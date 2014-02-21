@@ -1,0 +1,20 @@
+/* 
+* lightIRC Style Sheet
+* www.lightIRC.com
+*
+* Edit the CSS values and link the Style Sheet to the lightIRC application using the parameter "styleURL".
+* Please contribute new styles back to the lightIRC project!
+*
+* Note: Don't use hyphens for CSS attributes. Write fontSize instead of font-size.
+*
+*/
+
+/* Absolute or relative URL to the background image. Positioning is not yet supported. */
+.backgroundImage {
+	source:http://www.lightirc.com/start/css/images/hardangervidda.jpg;
+}
+
+/* Make components a bit transparent for a nice look */
+TextArea, List, TextInput {
+	contentBackgroundAlpha:0.75;
+}

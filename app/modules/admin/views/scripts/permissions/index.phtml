@@ -1,0 +1,106 @@
+<?
+$this->headTitle('Manage Permissions');
+$this->layout()->manual = TRUE;
+?>
+
+<div class="row">
+	<div class="span6">
+		<div class="floating">
+			<h2>Roles</h2>
+
+			<div class="buttons">
+				<?=$this->button(array(
+					'type'		=> 'link',
+					'class'		=> 'large success',
+					'href'		=> $this->route(array('module' => 'admin', 'controller' => 'permissions', 'action' => 'editrole')),
+					'icon'		=> 'add',
+					'text'		=> 'Add Role',
+				)) ?>
+			</div>
+
+			<table class="table table-striped">
+				<colgroup>
+					<col width="40%" />
+					<col width="60%" />
+				</colgroup>
+				<tbody>
+				<? foreach($this->roles as $role): ?>
+					<tr class="input">
+						<td class="center">
+							<?=$this->button(array(
+								'type'		=> 'small',
+								'icon'		=> 'pencil',
+								'href'		=> $this->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])),
+								'text'		=> 'Edit',
+							)) ?>
+						<? if( $role['id'] != 1 ): ?>
+							<?=$this->button(array(
+								'type'		=> 'small',
+								'icon'		=> 'delete',
+								'class'		=> 'negative confirm-delete',
+								'href'		=> $this->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'], 'csrf' => \DF\Csrf::getToken())),
+								'text'		=> 'Delete',
+							)) ?>
+						<? else: ?>
+							<?=$this->button(array(
+								'type'		=> 'small',
+								'icon'		=> 'delete',
+								'class'		=> 'disabled',
+								'href'		=> 'javascript:;',
+								'onclick'	=> 'alert(\'This role is the super administrator and cannot be deleted.\'); return false;',
+								'text'		=> 'Delete',
+							)) ?>
+						<? endif; ?>
+						</td>
+						<td align="left"><?=$role['name'] ?></td>
+					</tr>
+				<? endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="span6">
+		<div class="floating">
+			<h2>Actions</h2>
+
+			<div class="buttons">
+				<?=$this->button(array(
+					'type'		=> 'link',
+					'class'		=> 'large success',
+					'href'		=> $this->route(array('module' => 'admin', 'controller' => 'permissions', 'action' => 'editaction')),
+					'icon'		=> 'add',
+					'text'		=> 'Add Action',
+				)) ?>
+			</div>
+
+			<table class="table table-striped">
+				<colgroup>
+					<col width="40%" />
+					<col width="60%" />
+				</colgroup>
+				<tbody>
+				<? foreach($this->actions as $action): ?>
+					<tr class="input">
+						<td class="center">
+							<?=$this->button(array(
+								'type'		=> 'small',
+								'icon'		=> 'pencil',
+								'href'		=> $this->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])),
+								'text'		=> 'Edit',
+							)) ?>
+							<?=$this->button(array(
+								'type'		=> 'small',
+								'icon'		=> 'delete',
+								'class'		=> 'negative confirm-delete',
+								'href'		=> $this->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'], 'csrf' => \DF\Csrf::getToken())),
+								'text'		=> 'Delete',
+							)) ?>
+						</td>
+						<td align="left"><?=$action['name'] ?></td>
+					</tr>
+				<? endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

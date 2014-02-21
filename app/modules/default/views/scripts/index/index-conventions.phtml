@@ -1,0 +1,37 @@
+<div class="well">
+	<h3>Upcoming PVL Events</h3>
+	<ul class="unstyled nopadding">
+	<? foreach($this->conventions as $convention): ?>
+		<li>
+			<h5>
+				<a href="<?=$convention['web_url'] ?>" title="<?=$convention['category'] ?>" target="_blank"><? if ($convention['icon']): ?><i class="<?=$convention['icon'] ?>"></i> <? endif; ?><?=$convention['title'] ?></a> <small><?=date('F j', $convention['start_time']) ?> in <?=$convention['city'] ?></small>
+			</h5>
+		</li>
+	<? endforeach; ?>
+	</ul>
+
+	<div>
+		<?=$this->button(array(
+			'type'		=> 'small',
+			'class'		=> 'btn-primary',
+			'href'		=> $this->route(array('controller' => 'events')),
+			'icon'		=> 'icon-calendar',
+			'text'		=> 'View All PVL Events',
+		)) ?>
+	</div>
+</div>
+<div class="well">
+	<h3>Convention Archives</h3>
+	<ul class="unstyled nopadding">
+		<li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILHhcQo0ZcRAr4zQLAX3Lyw">Nightmare Nights Dallas</a> <small>from Dallas, Texas</small></h5></li>
+		<li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIKK8YhVDZgs4p2qn39j-Hlj">DerpyCon South</a> <small>from New Orleans, Louisiana</small></h5></li>
+		<li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIKM9Wh9aEdwVPcOYCwL6_Wk">Brony Fan Fair 2013</a> <small>from Austin, Texas</small></h5></li>
+		<li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILXuhnL7NZs1G583w5dFmo1">BronyCAN 2013</a> <small>from Vancouver, BC, Canada</small></h5></li>
+		<li><h5><a href="http://www.ponyvillelive.com/special/fiesta">Fiesta Equestria! 2013</a> <small>from Houston, Texas</small></h5></li>
+		<li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIJjEepgtCUqV67XXj3ldgtq">Pon3Con 2013</a> <small>from Omaha, Nebraska</small></h5></li>
+		<li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIKOxISJtXB2HxX2xz9nyy2f">EQLA 2013 Interviews</a> <small>from Anaheim, California</small></h5></li>
+		<li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIK17NS3C3W_OFlWwFiqlX21">PonyCon AU 2013</a> <small>from Sydney, Australia</small></h5></li>
+		<li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILGZOBkWWXynLM9fxFsNH-u">Brony-Fest 2013</a> <small>from Lewisville, Texas</small></h5></li>
+		<li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILo4QIIWrnW5D01U3hxyWDv">Las Pegasus Unicon 2013</a> <small>from Las Vegas, Nevada</small></h5></li>
+	</ul>
+</div>

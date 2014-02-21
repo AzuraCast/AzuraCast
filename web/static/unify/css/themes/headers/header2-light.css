@@ -1,0 +1,18 @@
+/*Top*/
+.loginbar li a:hover {
+	color:#787d80;
+}
+
+/*Menu*/
+.navbar .nav > .active > a, 
+.navbar .nav > .active > a:focus {
+	background: #787d80 !important;
+}
+.navbar .nav > .active > a:hover {	
+	background: #787d80 !important;		
+}
+
+/*Search*/
+.navbar .nav li a.search-nav:hover {
+	background:#787d80 !important;
+}

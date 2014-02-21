@@ -1,0 +1,169 @@
+<?php
+$this->headTitle('Chat Mode');
+$this->layout()->manual = true;
+$this->layout()->hide_title = true;
+
+$channels = array();
+foreach($this->stations as $station)
+{
+	if ($station['irc'])
+		$channels[$station['irc']] = $station['name'].': '.$station['irc'];
+}
+$channels['#PonyvilleLive'] = 'Ponyville Live! General: #PonyvilleLive';
+
+$skin = \PVL\Customization::get('theme');
+if ($skin == 'dark')
+	$chat_skin = 'css/black.css';
+else
+	$chat_skin = 'css/pvl_light.css';
+
+if ($this->auth->isLoggedIn())
+{
+	$user = $this->auth->getLoggedInUser();
+	$chat_username = $user->name;
+}
+else
+{
+	$chat_username = 'PVL_'.mt_rand(0, 10000);
+}
+?>
+
+<div class="row-fluid">
+	<div class="span4">
+		<div class="tabbable">
+			<h2><i class="icon-volume-up"></i> Tune In to PVL</h2>
+			<ul class="nav nav-pills">
+				<li class="active"><a href="#tab_audio" data-toggle="tab"><i class="<?=$this->categories['audio']['icon'] ?>"></i> <?=$this->categories['audio']['name'] ?></a></li>
+				<li><a href="#tab_video" data-toggle="tab"><i class="<?=$this->categories['video']['icon'] ?>"></i> <?=$this->categories['video']['name'] ?></a></li>
+				<li><a href="#tab_podcasts" data-toggle="tab"><i class="icon-rss"></i> Podcasts</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab_audio">
+					<?
+					$cat = $this->categories['audio'];
+					?>
+					<div class="well">
+						<?
+						$this->stations = $cat['stations'];
+						echo $this->renderCommon('station');
+						?>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab_video">
+					<?
+					$cat = $this->categories['video'];
+					?>
+					<div class="well">
+						<?
+						$this->stations = $cat['stations'];
+						echo $this->renderCommon('station');
+						?>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab_podcasts">
+					<div class="well">
+						<?
+						$this->podcasts = array_slice($this->podcasts, 0, 12, TRUE);
+						echo $this->renderCommon('podcast');
+						?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="span8">
+		<div class="floating">
+			<h2><i class="icon-comment"></i> Chat with Us<br><small>Powered by <a href="http://www.canternet.org/" target="_blank">Canternet IRC</a></small></h2>
+
+			<div class="flash">
+				<div id="lightIRC"></div>
+			</div>
+			<div class="noflash">
+				<div class="no-flash">
+					<h3>Flash Not Supported</h3>
+					<p>Your browser does not support the Flash plugin.</p>
+
+					<p>You are welcome to join us in our IRC channel using an IRC application of your choice! Just connect to <b>irc.canternet.org</b> and join channel #PonyvilleLive. If your IRC client supports special links, click the button below to connect.</p>
+
+					<?
+					$irc_url = 'http://client.canternet.org/?'.http_build_query(array(
+						'nick'		=> 'PVL_'.mt_rand(0, 10000),
+						'channels'	=> str_replace('#', '', implode(',', array_keys($channels))),
+						'prompt'	=> '1',
+						'uio'		=> 'Mj10cnVlJjk9dHJ1ZSYxMT0yMzYa9',
+					));
+					?>
+
+					<div class="buttons btn-group">
+						<?=$this->button(array(
+							'type'		=> 'link',
+							'href'		=> $irc_url,
+							'class'		=> 'large primary',
+							'text'		=> 'Web Chat',
+						)) ?>
+						<?=$this->button(array(
+							'type'		=> 'link',
+							'href'		=> 'irc://irc.canternet.org/#PonyvilleLive',
+							'class'		=> 'large primary',
+							'text'		=> 'IRC Client',
+						)) ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	window.onbeforeunload = function() {
+		swfobject.getObjectById('lightIRC').sendQuit();
+	}
+
+	$('.station').each(function() {
+		var irc_channel = $(this).data('chat');
+		if (irc_channel)
+		{
+			$(this).find('.station-info').prepend('<div class="chat-button"><a class="chat-link btn btn-small"><i class="icon-comment"></i> Chat</a></div>');
+		}
+	});
+
+	$('.station .chat-link').on('click', function(e) {
+		e.stopPropagation();
+
+		var channel_name = $(this).closest('.station').data('chat');
+		joinChannel(channel_name);
+
+		return false;
+	});
+
+	var params = {
+		host: 'irc.canternet.org',
+		port: '6667',
+		policyPort: '843',
+		language: 'en',
+		styleURL: '<?=$chat_skin ?>',
+		nick: '<?=$chat_username ?>',
+		autojoin: '#PonyvilleLive',
+		showNickSelection: 'true',
+		navigationPosition: 'top',
+		realname: 'Ponyville Live! Visitor',
+		quitMessage: 'Watch and listen live at http://www.ponyvillelive.com'
+	};
+
+	swfobject.embedSWF("<?=\DF\Url::content('lightIRC/lightIRC.swf') ?>", "lightIRC", "100%", "650", "10.0.0", "<?=\DF\Url::content('lightIRC/expressInstall.swf') ?>", params);
+
+	return false;
+});
+
+function joinChannel(channel_name)
+{
+	var channel = '#'+channel_name.replace('#', '');
+
+	console.log('Joining IRC channel '+channel+'...');
+
+	swfobject.getObjectById("lightIRC").sendCommand("/join "+channel);
+}
+</script>
+
+<?=$this->renderHere('player_skeleton', TRUE) ?>

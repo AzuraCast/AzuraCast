@@ -1,0 +1,237 @@
+<?php
+header("Content-type: text/html; charset=utf-8");
+echo $this->doctype();
+
+$skin = \PVL\Customization::get('theme');
+?>
+<html class="full_layout theme_<?=$skin ?>">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true">
+
+<meta name="viewport" content="initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+<meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, MLP, MLP:FiM" />
+<meta name="description" content="Equestria's newest Brony multimedia network, featuring 24/7 pony radio, videos, podcasts, convention coverage, and more." />
+<link rel="canonical" href="http://www.ponyvillelive.com" />
+
+<!-- iPhone/iPhone Retina -->
+<link rel="apple-touch-icon-precomposed" sizes="57x57" href="<?=\DF\Url::content('ios/touch_icon_iphone.png') ?>" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?=\DF\Url::content('ios/touch_icon_iphone.png') ?>" />
+<!-- iPad/iPad Retina -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?=\DF\Url::content('ios/touch_icon_ipad.png') ?>" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?=\DF\Url::content('ios/touch_icon_ipad.png') ?>" />
+
+<!-- Facebook and Other Social Sites -->
+<link rel="image_src" href="<?=\DF\Url::content('pvl_square.png') ?>" />
+
+<?php
+$title_items = $this->headTitle()->getIterator();
+$title = current($title_items);
+
+if (!$this->layout()->subtitle && $this->layout()->show_subtitle)
+    $this->layout()->subtitle = next($title_items);
+
+$this->headTitle($this->config->application->name);
+
+if (count($title_items) == 1)
+{
+	$this->headTitle()->append('Bringing Pony People Together');
+	$this->headTitle()->append('24/7 Pony Radio, Video, Podcasts, Convention Coverage & More');
+}
+
+if (DF_APPLICATION_ENV != "production")
+	$this->headTitle()->prepend('('.ucfirst(DF_APPLICATION_ENV).')');
+
+echo $this->headTitle()->setSeparator(" - ")->toString();
+
+$this->headLink()
+	->appendStylesheet('//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css', 'all')
+	->appendStylesheet('//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css', 'all')
+	->appendStylesheet(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.css'), 'all')
+	->appendStylesheet(\DF\Url::content('common/bootstrap2_r2/df-ui-printable.css'), 'print')
+	->appendStylesheet('//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen')
+	->appendStylesheet(\DF\Url::content('mid2013/style.css'), 'all')
+	->appendStylesheet(\DF\Url::content('mid2013/skin_'.$skin.'.css'));
+
+$this->headScript()
+	->prependFile(\DF\Url::cdn('jquery', '1.8.3'))
+	->appendFile(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.pack.js'))
+	->appendFile(\DF\Url::content('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js'))
+	->appendFile(\DF\Url::content('common/bootstrap2_r2/layout.js'))
+	->appendFile(\DF\Url::content('swfobject.js'))
+	->appendFile(\DF\Url::content('global.js'));
+
+echo $this->headMeta()."\n";
+echo $this->headLink()."\n";
+echo $this->headScript()."\n";
+
+if ($this->config->application->analytics_code)
+	echo $this->analytics($this->config->application->analytics_code);
+?>
+<? /*
+<script type="text/javascript">
+var uvOptions = {};
+(function() {
+	var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+	uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/RFLIXt2xqcpK7mNFeTJzjA.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+})();
+</script>
+*/ ?>
+<script>
+var DF_ContentPath = '<?php echo \DF\Url::content(); ?>';
+</script>
+</head>
+<body>
+<!-- Start Alexa Certify Javascript -->
+<script type="text/javascript">
+_atrk_opts = { atrk_acct:"Y1t+i1a8Dy00a/", domain:"ponyvillelive.com",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=Y1t+i1a8Dy00a/" style="display:none" height="1" width="1" alt="" /></noscript>
+<!-- End Alexa Certify Javascript -->
+
+<div class="top">
+    <div class="container">
+        <ul class="loginbar pull-right">
+        	<?
+        	$tz_info = \PVL\Timezone::getInfo();
+        	$tz_text = $tz_info['now']->format('g:ia').' '.$tz_info['abbr'];
+        	?>
+        	<li><a href="<?=$this->route(array('controller' => 'account', 'action' => 'timezone')) ?>" class="fancybox fancybox.ajax"><i class="icon-time"></i> <?=$tz_text ?></a></li>
+        	<li class="divider">&nbsp;</li>
+        	<li><a href="<?=$this->route(array('controller' => 'account', 'action' => 'theme', 'skin' => 'toggle')) ?>"><i class="icon-adjust"></i> <? if ($skin == 'light'): ?>Dark Theme<? else: ?>Light Theme<? endif; ?></a></li>
+        	<li class="divider">&nbsp;</li>
+        	<li><a href="<?=$this->route(array('module' => 'default', 'controller' => 'index', 'action' => 'tunein', 'origin' => 'home')) ?>" id="btn-tune-in"><i class="icon-youtube-play"></i> Player</a></li>
+        	<li class="divider">&nbsp;</li>
+        	<li><a href="<?=$this->route(array('module' => 'default', 'controller' => 'index', 'action' => 'app')) ?>"><i class="icon-cloud-download"></i> Plugins &amp; Apps</a></li>
+        	<li class="divider">&nbsp;</li>
+    	<? if ($this->auth->isLoggedIn()): ?>
+        	<?
+        	$user = $this->auth->getLoggedInUser();
+        	?>
+        	<? if ($this->acl->isAllowed('view administration')): ?>
+        		<li><a href="<?=$this->route(array('module' => 'admin')) ?>"><i class="icon-cog"></i> Admin</a></li>
+        		<li class="divider">&nbsp;</li>
+        	<? endif; ?>
+        	<? if (\Entity\Station::canSeeStationCenter($user)): ?>
+        		<li><a href="<?=$this->route(array('module' => 'stations')) ?>"><i class="icon-group"></i> Station Center</a></li>
+        		<li class="divider">&nbsp;</li>
+        	<? endif; ?>
+        		<li><b><?=$user->name ?></b></li>
+        	<? if ($this->auth->isMasqueraded()): ?>
+        		<li><a href="<?=$this->route(array('module' => 'account', 'controller' => 'logout', 'action' => 'endimpersonate')) ?>"><i class="icon-signout"></i> Switch User</a></li>
+        	<? else: ?>
+        		<li><a href="<?=$this->route(array('module' => 'account', 'controller' => 'logout')) ?>"><i class="icon-signout"></i> Sign Out</a></li>
+        	<? endif; ?>
+        <? else: ?>
+        	<li><a href="<?=$this->route(array('module' => 'default', 'controller' => 'account', 'action' => 'login')) ?>"><i class="icon-signin"></i> Sign In</a></li>
+    	<? endif; ?>
+        </ul>
+    </div>      
+</div>
+
+<div class="header">               
+    <div class="container">
+        <div class="logo">                                             
+            <a href="<?=$this->route() ?>"><img id="logo-header" src="<?=\DF\Url::content('mid2013/logo_'.$skin.'.png') ?>" alt="Logo"></a>
+        </div>
+
+        <div class="navbar">                                
+            <div class="navbar-inner">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="nav-collapse collapse">
+                	<?=$this->renderCommon('nav') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<? if ($this->placeholder('content_top')->toString()): ?>
+	<?=$this->placeholder('content_top')->toString() ?>
+<? else: ?>
+	<div id="secondary_header_stripe">&nbsp;</div>
+<? endif; ?>
+
+<div id="body-wrapper">
+	<div id="body" class="container">
+		<div id="page_wrapper"><div id="page">
+			<div>
+				<?
+				if (\DF\Flash::hasMessages()):
+					$messages = \DF\Flash::getMessages();
+					foreach($messages as $message):
+				?>
+					<div class="content-top-alert alert alert-<?=$message['color'] ?>" data-alert="alert">
+						<a class="close" data-dismiss="alert" href="#">×</a>
+						<?=$message['message'] ?>
+					</div>
+				<?
+					endforeach;
+				endif;
+				?>
+				
+				<div id="content_wrapper">
+					<div id="content">
+					<?
+					$breadcrumb = $this->breadcrumb()->render();
+					if ($breadcrumb):
+					?>
+						<div id="breadcrumb">
+							<a href="<?=\DF\Url::baseUrl() ?>/"><?=$this->config->application->name ?></a> &raquo; <?=$breadcrumb ?>
+						</div>
+					<? endif; ?>
+
+					<? if (!$this->layout()->hide_title): ?>
+						<h1 class="title"><?=$title ?></h1>
+					<? endif; ?>
+			
+					<? if ($this->layout()->tabs): ?>
+						<div id="content_tabs">
+							<?=$this->layout()->tabs ?>
+						</div>
+					<? endif; ?>
+
+					<? if ($this->layout()->subtitle): ?>
+						<h2 class="title"><?=$this->layout()->subtitle ?></h2>
+					<? endif; ?>
+
+					<? if ($this->layout()->manual): ?>
+						<?php echo $this->layout()->content; ?>
+					<? else: ?>
+						<div class="row-fluid">
+							<div class="span12">
+								<div class="content_inner">
+									<?php echo $this->layout()->content; ?>
+								</div>
+							</div>
+						</div>
+					<? endif; ?>
+					</div>
+				</div>
+			</div>
+		</div></div>
+	</div>
+</div>
+
+<div class="footer">
+	<div class="container">
+		<?=$this->renderCommon('footer') ?>
+	</div>
+</div>
+
+<div class="copyright">
+	<div class="container">
+		<p>MLP is copyright &copy; Hasbro. All creations are &copy; to their respective artists. All songs are property of their respective artists.<br>
+		Copyright &copy; <?=date('Y') ?> Ponyville Live! All rights reserved.</p>
+	</div>
+</div>
+</body>
+</html>

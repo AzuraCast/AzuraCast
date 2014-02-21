@@ -1,0 +1,145 @@
+<?
+$this->headTitle('System Administration');
+$this->layout()->manual = true;
+
+$this->headScript()
+    ->appendFile('http://code.highcharts.com/highcharts.js')
+    ->appendFile('http://code.highcharts.com/highcharts-more.js')
+    ->appendFile('http://code.highcharts.com/modules/exporting.js');
+
+$skin = \PVL\Customization::get('theme');
+if ($skin == "dark")
+    $this->headScript()->appendFile(\DF\Url::content('highcharts/dark-blue.js'));
+?>
+
+<div class="row-fluid">
+    <div class="span3">
+        <div class="well">
+            <ul class="nav nav-list">
+                <li class="nav-header">Manage Content</li>
+                <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'blocks')) ?>"><i class="icon-list-alt"></i> Content Blocks</a></li>
+
+                <li class="nav-header">Manage PVL Records</li>
+                <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'stations')) ?>"><i class="icon-volume-up"></i> Stations</a></li>
+                <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'artists')) ?>"><i class="icon-star"></i> Artists</a></li>
+                <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'podcasts')) ?>"><i class="icon-rss"></i> Podcasts</a></li>
+                <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'rotators')) ?>"><i class="icon-refresh"></i> Rotating Banners</a></li>
+
+                <li class="nav-header">Manage System Settings</li>
+                <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'users')) ?>"><i class="icon-user"></i> User Accounts</a></li>
+                <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'permissions')) ?>"><i class="icon-key"></i> Roles &amp; Permissions</a></li>
+                <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'settings')) ?>"><i class="icon-cog"></i> System Settings</a></li>
+
+                <li class="nav-header">Station Centers</li>
+            <? foreach($this->stations as $station): ?>
+                <li><a href="<?=$this->route(array('module' => 'stations', 'action' => 'index', 'station' => $station->id)) ?>"><i class="<?=$station->getCategoryIcon() ?>"></i> <?=$station->name ?></a></li>
+            <? endforeach; ?>
+            </ul>
+        </div>
+    </div>
+    <div class="span9">
+        <div class="well">
+            <div id="network_listeners_by_day" style="height: 250px;"></div>
+            <div id="station_listeners_by_day" style="height: 450px;"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+        }
+    });
+        
+    $('#network_listeners_by_day').highcharts({
+        chart: { zoomType: 'x' },
+        title: { text: 'PVL Network Traffic by Day' },
+        xAxis: {
+            type: 'datetime',
+            labels: {
+                formatter: function () {
+                    return Highcharts.dateFormat('%a %d %b', this.value);
+                },
+                dateTimeLabelFormats: {
+                    minute: '%H:%M',
+                    hour: '%H:%M',
+                    day: '%e. %b',
+                    week: '%e. %b',
+                    month: '%b \'%y',
+                    year: '%Y'
+                }
+            }
+        },
+        plotOptions: {
+            spline: {
+                marker: { enabled: false }
+            }
+        },
+        yAxis: {
+            title: { text: 'Listeners' },
+            min: 0
+        },
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            xDateFormat: '%Y-%m-%d'
+        },
+        
+        series: [{
+            name: 'Listener Range',
+            type: 'arearange',
+            data: <?=$this->pvl_ranges ?>
+        }, {
+            name: 'Average Listeners',
+            type: 'spline',
+            data: <?=$this->pvl_averages ?>
+        }]
+    });
+
+    $('#station_listeners_by_day').highcharts({
+        chart: { zoomType: 'x' },
+        title: { text: 'PVL Station Traffic by Day' },
+        xAxis: {
+            type: 'datetime',
+            labels: {
+                formatter: function () {
+                    return Highcharts.dateFormat('%a %d %b', this.value);
+                },
+                dateTimeLabelFormats: {
+                    minute: '%H:%M',
+                    hour: '%H:%M',
+                    day: '%e. %b',
+                    week: '%e. %b',
+                    month: '%b \'%y',
+                    year: '%Y'
+                }
+            }
+        },
+        plotOptions: {
+            spline: {
+                lineWidth: 1,
+                marker: { enabled: false },
+                shadow: false,
+                states: {
+                    hover: {
+                        lineWidth: 3
+                    }
+                },
+                threshold: null
+            }
+        },
+        yAxis: {
+            title: { text: 'Listeners' },
+            min: 0
+        },
+        tooltip: {
+            crosshairs: true,
+            xDateFormat: '%Y-%m-%d'
+        },
+        
+        series: <?=$this->station_metrics ?>
+    });
+});
+</script>

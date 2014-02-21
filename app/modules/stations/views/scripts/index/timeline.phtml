@@ -1,0 +1,78 @@
+<?
+$this->headTitle('Station Center');
+$this->layout()->manual = true;
+?>
+
+<?=$this->renderHere('header') ?>
+
+<h4><a href="<?=$this->routeFromHere(array('action' => 'index')) ?>"><i class="icon-arrow-left"></i> Station Center Home</a></h4>
+
+<div class="row-fluid">
+    <div class="span12">
+    	<h2>Recent Playback Timeline</h2>
+
+        <div class="buttons">
+            <?=$this->button(array(
+                'type'      => 'link',
+                'icon'      => 'icon-download',
+                'text'      => 'Download Excel/CSV',
+                'href'      => $this->routeFromHere(array('format' => 'csv')),
+            )) ?>
+        </div>
+
+        <div class="well">
+        	<table class="datatable table-striped table-condensed table-nopadding">
+                <colgroup>
+                	<col width="15%">
+                	<col width="10%">
+                	<col width="10%">
+                	<col width="35%">
+                	<col width="30%">
+                </colgroup>
+                <thead>
+                	<tr>
+                		<th>Date/Time</th>
+                		<th>Listeners</th>
+                		<th>Change</th>
+                		<th>Song Title</th>
+                		<th>Event</th>
+                	</tr>
+                </thead>
+                <tbody>
+                <? foreach($this->songs as $song_row): ?>
+                    <tr class="input" id="song_<?=$song_row['timestamp'] ?>">
+                    	<td class="center"><?=date('D g:ia', $song_row['timestamp']) ?></td>
+                    	<td class="center"><big><?=$song_row['stat_start'] ?></big></td>
+                    	<td class="center">
+                            <big>
+                    	<? if ($song_row['stat_delta'] > 0): ?>
+                    		<span class="text-success"><i class="icon-caret-up"></i> <?=$song_row['stat_delta'] ?></span>
+                    	<? elseif ($song_row['stat_delta'] < 0): ?>
+                    		<span class="text-error"><i class="icon-caret-down"></i> <?=abs($song_row['stat_delta']) ?></span>
+                    	<? else: ?>
+                    		0
+                    	<? endif; ?>
+                            </big>
+                    	</td>
+                    	<td>
+                        <? if ($song_row['song']['title']): ?>
+                            <b><?=$song_row['song']['title'] ?></b><br>
+                            <?=$song_row['song']['artist'] ?>
+                        <? else: ?>
+                            <?=$song_row['song']['text'] ?>
+                        <? endif; ?>
+                        </td>
+                        <td>
+                        <? if ($song_row['event']): ?>
+                        	<i class="icon-star"></i> <?=$song_row['event']['title'] ?>
+                        <? else: ?>
+                        	&nbsp;
+                    	<? endif; ?>
+                        </td>
+                    </tr>
+                <? endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

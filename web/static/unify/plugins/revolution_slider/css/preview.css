@@ -1,0 +1,251 @@
+/*-----------------------------------------------------------------------------
+
+KENBURNER RESPONSIVE BASIC STYLES OF HTML DOCUMENT
+
+Screen Stylesheet
+
+version:   	1.0
+date:      	07/27/11
+author:		themepunch
+email:     	support@themepunch.com
+website:   	http://www.themepunch.com
+-----------------------------------------------------------------------------*/
+
+
+/**********************
+	-	RESET	-
+************************/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline; background: transparent;
+}
+
+* {
+	 -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+
+}
+
+/***********************
+	-	BASICS 	-
+***********************/
+html {
+	overflow-x:hidden;
+	padding: 0 !important;
+	background-image:url(../images/tiles/bgtile.png);
+	margin:0px !important;
+}
+
+
+ol, ul 		{  list-style: none; }
+
+a			{	text-decoration:none;}
+
+.clear 		{	clear:both;}
+.space10	{	width:100%;height:10px;}
+.space15	{	width:100%;height:15px;}
+.space20	{	width:100%;height:20px;}
+.space30	{	width:100%;height:30px;}
+.space40	{	width:100%;height:40px;}
+
+/************************
+	-	HEADER	-
+************************/
+
+
+.header			{	max-width:960px; margin:auto; padding:0px 20px;}
+
+.header .left 	{	float:left; }
+.header .right	{	float:right;}
+
+.header .logo	{	margin-top:20px; margin-bottom:15px; width:360px; height:100px; background:url(../images/tiles/logo.png) no-repeat;}
+
+.divider	{	max-width:960px; margin:auto;height:10px; background:url(../images/tiles/divider.png) repeat;}
+
+.menupoint, .menupoint:visited		{	color:#000; font-weight:800; font-family: 'Open Sans', sans-serif; font-size:13px; line-height:52px; padding:0px 20px; border-right:1px solid #cdc;}
+.menupoint:hover, .menupoint.red 	{	color:#D31E00; }
+
+.menupoint:first-child	{ 	padding-left:0px;}
+.menupoint:last-child	{	border-right:none; padding-right:0px;}
+
+.purchase		{	-webkit-border-radius:5px; border-radius:5px; -moz-border-radius:5px;
+					background-color:rgba(211,30,0,0.5);
+					padding:3px 2px 3px 3px;
+					margin-top:40px;
+				}
+
+.purchase-inside	{	-webkit-border-radius:5px; border-radius:5px; -moz-border-radius:5px;
+					color:#fff; background-color:#D31E00;
+					font-family: 'Open Sans', sans-serif; font-size:13px; line-height:30px; font-weight:300;
+					padding:0px 17px;
+
+					cursor:pointer;
+				}
+
+.purchase:hover						{	background:rgba(0,0,0,0.5);	}
+.purchase:hover .purchase-inside	{	background:#000;}
+
+
+
+/***************************
+	-	CONFIGURATOR	-
+*****************************/
+
+.configurator					{	max-width:960px; margin:auto; padding:0px 20px;}
+.one_third						{	width:32%;margin-right:2%; float:left;}
+.one_third.last					{	margin-right:0}
+
+.configurator table tr					{		width:100%; color:#D31E00; font-weight:900; font-family: 'Open Sans', sans-serif; font-size:37px; line-height:39px; }
+.config_title.small						{		font-size:18px; white-space:nowrap; }
+
+.configurator table td:first-child		{	padding-right:10px;}
+.configurator table td.divider			{		width:100%; height:10px; background:url(../images/tiles/divider.png) repeat-x left 24px;}
+.configurator table td.divider.small	{		width:100%; height:10px; background:url(../images/tiles/divider.png) repeat-x left 18px;}
+
+.configurator .conftitle		{	color:#000; font-weight:800; font-family: 'Open Sans', sans-serif; font-size:12px;}
+.configurator .conftitle span	{	font-size:10px; font-weight:500; color:#999;}
+
+.configurator .selecter			{	position:relative; min-width:200px; max-width:320px; margin:5px auto 0px;}
+.configurator select			{	min-width:200px; max-width:320px;  width:100%; opacity:0; -moz-opacity: 0; -webkit-opacity: 0; filter: alpha(opacity = 0); cursor:pointer; background:#fff; height:30px; }
+
+
+.configurator .dropdown			{	min-width:200px; max-width:320px; width:100%; height:28px;
+									position:absolute;top:0px; left:0px;
+									background-color:#fff;
+									-webkit-border-radius:5px; border-radius:5px; -moz-border-radius:5px;
+									border:1px solid rgba(0,0,0,0.1);
+								}
+
+.configurator .dropcontent		{	line-height:30px;padding:0px 20px;
+									font-family: 'Open Sans', sans-serif;font-size:12px;
+									color:#404040;
+									float:left;
+								}
+
+.configurator .dropbutton		{	width:23px;height:23px; background:url(../images/tiles/dropdown.png) no-repeat;
+									float:right;margin-right:2px;
+									margin-top:2px;
+								}
+.configurator .selecter:hover .dropbutton	{ background-position:bottom;}
+
+.configurator .inputfield			{	width:154px;height:30px; background:url(../images/tiles/inputfield.png) no-repeat -2px 0px;
+										font-family: 'Open Sans', sans-serif;font-size:12px; line-height:30px;padding-left:20px;color:#404040;
+										margin-top:5px;
+									}
+
+
+.infofield							{	font-family:Arial; color:#555;font-size:12px; line-height:22px;}
+.infofield span						{	font-size:13px;font-weight:bold;}
+
+
+.configurator table.features tr td:first-child	{	width:100px;}
+
+.slogan								{	text-align:center; color:#4e5b6c; font-weight:900; font-family: 'Open Sans', sans-serif; font-size:28px;}
+.plus								{	background:url(../images/tiles/plus.png) no-repeat; width:23px; height:23px; float:left; margin-right:5px; cursor:pointer;}
+.minus								{	background:url(../images/tiles/minus.png) no-repeat; width:23px; height:23px; float:left; cursor:pointer;}
+
+.plus.slot, .minus.slot				{	margin-top:10px;}
+
+.plus:hover, .minus:hover			{	background-position:bottom;}
+
+.configurator .pmbutcont			{	position:relative; min-width:200px; max-width:320px; margin:0px auto 0px;  }
+
+
+/******************************
+	-	ROTATOR	-
+*******************************/
+.configurator .rotator				{	background:url(../images/tiles/rotator.png) no-repeat; width:75px; height:75px; margin-top:-10px;margin-right:10px; position:relative; cursor:pointer;}
+
+.configurator .rotator-line			{ 	background:url(../images/tiles/rotator-line.png) no-repeat; width:75px; height:75px; position:absolute; top:0px; left:0px;}
+.configurator .rotator:hover .rotator-line	{ background-position: bottom;}
+
+.configurator .rotbutcont			{	 min-width:260px; max-width:260px; margin:0px auto 0px;  }
+
+
+
+/***********************************
+	-	THE LIST OF FUNCTIONS	-
+************************************/
+.configurator ul li					{			background:url(../images/tiles/ok.png) no-repeat 0px 4px; padding-left:45px;
+												font-family: 'Open Sans', sans-serif;font-size:12px; line-height:15px;padding-left:20px;color:#404040;margin-bottom:10px;
+									}
+.configurator ul li	span			{ 			font-size:13px;font-weight:bold; line-height:15px;}
+
+/***************************************
+	-	TABLE OF COMPATIBILITY   -
+****************************************/
+
+.configurator table.features		{	width:100%;}
+.configurator table.features tr		{	font-size:11px;line-height:16px !important; color:#000; font-weight:900; font-family: 'Open Sans', sans-serif;
+										height:50px;
+									}
+.configurator table.features td		{	border-bottom:1px solid #ddd;	vertical-align:middle;}
+
+.configurator table.features span	{	font-size:11px;line-height:16px !important; color:#000; font-weight:500;}
+
+.configurator table.features tr.titles	{	color:#999; font-size:10px;  font-weight:500; text-align:center;}
+
+.yo									{	background:url(../images/tiles/ok.png) no-repeat; width:11px;height:8px; margin:auto;}
+.nop								{	background:url(../images/tiles/no.png) no-repeat; width:11px;height:8px; margin:auto;}
+
+
+
+/*************************************
+	-	TESTIMONIALS	-
+**************************************/
+.testimonials						{  padding:20px; background-color:#eee; border:1px solid rgb(229,229,229);	margin-bottom:10px;
+									   font-family: 'Open Sans', sans-serif;font-size:16px; line-height:22px; color:#555; font-weight:300;
+									  }
+.testimonials span				{font-weight:900;}
+
+
+
+
+ @media only screen and (min-width: 768px) and (max-width: 959px) {
+
+	
+	.configurator select,
+	.configurator .dropdown				{	width:100%;}
+	
+
+
+
+
+   }
+
+   @media only screen and (min-width: 480px) and (max-width: 767px) {
+
+	   .one_third	{ float:none; width:100%; margin-bottom:20px;}
+	   .one_third.last	{ margin-bottom:0px !important;}
+	   .configurator .conftitle		{	text-align:center; }
+		.configurator .pmbutcont			{	position:relative;  width:207px; margin:0px auto 0px;  }
+
+   }
+
+   @media only screen and (min-width: 0px) and (max-width: 600px) {
+
+
+		     .logo			{	margin-bottom:0px;}
+		     .header .right	{ 	clear:left; float:left;}
+		     .purchase		{ margin-top:0px; margin-bottom:20px;}
+			 .configurator .conftitle		{	text-align:center; }
+			 .configurator .pmbutcont			{	position:relative;  width:207px; margin:0px auto 0px;  }
+
+   }
+
+   @media only screen and (min-width: 0px) and (max-width: 479px) {
+		     .one_third			{ float:none; width:100%; margin-bottom:20px;}
+		     .one_third.last	{ margin-bottom:0px !important;}
+			 .configurator .conftitle		{	text-align:center; }
+			 .configurator .pmbutcont			{	position:relative;  width:207px; margin:0px auto 0px;  }
+
+
+   }
+
+
+
+
+
+
+

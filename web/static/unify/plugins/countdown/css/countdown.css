@@ -1,0 +1,32 @@
+/*Countdown*/
+#defaultCountdown { 
+	width: 100%;
+	margin: 10px 0; 
+	overflow: hidden;
+}
+
+#defaultCountdown span.countdown_row {
+	overflow: hidden;
+}
+
+#defaultCountdown span.countdown_row span { 
+	font-size: 16px;
+	line-height: 20px;
+	margin-right: 2px;
+	text-align: center;
+	display: inline-block;
+}
+
+#defaultCountdown span.countdown_section {
+	color: #fff;
+	padding: 30px 45px;
+	margin-bottom: 2px;
+	background: url(../../../img/bg-black.png) repeat;
+	text-align: center;
+}
+
+#defaultCountdown span.countdown_amount {
+	font-size: 50px !important;
+	padding: 15px;
+	font-family: Arial !important;
+}

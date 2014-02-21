@@ -1,0 +1,102 @@
+<?
+$this->headTitle('Manage Users');
+?>
+
+<div class="buttons">
+	<?=$this->button(array(
+		'type'		=> 'link',
+		'class'		=> 'success',
+		'href'		=> $this->route(array('module' => 'admin', 'controller' => 'users', 'action' => 'add' )),
+		'icon'		=> 'add',
+		'text'		=> 'Add New User',
+	)) ?>
+</div>
+
+<? if ($this->q): ?>
+	<h2>Search Results for "<?=$this->q ?>"</h2>
+<? else: ?>
+	<h2>View All Users</h2>
+<? endif; ?>
+
+<form class="form-search" action="<?=$this->routeFromHere(array('page' => NULL)) ?>" method="get">
+	<input type="text" name="q" title="Search terms" placeholder="Search..." class="input-medium span3 search-query" value="<?=$this->q ?>">
+	<?=$this->button(array(
+	    'type'		=> 'submit',
+	    'class'		=> 'primary btn-small',
+	    'text'		=> 'Search Users',
+	)) ?>
+</form>
+
+<?=$this->paginate($this->pager) ?>
+
+<table class="table table-striped" width="100%">
+	<colgroup>
+		<col width="20%">
+		<col width="25%">
+		<col width="25%">
+		<col width="30%">
+	</colgroup>
+	<thead>
+		<tr>
+			<th>Actions</th>
+			<th>Name</th>
+			<th>E-mail Address</th>
+			<th>Roles</th>
+		</tr>
+	</thead>
+	<tbody>
+	<? foreach($this->pager as $user): ?>
+		<tr class="input">
+			<td>
+				<div class="btn-group">
+					<?=$this->button(array(
+						'type'		=> 'small',
+						'class'		=> 'primary',
+						'href'		=> $this->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)),
+						'icon'		=> 'key_go',
+						'text'		=> 'Log In',
+					)) ?>
+					<?=$this->button(array(
+						'type'		=> 'small',
+						'href'		=> $this->routeFromHere(array('action' => 'edit', 'id' => $user->id)),
+						'icon'		=> 'pencil',
+						'text'		=> 'Edit',
+					)) ?>
+				<? if ($user->flag_delete): ?>
+					<?=$this->button(array(
+						'type'		=> 'small',
+						'href'		=> $this->routeFromHere(array('action' => 'delete', 'id' => $user->id)),
+						'class'		=> 'success',
+						'icon'		=> 'add',
+						'text'		=> 'Undelete',
+					)) ?>
+				<? else: ?>
+					<?=$this->button(array(
+						'type'		=> 'small',
+						'href'		=> $this->routeFromHere(array('action' => 'delete', 'id' => $user->id)),
+						'class'		=> 'danger confirm-delete',
+						'icon'		=> 'delete',
+						'text'		=> 'Delete',
+					)) ?>
+				<? endif; ?>
+				</div>
+			</td>
+			<td><big><?=$user->name ?></big></td>
+			<td><?=$this->mailto($user->email) ?></td>
+			<td>
+				<small>
+				<?
+				if (count($user->roles) > 0)
+				{
+					foreach($user->roles as $role)
+						echo '<div>'.$role->name.'</div>';
+				}
+				?>
+				</small>
+			</td>
+		</tr>
+	<? endforeach; ?>
+	</tbody>
+</table>
+
+<?=$this->paginate($this->pager) ?>

@@ -1,0 +1,110 @@
+<?php
+$this->headTitle('Desktop & Mobile Apps');
+
+$this->layout()->hide_title = true;
+$this->layout()->manual = true;
+?>
+
+<div class="row-fluid">
+	<div class="span6">
+		<h1 class="title">Desktop Apps</h1>
+
+		<h2>Google Chrome (HoofSounds)</h2>
+		<div class="well">
+			<div class="buttons">
+				<?=$this->button(array(
+					'type'		=> 'link',
+					'class'		=> 'btn-primary',
+					'icon'		=> 'icon-globe',
+					'href'		=> 'http://hoofsounds.little.my/',
+					'target'	=> '_blank',
+					'text'		=> 'HoofSounds Homepage',
+				)) ?>
+			</div>
+
+			<div>
+				<img src="<?=\DF\Url::content('images/app_hoofsounds_1.jpg') ?>" style="width: 50%;" alt="">
+			</div>
+
+			<p>Ponyville Live! has partnered with the PonyHoof development team and Celestia Radio to launch a new Chrome plugin that lets you listen to pony music right from your Chrome browser. Visit the link above to learn more and install it!</p>
+		</div>
+
+		<h2>Winamp, iTunes, VLC, etc.</h2>
+		<div class="well">
+			<div class="buttons">
+				<?=$this->button(array(
+					'type'		=> 'link',
+					'class'		=> 'btn-primary',
+					'icon'		=> 'icon-download',
+					'href'		=> $this->routeFromHere(array('controller' => 'station', 'action' => 'playlist', 'format' => 'pls')),
+					'target'	=> '_blank',
+					'text'		=> 'Download PLS (VLC, etc)',
+				)) ?>
+			</div>
+			<p>Download playlist files containing all of the Ponyville Live! radio stations.</p>
+		</div>
+	</div>
+	<div class="span6">
+		<h1 class="title">Mobile Apps</h1>
+
+		<h2>TuneIn Radio Mobile</h2>
+		<div class="well">
+			<div class="buttons">
+				<?=$this->button(array(
+					'type'		=> 'link',
+					'class'		=> 'btn-primary',
+					'icon'		=> 'icon-globe',
+					'href'		=> 'http://tunein.com/mobile/',
+					'target'	=> '_blank',
+					'text'		=> 'TuneIn for iPhone/Android/etc.',
+				)) ?>
+			</div>
+
+			<p>All of Ponyville Live!'s stations are listed inside the TuneIn Radio application. You can install a native version of TuneIn Radio on your iPhone/iPad, Android, Windows Phone, Blackberry or Palm device.</p>
+		</div>
+
+		<h2><i class="icon-android"></i> Android</h2>
+		<div class="well">
+			<div class="buttons">
+				<?=$this->button(array(
+					'type'		=> 'link',
+					'class'		=> 'btn-primary',
+					'icon'		=> 'icon-download',
+					'href'		=> 'http://www.ponyvillelive.com/resources/PonyvilleLive.apk',
+					'target'	=> '_blank',
+					'text'		=> 'Download PVL! for Android',
+				)) ?>
+			</div>
+			<div>
+				<img src="<?=\DF\Url::content('images/droid1.png') ?>" style="width: 30%;" alt="">
+				<img src="<?=\DF\Url::content('images/droid2.png') ?>" style="width: 30%;" alt="">
+				<img src="<?=\DF\Url::content('images/droid3.png') ?>" style="width: 30%;" alt="">
+			</div>
+			<p>The Ponyville Live! Android app is now available. From the app, you can listen to any of the stations in the PVL network, and chat along with us in our IRC channels. Click the link below to download the app.</p>
+			<p>A special thank you to NeonPony for helping with the construction of this application.</p>
+		</div>
+
+		<h2><i class="icon-windows"></i> Windows Phone 8 and Windows 8</h2>
+		<div class="well">
+			<div class="buttons">
+				<?=$this->button(array(
+					'type'		=> 'link',
+					'class'		=> 'btn-primary',
+					'icon'		=> 'icon-download',
+					'href'		=> 'http://mlp.reignofcomputer.com/Portal8/',
+					'target'	=> '_blank',
+					'text'		=> 'MLP Portal (Windows 8)',
+				)) ?>
+				<?=$this->button(array(
+					'type'		=> 'link',
+					'class'		=> 'btn-primary',
+					'icon'		=> 'icon-download',
+					'href'		=> 'http://mlp.reignofcomputer.com/mlpp/',
+					'target'	=> '_blank',
+					'text'		=> 'MLP Portal (Windows Phone 8)',
+				)) ?>
+			</div>
+			<p>All of Ponyville Live's stations are listed on the MLP Portal application for Windows Phone 8 and Windows 8 desktops. From the app, you can listen to our stations live, view what's playing, and visit the web sites and social media outlets for the stations.</p>
+		</div>
+	</div>
+</div>

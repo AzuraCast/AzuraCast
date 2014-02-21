@@ -1,0 +1,148 @@
+<ul class="media-list" style="padding-bottom: 0; margin-bottom: 0;">
+<? foreach((array)$this->stations as $station): ?>
+	<li class="media station" id="station_<?=\Entity\Station::getStationShortName($station['name']) ?>" 
+		data-id="<?=$station['id'] ?>" 
+		data-name="<?=$station['name'] ?>" 
+		data-type="<?=$station['type'] ?>" 
+		data-stream="<?=$station['stream_url'] ?>" 
+		data-image="<?=\DF\Url::content($station['image_url']) ?>" 
+		data-chat="<?=$station['irc'] ?>" 
+		data-inactive="<? if ($station['hide_if_inactive']): ?>hide<? else: ?>show<? endif; ?>" 
+		style="margin-top: 0;">
+		<div class="media-object pull-left center">
+			<img class="station-image" src="<?=\DF\Url::content($station['image_url']) ?>">
+			<div class="station-play-button">
+				<i class="icon-play"></i>
+			</div>
+		</div>
+		<div class="media-body">
+			<div class="station-info">
+
+			<? if ($this->render_mode != 'embed'): ?>
+				<!-- Station Like/Share Buttons -->
+				<div class="station-link buttons btn-toolbar pull-right" style="display: none;">
+					<div class="btn-group">
+					<? if ($this->auth->isLoggedIn()): ?>
+						<?=$this->button(array(
+							'type'		=> 'small',
+							'icon'		=> 'icon-thumbs-up',
+							'text'		=> 'Like',
+							'href'		=> $this->route(array('action' => 'like', 'origin' => 'pvl')),
+							'class'		=> 'btn-success btn-like',
+						)) ?>
+					<? else: ?>
+						<?=$this->button(array(
+							'type'		=> 'small',
+							'icon'		=> 'icon-thumbs-up',
+							'text'		=> 'Like',
+							'href'		=> '#',
+							'class'		=> 'btn-success btn-like-login-required',
+						)) ?>
+					<? endif; ?>
+						<?=$this->button(array(
+							'type'		=> 'small',
+							'icon'		=> 'icon-facebook',
+							'title'		=> 'Share on Facebook',
+							'href'		=> '#',
+							'class'		=> 'btn-icon-only btn-primary btn-share-station btn-share-facebook',
+						)) ?>
+						<?=$this->button(array(
+							'type'		=> 'small',
+							'icon'		=> 'icon-twitter',
+							'title'		=> 'Share on Twitter',
+							'href'		=> '#',
+							'class'		=> 'btn-icon-only btn-primary btn-share-station btn-share-twitter',
+						)) ?>
+					</div>
+				</div>
+			<? endif; ?>
+
+				<!-- Station Header -->
+				<h4>
+				<? if ($station['nickname']): ?>
+					<?=$station['nickname'] ?> 
+				<? else: ?>
+					<?=$station['name'] ?> 
+				<? endif; ?>
+					<span class="nowplaying-info">
+						<small>
+							<span class="nowplaying-live">Live! &bull; </span>
+							<span class="nowplaying-listeners"></span>
+							<span class="nowplaying-status"> &bull; Now Playing</span>
+						</small>
+					</span>
+				<? if ($station['genre']): ?>
+					<span class="genre-info">
+						<small>
+							<?=$station['genre'] ?>
+						</small>
+					</span>
+				<? endif; ?>
+				</h4>
+			<? if ($station['now']): ?>
+				<div class="nowplaying-onair">
+					<i class="icon-star"></i> On Air: <?=$station['now']['title'] ?>
+				</div>
+			<? else: ?>
+				<div class="nowplaying-onair" style="display: none;"></div>
+			<? endif; ?>
+
+				<!-- Now Playing Information -->
+				<div><big><span class="nowplaying-artist">Loading...</span></big></div>
+				<div><span class="nowplaying-title">Loading...</span></div>
+			</div>
+			<div class="station-player" style="display: none;">
+				<div class="station-player-container"></div>
+			
+				<!-- Station Links -->
+				<div class="station-link buttons btn-toolbar">
+				<? if ($station['requests_enabled']): ?>
+					<div class="btn-group">
+						<?=$this->button(array(
+							'type'		=> 'small',
+							'icon'		=> 'icon-music',
+							'text'		=> 'Request',
+							'title'		=> 'Request a song to play on this station!',
+							'href'		=> $this->route(array('controller' => 'station', 'action' => 'request', 'id' => $station['id'])),
+							'class'		=> 'btn-inverse',
+							'target'	=> '_blank',
+						)) ?>
+					</div>
+				<? endif; ?>
+
+					<div class="btn-group">
+					<? if ($this->render_mode != 'embed'): ?>
+						<?=$this->button(array(
+							'type'		=> 'small',
+							'icon'		=> 'icon-time',
+							'text'		=> 'Recent',
+							'title'		=> 'Show recently played songs.',
+							'href'		=> '#',
+							'class'		=> 'btn-show-history',
+						)) ?>
+						<?=$this->button(array(
+							'type'		=> 'small',
+							'icon'		=> 'icon-globe',
+							'text'		=> 'Site',
+							'title'		=> 'View the station\'s web site.',
+							'href'		=> $station['web_url'],
+							'target'	=> '_blank',
+						)) ?>
+					<? endif; ?>
+
+						<?=$this->button(array(
+							'type'		=> 'small',
+							'icon'		=> 'icon-download',
+							'text'		=> 'PLS',
+							'title'		=> 'Download a PLS playlist to play this station in a media player.',
+							'href'		=> $this->route(array('controller' => 'station', 'action' => 'playlist', 'format' => 'pls', 'id' => $station['id'])),
+						)) ?>
+					</div>
+				</div>
+
+				<div class="station-history"></div>
+			</div>
+		</div>
+	</li>
+<? endforeach; ?>
+</ul>

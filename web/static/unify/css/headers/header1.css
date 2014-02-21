@@ -1,0 +1,352 @@
+/*Top Bar (login, search etc.)
+------------------------------------*/
+.top {
+	padding:7px 0 8px;
+}
+
+.loginbar {
+	margin:0;
+	padding:0;
+	z-index:9999;
+	list-style:none;
+	position:relative;
+}
+
+.loginbar li {
+	display:inline;
+	list-style:none;
+	padding-bottom:15px;
+}
+
+.loginbar li a, 
+.loginbar li a:hover {
+	color:#7c8082;
+	font-size:11px;
+	text-transform:uppercase;
+	font-family:'Open Sans', sans-serif;
+}
+
+.loginbar li.devider { 
+	top:-1px;
+	padding:0;
+	font-size:8px;
+	position:relative;
+	margin:0 6px 0 2px;
+	font-family:Tahoma;
+	border-right:solid 1px #bbb;
+}
+
+.loginbar i {
+	color:#999;
+	font-size:18px;
+	margin-top:3px;
+	cursor:pointer;
+}
+
+/*Lenguages*/
+.loginbar li ul { 
+	top:30px; 
+	margin:0;
+	left:-6px;
+	display:none; 
+	padding-top:4px;
+	position:absolute; 
+	border-radius:3px;
+	padding-bottom:4px;
+	background:#f0f0f0;
+}
+
+.loginbar li:hover ul { 
+	display:block; 
+}
+
+.loginbar li ul li { 
+	padding-bottom:0;
+	display:list-item;
+	position:relative;
+	margin-bottom:1px;
+}
+
+.loginbar li ul li a { 
+	color:#555;
+	display:block;
+	min-width:85px; 
+	font-size:10px;
+	padding:2px 12px;
+	background:#f0f0f0;
+	text-decoration:none;
+}
+
+.loginbar li ul li a:hover, 
+.loginbar li ul li.active a {
+	opacity:1 !important;
+	color:#555 !important;
+	font-size:10px !important;
+	text-shadow:none !important;
+	background:#fafafa !important;
+}
+
+.loginbar li ul li.active i {
+	top:2px; 
+	right:-5px;
+	font-size:14px;
+	cursor:default;
+	position:absolute;
+	text-shadow:0 1px 0 #e9e9e9;
+}
+
+.loginbar i.icon-globe {
+	color:#bbb;
+	font-size:13px;
+	margin:3px 3px 0 0;
+}
+
+.loginbar li i.icon-sort-up {
+	top:21px; 
+	left:-1px;
+	color:#eee;
+	display:none;
+	font-size:14px;
+	cursor:default;
+	position:absolute;
+}
+
+.loginbar li:hover i.icon-sort-up {
+	display:block;
+}
+
+.loginbar li:hover i.icon-ok {
+	top:-2px;
+	color:#aaa;
+}
+
+/*Header (logo and menu)
+------------------------------------*/
+.header {
+	z-index:999;
+	position:relative;
+	border-bottom:solid 2px #eee;
+}
+
+.header .container {
+	position:relative;
+}
+
+.logo {
+	position:absolute;
+	top:-5px;
+	left:0;
+}
+
+/*Menu*/
+.navbar, 
+.navbar-inner, 
+.nav,
+.navbar-inverse {
+	background:#fff;
+	filter:none;
+	border:none;
+	padding:0;
+	margin:0 !important;
+	-webkit-box-shadow: none;
+       -moz-box-shadow: none;
+            box-shadow: none;
+}
+
+.nav i.icon-sort-up { 
+	position:absolute; 
+	font-size:13px;
+	bottom:-6px;
+}
+
+.navbar-inner {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+.navbar .nav > li { 
+	display:block; 
+	position:relative;
+}
+.navbar .nav > li > a {
+	display:block;
+	font-size:15px;
+	font-weight:400;
+	color: #687074;
+	text-shadow:none;
+	padding:9px 20px;
+	text-transform:uppercase;
+	border-bottom:solid 2px #eee;
+	font-family:'Open Sans', sans-serif;
+    -webkit-transition:all 0.4s ease-in-out;
+    -moz-transition:all 0.4s ease-in-out;
+    -o-transition:all 0.4s ease-in-out;
+    transition:all 0.4s ease-in-out;
+}
+
+.collapse.in ul { 
+	margin-top:10px !important;
+}
+
+.collapse.in li a { 
+	padding:0 10px;
+	border-bottom:solid 1px #eee;
+	background:none;
+}
+
+.collapse.in li a:hover,
+.collapse.in li a.dropdown-toggle { 
+	border-bottom:solid 1px #72c02c !important;
+	background:none;
+}
+
+.collapse.in ul.dropdown-menu {
+	margin-bottom:5px;
+}
+
+.collapse.in ul.dropdown-menu a {
+	padding:5px;
+	border-bottom:solid 1px #bbb; 
+}
+
+.nav-collapse .nav > li > a, .nav-collapse .dropdown-menu a {
+	margin:0 !important;
+	border-radius:0 !important;
+}
+
+.navbar .nav > li > a:focus,
+.navbar .nav > li > a:hover {
+  	color:#72c02c;
+	border-bottom:solid 2px #72c02c;
+}
+
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:focus {
+  	color:#72c02c;	
+  	text-decoration:none;
+	border-bottom:solid 2px #72c02c;
+  	background:none;	
+  	-webkit-box-shadow:none;
+       -moz-box-shadow:none;
+          	box-shadow:none;
+}
+
+.navbar .nav > .active > a:hover {	
+  	color:#72c02c;	
+	background:none;		
+	border-bottom:solid 2px #72c02c;
+  	-webkit-box-shadow:none;
+       -moz-box-shadow:none;
+          	box-shadow:none;
+}
+
+/*Arrow for menu*/
+.navbar .nav > li > a .caret {
+  margin:9px 0 0 3px !important;	
+  border-top-color: #72c02c!important;	
+  border-bottom-color: #72c02c !important;
+}
+
+/*Dropdown Menu*/
+.dropdown-menu { 
+	padding:0;
+	border:none;
+	margin-top:-2px; 
+	min-width:200px;
+	border-radius:0; 
+	border-top:solid 2px #72c02c; 
+	border-bottom:solid 2px #687074; 
+	z-index: 9999 !important;
+}
+.dropdown-menu li a { 
+	color:#687074; 
+	font-size:13px; 
+	font-weight:400; 
+	padding:6px 15px; 
+	border-bottom:solid 1px #eee;
+}
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:focus,
+.dropdown-submenu:hover > a {
+  color:#ffffff;
+  background:#687074 !important;
+    -webkit-transition:all 0.2s ease-in-out;
+    -moz-transition:all 0.2s ease-in-out;
+    -o-transition:all 0.2s ease-in-out;
+    transition:all 0.2s ease-in-out;
+	filter:none !important;
+}
+
+.dropdown-menu .active > a {
+	color:#ffffff !important;
+  	background:#687074 !important;
+	filter:none !important;
+}
+
+.navbar .btn-navbar {
+	padding:10px 15px;
+	margin-top:1px;
+	margin-right:0;
+	background:#72c02c;
+	border:none !important;	
+}
+.navbar .btn-navbar:hover {
+	background:#5fb611;
+}
+.navbar .btn-navbar span, 
+.navbar .btn-navbar:hover span { 
+	background:#fff !important;
+	box-shadow:none !important;
+}
+
+.navbar .nav > li > .dropdown-menu:after {
+	left:19px;
+}
+.navbar .nav > li > .dropdown-menu:before {
+	left:18px;
+	border-bottom:none;
+}
+.navbar .nav > li > .dropdown-menu:after {
+	left:19px;
+	border-top-color: #72c02c !important;
+	border-bottom-color: #72c02c !important;
+}
+
+/*Serach*/
+.navbar .search-open {
+	right:0; 
+	top:44px; 
+	display:none;
+	padding:15px; 
+	position:absolute; 
+	background:#fcfcfc; 
+	border-top:solid 2px #eee; 
+}
+
+.navbar .search-open form,
+.navbar .search-open .input-append {
+	margin:0 !important;	
+}
+
+.navbar a.search i.icon-remove {
+	top:2px;
+	font-size:18px;
+	position:relative;
+}
+
+.navbar .nav > li > a.search {
+	color:#aaa;
+	cursor:pointer;
+	background:#f7f7f7;
+	padding:8px 12px 10px;
+	border-bottom-color:#aaa;
+}
+.navbar .nav > li > a.search:hover {
+	color:#72c02c;
+	border-bottom-color:#72c02c;
+}
+
+/*Fancybox for gallery page*/
+.fancybox-overlay.fancybox-overlay-fixed {
+	z-index:9999;
+}

@@ -1,0 +1,126 @@
+@media (min-width: 1200px) { 
+	@keyframes shake { 
+	0% { transform: translate(2px, 1px) rotate(0deg); } 
+	10% { transform: translate(-1px, -2px) rotate(-1deg); } 
+	20% { transform: translate(-3px, 0px) rotate(1deg); } 
+	30% { transform: translate(0px, 2px) rotate(0deg); } 
+	40% { transform: translate(1px, -1px) rotate(1deg); } 
+	50% { transform: translate(-1px, 2px) rotate(-1deg); } 
+	60% { transform: translate(-3px, 1px) rotate(0deg); } 
+	70% { transform: translate(2px, 1px) rotate(-1deg); } 
+	80% { transform: translate(-1px, -1px) rotate(1deg); } 
+	90% { transform: translate(2px, 2px) rotate(0deg); } 
+	100% { transform: translate(1px, -2px) rotate(-1deg); } 
+	} 
+
+	@-moz-keyframes shake{ 
+	0% { -moz-transform: translate(2px, 1px) rotate(0deg); } 
+	10% { -moz-transform: translate(-1px, -2px) rotate(-1deg); } 
+	20% { -moz-transform: translate(-3px, 0px) rotate(1deg); } 
+	30% { -moz-transform: translate(0px, 2px) rotate(0deg); } 
+	40% { -moz-transform: translate(1px, -1px) rotate(1deg); } 
+	50% { -moz-transform: translate(-1px, 2px) rotate(-1deg); } 
+	60% { -moz-transform: translate(-3px, 1px) rotate(0deg); } 
+	70% { -moz-transform: translate(2px, 1px) rotate(-1deg); } 
+	80% { -moz-transform: translate(-1px, -1px) rotate(1deg); } 
+	90% { -moz-transform: translate(2px, 2px) rotate(0deg); } 
+	100% { -moz-transform: translate(1px, -2px) rotate(-1deg); } 
+	} 
+
+	@-webkit-keyframes shake { 
+	0% { -webkit-transform: translate(2px, 1px) rotate(0deg); } 
+	10% { -webkit-transform: translate(-1px, -2px) rotate(-1deg); } 
+	20% { -webkit-transform: translate(-3px, 0px) rotate(1deg); } 
+	30% { -webkit-transform: translate(0px, 2px) rotate(0deg); } 
+	40% { -webkit-transform: translate(1px, -1px) rotate(1deg); } 
+	50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); } 
+	60% { -webkit-transform: translate(-3px, 1px) rotate(0deg); } 
+	70% { -webkit-transform: translate(2px, 1px) rotate(-1deg); } 
+	80% { -webkit-transform: translate(-1px, -1px) rotate(1deg); } 
+	90% { -webkit-transform: translate(2px, 2px) rotate(0deg); } 
+	100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); } 
+	} 
+
+	.shake{ 
+	display:inline-block; 
+	} 
+
+	.shake:hover, 
+	.shake:focus{ 
+	animation-name: shake; 
+	animation-duration: 0.8s; 
+	transform-origin:50% 50%; 
+	animation-iteration-count: infinite; 
+	animation-timing-function: linear; 
+
+	-moz-animation-name: shake; 
+	-moz-animation-duration: 0.8s; 
+	-moz-transform-origin:50% 50%; 
+	-moz-animation-iteration-count: infinite; 
+	-moz-animation-timing-function: linear; 
+
+	-webkit-animation-name: shake; 
+	-webkit-animation-duration: 0.8s; 
+	-webkit-transform-origin:50% 50%; 
+	-webkit-animation-iteration-count: infinite; 
+	-webkit-animation-timing-function: linear; 
+	}
+}
+
+.zoomer:hover .overlay-zoom .zoom-icon{
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-o-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity:0.4;	
+	filter: alpha(opacity = 50);
+}
+
+.overlay-zoom {
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+	position: relative;		
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-o-transition: all 0.1s ease-in-out;
+	-ms-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+	z-index: 90;
+}
+
+.overlay-zoom .zoom-icon {
+	background-image:url("../img/overlay-icon.png");
+	background-color: #000;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	position: absolute;
+	width: inherit;
+	height: inherit;
+	opacity: 0;	
+	z-index: 100;
+	filter: alpha(opacity = 0);
+	top:0;	
+	-webkit-transition: all 0.4s ease-in-out;
+	-moz-transition: all 0.4s ease-in-out;
+	-o-transition: all 0.4s ease-in-out;
+	-ms-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
+	
+	-webkit-transform: scale(0);
+	-moz-transform: scale(0);
+	-o-transform: scale(0);
+	-ms-transform: scale(0);
+	transform: scale(0);
+	
+	-webkit-backface-visibility: hidden;
+}
+
+.ie7 .overlay-zoom .zoom-icon{
+	width: 100%;
+	height: 100%;
+	clear: both;
+	top:0px;
+	left:0px;
+}

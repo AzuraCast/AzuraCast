@@ -1,0 +1,517 @@
+/*
+ * Skin for jPlayer Plugin (http://jplayer.org/)
+ * jPlayer Version: 2.1.0
+ *
+ * Skin Name: Premium Pixels
+ * Author: @thelukemcdonald (lukemcdonald.com)
+ * Description: A responsive CSS3 jPlayer skin with playlist funcitonality. Design by @ormanclark (premiumpixels.com).
+ * Version: 2.0
+ * Tags: audio, playlist, dark, play, pause, volume-bar, progress-bar
+ */
+
+
+
+// LESS FUNCTIONS (Do not delete)
+//---------------------------------------------//
+
+@import '../functions';
+
+
+
+// LESS VARIABLES (Do not delete)
+//---------------------------------------------//
+
+// Audio Player Width
+@player_width: 400px;
+@playlist_width: 95%; // best set as a percentage of @player_width 
+
+// Border Radius
+@radius: 3px;
+
+// Link Colors
+@link_1: #d2d6db;
+@link_2: #ffffff;
+
+// Border Colors
+@border_1: #323334;
+@border_2: #242526;
+
+// Background Colors
+@background_1: #3a3b3c;
+@background_2: #222222;
+
+// Seek Bar Colors
+@seek_bar_1: #464849;
+@seek_bar_2: #262929;
+@seek_bar_3: #212424;
+
+// Diagonal Bar Colors
+@diagonal_bar_1: #FFF200;
+@diagonal_bar_2: #FCC500;
+@diagonal_bar_3: rgba(255,255,255,.3);
+
+// Volume Bar Colors
+@volume_bar: @seek_bar_2;
+
+
+
+/* DEMO STYLES
+----------------------------------------------- */
+
+* {
+	padding: 0; 
+	margin: 0; 
+	outline: none;
+	
+	-webkit-box-sizing: border-box; 
+	-moz-box-sizing: border-box; 
+	box-sizing: border-box;
+	
+ 	-webkit-transition-property: background-color, border-color, color, opacity;  
+ 	-webkit-transition-timing-function: linear; 
+ 	-webkit-transition-duration: 0.15s;  
+ 	-khtml-transition-property: background-color, border-color, color, opacity;  
+ 	-khtml-transition-timing-function: linear; 
+ 	-khtml-transition-duration: 0.15s;  
+	-moz-transition-property: background-color, border-color, color, opacity;  
+ 	-moz-transition-timing-function: linear;
+ 	-moz-transition-duration: 0.15s;  
+ 	-o-transition-property: background-color, border-color, color, opacity;  
+ 	-o-transition-timing-function: linear; 
+ 	-o-transition-duration: 0.15s;  
+ 	transition-property: background-color, border-color, color, opacity;  
+ 	transition-timing-function: linear; 
+ 	transition-duration:0.15s;  
+}
+
+body {
+	background: url(images/bg.jpg);
+}
+
+#skin-wrapper {
+	padding-top: 176px;
+	background: url(images/bg-player.png) center 0 no-repeat;
+}
+
+#credits {
+	margin: 0;
+	padding: 50px 0;
+	color: #d2d6db;
+	font-family: "Helvetica Neue", Helvetica, Arial, "Nimbus Sans L", sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	text-align: center;
+}
+
+#credits a {
+	color: #c0c8d6;
+	text-decoration: none;
+}
+
+#credits a:hover {
+	color: #a6b2c8;
+}
+
+
+
+/* GENERAL
+----------------------------------------------- */
+
+.jp-jplayer {
+	width: 0px;
+	height: 0px;
+	background-color: #000000;
+}
+
+.jp-audio {
+	margin: 0 auto;
+	width: @player_width;
+	max-width: 100%;
+	padding: 0 20px;
+	font-size: 1em;
+	font-family: "Helvetica Neue", Helvetica, Arial, "Nimbus Sans L", sans-serif;
+	color: #fff;
+	line-height: 1.6;
+	
+	a {
+		text-decoration: none;
+		color: @link_1;
+		
+		&:hover {
+			color: @link_2;
+		}
+	}
+}
+
+.jp-interface {
+	position: relative;
+	height: 30px;
+	width: 100%;
+	#gradient.vertical(@background_1,@background_2);
+	.box-shadow(0px 1px 1px rgba(0,0,0,0.5));
+	.border-radius(3px);
+}
+
+
+
+/* CONTROLS
+----------------------------------------------- */
+
+.jp-controls {
+	float: left;
+	width: 30px;
+	height: 30px;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	z-index: 100;
+	
+	&:after {
+		content: " ";
+		position: absolute;
+		top: 0;
+		left: 30px;
+		width: 0;
+		height: 30px;
+		border-left: 1px solid @border_2;
+		border-right: 1px solid @border_1;
+	}
+	
+	li {
+		float: left;
+	}
+	
+	a {
+		position: absolute;
+		overflow: hidden;
+		text-indent: -9999px;
+	}
+}
+
+.jp-play,
+.jp-pause,
+.jp-mute,
+.jp-unmute {
+	z-index: 1;
+	outline: none;
+	width: 30px;
+	height: 30px;
+	background-position: 10px center;
+	background-repeat: no-repeat;
+	
+	&:hover {
+		background-position: -23px center;
+	}
+}
+
+.jp-play {
+	.at2x('images/play.png');
+}
+
+.jp-pause {
+	display: none;
+	.at2x('images/pause.png');
+}
+
+.jp-mute,
+.jp-unmute {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 55px;
+}
+
+.jp-mute {
+	.at2x('images/mute-off.png');
+}
+
+.jp-unmute {
+	.at2x('images/mute-on.png');
+}
+
+
+
+/* PROGRESS BAR
+----------------------------------------------- */
+
+.jp-progress {
+	position: absolute;
+	padding: 0 95px 0 40px;
+	margin-top: 12px;
+	margin-bottom: 12px;
+	margin-left: 0;
+	margin-right: 0;
+	width: 100%;
+	height: 7px;
+}
+
+.jp-seek-bar,
+.jp-play-bar {
+	width: 0px;
+	height: 5px;
+	.border-radius(1px);
+}
+
+.jp-seek-bar {
+	cursor: pointer;
+	position: relative;
+	z-index: 999;
+	background: @seek_bar_1;
+	
+	&:before {
+		content: " ";
+		display: block;
+		background: transparent;
+		border: 1px solid;
+		border-color: @seek_bar_3 @seek_bar_2 @seek_bar_2;
+		height: 5px;
+		width: 100%;
+		position: relative;
+		top: -1px;
+		left: -1px;
+		.box-shadow(0 1px 1px rgba(255,255,255,0.1));
+		.border-radius(1px);
+	}
+}
+
+.jp-play-bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	
+	.animation( progress .75s linear infinite );
+	
+}
+
+
+/* VOLUME BAR
+----------------------------------------------- */
+
+.jp-volume-bar {
+	float: right;
+	z-index: 99;
+	position: relative;
+	margin: 12px 10px 12px;
+	width: 40px;
+	height: 7px;
+	cursor: pointer;
+	background: @volume_bar;
+	.box-shadow(0 1px 1px rgba(255,255,255,0.1));
+	.border-radius(1px);
+	
+	&:before {
+		content: " ";
+		position: absolute;
+		top: -12px;
+		left: -35px;
+		width: 0;
+		height: 30px;
+		border-left: 1px solid @border_1;
+		border-right: 1px solid @border_2;
+	}	
+}
+
+.jp-volume-bar-value {
+	width: 0px;
+	height: 5px;
+	margin: 1px;
+	.border-radius(1px);
+}
+
+
+/* Diagonal Background Bars */
+.jp-play-bar,
+.jp-volume-bar-value {
+	.box-shadow(inset 0 1px 2px rgba(255,255,255,0.3));
+	
+	// Diagonal Background Bar Size
+	@bg_size: 7px;
+	-webkit-background-size: @bg_size @bg_size;
+    -moz-background-size: @bg_size @bg_size;
+    -o-background-size: @bg_size @bg_size;
+    background-size: @bg_size @bg_size;
+    
+    // Diagonal Background Bar Colors
+	#gradient.vertical(@diagonal_bar_1, @diagonal_bar_2);
+	background-image: -webkit-gradient(
+	                      linear, 0 0, 100% 100%,
+	                      color-stop(.25, @diagonal_bar_3), 
+	                      color-stop(.25, transparent),
+	                      color-stop(.50, transparent), 
+	                      color-stop(.50, @diagonal_bar_3),
+	                      color-stop(.75, @diagonal_bar_3), 
+	                      color-stop(.75, transparent),
+	                      to(transparent)
+	                  );
+	background-image: -webkit-linear-gradient(
+	                      -45deg, @diagonal_bar_3 25%, 
+	                      transparent 25%,
+	                      transparent 50%, 
+	                      @diagonal_bar_3 50%, 
+	                      @diagonal_bar_3 75%,
+	                      transparent 75%, 
+	                      transparent
+	                  );
+	background-image: -moz-linear-gradient(
+	                      -45deg, 
+	                      @diagonal_bar_3 25%, 
+	                      transparent 25%,
+	                      transparent 50%, 
+	                      @diagonal_bar_3 50%, 
+	                      @diagonal_bar_3 75%,
+	                      transparent 75%, 
+	                      transparent
+	                  );
+	background-image: -ms-linear-gradient(
+	                      -45deg, 
+	                      @diagonal_bar_3 25%, 
+	                      transparent 25%,
+	                      transparent 50%, 
+	                      @diagonal_bar_3 50%, 
+	                      @diagonal_bar_3 75%,
+	                      transparent 75%, 
+	                      transparent
+	                  );
+	background-image: -o-linear-gradient(
+	                      -45deg, 
+	                      @diagonal_bar_3 25%, 
+	                      transparent 25%,
+	                      transparent 50%, 
+	                      @diagonal_bar_3 50%, 
+	                      @diagonal_bar_3 75%,
+	                      transparent 75%, 
+	                      transparent
+	                  );
+	background-image: linear-gradient(
+	                      -45deg, 
+	                      @diagonal_bar_3 25%, 
+	                      transparent 25%,
+	                      transparent 50%,
+	                      @diagonal_bar_3 50%,
+	                      @diagonal_bar_3 75%,
+	                      transparent 75%,
+	                      transparent
+	                  );
+}
+
+
+
+/* TIME HOLDER
+----------------------------------------------- */
+
+.jp-time-holder {
+	display: none;
+	visibility: hidden;
+}
+
+
+
+/* TIME HOLDER
+----------------------------------------------- */
+
+.jp-toggles {
+	display: none;
+	visibility: hidden;
+}
+
+
+
+/* PLAYLIST
+----------------------------------------------- */
+
+.jp-playlist {
+	width: @playlist_width;
+	margin: 0 auto;
+	font-size: 13px;
+	background-color: @background_1;
+	.box-shadow();
+	.border-radius(0 0 @radius @radius);
+	
+	a {
+		display: block;
+	}
+	
+	ul {
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		.box-shadow(inset 0 1px 3px rgba(0,0,0,0.15));
+	}
+	
+	li {
+		width: 100%;
+		padding: 5px 10px;
+		border-top: 1px solid lighten( @border_2, 10% );
+		border-bottom: 1px solid @border_1;
+		
+		&:first-child {
+			border-top: none;
+		}
+		
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+}
+
+		
+.jp-free-media {
+	float: right;
+	.opacity(50);
+	font-size: 10px;
+	text-transform: uppercase;
+	margin-top: 1px;
+	display: block;
+	
+	&:hover {
+		.opacity(80);
+	}
+	
+	a {
+		display: inline;
+		
+		&:first-child:before,
+		&:last-child:after {
+			content: " ";
+		}
+	}
+}
+
+
+.jp-playlist-current {
+	a {
+		font-weight: bold;
+		color: white;
+	}
+	
+	.jp-free-media {
+		a {
+			font-weight: normal;
+		}
+	}
+}
+
+
+
+/* CSS3 ANIMATINS
+----------------------------------------------- */
+/* Progress Bar Animation */
+@-webkit-keyframes progress {
+	0% { background-position: 0; }
+	100% { background-position: -7px; }
+}
+@-moz-keyframes progress {
+	0% { background-position: 0; }
+	100% { background-position: -7px; }
+}
+@-ms-keyframes progress {
+	0% { background-position: 0; }
+	100% { background-position: -7px; }
+}
+@-o-keyframes progress {
+	0% { background-position: 0; }
+	100% { background-position: -7px; }
+}
+
+

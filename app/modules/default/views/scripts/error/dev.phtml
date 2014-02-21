@@ -1,0 +1,63 @@
+<?
+$this->headTitle('Critical System Error');
+?>
+
+<h2>About the Exception:</h2>
+<dl>
+	<dt>Message:</dt>
+	<dd><?=$this->exception->getMessage(); ?></dd>
+</dl>
+
+<h2>Stack trace</h2>
+<table class="table table-striped" width="100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>File</th>
+            <th>Line</th>
+            <th>Function</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->exception->getTrace() as $i => $trace): ?>
+        <tr style="vertical-align: top;">
+            <td><?=$i ?></td>
+            <td><?php print isset($trace['file']) ? preg_replace('#^' . preg_quote(CASEMAN_ROOT_PATH, '#') . '#i', '', $trace['file']) : ""; ?></td>
+            <td><?php print isset($trace['line']) ? $trace['line'] : "" ?></td>
+            <td>
+                <code>
+                <?php
+                    $args = array();
+                    if( isset($trace['args']) )
+                    {
+                        foreach( $trace['args'] as $arg )
+                        {
+                            $args[] = gettype($arg);
+                        }
+                    }
+
+                    print sprintf("%s%s%s%s",
+                        isset($trace['class']) ? $trace['class'] : "",
+                        isset($trace['type']) ? $trace['type'] : "",
+                        isset($trace['function']) ? $trace['function'] : "",
+                        isset($trace['args']) ? "(" . implode(", ", $args) . ")" : ""
+                    );
+                ?>
+                </code>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+        <tr>
+            <td><?php print ++$i; ?></td>
+            <td colspan="3"><em>{main}</em></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Request Parameters</h2>
+<dl>
+<?php foreach($this->request->getParams() as $key => $param): ?>
+    <dt><?=$key ?></dt>
+    <dd><?=$param ?></dd>
+<?php endforeach; ?>
+</dl>

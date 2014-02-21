@@ -1,0 +1,104 @@
+/**
+ * Player Skin for PVL
+ */
+
+li.station {
+	line-height: inherit;
+	cursor: pointer;
+	padding-bottom: 5px;
+}
+.station h4 {
+	font-size: 16px;
+	padding-bottom: 3px;
+}
+.station span.genre-info {
+	display: block;
+}
+.station h4 span {
+	font-size: 12px;
+}
+.station .nowplaying-onair {
+	font-size: 12px;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.station img,
+.station .station-image {
+	margin-top: 5px;
+	width: 40px;
+}
+.station.playing .station-image {
+}
+
+.station .station-info div {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+
+	line-height: 14px;
+}
+
+.station .nowplaying-artist {
+	font-size: 14px;
+}
+.station .nowplaying-title {
+	font-size: 12px;
+}
+
+.station-play-button {
+	line-height: 20px;
+	background: #163D63;
+	color: #FFF;
+
+	border-radius: 0 0 10px 10px;
+	padding: 1px 3px;
+	text-align: center;
+}
+.station.playing .station-play-button {
+	background: #5699DC;
+	color: #FFF;
+}
+
+.station-image,
+.station img {
+	border: 1px solid #163D63;
+}
+.station.playing > img {
+	border: 1px solid #5699DC;
+}
+
+.station.playing,
+.station.playing h4 small {
+	color: #5699DC;	
+}
+
+.station .station-player-container {
+	padding-top: 5px;
+}
+
+.station .station-player .buttons {
+	margin-bottom: 0;
+}
+
+/* jPlayer */
+
+.station .jp-volume-bar {
+	width: 40%;
+	height: 16px;
+	float: left;
+
+	background: none;
+	filter: -;
+	background-color: #222;
+}
+
+.station .jp-mute,
+.station .jp-unmute {
+	float: left;
+	padding-right: 5px;
+}
+.station .jp-volume-max {
+	float: left;
+	padding-left: 5px;
+}

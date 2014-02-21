@@ -1,0 +1,453 @@
+/**
+ * Common include for general/jQuery UI functionality.
+ */
+ 
+@import url("bootstrap/css/bootstrap.min.css");
+@import url("font-awesome/css/font-awesome.css");
+@import url("../icons/silk-sprite.css");
+
+/** Bootstrap Overrides **/
+body {
+	font-size: 13px;
+}
+
+body,
+dt, dd,
+.table th,
+.table td
+{
+	font-size: 13px;
+	line-height: 17px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+}
+
+.form-actions {
+	margin-bottom: 0;
+}
+
+form.form-view {
+	padding-left: 0;
+}
+
+.form-view label {
+	float: none;
+	font-weight: bold;
+}
+
+form span.help-block,
+form span.help-inline {
+	display: block;
+	font-size: 11px;
+	line-height: 13px;
+	max-width: 800px;
+	color: #666;
+	margin-top: -5px;
+	margin-bottom: 10px;
+}
+
+div.navbar.navbar-unloaded {
+	height: 40px;
+	overflow: hidden;
+}
+.navbar .container {
+	width: 940px;
+}
+.navbar .brand {
+	color: #FFF;
+	text-shadow: none;
+}
+.navbar-wrapper .navbar-inner {
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+.navbar-inner {
+	border: 0;
+}
+.navbar .nav {
+	margin: 0;
+}
+.navbar .nav > li > a {
+	color: #AAA;
+	text-shadow: none;
+	padding: 9px 10px 11px;
+}
+.navbar .nav > li > a:focus,
+.navbar .nav > li > a:hover {
+	background-color: transparent;
+	color: #FFF;
+}
+.navbar li [class^="icon-"], 
+.navbar li [class*=" icon-"] {
+	line-height: 18px;
+}
+.dropdown-menu a {
+	padding: 3px 10px;
+	font-size: 13px;
+}
+.dropdown-menu a i {
+	font-size: 14px;
+}
+
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:focus,
+.dropdown-submenu:hover > a {
+	background: none;
+	background-color: #333;
+	filter: -;
+}
+.dropdown-menu li > a:hover,
+.dropdown-menu .active > a,
+.dropdown-menu .active > a:hover {
+	background: none;
+	background-color: #555;
+	filter: -;
+}
+
+#content_tabs {
+	margin-left: 30px;
+	margin-right: 30px;
+}
+#content_tabs ul.nav-tabs::before,
+#content_tabs ul.nav-tabs::after {
+	display: none;
+	content: none;
+}
+#content_tabs ul.nav-tabs > li {
+	margin-bottom: -4px;
+}
+
+#content_tabs .breadcrumb {
+	background: none;
+	margin-bottom: 5px;
+}
+
+.breadcrumb li {
+	color: #999;
+}
+.breadcrumb .active {
+	color: #000;
+}
+
+.carousel-caption h4, .carousel-caption p {
+	padding: 0;
+}
+.carousel-caption a {
+	color: #CCC;
+}
+.carousel-caption a:hover {
+	color: #FFF;
+}
+
+.container, .navbar-fixed-top .container, .navbar-fixed-bottom .container, .navbar .container {
+	width: 960px;
+}
+
+.row {
+	clear: both;
+	margin-left: -10px;
+}
+
+/** Bootstrap 1.0 Compatibility **/
+form div.control-group { 
+	margin: 15px 0;
+}
+form legend + div.control-group {
+	margin-top: 0px;
+}
+form fieldset {
+	margin-bottom: 25px;
+}
+form div.clearfix label {
+	font-weight: bold;
+}
+
+ul.inputs-list,
+ul.inputs-list li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.inputs-list input[type="radio"],
+.inputs-list input[type="checkbox"] {
+	vertical-align: top;
+}
+form ul.inputs-list label {
+	font-weight: normal;
+	margin: 0;
+}
+ul.inputs-list label input {
+	display: inline;
+}
+ul.inputs-list.inline li,
+ul.inputs-list.inline label {
+	display: inline;
+}
+ul.inputs-list.inline label {
+	padding-right: 10px;
+}
+
+/** Elements **/
+small {
+	font-size: smaller;
+}
+big {
+	font-size: larger;
+}
+
+select {
+	width: auto;
+}
+input.full-width,
+textarea.full-width {
+	width: 80%;
+}
+input.half-width,
+textarea.half-width {
+	width: 45%;
+}
+textarea.full-height {
+	height: 100px;
+}
+textarea.half-height {
+	height: 60px;
+}
+input.big {
+	font-size: 16px;
+	padding: 3px;
+}
+form {
+	margin-bottom: 0;
+}
+
+hr {
+	margin: 10px 0 9px;
+}
+
+h2 {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+h3, fieldset legend {
+	font-size: 19px;
+	font-weight: normal;
+}
+
+fieldset legend, h2, h3, h4, h5, h6 {
+	padding: 3px 0 8px 0;
+	line-height: 1;
+}
+
+table tr td.center,
+table tr th.center {
+	text-align: center;
+}
+
+table tr td.right,
+table tr th.right {
+	text-align: right;
+}
+
+table tr.input td,
+table tr.input th {
+	vertical-align: middle;
+}
+
+table.table-nopadding {
+	margin-bottom: 0;
+}
+
+/** Buttons **/
+
+.btn .icon
+{
+	margin-top: 1px;
+	margin-left: -3px;
+	margin-right: 6px;
+}
+
+.btn.small
+{
+	padding: 5px 9px 5px;
+}
+
+.btn.small .icon
+{
+	margin-top: 0px;
+	margin-bottom: -6px;
+	margin-left: -3px;
+	margin-right: 6px;
+}
+
+div.well.buttons
+{
+	padding: 10px;
+}
+
+div.buttons
+{
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+table tr td div.buttons
+{
+	margin-bottom: 0;
+}
+
+.progress {
+	margin-bottom: 0;
+}
+
+/** Tables **/
+
+div.odd,
+.table tbody tr.odd td {
+	background-color: #f9f9f9;
+}
+
+div.even,
+.table tbody tr.even td {
+	background-color: #ffffff;
+}
+
+div.red,
+.table tbody tr.red td,
+.table tbody tr td.red,
+.table tbody tr.red:hover td,
+.table tbody tr:hover td.red {
+	background-color: #fddfde;
+	color: #8C0C09;
+}
+
+div.green,
+.table tbody tr.green td,
+.table tbody tr td.green,
+.table tbody tr.green:hover td,
+.table tbody tr:hover td.green {
+	background-color: #d1eed1;
+	color: #256525;
+}
+
+div.yellow,
+.table tbody tr.yellow td,
+.table tbody tr td.yellow,
+.table tbody tr.yellow:hover td,
+.table tbody tr:hover td.yellow {
+	background-color: #FCF8E3;
+	color: #A68F11;
+}
+
+div.blue,
+.table tbody tr.blue td,
+.table tbody tr td.blue,
+.table tbody tr.blue:hover td,
+.table tbody tr:hover td.blue {
+	background-color: #ddf4fb;
+	color: #11728E;
+}
+
+.table tbody tr:hover td {
+	background-color: #f5f5f5;
+}
+
+.table tr.input td {
+	vertical-align: middle;
+}
+
+.table tbody tr.disabled td,
+.table tbody tr td.disabled {
+	background-color: #EEE;
+	color: #999;
+}
+
+
+/** Misc **/
+.pagination a:hover,
+.pagination .active a {
+	background-color: #EFEFEF;
+}
+.pagination .active a {
+	font-weight: bold;
+}
+
+.twipsy {
+	text-align: left;
+}
+
+.floatright {
+	float: right;
+}
+
+div.clear {
+	clear: both;
+	height: 1px;
+	margin-top: -1px;
+}
+
+.floatbox {
+	float: left;
+	margin: 5px 3px 5px 0;
+	
+	border: 1px solid #ddd;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+	padding: 5px 8px;
+
+	text-decoration: none;
+}
+
+div.floating {
+	padding: 15px;
+	margin: 3px;
+	margin-bottom: 23px;
+
+	background: #FFF;
+	border: 1px solid #D5D5D5;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	
+	box-shadow: 0 0 0 3px #F2F2F2;
+	-webkit-box-shadow: 0 0 0 3px #F2F2F2;
+	-moz-box-shadow: 0 0 0 3px #F2F2F2;
+}
+
+/**
+ * Media Query Defaults
+ */
+
+.wide-block {
+	display: block;
+}
+.wide-inline {
+	display: inline;
+}
+.narrow-block,
+.mobile-block,
+.narrow-inline,
+.mobile-inline {
+	display: none;
+}
+
+.navbar .brand {
+	display: none;
+}
+
+/**
+ * Google Maps Compatibility
+ */
+
+.gmap img,
+#mapSmallContainer img,
+img.icon,
+img.avatar {
+	max-width: none;
+}

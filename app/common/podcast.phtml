@@ -1,0 +1,31 @@
+<ul class="media-list">
+<? foreach($this->podcasts as $podcast_info): ?>
+	<?
+	$podcast = $podcast_info['record'];
+	$episodes = $podcast_info['episodes'];
+	$ep = $episodes[0];
+	?>
+	<li class="media podcast">
+		<div class="media-object pull-left">
+			<a href="<?=$this->routeFromHere(array('action' => 'podcast', 'id' => $podcast->id)) ?>" class="fancybox fancybox.ajax">
+				<img class="station-image" src="<?=\DF\Url::content($podcast->image_url) ?>" style="width: 40px;">
+				<div class="station-play-button">
+					<i class="icon-rss"></i>
+				</div>
+			</a>
+		</div>
+		<div class="media-body">
+			<div class="station-info">
+				<h4><?=$podcast->name ?><br>
+					<span class="genre-info"><small>
+						<?=$podcast->description ?>
+					</small></span>
+				</h4>
+
+				<small>Newest Episode (<?=date('F j, Y', $ep['timestamp']) ?>):</small><br>
+				<a href="<?=$ep['web_url'] ?>" target="_blank"><b><?=$ep['title'] ?></b></a>
+			</div>
+		</div>
+	</li>
+<? endforeach; ?>
+</ul>

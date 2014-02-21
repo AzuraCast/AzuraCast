@@ -1,0 +1,86 @@
+<?php
+/*
+$theme_session = \DF\Session::getNamespace('theme');
+$default_theme = $this->config->pvl->default_theme;
+$skin = ($theme_session->skin) ? $theme_session->skin : $default_theme;
+*/
+$skin = ($this->skin) ? $this->skin : 'dark';
+$embed = ($this->embed_mode) ? 'embedded' : 'non-embedded';
+?>
+<?php echo $this->doctype(); ?>
+<html class="compact_layout theme_<?=$skin ?> <?=$embed ?>">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php
+$title = current($this->headTitle()->getIterator());
+$this->headTitle($this->config->application->name);
+
+if (DF_APPLICATION_ENV != "production")
+    $this->headTitle()->prepend('('.ucfirst(DF_APPLICATION_ENV).')');
+
+echo $this->headTitle()->setSeparator(" | ")->toString();
+
+$this->headLink()
+	->appendStylesheet(\DF\Url::content('common/bootstrap2_r2/df-ui.css'), 'all')
+	->appendStylesheet(\DF\Url::content('common/bootstrap2_r2/df-ui-responsive.css'), 'all')
+	->appendStylesheet(\DF\Url::content('global.css'), 'all')
+	->appendStylesheet(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.css'), 'all')
+	->appendStylesheet(\DF\Url::content('common/bootstrap2_r2/df-ui-printable.css'), 'print')
+	->appendStylesheet('http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen')
+	->appendStylesheet(\DF\Url::content('global_'.$skin.'.css'));
+    
+$this->headScript()
+	->prependFile(\DF\Url::cdn('jquery', '1.8'))
+	->appendFile(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.pack.js'))
+	->appendFile(\DF\Url::content('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js'))
+	->appendFile(\DF\Url::content('common/bootstrap2_r2/layout.js'))
+	->appendFile(\DF\Url::content('global.js'))
+	->appendFile(\DF\Url::content('swfobject.js'));
+
+echo $this->headMeta();
+echo $this->headLink();
+echo $this->headScript();
+
+if ($this->config->application->analytics_code)
+	echo $this->analytics($this->config->application->analytics_code);
+?>
+<script>
+var DF_ContentPath = '<?php echo \DF\Url::content(); ?>';
+</script>
+</head>
+<body>
+<!-- Start Alexa Certify Javascript -->
+<script type="text/javascript">
+_atrk_opts = { atrk_acct:"Y1t+i1a8Dy00a/", domain:"ponyvillelive.com",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=Y1t+i1a8Dy00a/" style="display:none" height="1" width="1" alt="" /></noscript>
+<!-- End Alexa Certify Javascript -->
+
+<div id="body-wrapper">
+	<div id="body" class="container">
+		<div id="maintenance_header">
+			<a href="<?=$this->route(array('module' => 'default')) ?>" title="Home" target="_blank"><img src="<?=\DF\Url::content('pvl_'.$skin.'.png') ?>" alt="Home" /></a>
+		</div>
+
+	<? if ($title): ?>
+		<h1 class="title"><?=$title ?></h1>
+	<? endif; ?>
+
+	<? if ($this->layout()->manual): ?>
+		<?php echo $this->layout()->content; ?>
+	<? else: ?>
+		<div class="row">
+			<div class="span12">
+				<div class="floating">
+					<div class="content_inner">
+						<?php echo $this->layout()->content; ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	<? endif; ?>
+	</div>
+</div>
+</body>
+</html>

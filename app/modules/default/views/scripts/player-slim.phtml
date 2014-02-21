@@ -1,0 +1,85 @@
+<?php
+$this->render_mode = 'slim';
+
+$all_stations = array();
+foreach($categories as $cat_key => $cat)
+{
+	foreach((array)$cat['stations'] as $station)
+	{
+		if ($station['nowplaying_text'] != 'Stream Offline')
+		{
+			$station['category'] = $cat;
+			$all_stations[] = $station;
+		}
+	}
+}
+?>
+
+<center><a href="<?=$this->route(array('module' => 'default')) ?>" title="Home" target="_blank"><img src="<?=\DF\Url::content('pvl_slim.png') ?>" alt="Home" /></a></center>
+
+<div id="tunein_player" class="player_slim">
+	<div class="carousel slide" id="station_selector" data-interval="5000">
+		<div class="carousel-inner">
+		<? foreach($all_stations as $i => $station): ?>
+			<div class="item station media-list <? if ($i == 0): ?>active<? endif; ?>" id="station_<?=\Entity\Station::getStationShortName($station['name']) ?>" data-popup="true" data-id="<?=$station['id'] ?>" data-type="<?=$station['type'] ?>" data-stream="<?=$station['stream_url'] ?>" data-image="<?=\DF\Url::content($station['image_url']) ?>">
+				<img class="media-object pull-left" src="<?=\DF\Url::content($station['image_url']) ?>">
+				<div class="media-body">
+					<h4>
+						<i class="<?=$station['category']['icon'] ?>"></i> 
+					<? if ($station['nickname']): ?>
+						<?=$station['nickname'] ?> 
+					<? else: ?>
+						<?=$station['name'] ?> 
+					<? endif; ?>
+					<? if ($station['genre']): ?>
+						<span class="genre-info">
+							<small>
+								<?=$station['genre'] ?>
+							</small>
+						</span>
+					<? endif; ?>
+					</h4>
+					<p>
+						<big><span class="nowplaying-artist"><?=$station['nowplaying_artist'] ?></span></big><br>
+						<span class="nowplaying-title"><?=$station['nowplaying_title'] ?></span>
+					</p>
+				</div>
+			</div>
+		<? endforeach; ?>
+		</div>
+	</div>
+
+	<div class="carousel-controls">
+		<div class="control left">
+			<a href="#station_selector" data-slide="prev">&laquo;</a>
+		</div>
+		<div class="control center">
+			<a id="btn_browse_stations" href="<?=$this->route(array('action' => 'tunein')) ?>">Browse Stations</a>
+		</div>
+		<div class="control right">
+			<a href="#station_selector" data-slide="next">&raquo;</a>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$('.station-link').hide();
+	$('.nowplaying-status').hide();
+
+	$('.station').click(function(e) {
+		e.preventDefault();
+
+		playInPopUp($(this).data('id'));
+	});
+});
+
+function playInPopUp(station_id) {
+	orig_url = "<?=$this->route(array('action' => 'tunein', 'origin' => 'home')) ?>";
+
+	if (station_id !== undefined)
+		orig_url += '/id/'+station_id;
+
+	window.open(orig_url, 'pvl_player', 'height=600,width=400,status=yes,scrollbars=yes', true);
+}
+</script>

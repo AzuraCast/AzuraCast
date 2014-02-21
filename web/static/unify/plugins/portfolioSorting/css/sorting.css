@@ -1,0 +1,38 @@
+/* main page layout */
+#w ul { list-style:none;}
+
+/* sorting and filtering */
+.sort { display: block; font-family: 'Kite One', Arial, sans-serif; font-size: 1.4em; line-height: 0.9em; color: #444; }
+.sort ul { text-align:;}
+.sort li a { margin-right: 4px; padding: 0px 3px; text-decoration: none;}
+.sort li a:hover { color: #72c02c; text-decoration: none; border-bottom: 1px dotted #72c02c; }
+.sort li a.selected { color: #72c02c; border-bottom: 1px solid #72c02c; }
+
+/* portfolio items */
+.portfolio { 
+	width:100%;
+	display: block;
+	text-align:center; 
+	padding: 20px 0 0 0; 
+	margin: 0 0 10px; 
+}
+
+.portfolio li { 
+  float: left; 
+  margin-right: 18px; 
+  margin-bottom: 18px;
+}
+.portfolio li a { 
+  display: block; 
+  -webkit-transition: all 0.35s linear; 
+  -moz-transition: all 0.35s linear; 
+  -o-transition: all 0.35s linear;
+  transition: all 0.35s linear;
+}
+
+/* clearfix */
+.clearfix:after { content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0; }
+.clearfix { display: inline-block; }
+ 
+html[xmlns] .clearfix { display: block; }
+* html .clearfix { height: 1%; }

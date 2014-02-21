@@ -1,0 +1,452 @@
+/*
+ * Skin for jPlayer Plugin (http://jplayer.org/)
+ * jPlayer Version: 2.1.0
+ *
+ * Skin Name: Premium Pixels
+ * Author: @thelukemcdonald (lukemcdonald.com)
+ * Description: A responsive CSS3 jPlayer skin with playlist funcitonality. Design by @ormanclark (premiumpixels.com).
+ * Version: 2.0
+ * Tags: audio, playlist, dark, play, pause, volume-bar, progress-bar
+ */
+/* DEMO STYLES
+----------------------------------------------- */
+* {
+  padding: 0;
+  margin: 0;
+  outline: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition-property: background-color, border-color, color, opacity;
+  -webkit-transition-timing-function: linear;
+  -webkit-transition-duration: 0.15s;
+  -khtml-transition-property: background-color, border-color, color, opacity;
+  -khtml-transition-timing-function: linear;
+  -khtml-transition-duration: 0.15s;
+  -moz-transition-property: background-color, border-color, color, opacity;
+  -moz-transition-timing-function: linear;
+  -moz-transition-duration: 0.15s;
+  -o-transition-property: background-color, border-color, color, opacity;
+  -o-transition-timing-function: linear;
+  -o-transition-duration: 0.15s;
+  transition-property: background-color, border-color, color, opacity;
+  transition-timing-function: linear;
+  transition-duration: 0.15s;
+}
+body {
+  background: url(images/bg.jpg);
+}
+#skin-wrapper {
+  padding-top: 176px;
+  background: url(images/bg-player.png) center 0 no-repeat;
+}
+#credits {
+  margin: 0;
+  padding: 50px 0;
+  color: #d2d6db;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Nimbus Sans L", sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+#credits a {
+  color: #c0c8d6;
+  text-decoration: none;
+}
+#credits a:hover {
+  color: #a6b2c8;
+}
+/* GENERAL
+----------------------------------------------- */
+.jp-jplayer {
+  width: 0px;
+  height: 0px;
+  background-color: #000000;
+}
+.jp-audio {
+  margin: 0 auto;
+  width: 400px;
+  max-width: 100%;
+  padding: 0 20px;
+  font-size: 1em;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Nimbus Sans L", sans-serif;
+  color: #fff;
+  line-height: 1.6;
+}
+.jp-audio a {
+  text-decoration: none;
+  color: #d2d6db;
+}
+.jp-audio a:hover {
+  color: #ffffff;
+}
+.jp-interface {
+  position: relative;
+  height: 30px;
+  width: 100%;
+  background-color: #222222;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#3a3b3c), to(#222222));
+  background-image: -moz-linear-gradient(#3a3b3c, #222222);
+  background-image: -ms-linear-gradient(#3a3b3c, #222222);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #3a3b3c), color-stop(100%, #222222));
+  background-image: -webkit-linear-gradient(#3a3b3c, #222222);
+  background-image: -o-linear-gradient(#3a3b3c, #222222);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3a3b3c', endColorstr='#222222', GradientType=0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#3a3b3c', endColorstr='#222222', GradientType=0)";
+  background-image: linear-gradient(#3a3b3c, #222222);
+  -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+  -khtml-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+  -webkit-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+/* CONTROLS
+----------------------------------------------- */
+.jp-controls {
+  float: left;
+  width: 30px;
+  height: 30px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  z-index: 100;
+}
+.jp-controls:after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 30px;
+  width: 0;
+  height: 30px;
+  border-left: 1px solid #242526;
+  border-right: 1px solid #323334;
+}
+.jp-controls li {
+  float: left;
+}
+.jp-controls a {
+  position: absolute;
+  overflow: hidden;
+  text-indent: -9999px;
+}
+.jp-play,
+.jp-pause,
+.jp-mute,
+.jp-unmute {
+  z-index: 1;
+  outline: none;
+  width: 30px;
+  height: 30px;
+  background-position: 10px center;
+  background-repeat: no-repeat;
+}
+.jp-play:hover,
+.jp-pause:hover,
+.jp-mute:hover,
+.jp-unmute:hover {
+  background-position: -23px center;
+}
+.jp-play {
+  background-image: url('images/play.png');
+}
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .jp-play {
+    background-image: url('images/play@2x.png');
+    background-size: auto auto;
+  }
+}
+.jp-pause {
+  display: none;
+  background-image: url('images/pause.png');
+}
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .jp-pause {
+    background-image: url('images/pause@2x.png');
+    background-size: auto auto;
+  }
+}
+.jp-mute,
+.jp-unmute {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 55px;
+}
+.jp-mute {
+  background-image: url('images/mute-off.png');
+}
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .jp-mute {
+    background-image: url('images/mute-off@2x.png');
+    background-size: auto auto;
+  }
+}
+.jp-unmute {
+  background-image: url('images/mute-on.png');
+}
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  .jp-unmute {
+    background-image: url('images/mute-on@2x.png');
+    background-size: auto auto;
+  }
+}
+/* PROGRESS BAR
+----------------------------------------------- */
+.jp-progress {
+  position: absolute;
+  padding: 0 95px 0 40px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  height: 7px;
+}
+.jp-seek-bar,
+.jp-play-bar {
+  width: 0px;
+  height: 5px;
+  -webkit-border-radius: 1px;
+  -khtml-border-radius: 1px;
+  -moz-border-radius: 1px;
+  -o-border-radius: 1px;
+  border-radius: 1px;
+}
+.jp-seek-bar {
+  cursor: pointer;
+  position: relative;
+  z-index: 999;
+  background: #464849;
+}
+.jp-seek-bar:before {
+  content: " ";
+  display: block;
+  background: transparent;
+  border: 1px solid;
+  border-color: #212424 #262929 #262929;
+  height: 5px;
+  width: 100%;
+  position: relative;
+  top: -1px;
+  left: -1px;
+  -webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+  -khtml-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+  -moz-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+  -o-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+  -webkit-border-radius: 1px;
+  -khtml-border-radius: 1px;
+  -moz-border-radius: 1px;
+  -o-border-radius: 1px;
+  border-radius: 1px;
+}
+.jp-play-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-animation: progress 0.75s linear infinite;
+  -moz-animation: progress 0.75s linear infinite;
+  -o-animation: progress 0.75s linear infinite;
+  -ms-animation: progress 0.75s linear infinite;
+  animation: progress 0.75s linear infinite;
+}
+/* VOLUME BAR
+----------------------------------------------- */
+.jp-volume-bar {
+  float: right;
+  z-index: 99;
+  position: relative;
+  margin: 12px 10px 12px;
+  width: 40px;
+  height: 7px;
+  cursor: pointer;
+  background: #262929;
+  -webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+  -khtml-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+  -moz-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+  -o-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+  -webkit-border-radius: 1px;
+  -khtml-border-radius: 1px;
+  -moz-border-radius: 1px;
+  -o-border-radius: 1px;
+  border-radius: 1px;
+}
+.jp-volume-bar:before {
+  content: " ";
+  position: absolute;
+  top: -12px;
+  left: -35px;
+  width: 0;
+  height: 30px;
+  border-left: 1px solid #323334;
+  border-right: 1px solid #242526;
+}
+.jp-volume-bar-value {
+  width: 0px;
+  height: 5px;
+  margin: 1px;
+  -webkit-border-radius: 1px;
+  -khtml-border-radius: 1px;
+  -moz-border-radius: 1px;
+  -o-border-radius: 1px;
+  border-radius: 1px;
+}
+/* Diagonal Background Bars */
+.jp-play-bar,
+.jp-volume-bar-value {
+  -webkit-box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  -khtml-box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  -o-box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  -webkit-background-size: 7px 7px;
+  -moz-background-size: 7px 7px;
+  -o-background-size: 7px 7px;
+  background-size: 7px 7px;
+  background-color: #fcc500;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#fff200), to(#fcc500));
+  background-image: -moz-linear-gradient(#fff200, #fcc500);
+  background-image: -ms-linear-gradient(#fff200, #fcc500);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff200), color-stop(100%, #fcc500));
+  background-image: -webkit-linear-gradient(#fff200, #fcc500);
+  background-image: -o-linear-gradient(#fff200, #fcc500);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff200', endColorstr='#fcc500', GradientType=0);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff200', endColorstr='#fcc500', GradientType=0)";
+  background-image: linear-gradient(#fff200, #fcc500);
+  background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0.25, rgba(255, 255, 255, 0.3)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.3)), color-stop(0.75, rgba(255, 255, 255, 0.3)), color-stop(0.75, transparent), to(transparent));
+  background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.3) 75%, transparent 75%, transparent);
+  background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.3) 75%, transparent 75%, transparent);
+  background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.3) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.3) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.3) 75%, transparent 75%, transparent);
+}
+/* TIME HOLDER
+----------------------------------------------- */
+.jp-time-holder {
+  display: none;
+  visibility: hidden;
+}
+/* TIME HOLDER
+----------------------------------------------- */
+.jp-toggles {
+  display: none;
+  visibility: hidden;
+}
+/* PLAYLIST
+----------------------------------------------- */
+.jp-playlist {
+  width: 95%;
+  margin: 0 auto;
+  font-size: 13px;
+  background-color: #3a3b3c;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  -khtml-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  -o-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  -webkit-border-radius: 0 0 3px 3px;
+  -khtml-border-radius: 0 0 3px 3px;
+  -moz-border-radius: 0 0 3px 3px;
+  -o-border-radius: 0 0 3px 3px;
+  border-radius: 0 0 3px 3px;
+}
+.jp-playlist a {
+  display: block;
+}
+.jp-playlist ul {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+  -khtml-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+  -o-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+.jp-playlist li {
+  width: 100%;
+  padding: 5px 10px;
+  border-top: 1px solid #3d3f40;
+  border-bottom: 1px solid #323334;
+}
+.jp-playlist li:first-child {
+  border-top: none;
+}
+.jp-playlist li:last-child {
+  border-bottom: none;
+}
+.jp-free-media {
+  float: right;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  font-size: 10px;
+  text-transform: uppercase;
+  margin-top: 1px;
+  display: block;
+}
+.jp-free-media:hover {
+  filter: alpha(opacity=80);
+  -khtml-opacity: 0.8;
+  -moz-opacity: 0.8;
+  opacity: 0.8;
+}
+.jp-free-media a {
+  display: inline;
+}
+.jp-free-media a:first-child:before,
+.jp-free-media a:last-child:after {
+  content: " ";
+}
+.jp-playlist-current a {
+  font-weight: bold;
+  color: white;
+}
+.jp-playlist-current .jp-free-media a {
+  font-weight: normal;
+}
+/* CSS3 ANIMATINS
+----------------------------------------------- */
+/* Progress Bar Animation */
+@-webkit-keyframes progress {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: -7px;
+  }
+}
+@-moz-keyframes progress {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: -7px;
+  }
+}
+@-ms-keyframes progress {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: -7px;
+  }
+}
+@-o-keyframes progress {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: -7px;
+  }
+}

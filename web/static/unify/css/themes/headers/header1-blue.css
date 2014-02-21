@@ -1,0 +1,50 @@
+/*Menu
+------------------------------------*/
+.collapse.in li a:hover,
+.collapse.in li a.dropdown-toggle { 
+	border-bottom:solid 1px #3498db !important;
+}
+
+.navbar .nav > li > a:focus,
+.navbar .nav > li > a:hover {
+  	color:#3498db;
+	border-bottom:solid 2px #3498db;
+}
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:focus {
+  	color:#3498db;	
+	border-bottom:solid 2px #3498db;
+}
+
+.navbar .nav > .active > a:hover {	
+  	color:#3498db;	
+	border-bottom:solid 2px #3498db;
+}
+
+/*Arrow for menu*/
+.navbar .nav > li > a .caret {
+  border-top-color: #3498db!important;	
+  border-bottom-color: #3498db !important;
+}
+
+/*Dropdown Menu*/
+.dropdown-menu { 
+	border-top:solid 2px #3498db; 
+}
+
+.navbar .btn-navbar {
+	background:#3498db;
+}
+.navbar .btn-navbar:hover {
+	background:#2980b9;
+}
+.navbar .nav > li > .dropdown-menu:after {
+	border-top-color: #3498db !important;
+	border-bottom-color: #3498db !important;
+}
+
+/*Serach*/
+.navbar .nav > li > a.search:hover {
+	color:#3498db;
+	border-bottom-color:#3498db;
+}

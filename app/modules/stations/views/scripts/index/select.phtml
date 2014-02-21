@@ -1,0 +1,10 @@
+<?
+$this->headTitle('Station Center');
+?>
+
+<h2>Select a Station to View</h2>
+<dl>
+<? foreach($this->stations as $station_id => $station): ?>
+	<dt><a href="<?=$this->routeFromHere(array('action' => 'index', 'station' => $station_id)) ?>"><i class="<?=$station->getCategoryIcon() ?>"></i> <?=$station->name ?></a></dt>
+<? endforeach; ?>
+</dl>

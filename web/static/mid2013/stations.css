@@ -1,0 +1,168 @@
+.station h4,
+.podcast h4 {
+	border-color: #CCC;
+}
+.station img,
+.podcast img {
+	padding: 4px;
+	background: #163D63;
+	border-radius: 5px;
+	border: 0;
+}
+
+.station.live img {
+	background: #428BD5;
+}
+.station.playing img {
+	background: #5699DC;
+}
+.station.offline {
+	cursor: default;
+}
+.station.offline,
+.station.offline h4 small {
+	opacity: 0.6;
+}
+.station.live,
+.station.live h4 small {
+	color: #2C7FD2;
+}
+.station.playing,
+.station.playing h4 small {
+	color: #5699DC;	
+}
+
+.station .media-object,
+.podcast .media-object {
+	position: relative;
+	text-shadow: black 0.1em 0.1em 0.2em;
+}
+.station .media-object .station-play-button,
+.podcast .media-object .station-play-button {
+	background: none;
+}
+.station .media-object .station-play-button i,
+.podcast .media-object .station-play-button i {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+}
+
+.podcast .media-body small {
+	font-size: 12px;
+	line-height: 12px;
+}
+
+.podcast .media-body {
+	font-size: 14px;
+	line-height: 14px;
+}
+
+.station .station-info .chat-button {
+	float: right;
+	margin-top: 25px;
+}
+
+/**
+ * Player Skin for PVL
+ */
+
+li.station {
+	cursor: pointer;
+}
+li.station,
+li.podcast {
+	line-height: inherit;
+	padding-bottom: 5px;
+}
+.station h4,
+.podcast h4 {
+	font-size: 16px;
+	padding-bottom: 3px;
+}
+.station span.genre-info,
+.podcast span.genre-info {
+	display: block;
+}
+.station h4 span,
+.podcast h4 span {
+	font-size: 12px;
+}
+.station .nowplaying-onair {
+	font-size: 12px;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.station img,
+.station .station-image {
+	margin-top: 5px;
+	width: 40px;
+}
+.station.playing .station-image {
+}
+
+.podcast .station-info ul {
+	list-style: disc inside none;
+	margin-left: 0px;
+}
+.podcast .station-info li {
+	padding-left: 5px;
+}
+
+.station .station-info div,
+.podcast .station-info div,
+.podcast .station-info li {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+
+	line-height: 14px;
+}
+
+.podcast .station-info div,
+.podcast .station-info li {
+	font-size: 14px;
+}
+
+.station .nowplaying-artist {
+	font-size: 14px;
+}
+.station .nowplaying-title {
+	font-size: 12px;
+}
+
+.station.playing,
+.station.playing h4 small {
+	color: #5699DC;	
+}
+
+.station .station-player-container {
+	padding-top: 5px;
+}
+
+.station .station-player .buttons {
+	margin-bottom: 3px;
+}
+
+/* jPlayer */
+
+.station .jp-volume-bar {
+	width: 40%;
+	height: 16px;
+	float: left;
+
+	background: none;
+	filter: -;
+	background-color: #222;
+}
+
+.station .jp-mute,
+.station .jp-unmute {
+	float: left;
+	padding-right: 5px;
+}
+.station .jp-volume-max {
+	float: left;
+	padding-left: 5px;
+}

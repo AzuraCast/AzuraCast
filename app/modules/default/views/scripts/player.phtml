@@ -1,0 +1,17 @@
+<?
+// Split stations into categories.
+$categories = $this->categories;
+
+if ($this->skin == 'slim')
+{
+	include('player-slim.phtml');
+}
+else
+{
+	if ($this->embed_mode)
+		include('player-embed.phtml');
+	elseif ($this->standalone)
+		include('player-standalone.phtml');
+
+	include('player-skeleton.phtml');
+}

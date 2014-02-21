@@ -1,0 +1,12 @@
+syntax: glob
+*Thumbs.db
+tmp/cache/*---*
+app/models/Proxy/*.php
+web/static/api/*
+*.DS_Store
+*.apdisk
+*.zip
+<<<<<<< local
+*.mp3
+=======
+>>>>>>> other

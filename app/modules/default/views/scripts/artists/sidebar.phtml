@@ -1,0 +1,21 @@
+<?
+$artist_totals = \Entity\ArtistType::getTypeTotals();
+?>
+<div class="floating">
+	<h2>The Artist Directory</h2>
+
+	<form class="form-search" action="<?=$this->routeFromHere(array('type' => NULL, 'page' => NULL, 'q' => NULL)) ?>" method="get">
+		<div class="input-append">
+			<input type="text" class="span2 search-query" name="q" placeholder="Artist Name...">
+			<button type="submit" class="btn">Search</button>
+		</div>
+	</form>
+	<br>
+	<ul class="nav nav-pills nav-stacked autoselect" rel="<?=$this->type ?>">
+	<? foreach($artist_totals['types'] as $type_id => $type_info): ?>
+	  <? if ($type_info['count'] > 0): ?>
+	  <li rel="<?=$type_id ?>"><a href="<?=$this->routeFromHere(array('type' => $type_id, 'page' => NULL, 'q' => NULL)) ?>"><i class="<?=$type_info['icon'] ?>"></i> <?=$type_info['name'] ?> (<?=$type_info['count'] ?>)</a></li>
+	  <? endif; ?>
+	<? endforeach; ?>
+	</ul>
+</div>

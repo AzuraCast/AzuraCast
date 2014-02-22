@@ -1,3 +1,0 @@
-Modernizr [http://modernizr.com/] is the right micro-library to get you up and running with HTML5 & CSS3 today and it is licensed under the MIT license [http://www.opensource.org/licenses/mit-license.php].
-
-You may find its full online version here: http://modernizr.com/license/

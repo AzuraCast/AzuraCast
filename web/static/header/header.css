@@ -1,99 +1,25 @@
 .pvl-navbar {
 	z-index: 1000;
 	width: auto;
-
-	font-family: 'Source Sans Pro', sans-serif;
-	font-size: 14px;
+	
+	height: 42px;
+	
+	box-shadow: 1px 1px 2px #000;
 }
+.pvl-navbar-inner,
+.pvl-navbar-inner a {
+  height: 42px;
+  overflow: hidden;
+}
+
 .pvl-navbar-inner {
-	min-height: 40px;
-	padding-right: 20px;
-	padding-left: 20px;
-
-	border: 1px solid #d4d4d4;
-
-	background-color: #1b1b1b;
-	background-image: -moz-linear-gradient(top,#222,#111);
-	background-image: -webkit-gradient(linear,0 0,0 100%,from(#222),to(#111));
-	background-image: -webkit-linear-gradient(top,#222,#111);
-	background-image: -o-linear-gradient(top,#222,#111);
-	background-image: linear-gradient(to bottom,#222,#111);
-	background-repeat: repeat-x;
-	border-color: #252525;
-	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ff222222',endColorstr='#ff111111',GradientType=0);
-
-	-webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,0.1),0 1px 10px rgba(0,0,0,0.1);
-	-moz-box-shadow: inset 0 -1px 0 rgba(0,0,0,0.1),0 1px 10px rgba(0,0,0,0.1);
-	box-shadow: inset 0 -1px 0 rgba(0,0,0,0.1),0 1px 10px rgba(0,0,0,0.1);
+	text-align: center;
+	
+	background: #1B1B1B url('header_bg.png') center center no-repeat;
+	border-bottom: 1px solid #252525;
 }
 
-.pvl-navbar a.brand {
-	display: block;
-	float: left;
-	padding: 5px 5px 5px 5px;
-}
-
-.pvl-navbar .pvl-container {
-	width: 940px;
-	margin-right: auto;
-	margin-left: auto;
-}
-
-.pvl-navbar .pvl-nav {
-	position: relative;
-	left: 0;
-	display: block;
-	float: left;
-	margin: 0 10px 0 0;
-	list-style: none;
-	padding: 0;
-
-	color: #999;
-}
-.pvl-navbar .pvl-nav > li {
-	float: left;
-	line-height: 20px;
-	list-style: none;
-}
-
-.pvl-navbar .pvl-nav > li > a,
-.pvl-navbar .pvl-nav > li > div {
-	float: none;
-	display: block;
-	padding: 10px 15px 10px;
-	text-decoration: none;
-	color: #999;
-	text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
-}
-
-.pvl-navbar .pvl-nav > li > div {
-	padding: 7px 10px 7px;
-	font-size: 11px;
-	line-height: 13px;
-}
-
-.pvl-navbar .pvl-nav .active > div,
-.pvl-navbar .pvl-nav .active > a,
-.pvl-navbar .pvl-nav .active > a:hover,
-.pvl-navbar .pvl-nav .active > a:focus {
-	color: #BBB;
-	background-color: #111;
-}
-
-
-@media (min-width: 1200px) {
-
-	.pvl-navbar .pvl-container {
-		width: 1170px;
-	}
-
-}
-
-@media (max-width: 979px) {
-
-	.pvl-navbar .pvl-container {
-		width: auto;
-		padding: 0;
-	}
-
+.pvl-navbar-inner a {
+  height: 42px;
+  overflow: hidden;
 }

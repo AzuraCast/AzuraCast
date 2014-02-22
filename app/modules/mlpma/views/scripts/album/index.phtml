@@ -1,0 +1,10 @@
+<?
+$this->headTitle('Album: '.$this->album_name);
+?>
+
+<h2><?=$this->album_artist ?></h2>
+
+<?
+$this->songs = $this->album;
+echo $this->renderHere('songs', true);
+?>

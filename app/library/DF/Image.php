@@ -42,6 +42,15 @@ class Image
 		if ($image_width <= $width && $image_height <= $height)
 		{
 			$resized_image = $image;
+
+			if ($dest_extension == 'png')
+			{
+				imagealphablending($resized_image, false);
+				imagesavealpha($resized_image, true);
+
+				$transparent = imagecolorallocatealpha($resized_image, 255, 255, 255, 127);
+				imagefilledrectangle($resized_image, 0, 0, $resized_width, $resized_height, $transparent);
+			}
 		}
 		else
 		{

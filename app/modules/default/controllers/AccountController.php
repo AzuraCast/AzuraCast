@@ -266,7 +266,7 @@ class AccountController extends \DF\Controller\Action
 
         \PVL\Customization::set('theme', $new_skin);
 
-        $this->redirectHome();
+        $this->redirectToReferrer();
         return;
     }
 
@@ -284,9 +284,11 @@ class AccountController extends \DF\Controller\Action
             \PVL\Customization::set('timezone', $data['timezone']);
             
             $this->alert('Time zone updated!', 'green');
-            $this->redirectHome();
+            $this->redirectToStoredReferrer('customization');
             return;
         }
+
+        $this->storeReferrer('customization');
 
         $this->view->headTitle('Set Time Zone');
         $this->renderForm($form);

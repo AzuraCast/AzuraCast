@@ -404,7 +404,8 @@ function playStation(id)
 			}
 			
 			// Log in Google Analytics
-			_gaq.push(['_trackEvent', 'Station', 'Play', station.data('name') ]);
+			// _gaq.push(['_trackEvent', 'Station', 'Play', station.data('name') ]);
+			ga('send', 'event', 'Station', 'Play', station.data('name'));
 		}
 		else
 		{

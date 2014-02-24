@@ -12,8 +12,8 @@ class MusicManager
 	const MUSIC_DIR = '/www/mlpmusicarchive.com/music';
 	const ART_DIR = '/www/mlpmusicarchive.com/art';
 
-	const MUSIC_URL = 'http://www.mlpmusicarchive.com/music';
-	const ART_URL = 'http://www.mlpmusicarchive.com/art';
+	const MUSIC_URL = '//static.ponyvillelive.com/mlpmusicarchive/music';
+	const ART_URL = '//static.ponyvillelive.com/mlpmusicarchive/art';
 
 	public static function checkPendingFolder()
 	{

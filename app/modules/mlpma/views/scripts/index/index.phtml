@@ -1,33 +1,29 @@
 <?
-$this->headTitle('The MLP Music Archive');
+$this->headTitle('Welcome to the MLP Music Archive');
 $this->layout()->manual = true;
+$this->layout()->hide_title = true;
 ?>
 
-<!-- A tab to launch the Classic Widget -->
-<script>
-UserVoice = window.UserVoice || [];
-UserVoice.push(['showTab', 'classic_widget', {
-  mode: 'feedback',
-  primary_color: '#3f51c4',
-  link_color: '#59baeb',
-  forum_id: 203269,
-  tab_label: 'Feedback & Support',
-  tab_color: '#006fe6',
-  tab_position: 'middle-right',
-  tab_inverted: false
-}]);
-</script>
+<h1 class="title">Welcome to the <b>MLP Music Archive</b>!</h1>
+<p>The MLP Music Archive project is now a proud member of the <a href="http://www.ponyvillelive.com/" target="_blank">Ponyville Live!</a> family. We are working hard to bring you a brand spankin' new and improved version of the archive, with the latest and greatest in pony hits included, plus tons of new features.</p>
 
-<div class="container-fluid" id="intro">	
-	<div class="container">	
-		<div class="row span8 center">
-			<h1>Your Favorite Pony Songs,<br>All In One Place.</h1>
-			<p>The MLP Music Archive project is now a proud member of the <a href="http://www.ponyvillelive.com/" target="_blank">Ponyville Live!</a> family. We are working hard to bring you a brand spankin' new and improved version of the archive, with the latest and greatest in pony hits included, plus tons of new features.</p>
-
-			<p>You can download the existing MLP Music Archive using the link below.<br>This version of the archive was created on November 27, 2012.</p>
-
-			<a href="https://docs.google.com/open?id=0B5LW1ZIpaxUIZkIwdUtsQnFKUVU" class="btn btn-xlarge btn-primary">Download v14 (Torrent)</a>
-			<a href="https://docs.google.com/folder/d/0B60Mv4AgTPp8WjY4NnpuT05ZT0E/edit" class="btn btn-xlarge btn-inverse">View on Google Drive</a>
-		</div>	
+<div class="row-fluid">
+	<div class="span8">
+		<h2>Newly Added Songs</h2>
+		<?
+		$this->songs = $this->newest_songs;
+		$this->compact_view = true;
+		echo $this->renderHere('songs', TRUE);
+		?>
+	</div>
+	<div class="span4">
+		<h2>Explore By Genre</h2>
+		<div class="well">
+			<ul class="nav nav-list">
+			<? foreach($this->genres as $genre_id => $genre): ?>
+				<li><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'search', 'genre' => $genre['name'])) ?>" class="ajax"><i class="icon-folder-close"></i> <?=$genre['name'] ?> <span class="label pull-right"><?=$genre['total'] ?></span></li>
+			<? endforeach; ?>
+			</ul>
+		</div>
 	</div>
 </div>

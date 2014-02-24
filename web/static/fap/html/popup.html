@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <title>Fullwidth Audio Player</title>
+
+	    <!-- Style sheets -->
+		<link rel="stylesheet" type="text/css" href="css/jquery.fullwidthAudioPlayer.css" />
+		<style type="text/css">
+
+			/* RESET */
+			html, body, div, span, applet, object, iframe, p, blockquote, pre,
+			a, abbr, acronym, address, big, cite, code,
+			del, dfn, em, img, ins, kbd, q, s, samp,
+			small, strike, strong, sub, sup, tt, var,
+			b, u, i, center,
+			dl, dt, dd, ol, ul, li,
+			fieldset, form, label, legend,
+			table, caption, tbody, tfoot, thead, tr, th, td,
+			article, aside, canvas, details, embed,
+			figure, figcaption, footer, header, hgroup,
+			menu, nav, output, ruby, section, summary,
+			time, mark, audio, video {
+				margin: 0;
+				padding: 0;
+				border: 0;
+				font-size: 100%;
+				font: inherit;
+				vertical-align: baseline;
+			}
+
+			/* SET HERE YOUR BACKGROUND COLOR OF THE POPUP WINDOW */
+			body {
+				background-color: #fff;
+			}
+
+		</style>
+
+	    <!-- Include js files -->
+		<script src="js/jquery.min.js" type="text/javascript"></script>
+	    <script src="js/jquery-ui.js" type="text/javascript"></script>
+	    <script src="js/soundmanager2-nodebug-jsmin.js" type="text/javascript"></script>
+	    <script src="http://connect.soundcloud.com/sdk.js"></script>
+	    <script src="js/amplify.min.js"></script>
+	    <script src="js/jquery.fullwidthAudioPlayer.min.js" type="text/javascript"></script>
+
+		<script type="text/javascript">
+
+			//DO NOT CHANGE ANYTHING FROM THIS JAVASCRIPT CODE
+
+			soundManager.url = 'swf/';
+			soundManager.flashVersion = 9;
+			soundManager.useHTML5Audio = true;
+			soundManager.debugMode = false;
+
+			//let target window know that popout window is openend
+			function notifyOpener() {
+				//close popout when target window gets closed, comment the next line if you dont want that
+				if(!self.opener) {
+					self.opener.fapReady = false;
+					self.close();
+				}
+
+				if(self.opener || !self.opener.fapPopupWin) self.opener.fapPopupWin = self;
+
+			}
+			setInterval( notifyOpener, 300 );
+			self.focus();
+
+		    //functions that will be called from the target window
+		    function initPlayer(opts, html) {
+		    	opts.wrapperPosition = 'bottom';
+		    	$('#fap-popup').html(html).fullwidthAudioPlayer(opts);
+		    }
+
+		    function addTrack(trackUrl,title,meta,cover,linkUrl, playIt) {
+		    	$.fullwidthAudioPlayer.addTrack(trackUrl, title, meta, cover, linkUrl, playIt);
+		    }
+
+		    jQuery(document).ready(function(){
+		    	$('#fap-popup').bind('onFapReady', function(evt, trackData) {
+					self.opener.fapReady = true;
+				});
+		    });
+
+	    </script>
+
+    </head>
+    <body>
+    	<!-- Fancy Music Player Container -->
+    	<div id="fap-popup"></div>
+    </body>
+</html>

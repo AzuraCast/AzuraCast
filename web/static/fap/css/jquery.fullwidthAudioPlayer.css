@@ -1,0 +1,360 @@
+/*
+* Fullwidth Audio Player V1.5
+* Author: Rafael Dery
+* Copyright 2011
+*
+* Only for the sale at the envato marketplaces
+*
+*/
+
+/* Reset */
+
+#fap-wrapper * {
+	margin: 0;
+	padding: 0;
+	list-style: none !important;
+	line-height: 12px;
+	outline: none !important;	
+}
+
+
+/* Wrapper */
+
+#fap-wrapper {
+	min-width: 100%;
+	position: fixed;
+	left: 0;
+	z-index: 100000;
+	font-size: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.fap-fullwidth {
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+}
+
+.fap-boxed #fap-main {
+	border: 1px solid;
+}
+
+#fap-wrapper-switcher {
+	position: absolute;
+	width: 30px;
+	height: 15px;
+	line-height: 15px;
+	left: 0;
+	border: 1px solid;
+	cursor: pointer;
+	font-size: 20px;
+	text-align: center;
+}
+
+.fap-bordered-top {
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-bottomright: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+	border-radius: 5px 5px 0px 0px; 	
+}
+
+.fap-bordered-bottom {
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-topright: 0px;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	-webkit-border-radius: 0px 0px 5px 5px;
+	border-radius: 0px 0px 5px 5px; 
+}		
+
+#fap-init-text {
+	position: absolute;
+	left: 0;
+	font-size: 12px;	
+}
+
+.fap-wrapper-top #fap-init-text {
+	bottom: 20px;
+}
+
+.fap-wrapper-bottom #fap-init-text {
+	top: 20px;
+}
+
+#fap-main {
+	width: 960px;
+	height: 100%;
+	position: relative;
+}
+
+
+/* Meta Stuff */
+
+#fap-meta-wrapper {
+	width: 530px;
+	float: left;
+	margin-top: 10px;
+}
+
+
+
+#fap-current-cover, #fap-cover-replacement {
+	text-align: center;
+	font-size: 18px;
+	float: left;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px; 
+	-webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5);
+	box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5);  
+}
+
+#fap-current-title {
+	font-weight: bold;
+	font-size: 12px;
+	line-height: 18px;
+	padding-right: 10px;
+}
+
+#fap-current-meta {
+	font-size: 10px;	
+}
+
+#fap-current-meta a, #fap-current-meta a:visited {
+	color: #666666;	
+}
+
+#fap-current-meta a:hover {
+	text-decoration: none;	
+}
+
+#fap-social-links {
+	margin-top: 7px;
+}
+
+#fap-social-links a {
+	font-size: 10px;
+	margin-right: 10px;
+	float: left;
+	display: block;
+}
+
+#fap-social-links a.fap-soundcloud-link {
+	background: url(../images/fwap/sc_logo_dark.png) no-repeat;
+	width: 78px;
+	height: 12px;
+}
+
+
+/* Main UI */
+
+#fap-ui-wrapper {
+	width: 430px;
+	float: right;
+}
+
+#fap-ui-wrapper > div, #fap-ui-wrapper > a {
+	float: left;
+}
+
+#fap-ui-nav {
+	position: relative;
+	width: 80px;
+	height: 40px;
+}
+
+#fap-ui-wrapper > div {
+	margin-right: 11px;
+}
+
+#fap-ui-wrapper > div:last-child {
+	margin-right: 0;
+}
+
+#fap-ui-nav > a {
+	background-repeat: no-repeat;
+	display: block;
+	position: absolute;
+	-webkit-border-radius: 100%;
+	border-radius: 100%; 
+}
+
+#fap-ui-nav #fap-previous {
+	background-image: url(../images/fwap/previous.png);
+	background-position: 5px 12px;
+	top: 5px;
+	left: 0;
+	width: 30px;
+	height: 30px;
+}
+
+#fap-ui-nav #fap-next {
+	background-image: url(../images/fwap/next.png);
+	background-position: 12px 12px;
+	top: 5px;
+	left: 50px;
+	width: 30px;
+	height: 30px;
+}
+
+#fap-ui-nav #fap-play-pause {
+	top: 0;
+	left: 20px;
+	width: 40px;
+	height: 40px;
+	z-index: 3;
+}
+
+#fap-ui-nav .fap-play {
+	background-image: url(../images/fwap/play.png);
+	background-position: 15px 11px;
+}
+
+#fap-ui-nav .fap-pause {
+	background-image: url(../images/fwap/pause.png);
+	background-position: 16px 12px;
+}
+
+#fap-time-bar {
+	position: relative;
+}
+
+#fap-time-bar div {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#fap-time-bar div, #fap-volume-bar, #fap-volume-bar div {
+	cursor: pointer;
+}
+
+#fap-time-bar div {
+	width: 0;
+}
+
+#fap-time-bar span {
+	margin-top: 10px;
+}
+
+#fap-volume-bar div {
+	width: 100%;	
+}
+
+#fap-time-bar #fap-current-time {
+	float: left;
+}
+
+#fap-time-bar #fap-total-time {
+	float: right;
+}
+
+#fap-volume-bar {
+	margin-right: 5px !important;
+}
+
+#fap-volume-sign {
+	background-image: url(../images/fwap/volume.png);
+	background-repeat: no-repeat;
+	background-position: 0 3px;
+	width: 20px;
+	height: 22px;
+}
+
+#fap-playlist-toggle {
+	margin-right: 0 !important;
+}
+
+#fap-time-bar, #fap-time-bar div, #fap-volume-bar, #fap-volume-bar div {
+	height: 6px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px; 
+}
+
+
+/* Playlist Stuff */
+
+#fap-playlist-toggle, #fap-playlist-shuffle {
+	background-repeat: no-repeat;
+	display: block;
+	width: 25px;
+	height: 25px;
+	-webkit-border-radius: 100%;
+	border-radius: 100%;
+}
+
+#fap-playlist-toggle {
+	background-image: url(../images/fwap/playlist.png);
+	background-position: 7px 7px;
+}
+
+#fap-playlist-shuffle {
+	background-image: url(../images/fwap/shuffle.png);
+	background-position: 5px 7px;
+}
+
+#fap-playlist {
+	width: 100%;
+	height: 100%;
+}
+
+#fap-playlist li {
+	line-height: 20px;
+	margin-right: 10px;
+}
+
+#fap-playlist li img, #fap-playlist li .fap-cover-replace-small {
+	text-align: center;
+	float: left;
+	width: 20px;
+	height: 20px;
+}
+
+#fap-playlist li > span {
+	float: left;
+	line-height: 20px;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+#fap-playlist li span:hover {
+	text-decoration: underline;	
+}
+
+#fap-playlist li .fap-remove-track {
+	font-size: 18px;
+	line-height: 22px;
+	float: right;
+	cursor: pointer;
+}
+
+.fap-xml-playlist span {
+	display: none;	
+}
+
+
+/* Popup Skin */
+
+.fap-popup-skin #fap-wrapper-switcher {
+	display: none;
+	font-size: 20px;
+	text-align: center;
+}
+
+/* Soundcloud */
+.sc-player-engine-container{
+  width: 1px;
+  height: 1px;
+  position: fixed;
+  top: -200px;
+  left: -200px;
+}
+
+/* Helper */
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; overflow: hidden; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+.clear {clear: both;}

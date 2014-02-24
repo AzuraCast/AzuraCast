@@ -1,6 +1,9 @@
 <?php
 namespace PVL\Controller\Action;
 
+use \Entity\ArchiveGenre;
+use \Entity\ArchiveSong;
+
 class Mlpma extends \DF\Controller\Action
 {
 	public function init()
@@ -13,7 +16,8 @@ class Mlpma extends \DF\Controller\Action
 	public function preDispatch()
 	{
 		parent::preDispatch();
-		
 		\Zend_Layout::getMvcInstance()->enableLayout();
+
+		$this->view->top_genres = ArchiveGenre::getTop(5);
 	}
 }

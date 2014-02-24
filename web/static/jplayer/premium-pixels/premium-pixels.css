@@ -8,54 +8,7 @@
  * Version: 2.0
  * Tags: audio, playlist, dark, play, pause, volume-bar, progress-bar
  */
-/* DEMO STYLES
------------------------------------------------ */
-* {
-  padding: 0;
-  margin: 0;
-  outline: none;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-transition-property: background-color, border-color, color, opacity;
-  -webkit-transition-timing-function: linear;
-  -webkit-transition-duration: 0.15s;
-  -khtml-transition-property: background-color, border-color, color, opacity;
-  -khtml-transition-timing-function: linear;
-  -khtml-transition-duration: 0.15s;
-  -moz-transition-property: background-color, border-color, color, opacity;
-  -moz-transition-timing-function: linear;
-  -moz-transition-duration: 0.15s;
-  -o-transition-property: background-color, border-color, color, opacity;
-  -o-transition-timing-function: linear;
-  -o-transition-duration: 0.15s;
-  transition-property: background-color, border-color, color, opacity;
-  transition-timing-function: linear;
-  transition-duration: 0.15s;
-}
-body {
-  background: url(images/bg.jpg);
-}
-#skin-wrapper {
-  padding-top: 176px;
-  background: url(images/bg-player.png) center 0 no-repeat;
-}
-#credits {
-  margin: 0;
-  padding: 50px 0;
-  color: #d2d6db;
-  font-family: "Helvetica Neue", Helvetica, Arial, "Nimbus Sans L", sans-serif;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: center;
-}
-#credits a {
-  color: #c0c8d6;
-  text-decoration: none;
-}
-#credits a:hover {
-  color: #a6b2c8;
-}
+
 /* GENERAL
 ----------------------------------------------- */
 .jp-jplayer {
@@ -64,10 +17,11 @@ body {
   background-color: #000000;
 }
 .jp-audio {
+  width: 100%;
   margin: 0 auto;
-  width: 400px;
-  max-width: 100%;
-  padding: 0 20px;
+  padding: 5px 0;
+  height: 30px;
+  
   font-size: 1em;
   font-family: "Helvetica Neue", Helvetica, Arial, "Nimbus Sans L", sans-serif;
   color: #fff;

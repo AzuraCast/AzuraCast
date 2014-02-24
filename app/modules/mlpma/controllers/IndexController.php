@@ -10,14 +10,7 @@ class Mlpma_IndexController extends \PVL\Controller\Action\Mlpma
 			->setMaxResults(10)
 			->execute();
 
-		$this->view->genres = ArchiveGenre::getTotals();
-
-		$this->render('test');
-	}
-
-	public function testAction()
-	{
-		
+		$this->view->genres = ArchiveGenre::getTop(25);
 	}
 
 	public function downloadAction()

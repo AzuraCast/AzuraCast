@@ -3,6 +3,7 @@ namespace PVL;
 
 use \Entity\Station;
 use \Entity\StationMedia;
+use \Entity\StationRequest;
 
 class CentovaCast
 {
@@ -38,6 +39,11 @@ class CentovaCast
 	{
 		$db = self::getDatabase();
 		$em = self::getEntityManager();
+		$settings = self::getSettings();
+
+		// Forbid web crawlers from using this feature.
+		if (\PVL\Utilities::isCrawler())
+			throw new \DF\Exception('Search engine crawlers are not permitted to use this feature.');
 
 		// Verify that the station supports CentovaCast requests.
 		$station_id = self::getStationID($station);
@@ -108,17 +114,28 @@ class CentovaCast
 		if (count($existing_request) > 0)
 			throw new \DF\Exception('You already have a pending request with this station! Please try again later.');
 
+		// Check for any request (on any station) within 5 minutes.
+		$recent_threshold = time()-(60*5);
+
+		$recent_requests = $em->createQuery('SELECT sr FROM Entity\StationRequest sr WHERE sr.ip = :user_ip AND sr.timestamp >= :threshold')
+			->setParameter('user_ip', $user_ip)
+			->setParameter('threshold', $recent_threshold)
+			->getArrayResult();
+
+		if (count($recent_requests) > 0)
+			throw new \DF\Exception('You have submitted a request too recently! Please wait a while before submitting another one.');
+
 		// Enable the "Automated Song Requests" playlist.
-		$updated_playlist = array(
-			'status' => 'enabled',
-		);
-		$db->update('playlists', $updated_playlist, array('id' => $playlist_id));
+		$db->update('playlists', array('status' => 'enabled'), array('id' => $playlist_id));
+
+		$requesttime = new \DateTime('NOW');
+		$requesttime->setTimezone(new \DateTimeZone($settings['timezone']));
 
 		// Create a new request if all other checks pass.
 		$new_request = array(
 			'playlistid'	=> $playlist_id,
 			'trackid'		=> $track_id,
-			'requesttime'	=> date('Y-m-d h:i:s'),
+			'requesttime'	=> $requesttime->format('Y-m-d h:i:s'),
 			'sendername'	=> 'Ponyville Live!',
 			'senderemail'	=> 'requests@ponyvillelive.com',
 			'dedication'	=> '',
@@ -156,6 +173,23 @@ class CentovaCast
 
 		$db->executeQuery('DELETE FROM playbackstats_tracks WHERE endtime <= ?', array($threshold_date));
 		$db->executeQuery('DELETE FROM visitorstats_sessions WHERE endtime <= ?', array($threshold_date));
+
+		// Delete old requests still listed as pending.
+		$requesttime = new \DateTime('NOW');
+		$requesttime->modify('-3 hours');
+		$requesttime->setTimezone(new \DateTimeZone($settings['timezone']));
+
+		$threshold_requests = $requesttime->format('Y-m-d h:i:s');
+		$db->executeQuery('DELETE FROM playlist_tracks_requests WHERE requesttime <= ?', array($threshold_requests));
+
+		// Force playlist enabling for existing pending requests.
+		$request_playlists_raw = $db->fetchAll('SELECT DISTINCT ptr.playlistid AS pid FROM playlist_tracks_requests AS ptr');
+
+		foreach($request_playlists_raw as $pl)
+		{
+			$pl_id = $pl['pid'];
+			$db->update('playlists', array('status' => 'enabled'), array('id' => $pl_id));
+		}
 
 		// Preload all station media locally.
 		$stations = $em->createQuery('SELECT s FROM Entity\Station s WHERE s.requests_enabled = 1')->execute();

@@ -16,10 +16,18 @@ class UtilController extends \DF\Controller\Action
         error_reporting(E_ALL & ~E_NOTICE);
         ini_set('display_errors', 1);
 
-        \PVL\CentovaCast::sync();
+        $db = \PVL\CentovaCast::getDatabase();
+        $settings = \PVL\CentovaCast::getSettings();
 
-        echo 'CC Synced';
+        // Delete old requests still listed as pending.
+        $requesttime = new \DateTime('NOW');
+        $requesttime->modify('-3 hours');
+        $requesttime->setTimezone(new \DateTimeZone($settings['timezone']));
+        
+        $threshold_requests = $requesttime->format('Y-m-d h:i:s');
+        $db->executeQuery('DELETE FROM playlist_tracks_requests WHERE requesttime <= ?', array($threshold_requests));
 
+        echo 'Deleted all records before '.$threshold_requests;
         exit;
 
         $results = \Entity\StationMedia::search(1, 'Lost on the');

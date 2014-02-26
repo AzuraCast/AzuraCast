@@ -17,9 +17,12 @@ $(function() {
         socials: 1,
         volume: 1, 
         playlist: 1, 
+        storePlaylist: 1,
         loopPlaylist: 0,
         autoPopup: 0, 
-        sortable: true
+        keyboard: 0,
+        sortable: 1,
+        opened: 0
     });
 
     $('body').initPage();

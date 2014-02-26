@@ -3,30 +3,9 @@ namespace PVL\NewsAdapter;
 
 class YouTube extends AdapterAbstract
 {
-	public static function getAccount($url)
-	{
-		if (stristr($url, 'youtube.com') !== FALSE)
-		{
-			$url_parts = parse_url($url);
-			$path = rtrim($url_parts['path'], '/');
-
-			$url_components = explode('/', $path);
-			$url_last_element = array_pop($url_components);
-			$account = trim($url_last_element);
-		}
-		else
-		{
-			$account = trim($url);
-		}
-
-		return $account;
-	}
-
 	public static function fetch($url, $params = array())
 	{
-		$api_key = 'AI39si5oveOXVqbMmAeF-7oZ8NeDTeqo27ghNJVTi1yTBVpf3j03Vfs2hx908oI0zCAF07tpFS4N8cAXJnH9TaYhFPKWN6_hLA';
-
-		$username = self::getAccount($url);
+		$v3_api_key = 'AIzaSyC1vhf1rFShf9mzbUEL2LpfaD0E0BNOURk';
 
 		$client = new \Zend_Http_Client();
 		$client->setConfig(array(
@@ -34,19 +13,45 @@ class YouTube extends AdapterAbstract
 			'keepalive'		=> true,
 		));
 
-		$client->setUri('http://gdata.youtube.com/feeds/api/videos');
+		$account_info = self::getAccount($url);
+
+		if ($account_info['type'] == 'user')
+		{
+			$client->setUri('https://www.googleapis.com/youtube/v3/channels');
+	        $client->setParameterGet(array(
+	            'part'      => 'id,contentDetails',
+	            'forUsername' => $account_info['id'],
+	            'maxResults' => 25,
+	            'key'       => $v3_api_key,
+	        ));
+
+	        $response = $client->request('GET');
+
+	        if ($response->isSuccessful())
+	        {
+	        	$response_text = $response->getBody();
+				$data = @json_decode($response_text, TRUE);
+
+				$playlist_id = $data['items'][0]['contentDetails']['relatedPlaylists']['uploads'];
+	        }
+		}
+		else
+		{
+			$playlist_id = $account_info['id'];
+		}
+
+		if (!$playlist_id)
+			return null;
+
+		$client->setUri('https://www.googleapis.com/youtube/v3/playlistItems');
 		$client->setParameterGet(array(
-			'alt' 		=> 'json',
-			'author' 	=> $username,
-			'orderby' 	=> 'published',
-			'safeSearch' => 'none',
-			'racy'		=> 'include',
+			'part'      => 'id,snippet,status,contentDetails',
+			'playlistId' => $playlist_id,
+			'maxResults' => 25,
+			'key'       => $v3_api_key,
 		));
 
-		$client->setHeaders('GData-Version: 2');
-		$client->setHeaders('X-GData-Key: key='.$api_key);
 		$response = $client->request('GET');
-
 		$news_items = array();
 
 		if ($response->isSuccessful())
@@ -54,35 +59,57 @@ class YouTube extends AdapterAbstract
 			$response_text = $response->getBody();
 			$data = @json_decode($response_text, TRUE);
 
-			$feed_items = (array)$data['feed']['entry'];
+			$feed_items = (array)$data['items'];
 
 			foreach($feed_items as $item)
 			{
-				$embed_src = $item['link'][0]['href'];
-
-				$thumbnails = (array)$item['media$group']['media$thumbnail'];
-				foreach($thumbnails as $thumb)
-				{
-					if (stristr($thumb['url'], 'mqdefault') !== FALSE)
-						$thumbnail = $thumb['url'];
-				}
-				if (!$thumbnail)
-					$thumbnail = $thumbnails[0]['url'];
-
-				$body = '<a class="fancybox fancybox.iframe" href="'.$embed_src.'"><img src="'.$thumbnail.'" alt="Click to Watch Video"></a>';
-				$body .= '<p>'.$item['media$group']['media$description']['$t'].'</p>';
+				$embed_src = 'http://www.youtube.com/watch?v='.$item['contentDetails']['videoId'];
 
 				$news_items[] = array(
-					'guid' 			=> 'youtube_'.md5($item['id']['$t']),
-					'timestamp'		=> strtotime($item['published']['$t']),
-					'title'			=> $item['title']['$t'],
-					'body'			=> $body,
+					'guid' 			=> 'youtube_'.md5($item['id']),
+					'timestamp'		=> strtotime($item['snippet']['publishedAt']),
+					'title'			=> $item['snippet']['title'],
+					'body'			=> $item['snippet']['description'],
 					'web_url'		=> $embed_src,
-					'author'		=> $item['author'][0]['name']['$t'],
+					'author'		=> $item['snippet']['channelTitle'],
 				);
 			}
 		}
 
 		return $news_items;
+	}
+
+	public static function getAccount($url)
+	{
+		if (stristr($url, 'youtube.com') !== FALSE)
+		{
+			$url_parts = \PVL\Utilities::parseUrl($url);
+
+			if ($url_parts['path_clean'] == 'playlist')
+			{
+				return array(
+					'type'		=> 'playlist',
+					'id'		=> $url_parts['query_arr']['list'],
+				);
+			}
+			else
+			{
+				$url_components = explode('/', $url_parts['path']);
+				$url_last_element = array_pop($url_components);
+				$account = trim($url_last_element);
+
+				return array(
+					'type'		=> 'user',
+					'id'		=> $account,
+				);
+			}
+		}
+		else
+		{
+			return array(
+				'type'		=> 'user',
+				'id'		=> trim($url),
+			);
+		}
 	}
 }

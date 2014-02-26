@@ -79,7 +79,7 @@ class IndexController extends \DF\Controller\Action
     	if ($this->_hasParam('autoplay'))
     		$autoplay = ((bool)$autoplay == true);
     	else
-    		$autoplay = ($this->_getParam('showonlystation', false) == 'true');
+    		$autoplay = false;
 
     	$this->view->autoplay = $autoplay;
     	$this->view->standalone = true;

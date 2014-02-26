@@ -18,4 +18,10 @@
 # http://www.sxw.org.uk/computing/robots/check.html
 
 User-agent: *
-Crawl-delay: 10
+Crawl-delay: 2
+
+# Prevent GoogleBot from requesting tracks!
+Disallow: /station/request/*
+
+# Allow all others.
+Allow: /

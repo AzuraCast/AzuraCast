@@ -6,7 +6,5 @@ web/static/api/*
 *.DS_Store
 *.apdisk
 *.zip
-<<<<<<< local
 *.mp3
-=======
->>>>>>> other
+db.sql

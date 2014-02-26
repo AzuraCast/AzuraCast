@@ -68,6 +68,11 @@ class StationMedia extends \DF\Doctrine\Entity
     {
         $this->requests = (int)$this->requests + 1;
         $this->newest_request = time();
+
+        $record = new StationRequest;
+        $record->track = $this;
+        $record->station = $this->station;
+        $record->save();
     }
 
     public function setLength($length)

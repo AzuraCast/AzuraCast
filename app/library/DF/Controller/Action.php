@@ -104,6 +104,12 @@ class Action extends \Zend_Controller_Action
 		
 		if ($is_ajax)
 	        \Zend_Layout::getMvcInstance()->disableLayout();
+
+	    if ($this->_hasParam('debug') && $this->_getParam('debug') === 'true')
+	    {
+	    	error_reporting(E_ALL & ~E_STRICT);
+	    	ini_set('display_errors', 1);
+	    }
 	}
 	
 	public function postDispatch()

@@ -54,15 +54,26 @@ $this->headLink()
 	->appendStylesheet('//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen')
 	->appendStylesheet(\DF\Url::content('mid2013/style.css'), 'all')
 	->appendStylesheet(\DF\Url::content('mid2013/skin_'.$skin.'.css'))
-	->appendStylesheet(\DF\Url::content('mlpma/style.css'));
+	->appendStylesheet(\DF\Url::content('mlpma/style.css'))
+	->appendStylesheet(\DF\Url::content('fap/css/jquery.fullwidthAudioPlayer.css'), 'all')
+	->appendStylesheet(\DF\Url::content('fap/css/jquery.fullwidthAudioPlayer-responsive.css'), 'all');
 
 $this->headScript()
-	->prependFile(\DF\Url::cdn('jquery', '1.8.3'))
+	->prependFile(\DF\Url::cdn('jquery', '1.10.1'))
 	->appendFile(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.pack.js'))
 	->appendFile(\DF\Url::content('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js'))
 	->appendFile(\DF\Url::content('common/bootstrap2_r2/layout.js'))
 	->appendFile(\DF\Url::content('swfobject.js'))
-	->appendFile(\DF\Url::content('global.js'));
+	->appendFile(\DF\Url::content('global.js'))
+	->appendFile(\DF\Url::content('mlpma/jquery.scrollto.min.js'))
+	->appendFile(\DF\Url::content('mlpma/jquery.history.min.js'))
+	->appendFile(\DF\Url::content('mlpma/jquery.ajaxify.js'))
+	->appendFile(\DF\Url::content('fap/js/jquery-ui.js'))
+	->appendFile(\DF\Url::content('fap/js/soundmanager2-nodebug-jsmin.js'))
+	->appendFile('//connect.soundcloud.com/sdk.js')
+	->appendFile(\DF\Url::content('fap/js/jquery.fullwidthAudioPlayer.js'))
+	->appendFile(\DF\Url::content('fap/js/amplify.min.js'))
+	->appendFile(\DF\Url::content('mlpma/custom.js'));
 
 echo $this->headMeta()."\n";
 echo $this->headLink()."\n";
@@ -112,7 +123,7 @@ ga('send', 'pageview');
     </div>
 </div>
 
-<div id="secondary_header_stripe"><img src="<?=\DF\Url::content('mlpma/mlpma_logo.png') ?>" alt="The MLP Music Archive, a Ponyville Live! Project"></div>
+<div id="secondary_header_stripe"><a href="<?=$this->route(array('module' => 'mlpma')) ?>" class="ajax"><img src="<?=\DF\Url::content('mlpma/mlpma_logo.png') ?>" alt="The MLP Music Archive, a Ponyville Live! Project"></a></div>
 
 <div id="body-wrapper">
 	<div id="body" class="container">
@@ -139,11 +150,13 @@ ga('send', 'pageview');
 								<?=$this->renderCommon('mlpma') ?>
 							</div>
 							<div class="span9">
-								<? if (!$this->layout()->hide_title): ?>
-									<h1 class="title"><?=$title ?></h1>
-								<? endif; ?>
+								<div id="page-content">
+									<? if (!$this->layout()->hide_title): ?>
+										<h1 class="title"><?=$title ?></h1>
+									<? endif; ?>
 
-								<?php echo $this->layout()->content; ?>
+									<?php echo $this->layout()->content; ?>
+								</div>
 							</div>
 						</div>
 					</div>

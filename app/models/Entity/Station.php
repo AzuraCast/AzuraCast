@@ -263,7 +263,7 @@ class Station extends \DF\Doctrine\Entity
         if (!$stations || !$cached)
         {
             $em = self::getEntityManager();
-            $stations = $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE s.is_active=1 ORDER BY s.weight ASC')->getArrayResult();
+            $stations = $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE s.is_active=1 ORDER BY s.category ASC, s.weight ASC')->getArrayResult();
 
             foreach($stations as &$station)
             {

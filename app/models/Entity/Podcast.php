@@ -103,14 +103,20 @@ class Podcast extends \DF\Doctrine\Entity
     {
         $em = self::getEntityManager();
 
-        $latest_podcast_episodes = $em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold ORDER BY pe.timestamp DESC')
-            ->setParameter('threshold', strtotime('-3 months'))
-            ->useResultCache(true, 300, 'homepage_podcast_episodes')
-            ->getArrayResult();
+        $podcast_episodes = \DF\Cache::get('homepage_podcast_episodes');
 
-        $podcast_episodes = array();
-        foreach($latest_podcast_episodes as $ep)
-            $podcast_episodes[$ep['podcast_id']][] = $ep;
+        if (!$podcast_episodes)
+        {
+            $latest_podcast_episodes = $em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold ORDER BY pe.timestamp DESC')
+                ->setParameter('threshold', strtotime('-3 months'))
+                ->getArrayResult();
+
+            $podcast_episodes = array();
+            foreach($latest_podcast_episodes as $ep)
+                $podcast_episodes[$ep['podcast_id']][] = $ep;
+
+            \DF\Cache::save($podcast_episodes, 'homepage_podcast_episodes', array(), 300);
+        }
 
         $podcasts = array();
         foreach($podcast_episodes as $podcast_id => $episodes)

@@ -1,0 +1,126 @@
+<?php
+header("Content-type: text/html; charset=utf-8");
+echo $this->doctype();
+?>
+<html class="full_layout">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+<meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, MLP, MLP:FiM" />
+<meta name="description" content="Equestria's newest Brony multimedia network, featuring 24/7 pony radio, videos, podcasts, convention coverage, and more." />
+<link rel="canonical" href="http://ponyvillelive.com" />
+
+<!-- iPhone/iPhone Retina -->
+<link rel="apple-touch-icon-precomposed" sizes="57x57" href="<?=\DF\Url::content('ios/touch_icon_iphone.png') ?>" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?=\DF\Url::content('ios/touch_icon_iphone.png') ?>" />
+<!-- iPad/iPad Retina -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?=\DF\Url::content('ios/touch_icon_ipad.png') ?>" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?=\DF\Url::content('ios/touch_icon_ipad.png') ?>" />
+
+<!-- Facebook and Other Social Sites -->
+<meta property="og:site_name" content="Ponyville Live!" />
+<meta property="og:url" content="http://ponyvillelive.com/" />
+<meta property="og:image" content="<?=\DF\Url::content('pvl_square.png') ?>" />
+
+<link rel="image_src" href="<?=\DF\Url::content('pvl_square.png') ?>" />
+<link href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" />
+
+<?php
+$title_items = $this->headTitle()->getIterator();
+$title = current($title_items);
+
+if (!$this->layout()->subtitle && $this->layout()->show_subtitle)
+    $this->layout()->subtitle = next($title_items);
+
+$this->headTitle($this->config->application->name);
+
+if (DF_APPLICATION_ENV != "production")
+	$this->headTitle()->prepend('('.ucfirst(DF_APPLICATION_ENV).')');
+
+echo $this->headTitle()->setSeparator(" - ")->toString();
+
+$this->headLink()
+	->appendStylesheet('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css', 'all')
+	->appendStylesheet('//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen')
+	->appendStylesheet(\DF\Url::content('mobile/jquery.mobile-1.4.0.min.css'), 'all')
+	->appendStylesheet(\DF\Url::content('mobile/custom.css'), 'all');
+
+$this->headScript()
+	->prependFile(\DF\Url::cdn('jquery', '1.11.0'))
+	->appendFile(\DF\Url::content('swfobject.js'))
+	->appendFile(\DF\Url::content('mobile/jquery.mobile-1.4.0.min.js'))
+	->appendFile(\DF\Url::content('mobile/custom.js'))
+	->appendFile(\DF\Url::content('jplayer/jquery.jplayer.min.js'));
+
+echo $this->headMeta()."\n";
+echo $this->headLink()."\n";
+echo $this->headScript()."\n";
+?>
+<script>
+var DF_ContentPath = '<?php echo \DF\Url::content(); ?>';
+</script>
+</head>
+<body class="<?=$this->body_class ?>">
+<!-- Google Universal Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', '<?=$this->config->application->analytics_code ?>', 'ponyvillelive.com');
+ga('send', 'pageview');
+</script>
+<!-- End Google Universal Analytics -->
+
+<!-- Header -->
+<div data-role="header" data-position="fixed" data-theme="a" data-add-back-btn="true">
+	<a id="btn_back" href="#" data-rel="back" class="ui-btn-left ui-alt-icon ui-nodisc-icon ui-btn ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-role="button" role="button">Back</a>
+    <h1><?=$title ?></h1>
+</div>
+
+<!-- Main Body -->
+<div id="page" data-role="page" data-title="<?=$title ?>" class="jqm-demos">
+	<div role="main" class="ui-content jqm-content jqm-fullwidth">
+		<?php echo $this->layout()->content; ?>
+	</div>
+</div>
+
+<!-- Footer Nav -->
+<div data-role="footer" data-position="fixed" data-theme="a">
+	<div id="player_controls" data-role="controlgroup">
+		<a id="btn_stop" class="ui-btn ui-btn-left ui-corner-all ui-btn-icon-notext" id="player_pause" href="#">Stop</a>
+		<input type="range" class="volume_slider" name="player_volume" id="player_volume" min="0" max="100" value="50" data-highlight="true">
+	</div>
+
+	<div data-role="navbar">
+		<ul>
+			<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'radio')) ?>">
+				<span class="icon"><i class="fa fa-music"></i></span>
+				<span class="tab-label">Radio</span>
+			</a></li>
+			<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'video')) ?>">
+				<span class="icon"><i class="fa fa-video-camera"></i></span>
+				<span class="tab-label">Video</span>
+			</a></li>
+			<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'show')) ?>">
+				<span class="icon"><i class="fa fa-rss"></i></span>
+				<span class="tab-label">Shows</span>
+			</a></li>
+			<li><a href="<?=$this->route(array('module' => 'mobile', 'controller' => 'station', 'action' => 'request')) ?>">
+				<span class="icon"><i class="fa fa-comments"></i></span>
+				<span class="tab-label">Requests</span>
+			</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- Radio Player -->
+<div id="pvl-jplayer" style="width: 0; height: 0;"></div>
+
+</body>
+</html>

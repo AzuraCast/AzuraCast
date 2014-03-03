@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<playlists>
+
+  <playlist id="pl1">
+	<track href="MP3/SOUNDCLOUD URL" title="YOUR TITLE" target="LINK TO SHARE ON FACEBOOK AND TWITTER" rel="IMAGE OF THE COVER">
+	  <meta>
+	    <![CDATA[ <a href="http://google.de" target="_blank">This is an optional text with a link</a> ]]>
+	  </meta>
+	</track>
+	<track href="http://soundcloud.com/radykal/favorites" />
+  </playlist>
+  
+  
+</playlists>
+
+

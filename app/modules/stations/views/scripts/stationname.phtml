@@ -1,0 +1,5 @@
+<? if (count($this->stations) > 1): ?>
+    <a class="btn pull-right fancybox fancybox.ajax" href="<?=$this->routeFromHere(array('controller' => 'index', 'action' => 'select', 'station' => NULL)) ?>"><i class="icon-random"></i> Change Active Station</a>
+<? endif; ?>
+
+<h2><i class="<?=$this->station->getCategoryIcon() ?>"></i> <?=$this->station->name ?></h2>

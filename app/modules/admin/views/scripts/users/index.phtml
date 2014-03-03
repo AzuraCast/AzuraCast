@@ -6,8 +6,8 @@ $this->headTitle('Manage Users');
 	<?=$this->button(array(
 		'type'		=> 'link',
 		'class'		=> 'success',
-		'href'		=> $this->route(array('module' => 'admin', 'controller' => 'users', 'action' => 'add' )),
-		'icon'		=> 'add',
+		'href'		=> $this->routeFromHere(array('action' => 'edit')),
+		'icon'		=> 'icon-plus-sign',
 		'text'		=> 'Add New User',
 	)) ?>
 </div>
@@ -62,15 +62,6 @@ $this->headTitle('Manage Users');
 						'icon'		=> 'pencil',
 						'text'		=> 'Edit',
 					)) ?>
-				<? if ($user->flag_delete): ?>
-					<?=$this->button(array(
-						'type'		=> 'small',
-						'href'		=> $this->routeFromHere(array('action' => 'delete', 'id' => $user->id)),
-						'class'		=> 'success',
-						'icon'		=> 'add',
-						'text'		=> 'Undelete',
-					)) ?>
-				<? else: ?>
 					<?=$this->button(array(
 						'type'		=> 'small',
 						'href'		=> $this->routeFromHere(array('action' => 'delete', 'id' => $user->id)),
@@ -78,7 +69,6 @@ $this->headTitle('Manage Users');
 						'icon'		=> 'delete',
 						'text'		=> 'Delete',
 					)) ?>
-				<? endif; ?>
 				</div>
 			</td>
 			<td><big><?=$user->name ?></big></td>

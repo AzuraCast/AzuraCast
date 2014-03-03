@@ -221,7 +221,12 @@ class NowPlaying
 
     					$np['listeners'] = (int)$return['listeners'];
     					$np['artist'] = $return['now_playing']['artist'];
-    					$np['title'] = $return['now_playing']['song'];
+
+    					if ($return['now_playing']['track'])
+    						$np['title'] = $return['now_playing']['track'];
+    					else
+    						$np['title'] = $return['now_playing']['song'];
+
     					$np['text'] = $return['title'];
     					$np['is_live'] = ($return['mount'] != '/autodj');
     				}
@@ -246,7 +251,7 @@ class NowPlaying
 
 						list($artist, $track) = explode(" - ",$temp_array[9], 2);
 
-						$np['listeners'] = $temp_array[5];
+						$np['listeners'] = (int)$temp_array[5];
 						$np['artist'] = $artist;
 						$np['title'] = $track;
 						$np['text'] = $temp_array[9];

@@ -6,6 +6,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 /**
  * @Table(name="short_urls")
  * @Entity
+ * @HasLifecycleCallbacks
  */
 class ShortUrl extends \DF\Doctrine\Entity
 {
@@ -29,9 +30,33 @@ class ShortUrl extends \DF\Doctrine\Entity
     /** @Column(name="short_url", type="string", length=100) */
     protected $short_url;
 
+    public function setShortUrl($new_short_url)
+    {
+        $this->short_url = preg_replace("/[^A-Za-z0-9_\-]/", '', $new_short_url);
+    }
+
     public function getUrl()
     {
         return self::getFullUrl($this->short_url);
+    }
+
+    public function checkUrl()
+    {
+        if (empty($this->short_url))
+            $this->short_url = substr(md5($this->long_url), 0, 10);
+
+        // Check for a station URL.
+        $station_urls = self::stationUrls();
+        if (isset($station_urls[$this->short_url]))
+            return false;
+
+        $records = self::getRepository()->findBy(array('short_url' => $this->short_url));
+
+        // Updating an existing record, exclude existing item.
+        if ($this->id)
+            return (count($records) <= 1);
+        else
+            return (count($records) == 0);
     }
 
     /** @Column(name="long_url", type="string", length=300) */
@@ -61,20 +86,10 @@ class ShortUrl extends \DF\Doctrine\Entity
             return \DF\Url::route();
 
         // Check for a station's short code (overrides manual input URLs).
-        $station_short_names = Station::getShortNameLookup();
+        $station_urls = self::stationUrls();
 
-        if (isset($station_short_names[$origin]))
-        {
-            $station = $station_short_names[$origin];
-
-            return \DF\Url::route(array(
-                'module'    => 'default',
-                'controller' => 'index',
-                'action'    => 'index',
-                'id'        => $station['id'],
-                'autoplay'  => 'true',
-            ));
-        }
+        if (isset($station_urls[$origin]))
+            return $station_urls[$origin];
 
         // Check for a matching URL.
         $url = self::getRepository()->findOneBy(array('short_url' => $origin));
@@ -84,6 +99,25 @@ class ShortUrl extends \DF\Doctrine\Entity
 
         // Default to the homepage.
         return \DF\Url::route();
+    }
+
+    public static function stationUrls()
+    {
+        $station_urls = array();
+        $station_short_names = Station::getShortNameLookup();
+
+        foreach($station_short_names as $short_name => $station)
+        {
+            $station_urls[$short_name] = \DF\Url::route(array(
+                'module'    => 'default',
+                'controller' => 'index',
+                'action'    => 'index',
+                'id'        => $station['id'],
+                'autoplay'  => 'true',
+            ));
+        }
+
+        return $station_urls;
     }
 
     public static function stationUrl(Station $station)

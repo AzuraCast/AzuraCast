@@ -144,20 +144,24 @@
 .navbar-inner, 
 .nav,
 .navbar-inverse {
-	background:#fff;
+	background: none;
 	filter:none;
 	border:none;
 	padding:0;
 	margin:0 !important;
 	-webkit-box-shadow: none;
-       -moz-box-shadow: none;
-            box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 .nav i.icon-sort-up { 
 	position:absolute; 
 	font-size:13px;
 	bottom:-6px;
+}
+
+.navbar-inverse .navbar-inner {
+	background: none !important;
 }
 
 .navbar-inner {

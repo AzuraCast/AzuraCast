@@ -28,77 +28,33 @@ class Admin_UsersController extends \DF\Controller\Action
 		$this->view->pager = new \DF\Paginator\Doctrine($query, $this->_getParam('page', 1), 50);
     }
 
-    public function addAction()
-    {
-		$form = new \DF\Form($this->current_module_config->forms->user_new->form);
-
-        if( !empty($_POST) && $form->isValid($_POST) )
-        {
-			$data = $form->getValues();
-			$uins_raw = explode("\n", $data['uin']);
-			
-			foreach((array)$uins_raw as $uin)
-			{
-				$uin = trim($uin);
-
-				if (strlen($uin) == 9)
-				{
-					$user = User::getOrCreate($uin);
-					$user->fromArray(array('roles' => $data['roles']));
-					$this->em->persist($user);
-
-					$this->alert('User <a href="'.\DF\Url::route(array('module' => 'admin', 'controller' => 'users', 'action' => 'edit', 'id' => $user->id)).'" title="Edit User">'.$user->lastname.', '.$user->firstname.'</a> successfully updated/added.');
-				}
-			}
-
-			$this->em->flush();
-			
-			$this->redirectToRoute(array('module' => 'admin', 'controller' => 'users'));
-			return;
-        }
-
-        $this->view->headTitle('Add User');
-        $this->renderForm($form);
-    }
-    
     public function editAction()
     {
-		// Handle UIN translation.
-		if ($this->_hasParam('uin'))
+    	$form = new \DF\Form($this->current_module_config->forms->user_edit->form);
+		
+		if ($this->_hasParam('id'))
 		{
-			$user = User::getRepository()->findOneByUin($this->_getParam('uin'));
+			$record = User::find($this->_getParam('id'));
+			$form->setDefaults($record->toArray());
+		}
+
+        if(!empty($_POST) && $form->isValid($_POST))
+        {
+            $data = $form->getValues();
 			
-			if ($user instanceof User)
-				$this->redirectFromHere(array('uin' => NULL, 'id' => $user->id));
-			else
-				throw new \DF\Exception\DisplayOnly('User not found!');
-			return;
-		}
-		
-        $id = (int)$this->_getParam('id');
-        $user = User::find($id);
-		
-		$form = new \DF\Form($this->current_module_config->forms->user_edit->form);
-		
-		if (!($user instanceof User))
-			throw new \DF\Exception\DisplayOnly('User not found!');
+			if (!($record instanceof User))
+				$record = new User;
+			
+			$record->fromArray($data);
+			$record->save();
+			
+			$this->alert('User updated.', 'green');
+            $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
+            return;
+        }
 
-		$form->setDefaults($user->toArray(TRUE, TRUE));
-	
-		if( !empty($_POST) && $form->isValid($_POST) )
-		{
-			$data = $form->getValues();
-
-			$user->fromArray($data);
-			$user->save();
-
-			$this->alert('<b>User updated!</b>', 'green');
-			$this->redirectToRoute(array('module'=>'admin','controller'=>'users'));
-			return;
-		}
-
-		$this->view->headTitle('Edit User');
-		$this->renderForm($form);
+        $this->view->headTitle('Add/Edit User');
+        $this->renderForm($form);
     }
 
     public function deleteAction()
@@ -106,10 +62,10 @@ class Admin_UsersController extends \DF\Controller\Action
     	$id = (int)$this->_getParam('id');
         $user = User::find($id);
 
-        $user->flag_delete = !($user->flag_delete);
-        $user->save();
+        if ($user instanceof User)
+        	$user->delete();
 
-        $this->alert('<b>User deleted status toggled.</b>', 'green');
+        $this->alert('<b>User deleted.</b>', 'green');
         $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
     }
 

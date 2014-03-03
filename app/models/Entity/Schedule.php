@@ -227,4 +227,17 @@ class Schedule extends \DF\Doctrine\Entity
         return $range_text;
     }
 
+    public static function formatName($string)
+    {
+        $string = trim($string);
+
+        // Detect Twitter handles.
+        $string = preg_replace_callback('/@([A-Za-z0-9_]{1,15})/', function($matches) {
+            $twitter_username = substr($matches[0], 1);
+            return '<a href="https://twitter.com/'.$twitter_username.'" target="_blank">@'.$twitter_username.'</a>';
+        }, $string);
+
+        return $string;
+    }
+
 }

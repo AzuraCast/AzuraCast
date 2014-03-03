@@ -226,7 +226,7 @@ for($i = 0; $i <= $num_cols-1; $i++)
 					<? foreach((array)$date_row['events'] as $event): ?>
 						<li class="clearfix">
 							<img class="pull-left" src="<?=$event['image_url'] ?>" style="width: 32px; margin-right: 5px; margin-top: 5px;">
-							<h5><?=$event['title'] ?><br><small>
+							<h5><?=\Entity\Schedule::formatName($event['title']) ?><br><small>
 							<? if ($event['status'] == "now"): ?>
 								<b>Right now</b>
 							<? else: ?>

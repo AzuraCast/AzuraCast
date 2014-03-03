@@ -1,0 +1,142 @@
+/**
+ * Custom CSS for Mobile App
+ */
+
+body,
+.ui-btn {
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+.ui-footer span.icon {
+	display: block;
+	font-size: 20px;
+	line-height: 25px;
+}
+.ui-footer span {
+	font-size: 14px;
+	line-height: 15px;
+	font-weight: normal;
+}
+
+/**
+ * Homepage
+ */
+
+#home_header {
+	background: url('pagebg.jpg') center center no-repeat;
+	background-size: 100% auto;
+
+	text-align: center;
+	padding: 10px 0 0 0;
+	margin: -20px -20px 0 -20px;
+}
+#home_header img {
+	max-width: 100%;
+}
+
+#home_buttons {
+	margin: 15px 0;
+}
+
+#home_footer {
+	margin-top: 5px;
+	border-top: 1px solid #CCC;
+	padding-top: 5px;
+
+	text-align: center;
+	color: #999;
+	font-size: 12px;
+	line-height: 13px;
+}
+
+input.volume_slider {
+    display: none;
+}
+.volume_slider .ui-slider-track {
+    margin-left: 15px;
+}
+
+/**
+ * Station Listings
+ */
+
+#page .station a {
+	padding-top: 10px;
+	padding-bottom: 10px;
+
+	padding-left: 70px;
+	min-height: 50px;
+}
+#page .station a img {
+	width: 50px;
+	top: 10px;
+	left: 10px;
+}
+#page .station h4,
+#page .station div,
+#page .station span {
+	margin: 0;
+	padding: 0;
+}
+#page .station span {
+	display: block;
+}
+
+#page .station.offline,
+#page .station.offline h4 small {
+	opacity: 0.6;
+}
+#page .station.live,
+#page .station.live h4 small {
+	color: #2C7FD2;
+}
+#page .station.playing,
+#page .station.playing h4 small {
+	color: #5699DC;	
+}
+
+/**
+ * Player Skin for PVL
+ */
+
+#page .station h4,
+#page .podcast h4 {
+	font-size: 16px;
+}
+#page .station h4 span,
+#page .podcast h4 span {
+	display: inline;
+	font-weight: normal;
+	font-size: 12px;
+	color: #999;
+}
+
+#page .station span.genre-info,
+#page .podcast span.genre-info {
+	font-size: 13px;
+	display: block;
+}
+
+#page .station span.nowplaying-onair {
+	font-size: 12px;
+	line-height: 15px;
+	color: #AAA;
+}
+
+#page .station span.nowplaying-artist {
+	font-size: 14px;
+	line-height: 15px;
+
+	font-weight: bold;
+}
+#page .station span.nowplaying-title {
+	font-size: 12px;
+	line-height: 13px;
+
+	font-weight: normal;
+}
+
+#page .station.playing,
+#page .station.playing h4 small {
+	color: #5699DC;	
+}

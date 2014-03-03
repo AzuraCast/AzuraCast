@@ -24,7 +24,7 @@ define("DF_INCLUDE_LIB_LOCAL", DF_INCLUDE_BASE.'/library_local');
 
 define("DF_UPLOAD_FOLDER", DF_INCLUDE_STATIC);
 
-define("DF_URL_STATIC", (DF_IS_SECURE ? 'https:' : 'http:').'//static.ponyvillelive.com');
+define("DF_URL_STATIC", (DF_IS_SECURE ? 'https:' : 'http:').'//ponyvillelive.com/static');
 
 // Self-reference to current script.
 if (isset($_SERVER['REQUEST_URI']))

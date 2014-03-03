@@ -377,7 +377,7 @@ function playStation(id)
 					volumechange: function(event) {
 						volume = Math.round(event.jPlayer.options.volume * 100);
 					},
-					swfPath: '/static/jplayer/jplayer.swf',
+					swfPath: DF_ContentPath+'/jplayer/jplayer.swf',
 					solution: (canPlayMp3()) ? 'html, flash' : 'flash',
 					supplied: 'mp3',
 					preload: 'none',

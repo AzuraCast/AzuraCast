@@ -54,7 +54,7 @@ $this->headTitle('Station Schedules');
 	                		<? if ($this->station == 'all'): ?>
 	                			<? if ($event['station']): ?><?=$event['station']['name'] ?><? else: ?>Network-Wide<? endif; ?>:<br>
 	                		<? endif; ?>
-	                		<big><?=$event['title'] ?></big>
+	                		<?=\Entity\Schedule::formatName($event['title']) ?>
 	                		<br><small><?=$event['time'] ?></small>
 	                	<!-- </a> -->
 	                </div>

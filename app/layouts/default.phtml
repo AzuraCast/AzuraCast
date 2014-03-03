@@ -8,23 +8,17 @@ $skin = \PVL\Customization::get('theme');
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true">
 
-<meta name="viewport" content="initial-scale=1.0">
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-
 <meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, MLP, MLP:FiM" />
 <meta name="description" content="Equestria's newest Brony multimedia network, featuring 24/7 pony radio, videos, podcasts, convention coverage, and more." />
-<link rel="canonical" href="http://www.ponyvillelive.com" />
-
-<!-- iPhone/iPhone Retina -->
-<link rel="apple-touch-icon-precomposed" sizes="57x57" href="<?=\DF\Url::content('ios/touch_icon_iphone.png') ?>" />
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?=\DF\Url::content('ios/touch_icon_iphone.png') ?>" />
-<!-- iPad/iPad Retina -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?=\DF\Url::content('ios/touch_icon_ipad.png') ?>" />
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?=\DF\Url::content('ios/touch_icon_ipad.png') ?>" />
+<link rel="canonical" href="http://ponyvillelive.com" />
 
 <!-- Facebook and Other Social Sites -->
+<meta property="og:site_name" content="Ponyville Live!" />
+<meta property="og:url" content="http://ponyvillelive.com/" />
+<meta property="og:image" content="<?=\DF\Url::content('pvl_square.png') ?>" />
+
 <link rel="image_src" href="<?=\DF\Url::content('pvl_square.png') ?>" />
+<link href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" />
 
 <?php
 $title_items = $this->headTitle()->getIterator();

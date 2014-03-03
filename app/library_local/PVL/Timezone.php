@@ -31,7 +31,7 @@ class Timezone
 		$dt_in_tz = new \DateTime('now', $current_tz);
 
 		return array(
-			'name'			=> $tz['name'],
+			'name'			=> $transition[0]['name'],
 			'abbr'			=> $transition[0]['abbr'],
 			'tz_object'		=> $current_tz,
 			'utc_object'	=> $utc,

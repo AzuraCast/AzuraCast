@@ -77,9 +77,9 @@ class IndexController extends \DF\Controller\Action
     	$autoplay = $this->_getParam('autoplay');
 
     	if ($this->_hasParam('autoplay'))
-    		$autoplay = ((bool)$autoplay == true);
+    		$autoplay = ($autoplay === 'true' || $autoplay === '1');
     	else
-    		$autoplay = ($this->_getParam('showonlystation', false) == 'true');
+    		$autoplay = false;
 
     	$this->view->autoplay = $autoplay;
     	$this->view->standalone = true;
@@ -141,9 +141,11 @@ class IndexController extends \DF\Controller\Action
 
     	$this->categories = \Entity\Station::getCategories();
 
+    	/*
     	$special_event = Settings::getSetting('special_event', 0);
     	if (!$special_event)
     		unset($this->categories['event']);
+    	*/
 
     	if ($station_id && $this->_getParam('showonlystation', false) == 'true')
 		{

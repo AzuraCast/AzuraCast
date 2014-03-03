@@ -53,15 +53,18 @@ class ArchiveGenre extends \DF\Doctrine\Entity
         return $totals;
     }
 
-    public static function getTop($offset_num = 5)
+    public static function getTop($num_to_show = 5)
     {
-        $totals = self::getTotals();
+        $all_totals = self::getTotals();
+
+        $totals = array_filter($all_totals, function($var) {
+            return ($var['total'] > 2);
+        });
 
         uasort($totals, function($a, $b) {
             return $b['total'] - $a['total'];
         });
 
-        $totals = array_slice($totals, 0, $offset_num, TRUE);
-        return $totals;
+        return array_slice($totals, 0, $num_to_show);
     }
 }

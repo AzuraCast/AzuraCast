@@ -12,4 +12,6 @@ return array(
 	'db_pass'	=> 'PVLRadio2013!',
 	'db_name'	=> 'centova',
 
+	// Time zone to use when submitting requests.
+	'timezone'	=> 'US/Eastern',
 );

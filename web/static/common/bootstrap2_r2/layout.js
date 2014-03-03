@@ -156,7 +156,8 @@ function initPage(page) {
 	
 	/* Disable submit button to prevent double submissions */
 	$(page).find('form').submit(function(){
-		$(this).find('input[type=submit],button[type=submit]').attr('disabled', 'disabled').addClass('disabled').val('Working...');
+		if (!$(this).hasClass('no-disable'))
+			$(this).find('input[type=submit],button[type=submit]').attr('disabled', 'disabled').addClass('disabled').val('Working...');
 	});
 
 	/* Suppress the backspace key. */

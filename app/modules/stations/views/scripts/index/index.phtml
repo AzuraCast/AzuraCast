@@ -10,9 +10,9 @@ $this->headScript()
 $skin = \PVL\Customization::get('theme');
 if ($skin == "dark")
     $this->headScript()->appendFile(\DF\Url::content('highcharts/dark-blue.js'));
-?>
 
-<?=$this->renderHere('header') ?>
+echo $this->renderHere('stationname', true);
+?>
 
 <script type="text/javascript">
 Highcharts.setOptions({
@@ -42,6 +42,9 @@ Highcharts.setOptions({
 
                 <dt><a href="<?=$this->routeFromHere(array('action' => 'timeline')) ?>">Song Playback Timeline</a></dt>
                 <dd>View the entire playback history of your station over the last 48 hours, along with the rise and fall of listener counts and special events.</dd>
+
+                <dt><a href="<?=$this->routeFromHere(array('controller' => 'urls', 'action' => 'index')) ?>">PVL Short URLs</a></dt>
+                <dd>Manage the "pvlive.me" URL shortener links for your station.</dd>
 
                 <dt><a href="http://radio.ponyvillelive.com:2199/" target="_blank">CentovaCast Station Manager</a></dt>
                 <dd>If your station is hosted on the PVL CentovaCast server, use this link to manage it.</dd>

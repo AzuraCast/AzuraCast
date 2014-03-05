@@ -1,7 +1,3 @@
-<?php
-$this->headTitle('Radio Stations');
-?>
-
 <ul data-role="listview" class="station_list" id="station_list">
 <? foreach($this->category['stations'] as $station): ?>
     <li class="station" id="station_<?=\Entity\Station::getStationShortName($station['name']) ?>"
@@ -9,7 +5,7 @@ $this->headTitle('Radio Stations');
 		data-name="<?=$station['name'] ?>" 
 		data-type="<?=$station['type'] ?>" 
 		data-inactive="<? if ($station['hide_if_inactive']): ?>hide<? else: ?>show<? endif; ?>">
-    	<a href="<?=$this->routeFromHere(array('controller' => 'station', 'action' => 'index', 'id' => $station['id'])) ?>">
+    	<a href="<?=$this->routeFromHere(array('action' => 'station', 'id' => $station['id'])) ?>">
 	    	<img src="<?=\DF\Url::content($station['image_url']) ?>">
 
 	    	<h4>
@@ -21,7 +17,7 @@ $this->headTitle('Radio Stations');
 				<span class="genre-info"><?=$station['genre'] ?></span>
 			<? endif; ?>
 			</h4>
-			<span class="nowplaying-onair" style="display: none;"></span>
+			<span class="nowplaying-onair" style="display: none;"><span class="nowplaying-onair-inner"></span></span>
 			<span class="nowplaying-artist">Loading...</span>
 			<span class="nowplaying-title">Loading...</span>
 		</a>

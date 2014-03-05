@@ -8,7 +8,6 @@ echo $this->doctype();
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
 <meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, MLP, MLP:FiM" />
 <meta name="description" content="Equestria's newest Brony multimedia network, featuring 24/7 pony radio, videos, podcasts, convention coverage, and more." />
@@ -78,7 +77,7 @@ ga('send', 'pageview');
 <!-- End Google Universal Analytics -->
 
 <!-- Header -->
-<div data-role="header" data-position="fixed" data-theme="a" data-add-back-btn="true">
+<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
 	<a id="btn_back" href="#" data-rel="back" class="ui-btn-left ui-alt-icon ui-nodisc-icon ui-btn ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-role="button" role="button">Back</a>
     <h1><?=$title ?></h1>
 </div>
@@ -91,10 +90,10 @@ ga('send', 'pageview');
 </div>
 
 <!-- Footer Nav -->
-<div data-role="footer" data-position="fixed" data-theme="a">
+<div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
 	<div id="player_controls" data-role="controlgroup">
-		<a id="btn_stop" class="ui-btn ui-btn-left ui-corner-all ui-btn-icon-notext" id="player_pause" href="#">Stop</a>
-		<input type="range" class="volume_slider" name="player_volume" id="player_volume" min="0" max="100" value="50" data-highlight="true">
+		<a class="ui-corner-all ui-btn ui-btn-left" id="player_pause">Stop</a>
+		<input type="range" class="volume_slider" name="player_volume" id="player_volume" min="0" max="100" value="50" data-role="none" data-highlight="true">
 	</div>
 
 	<div data-role="navbar">
@@ -111,7 +110,7 @@ ga('send', 'pageview');
 				<span class="icon"><i class="fa fa-rss"></i></span>
 				<span class="tab-label">Shows</span>
 			</a></li>
-			<li><a href="<?=$this->route(array('module' => 'mobile', 'controller' => 'station', 'action' => 'request')) ?>">
+			<li><a href="<?=$this->route(array('module' => 'mobile', 'controller' => 'requests')) ?>">
 				<span class="icon"><i class="fa fa-comments"></i></span>
 				<span class="tab-label">Requests</span>
 			</a></li>

@@ -1,5 +1,7 @@
 <?php
 use \Entity\Station;
+use \Entity\Podcast;
+use \Entity\Schedule;
 
 class Mobile_IndexController extends \PVL\Controller\Action\Mobile
 {
@@ -37,14 +39,44 @@ class Mobile_IndexController extends \PVL\Controller\Action\Mobile
 
 			case "video":
 				$this->view->category = $this->categories['video'];
-				$this->render('view_video');
+				$this->view->headTitle('Video Streams');
+
+				$this->render('view_station');
 			break;
 
 			case "radio":
 			default:
 				$this->view->category = $this->categories['audio'];
-				$this->render('view_radio');
+				$this->view->headTitle('Radio Stations');
+
+				$this->render('view_station');
 			break;
 		}
+	}
+
+	public function stationAction()
+	{
+		$id = (int)$this->_getParam('id');
+		$station = Station::find($id);
+
+		if (!($station instanceof Station))
+			throw new \DF\Exception\DisplayOnly('Not found!');
+
+		$this->view->station = $station;
+
+		$threshold = time()+86400*7;
+		$this->view->events = Schedule::getEventsInRange($station->id, time(), $threshold);
+	}
+
+	public function podcastAction()
+	{
+		$id = (int)$this->_getParam('id');
+		$podcast = Podcast::find($id);
+
+		if (!($podcast instanceof Podcast))
+			throw new \DF\Exception\DisplayOnly('Not found!');
+
+		$this->view->podcast = $podcast;
+		$this->view->episodes = $podcast->episodes;
 	}
 }

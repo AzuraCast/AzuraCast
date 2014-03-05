@@ -18,6 +18,35 @@ body,
 	font-weight: normal;
 }
 
+.clearfix:after {
+   content: " "; /* Older browser do not support empty content */
+   visibility: hidden;
+   display: block;
+   height: 0;
+   clear: both;
+}
+
+.custom-corners .ui-bar {
+	-webkit-border-top-left-radius: inherit;
+	border-top-left-radius: inherit;
+	-webkit-border-top-right-radius: inherit;
+	border-top-right-radius: inherit;
+}
+.custom-corners .ui-body {
+	border-top-width: 0;
+	-webkit-border-bottom-left-radius: inherit;
+	border-bottom-left-radius: inherit;
+	-webkit-border-bottom-right-radius: inherit;
+	border-bottom-right-radius: inherit;
+}
+
+div.vertical-padded {
+	padding: 5px 0 0 0;
+}
+div.vertical-padded:nth-child(1) {
+	padding: 0;
+}
+
 /**
  * Homepage
  */
@@ -60,83 +89,155 @@ input.volume_slider {
  * Station Listings
  */
 
-#page .station a {
+#page li.station a,
+#page li.podcast a {
 	padding-top: 10px;
 	padding-bottom: 10px;
 
 	padding-left: 70px;
 	min-height: 50px;
 }
-#page .station a img {
+
+#page li.station a img,
+#page li.podcast a img {
 	width: 50px;
 	top: 10px;
 	left: 10px;
 }
-#page .station h4,
-#page .station div,
-#page .station span {
+#page li.station h4,
+#page li.station div,
+#page li.station span,
+#page li.podcast h4,
+#page li.podcast div,
+#page li.podcast span {
 	margin: 0;
 	padding: 0;
 }
-#page .station span {
+#page li.station span,
+#page li.podcast span {
 	display: block;
 }
+#page li.podcast span {
+	white-space: normal;
+}
 
-#page .station.offline,
-#page .station.offline h4 small {
+#page li.station.offline,
+#page li.station.offline h4 small {
 	opacity: 0.6;
 }
-#page .station.live,
-#page .station.live h4 small {
+#page li.station.live,
+#page li.station.live h4 small {
 	color: #2C7FD2;
 }
-#page .station.playing,
-#page .station.playing h4 small {
+#page li.station.playing,
+#page li.station.playing h4 small {
 	color: #5699DC;	
 }
 
-/**
- * Player Skin for PVL
- */
-
-#page .station h4,
-#page .podcast h4 {
+#page li.station h4,
+#page li.podcast h4 {
 	font-size: 16px;
 }
-#page .station h4 span,
-#page .podcast h4 span {
+#page li.station h4 span,
+#page li.podcast h4 span {
 	display: inline;
 	font-weight: normal;
 	font-size: 12px;
 	color: #999;
 }
 
-#page .station span.genre-info,
-#page .podcast span.genre-info {
+#page li.station span.genre-info,
+#page li.podcast span.genre-info {
 	font-size: 13px;
 	display: block;
 }
 
-#page .station span.nowplaying-onair {
+#page li.station span.nowplaying-onair {
 	font-size: 12px;
 	line-height: 15px;
 	color: #AAA;
 }
 
-#page .station span.nowplaying-artist {
+#page li.station span.nowplaying-artist,
+#page li.podcast span.newest-episode-name {
 	font-size: 14px;
 	line-height: 15px;
 
 	font-weight: bold;
 }
-#page .station span.nowplaying-title {
+#page li.station span.nowplaying-title,
+#page li.podcast span.newest-episode-intro {
 	font-size: 12px;
 	line-height: 13px;
 
 	font-weight: normal;
 }
 
-#page .station.playing,
-#page .station.playing h4 small {
+#page li.station.playing,
+#page li.station.playing h4 small {
 	color: #5699DC;	
+}
+
+/**
+ * Station Detail Page
+ */
+
+#page div.station img,
+#page div.podcast img {
+	width: 50px;
+	float: left;
+	padding-right: 5px;
+}
+
+#page div.station .station-header,
+#page div.podcast .podcast-header {
+	padding-bottom: 5px;
+}
+
+#page div.station h4,
+#page div.podcast h4 {
+	margin: 0;
+	padding: 6px 0;
+	font-size: 20px;
+	line-height: 18px;
+}
+#page div.station h4 span,
+#page div.podcast h4 span {
+	display: inline;
+	font-weight: normal;
+	font-size: 15px;
+	color: #999;
+}
+#page div.station span.genre-info,
+#page div.podcast span.genre-info {
+	display: block;
+}
+#page div.podcast span.genre-info {
+	white-space: normal;
+}
+
+#page div.station .panel {
+	padding-top: 10px;
+}
+
+#page div.station .ui-bar,
+#page div.station .ui-body {
+	padding: 8px;
+}
+
+#page div.station .nowplaying-artist {
+	font-size: 16px;
+	line-height: 17px;
+
+	font-weight: bold;
+}
+#page div.station .nowplaying-title {
+	font-size: 14px;
+	line-height: 15px;
+
+	font-weight: normal;
+}
+#page div.station .ui-body {
+	font-size: 14px;
+	line-height: 14px;
 }

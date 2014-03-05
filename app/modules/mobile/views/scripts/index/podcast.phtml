@@ -1,0 +1,45 @@
+<?php
+$this->headTitle($this->podcast->name);
+?>
+
+<div class="podcast">
+	<div class="podcast-header clearfix">
+		<img src="<?=\DF\Url::content($this->podcast['image_url']) ?>">
+
+		<h4>
+			<?=$this->podcast['name'] ?>
+			<span class="genre-info"><?=$this->podcast['description'] ?></span>
+		</h4>
+	</div>
+
+	<a class="ui-btn ui-btn-b ui-corner-all" href="<?=$this->podcast['web_url'] ?>" target="_blank" rel="external">
+		<i class="fa fa-globe"></i> Visit Homepage
+	</a>
+
+<? if (count($this->podcast->stations) > 0): ?>
+	<div class="panel nowplaying-onair ui-corner-all custom-corners" style="display: none;">
+		<div class="ui-bar ui-bar-a">
+			<h3>Airs on Stations</h3>
+		</div>
+		<div class="ui-body ui-body-a">
+		<? foreach($this->podcast->stations as $station): ?>
+			<div><?=$station->name ?></div>
+		<? endforeach; ?>
+		</div>
+	</div>
+<? endif; ?>
+
+	<div class="panel nowplaying-info ui-corner-all custom-corners">
+		<div class="ui-bar ui-bar-a">
+			<h3>Recent Episodes</h3>
+		</div>
+		<div class="ui-body ui-body-a">
+		<? foreach($this->episodes as $ep): ?>
+			<div class="vertical-padded">
+				<small><?=date('F j, Y g:ia', $ep['timestamp']) ?></small><br>
+				<a href="<?=$ep['web_url'] ?>" target="_blank"><?=$ep['title'] ?></a>
+			</div>
+		<? endforeach; ?>
+		</div>
+	</div>
+</div>

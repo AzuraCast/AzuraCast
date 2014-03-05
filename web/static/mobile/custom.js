@@ -2,33 +2,64 @@
  * Mobile Custom JS
  */
 
+var is_playing = false;
+var is_first_load = true;
 var volume = 100;
+
 var nowplaying_last_run = 0;
 var nowplaying_timeout;
 var nowplaying_interval;
 
-$(function() {
-	$('#btn_back').hide();
-	$('#player_controls').hide();
+$(document).on("pageinit", function() {
+	if (is_first_load)
+	{
+		$('#btn_back').hide();
 
-	$('input[type="slider"]').slider();
+		$("#pvl-jplayer").jPlayer({
+			swfPath: DF_ContentPath+'/jplayer/jplayer.swf',
+			solution: (canPlayMp3()) ? 'html, flash' : 'flash',
+			supplied: 'mp3',
+			preload: 'none',
+			volume: (volume / 100),
+			muted: false,
+			backgroundColor: '#000000',
+			cssSelectorAncestor: '#pvl-jplayer-controls',
+			errorAlerts: false,
+			warningAlerts: false
+		});
 
-	$('#player_controls input.volume_slider').attr('value', volume);
-	$('#player_controls input.volume_slider').on("slidestop", function(event, ui) {
-		volume = parseInt(ui.value);
+		$('#player_controls').hide();
 
-		$('#pvl-jplayer').jPlayer('volume', (volume / 100));
-	});
+		$('#player_volume').attr('value', volume);
+		$('#player_volume').slider({
+			stop: function(event, ui) {
+				volume = parseInt(event.target.value);
 
-	$("[data-role='navbar']").navbar();
-	$("[data-role='header'], [data-role='footer']").toolbar();
-	
-	nowplaying_interval = setInterval('verifyNowPlaying()', 30000);
+				if (is_playing)
+					$('#pvl-jplayer').jPlayer('volume', (volume / 100));
+			}
+		});
+		$('#player_controls #player_pause').on("click", function(event, ui) {
+			stopAllPlayers();
+		});
+
+		$('body').on('click', '.btn_tunein', function(event) {
+			playStation($(this).closest('.station').attr('id'));
+		});
+
+		$("[data-role='navbar']").navbar();
+		$("[data-role='header'], [data-role='footer']").toolbar();
+
+		nowplaying_interval = setInterval('verifyNowPlaying()', 30000);
+	}
 });
 
 $(window).on("pagecontainershow", function(event) {
 
-	$('#btn_back').show();
+	if (!is_first_load)
+		$('#btn_back').show();
+
+	is_first_load = false;
 
 	// Force old page to be deleted.
 	$("[data-role='page']:not(.ui-page-active)").remove();
@@ -49,20 +80,8 @@ $(window).on("pagecontainershow", function(event) {
 	});
 
 	// Detect autoplay station.
-	checkAutoPlay();
-
 	checkNowPlaying(true);
 });
-
-function checkAutoPlay()
-{	
-	$('[data-role="page"].ui-page-active').find('.station').each(function() {
-		var autoplay = Boolean($(this).data('autoplay'));
-
-		if (autoplay)
-			playStation($(this).attr('id'));
-	});
-}
 
 // Ensure now-playing is being checked, in spite of any interruptions.
 function verifyNowPlaying()
@@ -139,16 +158,16 @@ function checkNowPlaying(force_update)
 				if (station_info.event)
 				{
 					var event_info = station_info.event;
-					station.find('.nowplaying-onair').show().html('<i class="fa fa-star"></i>&nbsp;On Air: '+event_info.title);
+					station.find('.nowplaying-onair').show().find('.nowplaying-onair-inner').html('<i class="fa fa-star"></i>&nbsp;On Air: '+event_info.title);
 				}
 				else if (station_info.event_upcoming)
 				{
 					var event_info = station_info.event_upcoming;
-					station.find('.nowplaying-onair').show().html('<i class="fa fa-star"></i>&nbsp;In '+event_info.minutes_until+' mins: '+event_info.title);
+					station.find('.nowplaying-onair').show().find('.nowplaying-onair-inner').html('<i class="fa fa-star"></i>&nbsp;In '+event_info.minutes_until+' mins: '+event_info.title);
 				}
 				else
 				{
-					station.find('.nowplaying-onair').empty().hide();
+					station.find('.nowplaying-onair').hide();
 				}
 
 				// Set station history.
@@ -208,39 +227,7 @@ function playStation(id)
 		}
 		else
 		{
-			$("#pvl-jplayer").jPlayer({
-				ready: function (event) {
-					ready = true;
-					startPlayer(stream_url);
-				},
-				pause: function() {
-					$(this).jPlayer("clearMedia");
-				},
-				error: function(event) {
-					var error_details = event.jPlayer.error;
-					console.log('Error: '+error_details.message+' - '+error_details.hint);
-
-					setTimeout(function() {
-						console.log('Retrying playback...');
-						startPlayer(stream_url);
-					}, 200);
-				},
-				volumechange: function(event) {
-					volume = Math.round(event.jPlayer.options.volume * 100);
-				},
-				swfPath: DF_ContentPath+'/jplayer/jplayer.swf',
-				solution: (canPlayMp3()) ? 'html, flash' : 'flash',
-				supplied: 'mp3',
-				preload: 'none',
-				volume: volume,
-				muted: false,
-				backgroundColor: '#000000',
-				cssSelectorAncestor: '#pvl-jplayer-controls',
-				errorAlerts: false,
-				warningAlerts: false
-			});
-
-			$('#player_controls').show();
+			startPlayer(stream_url);
 
 			// Trigger an immediate now-playing check.
 			checkNowPlaying(true);
@@ -258,7 +245,11 @@ function startPlayer(stream_url)
 		mp3: stream_url
 	};
 
+	is_playing = true;
+	$('.btn_tunein').hide();
+
 	$("#pvl-jplayer").jPlayer("setMedia", stream).jPlayer("play");
+	$('#player_controls').show();
 }
 
 function stopAllPlayers()
@@ -273,12 +264,14 @@ function stopAllPlayers()
 
 		try
 		{
-			$('#pvl-jplayer').jPlayer("clearMedia").jPlayer("destroy");
+			$('#pvl-jplayer').jPlayer("clearMedia");
 		}
 		catch(e) {}		
 	}
 
-	$('#pvl-jplayer').empty();
+	is_playing = false;
+	$('.btn_tunein').show();
+
 	$('#player_controls').hide();
 }
 

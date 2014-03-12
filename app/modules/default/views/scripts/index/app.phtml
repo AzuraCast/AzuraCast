@@ -47,20 +47,24 @@ $this->layout()->manual = true;
 	<div class="span6">
 		<h1 class="title">Mobile Apps</h1>
 
-		<h2>TuneIn Radio Mobile</h2>
+		<h2>PVL! Mobile</h2>
 		<div class="well">
 			<div class="buttons">
 				<?=$this->button(array(
 					'type'		=> 'link',
-					'class'		=> 'btn-primary',
+					'class'		=> 'primary btn-tune-in',
 					'icon'		=> 'icon-globe',
-					'href'		=> 'http://tunein.com/mobile/',
-					'target'	=> '_blank',
-					'text'		=> 'TuneIn for iPhone/Android/etc.',
+					'href'		=> 'http://m.pvlive.me',
+					'text'		=> 'PVL! Mobile',
 				)) ?>
 			</div>
 
-			<p>All of Ponyville Live!'s stations are listed inside the TuneIn Radio application. You can install a native version of TuneIn Radio on your iPhone/iPad, Android, Windows Phone, Blackberry or Palm device.</p>
+			<div>
+				<img src="<?=\DF\Url::content('images/mobile1.png') ?>" style="width: 30%;" alt="">
+				<img src="<?=\DF\Url::content('images/mobile2.png') ?>" style="width: 30%;" alt="">
+			</div>
+
+			<p>The new PVL! Mobile web application lets you enjoy awesome pony radio, video stations, podcasts and more, anywhere you go. The mobile site is compatible with all modern smartphones, and can be bookmarked or pinned to your home screen for even easier access.</p>
 		</div>
 
 		<h2><i class="icon-android"></i> Android</h2>
@@ -70,18 +74,13 @@ $this->layout()->manual = true;
 					'type'		=> 'link',
 					'class'		=> 'btn-primary',
 					'icon'		=> 'icon-download',
-					'href'		=> 'http://www.ponyvillelive.com/resources/PonyvilleLive.apk',
+					'href'		=> 'http://ponyvillelive.com/resources/PonyvilleLive.apk',
 					'target'	=> '_blank',
-					'text'		=> 'Download PVL! for Android',
+					'text'		=> 'Download PVL! Mobile for Android (Beta)',
 				)) ?>
 			</div>
-			<div>
-				<img src="<?=\DF\Url::content('images/droid1.png') ?>" style="width: 30%;" alt="">
-				<img src="<?=\DF\Url::content('images/droid2.png') ?>" style="width: 30%;" alt="">
-				<img src="<?=\DF\Url::content('images/droid3.png') ?>" style="width: 30%;" alt="">
-			</div>
-			<p>The Ponyville Live! Android app is now available. From the app, you can listen to any of the stations in the PVL network, and chat along with us in our IRC channels. Click the link below to download the app.</p>
-			<p>A special thank you to NeonPony for helping with the construction of this application.</p>
+
+			<p>Try out the new beta app for PVL! Mobile on your Android smartphone.</p>
 		</div>
 
 		<h2><i class="icon-windows"></i> Windows Phone 8 and Windows 8</h2>

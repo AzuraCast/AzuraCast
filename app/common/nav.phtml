@@ -10,8 +10,10 @@ $podcasts = \Entity\Podcast::fetchArray('name');
 		<a href="<?=$this->route(array('controller' => 'about')) ?>"><i class="icon-info-sign"></i> About</a>
 		<ul class="dropdown-menu">
 			<li><a href="<?=$this->route(array('controller' => 'about')) ?>"><i class="icon-info-sign"></i> About Ponyville Live!</a></li>
+			<li><a href="<?=$this->route(array('action' => 'app')) ?>"><i class="icon-cloud-download"></i> Plugins &amp; Apps</a></li>
 			<li><a href="<?=$this->route(array('controller' => 'events')) ?>"><i class="icon-group"></i> Conventions</a></li>
 			<li><a href="<?=$this->route(array('controller' => 'events', 'action' => 'schedule')) ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
+			<li><a href="http://docs.ponyvillelive.apiary.io/"><i class="icon-cog"></i> PVL Data API</a></li>
 		</ul>
 	</li>
 	

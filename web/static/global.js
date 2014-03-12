@@ -1,6 +1,6 @@
 $(function() {
 
-	$('#btn-tunein').click(function(e) {
+	$('#btn-tune-in').click(function(e) {
 		var href = $(this).attr('href');
 		window.open(href, "pvlplayer", "width=400,height=600,menubar=0,toolbar=0,location=0,status=1");
 

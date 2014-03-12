@@ -5,6 +5,7 @@ use \Entity\Statistic;
 use \Entity\Schedule;
 use \Entity\Station;
 use \Entity\Song;
+use \Entity\Settings;
 
 class NowPlaying
 {
@@ -54,7 +55,7 @@ class NowPlaying
 		$pvl_file_path = self::getFilePath('nowplaying');
 
 		$nowplaying = self::loadNowPlaying();
-		$nowplaying_feed = json_encode($nowplaying);
+		$nowplaying_feed = json_encode($nowplaying, JSON_UNESCAPED_SLASHES);
 		@file_put_contents($pvl_file_path, $nowplaying_feed);
 
 		// Write shorter delimited file.
@@ -200,7 +201,10 @@ class NowPlaying
 
 						list($artist, $track) = explode(' - ', $return['SERVERTITLE'], 2);
 
-						$np['listeners'] = (int)$return['UNIQUELISTENERS'];
+						$np['listeners_unique'] = (int)$song_data['UNIQUELISTENERS'];
+    					$np['listeners_total'] = (int)$song_data['CURRENTLISTENERS'];
+    					$np['listeners'] = self::getListenerCount($np['listeners_unique'], $np['listeners_total']);
+
 						$np['artist'] = $artist;
 						$np['title'] = $track;
 						$np['text'] = $return['SERVERTITLE'];
@@ -274,7 +278,11 @@ class NowPlaying
     					$np['title'] = $title;
     					$np['artist'] = $artist;
     					$np['text'] = $song_data['SONGTITLE'];
-    					$np['listeners'] = (int)$song_data['UNIQUELISTENERS'];
+
+    					$np['listeners_unique'] = (int)$song_data['UNIQUELISTENERS'];
+    					$np['listeners_total'] = (int)$song_data['CURRENTLISTENERS'];
+    					$np['listeners'] = self::getListenerCount($np['listeners_unique'], $np['listeners_total']);
+
     					$np['is_live'] = 'false'; // ($song_data['NEXTTITLE'] != '') ? 'false' : 'true';
     				}
     				else
@@ -294,7 +302,10 @@ class NowPlaying
 
 	    				list($artist, $title) = explode(" - ", $parts[6], 2);
 
-	    				$np['listeners'] = (int)$parts[0];
+	    				$np['listeners_unique'] = (int)$parts[4];
+    					$np['listeners_total'] = (int)$parts[0];
+    					$np['listeners'] = self::getListenerCount($np['listeners_unique'], $np['listeners_total']);
+
 	    				$np['title'] = $title;
 	    				$np['artist'] = $artist;
 	    				$np['text'] = $parts[6];
@@ -488,13 +499,13 @@ class NowPlaying
 		// Pull from current NP data if song details haven't changed.
 		if (strcmp($np['text'], $current_np_data['text']) == 0)
 		{
-			$np['image'] = $current_np_data['image'];
+			// $np['image'] = $current_np_data['image'];
 			$np['song_id'] = $current_np_data['song_id'];
 			$np['song_history'] = $current_np_data['song_history'];
 		}
 		else if (empty($np['text']))
 		{
-			$np['image'] = $np['logo'];
+			// $np['image'] = $np['logo'];
 			$np['song_id'] = NULL;
 			$np['song_history'] = $station->getRecentHistory();
 		}
@@ -505,8 +516,8 @@ class NowPlaying
 				self::notifyStation($station, 'offline');
 
 			// Fetch new NP image in the event of a changed song.
-			$np['image'] = $np['logo'];
-			$station->nowplaying_image = $np['image'];
+			// $np['image'] = $np['logo'];
+			// $station->nowplaying_image = $np['image'];
 
 			// Register a new item in song history.
 			$np['song_history'] = $station->getRecentHistory();
@@ -600,5 +611,18 @@ class NowPlaying
         ));
 
         return true;
+    }
+
+    public static function getListenerCount($unique_listeners = 0, $current_listeners = 0)
+    {
+    	$unique_listeners = (int)$unique_listeners;
+    	$current_listeners = (int)$current_listeners;
+
+    	if ($unique_listeners == 0 || $current_listeners == 0)
+    		return max($unique_listeners, $current_listeners);
+    	else
+    		return min($unique_listeners, $current_listeners);
+
+    	// return round(($unique_listeners + $unique_listeners + $current_listeners) / 3);
     }
 }

@@ -289,6 +289,19 @@ class Station extends \DF\Doctrine\Entity
         return $lookup;
     }
 
+    public static function findByShortCode($short_code)
+    {
+        $short_names = self::getShortNameLookup();
+
+        if (isset($short_names[$short_code]))
+        {
+            $id = $short_names[$short_code]['id'];
+            return self::find($id);
+        }
+
+        return NULL;
+    }
+
     public static function getCategories()
     {
         return array(

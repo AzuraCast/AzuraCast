@@ -263,27 +263,6 @@ for($i = 0; $i <= $num_cols-1; $i++)
 
 <script type="text/javascript">
 $(function() {
-	/*
-<? if (!$this->special_event): ?>
-	$('a').not('.station').not('#btn-tune-in').on('click', function(e) {
-		var url = $(this).attr("href");
-
-		if(url.slice(0, 1) != "#") 
-		{
-			var current_station = $('#tunein_player').data('current_station');
-			if (current_station)
-				playInPopUp('current'); 
-        }
-	});
-<? endif; ?>
-	*/
-
-	/* Web player link */
-	$('#btn-tune-in').click(function(e) {
-		e.preventDefault();
-		playInPopUp('current');
-		return false;
-	});
 
 	$('.btn-play-station').click(function(e) {
 		e.preventDefault();

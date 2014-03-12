@@ -10,7 +10,7 @@ $skin = \PVL\Customization::get('theme');
 	<li class="divider">&nbsp;</li>
 	<li><a href="<?=$this->route(array('controller' => 'account', 'action' => 'theme', 'skin' => 'toggle')) ?>"><i class="icon-adjust"></i> <? if ($skin == 'light'): ?>Dark Theme<? else: ?>Light Theme<? endif; ?></a></li>
 	<li class="divider">&nbsp;</li>
-	<li><a href="<?=$this->route(array('module' => 'default', 'controller' => 'index', 'action' => 'tunein', 'origin' => 'home')) ?>" id="btn-tune-in"><i class="icon-youtube-play"></i> Player</a></li>
+	<li><a href="<?=$this->route(array('module' => 'mobile')) ?>" id="btn-tune-in"><i class="icon-youtube-play"></i> Player</a></li>
 	<li class="divider">&nbsp;</li>
 	<li><a href="<?=$this->route(array('module' => 'default', 'controller' => 'index', 'action' => 'app')) ?>"><i class="icon-cloud-download"></i> Plugins &amp; Apps</a></li>
 	<li class="divider">&nbsp;</li>

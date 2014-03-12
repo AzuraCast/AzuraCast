@@ -60,10 +60,12 @@ echo $this->headLink()."\n";
 echo $this->headScript()."\n";
 ?>
 <script>
+document.domain = 'ponyvillelive.com';
 var DF_ContentPath = '<?php echo \DF\Url::content(); ?>';
+var DF_IsApp = false;
 </script>
 </head>
-<body class="<?=$this->body_class ?>">
+<body>
 <!-- Google Universal Analytics -->
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -76,50 +78,52 @@ ga('send', 'pageview');
 </script>
 <!-- End Google Universal Analytics -->
 
-<!-- Header -->
-<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-	<a id="btn_back" href="#" data-rel="back" class="ui-btn-left ui-alt-icon ui-nodisc-icon ui-btn ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-role="button" role="button">Back</a>
-    <h1><?=$title ?></h1>
-</div>
-
-<!-- Main Body -->
-<div id="page" data-role="page" data-title="<?=$title ?>" class="jqm-demos">
-	<div role="main" class="ui-content jqm-content jqm-fullwidth">
-		<?php echo $this->layout()->content; ?>
-	</div>
-</div>
-
-<!-- Footer Nav -->
-<div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
-	<div id="player_controls" data-role="controlgroup">
-		<a class="ui-corner-all ui-btn ui-btn-left" id="player_pause">Stop</a>
-		<input type="range" class="volume_slider" name="player_volume" id="player_volume" min="0" max="100" value="50" data-role="none" data-highlight="true">
+<div id="webapp">
+	<!-- Header -->
+	<div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
+		<a id="btn_back" href="#" data-rel="back" class="ui-btn-left ui-alt-icon ui-nodisc-icon ui-btn ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-role="button" role="button">Back</a>
+	    <h1><?=$title ?></h1>
 	</div>
 
-	<div data-role="navbar">
-		<ul>
-			<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'radio')) ?>">
-				<span class="icon"><i class="fa fa-music"></i></span>
-				<span class="tab-label">Radio</span>
-			</a></li>
-			<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'video')) ?>">
-				<span class="icon"><i class="fa fa-video-camera"></i></span>
-				<span class="tab-label">Video</span>
-			</a></li>
-			<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'show')) ?>">
-				<span class="icon"><i class="fa fa-rss"></i></span>
-				<span class="tab-label">Shows</span>
-			</a></li>
-			<li><a href="<?=$this->route(array('module' => 'mobile', 'controller' => 'requests')) ?>">
-				<span class="icon"><i class="fa fa-comments"></i></span>
-				<span class="tab-label">Requests</span>
-			</a></li>
-		</ul>
+	<!-- Main Body -->
+	<div id="page" data-role="page" data-title="<?=$title ?>" class="jqm-demos">
+		<div role="main" class="ui-content jqm-content jqm-fullwidth">
+			<?php echo $this->layout()->content; ?>
+		</div>
 	</div>
-</div>
 
-<!-- Radio Player -->
-<div id="pvl-jplayer" style="width: 0; height: 0;"></div>
+	<!-- Footer Nav -->
+	<div data-role="footer" data-position="fixed" data-tap-toggle="false" data-theme="a">
+		<div id="player_controls" data-role="controlgroup">
+			<a class="ui-corner-all ui-btn ui-btn-left" id="player_pause">Stop</a>
+			<input type="range" class="volume_slider" name="player_volume" id="player_volume" min="0" max="100" value="50" data-role="none" data-highlight="true">
+		</div>
+
+		<div data-role="navbar">
+			<ul>
+				<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'radio')) ?>">
+					<span class="icon"><i class="fa fa-music"></i></span>
+					<span class="tab-label">Radio</span>
+				</a></li>
+				<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'video')) ?>">
+					<span class="icon"><i class="fa fa-video-camera"></i></span>
+					<span class="tab-label">Video</span>
+				</a></li>
+				<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'show')) ?>">
+					<span class="icon"><i class="fa fa-rss"></i></span>
+					<span class="tab-label">Shows</span>
+				</a></li>
+				<li><a href="<?=$this->route(array('module' => 'mobile', 'controller' => 'requests')) ?>">
+					<span class="icon"><i class="fa fa-comments"></i></span>
+					<span class="tab-label">Requests</span>
+				</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- Radio Player -->
+	<div id="pvl-jplayer" style="width: 0; height: 0;"></div>
+</div>
 
 </body>
 </html>

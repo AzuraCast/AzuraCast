@@ -8,6 +8,8 @@ class Mobile extends \DF\Controller\Action
     	parent::init();
 
 		\Zend_Layout::getMvcInstance()->setLayout('mobile');
+
+		header("Access-Control-Allow-Origin: *");
 	}
 
 	public function preDispatch()

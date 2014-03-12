@@ -26,6 +26,7 @@ class EventsController extends \DF\Controller\Action
             $event['end_timestamp'] = $event['end_time'];
 
             $special_info = \PVL\ScheduleManager::formatName($event['title']);
+            
             $event['title'] = $special_info['title'];
             $event['city'] = $special_info['city'];
             $event['title_full'] = $special_info['title_full'];

@@ -7,7 +7,7 @@ $this->headTitle('Ponyville Live!');
 </div>
 
 <div id="home_buttons">
-	<a class="ui-btn ui-corner-all" href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'radio')) ?>">
+	<a class="ui-btn ui-corner-all" data-ajax="true" href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'radio')) ?>">
 		<i class="fa fa-music"></i> Radio Stations
 	</a>
 	<a class="ui-btn ui-corner-all" href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'video')) ?>">

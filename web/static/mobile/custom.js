@@ -5,13 +5,17 @@
 var pvl_player;
 
 var is_playing = false;
+var jp_is_playing = false;
 var is_first_load = true;
 var volume = 100;
 
 var nowplaying_data;
 var nowplaying_last_run = 0;
+var nowplaying_url;
 var nowplaying_timeout;
 var nowplaying_interval;
+
+var check_interval;
 
 $(document).on("pageinit", function() {
 	if (is_first_load)
@@ -21,8 +25,28 @@ $(document).on("pageinit", function() {
 		if (!DF_IsApp)
 		{
 			$("#pvl-jplayer").jPlayer({
+				play: function() {
+					jp_is_playing = true;
+
+					// Progress event doesn't fire on iOS.
+					if (isIOS())
+						$.mobile.loading("hide");
+				},
+				progress: function(event) {
+					if (event.jPlayer.status.currentTime > 0)
+						$.mobile.loading("hide");
+				},
+				suspend: function(event) { 
+					console.log('Stream Suspended');
+					jp_is_playing = false;
+				},
+				error: function(event) {
+					var error_details = event.jPlayer.error;
+					console.error(error_details.message+' - '+error_details.hint);
+					jp_is_playing = false;
+				},
 				swfPath: DF_ContentPath+'/jplayer/jplayer.swf',
-				solution: (canPlayMp3()) ? 'html, flash' : 'flash',
+				solution: getPlaybackSolution(),
 				supplied: 'mp3',
 				preload: 'none',
 				volume: (volume / 100),
@@ -32,6 +56,9 @@ $(document).on("pageinit", function() {
 				errorAlerts: false,
 				warningAlerts: false
 			});
+
+			if (isIOS())
+				$('#player_volume').prop('disabled', true);
 		}
 
 		$('#player_controls').hide();
@@ -60,14 +87,17 @@ $(document).on("pageinit", function() {
 });
 
 $(window).on("pagecontainershow", function(event) {
-
-	if (!is_first_load)
-		$('#btn_back').show();
-
 	is_first_load = false;
 
 	// Force old page to be deleted.
 	$("[data-role='page']:not(.ui-page-active)").remove();
+
+	// Add "Home" button.
+	var page_url = $("[data-role='page']").jqmData("url");
+	if (page_url != '/mobile')
+		$('#btn_back').show();
+	else
+		$('#btn_back').hide();
 
 	// Change the heading
 	var current = $('#page').jqmData("title");
@@ -215,7 +245,8 @@ function processNowPlaying()
 		}
 	}
 
-	nowplaying_timeout = setTimeout('checkNowPlaying()', 20000);
+	nowplaying_last_run = getUnixTimestamp();
+	// nowplaying_timeout = setTimeout('checkNowPlaying()', 20000);
 }
 
 function playStation(id)
@@ -243,27 +274,45 @@ function playStation(id)
 		}
 		else
 		{
-			startPlayer(stream_url);
+			nowplaying_url = stream_url;
+
+			if (!DF_IsApp)
+			{
+				$.mobile.loading( "show", {
+		            text: 'Playing Station...',
+		            textVisible: true,
+		            theme: 'b',
+		            textonly: false
+			    });
+			}
+
+			startPlayer();
 
 			// Trigger an immediate now-playing check.
 			checkNowPlaying(true);
 		}
 		
 		// Log in Google Analytics
-		ga('send', 'event', 'Station', 'Play', station.data('name'));
+		try {
+			ga('send', 'event', 'Station', 'Play', station.data('name'));
+		} catch(e) {}
 	}
 }
 
-function startPlayer(stream_url)
+function startPlayer()
 {
 	if (DF_IsApp)
 	{
-		pvl_player = new Media(stream_url, function() {
+		pvl_player = new Media(nowplaying_url, function() {
 			playerSetVolume(volume);
             console.log("playAudio(): Audio Success");
         },
         function(err) {
-            console.log("playAudio(): Audio Error: "+err);
+            console.error("playAudio(): Audio Error");
+            console.error(err);
+    	},
+    	function(status) {
+    		console.log(status);
     	});
 
 		pvl_player.play();
@@ -272,9 +321,12 @@ function startPlayer(stream_url)
 	{
 		var stream = {
 			title: "Ponyville Live!",
-			mp3: stream_url
+			mp3: nowplaying_url
 		};
-		$("#pvl-jplayer").jPlayer("setMedia", stream).jPlayer("play");
+		$("#pvl-jplayer").jPlayer("setMedia", stream);
+		$("#pvl-jplayer").jPlayer("play");
+
+		check_interval = setInterval('checkPlayer()', 1500);
 	}
 
 	is_playing = true;
@@ -284,32 +336,47 @@ function startPlayer(stream_url)
 	$("[data-role='header'], [data-role='footer']").toolbar("updatePagePadding");
 }
 
+function checkPlayer()
+{
+	if (is_playing && !DF_IsApp && !jp_is_playing && !isIOS())
+		startPlayer();
+}
+
 function stopAllPlayers()
 {
-	if (DF_IsApp && typeof pvl_player !== 'undefined')
+	if (is_playing)
 	{
-		pvl_player.stop();
-		pvl_player.release();
-	}
-	else if ($("#pvl-jplayer").length > 0)
-	{
-		try
+		if (DF_IsApp && typeof pvl_player !== 'undefined')
 		{
-			$('#pvl-jplayer').jPlayer('stop');
+			pvl_player.stop();
+			pvl_player.release();
 		}
-		catch(e) {}
+		else if ($("#pvl-jplayer").length > 0)
+		{
+			try
+			{
+				$('#pvl-jplayer').jPlayer('stop');
+			}
+			catch(e) {}
 
-		try
-		{
-			$('#pvl-jplayer').jPlayer("clearMedia");
+			try
+			{
+				$('#pvl-jplayer').jPlayer("clearMedia");
+			}
+			catch(e) {}
 		}
-		catch(e) {}		
 	}
 
 	is_playing = false;
+	if (!DF_IsApp)
+		clearInterval(check_interval);
+
 	$('.btn_tunein').show();
 
 	$('#player_controls').hide();
+	$.mobile.loading("hide");
+
+	nowplaying_url = null;
 }
 
 function playerSetVolume(volume)
@@ -324,12 +391,22 @@ function playerSetVolume(volume)
 	}
 }
 
+function getPlaybackSolution()
+{
+	if (isIOS())
+		return 'html';
+	else if (canPlayMp3())
+		return 'html, flash';
+	else
+		return 'flash';
+}
+
 function canPlayMp3()
 {
-	if (isIE())
-		return false;
+	if (isIOS())
+		return true;
 
-	if (isSteam())
+	if (isIE() || isSteam())
 		return false;
 
 	var a = document.createElement('audio');
@@ -340,6 +417,9 @@ function canPlayMp3()
 function isIE () {
 	var myNav = navigator.userAgent.toLowerCase();
 	return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
+}
+function isIOS() {
+	return navigator.userAgent.match(/(iPod|iPhone|iPad)/i);
 }
 function isSteam() {
 	var myNav = navigator.userAgent.toLowerCase();

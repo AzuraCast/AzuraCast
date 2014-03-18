@@ -193,4 +193,23 @@ class Song extends \DF\Doctrine\Entity
             return $obj;
         }
     }
+
+    // Retrieve the API version of the object/array.
+    public static function api($row)
+    {
+        if ($row instanceof self)
+            $row = $row->toArray();
+
+        return array(
+            'id'        => $row['id'],
+            'text'      => $row['text'],
+            'artist'    => $row['artist'],
+            'title'     => $row['title'],
+            'rating'    => array(
+                'likes'     => $row['rate_likes'],
+                'dislikes'  => $row['rate_dislikes'],
+                'score'     => $row['rate_score'],
+            ),
+        );
+    }
 }

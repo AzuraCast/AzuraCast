@@ -233,6 +233,33 @@ class Export
         }
         return $child;
     }
+
+    public static function ArrayToXml($array)
+    {
+    	$xml_info = new \SimpleXMLElement('<?xml version="1.0"?><return></return>');
+    	self::_arr_to_xml($array, $xml_info);
+
+    	return $xml_info->asXML();
+    }
+
+    protected static function _arr_to_xml($array, &$xml)
+    {
+    	foreach((array)$array as $key => $value)
+    	{
+	        if(is_array($value))
+	        {
+	        	$key = is_numeric($key) ? "item$key" : $key;
+	        	$subnode = $xml->addChild("$key");
+
+	        	self::_arr_to_xml($value, $subnode);
+	        }
+	        else
+	        {
+	        	$key = is_numeric($key) ? "item$key" : $key;
+            	$xml->addChild("$key", htmlspecialchars($value));
+	        }
+	    }
+    }
     
     /**
      * iCal

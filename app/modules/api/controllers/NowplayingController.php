@@ -1,5 +1,6 @@
 <?php
 use \Entity\Station;
+use \Entity\Song;
 
 class Api_NowplayingController extends \PVL\Controller\Action\Api
 {
@@ -11,9 +12,14 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
     		$station = Station::find($id);
 
     		if (!($station instanceof Station))
-    			return $this->returnError('Station not found!');
+            {
+                return $this->returnError('Station not found!');
+            }
     		else
-    			return $this->returnSuccess($station->nowplaying_data);
+            {
+                $np = $this->_processRow($station);
+    			return $this->returnSuccess($np);
+            }
     	}
     	elseif ($this->_hasParam('station'))
     	{
@@ -23,7 +29,9 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
     		if (isset($short_names[$short]))
     		{
     			$data = $short_names[$short];
-    			return $this->returnSuccess($data['nowplaying_data']);
+                $np = $this->_processRow($data);
+
+    			return $this->returnSuccess($np);
     		}
     		else
     		{
@@ -32,17 +40,51 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
     	}
     	else
     	{
-    		$return_raw = $this->em->createQuery('SELECT s.name, s.nowplaying_data FROM Entity\Station s WHERE s.is_active = 1 ORDER BY s.weight ASC')
+    		$return_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.is_active = 1 ORDER BY s.weight ASC')
     			->getArrayResult();
 
     		$np = array();
     		foreach($return_raw as $row)
     		{
-    			$short_name = Station::getStationShortName($row['name']);
-    			$np[$short_name] = $row['nowplaying_data'];
+                $np_row = $this->_processRow($row);
+                $short_name = $np_row['station']['shortcode'];
+
+                $np[$short_name] = $np_row;
     		}
 
     		return $this->returnSuccess($np);
     	}
+    }
+
+    protected function _processRow($row)
+    {
+        $np = array();
+        $np_raw = $row['nowplaying_data'];
+
+        $np['station'] = Station::api($row);
+
+        $np['listeners'] = array(
+            'current'       => $np_raw['listeners'],
+            'unique'        => $np_raw['listeners_unique'],
+            'total'         => $np_raw['listeners_total'],
+        );
+
+        $current_song = array(
+            'id'        => $np_raw['song_id'],
+            'text'      => $np_raw['text'],
+            'artist'    => $np_raw['artist'],
+            'title'     => $np_raw['title'],
+        );
+        $np['current_song'] = Song::api($current_song);
+
+        foreach((array)$np_raw['song_history'] as $song_row)
+        {
+            $np['song_history'][] = array(
+                'played_at' => $song_row['timestamp'],
+                'song'      => Song::api($song_row),
+            );
+        }
+
+        return $np;
     }
 }

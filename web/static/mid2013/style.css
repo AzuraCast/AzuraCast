@@ -617,6 +617,13 @@ html.embedded #maintenance_header {
 	.navbar ul.nav > li > a > i {
 		display: none;
 	}
+
+	.top ul.loginbar > li > a > i {
+		display: none;
+	}
+	.top ul.loginbar li.divider {
+		margin: 0 2px 0 0;
+	}
 }
 
 @media (max-width: 980px) {
@@ -781,12 +788,6 @@ div#copyright {
 
 .well {
 	padding: 10px;
-}
-
-@media (max-width: 767px) {
-	body {
-		background: #EFEFEF url('layout/honey_im_subtle_light.png') top left repeat;
-	}
 }
 
 #page_wrapper {

@@ -51,10 +51,11 @@ div.vertical-padded:nth-child(1) {
  * Homepage
  */
 
+#page.page-mobile {
+	background: url('index.jpg') center center no-repeat;
+	background-size: cover;
+}
 #home_header {
-	background: url('pagebg.jpg') center center no-repeat;
-	background-size: 100% auto;
-
 	text-align: center;
 	padding: 10px 0 0 0;
 	margin: -20px -20px 0 -20px;
@@ -66,23 +67,65 @@ div.vertical-padded:nth-child(1) {
 #home_buttons {
 	margin: 15px 0;
 }
+#home_buttons a {
+	background-color: rgba(51, 51, 51, 0.85);
+}
 
 #home_footer {
 	margin-top: 5px;
-	border-top: 1px solid #CCC;
 	padding-top: 5px;
 
 	text-align: center;
-	color: #999;
+	color: #333;
 	font-size: 12px;
 	line-height: 13px;
+}
+
+/** 
+ * Player Customization
+ */
+
+#player_controls {
+	height: 30px;
 }
 
 input.volume_slider {
     display: none;
 }
-.volume_slider .ui-slider-track {
-    margin-left: 15px;
+#player_controls .ui-slider {
+	position: absolute;
+
+	top: 8px;
+	left: 58px;
+	right: 35px;
+
+	margin: 0;
+}
+#player_controls .ui-slider-track {
+	margin: 0;
+}
+
+#player_pause {
+	left: 4px;
+	top: 7px;
+
+	padding: 7px 10px;
+
+	-moz-border-radius: 50%; 
+    -webkit-border-radius: 50%; 
+    border-radius: 50%;
+}
+#volume_icon_left,
+#volume_icon_right {
+	position: absolute;
+	color: #999;
+	top: 12px;
+}
+#volume_icon_left {
+	left: 43px;
+}
+#volume_icon_right {
+	right: 7px;
 }
 
 /**

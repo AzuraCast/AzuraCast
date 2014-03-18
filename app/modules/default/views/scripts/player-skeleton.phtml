@@ -40,11 +40,15 @@ $this->headLink()
 <script type="text/javascript">
 var volume = <?=$this->volume ?>;
 var nowplaying_song = '';
+var nowplaying_url = '';
 var original_window_title;
 
 var nowplaying_last_run = 0;
 var nowplaying_timeout;
 var nowplaying_interval;
+
+var is_playing;
+var jp_is_playing;
 
 $(function() {
 	original_window_title = document.title;
@@ -335,6 +339,7 @@ function playStation(id)
 
 	var stream_type = station.data('type');
 	var stream_url = station.data('stream');
+	nowplaying_url = stream_url;
 
 	var currently_playing = station.hasClass('playing');
 
@@ -360,19 +365,22 @@ function playStation(id)
 				$("#pvl-jplayer").jPlayer({
 					ready: function (event) {
 						ready = true;
-						startPlayer(stream_url);
+						startPlayer(nowplaying_url);
 					},
 					pause: function() {
 						$(this).jPlayer("clearMedia");
 					},
+					play: function() {
+						jp_is_playing = true;
+					},
+					suspend: function(event) { 
+						console.log('Stream Suspended');
+						jp_is_playing = false;
+					},
 					error: function(event) {
 						var error_details = event.jPlayer.error;
 						console.log('Error: '+error_details.message+' - '+error_details.hint);
-
-						setTimeout(function() {
-							console.log('Retrying playback...');
-							startPlayer(stream_url);
-						}, 200);
+						jp_is_playing = false;
 					},
 					volumechange: function(event) {
 						volume = Math.round(event.jPlayer.options.volume * 100);
@@ -414,19 +422,31 @@ function playStation(id)
 	}
 }
 
-function startPlayer(stream_url)
+var check_interval;
+
+function startPlayer()
 {
 	var stream = {
 		title: "Ponyville Live!",
-		mp3: stream_url
+		mp3: nowplaying_url
 	};
 
 	$("#pvl-jplayer").jPlayer("setMedia", stream).jPlayer("play");
+
+	is_playing = true;
+	check_interval = setInterval('checkPlayer()', 1500);
+}
+
+
+function checkPlayer()
+{
+	if (is_playing && !jp_is_playing)
+		startPlayer();
 }
 
 function stopAllPlayers()
 {
-	if ($("#pvl-jplayer").length > 0)
+	if ($("#pvl-jplayer").length > 0 && is_playing)
 	{
 		try
 		{
@@ -440,6 +460,9 @@ function stopAllPlayers()
 		}
 		catch(e) {}		
 	}
+
+	clearInterval(check_interval);
+	is_playing = false;
 
 	$('.station .station-player-container').empty();
 

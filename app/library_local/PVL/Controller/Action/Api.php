@@ -16,7 +16,6 @@ class Api extends \DF\Controller\Action
 		$this->doNotRender();
 
 		// Allow AJAX retrieval.
-		header('Content-Type: application/json');
 		header('Access-Control-Allow-Origin: *');
 
 		// Log request.
@@ -39,7 +38,7 @@ class Api extends \DF\Controller\Action
 
 	public function returnSuccess($data)
 	{
-		$this->returnJson(array(
+		$this->returnToScreen(array(
 			'status' 	=> 'success',
 			'result'	=> $data,
 		));
@@ -47,17 +46,29 @@ class Api extends \DF\Controller\Action
 
 	public function returnError($message)
 	{
-		$this->returnJson(array(
+		$this->returnToScreen(array(
 			'status' 	=> 'error',
 			'error'		=> $message,
 		));
 	}
 
-	public function returnJson($obj)
+	public function returnToScreen($obj)
 	{
-		echo json_encode($obj, JSON_UNESCAPED_SLASHES);
+		$format = strtolower($this->_getParam('format', 'json'));
+
+		switch($format)
+		{
+			case "xml":
+				header('Content-Type: text/xml');
+				echo \DF\Export::ArrayToXml($obj);
+			break;
+
+			case "json":
+			default:
+				header('Content-Type: application/json');
+				echo json_encode($obj, JSON_UNESCAPED_SLASHES);
+			break;
+		}
 	}
-
-
 
 }

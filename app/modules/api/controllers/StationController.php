@@ -18,7 +18,7 @@ class Api_StationController extends \PVL\Controller\Action\Api
 		if (!($record instanceof Station) || $record->deleted_at)
 			return $this->returnError('Station not found.');
 
-		return $this->returnSuccess($this->_processStation($record));
+		return $this->returnSuccess(Station::api($record));
 	}
 
 	public function listAction()
@@ -41,29 +41,8 @@ class Api_StationController extends \PVL\Controller\Action\Api
 
 		$stations = array();
 		foreach($stations_raw as $row)
-			$stations[] = $this->_processStation($row);
+			$stations[] = Station::api($row);
 
 		return $this->returnSuccess($stations);
-	}
-
-	protected function _processStation($row)
-	{
-		if ($row instanceof Station)
-			$row = $row->toArray();
-
-		return array(
-			'id'		=> (int)$row['id'],
-			'name'		=> $row['name'],
-			'shortcode'	=> Station::getStationShortName($row['name']),
-			'genre'		=> $row['genre'],
-			'category'	=> $row['category'],
-			'type'		=> $row['type'],
-			'image_url'	=> \DF\Url::content($row['image_url']),
-			'web_url'	=> $row['web_url'],
-			'stream_url' => $row['stream_url'],
-			'twitter_url' => $row['twitter_url'],
-			'irc'		=> $row['irc'],
-		);
-
 	}
 }

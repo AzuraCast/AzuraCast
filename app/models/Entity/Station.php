@@ -357,4 +357,25 @@ class Station extends \DF\Doctrine\Entity
         $manager_positions = StationManager::getRepository()->findBy(array('email' => strtolower($user->email)));
         return (count($manager_positions) > 0);
     }
+
+    // Retrieve the API version of the object/array.
+    public static function api($row)
+    {
+        if ($row instanceof self)
+            $row = $row->toArray();
+
+        return array(
+            'id'        => (int)$row['id'],
+            'name'      => $row['name'],
+            'shortcode' => self::getStationShortName($row['name']),
+            'genre'     => $row['genre'],
+            'category'  => $row['category'],
+            'type'      => $row['type'],
+            'image_url' => \DF\Url::content($row['image_url']),
+            'web_url'   => $row['web_url'],
+            'stream_url' => $row['stream_url'],
+            'twitter_url' => $row['twitter_url'],
+            'irc'       => $row['irc'],
+        );
+    }
 }

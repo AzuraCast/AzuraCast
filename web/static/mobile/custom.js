@@ -5,7 +5,10 @@
 var pvl_player;
 
 var is_playing = false;
+
 var jp_is_playing = false;
+
+
 var is_first_load = true;
 var volume = 100;
 
@@ -339,7 +342,10 @@ function startPlayer()
 function checkPlayer()
 {
 	if (is_playing && !DF_IsApp && !jp_is_playing && !isIOS())
+	{
+		clearInterval(check_interval);
 		startPlayer();
+	}
 }
 
 function stopAllPlayers()

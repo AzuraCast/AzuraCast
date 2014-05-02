@@ -178,8 +178,6 @@ class ScheduleManager
 
 	    	$new_guids = array_keys($station_records);
 
-
-
 	    	$guids_to_delete = array_diff($existing_guids, $new_guids);
 
 	    	if ($guids_to_delete)
@@ -223,7 +221,7 @@ class ScheduleManager
 		curl_setopt($curl, CURLOPT_TIMEOUT, 10); 
 		curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2');  
 
-		$return_raw = curl_exec($curl);
+		$return_raw = \PVL\Utilities::curl_exec_utf8($curl);
 		// End cURL request.
 
 		\PVL\Debug::endTimer('Request URL '.$name);
@@ -240,9 +238,10 @@ class ScheduleManager
 		list($title, $city) = explode('-', $name);
 
 		$special_codes = array(
-            '@' => array('icon' => 'icon-star', 'text' => 'PVL Special Event'),
-            '*' => array('icon' => 'icon-group', 'text' => 'PVL Convention Coverage'),
-            '+' => array('icon' => 'icon-group', 'text' => 'PVL Convention Attendance'),
+            '@' => array('icon' => 'icon-calendar', 'text' => 'PVL Special Event'),
+            '*' => array('icon' => 'icon-star', 'text' => 'Full PVL Coverage'),
+            '+' => array('icon' => 'icon-star-half-full', 'text' => 'Partial PVL Coverage'),
+            '!' => array('icon' => 'icon-group', 'text' => 'No PVL Coverage'),
         );
 
 		$return = array(

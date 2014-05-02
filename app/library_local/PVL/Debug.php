@@ -48,12 +48,18 @@ class Debug
 		return self::$debug_log;
 	}
 
-	static function printLog()
+	static function printLog($preformatted = true)
 	{
+		if ($preformatted)
+			echo '<pre>';
+
 		foreach(self::$debug_log as $log_row)
 		{
 			echo $log_row."\n";
 		}
+
+		if ($preformatted)
+			echo '</pre>';
 	}
 
 	// Timers

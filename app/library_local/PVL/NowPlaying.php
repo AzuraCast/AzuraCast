@@ -83,29 +83,6 @@ class NowPlaying
 		// Post statistics to official record.
 		Statistic::post($nowplaying);
 
-		/*
-		// Generate CR now playing file.
-		$cr_file_path = self::getFilePath('cr');
-
-		$nowplaying['cr'] = self::processStation(array(
-			'id'		=> 0,
-			'category'	=> 'audio',
-			'type'		=> 'centovacast',
-			'code'		=> 'CR',
-			'name'		=> 'Celestia Radio',
-			'acronym'	=> 'CR',
-			'genre'		=> '"All pony, all the time!"',
-			'image_url'	=> 'stations/cr.png',
-			'web_url'	=> 'http://www.ponify.me/',
-			'stream_url' => 'http://molestia.ponify.me:8062/stream',
-			'nowplaying_url' => 'http://ponify.me/stats.php',
-		));
-		$nowplaying['cr']['player_url'] = 'http://ponify.me/player.html';
-
-		$nowplaying_feed = json_encode($nowplaying);
-		@file_put_contents($cr_file_path, $nowplaying_feed);
-		*/
-
 		return $pvl_file_path;
 	}
 
@@ -122,15 +99,18 @@ class NowPlaying
     	foreach($stations as $station_info)
     	{
     		$station = Station::find($station_info['id']);
+
+    		\PVL\Debug::log('Station "'.$station->name.'" processing starting.');
     		
     		$start_time = time();
 
     		$np = self::processStation($station);
-    		// self::getNowPlayingImage($np, $station);
 
     		$end_time = time();
     		$time_taken = $end_time - $start_time;
-    		echo "\n".'Station "'.$station->name.'" processed in '.$time_taken.' seconds.';
+
+    		\PVL\Debug::log('Station "'.$station->name.'" processed in '.$time_taken.' seconds.');
+    		\PVL\Debug::log('---');
 
     		$name = $station->short_name;
     		$nowplaying[$name] = $np;
@@ -142,7 +122,8 @@ class NowPlaying
 
     	$overall_end = time();
     	$overall_total = $overall_end - $overall_start;
-    	echo "\nNow Playing finished in ".$overall_total." seconds.";
+    	
+    	\PVL\Debug::log("Now Playing finished in ".$overall_total." seconds.");
 
     	return $nowplaying;
 	}
@@ -190,306 +171,25 @@ class NowPlaying
 		{
 			$url = $station->nowplaying_url;
 
-			switch($station->type)
-    		{
-    			case "centovacast":
-					$return_raw = self::requestExternalUrl($url);
+			$custom_class = Station::getStationClassName($station->name);
+			$custom_adapter = '\\PVL\\NowPlayingAdapter\\'.$custom_class;
 
-					if ($return_raw)
-					{
-						$return = @json_decode($return_raw, TRUE);
+			if (class_exists($custom_adapter))
+				$np_adapter = new $custom_adapter($station);
+			elseif ($station->type == "centovacast")
+				$np_adapter = new \PVL\NowPlayingAdapter\CentovaCast($station);
+			elseif ($station->type == "icecast")
+				$np_adapter = new \PVL\NowPlayingAdapter\IceCast($station);
+			elseif ($station->type == "shoutcast2")
+				$np_adapter = new \PVL\NowPlayingAdapter\ShoutCast2($station);
+			elseif ($station->type == "shoutcast1")
+				$np_adapter = new \PVL\NowPlayingAdapter\ShoutCast1($station);
+			elseif ($station->type == "stream")
+				$np_adapter = new \PVL\NowPlayingAdapter\Stream($station);
 
-						list($artist, $track) = explode(' - ', $return['SERVERTITLE'], 2);
+			\PVL\Debug::log('Adapter Class: '.get_class($np_adapter));
 
-						$np['listeners_unique'] = (int)$song_data['UNIQUELISTENERS'];
-    					$np['listeners_total'] = (int)$song_data['CURRENTLISTENERS'];
-    					$np['listeners'] = self::getListenerCount($np['listeners_unique'], $np['listeners_total']);
-
-						$np['artist'] = $artist;
-						$np['title'] = $track;
-						$np['text'] = $return['SERVERTITLE'];
-					}
-    			break;
-
-    			case "icecast":
-    				$return_raw = self::requestExternalUrl($url);
-
-    				if (!$return_raw)
-    				{
-    					$np['text'] = 'Stream Offline';
-    					$np['is_live'] = 'false';
-    				}
-    				else if (substr($return_raw, 0, 1) == '{')
-    				{
-    					$return = json_decode($return_raw, true);
-
-    					$np['listeners'] = (int)$return['listeners'];
-    					$np['artist'] = $return['now_playing']['artist'];
-
-    					if ($return['now_playing']['track'])
-    						$np['title'] = $return['now_playing']['track'];
-    					else
-    						$np['title'] = $return['now_playing']['song'];
-
-    					$np['text'] = $return['title'];
-    					$np['is_live'] = ($return['mount'] != '/autodj');
-    				}
-    				else
-    				{
-    					$temp_array = array();
-						$search_for = "<td\s[^>]*class=\"streamdata\">(.*)<\/td>";
-						$search_td = array('<td class="streamdata">','</td>');
-
-						if(preg_match_all("/$search_for/siU", $return_raw, $matches)) 
-						{
-							foreach($matches[0] as $match) 
-							{
-								$to_push = str_replace($search_td,'',$match);
-								$to_push = trim($to_push);
-								array_push($temp_array,$to_push);
-							}
-						}
-
-						// In the case of multiple streams, always use the last stream.
-						$temp_array = array_slice($temp_array, -10);
-
-						list($artist, $track) = explode(" - ",$temp_array[9], 2);
-
-						$np['listeners'] = (int)$temp_array[5];
-						$np['artist'] = $artist;
-						$np['title'] = $track;
-						$np['text'] = $temp_array[9];
-						$np['is_live'] = 'false';
-    				}
-    			break;
-
-    			case "shoutcast2":
-    				$return_raw = self::requestExternalUrl($url);
-
-    				if ($return_raw)
-    				{
-    					$current_data = \DF\Export::XmlToArray($return_raw);
-    					$song_data = $current_data['SHOUTCASTSERVER'];
-
-    					$title_parts = explode('-', str_replace('   ', ' - ', $song_data['SONGTITLE']), 2);
-    					$artist = trim(array_shift($title_parts));
-    					$title = trim(implode('-', $title_parts));
-
-    					$np['title'] = $title;
-    					$np['artist'] = $artist;
-    					$np['text'] = $song_data['SONGTITLE'];
-
-    					$np['listeners_unique'] = (int)$song_data['UNIQUELISTENERS'];
-    					$np['listeners_total'] = (int)$song_data['CURRENTLISTENERS'];
-    					$np['listeners'] = self::getListenerCount($np['listeners_unique'], $np['listeners_total']);
-
-    					$np['is_live'] = 'false'; // ($song_data['NEXTTITLE'] != '') ? 'false' : 'true';
-    				}
-    				else
-    				{
-    					$np['text'] = 'Stream Offline';
-    					$np['is_live'] = 'false';
-    				}
-    			break;
-
-    			case "shoutcast1":
-    				$return_raw = self::requestExternalUrl($url);
-
-					if ($return_raw)
-					{
-	    				preg_match("/<body.*>(.*)<\/body>/smU", $return_raw, $return);
-	    				$parts = explode(",", $return[1], 7);
-
-	    				list($artist, $title) = explode(" - ", $parts[6], 2);
-
-	    				$np['listeners_unique'] = (int)$parts[4];
-    					$np['listeners_total'] = (int)$parts[0];
-    					$np['listeners'] = self::getListenerCount($np['listeners_unique'], $np['listeners_total']);
-
-	    				$np['title'] = $title;
-	    				$np['artist'] = $artist;
-	    				$np['text'] = $parts[6];
-	    			}
-	    			else
-	    			{
-	    				$np['text'] = 'Stream Offline';
-    					$np['is_live'] = 'false';
-	    			}
-    			break;
-
-    			case "stream":
-    			case "video":
-    			case "swf":
-    			case "iframe":
-    			case "link":
-    				if (stristr($url, 'livestream') !== FALSE)
-    				{
-    					$xml = self::requestExternalUrl($url, 30);
-
-    					if ($xml)
-    					{
-    						$stream_data = \DF\Export::XmlToArray($xml);
-    					}
-
-    					if ($stream_data)
-    					{
-    						$np['listeners'] = (int)$stream_data['channel']['ls:currentViewerCount'];
-
-    						if ($stream_data['channel']['ls:isLive'] && $stream_data['channel']['ls:isLive'] == 'true')
-    						{
-    							$np['is_live'] = 'true';
-    							$np['text'] = 'Stream Online';
-    						}
-    						else
-    						{
-    							$np['is_live'] = 'false';
-    							$np['text'] = 'Stream Offline';
-    						}
-    					}
-    				}
-    				else if (stristr($url, 'twitch.tv') !== FALSE)
-    				{
-    					$return_raw = self::requestExternalUrl($url);
-
-    					$is_live = false;
-    					if ($return_raw)
-    					{
-    						$return = json_decode($return_raw, true);
-    						$stream = $return['stream'];
-
-    						if ($stream)
-    						{
-    							$is_live = true;
-	    						$np['title'] = $stream['game'];
-		    					$np['artist'] = 'Stream Online';
-		    					$np['text'] = 'Stream Online';
-		    					$np['listeners'] = (int)$stream['viewers'];
-		    					$np['is_live'] = 'true';
-		    				}
-    					}
-
-    					if (!$is_live)
-						{
-							$np['text'] = 'Stream Offline';
-							$np['is_live'] = 'false';
-						}
-    				}
-    				else if (stristr($url, 'justin.tv') !== FALSE)
-    				{
-    					$return_raw = self::requestExternalUrl($url);
-
-    					$is_live = false;
-    					if ($return_raw)
-    					{
-    						$return = json_decode($return_raw, true);
-    						$stream = $return[0];
-
-    						if ($stream)
-    						{
-    							$is_live = true;
-	    						$np['title'] = $stream['title'];
-		    					$np['artist'] = 'Stream Online';
-		    					$np['text'] = 'Stream Online';
-		    					$np['listeners'] = (int)$stream['stream_count'];
-		    					$np['is_live'] = 'true';
-		    				}
-    					}
-
-    					if (!$is_live)
-						{
-							$np['text'] = 'Stream Offline';
-							$np['is_live'] = 'false';
-						}
-    				}
-    				else if (stristr($url, 'bronytv') !== FALSE)
-    				{
-    					$return_raw = self::requestExternalUrl($url);
-
-	    				if ($return_raw)
-	    				{
-	    					$return = @json_decode($return_raw, TRUE);
-	    					$return = $return[0];
-
-	    					$np['listeners'] = (int)$return['Total_Viewers'];
-
-	    					if ($return['Stream_Status'] == 'Stream is offline')
-	    					{
-	    						$np['text'] = 'Stream Offline';
-	    						$np['is_live'] = 'false';
-	    					}
-	    					else
-	    					{
-	    						$parts = explode("-", str_replace('|', '-', $return['Stream_Status']), 2);
-	    						$parts = array_map(function($x) { return trim($x); }, (array)$parts);
-
-	    						$np['artist'] = $parts[0];
-	    						$np['title'] = $parts[1];
-	    						$np['text'] = implode(' - ', $parts);
-	    						$np['is_live'] = 'true';
-	    					}
-						}
-						else
-						{
-							$np['artist'] = 'Offline';
-							$np['title'] = 'Offline';
-							$np['text'] = 'Stream Offline';
-							$np['is_live'] = 'false';
-						}
-
-    					/*
-    					$ustream_api = 'http://api.ustream.tv/json/stream/all/search/title:like:btvstream?key=1AF9EEB115A063B2E7B70009C1BC52AF';
-    					$ustream_results = self::requestExternalUrl($ustream_api);
-
-    					if ($ustream_results)
-    					{
-    						$ustream = json_decode($ustream_results, TRUE);
-    						$listeners = (int)$ustream['results'][0]['currentNumberOfViewers'];
-    					}
-    					else
-    					{
-    						$listeners = 0;
-    					}
-
-    					// Regular playback list
-    					$return_raw = self::requestExternalUrl($url);
-
-	    				if ($return_raw)
-	    				{
-	    					$parts = explode("-", str_replace('|', '-', $return_raw), 2);
-	    					$parts = array_map(function($x) { return trim($x); }, (array)$parts);
-
-	    					if (substr($return_raw, 0, 1) == '<' || $parts[0] == "Stream is offline")
-	    					{
-	    						$np['text'] = 'Stream Offline';
-	    						$np['is_live'] = 'false';
-	    					}
-	    					else
-	    					{
-	    						$np['artist'] = $parts[0];
-	    						$np['title'] = $parts[1];
-	    						$np['text'] = implode(' - ', $parts);
-	    						$np['is_live'] = 'true';
-	    						$np['listeners'] = $listeners;
-	    					}
-						}
-						else
-						{
-							$np['artist'] = 'Offline';
-							$np['title'] = 'Offline';
-							$np['text'] = 'Stream is Offline';
-							$np['is_live'] = 'false';
-						}
-						*/
-    				}
-
-    				if (!$np['text'])
-    					$np['text'] = 'Click to Launch Player';
-    			break;
-
-    			default:
-    				$np['text'] = 'No stream details currently available.';
-    			break;
-    		}
+			$np_adapter->process($np);
 		}
 		else
 		{
@@ -541,46 +241,6 @@ class NowPlaying
 		return $np;
 	}
 
-	public static function requestExternalUrl($url, $cache_time = 0)
-	{
-		$cache_name = 'nowplaying_url_'.substr(md5($url), 0, 10);
-		if ($cache_time > 0)
-		{
-			$return_raw = \DF\Cache::load($cache_name);
-			if ($return_raw)
-				return $return_raw;
-		}
-
-		$curl_start = time();
-
-		// Start cURL request.
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $url);  
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
-		curl_setopt($curl, CURLOPT_TIMEOUT, 10); 
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2');  
-
-		$return_raw = curl_exec($curl);
-		// End cURL request.
-
-		$curl_end = time();
-		$curl_time = $curl_end - $curl_start;
-
-		echo "\nCurl processed in ".$curl_time." second(s).";
-
-		$error = curl_error($curl);
-		if ($error)
-			echo "\nCurl Error:".$error;
-
-		if ($cache_time > 0)
-		{
-			\DF\Cache::save($return_raw, $cache_name, array(), $cache_time);
-		}
-		
-		return $return_raw;
-	}
-
 	public static function getNowPlayingImage($np, $station)
     {
     	return \DF\Url::content($station['image_url']);
@@ -613,16 +273,4 @@ class NowPlaying
         return true;
     }
 
-    public static function getListenerCount($unique_listeners = 0, $current_listeners = 0)
-    {
-    	$unique_listeners = (int)$unique_listeners;
-    	$current_listeners = (int)$current_listeners;
-
-    	if ($unique_listeners == 0 || $current_listeners == 0)
-    		return max($unique_listeners, $current_listeners);
-    	else
-    		return min($unique_listeners, $current_listeners);
-
-    	// return round(($unique_listeners + $unique_listeners + $current_listeners) / 3);
-    }
 }

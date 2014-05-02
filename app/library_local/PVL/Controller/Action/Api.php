@@ -59,13 +59,13 @@ class Api extends \DF\Controller\Action
 		switch($format)
 		{
 			case "xml":
-				header('Content-Type: text/xml');
+				header('Content-Type: text/xml; charset=utf-8');
 				echo \DF\Export::ArrayToXml($obj);
 			break;
 
 			case "json":
 			default:
-				header('Content-Type: application/json');
+				header('Content-Type: application/json; charset=utf-8');
 				echo json_encode($obj, JSON_UNESCAPED_SLASHES);
 			break;
 		}

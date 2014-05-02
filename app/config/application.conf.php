@@ -93,6 +93,9 @@ $config = array(
                 'dbname'        => 'pvladmin_app',
                 'user'          => 'pvladmin_app',
                 'password'      => 'PvlWebDatabase2013!',
+                'driverOptions' => array(
+                	1002	=> 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
+                ),
 			),
 		),
 				

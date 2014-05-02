@@ -4,6 +4,7 @@ namespace PVL;
 use \Entity\Station;
 use \Entity\StationMedia;
 use \Entity\StationRequest;
+use \Entity\Song;
 
 class CentovaCast
 {
@@ -210,14 +211,16 @@ class CentovaCast
 			foreach($existing_ids_raw as $row)
 				$existing_records[$row['id']] = $row;
 
-			// Locate all new items.
-			$new_records_raw = $db->fetchAll('SELECT t.id, t.title, t.length, tal.name AS album_name, tar.name AS artist_name 
-				FROM tracks AS t 
+			// Find all tracks in active playlists.
+			$new_records_raw = $db->fetchAll('SELECT DISTINCT t.id, t.title, t.length, tal.name AS album_name, tar.name AS artist_name 
+				FROM playlists AS p 
+				RIGHT JOIN playlist_tracks AS pt ON pt.playlistid = p.id 
+				INNER JOIN tracks AS t ON pt.trackid = t.id 
 				INNER JOIN track_albums AS tal ON t.albumid = tal.id 
 				INNER JOIN track_artists AS tar ON t.artistid = tar.id 
-				WHERE t.accountid = ?', array($account_id));
+				WHERE p.accountid = ? AND p.status = ?', array($account_id, 'enabled'));
 
-			$new_records = array();
+			$records_by_hash = array();
 			foreach($new_records_raw as $track_info)
 			{
 				if ($track_info['length'] < 60)
@@ -230,6 +233,18 @@ class CentovaCast
 					'album'		=> $track_info['album_name'],
 					'length'	=> $track_info['length'],
 				);
+
+				$song_hash = Song::getSongHash(array(
+					'text'		=> $row['artist'].' - '.$row['title'],
+					'artist'	=> $row['artist'],
+					'title'		=> $row['title'],
+				));
+				$records_by_hash[$song_hash] = $row;
+			}
+
+			$new_records = array();
+			foreach($records_by_hash as $row)
+			{
 				$new_records[$row['id']] = $row;
 			}
 

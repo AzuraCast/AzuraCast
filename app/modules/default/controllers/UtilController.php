@@ -12,9 +12,66 @@ class UtilController extends \DF\Controller\Action
 	public function testAction()
 	{
 		$this->doNotRender();
+        error_reporting(E_ALL & !E_NOTICE);
 
-        error_reporting(E_ALL & ~E_NOTICE);
-        ini_set('display_errors', 1);
+        echo '<pre>';
+
+        \PVL\NowPlaying::generate();
+
+        echo '</pre>';
+
+        \PVL\Debug::printLog();
+        echo 'Done';
+
+        exit;
+
+        $return_raw = trim(\PVL\NowPlaying::requestExternalUrl('http://audio.celestiaradio.com:8062/'));
+
+        $temp_array = array();
+        $search_for = "<td\s[^>]*class=\"streamdata\">(.*)<\/td>";
+        $search_td = array('<td class="streamdata">','</td>');
+
+        if(preg_match_all("/$search_for/siU", $return_raw, $matches)) 
+        {
+            foreach($matches[0] as $match) 
+            {
+                $to_push = str_replace($search_td,'',$match);
+                $to_push = trim($to_push);
+                array_push($temp_array,$to_push);
+            }
+        }
+
+        \DF\Utilities::print_r($temp_array);
+
+        exit;
+
+        $base_url = 'https://www.google.com/calendar/feeds/djbronyradio%40gmail.com/public/basic';
+
+        header('Content-Type: text/html; charset=utf-8');
+
+        $start_time = date(\DateTime::RFC3339, strtotime('-1 week'));
+        $end_time = date(\DateTime::RFC3339, strtotime('+1 year'));
+        $http_params = array(
+            'alt'           => 'json',
+            'recurrence-expansion-start' => $start_time,
+            'recurrence-expansion-end' => $end_time,
+            'start-min'     => $start_time,
+            'start-max'     => $end_time,
+            'max-results'   => 200,
+            'singleevents'  => 'true',
+            'orderby'       => 'starttime',
+            'sortorder'     => 'ascending',
+            'ctz'           => date_default_timezone_get(),
+        );
+
+        $http_url = str_replace('/basic', '/full', $base_url).'?'.http_build_query($http_params);
+        $calendar_raw = \PVL\ScheduleManager::requestExternalUrl($http_url, 'Test');
+        
+        $calendar_array = json_decode($calendar_raw, true);
+
+        \DF\Utilities::print_r($calendar_array);
+
+        exit;
 
         $db = \PVL\CentovaCast::getDatabase();
         $settings = \PVL\CentovaCast::getSettings();

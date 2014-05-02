@@ -250,6 +250,14 @@ class Station extends \DF\Doctrine\Entity
         return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', $name)));
     }
 
+    public static function getStationClassName($name)
+    {
+        $name = preg_replace("/[^A-Za-z0-9_ ]/", '', $name);
+        $name = str_replace('_', ' ', $name);
+        $name = str_replace(' ', '', $name);
+        return $name;
+    }
+
     public static function fetchAll()
     {
         $em = self::getEntityManager();

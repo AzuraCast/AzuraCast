@@ -1,182 +1,29 @@
 <?php
-header("Content-type: text/html; charset=utf-8");
-echo $this->doctype();
-
-$skin = \PVL\Customization::get('theme');
+$this->placeholder('content_top')->captureStart();
 ?>
-<html class="full_layout theme_<?=$skin ?> mlpma">
-<head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true">
+<div id="secondary_header_stripe">
+	<a href="<?=$this->route(array('module' => 'mlpma')) ?>" class="ajax"><img src="<?=\DF\Url::content('mlpma/mlpma_logo.png') ?>" alt="The MLP Music Archive, a Ponyville Live! Project"></a>
+</div>
+<?
+$this->placeholder('content_top')->captureEnd();
 
-<meta name="viewport" content="initial-scale=1.0">
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+$this->custom_styles = array(
+	\DF\Url::content('mlpma/style.css'),
+	\DF\Url::content('fap/css/jquery.fullwidthAudioPlayer.css'),
+	\DF\Url::content('fap/css/jquery.fullwidthAudioPlayer-responsive.css'),
+);
 
-<meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, MLP, MLP:FiM" />
-<meta name="description" content="Equestria's newest Brony multimedia network, featuring 24/7 pony radio, videos, podcasts, convention coverage, and more." />
-<link rel="canonical" href="http://www.ponyvillelive.com" />
+$this->custom_scripts = array(
+	\DF\Url::content('mlpma/jquery.scrollto.min.js'),
+	\DF\Url::content('mlpma/jquery.history.min.js'),
+	\DF\Url::content('mlpma/jquery.ajaxify.js'),
+	\DF\Url::content('fap/js/jquery-ui.js'),
+	\DF\Url::content('fap/js/soundmanager2-nodebug-jsmin.js'),
+	'//connect.soundcloud.com/sdk.js',
+	\DF\Url::content('fap/js/jquery.fullwidthAudioPlayer.js'),
+	\DF\Url::content('fap/js/amplify.min.js'),
+	\DF\Url::content('mlpma/custom.js'),
+);
 
-<!-- iPhone/iPhone Retina -->
-<link rel="apple-touch-icon-precomposed" sizes="57x57" href="<?=\DF\Url::content('ios/touch_icon_iphone.png') ?>" />
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?=\DF\Url::content('ios/touch_icon_iphone.png') ?>" />
-<!-- iPad/iPad Retina -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?=\DF\Url::content('ios/touch_icon_ipad.png') ?>" />
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?=\DF\Url::content('ios/touch_icon_ipad.png') ?>" />
-
-<!-- Facebook and Other Social Sites -->
-<link rel="image_src" href="<?=\DF\Url::content('pvl_square.png') ?>" />
-
-<?php
-$title_items = $this->headTitle()->getIterator();
-$title = current($title_items);
-
-if (!$this->layout()->subtitle && $this->layout()->show_subtitle)
-    $this->layout()->subtitle = next($title_items);
-
-$this->headTitle($this->config->application->name);
-
-if (count($title_items) == 1)
-{
-	$this->headTitle()->append('Bringing Pony People Together');
-	$this->headTitle()->append('24/7 Pony Radio, Video, Podcasts, Convention Coverage & More');
-}
-
-if (DF_APPLICATION_ENV != "production")
-	$this->headTitle()->prepend('('.ucfirst(DF_APPLICATION_ENV).')');
-
-echo $this->headTitle()->setSeparator(" - ")->toString();
-
-$this->headLink()
-	->appendStylesheet('//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css', 'all')
-	->appendStylesheet('//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css', 'all')
-	->appendStylesheet(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.css'), 'all')
-	->appendStylesheet(\DF\Url::content('common/bootstrap2_r2/df-ui-printable.css'), 'print')
-	->appendStylesheet('//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen')
-	->appendStylesheet(\DF\Url::content('mid2013/style.css'), 'all')
-	->appendStylesheet(\DF\Url::content('mid2013/skin_'.$skin.'.css'))
-	->appendStylesheet(\DF\Url::content('mlpma/style.css'))
-	->appendStylesheet(\DF\Url::content('fap/css/jquery.fullwidthAudioPlayer.css'), 'all')
-	->appendStylesheet(\DF\Url::content('fap/css/jquery.fullwidthAudioPlayer-responsive.css'), 'all');
-
-$this->headScript()
-	->prependFile(\DF\Url::cdn('jquery', '1.10.1'))
-	->appendFile(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.pack.js'))
-	->appendFile(\DF\Url::content('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js'))
-	->appendFile(\DF\Url::content('common/bootstrap2_r2/layout.js'))
-	->appendFile(\DF\Url::content('swfobject.js'))
-	->appendFile(\DF\Url::content('global.js'))
-	->appendFile(\DF\Url::content('mlpma/jquery.scrollto.min.js'))
-	->appendFile(\DF\Url::content('mlpma/jquery.history.min.js'))
-	->appendFile(\DF\Url::content('mlpma/jquery.ajaxify.js'))
-	->appendFile(\DF\Url::content('fap/js/jquery-ui.js'))
-	->appendFile(\DF\Url::content('fap/js/soundmanager2-nodebug-jsmin.js'))
-	->appendFile('//connect.soundcloud.com/sdk.js')
-	->appendFile(\DF\Url::content('fap/js/jquery.fullwidthAudioPlayer.js'))
-	->appendFile(\DF\Url::content('fap/js/amplify.min.js'))
-	->appendFile(\DF\Url::content('mlpma/custom.js'));
-
-echo $this->headMeta()."\n";
-echo $this->headLink()."\n";
-echo $this->headScript()."\n";
+include('default.phtml');
 ?>
-<script>
-var DF_ContentPath = '<?php echo \DF\Url::content(); ?>';
-</script>
-</head>
-<body>
-<!-- Google Universal Analytics -->
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', '<?=$this->config->application->analytics_code ?>', 'ponyvillelive.com');
-ga('send', 'pageview');
-</script>
-<!-- End Google Universal Analytics -->
-
-<div class="top">
-    <div class="container">
-        <?=$this->renderCommon('usernav') ?>
-    </div>      
-</div>
-
-<div class="header">               
-    <div class="container">
-        <div class="logo">                                             
-            <a href="<?=$this->route() ?>"><img id="logo-header" src="<?=\DF\Url::content('mid2013/logo_'.$skin.'.png') ?>" alt="Logo"></a>
-        </div>
-
-        <div class="navbar">                                
-            <div class="navbar-inner">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <div class="nav-collapse collapse">
-                	<?=$this->renderCommon('nav') ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="secondary_header_stripe"><a href="<?=$this->route(array('module' => 'mlpma')) ?>" class="ajax"><img src="<?=\DF\Url::content('mlpma/mlpma_logo.png') ?>" alt="The MLP Music Archive, a Ponyville Live! Project"></a></div>
-
-<div id="body-wrapper">
-	<div id="body" class="container">
-		<div id="page_wrapper">
-			<div id="page">
-				<?
-				if (\DF\Flash::hasMessages()):
-					$messages = \DF\Flash::getMessages();
-					foreach($messages as $message):
-				?>
-					<div class="content-top-alert alert alert-<?=$message['color'] ?>" data-alert="alert">
-						<a class="close" data-dismiss="alert" href="#">×</a>
-						<?=$message['message'] ?>
-					</div>
-				<?
-					endforeach;
-				endif;
-				?>
-				
-				<div id="content_wrapper">
-					<div id="content">
-						<div class="row-fluid">
-							<div class="span3">
-								<?=$this->renderCommon('mlpma') ?>
-							</div>
-							<div class="span9">
-								<div id="page-content">
-									<? if (!$this->layout()->hide_title): ?>
-										<h1 class="title"><?=$title ?></h1>
-									<? endif; ?>
-
-									<?php echo $this->layout()->content; ?>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="footer">
-	<div class="container">
-		<?=$this->renderCommon('footer') ?>
-	</div>
-</div>
-
-<div class="copyright">
-	<div class="container">
-		<p>MLP is copyright &copy; Hasbro. All creations are &copy; to their respective artists. All songs are property of their respective artists.<br>
-		Copyright &copy; <?=date('Y') ?> Ponyville Live! All rights reserved.</p>
-	</div>
-</div>
-</body>
-</html>

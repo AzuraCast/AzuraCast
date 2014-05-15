@@ -44,7 +44,7 @@ class PodcastManager
                         'guid'      => $guid,
                         'timestamp' => $item['timestamp'],
                         'title'     => $item['title'],
-                        'body'      => $item['body'],
+                        'body'      => self::cleanUpText($item['body']),
                         'web_url'   => $item['web_url'],
                     );
                 }
@@ -82,5 +82,11 @@ class PodcastManager
         }
 
         return true;
+    }
+
+    public static function cleanUpText($text)
+    {
+        $text = strip_tags($text);
+        return trim($text);
     }
 }

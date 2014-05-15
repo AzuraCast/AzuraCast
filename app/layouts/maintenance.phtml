@@ -23,15 +23,12 @@ echo $this->headTitle()->setSeparator(" | ")->toString();
 $this->headLink()
 	->appendStylesheet(\DF\Url::content('common/bootstrap2_r2/df-ui.css'), 'all')
 	->appendStylesheet(\DF\Url::content('common/bootstrap2_r2/df-ui-responsive.css'), 'all')
-	->appendStylesheet(\DF\Url::content('global.css'), 'all')
-	->appendStylesheet(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.css'), 'all')
 	->appendStylesheet(\DF\Url::content('common/bootstrap2_r2/df-ui-printable.css'), 'print')
-	->appendStylesheet('http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen')
-	->appendStylesheet(\DF\Url::content('global_'.$skin.'.css'));
+	->appendStylesheet(\DF\Url::content('mid2013/embeds/'.$skin.'.css'))
+	->appendStylesheet('http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen');
     
 $this->headScript()
 	->prependFile(\DF\Url::cdn('jquery', '1.8'))
-	->appendFile(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.pack.js'))
 	->appendFile(\DF\Url::content('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js'))
 	->appendFile(\DF\Url::content('common/bootstrap2_r2/layout.js'))
 	->appendFile(\DF\Url::content('global.js'))
@@ -58,20 +55,8 @@ ga('send', 'pageview');
 </script>
 <!-- End Google Universal Analytics -->
 
-<!-- Start Alexa Certify Javascript -->
-<script type="text/javascript">
-_atrk_opts = { atrk_acct:"Y1t+i1a8Dy00a/", domain:"ponyvillelive.com",dynamic: true};
-(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
-</script>
-<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=Y1t+i1a8Dy00a/" style="display:none" height="1" width="1" alt="" /></noscript>
-<!-- End Alexa Certify Javascript -->
-
 <div id="body-wrapper">
 	<div id="body" class="container">
-		<div id="maintenance_header">
-			<a href="<?=$this->route(array('module' => 'default')) ?>" title="Home" target="_blank"><img src="<?=\DF\Url::content('pvl_'.$skin.'.png') ?>" alt="Home" /></a>
-		</div>
-
 	<? if ($title): ?>
 		<h1 class="title"><?=$title ?></h1>
 	<? endif; ?>
@@ -79,7 +64,7 @@ _atrk_opts = { atrk_acct:"Y1t+i1a8Dy00a/", domain:"ponyvillelive.com",dynamic: t
 	<? if ($this->layout()->manual): ?>
 		<?php echo $this->layout()->content; ?>
 	<? else: ?>
-		<div class="row">
+		<div class="row-fluid">
 			<div class="span12">
 				<div class="floating">
 					<div class="content_inner">

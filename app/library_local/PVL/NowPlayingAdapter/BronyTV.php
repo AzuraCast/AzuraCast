@@ -17,7 +17,7 @@ class BronyTV extends AdapterAbstract
 
 			$np['listeners'] = (int)$return['Total_Viewers'];
 
-			if ($return['Stream_Status'] == 'Stream is offline')
+			if ($return['Stream_Status'] == 'Stream is offline' || $return['Stream_Status'] == 'offline - Offline')
 			{
 				$np['text'] = 'Stream Offline';
 				$np['is_live'] = 'false';

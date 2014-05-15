@@ -1,6 +1,6 @@
 /* MLPMA-Specific Styling */
 
-html.mlpma #secondary_header_stripe {
+html #secondary_header_stripe {
 	background: url('headerbg_dark.jpg') center center no-repeat;
 	height: 200px;
 	text-align: center;

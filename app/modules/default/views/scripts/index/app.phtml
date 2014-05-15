@@ -7,9 +7,9 @@ $this->layout()->manual = true;
 
 <div class="row-fluid">
 	<div class="span6">
-		<h1 class="title">Desktop Apps</h1>
+		<h1 class="title">Desktop/Web Apps</h1>
 
-		<h2>Google Chrome (HoofSounds)</h2>
+		<h2>Chrome &amp; Firefox (HoofSounds)</h2>
 		<div class="well">
 			<div class="buttons">
 				<?=$this->button(array(
@@ -25,8 +25,24 @@ $this->layout()->manual = true;
 			<div>
 				<img src="<?=\DF\Url::content('images/app_hoofsounds_1.jpg') ?>" style="width: 50%;" alt="">
 			</div>
+			<br>
 
 			<p>Ponyville Live! has partnered with the PonyHoof development team and Celestia Radio to launch a new Chrome plugin that lets you listen to pony music right from your Chrome browser. Visit the link above to learn more and install it!</p>
+		</div>
+
+		<h2>Embedded On Your Web Site</h2>
+		<div class="well">
+			<p>Embed the PVL radio player, including all of its stations, directly into your web site for all of your users to enjoy! With the embedded widget, you can play music and tune into streams directly from your own web site.</p>
+
+			<div class="buttons">
+				<?=$this->button(array(
+					'type'		=> 'link',
+					'class'		=> 'btn-primary',
+					'icon'		=> 'icon-globe',
+					'href'		=> $this->route(array('action' => 'widget')),
+					'text'		=> 'Web Site Embed Instructions',
+				)) ?>
+			</div>
 		</div>
 
 		<h2>Winamp, iTunes, VLC, etc.</h2>
@@ -47,8 +63,13 @@ $this->layout()->manual = true;
 	<div class="span6">
 		<h1 class="title">Mobile Apps</h1>
 
-		<h2>PVL! Mobile</h2>
+		<h2>PVL! Mobile 1.0 for Mobile Safari &amp; Android</h2>
 		<div class="well">
+			<a href="https://play.google.com/store/apps/details?id=com.ponyvillelive.pvlmobile" style="float: right">
+			  <img alt="Get it on Google Play"
+			       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+			</a>
+
 			<div class="buttons">
 				<?=$this->button(array(
 					'type'		=> 'link',
@@ -59,33 +80,26 @@ $this->layout()->manual = true;
 				)) ?>
 			</div>
 
-			<a href="https://play.google.com/store/apps/details?id=com.ponyvillelive.pvlmobile">
-			  <img alt="Get it on Google Play"
-			       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
-			</a>
-
 			<div>
 				<img src="<?=\DF\Url::content('images/mobile1.png') ?>" style="width: 30%;" alt="">
 				<img src="<?=\DF\Url::content('images/mobile2.png') ?>" style="width: 30%;" alt="">
 			</div>
 
 			<p>The new PVL! Mobile web application lets you enjoy awesome pony radio, video stations, podcasts and more, anywhere you go. The mobile site is compatible with all modern smartphones, and can be bookmarked or pinned to your home screen for even easier access.</p>
+
+			<p><b>Note:</b> This app is still in active development, so new features are always being added!</p>
 		</div>
 
-		<h2><i class="icon-android"></i> Android</h2>
+		<h2><i class="icon-android"></i> Third Party Apps for Android</h2>
 		<div class="well">
-			<div class="buttons">
-				<?=$this->button(array(
-					'type'		=> 'link',
-					'class'		=> 'btn-primary',
-					'icon'		=> 'icon-download',
-					'href'		=> 'http://ponyvillelive.com/resources/PonyvilleLive.apk',
-					'target'	=> '_blank',
-					'text'		=> 'Download PVL! Mobile for Android (Beta)',
-				)) ?>
-			</div>
+			<p>Several members of the community have also started work on their own Ponyville Live! player apps for the Android platform. Check them out below.</p>
 
-			<p>Try out the new beta app for PVL! Mobile on your Android smartphone.</p>
+			<dl>
+				<dt><a href="https://sites.google.com/site/blackappleresearchfacility/apps-stuff/ponyville-live-radio-player">Black Apple Research Facility Ponyville Live! Player</a></dt>
+				<dd>Created by Colin Lacey with MIT App Inventor, currently in beta.</dd>
+
+				<dt><a href="http://ponyvillelive.com/resources/PonyvilleLive.apk">Legacy PVL Player App by David Marby</a></dt>
+			</dl>
 		</div>
 
 		<h2><i class="icon-windows"></i> Windows Phone 8 and Windows 8</h2>

@@ -248,7 +248,7 @@ class NowPlaying
 
     public static function notifyStation($station, $template)
     {
-    	if (!$station['admin_monitor_station'])
+    	if (true || !$station['admin_monitor_station'])
     		return false;
 
     	$em = \Zend_Registry::get('em');

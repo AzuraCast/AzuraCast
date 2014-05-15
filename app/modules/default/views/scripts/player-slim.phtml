@@ -15,34 +15,43 @@ foreach($categories as $cat_key => $cat)
 }
 ?>
 
-<center><a href="<?=$this->route(array('module' => 'default')) ?>" title="Home" target="_blank"><img src="<?=\DF\Url::content('pvl_slim.png') ?>" alt="Home" /></a></center>
+<center><a href="<?=$this->route(array('module' => 'default')) ?>" title="Home" target="_blank"><img src="<?=\DF\Url::content('mid2013/logo_light.png') ?>" style="width: 250px;" alt="Home" /></a></center>
 
 <div id="tunein_player" class="player_slim">
 	<div class="carousel slide" id="station_selector" data-interval="5000">
 		<div class="carousel-inner">
 		<? foreach($all_stations as $i => $station): ?>
 			<div class="item station media-list <? if ($i == 0): ?>active<? endif; ?>" id="station_<?=\Entity\Station::getStationShortName($station['name']) ?>" data-popup="true" data-id="<?=$station['id'] ?>" data-type="<?=$station['type'] ?>" data-stream="<?=$station['stream_url'] ?>" data-image="<?=\DF\Url::content($station['image_url']) ?>">
-				<img class="media-object pull-left" src="<?=\DF\Url::content($station['image_url']) ?>">
-				<div class="media-body">
-					<h4>
-						<i class="<?=$station['category']['icon'] ?>"></i> 
-					<? if ($station['nickname']): ?>
-						<?=$station['nickname'] ?> 
-					<? else: ?>
-						<?=$station['name'] ?> 
-					<? endif; ?>
-					<? if ($station['genre']): ?>
-						<span class="genre-info">
-							<small>
-								<?=$station['genre'] ?>
-							</small>
-						</span>
-					<? endif; ?>
-					</h4>
-					<p>
-						<big><span class="nowplaying-artist"><?=$station['nowplaying_artist'] ?></span></big><br>
-						<span class="nowplaying-title"><?=$station['nowplaying_title'] ?></span>
-					</p>
+				<div class="media">
+					<div class="media-object pull-left center">
+						<img class="station-image" src="<?=\DF\Url::content($station['image_url']) ?>">
+						<div class="station-play-button">
+							<i class="icon-play"></i>
+						</div>
+					</div>
+					<div class="media-body">
+						<div class="station-info">
+							<h4>
+								<i class="<?=$station['category']['icon'] ?>"></i> 
+							<? if ($station['nickname']): ?>
+								<?=$station['nickname'] ?> 
+							<? else: ?>
+								<?=$station['name'] ?> 
+							<? endif; ?>
+							<? if ($station['genre']): ?>
+								<span class="genre-info">
+									<small>
+										<?=$station['genre'] ?>
+									</small>
+								</span>
+							<? endif; ?>
+							</h4>
+							<p>
+								<big><span class="nowplaying-artist"><?=$station['nowplaying_artist'] ?></span></big><br>
+								<span class="nowplaying-title"><?=$station['nowplaying_title'] ?></span>
+							</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		<? endforeach; ?>

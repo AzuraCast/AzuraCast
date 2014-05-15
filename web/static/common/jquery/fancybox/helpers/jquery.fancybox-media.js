@@ -1,6 +1,6 @@
 /*!
  * Media helper for fancyBox
- * version: 1.0.3 (Mon, 13 Aug 2012)
+ * version: 1.0.6 (Fri, 14 Jun 2013)
  * @requires fancyBox v2.0 or later
  *
  * Usage:
@@ -25,7 +25,7 @@
  *
  * Or:
  *     $(".fancybox").fancybox({,
- *	       helpers : {
+ *         helpers : {
  *             media: true
  *         },
  *         youtube : {
@@ -37,7 +37,9 @@
  *
  *      Youtube
  *          http://www.youtube.com/watch?v=opj24KnzrWo
+ *          http://www.youtube.com/embed/opj24KnzrWo
  *          http://youtu.be/opj24KnzrWo
+ *			http://www.youtube-nocookie.com/embed/opj24KnzrWo
  *      Vimeo
  *          http://vimeo.com/40648169
  *          http://vimeo.com/channels/staffpicks/38843628
@@ -85,9 +87,9 @@
 
 	//Add helper object
 	F.helpers.media = {
-		types : {
+		defaults : {
 			youtube : {
-				matcher : /(youtube\.com|youtu\.be)\/(watch\?v=|v\/|u\/|embed)?([\w-]{11}|\?listType=(.*)&list=(.*)).*/i,
+				matcher : /(youtube\.com|youtu\.be|youtube-nocookie\.com)\/(watch\?v=|v\/|u\/|embed\/?)?(videoseries\?list=(.*)|[\w-]{11}|\?listType=(.*)&list=(.*)).*/i,
 				params  : {
 					autoplay    : 1,
 					autohide    : 1,
@@ -108,7 +110,6 @@
 					show_title    : 1,
 					show_byline   : 1,
 					show_portrait : 0,
-					color         : '',
 					fullscreen    : 1
 				},
 				type : 'iframe',
@@ -151,7 +152,7 @@
 			instagram : {
 				matcher : /(instagr\.am|instagram\.com)\/p\/([a-zA-Z0-9_\-]+)\/?/i,
 				type : 'image',
-				url  : '//$1/p/$2/media/'
+				url  : '//$1/p/$2/media/?size=l'
 			},
 			google_maps : {
 				matcher : /maps\.google\.([a-z]{2,3}(\.[a-z]{2})?)\/(\?ll=|maps\?)(.*)/i,
@@ -170,17 +171,19 @@
 				rez,
 				params;
 
-			for (what in this.types) {
-				item = this.types[ what ];
-				rez  = url.match( item.matcher );
+			for (what in opts) {
+				if (opts.hasOwnProperty(what)) {
+					item = opts[ what ];
+					rez  = url.match( item.matcher );
 
-				if (rez) {
-					type   = item.type;
-					params = $.extend(true, {}, item.params, obj[ what ] || ($.isPlainObject(opts[ what ]) ? opts[ what ].params : null));
+					if (rez) {
+						type   = item.type;
+						params = $.extend(true, {}, item.params, obj[ what ] || ($.isPlainObject(opts[ what ]) ? opts[ what ].params : null));
 
-					url = $.type( item.url ) === "function" ? item.url.call( this, rez, params, obj ) : format( item.url, rez, params );
+						url = $.type( item.url ) === "function" ? item.url.call( this, rez, params, obj ) : format( item.url, rez, params );
 
-					break;
+						break;
+					}
 				}
 			}
 

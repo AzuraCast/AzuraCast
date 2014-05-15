@@ -8,14 +8,22 @@ $this->headLink()->appendStylesheet(\DF\Url::content('zocial/zocial.css'), 'all'
 <div class="row-fluid">
 	<div class="span6">
 		<div class="floating">
+			<h2>Create a PVL Account</h2>
+			<p>Don't have an account within the Ponyville Live! system? Create one below.</p>
+
+			<div class="buttons">
+				<?=$this->button(array(
+					'type'		=> 'link',
+					'href'		=> $this->routeFromHere(array('action' => 'register')),
+					'icon'		=> 'icon-asterisk',
+					'text'		=> 'Create New PVL Account',
+				)) ?>
+			</div>
+
 			<h2>Log In with PVL Account</h2>
 			<p>If you have an account inside the Ponyville Live! system, enter your username and password below.</p>
 
-			<p><a href="<?=$this->routeFromHere(array('action' => 'register')) ?>">Create New PVL Account</a></p>
-
 			<?=$this->form->render() ?>
-
-			<p><small>You have requested access to a site that requires authentication.</b> This computer system and data herein are available only for authorized purposes by authorized users. Use for any other purpose may result in administrative/disciplinary actions or criminal prosecution against the user. Usage may be subject to security testing and monitoring. Applicable privacy laws establish the expectations of privacy.</small></p>
 		</div>
 	</div>
 	<div class="span6">

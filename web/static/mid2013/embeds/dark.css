@@ -1,0 +1,124 @@
+@charset "utf-8";
+@import url('common.css');
+@import url('../stations.css');
+
+html,
+html.full_layout {
+	background-color: #0A0A0A;
+}
+
+body {
+	color: #DDD;
+}
+
+h1, h2 {
+	color: #2C7FD2;
+	text-shadow: 1px 1px 1px #000;
+}
+
+a {
+	color: #5699DC; /* #2C7FD2; */
+}
+a:hover {
+	color: #81B3E4;
+}
+hr {
+	border-top: 1px solid #163D63;
+	border-bottom: 1px solid #0C2034;
+}
+
+code {
+	color: #DDD;
+	background: #0E2B47;
+	border: 1px solid #15416C;
+}
+
+fieldset legend {
+	color: #CCC;
+	border: 0;
+}
+
+form span.help-block, 
+form span.help-inline {
+	font-size: 12px;
+	color: #AAA;
+}
+
+.table-striped tbody tr:nth-child(odd) td,
+.table-striped tbody tr:nth-child(odd) th {
+	background-color: #0E2B47;
+	background-color: rgba(14,43,71,0.6);
+}
+.table tbody tr:hover td {
+	background-color: #15416C;
+	background-color: rgba(21,65,108,0.6);
+}
+.table th, .table td {
+	border-top: 0;
+}
+.table tbody tr.disabled td,
+.table tbody tr td.disabled {
+	background-color: #071727;
+	background-color: rgba(7,23,39,0.6);
+}
+
+.pagination ul > li > a,
+.pagination ul > li > span {
+	color: #CCC;
+	background-color: #112E4A;
+	border: 1px solid #1F5285;
+}
+.pagination ul > li > a:hover,
+.pagination ul > .active > a,
+.pagination ul > .active > span {
+	color: #FFF;
+	background-color: #1F5285;
+}
+
+/**
+ * Main Body
+ */
+
+.navbar-inverse .navbar-inner {
+	background: rgb(24, 24, 24) transparent;
+	background: rgba(24, 24, 24, 0.7);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99181818, endColorstr=#99181818);
+	background-image: none;
+}
+
+#about_pvl {
+  color: #AAA;
+}
+
+div#content_top {
+	color: #888;
+}
+
+div#copyright {
+	color: #AAA;
+}
+
+div.fancybox-skin {
+	background: #333;
+	color: #DDD;
+}
+
+.well {
+	background-color: rgb(51, 51, 51);
+	background: rgba(51, 51, 51, 0.3);
+
+	border: 0;
+	padding: 10px;
+}
+.well.station_video {
+	background: rgb(37, 50, 65) transparent;
+	background: rgba(37, 50, 65, 0.3);
+}
+
+.thumbnail {
+	border: 1px solid #333;
+}
+
+.thumbnail .caption {
+	color: #DDD;
+}

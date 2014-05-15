@@ -134,6 +134,55 @@ class Podcast extends \DF\Doctrine\Entity
         return $podcasts;
     }
 
+    public static function api($row_obj, $include_episodes = TRUE)
+    {
+        if ($row_obj instanceof self)
+        {
+            $row = $row_obj->toArray();
+
+            $row['stations'] = array();
+            if ($row_obj->stations)
+            {
+                foreach($row_obj->stations as $station)
+                    $row['stations'][] = Station::api($station);
+            }
+
+            $row['episodes'] = array();
+            if ($include_episodes && $row_obj->episodes)
+            {
+                foreach($row_obj->episodes as $episode)
+                    $row['episodes'][] = PodcastEpisode::api($episode);
+            }
+        }
+        else
+        {
+            $row = $row_obj;
+
+            if (!isset($row['stations']))
+                $row['stations'] = array();
+
+            if (!isset($row['episodes']))
+                $row['episodes'] = array();
+        }
+
+        $api_row = array(
+            'id'        => (int)$row['id'],
+            'name'      => $row['name'],
+            'description' => $row['description'],
+            'image_url' => \DF\Url::content($row['image_url']),
+            'stations'  => $row['stations'],
+        );
+
+        if ($include_episodes)
+            $api_row['episodes'] = $row['episodes'];
+
+        $social_types = array_keys(self::getSocialTypes());
+        foreach($social_types as $type_key)
+            $api_row[$type_key] = $row[$type_key];
+
+        return $api_row;
+    }
+
     public static function getArtistImage($image_url)
     {
         if ($image_url)

@@ -49,4 +49,15 @@ class PodcastEpisode extends \DF\Doctrine\Entity
      * })
      */
     protected $podcast;
+
+    public static function api($row)
+    {
+        if ($row instanceof Self)
+            $row = $row->toArray();
+
+        unset($row['podcast_id']);
+        unset($row['is_notified']);
+
+        return $row;
+    }
 }

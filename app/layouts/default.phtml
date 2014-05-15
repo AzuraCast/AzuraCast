@@ -49,13 +49,25 @@ $this->headLink()
 	->appendStylesheet(\DF\Url::content('mid2013/style.css'), 'all')
 	->appendStylesheet(\DF\Url::content('mid2013/skin_'.$skin.'.css'));
 
+if ($this->custom_styles)
+{
+	foreach($this->custom_styles as $stylesheet_url)
+		$this->headLink()->appendStylesheet($stylesheet_url);
+}
+
 $this->headScript()
-	->prependFile(\DF\Url::cdn('jquery', '1.8.3'))
+	->prependFile(\DF\Url::cdn('jquery', '1.10.1'))
 	->appendFile(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.pack.js'))
 	->appendFile(\DF\Url::content('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js'))
 	->appendFile(\DF\Url::content('common/bootstrap2_r2/layout.js'))
 	->appendFile(\DF\Url::content('swfobject.js'))
 	->appendFile(\DF\Url::content('global.js'));
+
+if ($this->custom_scripts)
+{
+	foreach($this->custom_scripts as $script_url)
+		$this->headScript()->appendFile($script_url);
+}
 
 echo $this->headMeta()."\n";
 echo $this->headLink()."\n";
@@ -181,7 +193,7 @@ ga('send', 'pageview');
 <div class="copyright">
 	<div class="container">
 		<p>MLP is copyright &copy; Hasbro. All creations are &copy; to their respective artists. All songs are property of their respective artists.<br>
-		Copyright &copy; <?=date('Y') ?> Ponyville Live! All rights reserved.</p>
+		Copyright &copy; 2012-<?=date('Y') ?> <a href="http://www.bravelyblue.com/" target="_blank">Bravely Blue Media LLC</a> and Ponyville Live! All rights reserved.</p>
 	</div>
 </div>
 </body>

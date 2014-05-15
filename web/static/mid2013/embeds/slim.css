@@ -1,4 +1,6 @@
 @charset "utf-8";
+@import url('light.css');
+@import url('../stations.css');
 
 html,
 html.full_layout {
@@ -129,42 +131,6 @@ div#body {
 	border-right: 6px solid #76ACE2;
 }
 
-.station {
-	padding-left: 5px;
-}
-.station > div.media-body {
-	padding-top: 2px;
-	padding-left: 5px;
-}
-
-.station > img {
-	width: 40px;
-	height: 40px;
-	margin-top: 5px;
-
-	border: 1px solid #DDD;
-}
-.station.live > img {
-	border: 1px solid #428BD5;	
-}
-.station.playing > img {
-	width: 60px;
-	height: 60px;
-
-	border: 1px solid #5699DC;
-}
-.station.playing span.nowplaying-info {
-	display: block;
-}
-
-.station.live,
-.station.live h4 small {
-	color: #2C7FD2;
-}
-.station.playing,
-.station.playing h4 small {
-	color: #5699DC;	
-}
 
 @media (max-width: 767px) {
 	body {

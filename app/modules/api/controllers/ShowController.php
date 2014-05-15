@@ -48,12 +48,10 @@ class Api_ShowController extends \PVL\Controller\Action\Api
 			$return = array();
 			foreach((array)$latest_shows as $show_info)
 			{
-				$return_row = array(
-					'show'		=> Podcast::api($show_info['record'], FALSE),
-				);
+				$return_row = Podcast::api($show_info['record'], FALSE);
 
 				foreach((array)$show_info['episodes'] as $ep_row)
-					$return_row['show']['episodes'][] = PodcastEpisode::api($ep_row);
+					$return_row['episodes'][] = PodcastEpisode::api($ep_row);
 
 				$return[] = $return_row;
 			}

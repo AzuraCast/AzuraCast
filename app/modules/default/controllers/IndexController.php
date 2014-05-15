@@ -56,18 +56,6 @@ class IndexController extends \DF\Controller\Action
 			$this->render();
     }
 
-    public function podcastAction()
-    {
-    	$id = (int)$this->_getParam('id');
-    	$podcast = Podcast::find($id);
-
-    	if (!($podcast instanceof Podcast))
-    		throw new \DF\Exception\DisplayOnly('Podcast not found!');
-
-    	$this->view->podcast = $podcast;
-    	$this->view->episodes = $podcast->episodes;
-    }
-
     public function tuneinAction()
     {
     	$this->view->layout()->setLayout('maintenance');

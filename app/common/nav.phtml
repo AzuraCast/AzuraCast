@@ -37,6 +37,7 @@ $podcasts = \Entity\Podcast::fetchArray('name');
 	<li class="dropdown">
 		<a href="#" data-toggle="dropdown"><i class="icon-rss"></i> Shows</a>
 		<ul class="dropdown-menu">
+			<li><a href="<?=$this->route(array('controller' => 'show')) ?>">Show Directory</a></li>
 		<? foreach($podcasts as $podcast): ?>
 			<li><a href="<?=$podcast['web_url'] ?>" title="<?=$podcast['description'] ?>" target="_blank"><?=$podcast['name'] ?></a></li>
 		<? endforeach; ?>

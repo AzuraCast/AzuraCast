@@ -1,0 +1,43 @@
+<?php
+$this->headTitle('Show: '.$this->podcast->name);
+?>
+
+<div class="clearfix">
+	<img class="thumbnail pull-left" src="<?=\DF\Url::content($this->podcast->image_url) ?>" style="width: 150px; margin-right: 10px;">
+
+	<blockquote>
+		<p><?=nl2br($this->podcast->description) ?></p>
+	</blockquote>
+
+	<dl>
+		<dt>URL:</dt>
+		<dd><a href="<?=$this->podcast->web_url ?>"><?=$this->podcast->web_url ?></a></dd>
+
+	<? if (count($this->podcast->stations) > 0): ?>
+		<dt>Also airs on:</dt>
+		<dd>
+		<? foreach($this->podcast->stations as $station): ?>
+			<div><?=$station->name ?></div>
+		<? endforeach; ?>
+		</dd>
+	<? endif; ?>
+	</dl>
+</div>
+
+<br>
+<h2>Recent Episodes</h2>
+
+<table class="datatable table-striped table-bordered table-nopadding" style="max-width: 800px;">
+	<colgroup>
+		<col width="25%">
+		<col width="75%">
+	</colgroup>
+	<tbody>
+	<? foreach($this->episodes as $ep): ?>
+		<tr class="input">
+			<td><?=date('F j, Y g:ia', $ep['timestamp']) ?></td>
+			<td><b><a href="<?=$ep['web_url'] ?>" target="_blank"><?=$ep['title'] ?></a></b></td>
+		</tr>
+	<? endforeach; ?>
+	</tbody>
+</table>

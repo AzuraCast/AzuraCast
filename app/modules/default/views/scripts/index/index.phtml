@@ -127,12 +127,21 @@ $this->render_mode = 'homepage';
 	</div>
 </div>
 
-<h2><i class="icon-rss"></i> Shows</h2>
+<?=$this->button(array(
+	'type'		=> 'link',
+	'icon'		=> 'icon-book',
+	'text'		=> 'Show Directory',
+	'href'		=> $this->route(array('controller' => 'show')),
+	'class' 	=> 'pull-right',
+)) ?>
+
+<h2><i class="icon-rss"></i> Shows <small>Newest episodes first</small></h2>
 
 <div class="well">
 	<div class="row-fluid">
 	<?
-	$podcast_cols = \DF\Utilities::columns($this->podcasts, 3, true);
+	$podcasts = array_slice($this->podcasts, 0, 15);
+	$podcast_cols = \DF\Utilities::columns($podcasts, 3, true);
 
 	foreach($podcast_cols as $podcasts):
 	?>
@@ -146,7 +155,7 @@ $this->render_mode = 'homepage';
 				?>
 				<li class="media podcast">
 					<div class="media-object pull-left">
-						<a href="<?=$this->routeFromHere(array('action' => 'podcast', 'id' => $podcast->id)) ?>">
+						<a href="<?=$this->routeFromHere(array('controller' => 'show', 'action' => 'view', 'id' => $podcast->id)) ?>">
 							<img class="station-image" src="<?=\DF\Url::content($podcast->image_url) ?>" style="width: 40px;">
 							<div class="station-play-button">
 								<i class="icon-rss"></i>
@@ -155,7 +164,7 @@ $this->render_mode = 'homepage';
 					</div>
 					<div class="media-body">
 						<div class="station-info">
-							<h4><?=$podcast->name ?> <a href="<?=$this->routeFromHere(array('action' => 'podcast', 'id' => $podcast->id)) ?>" title="Click for more information."><i class="icon-info-sign"></i> </a><br>
+							<h4><?=$podcast->name ?> <a href="<?=$this->routeFromHere(array('controller' => 'show', 'action' => 'view', 'id' => $podcast->id)) ?>" title="Click for more information."><i class="icon-info-sign"></i> </a><br>
 								<span class="genre-info"><small>
 									<?=$podcast->description ?>
 								<?

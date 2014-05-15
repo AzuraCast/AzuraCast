@@ -12,8 +12,10 @@ $skin = \PVL\Customization::get('theme');
 	<li class="divider">&nbsp;</li>
 	<li><a href="<?=$this->route(array('module' => 'mobile')) ?>" class="btn-tune-in"><i class="icon-youtube-play"></i> Player</a></li>
 	<li class="divider">&nbsp;</li>
+	<!--
 	<li><a href="<?=$this->route(array('module' => 'default', 'controller' => 'index', 'action' => 'app')) ?>"><i class="icon-cloud-download"></i> Plugins &amp; Apps</a></li>
 	<li class="divider">&nbsp;</li>
+	-->
 <? if ($this->auth->isLoggedIn()): ?>
 	<?
 	$user = $this->auth->getLoggedInUser();

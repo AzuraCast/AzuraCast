@@ -72,6 +72,10 @@ h1, h2 {
 	background-color: #333;
 }
 
+.table .table {
+	background: none;
+}
+
 .table-bordered {
 	border-color: #444;
 }

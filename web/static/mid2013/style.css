@@ -425,6 +425,11 @@ div.floating {
  * Google Maps Compatibility
  */
 
+table td > img:only-child {
+	display: block;
+	width: 100%;
+}
+
 .gmap img,
 #mapSmallContainer img,
 img.icon,

@@ -8,14 +8,16 @@ class Stream extends AdapterAbstract
 	/* Process a nowplaying record. */
 	public function process(&$np)
 	{
+		$is_live = false;
+
 		if (stristr($this->url, 'livestream') !== FALSE)
 		{
 			$xml = $this->getUrl($this->url, 30);
 
 			if ($xml)
-			{
 				$stream_data = \DF\Export::XmlToArray($xml);
-			}
+			else
+				$stream_data = NULL;
 
 			if ($stream_data)
 			{
@@ -23,13 +25,9 @@ class Stream extends AdapterAbstract
 
 				if ($stream_data['channel']['ls:isLive'] && $stream_data['channel']['ls:isLive'] == 'true')
 				{
+					$is_live = true;
 					$np['is_live'] = 'true';
 					$np['text'] = 'Stream Online';
-				}
-				else
-				{
-					$np['is_live'] = 'false';
-					$np['text'] = 'Stream Offline';
 				}
 			}
 		}
@@ -37,7 +35,6 @@ class Stream extends AdapterAbstract
 		{
 			$return_raw = $this->getUrl();
 
-			$is_live = false;
 			if ($return_raw)
 			{
 				$return = json_decode($return_raw, true);
@@ -53,18 +50,11 @@ class Stream extends AdapterAbstract
 					$np['is_live'] = 'true';
 				}
 			}
-
-			if (!$is_live)
-			{
-				$np['text'] = 'Stream Offline';
-				$np['is_live'] = 'false';
-			}
 		}
 		else if (stristr($this->url, 'justin.tv') !== FALSE)
 		{
 			$return_raw = $this->getUrl();
 
-			$is_live = false;
 			if ($return_raw)
 			{
 				$return = json_decode($return_raw, true);
@@ -80,12 +70,12 @@ class Stream extends AdapterAbstract
 					$np['is_live'] = 'true';
 				}
 			}
+		}
 
-			if (!$is_live)
-			{
-				$np['text'] = 'Stream Offline';
-				$np['is_live'] = 'false';
-			}
+		if (!$is_live)
+		{
+			$np['text'] = 'Stream Offline';
+			$np['is_live'] = 'false';
 		}
 
 		return $np;

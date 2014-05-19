@@ -83,10 +83,20 @@ h1, h2 {
 	border-left-color: #444;
 }
 
+.footer .media-object {
+	background: #151515;
+}
+
+
 
 /** 
  * Station Player
  */
+
+.station img,
+.podcast img {
+	background: #151515;
+}
 
 .station.playing h4 {
 	border-color: #66B33C;

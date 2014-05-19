@@ -3,7 +3,7 @@
 	margin-top:40px;
 	padding:20px 10px;
 	background: #375B88;
-	color:#dadada;
+	color: #dadada;
 	border-top: 2px solid #4878B3;
 } 
 .footer .container .footer-inner {
@@ -41,6 +41,18 @@
 	color:#e4e4e4;
 	background:none;
 	text-shadow:none;
+}
+
+.footer .media-object {
+	padding: 4px;
+
+	-webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+	-moz-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+	box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+	background: #FFFFFF;
+
+	border-radius: 5px;
+	border: 0;
 }
 
 /*Footer

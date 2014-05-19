@@ -9,6 +9,16 @@ $this->headTitle('Show: '.$this->podcast->name);
 		<p><?=nl2br($this->podcast->description) ?></p>
 	</blockquote>
 
+	<div class="buttons">
+		<?=$this->button(array(
+			'type'		=> 'link',
+			'icon'		=> 'icon-rss',
+			'href'		=> $this->routeFromHere(array('action' => 'feed', 'type' => 'single')),
+			'text'		=> 'Episode RSS Feed',
+			'target'	=> '_blank',
+		)) ?>
+	</div>
+
 	<dl>
 		<dt>URL:</dt>
 		<dd><a href="<?=$this->podcast->web_url ?>"><?=$this->podcast->web_url ?></a></dd>

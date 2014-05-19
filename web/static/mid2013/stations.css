@@ -5,16 +5,22 @@
 .station img,
 .podcast img {
 	padding: 4px;
-	background: #163D63;
+
+	-webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+	-moz-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+	box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+	background: #FFFFFF;
+	/* background: #163D63; */
+
 	border-radius: 5px;
 	border: 0;
 }
 
 .station.live img {
-	background: #428BD5;
+	/* background: #428BD5; */
 }
 .station.playing img {
-	background: #5699DC;
+	/* background: #5699DC; */
 }
 .station.offline {
 	cursor: default;

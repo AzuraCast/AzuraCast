@@ -130,6 +130,13 @@ $this->render_mode = 'homepage';
 <div class="buttons clearfix pull-right">
 	<?=$this->button(array(
 		'type'		=> 'link',
+		'icon'		=> 'icon-rss',
+		'target'	=> '_blank',
+		'text'		=> 'RSS Feed',
+		'href'		=> $this->route(array('controller' => 'show', 'action' => 'feed')),
+	)) ?>
+	<?=$this->button(array(
+		'type'		=> 'link',
 		'icon'		=> 'icon-book',
 		'text'		=> 'Show Directory',
 		'href'		=> $this->route(array('controller' => 'show')),

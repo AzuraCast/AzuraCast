@@ -1,5 +1,5 @@
 <?
-$this->headTitle('Manage Rotator Banners');
+$this->headTitle('Manage Affiliates');
 ?>
 
 <div class="buttons">
@@ -8,15 +8,15 @@ $this->headTitle('Manage Rotator Banners');
 		'class'		=> 'large success',
 		'href'		=> $this->routeFromHere(array('action' => 'edit')),
 		'icon'		=> 'icon-plus-sign',
-		'text'		=> 'Add New Rotator',
+		'text'		=> 'Add New Affiliate',
 	)) ?>
 </div>
 
 <table class="table table-striped table-bordered table-condensed">
 	<colgroup>
 		<col width="25%" />
-		<col width="25%" />
-		<col width="50%" />
+		<col width="10%" />
+		<col width="65%" />
 	</colgroup>
 	<thead>
 		<tr>
@@ -45,7 +45,8 @@ $this->headTitle('Manage Rotator Banners');
 			</td>
 			<td class="center" <? if (!$record['is_approved']): ?>style="opacity: 0.2;"<? endif; ?>><img src="<?=\DF\Url::content($record['image_url']) ?>"></td>
 			<td>
-				<div><big><?=$this->link($record['web_url']) ?></big></div>
+				<div><big><?=$record['name'] ?></big></div>
+				<div><?=$this->link($record['web_url']) ?></div>
 			<? if ($record['description']): ?>
 				<div><?=$record['description'] ?></div>
 			<? endif; ?>

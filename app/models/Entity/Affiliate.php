@@ -4,10 +4,10 @@ namespace Entity;
 use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @Table(name="rotators")
+ * @Table(name="affiliates")
  * @Entity
  */
-class Rotator extends \DF\Doctrine\Entity
+class Affiliate extends \DF\Doctrine\Entity
 {
     public function __construct()
     {
@@ -22,10 +22,13 @@ class Rotator extends \DF\Doctrine\Entity
      */
     protected $id;
 
+    /** @Column(name="name", type="string", length=255) */
+    protected $name;
+
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
 
-    /** @Column(name="image_url", type="string", length=255, nullable=true) */
+    /** @Column(name="image_url", type="string", length=255) */
     protected $image_url;
 
     public function setImageUrl($new_url)
@@ -39,7 +42,7 @@ class Rotator extends \DF\Doctrine\Entity
         }
     }
 
-    /** @Column(name="web_url", type="string", length=255, nullable=true) */
+    /** @Column(name="web_url", type="string", length=255) */
     protected $web_url;
 
     /** @Column(name="timestamp", type="integer") */

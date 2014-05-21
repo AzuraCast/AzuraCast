@@ -1,24 +1,24 @@
 <?php
-use \Entity\Rotator;
-use \Entity\Rotator as Record;
+use \Entity\Affiliate;
+use \Entity\Affiliate as Record;
 
-class Admin_RotatorsController extends \DF\Controller\Action
+class Admin_AffiliatesController extends \DF\Controller\Action
 {
     public function permissions()
     {
-        return $this->acl->isAllowed('administer rotators');
+        return $this->acl->isAllowed('administer affiliates');
     }
     
     public function indexAction()
     {
-    	$records = $this->em->createQuery('SELECT r FROM Entity\Rotator r ORDER BY r.id ASC')
+    	$records = $this->em->createQuery('SELECT r FROM Entity\Affiliate r ORDER BY r.id ASC')
     		->getArrayResult();
     	$this->view->records = $records;
     }
 	
 	public function editAction()
 	{
-        $form = new \DF\Form($this->current_module_config->forms->rotator);
+        $form = new \DF\Form($this->current_module_config->forms->affiliate);
 		
 		if ($this->_hasParam('id'))
 		{

@@ -5,20 +5,28 @@ return array(
 
 	'elements'		=> array(
 
-        'image_url' => array('file', array(
-            'label' => 'Upload New Icon',
-            'description' => 'To replace the existing icon associated with this station, upload a new one using the file browser below. Icons should be 150x150px in dimension.',
+        'name' => array('text', array(
+            'label' => 'Affiliate Name',
+            'class' => 'half-width',
+            'required' => true,
+        )),
+
+        'description' => array('textarea', array(
+            'label' => 'Description',
+            'class' => 'full-width half-height',
+            'required' => true,
         )),
 
         'web_url' => array('text', array(
             'label' => 'Web URL',
             'description' => 'Include full address (with http://).',
             'class' => 'half-width',
+            'required' => true,
         )),
 
-        'description' => array('textarea', array(
-            'label' => 'Description',
-            'class' => 'full-width half-height',
+        'image_url' => array('file', array(
+            'label' => 'Upload New Icon',
+            'description' => 'To replace the existing icon associated with this station, upload a new one using the file browser below. Icons should be 150x150px in dimension and preferably alpha-transparent 32-bit PNGs.',
         )),
 
         'is_approved' => array('radio', array(

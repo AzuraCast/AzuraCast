@@ -1,125 +1,21 @@
 <?
-$affiliates = array(
-	
-	array(
-		'name'		=> 'Ponyhoof',
-		'url'		=> 'http://ponyhoof.little.my',
-		'description' => 'Ponify Facebook and make it 20% cooler!',
-		'image'		=> \DF\Url::content('affiliates/ponyhoof.png'),
-	),
-
-	/*
-	array(
-		'name'		=> 'Journey of the Spark',
-		'url'		=> 'http://fimsparkmovie.tumblr.com/',
-		'description' => 'A Full Length Fan-Created Movie',
-		'image'		=> \DF\Url::content('affiliates/jots.png'),
-	),
-	*/
-
-	array(
-		'name'		=> 'PonyMC',
-		'description' => 'A Ponyville Live! Minecraft Partner',
-		'url'		=> 'http://ponymc.com/',
-		'image'		=> '//ponymc.com/img/logos/random_logo.php?width=150&height=150', // \DF\Url::content('affiliates/ponymc.png'),
-	),
-
-	array(
-		'name'		=> 'Legends of Equestria',
-		'url'		=> 'http://legendsofequestria.com/',
-		'description' => 'A Pony-Themed MMORPG',
-		'image'		=> \DF\Url::content('affiliates/loe.png'),
-	),
-
-	array(
-		'name'		=> 'PonySquare/BronySquare',
-		'url'		=> 'http://www.ponysquare.com/',
-		'custom'	=> '<a href="http://www.ponysquare.com/" target="_blank">PonySquare</a> &amp; <a href="http://www.bronysquare.com/" target="_blank">BronySquare</a>',
-		'description' => 'Pony-Driven Social Networks',
-		'image'		=> \DF\Url::content('affiliates/squared.png'),
-	),
-
-	array(
-		'name'		=> 'Brony Aerospace',
-		'url'		=> 'http://bronyaerospace.net/',
-		'description' => 'Launching Rockets Pony-Style!',
-		'image'		=> \DF\Url::content('affiliates/aerospace.png'),
-	),
-
-	array(
-		'name'		=> 'Brony@Home',
-		'url'		=> 'http://bronyathome.org/',
-		'description' => 'Distributed Computing for the Greater Good',
-		'image'		=> \DF\Url::content('affiliates/bronyathome.png'),
-	),
-
-	array(
-		'name'		=> 'Derpy Hooves News',
-		'url'		=> 'http://www.derpyhoovesnews.com/',
-		'description' => 'Aderpable Pony News Site',
-		'image'		=> \DF\Url::content('affiliates/dhn.png'),
-	),
-
-	array(
-		'name'		=> 'Bronies For Good',
-		'url'		=> 'http://broniesforgood.org/',
-		'description' => 'Promoting Brony Kindness and Philanthropy',
-		'image'		=> \DF\Url::content('affiliates/bfg.png'),
-	),
-
-	array(
-		'name'		=> 'Brony Musician Directory',
-		'url'		=> 'http://bronymusic.com/',
-		'description' => 'Profiles and Biographies of Pony Musicians',
-		'image'		=> \DF\Url::content('affiliates/bmd.png'),
-	),
-
-	/*
-	array(
-		'name'		=> 'MTMS Gaming',
-		'url'		=> 'http://steamcommunity.com/groups/MaximumServers',
-		'description' => 'Home of TF2 Servers and L4D Servers',
-		'image'		=> \DF\Url::content('affiliates/mtms.png'),
-	),
-	*/
-
-	array(
-		'name'		=> 'Las Pegasus Gaming',
-		'url'		=> 'http://laspegasus.net/',
-		'description' => 'A Community Brony Gaming Site',
-		'image'		=> \DF\Url::content('affiliates/lpp.png'),
-	),
-
-	array(
-		'name'		=> 'HoofSounds',
-		'url'		=> 'https://hoofsounds.little.my/',
-		'description' => 'Pony Radio in Your Browser!',
-		'image'		=> \DF\Url::content('affiliates/hoofsounds.png'),
-	),
-);
-
-shuffle($affiliates);
-
-$num_affiliates = count($affiliates);
-$col1_length = ceil($num_affiliates / 2);
-$col1 = array_splice($affiliates, 0, $col1_length);
-$cols = array($col1, $affiliates);
+$affiliates = \Entity\Affiliate::fetch(true);
+$columns = \DF\Utilities::columns($affiliates, 2);
 ?>
-
 <div class="footer-inner">
 	<div class="row-fluid">
 		<div class="span8">
 			<div class="headline"><h3>Friends &amp; Affiliates</h3></div>
 
 			<div class="row-fluid">
-			<? foreach($cols as $column): ?>
+			<? foreach($columns as $column): ?>
 				<div class="span6">
 					<ul class="media-list">
 					<? foreach($column as $affiliate): ?>
 						<li class="media">
 							<div class="media-object pull-left">
-								<a href="<?=$affiliate['url'] ?>" target="_blank">
-									<img src="<?=$affiliate['image'] ?>" style="width: 40px;">
+								<a href="<?=$affiliate['web_url'] ?>" target="_blank">
+									<img src="<?=\DF\Url::content($affiliate['image_url']) ?>" style="width: 40px;">
 								</a>
 							</div>
 							<div class="media-body">
@@ -127,7 +23,7 @@ $cols = array($col1, $affiliates);
 								<? if (isset($affiliate['custom'])): ?>
 									<?=$affiliate['custom'] ?><br>
 								<? else: ?>
-									<a href="<?=$affiliate['url'] ?>" target="_blank"><?=$affiliate['name'] ?></a><br>
+									<a href="<?=$affiliate['web_url'] ?>" target="_blank"><?=$affiliate['name'] ?></a><br>
 								<? endif; ?>
 									<small><?=$affiliate['description'] ?></small>
 								</h4>

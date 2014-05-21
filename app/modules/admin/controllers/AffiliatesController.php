@@ -35,7 +35,7 @@ class Admin_AffiliatesController extends \DF\Controller\Action
 			if (!($record instanceof Record))
 				$record = new Record;
 
-			$files = $form->processFiles('rotators');
+			$files = $form->processFiles('affiliates');
 
 			foreach($files as $file_field => $file_paths)
 			{

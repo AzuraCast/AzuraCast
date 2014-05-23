@@ -6,7 +6,7 @@ use \Entity\Station;
 class ShoutCast1 extends AdapterAbstract
 {
 	/* Process a nowplaying record. */
-	public function process(&$np)
+	protected function _process($np)
 	{
 		$return_raw = $this->getUrl();
 
@@ -24,13 +24,9 @@ class ShoutCast1 extends AdapterAbstract
 			$np['title'] = $title;
 			$np['artist'] = $artist;
 			$np['text'] = $parts[6];
-		}
-		else
-		{
-			$np['text'] = 'Stream Offline';
-			$np['is_live'] = 'false';
+			return $np;
 		}
 
-		return $np;
+		return false;
 	}
 }

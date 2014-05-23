@@ -21,6 +21,10 @@ html.theme_dark .dropdown-menu {
 	background-color: #222;
 }
 
+html.theme_dark .dropdown-menu .divider {
+	background-color: #333;
+}
+
 html.theme_dark .dropdown-menu li a {
 	color: #DDD;
 	border-bottom-color: #333;

@@ -6,7 +6,7 @@ use \Entity\Station;
 class Stream extends AdapterAbstract
 {
 	/* Process a nowplaying record. */
-	public function process(&$np)
+	protected function _process($np)
 	{
 		$is_live = false;
 
@@ -28,6 +28,7 @@ class Stream extends AdapterAbstract
 					$is_live = true;
 					$np['is_live'] = 'true';
 					$np['text'] = 'Stream Online';
+					return $np;
 				}
 			}
 		}
@@ -48,6 +49,7 @@ class Stream extends AdapterAbstract
 					$np['text'] = 'Stream Online';
 					$np['listeners'] = (int)$stream['viewers'];
 					$np['is_live'] = 'true';
+					return $np;
 				}
 			}
 		}
@@ -68,16 +70,11 @@ class Stream extends AdapterAbstract
 					$np['text'] = 'Stream Online';
 					$np['listeners'] = (int)$stream['stream_count'];
 					$np['is_live'] = 'true';
+					return $np;
 				}
 			}
 		}
 
-		if (!$is_live)
-		{
-			$np['text'] = 'Stream Offline';
-			$np['is_live'] = 'false';
-		}
-
-		return $np;
+		return false;
 	}
 }

@@ -21,7 +21,7 @@ $this->layout()->hide_title = true;
 		<div class="well">
 			<ul class="nav nav-list">
 			<? foreach($this->genres as $genre_id => $genre): ?>
-				<li><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'search', 'genre' => $genre['name'])) ?>" class="ajax"><i class="icon-folder-close"></i> <?=$genre['name'] ?> <span class="label pull-right"><?=$genre['total'] ?></span></li>
+				<li><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'search', 'genre' => $genre['name'])) ?>" class="ajax"><i class="icon-folder-close"></i> <?=$genre['name'] ?> <span class="label pull-right"><?=$genre['total'] ?></span></a></li>
 			<? endforeach; ?>
 			</ul>
 		</div>

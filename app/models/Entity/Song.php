@@ -110,7 +110,7 @@ class Song extends \DF\Doctrine\Entity
         $this->rate_score = (int)($this->rate_likes - $this->rate_dislikes);
     }
 
-    public function playedOnStation(Station $station)
+    public function playedOnStation(Station $station, $np)
     {
         // Check to ensure no match with most recent song.
         try
@@ -131,6 +131,7 @@ class Song extends \DF\Doctrine\Entity
             $sh = new SongHistory;
             $sh->song = $this;
             $sh->station = $station;
+            $sh->listeners = (int)$np['listeners'];
             $sh->save();
 
             return $sh;

@@ -97,6 +97,13 @@ return array(
                     'placeholder' => 'http://YourUsername.deviantart.com',
                 )),
 
+                'livestream_url' => array('text', array(
+                    'label' => 'LiveStream Address',
+                    'class' => 'half-width',
+                    'filters' => array('WebAddress'),
+                    'placeholder' => 'http://livestream.com/username',
+                )),
+
             ),
         ),
 

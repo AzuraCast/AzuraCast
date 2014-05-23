@@ -118,7 +118,7 @@ $this->render_mode = 'homepage';
 				<div class="carousel-inner">
 				<? foreach($this->rotators as $i => $record): ?>
 					<div class="item <? if ($i == 0): ?>active<? endif; ?>">
-						<a href="<?=$record['web_url'] ?>"><img src="<?=\DF\Url::content($record['image_url']) ?>" title="<?=$record['description'] ?>"></a>
+						<a href="<?=$record['web_url'] ?>" target="_blank"><img src="<?=\DF\Url::content($record['image_url']) ?>" title="<?=$record['description'] ?>"></a>
 					</div>
 				<? endforeach; ?>
 				</div>

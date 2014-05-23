@@ -3,7 +3,7 @@
  * Radio Player Script
  */
 
-var volume = 100;
+var volume = 70;
 var nowplaying_song = '';
 var nowplaying_url = '';
 var original_window_title;
@@ -203,7 +203,7 @@ function checkNowPlaying(force_update)
 					if (!station.is(':visible'))
 						station.show();
 				}
-				else if (station_info.text == 'Stream Offline')
+				else if (station_info.status == 'offline')
 				{
 					station.find('.nowplaying-live').hide();
 					station.removeClass('live').addClass('offline');
@@ -229,7 +229,8 @@ function checkNowPlaying(force_update)
 				}
 				else
 				{
-					station.find('img.media-object').attr('src', station.data('image'));
+					// Disabled for performance.
+					// station.find('img.media-object').attr('src', station.data('image'));
 				}
 
 				// Set event data.

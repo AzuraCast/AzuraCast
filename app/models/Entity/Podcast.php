@@ -74,6 +74,9 @@ class Podcast extends \DF\Doctrine\Entity
     /** @Column(name="deviantart_url", type="string", length=255, nullable=true) */
     protected $deviantart_url;
 
+    /** @Column(name="livestream_url", type="string", length=255, nullable=true) */
+    protected $livestream_url;
+
     /** @Column(name="sync_timestamp", type="datetime", nullable=true) */
     protected $sync_timestamp;
 
@@ -253,6 +256,13 @@ class Podcast extends \DF\Doctrine\Entity
                 'name' => 'DeviantArt',
                 'icon' => 'deviantart',
                 'adapter' => 'DeviantArt',
+                'settings' => array(),
+                'threshold' => '-6 months',
+            ),
+            'livestream_url' => array(
+                'name' => 'LiveStream',
+                'icon' => 'livestream',
+                'adapter' => 'LiveStream',
                 'settings' => array(),
                 'threshold' => '-6 months',
             ),

@@ -263,6 +263,11 @@
 	border-bottom:solid 2px #687074; 
 	z-index: 9999 !important;
 }
+.dropdown-menu .divider {
+	margin: 0;
+	height: 3px;
+	border-bottom: none;
+}
 .dropdown-menu li a { 
 	color:#687074; 
 	font-size:13px; 

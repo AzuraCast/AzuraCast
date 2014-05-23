@@ -16,6 +16,10 @@ class UtilController extends \DF\Controller\Action
 
         echo '<pre>';
 
+        $results = \PVL\NewsAdapter\LiveStream::fetch('http://www.livestream.com/efnwpresents');
+        \DF\Utilities::print_r($results);
+        exit;
+
         \PVL\NowPlaying::generate();
 
         echo '</pre>';

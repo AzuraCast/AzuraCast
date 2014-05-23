@@ -30,6 +30,9 @@ class SongHistory extends \DF\Doctrine\Entity
     /** @Column(name="timestamp", type="integer") */
     protected $timestamp;
 
+    /** @Column(name="listeners", type="integer", nullable=true) */
+    protected $listeners;
+
     /**
      * @ManyToOne(targetEntity="Song", inversedBy="history")
      * @JoinColumns({

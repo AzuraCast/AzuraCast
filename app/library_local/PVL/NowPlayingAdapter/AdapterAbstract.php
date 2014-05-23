@@ -14,8 +14,42 @@ class AdapterAbstract
 		$this->url = $station->nowplaying_url;
 	}
 
-	/* Process a nowplaying record. */
-	public function process(&$np)
+	/* Master processing and cleanup. */
+	public function process($np)
+	{
+		$np_new = $this->_process($np);
+
+		// Auto fail-safe for empty records or failed record pulls.
+		if ($np_new === false || (empty($np_new['title']) && empty($np_new['text'])))
+		{
+			$np['text'] = 'Stream Offline';
+			$np['status'] = 'offline';
+			$np['is_live'] = false;
+		}
+		else
+		{
+			// Trim results and clean up some possible erroneous data.
+			$np_new['listeners'] = (int)$np_new['listeners'];
+			$np_new['text'] = $this->_cleanUpString($np_new['text']);
+			$np_new['title'] = $this->_cleanUpString($np_new['title']);
+			$np_new['artist'] = $this->_cleanUpString($np_new['artist']);
+
+			$np = array_merge($np, $np_new);
+			$np['status'] = 'online';
+		}
+
+		return $np;
+	}
+
+	protected function _cleanUpString($value)
+	{
+		$value = htmlspecialchars_decode($value);
+		$value = trim($value);
+		return $value;
+	}
+
+	/* Stub function for the process internal handler. */
+	protected function _process($np)
 	{
 		return $np;
 	}

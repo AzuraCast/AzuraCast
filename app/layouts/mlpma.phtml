@@ -25,5 +25,13 @@ $this->custom_scripts = array(
 	\DF\Url::content('mlpma/custom.js'),
 );
 
+$this->layout()->manual = true;
+$this->layout()->content = '
+<div class="row-fluid">
+	<div class="span3">'.$this->renderCommon('mlpma').'</div>
+	<div class="span9">'.$this->layout()->content.'</div>
+</div>
+';
+
 include('default.phtml');
 ?>

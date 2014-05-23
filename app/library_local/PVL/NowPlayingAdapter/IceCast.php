@@ -6,16 +6,12 @@ use \Entity\Station;
 class IceCast extends AdapterAbstract
 {
 	/* Process a nowplaying record. */
-	public function process(&$np)
+	protected function _process($np)
 	{
 		$return_raw = $this->getUrl();
 
 		if (!$return_raw)
-		{
-			$np['text'] = 'Stream Offline';
-			$np['is_live'] = 'false';
-			return;
-		}
+			return false;
 
 		$temp_array = array();
 		$search_for = "<td\s[^>]*class=\"streamdata\">(.*)<\/td>";
@@ -42,6 +38,6 @@ class IceCast extends AdapterAbstract
 		$np['title'] = $track;
 		$np['text'] = $temp_array[9];
 		$np['is_live'] = 'false';
-		return;
+		return $np;
 	}
 }

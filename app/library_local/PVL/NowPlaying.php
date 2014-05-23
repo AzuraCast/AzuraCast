@@ -189,11 +189,13 @@ class NowPlaying
 
 			\PVL\Debug::log('Adapter Class: '.get_class($np_adapter));
 
-			$np_adapter->process($np);
+			$np = $np_adapter->process($np);
 		}
 		else
 		{
-			$np['text'] = 'No stream details currently available.';
+			$np['text'] = 'Error Processing Stream';
+			$np['is_live'] = false;
+			$np['status'] = 'offline';
 		}
 
 		// Pull from current NP data if song details haven't changed.
@@ -223,7 +225,7 @@ class NowPlaying
 			$np['song_history'] = $station->getRecentHistory();
 
 			$song_obj = Song::getOrCreate($np);
-			$song_obj->playedOnStation($station);
+			$song_obj->playedOnStation($station, $np);
 			$np['song_id'] = $song_obj->id;
 		}
 

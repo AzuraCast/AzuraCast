@@ -6,16 +6,12 @@ use \Entity\Station;
 class RadioBrony extends AdapterAbstract
 {
 	/* Process a nowplaying record. */
-	public function process(&$np)
+	protected function _process($np)
 	{
 		$return_raw = $this->getUrl();
 
 		if (!$return_raw)
-		{
-			$np['text'] = 'Stream Offline';
-			$np['is_live'] = 'false';
-			return;
-		}
+			return false;
 
 		$return = json_decode($return_raw, true);
 

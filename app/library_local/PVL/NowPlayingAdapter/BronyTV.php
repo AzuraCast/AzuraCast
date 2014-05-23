@@ -6,7 +6,7 @@ use \Entity\Station;
 class BronyTV extends AdapterAbstract
 {
 	/* Process a nowplaying record. */
-	public function process(&$np)
+	protected function _process($np)
 	{
 		$return_raw = $this->getUrl();
 
@@ -19,8 +19,7 @@ class BronyTV extends AdapterAbstract
 
 			if ($return['Stream_Status'] == 'Stream is offline' || $return['Stream_Status'] == 'offline - Offline')
 			{
-				$np['text'] = 'Stream Offline';
-				$np['is_live'] = 'false';
+				return false;
 			}
 			else
 			{
@@ -31,16 +30,12 @@ class BronyTV extends AdapterAbstract
 				$np['title'] = $parts[1];
 				$np['text'] = implode(' - ', $parts);
 				$np['is_live'] = 'true';
+				return $np;
 			}
 		}
 		else
 		{
-			$np['artist'] = 'Offline';
-			$np['title'] = 'Offline';
-			$np['text'] = 'Stream Offline';
-			$np['is_live'] = 'false';
+			return false;
 		}
-
-		return $np;
 	}
 }

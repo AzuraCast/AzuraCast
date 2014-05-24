@@ -6,36 +6,86 @@
 .podcast img {
 	padding: 4px;
 
-	-webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
-	-moz-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
 	box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
-	background: #FFFFFF;
+	background: #13385E;
 	/* background: #163D63; */
 
 	border-radius: 5px;
 	border: 0;
 }
 
+.station .show-when-playing {
+	display: none;
+}
+
+.station.live,
+.station.live h4 small {
+	color: #2C7FD2;
+}
 .station.live img {
 	/* background: #428BD5; */
 }
-.station.playing img {
-	/* background: #5699DC; */
+
+.station.playing {
+	overflow: initial;
+	background: rgba(19, 56, 93, 0.95); /* #13385E; */
+	box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+
+	border-radius: 5px;
+	margin: 3px 0 3px -5px;
+
+	padding-left: 5px;
+	padding-right: 10px;
+
+	cursor: default;
+
+	transition: background 1s ease;
 }
+.station.playing .show-when-playing {
+	display: block;
+}
+
+.station.playing .media-body {
+	overflow: hidden;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+.station.playing > .btn-toolbar {
+	padding-top: 4px;
+}
+.station.playing,
+.station.playing h4 small {
+	color: #EFEFEF;
+}
+.station.playing h4 {
+	font-size: 18px;
+	line-height: 16px;
+	padding-top: 8px;
+	padding-bottom: 4px;
+}
+.station.playing h4 small {
+	font-size: 14px;
+	color: #CCC;
+}
+.station.playing img {
+	background: none;
+	box-shadow: none;
+}
+.station.playing .nowplaying-artist {
+	font-size: 16px;
+	line-height: 17px;
+}
+.station.playing .nowplaying-title {
+	font-size: 14px;
+	line-height: 15px;
+}
+
 .station.offline {
 	cursor: default;
 }
 .station.offline,
 .station.offline h4 small {
 	opacity: 0.6;
-}
-.station.live,
-.station.live h4 small {
-	color: #2C7FD2;
-}
-.station.playing,
-.station.playing h4 small {
-	color: #5699DC;	
 }
 
 .station .media-object,
@@ -67,6 +117,35 @@
 .station .station-info .chat-button {
 	float: right;
 	margin-top: 25px;
+}
+
+/**
+ * Dropdown Menu
+ */
+
+li.media .dropdown-menu {
+	margin-top: 5px;
+	background: rgba(9,15,21,0.96);
+	box-shadow: 0 0 8px #000;
+	border: 1px solid rgba(255,255,255,0.1);
+	border-radius: 5px;
+
+	min-width: 175px;
+}
+li.media .dropdown-menu li a {
+	padding: 4px 8px 4px 10px;
+	color: #fff;
+	background: none;
+	border-bottom: none;
+}
+li.media .dropdown-menu li a:hover {
+	background: #13385E !important;
+}
+li.media .dropdown-menu li i {
+	padding-right: 3px;
+}
+li.media .dropdown-menu li i:before {
+	color: #CCC;
 }
 
 /**
@@ -138,13 +217,8 @@ li.podcast {
 	font-size: 12px;
 }
 
-.station.playing,
-.station.playing h4 small {
-	color: #5699DC;	
-}
-
 .station .station-player-container {
-	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .station .station-player .buttons {
@@ -161,6 +235,14 @@ li.podcast {
 	background: none;
 	filter: -;
 	background-color: #222;
+}
+
+.station .jp-pause,
+.station .jp-play {
+	float: left;
+	font-size: 15px;
+
+	padding-right: 15px;
 }
 
 .station .jp-mute,

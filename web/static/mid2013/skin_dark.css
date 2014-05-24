@@ -102,8 +102,8 @@ h1, h2 {
 	background: #151515;
 }
 
-.station.playing h4 {
-	border-color: #66B33C;
+.station.playing {
+	background: #151515;
 }
 
 .station.offline,
@@ -115,12 +115,7 @@ h1, h2 {
 	color: #B4D1EF;
 }
 
-.station.playing,
-.station.playing h4 small,
-.station.playing .station-player-container a {
-	color: #66B33C;	
-}
-
+/*
 .station.playing .progress .bar {
 	background-color: #66B33C;
 	background-image: -moz-linear-gradient(top, #66B33C, #366121);
@@ -131,3 +126,4 @@ h1, h2 {
 	background-repeat: repeat-x;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff66B33C', endColorstr='#ff366121', GradientType=0);
 }
+*/

@@ -18,18 +18,19 @@ var jp_is_playing;
 $(function() {
 	original_window_title = document.title;
 
-	$('.station-link,.station-history').hide();
-
 	$('.nowplaying-status').hide();
 
 	$('.station').click(function(e) {
-		e.preventDefault();
-		initNotifications();
+		if (!$(this).closest('.station').hasClass('playing'))
+		{
+			e.preventDefault();
+			initNotifications();
 
-		if ($(this).data('popup'))
-			playInPopUp($(this).data('id'));
-		else
-			playStation($(this).attr('id'));
+			if ($(this).data('popup'))
+				playInPopUp($(this).data('id'));
+			else
+				playStation($(this).attr('id'));
+		}
 	});
 	
 	$('.station .station-player').click(function(e) {
@@ -359,13 +360,10 @@ function playStation(id)
 					warningAlerts: false
 				});
 
-				station.find('i.current-status').removeClass('icon-stop icon-play').addClass('icon-stop');
-
-				station.find('.station-link').show();
-				station.find('.station-player').show();
-
 				station.addClass('playing');
-				station.find('.station-play-button').html('<i class="icon-pause"></i>');
+
+				// station.find('i.current-status').removeClass('icon-stop icon-play').addClass('icon-stop');
+				// station.find('.station-play-button').html('<i class="icon-pause"></i>');
 
 				$('#tunein_player').data('current_station', station.data('id'));
 
@@ -390,7 +388,7 @@ function startPlayer()
 {
 	var stream = {
 		title: "Ponyville Live!",
-		mp3: nowplaying_url
+		mp3: getPlaybackUrl()
 	};
 
 	$("#pvl-jplayer").jPlayer("setMedia", stream).jPlayer("play");
@@ -399,6 +397,13 @@ function startPlayer()
 	check_interval = setInterval('checkPlayer()', 1500);
 }
 
+function getPlaybackUrl()
+{
+	var playback_url = addParameter(nowplaying_url, 'played_at', getUnixTimestamp());
+	console.log('Playback URL: '+playback_url);
+
+	return playback_url;
+}
 
 function checkPlayer()
 {
@@ -429,22 +434,22 @@ function stopAllPlayers()
 	clearInterval(check_interval);
 	is_playing = false;
 
+	// $('i.current-status').removeClass('icon-stop icon-play').addClass('icon-play');
+	// $('.nowplaying-status').hide();
+
 	$('.station .station-player-container').empty();
-
-	$('i.current-status').removeClass('icon-stop icon-play').addClass('icon-play');
-	$('.nowplaying-status').hide();
-
-	$('.station-player,.station-link,.station-history').hide();
-
+	$('.station-history').hide();
 	$('.station').removeClass('playing');
 
 	$('#tunein_player').removeData('current_station');
 
+	/*
 	// Reset now-playing images.
 	$('.station').each(function() {
 		$(this).find('.station-play-button').html('<i class="icon-play"></i>');
 		$(this).find('img.media-object').attr('src', $(this).data('image'));
 	});
+	*/
 
 	document.title = original_window_title;
 }
@@ -493,6 +498,54 @@ function playInPopUp(station_id) {
 
 	window.open(orig_url, 'pvl_player', 'height=600,width=400,status=yes,scrollbars=yes', true);
 }
+
+/**
+ * Utility Functions
+ */
+
+function addParameter(url, parameterName, parameterValue, atStart)
+{
+    replaceDuplicates = true;
+    if(url.indexOf('#') > 0){
+        var cl = url.indexOf('#');
+        urlhash = url.substring(url.indexOf('#'),url.length);
+    } else {
+        urlhash = '';
+        cl = url.length;
+    }
+    sourceUrl = url.substring(0,cl);
+
+    var urlParts = sourceUrl.split("?");
+    var newQueryString = "";
+
+    if (urlParts.length > 1)
+    {
+        var parameters = urlParts[1].split("&");
+        for (var i=0; (i < parameters.length); i++)
+        {
+            var parameterParts = parameters[i].split("=");
+            if (!(replaceDuplicates && parameterParts[0] == parameterName))
+            {
+                if (newQueryString == "")
+                    newQueryString = "?";
+                else
+                    newQueryString += "&";
+                newQueryString += parameterParts[0] + "=" + (parameterParts[1]?parameterParts[1]:'');
+            }
+        }
+    }
+    if (newQueryString == "")
+        newQueryString = "?";
+
+    if(atStart){
+        newQueryString = '?'+ parameterName + "=" + parameterValue + (newQueryString.length>1?'&'+newQueryString.substring(1):'');
+    } else {
+        if (newQueryString !== "" && newQueryString != '?')
+            newQueryString += "&";
+        newQueryString += parameterName + "=" + (parameterValue?parameterValue:'');
+    }
+    return urlParts[0] + newQueryString + urlhash;
+};
 
 function getUnixTimestamp()
 {

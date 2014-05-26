@@ -240,15 +240,13 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
             $songs[] = $song_row;
         }
 
-        $this->view->songs = $songs;
-
         $format = $this->_getParam('format', 'html');
         if ($format == 'csv')
         {
             $this->doNotRender();
 
             $export_all = array();
-            $export_all[] = array('Date', 'Time', 'Listeners', 'Delta', 'Track', 'Artist', 'Event');
+            $export_all[] = array('Date', 'Time', 'Listeners', 'Likes', 'Dislikes', 'Delta', 'Track', 'Artist', 'Event');
 
             foreach($songs as $song_row)
             {
@@ -257,6 +255,8 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
                     date('g:ia', $song_row['timestamp']),
                     $song_row['stat_start'],
                     $song_row['stat_delta'],
+                    $song_row['score_likes'],
+                    $song_row['score_dislikes'],
                     ($song_row['song']['title']) ? $song_row['song']['title'] : $song_row['song']['text'],
                     $song_row['song']['artist'],
                     ($song_row['event']) ? $song_row['event']['title'] : '',
@@ -267,6 +267,13 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
 
             \DF\Export::csv($export_all);
             return;
+        }
+        else
+        {
+            $songs = array_reverse($songs);
+
+            $pager = new \DF\Paginator($songs, $this->_getParam('page', 1), 50);
+            $this->view->pager = $pager;
         }
     }
 

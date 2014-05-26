@@ -13,6 +13,12 @@ class StationRequest extends \DF\Doctrine\Entity
     {
         $this->timestamp = time();
         $this->ip = $_SERVER['REMOTE_ADDR'];
+
+        if (\DF\Auth::isLoggedIn())
+        {
+            $user = \DF\Auth::getLoggedInUser();
+            $this->user = $user;
+        }
     }
 
     /**
@@ -27,6 +33,9 @@ class StationRequest extends \DF\Doctrine\Entity
 
     /** @Column(name="track_id", type="integer") */
     protected $track_id;
+
+    /** @Column(name="user_id", type="integer", nullable=true) */
+    protected $user_id;
 
     /** @Column(name="timestamp", type="integer") */
     protected $timestamp;
@@ -49,4 +58,12 @@ class StationRequest extends \DF\Doctrine\Entity
      * })
      */
     protected $track;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumns({
+     *   @JoinColumn(name="user_id", referencedColumnName="uid", onDelete="SET NULL")
+     * })
+     */
+    protected $user;
 }

@@ -16,6 +16,12 @@ class SongVote extends \DF\Doctrine\Entity
     {
         $this->ip = self::getIp();
         $this->timestamp = time();
+
+        if (\DF\Auth::isLoggedIn())
+        {
+            $user = \DF\Auth::getLoggedInUser();
+            $this->user = $user;
+        }
     }
 
     /**
@@ -30,6 +36,9 @@ class SongVote extends \DF\Doctrine\Entity
 
     /** @Column(name="station_id", type="integer") */
     protected $station_id;
+
+    /** @Column(name="user_id", type="integer", nullable=true) */
+    protected $user_id;
 
     /** @Column(name="ip", type="string", length=45) */
     protected $ip;
@@ -55,6 +64,14 @@ class SongVote extends \DF\Doctrine\Entity
      * })
      */
     protected $station;
+
+    /**
+     * @ManyToOne(targetEntity="User")
+     * @JoinColumns({
+     *   @JoinColumn(name="user_id", referencedColumnName="uid", onDelete="SET NULL")
+     * })
+     */
+    protected $user;
 
     /**
      * Static Functions

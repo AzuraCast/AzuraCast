@@ -14,7 +14,6 @@
 .loginbar {
 	margin:0;
 	padding:0;
-	z-index:9999;
 	list-style:none;
 	position:relative;
 }
@@ -356,10 +355,6 @@
 	border-bottom-color:#72c02c;
 }
 
-/*Fancybox for gallery page*/
-.fancybox-overlay.fancybox-overlay-fixed {
-	z-index:9999;
-}
 
 /*Menu
 ------------------------------------*/

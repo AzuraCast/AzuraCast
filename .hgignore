@@ -3,6 +3,7 @@ syntax: glob
 tmp/cache/*---*
 app/models/Proxy/*.php
 web/static/api/*
+util/php_errors.log
 *.DS_Store
 *.apdisk
 *.zip

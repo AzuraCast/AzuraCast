@@ -12,6 +12,12 @@ class Debug
 		self::$echo_debug = $new_value;
 	}
 
+	static function showErrors()
+	{
+		error_reporting(E_ALL & ~E_STRICT);
+		ini_set('display_errors', 1);
+	}
+
 	// Logging
 	static function log($entry)
 	{

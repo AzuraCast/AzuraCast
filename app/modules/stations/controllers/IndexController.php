@@ -116,6 +116,7 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
 
         $threshold = strtotime('yesterday 00:00:00');
 
+        /*
         $stats_raw = $this->em->createQuery('SELECT s FROM Entity\Statistic s WHERE s.timestamp >= :datetime')
             ->setParameter('datetime', date('Y-m-d G:i:s', $threshold))
             ->getArrayResult();
@@ -130,8 +131,9 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
 
             $stats[$stat_timestamp] = $stat_for_station;
         }
+        */
 
-        $songs_played_raw = $this->em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id AND sh.timestamp >= :timestamp ORDER BY sh.timestamp ASC')
+        $songs_played_raw = $this->em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id AND sh.timestamp >= :timestamp AND sh.listeners IS NOT NULL ORDER BY sh.timestamp ASC')
             ->setParameter('station_id', $this->station->id)
             ->setParameter('timestamp', $threshold)
             ->getArrayResult();
@@ -146,25 +148,13 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
             if ($this->_ignoreSong($song_row['song']['text']))
                 continue;
 
-            $start_timestamp = $song_row['timestamp'];
-            $end_timestamp = $songs_played_raw[$i+1]['timestamp'] - 1;
+            $song_row['stat_start'] = $song_row['listeners'];
 
-            $relevant_stats = array();
-            foreach($stats as $stat_timestamp => $stat_value)
-            {
-                if ($stat_timestamp <= $start_timestamp - 30)
-                    unset($stats[$stat_timestamp]);
-                elseif ($stat_timestamp >= $end_timestamp + 30)
-                    break;
-                else
-                    $relevant_stats[$stat_timestamp] = $stat_value;
-            }
+            if ($i+1 == count($songs_played_raw))
+                $song_row['stat_end'] = $song_row['stat_start'];
+            else
+                $song_row['stat_end'] = $songs_played_raw[$i+1]['listeners'];
 
-            if (count($relevant_stats) < 2)
-                continue;
-
-            $song_row['stat_start'] = array_shift($relevant_stats);
-            $song_row['stat_end'] = array_pop($relevant_stats);
             $song_row['stat_delta'] = $song_row['stat_end'] - $song_row['stat_start'];
 
             $songs[] = $song_row;
@@ -198,29 +188,23 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
 
     public function timelineAction()
     {
-        $threshold = strtotime('yesterday 00:00:00');
+        try
+        {
+            $threshold = $this->em->createQuery('SELECT sh.timestamp FROM Entity\SongHistory sh WHERE sh.station_id = :station_id AND sh.listeners IS NOT NULL ORDER BY sh.timestamp ASC')
+                ->setParameter('station_id', $this->station->id)
+                ->setMaxResults(1)
+                ->getSingleScalarResult();
+        }
+        catch(\Exception $e)
+        {
+            $threshold = strtotime('Yesterday 00:00:00');
+        }
 
         // Get current events within threshold.
         $events = \Entity\Schedule::getEventsInRange($this->station->id, $threshold, time());
 
-        // Get listenership statistics.
-        $stats_raw = $this->em->createQuery('SELECT s FROM Entity\Statistic s WHERE s.timestamp >= :datetime')
-            ->setParameter('datetime', date('Y-m-d G:i:s', $threshold))
-            ->getArrayResult();
-
-        $stats = array();
-        $short_name = $this->station->short_name;
-
-        foreach($stats_raw as $stat_row)
-        {
-            $stat_timestamp = $stat_row['timestamp']->getTimestamp();
-            $stat_for_station = (int)$stat_row['total_stations'][$short_name];
-
-            $stats[$stat_timestamp] = $stat_for_station;
-        }
-
         // Get all songs played in timeline.
-        $songs_played_raw = $this->em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id AND sh.timestamp >= :timestamp ORDER BY sh.timestamp ASC')
+        $songs_played_raw = $this->em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id AND sh.timestamp >= :timestamp AND sh.listeners IS NOT NULL ORDER BY sh.timestamp ASC')
             ->setParameter('station_id', $this->station->id)
             ->setParameter('timestamp', $threshold)
             ->getArrayResult();
@@ -235,25 +219,13 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
             if ($this->_ignoreSong($song_row['song']['text']))
                 continue;
 
-            $start_timestamp = $song_row['timestamp'];
-            $end_timestamp = $songs_played_raw[$i+1]['timestamp'] - 1;
+            $song_row['stat_start'] = $song_row['listeners'];
 
-            $relevant_stats = array();
-            foreach($stats as $stat_timestamp => $stat_value)
-            {
-                if ($stat_timestamp < $start_timestamp - 20)
-                    unset($stats[$stat_timestamp]);
-                elseif ($stat_timestamp > $end_timestamp + 20)
-                    break;
-                else
-                    $relevant_stats[$stat_timestamp] = $stat_value;
-            }
+            if ($i+1 == count($songs_played_raw))
+                $song_row['stat_end'] = $song_row['stat_start'];
+            else
+                $song_row['stat_end'] = $songs_played_raw[$i+1]['listeners'];
 
-            if (count($relevant_stats) < 2)
-                continue;
-
-            $song_row['stat_start'] = array_shift($relevant_stats);
-            $song_row['stat_end'] = array_pop($relevant_stats);
             $song_row['stat_delta'] = $song_row['stat_end'] - $song_row['stat_start'];
 
             foreach($events as $event)

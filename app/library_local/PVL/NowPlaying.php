@@ -5,6 +5,8 @@ use \Entity\Statistic;
 use \Entity\Schedule;
 use \Entity\Station;
 use \Entity\Song;
+use \Entity\SongHistory;
+use \Entity\SongVote;
 use \Entity\Settings;
 
 class NowPlaying
@@ -201,15 +203,21 @@ class NowPlaying
 		// Pull from current NP data if song details haven't changed.
 		if (strcmp($np['text'], $current_np_data['text']) == 0)
 		{
+			$np['song_history'] = $current_np_data['song_history'];
+
 			// $np['image'] = $current_np_data['image'];
 			$np['song_id'] = $current_np_data['song_id'];
-			$np['song_history'] = $current_np_data['song_history'];
+			$np['song_sh_id'] = $current_np_data['song_sh_id'];
+			$np['song_score'] = $current_np_data['song_score'];
 		}
 		else if (empty($np['text']))
 		{
+			$np['song_history'] = $station->getRecentHistory();
+
 			// $np['image'] = $np['logo'];
 			$np['song_id'] = NULL;
-			$np['song_history'] = $station->getRecentHistory();
+			$np['song_sh_id'] = NULL;
+			$np['song_score'] = 0;
 		}
 		else
 		{
@@ -225,8 +233,11 @@ class NowPlaying
 			$np['song_history'] = $station->getRecentHistory();
 
 			$song_obj = Song::getOrCreate($np);
-			$song_obj->playedOnStation($station, $np);
+			$sh_obj = SongHistory::register($song_obj, $station, $np);
+
 			$np['song_id'] = $song_obj->id;
+			$np['song_sh_id'] = $sh_obj->id;
+			$np['song_score'] = SongVote::getScoreForStation($song_obj, $station);
 		}
 
 		// Get currently active event (cached query)

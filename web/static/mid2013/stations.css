@@ -45,6 +45,9 @@
 	display: block;
 }
 
+.station.playing .nowplaying-onair {
+	padding-top: 3px;
+}
 .station.playing .media-body {
 	overflow: hidden;
 	padding-top: 3px;
@@ -61,7 +64,7 @@
 	font-size: 18px;
 	line-height: 16px;
 	padding-top: 8px;
-	padding-bottom: 4px;
+	padding-bottom: 0;
 }
 .station.playing h4 small {
 	font-size: 14px;
@@ -78,6 +81,9 @@
 .station.playing .nowplaying-title {
 	font-size: 14px;
 	line-height: 15px;
+}
+.station.playing .station-player-container {
+	margin-top: 5px;
 }
 
 .station.offline {
@@ -253,4 +259,38 @@ li.podcast {
 .station .jp-volume-max {
 	float: left;
 	padding-left: 5px;
+}
+
+/**
+ * Voting Functionality
+ */
+
+.station .vote-wrapper {
+	text-align: center;
+	padding-top: 3px;
+	line-height: 14px;
+}
+
+.station .vote-wrapper a {
+	color: #AAA;
+	text-decoration: none !important;
+}
+.station .vote-wrapper a:focus { 
+    outline: none; 
+}
+.station .vote-wrapper a.btn-active {
+	color: #FFF;
+}
+
+.station .vote-wrapper a.btn-like {
+	color: #9FB79D;
+}
+.station .vote-wrapper a.btn-like.btn-active {
+	color: #45C126;
+}
+.station .vote-wrapper a.btn-dislike {
+	color: #B79D9D;
+}
+.station .vote-wrapper a.btn-dislike.btn-active {
+	color: #D51C1C;
 }

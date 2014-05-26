@@ -4,7 +4,9 @@ namespace Entity;
 use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @Table(name="songs")
+ * @Table(name="songs", indexes={
+ *   @index(name="search_idx", columns={"text", "artist", "title"})
+ * })
  * @Entity
  * @HasLifecycleCallbacks
  */
@@ -13,12 +15,9 @@ class Song extends \DF\Doctrine\Entity
     public function __construct()
     {
         $this->created_at = new \DateTime('NOW');
-        $this->rate_likes = 0;
-        $this->rate_dislikes = 0;
-        $this->rate_score = 0;
+        $this->score = 0;
 
-        $this->likes = new ArrayCollection;
-        $this->dislikes = new ArrayCollection;
+        $this->votes = new ArrayCollection;
         $this->history = new ArrayCollection;
     }
 
@@ -46,32 +45,14 @@ class Song extends \DF\Doctrine\Entity
     /** @Column(name="created_at", type="datetime", nullable=true) */
     protected $created_at;
 
-    /** @Column(name="rate_likes", type="smallint") */
-    protected $rate_likes;
+    /** @Column(name="score", type="smallint") */
+    protected $score;
 
-    /** @Column(name="rate_dislikes", type="smallint") */
-    protected $rate_dislikes;
-
-    /** @Column(name="rate_score", type="smallint") */
-    protected $rate_score;
-
-    /**
-     * @ManyToMany(targetEntity="User", inversedBy="liked_songs")
-     * @JoinTable(name="song_likes",
-     *      joinColumns={@JoinColumn(name="song_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")}
-     * )
+    /** 
+     * @OneToMany(targetEntity="SongVote", mappedBy="song")
+     * @OrderBy({"timestamp" = "DESC"})
      */
-    protected $likes;
-
-    /**
-     * @ManyToMany(targetEntity="User", inversedBy="disliked_songs")
-     * @JoinTable(name="song_dislikes",
-     *      joinColumns={@JoinColumn(name="song_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")}
-     * )
-     */
-    protected $dislikes;
+    protected $votes;
 
     /** 
      * @OneToMany(targetEntity="SongHistory", mappedBy="song")
@@ -79,63 +60,9 @@ class Song extends \DF\Doctrine\Entity
      */
     protected $history;
 
-    public function like(User $user)
-    {
-        $this->_clearLikes($user);
-        $this->likes->add($user);
-
-        $this->updateScore();
-        $this->save();
-    }
-
-    public function dislike(User $user)
-    {
-        $this->_clearLikes($user);
-        $this->dislikes->add($user);
-
-        $this->updateScore();
-        $this->save();
-    }
-
-    protected function _clearLikes(User $user)
-    {
-        $this->likes->removeElement($user);
-        $this->dislikes->removeElement($user);
-    }
-
     public function updateScore()
     {
-        $this->rate_likes = (int)$this->likes->count();
-        $this->rate_dislikes = (int)$this->dislikes->count();
-        $this->rate_score = (int)($this->rate_likes - $this->rate_dislikes);
-    }
-
-    public function playedOnStation(Station $station, $np)
-    {
-        // Check to ensure no match with most recent song.
-        try
-        {
-            $em = self::getEntityManager();
-            $last_song_id = $em->createQuery('SELECT sh.song_id FROM Entity\SongHistory sh WHERE sh.station_id = :station_id ORDER BY sh.timestamp DESC')
-                ->setMaxResults(1)
-                ->setParameter('station_id', $station->id)
-                ->getSingleScalarResult();
-        }
-        catch(\Exception $e)
-        {
-            $last_song_id = NULL;
-        }
-
-        if ($last_song_id != $this->id)
-        {
-            $sh = new SongHistory;
-            $sh->song = $this;
-            $sh->station = $station;
-            $sh->listeners = (int)$np['listeners'];
-            $sh->save();
-
-            return $sh;
-        }
+        $this->score = SongVote::getScore($this);
     }
 
     /**

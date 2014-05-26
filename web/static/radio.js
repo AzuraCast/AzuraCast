@@ -8,6 +8,8 @@ var nowplaying_song = '';
 var nowplaying_url = '';
 var original_window_title;
 
+var vote_ratelimit = false;
+
 var nowplaying_last_run = 0;
 var nowplaying_timeout;
 var nowplaying_interval;
@@ -45,42 +47,65 @@ $(function() {
 	});
 
 	// "Like" links.
-	$('.station .btn-like').click(function(e) {
+	$('.station .vote-wrapper a').click(function(e)
+	{
 		e.preventDefault();
 
-		var song_id = $(this).closest('.station').data('song_id');
-		var url = $(this).attr('href')+'/id/'+song_id;
-		var active_button = $(this);
+		// Vote rate limiting.
+		if (vote_ratelimit)
+			return false;
+
+		vote_ratelimit = true;
+		setTimeout(function() {
+			vote_ratelimit = false;
+		}, 500);
+
+		// Action to call remotely.
+		if ($(this).hasClass('btn-active'))
+			var vote_function = 'clearvote';
+		else if ($(this).hasClass('btn-like'))
+			var vote_function = 'like';
+		else
+			var vote_function = 'dislike';
+
+		// Trigger AJAX call.
+		var songhist_id = intOrZero($(this).closest('.station').data('historyid'));
+
+		if (songhist_id == 0)
+			return false;
+
+		var remote_url = $(this).attr('href')+'/'+vote_function+'/sh_id/'+songhist_id;
 
 		jQuery.ajax({
-			'url': url,
-			'dataType': 'text'
-		}).done(function(return_code) {
-			console.log(return_code);
-
-			if (return_code == 'OK')
-			{
-				active_button.removeClass('btn-success').addClass('btn-disabled');
-			}
+			'url': remote_url,
+			'dataType': 'json'
+		}).done(function(return_data) {
+			console.log(return_data);
 		});
-	});
 
-	$('.station .btn-like-login-required').click(function(e) {
-		e.preventDefault();
+		// Update local graphics and text.
+		var score_display = $(this).closest('.vote-wrapper').find('.nowplaying-score');
+		var score_original = intOrZero(score_display.data('original'));
 
-		$.fancybox($('#login_screen').html(), {
-			maxWidth	: 500,
-			maxHeight	: 300,
-			autoSize	: true,
-			fitToView	: true,
-			width		: '50%',
-			height		: '30%',
-			arrows		: false,
-			closeClick	: false,
-			closeBtn	: true,
-			openEffect	: 'none',
-			closeEffect	: 'none'
-		});
+		if (vote_function == 'clearvote')
+		{
+			$(this).removeClass('btn-active');
+			score_display.text(score_original);
+		}
+		else
+		{
+			$(this).siblings('a').removeClass('btn-active');
+			$(this).addClass('btn-active');
+
+			if (vote_function == 'like')
+				var new_score = score_original + 1;
+			else
+				var new_score = score_original - 1;
+
+			score_display.text(new_score);
+		}
+
+		return false;
 	});
 
 	// Social links.
@@ -271,13 +296,19 @@ function checkNowPlaying(force_update)
 					station.find('.station-history').html(history_block);
 				}
 
+				var song_history_id = intOrZero(station_info.song_sh_id);
+				station.data('historyid', song_history_id);
+
 				if (station_info.song_id)
 				{
 					// Detect a change in song.
 					var current_song_id = station.data('song_id');
 					if (station_info.song_id != current_song_id)
 					{
-						station.find('.btn-like').removeClass('btn-disabled').addClass('btn-success');
+						station.find('.vote-wrapper a').removeClass('btn-active');
+
+						var song_score = intOrZero(station_info.song_score);
+						station.find('.nowplaying-score').data('original', song_score).text(song_score);
 					}
 
 					station.data('song_id', station_info.song_id);
@@ -331,7 +362,7 @@ function playStation(id)
 						startPlayer(nowplaying_url);
 					},
 					pause: function() {
-						$(this).jPlayer("clearMedia");
+						stopAllPlayers();
 					},
 					play: function() {
 						jp_is_playing = true;
@@ -344,6 +375,8 @@ function playStation(id)
 						var error_details = event.jPlayer.error;
 						console.log('Error: '+error_details.message+' - '+error_details.hint);
 						jp_is_playing = false;
+
+						stopAllPlayers();
 					},
 					volumechange: function(event) {
 						volume = Math.round(event.jPlayer.options.volume * 100);
@@ -502,6 +535,11 @@ function playInPopUp(station_id) {
 /**
  * Utility Functions
  */
+
+function intOrZero(number)
+{
+	return parseInt(number) || 0;
+}
 
 function addParameter(url, parameterName, parameterValue, atStart)
 {

@@ -2,6 +2,10 @@
 use \Entity\Station;
 use \Entity\StationManager;
 
+use \Entity\Song;
+use \Entity\SongHistory;
+use \Entity\SongVote;
+
 class Stations_IndexController extends \PVL\Controller\Action\Station
 {
     public function selectAction()
@@ -199,7 +203,7 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
             $this->doNotRender();
 
             $export_all = array();
-            $export_all[] = array('Date', 'Time', 'Listeners', 'Likes', 'Dislikes', 'Delta', 'Track', 'Artist', 'Event');
+            $export_all[] = array('Date', 'Time', 'Listeners', 'Delta', 'Likes', 'Dislikes', 'Track', 'Artist', 'Event');
 
             foreach($songs as $song_row)
             {
@@ -228,6 +232,27 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
 
             $this->view->pager = $pager;
         }
+    }
+
+    public function votesAction()
+    {
+        $threshold = strtotime('-2 weeks');
+
+        $votes_raw = $this->em->createQuery('SELECT sv.song_id, SUM(sv.vote) AS vote_total FROM Entity\SongVote sv WHERE sv.station_id = :station_id AND sv.timestamp >= :threshold GROUP BY sv.song_id')
+            ->setParameter('station_id', $this->station->id)
+            ->setParameter('threshold', $threshold)
+            ->getArrayResult();
+
+        \PVL\Utilities::orderBy($votes_raw, 'vote_total DESC');
+
+        $votes = array();
+        foreach($votes_raw as $row)
+        {
+            $row['song'] = Song::find($row['song_id']);
+            $votes[] = $row;
+        }
+
+        $this->view->votes = $votes;
     }
 
     public function addadminAction()

@@ -56,9 +56,6 @@ $(function() {
 			return false;
 
 		vote_ratelimit = true;
-		setTimeout(function() {
-			vote_ratelimit = false;
-		}, 500);
 
 		// Action to call remotely.
 		if ($(this).hasClass('btn-active'))
@@ -74,12 +71,17 @@ $(function() {
 		if (songhist_id == 0)
 			return false;
 
-		var remote_url = $(this).attr('href')+'/'+vote_function+'/sh_id/'+songhist_id;
+		var remote_url = '/api/song/'+vote_function;
 
 		jQuery.ajax({
+			'type': 'POST',
 			'url': remote_url,
-			'dataType': 'json'
+			'dataType': 'json',
+			'data': {
+				'sh_id': songhist_id,
+			}
 		}).done(function(return_data) {
+			vote_ratelimit = false;
 			console.log(return_data);
 		});
 

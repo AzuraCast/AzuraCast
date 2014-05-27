@@ -7,6 +7,10 @@ body, p, input, button, select, textarea, th, td,
 	line-height: 16px;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
 h1.title,
 h2.title {
 	padding: 0 0 20px 40px;
@@ -169,9 +173,22 @@ html.no-flash .flash {
 	display: none;
 }
 
+.progress {
+	margin-bottom: 0;
+}
+
 /**
  * Responsive
  */
+
+@media (max-width: 480px) {
+	.media .pull-left {
+		float: left;
+	}
+	.media .pull-right {
+		float: right;
+	}
+}
 
 @media (max-width: 980px) {
 	div#body {

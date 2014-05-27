@@ -90,6 +90,12 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
             ->setMaxResults(40)
             ->getArrayResult();
 
+        $ignored_songs = $this->_getIgnoredSongs();
+        $song_totals_raw['played'] = array_filter($song_totals_raw['played'], function($value) use ($ignored_songs)
+        {
+            return !(isset($ignored_songs[$value['song_id']]));
+        });
+
         // Compile the above data.
         $song_totals = array();
         foreach($song_totals_raw as $total_type => $total_records)
@@ -98,9 +104,6 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
             {
                 $song = \Entity\Song::find($total_record['song_id']);
                 $total_record['song'] = $song;
-
-                if ($this->_ignoreSong($song['text']))
-                    continue;
 
                 $song_totals[$total_type][] = $total_record;
             }
@@ -114,39 +117,13 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
          * Song "Deltas" (Changes in Listener Count)
          */
 
-        $threshold = strtotime('yesterday 00:00:00');
-
-        /*
-        $stats_raw = $this->em->createQuery('SELECT s FROM Entity\Statistic s WHERE s.timestamp >= :datetime')
-            ->setParameter('datetime', date('Y-m-d G:i:s', $threshold))
-            ->getArrayResult();
-
-        $stats = array();
-        $short_name = $this->station->short_name;
-
-        foreach($stats_raw as $stat_row)
-        {
-            $stat_timestamp = $stat_row['timestamp']->getTimestamp();
-            $stat_for_station = (int)$stat_row['total_stations'][$short_name];
-
-            $stats[$stat_timestamp] = $stat_for_station;
-        }
-        */
-
-        $songs_played_raw = $this->em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id AND sh.timestamp >= :timestamp AND sh.listeners IS NOT NULL ORDER BY sh.timestamp ASC')
-            ->setParameter('station_id', $this->station->id)
-            ->setParameter('timestamp', $threshold)
-            ->getArrayResult();
-
+        $songs_played_raw = $this->_getEligibleHistory();
         $songs = array();
 
         foreach($songs_played_raw as $i => $song_row)
         {
             if (!isset($songs_played_raw[$i+1]))
                 break;
-
-            if ($this->_ignoreSong($song_row['song']['text']))
-                continue;
 
             $song_row['stat_start'] = $song_row['listeners'];
 
@@ -168,46 +145,18 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
             return ($a > $b) ? 1 : -1;
         });
 
+
         $this->view->best_performing_songs = array_reverse(array_slice($songs, -5));
         $this->view->worst_performing_songs = array_slice($songs, 0, 5);
     }
 
-    protected function _ignoreSong($song_name)
-    {
-        if (empty($song_name))
-            return true;
-        if (stristr($song_name, 'Offline') !== false)
-            return true;
-        if (stristr($song_name, 'Sweeper') !== false)
-            return true;
-        if (stristr($song_name, 'Bumper') !== false)
-            return true;
-
-        return false;
-    }
-
     public function timelineAction()
     {
-        try
-        {
-            $threshold = $this->em->createQuery('SELECT sh.timestamp FROM Entity\SongHistory sh WHERE sh.station_id = :station_id AND sh.listeners IS NOT NULL ORDER BY sh.timestamp ASC')
-                ->setParameter('station_id', $this->station->id)
-                ->setMaxResults(1)
-                ->getSingleScalarResult();
-        }
-        catch(\Exception $e)
-        {
-            $threshold = strtotime('Yesterday 00:00:00');
-        }
+        $songs_played_raw = $this->_getEligibleHistory();
 
         // Get current events within threshold.
+        $threshold = $songs_played_raw[0]['timestamp'];
         $events = \Entity\Schedule::getEventsInRange($this->station->id, $threshold, time());
-
-        // Get all songs played in timeline.
-        $songs_played_raw = $this->em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id AND sh.timestamp >= :timestamp AND sh.listeners IS NOT NULL ORDER BY sh.timestamp ASC')
-            ->setParameter('station_id', $this->station->id)
-            ->setParameter('timestamp', $threshold)
-            ->getArrayResult();
 
         $songs = array();
 
@@ -216,15 +165,19 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
             if (!isset($songs_played_raw[$i+1]))
                 break;
 
-            if ($this->_ignoreSong($song_row['song']['text']))
-                continue;
-
+            $start_timestamp = $song_row['timestamp'];
             $song_row['stat_start'] = $song_row['listeners'];
 
             if ($i+1 == count($songs_played_raw))
+            {
+                $end_timestamp = $start_timestamp;
                 $song_row['stat_end'] = $song_row['stat_start'];
+            }
             else
+            {
+                $end_timestamp = $songs_played_raw[$i+1]['timestamp'];
                 $song_row['stat_end'] = $songs_played_raw[$i+1]['listeners'];
+            }
 
             $song_row['stat_delta'] = $song_row['stat_end'] - $song_row['stat_start'];
 
@@ -271,8 +224,8 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
         else
         {
             $songs = array_reverse($songs);
-
             $pager = new \DF\Paginator($songs, $this->_getParam('page', 1), 50);
+
             $this->view->pager = $pager;
         }
     }
@@ -302,5 +255,78 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
         $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
     }
 
+    /**
+     * Utility Functions
+     */
 
+    protected function _getEligibleHistory()
+    {
+        $cache_name = 'station_center_history_'.$this->station->id;
+        $songs_played_raw = \DF\Cache::get($cache_name);
+
+        if (!$songs_played_raw)
+        {
+            try
+            {
+                $first_song = $this->em->createQuery('SELECT sh.timestamp FROM Entity\SongHistory sh WHERE sh.station_id = :station_id AND sh.listeners IS NOT NULL ORDER BY sh.timestamp ASC')
+                    ->setParameter('station_id', $this->station->id)
+                    ->setMaxResults(1)
+                    ->getSingleScalarResult();
+            }
+            catch(\Exception $e)
+            {
+                $first_song = strtotime('Yesterday 00:00:00');
+            }
+
+            $min_threshold = strtotime('-2 weeks');
+            $threshold = max($first_song, $min_threshold);
+
+            // Get all songs played in timeline.
+            $songs_played_raw = $this->em->createQuery('SELECT sh, s FROM Entity\SongHistory sh LEFT JOIN sh.song s WHERE sh.station_id = :station_id AND sh.timestamp >= :timestamp AND sh.listeners IS NOT NULL ORDER BY sh.timestamp ASC')
+                ->setParameter('station_id', $this->station->id)
+                ->setParameter('timestamp', $threshold)
+                ->getArrayResult();
+
+            $ignored_songs = $this->_getIgnoredSongs();
+            $songs_played_raw = array_filter($songs_played_raw, function($value) use ($ignored_songs)
+            {
+                return !(isset($ignored_songs[$value['song_id']]));
+            });
+
+            $songs_played_raw = array_values($songs_played_raw);
+
+            \DF\Cache::save($songs_played_raw, $cache_name, array(), 60*5);
+        }
+
+        return $songs_played_raw;
+    }
+
+    protected function _getIgnoredSongs()
+    {
+        $song_hashes = \DF\Cache::get('station_center_ignored_songs');
+
+        if (!$song_hashes)
+        {
+            $ignored_phrases = array('Offline', 'Sweeper', 'Bumper', 'Unknown');
+
+            $qb = $this->em->createQueryBuilder();
+            $qb->select('s.id')->from('Entity\Song', 's');
+
+            foreach($ignored_phrases as $i => $phrase)
+            {
+                $qb->orWhere('s.text LIKE ?'.($i+1));
+                $qb->setParameter($i+1, '%'.$phrase.'%');
+            }
+
+            $song_hashes_raw = $qb->getQuery()->getArrayResult();
+            $song_hashes = array();
+
+            foreach($song_hashes_raw as $row)
+                $song_hashes[$row['id']] = $row['id'];
+
+            \DF\Cache::save($song_hashes, 'station_center_ignored_songs', array(), 86400);
+        }
+
+        return $song_hashes;
+    }
 }

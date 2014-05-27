@@ -114,7 +114,7 @@ class SongVote extends \DF\Doctrine\Entity
             $score = 0;
         }
 
-        return $score;
+        return 100 + $score;
     }
 
     public static function getScore(Song $song)

@@ -78,3 +78,20 @@ div#copyright {
 .well {
 	padding: 10px;
 }
+
+.station.playing,
+.station.playing h4 small {
+	color: #111;
+}
+.station.playing h4 small {
+	font-size: 14px;
+	color: #555;
+}
+.station.playing .media-body {
+    text-shadow: 0.1em 0.1em 0.2em #FFF;
+}
+
+.station .media-object,
+.podcast .media-object {
+	text-shadow: 0.1em 0.1em 0.2em #FFF;
+}

@@ -16,15 +16,15 @@ class SongController extends \DF\Controller\Action
 
 	public function likeAction()
 	{
-		$this->_vote(1);
+		return $this->_vote(1);
 	}
 	public function dislikeAction()
 	{
-		$this->_vote(0-1);
+		return $this->_vote(0-1);
 	}
 	public function clearvoteAction()
 	{
-		$this->_vote(0);
+		return $this->_vote(0);
 	}
 
 	protected function _vote($value)

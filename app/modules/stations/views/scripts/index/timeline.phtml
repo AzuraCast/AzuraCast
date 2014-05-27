@@ -4,8 +4,7 @@ $this->layout()->manual = true;
 ?>
 
 <?=$this->renderHere('header') ?>
-
-<h4><a href="<?=$this->routeFromHere(array('action' => 'index')) ?>"><i class="icon-arrow-left"></i> Station Center Home</a></h4>
+<?=$this->renderHere('homelink', true) ?>
 
 <div class="row-fluid">
     <div class="span12">

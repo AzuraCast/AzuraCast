@@ -69,13 +69,24 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
             'total'         => $np_raw['listeners_total'],
         );
 
+        $vote_functions = array('like', 'dislike', 'clearvote');
+        $vote_urls = array();
+
+        foreach($vote_functions as $vote_function)
+            $vote_urls[$vote_function] = \DF\Url::route(array('module' => 'api', 'controller' => 'song', 'action' => $vote_function, 'sh_id' => $np_raw['song_sh_id']));
+
         $current_song = array(
             'id'        => $np_raw['song_id'],
             'text'      => $np_raw['text'],
             'artist'    => $np_raw['artist'],
             'title'     => $np_raw['title'],
+
+            'score'     => $np_raw['song_score'],
+            'sh_id'     => $np_raw['song_sh_id'],
+            'vote_urls' => $vote_urls,
         );
-        $np['current_song'] = Song::api($current_song);
+
+        $np['current_song'] = $current_song;
 
         foreach((array)$np_raw['song_history'] as $song_row)
         {

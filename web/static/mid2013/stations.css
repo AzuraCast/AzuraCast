@@ -42,6 +42,11 @@
 
 	transition: background 1s ease;
 }
+.station.rendermode-embed.playing {
+	background: none;
+	box-shadow: none;
+}
+
 .station.playing .show-when-playing {
 	display: block;
 }
@@ -50,13 +55,16 @@
 	padding-top: 3px;
 }
 .station.playing .media-body {
-	overflow: initial;
 	padding-top: 3px;
 	padding-bottom: 3px;
 }
 .station.playing > .btn-toolbar {
 	padding-top: 4px;
 }
+.station.rendermode-embed.playing > .btn-toolbar {
+	display: none;
+}
+
 .station.playing,
 .station.playing h4 small {
 	color: #EFEFEF;

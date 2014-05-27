@@ -133,11 +133,6 @@ class Song extends \DF\Doctrine\Entity
             'text'      => $row['text'],
             'artist'    => $row['artist'],
             'title'     => $row['title'],
-            'rating'    => array(
-                'likes'     => $row['rate_likes'],
-                'dislikes'  => $row['rate_dislikes'],
-                'score'     => $row['rate_score'],
-            ),
         );
     }
 }

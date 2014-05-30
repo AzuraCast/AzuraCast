@@ -12,12 +12,34 @@ class UtilController extends \DF\Controller\Action
 	public function testAction()
 	{
 		$this->doNotRender();
-        error_reporting(E_ALL & !E_NOTICE);
 
-        echo '<pre>';
+        \PVL\Debug::showErrors();
+        \PVL\Debug::setEchoMode(TRUE);
 
-        $results = \PVL\NewsAdapter\LiveStream::fetch('http://www.livestream.com/efnwpresents');
-        \DF\Utilities::print_r($results);
+        $song = \Entity\Song::find('3618c6feced139030b0306bf15c3fa9c');
+        $song->syncExternal(true);
+
+        $result = $song->getExternal();
+
+        \PVL\Debug::print_r($result);
+        exit;
+
+        $np_data = \PVL\NowPlaying::get(2);
+        $song_ids = array();
+        foreach($np_data as $station => $station_info)
+        {
+            if ($station_info['song_id'])
+                $song_ids[$station_info['song_id']] = $station_info['text'];
+        }
+
+        foreach($song_ids as $song_id => $text)
+        {
+            $song = \Entity\Song::find($song_id);
+            $song->syncExternal();
+            $song->save();
+
+            \PVL\Debug::divider();
+        }
         exit;
 
         \PVL\NowPlaying::generate();

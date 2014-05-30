@@ -243,6 +243,12 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
 
+        $ignored_songs = $this->_getIgnoredSongs();
+        $votes_raw = array_filter($votes_raw, function($value) use ($ignored_songs)
+        {
+            return !(isset($ignored_songs[$value['song_id']]));
+        });
+
         \PVL\Utilities::orderBy($votes_raw, 'vote_total DESC');
 
         $votes = array();

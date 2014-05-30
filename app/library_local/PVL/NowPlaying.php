@@ -11,6 +11,8 @@ use \Entity\Settings;
 
 class NowPlaying
 {
+	static $song_changes = array();
+
 	public static function get($version = 1, $id = NULL)
 	{
 		$raw_data = @file_get_contents(self::getFilePath());
@@ -84,6 +86,16 @@ class NowPlaying
 
 		// Post statistics to official record.
 		Statistic::post($nowplaying);
+
+		// Pull external data for newly updated songs.
+		if (count(self::$song_changes) > 0)
+		{
+			foreach(self::$song_changes as $song_id)
+			{
+				$song_obj = Song::find($song_id);
+				$song_obj->syncExternal();
+			}
+		}
 
 		return $pvl_file_path;
 	}
@@ -238,6 +250,8 @@ class NowPlaying
 			$np['song_id'] = $song_obj->id;
 			$np['song_sh_id'] = $sh_obj->id;
 			$np['song_score'] = SongVote::getScoreForStation($song_obj, $station);
+
+			self::$song_changes[] = $np['song_id'];
 		}
 
 		// Get currently active event (cached query)

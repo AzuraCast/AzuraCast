@@ -21,31 +21,102 @@ class Debug
 	// Logging
 	static function log($entry)
 	{
-		if (self::$echo_debug)
-		{
-			if (DF_IS_COMMAND_LINE)
-				echo "\n".$entry;
-			else
-				echo '<div>'.$entry.'</div>';
-		}
+		$row = array('type' => 'log', 'message' => $entry);
 
-		self::$debug_log[] = $entry;
+		if (self::$echo_debug)
+			self::display($row);
+
+		self::$debug_log[] = $row;
 	}
 
 	static function print_r($item)
 	{
-		if (DF_IS_COMMAND_LINE)
-		{
-			$return_value = print_r($item, TRUE);
-		}
-		else
-		{
-			$return_value = '<pre style="font-size: 13px; font-family: Consolas, Courier New, Courier, monospace; color: #000; background: #EFEFEF; border: 1px solid #CCC; padding: 5px;">';
-			$return_value .= print_r($item, TRUE);
-			$return_value .= '</pre>';
-		}
+		$row = array('type' => 'array', 'message' => $item);
 
-		self::log($return_value);
+		if (self::$echo_debug)
+			self::display($row);
+
+		self::$debug_log[] = $row;
+	}
+
+	static function divider()
+	{
+		$row = array('type' => 'divider');
+
+		if (self::$echo_debug)
+			self::display($row);
+
+		self::$debug_log[] = $row;
+	}
+
+	static function display($info)
+	{
+		switch($info['type'])
+		{
+			case 'divider':
+				if (DF_IS_COMMAND_LINE)
+				{
+					echo '---------------------------------------------'."\n";
+				}
+				else
+				{
+					echo '<div style="
+						padding: 3px;
+						background: #DDD;
+						border-left: 4px solid #DDD;
+						border-bottom: 1px solid #DDD;
+						margin: 0;"></div>';
+				}
+			break;
+
+			case 'array':
+				if (DF_IS_COMMAND_LINE)
+				{
+					echo print_r($info['message'], TRUE);
+					echo "\n";
+				}
+				else
+				{
+					echo '<pre style="
+						padding: 3px; 
+						font-family: Consolas, Courier New, Courier, monospace; 
+						font-size: 12px; 
+						background: #EEE; 
+						border-left: 4px solid #FFD24D; 
+						border-bottom: 1px solid #DDD;
+						margin: 0;">';
+
+					$message = print_r($info['message'], TRUE);
+					if ($message)
+						echo $message;
+					else
+						echo '&nbsp;';
+
+					echo '</pre>';
+				}
+			break;
+
+			case 'log':
+			default:
+				if (DF_IS_COMMAND_LINE)
+				{
+					echo $info['message']."\n";
+				}
+				else
+				{
+					echo '<div style="
+						padding: 3px; 
+						font-family: Consolas, Courier New, Courier, monospace; 
+						font-size: 12px; 
+						background: #EEE; 
+						border-left: 4px solid #4DA6FF; 
+						border-bottom: 1px solid #DDD;
+						margin: 0;">';
+					echo $info['message'];
+					echo '</div>';
+				}
+			break;
+		}
 	}
 
 	// Retrieval
@@ -54,18 +125,10 @@ class Debug
 		return self::$debug_log;
 	}
 
-	static function printLog($preformatted = true)
+	static function printLog()
 	{
-		if ($preformatted)
-			echo '<pre>';
-
 		foreach(self::$debug_log as $log_row)
-		{
-			echo $log_row."\n";
-		}
-
-		if ($preformatted)
-			echo '</pre>';
+			self::display($log_row);
 	}
 
 	// Timers

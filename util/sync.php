@@ -1,6 +1,6 @@
 <?php
 /**
- * Synchronization Script
+ * Synchronization Script (Runs every 10 minutes).
  */
 
 require_once dirname(__FILE__) . '/../app/bootstrap.php';
@@ -22,8 +22,5 @@ ini_set('memory_limit', '256M');
 
 // Sync CentovaCast song data.
 \PVL\CentovaCast::sync();
-
-// Sync analytical and statistical data (long running).
-\PVL\AnalyticsManager::run();
 
 \Entity\Settings::setSetting('sync_last_run', time());

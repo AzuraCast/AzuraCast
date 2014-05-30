@@ -12,6 +12,8 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class Song extends \DF\Doctrine\Entity
 {
+    const SYNC_THRESHOLD = 604800; // 604800 = 1 week
+
     public function __construct()
     {
         $this->created_at = new \DateTime('NOW');
@@ -48,6 +50,102 @@ class Song extends \DF\Doctrine\Entity
     /** @Column(name="score", type="smallint") */
     protected $score;
 
+    public function updateScore()
+    {
+        $this->score = SongVote::getScore($this);
+    }
+
+    /* External Records */
+
+    /** @Column(name="external_timestamp", type="integer", nullable=true) */
+    protected $external_timestamp;
+
+
+    /** @Column(name="external_ponyfm_id", type="integer", nullable=true) */
+    protected $external_ponyfm_id;
+    /**
+     * @ManyToOne(targetEntity="SongExternalPonyFm")
+     * @JoinColumns({ @JoinColumn(name="external_ponyfm_id", referencedColumnName="id", onDelete="CASCADE") })
+     */
+    protected $external_ponyfm;
+
+
+    /** @Column(name="external_eqbeats_id", type="integer", nullable=true) */
+    protected $external_eqbeats_id;
+    /**
+     * @ManyToOne(targetEntity="SongExternalEqBeats")
+     * @JoinColumns({ @JoinColumn(name="external_eqbeats_id", referencedColumnName="id", onDelete="CASCADE") })
+     */
+    protected $external_eqbeats;
+
+
+    /** @Column(name="external_bronytunes_id", type="integer", nullable=true) */
+    protected $external_bronytunes_id;
+    /**
+     * @ManyToOne(targetEntity="SongExternalBronyTunes")
+     * @JoinColumns({ @JoinColumn(name="external_bronytunes_id", referencedColumnName="id", onDelete="CASCADE") })
+     */
+    protected $external_bronytunes;
+
+
+    public function hasExternal()
+    {
+        $adapters = self::getExternalAdapters();
+
+        foreach($adapters as $adapter_key => $adapter_class)
+        {
+            $local_key = 'external_'.$adapter_key.'_id';
+            if ($this->{$local_key} !== NULL)
+                return true;
+        }
+        return false;
+    }
+
+    public function getExternal()
+    {
+        $adapters = self::getExternalAdapters();
+
+        $external = array();
+        foreach($adapters as $adapter_key => $adapter_class)
+        {
+            $local_key = 'external_'.$adapter_key;
+
+            if ($this->{$local_key} instanceof $adapter_class)
+            {
+                $local_row = $this->{$local_key}->toArray();
+                unset($local_row['__isInitialized__']);
+
+                $external[$adapter_key] = $local_row;
+            }
+        }
+
+        return $external;
+    }
+
+    public function syncExternal($force = false)
+    {
+        $threshold = time()-self::SYNC_THRESHOLD;
+        if ($this->external_timestamp >= $threshold && !$force)
+        {
+            \PVL\Debug::log('Skipping external sync, has been synced recently.');
+            return false;
+        }
+
+        $adapters = self::getExternalAdapters();
+
+        foreach($adapters as $adapter_key => $remote_class)
+        {
+            $local_key = 'external_'.$adapter_key;
+            $this->{$local_key} = $remote_class::match($this, $force);
+        }
+
+        $this->external_timestamp = time();
+        $this->save();
+        return true;
+    }
+
+    /* End External Records */
+
     /** 
      * @OneToMany(targetEntity="SongVote", mappedBy="song")
      * @OrderBy({"timestamp" = "DESC"})
@@ -59,11 +157,6 @@ class Song extends \DF\Doctrine\Entity
      * @OrderBy({"timestamp" = "DESC"})
      */
     protected $history;
-
-    public function updateScore()
-    {
-        $this->score = SongVote::getScore($this);
-    }
 
     /**
      * Static Functions
@@ -88,7 +181,7 @@ class Song extends \DF\Doctrine\Entity
         }
 
         // Generate hash.
-        if ($song_info['text'])
+        if (!empty($song_info['text']))
             $song_text = $song_info['text'];
         else
             $song_text = $song_info['artist'].' - '.$song_info['title'];
@@ -133,6 +226,15 @@ class Song extends \DF\Doctrine\Entity
             'text'      => $row['text'],
             'artist'    => $row['artist'],
             'title'     => $row['title'],
+        );
+    }
+
+    public static function getExternalAdapters()
+    {
+        return array(
+            'ponyfm'        => '\Entity\SongExternalPonyFm',
+            'eqbeats'       => '\Entity\SongExternalEqBeats',
+            'bronytunes'    => '\Entity\SongExternalBronyTunes',
         );
     }
 }

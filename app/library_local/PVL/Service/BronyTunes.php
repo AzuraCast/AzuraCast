@@ -31,13 +31,9 @@ class BronyTunes
 				if (isset($existing_ids[$id]))
 				{
 					if ($existing_ids[$id] != $processed['hash'])
-					{
 						$record = SongExternalBronyTunes::find($id);
-					}
 					else
-					{
 						$record = NULL;
-					}
 				}
 				else
 				{

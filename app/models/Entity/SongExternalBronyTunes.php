@@ -58,7 +58,7 @@ class SongExternalBronyTunes extends \DF\Doctrine\Entity
     public static function match(Song $song, $force_lookup = false)
     {
         $record = self::getRepository()->findOneBy(array('hash' => $song->id));
-        if ($record instanceof self && $record->timestamp >= $threshold)
+        if ($record instanceof self) // && $record->timestamp >= $threshold)
             return $record;
         else
             return NULL;

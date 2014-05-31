@@ -16,12 +16,8 @@ class UtilController extends \DF\Controller\Action
         \PVL\Debug::showErrors();
         \PVL\Debug::setEchoMode(TRUE);
 
-        $song = \Entity\Song::find('3618c6feced139030b0306bf15c3fa9c');
-        $song->syncExternal(true);
-
-        $result = $song->getExternal();
-
-        \PVL\Debug::print_r($result);
+        \PVL\Service\EqBeats::load();
+        echo 'Done Loading EqBeats';
         exit;
 
         $np_data = \PVL\NowPlaying::get(2);

@@ -84,6 +84,8 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
             'score'     => $np_raw['song_score'],
             'sh_id'     => $np_raw['song_sh_id'],
             'vote_urls' => $vote_urls,
+            
+            'external'  => $np_raw['song_external'],
         );
 
         $np['current_song'] = $current_song;

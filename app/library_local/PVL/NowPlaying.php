@@ -87,6 +87,7 @@ class NowPlaying
 		// Post statistics to official record.
 		Statistic::post($nowplaying);
 
+		/*
 		// Pull external data for newly updated songs.
 		if (count(self::$song_changes) > 0)
 		{
@@ -96,6 +97,7 @@ class NowPlaying
 				$song_obj->syncExternal();
 			}
 		}
+		*/
 
 		return $pvl_file_path;
 	}
@@ -221,6 +223,7 @@ class NowPlaying
 			$np['song_id'] = $current_np_data['song_id'];
 			$np['song_sh_id'] = $current_np_data['song_sh_id'];
 			$np['song_score'] = $current_np_data['song_score'];
+			$np['song_external'] = $current_np_data['song_external'];
 		}
 		else if (empty($np['text']))
 		{
@@ -230,6 +233,7 @@ class NowPlaying
 			$np['song_id'] = NULL;
 			$np['song_sh_id'] = NULL;
 			$np['song_score'] = 0;
+			$np['song_external'] = array();
 		}
 		else
 		{
@@ -246,6 +250,9 @@ class NowPlaying
 
 			$song_obj = Song::getOrCreate($np);
 			$sh_obj = SongHistory::register($song_obj, $station, $np);
+
+			$song_obj->syncExternal();
+			$np['song_external'] = $song_obj->getExternal();
 
 			$np['song_id'] = $song_obj->id;
 			$np['song_sh_id'] = $sh_obj->id;

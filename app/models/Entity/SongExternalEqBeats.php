@@ -44,16 +44,11 @@ class SongExternalEqBeats extends \DF\Doctrine\Entity
 
     public static function match(Song $song, $force_lookup = false)
     {
-        $threshold = time()-self::SYNC_THRESHOLD;
+        $record = self::getRepository()->findOneBy(array('hash' => $song->id));
+        if ($record instanceof self) // && $record->timestamp >= $threshold)
+            return $record;
 
-        if (!$force_lookup)
-        {
-            $record = self::getRepository()->findOneBy(array('hash' => $song->id));
-            if ($record instanceof self && $record->timestamp >= $threshold)
-                return $record;
-        }
-
-        return self::lookUp($song);
+        return null;
     }
 
     public static function lookUp(Song $song)
@@ -95,4 +90,15 @@ class SongExternalEqBeats extends \DF\Doctrine\Entity
         );
     }
 
+    public static function getIds()
+    {
+        $em = self::getEntityManager();
+        $ids_raw = $em->createQuery('SELECT se.id, se.hash FROM '.__CLASS__.' se')->getArrayResult();
+
+        $ids = array();
+        foreach($ids_raw as $row)
+            $ids[$row['id']] = $row['hash'];
+
+        return $ids;
+    }
 }

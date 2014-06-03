@@ -79,6 +79,7 @@ $(function() {
 			'dataType': 'json',
 			'data': {
 				'sh_id': songhist_id,
+				'client': 'pvl'
 			}
 		}).done(function(return_data) {
 			vote_ratelimit = false;

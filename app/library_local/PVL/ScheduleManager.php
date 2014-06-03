@@ -13,7 +13,7 @@ class ScheduleManager
 		$config = \Zend_Registry::get('config');
 
 		$last_run = Settings::getSetting('schedule_manager_last_run', 0);
-		if ($last_run > (time() - 900) && !$force_run)
+		if ($last_run > (time() - 300) && !$force_run)
 			return;
 
 		$schedule_items = array();

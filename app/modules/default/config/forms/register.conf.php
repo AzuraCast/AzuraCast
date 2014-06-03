@@ -5,7 +5,7 @@
 
 $config = Zend_Registry::get('config');
 $general_config = $config->general->toArray();
-$captcha_config = $config->services->recaptcha->toArray();
+$captcha_config = $config->apis->recaptcha->toArray();
 
 return array(
     'method' => 'post',

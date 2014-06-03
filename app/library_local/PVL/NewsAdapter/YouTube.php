@@ -5,7 +5,8 @@ class YouTube extends AdapterAbstract
 {
 	public static function fetch($url, $params = array())
 	{
-		$v3_api_key = 'AIzaSyC1vhf1rFShf9mzbUEL2LpfaD0E0BNOURk';
+		$config = \Zend_Registry::get('config');
+		$v3_api_key = $config->apis->youtube_v3;
 
 		$client = new \Zend_Http_Client();
 		$client->setConfig(array(

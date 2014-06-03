@@ -38,6 +38,9 @@ class Doctrine extends \Zend_Application_Resource_ResourceAbstract
     {
         $options = $this->getOptions();
         $config = new \Doctrine\ORM\Configuration;
+
+        $app_config = \Zend_Registry::get('config');
+        $options['conn'] = $app_config->db->toArray();
         
         if ($options['conn']['platform'])
         {

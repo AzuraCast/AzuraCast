@@ -62,7 +62,7 @@ class AccountController extends \DF\Controller\Action
  
             try
             {
-                $ha_config = $this->config->services->hybridauth->toArray();
+                $ha_config = $this->config->apis->hybrid_auth->toArray();
                 $ha_config['base_url'] = $this->view->routeFromHere(array('action' => 'hybrid'));
 
                 $hybridauth = new \Hybrid_Auth($ha_config);
@@ -137,7 +137,7 @@ class AccountController extends \DF\Controller\Action
 
     public function hybridAction()
     {
-        $ha_config = $this->config->services->hybridauth->toArray();
+        $ha_config = $this->config->apis->hybrid_auth->toArray();
         $ha_config['base_url'] = $this->view->routeFromHere(array('action' => 'hybrid'));
 
         \Hybrid_Auth::initialize($ha_config);

@@ -18,7 +18,9 @@ class Twitter extends AdapterAbstract
 		$twitter_username = self::getAccount($url);
 		
 		$config = \Zend_Registry::get('config');
-		$twitter = new \tmhOAuth($config->twitter->toArray());
+		$twitter_conf = $config->apis->twitter->toArray();
+
+		$twitter = new \tmhOAuth($twitter_conf);
 
 		$twitter->request('GET', 'https://api.twitter.com/1.1/statuses/user_timeline.json', array(
 			'screen_name' => $twitter_username,

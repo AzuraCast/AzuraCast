@@ -92,7 +92,7 @@ class Messenger
 
 		if (isset($mail_config['use_smtp']) && $mail_config['use_smtp'])
 		{
-			$smtp_config = $mail_config['smtp'];
+			$smtp_config = $config->apis->smtp->toArray();
 			$smtp_server = $smtp_config['server'];
 			unset($smtp_config['server']);
 

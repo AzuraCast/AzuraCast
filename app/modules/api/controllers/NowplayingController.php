@@ -6,7 +6,26 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
 {
     public function indexAction()
     {
-    	if ($this->_hasParam('id'))
+        $np = \DF\Cache::get('api_nowplaying_data');
+
+        if (!$np)
+        {
+            $return_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.is_active = 1 ORDER BY s.weight ASC')
+                ->getArrayResult();
+
+            $np = array();
+            foreach($return_raw as $row)
+            {
+                $np_row = $this->_processRow($row);
+                $short_name = $np_row['station']['shortcode'];
+
+                $np[$short_name] = $np_row;
+            }
+
+            \DF\Cache::save($np, 'api_nowplaying_data', array(), 10);
+        }
+
+        if ($this->_hasParam('id'))
     	{
     		$id = (int)$this->_getParam('id');
     		$station = Station::find($id);
@@ -17,41 +36,20 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
             }
     		else
             {
-                $np = $this->_processRow($station);
-    			return $this->returnSuccess($np);
+                $sc = $station->getShortName();
+                return $this->returnSuccess($np[$sc]);
             }
     	}
     	elseif ($this->_hasParam('station'))
     	{
-    		$short_names = Station::getShortNameLookup(true);
-    		$short = $this->_getParam('station');
-
-    		if (isset($short_names[$short]))
-    		{
-    			$data = $short_names[$short];
-                $np = $this->_processRow($data);
-
-    			return $this->returnSuccess($np);
-    		}
+            $short = $this->_getParam('station');
+            if (isset($np[$short]))
+                return $this->returnSuccess($np[$short]);
     		else
-    		{
     			return $this->returnError('Station not found!');
-    		}
     	}
     	else
     	{
-    		$return_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.is_active = 1 ORDER BY s.weight ASC')
-    			->getArrayResult();
-
-    		$np = array();
-    		foreach($return_raw as $row)
-    		{
-                $np_row = $this->_processRow($row);
-                $short_name = $np_row['station']['shortcode'];
-
-                $np[$short_name] = $np_row;
-    		}
-
     		return $this->returnSuccess($np);
     	}
     }

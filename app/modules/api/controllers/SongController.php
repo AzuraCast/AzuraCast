@@ -15,6 +15,15 @@ class Api_SongController extends \PVL\Controller\Action\Api
     		return $this->returnError('Song not found.');
 
     	$return = $record->toArray();
+
+    	// Handle display of external data.
+    	foreach($return as $r_key => $r_val)
+    	{
+    		if (substr($r_key, 0, 8) == 'external')
+    			unset($return[$r_key]);
+    	}
+    	$return['external'] = $record->getExternal();
+
     	return $this->returnSuccess($return);
     }
 

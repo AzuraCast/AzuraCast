@@ -91,13 +91,17 @@ DF\Loader::register($config->application->autoload);
 require('Zend/Application.php');
 $application = new Zend_Application('application', $config->application);
 $application->getBootstrap();
-$application->bootstrap('doctrine');
 
-// Save the configuration object to the global registry.
+// Set global registry options.
 Zend_Registry::set('application', $application);
 Zend_Registry::set('config', $config);
 Zend_Registry::set('module_config', $module_config);
 Zend_Registry::set('cache', new DF\Cache);
+
+// Bootstrap the DB for the following options.
+$application->bootstrap('doctrine');
+
+// Set additional global registry options.
 Zend_Registry::set('auth', new DF\Auth\Model);
 Zend_Registry::set('acl', new DF\Acl\Instance);
 

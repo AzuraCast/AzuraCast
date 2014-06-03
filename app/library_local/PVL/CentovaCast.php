@@ -310,7 +310,7 @@ class CentovaCast
 		if (!$settings)
 		{
 			$config = \Zend_Registry::get('config');
-			$settings = $config->services->centova->toArray();
+			$settings = $config->apis->centovacast->toArray();
 		}
 
 		return $settings;

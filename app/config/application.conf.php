@@ -18,17 +18,7 @@ $config = array(
         'templates'			=> DF_INCLUDE_BASE.'/messages',
         'from_addr'         => 'info@ponyvillelive.com',
         'from_name'         => 'Ponyville Live!',
-        // 'bounce_addr'		=> 'noreply@ponyvillelive.com',
-        // 'error_addr'        => 'noreply@ponyvillelive.com',
-
         'use_smtp'			=> true,
-        'smtp'				=> array(
-        	'server'		=> 'smtp.mandrillapp.com',
-        	'port'			=> '587',
-        	'auth'			=> 'login',
-        	'username'		=> 'loobalightdark@gmail.com',
-        	'password'		=> 'd05MxdhMxGxq7i8HRh8_mg',
-        ),
     ),
 
 	'phpSettings'		=> array(
@@ -87,16 +77,6 @@ $config = array(
             'proxyNamespace'    => 'Proxy',
             'proxyPath'         => DF_INCLUDE_MODELS.'/Proxy',
             'modelPath'         => DF_INCLUDE_MODELS,
-			'conn'				=> array(
-                'driver'        => 'pdo_mysql',
-                'host'          => 'localhost',
-                'dbname'        => 'pvladmin_app',
-                'user'          => 'pvladmin_app',
-                'password'      => 'PvlWebDatabase2013!',
-                'driverOptions' => array(
-                	1002	=> 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
-                ),
-			),
 		),
 				
 		/* RESOURCES: Menu */
@@ -143,7 +123,7 @@ if (DF_APPLICATION_ENV != 'production')
         'host'          => 'localhost',
         'dbname'        => 'pvl',
         'user'          => 'pvl',
-        'password'      => '7AchaZAz',
+        'password'      => 'root',
 	);
 }
 

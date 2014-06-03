@@ -8,6 +8,8 @@ web/static/api/*
 web/static/affiliates/*
 web/static/artists/*
 web/static/stations/*
+web/static/podcasts/*
+web/static/rotators/*
 util/php_errors.log
 *.DS_Store
 *.apdisk

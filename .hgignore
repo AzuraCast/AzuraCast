@@ -1,8 +1,13 @@
 syntax: glob
 *Thumbs.db
 tmp/cache/*---*
+app/config/db.conf.php
+app/config/apis.conf.php
 app/models/Proxy/*.php
 web/static/api/*
+web/static/affiliates/*
+web/static/artists/*
+web/static/stations/*
 util/php_errors.log
 *.DS_Store
 *.apdisk

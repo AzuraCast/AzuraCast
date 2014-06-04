@@ -69,7 +69,15 @@ sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i.bak /etc/php5/cli/php.ini
 
 service php5-fpm restart
 
+# Install composer.
+cd /root
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+
 # Set up DB.
 cd /var/www/vagrant/util
 sudo -u www-data php doctrine.php orm:schema-tool:create
 sudo -u www-data php flush.php
+
+# Add cron job
+crontab /var/www/vagrant/util/vagrant_cron

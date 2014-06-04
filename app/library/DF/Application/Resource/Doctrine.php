@@ -115,9 +115,6 @@ class Doctrine extends \Zend_Application_Resource_ResourceAbstract
         $evm = new \Doctrine\Common\EventManager();
         $em = \Doctrine\ORM\EntityManager::create($options['conn'], $config, $evm);
         
-        if ($options['conn']['driver'] != "pdo_sqlsrv")
-			$em->getConnection()->setCharset('utf8');
-        
         $em->getFilters()->enable("softdelete");
         
         // Trigger proxy regeneration.

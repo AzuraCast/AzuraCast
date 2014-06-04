@@ -62,9 +62,7 @@ class AccountController extends \DF\Controller\Action
  
             try
             {
-                $ha_config = $this->config->apis->hybrid_auth->toArray();
-                $ha_config['base_url'] = $this->view->routeFromHere(array('action' => 'hybrid'));
-
+                $ha_config = $this->_getHybridConfig();
                 $hybridauth = new \Hybrid_Auth($ha_config);
      
                 // try to authenticate with the selected provider
@@ -137,8 +135,7 @@ class AccountController extends \DF\Controller\Action
 
     public function hybridAction()
     {
-        $ha_config = $this->config->apis->hybrid_auth->toArray();
-        $ha_config['base_url'] = $this->view->routeFromHere(array('action' => 'hybrid'));
+        $ha_config = $this->_getHybridConfig();
 
         \Hybrid_Auth::initialize($ha_config);
         \Hybrid_Endpoint::process();
@@ -168,7 +165,7 @@ class AccountController extends \DF\Controller\Action
                 ));
             }
 
-            $this->alert('<b>A password recovery link has been sent to your e-mail address.</b><br>Click the link in the e-mail to reset your password.</b>', 'green');
+            $this->alert('<b>A password recovery link has been sent to your e-mail address.</b><br>Click the link in the e-mail to reset your password.', 'green');
             $this->redirectHome();
             return;
         }
@@ -292,5 +289,13 @@ class AccountController extends \DF\Controller\Action
 
         $this->view->headTitle('Set Time Zone');
         $this->renderForm($form);
+    }
+
+    protected function _getHybridConfig()
+    {
+        $ha_config = $this->config->apis->hybrid_auth->toArray();
+        $ha_config['base_url'] = $this->view->routeFromHere(array('action' => 'hybrid'));
+
+        return $ha_config;
     }
 }

@@ -19,6 +19,9 @@ return array(
     // Password for the user account specified above.
     'password'      => 'password',
 
+    // Character set.
+    'charset'       => 'utf8',
+
     // Other options to send to the PDO adapter for the database.
     'driverOptions' => array(
     	1002	=> 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',

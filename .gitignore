@@ -2,25 +2,35 @@
 ## App-Specific
 #################
 
-*Thumbs.db
-tmp/cache/*---*
+# Environment-specific files.
+pvl.key.txt
 app/config/db.conf.php
 app/config/apis.conf.php
+
+# Junk/cache files.
+*Thumbs.db
+tmp/cache/*---*
 app/models/Proxy/*.php
+*.DS_Store
+*.apdisk
+.vagrant
+
+# Auto-generated content.
+/vendor/
 web/static/api/*
 web/static/affiliates/*
 web/static/artists/*
 web/static/stations/*
 web/static/podcasts/*
 web/static/rotators/*
+
+# Log files.
 util/php_errors.log
-*.DS_Store
-*.apdisk
-*.zip
-*.mp3
 db.sql
 
-.vagrant
+# Media files.
+*.zip
+*.mp3
 
 #################
 ## Eclipse

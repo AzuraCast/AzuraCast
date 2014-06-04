@@ -6,17 +6,20 @@ then
 	exit
 fi
 
+# Set up environment.
 touch /var/www/.deploy_run
-export DEBIAN_FRONTEND=noninteractive
+touch /var/www/vagrant/app/.updated
 
-# Goodies for nerds.
+echo 'development' > /var/www/vagrant/app/.env
+
+# Goodies for nerds. ;)
 apt-get -q -y install vim
 
 # Create temp folders.
 mkdir -p /var/www/www_tmp
 mkdir -p /var/www/www_tmp/cache
 mkdir -p /var/www/www_tmp/sessions
-mkdir -p /var/www/vagrant/app/models/Proxy
+mkdir -p /var/www/www_tmp/proxies
 
 # Create log files.
 touch /var/www/www_tmp/access.log
@@ -29,7 +32,6 @@ usermod -G vagrant nobody
 chown -R vagrant:vagrant /var/www/www_tmp/
 
 chmod -R 777 /var/www/www_tmp
-chmod -R 777 /var/www/vagrant/app/models/Proxy
 chmod -R 775 /var/www/vagrant/web/static
 
 # Service setup.

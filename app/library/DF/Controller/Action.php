@@ -158,7 +158,7 @@ class Action extends \Zend_Controller_Action
 		call_user_func_array('\DF\Flash::addMessage', $func_args);
 	}
 
-    protected function redirect($url, array $options = null)
+    public function redirect($url, array $options = null)
     {
         if( $options === null )
         {

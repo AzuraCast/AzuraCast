@@ -40,8 +40,7 @@ $config = array(
 	),
 	
 	'includePaths'		=> array(
-		DF_INCLUDE_LIB,
-        DF_INCLUDE_LIB.'/Doctrine',
+		DF_INCLUDE_LIB.'/ThirdParty',
     ),
 	
 	'pluginpaths'		=> array(
@@ -49,12 +48,16 @@ $config = array(
 	),
     
     'autoload'          => array(
-		'Zend_'		=> DF_INCLUDE_LIB,
-		'Hybrid_'	=> DF_INCLUDE_LIB.'/ThirdParty',
-        'DF'		=> DF_INCLUDE_LIB,
-		'Doctrine'	=> DF_INCLUDE_LIB,
-        'Symfony'	=> DF_INCLUDE_LIB.'/Doctrine',
-        'PVL' 		=> DF_INCLUDE_LIB_LOCAL,
+    	'psr0'		=> array(
+    		'DF'		=> DF_INCLUDE_LIB,
+        	'PVL' 		=> DF_INCLUDE_LIB,
+        	'Entity'	=> DF_INCLUDE_MODELS,
+        	'Hybrid'	=> DF_INCLUDE_LIB.'/ThirdParty',
+        	'Hybrid_'	=> DF_INCLUDE_LIB.'/ThirdParty/Hybrid',
+        ),
+        'psr4'		=> array(
+        	'\\Proxy\\'		=> DF_INCLUDE_TEMP.'/proxies',
+        ),
 	),
 
 	'resources'			=> array(
@@ -77,7 +80,7 @@ $config = array(
 		'doctrine'			=> array(
             'autoGenerateProxies' => (DF_APPLICATION_ENV == "development"),
             'proxyNamespace'    => 'Proxy',
-            'proxyPath'         => DF_INCLUDE_MODELS.'/Proxy',
+            'proxyPath'         => DF_INCLUDE_TEMP.'/proxies',
             'modelPath'         => DF_INCLUDE_MODELS,
 		),
 				
@@ -102,13 +105,6 @@ $config = array(
 );
 
 /**
- * Doctrine autoloading.
- */
-
-$config['autoload']['Entity'] = $config['resources']['doctrine']['modelPath'];
-$config['autoload']['Proxy'] = $config['resources']['doctrine']['modelPath'];
-
-/**
  * Development mode changes.
  */
 
@@ -116,7 +112,6 @@ if (DF_APPLICATION_ENV != 'production')
 {
 	$config['phpSettings']['display_startup_errors'] = 1;
 	$config['phpSettings']['display_errors'] = 1;
-    $config['phpSettings']['error_reporting'] = E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT;
     
 	unset($config['base_url']);
 }

@@ -190,7 +190,6 @@ class Cache
                 'cache_dir' => $cache_dir,
                 'file_name_prefix' => 'df_cache',
                 'hashed_directory_perm' => 0777,
-                'cache_file_umask' => 0777,
                 'cache_file_perm' => 0777,
             );
         }

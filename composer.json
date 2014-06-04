@@ -1,0 +1,16 @@
+{
+    "name": "bravelyblue/pvlive",
+    "description": "The Ponyville Live! primary application.",
+    "require": {
+        "zendframework/zendframework1": "1.12.6",
+        "doctrine/orm": "v2.4.2",
+        "phpoffice/phpexcel": "1.8.0",
+        "james-heinrich/getid3": "v1.9.8"
+    },
+    "authors": [
+        {
+            "name": "Buster Neece",
+            "email": "buster@busterneece.com"
+        }
+    ]
+}

@@ -67,6 +67,8 @@ updatedb
 sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i.bak /etc/php5/fpm/php.ini
 sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i.bak /etc/php5/cli/php.ini
 
+service php5-fpm restart
+
 # Set up DB.
 cd /var/www/vagrant/util
 sudo -u www-data php doctrine.php orm:schema-tool:create

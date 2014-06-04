@@ -24,8 +24,6 @@ define("DF_INCLUDE_LIB_LOCAL", DF_INCLUDE_BASE.'/library_local');
 
 define("DF_UPLOAD_FOLDER", DF_INCLUDE_STATIC);
 
-define("DF_URL_STATIC", (DF_IS_SECURE ? 'https:' : 'http:').'//ponyvillelive.com/static');
-
 // Self-reference to current script.
 if (isset($_SERVER['REQUEST_URI']))
 	define("DF_THIS_PAGE", reset(explode("?", $_SERVER['REQUEST_URI'])));
@@ -39,6 +37,12 @@ define('DF_APPLICATION_ENV_PATH', DF_INCLUDE_BASE.DIRECTORY_SEPARATOR.'.env');
 
 if (!defined('DF_APPLICATION_ENV'))
     define('DF_APPLICATION_ENV', ($env = @file_get_contents(DF_APPLICATION_ENV_PATH)) ? trim($env) : 'development');
+
+// Static URL.
+if (DF_APPLICATION_ENV == 'production')
+	define("DF_URL_STATIC", (DF_IS_SECURE ? 'https:' : 'http:').'//ponyvillelive.com/static');
+else
+	define("DF_URL_STATIC", '/static');
 
 // Set error reporting.
 error_reporting(E_ALL & ~E_NOTICE);

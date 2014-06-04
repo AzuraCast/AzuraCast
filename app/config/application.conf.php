@@ -116,17 +116,9 @@ if (DF_APPLICATION_ENV != 'production')
 {
 	$config['phpSettings']['display_startup_errors'] = 1;
 	$config['phpSettings']['display_errors'] = 1;
-    $config['phpSettings']['error_reporting'] = E_ALL & ~E_STRICT & ~E_NOTICE;
+    $config['phpSettings']['error_reporting'] = E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT;
     
 	unset($config['base_url']);
-
-	$config['resources']['doctrine']['conn'] = array(
-		'driver'        => 'pdo_mysql',
-        'host'          => 'localhost',
-        'dbname'        => 'pvl',
-        'user'          => 'pvl',
-        'password'      => 'root',
-	);
 }
 
 return $config;

@@ -14,10 +14,10 @@ return array(
     'dbname'        => 'pvl',
 
     // Username for the database user with read/write access to the above database.
-    'user'          => 'pvl',
+    'user'          => 'root',
 
     // Password for the user account specified above.
-    'password'      => 'root',
+    'password'      => 'password',
 
     // Other options to send to the PDO adapter for the database.
     'driverOptions' => array(

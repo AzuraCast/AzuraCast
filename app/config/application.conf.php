@@ -22,9 +22,11 @@ $config = array(
     ),
 
 	'phpSettings'		=> array(
-		'display_startup_errors'		=> 0,
-		'display_errors'				=> 0,
-		'error_reporting' => E_ALL & ~E_NOTICE & ~E_WARNING,
+		'display_startup_errors' => 0,
+		'display_errors'		=> 0,
+		'log_errors'			=> 1,
+		'error_log'				=> DF_INCLUDE_TEMP.'/php_errors.log',
+		'error_reporting' => E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT,
 		'session' => array(
 			'save_path' => DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'sessions',
 			'gc_maxlifetime' => $session_lifetime,

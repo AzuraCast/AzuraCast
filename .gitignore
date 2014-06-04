@@ -20,6 +20,8 @@ util/php_errors.log
 *.mp3
 db.sql
 
+.vagrant
+
 #################
 ## Eclipse
 #################

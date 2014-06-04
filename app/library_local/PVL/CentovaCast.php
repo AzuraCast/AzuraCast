@@ -290,6 +290,10 @@ class CentovaCast
 		{
 			$settings = self::getSettings();
 
+			// CentovaCast isn't configured in apis.conf.php
+			if (empty($settings['db_pass']))
+				throw new \DF\Exception('CentovaCast is not set up.');
+
 			$config = new \Doctrine\DBAL\Configuration;
 			$connectionParams = array(
 				'host'		=> $settings['host'],

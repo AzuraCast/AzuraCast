@@ -1,4 +1,4 @@
-<?
+<?php
 namespace PVL;
 
 use \Entity\Analytics;

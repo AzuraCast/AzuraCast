@@ -21,6 +21,14 @@ ini_set('memory_limit', '256M');
 \PVL\PodcastManager::run();
 
 // Sync CentovaCast song data.
-\PVL\CentovaCast::sync();
+try
+{
+	\PVL\CentovaCast::sync();
+}
+catch(\Exception $e)
+{
+	echo "Error syncing CentovaCast:\n";
+	echo $e->getMessage()."\n";
+}
 
 \Entity\Settings::setSetting('sync_last_run', time());

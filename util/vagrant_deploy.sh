@@ -76,6 +76,12 @@ cd /root
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
+if [ ! -f /var/www/vagrant/vendor/autoload.php ]
+then
+	cd /var/www/vagrant
+	composer install
+fi
+
 # Set up DB.
 cd /var/www/vagrant/util
 sudo -u www-data php doctrine.php orm:schema-tool:create

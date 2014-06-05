@@ -42,7 +42,6 @@ usermod -G vagrant nobody
 chown -R vagrant:vagrant $tmp_base/
 
 chmod -R 777 $tmp_base
-# chmod -R 775 $www_base/web/static
 
 # Service setup.
 echo "Customizing nginx..."
@@ -105,7 +104,8 @@ echo "Setting up database..."
 cd $www_base/util
 sudo -u www-data php doctrine.php orm:schema-tool:create
 sudo -u www-data php flush.php
-sudo -u www-data php vagrant_import.php
+
+sudo -u vagrant php vagrant_import.php
 
 echo "Importing external music databases (takes a minute)..."
 sudo -u www-data php syncslow.php

@@ -77,6 +77,8 @@ echo 'Database import complete.'.PHP_EOL;
 
 echo 'Pulling static assets...'.PHP_EOL;
 
+@mkdir(DF_INCLUDE_STATIC.DIRECTORY_SEPARATOR.'api');
+
 $remote_url = $remote_base.'/api/dev/static?key='.$api_key;
 
 $static_raw = file_get_contents($remote_url);

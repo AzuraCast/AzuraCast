@@ -5,6 +5,12 @@
 
 return array(
 
+    // PVL deployment API sent by this application. Contact PVL lead developer for info.
+    'pvl_api_key'       => '',
+
+    // PVL deployment API keys accepted by this application.
+    'pvl_api_keys'      => array(),
+
     // Mandrill SMTP service.
     'smtp' => array(
         'server'        => 'smtp.mandrillapp.com',

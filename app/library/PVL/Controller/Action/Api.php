@@ -66,6 +66,7 @@ class Api extends \DF\Controller\Action
             'status'    => 'success',
             'result'    => $data,
         ));
+        return true;
     }
 
     public function returnError($message)
@@ -74,6 +75,7 @@ class Api extends \DF\Controller\Action
             'status'    => 'error',
             'error'     => $message,
         ));
+        return false;
     }
 
     public function returnToScreen($obj)

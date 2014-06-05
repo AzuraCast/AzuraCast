@@ -46,7 +46,7 @@ else
     define("DF_URL_STATIC", '/static');
 
 // Set error reporting for the bootstrapping process.
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
 // Set include path (as needed by CLI access.)
 $include_path = array(DF_INCLUDE_LIB, DF_INCLUDE_VENDOR, get_include_path());

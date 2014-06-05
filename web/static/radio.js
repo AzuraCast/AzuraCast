@@ -171,7 +171,7 @@ function checkNowPlaying(force_update)
 
 	jQuery.ajax({
 		cache: false,
-		url: '//ponyvillelive.com/static/api/nowplaying.json',
+		url: DF_ContentPath+'/api/nowplaying.json',
 		dataType: 'json'
 	}).done(function(data) {
 		var listener_total = 0;

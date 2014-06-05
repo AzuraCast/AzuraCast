@@ -1,40 +1,52 @@
 #!/bin/bash
 
-if [ -f /var/www/.deploy_run ]
+export app_base=/var/www
+export tmp_base=$app_base/www_tmp
+export www_base=$app_base/vagrant
+
+if [ -f $app_base/.deploy_run ]
 then
 	echo 'One-time setup has already been done!'
 	exit
 fi
 
 # Set up environment.
-touch /var/www/.deploy_run
-touch /var/www/vagrant/app/.updated
+touch $app_base/.deploy_run
+touch $www_base/app/.updated
 
-echo 'development' > /var/www/vagrant/app/.env
+echo 'development' > $app_base/app/.env
 
 # Goodies for nerds. ;)
 apt-get -q -y install vim
+apt-get -q -y remove redis-server
+apt-get -q -y remove mongodb-org
+apt-get autoremove
 
 # Create temp folders.
-mkdir -p /var/www/www_tmp
-mkdir -p /var/www/www_tmp/cache
-mkdir -p /var/www/www_tmp/sessions
-mkdir -p /var/www/www_tmp/proxies
+echo "Creating temporary folders..."
+mkdir -p $tmp_base
+mkdir -p $tmp_base/cache
+mkdir -p $tmp_base/sessions
+mkdir -p $tmp_base/proxies
 
 # Create log files.
-touch /var/www/www_tmp/access.log
-touch /var/www/www_tmp/error.log
-touch /var/www/www_tmp/php_errors.log
+echo "Setting permissions..."
+touch $tmp_base/access.log
+touch $tmp_base/error.log
+touch $tmp_base/php_errors.log
+touch $tmp_base/vagrant_import.sql
 
 usermod -G vagrant www-data
 usermod -G vagrant nobody
 
-chown -R vagrant:vagrant /var/www/www_tmp/
+chown -R vagrant:vagrant $tmp_base/
 
-chmod -R 777 /var/www/www_tmp
-# chmod -R 775 /var/www/vagrant/web/static
+chmod -R 777 $tmp_base
+# chmod -R 775 $www_base/web/static
 
 # Service setup.
+echo "Customizing nginx..."
+
 service nginx stop
 
 mv /etc/nginx/conf/nginx.conf /etc/nginx/conf/nginx.conf.bak
@@ -43,23 +55,27 @@ cp /vagrant/util/vagrant_nginx /etc/nginx/conf/nginx.conf
 service nginx start
 
 # Set up MySQL server.
-cat /var/www/vagrant/util/vagrant_mycnf >> /etc/mysql/my.cnf
+echo "Customizing MySQL..."
+
+cat $www_base/util/vagrant_mycnf >> /etc/mysql/my.cnf
 
 echo 'CREATE DATABASE pvl CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;' | mysql -u root -ppassword
 service mysql restart
 
 # Copy sample files.
-if [ ! -f /var/www/vagrant/app/config/apis.conf.php ]
+if [ ! -f $www_base/app/config/apis.conf.php ]
 then
-	cp /var/www/vagrant/app/config/apis.conf.sample.php /var/www/vagrant/app/config/apis.conf.php
+	cp $www_base/app/config/apis.conf.sample.php $www_base/app/config/apis.conf.php
 fi
 
-if [ ! -f /var/www/vagrant/app/config/db.conf.php ]
+if [ ! -f $www_base/app/config/db.conf.php ]
 then
-	cp /var/www/vagrant/app/config/db.conf.sample.php /var/www/vagrant/app/config/db.conf.php
+	cp $www_base/app/config/db.conf.sample.php $www_base/app/config/db.conf.php
 fi
 
 # Install PHP-CLI
+echo "Installing PHP5 Command Line Interface (CLI)..."
+
 apt-get -q -y install php5-cli
 
 echo "alias phpwww='sudo -u www-data php'" >> /home/vagrant/.profile
@@ -74,21 +90,38 @@ sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i.bak /etc/php5/cli/php.ini
 service php5-fpm restart
 
 # Install composer.
+echo "Installing Composer..."
 cd /root
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
-if [ ! -f /var/www/vagrant/vendor/autoload.php ]
+if [ ! -f $www_base/vendor/autoload.php ]
 then
-	cd /var/www/vagrant
+	cd $www_base
 	composer install
 fi
 
 # Set up DB.
-cd /var/www/vagrant/util
+echo "Setting up database..."
+
+cd $www_base/util
 sudo -u www-data php doctrine.php orm:schema-tool:create
 sudo -u www-data php flush.php
 sudo -u www-data php vagrant_import.php
 
+echo "Importing external music databases (takes a minute)..."
+sudo -u www-data php syncslow.php
+
+echo "Running regular tasks..."
+sudo -u www-data php syncfast.php
+sudo -u www-data php sync.php
+
+sudo -u www-data php nowplaying.php
+
 # Add cron job
-crontab /var/www/vagrant/util/vagrant_cron
+echo "Installing cron job..."
+crontab -u vagrant $www_base/util/vagrant_cron
+service cron restart
+
+echo "One-time setup complete!"
+echo "Server now live at localhost:8080 or www.pvlive.dev:8080."

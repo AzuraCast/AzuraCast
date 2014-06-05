@@ -1,7 +1,5 @@
-20 * * * * sudo -u www-data php /var/www/vagrant/util/syncslow.php
-*/15 * * * * sudo -u www-data php /var/www/vagrant/util/sync.php
-* * * * * sudo -u www-data php /var/www/vagrant/util/syncfast.php
-* * * * * sudo -u www-data php /var/www/vagrant/util/nowplaying.php
-* * * * * sleep 15; sudo -u www-data php /var/www/vagrant/util/nowplaying.php
-* * * * * sleep 30; sudo -u www-data php /var/www/vagrant/util/nowplaying.php
-* * * * * sleep 45; sudo -u www-data php /var/www/vagrant/util/nowplaying.php
+20 * * * * php /var/www/vagrant/util/syncslow.php
+*/15 * * * * php /var/www/vagrant/util/sync.php
+* * * * * php /var/www/vagrant/util/syncfast.php
+* * * * * php /var/www/vagrant/util/nowplaying.php
+* * * * * sleep 30; php /var/www/vagrant/util/nowplaying.php

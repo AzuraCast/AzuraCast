@@ -10,13 +10,18 @@ set_time_limit(0);
 error_reporting(E_ALL & ~E_NOTICE);
 
 $api_key = $config->apis->pvl_api_key;
+$remote_base = 'http://ponyvillelive.com';
 
 if (empty($api_key))
     die('No API key specified in app/config/apis.conf.php. Please contact PVL developer team!');
 
-$remote_base = 'http://ponyvillelive.com';
-$remote_url = $remote_base.'/api/dev/import?key='.$api_key;
+/**
+ * Database Import
+ */
 
+echo 'Importing database entries from production server...'.PHP_EOL;
+
+$remote_url = $remote_base.'/api/dev/import?key='.$api_key;
 $local_temp = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'vagrant_import.sql';
 
 // Pull from remote API.
@@ -60,11 +65,51 @@ $command_flags = array(
 );
 $command = 'mysql '.implode(' ', $command_flags).' < '.$local_temp;
 
-echo $command;
-
 passthru($command);
 
-// @unlink($local_temp);
+@unlink($local_temp);
 
 echo 'Database import complete.'.PHP_EOL;
+
+/**
+ * Static Asset Import
+ */
+
+echo 'Pulling static assets...'.PHP_EOL;
+
+$remote_url = $remote_base.'/api/dev/static?key='.$api_key;
+
+$static_raw = file_get_contents($remote_url);
+$static_result = @json_decode($static_raw, TRUE);
+
+if (isset($static_result['result']))
+{
+    $static_folders = $static_result['result'];
+    $ch = curl_init();
+
+    foreach($static_folders as $dir_name => $dir_files)
+    {
+        $local_dir = DF_INCLUDE_STATIC.DIRECTORY_SEPARATOR.$dir_name;
+        @mkdir($local_dir);
+
+        foreach($dir_files as $file_base => $remote_url)
+        {
+            $local_file = $local_dir.DIRECTORY_SEPARATOR.$file_base;
+
+            $fp = fopen($local_file, 'w');
+            $options = array(
+                CURLOPT_FILE    => $fp,
+                CURLOPT_TIMEOUT => 28800,
+                CURLOPT_URL     => $remote_url,
+            );
+            curl_setopt_array($ch, $options);
+            curl_exec($ch);
+            fclose($fp);
+        }
+
+        echo ' - Finished importing "'.$dir_name.'".'.PHP_EOL;
+    }
+}
+
+echo 'Static assets complete.'.PHP_EOL;
 exit;

@@ -86,6 +86,10 @@ class NotificationManager
     {
         static $twitter;
 
+        // Suppress notifications for non-production applications.
+        if (DF_APPLICATION_ENV != "production")
+            return false;
+
         if (!$twitter)
         {
             // The @PVLiveShows Twitter Account

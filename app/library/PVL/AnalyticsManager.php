@@ -22,18 +22,19 @@ class AnalyticsManager
         $hour_interval = 3600;
 
         // Get the earliest date that statistics are available for.
-        $earliest_date_raw = $em->createQuery('SELECT s.timestamp FROM Entity\Statistic s ORDER BY s.id ASC')
-            ->setMaxResults(1)
-            ->getSingleScalarResult();
-
-        if (!$earliest_date_raw)
-            return;
+        try
+        {
+            $earliest_date_raw = $em->createQuery('SELECT s.timestamp FROM Entity\Statistic s ORDER BY s.id ASC')
+                ->setMaxResults(1)
+                ->getSingleScalarResult();
+        }
+        catch(\Exception $e) { return false; }
 
         $earliest_timestamp = strtotime($earliest_date_raw);
         $earliest_date = date('Y-m-d', $earliest_timestamp);
 
         if ($earliest_date == $current_date)
-            return;
+            return false;
 
         // Loop through all days.
         $start_timestamp = strtotime($earliest_date.' 00:00:00');

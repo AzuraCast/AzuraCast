@@ -31,6 +31,7 @@ class Api_DevController extends \PVL\Controller\Action\Api
         $tables = array(
             'settings',
             'block',
+            'affiliates',
             'action',
             'role',
             'role_has_action',
@@ -75,5 +76,34 @@ class Api_DevController extends \PVL\Controller\Action\Api
 
             @unlink($destination_path);
         }
+    }
+
+    public function staticAction()
+    {
+        $directories = array(
+            'affiliates',
+            'artists',
+            'podcasts',
+            'rotators',
+            'songs',
+            'stations',
+        );
+
+        $static_files = array();
+
+        foreach($directories as $dir)
+        {
+            $dir_path = DF_INCLUDE_STATIC.DIRECTORY_SEPARATOR.$dir;
+            $files_raw = @scandir($dir_path);
+
+            foreach($files_raw as $file)
+            {
+                $path = $dir_path.DIRECTORY_SEPARATOR.$file;
+                if (!is_dir($path))
+                    $static_files[$dir][$file] = \DF\Url::content($dir.'/'.$file);
+            }
+        }
+
+        $this->returnSuccess($static_files);
     }
 }

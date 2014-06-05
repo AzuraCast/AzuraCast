@@ -77,6 +77,8 @@ echo 'Database import complete.'.PHP_EOL;
 
 echo 'Pulling static assets...'.PHP_EOL;
 
+@mkdir(DF_INCLUDE_STATIC.DIRECTORY_SEPARATOR.'api');
+
 $remote_url = $remote_base.'/api/dev/static?key='.$api_key;
 
 $static_raw = file_get_contents($remote_url);
@@ -96,15 +98,18 @@ if (isset($static_result['result']))
         {
             $local_file = $local_dir.DIRECTORY_SEPARATOR.$file_base;
 
-            $fp = fopen($local_file, 'w');
-            $options = array(
-                CURLOPT_FILE    => $fp,
-                CURLOPT_TIMEOUT => 28800,
-                CURLOPT_URL     => $remote_url,
-            );
-            curl_setopt_array($ch, $options);
-            curl_exec($ch);
-            fclose($fp);
+            if (!file_exists($local_file))
+            {
+                $fp = fopen($local_file, 'w');
+                $options = array(
+                    CURLOPT_FILE    => $fp,
+                    CURLOPT_TIMEOUT => 28800,
+                    CURLOPT_URL     => $remote_url,
+                );
+                curl_setopt_array($ch, $options);
+                curl_exec($ch);
+                fclose($fp);
+            }
         }
 
         echo ' - Finished importing "'.$dir_name.'".'.PHP_EOL;

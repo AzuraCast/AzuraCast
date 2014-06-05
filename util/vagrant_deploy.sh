@@ -32,7 +32,7 @@ usermod -G vagrant nobody
 chown -R vagrant:vagrant /var/www/www_tmp/
 
 chmod -R 777 /var/www/www_tmp
-chmod -R 775 /var/www/vagrant/web/static
+# chmod -R 775 /var/www/vagrant/web/static
 
 # Service setup.
 service nginx stop
@@ -86,6 +86,7 @@ fi
 cd /var/www/vagrant/util
 sudo -u www-data php doctrine.php orm:schema-tool:create
 sudo -u www-data php flush.php
+sudo -u www-data php vagrant_import.php
 
 # Add cron job
 crontab /var/www/vagrant/util/vagrant_cron

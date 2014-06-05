@@ -10,32 +10,32 @@ class Loader
     
     public static function loadClass($class_name)
     {
-		if (strpos($class_name, '\\') === 0)
-			$class_name = substr($class_name, 1);
-		
-		// Look through pre-assigned list of include paths first.
+        if (strpos($class_name, '\\') === 0)
+            $class_name = substr($class_name, 1);
+        
+        // Look through pre-assigned list of include paths first.
         foreach(self::$autoload_classes as $class_prefix => $class_dir)
         {
             if (strpos($class_name, $class_prefix) === 0)
             {
-				// Special handling for Doctrine 2.2 proxies.
-				if ($class_prefix == "Proxy")
-				{
-					$find = array('\\', 'Proxy');
-					$replace = array('', 'Proxy'.DIRECTORY_SEPARATOR);
-					$class_path = $class_dir.DIRECTORY_SEPARATOR.str_replace($find, $replace, $class_name).'.php';
-				}
-				else
-				{
-					$find = array('\\', '_');
-					$replace = array(DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
-					$class_path = $class_dir.DIRECTORY_SEPARATOR.str_replace($find, $replace, $class_name).'.php';
-				}
-				
-				if (@include($class_path))
-					return true;
-				else
-					break;
+                // Special handling for Doctrine 2.2 proxies.
+                if ($class_prefix == "Proxy")
+                {
+                    $find = array('\\', 'Proxy');
+                    $replace = array('', 'Proxy'.DIRECTORY_SEPARATOR);
+                    $class_path = $class_dir.DIRECTORY_SEPARATOR.str_replace($find, $replace, $class_name).'.php';
+                }
+                else
+                {
+                    $find = array('\\', '_');
+                    $replace = array(DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+                    $class_path = $class_dir.DIRECTORY_SEPARATOR.str_replace($find, $replace, $class_name).'.php';
+                }
+                
+                if (@include($class_path))
+                    return true;
+                else
+                    break;
             }
         }
         
@@ -43,14 +43,14 @@ class Loader
         $class_path = $class_name.'.php';
         
         if (@include($class_path))
-			return true;
-		
-		// Try loading the directory-separated filename (other legacy classes).
-		$class_path = str_replace('_', DIRECTORY_SEPARATOR, $class_name).'.php';
+            return true;
+        
+        // Try loading the directory-separated filename (other legacy classes).
+        $class_path = str_replace('_', DIRECTORY_SEPARATOR, $class_name).'.php';
         if (@include($class_path))
-			return true;
-		
-		return false;
+            return true;
+        
+        return false;
     }
     
     public static function register($class_paths)
@@ -70,8 +70,8 @@ class Loader
         
         if (defined('DF_INCLUDE_LIB_LOCAL'))
         {
-			$include_path[] = DF_INCLUDE_LIB_LOCAL;
-			$include_path[] = DF_INCLUDE_LIB_LOCAL.DIRECTORY_SEPARATOR.'ThirdParty';
+            $include_path[] = DF_INCLUDE_LIB_LOCAL;
+            $include_path[] = DF_INCLUDE_LIB_LOCAL.DIRECTORY_SEPARATOR.'ThirdParty';
         }
         
         $include_path[] = get_include_path();

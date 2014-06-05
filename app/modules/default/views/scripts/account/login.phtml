@@ -6,34 +6,34 @@ $this->headLink()->appendStylesheet(\DF\Url::content('zocial/zocial.css'), 'all'
 ?>
 
 <div class="row-fluid">
-	<div class="span6">
-		<div class="floating">
-			<h2>Create a PVL Account</h2>
-			<p>Don't have an account within the Ponyville Live! system? Create one below.</p>
+    <div class="span6">
+        <div class="floating">
+            <h2>Create a PVL Account</h2>
+            <p>Don't have an account within the Ponyville Live! system? Create one below.</p>
 
-			<div class="buttons">
-				<?=$this->button(array(
-					'type'		=> 'link',
-					'href'		=> $this->routeFromHere(array('action' => 'register')),
-					'icon'		=> 'icon-asterisk',
-					'text'		=> 'Create New PVL Account',
-				)) ?>
-			</div>
+            <div class="buttons">
+                <?=$this->button(array(
+                    'type'      => 'link',
+                    'href'      => $this->routeFromHere(array('action' => 'register')),
+                    'icon'      => 'icon-asterisk',
+                    'text'      => 'Create New PVL Account',
+                )) ?>
+            </div>
 
-			<h2>Log In with PVL Account</h2>
-			<p>If you have an account inside the Ponyville Live! system, enter your username and password below.</p>
+            <h2>Log In with PVL Account</h2>
+            <p>If you have an account inside the Ponyville Live! system, enter your username and password below.</p>
 
-			<?=$this->form->render() ?>
-		</div>
-	</div>
-	<div class="span6">
-		<div class="floating">
-			<h2>Log In with a Social Network</h2>
+            <?=$this->form->render() ?>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="floating">
+            <h2>Log In with a Social Network</h2>
 
-			<div class="buttons"><a href="<?=$this->routeFromHere(array('provider' => 'facebook')) ?>" class="zocial facebook">Sign in with Facebook</a></div>
-			<div class="buttons"><a href="<?=$this->routeFromHere(array('provider' => 'google')) ?>" class="zocial googleplus">Sign in with Google+</a></div>
-			<div class="buttons"><a href="<?=$this->routeFromHere(array('provider' => 'twitter')) ?>" class="zocial twitter">Sign in with Twitter</a></div>
-			<div class="buttons"><a href="<?=$this->routeFromHere(array('provider' => 'tumblr')) ?>" class="zocial tumblr">Sign in with Tumblr</a></div>
-		</div>
-	</div>
+            <div class="buttons"><a href="<?=$this->routeFromHere(array('provider' => 'facebook')) ?>" class="zocial facebook">Sign in with Facebook</a></div>
+            <div class="buttons"><a href="<?=$this->routeFromHere(array('provider' => 'google')) ?>" class="zocial googleplus">Sign in with Google+</a></div>
+            <div class="buttons"><a href="<?=$this->routeFromHere(array('provider' => 'twitter')) ?>" class="zocial twitter">Sign in with Twitter</a></div>
+            <div class="buttons"><a href="<?=$this->routeFromHere(array('provider' => 'tumblr')) ?>" class="zocial tumblr">Sign in with Tumblr</a></div>
+        </div>
+    </div>
 </div>

@@ -6,186 +6,186 @@
 namespace DF;
 class Export
 {
-	/**
-	 * CSV
-	 **/
-	
-	public static function csv($table_data, $headers_first_row = TRUE, $file_name = "ExportedData")
-	{
-		self::exportToCSV($table_data, $headers_first_row, $file_name);
-	}
-	
-	public static function exportToCSV($table_data, $headers_first_row = TRUE, $file_name = "ExportedData")
-	{
-		// Header data associated with CSV files.
-		header("Pragma: public");
-		header("Expires: 0");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Cache-Control: private", FALSE);
-		header("Content-Type: text/csv");
-		header("Content-Disposition: attachment; filename=".$file_name.".csv");
-		
-		echo self::convertToCSV($table_data, $headers_first_row);
-		exit;
-	}
-	
-	public static function convertToCSV($table_data, $headers_first_row = FALSE)
-	{
-		$final_display = array();
-		$row_count = 0;
-		foreach($table_data as $table_row)
-		{
-			$row_count++;
-			$col_count = 0;
-			$display_row1 = array();
-			$display_row2 = array();
-			foreach($table_row as $table_col => $table_val)
-			{
-				$col_count++;
-				if (!$headers_first_row && $row_count == 1)
-				{
-					$display_row1[] = '"'.self::filterTexttoCSV($table_col).'"';
-				}
-				$display_row2[] = '"'.self::filterTexttoCSV($table_val).'"';
-			}
-			
-			if ($display_row1)
-			{
-				$final_display[] = implode(',', $display_row1);
-			}
-			if ($display_row2)
-			{
-				$final_display[] = implode(',', $display_row2);
-			}
-		}
-		return implode("\n", $final_display);
-	}
-	
-	public static function filterTextToCSV($text)
-	{
-		return str_replace('"', '""', $text);
-	}
-	
-	/**
-	 * Excel
-	 */
-	
-	public static function excel($data, $version = 'Excel2007')
-	{
-		$doc = new \PHPExcel();
-		$doc->setActiveSheetIndex(0);
-		
-		$sheet = $doc->getActiveSheet();
-		$sheet->setTitle('Exported Data');
-		$sheet->fromArray($data);
-		
-		$version_specific = array(
-			'xlsx' => array(
-				'writer'		=> 'Excel2007',
-				'extension'		=> '.xlsx',
-				'mime-type'		=> 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-			),
-			'xls' => array(
-				'writer'		=> 'Excel5',
-				'extension'		=> '.xls',
-				'mime-type'		=> 'application/vnd.ms-excel',
-			),
-			'csv' => array(
-				'writer'		=> 'CSV',
-				'extension'		=> '.csv',
-				'mime-type'		=> 'text/csv',
-			),
-			'html' => array(
-				'writer'		=> 'HTML',
-				'extension'		=> '.html',
-				'mime-type'		=> 'text/html',
-			),
-			'pdf' => array(
-				'writer'		=> 'PDF',
-				'extension'		=> '.pdf',
-				'mime-type'		=> 'application/pdf',
-			),
-		);
-		
-		$filename = 'Exported Data ('.date('Y-m-d').')';
-		$filename .= $version_specific[$version]['extension'];
-		$mime_type = $version_specific[$version]['mime-type'];
-		
-		header("Pragma: public");
-		header("Expires: 0");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Cache-Control: private", FALSE);
-		header("Content-Type: ".$mime_type);
-		header("Content-Disposition: attachment; filename=".$filename);
-		
-		$writer = \PHPExcel_IOFactory::createWriter($doc, $version_specific[$version]['writer']);
-		$writer->save('php://output');
-	}
-		
-	/**
-	 * JSON
-	 **/
-	
-	public static function json($table_data)
-	{
-		return \Zend_Json::encode($table_data);
-	}
-	public static function exportToJSON($table_data)
-	{
-		return \Zend_Json::encode($table_data);
-	}
-	
-	/** 
-	 * PDF
-	 */
-	public static function getPdfFonts()
-	{
-		$fonts_by_name = array(
-			'courier'			=> \Zend_Pdf_Font::FONT_COURIER,
-			'courier_bold'		=> \Zend_Pdf_Font::FONT_COURIER_BOLD,
-			'helvetica'			=> \Zend_Pdf_Font::FONT_HELVETICA,
-			'helvetica_bold' 	=> \Zend_Pdf_Font::FONT_HELVETICA_BOLD,
-			'helvetica_oblique' => \Zend_Pdf_Font::FONT_HELVETICA_OBLIQUE,
-		);
-		$fonts_by_path = array(
-			'trebuchet'			=> DF_INCLUDE_STATIC.'/fonts/trebuc.ttf',
-			'trebuchet_bold'	=> DF_INCLUDE_STATIC.'/fonts/trebucbd.ttf',
-			'trebuchet_italic'	=> DF_INCLUDE_STATIC.'/fonts/trebucit.ttf',
-			'trebuchet_bolditalic' => DF_INCLUDE_STATIC.'/fonts/trebucbi.ttf',
-			'tahoma'			=> DF_INCLUDE_STATIC.'/fonts/tahoma.ttf',
-			'tahoma_bold'		=> DF_INCLUDE_STATIC.'/fonts/tahomabd.ttf',
-			'barcode'			=> DF_INCLUDE_STATIC.'/fonts/FRE3OF9X.TTF',
-		);
-		
-		$font_results = array();
-		foreach($fonts_by_name as $font_key => $font_name)
-		{
-			$font_results[$font_key] = \Zend_Pdf_Font::fontWithName($font_name);	
-		}
-		foreach($fonts_by_path as $font_key => $font_path)
-		{
-			if (file_exists($font_path))
-				$font_results[$font_key] = \Zend_Pdf_Font::fontWithPath($font_path);
-		}
-		return $font_results;
-	}
-	
-	public static function displayPdf($pdf_obj)
-	{
-		header("Pragma: public");
-		header("Expires: 0");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Cache-Control: private", FALSE);
-		header("Content-type: application/pdf");
-		echo $pdf_obj->render();
-		exit;
-	}
-	
-	/**
-	 * XML to Array
-	 */	
-	public static function XmlToArray($xml)
-	{
+    /**
+     * CSV
+     **/
+    
+    public static function csv($table_data, $headers_first_row = TRUE, $file_name = "ExportedData")
+    {
+        self::exportToCSV($table_data, $headers_first_row, $file_name);
+    }
+    
+    public static function exportToCSV($table_data, $headers_first_row = TRUE, $file_name = "ExportedData")
+    {
+        // Header data associated with CSV files.
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: private", FALSE);
+        header("Content-Type: text/csv");
+        header("Content-Disposition: attachment; filename=".$file_name.".csv");
+        
+        echo self::convertToCSV($table_data, $headers_first_row);
+        exit;
+    }
+    
+    public static function convertToCSV($table_data, $headers_first_row = FALSE)
+    {
+        $final_display = array();
+        $row_count = 0;
+        foreach($table_data as $table_row)
+        {
+            $row_count++;
+            $col_count = 0;
+            $display_row1 = array();
+            $display_row2 = array();
+            foreach($table_row as $table_col => $table_val)
+            {
+                $col_count++;
+                if (!$headers_first_row && $row_count == 1)
+                {
+                    $display_row1[] = '"'.self::filterTexttoCSV($table_col).'"';
+                }
+                $display_row2[] = '"'.self::filterTexttoCSV($table_val).'"';
+            }
+            
+            if ($display_row1)
+            {
+                $final_display[] = implode(',', $display_row1);
+            }
+            if ($display_row2)
+            {
+                $final_display[] = implode(',', $display_row2);
+            }
+        }
+        return implode("\n", $final_display);
+    }
+    
+    public static function filterTextToCSV($text)
+    {
+        return str_replace('"', '""', $text);
+    }
+    
+    /**
+     * Excel
+     */
+    
+    public static function excel($data, $version = 'Excel2007')
+    {
+        $doc = new \PHPExcel();
+        $doc->setActiveSheetIndex(0);
+        
+        $sheet = $doc->getActiveSheet();
+        $sheet->setTitle('Exported Data');
+        $sheet->fromArray($data);
+        
+        $version_specific = array(
+            'xlsx' => array(
+                'writer'        => 'Excel2007',
+                'extension'     => '.xlsx',
+                'mime-type'     => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            ),
+            'xls' => array(
+                'writer'        => 'Excel5',
+                'extension'     => '.xls',
+                'mime-type'     => 'application/vnd.ms-excel',
+            ),
+            'csv' => array(
+                'writer'        => 'CSV',
+                'extension'     => '.csv',
+                'mime-type'     => 'text/csv',
+            ),
+            'html' => array(
+                'writer'        => 'HTML',
+                'extension'     => '.html',
+                'mime-type'     => 'text/html',
+            ),
+            'pdf' => array(
+                'writer'        => 'PDF',
+                'extension'     => '.pdf',
+                'mime-type'     => 'application/pdf',
+            ),
+        );
+        
+        $filename = 'Exported Data ('.date('Y-m-d').')';
+        $filename .= $version_specific[$version]['extension'];
+        $mime_type = $version_specific[$version]['mime-type'];
+        
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: private", FALSE);
+        header("Content-Type: ".$mime_type);
+        header("Content-Disposition: attachment; filename=".$filename);
+        
+        $writer = \PHPExcel_IOFactory::createWriter($doc, $version_specific[$version]['writer']);
+        $writer->save('php://output');
+    }
+        
+    /**
+     * JSON
+     **/
+    
+    public static function json($table_data)
+    {
+        return \Zend_Json::encode($table_data);
+    }
+    public static function exportToJSON($table_data)
+    {
+        return \Zend_Json::encode($table_data);
+    }
+    
+    /** 
+     * PDF
+     */
+    public static function getPdfFonts()
+    {
+        $fonts_by_name = array(
+            'courier'           => \Zend_Pdf_Font::FONT_COURIER,
+            'courier_bold'      => \Zend_Pdf_Font::FONT_COURIER_BOLD,
+            'helvetica'         => \Zend_Pdf_Font::FONT_HELVETICA,
+            'helvetica_bold'    => \Zend_Pdf_Font::FONT_HELVETICA_BOLD,
+            'helvetica_oblique' => \Zend_Pdf_Font::FONT_HELVETICA_OBLIQUE,
+        );
+        $fonts_by_path = array(
+            'trebuchet'         => DF_INCLUDE_STATIC.'/fonts/trebuc.ttf',
+            'trebuchet_bold'    => DF_INCLUDE_STATIC.'/fonts/trebucbd.ttf',
+            'trebuchet_italic'  => DF_INCLUDE_STATIC.'/fonts/trebucit.ttf',
+            'trebuchet_bolditalic' => DF_INCLUDE_STATIC.'/fonts/trebucbi.ttf',
+            'tahoma'            => DF_INCLUDE_STATIC.'/fonts/tahoma.ttf',
+            'tahoma_bold'       => DF_INCLUDE_STATIC.'/fonts/tahomabd.ttf',
+            'barcode'           => DF_INCLUDE_STATIC.'/fonts/FRE3OF9X.TTF',
+        );
+        
+        $font_results = array();
+        foreach($fonts_by_name as $font_key => $font_name)
+        {
+            $font_results[$font_key] = \Zend_Pdf_Font::fontWithName($font_name);    
+        }
+        foreach($fonts_by_path as $font_key => $font_path)
+        {
+            if (file_exists($font_path))
+                $font_results[$font_key] = \Zend_Pdf_Font::fontWithPath($font_path);
+        }
+        return $font_results;
+    }
+    
+    public static function displayPdf($pdf_obj)
+    {
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: private", FALSE);
+        header("Content-type: application/pdf");
+        echo $pdf_obj->render();
+        exit;
+    }
+    
+    /**
+     * XML to Array
+     */ 
+    public static function XmlToArray($xml)
+    {
         $values = $index = $array = array();
         $parser = xml_parser_create();
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
@@ -199,7 +199,7 @@ class Export
         return $array;
     }
 
-	protected static function _struct_to_array($values, &$i)
+    protected static function _struct_to_array($values, &$i)
     {
         $child = array();
         if (isset($values[$i]['value'])) array_push($child, $values[$i]['value']);
@@ -207,28 +207,28 @@ class Export
         while ($i++ < count($values)) {
             switch ($values[$i]['type']) {
                 case 'cdata':
-					array_push($child, $values[$i]['value']);
-					break;
+                    array_push($child, $values[$i]['value']);
+                    break;
                
                 case 'complete':
                     $name = $values[$i]['tag'];
                     if(!empty($name)){
-						$child[$name]= ($values[$i]['value'])?($values[$i]['value']):'';
-						if(isset($values[$i]['attributes'])) {                   
-							$child[$name] = $values[$i]['attributes'];
-						}
-					}   
-					break;
+                        $child[$name]= ($values[$i]['value'])?($values[$i]['value']):'';
+                        if(isset($values[$i]['attributes'])) {                   
+                            $child[$name] = $values[$i]['attributes'];
+                        }
+                    }   
+                    break;
                
                 case 'open':
                     $name = $values[$i]['tag'];
                     $size = isset($child[$name]) ? sizeof($child[$name]) : 0;
                     $child[$name][$size] = self::_struct_to_array($values, $i);
-					break;
+                    break;
                
                 case 'close':
-					return $child;
-					break;
+                    return $child;
+                    break;
             }
         }
         return $child;
@@ -236,29 +236,29 @@ class Export
 
     public static function ArrayToXml($array)
     {
-    	$xml_info = new \SimpleXMLElement('<?xml version="1.0"?><return></return>');
-    	self::_arr_to_xml($array, $xml_info);
+        $xml_info = new \SimpleXMLElement('<?xml version="1.0"?><return></return>');
+        self::_arr_to_xml($array, $xml_info);
 
-    	return $xml_info->asXML();
+        return $xml_info->asXML();
     }
 
     protected static function _arr_to_xml($array, &$xml)
     {
-    	foreach((array)$array as $key => $value)
-    	{
-	        if(is_array($value))
-	        {
-	        	$key = is_numeric($key) ? "item$key" : $key;
-	        	$subnode = $xml->addChild("$key");
+        foreach((array)$array as $key => $value)
+        {
+            if(is_array($value))
+            {
+                $key = is_numeric($key) ? "item$key" : $key;
+                $subnode = $xml->addChild("$key");
 
-	        	self::_arr_to_xml($value, $subnode);
-	        }
-	        else
-	        {
-	        	$key = is_numeric($key) ? "item$key" : $key;
-            	$xml->addChild("$key", htmlspecialchars($value));
-	        }
-	    }
+                self::_arr_to_xml($value, $subnode);
+            }
+            else
+            {
+                $key = is_numeric($key) ? "item$key" : $key;
+                $xml->addChild("$key", htmlspecialchars($value));
+            }
+        }
     }
     
     /**

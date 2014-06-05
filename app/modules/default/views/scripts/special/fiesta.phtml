@@ -3,7 +3,7 @@ $this->headTitle('Fiesta Equestria! 2013');
 
 function getEmbedUrl($url)
 {
-	$search = '%
+    $search = '%
         (?:https?://)?
         (?:www\.)?
         (?:
@@ -19,310 +19,310 @@ function getEmbedUrl($url)
         \b
         %x';
     $replace = 'http://www.youtube.com/embed/$1?autoplay=1';
- 	return preg_replace($search, $replace, $url);
+    return preg_replace($search, $replace, $url);
 }
 
 function getMixcloudUrl($url)
 {
-	$params = array(
-		'feed'		=> $url,
-		'embed_type' => 'widget_standard',
-		'autoplay' => 'true',
-	);
-	return 'http://www.mixcloud.com/widget/iframe/?'.http_build_query($params);
+    $params = array(
+        'feed'      => $url,
+        'embed_type' => 'widget_standard',
+        'autoplay' => 'true',
+    );
+    return 'http://www.mixcloud.com/widget/iframe/?'.http_build_query($params);
 }
 
 $schedule = array(
-	'Friday, June 28' => array(
-		'Mane Events' => array(
-			'Opening Ceremonies' => array(
-				'efn' => 'http://www.youtube.com/watch?v=AtopnDNF_HM',
-				'pvl' => '',
-			),
-			'Legends of Equestria Panel' => array(
-				'efn' => 'http://www.youtube.com/watch?v=WvUv6BSZhoU',
-				'pvl' => 'http://youtu.be/5VJRSl4HV8g',
-			),
-			'Hey Ocean! Panel' => array(
-				'efn' => 'http://www.youtube.com/watch?v=N2O58ttdwy8',
-				'pvl' => '',
-			),
-			'All Voice Actor Panel 1' => array(
-				'efn' => 'http://www.youtube.com/watch?v=ksZOX2cB23w',
-				'pvl' => '',
-			),
-			'Friday Night Concert' => array(
-				'efn' => 'http://www.youtube.com/watch?v=UarX8PnETEE',
-				'pvl' => 'http://www.youtube.com/embed/zizfXH7-jqI?autoplay=1',
-			),
-		),
-		'Panel Room 1' => array(
-			'This Is My First Con, What Do I Do?' => array(
-				'pvl' => 'http://youtu.be/RubeLn9341w',
-			),
-			'Michelle Creber Jam Session #1' => array(
-				'pvl' => 'http://youtu.be/A-4A1i391YI',
-			),
-			'Musicians Panel 1' => array(
-				'pvl' => 'http://youtu.be/cS-rffTD_vs',
-			),
-			'Semper Filly' => array(
-				'pvl' => 'http://youtu.be/M4vJgCsaUXI',
-			),
-			'Voice Acting in the Fandom' => array(
-				'pvl' => 'http://youtu.be/k6FZv-mKpGA',
-			),
-			'Brony Stand-Up Comedy' => array(
-				'pvl' => 'http://youtu.be/brCT0Svkf1c',
-			),
-			'Convert a Non-Believer' => array(
-				'pvl' => 'http://youtu.be/rG4pBk2hArw',
-			),
-		),
-		'Panel Room 2' => array(
-			'Bronyology' => array(
-				'pvl' => 'http://youtu.be/3uyJMFAvV0A',
-			),
-			'Shapeless Sun' => array(
-				'pvl' => 'http://youtu.be/Fkjmxp_SyQc',
-			),
-			'Brony Power of 10 Game 1' => array(
-				'pvl' => 'http://youtu.be/Zuj_9eH_aas',
-			),
-			'The Plot Thickens' => array(
-				'pvl' => 'http://youtu.be/9e9I3krHp3o',
-			),
-			'Audience Request Sketch a Pony' => array(
-				'pvl' => 'http://youtu.be/aX4___J-0YE',
-			),
-			/*
-			'Table Top Ponies 101' => array(
-				'pvl' => '',
-			),
-			'Pony Karaoke' => array(
-				'pvl' => '',
-			),
-			*/
-		),
-	),
+    'Friday, June 28' => array(
+        'Mane Events' => array(
+            'Opening Ceremonies' => array(
+                'efn' => 'http://www.youtube.com/watch?v=AtopnDNF_HM',
+                'pvl' => '',
+            ),
+            'Legends of Equestria Panel' => array(
+                'efn' => 'http://www.youtube.com/watch?v=WvUv6BSZhoU',
+                'pvl' => 'http://youtu.be/5VJRSl4HV8g',
+            ),
+            'Hey Ocean! Panel' => array(
+                'efn' => 'http://www.youtube.com/watch?v=N2O58ttdwy8',
+                'pvl' => '',
+            ),
+            'All Voice Actor Panel 1' => array(
+                'efn' => 'http://www.youtube.com/watch?v=ksZOX2cB23w',
+                'pvl' => '',
+            ),
+            'Friday Night Concert' => array(
+                'efn' => 'http://www.youtube.com/watch?v=UarX8PnETEE',
+                'pvl' => 'http://www.youtube.com/embed/zizfXH7-jqI?autoplay=1',
+            ),
+        ),
+        'Panel Room 1' => array(
+            'This Is My First Con, What Do I Do?' => array(
+                'pvl' => 'http://youtu.be/RubeLn9341w',
+            ),
+            'Michelle Creber Jam Session #1' => array(
+                'pvl' => 'http://youtu.be/A-4A1i391YI',
+            ),
+            'Musicians Panel 1' => array(
+                'pvl' => 'http://youtu.be/cS-rffTD_vs',
+            ),
+            'Semper Filly' => array(
+                'pvl' => 'http://youtu.be/M4vJgCsaUXI',
+            ),
+            'Voice Acting in the Fandom' => array(
+                'pvl' => 'http://youtu.be/k6FZv-mKpGA',
+            ),
+            'Brony Stand-Up Comedy' => array(
+                'pvl' => 'http://youtu.be/brCT0Svkf1c',
+            ),
+            'Convert a Non-Believer' => array(
+                'pvl' => 'http://youtu.be/rG4pBk2hArw',
+            ),
+        ),
+        'Panel Room 2' => array(
+            'Bronyology' => array(
+                'pvl' => 'http://youtu.be/3uyJMFAvV0A',
+            ),
+            'Shapeless Sun' => array(
+                'pvl' => 'http://youtu.be/Fkjmxp_SyQc',
+            ),
+            'Brony Power of 10 Game 1' => array(
+                'pvl' => 'http://youtu.be/Zuj_9eH_aas',
+            ),
+            'The Plot Thickens' => array(
+                'pvl' => 'http://youtu.be/9e9I3krHp3o',
+            ),
+            'Audience Request Sketch a Pony' => array(
+                'pvl' => 'http://youtu.be/aX4___J-0YE',
+            ),
+            /*
+            'Table Top Ponies 101' => array(
+                'pvl' => '',
+            ),
+            'Pony Karaoke' => array(
+                'pvl' => '',
+            ),
+            */
+        ),
+    ),
 
-	'Saturday, June 29' => array(
-		'Mane Events' => array(
-			'The Stallions of Equestria; The Proud and The Few' => array(
-				'efn' => 'http://www.youtube.com/watch?v=bSrtBeWKExU',
-				'pvl' => '',
-			),
-			'Whose Line Is It Anypony' => array(
-				'efn' => 'http://www.youtube.com/watch?v=dR55ziDTpx4',
-				'pvl' => '',
-			),
-			'All Voice Actor Panel 2' => array(
-				'efn' => 'http://www.youtube.com/watch?v=cErnQup4WXk',
-				'pvl' => '',
-			),
-			'Cosplay Contest' => array(
-				'efn' => 'http://www.youtube.com/watch?v=peCLKDWSfyM',
-				'pvl' => '',
-			),
-			'Pon3techtronica Concert' => array(
-				'efn' => 'http://www.youtube.com/watch?v=yhSSOANnsPk',
-				'pvl' => 'http://youtu.be/EzcZSmn8OzU',
-			),
-		),
-		'Panel Room 1' => array(
-			'Ask Super Psy Guy' => array(
-				'pvl' => 'http://youtu.be/SgKUryJrUms',
-			),
-			'How To Be 20% Cooler' => array(
-				'pvl' => 'http://youtu.be/tZtL0QAPT9M',
-			),
-			'The Rainboom' => array(
-				'pvl' => 'http://youtu.be/q41ZTpiW3oA',
-			),
-			'Musicians Panel 2' => array(
-				'pvl' => 'http://youtu.be/nuAGzFHaKMQ',
-			),
-			'Manly Bronies: Dispelling the Myth' => array(
-				'pvl' => 'http://youtu.be/ZbNWrx-CwN8',
-			),
-			/*
-			'So You Want to Run a Con?' => array(
-				'pvl' => '',
-			),
-			'Pony Pantomime' => array(
-				'pvl' => '',
-			),
-			'Open Mic' => array(
-				'pvl' => '',
-			),
-			*/
-		),
-		'Panel Room 2' => array(
-			'Like. Comment. Subscribe.' => array(
-				'efn' => 'http://www.youtube.com/watch?v=Ht-YEZM7NtA',
-				'pvl' => 'http://youtu.be/1DLWtxG1trA',
-			),
-			'Artist Panel' => array(
-				'pvl' => 'http://youtu.be/taHhEpzst50',
-			),
-			'Shattered Kingdoms' => array(
-				'pvl' => 'http://youtu.be/3QkfHkJycqs',
-			),
-			'Who Is Best Pony?!' => array(
-				'pvl' => '',
-			),
-			'The Tao of Derpy' => array(
-				'pvl' => 'http://youtu.be/crj_bBR8p_Q',
-			),
-			'Brony News Network!' => array(
-				'pvl' => '',
-			),
-			'How to Draw Ponies' => array(
-				'pvl' => '',
-			),
-			'Ask DJ TETSUO' => array(
-				'pvl' => '',
-			),
-			'Brony Password Game' => array(
-				'pvl' => 'http://youtu.be/IOAb2z7sR4g',
-			),
-			/*
-			'Table Top Ponies 102' => array(
-				'pvl' => '',
-			),
-			*/
-		),
-	),
+    'Saturday, June 29' => array(
+        'Mane Events' => array(
+            'The Stallions of Equestria; The Proud and The Few' => array(
+                'efn' => 'http://www.youtube.com/watch?v=bSrtBeWKExU',
+                'pvl' => '',
+            ),
+            'Whose Line Is It Anypony' => array(
+                'efn' => 'http://www.youtube.com/watch?v=dR55ziDTpx4',
+                'pvl' => '',
+            ),
+            'All Voice Actor Panel 2' => array(
+                'efn' => 'http://www.youtube.com/watch?v=cErnQup4WXk',
+                'pvl' => '',
+            ),
+            'Cosplay Contest' => array(
+                'efn' => 'http://www.youtube.com/watch?v=peCLKDWSfyM',
+                'pvl' => '',
+            ),
+            'Pon3techtronica Concert' => array(
+                'efn' => 'http://www.youtube.com/watch?v=yhSSOANnsPk',
+                'pvl' => 'http://youtu.be/EzcZSmn8OzU',
+            ),
+        ),
+        'Panel Room 1' => array(
+            'Ask Super Psy Guy' => array(
+                'pvl' => 'http://youtu.be/SgKUryJrUms',
+            ),
+            'How To Be 20% Cooler' => array(
+                'pvl' => 'http://youtu.be/tZtL0QAPT9M',
+            ),
+            'The Rainboom' => array(
+                'pvl' => 'http://youtu.be/q41ZTpiW3oA',
+            ),
+            'Musicians Panel 2' => array(
+                'pvl' => 'http://youtu.be/nuAGzFHaKMQ',
+            ),
+            'Manly Bronies: Dispelling the Myth' => array(
+                'pvl' => 'http://youtu.be/ZbNWrx-CwN8',
+            ),
+            /*
+            'So You Want to Run a Con?' => array(
+                'pvl' => '',
+            ),
+            'Pony Pantomime' => array(
+                'pvl' => '',
+            ),
+            'Open Mic' => array(
+                'pvl' => '',
+            ),
+            */
+        ),
+        'Panel Room 2' => array(
+            'Like. Comment. Subscribe.' => array(
+                'efn' => 'http://www.youtube.com/watch?v=Ht-YEZM7NtA',
+                'pvl' => 'http://youtu.be/1DLWtxG1trA',
+            ),
+            'Artist Panel' => array(
+                'pvl' => 'http://youtu.be/taHhEpzst50',
+            ),
+            'Shattered Kingdoms' => array(
+                'pvl' => 'http://youtu.be/3QkfHkJycqs',
+            ),
+            'Who Is Best Pony?!' => array(
+                'pvl' => '',
+            ),
+            'The Tao of Derpy' => array(
+                'pvl' => 'http://youtu.be/crj_bBR8p_Q',
+            ),
+            'Brony News Network!' => array(
+                'pvl' => '',
+            ),
+            'How to Draw Ponies' => array(
+                'pvl' => '',
+            ),
+            'Ask DJ TETSUO' => array(
+                'pvl' => '',
+            ),
+            'Brony Password Game' => array(
+                'pvl' => 'http://youtu.be/IOAb2z7sR4g',
+            ),
+            /*
+            'Table Top Ponies 102' => array(
+                'pvl' => '',
+            ),
+            */
+        ),
+    ),
 
-	'Sunday, June 30' => array(
-		'Mane Events' => array(
-			'Charity Auction' => array(
-				'efn' => 'http://www.youtube.com/watch?v=L5C7RtbEqSI',
-				'pvl' => '',
-			),
-			'Two And A Half Mares and a Gryphon' => array(
-				'efn' => 'http://www.youtube.com/watch?v=5tWK_UIQJRg',
-				'pvl' => '',
-			),
-			'Cosplay Chess: The Battle for Fiesta Equestria!' => array(
-				'efn' => '',
-				'pvl' => '',
-			),
-			'Closing Ceremonies' => array(
-				'efn' => 'http://www.youtube.com/watch?v=AtopnDNF_HM',
-				'pvl' => '',
-			),
-		),
-		'Panel Room 1' => array(
-			/*
-			'Game Show' => array(
-				'pvl' => '',
-			),
-			'G1 Pony Swap' => array(
-				'pvl' => '',
-			),
-			'Brony Beats' => array(
-				'pvl' => '',
-			),
-			*/
-		),
-		'Panel Room 2' => array(
-			'The Low Points of MLP' => array(
-				'pvl' => 'http://youtu.be/rFHqN2J5790',
-			),
-			/*
-			'Rarity Approved Cosplaying' => array(
-				'pvl' => '',
-			),
-			*/
-		),
-	),
+    'Sunday, June 30' => array(
+        'Mane Events' => array(
+            'Charity Auction' => array(
+                'efn' => 'http://www.youtube.com/watch?v=L5C7RtbEqSI',
+                'pvl' => '',
+            ),
+            'Two And A Half Mares and a Gryphon' => array(
+                'efn' => 'http://www.youtube.com/watch?v=5tWK_UIQJRg',
+                'pvl' => '',
+            ),
+            'Cosplay Chess: The Battle for Fiesta Equestria!' => array(
+                'efn' => '',
+                'pvl' => '',
+            ),
+            'Closing Ceremonies' => array(
+                'efn' => 'http://www.youtube.com/watch?v=AtopnDNF_HM',
+                'pvl' => '',
+            ),
+        ),
+        'Panel Room 1' => array(
+            /*
+            'Game Show' => array(
+                'pvl' => '',
+            ),
+            'G1 Pony Swap' => array(
+                'pvl' => '',
+            ),
+            'Brony Beats' => array(
+                'pvl' => '',
+            ),
+            */
+        ),
+        'Panel Room 2' => array(
+            'The Low Points of MLP' => array(
+                'pvl' => 'http://youtu.be/rFHqN2J5790',
+            ),
+            /*
+            'Rarity Approved Cosplaying' => array(
+                'pvl' => '',
+            ),
+            */
+        ),
+    ),
 
-	'Special Events' => array(
-		'PVL Interviews' => array(
-			'Kelly Metzger (Spitfire)' => array(
-				'pvl' => 'http://youtu.be/oaZpYEmm-hM',
-			),
-			'Peter New (Big Mac, etc)' => array(
-				'pvl' => 'http://youtu.be/SblbZLdvCjQ',
-			),
-			'Marÿke Hendrikse (Gilda)' => array(
-				'pvl' => 'http://youtu.be/nBeAPR1U06Q',
-			),
-			'Sam Vincent (Flim)' => array(
-				'pvl' => 'http://youtu.be/BZj9e6JsyG4',
-			),
-			'Z Monnat (Lunar Patrol Guard)' => array(
-				'pvl' => 'http://youtu.be/Y40Yrku2a2k',
-			),
-			'The Combine (Musicians)' => array(
-				'pvl' => 'http://youtu.be/H-J5ulZGW2I',
-			),
-		),
-		'FOB Equestria' => array(
-			'Fiesta Equestria Podcast' => array(
-				'pvl' => 'http://youtu.be/5_eur62Mxvc',
-			),
-			'Marÿke Hendrikse (Gilda)' => array(
-				'pvl' => 'http://youtu.be/cT2V-24F6mM',
-			),
-			'Kelly Metzger (Spitfire)' => array(
-				'pvl' => 'http://youtu.be/VjYtxJsn8bc',
-			),
-		),
-		'Dancefloor DJ Sets' => array(
-			'Silva Hound Surprise Set' => array(
-				'br' => 'http://www.mixcloud.com/BronyRadio/fiesta-equestria-silva-hounds-surprise-sunday-set/',
-			),
-			'DJ Dream Weaver' => array(
-				'br' => 'http://www.mixcloud.com/BronyRadio/fiesta-equestria-dj-dream-weavers-saturday-set/',
-			),
-			'The Combine' => array(
-				'br' => 'http://www.mixcloud.com/BronyRadio/fiesta-equestria-the-combines-sunday-set/',
-			),
-			'Mushrooshi' => array(
-				'br' => 'http://www.mixcloud.com/BronyRadio/fiesta-equestria-shroos-sunday-set/',
-			),
-			'DJ Haruna Dash' => array(
-				'br' => 'http://www.mixcloud.com/BronyRadio/fiesta-equestria-dj-haruna-dashs-second-sunday-set/',
-			),
-		),
-	),
+    'Special Events' => array(
+        'PVL Interviews' => array(
+            'Kelly Metzger (Spitfire)' => array(
+                'pvl' => 'http://youtu.be/oaZpYEmm-hM',
+            ),
+            'Peter New (Big Mac, etc)' => array(
+                'pvl' => 'http://youtu.be/SblbZLdvCjQ',
+            ),
+            'Marÿke Hendrikse (Gilda)' => array(
+                'pvl' => 'http://youtu.be/nBeAPR1U06Q',
+            ),
+            'Sam Vincent (Flim)' => array(
+                'pvl' => 'http://youtu.be/BZj9e6JsyG4',
+            ),
+            'Z Monnat (Lunar Patrol Guard)' => array(
+                'pvl' => 'http://youtu.be/Y40Yrku2a2k',
+            ),
+            'The Combine (Musicians)' => array(
+                'pvl' => 'http://youtu.be/H-J5ulZGW2I',
+            ),
+        ),
+        'FOB Equestria' => array(
+            'Fiesta Equestria Podcast' => array(
+                'pvl' => 'http://youtu.be/5_eur62Mxvc',
+            ),
+            'Marÿke Hendrikse (Gilda)' => array(
+                'pvl' => 'http://youtu.be/cT2V-24F6mM',
+            ),
+            'Kelly Metzger (Spitfire)' => array(
+                'pvl' => 'http://youtu.be/VjYtxJsn8bc',
+            ),
+        ),
+        'Dancefloor DJ Sets' => array(
+            'Silva Hound Surprise Set' => array(
+                'br' => 'http://www.mixcloud.com/BronyRadio/fiesta-equestria-silva-hounds-surprise-sunday-set/',
+            ),
+            'DJ Dream Weaver' => array(
+                'br' => 'http://www.mixcloud.com/BronyRadio/fiesta-equestria-dj-dream-weavers-saturday-set/',
+            ),
+            'The Combine' => array(
+                'br' => 'http://www.mixcloud.com/BronyRadio/fiesta-equestria-the-combines-sunday-set/',
+            ),
+            'Mushrooshi' => array(
+                'br' => 'http://www.mixcloud.com/BronyRadio/fiesta-equestria-shroos-sunday-set/',
+            ),
+            'DJ Haruna Dash' => array(
+                'br' => 'http://www.mixcloud.com/BronyRadio/fiesta-equestria-dj-haruna-dashs-second-sunday-set/',
+            ),
+        ),
+    ),
 
 );
 ?>
 
 <? foreach($schedule as $day_name => $day_components): ?>
-	<h2><?=$day_name ?></h2>
-	<div class="row-fluid">
-	<? foreach($day_components as $component_name => $component_items): ?>
-		<div class="span4">
-			<div style="text-align: center;">
-				<h3><?=$component_name ?></h3>
-			<? foreach($component_items as $show_name => $show_sources): ?>
-				<div style="padding-bottom: 15px;">
-					<b><?=$show_name ?></b>
-					<?
-					$sources = array();
-					if ($show_sources['pvl'])
-						$sources[] = '<a href="'.getEmbedUrl($show_sources['pvl']).'" class="btn btn-primary btn-small fancybox fancybox.iframe" target="_blank"><i class="icon-facetime-video"></i> Ponyville Live!</a>';
+    <h2><?=$day_name ?></h2>
+    <div class="row-fluid">
+    <? foreach($day_components as $component_name => $component_items): ?>
+        <div class="span4">
+            <div style="text-align: center;">
+                <h3><?=$component_name ?></h3>
+            <? foreach($component_items as $show_name => $show_sources): ?>
+                <div style="padding-bottom: 15px;">
+                    <b><?=$show_name ?></b>
+                    <?
+                    $sources = array();
+                    if ($show_sources['pvl'])
+                        $sources[] = '<a href="'.getEmbedUrl($show_sources['pvl']).'" class="btn btn-primary btn-small fancybox fancybox.iframe" target="_blank"><i class="icon-facetime-video"></i> Ponyville Live!</a>';
 
-					if ($show_sources['br'])
-						$sources[] = '<a href="'.getMixcloudUrl($show_sources['br']).'" class="btn btn-primary btn-small fancybox fancybox.iframe" target="_blank"><i class="icon-music"></i> Brony Radio</a>';
+                    if ($show_sources['br'])
+                        $sources[] = '<a href="'.getMixcloudUrl($show_sources['br']).'" class="btn btn-primary btn-small fancybox fancybox.iframe" target="_blank"><i class="icon-music"></i> Brony Radio</a>';
 
-					if ($show_sources['efn'])
-						$sources[] = '<a href="'.getEmbedUrl($show_sources['efn']).'" class="btn btn-purple btn-small fancybox fancybox.iframe" target="_blank"><i class="icon-facetime-video"></i> Everfree Network</a>';
+                    if ($show_sources['efn'])
+                        $sources[] = '<a href="'.getEmbedUrl($show_sources['efn']).'" class="btn btn-purple btn-small fancybox fancybox.iframe" target="_blank"><i class="icon-facetime-video"></i> Everfree Network</a>';
 
-					if ($sources)
-						echo '<br><div class="btn-group">'.implode(' &bull; ', $sources).'</div>';
-					else
-						echo '<br><small>Uploading...check back soon!</small>';
-					?>
-				</div>
-			<? endforeach; ?>
-			</div>
-		</div>
-	<? endforeach; ?>
-	</div>
-	<hr>
+                    if ($sources)
+                        echo '<br><div class="btn-group">'.implode(' &bull; ', $sources).'</div>';
+                    else
+                        echo '<br><small>Uploading...check back soon!</small>';
+                    ?>
+                </div>
+            <? endforeach; ?>
+            </div>
+        </div>
+    <? endforeach; ?>
+    </div>
+    <hr>
 <? endforeach; ?>

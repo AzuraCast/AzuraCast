@@ -10,30 +10,30 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class UnixDateTime extends IntegerType
 {
-	const TYPENAME = 'unixdatetime';
-	
-	public function getName()
-	{
-		return self::TYPENAME;
-	}
-	
-	public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    const TYPENAME = 'unixdatetime';
+    
+    public function getName()
     {
-		if ($value !== NULL)
-		{
-			if ($value instanceof \DateTime)
-				return $value->getTimestamp();
-			else
-				return (int)$value;
-		}
-		return NULL;
+        return self::TYPENAME;
+    }
+    
+    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    {
+        if ($value !== NULL)
+        {
+            if ($value instanceof \DateTime)
+                return $value->getTimestamp();
+            else
+                return (int)$value;
+        }
+        return NULL;
     }
     
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-		if ((int)$value)
-			return \DateTime::createFromFormat(\DateTime::ISO8601, date(\DateTime::ISO8601, (int)$value));
-		else
-			return NULL;
+        if ((int)$value)
+            return \DateTime::createFromFormat(\DateTime::ISO8601, date(\DateTime::ISO8601, (int)$value));
+        else
+            return NULL;
     }
 }

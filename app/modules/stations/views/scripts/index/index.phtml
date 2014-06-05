@@ -3,9 +3,9 @@ $this->headTitle('Station Center');
 $this->layout()->manual = true;
 
 $this->headScript()
-	->appendFile('http://code.highcharts.com/highcharts.js')
-	->appendFile('http://code.highcharts.com/highcharts-more.js')
-	->appendFile('http://code.highcharts.com/modules/exporting.js');
+    ->appendFile('http://code.highcharts.com/highcharts.js')
+    ->appendFile('http://code.highcharts.com/highcharts-more.js')
+    ->appendFile('http://code.highcharts.com/modules/exporting.js');
 
 $skin = \PVL\Customization::get('theme');
 if ($skin == "dark")

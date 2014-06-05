@@ -5,48 +5,48 @@ $podcasts = \Entity\Podcast::fetchArray('name');
 
 <ul class="nav primary_menu">
 
-	<!-- About PVL -->
-	<li class="dropdown">
-		<a href="<?=$this->route(array('controller' => 'about')) ?>"><i class="icon-info-sign"></i> About</a>
-		<ul class="dropdown-menu">
-			<li><a href="<?=$this->route(array('controller' => 'about')) ?>"><i class="icon-info-sign"></i> About Ponyville Live!</a></li>
-			<li><a href="<?=$this->route(array('controller' => 'events')) ?>"><i class="icon-group"></i> Conventions</a></li>
-			<li><a href="<?=$this->route(array('controller' => 'events', 'action' => 'schedule')) ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
-			<li class="divider"></li>
-			<li><a href="<?=$this->route(array('action' => 'app')) ?>"><i class="icon-cloud-download"></i> Plugins &amp; Apps</a></li>
-			<li><a href="http://docs.ponyvillelive.apiary.io/" target="_blank"><i class="icon-cog"></i> PVL Data API</a></li>
-			<li class="divider"></li>
-			<li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ATKJ53AWWRQP4" target="_blank"><i class="icon-money"></i> Donate to Support PVL!</a></li>
-		</ul>
-	</li>
-	
-	<!-- Stations -->
-	<li class="dropdown">
-		<a href="#" data-toggle="dropdown"><i class="icon-music"></i> Radio</a>
-		<ul class="dropdown-menu">
-		<? foreach($categories['audio']['stations'] as $station): ?>
-			<li><a href="<?=$station['web_url'] ?>" title="<?=$station['genre'] ?>" target="_blank"><?=$station['name'] ?></a></li>
-		<? endforeach; ?>
-		</ul>
-	</li>
-	<li class="dropdown">
-		<a href="#" data-toggle="dropdown"><i class="icon-facetime-video"></i> Video</a>
-		<ul class="dropdown-menu">
-		<? foreach($categories['video']['stations'] as $station): ?>
-			<li><a href="<?=$station['web_url'] ?>" title="<?=$station['genre'] ?>" target="_blank"><?=$station['name'] ?></a></li>
-		<? endforeach; ?>
-		</ul>
-	</li>
-	<li class="dropdown">
-		<a href="#" data-toggle="dropdown"><i class="icon-rss"></i> Shows</a>
-		<ul class="dropdown-menu">
-			<li><a href="<?=$this->route(array('controller' => 'show')) ?>">Show Directory</a></li>
-			<li class="divider"></li>
-		<? foreach($podcasts as $podcast): ?>
-			<li><a href="<?=$podcast['web_url'] ?>" title="<?=$podcast['description'] ?>" target="_blank"><?=$podcast['name'] ?></a></li>
-		<? endforeach; ?>
-		</ul>
-	</li>
+    <!-- About PVL -->
+    <li class="dropdown">
+        <a href="<?=$this->route(array('controller' => 'about')) ?>"><i class="icon-info-sign"></i> About</a>
+        <ul class="dropdown-menu">
+            <li><a href="<?=$this->route(array('controller' => 'about')) ?>"><i class="icon-info-sign"></i> About Ponyville Live!</a></li>
+            <li><a href="<?=$this->route(array('controller' => 'events')) ?>"><i class="icon-group"></i> Conventions</a></li>
+            <li><a href="<?=$this->route(array('controller' => 'events', 'action' => 'schedule')) ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
+            <li class="divider"></li>
+            <li><a href="<?=$this->route(array('action' => 'app')) ?>"><i class="icon-cloud-download"></i> Plugins &amp; Apps</a></li>
+            <li><a href="http://docs.ponyvillelive.apiary.io/" target="_blank"><i class="icon-cog"></i> PVL Data API</a></li>
+            <li class="divider"></li>
+            <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ATKJ53AWWRQP4" target="_blank"><i class="icon-money"></i> Donate to Support PVL!</a></li>
+        </ul>
+    </li>
+    
+    <!-- Stations -->
+    <li class="dropdown">
+        <a href="#" data-toggle="dropdown"><i class="icon-music"></i> Radio</a>
+        <ul class="dropdown-menu">
+        <? foreach($categories['audio']['stations'] as $station): ?>
+            <li><a href="<?=$station['web_url'] ?>" title="<?=$station['genre'] ?>" target="_blank"><?=$station['name'] ?></a></li>
+        <? endforeach; ?>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" data-toggle="dropdown"><i class="icon-facetime-video"></i> Video</a>
+        <ul class="dropdown-menu">
+        <? foreach($categories['video']['stations'] as $station): ?>
+            <li><a href="<?=$station['web_url'] ?>" title="<?=$station['genre'] ?>" target="_blank"><?=$station['name'] ?></a></li>
+        <? endforeach; ?>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" data-toggle="dropdown"><i class="icon-rss"></i> Shows</a>
+        <ul class="dropdown-menu">
+            <li><a href="<?=$this->route(array('controller' => 'show')) ?>">Show Directory</a></li>
+            <li class="divider"></li>
+        <? foreach($podcasts as $podcast): ?>
+            <li><a href="<?=$podcast['web_url'] ?>" title="<?=$podcast['description'] ?>" target="_blank"><?=$podcast['name'] ?></a></li>
+        <? endforeach; ?>
+        </ul>
+    </li>
 
-	<li><a href="<?=$this->route(array('action' => 'index', 'mode' => 'chat')) ?>"><i class="icon-comment"></i> Chat</a></li>
+    <li><a href="<?=$this->route(array('action' => 'index', 'mode' => 'chat')) ?>"><i class="icon-comment"></i> Chat</a></li>
 </ul>

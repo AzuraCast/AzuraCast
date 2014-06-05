@@ -5,26 +5,26 @@ use \Entity\User;
 
 class Cas extends Instance
 {
-	public function __construct()
-	{
-		parent::__construct();
-		
-		$config = \Zend_Registry::get('config');
-		$this->_adapter = new Adapter\Cas($config->services->cas->toArray());
-	}
-	
-	public function authenticate()
+    public function __construct()
     {
-		$response = parent::authenticate();
-		
+        parent::__construct();
+        
+        $config = \Zend_Registry::get('config');
+        $this->_adapter = new Adapter\Cas($config->services->cas->toArray());
+    }
+    
+    public function authenticate()
+    {
+        $response = parent::authenticate();
+        
         if($response->isValid())
         {
-			$identity = $response->getIdentity();
-			$user = User::getOrCreate($identity['uin']);
-			
-			$this->_session->identity = $identity;
-			$this->_session->user_id = $user['id'];
-			$this->_user = $user;
+            $identity = $response->getIdentity();
+            $user = User::getOrCreate($identity['uin']);
+            
+            $this->_session->identity = $identity;
+            $this->_session->user_id = $user['id'];
+            $this->_user = $user;
             return true;
         }
         else

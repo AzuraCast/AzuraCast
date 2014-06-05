@@ -4,15 +4,15 @@ class Paginate extends \Zend_View_Helper_Abstract
 {
     public function paginate($pager)
     {
-		if (!($pager instanceof \Zend_Paginator))
-			return '';
-		
+        if (!($pager instanceof \Zend_Paginator))
+            return '';
+        
         $pages = (array)$pager->getPages();
 
-		$query_string = '';
-		if (!empty($_GET))
-			$query_string = '?'.http_build_query($_GET);
-		
+        $query_string = '';
+        if (!empty($_GET))
+            $query_string = '?'.http_build_query($_GET);
+        
         $return_string = '';
         
         if ($pages['pageCount'] > 1)

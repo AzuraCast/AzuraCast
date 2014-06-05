@@ -1,6 +1,6 @@
 <?php 
-return array(	
-	'method'		=> 'post',
+return array(   
+    'method'        => 'post',
     'enctype'       => 'multipart/form-data',
 
     'groups' => array(
@@ -123,14 +123,14 @@ return array(
         ),
 
         'submit_grp' => array(
-    	   'elements'		=> array(
-        		'submit'		=> array('submit', array(
-        			'type'	=> 'submit',
-        			'label'	=> 'Save Changes',
-        			'helper' => 'formButton',
-        			'class' => 'ui-button',
-        		)),
-        	),
+           'elements'       => array(
+                'submit'        => array('submit', array(
+                    'type'  => 'submit',
+                    'label' => 'Save Changes',
+                    'helper' => 'formButton',
+                    'class' => 'ui-button',
+                )),
+            ),
         ),
     ),
 );

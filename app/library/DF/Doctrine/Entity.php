@@ -12,9 +12,9 @@ class Entity implements \ArrayAccess
         $method_name = $this->_getMethodName($key, 'get');
         
         if (method_exists($this, $method_name))
-			return $this->$method_name();
-		else
-			return $this->_getVar($key);
+            return $this->$method_name();
+        else
+            return $this->_getVar($key);
     }
     
     public function __set($key, $value)
@@ -22,9 +22,9 @@ class Entity implements \ArrayAccess
         $method_name = $this->_getMethodName($key, 'set');
         
         if (method_exists($this, $method_name))
-			return $this->$method_name($value);
-		else
-			return $this->_setVar($key, $value);
+            return $this->$method_name($value);
+        else
+            return $this->_setVar($key, $value);
     }
     
     public function __call($method, $arguments)
@@ -42,15 +42,15 @@ class Entity implements \ArrayAccess
     
     protected function _getVar($var)
     {
-		if (property_exists($this, $var))
-			return $this->$var;
-		else
-			return NULL;
+        if (property_exists($this, $var))
+            return $this->$var;
+        else
+            return NULL;
     }
     protected function _setVar($var, $value)
     {
-		if (property_exists($this, $var))
-			$this->$var = $value;
+        if (property_exists($this, $var))
+            $this->$var = $value;
     }
     
     // Converts "varNameBlah" to "var_name_blah".
@@ -62,7 +62,7 @@ class Entity implements \ArrayAccess
     // Converts "getvar_name_blah" to "getVarNameBlah".
     protected function _getMethodName($var, $prefix = '')
     {
-		return $prefix.str_replace(" ", "", ucwords(strtr($var, "_-", "  ")));
+        return $prefix.str_replace(" ", "", ucwords(strtr($var, "_-", "  ")));
     }
     
     /**
@@ -75,20 +75,20 @@ class Entity implements \ArrayAccess
     }
     public function offsetSet($key, $value)
     {
-		$method_name = $this->_getMethodName($key, 'set');
+        $method_name = $this->_getMethodName($key, 'set');
         
         if (method_exists($this, $method_name))
-			return $this->$method_name($value);
-		else
-			return $this->_setVar($key, $value);
+            return $this->$method_name($value);
+        else
+            return $this->_setVar($key, $value);
     }
     public function offsetGet($key)
     {
         $method_name = $this->_getMethodName($key, 'get');
         if (method_exists($this, $method_name))
-			return $this->$method_name();
-		else
-			return $this->_getVar($key);
+            return $this->$method_name();
+        else
+            return $this->_getVar($key);
     }
     public function offsetUnset($offset)
     {
@@ -210,9 +210,9 @@ class Entity implements \ArrayAccess
             else
             {
                 if (!isset($meta->fieldMappings[$field]))
-					$field_info = array();
-				else
-					$field_info = $meta->fieldMappings[$field];
+                    $field_info = array();
+                else
+                    $field_info = $meta->fieldMappings[$field];
 
                 switch($field_info['type'])
                 {
@@ -221,11 +221,11 @@ class Entity implements \ArrayAccess
                         if (!($value instanceof \DateTime))
                         {
                             if ($value)
-                            {	
+                            {   
                                 if (!is_numeric($value))
-									$value = strtotime($value);
-								
-								$value = \DateTime::createFromFormat(\DateTime::ISO8601, date(\DateTime::ISO8601, (int)$value));
+                                    $value = strtotime($value);
+                                
+                                $value = \DateTime::createFromFormat(\DateTime::ISO8601, date(\DateTime::ISO8601, (int)$value));
                             }
                             else
                             {
@@ -253,9 +253,9 @@ class Entity implements \ArrayAccess
                     break;
                     
                     case "boolean":
-						if ($value !== NULL)
-							$value = (bool)$value;
-					break;
+                        if ($value !== NULL)
+                            $value = (bool)$value;
+                    break;
                 }
                 
                 $this->__set($field, $value);
@@ -290,9 +290,9 @@ class Entity implements \ArrayAccess
                 $prop_val = $property->getValue($this);
                 
                 if (isset($class_meta->fieldMappings[$prop_name]))
-					$prop_info = $class_meta->fieldMappings[$prop_name];
-				else
-					$prop_info = array();
+                    $prop_info = $class_meta->fieldMappings[$prop_name];
+                else
+                    $prop_info = array();
                 
                 if (is_array($prop_val))
                 {
@@ -300,10 +300,10 @@ class Entity implements \ArrayAccess
                 }
                 else if (!is_object($prop_val))
                 {
-					if ($prop_info['type'] == "array")
-						$return_arr[$prop_name] = (array)$prop_val;
-					else
-						$return_arr[$prop_name] = (string)$prop_val;
+                    if ($prop_info['type'] == "array")
+                        $return_arr[$prop_name] = (array)$prop_val;
+                    else
+                        $return_arr[$prop_name] = (string)$prop_val;
                 }
                 else if ($prop_val instanceof \DateTime)
                 {
@@ -311,34 +311,34 @@ class Entity implements \ArrayAccess
                 }
                 else if ($deep)
                 {
-					if ($prop_val instanceof \Doctrine\Common\Collections\Collection)
-					{
-						$return_val = array();
-						if (count($prop_val) > 0)
-						{
-							foreach($prop_val as $val_obj)
-							{
-								if ($form_mode)
-								{
-									$obj_meta = $em->getClassMetadata(get_class($val_obj));
-									$id_field = $obj_meta->identifier;
+                    if ($prop_val instanceof \Doctrine\Common\Collections\Collection)
+                    {
+                        $return_val = array();
+                        if (count($prop_val) > 0)
+                        {
+                            foreach($prop_val as $val_obj)
+                            {
+                                if ($form_mode)
+                                {
+                                    $obj_meta = $em->getClassMetadata(get_class($val_obj));
+                                    $id_field = $obj_meta->identifier;
 
-									if ($id_field && count($id_field) == 1)
-										$return_val[] = $val_obj->{$id_field[0]};
-								}
-								else
-								{
-									$return_val[] = $val_obj->toArray(FALSE);
-								}
-							}
-						}
+                                    if ($id_field && count($id_field) == 1)
+                                        $return_val[] = $val_obj->{$id_field[0]};
+                                }
+                                else
+                                {
+                                    $return_val[] = $val_obj->toArray(FALSE);
+                                }
+                            }
+                        }
 
-						$return_arr[$prop_name] = $return_val;
-					}
-					else
-					{
-						$return_arr[$prop_name] = $prop_val->toArray(FALSE);
-					}
+                        $return_arr[$prop_name] = $return_val;
+                    }
+                    else
+                    {
+                        $return_arr[$prop_name] = $prop_val->toArray(FALSE);
+                    }
                 }
             }
         }
@@ -349,7 +349,7 @@ class Entity implements \ArrayAccess
     /* Save (A Docrine 1 Classic) */
     public function save()
     {
-		$em = self::getEntityManager();
+        $em = self::getEntityManager();
         $em->persist($this);
         $em->flush($this);
     }
@@ -357,32 +357,32 @@ class Entity implements \ArrayAccess
     /* Delete (A Docrine 1 Classic) */
     public function delete($hard_delete = FALSE)
     {
-		$em = \Zend_Registry::get('em');
-		
-		// Support for soft-deletion.
-		if (!$hard_delete && property_exists($this, 'deleted_at'))
-		{
-			// Determine type of deleted field.
-			$class_meta = $em->getClassMetadata(get_called_class());
-			$deleted_at_type = $class_meta->fieldMappings['deleted_at']['type'];
-			
-			if ($deleted_at_type == "datetime")
-				$this->deleted_at = new \DateTime('NOW');
-			else
-				$this->deleted_at = true;
-			
-			$this->save();
-		}
-		else
-		{
-			$em = \Zend_Registry::get('em');
-			$em->remove($this);
-			$em->flush();
-		}
+        $em = \Zend_Registry::get('em');
+        
+        // Support for soft-deletion.
+        if (!$hard_delete && property_exists($this, 'deleted_at'))
+        {
+            // Determine type of deleted field.
+            $class_meta = $em->getClassMetadata(get_called_class());
+            $deleted_at_type = $class_meta->fieldMappings['deleted_at']['type'];
+            
+            if ($deleted_at_type == "datetime")
+                $this->deleted_at = new \DateTime('NOW');
+            else
+                $this->deleted_at = true;
+            
+            $this->save();
+        }
+        else
+        {
+            $em = \Zend_Registry::get('em');
+            $em->remove($this);
+            $em->flush();
+        }
     }
     public function hardDelete()
     {
-		return $this->delete(TRUE);
+        return $this->delete(TRUE);
     }
     
     public function detach()
@@ -405,13 +405,13 @@ class Entity implements \ArrayAccess
      
     public static function getEntityManager()
     {
-		static $em;
-		
-		if ($em === NULL)
-			$em = \Zend_Registry::get('em');
-		
-		return $em;
-	}
+        static $em;
+        
+        if ($em === NULL)
+            $em = \Zend_Registry::get('em');
+        
+        return $em;
+    }
     
     /* Fetch the global entity manager to get a repository class. */
     public static function getRepository()
@@ -447,34 +447,34 @@ class Entity implements \ArrayAccess
     /* Generic dropdown builder function (can be overridden for specialized use cases). */
     public static function fetchSelect($add_blank = FALSE, \Closure $display = NULL, $pk = 'id', $order_by = 'name')
     {
-		$select = array();
-		
-		// Specify custom text in the $add_blank parameter to override.
-		if ($add_blank !== FALSE)
-			$select[''] = ($add_blank === TRUE) ? 'Select...' : $add_blank;
-		
-		// Build query for records.
-		$class = get_called_class();
-		$em = self::getEntityManager();
-		
-		$qb = $em->createQueryBuilder()->from($class, 'e');
-		
-		if ($display === NULL)
-			$qb->select('e.'.$pk)->addSelect('e.name')->orderBy('e.'.$order_by, 'ASC');
-		else
-			$qb->select('e')->orderBy('e.'.$order_by, 'ASC');
-		
-		$results = $qb->getQuery()->getArrayResult();
-		
-		// Assemble select values and, if necessary, call $display callback.
-		foreach((array)$results as $result)
-		{
-			$key = $result[$pk];
-			$value = ($display === NULL) ? $result['name'] : $display($result);
-			$select[$key] = $value;
-		}
-		
-		return $select;
+        $select = array();
+        
+        // Specify custom text in the $add_blank parameter to override.
+        if ($add_blank !== FALSE)
+            $select[''] = ($add_blank === TRUE) ? 'Select...' : $add_blank;
+        
+        // Build query for records.
+        $class = get_called_class();
+        $em = self::getEntityManager();
+        
+        $qb = $em->createQueryBuilder()->from($class, 'e');
+        
+        if ($display === NULL)
+            $qb->select('e.'.$pk)->addSelect('e.name')->orderBy('e.'.$order_by, 'ASC');
+        else
+            $qb->select('e')->orderBy('e.'.$order_by, 'ASC');
+        
+        $results = $qb->getQuery()->getArrayResult();
+        
+        // Assemble select values and, if necessary, call $display callback.
+        foreach((array)$results as $result)
+        {
+            $key = $result[$pk];
+            $value = ($display === NULL) ? $result['name'] : $display($result);
+            $select[$key] = $value;
+        }
+        
+        return $select;
     }
 
     /* Find a specific item by primary key. */

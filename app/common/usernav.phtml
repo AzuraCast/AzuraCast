@@ -2,39 +2,39 @@
 $skin = \PVL\Customization::get('theme');
 ?>
 <ul class="loginbar pull-right">
-	<?
-	$tz_info = \PVL\Timezone::getInfo();
-	$tz_text = $tz_info['now']->format('g:ia').' '.$tz_info['abbr'];
-	?>
-	<li><a href="<?=$this->route(array('controller' => 'account', 'action' => 'timezone')) ?>" class="fancybox fancybox.ajax"><i class="icon-time"></i> <?=$tz_text ?></a></li>
-	<li class="divider">&nbsp;</li>
-	<li><a href="<?=$this->route(array('controller' => 'account', 'action' => 'theme', 'skin' => 'toggle')) ?>"><i class="icon-adjust"></i> <? if ($skin == 'light'): ?>Dark Theme<? else: ?>Light Theme<? endif; ?></a></li>
-	<li class="divider">&nbsp;</li>
-	<li><a href="<?=$this->route(array('module' => 'mobile')) ?>" class="btn-tune-in"><i class="icon-youtube-play"></i> Player</a></li>
-	<li class="divider">&nbsp;</li>
-	<!--
-	<li><a href="<?=$this->route(array('module' => 'default', 'controller' => 'index', 'action' => 'app')) ?>"><i class="icon-cloud-download"></i> Plugins &amp; Apps</a></li>
-	<li class="divider">&nbsp;</li>
-	-->
+    <?
+    $tz_info = \PVL\Timezone::getInfo();
+    $tz_text = $tz_info['now']->format('g:ia').' '.$tz_info['abbr'];
+    ?>
+    <li><a href="<?=$this->route(array('controller' => 'account', 'action' => 'timezone')) ?>" class="fancybox fancybox.ajax"><i class="icon-time"></i> <?=$tz_text ?></a></li>
+    <li class="divider">&nbsp;</li>
+    <li><a href="<?=$this->route(array('controller' => 'account', 'action' => 'theme', 'skin' => 'toggle')) ?>"><i class="icon-adjust"></i> <? if ($skin == 'light'): ?>Dark Theme<? else: ?>Light Theme<? endif; ?></a></li>
+    <li class="divider">&nbsp;</li>
+    <li><a href="<?=$this->route(array('module' => 'mobile')) ?>" class="btn-tune-in"><i class="icon-youtube-play"></i> Player</a></li>
+    <li class="divider">&nbsp;</li>
+    <!--
+    <li><a href="<?=$this->route(array('module' => 'default', 'controller' => 'index', 'action' => 'app')) ?>"><i class="icon-cloud-download"></i> Plugins &amp; Apps</a></li>
+    <li class="divider">&nbsp;</li>
+    -->
 <? if ($this->auth->isLoggedIn()): ?>
-	<?
-	$user = $this->auth->getLoggedInUser();
-	?>
-	<? if ($this->acl->isAllowed('view administration')): ?>
-		<li><a href="<?=$this->route(array('module' => 'admin')) ?>"><i class="icon-cog"></i> Admin</a></li>
-		<li class="divider">&nbsp;</li>
-	<? endif; ?>
-	<? if (\Entity\Station::canSeeStationCenter($user)): ?>
-		<li><a href="<?=$this->route(array('module' => 'stations')) ?>"><i class="icon-group"></i> Station Center</a></li>
-		<li class="divider">&nbsp;</li>
-	<? endif; ?>
-		<li><b><?=$user->name ?></b></li>
-	<? if ($this->auth->isMasqueraded()): ?>
-		<li><a href="<?=$this->route(array('module' => 'account', 'controller' => 'logout', 'action' => 'endimpersonate')) ?>"><i class="icon-signout"></i> Switch User</a></li>
-	<? else: ?>
-		<li><a href="<?=$this->route(array('module' => 'account', 'controller' => 'logout')) ?>"><i class="icon-signout"></i> Sign Out</a></li>
-	<? endif; ?>
+    <?
+    $user = $this->auth->getLoggedInUser();
+    ?>
+    <? if ($this->acl->isAllowed('view administration')): ?>
+        <li><a href="<?=$this->route(array('module' => 'admin')) ?>"><i class="icon-cog"></i> Admin</a></li>
+        <li class="divider">&nbsp;</li>
+    <? endif; ?>
+    <? if (\Entity\Station::canSeeStationCenter($user)): ?>
+        <li><a href="<?=$this->route(array('module' => 'stations')) ?>"><i class="icon-group"></i> Station Center</a></li>
+        <li class="divider">&nbsp;</li>
+    <? endif; ?>
+        <li><b><?=$user->name ?></b></li>
+    <? if ($this->auth->isMasqueraded()): ?>
+        <li><a href="<?=$this->route(array('module' => 'account', 'controller' => 'logout', 'action' => 'endimpersonate')) ?>"><i class="icon-signout"></i> Switch User</a></li>
+    <? else: ?>
+        <li><a href="<?=$this->route(array('module' => 'account', 'controller' => 'logout')) ?>"><i class="icon-signout"></i> Sign Out</a></li>
+    <? endif; ?>
 <? else: ?>
-	<li><a href="<?=$this->route(array('module' => 'default', 'controller' => 'account', 'action' => 'login')) ?>"><i class="icon-signin"></i> Sign In</a></li>
+    <li><a href="<?=$this->route(array('module' => 'default', 'controller' => 'account', 'action' => 'login')) ?>"><i class="icon-signin"></i> Sign In</a></li>
 <? endif; ?>
 </ul>

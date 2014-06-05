@@ -4,49 +4,49 @@ use \Entity\StationManager;
 
 class Stations_VoteController extends \PVL\Controller\Action\Station
 {
-	protected $vote_hash;
-	protected $vote_name;
+    protected $vote_hash;
+    protected $vote_name;
 
-	public function preDispatch()
-	{
-		parent::preDispatch();
+    public function preDispatch()
+    {
+        parent::preDispatch();
 
-		$user = $this->auth->getLoggedInUser();
+        $user = $this->auth->getLoggedInUser();
 
-		$this->vote_hash = $this->station->id.'_'.md5(strtolower($user->email));
-		$this->vote_name = $this->station->name.' ('.$user->name.')';
-	}
+        $this->vote_hash = $this->station->id.'_'.md5(strtolower($user->email));
+        $this->vote_name = $this->station->name.' ('.$user->name.')';
+    }
 
-	public function indexAction()
-	{
-		$pending_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.is_active = 0 AND s.is_special = 0 ORDER BY s.id DESC')->getArrayResult();
+    public function indexAction()
+    {
+        $pending_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.is_active = 0 AND s.is_special = 0 ORDER BY s.id DESC')->getArrayResult();
 
-		$pending_stations = array();
-		foreach($pending_raw as $station)
-		{
-			$votes_raw = (array)$station['intake_votes'];
+        $pending_stations = array();
+        foreach($pending_raw as $station)
+        {
+            $votes_raw = (array)$station['intake_votes'];
 
-			if (isset($votes_raw[$this->vote_hash]))
-				$station['my_vote'] = $votes_raw[$this->vote_hash];
+            if (isset($votes_raw[$this->vote_hash]))
+                $station['my_vote'] = $votes_raw[$this->vote_hash];
 
-			$pending_stations[$station['id']] = $station;
-		}
+            $pending_stations[$station['id']] = $station;
+        }
 
-		$this->view->pending_stations = $pending_stations;
-	}
+        $this->view->pending_stations = $pending_stations;
+    }
 
-	public function viewAction()
-	{
-		$id = $this->_getParam('id');
-		$station = Station::find($id);
+    public function viewAction()
+    {
+        $id = $this->_getParam('id');
+        $station = Station::find($id);
 
-		if ($station->is_active)
-			throw new \DF\Exception\DisplayOnly('This station has already been reviewed and is active.');
+        if ($station->is_active)
+            throw new \DF\Exception\DisplayOnly('This station has already been reviewed and is active.');
 
-		$station_form = new \DF\Form($this->current_module_config->forms->submit);
-		$station_form->populate($station->toArray());
+        $station_form = new \DF\Form($this->current_module_config->forms->submit);
+        $station_form->populate($station->toArray());
 
-		$form = new \DF\Form($this->current_module_config->forms->vote);
+        $form = new \DF\Form($this->current_module_config->forms->vote);
 
         if($_POST && $form->isValid($_POST))
         {
@@ -55,19 +55,19 @@ class Stations_VoteController extends \PVL\Controller\Action\Station
 
             $intake_votes = (array)$station->intake_votes;
             if ($data['decision'] == 'Abstain')
-            	unset($intake_votes[$this->vote_hash]);
+                unset($intake_votes[$this->vote_hash]);
             else
-            	$intake_votes[$this->vote_hash] = $data;
+                $intake_votes[$this->vote_hash] = $data;
 
             $station->intake_votes = $intake_votes;
             $station->save();
 
-			$this->alert('Your vote has been submitted. Thank you for your feedback.', 'green');
-			$this->redirectFromHere(array('action' => 'index', 'id' => NULL));
-			return;
+            $this->alert('Your vote has been submitted. Thank you for your feedback.', 'green');
+            $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
+            return;
         }
 
         $this->view->station_form = $station_form;
         $this->view->form = $form;
-	}
+    }
 }

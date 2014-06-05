@@ -2,8 +2,8 @@
 namespace DF\Service;
 
 class Geography {
-	const TAMU_LATITUDE = 30.620477;
-	const TAMU_LONGITUDE = -96.325982;
+    const TAMU_LATITUDE = 30.620477;
+    const TAMU_LONGITUDE = -96.325982;
     
     public static function getProvinces($countryCode = null)
     {
@@ -24,96 +24,96 @@ class Geography {
     }
     public static function getCountryName($id)
     {
-		$countries = self::$countries;
-		
-		if (isset($countries[$id]))
-			return $countries[$id];
-		else
-			return NULL;
+        $countries = self::$countries;
+        
+        if (isset($countries[$id]))
+            return $countries[$id];
+        else
+            return NULL;
     }
     
     public static function getLatLong($address = "", $city = "College Station", $state = "TX", $zip = "77840")
-	{
-		$service_uri = 'http://where.yahooapis.com/geocode';
+    {
+        $service_uri = 'http://where.yahooapis.com/geocode';
         $service_app_id = 'GPbstELV34EOLmhJU8b_nxgbrOxknJxtFjnIn8WOQ4tkmM22OpY8wzL0v3n3';
-		
-		$url_params = array(
-			'appid'		=> $service_app_id,
-			'flags'		=> 'P',
-            'q'    		=> $address.', '.$city.', '.$state.' '.$zip,
+        
+        $url_params = array(
+            'appid'     => $service_app_id,
+            'flags'     => 'P',
+            'q'         => $address.', '.$city.', '.$state.' '.$zip,
         );
         
         $request_url = $service_uri.'?'.http_build_query($url_params);
-		$response_raw = @file_get_contents($request_url);
-		
-		$response = unserialize($response_raw);
-		
-		if (count($response['ResultSet']['Result']) > 0)
-		{
-			$result = $response['ResultSet']['Result'][0];
-			
-			return array(
-				'lat'	=> (double)$result['latitude'],
-				'lon'	=> (double)$result['longitude'],
-			);
-		}
-		else
-		{
-			return array(
-				'lat'	=> self::TAMU_LATITUDE,
-				'lon'	=> self::TAMU_LONGITUDE,
-			);
-		}
-	}
-	
-	public static function getDistanceToCampus($latitude1, $longitude1)
-	{
-		$latitude2 = self::TAMU_LATITUDE;
-		$longitude2 = self::TAMU_LONGITUDE;
-		
-		$theta = $longitude1 - $longitude2;
-		$distance = (sin(deg2rad($latitude1)) * sin(deg2rad($latitude2))) + (cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * cos(deg2rad($theta)));
-		$distance = acos($distance);
-		$distance = rad2deg($distance);
-		$distance = $distance * 60 * 1.1515;
-		
-		return round($distance, 2);
-	}
-	
-	/**
-	 * Process an address submitted in this format:
-	 * Array ( address_1, address_2, address_unit, address_city, address_state, address_zip )
-	 */
-	public static function processAddress($address_array)
-	{
-		$latlon = self::getLatLong($address_array['address_1'], $address_array['address_city'], $address_array['address_state'], $address_array['address_zip']);
-		
-		$lat = $latlon['lat'];
-		$lon = $latlon['lon'];
-		
-		if ($lat != 0 && $lon != 0)
-		{
-			$distance = self::getDistanceToCampus($lat, $lon);
-		}
-		else
-		{
-			$distance = 0;
-			$lat = self::TAMU_LATITUDE;
-			$lon = self::TAMU_LONGITUDE;
-		}
-		
-		return array(
-			'latitude'	=> $lat,
-			'longitude'	=> $lon,
-			'distance'	=> $distance,
-		);
-	}
-	
-	/**
-	 * Static Arrays
-	 */
-	
-	static $provinces = array(
+        $response_raw = @file_get_contents($request_url);
+        
+        $response = unserialize($response_raw);
+        
+        if (count($response['ResultSet']['Result']) > 0)
+        {
+            $result = $response['ResultSet']['Result'][0];
+            
+            return array(
+                'lat'   => (double)$result['latitude'],
+                'lon'   => (double)$result['longitude'],
+            );
+        }
+        else
+        {
+            return array(
+                'lat'   => self::TAMU_LATITUDE,
+                'lon'   => self::TAMU_LONGITUDE,
+            );
+        }
+    }
+    
+    public static function getDistanceToCampus($latitude1, $longitude1)
+    {
+        $latitude2 = self::TAMU_LATITUDE;
+        $longitude2 = self::TAMU_LONGITUDE;
+        
+        $theta = $longitude1 - $longitude2;
+        $distance = (sin(deg2rad($latitude1)) * sin(deg2rad($latitude2))) + (cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * cos(deg2rad($theta)));
+        $distance = acos($distance);
+        $distance = rad2deg($distance);
+        $distance = $distance * 60 * 1.1515;
+        
+        return round($distance, 2);
+    }
+    
+    /**
+     * Process an address submitted in this format:
+     * Array ( address_1, address_2, address_unit, address_city, address_state, address_zip )
+     */
+    public static function processAddress($address_array)
+    {
+        $latlon = self::getLatLong($address_array['address_1'], $address_array['address_city'], $address_array['address_state'], $address_array['address_zip']);
+        
+        $lat = $latlon['lat'];
+        $lon = $latlon['lon'];
+        
+        if ($lat != 0 && $lon != 0)
+        {
+            $distance = self::getDistanceToCampus($lat, $lon);
+        }
+        else
+        {
+            $distance = 0;
+            $lat = self::TAMU_LATITUDE;
+            $lon = self::TAMU_LONGITUDE;
+        }
+        
+        return array(
+            'latitude'  => $lat,
+            'longitude' => $lon,
+            'distance'  => $distance,
+        );
+    }
+    
+    /**
+     * Static Arrays
+     */
+    
+    static $provinces = array(
         'US' => array(
             'AL' => 'Alabama',
             'AK' => 'Alaska',

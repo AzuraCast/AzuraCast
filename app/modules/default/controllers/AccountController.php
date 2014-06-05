@@ -35,8 +35,8 @@ class AccountController extends \DF\Controller\Action
                         'password'  => $data['auth_password'],
                     );
                     $login_success = $this->auth->authenticate($login_credentials);
-    				
-    				$this->alert('<b>Your account has been successfully created.</b><br>You have been automatically logged in to your new account.', 'green');
+                    
+                    $this->alert('<b>Your account has been successfully created.</b><br>You have been automatically logged in to your new account.', 'green');
 
                     $default_url = \DF\Url::route(array('module' => 'default'));
                     $this->redirectToStoredReferrer('login', $default_url);
@@ -103,13 +103,13 @@ class AccountController extends \DF\Controller\Action
         {
             if ($form->isValid($_POST))
             {
-    			$login_success = $this->auth->authenticate($form->getValues());
-    			
+                $login_success = $this->auth->authenticate($form->getValues());
+                
                 if($login_success)
                 {
                     $user = $this->auth->getLoggedInUser();
-    				
-    				$this->alert('<b>Logged in successfully. Welcome back, '.$user->name.'!</b><br>For security purposes, log off when your session is complete.', 'green');
+                    
+                    $this->alert('<b>Logged in successfully. Welcome back, '.$user->name.'!</b><br>For security purposes, log off when your session is complete.', 'green');
 
                     if ($this->acl->isAllowed('view administration'))
                         $default_url = \DF\Url::route(array('module' => 'admin'));
@@ -199,7 +199,7 @@ class AccountController extends \DF\Controller\Action
 
     public function logoutAction()
     {
-		$this->auth->logout();
+        $this->auth->logout();
         $this->redirectToRoute(array('module' => 'default'));
     }
 

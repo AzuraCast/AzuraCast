@@ -7,78 +7,78 @@ $tz_name = $tz_info['abbr'];
 ?>
 
 <div class="station" id="station_<?=$station->short_name ?>" 
-	data-autoplay="true" 
-	data-id="<?=$station['id'] ?>" 
-	data-name="<?=$station['name'] ?>" 
-	data-type="<?=$station['type'] ?>" 
-	data-stream="<?=$station['stream_url'] ?>" 
-	data-inactive="<? if ($station['hide_if_inactive']): ?>hide<? else: ?>show<? endif; ?>">
+    data-autoplay="true" 
+    data-id="<?=$station['id'] ?>" 
+    data-name="<?=$station['name'] ?>" 
+    data-type="<?=$station['type'] ?>" 
+    data-stream="<?=$station['stream_url'] ?>" 
+    data-inactive="<? if ($station['hide_if_inactive']): ?>hide<? else: ?>show<? endif; ?>">
 
-	<div class="station-header clearfix">
-		<img src="<?=\DF\Url::content($station['image_url']) ?>">
+    <div class="station-header clearfix">
+        <img src="<?=\DF\Url::content($station['image_url']) ?>">
 
-		<h4>
-			<?=$station['name'] ?>
-			<span class="nowplaying-info">
-				<span class="nowplaying-listeners"></span>
-			</span>
-		<? if ($station['genre']): ?>
-			<span class="genre-info"><?=$station['genre'] ?></span>
-		<? endif; ?>
-		</h4>
-	</div>
+        <h4>
+            <?=$station['name'] ?>
+            <span class="nowplaying-info">
+                <span class="nowplaying-listeners"></span>
+            </span>
+        <? if ($station['genre']): ?>
+            <span class="genre-info"><?=$station['genre'] ?></span>
+        <? endif; ?>
+        </h4>
+    </div>
 
 <? if ($station['category'] == 'audio'): ?>
-	<a class="btn_tunein ui-btn ui-btn-b ui-corner-all" href="#">
-		<i class="fa fa-music"></i> Tune In Now
-	</a>
+    <a class="btn_tunein ui-btn ui-btn-b ui-corner-all" href="#">
+        <i class="fa fa-music"></i> Tune In Now
+    </a>
 <? else: ?>
-	<a class="ui-btn ui-btn-b ui-corner-all" href="<?=$station['stream_url'] ?>" target="_blank" rel="external">
-		<i class="fa fa-video-camera"></i> Tune In Now
-	</a>
+    <a class="ui-btn ui-btn-b ui-corner-all" href="<?=$station['stream_url'] ?>" target="_blank" rel="external">
+        <i class="fa fa-video-camera"></i> Tune In Now
+    </a>
 <? endif; ?>
 
-	<div class="panel nowplaying-onair ui-corner-all custom-corners" style="display: none;">
-		<div class="ui-bar ui-bar-a">
-			<h3>Now On Air</h3>
-		</div>
-		<div class="ui-body ui-body-a">
-			<span class="nowplaying-onair-inner"></span>
-		</div>
-	</div>
+    <div class="panel nowplaying-onair ui-corner-all custom-corners" style="display: none;">
+        <div class="ui-bar ui-bar-a">
+            <h3>Now On Air</h3>
+        </div>
+        <div class="ui-body ui-body-a">
+            <span class="nowplaying-onair-inner"></span>
+        </div>
+    </div>
 
-	<div class="panel nowplaying-info ui-corner-all custom-corners">
-		<div class="ui-bar ui-bar-a">
-			<h3>Now Playing</h3>
-		</div>
-		<div class="ui-body ui-body-a">
-			<div class="nowplaying-artist">Loading...</div>
-			<div class="nowplaying-title">Loading...</div>
-		</div>
-	</div>
+    <div class="panel nowplaying-info ui-corner-all custom-corners">
+        <div class="ui-bar ui-bar-a">
+            <h3>Now Playing</h3>
+        </div>
+        <div class="ui-body ui-body-a">
+            <div class="nowplaying-artist">Loading...</div>
+            <div class="nowplaying-title">Loading...</div>
+        </div>
+    </div>
 
-	<div class="panel station-history-panel ui-corner-all custom-corners">
-		<div class="ui-bar ui-bar-a">
-			<h3>Recently Played</h3>
-		</div>
-		<div class="ui-body ui-body-a">
-			<div class="station-history"></div>
-		</div>
-	</div>
+    <div class="panel station-history-panel ui-corner-all custom-corners">
+        <div class="ui-bar ui-bar-a">
+            <h3>Recently Played</h3>
+        </div>
+        <div class="ui-body ui-body-a">
+            <div class="station-history"></div>
+        </div>
+    </div>
 
 <? if ($this->events): ?>
-	<div class="panel station-history-panel ui-corner-all custom-corners">
-		<div class="ui-bar ui-bar-a">
-			<h3>On the Schedule (<?=$tz_name ?>)</h3>
-		</div>
-		<div class="ui-body ui-body-a">
-		<? foreach($this->events as $event): ?>
-			<div class="vertical-padded">
-				<small><?=$event['range'] ?>:</small><br>
-				<b><?=\Entity\Schedule::formatName($event['title']) ?></b>
-			</div>
-		<? endforeach; ?>
-		</div>
-	</div>
+    <div class="panel station-history-panel ui-corner-all custom-corners">
+        <div class="ui-bar ui-bar-a">
+            <h3>On the Schedule (<?=$tz_name ?>)</h3>
+        </div>
+        <div class="ui-body ui-body-a">
+        <? foreach($this->events as $event): ?>
+            <div class="vertical-padded">
+                <small><?=$event['range'] ?>:</small><br>
+                <b><?=\Entity\Schedule::formatName($event['title']) ?></b>
+            </div>
+        <? endforeach; ?>
+        </div>
+    </div>
 <? endif; ?>
 </div>

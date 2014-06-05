@@ -11,17 +11,17 @@ class Stations_SubmitController extends \DF\Controller\Action
 
     public function indexAction()
     {
-    	$form = new \DF\Form($this->current_module_config->forms->submit);
+        $form = new \DF\Form($this->current_module_config->forms->submit);
 
         if($_POST && $form->isValid($_POST) )
         {
             $data = $form->getValues();
 
             $files = $form->processFiles('stations');
-			foreach($files as $file_field => $file_paths)
-				$data[$file_field] = $file_paths[1];
+            foreach($files as $file_field => $file_paths)
+                $data[$file_field] = $file_paths[1];
 
-			\DF\Image::resizeImage($data['image_url'], $data['image_url'], 150, 150);
+            \DF\Image::resizeImage($data['image_url'], $data['image_url'], 150, 150);
 
             $record = new Station;
             $record->fromArray($data);
@@ -66,7 +66,7 @@ class Stations_SubmitController extends \DF\Controller\Action
 
             $this->alert('Your station has been submitted. Thank you! We will contact you with any questions or additional information.', 'green');
             $this->redirectHere();
-			return;
+            return;
         }
 
         $this->view->headTitle('New Station Submission');

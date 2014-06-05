@@ -1,9 +1,9 @@
 <?php 
-return array(	
-	'method'		=> 'post',
+return array(   
+    'method'        => 'post',
     'enctype'       => 'multipart/form-data',
 
-	'elements'		=> array(
+    'elements'      => array(
 
         'name' => array('text', array(
             'label' => 'Affiliate Name',
@@ -39,11 +39,11 @@ return array(
             'required' => true,
         )),
         
-		'submit'		=> array('submit', array(
-			'type'	=> 'submit',
-			'label'	=> 'Save Changes',
-			'helper' => 'formButton',
-			'class' => 'ui-button',
-		)),
-	),
+        'submit'        => array('submit', array(
+            'type'  => 'submit',
+            'label' => 'Save Changes',
+            'helper' => 'formButton',
+            'class' => 'ui-button',
+        )),
+    ),
 );

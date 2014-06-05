@@ -22,17 +22,17 @@ class Pluralize extends \Zend_View_Helper_Abstract
             array( '/(x|ch|ss|sh)$/i',         "$1es"    ),
             array( '/([^aeiouy]|qu)y$/i',      "$1ies"   ),
             array( '/([^aeiouy]|qu)ies$/i',    "$1y"     ),
-    	    array( '/(hive)$/i',               "$1s"     ),
-    	    array( '/(?:([^f])fe|([lr])f)$/i', "$1$2ves" ),
-    	    array( '/sis$/i',                  "ses"     ),
-    	    array( '/([ti])um$/i',             "$1a"     ),
-    	    array( '/(buffal|tomat)o$/i',      "$1oes"   ),
+            array( '/(hive)$/i',               "$1s"     ),
+            array( '/(?:([^f])fe|([lr])f)$/i', "$1$2ves" ),
+            array( '/sis$/i',                  "ses"     ),
+            array( '/([ti])um$/i',             "$1a"     ),
+            array( '/(buffal|tomat)o$/i',      "$1oes"   ),
             array( '/(bu)s$/i',                "$1ses"   ),
-    	    array( '/(alias|status)$/i',       "$1es"    ),
-    	    array( '/(octop|vir)us$/i',        "$1i"     ),
-    	    array( '/(ax|test)is$/i',          "$1es"    ),
-    	    array( '/s$/i',                    "s"       ),
-    	    array( '/$/',                      "s"       )
+            array( '/(alias|status)$/i',       "$1es"    ),
+            array( '/(octop|vir)us$/i',        "$1i"     ),
+            array( '/(ax|test)is$/i',          "$1es"    ),
+            array( '/s$/i',                    "s"       ),
+            array( '/$/',                      "s"       )
         );
         
         $irregular = array(
@@ -44,14 +44,14 @@ class Pluralize extends \Zend_View_Helper_Abstract
         );
         
         $uncountable = array( 
-	    'sheep', 
-	    'fish',
-	    'series',
-	    'species',
-	    'money',
-	    'rice',
-	    'information',
-	    'equipment'
+        'sheep', 
+        'fish',
+        'series',
+        'species',
+        'money',
+        'rice',
+        'information',
+        'equipment'
         );
         
         // save some time in the case that singular and plural are the same

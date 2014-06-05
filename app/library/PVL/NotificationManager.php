@@ -12,102 +12,102 @@ use \Entity\ShortUrl;
 
 class NotificationManager
 {
-	public static function run($force_run = false)
-	{
-		$em = \Zend_Registry::get('em');
-		$config = \Zend_Registry::get('config');
+    public static function run($force_run = false)
+    {
+        $em = \Zend_Registry::get('em');
+        $config = \Zend_Registry::get('config');
 
-		/**
-		 * Scheduled Shows from Stations
-		 */
+        /**
+         * Scheduled Shows from Stations
+         */
 
-		$notify_minutes = 15;
+        $notify_minutes = 15;
 
-		$start_threshold = time();
-		$end_threshold = time()+(60*$notify_minutes);
+        $start_threshold = time();
+        $end_threshold = time()+(60*$notify_minutes);
 
-		$schedule_items = $em->createQuery('SELECT s, st FROM Entity\Schedule s JOIN s.station st WHERE s.start_time >= :start AND s.start_time <= :end AND s.type = :type AND s.is_notified = 0')
-			->setParameter('start', $start_threshold)
-			->setParameter('end', $end_threshold)
-			->setParameter('type', 'station')
-			->setMaxResults(1)
-			->execute();
+        $schedule_items = $em->createQuery('SELECT s, st FROM Entity\Schedule s JOIN s.station st WHERE s.start_time >= :start AND s.start_time <= :end AND s.type = :type AND s.is_notified = 0')
+            ->setParameter('start', $start_threshold)
+            ->setParameter('end', $end_threshold)
+            ->setParameter('type', 'station')
+            ->setMaxResults(1)
+            ->execute();
 
-		if ($schedule_items)
-		{
-			$schedule_item = $schedule_items[0];
-			$station = $schedule_item->station;
+        if ($schedule_items)
+        {
+            $schedule_item = $schedule_items[0];
+            $station = $schedule_item->station;
 
-			if ($station->twitter_url)
-				$twitter_handle = '@'.array_pop(explode('/', $station->twitter_url));
-			else
-				$twitter_handle = $station->name;
+            if ($station->twitter_url)
+                $twitter_handle = '@'.array_pop(explode('/', $station->twitter_url));
+            else
+                $twitter_handle = $station->name;
 
-			$tweet = 'On The Air: '.$schedule_item->title.' in '.$notify_minutes.' minutes on '.$twitter_handle.'!';
-			$tweet_url = $station->getShortUrl();
+            $tweet = 'On The Air: '.$schedule_item->title.' in '.$notify_minutes.' minutes on '.$twitter_handle.'!';
+            $tweet_url = $station->getShortUrl();
 
-			self::tweet($tweet, $tweet_url);
+            self::tweet($tweet, $tweet_url);
 
-			$schedule_item->is_notified = true;
-			$schedule_item->save();
-		}
+            $schedule_item->is_notified = true;
+            $schedule_item->save();
+        }
 
-		/**
-		 * New Podcast Episodes
-		 */
+        /**
+         * New Podcast Episodes
+         */
 
-		$start_threshold = time()-86400*7;
-		$end_threshold = time();
+        $start_threshold = time()-86400*7;
+        $end_threshold = time();
 
-		$podcast_episodes = $em->createQuery('SELECT pe, p FROM Entity\PodcastEpisode pe JOIN pe.podcast p WHERE pe.timestamp BETWEEN :start AND :end AND pe.is_notified = 0')
-			->setParameter('start', $start_threshold)
-			->setParameter('end', $end_threshold)
-			->setMaxResults(1)
-			->execute();
+        $podcast_episodes = $em->createQuery('SELECT pe, p FROM Entity\PodcastEpisode pe JOIN pe.podcast p WHERE pe.timestamp BETWEEN :start AND :end AND pe.is_notified = 0')
+            ->setParameter('start', $start_threshold)
+            ->setParameter('end', $end_threshold)
+            ->setMaxResults(1)
+            ->execute();
 
-		if ($podcast_episodes)
-		{
-			$episode = $podcast_episodes[0];
-			$podcast = $episode->podcast;
+        if ($podcast_episodes)
+        {
+            $episode = $podcast_episodes[0];
+            $podcast = $episode->podcast;
 
-			$title = \DF\Utilities::truncateText($episode->title, 110-strlen($podcast->name)-6);
-			$tweet = $podcast->name.': "'.$title.'" -';
+            $title = \DF\Utilities::truncateText($episode->title, 110-strlen($podcast->name)-6);
+            $tweet = $podcast->name.': "'.$title.'" -';
 
-			self::tweet($tweet, $episode->web_url);
+            self::tweet($tweet, $episode->web_url);
 
-			$episode->is_notified = true;
-			$episode->save();
-		}
+            $episode->is_notified = true;
+            $episode->save();
+        }
 
-		return;
-	}
+        return;
+    }
 
-	public static function tweet($message, $url = null)
-	{
-		static $twitter;
+    public static function tweet($message, $url = null)
+    {
+        static $twitter;
 
-		if (!$twitter)
-		{
-			// The @PVLiveShows Twitter Account
-			$twitter = new \tmhOAuth(array(
-	            'consumer_key'		=> 'dekLAskiLF8nrTZI3zmmg',
-			    'consumer_secret'	=> 'J6OaNpKHlDmrQLEmvxfdlRWO4E7WbyNnBTdpz1njLcw',
-			    'user_token'		=> '974916638-1jK4vgMYvv9pAc2gQfAYGcnDY58xTij5M42P93VU',
-			    'user_secret'		=> 'TTDLFrhcULlU3a9uYxIbdW5DZxx4TsCfOlf9sWuVlY4',
-	        ));
-		}
+        if (!$twitter)
+        {
+            // The @PVLiveShows Twitter Account
+            $twitter = new \tmhOAuth(array(
+                'consumer_key'      => 'dekLAskiLF8nrTZI3zmmg',
+                'consumer_secret'   => 'J6OaNpKHlDmrQLEmvxfdlRWO4E7WbyNnBTdpz1njLcw',
+                'user_token'        => '974916638-1jK4vgMYvv9pAc2gQfAYGcnDY58xTij5M42P93VU',
+                'user_secret'       => 'TTDLFrhcULlU3a9uYxIbdW5DZxx4TsCfOlf9sWuVlY4',
+            ));
+        }
 
-		$message_length = ($url) ? 110 : 130;
-		$tweet = \DF\Utilities::truncateText($message, $message_length);
+        $message_length = ($url) ? 110 : 130;
+        $tweet = \DF\Utilities::truncateText($message, $message_length);
 
-		if ($url)
-			$tweet .= ' '.$url;
+        if ($url)
+            $tweet .= ' '.$url;
 
-		$tweet .= ' #PVLive';
+        $tweet .= ' #PVLive';
 
-		$twitter->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', array(
+        $twitter->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', array(
             'status' => $tweet,
         ));
         \PVL\Debug::print_r($twitter->response['response']);
-	}
+    }
 }

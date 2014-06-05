@@ -8,7 +8,7 @@ $this->headTitle('Import Songs');
 <ul>
 <?
 foreach((array)$this->output['successes'] as $file_name => $message)
-	echo '<li><b>'.$file_name.'</b>: '.$message.'</li>';
+    echo '<li><b>'.$file_name.'</b>: '.$message.'</li>';
 ?>
 </ul>
 
@@ -16,6 +16,6 @@ foreach((array)$this->output['successes'] as $file_name => $message)
 <ul>
 <?
 foreach((array)$this->output['failures'] as $file_name => $message)
-	echo '<li><b>'.$file_name.'</b>: '.$message.'</li>';
-?>	
+    echo '<li><b>'.$file_name.'</b>: '.$message.'</li>';
+?>  
 </ul>

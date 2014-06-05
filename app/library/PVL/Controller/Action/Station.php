@@ -3,7 +3,7 @@ namespace PVL\Controller\Action;
 
 class Station extends \DF\Controller\Action
 {
-	protected $stations;
+    protected $stations;
     protected $station;
 
     public function permissions()

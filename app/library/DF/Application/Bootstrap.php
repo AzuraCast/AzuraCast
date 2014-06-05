@@ -1,7 +1,7 @@
 <?php
 namespace DF\Application;
 class Bootstrap extends \Zend_Application_Bootstrap_Bootstrap
-{	
+{   
     public function _initView()
     {
         return self::getNewView(TRUE);

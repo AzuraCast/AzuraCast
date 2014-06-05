@@ -18,13 +18,13 @@ $(function () {
             min: 0
         },
         tooltip: {
-        	crosshairs: true,
-		    shared: true
+            crosshairs: true,
+            shared: true
         },
         
         series: [{
-        	name: 'Average Listeners',
-        	type: 'column',
+            name: 'Average Listeners',
+            type: 'column',
             data: <?=$this->averages_by_hour ?>
         }]
     });

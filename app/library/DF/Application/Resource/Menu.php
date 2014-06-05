@@ -8,40 +8,40 @@ class Menu extends \Zend_Application_Resource_ResourceAbstract
         
         if (!$menu)
         {
-			$menu = $this->_loadMenu();
-			$this->_setMenuCache($menu);
+            $menu = $this->_loadMenu();
+            $this->_setMenuCache($menu);
         }
-		
-		return new \DF\Menu($menu);
+        
+        return new \DF\Menu($menu);
     }
     
     protected function _getMenuCache()
     {
-		// Never cache menus on dev environments.
-		if (DF_APPLICATION_ENV == "dev")
-			return NULL;
-		
-		// Compare to environment file timestamp, updated upon phing.
-		$upload_reference_path = DF_INCLUDE_BASE.DIRECTORY_SEPARATOR . '.env';
-		$last_upload_time = (int)@filemtime($upload_reference_path);
-		
-		$cache_contents = \DF\Cache::get('df_menu');
-		$cache_timestamp = \DF\Cache::get('df_menu_timestamp');
-		
-		if ($cache_contents && $cache_timestamp >= $last_upload_time)
-			return $cache_contents;
-		else
-			return NULL;
+        // Never cache menus on dev environments.
+        if (DF_APPLICATION_ENV == "dev")
+            return NULL;
+        
+        // Compare to environment file timestamp, updated upon phing.
+        $upload_reference_path = DF_INCLUDE_BASE.DIRECTORY_SEPARATOR . '.env';
+        $last_upload_time = (int)@filemtime($upload_reference_path);
+        
+        $cache_contents = \DF\Cache::get('df_menu');
+        $cache_timestamp = \DF\Cache::get('df_menu_timestamp');
+        
+        if ($cache_contents && $cache_timestamp >= $last_upload_time)
+            return $cache_contents;
+        else
+            return NULL;
     }
     protected function _setMenuCache($menu)
     {
-		\DF\Cache::save($menu, 'df_menu');
-		\DF\Cache::save(time(), 'df_menu_timestamp');
+        \DF\Cache::save($menu, 'df_menu');
+        \DF\Cache::save(time(), 'df_menu_timestamp');
     }
     
     protected function _loadMenu()
     {
-		$menu = array();
+        $menu = array();
         foreach(new \DirectoryIterator(DF_INCLUDE_MODULES) as $item)
         {
             if( $item->isDir() && !$item->isDot() )
@@ -49,9 +49,9 @@ class Menu extends \Zend_Application_Resource_ResourceAbstract
                 $menu_file = $item->getPathname().DIRECTORY_SEPARATOR.'menu.php';
                 if(file_exists($menu_file))
                 {
-					$new_menu = (array)include_once($menu_file);
-					$menu = $this->_mergeFlat($menu, $new_menu);
-				}
+                    $new_menu = (array)include_once($menu_file);
+                    $menu = $this->_mergeFlat($menu, $new_menu);
+                }
             }
         }
         return $menu;
@@ -59,7 +59,7 @@ class Menu extends \Zend_Application_Resource_ResourceAbstract
     
     protected function _mergeFlat()
     {
-		$arrays = func_get_args();
+        $arrays = func_get_args();
         $base = array_shift($arrays);
 
         foreach ($arrays as $array)

@@ -51,8 +51,8 @@ class User extends \DF\Doctrine\Entity
     {
         if (trim($password))
         {
-        	$this->auth_password_salt = sha1(mt_rand());
-	        $this->auth_password = sha1($password.$this->auth_password_salt);
+            $this->auth_password_salt = sha1(mt_rand());
+            $this->auth_password = sha1($password.$this->auth_password_salt);
         }
     }
 

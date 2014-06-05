@@ -2,66 +2,66 @@
 $this->headTitle('Station Schedules');
 ?>
 <ul class="nav nav-pills autoselect" rel="<?=$this->station ?>">
-	<li rel="all"><a href="<?=$this->routeFromHere(array('station' => 'all')) ?>">All Schedules</a></li>
+    <li rel="all"><a href="<?=$this->routeFromHere(array('station' => 'all')) ?>">All Schedules</a></li>
 <? foreach($this->all_stations as $station): ?>
-	<li rel="<?=$station['short_name'] ?>"><a href="<?=$this->routeFromHere(array('station' => $station['short_name'])) ?>"><?=$station['name'] ?></a></li>
+    <li rel="<?=$station['short_name'] ?>"><a href="<?=$this->routeFromHere(array('station' => $station['short_name'])) ?>"><?=$station['name'] ?></a></li>
 <? endforeach; ?>
 </ul>
 
 <? if ($this->calendar['prev_page_datecode']): ?>
-	<?=$this->button(array(
-		'type'		=> 'small',
-		'icon'		=> 'icon-arrow-left',
-		'class'		=> 'btn-inverse',
-		'text'		=> $this->calendar['prev_page_text'],
-		'style'		=> 'float: left',
-		'href'		=> $this->routeFromHere(array('month' => $this->calendar['prev_page_datecode'])),
-	)) ?>
+    <?=$this->button(array(
+        'type'      => 'small',
+        'icon'      => 'icon-arrow-left',
+        'class'     => 'btn-inverse',
+        'text'      => $this->calendar['prev_page_text'],
+        'style'     => 'float: left',
+        'href'      => $this->routeFromHere(array('month' => $this->calendar['prev_page_datecode'])),
+    )) ?>
 <? endif; ?>
 <? if ($this->calendar['next_page_datecode']): ?>
-	<?=$this->button(array(
-		'type'		=> 'small',
-		'icon'		=> 'icon-arrow-right',
-		'class'		=> 'btn-inverse',
-		'text'		=> $this->calendar['next_page_text'],
-		'style'		=> 'float: right',
-		'href'		=> $this->routeFromHere(array('month' => $this->calendar['next_page_datecode'])),
-	)) ?>
+    <?=$this->button(array(
+        'type'      => 'small',
+        'icon'      => 'icon-arrow-right',
+        'class'     => 'btn-inverse',
+        'text'      => $this->calendar['next_page_text'],
+        'style'     => 'float: right',
+        'href'      => $this->routeFromHere(array('month' => $this->calendar['next_page_datecode'])),
+    )) ?>
 <? endif; ?>
 <h2 style="text-align: center"><?=$this->calendar['current_page_text'] ?></h2>
 
 <table class="table table-striped" width="100%">
-	<thead>
-	    <tr>
-	        <th width="15%" align="center">Sunday</th>
-	        <th width="14%" align="center">Monday</th>
-	        <th width="14%" align="center">Tuesday</th>
-	        <th width="14%" align="center">Wednesday</th>
-	        <th width="14%" align="center">Thursday</th>
-	        <th width="14%" align="center">Friday</th>
-	        <th width="15%" align="center">Saturday</th>
-	    </tr>
-	</thead>
-	<tbody>
+    <thead>
+        <tr>
+            <th width="15%" align="center">Sunday</th>
+            <th width="14%" align="center">Monday</th>
+            <th width="14%" align="center">Tuesday</th>
+            <th width="14%" align="center">Wednesday</th>
+            <th width="14%" align="center">Thursday</th>
+            <th width="14%" align="center">Friday</th>
+            <th width="15%" align="center">Saturday</th>
+        </tr>
+    </thead>
+    <tbody>
     <? foreach($this->calendar['days'] as $calendar_row): ?>
-	    <tr class="nopad">
-			<? foreach($calendar_row as $calendar_day): ?>
-	        <td style="vertical-align: top; height: 100px;" <? if ($calendar_day['disabled']): ?>class="disabled"<? endif; ?>>
-	            <big><?=$calendar_day['day'] ?></big><br />
-	            <? foreach($calendar_day['records'] as $event): ?>
-	                <div style="padding: 1px 0px 3px 0px; border-top: 1px dashed #81B3E4;">
-	                	<!-- <a href="<?=$event['web_url'] ?>" target="_blank"> -->
-	                		<? if ($this->station == 'all'): ?>
-	                			<? if ($event['station']): ?><?=$event['station']['name'] ?><? else: ?>Network-Wide<? endif; ?>:<br>
-	                		<? endif; ?>
-	                		<?=\Entity\Schedule::formatName($event['title']) ?>
-	                		<br><small><?=$event['time'] ?></small>
-	                	<!-- </a> -->
-	                </div>
-	            <? endforeach; ?>
-	        </td>
-	        <? endforeach; ?>
-	    </tr>
+        <tr class="nopad">
+            <? foreach($calendar_row as $calendar_day): ?>
+            <td style="vertical-align: top; height: 100px;" <? if ($calendar_day['disabled']): ?>class="disabled"<? endif; ?>>
+                <big><?=$calendar_day['day'] ?></big><br />
+                <? foreach($calendar_day['records'] as $event): ?>
+                    <div style="padding: 1px 0px 3px 0px; border-top: 1px dashed #81B3E4;">
+                        <!-- <a href="<?=$event['web_url'] ?>" target="_blank"> -->
+                            <? if ($this->station == 'all'): ?>
+                                <? if ($event['station']): ?><?=$event['station']['name'] ?><? else: ?>Network-Wide<? endif; ?>:<br>
+                            <? endif; ?>
+                            <?=\Entity\Schedule::formatName($event['title']) ?>
+                            <br><small><?=$event['time'] ?></small>
+                        <!-- </a> -->
+                    </div>
+                <? endforeach; ?>
+            </td>
+            <? endforeach; ?>
+        </tr>
     <? endforeach; ?>
-   	</tbody>
+    </tbody>
 </table>

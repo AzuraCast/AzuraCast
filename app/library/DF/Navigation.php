@@ -68,7 +68,7 @@ class Navigation extends \Zend_Navigation
         else
         {
             $retval = '<ul>'.implode("\n", $items).'</ul>';
-			return $retval;
+            return $retval;
         }
     }
 
@@ -126,52 +126,52 @@ class Navigation extends \Zend_Navigation
         if( !self::_checkPermission($page) )
             return '';
 
-		$class = str_replace('here', '', $class);
+        $class = str_replace('here', '', $class);
 
         if( self::_isPageActive($page) )
         {
             $class = $class . " " . $currentClass;
             if (!$page->hasChildren()) $class = $class . " nochildren";
         }
-		
-		$retval = '';
-		
-		$page_label = $page->getLabel();
-		$retval .= ($page_label) ? '<a href="'.$page->getHref().'" class="'.$class.'">'.$page_label.'</a>' : '';
+        
+        $retval = '';
+        
+        $page_label = $page->getLabel();
+        $retval .= ($page_label) ? '<a href="'.$page->getHref().'" class="'.$class.'">'.$page_label.'</a>' : '';
 
         if( $page->hasChildren() && $levels != 0 )
         {
-			$sub_retval = '';
+            $sub_retval = '';
             foreach( $page as $child )
             {
                 $sub_retval .= $this->_navRender($child, $levels - 1, $class, $currentClass);
             }
-			
-			if (!empty($sub_retval))
-				$retval .= '<ul>'.$sub_retval.'</ul>';
+            
+            if (!empty($sub_retval))
+                $retval .= '<ul>'.$sub_retval.'</ul>';
         }
         
         if (isset($page->show_only_with_subpages) && !$sub_retval)
             return '';
-		
-		if (!empty($retval))
-			return '<li>'.$retval.'</li>';
-		else
-			return '';
+        
+        if (!empty($retval))
+            return '<li>'.$retval.'</li>';
+        else
+            return '';
     }
     
     protected static function _checkPermission(\Zend_Navigation_Page $page)
     {
-		if(isset($page->permission))
-		{
-			$acl = Acl::getInstance();
-			
-			if (isset($page->is_dept) && $page->is_dept && method_exists($acl, 'isAllowedInDepartment'))
-				return $acl->isAllowedInDepartment($page->permission);
-			else
-				return $acl->isAllowed($page->permission);
-		}
-		return true;
+        if(isset($page->permission))
+        {
+            $acl = Acl::getInstance();
+            
+            if (isset($page->is_dept) && $page->is_dept && method_exists($acl, 'isAllowedInDepartment'))
+                return $acl->isAllowedInDepartment($page->permission);
+            else
+                return $acl->isAllowed($page->permission);
+        }
+        return true;
     }
 
     protected static function _isPageActive(\Zend_Navigation_Page $page)

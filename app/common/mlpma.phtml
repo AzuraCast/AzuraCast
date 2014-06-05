@@ -6,39 +6,39 @@ soundManager.debugMode = false;
 </script>
 
 <div id="sidebar" class="well">
-	<ul class="nav nav-list">
-	    <li><a href="<?=$this->route(array('module' => 'mlpma')) ?>" class="ajax"><i class="icon-home"></i> Home</a></li>
-	    <li><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'index', 'action' => 'download')) ?>" class="ajax"><i class="icon-download"></i> Download the Archive</a></li>
-		<li><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'submit')) ?>"><i class="icon-plus-sign"></i> Submit a Song </a></li>
+    <ul class="nav nav-list">
+        <li><a href="<?=$this->route(array('module' => 'mlpma')) ?>" class="ajax"><i class="icon-home"></i> Home</a></li>
+        <li><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'index', 'action' => 'download')) ?>" class="ajax"><i class="icon-download"></i> Download the Archive</a></li>
+        <li><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'submit')) ?>"><i class="icon-plus-sign"></i> Submit a Song </a></li>
 
-	    <li class="nav-header">Search the Archive</li>
-	    <li>
-	    	<form id="form-search" action="<?=$this->route(array('module' => 'mlpma', 'controller' => 'search', 'origin' => 'header')) ?>" method="get" class="form-inline no-disable">
-				<input type="text" name="q" title="Search terms" placeholder="Song, Artist, Album..." class="half-width" value="<?=$this->q ?>">
-				<?=$this->button(array(
-				    'type'		=> 'submit',
-				    'class'		=> 'primary btn-small',
-				    'text'		=> 'Search',
-				)) ?>
-			</form>
-	    </li>
+        <li class="nav-header">Search the Archive</li>
+        <li>
+            <form id="form-search" action="<?=$this->route(array('module' => 'mlpma', 'controller' => 'search', 'origin' => 'header')) ?>" method="get" class="form-inline no-disable">
+                <input type="text" name="q" title="Search terms" placeholder="Song, Artist, Album..." class="half-width" value="<?=$this->q ?>">
+                <?=$this->button(array(
+                    'type'      => 'submit',
+                    'class'     => 'primary btn-small',
+                    'text'      => 'Search',
+                )) ?>
+            </form>
+        </li>
 
-	    <li class="nav-header">Top Artists</li>
+        <li class="nav-header">Top Artists</li>
 
 
-	    <li class="nav-header">Top Genres</li>
-		<?
-		$genres = \Entity\ArchiveGenre::getTop();
-		foreach($genres as $genre_id => $genre): ?>
-			<li><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'search', 'genre' => $genre['name'])) ?>" class="ajax"><i class="icon-folder-close"></i> <?=$genre['name'] ?></a></li>
-		<? endforeach; ?>
+        <li class="nav-header">Top Genres</li>
+        <?
+        $genres = \Entity\ArchiveGenre::getTop();
+        foreach($genres as $genre_id => $genre): ?>
+            <li><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'search', 'genre' => $genre['name'])) ?>" class="ajax"><i class="icon-folder-close"></i> <?=$genre['name'] ?></a></li>
+        <? endforeach; ?>
 
-	<? if ($this->acl->isAllowed('administer mlpma songs')): ?>
-		<li class="nav-header">Administration</li>
+    <? if ($this->acl->isAllowed('administer mlpma songs')): ?>
+        <li class="nav-header">Administration</li>
 
-		<li><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'manage', 'action' => 'import')) ?>"><i class="icon-inbox"></i><span>Import New Music</span></a></li>
+        <li><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'manage', 'action' => 'import')) ?>"><i class="icon-inbox"></i><span>Import New Music</span></a></li>
 
-	<? endif; ?>
+    <? endif; ?>
 
-	</ul>
+    </ul>
 </div>

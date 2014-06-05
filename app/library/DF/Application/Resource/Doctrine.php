@@ -44,8 +44,8 @@ class Doctrine extends \Zend_Application_Resource_ResourceAbstract
         
         if ($options['conn']['platform'])
         {
-			$class_obj = new \ReflectionClass($options['conn']['platform']);
-			$options['conn']['platform'] = $class_obj->newInstance();
+            $class_obj = new \ReflectionClass($options['conn']['platform']);
+            $options['conn']['platform'] = $class_obj->newInstance();
         }
         
         $metadata_driver = $config->newDefaultAnnotationDriver($options['modelPath']);
@@ -63,9 +63,9 @@ class Doctrine extends \Zend_Application_Resource_ResourceAbstract
             
             if (!file_exists($update_reference_path))
             {
-				@file_put_contents($update_reference_path, 'This file is automatically modified to track proxy regeneration.');
-				@touch($upload_reference_path);
-			}
+                @file_put_contents($update_reference_path, 'This file is automatically modified to track proxy regeneration.');
+                @touch($upload_reference_path);
+            }
             
             clearstatcache();
             $last_upload_time = (int)@filemtime($upload_reference_path);
@@ -73,22 +73,22 @@ class Doctrine extends \Zend_Application_Resource_ResourceAbstract
             
             if ($last_upload_time >= $last_update_time)
             {
-				@touch($update_reference_path);
-				
-				// Flush the cache.
+                @touch($update_reference_path);
+                
+                // Flush the cache.
                 $cache->flushAll();
                 
                 // Clear the proxy directory.
                 $proxy_dir = $options['proxyPath'];
                 @mkdir($proxy_dir);
-				
-				$files = glob($proxy_dir.DIRECTORY_SEPARATOR.'*.php');
-				foreach((array)$files as $file)
-					@unlink($file);
-				
-				// Trigger proxy regeneration below.
-				$regen_proxies = TRUE;
-				$config->setAutoGenerateProxyClasses(TRUE);
+                
+                $files = glob($proxy_dir.DIRECTORY_SEPARATOR.'*.php');
+                foreach((array)$files as $file)
+                    @unlink($file);
+                
+                // Trigger proxy regeneration below.
+                $regen_proxies = TRUE;
+                $config->setAutoGenerateProxyClasses(TRUE);
             }
         }
         else
@@ -104,10 +104,10 @@ class Doctrine extends \Zend_Application_Resource_ResourceAbstract
         $config->setProxyNamespace($options['proxyNamespace']);
         
         if (!$regen_proxies)
-			$config->setAutoGenerateProxyClasses($options['autoGenerateProxies']);
+            $config->setAutoGenerateProxyClasses($options['autoGenerateProxies']);
         
         if (isset($options['conn']['debug']) && $options['conn']['debug'])
-			$config->setSQLLogger(new \DF\Doctrine\Logger\EchoSQL);
+            $config->setSQLLogger(new \DF\Doctrine\Logger\EchoSQL);
         
         $config->addFilter('softdelete', '\DF\Doctrine\Filter\SoftDelete');
         $config->addCustomNumericFunction('RAND', '\DF\Doctrine\Functions\Rand');
@@ -120,27 +120,27 @@ class Doctrine extends \Zend_Application_Resource_ResourceAbstract
         // Trigger proxy regeneration.
         if ($regen_proxies)
         {
-			$metadatas = $em->getMetadataFactory()->getAllMetadata();
+            $metadatas = $em->getMetadataFactory()->getAllMetadata();
             $em->getProxyFactory()->generateProxyClasses($metadatas);
         }
         
         // Try the connection before rendering the page.
         try
         {
-			$em->getConnection()->connect();
-		}
+            $em->getConnection()->connect();
+        }
         catch(\Exception $e)
         {
-			$db_config_location = str_replace(DF_INCLUDE_ROOT, '', DF_INCLUDE_APP).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'application.conf.php';
-		
-			\DF\Application\Maintenance::display('
-				<h2>Database Error</h2>
-				<p>The system could not connect to the database. Verify that the information listed in "<i>'.$db_config_location.'</i>" is correct.</p>
-				<blockquote>'.$e->getMessage().'</blockquote>
-			');
-			exit;
-		}
-		
+            $db_config_location = str_replace(DF_INCLUDE_ROOT, '', DF_INCLUDE_APP).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'application.conf.php';
+        
+            \DF\Application\Maintenance::display('
+                <h2>Database Error</h2>
+                <p>The system could not connect to the database. Verify that the information listed in "<i>'.$db_config_location.'</i>" is correct.</p>
+                <blockquote>'.$e->getMessage().'</blockquote>
+            ');
+            exit;
+        }
+        
         return $em;
     }
 }

@@ -11,9 +11,9 @@ class DoctrineQuery implements \Zend_Paginator_Adapter_Interface
 
     public function __construct($query)
     {
-		if ($query instanceof QueryBuilder)
-			$query = $query->getQuery();
-		
+        if ($query instanceof QueryBuilder)
+            $query = $query->getQuery();
+        
         $this->_query = $query;
     }
     

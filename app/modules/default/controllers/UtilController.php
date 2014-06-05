@@ -2,16 +2,16 @@
 
 class UtilController extends \DF\Controller\Action
 {
-	public function indexAction()
-	{
+    public function indexAction()
+    {
         $this->doNotRender();
         
         phpinfo();
-	}
+    }
 
-	public function testAction()
-	{
-		$this->doNotRender();
+    public function testAction()
+    {
+        $this->doNotRender();
 
         \PVL\Debug::showErrors();
         \PVL\Debug::setEchoMode(TRUE);
@@ -420,7 +420,7 @@ class UtilController extends \DF\Controller\Action
         return;
         */
 
-		$types_raw = array(
+        $types_raw = array(
             'music' => array(
                 'name'      => 'Musician',
                 'icon'      => 'icon-music',
@@ -455,29 +455,29 @@ class UtilController extends \DF\Controller\Action
             ),
         );
 
-		$type_lookup = array();
-		foreach($types_raw as $type_key => $type_info)
-		{
-			$record = new \Entity\ArtistType;
-			$record->name = $type_info['name'];
-			$record->icon = $type_info['icon'];
-			$record->save();
+        $type_lookup = array();
+        foreach($types_raw as $type_key => $type_info)
+        {
+            $record = new \Entity\ArtistType;
+            $record->name = $type_info['name'];
+            $record->icon = $type_info['icon'];
+            $record->save();
 
-			$type_lookup[$type_key] = $record;
-		}
+            $type_lookup[$type_key] = $record;
+        }
 
-		$artists = \Entity\Artist::fetchAll();
+        $artists = \Entity\Artist::fetchAll();
 
-		foreach($artists as $artist)
-		{
-			$type = $artist->type;
+        foreach($artists as $artist)
+        {
+            $type = $artist->type;
 
-			$artist->types->add($type_lookup[$type]);
-			$artist->save();
-		}
+            $artist->types->add($type_lookup[$type]);
+            $artist->save();
+        }
 
-		echo 'Done';
-	}
+        echo 'Done';
+    }
 
     public function infoAction()
     {

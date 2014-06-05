@@ -6,18 +6,18 @@ use \Entity\ArchiveSong;
 
 class Mlpma extends \DF\Controller\Action
 {
-	public function init()
-	{
+    public function init()
+    {
     parent::init();
 
-		\Zend_Layout::getMvcInstance()->setLayout('mlpma');
-	}
+        \Zend_Layout::getMvcInstance()->setLayout('mlpma');
+    }
 
-	public function preDispatch()
-	{
-		parent::preDispatch();
-		\Zend_Layout::getMvcInstance()->enableLayout();
+    public function preDispatch()
+    {
+        parent::preDispatch();
+        \Zend_Layout::getMvcInstance()->enableLayout();
 
-		$this->view->top_genres = ArchiveGenre::getTop(5);
-	}
+        $this->view->top_genres = ArchiveGenre::getTop(5);
+    }
 }

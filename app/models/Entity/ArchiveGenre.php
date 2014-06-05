@@ -14,7 +14,7 @@ class ArchiveGenre extends \DF\Doctrine\Entity
         $this->songs = new ArrayCollection;
     }
 
-	/**
+    /**
      * @Column(name="id", type="integer")
      * @Id
      * @GeneratedValue(strategy="AUTO")

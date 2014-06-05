@@ -17,7 +17,7 @@ class Admin_SongsController extends \DF\Controller\Action
 
     public function votesAction()
     {
-    	$threshold = strtotime('-1 week');
+        $threshold = strtotime('-1 week');
 
         $votes_raw = $this->em->createQuery('SELECT sv.song_id, SUM(sv.vote) AS vote_total FROM Entity\SongVote sv WHERE sv.timestamp >= :threshold GROUP BY sv.song_id')
             ->setParameter('threshold', $threshold)

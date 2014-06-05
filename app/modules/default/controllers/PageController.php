@@ -3,14 +3,14 @@ use \Entity\Block;
 
 class PageController extends \DF\Controller\Action
 {
-	public function indexAction()
+    public function indexAction()
     {
-    	$page_id = $this->_getParam('id');
-    	$block = Block::find($page_id);
+        $page_id = $this->_getParam('id');
+        $block = Block::find($page_id);
 
-    	if (!$block instanceof Block)
-    		throw new \DF\Exception('Invalid block ID.');
+        if (!$block instanceof Block)
+            throw new \DF\Exception('Invalid block ID.');
 
-    	$this->view->block = $block;;
+        $this->view->block = $block;;
     }
 }

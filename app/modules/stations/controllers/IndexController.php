@@ -11,7 +11,7 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
     public function selectAction()
     {}
 
-	public function indexAction()
+    public function indexAction()
     {
         /**
          * Statistics

@@ -21,18 +21,18 @@ if (DF_APPLICATION_ENV != "production")
 echo $this->headTitle()->setSeparator(" | ")->toString();
 
 $this->headLink()
-	->appendStylesheet('//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css', 'all')
-	->appendStylesheet('//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css', 'all')
-	->appendStylesheet(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.css'), 'all')
-	->appendStylesheet(\DF\Url::content('mid2013/embeds/'.$skin.'.css'))
-	->appendStylesheet('http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen');
+    ->appendStylesheet('//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css', 'all')
+    ->appendStylesheet('//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css', 'all')
+    ->appendStylesheet(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.css'), 'all')
+    ->appendStylesheet(\DF\Url::content('mid2013/embeds/'.$skin.'.css'))
+    ->appendStylesheet('http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen');
     
 $this->headScript()
-	->prependFile(\DF\Url::cdn('jquery', '1.8'))
-	->appendFile(\DF\Url::content('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js'))
-	->appendFile(\DF\Url::content('common/bootstrap2_r2/layout.js'))
-	->appendFile(\DF\Url::content('global.js'))
-	->appendFile(\DF\Url::content('swfobject.js'));
+    ->prependFile(\DF\Url::cdn('jquery', '1.8'))
+    ->appendFile(\DF\Url::content('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js'))
+    ->appendFile(\DF\Url::content('common/bootstrap2_r2/layout.js'))
+    ->appendFile(\DF\Url::content('global.js'))
+    ->appendFile(\DF\Url::content('swfobject.js'));
 
 echo $this->headMeta();
 echo $this->headLink();
@@ -56,25 +56,25 @@ ga('send', 'pageview');
 <!-- End Google Universal Analytics -->
 
 <div id="body-wrapper">
-	<div id="body" class="container">
-	<? if ($title): ?>
-		<h1 class="title"><?=$title ?></h1>
-	<? endif; ?>
+    <div id="body" class="container">
+    <? if ($title): ?>
+        <h1 class="title"><?=$title ?></h1>
+    <? endif; ?>
 
-	<? if ($this->layout()->manual): ?>
-		<?php echo $this->layout()->content; ?>
-	<? else: ?>
-		<div class="row-fluid">
-			<div class="span12">
-				<div class="floating">
-					<div class="content_inner">
-						<?php echo $this->layout()->content; ?>
-					</div>
-				</div>
-			</div>
-		</div>
-	<? endif; ?>
-	</div>
+    <? if ($this->layout()->manual): ?>
+        <?php echo $this->layout()->content; ?>
+    <? else: ?>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="floating">
+                    <div class="content_inner">
+                        <?php echo $this->layout()->content; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <? endif; ?>
+    </div>
 </div>
 </body>
 </html>

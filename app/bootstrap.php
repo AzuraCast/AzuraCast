@@ -27,9 +27,9 @@ define("DF_UPLOAD_FOLDER", DF_INCLUDE_STATIC);
 
 // Self-reference to current script.
 if (isset($_SERVER['REQUEST_URI']))
-	define("DF_THIS_PAGE", reset(explode("?", $_SERVER['REQUEST_URI'])));
+    define("DF_THIS_PAGE", reset(explode("?", $_SERVER['REQUEST_URI'])));
 else
-	define("DF_THIS_PAGE", '');
+    define("DF_THIS_PAGE", '');
 
 define("DF_TIME", time());
 
@@ -41,9 +41,9 @@ if (!defined('DF_APPLICATION_ENV'))
 
 // Static URL.
 if (DF_APPLICATION_ENV == 'production')
-	define("DF_URL_STATIC", (DF_IS_SECURE ? 'https:' : 'http:').'//ponyvillelive.com/static');
+    define("DF_URL_STATIC", (DF_IS_SECURE ? 'https:' : 'http:').'//ponyvillelive.com/static');
 else
-	define("DF_URL_STATIC", '/static');
+    define("DF_URL_STATIC", '/static');
 
 // Set error reporting for the bootstrapping process.
 error_reporting(E_ALL & ~E_NOTICE);
@@ -56,14 +56,14 @@ $module_config_dirs = array();
 $modules = scandir(DF_INCLUDE_MODULES);
 foreach($modules as $module)
 {
-	if ($module != '.' && $module != '..')
-	{
-		$config_directory = DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'config';
-		if (file_exists($config_directory))
-		{
-			$module_config_dirs[$module] = $config_directory;
-		}
-	}
+    if ($module != '.' && $module != '..')
+    {
+        $config_directory = DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'config';
+        if (file_exists($config_directory))
+        {
+            $module_config_dirs[$module] = $config_directory;
+        }
+    }
 }
 
 // Set include paths.
@@ -81,16 +81,16 @@ $config->preload(array('application','general'));
 $module_config = array();
 if ($module_config_dirs)
 {
-	foreach($module_config_dirs as $module_name => $config_dir)
-		$module_config[$module_name] = new \DF\Config($config_dir);
+    foreach($module_config_dirs as $module_name => $config_dir)
+        $module_config[$module_name] = new \DF\Config($config_dir);
 }
 
 $autoload_classes = $config->application->autoload->toArray();
 foreach($autoload_classes['psr0'] as $class_key => $class_dir)
-	$autoloader->add($class_key, $class_dir);
+    $autoloader->add($class_key, $class_dir);
 
 foreach($autoload_classes['psr4'] as $class_key => $class_dir)
-	$autoloader->addPsr4($class_key, $class_dir);
+    $autoloader->addPsr4($class_key, $class_dir);
 
 // Initialize the ZendFramework Application Bootstrapper.
 $application = new \Zend_Application('application', $config->application);

@@ -42,41 +42,41 @@
                     {
                         foreach( $trace['args'] as $arg )
                         {
-                        	if( is_object($arg) )
-                        	{
-                        		$args[] = "&nbsp;&nbsp;&nbsp;&nbsp;" . gettype($arg) . "(" . get_class($arg) . ")";
-                        	}
-                        	elseif( is_array($arg) )
-                        	{
-                        		$array_args = explode("\n", print_r($arg, true));
-                        		
-                        		foreach( $array_args as &$line )
-                        		{
-                        			$line = "&nbsp;&nbsp;&nbsp;&nbsp;" . $line;
-                        		}
-                        		
-                        		$array_args = str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;", str_replace(" ", "&nbsp;", implode("<br/>", $array_args)));
-                        		
-                        		$args[] = "" . $array_args;
-                        	}
-                        	else
-                        	{
+                            if( is_object($arg) )
+                            {
+                                $args[] = "&nbsp;&nbsp;&nbsp;&nbsp;" . gettype($arg) . "(" . get_class($arg) . ")";
+                            }
+                            elseif( is_array($arg) )
+                            {
+                                $array_args = explode("\n", print_r($arg, true));
+                                
+                                foreach( $array_args as &$line )
+                                {
+                                    $line = "&nbsp;&nbsp;&nbsp;&nbsp;" . $line;
+                                }
+                                
+                                $array_args = str_replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;", str_replace(" ", "&nbsp;", implode("<br/>", $array_args)));
+                                
+                                $args[] = "" . $array_args;
+                            }
+                            else
+                            {
                                 $args[] = "&nbsp;&nbsp;&nbsp;&nbsp;" . gettype($arg) . "(" . $arg . ")";
-                        	}
+                            }
                         }
                         
-	                    if( count($args) > 0 )
-	                    {
-	                        $pretty_args = "(<br />";
-	                        
-	                        $pretty_args .= implode(",<br />", $args);
-	                        
-	                        $pretty_args .= "<br />);";
-	                    }
-	                    else
-	                    {
-	                    	$pretty_args = "();";
-	                    }
+                        if( count($args) > 0 )
+                        {
+                            $pretty_args = "(<br />";
+                            
+                            $pretty_args .= implode(",<br />", $args);
+                            
+                            $pretty_args .= "<br />);";
+                        }
+                        else
+                        {
+                            $pretty_args = "();";
+                        }
                     }
                     
 

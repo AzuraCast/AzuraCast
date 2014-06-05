@@ -11,8 +11,8 @@ class DtDdWrapper extends \Zend_Form_Decorator_Abstract
         $dd = '<dd id="' . $elementName . '-element">' . $content . '</dd>';
         
         if( null !== $dtLabel )
-			return $dt.$dd;
-		else
-			return $dd;
+            return $dt.$dd;
+        else
+            return $dd;
     }
 }

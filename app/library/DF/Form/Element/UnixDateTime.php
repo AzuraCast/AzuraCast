@@ -25,12 +25,12 @@ class UnixDateTime extends \Zend_Form_Element_Xhtml
         elseif (is_string($value))
             $timestamp = strtotime($value);
         elseif ($value instanceof \DateTime)
-			$timestamp = $value->getTimestamp();
+            $timestamp = $value->getTimestamp();
         elseif (is_array($value))
             $timestamp = self::processArray($value);
         else if (!$value)
-			$timestamp = 0;
-		else
+            $timestamp = 0;
+        else
             throw new \Exception('Invalid date value provided');
         
         $this->field_timestamp = (int)$timestamp;
@@ -53,16 +53,16 @@ class UnixDateTime extends \Zend_Form_Element_Xhtml
     
     public static function processArray($value, $default_timestamp = null)
     {
-		$default_timestamp = $default_timestamp ?: time();
-		
-		$month = (isset($value['month'])) ? (int)$value['month'] : date('m', $default_timestamp);
-		$day = (isset($value['day'])) ? (int)$value['day'] : date('d', $default_timestamp);
-		$year = (isset($value['year'])) ? (int)$value['year'] : date('Y', $default_timestamp);
-		
-		$hour = (isset($value['hour'])) ? (int)$value['hour'] : date('g', $default_timestamp);
-		$minute = (isset($value['minute'])) ? (int)$value['minute'] : date('i', $default_timestamp);
-		$meridian = (isset($value['meridian'])) ? $value['meridian'] : date('a', $default_timestamp);
-		
-		return strtotime($month.'/'.$day.'/'.$year.' '.$hour.':'.str_pad($minute, 2, '0', STR_PAD_LEFT).' '.$meridian);
+        $default_timestamp = $default_timestamp ?: time();
+        
+        $month = (isset($value['month'])) ? (int)$value['month'] : date('m', $default_timestamp);
+        $day = (isset($value['day'])) ? (int)$value['day'] : date('d', $default_timestamp);
+        $year = (isset($value['year'])) ? (int)$value['year'] : date('Y', $default_timestamp);
+        
+        $hour = (isset($value['hour'])) ? (int)$value['hour'] : date('g', $default_timestamp);
+        $minute = (isset($value['minute'])) ? (int)$value['minute'] : date('i', $default_timestamp);
+        $meridian = (isset($value['meridian'])) ? $value['meridian'] : date('a', $default_timestamp);
+        
+        return strtotime($month.'/'.$day.'/'.$year.' '.$hour.':'.str_pad($minute, 2, '0', STR_PAD_LEFT).' '.$meridian);
     }
 }

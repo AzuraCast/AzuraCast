@@ -13,7 +13,7 @@ class Form extends \Zend_Form
         
         $this->addElementPrefixPath('\DF\Validate\\', 'DF/Validate', \Zend_Form_Element::VALIDATE);
         $this->addElementPrefixPath('\DF\Filter\\', 'DF/Filter', \Zend_Form_Element::FILTER);
-		
+        
         $this->setElementFilters(array('StringTrim'));
         
         if ($options instanceof \Zend_Config)
@@ -23,23 +23,23 @@ class Form extends \Zend_Form
         {
             foreach($options['groups'] as $group_key => $group)
             {
-				// Special handling for items named "submit".
-				if ($group_key == "submit")
-					$group_key = "submit_grp";
-				
-				$group_elements = (array)$group['elements'];
-				unset($group['elements']);
-				
-				$options['displayGroups'][$group_key] = array(
-					'elements'      => array(),
-					'options'		=> $group,
-				);
-				
-				foreach($group_elements as $element_key => $element_info)
-				{
-					$options['displayGroups'][$group_key]['elements'][] = $element_key;
-					$options['elements'][$element_key] = $element_info;
-				}
+                // Special handling for items named "submit".
+                if ($group_key == "submit")
+                    $group_key = "submit_grp";
+                
+                $group_elements = (array)$group['elements'];
+                unset($group['elements']);
+                
+                $options['displayGroups'][$group_key] = array(
+                    'elements'      => array(),
+                    'options'       => $group,
+                );
+                
+                foreach($group_elements as $element_key => $element_info)
+                {
+                    $options['displayGroups'][$group_key]['elements'][] = $element_key;
+                    $options['elements'][$element_key] = $element_info;
+                }
             }
             
             unset($options['groups']);
@@ -47,14 +47,14 @@ class Form extends \Zend_Form
         
         // Check for default value.
         $defaults = array();
-		foreach((array)$options['elements'] as $element_name => $element_info)
-		{
-			if (isset($element_info[1]['default']))
-			{
-				$defaults[$element_name] = $element_info[1]['default'];
-				unset($options['elements'][$element_name][1]['default']);
-			}
-		}
+        foreach((array)$options['elements'] as $element_name => $element_info)
+        {
+            if (isset($element_info[1]['default']))
+            {
+                $defaults[$element_name] = $element_info[1]['default'];
+                unset($options['elements'][$element_name][1]['default']);
+            }
+        }
         
         parent::__construct($options);
         $this->setDefaults($defaults);
@@ -62,41 +62,41 @@ class Form extends \Zend_Form
     
     public function isSubForm()
     {
-		return FALSE;
+        return FALSE;
     }
-	
-	public function setDefault($name, $value)
+    
+    public function setDefault($name, $value)
     {
         $name = (string) $name;
         if ($element = $this->getElement($name))
-		{
-			$element->setAttrib('df_raw_value', $value);
+        {
+            $element->setAttrib('df_raw_value', $value);
         }
-		
-		return parent::setDefault($name, $value);
+        
+        return parent::setDefault($name, $value);
     }
     protected function _dissolveArrayValue($value, $arrayPath)
     {
-		return (array)parent::_dissolveArrayValue($value, $arrayPath);
+        return (array)parent::_dissolveArrayValue($value, $arrayPath);
     }
     
     public function clearAllDecorators()
     {
-		$this->clearDecorators();
-		
-		foreach($this->getElements() as $element)
-			$element->clearDecorators();
-		
-		foreach($this->getDisplayGroups() as $group)
-			$group->clearDecorators();
-		
-		foreach($this->getSubForms() as $form)
-		{
-			if ($form instanceof self)
-				$form->clearAllDecorators();
-			else
-				$form->clearDecorators();
-		}
+        $this->clearDecorators();
+        
+        foreach($this->getElements() as $element)
+            $element->clearDecorators();
+        
+        foreach($this->getDisplayGroups() as $group)
+            $group->clearDecorators();
+        
+        foreach($this->getSubForms() as $form)
+        {
+            if ($form instanceof self)
+                $form->clearAllDecorators();
+            else
+                $form->clearDecorators();
+        }
 
         return $this;
     }
@@ -105,31 +105,31 @@ class Form extends \Zend_Form
     {
         foreach($this->getElements() as $element)
         {
-			$element->setDecorators(array(
+            $element->setDecorators(array(
 
-				array(
-					'SpanFormErrors',
-					array(
-						'class' => 'help-block error',
-						'escape' => FALSE,
-						'placement' => \Zend_Form_Decorator_Abstract::PREPEND,
-					),
-				),
-				
-				array(
-					'Description',
-					array(
-						'tag' => 'span',
-						'class' => 'help-block '.$errors,
-						'escape' => FALSE,
-						'placement' => \Zend_Form_Decorator_Abstract::PREPEND,
-					)
-				),
-				
-			));
-				
-			if ($element instanceof \Zend_Form_Element_File)
-			{
+                array(
+                    'SpanFormErrors',
+                    array(
+                        'class' => 'help-block error',
+                        'escape' => FALSE,
+                        'placement' => \Zend_Form_Decorator_Abstract::PREPEND,
+                    ),
+                ),
+                
+                array(
+                    'Description',
+                    array(
+                        'tag' => 'span',
+                        'class' => 'help-block '.$errors,
+                        'escape' => FALSE,
+                        'placement' => \Zend_Form_Decorator_Abstract::PREPEND,
+                    )
+                ),
+                
+            ));
+                
+            if ($element instanceof \Zend_Form_Element_File)
+            {
                 $element->addDecorators(array(
                     array(
                         'FormFileEdit',
@@ -137,172 +137,172 @@ class Form extends \Zend_Form
                             'placement' => \Zend_Form_Decorator_Abstract::APPEND,
                         ),
                     ),
-				));
-			}
-			else
-			{
-				$element->addDecorators(array(
-					array(
-						'ViewHelper',
-						array(
-							'placement' => \Zend_Form_Decorator_Abstract::APPEND,
-						),
-					),
-				));
-			}
-			
-			if (!($element instanceof \Zend_Form_Element_Button || $element instanceof \Zend_Form_Element_Submit))
-			{
-				$element->addDecorators(array(
-					array(
-						'Label',
-						array(
-							'escape' => FALSE,
-							'optionalSuffix' => ':',
-							'requiredSuffix' => '<span style="color: #FF0000;">*</span>:',
-						),
-					),
-					array(
-						'HtmlTag', 
-						array(
-							'tag' => 'div', 
-							'class' => 'clearfix control-group',
-						),
-					),
-				));
-			}
-			
-			if( $element instanceOf \Zend_Form_Element_Hidden )
-			{
-				$element->setDecorators(array(
-					'ViewHelper',
-				));
-			}
+                ));
+            }
+            else
+            {
+                $element->addDecorators(array(
+                    array(
+                        'ViewHelper',
+                        array(
+                            'placement' => \Zend_Form_Decorator_Abstract::APPEND,
+                        ),
+                    ),
+                ));
+            }
+            
+            if (!($element instanceof \Zend_Form_Element_Button || $element instanceof \Zend_Form_Element_Submit))
+            {
+                $element->addDecorators(array(
+                    array(
+                        'Label',
+                        array(
+                            'escape' => FALSE,
+                            'optionalSuffix' => ':',
+                            'requiredSuffix' => '<span style="color: #FF0000;">*</span>:',
+                        ),
+                    ),
+                    array(
+                        'HtmlTag', 
+                        array(
+                            'tag' => 'div', 
+                            'class' => 'clearfix control-group',
+                        ),
+                    ),
+                ));
+            }
+            
+            if( $element instanceOf \Zend_Form_Element_Hidden )
+            {
+                $element->setDecorators(array(
+                    'ViewHelper',
+                ));
+            }
         }
-		
-		$subform_decorators = array(
-			array(
-				'Description',
-				array(
-					'tag' => 'span',
-					'class' => 'help-block in-fieldset',
-					'escape' => FALSE,
-				)
-			),
+        
+        $subform_decorators = array(
             array(
-	            'FormElements',
-            	array(
-            		'tag' => '',
-	            )
-	        ),
+                'Description',
+                array(
+                    'tag' => 'span',
+                    'class' => 'help-block in-fieldset',
+                    'escape' => FALSE,
+                )
+            ),
+            array(
+                'FormElements',
+                array(
+                    'tag' => '',
+                )
+            ),
         );
         $group_decorators = array_merge($subform_decorators, array(
-			array('Fieldset'),
+            array('Fieldset'),
         ));
         
         if (!$this->isSubForm())
         {
-			$this->setDecorators(array(
-				array('FormErrors'),
-				array('FormElements'),
-				array('Form', array(
-					'class' => 'form-stacked df-form',
-				)),
-			));
+            $this->setDecorators(array(
+                array('FormErrors'),
+                array('FormElements'),
+                array('Form', array(
+                    'class' => 'form-stacked df-form',
+                )),
+            ));
         }
         
-		$this->setDisplayGroupDecorators($group_decorators);
+        $this->setDisplayGroupDecorators($group_decorators);
         $this->setSubFormDecorators($subform_decorators);
     }
 
     public function render(\Zend_View_Interface $view = null)
     {
-		$view_mode = $GLOBALS['df_form_mode'];
-		
-		if ($view_mode == "view" || $view_mode == "message")
-			$this->preRenderView($view);
-		else
-			$this->preRender($view);
-		
-		return parent::render($view);
+        $view_mode = $GLOBALS['df_form_mode'];
+        
+        if ($view_mode == "view" || $view_mode == "message")
+            $this->preRenderView($view);
+        else
+            $this->preRender($view);
+        
+        return parent::render($view);
     }
     
     public function renderSpecial(\Zend_View_Interface $view = null, $view_mode = 'edit')
     {
-		$GLOBALS['df_form_mode'] = $view_mode;
-		$return_value = $this->render($view);
-		$GLOBALS['df_form_mode'] = NULL;
-		
-		return $return_value;
+        $GLOBALS['df_form_mode'] = $view_mode;
+        $return_value = $this->render($view);
+        $GLOBALS['df_form_mode'] = NULL;
+        
+        return $return_value;
     }
     public function renderView(\Zend_View_Interface $view = null)
     {
-		return $this->renderSpecial($view, 'view');
+        return $this->renderSpecial($view, 'view');
     }
     public function renderMessage(\Zend_View_Interface $view = null)
     {
-		return $this->renderSpecial($view, 'message');
+        return $this->renderSpecial($view, 'message');
     }
-	
-	/**
-	 * Read-only view
-	 */
-	
-	public function preRenderView(\Zend_View_Interface $view = null)
-	{
-		foreach($this->getElements() as $element)
+    
+    /**
+     * Read-only view
+     */
+    
+    public function preRenderView(\Zend_View_Interface $view = null)
+    {
+        foreach($this->getElements() as $element)
         {
-			$element->setDecorators(array(
-				'FormView',
-			));
-			
-			if ($element instanceof \Zend_Form_Element_Button ||
-				$element instanceof \Zend_Form_Element_Submit || 
-				$element instanceof \Zend_Form_Element_Hidden || 
-				$element instanceof Form\Element\Markup)
-			{
-				// Don't show these types of elements in this view
-				$element->clearDecorators();
-			}
-			else if ($element instanceof \Zend_Form_Element_File)
-			{
-				// Add a fake "Form File View" decorator, since Zend_Form_Element_File needs it.
-				$element->addDecorators(array(
-					'FormFileView',
-				));
-			}
+            $element->setDecorators(array(
+                'FormView',
+            ));
+            
+            if ($element instanceof \Zend_Form_Element_Button ||
+                $element instanceof \Zend_Form_Element_Submit || 
+                $element instanceof \Zend_Form_Element_Hidden || 
+                $element instanceof Form\Element\Markup)
+            {
+                // Don't show these types of elements in this view
+                $element->clearDecorators();
+            }
+            else if ($element instanceof \Zend_Form_Element_File)
+            {
+                // Add a fake "Form File View" decorator, since Zend_Form_Element_File needs it.
+                $element->addDecorators(array(
+                    'FormFileView',
+                ));
+            }
         }
-		
-		$group_decorators = array(
+        
+        $group_decorators = array(
             array('FormElements'),
             array('FormView'),
         );
-		
-		$this->setDecorators($group_decorators);
-		$this->setDisplayGroupDecorators($group_decorators);
+        
+        $this->setDecorators($group_decorators);
+        $this->setDisplayGroupDecorators($group_decorators);
         $this->setSubFormDecorators($group_decorators);
-	}
-	
-	/**
-	 * File upload processing
-	 */
-	public function processFiles($destination_folder, $file_name_prefix = '')
-	{
-		$return_fields = array();
-		
-		// Check for upload directory.
-		$base_dir = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$destination_folder;
-			
-		if (!file_exists($base_dir))
-			@mkdir($base_dir);
-		
-		foreach($this->getElements() as $element_name => $element)
-		{
-			if ($element instanceof \Zend_Form_Element_File)
-			{
-				$element_name_clean = preg_replace('#[^a-zA-Z0-9\_]#', '', $element_name);
-				
-				$file_names = (array)$element->getFileName();
+    }
+    
+    /**
+     * File upload processing
+     */
+    public function processFiles($destination_folder, $file_name_prefix = '')
+    {
+        $return_fields = array();
+        
+        // Check for upload directory.
+        $base_dir = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$destination_folder;
+            
+        if (!file_exists($base_dir))
+            @mkdir($base_dir);
+        
+        foreach($this->getElements() as $element_name => $element)
+        {
+            if ($element instanceof \Zend_Form_Element_File)
+            {
+                $element_name_clean = preg_replace('#[^a-zA-Z0-9\_]#', '', $element_name);
+                
+                $file_names = (array)$element->getFileName();
                 $original_files = (array)$element->getOriginalValue();
 
                 if (!empty($file_names))
@@ -322,9 +322,9 @@ class Form extends \Zend_Form
                         $i++;
                     }
                 }
-			}
-		}
-		
-		return $return_fields;
-	}
+            }
+        }
+        
+        return $return_fields;
+    }
 }

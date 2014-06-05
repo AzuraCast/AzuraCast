@@ -1,122 +1,122 @@
 <ul class="media-list" style="padding-bottom: 0; margin-bottom: 0;">
 <? foreach((array)$this->stations as $station): ?>
-	<li class="media station clearfix rendermode-<?=$this->render_mode ?>" id="station_<?=\Entity\Station::getStationShortName($station['name']) ?>" 
-		data-id="<?=$station['id'] ?>" 
-		data-name="<?=$station['name'] ?>" 
-		data-type="<?=$station['type'] ?>" 
-		data-stream="<?=$station['stream_url'] ?>" 
-		data-image="<?=\DF\Url::content($station['image_url']) ?>" 
-		data-chat="<?=$station['irc'] ?>" 
-		data-inactive="<? if ($station['hide_if_inactive']): ?>hide<? else: ?>show<? endif; ?>" 
-		data-historyid="0" 
-		style="margin-top: 0;">
+    <li class="media station clearfix rendermode-<?=$this->render_mode ?>" id="station_<?=\Entity\Station::getStationShortName($station['name']) ?>" 
+        data-id="<?=$station['id'] ?>" 
+        data-name="<?=$station['name'] ?>" 
+        data-type="<?=$station['type'] ?>" 
+        data-stream="<?=$station['stream_url'] ?>" 
+        data-image="<?=\DF\Url::content($station['image_url']) ?>" 
+        data-chat="<?=$station['irc'] ?>" 
+        data-inactive="<? if ($station['hide_if_inactive']): ?>hide<? else: ?>show<? endif; ?>" 
+        data-historyid="0" 
+        style="margin-top: 0;">
 
-		<!-- Station Like/Share Buttons -->
-		<div class="show-when-playing station-link buttons btn-toolbar pull-right">
-			<div class="btn-group">
-				<a href="#" class="btn btn-small btn-inverse dropdown-toggle" type="button" data-toggle="dropdown"><i class="icon-reorder"></i></a>
-				<ul class="dropdown-menu">
-				<? if ($station['requests_enabled']): ?>
-					<li><a href="<?=$this->route(array('controller' => 'station', 'action' => 'request', 'id' => $station['id'])) ?>" target="_blank"><i class="icon-question-sign"></i> Request a Song</a></li>
-				<? endif; ?>
-					<li><a href="#" class="btn-show-history"><i class="icon-time"></i> Recently Played</a></li>
-					<li><a href="<?=$station['web_url'] ?>" target="_blank"><i class="icon-globe"></i> Station Site</a></li>
-					<li><a href="<?=$this->route(array('controller' => 'station', 'action' => 'playlist', 'format' => 'pls', 'id' => $station['id'])) ?>"><i class="icon-download"></i> Download PLS</a></li>
-				</ul>
-			</div>
-		</div>
+        <!-- Station Like/Share Buttons -->
+        <div class="show-when-playing station-link buttons btn-toolbar pull-right">
+            <div class="btn-group">
+                <a href="#" class="btn btn-small btn-inverse dropdown-toggle" type="button" data-toggle="dropdown"><i class="icon-reorder"></i></a>
+                <ul class="dropdown-menu">
+                <? if ($station['requests_enabled']): ?>
+                    <li><a href="<?=$this->route(array('controller' => 'station', 'action' => 'request', 'id' => $station['id'])) ?>" target="_blank"><i class="icon-question-sign"></i> Request a Song</a></li>
+                <? endif; ?>
+                    <li><a href="#" class="btn-show-history"><i class="icon-time"></i> Recently Played</a></li>
+                    <li><a href="<?=$station['web_url'] ?>" target="_blank"><i class="icon-globe"></i> Station Site</a></li>
+                    <li><a href="<?=$this->route(array('controller' => 'station', 'action' => 'playlist', 'format' => 'pls', 'id' => $station['id'])) ?>"><i class="icon-download"></i> Download PLS</a></li>
+                </ul>
+            </div>
+        </div>
 
-		<div class="media-object pull-left center">
-			<div><img class="station-image" src="<?=\DF\Url::content($station['image_url']) ?>"></div>
-			<div class="show-when-playing vote-wrapper">
-				<a href="<?=$this->route(array('module' => 'default', 'controller' => 'song')) ?>" class="btn-like" title="Like This Song"><i class="icon-thumbs-up"></i></a>
-				<div class="nowplaying-score" data-original="0">0</div>
-				<a href="<?=$this->route(array('module' => 'default', 'controller' => 'song')) ?>" class="btn-dislike" title="Dislike This Song"><i class="icon-thumbs-down"></i></a>
-			</div>
-		</div>
+        <div class="media-object pull-left center">
+            <div><img class="station-image" src="<?=\DF\Url::content($station['image_url']) ?>"></div>
+            <div class="show-when-playing vote-wrapper">
+                <a href="<?=$this->route(array('module' => 'default', 'controller' => 'song')) ?>" class="btn-like" title="Like This Song"><i class="icon-thumbs-up"></i></a>
+                <div class="nowplaying-score" data-original="0">0</div>
+                <a href="<?=$this->route(array('module' => 'default', 'controller' => 'song')) ?>" class="btn-dislike" title="Dislike This Song"><i class="icon-thumbs-down"></i></a>
+            </div>
+        </div>
 
-		<div class="media-body">
-			<div class="station-info">
-				<!-- Station Header -->
-				<h4>
-				<? if ($station['nickname']): ?>
-					<?=$station['nickname'] ?> 
-				<? else: ?>
-					<?=$station['name'] ?> 
-				<? endif; ?>
-					<span class="nowplaying-info">
-						<small>
-							<span class="nowplaying-live">Live! &bull; </span>
-							<span class="nowplaying-listeners"></span>
-							<span class="nowplaying-status"> &bull; Now Playing</span>
-						</small>
-					</span>
-				<? if ($station['genre']): ?>
-					<span class="genre-info">
-						<small>
-							<?=$station['genre'] ?>
-						</small>
-					</span>
-				<? endif; ?>
-				</h4>
+        <div class="media-body">
+            <div class="station-info">
+                <!-- Station Header -->
+                <h4>
+                <? if ($station['nickname']): ?>
+                    <?=$station['nickname'] ?> 
+                <? else: ?>
+                    <?=$station['name'] ?> 
+                <? endif; ?>
+                    <span class="nowplaying-info">
+                        <small>
+                            <span class="nowplaying-live">Live! &bull; </span>
+                            <span class="nowplaying-listeners"></span>
+                            <span class="nowplaying-status"> &bull; Now Playing</span>
+                        </small>
+                    </span>
+                <? if ($station['genre']): ?>
+                    <span class="genre-info">
+                        <small>
+                            <?=$station['genre'] ?>
+                        </small>
+                    </span>
+                <? endif; ?>
+                </h4>
 
-			<? if ($station['now']): ?>
-				<div class="nowplaying-onair">
-					<i class="icon-star"></i> On Air: <?=$station['now']['title'] ?>
-				</div>
-			<? else: ?>
-				<div class="nowplaying-onair" style="display: none;"></div>
-			<? endif; ?>
+            <? if ($station['now']): ?>
+                <div class="nowplaying-onair">
+                    <i class="icon-star"></i> On Air: <?=$station['now']['title'] ?>
+                </div>
+            <? else: ?>
+                <div class="nowplaying-onair" style="display: none;"></div>
+            <? endif; ?>
 
-				<div class="show-when-playing">
-					<div class="station-player-container"></div>
-				</div>
+                <div class="show-when-playing">
+                    <div class="station-player-container"></div>
+                </div>
 
-				<!-- Now Playing Information -->
-				<div><big><span class="nowplaying-artist">Loading...</span></big></div>
-				<div><span class="nowplaying-title">Loading...</span></div>
+                <!-- Now Playing Information -->
+                <div><big><span class="nowplaying-artist">Loading...</span></big></div>
+                <div><span class="nowplaying-title">Loading...</span></div>
 
-				<div class="station-history" style="display: none;"></div>
-			</div>
+                <div class="station-history" style="display: none;"></div>
+            </div>
 
-			<? /*
-			<div class="station-player show-when-playing">
+            <? /*
+            <div class="station-player show-when-playing">
 
 
-				<!-- Station Links -->
-				<div class="station-link buttons btn-toolbar">
-					<div class="btn-group">
-					<? if ($this->render_mode != 'embed'): ?>
-						<?=$this->button(array(
-							'type'		=> 'small',
-							'icon'		=> 'icon-thumbs-up',
-							'text'		=> 'Like',
-							'href'		=> $this->route(array('action' => 'like', 'origin' => 'pvl')),
-							'class'		=> 'btn-success btn-like',
-						)) ?>
-						<?=$this->button(array(
-							'type'		=> 'small',
-							'icon'		=> 'icon-facebook',
-							'title'		=> 'Share on Facebook',
-							'href'		=> '#',
-							'class'		=> 'btn-icon-only btn-primary btn-share-station btn-share-facebook',
-						)) ?>
-						<?=$this->button(array(
-							'type'		=> 'small',
-							'icon'		=> 'icon-twitter',
-							'title'		=> 'Share on Twitter',
-							'href'		=> '#',
-							'class'		=> 'btn-icon-only btn-primary btn-share-station btn-share-twitter',
-						)) ?>
+                <!-- Station Links -->
+                <div class="station-link buttons btn-toolbar">
+                    <div class="btn-group">
+                    <? if ($this->render_mode != 'embed'): ?>
+                        <?=$this->button(array(
+                            'type'      => 'small',
+                            'icon'      => 'icon-thumbs-up',
+                            'text'      => 'Like',
+                            'href'      => $this->route(array('action' => 'like', 'origin' => 'pvl')),
+                            'class'     => 'btn-success btn-like',
+                        )) ?>
+                        <?=$this->button(array(
+                            'type'      => 'small',
+                            'icon'      => 'icon-facebook',
+                            'title'     => 'Share on Facebook',
+                            'href'      => '#',
+                            'class'     => 'btn-icon-only btn-primary btn-share-station btn-share-facebook',
+                        )) ?>
+                        <?=$this->button(array(
+                            'type'      => 'small',
+                            'icon'      => 'icon-twitter',
+                            'title'     => 'Share on Twitter',
+                            'href'      => '#',
+                            'class'     => 'btn-icon-only btn-primary btn-share-station btn-share-twitter',
+                        )) ?>
 
-						
-					</div>
-				</div>
+                        
+                    </div>
+                </div>
 
-				
-			</div>
-			*/ ?>
-		</div>
-	</li>
+                
+            </div>
+            */ ?>
+        </div>
+    </li>
 <? endforeach; ?>
 </ul>

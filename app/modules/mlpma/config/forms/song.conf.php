@@ -1,6 +1,6 @@
 <?php 
-return array(	
-	'method'		=> 'post',
+return array(   
+    'method'        => 'post',
     'enctype'       => 'multipart/form-data',
 
     'elements' => array(
@@ -41,12 +41,12 @@ return array(
             'label' => 'Replace Album Artwork',
         )),
 
-		'submit'		=> array('submit', array(
-			'type'	=> 'submit',
-			'label'	=> 'Save Changes',
-			'helper' => 'formButton',
-			'class' => 'ui-button',
-		)),
+        'submit'        => array('submit', array(
+            'type'  => 'submit',
+            'label' => 'Save Changes',
+            'helper' => 'formButton',
+            'class' => 'ui-button',
+        )),
 
     ),
 );

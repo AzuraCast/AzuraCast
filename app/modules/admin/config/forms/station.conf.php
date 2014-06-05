@@ -1,14 +1,14 @@
 <?php 
-return array(	
-	'method'		=> 'post',
+return array(   
+    'method'        => 'post',
     'enctype'       => 'multipart/form-data',
 
-	'elements'		=> array(
-				
-		'name' => array('text', array(
-			'label' => 'Station Name',
-			'class'	=> 'half-width',
-			'required' => true,
+    'elements'      => array(
+                
+        'name' => array('text', array(
+            'label' => 'Station Name',
+            'class' => 'half-width',
+            'required' => true,
         )),
 
         'is_active' => array('radio', array(
@@ -70,25 +70,25 @@ return array(
         )),
 
         'type' => array('radio', array(
-			'label' => 'Media Type',
-			'multiOptions' => array(
-				'shoutcast1'		=> 'ShoutCast v1',
-				'shoutcast2'		=> 'ShoutCast v2',
-				'icecast'			=> 'IceCast',
+            'label' => 'Media Type',
+            'multiOptions' => array(
+                'shoutcast1'        => 'ShoutCast v1',
+                'shoutcast2'        => 'ShoutCast v2',
+                'icecast'           => 'IceCast',
                 'stream'            => 'Popout Stream Player',
                 /*
                 'swf'               => 'SWF Embed',
-				'video'				=> 'Video Stream (Flash/RTMP)',
+                'video'             => 'Video Stream (Flash/RTMP)',
                 'iframe'            => 'IFRAME Content',
                 'link'              => 'URL Link',
                 */
-			),
-			'required' => true,
+            ),
+            'required' => true,
         )),
 
         'weight' => array('text', array(
-        	'label' => 'Sort Order',
-        	'description' => 'Lower numbers appear higher on the list of stations.',
+            'label' => 'Sort Order',
+            'description' => 'Lower numbers appear higher on the list of stations.',
         )),
 
         'image_url' => array('file', array(
@@ -170,12 +170,12 @@ return array(
             'description' => 'These notes are visible/editable by station owners.',
             'class' => 'full-width half-height',
         )),
-		
-		'submit'		=> array('submit', array(
-			'type'	=> 'submit',
-			'label'	=> 'Save Changes',
-			'helper' => 'formButton',
-			'class' => 'ui-button',
-		)),
-	),
+        
+        'submit'        => array('submit', array(
+            'type'  => 'submit',
+            'label' => 'Save Changes',
+            'helper' => 'formButton',
+            'class' => 'ui-button',
+        )),
+    ),
 );

@@ -14,24 +14,24 @@
  */
 class Hybrid_User_Contact
 {
-	/* The Unique contact user ID */
-	public $identifier = NULL;
+    /* The Unique contact user ID */
+    public $identifier = NULL;
 
-	/* User website, blog, web page */ 
-	public $webSiteURL = NULL;
+    /* User website, blog, web page */ 
+    public $webSiteURL = NULL;
 
-	/* URL link to profile page on the IDp web site */
-	public $profileURL = NULL;
+    /* URL link to profile page on the IDp web site */
+    public $profileURL = NULL;
 
-	/* URL link to user photo or avatar */
-	public $photoURL = NULL;
+    /* URL link to user photo or avatar */
+    public $photoURL = NULL;
 
-	/* User dispalyName provided by the IDp or a concatenation of first and last name */
-	public $displayName = NULL;
+    /* User dispalyName provided by the IDp or a concatenation of first and last name */
+    public $displayName = NULL;
 
-	/* A short about_me */
-	public $description = NULL;
+    /* A short about_me */
+    public $description = NULL;
 
-	/* User email. Not all of IDp garant access to the user email */
-	public $email = NULL;
+    /* User email. Not all of IDp garant access to the user email */
+    public $email = NULL;
 }

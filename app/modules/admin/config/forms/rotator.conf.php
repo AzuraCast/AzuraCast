@@ -1,9 +1,9 @@
 <?php 
-return array(	
-	'method'		=> 'post',
+return array(   
+    'method'        => 'post',
     'enctype'       => 'multipart/form-data',
 
-	'elements'		=> array(
+    'elements'      => array(
 
         'image_url' => array('file', array(
             'label' => 'Upload New Icon',
@@ -31,11 +31,11 @@ return array(
             'required' => true,
         )),
         
-		'submit'		=> array('submit', array(
-			'type'	=> 'submit',
-			'label'	=> 'Save Changes',
-			'helper' => 'formButton',
-			'class' => 'ui-button',
-		)),
-	),
+        'submit'        => array('submit', array(
+            'type'  => 'submit',
+            'label' => 'Save Changes',
+            'helper' => 'formButton',
+            'class' => 'ui-button',
+        )),
+    ),
 );

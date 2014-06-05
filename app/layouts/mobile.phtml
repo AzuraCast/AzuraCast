@@ -38,22 +38,22 @@ if (!$this->layout()->subtitle && $this->layout()->show_subtitle)
 $this->headTitle($this->config->application->name);
 
 if (DF_APPLICATION_ENV != "production")
-	$this->headTitle()->prepend('('.ucfirst(DF_APPLICATION_ENV).')');
+    $this->headTitle()->prepend('('.ucfirst(DF_APPLICATION_ENV).')');
 
 echo $this->headTitle()->setSeparator(" - ")->toString();
 
 $this->headLink()
-	->appendStylesheet('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css', 'all')
-	->appendStylesheet('//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen')
-	->appendStylesheet(\DF\Url::content('mobile/jquery.mobile-1.4.0.min.css'), 'all')
-	->appendStylesheet(\DF\Url::content('mobile/custom.css'), 'all');
+    ->appendStylesheet('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css', 'all')
+    ->appendStylesheet('//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen')
+    ->appendStylesheet(\DF\Url::content('mobile/jquery.mobile-1.4.0.min.css'), 'all')
+    ->appendStylesheet(\DF\Url::content('mobile/custom.css'), 'all');
 
 $this->headScript()
-	->prependFile(\DF\Url::cdn('jquery', '1.11.0'))
-	->appendFile(\DF\Url::content('swfobject.js'))
-	->appendFile(\DF\Url::content('mobile/jquery.mobile-1.4.0.min.js'))
-	->appendFile(\DF\Url::content('mobile/custom.js'))
-	->appendFile(\DF\Url::content('jplayer/jquery.jplayer.min.js'));
+    ->prependFile(\DF\Url::cdn('jquery', '1.11.0'))
+    ->appendFile(\DF\Url::content('swfobject.js'))
+    ->appendFile(\DF\Url::content('mobile/jquery.mobile-1.4.0.min.js'))
+    ->appendFile(\DF\Url::content('mobile/custom.js'))
+    ->appendFile(\DF\Url::content('jplayer/jquery.jplayer.min.js'));
 
 echo $this->headMeta()."\n";
 echo $this->headLink()."\n";
@@ -79,59 +79,59 @@ ga('send', 'pageview');
 <!-- End Google Universal Analytics -->
 
 <div id="webapp">
-	<!-- Header -->
-	<div data-role="header" data-position="fixed" data-tap-toggle="false">
-		<a id="btn_back" href="<?=$this->route(array('module' => 'mobile')) ?>" class="ui-btn-left ui-alt-icon ui-nodisc-icon ui-btn ui-icon-home ui-btn-icon-notext ui-corner-all" data-role="button" role="button">Back</a>
-	    <h1><?=$title ?></h1>
-	</div>
+    <!-- Header -->
+    <div data-role="header" data-position="fixed" data-tap-toggle="false">
+        <a id="btn_back" href="<?=$this->route(array('module' => 'mobile')) ?>" class="ui-btn-left ui-alt-icon ui-nodisc-icon ui-btn ui-icon-home ui-btn-icon-notext ui-corner-all" data-role="button" role="button">Back</a>
+        <h1><?=$title ?></h1>
+    </div>
 
-	<!-- Main Body -->
-	<?
-	$uri_raw = $_SERVER['REQUEST_URI'];
-	$uri_class = preg_replace("/[^A-Za-z0-9_\/]/", '', $uri_raw);
-	$uri_class = trim($uri_class, '/');
-	$uri_class = 'page-'.str_replace('/', '_', $uri_class);
-	?>
-	<div id="page" data-role="page" data-title="<?=$title ?>" data-url="<?=$uri_raw ?>" class="<?=$uri_class ?>">
-		<div role="main" class="ui-content jqm-content jqm-fullwidth">
-			<?php echo $this->layout()->content; ?>
-		</div>
-	</div>
+    <!-- Main Body -->
+    <?
+    $uri_raw = $_SERVER['REQUEST_URI'];
+    $uri_class = preg_replace("/[^A-Za-z0-9_\/]/", '', $uri_raw);
+    $uri_class = trim($uri_class, '/');
+    $uri_class = 'page-'.str_replace('/', '_', $uri_class);
+    ?>
+    <div id="page" data-role="page" data-title="<?=$title ?>" data-url="<?=$uri_raw ?>" class="<?=$uri_class ?>">
+        <div role="main" class="ui-content jqm-content jqm-fullwidth">
+            <?php echo $this->layout()->content; ?>
+        </div>
+    </div>
 
-	<!-- Footer Nav -->
-	<div data-role="footer" data-position="fixed" data-tap-toggle="false">
-		<div id="player_controls" data-role="controlgroup">
-			<a class="ui-corner-all ui-btn ui-btn-left" id="player_pause"><i class="fa fa-stop"></i></a>
-			<div id="volume_icon_left"><i class="fa fa-volume-off"></i></div>
-			<div id="volume_icon_right"><i class="fa fa-volume-up"></i></div>
+    <!-- Footer Nav -->
+    <div data-role="footer" data-position="fixed" data-tap-toggle="false">
+        <div id="player_controls" data-role="controlgroup">
+            <a class="ui-corner-all ui-btn ui-btn-left" id="player_pause"><i class="fa fa-stop"></i></a>
+            <div id="volume_icon_left"><i class="fa fa-volume-off"></i></div>
+            <div id="volume_icon_right"><i class="fa fa-volume-up"></i></div>
 
-			<input type="range" class="volume_slider" name="player_volume" id="player_volume" min="0" max="100" value="50" data-role="none" data-highlight="true" data-mini="true">
-		</div>
+            <input type="range" class="volume_slider" name="player_volume" id="player_volume" min="0" max="100" value="50" data-role="none" data-highlight="true" data-mini="true">
+        </div>
 
-		<div data-role="navbar">
-			<ul>
-				<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'radio')) ?>">
-					<span class="icon"><i class="fa fa-music"></i></span>
-					<span class="tab-label">Radio</span>
-				</a></li>
-				<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'video')) ?>">
-					<span class="icon"><i class="fa fa-video-camera"></i></span>
-					<span class="tab-label">Video</span>
-				</a></li>
-				<li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'show')) ?>">
-					<span class="icon"><i class="fa fa-rss"></i></span>
-					<span class="tab-label">Shows</span>
-				</a></li>
-				<li><a href="<?=$this->route(array('module' => 'mobile', 'controller' => 'requests')) ?>">
-					<span class="icon"><i class="fa fa-comments"></i></span>
-					<span class="tab-label">Requests</span>
-				</a></li>
-			</ul>
-		</div>
-	</div>
+        <div data-role="navbar">
+            <ul>
+                <li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'radio')) ?>">
+                    <span class="icon"><i class="fa fa-music"></i></span>
+                    <span class="tab-label">Radio</span>
+                </a></li>
+                <li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'video')) ?>">
+                    <span class="icon"><i class="fa fa-video-camera"></i></span>
+                    <span class="tab-label">Video</span>
+                </a></li>
+                <li><a href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'show')) ?>">
+                    <span class="icon"><i class="fa fa-rss"></i></span>
+                    <span class="tab-label">Shows</span>
+                </a></li>
+                <li><a href="<?=$this->route(array('module' => 'mobile', 'controller' => 'requests')) ?>">
+                    <span class="icon"><i class="fa fa-comments"></i></span>
+                    <span class="tab-label">Requests</span>
+                </a></li>
+            </ul>
+        </div>
+    </div>
 
-	<!-- Radio Player -->
-	<div id="pvl-jplayer" style="width: 0; height: 0;"></div>
+    <!-- Radio Player -->
+    <div id="pvl-jplayer" style="width: 0; height: 0;"></div>
 </div>
 
 </body>

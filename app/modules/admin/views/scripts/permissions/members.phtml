@@ -3,29 +3,29 @@ $this->headTitle('Members of Role: '.$this->role->name);
 ?>
 
 <table class="table table-striped">
-	<colgroup>
-    	<col width="15%" />
+    <colgroup>
+        <col width="15%" />
         <col width="15%" />
         <col width="60%" />
     </colgroup>
-	<thead>
-   		<tr>
-        	<th>Actions</th>
+    <thead>
+        <tr>
+            <th>Actions</th>
             <th>UIN</th>
             <th>User Name</th>
         </tr> 
     </thead>
     <tbody>
     <? foreach($this->role_members as $member): ?>
-    	<tr>
-        	<td align="center">
-            	<?=$this->button(array(
-					'type'		=> 'small',
-					'icon'		=> 'delete',
-					'class'		=> 'negative confirm-action',
-					'href'		=> $this->routeFromHere(array('action' => 'members', 'user_id' => $member['user_id'])),
-					'text'		=> 'Delete',
-				)) ?>
+        <tr>
+            <td align="center">
+                <?=$this->button(array(
+                    'type'      => 'small',
+                    'icon'      => 'delete',
+                    'class'     => 'negative confirm-action',
+                    'href'      => $this->routeFromHere(array('action' => 'members', 'user_id' => $member['user_id'])),
+                    'text'      => 'Delete',
+                )) ?>
             </td>
             <td align="center"><?=$member['user']['uin'] ?></td>
             <td align="left"><?=$member['user']['lastname'] ?>, <?=$member['user']['firstname'] ?></td>

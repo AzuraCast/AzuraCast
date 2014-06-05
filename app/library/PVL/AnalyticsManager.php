@@ -7,11 +7,11 @@ use \Entity\Statistic;
 
 class AnalyticsManager
 {
-	public static function run()
-	{
-		$em = \Zend_Registry::get('em');
+    public static function run()
+    {
+        $em = \Zend_Registry::get('em');
 
-		// Force all times to be UTC before continuing.
+        // Force all times to be UTC before continuing.
         date_default_timezone_set('UTC');
 
         $short_names = Station::getShortNameLookup();

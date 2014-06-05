@@ -8,7 +8,7 @@ $this->layout()->manual = true;
 
 <div class="row-fluid">
     <div class="span12">
-    	<h2>Recent Playback Timeline</h2>
+        <h2>Recent Playback Timeline</h2>
 
         <div class="buttons">
             <?=$this->button(array(
@@ -21,41 +21,41 @@ $this->layout()->manual = true;
 
         <?=$this->paginate($this->pager) ?>
 
-    	<table class="datatable table-striped table-condensed table-nopadding">
+        <table class="datatable table-striped table-condensed table-nopadding">
             <colgroup>
-            	<col width="15%">
-            	<col width="7%">
-            	<col width="7%">
+                <col width="15%">
                 <col width="7%">
-            	<col width="39%">
-            	<col width="25%">
+                <col width="7%">
+                <col width="7%">
+                <col width="39%">
+                <col width="25%">
             </colgroup>
             <thead>
-            	<tr>
-            		<th>Date/Time</th>
-            		<th>Listeners</th>
-            		<th>Change</th>
+                <tr>
+                    <th>Date/Time</th>
+                    <th>Listeners</th>
+                    <th>Change</th>
                     <th><i class="icon-thumbs-up"></i> / <i class="icon-thumbs-down"></i></th>
-            		<th>Song Title</th>
-            		<th>Event</th>
-            	</tr>
+                    <th>Song Title</th>
+                    <th>Event</th>
+                </tr>
             </thead>
             <tbody>
             <? foreach($this->pager as $song_row): ?>
                 <tr class="input" id="song_<?=$song_row['timestamp'] ?>">
-                	<td class="center"><?=date('D g:ia', $song_row['timestamp']) ?></td>
-                	<td class="center"><big><?=$song_row['stat_start'] ?></big></td>
-                	<td class="center">
+                    <td class="center"><?=date('D g:ia', $song_row['timestamp']) ?></td>
+                    <td class="center"><big><?=$song_row['stat_start'] ?></big></td>
+                    <td class="center">
                         <big>
-                	<? if ($song_row['stat_delta'] > 0): ?>
-                		<span class="text-success"><i class="icon-caret-up"></i> <?=$song_row['stat_delta'] ?></span>
-                	<? elseif ($song_row['stat_delta'] < 0): ?>
-                		<span class="text-error"><i class="icon-caret-down"></i> <?=abs($song_row['stat_delta']) ?></span>
-                	<? else: ?>
-                		0
-                	<? endif; ?>
+                    <? if ($song_row['stat_delta'] > 0): ?>
+                        <span class="text-success"><i class="icon-caret-up"></i> <?=$song_row['stat_delta'] ?></span>
+                    <? elseif ($song_row['stat_delta'] < 0): ?>
+                        <span class="text-error"><i class="icon-caret-down"></i> <?=abs($song_row['stat_delta']) ?></span>
+                    <? else: ?>
+                        0
+                    <? endif; ?>
                         </big>
-                	</td>
+                    </td>
                     <td class="center">
                     <? if ($song_row['score_dislikes'] > 0): ?>
                         <span class="text-error"><i class="icon-thumbs-down"></i> <?=abs($song_row['score_dislikes']) ?></span>
@@ -64,7 +64,7 @@ $this->layout()->manual = true;
                         <span class="text-success"><i class="icon-thumbs-up"></i> <?=abs($song_row['score_likes']) ?></span>
                     <? endif; ?>
                     </td>
-                	<td>
+                    <td>
                     <? if ($song_row['song']['title']): ?>
                         <b><?=$song_row['song']['title'] ?></b><br>
                         <?=$song_row['song']['artist'] ?>
@@ -74,10 +74,10 @@ $this->layout()->manual = true;
                     </td>
                     <td>
                     <? if ($song_row['event']): ?>
-                    	<i class="icon-star"></i> <?=$song_row['event']['title'] ?>
+                        <i class="icon-star"></i> <?=$song_row['event']['title'] ?>
                     <? else: ?>
-                    	&nbsp;
-                	<? endif; ?>
+                        &nbsp;
+                    <? endif; ?>
                     </td>
                 </tr>
             <? endforeach; ?>

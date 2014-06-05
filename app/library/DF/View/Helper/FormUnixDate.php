@@ -4,14 +4,14 @@ class FormUnixDate extends \Zend_View_Helper_FormElement
 {
     public function formUnixDate($name, $orig_value = null, $attribs = null)
     {
-		$info = $this->_getInfo($name, $orig_value, $attribs);
+        $info = $this->_getInfo($name, $orig_value, $attribs);
         extract($info); // name, value, attribs, options, listsep, disable
         
         if (empty($attribs))
         {
-			$element = new \DF\Form\Element\UnixDate($name);
-			$element->setValue($orig_value);
-			$attribs = (array)$element->getAttribs();
+            $element = new \DF\Form\Element\UnixDate($name);
+            $element->setValue($orig_value);
+            $attribs = (array)$element->getAttribs();
         }
         
         $config = \Zend_Registry::get('config');

@@ -4,20 +4,20 @@
  */
 
 return array(
-    'method'		=> 'post',
-    'elements'		=> array(
+    'method'        => 'post',
+    'elements'      => array(
 
-        'contact_email'	=> array('text', array(
+        'contact_email' => array('text', array(
             'label' => 'E-mail Address',
-			'class' => 'half-width',
+            'class' => 'half-width',
             'required' => true,
         )),
 
-        'submit'		=> array('submit', array(
-			'type'	=> 'submit',
-			'label'	=> 'Send Recovery Code',
-			'helper' => 'formButton',
-			'class' => 'ui-button',
+        'submit'        => array('submit', array(
+            'type'  => 'submit',
+            'label' => 'Send Recovery Code',
+            'helper' => 'formButton',
+            'class' => 'ui-button',
         )),
     ),
 );

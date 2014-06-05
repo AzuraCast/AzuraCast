@@ -4,7 +4,7 @@ class FormMarkup extends \Zend_View_Helper_FormElement
 {
     public function formMarkup($name, $value = null, $attribs = null)
     {
-		$info = $this->_getInfo($name, $value, $attribs);
+        $info = $this->_getInfo($name, $value, $attribs);
         extract($info); // name, value, attribs, options, listsep, disable
         
         $markup = $attribs['markup'];
@@ -14,9 +14,9 @@ class FormMarkup extends \Zend_View_Helper_FormElement
         
         $return = '<span';
         foreach($attribs as $attr_key => $attr_item)
-			$return .= ' '.$attr_key.'="'.$attr_item.'"';
-			
-		$return .= '>'.$markup.'</span>';
+            $return .= ' '.$attr_key.'="'.$attr_item.'"';
+            
+        $return .= '>'.$markup.'</span>';
         return $return;
-	}
+    }
 }

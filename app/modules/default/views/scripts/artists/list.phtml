@@ -4,36 +4,36 @@ $this->layout()->manual = true;
 ?>
 
 <div class="row">
-	<div class="span3">
-		<?=$this->renderHere('sidebar') ?>
-	</div>
-	<div class="span9">
-		<div class="floating">
-			<?=$this->paginate($this->pager) ?>
-			<ul class="media-list">
-			<? foreach($this->pager as $artist): ?>
-				<li class="media">
-					<div class="media-object pull-left">
-						<a href="<?=$this->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><img class="thumbnail" src="<?=\DF\Url::content($artist['image_url']) ?>" style="width: 64px;"></a>
-					</div>
-					<div class="media-body">
-						<h4>
-							<a href="<?=$this->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><?=$artist['name'] ?></a><br>
-							<small>
-								<div>
-								<? foreach($artist->types as $type): ?>
-									<i class="<?=$type['icon'] ?>"></i> <?=$type['name'] ?> 
-								<? endforeach; ?>
-								</div>
-							</small>
-						</h4>
-						<div><small><?=\DF\Utilities::truncateText($artist['description'], 150) ?></small></div>
-					</div>
-				</li>
-			<? endforeach; ?>
-			</ul>
-			<?=$this->paginate($this->pager) ?>
-		</div>
-	</div>
+    <div class="span3">
+        <?=$this->renderHere('sidebar') ?>
+    </div>
+    <div class="span9">
+        <div class="floating">
+            <?=$this->paginate($this->pager) ?>
+            <ul class="media-list">
+            <? foreach($this->pager as $artist): ?>
+                <li class="media">
+                    <div class="media-object pull-left">
+                        <a href="<?=$this->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><img class="thumbnail" src="<?=\DF\Url::content($artist['image_url']) ?>" style="width: 64px;"></a>
+                    </div>
+                    <div class="media-body">
+                        <h4>
+                            <a href="<?=$this->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><?=$artist['name'] ?></a><br>
+                            <small>
+                                <div>
+                                <? foreach($artist->types as $type): ?>
+                                    <i class="<?=$type['icon'] ?>"></i> <?=$type['name'] ?> 
+                                <? endforeach; ?>
+                                </div>
+                            </small>
+                        </h4>
+                        <div><small><?=\DF\Utilities::truncateText($artist['description'], 150) ?></small></div>
+                    </div>
+                </li>
+            <? endforeach; ?>
+            </ul>
+            <?=$this->paginate($this->pager) ?>
+        </div>
+    </div>
 </div>
 

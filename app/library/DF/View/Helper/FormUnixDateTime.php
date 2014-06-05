@@ -9,9 +9,9 @@ class FormUnixDateTime extends \Zend_View_Helper_FormElement
         
         if (empty($attribs))
         {
-			$element = new \DF\Form\Element\UnixDateTime($name);
-			$element->setValue($orig_value);
-			$attribs = (array)$element->getAttribs();
+            $element = new \DF\Form\Element\UnixDateTime($name);
+            $element->setValue($orig_value);
+            $attribs = (array)$element->getAttribs();
         }
         
         $config = \Zend_Registry::get('config');

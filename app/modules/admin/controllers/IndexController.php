@@ -5,7 +5,7 @@ class Admin_IndexController extends \DF\Controller\Action
     {
         return \DF\Acl::getInstance()->isAllowed('view administration');
     }
-	
+    
     /**
      * Main display.
      */

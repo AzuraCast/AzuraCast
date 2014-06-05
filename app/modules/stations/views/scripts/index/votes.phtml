@@ -8,18 +8,18 @@ $this->layout()->manual = true;
 
 <div class="row-fluid">
     <div class="span12">
-    	<h2>Song Vote Totals on Station</h2>
+        <h2>Song Vote Totals on Station</h2>
 
-    	<table class="datatable table-striped table-condensed table-nopadding">
+        <table class="datatable table-striped table-condensed table-nopadding">
             <colgroup>
-            	<col width="10%">
+                <col width="10%">
                 <col width="90%">
             </colgroup>
             <thead>
-            	<tr>
-            		<th>Score</th>
-            		<th>Song Title</th>
-            	</tr>
+                <tr>
+                    <th>Score</th>
+                    <th>Song Title</th>
+                </tr>
             </thead>
             <tbody>
             <? foreach($this->votes as $song_row): ?>
@@ -35,7 +35,7 @@ $this->layout()->manual = true;
                         <? endif; ?>
                         </big>
                     </td>
-                	<td>
+                    <td>
                     <? if ($song_row['song']['title']): ?>
                         <b><?=$song_row['song']['title'] ?></b><br>
                         <?=$song_row['song']['artist'] ?>

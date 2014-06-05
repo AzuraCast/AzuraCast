@@ -8,11 +8,11 @@ class FormFileEdit extends \Zend_Form_Decorator_File implements \Zend_Form_Decor
         
         $element = $this->getElement();
         $value = $element->getOriginalValue();
-		
-		if (defined('DF_UPLOAD_URL') && DF_UPLOAD_URL)
-			$url_base = DF_UPLOAD_URL;
-		else
-			$url_base = \DF\Url::content();
+        
+        if (defined('DF_UPLOAD_URL') && DF_UPLOAD_URL)
+            $url_base = DF_UPLOAD_URL;
+        else
+            $url_base = \DF\Url::content();
         
         if ($value)
         {
@@ -27,7 +27,7 @@ class FormFileEdit extends \Zend_Form_Decorator_File implements \Zend_Form_Decor
                 $i++;
                 
                 $file_url = $url_base.'/'.$existing_file;
-				$form_field .= '<div>#'.$i.': <a href="'.$file_url.'" target="_blank">Download File</a></div>';
+                $form_field .= '<div>#'.$i.': <a href="'.$file_url.'" target="_blank">Download File</a></div>';
             }
             
             $form_field .= '</dd>';

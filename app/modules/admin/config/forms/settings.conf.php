@@ -4,11 +4,11 @@
  */
 
 return array(
-	/**
-	 * Form Configuration
-	 */
-	'form' => array(
-		'method'		=> 'post',
+    /**
+     * Form Configuration
+     */
+    'form' => array(
+        'method'        => 'post',
         
         'groups'        => array(
 
@@ -80,9 +80,9 @@ return array(
             'submit'            => array(
                 'legend'            => '',
                 'elements'          => array(
-                    'submit'		=> array('submit', array(
-                        'type'	=> 'submit',
-                        'label'	=> 'Save Changes',
+                    'submit'        => array('submit', array(
+                        'type'  => 'submit',
+                        'label' => 'Save Changes',
                         'helper' => 'formButton',
                         'class' => 'ui-button',
                     )),
@@ -90,5 +90,5 @@ return array(
             ),
             
         ),
-	),
+    ),
 );

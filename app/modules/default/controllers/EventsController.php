@@ -4,7 +4,7 @@ use \Entity\EventType;
 
 class EventsController extends \DF\Controller\Action
 {
-	public function indexAction()
+    public function indexAction()
     {
         $show = ($this->_hasParam('month')) ? $this->_getParam('month') : date('Ym');
         $calendar = new \DF\Calendar($show);

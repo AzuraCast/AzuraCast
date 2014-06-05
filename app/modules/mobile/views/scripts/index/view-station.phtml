@@ -1,26 +1,26 @@
 <ul data-role="listview" class="station_list" id="station_list">
 <? foreach($this->category['stations'] as $station): ?>
     <li class="station" id="station_<?=\Entity\Station::getStationShortName($station['name']) ?>"
-		data-id="<?=$station['id'] ?>" 
-		data-name="<?=$station['name'] ?>" 
-		data-type="<?=$station['type'] ?>" 
-		data-inactive="<? if ($station['hide_if_inactive']): ?>hide<? else: ?>show<? endif; ?>">
-    	<a href="<?=$this->routeFromHere(array('action' => 'station', 'id' => $station['id'])) ?>">
-	    	<img src="<?=\DF\Url::content($station['image_url']) ?>">
+        data-id="<?=$station['id'] ?>" 
+        data-name="<?=$station['name'] ?>" 
+        data-type="<?=$station['type'] ?>" 
+        data-inactive="<? if ($station['hide_if_inactive']): ?>hide<? else: ?>show<? endif; ?>">
+        <a href="<?=$this->routeFromHere(array('action' => 'station', 'id' => $station['id'])) ?>">
+            <img src="<?=\DF\Url::content($station['image_url']) ?>">
 
-	    	<h4>
-	    		<?=$station['name'] ?>
-				<span class="nowplaying-info">
-					<span class="nowplaying-listeners"></span>
-				</span>
-			<? if ($station['genre']): ?>
-				<span class="genre-info"><?=$station['genre'] ?></span>
-			<? endif; ?>
-			</h4>
-			<span class="nowplaying-onair" style="display: none;"><span class="nowplaying-onair-inner"></span></span>
-			<span class="nowplaying-artist">Loading...</span>
-			<span class="nowplaying-title">Loading...</span>
-		</a>
-	</li>
+            <h4>
+                <?=$station['name'] ?>
+                <span class="nowplaying-info">
+                    <span class="nowplaying-listeners"></span>
+                </span>
+            <? if ($station['genre']): ?>
+                <span class="genre-info"><?=$station['genre'] ?></span>
+            <? endif; ?>
+            </h4>
+            <span class="nowplaying-onair" style="display: none;"><span class="nowplaying-onair-inner"></span></span>
+            <span class="nowplaying-artist">Loading...</span>
+            <span class="nowplaying-title">Loading...</span>
+        </a>
+    </li>
 <? endforeach; ?>
 </ul>

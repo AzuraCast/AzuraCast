@@ -14,7 +14,7 @@ class ArtistType extends \DF\Doctrine\Entity
         $this->artists = new ArrayCollection;
     }
 
-	/**
+    /**
      * @Column(name="id", type="integer")
      * @Id
      * @GeneratedValue(strategy="AUTO")

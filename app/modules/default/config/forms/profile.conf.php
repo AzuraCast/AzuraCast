@@ -19,13 +19,13 @@ return array(
                     'required' => true,
                 )),
                 
-                'email'	=> array('text', array(
+                'email' => array('text', array(
                     'label' => 'E-mail Address',
                     'class' => 'half-width',
                     'required' => true,
                 )),
         
-                'auth_password'	=> array('password', array(
+                'auth_password' => array('password', array(
                     'label' => 'Reset Password',
                     'description' => 'To change your password, enter the new password in the field below.',
                 )),
@@ -35,9 +35,9 @@ return array(
         
         'submit' => array(
             'elements' => array(
-                'submit'		=> array('submit', array(
-                    'type'	=> 'submit',
-                    'label'	=> 'Save Profile',
+                'submit'        => array('submit', array(
+                    'type'  => 'submit',
+                    'label' => 'Save Profile',
                     'helper' => 'formButton',
                     'class' => 'ui-button',
                 )),

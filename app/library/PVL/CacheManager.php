@@ -3,9 +3,9 @@ namespace PVL;
 
 class CacheManager
 {
-	public static function generateSlimPlayer()
-	{
-		$stations = \Entity\Station::getStationsInCategories();
+    public static function generateSlimPlayer()
+    {
+        $stations = \Entity\Station::getStationsInCategories();
 
         $view_vars = array(
             'skin' => 'slim',
@@ -33,5 +33,5 @@ class CacheManager
         $result = $layout->render();
 
         @file_put_contents(DF_INCLUDE_STATIC.'/api/player.html', $result);
-	}
+    }
 }

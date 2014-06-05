@@ -10,6 +10,6 @@ class Markup extends \Zend_Form_Element
     
     public function getValue()
     {
-		return NULL;
+        return NULL;
     }
 }

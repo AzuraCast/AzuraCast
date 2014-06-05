@@ -20,13 +20,13 @@ return array(
                     'required' => true,
                 )),
                 
-                'email'	=> array('text', array(
+                'email' => array('text', array(
                     'label' => 'E-mail Address',
                     'class' => 'half-width',
                     'required' => true,
                 )),
         
-                'auth_password'	=> array('password', array(
+                'auth_password' => array('password', array(
                     'label' => 'Password',
                     'required' => true,
                 )),
@@ -53,9 +53,9 @@ return array(
         
         'submit' => array(
             'elements' => array(
-                'submit'		=> array('submit', array(
-                    'type'	=> 'submit',
-                    'label'	=> 'Create Account and Log In',
+                'submit'        => array('submit', array(
+                    'type'  => 'submit',
+                    'label' => 'Create Account and Log In',
                     'helper' => 'formButton',
                     'class' => 'ui-button',
                 )),

@@ -4,10 +4,10 @@
  */
 
 return array(
-	// Backend driver to use with the database.
-	'driver'        => 'pdo_mysql',
+    // Backend driver to use with the database.
+    'driver'        => 'pdo_mysql',
 
-	// Host or IP to connect to (default: localhost).
+    // Host or IP to connect to (default: localhost).
     'host'          => 'localhost',
 
     // Name of the primary application database.
@@ -24,6 +24,6 @@ return array(
 
     // Other options to send to the PDO adapter for the database.
     'driverOptions' => array(
-    	1002	=> 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
+        1002    => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
     ),
 );

@@ -4,6 +4,6 @@ class FormFileView extends \Zend_Form_Decorator_Abstract implements \Zend_Form_D
 {
     public function render($content)
     {
-		return $content;
+        return $content;
     }
 }

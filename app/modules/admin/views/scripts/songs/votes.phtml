@@ -4,14 +4,14 @@ $this->headTitle('Top Songs from the Last Week');
 
 <table class="datatable table-striped table-condensed table-nopadding">
     <colgroup>
-    	<col width="10%">
+        <col width="10%">
         <col width="90%">
     </colgroup>
     <thead>
-    	<tr>
-    		<th>Score</th>
-    		<th>Song Title</th>
-    	</tr>
+        <tr>
+            <th>Score</th>
+            <th>Song Title</th>
+        </tr>
     </thead>
     <tbody>
     <? foreach($this->votes as $song_row): ?>
@@ -27,7 +27,7 @@ $this->headTitle('Top Songs from the Last Week');
                 <? endif; ?>
                 </big>
             </td>
-        	<td>
+            <td>
             <? if ($song_row['song']['title']): ?>
                 <b><?=$song_row['song']['title'] ?></b><br>
                 <?=$song_row['song']['artist'] ?>

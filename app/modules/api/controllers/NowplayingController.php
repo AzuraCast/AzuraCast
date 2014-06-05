@@ -26,32 +26,32 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
         }
 
         if ($this->_hasParam('id'))
-    	{
-    		$id = (int)$this->_getParam('id');
-    		$station = Station::find($id);
+        {
+            $id = (int)$this->_getParam('id');
+            $station = Station::find($id);
 
-    		if (!($station instanceof Station))
+            if (!($station instanceof Station))
             {
                 return $this->returnError('Station not found!');
             }
-    		else
+            else
             {
                 $sc = $station->getShortName();
                 return $this->returnSuccess($np[$sc]);
             }
-    	}
-    	elseif ($this->_hasParam('station'))
-    	{
+        }
+        elseif ($this->_hasParam('station'))
+        {
             $short = $this->_getParam('station');
             if (isset($np[$short]))
                 return $this->returnSuccess($np[$short]);
-    		else
-    			return $this->returnError('Station not found!');
-    	}
-    	else
-    	{
-    		return $this->returnSuccess($np);
-    	}
+            else
+                return $this->returnError('Station not found!');
+        }
+        else
+        {
+            return $this->returnSuccess($np);
+        }
     }
 
     protected function _processRow($row)

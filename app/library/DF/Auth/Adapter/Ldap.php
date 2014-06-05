@@ -9,17 +9,17 @@ define(LDAP_OPT_DIAGNOSTIC_MESSAGE, 0x0032);
 
 class Ldap implements \Zend_Auth_Adapter_Interface
 {
-	protected $_options = array();
+    protected $_options = array();
 
-	public function __construct($options = array())
+    public function __construct($options = array())
     {
-		$this->setOptions($options);
+        $this->setOptions($options);
     }
-	
-	public function setOptions($options)
-	{
-		$this->_options = array_merge($this->_options, (array)$options);
-	}
+    
+    public function setOptions($options)
+    {
+        $this->_options = array_merge($this->_options, (array)$options);
+    }
 
     /**
      * (non-PHPdoc)
@@ -29,6 +29,6 @@ class Ldap implements \Zend_Auth_Adapter_Interface
      */
     public function authenticate()
     {
-    	return \DF\Service\Ldap::authenticate($this->_options['username'], $this->_options['password']);
+        return \DF\Service\Ldap::authenticate($this->_options['username'], $this->_options['password']);
     }
 }

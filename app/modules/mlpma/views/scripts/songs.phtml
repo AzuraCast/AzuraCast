@@ -1,55 +1,55 @@
 <table class="table table-bordered table-condensed table-striped table-hover">
 <? if ($this->compact_view): ?>
-	<colgroup>
-		<col width="10%">
-		<col width="15%">
-		<col width="75%">
-	</colgroup>
+    <colgroup>
+        <col width="10%">
+        <col width="15%">
+        <col width="75%">
+    </colgroup>
 <? else: ?>
-	<colgroup>
-		<col width="10%">
-		<col width="40%">
-		<col width="20%">
-		<col width="15%">
-		<col width="15%">
-	</colgroup>
-	<thead>
-		<tr>
-			<th>&nbsp;</th>
-			<th>Track Name</th>
-			<th>Artist</th>
-			<th>Album</th>
-			<th>Genre</th>
-		</tr>
-	</thead>
+    <colgroup>
+        <col width="10%">
+        <col width="40%">
+        <col width="20%">
+        <col width="15%">
+        <col width="15%">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>Track Name</th>
+            <th>Artist</th>
+            <th>Album</th>
+            <th>Genre</th>
+        </tr>
+    </thead>
 <? endif; ?>
-	<tbody>
-	<? foreach($this->songs as $song): ?>
-		<tr class="input">
-			<td class="center">
-				<div class="btn-group">
-					<a href="<?=$song->file_url ?>" data-title="<?=$song->title ?>" data-artist="<?=$song->artist ?>" data-cover="<?=$song->art_url ?>" title="Play Song" class="btn-play-song btn btn-mini btn-success"><i class="icon-play"></i></a>
-					<a href="<?=$song->file_url ?>" title="Download Song" download="<?=basename($song->file_url) ?>" target="_blank" class="btn btn-mini btn-info"><i class="icon-download-alt"></i></a>
-				<? if ($this->acl->isAllowed('administer mlpma songs')): ?>
-					<a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'song', 'action' => 'edit', 'id' => $song->id)) ?>" title="Edit Song" class="btn btn-mini btn-warning"><i class="icon-pencil"></i></a>
-					<a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'song', 'action' => 'delete', 'id' => $song->id)) ?>" title="Delete Song" class="btn btn-mini btn-danger"><i class="icon-trash"></i></a>
-				<? endif; ?>
-				</div>
-			</td>
-		<? if ($this->compact_view): ?>
-			<td class="center"><img src="<?=$song->art_url ?>" style="width: 100%;"></td>
-			<td>
-				<a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'artist', 'artist' => $song->artist)) ?>" class="ajax"><?=$song->artist ?></a><br>
-				<big><b><?=$song->title ?></b></big><br>
-				<a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'album', 'album' => $song->album, 'artist' => $song->artist)) ?>" class="ajax"><?=$song->album ?></a><? if ($song->genre): ?> &bull; <?=$song->genre ?><? endif; ?>
-			</td>
-		<? else: ?>
-			<td><big><b><?=$song->title ?></b></big></td>
-			<td><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'artist', 'artist' => $song->artist)) ?>" class="ajax"><?=$song->artist ?></a></td>
-			<td><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'album', 'album' => $song->album, 'artist' => $song->artist)) ?>" class="ajax"><?=$song->album ?></a></td>
-			<td><?=$song->genre ?></td>
-		<? endif; ?>
-		</tr>
-	<? endforeach; ?>
-	</tbody>
+    <tbody>
+    <? foreach($this->songs as $song): ?>
+        <tr class="input">
+            <td class="center">
+                <div class="btn-group">
+                    <a href="<?=$song->file_url ?>" data-title="<?=$song->title ?>" data-artist="<?=$song->artist ?>" data-cover="<?=$song->art_url ?>" title="Play Song" class="btn-play-song btn btn-mini btn-success"><i class="icon-play"></i></a>
+                    <a href="<?=$song->file_url ?>" title="Download Song" download="<?=basename($song->file_url) ?>" target="_blank" class="btn btn-mini btn-info"><i class="icon-download-alt"></i></a>
+                <? if ($this->acl->isAllowed('administer mlpma songs')): ?>
+                    <a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'song', 'action' => 'edit', 'id' => $song->id)) ?>" title="Edit Song" class="btn btn-mini btn-warning"><i class="icon-pencil"></i></a>
+                    <a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'song', 'action' => 'delete', 'id' => $song->id)) ?>" title="Delete Song" class="btn btn-mini btn-danger"><i class="icon-trash"></i></a>
+                <? endif; ?>
+                </div>
+            </td>
+        <? if ($this->compact_view): ?>
+            <td class="center"><img src="<?=$song->art_url ?>" style="width: 100%;"></td>
+            <td>
+                <a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'artist', 'artist' => $song->artist)) ?>" class="ajax"><?=$song->artist ?></a><br>
+                <big><b><?=$song->title ?></b></big><br>
+                <a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'album', 'album' => $song->album, 'artist' => $song->artist)) ?>" class="ajax"><?=$song->album ?></a><? if ($song->genre): ?> &bull; <?=$song->genre ?><? endif; ?>
+            </td>
+        <? else: ?>
+            <td><big><b><?=$song->title ?></b></big></td>
+            <td><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'artist', 'artist' => $song->artist)) ?>" class="ajax"><?=$song->artist ?></a></td>
+            <td><a href="<?=$this->route(array('module' => 'mlpma', 'controller' => 'album', 'album' => $song->album, 'artist' => $song->artist)) ?>" class="ajax"><?=$song->album ?></a></td>
+            <td><?=$song->genre ?></td>
+        <? endif; ?>
+        </tr>
+    <? endforeach; ?>
+    </tbody>
 </table>

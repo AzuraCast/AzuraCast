@@ -5,9 +5,9 @@ $this->headTitle('Artist: '.$this->artist_name);
 <h2>Albums</h2>
 
 <? foreach($this->albums as $album_name => $songs): ?>
-	<h3><?=$album_name ?></h3>
-	<?
-	$this->songs = $songs;
-	echo $this->renderHere('songs', true);
-	?>
+    <h3><?=$album_name ?></h3>
+    <?
+    $this->songs = $songs;
+    echo $this->renderHere('songs', true);
+    ?>
 <? endforeach; ?>

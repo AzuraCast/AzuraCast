@@ -6,62 +6,62 @@ $this->layout()->manual = true;
 <h4><a href="<?=$this->routeFromHere(array('controller' => 'index', 'action' => 'index')) ?>"><i class="icon-arrow-left"></i> Station Center Home</a></h4>
 
 <div class="row-fluid">
-	<div class="span6">
-		<h2>Licensed Artists</h2>
-		<div class="well">
-		<? foreach($this->licenses as $license_type => $artists): ?>
-			<h3><?=ucfirst($license_type) ?> (<?=count($artists) ?>)</h3>
+    <div class="span6">
+        <h2>Licensed Artists</h2>
+        <div class="well">
+        <? foreach($this->licenses as $license_type => $artists): ?>
+            <h3><?=ucfirst($license_type) ?> (<?=count($artists) ?>)</h3>
 
-			<ul class="media-list">
-			<? foreach($artists as $artist): ?>
-				<li class="media">
-					<img class="media-object pull-left" src="<?=\DF\Url::content($artist['image_url']) ?>" style="width: 40px;">
-					<div class="media-body">
-						<h4>
-							<?=$artist['name'] ?><br>
-							<small>
-								<div>
-								<? foreach((array)$artist['types'] as $type): ?>
-									<i class="<?=$type['icon'] ?>"></i> <?=$type['name'] ?> 
-								<? endforeach; ?>
-								</div>
-							</small>
-						</h4>
-					<? if ($artist['license_specifics']): ?>
-						<div><small><?=$artist['license_specifics'] ?></small></div>
-					<? endif; ?>
-					</div>
-				</li>
-			<? endforeach; ?>
-			</ul>
-			<hr>
-		<? endforeach; ?>
-		</div>
-	</div>
-	<div class="span6">
-		<h2>Interview-Friendly Artists</h2>
-		<div class="well">
-			<ul class="media-list">
-			<? foreach($this->interviews as $artist): ?>
-				<li class="media">
-					<img class="media-object pull-left" src="<?=\DF\Url::content($artist['image_url']) ?>" style="width: 40px;">
-					<div class="media-body">
-						<h4>
-							<?=$artist['name'] ?><br>
-							<small>
-								<div>
-								<? foreach((array)$artist['types'] as $type): ?>
-									<i class="<?=$type['icon'] ?>"></i> <?=$type['name'] ?> 
-								<? endforeach; ?>
-								</div>
-							</small>
-						</h4>
-						<div><small><b>Skype:</b> <?=$artist['contact_skype'] ?></small></div>
-					</div>
-				</li>
-			<? endforeach; ?>
-			</ul>
-		</div>
-	</div>
+            <ul class="media-list">
+            <? foreach($artists as $artist): ?>
+                <li class="media">
+                    <img class="media-object pull-left" src="<?=\DF\Url::content($artist['image_url']) ?>" style="width: 40px;">
+                    <div class="media-body">
+                        <h4>
+                            <?=$artist['name'] ?><br>
+                            <small>
+                                <div>
+                                <? foreach((array)$artist['types'] as $type): ?>
+                                    <i class="<?=$type['icon'] ?>"></i> <?=$type['name'] ?> 
+                                <? endforeach; ?>
+                                </div>
+                            </small>
+                        </h4>
+                    <? if ($artist['license_specifics']): ?>
+                        <div><small><?=$artist['license_specifics'] ?></small></div>
+                    <? endif; ?>
+                    </div>
+                </li>
+            <? endforeach; ?>
+            </ul>
+            <hr>
+        <? endforeach; ?>
+        </div>
+    </div>
+    <div class="span6">
+        <h2>Interview-Friendly Artists</h2>
+        <div class="well">
+            <ul class="media-list">
+            <? foreach($this->interviews as $artist): ?>
+                <li class="media">
+                    <img class="media-object pull-left" src="<?=\DF\Url::content($artist['image_url']) ?>" style="width: 40px;">
+                    <div class="media-body">
+                        <h4>
+                            <?=$artist['name'] ?><br>
+                            <small>
+                                <div>
+                                <? foreach((array)$artist['types'] as $type): ?>
+                                    <i class="<?=$type['icon'] ?>"></i> <?=$type['name'] ?> 
+                                <? endforeach; ?>
+                                </div>
+                            </small>
+                        </h4>
+                        <div><small><b>Skype:</b> <?=$artist['contact_skype'] ?></small></div>
+                    </div>
+                </li>
+            <? endforeach; ?>
+            </ul>
+        </div>
+    </div>
 </div>
 

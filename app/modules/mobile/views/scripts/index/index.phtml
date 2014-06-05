@@ -3,27 +3,27 @@ $this->headTitle('Ponyville Live!');
 ?>
 
 <div id="home_header">
-	<img src="<?=\DF\Url::content('mid2013/logo_light.png') ?>" alt="Ponyville Live!">
+    <img src="<?=\DF\Url::content('mid2013/logo_light.png') ?>" alt="Ponyville Live!">
 </div>
 
 <div id="home_buttons">
-	<a class="ui-btn ui-corner-all ui-btn-b" data-ajax="true" href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'radio')) ?>">
-		<i class="fa fa-music"></i> Radio Stations
-	</a>
-	<a class="ui-btn ui-corner-all ui-btn-b" href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'video')) ?>">
-		<i class="fa fa-video-camera"></i> Video Streams
-	</a>
-	<a class="ui-btn ui-corner-all ui-btn-b" href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'show')) ?>">
-		<i class="fa fa-rss"></i> Show Episodes
-	</a>
-	<a class="ui-btn ui-corner-all ui-btn-b" href="<?=$this->route(array('module' => 'mobile', 'controller' => 'requests', 'action' => 'index')) ?>">
-		<i class="fa fa-comments"></i> Song Requests
-	</a>
+    <a class="ui-btn ui-corner-all ui-btn-b" data-ajax="true" href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'radio')) ?>">
+        <i class="fa fa-music"></i> Radio Stations
+    </a>
+    <a class="ui-btn ui-corner-all ui-btn-b" href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'video')) ?>">
+        <i class="fa fa-video-camera"></i> Video Streams
+    </a>
+    <a class="ui-btn ui-corner-all ui-btn-b" href="<?=$this->route(array('module' => 'mobile', 'action' => 'view', 'type' => 'show')) ?>">
+        <i class="fa fa-rss"></i> Show Episodes
+    </a>
+    <a class="ui-btn ui-corner-all ui-btn-b" href="<?=$this->route(array('module' => 'mobile', 'controller' => 'requests', 'action' => 'index')) ?>">
+        <i class="fa fa-comments"></i> Song Requests
+    </a>
 </div>
 
 <div id="home_footer">
-	My Little Pony: Friendship is Magic&trade; &copy; Hasbro.<br>
-	All creations are &copy; their respective artists.<br>
-	All songs are &copy; their respective artists.<br>
-	Copyright &copy; <?=date('Y') ?> Ponyville Live! All rights reserved.
+    My Little Pony: Friendship is Magic&trade; &copy; Hasbro.<br>
+    All creations are &copy; their respective artists.<br>
+    All songs are &copy; their respective artists.<br>
+    Copyright &copy; <?=date('Y') ?> Ponyville Live! All rights reserved.
 </div>

@@ -6,28 +6,28 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
 {
     public function indexAction()
     {
-    	if ($this->_hasParam('month'))
-    	{
-    		$show = $this->_getParam('month');
-        	$calendar = new \DF\Calendar($show);
-        	$timestamps = $calendar->getTimestamps();
+        if ($this->_hasParam('month'))
+        {
+            $show = $this->_getParam('month');
+            $calendar = new \DF\Calendar($show);
+            $timestamps = $calendar->getTimestamps();
             
-        	$start_timestamp = $timestamps['start'];
-        	$end_timestamp = $timestamps['end'];
+            $start_timestamp = $timestamps['start'];
+            $end_timestamp = $timestamps['end'];
 
             $cache_name = 'month_'.$show;
         }
         elseif ($this->_hasParam('start'))
         {
             $start_timestamp = (int)$this->_getParam('start');
-        	$end_timestamp = (int)$this->_getParam('end');
+            $end_timestamp = (int)$this->_getParam('end');
 
             $cache_name = 'range_'.$start_timestamp.'_'.$end_timestamp;
         }
         else
         {
-        	$start_timestamp = time();
-        	$end_timestamp = time()+(86400 * 30);
+            $start_timestamp = time();
+            $end_timestamp = time()+(86400 * 30);
 
             $cache_name = 'upcoming';
         }
@@ -61,17 +61,17 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
             $events = array();
             foreach((array)$events_raw as $event)
             {
-            	if ($station_shortcode == 'all')
-            	{
-            		$shortcode = Station::getStationShortName($event['station']['name']);
-            		$event['station'] = $shortcode;
-            	}
-            	else
-            	{
-            		unset($event['station']);
-            	}
-            	
-            	unset($event['is_notified']);
+                if ($station_shortcode == 'all')
+                {
+                    $shortcode = Station::getStationShortName($event['station']['name']);
+                    $event['station'] = $shortcode;
+                }
+                else
+                {
+                    unset($event['station']);
+                }
+                
+                unset($event['is_notified']);
 
                 $events[] = $event;
             }
@@ -84,7 +84,7 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
 
     public function conventionsAction()
     {
-    	$start_timestamp = strtotime('-1 month');
+        $start_timestamp = strtotime('-1 month');
         $end_timestamp = strtotime('+1 year');
 
         $events_raw = $this->em->createQuery('SELECT s FROM Entity\Schedule s WHERE s.type = :type AND s.start_time <= :end AND s.end_time >= :start ORDER BY s.start_time ASC')
@@ -96,7 +96,7 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
         $events = array();
         foreach((array)$events_raw as $event)
         {
-        	$special_info = \PVL\ScheduleManager::formatName($event['title']);
+            $special_info = \PVL\ScheduleManager::formatName($event['title']);
             $event = array_merge($event, $special_info);
 
             unset($event['station_id'], $event['icon'], $event['is_notified']);

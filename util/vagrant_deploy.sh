@@ -52,8 +52,6 @@ service nginx stop
 mv /etc/nginx/conf/nginx.conf /etc/nginx/conf/nginx.conf.bak
 cp /vagrant/util/vagrant_nginx /etc/nginx/conf/nginx.conf
 
-service nginx start
-
 # Set up MySQL server.
 echo "Customizing MySQL..."
 
@@ -122,6 +120,8 @@ sudo -u www-data php nowplaying.php
 echo "Installing cron job..."
 crontab -u vagrant $www_base/util/vagrant_cron
 service cron restart
+
+service nginx start
 
 echo "One-time setup complete!"
 echo "Server now live at localhost:8080 or www.pvlive.dev:8080."

@@ -32,6 +32,7 @@ class Api_DevController extends \PVL\Controller\Action\Api
             'settings',
             'block',
             'affiliates',
+            'rotators',
             'action',
             'role',
             'role_has_action',

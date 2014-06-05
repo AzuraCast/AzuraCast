@@ -54,6 +54,7 @@ $config = array(
             'Entity'    => DF_INCLUDE_MODELS,
             'Hybrid'    => DF_INCLUDE_LIB.'/ThirdParty',
             'Hybrid_'   => DF_INCLUDE_LIB.'/ThirdParty/Hybrid',
+            'tmhOAuth'  => DF_INCLUDE_LIB.'/ThirdParty',
         ),
         'psr4'      => array(
             '\\Proxy\\'     => DF_INCLUDE_TEMP.'/proxies',

@@ -82,23 +82,19 @@ class NotificationManager
         return;
     }
 
-    public static function tweet($message, $url = null)
+    public static function tweet($message, $url = null, $force = false)
     {
         static $twitter;
 
         // Suppress notifications for non-production applications.
-        if (DF_APPLICATION_ENV != "production")
+        if (DF_APPLICATION_ENV != "production" && !$force)
             return false;
 
         if (!$twitter)
         {
-            // The @PVLiveShows Twitter Account
-            $twitter = new \tmhOAuth(array(
-                'consumer_key'      => 'dekLAskiLF8nrTZI3zmmg',
-                'consumer_secret'   => 'J6OaNpKHlDmrQLEmvxfdlRWO4E7WbyNnBTdpz1njLcw',
-                'user_token'        => '974916638-1jK4vgMYvv9pAc2gQfAYGcnDY58xTij5M42P93VU',
-                'user_secret'       => 'TTDLFrhcULlU3a9uYxIbdW5DZxx4TsCfOlf9sWuVlY4',
-            ));
+            $config = \Zend_Registry::get('config');
+            $twitter_config = $config->apis->twitter->toArray();
+            $twitter = new \tmhOAuth($twitter_config);
         }
 
         $message_length = ($url) ? 110 : 130;

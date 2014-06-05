@@ -9,9 +9,6 @@ ini_set('display_errors', 1);
 
 require dirname(__FILE__).'/../app/bootstrap.php';
 
-$application = Zend_Registry::get('application');
-$application->bootstrap('doctrine');
-
 $em = $application->getBootstrap()->getResource('doctrine');
 
 $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(

@@ -13,7 +13,7 @@ class Doctrine extends \Zend_Application_Resource_ResourceAbstract
         $options = $this->getOptions();
         
         if(empty($options))
-            return;
+            return false;
         
         // Register custom data types.
         Type::addType('json', 'DF\Doctrine\Type\Json');
@@ -41,11 +41,18 @@ class Doctrine extends \Zend_Application_Resource_ResourceAbstract
 
         $app_config = \Zend_Registry::get('config');
         $options['conn'] = $app_config->db->toArray();
-        
+
+        // Handling for class names specified as platform types.
         if ($options['conn']['platform'])
         {
             $class_obj = new \ReflectionClass($options['conn']['platform']);
             $options['conn']['platform'] = $class_obj->newInstance();
+        }
+
+        // Special handling for the utf8mb4 type.
+        if ($options['conn']['driver'] == 'pdo_mysql' && $options['conn']['charset'] == 'utf8mb4')
+        {
+            $options['conn']['platform'] = new \DF\Doctrine\Platform\MysqlUnicode;
         }
         
         $metadata_driver = $config->newDefaultAnnotationDriver($options['modelPath']);

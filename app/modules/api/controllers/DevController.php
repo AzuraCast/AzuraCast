@@ -51,6 +51,9 @@ class Api_DevController extends \PVL\Controller\Action\Api
             '-p'.$db_config['password'],
             '--no-create-info',
             '--skip-extended-insert',
+            '--complete-insert',
+            '--single-transaction',
+            '--quick',
             $db_config['dbname'],
             implode(' ', $tables),
         );

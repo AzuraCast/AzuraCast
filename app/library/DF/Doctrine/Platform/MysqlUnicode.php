@@ -1,7 +1,20 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Buster
- * Date: 6/5/14
- * Time: 7:32 AM
- */ 
+ * Custom MySQL platform that supports utf8mb4 charset and encoding by default for tables.
+ */
+
+namespace DF\Doctrine\Platform;
+
+class MysqlUnicode extends \Doctrine\DBAL\Platforms\MySqlPlatform
+{
+    protected function _getCreateTableSQL($tableName, array $columns, array $options = array())
+    {
+        if (!isset($options['charset']))
+            $options['charset'] = 'utf8mb4';
+
+        if (!isset($options['collate']))
+            $options['collate'] = 'utf8mb4_unicode_ci';
+
+        return parent::_getCreateTableSQL($tableName, $columns, $options);
+    }
+}

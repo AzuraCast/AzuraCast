@@ -43,7 +43,9 @@ cp /vagrant/util/vagrant_nginx /etc/nginx/conf/nginx.conf
 service nginx start
 
 # Set up MySQL server.
-echo 'CREATE DATABASE pvl;' | mysql -u root -ppassword
+cat /var/www/vagrant/util/vagrant_mycnf >> /etc/mysql/my.cnf
+
+echo 'CREATE DATABASE pvl CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;' | mysql -u root -ppassword
 service mysql restart
 
 # Copy sample files.

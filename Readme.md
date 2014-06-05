@@ -7,6 +7,7 @@
 PVLive is the flagship web application for the [Ponyville Live!](http://ponyvillelive.com/) network, maintained by Bravely Blue Media LLC.
 
 The PVLive application is built on several powerful technologies:
+
 * [Twitter Bootstrap 2](http://getbootstrap.com/2.3.2/) (Frontend UI)
 * [ZendFramework 1.x](http://framework.zend.com/) (PHP MVC Framework)
 * [Doctrine 2](http://www.doctrine-project.org/) (PHP Database ORM / Abstraction)

@@ -1,8 +1,10 @@
 <?php
 namespace DF\Controller;
 
-use \DF\Url;
-use \DF\Flash;
+use DF\Exception\NotLoggedIn;
+use DF\Exception\PermissionDenied;
+use DF\Url;
+use DF\Flash;
 
 class Action extends \Zend_Controller_Action
 {
@@ -11,6 +13,8 @@ class Action extends \Zend_Controller_Action
 	public $auth;
 	public $acl;
 	public $test_mode;
+    public $em;
+    public $module_name;
 	
     public function init()
     {
@@ -41,9 +45,9 @@ class Action extends \Zend_Controller_Action
 		if (!$isAllowed)
 		{
 			if (!\DF\Auth::isLoggedIn())
-				throw new \DF\Exception\NotLoggedIn();
+				throw new NotLoggedIn;
 			else
-				throw new \DF\Exception\PermissionDenied();
+				throw new PermissionDenied;
 		}
 
         $this->postInit();

@@ -37,7 +37,6 @@ class Api_DevController extends \PVL\Controller\Action\Api
             'station',
             'podcast',
             'podcast_on_station',
-            'artist',
             'songs',
         );
 

@@ -19,77 +19,44 @@ class SongController extends \DF\Controller\Action
         // Get external provider information.
         $song_info['external'] = $record->getExternal();
 
-        // Temporary replacement for locally cached song art.
-        if ($song_info['external']['bronytunes']['image_url'])
-            $song_info['image_url'] = $song_info['external']['bronytunes']['image_url'];
-        elseif ($song_info['external']['eqbeats']['image_url'])
-            $song_info['image_url'] = $song_info['external']['eqbeats']['image_url'];
-        elseif ($song_info['external']['ponyfm']['image_url'])
-            $song_info['image_url'] = $song_info['external']['ponyfm']['image_url'];
-        else
+        // Get album art and lyrics from all providers.
+        $adapters = Song::getExternalAdapters();
+        $external_fields = array('image_url', 'lyrics', 'purchase_url', 'description');
+
+        foreach($external_fields as $field_name)
+        {
+            $song_info[$field_name] = NULL;
+            foreach($adapters as $adapter_name => $adapter_class)
+            {
+                if (!empty($song_info['external'][$adapter_name][$field_name]))
+                {
+                    $song_info[$field_name] = $song_info['external'][$adapter_name][$field_name];
+                    break;
+                }
+            }
+
+        if (!$song_info['image_url'])
             $song_info['image_url'] = \DF\Url::content('images/song_generic.png');
 
         // Get most recent playback information.
-        
+        $song_info['recent_history'] = $this->em->createQuery('
+            SELECT sh, st
+            FROM Entity\SongHistory sh JOIN sh.station st
+            WHERE sh.song_id = :song_id')
+            ->setParameter('song_id', $record->id)
+            ->setMaxResults(20)
+            ->getArrayResult();
 
         // Get requestable locations.
+        $song_info['request_on'] = $this->em->createQuery('
+            SELECT sm, st
+            FROM Entity\StationMedia sm JOIN sm.station st
+            WHERE sm.song_id = :song_id
+            GROUP BY sm.station_id')
+            ->setParameter('song_id', $record->id)
+            ->getArrayResult();
 
         $this->view->song = $song_info;
-    }
-
-    /**
-     * Voting Functions
-     */
-
-    public function likeAction()
-    {
-        return $this->_vote(1);
-    }
-    public function dislikeAction()
-    {
-        return $this->_vote(0-1);
-    }
-    public function clearvoteAction()
-    {
-        return $this->_vote(0);
-    }
-
-    protected function _vote($value)
-    {
-        $this->doNotRender();
-
-        $sh_id = (int)$this->_getParam('sh_id');
-        $sh = SongHistory::find($sh_id);
-
-        if ($sh instanceof SongHistory)
-        {
-            if ($value == 0)
-                $vote_result = $sh->clearVote();
-            else
-                $vote_result = $sh->vote($value);
-
-            if ($vote_result)
-                return $this->_returnMessage('success', 'OK');
-            else
-                return $this->_returnMessage('error', 'Vote could not be applied.');
-        }
-        else
-        {
-            return $this->_returnMessage('error', 'Song history record not found.');
-        }
-    }
-
-    protected function _returnMessage($status, $message = 'OK')
-    {
-        header("Content-type: application/json");
-        $return_message = json_encode(array(
-            'status'    => $status,
-            'message'   => $message,
-        ));
-
-        echo $return_message;
-
-        return true;
     }
 
 }

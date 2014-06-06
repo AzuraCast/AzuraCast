@@ -1,0 +1,129 @@
+<?php
+$song_info = $this->song;
+$song = $this->song['record'];
+
+$this->headTitle($song->title.' by '.$song->artist);
+$this->layout()->hide_title = true;
+?>
+
+<div class="clearfix">
+    <img src="<?=$song_info['image_url'] ?>" alt="Song Album Art" style="width: 256px; float: left; margin-right: 3px;">
+
+    <h1><?=$song->title ?></h1>
+    <h2><?=$song->artist ?></h2>
+</div>
+
+<div class="tabbable">
+    <ul class="nav nav-pills">
+        <li><a href="#tab_moreinfo"><i class="icon-info-sign"></i> More Info</a></li>
+        <li><a href="#tab_description">Description</a></li>
+        <li><a href="#tab_lyrics">Lyrics</a></li>
+        <li><a href="#tab_history">Play History</a></li>
+        <li><a href="#tab_request">Request Song</a></li>
+    </ul>
+    <div class="tab-content">
+    <? if ($song_info['external']): ?>
+        <div class="tab-pane" id="tab_moreinfo">
+            <h2>More Info About This Song</h2>
+            <div class="row-fluid">
+                <div class="span8">
+                    <h3>Pony Music Sites</h3>
+
+                <? if ($song_info['external']['ponyfm']): ?>
+                    <a href="<?=$song_info['external']['ponyfm']['web_url'] ?>" class="external_info ponyfm">
+                        <h4>
+                            <?=$song->title ?> on Pony.fm<br>
+                            <small><?=$song_info['external']['ponyfm']['web_url'] ?></small>
+                        </h4>
+                    </a>
+                <? endif; ?>
+                <? if ($song_info['external']['eqbeats']): ?>
+                    <a href="<?=$song_info['external']['eqbeats']['web_url'] ?>" class="external_info eqbeats">
+                        <h4>
+                            <?=$song->title ?> on EqBeats<br>
+                            <small><?=$song_info['external']['eqbeats']['web_url'] ?></small>
+                        </h4>
+                    </a>
+                <? endif; ?>
+                <? if ($song_info['external']['bronytunes']): ?>
+                    <a href="<?=$song_info['external']['bronytunes']['web_url'] ?>" class="external_info bronytunes">
+                        <h4>
+                            <?=$song->title ?> on BronyTunes<br>
+                            <small><?=$song_info['external']['bronytunes']['web_url'] ?></small>
+                        </h4>
+                    </a>
+                <? endif; ?>
+                </div>
+                <div class="span4">
+                    <h3>On Other Sites</h3>
+
+                <? if ($song_info['purchase_url']): ?>
+                    <a href="<?=$song_info['purchase_url'] ?>">
+                        <h4>
+                            Buy This Song<br>
+                            <small><?=$song_info['purchase_url'] ?></small>
+                        </h4>
+                    </a>
+                <? endif; ?>
+
+                <? if ($song_info['youtube_url']): ?>
+                    <a href="<?=$song_info['youtube_url'] ?>">
+                        <h4>
+                            Watch on YouTube<br>
+                            <small><?=$song_info['youtube_url'] ?></small>
+                        </h4>
+                    </a>
+                <? endif; ?>
+                </div>
+            </div>
+        </div>
+    <? endif; ?>
+    <? if ($song_info['description']): ?>
+        <div class="tab-pane" id="tab_description">
+            <h2>Song Description</h2>
+
+            <blockquote class="scroll_overflow">
+                <?=$song_info['description'] ?>
+            </blockquote>
+        </div>
+    <? endif; ?>
+    <? if ($song_info['lyrics']): ?>
+        <div class="tab-pane" id="tab_lyrics">
+            <h2>Song Lyrics</h2>
+
+            <blockquote class="scroll_overflow">
+                <?=$song_info['lyrics'] ?>
+            </blockquote>
+        </div>
+    <? endif; ?>
+    <? if (!empty($song_info['recent_history'])): ?>
+        <div class="tab-pane" id="tab_history">
+            <h2>Playback History</h2>
+
+            <div class="scroll_overflow">
+                <table class="datatable table table-bordered table-nopadding table-striped">
+                    <colgroup>
+                        <col width="10%">
+                        <col width="55%">
+                        <col width="35%">
+                    </colgroup>
+                    <tbody>
+                    <? foreach($song_info['recent_history'] as $row): ?>
+
+                    <? endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <? endif; ?>
+    <? if (!empty($song_info['request_on'])): ?>
+        <div class="tab-pane" id="tab_request">
+            <h2>Request Song on Stations</h2>
+
+            <div class="scroll_overflow">
+
+            </div>
+        </div>
+    <? endif; ?>
+    </div>
+</div>

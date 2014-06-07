@@ -39,11 +39,15 @@ class SongController extends \DF\Controller\Action
         if (!$song_info['image_url'])
             $song_info['image_url'] = \DF\Url::content('images/song_generic.png');
 
+        $song_info['description'] = $this->_cleanUpText($song_info['description']);
+        $song_info['lyrics'] = $this->_cleanUpText($song_info['lyrics']);
+
         // Get most recent playback information.
         $song_info['recent_history'] = $this->em->createQuery('
             SELECT sh, st
             FROM Entity\SongHistory sh JOIN sh.station st
-            WHERE sh.song_id = :song_id')
+            WHERE sh.song_id = :song_id
+            ORDER BY sh.timestamp DESC')
             ->setParameter('song_id', $record->id)
             ->setMaxResults(20)
             ->getArrayResult();
@@ -58,6 +62,12 @@ class SongController extends \DF\Controller\Action
             ->getArrayResult();
 
         $this->view->song = $song_info;
+    }
+
+    protected function _cleanUpText($string)
+    {
+        $string = trim($string);
+        return nl2br(strip_tags($string));
     }
 
 }

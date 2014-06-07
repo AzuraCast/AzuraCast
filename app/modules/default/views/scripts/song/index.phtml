@@ -26,57 +26,53 @@ $this->layout()->hide_title = true;
         <? if ($song_info['external']): ?>
             <div class="tab-pane" id="tab_moreinfo">
                 <h2>More Info About This Song</h2>
-                <div class="row-fluid">
-                    <div class="span8">
-                        <h3>Pony Music Sites</h3>
 
-                    <? if ($song_info['external']['ponyfm']): ?>
-                        <a href="<?=$song_info['external']['ponyfm']['web_url'] ?>" class="external_info ponyfm">
-                            <h4>
-                                <?=$song->title ?> on Pony.fm<br>
-                                <small><?=$song_info['external']['ponyfm']['web_url'] ?></small>
-                            </h4>
-                        </a>
-                    <? endif; ?>
-                    <? if ($song_info['external']['eqbeats']): ?>
-                        <a href="<?=$song_info['external']['eqbeats']['web_url'] ?>" class="external_info eqbeats">
-                            <h4>
-                                <?=$song->title ?> on EqBeats<br>
-                                <small><?=$song_info['external']['eqbeats']['web_url'] ?></small>
-                            </h4>
-                        </a>
-                    <? endif; ?>
-                    <? if ($song_info['external']['bronytunes']): ?>
-                        <a href="<?=$song_info['external']['bronytunes']['web_url'] ?>" class="external_info bronytunes">
-                            <h4>
-                                <?=$song->title ?> on BronyTunes<br>
-                                <small><?=$song_info['external']['bronytunes']['web_url'] ?></small>
-                            </h4>
-                        </a>
-                    <? endif; ?>
-                    </div>
-                    <div class="span4">
-                        <h3>On Other Sites</h3>
+                <h3>Pony Music Sites</h3>
 
-                    <? if ($song_info['purchase_url']): ?>
-                        <a href="<?=$song_info['purchase_url'] ?>">
-                            <h4>
-                                Buy This Song<br>
-                                <small><?=$song_info['purchase_url'] ?></small>
-                            </h4>
-                        </a>
-                    <? endif; ?>
+            <? if ($song_info['external']['ponyfm']): ?>
+                <a href="<?=$song_info['external']['ponyfm']['web_url'] ?>" class="external_info ponyfm">
+                    <h4>
+                        <?=$song->title ?> on Pony.fm<br>
+                        <small><?=$song_info['external']['ponyfm']['web_url'] ?></small>
+                    </h4>
+                </a>
+            <? endif; ?>
+            <? if ($song_info['external']['eqbeats']): ?>
+                <a href="<?=$song_info['external']['eqbeats']['web_url'] ?>" class="external_info eqbeats">
+                    <h4>
+                        <?=$song->title ?> on EqBeats<br>
+                        <small><?=$song_info['external']['eqbeats']['web_url'] ?></small>
+                    </h4>
+                </a>
+            <? endif; ?>
+            <? if ($song_info['external']['bronytunes']): ?>
+                <a href="<?=$song_info['external']['bronytunes']['web_url'] ?>" class="external_info bronytunes">
+                    <h4>
+                        <?=$song->title ?> on BronyTunes<br>
+                        <small><?=$song_info['external']['bronytunes']['web_url'] ?></small>
+                    </h4>
+                </a>
+            <? endif; ?>
 
-                    <? if ($song_info['youtube_url']): ?>
-                        <a href="<?=$song_info['youtube_url'] ?>">
-                            <h4>
-                                Watch on YouTube<br>
-                                <small><?=$song_info['youtube_url'] ?></small>
-                            </h4>
-                        </a>
-                    <? endif; ?>
-                    </div>
-                </div>
+                <h3>On Other Sites</h3>
+
+            <? if ($song_info['purchase_url']): ?>
+                <a href="<?=$song_info['purchase_url'] ?>">
+                    <h4>
+                        Buy This Song<br>
+                        <small><?=$song_info['purchase_url'] ?></small>
+                    </h4>
+                </a>
+            <? endif; ?>
+
+            <? if ($song_info['youtube_url']): ?>
+                <a href="<?=$song_info['youtube_url'] ?>">
+                    <h4>
+                        Watch on YouTube<br>
+                        <small><?=$song_info['youtube_url'] ?></small>
+                    </h4>
+                </a>
+            <? endif; ?>
             </div>
         <? endif; ?>
         <? if ($song_info['description']): ?>

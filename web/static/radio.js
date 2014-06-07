@@ -114,6 +114,7 @@ $(function() {
 	// Social links.
 	$('.station .btn-share-station').click(function(e) {
 		e.preventDefault();
+        e.stopPropagation();
 
 		var shareLink = document.URL;
 
@@ -139,6 +140,22 @@ $(function() {
 		}
 	});
 
+    // Song profile link.
+    $('.station .song-info, .station .btn-song-info').click(function(e) {
+        if ($(this).closest('.station').hasClass('playing'))
+        {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var song_id = $(this).closest('.station').data('songid');
+            if (song_id != "")
+                showSongInfo(song_id);
+
+            return false;
+        }
+    });
+
+    // "Browse Stations" link.
 	$('#btn_browse_stations').click(function(e) {
 		playInPopUp(0);
 		e.preventDefault();
@@ -175,7 +192,7 @@ function checkNowPlaying(force_update)
 		dataType: 'json'
 	}).done(function(data) {
 		var listener_total = 0;
-		var listeners_by_type = new Array();
+		var listeners_by_type = [];
 
 		for (var station_id in data)
 		{
@@ -298,6 +315,9 @@ function checkNowPlaying(force_update)
 
 					station.find('.station-history').html(history_block);
 				}
+
+                var song_id = station_info.song_id;
+                station.data('songid', song_id);
 
 				var song_history_id = intOrZero(station_info.song_sh_id);
 				station.data('historyid', song_history_id);

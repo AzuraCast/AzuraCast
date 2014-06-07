@@ -1,0 +1,31 @@
+
+.song_info .song_album_art {
+    width: 125px;
+    height: 125px;
+    float: left;
+    margin-right: 10px;
+}
+.song_info h1.song_title {
+    padding-top: 25px;
+}
+.song_info h2.song_artist {
+
+}
+
+.song_info h1.song_title,
+.song_info h2.song_artist {
+    max-width: 550px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.song_info .nav.nav-pills {
+    padding-top: 5px;
+}
+
+.song_info .scroll_overflow {
+    max-height: 250px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}

@@ -24,6 +24,7 @@ web/static/artists/*
 web/static/stations/*
 web/static/podcasts/*
 web/static/rotators/*
+web/static/songs/*
 
 # Log files.
 util/php_errors.log

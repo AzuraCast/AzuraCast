@@ -36,12 +36,14 @@ $this->layout()->manual = true;
                         </big>
                     </td>
                     <td>
-                    <? if ($song_row['song']['title']): ?>
-                        <b><?=$song_row['song']['title'] ?></b><br>
-                        <?=$song_row['song']['artist'] ?>
-                    <? else: ?>
-                        <?=$song_row['song']['text'] ?>
-                    <? endif; ?>
+                        <a href="#" class="btn-show-song-info" data-id="<?=$song_row['song']['id'] ?>" title="Click for Song Information">
+                        <? if ($song_row['song']['title']): ?>
+                            <b><?=$song_row['song']['title'] ?></b><br>
+                            <?=$song_row['song']['artist'] ?>
+                        <? else: ?>
+                            <?=$song_row['song']['text'] ?>
+                        <? endif; ?>
+                        </a>
                     </td>
                 </tr>
             <? endforeach; ?>

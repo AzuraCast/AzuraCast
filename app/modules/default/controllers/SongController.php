@@ -7,7 +7,7 @@ class SongController extends \DF\Controller\Action
 {
     public function indexAction()
     {
-        $id = (int)$this->getParam('id');
+        $id = $this->getParam('id');
         $record = Song::find($id);
 
         if (!($record instanceof Song))
@@ -34,6 +34,7 @@ class SongController extends \DF\Controller\Action
                     break;
                 }
             }
+        }
 
         if (!$song_info['image_url'])
             $song_info['image_url'] = \DF\Url::content('images/song_generic.png');

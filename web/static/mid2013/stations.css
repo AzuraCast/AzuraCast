@@ -99,6 +99,13 @@
     text-shadow: 0.1em 0.1em 0.2em #000000;
 }
 
+.station.playing .song-info {
+    cursor: pointer;
+}
+.station.playing .song-info:hover div {
+    text-decoration: underline;
+}
+
 .station.offline {
 	cursor: default;
 }
@@ -151,6 +158,12 @@ li.media .dropdown-menu {
 
 	min-width: 175px;
 }
+li.media.rendermode-embed .dropdown-menu,
+li.media.rendermode-standalone .dropdown-menu{
+    left: auto;
+    right: 0;
+}
+
 li.media .dropdown-menu li a {
 	padding: 4px 8px 4px 10px;
 	color: #fff;
@@ -165,6 +178,10 @@ li.media .dropdown-menu li i {
 }
 li.media .dropdown-menu li i:before {
 	color: #CCC;
+}
+
+li.media .dropdown-menu li.divider {
+    background-color: rgba(255,255,255,0.1);
 }
 
 /**

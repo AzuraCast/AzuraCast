@@ -94,7 +94,7 @@ $this->layout()->manual = true;
                             'text'      => 'Request',
                         )) ?>
                     </td>
-                    <td><big><?=$record['title'] ?></big></td>
+                    <td><big><a href="#" class="btn-show-song-info" data-id="<?=$record['song_id'] ?>" title="Click for Song Information"><?=$record['title'] ?></a></big></td>
                     <td><?=$record['artist'] ?></td>
                     <td><?=$record['album'] ?></td>
                     <td><?=$record['length_text'] ?></td>

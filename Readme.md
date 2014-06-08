@@ -32,6 +32,8 @@ It is now very easy to set up the PVLive application for local development. Just
 
 In a few minutes, a full VM will be deployed and customized on your computer, complete with a working copy of this application! Ports are automatically followed as below.
 
+A new super-administrator account will also be created, with the username `admin@ponyvillelive.com` and the password `password`.
+
 ### SSH
 
 You can connect to the Vagrant VM by typing `vagrant ssh` into the command line of the host computer.

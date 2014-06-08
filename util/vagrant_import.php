@@ -3,11 +3,14 @@
  * Vagrant Remote API importer script.
  */
 
+use \Entity\User;
+use \Entity\Role;
+
 require_once dirname(__FILE__) . '/../app/bootstrap.php';
 $application->bootstrap();
 
 set_time_limit(0);
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
 $api_key = $config->apis->pvl_api_key;
 $remote_base = 'http://ponyvillelive.com';
@@ -68,6 +71,16 @@ $command = 'mysql '.implode(' ', $command_flags).' < '.$local_temp;
 passthru($command);
 
 @unlink($local_temp);
+
+// Create initial user account.
+$user = new User;
+$user->email = 'admin@ponyvillelive.com';
+$user->setAuthPassword('password');
+$user->name = 'Administrator';
+
+$role = Role::find(1);
+$user->roles->add($role);
+$user->save();
 
 echo 'Database import complete.'.PHP_EOL;
 

@@ -17,7 +17,7 @@ class FillydelphiaRadio extends AdapterAbstract
 
         if ($return['result'])
         {
-            $np['listeners'] = (int)$return['result']['server_listener_total'];
+            $np['listeners'] = (int)$return['result']['server_listeners_total'];
 
             $np_stream = $return['result']['server_streams'][0]['stream_nowplaying'];
             $np['artist'] = $np_stream['artist'];

@@ -17,7 +17,9 @@ class TheHiveRadio extends AdapterAbstract
 
         if ($return['server_ver'])
         {
-            $np['listeners'] = (int)$return['server_listener_total'];
+            $u_list = (int)$return['result']['server_listener_unique'];
+            $c_list = (int)$return['result']['server_listener_total'];
+            $np['listeners'] = $this->getListenerCount($u_list, $c_list);
 
             $np_stream = $return['server_streams']['normal.mp3'];
             $np['artist'] = $np_stream['artist'];

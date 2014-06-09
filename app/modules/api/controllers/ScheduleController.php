@@ -79,7 +79,74 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
             \DF\Cache::save($events, $cache_name, array(), 300);
         }
 
-        $this->returnSuccess($events);
+        $format = strtolower($this->getParam('format', 'json'));
+        switch($format)
+        {
+            case "ics":
+            case "ical":
+                $this->_printCalendar($events);
+            break;
+
+            case "json":
+            default:
+                $this->returnSuccess($events);
+            break;
+        }
+    }
+
+    protected function _printCalendar($events, $calendar_name = 'calendar')
+    {
+        $calendar_name = str_replace('api_', '', $calendar_name);
+
+        header('Content-type: text/calendar; charset=utf-8');
+        header('Content-Disposition: attachment; filename='.$calendar_name.'.ics');
+
+        $stations = Station::fetchArray();
+
+        $cal = array();
+        $cal[] = 'BEGIN:VCALENDAR';
+        $cal[] = 'VERSION:2.0';
+        $cal[] = 'PRODID:-//pvlcalendar//NONSGML v1.0//EN';
+        $cal[] = 'CALSCALE:GREGORIAN';
+
+        foreach($events as $row)
+        {
+            if ($row['station'])
+            {
+                $row['station'] = $stations[$row['station']];
+            }
+            else
+            {
+                $row['station'] = array(
+                    'name' => 'Ponyville Live!',
+                    'web_url' => 'http://ponyvillelive.com/',
+                );
+            }
+
+            $cal[] = 'BEGIN:VEVENT';
+            $cal[] = 'DTSTART:'.$this->_calDate($row['start_time']);
+            $cal[] = 'DTEND:'.$this->_calDate($row['end_time']);
+            $cal[] = 'UID:'.$row['guid'];
+            $cal[] = 'DTSTAMP:'.$this->_calDate(time());
+            $cal[] = 'LOCATION:'.$this->_calString($row['station']['name']);
+            $cal[] = 'URL;VALUE=URI:'.$this->_calString($row['station']['web_url']);
+            $cal[] = 'SUMMARY:'.$this->_calString($row['title']);
+            $cal[] = 'DESCRIPTION:'.$this->_calString($row['title'].' on '.$row['station']['name']);
+            $cal[] = 'END:VEVENT';
+        }
+
+        $cal[] = 'END:VCALENDAR';
+        echo implode(PHP_EOL, $cal);
+    }
+
+    protected function _calDate($timestamp)
+    {
+        return gmdate('Ymd\THis\Z', $timestamp);
+    }
+
+    protected function _calString($string)
+    {
+        return preg_replace('/([\,;])/','\\\$1', $string);
     }
 
     public function conventionsAction()

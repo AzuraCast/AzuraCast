@@ -218,23 +218,14 @@ for($i = 0; $i <= $num_cols-1; $i++)
         'events' => $this->events_by_day[$day_date],
     );
 }
+
+$tz_info = \PVL\Timezone::getInfo();
 ?>
+<h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->route(array('controller' => 'account', 'action' => 'timezone')) ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a></small></h2>
 
 <div class="row-fluid">
-    <div class="span4">
-        <h2><i class="icon-group"></i> Ponyville Live! Presents</h2>
-
-        <?
-        echo $this->renderHere('index_conventions');
-        ?>
-    </div>
-    <div class="span8">
-        <?
-        $tz_info = \PVL\Timezone::getInfo();
-        ?>
-        <h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->route(array('controller' => 'account', 'action' => 'timezone')) ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a></small></h2>
-
-        <div class="well no-margin">
+    <div class="span9">
+        <div class="well">
             <div class="row-fluid">
             <? foreach($dates as $date_row): ?>
                 <div class="span<?=(12 / $num_cols) ?>">
@@ -272,6 +263,95 @@ for($i = 0; $i <= $num_cols-1; $i++)
                     'text'      => 'View Full Station Schedules',
                 )) ?>
             </div>
+        </div>
+    </div>
+    <div class="span3">
+        <div class="well">
+            <?
+            $ical_url = $this->route(array('module' => 'api', 'controller' => 'schedule', 'format' => 'ical'));
+            $gcal_url = 'http://www.google.com/calendar/render?cid='.urlencode($ical_url);
+            ?>
+            <h3><i class="icon-calendar-empty"></i> Subscribe for Updates</h3>
+
+            <p>You can subscribe to the list of upcoming Ponyville Live! events using your favorite calendar software (iCal, etc.) or add the feed directly to your Google Calendar feed.</p>
+
+            <div class="buttons">
+                <?=$this->button(array(
+                    'type'      => 'link',
+                    'target'    => '_blank',
+                    'icon'      => 'icon-download',
+                    'text'      => 'Download ICS',
+                    'href'      => $ical_url,
+                )) ?>
+                <?=$this->button(array(
+                    'type'      => 'link',
+                    'target'    => '_blank',
+                    'icon'      => 'icon-plus-sign',
+                    'text'      => 'Add to Google Calendar',
+                    'href'      => $gcal_url,
+                )) ?>
+            </div>
+
+            <h3><i class="icon-twitter"></i> Follow the TwitterBot</h3>
+
+            <p>Ponyville Live!'s main Twitter account announces shows as they're coming up, so you can keep up to date with what's going on right from your Twitter homepage!</p>
+
+            <div class="buttons">
+                <?=$this->button(array(
+                    'type'      => 'link',
+                    'target'    => '_blank',
+                    'icon'      => 'icon-twitter',
+                    'text'      => '@PonyvilleLive on Twitter',
+                    'href'      => 'https://twitter.com/intent/user?screen_name=PonyvilleLive',
+                )) ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2><i class="icon-group"></i> Ponyville Live! Convention Coverage</h2>
+
+<div class="row-fluid">
+    <div class="span6">
+        <div class="well no-margin">
+            <?=$this->button(array(
+                'type'      => 'small',
+                'class'     => 'pull-right',
+                'href'      => $this->route(array('controller' => 'events')),
+                'icon'      => 'icon-calendar',
+                'text'      => 'View All PVL Events',
+            )) ?>
+            <h3>Events Coming Up</h3>
+
+            <ul class="unstyled nopadding">
+                <? foreach($this->conventions as $convention): ?>
+                    <li>
+                        <h5 class="clearfix" title="<?=$convention['category'] ?>">
+                            <div style="font-size: 25px; width: 25px; float: left; padding-top: 2px; padding-right: 5px;"><i class="<?=$convention['icon'] ?>"></i></div>
+                            <a href="<?=$convention['web_url'] ?>" target="_blank"><? if ($convention['icon']): ?> <? endif; ?><?=$convention['title'] ?></a><br><small><?=date('F j', $convention['start_time']) ?> in <?=$convention['city'] ?></small>
+                        </h5>
+                    </li>
+                <? endforeach; ?>
+            </ul>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="well no-margin">
+            <h3>Convention Archives</h3>
+            <ul class="unstyled nopadding">
+                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIL-rfXqF40x48mCQoGw3ymq">BABScon 2014</a> <small>from San Francisco, California</small></h5></li>
+                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIK0Plyid3tN9OObE43Ew6TZ">PonyCon AU 2014</a> <small>from Melbourne, Australia</small></h5></li>
+                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILHhcQo0ZcRAr4zQLAX3Lyw">Nightmare Nights 2013</a> <small>from Dallas, Texas</small></h5></li>
+                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIKK8YhVDZgs4p2qn39j-Hlj">DerpyCon South 2013</a> <small>from New Orleans, Louisiana</small></h5></li>
+                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIKM9Wh9aEdwVPcOYCwL6_Wk">Brony Fan Fair 2013</a> <small>from Austin, Texas</small></h5></li>
+                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILXuhnL7NZs1G583w5dFmo1">BronyCAN 2013</a> <small>from Vancouver, BC, Canada</small></h5></li>
+                <li><h5><a href="http://www.ponyvillelive.com/special/fiesta">Fiesta Equestria! 2013</a> <small>from Houston, Texas</small></h5></li>
+                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIJjEepgtCUqV67XXj3ldgtq">Pon3Con 2013</a> <small>from Omaha, Nebraska</small></h5></li>
+                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIKOxISJtXB2HxX2xz9nyy2f">EQLA 2013 Interviews</a> <small>from Anaheim, California</small></h5></li>
+                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIK17NS3C3W_OFlWwFiqlX21">PonyCon AU 2013</a> <small>from Sydney, Australia</small></h5></li>
+                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILGZOBkWWXynLM9fxFsNH-u">Brony-Fest 2013</a> <small>from Lewisville, Texas</small></h5></li>
+                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILo4QIIWrnW5D01U3hxyWDv">Las Pegasus Unicon 2013</a> <small>from Las Vegas, Nevada</small></h5></li>
+            </ul>
         </div>
     </div>
 </div>

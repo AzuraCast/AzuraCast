@@ -6,9 +6,9 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
 {
     public function indexAction()
     {
-        if ($this->_hasParam('month'))
+        if ($this->hasParam('month'))
         {
-            $show = $this->_getParam('month');
+            $show = $this->getParam('month');
             $calendar = new \DF\Calendar($show);
             $timestamps = $calendar->getTimestamps();
             
@@ -17,10 +17,10 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
 
             $cache_name = 'month_'.$show;
         }
-        elseif ($this->_hasParam('start'))
+        elseif ($this->hasParam('start'))
         {
-            $start_timestamp = (int)$this->_getParam('start');
-            $end_timestamp = (int)$this->_getParam('end');
+            $start_timestamp = (int)$this->getParam('start');
+            $end_timestamp = (int)$this->getParam('end');
 
             $cache_name = 'range_'.$start_timestamp.'_'.$end_timestamp;
         }
@@ -32,12 +32,12 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
             $cache_name = 'upcoming';
         }
 
-        $cache_name = 'api_schedule_'.$cache_name;
+        $station_shortcode = $this->getParam('station', 'all');
+        $cache_name = 'api_schedule_'.$station_shortcode.'_'.$cache_name;
         $events = \DF\Cache::get($cache_name);
 
         if (!$events)
         {
-            $station_shortcode = $this->_getParam('station', 'all');
             $short_names = Station::getShortNameLookup();
 
             if ($station_shortcode != "all")

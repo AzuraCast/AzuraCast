@@ -70,7 +70,7 @@ function showSongInfo(song_id)
     var info_url = '/song/index/id/'+song_id;
 
     // Detect iframe.
-    if (window!=window.top)
+    if (window!=window.top || !$.fn.fancybox)
     {
         window.open(info_url,'PVLSongInfo','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=600');
     }

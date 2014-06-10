@@ -6,6 +6,21 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
 {
     public function indexAction()
     {
+        // Get calendar name.
+        $short_names = Station::getShortNameLookup();
+
+        $station_shortcode = $this->getParam('station', 'all');
+        if ($station_shortcode != "all")
+        {
+            $station = $short_names[$station_shortcode];
+            $calendar_name = $station['name'];
+        }
+        else
+        {
+            $calendar_name = 'Ponyville Live!';
+        }
+
+        // Get timestamp boundaries.
         if ($this->hasParam('month'))
         {
             $show = $this->getParam('month');
@@ -16,6 +31,7 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
             $end_timestamp = $timestamps['end'];
 
             $cache_name = 'month_'.$show;
+            $calendar_name .= ' - '.date('F Y', $timestamps['mid']);
         }
         elseif ($this->hasParam('start'))
         {
@@ -23,6 +39,7 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
             $end_timestamp = (int)$this->getParam('end');
 
             $cache_name = 'range_'.$start_timestamp.'_'.$end_timestamp;
+            $calendar_name .= ' - '.date('F j, Y', $start_timestamp).' to '.date('F j, Y', $end_timestamp);
         }
         else
         {
@@ -30,16 +47,15 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
             $end_timestamp = time()+(86400 * 30);
 
             $cache_name = 'upcoming';
+            $calendar_name .= ' - Upcoming';
         }
 
-        $station_shortcode = $this->getParam('station', 'all');
+        // Load from cache or regenerate.
         $cache_name = 'api_schedule_'.$station_shortcode.'_'.$cache_name;
         $events = \DF\Cache::get($cache_name);
 
         if (!$events)
         {
-            $short_names = Station::getShortNameLookup();
-
             if ($station_shortcode != "all")
             {
                 $station = $short_names[$station_shortcode];
@@ -61,16 +77,9 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
             $events = array();
             foreach((array)$events_raw as $event)
             {
-                if ($station_shortcode == 'all')
-                {
-                    $shortcode = Station::getStationShortName($event['station']['name']);
-                    $event['station'] = $shortcode;
-                }
-                else
-                {
-                    unset($event['station']);
-                }
-                
+                $shortcode = Station::getStationShortName($event['station']['name']);
+                $event['station_shortcode'] = $shortcode;
+
                 unset($event['is_notified']);
 
                 $events[] = $event;
@@ -94,28 +103,24 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
         }
     }
 
-    protected function _printCalendar($events, $calendar_name = 'calendar')
+    protected function _printCalendar($events, $name = 'Ponyville Live! - Events', $filename = 'calendar')
     {
-        $calendar_name = str_replace('api_', '', $calendar_name);
+        $filename = str_replace('api_', '', $filename);
 
         header('Content-type: text/calendar; charset=utf-8');
-        header('Content-Disposition: attachment; filename='.$calendar_name.'.ics');
-
-        $stations = Station::fetchArray();
+        header('Content-Disposition: attachment; filename='.$filename.'.ics');
 
         $cal = array();
         $cal[] = 'BEGIN:VCALENDAR';
         $cal[] = 'VERSION:2.0';
         $cal[] = 'PRODID:-//pvlcalendar//NONSGML v1.0//EN';
         $cal[] = 'CALSCALE:GREGORIAN';
+        $cal[] = 'X-WR-CALNAME:'.$this->_calString($name);
+        $cal[] = 'METHOD:PUBLISH';
 
         foreach($events as $row)
         {
-            if ($row['station'])
-            {
-                $row['station'] = $stations[$row['station']];
-            }
-            else
+            if (empty($row['station']))
             {
                 $row['station'] = array(
                     'name' => 'Ponyville Live!',

@@ -268,7 +268,8 @@ $tz_info = \PVL\Timezone::getInfo();
     <div class="span3">
         <div class="well">
             <?
-            $ical_url = $this->route(array('module' => 'api', 'controller' => 'schedule', 'format' => 'ical'));
+            $ical_url = $this->route(array('module' => 'api', 'controller' => 'schedule', 'format' => 'ical', 'nocache' => time()));
+            $ical_url = str_replace('http://', 'webcal://', $ical_url);
             $gcal_url = 'http://www.google.com/calendar/render?cid='.urlencode($ical_url);
             ?>
             <h3><i class="icon-calendar-empty"></i> Subscribe for Updates</h3>

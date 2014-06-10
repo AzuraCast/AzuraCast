@@ -93,7 +93,7 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
         {
             case "ics":
             case "ical":
-                $this->_printCalendar($events);
+                $this->_printCalendar($events, $calendar_name, $cache_name);
             break;
 
             case "json":

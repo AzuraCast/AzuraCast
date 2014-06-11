@@ -68,7 +68,8 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
             }
             else
             {
-                $events_raw = $this->em->createQuery('SELECT s, st FROM Entity\Schedule s LEFT JOIN s.station st WHERE (s.start_time <= :end AND s.end_time >= :start) ORDER BY s.start_time ASC')
+                $events_raw = $this->em->createQuery('SELECT s, st FROM Entity\Schedule s LEFT JOIN s.station st WHERE s.type = :type AND (s.start_time <= :end AND s.end_time >= :start) ORDER BY s.start_time ASC')
+                    ->setParameter('type', 'station')
                     ->setParameter('start', $start_timestamp)
                     ->setParameter('end', $end_timestamp)
                     ->getArrayResult();
@@ -115,6 +116,7 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
         $cal[] = 'VERSION:2.0';
         $cal[] = 'PRODID:-//pvlcalendar//NONSGML v1.0//EN';
         $cal[] = 'CALSCALE:GREGORIAN';
+        $cal[] = 'TZID:Europe/London';
         $cal[] = 'X-WR-CALNAME:'.$this->_calString($name);
         $cal[] = 'METHOD:PUBLISH';
 
@@ -129,8 +131,8 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
             }
 
             $cal[] = 'BEGIN:VEVENT';
-            $cal[] = 'DTSTART:'.$this->_calDate($row['start_time']);
-            $cal[] = 'DTEND:'.$this->_calDate($row['end_time']);
+            $cal[] = 'DTSTART:'.$this->_calDate($row['start_time'], $row['is_all_day']);
+            $cal[] = 'DTEND:'.$this->_calDate($row['end_time'], $row['is_all_day']);
             $cal[] = 'UID:'.$row['guid'];
             $cal[] = 'DTSTAMP:'.$this->_calDate(time());
             $cal[] = 'LOCATION:'.$this->_calString($row['station']['name']);
@@ -144,9 +146,12 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
         echo implode(PHP_EOL, $cal);
     }
 
-    protected function _calDate($timestamp)
+    protected function _calDate($timestamp, $date_only=false)
     {
-        return gmdate('Ymd\THis\Z', $timestamp);
+        if ($date_only)
+            return gmdate('Ymd', $timestamp);
+        else
+            return gmdate('Ymd\THis\Z', $timestamp);
     }
 
     protected function _calString($string)

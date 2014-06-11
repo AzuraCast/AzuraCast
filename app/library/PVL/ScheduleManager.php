@@ -77,9 +77,13 @@ class ScheduleManager
             if ($calendar_raw)
             {
                 $calendar_array = json_decode($calendar_raw, true);
+
+                if (empty($calendar_array['feed']['entry']))
+                    continue;
+
                 $events = (array)$calendar_array['feed']['entry'];
 
-                // \PVL\Debug::print_r($calendar_array);
+                \PVL\Debug::print_r($calendar_array);
 
                 $all_events = array();
 
@@ -149,12 +153,10 @@ class ScheduleManager
         // Add/Remove all differential records.
         \PVL\Debug::startTimer('Sync DB Records');
 
-        /*
-        $em->createQuery('DELETE FROM Entity\Schedule s WHERE s.type = :type AND s.id NOT IN (:station_ids)')
+        $em->createQuery('DELETE FROM Entity\Schedule s WHERE s.type = :type AND s.station_id NOT IN (:station_ids)')
             ->setParameter('type', 'station')
             ->setParameter('station_ids', array_keys($schedule_records))
             ->execute();
-        */
 
         foreach($schedule_records as $station_id => $station_records)
         {
@@ -213,6 +215,7 @@ class ScheduleManager
     public static function requestExternalUrl($url, $name = 'Calendar')
     {
         \PVL\Debug::startTimer('Request URL '.$name);
+        \PVL\Debug::log($url);
 
         // Start cURL request.
         $curl = curl_init();

@@ -41,7 +41,7 @@ class Schedule extends \DF\Doctrine\Entity
 
     public function getRange()
     {
-        return self::getRangeText($this->start_time, $this->end_time, $is_all_day = FALSE);
+        return self::getRangeText($this->start_time, $this->end_time, $this->is_all_day);
     }
 
     /** @Column(name="is_all_day", type="boolean", nullable=true) */
@@ -79,28 +79,7 @@ class Schedule extends \DF\Doctrine\Entity
 
     public static function getUpcomingConventions()
     {
-        $em = self::getEntityManager();
-
-        $start_timestamp = strtotime('-3 days');
-        $end_timestamp = strtotime('+1 year');
-
-        $events_raw = $em->createQuery('SELECT s FROM Entity\Schedule s WHERE (s.type = :type AND s.start_time <= :end AND s.end_time >= :start) ORDER BY s.start_time ASC')
-            ->setParameter('type', 'convention')
-            ->setParameter('start', $start_timestamp)
-            ->setParameter('end', $end_timestamp)
-            ->useResultCache(true, 1800, 'pvl_upcoming_conventions')
-            ->getArrayResult();
-
-        $conventions = array();
-        foreach($events_raw as $convention)
-        {
-            $special_info = \PVL\ScheduleManager::formatName($convention['title']);
-            $convention = array_merge($convention, $special_info);
-
-            $conventions[] = $convention;
-        }
-
-        return $conventions;
+        return Convention::getUpcomingConventions();
     }
 
     public static function getCurrentEvent($station_id)

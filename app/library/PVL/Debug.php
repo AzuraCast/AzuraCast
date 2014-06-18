@@ -12,9 +12,13 @@ class Debug
         self::$echo_debug = $new_value;
     }
 
-    static function showErrors()
+    static function showErrors($include_notices = FALSE)
     {
-        error_reporting(E_ALL & ~E_STRICT);
+        if ($include_notices)
+            error_reporting(E_ALL & ~E_STRICT);
+        else
+            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
+
         ini_set('display_errors', 1);
     }
 

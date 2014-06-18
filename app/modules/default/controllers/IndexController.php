@@ -143,7 +143,8 @@ class IndexController extends \DF\Controller\Action
         }
         else
         {
-            $stations_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.is_active=1 ORDER BY s.weight ASC')
+            $stations_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.category IN (:types) AND s.is_active = 1 ORDER BY s.weight ASC')
+                ->setParameter('types', array('audio', 'video'))
                 ->getArrayResult();
         }
 

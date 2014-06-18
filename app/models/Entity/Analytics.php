@@ -61,8 +61,6 @@ class Analytics extends \DF\Doctrine\Entity
         $this->number_avg = (int)(array_sum($number_set) / count($number_set));
     }
 
-
-
     /**
      * Static Functions
      */

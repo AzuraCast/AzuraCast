@@ -1,7 +1,50 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Buster
- * Date: 6/17/14
- * Time: 2:14 AM
- */ 
+<table class="table table-striped table-bordered table-condensed">
+    <colgroup>
+        <col width="30%" />
+        <col width="15%" />
+        <col width="55%" />
+    </colgroup>
+    <thead>
+    <tr>
+        <th>Actions</th>
+        <th>Image</th>
+        <th>Station</th>
+    </tr>
+    </thead>
+    <tbody>
+    <? foreach($this->stations as $record): ?>
+        <tr class="input">
+            <td class="center">
+                <div class="btn-group">
+                    <?=$this->button(array(
+                        'type'      => 'small',
+                        'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'text'      => 'Edit',
+                    )) ?>
+                    <?=$this->button(array(
+                        'type'      => 'small',
+                        'class'     => 'danger confirm-delete',
+                        'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'text'      => 'Delete',
+                    )) ?>
+                </div>
+            </td>
+            <td class="center"><img src="<?=\DF\Url::content($record['image_url']) ?>" style="max-width: 70px;"></td>
+            <td>
+                <div><big><?=$record['name'] ?></big></div>
+                <div>Stream type: <?=$record['type'] ?></div>
+                <? if ($record['twitter_url']): ?>
+                    <div class="text-success"><i class="icon-check-sign"></i> Has Twitter</div>
+                <? else: ?>
+                    <div class="text-error"><i class="icon-exclamation-sign"></i> Needs Twitter</div>
+                <? endif; ?>
+                <? if ($record['gcal_url']): ?>
+                    <div class="text-success"><i class="icon-check-sign"></i> Has Calendar</div>
+                <? else: ?>
+                    <div class="text-error"><i class="icon-exclamation-sign"></i> Needs Calendar</div>
+                <? endif; ?>
+            </td>
+        </tr>
+    <? endforeach; ?>
+    </tbody>
+</table>

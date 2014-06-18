@@ -261,7 +261,7 @@ class Station extends \DF\Doctrine\Entity
     public static function fetchAll()
     {
         $em = self::getEntityManager();
-        return $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE s.is_active=1 ORDER BY s.category ASC, s.weight ASC')->execute();
+        return $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE s.is_active = 1 ORDER BY s.category ASC, s.weight ASC')->execute();
     }
     
     public static function fetchArray($cached = true)
@@ -271,7 +271,9 @@ class Station extends \DF\Doctrine\Entity
         if (!$stations || !$cached)
         {
             $em = self::getEntityManager();
-            $stations = $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE s.is_active=1 ORDER BY s.category ASC, s.weight ASC')->getArrayResult();
+            $stations = $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE s.is_active = 1 AND s.category IN (:types) ORDER BY s.category ASC, s.weight ASC')
+                ->setParameter('types', array('audio', 'video'))
+                ->getArrayResult();
 
             foreach($stations as &$station)
             {
@@ -313,11 +315,6 @@ class Station extends \DF\Doctrine\Entity
     public static function getCategories()
     {
         return array(
-            'event'     => array(
-                'name' => 'Special Event Coverage',
-                'icon' => 'icon-calendar',
-                'stations' => array(),
-            ),
             'audio'     => array(
                 'name' => 'Radio Stations',
                 'icon' => 'icon-music',
@@ -326,6 +323,16 @@ class Station extends \DF\Doctrine\Entity
             'video'     => array(
                 'name' => 'Video Streams',
                 'icon' => 'icon-facetime-video',
+                'stations' => array(),
+            ),
+            'event'     => array(
+                'name' => 'Special Event Coverage',
+                'icon' => 'icon-calendar',
+                'stations' => array(),
+            ),
+            'internal' => array(
+                'name' => 'Internal Tracking Station',
+                'icon' => 'icon-cog',
                 'stations' => array(),
             ),
         );
@@ -338,10 +345,6 @@ class Station extends \DF\Doctrine\Entity
         $categories = self::getCategories();
         foreach($stations as $station)
             $categories[$station['category']]['stations'][] = $station;
-
-        $special_event = Settings::getSetting('special_event', 0);
-        if (!$special_event)
-            unset($categories['event']);
 
         return $categories;
     }

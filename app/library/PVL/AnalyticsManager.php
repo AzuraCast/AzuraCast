@@ -14,7 +14,11 @@ class AnalyticsManager
         // Force all times to be UTC before continuing.
         date_default_timezone_set('UTC');
 
-        $short_names = Station::getShortNameLookup();
+        $stations = Station::fetchAll();
+        $short_names = array();
+        foreach($stations as $station)
+            $short_names[$station->getShortName()] = $station;
+
         $current_date = date('Y-m-d');
 
         // Interval of seconds to use for "minute"-level statistics.

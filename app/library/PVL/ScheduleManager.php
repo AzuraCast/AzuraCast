@@ -30,7 +30,8 @@ class ScheduleManager
         );
         $schedule_stations[0] = NULL;
 
-        $stations = $em->createQuery('SELECT s FROM Entity\Station s WHERE s.is_active = 1')
+        $stations = $em->createQuery('SELECT s FROM Entity\Station s WHERE s.category IN (:types) AND s.is_active = 1')
+            ->setParameter('types', array('audio', 'video'))
             ->execute();
 
         foreach($stations as $station)

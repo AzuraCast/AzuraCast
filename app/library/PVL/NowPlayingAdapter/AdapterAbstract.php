@@ -55,12 +55,24 @@ class AdapterAbstract
     }
 
     /* Fetch a remote URL. */
-    protected function getUrl($url = null, $cache_time = 0)
+    protected function getUrl($c_opts = null, $cache_time = 0)
     {
-        if ($url === null)
-            $url = $this->url;
+        // Compose cURL configuration array.
+        if (is_null($c_opts))
+            $c_opts = array();
+        elseif (!is_array($c_opts))
+            $c_opts = array('url' => $c_opts);
 
-        $cache_name = 'nowplaying_url_'.substr(md5($url), 0, 10);
+        $c_defaults = array(
+            'url'       => $this->url,
+            'method'    => 'GET',
+            'useragent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2',
+        );
+        $c_opts = array_merge($c_defaults, $c_opts);
+
+        \PVL\Debug::print_r($c_opts);
+
+        $cache_name = 'nowplaying_url_'.substr(md5($c_opts['url']), 0, 10);
         if ($cache_time > 0)
         {
             $return_raw = \DF\Cache::load($cache_name);
@@ -70,13 +82,38 @@ class AdapterAbstract
 
         $curl_start = time();
 
+        $postfields = false;
+        if (!empty($c_opts['params']))
+        {
+            if (strtoupper($c_opts['method']) == 'POST')
+                $postfields = $c_opts['params'];
+            else
+                $url = $url.'?'.http_build_query($c_opts['params']);
+        }
+
         // Start cURL request.
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);  
+        $curl = curl_init($c_opts['url']);
+
+        // Handle POST support.
+        if (strtoupper($c_opts['method']) == 'POST')
+            curl_setopt($curl, CURLOPT_POST, true);
+
+        if (!empty($c_opts['referer']))
+            curl_setopt($curl, CURLOPT_REFERER, $c_opts['referer']);
+
+        if ($postfields)
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $postfields);
+
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
         curl_setopt($curl, CURLOPT_TIMEOUT, 10); 
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2');
+        curl_setopt($curl, CURLOPT_USERAGENT, $c_opts['useragent']);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
+
+        // Set custom HTTP headers.
+        if (!empty($c_opts['headers']))
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $c_opts['headers']);
 
         $return_raw = \PVL\Utilities::curl_exec_utf8($curl);
         // End cURL request.
@@ -85,6 +122,7 @@ class AdapterAbstract
         $curl_time = $curl_end - $curl_start;
 
         \PVL\Debug::log("Curl processed in ".$curl_time." second(s).");
+        \PVL\Debug::log("Curl return: ".$return_raw);
 
         $error = curl_error($curl);
         if ($error)

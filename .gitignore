@@ -16,6 +16,10 @@ app/models/Proxy/*.php
 .vagrant
 .idea
 
+# Local development files.
+app/.env
+util/test.php
+
 # Auto-generated content.
 /vendor/
 web/static/api/*
@@ -249,4 +253,3 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
-app/.env

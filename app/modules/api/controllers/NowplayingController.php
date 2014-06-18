@@ -10,8 +10,7 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
 
         if (!$np)
         {
-            $return_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.is_active = 1 ORDER BY s.weight ASC')
-                ->getArrayResult();
+            $return_raw = Station::fetchArray();
 
             $np = array();
             foreach($return_raw as $row)

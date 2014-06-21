@@ -91,15 +91,7 @@ $(function () {
             xDateFormat: '%Y-%m-%d'
         },
         
-        series: [{
-            name: 'Listener Range',
-            type: 'arearange',
-            data: <?=$this->pvl_ranges ?>
-        }, {
-            name: 'Average Listeners',
-            type: 'spline',
-            data: <?=$this->pvl_averages ?>
-        }]
+        series: <?=$this->network_metrics ?>
     });
 
     $('#station_listeners_by_day').highcharts({

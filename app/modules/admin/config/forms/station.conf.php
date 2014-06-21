@@ -1,4 +1,10 @@
-<?php 
+<?php
+$cat_raw = \Entity\Station::getCategories();
+$cat_select = array();
+
+foreach($cat_raw as $cat_id => $cat_info)
+    $cat_select[$cat_id] = $cat_info['name'];
+
 return array(   
     'method'        => 'post',
     'enctype'       => 'multipart/form-data',
@@ -58,14 +64,7 @@ return array(
 
         'category' => array('radio', array(
             'label' => 'Station Category',
-            'multiOptions' => array(
-                'audio'             => 'Radio Station',
-                'video'             => 'Video Stream',
-                /*
-                'podcast'           => 'Podcast',
-                'event'             => 'Special Event',
-                */
-            ),
+            'multiOptions' => $cat_select,
             'required' => true,
         )),
 

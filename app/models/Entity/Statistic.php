@@ -39,9 +39,13 @@ class Statistic extends \DF\Doctrine\Entity
         $total_overall = 0;
         $total_stations = array();
 
+        $active_shortcodes = Station::getShortNameLookup();
+
         foreach($nowplaying as $short_code => $info)
         {
-            $total_overall += (int)$info['listeners'];
+            if (isset($active_shortcodes[$short_code]))
+                $total_overall += (int)$info['listeners'];
+
             $total_stations[$short_code] = (int)$info['listeners'];
         }
 

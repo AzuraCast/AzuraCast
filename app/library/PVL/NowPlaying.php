@@ -55,32 +55,38 @@ class NowPlaying
     {
         set_time_limit(60);
 
+        $nowplaying = self::loadNowPlaying();
+
+        $np_file_lines = array();
+        $text_lines = array();
+
+        foreach($nowplaying as $shortcode => $station_info)
+        {
+            switch($station_info['category'])
+            {
+                case "audio":
+                    $text_line = array(
+                        $station_info['id'],
+                        $station_info['name'],
+                        $station_info['listeners'],
+                        $station_info['title'],
+                        $station_info['artist'],
+                    );
+                    $text_lines[] = implode('|', $text_line);
+
+                case "video":
+                    $np_file_lines[$shortcode] = $station_info;
+                break;
+            }
+        }
+
         // Generate PVL now playing file.
         $pvl_file_path = self::getFilePath('nowplaying');
-
-        $nowplaying = self::loadNowPlaying();
-        $nowplaying_feed = json_encode($nowplaying, JSON_UNESCAPED_SLASHES);
+        $nowplaying_feed = json_encode($np_file_lines, JSON_UNESCAPED_SLASHES);
         @file_put_contents($pvl_file_path, $nowplaying_feed);
 
         // Write shorter delimited file.
         $text_file_path = self::getFilePath('nowplaying', 'txt');
-        $text_lines = array();
-
-        foreach($nowplaying as $station_shortcode => $station_info)
-        {
-            if ($station_info['category'] == 'audio')
-            {
-                $text_line = array(
-                    $station_info['id'],
-                    $station_info['name'],
-                    $station_info['listeners'],
-                    $station_info['title'],
-                    $station_info['artist'],
-                );
-                $text_lines[] = implode('|', $text_line);
-            }
-        }
-
         $nowplaying_text = implode("<>", $text_lines);
         @file_put_contents($text_file_path, $nowplaying_text);
 

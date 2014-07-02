@@ -46,7 +46,7 @@ $this->render_mode = 'homepage';
                 </div>
             </div>
         </div>
-    <? else: ?>
+    <? elseif (count($this->network_news) > 0): ?>
         <div class="well carousel slide" id="rotator" data-interval="5000">     
             <ol class="carousel-indicators">
             <? for($i = 0; $i < count($this->network_news); $i++): ?>

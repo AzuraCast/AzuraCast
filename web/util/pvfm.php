@@ -1,20 +1,28 @@
 <?php
 header('Content-Type: application/xml');
 
+function curlGet($url)
+{
+  //create a new curl resource
+  $ch = curl_init();
+
+  //set url
+  curl_setopt($ch,CURLOPT_URL,$url);
+  curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch,CURLOPT_TIMEOUT, 2);
+
+  $output = curl_exec($ch);
+
+  //close curl resource to free up system resources
+  curl_close($ch);
+  
+  return $output;
+}
+
 $SERVER = 'http://dj.bronyradio.com:7090';
 $STATS_FILE = '/status.xsl';
 
-//create a new curl resource
-$ch = curl_init();
-
-//set url
-curl_setopt($ch,CURLOPT_URL,$SERVER.$STATS_FILE);
-curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-
-$output = curl_exec($ch);
-
-//close curl resource to free up system resources
-curl_close($ch);
+$output = curlGet($SERVER.$STATS_FILE);
 
 //build array to store our radio stats for later use
 $radio_info = array();
@@ -61,8 +69,13 @@ $x = explode(" - ",$temp_array[9]);
 $radio_info['now_playing']['artist'] = $x[0];
 $radio_info['now_playing']['track'] = $x[1];
 
-$vinyl = simplexml_load_file('http://dj.bronyradio.com:8000/stats?sid=1');
-$velvet = simplexml_load_file('http://radio.ponyvillelive.com:8014/stats?sid=1');
+$vinyl_raw = curlGet('http://dj.bronyradio.com:8000/stats?sid=1');
+if (!empty($vinyl_raw))
+  $vinyl = simplexml_load_string($vinyl_raw);
+
+$velvet_raw = curlGet('http://radio.ponyvillelive.com:8014/stats?sid=1');
+if (!empty($velvet_raw))
+  $velvet = simplexml_load_string($velvet_raw);
 
 try
 {

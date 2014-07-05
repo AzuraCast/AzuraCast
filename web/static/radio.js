@@ -400,6 +400,10 @@ function playStation(id)
 						jp_is_playing = false;
 
 						stopAllPlayers();
+
+                        // Auto-replay if Media URL load failure.
+                        if (error_details.message == 'Media URL could not be loaded.')
+                            startPlayer(nowplaying_url);
 					},
 					volumechange: function(event) {
 						volume = Math.round(event.jPlayer.options.volume * 100);

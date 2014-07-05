@@ -399,11 +399,11 @@ function playStation(id)
 						console.log('Error: '+error_details.message+' - '+error_details.hint);
 						jp_is_playing = false;
 
-						stopAllPlayers();
-
                         // Auto-replay if Media URL load failure.
                         if (error_details.message == 'Media URL could not be loaded.')
                             startPlayer(nowplaying_url);
+                        else
+                            stopAllPlayers();
 					},
 					volumechange: function(event) {
 						volume = Math.round(event.jPlayer.options.volume * 100);

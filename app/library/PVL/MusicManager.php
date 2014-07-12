@@ -3,9 +3,6 @@ namespace PVL;
 
 use \Entity\ArchiveSong;
 
-require(DF_INCLUDE_LIB.'/ThirdParty/getid3/getid3.php');
-require(DF_INCLUDE_LIB.'/ThirdParty/getid3/write.php');
-
 class MusicManager
 {
     const CHECK_DIR = '/www/mlpmusicarchive.com/music-to-add';

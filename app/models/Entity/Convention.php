@@ -43,7 +43,7 @@ class Convention extends \DF\Doctrine\Entity
     /** @Column(name="web_url", type="string", length=250, nullable=true) */
     protected $web_url;
 
-    /** @Column(name="image_url", type="string", length=150, nullable=true) */
+    /** @Column(name="image_url", type="string", length=200, nullable=true) */
     protected $image_url;
 
     public function setImageUrl($new_url)
@@ -59,6 +59,9 @@ class Convention extends \DF\Doctrine\Entity
             $this->image_url = $new_url;
         }
     }
+
+    /** @Column(name="schedule_url", type="string", length=250, nullable=true) */
+    protected $schedule_url;
 
     /** @Column(name="signup_notes", type="text", nullable=true) */
     protected $signup_notes;
@@ -84,5 +87,10 @@ class Convention extends \DF\Doctrine\Entity
             ->getArrayResult();
 
         return $conventions;
+    }
+
+    public static function getConventionsWithArchives()
+    {
+
     }
 }

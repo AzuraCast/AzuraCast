@@ -19,34 +19,26 @@ class ConventionSignup extends \DF\Doctrine\Entity
     /** @Column(name="convention_id", type="integer") */
     protected $convention_id;
 
-    /** @Column(name="user_id", type="integer", nullable=true) */
+    /** @Column(name="user_id", type="integer") */
     protected $user_id;
 
-    /** @Column(name="name", type="string", length=400, nullable=true) */
-    protected $name;
+    /** @Column(name="pony_name", type="string", length=400, nullable=true) */
+    protected $pony_name;
 
-    /** @Column(name="description", type="text", nullable=true) */
-    protected $description;
+    /** @Column(name="legal_name", type="string", length=400, nullable=true) */
+    protected $legal_name;
 
-    /** @Column(name="web_url", type="string", length=250, nullable=true) */
-    protected $web_url;
+    /** @Column(name="phone", type="string", length=50, nullable=true) */
+    protected $phone;
 
-    /** @Column(name="image_url", type="string", length=200, nullable=true) */
-    protected $image_url;
+    /** @Column(name="pvl_affiliation", type="string", length=50, nullable=true) */
+    protected $pvl_affiliation;
 
-    public function setImageUrl($new_url)
-    {
-        if ($new_url)
-        {
-            if ($this->image_url && $this->image_url != $new_url)
-                @unlink(DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$this->image_url);
+    /** @Column(name="travel_notes", type="text", nullable=true) */
+    protected $travel_notes;
 
-            $new_path = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_url;
-            \DF\Image::resizeImage($new_path, $new_path, 1150, 200);
-
-            $this->image_url = $new_url;
-        }
-    }
+    /** @Column(name="accommodation_notes", type="text", nullable=true) */
+    protected $accommodation_notes;
 
     /**
      * @ManyToOne(targetEntity="Convention", inversedBy="signups")
@@ -59,7 +51,7 @@ class ConventionSignup extends \DF\Doctrine\Entity
     /**
      * @ManyToOne(targetEntity="User")
      * @JoinColumns({
-     *   @JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
      * })
      */
     protected $user;

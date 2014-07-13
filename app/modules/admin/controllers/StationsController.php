@@ -51,8 +51,6 @@ class Admin_StationsController extends \DF\Controller\Action
 
             foreach($files as $file_field => $file_paths)
                 $data[$file_field] = $file_paths[1];
-
-            \DF\Image::resizeImage($data['image_url'], $data['image_url'], 150, 150);
             
             $record->fromArray($data);
             $record->save();

@@ -87,6 +87,9 @@ class Station extends \DF\Doctrine\Entity
             if ($this->image_url && $this->image_url != $new_url)
                 @unlink(DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$this->image_url);
 
+            $new_path = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_url;
+            \DF\Image::resizeImage($new_path, $new_path, 150, 150);
+
             $this->image_url = $new_url;
         }
     }

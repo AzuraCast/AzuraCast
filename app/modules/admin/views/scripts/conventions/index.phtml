@@ -33,9 +33,25 @@ $this->headTitle('Manage Conventions');
     </thead>
     <tbody>
     <? foreach($this->pager as $record): ?>
-        <tr class="input">
+        <tr class="input <? if ($record['signup_enabled'] == 1): ?>text-success<? endif; ?>">
             <td class="center">
                 <div class="btn-group">
+                    <?=$this->button(array(
+                        'type'      => 'small',
+                        'class'     => 'btn-primary btn-icon-only',
+                        'icon'      => 'icon-user',
+                        'title'     => 'Signups',
+                        'href'      => $this->routeFromHere(array('action' => 'signups', 'id' => $record['id'])),
+                        'text'      => '',
+                    )) ?>
+                    <?=$this->button(array(
+                        'type'      => 'small',
+                        'class'     => 'btn-primary btn-icon-only',
+                        'icon'      => 'icon-facetime-video',
+                        'title'     => 'Video Archives',
+                        'href'      => $this->routeFromHere(array('action' => 'archives', 'id' => $record['id'])),
+                        'text'      => '',
+                    )) ?>
                     <?=$this->button(array(
                         'type'      => 'small',
                         'icon'      => 'icon-pencil',

@@ -65,4 +65,14 @@ class Admin_ConventionsController extends \DF\Controller\Action
         $this->alert('Record deleted.', 'green');
         $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
     }
+
+    public function signupsAction()
+    {
+
+    }
+
+    public function archivesAction()
+    {
+
+    }
 }

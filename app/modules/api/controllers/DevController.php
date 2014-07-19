@@ -88,6 +88,7 @@ class Api_DevController extends \PVL\Controller\Action\Api
             'rotators',
             'songs',
             'stations',
+            'conventions',
         );
 
         $static_files = array();

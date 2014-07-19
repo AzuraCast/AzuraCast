@@ -7,7 +7,7 @@ $this->headTitle('Manage Podcasts');
         'type'      => 'link',
         'class'     => 'large success',
         'href'      => $this->routeFromHere(array('action' => 'edit')),
-        'icon'      => 'add',
+        'icon'      => 'icon-plus-sign',
         'text'      => 'Add New Podcast',
     )) ?>
 </div>
@@ -38,13 +38,13 @@ $this->headTitle('Manage Podcasts');
                 <div class="btn-group">
                     <?=$this->button(array(
                         'type'      => 'small',
-                        'icon'      => 'pencil',
+                        'icon'      => 'icon-pencil',
                         'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
                         'text'      => 'Edit',
                     )) ?>
                     <?=$this->button(array(
                         'type'      => 'small',
-                        'icon'      => 'delete',
+                        'icon'      => 'icon-trash',
                         'class'     => 'danger confirm-delete',
                         'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
                         'text'      => 'Delete',

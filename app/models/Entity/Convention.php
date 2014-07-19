@@ -13,7 +13,11 @@ class Convention extends \DF\Doctrine\Entity
 {
     public function __construct()
     {
+        $this->coverage_level = 'full';
         $this->signup_enabled = true;
+
+        $this->archives = new ArrayCollection();
+        $this->signups = new ArrayCollection();
     }
 
     /**
@@ -23,11 +27,14 @@ class Convention extends \DF\Doctrine\Entity
      */
     protected $id;
 
-    /** @Column(name="name", type="string", length=400, nullable=true) */
+    /** @Column(name="name", type="string", length=400) */
     protected $name;
 
     /** @Column(name="location", type="string", length=400, nullable=true) */
     protected $location;
+
+    /** @Column(name="coverage_level", type="string", length=50) */
+    protected $coverage_level;
 
     /** @Column(name="start_date", type="date") */
     protected $start_date;
@@ -53,6 +60,8 @@ class Convention extends \DF\Doctrine\Entity
             if ($this->image_url && $this->image_url != $new_url)
                 @unlink(DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$this->image_url);
 
+            echo $new_url;
+
             $new_path = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_url;
             \DF\Image::resizeImage($new_path, $new_path, 1150, 200);
 
@@ -68,6 +77,16 @@ class Convention extends \DF\Doctrine\Entity
 
     /** @Column(name="signup_enabled", type="boolean") */
     protected $signup_enabled;
+
+    /**
+     * @OneToMany(targetEntity="ConventionSignup", mappedBy="convention")
+     */
+    protected $signups;
+
+    /**
+     * @OneToMany(targetEntity="ConventionArchive", mappedBy="convention")
+     */
+    protected $archives;
 
     /**
      * Static Functions
@@ -91,6 +110,39 @@ class Convention extends \DF\Doctrine\Entity
 
     public static function getConventionsWithArchives()
     {
+        $em = self::getEntityManager();
 
+        $conventions = $em->createQuery('SELECT c FROM '.__CLASS__.' c LEFT JOIN c.archives ca WHERE ca.id IS NOT NULL AND (c.start_date <= :now) ORDER BY c.start_date DESC')
+            ->setParameter('now', gmdate('Y-m-d', time()))
+            ->useResultCache(true, 1800, 'pvl_archived_conventions')
+            ->getArrayResult();
+
+        return $conventions;
+    }
+
+    public static function getCoverageLevels()
+    {
+        return array(
+            'streaming' => array(
+                'text'      => 'PVL Full Streaming & Coverage',
+                'icon'      => 'icon-globe',
+                'short'     => '@',
+            ),
+            'full'      => array(
+                'text'      => 'PVL Full Recorded Coverage',
+                'icon'      => 'icon-star',
+                'short'     => '*',
+            ),
+            'partial'   => array(
+                'text'      => 'PVL Partial Recorded Coverage',
+                'icon'      => 'icon-star-half-full',
+                'short'     => '+',
+            ),
+            'none'      => array(
+                'text'      => 'No Coverage',
+                'icon'      => 'icon-flag',
+                'short'     => '!',
+            ),
+        );
     }
 }

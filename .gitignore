@@ -29,6 +29,7 @@ web/static/stations/*
 web/static/podcasts/*
 web/static/rotators/*
 web/static/songs/*
+web/static/conventions/*
 
 # Log files.
 util/php_errors.log

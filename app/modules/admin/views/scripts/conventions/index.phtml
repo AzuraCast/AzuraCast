@@ -1,0 +1,75 @@
+<?
+$this->headTitle('Manage Conventions');
+?>
+
+<div class="buttons">
+    <?=$this->button(array(
+        'type'      => 'link',
+        'class'     => 'large success',
+        'href'      => $this->routeFromHere(array('action' => 'edit')),
+        'icon'      => 'icon-plus-sign',
+        'text'      => 'Add New Convention',
+    )) ?>
+</div>
+
+<?=$this->paginate($this->pager) ?>
+
+<table class="table table-striped table-nopadding">
+    <colgroup>
+        <col width="20%" />
+        <col width="3%" />
+        <col width="27%" />
+        <col width="30%" />
+        <col width="20%" />
+    </colgroup>
+    <thead>
+    <tr>
+        <th>Actions</th>
+        <th>&nbsp;</th>
+        <th>Name</th>
+        <th>Image</th>
+        <th>URLs</th>
+    </tr>
+    </thead>
+    <tbody>
+    <? foreach($this->pager as $record): ?>
+        <tr class="input">
+            <td class="center">
+                <div class="btn-group">
+                    <?=$this->button(array(
+                        'type'      => 'small',
+                        'icon'      => 'icon-pencil',
+                        'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'text'      => 'Edit',
+                    )) ?>
+                    <?=$this->button(array(
+                        'type'      => 'small',
+                        'icon'      => 'icon-trash',
+                        'class'     => 'danger confirm-delete',
+                        'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'text'      => 'Delete',
+                    )) ?>
+                </div>
+            </td>
+            <td class="center">
+                <?
+                $level = $this->coverage[$record['coverage_level']];
+                ?>
+                <div title="<?=$level['text'] ?>"><i class="large-icon <?=$level['icon'] ?>"></i></div>
+            </td>
+            <td>
+                <big><?=$record['name'] ?></big><br>
+                <?=$record['location'] ?><br>
+                <?=$record['start_date']->format('F j') ?> to <?=$record['end_date']->format('F j, Y') ?>
+            </td>
+            <td class="center"><img src="<?=\DF\Url::content($record['image_url']) ?>" style="width: 100%;"></td>
+            <td>
+                Web: <a href="<?=$record['web_url'] ?>" target="_blank"><?=$record['web_url'] ?></a><br>
+                Schedule: <a href="<?=$record['schedule_url'] ?>" target="_blank"><?=$record['schedule_url'] ?></a>
+            </td>
+        </tr>
+    <? endforeach; ?>
+    </tbody>
+</table>
+
+<?=$this->paginate($this->pager) ?>

@@ -313,8 +313,11 @@ class Form extends \Zend_Form
                         $new_file_name = ($file_name_prefix) ? $file_name_prefix.'_' : '';
                         $new_file_name .= date('Ymd_His').'_'.mt_rand(100, 999).'_'.$element_name_clean.'_'.$i.'.'.File::getFileExtension($file_path_original);
                         
-                        $new_file_path_short = $destination_folder.'/'.$new_file_name;
+                        $new_file_path_short = $destination_folder.DIRECTORY_SEPARATOR.$new_file_name;
                         $new_file_path_full = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_file_path_short;
+
+                        if (!is_writable(dirname($new_file_path_full)))
+                            throw new \DF\Exception('New directory not writable.');
                         
                         @rename($file_path_original, $new_file_path_full);
                         

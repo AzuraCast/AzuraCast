@@ -223,9 +223,9 @@ class Entity implements \ArrayAccess
                             if ($value)
                             {   
                                 if (!is_numeric($value))
-                                    $value = strtotime($value);
+                                    $value = strtotime($value.' UTC');
                                 
-                                $value = \DateTime::createFromFormat(\DateTime::ISO8601, date(\DateTime::ISO8601, (int)$value));
+                                $value = \DateTime::createFromFormat(\DateTime::ISO8601, gmdate(\DateTime::ISO8601, (int)$value));
                             }
                             else
                             {

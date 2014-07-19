@@ -18,7 +18,7 @@ class UnixDate extends \Zend_Form_Element_Xhtml
         if (is_numeric($value))
             $timestamp = $value;
         elseif (is_string($value))
-            $timestamp = strtotime($value);
+            $timestamp = strtotime($value.' UTC');
         elseif ($value instanceof \DateTime)
             $timestamp = $value->getTimestamp();
         elseif (is_array($value))
@@ -29,9 +29,9 @@ class UnixDate extends \Zend_Form_Element_Xhtml
             throw new \Exception('Invalid date value provided');
         
         $this->field_timestamp = (int)$timestamp;
-        $this->field_year = ($timestamp) ? date('Y', $timestamp) : '';
-        $this->field_month = ($timestamp) ? date('m', $timestamp) : '';
-        $this->field_day = ($timestamp) ? date('d', $timestamp) : '';
+        $this->field_year = ($timestamp) ? gmdate('Y', $timestamp) : '';
+        $this->field_month = ($timestamp) ? gmdate('m', $timestamp) : '';
+        $this->field_day = ($timestamp) ? gmdate('d', $timestamp) : '';
         
         return $this;
     }
@@ -51,11 +51,11 @@ class UnixDate extends \Zend_Form_Element_Xhtml
         }
         else
         {
-            $month = (!empty($value['month'])) ? (int)$value['month'] : date('m', $default_timestamp);
-            $day = (!empty($value['day'])) ? (int)$value['day'] : date('d', $default_timestamp);
-            $year = (!empty($value['year'])) ? (int)$value['year'] : date('Y', $default_timestamp);
+            $month = (!empty($value['month'])) ? (int)$value['month'] : gmdate('m', $default_timestamp);
+            $day = (!empty($value['day'])) ? (int)$value['day'] : gmdate('d', $default_timestamp);
+            $year = (!empty($value['year'])) ? (int)$value['year'] : gmdate('Y', $default_timestamp);
             
-            return strtotime($month.'/'.$day.'/'.$year.' 00:00:00');
+            return strtotime($month.'/'.$day.'/'.$year.' 00:00:00 UTC');
         }
     }
 }

@@ -1,4 +1,4 @@
-user www-data;
+user vagrant;
 worker_processes 4;
 pid logs/nginx.pid;
 

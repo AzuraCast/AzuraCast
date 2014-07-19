@@ -38,6 +38,7 @@ touch $tmp_base/vagrant_import.sql
 
 usermod -G vagrant www-data
 usermod -G vagrant nobody
+usermod -G www-data vagrant
 
 chown -R vagrant:vagrant $tmp_base/
 
@@ -75,7 +76,7 @@ echo "Installing PHP5 Command Line Interface (CLI)..."
 
 apt-get -q -y install php5-cli
 
-echo "alias phpwww='sudo -u www-data php'" >> /home/vagrant/.profile
+echo "alias phpwww='sudo -u vagrant php'" >> /home/vagrant/.profile
 
 # Trigger mlocate reindex.
 updatedb
@@ -83,6 +84,9 @@ updatedb
 # Enable PHP flags.
 sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i.bak /etc/php5/fpm/php.ini
 sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i.bak /etc/php5/cli/php.ini
+
+mv /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/www.conf.bak
+cp /vagrant/util/vagrant_phpfpm.conf /etc/php5/fpm/pool.d/www.conf
 
 service php5-fpm restart
 
@@ -102,19 +106,19 @@ fi
 echo "Setting up database..."
 
 cd $www_base/util
-sudo -u www-data php doctrine.php orm:schema-tool:create
-sudo -u www-data php flush.php
+sudo -u vagrant php doctrine.php orm:schema-tool:create
+sudo -u vagrant php flush.php
 
 sudo -u vagrant php vagrant_import.php
 
 echo "Importing external music databases (takes a minute)..."
-sudo -u www-data php syncslow.php
+sudo -u vagrant php syncslow.php
 
 echo "Running regular tasks..."
-sudo -u www-data php syncfast.php
-sudo -u www-data php sync.php
+sudo -u vagrant php syncfast.php
+sudo -u vagrant php sync.php
 
-sudo -u www-data php nowplaying.php
+sudo -u vagrant php nowplaying.php
 
 # Add cron job
 echo "Installing cron job..."

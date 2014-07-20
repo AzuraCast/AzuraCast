@@ -9,6 +9,12 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class ConventionArchive extends \DF\Doctrine\Entity
 {
+    public function __construct()
+    {
+        $this->type = 'yt_video';
+        $this->created_at = time();
+    }
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -19,6 +25,15 @@ class ConventionArchive extends \DF\Doctrine\Entity
     /** @Column(name="convention_id", type="integer") */
     protected $convention_id;
 
+    /** @Column(name="playlist_id", type="integer", nullable=true) */
+    protected $playlist_id;
+
+    /** @Column(name="type", type="string", length=50, nullable=true) */
+    protected $type;
+
+    /** @Column(name="folder", type="string", length=50, nullable=true) */
+    protected $folder;
+
     /** @Column(name="name", type="string", length=400, nullable=true) */
     protected $name;
 
@@ -28,22 +43,15 @@ class ConventionArchive extends \DF\Doctrine\Entity
     /** @Column(name="web_url", type="string", length=250, nullable=true) */
     protected $web_url;
 
-    /** @Column(name="image_url", type="string", length=200, nullable=true) */
-    protected $image_url;
+    /** @Column(name="thumbnail_url", type="string", length=250, nullable=true) */
+    protected $thumbnail_url;
 
-    public function setImageUrl($new_url)
-    {
-        if ($new_url)
-        {
-            if ($this->image_url && $this->image_url != $new_url)
-                @unlink(DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$this->image_url);
+    /** @Column(name="created_at", type="integer") */
+    protected $created_at;
 
-            $new_path = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_url;
-            \DF\Image::resizeImage($new_path, $new_path, 1150, 200);
+    /** @Column(name="synchronized_at", type="integer") */
+    protected $synchronized_at;
 
-            $this->image_url = $new_url;
-        }
-    }
 
     /**
      * @ManyToOne(targetEntity="Convention", inversedBy="archives")
@@ -52,4 +60,26 @@ class ConventionArchive extends \DF\Doctrine\Entity
      * })
      */
     protected $convention;
+
+    /**
+     * Static Functions
+     */
+
+    public static function getTypes()
+    {
+        return array(
+            'yt_video'      => 'YouTube Video',
+            'yt_playlist'   => 'YouTube Playlist',
+        );
+    }
+    public static function getFolders()
+    {
+        return array(
+            'pvl'           => 'Ponyville Live! Footage',
+            'efn'           => 'Everfree Network Footage',
+            'viper'         => 'VIPER Footage',
+            'con'           => 'Convention-Supplied Footage',
+            'thirdparty'    => 'Third-Party Footage',
+        );
+    }
 }

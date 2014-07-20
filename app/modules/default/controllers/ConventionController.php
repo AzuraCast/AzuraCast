@@ -14,7 +14,7 @@ class ConventionController extends \DF\Controller\Action
 
     public function signupAction()
     {
-        
+
     }
 
 }

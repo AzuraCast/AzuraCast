@@ -13,6 +13,7 @@ class ConventionArchive extends \DF\Doctrine\Entity
     {
         $this->type = 'yt_video';
         $this->created_at = time();
+        $this->synchronized_at = 0;
     }
 
     /**
@@ -52,7 +53,6 @@ class ConventionArchive extends \DF\Doctrine\Entity
     /** @Column(name="synchronized_at", type="integer") */
     protected $synchronized_at;
 
-
     /**
      * @ManyToOne(targetEntity="Convention", inversedBy="archives")
      * @JoinColumns({
@@ -60,6 +60,12 @@ class ConventionArchive extends \DF\Doctrine\Entity
      * })
      */
     protected $convention;
+
+    public function process()
+    {
+        \PVL\ConventionManager::process($this);
+        $this->save();
+    }
 
     /**
      * Static Functions

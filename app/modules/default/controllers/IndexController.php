@@ -7,6 +7,7 @@ use \Entity\NetworkNews;
 use \Entity\Settings;
 use \Entity\Schedule;
 use \Entity\Rotator;
+use \Entity\Convention;
 
 class IndexController extends \DF\Controller\Action
 {
@@ -24,8 +25,8 @@ class IndexController extends \DF\Controller\Action
         $this->_initStations();
 
         // Pull conventions.
-        $conventions = Schedule::getUpcomingConventions();
-        $this->view->conventions = $conventions;
+        $this->view->conventions_upcoming = Convention::getUpcomingConventions();
+        $this->view->conventions_archived = Convention::getConventionsWithArchives();
 
         // Pull rotators.
         $rotators = Rotator::fetch();

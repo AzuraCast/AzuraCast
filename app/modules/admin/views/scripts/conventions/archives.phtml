@@ -1,0 +1,92 @@
+<?
+$this->headTitle('Manage Conventions');
+?>
+
+<h2><?=$this->convention->name ?></h2>
+<h3>Manage Convention Video Archives</h3>
+
+<div class="buttons btn-group">
+    <?=$this->button(array(
+        'type'      => 'link',
+        'class'     => 'large',
+        'href'      => $this->routeFromHere(array('action' => 'index', 'convention' => NULL)),
+        'icon'      => 'icon-arrow-left',
+        'text'      => 'Back to Main',
+    )) ?>
+    <?=$this->button(array(
+        'type'      => 'link',
+        'class'     => 'large success fancybox fancybox.ajax',
+        'href'      => $this->routeFromHere(array('action' => 'editarchive')),
+        'icon'      => 'icon-plus-sign',
+        'text'      => 'Add New Archive',
+    )) ?>
+</div>
+
+<? foreach($this->folders as $folder_id => $folder_name): ?>
+    <table class="table table-striped datatable">
+        <colgroup>
+            <col width="15%" />
+            <col width="10%" />
+            <col width="75%" />
+        </colgroup>
+        <thead>
+            <th colspan="3"><?=$folder_name ?></th>
+        </thead>
+        <tbody>
+        <? foreach((array)$this->archives[$folder_id] as $id => $record): ?>
+            <tr class="input">
+                <td class="center">
+                    <div class="btn-group">
+                        <?=$this->button(array(
+                            'type'      => 'small',
+                            'icon'      => 'icon-pencil',
+                            'class'     => 'fancybox fancybox.ajax',
+                            'href'      => $this->routeFromHere(array('action' => 'editarchive', 'id' => $record['id'])),
+                            'text'      => 'Edit',
+                        )) ?>
+                        <?=$this->button(array(
+                            'type'      => 'small',
+                            'icon'      => 'icon-trash',
+                            'class'     => 'danger confirm-delete',
+                            'href'      => $this->routeFromHere(array('action' => 'deletearchive', 'id' => $record['id'])),
+                            'text'      => 'Delete',
+                        )) ?>
+                    </div>
+                </td>
+                <td class="center">
+                    <img src="<?=$record['thumbnail_url'] ?>" alt="Thumbnail" style="max-width: 100%;">
+                </td>
+                <td>
+                    <?=$record['type_text'] ?>:<br>
+                    <big><?=$record['name'] ?></big><br>
+                    <small><a href="<?=$record['web_url'] ?>" target="_blank"><?=$record['web_url'] ?></a></small>
+                </td>
+            </tr>
+        <? if ($record['videos']): ?>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="2">
+                    <table class="table datatable table-nopadding">
+                        <colgroup>
+                            <col width="10%">
+                            <col width="90%">
+                        </colgroup>
+                        <tbody>
+                        <? foreach($record['videos'] as $video): ?>
+                            <tr>
+                                <td><img src="<?=$video['thumbnail_url'] ?>" style="width: 100%;" alt="Thumbnail"></td>
+                                <td>
+                                    <b><?=$video['name'] ?></b><br>
+                                    <small><a href="<?=$video['web_url'] ?>" target="_blank"><?=$video['web_url'] ?></a></small>
+                                </td>
+                            </tr>
+                        <? endforeach; ?>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        <? endif; ?>
+        <? endforeach; ?>
+        </tbody>
+    </table>
+<? endforeach; ?>

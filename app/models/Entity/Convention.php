@@ -44,7 +44,7 @@ class Convention extends \DF\Doctrine\Entity
 
     public function getRange()
     {
-        return Schedule::getRangeText($this->start_date->getTimestamp(), $this->end_date->getTimestamp(), TRUE);
+        return self::getDateRange($this->start_date, $this->end_date);
     }
 
     /** @Column(name="web_url", type="string", length=250, nullable=true) */
@@ -105,6 +105,12 @@ class Convention extends \DF\Doctrine\Entity
             ->useResultCache(true, 1800, 'pvl_upcoming_conventions')
             ->getArrayResult();
 
+        $coverage = self::getCoverageLevels();
+        array_walk($conventions, function(&$row, $key) use ($coverage) {
+            $row['range'] = self::getDateRange($row['start_date'], $row['end_date']);
+            $row['coverage'] = $coverage[$row['coverage_level']];
+        });
+
         return $conventions;
     }
 
@@ -116,6 +122,12 @@ class Convention extends \DF\Doctrine\Entity
             ->setParameter('now', gmdate('Y-m-d', time()))
             ->useResultCache(true, 1800, 'pvl_archived_conventions')
             ->getArrayResult();
+
+        $coverage = self::getCoverageLevels();
+        array_walk($conventions, function(&$row, $key) use ($coverage) {
+            $row['range'] = self::getDateRange($row['start_date'], $row['end_date']);
+            $row['coverage'] = $coverage[$row['coverage_level']];
+        });
 
         return $conventions;
     }
@@ -144,5 +156,26 @@ class Convention extends \DF\Doctrine\Entity
                 'short'     => '!',
             ),
         );
+    }
+
+    public static function getDateRange(\DateTime $start, \DateTime $end)
+    {
+        $start_day = $start->format('M j');
+        $start_year = $start->format('Y');
+
+        $end_day = $end->format('M j');
+        $end_year = $end->format('Y');
+
+        if ($start_year == $end_year)
+        {
+            if ($start_day == $end_day)
+                return $start_day.', '.$start_year;
+            else
+                return $start_day.' to '.$end_day.', '.$end_year;
+        }
+        else
+        {
+            return $start_day.', '.$start_year.' to '.$end_day.', '.$end_year;
+        }
     }
 }

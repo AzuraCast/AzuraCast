@@ -41,7 +41,7 @@ $this->headTitle('Manage Conventions');
                         'class'     => 'btn-primary btn-icon-only',
                         'icon'      => 'icon-user',
                         'title'     => 'Signups',
-                        'href'      => $this->routeFromHere(array('action' => 'signups', 'id' => $record['id'])),
+                        'href'      => $this->routeFromHere(array('action' => 'signups', 'convention' => $record['id'])),
                         'text'      => '',
                     )) ?>
                     <?=$this->button(array(
@@ -49,7 +49,7 @@ $this->headTitle('Manage Conventions');
                         'class'     => 'btn-primary btn-icon-only',
                         'icon'      => 'icon-facetime-video',
                         'title'     => 'Video Archives',
-                        'href'      => $this->routeFromHere(array('action' => 'archives', 'id' => $record['id'])),
+                        'href'      => $this->routeFromHere(array('action' => 'archives', 'convention' => $record['id'])),
                         'text'      => '',
                     )) ?>
                     <?=$this->button(array(

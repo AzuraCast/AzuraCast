@@ -12,6 +12,9 @@ ini_set('memory_limit', '256M');
 // Sync analytical and statistical data (long running).
 \PVL\AnalyticsManager::run();
 
+// Update convention archives.
+\PVL\ConventionManager::run();
+
 // Sync the BronyTunes library.
 \PVL\Service\BronyTunes::load();
 

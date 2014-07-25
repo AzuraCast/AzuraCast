@@ -6,6 +6,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 /**
  * @Table(name="convention_archives")
  * @Entity
+ * @HasLifecycleCallbacks
  */
 class ConventionArchive extends \DF\Doctrine\Entity
 {
@@ -14,6 +15,22 @@ class ConventionArchive extends \DF\Doctrine\Entity
         $this->type = 'yt_video';
         $this->created_at = time();
         $this->synchronized_at = 0;
+    }
+
+    /**
+     * Clear all related video items when a playlist is deleted.
+     * @PreDelete
+     */
+    public function deleting()
+    {
+        if ($this->type == 'yt_playlist')
+        {
+            $em = self::getEntityManager();
+
+            $em->createQuery('DELETE FROM Entity\ConventionArchive ca WHERE ca.playlist_id = :id')
+                ->setParameter('id', $this->id)
+                ->execute();
+        }
     }
 
     /**

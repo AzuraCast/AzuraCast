@@ -79,3 +79,39 @@
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
 }
+
+/**
+ * Conventions
+ */
+
+a.convention {
+    display: block;
+    position: relative;
+    padding-bottom: 40px;
+    border-radius: 5px;
+
+    background: #111;
+    color: #FFF !important;
+}
+a.convention:hover {
+    text-decoration: none;
+}
+a.convention img {
+    border-radius: 5px 5px 0 0;
+}
+a.convention .coverage {
+    position: absolute;
+    bottom: 8px;
+    left: 7px;
+}
+a.convention .name {
+    position: absolute;
+    font-size: 12px;
+    line-height: 14px;
+    bottom: 6px;
+    left: 35px;
+}
+a.convention .name h4 {
+    font-size: 14px;
+    padding: 0;
+}

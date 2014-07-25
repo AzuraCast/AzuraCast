@@ -84,11 +84,12 @@ class ConventionManager
 
                         $row->name = $playlist['title'];
                         $row->description = $playlist['description'];
-                        $row->thumbnail_url = $playlist['thumbnails']['high']['url'];
+                        $row->thumbnail_url = self::getThumbnail($playlist['thumbnails']);
                     }
 
                     // Get playlist contents.
                     $client->setUri('https://www.googleapis.com/youtube/v3/playlistItems');
+                    $client->resetParameters();
                     $client->setParameterGet(array(
                         'part'      => 'id,snippet,status,contentDetails',
                         'playlistId' => $playlist_id,
@@ -114,8 +115,8 @@ class ConventionManager
                             $child_row->name = self::filterName($row, $item['snippet']['title']);
                             $child_row->description = $item['snippet']['description'];
                             $child_row->web_url = 'http://youtu.be/'.$item['contentDetails']['videoId'];
-                            $child_row->thumbnail_url = $item['snippet']['thumbnails']['high']['url'];
-                            $child_row->save();
+                            $child_row->thumbnail_url = self::getThumbnail($item['snippet']['thumbnails']);
+                            $em->persist($child_row);
                         }
                     }
                 break;
@@ -150,14 +151,15 @@ class ConventionManager
                         $video = $data['items'][0]['snippet'];
                         $row->name = self::filterName($row, $video['title']);
                         $row->description = $video['description'];
-                        $row->thumbnail_url = $video['thumbnails']['high']['url'];
+                        $row->thumbnail_url = self::getThumbnail($video['thumbnails']);
                     }
                 break;
             }
         }
 
         $row->synchronized_at = time();
-        $row->save();
+        $em->persist($row);
+        $em->flush();
     }
 
     public static function filterName(ConventionArchive $row, $name)
@@ -165,7 +167,15 @@ class ConventionManager
         $con = $row->convention;
 
         $name = str_replace($con->name, '', $name);
-        $name = trim($name, ' -\t\n\r\0');
+        $name = trim($name, " -\t\n\r\0");
         return $name;
+    }
+
+    public static function getThumbnail($thumbnails)
+    {
+        if ($thumbnails['medium'])
+            return $thumbnails['medium']['url'];
+        elseif ($thumbnails['maxres'])
+            return $thumbnails['maxres']['url'];
     }
 }

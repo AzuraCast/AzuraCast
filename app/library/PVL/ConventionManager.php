@@ -164,7 +164,7 @@ class ConventionManager
 
     public static function filterName(ConventionArchive $row, $name)
     {
-        $con = $row->convention;
+        $con = $row->convention->name;
 
         if (substr($name, 0, strlen($con)) == $con)
             $name = substr($name, strlen($con));

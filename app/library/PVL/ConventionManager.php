@@ -166,8 +166,10 @@ class ConventionManager
     {
         $con = $row->convention;
 
-        $name = str_replace($con->name, '', $name);
-        $name = trim($name, " -\t\n\r\0");
+        if (substr($name, 0, strlen($con)) == $con)
+            $name = substr($name, strlen($con));
+
+        $name = trim($name, " -:\t\n\r\0");
         return $name;
     }
 

@@ -114,7 +114,7 @@ class ConventionManager
 
                             $child_row->name = self::filterName($row, $item['snippet']['title']);
                             $child_row->description = $item['snippet']['description'];
-                            $child_row->web_url = 'http://youtu.be/'.$item['contentDetails']['videoId'];
+                            $child_row->web_url = 'http://www.youtube.com/watch?v='.$item['contentDetails']['videoId'];
                             $child_row->thumbnail_url = self::getThumbnail($item['snippet']['thumbnails']);
                             $em->persist($child_row);
                         }
@@ -130,7 +130,7 @@ class ConventionManager
                         break;
 
                     // Reformat video URL to match standard format.
-                    $row->web_url = 'http://youtu.be/'.$video_id;
+                    $row->web_url = 'http://www.youtube.com/watch?v='.$video_id;
 
                     // Pull data from API.
                     $client->setUri('https://www.googleapis.com/youtube/v3/videos');

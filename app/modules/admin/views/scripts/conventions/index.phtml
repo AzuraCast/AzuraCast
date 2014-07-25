@@ -76,9 +76,13 @@ $this->headTitle('Manage Conventions');
             <td>
                 <big><?=$record['name'] ?></big><br>
                 <?=$record['location'] ?><br>
-                <?=$record['start_date']->format('F j') ?> to <?=$record['end_date']->format('F j, Y') ?>
+                <?=$record['range'] ?>
             </td>
-            <td class="center"><img src="<?=\DF\Url::content($record['image_url']) ?>" style="width: 100%;"></td>
+            <td class="center">
+            <? if ($record['image_url']): ?>
+                <img src="<?=\DF\Url::content($record['image_url']) ?>" style="width: 100%;">
+            <? endif; ?>
+            </td>
             <td>
                 Web: <a href="<?=$record['web_url'] ?>" target="_blank"><?=$record['web_url'] ?></a><br>
                 Schedule: <a href="<?=$record['schedule_url'] ?>" target="_blank"><?=$record['schedule_url'] ?></a>

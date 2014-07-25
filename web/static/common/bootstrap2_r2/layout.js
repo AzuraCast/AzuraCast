@@ -187,7 +187,8 @@ function initPage(page) {
 			closeClick	: false,
 			closeBtn	: true,
 			openEffect	: 'none',
-			closeEffect	: 'none'
+			closeEffect	: 'none',
+            helpers     : { media : {} }
 		});
 	}
 }

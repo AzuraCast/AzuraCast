@@ -18,12 +18,14 @@ return array(
             'label' => 'Type of URL',
             'multiOptions' => $types,
             'required' => true,
+            'default' => 'yt_playlist',
         )),
 
         'folder' => array('radio', array(
             'label' => 'Archive Folder',
             'multiOptions' => $folders,
             'required' => true,
+            'default' => 'pvl',
         )),
 
         'submit'        => array('submit', array(

@@ -84,13 +84,21 @@
  * Conventions
  */
 
+div.conventions {
+    margin-bottom: -10px;
+}
+
 a.convention {
     display: block;
     position: relative;
     padding-bottom: 40px;
     border-radius: 5px;
+    margin-bottom: 10px;
 
-    background: #111;
+    box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+    background: #13385E;
+
+    /* background: #111; */
     color: #FFF !important;
 }
 a.convention:hover {

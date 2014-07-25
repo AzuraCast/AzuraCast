@@ -1,19 +1,16 @@
+<h2><i class="icon-group"></i> Ponyville Live! Convention Coverage</h2>
+
 <div class="row-fluid">
-    <div class="span6">
+    <div class="span4">
         <div class="well no-margin">
-            <?=$this->button(array(
-                'type'      => 'small',
-                'class'     => 'pull-right',
-                'href'      => $this->route(array('controller' => 'events')),
-                'icon'      => 'icon-calendar',
-                'text'      => 'View All PVL Events',
-            )) ?>
-            <h3>Coming Up</h3>
+            <h3><i class="icon-bookmark"></i> Coming Up</h3>
 
             <div class="conventions">
             <? foreach($this->conventions_upcoming as $record): ?>
                 <a class="convention" href="<?=$record['web_url'] ?>" target="_blank">
+                    <? if ($record['image_url']): ?>
                     <img src="<?=\DF\Url::content($record['image_url']) ?>" alt="Convention Image">
+                    <? endif; ?>
                     <div class="coverage" title="<?=$record['coverage']['text'] ?>">
                         <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
                     </div>
@@ -26,23 +23,33 @@
             </div>
         </div>
     </div>
-    <div class="span6">
+    <div class="span8">
         <div class="well no-margin">
-            <h3>Convention Archives</h3>
-            <ul class="unstyled nopadding">
-                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIL-rfXqF40x48mCQoGw3ymq">BABScon 2014</a> <small>from San Francisco, California</small></h5></li>
-                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIK0Plyid3tN9OObE43Ew6TZ">PonyCon AU 2014</a> <small>from Melbourne, Australia</small></h5></li>
-                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILHhcQo0ZcRAr4zQLAX3Lyw">Nightmare Nights 2013</a> <small>from Dallas, Texas</small></h5></li>
-                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIKK8YhVDZgs4p2qn39j-Hlj">DerpyCon South 2013</a> <small>from New Orleans, Louisiana</small></h5></li>
-                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIKM9Wh9aEdwVPcOYCwL6_Wk">Brony Fan Fair 2013</a> <small>from Austin, Texas</small></h5></li>
-                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILXuhnL7NZs1G583w5dFmo1">BronyCAN 2013</a> <small>from Vancouver, BC, Canada</small></h5></li>
-                <li><h5><a href="http://www.ponyvillelive.com/special/fiesta">Fiesta Equestria! 2013</a> <small>from Houston, Texas</small></h5></li>
-                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIJjEepgtCUqV67XXj3ldgtq">Pon3Con 2013</a> <small>from Omaha, Nebraska</small></h5></li>
-                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIKOxISJtXB2HxX2xz9nyy2f">EQLA 2013 Interviews</a> <small>from Anaheim, California</small></h5></li>
-                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdIK17NS3C3W_OFlWwFiqlX21">PonyCon AU 2013</a> <small>from Sydney, Australia</small></h5></li>
-                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILGZOBkWWXynLM9fxFsNH-u">Brony-Fest 2013</a> <small>from Lewisville, Texas</small></h5></li>
-                <li><h5><a href="http://www.youtube.com/playlist?list=PLUYW7t-2KdILo4QIIWrnW5D01U3hxyWDv">Las Pegasus Unicon 2013</a> <small>from Las Vegas, Nevada</small></h5></li>
-            </ul>
+            <h3><i class="icon-folder-open-alt"></i> Convention Archives</h3>
+
+            <?
+            $cols = \DF\Utilities::columns($this->conventions_archived);
+            ?>
+            <div class="conventions row-fluid">
+            <? foreach($cols as $col): ?>
+                <div class="span6">
+                <? foreach($col as $record): ?>
+                    <a class="convention" href="<?=$this->route(array('controller' => 'convention', 'id' => $record['id'])) ?>">
+                        <? if ($record['image_url']): ?>
+                            <img src="<?=\DF\Url::content($record['image_url']) ?>" alt="Convention Image">
+                        <? endif; ?>
+                        <div class="coverage" title="<?=$record['coverage']['text'] ?>">
+                            <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
+                        </div>
+                        <div class="name">
+                            <h4><?=$record['name'] ?></h4>
+                            <?=$record['location'] ?> &bull; <?=$record['range'] ?>
+                        </div>
+                    </a>
+                <? endforeach; ?>
+                </div>
+            <? endforeach; ?>
+            </div>
         </div>
     </div>
 </div>

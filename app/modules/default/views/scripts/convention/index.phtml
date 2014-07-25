@@ -1,0 +1,34 @@
+<?
+$this->headTitle($this->convention->name);
+?>
+
+<? if ($this->convention->image_url): ?>
+    <? $this->placeholder('content_top')->captureStart(); ?>
+    <div id="home_header">
+        <div class="container">
+            <div class="well carousel slide" id="rotator">
+                <div class="carousel-inner">
+                    <div class="item">
+                        <img src="<?=\DF\Url::content($this->convention->image_url) ?>" alt="Convention Thumbnail">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <? $this->placeholder('content_top')->captureEnd(); ?>
+<? endif; ?>
+
+<? foreach($this->videos as $folder_name => $videos): ?>
+    <h2><i class="icon-folder-open"></i> <?=$folder_name ?></h2>
+
+    <div class="clearfix">
+    <? foreach($videos as $record): ?>
+        <a class="video fancybox fancybox.iframe <?=$record['type'] ?>" href="<?=$record['web_url'] ?>">
+            <img src="<?=$record['thumbnail_url'] ?>">
+            <div class="title">
+                <h4><?=$record['name'] ?></h4>
+            </div>
+        </a>
+    <? endforeach; ?>
+    </div>
+<? endforeach; ?>

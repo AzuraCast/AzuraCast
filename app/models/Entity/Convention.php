@@ -118,7 +118,7 @@ class Convention extends \DF\Doctrine\Entity
     {
         $em = self::getEntityManager();
 
-        $conventions = $em->createQuery('SELECT c FROM '.__CLASS__.' c LEFT JOIN c.archives ca WHERE ca.id IS NOT NULL AND (c.start_date <= :now) ORDER BY c.start_date DESC')
+        $conventions = $em->createQuery('SELECT c FROM '.__CLASS__.' c LEFT JOIN c.archives ca WHERE ca.id IS NOT NULL AND (c.start_date <= :now) GROUP BY c.id ORDER BY c.start_date DESC')
             ->setParameter('now', gmdate('Y-m-d', time()))
             ->useResultCache(true, 1800, 'pvl_archived_conventions')
             ->getArrayResult();

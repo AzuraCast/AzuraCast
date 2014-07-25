@@ -1,5 +1,8 @@
 <?
 $this->headTitle($this->convention->name);
+
+$this->headLink()
+    ->appendStylesheet(\DF\Url::content('mid2013/convention.css'), 'all')
 ?>
 
 <? if ($this->convention->image_url): ?>
@@ -24,8 +27,8 @@ $this->headTitle($this->convention->name);
     <div class="clearfix">
     <? foreach($videos as $record): ?>
         <a class="video fancybox fancybox.iframe <?=$record['type'] ?>" href="<?=$record['web_url'] ?>">
-            <img src="<?=$record['thumbnail_url'] ?>">
-            <div class="title">
+            <img src="<?=$record['thumbnail_url'] ?>" title="<?=$record['name'] ?>">
+            <div class="name">
                 <h4><?=$record['name'] ?></h4>
             </div>
         </a>

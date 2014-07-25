@@ -1,0 +1,40 @@
+a.video {
+    display: block;
+    position: relative;
+    float: left;
+    width: 18%;
+
+    padding-bottom: 30px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+
+    box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+    background: #13385E;
+
+    /* background: #111; */
+    color: #FFF !important;
+}
+a.video:hover {
+    text-decoration: none;
+}
+a.video img {
+    border-radius: 5px 5px 0 0;
+}
+a.video .name {
+    position: absolute;
+    font-size: 11px;
+    line-height: 14px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    bottom: 9px;
+    left: 8px;
+    right: 8px;
+}
+a.video .name h4 {
+    font-size: 14px;
+    padding: 0;
+}

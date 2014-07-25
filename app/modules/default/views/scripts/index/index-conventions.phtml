@@ -7,7 +7,7 @@
 
             <div class="conventions">
             <? foreach($this->conventions_upcoming as $record): ?>
-                <a class="convention" href="<?=$record['web_url'] ?>" target="_blank">
+                <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$record['web_url'] ?>" target="_blank">
                     <? if ($record['image_url']): ?>
                     <img src="<?=\DF\Url::content($record['image_url']) ?>" alt="Convention Image">
                     <? endif; ?>
@@ -34,7 +34,7 @@
             <? foreach($cols as $col): ?>
                 <div class="span6">
                 <? foreach($col as $record): ?>
-                    <a class="convention" href="<?=$this->route(array('controller' => 'convention', 'id' => $record['id'])) ?>">
+                    <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$this->route(array('controller' => 'convention', 'id' => $record['id'])) ?>">
                         <? if ($record['image_url']): ?>
                             <img src="<?=\DF\Url::content($record['image_url']) ?>" alt="Convention Image">
                         <? endif; ?>

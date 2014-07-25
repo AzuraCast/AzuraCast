@@ -101,6 +101,14 @@ a.convention {
     /* background: #111; */
     color: #FFF !important;
 }
+a.convention.coverage_streaming,
+a.convention.coverage_full {
+    background: #165787;
+}
+a.convention.coverage_none {
+    opacity: 0.6;
+}
+
 a.convention:hover {
     text-decoration: none;
 }

@@ -7,14 +7,10 @@ $this->headLink()
 
 <? if ($this->convention->image_url): ?>
     <? $this->placeholder('content_top')->captureStart(); ?>
-    <div id="home_header">
+    <div id="convention_header">
         <div class="container">
-            <div class="well carousel slide" id="rotator">
-                <div class="carousel-inner">
-                    <div class="item">
-                        <img src="<?=\DF\Url::content($this->convention->image_url) ?>" alt="Convention Thumbnail">
-                    </div>
-                </div>
+            <div class="item">
+                <img src="<?=\DF\Url::content($this->convention->image_url) ?>" alt="Convention Thumbnail">
             </div>
         </div>
     </div>

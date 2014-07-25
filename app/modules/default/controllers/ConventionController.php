@@ -35,6 +35,9 @@ class ConventionController extends \DF\Controller\Action
             $videos = array();
             $folders = ConventionArchive::getFolders();
 
+            foreach($folders as $folder_key => $folder_name)
+                $videos[$folder_name] = array();
+
             foreach($convention->archives as $row)
             {
                 if ($row->isPlayable())
@@ -42,6 +45,12 @@ class ConventionController extends \DF\Controller\Action
                     $folder_name = $folders[$row->folder];
                     $videos[$folder_name][] = $row;
                 }
+            }
+
+            foreach($videos as $folder_name => $rows)
+            {
+                if (empty($rows))
+                    unset($videos[$folder_name]);
             }
 
             $this->view->videos = $videos;

@@ -1,3 +1,20 @@
+#convention_header {
+    background: url('headerbg.jpg') center center no-repeat;
+    padding: 10px 0;
+
+    border-bottom: solid 2px #eee;
+}
+
+#convention_header img {
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+}
+
 a.video {
     display: block;
     position: relative;

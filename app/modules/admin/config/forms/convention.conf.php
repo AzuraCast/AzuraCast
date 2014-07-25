@@ -33,11 +33,11 @@ return array(
             'required' => true,
         )),
 
-        'start_date' => array('unixdate', array(
+        'start_date' => array('unixDate', array(
             'label' => 'Start Date',
         )),
 
-        'end_date' => array('unixdate', array(
+        'end_date' => array('unixDate', array(
             'label' => 'End Date',
         )),
 

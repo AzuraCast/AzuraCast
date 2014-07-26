@@ -18,9 +18,9 @@ class ScheduleManager
 
         $schedule_items = array();
         $schedule_records = array();
-        $schedule_stations = array();
 
-        // PVL news
+        /*
+        // PVL news (retired for con center)
         $schedule_items[] = array(
             'name'      => 'PVL Global Events',
             'url'       => 'https://www.google.com/calendar/feeds/lj3d00magjlucuk902rarrhhrg%40group.calendar.google.com/public/full',
@@ -29,28 +29,27 @@ class ScheduleManager
             'image_url' => \DF\Url::content('pvl_square.png'),
         );
         $schedule_stations[0] = NULL;
+        */
 
         $stations = $em->createQuery('SELECT s FROM Entity\Station s WHERE s.category IN (:types) AND s.is_active = 1')
             ->setParameter('types', array('audio', 'video'))
-            ->execute();
+            ->getArrayResult();
 
         foreach($stations as $station)
         {
-            if ($station->gcal_url)
+            if ($station['gcal_url'])
             {
-                $schedule_stations[$station->id] = $station;
-
                 $schedule_items[] = array(
-                    'name'      => $station->name,
-                    'url'       => $station->gcal_url,
+                    'name'      => $station['name'],
+                    'url'       => $station['gcal_url'],
                     'type'      => 'station',
-                    'station_id' => $station->id,
-                    'image_url' => \DF\Url::content($station->image_url),
+                    'station_id' => $station['id'],
+                    'image_url' => \DF\Url::content($station['image_url']),
                 );
             }
         }
 
-        \PVL\Debug::startTimer('Get Calendar Records');
+        Debug::startTimer('Get Calendar Records');
 
         $time_check_start = time();
 
@@ -80,11 +79,14 @@ class ScheduleManager
                 $calendar_array = json_decode($calendar_raw, true);
 
                 if (empty($calendar_array['feed']['entry']))
+                {
+                    Debug::log($calendar_raw);
                     continue;
+                }
 
                 $events = (array)$calendar_array['feed']['entry'];
 
-                \PVL\Debug::print_r($calendar_array);
+                Debug::print_r($calendar_array);
 
                 $all_events = array();
 
@@ -149,10 +151,16 @@ class ScheduleManager
             }
         }
 
-        \PVL\Debug::endTimer('Get Calendar Records');
+        Debug::endTimer('Get Calendar Records');
+        
+        if (count($schedule_records) == 0)
+        {
+            Debug::log('Error: No calendar records loaded');
+            return;
+        }
 
         // Add/Remove all differential records.
-        \PVL\Debug::startTimer('Sync DB Records');
+        Debug::startTimer('Sync DB Records');
 
         $em->createQuery('DELETE FROM Entity\Schedule s WHERE s.type = :type AND s.station_id NOT IN (:station_ids)')
             ->setParameter('type', 'station')
@@ -161,7 +169,7 @@ class ScheduleManager
 
         foreach($schedule_records as $station_id => $station_records)
         {
-            $station = $schedule_stations[$station_id];
+            $station = Station::find($station_id);
 
             if ($station_id == 0)
             {
@@ -204,19 +212,20 @@ class ScheduleManager
                     $em->persist($record);
                 }
             }
+
+            $em->flush();
+            $em->clear();
         }
 
-        $em->flush();
-
-        \PVL\Debug::endTimer('Sync DB Records');
+        Debug::endTimer('Sync DB Records');
 
         Settings::setSetting('schedule_manager_last_run', time());
     }
 
     public static function requestExternalUrl($url, $name = 'Calendar')
     {
-        \PVL\Debug::startTimer('Request URL '.$name);
-        \PVL\Debug::log($url);
+        Debug::startTimer('Request URL '.$name);
+        Debug::log($url);
 
         // Start cURL request.
         $curl = curl_init();
@@ -228,11 +237,11 @@ class ScheduleManager
         $return_raw = \PVL\Utilities::curl_exec_utf8($curl);
         // End cURL request.
 
-        \PVL\Debug::endTimer('Request URL '.$name);
+        Debug::endTimer('Request URL '.$name);
 
         $error = curl_error($curl);
         if ($error)
-            \PVL\Debug::log('Curl Error:'.$error);
+            Debug::log('Curl Error:'.$error);
         
         return $return_raw;
     }

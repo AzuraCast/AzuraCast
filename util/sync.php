@@ -6,27 +6,4 @@
 require_once dirname(__FILE__) . '/../app/bootstrap.php';
 $application->bootstrap();
 
-set_time_limit(300);
-ini_set('memory_limit', '256M');
-
-// Generate cache files.
-\PVL\CacheManager::generateSlimPlayer();
-
-// Sync schedules (highest priority).
-\PVL\ScheduleManager::run();
-
-// Sync show episodes and artist news (high priority).
-\PVL\PodcastManager::run();
-
-// Sync CentovaCast song data.
-try
-{
-	\PVL\CentovaCast::sync();
-}
-catch(\Exception $e)
-{
-	echo "Error syncing CentovaCast:\n";
-	echo $e->getMessage()."\n";
-}
-
-\Entity\Settings::setSetting('sync_last_run', time());
+\PVL\SyncManager::syncMedium();

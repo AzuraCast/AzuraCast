@@ -96,5 +96,43 @@ class Admin_IndexController extends \DF\Controller\Action
 
         $this->view->network_metrics = json_encode($network_metrics);
         $this->view->station_metrics = json_encode($station_metrics);
+
+        // Synchronization statuses
+        if ($this->acl->isAllowed('administer all'))
+            $this->view->sync_times = \PVL\SyncManager::getSyncTimes();
+    }
+
+    public function syncAction()
+    {
+        $this->acl->checkPermission('administer all');
+
+        $this->doNotRender();
+
+        \PVL\Debug::setEchoMode(TRUE);
+        \PVL\Debug::startTimer('sync_task');
+
+        $type = $this->getParam('type', 'nowplaying');
+        switch($type)
+        {
+            case "long":
+                \PVL\SyncManager::syncLong();
+            break;
+
+            case "medium":
+                \PVL\SyncManager::syncMedium();
+            break;
+
+            case "short":
+                \PVL\SyncManager::syncShort();
+            break;
+
+            case "nowplaying":
+            default:
+                \PVL\SyncManager::syncNowplaying();
+            break;
+        }
+
+        \PVL\Debug::endTimer('sync_task');
+        \PVL\Debug::log('Sync task complete. See log above.');
     }
 }

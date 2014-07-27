@@ -77,14 +77,7 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
 
             $events = array();
             foreach((array)$events_raw as $event)
-            {
-                $shortcode = Station::getStationShortName($event['station']['name']);
-                $event['station_shortcode'] = $shortcode;
-
-                unset($event['is_notified']);
-
-                $events[] = $event;
-            }
+                $events[] = Schedule::api($event);
 
             \DF\Cache::save($events, $cache_name, array(), 300);
         }

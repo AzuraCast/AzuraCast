@@ -219,4 +219,25 @@ class Schedule extends \DF\Doctrine\Entity
         return $string;
     }
 
+    public static function api($row)
+    {
+        if (empty($row))
+            return array();
+
+        // Add station shortcode.
+        if (isset($row['station']))
+        {
+            $shortcode = Station::getStationShortName($row['station']['name']);
+            $row['station_shortcode'] = $shortcode;
+        }
+
+        // Add date range text.
+        $row['duration'] = $row['end_time'] - $row['start_time'];
+        $row['range'] = self::getRangeText($row['start_time'], $row['end_time'], $row['is_all_day']);
+
+        // Remove non-display variables.
+        unset($row['is_notified']);
+
+        return $row;
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 use \Entity\Station;
 use \Entity\Song;
+use \Entity\Schedule;
 
 class Api_NowplayingController extends \PVL\Controller\Action\Api
 {
@@ -81,7 +82,7 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
             'score'     => $np_raw['song_score'],
             'sh_id'     => $np_raw['song_sh_id'],
             'vote_urls' => $vote_urls,
-            
+
             'external'  => $np_raw['song_external'],
         );
 
@@ -94,6 +95,9 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
                 'song'      => Song::api($song_row),
             );
         }
+
+        $np['event'] = Schedule::api($np_raw['event']);
+        $np['event_upcoming'] = Schedule::api($np_raw['event_upcoming']);
 
         return $np;
     }

@@ -232,8 +232,8 @@ class Schedule extends \DF\Doctrine\Entity
         }
 
         // Add date range text.
-        $row['duration'] = $row['end_time'] - $row['start_time'];
-        $row['range'] = self::getRangeText($row['start_time'], $row['end_time'], $row['is_all_day']);
+        if (!isset($row['range']))
+            $row['range'] = self::getRangeText($row['start_time'], $row['end_time'], $row['is_all_day']);
 
         // Remove non-display variables.
         unset($row['is_notified']);

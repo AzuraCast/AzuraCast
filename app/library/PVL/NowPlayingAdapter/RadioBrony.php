@@ -15,6 +15,9 @@ class RadioBrony extends AdapterAbstract
 
         $return = json_decode($return_raw, true);
 
+        if ($return['title'] == 'Offline')
+            return false;
+
         $np['listeners'] = (int)$return['listeners'];
         $np['artist'] = $return['now_playing']['artist'];
 

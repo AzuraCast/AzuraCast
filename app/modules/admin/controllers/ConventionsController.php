@@ -29,6 +29,10 @@ class Admin_ConventionsController extends \DF\Controller\Action
             throw new \DF\Exception\DisplayOnly('Convention ID not found!');
         }
     }
+    protected function _flushConventionCache()
+    {
+        \DF\Cache::remove('homepage_conventions');
+    }
 
     public function indexAction()
     {
@@ -58,13 +62,13 @@ class Admin_ConventionsController extends \DF\Controller\Action
 
             $files = $form->processFiles('conventions');
 
-            \DF\Utilities::print_r($files);
-
             foreach($files as $file_field => $file_paths)
                 $data[$file_field] = $file_paths[1];
 
             $record->fromArray($data);
             $record->save();
+
+            $this->_flushConventionCache();
 
             $this->alert('Changes saved.', 'green');
             $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
@@ -80,6 +84,8 @@ class Admin_ConventionsController extends \DF\Controller\Action
         $record = Record::find($this->_getParam('id'));
         if ($record)
             $record->delete();
+
+        $this->_flushConventionCache();
 
         $this->alert('Record deleted.', 'green');
         $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));

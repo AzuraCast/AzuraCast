@@ -25,8 +25,9 @@ class IndexController extends \DF\Controller\Action
         $this->_initStations();
 
         // Pull conventions.
-        $this->view->conventions_upcoming = Convention::getUpcomingConventions();
-        $this->view->conventions_archived = Convention::getConventionsWithArchives();
+        $conventions = Convention::getAllConventions();
+        $this->view->conventions_upcoming = $conventions['upcoming'];
+        $this->view->conventions_archived = $conventions['archived'];
 
         // Pull rotators.
         $rotators = Rotator::fetch();

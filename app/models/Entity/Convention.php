@@ -115,6 +115,23 @@ class Convention extends \DF\Doctrine\Entity
      * Static Functions
      */
 
+    public static function getAllConventions()
+    {
+        $all_cons = \DF\Cache::get('homepage_conventions');
+
+        if (!$all_cons)
+        {
+            $all_cons = array(
+                'upcoming' => self::getUpcomingConventions(),
+                'archived' => self::getConventionsWithArchives(),
+            );
+
+            \DF\Cache::save($all_cons, 'homepage_conventions', array(), 1800);
+        }
+
+        return $all_cons;
+    }
+
     public static function getUpcomingConventions()
     {
         $em = self::getEntityManager();
@@ -125,7 +142,6 @@ class Convention extends \DF\Doctrine\Entity
         $conventions = $em->createQuery('SELECT c FROM '.__CLASS__.' c WHERE (c.start_date <= :end AND c.end_date >= :start) ORDER BY c.start_date ASC')
             ->setParameter('start', gmdate('Y-m-d', $start_timestamp))
             ->setParameter('end', gmdate('Y-m-d', $end_timestamp))
-            ->useResultCache(true, 1800, 'pvl_upcoming_conventions')
             ->getArrayResult();
 
         $coverage = self::getCoverageLevels();
@@ -144,7 +160,6 @@ class Convention extends \DF\Doctrine\Entity
 
         $conventions = $em->createQuery('SELECT c FROM '.__CLASS__.' c LEFT JOIN c.archives ca WHERE ca.id IS NOT NULL AND (c.start_date <= :now) GROUP BY c.id ORDER BY c.start_date DESC')
             ->setParameter('now', gmdate('Y-m-d', time()))
-            ->useResultCache(true, 1800, 'pvl_archived_conventions')
             ->getArrayResult();
 
         $coverage = self::getCoverageLevels();

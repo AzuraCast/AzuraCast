@@ -88,7 +88,7 @@ class Image
             break;
             
             case 'png':
-                imagepng($resized_image, $dest_file, 0);
+                imagepng($resized_image, $dest_file, 5);
             break;
         }
     }   

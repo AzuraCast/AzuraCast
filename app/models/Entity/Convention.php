@@ -100,12 +100,12 @@ class Convention extends \DF\Doctrine\Entity
             $new_path_full = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_url_full;
             $new_path_thumb = \DF\File::addSuffix($new_path_full, '_thumb');
 
-            $new_url_thumb = \DF\File::addSuffix($new_url, '_thumb');
+            $new_url_thumb = \DF\File::addSuffix($new_url_full, '_thumb');
 
             \DF\Image::resizeImage($new_path_full, $new_path_full, 1150, 200);
             \DF\Image::resizeImage($new_path_full, $new_path_thumb, 575, 100);
 
-            $this->image_url = $new_url;
+            $this->image_url = $new_url_full;
             $this->thumbnail_url = $new_url_thumb;
         }
     }
@@ -181,7 +181,7 @@ class Convention extends \DF\Doctrine\Entity
         {
             return array(
                 'full'      => $row['image_url'],
-                'thumb'     => ($row['thumbnail_url']) ? $row['thumbnail_url'] : $row['image_url'],
+                'thumb'     => (isset($row['thumbnail_url'])) ? $row['thumbnail_url'] : $row['image_url'],
             );
         }
         else

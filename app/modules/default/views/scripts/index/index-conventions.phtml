@@ -8,9 +8,7 @@
             <div class="conventions">
             <? foreach($this->conventions_upcoming as $record): ?>
                 <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$record['web_url'] ?>" target="_blank">
-                    <? if ($record['image_url']): ?>
-                    <img src="<?=\DF\Url::content($record['image_url']) ?>" alt="Convention Image">
-                    <? endif; ?>
+                    <img src="<?=\DF\Url::content($record['images']['thumb']) ?>" alt="Convention Image">
                     <div class="coverage" title="<?=$record['coverage']['text'] ?>">
                         <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
                     </div>

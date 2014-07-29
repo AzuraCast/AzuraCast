@@ -8,9 +8,13 @@ use \Doctrine\Common\Collections\ArrayCollection;
  *   @index(name="search_idx", columns={"start_date", "end_date"})
  * })
  * @Entity
+ * @HasLifecycleCallbacks
  */
 class Convention extends \DF\Doctrine\Entity
 {
+    const DEFAULT_IMAGE_FULL = 'images/convention_default.png';
+    const DEFAULT_IMAGE_THUMB = 'images/convention_thumb.png';
+
     public function __construct()
     {
         $this->coverage_level = 'full';
@@ -18,6 +22,15 @@ class Convention extends \DF\Doctrine\Entity
 
         $this->archives = new ArrayCollection();
         $this->signups = new ArrayCollection();
+    }
+
+    /**
+     * @PreRemove
+     */
+    public function deleting()
+    {
+        @unlink(DF_UPLOAD_FOLDER . DIRECTORY_SEPARATOR . $this->image_url);
+        @unlink(DF_UPLOAD_FOLDER . DIRECTORY_SEPARATOR . $this->thumbnail_url);
     }
 
     /**
@@ -53,19 +66,47 @@ class Convention extends \DF\Doctrine\Entity
     /** @Column(name="image_url", type="string", length=200, nullable=true) */
     protected $image_url;
 
-    public function setImageUrl($new_url)
+    public function getImageUrl()
     {
-        if ($new_url)
+        if ($this->image_url)
+            return $this->image_url;
+        else
+            return self::DEFAULT_IMAGE_FULL;
+    }
+
+    /** @Column(name="thumbnail_url", type="string", length=200, nullable=true) */
+    protected $thumbnail_url;
+
+    public function getThumbnailUrl()
+    {
+        if ($this->thumbnail_url)
+            return $this->thumbnail_url;
+        elseif ($this->image_url)
+            return $this->image_url;
+        else
+            return self::DEFAULT_IMAGE_THUMB;
+    }
+
+    public function setImageUrl($new_url_full)
+    {
+        if ($new_url_full)
         {
-            if ($this->image_url && $this->image_url != $new_url)
-                @unlink(DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$this->image_url);
+            if ($this->image_url && $this->image_url != $new_url_full)
+            {
+                @unlink(DF_UPLOAD_FOLDER . DIRECTORY_SEPARATOR . $this->image_url);
+                @unlink(DF_UPLOAD_FOLDER . DIRECTORY_SEPARATOR . $this->thumbnail_url);
+            }
 
-            echo $new_url;
+            $new_path_full = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_url_full;
+            $new_path_thumb = \DF\File::addSuffix($new_path_full, '_thumb');
 
-            $new_path = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_url;
-            \DF\Image::resizeImage($new_path, $new_path, 1150, 200);
+            $new_url_thumb = \DF\File::addSuffix($new_url, '_thumb');
+
+            \DF\Image::resizeImage($new_path_full, $new_path_full, 1150, 200);
+            \DF\Image::resizeImage($new_path_full, $new_path_thumb, 575, 100);
 
             $this->image_url = $new_url;
+            $this->thumbnail_url = $new_url_thumb;
         }
     }
 
@@ -107,6 +148,7 @@ class Convention extends \DF\Doctrine\Entity
 
         $coverage = self::getCoverageLevels();
         array_walk($conventions, function(&$row, $key) use ($coverage) {
+            $row['images'] = self::getImages($row);
             $row['range'] = self::getDateRange($row['start_date'], $row['end_date']);
             $row['coverage'] = $coverage[$row['coverage_level']];
         });
@@ -125,11 +167,30 @@ class Convention extends \DF\Doctrine\Entity
 
         $coverage = self::getCoverageLevels();
         array_walk($conventions, function(&$row, $key) use ($coverage) {
+            $row['images'] = self::getImages($row);
             $row['range'] = self::getDateRange($row['start_date'], $row['end_date']);
             $row['coverage'] = $coverage[$row['coverage_level']];
         });
 
         return $conventions;
+    }
+
+    public static function getImages($row)
+    {
+        if (isset($row['image_url']))
+        {
+            return array(
+                'full'      => $row['image_url'],
+                'thumb'     => ($row['thumbnail_url']) ? $row['thumbnail_url'] : $row['image_url'],
+            );
+        }
+        else
+        {
+            return array(
+                'full'      => self::DEFAULT_IMAGE_FULL,
+                'thumb'     => self::DEFAULT_IMAGE_THUMB,
+            );
+        }
     }
 
     public static function getCoverageLevels()

@@ -19,7 +19,7 @@ class ConventionArchive extends \DF\Doctrine\Entity
 
     /**
      * Clear all related video items when a playlist is deleted.
-     * @PreDelete
+     * @PreRemove
      */
     public function deleting()
     {

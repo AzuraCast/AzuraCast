@@ -164,12 +164,13 @@ class ConventionManager
 
     public static function filterName(ConventionArchive $row, $name)
     {
-        $con = $row->convention->name;
+        $con = trim($row->convention->name);
+        $name = trim($name);
 
-        if (substr($name, 0, strlen($con)) == $con)
+        if (substr(strtolower($name), 0, strlen($con)) == strtolower($con))
             $name = substr($name, strlen($con));
 
-        $name = trim($name, " -:\t\n\r\0");
+        $name = trim($name, " -@:\t\n\r\0");
         return $name;
     }
 

@@ -6,8 +6,21 @@
 namespace DF;
 class File
 {
+    // Add a suffix to a file *before* its extension.
+    public static function addSuffix($file_name, $suffix)
+    {
+        $file_parts = pathinfo($file_name);
+        $new_file_name = $file_parts['filename'].$suffix.'.'.$file_parts['extension'];
+
+        if ($file_parts['dirname'])
+            return $file_parts['dirname'].DIRECTORY_SEPARATOR.$new_file_name;
+        else
+            return $new_file_name;
+    }
+
     public static function getFileExtension($file_name)
     {
+        // Significantly more performant than using pathinfo function.
         return substr($file_name, strrpos($file_name, '.')+1);
     }
     public static function getFilePath($file_name)

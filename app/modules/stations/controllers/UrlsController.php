@@ -1,5 +1,6 @@
 <?php
 use \Entity\Station;
+use \Entity\Convention;
 use \Entity\ShortUrl;
 
 class Stations_UrlsController extends \PVL\Controller\Action\Station
@@ -12,10 +13,11 @@ class Stations_UrlsController extends \PVL\Controller\Action\Station
 
         $this->view->urls = $urls;
 
+        // Auto-Generated Station URLs.
         $station_details = Station::getShortNameLookup();
         $station_categories = Station::getCategories();
-
         $station_urls = array();
+
         foreach($station_details as $short_name => $station)
         {
             $station['url'] = ShortUrl::getFullUrl($short_name);
@@ -25,6 +27,18 @@ class Stations_UrlsController extends \PVL\Controller\Action\Station
         }
 
         $this->view->station_urls = $station_urls;
+
+        // Auto-Generated Convention Archive URLs
+        $convention_details = Convention::getShortNameLookup();
+        $convention_urls = array();
+
+        foreach($convention_details as $short_name => $convention)
+        {
+            $convention['url'] = ShortUrl::getFullUrl($short_name);
+            $convention_urls[$short_name] = $convention;
+        }
+
+        $this->view->convention_urls = $convention_urls;
     }
 
     public function editAction()

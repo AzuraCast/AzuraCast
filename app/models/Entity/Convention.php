@@ -146,6 +146,7 @@ class Convention extends \DF\Doctrine\Entity
 
         $coverage = self::getCoverageLevels();
         array_walk($conventions, function(&$row, $key) use ($coverage) {
+            $row['short_name'] = self::getConventionShortName($row['name']);
             $row['images'] = self::getImages($row);
             $row['range'] = self::getDateRange($row['start_date'], $row['end_date']);
             $row['coverage'] = $coverage[$row['coverage_level']];
@@ -164,12 +165,29 @@ class Convention extends \DF\Doctrine\Entity
 
         $coverage = self::getCoverageLevels();
         array_walk($conventions, function(&$row, $key) use ($coverage) {
+            $row['short_name'] = self::getConventionShortName($row['name']);
             $row['images'] = self::getImages($row);
             $row['range'] = self::getDateRange($row['start_date'], $row['end_date']);
             $row['coverage'] = $coverage[$row['coverage_level']];
         });
 
         return $conventions;
+    }
+
+    public static function getShortNameLookup()
+    {
+        $short_names = array();
+        $archived_conventions = self::getConventionsWithArchives();
+
+        foreach($archived_conventions as $con)
+            $short_names[$con['short_name']] = $con;
+
+        return $short_names;
+    }
+
+    public static function getConventionShortName($name)
+    {
+        return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', $name)));
     }
 
     public static function getImages($row)

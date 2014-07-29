@@ -91,6 +91,12 @@ class ShortUrl extends \DF\Doctrine\Entity
         if (isset($station_urls[$origin]))
             return $station_urls[$origin];
 
+        // Check for a convention archive page (overrides manual input URLs).
+        $convention_urls = self::conventionUrls();
+
+        if (isset($convention_urls[$origin]))
+            return $convention_urls[$origin];
+
         // Check for a matching URL.
         $url = self::getRepository()->findOneBy(array('short_url' => $origin));
 
@@ -103,21 +109,39 @@ class ShortUrl extends \DF\Doctrine\Entity
 
     public static function stationUrls()
     {
-        $station_urls = array();
-        $station_short_names = Station::getShortNameLookup();
+        $urls = array();
+        $short_names = Station::getShortNameLookup();
 
-        foreach($station_short_names as $short_name => $station)
+        foreach($short_names as $short_name => $record)
         {
-            $station_urls[$short_name] = \DF\Url::route(array(
+            $urls[$short_name] = \DF\Url::route(array(
                 'module'    => 'default',
                 'controller' => 'index',
                 'action'    => 'index',
-                'id'        => $station['id'],
+                'id'        => $record['id'],
                 'autoplay'  => 'true',
             ));
         }
 
-        return $station_urls;
+        return $urls;
+    }
+
+    public static function conventionUrls()
+    {
+        $urls = array();
+        $short_names = Convention::getShortNameLookup();
+
+        foreach($short_names as $short_name => $record)
+        {
+            $urls[$short_name] = \DF\Url::route(array(
+                'module'    => 'default',
+                'controller' => 'convention',
+                'action'    => 'index',
+                'id'        => $record['id'],
+            ));
+        }
+
+        return $urls;
     }
 
     public static function stationUrl(Station $station)

@@ -44,7 +44,12 @@ class NewsManager
                 $local_url = $local_path_base;
 
                 if (!file_exists($local_path))
+                {
                     @copy($image_url, $local_path);
+
+                    // Optimize image for fast display.
+                    \DF\Image::resizeImage($local_path, $local_path, 1150, 200);
+                }
 
                 $tags = array_map('strtolower', (array)$post['tags']);
                 if (in_array('archive', $tags))

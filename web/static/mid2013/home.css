@@ -126,6 +126,10 @@ a.convention .name {
     line-height: 14px;
     bottom: 6px;
     left: 35px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 a.convention .name h4 {
     font-size: 14px;

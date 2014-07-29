@@ -218,22 +218,31 @@ class Convention extends \DF\Doctrine\Entity
 
     public static function getDateRange(\DateTime $start, \DateTime $end)
     {
-        $start_day = $start->format('M j');
+        $start_month = $start->format('M');
+        $start_day = $start->format('j');
         $start_year = $start->format('Y');
 
-        $end_day = $end->format('M j');
+        $end_month = $end->format('M');
+        $end_day = $end->format('j');
         $end_year = $end->format('Y');
 
         if ($start_year == $end_year)
         {
-            if ($start_day == $end_day)
-                return $start_day.', '.$start_year;
+            if (strcmp($start_month, $end_month) == 0)
+            {
+                if ($start_day == $end_day)
+                    return $start_month.' '.$start_day.', '.$end_year;
+                else
+                    return $start_month.' '.$start_day.'-'.$end_day.', '.$end_year;
+            }
             else
-                return $start_day.' to '.$end_day.', '.$end_year;
+            {
+                return $start_month.' '.$start_day.' to '.$end_month.' '.$end_day.', '.$end_year;
+            }
         }
         else
         {
-            return $start_day.', '.$start_year.' to '.$end_day.', '.$end_year;
+            return $start_month.' '.$start_day.', '.$start_year.' to '.$end_month.' '.$end_day.', '.$end_year;
         }
     }
 }

@@ -66,26 +66,8 @@ class Convention extends \DF\Doctrine\Entity
     /** @Column(name="image_url", type="string", length=200, nullable=true) */
     protected $image_url;
 
-    public function getImageUrl()
-    {
-        if ($this->image_url)
-            return $this->image_url;
-        else
-            return self::DEFAULT_IMAGE_FULL;
-    }
-
     /** @Column(name="thumbnail_url", type="string", length=200, nullable=true) */
     protected $thumbnail_url;
-
-    public function getThumbnailUrl()
-    {
-        if ($this->thumbnail_url)
-            return $this->thumbnail_url;
-        elseif ($this->image_url)
-            return $this->image_url;
-        else
-            return self::DEFAULT_IMAGE_THUMB;
-    }
 
     public function setImageUrl($new_url_full)
     {

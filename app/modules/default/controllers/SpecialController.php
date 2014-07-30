@@ -41,8 +41,13 @@ class SpecialController extends \DF\Controller\Action
     }
 
     public function fiestaAction()
-    {}
+    {
+        $con = \Entity\Convention::getRepository()->findOneBy(array('name' => 'Fiesta Equestria 2013'));
+        $this->redirectToRoute(array('module' => 'default', 'controller' => 'convention', 'action' => 'archive', 'id' => $con->id));
+    }
 
     public function cddAction()
-    {}
+    {
+        $this->redirectHome();
+    }
 }

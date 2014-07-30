@@ -10,8 +10,8 @@ $podcasts = \Entity\Podcast::fetchArray('name');
         <a href="<?=$this->route(array('controller' => 'about')) ?>"><i class="icon-info-sign"></i> About</a>
         <ul class="dropdown-menu">
             <li><a href="<?=$this->route(array('controller' => 'about')) ?>"><i class="icon-info-sign"></i> About Ponyville Live!</a></li>
-            <li><a href="<?=$this->route(array('controller' => 'events')) ?>"><i class="icon-group"></i> Conventions</a></li>
-            <li><a href="<?=$this->route(array('controller' => 'events', 'action' => 'schedule')) ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
+            <li><a href="<?=$this->route(array('controller' => 'convention')) ?>"><i class="icon-group"></i> Pony Conventions</a></li>
+            <li><a href="<?=$this->route(array('controller' => 'schedule')) ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
             <li class="divider"></li>
             <li><a href="<?=$this->route(array('action' => 'app')) ?>"><i class="icon-cloud-download"></i> Plugins &amp; Apps</a></li>
             <li><a href="http://docs.ponyvillelive.apiary.io/" target="_blank"><i class="icon-cog"></i> PVL Data API</a></li>
@@ -47,6 +47,13 @@ $podcasts = \Entity\Podcast::fetchArray('name');
         <? endforeach; ?>
         </ul>
     </li>
+    <li class="dropdown">
+        <a href="#" data-toggle="dropdown"><i class="icon-user"></i> Community</a>
+        <ul class="dropdown-menu">
+            <li><a href="http://pvlive.me/forums" target="_blank">PVL Forums</a></li>
+            <li><a href="<?=$this->route(array('action' => 'index', 'mode' => 'chat')) ?>">Chat + Player</a></li>
+        </ul>
+    </li>
 
-    <li><a href="<?=$this->route(array('action' => 'index', 'mode' => 'chat')) ?>"><i class="icon-comment"></i> Chat</a></li>
+    <li></li>
 </ul>

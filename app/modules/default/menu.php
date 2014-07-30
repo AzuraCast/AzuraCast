@@ -27,5 +27,18 @@ return array(
                 ),
             ),
         ),
+
+        'conventions' => array(
+            'label' => 'Conventions',
+            'module' => 'default',
+            'controller' => 'convention',
+            'pages' => array(
+                'convention_view' => array(
+                    'module' => 'default',
+                    'controller' => 'convention',
+                    'action' => 'index',
+                ),
+            ),
+        ),
     ),
 );

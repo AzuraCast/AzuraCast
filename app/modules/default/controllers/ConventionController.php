@@ -54,11 +54,16 @@ class ConventionController extends \DF\Controller\Action
             }
 
             $this->view->videos = $videos;
-            $this->render();
+            $this->render('archive');
         }
         else
         {
-            /* TODO: Directory of conventions. */
+            // Pull conventions.
+            $conventions = Convention::getAllConventions();
+            $this->view->conventions_upcoming = $conventions['upcoming'];
+            $this->view->conventions_archived = $conventions['archived'];
+
+            $this->render();
         }
     }
 

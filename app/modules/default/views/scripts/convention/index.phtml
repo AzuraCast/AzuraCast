@@ -1,33 +1,53 @@
 <?
-$this->headTitle($this->convention->name);
-
-$this->headLink()
-    ->appendStylesheet(\DF\Url::content('mid2013/convention.css'), 'all')
+$this->headTitle('Convention Center');
+$this->layout()->manual = true;
 ?>
 
-<? if ($this->convention->image_url): ?>
-    <? $this->placeholder('content_top')->captureStart(); ?>
-    <div id="convention_header">
-        <div class="container">
-            <div class="item">
-                <img src="<?=\DF\Url::content($this->convention->image_url) ?>" alt="Convention Thumbnail">
-            </div>
+<div class="row-fluid">
+    <div class="span4">
+        <h2>PVL! Convention Coverage</h2>
+        <p>The <b>Ponyville Live!</b> network is proud to offer free-of-charge convention streaming and recording services, when available, to any convention within the My Little Pony fan community. This is a service we are able to provide thanks to our international team of videographers.</p>
+
+        <p>Below is a list of conventions our network will be attending soon. If you're hosting a MLP convention and would like to inquire about the PVL network covering your event, please contact us at <?=$this->mailto('pr@ponyvillelive.com') ?>.</p>
+
+        <h3>Upcoming Conventions</h3>
+
+        <dl>
+        <? foreach($this->conventions_upcoming as $record): ?>
+            <? if ($record['coverage_level'] != "none"): ?>
+            <dt><a href="<?=$record['web_url'] ?>" target="_blank"><?=$record['name'] ?></a></dt>
+            <dd>
+                <?=$record['range'] ?><br>
+                <?=$record['location'] ?><br>
+                <i class="<?=$record['coverage']['icon'] ?>"></i> <?=$record['coverage']['text'] ?>
+            </dd>
+            <? endif; ?>
+        <? endforeach; ?>
+        </dl>
+    </div>
+    <div class="span8">
+        <h2>Convention Video Archives</h2>
+
+        <?
+        $cols = \DF\Utilities::columns($this->conventions_archived);
+        ?>
+        <div class="conventions row-fluid">
+            <? foreach($cols as $col): ?>
+                <div class="span6">
+                    <? foreach($col as $record): ?>
+                        <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$this->routeFromHere(array('id' => $record['id'])) ?>">
+                            <img src="<?=\DF\Url::content($record['images']['thumb']) ?>" alt="Convention Image">
+                            <div class="coverage" title="<?=$record['coverage']['text'] ?>">
+                                <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
+                            </div>
+                            <div class="name">
+                                <h4><?=$record['name'] ?></h4>
+                                <?=$record['location'] ?> &bull; <?=$record['range'] ?>
+                            </div>
+                        </a>
+                    <? endforeach; ?>
+                </div>
+            <? endforeach; ?>
         </div>
     </div>
-    <? $this->placeholder('content_top')->captureEnd(); ?>
-<? endif; ?>
-
-<? foreach($this->videos as $folder_name => $videos): ?>
-    <h2><i class="icon-folder-open"></i> <?=$folder_name ?></h2>
-
-    <div class="clearfix">
-    <? foreach($videos as $record): ?>
-        <a class="video fancybox fancybox.iframe <?=$record['type'] ?>" href="<?=$record['web_url'] ?>">
-            <img src="<?=$record['thumbnail_url'] ?>" title="<?=$record['name'] ?>">
-            <div class="name">
-                <h4><?=$record['name'] ?></h4>
-            </div>
-        </a>
-    <? endforeach; ?>
-    </div>
-<? endforeach; ?>
+</div>

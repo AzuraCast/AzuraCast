@@ -456,7 +456,8 @@ div#page_wrapper {
 }
 
 div#breadcrumb {
-	font-size: smaller;
+	font-size: 13px;
+    line-height: 14px;
 	padding: 0 20px 0px 0px;
 }
 

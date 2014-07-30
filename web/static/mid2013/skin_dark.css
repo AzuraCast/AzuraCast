@@ -36,6 +36,7 @@ html.theme_dark .navbar .nav > li > a {
 }
 
 html.theme_dark #home_header,
+html.theme_dark #convention_header,
 html.theme_dark #secondary_header_stripe {
 	background: url('headerbg_dark.jpg') center center no-repeat;
 	border-bottom: solid 2px #333;

@@ -5,7 +5,7 @@
         <div class="well no-margin">
             <h3><i class="icon-bookmark"></i> Coming Up</h3>
 
-            <div class="conventions">
+            <div class="conventions upcoming">
             <? foreach($this->conventions_upcoming as $record): ?>
                 <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$record['web_url'] ?>" target="_blank">
                     <img src="<?=\DF\Url::content($record['images']['thumb']) ?>" alt="Convention Image">

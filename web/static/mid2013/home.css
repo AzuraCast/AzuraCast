@@ -108,6 +108,9 @@ a.convention.coverage_full {
 a.convention.coverage_none {
     opacity: 0.6;
 }
+.conventions.upcoming a.convention.coverage_none img {
+    display: none;
+}
 
 a.convention:hover {
     text-decoration: none;

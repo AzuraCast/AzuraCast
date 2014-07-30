@@ -40,7 +40,7 @@ class Api_DevController extends \PVL\Controller\Action\Api
             'podcast',
             'podcast_on_station',
             'songs',
-            'conventions',
+            'convention',
             'convention_archives',
         );
 

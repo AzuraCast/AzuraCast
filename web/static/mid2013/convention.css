@@ -1,8 +1,6 @@
 #convention_header {
     background: url('headerbg.jpg') center center no-repeat;
     padding: 10px 0;
-
-    border-bottom: solid 2px #eee;
 }
 
 #convention_header img {
@@ -18,13 +16,10 @@
 a.video {
     display: block;
     position: relative;
-    float: left;
-    width: 18%;
 
     padding-bottom: 30px;
     border-radius: 5px;
-    margin-bottom: 10px;
-    margin-right: 10px;
+    margin-bottom: 15px;
 
     box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
     background: #13385E;
@@ -36,6 +31,7 @@ a.video:hover {
     text-decoration: none;
 }
 a.video img {
+    width: 100%;
     border-radius: 5px 5px 0 0;
 }
 a.video .name {

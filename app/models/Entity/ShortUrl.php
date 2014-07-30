@@ -136,7 +136,7 @@ class ShortUrl extends \DF\Doctrine\Entity
             $urls[$short_name] = \DF\Url::route(array(
                 'module'    => 'default',
                 'controller' => 'convention',
-                'action'    => 'index',
+                'action'    => 'archive',
                 'id'        => $record['id'],
             ));
         }

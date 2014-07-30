@@ -33,10 +33,10 @@ return array(
             'module' => 'default',
             'controller' => 'convention',
             'pages' => array(
-                'convention_view' => array(
+                'convention_archive' => array(
                     'module' => 'default',
                     'controller' => 'convention',
-                    'action' => 'index',
+                    'action' => 'archive',
                 ),
             ),
         ),

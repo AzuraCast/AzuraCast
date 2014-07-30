@@ -410,6 +410,7 @@
 /* Secondary Page Header Stripe */
 #secondary_header_stripe {
 	height: 40px;
+    padding: 0;
 	background: url('headerbg.jpg') center center no-repeat;
 	border-bottom: solid 2px #eee;
 }

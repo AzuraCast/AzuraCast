@@ -26,50 +26,62 @@ class ConventionController extends \DF\Controller\Action
     // Public convention archives view.
     public function indexAction()
     {
+        if ($this->hasParam('id'))
+            $this->redirectFromHere(array('action' => 'archive'));
+
+        // Pull conventions.
+        $conventions = Convention::getAllConventions();
+        $this->view->conventions_upcoming = $conventions['upcoming'];
+        $this->view->conventions_archived = $conventions['archived'];
+
+        $this->render();
+    }
+
+    public function archiveAction()
+    {
         $convention = $this->_getConvention();
 
-        if ($convention)
+        if (!$convention)
+            $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
+
+        $this->view->convention = $convention;
+
+        $videos = array();
+        $sources = array();
+        $folders = ConventionArchive::getFolders();
+
+        foreach($folders as $folder_key => $folder_name)
+            $videos[$folder_name] = array('key' => $folder_key, 'name' => $folder_name, 'videos' => array());
+
+        foreach($convention->archives as $row)
         {
-            $this->view->convention = $convention;
-
-            $videos = array();
-            $folders = ConventionArchive::getFolders();
-
-            foreach($folders as $folder_key => $folder_name)
-                $videos[$folder_name] = array();
-
-            foreach($convention->archives as $row)
+            if ($row->isPlayable())
             {
-                if ($row->isPlayable())
-                {
-                    $folder_name = $folders[$row->folder];
-                    $videos[$folder_name][] = $row;
-                }
+                $folder_name = $folders[$row->folder];
+                $videos[$folder_name]['videos'][] = $row;
             }
-
-            foreach($videos as $folder_name => $rows)
+            else
             {
-                if (empty($rows))
-                    unset($videos[$folder_name]);
+                $sources[] = $row;
             }
-
-            $this->view->videos = $videos;
-            $this->render('archive');
         }
-        else
+
+        foreach($videos as $folder_name => $row)
         {
-            // Pull conventions.
-            $conventions = Convention::getAllConventions();
-            $this->view->conventions_upcoming = $conventions['upcoming'];
-            $this->view->conventions_archived = $conventions['archived'];
-
-            $this->render();
+            if (empty($row['videos']))
+                unset($videos[$folder_name]);
         }
+
+        $this->view->videos = $videos;
+        $this->view->sources = $sources;
+
+        // Pull conventions.
+        $conventions = Convention::getAllConventions();
+        $this->view->conventions_archived = $conventions['archived'];
     }
 
     public function signupAction()
     {
 
     }
-
 }

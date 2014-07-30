@@ -280,4 +280,9 @@ class Utilities
         $items_per_col = ceil($items_total / $num_cols);
         return array_chunk($array, $items_per_col, $preserve_keys);
     }
+
+    public static function rows($array, $num_per_row = 3, $preserve_keys = true)
+    {
+        return array_chunk($array, $num_per_row, $preserve_keys);
+    }
 }

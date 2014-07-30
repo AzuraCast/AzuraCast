@@ -361,12 +361,30 @@ div.clear {
 	margin-left: 0;
 	margin-right: 0;
 }
-.nav-list > li > a {
-	padding: 1px 3px;
+.nav-list li {
+    line-height: 13px;
+}
+.nav-list > li > span {
+    display: block;
+}
+.nav-list > li > a,
+.nav-list > li > span {
+	padding: 4px 0px;
 }
 .nav-header {
-	padding: 1px 0;
+	padding: 2px 0;
 	font-size: 12px;
+}
+
+.nav-list li.active {
+    margin-left: -5px;
+    margin-right: -5px;
+}
+.nav-list li.active > a,
+.nav-list li.active > span {
+    padding-left: 5px;
+
+    border-radius: 3px;
 }
 
 .floatbox {

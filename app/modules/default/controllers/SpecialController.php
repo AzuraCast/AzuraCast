@@ -1,5 +1,7 @@
 <?php
 use \Entity\Station;
+use \Entity\Convention;
+use \Entity\Settings;
 
 class SpecialController extends \DF\Controller\Action
 {
@@ -40,9 +42,18 @@ class SpecialController extends \DF\Controller\Action
         $this->view->autoplay = true;
     }
 
+    public function galaconAction()
+    {
+        $con = Convention::getRepository()->findOneBy(array('name' => 'GalaCon 2014'));
+        $this->view->convention = $con;
+
+        $this->view->special_event_embed = trim(Settings::getSetting('special_event_embed_code'));
+        $this->view->special_chat_embed = trim(Settings::getSetting('special_event_chat_code'));
+    }
+
     public function fiestaAction()
     {
-        $con = \Entity\Convention::getRepository()->findOneBy(array('name' => 'Fiesta Equestria 2013'));
+        $con = Convention::getRepository()->findOneBy(array('name' => 'Fiesta Equestria 2013'));
         $this->redirectToRoute(array('module' => 'default', 'controller' => 'convention', 'action' => 'archive', 'id' => $con->id));
     }
 

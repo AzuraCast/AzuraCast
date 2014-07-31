@@ -34,7 +34,7 @@ class IndexController extends \DF\Controller\Action
         $this->view->rotators = $rotators;
 
         // Special event flagging and special formatting.
-        $special_event = (Settings::getSetting('special_event', 0) == 1);
+        $special_event = \PVL\Utilities::showSpecialEventsMode();
         $this->view->special_event = $special_event;
 
         if ($special_event)
@@ -46,6 +46,9 @@ class IndexController extends \DF\Controller\Action
                 $this->view->station_id = $autoplay_station;
                 $this->view->autoplay = true;
             }
+
+            $this->view->special_event_embed = trim(Settings::getSetting('special_event_embed_code'));
+            $this->view->special_chat_embed = trim(Settings::getSetting('special_event_chat_code'));
         }
 
         $this->view->autoplay = (bool)$this->_getParam('autoplay', true);

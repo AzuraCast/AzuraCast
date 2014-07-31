@@ -1,0 +1,37 @@
+body h1.title {
+    display: none;
+}
+
+#galacon_wrapper {
+    min-width: 960px;
+    min-height: 1100px;
+
+    margin-top: -10px;
+    margin-bottom: -40px;
+
+    position: relative;
+    background: url('../images/galacon_backdrop.png') top center no-repeat;
+}
+
+#galacon_stream {
+    border-radius: 25px;
+    padding-top: 97px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#galacon_stream,
+#galacon_stream > iframe {
+    width: 655px;
+    height: 395px;
+}
+
+#galacon_chat {
+    padding-top: 112px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#galacon_chat,
+#galacon_chat > iframe {
+    width: 522px;
+    height: 393px;
+}

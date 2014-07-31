@@ -1,8 +1,31 @@
 <?php
 namespace PVL;
 
+use \Entity\Settings;
+use \Entity\Station;
+
 class Utilities
 {
+    public static function showSpecialEventsMode()
+    {
+        if (Settings::getSetting('special_event', 0) == 1)
+        {
+            return true;
+        }
+        elseif (Settings::getSetting('special_event_if_stream_active', 0) == 1)
+        {
+            $stream = Station::getRepository()->findOneBy(array('name' => 'PVL Special Events'));
+            if ($stream instanceof Station)
+                return $stream->isPlaying();
+            else
+                return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public static function parseUrl($url)
     {
         $url_parts = @parse_url($url);

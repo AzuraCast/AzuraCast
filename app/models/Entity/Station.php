@@ -244,6 +244,16 @@ class Station extends \DF\Doctrine\Entity
         return false;
     }
 
+    public function isPlaying()
+    {
+        $np_data = (array)$this->nowplaying_data;
+
+        if (isset($np_data['status']))
+            return ($np_data['status'] != 'offline');
+        else
+            return false;
+    }
+
     /**
      * Static Functions
      */

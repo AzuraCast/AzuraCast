@@ -12,34 +12,28 @@ return array(
         
         'groups'        => array(
 
-            'special' => array(
-                'legend' => 'PVL Special Events Streaming Settings',
-                'elements' => array(
-
-                    'special_nowplaying_title' => array('text', array(
-                        'label' => 'Now Playing Title',
-                        'class' => 'half-width',
-                    )),
-
-                    'special_nowplaying_artist' => array('text', array(
-                        'label' => 'Now Playing Event Name (Artist)',
-                        'class' => 'half-width',
-                    )),
-
-                ),
-            ),
-
             'flags' => array(
                 'legend' => 'Site Content Display Flags',
                 'elements' => array(
 
+                    'special_event_if_stream_active' => array('radio', array(
+                        'label' => 'Automatically Enable Special Events when PVL Stream Live',
+                        'description' => 'This will cause the special event code below to automatically preempt the homepage rotator if any stream is active on the PVL Special Events channel.',
+                        'multiOptions' => array(
+                            0 => 'No',
+                            1 => 'Yes',
+                        ),
+                        'default' => 1,
+                    )),
+
                     'special_event' => array('radio', array(
-                        'label' => 'Special Event - Currently Streaming',
+                        'label' => 'Special Event - Manual Override',
                         'description' => 'Causes an advertisement to tune in to the stream to preempt any other rotating images on the homepage.',
                         'multiOptions' => array(
                             0 => 'No',
                             1 => 'Yes',
                         ),
+                        'default' => 0,
                     )),
 
                     'special_event_embed_code' => array('textarea', array(
@@ -56,7 +50,7 @@ return array(
 
                     'special_event_station_id' => array('select', array(
                         'label' => 'Special Event - Default Station',
-                        'description' => 'Configure a station to autoplay on the homepage when loaded. This should only be used for rare circumstances.',
+                        'description' => 'Configure a station to autoplay on the homepage when loaded. This should only be used when a radio station should be shown instead of the video stream (uncommon).',
                         'multiOptions' => \Entity\Station::fetchSelect(TRUE),
                     )),
 

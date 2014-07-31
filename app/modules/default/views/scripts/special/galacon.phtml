@@ -1,0 +1,26 @@
+<?php
+$this->headLink()
+    ->appendStylesheet(\DF\Url::content('mid2013/convention.css'), 'all')
+    ->appendStylesheet(\DF\Url::content('special/galacon.css'), 'all')
+?>
+
+<? $this->placeholder('content_top')->captureStart(); ?>
+<div id="convention_header" class="rich_header">
+    <div class="container">
+        <div class="well">
+            <div class="item">
+                <img src="<?=\DF\Url::content($this->convention->image_url) ?>" alt="Convention Thumbnail">
+            </div>
+        </div>
+    </div>
+</div>
+<? $this->placeholder('content_top')->captureEnd(); ?>
+
+<div id="galacon_wrapper">
+    <div id="galacon_stream">
+        <?=$this->special_event_embed ?>
+    </div>
+    <div id="galacon_chat">
+        <?=$this->renderHere('chat', TRUE) ?>
+    </div>
+</div>

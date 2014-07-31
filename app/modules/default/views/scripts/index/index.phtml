@@ -10,38 +10,12 @@ $this->render_mode = 'homepage';
     <? if ($this->special_event): ?>
         <div class="well">
             <div class="special_event">
-                <?
-                if ($this->auth->isLoggedIn())
-                {
-                    $user = $this->auth->getLoggedInUser();
-                    $chat_username = $user->name;
-                }
-                else
-                {
-                    $chat_username = 'PVL_'.mt_rand(0, 10000);
-                }
-
-                $skin = \PVL\Customization::get('theme');
-                if ($skin == 'dark')
-                    $chat_skin = 'css/black.css';
-                else
-                    $chat_skin = 'css/pvl_light.css';
-
-                $special_event_embed = trim(\Entity\Settings::getSetting('special_event_embed_code'));
-                $special_chat_embed = trim(\Entity\Settings::getSetting('special_event_chat_code'));
-                ?>
-
-                <script type="text/javascript">
-                var PVL_ChatUser = '<?=$chat_username ?>';
-                var PVL_ChatSkin = '<?=$skin ?>';
-                </script>
-
                 <div class="row-fluid">
-                <? if (empty($special_chat_embed)): ?>
-                    <div class="span12"><?=$special_event_embed ?></div>
+                <? if (empty($this->special_chat_embed)): ?>
+                    <div class="span12"><?=$this->special_event_embed ?></div>
                 <? else: ?>
-                    <div class="span7"><?=$special_event_embed ?></div>
-                    <div class="span5"><?=$special_chat_embed ?></div>
+                    <div class="span7"><?=$this->special_event_embed ?></div>
+                    <div class="span5"><?=$this->renderHere('chat', TRUE) ?></div>
                 <? endif; ?>
                 </div>
             </div>

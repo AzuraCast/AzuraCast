@@ -2,10 +2,10 @@
 	z-index: 1000;
 	width: auto;
 	
-	height: 42px;
-	
 	box-shadow: 1px 1px 2px #000;
 }
+
+.pvl-navbar,
 .pvl-navbar-inner,
 .pvl-navbar-inner a {
   height: 42px;
@@ -20,6 +20,9 @@
 }
 
 .pvl-navbar-inner a {
-  height: 42px;
-  overflow: hidden;
+    text-decoration: none !important;
+}
+
+.pvl-navbar-inner a img {
+    border: 0 !important;
 }

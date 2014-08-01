@@ -13,10 +13,10 @@ if (jQuery) {
 
     var pvl_static_base = '//ponyvillelive.com/static';
 
-	(function($) { 
+    (function($) {
 
-		// Load supporting CSS.
-		$("head").append("<link rel='stylesheet' href='"+pvl_static_base+"/header/header.css' type='text/css' media='screen'>");
+        // Load supporting CSS.
+        $("head").append("<link rel='stylesheet' href='"+pvl_static_base+"/header/header.css' type='text/css' media='screen'>");
 
         // Move existing link to top of body if detected, or recreate.
         if ($('#pvl_header_link').length > 0)
@@ -28,6 +28,6 @@ if (jQuery) {
         header_link.wrap('<div class="pvl-navbar-inner" />').wrap('<div class="pvl-navbar" />');
         header_link.html('<img src="'+pvl_static_base+'/header/header_dark.png" alt="This station is a proud partner of Ponyville Live! - Ponyville Live, Bringing Pony People Together.">');
 
-	})(jQuery);
-
+    })(jQuery);
+    
 }

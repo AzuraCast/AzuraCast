@@ -13,6 +13,8 @@ class User extends \DF\Doctrine\Entity
     public function __construct()
     {
         $this->roles = new ArrayCollection;
+        $this->external_accounts = new ArrayCollection;
+
         $this->time_created = time();
         $this->time_updated = time();
     }
@@ -101,6 +103,11 @@ class User extends \DF\Doctrine\Entity
      * )
      */
     protected $roles;
+
+    /**
+     * @ManyToOne(targetEntity="UserExternal", mappedBy="user")
+     */
+    protected $external_accounts;
 
     /**
      * Static Functions

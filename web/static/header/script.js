@@ -4,7 +4,7 @@
  *
  * Usage:
  * Immediately after <body> tag, add:
- * <a id="pvl_header_link" href="http://www.ponyvillelive.com/" target="_blank">Ponyville Live!</a>
+ * <a id="pvl_header_link" href="http://ponyvillelive.com/" target="_blank">Ponyville Live!</a>
  * <script type="text/javascript" src="http://www.ponyvillelive.com/static/header/script.js"></script>
  */
 
@@ -29,5 +29,5 @@ if (jQuery) {
         header_link.html('<img src="'+pvl_static_base+'/header/header_dark.png" alt="This station is a proud partner of Ponyville Live! - Ponyville Live, Bringing Pony People Together.">');
 
     })(jQuery);
-    
+
 }

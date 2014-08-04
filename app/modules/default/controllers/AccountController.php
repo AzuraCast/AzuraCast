@@ -1,5 +1,6 @@
 <?php
 use \Entity\User;
+use \Entity\UserExternal;
 
 class AccountController extends \DF\Controller\Action
 {
@@ -56,9 +57,9 @@ class AccountController extends \DF\Controller\Action
     {
         $form = new \DF\Form($this->current_module_config->forms->login);
 
-        if ($this->_hasParam('provider'))
+        if ($this->hasParam('provider'))
         {
-            $provider_name = $this->_getParam('provider');
+            $provider_name = $this->getParam('provider');
  
             try
             {
@@ -72,25 +73,7 @@ class AccountController extends \DF\Controller\Action
                 {
                     $user_profile = $adapter->getUserProfile();
 
-                    $user = User::getRepository()->findOneBy(array(
-                        'auth_external_provider' => $provider_name,
-                        'auth_external_id' => $user_profile->identifier,
-                    ));
-
-                    if (!($user instanceof User))
-                    {
-                        $user = new User;
-                        $user->fromArray(array(
-                            'auth_external_provider'    => $provider_name,
-                            'auth_external_id'          => $user_profile->identifier,
-                            'email'                     => $user_profile->email,
-                            'name'                      => $user_profile->displayName,
-                            'avatar_url'                => $user_profile->photoURL,
-                        ));
-                        $user->generateRandomPassword();
-                        $user->save();
-                    }
-
+                    $user = UserExternal::processExternal($provider_name, $user_profile);
                     $this->auth->setUser($user);
                 }
             }
@@ -297,5 +280,45 @@ class AccountController extends \DF\Controller\Action
         $ha_config['base_url'] = $this->view->routeFromHere(array('action' => 'hybrid'));
 
         return $ha_config;
+    }
+
+    public function mergeAction()
+    {
+        set_time_limit(600);
+
+        $this->acl->checkPermission('administer all');
+        $this->doNotRender();
+
+        // Get all accounts with external auth.
+        $external_accounts_raw = $this->em->createQuery('SELECT u FROM Entity\User u WHERE u.auth_external_provider IS NOT NULL')
+            ->getArrayResult();
+
+        // Delete all accounts with external auth.
+        $this->em->createQuery('DELETE FROM Entity\User u WHERE u.auth_external_provider IS NOT NULL')->execute();
+
+        // Loop through all external accounts and call External Auth to get/create proper associations.
+        foreach($external_accounts_raw as $account)
+        {
+            $provider = $account['auth_external_provider'];
+
+            $profile = new \stdClass;
+            $profile->email = $account['email'];
+            $profile->displayName = $account['name'];
+            $profile->photoURL = $account['avatar_url'];
+            $profile->identifier = $account['auth_external_id'];
+
+            $user = UserExternal::processExternal($provider, $profile);
+
+            if (!empty($account['customization']) && empty($user->customization))
+            {
+                $user->customization = $account['customization'];
+                $user->save();
+            }
+
+            $this->em->clear();
+        }
+
+        echo 'All accounts migrated!';
+        exit;
     }
 }

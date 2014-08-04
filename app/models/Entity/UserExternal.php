@@ -14,19 +14,19 @@ class UserExternal extends \DF\Doctrine\Entity
     {}
 
     /**
-     * @Column(name="user_id", type="integer")
-     * @Id
-     */
-    protected $user_id;
-
-    /**
      * @Column(name="provider", type="string", length=255)
      * @Id
      */
     protected $provider;
 
-    /** @Column(name="external_id", type="string", length=255) */
+    /**
+     * @Column(name="external_id", type="string", length=255)
+     * @Id
+     */
     protected $external_id;
+
+    /** @Column(name="user_id", type="integer") */
+    protected $user_id;
 
     /** @Column(name="avatar_url", type="string", length=255, nullable=true) */
     protected $avatar_url;
@@ -45,34 +45,37 @@ class UserExternal extends \DF\Doctrine\Entity
 
     public static function processExternal($provider, $user_profile)
     {
-        $email = $user_profile->email;
+        $external = self::getRepository()->findOneBy(array('provider' => $provider, 'external_id' => $user_profile->identifier));
 
-        // Find or create user account.
-        $user = User::getRepository()->findOneBy(array('email' => $email));
-
-        if (!($user instanceof User))
+        if ($external instanceof self)
         {
-            $user = new User;
-            $user->email = $email;
-            $user->name = $user_profile->displayName;
-            $user->avatar_url = $user_profile->photoURL;
-            $user->generateRandomPassword();
-            $user->save();
+            return $external->user;
         }
-
-        // Find or create external auth account.
-        $external = self::getRepository()->findOneBy(array('user_id' => $user->id, 'provider' => $provider));
-
-        if (!($external instanceof self))
+        else
         {
-            $external = new self;
-            $external->user = $user;
-            $external->provider = $provider;
-            $external->external_id = $user_profile->identifier;
-            $external->avatar_url = $user_profile->photoURL;
-            $external->save();
-        }
+            // Find or create user account.
+            $user = User::getRepository()->findOneBy(array('email' => $email));
 
-        return $user;
+            if (!($user instanceof User)) {
+                $user = new User;
+                $user->email = $email;
+                $user->name = $user_profile->displayName;
+                $user->avatar_url = $user_profile->photoURL;
+                $user->generateRandomPassword();
+                $user->save();
+            }
+
+            if (!($external instanceof self)) {
+                $external = new self;
+                $external->provider = $provider;
+                $external->external_id = $user_profile->identifier;
+
+                $external->user = $user;
+                $external->avatar_url = $user_profile->photoURL;
+                $external->save();
+            }
+
+            return $user;
+        }
     }
 }

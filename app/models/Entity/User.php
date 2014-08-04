@@ -105,7 +105,7 @@ class User extends \DF\Doctrine\Entity
     protected $roles;
 
     /**
-     * @ManyToOne(targetEntity="UserExternal", mappedBy="user")
+     * @OneToMany(targetEntity="UserExternal", mappedBy="user")
      */
     protected $external_accounts;
 

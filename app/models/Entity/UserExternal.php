@@ -51,12 +51,13 @@ class UserExternal extends \DF\Doctrine\Entity
         {
             return $external->user;
         }
-        else
+        else if (!empty($user_profile->email))
         {
             // Find or create user account.
             $user = User::getRepository()->findOneBy(array('email' => $user_profile->email));
 
-            if (!($user instanceof User)) {
+            if (!($user instanceof User))
+            {
                 $user = new User;
                 $user->email = $user_profile->email;
                 $user->name = $user_profile->displayName;
@@ -65,17 +66,19 @@ class UserExternal extends \DF\Doctrine\Entity
                 $user->save();
             }
 
-            if (!($external instanceof self)) {
-                $external = new self;
-                $external->provider = $provider;
-                $external->external_id = $user_profile->identifier;
+            $external = new self;
+            $external->provider = $provider;
+            $external->external_id = $user_profile->identifier;
 
-                $external->user = $user;
-                $external->avatar_url = $user_profile->photoURL;
-                $external->save();
-            }
+            $external->user = $user;
+            $external->avatar_url = $user_profile->photoURL;
+            $external->save();
 
             return $user;
+        }
+        else
+        {
+            throw new \DF\Exception\DisplayOnly('Social login not linked to an external account!');
         }
     }
 }

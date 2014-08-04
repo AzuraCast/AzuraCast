@@ -289,6 +289,9 @@ class AccountController extends \DF\Controller\Action
         $this->acl->checkPermission('administer all');
         $this->doNotRender();
 
+        // Remove all accounts with no e-mail.
+        $this->em->createQuery('DELETE FROM Entity\User u WHERE u.email IS NULL')->execute();
+
         // Get all accounts with external auth.
         $external_accounts_raw = $this->em->createQuery('SELECT u FROM Entity\User u WHERE u.auth_external_provider IS NOT NULL')
             ->getArrayResult();

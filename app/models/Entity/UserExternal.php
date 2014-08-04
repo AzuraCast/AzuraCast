@@ -54,11 +54,11 @@ class UserExternal extends \DF\Doctrine\Entity
         else
         {
             // Find or create user account.
-            $user = User::getRepository()->findOneBy(array('email' => $email));
+            $user = User::getRepository()->findOneBy(array('email' => $user_profile->email));
 
             if (!($user instanceof User)) {
                 $user = new User;
-                $user->email = $email;
+                $user->email = $user_profile->email;
                 $user->name = $user_profile->displayName;
                 $user->avatar_url = $user_profile->photoURL;
                 $user->generateRandomPassword();

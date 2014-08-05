@@ -26,12 +26,19 @@ class ProfileController extends \DF\Controller\Action
 
         // Create song lists.
         $song_lists = array(
-            'liked' => array(
-                'name' => 'Songs I Liked',
-                'items' => array(),
-            ),
             'requested' => array(
                 'name' => 'Songs I Requested',
+                'icon' => 'icon-question-sign',
+                'items' => array(),
+            ),
+            'liked' => array(
+                'name' => 'Songs I Liked',
+                'icon' => 'icon-thumbs-up',
+                'items' => array(),
+            ),
+            'disliked' => array(
+                'name' => 'Songs I Disliked',
+                'icon' => 'icon-thumbs-down',
                 'items' => array(),
             ),
         );
@@ -47,7 +54,11 @@ class ProfileController extends \DF\Controller\Action
                 'station' => $row['station'],
                 'song' => $row['song'],
             );
-            $song_lists['liked']['items'][] = $item;
+
+            if ((int)$row['vote'] > 0)
+                $song_lists['liked']['items'][] = $item;
+            else
+                $song_lists['disliked']['items'][] = $item;
         }
 
         $requested_raw = $this->em->createQuery('SELECT sr, s, tr, st FROM Entity\StationRequest sr JOIN sr.station st JOIN sr.track tr JOIN tr.song s WHERE sr.user_id = :user_id ORDER BY sr.timestamp DESC')

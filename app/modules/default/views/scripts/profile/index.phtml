@@ -53,45 +53,60 @@ $this->headTitle('My Profile');
         </table>
     </div>
     <div class="span8">
-    <? foreach($this->song_lists as $list): ?>
-        <h2><?=$list['name'] ?></h2>
-
-        <table class="datatable table-striped">
-            <colgroup>
-                <col width="7%">
-                <col width="20%">
-                <col width="25%">
-                <col width="25%">
-                <col width="23%">
-            </colgroup>
-            <thead>
-                <tr>
-                    <th colspan="2">Station</th>
-                    <th>Song Title</th>
-                    <th>Artist</th>
-                    <th>Date/Time</th>
-                </tr>
-            </thead>
-            <tbody>
-            <? foreach($list['items'] as $row): ?>
-                <tr class="input">
-                    <td class="center"><img src="<?=\DF\Url::content($row['station']['image_url']) ?>"></td>
-                    <td>
-                        <?=$row['station']['name'] ?>
-                    </td>
-                    <td>
-                        <?=$row['song']['title'] ?>
-                    </td>
-                    <td>
-                        <?=$row['song']['artist'] ?>
-                    </td>
-                    <td>
-                        <?=date('F j, Y g:ia', $row['timestamp']) ?>
-                    </td>
-                </tr>
+        <div class="tabbable">
+            <ul class="nav nav-pills">
+            <? $i = 0; ?>
+            <? foreach($this->song_lists as $list_key => $list): ?>
+                <li class="<? if ($i == 0): ?>active<? endif; ?>"><a href="#list_<?=$list_key ?>" data-toggle="tab"><i class="<?=$list['icon'] ?>"></i> <?=$list['name'] ?> (<?=count($list['items']) ?>)</a></li>
+                <? $i++; ?>
             <? endforeach; ?>
-            </tbody>
-        </table>
-    <? endforeach; ?>
+            </ul>
+            <div class="tab-content">
+            <? $i = 0; ?>
+            <? foreach($this->song_lists as $list_key => $list): ?>
+                <div class="tab-pane <? if ($i == 0): ?>active<? endif; ?>" id="list_<?=$list_key ?>">
+                    <h2><i class="<?=$list['icon'] ?>"></i> <?=$list['name'] ?></h2>
+
+                    <table class="datatable table-striped">
+                        <colgroup>
+                            <col width="7%">
+                            <col width="20%">
+                            <col width="25%">
+                            <col width="25%">
+                            <col width="23%">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th colspan="2">Station</th>
+                            <th>Song Title</th>
+                            <th>Artist</th>
+                            <th>Date/Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <? foreach($list['items'] as $row): ?>
+                            <tr class="input">
+                                <td class="center"><img src="<?=\DF\Url::content($row['station']['image_url']) ?>"></td>
+                                <td>
+                                    <?=$row['station']['name'] ?>
+                                </td>
+                                <td>
+                                    <?=$row['song']['title'] ?>
+                                </td>
+                                <td>
+                                    <?=$row['song']['artist'] ?>
+                                </td>
+                                <td>
+                                    <?=date('F j, Y g:ia', $row['timestamp']) ?>
+                                </td>
+                            </tr>
+                        <? endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <? $i++; ?>
+            <? endforeach; ?>
+            </div>
+        </div>
     </div>
 </div>

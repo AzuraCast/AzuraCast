@@ -1,0 +1,97 @@
+<?
+$this->headTitle('My Profile');
+?>
+
+<div class="row-fluid">
+    <div class="span4">
+        <div class="buttons pull-right">
+            <?=$this->button(array(
+                'type'      => 'small',
+                'class'     => 'pull-right',
+                'icon'      => 'icon-pencil',
+                'href'      => $this->routeFromHere(array('action' => 'edit')),
+                'text'      => 'Edit Profile',
+            )) ?>
+        </div>
+        <h2>Basic Info</h2>
+
+        <div class="well">
+            <div class="media clearfix">
+                <a class="pull-left" href="http://gravatar.com" target="_blank" title="Click to configure your avatar on Gravatar's web site.">
+                    <img class="media-object" src="<?=$this->user->avatar ?>">
+                </a>
+                <div class="media-body">
+                    <div><big><?=$this->user->name ?></big></div>
+                    <div><?=$this->mailto($this->user->email) ?></div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Linked Accounts</h2>
+        <table class="datatable table-striped">
+            <colgroup>
+                <col width="10%">
+                <col width="90%">
+            </colgroup>
+            <tbody>
+            <? foreach($this->external_providers as $provider_key => $provider_info): ?>
+                <tr class="input">
+                    <td class="center"><i class="large-icon <?=$provider_info['icon'] ?>"></i></td>
+                    <td>
+                    <? if ($provider_info['existing']): ?>
+                        <div><small><?=$provider_info['name'] ?>:</small></div>
+                        <div><big><?=$provider_info['existing']->name ?></big></div>
+                        <div><a href="<?=$this->route(array('module' => 'default', 'controller' => 'account', 'action' => 'unlink', 'provider' => $provider_key)) ?>">Unlink Account</a></div>
+                    <? else: ?>
+                        <div><big><?=$provider_info['name'] ?></big></div>
+                        <div><a href="<?=$this->route(array('module' => 'default', 'controller' => 'account', 'action' => 'link', 'provider' => $provider_key)) ?>">Link Account</a></div>
+                    <? endif; ?>
+                    </td>
+                </tr>
+            <? endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <div class="span8">
+    <? foreach($this->song_lists as $list): ?>
+        <h2><?=$list['name'] ?></h2>
+
+        <table class="datatable table-striped">
+            <colgroup>
+                <col width="7%">
+                <col width="20%">
+                <col width="25%">
+                <col width="25%">
+                <col width="23%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th colspan="2">Station</th>
+                    <th>Song Title</th>
+                    <th>Artist</th>
+                    <th>Date/Time</th>
+                </tr>
+            </thead>
+            <tbody>
+            <? foreach($list['items'] as $row): ?>
+                <tr class="input">
+                    <td class="center"><img src="<?=\DF\Url::content($row['station']['image_url']) ?>"></td>
+                    <td>
+                        <?=$row['station']['name'] ?>
+                    </td>
+                    <td>
+                        <?=$row['song']['title'] ?>
+                    </td>
+                    <td>
+                        <?=$row['song']['artist'] ?>
+                    </td>
+                    <td>
+                        <?=date('F j, Y g:ia', $row['timestamp']) ?>
+                    </td>
+                </tr>
+            <? endforeach; ?>
+            </tbody>
+        </table>
+    <? endforeach; ?>
+    </div>
+</div>

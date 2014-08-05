@@ -98,11 +98,14 @@ form span.help-inline {
 form div.control-group { 
 	margin: 15px 0;
 }
+form legend {
+    margin: 0;
+}
 form legend + div.control-group {
 	margin-top: 0px;
 }
 form fieldset {
-	margin-bottom: 25px;
+	margin-bottom: 0px;
 }
 form div.clearfix label {
 	font-weight: bold;

@@ -6,6 +6,16 @@ class AccountController extends \DF\Controller\Action
 {
     public function indexAction()
     {
+        if ($this->auth->isLoggedIn())
+            $this->redirectToRoute(array('module' => 'default', 'controller' => 'profile'));
+        else
+            $this->redirectFromHere(array('action' => 'login'));
+    }
+
+    public function profileAction()
+    {
+        $this->redirectToRoute(array('controller' => 'profile'));
+        return;
     }
     
     public function registerAction()
@@ -79,7 +89,10 @@ class AccountController extends \DF\Controller\Action
             }
             catch(\Exception $e)
             {
-                $this->alert($e->getMessage(), 'red');
+                if ($e instanceof \PVL\Exception\AccountNotLinked)
+                    $this->alert('<b>Your social network account is not linked to a PVL account yet!</b><br>Sign in below, or create a new PVL account, then link your social accounts from your profile.', 'red');
+                else
+                    $this->alert($e->getMessage(), 'red');
             }
         }
         else if ($_POST)
@@ -113,7 +126,58 @@ class AccountController extends \DF\Controller\Action
         if ($this->auth->isLoggedIn())
             $this->redirectToStoredReferrer('login', $default_url);
 
+        $this->view->external_providers = UserExternal::getExternalProviders();
         $this->view->form = $form;
+    }
+
+    public function linkAction()
+    {
+        $this->acl->checkPermission('is logged in');
+        $this->doNotRender();
+
+        // Link external account.
+        $user = $this->auth->getLoggedInUser();
+
+        $provider_name = $this->getParam('provider');
+
+        $ha_config = $this->_getHybridConfig();
+        $hybridauth = new \Hybrid_Auth($ha_config);
+
+        // try to authenticate with the selected provider
+        $adapter = $hybridauth->authenticate($provider_name);
+
+        if ($hybridauth->isConnectedWith($provider_name))
+        {
+            $user_profile = $adapter->getUserProfile();
+            UserExternal::processExternal($provider_name, $user_profile, $user);
+
+            $this->alert('<b>Account successfully linked!</b>', 'green');
+
+            $this->redirectToRoute(array('module' => 'default', 'controller' => 'profile'));
+            return;
+        }
+    }
+
+    public function unlinkAction()
+    {
+        $this->acl->checkPermission('is logged in');
+        $this->doNotRender();
+
+        // Unlink external account.
+        $user = $this->auth->getLoggedInUser();
+
+        $provider_name = $this->getParam('provider');
+
+        foreach($user->external_accounts as $acct)
+        {
+            if ($acct->provider == $provider_name)
+                $acct->delete();
+        }
+
+        $this->alert('<b>Account successfully unlinked!</b>', 'green');
+
+        $this->redirectToRoute(array('module' => 'default', 'controller' => 'profile'));
+        return;
     }
 
     public function hybridAction()
@@ -194,136 +258,11 @@ class AccountController extends \DF\Controller\Action
         $this->redirectHome();
     }
 
-    public function profileAction()
-    {
-        $form_config = $this->current_module_config->forms->register->toArray();
-        
-        $user = $this->auth->getLoggedInUser();
-        $form = new \DF\Form($form_config);
-        $form->setDefaults($user->toArray());
-        $this->view->form = $form;
-    }
-    
-    public function editprofileAction()
-    {
-        $user = $this->auth->getLoggedInUser();
-        $form = new \DF\Form($this->current_module_config->forms->profile);
-        $form->setDefaults($user->toArray());
-        
-        if($_POST && $form->isValid($_POST))
-        {
-            $data = $form->getValues();
-            
-            if (!empty($data['new_password']))
-                $user['auth_password'] = $data['new_password'];
-            
-            $user->fromArray($data);
-            $user->save();
-            
-            $this->alert('Profile saved!', 'green');
-            $this->redirectHome();
-            return;
-        }
-
-        $this->view->headTitle('Edit Profile');
-        $this->renderForm($form);
-    }
-
-    /**
-     * Site Customization
-     */
-
-    public function themeAction()
-    {
-        $skin = $this->_getParam('skin', 'toggle');
-
-        $current_skin = \PVL\Customization::get('theme');
-
-        if ($skin == "toggle")
-            $new_skin = ($current_skin == "dark") ? 'light' : 'dark';
-        else
-            $new_skin = $skin;
-
-        \PVL\Customization::set('theme', $new_skin);
-
-        $this->redirectToReferrer();
-        return;
-    }
-
-    public function timezoneAction()
-    {
-        $form = new \DF\Form($this->current_module_config->forms->timezone);
-        $form->setDefaults(array(
-            'timezone'      => \PVL\Customization::get('timezone'),
-        ));
-        
-        if($_POST && $form->isValid($_POST))
-        {
-            $data = $form->getValues();
-
-            \PVL\Customization::set('timezone', $data['timezone']);
-            
-            $this->alert('Time zone updated!', 'green');
-            $this->redirectToStoredReferrer('customization');
-            return;
-        }
-
-        $this->storeReferrer('customization');
-
-        $this->view->headTitle('Set Time Zone');
-        $this->renderForm($form);
-    }
-
     protected function _getHybridConfig()
     {
         $ha_config = $this->config->apis->hybrid_auth->toArray();
         $ha_config['base_url'] = $this->view->routeFromHere(array('action' => 'hybrid'));
 
         return $ha_config;
-    }
-
-    public function mergeAction()
-    {
-        set_time_limit(600);
-
-        $this->acl->checkPermission('administer all');
-        $this->doNotRender();
-
-        // Remove all accounts with no e-mail.
-        $this->em->createQuery('DELETE FROM Entity\User u WHERE u.email IS NULL OR u.email = :empty')
-            ->setParameter('empty', '')
-            ->execute();
-
-        // Get all accounts with external auth.
-        $external_accounts_raw = $this->em->createQuery('SELECT u FROM Entity\User u WHERE u.auth_external_provider IS NOT NULL')
-            ->getArrayResult();
-
-        // Delete all accounts with external auth.
-        $this->em->createQuery('DELETE FROM Entity\User u WHERE u.auth_external_provider IS NOT NULL')->execute();
-
-        // Loop through all external accounts and call External Auth to get/create proper associations.
-        foreach($external_accounts_raw as $account)
-        {
-            $provider = $account['auth_external_provider'];
-
-            $profile = new \stdClass;
-            $profile->email = $account['email'];
-            $profile->displayName = $account['name'];
-            $profile->photoURL = $account['avatar_url'];
-            $profile->identifier = $account['auth_external_id'];
-
-            $user = UserExternal::processExternal($provider, $profile);
-
-            if (!empty($account['customization']) && empty($user->customization))
-            {
-                $user->customization = $account['customization'];
-                $user->save();
-            }
-
-            $this->em->clear();
-        }
-
-        echo 'All accounts migrated!';
-        exit;
     }
 }

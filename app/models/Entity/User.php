@@ -29,8 +29,10 @@ class User extends \DF\Doctrine\Entity
     /** @Column(name="email", type="string", length=100, nullable=true) */
     protected $email;
 
-    /** @Column(name="avatar_url", type="string", length=255, nullable=true) */
-    protected $avatar_url;
+    public function getAvatar($size = 50)
+    {
+        return \DF\Service\Gravatar::get($this->email, $size, 'identicon');
+    }
 
     /** @Column(name="auth_password", type="string", length=255, nullable=true) */
     protected $auth_password;
@@ -83,14 +85,6 @@ class User extends \DF\Doctrine\Entity
 
     /** @Column(name="gender", type="string", length=1, nullable=true) */
     protected $gender;
-
-    public function getAvatar($size = 50)
-    {
-        if ($this->avatar_url)
-            return $this->avatar_url;
-        else
-            return \DF\Service\Gravatar::get($this->email, $size);
-    }
 
     /** @Column(name="customization", type="json", nullable=true) */
     protected $customization;

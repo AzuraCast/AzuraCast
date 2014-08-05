@@ -35,8 +35,11 @@ class ErrorController extends \DF\Controller\Action
         }
         else if ($errors->exception instanceof \DF\Exception\NotLoggedIn)
         {
-            $this->_helper->viewRenderer('error/notloggedin', NULL, TRUE);
-            $this->view->message = 'Login Required to Access This Page';
+            // $this->_helper->viewRenderer('error/notloggedin', NULL, TRUE);
+            // $this->view->message = 'Login Required to Access This Page';
+
+            $this->redirectToRoute(array('module' => 'default', 'controller' => 'account', 'action' => 'login'));
+            return;
         }
         else if ($errors->exception instanceof \DF\Exception\PermissionDenied)
         {

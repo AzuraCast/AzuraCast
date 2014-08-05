@@ -5,6 +5,6 @@ return array(
 
     'customization_defaults' => array(
         'theme'     => 'light',
-        'timezone'  => 'America/New_York',
+        'timezone'  => 'US/Eastern',
     ),
 );

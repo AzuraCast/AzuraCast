@@ -1,6 +1,6 @@
 <?php
 /**
- * Register Form
+ * Profile Form
  */
 
 $config = Zend_Registry::get('config');
@@ -16,6 +16,7 @@ return array(
 
                 'name' => array('text', array(
                     'label' => 'Your Name',
+                    'class' => 'half-width',
                     'required' => true,
                 )),
                 
@@ -30,6 +31,30 @@ return array(
                     'description' => 'To change your password, enter the new password in the field below.',
                 )),
                 
+            ),
+        ),
+
+        'customization_details' => array(
+            'legend' => 'Site Customization',
+            'elements' => array(
+
+                'theme' => array('radio', array(
+                    'label' => 'Site Theme',
+                    'belongsTo' => 'customization',
+                    'multiOptions' => array(
+                        'light'     => 'Light Theme',
+                        'dark'      => 'Dark Theme',
+                    ),
+                    'default' => 'light',
+                )),
+
+                'timezone' => array('select', array(
+                    'label' => 'Time Zone',
+                    'belongsTo' => 'customization',
+                    'multiOptions' => \PVL\Timezone::fetchSelect(),
+                    'default' => 'UTC',
+                )),
+
             ),
         ),
         

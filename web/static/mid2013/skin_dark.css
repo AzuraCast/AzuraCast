@@ -43,6 +43,9 @@ html.theme_dark .rich_header {
 html.theme_dark body {
 	color: #DDD;
 }
+html.theme_dark form legend {
+    color: #CCC;
+}
 
 h1, h2 {
 	text-shadow: 1px 1px 1px #000;

@@ -6,12 +6,12 @@ namespace DF\Service;
 
 class Gravatar
 {
-    public static function get($email, $size=50)
+    public static function get($email, $size=50, $default='mm')
     {
         $grav_prefix = (DF_IS_SECURE) ? 'https://secure.gravatar.com' : 'http://www.gravatar.com';
         
         $url_params = array(
-            'd'     => 'mm',
+            'd'     => $default,
             'r'     => 'g',
             'size'  => $size,
         );

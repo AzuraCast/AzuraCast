@@ -136,6 +136,18 @@ ul.inputs-list.inline label {
 	padding-right: 10px;
 }
 
+ul.nav.nav-tabs {
+    padding-left: 10px;
+    border-bottom: 1px solid #DDD;
+}
+ul.nav.nav-tabs > li > a {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+div.tabbable div.tab-pane {
+    padding-top: 10px;
+}
+
 div.well.no-margin {
 	margin-bottom: 0;
 }

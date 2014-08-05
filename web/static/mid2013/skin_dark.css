@@ -78,6 +78,26 @@ h1, h2 {
 	background-color: #333;
 }
 
+ul.nav.nav-tabs {
+    border-bottom-color: #333;
+}
+ul.nav.nav-tabs > .active > a,
+ul.nav.nav-tabs > .active > a:hover,
+ul.nav.nav-tabs > .active > a:focus {
+    color: #999;
+    background: #151515;
+    border-color: #333;
+    border-bottom-color: transparent;
+}
+ul.nav.nav-tabs > li > a:hover,
+ul.nav.nav-tabs > li > a:focus {
+    border-color: #333;
+}
+
+div.tabbable div.tab-pane {
+    padding-top: 10px;
+}
+
 .table .table {
 	background: none;
 }
@@ -92,8 +112,6 @@ h1, h2 {
 .footer .media-object {
 	background: #151515;
 }
-
-
 
 /** 
  * Station Player

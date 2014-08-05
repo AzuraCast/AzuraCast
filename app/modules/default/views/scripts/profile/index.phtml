@@ -54,7 +54,7 @@ $this->headTitle('My Profile');
     </div>
     <div class="span8">
         <div class="tabbable">
-            <ul class="nav nav-pills">
+            <ul class="nav nav-tabs">
             <? $i = 0; ?>
             <? foreach($this->song_lists as $list_key => $list): ?>
                 <li class="<? if ($i == 0): ?>active<? endif; ?>"><a href="#list_<?=$list_key ?>" data-toggle="tab"><i class="<?=$list['icon'] ?>"></i> <?=$list['name'] ?> (<?=count($list['items']) ?>)</a></li>

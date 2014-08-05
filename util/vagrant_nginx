@@ -1,6 +1,6 @@
 user vagrant;
 worker_processes 4;
-pid logs/nginx.pid;
+pid /run/nginx.pid;
 
 events {
         worker_connections 768;
@@ -74,7 +74,7 @@ http {
                 location ~ \.php$ {
                         fastcgi_split_path_info ^(.+\.php)(/.+)$;
                         # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
-                        fastcgi_pass unix:/var/run/php5-fpm.sock;
+                        fastcgi_pass 127.0.0.1:9000;
                         fastcgi_index index.php;
                         fastcgi_param SCRIPT_FILENAME /var/www/vagrant/web$fastcgi_script_name;
                         include fastcgi_params;

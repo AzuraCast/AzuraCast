@@ -4,13 +4,10 @@ use \Entity\UserExternal;
 
 class ProfileController extends \DF\Controller\Action
 {
-    public function permissions()
-    {
-        return $this->acl->isAllowed('is logged in');
-    }
-
     public function indexAction()
     {
+        $this->acl->checkPermission('is logged in');
+
         $user = $this->auth->getLoggedInUser();
         $this->view->user = $user;
 
@@ -72,6 +69,8 @@ class ProfileController extends \DF\Controller\Action
 
     public function editAction()
     {
+        $this->acl->checkPermission('is logged in');
+
         $user = $this->auth->getLoggedInUser();
         $form = new \DF\Form($this->current_module_config->forms->profile);
 

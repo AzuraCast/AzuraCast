@@ -17,12 +17,12 @@ class Admin_UsersController extends \DF\Controller\Action
         {
             $this->view->q = $q = trim($this->getParam('q'));
 
-            $query = $this->em->createQuery('SELECT u FROM Entity\User u WHERE (u.name LIKE :query OR u.email LIKE :query) ORDER BY u.name ASC')
+            $query = $this->em->createQuery('SELECT u, r FROM Entity\User u JOIN u.roles r WHERE (u.name LIKE :query OR u.email LIKE :query) ORDER BY u.name ASC')
                 ->setParameter('query', '%'.$q.'%');
         }
         else
         {
-            $query = $this->em->createQuery('SELECT u FROM Entity\User u ORDER BY u.name ASC');
+            $query = $this->em->createQuery('SELECT u, r FROM Entity\User u JOIN u.roles r ORDER BY u.name ASC');
         }
         
         $this->view->pager = new \DF\Paginator\Doctrine($query, $this->_getParam('page', 1), 50);

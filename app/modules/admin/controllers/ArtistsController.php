@@ -17,12 +17,12 @@ class Admin_ArtistsController extends \DF\Controller\Action
         if ($this->_hasParam('q'))
         {
             $this->view->q = $q = trim($this->_getParam('q'));
-            $query = $this->em->createQuery('SELECT a FROM Entity\Artist a WHERE (a.name LIKE :q) ORDER BY a.name ASC')
+            $query = $this->em->createQuery('SELECT a, at FROM Entity\Artist a LEFT JOIN a.types at WHERE (a.name LIKE :q) ORDER BY a.name ASC')
                 ->setParameter('q', '%'.$q.'%');
         }
         else
         {
-            $query = $this->em->createQuery('SELECT a FROM Entity\Artist a ORDER BY a.is_approved ASC, a.name ASC');
+            $query = $this->em->createQuery('SELECT a, at FROM Entity\Artist a LEFT JOIN a.types at ORDER BY a.is_approved ASC, a.name ASC');
         }
         
         $this->view->pager = new \DF\Paginator\Doctrine($query, $this->_getParam('page', 1), 30);

@@ -13,12 +13,12 @@ class Admin_UsersController extends \DF\Controller\Action
         if ($_GET)
             $this->redirectFromHere($_GET);
         
-        if ($this->_hasParam('q'))
+        if ($this->hasParam('q'))
         {
-            $this->view->q = $q = trim($this->_getParam('q'));
+            $this->view->q = $q = trim($this->getParam('q'));
 
-            $query = $this->em->createQuery('SELECT u FROM Entity\User u WHERE (u.name LIKE :q OR u.email LIKE :q) ORDER BY u.name ASC')
-                ->setParameter('q', '%'.$q.'%');
+            $query = $this->em->createQuery('SELECT u FROM Entity\User u WHERE (u.name LIKE :query OR u.email LIKE :query) ORDER BY u.name ASC')
+                ->setParameter('query', '%'.$q.'%');
         }
         else
         {
@@ -32,7 +32,7 @@ class Admin_UsersController extends \DF\Controller\Action
     {
         $form = new \DF\Form($this->current_module_config->forms->user_edit->form);
         
-        if ($this->_hasParam('id'))
+        if ($this->hasParam('id'))
         {
             $record = User::find($this->_getParam('id'));
             $form->setDefaults($record->toArray());
@@ -59,7 +59,7 @@ class Admin_UsersController extends \DF\Controller\Action
 
     public function deleteAction()
     {
-        $id = (int)$this->_getParam('id');
+        $id = (int)$this->getParam('id');
         $user = User::find($id);
 
         if ($user instanceof User)
@@ -71,7 +71,7 @@ class Admin_UsersController extends \DF\Controller\Action
 
     public function impersonateAction()
     {
-        $id = (int)$this->_getParam('id');
+        $id = (int)$this->getParam('id');
         $user = User::find($id);
 
         if (!($user instanceof User))

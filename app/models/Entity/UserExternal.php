@@ -58,51 +58,50 @@ class UserExternal extends \DF\Doctrine\Entity
     {
         $external = self::getRepository()->findOneBy(array('provider' => $provider, 'external_id' => $user_profile->identifier));
 
-        if ($external instanceof self)
+        // Locate a user account to associate.
+        if ($user instanceof User)
         {
-            // Existing link already exists, return associated user.
-            return $external->user;
+            // No additional processing.
+        }
+        elseif ($external instanceof self && $external->user instanceof User)
+        {
+            $user = $external->user;
+        }
+        elseif (!empty($user_profile->email))
+        {
+            $user = User::getRepository()->findOneBy(array('email' => $user_profile->email));
+
+            if (!($user instanceof User))
+            {
+                $user = new User;
+                $user->email = $user_profile->email;
+                $user->name = $user_profile->displayName;
+                $user->avatar_url = $user_profile->photoURL;
+                $user->generateRandomPassword();
+                $user->save();
+            }
         }
         else
         {
-            // Try to establish a new link with the information supplied.
-            if ($user instanceof User)
-            {
-                // No additional processing.
-            }
-            elseif (!empty($user_profile->email))
-            {
-                // Find or create user account.
-                $user = User::getRepository()->findOneBy(array('email' => $user_profile->email));
+            // Not enough information to auto-create account; throw exception.
+            throw new \PVL\Exception\AccountNotLinked;
+        }
 
-                if (!($user instanceof User))
-                {
-                    $user = new User;
-                    $user->email = $user_profile->email;
-                    $user->name = $user_profile->displayName;
-                    $user->avatar_url = $user_profile->photoURL;
-                    $user->generateRandomPassword();
-                    $user->save();
-                }
-            }
-            else
-            {
-                // Not enough information to auto-create account; throw exception.
-                throw new \PVL\Exception\AccountNotLinked;
-            }
-
+        // Create new external record (if none exists)
+        if (!($external instanceof self))
+        {
             // Create new external account and associate with the specified user.
             $external = new self;
             $external->provider = $provider;
             $external->external_id = $user_profile->identifier;
-
-            $external->user = $user;
-            $external->name = $user_profile->displayName;
-            $external->avatar_url = $user_profile->photoURL;
-            $external->save();
-
-            return $user;
         }
+
+        $external->user = $user;
+        $external->name = $user_profile->displayName;
+        $external->avatar_url = $user_profile->photoURL;
+        $external->save();
+
+        return $user;
     }
 
     public static function getExternalProviders()

@@ -136,10 +136,10 @@ class Convention extends \DF\Doctrine\Entity
     {
         $em = self::getEntityManager();
 
-        $start_timestamp = strtotime('-3 days');
+        $start_timestamp = time();
         $end_timestamp = strtotime('+1 year');
 
-        $conventions = $em->createQuery('SELECT c FROM '.__CLASS__.' c WHERE (c.start_date <= :end AND c.end_date >= :start) ORDER BY c.start_date ASC')
+        $conventions = $em->createQuery('SELECT c FROM '.__CLASS__.' c WHERE (c.end_date <= :end AND c.end_date >= :start) ORDER BY c.start_date ASC')
             ->setParameter('start', gmdate('Y-m-d', $start_timestamp))
             ->setParameter('end', gmdate('Y-m-d', $end_timestamp))
             ->getArrayResult();

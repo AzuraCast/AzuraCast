@@ -102,13 +102,20 @@ $(function () {
         },
         yAxis: {
             title: { text: 'Listeners' },
-            min: 0
+            min: 0,
+            max: 500
         },
         tooltip: {
             crosshairs: true,
             shared: true,
             xDateFormat: '%Y-%m-%d'
         },
+        colors: [
+            '#AEE1FF',
+            '#0091E5',
+            '#FFA6A6',
+            '#8C0000'
+        ],
         
         series: <?=$this->network_metrics ?>
     });
@@ -147,7 +154,8 @@ $(function () {
         },
         yAxis: {
             title: { text: 'Listeners' },
-            min: 0
+            min: 0,
+            max: 100
         },
         tooltip: {
             crosshairs: true,

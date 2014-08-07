@@ -258,6 +258,24 @@ class AccountController extends \DF\Controller\Action
         $this->redirectHome();
     }
 
+    public function removeAction()
+    {
+        $this->acl->checkPermission('is logged in');
+
+        if ($_POST['confirm'] == 'confirm')
+        {
+            $user = $this->auth->getLoggedInUser();
+            $this->auth->logout();
+
+            // Parting is such sweet sorrow...
+            $user->delete();
+
+            $this->alert('<b>Account successfully deleted.</b><br>You can recreate your PVL account at any time by registering again.', 'green');
+            $this->redirectHome();
+            return;
+        }
+    }
+
     protected function _getHybridConfig()
     {
         $ha_config = $this->config->apis->hybrid_auth->toArray();

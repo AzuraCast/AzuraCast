@@ -51,6 +51,9 @@ $this->headTitle('My Profile');
             <? endforeach; ?>
             </tbody>
         </table>
+        <div class="text-center">
+            <a href="<?=$this->route(array('module' => 'default', 'controller' => 'account', 'action' => 'remove')) ?>">Delete PVL Account</a>
+        </div>
     </div>
     <div class="span8">
         <div class="tabbable">

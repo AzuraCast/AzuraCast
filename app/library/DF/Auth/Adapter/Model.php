@@ -38,7 +38,7 @@ class Model implements \Zend_Auth_Adapter_Interface
             return new \Zend_Auth_Result(
                 \Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND,
                 null,
-                array('Could not determine credentials to be authentic.')
+                array('Invalid username or password supplied. Please try again.')
             );
         }
     }

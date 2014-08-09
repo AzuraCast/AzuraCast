@@ -106,7 +106,7 @@ class Convention extends \DF\Doctrine\Entity
         if ($this->signup_enabled)
         {
             $end_timestamp = $this->end_date->getTimestamp();
-            if ($end_timestamp <= time())
+            if ($end_timestamp >= time())
                 return true;
             else
                 return false;

@@ -8,13 +8,40 @@ use DF\Flash;
 
 class Action extends \Zend_Controller_Action
 {
+    /**
+     * @var \DF\Config
+     */
     public $config;
+
+    /**
+     * @var array
+     */
     public $module_config;
+
+    /**
+     * @var \DF\Auth\Instance
+     */
     public $auth;
+
+    /**
+     * @var \DF\Acl\Instance
+     */
     public $acl;
-    public $test_mode;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     public $em;
+
+    /**
+     * @var string
+     */
     public $module_name;
+
+    /**
+     * @var boolean
+     */
+    public $test_mode;
     
     public function init()
     {

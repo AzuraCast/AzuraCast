@@ -107,6 +107,7 @@ class Admin_ConventionsController extends \DF\Controller\Action
                     'Pony/Badge Name',
                     'Legal Name',
                     'Phone Number',
+                    'E-mail Address',
                     'PVL Affiliation',
                     'Travel Notes',
                     'Accommodation Notes',
@@ -118,6 +119,7 @@ class Admin_ConventionsController extends \DF\Controller\Action
                         $row->pony_name,
                         $row->legal_name,
                         $row->phone,
+                        $row->email,
                         $row->pvl_affiliation,
                         $row->travel_notes,
                         $row->accommodation_notes,
@@ -140,11 +142,11 @@ class Admin_ConventionsController extends \DF\Controller\Action
     {
         $con = $this->_getConvention();
 
-        $form = new \DF\Form($this->current_module_config->forms->conventionsignup);
+        $form = ConventionSignup::getForm($con);
 
-        if ($this->_hasParam('id'))
+        if ($this->hasParam('id'))
         {
-            $id = (int)$this->_getParam('id');
+            $id = (int)$this->getParam('id');
             $record = ConventionSignup::find($id);
 
             $form->setDefaults($record->toArray(TRUE, TRUE));

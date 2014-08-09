@@ -101,6 +101,22 @@ class Convention extends \DF\Doctrine\Entity
     /** @Column(name="signup_enabled", type="boolean") */
     protected $signup_enabled;
 
+    public function canSignup()
+    {
+        if ($this->signup_enabled)
+        {
+            $end_timestamp = $this->end_date->getTimestamp();
+            if ($end_timestamp <= time())
+                return true;
+            else
+                return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     /**
      * @OneToMany(targetEntity="ConventionSignup", mappedBy="convention")
      */

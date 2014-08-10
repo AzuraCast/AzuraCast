@@ -141,26 +141,19 @@ class Admin_ConventionsController extends \DF\Controller\Action
     public function editsignupAction()
     {
         $con = $this->_getConvention();
-
         $form = ConventionSignup::getForm($con);
 
-        if ($this->hasParam('id'))
-        {
-            $id = (int)$this->getParam('id');
-            $record = ConventionSignup::find($id);
+        $id = (int)$this->getParam('id');
+        $record = ConventionSignup::find($id);
 
+        if ($record instanceof ConventionSignup)
             $form->setDefaults($record->toArray(TRUE, TRUE));
-        }
+        else
+            throw new \DF\Exception\DisplayOnly('Cannot create new signup records from this page.');
 
         if($_POST && $form->isValid($_POST) )
         {
             $data = $form->getValues();
-
-            if (!($record instanceof ConventionSignup))
-            {
-                $record = new ConventionSignup;
-                $record->convention = $con;
-            }
 
             $record->fromArray($data);
             $record->save();

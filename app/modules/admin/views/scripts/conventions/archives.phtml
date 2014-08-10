@@ -30,7 +30,9 @@ $this->headTitle('Manage Conventions');
             <col width="75%" />
         </colgroup>
         <thead>
-            <th colspan="3"><?=$folder_name ?></th>
+            <tr>
+                <th colspan="3"><?=$folder_name ?></th>
+            </tr>
         </thead>
         <tbody>
         <? foreach((array)$this->archives[$folder_id] as $id => $record): ?>

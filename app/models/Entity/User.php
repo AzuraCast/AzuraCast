@@ -80,6 +80,18 @@ class User extends \DF\Doctrine\Entity
     /** @Column(name="name", type="string", length=100, nullable=true) */
     protected $name;
 
+    /** @Column(name="legal_name", type="string", length=100, nullable=true) */
+    protected $legal_name;
+
+    /** @Column(name="pony_name", type="string", length=100, nullable=true) */
+    protected $pony_name;
+
+    /** @Column(name="phone", type="string", length=50, nullable=true) */
+    protected $phone;
+
+    /** @Column(name="pvl_affiliation", type="string", length=50, nullable=true) */
+    protected $pvl_affiliation;
+
     /** @Column(name="title", type="string", length=100, nullable=true) */
     protected $title;
 
@@ -112,9 +124,6 @@ class User extends \DF\Doctrine\Entity
         $login_info = self::getRepository()->findOneBy(array('email' => $username));
 
         if (!($login_info instanceof self))
-            return FALSE;
-
-        if ($login_info->flag_delete || $login_info->flag_suspend)
             return FALSE;
 
         $hashed_password = sha1($password.$login_info->auth_password_salt);

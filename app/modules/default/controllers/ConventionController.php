@@ -150,9 +150,9 @@ class ConventionController extends \DF\Controller\Action
 
         $record = ConventionSignup::getRepository()->findOneBy(array('convention_id' => $con->id, 'user_id' => $user->id));
         if ($record instanceof ConventionSignup)
-        {
             $form->setDefaults($record->toArray());
-        }
+        else
+            $form->setDefaults($user->toArray());
 
         if ($_POST && $form->isValid($_POST))
         {
@@ -167,6 +167,15 @@ class ConventionController extends \DF\Controller\Action
 
             $record->fromArray($data);
             $record->save();
+
+            // Save some data to the user profile.
+            $user->fromArray(array(
+                'legal_name'    => $data['legal_name'],
+                'pony_name'     => $data['pony_name'],
+                'phone'         => $data['phone'],
+                'pvl_affiliation' => $data['pvl_affiliation'],
+            ));
+            $user->save();
 
             $this->alert('<b>Convention registration successfully submitted.</b><br>You will be contacted by the PVL administrators with more information.', 'green');
             $this->redirectFromHere(array('action' => 'signup', 'id' => NULL));

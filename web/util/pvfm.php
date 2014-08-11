@@ -1,6 +1,9 @@
 <?php
 header('Content-Type: application/xml');
 
+error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
+ini_set('display_errors', 0);
+
 function curlGet($url)
 {
   //create a new curl resource
@@ -66,8 +69,16 @@ $radio_info['genre'] = $temp_array[7];
 $radio_info['url'] = $temp_array[8];
 
 $x = explode(" - ",$temp_array[9]);
-$radio_info['now_playing']['artist'] = $x[0];
-$radio_info['now_playing']['track'] = $x[1];
+if (count($x) > 2)
+{
+    $radio_info['now_playing']['artist'] = $x[0];
+    $radio_info['now_playing']['track'] = $x[1];
+}
+else
+{
+    $radio_info['now_playing']['artist'] = '';
+    $radio_info['now_playing']['track'] = $temp_array[9];
+}
 
 $vinyl_raw = curlGet('http://dj.bronyradio.com:8000/stats?sid=1');
 if (!empty($vinyl_raw))

@@ -14,13 +14,13 @@ $this->headTitle('Manage Conventions');
 
 <?=$this->paginate($this->pager) ?>
 
-<table class="table table-striped table-nopadding">
+<table class="table table-bordered table-striped table-nopadding">
     <colgroup>
         <col width="20%" />
         <col width="3%" />
         <col width="27%" />
-        <col width="30%" />
-        <col width="20%" />
+        <col width="25%" />
+        <col width="25%" />
     </colgroup>
     <thead>
     <tr>
@@ -38,17 +38,17 @@ $this->headTitle('Manage Conventions');
                 <div class="btn-group">
                     <?=$this->button(array(
                         'type'      => 'small',
-                        'class'     => 'btn-primary btn-icon-only',
+                        'class'     => ((count($record->signups) > 0) ? 'btn-primary' : '').' btn-icon-only',
                         'icon'      => 'icon-user',
-                        'title'     => 'Signups',
+                        'title'     => 'Signups ('.count($record->signups).')',
                         'href'      => $this->routeFromHere(array('action' => 'signups', 'convention' => $record['id'])),
                         'text'      => '',
                     )) ?>
                     <?=$this->button(array(
                         'type'      => 'small',
-                        'class'     => 'btn-primary btn-icon-only',
+                        'class'     => ((count($record->archives) > 0) ? 'btn-primary' : '').' btn-icon-only',
                         'icon'      => 'icon-facetime-video',
-                        'title'     => 'Video Archives',
+                        'title'     => 'Video Archives ('.count($record->archives).')',
                         'href'      => $this->routeFromHere(array('action' => 'archives', 'convention' => $record['id'])),
                         'text'      => '',
                     )) ?>

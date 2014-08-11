@@ -269,7 +269,7 @@ function checkNowPlaying(force_update)
 				// Set image, if supplied.
 				if (station.hasClass('playing'))
 				{
-					station.find('img.media-object').attr('src', station_info.image);
+                    // station.find('img.media-object').attr('src', station_info.image);
 
 					document.title = '\u25B6 '+station_info.name+' - '+station_info.text;
 				}

@@ -6,14 +6,11 @@ class Station extends \DF\Controller\Action
     protected $stations;
     protected $station;
 
-    public function permissions()
-    {
-        return $this->acl->isAllowed('is logged in');
-    }
-
     public function preDispatch()
     {
         parent::preDispatch();
+
+        $this->forceSecure();
 
         $user = $this->auth->getLoggedInUser();
 
@@ -57,5 +54,10 @@ class Station extends \DF\Controller\Action
             $this->redirectToRoute(array('module' => 'stations', 'controller' => 'index', 'action' => 'select', 'station' => NULL));
             return;
         }
+    }
+
+    public function permissions()
+    {
+        return $this->acl->isAllowed('is logged in');
     }
 }

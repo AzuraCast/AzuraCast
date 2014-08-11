@@ -2,7 +2,7 @@
 use \Entity\Affiliate;
 use \Entity\Affiliate as Record;
 
-class Admin_AffiliatesController extends \DF\Controller\Action
+class Admin_AffiliatesController extends \PVL\Controller\Action\Admin
 {
     public function permissions()
     {

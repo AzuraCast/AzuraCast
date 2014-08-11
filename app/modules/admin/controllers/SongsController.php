@@ -4,11 +4,11 @@ use \Entity\Song as Record;
 use \Entity\SongHistory;
 use \Entity\SongVote;
 
-class Admin_SongsController extends \DF\Controller\Action
+class Admin_SongsController extends \PVL\Controller\Action\Admin
 {
     public function permissions()
     {
-        return \DF\Acl::getInstance()->isAllowed('administer stations');
+        return $this->acl->isAllowed('administer stations');
     }
     
     public function indexAction()

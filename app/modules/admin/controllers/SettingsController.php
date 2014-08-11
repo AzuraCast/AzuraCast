@@ -1,11 +1,11 @@
 <?php
 use \Entity\Settings;
 
-class Admin_SettingsController extends \DF\Controller\Action
+class Admin_SettingsController extends \PVL\Controller\Action\Admin
 {
     public function permissions()
     {
-        return $this->acl->isAllowed('admin_all');
+        return $this->acl->isAllowed('administer all');
     }
     
     public function indexAction()

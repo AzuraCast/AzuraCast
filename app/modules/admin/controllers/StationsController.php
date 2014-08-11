@@ -2,11 +2,11 @@
 use \Entity\Station;
 use \Entity\Station as Record;
 
-class Admin_StationsController extends \DF\Controller\Action
+class Admin_StationsController extends \PVL\Controller\Action\Admin
 {
     public function permissions()
     {
-        return \DF\Acl::getInstance()->isAllowed('administer stations');
+        return $this->acl->isAllowed('administer stations');
     }
     
     public function indexAction()

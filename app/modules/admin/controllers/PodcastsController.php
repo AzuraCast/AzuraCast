@@ -2,11 +2,11 @@
 use \Entity\Podcast;
 use \Entity\Podcast as Record;
 
-class Admin_PodcastsController extends \DF\Controller\Action
+class Admin_PodcastsController extends \PVL\Controller\Action\Admin
 {
     public function permissions()
     {
-        return \DF\Acl::getInstance()->isAllowed('administer podcasts');
+        return $this->acl->isAllowed('administer podcasts');
     }
     
     public function indexAction()

@@ -20,6 +20,12 @@ class AccountController extends \DF\Controller\Action
     
     public function registerAction()
     {
+        if (!$_POST)
+        {
+            $this->storeReferrer('login');
+            $this->forceSecure();
+        }
+
         $request = $this->getRequest();
         $form = new \DF\Form($this->current_module_config->forms->register);
         
@@ -55,16 +61,19 @@ class AccountController extends \DF\Controller\Action
                 }
             }
         }
-        else
-        {
-            $this->storeReferrer('login');
-        }
 
-        $this->view->form = $form;
+        $this->view->headTitle('Create New Account');
+        $this->renderForm($form);
     }
 
     public function loginAction()
     {
+        if (!$_POST)
+        {
+            $this->storeReferrer('login');
+            $this->forceSecure();
+        }
+
         $form = new \DF\Form($this->current_module_config->forms->login);
 
         if ($this->hasParam('provider'))
@@ -116,10 +125,6 @@ class AccountController extends \DF\Controller\Action
                     return;
                 }
             }
-        }
-        else
-        {
-            $this->storeReferrer('login');
         }
 
         // Auto-bounce back if logged in.

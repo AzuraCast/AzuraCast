@@ -1,11 +1,11 @@
 <?php
 use \Entity\Block;
 
-class Admin_BlocksController extends \DF\Controller\Action
+class Admin_BlocksController extends \PVL\Controller\Action\Admin
 {
     public function permissions()
     {
-        return \DF\Acl::getInstance()->isAllowed('administer blocks');
+        return $this->acl->isAllowed('administer blocks');
     }
     
     public function indexAction()

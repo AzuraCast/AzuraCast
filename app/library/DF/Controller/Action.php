@@ -136,7 +136,7 @@ class Action extends \Zend_Controller_Action
         if ($is_ajax)
             \Zend_Layout::getMvcInstance()->disableLayout();
 
-        if ($this->_hasParam('debug') && $this->_getParam('debug') === 'true')
+        if ($this->hasParam('debug') && $this->_getParam('debug') === 'true')
         {
             error_reporting(E_ALL & ~E_STRICT);
             ini_set('display_errors', 1);
@@ -181,7 +181,7 @@ class Action extends \Zend_Controller_Action
     
     public function flash($message, $level = Flash::INFO)
     {
-        return $this->alert($message, $level);
+        $this->alert($message, $level);
     }
     public function alert($message, $level = Flash::INFO)
     {
@@ -324,6 +324,7 @@ class Action extends \Zend_Controller_Action
     /**
      * CSRF security token validation
      */
+
     protected function validateToken($token, $redirect = true)
     {
         if(!\DF\Csrf::validateToken($token) )
@@ -340,7 +341,21 @@ class Action extends \Zend_Controller_Action
             return true;
         }
     }
-    
+
+    /**
+     * SSL Handling
+     */
+
+    protected function forceSecure()
+    {
+        if (DF_APPLICATION_ENV == 'production' && !DF_IS_SECURE)
+        {
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+            exit;
+        }
+    }
+
     /**
      * Parameter Handling
      */

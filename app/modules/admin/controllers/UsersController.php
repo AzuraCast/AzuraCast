@@ -1,7 +1,7 @@
 <?php
 use \Entity\User;
 
-class Admin_UsersController extends \DF\Controller\Action
+class Admin_UsersController extends \PVL\Controller\Action\Admin
 {
     public function permissions()
     {

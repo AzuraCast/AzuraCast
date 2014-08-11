@@ -2,7 +2,7 @@
 use \Entity\Rotator;
 use \Entity\Rotator as Record;
 
-class Admin_RotatorsController extends \DF\Controller\Action
+class Admin_RotatorsController extends \PVL\Controller\Action\Admin
 {
     public function permissions()
     {

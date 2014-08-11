@@ -1,11 +1,6 @@
 <?php
-class Admin_IndexController extends \DF\Controller\Action
+class Admin_IndexController extends \PVL\Controller\Action\Admin
 {
-    public function permissions()
-    {
-        return \DF\Acl::getInstance()->isAllowed('view administration');
-    }
-    
     /**
      * Main display.
      */

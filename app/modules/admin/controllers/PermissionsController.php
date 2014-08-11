@@ -2,7 +2,7 @@
 use \Entity\Action;
 use \Entity\Role;
 
-class Admin_PermissionsController extends \DF\Controller\Action
+class Admin_PermissionsController extends \PVL\Controller\Action\Admin
 {
     public function permissions()
     {

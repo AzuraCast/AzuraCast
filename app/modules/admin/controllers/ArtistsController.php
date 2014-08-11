@@ -2,11 +2,11 @@
 use \Entity\Artist;
 use \Entity\Artist as Record;
 
-class Admin_ArtistsController extends \DF\Controller\Action
+class Admin_ArtistsController extends \PVL\Controller\Action\Admin
 {
     public function permissions()
     {
-        return \DF\Acl::getInstance()->isAllowed('administer artists');
+        return $this->acl->isAllowed('administer artists');
     }
     
     public function indexAction()

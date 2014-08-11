@@ -4,7 +4,7 @@ use \Entity\Convention;
 use \Entity\ConventionSignup;
 use \Entity\ConventionArchive;
 
-class Admin_ConventionsController extends \DF\Controller\Action
+class Admin_ConventionsController extends \PVL\Controller\Action\Admin
 {
     public function permissions()
     {

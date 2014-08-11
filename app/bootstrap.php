@@ -41,7 +41,7 @@ if (!defined('DF_APPLICATION_ENV'))
 
 // Static URL.
 if (DF_APPLICATION_ENV == 'production')
-    define("DF_URL_STATIC", (DF_IS_SECURE ? 'https:' : 'http:').'//ponyvillelive.com/static');
+    define("DF_URL_STATIC", '//ponyvillelive.com/static');
 else
     define("DF_URL_STATIC", '/static');
 

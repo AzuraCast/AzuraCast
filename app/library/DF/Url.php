@@ -41,6 +41,11 @@ class Url
     public static function setBaseUrl($new_base_url)
     {
         self::$base_url = $new_base_url;
+
+        $router = self::getRouter();
+        $request = $router->getRequest();
+
+        $request->setBaseUrl($new_base_url);
     }
     
     public static function content($file_name = NULL)
@@ -60,7 +65,7 @@ class Url
     {
         if (defined('DF_UPLOAD_URL'))
         {
-            $upload_url_base = self::baseUrl().DF_UPLOAD_URL;
+            $static_url_base = self::baseUrl().DF_UPLOAD_URL;
         
             if ($file_name !== NULL)
                 return $static_url_base.'/'.$file_name;

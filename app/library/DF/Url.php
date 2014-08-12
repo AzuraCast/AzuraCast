@@ -42,10 +42,10 @@ class Url
     {
         self::$base_url = $new_base_url;
 
-        $front = \Zend_Controller_Front::getInstance();
-        $request = $front->getRequest();
+        $router = self::getRouter();
+        $front = $router->getFrontController();
 
-        $request->setBaseUrl($new_base_url);
+        $front->setBaseUrl($new_base_url);
     }
     
     public static function content($file_name = NULL)

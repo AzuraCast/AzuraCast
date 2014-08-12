@@ -5,7 +5,7 @@ use \Entity\Settings;
 
 class SyncManager
 {
-    public static function syncNowplaying()
+    public static function syncNowplaying($force = false)
     {
         set_time_limit(60);
         ini_set('memory_limit', '256M');
@@ -14,7 +14,7 @@ class SyncManager
         $last_start = Settings::getSetting('nowplaying_last_started', 0);
         $last_end = Settings::getSetting('nowplaying_last_run', 0);
 
-        if ($last_start > $last_end && $last_start >= (time() - 60))
+        if ($last_start > $last_end && $last_start >= (time() - 60) && !$force)
             return;
 
         // Sync schedules.
@@ -25,7 +25,7 @@ class SyncManager
         Settings::setSetting('nowplaying_last_run', time());
     }
 
-    public static function syncShort()
+    public static function syncShort($force = false)
     {
         set_time_limit(60);
         ini_set('memory_limit', '256M');
@@ -36,7 +36,7 @@ class SyncManager
         Settings::setSetting('sync_fast_last_run', time());
     }
 
-    public static function syncMedium()
+    public static function syncMedium($force = false)
     {
         set_time_limit(300);
         ini_set('memory_limit', '256M');
@@ -67,7 +67,7 @@ class SyncManager
         Settings::setSetting('sync_last_run', time());
     }
 
-    public static function syncLong()
+    public static function syncLong($force = false)
     {
         set_time_limit(1800);
         ini_set('memory_limit', '256M');

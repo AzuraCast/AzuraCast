@@ -123,7 +123,7 @@ class Admin_IndexController extends \PVL\Controller\Action\Admin
 
             case "nowplaying":
             default:
-                \PVL\SyncManager::syncNowplaying();
+                \PVL\SyncManager::syncNowplaying(true);
             break;
         }
 

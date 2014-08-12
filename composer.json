@@ -5,7 +5,8 @@
         "zendframework/zendframework1": "1.12.6",
         "doctrine/orm": "v2.4.2",
         "phpoffice/phpexcel": "1.8.0",
-        "james-heinrich/getid3": "v1.9.8"
+        "james-heinrich/getid3": "v1.9.8",
+        "electrolinux/phpquery": "0.9.6"
     },
     "authors": [
         {

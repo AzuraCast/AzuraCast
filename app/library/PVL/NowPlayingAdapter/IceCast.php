@@ -13,24 +13,55 @@ class IceCast extends AdapterAbstract
         if (!$return_raw)
             return false;
 
-        $temp_array = array();
-        $search_for = "<td\s[^>]*class=\"streamdata\">(.*)<\/td>";
-        $search_td = array('<td class="streamdata">','</td>');
+        // Query document for tables with stream data.
+        $pq = \phpQuery::newDocument($return_raw);
 
-        if(preg_match_all("/$search_for/siU", $return_raw, $matches)) 
+        $tables = $pq->find('table:has(td.streamdata)');
+        $mounts = array();
+
+        if ($tables->length > 0)
         {
-            foreach($matches[0] as $match) 
+            foreach($tables as $table)
             {
-                $to_push = str_replace($search_td,'',$match);
-                $to_push = trim($to_push);
-                array_push($temp_array,$to_push);
+                $streamdata = pq($table)->find('td.streamdata');
+                $mount = array();
+
+                $i = 0;
+                foreach($streamdata as $cell)
+                {
+                    $mount[$i] = pq($cell)->html();
+                    $i++;
+                }
+
+                $mounts[] = $mount;
             }
         }
 
-        // In the case of multiple streams, always use the last stream.
-        if (count($temp_array) > 12)
-            $temp_array = array_slice($temp_array, -10);
+        if (count($mounts) == 0)
+            return false;
 
+        $active_mounts = array();
+        foreach($mounts as $mount)
+        {
+            if (count($mount) >= 10)
+                $active_mounts[] = $mount;
+        }
+
+        if (count($active_mounts) == 0)
+            return false;
+
+        // Sort in descending order of listeners.
+        usort($active_mounts, function($a, $b) {
+            $a_list = (int)$a[5];
+            $b_list = (int)$b[5];
+
+            if ($a_list == $b_list)
+                return 0;
+            else
+                return ($a_list > $b_list) ? -1 : 1;
+        });
+
+        $temp_array = $active_mounts[0];
         list($artist, $track) = explode(" - ",$temp_array[9], 2);
 
         $np['listeners'] = (int)$temp_array[5];

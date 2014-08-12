@@ -95,11 +95,17 @@ class Url
 
     public static function domain($includeScheme = false)
     {
-        $domain = $_SERVER['HTTP_HOST'];
-        if($includeScheme)
-            $domain = 'http'.((DF_IS_SECURE) ? 's' : '').'://'.$domain;
+        if (!empty($_SERVER['HTTP_HOST']))
+        {
+            $domain = $_SERVER['HTTP_HOST'];
 
-        return $domain;
+            if ($includeScheme)
+                $domain = 'http' . ((DF_IS_SECURE) ? 's' : '') . '://' . $domain;
+
+            return $domain;
+        }
+
+        return '';
     }
 
     /**

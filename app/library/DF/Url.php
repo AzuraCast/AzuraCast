@@ -42,8 +42,8 @@ class Url
     {
         self::$base_url = $new_base_url;
 
-        $router = self::getRouter();
-        $request = $router->getRequest();
+        $front = \Zend_Controller_Front::getInstance();
+        $request = $front->getRequest();
 
         $request->setBaseUrl($new_base_url);
     }
@@ -165,7 +165,12 @@ class Url
         $justice_friends = self::getRouter();
         return $justice_friends->assemble($options, $route, $reset, $encode).self::arrayToGetString($get).$target;
     }
-    
+
+    /**
+     * @return \Zend_Controller_Router_Interface|\Zend_Controller_Router_Rewrite
+     * @throws \Zend_Controller_Exception
+     * @throws \Zend_Exception
+     */
     public static function getRouter()
     {
         static $router;

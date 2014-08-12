@@ -1,34 +1,46 @@
 <?php
 namespace DF;
+
 class Url
 {
+    static $base_url;
+
     /**
      * Returns the baseUrl
-     * 
+     *
+     * @throws \Zend_Exception
      * @return string
      */
-    public static function baseUrl($include_domain = TRUE)
+    public static function baseUrl()
     {
-        $config = \Zend_Registry::get('config');
-        
-        if ($config->application->base_url && $include_domain === TRUE)
+        if (self::$base_url !== NULL)
         {
-            $base_url = $config->application->base_url;
-            
-            if (DF_IS_SECURE)
-                $base_url = str_replace('http://', 'https://', $base_url);
-            
-            return $base_url;
+            return self::$base_url;
         }
         else
         {
-            $base_url = \Zend_Controller_Front::getInstance()->getBaseUrl();
-        
-            if ($include_domain)
-                return self::domain(TRUE).$base_url;
-            else
+            $config = \Zend_Registry::get('config');
+
+            if ($config->application->base_url)
+            {
+                $base_url = $config->application->base_url;
+
+                if (DF_IS_SECURE)
+                    $base_url = str_replace('http://', 'https://', $base_url);
+
                 return $base_url;
+            }
+            else
+            {
+                $base_url = \Zend_Controller_Front::getInstance()->getBaseUrl();
+                return self::domain(TRUE) . $base_url;
+            }
         }
+    }
+
+    public static function setBaseUrl($new_base_url)
+    {
+        self::$base_url = $new_base_url;
     }
     
     public static function content($file_name = NULL)
@@ -36,7 +48,7 @@ class Url
         if (defined('DF_URL_STATIC'))
             $static_url_base = DF_URL_STATIC;
         else
-            $static_url_base = self::baseUrl(FALSE).'/static';
+            $static_url_base = self::baseUrl().'/static';
         
         if ($file_name !== NULL)
             return $static_url_base.'/'.$file_name;
@@ -80,7 +92,7 @@ class Url
     {
         $domain = $_SERVER['HTTP_HOST'];
         if($includeScheme)
-            $domain = 'http'.((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) ? 's' : '').'://'.$domain;
+            $domain = 'http'.((DF_IS_SECURE) ? 's' : '').'://'.$domain;
 
         return $domain;
     }

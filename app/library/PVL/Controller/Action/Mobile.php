@@ -7,6 +7,18 @@ class Mobile extends \DF\Controller\Action
     {
         parent::init();
 
+        // Hard-code base URL (for mobile Android app).
+        $config = $this->config;
+
+        if ($config->application->base_url)
+        {
+            $base_url = $config->application->base_url;
+            $base_url = ((DF_IS_SECURE) ? 'https:' : 'http:').$base_url;
+
+            \DF\Url::setBaseUrl($base_url);
+        }
+
+        // Set mobile template.
         \Zend_Layout::getMvcInstance()->setLayout('mobile');
 
         header("Access-Control-Allow-Origin: *");

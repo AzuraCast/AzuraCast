@@ -18,6 +18,7 @@ class Station extends \DF\Doctrine\Entity
         $this->requests_enabled = 0;
         $this->hide_if_inactive = 0;
 
+        $this->streams = new ArrayCollection;
         $this->history = new ArrayCollection;
         $this->managers = new ArrayCollection;
         $this->short_urls = new ArrayCollection;
@@ -175,6 +176,11 @@ class Station extends \DF\Doctrine\Entity
 
     /** @Column(name="deleted_at", type="datetime", nullable=true) */
     protected $deleted_at;
+
+    /**
+     * @OneToMany(targetEntity="StationStream", mappedBy="station")
+     */
+    protected $streams;
 
     /**
      * @OneToMany(targetEntity="SongHistory", mappedBy="station")

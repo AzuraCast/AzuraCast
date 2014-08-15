@@ -33,8 +33,8 @@ class StationStream extends \DF\Doctrine\Entity
     /** @Column(name="type", type="string", length=50, nullable=true) */
     protected $type;
 
-    /** @Column(name="listen_url", type="string", length=150, nullable=true) */
-    protected $listen_url;
+    /** @Column(name="stream_url", type="string", length=150, nullable=true) */
+    protected $stream_url;
 
     /** @Column(name="nowplaying_url", type="string", length=100, nullable=true) */
     protected $nowplaying_url;
@@ -42,4 +42,11 @@ class StationStream extends \DF\Doctrine\Entity
     /** @Column(name="nowplaying_data", type="json", nullable=true) */
     protected $nowplaying_data;
 
+    /**
+     * @ManyToOne(targetEntity="Station", inversedBy="streams")
+     * @JoinColumns({
+     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    protected $station;
 }

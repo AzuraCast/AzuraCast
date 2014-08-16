@@ -78,7 +78,6 @@ class IndexController extends \DF\Controller\Action
         $this->view->standalone = true;
 
         $this->_initStations();
-        // $this->render('index_stations');
     }
 
     public function chatAction()
@@ -92,34 +91,6 @@ class IndexController extends \DF\Controller\Action
     public function appAction()
     {}
 
-    public function likeAction()
-    {
-        $this->doNotRender();
-
-        if (!$this->acl->isAllowed('is logged in'))
-        {
-            echo 'NOTLOGGEDIN';
-            return;
-        }
-        else
-        {
-            $song_id = $this->_getParam('id');
-            $song = \Entity\Song::find($song_id);
-
-            if ($song instanceof \Entity\Song)
-            {
-                $user = $this->auth->getLoggedInUser();
-                $song->like($user);
-
-                echo 'OK';
-                return;
-            }
-        }
-
-        echo 'ERROR';
-        return;
-    }
-
     /**
      * Protected Functions
      */
@@ -130,17 +101,11 @@ class IndexController extends \DF\Controller\Action
     protected function _initStations()
     {
         $this->view->station_id = $station_id = $this->_getParam('id', NULL);
-        $this->view->volume = ($this->_hasParam('volume')) ? (int)$this->_getParam('volume') : 30;
+        $this->view->volume = ($this->hasParam('volume')) ? (int)$this->_getParam('volume') : 30;
 
         $this->categories = \Entity\Station::getCategories();
 
-        /*
-        $special_event = Settings::getSetting('special_event', 0);
-        if (!$special_event)
-            unset($this->categories['event']);
-        */
-
-        if ($station_id && $this->_getParam('showonlystation', false) == 'true')
+        if ($station_id && $this->getParam('showonlystation', false) == 'true')
         {
             $stations_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.id = :station_id')
                 ->setParameter('station_id', $station_id)

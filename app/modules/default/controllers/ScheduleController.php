@@ -51,4 +51,33 @@ class ScheduleController extends \DF\Controller\Action
 
         $this->view->calendar = $calendar->fetch($events);
     }
+
+    public function upcomingAction()
+    {
+        $station_id = (int)$this->station('id');
+        $station = Station::find($station_id);
+
+        if (!($station instanceof Station))
+            throw new \DF\Exception\DisplayOnly('Station not found!');
+
+        $events_raw = $this->em->createQuery('SELECT s FROM Entity\Schedule s WHERE (s.station_id = :sid) AND (s.start_time <= :end AND s.end_time >= :start) ORDER BY s.start_time ASC')
+            ->setParameter('sid', $station['id'])
+            ->setParameter('start', $timestamps['start'])
+            ->setParameter('end', $timestamps['end'])
+            ->getArrayResult();
+
+
+
+        $stations = array();
+        foreach($all_stations as $station_info)
+            $stations[$station_info['short_name']] = $station_info;
+
+        $show = ($this->_hasParam('month')) ? $this->_getParam('month') : date('Ym');
+        $calendar = new \DF\Calendar($show);
+
+        $timestamps = $calendar->getTimestamps();
+
+        $station_shortcode = $this->_getParam('station', 'all');
+        $this->view->station = $station_shortcode;
+    }
 }

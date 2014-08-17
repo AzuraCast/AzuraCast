@@ -91,6 +91,17 @@ class IndexController extends \DF\Controller\Action
     public function appAction()
     {}
 
+    public function scheduleAction()
+    {
+        // Pull stations.
+        $this->_initStations();
+    }
+
+    public function upcomingAction()
+    {
+
+    }
+
     /**
      * Protected Functions
      */
@@ -122,40 +133,46 @@ class IndexController extends \DF\Controller\Action
         foreach($stations_raw as $station)
             $this->stations[$station['id']] = $station;
 
+        foreach($this->stations as $station)
+        {
+            if (isset($this->categories[$station['category']]))
+                $this->categories[$station['category']]['stations'][] = $station;
+        }
+
+        $this->view->stations = $this->stations;
+        $this->view->categories = $this->categories;
+
         /**
          * Compose events
          */
 
-        $events = array();
-        
-        $events_now = $this->em->createQuery('SELECT s FROM Entity\Schedule s WHERE s.type = :type AND s.start_time <= :current AND s.end_time >= :current ORDER BY s.start_time ASC')
-            ->setParameter('type', 'station')
-            ->setParameter('current', time())
-            ->getArrayResult();
-
-        foreach((array)$events_now as $event)
-        {
-            $event['status'] = 'now';
-            $events[] = $event;
-        }
-
-        $events_upcoming = $this->em->createQuery('SELECT s FROM Entity\Schedule s WHERE s.type = :type AND s.start_time > :current AND s.start_time <= :future ORDER BY s.start_time ASC')
-            ->setParameter('type', 'station')
+        $events_raw = $this->em->createQuery('SELECT s FROM Entity\Schedule s WHERE (s.end_time >= :current AND s.start_time <= :future) ORDER BY s.start_time ASC')
             ->setParameter('current', time())
             ->setParameter('future', strtotime('+1 week'))
             ->getArrayResult();
 
-        foreach((array)$events_upcoming as $event)
+        $all_events = array();
+        $events_by_day = array();
+
+        $num_cols = 3;
+        for($i = 0; $i <= $num_cols-1; $i++)
         {
-            $event['status'] = 'upcoming';
-            $events[] = $event;
+            $day_timestamp = mktime(0, 0, 1, date('n'), (int)date('j') + $i);
+            $day_date = date('Y-m-d', $day_timestamp);
+
+            $is_today = ($day_date == date('Y-m-d'));
+
+            $events_by_day[$day_date] = array(
+                'day_name'      => ($is_today) ? 'Today' : date('l', $day_timestamp),
+                'timestamp'     => $day_timestamp,
+                'is_today'      => $is_today,
+                'events'        => array(),
+            );
         }
 
-        $all_events = array();
-        $today = date('Y-m-d');
-
-        foreach($events as $event)
+        foreach($events_raw as $event)
         {
+            $event['status'] = ($event['start_time'] <= time()) ? 'now' : 'upcoming';
             $event['range'] = \Entity\Schedule::getRangeText($event['start_time'], $event['end_time'], $event['is_all_day']);
 
             if ($event['station_id'])
@@ -172,45 +189,15 @@ class IndexController extends \DF\Controller\Action
                 }
             }
 
-            if (date('Y-m-d', $event['start_time']) == $today || $event['status'] == 'now')
-                $event['is_today'] = true;
-            else
-                $event['is_today'] = false;
-
             $all_events[] = $event;
-        }
 
-        $top_events = array_slice($all_events, 0, 20);
-        $events_by_day = array(
-            'Today' => array(),
-        );
-        
-        foreach($all_events as $event)
-        {
             $event_date = date('Y-m-d', $event['start_time']);
-
-            if ($event['is_today'])
-                $events_by_day['Today'][] = $event;
-            
-            $events_by_day[$event_date][] = $event;
-        }
-
-        if (count($events_by_day['Today']) == 0)
-            unset($events_by_day['Today']);
-
-        foreach($this->stations as $station)
-        {
-            if (isset($this->categories[$station['category']]))
-                $this->categories[$station['category']]['stations'][] = $station;
+            if (isset($events_by_day[$event_date]))
+                $events_by_day[$event_date]['events'][] = $event;
         }
 
         $this->view->events_by_day = $events_by_day;
         $this->view->all_events = $all_events;
-        $this->view->top_events = $top_events;
-
-        $this->view->events = $events;
-        $this->view->stations = $this->stations;
-        $this->view->categories = $this->categories;
     }
 
     public function nowplayingAction()

@@ -81,8 +81,7 @@ class Schedule extends \DF\Doctrine\Entity
     public static function getCurrentEvent($station_id)
     {
         $em = self::getEntityManager();
-        $events_now = $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE (s.type = :type AND s.station_id = :station_id AND s.start_time <= :current AND s.end_time >= :current) ORDER BY s.start_time ASC')
-            ->setParameter('type', 'station')
+        $events_now = $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE (s.station_id = :station_id AND s.start_time <= :current AND s.end_time >= :current) ORDER BY s.start_time ASC')
             ->setParameter('station_id', $station_id)
             ->setParameter('current', time())
             ->useResultCache(true, 90, 'pvl_event_'.$station_id)

@@ -162,8 +162,7 @@ class ScheduleManager
         // Add/Remove all differential records.
         Debug::startTimer('Sync DB Records');
 
-        $em->createQuery('DELETE FROM Entity\Schedule s WHERE s.type = :type AND s.station_id NOT IN (:station_ids)')
-            ->setParameter('type', 'station')
+        $em->createQuery('DELETE FROM Entity\Schedule s WHERE s.station_id NOT IN (:station_ids)')
             ->setParameter('station_ids', array_keys($schedule_records))
             ->execute();
 

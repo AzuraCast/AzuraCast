@@ -104,8 +104,7 @@ class Schedule extends \DF\Doctrine\Entity
         $end_timestamp = $start_timestamp+$threshold;
 
         $em = self::getEntityManager();
-        $events_raw = $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE (s.type = :type AND s.station_id = :station_id AND s.start_time >= :start AND s.start_time < :end) ORDER BY s.start_time ASC')
-            ->setParameter('type', 'station')
+        $events_raw = $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE (s.station_id = :station_id AND s.start_time >= :start AND s.start_time < :end) ORDER BY s.start_time ASC')
             ->setParameter('station_id', $station_id)
             ->setParameter('start', $start_timestamp)
             ->setParameter('end', $end_timestamp)
@@ -127,8 +126,7 @@ class Schedule extends \DF\Doctrine\Entity
     public static function getEventsInRange($station_id, $start_timestamp, $end_timestamp)
     {
         $em = self::getEntityManager();
-        $events_now = $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE (s.type = :type AND s.station_id = :station_id AND s.start_time <= :end AND s.end_time >= :start) ORDER BY s.start_time ASC')
-            ->setParameter('type', 'station')
+        $events_now = $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE (s.station_id = :station_id AND s.start_time <= :end AND s.end_time >= :start) ORDER BY s.start_time ASC')
             ->setParameter('station_id', $station_id)
             ->setParameter('start', $start_timestamp)
             ->setParameter('end', $end_timestamp)

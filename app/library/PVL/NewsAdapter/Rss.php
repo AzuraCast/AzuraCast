@@ -47,6 +47,9 @@ class Rss extends AdapterAbstract
                 if (is_array($web_url))
                     $web_url = $web_url[0];
 
+                if ($web_url instanceof \DOMElement)
+                    $web_url = $web_url->nodeValue;
+
                 if (!$web_url && substr($guid, 0, 4) == 'http')
                     $web_url = $guid;
                 

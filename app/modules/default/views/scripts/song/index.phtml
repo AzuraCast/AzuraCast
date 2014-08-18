@@ -176,9 +176,6 @@ function cleanUpSongInfo()
     $('.song_info .nav li a').each(function() {
         var tab_id = $(this).attr('href');
 
-        console.log(tab_id);
-        console.log($(tab_id).length);
-
         if ($(tab_id).length == 0)
             $(this).closest('li').remove();
     });

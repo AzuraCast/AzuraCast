@@ -141,7 +141,7 @@ $(function() {
 	});
 
     // Song profile link.
-    $('.station .song-info, .station .btn-song-info').click(function(e) {
+    $('.station .song-info, .station .btn-song-info').on('click', function(e) {
         if ($(this).closest('.station').hasClass('playing'))
         {
             e.preventDefault();
@@ -152,6 +152,17 @@ $(function() {
                 showSongInfo(song_id);
 
             return false;
+        }
+    });
+
+    /* Upcoming Schedule button. */
+    $('.nowplaying-onair, .btn-station-schedule').on('click', function(e) {
+        if ($(this).closest('.station').hasClass('playing'))
+        {
+            e.preventDefault();
+
+            var station_id = $(this).closest('.station').data('id');
+            showStationSchedule(station_id);
         }
     });
 
@@ -529,12 +540,12 @@ function canPlayMp3()
 
 function isIE () {
 	var myNav = navigator.userAgent.toLowerCase();
-	return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
+    return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
 }
 
 function isSteam() {
-	var myNav = navigator.userAgent.toLowerCase();
-	return (myNav.indexOf('gameoverlay') != -1) ? true : false;
+    var myNav = navigator.userAgent.toLowerCase();
+    return (myNav.indexOf('gameoverlay') != -1) ? true : false;
 }
 
 function playInPopUp(station_id) {
@@ -557,6 +568,21 @@ function playInPopUp(station_id) {
 	orig_url = '//ponyvillelive.com/mobile';
 
 	window.open(orig_url, 'pvl_player', 'height=600,width=400,status=yes,scrollbars=yes', true);
+}
+
+
+/* Station schedule popup. */
+function showStationSchedule(station_id)
+{
+    console.log('Station Upcoming Schedule: '+station_id);
+
+    var url = DF_BaseUrl+'/index/upcoming/id/'+station_id;
+    modalPopup(url, {
+        'width': 400,
+        'minWidth': 400,
+        'maxWidth': 400,
+        'maxHeight': 500
+    });
 }
 
 /**

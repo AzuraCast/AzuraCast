@@ -26,6 +26,7 @@
                     <li><a href="#" class="btn-share-station btn-share-twitter"><i class="icon-twitter-sign"></i> Share on Twitter</a></li>
                     <li class="divider"></li>
                     <li><a href="#" class="btn-show-history"><i class="icon-time"></i> Recently Played</a></li>
+                    <li><a href="#" class="btn-station-schedule"><i class="icon-calendar"></i> Upcoming Events</a></li>
                     <li><a href="<?=$station['web_url'] ?>" target="_blank"><i class="icon-globe"></i> Station Site</a></li>
                     <li><a href="<?=$this->route(array('controller' => 'station', 'action' => 'playlist', 'format' => 'pls', 'id' => $station['id'])) ?>"><i class="icon-download"></i> Download PLS</a></li>
                 </ul>
@@ -67,11 +68,11 @@
                 </h4>
 
             <? if ($station['now']): ?>
-                <div class="nowplaying-onair">
+                <div class="nowplaying-onair underline-when-playing">
                     <i class="icon-star"></i> On Air: <?=$station['now']['title'] ?>
                 </div>
             <? else: ?>
-                <div class="nowplaying-onair" style="display: none;"></div>
+                <div class="nowplaying-onair underline-when-playing" style="display: none;"></div>
             <? endif; ?>
 
                 <div class="show-when-playing">
@@ -79,10 +80,10 @@
                 </div>
 
                 <!-- Now Playing Information -->
-                <div class="song-info" title="Click for Song Information">
+                <div class="song-info underline-when-playing" title="Click for Song Information">
                     <div><big><span class="nowplaying-artist">Loading...</span></big></div>
                     <div><span class="nowplaying-title">Loading...</span></div>
-                </a>
+                </div>
 
                 <div class="station-history" style="display: none;"></div>
             </div>

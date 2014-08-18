@@ -99,11 +99,11 @@
     text-shadow: 0.1em 0.1em 0.2em #000000;
 }
 
-.station.playing .song-info {
+.station.playing .underline-when-playing {
     cursor: pointer;
 }
-.station.playing .song-info:hover div {
-    text-decoration: underline;
+.station.playing .underline-when-playing:hover {
+    text-decoration: underline !important;
 }
 
 .station.offline {
@@ -251,6 +251,10 @@ li.podcast {
 }
 .station .nowplaying-title {
 	font-size: 12px;
+}
+
+.station .station-history {
+    margin-top: 5px;
 }
 
 .station .station-player-container {

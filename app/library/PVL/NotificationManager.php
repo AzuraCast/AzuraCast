@@ -26,10 +26,9 @@ class NotificationManager
         $start_threshold = time();
         $end_threshold = time()+(60*$notify_minutes);
 
-        $schedule_items = $em->createQuery('SELECT s, st FROM Entity\Schedule s JOIN s.station st WHERE s.start_time >= :start AND s.start_time <= :end AND s.type = :type AND s.is_notified = 0')
+        $schedule_items = $em->createQuery('SELECT s, st FROM Entity\Schedule s JOIN s.station st WHERE s.start_time >= :start AND s.start_time <= :end AND s.is_notified = 0')
             ->setParameter('start', $start_threshold)
             ->setParameter('end', $end_threshold)
-            ->setParameter('type', 'station')
             ->setMaxResults(1)
             ->execute();
 

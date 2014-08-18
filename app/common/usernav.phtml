@@ -6,7 +6,7 @@ $skin = \PVL\Customization::get('theme');
     $tz_info = \PVL\Timezone::getInfo();
     $tz_text = $tz_info['now']->format('g:ia').' '.$tz_info['abbr'];
     ?>
-    <li><a href="<?=$this->route(array('controller' => 'profile', 'action' => 'timezone')) ?>" class="fancybox fancybox.ajax"><i class="icon-time"></i> <?=$tz_text ?></a></li>
+    <li><a href="<?=$this->route(array('controller' => 'profile', 'action' => 'timezone')) ?>" class="fancybox fancybox.ajax"><i class="icon-time"></i> <span class="current_time"><?=$tz_text ?></span></a></li>
     <li class="divider">&nbsp;</li>
     <li><a href="<?=$this->route(array('controller' => 'profile', 'action' => 'theme', 'skin' => 'toggle')) ?>"><i class="icon-adjust"></i> <? if ($skin == 'light'): ?>Dark Theme<? else: ?>Light Theme<? endif; ?></a></li>
     <li class="divider">&nbsp;</li>

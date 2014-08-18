@@ -44,6 +44,12 @@ class Rss extends AdapterAbstract
                 $description = preg_replace('/<a[^(>)]+>read more<\/a>/i', '', $description); // Remove "read more" link.
 
                 $web_url = $item->link();
+                if (is_array($web_url))
+                    $web_url = $web_url[0];
+
+                if ($web_url instanceof \DOMElement)
+                    $web_url = $web_url->nodeValue;
+
                 if (!$web_url && substr($guid, 0, 4) == 'http')
                     $web_url = $guid;
                 

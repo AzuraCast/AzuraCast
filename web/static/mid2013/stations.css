@@ -253,6 +253,10 @@ li.podcast {
 	font-size: 12px;
 }
 
+.station .station-history {
+    margin-top: 5px;
+}
+
 .station .station-player-container {
 	padding-bottom: 5px;
 }

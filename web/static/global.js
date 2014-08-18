@@ -1,3 +1,11 @@
+/**
+ * Ponyville Live! Global JavaScript
+ * Made with love for the ponyfolk. /)
+ */
+
+var clock_timeout;
+var clock_interval = 60000;
+
 $(function() {
 
 	if ($('html').hasClass('theme_dark'))
@@ -50,12 +58,16 @@ $(function() {
 			});
 	}
 
+    /* Song Information button. */
     $('.btn-show-song-info').on('click', function(e) {
         e.preventDefault();
 
         var song_id = $(this).data('id');
         showSongInfo(song_id);
     });
+
+    /* Time synchronization. */
+    clock_timeout = setTimeout('updateTime()', clock_interval);
 });
 
 /* Song biography popup. */
@@ -67,27 +79,54 @@ function showSongInfo(song_id)
     if (song_id.length != 32)
         return false;
 
-    var info_url = '/song/index/id/'+song_id;
+    var info_url = DF_BaseUrl+'/song/index/id/'+song_id;
+    modalPopup(info_url, {
+        'width': 600,
+        'minWidth': 600,
+        'maxWidth': 600,
+        'height': 500,
+        'minHeight': 500,
+        'maxHeight': 500,
+        'onComplete': function() {
+            cleanUpSongInfo(); // Loaded in remote URL.
+        }
+    });
+}
+
+/* Clock synchronization. */
+function updateTime()
+{
+    clearInterval(clock_interval);
+
+    jQuery.ajax({
+        cache: false,
+        url: DF_BaseUrl+'/api/index/time',
+        dataType: 'json'
+    }).done(function(data) {
+        var time_info = data.result;
+        var new_current_time = time_info.local_time+' '+time_info.local_timezone_abbr;
+
+        $('.current_time').text(new_current_time);
+
+        clock_timeout = setTimeout('updateTime()', clock_interval);
+    });
+}
+
+/* Fancybox (or iFrame if fancybox isn't available). */
+function modalPopup(popup_url, params)
+{
+    params = $.extend({
+        'type': 'ajax',
+        'href': popup_url,
+        'width': 600,
+        'height': 500
+    }, params);
+
+    console.log(params);
 
     // Detect iframe.
     if (window!=window.top || !$.fn.fancybox)
-    {
-        window.open(info_url,'PVLSongInfo','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=600');
-    }
+        window.open(popup_url,'PVLModalPopup','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height='+params.heightt+',width='+params.width);
     else
-    {
-        $.fancybox.open({
-            'type': 'ajax',
-            'href': info_url,
-            'width': 600,
-            'height': 500,
-            'minWidth': 600,
-            'minHeight': 500,
-            'maxWidth': 600,
-            'maxHeight': 500,
-            onComplete: function() {
-                cleanUpSongInfo();
-            }
-        });
-    }
+        $.fancybox.open(params);
 }

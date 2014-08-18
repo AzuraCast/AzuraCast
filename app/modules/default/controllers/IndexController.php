@@ -99,7 +99,36 @@ class IndexController extends \DF\Controller\Action
 
     public function upcomingAction()
     {
+        $this->_initStations();
 
+        $id = $this->view->station_id;
+
+        $station = Station::find($id);
+        if (!($station instanceof Station))
+            throw new \DF\Exception\DisplayOnly('Station not found!');
+
+        $this->view->station = $station;
+
+        // Filter events from master events list.
+        $events_by_day = $this->view->events_by_day;
+        $station_events = array();
+
+        foreach($events_by_day as $day_date => $day_info)
+        {
+            $day_events = array();
+
+            foreach($day_info['events'] as $event)
+            {
+                if ($event['station_id'] == $id)
+                    $day_events[] = $event;
+            }
+
+            $day_info['events'] = $day_events;
+            if (!empty($day_info['events']))
+                $station_events[$day_date] = $day_info;
+        }
+
+        $this->view->station_events = $station_events;
     }
 
     /**
@@ -154,8 +183,7 @@ class IndexController extends \DF\Controller\Action
         $all_events = array();
         $events_by_day = array();
 
-        $num_cols = 3;
-        for($i = 0; $i <= $num_cols-1; $i++)
+        for($i = 0; $i < 6; $i++)
         {
             $day_timestamp = mktime(0, 0, 1, date('n'), (int)date('j') + $i);
             $day_date = date('Y-m-d', $day_timestamp);

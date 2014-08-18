@@ -1,6 +1,9 @@
+<?
+$schedule = array_slice($this->events_by_day, 0, 3, TRUE);
+?>
 <div class="row-fluid">
-    <? foreach($this->events_by_day as $day_date => $day_info): ?>
-        <div class="span<?=(12 / count($this->events_by_day)) ?>">
+    <? foreach($schedule as $day_date => $day_info): ?>
+        <div class="span<?=(12 / count($schedule)) ?>">
             <h3><?=$day_info['day_name'] ?><br><small><?=date('F j, Y', $day_info['timestamp']) ?></small></h3>
             <ul class="unstyled nopadding">
             <? foreach($day_info['events'] as $event): ?>
@@ -12,12 +15,7 @@
                         <? else: ?>
                             <?=date('g:ia', $event['start_time']) ?>
                         <? endif; ?>
-                        on
-                        <? if ($event['station']): ?>
-                            <?=$event['station']['name'] ?>
-                        <? else: ?>
-                            Ponyville Live!
-                        <? endif; ?>
+                        on <?=$event['station']['name'] ?>
                     </small></h5>
                 </li>
             <? endforeach; ?>

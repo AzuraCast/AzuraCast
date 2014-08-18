@@ -8,7 +8,6 @@ use \Doctrine\Common\Collections\ArrayCollection;
  *   @index(name="search_idx", columns={"guid", "start_time", "end_time"})
  * })
  * @Entity
- * 
  */
 class Schedule extends \DF\Doctrine\Entity
 {
@@ -23,9 +22,6 @@ class Schedule extends \DF\Doctrine\Entity
      * @GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
-
-    /** @Column(name="type", type="string", length=40, nullable=true) */
-    protected $type;
 
     /** @Column(name="station_id", type="integer", nullable=true) */
     protected $station_id;

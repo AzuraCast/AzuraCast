@@ -234,16 +234,18 @@ function checkNowPlaying(force_update)
 				}
 
 				// Post listener count.
-				if (station_info.listeners.total)
+				if (station_info.listeners.current >= 0)
 				{
-					listener_total += intOrZero(station_info.listeners.total);
+                    var station_listeners = intOrZero(station_info.listeners.current);
+
+					listener_total += station_listeners;
 
 					if (typeof(listeners_by_type[station_info.station.category]) == 'undefined')
 						listeners_by_type[station_info.station.category] = 0;
 
-					listeners_by_type[station_info.station.category] += intOrZero(station_info.listeners.total);
+					listeners_by_type[station_info.station.category] += station_listeners;
 
-					station.find('.nowplaying-listeners').show().html('<i class="icon-user"></i>&nbsp;'+station_info.listeners.total);
+					station.find('.nowplaying-listeners').show().html('<i class="icon-user"></i>&nbsp;'+station_listeners);
 				}
 				else
 				{

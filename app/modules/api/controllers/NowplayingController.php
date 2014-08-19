@@ -64,8 +64,8 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
 
         $np['listeners'] = array(
             'current'       => $np_raw['listeners'],
-            'unique'        => $np_raw['listeners_unique'],
-            'total'         => $np_raw['listeners_total'],
+            'unique'        => (isset($np_raw['listeners_unique'])) ? $np_raw['listeners_unique'] : $np_raw['listeners'],
+            'total'         => (isset($np_raw['listeners_total'])) ? $np_raw['listeners_total'] : $np_raw['listeners'],
         );
 
         $vote_functions = array('like', 'dislike', 'clearvote');

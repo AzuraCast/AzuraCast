@@ -2,6 +2,7 @@
 namespace PVL;
 
 use \Entity\Settings;
+use \Entity\ApiCall;
 
 class SyncManager
 {
@@ -77,6 +78,9 @@ class SyncManager
 
         // Update convention archives.
         ConventionManager::run();
+
+        // Clean up old API calls.
+        ApiCall::cleanUp();
 
         // Sync the BronyTunes library.
         Service\BronyTunes::load();

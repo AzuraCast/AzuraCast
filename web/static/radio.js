@@ -628,7 +628,7 @@ function notify(image, title, description)
         'tag': 'pvl_'+nowplaying_song_id,
         'icon': image,
         'body': description,
-        'timeout': 5000
+        'timeout': 5
     });
 
     notice.show();

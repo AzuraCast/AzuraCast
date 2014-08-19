@@ -34,6 +34,9 @@ return array(
         'curl_ssl_verifypeer' => false,
     ),
 
+    // Notifico settings.
+    'notifico_push_url' => '',
+
     // Hybrid/oAuth API settings.
     'hybrid_auth' => array(
         'base_url' => \DF\Url::baseUrl(),

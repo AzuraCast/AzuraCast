@@ -15,7 +15,7 @@ class Admin_ApiController extends \PVL\Controller\Action\Admin
 
         if (!$stats)
         {
-            $threshold = strtotime('-7 days');
+            $threshold = strtotime('-1 day');
 
             $seconds_in_threshold = time() - $threshold;
             $minutes_in_threshold = round($seconds_in_threshold / 60);

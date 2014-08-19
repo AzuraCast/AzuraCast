@@ -22,7 +22,7 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
                 $np[$short_name] = $np_row;
             }
 
-            \DF\Cache::save($np, 'api_nowplaying_data', array(), 10);
+            \DF\Cache::save($np, 'api_nowplaying_data', array(), 30);
         }
 
         if ($this->_hasParam('id'))
@@ -59,12 +59,13 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
         $np = array();
         $np_raw = $row['nowplaying_data'];
 
+        $np['status'] = $np_raw['status'];
         $np['station'] = Station::api($row);
 
         $np['listeners'] = array(
             'current'       => $np_raw['listeners'],
-            'unique'        => $np_raw['listeners_unique'],
-            'total'         => $np_raw['listeners_total'],
+            'unique'        => (isset($np_raw['listeners_unique'])) ? $np_raw['listeners_unique'] : $np_raw['listeners'],
+            'total'         => (isset($np_raw['listeners_total'])) ? $np_raw['listeners_total'] : $np_raw['listeners'],
         );
 
         $vote_functions = array('like', 'dislike', 'clearvote');

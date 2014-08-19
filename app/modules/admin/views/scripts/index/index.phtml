@@ -30,7 +30,8 @@ if ($skin == "dark")
                 <li class="nav-header">Network Statistics</li>
                 <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'songs', 'action' => 'votes')) ?>"><i class="icon-sort-by-order"></i> Top Songs for Week</a></li>
 
-                <li class="nav-header">Manage System Settings</li>
+                <li class="nav-header">Manage Core System</li>
+                <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'api')) ?>"><i class="icon-puzzle-piece"></i> API Usage</a></li>
                 <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'users')) ?>"><i class="icon-user"></i> User Accounts</a></li>
                 <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'permissions')) ?>"><i class="icon-key"></i> Roles &amp; Permissions</a></li>
                 <li><a href="<?=$this->route(array('module' => 'admin', 'controller' => 'settings')) ?>"><i class="icon-cog"></i> System Settings</a></li>

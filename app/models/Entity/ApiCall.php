@@ -47,4 +47,21 @@ class ApiCall extends \DF\Doctrine\Entity
 
     /** @Column(name="requesttime", type="float") */
     protected $requesttime;
+
+    /**
+     * Static Functions
+     */
+
+    public static function cleanUp()
+    {
+        $em = self::getEntityManager();
+
+        $threshold = strtotime('-7 days');
+
+        $em->createQuery('DELETE FROM ApiCall WHERE timestamp <= :threshold')
+            ->setParameter('threshold', $threshold)
+            ->execute();
+
+        return true;
+    }
 }

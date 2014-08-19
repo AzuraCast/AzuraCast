@@ -90,20 +90,11 @@ class NowPlaying
         $nowplaying_text = implode("<>", $text_lines);
         @file_put_contents($text_file_path, $nowplaying_text);
 
+        // Force cache clear for nowplaying API.
+        \DF\Cache::remove('api_nowplaying_data');
+
         // Post statistics to official record.
         Statistic::post($nowplaying);
-
-        /*
-        // Pull external data for newly updated songs.
-        if (count(self::$song_changes) > 0)
-        {
-            foreach(self::$song_changes as $song_id)
-            {
-                $song_obj = Song::find($song_id);
-                $song_obj->syncExternal();
-            }
-        }
-        */
 
         return $pvl_file_path;
     }

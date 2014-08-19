@@ -45,7 +45,7 @@ class NotificationManager
             $tweet = 'On The Air: '.$schedule_item->title.' in '.$notify_minutes.' minutes on '.$twitter_handle.'!';
             $tweet_url = $station->getShortUrl();
 
-            self::tweet($tweet, $tweet_url);
+            self::notify($tweet, $tweet_url);
 
             $schedule_item->is_notified = true;
             $schedule_item->save();
@@ -72,7 +72,7 @@ class NotificationManager
             $title = \DF\Utilities::truncateText($episode->title, 110-strlen($podcast->name)-6);
             $tweet = $podcast->name.': "'.$title.'" -';
 
-            self::tweet($tweet, $episode->web_url);
+            self::notify($tweet, $episode->web_url);
 
             $episode->is_notified = true;
             $episode->save();
@@ -81,7 +81,7 @@ class NotificationManager
         return;
     }
 
-    public static function tweet($message, $url = null, $force = false)
+    public static function notify($message, $url = null, $force = false)
     {
         static $twitter;
 
@@ -89,6 +89,11 @@ class NotificationManager
         if (DF_APPLICATION_ENV != "production" && !$force)
             return false;
 
+        // Send through Notifico hook.
+        $payload = $message.' - '.$url;
+        \PVL\Service\Notifico::post($payload);
+
+        // Send through Twitter.
         if (!$twitter)
         {
             $config = \Zend_Registry::get('config');

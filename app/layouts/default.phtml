@@ -61,8 +61,9 @@ $this->headScript()
     ->appendFile(\DF\Url::content('common/jquery/fancybox/helpers/jquery.fancybox-media.js'))
     ->appendFile(\DF\Url::content('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js'))
     ->appendFile(\DF\Url::content('common/bootstrap2_r2/layout.js'))
-    ->appendFile(\DF\Url::content('swfobject.js'))
+    ->appendFile(\DF\Url::content('js/swfobject.js'))
     ->appendFile(\DF\Url::content('js/jquery.hammer-full.min.js'))
+    ->appendFile(\DF\Url::content('js/notify.js'))
     ->appendFile(\DF\Url::content('global.js'));
 
 if ($this->custom_scripts)

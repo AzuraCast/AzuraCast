@@ -21,6 +21,18 @@ class ErrorController extends \DF\Controller\Action
                 $this->_forward('index', 'page', 'default', array('id' => $block->id));
                 return;
             }
+            elseif (substr($uri, 0, 3) == 'api')
+            {
+                // Return a JSON-encoded error for
+                $this->doNotRender();
+
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode(array(
+                    'status'    => 'error',
+                    'error'     => 'API function not found.',
+                ), JSON_UNESCAPED_SLASHES);
+                return;
+            }
             else
             {
                 $this->_helper->viewRenderer('error/pagenotfound', null, true);

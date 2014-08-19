@@ -59,6 +59,7 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
         $np = array();
         $np_raw = $row['nowplaying_data'];
 
+        $np['status'] = $np_raw['status'];
         $np['station'] = Station::api($row);
 
         $np['listeners'] = array(

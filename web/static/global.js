@@ -100,7 +100,7 @@ function updateTime()
 
     jQuery.ajax({
         cache: false,
-        url: DF_BaseUrl+'/api/index/time',
+        url: DF_BaseUrl+'/api/index/time/client/pvlwebapp',
         dataType: 'json'
     }).done(function(data) {
         var time_info = data.result;

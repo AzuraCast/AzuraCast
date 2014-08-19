@@ -68,8 +68,7 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
             }
             else
             {
-                $events_raw = $this->em->createQuery('SELECT s, st FROM Entity\Schedule s LEFT JOIN s.station st WHERE s.type = :type AND (s.start_time <= :end AND s.end_time >= :start) ORDER BY s.start_time ASC')
-                    ->setParameter('type', 'station')
+                $events_raw = $this->em->createQuery('SELECT s, st FROM Entity\Schedule s LEFT JOIN s.station st WHERE (s.start_time <= :end AND s.end_time >= :start) ORDER BY s.start_time ASC')
                     ->setParameter('start', $start_timestamp)
                     ->setParameter('end', $end_timestamp)
                     ->getArrayResult();
@@ -154,26 +153,6 @@ class Api_ScheduleController extends \PVL\Controller\Action\Api
 
     public function conventionsAction()
     {
-        $start_timestamp = strtotime('-1 month');
-        $end_timestamp = strtotime('+1 year');
-
-        $events_raw = $this->em->createQuery('SELECT s FROM Entity\Schedule s WHERE s.type = :type AND s.start_time <= :end AND s.end_time >= :start ORDER BY s.start_time ASC')
-            ->setParameter('type', 'convention')
-            ->setParameter('start', $start_timestamp)
-            ->setParameter('end', $end_timestamp)
-            ->getArrayResult();
-
-        $events = array();
-        foreach((array)$events_raw as $event)
-        {
-            $special_info = \PVL\ScheduleManager::formatName($event['title']);
-            $event = array_merge($event, $special_info);
-
-            unset($event['station_id'], $event['icon'], $event['is_notified']);
-
-            $events[] = $event;
-        }
-
-        $this->returnSuccess($events);
+        $this->returnError('This function is deprecated for api/conventions/list');
     }
 }

@@ -5,9 +5,22 @@ use \Entity\SongVote;
 
 class Api_SongController extends \PVL\Controller\Action\Api
 {
+    public function listAction()
+    {
+        $all_songs = Song::fetchArray();
+        $export_data = array();
+
+        foreach($all_songs as $song)
+        {
+            $export_data[$song['id']] = Song::api($song);
+        }
+
+        $this->returnSuccess($export_data);
+    }
+
     public function indexAction()
     {
-        $id = $this->_getParam('id');
+        $id = $this->getParam('id');
 
         $record = Song::find($id);
 

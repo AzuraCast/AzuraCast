@@ -3,7 +3,11 @@ class Admin_ApiController extends \PVL\Controller\Action\Admin
 {
     public function indexAction()
     {
-        $threshold = strtotime('-1 week');
+        set_time_limit(300);
+        ini_set('memory_limit', '256M');
+
+        $threshold = time() - 86400;
+
         $seconds_in_threshold = time() - $threshold;
         $minutes_in_threshold = round($seconds_in_threshold / 60);
 
@@ -19,6 +23,8 @@ class Admin_ApiController extends \PVL\Controller\Action\Admin
             'calls_by_ip'           => array(),
             'calls_by_hour'         => array(),
         );
+
+        $num_calls = count($api_calls);
 
         // Organize raw statistics.
         foreach($api_calls as $row)
@@ -89,7 +95,6 @@ class Admin_ApiController extends \PVL\Controller\Action\Admin
         $raw_stats['calls_by_function'] = $calls_by_minute;
 
         // Group and arrange stats into a visual format.
-        $num_calls = count($api_calls);
         $stats = array();
 
         foreach($raw_stats as $stat_type => $stat_values)

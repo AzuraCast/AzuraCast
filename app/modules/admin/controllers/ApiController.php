@@ -1,12 +1,17 @@
 <?php
 class Admin_ApiController extends \PVL\Controller\Action\Admin
 {
+    public function permissions()
+    {
+        return $this->acl->isAllowed('administer all');
+    }
+
     public function indexAction()
     {
         set_time_limit(300);
         ini_set('memory_limit', '256M');
 
-        $threshold = time() - 86400;
+        $threshold = strtotime('-7 days');
 
         $seconds_in_threshold = time() - $threshold;
         $minutes_in_threshold = round($seconds_in_threshold / 60);
@@ -69,6 +74,10 @@ class Admin_ApiController extends \PVL\Controller\Action\Admin
 
             $raw_stats['calls_by_hour'][$hour]++;
         }
+
+        // Free up memory.
+        unset($api_calls);
+        $this->em->clear();
 
         // Average speed by function.
         $new_speed_by_func = array();
@@ -143,6 +152,10 @@ class Admin_ApiController extends \PVL\Controller\Action\Admin
 
             $stats[$stat_type] = $stat;
         }
+
+        $this->view->threshold = $threshold;
+        $this->view->total_calls = $num_calls;
+        $this->view->calls_per_minute = round($num_calls / $minutes_in_threshold, 3);
 
         $this->view->statistics = $stats;
     }

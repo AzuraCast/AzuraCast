@@ -8,32 +8,12 @@ return array(
             
             'order' => 5,
             'pages' => array(
-                'settings'  => array(
-                    'label' => 'Settings',
+
+                'api'  => array(
+                    'label' => 'API',
                     'module' => 'admin',
-                    'controller' => 'settings',
+                    'controller' => 'api',
                     'permission' => 'administer all',
-                ),
-
-                'blocks'    => array(
-                    'label' => 'Content Blocks',
-                    'module' => 'admin',
-                    'controller' => 'blocks',
-                    'permission' => 'administer blocks',
-                ),
-
-                'stations'  => array(
-                    'label' => 'Stations',
-                    'module' => 'admin',
-                    'controller' => 'stations',
-                    'permission' => 'administer stations',
-                ),
-
-                'rotator'   => array(
-                    'label' => 'Homepage Rotator',
-                    'module' => 'admin',
-                    'controller' => 'rotator',
-                    'permission' => 'administer rotator',
                 ),
 
                 'artists' => array(
@@ -43,20 +23,28 @@ return array(
                     'permission' => 'administer artists',
                 ),
 
+                'blocks'    => array(
+                    'label' => 'Content Blocks',
+                    'module' => 'admin',
+                    'controller' => 'blocks',
+                    'permission' => 'administer blocks',
+                ),
+
                 'events' => array(
                     'label' => 'Events',
                     'module' => 'admin',
                     'controller' => 'events',
                     'permission' => 'administer events',
                 ),
-                
-                'users' => array(
-                    'label' => 'Users',
+
+                'files' => array(
+                    'label' => 'Files',
                     'module' => 'admin',
-                    'controller' => 'users',
+                    'controller' => 'files',
                     'action' => 'index',
                     'permission' => 'administer all',
                 ),
+
                 'permissions' => array(
                     'label' => 'Permissions',
                     'module' => 'admin',
@@ -70,10 +58,32 @@ return array(
                         ),
                     ),
                 ),
-                'files' => array(
-                    'label' => 'Files',
+
+                'rotator'   => array(
+                    'label' => 'Homepage Rotator',
                     'module' => 'admin',
-                    'controller' => 'files',
+                    'controller' => 'rotator',
+                    'permission' => 'administer rotator',
+                ),
+
+                'settings'  => array(
+                    'label' => 'Settings',
+                    'module' => 'admin',
+                    'controller' => 'settings',
+                    'permission' => 'administer all',
+                ),
+
+                'stations'  => array(
+                    'label' => 'Stations',
+                    'module' => 'admin',
+                    'controller' => 'stations',
+                    'permission' => 'administer stations',
+                ),
+                
+                'users' => array(
+                    'label' => 'Users',
+                    'module' => 'admin',
+                    'controller' => 'users',
                     'action' => 'index',
                     'permission' => 'administer all',
                 ),

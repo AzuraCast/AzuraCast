@@ -22,7 +22,7 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
                 $np[$short_name] = $np_row;
             }
 
-            \DF\Cache::save($np, 'api_nowplaying_data', array(), 10);
+            \DF\Cache::save($np, 'api_nowplaying_data', array(), 30);
         }
 
         if ($this->_hasParam('id'))

@@ -279,4 +279,23 @@ class Convention extends \DF\Doctrine\Entity
             return $start_month.' '.$start_day.', '.$start_year.' to '.$end_month.' '.$end_day.', '.$end_year;
         }
     }
+
+    public static function api($row)
+    {
+        $coverage_levels = self::getCoverageLevels();
+
+        return array(
+            'id'        => $row['id'],
+            'name'      => $row['name'],
+            'location'  => $row['location'],
+            'coverage'  => $row['coverage_level'],
+            'coverage_details' => $coverage_levels[$row['coverage_level']],
+            'date_range' => self::getDateRange($row['start_date'], $row['end_date']),
+            'start_date' => $row['start_date'],
+            'end_date'  => $row['end_date'],
+            'web_url'   => $row['web_url'],
+            'image_url' => \DF\Url::content($row['image_url']),
+            'thumbnail_url' => \DF\Url::content($row['thumbnail_url']),
+        );
+    }
 }

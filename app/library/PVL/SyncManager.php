@@ -8,8 +8,7 @@ class SyncManager
 {
     public static function syncNowplaying($force = false)
     {
-        set_time_limit(60);
-        ini_set('memory_limit', '256M');
+        self::initSync(60);
 
         // Prevent nowplaying from running on top of itself.
         $last_start = Settings::getSetting('nowplaying_last_started', 0);
@@ -28,8 +27,7 @@ class SyncManager
 
     public static function syncShort($force = false)
     {
-        set_time_limit(60);
-        ini_set('memory_limit', '256M');
+        self::initSync(60);
 
         // Send notifications related to schedules (high priority).
         NotificationManager::run();
@@ -39,8 +37,7 @@ class SyncManager
 
     public static function syncMedium($force = false)
     {
-        set_time_limit(300);
-        ini_set('memory_limit', '256M');
+        self::initSync(60);
 
         // Pull the homepage news.
         NewsManager::syncNetwork();
@@ -70,8 +67,7 @@ class SyncManager
 
     public static function syncLong($force = false)
     {
-        set_time_limit(1800);
-        ini_set('memory_limit', '256M');
+        self::initSync(1800);
 
         // Sync analytical and statistical data (long running).
         AnalyticsManager::run();
@@ -124,5 +120,20 @@ class SyncManager
         }
 
         return $syncs;
+    }
+
+    public static function initSync($script_timeout = 60)
+    {
+        set_time_limit($script_timeout);
+        ini_set('memory_limit', '256M');
+
+        if (DF_IS_COMMAND_LINE)
+        {
+            \PVL\Debug::setEchoMode(TRUE);
+
+            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
+            ini_set('display_errors', 1);
+            ini_set('log_errors', 1);
+        }
     }
 }

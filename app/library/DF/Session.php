@@ -20,9 +20,14 @@ class Session
             $sessions = array();
         
         $session_name = self::getNamespaceName($namespace);
-    
+
         if (!isset($sessions[$session_name]))
-            $sessions[$session_name] = new \Zend_Session_Namespace($session_name);
+        {
+            if (DF_IS_COMMAND_LINE)
+                $sessions[$session_name] = new \stdClass;
+            else
+                $sessions[$session_name] = new \Zend_Session_Namespace($session_name);
+        }
         
         return $sessions[$session_name];
     }

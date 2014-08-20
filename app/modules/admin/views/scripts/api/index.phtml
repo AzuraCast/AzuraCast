@@ -3,8 +3,8 @@ $this->headTitle('API Dashboard');
 ?>
 
 <h3>
-    <?=date('F j, Y g:ia', $this->threshold) ?> to Current<br>
-    <small><?=$this->total_calls ?> API Calls (<?=$this->calls_per_minute ?> per minute)</small>
+    <?=date('F j, Y g:ia', $this->statistics['meta']['threshold']) ?> to Current<br>
+    <small><?=$this->statistics['meta']['total_calls'] ?> API Calls (<?=$this->statistics['meta']['calls_per_minute'] ?> per minute)</small>
 </h3>
 
 <div class="row-fluid">

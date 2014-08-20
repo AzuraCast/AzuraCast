@@ -39,6 +39,8 @@ echo $this->headLink();
 echo $this->headScript();
 ?>
 <script>
+var DF_AppEnv = '<?=DF_APPLICATION_ENV ?>';
+var DF_BaseUrl = '<?php echo \DF\Url::baseUrl(); ?>';
 var DF_ContentPath = '<?php echo \DF\Url::content(); ?>';
 </script>
 </head>

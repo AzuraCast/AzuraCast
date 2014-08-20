@@ -11,11 +11,20 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
 
         if (!$np)
         {
-            $np_all = \PVL\NowPlaying::loadNowPlaying();
-            $np = $np_all['api'];
+            // Automatically generate new API info.
+            $stations = Station::fetchAll();
 
-            foreach($np as $station => $np_info)
-                $np[$station]['cache'] = 'miss';
+            $np = array();
+
+            foreach($stations as $station)
+            {
+                $short_name = $station->short_name;
+
+                $np_data = $station->nowplaying_data;
+                $np[$short_name] = \PVL\NowPlaying::processApi($np_data, $station);
+
+                $np[$short_name]['cache'] = 'miss';
+            }
 
             \DF\Cache::save($np, 'api_nowplaying_data', array('nowplaying'), 10);
         }

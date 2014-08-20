@@ -388,7 +388,7 @@ class Station extends \DF\Doctrine\Entity
         if ($row instanceof self)
             $row = $row->toArray();
 
-        return array(
+        $api = array(
             'id'        => (int)$row['id'],
             'name'      => $row['name'],
             'shortcode' => self::getStationShortName($row['name']),
@@ -401,5 +401,10 @@ class Station extends \DF\Doctrine\Entity
             'twitter_url' => $row['twitter_url'],
             'irc'       => $row['irc'],
         );
+
+        if ($row['requests_enabled'])
+            $api['request_url'] = \DF\Url::route(array('module' => 'default', 'controller' => 'station', 'action' => 'request', 'id' => $row['id']));
+
+        return $api;
     }
 }

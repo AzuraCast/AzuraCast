@@ -230,14 +230,7 @@ class IndexController extends \DF\Controller\Action
 
     public function nowplayingAction()
     {
-        $this->doNotRender();
-        
-        header('Access-Control-Allow-Origin: *');
-
-        $version = $this->_getParam('v', 1);
-        $id = $this->_getParam('id');
-
-        $nowplaying = \PVL\NowPlaying::get($version, $id);
-        echo json_encode($nowplaying);
+        $this->redirect(\DF\Url::content('api/nowplaying.json'));
+        return;
     }
 }

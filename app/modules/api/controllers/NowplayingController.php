@@ -14,7 +14,10 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
             $np_all = \PVL\NowPlaying::loadNowPlaying();
             $np = $np_all['api'];
 
-            \DF\Cache::save($np, 'api_nowplaying_data', array(), 300);
+            foreach($np as $station => $np_info)
+                $np[$station]['cache'] = 'miss';
+
+            \DF\Cache::save($np, 'api_nowplaying_data', array('nowplaying'), 10);
         }
 
         if ($this->hasParam('id'))

@@ -24,8 +24,12 @@ class NowPlaying
         @file_put_contents($pvl_file_path, $nowplaying_feed);
 
         // Generate PVL API cache.
+        $np_api = $nowplaying['api'];
+        foreach($np_api as $station => $np_info)
+            $np_api[$station]['cache'] = 'hit';
+
         \DF\Cache::remove('api_nowplaying_data');
-        \DF\Cache::save($nowplaying['api'], 'api_nowplaying_data', array('nowplaying'), 300);
+        \DF\Cache::save($np_api, 'api_nowplaying_data', array('nowplaying'), 30);
 
         // Post statistics to official record.
         Statistic::post($nowplaying);

@@ -306,7 +306,7 @@ function checkNowPlaying(force_update)
 						var song_num = parseInt(j)+1;
 						var history_row = station_info.song_history[j];
 
-						history_block += '<div>#'+song_num+": "+history_row.text+'</div>';
+						history_block += '<div>#'+song_num+": "+history_row.song.text+'</div>';
 					}
 
 					station.find('.station-history').html(history_block);

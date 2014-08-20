@@ -58,7 +58,7 @@ class ApiCall extends \DF\Doctrine\Entity
 
         $threshold = strtotime('-7 days');
 
-        $em->createQuery('DELETE FROM Entity\ApiCall WHERE timestamp <= :threshold')
+        $em->createQuery('DELETE FROM '.__CLASS__.' ac WHERE ac.timestamp <= :threshold')
             ->setParameter('threshold', $threshold)
             ->execute();
 

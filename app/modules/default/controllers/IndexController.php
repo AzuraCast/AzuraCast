@@ -91,6 +91,9 @@ class IndexController extends \DF\Controller\Action
     public function appAction()
     {}
 
+    public function donateAction()
+    {}
+
     public function scheduleAction()
     {
         // Pull stations.

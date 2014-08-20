@@ -32,7 +32,7 @@ class NowPlaying
         \DF\Cache::save($np_api, 'api_nowplaying_data', array('nowplaying'), 30);
 
         // Post statistics to official record.
-        Statistic::post($nowplaying);
+        Statistic::post($nowplaying['legacy']);
 
         return $pvl_file_path;
     }

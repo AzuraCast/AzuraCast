@@ -129,6 +129,8 @@ class SyncManager
 
         if (DF_IS_COMMAND_LINE)
         {
+            \PVL\Debug::setEchoMode(TRUE);
+
             error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
             ini_set('display_errors', 1);
             ini_set('log_errors', 1);

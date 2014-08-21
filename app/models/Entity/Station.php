@@ -192,9 +192,10 @@ class Station extends \DF\Doctrine\Entity
         $return = array();
         foreach($history as $sh)
         {
-            $history = $sh['song'];
-            $history['timestamp'] = $sh['timestamp'];
-            
+            $history = array(
+                'played_at'     => $sh['timestamp'],
+                'song'          => Song::api($sh['song']),
+            );
             $return[] = $history;
         }
 
@@ -422,6 +423,8 @@ class Station extends \DF\Doctrine\Entity
             'twitter_url' => $row['twitter_url'],
             'irc'       => $row['irc'],
         );
+
+        $api['player_url'] = ShortUrl::stationUrl($api['shortcode']);
 
         if ($row['requests_enabled'])
             $api['request_url'] = \DF\Url::route(array('module' => 'default', 'controller' => 'station', 'action' => 'request', 'id' => $row['id']));

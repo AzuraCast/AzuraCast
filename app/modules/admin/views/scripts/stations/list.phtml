@@ -32,7 +32,8 @@
             <td class="center"><img src="<?=\DF\Url::content($record['image_url']) ?>" style="max-width: 70px;"></td>
             <td>
                 <div><big><?=$record['name'] ?></big></div>
-                <div>Stream type: <?=$record['type'] ?></div>
+                <div><a href="<?=$this->route(array('module' => 'stations', 'controller' => 'streams', 'action' => 'index','station' => $record['id'])) ?>" target="_blank"><?=count($record['streams']) ?> Streams</a></div>
+
                 <? if ($record['twitter_url']): ?>
                     <div class="text-success"><i class="icon-check-sign"></i> Has Twitter</div>
                 <? else: ?>

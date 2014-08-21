@@ -29,7 +29,12 @@ class IceCast extends AdapterAbstract
                 $i = 0;
                 foreach($streamdata as $cell)
                 {
-                    $mount[$i] = pq($cell)->html();
+                    $pq_cell = pq($cell);
+
+                    $cell_name = $pq_cell->prev()->html();
+                    $cell_name_clean = preg_replace('/[^\da-z_]/i', '', str_replace(' ', '_', strtolower($cell_name)));
+
+                    $mount[$cell_name_clean] = $pq_cell->html();
                     $i++;
                 }
 
@@ -43,7 +48,7 @@ class IceCast extends AdapterAbstract
         $active_mounts = array();
         foreach($mounts as $mount)
         {
-            if (count($mount) >= 10)
+            if (count($mount) >= 9)
                 $active_mounts[] = $mount;
         }
 
@@ -62,12 +67,12 @@ class IceCast extends AdapterAbstract
         });
 
         $temp_array = $active_mounts[0];
-        list($artist, $track) = explode(" - ",$temp_array[9], 2);
+        list($artist, $track) = explode(" - ", $temp_array['current_song'], 2);
 
-        $np['listeners'] = (int)$temp_array[5];
+        $np['listeners'] = (int)$temp_array['current_listeners'];
         $np['artist'] = $artist;
         $np['title'] = $track;
-        $np['text'] = $temp_array[9];
+        $np['text'] = $temp_array['current_song'];
         $np['is_live'] = 'false';
         return $np;
     }

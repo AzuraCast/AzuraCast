@@ -72,9 +72,16 @@ echo $this->renderHere('homelink', true);
                 <?
                 $np = (array)$record->nowplaying_data;
                 ?>
-                <big><?=$np['title'] ?></big><br>
-                <?=$np['artist'] ?><br>
-                <i class="icon-user"></i> <?=$np['listeners'] ?> Tuned In
+                <? if ($np['status'] == 'offline'): ?>
+                    <span class="text-error">
+                        <big>Station Offline</big><br>
+                        Verify correct URLs!
+                    </span>
+                <? else: ?>
+                    <big><?=$np['current_song']['title'] ?></big><br>
+                    <?=$np['current_song']['artist'] ?><br>
+                    <i class="icon-user"></i> <?=$np['listeners']['current'] ?> Tuned In
+                <? endif; ?>
             </td>
         </tr>
     <? endforeach; ?>

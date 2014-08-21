@@ -116,8 +116,11 @@ class NowPlaying
         $np['listeners'] = $listener_totals;
 
         // Get currently active event (cached query)
-        $np['event'] = Schedule::getCurrentEvent($station->id);
-        $np['event_upcoming'] = Schedule::getUpcomingEvent($station->id);
+        $event_current = Schedule::getCurrentEvent($station->id);
+        $event_upcoming = Schedule::getUpcomingEvent($station->id);
+
+        $np['event'] = Schedule::api($event_current);
+        $np['event_upcoming'] = Schedule::api($event_upcoming);
 
         $station->nowplaying_data = $np['streams'];
         $em->persist($station);
@@ -182,10 +185,8 @@ class NowPlaying
             'total'         => ((isset($song_np['listeners_total'])) ? (int)$song_np['listeners_total'] : (int)$song_np['listeners']),
         );
 
-        $current_song = $current_np_data['current_song'];
-
         // Pull from current NP data if song details haven't changed.
-        if (strcmp($song_np['text'], $current_song['text']) == 0)
+        if (strcmp($song_np['text'], $current_np_data['current_song']['text']) == 0)
         {
             $np['current_song'] = $current_np_data['current_song'];
             $np['song_history'] = $current_np_data['song_history'];
@@ -248,6 +249,12 @@ class NowPlaying
     public static function processLegacy($np_raw)
     {
         $np = $np_raw['station'];
+
+        $np['code'] = $np['shortcode'];
+        $np['web'] = $np['web_url'];
+        $np['logo'] = $np['image_url'];
+        unset($np['web_url'], $np['image_url'], $np['shortcode']);
+
         $np['listeners'] = $np_raw['listeners']['current'];
         $np['listeners_unique'] = $np_raw['listeners']['unique'];
         $np['listeners_total'] = $np_raw['listeners']['total'];
@@ -271,7 +278,13 @@ class NowPlaying
                 $np['is_live'] = ($np_stream['status'] == 'online');
                 $np['status'] = $np_stream['status'];
 
-                $np['song_history'] = $np_stream['song_history'];
+                $np['song_history'] = array();
+                foreach((array)$np_stream['song_history'] as $hist_row)
+                {
+                    $row = $hist_row['song'];
+                    $row['timestamp'] = $hist_row['played_at'];
+                    $np['song_history'][] = $row;
+                }
             }
         }
 

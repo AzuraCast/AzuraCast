@@ -11,7 +11,7 @@ class Admin_StationsController extends \PVL\Controller\Action\Admin
     
     public function indexAction()
     {
-        $records = $this->em->createQuery('SELECT s FROM Entity\Station s ORDER BY s.category ASC, s.weight ASC, s.id ASC')
+        $records = $this->em->createQuery('SELECT s, ss FROM Entity\Station s LEFT JOIN s.streams ss ORDER BY s.category ASC, s.weight ASC, s.id ASC')
             ->getArrayResult();
 
         $stations_by_category = array();

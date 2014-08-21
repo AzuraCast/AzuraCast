@@ -30,14 +30,14 @@ return array(
             'markup' => '
                 <p>If you are unsure of what to enter into the fields below, some examples of common stream/nowplaying URLs for various stream types are included below for reference. You may need to customize these to meet your station\'s requirements.</p>
 
-                <dl>
+                <dl class="dl-horizontal">
                     <dt>ShoutCast 1</dt>
                     <dd>
                         <b>Broadcast URL:</b> <span class="text-disabled">http://listen.fillyradio.com:8000</span>/;stream.nsv<br>
                         <b>Now Playing URL:</b> <span class="text-disabled">http://listen.fillyradio.com:8000</span>/7.html
                     </dd>
 
-                    <dt>ShoutCast 2 (including CentovaCast / PVL Radio)</dt>
+                    <dt>SC 2 &amp; CentovaCast</dt>
                     <dd>
                         <b>Broadcast URL:</b> <span class="text-disabled">http://pvlradio.bravelyblue.com:8020</span>/stream?sid=1;stream.nsv<br>
                         <b>Now Playing URL:</b> <span class="text-disabled">http://pvlradio.bravelyblue.com:8020</span>/stats?sid=1

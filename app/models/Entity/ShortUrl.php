@@ -144,9 +144,13 @@ class ShortUrl extends \DF\Doctrine\Entity
         return $urls;
     }
 
-    public static function stationUrl(Station $station)
+    public static function stationUrl($station)
     {
-        $short_name = $station->short_name;
+        if ($station instanceof Station)
+            $short_name = $station->short_name;
+        else
+            $short_name = $station;
+
         return self::getFullUrl($short_name);
     }
 

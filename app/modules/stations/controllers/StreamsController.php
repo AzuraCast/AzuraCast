@@ -14,7 +14,7 @@ class Stations_StreamsController extends \PVL\Controller\Action\Station
         $id = (int)$this->getParam('id');
         $this->station->setDefaultStream($id);
 
-        $this->alert('<b>Record deleted.</b>', 'green');
+        $this->alert('<b>Default stream updated.</b>', 'green');
         $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
     }
 
@@ -49,11 +49,19 @@ class Stations_StreamsController extends \PVL\Controller\Action\Station
 
             // Immediately load "Now Playing" data for the added/updated stream.
             $np = \PVL\NowPlaying::processStream($record, $this->station);
+            $record->save();
 
-            if ($np[''])
+            if ($np['status'] != 'offline')
+            {
+                $song = $np['current_song'];
 
+                $this->alert('<b>Stream updated and successfully connected.</b><br>The currently playing song is reporting as "'.$song['title'].'" by "'.$song['artist'].'" with '.$np['listeners']['current'].' tuned in.', 'green');
+            }
+            else
+            {
+                $this->alert('<b>Stream updated, but is currently offline.</b><br>The system could not retrieve now-playing information about this stream. Verify that the station is online and the URLs are correct.', 'red');
+            }
 
-            $this->alert('Stream updated.', 'green');
             $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
             return;
         }

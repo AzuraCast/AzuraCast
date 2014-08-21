@@ -417,10 +417,8 @@ class Station extends \DF\Doctrine\Entity
             'shortcode' => self::getStationShortName($row['name']),
             'genre'     => $row['genre'],
             'category'  => $row['category'],
-            'type'      => $row['type'],
             'image_url' => \DF\Url::content($row['image_url']),
             'web_url'   => $row['web_url'],
-            'stream_url' => $row['stream_url'],
             'twitter_url' => $row['twitter_url'],
             'irc'       => $row['irc'],
         );

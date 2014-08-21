@@ -75,16 +75,12 @@ return array(
             'required' => true,
         )),
 
-        'submit_grp' => array(
-            'elements' => array(
-                'submit'        => array('submit', array(
-                    'type'  => 'submit',
-                    'label' => 'Submit Station',
-                    'helper' => 'formButton',
-                    'class' => 'ui-button btn-large',
-                )),
-            ),
-        ),
+        'submit'        => array('submit', array(
+            'type'  => 'submit',
+            'label' => 'Save Changes',
+            'helper' => 'formButton',
+            'class' => 'ui-button btn-large',
+        )),
 
     ),
 );

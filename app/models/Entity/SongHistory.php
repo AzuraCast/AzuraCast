@@ -146,7 +146,7 @@ class SongHistory extends \DF\Doctrine\Entity
             $sh = new self;
             $sh->song = $song;
             $sh->station = $station;
-            $sh->listeners = (int)$np['listeners'];
+            $sh->listeners = (int)$np['listeners']['current'];
             $sh->save();
 
             return $sh;

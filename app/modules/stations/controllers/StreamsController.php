@@ -47,6 +47,10 @@ class Stations_StreamsController extends \PVL\Controller\Action\Station
             // Ensure at least one stream is default.
             $this->station->checkDefaultStream();
 
+            // Immediately load "Now Playing" data for the added/updated stream.
+            $np = \PVL\NowPlaying::processStream($record, $this->station);
+
+            if ($np[''])
 
 
             $this->alert('Stream updated.', 'green');

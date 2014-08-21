@@ -38,7 +38,6 @@ class NowPlaying
         return $pvl_file_path;
     }
 
-
     public static function loadNowPlaying()
     {
         \PVL\Debug::startTimer('Nowplaying Overall');
@@ -58,8 +57,8 @@ class NowPlaying
 
             $name = $station->short_name;
 
-            $nowplaying['legacy'][$name] = self::processStation($station);
-            $nowplaying['api'][$name] = self::processApi($nowplaying['legacy'][$name], $station);
+            $nowplaying['api'][$name] = self::processStation($station);
+            $nowplaying['legacy'][$name] = self::processLegacy($nowplaying['api'][$name]);
 
             \PVL\Debug::endTimer($station->name);
         }
@@ -69,73 +68,88 @@ class NowPlaying
         return $nowplaying;
     }
 
+    /**
+     * Generate Structured NowPlaying Data
+     *
+     * @param Station $station
+     * @return array Structured NowPlaying Data
+     */
     public static function processStation(Station $station)
     {
         $em = self::getEntityManager();
-        $new_np_data = array();
 
-        $np = array(
-            'id' => $station->id,
-            'category' => $station->category,
-            'type' => $station->type,
-            'code' => $station->short_name,
-            'name' => $station->name,
-            'acronym' => $station->acronym,
-            'genre' => $station->genre,
-            'web' => $station->web_url,
-            'player_url' => \DF\Url::route(array('module' => 'default', 'action' => 'tunein', 'id' => $station->id)),
-            'logo' => \DF\Url::content($station->image_url, TRUE),
-            'streams' => array('name' => 'Primary', 'url' => $station->stream_url),
+        $np = array();
+        $np['status'] = 'offline';
+        $np['station'] = Station::api($station);
+
+        $listener_totals = array(
+            'current' => 0,
+            'unique' => 0,
+            'total' => 0,
         );
-
-        if ($station->requests_enabled)
-        {
-            $request_url = \DF\Url::route(array('module' => 'default', 'controller' => 'station', 'action' => 'request', 'id' => $station->id));
-            $np['request_url'] = $request_url;
-        }
 
         $np['streams'] = array();
 
         foreach($station->streams as $stream)
         {
             $np_stream = self::processStream($stream, $station);
-            $np['streams'][] = $np_stream;
+            $np['streams'][$stream->id] = $np_stream;
+
+            foreach($np_stream['listeners'] as $type => $count)
+                $listener_totals[$type] += $count;
 
             $em->persist($stream);
 
             // Merge default info into main array for legacy purposes.
-            if ($np_stream['default'] == true)
+            if ($np_stream['is_default'] == true)
             {
-                $new_np_data = $np_stream;
-                $np = array_merge($np, $np_stream);
+                $np['status'] = $np_stream['status'];
+
+                $np['station']['stream_url'] = $np_stream['url'];
+                $np['station']['default_stream_id'] = $np_stream['id'];
+
+                $np['current_song'] = $np_stream['current_song'];
+                $np['song_history'] = $np_stream['song_history'];
             }
         }
+
+        $np['listeners'] = $listener_totals;
 
         // Get currently active event (cached query)
         $np['event'] = Schedule::getCurrentEvent($station->id);
         $np['event_upcoming'] = Schedule::getUpcomingEvent($station->id);
 
-        $new_np_data['streams'] = $np['streams'];
-
-        $station->nowplaying_data = $new_np_data;
+        $station->nowplaying_data = $np['streams'];
         $em->persist($station);
-
         $em->flush();
 
         return $np;
     }
 
+    /**
+     * Process a single stream's NowPlaying info.
+     *
+     * @param StationStream $stream
+     * @param Station $station
+     * @return array Structured NowPlaying Data
+     */
     public static function processStream(StationStream $stream, Station $station)
     {
         $current_np_data = (array)$stream->nowplaying_data;
-        $np = array();
+
+        $np = array(
+            'id'            => $stream->id,
+            'name'          => $stream->name,
+            'url'           => $stream->stream_url,
+            'is_default'    => $stream->is_default,
+        );
+
+        $song_np = array();
 
         if ($stream->type)
         {
             $custom_class = Station::getStationClassName($station->name);
             $custom_adapter = '\\PVL\\NowPlayingAdapter\\'.$custom_class;
-
-            \PVL\Debug::log($custom_adapter);
 
             if (class_exists($custom_adapter))
                 $np_adapter = new $custom_adapter($stream, $station);
@@ -152,35 +166,34 @@ class NowPlaying
 
             \PVL\Debug::log('Adapter Class: '.get_class($np_adapter));
 
-            $np = $np_adapter->process();
+            $song_np = $np_adapter->process();
         }
         else
         {
-            $np['text'] = 'Error Processing Stream';
-            $np['is_live'] = false;
-            $np['status'] = 'offline';
+            $song_np['text'] = 'Error Processing Stream';
+            $song_np['is_live'] = false;
+            $song_np['status'] = 'offline';
         }
+
+        $np['status'] = $song_np['status'];
+        $np['listeners'] = array(
+            'current'       => (int)$song_np['listeners'],
+            'unique'        => ((isset($song_np['listeners_unique'])) ? (int)$song_np['listeners_unique'] : (int)$song_np['listeners']),
+            'total'         => ((isset($song_np['listeners_total'])) ? (int)$song_np['listeners_total'] : (int)$song_np['listeners']),
+        );
+
+        $current_song = $current_np_data['current_song'];
 
         // Pull from current NP data if song details haven't changed.
-        if (strcmp($np['text'], $current_np_data['text']) == 0)
+        if (strcmp($song_np['text'], $current_song['text']) == 0)
         {
+            $np['current_song'] = $current_np_data['current_song'];
             $np['song_history'] = $current_np_data['song_history'];
-
-            // $np['image'] = $current_np_data['image'];
-            $np['song_id'] = $current_np_data['song_id'];
-            $np['song_sh_id'] = $current_np_data['song_sh_id'];
-            $np['song_score'] = $current_np_data['song_score'];
-            $np['song_external'] = $current_np_data['song_external'];
         }
-        else if (empty($np['text']))
+        else if (empty($song_np['text']))
         {
+            $np['current_song'] = array();
             $np['song_history'] = $station->getRecentHistory();
-
-            // $np['image'] = $np['logo'];
-            $np['song_id'] = NULL;
-            $np['song_sh_id'] = NULL;
-            $np['song_score'] = 0;
-            $np['song_external'] = array();
         }
         else
         {
@@ -189,17 +202,36 @@ class NowPlaying
                 self::notifyStation($station, 'offline');
 
             // Register a new item in song history.
+            $np['current_song'] = array();
             $np['song_history'] = $station->getRecentHistory();
 
-            $song_obj = Song::getOrCreate($np);
+            $song_obj = Song::getOrCreate($song_np);
             $sh_obj = SongHistory::register($song_obj, $station, $np);
 
             $song_obj->syncExternal();
-            $np['song_external'] = $song_obj->getExternal();
 
-            $np['song_id'] = $song_obj->id;
-            $np['song_sh_id'] = $sh_obj->id;
-            $np['song_score'] = SongVote::getScoreForStation($song_obj, $station);
+            // Compose "current_song" object for API.
+            $current_song = Song::api($song_obj);
+            $current_song['sh_id'] = $sh_obj->id;
+            $current_song['score'] = SongVote::getScoreForStation($song_obj, $station);
+
+            $vote_urls = array();
+            $vote_functions = array('like', 'dislike', 'clearvote');
+
+            foreach($vote_functions as $vote_function)
+            {
+                $vote_urls[$vote_function] = \DF\Url::route(array(
+                    'module' => 'api',
+                    'controller' => 'song',
+                    'action' => $vote_function,
+                    'sh_id' => $sh_obj->id,
+                ));
+            }
+
+            $current_song['vote_urls'] = $vote_urls;
+            $current_song['external'] = $song_obj->getExternal();
+
+            $np['current_song'] = $current_song;
         }
 
         $stream->nowplaying_data = $np;
@@ -207,53 +239,52 @@ class NowPlaying
         return $np;
     }
 
-    public static function processApi($np_raw, Station $station)
+    /**
+     * Generate Legacy Now Playing Data
+     *
+     * @param $np_raw
+     * @return array Legacy NowPlaying Data
+     */
+    public static function processLegacy($np_raw)
     {
-        $np = array();
-        $np['status'] = $np_raw['status'];
-        $np['station'] = Station::api($station);
+        $np = $np_raw['station'];
+        $np['listeners'] = $np_raw['listeners']['current'];
+        $np['listeners_unique'] = $np_raw['listeners']['unique'];
+        $np['listeners_total'] = $np_raw['listeners']['total'];
 
-        $np['listeners'] = array(
-            'current'       => $np_raw['listeners'],
-            'unique'        => (isset($np_raw['listeners_unique'])) ? $np_raw['listeners_unique'] : $np_raw['listeners'],
-            'total'         => (isset($np_raw['listeners_total'])) ? $np_raw['listeners_total'] : $np_raw['listeners'],
-        );
-
-        $vote_functions = array('like', 'dislike', 'clearvote');
-        $vote_urls = array();
-
-        foreach($vote_functions as $vote_function)
-            $vote_urls[$vote_function] = \DF\Url::route(array('module' => 'api', 'controller' => 'song', 'action' => $vote_function, 'sh_id' => $np_raw['song_sh_id']));
-
-        $current_song = array(
-            'id'        => $np_raw['song_id'],
-            'text'      => $np_raw['text'],
-            'artist'    => $np_raw['artist'],
-            'title'     => $np_raw['title'],
-
-            'score'     => $np_raw['song_score'],
-            'sh_id'     => $np_raw['song_sh_id'],
-            'vote_urls' => $vote_urls,
-
-            'external'  => $np_raw['song_external'],
-        );
-
-        $np['current_song'] = $current_song;
-
-        foreach((array)$np_raw['song_history'] as $song_row)
+        // Merge a default stream info into main array for legacy purposes.
+        foreach($np_raw['streams'] as $np_stream)
         {
-            $np['song_history'][] = array(
-                'played_at' => $song_row['timestamp'],
-                'song'      => Song::api($song_row),
-            );
+            if ($np_stream['is_default'] == true)
+            {
+                $song = $np_stream['current_song'];
+
+                $np['title'] = $song['title'];
+                $np['text'] = $song['text'];
+                $np['artist'] = $song['artist'];
+                $np['song_id'] = $song['id'];
+                $np['song_sh_id'] = $song['sh_id'];
+                $np['song_score'] = $song['score'];
+                $np['song_external'] = $song['external'];
+
+                $np['stream_url'] = $np_stream['url'];
+                $np['is_live'] = ($np_stream['status'] == 'online');
+                $np['status'] = $np_stream['status'];
+
+                $np['song_history'] = $np_stream['song_history'];
+            }
         }
 
-        $np['event'] = Schedule::api($np_raw['event']);
-        $np['event_upcoming'] = Schedule::api($np_raw['event_upcoming']);
+        $np['event'] = $np_raw['event'];
+        $np['event_upcoming'] = $np_raw['event_upcoming'];
 
         return $np;
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     * @throws \Zend_Exception
+     */
     public static function getEntityManager()
     {
         static $em;

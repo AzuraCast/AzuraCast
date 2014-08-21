@@ -4,6 +4,7 @@ namespace PVL;
 use \Entity\Statistic;
 use \Entity\Schedule;
 use \Entity\Station;
+use \Entity\StationStream;
 use \Entity\Song;
 use \Entity\SongHistory;
 use \Entity\SongVote;
@@ -37,6 +38,7 @@ class NowPlaying
         return $pvl_file_path;
     }
 
+
     public static function loadNowPlaying()
     {
         \PVL\Debug::startTimer('Nowplaying Overall');
@@ -58,13 +60,9 @@ class NowPlaying
 
             $nowplaying['legacy'][$name] = self::processStation($station);
             $nowplaying['api'][$name] = self::processApi($nowplaying['legacy'][$name], $station);
-            
-            $em->persist($station);
 
             \PVL\Debug::endTimer($station->name);
         }
-
-        $em->flush();
 
         \PVL\Debug::endTimer('Nowplaying Overall');
 
@@ -73,7 +71,8 @@ class NowPlaying
 
     public static function processStation(Station $station)
     {
-        $current_np_data = (array)$station->nowplaying_data;
+        $em = self::getEntityManager();
+        $new_np_data = array();
 
         $np = array(
             'id' => $station->id,
@@ -95,27 +94,65 @@ class NowPlaying
             $np['request_url'] = $request_url;
         }
 
-        if ($station->type)
+        $np['streams'] = array();
+
+        foreach($station->streams as $stream)
+        {
+            $np_stream = self::processStream($stream, $station);
+            $np['streams'][] = $np_stream;
+
+            $em->persist($stream);
+
+            // Merge default info into main array for legacy purposes.
+            if ($np_stream['default'] == true)
+            {
+                $new_np_data = $np_stream;
+                $np = array_merge($np, $np_stream);
+            }
+        }
+
+        // Get currently active event (cached query)
+        $np['event'] = Schedule::getCurrentEvent($station->id);
+        $np['event_upcoming'] = Schedule::getUpcomingEvent($station->id);
+
+        $new_np_data['streams'] = $np['streams'];
+
+        $station->nowplaying_data = $new_np_data;
+        $em->persist($station);
+
+        $em->flush();
+
+        return $np;
+    }
+
+    public static function processStream(StationStream $stream, Station $station)
+    {
+        $current_np_data = (array)$stream->nowplaying_data;
+        $np = array();
+
+        if ($stream->type)
         {
             $custom_class = Station::getStationClassName($station->name);
             $custom_adapter = '\\PVL\\NowPlayingAdapter\\'.$custom_class;
 
+            \PVL\Debug::log($custom_adapter);
+
             if (class_exists($custom_adapter))
-                $np_adapter = new $custom_adapter($station);
-            elseif ($station->type == "centovacast")
-                $np_adapter = new \PVL\NowPlayingAdapter\CentovaCast($station);
-            elseif ($station->type == "icecast")
-                $np_adapter = new \PVL\NowPlayingAdapter\IceCast($station);
-            elseif ($station->type == "shoutcast2")
-                $np_adapter = new \PVL\NowPlayingAdapter\ShoutCast2($station);
-            elseif ($station->type == "shoutcast1")
-                $np_adapter = new \PVL\NowPlayingAdapter\ShoutCast1($station);
-            elseif ($station->type == "stream")
-                $np_adapter = new \PVL\NowPlayingAdapter\Stream($station);
+                $np_adapter = new $custom_adapter($stream, $station);
+            elseif ($stream->type == "centovacast")
+                $np_adapter = new \PVL\NowPlayingAdapter\CentovaCast($stream, $station);
+            elseif ($stream->type == "icecast")
+                $np_adapter = new \PVL\NowPlayingAdapter\IceCast($stream, $station);
+            elseif ($stream->type == "shoutcast2")
+                $np_adapter = new \PVL\NowPlayingAdapter\ShoutCast2($stream, $station);
+            elseif ($stream->type == "shoutcast1")
+                $np_adapter = new \PVL\NowPlayingAdapter\ShoutCast1($stream, $station);
+            elseif ($stream->type == "stream")
+                $np_adapter = new \PVL\NowPlayingAdapter\Stream($stream, $station);
 
             \PVL\Debug::log('Adapter Class: '.get_class($np_adapter));
 
-            $np = $np_adapter->process($np);
+            $np = $np_adapter->process();
         }
         else
         {
@@ -165,16 +202,7 @@ class NowPlaying
             $np['song_score'] = SongVote::getScoreForStation($song_obj, $station);
         }
 
-        // Get currently active event (cached query)
-        $np['event'] = Schedule::getCurrentEvent($station->id);
-        $np['event_upcoming'] = Schedule::getUpcomingEvent($station->id);
-
-        $station->nowplaying_data = $np;
-
-        $station->nowplaying_artist = $np['artist'];
-        $station->nowplaying_title = $np['title'];
-        $station->nowplaying_text = $np['text'];
-        $station->nowplaying_listeners = (int)$np['listeners'];
+        $stream->nowplaying_data = $np;
 
         return $np;
     }
@@ -224,6 +252,16 @@ class NowPlaying
         $np['event_upcoming'] = Schedule::api($np_raw['event_upcoming']);
 
         return $np;
+    }
+
+    public static function getEntityManager()
+    {
+        static $em;
+
+        if (!$em)
+            $em = \Zend_Registry::get('em');
+
+        return $em;
     }
 
     public static function notifyStation($station, $template)

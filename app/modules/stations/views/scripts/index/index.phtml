@@ -35,25 +35,22 @@ Highcharts.setOptions({
 
         <h2>Station Tools</h2>
         <div class="well">
-            <h3>Network Interaction</h3>
+            <h3>PVL Network Tools</h3>
             <dl>
-                <dt><a href="<?=$this->routeFromHere(array('controller' => 'vote', 'action' => 'index')) ?>">New Station Intake Voting</a></dt>
-                <dd>Submit your recommendation on whether PVL should accept any of the stations that have submitted their profiles to the system.</dd>
+                <dt><a href="<?=$this->routeFromHere(array('controller' => 'streams', 'action' => 'index')) ?>">Station Stream Manager</a></dt>
+                <dd>Update your existing radio/video streams or add new ones.</dd>
+
+                <dt><a href="<?=$this->routeFromHere(array('controller' => 'vote', 'action' => 'index')) ?>">Vote on New PVL Stations</a></dt>
+                <dd>Submit your recommendation on whether PVL should accept new station applicants.</dd>
 
                 <dt><a href="<?=$this->routeFromHere(array('action' => 'timeline')) ?>">Song Playback Timeline</a></dt>
                 <dd>View the entire playback history of your station over the last 48 hours, along with the rise and fall of listener counts and special events.</dd>
 
                 <dt><a href="<?=$this->routeFromHere(array('action' => 'votes')) ?>">Song Vote Totals</a></dt>
-                <dd>View most/least popular songs on the station over the last two weeks.</dd>
+                <dd>Most/least popular songs on the station over the last two weeks.</dd>
 
-                <dt><a href="<?=$this->routeFromHere(array('controller' => 'urls', 'action' => 'index')) ?>">PVL Short URLs</a></dt>
-                <dd>Manage the "pvlive.me" URL shortener links for your station.</dd>
-
-                <dt><a href="http://radio.ponyvillelive.com:2199/" target="_blank">CentovaCast Station Manager</a></dt>
-                <dd>If your station is hosted on the PVL CentovaCast server, use this link to manage it.</dd>
-
-                <dt><a href="http://mistyfly.ponyvillelive.com/cpanel" target="_blank">cPanel Web Account Manager</a></dt>
-                <dd>If your station's web site is hosted on cPanel, use this link to manage your FTP accounts, e-mail, and other features.</dd>                
+                <dt><a href="<?=$this->routeFromHere(array('controller' => 'urls', 'action' => 'index')) ?>">PVLive.me Short URLs</a></dt>
+                <dd>Use the http://pvlive.me/ URL shortener for clean, short addresses.</dd>
             </dl>
 
             <h3>Artist Interaction</h3>
@@ -62,16 +59,17 @@ Highcharts.setOptions({
                 <dd>View the full list of artists who have agreed to (or otherwise limited) usage of their creations or interviews with them by the PVL network.</dd>
 
                 <dt><a href="<?=$this->routeFromHere(array('controller' => 'artists', 'action' => 'copyright')) ?>">Fully Licensed Artists</a></dt>
-                <dd>Only view the fully licensed artists who have granted permission to PVL to use their work from the list above.</dd>
             </dl>
 
-            <h3>PVL Resources</h3>
+            <h3>Shortcuts</h3>
             <dl>
-                <dt><a href="<?=$this->route(array('controller' => 'widget', 'action' => 'index')) ?>">Radio Player Embed Instructions</a></dt>
-                <dd>View a detailed guide of the embeddable radio player, and what can be customized with it.</dd>
+                <dt><a href="<?=$this->route(array('module' => 'default', 'controller' => 'convention', 'action' => 'signup')) ?>">Convention Sign-up Form</a></dt>
+                <dd>Send this form to your station staff if they are interested in attending conventions as PVL press members.</dd>
 
-                <dt><a href="//www.ponyvillelive.com/resources/brand_package.zip">PVL Network Branding Kit</a></dt>
-                <dd>Includes several versions, color combinations and formats of the popular PVL network-wide branding.</dd>
+                <dt><a href="<?=$this->route(array('controller' => 'widget', 'action' => 'index')) ?>">Radio Player Embed Instructions</a></dt>
+                <dt><a href="//www.ponyvillelive.com/resources/brand_package.zip">PVL Network Logos &amp; Branding Kit</a></dt>
+                <dt><a href="http://radio.ponyvillelive.com:2199/" target="_blank">CentovaCast Station Manager</a></dt>
+                <dt><a href="pvlhosting.bravelyblue.com:8443" target="_blank">Plesk Web Hosting Manager</a></dt>
             </dl>
         </div>
 

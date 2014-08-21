@@ -2,21 +2,31 @@
 namespace PVL\NowPlayingAdapter;
 
 use \Entity\Station;
+use \Entity\StationStream;
 
 class AdapterAbstract
 {
+    protected $stream;
     protected $station;
+
     protected $url;
 
-    public function __construct(Station $station)
+    /**
+     * @param StationStream $stream
+     * @param Station $station
+     */
+    public function __construct(StationStream $stream, Station $station)
     {
+        $this->stream = $stream;
         $this->station = $station;
-        $this->url = $station->nowplaying_url;
+
+        $this->url = $stream->nowplaying_url;
     }
 
     /* Master processing and cleanup. */
-    public function process($np)
+    public function process()
     {
+        $np = array();
         $np_new = $this->_process($np);
 
         // Auto fail-safe for empty records or failed record pulls.
@@ -144,8 +154,6 @@ class AdapterAbstract
             return max($unique_listeners, $current_listeners);
         else
             return min($unique_listeners, $current_listeners);
-
-        // return round(($unique_listeners + $unique_listeners + $current_listeners) / 3);
     }
 
 }

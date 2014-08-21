@@ -63,9 +63,6 @@ class Station extends \DF\Doctrine\Entity
         return $categories[$this->category]['name'];
     }
 
-    /** @Column(name="type", type="string", length=50, nullable=true) */
-    protected $type;
-
     /** @Column(name="weight", type="smallint") */
     protected $weight;
 
@@ -98,15 +95,6 @@ class Station extends \DF\Doctrine\Entity
     /** @Column(name="web_url", type="string", length=100, nullable=true) */
     protected $web_url;
 
-    /** @Column(name="nowplaying_url", type="string", length=100, nullable=true) */
-    protected $nowplaying_url;
-
-    /** @Column(name="stream_url", type="string", length=150, nullable=true) */
-    protected $stream_url;
-
-    /** @Column(name="stream_alternate", type="text", nullable=true) */
-    protected $stream_alternate;
-
     /** @Column(name="irc", type="string", length=25, nullable=true) */
     protected $irc;
 
@@ -128,21 +116,6 @@ class Station extends \DF\Doctrine\Entity
 
     /** @Column(name="gcal_url", type="string", length=150, nullable=true) */
     protected $gcal_url;
-
-    /** @Column(name="nowplaying_artist", type="string", length=100, nullable=true) */
-    protected $nowplaying_artist;
-
-    /** @Column(name="nowplaying_title", type="string", length=100, nullable=true) */
-    protected $nowplaying_title;
-
-    /** @Column(name="nowplaying_text", type="string", length=150, nullable=true) */
-    protected $nowplaying_text;
-
-    /** @Column(name="nowplaying_image", type="string", length=255, nullable=true) */
-    protected $nowplaying_image;
-
-    /** @Column(name="nowplaying_listeners", type="smallint", nullable=true) */
-    protected $nowplaying_listeners;
 
     /** @Column(name="nowplaying_data", type="json", nullable=true) */
     protected $nowplaying_data;
@@ -258,6 +231,50 @@ class Station extends \DF\Doctrine\Entity
             return ($np_data['status'] != 'offline');
         else
             return false;
+    }
+
+    public function setDefaultStream($sid)
+    {
+        if ($sid instanceof StationStream)
+            $sid = $sid->id;
+
+        $em = self::getEntityManager();
+
+        foreach($this->streams as $stream)
+        {
+            if ($stream->id == $sid)
+                $stream->is_default = true;
+            else
+                $stream->is_default = false;
+
+            $em->persist($stream);
+        }
+
+        $em->flush();
+
+        // Ensure at least one stream is "default" for the station.
+        $this->checkDefaultStream();
+    }
+
+    public function checkDefaultStream()
+    {
+        if (count($this->streams) == 0)
+            return false;
+
+        $has_default = false;
+
+        foreach($this->streams as $stream)
+        {
+            if ($stream->is_default)
+                $has_default = true;
+        }
+
+        if (!$has_default)
+        {
+            $stream = $this->streams->first();
+            $stream->is_default = true;
+            $stream->save();
+        }
     }
 
     /**

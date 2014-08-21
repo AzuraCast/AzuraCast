@@ -19,6 +19,11 @@ class Action extends \Zend_Controller_Action
     public $module_config;
 
     /**
+     * @var \DF\Config
+     */
+    public $current_module_config;
+
+    /**
      * @var \DF\Auth\Instance
      */
     public $auth;
@@ -56,6 +61,8 @@ class Action extends \Zend_Controller_Action
         
         if (isset($this->module_config[$this->module_name]))
             $this->current_module_config = $this->module_config[$this->module_name];
+        else
+            $this->current_module_config = NULL;
             
         $this->test_mode = $this->isTestMode();
         

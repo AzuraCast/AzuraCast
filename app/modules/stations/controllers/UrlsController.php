@@ -84,8 +84,11 @@ class Stations_UrlsController extends \PVL\Controller\Action\Station
 
     public function deleteAction()
     {
-        $id = (int)$this->_getParam('id');
-        $record = ShortUrl::find($id);
+        $id = (int)$this->getParam('id');
+        $record = ShortUrl::getRepository()->findOneBy(array(
+            'id' => $id,
+            'station_id' => $this->station->id
+        ));
 
         if ($record instanceof ShortUrl)
             $record->delete();

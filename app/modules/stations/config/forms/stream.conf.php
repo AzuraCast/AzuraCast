@@ -19,6 +19,7 @@ return array(
                 'shoutcast1'        => 'ShoutCast v1',
                 'shoutcast2'        => 'ShoutCast v2',
                 'icecast'           => 'IceCast',
+                'icebreath'         => 'IceCast with IceBreath Tool',
                 'stream'            => 'Other / Video Stream',
             ),
 
@@ -47,6 +48,12 @@ return array(
                     <dd>
                         <b>Broadcast URL:</b> <span class="text-disabled">http://www.radiobrony.fr:8000</span>/live<br>
                         <b>Now Playing URL:</b> <span class="text-disabled">http://www.radiobrony.fr:8000</span>/
+                    </dd>
+
+                    <dt>IceBreath</dt>
+                    <dd>
+                        <b>Broadcast URL:</b> <span class="text-disabled">http://url.com:8000</span>/live.mp3<br>
+                        <b>Now Playing URL:</b> <span class="text-disabled">http://url.com</span>/icebreath/icecast/stats/live.mp3
                     </dd>
 
                     <dt>LiveStream</dt>

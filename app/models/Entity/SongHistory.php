@@ -32,6 +32,9 @@ class SongHistory extends \DF\Doctrine\Entity
     /** @Column(name="station_id", type="integer") */
     protected $station_id;
 
+    /** @Column(name="stream_id", type="integer", nullable=true) */
+    protected $stream_id;
+
     /** @Column(name="timestamp", type="integer") */
     protected $timestamp;
 
@@ -60,6 +63,14 @@ class SongHistory extends \DF\Doctrine\Entity
      */
     protected $station;
 
+    /**
+     * @ManyToOne(targetEntity="StationStream", inversedBy="history")
+     * @JoinColumns({
+     *   @JoinColumn(name="stream_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     */
+    protected $stream;
+
     public function like()
     {
         return $this->vote(1);
@@ -81,7 +92,7 @@ class SongHistory extends \DF\Doctrine\Entity
                 $this->clearVote($record);
 
             if ($value > 0)
-                $this->score_likes += 1; 
+                $this->score_likes += 1;
             else
                 $this->score_dislikes += 1;
 
@@ -125,15 +136,18 @@ class SongHistory extends \DF\Doctrine\Entity
      * Static Functions
      */
 
-    public static function register(Song $song, Station $station, $np)
+    public static function register(Song $song, Station $station, StationStream $stream, $np)
     {
         // Check to ensure no match with most recent song.
         try
         {
             $em = self::getEntityManager();
-            $last_song_id = $em->createQuery('SELECT sh.song_id FROM '.__CLASS__.' sh WHERE sh.station_id = :station_id ORDER BY sh.timestamp DESC')
+            $last_song_id = $em->createQuery('SELECT sh.song_id FROM '.__CLASS__.' sh
+                WHERE sh.station_id = :station_id AND sh.stream_id = :stream_id
+                ORDER BY sh.timestamp DESC')
                 ->setMaxResults(1)
                 ->setParameter('station_id', $station->id)
+                ->setParameter('stream_id', $stream->id)
                 ->getSingleScalarResult();
         }
         catch(\Exception $e)
@@ -146,6 +160,8 @@ class SongHistory extends \DF\Doctrine\Entity
             $sh = new self;
             $sh->song = $song;
             $sh->station = $station;
+            $sh->stream = $stream;
+
             $sh->listeners = (int)$np['listeners']['current'];
             $sh->save();
 

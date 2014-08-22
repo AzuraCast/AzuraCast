@@ -235,6 +235,10 @@ table.table-nopadding {
 	margin-bottom: 0;
 }
 
+span.text-disabled {
+    opacity: 0.5;
+}
+
 /** Buttons **/
 
 .btn .icon

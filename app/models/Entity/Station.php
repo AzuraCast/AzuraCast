@@ -152,6 +152,7 @@ class Station extends \DF\Doctrine\Entity
 
     /**
      * @OneToMany(targetEntity="StationStream", mappedBy="station")
+     * @OrderBy({"name" = "ASC"})
      */
     protected $streams;
 
@@ -181,11 +182,12 @@ class Station extends \DF\Doctrine\Entity
         return ShortUrl::stationUrl($this);
     }
 
-    public function getRecentHistory($num_entries = 5)
+    public function getRecentHistory(StationStream $stream, $num_entries = 5)
     {
         $em = self::getEntityManager();
-        $history = $em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id ORDER BY sh.id DESC')
+        $history = $em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id AND sh.stream_id = :stream_id ORDER BY sh.id DESC')
             ->setParameter('station_id', $this->id)
+            ->setParameter('stream_id', $stream->id)
             ->setMaxResults($num_entries)
             ->getArrayResult();
 

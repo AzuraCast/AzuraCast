@@ -12,6 +12,8 @@ class StationStream extends \DF\Doctrine\Entity
     public function __construct()
     {
         $this->is_default = 0;
+
+        $this->history = new ArrayCollection;
     }
 
     /**
@@ -49,4 +51,10 @@ class StationStream extends \DF\Doctrine\Entity
      * })
      */
     protected $station;
+
+    /**
+     * @OneToMany(targetEntity="SongHistory", mappedBy="station")
+     * @OrderBy({"timestamp" = "DESC"})
+     */
+    protected $history;
 }

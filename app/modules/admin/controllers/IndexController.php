@@ -123,6 +123,9 @@ class Admin_IndexController extends \PVL\Controller\Action\Admin
 
             case "nowplaying":
             default:
+                $segment = $this->getParam('segment', 1);
+                define('NOWPLAYING_SEGMENT', $segment);
+
                 \PVL\SyncManager::syncNowplaying(true);
             break;
         }

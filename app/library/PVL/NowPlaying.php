@@ -16,6 +16,10 @@ class NowPlaying
     {
         set_time_limit(60);
 
+        // Run different tasks for different "segments" of now playing data.
+        if (!defined('NOWPLAYING_SEGMENT'))
+            define('NOWPLAYING_SEGMENT', 1);
+
         $nowplaying = self::loadNowPlaying();
 
         // Generate PVL legacy nowplaying file.
@@ -78,6 +82,8 @@ class NowPlaying
     {
         $em = self::getEntityManager();
 
+        $np_old = (array)$station->nowplaying_data;
+
         $np = array();
         $np['status'] = 'offline';
         $np['station'] = Station::api($station);
@@ -122,7 +128,11 @@ class NowPlaying
         $np['event'] = Schedule::api($event_current);
         $np['event_upcoming'] = Schedule::api($event_upcoming);
 
-        $station->nowplaying_data = $np['streams'];
+        $station->nowplaying_data = array(
+            'current_song'      => $np['current_song'],
+            'song_history'      => $np['song_history'],
+        );
+
         $em->persist($station);
         $em->flush();
 
@@ -139,6 +149,13 @@ class NowPlaying
     public static function processStream(StationStream $stream, Station $station)
     {
         $current_np_data = (array)$stream->nowplaying_data;
+
+        if (!$stream->is_default)
+        {
+            // Only process non-default streams on odd-numbered "segments" to improve performance.
+            if (NOWPLAYING_SEGMENT % 2 == 0 && !empty($current_np_data))
+                return $current_np_data;
+        }
 
         $np = array(
             'id'            => $stream->id,
@@ -160,6 +177,8 @@ class NowPlaying
                 $np_adapter = new \PVL\NowPlayingAdapter\CentovaCast($stream, $station);
             elseif ($stream->type == "icecast")
                 $np_adapter = new \PVL\NowPlayingAdapter\IceCast($stream, $station);
+            elseif ($stream->type == "icebreath")
+                $np_adapter = new \PVL\NowPlayingAdapter\IceBreath($stream, $station);
             elseif ($stream->type == "shoutcast2")
                 $np_adapter = new \PVL\NowPlayingAdapter\ShoutCast2($stream, $station);
             elseif ($stream->type == "shoutcast1")
@@ -194,7 +213,7 @@ class NowPlaying
         else if (empty($song_np['text']))
         {
             $np['current_song'] = array();
-            $np['song_history'] = $station->getRecentHistory();
+            $np['song_history'] = $station->getRecentHistory($stream);
         }
         else
         {
@@ -204,10 +223,10 @@ class NowPlaying
 
             // Register a new item in song history.
             $np['current_song'] = array();
-            $np['song_history'] = $station->getRecentHistory();
+            $np['song_history'] = $station->getRecentHistory($stream);
 
             $song_obj = Song::getOrCreate($song_np);
-            $sh_obj = SongHistory::register($song_obj, $station, $np);
+            $sh_obj = SongHistory::register($song_obj, $station, $stream, $np);
 
             $song_obj->syncExternal();
 

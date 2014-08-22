@@ -1,7 +1,12 @@
+.media.station {
+    margin-top: 0px;
+}
+
 .station h4,
 .podcast h4 {
 	border-color: #CCC;
 }
+
 .station img,
 .podcast img {
 	padding: 4px;
@@ -169,8 +174,13 @@ li.media .dropdown-menu li a {
 	color: #fff;
 	background: none;
 	border-bottom: none;
+    border-radius: 4px;
 }
-li.media .dropdown-menu li a:hover {
+li.media .dropdown-menu li.active > a {
+    background: rgba(255, 255, 255, 0.25) !important;
+    font-weight: bold;
+}
+li.media .dropdown-menu li > a:hover {
 	background: #13385E !important;
 }
 li.media .dropdown-menu li i {

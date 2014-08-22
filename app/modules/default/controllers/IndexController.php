@@ -150,20 +150,38 @@ class IndexController extends \DF\Controller\Action
 
         if ($station_id && $this->getParam('showonlystation', false) == 'true')
         {
-            $stations_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.id = :station_id')
+            $stations_raw = $this->em->createQuery('SELECT s, ss FROM Entity\Station s LEFT JOIN s.streams ss WHERE s.id = :station_id')
                 ->setParameter('station_id', $station_id)
                 ->getArrayResult();
         }
         else
         {
-            $stations_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.category IN (:types) AND s.is_active = 1 ORDER BY s.weight ASC')
+            $stations_raw = $this->em->createQuery('SELECT s, ss FROM Entity\Station s LEFT JOIN s.streams ss WHERE s.category IN (:types) AND s.is_active = 1 ORDER BY s.weight ASC')
                 ->setParameter('types', array('audio', 'video'))
                 ->getArrayResult();
         }
 
         $this->stations = array();
         foreach($stations_raw as $station)
+        {
+            // Build multi-stream directory.
+            $streams = array();
+
+            foreach((array)$station['streams'] as $stream)
+            {
+                if ($stream['is_default'])
+                {
+                    $station['default_stream_id'] = $stream['id'];
+                    $station['default_stream'] = $stream;
+                }
+
+                $streams[$stream['id']] = $stream;
+            }
+
+            $station['streams'] = $streams;
+
             $this->stations[$station['id']] = $station;
+        }
 
         foreach($this->stations as $station)
         {

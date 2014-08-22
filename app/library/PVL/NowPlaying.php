@@ -161,6 +161,7 @@ class NowPlaying
             'id'            => $stream->id,
             'name'          => $stream->name,
             'url'           => $stream->stream_url,
+            'type'          => $stream->type,
             'is_default'    => $stream->is_default,
         );
 
@@ -294,6 +295,7 @@ class NowPlaying
                 $np['song_external'] = $song['external'];
 
                 $np['stream_url'] = $np_stream['url'];
+                $np['type'] = $np_stream['type'];
                 $np['is_live'] = ($np_stream['status'] == 'online');
                 $np['status'] = $np_stream['status'];
 

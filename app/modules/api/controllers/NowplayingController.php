@@ -10,6 +10,13 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
         $file_path_api = DF_INCLUDE_STATIC.'/api/nowplaying_api.json';
         $np_raw = file_get_contents($file_path_api);
 
+        // Sanity check for now playing data.
+        if (empty($np_raw))
+        {
+            $this->returnError('Now Playing data has not loaded into the cache. Wait for file reload.');
+            return;
+        }
+
         if ($this->hasParam('id') || $this->hasParam('station'))
         {
             $np_arr = @json_decode($np_raw, TRUE);

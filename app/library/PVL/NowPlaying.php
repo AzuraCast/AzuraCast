@@ -301,6 +301,15 @@ class NowPlaying
                 $np['song_external'] = $song['external'];
 
                 $np['stream_url'] = $np_stream['url'];
+
+                // Legacy "streams" container.
+                $np['streams'] = array(
+                    array(
+                        'name'      => $np_stream['name'],
+                        'url'       => $np_stream['url'],
+                    ),
+                );
+
                 $np['type'] = $np_stream['type'];
                 $np['is_live'] = ($np_stream['status'] == 'online');
                 $np['status'] = $np_stream['status'];

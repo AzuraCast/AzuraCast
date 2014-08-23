@@ -80,21 +80,25 @@ class Api extends \DF\Controller\Action
 
     public function returnToScreen($obj)
     {
-        $format = strtolower($this->_getParam('format', 'json'));
+        $format = strtolower($this->getParam('format', 'json'));
 
-        switch($format)
-        {
-            case "xml":
-                header('Content-Type: text/xml; charset=utf-8');
-                echo \DF\Export::ArrayToXml($obj);
-            break;
-
-            case "json":
-            default:
-                header('Content-Type: application/json; charset=utf-8');
-                echo json_encode($obj, JSON_UNESCAPED_SLASHES);
-            break;
-        }
+        if ($format == 'xml')
+            $this->returnRaw(\DF\Export::ArrayToXml($obj), 'xml');
+        else
+            $this->returnRaw(json_encode($obj, JSON_UNESCAPED_SLASHES), 'json');
     }
+
+    public function returnRaw($message, $format = 'json')
+    {
+        if ($format == 'xml')
+            header('Content-Type: text/xml; charset=utf-8');
+        else
+            header('Content-Type: application/json; charset=utf-8');
+
+        echo $message;
+    }
+
+
+
 
 }

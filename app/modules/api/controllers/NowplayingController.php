@@ -7,46 +7,37 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
 {
     public function indexAction()
     {
-        $np = \DF\Cache::get('api_nowplaying_data');
+        $file_path_api = DF_INCLUDE_STATIC.'/api/nowplaying_api.json';
+        $np_raw = file_get_contents($file_path_api);
 
-        if (!$np)
+        if ($this->hasParam('id') || $this->hasParam('station'))
         {
-            // Automatically generate new API info.
-            $np_all = \PVL\NowPlaying::loadNowPlaying();
-            $np = $np_all['api'];
+            $np_arr = @json_decode($np_raw, TRUE);
+            $np = $np_arr['result'];
 
-            foreach($np as $station => $np_row)
-                $np[$station]['cache'] = 'miss';
-
-            \DF\Cache::save($np, 'api_nowplaying_data', array('nowplaying'), 10);
-        }
-
-        if ($this->hasParam('id'))
-        {
-            $id = (int)$this->getParam('id');
-            $station = Station::find($id);
-
-            if (!($station instanceof Station))
+            if ($this->hasParam('id'))
             {
-                return $this->returnError('Station not found!');
+                $id = (int)$this->getParam('id');
+                $station = Station::find($id);
+
+                if (!($station instanceof Station))
+                    return $this->returnError('Station not found!');
+                else
+                    $sc = $station->getShortName();
             }
-            else
+            elseif ($this->hasParam('station'))
             {
-                $sc = $station->getShortName();
-                return $this->returnSuccess($np[$sc]);
+                $sc = $this->getParam('station');
             }
-        }
-        elseif ($this->hasParam('station'))
-        {
-            $short = $this->_getParam('station');
-            if (isset($np[$short]))
-                return $this->returnSuccess($np[$short]);
+
+            if (isset($np[$sc]))
+                $this->returnSuccess($np[$sc]);
             else
                 return $this->returnError('Station not found!');
         }
         else
         {
-            return $this->returnSuccess($np);
+            $this->returnRaw($np_raw, 'json');
         }
     }
 }

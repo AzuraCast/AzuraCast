@@ -36,6 +36,12 @@ class NowPlaying
         \DF\Cache::remove('api_nowplaying_data');
         \DF\Cache::save($np_api, 'api_nowplaying_data', array('nowplaying'), 30);
 
+        // Generate PVL API nowplaying file.
+        $nowplaying_api = json_encode(array('status' => 'success', 'result' => $np_api), JSON_UNESCAPED_SLASHES);
+        $file_path_api = DF_INCLUDE_STATIC.'/api/nowplaying_api.json';
+
+        @file_put_contents($file_path_api, $nowplaying_api);
+
         // Post statistics to official record.
         Statistic::post($nowplaying['legacy']);
 

@@ -171,53 +171,36 @@ class NowPlaying
             'is_default'    => $stream->is_default,
         );
 
-        $song_np = array();
+        $custom_class = Station::getStationClassName($station->name);
+        $custom_adapter = '\\PVL\\NowPlayingAdapter\\'.$custom_class;
 
-        if ($stream->type)
-        {
-            $custom_class = Station::getStationClassName($station->name);
-            $custom_adapter = '\\PVL\\NowPlayingAdapter\\'.$custom_class;
+        if (class_exists($custom_adapter))
+            $np_adapter = new $custom_adapter($stream, $station);
+        elseif ($stream->type == "icecast")
+            $np_adapter = new \PVL\NowPlayingAdapter\IceCast($stream, $station);
+        elseif ($stream->type == "icebreath")
+            $np_adapter = new \PVL\NowPlayingAdapter\IceBreath($stream, $station);
+        elseif ($stream->type == "shoutcast2")
+            $np_adapter = new \PVL\NowPlayingAdapter\ShoutCast2($stream, $station);
+        elseif ($stream->type == "shoutcast1")
+            $np_adapter = new \PVL\NowPlayingAdapter\ShoutCast1($stream, $station);
+        elseif ($stream->type == "stream")
+            $np_adapter = new \PVL\NowPlayingAdapter\Stream($stream, $station);
 
-            if (class_exists($custom_adapter))
-                $np_adapter = new $custom_adapter($stream, $station);
-            elseif ($stream->type == "centovacast")
-                $np_adapter = new \PVL\NowPlayingAdapter\CentovaCast($stream, $station);
-            elseif ($stream->type == "icecast")
-                $np_adapter = new \PVL\NowPlayingAdapter\IceCast($stream, $station);
-            elseif ($stream->type == "icebreath")
-                $np_adapter = new \PVL\NowPlayingAdapter\IceBreath($stream, $station);
-            elseif ($stream->type == "shoutcast2")
-                $np_adapter = new \PVL\NowPlayingAdapter\ShoutCast2($stream, $station);
-            elseif ($stream->type == "shoutcast1")
-                $np_adapter = new \PVL\NowPlayingAdapter\ShoutCast1($stream, $station);
-            elseif ($stream->type == "stream")
-                $np_adapter = new \PVL\NowPlayingAdapter\Stream($stream, $station);
+        \PVL\Debug::log('Adapter Class: '.get_class($np_adapter));
 
-            \PVL\Debug::log('Adapter Class: '.get_class($np_adapter));
+        $stream_np = $np_adapter->process();
 
-            $song_np = $np_adapter->process();
-        }
-        else
-        {
-            $song_np['text'] = 'Error Processing Stream';
-            $song_np['is_live'] = false;
-            $song_np['status'] = 'offline';
-        }
-
-        $np['status'] = $song_np['status'];
-        $np['listeners'] = array(
-            'current'       => (int)$song_np['listeners'],
-            'unique'        => ((isset($song_np['listeners_unique'])) ? (int)$song_np['listeners_unique'] : (int)$song_np['listeners']),
-            'total'         => ((isset($song_np['listeners_total'])) ? (int)$song_np['listeners_total'] : (int)$song_np['listeners']),
-        );
+        $np = array_merge($np, $stream_np['meta']);
+        $np['listeners'] = $stream_np['listeners'];
 
         // Pull from current NP data if song details haven't changed.
-        if (strcmp($song_np['text'], $current_np_data['current_song']['text']) == 0)
+        if (strcmp($stream_np['current_song']['text'], $current_np_data['current_song']['text']) == 0)
         {
             $np['current_song'] = $current_np_data['current_song'];
             $np['song_history'] = $current_np_data['song_history'];
         }
-        else if (empty($song_np['text']))
+        else if (empty($stream_np['current_song']['text']))
         {
             $np['current_song'] = array();
             $np['song_history'] = $station->getRecentHistory($stream);
@@ -225,14 +208,14 @@ class NowPlaying
         else
         {
             // Send e-mail on the first instance of offline status detected.
-            if ($np['text'] == 'Stream Offline')
+            if ($stream_np['current_song']['text'] == 'Stream Offline')
                 self::notifyStation($station, 'offline');
 
             // Register a new item in song history.
             $np['current_song'] = array();
             $np['song_history'] = $station->getRecentHistory($stream);
 
-            $song_obj = Song::getOrCreate($song_np);
+            $song_obj = Song::getOrCreate($stream_np['current_song']);
             $sh_obj = SongHistory::register($song_obj, $station, $stream, $np);
 
             $song_obj->syncExternal();

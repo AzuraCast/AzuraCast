@@ -26,42 +26,56 @@ class AdapterAbstract
     /* Master processing and cleanup. */
     public function process()
     {
-        $np = array();
-        $np_new = $this->_process($np);
+        // Now Playing defaults.
+        $np = array(
+            'current_song' => array(
+                'text'          => 'Stream Offline',
+                'title'         => '',
+                'artist'        => '',
+            ),
+            'listeners' => array(
+                'current'       => 0,
+                'unique'        => null,
+                'total'         => null,
+            ),
+            'meta' => array(
+                'status'        => 'offline',
+                'bitrate'       => 0,
+                'format'        => '',
+            ),
+        );
 
-        // Auto fail-safe for empty records or failed record pulls.
-        if ($np_new === false || (empty($np_new['title']) && empty($np_new['text'])))
-        {
-            $np['text'] = 'Stream Offline';
-            $np['status'] = 'offline';
-            $np['is_live'] = false;
-        }
+        // Merge station-specific info into defaults.
+        $this->_process($np);
+
+        // Update status code for offline stations, clean up song info for online ones.
+        if ($np['current_song']['text'] == 'Stream Offline')
+            $np['meta']['status'] = 'offline';
         else
-        {
-            // Trim results and clean up some possible erroneous data.
-            $np_new['listeners'] = (int)$np_new['listeners'];
-            $np_new['text'] = $this->_cleanUpString($np_new['text']);
-            $np_new['title'] = $this->_cleanUpString($np_new['title']);
-            $np_new['artist'] = $this->_cleanUpString($np_new['artist']);
+            array_walk($np['current_song'], array($this, '_cleanUpString'));
 
-            $np = array_merge($np, $np_new);
-            $np['status'] = 'online';
-        }
+        // Fill in any missing listener info.
+        if ($np['listeners']['unique'] === null)
+            $np['listeners']['unique'] = $np['listeners']['current'];
+
+        if ($np['listeners']['total'] === null)
+            $np['listeners']['total'] = $np['listeners']['current'];
+
+        \PVL\Debug::log($np);
 
         return $np;
     }
 
-    protected function _cleanUpString($value)
+    protected function _cleanUpString(&$value)
     {
         $value = htmlspecialchars_decode($value);
         $value = trim($value);
-        return $value;
     }
 
     /* Stub function for the process internal handler. */
-    protected function _process($np)
+    protected function _process(&$np)
     {
-        return $np;
+        return false;
     }
 
     /* Fetch a remote URL. */
@@ -80,8 +94,6 @@ class AdapterAbstract
         );
         $c_opts = array_merge($c_defaults, $c_opts);
 
-        \PVL\Debug::print_r($c_opts);
-
         $cache_name = 'nowplaying_url_'.substr(md5($c_opts['url']), 0, 10);
         if ($cache_time > 0)
         {
@@ -90,7 +102,7 @@ class AdapterAbstract
                 return $return_raw;
         }
 
-        $curl_start = time();
+        \PVL\Debug::startTimer('Make cURL Request');
 
         $postfields = false;
         if (!empty($c_opts['params']))
@@ -128,11 +140,7 @@ class AdapterAbstract
         $return_raw = \PVL\Utilities::curl_exec_utf8($curl);
         // End cURL request.
 
-        $curl_end = time();
-        $curl_time = $curl_end - $curl_start;
-
-        \PVL\Debug::log("Curl processed in ".$curl_time." second(s).");
-        \PVL\Debug::log("Curl return: ".$return_raw);
+        \PVL\Debug::endTimer('Make cURL Request');
 
         $error = curl_error($curl);
         if ($error)

@@ -6,75 +6,61 @@ use \Entity\Station;
 class Stream extends AdapterAbstract
 {
     /* Process a nowplaying record. */
-    protected function _process($np)
+    protected function _process(&$np)
     {
-        $is_live = false;
-
         if (stristr($this->url, 'livestream') !== FALSE)
-        {
-            $xml = $this->getUrl($this->url, 30);
-
-            if ($xml)
-                $stream_data = \DF\Export::XmlToArray($xml);
-            else
-                $stream_data = NULL;
-
-            if ($stream_data)
-            {
-                $np['listeners'] = (int)$stream_data['channel']['ls:currentViewerCount'];
-
-                if ($stream_data['channel']['ls:isLive'] && $stream_data['channel']['ls:isLive'] == 'true')
-                {
-                    $is_live = true;
-                    $np['is_live'] = 'true';
-                    $np['text'] = 'Stream Online';
-                    return $np;
-                }
-            }
-        }
+            return $this->_processLivestream($np);
         else if (stristr($this->url, 'twitch.tv') !== FALSE)
+            return $this->_processTwitchTv($np);
+        else
+            return false;
+    }
+
+    protected function _processLivestream(&$np)
+    {
+        $xml = $this->getUrl($this->url, 30);
+
+        if (empty($xml))
+            return false;
+
+        $stream_data = \DF\Export::XmlToArray($xml);
+
+        if ($stream_data['channel']['ls:isLive'] && $stream_data['channel']['ls:isLive'] == 'true')
         {
-            $return_raw = $this->getUrl();
+            $np['meta']['status'] = 'online';
 
-            if ($return_raw)
-            {
-                $return = json_decode($return_raw, true);
-                $stream = $return['stream'];
+            $np['listeners']['current'] = (int)$stream_data['channel']['ls:currentViewerCount'];
 
-                if ($stream)
-                {
-                    $is_live = true;
-                    $np['title'] = $stream['game'];
-                    $np['artist'] = 'Stream Online';
-                    $np['text'] = 'Stream Online';
-                    $np['listeners'] = (int)$stream['viewers'];
-                    $np['is_live'] = 'true';
-                    return $np;
-                }
-            }
+            $np['current_song'] = array(
+                'text'      => 'Stream Online',
+            );
+
+            return true;
         }
-        else if (stristr($this->url, 'justin.tv') !== FALSE)
-        {
-            $return_raw = $this->getUrl();
+    }
 
-            if ($return_raw)
-            {
-                $return = json_decode($return_raw, true);
-                $stream = $return[0];
+    protected function _processTwitchTv(&$np)
+    {
+        $return_raw = $this->getUrl();
 
-                if ($stream)
-                {
-                    $is_live = true;
-                    $np['title'] = $stream['title'];
-                    $np['artist'] = 'Stream Online';
-                    $np['text'] = 'Stream Online';
-                    $np['listeners'] = (int)$stream['stream_count'];
-                    $np['is_live'] = 'true';
-                    return $np;
-                }
-            }
-        }
+        if (empty($return_raw))
+            return false;
 
-        return false;
+        $return = json_decode($return_raw, true);
+        $stream = $return['stream'];
+
+        if (empty($stream))
+            return false;
+
+        $np['meta']['status'] = 'online';
+
+        $np['listeners']['current'] = (int)$stream['viewers'];
+
+        $np['current_song'] = array(
+            'title'     => $stream['game'],
+            'artist'    => 'Stream Online',
+            'text'      => 'Stream Online',
+        );
+        return true;
     }
 }

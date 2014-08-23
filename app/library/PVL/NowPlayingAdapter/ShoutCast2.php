@@ -6,31 +6,38 @@ use \Entity\Station;
 class ShoutCast2 extends AdapterAbstract
 {
     /* Process a nowplaying record. */
-    protected function _process($np)
+    protected function _process(&$np)
     {
         $return_raw = $this->getUrl();
 
-        if ($return_raw)
-        {
-            $current_data = \DF\Export::XmlToArray($return_raw);
-            $song_data = $current_data['SHOUTCASTSERVER'];
+        if (empty($return_raw))
+            return false;
 
-            $title_parts = explode('-', str_replace('   ', ' - ', $song_data['SONGTITLE']), 2);
-            $artist = trim(array_shift($title_parts));
-            $title = trim(implode('-', $title_parts));
+        $current_data = \DF\Export::XmlToArray($return_raw);
+        $song_data = $current_data['SHOUTCASTSERVER'];
 
-            $np['title'] = $title;
-            $np['artist'] = $artist;
-            $np['text'] = $song_data['SONGTITLE'];
+        $np['meta']['status'] = 'online';
+        $np['meta']['bitrate'] = $song_data['BITRATE'];
+        $np['meta']['format'] = $song_data['CONTENT'];
 
-            $np['listeners_unique'] = (int)$song_data['UNIQUELISTENERS'];
-            $np['listeners_total'] = (int)$song_data['CURRENTLISTENERS'];
-            $np['listeners'] = $this->getListenerCount($np['listeners_unique'], $np['listeners_total']);
+        $title_parts = explode('-', str_replace('   ', ' - ', $song_data['SONGTITLE']), 2);
+        $artist = trim(array_shift($title_parts));
+        $title = trim(implode('-', $title_parts));
 
-            $np['is_live'] = 'false'; // ($song_data['NEXTTITLE'] != '') ? 'false' : 'true';
-            return $np;
-        }
+        $np['current_song'] = array(
+            'title'     => $title,
+            'artist'    => $artist,
+            'text'      => $song_data['SONGTITLE'],
+        );
 
-        return false;
+        $u_list = (int)$song_data['UNIQUELISTENERS'];
+        $t_list = (int)$song_data['CURRENTLISTENERS'];
+        $np['listeners'] = array(
+            'current'       => $this->getListenerCount($u_list, $t_list),
+            'unique'        => $u_list,
+            'total'         => $t_list,
+        );
+
+        return true;
     }
 }

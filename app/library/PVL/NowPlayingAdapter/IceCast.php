@@ -6,7 +6,7 @@ use \Entity\Station;
 class IceCast extends AdapterAbstract
 {
     /* Process a nowplaying record. */
-    protected function _process($np)
+    protected function _process(&$np)
     {
         $return_raw = $this->getUrl();
 
@@ -69,11 +69,18 @@ class IceCast extends AdapterAbstract
         $temp_array = $active_mounts[0];
         list($artist, $track) = explode(" - ", $temp_array['current_song'], 2);
 
-        $np['listeners'] = (int)$temp_array['current_listeners'];
-        $np['artist'] = $artist;
-        $np['title'] = $track;
-        $np['text'] = $temp_array['current_song'];
-        $np['is_live'] = 'false';
-        return $np;
+        $np['meta']['status'] = 'online';
+        $np['meta']['bitrate'] = $temp_array['bitrate'];
+        $np['meta']['format'] = $temp_array['content_type'];
+
+        $np['listeners']['current'] = (int)$temp_array['current_listeners'];
+
+        $np['current_song'] = array(
+            'artist'    => $artist,
+            'title'     => $track,
+            'text'      => $temp_array['current_song'],
+        );
+
+        return true;
     }
 }

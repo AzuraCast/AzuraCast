@@ -6,27 +6,36 @@ use \Entity\Station;
 class ShoutCast1 extends AdapterAbstract
 {
     /* Process a nowplaying record. */
-    protected function _process($np)
+    protected function _process(&$np)
     {
         $return_raw = $this->getUrl();
 
-        if ($return_raw)
-        {
-            preg_match("/<body.*>(.*)<\/body>/smU", $return_raw, $return);
-            $parts = explode(",", $return[1], 7);
+        if (empty($return_raw))
+            return false;
 
-            list($artist, $title) = explode(" - ", $parts[6], 2);
+        preg_match("/<body.*>(.*)<\/body>/smU", $return_raw, $return);
+        $parts = explode(",", $return[1], 7);
 
-            $np['listeners_unique'] = (int)$parts[4];
-            $np['listeners_total'] = (int)$parts[0];
-            $np['listeners'] = $this->getListenerCount($np['listeners_unique'], $np['listeners_total']);
+        $np['meta']['status'] = 'online';
+        $np['meta']['bitrate'] = $parts[5];
+        $np['meta']['format'] = 'audio/mpeg';
 
-            $np['title'] = $title;
-            $np['artist'] = $artist;
-            $np['text'] = $parts[6];
-            return $np;
-        }
+        list($artist, $title) = explode(" - ", $parts[6], 2);
 
-        return false;
+        $np['current_song'] = array(
+            'title'     => $title,
+            'artist'    => $artist,
+            'text'      => $parts[6],
+        );
+
+        $u_list = (int)$parts[4];
+        $t_list = (int)$parts[0];
+        $np['listeners'] = array(
+            'current'       => $this->getListenerCount($u_list, $t_list),
+            'unique'        => $u_list,
+            'total'         => $t_list,
+        );
+
+        return true;
     }
 }

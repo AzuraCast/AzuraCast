@@ -177,6 +177,7 @@ $(function() {
     $('.btn-switch-stream').on('click', function(e) {
         e.preventDefault();
 
+        // Stop the current playing song.
         stopAllPlayers();
 
         var station = $(this).closest('.station');
@@ -188,9 +189,24 @@ $(function() {
         nowplaying_song_id = null;
         nowplaying_song = null;
 
+        // Force a reload of the "now playing" data.
         processNowPlaying();
 
+        // Play the new stream URL.
         playStation(station.attr('id'));
+
+        // Persist the stream change for future page loads.
+        jQuery.ajax({
+            'type': 'POST',
+            'url': DF_BaseUrl+'/profile/stream',
+            'dataType': 'text',
+            'data': {
+                'station': station.data('id'),
+                'stream': stream_id
+            }
+        }).done(function(return_data) {
+            console.log('Persist stream preference: '+return_data);
+        });
     });
 
 	checkNowPlaying();

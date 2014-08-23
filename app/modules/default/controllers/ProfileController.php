@@ -111,7 +111,7 @@ class ProfileController extends \DF\Controller\Action
 
     public function themeAction()
     {
-        $skin = $this->_getParam('skin', 'toggle');
+        $skin = $this->getParam('skin', 'toggle');
 
         $current_skin = \PVL\Customization::get('theme');
 
@@ -148,6 +148,24 @@ class ProfileController extends \DF\Controller\Action
 
         $this->view->headTitle('Set Time Zone');
         $this->renderForm($form);
+    }
+
+    /**
+     * Customize the default active stream for a station.
+     */
+    public function streamAction()
+    {
+        $this->doNotRender();
+
+        $station_id = (int)$this->getParam('station', 0);
+        $stream_id = (int)$this->getParam('stream', 0);
+
+        $default_streams = (array)\PVL\Customization::get('stream_defaults');
+        $default_streams[$station_id] = $stream_id;
+
+        \PVL\Customization::set('stream_defaults', $default_streams);
+
+        echo 'OK';
     }
 
 }

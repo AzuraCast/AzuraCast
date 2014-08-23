@@ -12,6 +12,7 @@ class StationStream extends \DF\Doctrine\Entity
     public function __construct()
     {
         $this->is_default = 0;
+        $this->hidden_from_player = 0;
 
         $this->history = new ArrayCollection;
     }
@@ -28,6 +29,9 @@ class StationStream extends \DF\Doctrine\Entity
 
     /** @Column(name="is_default", type="boolean") */
     protected $is_default;
+
+    /** @Column(name="hidden_from_player", type="boolean") */
+    protected $hidden_from_player;
 
     /** @Column(name="name", type="string", length=75, nullable=true) */
     protected $name;

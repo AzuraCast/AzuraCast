@@ -166,21 +166,36 @@ class IndexController extends \DF\Controller\Action
         {
             // Build multi-stream directory.
             $streams = array();
+            $default_stream_id = NULL;
 
             foreach((array)$station['streams'] as $stream)
             {
-                if ($stream['is_default'])
+                if (!$stream['hidden_from_player'])
                 {
-                    $station['default_stream_id'] = $stream['id'];
-                    $station['default_stream'] = $stream;
-                }
+                    if ($stream['is_default'])
+                        $default_stream_id = $stream['id'];
 
-                $streams[$stream['id']] = $stream;
+                    $streams[$stream['id']] = $stream;
+                }
             }
 
+            // Pull from user preferences to potentially override defaults.
+            $default_streams = (array)\PVL\Customization::get('stream_defaults');
+
+            if (isset($default_streams[$station['id']]))
+            {
+                $stream_id = (int)$default_streams[$station['id']];
+                if (isset($streams[$stream_id]))
+                    $default_stream_id = $stream_id;
+            }
+
+            $station['default_stream_id'] = $default_stream_id;
+            $station['default_stream'] = $streams[$default_stream_id];
             $station['streams'] = $streams;
 
-            $this->stations[$station['id']] = $station;
+            // Only show stations with at least one usable stream.
+            if (count($streams) > 0)
+                $this->stations[$station['id']] = $station;
         }
 
         foreach($this->stations as $station)

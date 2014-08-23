@@ -3,6 +3,7 @@ namespace PVL;
 
 use \Entity\Settings;
 use \Entity\ApiCall;
+use \Entity\SongHistory;
 
 class SyncManager
 {
@@ -77,6 +78,9 @@ class SyncManager
 
         // Clean up old API calls.
         ApiCall::cleanUp();
+
+        // Clean up old song history entries.
+        SongHistory::cleanUp();
 
         // Sync the BronyTunes library.
         Service\BronyTunes::load();

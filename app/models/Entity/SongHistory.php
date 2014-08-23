@@ -170,4 +170,17 @@ class SongHistory extends \DF\Doctrine\Entity
 
         return NULL;
     }
+
+    public static function cleanUp()
+    {
+        $em = self::getEntityManager();
+
+        $threshold = strtotime('-1 month');
+
+        $em->createQuery('DELETE FROM '.__CLASS__.' sh WHERE sh.timestamp <= :threshold')
+            ->setParameter('threshold', $threshold)
+            ->execute();
+
+        return true;
+    }
 }

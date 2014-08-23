@@ -82,6 +82,15 @@ return array(
             'required' => true,
         )),
 
+        'hidden_from_player' => array('radio', array(
+            'label' => 'Hide Stream from PVL Web Player',
+            'multiOptions' => array(0 => 'No', 1 => 'Yes'),
+            'default' => 0,
+
+            'description' => 'Some types of streams cannot be played by the PVL web player, including most AAC+ streams. If this stream should be included in statistics but not listed on the player, select "Yes" here.',
+            'required' => true,
+        )),
+
         'submit'        => array('submit', array(
             'type'  => 'submit',
             'label' => 'Save Changes',

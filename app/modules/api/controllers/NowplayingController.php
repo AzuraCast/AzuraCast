@@ -25,14 +25,16 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
             if ($this->hasParam('id'))
             {
                 $id = (int)$this->getParam('id');
-                foreach($np as $key => $station) {
-                    if($station->id === $id) {
+                foreach($np as $key => $np_row)
+                {
+                    if ($np_row['station']['id'] == $id)
+                    {
                         $sc = $key;
                         break;
                     }
                 }
 
-                if (!$sc)
+                if (empty($sc))
                     return $this->returnError('Station not found!');
             }
             elseif ($this->hasParam('station'))

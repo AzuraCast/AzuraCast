@@ -127,6 +127,11 @@ class UserExternal extends \DF\Doctrine\Entity
                 'class'     => 'tumblr',
                 'icon'      => 'icon-tumblr',
             ),
+            'poniverse' => array(
+                'name'      => 'Poniverse.net',
+                'class'     => 'guest',
+                'icon'      => 'icon-user',
+            ),
         );
     }
 }

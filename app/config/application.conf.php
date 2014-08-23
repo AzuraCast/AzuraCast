@@ -115,8 +115,9 @@ if (DF_APPLICATION_ENV != 'production')
 {
     $config['phpSettings']['display_startup_errors'] = 1;
     $config['phpSettings']['display_errors'] = 1;
-    
-    unset($config['base_url']);
+
+    // Update if your local configuration differs.
+    $config['base_url'] = '//localhost:8080';
 }
 
 return $config;

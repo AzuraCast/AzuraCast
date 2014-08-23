@@ -82,6 +82,14 @@ return array(
                     "secret" => ""
                 ),
             ),
+
+            "Poniverse" => array(
+                "enabled"   => true,
+                "keys"      => array(
+                    "id" => '',
+                    "secret" => '',
+                ),
+            ),
         ),
     ),
 

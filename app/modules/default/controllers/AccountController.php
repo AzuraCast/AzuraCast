@@ -283,8 +283,20 @@ class AccountController extends \DF\Controller\Action
 
     protected function _getHybridConfig()
     {
+        // Force "scheme" injection for base URLs.
+        $current_base_url = \DF\Url::baseUrl();
+        $base_url = $current_base_url;
+
+        if (substr($current_base_url, 0, 2) == '//')
+            $base_url = 'http'.((DF_IS_SECURE) ? 's:' : ':').$base_url;
+
+        \DF\Url::setBaseUrl($base_url);
+
         $ha_config = $this->config->apis->hybrid_auth->toArray();
         $ha_config['base_url'] = $this->view->routeFromHere(array('action' => 'hybrid'));
+
+        // Reset base URL to regular.
+        \DF\Url::setBaseUrl($current_base_url);
 
         return $ha_config;
     }

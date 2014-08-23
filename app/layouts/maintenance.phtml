@@ -28,6 +28,7 @@ $this->headLink()
     ->appendStylesheet('http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen');
     
 $this->headScript()
+    ->prependFile('//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.compat.min.js')
     ->prependFile(\DF\Url::cdn('jquery', '1.8'))
     ->appendFile(\DF\Url::content('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js'))
     ->appendFile(\DF\Url::content('common/bootstrap2_r2/layout.js'))

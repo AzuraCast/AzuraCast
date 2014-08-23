@@ -105,7 +105,7 @@ class NowPlaying
         foreach($station->streams as $stream)
         {
             $np_stream = self::processStream($stream, $station);
-            $np['streams'][$stream->id] = $np_stream;
+            $np['streams'][] = $np_stream;
 
             foreach($np_stream['listeners'] as $type => $count)
                 $listener_totals[$type] += $count;

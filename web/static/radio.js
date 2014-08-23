@@ -259,7 +259,7 @@ function processNowPlaying()
         if (station_exists)
         {
             var stream_id = parseInt(station.data('streamid'));
-            var stream = station_info.streams[stream_id];
+            var stream = _(station_info.streams).find({'id': stream_id });
 
             // Set stream URL.
             station.data('stream', stream.url);

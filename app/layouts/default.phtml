@@ -56,6 +56,7 @@ if ($this->custom_styles)
 }
 
 $this->headScript()
+    ->prependFile('//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.compat.min.js')
     ->prependFile(\DF\Url::cdn('jquery', '1.10.1'))
     ->appendFile(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.pack.js'))
     ->appendFile(\DF\Url::content('common/jquery/fancybox/helpers/jquery.fancybox-media.js'))

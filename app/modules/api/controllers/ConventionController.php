@@ -35,9 +35,9 @@ class Api_ConventionController extends \PVL\Controller\Action\Api
             foreach($record->archives as $row)
             {
                 if ($row->isPlayable())
-                    $export_data['archives']['videos'][$row->id] = $row->toArray();
+                    $export_data['archives']['videos'][] = $row->toArray();
                 else
-                    $export_data['archives']['sources'][$row->id] = $row->toArray();
+                    $export_data['archives']['sources'][] = $row->toArray();
             }
         }
 

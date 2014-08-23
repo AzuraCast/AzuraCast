@@ -31,7 +31,9 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
                         break;
                     }
                 }
-                return $this->returnError('Station not found!');
+
+                if (!$sc)
+                    return $this->returnError('Station not found!');
             }
             elseif ($this->hasParam('station'))
             {

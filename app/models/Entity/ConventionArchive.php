@@ -51,8 +51,7 @@ class ConventionArchive extends \DF\Doctrine\Entity
 
     public function isPlayable()
     {
-        $playable_types = array('yt_video');
-        return in_array($this->type, $playable_types);
+        return self::typeIsPlayable($this->type);
     }
 
     /** @Column(name="folder", type="string", length=50, nullable=true) */
@@ -110,5 +109,10 @@ class ConventionArchive extends \DF\Doctrine\Entity
             'con'           => 'Convention-Supplied Footage',
             'thirdparty'    => 'Third-Party Footage',
         );
+    }
+    public static function typeIsPlayable($type)
+    {
+        $playable_types = array('yt_video');
+        return in_array($type, $playable_types);
     }
 }

@@ -6,11 +6,27 @@ class Api_ConventionController extends \PVL\Controller\Action\Api
 {
     public function listAction()
     {
-        $all_conventions = Convention::fetchArray();
+        $all_conventions = $this->em->createQuery('SELECT c, ca FROM Entity\Convention c LEFT JOIN c.archives ca ORDER BY c.start_date DESC')
+            ->getArrayResult();
+
         $export_data = array();
 
         foreach($all_conventions as $row)
-            $export_data[$row['id']] = Convention::api($row);
+        {
+            $api_row = Convention::api($row);
+
+            $api_row['archives_count'] = 0;
+            if (count($row['archives']) > 0)
+            {
+                foreach($row['archives'] as $a_row)
+                {
+                    if (ConventionArchive::typeIsPlayable($a_row['type']))
+                        $api_row['archives_count']++;
+                }
+            }
+
+            $export_data[] = $api_row;
+        }
 
         $this->returnSuccess($export_data);
     }

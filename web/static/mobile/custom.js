@@ -202,12 +202,12 @@ function processNowPlaying()
 			}
 
 			// Set event data.
-			if (station_info.event)
+			if (station_info.event.title)
 			{
 				var event_info = station_info.event;
 				station.find('.nowplaying-onair').show().find('.nowplaying-onair-inner').html('<i class="fa fa-star"></i>&nbsp;On Air: '+event_info.title);
 			}
-			else if (station_info.event_upcoming)
+			else if (station_info.event_upcoming.title)
 			{
 				var event_info = station_info.event_upcoming;
 				station.find('.nowplaying-onair').show().find('.nowplaying-onair-inner').html('<i class="fa fa-star"></i>&nbsp;In '+event_info.minutes_until+' mins: '+event_info.title);

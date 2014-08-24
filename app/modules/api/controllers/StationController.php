@@ -23,7 +23,7 @@ class Api_StationController extends \PVL\Controller\Action\Api
 
     public function listAction()
     {
-        $category = $this->_getParam('category', 'all');
+        $category = $this->getParam('category', 'all');
 
         if ($category == 'all')
         {

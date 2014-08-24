@@ -148,17 +148,19 @@ class IndexController extends \DF\Controller\Action
 
         $this->categories = \Entity\Station::getCategories();
 
+        $stations_raw = Station::fetchArray();
+
+        // Limit to a single station if requested.
         if ($station_id && $this->getParam('showonlystation', false) == 'true')
         {
-            $stations_raw = $this->em->createQuery('SELECT s, ss FROM Entity\Station s LEFT JOIN s.streams ss WHERE s.id = :station_id')
-                ->setParameter('station_id', $station_id)
-                ->getArrayResult();
-        }
-        else
-        {
-            $stations_raw = $this->em->createQuery('SELECT s, ss FROM Entity\Station s LEFT JOIN s.streams ss WHERE s.category IN (:types) AND s.is_active = 1 ORDER BY s.weight ASC')
-                ->setParameter('types', array('audio', 'video'))
-                ->getArrayResult();
+            foreach($stations_raw as $station)
+            {
+                if ($station['id'] == $station_id)
+                {
+                    $stations_raw = array($station);
+                    break;
+                }
+            }
         }
 
         $this->stations = array();

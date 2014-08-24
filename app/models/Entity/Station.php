@@ -300,7 +300,7 @@ class Station extends \DF\Doctrine\Entity
     public static function fetchAll()
     {
         $em = self::getEntityManager();
-        return $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE s.is_active = 1 ORDER BY s.category ASC, s.weight ASC')->execute();
+        return $em->createQuery('SELECT s, ss FROM '.__CLASS__.' s LEFT JOIN s.streams ss WHERE s.is_active = 1 ORDER BY s.category ASC, s.weight ASC')->execute();
     }
     
     public static function fetchArray($cached = true)
@@ -310,13 +310,25 @@ class Station extends \DF\Doctrine\Entity
         if (!$stations || !$cached)
         {
             $em = self::getEntityManager();
-            $stations = $em->createQuery('SELECT s FROM '.__CLASS__.' s WHERE s.is_active = 1 AND s.category IN (:types) ORDER BY s.category ASC, s.weight ASC')
+            $stations = $em->createQuery('SELECT s, ss FROM '.__CLASS__.' s
+                LEFT JOIN s.streams ss
+                WHERE s.is_active = 1 AND s.category IN (:types)
+                ORDER BY s.category ASC, s.weight ASC')
                 ->setParameter('types', array('audio', 'video'))
                 ->getArrayResult();
 
             foreach($stations as &$station)
             {
                 $station['short_name'] = self::getStationShortName($station['name']);
+
+                foreach((array)$station['streams'] as $stream)
+                {
+                    if ($stream['is_default'])
+                    {
+                        $station['default_stream_id'] = $stream['id'];
+                        $station['stream_url'] = $stream['stream_url'];
+                    }
+                }
             }
 
             \DF\Cache::save($stations, 'stations', array(), 60);
@@ -425,6 +437,22 @@ class Station extends \DF\Doctrine\Entity
             'twitter_url' => $row['twitter_url'],
             'irc'       => $row['irc'],
         );
+
+        if (isset($row['streams']))
+        {
+            $api['streams'] = array();
+
+            foreach ((array)$row['streams'] as $stream)
+            {
+                $api['streams'][] = StationStream::api($stream);
+
+                if ($stream['is_default'])
+                {
+                    $api['default_stream_id'] = $stream['id'];
+                    $api['stream_url'] = $stream['stream_url'];
+                }
+            }
+        }
 
         $api['player_url'] = ShortUrl::stationUrl($api['shortcode']);
 

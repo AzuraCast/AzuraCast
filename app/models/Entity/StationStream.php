@@ -61,4 +61,15 @@ class StationStream extends \DF\Doctrine\Entity
      * @OrderBy({"timestamp" = "DESC"})
      */
     protected $history;
+
+    public static function api($row)
+    {
+        return array(
+            'id'            => $row['id'],
+            'name'          => $row['name'],
+            'url'           => $row['stream_url'],
+            'type'          => $row['type'],
+            'is_default'    => $row['is_default'],
+        );
+    }
 }

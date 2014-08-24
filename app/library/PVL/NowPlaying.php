@@ -53,8 +53,7 @@ class NowPlaying
         \PVL\Debug::startTimer('Nowplaying Overall');
 
         $em = \Zend_Registry::get('em');
-        $stations = $em->createQuery('SELECT s FROM Entity\Station s WHERE s.is_active = 1 ORDER BY s.category ASC, s.weight ASC')
-            ->execute();
+        $stations = Station::fetchAll();
 
         $nowplaying = array(
             'legacy'    => array(),
@@ -93,6 +92,9 @@ class NowPlaying
         $np = array();
         $np['status'] = 'offline';
         $np['station'] = Station::api($station);
+
+        // Remove API-supplied 'streams' item in the wrong place.
+        unset($np['station']['streams']);
 
         $listener_totals = array(
             'current' => 0,
@@ -163,13 +165,7 @@ class NowPlaying
                 return $current_np_data;
         }
 
-        $np = array(
-            'id'            => $stream->id,
-            'name'          => $stream->name,
-            'url'           => $stream->stream_url,
-            'type'          => $stream->type,
-            'is_default'    => $stream->is_default,
-        );
+        $np = StationStream::api($stream);
 
         $custom_class = Station::getStationClassName($station->name);
         $custom_adapter = '\\PVL\\NowPlayingAdapter\\'.$custom_class;

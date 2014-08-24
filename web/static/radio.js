@@ -292,10 +292,10 @@ function processNowPlaying()
             }
 
             // Post listener count.
-            if (station_info.listeners.current >= 0)
-            {
-                var station_listeners = intOrZero(station_info.listeners.current);
+            var station_listeners = intOrZero(station_info.listeners.current);
 
+            if (station_listeners >= 0)
+            {
                 listener_total += station_listeners;
 
                 if (typeof(listeners_by_type[station_info.station.category]) == 'undefined')
@@ -310,18 +310,25 @@ function processNowPlaying()
                 station.find('.nowplaying-listeners').hide();
             }
 
+            // Post listener count for each stream.
+            _(station_info.streams).forEach(function(stream_row)
+            {
+                var stream_listeners = intOrZero(stream_row.listeners.current);
+
+                station.find('li[rel="'+stream_row.id+'"] .nowplaying-stream-listeners').html('<i class="icon-user"></i>'+stream_listeners);
+            });
+
+            // Style offline/online stations properly.
             if (stream.status == 'offline')
             {
-                station.find('.nowplaying-live').hide();
-                station.removeClass('live').addClass('offline');
+                station.addClass('offline');
 
                 if (station.data('inactive') == 'hide')
                     station.hide();
             }
             else
             {
-                station.find('.nowplaying-live').hide();
-                station.removeClass('live offline');
+                station.removeClass('offline');
 
                 if (!station.is(':visible'))
                     station.show();
@@ -358,14 +365,12 @@ function processNowPlaying()
             if (stream.song_history)
             {
                 var history_block = '';
+                var i = 1;
 
-                for (var j in stream.song_history)
-                {
-                    var song_num = parseInt(j)+1;
-                    var history_row = stream.song_history[j];
-
-                    history_block += '<div>#'+song_num+": "+history_row.song.text+'</div>';
-                }
+                _(stream.song_history).forEach(function(history_row) {
+                    history_block += '<div>#'+i+": "+history_row.song.text+'</div>';
+                    i++;
+                });
 
                 station.find('.station-history').html(history_block);
             }

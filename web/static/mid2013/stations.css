@@ -190,6 +190,13 @@ li.media .dropdown-menu li i:before {
 	color: #CCC;
 }
 
+.station.playing li a span.nowplaying-stream-listeners {
+    font-weight: normal;
+    margin-left: 5px;
+    font-size: 12px;
+    color: #999;
+}
+
 li.media .dropdown-menu li.divider {
     background-color: rgba(255,255,255,0.1);
 }

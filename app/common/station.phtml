@@ -15,7 +15,7 @@
                 <a href="#" class="btn btn-small btn-inverse dropdown-toggle" type="button" data-toggle="dropdown" title="Switch Stream"><i class="icon-random"></i></a>
                 <ul class="dropdown-menu">
                 <? foreach($station['streams'] as $stream): ?>
-                    <li rel="<?=$stream['id'] ?>"><a href="#" class="btn-switch-stream"><?=$stream['name'] ?></a></li>
+                    <li rel="<?=$stream['id'] ?>"><a href="#" class="btn-switch-stream"><?=$stream['name'] ?><span class="nowplaying-stream-listeners"></span></a></li>
                 <? endforeach; ?>
                 </ul>
             </div>

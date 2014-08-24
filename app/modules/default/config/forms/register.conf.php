@@ -43,7 +43,11 @@ return array(
                     'captcha' => 'ReCaptcha',
                     'captchaOptions' => array(
                         'captcha' => 'ReCaptcha',
-                        'service' => new \Zend_Service_ReCaptcha($captcha_config['public_key'], $captcha_config['private_key']),
+                        'service' => new \Zend_Service_ReCaptcha(
+                            $captcha_config['public_key'],
+                            $captcha_config['private_key'],
+                            array('ssl' => DF_IS_SECURE)
+                        ),
                     ),
                     'helper' => 'formLabel',
                 )),

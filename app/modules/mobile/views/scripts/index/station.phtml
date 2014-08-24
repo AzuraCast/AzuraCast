@@ -10,8 +10,8 @@ $tz_name = $tz_info['abbr'];
     data-autoplay="true" 
     data-id="<?=$station['id'] ?>" 
     data-name="<?=$station['name'] ?>" 
-    data-type="<?=$station['type'] ?>" 
-    data-stream="<?=$station['stream_url'] ?>" 
+    data-type="<?=$this->stream['type'] ?>"
+    data-stream="<?=$this->stream['stream_url'] ?>"
     data-inactive="<? if ($station['hide_if_inactive']): ?>hide<? else: ?>show<? endif; ?>">
 
     <div class="station-header clearfix">

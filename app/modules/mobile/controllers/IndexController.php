@@ -64,6 +64,12 @@ class Mobile_IndexController extends \PVL\Controller\Action\Mobile
 
         $this->view->station = $station;
 
+        foreach($station->streams as $stream)
+        {
+            if ($stream->is_default)
+                $this->view->stream = $stream;
+        }
+
         $threshold = time()+86400*7;
         $this->view->events = Schedule::getEventsInRange($station->id, time(), $threshold);
     }

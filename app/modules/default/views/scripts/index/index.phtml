@@ -147,8 +147,9 @@ $this->render_mode = 'homepage';
                     <div class="media-body">
                         <div class="station-info">
                             <h4><?=$podcast->name ?> <a href="<?=$this->routeFromHere(array('controller' => 'show', 'action' => 'view', 'id' => $podcast->id)) ?>" title="Click for more information."><i class="icon-info-sign"></i> </a><br>
-                                <span class="genre-info"><small>
+                                <span class="block genre-info">
                                     <?=$podcast->description ?>
+                                </span>
                                 <?
                                 if (count($podcast->stations) > 0)
                                 {
@@ -158,10 +159,10 @@ $this->render_mode = 'homepage';
                                         $station_link = '<a href="#" class="btn-play-station" data-station="station_'.$station->short_name.'">'.$station->name.'</a>';
                                         $station_links[] = $station_link;
                                     }
-                                    echo '<br><i class="icon-star"></i> Airs on '.implode(', ', $station_links);
+
+                                    echo '<span class="block airson-info"><i class="icon-star"></i> Airs on '.implode(', ', $station_links).'</span>';
                                 }
-                                ?> 
-                                </small></span>
+                                ?>
                             </h4>
 
                             <small>Newest Episode (<?=date('F j, Y', $ep['timestamp']) ?>):</small><br>

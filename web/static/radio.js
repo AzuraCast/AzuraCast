@@ -34,6 +34,8 @@ $(function() {
 			else
 				playStation($(this).attr('id'));
 		}
+
+
 	});
 	
 	$('.station .station-player').click(function(e) {
@@ -173,6 +175,14 @@ $(function() {
 		e.preventDefault();
 	});
 
+    /* Launch Video Player link. */
+    $('.btn-launch-video').on('click', function(e) {
+        e.preventDefault();
+
+        var station_id = $(this).closest('.station').attr('id');
+        playVideoStream(station_id);
+    });
+
     /* Switch Stream button. */
     $('.btn-switch-stream').on('click', function(e) {
         e.preventDefault();
@@ -279,6 +289,16 @@ function processNowPlaying()
             {
                 station.find('.nowplaying-artist').text(stream.current_song.title);
                 station.find('.nowplaying-title').text(stream.current_song.artist);
+            }
+
+            // Show stream info if non-default.
+            if (station.data('defaultstream') != stream_id)
+            {
+                station.find('.stream-info').html('<i class="icon-random"></i> '+stream.name).show();
+            }
+            else
+            {
+                station.find('.stream-info').hide();
             }
 
             // Trigger notification of song change.
@@ -423,7 +443,13 @@ function playStation(id)
 
 			if (stream_type == "stream")
 			{
-				window.open(stream_url, 'pvlive_stream', 'width=980,height=700,location=yes,menubar=yes,resizable=yes,scrollbars=yes,status=no,titlebar=yes,toolbar=no');
+                // Hide radio-specific items.
+                station.find('.station-player-container').hide();
+                station.find('.radio-only').hide();
+
+                station.find('.video-stream-player').show();
+
+                station.addClass('playing');
 			}
 			else
 			{
@@ -494,6 +520,16 @@ function playStation(id)
 	}
 }
 
+function playVideoStream(id)
+{
+    var station = $('#'+id);
+
+    var stream_type = station.data('type');
+    var stream_url = station.data('stream');
+
+    window.open(stream_url, 'pvlive_stream', 'width=980,height=700,location=yes,menubar=yes,resizable=yes,scrollbars=yes,status=no,titlebar=yes,toolbar=no');
+}
+
 var check_interval;
 
 function startPlayer()
@@ -551,6 +587,8 @@ function stopAllPlayers()
 
 	$('.station .station-player-container').empty();
 	$('.station-history').hide();
+    $('.video-stream-player').hide();
+
 	$('.station').removeClass('playing');
 
 	$('#tunein_player').removeData('current_station');

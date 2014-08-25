@@ -168,14 +168,17 @@ class IndexController extends \DF\Controller\Action
         {
             // Build multi-stream directory.
             $streams = array();
-            $default_stream_id = NULL;
+            $current_stream_id = NULL;
 
             foreach((array)$station['streams'] as $stream)
             {
                 if (!$stream['hidden_from_player'])
                 {
                     if ($stream['is_default'])
-                        $default_stream_id = $stream['id'];
+                    {
+                        $station['default_stream_id'] = $stream['id'];
+                        $current_stream_id = $stream['id'];
+                    }
 
                     $streams[$stream['id']] = $stream;
                 }
@@ -188,11 +191,11 @@ class IndexController extends \DF\Controller\Action
             {
                 $stream_id = (int)$default_streams[$station['id']];
                 if (isset($streams[$stream_id]))
-                    $default_stream_id = $stream_id;
+                    $current_stream_id = $stream_id;
             }
 
-            $station['default_stream_id'] = $default_stream_id;
-            $station['default_stream'] = $streams[$default_stream_id];
+            $station['current_stream_id'] = $current_stream_id;
+            $station['current_stream'] = $streams[$default_stream_id];
             $station['streams'] = $streams;
 
             // Only show stations with at least one usable stream.

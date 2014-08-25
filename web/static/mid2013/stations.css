@@ -7,6 +7,16 @@
 	border-color: #CCC;
 }
 
+.station h4 span,
+.podcast h4 span{
+    font-weight: normal;
+
+    font-size: 13px;
+    line-height: 13px;
+
+    color: #999999;
+}
+
 .station img,
 .podcast img {
 	padding: 4px;
@@ -22,9 +32,13 @@
 .station .show-when-playing {
 	display: none;
 }
+.station .video-stream-player {
+    display: none;
+    margin-top: 5px;
+}
 
 .station.live,
-.station.live h4 small {
+.station.live h4 span {
 	color: #2C7FD2;
 }
 .station.live img {
@@ -71,7 +85,7 @@
 }
 
 .station.playing,
-.station.playing h4 small {
+.station.playing h4 span {
 	color: #EFEFEF;
 }
 .station.playing h4 {
@@ -80,7 +94,7 @@
 	padding-top: 8px;
 	padding-bottom: 0;
 }
-.station.playing h4 small {
+.station.playing h4 span {
 	font-size: 14px;
 	color: #CCC;
 }
@@ -218,14 +232,12 @@ li.podcast {
 	font-size: 16px;
 	padding-bottom: 3px;
 }
-.station span.genre-info,
-.podcast span.genre-info {
+
+.station span.block,
+.podcast span.block {
 	display: block;
 }
-.station h4 span,
-.podcast h4 span {
-	font-size: 12px;
-}
+
 .station .nowplaying-onair {
 	font-size: 12px;
 	font-weight: bold;

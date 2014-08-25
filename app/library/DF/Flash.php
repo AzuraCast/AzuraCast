@@ -13,7 +13,7 @@ class Flash
 
     public static function addMessage($message, $level = self::INFO)
     {
-        $session = new \Zend_Session_Namespace('DF_Flash');
+        $session = \DF\Session::get('alerts');
 
         $color_chart = array(
             'green'     => 'success',
@@ -27,15 +27,18 @@ class Flash
             'default'   => 'info',
         );
 
-        $session->messages[] = array(
+        $messages = (array)$session->messages;
+        $messages[] = array(
             'message' => $message,
             'color' => (isset($color_chart[$level])) ? $color_chart[$level] : $color_chart['default'],
         );
+
+        $session->messages = $messages;
     }
 
     public static function hasMessages()
     {
-        $session = new \Zend_Session_Namespace('DF_Flash');
+        $session = \DF\Session::get('alerts');
 
         $messages = (array)$session->messages;
         return count($messages) > 0;
@@ -43,7 +46,7 @@ class Flash
 
     public static function getMessages()
     {
-        $session = new \Zend_Session_Namespace('DF_Flash');
+        $session = \DF\Session::get('alerts');
 
         $messages = (array)$session->messages;
         unset($session->messages);

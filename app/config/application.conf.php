@@ -28,11 +28,14 @@ $config = array(
         'error_log'             => DF_INCLUDE_TEMP.'/php_errors.log',
         'error_reporting'       => E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT,
         'session' => array(
+            'use_only_cookies'  => 1,
             'save_path'         => DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'sessions',
             'gc_maxlifetime'    => $session_lifetime,
             'gc_probability'    => 1,
             'gc_divisor'        => 100,
             'cookie_lifetime'   => $session_lifetime,
+            'hash_function'     => 'sha512',
+            'hash_bits_per_character' => 4,
         ),
     ),
         
@@ -97,12 +100,6 @@ $config = array(
             'layout'            => 'default',
             'layoutPath'        => DF_INCLUDE_APP.'/layouts',
             'commonTemplates'   => DF_INCLUDE_BASE.'/common',
-        ),
-
-        /* RESOURCES: Session */
-        'session' => array(
-            'use_only_cookies' => true,
-            'remember_me_seconds' => $session_lifetime,
         ),
     ),
 );

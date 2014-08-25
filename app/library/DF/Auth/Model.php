@@ -20,10 +20,8 @@ class Model extends Instance
         {
             $identity = $response->getIdentity();
             $user = User::find($identity['id']);
-            
-            $this->_session->identity = $identity;
-            $this->_session->user_id = $user['id'];
-            $this->_user = $user;
+
+            $this->setUser($user);
             return true;
         }
         else

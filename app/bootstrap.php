@@ -108,6 +108,9 @@ $application->getBootstrap();
 $application->bootstrap('doctrine');
 
 // Set additional global registry options.
+$em = \Zend_Registry::get('em');
+\DF\Doctrine\Session\SaveHandler::register($em);
+
 \Zend_Registry::set('auth', new \DF\Auth\Model);
 \Zend_Registry::set('acl', new \DF\Acl\Instance);
 

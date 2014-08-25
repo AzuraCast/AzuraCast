@@ -7,6 +7,19 @@
 namespace DF;
 class Session
 {
+    public static function start()
+    {
+        static $is_started = false;
+
+        if (DF_IS_COMMAND_LINE)
+            return false;
+
+        if (!$is_started)
+            $is_started = session_start();
+
+        return $is_started;
+    }
+
     public static function get($namespace = 'default')
     {
         return self::getNamespace($namespace);
@@ -14,11 +27,11 @@ class Session
     
     public static function getNamespace($namespace = 'default')
     {
-        static $sessions;
-        
-        if ($sessions === NULL)
-            $sessions = array();
-        
+        if (!self::start())
+            return new \stdClass;
+
+        static $sessions = array();
+
         $session_name = self::getNamespaceName($namespace);
 
         if (!isset($sessions[$session_name]))
@@ -26,7 +39,7 @@ class Session
             if (DF_IS_COMMAND_LINE)
                 $sessions[$session_name] = new \stdClass;
             else
-                $sessions[$session_name] = new \Zend_Session_Namespace($session_name);
+                $sessions[$session_name] = new \DF\Session\Instance($session_name);
         }
         
         return $sessions[$session_name];

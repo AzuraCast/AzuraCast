@@ -288,7 +288,7 @@ class Action extends \Zend_Controller_Action
      */
     protected function storeReferrer($namespace = 'default', $loose = true)
     {
-        $session = new \Zend_Session_Namespace('df_referrer_'.strtolower($namespace));
+        $session = \DF\Session::get('referrer_'.$namespace);
 
         if( !isset($session->url) || ($loose && isset($session->url) && Url::current() != Url::referrer()) )
             $session->url = Url::referrer();
@@ -296,13 +296,13 @@ class Action extends \Zend_Controller_Action
 
     protected function getStoredReferrer($namespace = 'default')
     {
-        $session = new \Zend_Session_Namespace('df_referrer_' . strtolower($namespace));
+        $session = \DF\Session::get('referrer_'.$namespace);
         return $session->url;
     }
 
     protected function clearStoredReferrer($namespace = 'default')
     {
-        $session = new \Zend_Session_Namespace('df_referrer_' . strtolower($namespace));
+        $session = \DF\Session::get('referrer_'.$namespace);
         unset($session->url);
     }
 

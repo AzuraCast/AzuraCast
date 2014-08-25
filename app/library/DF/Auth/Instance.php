@@ -103,8 +103,11 @@ class Instance
     {
         // Prevent any previous identity from being used.
         unset($this->_session->identity);
-        
+
+        session_regenerate_id(TRUE);
+
         $this->_session->user_id = $user->id;
+
         $this->_user = $user;
         return true;
     }
@@ -153,7 +156,7 @@ class Instance
             $user_info = User::getRepository()->findOneByUsername($user_info);
         
         $this->_session->masquerade_user_id = $user_info->id;
-        $this->_masqueraded_user = $user;
+        $this->_masqueraded_user = $user_info;
     }
 
     public function endMasquerade()

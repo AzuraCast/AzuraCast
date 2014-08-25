@@ -154,11 +154,11 @@ class NowPlaying
      * @param Station $station
      * @return array Structured NowPlaying Data
      */
-    public static function processStream(StationStream $stream, Station $station)
+    public static function processStream(StationStream $stream, Station $station, $force = false)
     {
         $current_np_data = (array)$stream->nowplaying_data;
 
-        if (!$stream->is_default)
+        if (!$stream->is_default && !$force)
         {
             // Only process non-default streams on odd-numbered "segments" to improve performance.
             if (NOWPLAYING_SEGMENT % 2 == 0 && !empty($current_np_data))

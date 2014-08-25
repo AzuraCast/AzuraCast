@@ -47,8 +47,11 @@ class Stations_StreamsController extends \PVL\Controller\Action\Station
             // Ensure at least one stream is default.
             $this->station->checkDefaultStream();
 
+            // Clear station cache.
+            \DF\Cache::remove('stations');
+
             // Immediately load "Now Playing" data for the added/updated stream.
-            $np = \PVL\NowPlaying::processStream($record, $this->station);
+            $np = \PVL\NowPlaying::processStream($record, $this->station, true);
             $record->save();
 
             if ($np['status'] != 'offline')

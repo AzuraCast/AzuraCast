@@ -37,6 +37,7 @@ class Api_DevController extends \PVL\Controller\Action\Api
             'role',
             'role_has_action',
             'station',
+            'station_streams',
             'podcast',
             'podcast_on_station',
             'songs',

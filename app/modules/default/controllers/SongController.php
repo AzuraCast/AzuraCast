@@ -46,9 +46,10 @@ class SongController extends \DF\Controller\Action
         $song_info['recent_history'] = $this->em->createQuery('
             SELECT sh, st
             FROM Entity\SongHistory sh JOIN sh.station st
-            WHERE sh.song_id = :song_id
+            WHERE sh.song_id = :song_id AND st.category IN (:categories)
             ORDER BY sh.timestamp DESC')
             ->setParameter('song_id', $record->id)
+            ->setParameter('categories', array('audio', 'video'))
             ->setMaxResults(20)
             ->getArrayResult();
 

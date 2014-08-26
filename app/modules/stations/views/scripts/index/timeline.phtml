@@ -10,6 +10,12 @@ $this->layout()->manual = true;
     <div class="span12">
         <h2>Recent Playback Timeline</h2>
 
+        <ul class="nav nav-tabs autoselect" rel="<?=$this->stream_id ?>">
+        <? foreach($this->station->streams as $stream): ?>
+            <li rel="<?=$stream->id ?>"><a href="<?=$this->routeFromHere(array('stream' => $stream->id, 'page' => NULL)) ?>"><? if ($stream->is_default): ?><i class="icon-star"></i> <? endif; ?><?=$stream->name ?></a></li>
+        <? endforeach; ?>
+        </ul>
+
         <div class="buttons">
             <?=$this->button(array(
                 'type'      => 'link',

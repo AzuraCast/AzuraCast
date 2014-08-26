@@ -366,7 +366,7 @@ function processNowPlaying()
                 var event_info = station_info.event;
 
                 if (station.is(':visible') && !station.find('.nowplaying-onair').is(':visible') && nowplaying_last_run != 0)
-                    notify(station.data('image'), 'Now On Air: '+event_info.title, 'Tune in now on '+station_info.name);
+                    notify(station.data('image'), 'Now On Air: '+event_info.title, 'Tune in now on '+station_info.station.name);
 
                 station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;On Air: '+event_info.title);
             }

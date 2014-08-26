@@ -48,7 +48,9 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
         $this->view->daily_averages = json_encode($daily_averages);
 
         // Statistics by hour.
-        $hourly_stats = $this->em->createQuery('SELECT a FROM Entity\Analytics a WHERE a.station_id = :station_id AND a.type = :type AND a.timestamp >= :timestamp ORDER BY a.timestamp ASC')
+        $hourly_stats = $this->em->createQuery('SELECT a FROM Entity\Analytics a
+            WHERE a.station_id = :station_id AND a.type = :type AND a.timestamp >= :timestamp
+            ORDER BY a.timestamp ASC')
             ->setParameter('station_id', $this->station->id)
             ->setParameter('type', 'hour')
             ->setParameter('timestamp', $threshold)
@@ -87,9 +89,16 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
         $song_totals = array();
         
         // Most played songs.
+        $default_stream = $this->station->getDefaultStream();
+
         $song_totals_raw = array();
-        $song_totals_raw['played'] = $this->em->createQuery('SELECT sh.song_id, COUNT(sh.id) AS records FROM Entity\SongHistory sh WHERE sh.station_id = :station_id AND sh.timestamp >= :timestamp GROUP BY sh.song_id ORDER BY records DESC')
+        $song_totals_raw['played'] = $this->em->createQuery('SELECT sh.song_id, COUNT(sh.id) AS records
+            FROM Entity\SongHistory sh
+            WHERE sh.station_id = :station_id AND sh.stream_id = :stream_id AND sh.timestamp >= :timestamp
+            GROUP BY sh.song_id
+            ORDER BY records DESC')
             ->setParameter('station_id', $this->station->id)
+            ->setParameter('stream_id', $default_stream->id)
             ->setParameter('timestamp', $threshold)
             ->setMaxResults(40)
             ->getArrayResult();
@@ -156,7 +165,16 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
 
     public function timelineAction()
     {
-        $songs_played_raw = $this->_getEligibleHistory();
+        $stream_id = $this->getParam('stream');
+        if (!$stream_id)
+        {
+            $default_stream = $this->station->getDefaultStream();
+            $stream_id = $default_stream->id;
+        }
+
+        $this->view->stream_id = $stream_id;
+
+        $songs_played_raw = $this->_getEligibleHistory($stream_id);
 
         // Get current events within threshold.
         $threshold = $songs_played_raw[0]['timestamp'];
@@ -290,17 +308,26 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
      * Utility Functions
      */
 
-    protected function _getEligibleHistory()
+    protected function _getEligibleHistory($stream_id = null)
     {
-        $cache_name = 'station_center_history_'.$this->station->id;
+        if ($stream_id === null)
+        {
+            $default_stream = $this->station->getDefaultStream();
+            $stream_id = $default_stream->id;
+        }
+
+        $cache_name = 'station_center_history_'.$this->station->id.'_'.$stream_id;
         $songs_played_raw = \DF\Cache::get($cache_name);
 
         if (!$songs_played_raw)
         {
             try
             {
-                $first_song = $this->em->createQuery('SELECT sh.timestamp FROM Entity\SongHistory sh WHERE sh.station_id = :station_id AND sh.listeners IS NOT NULL ORDER BY sh.timestamp ASC')
+                $first_song = $this->em->createQuery('SELECT sh.timestamp FROM Entity\SongHistory sh
+                    WHERE sh.station_id = :station_id AND sh.stream_id = :stream_id AND sh.listeners IS NOT NULL
+                    ORDER BY sh.timestamp ASC')
                     ->setParameter('station_id', $this->station->id)
+                    ->setParameter('stream_id', $stream_id)
                     ->setMaxResults(1)
                     ->getSingleScalarResult();
             }
@@ -313,8 +340,13 @@ class Stations_IndexController extends \PVL\Controller\Action\Station
             $threshold = max($first_song, $min_threshold);
 
             // Get all songs played in timeline.
-            $songs_played_raw = $this->em->createQuery('SELECT sh, s FROM Entity\SongHistory sh LEFT JOIN sh.song s WHERE sh.station_id = :station_id AND sh.timestamp >= :timestamp AND sh.listeners IS NOT NULL ORDER BY sh.timestamp ASC')
+            $songs_played_raw = $this->em->createQuery('SELECT sh, s
+                FROM Entity\SongHistory sh
+                LEFT JOIN sh.song s
+                WHERE sh.station_id = :station_id AND sh.stream_id = :stream_id AND sh.timestamp >= :timestamp AND sh.listeners IS NOT NULL
+                ORDER BY sh.timestamp ASC')
                 ->setParameter('station_id', $this->station->id)
+                ->setParameter('stream_id', $stream_id)
                 ->setParameter('timestamp', $threshold)
                 ->getArrayResult();
 

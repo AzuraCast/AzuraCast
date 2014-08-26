@@ -259,6 +259,17 @@ class Station extends \DF\Doctrine\Entity
         $this->checkDefaultStream();
     }
 
+    public function getDefaultStream()
+    {
+        foreach($this->streams as $stream)
+        {
+            if ($stream->is_default)
+                return $stream;
+        }
+
+        return NULL;
+    }
+
     public function checkDefaultStream()
     {
         if (count($this->streams) == 0)

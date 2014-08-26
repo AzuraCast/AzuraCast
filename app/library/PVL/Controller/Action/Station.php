@@ -3,7 +3,14 @@ namespace PVL\Controller\Action;
 
 class Station extends \DF\Controller\Action
 {
+    /*
+     * @var array All available stations.
+     */
     protected $stations;
+
+    /**
+     * @var \Entity\Station The current active station.
+     */
     protected $station;
 
     public function preDispatch()

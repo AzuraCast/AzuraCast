@@ -22,6 +22,20 @@ class NowPlaying
 
         $nowplaying = self::loadNowPlaying();
 
+        // Post statistics to official record.
+        Statistic::post($nowplaying['legacy']);
+
+        // Clear any records that are not audio/video category.
+        $api_categories = array('audio', 'video');
+        foreach($nowplaying['api'] as $station_shortcode => $station_info)
+        {
+            if (!in_array($station_info['station']['category'], $api_categories))
+            {
+                unset($nowplaying['api'][$station_shortcode]);
+                unset($nowplaying['legacy'][$station_shortcode]);
+            }
+        }
+
         // Generate PVL legacy nowplaying file.
         $pvl_file_path = DF_INCLUDE_STATIC.'/api/nowplaying.json';
         $nowplaying_feed = json_encode($nowplaying['legacy'], JSON_UNESCAPED_SLASHES);
@@ -41,9 +55,6 @@ class NowPlaying
         $file_path_api = DF_INCLUDE_STATIC.'/api/nowplaying_api.json';
 
         @file_put_contents($file_path_api, $nowplaying_api);
-
-        // Post statistics to official record.
-        Statistic::post($nowplaying['legacy']);
 
         return $pvl_file_path;
     }

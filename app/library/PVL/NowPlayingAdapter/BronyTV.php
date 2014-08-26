@@ -16,7 +16,7 @@ class BronyTV extends AdapterAbstract
         $return = @json_decode($return_raw, TRUE);
         $return = $return[0];
 
-        $np['listeners']['total'] = (int)$return['Total_Viewers'];
+        $np['listeners']['current'] = (int)$return['Total_Viewers'];
 
         if ($return['Stream_Status'] == 'Stream is offline' || $return['Stream_Status'] == 'offline - Offline')
         {

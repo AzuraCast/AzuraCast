@@ -138,7 +138,7 @@ $this->render_mode = 'homepage';
                 <li class="media podcast">
                     <div class="media-object pull-left">
                         <a href="<?=$this->routeFromHere(array('controller' => 'show', 'action' => 'view', 'id' => $podcast->id)) ?>">
-                            <img class="station-image" src="<?=\DF\Url::content($podcast->image_url) ?>" style="width: 40px;">
+                            <img class="station-image" src="<?=\DF\Url::content($podcast->image_url) ?>" alt="<?=$podcast->name ?> Logo" style="width: 40px;">
                             <div class="station-play-button">
                                 <i class="icon-rss"></i>
                             </div>

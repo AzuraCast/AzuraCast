@@ -15,7 +15,7 @@ $columns = \DF\Utilities::columns($affiliates, 2);
                         <li class="media">
                             <div class="media-object pull-left">
                                 <a href="<?=$affiliate['web_url'] ?>" target="_blank">
-                                    <img src="<?=\DF\Url::content($affiliate['image_url']) ?>" style="width: 40px;">
+                                    <img src="<?=\DF\Url::content($affiliate['image_url']) ?>" alt="<?=$affiliate['name'] ?> Logo" style="width: 40px;">
                                 </a>
                             </div>
                             <div class="media-body">

@@ -8,6 +8,10 @@ class SongController extends \DF\Controller\Action
     public function indexAction()
     {
         $id = $this->getParam('id');
+
+        if (empty($id))
+            $this->redirectHome();
+
         $record = Song::find($id);
 
         if (!($record instanceof Song))

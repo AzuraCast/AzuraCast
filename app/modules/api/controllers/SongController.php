@@ -59,9 +59,6 @@ class Api_SongController extends \PVL\Controller\Action\Api
 
     protected function _vote($value)
     {
-        if (!$this->_request->isPost())
-            return $this->returnError('Votes must be submitted via HTTP POST.');
-
         $sh_id = (int)$this->_getParam('sh_id');
         $sh = SongHistory::find($sh_id);
 

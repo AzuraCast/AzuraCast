@@ -172,7 +172,7 @@ class Podcast extends \DF\Doctrine\Entity
             'id'        => (int)$row['id'],
             'name'      => $row['name'],
             'description' => $row['description'],
-            'image_url' => \DF\Url::content($row['image_url']),
+            'image_url' => \DF\Url::content(self::getArtistImage($row['image_url'])),
             'stations'  => $row['stations'],
         );
 

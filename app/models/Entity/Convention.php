@@ -284,7 +284,7 @@ class Convention extends \DF\Doctrine\Entity
     {
         $coverage_levels = self::getCoverageLevels();
 
-        return array(
+        $con = array(
             'id'        => $row['id'],
             'name'      => $row['name'],
             'location'  => $row['location'],
@@ -294,8 +294,14 @@ class Convention extends \DF\Doctrine\Entity
             'start_date' => $row['start_date'],
             'end_date'  => $row['end_date'],
             'web_url'   => $row['web_url'],
-            'image_url' => \DF\Url::content($row['image_url']),
-            'thumbnail_url' => \DF\Url::content($row['thumbnail_url']),
         );
+
+        if (!empty($row['image_url']))
+            $con['image_url'] = \DF\Url::content($row['image_url']);
+
+        if (!empty($row['thumbnail_url']))
+            $con['thumbnail_url'] = \DF\Url::content($row['thumbnail_url']);
+
+        return $con;
     }
 }

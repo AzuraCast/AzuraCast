@@ -21,13 +21,7 @@ class Api extends \DF\Controller\Action
         header('Access-Control-Allow-Origin: *');
 
         // Fix the base URL prefixed with '//'.
-        $current_base_url = \DF\Url::baseUrl();
-        $base_url = $current_base_url;
-
-        if (substr($current_base_url, 0, 2) == '//')
-            $base_url = 'http'.((DF_IS_SECURE) ? 's:' : ':').$base_url;
-
-        \DF\Url::setBaseUrl($base_url);
+        \DF\Url::forceSchemePrefix();
 
         $this->_time_start = microtime(true);
     }

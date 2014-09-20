@@ -47,6 +47,16 @@ class Url
 
         $front->setBaseUrl($new_base_url);
     }
+
+    public static function forceSchemePrefix()
+    {
+        $base_url = self::baseUrl();
+
+        if (substr($base_url, 0, 2) == '//')
+            $base_url = 'http'.((DF_IS_SECURE) ? 's:' : ':').$base_url;
+
+        self::setBaseUrl($base_url);
+    }
     
     public static function content($file_name = NULL)
     {

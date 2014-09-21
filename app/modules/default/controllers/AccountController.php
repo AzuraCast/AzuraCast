@@ -283,11 +283,9 @@ class AccountController extends \DF\Controller\Action
 
     protected function _getHybridConfig()
     {
-        \DF\Url::forceSchemePrefix();
-
         // Force "scheme" injection for base URLs.
         $ha_config = $this->config->apis->hybrid_auth->toArray();
-        $ha_config['base_url'] = $this->view->routeFromHere(array('action' => 'hybrid'));
+        $ha_config['base_url'] = \DF\Url::addSchemePrefix($this->view->routeFromHere(array('action' => 'hybrid')));
 
         return $ha_config;
     }

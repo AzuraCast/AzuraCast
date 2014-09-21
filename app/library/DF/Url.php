@@ -48,16 +48,34 @@ class Url
         $front->setBaseUrl($new_base_url);
     }
 
+    // Conversion from '//' scheme-independent URL to scheme-explicit URLs
+    static $original_base_url;
+
     public static function forceSchemePrefix()
     {
-        $base_url = self::baseUrl();
+        if (!empty(self::$original_base_url))
+            return null;
 
-        if (substr($base_url, 0, 2) == '//')
-            $base_url = 'http'.((DF_IS_SECURE) ? 's:' : ':').$base_url;
+        self::$original_base_url = self::baseUrl();
 
-        self::setBaseUrl($base_url);
+        $new_base_url = self::addSchemePrefix(self::$original_base_url);
+        self::setBaseUrl($new_base_url);
     }
-    
+    public static function restoreNonPrefixed()
+    {
+        self::setBaseUrl(self::$original_base_url);
+        self::$original_base_url = null;
+    }
+
+    public static function addSchemePrefix($url)
+    {
+        if (substr($url, 0, 2) == '//')
+            return 'http'.((DF_IS_SECURE) ? 's:' : ':').$url;
+
+        return $url;
+    }
+
+    // Return path to static content.
     public static function content($file_name = NULL)
     {
         if (defined('DF_URL_STATIC'))
@@ -70,7 +88,8 @@ class Url
         else
             return $static_url_base;
     }
-    
+
+    // Return path to uploaded file.
     public static function file($file_name = NULL)
     {
         if (defined('DF_UPLOAD_URL'))

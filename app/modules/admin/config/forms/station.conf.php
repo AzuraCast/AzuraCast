@@ -68,23 +68,6 @@ return array(
             'required' => true,
         )),
 
-        'type' => array('radio', array(
-            'label' => 'Media Type',
-            'multiOptions' => array(
-                'shoutcast1'        => 'ShoutCast v1',
-                'shoutcast2'        => 'ShoutCast v2',
-                'icecast'           => 'IceCast',
-                'stream'            => 'Popout Stream Player',
-                /*
-                'swf'               => 'SWF Embed',
-                'video'             => 'Video Stream (Flash/RTMP)',
-                'iframe'            => 'IFRAME Content',
-                'link'              => 'URL Link',
-                */
-            ),
-            'required' => true,
-        )),
-
         'weight' => array('text', array(
             'label' => 'Sort Order',
             'description' => 'Lower numbers appear higher on the list of stations.',
@@ -98,18 +81,6 @@ return array(
         'web_url' => array('text', array(
             'label' => 'Web URL',
             'description' => 'Include full address (with http://).',
-            'class' => 'half-width',
-        )),
-
-        'nowplaying_url' => array('text', array(
-            'label' => 'Now Playing Feed URL',
-            'description' => 'Include full address (with http://).',
-            'class' => 'half-width',
-        )),
-
-        'stream_url' => array('text', array(
-            'label' => 'Stream URL',
-            'description' => 'Include full address (with http://). For ShoutCast streams, append ;stream.nsv to the end.',
             'class' => 'half-width',
         )),
 

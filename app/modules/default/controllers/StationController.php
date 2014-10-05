@@ -122,7 +122,7 @@ class StationController extends \DF\Controller\Action
 
         if ($this->station)
         {
-            $stations = array($this->station->toArray());
+            $stations = array($this->station);
         }
         else
         {
@@ -140,9 +140,12 @@ class StationController extends \DF\Controller\Action
                 $i = 0;
                 foreach($stations as $station)
                 {
-                    $m3u_lines[] = '#EXTINF:'.$i.',PVL! '.$station['name'];
-                    $m3u_lines[] = $station['stream_url'];
-                    $i++;
+                    foreach($station['streams'] as $stream)
+                    {
+                        $m3u_lines[] = '#EXTINF:' . $i . ',PVL! ' . $station['name'].': '.$stream['name'];
+                        $m3u_lines[] = $stream['stream_url'];
+                        $i++;
+                    }
                 }
 
                 $m3u_file = implode("\r\n", $m3u_lines);
@@ -161,12 +164,15 @@ class StationController extends \DF\Controller\Action
                 $i = 1;
                 foreach($stations as $station)
                 {
-                    $output[] = 'File'.$i.'='.$station['stream_url'];
-                    $output[] = 'Title'.$i.'=PVL! '.$station['name'];
-                    $output[] = 'Length'.$i.'=-1';
-                    $output[] = 'Version=2';
+                    foreach($station['streams'] as $stream)
+                    {
+                        $output[] = 'File' . $i . '=' . $stream['stream_url'];
+                        $output[] = 'Title' . $i . '=PVL! ' . $station['name'].': '.$stream['name'];
+                        $output[] = 'Length' . $i . '=-1';
+                        $output[] = 'Version=2';
 
-                    $i++;
+                        $i++;
+                    }
                 }
 
                 header('Content-Type: audio/x-scpls');

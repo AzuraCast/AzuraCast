@@ -62,6 +62,16 @@ class StationStream extends \DF\Doctrine\Entity
      */
     protected $history;
 
+    public function isPlaying()
+    {
+        $np_data = (array)$this->nowplaying_data;
+
+        if (isset($np_data['status']))
+            return ($np_data['status'] != 'offline');
+        else
+            return false;
+    }
+
     public static function api($row)
     {
         return array(

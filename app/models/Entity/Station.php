@@ -228,12 +228,8 @@ class Station extends \DF\Doctrine\Entity
 
     public function isPlaying()
     {
-        $np_data = (array)$this->nowplaying_data;
-
-        if (isset($np_data['status']))
-            return ($np_data['status'] != 'offline');
-        else
-            return false;
+        $stream = $this->getDefaultStream();
+        return $stream->isPlaying();
     }
 
     public function setDefaultStream($sid)

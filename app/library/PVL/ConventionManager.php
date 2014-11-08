@@ -106,18 +106,18 @@ class ConventionManager
 
                         foreach((array)$data['items'] as $item)
                         {
-                            $child_row = new ConventionArchive;
-                            $child_row->convention = $row->convention;
-                            $child_row->playlist_id = $row->id;
-                            $child_row->type = 'yt_video';
-                            $child_row->folder = $row->folder;
-
                             $row_name = self::filterName($row, $item['snippet']['title']);
                             $row_thumb = self::getThumbnail($item['snippet']['thumbnails']);
 
                             // Apply name/thumbnail filtering to sub-videos.
                             if (!empty($row_name) && !empty($row_thumb))
                             {
+                                $child_row = new ConventionArchive;
+                                $child_row->convention = $row->convention;
+                                $child_row->playlist_id = $row->id;
+                                $child_row->type = 'yt_video';
+                                $child_row->folder = $row->folder;
+
                                 $child_row->name = $row_name;
                                 $child_row->description = $item['snippet']['description'];
                                 $child_row->web_url = 'http://www.youtube.com/watch?v=' . $item['contentDetails']['videoId'];
@@ -127,6 +127,9 @@ class ConventionManager
                             }
                         }
                     }
+
+                    $row->synchronized_at = time();
+                    $em->persist($row);
                 break;
 
                 case "yt_video":
@@ -161,20 +164,12 @@ class ConventionManager
                         $row->name = self::filterName($row, $video['title']);
                         $row->description = $video['description'];
                         $row->thumbnail_url = self::getThumbnail($video['thumbnails']);
+
+                        $row->synchronized_at = time();
+                        $em->persist($row);
                     }
                 break;
             }
-        }
-
-        // Remove any videos without name or thumbnail attributes.
-        if (!empty($row->name) && !empty($row->thumbnail_url))
-        {
-            $row->synchronized_at = time();
-            $em->persist($row);
-        }
-        else
-        {
-            $em->remove($row);
         }
 
         $em->flush();

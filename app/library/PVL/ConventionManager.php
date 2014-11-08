@@ -106,17 +106,25 @@ class ConventionManager
 
                         foreach((array)$data['items'] as $item)
                         {
-                            $child_row = new ConventionArchive;
-                            $child_row->convention = $row->convention;
-                            $child_row->playlist_id = $row->id;
-                            $child_row->type = 'yt_video';
-                            $child_row->folder = $row->folder;
+                            $row_name = self::filterName($row, $item['snippet']['title']);
+                            $row_thumb = self::getThumbnail($item['snippet']['thumbnails']);
 
-                            $child_row->name = self::filterName($row, $item['snippet']['title']);
-                            $child_row->description = $item['snippet']['description'];
-                            $child_row->web_url = 'http://www.youtube.com/watch?v='.$item['contentDetails']['videoId'];
-                            $child_row->thumbnail_url = self::getThumbnail($item['snippet']['thumbnails']);
-                            $em->persist($child_row);
+                            // Apply name/thumbnail filtering to sub-videos.
+                            if ($row_name && $row_thumb)
+                            {
+                                $child_row = new ConventionArchive;
+                                $child_row->convention = $row->convention;
+                                $child_row->playlist_id = $row->id;
+                                $child_row->type = 'yt_video';
+                                $child_row->folder = $row->folder;
+
+                                $child_row->name = $row_name;
+                                $child_row->description = $item['snippet']['description'];
+                                $child_row->web_url = 'http://www.youtube.com/watch?v=' . $item['contentDetails']['videoId'];
+                                $child_row->thumbnail_url = $row_thumb;
+
+                                $em->persist($child_row);
+                            }
                         }
                     }
                 break;
@@ -149,6 +157,7 @@ class ConventionManager
                         $data = @json_decode($response_text, TRUE);
 
                         $video = $data['items'][0]['snippet'];
+
                         $row->name = self::filterName($row, $video['title']);
                         $row->description = $video['description'];
                         $row->thumbnail_url = self::getThumbnail($video['thumbnails']);
@@ -157,8 +166,17 @@ class ConventionManager
             }
         }
 
-        $row->synchronized_at = time();
-        $em->persist($row);
+        // Remove any videos without name or thumbnail attributes.
+        if (!empty($row->name) && !empty($row->thumbnail_url))
+        {
+            $row->synchronized_at = time();
+            $em->persist($row);
+        }
+        else
+        {
+            $em->remove($row);
+        }
+
         $em->flush();
     }
 
@@ -167,8 +185,17 @@ class ConventionManager
         $con = trim($row->convention->name);
         $name = trim($name);
 
+        // Halt processing if video is private.
+        if ($name == 'Private video')
+            return false;
+
+        // Strip con name off front of footage.
         if (substr(strtolower($name), 0, strlen($con)) == strtolower($con))
             $name = substr($name, strlen($con));
+
+        // Strip con name off end of footage.
+        if (substr(strtolower($name), 0-strlen($con)) == strtolower($con))
+            $name = substr($name, 0, strlen($name)-strlen($con));
 
         $name = trim($name, " -@:\t\n\r\0");
         return $name;
@@ -180,5 +207,7 @@ class ConventionManager
             return $thumbnails['medium']['url'];
         elseif ($thumbnails['maxres'])
             return $thumbnails['maxres']['url'];
+        else
+            return NULL;
     }
 }

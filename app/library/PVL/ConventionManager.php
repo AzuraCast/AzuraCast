@@ -106,18 +106,18 @@ class ConventionManager
 
                         foreach((array)$data['items'] as $item)
                         {
+                            $child_row = new ConventionArchive;
+                            $child_row->convention = $row->convention;
+                            $child_row->playlist_id = $row->id;
+                            $child_row->type = 'yt_video';
+                            $child_row->folder = $row->folder;
+
                             $row_name = self::filterName($row, $item['snippet']['title']);
                             $row_thumb = self::getThumbnail($item['snippet']['thumbnails']);
 
                             // Apply name/thumbnail filtering to sub-videos.
-                            if ($row_name && $row_thumb)
+                            if (!empty($row_name) && !empty($row_thumb))
                             {
-                                $child_row = new ConventionArchive;
-                                $child_row->convention = $row->convention;
-                                $child_row->playlist_id = $row->id;
-                                $child_row->type = 'yt_video';
-                                $child_row->folder = $row->folder;
-
                                 $child_row->name = $row_name;
                                 $child_row->description = $item['snippet']['description'];
                                 $child_row->web_url = 'http://www.youtube.com/watch?v=' . $item['contentDetails']['videoId'];
@@ -186,7 +186,7 @@ class ConventionManager
         $name = trim($name);
 
         // Halt processing if video is private.
-        if ($name == 'Private video')
+        if (strcmp($name, 'Private video') === 0)
             return false;
 
         // Strip con name off front of footage.

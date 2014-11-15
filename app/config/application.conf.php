@@ -114,7 +114,7 @@ if (DF_APPLICATION_ENV != 'production')
     $config['phpSettings']['display_errors'] = 1;
 
     // Update if your local configuration differs.
-    $config['base_url'] = '//localhost:8080';
+    $config['base_url'] = '//dev.pvlive.me';
 }
 
 return $config;

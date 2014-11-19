@@ -15,6 +15,9 @@ class Session extends \DF\Doctrine\Entity
     {
         $this->last_modified = time();
         $this->user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+        if (empty($this->user_agent))
+            $this->user_agent = 'none';
     }
 
     /**
@@ -23,7 +26,7 @@ class Session extends \DF\Doctrine\Entity
      */
     protected $id;
 
-    /** @Column(name="user_agent", type="string", length=255) */
+    /** @Column(name="user_agent", type="string", length=255, nullable=true) */
     protected $user_agent;
 
     /** @Column(name="expires", type="integer") */
@@ -50,6 +53,9 @@ class Session extends \DF\Doctrine\Entity
             return false;
 
         $current_ua = $_SERVER['HTTP_USER_AGENT'];
+        if (empty($current_ua))
+            $current_ua = 'none';
+
         if (strcmp($this->user_agent, $current_ua) !== 0)
             return false;
 

@@ -82,6 +82,14 @@ http {
                         fastcgi_read_timeout 1800;
                 }
 
+                location /api/live {
+                        proxy_pass http://localhost:4002/socket.io;
+                        proxy_redirect off;
+                        proxy_http_version 1.1;
+                        proxy_set_header Upgrade $http_upgrade;
+                        proxy_set_header Connection "upgrade";
+                }
+
                 # deny access to .htaccess files, if Apache's document root
                 # concurs with nginx's one
                 #

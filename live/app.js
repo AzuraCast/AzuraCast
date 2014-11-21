@@ -1,6 +1,7 @@
 var express = require('express'),
     http = require('http'),
-    Socket = require('socket.io');
+    Socket = require('socket.io'),
+    bodyParser = require('body-parser');
 
 var local_port = 4001;
 var remote_port = 4002;
@@ -16,21 +17,30 @@ var http_local = http.Server(app_local);
 // Handle local information update.
 var current_np = {};
 
+app_local.use(bodyParser.json({ limit: '50mb' }));
+
 app_local.post('/data', function(req, res) {
     var remote_body = req.body;
+
     if (remote_body.type == 'nowplaying')
         current_np = remote_body.contents;
 
     io.emit(remote_body.type, remote_body.contents);
+
+    res.end("yes");
 });
 
 // Handle remote information publishing.
 io.on('connection', function(socket) {
-    socket.emit('nowplaying', currentStatus);
+    socket.emit('nowplaying', current_np);
+});
+
+app_remote.get('/', function(req, res) {
+    res.send('Ponyville Live! Live Updates API');
 });
 
 // Trigger listening on local and remote HTTP servers.
-http_local.listen(local_port, function() {
+http_local.listen(local_port, 'localhost', function() {
     console.log('Local listening on %d', local_port);
 });
 

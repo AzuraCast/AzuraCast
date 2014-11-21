@@ -4,6 +4,7 @@
   "description": "Live updates from the Ponyville Live! service.",
   "dependencies": {
     "express": "~4.10.2",
-    "socket.io": "~1.2.1"
+    "socket.io": "~1.2.1",
+    "body-parser": "~1.9.2"
   }
 }

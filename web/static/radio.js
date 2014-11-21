@@ -219,8 +219,25 @@ $(function() {
         });
     });
 
-	checkNowPlaying();
-	nowplaying_interval = setInterval('verifyNowPlaying()', 30000);
+    console.log(pvlnode_remote_url);
+
+    var socket = io(pvlnode_remote_url, {path: pvlnode_remote_path});
+
+    socket.on('connect', function(){});
+    socket.on('disconnect', function(){});
+
+    socket.on('nowplaying', function(np_data) {
+        console.log('Event received from PVLNode!');
+        console.log(np_data);
+
+        nowplaying_cache = np_data;
+        processNowPlaying();
+    });
+
+	// checkNowPlaying();
+	// nowplaying_interval = setInterval('verifyNowPlaying()', 30000);
+
+
 });
 
 // Ensure now-playing is being checked, in spite of any interruptions.

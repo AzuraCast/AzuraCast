@@ -11,6 +11,11 @@ return array(
     // PVL deployment API keys accepted by this application.
     'pvl_api_keys'      => array(),
 
+    // PVLNode Live update service locations.
+    'pvlnode_local_url'  => 'http://localhost:4001/data',
+    'pvlnode_remote_url' => 'http://dev.pvlive.me/',
+    'pvlnode_remote_path' => '/api/live',
+
     // Mandrill SMTP service.
     'smtp' => array(
         'server'        => 'smtp.mandrillapp.com',

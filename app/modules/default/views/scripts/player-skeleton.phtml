@@ -1,11 +1,25 @@
 <?
 $this->headScript()
+    ->appendFile('https://cdn.socket.io/socket.io-1.2.1.js')
     ->appendFile(\DF\Url::content('jplayer/jquery.jplayer.min.js'))
     ->appendFile(\DF\Url::content('radio.js'));
 
 // ->appendFile('//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.js');
 // $this->headLink()->appendStylesheet('//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.css', 'all');
 ?>
+<script type="text/javascript">
+    var pvlnode_remote_url = '<?=$this->config->apis->pvlnode_remote_url ?>';
+    var pvlnode_remote_path = '<?=$this->config->apis->pvlnode_remote_path ?>';
+</script>
+
+<? if ($this->station_id && $this->autoplay): ?>
+<script type="text/javascript">
+    $(function() {
+        playStation($('.station[data-id="<?=$this->station_id ?>"]').attr('id'));
+    });
+</script>
+<? endif; ?>
+
 <div id="pvl-jplayer-controls-image" style="display: none;">
     <div class="jp-type-single">
         <div class="jp-gui jp-interface clearfix">
@@ -39,11 +53,3 @@ $this->headScript()
         )) ?>
     </div>
 </div>
-
-<? if ($this->station_id && $this->autoplay): ?>
-<script type="text/javascript">
-$(function() {
-    playStation($('.station[data-id="<?=$this->station_id ?>"]').attr('id'));
-});
-</script>
-<? endif; ?>

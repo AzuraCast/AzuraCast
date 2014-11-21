@@ -22,14 +22,18 @@ util/test.php
 
 # Auto-generated content.
 /vendor/
-web/static/api/*
-web/static/affiliates/*
-web/static/artists/*
-web/static/stations/*
-web/static/podcasts/*
-web/static/rotators/*
-web/static/songs/*
-web/static/conventions/*
+/web/static/api/*
+/live/node_modules/
+!/live/node_modules/.gitkeep
+
+# User-uploaded content.
+/web/static/affiliates/*
+/web/static/artists/*
+/web/static/stations/*
+/web/static/podcasts/*
+/web/static/rotators/*
+/web/static/songs/*
+/web/static/conventions/*
 
 # Log files.
 util/php_errors.log

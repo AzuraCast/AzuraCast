@@ -1,0 +1,9 @@
+{
+  "name": "pvlive-live-updates",
+  "version": "0.0.1",
+  "description": "Live updates from the Ponyville Live! service.",
+  "dependencies": {
+    "express": "~4.10.2",
+    "socket.io": "~1.2.1"
+  }
+}

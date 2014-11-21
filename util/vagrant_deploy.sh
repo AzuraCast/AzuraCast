@@ -83,6 +83,15 @@ then
     curl -sS https://getcomposer.org/installer | php
     mv composer.phar /usr/local/bin/composer
 
+    # Install Node.js and services
+    apt-get -q -y install nodejs npm
+
+    cd $www_base/live
+    npm install --no-bin-links
+
+    cp $www_base/util/vagrant_initd /etc/init/pvlnode.conf
+    service pvlnode start
+
     # Mark deployment as run.
     touch $app_base/.deploy_run
 

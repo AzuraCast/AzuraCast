@@ -234,24 +234,27 @@ $(function() {
         processNowPlaying();
     });
 
-	// checkNowPlaying();
-	// nowplaying_interval = setInterval('verifyNowPlaying()', 30000);
-
-
+    /*
+    checkNowPlaying();
+    nowplaying_interval = setInterval('verifyNowPlaying()', 30000);
+    */
 });
 
 // Ensure now-playing is being checked, in spite of any interruptions.
 function verifyNowPlaying()
 {
+    /*
 	var current_timestamp = getUnixTimestamp();
 	if (current_timestamp - nowplaying_last_run > 25)
 	{
 		checkNowPlaying();
 	}
+	*/
 }
 
 function checkNowPlaying(force_update)
 {
+    /*
 	force_update = (typeof force_update !== 'undefined') ? force_update : false;
 
 	// Only run now-playing once every 10 seconds max.
@@ -270,6 +273,7 @@ function checkNowPlaying(force_update)
         nowplaying_last_run = getUnixTimestamp();
 		nowplaying_timeout = setTimeout('checkNowPlaying()', 20000);
 	});
+	*/
 }
 
 function processNowPlaying()
@@ -523,7 +527,7 @@ function playStation(id)
 				$('#tunein_player').data('current_station', station.data('id'));
 
 				// Trigger an immediate now-playing check.
-				checkNowPlaying(true);
+				// checkNowPlaying(true);
 			}
 			
 			// Log in Google Analytics

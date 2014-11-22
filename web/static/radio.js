@@ -19,6 +19,8 @@ var nowplaying_interval;
 var is_playing;
 var jp_is_playing;
 
+var socket;
+
 $(function() {
 	original_window_title = document.title;
 
@@ -219,16 +221,13 @@ $(function() {
         });
     });
 
-    console.log(pvlnode_remote_url);
-
-    var socket = io(pvlnode_remote_url, {path: pvlnode_remote_path});
+    socket = io(pvlnode_remote_url, {path: pvlnode_remote_path});
 
     socket.on('connect', function(){});
     socket.on('disconnect', function(){});
 
     socket.on('nowplaying', function(np_data) {
-        console.log('Event received from PVLNode!');
-        console.log(np_data);
+        console.log('Nowplaying updated.');
 
         nowplaying_cache = np_data;
         processNowPlaying();

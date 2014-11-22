@@ -8,8 +8,4 @@ stop on shutdown
 respawn
 respawn limit 99 5
 
-script
- export HOME="/root"
-
- exec /usr/bin/nodejs /var/www/vagrant/live/app.js >> /var/log/node.log 2>&1
-end script
+exec /usr/bin/nodejs /var/www/vagrant/live/app.js >> /var/log/node.log 2>&1

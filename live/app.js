@@ -16,6 +16,7 @@ var http_local = http.Server(app_local);
 
 // Handle local information update.
 var current_np = {};
+var current_clients = 0;
 
 app_local.use(bodyParser.json({ limit: '50mb' }));
 
@@ -30,9 +31,21 @@ app_local.post('/data', function(req, res) {
     res.end("yes");
 });
 
+app_local.get('/data', function(req, res) {
+    res.json({
+        'clients': current_clients
+    });
+});
+
 // Handle remote information publishing.
 io.on('connection', function(socket) {
+    current_clients++;
+
     socket.emit('nowplaying', current_np);
+});
+
+io.on('disconnection', function(socket) {
+    current_clients--;
 });
 
 app_remote.get('/', function(req, res) {

@@ -6,12 +6,17 @@
         "doctrine/orm": "v2.4.2",
         "phpoffice/phpexcel": "1.8.0",
         "james-heinrich/getid3": "v1.9.8",
-        "electrolinux/phpquery": "0.9.6"
+        "electrolinux/phpquery": "0.9.6",
+        "phalcon/devtools": "dev-master"
     },
     "authors": [
         {
             "name": "Buster Neece",
             "email": "buster@busterneece.com"
         }
-    ]
+    ],
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "dev"
 }

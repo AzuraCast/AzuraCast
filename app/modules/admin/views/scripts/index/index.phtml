@@ -56,12 +56,18 @@ if ($skin == "dark")
                     <h4><?=$sync_info['name'] ?></h4>
                     <p><?=date('F j, Y g:ia', $sync_info['latest']) ?><br><small><?=$sync_info['diff_text'] ?> ago</small></p>
 
-                    <?=$this->button(array(
-                        'type'      => 'small',
-                        'href'      => $this->routeFromHere(array('action' => 'sync', 'type' => $sync_key)),
-                        'text'      => 'Run Manually',
-                        'target'    => '_blank',
-                    )) ?>
+                    <div class="buttons">
+                        <?=$this->button(array(
+                            'type'      => 'small',
+                            'href'      => $this->routeFromHere(array('action' => 'sync', 'type' => $sync_key)),
+                            'text'      => 'Run Manually',
+                            'target'    => '_blank',
+                        )) ?>
+                    </div>
+
+                    <p><small>
+                        <?=implode('<br>', $sync_info['contents']) ?>
+                    </small></p>
                 </div>
             <? endforeach; ?>
             </div>

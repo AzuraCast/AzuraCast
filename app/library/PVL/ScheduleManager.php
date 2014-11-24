@@ -54,8 +54,8 @@ class ScheduleManager
         Debug::startTimer('Get Calendar Records');
 
         // Time boundaries for calendar entries.
-        $start_time = date(\DateTime::RFC3339, strtotime('-1 week'));
-        $end_time = date(\DateTime::RFC3339, strtotime('+1 year'));
+        $threshold_start = date(\DateTime::RFC3339, strtotime('-1 week'));
+        $threshold_end = date(\DateTime::RFC3339, strtotime('+1 year'));
 
         foreach($schedule_items as $item)
         {
@@ -72,8 +72,8 @@ class ScheduleManager
             try
             {
                 $all_events = $gcal->events->listEvents($calendar_id, array(
-                    'timeMin'       => $start_time,
-                    'timeMax'       => $end_time,
+                    'timeMin'       => $threshold_start,
+                    'timeMax'       => $threshold_end,
                     'singleEvents'  => 'true',
                     'orderBy'       => 'startTime',
                     'maxResults'    => '300',

@@ -25,6 +25,9 @@ return array(
         'password'      => '',
     ),
 
+    // Google Common APIs server key (get from https://console.developers.google.com/)
+    'google_apis_key' => '',
+
     // YouTube v3 API key.
     'youtube_v3' => '',
 

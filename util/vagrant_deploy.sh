@@ -9,9 +9,14 @@ if [ ! -f $app_base/.deploy_run ]
 then
 
     # Set up server
+    apt-get -q -y install python-software-properties
+
+    apt-add-repository ppa:phalcon/stable
+
     apt-get update
 
-    apt-get -q -y install vim nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl
+    apt-get -q -y install vim nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl php5-phalcon
+
     apt-get autoremove
 
     mysqladmin -u root password password

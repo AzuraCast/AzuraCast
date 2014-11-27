@@ -11,7 +11,7 @@ then
     # Set up server
     apt-get update
 
-    apt-get -q -y install vim nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl
+    apt-get -q -y install vim git nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl
     apt-get autoremove
 
     mysqladmin -u root password password
@@ -85,12 +85,16 @@ then
 
     # Install Node.js and services
     apt-get -q -y install nodejs npm
+    ln -s /usr/bin/nodejs /usr/bin/node
 
     cd $www_base/live
     npm install --no-bin-links
 
     cp $www_base/util/vagrant_initd /etc/init/pvlnode.conf
     service pvlnode start
+
+    # Bower install.
+    npm install -g bower
 
     # Mark deployment as run.
     touch $app_base/.deploy_run

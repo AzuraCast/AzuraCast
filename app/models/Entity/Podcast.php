@@ -121,21 +121,32 @@ class Podcast extends \DF\Doctrine\Entity
 
         if (!$podcasts)
         {
-            $latest_podcast_episodes = $em->createQuery('SELECT pe, p, s FROM Entity\PodcastEpisode pe LEFT JOIN pe.podcast p LEFT JOIN p.stations s WHERE pe.timestamp > :threshold GROUP BY pe.podcast_id ORDER BY pe.timestamp DESC')
+            $latest_podcast_episodes = $em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold GROUP BY pe.podcast_id ORDER BY pe.timestamp DESC')
                 ->setMaxResults($num_to_fetch)
                 ->setParameter('threshold', strtotime('-3 months'))
                 ->getArrayResult();
 
-            foreach($latest_podcast_episodes as $row)
+            $eps = array();
+            foreach($latest_podcast_episodes as $ep)
             {
-                $pid = $row['podcast_id'];
-
-                $podcasts[$pid] = $row['podcast'];
-
-                $ep = $row;
-                unset($ep['podcast']);
-                $podcasts[$pid]['episodes'] = array($ep);
+                $eps[$ep['podcast_id']] = $ep;
             }
+
+            $podcasts_raw = $em->createQuery('SELECT p, s FROM Entity\Podcast p JOIN p.stations s WHERE p.id IN (:podcasts)')
+                ->setParameter('podcasts', array_keys($eps))
+                ->getArrayResult();
+
+            $podcasts = array();
+            foreach($podcasts_raw as $pc)
+            {
+                $ep = $eps[$pc['id']];
+                $pc['timestamp'] = $ep['timestamp'];
+
+                $podcasts[$pc['id']] = $pc;
+                $podcasts[$pc['id']]['episodes'] = array($ep);
+            }
+
+            \PVL\Utilities::orderBy($podcasts, 'timestamp DESC');
 
             \DF\Cache::save($podcasts, 'homepage_podcasts', array(), 300);
         }

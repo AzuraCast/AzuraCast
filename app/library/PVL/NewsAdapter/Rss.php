@@ -27,6 +27,11 @@ class Rss extends AdapterAbstract
                 $article_num++;
 
                 $guid = $item->guid();
+
+                $title = $item->title();
+
+                if (is_array($title))
+                    $title = $title[0]->nodeValue;
                 
                 // Process categories.
                 $categories_raw = (is_array($item->category)) ? $item->category : array($item->category);
@@ -56,7 +61,7 @@ class Rss extends AdapterAbstract
                 $news_item = array(
                     'guid'          => 'rss_'.md5($guid),
                     'timestamp'     => strtotime($item->pubDate()),
-                    'title'         => $item->title(),
+                    'title'         => $title,
                     'body'          => $description,
                     'web_url'       => $web_url,
                     'author'        => $item->author(),

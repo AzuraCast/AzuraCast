@@ -136,7 +136,7 @@ class Podcast extends \DF\Doctrine\Entity
             }
 
             // Bulk query for all podcasts related to recent episodes.
-            $podcasts_raw = $em->createQuery('SELECT p, s FROM Entity\Podcast p JOIN p.stations s WHERE p.id IN (:podcasts)')
+            $podcasts_raw = $em->createQuery('SELECT p, s FROM Entity\Podcast p LEFT JOIN p.stations s WHERE p.id IN (:podcasts)')
                 ->setParameter('podcasts', array_keys($eps))
                 ->getArrayResult();
 
@@ -151,10 +151,10 @@ class Podcast extends \DF\Doctrine\Entity
                 unset($ep['podcast']);
                 $pc['episodes'] = array($ep);
 
-                $podcasts[$pc['id']] = $pc;
+                $podcasts[] = $pc;
             }
 
-            array_slice($podcasts, 0, $num_to_fetch, true);
+            array_slice($podcasts, 0, $num_to_fetch);
 
             \DF\Cache::save($podcasts, 'homepage_podcasts', array(), 300);
         }

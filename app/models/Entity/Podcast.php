@@ -117,36 +117,44 @@ class Podcast extends \DF\Doctrine\Entity
     {
         $em = self::getEntityManager();
 
-        // $podcasts = \DF\Cache::get('homepage_podcasts');
+        $podcasts = \DF\Cache::get('homepage_podcasts');
 
         if (!$podcasts)
         {
-            $latest_podcast_episodes = $em->createQuery('SELECT pe, MAX(pe.timestamp) FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold GROUP BY pe.podcast_id ORDER BY pe.timestamp DESC')
-                ->setMaxResults($num_to_fetch)
+            // Pull all recent episodes.
+            $latest_podcast_episodes = $em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold ORDER BY pe.timestamp DESC')
                 ->setParameter('threshold', strtotime('-3 months'))
                 ->getArrayResult();
 
             $eps = array();
             foreach($latest_podcast_episodes as $ep)
             {
-                $eps[$ep[0]['podcast_id']] = $ep[0];
+                $pcid = $ep['podcast_id'];
+
+                if (!isset($eps[$pcid]))
+                    $eps[$pcid] = $ep;
             }
 
+            // Bulk query for all podcasts related to recent episodes.
             $podcasts_raw = $em->createQuery('SELECT p, s FROM Entity\Podcast p JOIN p.stations s WHERE p.id IN (:podcasts)')
                 ->setParameter('podcasts', array_keys($eps))
                 ->getArrayResult();
 
-            $podcasts = array();
             foreach($podcasts_raw as $pc)
+                $eps[$pc['id']]['podcast'] = $pc;
+
+            // Reassign together into sensible array.
+            $podcasts = array();
+            foreach($eps as $ep)
             {
-                $ep = $eps[$pc['id']];
-                $pc['timestamp'] = $ep['timestamp'];
+                $pc = $ep['podcast'];
+                unset($ep['podcast']);
+                $pc['episodes'] = array($ep);
 
                 $podcasts[$pc['id']] = $pc;
-                $podcasts[$pc['id']]['episodes'] = array($ep);
             }
 
-            \PVL\Utilities::orderBy($podcasts, 'timestamp DESC');
+            array_slice($podcasts, 0, $num_to_fetch, true);
 
             \DF\Cache::save($podcasts, 'homepage_podcasts', array(), 300);
         }

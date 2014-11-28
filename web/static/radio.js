@@ -7,7 +7,6 @@ var volume = 70;
 var nowplaying_song = '';
 var nowplaying_song_id = '';
 var nowplaying_url = '';
-var original_window_title;
 
 var vote_ratelimit = false;
 
@@ -22,8 +21,6 @@ var jp_is_playing;
 var socket;
 
 $(function() {
-	original_window_title = document.title;
-
 	$('.nowplaying-status').hide();
 
 	$('.station').click(function(e) {
@@ -36,8 +33,6 @@ $(function() {
 			else
 				playStation($(this).attr('id'));
 		}
-
-
 	});
 	
 	$('.station .station-player').click(function(e) {
@@ -314,7 +309,7 @@ function processNowPlaying()
             // Show stream info if non-default.
             if (station.data('defaultstream') != stream_id)
             {
-                station.find('.stream-info').html('<i class="icon-random"></i> '+stream.name).show();
+                station.find('.stream-info').html('<i class="icon-code-fork"></i> '+stream.name).show();
             }
             else
             {
@@ -374,16 +369,12 @@ function processNowPlaying()
                     station.show();
             }
 
-            // Set image, if supplied.
-            if (station.hasClass('playing'))
-            {
-                document.title = '\u25B6 '+station_info.station.name+' - '+stream.current_song.text;
-            }
-
             // Set event data.
+            var event_info;
+
             if (station_info.event.title)
             {
-                var event_info = station_info.event;
+                event_info = station_info.event;
 
                 if (station.is(':visible') && !station.find('.nowplaying-onair').is(':visible') && nowplaying_last_run != 0)
                     notify(station.data('image'), 'Now On Air: '+event_info.title, 'Tune in now on '+station_info.station.name);
@@ -392,7 +383,7 @@ function processNowPlaying()
             }
             else if (station_info.event_upcoming.title)
             {
-                var event_info = station_info.event_upcoming;
+                event_info = station_info.event_upcoming;
 
                 station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;In '+intOrZero(event_info.minutes_until)+' mins: '+event_info.title);
             }
@@ -620,8 +611,6 @@ function stopAllPlayers()
 		$(this).find('img.media-object').attr('src', $(this).data('image'));
 	});
 	*/
-
-	document.title = original_window_title;
 }
 
 function canPlayMp3()

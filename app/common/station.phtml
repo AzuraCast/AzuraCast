@@ -13,7 +13,7 @@
         <div class="show-when-playing station-link buttons btn-toolbar pull-right">
         <? if (count($station['streams']) > 1): ?>
             <div class="btn-group stream-switcher">
-                <a href="#" class="btn btn-small btn-inverse dropdown-toggle" type="button" data-toggle="dropdown" title="Switch Stream"><i class="icon-random"></i></a>
+                <a href="#" class="btn btn-small btn-inverse dropdown-toggle" type="button" data-toggle="dropdown" title="Switch Stream"><i class="icon-code-fork"></i></a>
                 <ul class="dropdown-menu">
                 <? foreach($station['streams'] as $stream): ?>
                     <li rel="<?=$stream['id'] ?>"><a href="#" class="btn-switch-stream"><? if ($stream['is_default']): ?><i class="icon-star"></i> <? endif; ?><?=$stream['name'] ?><span class="nowplaying-stream-listeners"></span></a></li>

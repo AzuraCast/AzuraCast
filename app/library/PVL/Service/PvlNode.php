@@ -37,18 +37,18 @@ class PvlNode
     }
 
     /**
-     * Get the number of active connections on the PVLNode service.
+     * Fetch analytics from the remote service (i.e. active connections, last update)
      *
      * @return int
      * @throws \Zend_Exception
      */
-    public static function getActive()
+    public static function fetch()
     {
         $config = \Zend_Registry::get('config');
         $url = $config->apis->pvlnode_local_url;
 
         // Send standard HTTP GET request.
         $connections_raw = file_get_contents($url);
-        return (int)$connections_raw;
+        return @json_decode($connections_raw, true);
     }
 }

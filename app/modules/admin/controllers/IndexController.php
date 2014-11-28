@@ -97,7 +97,7 @@ class Admin_IndexController extends \PVL\Controller\Action\Admin
             $this->view->sync_times = \PVL\SyncManager::getSyncTimes();
 
         // PVLNode service stats.
-        $this->view->pvlnode_active = \PVL\Service\PvlNode::getActive();
+        $this->view->pvlnode_stats = \PVL\Service\PvlNode::fetch();
     }
 
     public function syncAction()

@@ -74,10 +74,13 @@ if ($skin == "dark")
         <div class="row-fluid">
             <div class="span3">
                 <h4>PVLNode Service</h4>
-                <div>
-                    <big><?=$this->pvlnode_active ?></big><br>
-                    Active Connections
-                </div>
+                <dl>
+                    <dt><?=(int)$this->pvlnode_stats['clients'] ?></dt>
+                    <dd>Active Connections</dd>
+
+                    <dt><?=\DF\Utilities::timeDifferenceText(time(), $this->pvlnode_stats['latest_update']) ?></dt>
+                    <dd>Since Last Update</dd>
+                </dl>
             </div>
         </div>
     </div>

@@ -113,6 +113,21 @@ div.tabbable div.tab-pane {
 	background: #151515;
 }
 
+/**
+ * Homepage
+ */
+
+.rich_header .hero h1,
+.rich_header .hero h2,
+.rich_header .hero h3 {
+
+    color: #DDD;
+
+    text-shadow: 0 0 5px #000,
+    -1px 0 #000, 0 1px #000,
+    1px 0 #000, 0 -1px #000;
+}
+
 /** 
  * Station Player
  */

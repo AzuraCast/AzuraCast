@@ -5,6 +5,22 @@
 	border-bottom: solid 2px #eee;
 }
 
+.rich_header .hero {
+    padding: 20px;
+    text-align: center;
+}
+.rich_header .hero h1,
+.rich_header .hero h2,
+.rich_header .hero h3 {
+    opacity: 0.9;
+    font-weight: bold;
+    color: #222;
+
+    text-shadow: 0 0 5px #FFF,
+        -1px 0 #FFF, 0 1px #FFF,
+        1px 0 #FFF, 0 -1px #FFF;
+}
+
 .rich_header .well {
 	margin-bottom: 0;
 	margin: 10px;

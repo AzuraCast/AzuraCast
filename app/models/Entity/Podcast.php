@@ -117,11 +117,11 @@ class Podcast extends \DF\Doctrine\Entity
     {
         $em = self::getEntityManager();
 
-        $podcasts = \DF\Cache::get('homepage_podcasts');
+        // $podcasts = \DF\Cache::get('homepage_podcasts');
 
         if (!$podcasts)
         {
-            $latest_podcast_episodes = $em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold GROUP BY pe.podcast_id ORDER BY pe.timestamp DESC')
+            $latest_podcast_episodes = $em->createQuery('SELECT pe, MAX(pe.timestamp) FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold GROUP BY pe.podcast_id ORDER BY pe.timestamp DESC')
                 ->setMaxResults($num_to_fetch)
                 ->setParameter('threshold', strtotime('-3 months'))
                 ->getArrayResult();
@@ -129,7 +129,7 @@ class Podcast extends \DF\Doctrine\Entity
             $eps = array();
             foreach($latest_podcast_episodes as $ep)
             {
-                $eps[$ep['podcast_id']] = $ep;
+                $eps[$ep[0]['podcast_id']] = $ep[0];
             }
 
             $podcasts_raw = $em->createQuery('SELECT p, s FROM Entity\Podcast p JOIN p.stations s WHERE p.id IN (:podcasts)')

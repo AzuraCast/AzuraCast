@@ -44,32 +44,40 @@ if ($skin == "dark")
         </div>
     </div>
     <div class="span9">
-        <div class="well">
-            <div id="network_listeners_by_day" style="height: 250px;"></div>
-            <div id="station_listeners_by_day" style="height: 450px;"></div>
-        </div>
-        <div class="well no-margin">
-            <h2>Synchronization Status</h2>
-            <div class="row-fluid">
-            <? foreach($this->sync_times as $sync_key => $sync_info): ?>
-                <div class="span3">
-                    <h4><?=$sync_info['name'] ?></h4>
-                    <p><?=date('F j, Y g:ia', $sync_info['latest']) ?><br><small><?=$sync_info['diff_text'] ?> ago</small></p>
+        <div id="network_listeners_by_day" style="height: 250px;"></div>
+        <div id="station_listeners_by_day" style="height: 450px;"></div>
 
-                    <div class="buttons">
-                        <?=$this->button(array(
-                            'type'      => 'small',
-                            'href'      => $this->routeFromHere(array('action' => 'sync', 'type' => $sync_key)),
-                            'text'      => 'Run Manually',
-                            'target'    => '_blank',
-                        )) ?>
-                    </div>
+        <h2>Synchronization Status</h2>
+        <div class="row-fluid">
+        <? foreach($this->sync_times as $sync_key => $sync_info): ?>
+            <div class="span3">
+                <h4><?=$sync_info['name'] ?></h4>
+                <p><?=date('F j, Y g:ia', $sync_info['latest']) ?><br><small><?=$sync_info['diff_text'] ?> ago</small></p>
 
-                    <p><small>
-                        <?=implode('<br>', $sync_info['contents']) ?>
-                    </small></p>
+                <div class="buttons">
+                    <?=$this->button(array(
+                        'type'      => 'small',
+                        'href'      => $this->routeFromHere(array('action' => 'sync', 'type' => $sync_key)),
+                        'text'      => 'Run Manually',
+                        'target'    => '_blank',
+                    )) ?>
                 </div>
-            <? endforeach; ?>
+
+                <p><small>
+                    <?=implode('<br>', $sync_info['contents']) ?>
+                </small></p>
+            </div>
+        <? endforeach; ?>
+        </div>
+
+        <h2>Real-Time Statistics</h2>
+        <div class="row-fluid">
+            <div class="span3">
+                <h4>PVLNode Service</h4>
+                <div>
+                    <big><?=$this->pvlnode_active ?></big><br>
+                    Active Connections
+                </div>
             </div>
         </div>
     </div>

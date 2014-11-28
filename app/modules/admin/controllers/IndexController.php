@@ -95,6 +95,9 @@ class Admin_IndexController extends \PVL\Controller\Action\Admin
         // Synchronization statuses
         if ($this->acl->isAllowed('administer all'))
             $this->view->sync_times = \PVL\SyncManager::getSyncTimes();
+
+        // PVLNode service stats.
+        $this->view->pvlnode_active = \PVL\Service\PvlNode::getActive();
     }
 
     public function syncAction()

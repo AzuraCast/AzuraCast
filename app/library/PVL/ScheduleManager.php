@@ -17,7 +17,7 @@ class ScheduleManager
         $gclient_app_name = $config->application->name;
 
         if (empty($gclient_api_key))
-            return;
+            return null;
 
         $gclient = new \Google_Client();
         $gclient->setApplicationName($gclient_app_name);
@@ -28,7 +28,7 @@ class ScheduleManager
         // Prevent running repeatedly in too short of a time (avoid API limits).
         $last_run = Settings::getSetting('schedule_manager_last_run', 0);
         if ($last_run > (time() - 300) && !$force_run)
-            return;
+            return null;
 
         $schedule_items = array();
         $schedule_records = array();

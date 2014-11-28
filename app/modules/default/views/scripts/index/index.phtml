@@ -87,7 +87,7 @@ $station_cols = \DF\Utilities::columns($cat['stations'], 3);
 <!-- Show/Video Headers -->
 <div class="row-fluid">
     <div class="span8">
-        <h2><i class="icon-rss"></i> Shows <small>Showing new episodes, <a href="<?=$this->route(array('controller' => 'show')) ?>">view all</a></small></h2>
+        <h2 id="section_shows"><i class="icon-rss"></i> Shows <small>Showing new episodes, <a href="<?=$this->route(array('controller' => 'show')) ?>">view all</a></small></h2>
     </div>
     <div class="span4">
         <h2 id="section_video"><i class="<?=$this->categories['video']['icon'] ?>"></i> Video Streams <small><span id="nowplaying-listeners-video"></span> watching</small></h2>

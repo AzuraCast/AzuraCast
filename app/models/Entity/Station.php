@@ -69,6 +69,17 @@ class Station extends \DF\Doctrine\Entity
     /** @Column(name="genre", type="string", length=50, nullable=true) */
     protected $genre;
 
+    /** @Column(name="country", type="string", length=5, nullable=true) */
+    protected $country;
+
+    public function getCountryName()
+    {
+        if ($this->country)
+            return \PVL\Internationalization::getLanguageName($this->country);
+        else
+            return '';
+    }
+
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
 

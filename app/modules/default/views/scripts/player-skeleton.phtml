@@ -4,6 +4,9 @@ $this->headScript()
     ->appendFile(\DF\Url::content('jplayer/jquery.jplayer.min.js'))
     ->appendFile(\DF\Url::content('radio.js'));
 
+$this->headLink()
+    ->appendStylesheet(\DF\Url::content('vendor/world-flags-sprite/stylesheets/flags16.css'));
+
 // ->appendFile('//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.js');
 // $this->headLink()->appendStylesheet('//cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.css', 'all');
 ?>

@@ -25,6 +25,17 @@ class Podcast extends \DF\Doctrine\Entity
     /** @Column(name="name", type="string", length=150, nullable=true) */
     protected $name;
 
+    /** @Column(name="country", type="string", length=50, nullable=true) */
+    protected $country;
+
+    public function getCountryName()
+    {
+        if ($this->country)
+            return \PVL\Internationalization::getLanguageName($this->country);
+        else
+            return '';
+    }
+
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
 

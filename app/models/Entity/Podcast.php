@@ -113,36 +113,31 @@ class Podcast extends \DF\Doctrine\Entity
      * Static Functions
      */
 
-    public static function fetchLatest()
+    public static function fetchLatest($num_to_fetch = 10)
     {
         $em = self::getEntityManager();
 
-        $podcast_episodes = \DF\Cache::get('homepage_podcast_episodes');
+        $podcasts = \DF\Cache::get('homepage_podcasts');
 
-        if (!$podcast_episodes)
+        if (!$podcasts)
         {
-            $latest_podcast_episodes = $em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold ORDER BY pe.timestamp DESC')
+            $latest_podcast_episodes = $em->createQuery('SELECT pe, p, s FROM Entity\PodcastEpisode pe LEFT JOIN pe.podcast p LEFT JOIN p.stations s WHERE pe.timestamp > :threshold GROUP BY pe.podcast_id ORDER BY pe.timestamp DESC')
+                ->setMaxResults($num_to_fetch)
                 ->setParameter('threshold', strtotime('-3 months'))
                 ->getArrayResult();
 
-            $podcast_episodes = array();
-            foreach($latest_podcast_episodes as $ep)
-                $podcast_episodes[$ep['podcast_id']][] = $ep;
-
-            \DF\Cache::save($podcast_episodes, 'homepage_podcast_episodes', array(), 300);
-        }
-
-        $podcasts = array();
-        foreach($podcast_episodes as $podcast_id => $episodes)
-        {
-            $podcast_record = self::find($podcast_id);
-            if ($podcast_record instanceof self && $podcast_record->is_approved == 1)
+            foreach($latest_podcast_episodes as $row)
             {
-                $podcasts[$podcast_id] = array(
-                    'record' => $podcast_record,
-                    'episodes' => array_slice($episodes, 0, 3),
-                );
+                $pid = $row['podcast_id'];
+
+                $podcasts[$pid] = $row['podcast'];
+
+                $ep = $row;
+                unset($ep['podcast']);
+                $podcasts[$pid]['episodes'] = array($ep);
             }
+
+            \DF\Cache::save($podcasts, 'homepage_podcasts', array(), 300);
         }
 
         return $podcasts;

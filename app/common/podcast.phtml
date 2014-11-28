@@ -37,9 +37,9 @@
                 </h4>
 
                 <?
-                $time_diff = \DF\Utilities::timeDifferenceText(time(), $ep['timestamp']);
+                $time_diff = \DF\Utilities::timeDifferenceText(time(), $ep['timestamp'], 0);
                 ?>
-                <small><?=$time_diff?> ago:</small><br>
+                <small><span title="<?=date('l, F j, Y g:ia', $ep['timestamp']) ?>"><?=$time_diff?> ago</span>:</small><br>
                 <a href="<?=$ep['web_url'] ?>" target="_blank"><b><?=$ep['title'] ?></b></a>
             </div>
         </div>

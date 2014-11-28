@@ -146,7 +146,11 @@ $this->render_mode = 'homepage';
                     </div>
                     <div class="media-body">
                         <div class="station-info">
-                            <h4><?=$podcast->name ?> <a href="<?=$this->routeFromHere(array('controller' => 'show', 'action' => 'view', 'id' => $podcast->id)) ?>" title="Click for more information."><i class="icon-info-sign"></i> </a><br>
+                            <h4>
+                            <? if (!empty($podcast['country'])): ?>
+                                <span class="f16"><span class="flag <?=strtolower($podcast['country']) ?>" title="<?=\PVL\Internationalization::getCountryName($podcast['country']) ?>"></span></span>
+                            <? endif; ?>
+                                <?=$podcast->name ?> <a href="<?=$this->routeFromHere(array('controller' => 'show', 'action' => 'view', 'id' => $podcast->id)) ?>" title="Click for more information."><i class="icon-info-sign"></i> </a><br>
                                 <span class="block genre-info">
                                     <?=$podcast->description ?>
                                 </span>

@@ -16,7 +16,11 @@
         </div>
         <div class="media-body">
             <div class="station-info">
-                <h4><?=$podcast->name ?><br>
+                <h4>
+                <? if (!empty($podcast['country'])): ?>
+                    <span class="f16"><span class="flag <?=strtolower($podcast['country']) ?>" title="<?=\PVL\Internationalization::getCountryName($podcast['country']) ?>"></span></span>
+                <? endif; ?>
+                    <?=$podcast->name ?><br>
                     <span class="genre-info"><small>
                         <?=$podcast->description ?>
                     </small></span>

@@ -54,7 +54,7 @@
                 <!-- Station Header -->
                 <h4>
                 <? if (!empty($station['country'])): ?>
-                    <span class="f16"><span class="flag <?=strtolower($station['country']) ?>" title="<?=\PVL\Internationalization::getCountryName($station['country']) ?>">&nbsp;</span></span>
+                    <span class="f16"><span class="flag <?=strtolower($station['country']) ?>" title="<?=\PVL\Internationalization::getCountryName($station['country']) ?>"></span></span>
                 <? endif; ?>
                 <? if ($station['nickname']): ?>
                     <?=$station['nickname'] ?> 

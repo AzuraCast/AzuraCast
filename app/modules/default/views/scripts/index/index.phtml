@@ -20,14 +20,7 @@ $this->render_mode = 'homepage';
                 </div>
             </div>
         </div>
-    <? else: ?>
-        <div class="hero">
-            <h1>Your Home for Pony Media</h1>
-            <h2>Ponyville Live! is a network of <a href="#section_radio">radio stations</a>, <a href="#section_video">video streams</a>, and <a href="#section_shows">shows</a>.</h2>
-        </div>
-    <? endif; ?>
-
-    <? /* elseif (count($this->network_news) > 0): ?>
+    <? elseif (count($this->network_news) > 0): ?>
         <div class="well carousel slide" id="rotator" data-interval="5000">     
             <ol class="carousel-indicators">
             <? for($i = 0; $i < count($this->network_news); $i++): ?>
@@ -51,7 +44,47 @@ $this->render_mode = 'homepage';
             <a class="carousel-control left" href="#rotator" data-slide="prev">&lsaquo;</a>
             <a class="carousel-control right" href="#rotator" data-slide="next">&rsaquo;</a>
         </div>
-    <? endif; */ ?>
+    <? endif; ?>
+    </div>
+</div>
+<div class="hero">
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span6 hero-text">
+                <h4>Your Home for Pony Media</h4>
+                <p><a href="<?=$this->route(array('controller' => 'about')) ?>">Ponyville Live!</a> is a network of <a href="#section_radio">radio stations</a>, <a href="#section_video">video streams</a>, and <a href="#section_shows">shows</a>.</p>
+            </div>
+            <div class="span3 hero-apps">
+                <h5>Take Ponyville Live! With You</h5>
+                <div class="btn-group">
+                    <?=$this->button(array(
+                        'type'      => 'link',
+                        'icon'      => 'icon-cloud-download',
+                        'text'      => 'Plugins &amp; Apps',
+                        'href'      => $this->route(array('action' => 'app')),
+                    )) ?>
+                    <?=$this->button(array(
+                        'type'      => 'link',
+                        'icon'      => 'icon-mobile-phone',
+                        'text'      => 'PVL! Mobile',
+                        'href'      => 'http://m.pvlive.me/',
+                    )) ?>
+                </div>
+            </div>
+            <div class="span3 hero-social">
+                <h5>Ponyville Live! on the Web</h5>
+
+                <div>
+                    <a href="https://www.youtube.com/ponyvilleliveglobal" target="_blank"><img src="<?=\DF\Url::content('social/youtube_32.png') ?>" alt="YouTube"></a>
+                    <a href="https://twitter.com/PonyvilleLive" target="_blank"><img src="<?=\DF\Url::content('social/twitter_32.png') ?>" alt="Twitter"></a>
+                    <a href="http://news.ponyvillelive.com/" target="_blank"><img src="<?=\DF\Url::content('social/tumblr_32.png') ?>" alt="Tumblr"></a>
+                    <a href="https://www.facebook.com/pages/Ponyville-LIVE/517435684948331" target="_blank"><img src="<?=\DF\Url::content('social/facebook_32.png') ?>" alt="Facebook"></a>
+                    <a href="http://steamcommunity.com/groups/ponyvillelive" target="_blank"><img src="<?=\DF\Url::content('social/steam_32.png') ?>" alt="Steam"></a>
+                    <a href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" target="_blank"><img src="<?=\DF\Url::content('social/google_plus_32.png') ?>" alt="Google Plus"></a>
+                    <a href="<?=$this->route(array('controller' => 'show', 'action' => 'feed')) ?>" target="_blank"><img src="<?=\DF\Url::content('social/rss_32.png') ?>" alt="RSS Feed"></a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <? $this->placeholder('content_top')->captureEnd(); ?>
@@ -61,7 +94,7 @@ $cat = $this->categories['audio'];
 $station_cols = \DF\Utilities::columns($cat['stations'], 3);
 ?>
 
-<h2 id="section_radio"><i class="<?=$cat['icon'] ?>"></i> Pony Radio Stations <small><span id="nowplaying-listeners-audio"></span> listening</small></h2>
+<h2 id="section_radio"><i class="<?=$cat['icon'] ?>"></i> Pony Radio Stations <small><span id="nowplaying-listeners-audio"></span></small></h2>
 
 <div class="row-fluid">
     <div class="span4">
@@ -90,7 +123,7 @@ $station_cols = \DF\Utilities::columns($cat['stations'], 3);
         <h2 id="section_shows"><i class="icon-rss"></i> Shows <small>Showing new episodes, <a href="<?=$this->route(array('controller' => 'show')) ?>">view all</a></small></h2>
     </div>
     <div class="span4">
-        <h2 id="section_video"><i class="<?=$this->categories['video']['icon'] ?>"></i> Video Streams <small><span id="nowplaying-listeners-video"></span> watching</small></h2>
+        <h2 id="section_video"><i class="<?=$this->categories['video']['icon'] ?>"></i> Video Streams <small><span id="nowplaying-listeners-video"></span></small></h2>
     </div>
 </div>
 
@@ -123,30 +156,11 @@ $podcast_cols = \DF\Utilities::columns($podcasts, 2, true);
 </div>
 
 <?
-/*
 $tz_info = \PVL\Timezone::getInfo();
 ?>
-<div class="buttons clearfix pull-right">
-    <?=$this->button(array(
-        'type'      => 'link',
-        'href'      => $this->route(array('controller' => 'schedule')),
-        'icon'      => 'icon-calendar',
-        'text'      => 'See Full Schedules',
-    )) ?>
-</div>
+<h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->route(array('controller' => 'profile', 'action' => 'timezone')) ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a>, see <a href="<?=$this->route(array('controller' => 'schedule')) ?>">entire schedule</a></small></h2>
 
-<h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->route(array('controller' => 'profile', 'action' => 'timezone')) ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a></small></h2>
-
-<div class="row-fluid">
-    <div class="span9">
-        <?=$this->renderHere('schedule') ?>
-    </div>
-    <div class="span3">
-
-    </div>
-</div>
-*/
-?>
+<?=$this->renderHere('schedule') ?>
 
 <? /*
 <h2 id="section_pvl"><i class="icon-group"></i> The Ponyville Live! Network</h2>

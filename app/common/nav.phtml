@@ -13,8 +13,9 @@ $podcasts = \Entity\Podcast::fetchArray('name');
             <li><a href="<?=$this->route(array('controller' => 'convention')) ?>"><i class="icon-group"></i> Pony Conventions</a></li>
             <li><a href="<?=$this->route(array('controller' => 'schedule')) ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
             <li class="divider"></li>
+            <li><a href="http://m.pvlive.me/"><i class="icon-mobile-phone"></i> PVL! Mobile</a></li>
             <li><a href="<?=$this->route(array('action' => 'app')) ?>"><i class="icon-cloud-download"></i> Plugins &amp; Apps</a></li>
-            <li><a href="http://docs.ponyvillelive.apiary.io/" target="_blank"><i class="icon-cog"></i> PVL Data API</a></li>
+            <li><a href="http://docs.ponyvillelive.apiary.io/" target="_blank"><i class="icon-cog"></i> PVL! Data API</a></li>
             <li class="divider"></li>
             <li><a href="<?=$this->route(array('action' => 'donate')) ?>"><i class="icon-money"></i> Support Ponyville Live!</a></li>
         </ul>

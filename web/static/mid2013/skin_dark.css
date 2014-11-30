@@ -6,7 +6,8 @@ html.theme_dark body {
 	background-color: #151515;
 }
 
-html.theme_dark .header {
+html.theme_dark .header,
+html.theme_dark .hero {
 	border-bottom: solid 2px #333;
 }
 
@@ -113,32 +114,12 @@ div.tabbable div.tab-pane {
 	background: #151515;
 }
 
-/**
- * Homepage
- */
-
-.rich_header .hero h1,
-.rich_header .hero h2,
-.rich_header .hero h3 {
-
-    color: #DDD;
-
-    text-shadow: 0 0 5px #000,
-    -1px 0 #000, 0 1px #000,
-    1px 0 #000, 0 -1px #000;
-}
-
 /** 
  * Station Player
  */
 
-.station img,
-.podcast img {
-	background: #151515;
-}
-
 .station.playing {
-	background: #151515;
+	background: #222;
 }
 
 .station.offline,

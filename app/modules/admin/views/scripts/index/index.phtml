@@ -48,39 +48,43 @@ if ($skin == "dark")
         <div id="station_listeners_by_day" style="height: 450px;"></div>
 
         <h2>Synchronization Status</h2>
-        <div class="row-fluid">
-        <? foreach($this->sync_times as $sync_key => $sync_info): ?>
-            <div class="span3">
-                <h4><?=$sync_info['name'] ?></h4>
-                <p><?=date('F j, Y g:ia', $sync_info['latest']) ?><br><small><?=$sync_info['diff_text'] ?> ago</small></p>
+        <div class="well">
+            <div class="row-fluid">
+            <? foreach($this->sync_times as $sync_key => $sync_info): ?>
+                <div class="span3">
+                    <h4><?=$sync_info['name'] ?></h4>
+                    <p><?=date('F j, Y g:ia', $sync_info['latest']) ?><br><small><?=$sync_info['diff_text'] ?> ago</small></p>
 
-                <div class="buttons">
-                    <?=$this->button(array(
-                        'type'      => 'small',
-                        'href'      => $this->routeFromHere(array('action' => 'sync', 'type' => $sync_key)),
-                        'text'      => 'Run Manually',
-                        'target'    => '_blank',
-                    )) ?>
+                    <div class="buttons">
+                        <?=$this->button(array(
+                            'type'      => 'small',
+                            'href'      => $this->routeFromHere(array('action' => 'sync', 'type' => $sync_key)),
+                            'text'      => 'Run Manually',
+                            'target'    => '_blank',
+                        )) ?>
+                    </div>
+
+                    <p><small>
+                        <?=implode('<br>', $sync_info['contents']) ?>
+                    </small></p>
                 </div>
-
-                <p><small>
-                    <?=implode('<br>', $sync_info['contents']) ?>
-                </small></p>
+            <? endforeach; ?>
             </div>
-        <? endforeach; ?>
         </div>
 
         <h2>Real-Time Statistics</h2>
-        <div class="row-fluid">
-            <div class="span3">
-                <h4>PVLNode Service</h4>
-                <dl>
-                    <dt><?=(int)$this->pvlnode_stats['clients'] ?></dt>
-                    <dd>Active Connections</dd>
+        <div class="well">
+            <div class="row-fluid">
+                <div class="span3">
+                    <h4>PVLNode Service</h4>
+                    <dl>
+                        <dt><?=(int)$this->pvlnode_stats['clients'] ?></dt>
+                        <dd>Active Connections</dd>
 
-                    <dt><?=\DF\Utilities::timeDifferenceText(time(), $this->pvlnode_stats['latest_update']) ?></dt>
-                    <dd>Since Last Update</dd>
-                </dl>
+                        <dt><?=\DF\Utilities::timeDifferenceText(time(), $this->pvlnode_stats['latest_update']) ?></dt>
+                        <dd>Since Last Update</dd>
+                    </dl>
+                </div>
             </div>
         </div>
     </div>

@@ -1,17 +1,40 @@
 .rich_header {
 	background: url('headerbg.jpg') center center no-repeat;
-	padding: 10px 0;
-
 	border-bottom: solid 2px #eee;
 }
-
-.rich_header .hero {
-    padding: 20px;
-    text-align: center;
+.rich_header .container {
+    padding: 10px 0;
 }
-.rich_header .hero h1,
-.rich_header .hero h2,
-.rich_header .hero h3 {
+
+.hero {
+    background: rgba(0, 0, 0, 0.05);
+    border-bottom: solid 2px #eee;
+}
+.hero .hero-text {
+    padding: 15px 10px;
+}
+.hero h4,
+.hero p{
+    margin: 0;
+    padding: 0;
+}
+.hero h5 {
+    font-size: 13px;
+    color: #999;
+    margin: 0;
+    padding: 0 0 5px 0;
+}
+
+.hero .hero-apps,
+.hero .hero-social {
+    padding: 5px 10px;
+    text-align: right;
+}
+
+/*
+.hero h1,
+.hero h2,
+.hero h3 {
     opacity: 0.9;
     font-weight: bold;
     color: #222;
@@ -20,6 +43,7 @@
         -1px 0 #FFF, 0 1px #FFF,
         1px 0 #FFF, 0 -1px #FFF;
 }
+*/
 
 .rich_header .well {
 	margin-bottom: 0;

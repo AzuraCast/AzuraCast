@@ -12,8 +12,6 @@ var vote_ratelimit = false;
 
 var nowplaying_cache;
 var nowplaying_last_run = 0;
-var nowplaying_timeout;
-var nowplaying_interval;
 
 var is_playing;
 var jp_is_playing;
@@ -227,48 +225,7 @@ $(function() {
         nowplaying_cache = np_data;
         processNowPlaying();
     });
-
-    /*
-    checkNowPlaying();
-    nowplaying_interval = setInterval('verifyNowPlaying()', 30000);
-    */
 });
-
-// Ensure now-playing is being checked, in spite of any interruptions.
-function verifyNowPlaying()
-{
-    /*
-	var current_timestamp = getUnixTimestamp();
-	if (current_timestamp - nowplaying_last_run > 25)
-	{
-		checkNowPlaying();
-	}
-	*/
-}
-
-function checkNowPlaying(force_update)
-{
-    /*
-	force_update = (typeof force_update !== 'undefined') ? force_update : false;
-
-	// Only run now-playing once every 10 seconds max.
-	var current_timestamp = getUnixTimestamp();
-	if (current_timestamp - nowplaying_last_run < 10 && !force_update)
-		return;
-
-	jQuery.ajax({
-		cache: false,
-		url: DF_BaseUrl+'/api/nowplaying/index/client/pvlwebapp',
-		dataType: 'json'
-	}).done(function(data) {
-        nowplaying_cache = data.result;
-        processNowPlaying();
-
-        nowplaying_last_run = getUnixTimestamp();
-		nowplaying_timeout = setTimeout('checkNowPlaying()', 20000);
-	});
-	*/
-}
 
 function processNowPlaying()
 {
@@ -511,17 +468,10 @@ function playStation(id)
 
 				station.addClass('playing');
 
-				// station.find('i.current-status').removeClass('icon-stop icon-play').addClass('icon-stop');
-				// station.find('.station-play-button').html('<i class="icon-pause"></i>');
-
 				$('#tunein_player').data('current_station', station.data('id'));
-
-				// Trigger an immediate now-playing check.
-				// checkNowPlaying(true);
 			}
 			
 			// Log in Google Analytics
-			// _gaq.push(['_trackEvent', 'Station', 'Play', station.data('name') ]);
 			ga('send', 'event', 'Station', 'Play', station.data('name'));
 		}
 		else
@@ -593,9 +543,6 @@ function stopAllPlayers()
 	clearInterval(check_interval);
 	is_playing = false;
 
-	// $('i.current-status').removeClass('icon-stop icon-play').addClass('icon-play');
-	// $('.nowplaying-status').hide();
-
 	$('.station .station-player-container').empty();
 	$('.station-history').hide();
     $('.video-stream-player').hide();
@@ -603,14 +550,6 @@ function stopAllPlayers()
 	$('.station').removeClass('playing');
 
 	$('#tunein_player').removeData('current_station');
-
-	/*
-	// Reset now-playing images.
-	$('.station').each(function() {
-		$(this).find('.station-play-button').html('<i class="icon-play"></i>');
-		$(this).find('img.media-object').attr('src', $(this).data('image'));
-	});
-	*/
 }
 
 function canPlayMp3()
@@ -637,10 +576,6 @@ function isSteam() {
 }
 
 function playInPopUp(station_id) {
-	/*
-	orig_url = "<?=$this->route(array('action' => 'tunein', 'origin' => 'home')) ?>";
-	*/
-
 	var current_station = $('#tunein_player').data('current_station');
 
 	if (station_id == 'current')
@@ -724,7 +659,7 @@ function addParameter(url, parameterName, parameterValue, atStart)
         newQueryString += parameterName + "=" + (parameterValue?parameterValue:'');
     }
     return urlParts[0] + newQueryString + urlhash;
-};
+}
 
 function getUnixTimestamp()
 {

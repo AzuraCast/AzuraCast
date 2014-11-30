@@ -52,7 +52,7 @@ class PodcastEpisode extends \DF\Doctrine\Entity
 
     public static function api($row)
     {
-        if ($row instanceof Self)
+        if ($row instanceof self)
             $row = $row->toArray();
 
         unset($row['podcast_id']);

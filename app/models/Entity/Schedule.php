@@ -217,6 +217,9 @@ class Schedule extends \DF\Doctrine\Entity
         if (empty($row))
             return array();
 
+        if ($row instanceof self)
+            $row = $row->toArray();
+
         // Add station shortcode.
         if (isset($row['station']))
         {

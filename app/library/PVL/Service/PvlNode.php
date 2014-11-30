@@ -26,9 +26,7 @@ class PvlNode
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
         ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
-
-        var_dump(curl_error($ch));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($ch);
         curl_close($ch);

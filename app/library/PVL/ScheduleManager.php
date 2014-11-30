@@ -126,7 +126,7 @@ class ScheduleManager
                         $web_url = $urls[0];
                 }
 
-                $guid = md5($event_orig->id);
+                $guid = md5(implode('|', array($event_orig->id, $start_time, $end_time, $title, $location)));
 
                 $schedule_record = array(
                     'guid'      => $guid,
@@ -141,7 +141,7 @@ class ScheduleManager
                     'web_url'   => $web_url,
                 );
 
-                \DF\Utilities::print_r($schedule_record);
+                \PVL\Debug::print_r($schedule_record);
 
                 $schedule_records[$item['station_id']][$guid] = $schedule_record;
             }

@@ -4,17 +4,18 @@
  */
 
 var volume = 70;
-var nowplaying_song = '';
-var nowplaying_song_id = '';
-var nowplaying_url = '';
+var nowplaying_song,
+    nowplaying_song_id,
+    nowplaying_url,
+    nowplaying_station;
 
 var vote_ratelimit = false;
 
-var nowplaying_cache;
-var nowplaying_last_run = 0;
+var nowplaying_cache,
+    nowplaying_last_run = 0;
 
-var is_playing;
-var jp_is_playing;
+var is_playing,
+    jp_is_playing;
 
 var socket;
 
@@ -194,9 +195,6 @@ $(function() {
         nowplaying_song_id = null;
         nowplaying_song = null;
 
-        // Force a reload of the "now playing" data.
-        processNowPlaying();
-
         // Play the new stream URL.
         playStation(station.attr('id'));
 
@@ -214,6 +212,8 @@ $(function() {
         });
     });
 
+    /* Websocket Interaction */
+
     socket = io(pvlnode_remote_url, {path: pvlnode_remote_path});
 
     socket.on('connect', function(){});
@@ -224,6 +224,43 @@ $(function() {
 
         nowplaying_cache = np_data;
         processNowPlaying();
+    });
+
+    socket.on('schedule.event_upcoming', function(e) {
+        console.log(e);
+
+        var station_name = e.station.name;
+        var station_image = e.station.image_url;
+        var station_id = 'station_'+ e.station.shortcode;
+
+        var event_name = e.event.title;
+        var event_url = e.event.web_url;
+
+        notify(station_image, event_name, 'Coming up on '+station_name+'\nClick to tune in!', {
+            tag: 'event_upcoming',
+            timeout: 15,
+            notifyClick: function() {
+                playStation(station_id);
+            }
+        });
+    });
+
+    socket.on('podcast.new_episode', function(e) {
+        console.log(e);
+
+        var podcast_name = e.podcast.name;
+        var podcast_image = e.podcast.image_url;
+
+        var episode_name = e.episode.title;
+        var episode_url = e.episode.web_url;
+
+        notify(podcast_image, podcast_name, 'New episode available:\n'+episode_name+'\nClick to view!', {
+            tag: 'podcast_episode',
+            timeout: 15,
+            notifyClick: function() {
+                window.open(episode_url);
+            }
+        });
     });
 });
 
@@ -276,8 +313,9 @@ function processNowPlaying()
             // Trigger notification of song change.
             if (station.hasClass('playing'))
             {
-                if (stream.current_song.id != nowplaying_song_id)
-                    notify(station.data('image'), station_info.station.name, stream.current_song.text);
+                if (stream.current_song.id != nowplaying_song_id) {
+                    notify(station.data('image'), station_info.station.name, stream.current_song.text, { tag: 'nowplaying' });
+                }
 
                 nowplaying_song = stream.current_song.text;
                 nowplaying_song_id = stream.current_song.id;
@@ -332,16 +370,11 @@ function processNowPlaying()
             if (station_info.event.title)
             {
                 event_info = station_info.event;
-
-                if (station.is(':visible') && !station.find('.nowplaying-onair').is(':visible') && nowplaying_last_run != 0)
-                    notify(station.data('image'), 'Now On Air: '+event_info.title, 'Tune in now on '+station_info.station.name);
-
                 station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;On Air: '+event_info.title);
             }
             else if (station_info.event_upcoming.title)
             {
                 event_info = station_info.event_upcoming;
-
                 station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;In '+intOrZero(event_info.minutes_until)+' mins: '+event_info.title);
             }
             else
@@ -467,8 +500,12 @@ function playStation(id)
 				});
 
 				station.addClass('playing');
+                nowplaying_station = id;
 
-				$('#tunein_player').data('current_station', station.data('id'));
+                $('#tunein_player').data('current_station', station.data('id'));
+
+                // Force a reload of the "now playing" data.
+                processNowPlaying();
 			}
 			
 			// Log in Google Analytics
@@ -540,8 +577,8 @@ function stopAllPlayers()
 		catch(e) {}		
 	}
 
-	clearInterval(check_interval);
 	is_playing = false;
+    nowplaying_station = null;
 
 	$('.station .station-player-container').empty();
 	$('.station-history').hide();
@@ -592,7 +629,6 @@ function playInPopUp(station_id) {
 
 	window.open(orig_url, 'pvl_player', 'height=600,width=400,status=yes,scrollbars=yes', true);
 }
-
 
 /* Station schedule popup. */
 function showStationSchedule(station_id)
@@ -666,14 +702,32 @@ function getUnixTimestamp()
 	return Math.round((new Date()).getTime() / 1000);
 }
 
-function notify(image, title, description)
+function notify(image, title, description, opts)
 {
-    var notice = new Notify(title, {
-        'tag': 'pvl_'+nowplaying_song_id,
-        'icon': image,
-        'body': description,
-        'timeout': 5
-    });
+    // Defaults (including title/desc parameters).
+    var options = {
+        tag: 'pvlnotify',
+        icon: image,
+        body: description,
+        timeout: 5,
+        notifyClose: null,
+        notifyClick: null
+    };
 
-    notice.show();
+    // Merge options.
+    for (var i in opts) {
+        if (opts.hasOwnProperty(i)) {
+            options[i] = opts[i];
+        }
+    }
+
+    // Always request permission, skip to granted if already done.
+    Notify.requestPermission(function() {
+
+        console.log([title, options]);
+
+        var notice = new Notify(title, options);
+        notice.show();
+
+    });
 }

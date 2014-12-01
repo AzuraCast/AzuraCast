@@ -1,50 +1,19 @@
 <?php
 $this->headTitle('Shows Directory');
+
+$this->headLink()
+    ->appendStylesheet(\DF\Url::content('vendor/world-flags-sprite/stylesheets/flags16.css'));
+
+$cols = \DF\Utilities::columns($this->podcasts, 2);
 ?>
 
-<table class="table">
-    <colgroup>
-        <col width="8%">
-        <col width="32%">
-        <col width="60%">
-    </colgroup>
-    <thead>
-        <tr>
-            <th>&nbsp;</th>
-            <th>Show</th>
-            <th>Newest Episodes</th>
-        </tr>
-    </thead>
-    <tbody>
-    <? foreach($this->podcasts as $row): ?>
-        <tr>
-            <td class="center"><img src="<?=\DF\Url::content($row['image_url']) ?>"></td>
-            <td>
-                <h4><a href="<?=$this->routeFromHere(array('action' => 'view', 'id' => $row['id'])) ?>"><?=$row['name'] ?></a></h4>
-                <p><?=$row['description'] ?></p>
-            </td>
-            <td>
-                <?
-                $episodes = array_slice((array)$row['episodes'], 0, 3);
-                ?>
-                <table class="datatable table-striped table-bordered table-nopadding" style="max-width: 800px;">
-                    <colgroup>
-                        <col width="25%">
-                        <col width="75%">
-                    </colgroup>
-                    <tbody>
-                    <? foreach($episodes as $ep): ?>
-                        <tr class="input">
-                            <td><?=date('F j, Y g:ia', $ep['timestamp']) ?></td>
-                            <td><b><a href="<?=$ep['web_url'] ?>" target="_blank"><?=$ep['title'] ?></a></b></td>
-                        </tr>
-                    <? endforeach; ?>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-    <? endforeach; ?>
-    </tbody>
-</table>
-
-
+<div class="row-fluid">
+<? foreach($cols as $col): ?>
+    <div class="span6">
+        <?
+        $this->podcasts = $col;
+        echo $this->renderCommon('podcast');
+        ?>
+    </div>
+<? endforeach; ?>
+</div>

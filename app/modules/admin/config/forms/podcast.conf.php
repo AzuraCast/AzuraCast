@@ -20,6 +20,12 @@ return array(
                     'class' => 'full-width half-height',
                 )),
 
+                'country' => array('select', array(
+                    'label' => 'Country of Broadcast',
+                    'multiOptions' => \PVL\Internationalization::getCountryLookup(),
+                    'default' => '',
+                )),
+
                 'web_url' => array('text', array(
                     'label' => 'Web Site Address',
                     'class' => 'half-width',

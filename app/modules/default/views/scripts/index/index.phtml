@@ -11,12 +11,12 @@ $this->render_mode = 'homepage';
         <div class="well">
             <div class="special_event">
                 <div class="row-fluid">
-                <? if (empty($this->special_chat_embed)): ?>
-                    <div class="span12"><?=$this->special_event_embed ?></div>
-                <? else: ?>
-                    <div class="span7"><?=$this->special_event_embed ?></div>
-                    <div class="span5"><?=$this->renderHere('chat', TRUE) ?></div>
-                <? endif; ?>
+                    <? if (empty($this->special_chat_embed)): ?>
+                        <div class="span12"><?=$this->special_event_embed ?></div>
+                    <? else: ?>
+                        <div class="span7"><?=$this->special_event_embed ?></div>
+                        <div class="span5"><?=$this->renderHere('chat', TRUE) ?></div>
+                    <? endif; ?>
                 </div>
             </div>
         </div>
@@ -47,207 +47,183 @@ $this->render_mode = 'homepage';
     <? endif; ?>
     </div>
 </div>
-<? $this->placeholder('content_top')->captureEnd(); ?>
-
-<div class="row-fluid">
-    <div class="span8">
-        <?
-        $cat = $this->categories['audio'];
-        $station_cols = \DF\Utilities::columns($cat['stations'], 2);
-        ?>
-        <h2><i class="<?=$cat['icon'] ?>"></i> <?=$cat['name'] ?> <small><span id="nowplaying-listeners-audio"></span></small></h2>
-
-        <div class="well">
-            <div class="row-fluid">
-                <div class="span6">
-                    <?
-                    $this->stations = $station_cols[0];
-                    echo $this->renderCommon('station');
-                    ?>
+<div class="hero">
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span6 hero-text">
+                <h4>Your Home for Pony Media</h4>
+                <p><a href="<?=$this->route(array('controller' => 'about')) ?>">Ponyville Live!</a> is a network of <a href="#section_radio">radio stations</a>, <a href="#section_video">video streams</a>, and <a href="#section_shows">shows</a>.</p>
+            </div>
+            <div class="span3 hero-apps">
+                <h5>Take Ponyville Live! With You</h5>
+                <div class="btn-group">
+                    <?=$this->button(array(
+                        'type'      => 'link',
+                        'icon'      => 'icon-cloud-download',
+                        'text'      => 'Apps &amp; Players',
+                        'href'      => $this->route(array('action' => 'app')),
+                    )) ?>
+                    <?=$this->button(array(
+                        'type'      => 'link',
+                        'icon'      => 'icon-mobile-phone',
+                        'text'      => 'PVL! Mobile',
+                        'href'      => 'http://m.pvlive.me/',
+                    )) ?>
                 </div>
-                <div class="span6">
-                    <?
-                    $this->stations = $station_cols[1];
-                    echo $this->renderCommon('station');
-                    ?>
+            </div>
+            <div class="span3 hero-social">
+                <h5>Ponyville Live! on the Web</h5>
+
+                <div>
+                    <a href="https://www.youtube.com/ponyvilleliveglobal" target="_blank"><img src="<?=\DF\Url::content('social/youtube_32.png') ?>" alt="YouTube"></a>
+                    <a href="https://twitter.com/PonyvilleLive" target="_blank"><img src="<?=\DF\Url::content('social/twitter_32.png') ?>" alt="Twitter"></a>
+                    <a href="http://news.ponyvillelive.com/" target="_blank"><img src="<?=\DF\Url::content('social/tumblr_32.png') ?>" alt="Tumblr"></a>
+                    <a href="https://www.facebook.com/pages/Ponyville-LIVE/517435684948331" target="_blank"><img src="<?=\DF\Url::content('social/facebook_32.png') ?>" alt="Facebook"></a>
+                    <a href="http://steamcommunity.com/groups/ponyvillelive" target="_blank"><img src="<?=\DF\Url::content('social/steam_32.png') ?>" alt="Steam"></a>
+                    <a href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" target="_blank"><img src="<?=\DF\Url::content('social/google_plus_32.png') ?>" alt="Google Plus"></a>
+                    <a href="<?=$this->route(array('controller' => 'show', 'action' => 'feed')) ?>" target="_blank"><img src="<?=\DF\Url::content('social/rss_32.png') ?>" alt="RSS Feed"></a>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<? $this->placeholder('content_top')->captureEnd(); ?>
+
+<?
+$cat = $this->categories['audio'];
+$station_cols = \DF\Utilities::columns($cat['stations'], 3);
+?>
+
+<h2 id="section_radio"><i class="<?=$cat['icon'] ?>"></i> Pony Radio Stations <small><span id="nowplaying-listeners-audio"></span></small></h2>
+
+<div class="row-fluid">
+    <div class="span4">
+        <?
+        $this->stations = $station_cols[0];
+        echo $this->renderCommon('station');
+        ?>
+    </div>
+    <div class="span4">
+        <?
+        $this->stations = $station_cols[1];
+        echo $this->renderCommon('station');
+        ?>
+    </div>
+    <div class="span4">
+        <?
+        $this->stations = $station_cols[2];
+        echo $this->renderCommon('station');
+        ?>
+    </div>
+</div>
+
+<!-- Show/Video Headers -->
+<div class="row-fluid">
+    <div class="span8">
+        <h2 id="section_shows"><i class="icon-rss"></i> Shows <small>Showing new episodes, <a href="<?=$this->route(array('controller' => 'show')) ?>">view all</a></small></h2>
+    </div>
+    <div class="span4">
+        <h2 id="section_video"><i class="<?=$this->categories['video']['icon'] ?>"></i> Video Streams <small><span id="nowplaying-listeners-video"></span></small></h2>
+    </div>
+</div>
+
+<!-- Show/Video Content -->
+<?
+$podcasts = array_slice($this->podcasts, 0, 8);
+$podcast_cols = \DF\Utilities::columns($podcasts, 2, true);
+?>
+
+<div class="row-fluid">
+    <div class="span4">
+        <?
+        $this->podcasts = $podcast_cols[0];
+        echo $this->renderCommon('podcast');
+        ?>
+    </div>
+    <div class="span4">
+        <?
+        $this->podcasts = $podcast_cols[1];
+        echo $this->renderCommon('podcast');
+        ?>
     </div>
     <div class="span4">
         <?
         $cat = $this->categories['video'];
+        $this->stations = $cat['stations'];
+        echo $this->renderCommon('station');
         ?>
-        <h2><i class="<?=$cat['icon'] ?>"></i> <?=$cat['name'] ?> <small><span id="nowplaying-listeners-video"></span></small></h2>
-
-        <div class="well">
-            <?
-            $this->stations = $cat['stations'];
-            echo $this->renderCommon('station');
-            ?>
-        </div>
-
-        <div id="secondary-rotator">
-            <div class="well carousel slide"  data-interval="5000">
-                <div class="carousel-inner">
-                <? foreach($this->rotators as $i => $record): ?>
-                    <div class="item <? if ($i == 0): ?>active<? endif; ?>">
-                        <a href="<?=$record['web_url'] ?>" target="_blank"><img src="<?=\DF\Url::content($record['image_url']) ?>" title="<?=$record['description'] ?>"></a>
-                    </div>
-                <? endforeach; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="buttons clearfix pull-right">
-    <?=$this->button(array(
-        'type'      => 'link',
-        'icon'      => 'icon-rss',
-        'target'    => '_blank',
-        'text'      => 'RSS Feed',
-        'href'      => $this->route(array('controller' => 'show', 'action' => 'feed')),
-    )) ?>
-    <?=$this->button(array(
-        'type'      => 'link',
-        'icon'      => 'icon-book',
-        'text'      => 'Show Directory',
-        'href'      => $this->route(array('controller' => 'show')),
-    )) ?>
-</div>
-
-<h2><i class="icon-rss"></i> Shows <small>Newest episodes first</small></h2>
-
-<div class="well">
-    <div class="row-fluid">
-    <?
-    $podcasts = array_slice($this->podcasts, 0, 15);
-    $podcast_cols = \DF\Utilities::columns($podcasts, 3, true);
-
-    foreach($podcast_cols as $podcasts):
-    ?>
-        <div class="span4">
-            <ul class="media-list">
-            <? foreach($podcasts as $podcast_info): ?>
-                <?
-                $podcast = $podcast_info['record'];
-                $episodes = $podcast_info['episodes'];
-                $ep = $episodes[0];
-                ?>
-                <li class="media podcast">
-                    <div class="media-object pull-left">
-                        <a href="<?=$this->routeFromHere(array('controller' => 'show', 'action' => 'view', 'id' => $podcast->id)) ?>">
-                            <img class="station-image" src="<?=\DF\Url::content($podcast->image_url) ?>" alt="<?=$podcast->name ?> Logo" style="width: 40px;">
-                            <div class="station-play-button">
-                                <i class="icon-rss"></i>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <div class="station-info">
-                            <h4><?=$podcast->name ?> <a href="<?=$this->routeFromHere(array('controller' => 'show', 'action' => 'view', 'id' => $podcast->id)) ?>" title="Click for more information."><i class="icon-info-sign"></i> </a><br>
-                                <span class="block genre-info">
-                                    <?=$podcast->description ?>
-                                </span>
-                                <?
-                                if (count($podcast->stations) > 0)
-                                {
-                                    $station_links = array();
-                                    foreach($podcast->stations as $station)
-                                    {
-                                        $station_link = '<a href="#" class="btn-play-station" data-station="station_'.$station->short_name.'">'.$station->name.'</a>';
-                                        $station_links[] = $station_link;
-                                    }
-
-                                    echo '<span class="block airson-info"><i class="icon-star"></i> Airs on '.implode(', ', $station_links).'</span>';
-                                }
-                                ?>
-                            </h4>
-
-                            <small>Newest Episode (<?=date('F j, Y', $ep['timestamp']) ?>):</small><br>
-                            <a href="<?=$ep['web_url'] ?>" target="_blank"><b><?=$ep['title'] ?></b></a>
-                        </div>
-                    </div>
-                </li>
-            <? endforeach; ?>
-            </ul>
-        </div>
-    <?
-    endforeach;
-    ?>
     </div>
 </div>
 
 <?
 $tz_info = \PVL\Timezone::getInfo();
 ?>
-<div class="buttons clearfix pull-right">
-    <?=$this->button(array(
-        'type'      => 'link',
-        'href'      => $this->route(array('controller' => 'schedule')),
-        'icon'      => 'icon-calendar',
-        'text'      => 'See Full Schedules',
-    )) ?>
-</div>
+<h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->route(array('controller' => 'profile', 'action' => 'timezone')) ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a>, see <a href="<?=$this->route(array('controller' => 'schedule')) ?>">entire schedule</a></small></h2>
 
-<h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->route(array('controller' => 'profile', 'action' => 'timezone')) ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a></small></h2>
+<?=$this->renderHere('schedule') ?>
+
+<? /*
+<h2 id="section_pvl"><i class="icon-group"></i> The Ponyville Live! Network</h2>
+
+<?
+?>
+<div class="row-fluid">
+    <div class="span4">
+        <h3>What's New</h3>
+
+        <dl>
+
+        </dl>
+
+        <h3>Upcoming Conventions</h3>
+
+        <dl>
+        <? foreach($this->conventions_upcoming as $record): ?>
+            <dt><a href="<?=$record['web_url'] ?>" target="_blank">
+                <i class="icon <?=$record['coverage']['icon'] ?>"></i>
+                <?=$record['name'] ?>
+            </a></dt>
+            <dd>
+                <?=$record['location'] ?><br><?=$record['range'] ?>
+            </dd>
+        <? endforeach; ?>
+        </dl>
+
+        <h3>Stay in Touch</h3>
+    </div>
+</div>
+<? */ ?>
+
+<h2><i class="icon-folder-open-alt"></i> Convention Archives</h2>
+
+<?
+$cons = array_slice($this->conventions_archived, 0, 12);
+$cols = \DF\Utilities::columns($cons, 3);
+?>
 
 <div class="row-fluid">
-    <div class="span9">
-        <div class="well" id="schedule_container">
-            <?=$this->renderHere('schedule') ?>
-        </div>
+<? foreach($cols as $col): ?>
+    <div class="span4">
+        <? foreach($col as $record): ?>
+            <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$this->route(array('controller' => 'convention', 'action' => 'archive', 'id' => $record['id'])) ?>">
+                <img src="<?=\DF\Url::content($record['images']['thumb']) ?>" alt="Convention Image">
+                <div class="coverage" title="<?=$record['coverage']['text'] ?>">
+                    <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
+                </div>
+                <div class="name">
+                    <h4><?=$record['name'] ?></h4>
+                    <?=$record['location'] ?> &bull; <?=$record['range'] ?>
+                </div>
+            </a>
+        <? endforeach; ?>
     </div>
-    <div class="span3">
-        <div class="well">
-            <?
-            $ical_url = $this->route(array('module' => 'api', 'controller' => 'schedule', 'format' => 'ical', 'nocache' => time()));
-            $ical_url = str_replace('http://', 'webcal://', $ical_url);
-            $gcal_url = 'http://www.google.com/calendar/render?cid='.urlencode($ical_url);
-            ?>
-            <h3><i class="icon-calendar-empty"></i> Subscribe for Updates</h3>
-
-            <p>You can subscribe to the list of upcoming Ponyville Live! events using your favorite calendar software (iCal, etc.) or add the feed directly to your Google Calendar feed.</p>
-
-            <div class="buttons">
-                <?=$this->button(array(
-                    'type'      => 'link',
-                    'target'    => '_blank',
-                    'icon'      => 'icon-download',
-                    'text'      => 'Download ICS',
-                    'href'      => $ical_url,
-                )) ?>
-                <?=$this->button(array(
-                    'type'      => 'link',
-                    'target'    => '_blank',
-                    'icon'      => 'icon-plus-sign',
-                    'text'      => 'Add to Google Calendar',
-                    'href'      => $gcal_url,
-                )) ?>
-            </div>
-
-            <h3><i class="icon-twitter"></i> Follow the TwitterBot</h3>
-
-            <p>Ponyville Live!'s main Twitter account announces shows as they're coming up, so you can keep up to date with what's going on right from your Twitter homepage!</p>
-
-            <div class="buttons">
-                <?=$this->button(array(
-                    'type'      => 'link',
-                    'target'    => '_blank',
-                    'icon'      => 'icon-twitter',
-                    'text'      => '@PonyvilleLive on Twitter',
-                    'href'      => 'https://twitter.com/intent/user?screen_name=PonyvilleLive',
-                )) ?>
-            </div>
-        </div>
-    </div>
+<? endforeach; ?>
 </div>
 
-<?=$this->renderHere('index_conventions') ?>
-
+<!-- Player Interface Skeleton Code -->
 <?=$this->renderHere('player_skeleton', TRUE) ?>
 
+<!-- Schedule Reloader -->
 <script type="text/javascript">
 var schedule_timeout;
 var schedule_interval = 300000;

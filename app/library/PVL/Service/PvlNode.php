@@ -26,13 +26,27 @@ class PvlNode
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
         ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
-
-        var_dump(curl_error($ch));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($ch);
         curl_close($ch);
 
         return $response;
+    }
+
+    /**
+     * Fetch analytics from the remote service (i.e. active connections, last update)
+     *
+     * @return int
+     * @throws \Zend_Exception
+     */
+    public static function fetch()
+    {
+        $config = \Zend_Registry::get('config');
+        $url = $config->apis->pvlnode_local_url;
+
+        // Send standard HTTP GET request.
+        $connections_raw = file_get_contents($url);
+        return @json_decode($connections_raw, true);
     }
 }

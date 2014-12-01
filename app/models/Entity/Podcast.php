@@ -25,6 +25,17 @@ class Podcast extends \DF\Doctrine\Entity
     /** @Column(name="name", type="string", length=150, nullable=true) */
     protected $name;
 
+    /** @Column(name="country", type="string", length=50, nullable=true) */
+    protected $country;
+
+    public function getCountryName()
+    {
+        if ($this->country)
+            return \PVL\Internationalization::getLanguageName($this->country);
+        else
+            return '';
+    }
+
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
 
@@ -102,36 +113,50 @@ class Podcast extends \DF\Doctrine\Entity
      * Static Functions
      */
 
-    public static function fetchLatest()
+    public static function fetchLatest($num_to_fetch = 10)
     {
         $em = self::getEntityManager();
 
-        $podcast_episodes = \DF\Cache::get('homepage_podcast_episodes');
+        $podcasts = \DF\Cache::get('homepage_podcasts');
 
-        if (!$podcast_episodes)
+        if (!$podcasts)
         {
+            // Pull all recent episodes.
             $latest_podcast_episodes = $em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold ORDER BY pe.timestamp DESC')
                 ->setParameter('threshold', strtotime('-3 months'))
                 ->getArrayResult();
 
-            $podcast_episodes = array();
+            $eps = array();
             foreach($latest_podcast_episodes as $ep)
-                $podcast_episodes[$ep['podcast_id']][] = $ep;
-
-            \DF\Cache::save($podcast_episodes, 'homepage_podcast_episodes', array(), 300);
-        }
-
-        $podcasts = array();
-        foreach($podcast_episodes as $podcast_id => $episodes)
-        {
-            $podcast_record = self::find($podcast_id);
-            if ($podcast_record instanceof self && $podcast_record->is_approved == 1)
             {
-                $podcasts[$podcast_id] = array(
-                    'record' => $podcast_record,
-                    'episodes' => array_slice($episodes, 0, 3),
-                );
+                $pcid = $ep['podcast_id'];
+
+                if (!isset($eps[$pcid]))
+                    $eps[$pcid] = $ep;
             }
+
+            // Bulk query for all podcasts related to recent episodes.
+            $podcasts_raw = $em->createQuery('SELECT p, s FROM Entity\Podcast p LEFT JOIN p.stations s WHERE p.id IN (:podcasts)')
+                ->setParameter('podcasts', array_keys($eps))
+                ->getArrayResult();
+
+            foreach($podcasts_raw as $pc)
+                $eps[$pc['id']]['podcast'] = $pc;
+
+            // Reassign together into sensible array.
+            $podcasts = array();
+            foreach($eps as $ep)
+            {
+                $pc = $ep['podcast'];
+                unset($ep['podcast']);
+                $pc['episodes'] = array($ep);
+
+                $podcasts[] = $pc;
+            }
+
+            array_slice($podcasts, 0, $num_to_fetch);
+
+            \DF\Cache::save($podcasts, 'homepage_podcasts', array(), 300);
         }
 
         return $podcasts;

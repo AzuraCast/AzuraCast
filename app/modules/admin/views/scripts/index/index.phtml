@@ -3,6 +3,8 @@ $this->headTitle('System Administration');
 $this->layout()->manual = true;
 
 $this->headScript()
+    ->appendFile('//cdn.socket.io/socket.io-1.2.1.js')
+    ->appendFile(\DF\Url::content('vendor/moment/moment.js'))
     ->appendFile('//code.highcharts.com/highcharts.js')
     ->appendFile('//code.highcharts.com/highcharts-more.js')
     ->appendFile('//code.highcharts.com/modules/exporting.js');
@@ -44,31 +46,106 @@ if ($skin == "dark")
         </div>
     </div>
     <div class="span9">
+        <div id="network_listeners_by_day" style="height: 250px;"></div>
+        <div id="station_listeners_by_day" style="height: 450px;"></div>
+
+        <h2>Synchronization Status</h2>
         <div class="well">
-            <div id="network_listeners_by_day" style="height: 250px;"></div>
-            <div id="station_listeners_by_day" style="height: 450px;"></div>
-        </div>
-        <div class="well no-margin">
-            <h2>Synchronization Status</h2>
             <div class="row-fluid">
             <? foreach($this->sync_times as $sync_key => $sync_info): ?>
                 <div class="span3">
                     <h4><?=$sync_info['name'] ?></h4>
                     <p><?=date('F j, Y g:ia', $sync_info['latest']) ?><br><small><?=$sync_info['diff_text'] ?> ago</small></p>
 
-                    <?=$this->button(array(
-                        'type'      => 'small',
-                        'href'      => $this->routeFromHere(array('action' => 'sync', 'type' => $sync_key)),
-                        'text'      => 'Run Manually',
-                        'target'    => '_blank',
-                    )) ?>
+                    <div class="buttons">
+                        <?=$this->button(array(
+                            'type'      => 'small',
+                            'href'      => $this->routeFromHere(array('action' => 'sync', 'type' => $sync_key)),
+                            'text'      => 'Run Manually',
+                            'target'    => '_blank',
+                        )) ?>
+                    </div>
+
+                    <p><small>
+                        <?=implode('<br>', $sync_info['contents']) ?>
+                    </small></p>
                 </div>
             <? endforeach; ?>
+            </div>
+        </div>
+
+        <h2>Real-Time Statistics</h2>
+        <div class="well">
+            <div class="row-fluid">
+                <div class="span3">
+                    <h4>PVLNode Service</h4>
+                    <dl>
+                        <dt><?=(int)$this->pvlnode_stats['clients'] ?></dt>
+                        <dd>Active Connections</dd>
+
+                        <dt><?=\DF\Utilities::timeDifferenceText(time(), $this->pvlnode_stats['latest_update']) ?></dt>
+                        <dd>Since Last Update</dd>
+                    </dl>
+                </div>
+                <div class="span9">
+                    <h4>Websocket Updates</h4>
+                    <div id="websocket_updates" style="height: 150px; overflow-y: scroll; overflow-x: hidden;">
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<script type="text/javascript">
+var pvlnode_remote_url = '<?=$this->config->apis->pvlnode_remote_url ?>';
+var pvlnode_remote_path = '<?=$this->config->apis->pvlnode_remote_path ?>';
+
+$(function() {
+    socket = io(pvlnode_remote_url, {path: pvlnode_remote_path});
+
+    socket.on('connect', function(){});
+    socket.on('disconnect', function(){});
+
+    socket.on('nowplaying', function(e) {
+        console.log(e);
+        pushPvlNodeUpdate('Nowplaying updated.');
+    });
+
+    socket.on('schedule.event_upcoming', function(e) {
+        console.log(e);
+
+        var station_name = e.station.name;
+        var station_image = e.station.image_url;
+
+        var event_name = e.event.title;
+        var event_url = e.event.web_url;
+
+        pushPvlNodeUpdate('Upcoming event: '+event_name+' on '+station_name);
+    });
+
+    socket.on('podcast.new_episode', function(e) {
+        console.log(e);
+
+        var podcast_name = e.podcast.name;
+        var podcast_image = e.podcast.image_url;
+
+        var episode_name = e.episode.title;
+        var episode_url = e.episode.web_url;
+
+        pushPvlNodeUpdate('New podcast episode: '+podcast_name+' - <a href="'+episode_url+'" target="_blank">'+episode_name+'</a>');
+    });
+});
+
+function pushPvlNodeUpdate(update_text) {
+
+    var update_time = moment().format("MMM Do, h:mm:ss a");
+    var update_html = '<div><b>'+update_time+'</b>: '+update_text;
+
+    $('#websocket_updates').prepend(update_html);
+}
+</script>
 <script type="text/javascript">
 $(function () {
     Highcharts.setOptions({

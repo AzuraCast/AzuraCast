@@ -1,6 +1,6 @@
 <ul class="media-list" style="padding-bottom: 0; margin-bottom: 0;">
 <? foreach((array)$this->stations as $station): ?>
-    <li class="media station clearfix rendermode-<?=$this->render_mode ?>" id="station_<?=\Entity\Station::getStationShortName($station['name']) ?>" 
+    <li class="media station clearfix rendermode-<?=$this->render_mode ?>" id="station_<?=\Entity\Station::getStationShortName($station['name']) ?>"
         data-id="<?=$station['id'] ?>" 
         data-name="<?=$station['name'] ?>"
         data-image="<?=\DF\Url::content($station['image_url']) ?>"
@@ -13,7 +13,7 @@
         <div class="show-when-playing station-link buttons btn-toolbar pull-right">
         <? if (count($station['streams']) > 1): ?>
             <div class="btn-group stream-switcher">
-                <a href="#" class="btn btn-small btn-inverse dropdown-toggle" type="button" data-toggle="dropdown" title="Switch Stream"><i class="icon-random"></i></a>
+                <a href="#" class="btn btn-small btn-inverse dropdown-toggle" type="button" data-toggle="dropdown" title="Switch Stream"><i class="icon-code-fork"></i></a>
                 <ul class="dropdown-menu">
                 <? foreach($station['streams'] as $stream): ?>
                     <li rel="<?=$stream['id'] ?>"><a href="#" class="btn-switch-stream"><? if ($stream['is_default']): ?><i class="icon-star"></i> <? endif; ?><?=$stream['name'] ?><span class="nowplaying-stream-listeners"></span></a></li>
@@ -53,6 +53,9 @@
             <div class="station-info">
                 <!-- Station Header -->
                 <h4>
+                <? if (!empty($station['country'])): ?>
+                    <span class="f16"><span class="flag <?=strtolower($station['country']) ?>" title="<?=\PVL\Internationalization::getCountryName($station['country']) ?>"></span></span>
+                <? endif; ?>
                 <? if ($station['nickname']): ?>
                     <?=$station['nickname'] ?> 
                 <? else: ?>

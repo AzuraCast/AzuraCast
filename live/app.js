@@ -17,6 +17,7 @@ var http_local = http.Server(app_local);
 // Handle local information update.
 var current_np = {};
 var current_clients = 0;
+var latest_update = 0;
 
 app_local.use(bodyParser.json({ limit: '50mb' }));
 
@@ -28,12 +29,15 @@ app_local.post('/data', function(req, res) {
 
     io.emit(remote_body.type, remote_body.contents);
 
+    latest_update = Math.floor(new Date() / 1000);
+
     res.end("yes");
 });
 
 app_local.get('/data', function(req, res) {
     res.json({
-        'clients': current_clients
+        'clients': current_clients,
+        'latest_update': latest_update
     });
 });
 
@@ -42,10 +46,10 @@ io.on('connection', function(socket) {
     current_clients++;
 
     socket.emit('nowplaying', current_np);
-});
 
-io.on('disconnection', function(socket) {
-    current_clients--;
+    socket.on('disconnect', function () {
+        current_clients--;
+    });
 });
 
 app_remote.get('/', function(req, res) {

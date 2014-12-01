@@ -12,24 +12,26 @@ class ScheduleManager
         $em = \Zend_Registry::get('em');
         $config = \Zend_Registry::get('config');
 
+        // Set up Google Client.
+        $gclient_api_key = $config->apis->google_apis_key;
+        $gclient_app_name = $config->application->name;
+
+        if (empty($gclient_api_key))
+            return null;
+
+        $gclient = new \Google_Client();
+        $gclient->setApplicationName($gclient_app_name);
+        $gclient->setDeveloperKey($gclient_api_key);
+
+        $gcal = new \Google_Service_Calendar($gclient);
+
+        // Prevent running repeatedly in too short of a time (avoid API limits).
         $last_run = Settings::getSetting('schedule_manager_last_run', 0);
         if ($last_run > (time() - 300) && !$force_run)
-            return;
+            return null;
 
         $schedule_items = array();
         $schedule_records = array();
-
-        /*
-        // PVL news (retired for con center)
-        $schedule_items[] = array(
-            'name'      => 'PVL Global Events',
-            'url'       => 'https://www.google.com/calendar/feeds/lj3d00magjlucuk902rarrhhrg%40group.calendar.google.com/public/full',
-            'type'      => 'convention',
-            'station_id' => 0,
-            'image_url' => \DF\Url::content('pvl_square.png'),
-        );
-        $schedule_stations[0] = NULL;
-        */
 
         $stations = $em->createQuery('SELECT s FROM Entity\Station s WHERE s.category IN (:types) AND s.is_active = 1')
             ->setParameter('types', array('audio', 'video'))
@@ -51,103 +53,97 @@ class ScheduleManager
 
         Debug::startTimer('Get Calendar Records');
 
-        $time_check_start = time();
+        // Time boundaries for calendar entries.
+        $threshold_start = date(\DateTime::RFC3339, strtotime('-1 week'));
+        $threshold_end = date(\DateTime::RFC3339, strtotime('+1 year'));
 
         foreach($schedule_items as $item)
         {
-            $start_time = date(\DateTime::RFC3339, strtotime('-1 week'));
-            $end_time = date(\DateTime::RFC3339, strtotime('+1 year'));
-            $http_params = array(
-                'alt'           => 'json',
-                'recurrence-expansion-start' => $start_time,
-                'recurrence-expansion-end' => $end_time,
-                'start-min'     => $start_time,
-                'start-max'     => $end_time,
-                'max-results'   => 200,
-                'singleevents'  => 'true',
-                'orderby'       => 'starttime',
-                'sortorder'     => 'ascending',
-                'ctz'           => date_default_timezone_get(),
-            );
+            // Get the "calendar_id" from the URL provided by the user.
+            $orig_url_parts = parse_url($item['url']);
+            $url_path_parts = explode('/', $orig_url_parts['path']);
 
-            $base_url = $item['url'];
-            $http_url = str_replace('/basic', '/full', $base_url).'?'.http_build_query($http_params);
-            $calendar_raw = self::requestExternalUrl($http_url, $item['name']);
+            $calendar_id = urldecode($url_path_parts[3]);
 
-            if ($calendar_raw)
+            if (empty($calendar_id))
+                continue;
+
+            // Call the external Google Calendar client.
+            try
             {
-                $calendar_array = json_decode($calendar_raw, true);
+                $all_events = $gcal->events->listEvents($calendar_id, array(
+                    'timeMin'       => $threshold_start,
+                    'timeMax'       => $threshold_end,
+                    'singleEvents'  => 'true',
+                    'orderBy'       => 'startTime',
+                    'maxResults'    => '300',
+                ));
+            }
+            catch(\Exception $e) { continue; }
 
-                if (empty($calendar_array['feed']['entry']))
+            // Process each individual event.
+            foreach($all_events as $event_orig)
+            {
+                $title = $event_orig->summary;
+                $body = $event_orig->description;
+                $location = $event_orig->location;
+                $web_url = $event_orig->htmlLink;
+
+                $is_all_day = false;
+
+                $start_time_obj = $event_orig->start;
+                if ($start_time_obj->date)
                 {
-                    Debug::log($calendar_raw);
-                    continue;
+                    $is_all_day = true;
+                    $start_time = strtotime($start_time_obj->date.' 00:00:00');
+                }
+                else
+                {
+                    $start_time = strtotime($start_time_obj->dateTime);
                 }
 
-                $events = (array)$calendar_array['feed']['entry'];
-
-                Debug::print_r($calendar_array);
-
-                $all_events = array();
-
-                foreach($events as $event_orig)
+                $end_time_obj = $event_orig->end;
+                if ($end_time_obj->date)
                 {
-                    $title = trim($event_orig['title']['$t']);
-                    $body = trim($event_orig['content']['$t']);
-                    $location = trim($event_orig['gd$where'][0]['valueString']);
-
-                    $web_url = trim($event_orig['link'][0]['href']);
-
-                    $is_all_day = false;
-
-                    $start_time = trim($event_orig['gd$when'][0]['startTime']);
-                    if (strlen($start_time) == 10)
-                    {
-                        $is_all_day = true;
-                        $start_time = strtotime($start_time.' 00:00:00');
-                    }
-                    else
-                    {
-                        $start_time = strtotime($start_time);
-                    }
-
-                    $end_time = trim($event_orig['gd$when'][0]['endTime']);
-                    if (strlen($end_time) == 10)
-                    {
-                        $is_all_day = true;
-                        $end_time = strtotime($end_time.' 00:00:00')-1;
-                    }
-                    else
-                    {
-                        $end_time = strtotime($end_time);
-                    }
-
-                    // Detect URLs.
-                    if ($body)
-                    {
-                        preg_match('@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@',$body, $urls);
-
-                        if (count($urls) > 0)
-                            $web_url = $urls[0];
-                    }
-
-                    $schedule_record = array(
-                        'type'      => $item['type'],
-                        'start_time' => $start_time,
-                        'end_time'  => $end_time,
-                        'is_all_day' => $is_all_day,
-                        'title'     => $title,
-                        'location'  => $location,
-                        'body'      => $body,
-                        'image_url' => $item['image_url'],
-                        'web_url'   => $web_url,
-                    );
-
-                    $guid = md5(json_encode($schedule_record));
-                    $schedule_record['guid'] = $guid;
-
-                    $schedule_records[$item['station_id']][$guid] = $schedule_record;
+                    $is_all_day = true;
+                    $end_time = strtotime($end_time_obj->date.' 00:00:00');
                 }
+                elseif ($end_time_obj)
+                {
+                    $end_time = strtotime($end_time_obj->dateTime);
+                }
+                else
+                {
+                    $end_time = $start_time;
+                }
+
+                // Detect URLs.
+                if ($body)
+                {
+                    preg_match('@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@',$body, $urls);
+
+                    if (count($urls) > 0)
+                        $web_url = $urls[0];
+                }
+
+                $guid = md5(implode('|', array($event_orig->id, $start_time, $end_time, $title, $location)));
+
+                $schedule_record = array(
+                    'guid'      => $guid,
+                    'type'      => $item['type'],
+                    'start_time' => $start_time,
+                    'end_time'  => $end_time,
+                    'is_all_day' => $is_all_day,
+                    'title'     => $title,
+                    'location'  => $location,
+                    'body'      => $body,
+                    'image_url' => $item['image_url'],
+                    'web_url'   => $web_url,
+                );
+
+                \PVL\Debug::print_r($schedule_record);
+
+                $schedule_records[$item['station_id']][$guid] = $schedule_record;
             }
         }
 

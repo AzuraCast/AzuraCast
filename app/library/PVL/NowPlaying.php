@@ -10,6 +10,8 @@ use \Entity\SongHistory;
 use \Entity\SongVote;
 use \Entity\Settings;
 
+use PVL\Service\PvlNode;
+
 class NowPlaying
 {
     public static function generate()
@@ -60,7 +62,7 @@ class NowPlaying
         @file_put_contents($file_path_api, $nowplaying_api);
 
         // Push to live-update service.
-        \PVL\Service\PvlNode::push('nowplaying', $nowplaying['api']);
+        PvlNode::push('nowplaying', $nowplaying['api']);
 
         return $pvl_file_path;
     }

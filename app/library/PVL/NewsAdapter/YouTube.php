@@ -6,60 +6,51 @@ class YouTube extends AdapterAbstract
     public static function fetch($url, $params = array())
     {
         $config = \Zend_Registry::get('config');
-        $v3_api_key = $config->apis->youtube_v3;
 
-        $client = new \Zend_Http_Client();
-        $client->setConfig(array(
-            'timeout'       => 20,
-            'keepalive'     => true,
-        ));
+        // Set up Google Client
+        $gclient_api_key = $config->apis->google_apis_key;
+        $gclient_app_name = $config->application->name;
 
+        if (empty($gclient_api_key))
+            return null;
+
+        $gclient = new \Google_Client();
+        $gclient->setApplicationName($gclient_app_name);
+        $gclient->setDeveloperKey($gclient_api_key);
+
+        $yt_client = new \Google_Service_YouTube($gclient);
+
+        // Retrieve account info from URL processor.
         $account_info = self::getAccount($url);
 
+        // For "User" account types, use "Uploads" playlist.
         if ($account_info['type'] == 'user')
         {
-            $client->setUri('https://www.googleapis.com/youtube/v3/channels');
-            $client->setParameterGet(array(
-                'part'      => 'id,contentDetails',
+            $data = $yt_client->channels->listChannels('id,contentDetails', array(
                 'forUsername' => $account_info['id'],
                 'maxResults' => 25,
-                'key'       => $v3_api_key,
             ));
 
-            $response = $client->request('GET');
-
-            if ($response->isSuccessful())
-            {
-                $response_text = $response->getBody();
-                $data = @json_decode($response_text, TRUE);
-
+            if ($data)
                 $playlist_id = $data['items'][0]['contentDetails']['relatedPlaylists']['uploads'];
-            }
         }
         else
         {
             $playlist_id = $account_info['id'];
         }
 
-        if (!$playlist_id)
+        if (empty($playlist_id))
             return null;
 
-        $client->setUri('https://www.googleapis.com/youtube/v3/playlistItems');
-        $client->setParameterGet(array(
-            'part'      => 'id,snippet,status,contentDetails',
+        $data = $yt_client->playlistItems->listPlaylistItems('id,snippet,status,contentDetails', array(
             'playlistId' => $playlist_id,
             'maxResults' => 25,
-            'key'       => $v3_api_key,
         ));
 
-        $response = $client->request('GET');
         $news_items = array();
 
-        if ($response->isSuccessful())
+        if ($data)
         {
-            $response_text = $response->getBody();
-            $data = @json_decode($response_text, TRUE);
-
             $feed_items = (array)$data['items'];
 
             foreach($feed_items as $item)

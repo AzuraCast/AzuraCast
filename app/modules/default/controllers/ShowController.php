@@ -6,8 +6,15 @@ class ShowController extends \DF\Controller\Action
 {
     public function indexAction()
     {
-        $podcasts = $this->em->createQuery('SELECT p, s, pe FROM Entity\Podcast p LEFT JOIN p.stations s LEFT JOIN p.episodes pe WHERE p.is_approved = 1 ORDER BY p.name ASC')
+        $podcasts_raw = $this->em->createQuery('SELECT p, s, pe FROM Entity\Podcast p LEFT JOIN p.stations s LEFT JOIN p.episodes pe WHERE p.is_approved = 1 ORDER BY p.name ASC')
             ->getArrayResult();
+
+        $podcasts = array();
+        foreach($podcasts_raw as $pc)
+        {
+            $pc['episodes'] = array_slice($pc['episodes'], 0, 3);
+            $podcasts[$pc['id']] = $pc;
+        }
 
         $this->view->podcasts = $podcasts;
     }

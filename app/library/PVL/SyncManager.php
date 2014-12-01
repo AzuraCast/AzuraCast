@@ -100,18 +100,40 @@ class SyncManager
             'nowplaying' => array(
                 'name'      => 'Now Playing Data',
                 'latest'    => Settings::getSetting('nowplaying_last_run', 0),
+                'contents'  => array(
+                    'Now Playing Data',
+                ),
             ),
             'short' => array(
                 'name'      => '1-Minute Sync',
                 'latest'    => Settings::getSetting('sync_fast_last_run', 0),
+                'contents'  => array(
+                    'Schedule Notifications',
+                ),
             ),
             'medium' => array(
                 'name'      => '5-Minute Sync',
                 'latest'    => Settings::getSetting('sync_last_run', 0),
+                'contents'  => array(
+                    'Homepage Tumblr Rotator',
+                    'Station Schedules',
+                    'Podcast Episodes',
+                    'CentovaCast Metadata',
+                    'Slim Player Cache',
+                ),
             ),
             'long' => array(
                 'name'      => '1-Hour Sync',
                 'latest'    => Settings::getSetting('sync_slow_last_run', 0),
+                'contents'  => array(
+                    'Analytics and Statistics',
+                    'Convention Archives',
+                    'API Call Cleanup',
+                    'Song History Cleanup',
+                    'BronyTunes Sync',
+                    'Pony.fm Sync',
+                    'EqBeats Sync',
+                ),
             ),
         );
 

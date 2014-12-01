@@ -6,7 +6,8 @@ html.theme_dark body {
 	background-color: #151515;
 }
 
-html.theme_dark .header {
+html.theme_dark .header,
+html.theme_dark .hero {
 	border-bottom: solid 2px #333;
 }
 
@@ -117,13 +118,8 @@ div.tabbable div.tab-pane {
  * Station Player
  */
 
-.station img,
-.podcast img {
-	background: #151515;
-}
-
 .station.playing {
-	background: #151515;
+	background: #222;
 }
 
 .station.offline,

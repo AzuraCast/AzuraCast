@@ -199,7 +199,7 @@ class Utilities
     }
     
     // Get the plain-english difference between two timestamps.
-    public static function timeDifferenceText($timestamp1, $timestamp2)
+    public static function timeDifferenceText($timestamp1, $timestamp2, $precision = 1)
     {
         $time_diff = abs($timestamp1 - $timestamp2);
         $diff_text = "";
@@ -211,12 +211,12 @@ class Utilities
         }
         else if ($time_diff >= 60 && $time_diff < 3600)
         {
-            $time_num = round($time_diff / 60, 1);
+            $time_num = round($time_diff / 60, $precision);
             $time_unit = 'minute';
         }
         else if ($time_diff >= 3600 && $time_diff < 216000)
         {
-            $time_num = round($time_diff / 3600, 1);
+            $time_num = round($time_diff / 3600, $precision);
             $time_unit = 'hour';
         }
         else if ($time_diff >= 216000 && $time_diff < 10368000)

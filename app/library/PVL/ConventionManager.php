@@ -36,15 +36,21 @@ class ConventionManager
      */
     public static function process(ConventionArchive $row)
     {
-        $config = \Zend_Registry::get('config');
-        $v3_api_key = $config->apis->youtube_v3;
-
-        $client = new \Zend_Http_Client();
-        $client->setConfig(array(
-            'timeout'       => 20,
-            'keepalive'     => true,
-        ));
         $em = \Zend_Registry::get('em');
+        $config = \Zend_Registry::get('config');
+
+        // Set up Google Client
+        $gclient_api_key = $config->apis->google_apis_key;
+        $gclient_app_name = $config->application->name;
+
+        if (empty($gclient_api_key))
+            return null;
+
+        $gclient = new \Google_Client();
+        $gclient->setApplicationName($gclient_app_name);
+        $gclient->setDeveloperKey($gclient_api_key);
+
+        $yt_client = new \Google_Service_YouTube($gclient);
 
         $url = $row->web_url;
 
@@ -64,22 +70,13 @@ class ConventionManager
                         ->setParameter('id', $row->id)
                         ->execute();
 
-                    // Get playlist information.
-                    $client->setUri('https://www.googleapis.com/youtube/v3/playlists');
-                    $client->setParameterGet(array(
-                        'part'      => 'id,snippet',
+                    $data = $yt_client->playlists->listPlaylists('id,snippet', array(
                         'id'        => $playlist_id,
                         'maxResults' => 1,
-                        'key'       => $v3_api_key,
                     ));
 
-                    $response = $client->request('GET');
-
-                    if ($response->isSuccessful())
+                    if ($data)
                     {
-                        $response_text = $response->getBody();
-                        $data = @json_decode($response_text, TRUE);
-
                         $playlist = $data['items'][0]['snippet'];
 
                         $row->name = $playlist['title'];
@@ -88,22 +85,13 @@ class ConventionManager
                     }
 
                     // Get playlist contents.
-                    $client->setUri('https://www.googleapis.com/youtube/v3/playlistItems');
-                    $client->resetParameters();
-                    $client->setParameterGet(array(
-                        'part'      => 'id,snippet,status,contentDetails',
+                    $data = $yt_client->playlistItems->listPlaylistItems('id,snippet,status,contentDetails', array(
                         'playlistId' => $playlist_id,
                         'maxResults' => 50,
-                        'key'       => $v3_api_key,
                     ));
 
-                    $response = $client->request('GET');
-
-                    if ($response->isSuccessful())
+                    if ($data)
                     {
-                        $response_text = $response->getBody();
-                        $data = @json_decode($response_text, TRUE);
-
                         foreach((array)$data['items'] as $item)
                         {
                             $row_name = self::filterName($row, $item['snippet']['title']);
@@ -144,21 +132,13 @@ class ConventionManager
                     $row->web_url = 'http://www.youtube.com/watch?v='.$video_id;
 
                     // Pull data from API.
-                    $client->setUri('https://www.googleapis.com/youtube/v3/videos');
-                    $client->setParameterGet(array(
+                    $data = $yt_client->videos->listVideos('snippet,contentDetails', array(
                         'id'        => $video_id,
-                        'part'      => 'snippet,contentDetails',
                         'maxResults' => 1,
-                        'key'       => $v3_api_key,
                     ));
 
-                    $response = $client->request('GET');
-
-                    if ($response->isSuccessful())
+                    if ($data)
                     {
-                        $response_text = $response->getBody();
-                        $data = @json_decode($response_text, TRUE);
-
                         $video = $data['items'][0]['snippet'];
 
                         $row->name = self::filterName($row, $video['title']);

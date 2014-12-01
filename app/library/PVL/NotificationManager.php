@@ -3,12 +3,12 @@ namespace PVL;
 
 use \Entity\Station;
 use \Entity\Schedule;
-
 use \Entity\Podcast;
 use \Entity\PodcastEpisode;
-
 use \Entity\Settings;
 use \Entity\ShortUrl;
+
+use \PVL\Service\PvlNode;
 
 class NotificationManager
 {
@@ -45,6 +45,11 @@ class NotificationManager
             $tweet = 'On The Air: '.$schedule_item->title.' in '.$notify_minutes.' minutes on '.$twitter_handle.'!';
             $tweet_url = $station->getShortUrl();
 
+            PvlNode::push('schedule.event_upcoming', array(
+                'event'     => Schedule::api($schedule_item),
+                'station'   => Station::api($station),
+            ));
+
             self::notify($tweet, $tweet_url);
 
             $schedule_item->is_notified = true;
@@ -71,6 +76,11 @@ class NotificationManager
 
             $title = \DF\Utilities::truncateText($episode->title, 110-strlen($podcast->name)-6);
             $tweet = $podcast->name.': "'.$title.'" -';
+
+            PvlNode::push('podcast.new_episode', array(
+                'episode' => PodcastEpisode::api($episode),
+                'podcast' => Podcast::api($podcast, false),
+            ));
 
             self::notify($tweet, $episode->web_url);
 

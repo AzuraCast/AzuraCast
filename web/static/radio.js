@@ -219,11 +219,17 @@ $(function() {
     socket.on('connect', function(){});
     socket.on('disconnect', function(){});
 
-    socket.on('nowplaying', function(np_data) {
+    socket.on('nowplaying', function(e) {
         console.log('Nowplaying updated.');
 
-        nowplaying_cache = np_data;
+        nowplaying_cache = e;
         processNowPlaying();
+
+        // Send message to iframe listeners.
+        top.postMessage({
+            type: 'nowplaying',
+            body: e
+        }, '*');
     });
 
     socket.on('schedule.event_upcoming', function(e) {
@@ -243,6 +249,12 @@ $(function() {
                 playStation(station_id);
             }
         });
+
+        // Send message to iframe listeners.
+        top.postMessage({
+            type: 'event_upcoming',
+            body: e
+        }, '*');
     });
 
     socket.on('podcast.new_episode', function(e) {
@@ -261,6 +273,12 @@ $(function() {
                 window.open(episode_url);
             }
         });
+
+        // Send message to iframe listeners.
+        top.postMessage({
+            type: 'podcast_episode',
+            body: e
+        }, '*');
     });
 });
 

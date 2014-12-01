@@ -7,12 +7,10 @@ var volume = 70;
 var nowplaying_song,
     nowplaying_song_id,
     nowplaying_url,
-    nowplaying_station;
+    nowplaying_station,
+    nowplaying_cache;
 
 var vote_ratelimit = false;
-
-var nowplaying_cache,
-    nowplaying_last_run = 0;
 
 var is_playing,
     jp_is_playing;
@@ -194,6 +192,9 @@ $(function() {
 
         nowplaying_song_id = null;
         nowplaying_song = null;
+
+        // Force stream metadata switch.
+        processNowPlaying();
 
         // Play the new stream URL.
         playStation(station.attr('id'));

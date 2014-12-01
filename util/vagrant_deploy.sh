@@ -15,7 +15,7 @@ then
 
     apt-get update
 
-    apt-get -q -y install vim nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl php5-phalcon
+    apt-get -q -y install vim git nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl php5-phalcon
 
     apt-get autoremove
 

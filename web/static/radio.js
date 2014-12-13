@@ -229,7 +229,7 @@ $(function() {
         // Send message to iframe listeners.
         top.postMessage({
             type: 'nowplaying',
-            body: e
+            body: JSON.stringify(e)
         }, '*');
     });
 
@@ -254,7 +254,7 @@ $(function() {
         // Send message to iframe listeners.
         top.postMessage({
             type: 'event_upcoming',
-            body: e
+            body: JSON.stringify(e)
         }, '*');
     });
 
@@ -278,7 +278,7 @@ $(function() {
         // Send message to iframe listeners.
         top.postMessage({
             type: 'podcast_episode',
-            body: e
+            body: JSON.stringify(e)
         }, '*');
     });
 });

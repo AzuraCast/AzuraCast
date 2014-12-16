@@ -29,6 +29,10 @@ class PvlNode
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($ch);
+
+        if(curl_errno($ch))
+            throw new \DF\Exception('cURL Error: '.curl_error($ch));
+
         curl_close($ch);
 
         return $response;

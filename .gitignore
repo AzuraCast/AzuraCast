@@ -260,3 +260,5 @@ pip-log.txt
 .mr.developer.cfg
 web/test.php
 app/modules/default/controllers/UtilController.php
+node_modules/
+.sass-cache/

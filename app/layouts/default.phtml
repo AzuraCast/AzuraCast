@@ -46,8 +46,7 @@ $this->headLink()
     ->appendStylesheet(\DF\Url::content('common/jquery/fancybox/jquery.fancybox.css'), 'all')
     ->appendStylesheet(\DF\Url::content('common/bootstrap2_r2/df-ui-printable.css'), 'print')
     ->appendStylesheet('//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', 'screen')
-    ->appendStylesheet(\DF\Url::content('mid2013/style.css'), 'all')
-    ->appendStylesheet(\DF\Url::content('mid2013/skin_'.$skin.'.css'));
+    ->appendStylesheet(\DF\Url::content('compiled/style.css'), 'all');
 
 if ($this->custom_styles)
 {

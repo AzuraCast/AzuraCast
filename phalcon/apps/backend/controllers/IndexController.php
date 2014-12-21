@@ -1,9 +1,9 @@
 <?php
 
-namespace Baseapp\Frontend\Controllers;
+namespace Baseapp\Backend\Controllers;
 
 /**
- * Frontend Index Controller
+ * Backend Index Controller
  *
  * @package     base-app
  * @category    Controller
@@ -12,7 +12,6 @@ namespace Baseapp\Frontend\Controllers;
 class IndexController extends \Phalcon\Mvc\Controller
 {
 
-    public $siteDesc;
     public $scripts = array();
 
     /**
@@ -23,12 +22,10 @@ class IndexController extends \Phalcon\Mvc\Controller
      */
     public function beforeExecuteRoute($dispatcher)
     {
-        // Set default title and description
-        $this->tag->setTitle('Default');
-        $this->siteDesc = 'Default';
+        // Set default title
+        $this->tag->setTitle('Index');
 
         // Add css and js to assets collection
-        $this->assets->addCss('css/fonts.css');
         $this->assets->addCss('css/app.css');
         $this->assets->addJs('js/plugins.js');
     }
@@ -41,6 +38,11 @@ class IndexController extends \Phalcon\Mvc\Controller
      */
     public function initialize()
     {
+        // Redirect to home page if user is not admin
+        if (!$this->auth->logged_in('admin')) {
+            $this->response->redirect('');
+        }
+
         // Check the session lifetime
         if ($this->session->has('last_active') && time() - $this->session->get('last_active') > $this->config->session->options->lifetime) {
             $this->session->destroy();
@@ -71,8 +73,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      */
     public function indexAction()
     {
-        $this->tag->setTitle(__('Home'));
-        $this->siteDesc = __('Home');
+        $this->tag->setTitle(__('Admin panel'));
     }
 
     /**
@@ -83,10 +84,9 @@ class IndexController extends \Phalcon\Mvc\Controller
      */
     public function afterExecuteRoute($dispatcher)
     {
-        // Set final title and description
+        // Set final title
         $this->tag->setTitleSeparator(' | ');
         $this->tag->appendTitle($this->config->app->name);
-        $this->view->setVar('siteDesc', mb_substr($this->filter->sanitize($this->siteDesc, 'string'), 0, 200, 'utf-8'));
 
         // Set scripts
         $this->view->setVar('scripts', $this->scripts);
@@ -101,7 +101,7 @@ class IndexController extends \Phalcon\Mvc\Controller
      * @package     base-app
      * @version     2.0
      */
-    public function notFoundAction()
+    public function notfoundAction()
     {
         // Send a HTTP 404 response header
         $this->response->setStatusCode(404, "Not Found");

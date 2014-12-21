@@ -1,9 +1,9 @@
 <?php
 
-namespace Baseapp\Frontend;
+namespace Baseapp\Cli;
 
 /**
- * Frontend Module
+ * Cli Module
  *
  * @package     base-app
  * @category    Module
@@ -27,7 +27,7 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         $loader = new \Phalcon\Loader();
 
         $loader->registerNamespaces(array(
-            'Baseapp\Frontend\Controllers' => __DIR__ . '/controllers/',
+            'Baseapp\Cli\Tasks' => __DIR__ . '/tasks/',
         ));
 
         $loader->register();
@@ -54,10 +54,10 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
                 //controller or action doesn't exist
                 if ($event->getType() == 'beforeException') {
                     switch ($exception->getCode()) {
-                        case \Phalcon\Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+                        case \Phalcon\Cli\Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
                         case \Phalcon\Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
                             $dispatcher->forward(array(
-                                'controller' => 'index',
+                                'task' => 'main',
                                 'action' => 'notFound'
                             ));
                             return false;
@@ -65,9 +65,10 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
                 }
             });
 
-            $dispatcher = new \Phalcon\Mvc\Dispatcher();
+            //$dispatcher = new \Phalcon\Mvc\Dispatcher();
+            $dispatcher = new \Phalcon\Cli\Dispatcher();
             //Set default namespace to frontend module
-            $dispatcher->setDefaultNamespace("Baseapp\Frontend\Controllers");
+            $dispatcher->setDefaultNamespace("Baseapp\Cli\Tasks");
             //Bind the EventsManager to the dispatcher
             $dispatcher->setEventsManager($eventsManager);
 
@@ -77,7 +78,7 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         //Registering the view component
         $di->set('view', function() use($di) {
             $view = new \Phalcon\Mvc\View();
-            $view->setViewsDir(__DIR__ . '/views/');
+            $view->setViewsDir(ROOT_PATH . '/app/frontend/views/');
             $view->registerEngines(\Baseapp\Library\Tool::registerEngines($view, $di));
             return $view;
         });

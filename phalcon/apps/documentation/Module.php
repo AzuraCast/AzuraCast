@@ -1,9 +1,9 @@
 <?php
 
-namespace Baseapp\Frontend;
+namespace Baseapp\Documentation;
 
 /**
- * Frontend Module
+ * Documentation Module
  *
  * @package     base-app
  * @category    Module
@@ -27,7 +27,7 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         $loader = new \Phalcon\Loader();
 
         $loader->registerNamespaces(array(
-            'Baseapp\Frontend\Controllers' => __DIR__ . '/controllers/',
+            'Baseapp\Documentation\Controllers' => __DIR__ . '/controllers/',
         ));
 
         $loader->register();
@@ -66,8 +66,8 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
             });
 
             $dispatcher = new \Phalcon\Mvc\Dispatcher();
-            //Set default namespace to frontend module
-            $dispatcher->setDefaultNamespace("Baseapp\Frontend\Controllers");
+            //Set default namespace to documentation module
+            $dispatcher->setDefaultNamespace("Baseapp\Documentation\Controllers");
             //Bind the EventsManager to the dispatcher
             $dispatcher->setEventsManager($eventsManager);
 

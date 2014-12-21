@@ -8,7 +8,8 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    'web/static/compiled/style.css' : 'web/static/sass/style.scss'
+                    'web/static/compiled/style.css' : 'web/static/sass/style.scss',
+                    'web/static/compiled/stations.css' : 'web/static/sass/stations.scss'
                 }
             }
         },

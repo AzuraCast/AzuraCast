@@ -243,12 +243,9 @@ $(function() {
         var event_name = e.event.title;
         var event_url = e.event.web_url;
 
-        notify(station_image, event_name, 'Coming up on '+station_name+'\nClick to tune in!', {
+        notify(station_image, event_name, 'Coming up on '+station_name, {
             tag: 'event_upcoming',
-            timeout: 15,
-            notifyClick: function() {
-                playStation(station_id);
-            }
+            timeout: 15
         });
 
         // Send message to iframe listeners.
@@ -267,12 +264,9 @@ $(function() {
         var episode_name = e.episode.title;
         var episode_url = e.episode.web_url;
 
-        notify(podcast_image, podcast_name, 'New episode available:\n'+episode_name+'\nClick to view!', {
+        notify(podcast_image, podcast_name, 'New episode available:\n'+episode_name, {
             tag: 'podcast_episode',
-            timeout: 15,
-            notifyClick: function() {
-                window.open(episode_url);
-            }
+            timeout: 15
         });
 
         // Send message to iframe listeners.

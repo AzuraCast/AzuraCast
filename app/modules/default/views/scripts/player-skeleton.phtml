@@ -17,9 +17,16 @@ $this->headLink()
 
 <? if ($this->station_id && $this->autoplay): ?>
 <script type="text/javascript">
-    $(function() {
-        playStation($('.station[data-id="<?=$this->station_id ?>"]').attr('id'));
+$(function() {
+    var autoplay_triggered = false;
+
+    socket.on('nowplaying', function(e) {
+        if (!autoplay_triggered) {
+            autoplay_triggered = true;
+            playStation($('.station[data-id="<?=$this->station_id ?>"]').attr('id'));
+        }
     });
+});
 </script>
 <? endif; ?>
 

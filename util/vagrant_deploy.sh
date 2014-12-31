@@ -97,6 +97,15 @@ then
     cp $www_base/util/vagrant_initd /etc/init/pvlnode.conf
     service pvlnode start
 
+<<<<<<< HEAD
+=======
+    # Bower and Grunt install.
+    npm install -g bower grunt-cli
+
+    cd $www_base
+    npm install --no-bin-links
+
+>>>>>>> master
     # Mark deployment as run.
     touch $app_base/.deploy_run
 

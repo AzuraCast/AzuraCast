@@ -1,0 +1,21 @@
+{
+  "name": "PVLiveWebApp",
+  "version": "0.0.1",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-sass": "~0.17.0"
+  },
+  "description": "![PVL Logo](https://bytebucket.org/bravelyblue/pvlive/raw/072a2925f95b5dc05375b6ca0d39205194b1c04e/web/resources/bitbucket.png)",
+  "main": "Gruntfile.js",
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://SlvrEagle23@bitbucket.org/bravelyblue/pvlive.git"
+  },
+  "author": "",
+  "license": "BSD-2-Clause"
+}

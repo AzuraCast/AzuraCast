@@ -1,0 +1,128 @@
+/**
+ * Dark Skin
+ */
+
+html.theme_dark {
+  body {
+    background-color: #151515;
+    color: #DDD;
+  }
+  form legend {
+    color: #CCC;
+  }
+  h1, h2 {
+    text-shadow: 1px 1px 1px #000;
+  }
+
+  .header, .hero {
+    border-bottom: solid 2px #333;
+  }
+
+  .navbar, .navbar-inner, .nav, .navbar-inverse {
+    background: none;
+  }
+
+  .dropdown-menu {
+    background-color: #222;
+
+    .divider {
+      background-color: #333;
+    }
+
+    li a {
+      color: #DDD;
+      border-bottom-color: #333;
+    }
+  }
+
+  .navbar .nav > li > a {
+    color: #AAA;
+    border-bottom: solid 2px #333;
+  }
+
+  .rich_header {
+    background: url('../mid2013/headerbg_dark.jpg') center center no-repeat;
+    border-bottom: solid 2px #333;
+  }
+
+  .well {
+    background-color: rgb(51, 51, 51);
+    background: rgba(51, 51, 51, 0.3);
+
+    .station_video {
+      background: rgb(37, 50, 65) transparent;
+      background: rgba(37, 50, 65, 0.3);
+    }
+  }
+
+  .footer {
+    background: #1B2C41;
+    color: #dadada;
+    border-top: 2px solid #375B88;
+  }
+
+  .nav-list > li > a,
+  .nav-list .nav-header {
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+  }
+  .nav > li > a:hover,
+  .nav > li > a:focus {
+    background-color: #333;
+  }
+
+  ul.nav.nav-tabs {
+    border-bottom-color: #333;
+
+    & > .active {
+      & > a, & > a:hover, & > a:focus {
+        color: #999;
+        background: #151515;
+        border-color: #333;
+        border-bottom-color: transparent;
+      }
+    }
+    & > li > a:hover,
+    & > li > a:focus {
+      border-color: #333;
+    }
+  }
+
+  div.tabbable div.tab-pane {
+    padding-top: 10px;
+  }
+
+  .table .table {
+    background: none;
+  }
+
+  .table-bordered {
+    border-color: #444;
+  }
+  .table-bordered th, .table-bordered td {
+    border-left-color: #444;
+  }
+
+  .footer .media-object {
+    background: #151515;
+  }
+
+  /**
+   * Station Player
+   */
+
+  .station {
+    .playing {
+      background: #222;
+    }
+
+    &.offline,
+    &.offline h4 small {
+      color: #999;
+    }
+
+    &.live,
+    &.live h4 small {
+      color: #B4D1EF;
+    }
+  }
+}

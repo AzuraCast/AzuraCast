@@ -18,7 +18,9 @@ $this->headLink()
 <? if ($this->station_id && $this->autoplay): ?>
 <script type="text/javascript">
     $(function() {
-        playStation($('.station[data-id="<?=$this->station_id ?>"]').attr('id'));
+        setTimeout(function() {
+            playStation($('.station[data-id="<?=$this->station_id ?>"]').attr('id'));
+        }, 1000);
     });
 </script>
 <? endif; ?>

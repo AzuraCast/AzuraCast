@@ -1,6 +1,8 @@
 <?php
 $router = new \Phalcon\Mvc\Router(true);
 
+
+
 $router->add('/admin', array(
     'module' => 'backend',
     'controller' => 'index',
@@ -11,6 +13,7 @@ $router->add('/index', array(
     'controller' => 'index',
     'action' => 'index'
 ));
+
 $router->add('/', array(
     'module' => 'frontend',
     'controller' => 'index',

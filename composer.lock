@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a2dcaba671944856f06618be1a717f2d",
+    "hash": "7f51d53eec75b9dacad7675b59414c2d",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "3b6668f54ad3f95d68b64a742f6b0de55d6caeb1"
+                "reference": "b5202eb9e83f8db52e0e58867e0a46e63be8332e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/3b6668f54ad3f95d68b64a742f6b0de55d6caeb1",
-                "reference": "3b6668f54ad3f95d68b64a742f6b0de55d6caeb1",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/b5202eb9e83f8db52e0e58867e0a46e63be8332e",
+                "reference": "b5202eb9e83f8db52e0e58867e0a46e63be8332e",
                 "shasum": ""
             },
             "require": {
@@ -72,7 +72,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2014-11-04 15:34:10"
+            "time": "2014-12-23 22:40:37"
         },
         {
             "name": "doctrine/cache",
@@ -80,12 +80,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "85ff6118558d7b2501cd85b31bdc1ffc0cab731a"
+                "reference": "803a41469d948bc120a6c913399e8bfc8b5d9650"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/85ff6118558d7b2501cd85b31bdc1ffc0cab731a",
-                "reference": "85ff6118558d7b2501cd85b31bdc1ffc0cab731a",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/803a41469d948bc120a6c913399e8bfc8b5d9650",
+                "reference": "803a41469d948bc120a6c913399e8bfc8b5d9650",
                 "shasum": ""
             },
             "require": {
@@ -142,7 +142,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2014-11-27 00:22:12"
+            "time": "2014-12-08 23:13:26"
         },
         {
             "name": "doctrine/collections",
@@ -216,12 +216,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "559a805125524b0bb6742638784c2979a5c5e607"
+                "reference": "c819359fc0babd36620e4b48d2eb0c6dacbc48a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/559a805125524b0bb6742638784c2979a5c5e607",
-                "reference": "559a805125524b0bb6742638784c2979a5c5e607",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/c819359fc0babd36620e4b48d2eb0c6dacbc48a2",
+                "reference": "c819359fc0babd36620e4b48d2eb0c6dacbc48a2",
                 "shasum": ""
             },
             "require": {
@@ -281,7 +281,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2014-07-27 17:39:50"
+            "time": "2015-01-01 17:37:36"
         },
         {
             "name": "doctrine/dbal",
@@ -289,12 +289,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "40fd004725b4aa902aea170cd15152b06a6faba0"
+                "reference": "608d2a281b58209b8e2f69e5286c0108e254350e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/40fd004725b4aa902aea170cd15152b06a6faba0",
-                "reference": "40fd004725b4aa902aea170cd15152b06a6faba0",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/608d2a281b58209b8e2f69e5286c0108e254350e",
+                "reference": "608d2a281b58209b8e2f69e5286c0108e254350e",
                 "shasum": ""
             },
             "require": {
@@ -314,7 +314,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5.x-dev"
+                    "dev-master": "2.6.x-dev"
                 }
             },
             "autoload": {
@@ -352,7 +352,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2014-11-24 15:49:52"
+            "time": "2015-01-01 16:43:32"
         },
         {
             "name": "doctrine/inflector",
@@ -360,12 +360,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "8a0b96e65d2399d6f95b75de11134843a2c61feb"
+                "reference": "e5eaf8c7ded0877195b5d2848491e17b1c0a6c4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/8a0b96e65d2399d6f95b75de11134843a2c61feb",
-                "reference": "8a0b96e65d2399d6f95b75de11134843a2c61feb",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/e5eaf8c7ded0877195b5d2848491e17b1c0a6c4d",
+                "reference": "e5eaf8c7ded0877195b5d2848491e17b1c0a6c4d",
                 "shasum": ""
             },
             "require": {
@@ -419,7 +419,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2014-10-05 18:49:49"
+            "time": "2015-01-01 18:34:57"
         },
         {
             "name": "doctrine/lexer",
@@ -592,6 +592,64 @@
             "time": "2013-03-21 12:39:33"
         },
         {
+            "name": "filp/whoops",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filp/whoops.git",
+                "reference": "542400d23369c3c9f1ff221858ba4b220bcc4245"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/542400d23369c3c9f1ff221858ba4b220bcc4245",
+                "reference": "542400d23369c3c9f1ff221858ba4b220bcc4245",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Whoops": "src/"
+                },
+                "classmap": [
+                    "src/deprecated"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Filipe Dobreira",
+                    "homepage": "https://github.com/filp",
+                    "role": "Developer"
+                }
+            ],
+            "description": "php error handling for cool kids",
+            "homepage": "https://github.com/filp/whoops",
+            "keywords": [
+                "error",
+                "exception",
+                "handling",
+                "library",
+                "silex-provider",
+                "whoops",
+                "zf2"
+            ],
+            "time": "2014-11-29 09:19:11"
+        },
+        {
             "name": "james-heinrich/getid3",
             "version": "v1.9.8",
             "source": {
@@ -628,12 +686,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phalcon/phalcon-devtools.git",
-                "reference": "169058d5b12782a771f198f638429975460ec136"
+                "reference": "070c3c3a51c81944ae241267e271ee9ce8ebf066"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phalcon/phalcon-devtools/zipball/169058d5b12782a771f198f638429975460ec136",
-                "reference": "169058d5b12782a771f198f638429975460ec136",
+                "url": "https://api.github.com/repos/phalcon/phalcon-devtools/zipball/070c3c3a51c81944ae241267e271ee9ce8ebf066",
+                "reference": "070c3c3a51c81944ae241267e271ee9ce8ebf066",
                 "shasum": ""
             },
             "require": {
@@ -664,7 +722,7 @@
                 "framework",
                 "phalcon"
             ],
-            "time": "2014-10-14 02:42:17"
+            "time": "2014-12-11 14:36:33"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -730,12 +788,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "c5e1a11682f97c1330223268b2a8105f3fc3630d"
+                "reference": "1576b36b25204ae72d4c4577b985181cf3cd0a98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/c5e1a11682f97c1330223268b2a8105f3fc3630d",
-                "reference": "c5e1a11682f97c1330223268b2a8105f3fc3630d",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/1576b36b25204ae72d4c4577b985181cf3cd0a98",
+                "reference": "1576b36b25204ae72d4c4577b985181cf3cd0a98",
                 "shasum": ""
             },
             "require": {
@@ -743,8 +801,8 @@
             },
             "require-dev": {
                 "psr/log": "~1.0",
-                "symfony/event-dispatcher": "~2.1",
-                "symfony/process": "~2.1"
+                "symfony/event-dispatcher": "~2.1|~3.0.0",
+                "symfony/process": "~2.1|~3.0.0"
             },
             "suggest": {
                 "psr/log": "For using the console logger",
@@ -778,7 +836,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-11-30 15:28:47"
+            "time": "2014-12-30 13:34:24"
         },
         {
             "name": "zendframework/zendframework1",

@@ -146,8 +146,8 @@ class Instance implements \Phalcon\DI\InjectionAwareInterface
      */
     public function checkPermission($action)
     {
-        $auth = \Zend_Registry::get('auth');
-        
+        $auth = $this->_di->get('auth');
+
         if (!$this->isAllowed($action))
         {
             if (!$auth->isLoggedIn())

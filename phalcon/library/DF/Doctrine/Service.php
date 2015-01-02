@@ -1,10 +1,10 @@
 <?php
-namespace DF\Service;
+namespace DF\Doctrine;
 
 use \Doctrine\Common\ClassLoader;
 use \Doctrine\DBAL\Types\Type;
 
-class Doctrine
+class Service
 {
     public static function init($options)
     {
@@ -127,21 +127,7 @@ class Doctrine
         }
 
         // Try the connection before rendering the page.
-        try
-        {
-            $em->getConnection()->connect();
-        }
-        catch(\Exception $e)
-        {
-            $db_config_location = str_replace(DF_INCLUDE_ROOT, '', DF_INCLUDE_APP).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'application.conf.php';
-
-            \DF\Application\Maintenance::display('
-                <h2>Database Error</h2>
-                <p>The system could not connect to the database. Verify that the information listed in "<i>'.$db_config_location.'</i>" is correct.</p>
-                <blockquote>'.$e->getMessage().'</blockquote>
-            ');
-            exit;
-        }
+        $em->getConnection()->connect();
 
         return $em;
     }

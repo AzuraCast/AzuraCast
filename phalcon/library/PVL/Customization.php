@@ -32,7 +32,7 @@ class Customization
     public static function getCustom($key)
     {
         // Check for permanent variable if logged in.
-        $auth = \Zend_Registry::get('auth');
+        $auth = \Phalcon\DI::getDefault()->get('auth');
         if ($auth->isLoggedIn())
         {
             $user = $auth->getLoggedInUser();
@@ -94,7 +94,7 @@ class Customization
         static $defaults;
         if (!$defaults)
         {
-            $config = \Zend_Registry::get('config');
+            $config = \Phalcon\DI::getDefault()->get('config');
             $defaults = $config->pvl->customization_defaults->toArray();
         }
         return $defaults;

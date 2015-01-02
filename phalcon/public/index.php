@@ -4,15 +4,9 @@ use Phalcon\Mvc\Application;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-try {
+require(__DIR__ . '/../app/bootstrap.php');
 
-    $di = require(__DIR__ . '/../app/bootstrap.php');
-    $application = new Application($di);
+$application = new Application($di);
+$application->registerModules($phalcon_modules);
 
-    echo $application->handle()->getContent();
-
-} catch (Exception $e) {
-
-    echo $e->getMessage();
-
-}
+echo $application->handle()->getContent();

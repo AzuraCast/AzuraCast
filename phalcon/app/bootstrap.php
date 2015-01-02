@@ -54,6 +54,9 @@ $config->preload(array('application','general'));
 // Loop through modules to find configuration files or libraries.
 $module_config_dirs = array();
 $modules = scandir(DF_INCLUDE_MODULES);
+
+$phalcon_modules = array();
+
 foreach($modules as $module)
 {
     if ($module == '.' || $module == '..')
@@ -62,6 +65,11 @@ foreach($modules as $module)
     $config_directory = DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'config';
     if (file_exists($config_directory))
         $module_config[$module] = new \DF\Config($config_directory);
+
+    $phalcon_modules[$module] = array(
+        'className' => 'Modules\\'.ucfirst($module).'\Module',
+        'path' => DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'/Module.php',
+    );
 }
 
 $autoload_classes = $config->application->autoload->toArray();
@@ -81,9 +89,16 @@ foreach($autoload_classes['psr4'] as $class_key => $class_dir)
 // $em = \Zend_Registry::get('em');
 // \DF\Doctrine\Session\SaveHandler::register($em);
 
-// PVL-specific customization.
-$system_tz = \PVL\Customization::get('timezone');
-@date_default_timezone_set($system_tz);
+// Register error-handler.
+$run     = new \Whoops\Run;
+
+$handler = new \Whoops\Handler\PrettyPageHandler;
+$handler->setPageTitle("Whoops! There was a problem.");
+$run->pushHandler($handler);
+
+// $run->pushHandler(new \Whoops\Handler\JsonResponseHandler);
+
+$run->register();
 
 $di = new \Phalcon\DI\FactoryDefault();
 
@@ -95,6 +110,9 @@ $di['router'] = function() {
 // Configs
 $di['config'] = $config;
 $di['module_config'] = $module_config;
+
+// Database
+$di->setShared('em', '\DF\Doctrine\Service');
 
 // Auth and ACL
 $di->setShared('auth', '\DF\Auth\Model');
@@ -114,4 +132,6 @@ $di->set('session', function() {
     return $session;
 });
 
-return $di;
+// PVL-specific customization.
+$system_tz = \PVL\Customization::get('timezone');
+@date_default_timezone_set($system_tz);

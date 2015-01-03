@@ -5,7 +5,7 @@
 </head>
 <body>
 <div style="background: coral">
-    <?php echo $this->getContent(); ?>
+    {{ content }}
 </div>
 </body>
 </html>

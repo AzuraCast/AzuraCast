@@ -32,8 +32,13 @@ class Module
             $view = new \Phalcon\Mvc\View();
 
             $view->setViewsDir(__DIR__ . '/views/');
-            $view->setLayoutsDir('../../../templates');
-            $view->setTemplateAfter('main');
+            $view->setLayoutsDir('../../templates');
+
+            $view->setTemplateAfter('main.volt');
+
+            $view->registerEngines(array(
+                ".volt" => 'Phalcon\Mvc\View\Engine\Volt'
+            ));
 
             return $view;
         };

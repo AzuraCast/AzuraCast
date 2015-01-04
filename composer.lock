@@ -289,12 +289,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "608d2a281b58209b8e2f69e5286c0108e254350e"
+                "reference": "a8f66a29d06856356681ba8480e80015c7227f33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/608d2a281b58209b8e2f69e5286c0108e254350e",
-                "reference": "608d2a281b58209b8e2f69e5286c0108e254350e",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/a8f66a29d06856356681ba8480e80015c7227f33",
+                "reference": "a8f66a29d06856356681ba8480e80015c7227f33",
                 "shasum": ""
             },
             "require": {
@@ -352,7 +352,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2015-01-01 16:43:32"
+            "time": "2015-01-04 00:25:17"
         },
         {
             "name": "doctrine/inflector",
@@ -788,12 +788,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "1576b36b25204ae72d4c4577b985181cf3cd0a98"
+                "reference": "3591799139ecb629248fa8db2eae39e13fe41697"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/1576b36b25204ae72d4c4577b985181cf3cd0a98",
-                "reference": "1576b36b25204ae72d4c4577b985181cf3cd0a98",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/3591799139ecb629248fa8db2eae39e13fe41697",
+                "reference": "3591799139ecb629248fa8db2eae39e13fe41697",
                 "shasum": ""
             },
             "require": {
@@ -836,7 +836,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-12-30 13:34:24"
+            "time": "2015-01-03 15:46:01"
         },
         {
             "name": "zendframework/zendframework1",
@@ -893,6 +893,7 @@
         "phalcon/devtools": 20
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": [],
     "platform-dev": []
 }

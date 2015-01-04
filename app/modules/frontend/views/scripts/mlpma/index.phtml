@@ -1,0 +1,60 @@
+<?
+$this->headTitle('The MLP Music Archive');
+
+$this->custom_styles = array(\DF\Url::content('mlpma/style.css'));
+?>
+
+<?php
+$this->placeholder('content_top')->captureStart();
+?>
+<div id="secondary_header_stripe" class="rich_header">
+    <a href="<?=$this->route(array('module' => 'mlpma')) ?>" class="ajax"><img src="<?=\DF\Url::content('mlpma/mlpma_logo.png') ?>" alt="The MLP Music Archive, a Ponyville Live! Project"></a>
+</div>
+<?
+$this->placeholder('content_top')->captureEnd();
+?>
+
+<div class="row-fluid">
+    <div class="span8">
+        <h2>About the Archive</h2>
+        <p>The MLP Music Archive is a project created by fans of the brony music community, with the purpose of preserving the entirety of brony music in a single collection. Artists and the art they create come and go, and move on from the fandom, but the archive seeks to keep their music intact for the community to enjoy indefinitely.</p>
+
+        <p>An updated version of the archive for 2014 is currently under active development. Older versions of the archive are still available for download using the links below.</p>
+
+        <h3>Latest Version</h3>
+        <p>You can download the newest MLP Music Archive using the link below.</p>
+
+        <div class="buttons">
+            <?=$this->button(array(
+                'type'      => 'link',
+                'class'     => 'btn-large btn-primary',
+                'icon'      => 'icon-download',
+                'text'      => 'Download MLPMA Version 15, Fall 2013 (.torrent)',
+                'href'      => '//ponyvillelive.com/resources/mlpma_v15.torrent',
+            )) ?>
+        </div>
+
+        <h3>Older Versions</h3>
+        <p>Old versions of the MLP Music Archive are available for download below.</p>
+
+        <ul class="nav nav-list">
+            <li><a href="//ponyvillelive.com/resources/mlpma_v14.torrent"><i class="icon-download"></i> MLPMA Version 14, Fall 2012 (.torrent)</a></li>
+        </ul>
+    </div>
+    <div class="span4">
+        <h2>Online Music Services</h2>
+
+        <p>Looking for pony music to listen to online or add to your collection? Check out these awesome music sites for more.</p>
+
+        <ul>
+            <li><a href="http://www.pony.fm" target="_blank">Pony.fm by Poniverse</a></li>
+            <li><a href="http://www.bronytunes.com/" target="_blank">BronyTunes</a></li>
+            <li><a href="http://www.eqbeats.org/" target="_blank">Equestrian Beats</a></li>
+        </ul>
+
+        <h2>About .torrent Files</h2>
+        <p>A .torrent file lets you download files from the BitTorrent peer-to-peer file sharing network. Since the MLPMA is so large, this is the best way to make sure everyone can download it at the fastest possible speeds, without overloading servers in the process.</p>
+
+        <p>In order to download .torrent files, you will need a BitTorrent downloader tool. There are many options available, but a simple lightweight option is the <a href="http://deluge-torrent.org/">Deluge</a> client.</p>
+    </div>
+</div>

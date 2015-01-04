@@ -1,0 +1,233 @@
+<?php
+$this->view->manual = TRUE;
+$this->view->hide_title = true;
+$this->render_mode = 'homepage';
+?>
+
+<?
+ob_start();
+?>
+<div id="home_header" class="rich_header">
+    <div class="container">
+    <? if ($this->view->special_event): ?>
+        <div class="well">
+            <div class="special_event">
+                <div class="row-fluid">
+                    <? if (empty($this->view->special_chat_embed)): ?>
+                        <div class="span12"><?=$this->view->special_event_embed ?></div>
+                    <? else: ?>
+                        <div class="span7"><?=$this->view->special_event_embed ?></div>
+                        <div class="span5"><?=$this->renderHere('chat', TRUE) ?></div>
+                    <? endif; ?>
+                </div>
+            </div>
+        </div>
+    <? elseif (count($this->view->network_news) > 0): ?>
+        <div class="well carousel slide" id="rotator" data-interval="5000">     
+            <ol class="carousel-indicators">
+            <? for($i = 0; $i < count($this->view->network_news); $i++): ?>
+                <li data-target="#rotator" data-slide-to="<?=$i ?>" <? if ($i == 0): ?>class="active"<? endif; ?>></li>
+            <? endfor; ?>
+            </ol>
+            <div class="carousel-inner">
+            <? foreach($this->view->network_news as $i => $article): ?>
+                <div class="item <? if ($i == 0): ?>active<? endif; ?>">
+                    <a href="<?=$article['url'] ?>"><img src="<?=$article['image'] ?>" alt="Article Image"></a>
+                    <div class="carousel-caption">
+                        <a href="<?=$article['url'] ?>">
+                            <h4><?=$article['title'] ?></h4>
+                            <p><?=$article['description'] ?> <small>Read more &raquo;</small></p>
+                        </a>
+                    </div>
+                </div>
+            <? endforeach; ?>
+            </div>
+
+            <a class="carousel-control left" href="#rotator" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" href="#rotator" data-slide="next">&rsaquo;</a>
+        </div>
+    <? endif; ?>
+    </div>
+</div>
+<div class="hero">
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span6 hero-text">
+                <h4>Your Home for Pony Media</h4>
+                <p><a href="<?=$this->url->get('about') ?>">Ponyville Live!</a> is a network of <a href="#section_radio">radio stations</a>, <a href="#section_video">video streams</a>, and <a href="#section_shows">shows</a>.</p>
+            </div>
+            <div class="span3 hero-apps">
+                <h5>Take Ponyville Live! With You</h5>
+                <div class="btn-group">
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'link',
+                        'icon'      => 'icon-cloud-download',
+                        'text'      => 'Apps &amp; Players',
+                        'href'      => $this->url->get('index/app'),
+                    )) ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'link',
+                        'icon'      => 'icon-mobile-phone',
+                        'text'      => 'PVL! Mobile',
+                        'href'      => 'http://m.pvlive.me/',
+                    )) ?>
+                </div>
+            </div>
+            <div class="span3 hero-social">
+                <h5>Ponyville Live! on the Web</h5>
+
+                <div>
+                    <a href="https://www.youtube.com/ponyvilleliveglobal" target="_blank"><img src="<?=\DF\Url::content('social/youtube_32.png') ?>" alt="YouTube"></a>
+                    <a href="https://twitter.com/PonyvilleLive" target="_blank"><img src="<?=\DF\Url::content('social/twitter_32.png') ?>" alt="Twitter"></a>
+                    <a href="http://news.ponyvillelive.com/" target="_blank"><img src="<?=\DF\Url::content('social/tumblr_32.png') ?>" alt="Tumblr"></a>
+                    <a href="https://www.facebook.com/pages/Ponyville-LIVE/517435684948331" target="_blank"><img src="<?=\DF\Url::content('social/facebook_32.png') ?>" alt="Facebook"></a>
+                    <a href="http://steamcommunity.com/groups/ponyvillelive" target="_blank"><img src="<?=\DF\Url::content('social/steam_32.png') ?>" alt="Steam"></a>
+                    <a href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" target="_blank"><img src="<?=\DF\Url::content('social/google_plus_32.png') ?>" alt="Google Plus"></a>
+                    <a href="<?=$this->url->get('show/feed') ?>" target="_blank"><img src="<?=\DF\Url::content('social/rss_32.png') ?>" alt="RSS Feed"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?
+$this->view->content_top = ob_get_contents();
+ob_end_clean();
+?>
+
+<?
+$cat = $this->view->categories['audio'];
+$station_cols = \DF\Utilities::columns($cat['stations'], 3);
+?>
+
+<h2 id="section_radio"><i class="<?=$cat['icon'] ?>"></i> Pony Radio Stations <small><span id="nowplaying-listeners-audio"></span></small></h2>
+
+<div class="row-fluid">
+    <div class="span4">
+        <?
+        $this->view->stations = $station_cols[0];
+        echo $this->partial('station');
+        ?>
+    </div>
+    <div class="span4">
+        <?
+        $this->view->stations = $station_cols[1];
+        echo $this->partial('station');
+        ?>
+    </div>
+    <div class="span4">
+        <?
+        $this->view->stations = $station_cols[2];
+        echo $this->partial('station');
+        ?>
+    </div>
+</div>
+
+<!-- Show/Video Headers -->
+<div class="row-fluid">
+    <div class="span8">
+        <h2 id="section_shows"><i class="icon-rss"></i> Shows <small>Showing new episodes, <a href="<?=$this->url->get('show') ?>">view all</a></small></h2>
+    </div>
+    <div class="span4">
+        <h2 id="section_video"><i class="<?=$this->view->categories['video']['icon'] ?>"></i> Video Streams <small><span id="nowplaying-listeners-video"></span></small></h2>
+    </div>
+</div>
+
+<!-- Show/Video Content -->
+<?
+$podcasts = array_slice($this->view->podcasts, 0, 8);
+$podcast_cols = \DF\Utilities::columns($podcasts, 2, true);
+?>
+
+<div class="row-fluid">
+    <div class="span4">
+        <?
+        $this->view->podcasts = $podcast_cols[0];
+        echo $this->partial('podcast');
+        ?>
+    </div>
+    <div class="span4">
+        <?
+        $this->view->podcasts = $podcast_cols[1];
+        echo $this->partial('podcast');
+        ?>
+    </div>
+    <div class="span4">
+        <?
+        $cat = $this->view->categories['video'];
+        $this->view->stations = $cat['stations'];
+        echo $this->partial('station');
+        ?>
+    </div>
+</div>
+
+<?
+$tz_info = \PVL\Timezone::getInfo();
+?>
+<h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a>, see <a href="<?=$this->url->get('schedule') ?>">entire schedule</a></small></h2>
+
+<?
+echo $this->view->getRender('index', 'schedule');
+?>
+
+<h2><i class="icon-folder-open-alt"></i> Convention Archives</h2>
+
+<?
+$cons = array_slice($this->view->conventions_archived, 0, 12);
+$cols = \DF\Utilities::columns($cons, 3);
+?>
+
+<div class="row-fluid">
+<? foreach($cols as $col): ?>
+    <div class="span4">
+        <? foreach($col as $record): ?>
+            <a class="convention coverage_<?=$record['coverage_level'] ?>" href="">
+                <div class="coverage" title="<?=$record['coverage']['text'] ?>">
+                    <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
+                </div>
+                <div class="name">
+                    <h4><?=$record['name'] ?></h4>
+                    <?=$record['location'] ?> &bull; <?=$record['range'] ?>
+                </div>
+            </a>
+        <? endforeach; ?>
+    </div>
+<? endforeach; ?>
+</div>
+
+<!-- Player Interface Skeleton Code -->
+<?
+echo $this->view->getRender('', 'player-skeleton');
+?>
+
+<!-- Schedule Reloader -->
+<script type="text/javascript">
+var schedule_timeout;
+var schedule_interval = 300000;
+
+$(function() {
+
+    $('.btn-play-station').click(function(e) {
+        e.preventDefault();
+
+        var station_id = $(this).data('station');
+        playStation(station_id);
+
+        return false;
+    });
+
+    schedule_timeout = setTimeout('updateSchedule()', schedule_interval);
+
+});
+
+function updateSchedule()
+{
+    $('#schedule_container').load('<?=$this->url->get('index/schedule') ?>', function(rt, status)
+    {
+        if (status == 'success')
+        {
+            clearTimeout(schedule_timeout);
+            schedule_timeout = setTimeout('updateSchedule()', schedule_interval);
+        }
+    });
+}
+</script>

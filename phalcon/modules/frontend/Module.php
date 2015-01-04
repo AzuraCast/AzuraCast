@@ -32,7 +32,8 @@ class Module
             $view = new \Phalcon\Mvc\View();
 
             $view->setViewsDir(__DIR__ . '/views/');
-            $view->setLayoutsDir('../../templates');
+            $view->setLayoutsDir('../../../templates');
+            $view->setPartialsDir('../../../templates/shared');
 
             $view->setTemplateAfter('main.volt');
 

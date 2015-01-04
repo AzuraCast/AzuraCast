@@ -55,12 +55,16 @@ $config->preload(array('application','general'));
 $module_config_dirs = array();
 $modules = scandir(DF_INCLUDE_MODULES);
 
+$module_names = array();
+$module_config = array();
 $phalcon_modules = array();
 
 foreach($modules as $module)
 {
     if ($module == '.' || $module == '..')
         continue;
+
+    $module_names[] = $module;
 
     $config_directory = DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'config';
     if (file_exists($config_directory))
@@ -92,14 +96,16 @@ $run->register();
 
 $di = new \Phalcon\DI\FactoryDefault();
 
-$di['router'] = function() {
+// Configs
+$di->setShared('config', $config);
+$di->setShared('module_config', function() use ($module_names) { return $module_config; });
+$di->setShared('module_names', function() use ($module_names) { return $module_names; });
+
+// Router
+$di->setShared('router', function() use ($di) {
     $router = require DF_INCLUDE_BASE . '/routes.php';
     return $router;
-};
-
-// Configs
-$di['config'] = $config;
-$di['module_config'] = $module_config;
+});
 
 // Database
 $di->setShared('em', function() use ($config) {

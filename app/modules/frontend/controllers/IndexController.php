@@ -96,6 +96,9 @@ class IndexController extends \DF\Phalcon\Controller
     public function donateAction()
     {}
 
+    public function aboutAction()
+    {}
+
     public function scheduleAction()
     {
         // Pull stations.

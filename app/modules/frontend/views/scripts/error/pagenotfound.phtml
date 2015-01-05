@@ -1,6 +1,6 @@
 <?php
-$this->headTitle('404: Page Not Found');
-$this->layout()->manual = true;
+$this->view->setVar('title', '404: Page Not Found');
+$this->view->manual = true;
 
 $sayings = array(
     'Yeah...It\'s a Mystery.',

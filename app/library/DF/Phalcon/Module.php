@@ -26,6 +26,7 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
 
     public function registerServices($di)
     {
+        // Set up MVC dispatcher.
         $controller_class = 'Modules\\'.$this->_module_class_name.'\Controllers';
 
         $di['dispatcher'] = function () use ($controller_class) {
@@ -34,10 +35,18 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
             return $dispatcher;
         };
 
-        /**
-         * Setting up the view component
-         */
+        // Set up module-specific configuration.
+        $module_base_name = strtolower($this->_module_class_name);
+        $module_config = $di->get('module_config');
 
+        $di->setShared('current_module_config', function() use ($module_base_name, $module_config) {
+            if (isset($module_config[$module_base_name]))
+                return $module_config[$module_base_name];
+            else
+                return null;
+        });
+
+        // Set up the view component and shared templates.
         $views_dir = $this->_module_dir . '/views/scripts/';
 
         $di['view'] = function () use($views_dir) {

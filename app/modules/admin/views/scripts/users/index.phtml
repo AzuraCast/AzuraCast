@@ -1,5 +1,5 @@
 <?
-$this->headTitle('Manage Users');
+$this->view->setVar('title', 'Manage Users');
 ?>
 
 <div class="buttons">
@@ -72,7 +72,7 @@ $this->headTitle('Manage Users');
                 </div>
             </td>
             <td><big><?=$user->name ?></big></td>
-            <td><?=$this->mailto($user->email) ?></td>
+            <td><?=$this->viewHelper->mailto($user->email) ?></td>
             <td>
                 <small>
                 <?

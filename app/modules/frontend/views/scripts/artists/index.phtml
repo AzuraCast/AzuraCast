@@ -1,6 +1,6 @@
 <?php
-$this->headTitle('PVL Artists');
-$this->layout()->manual = true;
+$this->view->setVar('title', 'PVL Artists');
+$this->view->manual = true;
 
 $categories = \Entity\Artist::getSocialTypes();
 ?>

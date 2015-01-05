@@ -1,5 +1,5 @@
 <?
-$this->headTitle('Manage Conventions');
+$this->view->setVar('title', 'Manage Conventions');
 ?>
 
 <h2><?=$this->convention->name ?></h2>
@@ -70,7 +70,7 @@ $this->headTitle('Manage Conventions');
                 <?=$record->legal_name ?>
             </td>
             <td>
-                <?=$this->mailto($record->email) ?>
+                <?=$this->viewHelper->mailto($record->email) ?>
             </td>
             <td>
                 <?=$record->phone ?>

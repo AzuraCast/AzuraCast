@@ -1,5 +1,5 @@
 <?php
-$this->headTitle('Station Schedules');
+$this->view->setVar('title', 'Station Schedules');
 ?>
 <ul class="nav nav-pills autoselect" rel="<?=$this->station ?>">
     <li rel="all"><a href="<?=$this->viewHelper->routeFromHere(array('station' => 'all')) ?>">All Schedules</a></li>

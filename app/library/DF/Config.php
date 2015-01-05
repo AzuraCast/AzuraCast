@@ -54,7 +54,7 @@ class Config
         if (file_exists($config_base))
             return new \Phalcon\Config(require $config_base);
         if (file_exists($config_base.'.conf.php'))
-            return new \Phalcon\Config\Adapter\Php($config_base.'.conf.php');
+            return new \Phalcon\Config(require $config_base.'.conf.php');
         else if (file_exists($config_base.'.ini'))
             return new \Phalcon\Config\Adapter\Ini($config_base.'.ini');
         else if (file_exists($config_base.'.json'))

@@ -1,4 +1,4 @@
 <?php
-$this->headTitle($this->block->title);
+$this->view->setVar('title', $this->block->title);
 echo \Entity\Block::render($this->block);
 ?>

@@ -1,6 +1,6 @@
 <?
-$this->headTitle('Convention Center');
-$this->layout()->manual = true;
+$this->view->setVar('title', 'Convention Center');
+$this->view->manual = true;
 ?>
 
 <div class="row-fluid">
@@ -8,12 +8,12 @@ $this->layout()->manual = true;
         <h2>PVL! Convention Coverage</h2>
         <p>The <b>Ponyville Live!</b> network is proud to offer free-of-charge convention streaming and recording services, when available, to any convention within the My Little Pony fan community. This is a service we are able to provide thanks to our international team of videographers.</p>
 
-        <p>Below is a list of conventions our network will be attending soon. If you're hosting a MLP convention and would like to inquire about the PVL network covering your event, please contact us at <?=$this->mailto('pr@ponyvillelive.com') ?>.</p>
+        <p>Below is a list of conventions our network will be attending soon. If you're hosting a MLP convention and would like to inquire about the PVL network covering your event, please contact us at <?=$this->viewHelper->mailto('pr@ponyvillelive.com') ?>.</p>
 
         <h3>Upcoming Conventions</h3>
 
         <dl>
-        <? foreach($this->conventions_upcoming as $record): ?>
+        <? foreach($this->view->conventions_upcoming as $record): ?>
             <? if ($record['coverage_level'] != "none"): ?>
             <dt><a href="<?=$record['web_url'] ?>" target="_blank"><?=$record['name'] ?></a></dt>
             <dd>
@@ -29,7 +29,7 @@ $this->layout()->manual = true;
         <h2>Convention Video Archives</h2>
 
         <?
-        $cols = \DF\Utilities::columns($this->conventions_archived);
+        $cols = \DF\Utilities::columns($this->view->conventions_archived);
         ?>
         <div class="conventions row-fluid">
             <? foreach($cols as $col): ?>

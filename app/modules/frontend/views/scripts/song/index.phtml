@@ -2,8 +2,8 @@
 $song_info = $this->song;
 $song = $this->song['record'];
 
-$this->headTitle($song->title.' by '.$song->artist);
-$this->layout()->hide_title = true;
+$this->view->setVar('title', $song->title.' by '.$song->artist);
+$this->view->hide_title = true;
 ?>
 
 <div class="song_info">

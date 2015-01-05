@@ -1,6 +1,6 @@
 <?php
-$this->headTitle('Artist Profile: '.$this->artist->name);
-$this->layout()->manual = true;
+$this->view->setVar('title', 'Artist Profile: '.$this->artist->name);
+$this->view->manual = true;
 
 $social_links = \Entity\Artist::getSocialTypes();
 ?>
@@ -55,7 +55,7 @@ $social_links = \Entity\Artist::getSocialTypes();
                                 <?
                                 $link = $this->artist[$key];
                                 $text = \DF\Utilities::truncateUrl($link);
-                                $icon = $this->icon(array('type' => 'social32', 'image' => $link_info['icon']));
+                                $icon = $this->viewHelper->icon(array('type' => 'social32', 'image' => $link_info['icon']));
                                 ?>
                                 <div class="media">
                                     <div class="media-object pull-left">
@@ -88,7 +88,7 @@ $social_links = \Entity\Artist::getSocialTypes();
             <? foreach($this->news as $article): ?>
                 <li class="media news-article article_type_all article_type_<?=$article['source'] ?>">
                     <div class="media-object pull-left">
-                        <a href="<?=$article['web_url'] ?>"><?=$this->icon(array('type' => 'social32', 'image' => $social_links[$article['source']]['icon'])) ?></a>
+                        <a href="<?=$article['web_url'] ?>"><?=$this->viewHelper->icon(array('type' => 'social32', 'image' => $social_links[$article['source']]['icon'])) ?></a>
                     </div>
                     <div class="media-body">
                         <h4>

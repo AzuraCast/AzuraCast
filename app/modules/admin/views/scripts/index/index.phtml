@@ -1,17 +1,17 @@
 <?
-$this->headTitle('System Administration');
-$this->layout()->manual = true;
+$this->view->setVar('title', 'System Administration');
+$this->view->manual = true;
 
-$this->headScript()
-    ->appendFile('//cdn.socket.io/socket.io-1.2.1.js')
-    ->appendFile(\DF\Url::content('vendor/moment/moment.js'))
-    ->appendFile('//code.highcharts.com/highcharts.js')
-    ->appendFile('//code.highcharts.com/highcharts-more.js')
-    ->appendFile('//code.highcharts.com/modules/exporting.js');
+$this->assets
+    ->addJs('//cdn.socket.io/socket.io-1.2.1.js', false)
+    ->addJs('//code.highcharts.com/highcharts.js', false)
+    ->addJs('//code.highcharts.com/highcharts-more.js', false)
+    ->addJs('//code.highcharts.com/modules/exporting.js', false)
+    ->addJs('vendor/moment/moment.js');
 
 $skin = \PVL\Customization::get('theme');
 if ($skin == "dark")
-    $this->headScript()->appendFile(\DF\Url::content('highcharts/dark-blue.js'));
+    $this->assets->addCss('highcharts/dark-blue.js');
 ?>
 
 <div class="row-fluid">

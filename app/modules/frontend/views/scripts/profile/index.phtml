@@ -1,5 +1,5 @@
 <?
-$this->headTitle('My Profile');
+$this->view->setVar('title', 'My Profile');
 ?>
 
 <div class="row-fluid">
@@ -22,7 +22,7 @@ $this->headTitle('My Profile');
                 </a>
                 <div class="media-body">
                     <div><big><?=$this->user->name ?></big></div>
-                    <div><?=$this->mailto($this->user->email) ?></div>
+                    <div><?=$this->viewHelper->mailto($this->user->email) ?></div>
                 </div>
             </div>
         </div>

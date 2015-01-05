@@ -1,6 +1,6 @@
 <?php
-$this->headTitle($this->type_name);
-$this->layout()->manual = true;
+$this->view->setVar('title', $this->type_name);
+$this->view->manual = true;
 ?>
 
 <div class="row">

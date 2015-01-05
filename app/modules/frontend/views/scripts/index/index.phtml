@@ -165,9 +165,7 @@ $tz_info = \PVL\Timezone::getInfo();
 ?>
 <h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a>, see <a href="<?=$this->url->get('schedule') ?>">entire schedule</a></small></h2>
 
-<?
-echo $this->view->getRender('index', 'schedule');
-?>
+<? echo $this->partial('schedule') ?>
 
 <h2><i class="icon-folder-open-alt"></i> Convention Archives</h2>
 
@@ -180,7 +178,8 @@ $cols = \DF\Utilities::columns($cons, 3);
 <? foreach($cols as $col): ?>
     <div class="span4">
         <? foreach($col as $record): ?>
-            <a class="convention coverage_<?=$record['coverage_level'] ?>" href="">
+            <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$this->viewHelper->route(array('controller' => 'convention', 'action' => 'archive', 'id' => $record['id'])) ?>">
+                <img src="<?=\DF\Url::content($record['images']['thumb']) ?>" alt="Convention Image">
                 <div class="coverage" title="<?=$record['coverage']['text'] ?>">
                     <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
                 </div>

@@ -57,7 +57,7 @@ class Customization
         $session->$key = $new_value;
 
         // Set permanent record if logged in.
-        $auth = \Zend_Registry::get('auth');
+        $auth = \Phalcon\DI::getDefault()->get('auth');
         if ($auth->isLoggedIn())
         {
             $user = $auth->getLoggedInUser();

@@ -1,7 +1,7 @@
 <?php
-$this->headTitle('Chat Mode');
-$this->layout()->manual = true;
-$this->layout()->hide_title = true;
+$this->view->setVar('title', 'Chat Mode');
+$this->view->manual = true;
+$this->view->hide_title = true;
 
 $channels = array();
 foreach($this->stations as $station)

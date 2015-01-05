@@ -19,9 +19,12 @@ $skin = \PVL\Customization::get('theme');
     <link href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" />
 
     <?php
-    $this->tag->setTitle($this->config->application->name);
-    $this->tag->appendTitle(' - Live Pony Radio, Video, Podcasts, Convention Coverage & More');
+    if ($this->view->title)
+        $page_title = $this->view->title.' - '.$this->config->application->name;
+    else
+        $page_title = $this->config->application->name.' - Live Pony Radio, Video, Podcasts, Convention Coverage & More';
 
+    $this->tag->setTitle($page_title);
     if (DF_APPLICATION_ENV != "production")
         $this->tag->prependTitle('('.ucfirst(DF_APPLICATION_ENV).') ');
 
@@ -122,7 +125,7 @@ $skin = \PVL\Customization::get('theme');
                 <div id="content_wrapper">
                     <div id="content">
                         <? if (!$this->view->hide_title): ?>
-                            <h1 class="title"><?=$title ?></h1>
+                            <h1 class="title"><?=$this->view->title ?></h1>
                         <? endif; ?>
 
                         <? if ($this->view->tabs): ?>

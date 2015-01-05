@@ -3,13 +3,26 @@ namespace DF;
 
 class Url
 {
+    /**
+     * Get the URI for the current page.
+     *
+     * @param \Phalcon\DiInterface $di
+     * @return mixed
+     */
     public static function current(\Phalcon\DiInterface $di = null)
     {
         $di = self::getDi($di);
         return $di->get('request')->getURI();
     }
 
-    public static function referrer(\Phalcon\DiInterface $di = null)
+    /**
+     * Get the HTTP_REFERER value for the current page.
+     *
+     * @param null $default_url
+     * @param \Phalcon\DiInterface $di
+     * @return mixed
+     */
+    public static function referrer($default_url = null, \Phalcon\DiInterface $di = null)
     {
         $di = self::getDi($di);
         return $di->get('request')->getHTTPReferer();
@@ -20,10 +33,15 @@ class Url
      *
      * @return mixed
      */
-    public static function baseUrl(\Phalcon\DiInterface $di = null)
+    public static function baseUrl($include_host = false, \Phalcon\DiInterface $di = null)
     {
         $di = self::getDi($di);
-        return $di->get('url')->get('');
+        $uri = $di->get('url')->get('');
+
+        if ($include_host)
+            return ((DF_IS_SECURE)? 'https://' : 'http://') . $di->get('request')->getHttpHost() . $uri;
+        else
+            return $uri;
     }
 
     /**

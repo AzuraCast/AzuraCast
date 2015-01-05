@@ -1,5 +1,5 @@
 <?php
-$this->headTitle($this->type_name);
+$this->view->setVar('title', $this->type_name);
 ?>
 
 <?=$this->paginate($this->pager) ?>

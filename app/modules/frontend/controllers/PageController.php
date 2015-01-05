@@ -1,7 +1,9 @@
 <?php
+namespace Modules\Frontend\Controllers;
+
 use \Entity\Block;
 
-class PageController extends \DF\Controller\Action
+class PageController extends BaseController
 {
     public function indexAction()
     {

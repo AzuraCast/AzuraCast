@@ -1,10 +1,12 @@
 <?php
+namespace Modules\Frontend\Controllers;
+
 use \Entity\Station;
 use \Entity\StationMedia;
 
 use \PVL\CentovaCast;
 
-class StationController extends \DF\Controller\Action
+class StationController extends BaseController
 {
     protected $station_id;
     protected $station;

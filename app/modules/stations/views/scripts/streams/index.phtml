@@ -8,10 +8,10 @@ echo $this->renderHere('homelink', true);
 <h2>Station Stream Manager</h2>
 
 <div class="buttons">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'btn-large success',
-        'href'      => $this->routeFromHere(array('action' => 'edit')),
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
         'icon'      => 'icon-plus-sign',
         'text'      => 'Add New Stream',
     )) ?>
@@ -37,24 +37,24 @@ echo $this->renderHere('homelink', true);
         <tr class="input <? if ($record['is_default']): ?>blue<? endif; ?>">
             <td class="center">
                 <div class="btn-group">
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'link',
                         'class'     => 'btn-small confirm-action '.($record['is_default'] ? 'btn-primary disabled' : ''),
-                        'href'      => $this->routeFromHere(array('action' => 'setdefault', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'setdefault', 'id' => $record['id'])),
                         'icon'      => 'icon-asterisk',
                         'text'      => 'Default',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'link',
                         'class'     => 'btn-small',
-                        'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
                         'icon'      => 'icon-pencil',
                         'text'      => 'Edit',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'link',
                         'class'     => 'btn-small btn-danger confirm-action',
-                        'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
                         'icon'      => 'icon-trash',
                         'text'      => 'Delete',
                     )) ?>

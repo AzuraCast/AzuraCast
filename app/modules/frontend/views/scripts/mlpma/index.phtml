@@ -8,7 +8,7 @@ $this->custom_styles = array(\DF\Url::content('mlpma/style.css'));
 $this->placeholder('content_top')->captureStart();
 ?>
 <div id="secondary_header_stripe" class="rich_header">
-    <a href="<?=$this->route(array('module' => 'mlpma')) ?>" class="ajax"><img src="<?=\DF\Url::content('mlpma/mlpma_logo.png') ?>" alt="The MLP Music Archive, a Ponyville Live! Project"></a>
+    <a href="<?=$this->viewHelper->route(array('module' => 'mlpma')) ?>" class="ajax"><img src="<?=\DF\Url::content('mlpma/mlpma_logo.png') ?>" alt="The MLP Music Archive, a Ponyville Live! Project"></a>
 </div>
 <?
 $this->placeholder('content_top')->captureEnd();
@@ -25,7 +25,7 @@ $this->placeholder('content_top')->captureEnd();
         <p>You can download the newest MLP Music Archive using the link below.</p>
 
         <div class="buttons">
-            <?=$this->button(array(
+            <?=$this->viewHelper->button(array(
                 'type'      => 'link',
                 'class'     => 'btn-large btn-primary',
                 'icon'      => 'icon-download',

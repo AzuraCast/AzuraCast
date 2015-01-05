@@ -1,9 +1,10 @@
 <?php
 namespace Modules\Frontend\Controllers;
 
-class WidgetController extends BaseController
+class AboutController extends BaseController
 {
     public function indexAction()
     {
+
     }
 }

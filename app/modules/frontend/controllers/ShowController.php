@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Frontend\Controllers;
+
 use \Entity\Podcast;
 use \Entity\PodcastEpisode;
 
-class ShowController extends \DF\Controller\Action
+class ShowController extends BaseController
 {
     public function indexAction()
     {

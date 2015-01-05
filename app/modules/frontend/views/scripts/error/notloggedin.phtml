@@ -3,17 +3,17 @@
 <p>You must be logged in to access this page. Click the button below to log in.</p>
 
 <div class="buttons btn-group">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'large primary',
-        'href'      => $this->route(array('module' => 'default', 'controller' => 'account', 'action' => 'login')),
+        'href'      => $this->viewHelper->route(array('module' => 'default', 'controller' => 'account', 'action' => 'login')),
         'icon'      => 'icon-key',
         'text'      => 'Log In',
     )) ?>
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'large',
-        'href'      => $this->route(array('module' => 'default', 'controller' => 'account', 'action' => 'register')),
+        'href'      => $this->viewHelper->route(array('module' => 'default', 'controller' => 'account', 'action' => 'register')),
         'icon'      => 'icon-asterisk',
         'text'      => 'Create Account',
     )) ?>

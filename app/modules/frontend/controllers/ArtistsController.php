@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Frontend\Controllers;
+
 use \Entity\Artist;
 use \Entity\ArtistType;
 
-class ArtistsController extends \DF\Controller\Action
+class ArtistsController extends BaseController
 {
     public function indexAction()
     {

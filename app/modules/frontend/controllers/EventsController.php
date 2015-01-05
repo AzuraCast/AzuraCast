@@ -1,5 +1,7 @@
 <?php
-class EventsController extends \DF\Controller\Action
+namespace Modules\Frontend\Controllers;
+
+class EventsController extends BaseController
 {
     public function indexAction()
     {

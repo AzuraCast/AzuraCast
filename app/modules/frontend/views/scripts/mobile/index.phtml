@@ -7,7 +7,7 @@ $this->headTitle('PVL! Mobile');
 <p>There's a new edition of Ponyville Live! mobile, available via your web browser or the Google Play store. The new app is greatly improved, with better access to radio stations and streams, podcasts, and convention coverage. Check it out below.</p>
 
 <div class="buttons">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'text'      => 'PVL! Mobile Web App',
         'href'      => 'http://m.pvlive.me',
@@ -15,7 +15,7 @@ $this->headTitle('PVL! Mobile');
         'rel'       => 'external',
         'target'    => '_blank',
     )) ?>
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'text'      => 'PVL! Mobile on Google Play',
         'href'      => 'https://play.google.com/store/apps/details?id=com.ponyvillelive.pvlmobile',
@@ -23,10 +23,10 @@ $this->headTitle('PVL! Mobile');
         'rel'       => 'external',
         'target'    => '_blank',
     )) ?>
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'text'      => 'Ponyville Live! Homepage',
-        'href'      => $this->route(),
+        'href'      => $this->viewHelper->route(),
         'class'     => 'btn-block',
         'rel'       => 'external',
         'target'    => '_blank',

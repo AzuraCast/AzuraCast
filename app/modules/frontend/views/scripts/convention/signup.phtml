@@ -25,26 +25,26 @@ $this->headTitle('Convention Signup');
             <td class="center">
                 <div class="btn-group">
                 <? if ($con['signup']): ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'  => 'small',
                         'icon'  => 'icon-pencil',
                         'text'  => 'Edit',
-                        'href'  => $this->routeFromHere(array('action' => 'editsignup', 'id' => $con['id'])),
+                        'href'  => $this->viewHelper->routeFromHere(array('action' => 'editsignup', 'id' => $con['id'])),
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'  => 'small',
                         'icon'  => 'icon-trash',
                         'class' => 'confirm-action btn-danger',
                         'text'  => 'Unregister',
-                        'href'  => $this->routeFromHere(array('action' => 'deletesignup', 'id' => $con['id'])),
+                        'href'  => $this->viewHelper->routeFromHere(array('action' => 'deletesignup', 'id' => $con['id'])),
                     )) ?>
                 <? else: ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'  => 'small',
                         'icon'  => 'icon-plus-sign',
                         'class' => 'btn-success',
                         'text'  => 'Sign Up',
-                        'href'  => $this->routeFromHere(array('action' => 'editsignup', 'id' => $con['id'])),
+                        'href'  => $this->viewHelper->routeFromHere(array('action' => 'editsignup', 'id' => $con['id'])),
                     )) ?>
                 <? endif; ?>
                 </div>

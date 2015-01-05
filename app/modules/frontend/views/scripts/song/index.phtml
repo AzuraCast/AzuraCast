@@ -146,12 +146,12 @@ $this->layout()->hide_title = true;
                                     </h4>
                                 </td>
                                 <td>
-                                    <?=$this->button(array(
+                                    <?=$this->viewHelper->button(array(
                                         'text'      => 'Request Song',
                                         'icon'      => 'icon-question-sign',
                                         'type'      => 'link',
                                         'class'     => 'btn-small btn-primary',
-                                        'href'      => $this->route(array('controller' => 'station', 'action' => 'request', 'id' => $row['station']['id'], 'track' => $row['id'])),
+                                        'href'      => $this->viewHelper->route(array('controller' => 'station', 'action' => 'request', 'id' => $row['station']['id'], 'track' => $row['id'])),
 
                                     )) ?>
                                 </td>

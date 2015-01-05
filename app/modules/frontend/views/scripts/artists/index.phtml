@@ -33,7 +33,7 @@ $categories = \Entity\Artist::getSocialTypes();
             <ul class="media-list">
             <? foreach($this->news as $article): ?>
                 <?
-                $artist_url = $this->route(array('controller' => 'artists', 'action' => 'view', 'id' => $article['author_id']));
+                $artist_url = $this->viewHelper->route(array('controller' => 'artists', 'action' => 'view', 'id' => $article['author_id']));
                 ?>
                 <li class="media news-article">
                     <div class="media-object pull-left">

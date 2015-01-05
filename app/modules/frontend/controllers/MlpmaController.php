@@ -1,5 +1,7 @@
 <?php
-class MlpmaController extends \DF\Controller\Action
+namespace Modules\Frontend\Controllers;
+
+class MlpmaController extends BaseController
 {
     public function indexAction()
     {

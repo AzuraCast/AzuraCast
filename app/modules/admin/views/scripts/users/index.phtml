@@ -3,10 +3,10 @@ $this->headTitle('Manage Users');
 ?>
 
 <div class="buttons">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'success',
-        'href'      => $this->routeFromHere(array('action' => 'edit')),
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
         'icon'      => 'icon-plus-sign',
         'text'      => 'Add New User',
     )) ?>
@@ -18,9 +18,9 @@ $this->headTitle('Manage Users');
     <h2>View All Users</h2>
 <? endif; ?>
 
-<form class="form-search" action="<?=$this->routeFromHere(array('page' => NULL)) ?>" method="get">
+<form class="form-search" action="<?=$this->viewHelper->routeFromHere(array('page' => NULL)) ?>" method="get">
     <input type="text" name="q" title="Search terms" placeholder="Search..." class="input-medium span3 search-query" value="<?=$this->q ?>">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'submit',
         'class'     => 'primary btn-small',
         'text'      => 'Search Users',
@@ -49,22 +49,22 @@ $this->headTitle('Manage Users');
         <tr class="input">
             <td>
                 <div class="btn-group">
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'class'     => 'primary',
-                        'href'      => $this->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)),
                         'icon'      => 'key_go',
                         'text'      => 'Log In',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
-                        'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $user->id)),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $user->id)),
                         'icon'      => 'pencil',
                         'text'      => 'Edit',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
-                        'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $user->id)),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $user->id)),
                         'class'     => 'danger confirm-delete',
                         'icon'      => 'delete',
                         'text'      => 'Delete',

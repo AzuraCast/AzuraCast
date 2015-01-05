@@ -1,9 +1,11 @@
 <?php
+namespace Modules\Frontend\Controllers;
+
 use \Entity\Song;
 use \Entity\SongHistory;
 use \Entity\SongVote;
 
-class SongController extends \DF\Controller\Action
+class SongController extends BaseController
 {
     public function indexAction()
     {

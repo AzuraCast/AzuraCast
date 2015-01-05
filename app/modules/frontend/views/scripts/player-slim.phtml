@@ -15,7 +15,7 @@ foreach($categories as $cat_key => $cat)
 }
 ?>
 
-<center><a href="<?=$this->route(array('module' => 'default')) ?>" title="Home" target="_blank"><img src="<?=\DF\Url::content('mid2013/logo_light.png') ?>" style="width: 250px;" alt="Home" /></a></center>
+<center><a href="<?=$this->viewHelper->route(array('module' => 'default')) ?>" title="Home" target="_blank"><img src="<?=\DF\Url::content('mid2013/logo_light.png') ?>" style="width: 250px;" alt="Home" /></a></center>
 
 <div id="tunein_player" class="player_slim">
     <div class="carousel slide" id="station_selector" data-interval="5000">
@@ -63,7 +63,7 @@ foreach($categories as $cat_key => $cat)
             <a href="#station_selector" data-slide="prev">&laquo;</a>
         </div>
         <div class="control center">
-            <a id="btn_browse_stations" href="<?=$this->route(array('action' => 'tunein')) ?>">Browse Stations</a>
+            <a id="btn_browse_stations" href="<?=$this->viewHelper->route(array('action' => 'tunein')) ?>">Browse Stations</a>
         </div>
         <div class="control right">
             <a href="#station_selector" data-slide="next">&raquo;</a>
@@ -84,7 +84,7 @@ $(function() {
 });
 
 function playInPopUp(station_id) {
-    orig_url = "<?=$this->route(array('action' => 'tunein', 'origin' => 'home')) ?>";
+    orig_url = "<?=$this->viewHelper->route(array('action' => 'tunein', 'origin' => 'home')) ?>";
 
     if (station_id !== undefined)
         orig_url += '/id/'+station_id;

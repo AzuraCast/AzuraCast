@@ -1,5 +1,7 @@
 <?php
-class UtilController extends \DF\Controller\Action
+namespace Modules\Frontend\Controllers;
+
+class UtilController extends BaseController
 {
     public function testAction()
     {

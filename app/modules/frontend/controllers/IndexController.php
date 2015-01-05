@@ -11,7 +11,7 @@ use \Entity\Schedule;
 use \Entity\Rotator;
 use \Entity\Convention;
 
-class IndexController extends \DF\Phalcon\Controller
+class IndexController extends BaseController
 {
     public function indexAction()
     {

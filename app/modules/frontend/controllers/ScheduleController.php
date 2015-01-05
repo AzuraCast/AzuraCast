@@ -1,9 +1,11 @@
 <?php
+namespace Modules\Frontend\Controllers;
+
 use \Entity\Event;
 use \Entity\EventType;
 use \Entity\Station;
 
-class ScheduleController extends \DF\Controller\Action
+class ScheduleController extends BaseController
 {
     public function indexAction()
     {

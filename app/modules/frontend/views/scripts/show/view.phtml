@@ -10,10 +10,10 @@ $this->headTitle('Show: '.$this->podcast->name);
     </blockquote>
 
     <div class="buttons">
-        <?=$this->button(array(
+        <?=$this->viewHelper->button(array(
             'type'      => 'link',
             'icon'      => 'icon-rss',
-            'href'      => $this->routeFromHere(array('action' => 'feed', 'type' => 'single')),
+            'href'      => $this->viewHelper->routeFromHere(array('action' => 'feed', 'type' => 'single')),
             'text'      => 'Episode RSS Feed',
             'target'    => '_blank',
         )) ?>

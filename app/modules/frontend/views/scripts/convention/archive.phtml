@@ -54,7 +54,7 @@ $this->headLink()
         <div class="well">
             <ul class="nav nav-list autoselect" rel="<?=$this->convention->id ?>">
             <? foreach($this->conventions_archived as $record): ?>
-                <li rel="<?=$record['id'] ?>"><a href="<?=$this->routeFromHere(array('id' => $record['id'])) ?>">
+                <li rel="<?=$record['id'] ?>"><a href="<?=$this->viewHelper->routeFromHere(array('id' => $record['id'])) ?>">
                     <b><?=$record['name'] ?></b><br>
                     <?=$record['location'] ?> &bull; <?=$record['range'] ?>
                 </a></li>

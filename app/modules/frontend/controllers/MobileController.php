@@ -1,5 +1,7 @@
 <?php
-class MobileController extends \DF\Controller\Action
+namespace Modules\Frontend\Controllers;
+
+class MobileController extends BaseController
 {
     public function indexAction()
     {

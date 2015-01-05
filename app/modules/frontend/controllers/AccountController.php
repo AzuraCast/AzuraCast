@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Frontend\Controllers;
+
 use \Entity\User;
 use \Entity\UserExternal;
 
-class AccountController extends \DF\Controller\Action
+class AccountController extends BaseController
 {
     public function indexAction()
     {

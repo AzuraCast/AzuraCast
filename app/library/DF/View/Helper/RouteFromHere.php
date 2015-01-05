@@ -6,9 +6,8 @@
 namespace DF\View\Helper;
 class RouteFromHere extends HelperAbstract
 {
-    public function routeFromHere()
+    public function routeFromHere($params)
     {
-        $func_args = func_get_args();
-        return call_user_func_array('\DF\Url::routeFromHere', $func_args);
+        return \DF\Url::routeFromHere($params, $this->di);
     }
 }

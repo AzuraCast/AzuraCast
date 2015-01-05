@@ -1,7 +1,9 @@
 <?php
+namespace Modules\Frontend\Controllers;
+
 use \Entity\Block;
 
-class ErrorController extends \DF\Controller\Action
+class ErrorController extends BaseController
 {
     public function errorAction()
     {

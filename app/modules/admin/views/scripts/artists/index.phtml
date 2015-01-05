@@ -3,18 +3,18 @@ $this->headTitle('Manage Artists');
 ?>
 
 <div class="buttons">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'large success',
-        'href'      => $this->routeFromHere(array('action' => 'edit')),
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
         'icon'      => 'icon-plus-sign',
         'text'      => 'Add New Artist',
     )) ?>
 </div>
 
-<form class="form-search" action="<?=$this->routeFromHere(array('page' => NULL)) ?>" method="get">
+<form class="form-search" action="<?=$this->viewHelper->routeFromHere(array('page' => NULL)) ?>" method="get">
     <input type="text" name="q" title="Search terms" placeholder="Search..." class="input-medium span3 search-query" value="<?=$this->q ?>">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'submit',
         'class'     => 'primary btn-small',
         'text'      => 'Search',
@@ -49,17 +49,17 @@ $this->headTitle('Manage Artists');
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'icon'      => 'pencil',
-                        'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
                         'text'      => 'Edit',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'icon'      => 'delete',
                         'class'     => 'danger confirm-delete',
-                        'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
                         'text'      => 'Delete',
                     )) ?>
                 </div>

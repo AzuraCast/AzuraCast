@@ -16,15 +16,15 @@
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
-                        'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
                         'text'      => 'Edit',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'class'     => 'danger confirm-delete',
-                        'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
                         'text'      => 'Delete',
                     )) ?>
                 </div>
@@ -32,7 +32,7 @@
             <td class="center"><img src="<?=\DF\Url::content($record['image_url']) ?>" style="max-width: 70px;"></td>
             <td>
                 <div><big><?=$record['name'] ?></big></div>
-                <div><a href="<?=$this->route(array('module' => 'stations', 'controller' => 'streams', 'action' => 'index','station' => $record['id'])) ?>" target="_blank"><?=count($record['streams']) ?> Streams</a></div>
+                <div><a href="<?=$this->viewHelper->route(array('module' => 'stations', 'controller' => 'streams', 'action' => 'index','station' => $record['id'])) ?>" target="_blank"><?=count($record['streams']) ?> Streams</a></div>
 
                 <? if ($record['twitter_url']): ?>
                     <div class="text-success"><i class="icon-check-sign"></i> Has Twitter</div>

@@ -17,7 +17,7 @@ foreach($categories as $cat_key => $cat)
 
 <div class="row-fluid">
     <div class="span4" class="embed_logo" style="text-align: center;">
-        <a href="<?=$this->route(array('module' => 'default')) ?>" title="Ponyville Live!" target="_blank"><img src="<?=\DF\Url::content('mid2013/logo_dark.png') ?>" alt="Home" /></a>
+        <a href="<?=$this->viewHelper->route(array('module' => 'default')) ?>" title="Ponyville Live!" target="_blank"><img src="<?=\DF\Url::content('mid2013/logo_dark.png') ?>" alt="Home" /></a>
     </div>
     <div class="span8">
         <div id="tunein_player" class="player_slim">
@@ -77,7 +77,7 @@ $(function() {
 });
 
 function playInPopUp(station_id) {
-    orig_url = "<?=$this->route(array('action' => 'tunein', 'origin' => 'home')) ?>";
+    orig_url = "<?=$this->viewHelper->route(array('action' => 'tunein', 'origin' => 'home')) ?>";
 
     if (station_id !== undefined)
         orig_url += '/id/'+station_id;

@@ -1,8 +1,13 @@
 <?php
-$this->headTitle('Ponyville Live! Apps &amp; Players');
+$this->tag->prependTitle('Apps &amp; Players - ');
 
-$this->layout()->hide_title = true;
-$this->layout()->manual = true;
+// $this->headTitle('Ponyville Live! Apps &amp; Players');
+
+$this->view->hide_title = true;
+$this->view->manual = true;
+
+// $this->layout()->hide_title = true;
+// $this->layout()->manual = true;
 ?>
 
 <div class="row-fluid">
@@ -16,7 +21,7 @@ $this->layout()->manual = true;
             <p>Ponyville Live! has partnered with the PonyHoof development team to launch a new Chrome plugin that lets you listen to pony music right from your Chrome browser. Visit the link below to learn more and install it!</p>
 
             <div class="buttons">
-                <?=$this->button(array(
+                <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'class'     => 'btn-primary',
                     'icon'      => 'icon-globe',
@@ -32,7 +37,7 @@ $this->layout()->manual = true;
             <p>Want to put pony radio right on your desktop? Now you can! Install the Ponyville Live! Chrome desktop app on any major platform (Windows, OSX, Chrome OS) and you can open the PVL radio player at any time, without needing to have your browser window open. Convenient!</p>
 
             <div class="buttons">
-                <?=$this->button(array(
+                <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'class'     => 'btn-primary',
                     'icon'      => 'icon-globe',
@@ -48,11 +53,11 @@ $this->layout()->manual = true;
             <p>Embed the PVL radio player, including all of its stations, directly into your web site for all of your users to enjoy! With the embedded widget, you can play music and tune into streams directly from your own web site.</p>
 
             <div class="buttons">
-                <?=$this->button(array(
+                <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'class'     => 'btn-primary',
                     'icon'      => 'icon-globe',
-                    'href'      => $this->route(array('controller' => 'widget')),
+                    'href'      => $this->viewHelper->route(array('controller' => 'widget')),
                     'text'      => 'Web Site Embed Instructions',
                 )) ?>
             </div>
@@ -61,11 +66,11 @@ $this->layout()->manual = true;
         <h2>Winamp, iTunes, VLC, etc.</h2>
         <div class="well">
             <div class="buttons">
-                <?=$this->button(array(
+                <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'class'     => 'btn-primary',
                     'icon'      => 'icon-download',
-                    'href'      => $this->routeFromHere(array('controller' => 'station', 'action' => 'playlist', 'format' => 'pls')),
+                    'href'      => $this->viewHelper->routeFromHere(array('controller' => 'station', 'action' => 'playlist', 'format' => 'pls')),
                     'target'    => '_blank',
                     'text'      => 'Download PLS (VLC, etc)',
                 )) ?>
@@ -88,7 +93,7 @@ $this->layout()->manual = true;
             <p><b>Note:</b> This app is still in active development, so new features are always being added!</p>
 
             <div class="buttons">
-                <?=$this->button(array(
+                <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'class'     => 'primary btn-tune-in',
                     'icon'      => 'icon-globe',
@@ -117,7 +122,7 @@ $this->layout()->manual = true;
         <h2><i class="icon-windows"></i> Windows Phone 8 and Windows 8</h2>
         <div class="well">
             <div class="buttons">
-                <?=$this->button(array(
+                <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'class'     => 'btn-primary',
                     'icon'      => 'icon-download',
@@ -125,7 +130,7 @@ $this->layout()->manual = true;
                     'target'    => '_blank',
                     'text'      => 'MLP Portal (Windows 8)',
                 )) ?>
-                <?=$this->button(array(
+                <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'class'     => 'btn-primary',
                     'icon'      => 'icon-download',

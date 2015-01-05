@@ -9,9 +9,9 @@ $this->layout()->manual = true;
 
         <div class="well">
             <h3>Find a Song</h3>
-            <form class="form-inline" action="<?=$this->routeFromHere(array('page' => NULL, 'artist' => NULL, 'q' => NULL)) ?>" method="get">
+            <form class="form-inline" action="<?=$this->viewHelper->routeFromHere(array('page' => NULL, 'artist' => NULL, 'q' => NULL)) ?>" method="get">
                 <input type="text" name="q" title="Search terms" placeholder="Song or Artist Name..." class="half-width" value="<?=$this->q ?>">
-                <?=$this->button(array(
+                <?=$this->viewHelper->button(array(
                     'type'      => 'submit',
                     'class'     => 'primary',
                     'icon'      => 'icon-search',
@@ -25,7 +25,7 @@ $this->layout()->manual = true;
         <? if ($this->top_songs): ?>
             <ul class="nav nav-list">
             <? foreach($this->top_songs as $record): ?>
-                <li><a href="<?=$this->routeFromHere(array('track' => $record['id'])) ?>" title="Click to request this song.">
+                <li><a href="<?=$this->viewHelper->routeFromHere(array('track' => $record['id'])) ?>" title="Click to request this song.">
                     <b><?=$record['title'] ?></b> by <?=$record['artist'] ?>
                 </a></li>
             <? endforeach; ?>
@@ -40,7 +40,7 @@ $this->layout()->manual = true;
             <div style="height: 350px; overflow-y: scroll;">
                 <ul class="nav nav-list">
                 <? foreach($this->artist_names as $artist): ?>
-                    <li><a href="<?=$this->routeFromHere(array('artist' => $artist)) ?>" title="View all songs by this artist.">
+                    <li><a href="<?=$this->viewHelper->routeFromHere(array('artist' => $artist)) ?>" title="View all songs by this artist.">
                         <?=$artist ?>
                     </a></li>
                 <? endforeach; ?>
@@ -54,11 +54,11 @@ $this->layout()->manual = true;
 
     <? if ($this->reset_button): ?>
         <div class="buttons">
-            <?=$this->button(array(
+            <?=$this->viewHelper->button(array(
                 'type'      => 'link',
                 'icon'      => 'icon-chevron-sign-left',
                 'text'      => 'Reset Search',
-                'href'      => $this->routeFromHere(array('q' => NULL, 'artist' => NULL, 'page' => 1)),
+                'href'      => $this->viewHelper->routeFromHere(array('q' => NULL, 'artist' => NULL, 'page' => 1)),
             )) ?>
         </div>
     <? endif; ?>
@@ -86,10 +86,10 @@ $this->layout()->manual = true;
             <? foreach($this->pager as $record): ?>
                 <tr class="input">
                     <td class="center">
-                        <?=$this->button(array(
+                        <?=$this->viewHelper->button(array(
                             'type'      => 'small',
                             'class'     => 'primary',
-                            'href'      => $this->routeFromHere(array('track' => $record['id'])),
+                            'href'      => $this->viewHelper->routeFromHere(array('track' => $record['id'])),
                             'icon'      => 'icon-play-sign',
                             'text'      => 'Request',
                         )) ?>

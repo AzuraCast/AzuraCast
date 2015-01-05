@@ -2,30 +2,30 @@
 $this->headTitle('Station Schedules');
 ?>
 <ul class="nav nav-pills autoselect" rel="<?=$this->station ?>">
-    <li rel="all"><a href="<?=$this->routeFromHere(array('station' => 'all')) ?>">All Schedules</a></li>
+    <li rel="all"><a href="<?=$this->viewHelper->routeFromHere(array('station' => 'all')) ?>">All Schedules</a></li>
 <? foreach($this->all_stations as $station): ?>
-    <li rel="<?=$station['short_name'] ?>"><a href="<?=$this->routeFromHere(array('station' => $station['short_name'])) ?>"><?=$station['name'] ?></a></li>
+    <li rel="<?=$station['short_name'] ?>"><a href="<?=$this->viewHelper->routeFromHere(array('station' => $station['short_name'])) ?>"><?=$station['name'] ?></a></li>
 <? endforeach; ?>
 </ul>
 
 <? if ($this->calendar['prev_page_datecode']): ?>
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'small',
         'icon'      => 'icon-arrow-left',
         'class'     => 'btn-inverse',
         'text'      => $this->calendar['prev_page_text'],
         'style'     => 'float: left',
-        'href'      => $this->routeFromHere(array('month' => $this->calendar['prev_page_datecode'])),
+        'href'      => $this->viewHelper->routeFromHere(array('month' => $this->calendar['prev_page_datecode'])),
     )) ?>
 <? endif; ?>
 <? if ($this->calendar['next_page_datecode']): ?>
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'small',
         'icon'      => 'icon-arrow-right',
         'class'     => 'btn-inverse',
         'text'      => $this->calendar['next_page_text'],
         'style'     => 'float: right',
-        'href'      => $this->routeFromHere(array('month' => $this->calendar['next_page_datecode'])),
+        'href'      => $this->viewHelper->routeFromHere(array('month' => $this->calendar['next_page_datecode'])),
     )) ?>
 <? endif; ?>
 <h2 style="text-align: center"><?=$this->calendar['current_page_text'] ?></h2>

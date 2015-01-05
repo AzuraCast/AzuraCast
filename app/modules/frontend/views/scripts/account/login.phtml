@@ -12,10 +12,10 @@ $this->headLink()->appendStylesheet(\DF\Url::content('zocial/zocial.css'), 'all'
             <p>Don't have an account within the Ponyville Live! system? Create one below.</p>
 
             <div class="buttons">
-                <?=$this->button(array(
+                <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'class'     => 'large',
-                    'href'      => $this->routeFromHere(array('action' => 'register')),
+                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'register')),
                     'icon'      => 'icon-asterisk',
                     'text'      => 'Create New PVL Account',
                 )) ?>
@@ -33,7 +33,7 @@ $this->headLink()->appendStylesheet(\DF\Url::content('zocial/zocial.css'), 'all'
             <h2>Social Sign-In</h2>
 
         <? foreach($this->external_providers as $provider_key => $provider_info): ?>
-            <div class="buttons"><a href="<?=$this->routeFromHere(array('provider' => $provider_key)) ?>" class="zocial <?=$provider_info['class'] ?>">Sign in with <?=$provider_info['name'] ?></a></div>
+            <div class="buttons"><a href="<?=$this->viewHelper->routeFromHere(array('provider' => $provider_key)) ?>" class="zocial <?=$provider_info['class'] ?>">Sign in with <?=$provider_info['name'] ?></a></div>
         <? endforeach; ?>
         </div>
     </div>

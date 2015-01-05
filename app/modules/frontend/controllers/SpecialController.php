@@ -1,9 +1,11 @@
 <?php
+namespace Modules\Frontend\Controllers;
+
 use \Entity\Station;
 use \Entity\Convention;
 use \Entity\Settings;
 
-class SpecialController extends \DF\Controller\Action
+class SpecialController extends BaseController
 {
     public function indexAction()
     {

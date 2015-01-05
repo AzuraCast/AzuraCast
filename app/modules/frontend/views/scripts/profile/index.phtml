@@ -5,11 +5,11 @@ $this->headTitle('My Profile');
 <div class="row-fluid">
     <div class="span4">
         <div class="buttons pull-right">
-            <?=$this->button(array(
+            <?=$this->viewHelper->button(array(
                 'type'      => 'small',
                 'class'     => 'pull-right',
                 'icon'      => 'icon-pencil',
-                'href'      => $this->routeFromHere(array('action' => 'edit')),
+                'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
                 'text'      => 'Edit Profile',
             )) ?>
         </div>
@@ -41,10 +41,10 @@ $this->headTitle('My Profile');
                     <? if ($provider_info['existing']): ?>
                         <div><small><?=$provider_info['name'] ?>:</small></div>
                         <div><big><?=$provider_info['existing']->name ?></big></div>
-                        <div><a href="<?=$this->route(array('module' => 'default', 'controller' => 'account', 'action' => 'unlink', 'provider' => $provider_key)) ?>">Unlink Account</a></div>
+                        <div><a href="<?=$this->viewHelper->route(array('module' => 'default', 'controller' => 'account', 'action' => 'unlink', 'provider' => $provider_key)) ?>">Unlink Account</a></div>
                     <? else: ?>
                         <div><big><?=$provider_info['name'] ?></big></div>
-                        <div><a href="<?=$this->route(array('module' => 'default', 'controller' => 'account', 'action' => 'link', 'provider' => $provider_key)) ?>">Link Account</a></div>
+                        <div><a href="<?=$this->viewHelper->route(array('module' => 'default', 'controller' => 'account', 'action' => 'link', 'provider' => $provider_key)) ?>">Link Account</a></div>
                     <? endif; ?>
                     </td>
                 </tr>
@@ -52,7 +52,7 @@ $this->headTitle('My Profile');
             </tbody>
         </table>
         <div class="text-center">
-            <a class="text-error" href="<?=$this->route(array('module' => 'default', 'controller' => 'account', 'action' => 'remove')) ?>">Delete PVL Account</a>
+            <a class="text-error" href="<?=$this->viewHelper->route(array('module' => 'default', 'controller' => 'account', 'action' => 'remove')) ?>">Delete PVL Account</a>
         </div>
     </div>
     <div class="span8">

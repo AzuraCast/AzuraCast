@@ -98,7 +98,7 @@ $di = new \Phalcon\DI\FactoryDefault();
 
 // Configs
 $di->setShared('config', $config);
-$di->setShared('module_config', function() use ($module_names) { return $module_config; });
+$di->setShared('module_config', function() use ($module_config) { return $module_config; });
 $di->setShared('module_names', function() use ($module_names) { return $module_names; });
 
 // Router

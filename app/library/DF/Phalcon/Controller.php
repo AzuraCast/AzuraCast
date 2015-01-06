@@ -109,6 +109,7 @@ class Controller extends \Phalcon\Mvc\Controller
      */
     public function redirect($new_url, $code = 302)
     {
+        $this->doNotRender();
         $this->response->redirect($new_url, $code);
     }
 
@@ -120,6 +121,7 @@ class Controller extends \Phalcon\Mvc\Controller
      */
     public function redirectToRoute($route, $code = 302)
     {
+        $this->doNotRender();
         $this->response->redirect(Url::route($route, $this->di), $code);
     }
 
@@ -131,6 +133,7 @@ class Controller extends \Phalcon\Mvc\Controller
      */
     public function redirectFromHere($route, $code = 302)
     {
+        $this->doNotRender();
         $this->response->redirect(Url::routeFromHere($route, $this->di), $code);
     }
 
@@ -150,8 +153,6 @@ class Controller extends \Phalcon\Mvc\Controller
     }
 
     /* Referrer storage */
-
-
     protected function storeReferrer($namespace = 'default', $loose = true)
     {
         $session = Session::get('referrer_'.$namespace);
@@ -194,4 +195,14 @@ class Controller extends \Phalcon\Mvc\Controller
         $this->redirect(Url::referrer($default));
     }
 
+    /* Notifications */
+
+    public function flash($message, $level = \DF\Flash::INFO)
+    {
+        $this->alert($message, $level);
+    }
+    public function alert($message, $level = \DF\Flash::INFO)
+    {
+        \DF\Flash::addMessage($message, $level);
+    }
 }

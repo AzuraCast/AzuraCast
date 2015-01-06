@@ -63,7 +63,7 @@ class Url
      * @param \Phalcon\DiInterface $di
      * @return string The routed URL.
      */
-    public static function route($path_info, \Phalcon\DiInterface $di = null)
+    public static function route($path_info = array(), \Phalcon\DiInterface $di = null)
     {
         $di = self::getDi($di);
         $router = $di->get('router');

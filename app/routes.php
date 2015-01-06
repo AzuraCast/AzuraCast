@@ -7,21 +7,16 @@ $router->setUriSource(Router::URI_SOURCE_SERVER_REQUEST_URI);
 
 $router->setDi($di);
 
-$router->notFound(array(
-    'module' => 'frontend',
-    'controller' => 'error',
-    'action' => 'pagenotfound',
-));
+$router_config = $di->get('config')->routes->toArray();
 
-$router->setDefaultModule("frontend");
-$router->setDefaultController("index");
-$router->setDefaultAction("index");
+$router->setDefaultModule($router_config['default_module']);
+$router->setDefaultController($router_config['default_controller']);
+$router->setDefaultAction($router_config['default_action']);
 $router->removeExtraSlashes(true);
 
-$router->add('/', array(
-    'module' => 'frontend',
-    'controller' => 'index',
-    'action' => 'index'
-));
+foreach((array)$router_config['custom_routes'] as $route_path => $route_params)
+{
+    $router->add($route_path, $route_params);
+}
 
 return $router;

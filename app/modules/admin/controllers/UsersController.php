@@ -1,7 +1,9 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\User;
 
-class Admin_UsersController extends \PVL\Controller\Action\Admin
+class UsersController extends BaseController
 {
     public function permissions()
     {

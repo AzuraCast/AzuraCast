@@ -98,9 +98,22 @@ class Url
             unset($path_info['params']);
         }
 
+        // Handle the legacy "default" module being so-named.
+        if ($components['module'] == 'default')
+            $components['module'] = $default_module;
+
+        // Special exception for homepage.
+        if ($components['module'] == $default_module &&
+            $components['controller'] == $router->getDefaultController() &&
+            $components['action'] == $router->getDefaultAction() &&
+            empty($path_info)) {
+            return $di->get('url')->get('');
+        }
+
+        // Otherwise compile URL using a uniform format.
         $url_parts = array();
 
-        if ($components['module'] != $default_module && $components['module'] != 'default')
+        if ($components['module'] != $default_module)
             $url_parts[] = $components['module'];
 
         $url_parts[] = $components['controller'];

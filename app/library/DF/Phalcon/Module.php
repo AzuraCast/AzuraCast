@@ -12,7 +12,7 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         $this->_module_dir = $dir;
     }
 
-    public function registerAutoloaders()
+    public function registerAutoloaders($di)
     {
         $loader = new \Phalcon\Loader();
 
@@ -30,7 +30,25 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         $controller_class = 'Modules\\'.$this->_module_class_name.'\Controllers';
 
         $di['dispatcher'] = function () use ($controller_class) {
-            $dispatcher = new \Phalcon\Mvc\Dispatcher();
+            // Set error handling globals.
+            $eventsManager = new \Phalcon\Events\Manager();
+            $eventsManager->attach("dispatch:beforeException", function($event, $dispatcher, $exception) {
+                // Handle 404 Page Not Found errors.
+                if ($exception instanceof \Phalcon\Mvc\Dispatcher\Exception && $dispatcher->getModuleName() == 'frontend') {
+                    $dispatcher->forward(array(
+                        'module'        => 'frontend',
+                        'controller'    => 'error',
+                        'action'        => 'pagenotfound',
+                    ));
+                    return false;
+                }
+
+                throw $exception;
+            });
+
+            $dispatcher = new \Phalcon\Mvc\Dispatcher;
+            $dispatcher->setEventsManager($eventsManager);
+
             $dispatcher->setDefaultNamespace($controller_class);
             return $dispatcher;
         };

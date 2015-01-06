@@ -7,6 +7,12 @@ $router->setUriSource(Router::URI_SOURCE_SERVER_REQUEST_URI);
 
 $router->setDi($di);
 
+$router->notFound(array(
+    'module' => 'frontend',
+    'controller' => 'error',
+    'action' => 'pagenotfound',
+));
+
 $router->setDefaultModule("frontend");
 $router->setDefaultController("index");
 $router->setDefaultAction("index");

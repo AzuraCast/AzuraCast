@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Affiliate;
 use \Entity\Affiliate as Record;
 
-class Admin_AffiliatesController extends \PVL\Controller\Action\Admin
+class AffiliatesController extends BaseController
 {
     public function permissions()
     {

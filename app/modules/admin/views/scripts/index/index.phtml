@@ -2,7 +2,7 @@
 $this->view->setVar('title', 'System Administration');
 $this->view->manual = true;
 
-$this->assets
+$this->assets->collection('custom_js')
     ->addJs('//cdn.socket.io/socket.io-1.2.1.js', false)
     ->addJs('//code.highcharts.com/highcharts.js', false)
     ->addJs('//code.highcharts.com/highcharts-more.js', false)
@@ -11,7 +11,7 @@ $this->assets
 
 $skin = \PVL\Customization::get('theme');
 if ($skin == "dark")
-    $this->assets->addCss('highcharts/dark-blue.js');
+    $this->assets->collection('custom_css')->addCss('highcharts/dark-blue.js');
 ?>
 
 <div class="row-fluid">
@@ -39,7 +39,7 @@ if ($skin == "dark")
                 <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'settings')) ?>"><i class="icon-cog"></i> System Settings</a></li>
 
                 <li class="nav-header">Station Centers</li>
-            <? foreach($this->stations as $station): ?>
+            <? foreach($this->view->stations as $station): ?>
                 <li><a href="<?=$this->viewHelper->route(array('module' => 'stations', 'action' => 'index', 'station' => $station->id)) ?>"><i class="<?=$station->getCategoryIcon() ?>"></i> <?=$station->name ?></a></li>
             <? endforeach; ?>
             </ul>
@@ -52,7 +52,7 @@ if ($skin == "dark")
         <h2>Synchronization Status</h2>
         <div class="well">
             <div class="row-fluid">
-            <? foreach($this->sync_times as $sync_key => $sync_info): ?>
+            <? foreach($this->view->sync_times as $sync_key => $sync_info): ?>
                 <div class="span3">
                     <h4><?=$sync_info['name'] ?></h4>
                     <p><?=date('F j, Y g:ia', $sync_info['latest']) ?><br><small><?=$sync_info['diff_text'] ?> ago</small></p>
@@ -80,10 +80,10 @@ if ($skin == "dark")
                 <div class="span3">
                     <h4>PVLNode Service</h4>
                     <dl>
-                        <dt><?=(int)$this->pvlnode_stats['clients'] ?></dt>
+                        <dt><?=(int)$this->view->pvlnode_stats['clients'] ?></dt>
                         <dd>Active Connections</dd>
 
-                        <dt><?=\DF\Utilities::timeDifferenceText(time(), $this->pvlnode_stats['latest_update']) ?></dt>
+                        <dt><?=\DF\Utilities::timeDifferenceText(time(), $this->view->pvlnode_stats['latest_update']) ?></dt>
                         <dd>Since Last Update</dd>
                     </dl>
                 </div>
@@ -195,7 +195,7 @@ $(function () {
             '#8C0000'
         ],
         
-        series: <?=$this->network_metrics ?>
+        series: <?=$this->view->network_metrics ?>
     });
 
     $('#station_listeners_by_day').highcharts({
@@ -240,7 +240,7 @@ $(function () {
             xDateFormat: '%Y-%m-%d'
         },
         
-        series: <?=$this->station_metrics ?>
+        series: <?=$this->view->station_metrics ?>
     });
 });
 </script>

@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Action;
 use \Entity\Role;
 
-class Admin_PermissionsController extends \PVL\Controller\Action\Admin
+class PermissionsController extends BaseController
 {
     public function permissions()
     {

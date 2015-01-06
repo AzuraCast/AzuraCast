@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Rotator;
 use \Entity\Rotator as Record;
 
-class Admin_RotatorsController extends \PVL\Controller\Action\Admin
+class RotatorsController extends BaseController
 {
     public function permissions()
     {

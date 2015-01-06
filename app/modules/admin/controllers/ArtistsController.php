@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Artist;
 use \Entity\Artist as Record;
 
-class Admin_ArtistsController extends \PVL\Controller\Action\Admin
+class ArtistsController extends BaseController
 {
     public function permissions()
     {

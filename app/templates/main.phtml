@@ -30,24 +30,28 @@ $skin = \PVL\Customization::get('theme');
 
     echo $this->tag->getTitle();
 
-    $this->assets
+    // Set up CSS includes.
+    $this->assets->collection('header_css')
         ->addCss('//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css', false)
         ->addCss('//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css', false)
         ->addCss('//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', false)
         ->addCss('common/jquery/fancybox/jquery.fancybox.css')
         ->addCss('compiled/style.css');
 
-    if ($this->view->custom_styles)
-    {
-        foreach($this->view->custom_styles as $stylesheet_url)
-            $this->assets->addCss($stylesheet_url);
-    }
+    // Establish custom CSS/JS collections in case they don't exist.
+    $this->assets->collection('custom_css');
+    $this->assets->collection('custom_js');
 
-    $this->assets->outputCss();
+    // Output header CSS.
+    $this->assets->outputCss('header_css');
+    $this->assets->outputCss('custom_css');
 
-    $this->assets
-        ->addJs('//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.compat.min.js', false)
+    // Set up JS includes.
+    $this->assets->collection('header_js')
         ->addJs('//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js', false)
+        ->addJs('//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.compat.min.js', false);
+
+    $this->assets->collection('footer_js')
         ->addJs('common/jquery/fancybox/jquery.fancybox.pack.js')
         ->addJs('common/jquery/fancybox/helpers/jquery.fancybox-media.js')
         ->addJs('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js')
@@ -57,11 +61,7 @@ $skin = \PVL\Customization::get('theme');
         ->addJs('js/notify.js')
         ->addJs('global.js');
 
-    if ($this->view->custom_scripts)
-    {
-        foreach($this->view->custom_scripts as $script_url)
-            $this->assets->addJs($script_url);
-    }
+    $this->assets->outputJs('header_js');
     ?>
     <script>
         var DF_AppEnv = '<?=DF_APPLICATION_ENV ?>';
@@ -170,7 +170,8 @@ $skin = \PVL\Customization::get('theme');
 </div>
 
 <?
-echo $this->assets->outputJs();
+echo $this->assets->outputJs('footer_js');
+echo $this->assets->outputJs('custom_js');
 ?>
 
 <!-- Google Universal Analytics -->

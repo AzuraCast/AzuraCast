@@ -6,6 +6,52 @@ use \DF\Url;
 
 class Controller extends \Phalcon\Mvc\Controller
 {
+    /* Phalcon Initialization */
+
+    public function initialize()
+    {
+        $isAllowed = $this->permissions();
+        if (!$isAllowed)
+        {
+            if (!$this->auth->isLoggedIn())
+                throw new \DF\Exception\NotLoggedIn;
+            else
+                throw new \DF\Exception\PermissionDenied;
+        }
+    }
+
+    public function beforeExecuteRoute()
+    {
+        $this->preDispatch();
+    }
+    public function preDispatch()
+    {
+        $is_ajax = ($this->isAjax());
+        $this->view->is_ajax = $is_ajax;
+
+        if ($is_ajax)
+            $this->view->cleanTemplateAfter();
+
+        if ($this->hasParam('debug') && $this->_getParam('debug') === 'true')
+        {
+            error_reporting(E_ALL & ~E_STRICT);
+            ini_set('display_errors', 1);
+        }
+    }
+
+    public function afterExecuteRoute()
+    {
+        $this->postDispatch();
+    }
+    public function postDispatch()
+    {
+    }
+
+    public function permissions()
+    {
+        return true;
+    }
+
     /* URL Parameter Handling */
 
     /**

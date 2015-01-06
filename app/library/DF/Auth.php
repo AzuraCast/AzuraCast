@@ -8,7 +8,8 @@ class Auth
 {
     public static function getInstance()
     {
-        return \Zend_Registry::get('auth');
+        $di = \Phalcon\Di::getDefault();
+        return $di->get('auth');
     }
     
     public static function __callStatic($name, $arguments)

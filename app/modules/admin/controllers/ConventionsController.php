@@ -1,10 +1,12 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Convention as Record;
 use \Entity\Convention;
 use \Entity\ConventionSignup;
 use \Entity\ConventionArchive;
 
-class Admin_ConventionsController extends \PVL\Controller\Action\Admin
+class ConventionsController extends BaseController
 {
     public function permissions()
     {

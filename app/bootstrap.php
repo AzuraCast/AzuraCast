@@ -39,9 +39,6 @@ if (!defined('DF_APPLICATION_ENV'))
 // Set error reporting for the bootstrapping process.
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
-// Set include paths.
-set_include_path(implode(PATH_SEPARATOR, $include_path));
-
 // Composer autoload.
 $autoloader = require(DF_INCLUDE_VENDOR . DIRECTORY_SEPARATOR . 'autoload.php');
 
@@ -55,7 +52,6 @@ $config->preload(array('application','general'));
 $module_config_dirs = array();
 $modules = scandir(DF_INCLUDE_MODULES);
 
-$module_names = array();
 $module_config = array();
 $phalcon_modules = array();
 
@@ -64,8 +60,6 @@ foreach($modules as $module)
     if ($module == '.' || $module == '..')
         continue;
 
-    $module_names[] = $module;
-
     $config_directory = DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'config';
     if (file_exists($config_directory))
         $module_config[$module] = new \DF\Config($config_directory);
@@ -73,6 +67,9 @@ foreach($modules as $module)
     $phalcon_modules[$module] = array(
         'className' => 'Modules\\'.ucfirst($module).'\Module',
         'path' => DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'/Module.php',
+
+        'controllerClass' => 'Modules\\'.ucfirst($module).'\Controllers',
+        'controllerPath' => DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'/controllers',
     );
 }
 
@@ -83,23 +80,12 @@ foreach($autoload_classes['psr0'] as $class_key => $class_dir)
 foreach($autoload_classes['psr4'] as $class_key => $class_dir)
     $autoloader->addPsr4($class_key, $class_dir);
 
-// Register error-handler.
-$run     = new \Whoops\Run;
-
-$handler = new \Whoops\Handler\PrettyPageHandler;
-$handler->setPageTitle("Whoops! There was a problem.");
-$run->pushHandler($handler);
-
-// $run->pushHandler(new \Whoops\Handler\JsonResponseHandler);
-
-$run->register();
-
 $di = new \Phalcon\DI\FactoryDefault();
 
 // Configs
 $di->setShared('config', $config);
 $di->setShared('module_config', function() use ($module_config) { return $module_config; });
-$di->setShared('module_names', function() use ($module_names) { return $module_names; });
+$di->setShared('phalcon_modules', function() use ($phalcon_modules) { return $phalcon_modules; });
 
 // Router
 $di->setShared('router', function() use ($di) {

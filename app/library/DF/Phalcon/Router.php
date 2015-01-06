@@ -18,7 +18,7 @@ class Router extends \Phalcon\Mvc\Router
             return $path;
 
         $di = $this->getDI();
-        $module_list = $di->get('module_names');
+        $module_list = array_keys($di->get('phalcon_modules'));
 
         $path = trim($path, self::URI_DELIMITER);
 

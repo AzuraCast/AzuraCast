@@ -1,10 +1,12 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Song;
 use \Entity\Song as Record;
 use \Entity\SongHistory;
 use \Entity\SongVote;
 
-class Admin_SongsController extends \PVL\Controller\Action\Admin
+class SongsController extends BaseController
 {
     public function permissions()
     {

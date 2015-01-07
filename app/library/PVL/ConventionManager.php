@@ -12,7 +12,9 @@ class ConventionManager
      */
     public static function run()
     {
-        $em = \Zend_Registry::get('em');
+        $di = \Phalcon\Di::getDefault();
+        $em = $di->get('em');
+
         $created_threshold = strtotime('-1 month');
         $sync_threshold = time()-3600;
 
@@ -36,8 +38,9 @@ class ConventionManager
      */
     public static function process(ConventionArchive $row)
     {
-        $em = \Zend_Registry::get('em');
-        $config = \Zend_Registry::get('config');
+        $di = \Phalcon\Di::getDefault();
+        $em = $di->get('em');
+        $config = $di->get('config');
 
         // Set up Google Client
         $gclient_api_key = $config->apis->google_apis_key;

@@ -220,7 +220,8 @@ class Station extends \DF\Doctrine\Entity
         if ($user === null)
             $user = \DF\Auth::getLoggedInUser();
 
-        $acl = \Zend_Registry::get('acl');
+        $di = \Phalcon\Di::getDefault();
+        $acl = $di->get('acl');
 
         if ($acl->userAllowed('manage stations', $user))
             return true;
@@ -428,7 +429,9 @@ class Station extends \DF\Doctrine\Entity
                 return false;
         }
 
-        $acl = \Zend_Registry::get('acl');
+        $di = \Phalcon\Di::getDefault();
+        $acl = $di->get('acl');
+
         if ($acl->userAllowed('manage stations', $user))
             return true;
 

@@ -12,7 +12,8 @@ class Messenger
      */
     public static function send($message_options)
     {
-        $config = \Zend_Registry::get('config');
+        $di = \Phalcon\Di::getDefault();
+        $config = $di->get('config');
         
         $default_options = array(
             'reply_to'          => NULL,
@@ -84,8 +85,10 @@ class Messenger
                 'delivery_date' => $args[4],
             ), $args[5]);
         }
-        
-        $config = \Zend_Registry::get('config');
+
+        $di = \Phalcon\Di::getDefault();
+        $config = $di->get('config');
+
         $mail_config = $config->application->mail->toArray();
         
         $validator = new \Zend_Validate_EmailAddress();

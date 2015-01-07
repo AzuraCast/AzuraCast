@@ -9,7 +9,8 @@ class AnalyticsManager
 {
     public static function run()
     {
-        $em = \Zend_Registry::get('em');
+        $di = \Phalcon\Di::getDefault();
+        $em = $di->get('em');
 
         // Force all times to be UTC before continuing.
         date_default_timezone_set('UTC');

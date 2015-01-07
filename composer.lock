@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7f51d53eec75b9dacad7675b59414c2d",
+    "hash": "15fbd76b6bd45a336ef9ab13ecf92ac0",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -289,12 +289,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "a8f66a29d06856356681ba8480e80015c7227f33"
+                "reference": "1b71f926976f0b5b3bccd7443a26059f64342c67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/a8f66a29d06856356681ba8480e80015c7227f33",
-                "reference": "a8f66a29d06856356681ba8480e80015c7227f33",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/1b71f926976f0b5b3bccd7443a26059f64342c67",
+                "reference": "1b71f926976f0b5b3bccd7443a26059f64342c67",
                 "shasum": ""
             },
             "require": {
@@ -352,7 +352,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2015-01-04 00:25:17"
+            "time": "2015-01-04 22:01:13"
         },
         {
             "name": "doctrine/inflector",
@@ -650,6 +650,51 @@
             "time": "2014-11-29 09:19:11"
         },
         {
+            "name": "google/apiclient",
+            "version": "1.0.6-beta",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/google/google-api-php-client.git",
+                "reference": "a41a9dc0662e36420030eaab802dbb1f85459479"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/google/google-api-php-client/zipball/a41a9dc0662e36420030eaab802dbb1f85459479",
+                "reference": "a41a9dc0662e36420030eaab802dbb1f85459479",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "src/"
+            ],
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Client library for Google APIs",
+            "homepage": "http://developers.google.com/api-client-library/php",
+            "keywords": [
+                "google"
+            ],
+            "time": "2014-09-30 19:33:59"
+        },
+        {
             "name": "james-heinrich/getid3",
             "version": "v1.9.8",
             "source": {
@@ -788,12 +833,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "3591799139ecb629248fa8db2eae39e13fe41697"
+                "reference": "273b8fe99910b6864a863ed6a397938f39847cb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/3591799139ecb629248fa8db2eae39e13fe41697",
-                "reference": "3591799139ecb629248fa8db2eae39e13fe41697",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/273b8fe99910b6864a863ed6a397938f39847cb3",
+                "reference": "273b8fe99910b6864a863ed6a397938f39847cb3",
                 "shasum": ""
             },
             "require": {
@@ -836,7 +881,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-03 15:46:01"
+            "time": "2015-01-06 17:50:09"
         },
         {
             "name": "zendframework/zendframework1",
@@ -890,6 +935,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "google/apiclient": 10,
         "phalcon/devtools": 20
     },
     "prefer-stable": false,

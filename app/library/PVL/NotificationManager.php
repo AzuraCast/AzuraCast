@@ -14,8 +14,10 @@ class NotificationManager
 {
     public static function run($force_run = false)
     {
-        $em = \Zend_Registry::get('em');
-        $config = \Zend_Registry::get('config');
+        $di = \Phalcon\Di::getDefault();
+
+        $em = $di->get('em');
+        $config = $di->get('config');
 
         /**
          * Scheduled Shows from Stations
@@ -106,7 +108,9 @@ class NotificationManager
         // Send through Twitter.
         if (!$twitter)
         {
-            $config = \Zend_Registry::get('config');
+            $di = \Phalcon\Di::getDefault();
+            $config = $di->get('config');
+
             $twitter_config = $config->apis->twitter->toArray();
             $twitter = new \tmhOAuth($twitter_config);
         }

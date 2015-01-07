@@ -280,7 +280,8 @@ class CentovaCast
 
     public static function getEntityManager()
     {
-        return \Zend_Registry::get('em');
+        $di = \Phalcon\Di::getDefault();
+        return $di->get('em');
     }
 
     public static function getDatabase()
@@ -313,7 +314,9 @@ class CentovaCast
         static $settings;
         if (!$settings)
         {
-            $config = \Zend_Registry::get('config');
+            $di = \Phalcon\Di::getDefault();
+            $config = $di->get('config');
+
             $settings = $config->apis->centovacast->toArray();
         }
 

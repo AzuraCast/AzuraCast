@@ -116,7 +116,9 @@ class Cache
     
     public static function page()
     {
-        $auth = \Zend_Registry::get('auth');
+        $di = \Phalcon\Di::getDefault();
+        $auth = $di->get('auth');
+
         if (!$auth->isLoggedIn() && !\DF\Flash::hasMessages())
         {
             $page_cache = self::getPageCache();

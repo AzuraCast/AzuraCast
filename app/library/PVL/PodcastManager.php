@@ -9,7 +9,9 @@ class PodcastManager
 {
     public static function run($debug_mode = false)
     {
-        $em = \Zend_Registry::get('em');
+        $di = \Phalcon\Di::getDefault();
+        $em = $di->get('em');
+
         $social_fields = Podcast::getSocialTypes();
 
         // Pull podcast news.

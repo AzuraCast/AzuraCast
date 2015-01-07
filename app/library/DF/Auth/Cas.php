@@ -8,8 +8,10 @@ class Cas extends Instance
     public function __construct()
     {
         parent::__construct();
-        
-        $config = \Zend_Registry::get('config');
+
+        $di = \Phalcon\Di::getDefault();
+        $config = $di->get('config');
+
         $this->_adapter = new Adapter\Cas($config->services->cas->toArray());
     }
     

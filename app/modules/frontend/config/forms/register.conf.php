@@ -3,7 +3,9 @@
  * Register Form
  */
 
-$config = Zend_Registry::get('config');
+$di = \Phalcon\Di::getDefault();
+$config = $di->get('config');
+
 $general_config = $config->general->toArray();
 $captcha_config = $config->apis->recaptcha->toArray();
 

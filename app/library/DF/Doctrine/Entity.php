@@ -376,7 +376,7 @@ class Entity implements \ArrayAccess
         }
         else
         {
-            $em = \Zend_Registry::get('em');
+            $em = self::getEntityManager();
             $em->remove($this);
             $em->flush();
         }
@@ -484,7 +484,8 @@ class Entity implements \ArrayAccess
     /* Reset auto-increment key (MySQL Only). */
     public static function resetAutoIncrement()
     {
-        $em = \Zend_Registry::get('em');
+        $em = self::getEntityManager();
+
         $table_name = $em->getClassMetadata(get_called_class())->getTableName();
         $conn = $em->getConnection();
 

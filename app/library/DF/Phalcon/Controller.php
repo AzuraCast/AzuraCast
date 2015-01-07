@@ -300,20 +300,8 @@ class Controller extends \Phalcon\Mvc\Controller
         else
             $body .= $form->renderView();
 
-        $this->view->form_title = $form_title;
-        $this->view->form = $form;
-        $this->view->mode = $mode;
-
-        $this->view->setRenderLevel(\Phalcon\MVC\View::LEVEL_LAYOUT);
         $this->view->setContent($body);
-
-        $this->view->disable();
-
-        $view = new \Phalcon\Mvc\View();
-
-        $new_view = $this->module->getView();
-        var_dump($new_view->isDisabled());
-        exit;
+        $this->view->setRenderLevel(\Phalcon\MVC\View::LEVEL_LAYOUT);
     }
 
     /* Parameter Handling */

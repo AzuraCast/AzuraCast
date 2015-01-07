@@ -13,7 +13,8 @@ class CacheManager
             'categories' => $stations,
         );
 
-        $config = \Zend_Registry::get('config');
+        $di = \Phalcon\Di::getDefault();
+        $config = $di->get('config');
 
         $layout = new \Zend_Layout();
         $layout->setLayoutPath($config->application->resources->layout->layoutPath);

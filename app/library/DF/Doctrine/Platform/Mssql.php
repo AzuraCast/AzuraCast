@@ -22,7 +22,9 @@ class Mssql extends \Doctrine\DBAL\Platforms\SQLServer2008Platform
         // Initialize schema.
         if ($schema === NULL)
         {
-            $em = \Zend_Registry::get('em');
+            $di = \Phalcon\Di::getDefault();
+            $em = $di->get('em');
+
             $sm = $em->getConnection()->getSchemaManager();
             $schema = $sm->createSchema();
         }

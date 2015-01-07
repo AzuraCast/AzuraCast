@@ -344,7 +344,8 @@ class NowPlaying
         if (true || !$station['admin_monitor_station'])
             return false;
 
-        $em = \Zend_Registry::get('em');
+        $di = \Phalcon\Di::getDefault();
+        $em = $di->get('em');
 
         $managers_raw = $em->createQuery('SELECT sm.email FROM Entity\StationManager sm WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station['id'])

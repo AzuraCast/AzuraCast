@@ -16,8 +16,10 @@ class Twitter extends AdapterAbstract
         $news_items = array();
 
         $twitter_username = self::getAccount($url);
-        
-        $config = \Zend_Registry::get('config');
+
+        $di = \Phalcon\Di::getDefault();
+        $config = $di->get('config');
+
         $twitter_conf = $config->apis->twitter->toArray();
 
         $twitter = new \tmhOAuth($twitter_conf);

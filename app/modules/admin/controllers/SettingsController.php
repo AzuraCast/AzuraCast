@@ -28,6 +28,7 @@ class SettingsController extends BaseController
             
             $this->alert('Settings updated!');
             $this->redirectHere();
+            return;
         }
         
         $this->view->form = $form;

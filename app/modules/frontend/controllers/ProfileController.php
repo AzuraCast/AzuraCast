@@ -107,7 +107,7 @@ class ProfileController extends BaseController
             return;
         }
 
-        $this->view->headTitle('Edit Profile');
+        $this->view->setVar('title', 'Edit Profile');
         $this->renderForm($form);
     }
 
@@ -148,7 +148,7 @@ class ProfileController extends BaseController
 
         $this->storeReferrer('customization');
 
-        $this->view->headTitle('Set Time Zone');
+        $this->view->setVar('title', 'Set Time Zone');
         $this->renderForm($form);
     }
 

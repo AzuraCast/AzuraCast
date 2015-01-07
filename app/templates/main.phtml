@@ -72,7 +72,7 @@ $skin = \PVL\Customization::get('theme');
 <body>
 <div class="top">
     <div class="container">
-        <?php $this->partial("usernav") ?>
+        <?php $this->viewHelper->renderCommon("usernav") ?>
     </div>
 </div>
 
@@ -90,7 +90,7 @@ $skin = \PVL\Customization::get('theme');
                     <span class="icon-bar"></span>
                 </a>
                 <div class="nav-collapse collapse">
-                    <?php $this->partial("nav") ?>
+                    <?php $this->viewHelper->renderCommon("nav") ?>
                 </div>
             </div>
         </div>
@@ -158,7 +158,7 @@ $skin = \PVL\Customization::get('theme');
 
 <div class="footer">
     <div class="container">
-        <?=$this->partial('footer') ?>
+        <?=$this->viewHelper->renderCommon('footer') ?>
     </div>
 </div>
 

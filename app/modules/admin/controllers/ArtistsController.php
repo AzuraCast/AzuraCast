@@ -66,7 +66,7 @@ class ArtistsController extends BaseController
             return;
         }
 
-        $this->view->headTitle('Edit Record');
+        $this->view->setVar('title', 'Edit Record');
         $this->renderForm($form);
     }
     

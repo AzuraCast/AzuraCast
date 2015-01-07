@@ -69,7 +69,7 @@ class Stations_SubmitController extends \DF\Controller\Action
             return;
         }
 
-        $this->view->headTitle('New Station Submission');
+        $this->view->setVar('title', 'New Station Submission');
         $this->renderForm($form);
     }
 }

@@ -71,10 +71,11 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
             $view = new \Phalcon\Mvc\View();
 
             $view->setViewsDir($views_dir);
-            $view->setLayoutsDir('../../../../templates');
-            $view->setPartialsDir('../../../../templates/shared');
 
-            $view->setTemplateAfter('main');
+            $view->setLayoutsDir('../../../../templates');
+            $view->setLayout('main');
+
+            $view->setPartialsDir('');
 
             $view->registerEngines(array(
                 ".phtml" => 'Phalcon\Mvc\View\Engine\Php',

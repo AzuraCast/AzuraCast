@@ -42,7 +42,7 @@ class PermissionsController extends BaseController
             return;
         }
 
-        $this->view->headTitle('Add/Edit Action');
+        $this->view->setVar('title', 'Add/Edit Action');
         $this->renderForm($form);
     }
     
@@ -85,7 +85,7 @@ class PermissionsController extends BaseController
             return;
         }
 
-        $this->view->headTitle('Add/Edit Role');
+        $this->view->setVar('title', 'Add/Edit Role');
         $this->renderForm($form);
     }
 

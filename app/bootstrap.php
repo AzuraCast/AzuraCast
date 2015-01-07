@@ -38,6 +38,7 @@ if (!defined('DF_APPLICATION_ENV'))
 
 // Set error reporting for the bootstrapping process.
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+ini_set('display_errors', 1);
 
 // Composer autoload.
 $autoloader = require(DF_INCLUDE_VENDOR . DIRECTORY_SEPARATOR . 'autoload.php');

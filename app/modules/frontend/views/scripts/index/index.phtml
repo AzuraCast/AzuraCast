@@ -105,19 +105,19 @@ $station_cols = \DF\Utilities::columns($cat['stations'], 3);
     <div class="span4">
         <?
         $this->view->stations = $station_cols[0];
-        echo $this->partial('station');
+        echo $this->viewHelper->renderCommon('station');
         ?>
     </div>
     <div class="span4">
         <?
         $this->view->stations = $station_cols[1];
-        echo $this->partial('station');
+        echo $this->viewHelper->renderCommon('station');
         ?>
     </div>
     <div class="span4">
         <?
         $this->view->stations = $station_cols[2];
-        echo $this->partial('station');
+        echo $this->viewHelper->renderCommon('station');
         ?>
     </div>
 </div>
@@ -142,20 +142,20 @@ $podcast_cols = \DF\Utilities::columns($podcasts, 2, true);
     <div class="span4">
         <?
         $this->view->podcasts = $podcast_cols[0];
-        echo $this->partial('podcast');
+        echo $this->viewHelper->renderCommon('podcast');
         ?>
     </div>
     <div class="span4">
         <?
         $this->view->podcasts = $podcast_cols[1];
-        echo $this->partial('podcast');
+        echo $this->viewHelper->renderCommon('podcast');
         ?>
     </div>
     <div class="span4">
         <?
         $cat = $this->view->categories['video'];
         $this->view->stations = $cat['stations'];
-        echo $this->partial('station');
+        echo $this->viewHelper->renderCommon('station');
         ?>
     </div>
 </div>
@@ -165,7 +165,9 @@ $tz_info = \PVL\Timezone::getInfo();
 ?>
 <h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a>, see <a href="<?=$this->url->get('schedule') ?>">entire schedule</a></small></h2>
 
-<? echo $this->partial('schedule') ?>
+<?
+echo $this->viewHelper->renderHere('schedule');
+?>
 
 <h2><i class="icon-folder-open-alt"></i> Convention Archives</h2>
 
@@ -195,7 +197,7 @@ $cols = \DF\Utilities::columns($cons, 3);
 
 <!-- Player Interface Skeleton Code -->
 <?
-echo $this->view->getRender('', 'player-skeleton');
+echo $this->viewHelper->renderHere('player-skeleton', true);
 ?>
 
 <!-- Schedule Reloader -->

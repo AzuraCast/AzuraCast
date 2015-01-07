@@ -55,7 +55,7 @@ class UsersController extends BaseController
             return;
         }
 
-        $this->view->headTitle('Add/Edit User');
+        $this->view->setVar('title', 'Add/Edit User');
         $this->renderForm($form);
     }
 

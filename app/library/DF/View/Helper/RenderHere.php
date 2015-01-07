@@ -4,18 +4,14 @@
  */
 
 namespace DF\View\Helper;
+
 class RenderHere extends HelperAbstract
 {
-    public function renderHere($target,$outside_controller_dir = FALSE)
+    public function renderHere($target, $outside_controller_dir = FALSE)
     {
-        // Get the current path used by the current template.
-        $view_renderer = new \Zend_Controller_Action_Helper_ViewRenderer();
-        $view_renderer->init();
-        
-        $view_renderer->setRender($target, NULL, $outside_controller_dir);
-        $path = $view_renderer->getViewScript();
-        
-        $return_value = $this->view->render($path);     
-        return $return_value;
+        if (!$outside_controller_dir)
+            $target = $this->view->getControllerName().'/'.$target;
+
+        return $this->view->partial($target);
     }
 }

@@ -156,7 +156,9 @@ class Controller extends \Phalcon\Mvc\Controller
     public function redirect($new_url, $code = 302)
     {
         $this->doNotRender();
+
         $this->response->redirect($new_url, $code);
+        $this->response->send();
     }
 
     /**
@@ -168,7 +170,9 @@ class Controller extends \Phalcon\Mvc\Controller
     public function redirectToRoute($route, $code = 302)
     {
         $this->doNotRender();
+
         $this->response->redirect(Url::route($route, $this->di), $code);
+        $this->response->send();
     }
 
     /**
@@ -180,7 +184,35 @@ class Controller extends \Phalcon\Mvc\Controller
     public function redirectFromHere($route, $code = 302)
     {
         $this->doNotRender();
+
         $this->response->redirect(Url::routeFromHere($route, $this->di), $code);
+        $this->response->send();
+    }
+
+    /**
+     * Redirect to the current page.
+     *
+     * @param int $code
+     */
+    public function redirectHere($code = 302)
+    {
+        $this->doNotRender();
+
+        $this->response->redirect($this->request->getUri(), $code);
+        $this->response->send();
+    }
+
+    /**
+     * Redirect to the homepage.
+     *
+     * @param int $code
+     */
+    public function redirectHome($code = 302)
+    {
+        $this->doNotRender();
+
+        $this->response->redirect($this->url->get(''), $code);
+        $this->response->send();
     }
 
     /**
@@ -250,5 +282,55 @@ class Controller extends \Phalcon\Mvc\Controller
     public function alert($message, $level = \DF\Flash::INFO)
     {
         \DF\Flash::addMessage($message, $level);
+    }
+
+    /* Form Rendering */
+
+    protected function renderForm(\DF\Form $form, $mode = 'edit', $form_title = NULL)
+    {
+        $body = '';
+
+        // Show visible title.
+        if ($form_title)
+            $body .= '<h2>'.$form_title.'</h2>';
+
+        // Form render mode.
+        if ($mode == 'edit')
+            $body .= $form->render();
+        else
+            $body .= $form->renderView();
+
+        $this->view->form_title = $form_title;
+        $this->view->form = $form;
+        $this->view->mode = $mode;
+
+        $this->view->setRenderLevel(\Phalcon\MVC\View::LEVEL_LAYOUT);
+        $this->view->setContent($body);
+
+        $this->view->disable();
+
+        $view = new \Phalcon\Mvc\View();
+
+        $new_view = $this->module->getView();
+        var_dump($new_view->isDisabled());
+        exit;
+    }
+
+    /* Parameter Handling */
+
+    protected function convertGetToParam($params)
+    {
+        if (!is_array($params))
+            $params = array($params);
+
+        $url_changes = array();
+        foreach($params as $param)
+        {
+            if (isset($_GET[$param]))
+                $url_changes[$param] = $_GET[$param];
+        }
+
+        if (count($url_changes) > 0)
+            $this->redirectFromHere($url_changes);
     }
 }

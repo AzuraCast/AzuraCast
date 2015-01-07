@@ -16,7 +16,10 @@ $router->removeExtraSlashes(true);
 
 foreach((array)$router_config['custom_routes'] as $route_path => $route_params)
 {
-    $router->add($route_path, $route_params);
+    $route = $router->add($route_path, $route_params);
+
+    if (isset($route_params['name']))
+        $route->setName($route_params['name']);
 }
 
 return $router;

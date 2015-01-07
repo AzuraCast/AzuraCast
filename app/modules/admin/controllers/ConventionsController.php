@@ -77,7 +77,7 @@ class ConventionsController extends BaseController
             return;
         }
 
-        $this->view->headTitle('Edit Record');
+        $this->view->setVar('title', 'Edit Record');
         $this->renderForm($form);
     }
 
@@ -165,7 +165,7 @@ class ConventionsController extends BaseController
             return;
         }
 
-        $this->view->headTitle('Edit Signup Record');
+        $this->view->setVar('title', 'Edit Signup Record');
         $this->renderForm($form);
     }
 
@@ -259,7 +259,7 @@ class ConventionsController extends BaseController
             return;
         }
 
-        $this->view->headTitle('Edit Convention Archive Item');
+        $this->view->setVar('title', 'Edit Convention Archive Item');
         $this->renderForm($form);
     }
 

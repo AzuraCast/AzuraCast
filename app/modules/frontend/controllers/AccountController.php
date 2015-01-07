@@ -64,7 +64,7 @@ class AccountController extends BaseController
             }
         }
 
-        $this->view->headTitle('Create New Account');
+        $this->view->title = 'Create New Account';
         $this->renderForm($form);
     }
 
@@ -224,7 +224,7 @@ class AccountController extends BaseController
             return;
         }
 
-        $this->view->headTitle('Forgot My Password');
+        $this->view->setVar('title', 'Forgot My Password');
         $this->renderForm($form);
     }
 

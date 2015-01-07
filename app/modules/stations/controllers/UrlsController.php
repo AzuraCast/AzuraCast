@@ -75,9 +75,9 @@ class Stations_UrlsController extends \PVL\Controller\Action\Station
         }
 
         if ($this->_hasParam('id'))
-            $this->view->headTitle('Edit Short URL');
+            $this->view->setVar('title', 'Edit Short URL');
         else
-            $this->view->headTitle('Add Short URL');
+            $this->view->setVar('title', 'Add Short URL');
 
         $this->renderForm($form);
     }

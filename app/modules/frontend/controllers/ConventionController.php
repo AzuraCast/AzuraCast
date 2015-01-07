@@ -184,7 +184,7 @@ class ConventionController extends BaseController
             return;
         }
 
-        $this->view->headTitle('Convention Signup Form');
+        $this->view->setVar('title', 'Convention Signup Form');
         $this->renderForm($form);
     }
 

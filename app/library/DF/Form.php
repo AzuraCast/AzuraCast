@@ -47,6 +47,18 @@ class Form
         return $this->options;
     }
 
+    public function setDefaults($default_values)
+    {
+        foreach((array)$default_values as $field_key => $default_value)
+        {
+            if ($this->form->has($field_key))
+            {
+                $element = $this->form->get($field_key);
+                $element->setDefault($default_value);
+            }
+        }
+    }
+
     protected function _setUpFields()
     {
         if ($this->options['groups']) {
@@ -88,6 +100,9 @@ class Form
             $element_default = NULL;
         }
 
+        if (isset($field_options['description']))
+            unset($field_options['description']);
+
         $element_validators = array();
 
         if (isset($field_options['required'])) {
@@ -121,12 +136,16 @@ class Form
                 break;
 
             case 'checkbox':
+                $element = new \Phalcon\Forms\Element\Check($field_key, $field_options);
+                break;
+
             case 'multiCheckbox':
-                $element = new \Phalcon\Forms\Element\Check($field_key, $select_options, $field_options);
+                $field_options['name'] = $field_key.'[]';
+                $element = new \Phalcon\Forms\Element\Check($field_key, $field_options);
                 break;
 
             case 'radio':
-                $element = new \Phalcon\Forms\Element\Radio($field_key, $select_options, $field_options);
+                $element = new \Phalcon\Forms\Element\Radio($field_key, $field_options);
                 break;
 
             case 'textarea':
@@ -183,7 +202,7 @@ class Form
     public function render($name = null)
     {
         if ($name !== null)
-            return $this->_renderField($name);
+            return $this->_renderField($name, array());
 
         $form_defaults = array(
             'method'        => 'POST',
@@ -207,22 +226,24 @@ class Form
 
         if ($this->options['groups']) {
             foreach($this->options['groups'] as $group_id => $group_info) {
-                $return .= '<fieldset id="'.$group_id.'">';
-
-                if (!empty($group_info['legend']))
-                    $return .= '<legend>'.$group_info['legend'].'</legend>';
-
-                foreach($group_info['elements'] as $element_key => $element_info) {
-                    $return .= $this->_renderField($element_key);
+                if (!empty($group_info['legend'])) {
+                    $return .= '<fieldset id="' . $group_id . '">';
+                    $return .= '<legend>' . $group_info['legend'] . '</legend>';
                 }
 
-                $return .= '</fieldset>';
+                foreach($group_info['elements'] as $element_key => $element_info) {
+                    $return .= $this->_renderField($element_key, $element_info);
+                }
+
+                if (!empty($group_info['legend'])) {
+                    $return .= '</fieldset>';
+                }
             }
         }
 
         if (!empty($this->options['elements'])) {
             foreach($this->options['elements'] as $element_key => $element_info) {
-                $return .= $this->_renderField($element_key);
+                $return .= $this->_renderField($element_key, $element_info);
             }
         }
 
@@ -230,8 +251,11 @@ class Form
         return $return;
     }
 
-    protected function _renderField($name)
+    protected function _renderField($name, $field_params)
     {
+        $field_type = $field_params[0];
+        $field_options = $field_params[1];
+
         $element = $this->form->get($name);
 
         $return = '<div class="clearfix control-group">';
@@ -239,6 +263,9 @@ class Form
         $label = $element->getLabel();
         if (!empty($label))
             $return .= '<label for="'.$element->getName().'">'.$label.':</label>';
+
+        if (!empty($field_options['description']))
+            $return .= '<span class="help-block">'.$field_options['description'].'</span>';
 
         //Get any generated messages for the current element
         $messages = $this->form->getMessagesFor($element->getName());
@@ -249,9 +276,31 @@ class Form
             }
         }
 
-        $return .= $this->form->render($name);
+        switch($field_type)
+        {
+            case 'submit':
+                return $this->form->render($name);
+                break;
+
+            case 'multiCheckbox':
+            case 'radio':
+                $return .= '<ul class="inputs-list inline">';
+
+                $list_items = array();
+                foreach($field_options['multiOptions'] as $option_value => $option_label)
+                    $list_items[] = '<li><label>'.$this->form->render($name, array('value' => $option_value)).' <span>'.$option_label.'</span></label></li>';
+
+                $return .= implode('<br>', $list_items);
+                $return .= '</ul>';
+                break;
+
+            default:
+                $return .= $this->form->render($name);
+                break;
+        }
 
         $return .= '</div>';
+
         return $return;
     }
 
@@ -262,6 +311,11 @@ class Form
     public function renderMessage()
     {
         return $this->renderView();
+    }
+
+    protected function _renderFieldView($name, $field_params)
+    {
+
     }
 
     public function isValid($submitted_data = null)

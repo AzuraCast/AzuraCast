@@ -2,7 +2,9 @@
 $this->assets->collection('custom_js')
     ->addJs('https://cdn.socket.io/socket.io-1.2.1.js', false)
     ->addJs('jplayer/jquery.jplayer.min.js')
-    ->addJs('radio.js')
+    ->addJs('radio.js');
+
+$this->assets->collection('custom_css')
     ->addCss('vendor/world-flags-sprite/stylesheets/flags16.css');
 ?>
 <script type="text/javascript">
@@ -11,18 +13,18 @@ $this->assets->collection('custom_js')
 </script>
 
 <? if ($this->view->station_id && $this->view->autoplay): ?>
-<script type="text/javascript">
-$(function() {
-    var autoplay_triggered = false;
+    <script type="text/javascript">
+        $(function() {
+            var autoplay_triggered = false;
 
-    socket.on('nowplaying', function(e) {
-        if (!autoplay_triggered) {
-            autoplay_triggered = true;
-            playStation($('.station[data-id="<?=$this->view->station_id ?>"]').attr('id'));
-        }
-    });
-});
-</script>
+            socket.on('nowplaying', function(e) {
+                if (!autoplay_triggered) {
+                    autoplay_triggered = true;
+                    playStation($('.station[data-id="<?=$this->view->station_id ?>"]').attr('id'));
+                }
+            });
+        });
+    </script>
 <? endif; ?>
 
 <div id="pvl-jplayer-controls-image" style="display: none;">
@@ -33,7 +35,7 @@ $(function() {
 
             <a href="javascript:;" class="jp-mute" tabindex="1" title="mute"><i class="icon-volume-off"></i></a>
             <a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute"><i class="icon-volume-down"></i></a>
-            
+
             <div class="jp-volume-bar progress">
                 <div class="jp-volume-bar-value bar"></div>
             </div>

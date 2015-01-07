@@ -7,11 +7,11 @@ use \Entity\User;
 use \Entity\Role;
 
 require_once dirname(__FILE__) . '/../app/bootstrap.php';
-$application->bootstrap();
 
 set_time_limit(0);
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
+$config = $di->get('config');
 $api_key = $config->apis->pvl_api_key;
 $remote_base = 'http://ponyvillelive.com';
 

@@ -1,7 +1,9 @@
 <?php
+namespace Modules\Api\Controllers;
+
 use \Entity\Station;
 
-class Api_StationController extends \PVL\Controller\Action\Api
+class StationController extends BaseController
 {
     public function indexAction()
     {
@@ -13,6 +15,14 @@ class Api_StationController extends \PVL\Controller\Action\Api
         {
             $id = (int)$this->_getParam('id');
             $record = Station::find($id);
+        }
+        else
+        {
+            $this->dispatcher->forward(array(
+                'controller' => 'station',
+                'action' => 'list',
+            ));
+            return false;
         }
 
         if (!($record instanceof Station) || $record->deleted_at)

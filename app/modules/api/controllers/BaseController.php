@@ -12,7 +12,7 @@ class BaseController extends \DF\Phalcon\Controller
 
     public function preDispatch()
     {
-        // parent::preDispatch();
+        parent::preDispatch();
 
         // Disable rendering.
         $this->doNotRender();
@@ -30,7 +30,7 @@ class BaseController extends \DF\Phalcon\Controller
 
     public function postDispatch()
     {
-        // parent::postDispatch();
+        parent::postDispatch();
 
         $end_time = microtime(true);
         $request_time = $end_time - $this->_time_start;
@@ -44,8 +44,8 @@ class BaseController extends \DF\Phalcon\Controller
             'ip'            => $_SERVER['REMOTE_ADDR'],
             'client'        => $this->_getParam('client', 'general'),
             'useragent'     => $_SERVER['HTTP_USER_AGENT'],
-            'controller'    => $this->_getControllerName(),
-            'action'        => $this->_getActionName(),
+            'controller'    => $this->dispatcher->getControllerName(),
+            'action'        => $this->dispatcher->getActionName(),
             'parameters'    => json_encode($_REQUEST),
             'requesttime'   => $request_time,
         ));
@@ -98,8 +98,9 @@ class BaseController extends \DF\Phalcon\Controller
         if ($format == 'xml')
             $this->response->setContentType('text/xml', 'utf-8');
         else
-            $this->response->setJsonContent('application/json', 'utf-8');
+            $this->response->setContentType('application/json', 'utf-8');
 
         $this->response->setContent($message);
+        $this->response->send();
     }
 }

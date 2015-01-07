@@ -30,7 +30,7 @@ class Controller extends \Phalcon\Mvc\Controller
         $this->view->is_ajax = $is_ajax;
 
         if ($is_ajax)
-            $this->view->cleanTemplateAfter();
+            $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_MAIN_LAYOUT);
 
         if ($this->hasParam('debug') && $this->_getParam('debug') === 'true')
         {

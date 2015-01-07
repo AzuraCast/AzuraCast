@@ -1,9 +1,11 @@
 <?php
+namespace Modules\Api\Controllers;
+
 use \Entity\Station;
 use \Entity\Song;
 use \Entity\Schedule;
 
-class Api_NowplayingController extends \PVL\Controller\Action\Api
+class NowplayingController extends BaseController
 {
     public function indexAction()
     {
@@ -12,10 +14,7 @@ class Api_NowplayingController extends \PVL\Controller\Action\Api
 
         // Sanity check for now playing data.
         if (empty($np_raw))
-        {
-            $this->returnError('Now Playing data has not loaded into the cache. Wait for file reload.');
-            return;
-        }
+            return $this->returnError('Now Playing data has not loaded into the cache. Wait for file reload.');
 
         if ($this->hasParam('id') || $this->hasParam('station'))
         {

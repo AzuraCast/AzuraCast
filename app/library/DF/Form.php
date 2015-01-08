@@ -59,6 +59,11 @@ class Form
         }
     }
 
+    public function populate($values)
+    {
+        $this->setDefaults($values);
+    }
+
     protected function _setUpFields()
     {
         if ($this->options['groups']) {
@@ -90,7 +95,7 @@ class Form
             $element_label = $field_options['label'];
             unset($field_options['label']);
         } else {
-            $element_label = ucfirst($field_key);
+            $element_label = NULL;
         }
 
         if (isset($field_options['default'])) {
@@ -173,6 +178,10 @@ class Form
                 $element_label = NULL;
 
                 $element = new \Phalcon\Forms\Element\Submit($field_key, $field_options);
+                break;
+
+            case 'markup':
+                $element = new \DF\Forms\Element\Markup($field_key, $field_options['markup'], $field_options);
                 break;
 
             case 'text':
@@ -326,7 +335,50 @@ class Form
 
     public function renderView()
     {
+        $return = '';
+        $return .= '<div class="form-view">';
 
+        if ($this->options['groups']) {
+            foreach($this->options['groups'] as $group_id => $group_info) {
+
+                $elements_return = '';
+                foreach($group_info['elements'] as $element_key => $element_info) {
+                    $elements_return .= $this->_renderFieldView($element_key, $element_info);
+                }
+
+                $elements_return = trim($elements_return);
+
+                // Hide empty fieldsets.
+                if (empty($elements_return))
+                    continue;
+
+                if (!empty($group_info['legend']))
+                    $return .= '<h3>' . $group_info['legend'] . '</h3>';
+
+                $return .= '<dl>'.$elements_return.'</dl>';
+
+                if (!empty($group_info['legend'])) {
+                    $return .= '</fieldset>';
+                }
+            }
+        }
+
+        if (!empty($this->options['elements'])) {
+
+            $elements_return = '';
+            foreach($this->options['elements'] as $element_key => $element_info) {
+                $elements_return .= $this->_renderFieldView($element_key, $element_info);
+            }
+
+            $elements_return = trim($elements_return);
+
+            if (!empty($elements_return))
+                $return .= '<dl>'.$elements_return.'</dl>';
+        }
+
+        $return .= '</div>';
+
+        return $return;
     }
     public function renderMessage()
     {
@@ -335,7 +387,69 @@ class Form
 
     protected function _renderFieldView($name, $field_params)
     {
+        $field_type = $field_params[0];
+        $field_options = $field_params[1];
 
+        $element = $this->form->get($name);
+
+        $return = '';
+
+        switch($field_type)
+        {
+            case 'markup':
+            case 'submit':
+                return '';
+                break;
+
+            case 'multiCheckbox':
+            case 'radio':
+                $options = $field_options['multiOptions'];
+                $value = $element->getValue();
+
+                if (is_array($value))
+                {
+                    $return .= '<dd><ul>';
+                    foreach($value as $key)
+                        $return .= '<li>'.$options[$key].'</li>';
+
+                    $return .= '</ul></dd>';
+                }
+                else
+                {
+                    if (isset($options[$value]))
+                        $return .= '<dd>'.$options[$value].'</dd>';
+                }
+                break;
+
+            case 'file':
+                $files = (array)$element->getValue();
+
+                $return .= '<dd>';
+                $i = 1;
+                foreach($files as $file)
+                {
+                    $file_url = \DF\Url::content($file);
+                    $return .= '<div>#'.$i.': <a href="'.$file_url.'" target="_blank">Download File</a></div>';
+
+                    $i++;
+                }
+                $return .= '</dd>';
+                break;
+
+            default:
+                $value = trim($element->getValue());
+
+                if (!empty($value))
+                    $return .= '<dd>'.$value.'</dd>';
+                break;
+        }
+
+        // Only add label for non-empty elements.
+        $label = $element->getLabel();
+        if (!empty($return) && !empty($label))
+            $return = '<dt>'.$label.':</dt>'.$return;
+
+        return $return;
     }
 
     public function isValid($submitted_data = null)

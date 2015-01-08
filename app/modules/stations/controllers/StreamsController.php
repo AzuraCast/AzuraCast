@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Stations\Controllers;
+
 use \Entity\Station;
 use \Entity\StationStream;
 
-class Stations_StreamsController extends \PVL\Controller\Action\Station
+class StreamsController extends BaseController
 {
     public function indexAction()
     {

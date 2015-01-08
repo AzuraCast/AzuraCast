@@ -2,16 +2,16 @@
 $this->view->setVar('title', 'Station Center');
 $this->view->manual = true;
 
-$this->headScript()
-    ->appendFile('//code.highcharts.com/highcharts.js')
-    ->appendFile('//code.highcharts.com/highcharts-more.js')
-    ->appendFile('//code.highcharts.com/modules/exporting.js');
+$this->assets->collection('custom_js')
+    ->addJs('//code.highcharts.com/highcharts.js', false)
+    ->addJs('//code.highcharts.com/highcharts-more.js', false)
+    ->addJs('//code.highcharts.com/modules/exporting.js', false);
 
 $skin = \PVL\Customization::get('theme');
 if ($skin == "dark")
-    $this->headScript()->appendFile(\DF\Url::content('highcharts/dark-blue.js'));
+    $this->assets->collection('custom_css')->addCss('highcharts/dark-blue.js');
 
-echo $this->renderHere('stationname', true);
+echo $this->viewHelper->renderHere('stationname', true);
 ?>
 
 <script type="text/javascript">
@@ -25,7 +25,7 @@ Highcharts.setOptions({
 <div class="row-fluid">
     <div class="span12">
         <div class="well">
-            <?=$this->renderHere('index_dailystats') ?>
+            <?=$this->viewHelper->renderHere('index-dailystats') ?>
         </div>
     </div>
 </div>
@@ -69,7 +69,7 @@ Highcharts.setOptions({
                 <dt><a href="<?=$this->viewHelper->route(array('controller' => 'widget', 'action' => 'index')) ?>">Radio Player Embed Instructions</a></dt>
                 <dt><a href="//www.ponyvillelive.com/resources/brand_package.zip">PVL Network Logos &amp; Branding Kit</a></dt>
                 <dt><a href="http://radio.ponyvillelive.com:2199/" target="_blank">CentovaCast Station Manager</a></dt>
-                <dt><a href="pvlhosting.bravelyblue.com:8443" target="_blank">Plesk Web Hosting Manager</a></dt>
+                <dt><a href="http://hosting.ponyvillelive.com:8443/" target="_blank">Plesk Web Hosting Manager</a></dt>
             </dl>
         </div>
 
@@ -82,7 +82,7 @@ Highcharts.setOptions({
                     <col width="40%">
                 </colgroup>
                 <tbody>
-                <? foreach($this->station->managers as $manager): ?>
+                <? foreach($this->view->station->managers as $manager): ?>
                     <tr class="input">
                         <td><?=$manager->email ?></td>
                         <td>
@@ -119,7 +119,7 @@ Highcharts.setOptions({
     <div class="span4">
 
         <div class="well">
-            <?=$this->renderHere('index_hourlystats') ?>
+            <?=$this->viewHelper->renderHere('index-hourlystats') ?>
         </div>
 
         <h2><i class="icon-circle-arrow-up"></i> Best Performing Songs<br><small>In the last 48 hours</small></h2>
@@ -131,7 +131,7 @@ Highcharts.setOptions({
                     <col width="80%">
                 </colgroup>
                 <tbody>
-                <? foreach($this->best_performing_songs as $song_row): ?>
+                <? foreach($this->view->best_performing_songs as $song_row): ?>
                     <tr>
                         <td class="center text-success"><i class="icon-caret-up"></i> <?=abs($song_row['stat_delta']) ?><br><small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?></td>
                         <td>
@@ -159,7 +159,7 @@ Highcharts.setOptions({
                     <col width="80%">
                 </colgroup>
                 <tbody>
-                <? foreach($this->worst_performing_songs as $song_row): ?>
+                <? foreach($this->view->worst_performing_songs as $song_row): ?>
                     <tr>
                         <td class="center text-error"><i class="icon-caret-down"></i> <?=abs($song_row['stat_delta']) ?><br><small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?></td>
                         <td>
@@ -182,7 +182,7 @@ Highcharts.setOptions({
     <div class="span4">
 
         <div class="well">
-            <?=$this->renderHere('index_dayofweek') ?>
+            <?=$this->viewHelper->renderHere('index-dayofweek') ?>
         </div>
 
         <h2>Most Played Songs<br><small>In the last month</small></h2>
@@ -194,7 +194,7 @@ Highcharts.setOptions({
                     <col width="80%">
                 </colgroup>
                 <tbody>
-                <? foreach($this->song_totals['played'] as $song_row): ?>
+                <? foreach($this->view->song_totals['played'] as $song_row): ?>
                     <tr>
                         <td class="center"><?=$song_row['records'] ?></td>
                         <td>

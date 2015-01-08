@@ -14,6 +14,28 @@ return array(
             'name' => 'home',
         ),
 
+        // Info pages.
+        '/about' => array(
+            'module' => 'frontend',
+            'controller' => 'index',
+            'action' => 'about',
+        ),
+        '/apps' => array(
+            'module' => 'frontend',
+            'controller' => 'index',
+            'action' => 'app',
+        ),
+        '/donate' => array(
+            'module' => 'frontend',
+            'controller' => 'index',
+            'action' => 'donate',
+        ),
+        '/conventions' => array(
+            'module' => 'frontend',
+            'controller' => 'convention',
+            'action' => 'index',
+        ),
+
         // Podcasts
         '/shows' => array(
             'module' => 'frontend',
@@ -21,11 +43,11 @@ return array(
             'action' => 'index',
             'name' => 'show-listing',
         ),
-        '/shows/:int' => array(
+        '/shows/:params' => array(
             'module' => 'frontend',
             'controller' => 'show',
             'action' => 'view',
-            'id' => 1,
+            'params' => 1,
             'name' => 'show-info',
         ),
     ),

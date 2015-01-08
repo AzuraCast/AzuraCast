@@ -1,8 +1,8 @@
 <?php
 $this->view->setVar('title', 'URL Shortener Management');
 
-echo $this->renderHere('stationname', true);
-echo $this->renderHere('homelink', true);
+echo $this->viewHelper->renderHere('stationname', true);
+echo $this->viewHelper->renderHere('homelink', true);
 ?>
 
 <h2>My Station's Links</h2>
@@ -31,7 +31,7 @@ echo $this->renderHere('homelink', true);
     </tr>
     </thead>
     <tbody>
-    <? foreach($this->urls as $record): ?>
+    <? foreach($this->view->urls as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
@@ -74,7 +74,7 @@ echo $this->renderHere('homelink', true);
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->station_urls as $record): ?>
+    <? foreach($this->view->station_urls as $record): ?>
         <tr class="input">
             <td><i class="<?=$record['icon'] ?>"></i> <?=$record['name'] ?></td>
             <td><a href="<?=$record['url'] ?>" target="_blank"><?=$record['url'] ?></a></td>
@@ -98,7 +98,7 @@ echo $this->renderHere('homelink', true);
     </tr>
     </thead>
     <tbody>
-    <? foreach($this->convention_urls as $record): ?>
+    <? foreach($this->view->convention_urls as $record): ?>
         <tr class="input">
             <td><?=$record['name'] ?></td>
             <td><a href="<?=$record['url'] ?>" target="_blank"><?=$record['url'] ?></a></td>

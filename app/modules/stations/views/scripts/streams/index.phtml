@@ -1,8 +1,8 @@
 <?php
 $this->view->setVar('title', 'Station Stream Manager');
 
-echo $this->renderHere('stationname', true);
-echo $this->renderHere('homelink', true);
+echo $this->viewHelper->renderHere('stationname', true);
+echo $this->viewHelper->renderHere('homelink', true);
 ?>
 
 <h2>Station Stream Manager</h2>
@@ -33,7 +33,7 @@ echo $this->renderHere('homelink', true);
     </tr>
     </thead>
     <tbody>
-    <? foreach($this->streams as $record): ?>
+    <? foreach($this->view->streams as $record): ?>
         <tr class="input <? if ($record['is_default']): ?>blue<? endif; ?>">
             <td class="center">
                 <div class="btn-group">

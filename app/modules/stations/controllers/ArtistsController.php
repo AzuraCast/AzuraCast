@@ -1,10 +1,12 @@
 <?php
+namespace Modules\Stations\Controllers;
+
 use \Entity\Station;
 use \Entity\StationManager;
 
 use \Entity\Artist;
 
-class Stations_ArtistsController extends \PVL\Controller\Action\Station
+class ArtistsController extends BaseController
 {
     public function allAction()
     {

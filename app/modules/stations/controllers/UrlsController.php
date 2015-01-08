@@ -1,9 +1,11 @@
 <?php
+namespace Modules\Stations\Controllers;
+
 use \Entity\Station;
 use \Entity\Convention;
 use \Entity\ShortUrl;
 
-class Stations_UrlsController extends \PVL\Controller\Action\Station
+class UrlsController extends BaseController
 {
     public function indexAction()
     {

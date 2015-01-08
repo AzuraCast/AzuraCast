@@ -1,7 +1,9 @@
 <?php
+namespace Modules\Url\Controllers;
+
 use \Entity\ShortUrl;
 
-class Url_IndexController extends \DF\Controller\Action
+class IndexController extends \DF\Phalcon\Controller
 {
     public function indexAction()
     {

@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Stations\Controllers;
+
 use \Entity\Station;
 use \Entity\StationManager;
 
-class Stations_SubmitController extends \DF\Controller\Action
+class SubmitController extends \DF\Phalcon\Controller
 {
     public function permissions()
     {

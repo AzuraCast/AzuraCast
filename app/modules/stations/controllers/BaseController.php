@@ -1,7 +1,7 @@
 <?php
-namespace PVL\Controller\Action;
+namespace Modules\Stations\Controllers;
 
-class Station extends \DF\Controller\Action
+class BaseController extends \DF\Phalcon\Controller
 {
     /*
      * @var array All available stations.
@@ -24,7 +24,7 @@ class Station extends \DF\Controller\Action
         // Compile list of visible stations.
         $all_stations = \Entity\Station::fetchAll();
         $stations = array();
-        
+
         foreach($all_stations as $station)
         {
             if ($station->canManage($user))
@@ -56,7 +56,7 @@ class Station extends \DF\Controller\Action
         }
 
         // Force a redirect to the "Select" page if no station ID is specified.
-        if (!$this->station && $this->_getActionName() != 'select')
+        if (!$this->station && $this->dispatcher->getActionName() != 'select')
         {
             $this->redirectToRoute(array('module' => 'stations', 'controller' => 'index', 'action' => 'select', 'station' => NULL));
             return;

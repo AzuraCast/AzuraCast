@@ -3,8 +3,8 @@ $this->view->setVar('title', 'Station Center');
 $this->view->manual = true;
 ?>
 
-<?=$this->renderHere('header') ?>
-<?=$this->renderHere('homelink', true) ?>
+<?=$this->viewHelper->renderHere('header') ?>
+<?=$this->viewHelper->renderHere('homelink', true) ?>
 
 <div class="row-fluid">
     <div class="span12">
@@ -22,7 +22,7 @@ $this->view->manual = true;
                 </tr>
             </thead>
             <tbody>
-            <? foreach($this->votes as $song_row): ?>
+            <? foreach($this->view->votes as $song_row): ?>
                 <tr class="input">
                     <td class="center">
                         <big>

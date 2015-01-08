@@ -58,9 +58,7 @@ class IndexController extends BaseController
         $render_mode = $this->_getParam('mode', 'default');
 
         if ($render_mode == 'chat')
-            $this->render('index_chat');
-        else
-            $this->render();
+            $this->render('index/index-chat');
     }
 
     public function tuneinAction()
@@ -93,10 +91,10 @@ class IndexController extends BaseController
     public function appAction()
     {}
 
-    public function donateAction()
+    public function aboutAction()
     {}
 
-    public function aboutAction()
+    public function donateAction()
     {}
 
     public function scheduleAction()

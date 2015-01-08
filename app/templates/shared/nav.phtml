@@ -10,14 +10,14 @@ $podcasts = \Entity\Podcast::fetchArray('name');
         <a href="<?=$this->url->get('about') ?>"><i class="icon-info-sign"></i> About</a>
         <ul class="dropdown-menu">
             <li><a href="<?=$this->url->get('about') ?>"><i class="icon-info-sign"></i> About Ponyville Live!</a></li>
-            <li><a href="<?=$this->url->get('convention') ?>"><i class="icon-group"></i> Pony Conventions</a></li>
+            <li><a href="<?=$this->url->get('conventions') ?>"><i class="icon-group"></i> Pony Conventions</a></li>
             <li><a href="<?=$this->url->get('schedule') ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
             <li class="divider"></li>
             <li><a href="http://m.pvlive.me/"><i class="icon-mobile-phone"></i> PVL! Mobile</a></li>
-            <li><a href="<?=$this->url->get('index/app') ?>"><i class="icon-cloud-download"></i> Apps &amp; Players</a></li>
+            <li><a href="<?=$this->url->get('apps') ?>"><i class="icon-cloud-download"></i> Apps &amp; Players</a></li>
             <li><a href="http://docs.ponyvillelive.apiary.io/" target="_blank"><i class="icon-cog"></i> PVL! Data API</a></li>
             <li class="divider"></li>
-            <li><a href="<?=$this->url->get('index/donate') ?>"><i class="icon-money"></i> Support Ponyville Live!</a></li>
+            <li><a href="<?=$this->url->get('donate') ?>"><i class="icon-money"></i> Support Ponyville Live!</a></li>
         </ul>
     </li>
     

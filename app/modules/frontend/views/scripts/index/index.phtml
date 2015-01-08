@@ -17,7 +17,7 @@ ob_start();
                         <div class="span12"><?=$this->view->special_event_embed ?></div>
                     <? else: ?>
                         <div class="span7"><?=$this->view->special_event_embed ?></div>
-                        <div class="span5"><?=$this->renderHere('chat', TRUE) ?></div>
+                        <div class="span5"><?=$this->viewHelper->renderHere('chat', TRUE) ?></div>
                     <? endif; ?>
                 </div>
             </div>

@@ -30,7 +30,9 @@ class Controller extends \Phalcon\Mvc\Controller
         $this->view->is_ajax = $is_ajax;
 
         if ($is_ajax)
-            $this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_MAIN_LAYOUT);
+        {
+            $this->view->setLayout(null);
+        }
 
         if ($this->hasParam('debug') && $this->_getParam('debug') === 'true')
         {
@@ -157,8 +159,7 @@ class Controller extends \Phalcon\Mvc\Controller
     {
         $this->doNotRender();
 
-        $this->response->redirect($new_url, $code);
-        $this->response->send();
+        return $this->response->redirect($new_url, $code);
     }
 
     /**
@@ -171,8 +172,7 @@ class Controller extends \Phalcon\Mvc\Controller
     {
         $this->doNotRender();
 
-        $this->response->redirect(Url::route($route, $this->di), $code);
-        $this->response->send();
+        return $this->response->redirect(Url::route($route, $this->di), $code);
     }
 
     /**
@@ -185,8 +185,7 @@ class Controller extends \Phalcon\Mvc\Controller
     {
         $this->doNotRender();
 
-        $this->response->redirect(Url::routeFromHere($route, $this->di), $code);
-        $this->response->send();
+        return $this->response->redirect(Url::routeFromHere($route, $this->di), $code);
     }
 
     /**
@@ -198,8 +197,7 @@ class Controller extends \Phalcon\Mvc\Controller
     {
         $this->doNotRender();
 
-        $this->response->redirect($this->request->getUri(), $code);
-        $this->response->send();
+        return $this->response->redirect($this->request->getUri(), $code);
     }
 
     /**
@@ -211,8 +209,7 @@ class Controller extends \Phalcon\Mvc\Controller
     {
         $this->doNotRender();
 
-        $this->response->redirect($this->url->get(''), $code);
-        $this->response->send();
+        return $this->response->redirect($this->url->get(''), $code);
     }
 
     /**
@@ -225,8 +222,7 @@ class Controller extends \Phalcon\Mvc\Controller
             $this->doNotRender();
 
             $url = 'https://'.$this->request->getHttpHost().$this->request->getURI();
-            $this->response->redirect($url, 301);
-            exit;
+            return $this->response->redirect($url, 301);
         }
     }
 
@@ -300,8 +296,15 @@ class Controller extends \Phalcon\Mvc\Controller
         else
             $body .= $form->renderView();
 
-        $this->view->setContent($body);
-        $this->view->setRenderLevel(\Phalcon\MVC\View::LEVEL_LAYOUT);
+        // Really "hacky" way of manually inserting form content instead of a view.
+        $events = $this->view->getEventsManager();
+        $events->attach("view:beforeRender", function($event, $view) use ($body) {
+
+            $render_level = $view->getCurrentRenderLevel();
+
+            if ($render_level == \Phalcon\Mvc\View::LEVEL_NO_RENDER)
+                echo $body;
+        });
     }
 
     /* Parameter Handling */

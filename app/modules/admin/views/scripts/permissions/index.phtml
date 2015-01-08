@@ -24,7 +24,7 @@ $this->view->manual = TRUE;
                     <col width="60%" />
                 </colgroup>
                 <tbody>
-                <? foreach($this->roles as $role): ?>
+                <? foreach($this->view->roles as $role): ?>
                     <tr class="input">
                         <td class="center">
                             <?=$this->viewHelper->button(array(
@@ -79,7 +79,7 @@ $this->view->manual = TRUE;
                     <col width="60%" />
                 </colgroup>
                 <tbody>
-                <? foreach($this->actions as $action): ?>
+                <? foreach($this->view->actions as $action): ?>
                     <tr class="input">
                         <td class="center">
                             <?=$this->viewHelper->button(array(

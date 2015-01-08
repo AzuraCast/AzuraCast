@@ -9,7 +9,7 @@ $this->view->manual = true;
     </div>
     <div class="span9">
         <div class="floating">
-            <?=$this->paginate($this->pager) ?>
+            <?=$this->viewHelper->paginate($this->view->pager) ?>
             <ul class="media-list">
             <? foreach($this->pager as $artist): ?>
                 <li class="media">
@@ -32,7 +32,7 @@ $this->view->manual = true;
                 </li>
             <? endforeach; ?>
             </ul>
-            <?=$this->paginate($this->pager) ?>
+            <?=$this->viewHelper->paginate($this->view->pager) ?>
         </div>
     </div>
 </div>

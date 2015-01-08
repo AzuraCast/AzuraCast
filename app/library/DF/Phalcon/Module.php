@@ -30,9 +30,49 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         $controller_class = 'Modules\\'.$this->_module_class_name.'\Controllers';
 
         $di['dispatcher'] = function () use ($controller_class) {
-            // Set error handling globals.
+
             $eventsManager = new \Phalcon\Events\Manager();
+
+            $eventsManager->attach("dispatch:beforeDispatchLoop", function($event, $dispatcher) {
+
+                // Set odd/even pairs as the key and value of parameters, respectively.
+                $keyParams = array();
+                $params = $dispatcher->getParams();
+
+                foreach ($params as $number => $value) {
+                    if ($number & 1) {
+                        $keyParams[$params[$number - 1]] = $value;
+                    }
+                }
+
+                $dispatcher->setParams($keyParams);
+
+                // Detect filename in controller and convert to "format" parameter.
+                $controller_name = $dispatcher->getControllerName();
+
+                if (strstr($controller_name, '.') !== false)
+                {
+                    list($controller_clean, $format) = explode('.', $controller_name, 2);
+
+                    $dispatcher->setControllerName($controller_clean);
+                    $dispatcher->setParam('format', $format);
+                }
+
+                // Detect filename in action and convert to "format" parameter.
+                $action_name = $dispatcher->getActionName();
+
+                if (strstr($action_name, '.') !== false)
+                {
+                    list($action_clean, $format) = explode('.', $action_name, 2);
+
+                    $dispatcher->setActionName($action_clean);
+                    $dispatcher->setParam('format', $format);
+                }
+            });
+
+            // Set error handling globals.
             $eventsManager->attach("dispatch:beforeException", function($event, $dispatcher, $exception) {
+
                 // Handle 404 Page Not Found errors.
                 if ($exception instanceof \Phalcon\Mvc\Dispatcher\Exception && $dispatcher->getModuleName() == 'frontend') {
                     $dispatcher->forward(array(
@@ -70,13 +110,20 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         $di['view'] = function () use($views_dir) {
             $view = new \Phalcon\Mvc\View();
 
+            $eventsManager = new \Phalcon\Events\Manager();
+            $view->setEventsManager($eventsManager);
+
+            // Base directory from which all views load.
             $view->setViewsDir($views_dir);
 
+            // Relative path of main templates.
             $view->setLayoutsDir('../../../../templates');
             $view->setLayout('main');
 
+            // Use present directory for partials by default.
             $view->setPartialsDir('');
 
+            // Register template engines.
             $view->registerEngines(array(
                 ".phtml" => 'Phalcon\Mvc\View\Engine\Php',
                 ".volt" => 'Phalcon\Mvc\View\Engine\Volt'

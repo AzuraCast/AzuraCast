@@ -2,7 +2,7 @@
 $this->view->setVar('title', 'Sign In to Ponyville Live!');
 $this->view->manual = true;
 
-$this->assets->addCss('zocial/zocial.css');
+$this->assets->collection('custom_css')->addCss('zocial/zocial.css');
 ?>
 
 <div class="row-fluid">

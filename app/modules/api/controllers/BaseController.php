@@ -67,20 +67,18 @@ class BaseController extends \DF\Phalcon\Controller
 
     public function returnSuccess($data)
     {
-        $this->returnToScreen(array(
+        return $this->returnToScreen(array(
             'status'    => 'success',
             'result'    => $data,
         ));
-        return true;
     }
 
     public function returnError($message)
     {
-        $this->returnToScreen(array(
+        return $this->returnToScreen(array(
             'status'    => 'error',
             'error'     => $message,
         ));
-        return false;
     }
 
     public function returnToScreen($obj)
@@ -88,9 +86,9 @@ class BaseController extends \DF\Phalcon\Controller
         $format = strtolower($this->getParam('format', 'json'));
 
         if ($format == 'xml')
-            $this->returnRaw(\DF\Export::ArrayToXml($obj), 'xml');
+            return $this->returnRaw(\DF\Export::ArrayToXml($obj), 'xml');
         else
-            $this->returnRaw(json_encode($obj, JSON_UNESCAPED_SLASHES), 'json');
+            return $this->returnRaw(json_encode($obj, JSON_UNESCAPED_SLASHES), 'json');
     }
 
     public function returnRaw($message, $format = 'json')
@@ -100,7 +98,6 @@ class BaseController extends \DF\Phalcon\Controller
         else
             $this->response->setContentType('application/json', 'utf-8');
 
-        $this->response->setContent($message);
-        $this->response->send();
+        return $this->response->setContent($message);
     }
 }

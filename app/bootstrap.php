@@ -81,6 +81,7 @@ foreach($autoload_classes['psr0'] as $class_key => $class_dir)
 foreach($autoload_classes['psr4'] as $class_key => $class_dir)
     $autoloader->addPsr4($class_key, $class_dir);
 
+// Set up Dependency Injection
 $di = new \Phalcon\DI\FactoryDefault();
 
 // Configs
@@ -90,7 +91,26 @@ $di->setShared('phalcon_modules', function() use ($phalcon_modules) { return $ph
 
 // Router
 $di->setShared('router', function() use ($di) {
-    $router = require DF_INCLUDE_BASE . '/routes.php';
+    $router = new \DF\Phalcon\Router(false);
+    $router->setUriSource(\DF\Phalcon\Router::URI_SOURCE_SERVER_REQUEST_URI);
+
+    $router->setDi($di);
+
+    $router_config = $di->get('config')->routes->toArray();
+
+    $router->setDefaultModule($router_config['default_module']);
+    $router->setDefaultController($router_config['default_controller']);
+    $router->setDefaultAction($router_config['default_action']);
+    $router->removeExtraSlashes(true);
+
+    foreach((array)$router_config['custom_routes'] as $route_path => $route_params)
+    {
+        $route = $router->add($route_path, $route_params);
+
+        if (isset($route_params['name']))
+            $route->setName($route_params['name']);
+    }
+
     return $router;
 });
 
@@ -99,7 +119,8 @@ $di->setShared('em', function() use ($config) {
     $db_conf = $config->application->resources->doctrine->toArray();
     $db_conf['conn'] = $config->db->toArray();
 
-    return \DF\Phalcon\Service\Doctrine::init($db_conf);
+    $em = \DF\Phalcon\Service\Doctrine::init($db_conf);
+    return $em;
 });
 
 // Auth and ACL

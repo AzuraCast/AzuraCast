@@ -42,13 +42,19 @@ class NowplayingController extends BaseController
             }
 
             if (isset($np[$sc]))
-                $this->returnSuccess($np[$sc]);
+                return $this->returnSuccess($np[$sc]);
             else
                 return $this->returnError('Station not found!');
         }
         else
         {
-            $this->returnRaw($np_raw, 'json');
+            $format = strtolower($this->getParam('format', 'json'));
+
+            if ($format == 'json')
+                return $this->returnRaw($np_raw, 'json');
+
+            $np_obj = @json_decode($np_raw, TRUE);
+            return $this->returnToScreen($np_obj);
         }
     }
 }

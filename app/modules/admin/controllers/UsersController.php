@@ -37,7 +37,11 @@ class UsersController extends BaseController
         if ($this->hasParam('id'))
         {
             $record = User::find($this->_getParam('id'));
-            $form->setDefaults($record->toArray());
+            $record_defaults = $record->toArray(TRUE, TRUE);
+
+            unset($record_defaults['auth_password']);
+
+            $form->setDefaults($record_defaults);
         }
 
         if(!empty($_POST) && $form->isValid($_POST))

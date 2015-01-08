@@ -206,7 +206,7 @@ class Form
 
         $form_defaults = array(
             'method'        => 'POST',
-            'action'        => '',
+            'action'        => \DF\Url::current(),
             'class'         => 'form-stacked df-form',
         );
 
@@ -261,8 +261,20 @@ class Form
         $return = '<div class="clearfix control-group">';
 
         $label = $element->getLabel();
-        if (!empty($label))
-            $return .= '<label for="'.$element->getName().'">'.$label.':</label>';
+        if (!empty($label)) {
+            // Check if field is required.
+            $validators = $element->getValidators();
+            $is_required = false;
+
+            if (count($validators)) {
+                foreach($validators as $v_obj) {
+                    if ($v_obj instanceof \Phalcon\Validation\Validator\PresenceOf)
+                        $is_required = true;
+                }
+            }
+
+            $return .= '<label for="' . $element->getName() . '" '.(($is_required) ? 'class="required"' : '').'>' . $label . (($is_required) ? '<span style="color: #FF0000;">*</span>' : '') . ':</label>';
+        }
 
         if (!empty($field_options['description']))
             $return .= '<span class="help-block">'.$field_options['description'].'</span>';
@@ -287,8 +299,16 @@ class Form
                 $return .= '<ul class="inputs-list inline">';
 
                 $list_items = array();
-                foreach($field_options['multiOptions'] as $option_value => $option_label)
-                    $list_items[] = '<li><label>'.$this->form->render($name, array('value' => $option_value)).' <span>'.$option_label.'</span></label></li>';
+                $default = $element->getDefault();
+
+                foreach($field_options['multiOptions'] as $option_value => $option_label) {
+
+                    // Force a "default" value.
+                    if (is_array($default) && in_array($option_value, $default))
+                        $element->setDefault($option_value);
+
+                    $list_items[] = '<li><label>' . $this->form->render($name, array('value' => $option_value)) . ' <span>' . $option_label . '</span></label></li>';
+                }
 
                 $return .= implode('<br>', $list_items);
                 $return .= '</ul>';
@@ -335,6 +355,69 @@ class Form
         $this->form->bind($submitted_data, $values_obj);
 
         return $values_obj->getArrayCopy();
+    }
+
+    /**
+     * File upload processing
+     */
+    public function processFiles($destination_folder, $file_name_prefix = '', \Phalcon\Http\Request $request = null)
+    {
+        if ($request === null) {
+            $di = \Phalcon\Di::getDefault();
+            $request = $di->get('request');
+        }
+
+        if (!$request->hasFiles())
+            return array();
+
+        $return_fields = array();
+
+        // Check for upload directory.
+        $base_dir = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$destination_folder;
+
+        if (!file_exists($base_dir))
+            @mkdir($base_dir);
+
+        // Loop through all uploaded files.
+        $all_uploaded_files = $request->getUploadedFiles();
+
+        foreach($all_uploaded_files as $file)
+        {
+            // Validate that this form contains a field with this name.
+            $element_key = $file->getKey();
+            if (!$this->form->has($element_key))
+                continue;
+
+            $element = $this->form->get($element_key);
+            if (!($element instanceof \Phalcon\Forms\Element\File))
+                continue;
+
+            // Prepare array.
+            if (isset($return_fields[$element_key])) {
+                $i = count($return_fields[$element_key]) + 1;
+            } else {
+                $return_fields[$element_key] = array();
+                $i = 1;
+            }
+
+            // Sanitize file name and generate new name.
+            $element_name_clean = preg_replace('#[^a-zA-Z0-9\_]#', '', $element_key);
+
+            $new_file_name = ($file_name_prefix) ? $file_name_prefix.'_' : '';
+            $new_file_name .= date('Ymd_His').'_'.mt_rand(100, 999).'_'.$element_name_clean.'_'.$i.'.'.File::getFileExtension($file->getName());
+
+            $new_file_path_short = $destination_folder.DIRECTORY_SEPARATOR.$new_file_name;
+            $new_file_path_full = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_file_path_short;
+
+            if (!is_writable(dirname($new_file_path_full)))
+                throw new \DF\Exception('New directory not writable.');
+
+            $file->moveTo($new_file_path_full);
+
+            $return_fields[$element_key][$i] = $new_file_path_short;
+        }
+
+        return $return_fields;
     }
 
 }

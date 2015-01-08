@@ -12,14 +12,14 @@ $this->view->setVar('title', 'Manage Users');
     )) ?>
 </div>
 
-<? if ($this->q): ?>
-    <h2>Search Results for "<?=$this->q ?>"</h2>
+<? if ($this->view->q): ?>
+    <h2>Search Results for "<?=$this->view->q ?>"</h2>
 <? else: ?>
     <h2>View All Users</h2>
 <? endif; ?>
 
 <form class="form-search" action="<?=$this->viewHelper->routeFromHere(array('page' => NULL)) ?>" method="get">
-    <input type="text" name="q" title="Search terms" placeholder="Search..." class="input-medium span3 search-query" value="<?=$this->q ?>">
+    <input type="text" name="q" title="Search terms" placeholder="Search..." class="input-medium span3 search-query" value="<?=$this->view->q ?>">
     <?=$this->viewHelper->button(array(
         'type'      => 'submit',
         'class'     => 'primary btn-small',
@@ -27,7 +27,7 @@ $this->view->setVar('title', 'Manage Users');
     )) ?>
 </form>
 
-<?=$this->paginate($this->pager) ?>
+<?=$this->viewHelper->paginate($this->view->pager) ?>
 
 <table class="table table-striped" width="100%">
     <colgroup>
@@ -45,7 +45,7 @@ $this->view->setVar('title', 'Manage Users');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->pager as $user): ?>
+    <? foreach($this->view->pager as $user): ?>
         <tr class="input">
             <td>
                 <div class="btn-group">
@@ -89,4 +89,4 @@ $this->view->setVar('title', 'Manage Users');
     </tbody>
 </table>
 
-<?=$this->paginate($this->pager) ?>
+<?=$this->viewHelper->paginate($this->view->pager) ?>

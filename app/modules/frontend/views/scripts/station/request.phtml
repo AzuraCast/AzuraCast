@@ -63,7 +63,7 @@ $this->view->manual = true;
         </div>
     <? endif; ?>
 
-        <?=$this->paginate($this->pager) ?>
+        <?=$this->viewHelper->paginate($this->view->pager) ?>
 
         <table class="table table-bordered table-striped" width="100%">
             <colgroup>
@@ -103,6 +103,6 @@ $this->view->manual = true;
             </tbody>
         </table>
 
-        <?=$this->paginate($this->pager) ?>
+        <?=$this->viewHelper->paginate($this->view->pager) ?>
     </div>
 </div>

@@ -119,6 +119,8 @@ class Url
         $url_parts[] = $components['controller'];
         $url_parts[] = $components['action'];
 
+        $path_info = array_filter($path_info);
+
         if (count($path_info) > 0)
         {
             foreach ((array)$path_info as $param_key => $param_value)

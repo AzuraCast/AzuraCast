@@ -8,8 +8,10 @@
         "james-heinrich/getid3": "v1.9.8",
         "electrolinux/phpquery": "0.9.6",
         "google/apiclient": "1.0.*@beta",
-        "phalcon/devtools": "dev-master",
         "filp/whoops": "1.*"
+    },
+    "require-dev": {
+        "phalcon/devtools": "dev-master"
     },
     "authors": [
         {

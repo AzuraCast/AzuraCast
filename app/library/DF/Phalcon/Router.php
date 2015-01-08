@@ -35,15 +35,8 @@ class Router extends \Phalcon\Mvc\Router
             if (count($path) && !empty($path[0]))
                 $this->_action = array_shift($path);
 
-            if ($numSegs = count($path))
-            {
-                for ($i = 0; $i < $numSegs; $i = $i + 2)
-                {
-                    $key = urldecode($path[$i]);
-                    $val = isset($path[$i + 1]) ? urldecode($path[$i + 1]) : null;
-                    $this->_params[$key] = (isset($this->_params[$key]) ? (array_merge((array)$this->_params[$key], array($val))): $val);
-                }
-            }
+            if (count($path))
+                $this->_params = $path;
         }
 
         return $path;

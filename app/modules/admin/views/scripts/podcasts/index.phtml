@@ -12,7 +12,7 @@ $this->view->setVar('title', 'Manage Podcasts');
     )) ?>
 </div>
 
-<?=$this->paginate($this->pager) ?>
+<?=$this->viewHelper->paginate($this->view->pager) ?>
 
 <table class="table table-striped table-nopadding">
     <colgroup>
@@ -32,7 +32,7 @@ $this->view->setVar('title', 'Manage Podcasts');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->pager as $record): ?>
+    <? foreach($this->view->pager as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
@@ -69,4 +69,4 @@ $this->view->setVar('title', 'Manage Podcasts');
     </tbody>
 </table>
 
-<?=$this->paginate($this->pager) ?>
+<?=$this->viewHelper->paginate($this->view->pager) ?>

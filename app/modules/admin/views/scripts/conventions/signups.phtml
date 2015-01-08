@@ -2,7 +2,7 @@
 $this->view->setVar('title', 'Manage Conventions');
 ?>
 
-<h2><?=$this->convention->name ?></h2>
+<h2><?=$this->view->convention->name ?></h2>
 <h3>Manage Convention Press Signups</h3>
 
 <div class="buttons btn-group">
@@ -42,7 +42,7 @@ $this->view->setVar('title', 'Manage Conventions');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->signups as $record): ?>
+    <? foreach($this->view->signups as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">

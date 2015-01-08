@@ -25,7 +25,7 @@ $this->view->manual = true;
             )) ?>
         </div>
 
-        <?=$this->paginate($this->pager) ?>
+        <?=$this->viewHelper->paginate($this->view->pager) ?>
 
         <table class="datatable table-striped table-condensed table-nopadding">
             <colgroup>
@@ -92,6 +92,6 @@ $this->view->manual = true;
             </tbody>
         </table>
 
-        <?=$this->paginate($this->pager) ?>
+        <?=$this->viewHelper->paginate($this->view->pager) ?>
     </div>
 </div>

@@ -7,11 +7,11 @@ namespace DF\View\Helper;
 
 class RenderHere extends HelperAbstract
 {
-    public function renderHere($target, $outside_controller_dir = FALSE)
+    public function renderHere($target, $outside_controller_dir = FALSE, $vars = array())
     {
         if (!$outside_controller_dir)
             $target = $this->view->getControllerName().'/'.$target;
 
-        return $this->view->partial($target);
+        return $this->view->partial($target, $vars);
     }
 }

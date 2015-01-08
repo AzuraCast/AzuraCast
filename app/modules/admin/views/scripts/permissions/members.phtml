@@ -16,7 +16,7 @@ $this->view->setVar('title', 'Members of Role: '.$this->role->name);
         </tr> 
     </thead>
     <tbody>
-    <? foreach($this->role_members as $member): ?>
+    <? foreach($this->view->role_members as $member): ?>
         <tr>
             <td align="center">
                 <?=$this->viewHelper->button(array(

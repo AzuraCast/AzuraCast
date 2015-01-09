@@ -9,7 +9,7 @@ $cols = \DF\Utilities::columns($this->view->podcasts, 2);
 <? foreach($cols as $col): ?>
     <div class="span6">
         <?
-        echo $this->partial('podcast', array('podcasts' => $col));
+        echo $this->viewHelper->renderCommon('podcast', array('podcasts' => $col));
         ?>
     </div>
 <? endforeach; ?>

@@ -39,26 +39,22 @@ define('DF_APPLICATION_ENV_PATH', DF_INCLUDE_BASE.DIRECTORY_SEPARATOR.'.env');
 if (!defined('DF_APPLICATION_ENV'))
     define('DF_APPLICATION_ENV', ($env = @file_get_contents(DF_APPLICATION_ENV_PATH)) ? trim($env) : 'development');
 
+/*
+// Static URL.
+if (DF_APPLICATION_ENV == 'production')
+    define("DF_URL_STATIC", '//ponyvillelive.com/static');
+else
+    define("DF_URL_STATIC", '/static');
+*/
+
 // Set error reporting for the bootstrapping process.
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
-// Composer autoload.
-$autoloader = require(DF_INCLUDE_VENDOR.DIRECTORY_SEPARATOR.'autoload.php');
-
 // Set include path (as needed by CLI access.)
 $include_path = array(DF_INCLUDE_LIB, DF_INCLUDE_VENDOR, get_include_path());
-set_include_path(implode(PATH_SEPARATOR, $include_path));
-
-// Save configuration object.
-require(DF_INCLUDE_LIB.'/DF/Config.php');
-
-$config = new \DF\Config(DF_INCLUDE_APP.'/config');
-$config->preload(array('application','general'));
 
 // Loop through modules to find configuration files or libraries.
 $module_config_dirs = array();
-$module_config = array();
-
 $modules = scandir(DF_INCLUDE_MODULES);
 foreach($modules as $module)
 {
@@ -66,8 +62,29 @@ foreach($modules as $module)
     {
         $config_directory = DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'config';
         if (file_exists($config_directory))
-            $module_config[$module] = new \DF\Config($config_directory);
+        {
+            $module_config_dirs[$module] = $config_directory;
+        }
     }
+}
+
+// Set include paths.
+set_include_path(implode(PATH_SEPARATOR, $include_path));
+
+// Composer autoload.
+$autoloader = require(DF_INCLUDE_VENDOR.DIRECTORY_SEPARATOR.'autoload.php');
+
+// Save configuration object.
+require(DF_INCLUDE_LIB.'/DF/Config.php');
+
+$config = new \DF\Config(DF_INCLUDE_APP.'/config');
+$config->preload(array('application','general'));
+
+$module_config = array();
+if ($module_config_dirs)
+{
+    foreach($module_config_dirs as $module_name => $config_dir)
+        $module_config[$module_name] = new \DF\Config($config_dir);
 }
 
 $autoload_classes = $config->application->autoload->toArray();

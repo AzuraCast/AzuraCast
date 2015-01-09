@@ -9,9 +9,7 @@ class ErrorController extends \DF\Controller\Action
         $errors = $this->_getParam('error_handler');
         
         // 404 error -- controller or action not found
-        if (in_array($errors->type, array(
-            \Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER,
-            \Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION)))
+        if (in_array($errors->type, array(\Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER, \Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION)))
         {
             $uri = $errors->request->getRequestUri();
             $uri = trim($uri, '/');
@@ -65,23 +63,9 @@ class ErrorController extends \DF\Controller\Action
             // Application Error
             $this->getResponse()->setHttpResponseCode(500);
             $this->view->message = 'Application error';
-
-            if (DF_APPLICATION_ENV != "production" || $this->acl->isAllowed('administer all'))
-            {
-                $this->doNotRender();
-
-                // Pretty error reporting.
-                $run = new \Whoops\Run;
-                $handler = new \Whoops\Handler\PrettyPageHandler;
-                $handler->setPageTitle("Whoops! There was a problem.");
-
-                $run->pushHandler($handler);
-
-                if ($this->isAjax())
-                    $run->pushHandler(new \Whoops\Handler\JsonResponseHandler);
-
-                $run->handleException($errors->exception);
-            }
+            
+            // Show user-friendly error message and report back to central API.
+            $this->_helper->viewRenderer('error/dev', null, true);
         }
         
         $this->view->exception = $errors->exception;

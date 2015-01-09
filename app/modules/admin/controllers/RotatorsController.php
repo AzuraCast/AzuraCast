@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Rotator;
 use \Entity\Rotator as Record;
 
-class Admin_RotatorsController extends \PVL\Controller\Action\Admin
+class RotatorsController extends BaseController
 {
     public function permissions()
     {
@@ -54,7 +56,7 @@ class Admin_RotatorsController extends \PVL\Controller\Action\Admin
             return;
         }
 
-        $this->view->headTitle('Edit Record');
+        $this->view->setVar('title', 'Edit Record');
         $this->renderForm($form);
     }
     

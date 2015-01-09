@@ -1,0 +1,71 @@
+<?
+$this->view->setVar('title', 'Convention Signup');
+?>
+
+<h2>Upcoming Conventions</h2>
+
+<table class="datatable table-striped">
+    <colgroup>
+        <col width="20%">
+        <col width="35%">
+        <col width="20%">
+        <col width="25%">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Actions</th>
+            <th>Convention Name</th>
+            <th>Location</th>
+            <th>Date Range</th>
+        </tr>
+    </thead>
+    <tbody>
+    <? foreach($this->upcoming_cons as $con): ?>
+        <tr class="input">
+            <td class="center">
+                <div class="btn-group">
+                <? if ($con['signup']): ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'  => 'small',
+                        'icon'  => 'icon-pencil',
+                        'text'  => 'Edit',
+                        'href'  => $this->viewHelper->routeFromHere(array('action' => 'editsignup', 'id' => $con['id'])),
+                    )) ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'  => 'small',
+                        'icon'  => 'icon-trash',
+                        'class' => 'confirm-action btn-danger',
+                        'text'  => 'Unregister',
+                        'href'  => $this->viewHelper->routeFromHere(array('action' => 'deletesignup', 'id' => $con['id'])),
+                    )) ?>
+                <? else: ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'  => 'small',
+                        'icon'  => 'icon-plus-sign',
+                        'class' => 'btn-success',
+                        'text'  => 'Sign Up',
+                        'href'  => $this->viewHelper->routeFromHere(array('action' => 'editsignup', 'id' => $con['id'])),
+                    )) ?>
+                <? endif; ?>
+                </div>
+            </td>
+            <td><big><a href="<?=$con['web_url'] ?>" target="_blank"><?=$con['name'] ?></a></big></td>
+            <td><?=$con['location'] ?></td>
+            <td><?=$con['range'] ?></td>
+        </tr>
+    <? endforeach; ?>
+    </tbody>
+</table>
+
+<h2>Previous Conventions</h2>
+<p>These conventions have already passed, and you cannot update your signup record for them.</p>
+
+<dl>
+<? foreach($this->previous_cons as $con): ?>
+    <dt><?=$con['name'] ?></dt>
+    <dd>
+        <?=$con['location'] ?><br>
+        <?=$con['range'] ?>
+    </dd>
+<? endforeach; ?>
+</dl>

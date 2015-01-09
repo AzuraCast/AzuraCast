@@ -1,0 +1,33 @@
+<?
+$skin = \PVL\Customization::get('theme');
+?>
+<ul class="loginbar pull-right">
+    <?
+    $tz_info = \PVL\Timezone::getInfo();
+    $tz_text = $tz_info['now']->format('g:ia').' '.$tz_info['abbr'];
+    ?>
+
+    <li><a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><i class="icon-time"></i> <span class="current_time"><?=$tz_text ?></span></a></li>
+    <li class="divider">&nbsp;</li>
+    <li><a href="<?=$this->url->get('profile/theme/skin/toggle') ?>"><i class="icon-adjust"></i> <? if ($skin == 'light'): ?>Dark Theme<? else: ?>Light Theme<? endif; ?></a></li>
+    <li class="divider">&nbsp;</li>
+
+<? if ($this->auth->isLoggedIn()): ?>
+    <?
+    $user = $this->auth->getLoggedInUser();
+    ?>
+    <? if ($this->acl->isAllowed('view administration')): ?>
+        <li><a href="<?=$this->url->get('admin') ?>"><i class="icon-cog"></i> Admin</a></li>
+        <li class="divider">&nbsp;</li>
+    <? elseif (\Entity\Station::canSeeStationCenter($user)): ?>
+        <li><a href="<?=$this->url->get('stations') ?>"><i class="icon-group"></i> Station Center</a></li>
+        <li class="divider">&nbsp;</li>
+    <? endif; ?>
+        <li><a href="<?=$this->url->get('profile') ?>"><i class="icon-user"></i> Profile</a></li>
+        <li class="divider">&nbsp;</li>
+        <li><b><?=$user->name ?></b></li>
+        <li><a href="<?=$this->url->get('account/logout') ?>"><i class="icon-signout"></i> Sign Out</a></li>
+<? else: ?>
+    <li><a href="<?=$this->url->get('account/login') ?>"><i class="icon-signin"></i> Sign In</a></li>
+<? endif; ?>
+</ul>

@@ -1,9 +1,11 @@
 <?php
+namespace Modules\Stations\Controllers;
+
 use \Entity\Station;
 use \Entity\Convention;
 use \Entity\ShortUrl;
 
-class Stations_UrlsController extends \PVL\Controller\Action\Station
+class UrlsController extends BaseController
 {
     public function indexAction()
     {
@@ -75,9 +77,9 @@ class Stations_UrlsController extends \PVL\Controller\Action\Station
         }
 
         if ($this->_hasParam('id'))
-            $this->view->headTitle('Edit Short URL');
+            $this->view->setVar('title', 'Edit Short URL');
         else
-            $this->view->headTitle('Add Short URL');
+            $this->view->setVar('title', 'Add Short URL');
 
         $this->renderForm($form);
     }

@@ -1,17 +1,17 @@
 <?php
-$this->headTitle('URL Shortener Management');
+$this->view->setVar('title', 'URL Shortener Management');
 
-echo $this->renderHere('stationname', true);
-echo $this->renderHere('homelink', true);
+echo $this->viewHelper->renderHere('stationname', true);
+echo $this->viewHelper->renderHere('homelink', true);
 ?>
 
 <h2>My Station's Links</h2>
 
 <div class="buttons">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'btn-large success',
-        'href'      => $this->routeFromHere(array('action' => 'edit')),
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
         'icon'      => 'icon-plus-sign',
         'text'      => 'Add New URL',
     )) ?>
@@ -31,20 +31,20 @@ echo $this->renderHere('homelink', true);
     </tr>
     </thead>
     <tbody>
-    <? foreach($this->urls as $record): ?>
+    <? foreach($this->view->urls as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'link',
-                        'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
                         'icon'      => 'icon-pencil',
                         'text'      => 'Edit',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'link',
                         'class'     => 'btn-danger confirm-action',
-                        'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
                         'icon'      => 'icon-trash',
                         'text'      => 'Delete',
                     )) ?>
@@ -74,7 +74,7 @@ echo $this->renderHere('homelink', true);
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->station_urls as $record): ?>
+    <? foreach($this->view->station_urls as $record): ?>
         <tr class="input">
             <td><i class="<?=$record['icon'] ?>"></i> <?=$record['name'] ?></td>
             <td><a href="<?=$record['url'] ?>" target="_blank"><?=$record['url'] ?></a></td>
@@ -98,7 +98,7 @@ echo $this->renderHere('homelink', true);
     </tr>
     </thead>
     <tbody>
-    <? foreach($this->convention_urls as $record): ?>
+    <? foreach($this->view->convention_urls as $record): ?>
         <tr class="input">
             <td><?=$record['name'] ?></td>
             <td><a href="<?=$record['url'] ?>" target="_blank"><?=$record['url'] ?></a></td>

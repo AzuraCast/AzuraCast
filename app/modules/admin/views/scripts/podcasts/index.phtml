@@ -1,18 +1,18 @@
 <?
-$this->headTitle('Manage Podcasts');
+$this->view->setVar('title', 'Manage Podcasts');
 ?>
 
 <div class="buttons">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'large success',
-        'href'      => $this->routeFromHere(array('action' => 'edit')),
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
         'icon'      => 'icon-plus-sign',
         'text'      => 'Add New Podcast',
     )) ?>
 </div>
 
-<?=$this->paginate($this->pager) ?>
+<?=$this->viewHelper->paginate($this->view->pager) ?>
 
 <table class="table table-striped table-nopadding">
     <colgroup>
@@ -32,21 +32,21 @@ $this->headTitle('Manage Podcasts');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->pager as $record): ?>
+    <? foreach($this->view->pager as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'icon'      => 'icon-pencil',
-                        'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
                         'text'      => 'Edit',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'icon'      => 'icon-trash',
                         'class'     => 'danger confirm-delete',
-                        'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
                         'text'      => 'Delete',
                     )) ?>
                 </div>
@@ -69,4 +69,4 @@ $this->headTitle('Manage Podcasts');
     </tbody>
 </table>
 
-<?=$this->paginate($this->pager) ?>
+<?=$this->viewHelper->paginate($this->view->pager) ?>

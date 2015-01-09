@@ -7,7 +7,8 @@ class NewsManager
 {
     public static function syncNetwork()
     {
-        $em = \Zend_Registry::get('em');
+        $di = \Phalcon\Di::getDefault();
+        $em = $di->get('em');
 
         // Pull featured images.
         $timestamp_threshold = strtotime('-6 weeks');

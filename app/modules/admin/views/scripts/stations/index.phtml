@@ -1,12 +1,12 @@
 <?
-$this->headTitle('Manage Stations');
+$this->view->setVar('title', 'Manage Stations');
 ?>
 
 <div class="buttons">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'large success',
-        'href'      => $this->routeFromHere(array('action' => 'edit')),
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
         'icon'      => 'icon-plus-sign',
         'text'      => 'Add New Station',
     )) ?>
@@ -18,28 +18,24 @@ $this->headTitle('Manage Stations');
     <div class="span4">
         <h3>Radio Stations</h3>
         <?
-        $this->stations = (array)$this->categories['audio'];
-        echo $this->renderHere('list');
+        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$this->view->categories['audio']));
         ?>
     </div>
     <div class="span4">
         <h3>Video Streams</h3>
         <?
-        $this->stations = (array)$this->categories['video'];
-        echo $this->renderHere('list');
+        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$this->view->categories['video']));
         ?>
     </div>
     <div class="span4">
         <h3>Special Events</h3>
         <?
-        $this->stations = (array)$this->categories['event'];
-        echo $this->renderHere('list');
+        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$this->view->categories['event']));
         ?>
 
         <h3>Internal Tracking</h3>
         <?
-        $this->stations = (array)$this->categories['internal'];
-        echo $this->renderHere('list');
+        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$this->view->categories['internal']));
         ?>
     </div>
 </div>
@@ -62,19 +58,19 @@ $this->headTitle('Manage Stations');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->pending_stations as $record): ?>
+    <? foreach($this->view->pending_stations as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
-                        'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
                         'text'      => 'Edit',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'class'     => 'danger confirm-delete',
-                        'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
                         'text'      => 'Delete',
                     )) ?>
                 </div>

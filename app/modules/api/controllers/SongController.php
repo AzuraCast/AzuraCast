@@ -1,9 +1,11 @@
 <?php
+namespace Modules\Api\Controllers;
+
 use \Entity\Song;
 use \Entity\SongHistory;
 use \Entity\SongVote;
 
-class Api_SongController extends \PVL\Controller\Action\Api
+class SongController extends BaseController
 {
     public function listAction()
     {
@@ -20,6 +22,15 @@ class Api_SongController extends \PVL\Controller\Action\Api
 
     public function indexAction()
     {
+        if (!$this->hasParam('id'))
+        {
+            $this->dispatcher->forward(array(
+                'controller' => 'song',
+                'action' => 'list',
+            ));
+            return false;
+        }
+
         $id = $this->getParam('id');
 
         $record = Song::find($id);

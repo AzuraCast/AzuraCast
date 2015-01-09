@@ -1,6 +1,6 @@
 <?php
 namespace DF\View\Helper;
-class Truncate extends \Zend_View_Helper_Abstract
+class Truncate extends HelperAbstract
 {
     public function truncate($text, $length=80)
     {

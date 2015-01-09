@@ -9,9 +9,14 @@ if [ ! -f $app_base/.deploy_run ]
 then
 
     # Set up server
+    apt-get -q -y install python-software-properties
+
+    apt-add-repository ppa:phalcon/stable
+
     apt-get update
 
-    apt-get -q -y install vim git nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl
+    apt-get -q -y install vim git nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl php5-phalcon
+
     apt-get autoremove
 
     mysqladmin -u root password password
@@ -85,7 +90,6 @@ then
 
     # Install Node.js and services
     apt-get -q -y install nodejs npm
-    ln -s /usr/bin/nodejs /usr/bin/node
 
     cd $www_base/live
     npm install --no-bin-links
@@ -93,12 +97,15 @@ then
     cp $www_base/util/vagrant_initd /etc/init/pvlnode.conf
     service pvlnode start
 
+<<<<<<< HEAD
+=======
     # Bower and Grunt install.
     npm install -g bower grunt-cli
 
     cd $www_base
     npm install --no-bin-links
 
+>>>>>>> master
     # Mark deployment as run.
     touch $app_base/.deploy_run
 

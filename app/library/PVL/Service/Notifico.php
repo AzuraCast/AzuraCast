@@ -5,7 +5,9 @@ class Notifico
 {
     public static function post($payload)
     {
-        $config = \Zend_Registry::get('config');
+        $di = \Phalcon\Di::getDefault();
+        $config = $di->get('config');
+
         $push_url = $config->apis->notifico_push_url;
 
         if ($push_url)

@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Stations\Controllers;
+
 use \Entity\Station;
 use \Entity\StationStream;
 
-class Stations_StreamsController extends \PVL\Controller\Action\Station
+class StreamsController extends BaseController
 {
     public function indexAction()
     {
@@ -70,9 +72,9 @@ class Stations_StreamsController extends \PVL\Controller\Action\Station
         }
 
         if ($this->hasParam('id'))
-            $this->view->headTitle('Edit Station Stream');
+            $this->view->setVar('title', 'Edit Station Stream');
         else
-            $this->view->headTitle('Add Station Stream');
+            $this->view->setVar('title', 'Add Station Stream');
 
         $this->renderForm($form);
     }

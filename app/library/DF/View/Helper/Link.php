@@ -4,7 +4,7 @@
  */
 
 namespace DF\View\Helper;
-class Link extends \Zend_View_Helper_Abstract
+class Link extends HelperAbstract
 {
     public function link($url, $text = NULL, $target = NULL)
     {

@@ -1,6 +1,6 @@
 <?php
 namespace DF\View\Helper;
-class Icon extends \Zend_View_Helper_Abstract
+class Icon extends HelperAbstract
 {
     /**
      * @return A string containing the icon's image tag.

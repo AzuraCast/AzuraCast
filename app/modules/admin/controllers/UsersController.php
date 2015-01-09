@@ -1,7 +1,9 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\User;
 
-class Admin_UsersController extends \PVL\Controller\Action\Admin
+class UsersController extends BaseController
 {
     public function permissions()
     {
@@ -35,7 +37,11 @@ class Admin_UsersController extends \PVL\Controller\Action\Admin
         if ($this->hasParam('id'))
         {
             $record = User::find($this->_getParam('id'));
-            $form->setDefaults($record->toArray());
+            $record_defaults = $record->toArray(TRUE, TRUE);
+
+            unset($record_defaults['auth_password']);
+
+            $form->setDefaults($record_defaults);
         }
 
         if(!empty($_POST) && $form->isValid($_POST))
@@ -53,7 +59,7 @@ class Admin_UsersController extends \PVL\Controller\Action\Admin
             return;
         }
 
-        $this->view->headTitle('Add/Edit User');
+        $this->view->setVar('title', 'Add/Edit User');
         $this->renderForm($form);
     }
 

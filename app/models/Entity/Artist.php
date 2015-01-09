@@ -134,9 +134,10 @@ class Artist extends \DF\Doctrine\Entity
     protected $types;
 
     public function canEdit()
-    {        
-        $acl = \Zend_Registry::get('acl');
-        $auth = \Zend_Registry::get('auth');
+    {
+        $di = \Phalcon\Di::getDefault();
+        $acl = $di->get('acl');
+        $auth = $di->get('auth');
 
         if ($acl->isAllowed('administer artists'))
             return true;

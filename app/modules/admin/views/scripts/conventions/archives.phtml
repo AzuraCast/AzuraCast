@@ -1,28 +1,28 @@
 <?
-$this->headTitle('Manage Conventions');
+$this->view->setVar('title', 'Manage Conventions');
 ?>
 
-<h2><?=$this->convention->name ?></h2>
+<h2><?=$this->view->convention->name ?></h2>
 <h3>Manage Convention Video Archives</h3>
 
 <div class="buttons btn-group">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'large',
-        'href'      => $this->routeFromHere(array('action' => 'index', 'convention' => NULL)),
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'index', 'convention' => NULL)),
         'icon'      => 'icon-arrow-left',
         'text'      => 'Back to Main',
     )) ?>
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'large success fancybox fancybox.ajax',
-        'href'      => $this->routeFromHere(array('action' => 'editarchive')),
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'editarchive')),
         'icon'      => 'icon-plus-sign',
         'text'      => 'Add New Archive',
     )) ?>
 </div>
 
-<? foreach($this->folders as $folder_id => $folder_name): ?>
+<? foreach($this->view->folders as $folder_id => $folder_name): ?>
     <table class="table table-striped datatable">
         <colgroup>
             <col width="15%" />
@@ -35,22 +35,22 @@ $this->headTitle('Manage Conventions');
             </tr>
         </thead>
         <tbody>
-        <? foreach((array)$this->archives[$folder_id] as $id => $record): ?>
+        <? foreach((array)$this->view->archives[$folder_id] as $id => $record): ?>
             <tr class="input">
                 <td class="center">
                     <div class="btn-group">
-                        <?=$this->button(array(
+                        <?=$this->viewHelper->button(array(
                             'type'      => 'small',
                             'icon'      => 'icon-pencil',
                             'class'     => 'fancybox fancybox.ajax',
-                            'href'      => $this->routeFromHere(array('action' => 'editarchive', 'id' => $record['id'])),
+                            'href'      => $this->viewHelper->routeFromHere(array('action' => 'editarchive', 'id' => $record['id'])),
                             'text'      => 'Edit',
                         )) ?>
-                        <?=$this->button(array(
+                        <?=$this->viewHelper->button(array(
                             'type'      => 'small',
                             'icon'      => 'icon-trash',
                             'class'     => 'danger confirm-delete',
-                            'href'      => $this->routeFromHere(array('action' => 'deletearchive', 'id' => $record['id'])),
+                            'href'      => $this->viewHelper->routeFromHere(array('action' => 'deletearchive', 'id' => $record['id'])),
                             'text'      => 'Delete',
                         )) ?>
                     </div>

@@ -1,7 +1,9 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Block;
 
-class Admin_BlocksController extends \PVL\Controller\Action\Admin
+class BlocksController extends BaseController
 {
     public function permissions()
     {

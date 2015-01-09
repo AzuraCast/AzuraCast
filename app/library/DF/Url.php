@@ -3,270 +3,188 @@ namespace DF;
 
 class Url
 {
-    static $base_url;
+    /**
+     * Get the URI for the current page.
+     *
+     * @param \Phalcon\DiInterface $di
+     * @return mixed
+     */
+    public static function current(\Phalcon\DiInterface $di = null)
+    {
+        $di = self::getDi($di);
+        return $di->get('request')->getURI();
+    }
 
     /**
-     * Returns the baseUrl
+     * Get the HTTP_REFERER value for the current page.
      *
-     * @throws \Zend_Exception
-     * @return string
+     * @param null $default_url
+     * @param \Phalcon\DiInterface $di
+     * @return mixed
      */
-    public static function baseUrl()
+    public static function referrer($default_url = null, \Phalcon\DiInterface $di = null)
     {
-        if (self::$base_url !== NULL)
-        {
-            return self::$base_url;
-        }
+        $di = self::getDi($di);
+        return $di->get('request')->getHTTPReferer();
+    }
+
+    /**
+     * Return the base URL of the site.
+     *
+     * @return mixed
+     */
+    public static function baseUrl($include_host = false, \Phalcon\DiInterface $di = null)
+    {
+        $di = self::getDi($di);
+        $uri = $di->get('url')->get('');
+
+        if ($include_host)
+            return ((DF_IS_SECURE)? 'https://' : 'http://') . $di->get('request')->getHttpHost() . $uri;
         else
-        {
-            $config = \Zend_Registry::get('config');
-
-            if ($config->application->base_url)
-            {
-                $base_url = $config->application->base_url;
-
-                if (DF_IS_SECURE)
-                    $base_url = str_replace('http://', 'https://', $base_url);
-
-                return $base_url;
-            }
-            else
-            {
-                $base_url = \Zend_Controller_Front::getInstance()->getBaseUrl();
-                return self::domain(TRUE) . $base_url;
-            }
-        }
+            return $uri;
     }
 
-    public static function setBaseUrl($new_base_url)
-    {
-        self::$base_url = $new_base_url;
-
-        $router = self::getRouter();
-        $front = $router->getFrontController();
-
-        $front->setBaseUrl($new_base_url);
-    }
-
-    // Conversion from '//' scheme-independent URL to scheme-explicit URLs
-    static $original_base_url;
-
-    public static function forceSchemePrefix()
-    {
-        if (!empty(self::$original_base_url))
-            return null;
-
-        self::$original_base_url = self::baseUrl();
-
-        $new_base_url = self::addSchemePrefix(self::$original_base_url);
-        self::setBaseUrl($new_base_url);
-    }
-    public static function restoreNonPrefixed()
-    {
-        self::setBaseUrl(self::$original_base_url);
-        self::$original_base_url = null;
-    }
-
-    public static function addSchemePrefix($url)
-    {
-        if (substr($url, 0, 2) == '//')
-            return 'http'.((DF_IS_SECURE) ? 's:' : ':').$url;
-
-        return $url;
-    }
-
-    // Return path to static content.
+    /**
+     * Return the static URL for a given path segment.
+     *
+     * @param null $file_name
+     * @return string The routed URL.
+     */
     public static function content($file_name = NULL)
     {
-        if (defined('DF_URL_STATIC'))
-            $static_url_base = DF_URL_STATIC;
-        else
-            $static_url_base = self::baseUrl().'/static';
-        
-        if ($file_name !== NULL)
-            return $static_url_base.'/'.$file_name;
-        else
-            return $static_url_base;
-    }
-
-    // Return path to uploaded file.
-    public static function file($file_name = NULL)
-    {
-        if (defined('DF_UPLOAD_URL'))
-        {
-            $static_url_base = self::baseUrl().DF_UPLOAD_URL;
-        
-            if ($file_name !== NULL)
-                return $static_url_base.'/'.$file_name;
-            else
-                return $static_url_base;
-        }
-        else
-        {
-            return self::content($file_name);
-        }
-    }
-    
-    public static function cdn($library_name, $library_version)
-    {
-        $cdn_base = '//ajax.googleapis.com/ajax/libs';
-        switch($library_name)
-        {
-            case 'jquery':
-                return $cdn_base.'/jquery/'.$library_version.'/jquery.min.js';
-            break;
-            
-            case 'jqueryui':
-                return $cdn_base.'/jqueryui/'.$library_version.'/jquery-ui.min.js';
-            break;
-        }
-    }
-
-    public static function domain($includeScheme = false)
-    {
-        if (!empty($_SERVER['HTTP_HOST']))
-        {
-            $domain = $_SERVER['HTTP_HOST'];
-
-            if ($includeScheme)
-                $domain = 'http' . ((DF_IS_SECURE) ? 's' : '') . '://' . $domain;
-
-            return $domain;
-        }
-
-        return '';
+        $di = \Phalcon\Di::getDefault();
+        return $di->get('url')->getStatic($file_name);
     }
 
     /**
-     * Returns the referring URL, or, if no referring url, return the default
-     * url set (by default "false").
+     * Generate a route using the ZendFramework 1 MVC route standard.
      *
-     * @param string $default
-     * @return string
+     * @param $path_info
+     * @param \Phalcon\DiInterface $di
+     * @return string The routed URL.
      */
-    public static function referrer($default = false)
+    public static function route($path_info = array(), \Phalcon\DiInterface $di = null)
     {
-        if( isset($_SERVER['HTTP_REFERER']) )
-            return $_SERVER['HTTP_REFERER'];
-        else
-            return $default;
-    }
+        $di = self::getDi($di);
+        $router = $di->get('router');
 
-    public static function current($includeSchemeDomain = TRUE, $include_request_uri = TRUE)
-    {
-        $prefix = '';
-        if($includeSchemeDomain)
+        $url_separator = '/';
+        $default_module = $router->getDefaultModule();
+
+        $components = array(
+            'module'    => $default_module,
+            'controller' => $router->getDefaultController(),
+            'action'    => $router->getDefaultAction(),
+        );
+
+        if (isset($path_info['module']))
         {
-            $prefix = 'http' . (DF_IS_SECURE ? 's' : '') . '://' . $_SERVER['HTTP_HOST'];
+            $components['module'] = $path_info['module'];
+            unset($path_info['module']);
         }
-        
-        $uri = '';
-        if (isset($_SERVER['REQUEST_URI']))
+        if (isset($path_info['controller']))
         {
-            $uri = $_SERVER['REQUEST_URI'];
+            $components['controller'] = $path_info['controller'];
+            unset($path_info['controller']);
         }
-        else
+        if (isset($path_info['action']))
         {
-            $uri = self::route($request->getParams()).self::arrayToGetString($_GET);
+            $components['action'] = $path_info['action'];
+            unset($path_info['action']);
         }
-        
-        if (!$include_request_uri && strstr($uri, '?') !== FALSE)
+        if (isset($path_info['params']))
         {
-            $uri = substr($uri, 0, strpos($uri, '?'));
+            $path_info = array_merge($path_info, $path_info['params']);
+            unset($path_info['params']);
         }
-        
-        return $prefix.$uri;
+
+        // Handle the legacy "default" module being so-named.
+        if ($components['module'] == 'default')
+            $components['module'] = $default_module;
+
+        // Special exception for homepage.
+        if ($components['module'] == $default_module &&
+            $components['controller'] == $router->getDefaultController() &&
+            $components['action'] == $router->getDefaultAction() &&
+            empty($path_info)) {
+            return $di->get('url')->get('');
+        }
+
+        // Otherwise compile URL using a uniform format.
+        $url_parts = array();
+
+        if ($components['module'] != $default_module)
+            $url_parts[] = $components['module'];
+
+        $url_parts[] = $components['controller'];
+        $url_parts[] = $components['action'];
+
+        $path_info = array_filter($path_info);
+
+        if (count($path_info) > 0)
+        {
+            foreach ((array)$path_info as $param_key => $param_value)
+            {
+                $url_parts[] = urlencode($param_key);
+                $url_parts[] = urlencode($param_value);
+            }
+        }
+
+        $url_full = implode($url_separator, $url_parts);
+        return $di->get('url')->get($url_full);
     }
 
     /**
-     * Generate a URL based on a route
+     * Generate a route based on the current URL.
      *
-     * @param array $options variables to pass to the router
-     * @param string $route which route to process
-     * @param boolean $reset reset automatic variable assignment
-     * @param boolean $encode url_encode() all pieces of the url
-     * @param array $get array of values for a ?get=string to be appended to the URL
-     * @return string Generated URL
+     * @param $path_info
+     * @param \Phalcon\DiInterface $di
+     * @return string The routed URL.
      */
-    public static function route(array $options = array(), $route = null, $reset = true, $encode = true, array $get = array())
+    public static function routeFromHere($path_info, \Phalcon\DiInterface $di = null)
     {
-        $target = '';
-        if (isset($options['#target']))
+        $di = self::getDi($di);
+
+        $dispatcher = $di->get('dispatcher');
+        $new_path = array(
+            'module'        => $dispatcher->getModuleName(),
+            'controller'    => $dispatcher->getControllerName(),
+            'action'        => $dispatcher->getActionName(),
+            'params'        => (array)$dispatcher->getParams(),
+        );
+
+        if (isset($path_info['module']))
         {
-            $target = '#'.str_replace('#', '', $options['#target']);
-            unset($options['#target']);
+            $new_path['module'] = $path_info['module'];
+            unset($path_info['module']);
         }
-        
-        $justice_friends = self::getRouter();
-        return $justice_friends->assemble($options, $route, $reset, $encode).self::arrayToGetString($get).$target;
-    }
-
-    /**
-     * @return \Zend_Controller_Router_Interface|\Zend_Controller_Router_Rewrite
-     * @throws \Zend_Controller_Exception
-     * @throws \Zend_Exception
-     */
-    public static function getRouter()
-    {
-        static $router;
-        
-        if (!$router)
+        if (isset($path_info['controller']))
         {
-            $front = \Zend_Controller_Front::getInstance();
-            
-            $request = $front->getRequest();
-            if (!$request)
-            {
-                $request = new \Zend_Controller_Request_Http;
-                $front->setRequest($request);
-            }
-            
-            $config = \Zend_Registry::get('config');
-            if ($config->application->base_url)
-                $request->setBaseUrl($config->application->base_url);
-            
-            $router = $front->getRouter();
-            if (!$router)
-            {
-                $router = new \Zend_Controller_Router_Rewrite;
-                $front->setRouter($router);
-            }
-            
-            $router->addDefaultRoutes();
+            $new_path['controller'] = $path_info['controller'];
+            unset($path_info['controller']);
         }
-        
-        return $router;
-    }
-    
-    // Route to a URL without resetting the current routing path.
-    public static function routeFromHere($options = array())
-    {
-        $options = (is_array($options)) ? $options : array('action' => $options);
-        return self::route($options, NULL, FALSE);
-    }
-
-    protected static function arrayToGetString(array $get, $preserve_existing_get = false)
-    {
-        $get_string = array();
-
-        if($preserve_existing_get === true)
+        if (isset($path_info['action']))
         {
-            foreach( (array)$_GET as $key => $value )
+            $new_path['action'] = $path_info['action'];
+            unset($path_info['action']);
+        }
+
+        if (count($path_info) > 0)
+        {
+            foreach ((array)$path_info as $param_key => $param_value)
             {
-                $get_string[$key] = urlencode($key) . '=' . urlencode($value);
+                $new_path['params'][$param_key] = $param_value;
             }
         }
 
-        foreach( (array)$get as $key => $value )
-        {
-            $get_string[$key] = urlencode($key) . '=' . urlencode($value);
-        }
+        return self::route($new_path);
+    }
 
-        if(count($get_string) > 0)
-            $get_string = '?' . implode('&', $get_string);
+    public static function getDi(\Phalcon\DiInterface $di = null)
+    {
+        if ($di instanceof \Phalcon\DiInterface)
+            return $di;
         else
-            $get_string = '';
-
-        return $get_string;
+            return  \Phalcon\Di::getDefault();
     }
 }

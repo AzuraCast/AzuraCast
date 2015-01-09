@@ -4,7 +4,7 @@
  */
 
 namespace DF\View\Helper;
-class Ifset extends \Zend_View_Helper_Abstract
+class Ifset extends HelperAbstract
 {
     public function ifset($original_var, $default_value = "")
     {

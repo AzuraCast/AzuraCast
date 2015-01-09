@@ -1,19 +1,19 @@
 <?
-$this->headTitle('Artist Biography');
+$this->view->setVar('title', 'Artist Biography');
 ?>
 
-<img src="<?=\DF\Url::content($this->artist['image_url'] ?>) ?>" style="float: right; padding: 5px;">
+<img src="<?=\DF\Url::content($this->view->artist['image_url']) ?>" style="float: right; padding: 5px;">
 
 <h2>
-    <?=$this->artist['name'] ?><br>
-    <small><i class="<?=$this->artist['type_icon'] ?>"></i> <?=$this->artist['type_name'] ?></small>
+    <?=$this->view->artist['name'] ?><br>
+    <small><i class="<?=$this->view->artist['type_icon'] ?>"></i> <?=$this->view->artist['type_name'] ?></small>
 </h2>
 
-<p><?=nl2br($this->artist['description']) ?></p>
+<p><?=nl2br($this->view->artist['description']) ?></p>
 
 <dl>
     <dt>Homepage:</dt>
-    <dd><?=$this->link($this->artist['web_url']) ?></dd>
+    <dd><?=$this->link($this->view->artist['web_url']) ?></dd>
 </dl>
 
 <div class="clear">&nbsp;</div>

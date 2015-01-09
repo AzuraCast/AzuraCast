@@ -1,11 +1,5 @@
 <?php
-/**
- * Zend_Config Wrapper Class
- */
-
 namespace DF;
-
-require_once('Zend/Config.php');
 
 class Config
 {
@@ -19,7 +13,7 @@ class Config
         if(is_dir($baseFolder))
             $this->_baseFolder = $baseFolder;
         else
-            throw new \Zend_Exception("Invalid base folder for configurations.");
+            throw new \Exception("Invalid base folder for configurations.");
     }
     
     public function preload($configs)
@@ -33,7 +27,7 @@ class Config
     
     public function __set($name, $value)
     {
-        throw new \Zend_Exception("Configuration is read-only.");
+        throw new \Exception("Configuration is read-only.");
     }
     
     public function __get($name)
@@ -54,19 +48,19 @@ class Config
         
         return $this->_loaded_configs[$name];
     }
-    
+
     public function getFile($config_base)
     {
         if (file_exists($config_base))
-            return new \Zend_Config(require $config_base);
+            return new \Phalcon\Config(require $config_base);
         if (file_exists($config_base.'.conf.php'))
-            return new \Zend_Config(require $config_base.'.conf.php');
+            return new \Phalcon\Config(require $config_base.'.conf.php');
         else if (file_exists($config_base.'.ini'))
-            return new \Zend_Config_Ini($config_base.'.ini');
-        else if (file_exists($config_base.'.xml'))
-            return new \Zend_Config_Xml($config_base.'.xml');
+            return new \Phalcon\Config\Adapter\Ini($config_base.'.ini');
+        else if (file_exists($config_base.'.json'))
+            return new \Phalcon\Config\Adapter\Json($config_base.'.json');
         else
-            return new \Zend_Config(array());
+            return new \Phalcon\Config(array());
     }
     
     /**

@@ -4,19 +4,19 @@
  */
 
 namespace DF\View\Helper;
-class RenderCommon extends \Zend_View_Helper_Abstract
+class RenderCommon extends HelperAbstract
 {
     public function renderCommon($target, $vars = array())
     {
-        $config = \Zend_Registry::get('config');
-        
-        $assign_vars = array_merge((array)$this->view->getVars(), $vars);
-        
-        $view_renderer = \DF\Application\Bootstrap::getNewView(FALSE);
-        $view = $view_renderer->view;
-        
-        $view->setScriptPath($config->application->resources->layout->commonTemplates);
-        $view->assign((array)$assign_vars);
-        return $view->render($target.'.phtml');
+        $previous_partials_dir = $this->view->getPartialsDir();
+
+        $new_partials_dir = $this->view->getLayoutsDir().'/shared';
+        $this->view->setPartialsDir($new_partials_dir);
+
+        $partial = $this->view->partial($target, $vars);
+
+        $this->view->setPartialsDir($previous_partials_dir);
+
+        return $partial;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace DF\View\Helper;
-class DateOrDefault extends \Zend_View_Helper_Abstract
+
+class DateOrDefault extends HelperAbstract
 {
     public function dateOrDefault($timestamp, $date_format = 'm/d/Y', $no_date_text = '(No Date)')
     {

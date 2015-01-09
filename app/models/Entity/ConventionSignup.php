@@ -71,7 +71,9 @@ class ConventionSignup extends \DF\Doctrine\Entity
      */
     public static function getForm(Convention $con)
     {
-        $module_config = \Zend_Registry::get('module_config');
+        $di = \Phalcon\Di::getDefault();
+        $module_config = $di->get('module_config');
+
         $form_config = $module_config['admin']->forms->conventionsignup->toArray();
 
         $con_info = array(

@@ -1,22 +1,22 @@
 <?
-$this->headTitle('Manage Conventions');
+$this->view->setVar('title', 'Manage Conventions');
 ?>
 
-<h2><?=$this->convention->name ?></h2>
+<h2><?=$this->view->convention->name ?></h2>
 <h3>Manage Convention Press Signups</h3>
 
 <div class="buttons btn-group">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'large',
-        'href'      => $this->routeFromHere(array('action' => 'index', 'convention' => NULL)),
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'index', 'convention' => NULL)),
         'icon'      => 'icon-arrow-left',
         'text'      => 'Back to Main',
     )) ?>
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'large',
-        'href'      => $this->routeFromHere(array('format' => 'csv')),
+        'href'      => $this->viewHelper->routeFromHere(array('format' => 'csv')),
         'icon'      => 'icon-download',
         'text'      => 'Download Excel CSV',
     )) ?>
@@ -42,22 +42,22 @@ $this->headTitle('Manage Conventions');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->signups as $record): ?>
+    <? foreach($this->view->signups as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'icon'      => 'icon-pencil',
                         'class'     => 'fancybox fancybox.ajax',
-                        'href'      => $this->routeFromHere(array('action' => 'editsignup', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'editsignup', 'id' => $record['id'])),
                         'text'      => 'Edit',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'icon'      => 'icon-trash',
                         'class'     => 'danger confirm-delete',
-                        'href'      => $this->routeFromHere(array('action' => 'deletesignup', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'deletesignup', 'id' => $record['id'])),
                         'text'      => 'Delete',
                     )) ?>
                 </div>
@@ -70,7 +70,7 @@ $this->headTitle('Manage Conventions');
                 <?=$record->legal_name ?>
             </td>
             <td>
-                <?=$this->mailto($record->email) ?>
+                <?=$this->viewHelper->mailto($record->email) ?>
             </td>
             <td>
                 <?=$record->phone ?>

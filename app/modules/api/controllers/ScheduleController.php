@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Api\Controllers;
+
 use \Entity\Station;
 use \Entity\Schedule;
 
-class Api_ScheduleController extends \PVL\Controller\Action\Api
+class ScheduleController extends BaseController
 {
     public function indexAction()
     {

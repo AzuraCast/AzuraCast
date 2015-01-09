@@ -1,0 +1,70 @@
+<?php
+$this->view->setVar('title', 'Embed the Ponyville Live! Player');
+
+$default_example_params = array(
+    'controller' => 'index',
+    'action' => 'tunein',
+    'skin' => 'dark',
+    'embed' => 'true',
+);
+$default_example_url = \DF\Url::route($default_example_params);
+$default_example = '<iframe src="'.$default_example_url.'" frameborder="0" allowtransparency="true" style="width: 100%; height: 600px; border: 0; overflow-x: hidden; overflow-y: scroll;"></iframe>';
+
+$station_example_params = array(
+    'controller' => 'index',
+    'action' => 'tunein',
+    'skin' => 'dark',
+    'embed' => 'true',
+    'autoplay' => 'true',
+    'showonlystation' => 'true',
+    'id' => 1,
+);
+$station_example_url = \DF\Url::route($station_example_params);
+$station_example = '<iframe src="'.$station_example_url.'" frameborder="0" allowtransparency="true" style="width: 100%; height: 420px; border: 0;"></iframe>';
+
+$categories = \Entity\Station::getStationsInCategories();
+?>
+
+<h2>Default Example (Full Player)</h2>
+
+<textarea class="full-width half-height"><?=htmlspecialchars($default_example) ?></textarea>
+
+<p>This will embed the full Ponyville Live! sidebar player into your site, with all of the stations listed and a built-in player that automatically appears above all of the stations. No additional setup work is required to make this embed option work.</p>
+
+<h2>Show Only One Station</h2>
+
+<textarea class="full-width half-height"><?=htmlspecialchars($station_example) ?></textarea>
+
+<p>This will only embed a single station, with certain behaviors based on the parameters listed below. You can customize these parameters to change the way the embedded player functions.</p>
+
+<h2>Customizable Parameters</h2>
+
+<p>In both cases above, the parameters that are sent to the player are attached to the end of the embedded URL. They are always in pairs, i.e. /paramname/paramval/. Each of the parameter pairs are listed below along with their possible values and purpose.</p>
+
+<dl>
+    <dt>/id/[station id]</dt>
+    <dd>Choose from one of the station IDs specified below:
+        <dl class="dl-horizontal">
+        <? foreach($categories as $cat): ?>
+            <dt><i class="<?=$cat['icon'] ?>"></i> <?=$cat['name'] ?></dt>
+            <dd>
+            <? foreach($cat['stations'] as $station): ?>
+                <div><?=$station['id'] ?> - <?=$station['name'] ?></div>
+            <? endforeach; ?>
+            </dd>
+        <? endforeach; ?>
+        </dl>
+    </dd>
+
+    <dt>/skin/[dark,light,slim]/</dt>
+    <dd>This changes the overall color scheme of the player. Dark is more suitable for sites with darker backgrounds, and vice versa with light. Slim is a streamlined version of the player that occupies much less vertical space.</dd>
+
+    <dt>/embed/[true,false]/</dt>
+    <dd>If you want the background of your site to show through the player, set this to "true" to give the player a transparent background. Otherwise, set this to "false" and the player will use its own background color.</dd>
+
+    <dt>/autoplay/[true,false]/</dt>
+    <dd>Set this value to "true" to automatically start playing the station selected.</dd>
+
+    <dt>/showonlystation/[true,false]/</dt>
+    <dd>Set this value to "true" to <i>only</i> show the station ID number you specify. Otherwise, all stations will be shown, and the ID number will only be used to autoplay the station matching that ID.</dd>
+</dl>

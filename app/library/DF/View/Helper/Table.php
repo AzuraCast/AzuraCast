@@ -1,6 +1,6 @@
 <?php
 namespace DF\View\Helper;
-class Table extends \Zend_View_Helper_Abstract
+class Table extends HelperAbstract
 {
     protected $header;
     protected $footer;

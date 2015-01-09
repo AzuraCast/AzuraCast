@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Station;
 use \Entity\Station as Record;
 
-class Admin_StationsController extends \PVL\Controller\Action\Admin
+class StationsController extends BaseController
 {
     public function permissions()
     {
@@ -63,7 +65,7 @@ class Admin_StationsController extends \PVL\Controller\Action\Admin
             return;
         }
 
-        $this->view->headTitle('Edit Record');
+        $this->view->setVar('title', 'Edit Record');
         $this->renderForm($form);
     }
     

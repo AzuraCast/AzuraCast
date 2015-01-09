@@ -1,0 +1,20 @@
+<?
+// Split stations into categories.
+$categories = $this->view->categories;
+
+switch($this->view->skin)
+{
+    case "slim":
+    case "horizontal":
+        include('player-'.$this->view->skin.'.phtml');
+    break;
+
+    default:
+        if ($this->view->embed_mode)
+            include('player-embed.phtml');
+        elseif ($this->view->standalone)
+            include('player-standalone.phtml');
+
+        include('player-skeleton.phtml');
+    break;
+}

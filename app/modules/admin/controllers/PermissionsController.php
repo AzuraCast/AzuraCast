@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Action;
 use \Entity\Role;
 
-class Admin_PermissionsController extends \PVL\Controller\Action\Admin
+class PermissionsController extends BaseController
 {
     public function permissions()
     {
@@ -40,7 +42,7 @@ class Admin_PermissionsController extends \PVL\Controller\Action\Admin
             return;
         }
 
-        $this->view->headTitle('Add/Edit Action');
+        $this->view->setVar('title', 'Add/Edit Action');
         $this->renderForm($form);
     }
     
@@ -83,7 +85,7 @@ class Admin_PermissionsController extends \PVL\Controller\Action\Admin
             return;
         }
 
-        $this->view->headTitle('Add/Edit Role');
+        $this->view->setVar('title', 'Add/Edit Role');
         $this->renderForm($form);
     }
 

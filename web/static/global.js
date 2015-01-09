@@ -126,7 +126,7 @@ function modalPopup(popup_url, params)
 
     // Detect iframe.
     if (window!=window.top || !$.fn.fancybox)
-        window.open(popup_url,'PVLModalPopup','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height='+params.heightt+',width='+params.width);
+        window.open(popup_url,'PVLModalPopup','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height='+params.height+',width='+params.width);
     else
         $.fancybox.open(params);
 }

@@ -1,6 +1,7 @@
 <?php
 namespace DF\View\Helper;
-class Button extends \Zend_View_Helper_Abstract
+
+class Button extends HelperAbstract
 {
     /**
      * @return A string containing the icon's image tag.
@@ -14,8 +15,10 @@ class Button extends \Zend_View_Helper_Abstract
         $params = array_merge($defaults, $params);
         
         $params['class'] .= ' btn ui-button';
+
+        $vh = $this->di->get('viewHelper');
                 
-        $button_icon = (isset($params['icon'])) ? $this->view->icon($params['icon']) : '';
+        $button_icon = (isset($params['icon'])) ? $vh->icon($params['icon']) : '';
         $button_type = $params['type'];
         $button_text = $params['text'];
         unset($params['text'], $params['icon']);

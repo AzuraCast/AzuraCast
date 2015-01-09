@@ -1,6 +1,6 @@
 <?php
 namespace DF\View\Helper;
-class Alert extends \Zend_View_Helper_Abstract
+class Alert extends HelperAbstract
 {
     public function alert($message, $level = \DF\Flash::INFO)
     {

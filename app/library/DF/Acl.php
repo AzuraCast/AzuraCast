@@ -11,7 +11,8 @@ class Acl
 {
     public static function getInstance()
     {
-        return \Zend_Registry::get('acl');
+        $di = \Phalcon\Di::getDefault();
+        return $di->get('acl');
     }
     
     public static function __callStatic($name, $arguments)

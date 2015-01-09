@@ -1,0 +1,108 @@
+<?
+$this->view->setVar('title', 'Request a Song');
+$this->view->manual = true;
+?>
+
+<div class="row-fluid">
+    <div class="span4">
+        <h2><i class="<?=$this->view->station->getCategoryIcon() ?>"></i> <?=$this->view->station->name ?></h2>
+
+        <div class="well">
+            <h3>Find a Song</h3>
+            <form class="form-inline" action="<?=$this->viewHelper->routeFromHere(array('page' => NULL, 'artist' => NULL, 'q' => NULL)) ?>" method="get">
+                <input type="text" name="q" title="Search terms" placeholder="Song or Artist Name..." class="half-width" value="<?=$this->view->q ?>">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'submit',
+                    'class'     => 'primary',
+                    'icon'      => 'icon-search',
+                    'text'      => 'Search',
+                )) ?>
+            </form>
+
+            <br>
+            <h3>Most Requested Songs</h3>
+
+        <? if ($this->view->top_songs): ?>
+            <ul class="nav nav-list">
+            <? foreach($this->view->top_songs as $record): ?>
+                <li><a href="<?=$this->viewHelper->routeFromHere(array('track' => $record['id'])) ?>" title="Click to request this song.">
+                    <b><?=$record['title'] ?></b> by <?=$record['artist'] ?>
+                </a></li>
+            <? endforeach; ?>
+            </ul>
+        <? else: ?>
+            <p>No songs have been requested yet. Request one now!</p>
+        <? endif; ?>
+
+            <br>
+            <h3>Browse by Artist</h3>
+
+            <div style="height: 350px; overflow-y: scroll;">
+                <ul class="nav nav-list">
+                <? foreach($this->view->artist_names as $artist): ?>
+                    <li><a href="<?=$this->viewHelper->routeFromHere(array('artist' => $artist)) ?>" title="View all songs by this artist.">
+                        <?=$artist ?>
+                    </a></li>
+                <? endforeach; ?>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="span8">
+        <h2><?=$this->view->page_title ?></h2>
+
+    <? if ($this->view->reset_button): ?>
+        <div class="buttons">
+            <?=$this->viewHelper->button(array(
+                'type'      => 'link',
+                'icon'      => 'icon-chevron-sign-left',
+                'text'      => 'Reset Search',
+                'href'      => $this->viewHelper->routeFromHere(array('q' => NULL, 'artist' => NULL, 'page' => 1)),
+            )) ?>
+        </div>
+    <? endif; ?>
+
+        <?=$this->viewHelper->paginate($this->view->pager) ?>
+
+        <table class="table table-bordered table-striped" width="100%">
+            <colgroup>
+                <col width="15%">
+                <col width="25%">
+                <col width="25%">
+                <col width="25%">
+                <col width="10%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Track Name</th>
+                    <th>Artist</th>
+                    <th>Album</th>
+                    <th>Length</th>
+                </tr>
+            </thead>
+            <tbody>
+            <? foreach($this->view->pager as $record): ?>
+                <tr class="input">
+                    <td class="center">
+                        <?=$this->viewHelper->button(array(
+                            'type'      => 'small',
+                            'class'     => 'primary',
+                            'href'      => $this->viewHelper->routeFromHere(array('track' => $record['id'])),
+                            'icon'      => 'icon-play-sign',
+                            'text'      => 'Request',
+                        )) ?>
+                    </td>
+                    <td><big><a href="#" class="btn-show-song-info" data-id="<?=$record['song_id'] ?>" title="Click for Song Information"><?=$record['title'] ?></a></big></td>
+                    <td><?=$record['artist'] ?></td>
+                    <td><?=$record['album'] ?></td>
+                    <td><?=$record['length_text'] ?></td>
+                </tr>
+            <? endforeach; ?>
+            </tbody>
+        </table>
+
+        <?=$this->viewHelper->paginate($this->view->pager) ?>
+    </div>
+</div>

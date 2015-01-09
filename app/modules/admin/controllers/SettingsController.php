@@ -1,7 +1,9 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Settings;
 
-class Admin_SettingsController extends \PVL\Controller\Action\Admin
+class SettingsController extends BaseController
 {
     public function permissions()
     {
@@ -26,6 +28,7 @@ class Admin_SettingsController extends \PVL\Controller\Action\Admin
             
             $this->alert('Settings updated!');
             $this->redirectHere();
+            return;
         }
         
         $this->view->form = $form;

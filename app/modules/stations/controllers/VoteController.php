@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Stations\Controllers;
+
 use \Entity\Station;
 use \Entity\StationManager;
 
-class Stations_VoteController extends \PVL\Controller\Action\Station
+class VoteController extends BaseController
 {
     protected $vote_hash;
     protected $vote_name;

@@ -1,12 +1,12 @@
 <?
-$this->headTitle('Manage Rotator Banners');
+$this->view->setVar('title', 'Manage Rotator Banners');
 ?>
 
 <div class="buttons">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'large success',
-        'href'      => $this->routeFromHere(array('action' => 'edit')),
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
         'icon'      => 'icon-plus-sign',
         'text'      => 'Add New Rotator',
     )) ?>
@@ -26,19 +26,19 @@ $this->headTitle('Manage Rotator Banners');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->records as $record): ?>
+    <? foreach($this->view->records as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
-                        'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
                         'text'      => 'Edit',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'class'     => 'danger confirm-delete',
-                        'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
                         'text'      => 'Delete',
                     )) ?>
                 </div>

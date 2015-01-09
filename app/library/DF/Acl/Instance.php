@@ -8,9 +8,19 @@ namespace DF\Acl;
 use \Entity\User;
 use \Entity\Role;
 
-class Instance
+class Instance implements \Phalcon\DI\InjectionAwareInterface
 {
     protected $_actions = NULL;
+
+    protected $_di;
+    public function setDi($di)
+    {
+        $this->_di = $di;
+    }
+    public function getDi()
+    {
+        return $this->_di;
+    }
     
     public function __construct()
     {}
@@ -21,7 +31,7 @@ class Instance
         {
             $this->_actions = array();
             
-            $em = \Zend_Registry::get('em');
+            $em = $this->_di->get('em');
             $query = $em->createQuery('SELECT r, a FROM \Entity\Role r JOIN r.actions a');
             $roles_with_actions = $query->getArrayResult();
             
@@ -76,7 +86,7 @@ class Instance
 
     public function isAllowed($action)
     {
-        $auth = \Zend_Registry::get('auth');
+        $auth = $this->_di->get('auth');
         $user = $auth->getLoggedInUser();
         $is_logged_in = ($user instanceof User);
         
@@ -136,8 +146,8 @@ class Instance
      */
     public function checkPermission($action)
     {
-        $auth = \Zend_Registry::get('auth');
-        
+        $auth = $this->_di->get('auth');
+
         if (!$this->isAllowed($action))
         {
             if (!$auth->isLoggedIn())

@@ -1,5 +1,7 @@
 <?php
-class Api_IndexController extends \PVL\Controller\Action\Api
+namespace Modules\Api\Controllers;
+
+class IndexController extends BaseController
 {
     /**
      * Public index for API.

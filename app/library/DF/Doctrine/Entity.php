@@ -102,7 +102,8 @@ class Entity implements \ArrayAccess
     
     public function fromArray($source)
     {
-        $em = \Zend_Registry::get('em');
+        $em = self::getEntityManager();
+
         $metafactory = $em->getMetadataFactory();
         $meta = $metafactory->getMetadataFor(get_called_class());
 
@@ -275,7 +276,7 @@ class Entity implements \ArrayAccess
     {
         $return_arr = array();
 
-        $em = \Zend_Registry::get('em');
+        $em = self::getEntityManager();
         $class_meta = $em->getClassMetadata(get_called_class());
         
         $reflect = new \ReflectionClass($this);
@@ -357,7 +358,7 @@ class Entity implements \ArrayAccess
     /* Delete (A Docrine 1 Classic) */
     public function delete($hard_delete = FALSE)
     {
-        $em = \Zend_Registry::get('em');
+        $em = self::getEntityManager();
         
         // Support for soft-deletion.
         if (!$hard_delete && property_exists($this, 'deleted_at'))
@@ -375,7 +376,7 @@ class Entity implements \ArrayAccess
         }
         else
         {
-            $em = \Zend_Registry::get('em');
+            $em = self::getEntityManager();
             $em->remove($this);
             $em->flush();
         }
@@ -387,14 +388,14 @@ class Entity implements \ArrayAccess
     
     public function detach()
     {
-        $em = \Zend_Registry::get('em');
+        $em = self::getEntityManager();
         $em->detach($this);
         return $this;
     }
     
     public function merge()
     {
-        $em = \Zend_Registry::get('em');
+        $em = self::getEntityManager();
         $em->merge($this);
         return $this;
     }
@@ -405,12 +406,8 @@ class Entity implements \ArrayAccess
      
     public static function getEntityManager()
     {
-        static $em;
-        
-        if ($em === NULL)
-            $em = \Zend_Registry::get('em');
-        
-        return $em;
+        $di = \Phalcon\Di::getDefault();
+        return $di->get('em');
     }
     
     /* Fetch the global entity manager to get a repository class. */
@@ -487,7 +484,8 @@ class Entity implements \ArrayAccess
     /* Reset auto-increment key (MySQL Only). */
     public static function resetAutoIncrement()
     {
-        $em = \Zend_Registry::get('em');
+        $em = self::getEntityManager();
+
         $table_name = $em->getClassMetadata(get_called_class())->getTableName();
         $conn = $em->getConnection();
 

@@ -4,7 +4,7 @@
  */
 
 namespace DF\View\Helper;
-class RenderBlock extends \Zend_View_Helper_Abstract
+class RenderBlock extends HelperAbstract
 {
     public function renderBlock($block_name, $vars = array(), $title = FALSE)
     {

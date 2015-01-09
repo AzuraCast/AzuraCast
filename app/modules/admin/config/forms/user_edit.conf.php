@@ -19,10 +19,13 @@ return array(
                 'label' => 'E-mail Address (Username)',
                 'validators' => array('EmailAddress'),
                 'required' => true,
+                'autocomplete' => 'off',
             )),
 
             'auth_password' => array('password', array(
                 'label' => 'Reset Password',
+                'description' => 'Leave blank to persist current password.',
+                'autocomplete' => 'off',
             )),
             
             'roles'         => array('multiCheckbox', array(

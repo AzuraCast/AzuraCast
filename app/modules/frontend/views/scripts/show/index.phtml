@@ -1,0 +1,16 @@
+<?php
+$this->view->setVar('title', 'Shows Directory');
+$this->assets->addCss('vendor/world-flags-sprite/stylesheets/flags16.css');
+
+$cols = \DF\Utilities::columns($this->view->podcasts, 2);
+?>
+
+<div class="row-fluid">
+<? foreach($cols as $col): ?>
+    <div class="span6">
+        <?
+        echo $this->partial('podcast', array('podcasts' => $col));
+        ?>
+    </div>
+<? endforeach; ?>
+</div>

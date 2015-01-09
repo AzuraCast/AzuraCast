@@ -1,333 +1,537 @@
 <?php
-
 namespace DF;
-class Form extends \Zend_Form
+
+class Form
 {
     /**
-     * Custom override of the Zend_Form constructor
+     * @var \Phalcon\Forms\Form The underlying form.
      */
-    public function __construct($options = null)
+    protected $form;
+
+    /**
+     * @var array|void Configuration.
+     */
+    protected $options;
+
+    public function __construct($options, \Phalcon\Forms\Form $form = null)
     {
-        $this->getPluginLoader(\Zend_Form::DECORATOR)->addPrefixPath('\DF\Form\Decorator\\', 'DF/Form/Decorator');
-        $this->getPluginLoader(\Zend_Form::ELEMENT)->addPrefixPath('\DF\Form\Element\\', 'DF/Form/Element');
-        
-        $this->addElementPrefixPath('\DF\Validate\\', 'DF/Validate', \Zend_Form_Element::VALIDATE);
-        $this->addElementPrefixPath('\DF\Filter\\', 'DF/Filter', \Zend_Form_Element::FILTER);
-        
-        $this->setElementFilters(array('StringTrim'));
-        
-        if ($options instanceof \Zend_Config)
+        if ($form === null)
+            $form = new \Phalcon\Forms\Form;
+
+        $this->form = new $form;
+
+        if ($options instanceof \Phalcon\Config)
             $options = $options->toArray();
-        
-        if (is_array($options) && isset($options['groups']))
+
+        $this->options = $options;
+        $this->_setUpFields();
+    }
+
+    /**
+     * Return the active form underlying this class.
+     *
+     * @return \Phalcon\Forms\Form The form.
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
+     * Return the configuration options for this form.
+     *
+     * @return null|array Form options.
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    public function setDefaults($default_values)
+    {
+        foreach((array)$default_values as $field_key => $default_value)
         {
-            foreach($options['groups'] as $group_key => $group)
+            if ($this->form->has($field_key))
             {
-                // Special handling for items named "submit".
-                if ($group_key == "submit")
-                    $group_key = "submit_grp";
-                
-                $group_elements = (array)$group['elements'];
-                unset($group['elements']);
-                
-                $options['displayGroups'][$group_key] = array(
-                    'elements'      => array(),
-                    'options'       => $group,
-                );
-                
-                foreach($group_elements as $element_key => $element_info)
-                {
-                    $options['displayGroups'][$group_key]['elements'][] = $element_key;
-                    $options['elements'][$element_key] = $element_info;
+                $element = $this->form->get($field_key);
+                $element->setDefault($default_value);
+            }
+        }
+    }
+
+    public function populate($values)
+    {
+        $this->setDefaults($values);
+    }
+
+    protected function _setUpFields()
+    {
+        if ($this->options['groups']) {
+            foreach($this->options['groups'] as $group) {
+                foreach((array)$group['elements'] as $element_key => $element_options)
+                    $this->_setUpField($element_key, $element_options);
+            }
+        }
+
+        foreach((array)$this->options['elements'] as $element_key => $element_options) {
+            $this->_setUpField($element_key, $element_options);
+        }
+    }
+
+    protected function _setUpField($field_key, $field_params)
+    {
+        $field_type = $field_params[0];
+        $field_options = (array)$field_params[1];
+
+        // Clean up array.
+        if (isset($field_options['multiOptions'])) {
+            $select_options = $field_options['multiOptions'];
+            unset($field_options['multiOptions']);
+        } else {
+            $select_options = array();
+        }
+
+        if (isset($field_options['label'])) {
+            $element_label = $field_options['label'];
+            unset($field_options['label']);
+        } else {
+            $element_label = NULL;
+        }
+
+        if (isset($field_options['default'])) {
+            $element_default = $field_options['default'];
+            unset($field_options['default']);
+        } else {
+            $element_default = NULL;
+        }
+
+        if (isset($field_options['description']))
+            unset($field_options['description']);
+
+        $element_validators = array();
+
+        if (isset($field_options['required'])) {
+            if ($field_options['required']) {
+                $element_validators[] = new \Phalcon\Validation\Validator\PresenceOf(array(
+                    'message'   => 'This field is required.',
+                ));
+            }
+
+            unset($field_options['required']);
+        }
+
+        if (isset($field_options['minLength'])) {
+            $element_validators[] = new \Phalcon\Validation\Validator\StringLength(array(
+                'min'       => $field_options['minLength'],
+                'message'   => 'This field must be at least '.$field_options['minLength'].' characters.',
+            ));
+
+            unset($field_options['minLength']);
+        }
+
+        // Set up element object.
+        switch($field_type)
+        {
+            case 'password':
+                $element = new \Phalcon\Forms\Element\Password($field_key, $field_options);
+                break;
+
+            case 'select':
+                $element = new \Phalcon\Forms\Element\Select($field_key, $select_options, $field_options);
+                break;
+
+            case 'checkbox':
+                $element = new \Phalcon\Forms\Element\Check($field_key, $field_options);
+                break;
+
+            case 'multiCheckbox':
+                $field_options['name'] = $field_key.'[]';
+                $element = new \Phalcon\Forms\Element\Check($field_key, $field_options);
+                break;
+
+            case 'radio':
+                $element = new \Phalcon\Forms\Element\Radio($field_key, $field_options);
+                break;
+
+            case 'textarea':
+                $element = new \Phalcon\Forms\Element\TextArea($field_key, $field_options);
+                break;
+
+            case 'hidden':
+                $element = new \Phalcon\Forms\Element\Hidden($field_key, $field_options);
+                break;
+
+            case 'file':
+                $element = new \Phalcon\Forms\Element\File($field_key, $field_options);
+                break;
+
+            case 'date':
+                $element = new \Phalcon\Forms\Element\Date($field_key, $field_options);
+                break;
+
+            case 'numeric':
+                $element = new \Phalcon\Forms\Element\Numeric($field_key, $field_options);
+                break;
+
+            case 'submit':
+                $field_options['value'] = $element_label;
+                $element_label = NULL;
+
+                $element = new \Phalcon\Forms\Element\Submit($field_key, $field_options);
+                break;
+
+            case 'markup':
+                $element = new \DF\Forms\Element\Markup($field_key, $field_options['markup'], $field_options);
+                break;
+
+            case 'text':
+            default:
+                $element = new \Phalcon\Forms\Element\Text($field_key, $field_options);
+                break;
+        }
+
+        // Set element label and defaults.
+        $element->setLabel($element_label);
+        $element->setDefault($element_default);
+
+        // Set up required or min-length validators.
+        if ($element_validators)
+            $element->addValidators($element_validators);
+
+        $this->form->add($element);
+        return $this->form;
+    }
+
+    /**
+     * Render the entire form (or a specified field name).
+     *
+     * @param null $name The portion of the form to render (leave null for the entire form).
+     * @return string The rendered form.
+     */
+    public function render($name = null)
+    {
+        if ($name !== null)
+            return $this->_renderField($name, array());
+
+        $form_defaults = array(
+            'method'        => 'POST',
+            'action'        => \DF\Url::current(),
+            'class'         => 'form-stacked df-form',
+        );
+
+        $form_options = (array)$this->options;
+        unset($form_options['elements'], $form_options['groups']);
+
+        $form_options = array_merge($form_defaults, $form_options);
+
+        $form_tag = '<form';
+        foreach((array)$form_options as $option_key => $option_value) {
+            $form_tag .= ' '.$option_key.'="'.$option_value.'"';
+        }
+        $form_tag .= '>';
+
+        $return = '';
+        $return .= $form_tag;
+
+        if ($this->options['groups']) {
+            foreach($this->options['groups'] as $group_id => $group_info) {
+                if (!empty($group_info['legend'])) {
+                    $return .= '<fieldset id="' . $group_id . '">';
+                    $return .= '<legend>' . $group_info['legend'] . '</legend>';
+                }
+
+                foreach($group_info['elements'] as $element_key => $element_info) {
+                    $return .= $this->_renderField($element_key, $element_info);
+                }
+
+                if (!empty($group_info['legend'])) {
+                    $return .= '</fieldset>';
                 }
             }
-            
-            unset($options['groups']);
-        }
-        
-        // Check for default value.
-        $defaults = array();
-        foreach((array)$options['elements'] as $element_name => $element_info)
-        {
-            if (isset($element_info[1]['default']))
-            {
-                $defaults[$element_name] = $element_info[1]['default'];
-                unset($options['elements'][$element_name][1]['default']);
-            }
-        }
-        
-        parent::__construct($options);
-        $this->setDefaults($defaults);
-    }
-    
-    public function isSubForm()
-    {
-        return FALSE;
-    }
-    
-    public function setDefault($name, $value)
-    {
-        $name = (string) $name;
-        if ($element = $this->getElement($name))
-        {
-            $element->setAttrib('df_raw_value', $value);
-        }
-        
-        return parent::setDefault($name, $value);
-    }
-    protected function _dissolveArrayValue($value, $arrayPath)
-    {
-        return (array)parent::_dissolveArrayValue($value, $arrayPath);
-    }
-    
-    public function clearAllDecorators()
-    {
-        $this->clearDecorators();
-        
-        foreach($this->getElements() as $element)
-            $element->clearDecorators();
-        
-        foreach($this->getDisplayGroups() as $group)
-            $group->clearDecorators();
-        
-        foreach($this->getSubForms() as $form)
-        {
-            if ($form instanceof self)
-                $form->clearAllDecorators();
-            else
-                $form->clearDecorators();
         }
 
-        return $this;
-    }
-    
-    protected function preRender(\Zend_View_Interface &$view = null)
-    {
-        foreach($this->getElements() as $element)
-        {
-            $element->setDecorators(array(
+        if (!empty($this->options['elements'])) {
+            foreach($this->options['elements'] as $element_key => $element_info) {
+                $return .= $this->_renderField($element_key, $element_info);
+            }
+        }
 
-                array(
-                    'SpanFormErrors',
-                    array(
-                        'class' => 'help-block error',
-                        'escape' => FALSE,
-                        'placement' => \Zend_Form_Decorator_Abstract::PREPEND,
-                    ),
-                ),
-                
-                array(
-                    'Description',
-                    array(
-                        'tag' => 'span',
-                        'class' => 'help-block '.$errors,
-                        'escape' => FALSE,
-                        'placement' => \Zend_Form_Decorator_Abstract::PREPEND,
-                    )
-                ),
-                
-            ));
-                
-            if ($element instanceof \Zend_Form_Element_File)
-            {
-                $element->addDecorators(array(
-                    array(
-                        'FormFileEdit',
-                        array(
-                            'placement' => \Zend_Form_Decorator_Abstract::APPEND,
-                        ),
-                    ),
-                ));
-            }
-            else
-            {
-                $element->addDecorators(array(
-                    array(
-                        'ViewHelper',
-                        array(
-                            'placement' => \Zend_Form_Decorator_Abstract::APPEND,
-                        ),
-                    ),
-                ));
-            }
-            
-            if (!($element instanceof \Zend_Form_Element_Button || $element instanceof \Zend_Form_Element_Submit))
-            {
-                $element->addDecorators(array(
-                    array(
-                        'Label',
-                        array(
-                            'escape' => FALSE,
-                            'optionalSuffix' => ':',
-                            'requiredSuffix' => '<span style="color: #FF0000;">*</span>:',
-                        ),
-                    ),
-                    array(
-                        'HtmlTag', 
-                        array(
-                            'tag' => 'div', 
-                            'class' => 'clearfix control-group',
-                        ),
-                    ),
-                ));
-            }
-            
-            if( $element instanceOf \Zend_Form_Element_Hidden )
-            {
-                $element->setDecorators(array(
-                    'ViewHelper',
-                ));
-            }
-        }
-        
-        $subform_decorators = array(
-            array(
-                'Description',
-                array(
-                    'tag' => 'span',
-                    'class' => 'help-block in-fieldset',
-                    'escape' => FALSE,
-                )
-            ),
-            array(
-                'FormElements',
-                array(
-                    'tag' => '',
-                )
-            ),
-        );
-        $group_decorators = array_merge($subform_decorators, array(
-            array('Fieldset'),
-        ));
-        
-        if (!$this->isSubForm())
-        {
-            $this->setDecorators(array(
-                array('FormErrors'),
-                array('FormElements'),
-                array('Form', array(
-                    'class' => 'form-stacked df-form',
-                )),
-            ));
-        }
-        
-        $this->setDisplayGroupDecorators($group_decorators);
-        $this->setSubFormDecorators($subform_decorators);
+        $return .= '</form>';
+        return $return;
     }
 
-    public function render(\Zend_View_Interface $view = null)
+    protected function _renderField($name, $field_params)
     {
-        $view_mode = $GLOBALS['df_form_mode'];
-        
-        if ($view_mode == "view" || $view_mode == "message")
-            $this->preRenderView($view);
-        else
-            $this->preRender($view);
-        
-        return parent::render($view);
-    }
-    
-    public function renderSpecial(\Zend_View_Interface $view = null, $view_mode = 'edit')
-    {
-        $GLOBALS['df_form_mode'] = $view_mode;
-        $return_value = $this->render($view);
-        $GLOBALS['df_form_mode'] = NULL;
-        
-        return $return_value;
-    }
-    public function renderView(\Zend_View_Interface $view = null)
-    {
-        return $this->renderSpecial($view, 'view');
-    }
-    public function renderMessage(\Zend_View_Interface $view = null)
-    {
-        return $this->renderSpecial($view, 'message');
-    }
-    
-    /**
-     * Read-only view
-     */
-    
-    public function preRenderView(\Zend_View_Interface $view = null)
-    {
-        foreach($this->getElements() as $element)
-        {
-            $element->setDecorators(array(
-                'FormView',
-            ));
-            
-            if ($element instanceof \Zend_Form_Element_Button ||
-                $element instanceof \Zend_Form_Element_Submit || 
-                $element instanceof \Zend_Form_Element_Hidden || 
-                $element instanceof Form\Element\Markup)
-            {
-                // Don't show these types of elements in this view
-                $element->clearDecorators();
+        $field_type = $field_params[0];
+        $field_options = $field_params[1];
+
+        $element = $this->form->get($name);
+
+        $return = '<div class="clearfix control-group">';
+
+        $label = $element->getLabel();
+        if (!empty($label)) {
+            // Check if field is required.
+            $validators = $element->getValidators();
+            $is_required = false;
+
+            if (count($validators)) {
+                foreach($validators as $v_obj) {
+                    if ($v_obj instanceof \Phalcon\Validation\Validator\PresenceOf)
+                        $is_required = true;
+                }
             }
-            else if ($element instanceof \Zend_Form_Element_File)
-            {
-                // Add a fake "Form File View" decorator, since Zend_Form_Element_File needs it.
-                $element->addDecorators(array(
-                    'FormFileView',
-                ));
+
+            $return .= '<label for="' . $element->getName() . '" '.(($is_required) ? 'class="required"' : '').'>' . $label . (($is_required) ? '<span style="color: #FF0000;">*</span>' : '') . ':</label>';
+        }
+
+        if (!empty($field_options['description']))
+            $return .= '<span class="help-block">'.$field_options['description'].'</span>';
+
+        //Get any generated messages for the current element
+        $messages = $this->form->getMessagesFor($element->getName());
+
+        if (count($messages)) {
+            foreach ($messages as $message) {
+                $return .= '<span class="help-block error">'.$message.'</span>';
             }
         }
-        
-        $group_decorators = array(
-            array('FormElements'),
-            array('FormView'),
-        );
-        
-        $this->setDecorators($group_decorators);
-        $this->setDisplayGroupDecorators($group_decorators);
-        $this->setSubFormDecorators($group_decorators);
+
+        switch($field_type)
+        {
+            case 'submit':
+                return $this->form->render($name);
+                break;
+
+            case 'multiCheckbox':
+            case 'radio':
+                $return .= '<ul class="inputs-list inline">';
+
+                $list_items = array();
+                $default = $element->getDefault();
+
+                foreach($field_options['multiOptions'] as $option_value => $option_label) {
+
+                    // Force a "default" value.
+                    if (is_array($default) && in_array($option_value, $default))
+                        $element->setDefault($option_value);
+
+                    $list_items[] = '<li><label>' . $this->form->render($name, array('value' => $option_value)) . ' <span>' . $option_label . '</span></label></li>';
+                }
+
+                $return .= implode('<br>', $list_items);
+                $return .= '</ul>';
+                break;
+
+            default:
+                $return .= $this->form->render($name);
+                break;
+        }
+
+        $return .= '</div>';
+
+        return $return;
     }
-    
+
+    public function renderView()
+    {
+        $return = '';
+        $return .= '<div class="form-view">';
+
+        if ($this->options['groups']) {
+            foreach($this->options['groups'] as $group_id => $group_info) {
+
+                $elements_return = '';
+                foreach($group_info['elements'] as $element_key => $element_info) {
+                    $elements_return .= $this->_renderFieldView($element_key, $element_info);
+                }
+
+                $elements_return = trim($elements_return);
+
+                // Hide empty fieldsets.
+                if (empty($elements_return))
+                    continue;
+
+                if (!empty($group_info['legend']))
+                    $return .= '<h3>' . $group_info['legend'] . '</h3>';
+
+                $return .= '<dl>'.$elements_return.'</dl>';
+
+                if (!empty($group_info['legend'])) {
+                    $return .= '</fieldset>';
+                }
+            }
+        }
+
+        if (!empty($this->options['elements'])) {
+
+            $elements_return = '';
+            foreach($this->options['elements'] as $element_key => $element_info) {
+                $elements_return .= $this->_renderFieldView($element_key, $element_info);
+            }
+
+            $elements_return = trim($elements_return);
+
+            if (!empty($elements_return))
+                $return .= '<dl>'.$elements_return.'</dl>';
+        }
+
+        $return .= '</div>';
+
+        return $return;
+    }
+    public function renderMessage()
+    {
+        return $this->renderView();
+    }
+
+    protected function _renderFieldView($name, $field_params)
+    {
+        $field_type = $field_params[0];
+        $field_options = $field_params[1];
+
+        $element = $this->form->get($name);
+
+        $return = '';
+
+        switch($field_type)
+        {
+            case 'markup':
+            case 'submit':
+                return '';
+                break;
+
+            case 'multiCheckbox':
+            case 'radio':
+                $options = $field_options['multiOptions'];
+                $value = $element->getValue();
+
+                if (is_array($value))
+                {
+                    $return .= '<dd><ul>';
+                    foreach($value as $key)
+                        $return .= '<li>'.$options[$key].'</li>';
+
+                    $return .= '</ul></dd>';
+                }
+                else
+                {
+                    if (isset($options[$value]))
+                        $return .= '<dd>'.$options[$value].'</dd>';
+                }
+                break;
+
+            case 'file':
+                $files = (array)$element->getValue();
+
+                $return .= '<dd>';
+                $i = 1;
+                foreach($files as $file)
+                {
+                    $file_url = \DF\Url::content($file);
+                    $return .= '<div>#'.$i.': <a href="'.$file_url.'" target="_blank">Download File</a></div>';
+
+                    $i++;
+                }
+                $return .= '</dd>';
+                break;
+
+            default:
+                $value = trim($element->getValue());
+
+                if (!empty($value))
+                    $return .= '<dd>'.$value.'</dd>';
+                break;
+        }
+
+        // Only add label for non-empty elements.
+        $label = $element->getLabel();
+        if (!empty($return) && !empty($label))
+            $return = '<dt>'.$label.':</dt>'.$return;
+
+        return $return;
+    }
+
+    public function isValid($submitted_data = null)
+    {
+        if ($submitted_data === null)
+            $submitted_data = $_POST;
+
+        return $this->form->isValid($submitted_data);
+    }
+
+    public function getValues($submitted_data = null)
+    {
+        if ($submitted_data === null)
+            $submitted_data = $_POST;
+
+        $values_obj = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+        $this->form->bind($submitted_data, $values_obj);
+
+        return $values_obj->getArrayCopy();
+    }
+
     /**
      * File upload processing
      */
-    public function processFiles($destination_folder, $file_name_prefix = '')
+    public function processFiles($destination_folder, $file_name_prefix = '', \Phalcon\Http\Request $request = null)
     {
+        if ($request === null) {
+            $di = \Phalcon\Di::getDefault();
+            $request = $di->get('request');
+        }
+
+        if (!$request->hasFiles())
+            return array();
+
         $return_fields = array();
-        
+
         // Check for upload directory.
         $base_dir = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$destination_folder;
-            
+
         if (!file_exists($base_dir))
             @mkdir($base_dir);
-        
-        foreach($this->getElements() as $element_name => $element)
+
+        // Loop through all uploaded files.
+        $all_uploaded_files = $request->getUploadedFiles();
+
+        foreach($all_uploaded_files as $file)
         {
-            if ($element instanceof \Zend_Form_Element_File)
-            {
-                $element_name_clean = preg_replace('#[^a-zA-Z0-9\_]#', '', $element_name);
-                
-                $file_names = (array)$element->getFileName();
-                $original_files = (array)$element->getOriginalValue();
+            // Validate that this form contains a field with this name.
+            $element_key = $file->getKey();
+            if (!$this->form->has($element_key))
+                continue;
 
-                if (!empty($file_names))
-                {
-                    $i = 1;
-                    foreach($file_names as $file_path_original)
-                    {
-                        $new_file_name = ($file_name_prefix) ? $file_name_prefix.'_' : '';
-                        $new_file_name .= date('Ymd_His').'_'.mt_rand(100, 999).'_'.$element_name_clean.'_'.$i.'.'.File::getFileExtension($file_path_original);
-                        
-                        $new_file_path_short = $destination_folder.DIRECTORY_SEPARATOR.$new_file_name;
-                        $new_file_path_full = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_file_path_short;
+            $element = $this->form->get($element_key);
+            if (!($element instanceof \Phalcon\Forms\Element\File))
+                continue;
 
-                        if (!is_writable(dirname($new_file_path_full)))
-                            throw new \DF\Exception('New directory not writable.');
-                        
-                        @rename($file_path_original, $new_file_path_full);
-                        
-                        $return_fields[$element_name][$i] = $new_file_path_short;
-                        $i++;
-                    }
-                }
+            // Prepare array.
+            if (isset($return_fields[$element_key])) {
+                $i = count($return_fields[$element_key]) + 1;
+            } else {
+                $return_fields[$element_key] = array();
+                $i = 1;
             }
+
+            // Sanitize file name and generate new name.
+            $element_name_clean = preg_replace('#[^a-zA-Z0-9\_]#', '', $element_key);
+
+            $new_file_name = ($file_name_prefix) ? $file_name_prefix.'_' : '';
+            $new_file_name .= date('Ymd_His').'_'.mt_rand(100, 999).'_'.$element_name_clean.'_'.$i.'.'.File::getFileExtension($file->getName());
+
+            $new_file_path_short = $destination_folder.DIRECTORY_SEPARATOR.$new_file_name;
+            $new_file_path_full = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_file_path_short;
+
+            if (!is_writable(dirname($new_file_path_full)))
+                throw new \DF\Exception('New directory not writable.');
+
+            $file->moveTo($new_file_path_full);
+
+            $return_fields[$element_key][$i] = $new_file_path_short;
         }
-        
+
         return $return_fields;
     }
+
 }

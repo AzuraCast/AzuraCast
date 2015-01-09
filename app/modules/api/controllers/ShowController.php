@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Api\Controllers;
+
 use \Entity\Podcast;
 use \Entity\PodcastEpisode;
 
-class Api_ShowController extends \PVL\Controller\Action\Api
+class ShowController extends BaseController
 {
     public function indexAction()
     {

@@ -1,10 +1,10 @@
 <?
-$this->headTitle('API Dashboard');
+$this->view->setVar('title', 'API Dashboard');
 ?>
 
 <h3>
-    <?=date('F j, Y g:ia', $this->statistics['meta']['threshold']) ?> to Current<br>
-    <small><?=$this->statistics['meta']['total_calls'] ?> API Calls (<?=$this->statistics['meta']['calls_per_minute'] ?> per minute)</small>
+    <?=date('F j, Y g:ia', $this->view->statistics['meta']['threshold']) ?> to Current<br>
+    <small><?=$this->view->statistics['meta']['total_calls'] ?> API Calls (<?=$this->view->statistics['meta']['calls_per_minute'] ?> per minute)</small>
 </h3>
 
 <div class="row-fluid">
@@ -25,7 +25,7 @@ $this->headTitle('API Dashboard');
                 </tr>
             </thead>
             <tbody>
-            <? foreach($this->statistics['calls_by_function'] as $function_name => $function_data): ?>
+            <? foreach($this->view->statistics['calls_by_function'] as $function_name => $function_data): ?>
                 <tr class="input">
                     <td class="text-right"><?=$function_data['total'] ?></td>
                     <td class="text-right"><?=$function_data['percentage'] ?></td>
@@ -50,7 +50,7 @@ $this->headTitle('API Dashboard');
             </tr>
             </thead>
             <tbody>
-            <? foreach($this->statistics['speed_by_function'] as $function_name => $function_data): ?>
+            <? foreach($this->view->statistics['speed_by_function'] as $function_name => $function_data): ?>
             <tr class="input">
                 <td class="text-right"><?=$function_data['total'] ?>ms</td>
                 <td><?=$function_name ?></td>
@@ -77,7 +77,7 @@ $this->headTitle('API Dashboard');
             </tr>
             </thead>
             <tbody>
-            <? foreach($this->statistics['calls_by_hour'] as $hour => $row_info): ?>
+            <? foreach($this->view->statistics['calls_by_hour'] as $hour => $row_info): ?>
             <tr class="input">
                 <td class="right"><?=$row_info['total'] ?></td>
                 <td class="right"><?=$row_info['percentage'] ?></td>
@@ -107,7 +107,7 @@ $this->headTitle('API Dashboard');
             </tr>
             </thead>
             <tbody>
-            <? foreach($this->statistics['calls_by_useragent'] as $key => $row_info): ?>
+            <? foreach($this->view->statistics['calls_by_useragent'] as $key => $row_info): ?>
                 <tr class="input">
                     <td class="right"><?=$row_info['total'] ?></td>
                     <td class="right"><?=$row_info['percentage'] ?></td>
@@ -134,7 +134,7 @@ $this->headTitle('API Dashboard');
             </tr>
             </thead>
             <tbody>
-            <? foreach($this->statistics['calls_by_ip'] as $key => $row_info): ?>
+            <? foreach($this->view->statistics['calls_by_ip'] as $key => $row_info): ?>
                 <tr class="input">
                     <td class="right"><?=$row_info['total'] ?></td>
                     <td class="right"><?=$row_info['percentage'] ?></td>
@@ -161,7 +161,7 @@ $this->headTitle('API Dashboard');
             </tr>
             </thead>
             <tbody>
-            <? foreach($this->statistics['calls_by_client'] as $key => $row_info): ?>
+            <? foreach($this->view->statistics['calls_by_client'] as $key => $row_info): ?>
                 <tr class="input">
                     <td class="right"><?=$row_info['total'] ?></td>
                     <td class="right"><?=$row_info['percentage'] ?></td>

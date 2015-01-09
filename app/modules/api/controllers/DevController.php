@@ -1,5 +1,7 @@
 <?php
-class Api_DevController extends \PVL\Controller\Action\Api
+namespace Modules\Api\Controllers;
+
+class DevController extends BaseController
 {
     public function preDispatch()
     {

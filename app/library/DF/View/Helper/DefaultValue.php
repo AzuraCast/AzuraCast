@@ -1,6 +1,7 @@
 <?php
 namespace DF\View\Helper;
-class DefaultValue extends \Zend_View_Helper_Abstract
+
+class DefaultValue extends HelperAbstract
 {
     public function defaultValue($var, $default_val = '')
     {

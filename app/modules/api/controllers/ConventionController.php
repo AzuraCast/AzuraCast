@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Api\Controllers;
+
 use \Entity\Convention;
 use \Entity\ConventionArchive;
 
-class Api_ConventionController extends \PVL\Controller\Action\Api
+class ConventionController extends BaseController
 {
     public function listAction()
     {

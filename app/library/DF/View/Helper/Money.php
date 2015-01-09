@@ -1,6 +1,6 @@
 <?php
 namespace DF\View\Helper;
-class Money extends \Zend_View_Helper_Abstract
+class Money extends HelperAbstract
 {
     public function money($amount)
     {

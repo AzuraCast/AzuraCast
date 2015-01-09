@@ -4,7 +4,7 @@
  */
 
 namespace DF\View\Helper;
-class Mailto extends \Zend_View_Helper_Abstract
+class Mailto extends HelperAbstract
 {
     public function mailto($address, $link_text = NULL)
     {

@@ -1,0 +1,190 @@
+<?php
+header("Content-type: text/html; charset=utf-8");
+$skin = \PVL\Customization::get('theme');
+?>
+<!DOCTYPE html>
+<html class="full_layout theme_<?=$skin ?>">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true">
+
+    <meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, MLP, MLP:FiM" />
+    <meta name="description" content="Equestria's newest Brony multimedia network, featuring 24/7 pony radio, videos, podcasts, convention coverage, and more." />
+    <link rel="canonical" href="http://ponyvillelive.com" />
+
+    <!-- Facebook and Other Social Sites -->
+    <meta property="og:site_name" content="Ponyville Live!" />
+    <meta property="og:url" content="http://ponyvillelive.com/" />
+    <meta property="og:image" content="<?=$this->url->getStatic('pvl_square.png') ?>" />
+
+    <link rel="image_src" href="<?=$this->url->getStatic('pvl_square.png') ?>" />
+    <link href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" />
+
+    <?php
+    if ($this->view->title)
+        $page_title = $this->view->title.' - '.$this->config->application->name;
+    else
+        $page_title = $this->config->application->name.' - Live Pony Radio, Video, Podcasts, Convention Coverage & More';
+
+    $this->tag->setTitle($page_title);
+    if (DF_APPLICATION_ENV != "production")
+        $this->tag->prependTitle('('.ucfirst(DF_APPLICATION_ENV).') ');
+
+    echo $this->tag->getTitle();
+
+    // Set up CSS includes.
+    $this->assets->collection('header_css')
+        ->addCss('//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css', false)
+        ->addCss('//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css', false)
+        ->addCss('//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', false)
+        ->addCss('common/jquery/fancybox/jquery.fancybox.css')
+        ->addCss('compiled/style.css');
+
+    // Establish custom CSS/JS collections in case they don't exist.
+    $this->assets->collection('custom_css');
+    $this->assets->collection('custom_js');
+
+    // Output header CSS.
+    $this->assets->outputCss('header_css');
+    $this->assets->outputCss('custom_css');
+
+    // Set up JS includes.
+    $this->assets->collection('header_js')
+        ->addJs('//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js', false)
+        ->addJs('//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.compat.min.js', false);
+
+    $this->assets->collection('footer_js')
+        ->addJs('common/jquery/fancybox/jquery.fancybox.pack.js')
+        ->addJs('common/jquery/fancybox/helpers/jquery.fancybox-media.js')
+        ->addJs('common/bootstrap2_r2/bootstrap/js/bootstrap.min.js')
+        ->addJs('common/bootstrap2_r2/layout.js')
+        ->addJs('js/swfobject.js')
+        ->addJs('js/jquery.hammer-full.min.js')
+        ->addJs('js/notify.js')
+        ->addJs('global.js');
+
+    $this->assets->outputJs('header_js');
+    ?>
+    <script>
+        var DF_AppEnv = '<?=DF_APPLICATION_ENV ?>';
+        var DF_BaseUrl = '<?php echo rtrim($this->url->get(''), '/'); ?>';
+        var DF_ContentPath = '<?php echo $this->url->getStatic(''); ?>';
+    </script>
+</head>
+<body>
+<div class="top">
+    <div class="container">
+        <?php $this->viewHelper->renderCommon("usernav") ?>
+    </div>
+</div>
+
+<div class="header">
+    <div class="container">
+        <div class="logo">
+            <a href="<?=$this->url->get('') ?>"><img id="logo-header" src="<?=$this->url->getStatic('mid2013/logo_'.$skin.'.png') ?>" alt="Ponyville Live! Logo"></a>
+        </div>
+
+        <div class="navbar">
+            <div class="navbar-inner">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="nav-collapse collapse">
+                    <?php $this->viewHelper->renderCommon("nav") ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<? if ($this->view->content_top): ?>
+    <?=$this->view->content_top ?>
+<? else: ?>
+    <div id="secondary_header_stripe" class="rich_header">&nbsp;</div>
+<? endif; ?>
+
+<div id="body-wrapper">
+    <div id="body" class="container">
+        <div id="page_wrapper">
+            <div id="page">
+                <?
+                if (\DF\Flash::hasMessages()):
+                    $messages = \DF\Flash::getMessages();
+                    foreach($messages as $message):
+                        ?>
+                        <div class="content-top-alert alert alert-<?=$message['color'] ?>" data-alert="alert">
+                            <a class="close" data-dismiss="alert" href="#">×</a>
+                            <?=$message['message'] ?>
+                        </div>
+                    <?
+                    endforeach;
+                endif;
+                ?>
+
+                <div id="content_wrapper">
+                    <div id="content">
+                        <? if (!$this->view->hide_title): ?>
+                            <h1 class="title"><?=$this->view->title ?></h1>
+                        <? endif; ?>
+
+                        <? if ($this->view->tabs): ?>
+                            <div id="content_tabs">
+                                <?=$this->view->tabs ?>
+                            </div>
+                        <? endif; ?>
+
+                        <? if ($this->view->subtitle): ?>
+                            <h2 class="title"><?=$this->view->subtitle ?></h2>
+                        <? endif; ?>
+
+                        <? if ($this->view->manual): ?>
+                            <?php echo $this->getContent(); ?>
+                        <? else: ?>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="content_inner">
+                                        <?php echo $this->getContent(); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <? endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div class="container">
+        <?=$this->viewHelper->renderCommon('footer') ?>
+    </div>
+</div>
+
+<div class="copyright">
+    <div class="container">
+        <p>MLP is copyright &copy; Hasbro. All creations are &copy; to their respective artists. All songs are property of their respective artists.<br>
+            Copyright &copy; 2012-<?=date('Y') ?> <a href="http://www.bravelyblue.com/" target="_blank">Bravely Blue Media LLC</a> and Ponyville Live! All rights reserved.</p>
+    </div>
+</div>
+
+<?
+echo $this->assets->outputJs('footer_js');
+echo $this->assets->outputJs('custom_js');
+?>
+
+<!-- Google Universal Analytics -->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', '<?=$this->config->application->analytics_code ?>', 'ponyvillelive.com');
+    ga('send', 'pageview');
+</script>
+<!-- End Google Universal Analytics -->
+</body>
+</html>

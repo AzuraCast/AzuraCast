@@ -1,5 +1,7 @@
 <?php
-class Admin_IndexController extends \PVL\Controller\Action\Admin
+namespace Modules\Admin\Controllers;
+
+class IndexController extends BaseController
 {
     /**
      * Main display.

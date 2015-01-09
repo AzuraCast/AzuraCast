@@ -1,0 +1,16 @@
+<? foreach($categories as $cat_key => $cat): ?>
+    <? if (count($cat['stations']) > 0): ?>
+        <div class="floating">
+            <div class="well">
+                <h3><i class="<?=$cat['icon'] ?>"></i> <?=$cat['name'] ?> <small><span id="nowplaying-listeners-<?=$cat_key ?>"></span></small></h3>
+
+                <?
+                $this->view->stations = $cat['stations'];
+                $this->view->render_mode = 'standalone';
+
+                echo $this->viewHelper->renderCommon('station');
+                ?>
+            </div>
+        </div>
+    <? endif; ?>
+<? endforeach; ?>

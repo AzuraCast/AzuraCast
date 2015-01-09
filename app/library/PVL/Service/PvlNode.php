@@ -13,7 +13,9 @@ class PvlNode
      */
     public static function push($event_type, $event_data)
     {
-        $config = \Zend_Registry::get('config');
+        $di = \Phalcon\Di::getDefault();
+        $config = $di->get('config');
+
         $url = $config->apis->pvlnode_local_url;
 
         $ch = curl_init($url);
@@ -46,7 +48,9 @@ class PvlNode
      */
     public static function fetch()
     {
-        $config = \Zend_Registry::get('config');
+        $di = \Phalcon\Di::getDefault();
+        $config = $di->get('config');
+
         $url = $config->apis->pvlnode_local_url;
 
         // Send standard HTTP GET request.

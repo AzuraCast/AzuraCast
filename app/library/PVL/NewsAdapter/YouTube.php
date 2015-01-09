@@ -5,7 +5,8 @@ class YouTube extends AdapterAbstract
 {
     public static function fetch($url, $params = array())
     {
-        $config = \Zend_Registry::get('config');
+        $di = \Phalcon\Di::getDefault();
+        $config = $di->get('config');
 
         // Set up Google Client
         $gclient_api_key = $config->apis->google_apis_key;

@@ -1,18 +1,18 @@
 <?
-$this->headTitle('Manage Conventions');
+$this->view->setVar('title', 'Manage Conventions');
 ?>
 
 <div class="buttons">
-    <?=$this->button(array(
+    <?=$this->viewHelper->button(array(
         'type'      => 'link',
         'class'     => 'large success',
-        'href'      => $this->routeFromHere(array('action' => 'edit')),
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
         'icon'      => 'icon-plus-sign',
         'text'      => 'Add New Convention',
     )) ?>
 </div>
 
-<?=$this->paginate($this->pager) ?>
+<?=$this->viewHelper->paginate($this->view->pager) ?>
 
 <table class="table table-bordered table-striped table-nopadding">
     <colgroup>
@@ -32,37 +32,37 @@ $this->headTitle('Manage Conventions');
     </tr>
     </thead>
     <tbody>
-    <? foreach($this->pager as $record): ?>
+    <? foreach($this->view->pager as $record): ?>
         <tr class="input <? if ($record['signup_enabled'] == 1): ?>text-success<? endif; ?>">
             <td class="center">
                 <div class="btn-group">
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'class'     => ((count($record->signups) > 0) ? 'btn-primary' : '').' btn-icon-only',
                         'icon'      => 'icon-user',
                         'title'     => 'Signups ('.count($record->signups).')',
-                        'href'      => $this->routeFromHere(array('action' => 'signups', 'convention' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'signups', 'convention' => $record['id'])),
                         'text'      => '',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'class'     => ((count($record->archives) > 0) ? 'btn-primary' : '').' btn-icon-only',
                         'icon'      => 'icon-facetime-video',
                         'title'     => 'Video Archives ('.count($record->archives).')',
-                        'href'      => $this->routeFromHere(array('action' => 'archives', 'convention' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'archives', 'convention' => $record['id'])),
                         'text'      => '',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'icon'      => 'icon-pencil',
-                        'href'      => $this->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
                         'text'      => 'Edit',
                     )) ?>
-                    <?=$this->button(array(
+                    <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'icon'      => 'icon-trash',
                         'class'     => 'danger confirm-delete',
-                        'href'      => $this->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
                         'text'      => 'Delete',
                     )) ?>
                 </div>
@@ -92,4 +92,4 @@ $this->headTitle('Manage Conventions');
     </tbody>
 </table>
 
-<?=$this->paginate($this->pager) ?>
+<?=$this->viewHelper->paginate($this->view->pager) ?>

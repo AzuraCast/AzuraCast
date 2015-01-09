@@ -1,0 +1,91 @@
+<?
+$this->view->setVar('title', $this->view->convention->name);
+$this->view->manual = true;
+?>
+
+<? if ($this->view->convention->image_url): ?>
+    <?
+    ob_start();
+    ?>
+    <div id="convention_header" class="rich_header">
+        <div class="container">
+            <div class="well">
+                <div class="item">
+                    <img src="<?=\DF\Url::content($this->view->convention->image_url) ?>" alt="Convention Thumbnail">
+                </div>
+            </div>
+        </div>
+    </div>
+    <?
+    $this->view->content_top = ob_get_contents();
+    ob_end_clean();
+    ?>
+<? endif; ?>
+
+<div class="row-fluid">
+    <div class="span3">
+        <h2><i class="icon-info-sign"></i> Convention Info</h2>
+        <div class="well">
+            <ul class="nav nav-list">
+                <li class="nav-header">Location</li>
+                <li><span><?=$this->view->convention->location ?></span></li>
+
+                <li class="nav-header">Dates</li>
+                <li><span><?=$this->view->convention->range ?></span></li>
+
+            <? if ($this->view->convention->web_url): ?>
+                <li class="nav-header">Homepage</li>
+                <li><a href="<?=$this->view->convention->web_url ?>" target="_blank"><?=$this->view->convention->web_url ?></a></li>
+            <? endif; ?>
+
+                <li class="nav-header">Folders</li>
+                <? foreach($this->view->videos as $folder): ?>
+                    <li><a href="#folder_<?=$folder['key'] ?>"><i class="icon-folder-open"></i> <?=$folder['name'] ?></a></li>
+                <? endforeach; ?>
+
+            <? if ($this->view->sources): ?>
+                <li class="nav-header">Video Sources</li>
+                <? foreach($this->view->sources as $source): ?>
+                    <li><a href="<?=$source['web_url'] ?>" target="_blank"><i class="icon-globe"></i> <?=$source['name'] ?></a></li>
+                <? endforeach; ?>
+            <? endif; ?>
+            </ul>
+        </div>
+
+        <h2><i class="icon-folder-open-alt"></i> More Archives</h2>
+        <div class="well">
+            <ul class="nav nav-list autoselect" rel="<?=$this->view->convention->id ?>">
+            <? foreach($this->view->conventions_archived as $record): ?>
+                <li rel="<?=$record['id'] ?>"><a href="<?=$this->viewHelper->routeFromHere(array('id' => $record['id'])) ?>">
+                    <b><?=$record['name'] ?></b><br>
+                    <?=$record['location'] ?> &bull; <?=$record['range'] ?>
+                </a></li>
+            <? endforeach; ?>
+            </ul>
+        </div>
+    </div>
+    <div class="span9">
+    <? foreach($this->view->videos as $folder): ?>
+        <h2 id="folder_<?=$folder['key'] ?>"><i class="icon-folder-open"></i> <?=$folder['name'] ?></h2>
+
+        <?
+        $rows = \DF\Utilities::rows($folder['videos'], 4);
+        ?>
+        <? foreach($rows as $row): ?>
+            <div class="row-fluid clearfix">
+                <? foreach($row as $record): ?>
+                    <div class="span3">
+                        <a class="video fancybox fancybox.iframe <?=$record['type'] ?>" href="<?=$record['web_url'] ?>">
+                            <img src="<?=$record['thumbnail_url'] ?>" title="<?=$record['name'] ?>">
+                            <div class="name">
+                                <h4><?=$record['name'] ?></h4>
+                            </div>
+                        </a>
+                    </div>
+                <? endforeach; ?>
+            </div>
+        <? endforeach; ?>
+    <? endforeach; ?>
+    </div>
+</div>
+

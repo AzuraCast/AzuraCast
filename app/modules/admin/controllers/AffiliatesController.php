@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Affiliate;
 use \Entity\Affiliate as Record;
 
-class Admin_AffiliatesController extends \PVL\Controller\Action\Admin
+class AffiliatesController extends BaseController
 {
     public function permissions()
     {
@@ -54,7 +56,7 @@ class Admin_AffiliatesController extends \PVL\Controller\Action\Admin
             return;
         }
 
-        $this->view->headTitle('Edit Record');
+        $this->view->setVar('title', 'Edit Record');
         $this->renderForm($form);
     }
     

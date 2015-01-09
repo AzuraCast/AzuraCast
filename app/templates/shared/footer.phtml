@@ -1,0 +1,60 @@
+<?
+$affiliates = \Entity\Affiliate::fetch(true);
+$columns = \DF\Utilities::columns($affiliates, 2);
+?>
+<div class="footer-inner">
+    <div class="row-fluid">
+        <div class="span8">
+            <div class="headline"><h3>Friends &amp; Affiliates</h3></div>
+
+            <div class="row-fluid">
+            <? foreach($columns as $column): ?>
+                <div class="span6">
+                    <ul class="media-list">
+                    <? foreach($column as $affiliate): ?>
+                        <li class="media">
+                            <div class="media-object pull-left">
+                                <a href="<?=$affiliate['web_url'] ?>" target="_blank">
+                                    <img src="<?=\DF\Url::content($affiliate['image_url']) ?>" alt="<?=$affiliate['name'] ?> Logo" style="width: 40px;">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4>
+                                <? if (isset($affiliate['custom'])): ?>
+                                    <?=$affiliate['custom'] ?><br>
+                                <? else: ?>
+                                    <a href="<?=$affiliate['web_url'] ?>" target="_blank"><?=$affiliate['name'] ?></a><br>
+                                <? endif; ?>
+                                    <small><?=$affiliate['description'] ?></small>
+                                </h4>
+                            </div>
+                        </li>
+                    <? endforeach; ?>
+                    </ul>
+                </div>
+            <? endforeach; ?>
+            </div>
+        </div>
+
+        <div class="span4">
+            <div class="headline"><h3>Follow &amp; Like Us</h3></div>
+
+            <ul class="unstyled">
+                <li><a href="http://news.ponyvillelive.com/" target="_blank"><img src="<?=\DF\Url::content('social/tumblr_16.png') ?>" alt="Tumblr"> Tumblr</a></li>
+                <li><a href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" target="_blank"><img src="<?=\DF\Url::content('social/google_plus_16.png') ?>" alt="Google Plus"> Google+</a></li>
+                <li><a href="https://www.youtube.com/ponyvilleliveglobal" target="_blank"><img src="<?=\DF\Url::content('social/youtube_16.png') ?>" alt="YouTube"> YouTube</a></li>
+                <li><a href="https://www.facebook.com/pages/Ponyville-LIVE/517435684948331" target="_blank"><img src="<?=\DF\Url::content('social/facebook_16.png') ?>" alt="Facebook"> Facebook</a></li>
+                <li><a href="https://twitter.com/PonyvilleLive" target="_blank"><img src="<?=\DF\Url::content('social/twitter_16.png') ?>" alt="Twitter"> Twitter</a></li>
+                <li><a href="http://steamcommunity.com/groups/ponyvillelive" target="_blank"><img src="<?=\DF\Url::content('social/steam_16.png') ?>" alt="Steam"> Steam</a></li>
+            </ul>
+
+            <div class="headline"><h3>Contact Us</h3></div>
+            <ul class="unstyled">
+                <li><a href="mailto:info@ponyvillelive.com"><i class="icon-envelope"></i> General Information</a></li>
+                <li><a href="mailto:pr@ponyvillelive.com"><i class="icon-envelope"></i> Public Relations</a></li>
+                <li><a href="mailto:silvereagle@ponyvillelive.com"><i class="icon-envelope"></i> Director, Silver Eagle</a></li>
+                <li><a href="mailto:weareborg@ponyvillelive.com"><i class="icon-envelope"></i> Associate Director, WeAreBorg</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

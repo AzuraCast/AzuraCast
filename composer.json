@@ -7,12 +7,20 @@
         "phpoffice/phpexcel": "1.8.0",
         "james-heinrich/getid3": "v1.9.8",
         "electrolinux/phpquery": "0.9.6",
-        "google/apiclient": "1.0.*@beta"
+        "google/apiclient": "1.0.*@beta",
+        "filp/whoops": "1.*"
+    },
+    "require-dev": {
+        "phalcon/devtools": "dev-master"
     },
     "authors": [
         {
             "name": "Buster Neece",
             "email": "buster@busterneece.com"
         }
-    ]
+    ],
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "dev"
 }

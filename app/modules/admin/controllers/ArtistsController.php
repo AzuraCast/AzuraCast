@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Artist;
 use \Entity\Artist as Record;
 
-class Admin_ArtistsController extends \PVL\Controller\Action\Admin
+class ArtistsController extends BaseController
 {
     public function permissions()
     {
@@ -64,7 +66,7 @@ class Admin_ArtistsController extends \PVL\Controller\Action\Admin
             return;
         }
 
-        $this->view->headTitle('Edit Record');
+        $this->view->setVar('title', 'Edit Record');
         $this->renderForm($form);
     }
     

@@ -1,8 +1,10 @@
 <?php
+namespace Modules\Stations\Controllers;
+
 use \Entity\Station;
 use \Entity\StationManager;
 
-class Stations_SubmitController extends \DF\Controller\Action
+class SubmitController extends \DF\Phalcon\Controller
 {
     public function permissions()
     {
@@ -69,7 +71,7 @@ class Stations_SubmitController extends \DF\Controller\Action
             return;
         }
 
-        $this->view->headTitle('New Station Submission');
+        $this->view->setVar('title', 'New Station Submission');
         $this->renderForm($form);
     }
 }

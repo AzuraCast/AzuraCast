@@ -1,5 +1,5 @@
 <?
-$this->headTitle('Top Songs from the Last Week');
+$this->view->setVar('title', 'Top Songs from the Last Week');
 ?>
 
 <table class="datatable table-striped table-condensed table-nopadding">
@@ -14,7 +14,7 @@ $this->headTitle('Top Songs from the Last Week');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->votes as $song_row): ?>
+    <? foreach($this->view->votes as $song_row): ?>
         <tr class="input">
             <td class="center">
                 <big>

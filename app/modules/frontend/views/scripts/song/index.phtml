@@ -1,0 +1,188 @@
+<?php
+$song_info = $this->view->song;
+$song = $this->view->song['record'];
+
+$this->view->setVar('title', $song->title.' by '.$song->artist);
+$this->view->hide_title = true;
+?>
+
+<div class="song_info">
+    <div class="clearfix">
+        <img src="<?=$song_info['image_url'] ?>" alt="Song Album Art" class="song_album_art">
+
+        <h1 class="song_title"><?=$song->title ?></h1>
+        <h2 class="song_artist"><?=$song->artist ?></h2>
+    </div>
+
+    <div class="tabbable">
+        <ul class="nav nav-pills">
+            <li><a href="#tab_moreinfo" data-toggle="tab"><i class="icon-info-sign"></i> More Info</a></li>
+            <li><a href="#tab_description" data-toggle="tab">Description</a></li>
+            <li><a href="#tab_lyrics" data-toggle="tab">Lyrics</a></li>
+            <li><a href="#tab_history" data-toggle="tab"><i class="icon-time"></i> Play History</a></li>
+            <li><a href="#tab_request" data-toggle="tab"><i class="icon-question-sign"></i> Request Song</a></li>
+        </ul>
+        <div class="tab-content">
+        <? if ($song_info['external']): ?>
+            <div class="tab-pane" id="tab_moreinfo">
+                <h2>More Info About This Song</h2>
+
+                <h3>Pony Music Sites</h3>
+
+            <? if ($song_info['external']['ponyfm']): ?>
+                <a href="<?=$song_info['external']['ponyfm']['web_url'] ?>" class="external_info ponyfm">
+                    <h4>
+                        <?=$song->title ?> on Pony.fm<br>
+                        <small><?=$song_info['external']['ponyfm']['web_url'] ?></small>
+                    </h4>
+                </a>
+            <? endif; ?>
+            <? if ($song_info['external']['eqbeats']): ?>
+                <a href="<?=$song_info['external']['eqbeats']['web_url'] ?>" class="external_info eqbeats">
+                    <h4>
+                        <?=$song->title ?> on EqBeats<br>
+                        <small><?=$song_info['external']['eqbeats']['web_url'] ?></small>
+                    </h4>
+                </a>
+            <? endif; ?>
+            <? if ($song_info['external']['bronytunes']): ?>
+                <a href="<?=$song_info['external']['bronytunes']['web_url'] ?>" class="external_info bronytunes">
+                    <h4>
+                        <?=$song->title ?> on BronyTunes<br>
+                        <small><?=$song_info['external']['bronytunes']['web_url'] ?></small>
+                    </h4>
+                </a>
+            <? endif; ?>
+
+                <h3>On Other Sites</h3>
+
+            <? if ($song_info['purchase_url']): ?>
+                <a href="<?=$song_info['purchase_url'] ?>">
+                    <h4>
+                        Buy This Song<br>
+                        <small><?=$song_info['purchase_url'] ?></small>
+                    </h4>
+                </a>
+            <? endif; ?>
+
+            <? if ($song_info['youtube_url']): ?>
+                <a href="<?=$song_info['youtube_url'] ?>">
+                    <h4>
+                        Watch on YouTube<br>
+                        <small><?=$song_info['youtube_url'] ?></small>
+                    </h4>
+                </a>
+            <? endif; ?>
+            </div>
+        <? endif; ?>
+        <? if ($song_info['description']): ?>
+            <div class="tab-pane" id="tab_description">
+                <h2>Song Description</h2>
+
+                <blockquote class="scroll_overflow">
+                    <?=$song_info['description'] ?>
+                </blockquote>
+            </div>
+        <? endif; ?>
+        <? if ($song_info['lyrics']): ?>
+            <div class="tab-pane" id="tab_lyrics">
+                <h2>Song Lyrics</h2>
+
+                <blockquote class="scroll_overflow">
+                    <?=$song_info['lyrics'] ?>
+                </blockquote>
+            </div>
+        <? endif; ?>
+        <? if (!empty($song_info['recent_history'])): ?>
+            <div class="tab-pane" id="tab_history">
+                <h2>Playback History</h2>
+
+                <div class="scroll_overflow">
+                    <table class="datatable table table-bordered table-nopadding table-striped">
+                        <colgroup>
+                            <col width="10%">
+                            <col width="55%">
+                            <col width="35%">
+                        </colgroup>
+                        <tbody>
+                        <? foreach($song_info['recent_history'] as $row): ?>
+                            <tr class="input">
+                                <td class="center"><img src="<?=\DF\Url::content($row['station']['image_url']) ?>" alt="Station Logo"></td>
+                                <td>
+                                    <h4>
+                                        <?=$row['station']['name'] ?><br>
+                                        <small><?=$row['station']['genre'] ?></small>
+                                    </h4>
+                                </td>
+                                <td>
+                                    <?=date('F j, Y g:ia', $row['timestamp']) ?>
+                                </td>
+                            </tr>
+                        <? endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <? endif; ?>
+        <? if (!empty($song_info['request_on'])): ?>
+            <div class="tab-pane" id="tab_request">
+                <h2>Request Song on Stations</h2>
+
+                <div class="scroll_overflow">
+                    <table class="datatable table table-bordered table-nopadding table-striped">
+                        <colgroup>
+                            <col width="10%">
+                            <col width="55%">
+                            <col width="35%">
+                        </colgroup>
+                        <tbody>
+                        <? foreach($song_info['request_on'] as $row): ?>
+                            <tr class="input">
+                                <td class="center"><img src="<?=\DF\Url::content($row['station']['image_url']) ?>" alt="Station Logo"></td>
+                                <td>
+                                    <h4>
+                                        <?=$row['station']['name'] ?><br>
+                                        <small><?=$row['station']['genre'] ?></small>
+                                    </h4>
+                                </td>
+                                <td>
+                                    <?=$this->viewHelper->button(array(
+                                        'text'      => 'Request Song',
+                                        'icon'      => 'icon-question-sign',
+                                        'type'      => 'link',
+                                        'class'     => 'btn-small btn-primary',
+                                        'href'      => $this->viewHelper->route(array('controller' => 'station', 'action' => 'request', 'id' => $row['station']['id'], 'track' => $row['id'])),
+
+                                    )) ?>
+                                </td>
+                            </tr>
+                        <? endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <? endif; ?>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+    cleanUpSongInfo();
+});
+
+function cleanUpSongInfo()
+{
+    $('.song_info .nav li a').each(function() {
+        var tab_id = $(this).attr('href');
+
+        if ($(tab_id).length == 0)
+            $(this).closest('li').remove();
+    });
+
+    $('.song_info .nav li:first').addClass('active');
+    $('.song_info .tab-pane:first').addClass('active');
+
+    $('.song_info .tab-pane a').attr('target', '_blank');
+}
+</script>

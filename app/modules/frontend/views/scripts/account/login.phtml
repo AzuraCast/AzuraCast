@@ -1,0 +1,40 @@
+<?
+$this->view->setVar('title', 'Sign In to Ponyville Live!');
+$this->view->manual = true;
+
+$this->assets->collection('custom_css')->addCss('zocial/zocial.css');
+?>
+
+<div class="row-fluid">
+    <div class="span8">
+        <div class="floating">
+            <h2>Create a PVL Account</h2>
+            <p>Don't have an account within the Ponyville Live! system? Create one below.</p>
+
+            <div class="buttons">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'large',
+                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'register')),
+                    'icon'      => 'icon-asterisk',
+                    'text'      => 'Create New PVL Account',
+                )) ?>
+            </div>
+
+            <br>
+            <h2>Sign In with PVL Account</h2>
+            <p>If you have an account inside the Ponyville Live! system, enter your username and password below.</p>
+
+            <?=$this->view->form->render() ?>
+        </div>
+    </div>
+    <div class="span4">
+        <div class="floating">
+            <h2>Social Sign-In</h2>
+
+        <? foreach($this->view->external_providers as $provider_key => $provider_info): ?>
+            <div class="buttons"><a href="<?=$this->viewHelper->routeFromHere(array('provider' => $provider_key)) ?>" class="zocial <?=$provider_info['class'] ?>">Sign in with <?=$provider_info['name'] ?></a></div>
+        <? endforeach; ?>
+        </div>
+    </div>
+</div>

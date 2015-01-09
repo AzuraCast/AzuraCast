@@ -19,7 +19,7 @@ class NowPlaying
         set_time_limit(60);
 
         // Fix DF\URL // prefixing.
-        \DF\Url::forceSchemePrefix();
+        // \DF\Url::forceSchemePrefix();
 
         // Run different tasks for different "segments" of now playing data.
         if (!defined('NOWPLAYING_SEGMENT'))
@@ -71,7 +71,8 @@ class NowPlaying
     {
         \PVL\Debug::startTimer('Nowplaying Overall');
 
-        $em = \Zend_Registry::get('em');
+        $em = self::getEntityManager();
+
         $stations = Station::fetchAll();
 
         $nowplaying = array(
@@ -334,12 +335,8 @@ class NowPlaying
      */
     public static function getEntityManager()
     {
-        static $em;
-
-        if (!$em)
-            $em = \Zend_Registry::get('em');
-
-        return $em;
+        $di = \Phalcon\Di::getDefault();
+        return $di->get('em');
     }
 
     public static function notifyStation($station, $template)
@@ -347,7 +344,8 @@ class NowPlaying
         if (true || !$station['admin_monitor_station'])
             return false;
 
-        $em = \Zend_Registry::get('em');
+        $di = \Phalcon\Di::getDefault();
+        $em = $di->get('em');
 
         $managers_raw = $em->createQuery('SELECT sm.email FROM Entity\StationManager sm WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station['id'])

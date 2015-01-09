@@ -1,10 +1,12 @@
 <?php
+namespace Modules\Admin\Controllers;
+
 use \Entity\Convention as Record;
 use \Entity\Convention;
 use \Entity\ConventionSignup;
 use \Entity\ConventionArchive;
 
-class Admin_ConventionsController extends \PVL\Controller\Action\Admin
+class ConventionsController extends BaseController
 {
     public function permissions()
     {
@@ -75,7 +77,7 @@ class Admin_ConventionsController extends \PVL\Controller\Action\Admin
             return;
         }
 
-        $this->view->headTitle('Edit Record');
+        $this->view->setVar('title', 'Edit Record');
         $this->renderForm($form);
     }
 
@@ -163,7 +165,7 @@ class Admin_ConventionsController extends \PVL\Controller\Action\Admin
             return;
         }
 
-        $this->view->headTitle('Edit Signup Record');
+        $this->view->setVar('title', 'Edit Signup Record');
         $this->renderForm($form);
     }
 
@@ -257,7 +259,7 @@ class Admin_ConventionsController extends \PVL\Controller\Action\Admin
             return;
         }
 
-        $this->view->headTitle('Edit Convention Archive Item');
+        $this->view->setVar('title', 'Edit Convention Archive Item');
         $this->renderForm($form);
     }
 

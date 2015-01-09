@@ -1,6 +1,6 @@
 <?php
 namespace DF\View\Helper;
-class Pluralize extends \Zend_View_Helper_Abstract
+class Pluralize extends HelperAbstract
 {
     public function pluralize($word, $num = 0)
     {

@@ -1,5 +1,7 @@
 <?php
-class Admin_ApiController extends \PVL\Controller\Action\Admin
+namespace Modules\Admin\Controllers;
+
+class ApiController extends BaseController
 {
     public function permissions()
     {

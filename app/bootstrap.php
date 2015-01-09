@@ -20,7 +20,6 @@ define("DF_INCLUDE_TEMP", DF_INCLUDE_ROOT.'/../www_tmp');
 define("DF_INCLUDE_CACHE", DF_INCLUDE_TEMP.'/cache');
 
 define("DF_INCLUDE_LIB", DF_INCLUDE_BASE.'/library');
-# define("DF_INCLUDE_LIB_LOCAL", DF_INCLUDE_BASE.'/library_local');
 define("DF_INCLUDE_VENDOR", DF_INCLUDE_ROOT.'/vendor');
 
 define("DF_UPLOAD_FOLDER", DF_INCLUDE_STATIC);
@@ -31,60 +30,48 @@ if (isset($_SERVER['REQUEST_URI']))
 else
     define("DF_THIS_PAGE", '');
 
-define("DF_TIME", time());
-
 // Application environment.
 define('DF_APPLICATION_ENV_PATH', DF_INCLUDE_BASE.DIRECTORY_SEPARATOR.'.env');
 
 if (!defined('DF_APPLICATION_ENV'))
     define('DF_APPLICATION_ENV', ($env = @file_get_contents(DF_APPLICATION_ENV_PATH)) ? trim($env) : 'development');
 
-/*
-// Static URL.
-if (DF_APPLICATION_ENV == 'production')
-    define("DF_URL_STATIC", '//ponyvillelive.com/static');
-else
-    define("DF_URL_STATIC", '/static');
-*/
-
 // Set error reporting for the bootstrapping process.
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+ini_set('display_errors', 1);
 
-// Set include path (as needed by CLI access.)
-$include_path = array(DF_INCLUDE_LIB, DF_INCLUDE_VENDOR, get_include_path());
+// Composer autoload.
+$autoloader = require(DF_INCLUDE_VENDOR . DIRECTORY_SEPARATOR . 'autoload.php');
+
+// Save configuration object.
+require(DF_INCLUDE_LIB . '/DF/Config.php');
+
+$config = new \DF\Config(DF_INCLUDE_BASE.'/config');
+$config->preload(array('application','general'));
 
 // Loop through modules to find configuration files or libraries.
 $module_config_dirs = array();
 $modules = scandir(DF_INCLUDE_MODULES);
-foreach($modules as $module)
-{
-    if ($module != '.' && $module != '..')
-    {
-        $config_directory = DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'config';
-        if (file_exists($config_directory))
-        {
-            $module_config_dirs[$module] = $config_directory;
-        }
-    }
-}
-
-// Set include paths.
-set_include_path(implode(PATH_SEPARATOR, $include_path));
-
-// Composer autoload.
-$autoloader = require(DF_INCLUDE_VENDOR.DIRECTORY_SEPARATOR.'autoload.php');
-
-// Save configuration object.
-require(DF_INCLUDE_LIB.'/DF/Config.php');
-
-$config = new \DF\Config(DF_INCLUDE_APP.'/config');
-$config->preload(array('application','general'));
 
 $module_config = array();
-if ($module_config_dirs)
+$phalcon_modules = array();
+
+foreach($modules as $module)
 {
-    foreach($module_config_dirs as $module_name => $config_dir)
-        $module_config[$module_name] = new \DF\Config($config_dir);
+    if ($module == '.' || $module == '..')
+        continue;
+
+    $config_directory = DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'config';
+    if (file_exists($config_directory))
+        $module_config[$module] = new \DF\Config($config_directory);
+
+    $phalcon_modules[$module] = array(
+        'className' => 'Modules\\'.ucfirst($module).'\Module',
+        'path' => DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'/Module.php',
+
+        'controllerClass' => 'Modules\\'.ucfirst($module).'\Controllers',
+        'controllerPath' => DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'/controllers',
+    );
 }
 
 $autoload_classes = $config->application->autoload->toArray();
@@ -94,25 +81,72 @@ foreach($autoload_classes['psr0'] as $class_key => $class_dir)
 foreach($autoload_classes['psr4'] as $class_key => $class_dir)
     $autoloader->addPsr4($class_key, $class_dir);
 
-// Initialize the ZendFramework Application Bootstrapper.
-$application = new \Zend_Application('application', $config->application);
-$application->getBootstrap();
+// Set up Dependency Injection
+$di = new \Phalcon\DI\FactoryDefault();
 
-// Set global registry options.
-\Zend_Registry::set('application', $application);
-\Zend_Registry::set('config', $config);
-\Zend_Registry::set('module_config', $module_config);
-\Zend_Registry::set('cache', new \DF\Cache);
+// Configs
+$di->setShared('config', $config);
+$di->setShared('module_config', function() use ($module_config) { return $module_config; });
+$di->setShared('phalcon_modules', function() use ($phalcon_modules) { return $phalcon_modules; });
 
-// Bootstrap the DB for the following options.
-$application->bootstrap('doctrine');
+// Router
+$di->setShared('router', function() use ($di) {
+    $router = new \DF\Phalcon\Router(false);
+    $router->setUriSource(\DF\Phalcon\Router::URI_SOURCE_SERVER_REQUEST_URI);
 
-// Set additional global registry options.
-$em = \Zend_Registry::get('em');
-\DF\Doctrine\Session\SaveHandler::register($em);
+    $router->setDi($di);
 
-\Zend_Registry::set('auth', new \DF\Auth\Model);
-\Zend_Registry::set('acl', new \DF\Acl\Instance);
+    $router_config = $di->get('config')->routes->toArray();
+
+    $router->setDefaultModule($router_config['default_module']);
+    $router->setDefaultController($router_config['default_controller']);
+    $router->setDefaultAction($router_config['default_action']);
+    $router->removeExtraSlashes(true);
+
+    foreach((array)$router_config['custom_routes'] as $route_path => $route_params)
+    {
+        $route = $router->add($route_path, $route_params);
+
+        if (isset($route_params['name']))
+            $route->setName($route_params['name']);
+    }
+
+    return $router;
+});
+
+// Database
+$di->setShared('em', function() use ($config) {
+    $db_conf = $config->application->resources->doctrine->toArray();
+    $db_conf['conn'] = $config->db->toArray();
+
+    $em = \DF\Phalcon\Service\Doctrine::init($db_conf);
+    return $em;
+});
+
+// Auth and ACL
+$di->setShared('auth', '\DF\Auth\Model');
+$di->setShared('acl', '\DF\Acl\Instance');
+$di->setShared('cache', '\DF\Cache');
+
+// Register URL handler.
+$di->set('url', function() use ($config) {
+    $url = new \Phalcon\Mvc\Url();
+
+    $url->setBaseUri('/');
+    $url->setStaticBaseUri('/static/');
+
+    return $url;
+});
+
+// Register session.
+$di->set('session', function() {
+    $session = new \Phalcon\Session\Adapter\Files();
+    $session->start();
+    return $session;
+});
+
+// Register view helpers.
+$di->setShared('viewHelper', '\DF\Phalcon\Service\ViewHelper');
 
 // PVL-specific customization.
 $system_tz = \PVL\Customization::get('timezone');

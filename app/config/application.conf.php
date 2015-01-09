@@ -38,11 +38,6 @@ $config = array(
             'hash_bits_per_character' => 4,
         ),
     ),
-        
-    'bootstrap'         => array(
-        'path'              => 'DF/Application/Bootstrap.php',
-        'class'             => '\DF\Application\Bootstrap',
-    ),
     
     'includePaths'      => array(
         DF_INCLUDE_LIB.'/ThirdParty',
@@ -71,35 +66,13 @@ $config = array(
         'locale'            => array(
             'default'           => 'en_US',
         ),
-        
-        /* RESOURCES: Front Controller */
-        'frontController'   => array(
-            'throwerrors'       => true,
-            'moduleDirectory'   => DF_INCLUDE_MODULES,
-            'moduleControllerDirectoryName' => "controllers",
-            'defaultModule'     => "default",
-            'defaultAction'     => "index",
-            'defaultControllerName' => "index",
-        ),
-        
+
         /* RESOURCES: Doctrine ORM Layer */
         'doctrine'          => array(
             'autoGenerateProxies' => (DF_APPLICATION_ENV == "development"),
             'proxyNamespace'    => 'Proxy',
             'proxyPath'         => DF_INCLUDE_TEMP.'/proxies',
             'modelPath'         => DF_INCLUDE_MODELS,
-        ),
-                
-        /* RESOURCES: Menu */
-        'menu'              => array(
-            'enabled'           => true,
-        ),
-        
-        /* RESOURCES: Layout */
-        'layout'            => array(
-            'layout'            => 'default',
-            'layoutPath'        => DF_INCLUDE_APP.'/layouts',
-            'commonTemplates'   => DF_INCLUDE_BASE.'/common',
         ),
     ),
 );

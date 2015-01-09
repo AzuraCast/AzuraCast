@@ -66,7 +66,7 @@ $skin = \PVL\Customization::get('theme');
     ?>
     <script>
         var DF_AppEnv = '<?=DF_APPLICATION_ENV ?>';
-        var DF_BaseUrl = '<?php echo $this->url->get(''); ?>';
+        var DF_BaseUrl = '<?php echo rtrim($this->url->get(''), '/'); ?>';
         var DF_ContentPath = '<?php echo $this->url->getStatic(''); ?>';
     </script>
 </head>

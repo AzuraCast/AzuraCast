@@ -8,27 +8,27 @@ $this->view->setVar('title', 'Station Schedules');
     <? endforeach; ?>
 </ul>
 
-<? if ($this->calendar['prev_page_datecode']): ?>
+<? if ($this->view->calendar['prev_page_datecode']): ?>
     <?=$this->viewHelper->button(array(
         'type'      => 'small',
         'icon'      => 'icon-arrow-left',
         'class'     => 'btn-inverse',
-        'text'      => $this->calendar['prev_page_text'],
+        'text'      => $this->view->calendar['prev_page_text'],
         'style'     => 'float: left',
-        'href'      => $this->viewHelper->routeFromHere(array('month' => $this->calendar['prev_page_datecode'])),
+        'href'      => $this->viewHelper->routeFromHere(array('month' => $this->view->calendar['prev_page_datecode'])),
     )) ?>
 <? endif; ?>
-<? if ($this->calendar['next_page_datecode']): ?>
+<? if ($this->view->calendar['next_page_datecode']): ?>
     <?=$this->viewHelper->button(array(
         'type'      => 'small',
         'icon'      => 'icon-arrow-right',
         'class'     => 'btn-inverse',
-        'text'      => $this->calendar['next_page_text'],
+        'text'      => $this->view->calendar['next_page_text'],
         'style'     => 'float: right',
-        'href'      => $this->viewHelper->routeFromHere(array('month' => $this->calendar['next_page_datecode'])),
+        'href'      => $this->viewHelper->routeFromHere(array('month' => $this->view->calendar['next_page_datecode'])),
     )) ?>
 <? endif; ?>
-<h2 style="text-align: center"><?=$this->calendar['current_page_text'] ?></h2>
+<h2 style="text-align: center"><?=$this->view->calendar['current_page_text'] ?></h2>
 
 <table class="table table-striped" width="100%">
     <thead>
@@ -43,7 +43,7 @@ $this->view->setVar('title', 'Station Schedules');
     </tr>
     </thead>
     <tbody>
-    <? foreach($this->calendar['days'] as $calendar_row): ?>
+    <? foreach($this->view->calendar['days'] as $calendar_row): ?>
         <tr class="nopad">
             <? foreach($calendar_row as $calendar_day): ?>
                 <td style="vertical-align: top; height: 100px;" <? if ($calendar_day['disabled']): ?>class="disabled"<? endif; ?>>

@@ -7,7 +7,7 @@ class PageController extends BaseController
 {
     public function indexAction()
     {
-        $page_id = $this->_getParam('id');
+        $page_id = $this->getParam('id');
         $block = Block::find($page_id);
 
         if (!$block instanceof Block)

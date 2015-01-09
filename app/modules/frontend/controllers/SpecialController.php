@@ -43,24 +43,4 @@ class SpecialController extends BaseController
         $this->view->station_id = $stations_by_name[$default_station]['id'];
         $this->view->autoplay = true;
     }
-
-    public function galaconAction()
-    {
-        $con = Convention::getRepository()->findOneBy(array('name' => 'GalaCon 2014'));
-        $this->view->convention = $con;
-
-        $this->view->special_event_embed = trim(Settings::getSetting('special_event_embed_code'));
-        $this->view->special_chat_embed = trim(Settings::getSetting('special_event_chat_code'));
-    }
-
-    public function fiestaAction()
-    {
-        $con = Convention::getRepository()->findOneBy(array('name' => 'Fiesta Equestria 2013'));
-        $this->redirectToRoute(array('module' => 'default', 'controller' => 'convention', 'action' => 'archive', 'id' => $con->id));
-    }
-
-    public function cddAction()
-    {
-        $this->redirectHome();
-    }
 }

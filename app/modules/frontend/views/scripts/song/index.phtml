@@ -1,6 +1,6 @@
 <?php
-$song_info = $this->song;
-$song = $this->song['record'];
+$song_info = $this->view->song;
+$song = $this->view->song['record'];
 
 $this->view->setVar('title', $song->title.' by '.$song->artist);
 $this->view->hide_title = true;

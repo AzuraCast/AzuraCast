@@ -30,6 +30,11 @@ return array(
             'controller' => 'index',
             'action' => 'donate',
         ),
+        '/mobile' => array(
+            'module' => 'frontend',
+            'controller' => 'index',
+            'action' => 'mobile',
+        ),
         '/conventions' => array(
             'module' => 'frontend',
             'controller' => 'convention',
@@ -49,6 +54,18 @@ return array(
             'action' => 'view',
             'params' => 1,
             'name' => 'show-info',
+        ),
+
+        // Old URLs.
+        '/events' => array(
+            'module' => 'frontend',
+            'controller' => 'convention',
+            'action' => 'index',
+        ),
+        '/events/schedule' => array(
+            'module' => 'frontend',
+            'controller' => 'schedule',
+            'action' => 'index',
         ),
     ),
 

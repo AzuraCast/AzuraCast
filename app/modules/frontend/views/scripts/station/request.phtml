@@ -5,12 +5,12 @@ $this->view->manual = true;
 
 <div class="row-fluid">
     <div class="span4">
-        <h2><i class="<?=$this->station->getCategoryIcon() ?>"></i> <?=$this->station->name ?></h2>
+        <h2><i class="<?=$this->view->station->getCategoryIcon() ?>"></i> <?=$this->view->station->name ?></h2>
 
         <div class="well">
             <h3>Find a Song</h3>
             <form class="form-inline" action="<?=$this->viewHelper->routeFromHere(array('page' => NULL, 'artist' => NULL, 'q' => NULL)) ?>" method="get">
-                <input type="text" name="q" title="Search terms" placeholder="Song or Artist Name..." class="half-width" value="<?=$this->q ?>">
+                <input type="text" name="q" title="Search terms" placeholder="Song or Artist Name..." class="half-width" value="<?=$this->view->q ?>">
                 <?=$this->viewHelper->button(array(
                     'type'      => 'submit',
                     'class'     => 'primary',
@@ -22,9 +22,9 @@ $this->view->manual = true;
             <br>
             <h3>Most Requested Songs</h3>
 
-        <? if ($this->top_songs): ?>
+        <? if ($this->view->top_songs): ?>
             <ul class="nav nav-list">
-            <? foreach($this->top_songs as $record): ?>
+            <? foreach($this->view->top_songs as $record): ?>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('track' => $record['id'])) ?>" title="Click to request this song.">
                     <b><?=$record['title'] ?></b> by <?=$record['artist'] ?>
                 </a></li>
@@ -39,7 +39,7 @@ $this->view->manual = true;
 
             <div style="height: 350px; overflow-y: scroll;">
                 <ul class="nav nav-list">
-                <? foreach($this->artist_names as $artist): ?>
+                <? foreach($this->view->artist_names as $artist): ?>
                     <li><a href="<?=$this->viewHelper->routeFromHere(array('artist' => $artist)) ?>" title="View all songs by this artist.">
                         <?=$artist ?>
                     </a></li>
@@ -50,9 +50,9 @@ $this->view->manual = true;
         </div>
     </div>
     <div class="span8">
-        <h2><?=$this->page_title ?></h2>
+        <h2><?=$this->view->page_title ?></h2>
 
-    <? if ($this->reset_button): ?>
+    <? if ($this->view->reset_button): ?>
         <div class="buttons">
             <?=$this->viewHelper->button(array(
                 'type'      => 'link',
@@ -83,7 +83,7 @@ $this->view->manual = true;
                 </tr>
             </thead>
             <tbody>
-            <? foreach($this->pager as $record): ?>
+            <? foreach($this->view->pager as $record): ?>
                 <tr class="input">
                     <td class="center">
                         <?=$this->viewHelper->button(array(

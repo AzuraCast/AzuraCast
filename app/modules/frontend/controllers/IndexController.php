@@ -58,12 +58,13 @@ class IndexController extends BaseController
         $render_mode = $this->_getParam('mode', 'default');
 
         if ($render_mode == 'chat')
-            $this->render('index/index-chat');
+            $this->view->pick('index/index-chat');
     }
 
     public function tuneinAction()
     {
-        $this->view->layout()->setLayout('maintenance');
+        $this->view->setLayout('maintenance');
+
         $this->view->embed_mode = ($this->_getParam('embed', 'false') == 'true');
         $this->view->skin = ($this->_getParam('skin'));
 
@@ -96,6 +97,11 @@ class IndexController extends BaseController
 
     public function donateAction()
     {}
+
+    public function mobileAction()
+    {
+        return $this->response->redirect('http://m.pvlive.me');
+    }
 
     public function scheduleAction()
     {

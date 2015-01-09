@@ -48,13 +48,6 @@ return array(
             'action' => 'index',
             'name' => 'show-listing',
         ),
-        '/shows/:params' => array(
-            'module' => 'frontend',
-            'controller' => 'show',
-            'action' => 'view',
-            'params' => 1,
-            'name' => 'show-info',
-        ),
 
         // Old URLs.
         '/events' => array(

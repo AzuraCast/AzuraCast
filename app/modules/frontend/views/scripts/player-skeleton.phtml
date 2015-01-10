@@ -13,18 +13,9 @@ $this->assets->collection('custom_css')
 </script>
 
 <? if ($this->view->station_id && $this->view->autoplay): ?>
-    <script type="text/javascript">
-        $(function() {
-            var autoplay_triggered = false;
-
-            socket.on('nowplaying', function(e) {
-                if (!autoplay_triggered) {
-                    autoplay_triggered = true;
-                    playStation($('.station[data-id="<?=$this->view->station_id ?>"]').attr('id'));
-                }
-            });
-        });
-    </script>
+<script type="text/javascript">
+var pvl_autoplay_station = <?=$this->view->station_id ?>;
+</script>
 <? endif; ?>
 
 <div id="pvl-jplayer-controls-image" style="display: none;">

@@ -275,6 +275,18 @@ $(function() {
             body: JSON.stringify(e)
         }, '*');
     });
+
+    // Autoplay registration.
+    if (typeof pvl_autoplay_station !== undefined) {
+        var autoplay_triggered = false;
+
+        socket.on('nowplaying', function(e) {
+            if (!autoplay_triggered) {
+                autoplay_triggered = true;
+                playStation($('.station[data-id="'+pvl_autoplay_station+'"]').attr('id'));
+            }
+        });
+    }
 });
 
 function processNowPlaying()

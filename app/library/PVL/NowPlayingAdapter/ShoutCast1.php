@@ -20,13 +20,7 @@ class ShoutCast1 extends AdapterAbstract
         $np['meta']['bitrate'] = $parts[5];
         $np['meta']['format'] = 'audio/mpeg';
 
-        list($artist, $title) = explode(" - ", $parts[6], 2);
-
-        $np['current_song'] = array(
-            'title'     => $title,
-            'artist'    => $artist,
-            'text'      => $parts[6],
-        );
+        $np['current_song'] = $this->getSongFromString($parts[6], ' - ');
 
         $u_list = (int)$parts[4];
         $t_list = (int)$parts[0];

@@ -13,33 +13,94 @@ class IceCast extends AdapterAbstract
         if (!$return_raw)
             return false;
 
+        if (substr($return_raw, 0, 1) == '{')
+            return $this->_processJson($return_raw, $np);
+        else
+            return $this->_processHtml($return_raw, $np);
+    }
+
+    protected function _processJson($return_raw, &$np)
+    {
+        $return = @json_decode($return_raw, true);
+
+        if (!$return)
+            return false;
+
+        $sources = $return['icestats']['source'];
+
+        if (isset($sources['audio_info']))
+            $mounts = array($sources);
+        else
+            $mounts = $sources;
+
+        if (count($mounts) == 0)
+            return false;
+
+        // Sort in descending order of listeners.
+        usort($mounts, function($a, $b) {
+            $a_list = (int)$a[5];
+            $b_list = (int)$b[5];
+
+            if ($a_list == $b_list)
+                return 0;
+            else
+                return ($a_list > $b_list) ? -1 : 1;
+        });
+
+        $temp_array = $mounts[0];
+
+        $np['current_song'] = $this->getSongFromString($temp_array['title'], ' - ');
+
+        $np['meta']['status'] = 'online';
+        $np['meta']['bitrate'] = $temp_array['bitrate'];
+        $np['meta']['format'] = $temp_array['server_type'];
+
+        $np['listeners']['current'] = (int)$temp_array['listeners'];
+
+        return true;
+    }
+
+    protected function _processHtml($return_raw, &$np)
+    {
         // Query document for tables with stream data.
         $pq = \phpQuery::newDocument($return_raw);
 
-        $tables = $pq->find('table:has(td.streamdata)');
         $mounts = array();
 
-        if ($tables->length > 0)
+        $tables_1 = $pq->find('table:has(td.streamdata)');
+
+        if ($tables_1->length > 0)
         {
-            foreach($tables as $table)
+            $tables = $tables_1;
+            $table_selector = 'td.streamdata';
+        }
+        else
+        {
+            return false;
+        }
+
+        foreach($tables as $table)
+        {
+            $streamdata = pq($table)->find($table_selector);
+            $mount = array();
+
+            $i = 0;
+            foreach($streamdata as $cell)
             {
-                $streamdata = pq($table)->find('td.streamdata');
-                $mount = array();
+                $pq_cell = pq($cell);
 
-                $i = 0;
-                foreach($streamdata as $cell)
-                {
-                    $pq_cell = pq($cell);
+                $cell_name = $pq_cell->prev()->html();
+                $cell_name_clean = preg_replace('/[^\da-z_]/i', '', str_replace(' ', '_', strtolower($cell_name)));
 
-                    $cell_name = $pq_cell->prev()->html();
-                    $cell_name_clean = preg_replace('/[^\da-z_]/i', '', str_replace(' ', '_', strtolower($cell_name)));
+                $cell_value = trim($pq_cell->html());
 
-                    $mount[$cell_name_clean] = $pq_cell->html();
-                    $i++;
-                }
+                if (!empty($cell_name_clean) && !empty($cell_value))
+                    $mount[$cell_name_clean] = $cell_value;
 
-                $mounts[] = $mount;
+                $i++;
             }
+
+            $mounts[] = $mount;
         }
 
         if (count($mounts) == 0)
@@ -67,19 +128,14 @@ class IceCast extends AdapterAbstract
         });
 
         $temp_array = $active_mounts[0];
-        list($artist, $track) = explode(" - ", $temp_array['current_song'], 2);
+
+        $np['current_song'] = $this->getSongFromString($temp_array['current_song'], ' - ');
 
         $np['meta']['status'] = 'online';
         $np['meta']['bitrate'] = $temp_array['bitrate'];
         $np['meta']['format'] = $temp_array['content_type'];
 
         $np['listeners']['current'] = (int)$temp_array['current_listeners'];
-
-        $np['current_song'] = array(
-            'artist'    => $artist,
-            'title'     => $track,
-            'text'      => $temp_array['current_song'],
-        );
 
         return true;
     }

@@ -20,15 +20,7 @@ class ShoutCast2 extends AdapterAbstract
         $np['meta']['bitrate'] = $song_data['BITRATE'];
         $np['meta']['format'] = $song_data['CONTENT'];
 
-        $title_parts = explode('-', str_replace('   ', ' - ', $song_data['SONGTITLE']), 2);
-        $artist = trim(array_shift($title_parts));
-        $title = trim(implode('-', $title_parts));
-
-        $np['current_song'] = array(
-            'title'     => $title,
-            'artist'    => $artist,
-            'text'      => $song_data['SONGTITLE'],
-        );
+        $np['current_song'] = $this->getSongFromString($song_data['SONGTITLE'], '-');
 
         $u_list = (int)$song_data['UNIQUELISTENERS'];
         $t_list = (int)$song_data['CURRENTLISTENERS'];

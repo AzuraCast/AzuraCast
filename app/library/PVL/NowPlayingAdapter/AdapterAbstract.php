@@ -164,4 +164,33 @@ class AdapterAbstract
             return min($unique_listeners, $current_listeners);
     }
 
+    /* Return the artist and title from a string in the format "Artist - Title" */
+    protected function getSongFromString($song_string, $delimiter = '-')
+    {
+        // Filter for CR AutoDJ
+        $song_string = str_replace('AutoDJ - ', '', $song_string);
+
+        // Fix ShoutCast 2 bug where 3 spaces = " - "
+        $song_string = str_replace('   ', ' - ', $song_string);
+
+        // Remove dashes or spaces on both sides of the name.
+        $song_string = trim($song_string, " \t\n\r\0\x0B-");
+
+        $string_parts = explode($delimiter, $song_string);
+
+        // If not normally delimited, return "text" only.
+        if (count($string_parts) == 1)
+            return array('text' => $string_parts, 'artist' => NULL, 'title' => NULL);
+
+        // Title is the last element, artist is all other elements (artists are far more likely to have hyphens).
+        $title = trim(array_pop($string_parts));
+        $artist = trim(implode($delimiter, $string_parts));
+
+        return array(
+            'text' => $song_string,
+            'artist' => $artist,
+            'title' => $title,
+        );
+    }
+
 }

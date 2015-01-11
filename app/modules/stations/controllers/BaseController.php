@@ -1,6 +1,8 @@
 <?php
 namespace Modules\Stations\Controllers;
 
+use Entity\Station;
+
 class BaseController extends \DF\Phalcon\Controller
 {
     /*
@@ -9,7 +11,7 @@ class BaseController extends \DF\Phalcon\Controller
     protected $stations;
 
     /**
-     * @var \Entity\Station The current active station.
+     * @var Station The current active station.
      */
     protected $station;
 
@@ -22,7 +24,7 @@ class BaseController extends \DF\Phalcon\Controller
         $user = $this->auth->getLoggedInUser();
 
         // Compile list of visible stations.
-        $all_stations = \Entity\Station::fetchAll();
+        $all_stations = Station::fetchAll();
         $stations = array();
 
         foreach($all_stations as $station)

@@ -8,7 +8,13 @@ class Controller extends \Phalcon\Mvc\Controller
 {
     /* Phalcon Initialization */
 
-    public function initialize()
+    public function beforeExecuteRoute()
+    {
+        $this->init();
+        $this->preDispatch();
+    }
+
+    public function init()
     {
         $isAllowed = $this->permissions();
         if (!$isAllowed)
@@ -20,10 +26,6 @@ class Controller extends \Phalcon\Mvc\Controller
         }
     }
 
-    public function beforeExecuteRoute()
-    {
-        $this->preDispatch();
-    }
     public function preDispatch()
     {
         $is_ajax = ($this->isAjax());

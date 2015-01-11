@@ -10,8 +10,8 @@ $this->view->manual = true;
     <div class="span12">
         <h2>Recent Playback Timeline</h2>
 
-        <ul class="nav nav-tabs autoselect" rel="<?=$this->stream_id ?>">
-        <? foreach($this->station->streams as $stream): ?>
+        <ul class="nav nav-tabs autoselect" rel="<?=$this->view->stream_id ?>">
+        <? foreach($this->view->station->streams as $stream): ?>
             <li rel="<?=$stream->id ?>"><a href="<?=$this->viewHelper->routeFromHere(array('stream' => $stream->id, 'page' => NULL)) ?>"><? if ($stream->is_default): ?><i class="icon-star"></i> <? endif; ?><?=$stream->name ?></a></li>
         <? endforeach; ?>
         </ul>
@@ -47,7 +47,7 @@ $this->view->manual = true;
                 </tr>
             </thead>
             <tbody>
-            <? foreach($this->pager as $song_row): ?>
+            <? foreach($this->view->pager as $song_row): ?>
                 <tr class="input" id="song_<?=$song_row['timestamp'] ?>">
                     <td class="center"><?=date('D g:ia', $song_row['timestamp']) ?></td>
                     <td class="center"><big><?=$song_row['stat_start'] ?></big></td>

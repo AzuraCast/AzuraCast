@@ -71,7 +71,7 @@ class ShowController extends BaseController
         $feed = new \Zend_Feed_Writer_Feed;
         $feed->setTitle($feed_title);
         $feed->setLink('http://ponyvillelive.com/');
-        $feed->setFeedLink(\DF\Url::current(), 'rss');
+
         $feed->setDescription($feed_desc);
 
         $feed->addAuthor(array(

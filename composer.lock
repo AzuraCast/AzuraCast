@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f7991fb759d35955b9f52a94a9bbdea8",
+    "hash": "fb101dbb29d5e3f183da9b7af8e82e3b",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -80,12 +80,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "803a41469d948bc120a6c913399e8bfc8b5d9650"
+                "reference": "23210e0381057c5976b15dae52ef389fa180e09f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/803a41469d948bc120a6c913399e8bfc8b5d9650",
-                "reference": "803a41469d948bc120a6c913399e8bfc8b5d9650",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/23210e0381057c5976b15dae52ef389fa180e09f",
+                "reference": "23210e0381057c5976b15dae52ef389fa180e09f",
                 "shasum": ""
             },
             "require": {
@@ -142,7 +142,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2014-12-08 23:13:26"
+            "time": "2015-01-11 19:26:38"
         },
         {
             "name": "doctrine/collections",
@@ -289,12 +289,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "1b71f926976f0b5b3bccd7443a26059f64342c67"
+                "reference": "057c07ba0f794bde965818d14542f7610bebb6a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/1b71f926976f0b5b3bccd7443a26059f64342c67",
-                "reference": "1b71f926976f0b5b3bccd7443a26059f64342c67",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/057c07ba0f794bde965818d14542f7610bebb6a8",
+                "reference": "057c07ba0f794bde965818d14542f7610bebb6a8",
                 "shasum": ""
             },
             "require": {
@@ -352,7 +352,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2015-01-04 22:01:13"
+            "time": "2015-01-12 11:58:44"
         },
         {
             "name": "doctrine/inflector",
@@ -789,16 +789,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "273b8fe99910b6864a863ed6a397938f39847cb3"
+                "reference": "fdb3285803e812d97988470722129c28343f1415"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/273b8fe99910b6864a863ed6a397938f39847cb3",
-                "reference": "273b8fe99910b6864a863ed6a397938f39847cb3",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/fdb3285803e812d97988470722129c28343f1415",
+                "reference": "fdb3285803e812d97988470722129c28343f1415",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.9"
             },
             "require-dev": {
                 "psr/log": "~1.0",
@@ -837,7 +837,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-06 17:50:09"
+            "time": "2015-01-09 06:51:41"
         },
         {
             "name": "zendframework/zendframework1",
@@ -888,58 +888,6 @@
         }
     ],
     "packages-dev": [
-        {
-            "name": "fabfuel/prophiler",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fabfuel/prophiler.git",
-                "reference": "67c4082d47a5c8662c761de4bc71b77c6da2da65"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fabfuel/prophiler/zipball/67c4082d47a5c8662c761de4bc71b77c6da2da65",
-                "reference": "67c4082d47a5c8662c761de4bc71b77c6da2da65",
-                "shasum": ""
-            },
-            "require": {
-                "php": "~5.4"
-            },
-            "require-dev": {
-                "doctrine/orm": "~2.4",
-                "erusev/parsedown": "~1.1",
-                "fabfuel/mongo": "~0.4",
-                "phpmd/phpmd": "~1.0",
-                "phpunit/phpunit": "~4.0",
-                "psr/log": "~1.0",
-                "squizlabs/php_codesniffer": "~1.0"
-            },
-            "suggest": {
-                "fabfuel/mongo": "ORM for Mongo, supports lazy loading, object references, subdocument classes and their collections.",
-                "phalcon/devtools": "This tools provide you useful scripts, helping to develop applications that use with Phalcon."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Fabfuel\\Prophiler\\": "src/"
-                },
-                "classmap": [
-                    "tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Fabian Fuelling",
-                    "email": "fabian@fabfuel.de"
-                }
-            ],
-            "description": "PHP Profiler & Developer Toolbar built for Phalcon",
-            "time": "2014-12-18 11:19:37"
-        },
         {
             "name": "phalcon/devtools",
             "version": "dev-master",

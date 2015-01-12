@@ -65,6 +65,7 @@ class IndexController extends BaseController
 
     public function tuneinAction()
     {
+        $this->forceInsecure();
         $this->view->setLayout('maintenance');
 
         $this->view->embed_mode = ($this->_getParam('embed', 'false') == 'true');
@@ -85,6 +86,7 @@ class IndexController extends BaseController
 
     public function chatAction()
     {
+        $this->forceInsecure();
         $this->view->layout()->setLayout('maintenance');
         $this->view->skin = $this->_getParam('skin', 'dark');
 

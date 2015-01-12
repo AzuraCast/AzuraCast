@@ -15,7 +15,7 @@ class Cache
     public static function load($id)
     {
         $cache = self::getCache();
-        return $cache->load($id);
+        return $cache->get($id);
     }
     // Alias of the "load" function.
     public static function get($id, $default = NULL)
@@ -27,14 +27,14 @@ class Cache
     public static function test($id)
     {
         $cache = self::getCache();
-        return $cache->test($id);
+        return $cache->exists($id);
     }
     
     // Save an item to the cache.
     public static function save($data, $id, $tags = array(), $specificLifetime = false)
     {
         $cache = self::getCache();
-        return $cache->save($data, $id, $tags, $specificLifetime);
+        $cache->save($id, $data, $specificLifetime);
     }
     // Alias for the "set" function.
     public static function set($data, $id, $tags = array(), $specificLifetime = false)
@@ -63,24 +63,22 @@ class Cache
     public static function remove($id)
     {
         $cache = self::getCache();
-        return $cache->remove($id);
+        return $cache->delete($id);
     }
     
     // Clean the cache.
     public static function clean($mode = 'all', $tags = array())
     {
-        if ($mode == 'all' && $tags)
-            $mode = \Zend_Cache::CLEANING_MODE_MATCHING_TAG;
-        
         $cache = self::getCache();
-        return $cache->clean($mode, $tags);
+        if ($mode == 'all')
+            return $cache->flush();
     }
     
     // Get all cache keys.
     public static function getKeys()
     {
         $cache = self::getCache();
-        return $cache->getIds();
+        return $cache->queryKeys();
     }
     
     // Retrieve or initialize the cache.
@@ -94,17 +92,11 @@ class Cache
     {
         if (!is_object(self::$_user_cache))
         {
-            $frontend_name = 'Core';
-            $frontend_options = array(
-                'cache_id_prefix' => self::getSitePrefix().'_user_',
+            $frontend = new \Phalcon\Cache\Frontend\Data(array(
                 'lifetime' => 3600,
-                'automatic_serialization' => true
-            );
-            
-            // Choose the most optimal caching mechanism available.
-            list($backend_name, $backend_options) = self::getBackendCache();
-            
-            self::$_user_cache = \Zend_Cache::factory($frontend_name, $backend_name, $frontend_options, $backend_options);
+            ));
+
+            self::$_user_cache = self::getBackendCache($frontend);
         }
         
         return self::$_user_cache;
@@ -112,8 +104,6 @@ class Cache
     
     /**
      * Page Cache
-     */
-    
     public static function page()
     {
         $di = \Phalcon\Di::getDefault();
@@ -152,6 +142,7 @@ class Cache
         
         return self::$_page_cache;
     }
+     */
     
     /**
      * Generic Cache Details
@@ -168,34 +159,33 @@ class Cache
         return ($base_folder) ? preg_replace("/[^a-zA-Z0-9]/", "", $base_folder) : 'default';
     }
     
-    public static function getBackendCache()
+    public static function getBackendCache(\Phalcon\Cache\FrontendInterface $frontCache)
     {
         $cache_dir = DF_INCLUDE_CACHE;
-        $backend_options = array();
-        
-        if (extension_loaded('wincache') && class_exists('Zend_Cache_Backend_WinCache'))
+        $cache_prefix = self::getSitePrefix().'_user_';
+
+        return new \Phalcon\Cache\Backend\File($frontCache, array(
+            'cacheDir' => $cache_dir.DIRECTORY_SEPARATOR,
+            'prefix' => $cache_prefix,
+        ));
+
+        /*
+        if (extension_loaded('xcache'))
         {
-            $backend_name = 'WinCache';
-        }
-        else if (extension_loaded('xcache'))
-        {
-            $backend_name = 'Xcache';
+            return new \Phalcon\Cache\Backend\Xcache($frontCache, array(
+                'prefix' => $cache_prefix,
+            ));
         }
         else if (extension_loaded('apc'))
         {
-            $backend_name = 'Apc';
+            return new \Phalcon\Cache\Backend\Apc($frontCache, array(
+                'prefix' => $cache_prefix,
+            ));
         }
         else
         {
-            $backend_name = 'File';
-            $backend_options = array(
-                'cache_dir' => $cache_dir,
-                'file_name_prefix' => 'df_cache',
-                'hashed_directory_perm' => 0777,
-                'cache_file_perm' => 0777,
-            );
+
         }
-        
-        return array($backend_name, $backend_options);
+        */
     }
 }

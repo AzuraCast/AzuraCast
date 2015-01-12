@@ -69,7 +69,7 @@ $this->view->setVar('title', 'Manage Conventions');
             </td>
             <td class="center">
                 <?
-                $level = $this->coverage[$record['coverage_level']];
+                $level = $this->view->coverage[$record['coverage_level']];
                 ?>
                 <div title="<?=$level['text'] ?>"><i class="large-icon <?=$level['icon'] ?>"></i></div>
             </td>

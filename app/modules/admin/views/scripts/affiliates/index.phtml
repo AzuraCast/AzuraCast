@@ -46,7 +46,7 @@ $this->view->setVar('title', 'Manage Affiliates');
             <td class="center" <? if (!$record['is_approved']): ?>style="opacity: 0.2;"<? endif; ?>><img src="<?=\DF\Url::content($record['image_url']) ?>"></td>
             <td>
                 <div><big><?=$record['name'] ?></big></div>
-                <div><?=$this->link($record['web_url']) ?></div>
+                <div><?=$this->viewHelper->link($record['web_url']) ?></div>
             <? if ($record['description']): ?>
                 <div><?=$record['description'] ?></div>
             <? endif; ?>

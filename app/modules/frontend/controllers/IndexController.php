@@ -15,6 +15,8 @@ class IndexController extends BaseController
 {
     public function indexAction()
     {
+        $this->forceInsecure();
+
         // Pull podcasts.
         $podcasts = Podcast::fetchLatest();
         $this->view->podcasts = $podcasts;

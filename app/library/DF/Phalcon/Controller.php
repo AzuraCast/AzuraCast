@@ -228,6 +228,20 @@ class Controller extends \Phalcon\Mvc\Controller
         }
     }
 
+    /**
+     * Force redirection to a non-HTTPS URL for content reasons.
+     */
+    protected function forceInsecure()
+    {
+        if (DF_APPLICATION_ENV == 'production' && DF_IS_SECURE)
+        {
+            $this->doNotRender();
+
+            $url = 'http://'.$this->request->getHttpHost().$this->request->getURI();
+            return $this->response->redirect($url, 301);
+        }
+    }
+
     /* Referrer storage */
     protected function storeReferrer($namespace = 'default', $loose = true)
     {

@@ -60,9 +60,6 @@ class SyncManager
             echo $e->getMessage()."\n";
         }
 
-        // Generate cache files.
-        CacheManager::generateSlimPlayer();
-
         Settings::setSetting('sync_last_run', time());
     }
 

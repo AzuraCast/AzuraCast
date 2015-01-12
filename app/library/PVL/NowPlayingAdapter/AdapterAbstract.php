@@ -180,7 +180,7 @@ class AdapterAbstract
 
         // If not normally delimited, return "text" only.
         if (count($string_parts) == 1)
-            return array('text' => $string_parts, 'artist' => NULL, 'title' => NULL);
+            return array('text' => $song_string, 'artist' => '', 'title' => $song_string);
 
         // Title is the last element, artist is all other elements (artists are far more likely to have hyphens).
         $title = trim(array_pop($string_parts));

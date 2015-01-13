@@ -78,7 +78,7 @@ class Cache
     public static function getKeys()
     {
         $cache = self::getCache();
-        return $cache->queryKeys();
+        return $cache->queryKeys(self::getSitePrefix().'_user_');
     }
     
     // Retrieve or initialize the cache.

@@ -9,12 +9,18 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
 {
     protected function doFetch($id, $testCacheValidity = true)
     {
-        return \DF\Cache::get($this->_filterCacheId($id));
+        $id = $this->_filterCacheId($id);
+
+        if (!$testCacheValidity || \DF\Cache::test($id))
+            return \DF\Cache::get($id);
+        else
+            return FALSE;
     }
 
     protected function doContains($id)
     {
-        return \DF\Cache::test($this->_filterCacheId($id));
+        $id = $this->_filterCacheId($id);
+        return \DF\Cache::test($id);
     }
     
     protected function doSave($id, $data, $lifeTime = NULL)

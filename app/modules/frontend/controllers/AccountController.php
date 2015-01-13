@@ -28,7 +28,6 @@ class AccountController extends BaseController
             $this->forceSecure();
         }
 
-        $request = $this->getRequest();
         $form = new \DF\Form($this->current_module_config->forms->register);
         
         if ($_POST)

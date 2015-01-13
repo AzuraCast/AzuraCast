@@ -15,7 +15,7 @@ class BaseController extends \DF\Phalcon\Controller
      */
     protected $station;
 
-    public function preDispatch()
+    protected function preDispatch()
     {
         parent::preDispatch();
 
@@ -54,18 +54,18 @@ class BaseController extends \DF\Phalcon\Controller
         {
             // Convenience auto-redirect for single-station admins.
             $this->redirectFromHere(array('station' => key($this->stations)));
-            return;
+            return false;
         }
 
         // Force a redirect to the "Select" page if no station ID is specified.
         if (!$this->station && $this->dispatcher->getActionName() != 'select')
         {
             $this->redirectToRoute(array('module' => 'stations', 'controller' => 'index', 'action' => 'select', 'station' => NULL));
-            return;
+            return false;
         }
     }
 
-    public function permissions()
+    protected function permissions()
     {
         return $this->acl->isAllowed('is logged in');
     }

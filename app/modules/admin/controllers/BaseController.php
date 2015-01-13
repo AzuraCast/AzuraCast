@@ -3,14 +3,16 @@ namespace Modules\Admin\Controllers;
 
 class BaseController extends \DF\Phalcon\Controller
 {
-    public function preDispatch()
+    protected function preDispatch()
     {
         parent::preDispatch();
 
         $this->forceSecure();
+
+        return true;
     }
 
-    public function permissions()
+    protected function permissions()
     {
         return $this->acl->isAllowed('view administration');
     }

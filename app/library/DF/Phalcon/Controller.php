@@ -11,7 +11,7 @@ class Controller extends \Phalcon\Mvc\Controller
     public function beforeExecuteRoute()
     {
         $this->init();
-        $this->preDispatch();
+        return $this->preDispatch();
     }
 
     public function init()
@@ -26,7 +26,7 @@ class Controller extends \Phalcon\Mvc\Controller
         }
     }
 
-    public function preDispatch()
+    protected function preDispatch()
     {
         $is_ajax = ($this->isAjax());
         $this->view->is_ajax = $is_ajax;
@@ -41,17 +41,20 @@ class Controller extends \Phalcon\Mvc\Controller
             error_reporting(E_ALL & ~E_STRICT);
             ini_set('display_errors', 1);
         }
+
+        return true;
     }
 
     public function afterExecuteRoute()
     {
         $this->postDispatch();
     }
-    public function postDispatch()
+
+    protected function postDispatch()
     {
     }
 
-    public function permissions()
+    protected function permissions()
     {
         return true;
     }

@@ -19,7 +19,7 @@ class NowPlaying
         set_time_limit(60);
 
         // Fix DF\URL // prefixing.
-        // \DF\Url::forceSchemePrefix();
+        \DF\Url::forceSchemePrefix(true);
 
         // Run different tasks for different "segments" of now playing data.
         if (!defined('NOWPLAYING_SEGMENT'))

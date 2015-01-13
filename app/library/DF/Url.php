@@ -3,6 +3,8 @@ namespace DF;
 
 class Url
 {
+    static $include_domain = false;
+
     /**
      * Get the URI for the current page.
      *
@@ -12,7 +14,7 @@ class Url
     public static function current(\Phalcon\DiInterface $di = null)
     {
         $di = self::getDi($di);
-        return $di->get('request')->getURI();
+        return self::getUrl($di->get('request')->getURI());
     }
 
     /**
@@ -25,7 +27,7 @@ class Url
     public static function referrer($default_url = null, \Phalcon\DiInterface $di = null)
     {
         $di = self::getDi($di);
-        return $di->get('request')->getHTTPReferer();
+        return self::getUrl($di->get('request')->getHTTPReferer());
     }
 
     /**
@@ -38,10 +40,17 @@ class Url
         $di = self::getDi($di);
         $uri = $di->get('url')->get('');
 
-        if ($include_host)
-            return ((DF_IS_SECURE)? 'https://' : 'http://') . $di->get('request')->getHttpHost() . $uri;
-        else
-            return $uri;
+        if ($include_host) {
+            $prev_include_domain = self::$include_domain;
+            self::$include_domain = true;
+
+            $url = self::getUrl($uri);
+
+            self::$include_domain = $prev_include_domain;
+        } else {
+            $url = self::getUrl($uri);
+        }
+        return $url;
     }
 
     /**
@@ -53,7 +62,7 @@ class Url
     public static function content($file_name = NULL)
     {
         $di = \Phalcon\Di::getDefault();
-        return $di->get('url')->getStatic($file_name);
+        return self::getUrl($di->get('url')->getStatic($file_name));
     }
 
     /**
@@ -131,7 +140,7 @@ class Url
         }
 
         $url_full = implode($url_separator, $url_parts);
-        return $di->get('url')->get($url_full);
+        return self::getUrl($di->get('url')->get($url_full));
     }
 
     /**
@@ -186,5 +195,33 @@ class Url
             return $di;
         else
             return  \Phalcon\Di::getDefault();
+    }
+
+    public static function forceSchemePrefix($new_value = true)
+    {
+        self::$include_domain = $new_value;
+    }
+
+    public static function getUrl($url_raw, \Phalcon\DiInterface $di = null)
+    {
+        $di = self::getDi($di);
+
+        // Ignore preformed URLs.
+        if (stristr($url_raw, '://'))
+            return $url_raw;
+
+        // Retrieve domain from either MVC controller or config file.
+        if (self::$include_domain) {
+            if ($di->has('request')) {
+                $url_domain = ((DF_IS_SECURE) ? 'https://' : 'http://') . $di->get('request')->getHttpHost();
+            } else {
+                $config = $di->get('config');
+                $url_domain = $config->application->base_url;
+            }
+
+            $url_raw = $url_domain . $url_raw;
+        }
+
+        return $url_raw;
     }
 }

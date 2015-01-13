@@ -20,10 +20,8 @@ class BaseController extends \DF\Phalcon\Controller
         // Allow AJAX retrieval.
         $this->response->setHeader('Access-Control-Allow-Origin', '*');
 
-        /*
         // Fix the base URL prefixed with '//'.
-        \DF\Url::forceSchemePrefix();
-        */
+        \DF\Url::forceSchemePrefix(true);
 
         $this->_time_start = microtime(true);
     }
@@ -88,7 +86,7 @@ class BaseController extends \DF\Phalcon\Controller
         if ($format == 'xml')
             return $this->returnRaw(\DF\Export::ArrayToXml($obj), 'xml');
         else
-            return $this->returnRaw(json_encode($obj, JSON_UNESCAPED_SLASHES), 'json');
+            return $this->returnRaw(json_encode($obj, \JSON_UNESCAPED_SLASHES), 'json');
     }
 
     public function returnRaw($message, $format = 'json')

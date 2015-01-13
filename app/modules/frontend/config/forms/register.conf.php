@@ -36,6 +36,7 @@ return array(
             ),
         ),
 
+        /*
         'captcha_grp' => array(
             'legend' => 'Spam Protection',
             'elements' => array(
@@ -56,6 +57,7 @@ return array(
 
             ),
         ),
+        */
         
         'submit' => array(
             'elements' => array(

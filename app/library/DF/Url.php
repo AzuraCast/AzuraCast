@@ -214,7 +214,7 @@ class Url
         if (self::$include_domain) {
             $url_domain = null;
             if ($di->has('request')) {
-                $http_host = $di->get('request')->getHttpHost();
+                $http_host = trim($di->get('request')->getHttpHost(), ':');
 
                 if (!empty($http_host))
                     $url_domain = ((DF_IS_SECURE) ? 'https://' : 'http://') . $http_host;

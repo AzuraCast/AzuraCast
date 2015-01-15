@@ -7,6 +7,8 @@ namespace DF;
 
 class Cache
 {
+    static $cache_lifetime = 3600;
+
     /**
      * User Cache
      */
@@ -17,6 +19,7 @@ class Cache
         $cache = self::getCache();
         return $cache->get($id);
     }
+
     // Alias of the "load" function.
     public static function get($id, $default = NULL)
     {
@@ -34,8 +37,13 @@ class Cache
     public static function save($data, $id, $tags = array(), $specificLifetime = false)
     {
         $cache = self::getCache();
+
+        if ($specificLifetime === false)
+            $specificLifetime = self::$cache_lifetime;
+
         $cache->save($id, $data, $specificLifetime);
     }
+
     // Alias for the "set" function.
     public static function set($data, $id, $tags = array(), $specificLifetime = false)
     {
@@ -92,9 +100,7 @@ class Cache
     {
         if (!is_object(self::$_user_cache))
         {
-            $frontend = new \Phalcon\Cache\Frontend\Data(array(
-                'lifetime' => 3600,
-            ));
+            $frontend = new \Phalcon\Cache\Frontend\Data();
 
             self::$_user_cache = self::getBackendCache($frontend);
         }

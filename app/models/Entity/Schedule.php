@@ -52,8 +52,10 @@ class Schedule extends \DF\Doctrine\Entity
     /** @Column(name="body", type="text", nullable=true) */
     protected $body;
 
-    /** @Column(name="image_url", type="string", length=150, nullable=true) */
-    protected $image_url;
+    public function getImageUrl()
+    {
+        return self::getRowImageUrl($this);
+    }
 
     /** @Column(name="web_url", type="string", length=250, nullable=true) */
     protected $web_url;
@@ -199,6 +201,16 @@ class Schedule extends \DF\Doctrine\Entity
         return $range_text;
     }
 
+    public static function getRowImageUrl($row)
+    {
+        if ($row instanceof Schedule)
+            $station = $row->station;
+        else
+            $station = $row['station'];
+
+        return $station['image_url'];
+    }
+
     public static function formatName($string)
     {
         $string = trim($string);
@@ -220,9 +232,14 @@ class Schedule extends \DF\Doctrine\Entity
         if ($row instanceof self)
             $row = $row->toArray();
 
+        // Update Image URL
+        $row['image_url'] = \DF\Url::content(self::getRowImageUrl($row));
+
         // Add station shortcode.
         if (isset($row['station']))
         {
+            $row['station'] = Station::api($row['station']);
+
             $shortcode = Station::getStationShortName($row['station']['name']);
             $row['station_shortcode'] = $shortcode;
         }

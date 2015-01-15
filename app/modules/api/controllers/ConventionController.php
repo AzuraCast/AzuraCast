@@ -30,7 +30,7 @@ class ConventionController extends BaseController
             $export_data[] = $api_row;
         }
 
-        $this->returnSuccess($export_data);
+        return $this->returnSuccess($export_data);
     }
 
     public function indexAction()

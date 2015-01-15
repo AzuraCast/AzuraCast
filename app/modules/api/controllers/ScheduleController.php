@@ -88,12 +88,12 @@ class ScheduleController extends BaseController
         {
             case "ics":
             case "ical":
-                $this->_printCalendar($events, $calendar_name, $cache_name);
+                return $this->_printCalendar($events, $calendar_name, $cache_name);
             break;
 
             case "json":
             default:
-                $this->returnSuccess($events);
+                return $this->returnSuccess($events);
             break;
         }
     }
@@ -102,8 +102,8 @@ class ScheduleController extends BaseController
     {
         $filename = str_replace('api_', '', $filename);
 
-        header('Content-type: text/calendar; charset=utf-8');
-        header('Content-Disposition: attachment; filename='.$filename.'.ics');
+        $this->response->setContentType('text/calendar', 'utf-8');
+        $this->response->setHeader('Content-Disposition', 'attachment; filename='.$filename.'.ics');
 
         $cal = array();
         $cal[] = 'BEGIN:VCALENDAR';
@@ -137,7 +137,7 @@ class ScheduleController extends BaseController
         }
 
         $cal[] = 'END:VCALENDAR';
-        echo implode(PHP_EOL, $cal);
+        return $this->response->setContent(implode(PHP_EOL, $cal));
     }
 
     protected function _calDate($timestamp, $date_only=false)
@@ -155,6 +155,6 @@ class ScheduleController extends BaseController
 
     public function conventionsAction()
     {
-        $this->returnError('This function is deprecated for api/conventions/list');
+        return $this->returnError('This function is deprecated for api/conventions/list');
     }
 }

@@ -229,7 +229,7 @@ class IndexController extends BaseController
          * Compose events
          */
 
-        $events_raw = $this->em->createQuery('SELECT s FROM Entity\Schedule s WHERE (s.end_time >= :current AND s.start_time <= :future) ORDER BY s.start_time ASC')
+        $events_raw = $this->em->createQuery('SELECT s, st FROM Entity\Schedule s JOIN s.station st WHERE (s.end_time >= :current AND s.start_time <= :future) ORDER BY s.start_time ASC')
             ->setParameter('current', time())
             ->setParameter('future', strtotime('+1 week'))
             ->getArrayResult();
@@ -254,8 +254,9 @@ class IndexController extends BaseController
 
         foreach($events_raw as $event)
         {
+            $event['image_url'] = \DF\Url::content(Schedule::getRowImageUrl($event));
             $event['status'] = ($event['start_time'] <= time()) ? 'now' : 'upcoming';
-            $event['range'] = \Entity\Schedule::getRangeText($event['start_time'], $event['end_time'], $event['is_all_day']);
+            $event['range'] = Schedule::getRangeText($event['start_time'], $event['end_time'], $event['is_all_day']);
 
             if ($event['station_id'])
             {

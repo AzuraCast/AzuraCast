@@ -66,6 +66,7 @@ class Calendar
             $this->setRecords($records);
         
         $return_vars = array();
+        $calendar_days = array();
         
         // Current page.
         $current_page_timestamp = $this->_mid_timestamp;
@@ -173,6 +174,10 @@ class Calendar
                     $start_timestamp = (int)$record['start_timestamp'];
                     $end_timestamp = (int)$record['end_timestamp'];
                 }
+                else
+                {
+                    break;
+                }
                 
                 if ($start_timestamp && $end_timestamp)
                 {
@@ -211,7 +216,7 @@ class Calendar
         
         foreach($calendar_days as $calendar_day_num => $calendar_day_info)
         {
-            $current_row = floor(($calendar_day_num-1) / 7);
+            $current_row = (int)floor(($calendar_day_num-1) / 7);
             $new_calendar_days[$current_row][] = $calendar_day_info;
         }
         

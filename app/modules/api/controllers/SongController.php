@@ -17,7 +17,7 @@ class SongController extends BaseController
             $export_data[$song['id']] = Song::api($song);
         }
 
-        $this->returnSuccess($export_data);
+        return $this->returnSuccess($export_data);
     }
 
     public function indexAction()

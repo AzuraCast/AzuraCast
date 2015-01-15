@@ -8,7 +8,7 @@ class IndexController extends BaseController
      */
     public function indexAction()
     {
-        $this->returnSuccess('The PVL! API is online and functioning. For more information, visit http://docs.ponyvillelive.apiary.io/');
+        return $this->returnSuccess('The PVL! API is online and functioning. For more information, visit http://docs.ponyvillelive.apiary.io/');
     }
 
     /**
@@ -16,7 +16,7 @@ class IndexController extends BaseController
      */
     public function statusAction()
     {
-        $this->returnSuccess(array(
+        return $this->returnSuccess(array(
             'online' => 'true',
             'timestamp' => time(),
         ));
@@ -29,7 +29,7 @@ class IndexController extends BaseController
     {
         $tz_info = \PVL\Timezone::getInfo();
 
-        $this->returnSuccess(array(
+        return $this->returnSuccess(array(
             'timestamp'             => time(),
 
             'gmt_datetime'          => $tz_info['now_utc']->format('Y-m-d g:i:s'),

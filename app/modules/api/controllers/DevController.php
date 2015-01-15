@@ -111,6 +111,6 @@ class DevController extends BaseController
             }
         }
 
-        $this->returnSuccess($static_files);
+        return $this->returnSuccess($static_files);
     }
 }

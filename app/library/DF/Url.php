@@ -212,9 +212,15 @@ class Url
 
         // Retrieve domain from either MVC controller or config file.
         if (self::$include_domain) {
+            $url_domain = null;
             if ($di->has('request')) {
-                $url_domain = ((DF_IS_SECURE) ? 'https://' : 'http://') . $di->get('request')->getHttpHost();
-            } else {
+                $http_host = $di->get('request')->getHttpHost();
+
+                if (!empty($http_host))
+                    $url_domain = ((DF_IS_SECURE) ? 'https://' : 'http://') . $http_host;
+            }
+
+            if (!$url_domain) {
                 $config = $di->get('config');
                 $url_domain = $config->application->base_url;
             }

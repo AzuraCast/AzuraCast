@@ -165,9 +165,11 @@ $tz_info = \PVL\Timezone::getInfo();
 ?>
 <h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a>, see <a href="<?=$this->url->get('schedule') ?>">entire schedule</a></small></h2>
 
-<?
-echo $this->viewHelper->renderHere('schedule');
-?>
+<div id="schedule_container">
+    <?
+    echo $this->viewHelper->renderHere('schedule');
+    ?>
+</div>
 
 <h2><i class="icon-folder-open-alt"></i> Convention Archives</h2>
 
@@ -203,7 +205,7 @@ echo $this->viewHelper->renderHere('player-skeleton', true);
 <!-- Schedule Reloader -->
 <script type="text/javascript">
 var schedule_timeout;
-var schedule_interval = 300000;
+var schedule_interval = 600000;
 
 $(function() {
 

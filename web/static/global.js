@@ -4,7 +4,7 @@
  */
 
 var clock_timeout;
-var clock_interval = 60000;
+var clock_interval = 90000;
 
 $(function() {
 

@@ -277,7 +277,7 @@ $(function() {
     });
 
     // Autoplay registration.
-    if (typeof pvl_autoplay_station !== undefined) {
+    if (typeof pvl_autoplay_station !== "undefined") {
         var autoplay_triggered = false;
 
         socket.on('nowplaying', function(e) {

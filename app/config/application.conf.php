@@ -11,7 +11,7 @@ $config = array(
     'analytics_code'    => 'UA-37359273-1',
     
     // Primary application web address
-    'base_url'          => (DF_IS_SECURE ? 'http://' : 'https://').'ponyvillelive.com',
+    'base_url'          => (DF_IS_SECURE ? 'https://' : 'http://').'ponyvillelive.com',
     
     // DF Messenger mail settings
     'mail'              => array(

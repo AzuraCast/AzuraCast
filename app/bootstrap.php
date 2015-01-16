@@ -36,10 +36,6 @@ define('DF_APPLICATION_ENV_PATH', DF_INCLUDE_BASE.DIRECTORY_SEPARATOR.'.env');
 if (!defined('DF_APPLICATION_ENV'))
     define('DF_APPLICATION_ENV', ($env = @file_get_contents(DF_APPLICATION_ENV_PATH)) ? trim($env) : 'development');
 
-// Set error reporting for the bootstrapping process.
-error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
-ini_set('display_errors', 1);
-
 // Composer autoload.
 $autoloader = require(DF_INCLUDE_VENDOR . DIRECTORY_SEPARATOR . 'autoload.php');
 
@@ -48,6 +44,18 @@ require(DF_INCLUDE_LIB . '/DF/Config.php');
 
 $config = new \DF\Config(DF_INCLUDE_BASE.'/config');
 $config->preload(array('application','general'));
+
+// Apply PHP settings.
+$php_settings = $config->application->phpSettings->toArray();
+foreach($php_settings as $setting_key => $setting_value)
+{
+    if (is_array($setting_value)) {
+        foreach($setting_value as $setting_subkey => $setting_subval)
+            ini_set($setting_key.'.'.$setting_subkey, $setting_subval);
+    } else {
+        ini_set($setting_key, $setting_value);
+    }
+}
 
 // Loop through modules to find configuration files or libraries.
 $module_config_dirs = array();

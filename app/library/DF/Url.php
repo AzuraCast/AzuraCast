@@ -40,17 +40,10 @@ class Url
         $di = self::getDi($di);
         $uri = $di->get('url')->get('');
 
-        if ($include_host) {
-            $prev_include_domain = self::$include_domain;
-            self::$include_domain = true;
-
-            $url = self::getUrl($uri);
-
-            self::$include_domain = $prev_include_domain;
-        } else {
-            $url = self::getUrl($uri);
-        }
-        return $url;
+        if ($include_host)
+            return self::addSchemePrefix($uri);
+        else
+            return self::getUrl($uri);
     }
 
     /**
@@ -200,6 +193,18 @@ class Url
     public static function forceSchemePrefix($new_value = true)
     {
         self::$include_domain = $new_value;
+    }
+
+    public static function addSchemePrefix($url_raw)
+    {
+        $prev_include_domain = self::$include_domain;
+        self::$include_domain = true;
+
+        $url = self::getUrl($url_raw);
+
+        self::$include_domain = $prev_include_domain;
+
+        return $url;
     }
 
     public static function getUrl($url_raw, \Phalcon\DiInterface $di = null)

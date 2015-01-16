@@ -286,7 +286,7 @@ class AccountController extends BaseController
     {
         // Force "scheme" injection for base URLs.
         $ha_config = $this->config->apis->hybrid_auth->toArray();
-        $ha_config['base_url'] = \DF\Url::addSchemePrefix($this->view->routeFromHere(array('action' => 'hybrid')));
+        $ha_config['base_url'] = \DF\Url::addSchemePrefix(\DF\Url::routeFromHere(array('action' => 'hybrid')));
 
         return $ha_config;
     }

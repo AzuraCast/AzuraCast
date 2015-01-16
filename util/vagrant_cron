@@ -1,5 +1,5 @@
-20 * * * * php /var/www/vagrant/util/syncslow.php
-*/15 * * * * php /var/www/vagrant/util/sync.php
-* * * * * php /var/www/vagrant/util/syncfast.php
-* * * * * php /var/www/vagrant/util/nowplaying.php --segment=1
-* * * * * sleep 30; php /var/www/vagrant/util/nowplaying.php --segment=2
+20 * * * * php /var/www/vagrant/util/cli.php sync:long
+*/15 * * * * php /var/www/vagrant/util/cli.php sync:medium
+* * * * * php /var/www/vagrant/util/cli.php sync:short
+* * * * * php /var/www/vagrant/util/cli.php sync:nowplaying 1
+* * * * * sleep 30; php /var/www/vagrant/util/cli.php sync:nowplaying 2

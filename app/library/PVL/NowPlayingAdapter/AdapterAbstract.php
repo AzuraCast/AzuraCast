@@ -61,8 +61,6 @@ class AdapterAbstract
         if ($np['listeners']['total'] === null)
             $np['listeners']['total'] = $np['listeners']['current'];
 
-        \PVL\Debug::log($np);
-
         return $np;
     }
 

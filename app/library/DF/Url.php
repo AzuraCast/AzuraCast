@@ -68,15 +68,15 @@ class Url
     public static function route($path_info = array(), \Phalcon\DiInterface $di = null)
     {
         $di = self::getDi($di);
-        $router = $di->get('router');
+        $router_config = $di->get('config')->routes->toArray();
 
         $url_separator = '/';
-        $default_module = $router->getDefaultModule();
+        $default_module = $router_config['default_module'];
 
         $components = array(
             'module'    => $default_module,
-            'controller' => $router->getDefaultController(),
-            'action'    => $router->getDefaultAction(),
+            'controller' => $router_config['default_controller'],
+            'action'    => $router_config['default_action'],
         );
 
         if (isset($path_info['module']))
@@ -106,8 +106,8 @@ class Url
 
         // Special exception for homepage.
         if ($components['module'] == $default_module &&
-            $components['controller'] == $router->getDefaultController() &&
-            $components['action'] == $router->getDefaultAction() &&
+            $components['controller'] == $router_config['default_controller'] &&
+            $components['action'] == $router_config['default_action'] &&
             empty($path_info)) {
             return $di->get('url')->get('');
         }

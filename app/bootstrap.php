@@ -90,7 +90,10 @@ foreach($autoload_classes['psr4'] as $class_key => $class_dir)
     $autoloader->addPsr4($class_key, $class_dir);
 
 // Set up Dependency Injection
-$di = new \Phalcon\DI\FactoryDefault();
+if (DF_IS_COMMAND_LINE)
+    $di = new \Phalcon\DI\FactoryDefault\CLI;
+else
+    $di = new \Phalcon\DI\FactoryDefault;
 
 // Configs
 $di->setShared('config', $config);
@@ -98,29 +101,33 @@ $di->setShared('module_config', function() use ($module_config) { return $module
 $di->setShared('phalcon_modules', function() use ($phalcon_modules) { return $phalcon_modules; });
 
 // Router
-$di->setShared('router', function() use ($di) {
-    $router = new \DF\Phalcon\Router(false);
-    $router->setUriSource(\DF\Phalcon\Router::URI_SOURCE_SERVER_REQUEST_URI);
+if (DF_IS_COMMAND_LINE) {
+    $router = new \Phalcon\CLI\Router;
+    $di->setShared('router', $router);
+} else {
+    $di->setShared('router', function () use ($di) {
+        $router = new \DF\Phalcon\Router(false);
+        $router->setUriSource(\DF\Phalcon\Router::URI_SOURCE_SERVER_REQUEST_URI);
 
-    $router->setDi($di);
+        $router->setDi($di);
 
-    $router_config = $di->get('config')->routes->toArray();
+        $router_config = $di->get('config')->routes->toArray();
 
-    $router->setDefaultModule($router_config['default_module']);
-    $router->setDefaultController($router_config['default_controller']);
-    $router->setDefaultAction($router_config['default_action']);
-    $router->removeExtraSlashes(true);
+        $router->setDefaultModule($router_config['default_module']);
+        $router->setDefaultController($router_config['default_controller']);
+        $router->setDefaultAction($router_config['default_action']);
+        $router->removeExtraSlashes(true);
 
-    foreach((array)$router_config['custom_routes'] as $route_path => $route_params)
-    {
-        $route = $router->add($route_path, $route_params);
+        foreach ((array)$router_config['custom_routes'] as $route_path => $route_params) {
+            $route = $router->add($route_path, $route_params);
 
-        if (isset($route_params['name']))
-            $route->setName($route_params['name']);
-    }
+            if (isset($route_params['name']))
+                $route->setName($route_params['name']);
+        }
 
-    return $router;
-});
+        return $router;
+    });
+}
 
 // Database
 $di->setShared('em', function() use ($config) {

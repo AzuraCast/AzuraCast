@@ -25,6 +25,13 @@ return array(
         'password'      => '',
     ),
 
+    // CloudFlare API.
+    'cloudflare' => array(
+        'domain'        => 'ponyvillelive.com',
+        'email'         => '',
+        'api_key'       => '',
+    ),
+
     // Google Common APIs server key (get from https://console.developers.google.com/)
     'google_apis_key' => '',
 

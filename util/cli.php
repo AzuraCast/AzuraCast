@@ -23,7 +23,7 @@ foreach($argv as $k => $arg) {
         $task_parts = explode(':', $arg);
         $arguments['task'] = $task_parts[0];
         $arguments['action'] = (isset($task_parts[1])) ? $task_parts[1] : 'index';
-    } else {
+    } elseif ($k > 1) {
         $arguments['params'][] = $arg;
     }
 }

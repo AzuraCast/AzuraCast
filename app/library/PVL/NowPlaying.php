@@ -366,8 +366,4 @@ class NowPlaying
 
         return true;
     }
-
-
-
-
 }

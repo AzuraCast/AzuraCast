@@ -4,9 +4,9 @@ use \PVL\SyncManager;
 
 class SyncTask extends Task
 {
-    public function nowplayingAction($params = null) {
-        if (isset($params[0]))
-            define('NOWPLAYING_SEGMENT', $params[0]);
+    public function nowplayingAction($segment = 1)
+    {
+        define('NOWPLAYING_SEGMENT', $segment);
 
         SyncManager::syncNowplaying();
     }

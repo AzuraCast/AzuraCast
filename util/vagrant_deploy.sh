@@ -137,18 +137,18 @@ echo "Setting up database..."
 
 cd $www_base/util
 sudo -u vagrant php doctrine.php orm:schema-tool:create
-sudo -u vagrant php flush.php
+sudo -u vagrant php cli.php cache:clear
 
 sudo -u vagrant php vagrant_import.php
 
 echo "Importing external music databases (takes a minute)..."
-sudo -u vagrant php syncslow.php
+sudo -u vagrant php cli.php sync:long
 
 echo "Running regular tasks..."
-sudo -u vagrant php syncfast.php
-sudo -u vagrant php sync.php
+sudo -u vagrant php cli.php sync:short
+sudo -u vagrant php cli.php sync:medium
 
-sudo -u vagrant php nowplaying.php
+sudo -u vagrant php cli.php sync:nowplaying
 
 # Add cron job
 echo "Installing cron job..."
@@ -158,4 +158,4 @@ service cron restart
 service nginx restart
 
 echo "One-time setup complete!"
-echo "Server now live at localhost:8080 or www.pvlive.dev:8080."
+echo "Server now live at https://dev.pvlive.me"

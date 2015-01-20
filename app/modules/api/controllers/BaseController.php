@@ -52,6 +52,8 @@ class BaseController extends \DF\Phalcon\Controller
             'controller'    => $this->dispatcher->getControllerName(),
             'action'        => $this->dispatcher->getActionName(),
             'parameters'    => json_encode($params),
+            'referrer'      => $_SERVER['HTTP_REFERER'],
+            'is_ajax'       => ($this->isAjax() ? '1' : '0'),
             'requesttime'   => $request_time,
         ));
     }

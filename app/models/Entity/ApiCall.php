@@ -45,6 +45,12 @@ class ApiCall extends \DF\Doctrine\Entity
     /** @Column(name="parameters", type="json", nullable=true) */
     protected $parameters;
 
+    /** @Column(name="referrer", type="string", length=255, nullable=true) */
+    protected $referrer;
+
+    /** @Column(name="is_ajax", type="boolean", nullable=true) */
+    protected $is_ajax;
+
     /** @Column(name="requesttime", type="float") */
     protected $requesttime;
 

@@ -34,17 +34,24 @@ class BaseController extends \DF\Phalcon\Controller
         $request_time = $end_time - $this->_time_start;
 
         // Log request using a raw SQL query for higher performance.
+        if (isset($_SERVER['CF-Connecting-IP']))
+            $remote_ip = $_SERVER['CF-Connecting-IP'];
+        else
+            $remote_ip = $_SERVER['REMOTE_ADDR'];
+
         $table_name = $this->em->getClassMetadata('\Entity\ApiCall')->getTableName();
         $conn = $this->em->getConnection();
 
+        $params = array_merge((array)$this->dispatcher->getParams(), (array)$this->request->getQuery());
+
         $conn->insert($table_name, array(
             'timestamp'     => time(),
-            'ip'            => $_SERVER['REMOTE_ADDR'],
+            'ip'            => $remote_ip,
             'client'        => $this->_getParam('client', 'general'),
             'useragent'     => $_SERVER['HTTP_USER_AGENT'],
             'controller'    => $this->dispatcher->getControllerName(),
             'action'        => $this->dispatcher->getActionName(),
-            'parameters'    => json_encode($_REQUEST),
+            'parameters'    => json_encode($params),
             'requesttime'   => $request_time,
         ));
     }

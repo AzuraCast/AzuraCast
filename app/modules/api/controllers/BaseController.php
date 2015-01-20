@@ -39,12 +39,8 @@ class BaseController extends \DF\Phalcon\Controller
         else
             $remote_ip = $_SERVER['REMOTE_ADDR'];
 
-        $table_name = $this->em->getClassMetadata('\Entity\ApiCall')->getTableName();
-        $conn = $this->em->getConnection();
-
         $params = array_merge((array)$this->dispatcher->getParams(), (array)$this->request->getQuery());
-
-        $conn->insert($table_name, array(
+        $this->db->insert('api_calls', array(
             'timestamp'     => time(),
             'ip'            => $remote_ip,
             'client'        => $this->_getParam('client', 'general'),

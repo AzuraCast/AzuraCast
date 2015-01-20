@@ -138,6 +138,14 @@ $di->setShared('em', function() use ($config) {
     return $em;
 });
 
+$di->setShared('db', function() use ($config) {
+    $db_conf = $config->application->resources->doctrine->toArray();
+    $db_conf['conn'] = $config->db->toArray();
+
+    $config = new \Doctrine\DBAL\Configuration;
+    return \Doctrine\DBAL\DriverManager::getConnection($db_conf['conn'], $config);
+});
+
 // Auth and ACL
 $di->setShared('auth', '\DF\Auth\Model');
 $di->setShared('acl', '\DF\Acl\Instance');

@@ -13,15 +13,7 @@ DirectoryIndex index.php
   RewriteEngine on
   RewriteBase /
 
-  # Force URL to contain www.
-  RewriteEngine On
-  RewriteCond %{HTTP_HOST} !^(www|direct|static)\.ponyvillelive\.com [NC]
-  RewriteRule ^(.*)$ http://www.ponyvillelive.com/$1 [R=302,L]
-  
-  RewriteRule ^web(/?)(.*)$ /$2 [R,L,QSA]
-
   # Forward all requests that are not existing files to index.php
   RewriteCond %{REQUEST_FILENAME} !-f
-  # RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule (.*) index.php [L,QSA]
 </IfModule>

@@ -3,7 +3,7 @@
  * Application Settings
  */
 
-$session_lifetime = 86400*4;
+$session_lifetime = 86400*1;
 
 $config = array(
     // Application name

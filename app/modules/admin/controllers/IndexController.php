@@ -18,81 +18,81 @@ class IndexController extends BaseController
                 $internal_stations[$station->id] = $station;
         }
 
-        // Statistics by day.
-        $daily_stats = $this->em->createQuery('SELECT a FROM Entity\Analytics a WHERE a.type = :type ORDER BY a.timestamp ASC')
-            ->setParameter('type', 'day')
-            ->getArrayResult();
+        $network_metrics = \DF\Cache::get('admin_network_metrics');
+        $station_metrics = \DF\Cache::get('admin_station_metrics');
 
-        $station_averages = array();
-        $network_data = array(
-            'PVL Network' => array(
-                'ranges' => array(),
-                'averages' => array(),
-            ),
-        );
+        if (!$network_metrics || !$station_metrics) {
+            // Statistics by day.
+            $daily_stats = $this->em->createQuery('SELECT a FROM Entity\Analytics a WHERE a.type = :type ORDER BY a.timestamp ASC')
+                ->setParameter('type', 'day')
+                ->getArrayResult();
 
-        foreach($daily_stats as $stat)
-        {
-            if (!$stat['station_id'])
-            {
-                $network_name = 'PVL Network';
-                $network_data[$network_name]['ranges'][] = array($stat['timestamp']*1000, $stat['number_min'], $stat['number_max']);
-                $network_data[$network_name]['averages'][] = array($stat['timestamp']*1000, $stat['number_avg']);
+            $station_averages = array();
+            $network_data = array(
+                'PVL Network' => array(
+                    'ranges' => array(),
+                    'averages' => array(),
+                ),
+            );
+
+            foreach ($daily_stats as $stat) {
+                if (!$stat['station_id']) {
+                    $network_name = 'PVL Network';
+                    $network_data[$network_name]['ranges'][] = array($stat['timestamp'] * 1000, $stat['number_min'], $stat['number_max']);
+                    $network_data[$network_name]['averages'][] = array($stat['timestamp'] * 1000, $stat['number_avg']);
+                } elseif (isset($internal_stations[$stat['station_id']])) {
+                    $network_name = $internal_stations[$stat['station_id']]['name'];
+                    $network_data[$network_name]['ranges'][] = array($stat['timestamp'] * 1000, $stat['number_min'], $stat['number_max']);
+                    $network_data[$network_name]['averages'][] = array($stat['timestamp'] * 1000, $stat['number_avg']);
+                } else {
+                    $station_averages[$stat['station_id']][] = array($stat['timestamp'] * 1000, $stat['number_avg']);
+                }
             }
-            elseif (isset($internal_stations[$stat['station_id']]))
-            {
-                $network_name = $internal_stations[$stat['station_id']]['name'];
-                $network_data[$network_name]['ranges'][] = array($stat['timestamp']*1000, $stat['number_min'], $stat['number_max']);
-                $network_data[$network_name]['averages'][] = array($stat['timestamp']*1000, $stat['number_avg']);
+
+            $network_metrics = array();
+            foreach ($network_data as $network_name => $data_charts) {
+                if (isset($data_charts['ranges'])) {
+                    $metric_row = new \stdClass;
+                    $metric_row->name = $network_name . ' Listener Range';
+                    $metric_row->type = 'arearange';
+                    $metric_row->data = $data_charts['ranges'];
+
+                    $network_metrics[] = $metric_row;
+                }
+
+                if (isset($data_charts['averages'])) {
+                    $metric_row = new \stdClass;
+                    $metric_row->name = $network_name . ' Daily Average';
+                    $metric_row->type = 'spline';
+                    $metric_row->data = $data_charts['averages'];
+
+                    $network_metrics[] = $metric_row;
+                }
             }
-            else
-            {
-                $station_averages[$stat['station_id']][] = array($stat['timestamp']*1000, $stat['number_avg']);
+
+            $station_metrics = array();
+
+            foreach ($stations as $station) {
+                $station_id = $station['id'];
+
+                if (isset($station_averages[$station_id])) {
+                    $series_obj = new \stdClass;
+                    $series_obj->name = $station['name'];
+                    $series_obj->type = 'spline';
+                    $series_obj->data = $station_averages[$station_id];
+                    $station_metrics[] = $series_obj;
+                }
             }
+
+            $network_metrics = json_encode($network_metrics);
+            $station_metrics = json_encode($station_metrics);
+
+            \DF\Cache::save($network_metrics, 'admin_network_metrics', array(), 600);
+            \DF\Cache::save($station_metrics, 'admin_station_metrics', array(), 600);
         }
 
-        $network_metrics = array();
-        foreach($network_data as $network_name => $data_charts)
-        {
-            if (isset($data_charts['ranges']))
-            {
-                $metric_row = new \stdClass;
-                $metric_row->name = $network_name.' Listener Range';
-                $metric_row->type = 'arearange';
-                $metric_row->data = $data_charts['ranges'];
-
-                $network_metrics[] = $metric_row;
-            }
-
-            if (isset($data_charts['averages']))
-            {
-                $metric_row = new \stdClass;
-                $metric_row->name = $network_name.' Daily Average';
-                $metric_row->type = 'spline';
-                $metric_row->data = $data_charts['averages'];
-
-                $network_metrics[] = $metric_row;
-            }
-        }
-
-        $station_metrics = array();
-
-        foreach($stations as $station)
-        {
-            $station_id = $station['id'];
-
-            if (isset($station_averages[$station_id]))
-            {
-                $series_obj = new \stdClass;
-                $series_obj->name = $station['name'];
-                $series_obj->type = 'spline';
-                $series_obj->data = $station_averages[$station_id];
-                $station_metrics[] = $series_obj;
-            }
-        }
-
-        $this->view->network_metrics = json_encode($network_metrics);
-        $this->view->station_metrics = json_encode($station_metrics);
+        $this->view->network_metrics = $network_metrics;
+        $this->view->station_metrics = $station_metrics;
 
         // Synchronization statuses
         if ($this->acl->isAllowed('administer all'))

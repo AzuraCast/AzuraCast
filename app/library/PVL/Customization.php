@@ -31,6 +31,11 @@ class Customization
 
     public static function getCustom($key)
     {
+        // Check for session variable.
+        $session = self::getSession();
+        if ($session->$key)
+            return $session->$key;
+
         // Check for permanent variable if logged in.
         $auth = \Phalcon\DI::getDefault()->get('auth');
         if ($auth->isLoggedIn())
@@ -38,14 +43,11 @@ class Customization
             $user = $auth->getLoggedInUser();
             $custom_options = (array)$user->customization;
 
-            if (isset($custom_options[$key]))
+            if (isset($custom_options[$key])) {
+                $session->$key = $custom_options[$key];
                 return $custom_options[$key];
+            }
         }
-
-        // Check for session variable.
-        $session = self::getSession();
-        if ($session->$key)
-            return $session->$key;
 
         return NULL;
     }

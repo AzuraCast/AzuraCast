@@ -2,9 +2,7 @@
 namespace Modules\Frontend\Controllers;
 
 use \Entity\Station;
-use \Entity\Artist;
 use \Entity\Podcast;
-use \Entity\Event;
 use \Entity\NetworkNews;
 use \Entity\Settings;
 use \Entity\Schedule;
@@ -55,10 +53,9 @@ class IndexController extends BaseController
             $this->view->special_chat_embed = trim(Settings::getSetting('special_event_chat_code'));
         }
 
-        $this->view->autoplay = (bool)$this->_getParam('autoplay', true);
+        $this->view->autoplay = (bool)$this->getParam('autoplay', true);
 
-        $render_mode = $this->_getParam('mode', 'default');
-
+        $render_mode = $this->getParam('mode', 'default');
         if ($render_mode == 'chat')
             $this->view->pick('index/index-chat');
     }

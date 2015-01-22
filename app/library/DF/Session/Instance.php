@@ -4,6 +4,7 @@ namespace DF\Session;
 class Instance implements \ArrayAccess
 {
     protected $_namespace;
+    protected $_data;
 
     public function __construct($namespace = 'default')
     {
@@ -11,8 +12,10 @@ class Instance implements \ArrayAccess
 
         $this->_namespace = $namespace;
 
-        if (!isset($_SESSION[$this->_namespace]))
-            $_SESSION[$this->_namespace] = array();
+        if (isset($_SESSION[$this->_namespace]))
+            $this->_data = $_SESSION[$this->_namespace];
+        else
+            $this->_data = array();
     }
 
     /**
@@ -23,6 +26,27 @@ class Instance implements \ArrayAccess
      */
     public function __set($name, $value)
     {
+        $this->_data[$name] = $value;
+
+        if (!isset($_SESSION[$this->_namespace]))
+            $_SESSION[$this->_namespace] = array();
+
+        $_SESSION[$this->_namespace][$name] = $value;
+    }
+
+    /**
+     * ArrayAccess form of __set
+     *
+     * @param mixed $name
+     * @param mixed $value
+     */
+    public function offsetSet($name, $value)
+    {
+        $this->_data[$name] = $value;
+
+        if (!isset($_SESSION[$this->_namespace]))
+            $_SESSION[$this->_namespace] = array();
+
         $_SESSION[$this->_namespace][$name] = $value;
     }
 
@@ -34,40 +58,10 @@ class Instance implements \ArrayAccess
      */
     public function __get($name)
     {
-        if (isset($_SESSION[$this->_namespace][$name]))
-            return $_SESSION[$this->_namespace][$name];
-    }
+        if (isset($this->_data[$name]))
+            return $this->_data[$name];
 
-    /**
-     * Magic Method __isset
-     *
-     * @param $name
-     * @return bool
-     */
-    public function __isset($name)
-    {
-        return isset($_SESSION[$this->_namespace][$name]);
-    }
-
-    /**
-     * Magic Method __unset
-     *
-     * @param $name
-     */
-    public function __unset($name)
-    {
-        unset($_SESSION[$this->_namespace][$name]);
-    }
-
-    /**
-     * ArrayAccess form of __isset
-     *
-     * @param mixed $name
-     * @return bool
-     */
-    public function offsetExists($name)
-    {
-        return isset($_SESSION[$this->_namespace][$name]);
+        return null;
     }
 
     /**
@@ -78,20 +72,43 @@ class Instance implements \ArrayAccess
      */
     public function offsetGet($name)
     {
-        if (isset($_SESSION[$this->_namespace][$name]))
-            return $_SESSION[$this->_namespace][$name];
+        if (isset($this->_data[$name]))
+            return $this->_data[$name];
+
+        return null;
     }
 
     /**
-     * ArrayAccess form of __set
+     * Magic Method __isset
+     *
+     * @param $name
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        return isset($this->_data[$name]);
+    }
+
+    /**
+     * ArrayAccess form of __isset
      *
      * @param mixed $name
-     * @param mixed $value
+     * @return bool
      */
-    public function offsetSet($name, $value)
+    public function offsetExists($name)
     {
-        if (isset($_SESSION[$this->_namespace][$name]))
-            return $_SESSION[$this->_namespace][$name];
+        return isset($this->_data[$name]);
+    }
+
+    /**
+     * Magic Method __unset
+     *
+     * @param $name
+     */
+    public function __unset($name)
+    {
+        unset($this->_data[$name]);
+        unset($_SESSION[$this->_namespace][$name]);
     }
 
     /**
@@ -101,6 +118,7 @@ class Instance implements \ArrayAccess
      */
     public function offsetUnset($name)
     {
+        unset($this->_data[$name]);
         unset($_SESSION[$this->_namespace][$name]);
     }
 }

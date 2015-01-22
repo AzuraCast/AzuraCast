@@ -171,10 +171,14 @@ class Cache
         $cache_prefix = self::getSitePrefix().'_user_';
 
         if (DF_APPLICATION_ENV == 'production') {
-            return new \Phalcon\Cache\Backend\Memcache($frontCache, array(
-                'host' => 'localhost',
-                'port' => 11211,
-                'persistent' => false
+            return new \Phalcon\Cache\Backend\Libmemcached($frontCache, array(
+                'servers' => array(
+                    array('host' => 'localhost', 'port' => 11211, 'weight' => 1),
+                ),
+                'client' => array(
+                    \Memcached::OPT_HASH => \Memcached::HASH_MD5,
+                    \Memcached::OPT_PREFIX_KEY => 'prefix.',
+                ),
             ));
         } else {
             return new \Phalcon\Cache\Backend\File($frontCache, array(

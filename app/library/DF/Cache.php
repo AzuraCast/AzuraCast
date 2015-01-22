@@ -173,11 +173,15 @@ class Cache
         if (DF_APPLICATION_ENV == 'production') {
             return new \Phalcon\Cache\Backend\Libmemcached($frontCache, array(
                 'servers' => array(
-                    array('host' => 'localhost', 'port' => 11211, 'weight' => 1),
+                    array(
+                        'host' => 'localhost',
+                        'port' => 11211,
+                        'weight' => 1
+                    ),
                 ),
                 'client' => array(
                     \Memcached::OPT_HASH => \Memcached::HASH_MD5,
-                    \Memcached::OPT_PREFIX_KEY => 'prefix.',
+                    \Memcached::OPT_PREFIX_KEY => $cache_prefix,
                 ),
             ));
         } else {
@@ -186,24 +190,5 @@ class Cache
                 'prefix' => $cache_prefix,
             ));
         }
-
-        /*
-        if (extension_loaded('xcache'))
-        {
-            return new \Phalcon\Cache\Backend\Xcache($frontCache, array(
-                'prefix' => $cache_prefix,
-            ));
-        }
-        else if (extension_loaded('apc'))
-        {
-            return new \Phalcon\Cache\Backend\Apc($frontCache, array(
-                'prefix' => $cache_prefix,
-            ));
-        }
-        else
-        {
-
-        }
-        */
     }
 }

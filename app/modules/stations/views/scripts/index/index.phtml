@@ -9,7 +9,7 @@ $this->assets->collection('custom_js')
 
 $skin = \PVL\Customization::get('theme');
 if ($skin == "dark")
-    $this->assets->collection('custom_css')->addCss('highcharts/dark-blue.js');
+    $this->assets->collection('custom_js')->addJs('highcharts/dark-blue.js');
 
 echo $this->viewHelper->renderHere('stationname', true);
 ?>

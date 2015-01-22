@@ -29,7 +29,8 @@ $config = array(
         'error_reporting'       => E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT,
         'session' => array(
             'use_only_cookies'  => 1,
-            'save_path'         => DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'sessions',
+            'save_handler'      => 'memcached',
+            'save_path'         => 'localhost:11211',
             'gc_maxlifetime'    => $session_lifetime,
             'gc_probability'    => 1,
             'gc_divisor'        => 100,
@@ -85,6 +86,9 @@ if (DF_APPLICATION_ENV != 'production')
 {
     $config['phpSettings']['display_startup_errors'] = 1;
     $config['phpSettings']['display_errors'] = 1;
+
+    unset($config['phpSettings']['session']['save_handler']);
+    $config['phpSettings']['session']['save_path'] = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'sessions';
 
     // Update if your local configuration differs.
     $config['base_url'] = '//dev.pvlive.me';

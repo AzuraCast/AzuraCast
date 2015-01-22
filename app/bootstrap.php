@@ -161,12 +161,14 @@ $di->set('url', function() use ($config) {
     return $url;
 });
 
+/*
 // Register session.
 $di->set('session', function() {
     $session = new \Phalcon\Session\Adapter\Files();
     $session->start();
     return $session;
 });
+*/
 
 // Register view helpers.
 $di->setShared('viewHelper', '\DF\Phalcon\Service\ViewHelper');

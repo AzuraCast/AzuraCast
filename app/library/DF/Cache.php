@@ -170,10 +170,18 @@ class Cache
         $cache_dir = DF_INCLUDE_CACHE;
         $cache_prefix = self::getSitePrefix().'_user_';
 
-        return new \Phalcon\Cache\Backend\File($frontCache, array(
-            'cacheDir' => $cache_dir.DIRECTORY_SEPARATOR,
-            'prefix' => $cache_prefix,
-        ));
+        if (DF_APPLICATION_ENV == 'production') {
+            return new \Phalcon\Cache\Backend\Memcache($frontCache, array(
+                'host' => 'localhost',
+                'port' => 11211,
+                'persistent' => false
+            ));
+        } else {
+            return new \Phalcon\Cache\Backend\File($frontCache, array(
+                'cacheDir' => $cache_dir.DIRECTORY_SEPARATOR,
+                'prefix' => $cache_prefix,
+            ));
+        }
 
         /*
         if (extension_loaded('xcache'))

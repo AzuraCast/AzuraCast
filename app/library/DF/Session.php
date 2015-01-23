@@ -1,14 +1,15 @@
 <?php
-/**
- * DF_Session:
- * Extender for session management
- */
-
 namespace DF;
+
 class Session
 {
     protected static $prevent_sessions = false;
 
+    /**
+     * Start the session handler if allowed and not already started.
+     *
+     * @return bool
+     */
     public static function start()
     {
         static $is_started = false;
@@ -23,52 +24,66 @@ class Session
         return $is_started;
     }
 
+    /**
+     * Alias for self::getNamespace()
+     *
+     * @param string $namespace
+     * @return mixed
+     */
     public static function get($namespace = 'default')
     {
         return self::getNamespace($namespace);
     }
-    
+
+    /**
+     * Get a session management namespace.
+     *
+     * @param string $namespace
+     * @return mixed
+     */
     public static function getNamespace($namespace = 'default')
     {
-        if (!self::start())
-            return new \stdClass;
-
         static $sessions = array();
 
         $session_name = self::getNamespaceName($namespace);
 
         if (!isset($sessions[$session_name]))
         {
-            if (DF_IS_COMMAND_LINE)
-                $sessions[$session_name] = new \stdClass;
-            else
+            if (self::isActive())
                 $sessions[$session_name] = new \DF\Session\Instance($session_name);
+            else
+                $sessions[$session_name] = new \DF\Session\Temporary($session_name);
         }
         
         return $sessions[$session_name];
     }
-    
+
+    /**
+     * Clean up the name of a session namespace for storage.
+     *
+     * @param string $suffix
+     * @return string
+     */
     public static function getNamespaceName($suffix = 'default')
     {
         $app_hash = strtoupper(substr(md5(DF_INCLUDE_BASE), 0, 5));
         return 'DF_'.$app_hash.'_'.$suffix;
     }
-    
+
+    /**
+     * Temporarily suspend the session in mid-page.
+     */
     public static function suspend()
     {
         @session_write_close();
     }
+
+    /**
+     * Resume a temporarily suspended session.
+     */
     public static function resume()
     {
         @session_start();
-    }
-
-    public static function isStarted()
-    {
-        if (defined('PHP_SESSION_ACTIVE'))
-            return (session_status() !== PHP_SESSION_ACTIVE);
-        else
-            return (!session_id());
     }
 
     /**
@@ -98,7 +113,7 @@ class Session
     }
 
     /**
-     * Indicates if sessions are currently active.
+     * Indicates if sessions are currently active (and permitted).
      *
      * @return bool
      */
@@ -113,4 +128,16 @@ class Session
         return true;
     }
 
+    /**
+     * Indicates if a session has already been started in this page load.
+     *
+     * @return bool
+     */
+    public static function isStarted()
+    {
+        if (defined('PHP_SESSION_ACTIVE'))
+            return (session_status() !== PHP_SESSION_ACTIVE);
+        else
+            return (!session_id());
+    }
 }

@@ -14,6 +14,9 @@ class BaseController extends \DF\Phalcon\Controller
     {
         parent::preDispatch();
 
+        // Disable session creation.
+        \DF\Session::disable();
+
         // Disable rendering.
         $this->doNotRender();
 

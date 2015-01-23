@@ -7,16 +7,22 @@
 namespace DF;
 class Session
 {
+    protected static $prevent_sessions = false;
+
     public static function start()
     {
         static $is_started = false;
 
+        if ($is_started)
+            return true;
+
         if (DF_IS_COMMAND_LINE)
             return false;
 
-        if (!$is_started)
-            $is_started = session_start();
+        if (self::$prevent_sessions)
+            return false;
 
+        $is_started = session_start();
         return $is_started;
     }
 
@@ -59,4 +65,29 @@ class Session
     {
         @session_start();
     }
+
+    public static function isStarted()
+    {
+        if (defined('PHP_SESSION_ACTIVE'))
+            return (session_status() !== PHP_SESSION_ACTIVE);
+        else
+            return (!session_id());
+    }
+
+    /**
+     * Prevent sessions from being created.
+     */
+    public static function disable()
+    {
+        self::$prevent_sessions = true;
+    }
+
+    /**
+     * Reallow sessions to be created after previously prevented.
+     */
+    public static function enable()
+    {
+        self::$prevent_sessions = false;
+    }
+
 }

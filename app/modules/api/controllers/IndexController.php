@@ -27,6 +27,9 @@ class IndexController extends BaseController
      */
     public function timeAction()
     {
+        // Re-enable session management for this API function.
+        \DF\Session::enable();
+
         $tz_info = \PVL\Timezone::getInfo();
 
         return $this->returnSuccess(array(

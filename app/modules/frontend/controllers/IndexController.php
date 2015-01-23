@@ -54,15 +54,16 @@ class IndexController extends BaseController
         }
 
         $this->view->autoplay = (bool)$this->getParam('autoplay', true);
-
-        $render_mode = $this->getParam('mode', 'default');
-        if ($render_mode == 'chat')
-            $this->view->pick('index/index-chat');
     }
 
     public function tuneinAction()
     {
         $this->forceInsecure();
+
+        // Disable session creation.
+        \DF\Session::disable();
+
+        // Switch to maintenance theme.
         $this->view->setLayout('maintenance');
 
         $this->view->embed_mode = ($this->_getParam('embed', 'false') == 'true');
@@ -84,10 +85,12 @@ class IndexController extends BaseController
     public function chatAction()
     {
         $this->forceInsecure();
-        $this->view->layout()->setLayout('maintenance');
-        $this->view->skin = $this->_getParam('skin', 'dark');
 
         $this->_initStations();
+
+        // Pull podcasts.
+        $podcasts = Podcast::fetchLatest();
+        $this->view->podcasts = $podcasts;
     }
 
     public function appAction()

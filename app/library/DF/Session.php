@@ -16,10 +16,7 @@ class Session
         if ($is_started)
             return true;
 
-        if (DF_IS_COMMAND_LINE)
-            return false;
-
-        if (self::$prevent_sessions)
+        if (!self::isActive())
             return false;
 
         $is_started = session_start();
@@ -88,6 +85,32 @@ class Session
     public static function enable()
     {
         self::$prevent_sessions = false;
+    }
+
+    /**
+     * Indicate if a session exists on the user's computer already.
+     *
+     * @return bool
+     */
+    public static function exists()
+    {
+        return isset($_COOKIE[session_name()]);
+    }
+
+    /**
+     * Indicates if sessions are currently active.
+     *
+     * @return bool
+     */
+    public static function isActive()
+    {
+        if (DF_IS_COMMAND_LINE)
+            return false;
+
+        if (self::$prevent_sessions)
+            return false;
+
+        return true;
     }
 
 }

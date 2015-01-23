@@ -8,14 +8,18 @@ class Instance implements \ArrayAccess
 
     public function __construct($namespace = 'default')
     {
-        \DF\Session::start();
-
         $this->_namespace = $namespace;
 
-        if (isset($_SESSION[$this->_namespace]))
+        // Lazy load session.
+        if (\DF\Session::exists())
+        {
+            \DF\Session::start();
             $this->_data = $_SESSION[$this->_namespace];
+        }
         else
+        {
             $this->_data = array();
+        }
     }
 
     /**
@@ -28,10 +32,14 @@ class Instance implements \ArrayAccess
     {
         $this->_data[$name] = $value;
 
-        if (!isset($_SESSION[$this->_namespace]))
-            $_SESSION[$this->_namespace] = array();
+        if (\DF\Session::isActive()) {
+            \DF\Session::start();
 
-        $_SESSION[$this->_namespace][$name] = $value;
+            if (!isset($_SESSION[$this->_namespace]))
+                $_SESSION[$this->_namespace] = array();
+
+            $_SESSION[$this->_namespace][$name] = $value;
+        }
     }
 
     /**
@@ -44,10 +52,14 @@ class Instance implements \ArrayAccess
     {
         $this->_data[$name] = $value;
 
-        if (!isset($_SESSION[$this->_namespace]))
-            $_SESSION[$this->_namespace] = array();
+        if (\DF\Session::isActive()) {
+            \DF\Session::start();
 
-        $_SESSION[$this->_namespace][$name] = $value;
+            if (!isset($_SESSION[$this->_namespace]))
+                $_SESSION[$this->_namespace] = array();
+
+            $_SESSION[$this->_namespace][$name] = $value;
+        }
     }
 
     /**
@@ -108,7 +120,11 @@ class Instance implements \ArrayAccess
     public function __unset($name)
     {
         unset($this->_data[$name]);
-        unset($_SESSION[$this->_namespace][$name]);
+
+        if (\DF\Session::isActive()) {
+            \DF\Session::start();
+            unset($_SESSION[$this->_namespace][$name]);
+        }
     }
 
     /**
@@ -119,6 +135,10 @@ class Instance implements \ArrayAccess
     public function offsetUnset($name)
     {
         unset($this->_data[$name]);
-        unset($_SESSION[$this->_namespace][$name]);
+
+        if (\DF\Session::isActive()) {
+            \DF\Session::start();
+            unset($_SESSION[$this->_namespace][$name]);
+        }
     }
 }

@@ -12,7 +12,7 @@ class CacheTask extends Task
         $this->printLn('Local cache flushed.');
 
         // Flush CloudFlare cache.
-        if (DF_APPLICATION_ENV != 'production') {
+        if (DF_APPLICATION_ENV == 'production') {
             $apis = $this->config->apis->toArray();
             if (isset($apis['cloudflare'])) {
                 $url_base = 'https://www.cloudflare.com/api_json.html';

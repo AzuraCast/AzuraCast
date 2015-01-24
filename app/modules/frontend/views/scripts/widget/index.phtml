@@ -7,7 +7,7 @@ $default_example_params = array(
     'skin' => 'dark',
     'embed' => 'true',
 );
-$default_example_url = \DF\Url::route($default_example_params);
+$default_example_url = \DF\Url::addSchemePrefix(\DF\Url::route($default_example_params));
 $default_example = '<iframe src="'.$default_example_url.'" frameborder="0" allowtransparency="true" style="width: 100%; height: 600px; border: 0; overflow-x: hidden; overflow-y: scroll;"></iframe>';
 
 $station_example_params = array(
@@ -19,7 +19,7 @@ $station_example_params = array(
     'showonlystation' => 'true',
     'id' => 1,
 );
-$station_example_url = \DF\Url::route($station_example_params);
+$station_example_url = \DF\Url::addSchemePrefix(\DF\Url::route($station_example_params));
 $station_example = '<iframe src="'.$station_example_url.'" frameborder="0" allowtransparency="true" style="width: 100%; height: 420px; border: 0;"></iframe>';
 
 $categories = \Entity\Station::getStationsInCategories();
@@ -44,14 +44,16 @@ $categories = \Entity\Station::getStationsInCategories();
 <dl>
     <dt>/id/[station id]</dt>
     <dd>Choose from one of the station IDs specified below:
-        <dl class="dl-horizontal">
+        <dl>
         <? foreach($categories as $cat): ?>
-            <dt><i class="<?=$cat['icon'] ?>"></i> <?=$cat['name'] ?></dt>
-            <dd>
-            <? foreach($cat['stations'] as $station): ?>
-                <div><?=$station['id'] ?> - <?=$station['name'] ?></div>
-            <? endforeach; ?>
-            </dd>
+            <? if (!empty($cat['stations'])): ?>
+                <dt><i class="<?=$cat['icon'] ?>"></i> <?=$cat['name'] ?></dt>
+                <dd>
+                <? foreach($cat['stations'] as $station): ?>
+                    <div><?=$station['id'] ?> - <?=$station['name'] ?></div>
+                <? endforeach; ?>
+                </dd>
+            <? endif; ?>
         <? endforeach; ?>
         </dl>
     </dd>

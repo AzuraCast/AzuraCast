@@ -370,7 +370,9 @@ function processNowPlaying()
             {
                 var stream_listeners = intOrZero(stream_row.listeners.current);
 
-                if (stream_row.status != 'online')
+                if (stream_row.status == 'online')
+                    station.find('li[rel="'+stream_row.id+'"]').show();
+                else
                     station.find('li[rel="'+stream_row.id+'"]').hide();
 
                 station.find('li[rel="'+stream_row.id+'"] .nowplaying-stream-listeners').html('<i class="icon-user"></i>'+stream_listeners);

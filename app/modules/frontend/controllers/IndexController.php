@@ -20,7 +20,7 @@ class IndexController extends BaseController
         $this->view->podcasts = $podcasts;
 
         // Pull large photos and news for rotator.
-        $network_news = NetworkNews::fetch();
+        $network_news = NetworkNews::fetchFeatured();
         $this->view->network_news = $network_news;
 
         // Pull stations.

@@ -19,10 +19,6 @@
     -moz-border-radius: 15px;
   }
 
-  div.item h4 a {
-    color: #FFF;
-  }
-
   div.carousel-inner {
     border-radius: 15px;
     -webkit-border-radius: 15px;
@@ -35,22 +31,106 @@
 
   div.item {
     border: 0;
+    height: 300px;
 
     border-radius: 15px;
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
 
-    img {
-      border-radius: 15px 15px 0 0;
-      -webkit-border-radius: 15px 15px 0 0;
-      -moz-border-radius: 15px 15px 0 0;
+    h4, a, div, span {
+      color: #FFF;
     }
 
-    .carousel-caption {
-      border-radius: 0 0 15px 15px;
-      -webkit-border-radius: 0 0 15px 15px;
-      -moz-border-radius: 0 0 15px 15px;
+    &.layout-horizontal {
+      img {
+        border-radius: 15px 15px 0 0;
+        -webkit-border-radius: 15px 15px 0 0;
+        -moz-border-radius: 15px 15px 0 0;
+      }
+
+      .carousel-caption {
+        border-radius: 0 0 15px 15px;
+        -webkit-border-radius: 0 0 15px 15px;
+        -moz-border-radius: 0 0 15px 15px;
+
+        padding-right: 140px;
+
+        .post-date {
+          display: none;
+        }
+        .readmore {
+          font-size: 12px;
+          line-height: 12px;
+        }
+        .tags {
+          display: none;
+        }
+      }
     }
+
+    &.layout-vertical {
+      img {
+        border-radius: 15px 0 0 15px;
+        -webkit-border-radius: 15px 0 0 15px;
+        -moz-border-radius: 15px 0 0 15px;
+      }
+      .carousel-caption {
+        padding-top: 50px;
+        padding-bottom: 50px;
+        height: 230px;
+
+        position: absolute;
+        left: 600px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+
+        .post-date {
+          color: #999;
+        }
+
+        h4 {
+          font-size: 25px;
+          line-height: 27px;
+        }
+
+        p {
+          font-size: 16px;
+          line-height: 18px;
+        }
+
+        .readmore {
+          display: block;
+          text-align: right;
+          font-size: 14px;
+          font-weight: bold;
+        }
+
+        .tags {
+          padding: 5px 0;
+
+          span {
+            color: #999;
+            background: #111;
+            border-radius: 3px;
+            padding: 3px;
+          }
+        }
+      }
+    }
+  }
+
+  a.carousel-control {
+    top: auto;
+    right: 75px;
+    bottom: 15px;
+    left: auto;
+  }
+  a.carousel-control.right {
+    top: auto;
+    right: 15px;
+    bottom: 15px;
+    left: auto;
   }
 
   .special_event {

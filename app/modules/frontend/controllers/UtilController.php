@@ -7,7 +7,8 @@ class UtilController extends BaseController
     {
         $this->doNotRender();
 
-        echo \PVL\Service\PvlNode::push('test', array('test' => true));
+        \PVL\Debug::setEchoMode();
 
+        \PVL\NewsManager::syncNetwork();
     }
 }

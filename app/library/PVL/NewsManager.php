@@ -9,12 +9,13 @@ class NewsManager
     {
         $di = \Phalcon\Di::getDefault();
         $em = $di->get('em');
+        $config = $di->get('config');
 
         // Pull featured images.
         $timestamp_threshold = strtotime('-6 weeks');
 
         $api_params = array(
-            'api_key'       => 'Hp1W4lpJ0dhHA7pOGih0yow02ZXAFHdiIR5bzFS67C0xlERPAZ',
+            'api_key'       => $config->apis->tumblr->key,
             'limit'         => 10,
         );
         $api_url = 'http://api.tumblr.com/v2/blog/news.ponyvillelive.com/posts/photo?'.http_build_query($api_params);
@@ -27,12 +28,34 @@ class NewsManager
             $results = json_decode($results_raw, true);
             $posts = $results['response']['posts'];
 
-            $network_news = array();
             foreach((array)$posts as $post)
             {
-                $image = $post['photos'][0]['original_size'];
+                if ($post['timestamp'] < $timestamp_threshold)
+                    continue;
 
-                if ($image['height'] > 250)
+                $image = null;
+                $post_style = 'vertical';
+                $image_is_valid = false;
+
+                foreach((array)$post['photos'] as $photo)
+                {
+                    $image = $photo['original_size'];
+
+                    if ($image['width'] == 600 && $image['height'] == 300) // New vertical style.
+                    {
+                        $image_is_valid = true;
+                        $post_style = 'vertical';
+                        break;
+                    }
+                    elseif ($image['width'] == 1150 && $image['height'] == 200) // Older horizontal style.
+                    {
+                        $image_is_valid = true;
+                        $post_style = 'horizontal';
+                        break;
+                    }
+                }
+
+                if (!$image_is_valid)
                     continue;
 
                 // Copy the image to the local static directory (for SSL and other caching support).
@@ -49,37 +72,33 @@ class NewsManager
                     @copy($image_url, $local_path);
 
                     // Optimize image for fast display.
-                    \DF\Image::resizeImage($local_path, $local_path, 1150, 200);
+                    \DF\Image::resizeImage($local_path, $local_path, $image['width'], $image['height']);
                 }
 
                 $tags = array_map('strtolower', (array)$post['tags']);
                 if (in_array('archive', $tags))
                     continue;
 
-                $description = \DF\Utilities::truncateText(strip_tags($post['caption']), 250);
+                $description = strip_tags($post['caption']);
+                if (strpos($description, ':') === FALSE)
+                    break;
 
-                if (strpos($description, ':') !== FALSE)
-                {
-                    list($title, $description) = explode(':', $description, 2);
-                }
-                else
-                {
-                    $title = $description;
-                    $description = NULL;
-                }
+                list($title, $description) = explode(':', $description, 2);
+                $description = \DF\Utilities::truncateText($description, 300);
 
-                $news_row = array(
+                $news_items[] = array(
                     'id'        => 'tumblr_'.$post['id'],
                     'title'     => trim($title),
                     'body'      => trim($description),
                     'image_url' => $local_url,
                     'web_url'   => $post['post_url'],
+                    'layout'    => $post_style,
+                    'tags'      => (array)$post['tags'],
                     'timestamp' => $post['timestamp'],
                 );
-
-                if ($news_row['timestamp'] >= $timestamp_threshold)
-                    $news_items[] = $news_row;
             }
+
+            \PVL\Debug::print_r($news_items);
 
             // Delete current rotator contents.
             $em->createQuery('DELETE FROM Entity\NetworkNews nn')->execute();
@@ -93,6 +112,9 @@ class NewsManager
             }
 
             $em->flush();
+
+            // Flush cache of homepage news.
+            \DF\Cache::remove('homepage_featured_news');
         }
     }
 }

@@ -46,6 +46,12 @@ return array(
         'curl_ssl_verifypeer' => false,
     ),
 
+    // Tumblr API settings.
+    'tumblr' => array(
+        "key" => '',
+        "secret" => '',
+    ),
+
     // Notifico settings.
     'notifico_push_url' => '',
 

@@ -1,10 +1,10 @@
 <?php
-$this->view->setVar('title', 'Chat Mode');
-$this->view->manual = true;
-$this->view->hide_title = true;
+$title = ('Chat Mode');
+$manual = true;
+$hide_title = true;
 
 $channels = array();
-foreach($this->view->stations as $station)
+foreach($stations as $station)
 {
     if ($station['irc'])
         $channels[$station['irc']] = $station['name'].': '.$station['irc'];
@@ -33,26 +33,26 @@ else
         <div class="tabbable">
             <h2><i class="icon-volume-up"></i> Tune In to PVL</h2>
             <ul class="nav nav-pills">
-                <li class="active"><a href="#tab_audio" data-toggle="tab"><i class="<?=$this->view->categories['audio']['icon'] ?>"></i> <?=$this->view->categories['audio']['name'] ?></a></li>
-                <li><a href="#tab_video" data-toggle="tab"><i class="<?=$this->view->categories['video']['icon'] ?>"></i> <?=$this->view->categories['video']['name'] ?></a></li>
+                <li class="active"><a href="#tab_audio" data-toggle="tab"><i class="<?=$categories['audio']['icon'] ?>"></i> <?=$categories['audio']['name'] ?></a></li>
+                <li><a href="#tab_video" data-toggle="tab"><i class="<?=$categories['video']['icon'] ?>"></i> <?=$categories['video']['name'] ?></a></li>
                 <li><a href="#tab_podcasts" data-toggle="tab"><i class="icon-rss"></i> Podcasts</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_audio">
                     <?
-                    $cat = $this->view->categories['audio'];
+                    $cat = $categories['audio'];
                     echo $this->viewHelper->renderCommon('station', array('stations' => $cat['stations']));
                     ?>
                 </div>
                 <div class="tab-pane" id="tab_video">
                     <?
-                    $cat = $this->view->categories['video'];
+                    $cat = $categories['video'];
                     echo $this->viewHelper->renderCommon('station', array('stations' => $cat['stations']));
                     ?>
                 </div>
                 <div class="tab-pane" id="tab_podcasts">
                     <?
-                    echo $this->viewHelper->renderCommon('podcast', array('podcasts' => array_slice($this->view->podcasts, 0, 12, TRUE)));
+                    echo $this->viewHelper->renderCommon('podcast', array('podcasts' => array_slice($podcasts, 0, 12, TRUE)));
                     ?>
                 </div>
             </div>

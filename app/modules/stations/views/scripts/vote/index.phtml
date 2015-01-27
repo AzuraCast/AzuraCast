@@ -1,5 +1,5 @@
 <?php
-$this->view->setVar('title', 'New Station Intake Voting');
+$title = ('New Station Intake Voting');
 
 echo $this->viewHelper->renderHere('stationname', true);
 echo $this->viewHelper->renderHere('homelink', true);
@@ -21,7 +21,7 @@ echo $this->viewHelper->renderHere('homelink', true);
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->view->pending_stations as $record): ?>
+    <? foreach($pending_stations as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">

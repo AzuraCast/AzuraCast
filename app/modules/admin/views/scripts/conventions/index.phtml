@@ -1,5 +1,5 @@
 <?
-$this->view->setVar('title', 'Manage Conventions');
+$title = 'Manage Conventions';
 ?>
 
 <div class="buttons">
@@ -12,7 +12,7 @@ $this->view->setVar('title', 'Manage Conventions');
     )) ?>
 </div>
 
-<?=$this->viewHelper->paginate($this->view->pager) ?>
+<?=$this->viewHelper->paginate($pager) ?>
 
 <table class="table table-bordered table-striped table-nopadding">
     <colgroup>
@@ -32,7 +32,7 @@ $this->view->setVar('title', 'Manage Conventions');
     </tr>
     </thead>
     <tbody>
-    <? foreach($this->view->pager as $record): ?>
+    <? foreach($pager as $record): ?>
         <tr class="input <? if ($record['signup_enabled'] == 1): ?>text-success<? endif; ?>">
             <td class="center">
                 <div class="btn-group">
@@ -69,7 +69,7 @@ $this->view->setVar('title', 'Manage Conventions');
             </td>
             <td class="center">
                 <?
-                $level = $this->view->coverage[$record['coverage_level']];
+                $level = $coverage[$record['coverage_level']];
                 ?>
                 <div title="<?=$level['text'] ?>"><i class="large-icon <?=$level['icon'] ?>"></i></div>
             </td>
@@ -92,4 +92,4 @@ $this->view->setVar('title', 'Manage Conventions');
     </tbody>
 </table>
 
-<?=$this->viewHelper->paginate($this->view->pager) ?>
+<?=$this->viewHelper->paginate($pager) ?>

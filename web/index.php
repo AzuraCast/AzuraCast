@@ -8,7 +8,8 @@ require __DIR__ . '/../app/bootstrap.php';
 try
 {
     $application = new Application($di);
-    $application->bootstrap()->run();;
+
+    $application->bootstrap()->run();
 }
 catch(\Exception $e)
 {

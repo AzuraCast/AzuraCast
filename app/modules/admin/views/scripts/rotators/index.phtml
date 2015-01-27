@@ -1,5 +1,5 @@
 <?
-$this->view->setVar('title', 'Manage Rotator Banners');
+$title = 'Manage Rotator Banners';
 ?>
 
 <div class="buttons">
@@ -26,7 +26,7 @@ $this->view->setVar('title', 'Manage Rotator Banners');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->view->records as $record): ?>
+    <? foreach($records as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
@@ -45,7 +45,7 @@ $this->view->setVar('title', 'Manage Rotator Banners');
             </td>
             <td class="center" <? if (!$record['is_approved']): ?>style="opacity: 0.2;"<? endif; ?>><img src="<?=\DF\Url::content($record['image_url']) ?>"></td>
             <td>
-                <div><big><?=$this->link($record['web_url']) ?></big></div>
+                <div><big><?=$this->viewHelper->link($record['web_url']) ?></big></div>
             <? if ($record['description']): ?>
                 <div><?=$record['description'] ?></div>
             <? endif; ?>

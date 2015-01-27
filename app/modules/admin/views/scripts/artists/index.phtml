@@ -1,5 +1,5 @@
 <?
-$this->view->setVar('title', 'Manage Artists');
+$title = 'Manage Artists';
 ?>
 
 <div class="buttons">
@@ -21,7 +21,7 @@ $this->view->setVar('title', 'Manage Artists');
     )) ?>
 </form>
 
-<?=$this->viewHelper->paginate($this->view->pager) ?>
+<?=$this->viewHelper->paginate($pager) ?>
 
 <table class="table table-striped table-nopadding">
     <colgroup>
@@ -45,7 +45,7 @@ $this->view->setVar('title', 'Manage Artists');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->view->pager as $record): ?>
+    <? foreach($pager as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
@@ -91,4 +91,4 @@ $this->view->setVar('title', 'Manage Artists');
     </tbody>
 </table>
 
-<?=$this->viewHelper->paginate($this->view->pager) ?>
+<?=$this->viewHelper->paginate($pager) ?>

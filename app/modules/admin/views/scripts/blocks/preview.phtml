@@ -1,5 +1,5 @@
 <?
-$this->view->setVar('title', 'Preview Block: '.$this->view->block->name);
+$title = 'Preview Block: '.$block->name;
 ?>
 
-<?=$this->viewHelper->renderBlock($this->view->block); ?>
+<?=$this->viewHelper->renderBlock($block); ?>

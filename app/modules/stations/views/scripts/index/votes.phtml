@@ -1,6 +1,6 @@
 <?
-$this->view->setVar('title', 'Station Center');
-$this->view->manual = true;
+$title = ('Station Center');
+$manual = true;
 ?>
 
 <?=$this->viewHelper->renderHere('header') ?>
@@ -22,7 +22,7 @@ $this->view->manual = true;
                 </tr>
             </thead>
             <tbody>
-            <? foreach($this->view->votes as $song_row): ?>
+            <? foreach($votes as $song_row): ?>
                 <tr class="input">
                     <td class="center">
                         <big>

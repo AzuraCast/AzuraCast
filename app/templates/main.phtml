@@ -21,8 +21,8 @@ $skin = \PVL\Customization::get('theme');
     <link href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" />
 
     <?php
-    if ($this->view->title)
-        $page_title = $this->view->title.' - '.$this->config->application->name;
+    if ($title)
+        $page_title = $title.' - '.$this->config->application->name;
     else
         $page_title = $this->config->application->name.' - Live Pony Radio, Video, Podcasts, Convention Coverage & More';
 
@@ -100,8 +100,8 @@ $skin = \PVL\Customization::get('theme');
 </div>
 
 
-<? if ($this->view->content_top): ?>
-    <?=$this->view->content_top ?>
+<? if ($content_top): ?>
+    <?=$content_top ?>
 <? else: ?>
     <div id="secondary_header_stripe" class="rich_header">&nbsp;</div>
 <? endif; ?>
@@ -126,21 +126,21 @@ $skin = \PVL\Customization::get('theme');
 
                 <div id="content_wrapper">
                     <div id="content">
-                        <? if (!$this->view->hide_title): ?>
-                            <h1 class="title"><?=$this->view->title ?></h1>
+                        <? if (!$hide_title): ?>
+                            <h1 class="title"><?=$title ?></h1>
                         <? endif; ?>
 
-                        <? if ($this->view->tabs): ?>
+                        <? if ($tabs): ?>
                             <div id="content_tabs">
-                                <?=$this->view->tabs ?>
+                                <?=$tabs ?>
                             </div>
                         <? endif; ?>
 
-                        <? if ($this->view->subtitle): ?>
-                            <h2 class="title"><?=$this->view->subtitle ?></h2>
+                        <? if ($subtitle): ?>
+                            <h2 class="title"><?=$subtitle ?></h2>
                         <? endif; ?>
 
-                        <? if ($this->view->manual): ?>
+                        <? if ($manual): ?>
                             <?php echo $this->getContent(); ?>
                         <? else: ?>
                             <div class="row-fluid">

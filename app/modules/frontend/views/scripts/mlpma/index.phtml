@@ -1,5 +1,5 @@
 <?
-$this->view->setVar('title', 'The MLP Music Archive');
+$title = ('The MLP Music Archive');
 
 $this->assets->collection('custom_css')->addCss('mlpma/style.css');
 ?>
@@ -11,7 +11,7 @@ ob_start();
     <a href="<?=$this->viewHelper->route(array('module' => 'mlpma')) ?>" class="ajax"><img src="<?=\DF\Url::content('mlpma/mlpma_logo.png') ?>" alt="The MLP Music Archive, a Ponyville Live! Project"></a>
 </div>
 <?
-$this->view->content_top = ob_get_contents();
+$content_top = ob_get_contents();
 ob_end_clean();
 ?>
 

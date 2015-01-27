@@ -12,9 +12,9 @@ $this->assets->collection('custom_css')
     var pvlnode_remote_path = '<?=$this->config->apis->pvlnode_remote_path ?>';
 </script>
 
-<? if ($this->view->station_id && $this->view->autoplay): ?>
+<? if ($station_id && $autoplay): ?>
 <script type="text/javascript">
-var pvl_autoplay_station = <?=$this->view->station_id ?>;
+var pvl_autoplay_station = <?=$station_id ?>;
 </script>
 <? endif; ?>
 

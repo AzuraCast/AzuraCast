@@ -1,6 +1,6 @@
 <?
-$this->view->setVar('title', 'Station Center');
-$this->view->manual = true;
+$title = ('Station Center');
+$manual = true;
 
 $this->assets->collection('custom_js')
     ->addJs('//code.highcharts.com/highcharts.js', false)
@@ -82,7 +82,7 @@ Highcharts.setOptions({
                     <col width="40%">
                 </colgroup>
                 <tbody>
-                <? foreach($this->view->station->managers as $manager): ?>
+                <? foreach($station->managers as $manager): ?>
                     <tr class="input">
                         <td><?=$manager->email ?></td>
                         <td>
@@ -131,7 +131,7 @@ Highcharts.setOptions({
                     <col width="80%">
                 </colgroup>
                 <tbody>
-                <? foreach($this->view->best_performing_songs as $song_row): ?>
+                <? foreach($best_performing_songs as $song_row): ?>
                     <tr>
                         <td class="center text-success"><i class="icon-caret-up"></i> <?=abs($song_row['stat_delta']) ?><br><small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?></td>
                         <td>
@@ -159,7 +159,7 @@ Highcharts.setOptions({
                     <col width="80%">
                 </colgroup>
                 <tbody>
-                <? foreach($this->view->worst_performing_songs as $song_row): ?>
+                <? foreach($worst_performing_songs as $song_row): ?>
                     <tr>
                         <td class="center text-error"><i class="icon-caret-down"></i> <?=abs($song_row['stat_delta']) ?><br><small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?></td>
                         <td>
@@ -194,7 +194,7 @@ Highcharts.setOptions({
                     <col width="80%">
                 </colgroup>
                 <tbody>
-                <? foreach($this->view->song_totals['played'] as $song_row): ?>
+                <? foreach($song_totals['played'] as $song_row): ?>
                     <tr>
                         <td class="center"><?=$song_row['records'] ?></td>
                         <td>

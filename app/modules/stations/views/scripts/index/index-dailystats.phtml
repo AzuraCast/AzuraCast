@@ -57,15 +57,15 @@ $(function () {
         series: [{
             name: 'Daily Listener Range',
             type: 'arearange',
-            data: <?=$this->view->daily_ranges ?>
+            data: <?=$daily_ranges ?>
         }, {
             name: 'Hourly Average Listeners',
             type: 'spline',
-            data: <?=$this->view->hourly_averages ?>
+            data: <?=$hourly_averages ?>
         }, {
             name: 'Daily Average Listeners',
             type: 'spline',
-            data: <?=$this->view->daily_averages ?>
+            data: <?=$daily_averages ?>
         }]
     });
 });

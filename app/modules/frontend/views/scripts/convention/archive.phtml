@@ -1,9 +1,9 @@
 <?
-$this->view->setVar('title', $this->view->convention->name);
-$this->view->manual = true;
+$title = $convention->name;
+$manual = true;
 ?>
 
-<? if ($this->view->convention->image_url): ?>
+<? if ($convention->image_url): ?>
     <?
     ob_start();
     ?>
@@ -11,13 +11,13 @@ $this->view->manual = true;
         <div class="container">
             <div class="well">
                 <div class="item">
-                    <img src="<?=\DF\Url::content($this->view->convention->image_url) ?>" alt="Convention Thumbnail">
+                    <img src="<?=\DF\Url::content($convention->image_url) ?>" alt="Convention Thumbnail">
                 </div>
             </div>
         </div>
     </div>
     <?
-    $this->view->content_top = ob_get_contents();
+    $content_top = ob_get_contents();
     ob_end_clean();
     ?>
 <? endif; ?>
@@ -28,24 +28,24 @@ $this->view->manual = true;
         <div class="well">
             <ul class="nav nav-list">
                 <li class="nav-header">Location</li>
-                <li><span><?=$this->view->convention->location ?></span></li>
+                <li><span><?=$convention->location ?></span></li>
 
                 <li class="nav-header">Dates</li>
-                <li><span><?=$this->view->convention->range ?></span></li>
+                <li><span><?=$convention->range ?></span></li>
 
-            <? if ($this->view->convention->web_url): ?>
+            <? if ($convention->web_url): ?>
                 <li class="nav-header">Homepage</li>
-                <li><a href="<?=$this->view->convention->web_url ?>" target="_blank"><?=$this->view->convention->web_url ?></a></li>
+                <li><a href="<?=$convention->web_url ?>" target="_blank"><?=$convention->web_url ?></a></li>
             <? endif; ?>
 
                 <li class="nav-header">Folders</li>
-                <? foreach($this->view->videos as $folder): ?>
+                <? foreach($videos as $folder): ?>
                     <li><a href="#folder_<?=$folder['key'] ?>"><i class="icon-folder-open"></i> <?=$folder['name'] ?></a></li>
                 <? endforeach; ?>
 
-            <? if ($this->view->sources): ?>
+            <? if ($sources): ?>
                 <li class="nav-header">Video Sources</li>
-                <? foreach($this->view->sources as $source): ?>
+                <? foreach($sources as $source): ?>
                     <li><a href="<?=$source['web_url'] ?>" target="_blank"><i class="icon-globe"></i> <?=$source['name'] ?></a></li>
                 <? endforeach; ?>
             <? endif; ?>
@@ -54,8 +54,8 @@ $this->view->manual = true;
 
         <h2><i class="icon-folder-open-alt"></i> More Archives</h2>
         <div class="well">
-            <ul class="nav nav-list autoselect" rel="<?=$this->view->convention->id ?>">
-            <? foreach($this->view->conventions_archived as $record): ?>
+            <ul class="nav nav-list autoselect" rel="<?=$convention->id ?>">
+            <? foreach($conventions_archived as $record): ?>
                 <li rel="<?=$record['id'] ?>"><a href="<?=$this->viewHelper->routeFromHere(array('id' => $record['id'])) ?>">
                     <b><?=$record['name'] ?></b><br>
                     <?=$record['location'] ?> &bull; <?=$record['range'] ?>
@@ -65,7 +65,7 @@ $this->view->manual = true;
         </div>
     </div>
     <div class="span9">
-    <? foreach($this->view->videos as $folder): ?>
+    <? foreach($videos as $folder): ?>
         <h2 id="folder_<?=$folder['key'] ?>"><i class="icon-folder-open"></i> <?=$folder['name'] ?></h2>
 
         <?

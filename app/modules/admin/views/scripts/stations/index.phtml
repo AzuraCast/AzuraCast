@@ -1,5 +1,5 @@
 <?
-$this->view->setVar('title', 'Manage Stations');
+$title = 'Manage Stations';
 ?>
 
 <div class="buttons">
@@ -18,24 +18,24 @@ $this->view->setVar('title', 'Manage Stations');
     <div class="span4">
         <h3>Radio Stations</h3>
         <?
-        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$this->view->categories['audio']));
+        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['audio']));
         ?>
     </div>
     <div class="span4">
         <h3>Video Streams</h3>
         <?
-        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$this->view->categories['video']));
+        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['video']));
         ?>
     </div>
     <div class="span4">
         <h3>Special Events</h3>
         <?
-        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$this->view->categories['event']));
+        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['event']));
         ?>
 
         <h3>Internal Tracking</h3>
         <?
-        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$this->view->categories['internal']));
+        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['internal']));
         ?>
     </div>
 </div>
@@ -58,7 +58,7 @@ $this->view->setVar('title', 'Manage Stations');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->view->pending_stations as $record): ?>
+    <? foreach($pending_stations as $record): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">

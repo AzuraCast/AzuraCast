@@ -1,6 +1,6 @@
 <?
-$this->view->setVar('title', 'Convention Center');
-$this->view->manual = true;
+$title = ('Convention Center');
+$manual = true;
 ?>
 
 <div class="row-fluid">
@@ -13,7 +13,7 @@ $this->view->manual = true;
         <h3>Upcoming Conventions</h3>
 
         <dl>
-        <? foreach($this->view->conventions_upcoming as $record): ?>
+        <? foreach($conventions_upcoming as $record): ?>
             <? if ($record['coverage_level'] != "none"): ?>
             <dt><a href="<?=$record['web_url'] ?>" target="_blank"><?=$record['name'] ?></a></dt>
             <dd>
@@ -29,7 +29,7 @@ $this->view->manual = true;
         <h2>Convention Video Archives</h2>
 
         <?
-        $cols = \DF\Utilities::columns($this->view->conventions_archived);
+        $cols = \DF\Utilities::columns($conventions_archived);
         ?>
         <div class="conventions row-fluid">
             <? foreach($cols as $col): ?>

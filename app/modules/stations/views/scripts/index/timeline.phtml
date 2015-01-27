@@ -1,6 +1,6 @@
 <?
-$this->view->setVar('title', 'Station Center');
-$this->view->manual = true;
+$title = ('Station Center');
+$manual = true;
 ?>
 
 <?=$this->viewHelper->renderHere('header') ?>
@@ -10,8 +10,8 @@ $this->view->manual = true;
     <div class="span12">
         <h2>Recent Playback Timeline</h2>
 
-        <ul class="nav nav-tabs autoselect" rel="<?=$this->view->stream_id ?>">
-        <? foreach($this->view->station->streams as $stream): ?>
+        <ul class="nav nav-tabs autoselect" rel="<?=$stream_id ?>">
+        <? foreach($station->streams as $stream): ?>
             <li rel="<?=$stream->id ?>"><a href="<?=$this->viewHelper->routeFromHere(array('stream' => $stream->id, 'page' => NULL)) ?>"><? if ($stream->is_default): ?><i class="icon-star"></i> <? endif; ?><?=$stream->name ?></a></li>
         <? endforeach; ?>
         </ul>
@@ -25,7 +25,7 @@ $this->view->manual = true;
             )) ?>
         </div>
 
-        <?=$this->viewHelper->paginate($this->view->pager) ?>
+        <?=$this->viewHelper->paginate($pager) ?>
 
         <table class="datatable table-striped table-condensed table-nopadding">
             <colgroup>
@@ -47,7 +47,7 @@ $this->view->manual = true;
                 </tr>
             </thead>
             <tbody>
-            <? foreach($this->view->pager as $song_row): ?>
+            <? foreach($pager as $song_row): ?>
                 <tr class="input" id="song_<?=$song_row['timestamp'] ?>">
                     <td class="center"><?=date('D g:ia', $song_row['timestamp']) ?></td>
                     <td class="center"><big><?=$song_row['stat_start'] ?></big></td>
@@ -92,6 +92,6 @@ $this->view->manual = true;
             </tbody>
         </table>
 
-        <?=$this->viewHelper->paginate($this->view->pager) ?>
+        <?=$this->viewHelper->paginate($pager) ?>
     </div>
 </div>

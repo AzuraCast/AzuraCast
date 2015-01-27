@@ -1,12 +1,12 @@
 <?php
-$this->view->setVar('title', 'Show: '.$this->view->podcast->name);
+$title = ('Show: '.$podcast->name);
 ?>
 
 <div class="clearfix">
-    <img class="pull-left" src="<?=\DF\Url::content($this->view->podcast->image_url) ?>" style="width: 150px; margin-right: 10px;">
+    <img class="pull-left" src="<?=\DF\Url::content($podcast->image_url) ?>" style="width: 150px; margin-right: 10px;">
 
     <blockquote>
-        <p><?=nl2br($this->view->podcast->description) ?></p>
+        <p><?=nl2br($podcast->description) ?></p>
     </blockquote>
 
     <div class="buttons">
@@ -22,12 +22,12 @@ $this->view->setVar('title', 'Show: '.$this->view->podcast->name);
 
 <dl>
     <dt>URL:</dt>
-    <dd><a href="<?=$this->view->podcast->web_url ?>"><?=$this->view->podcast->web_url ?></a></dd>
+    <dd><a href="<?=$podcast->web_url ?>"><?=$podcast->web_url ?></a></dd>
 
-<? if (count($this->view->podcast->stations) > 0): ?>
+<? if (count($podcast->stations) > 0): ?>
     <dt>Also airs on:</dt>
     <dd>
-    <? foreach($this->view->podcast->stations as $station): ?>
+    <? foreach($podcast->stations as $station): ?>
         <div><?=$station->name ?></div>
     <? endforeach; ?>
     </dd>
@@ -37,7 +37,7 @@ $this->view->setVar('title', 'Show: '.$this->view->podcast->name);
 <br>
 <h2>Recent Episodes</h2>
 
-<? foreach($this->view->episodes as $ep): ?>
+<? foreach($episodes as $ep): ?>
     <h4>
         <small><?=date('l, F j, Y g:ia', $ep['timestamp']) ?></small><br>
         <a href="<?=$ep['web_url'] ?>" target="_blank"><?=$ep['title'] ?></a>

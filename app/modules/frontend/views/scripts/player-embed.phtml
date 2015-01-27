@@ -1,8 +1,8 @@
 <? foreach($categories as $cat_key => $cat): ?>
     <? if (count($cat['stations']) > 0): ?>
         <?
-        $this->view->render_mode = 'embed';
-        $this->view->stations = $cat['stations'];
+        $render_mode = 'embed';
+        $stations = $cat['stations'];
         echo $this->viewHelper->renderCommon('station');
         ?>
     <? endif; ?>

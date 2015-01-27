@@ -1,14 +1,14 @@
 <?php
-$this->view->setVar('title', 'New Station Intake Voting');
-$this->view->manual = true;
+$title = ('New Station Intake Voting');
+$manual = true;
 ?>
 
 <div class="row-fluid">
     <div class="span8">
-        <?=$this->view->station_form->renderView() ?>
+        <?=$station_form->renderView() ?>
     </div>
     <div class="span4">
         <h2>Vote for Station</h2>
-        <?=$this->view->form->render() ?>
+        <?=$form->render() ?>
     </div>
 </div>

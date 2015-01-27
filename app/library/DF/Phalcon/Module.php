@@ -70,22 +70,6 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
                 }
             });
 
-            // Set error handling globals.
-            $eventsManager->attach("dispatch:beforeException", function($event, $dispatcher, $exception) {
-
-                // Handle 404 Page Not Found errors.
-                if ($exception instanceof \Phalcon\Mvc\Dispatcher\Exception && $dispatcher->getModuleName() == 'frontend') {
-                    $dispatcher->forward(array(
-                        'module'        => 'frontend',
-                        'controller'    => 'error',
-                        'action'        => 'pagenotfound',
-                    ));
-                    return false;
-                }
-
-                throw $exception;
-            });
-
             $dispatcher = new \Phalcon\Mvc\Dispatcher;
             $dispatcher->setEventsManager($eventsManager);
 
@@ -105,31 +89,12 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         });
 
         // Set up the view component and shared templates.
-        $views_dir = $this->_module_dir . '/views/scripts/';
+        $views_dir = 'modules/'.$module_base_name.'/views/scripts/';
 
         $di['view'] = function () use($views_dir) {
-            $view = new \Phalcon\Mvc\View();
-
-            $eventsManager = new \Phalcon\Events\Manager();
-            $view->setEventsManager($eventsManager);
-
-            // Base directory from which all views load.
-            $view->setViewsDir($views_dir);
-
-            // Relative path of main templates.
-            $view->setLayoutsDir('../../../../templates');
-            $view->setLayout('main');
-
-            // Use present directory for partials by default.
-            $view->setPartialsDir('');
-
-            // Register template engines.
-            $view->registerEngines(array(
-                ".phtml" => 'Phalcon\Mvc\View\Engine\Php',
-                ".volt" => 'Phalcon\Mvc\View\Engine\Volt'
+            return \DF\Phalcon\View::getView(array(
+                'views_dir' => $views_dir,
             ));
-
-            return $view;
         };
     }
 

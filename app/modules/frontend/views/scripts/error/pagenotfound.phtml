@@ -1,6 +1,6 @@
 <?php
-$this->view->setVar('title', '404: Page Not Found');
-$this->view->manual = true;
+$title = ('404: Page Not Found');
+$manual = true;
 
 $sayings = array(
     'Yeah...It\'s a Mystery.',
@@ -8,12 +8,12 @@ $sayings = array(
     'Derpy Ate This Page.',
 );
 shuffle($sayings);
-$subtitle = current($sayings);
+$snarky_subtitle = current($sayings);
 ?>
 
 <div class="row-fluid">
     <div class="span8">
-        <h2><?=$subtitle ?></h2>
+        <h2><?=$snarky_subtitle ?></h2>
         <center><img src="<?=\DF\Url::content('images/404.png') ?>" alt="Happy Derpeh" title="Who can be mad at a face like that?" /></center>
     </div>
     <div class="span4">

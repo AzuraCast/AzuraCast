@@ -1,9 +1,9 @@
 <?
-$this->view->setVar('title', $this->view->station->name);
+$setVar('title', $station->name);
 ?>
 <h2>Upcoming Schedule</h2>
 
-<? foreach($this->view->station_events as $day_date => $day_info): ?>
+<? foreach($station_events as $day_date => $day_info): ?>
     <h3><?=$day_info['day_name'] ?><br><small><?=date('F j, Y', $day_info['timestamp']) ?></small></h3>
     <dl class="dl-horizontal">
     <? foreach($day_info['events'] as $event): ?>

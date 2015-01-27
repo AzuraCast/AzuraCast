@@ -1,5 +1,5 @@
 <?
-$this->view->setVar('title', 'My Profile');
+$title = ('My Profile');
 ?>
 
 <div class="row-fluid">
@@ -18,11 +18,11 @@ $this->view->setVar('title', 'My Profile');
         <div class="well">
             <div class="media clearfix">
                 <a class="pull-left" href="http://gravatar.com" target="_blank" title="Click to configure your avatar on Gravatar's web site.">
-                    <img class="media-object" src="<?=$this->view->user->avatar ?>">
+                    <img class="media-object" src="<?=$user->avatar ?>">
                 </a>
                 <div class="media-body">
-                    <div><big><?=$this->view->user->name ?></big></div>
-                    <div><?=$this->viewHelper->mailto($this->view->user->email) ?></div>
+                    <div><big><?=$user->name ?></big></div>
+                    <div><?=$this->viewHelper->mailto($user->email) ?></div>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@ $this->view->setVar('title', 'My Profile');
                 <col width="90%">
             </colgroup>
             <tbody>
-            <? foreach($this->view->external_providers as $provider_key => $provider_info): ?>
+            <? foreach($external_providers as $provider_key => $provider_info): ?>
                 <tr class="input">
                     <td class="center"><i class="large-icon <?=$provider_info['icon'] ?>"></i></td>
                     <td>
@@ -59,14 +59,14 @@ $this->view->setVar('title', 'My Profile');
         <div class="tabbable">
             <ul class="nav nav-tabs">
             <? $i = 0; ?>
-            <? foreach($this->view->song_lists as $list_key => $list): ?>
+            <? foreach($song_lists as $list_key => $list): ?>
                 <li class="<? if ($i == 0): ?>active<? endif; ?>"><a href="#list_<?=$list_key ?>" data-toggle="tab"><i class="<?=$list['icon'] ?>"></i> <?=$list['name'] ?> (<?=count($list['items']) ?>)</a></li>
                 <? $i++; ?>
             <? endforeach; ?>
             </ul>
             <div class="tab-content">
             <? $i = 0; ?>
-            <? foreach($this->view->song_lists as $list_key => $list): ?>
+            <? foreach($song_lists as $list_key => $list): ?>
                 <div class="tab-pane <? if ($i == 0): ?>active<? endif; ?>" id="list_<?=$list_key ?>">
                     <h2><i class="<?=$list['icon'] ?>"></i> <?=$list['name'] ?></h2>
 

@@ -1,6 +1,6 @@
 <?php
-$this->view->manual = TRUE;
-$this->view->hide_title = true;
+$manual = TRUE;
+$hide_title = true;
 $this->render_mode = 'homepage';
 ?>
 
@@ -9,28 +9,28 @@ ob_start();
 ?>
 <div id="home_header" class="rich_header">
     <div class="container">
-    <? if ($this->view->special_event): ?>
+    <? if ($special_event): ?>
         <div class="well">
             <div class="special_event">
                 <div class="row-fluid">
-                    <? if (empty($this->view->special_chat_embed)): ?>
-                        <div class="span12"><?=$this->view->special_event_embed ?></div>
+                    <? if (empty($special_chat_embed)): ?>
+                        <div class="span12"><?=$special_event_embed ?></div>
                     <? else: ?>
-                        <div class="span7"><?=$this->view->special_event_embed ?></div>
+                        <div class="span7"><?=$special_event_embed ?></div>
                         <div class="span5"><?=$this->viewHelper->renderHere('chat', TRUE) ?></div>
                     <? endif; ?>
                 </div>
             </div>
         </div>
-    <? elseif (count($this->view->network_news) > 0): ?>
+    <? elseif (count($network_news) > 0): ?>
         <div class="well carousel slide" id="rotator" data-interval="5000">     
             <ol class="carousel-indicators">
-            <? for($i = 0; $i < count($this->view->network_news); $i++): ?>
+            <? for($i = 0; $i < count($network_news); $i++): ?>
                 <li data-target="#rotator" data-slide-to="<?=$i ?>" <? if ($i == 0): ?>class="active"<? endif; ?>></li>
             <? endfor; ?>
             </ol>
             <div class="carousel-inner">
-            <? foreach($this->view->network_news as $i => $article): ?>
+            <? foreach($network_news as $i => $article): ?>
                 <div class="item layout-<?=$article['layout'] ?> <? if ($i == 0): ?>active<? endif; ?>">
                     <a href="<?=$article['web_url'] ?>"><img src="<?=$article['image_url'] ?>" alt="Article Image"></a>
                     <div class="carousel-caption">
@@ -96,12 +96,12 @@ ob_start();
     </div>
 </div>
 <?
-$this->view->content_top = ob_get_contents();
+$content_top = ob_get_contents();
 ob_end_clean();
 ?>
 
 <?
-$cat = $this->view->categories['audio'];
+$cat = $categories['audio'];
 $station_cols = \DF\Utilities::columns($cat['stations'], 3);
 ?>
 
@@ -110,20 +110,20 @@ $station_cols = \DF\Utilities::columns($cat['stations'], 3);
 <div class="row-fluid">
     <div class="span4">
         <?
-        $this->view->stations = $station_cols[0];
-        echo $this->viewHelper->renderCommon('station');
+        $stations = $station_cols[0];
+        echo $this->viewHelper->renderCommon('station', array('stations' => $stations));
         ?>
     </div>
     <div class="span4">
         <?
-        $this->view->stations = $station_cols[1];
-        echo $this->viewHelper->renderCommon('station');
+        $stations = $station_cols[1];
+        echo $this->viewHelper->renderCommon('station', array('stations' => $stations));
         ?>
     </div>
     <div class="span4">
         <?
-        $this->view->stations = $station_cols[2];
-        echo $this->viewHelper->renderCommon('station');
+        $stations = $station_cols[2];
+        echo $this->viewHelper->renderCommon('station', array('stations' => $stations));
         ?>
     </div>
 </div>
@@ -134,34 +134,34 @@ $station_cols = \DF\Utilities::columns($cat['stations'], 3);
         <h2 id="section_shows"><i class="icon-rss"></i> Shows <small>Showing new episodes, <a href="<?=$this->url->get('show') ?>">view all</a></small></h2>
     </div>
     <div class="span4">
-        <h2 id="section_video"><i class="<?=$this->view->categories['video']['icon'] ?>"></i> Video Streams <small><span id="nowplaying-listeners-video"></span></small></h2>
+        <h2 id="section_video"><i class="<?=$categories['video']['icon'] ?>"></i> Video Streams <small><span id="nowplaying-listeners-video"></span></small></h2>
     </div>
 </div>
 
 <!-- Show/Video Content -->
 <?
-$podcasts = array_slice($this->view->podcasts, 0, 8);
+$podcasts = array_slice($podcasts, 0, 8);
 $podcast_cols = \DF\Utilities::columns($podcasts, 2, true);
 ?>
 
 <div class="row-fluid">
     <div class="span4">
         <?
-        $this->view->podcasts = $podcast_cols[0];
-        echo $this->viewHelper->renderCommon('podcast');
+        $podcasts = $podcast_cols[0];
+        echo $this->viewHelper->renderCommon('podcast', array('podcasts' => $podcasts));
         ?>
     </div>
     <div class="span4">
         <?
-        $this->view->podcasts = $podcast_cols[1];
-        echo $this->viewHelper->renderCommon('podcast');
+        $podcasts = $podcast_cols[1];
+        echo $this->viewHelper->renderCommon('podcast', array('podcasts' => $podcasts));
         ?>
     </div>
     <div class="span4">
         <?
-        $cat = $this->view->categories['video'];
-        $this->view->stations = $cat['stations'];
-        echo $this->viewHelper->renderCommon('station');
+        $cat = $categories['video'];
+        $stations = $cat['stations'];
+        echo $this->viewHelper->renderCommon('station', array('stations' => $stations));
         ?>
     </div>
 </div>
@@ -180,7 +180,7 @@ $tz_info = \PVL\Timezone::getInfo();
 <h2><i class="icon-folder-open-alt"></i> Convention Archives</h2>
 
 <?
-$cons = array_slice($this->view->conventions_archived, 0, 12);
+$cons = array_slice($conventions_archived, 0, 12);
 $cols = \DF\Utilities::columns($cons, 3);
 ?>
 

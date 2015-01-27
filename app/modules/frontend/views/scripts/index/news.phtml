@@ -1,8 +1,8 @@
 <?php
-$this->view->setVar('title', $this->type_name);
+$setVar('title', $this->type_name);
 ?>
 
-<?=$this->viewHelper->paginate($this->view->pager) ?>
+<?=$this->viewHelper->paginate($pager) ?>
 
 <div class="media-list">
 <? foreach($this->pager as $article): ?>
@@ -17,4 +17,4 @@ $this->view->setVar('title', $this->type_name);
 <? endforeach; ?>
 </div>
 
-<?=$this->viewHelper->paginate($this->view->pager) ?>
+<?=$this->viewHelper->paginate($pager) ?>

@@ -1,6 +1,6 @@
 <?php
-$this->view->setVar('title', 'Artist Profile: '.$this->artist->name);
-$this->view->manual = true;
+$title = ('Artist Profile: '.$this->artist->name);
+$manual = true;
 
 $social_links = \Entity\Artist::getSocialTypes();
 ?>

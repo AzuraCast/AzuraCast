@@ -1,6 +1,6 @@
 <?php
-$skin = ($this->view->skin) ? $this->view->skin : 'dark';
-$embed = ($this->view->embed_mode) ? 'embedded' : 'non-embedded';
+$skin = ($skin) ? $skin : 'dark';
+$embed = ($embed_mode) ? 'embedded' : 'non-embedded';
 ?>
 <!DOCTYPE html>
 <html class="compact_layout theme_<?=$skin ?> <?=$embed ?>">
@@ -9,8 +9,8 @@ $embed = ($this->view->embed_mode) ? 'embedded' : 'non-embedded';
     <meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true">
 
     <?php
-    if ($this->view->title)
-        $page_title = $this->view->title.' - '.$this->config->application->name;
+    if ($title)
+        $page_title = $title.' - '.$this->config->application->name;
     else
         $page_title = $this->config->application->name.' - Live Pony Radio, Video, Podcasts, Convention Coverage & More';
 
@@ -62,7 +62,7 @@ $embed = ($this->view->embed_mode) ? 'embedded' : 'non-embedded';
 <body>
 <div id="body-wrapper">
     <div id="body" class="container">
-        <? if ($this->view->manual): ?>
+        <? if ($manual): ?>
             <?php echo $this->getContent(); ?>
         <? else: ?>
             <div class="row-fluid">

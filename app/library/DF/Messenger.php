@@ -25,26 +25,18 @@ class Messenger
         // Render the template as the message if a template is specified.
         if (isset($options['template']))
         {
-            $layout = new \Zend_Layout();
-            $layout->setLayoutPath($config->application->resources->layout->layoutPath);
-            $layout->setLayout('message');
-            
-            $view_renderer = Application\Bootstrap::getNewView(FALSE);
-            $view = $view_renderer->view;
-            
-            if (isset($options['module']))
-                $view_script_path = DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$options['module'].DIRECTORY_SEPARATOR.'messages';
-            else
-                $view_script_path = $config->application->mail->templates;
-            
-            $view->setScriptPath($view_script_path);
+            \DF\Url::forceSchemePrefix(TRUE);
+
+            $view = \DF\Phalcon\View::getView(array(
+                'views_dir' => 'messages',
+                'layouts_dir' => '../templates',
+                'layout'    => 'message',
+            ));
             
             $view->subject = $options['subject'];
-            $view->assign((array)$options['vars']);
-            
-            $layout->content = $view->render($options['template'].'.phtml');
-            
-            $options['message'] = $layout->render();
+            $view->setVars((array)$options['vars']);
+
+            $options['message'] = $view->getRender('', $options['template']);
         }
         else if (isset($options['body']) && !isset($options['message']))
         {

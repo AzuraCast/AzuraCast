@@ -1,6 +1,6 @@
 <?
-$this->view->setVar('title', 'Manage Permissions');
-$this->view->manual = TRUE;
+$title = 'Manage Permissions';
+$manual = TRUE;
 ?>
 
 <div class="row-fluid">
@@ -24,7 +24,7 @@ $this->view->manual = TRUE;
                     <col width="60%" />
                 </colgroup>
                 <tbody>
-                <? foreach($this->view->roles as $role): ?>
+                <? foreach($roles as $role): ?>
                     <tr class="input">
                         <td class="center">
                             <?=$this->viewHelper->button(array(
@@ -79,7 +79,7 @@ $this->view->manual = TRUE;
                     <col width="60%" />
                 </colgroup>
                 <tbody>
-                <? foreach($this->view->actions as $action): ?>
+                <? foreach($actions as $action): ?>
                     <tr class="input">
                         <td class="center">
                             <?=$this->viewHelper->button(array(

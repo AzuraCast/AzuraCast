@@ -1,4 +1,4 @@
-<h2><?=$this->subject ?></h2>
+<h2><?=$subject ?></h2>
 
 <p>You are receiving this e-mail because you are listed as the administrator of an active Ponyville Live! station.</p>
 
@@ -6,9 +6,9 @@
 
 <p>
     To access the station center and submit your vote, visit this page:<br>
-    <?=$this->link($this->route(array('module' => 'stations'))) ?>
+    <?=$this->viewHelper->link($this->viewHelper->route(array('module' => 'stations'))) ?>
 </p>
 
 <p>Station details are listed below:</p>
 
-<?=$this->form ?>
+<?=$form->renderView() ?>

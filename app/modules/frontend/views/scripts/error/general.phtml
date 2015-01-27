@@ -1,0 +1,7 @@
+<?php
+$title = 'An Error Occurred';
+?>
+
+<h2><?=$e->getMessage() ?></h2>
+<p>An error has occurred on this page. Please retry your request again later, or contact the administrators if the issue continues.</p>
+<p><small>Exception found on line <?=$e->getLine() ?> of <?=$e->getFile() ?></small></p>

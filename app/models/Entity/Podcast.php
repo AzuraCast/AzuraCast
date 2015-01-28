@@ -136,7 +136,7 @@ class Podcast extends \DF\Doctrine\Entity
             }
 
             // Bulk query for all podcasts related to recent episodes.
-            $podcasts_raw = $em->createQuery('SELECT p, s FROM Entity\Podcast p LEFT JOIN p.stations s WHERE p.id IN (:podcasts)')
+            $podcasts_raw = $em->createQuery('SELECT p, s FROM Entity\Podcast p LEFT JOIN p.stations s WHERE p.id IN (:podcasts) AND p.is_approved = 1')
                 ->setParameter('podcasts', array_keys($eps))
                 ->getArrayResult();
 
@@ -228,11 +228,11 @@ class Podcast extends \DF\Doctrine\Entity
         return array(
             'web_url' => array(
                 'name' => 'Web Site',
-                'icon' => 'sharethis',
+                'icon' => 'link',
             ),
             'rss_url'   => array(
                 'name' => 'RSS',
-                'icon' => 'rss',
+                'icon' => 'feed',
                 'adapter' => 'Rss',
                 'threshold' => '-6 months',
             ),

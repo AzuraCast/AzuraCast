@@ -176,3 +176,4 @@ $di->setShared('viewHelper', '\DF\Phalcon\Service\ViewHelper');
 // PVL-specific customization.
 $system_tz = \PVL\Customization::get('timezone');
 @date_default_timezone_set($system_tz);
+

@@ -4,6 +4,7 @@
  */
 
 namespace DF;
+
 class Messenger
 {
     /**

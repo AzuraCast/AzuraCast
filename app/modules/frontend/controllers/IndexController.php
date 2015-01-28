@@ -99,6 +99,15 @@ class IndexController extends BaseController
     public function aboutAction()
     {}
 
+    public function contactAction()
+    {
+        $all_categories = Station::getStationsInCategories();
+        $this->view->categories = array($all_categories['audio'], $all_categories['video']);
+
+        $this->view->podcasts = array_filter(Podcast::fetchArray('name'), function($row) { return $row['is_approved']; });
+        $this->view->podcast_social_types = Podcast::getSocialTypes();
+    }
+
     public function donateAction()
     {}
 

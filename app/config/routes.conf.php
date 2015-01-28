@@ -40,6 +40,11 @@ return array(
             'controller' => 'convention',
             'action' => 'index',
         ),
+        '/contact' => array(
+            'module' => 'frontend',
+            'controller' => 'index',
+            'action' => 'contact',
+        ),
 
         // Podcasts
         '/shows' => array(

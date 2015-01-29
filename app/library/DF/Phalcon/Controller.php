@@ -44,7 +44,7 @@ class Controller extends \Phalcon\Mvc\Controller
 
         // NewRelic Logging.
         if (function_exists('newrelic_name_transaction')) {
-            $app_url = $this->request->getURI();
+            $app_url = '/'.$this->dispatcher->getModuleName().'/'.$this->dispatcher->getControllerName().'/'.$this->dispatcher->getActionName();
             newrelic_name_transaction($app_url);
         }
 

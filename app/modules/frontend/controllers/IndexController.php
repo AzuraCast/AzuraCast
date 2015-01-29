@@ -102,9 +102,28 @@ class IndexController extends BaseController
     public function contactAction()
     {
         $all_categories = Station::getStationsInCategories();
-        $this->view->categories = array($all_categories['audio'], $all_categories['video']);
 
-        $this->view->podcasts = array_filter(Podcast::fetchArray('name'), function($row) { return $row['is_approved']; });
+        $audio_stations = \DF\Utilities::columns($all_categories['audio']['stations'], 2);
+        $video_stations = $all_categories['video']['stations'];
+
+        $this->view->station_columns = array(
+            array(
+                '<i class="icon '.$all_categories['audio']['icon'].'"></i> '.$all_categories['audio']['name'],
+                $audio_stations[0],
+            ),
+            array(
+                '&nbsp;',
+                $audio_stations[1],
+            ),
+            array(
+                '<i class="icon '.$all_categories['video']['icon'].'"></i> '.$all_categories['video']['name'],
+                $video_stations,
+            ),
+        );
+
+        $active_podcasts = array_filter(Podcast::fetchArray('name'), function($row) { return $row['is_approved']; });
+        $this->view->podcasts = \DF\Utilities::columns($active_podcasts, 3);
+
         $this->view->podcast_social_types = Podcast::getSocialTypes();
     }
 

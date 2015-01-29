@@ -35,7 +35,10 @@ $manual = true;
                     <div class="social" style="padding-bottom: 10px;">
                         <a href="mailto:borg@ponyvillelive.com"><img src="<?=\DF\Url::content('social/email.png') ?>" alt="E-mail"></a>
                         <a href="https://twitter.com/weareborgpony" target="_blank"><img src="<?=\DF\Url::content('social/twitter.png') ?>" alt="Twitter"></a>
+                        <a href="skype:weyrling" target="_blank"><img src="<?=\DF\Url::content('social/skype.png') ?>" alt="Skype"></a>
                     </div>
+
+                    <p>Hello! I'm WeAreBorg, and I'm the associate director for the Ponyville Live! media network.  I'm the biggest "brony" you'll ever meet and love helping with conventions and community projects like PVL!  I'm a tech geek that's a server admin by day and a music loving gamer/bike mechanic by night. Let me know if there’s anything I can do to make your PVL! experience better!</p>
                 </div>
             </div>
         </div>
@@ -66,11 +69,11 @@ $manual = true;
 <br>
 
 <div class="row-fluid">
-<? foreach($categories as $cat_info): ?>
+<? foreach($station_columns as $col): ?>
     <div class="span4">
-        <h2><i class="icon <?=$cat_info['icon'] ?>"></i> <?=$cat_info['name'] ?></h2>
+        <h2><?=$col[0] ?></h2>
         <div class="media-list">
-        <? foreach($cat_info['stations'] as $station): ?>
+        <? foreach($col[1] as $station): ?>
             <div class="media">
                 <img src="<?=\DF\Url::content($station['image_url']) ?>" alt="Station" class="pull-left" style="width: 50px;">
                 <div class="media-body">
@@ -92,11 +95,16 @@ $manual = true;
         </div>
     </div>
 <? endforeach; ?>
-    <div class="span4">
-        <h2><i class="icon-rss"></i> Shows &amp; Podcasts</h2>
+</div>
 
+<br>
+
+<h2><i class="icon-rss"></i> Shows &amp; Podcasts</h2>
+<div class="row-fluid">
+<? foreach($podcasts as $col): ?>
+    <div class="span4">
         <div class="media-list">
-        <? foreach($podcasts as $podcast): ?>
+        <? foreach($col as $podcast): ?>
             <div class="media">
                 <img src="<?=\DF\Url::content($podcast['image_url']) ?>" alt="Station" class="pull-left" style="width: 50px;">
                 <div class="media-body">
@@ -116,4 +124,5 @@ $manual = true;
         <? endforeach; ?>
         </div>
     </div>
+<? endforeach; ?>
 </div>

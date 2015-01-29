@@ -42,6 +42,12 @@ class Controller extends \Phalcon\Mvc\Controller
             ini_set('display_errors', 1);
         }
 
+        // NewRelic Logging.
+        if (function_exists('newrelic_name_transaction')) {
+            $app_url = $this->request->getURI();
+            newrelic_name_transaction($app_url);
+        }
+
         return true;
     }
 

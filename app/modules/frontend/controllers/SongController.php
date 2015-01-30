@@ -60,20 +60,19 @@ class SongController extends BaseController
             ->getArrayResult();
 
         $history = array();
+        $last_row = NULL;
+
         foreach($history_raw as $i => $row)
         {
-            if (isset($history_raw[$i-1]))
+            if ($last_row && $row['station_id'] == $last_row['station_id'])
             {
-                $previous_row = $history_raw[$i - 1];
-                if ($row['station_id'] == $previous_row['station_id'])
-                {
-                    $timestamp_diff = abs($row['timestamp'] - $previous_row['timestamp']);
-                    if ($timestamp_diff < 30)
-                        continue;
-                }
+                $timestamp_diff = abs($row['timestamp'] - $last_row['timestamp']);
+                if ($timestamp_diff < 30)
+                    continue;
             }
 
             $history[] = $row;
+            $last_row = $row;
         }
 
         $song_info['recent_history'] = $history;

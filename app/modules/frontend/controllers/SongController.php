@@ -49,15 +49,34 @@ class SongController extends BaseController
         $song_info['lyrics'] = $this->_cleanUpText($song_info['lyrics']);
 
         // Get most recent playback information.
-        $song_info['recent_history'] = $this->em->createQuery('
+        $history_raw = $this->em->createQuery('
             SELECT sh, st
             FROM Entity\SongHistory sh JOIN sh.station st
-            WHERE sh.song_id = :song_id AND st.category IN (:categories)
+            WHERE sh.song_id = :song_id AND st.category IN (:categories) AND sh.timestamp >= :threshold
             ORDER BY sh.timestamp DESC')
             ->setParameter('song_id', $record->id)
             ->setParameter('categories', array('audio', 'video'))
-            ->setMaxResults(20)
+            ->setParameter('threshold', strtotime('-1 week'))
             ->getArrayResult();
+
+        $history = array();
+        foreach($history_raw as $i => $row)
+        {
+            if (isset($history_raw[$i-1]))
+            {
+                $previous_row = $history_raw[$i - 1];
+                if ($row['station_id'] == $previous_row['station_id'])
+                {
+                    $timestamp_diff = abs($row['timestamp'] - $previous_row['timestamp']);
+                    if ($timestamp_diff < 30)
+                        continue;
+                }
+            }
+
+            $history[] = $row;
+        }
+
+        $song_info['recent_history'] = $history;
 
         // Get requestable locations.
         $song_info['request_on'] = $this->em->createQuery('

@@ -27,11 +27,14 @@
     -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
     -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+
+    div.item {
+      height: 300px;
+    }
   }
 
   div.item {
     border: 0;
-    height: 300px;
 
     border-radius: 15px;
     -webkit-border-radius: 15px;

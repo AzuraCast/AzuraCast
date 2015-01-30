@@ -338,7 +338,7 @@ function processNowPlaying()
             // Trigger notification of song change.
             if (station.hasClass('playing'))
             {
-                if (stream.current_song.id != nowplaying_song_id) {
+                if (stream.current_song.id != nowplaying_song_id && jp_is_playing) {
                     notify(station.data('image'), station_info.station.name, stream.current_song.text, { tag: 'nowplaying' });
                 }
 
@@ -500,6 +500,7 @@ function playStation(id)
 					},
 					suspend: function(event) { 
 						console.log('Stream Suspended');
+
 						jp_is_playing = false;
 					},
 					error: function(event) {

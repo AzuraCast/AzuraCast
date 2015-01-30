@@ -65,8 +65,6 @@ class ErrorHandler
             if (DF_APPLICATION_ENV != 'production')
                 $show_debug = true;
 
-            $show_debug = false;
-
             if ($show_debug)
             {
                 $response = $di->get('response');

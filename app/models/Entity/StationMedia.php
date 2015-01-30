@@ -134,7 +134,7 @@ class StationMedia extends \DF\Doctrine\Entity
 
         $table_name = $em->getClassMetadata(__CLASS__)->getTableName();
 
-        $stmt = $db->executeQuery('SELECT sm.* FROM '.$db->quoteIdentifier($table_name).' AS sm WHERE sm.station_id = ? AND MATCH(sm.title, sm.artist, sm.album) AGAINST (?)', array($station->id, $query));
+        $stmt = $db->executeQuery('SELECT sm.* FROM '.$db->quoteIdentifier($table_name).' AS sm WHERE sm.station_id = ? AND CONCAT(sm.title, \' \', sm.artist, \' \', sm.album) LIKE ?', array($station->id, '%'.$query.'%'));
         $results = $stmt->fetchAll();
 
         return $results;

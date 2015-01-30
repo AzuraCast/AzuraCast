@@ -67,7 +67,7 @@ class SongController extends BaseController
             if ($last_row && $row['station_id'] == $last_row['station_id'])
             {
                 $timestamp_diff = abs($row['timestamp'] - $last_row['timestamp']);
-                if ($timestamp_diff < 30)
+                if ($timestamp_diff < 60)
                     continue;
             }
 

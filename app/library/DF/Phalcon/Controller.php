@@ -315,27 +315,21 @@ class Controller extends \Phalcon\Mvc\Controller
 
     protected function renderForm(\DF\Form $form, $mode = 'edit', $form_title = NULL)
     {
-        $body = '';
+        $this->view->disable();
+
+        $view = \DF\Phalcon\View::getView();
 
         // Show visible title.
         if ($form_title)
-            $body .= '<h2>'.$form_title.'</h2>';
+            $view->title = $form_title;
 
-        // Form render mode.
-        if ($mode == 'edit')
-            $body .= $form->render();
-        else
-            $body .= $form->renderView();
+        $view->form = $form;
+        $view->render_mode = $mode;
 
-        // Really "hacky" way of manually inserting form content instead of a view.
-        $events = $this->view->getEventsManager();
-        $events->attach("view:beforeRender", function($event, $view) use ($body) {
+        $result = $view->getRender('system', 'form');
 
-            $render_level = $view->getCurrentRenderLevel();
-
-            if ($render_level == \Phalcon\Mvc\View::LEVEL_NO_RENDER)
-                echo $body;
-        });
+        $this->response->setContent($result);
+        $this->response->send();
     }
 
     /* Parameter Handling */

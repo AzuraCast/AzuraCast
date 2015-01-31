@@ -26,11 +26,13 @@ return array(
                     'label' => 'E-mail Address',
                     'class' => 'half-width',
                     'required' => true,
+                    'autocomplete' => 'off',
                 )),
         
                 'auth_password' => array('password', array(
                     'label' => 'Reset Password',
                     'description' => 'To change your password, enter the new password in the field below.',
+                    'autocomplete' => 'off',
                 )),
                 
             ),

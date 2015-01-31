@@ -51,7 +51,11 @@ class Form
     {
         foreach((array)$default_values as $field_key => $default_value)
         {
-            if ($this->form->has($field_key))
+            if (is_array($default_value))
+            {
+                $this->setDefaults($default_value);
+            }
+            elseif ($this->form->has($field_key))
             {
                 $element = $this->form->get($field_key);
                 $element->setDefault($default_value);
@@ -127,6 +131,11 @@ class Form
             ));
 
             unset($field_options['minLength']);
+        }
+
+        if (isset($field_options['belongsTo'])) {
+            $field_name = $field_options['belongsTo'].'['.$field_key.']';
+            $field_options['name'] = $field_name;
         }
 
         // Set up element object.
@@ -465,10 +474,14 @@ class Form
         if ($submitted_data === null)
             $submitted_data = $_POST;
 
-        $values_obj = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
-        $this->form->bind($submitted_data, $values_obj);
+        $form = $this->form;
 
-        return $values_obj->getArrayCopy();
+        array_walk_recursive($submitted_data, function($val, $key) use ($form) {
+            if (!$form->has($key))
+                return NULL;
+        });
+
+        return $submitted_data;
     }
 
     /**

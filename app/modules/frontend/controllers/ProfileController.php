@@ -89,6 +89,8 @@ class ProfileController extends BaseController
 
         $user_profile = $user->toArray();
         $user_profile['customization'] = array_merge(\PVL\Customization::getDefaults(), $user_profile['customization']);
+        unset($user_profile['auth_password']);
+
         $form->setDefaults($user_profile);
 
         if($_POST && $form->isValid($_POST))
@@ -96,19 +98,17 @@ class ProfileController extends BaseController
             $data = $form->getValues();
 
             $user->fromArray($data);
-
-            if (!empty($data['new_password']))
-                $user->setAuthPassword($data['new_password']);
-
             $user->save();
+
+            foreach($data['customization'] as $custom_key => $custom_val)
+                \PVL\Customization::set($custom_key, $custom_val);
 
             $this->alert('Profile saved!', 'green');
             $this->redirectFromHere(array('action' => 'index'));
             return;
         }
 
-        $this->view->setVar('title', 'Edit Profile');
-        $this->renderForm($form);
+        $this->renderForm($form, 'edit', 'Edit Profile');
     }
 
     public function themeAction()

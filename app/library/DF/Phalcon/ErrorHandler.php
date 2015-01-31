@@ -88,7 +88,7 @@ class ErrorHandler
 
                 $view->setVar('e', $e);
 
-                $result = $view->render('error', 'general');
+                $result = $view->getRender('error', 'general');
 
                 $response = $di->get('response');
                 $response->setStatusCode(500, "Internal Server Error");

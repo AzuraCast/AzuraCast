@@ -34,20 +34,6 @@ class ArtistsController extends BaseController
             $this->render('list');
             return;
         }
-
-        /*
-        // Pull overall news.
-        $news = $this->em->createQuery('SELECT n FROM Entity\News n WHERE n.type = :type AND n.is_featured=1 AND n.is_approved=1 ORDER BY n.timestamp DESC')
-            ->setParameter('type', 'artist')
-            ->setMaxResults(20)
-            ->getArrayResult();
-
-        foreach($news as &$article)
-        {
-            $article['artist'] = Artist::find($article['author_id']);
-        }
-        $this->view->news = $news;
-        */
     }
 
     public function reviewAction()
@@ -55,6 +41,7 @@ class ArtistsController extends BaseController
 
     }
 
+    /*
     public function viewAction()
     {
         $id = (int)$this->_getParam('id');
@@ -88,12 +75,16 @@ class ArtistsController extends BaseController
         }
 
         $this->view->news = $news;
+
         $this->view->categories = $categories;
         $this->view->artist = $record;
     }
+    */
 
     public function submitAction()
-    { $this->redirectFromHere(array('action' => 'profile')); }
+    {
+        return $this->redirectFromHere(array('action' => 'profile'));
+    }
 
     public function profileAction()
     {

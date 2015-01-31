@@ -125,8 +125,14 @@ class Controller extends \Phalcon\Mvc\Controller
      */
     public function render($template_name = NULL)
     {
-        if (!is_null($template_name))
-            $this->view->pick($template_name);
+        if ($template_name === null)
+            $new_view = $this->dispatcher->getControllerName().'/'.$this->dispatcher->getActionName();
+        elseif (stristr($template_name, '/') !== false)
+            $new_view = $template_name;
+        else
+            $new_view = $this->dispatcher->getControllerName().'/'.$template_name;
+
+        $this->view->pick(array($new_view));
     }
 
     /**

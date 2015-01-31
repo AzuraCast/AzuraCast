@@ -1,9 +1,9 @@
 <?php
-$setVar('title', $this->type_name);
+$title = $type_name;
 $manual = true;
 ?>
 
-<div class="row">
+<div class="row-fluid">
     <div class="span3">
         <?=$this->viewHelper->renderHere('sidebar') ?>
     </div>
@@ -11,14 +11,14 @@ $manual = true;
         <div class="floating">
             <?=$this->viewHelper->paginate($pager) ?>
             <ul class="media-list">
-            <? foreach($this->pager as $artist): ?>
+            <? foreach($pager as $artist): ?>
                 <li class="media">
                     <div class="media-object pull-left">
                         <a href="<?=$this->viewHelper->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><img class="thumbnail" src="<?=\DF\Url::content($artist['image_url']) ?>" style="width: 64px;"></a>
                     </div>
                     <div class="media-body">
                         <h4>
-                            <a href="<?=$this->viewHelper->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><?=$artist['name'] ?></a><br>
+                            <? /* <a href="<?=$this->viewHelper->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><?=$artist['name'] ?></a> */ ?><?=$artist['name'] ?><br>
                             <small>
                                 <div>
                                 <? foreach($artist->types as $type): ?>
@@ -27,7 +27,7 @@ $manual = true;
                                 </div>
                             </small>
                         </h4>
-                        <div><small><?=\DF\Utilities::truncateText($artist['description'], 150) ?></small></div>
+                        <div><?=\DF\Utilities::truncateText($artist['description'], 150) ?></div>
                     </div>
                 </li>
             <? endforeach; ?>

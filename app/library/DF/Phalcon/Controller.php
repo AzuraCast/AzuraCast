@@ -319,6 +319,9 @@ class Controller extends \Phalcon\Mvc\Controller
 
         $view = \DF\Phalcon\View::getView();
 
+        if ($this->isAjax())
+            $view->setLayout(null);
+
         // Show visible title.
         if ($form_title)
             $view->title = $form_title;

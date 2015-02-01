@@ -58,6 +58,11 @@ $(function() {
 			});
 	}
 
+    if ($.fn.nanoScroller)
+    {
+        $(".nano").nanoScroller();
+    }
+
     /* Song Information button. */
     $('.btn-show-song-info').on('click', function(e) {
         e.preventDefault();

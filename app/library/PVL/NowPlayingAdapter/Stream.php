@@ -25,6 +25,8 @@ class Stream extends AdapterAbstract
 
         $stream_data = \DF\Export::XmlToArray($xml);
 
+        \PVL\Debug::print_r($stream_data);
+
         if ($stream_data['channel']['ls:isLive'] && $stream_data['channel']['ls:isLive'] == 'true')
         {
             $np['meta']['status'] = 'online';
@@ -48,6 +50,8 @@ class Stream extends AdapterAbstract
 
         $return = json_decode($return_raw, true);
         $stream = $return['stream'];
+
+        \PVL\Debug::print_r($stream);
 
         if (empty($stream))
             return false;

@@ -236,7 +236,6 @@ class IndexController extends BaseController
             }
 
             $station['current_stream_id'] = $current_stream_id;
-            $station['current_stream'] = $streams[$default_stream_id];
             $station['streams'] = $streams;
 
             // Only show stations with at least one usable stream.

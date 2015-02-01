@@ -254,6 +254,16 @@ a.convention {
   }
 }
 
+#schedule_container {
+  ul {
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    @include custom-scrollbar(#555);
+  }
+}
+
 .conventions.upcoming a.convention.coverage_none img {
   display: none;
 }

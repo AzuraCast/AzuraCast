@@ -99,6 +99,26 @@ ob_end_clean();
 ?>
 
 <?
+/*
+<div class="hide-if-empty">
+    <h2 id="section_video"><i class="<?=$categories['video']['icon'] ?>"></i> Live Video Streams <small><span id="nowplaying-listeners-video"></span></small></h2>
+
+    <div class="row-fluid">
+        <?
+        $cat = $categories['video'];
+        $stations = $cat['stations'];
+        foreach($stations as $station):
+        ?>
+        <div class="span4"><?=$this->viewHelper->renderCommon('video', array('stations' => array($station))); ?></div>
+        <?
+        endforeach;
+        ?>
+    </div>
+</div>
+*/
+?>
+
+<?
 $cat = $categories['audio'];
 $station_cols = \DF\Utilities::columns($cat['stations'], 3);
 ?>
@@ -126,44 +146,7 @@ $station_cols = \DF\Utilities::columns($cat['stations'], 3);
     </div>
 </div>
 
-<!-- Show/Video Headers -->
-<div class="row-fluid">
-    <div class="span8">
-        <h2 id="section_shows"><i class="icon-rss"></i> Shows <small>Showing new episodes, <a href="<?=$this->url->get('show') ?>">view all</a></small></h2>
-    </div>
-    <div class="span4">
-        <h2 id="section_video"><i class="<?=$categories['video']['icon'] ?>"></i> Video Streams <small><span id="nowplaying-listeners-video"></span></small></h2>
-    </div>
-</div>
-
-<!-- Show/Video Content -->
-<?
-$podcasts = array_slice($podcasts, 0, 8);
-$podcast_cols = \DF\Utilities::columns($podcasts, 2, true);
-?>
-
-<div class="row-fluid">
-    <div class="span4">
-        <?
-        $podcasts = $podcast_cols[0];
-        echo $this->viewHelper->renderCommon('podcast', array('podcasts' => $podcasts));
-        ?>
-    </div>
-    <div class="span4">
-        <?
-        $podcasts = $podcast_cols[1];
-        echo $this->viewHelper->renderCommon('podcast', array('podcasts' => $podcasts));
-        ?>
-    </div>
-    <div class="span4">
-        <?
-        $cat = $categories['video'];
-        $stations = $cat['stations'];
-        echo $this->viewHelper->renderCommon('station', array('stations' => $stations));
-        ?>
-    </div>
-</div>
-
+<!-- Upcoming on the Schedule -->
 <?
 $tz_info = \PVL\Timezone::getInfo();
 ?>
@@ -175,8 +158,22 @@ $tz_info = \PVL\Timezone::getInfo();
     ?>
 </div>
 
-<h2><i class="icon-folder-open-alt"></i> Convention Archives</h2>
+<!-- Shows/Podcasts -->
+<h2 id="section_shows"><i class="icon-rss"></i> Podcasts &amp; Show Archives <small>Newer episodes first, <a href="<?=$this->url->get('show') ?>">view all</a></small></h2>
 
+<?
+$podcasts = array_slice($podcasts, 0, 15);
+$podcast_cols = \DF\Utilities::columns($podcasts, 3, true);
+?>
+<div class="row-fluid">
+<? foreach($podcast_cols as $podcast_col): ?>
+    <div class="span4"><?=$this->viewHelper->renderCommon('podcast', array('podcasts' => $podcast_col)) ?></div>
+<? endforeach; ?>
+</div>
+
+
+
+<h2><i class="icon-folder-open-alt"></i> Convention Coverage</h2>
 <?
 $cons = array_slice($conventions_archived, 0, 12);
 $cols = \DF\Utilities::columns($cons, 3);

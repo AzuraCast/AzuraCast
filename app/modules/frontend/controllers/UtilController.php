@@ -7,12 +7,9 @@ class UtilController extends BaseController
     {
         $this->doNotRender();
 
-        throw new \DF\Exception('STUFF BROKE OMG');
-
-
 
         \PVL\Debug::setEchoMode();
 
-        \PVL\NewsManager::syncNetwork();
+        \PVL\NowPlaying::generate();
     }
 }

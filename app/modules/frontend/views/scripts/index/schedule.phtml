@@ -8,19 +8,19 @@ $col_span = (12 / (count($schedule)+1));
             <div class="well">
                 <h3><?=$day_info['day_name'] ?><br><small><?=date('F j, Y', $day_info['timestamp']) ?></small></h3>
                 <ul class="unstyled nopadding">
-                    <? foreach($day_info['events'] as $event): ?>
-                        <li class="clearfix">
-                            <img class="pull-left" src="<?=$event['image_url'] ?>" style="width: 32px; margin-right: 5px; margin-top: 5px;">
-                            <h5><?=\Entity\Schedule::formatName($event['title']) ?><br><small>
-                                    <? if ($event['status'] == "now"): ?>
-                                        <b>Right now</b>
-                                    <? else: ?>
-                                        <?=date('g:ia', $event['start_time']) ?>
-                                    <? endif; ?>
-                                    on <?=$event['station']['name'] ?>
-                                </small></h5>
-                        </li>
-                    <? endforeach; ?>
+                <? foreach($day_info['events'] as $event): ?>
+                    <li class="clearfix">
+                        <img class="pull-left" src="<?=$event['image_url'] ?>" style="width: 32px; margin-right: 5px; margin-top: 5px;">
+                        <h5><?=\Entity\Schedule::formatName($event['title']) ?><br><small>
+                                <? if ($event['status'] == "now"): ?>
+                                    <b>Right now</b>
+                                <? else: ?>
+                                    <?=date('g:ia', $event['start_time']) ?>
+                                <? endif; ?>
+                                on <?=$event['station']['name'] ?>
+                            </small></h5>
+                    </li>
+                <? endforeach; ?>
                 </ul>
             </div>
         </div>

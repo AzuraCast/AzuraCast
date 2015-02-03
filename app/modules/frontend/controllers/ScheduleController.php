@@ -16,12 +16,12 @@ class ScheduleController extends BaseController
         foreach($all_stations as $station_info)
             $stations[$station_info['short_name']] = $station_info;
 
-        $show = ($this->_hasParam('month')) ? $this->_getParam('month') : date('Ym');
+        $show = ($this->hasParam('month')) ? $this->getParam('month') : date('Ym');
         $calendar = new \DF\Calendar($show);
 
         $timestamps = $calendar->getTimestamps();
 
-        $station_shortcode = $this->_getParam('station', 'all');
+        $station_shortcode = $this->getParam('station', 'all');
         $this->view->station = $station_shortcode;
 
         if ($station_shortcode != "all")

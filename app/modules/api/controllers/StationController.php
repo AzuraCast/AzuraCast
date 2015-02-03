@@ -7,13 +7,13 @@ class StationController extends BaseController
 {
     public function indexAction()
     {
-        if ($this->_hasParam('station'))
+        if ($this->hasParam('station'))
         {
-            $record = Station::findByShortCode($this->_getParam('station'));
+            $record = Station::findByShortCode($this->getParam('station'));
         }
-        elseif ($this->_hasParam('id'))
+        elseif ($this->hasParam('id'))
         {
-            $id = (int)$this->_getParam('id');
+            $id = (int)$this->getParam('id');
             $record = Station::find($id);
         }
         else

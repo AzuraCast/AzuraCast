@@ -70,7 +70,7 @@ class SongController extends BaseController
 
     protected function _vote($value)
     {
-        $sh_id = (int)$this->_getParam('sh_id');
+        $sh_id = (int)$this->getParam('sh_id');
         $sh = SongHistory::find($sh_id);
 
         if ($sh instanceof SongHistory)

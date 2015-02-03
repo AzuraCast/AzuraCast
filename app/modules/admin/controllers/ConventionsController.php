@@ -41,16 +41,16 @@ class ConventionsController extends BaseController
         $this->view->coverage = Convention::getCoverageLevels();
 
         $query = $this->em->createQuery('SELECT c, cs, ca FROM Entity\Convention c LEFT JOIN c.signups cs LEFT JOIN c.archives ca ORDER BY c.start_date DESC');
-        $this->view->pager = new \DF\Paginator\Doctrine($query, $this->_getParam('page', 1), 15);
+        $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 15);
     }
 
     public function editAction()
     {
         $form = new \DF\Form($this->current_module_config->forms->convention);
 
-        if ($this->_hasParam('id'))
+        if ($this->hasParam('id'))
         {
-            $id = (int)$this->_getParam('id');
+            $id = (int)$this->getParam('id');
             $record = Record::find($id);
             $form->setDefaults($record->toArray(TRUE, TRUE));
         }
@@ -83,7 +83,7 @@ class ConventionsController extends BaseController
 
     public function deleteAction()
     {
-        $record = Record::find($this->_getParam('id'));
+        $record = Record::find($this->getParam('id'));
         if ($record)
             $record->delete();
 
@@ -173,7 +173,7 @@ class ConventionsController extends BaseController
     {
         $con = $this->_getConvention();
 
-        $record = ConventionSignup::find($this->_getParam('id'));
+        $record = ConventionSignup::find($this->getParam('id'));
         if ($record instanceof ConventionSignup)
             $record->delete();
 
@@ -231,9 +231,9 @@ class ConventionsController extends BaseController
 
         $form = new \DF\Form($this->current_module_config->forms->conventionarchive);
 
-        if ($this->_hasParam('id'))
+        if ($this->hasParam('id'))
         {
-            $id = (int)$this->_getParam('id');
+            $id = (int)$this->getParam('id');
             $record = ConventionArchive::find($id);
 
             $form->setDefaults($record->toArray(TRUE, TRUE));
@@ -267,7 +267,7 @@ class ConventionsController extends BaseController
     {
         $con = $this->_getConvention();
 
-        $record = ConventionArchive::find($this->_getParam('id'));
+        $record = ConventionArchive::find($this->getParam('id'));
         if ($record instanceof ConventionArchive)
             $record->delete();
 

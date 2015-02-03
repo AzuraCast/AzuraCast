@@ -229,8 +229,8 @@ class AccountController extends BaseController
 
     public function recoverAction()
     {
-        $id = (int)$this->_getParam('id');
-        $code = $this->_getParam('code');
+        $id = (int)$this->getParam('id');
+        $code = $this->getParam('code');
 
         $user = User::getRepository()->findOneBy(array('id' => $id, 'auth_recovery_code' => $code));
 

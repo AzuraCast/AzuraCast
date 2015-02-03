@@ -19,9 +19,9 @@ class BlocksController extends BaseController
     {
         $form = new \DF\Form($this->current_module_config->forms->block->form);
         
-        if ($this->_hasParam('id'))
+        if ($this->hasParam('id'))
         {
-            $id = (int)$this->_getParam('id');
+            $id = (int)$this->getParam('id');
             $record = Block::find($id);
             $form->setDefaults($record->toArray(TRUE, TRUE));
         }
@@ -46,13 +46,13 @@ class BlocksController extends BaseController
     
     public function previewAction()
     {
-        $record = Block::find($this->_getParam('id'));
+        $record = Block::find($this->getParam('id'));
         $this->view->block = $record;
     }
     
     public function deleteAction()
     {
-        $record = Block::find($this->_getParam('id'));
+        $record = Block::find($this->getParam('id'));
         if ($record)
             $record->delete();
             

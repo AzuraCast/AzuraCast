@@ -23,7 +23,7 @@ class ShowController extends BaseController
 
     public function viewAction()
     {
-        $id = (int)$this->_getParam('id');
+        $id = (int)$this->getParam('id');
         $podcast = Podcast::find($id);
 
         if (!($podcast instanceof Podcast))
@@ -37,10 +37,10 @@ class ShowController extends BaseController
     {
         $this->doNotRender();
 
-        switch(strtolower($this->_getParam('type', 'default')))
+        switch(strtolower($this->getParam('type', 'default')))
         {
             case 'single':
-                $id = (int)$this->_getParam('id');
+                $id = (int)$this->getParam('id');
                 $record = Podcast::find($id);
 
                 if (!($record instanceof Podcast))

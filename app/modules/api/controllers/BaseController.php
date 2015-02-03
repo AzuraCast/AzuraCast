@@ -46,7 +46,7 @@ class BaseController extends \DF\Phalcon\Controller
         $this->db->insert('api_calls', array(
             'timestamp'     => time(),
             'ip'            => $remote_ip,
-            'client'        => $this->_getParam('client', 'general'),
+            'client'        => $this->getParam('client', 'general'),
             'useragent'     => $_SERVER['HTTP_USER_AGENT'],
             'controller'    => $this->dispatcher->getControllerName(),
             'action'        => $this->dispatcher->getActionName(),

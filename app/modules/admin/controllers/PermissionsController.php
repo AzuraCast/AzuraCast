@@ -21,9 +21,9 @@ class PermissionsController extends BaseController
     {
         $form = new \DF\Form($this->current_module_config->forms->action->form);
         
-        if ($this->_hasParam('id'))
+        if ($this->hasParam('id'))
         {
-            $record = Action::find($this->_getParam('id'));
+            $record = Action::find($this->getParam('id'));
             $form->setDefaults($record->toArray());
         }
 
@@ -48,9 +48,9 @@ class PermissionsController extends BaseController
     
     public function deleteactionAction()
     {
-        $this->validateToken($this->_getParam('csrf'));
+        $this->validateToken($this->getParam('csrf'));
         
-        $action = Action::find($this->_getParam('id'));
+        $action = Action::find($this->getParam('id'));
         if ($action)
             $action->delete();
             
@@ -64,9 +64,9 @@ class PermissionsController extends BaseController
         
         $form = new \DF\Form($form_config);
         
-        if ($this->_hasParam('id'))
+        if ($this->hasParam('id'))
         {
-            $record = Role::find($this->_getParam('id'));
+            $record = Role::find($this->getParam('id'));
             $form->setDefaults($record->toArray(TRUE, TRUE));
         }
 
@@ -91,9 +91,9 @@ class PermissionsController extends BaseController
 
     public function deleteroleAction()
     {
-        $this->validateToken($this->_getParam('csrf'));
+        $this->validateToken($this->getParam('csrf'));
         
-        $record = Role::find($this->_getParam('id'));
+        $record = Role::find($this->getParam('id'));
         if ($record instanceof Role)
             $record->delete();
         

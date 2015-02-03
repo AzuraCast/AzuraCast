@@ -39,7 +39,7 @@ class VoteController extends BaseController
 
     public function viewAction()
     {
-        $id = $this->_getParam('id');
+        $id = $this->getParam('id');
         $station = Station::find($id);
 
         if ($station->is_active)

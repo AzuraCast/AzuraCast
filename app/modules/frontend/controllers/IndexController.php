@@ -66,12 +66,12 @@ class IndexController extends BaseController
         // Switch to maintenance theme.
         $this->view->setLayout('maintenance');
 
-        $this->view->embed_mode = ($this->_getParam('embed', 'false') == 'true');
-        $this->view->skin = ($this->_getParam('skin'));
+        $this->view->embed_mode = ($this->getParam('embed', 'false') == 'true');
+        $this->view->skin = ($this->getParam('skin'));
 
-        $autoplay = $this->_getParam('autoplay');
+        $autoplay = $this->getParam('autoplay');
 
-        if ($this->_hasParam('autoplay'))
+        if ($this->hasParam('autoplay'))
             $autoplay = ($autoplay === 'true' || $autoplay === '1');
         else
             $autoplay = false;
@@ -184,8 +184,8 @@ class IndexController extends BaseController
 
     protected function _initStations()
     {
-        $this->view->station_id = $station_id = $this->_getParam('id', NULL);
-        $this->view->volume = ($this->hasParam('volume')) ? (int)$this->_getParam('volume') : 30;
+        $this->view->station_id = $station_id = $this->getParam('id', NULL);
+        $this->view->volume = ($this->hasParam('volume')) ? (int)$this->getParam('volume') : 30;
 
         $this->categories = \Entity\Station::getCategories();
 

@@ -9,7 +9,7 @@ class IndexController extends \DF\Phalcon\Controller
     {
         $this->doNotRender();
 
-        $origin = $this->_getParam('origin');
+        $origin = $this->getParam('origin');
         $destination = ShortUrl::parse($origin);
 
         $this->redirect($destination);

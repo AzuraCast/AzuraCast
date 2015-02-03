@@ -18,14 +18,14 @@ class SongsController extends BaseController
         if ($_GET)
             $this->redirectFromHere($_GET);
 
-        if ($this->_hasParam('q'))
+        if ($this->hasParam('q'))
         {
-            $this->view->q = $q = trim($this->_getParam('q'));
+            $this->view->q = $q = trim($this->getParam('q'));
             $query = $this->em->createQuery('SELECT s FROM Entity\Song s WHERE (s.text LIKE :q OR s.id = :q_exact) ORDER BY s.text ASC')
                 ->setParameter('q', '%'.addcslashes($q, "%_").'%')
                 ->setParameter('q_exact', $q);
 
-            $this->view->pager = new \DF\Paginator\Doctrine($query, $this->_getParam('page', 1), 30);
+            $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 30);
         }
     }
 
@@ -88,7 +88,7 @@ class SongsController extends BaseController
 
     public function deleteAction()
     {
-        $record = Record::find($this->_getParam('id'));
+        $record = Record::find($this->getParam('id'));
         if ($record instanceof Record)
             $record->delete();
 

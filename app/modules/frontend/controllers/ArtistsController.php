@@ -11,26 +11,26 @@ class ArtistsController extends BaseController
         $type_names = ArtistType::getTypeNames();
         $this->view->type_names = $type_names;
 
-        if ($this->_hasParam('type'))
+        if ($this->hasParam('type'))
         {
-            $this->view->type = $type = $this->_getParam('type');
+            $this->view->type = $type = $this->getParam('type');
             $this->view->type_name = $type_names[$type];
 
             $query = $this->em->createQuery('SELECT a, at FROM Entity\Artist a LEFT JOIN a.types at WHERE (a.is_approved = 1 AND at.id = :type) ORDER BY a.name ASC')
                 ->setParameter('type', $type);
         }
-        else if ($this->_hasParam('q'))
+        else if ($this->hasParam('q'))
         {
-            $this->view->q = $q = $this->_getParam('q');
+            $this->view->q = $q = $this->getParam('q');
             $this->view->type_name = 'Search Results';
 
             $query = $this->em->createQuery('SELECT a, at FROM Entity\Artist a LEFT JOIN a.types at WHERE (a.is_approved = 1) AND (a.name LIKE :q) ORDER BY a.name ASC')
-                ->setParameter('q', '%'.$q.'%');
+                ->setParameter('q', '%'.addcslashes($query, "%_").'%');
         }
 
         if ($query)
         {
-            $this->view->pager = new \DF\Paginator\Doctrine($query, $this->_getParam('page', 1));
+            $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1));
             $this->render('list');
             return;
         }
@@ -44,7 +44,7 @@ class ArtistsController extends BaseController
     /*
     public function viewAction()
     {
-        $id = (int)$this->_getParam('id');
+        $id = (int)$this->getParam('id');
 
         $record = Artist::find($id);
 

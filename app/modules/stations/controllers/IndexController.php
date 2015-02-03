@@ -217,7 +217,7 @@ class IndexController extends BaseController
             $songs[] = $song_row;
         }
 
-        $format = $this->_getParam('format', 'html');
+        $format = $this->getParam('format', 'html');
         if ($format == 'csv')
         {
             $this->doNotRender();
@@ -248,7 +248,7 @@ class IndexController extends BaseController
         else
         {
             $songs = array_reverse($songs);
-            $pager = new \DF\Paginator($songs, $this->_getParam('page', 1), 50);
+            $pager = new \DF\Paginator($songs, $this->getParam('page', 1), 50);
 
             $this->view->pager = $pager;
         }
@@ -297,7 +297,7 @@ class IndexController extends BaseController
     {
         $this->doNotRender();
         
-        $id_hash = $this->_getParam('id');
+        $id_hash = $this->getParam('id');
 
         $record = StationManager::getRepository()->findOneBy(array('station_id' => $this->station->id, 'id' => $id_hash));
         if ($record instanceof StationManager)

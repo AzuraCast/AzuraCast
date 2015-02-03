@@ -37,9 +37,9 @@ class BaseController extends \DF\Phalcon\Controller
         $this->view->stations = $stations;
 
         // Assign a station if one is selected.
-        if ($this->_hasParam('station'))
+        if ($this->hasParam('station'))
         {
-            $station_id = (int)$this->_getParam('station');
+            $station_id = (int)$this->getParam('station');
             if (isset($stations[$station_id]))
             {
                 $this->station = $stations[$station_id];

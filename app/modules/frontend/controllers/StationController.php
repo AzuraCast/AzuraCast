@@ -15,7 +15,7 @@ class StationController extends BaseController
     {
         parent::preDispatch();
 
-        $station_id = (int)$this->_getParam('id');
+        $station_id = (int)$this->getParam('id');
         if ($station_id)
         {
             $this->station_id = $station_id;
@@ -54,11 +54,11 @@ class StationController extends BaseController
             $this->redirectFromHere($_GET);
 
         // Process a request.
-        if ($this->_getParam('track'))
+        if ($this->getParam('track'))
         {
             try
             {
-                $track_id = (int)$this->_getParam('track');
+                $track_id = (int)$this->getParam('track');
                 CentovaCast::request($this->station, $track_id);
 
                 $track = StationMedia::find($track_id);
@@ -91,17 +91,17 @@ class StationController extends BaseController
         $this->view->artist_names = $artist_names;
 
         // Paginated results.
-        if ($this->_hasParam('q'))
+        if ($this->hasParam('q'))
         {
-            $query = $this->_getParam('q');
+            $query = $this->getParam('q');
 
             $media = StationMedia::search($this->station, $query);
             $this->view->page_title = 'Search Results for "'.htmlspecialchars($query).'"';
             $this->view->reset_button = true;
         }
-        else if ($this->_hasParam('artist'))
+        else if ($this->hasParam('artist'))
         {
-            $artist = $this->_getParam('artist');
+            $artist = $this->getParam('artist');
 
             $media = StationMedia::getByArtist($this->station, $artist);
             $this->view->page_title = 'All Songs by '.htmlspecialchars($artist);
@@ -114,7 +114,7 @@ class StationController extends BaseController
             $this->view->reset_button = false;
         }
 
-        $pager = new \DF\Paginator($media, $this->_getParam('page'), 50);
+        $pager = new \DF\Paginator($media, $this->getParam('page'), 50);
         $this->view->pager = $pager;
     }
 
@@ -132,7 +132,7 @@ class StationController extends BaseController
             $stations = $all_stations['audio']['stations'];
         }
 
-        $format = strtolower($this->_getParam('format', 'pls'));
+        $format = strtolower($this->getParam('format', 'pls'));
         switch($format)
         {
             case "m3u":

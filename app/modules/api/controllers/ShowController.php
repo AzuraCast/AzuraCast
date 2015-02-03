@@ -8,9 +8,9 @@ class ShowController extends BaseController
 {
     public function indexAction()
     {
-        if ($this->_hasParam('id'))
+        if ($this->hasParam('id'))
         {
-            $id = (int)$this->_getParam('id');
+            $id = (int)$this->getParam('id');
 
             $record = $this->em->createQuery('SELECT p, s, pe FROM Entity\Podcast p LEFT JOIN p.stations s LEFT JOIN p.episodes pe WHERE p.is_approved = 1 AND p.id = :id')
                 ->setParameter('id', $id)

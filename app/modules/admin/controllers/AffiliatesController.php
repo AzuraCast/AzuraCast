@@ -22,9 +22,9 @@ class AffiliatesController extends BaseController
     {
         $form = new \DF\Form($this->current_module_config->forms->affiliate);
         
-        if ($this->_hasParam('id'))
+        if ($this->hasParam('id'))
         {
-            $id = (int)$this->_getParam('id');
+            $id = (int)$this->getParam('id');
             $record = Record::find($id);
 
             $form->setDefaults($record->toArray(FALSE, TRUE));
@@ -62,7 +62,7 @@ class AffiliatesController extends BaseController
     
     public function deleteAction()
     {
-        $record = Record::find($this->_getParam('id'));
+        $record = Record::find($this->getParam('id'));
         if ($record)
             $record->delete();
             

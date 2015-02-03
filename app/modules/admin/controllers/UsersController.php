@@ -27,7 +27,7 @@ class UsersController extends BaseController
             $query = $this->em->createQuery('SELECT u, r FROM Entity\User u LEFT JOIN u.roles r ORDER BY u.name ASC');
         }
         
-        $this->view->pager = new \DF\Paginator\Doctrine($query, $this->_getParam('page', 1), 50);
+        $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 50);
     }
 
     public function editAction()
@@ -36,7 +36,7 @@ class UsersController extends BaseController
         
         if ($this->hasParam('id'))
         {
-            $record = User::find($this->_getParam('id'));
+            $record = User::find($this->getParam('id'));
             $record_defaults = $record->toArray(TRUE, TRUE);
 
             unset($record_defaults['auth_password']);

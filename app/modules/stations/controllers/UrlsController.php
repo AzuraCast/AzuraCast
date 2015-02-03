@@ -47,10 +47,10 @@ class UrlsController extends BaseController
     {
         $form = new \DF\Form($this->current_module_config->forms->url);
         
-        if ($this->_hasParam('id'))
+        if ($this->hasParam('id'))
         {
             $record = ShortUrl::getRepository()->findOneBy(array(
-                'id' => $this->_getParam('id'), 
+                'id' => $this->getParam('id'),
                 'station_id' => $this->station->id
             ));
             $form->setDefaults($record->toArray());
@@ -76,7 +76,7 @@ class UrlsController extends BaseController
             return;
         }
 
-        if ($this->_hasParam('id'))
+        if ($this->hasParam('id'))
             $this->view->setVar('title', 'Edit Short URL');
         else
             $this->view->setVar('title', 'Add Short URL');

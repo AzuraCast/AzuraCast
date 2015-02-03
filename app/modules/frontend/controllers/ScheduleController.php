@@ -16,13 +16,25 @@ class ScheduleController extends BaseController
         foreach($all_stations as $station_info)
             $stations[$station_info['short_name']] = $station_info;
 
-        $show = ($this->hasParam('month')) ? $this->getParam('month') : date('Ym');
-        $calendar = new \DF\Calendar($show);
-
-        $timestamps = $calendar->getTimestamps();
-
         $station_shortcode = $this->getParam('station', 'all');
         $this->view->station = $station_shortcode;
+    }
+
+    public function fetchAction()
+    {
+        $this->doNotRender();
+
+        $all_stations = Station::fetchArray();
+        $stations = array();
+        foreach($all_stations as $station_info)
+            $stations[$station_info['short_name']] = $station_info;
+
+        $station_shortcode = $this->getParam('station', 'all');
+
+        $timestamps = array(
+            'start' => strtotime($this->getParam('start').' 00:00:00'),
+            'end' => strtotime($this->getParam('end').' 23:59:59')+1,
+        );
 
         if ($station_shortcode != "all")
         {
@@ -36,6 +48,8 @@ class ScheduleController extends BaseController
         }
         else
         {
+            $station = NULL;
+
             $events_raw = $this->em->createQuery('SELECT s, st FROM Entity\Schedule s LEFT JOIN s.station st WHERE (s.start_time <= :end AND s.end_time >= :start) ORDER BY s.start_time ASC')
                 ->setParameter('start', $timestamps['start'])
                 ->setParameter('end', $timestamps['end'])
@@ -45,12 +59,19 @@ class ScheduleController extends BaseController
         $events = array();
         foreach((array)$events_raw as $event)
         {
-            $event['start_timestamp'] = $event['start_time'];
-            $event['end_timestamp'] = $event['end_time'];
+            if (!$station)
+                $event['title'] = $event['station']['name'].":\n".$event['title'];
 
-            $events[] = $event;
+            $events[] = array(
+                'id'        => $event['guid'],
+                'title'     => $event['title'],
+                'allDay'    => $event['is_all_day'] ? true : false,
+                'start'     => date(\DateTime::ISO8601, $event['start_time']),
+                'end'       => date(\DateTime::ISO8601, $event['end_time']),
+                'url'       => $event['web_url'],
+            );
         }
 
-        $this->view->calendar = $calendar->fetch($events);
+        return $this->response->setJsonContent($events);
     }
 }

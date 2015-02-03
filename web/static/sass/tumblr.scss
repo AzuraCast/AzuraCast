@@ -26,8 +26,11 @@
     }
 
     &.photoset > p {
+      clear: right;
       float: right;
-      max-width: 51%;
+      max-width: 40%;
+
+      padding-left: 5px;
     }
 
     &.photo p:first-child img,
@@ -66,9 +69,6 @@
   div#notes {
     clear: both;
 
-    font-size: 12px;
-    line-height: 12px;
-
     ol {
       list-style: none;
       margin: 0;
@@ -77,6 +77,8 @@
 
     li {
       padding: 5px;
+      font-size: 12px;
+      line-height: 12px;
 
       a.avatar_frame {
         padding-right: 5px;

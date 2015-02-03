@@ -24,12 +24,19 @@ class ScheduleController extends BaseController
     {
         $this->doNotRender();
 
+        // Allow AJAX retrieval.
+        $this->response->setHeader('Access-Control-Allow-Origin', '*');
+
         $all_stations = Station::fetchArray();
         $stations = array();
         foreach($all_stations as $station_info)
             $stations[$station_info['short_name']] = $station_info;
 
         $station_shortcode = $this->getParam('station', 'all');
+
+        // All parameters required for normal pull.
+        if (!$this->hasParam('start') || !$this->hasParam('end'))
+            return $this->response->setJsonContent(array());
 
         $timestamps = array(
             'start' => strtotime($this->getParam('start').' 00:00:00'),

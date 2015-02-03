@@ -1,6 +1,6 @@
 # PVLive: The Ponyville Live! Web Application
 
-![PVL Logo](https://bytebucket.org/bravelyblue/pvlive/raw/072a2925f95b5dc05375b6ca0d39205194b1c04e/web/resources/bitbucket.png)
+![PVL Logo](https://raw.githubusercontent.com/BravelyBlue/PVLive/master/web/resources/bitbucket.png)
 
 ---
 

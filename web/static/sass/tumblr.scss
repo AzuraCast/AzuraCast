@@ -1,0 +1,75 @@
+/* Bootstrapping */
+@import 'mixins';
+
+/* Site Design */
+@import 'header';
+@import 'footer';
+
+/* Main Site Body */
+@import 'body';
+
+#content {
+
+  .post {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #EEE;
+    margin-bottom: 10px;
+
+    img, embed {
+      background: #EEE;
+      padding: 9px;
+      border: 1px solid #EFEFEF;
+      border-radius: 4px;
+
+      max-width: 600px;
+    }
+
+    &.photoset > p {
+      float: right;
+      max-width: 50%;
+    }
+
+    &.photo p:first-child img,
+    p:first-child img {
+      max-width: 100%;
+    }
+  }
+
+  .caption p:first-child > strong,
+  .caption p:first-child > b {
+    font-size: 28px;
+    font-weight: normal;
+
+    color: #2C7FD2;
+    text-shadow: 1px 1px 1px #FFF;
+
+    padding: 3px 0 8px 0;
+    line-height: 1;
+  }
+
+  p, blockquote, li {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  blockquote p {
+    margin: inherit;
+  }
+
+  p.meta {
+    font-size: 12px;
+  }
+
+  div#notes {
+    clear: both;
+
+    font-size: 12px;
+    line-height: 12px;
+
+    ol {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}

@@ -41,7 +41,7 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
 
                 foreach ($params as $number => $value) {
                     if ($number & 1) {
-                        $keyParams[$params[$number - 1]] = $value;
+                        $keyParams[$params[$number - 1]] = urldecode($value);
                     }
                 }
 

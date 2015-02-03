@@ -47,6 +47,9 @@ class View
             ".volt" => 'Phalcon\Mvc\View\Engine\Volt'
         ));
 
+        // Register global escaper.
+        $view->setVar('e', new \Phalcon\Escaper());
+
         return $view;
     }
 }

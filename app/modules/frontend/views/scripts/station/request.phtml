@@ -10,7 +10,7 @@ $manual = true;
         <div class="well">
             <h3>Find a Song</h3>
             <form class="form-inline" action="<?=$this->viewHelper->routeFromHere(array('page' => NULL, 'artist' => NULL, 'q' => NULL)) ?>" method="get">
-                <input type="text" name="q" title="Search terms" placeholder="Song or Artist Name..." class="half-width" value="<?=$q ?>">
+                <input type="text" name="q" title="Search terms" placeholder="Song or Artist Name..." class="half-width" value="<?=$e->escapeHtml($q) ?>">
                 <?=$this->viewHelper->button(array(
                     'type'      => 'submit',
                     'class'     => 'primary',

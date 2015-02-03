@@ -13,6 +13,7 @@ class UtilController extends BaseController
         \PVL\NowPlaying::generate();
     }
 
+    /*
     public function setdatesAction()
     {
         $this->doNotRender();
@@ -99,4 +100,5 @@ class UtilController extends BaseController
 
         \PVL\Debug::log('Done!');
     }
+    */
 }

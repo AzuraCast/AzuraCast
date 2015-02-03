@@ -16,7 +16,7 @@ class Song extends \DF\Doctrine\Entity
 
     public function __construct()
     {
-        $this->created_at = time();
+        $this->created = time();
         $this->score = 0;
 
         $this->votes = new ArrayCollection;
@@ -46,9 +46,6 @@ class Song extends \DF\Doctrine\Entity
 
     /** @Column(name="image_url", type="string", length=250, nullable=true) */
     protected $image_url;
-
-    /** @Column(name="created_at", type="datetime", nullable=true) */
-    protected $created_at;
 
     /** @Column(name="created", type="integer") */
     protected $created;

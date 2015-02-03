@@ -16,7 +16,7 @@ class Song extends \DF\Doctrine\Entity
 
     public function __construct()
     {
-        $this->created_at = new \DateTime('NOW');
+        $this->created_at = time();
         $this->score = 0;
 
         $this->votes = new ArrayCollection;
@@ -44,8 +44,17 @@ class Song extends \DF\Doctrine\Entity
     /** @Column(name="title", type="string", length=150, nullable=true) */
     protected $title;
 
+    /** @Column(name="image_url", type="string", length=250, nullable=true) */
+    protected $image_url;
+
     /** @Column(name="created_at", type="datetime", nullable=true) */
     protected $created_at;
+
+    /** @Column(name="created", type="integer") */
+    protected $created;
+
+    /** @Column(name="last_played", type="integer") */
+    protected $last_played;
 
     /** @Column(name="score", type="smallint") */
     protected $score;
@@ -133,14 +142,35 @@ class Song extends \DF\Doctrine\Entity
 
         $adapters = self::getExternalAdapters();
 
+        $local_from_external = array('image_url');
+        $local_values = array();
+
         foreach($adapters as $adapter_key => $remote_class)
         {
             $local_key = 'external_'.$adapter_key;
-            $this->{$local_key} = $remote_class::match($this, $force);
+            $adapter_obj = $remote_class::match($this, $force);
+
+            $this->{$local_key} = $adapter_obj;
+
+            // Internalize values like "image_url" from remote sources.
+            if ($adapter_obj instanceof $remote_class)
+            {
+                foreach($local_from_external as $local_key)
+                {
+                    if (!empty($adapter_obj[$local_key]))
+                        $local_values[$local_key][] = $adapter_obj[$local_key];
+                }
+            }
+        }
+
+        // Load internalized values into local object.
+        foreach($local_values as $local_key => $local_vals)
+        {
+            if (empty($this->$local_key))
+                $this->$local_key = array_shift($local_vals);
         }
 
         $this->external_timestamp = time();
-        $this->save();
         return true;
     }
 
@@ -190,7 +220,7 @@ class Song extends \DF\Doctrine\Entity
         return md5($hash_base);
     }
 
-    public static function getOrCreate($song_info)
+    public static function getOrCreate($song_info, $is_radio_play = false)
     {
         $song_hash = self::getSongHash($song_info);
 
@@ -198,6 +228,14 @@ class Song extends \DF\Doctrine\Entity
 
         if ($obj instanceof self)
         {
+            if ($is_radio_play)
+            {
+                $obj->last_played = time();
+                $obj->syncExternal();
+            }
+
+            $obj->save();
+
             return $obj;
         }
         else
@@ -206,9 +244,16 @@ class Song extends \DF\Doctrine\Entity
                 $song_info = array('text' => $song_info);
 
             $obj = new self;
+
             $obj->text = $song_info['text'];
             $obj->title = $song_info['title'];
             $obj->artist = $song_info['artist'];
+
+            $obj->last_played = time();
+            $obj->save();
+
+            // Only trigger external sync after ID hash is generated.
+            $obj->syncExternal();
             $obj->save();
 
             return $obj;

@@ -231,10 +231,8 @@ class NowPlaying
             $np['current_song'] = array();
             $np['song_history'] = $station->getRecentHistory($stream);
 
-            $song_obj = Song::getOrCreate($stream_np['current_song']);
+            $song_obj = Song::getOrCreate($stream_np['current_song'], true);
             $sh_obj = SongHistory::register($song_obj, $station, $stream, $np);
-
-            $song_obj->syncExternal();
 
             // Compose "current_song" object for API.
             $current_song = Song::api($song_obj);

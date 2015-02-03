@@ -13,12 +13,10 @@ $title = 'Manage Artists';
 </div>
 
 <form class="form-search" action="<?=$this->viewHelper->routeFromHere(array('page' => NULL)) ?>" method="get">
-    <input type="text" name="q" title="Search terms" placeholder="Search..." class="input-medium span3 search-query" value="<?=$this->q ?>">
-    <?=$this->viewHelper->button(array(
-        'type'      => 'submit',
-        'class'     => 'primary btn-small',
-        'text'      => 'Search',
-    )) ?>
+    <div class="input-append">
+        <input type="text" name="q" title="Search terms" placeholder="Search..." class="input-large search-query" value="<?=$e->escapeHtml($q) ?>">
+        <button type="submit" class="btn">Search</button>
+    </div>
 </form>
 
 <?=$this->viewHelper->paginate($pager) ?>

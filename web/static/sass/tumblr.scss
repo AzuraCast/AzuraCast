@@ -11,6 +11,7 @@
 #content {
 
   .post {
+    clear: both;
     padding-bottom: 10px;
     border-bottom: 1px solid #EEE;
     margin-bottom: 10px;
@@ -21,12 +22,12 @@
       border: 1px solid #EFEFEF;
       border-radius: 4px;
 
-      max-width: 600px;
+      max-width: 100%;
     }
 
     &.photoset > p {
       float: right;
-      max-width: 50%;
+      max-width: 51%;
     }
 
     &.photo p:first-child img,

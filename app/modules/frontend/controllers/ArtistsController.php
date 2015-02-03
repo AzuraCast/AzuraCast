@@ -8,8 +8,13 @@ class ArtistsController extends BaseController
 {
     public function indexAction()
     {
+        if (!empty($_GET))
+            return $this->convertGetToParam();
+
         $type_names = ArtistType::getTypeNames();
         $this->view->type_names = $type_names;
+
+        $query = NULL;
 
         if ($this->hasParam('type'))
         {
@@ -25,7 +30,7 @@ class ArtistsController extends BaseController
             $this->view->type_name = 'Search Results';
 
             $query = $this->em->createQuery('SELECT a, at FROM Entity\Artist a LEFT JOIN a.types at WHERE (a.is_approved = 1) AND (a.name LIKE :q) ORDER BY a.name ASC')
-                ->setParameter('q', '%'.addcslashes($query, "%_").'%');
+                ->setParameter('q', '%'.addcslashes($q, "%_").'%');
         }
 
         if ($query)

@@ -6,7 +6,7 @@ $artist_totals = \Entity\ArtistType::getTypeTotals();
 
     <form class="form-search" action="<?=$this->viewHelper->routeFromHere(array('type' => NULL, 'page' => NULL, 'q' => NULL)) ?>" method="get">
         <div class="input-append">
-            <input type="text" class="half-width search-query" name="q" placeholder="Artist Name...">
+            <input type="text" class="half-width search-query" name="q" value="<?=$e->escapeHtml($q) ?>" placeholder="Artist Name...">
             <button type="submit" class="btn">Search</button>
         </div>
     </form>

@@ -87,6 +87,7 @@ class Controller extends \Phalcon\Mvc\Controller
     /**
      * Alias for getParam()
      *
+     * @deprecated Use getParam() instead.
      * @param $param_name
      * @param null $default_value
      * @return mixed|null
@@ -110,6 +111,7 @@ class Controller extends \Phalcon\Mvc\Controller
     /**
      * Alias for hasParam()
      *
+     * @deprecated Use hasParam() instead.
      * @param $param_name
      * @return bool
      */
@@ -337,19 +339,8 @@ class Controller extends \Phalcon\Mvc\Controller
 
     /* Parameter Handling */
 
-    protected function convertGetToParam($params)
+    protected function convertGetToParam()
     {
-        if (!is_array($params))
-            $params = array($params);
-
-        $url_changes = array();
-        foreach($params as $param)
-        {
-            if (isset($_GET[$param]))
-                $url_changes[$param] = $_GET[$param];
-        }
-
-        if (count($url_changes) > 0)
-            $this->redirectFromHere($url_changes);
+        return $this->redirectFromHere($_GET);
     }
 }

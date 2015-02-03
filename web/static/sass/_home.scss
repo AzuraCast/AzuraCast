@@ -259,8 +259,6 @@ a.convention {
     max-height: 400px;
     overflow-x: hidden;
     overflow-y: scroll;
-
-    @include custom-scrollbar(#555);
   }
 }
 

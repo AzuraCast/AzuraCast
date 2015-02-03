@@ -1,3 +1,5 @@
+@include custom-scrollbar(#555);
+
 html {
   background: #FFF;
 }
@@ -20,8 +22,6 @@ body, p, input, button, select, textarea, th, td,
   font-size: 14px;
   line-height: 16px;
 }
-
-@include custom-scrollbar(#555);
 
 body {
   font-size: 13px;

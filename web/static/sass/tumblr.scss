@@ -34,6 +34,12 @@
     p:first-child img {
       max-width: 100%;
     }
+
+    p.meta {
+      float: none;
+      max-width: 100%;
+      font-size: 12px;
+    }
   }
 
   .caption p:first-child > strong,
@@ -57,10 +63,6 @@
     margin: inherit;
   }
 
-  p.meta {
-    font-size: 12px;
-  }
-
   div#notes {
     clear: both;
 
@@ -71,6 +73,14 @@
       list-style: none;
       margin: 0;
       padding: 0;
+    }
+
+    li {
+      padding: 5px;
+
+      a.avatar_frame {
+        padding-right: 5px;
+      }
     }
   }
 }

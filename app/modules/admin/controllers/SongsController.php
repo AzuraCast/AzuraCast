@@ -10,7 +10,7 @@ class SongsController extends BaseController
 {
     public function permissions()
     {
-        return $this->acl->isAllowed('administer stations');
+        return $this->acl->isAllowed('administer songs');
     }
     
     public function indexAction()

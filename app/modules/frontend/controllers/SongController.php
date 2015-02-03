@@ -27,7 +27,7 @@ class SongController extends BaseController
 
         // Get album art and lyrics from all providers.
         $adapters = Song::getExternalAdapters();
-        $external_fields = array('image_url', 'lyrics', 'purchase_url', 'description');
+        $external_fields = array('lyrics', 'purchase_url', 'description');
 
         foreach($external_fields as $field_name)
         {

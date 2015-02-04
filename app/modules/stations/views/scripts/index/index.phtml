@@ -53,44 +53,23 @@ Highcharts.setOptions({
                 <li><a href="http://hosting.ponyvillelive.com:8443/" target="_blank"><i class="icon-external-link-sign"></i> Plesk Web Hosting Manager</a></li>
         </div>
 
-        <h2>Station Administrators</h2>
+        <h2>Station Managers</h2>
         <div class="well">
+            <? foreach($station->managers as $manager): ?>
+            <div style="padding: 5px 0;">
+                <?=$manager->email ?><br>
+                <small><a href="<?=$this->viewHelper->routeFromHere(array('action' => 'removeadmin', 'id' => $manager->id)) ?>"><i class="icon-minus-sign"></i> Remove</a></small>
+            </div>
+            <? endforeach; ?>
+
             <form action="<?=$this->viewHelper->routeFromHere(array('action' => 'addadmin')) ?>" method="post">
-            <table class="datatable table-nopadding table-striped table-condensed">
-                <colgroup>
-                    <col width="60%">
-                    <col width="40%">
-                </colgroup>
-                <tbody>
-                <? foreach($station->managers as $manager): ?>
-                    <tr class="input">
-                        <td><?=$manager->email ?></td>
-                        <td>
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'link',
-                                'icon'      => 'icon-minus-sign',
-                                'class'     => 'btn-small btn-danger btn-confirm-delete',
-                                'text'      => 'Remove',
-                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'removeadmin', 'id' => $manager->id)),
-                            )) ?>
-                        </td>
-                    </tr>
-                <? endforeach; ?>
-                </tbody>
-                <tfoot>
-                    <tr class="input">
-                        <td><input type="email" name="email" placeholder="E-mail Address" class="full-width" style="margin: 0;"></td>
-                        <td>
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'submit',
-                                'icon'      => 'icon-plus-sign',
-                                'text'      => 'Add',
-                                'class'     => 'btn-small btn-success',
-                            )) ?>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+                <input type="email" name="email" placeholder="E-mail Address" class="full-width" style="margin: 0;">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'submit',
+                    'icon'      => 'icon-plus-sign',
+                    'text'      => 'Add Admin',
+                    'class'     => 'btn-small btn-success',
+                )) ?>
             </form>
         </div>
         

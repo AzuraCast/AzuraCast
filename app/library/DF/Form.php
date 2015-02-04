@@ -475,15 +475,7 @@ class Form
     {
         foreach((array)$default_values as $field_key => $default_value)
         {
-            if (is_array($default_value))
-            {
-                // Only allow one level of "recursion" on BelongsTo.
-                if (!$belongs_to)
-                    $this->setDefaults($default_value, $field_key);
-                else
-                    continue;
-            }
-            elseif ($this->form->has($field_key))
+            if ($this->form->has($field_key))
             {
                 // Validate that field corresponds to proper sub-array.
                 if ($belongs_to)
@@ -504,6 +496,14 @@ class Form
                     $element = $this->form->get($field_key);
                     $element->setDefault($default_value);
                 }
+            }
+            else if (is_array($default_value))
+            {
+                // Only allow one level of "recursion" on BelongsTo.
+                if (!$belongs_to)
+                    $this->setDefaults($default_value, $field_key);
+                else
+                    continue;
             }
         }
     }

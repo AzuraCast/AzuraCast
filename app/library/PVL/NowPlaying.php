@@ -253,7 +253,10 @@ class NowPlaying
             }
 
             $current_song['vote_urls'] = $vote_urls;
-            $current_song['external'] = $song_obj->getExternal();
+
+            $external = $song_obj->getExternal();
+            if ($external)
+                $current_song['external'] = $song_obj->getExternal();
 
             $np['current_song'] = $current_song;
         }

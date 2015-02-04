@@ -132,6 +132,12 @@
       box-shadow: none;
     }
 
+    .song-info-button {
+      font-size: 18px;
+      line-height: 30px;
+      padding-right: 5px;
+      opacity: 0.8;
+    }
     .nowplaying-artist {
       font-size: 16px;
       line-height: 17px;
@@ -140,6 +146,17 @@
       font-size: 14px;
       line-height: 15px;
     }
+
+    .station-history a {
+      color: #AAA;
+      text-decoration: none;
+
+      &:hover {
+        color: #FFF;
+        text-decoration: underline;
+      }
+    }
+
     .station-player-container {
       margin-top: 5px;
     }
@@ -166,6 +183,14 @@
   .chat-button {
     float: right;
     margin-top: 25px;
+  }
+
+  .song-info-button {
+    float: left;
+    padding: 0 3px 0 2px;
+    font-size: 17px;
+    line-height: 28px;
+    opacity: 0.4;
   }
   .nowplaying-artist {
     font-size: 14px;

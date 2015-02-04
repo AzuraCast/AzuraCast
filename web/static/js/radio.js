@@ -24,16 +24,8 @@ $(function() {
 		if (!$(this).closest('.station').hasClass('playing'))
 		{
 			e.preventDefault();
-
-			if ($(this).data('popup'))
-				playInPopUp($(this).data('id'));
-			else
-				playStation($(this).attr('id'));
+            playStation($(this).attr('id'));
 		}
-	});
-	
-	$('.station .station-player').click(function(e) {
-		e.stopPropagation();
 	});
 
 	// Toggle display of the "Playback History" pane.
@@ -325,6 +317,15 @@ function processNowPlaying()
                 station.find('.nowplaying-title').text(stream.current_song.artist);
             }
 
+            if (_.size(stream.current_song.external) > 0)
+            {
+                station.find('.song-info-button').show();
+            }
+            else
+            {
+                station.find('.song-info-button').hide();
+            }
+
             // Show stream info if non-default.
             if (station.data('defaultstream') != stream_id)
             {
@@ -419,7 +420,7 @@ function processNowPlaying()
                 var i = 1;
 
                 _(stream.song_history).forEach(function(history_row) {
-                    history_block += '<div>#'+i+": "+history_row.song.text+'</div>';
+                    history_block += '<div>#'+i+': <a href="#" onclick="showSongInfo(\''+history_row.song.id+'\'); return false;">'+history_row.song.text+'</a></div>';
                     i++;
                 });
 

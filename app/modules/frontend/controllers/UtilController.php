@@ -13,6 +13,13 @@ class UtilController extends BaseController
         \PVL\NowPlaying::generate();
     }
 
+    public function colgateAction()
+    {
+        $this->doNotRender();
+
+        echo 'It\'s me :P';
+    }
+
     /*
     public function setdatesAction()
     {

@@ -15,22 +15,16 @@ $title = 'Manage Stations';
 <h2>Current Active Stations</h2>
 
 <div class="row-fluid">
-    <div class="span4">
+    <div class="span6">
         <h3>Radio Stations</h3>
         <?
         echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['audio']));
         ?>
     </div>
-    <div class="span4">
+    <div class="span6">
         <h3>Video Streams</h3>
         <?
         echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['video']));
-        ?>
-    </div>
-    <div class="span4">
-        <h3>Special Events</h3>
-        <?
-        echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['event']));
         ?>
 
         <h3>Internal Tracking</h3>

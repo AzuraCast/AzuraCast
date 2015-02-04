@@ -24,16 +24,13 @@ Highcharts.setOptions({
 
 <div class="row-fluid">
     <div class="span12">
-        <div class="well">
-            <?=$this->viewHelper->renderHere('index-dailystats') ?>
-        </div>
+        <?=$this->viewHelper->renderHere('index-dailystats') ?>
     </div>
 </div>
 
 <div class="row-fluid">
-    <div class="span4">
+    <div class="span3">
 
-        <h2>Station Tools</h2>
         <div class="well">
             <ul class="nav nav-list">
                 <li class="nav-header">PVL Network Tools</li>
@@ -87,7 +84,7 @@ Highcharts.setOptions({
                             <?=$this->viewHelper->button(array(
                                 'type'      => 'submit',
                                 'icon'      => 'icon-plus-sign',
-                                'text'      => 'Add Admin',
+                                'text'      => 'Add',
                                 'class'     => 'btn-small btn-success',
                             )) ?>
                         </td>
@@ -99,11 +96,9 @@ Highcharts.setOptions({
         
     </div>
 
-    <div class="span4">
+    <div class="span5">
 
-        <div class="well">
-            <?=$this->viewHelper->renderHere('index-hourlystats') ?>
-        </div>
+        <?=$this->viewHelper->renderHere('index-hourlystats') ?>
 
         <h2><i class="icon-circle-arrow-up"></i> Best Performing Songs<br><small>In the last 48 hours</small></h2>
 
@@ -164,9 +159,7 @@ Highcharts.setOptions({
     </div>
     <div class="span4">
 
-        <div class="well">
-            <?=$this->viewHelper->renderHere('index-dayofweek') ?>
-        </div>
+        <?=$this->viewHelper->renderHere('index-dayofweek') ?>
 
         <h2>Most Played Songs<br><small>In the last month</small></h2>
 

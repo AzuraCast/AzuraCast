@@ -13,6 +13,11 @@ class Form
      */
     protected $options;
 
+    /**
+     * @var array|void Field settings indexed by key.
+     */
+    protected $fields;
+
     public function __construct($options, \Phalcon\Forms\Form $form = null)
     {
         if ($form === null)
@@ -47,27 +52,6 @@ class Form
         return $this->options;
     }
 
-    public function setDefaults($default_values)
-    {
-        foreach((array)$default_values as $field_key => $default_value)
-        {
-            if (is_array($default_value))
-            {
-                $this->setDefaults($default_value);
-            }
-            elseif ($this->form->has($field_key))
-            {
-                $element = $this->form->get($field_key);
-                $element->setDefault($default_value);
-            }
-        }
-    }
-
-    public function populate($values)
-    {
-        $this->setDefaults($values);
-    }
-
     protected function _setUpFields()
     {
         if ($this->options['groups']) {
@@ -86,6 +70,9 @@ class Form
     {
         $field_type = $field_params[0];
         $field_options = (array)$field_params[1];
+
+        // Save for later lookup.
+        $this->fields[$field_key] = array('type' => $field_type) + $field_options;
 
         // Clean up array.
         if (isset($field_options['multiOptions'])) {
@@ -482,6 +469,48 @@ class Form
         });
 
         return $submitted_data;
+    }
+
+    public function setDefaults($default_values, $belongs_to = NULL)
+    {
+        foreach((array)$default_values as $field_key => $default_value)
+        {
+            if (is_array($default_value))
+            {
+                // Only allow one level of "recursion" on BelongsTo.
+                if (!$belongs_to)
+                    $this->setDefaults($default_value, $field_key);
+                else
+                    continue;
+            }
+            elseif ($this->form->has($field_key))
+            {
+                // Validate that field corresponds to proper sub-array.
+                if ($belongs_to)
+                {
+                    $field_belongs_to = $this->fields[$field_key]['belongsTo'];
+                    if (strcmp($field_belongs_to, $belongs_to) == 0)
+                        $set_field = true;
+                    else
+                        $set_field = false;
+                }
+                else
+                {
+                    $set_field = true;
+                }
+
+                if ($set_field)
+                {
+                    $element = $this->form->get($field_key);
+                    $element->setDefault($default_value);
+                }
+            }
+        }
+    }
+
+    public function populate($values)
+    {
+        $this->setDefaults($values);
     }
 
     /**

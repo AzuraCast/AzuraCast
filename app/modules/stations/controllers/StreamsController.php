@@ -71,12 +71,8 @@ class StreamsController extends BaseController
             return;
         }
 
-        if ($this->hasParam('id'))
-            $this->view->setVar('title', 'Edit Station Stream');
-        else
-            $this->view->setVar('title', 'Add Station Stream');
-
-        $this->renderForm($form);
+        $title = (($this->hasParam('id')) ? 'Edit' : 'Add').' Station Stream';
+        $this->renderForm($form, 'edit', $title);
     }
 
     public function deleteAction()

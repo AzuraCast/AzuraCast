@@ -14,7 +14,6 @@ class Station extends \DF\Doctrine\Entity
         $this->weight = 0;
 
         $this->is_active = 0;
-        $this->is_special = 0;
         $this->requests_enabled = 0;
         $this->hide_if_inactive = 0;
 
@@ -34,9 +33,6 @@ class Station extends \DF\Doctrine\Entity
 
     /** @Column(name="is_active", type="boolean") */
     protected $is_active;
-
-    /** @Column(name="is_special", type="boolean") */
-    protected $is_special;
 
     /** @Column(name="name", type="string", length=100, nullable=true) */
     protected $name;

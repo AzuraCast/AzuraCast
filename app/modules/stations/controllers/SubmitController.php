@@ -28,7 +28,6 @@ class SubmitController extends \DF\Phalcon\Controller
             $record = new Station;
             $record->fromArray($data);
             $record->is_active = false;
-            $record->is_special = false;
             $record->save();
 
             $user = \DF\Auth::getLoggedInUser();

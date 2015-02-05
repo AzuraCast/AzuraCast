@@ -43,7 +43,9 @@ $(function() {
 	}
 
     /* Carousel and touch support. */
-	$('.carousel').carousel();
+	$('.carousel').carousel({
+        interval: 10000
+    });
 
 	if ($().hammer)
 	{

@@ -61,6 +61,23 @@ class Podcast extends \DF\Doctrine\Entity
         return self::getArtistImage($this->image_url);
     }
 
+    /** @Column(name="banner_url", type="string", length=100, nullable=true) */
+    protected $banner_url;
+
+    public function setBannerUrl($new_url)
+    {
+        if ($new_url)
+        {
+            if ($this->banner_url && $this->banner_url != $new_url)
+                @unlink(DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$this->banner_url);
+
+            $new_path = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_url;
+            \DF\Image::resizeImage($new_path, $new_path, 600, 300);
+
+            $this->banner_url = $new_url;
+        }
+    }
+
     /** @Column(name="web_url", type="string", length=255, nullable=true) */
     protected $web_url;
 

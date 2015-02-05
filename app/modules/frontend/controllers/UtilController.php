@@ -10,7 +10,8 @@ class UtilController extends BaseController
         $this->doNotRender();
 
         \PVL\Debug::setEchoMode();
-        \PVL\NowPlaying::generate();
+
+        \PVL\NewsManager::syncNetwork();
     }
 
     /*

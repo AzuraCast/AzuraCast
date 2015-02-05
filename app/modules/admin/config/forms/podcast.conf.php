@@ -33,8 +33,13 @@ return array(
                 )),
 
                 'image_url' => array('file', array(
-                    'label' => 'Avatar',
+                    'label' => 'Avatar (150x150 PNG)',
                     'description' => 'This is the small image that appears on your profile. Images should be under 150x150px in size. Larger images will automatically be scaled.',
+                )),
+
+                'banner_url' => array('file', array(
+                    'label' => 'Promotional Banner (600x300 PNG)',
+                    'description' => 'This image will be shown in the header rotator when new episodes are posted. Images should be 600x300.',
                 )),
 
                 'stations' => array('multiCheckbox', array(

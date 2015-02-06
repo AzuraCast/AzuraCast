@@ -306,25 +306,36 @@ function processNowPlaying()
             station.find('.stream-switcher ul li[rel="'+stream_id+'"]').addClass('active');
 
             // Format title.
+            var song_tooltip = '';
+
             if (!stream.current_song.title)
             {
                 station.find('.nowplaying-artist').text(stream.current_song.text);
                 station.find('.nowplaying-title').text('');
+
+                song_tooltip += stream.current_song.text;
             }
             else
             {
                 station.find('.nowplaying-artist').text(stream.current_song.title);
                 station.find('.nowplaying-title').text(stream.current_song.artist);
+
+                song_tooltip += stream.current_song.title + "\n" + stream.current_song.artist;
             }
 
             if (_.size(stream.current_song.external) > 0)
             {
                 station.find('.song-info-button').show();
+
+                song_tooltip += "\n" + 'More Info Available';
             }
             else
             {
                 station.find('.song-info-button').hide();
             }
+
+            // Set hover tooltip for song.
+            station.find('.song-info').attr('title', song_tooltip);
 
             // Show stream info if non-default.
             if (station.data('defaultstream') != stream_id)
@@ -420,7 +431,13 @@ function processNowPlaying()
                 var i = 1;
 
                 _(stream.song_history).forEach(function(history_row) {
-                    history_block += '<div>#'+i+': <a href="#" onclick="showSongInfo(\''+history_row.song.id+'\'); return false;">'+history_row.song.text+'</a></div>';
+                    var history_song;
+                    if (history_row.song.title != '')
+                        history_song = history_row.song.artist+' - '+history_row.song.title;
+                    else
+                        history_song = history_row.song.text;
+
+                    history_block += '<div>#'+i+': <a href="#" onclick="showSongInfo(\''+history_row.song.id+'\'); return false;">'+history_song+'</a></div>';
                     i++;
                 });
 

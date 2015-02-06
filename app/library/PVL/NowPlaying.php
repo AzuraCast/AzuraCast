@@ -211,7 +211,9 @@ class NowPlaying
         $np['listeners'] = $stream_np['listeners'];
 
         // Pull from current NP data if song details haven't changed.
-        if (strcmp($stream_np['current_song']['text'], $current_np_data['current_song']['text']) == 0)
+        $current_song_hash = Song::getSongHash($stream_np['current_song']);
+
+        if (strcmp($current_song_hash, $current_np_data['current_song']['id']) == 0)
         {
             $np['current_song'] = $current_np_data['current_song'];
             $np['song_history'] = $current_np_data['song_history'];

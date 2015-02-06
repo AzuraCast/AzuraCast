@@ -1,0 +1,24 @@
+<?
+$title = 'Role Membership Report';
+?>
+
+<? foreach($roles as $role): ?>
+    <h2>
+        <?=$role['name'] ?><br>
+        <small>
+            <?
+            $actions = array();
+            foreach($role['actions'] as $action)
+                $actions[] = $action['name'];
+
+            echo implode(', ', $actions);
+            ?>
+        </small>
+    </h2>
+
+    <ul>
+    <? foreach($role['users'] as $user): ?>
+        <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'users', 'action' => 'edit', 'id' => $user['id'])) ?>" target="_blank"><?=$user['name'] ?></a></li>
+    <? endforeach; ?>
+    </ul>
+<? endforeach; ?>

@@ -48,14 +48,20 @@ class PermissionsController extends BaseController
     
     public function deleteactionAction()
     {
-        $this->validateToken($this->getParam('csrf'));
-        
         $action = Action::find($this->getParam('id'));
         if ($action)
             $action->delete();
             
         $this->alert('Action deleted!', 'green');
         $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
+    }
+
+    public function rolemembersAction()
+    {
+        $roles = $this->em->createQuery('SELECT r, a, u FROM Entity\Role r LEFT JOIN r.actions a LEFT JOIN r.users u')
+            ->getArrayResult();
+
+        $this->view->roles = $roles;
     }
 
     public function editroleAction()
@@ -91,8 +97,6 @@ class PermissionsController extends BaseController
 
     public function deleteroleAction()
     {
-        $this->validateToken($this->getParam('csrf'));
-        
         $record = Role::find($this->getParam('id'));
         if ($record instanceof Role)
             $record->delete();

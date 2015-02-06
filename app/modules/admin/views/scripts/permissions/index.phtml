@@ -8,13 +8,20 @@ $manual = TRUE;
         <div class="floating">
             <h2>Roles</h2>
 
-            <div class="buttons">
+            <div class="buttons btn-group">
                 <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'class'     => 'large success',
-                    'href'      => $this->viewHelper->route(array('module' => 'admin', 'controller' => 'permissions', 'action' => 'editrole')),
-                    'icon'      => 'add',
+                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'editrole')),
+                    'icon'      => 'icon-plus-sign',
                     'text'      => 'Add Role',
+                )) ?>
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'large',
+                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'rolemembers')),
+                    'icon'      => 'icon-user',
+                    'text'      => 'Members',
                 )) ?>
             </div>
 
@@ -29,22 +36,22 @@ $manual = TRUE;
                         <td class="center">
                             <?=$this->viewHelper->button(array(
                                 'type'      => 'small',
-                                'icon'      => 'pencil',
+                                'icon'      => 'icon-pencil',
                                 'href'      => $this->viewHelper->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])),
                                 'text'      => 'Edit',
                             )) ?>
                         <? if( $role['id'] != 1 ): ?>
                             <?=$this->viewHelper->button(array(
                                 'type'      => 'small',
-                                'icon'      => 'delete',
-                                'class'     => 'negative confirm-delete',
-                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'], 'csrf' => \DF\Csrf::getToken())),
+                                'icon'      => 'icon-trash',
+                                'class'     => 'danger confirm-delete',
+                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'])),
                                 'text'      => 'Delete',
                             )) ?>
                         <? else: ?>
                             <?=$this->viewHelper->button(array(
                                 'type'      => 'small',
-                                'icon'      => 'delete',
+                                'icon'      => 'icon-trash',
                                 'class'     => 'disabled',
                                 'href'      => 'javascript:;',
                                 'onclick'   => 'alert(\'This role is the super administrator and cannot be deleted.\'); return false;',
@@ -68,7 +75,7 @@ $manual = TRUE;
                     'type'      => 'link',
                     'class'     => 'large success',
                     'href'      => $this->viewHelper->route(array('module' => 'admin', 'controller' => 'permissions', 'action' => 'editaction')),
-                    'icon'      => 'add',
+                    'icon'      => 'icon-plus-sign',
                     'text'      => 'Add Action',
                 )) ?>
             </div>
@@ -84,15 +91,15 @@ $manual = TRUE;
                         <td class="center">
                             <?=$this->viewHelper->button(array(
                                 'type'      => 'small',
-                                'icon'      => 'pencil',
+                                'icon'      => 'icon-pencil',
                                 'href'      => $this->viewHelper->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])),
                                 'text'      => 'Edit',
                             )) ?>
                             <?=$this->viewHelper->button(array(
                                 'type'      => 'small',
-                                'icon'      => 'delete',
-                                'class'     => 'negative confirm-delete',
-                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'], 'csrf' => \DF\Csrf::getToken())),
+                                'icon'      => 'icon-trash',
+                                'class'     => 'danger confirm-delete',
+                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'])),
                                 'text'      => 'Delete',
                             )) ?>
                         </td>

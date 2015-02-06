@@ -122,6 +122,7 @@ class NewsManager
                     'image_url' => $podcast['banner_url'],
                     'web_url' => $ep['web_url'],
                     'layout' => 'vertical',
+                    'tags' => array($podcast['name'], 'Podcast Episodes'),
                     'timestamp' => $ep['timestamp'],
                 );
                 break;

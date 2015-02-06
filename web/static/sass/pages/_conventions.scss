@@ -17,10 +17,10 @@ a.video {
   margin-bottom: 15px;
 
   box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
-  background: #13385E;
+  background: $clr_primary_dark;
 
   /* background: #111; */
-  color: #FFF !important;
+  color: $clr_white !important;
 
   &:hover {
     text-decoration: none;

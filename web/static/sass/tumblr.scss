@@ -1,13 +1,14 @@
 /* Bootstrapping */
-@import 'mixins';
+@import 'config';
+@import 'components/mixins';
 
 /* Site Design */
 @import 'header';
 @import 'footer';
-
-/* Main Site Body */
 @import 'body';
-@import 'home';
+
+/* Pages */
+@import 'pages/home';
 
 #content {
 

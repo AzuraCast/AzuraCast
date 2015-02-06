@@ -1,18 +1,21 @@
 /* Bootstrapping */
-@import 'mixins';
+@import 'config';
+
+@import 'components/mixins';
+@import 'components/progress';
 
 /* Site Design */
 @import 'header';
 @import 'footer';
 
-/* Site Sections */
-@import 'pvl-conventions';
-@import 'pvl-songs';
-@import 'pvl-stations';
-
 /* Main Site Body */
 @import 'body';
-@import 'home';
+
+/* Site Sections */
+@import 'pages/home';
+@import 'pages/conventions';
+@import 'pages/songs';
+@import 'pages/stations';
 
 /* Themes */
 @import 'theme-dark';

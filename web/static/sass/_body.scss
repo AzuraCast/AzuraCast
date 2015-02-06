@@ -501,13 +501,14 @@ div#breadcrumb {
   position: static;
   height: 70px;
   overflow: hidden;
-}
-.carousel-caption h4 {
-  margin: 0;
-  padding: 0;
-}
-.carousel-caption a:hover {
-  text-decoration: none;
+
+  h4 {
+    margin: 0;
+    padding: 0;
+  }
+  a:hover {
+    text-decoration: none;
+  }
 }
 
 div.floating {
@@ -547,32 +548,36 @@ div#footer-nav {
 
 div.announcement {
   padding: 0px;
-}
-div.announcement h3 {
-  padding-top: 5px;
-  line-height: 25px;
-}
-div.announcement h3 span {
-  vertical-align: top;
+
+  h3 {
+    padding-top: 5px;
+    line-height: 25px;
+
+    span {
+      vertical-align: top;
+    }
+  }
 }
 
 div#content_tabs {
   padding: 0 15px 0 30px;
   margin-top: -10px;
-}
-div#content_tabs ul {
-  margin-bottom: 0;
-  border-bottom: 0;
-}
-div#content_tabs ul.nav-pills {
-  margin-bottom: 15px;
-}
-div#content_tabs .tabs > li > a {
-  border-bottom: 0;
-  z-index: 10000;
-}
-div#content_tabs ul li.pull-right {
-  float: right;
+
+  ul {
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+  ul.nav-pills {
+    margin-bottom: 15px;
+  }
+  ul li.pull-right {
+    float: right;
+  }
+
+  .tabs > li > a {
+    border-bottom: 0;
+    z-index: 10000;
+  }
 }
 
 .gallery {
@@ -590,11 +595,13 @@ div.artist {
   float: left;
   width: 50%;
   padding-top: 10px;
+
+  table {
+    width: 100%;
+    height: 100px;
+  }
 }
-div.artist table {
-  width: 100%;
-  height: 100px;
-}
+
 .large-icon {
   font-size: 25px;
   line-height: 25px;
@@ -602,26 +609,20 @@ div.artist table {
 
 ul.nopadding {
   margin: 0;
-}
-ul.unstyled li h1,
-ul.unstyled li h2,
-ul.unstyled li h3,
-ul.unstyled li h4,
-ul.unstyled li h5,
-ul.unstyled li h6 {
-  padding-bottom: 3px;
+
+  li {
+    h1, h2, h3, h4, h5, h6 {
+      padding-bottom: 3px;
+    }
+  }
 }
 
 ul.nav.social-nav li {
   padding: 0;
-}
-ul.nav.social-nav li a {
-  padding: 4px 0 2px 3px;
-}
 
-html.flash .no-flash,
-html.no-flash .flash {
-  display: none;
+  a {
+    padding: 4px 0 2px 3px;
+  }
 }
 
 .max-width-only {
@@ -771,28 +772,28 @@ body {
 }
 
 h1, h2 {
-  color: #2C7FD2;
-  text-shadow: 1px 1px 1px #FFF;
+  color: $clr_primary;
+  text-shadow: 1px 1px 1px $clr_white;
 }
 
 a {
-  color: #2C7FD2;
+  color: $clr_primary;
 }
 a:hover {
-  color: #5699DC;
+  color: $clr_primary_light;
 }
 hr {
-  border-top: 1px solid #666;
-  border-bottom: 1px solid #DDD;
+  border-top: 1px solid $clr_neutral_dark;
+  border-bottom: 1px solid $clr_neutral_xlight;
 }
 code {
-  color: #DDD;
-  background: #0E2B47;
-  border: 1px solid #15416C;
+  color: $clr_neutral_xlight;
+  background: $clr_primary_xdark;
+  border: 1px solid $clr_primary_dark;
 }
 
 fieldset legend {
-  color: #444;
+  color: $clr_neutral_xdark;
   border: 0;
 }
 
@@ -804,11 +805,11 @@ form span.help-inline {
 
 .table-striped tbody tr:nth-child(odd) td,
 .table-striped tbody tr:nth-child(odd) th {
-  background-color: #DDD;
+  background-color: $clr_neutral_xlight;
   background-color: rgba(0, 0, 0, 0.1);
 }
 .table tbody tr:hover td {
-  background-color: #EEE;
+  background-color: $clr_neutral_xxlight;
   background-color: rgba(0, 0, 0, 0.2);
 }
 .table th, .table td {

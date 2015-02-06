@@ -42,6 +42,7 @@ class SongController extends BaseController
             }
         }
 
+        $song_info['image_url'] = $record->image_url;
         if (!$song_info['image_url'])
             $song_info['image_url'] = \DF\Url::content('images/song_generic.png');
 

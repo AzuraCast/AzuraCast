@@ -27,7 +27,8 @@
       max-width: 100%;
     }
 
-    &.photoset > p {
+    &.photoset > p,
+    &.photo > p {
       clear: right;
       float: right;
       max-width: 45%;

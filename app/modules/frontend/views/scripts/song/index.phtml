@@ -9,7 +9,9 @@ $hide_title = true;
 <div class="modal_song_info">
     <div class="clearfix">
     <? if ($this->acl->isAllowed('administer songs')): ?>
-        <a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'songs', 'action' => 'edit', 'id' => $song->id)) ?>" class="pull-right" target="_blank"><i class="icon icon-pencil"></i> Edit</a>
+        <div class="pull-right">
+            <?=$song->id ?> - <a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'songs', 'action' => 'edit', 'id' => $song->id)) ?>" target="_blank"><i class="icon icon-pencil"></i> Edit</a>
+        </div>
     <? endif; ?>
 
         <img src="<?=$song_info['image_url'] ?>" alt="Song Album Art" class="song_album_art">

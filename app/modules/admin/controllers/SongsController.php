@@ -16,7 +16,7 @@ class SongsController extends BaseController
     public function indexAction()
     {
         if ($_GET)
-            $this->redirectFromHere($_GET);
+            return $this->redirectFromHere($_GET);
 
         if ($this->hasParam('q'))
         {
@@ -29,25 +29,56 @@ class SongsController extends BaseController
         }
     }
 
-    public function searchAction()
+    public function mergeAction()
     {
-        $this->doNotRender();
+        if ($_GET)
+            return $this->redirectFromHere($_GET);
 
-        $results = array();
+        $id = $this->getParam('id');
+        $song_to_merge = Record::find($id);
 
-        $query = $this->getParam('q');
-        $results_raw = $this->em->createQuery('SELECT s FROM Entity\Song s WHERE s.text LIKE :query')
-            ->setParameter('query', '%'.addcslashes($query, "%_").'%')
-            ->getArrayResult();
+        if (!($song_to_merge instanceof Record))
+            throw new \DF\Exception('Song not found!');
 
-        if ($results_raw)
+        $this->view->song_to_merge = $song_to_merge;
+
+        if ($this->hasParam('merge_id'))
         {
-            foreach($results_raw as $row)
-                $results[] = array('label' => $row['title'].'<br>'.$row['artist'], 'value' => $row['id']);
+            $song_to_merge->merge_song_id = $this->getParam('merge_id');
+            $song_to_merge->save();
+
+            $this->alert('<b>Song merged.</b><br>Requests for this song ID will now show info from the merged song ID instead.', 'green');
+            return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'merge_q' => NULL, 'merge_id' => NULL));
+        }
+        else if ($this->hasParam('merge_q'))
+        {
+            $this->view->q = $q = trim($this->getParam('merge_q'));
+            $query = $this->em->createQuery('SELECT s FROM Entity\Song s
+                WHERE (s.text LIKE :q OR s.id = :q_exact)
+                AND s.id != :song_to_merge
+                AND s.merge_song_id IS NULL
+                ORDER BY s.text ASC')
+                ->setParameter('song_to_merge', $song_to_merge->id)
+                ->setParameter('q', '%'.addcslashes($q, "%_").'%')
+                ->setParameter('q_exact', $q);
+
+            $this->view->results = $query->getArrayResult();
+        }
+    }
+
+    public function unmergeAction()
+    {
+        $id = $this->getParam('id');
+        $record = Record::find($id);
+
+        if ($record instanceof Record)
+        {
+            $record->merge_song_id = NULL;
+            $record->save();
         }
 
-        $this->response->setJsonContent($results);
-        return $this->response->send();
+        $this->alert('<b>Song unmerged.</b>', 'green');
+        return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
     }
 
     public function editAction()

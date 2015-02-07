@@ -233,7 +233,10 @@ class NowPlaying
             $np['current_song'] = array();
             $np['song_history'] = $station->getRecentHistory($stream);
 
-            $song_obj = Song::getOrCreate($stream_np['current_song'], true);
+            // Determine whether to log this song play for analytics.
+            $log_radio_play = ($stream->is_default && $station->category == 'audio');
+
+            $song_obj = Song::getOrCreate($stream_np['current_song'], $log_radio_play);
             $sh_obj = SongHistory::register($song_obj, $station, $stream, $np);
 
             // Compose "current_song" object for API.

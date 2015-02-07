@@ -1,0 +1,107 @@
+<table class="table datatable table-striped table-nopadding">
+    <colgroup>
+        <col width="20%" />
+        <col width="7%" />
+        <col width="33%" />
+        <col width="7%" />
+        <col width="7%" />
+        <col width="7%" />
+        <col width="19%" />
+    </colgroup>
+    <thead>
+    <tr>
+        <th>Actions</th>
+        <th>Art</th>
+        <th>Song</th>
+        <th>Pony.fm</th>
+        <th>EQBeats</th>
+        <th>BTunes</th>
+        <th>Info</th>
+    </tr>
+    </thead>
+    <tbody>
+    <? foreach($songs as $record): ?>
+        <tr class="input">
+            <td class="center">
+                <div class="btn-group">
+                <? if ($display_mode == 'index'): ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'href'      => '#',
+                        'class'     => 'btn-primary',
+                        'onclick'   => "showSongInfo('".$record['id']."'); return false;",
+                        'text'      => 'Info',
+                    )) ?>
+                    <? if ($record['merge_song_id']): ?>
+                        <?=$this->viewHelper->button(array(
+                            'type'      => 'small',
+                            'href'      => $this->viewHelper->routeFromHere(array('action' => 'unmerge', 'id' => $record['id'])),
+                            'text'      => 'Unmerge',
+                        )) ?>
+                    <? else: ?>
+                        <?=$this->viewHelper->button(array(
+                            'type'      => 'small',
+                            'href'      => $this->viewHelper->routeFromHere(array('action' => 'merge', 'id' => $record['id'])),
+                            'text'      => 'Merge',
+                        )) ?>
+                    <? endif; ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'text'      => 'Edit',
+                    )) ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'class'     => 'danger confirm-delete',
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'text'      => 'Delete',
+                    )) ?>
+                <? elseif ($display_mode == 'merge'): ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'class'     => 'btn-primary',
+                        'href'      => $this->viewHelper->routeFromHere(array('merge_id' => $record['id'])),
+                        'text'      => 'Merge Song',
+                    )) ?>
+                <? endif; ?>
+                </div>
+            </td>
+            <td class="center">
+                <? if ($record['image_url']): ?>
+                    <img src="<?=$record['image_url'] ?>" style="width: 64px;">
+                <? endif; ?>
+            </td>
+            <td>
+                <b><?=$record['title'] ?></b><br>
+                <?=$record['artist'] ?>
+            </td>
+            <td class="center">
+                <? if ($record['external_ponyfm_id']): ?>
+                    <span class="large-icon" title="Approved"><i class="icon-ok-sign"></i></span>
+                <? else: ?>&nbsp;<? endif; ?>
+            </td>
+            <td class="center">
+                <? if ($record['external_eqbeats_id']): ?>
+                    <span class="large-icon" title="Approved"><i class="icon-ok-sign"></i></span>
+                <? else: ?>&nbsp;<? endif; ?>
+            </td>
+            <td class="center">
+                <? if ($record['external_bronytunes_id']): ?>
+                    <span class="large-icon" title="Approved"><i class="icon-ok-sign"></i></span>
+                <? else: ?>&nbsp;<? endif; ?>
+            </td>
+            <td>
+            <? if ($record['merge_song_id']): ?>
+                <div>Merged with <a href="#" onclick="showSongInfo('<?=$record['merge_song_id'] ?>'); return false;"><?=$record['merge_song_id'] ?></a></div>
+            <? endif; ?>
+            <? if ($record['last_played']): ?>
+                <div title="<?=date('F j, Y g:ia', $record['last_played']) ?>">Last Played <?=\DF\Utilities::timeDifferenceText($record['last_played'], time(), 0) ?> ago</div>
+            <? endif; ?>
+            <? if ($record['play_count']): ?>
+                <div>Played <?=$record['play_count'] ?> time(s)</div>
+            <? endif; ?>
+            </td>
+        </tr>
+    <? endforeach; ?>
+    </tbody>
+</table>

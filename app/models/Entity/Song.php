@@ -50,6 +50,9 @@ class Song extends \DF\Doctrine\Entity
     /** @Column(name="created", type="integer") */
     protected $created;
 
+    /** @Column(name="play_count", type="integer") */
+    protected $play_count;
+
     /** @Column(name="last_played", type="integer") */
     protected $last_played;
 
@@ -60,6 +63,9 @@ class Song extends \DF\Doctrine\Entity
     {
         $this->score = SongVote::getScore($this);
     }
+
+    /** @Column(name="merge_song_id", type="string", length=50, nullable=true) */
+    protected $merge_song_id;
 
     /* External Records */
 
@@ -217,17 +223,34 @@ class Song extends \DF\Doctrine\Entity
         return md5($hash_base);
     }
 
+    public static function getById($song_hash)
+    {
+        $record = self::find($song_hash);
+
+        if ($record instanceof self)
+        {
+            if (!empty($record->merge_song_id))
+                return self::getById($record->merge_song_id);
+            else
+                return $record;
+        }
+
+        return null;
+    }
+
     public static function getOrCreate($song_info, $is_radio_play = false)
     {
         $song_hash = self::getSongHash($song_info);
 
-        $obj = self::find($song_hash);
+        $obj = self::getById($song_hash);
 
         if ($obj instanceof self)
         {
             if ($is_radio_play)
             {
                 $obj->last_played = time();
+                $obj->play_count += 1;
+
                 $obj->syncExternal();
             }
 
@@ -246,7 +269,12 @@ class Song extends \DF\Doctrine\Entity
             $obj->title = $song_info['title'];
             $obj->artist = $song_info['artist'];
 
-            $obj->last_played = time();
+            if ($is_radio_play)
+            {
+                $obj->last_played = time();
+                $obj->play_count = 1;
+            }
+
             $obj->save();
 
             // Only trigger external sync after ID hash is generated.

@@ -72,6 +72,31 @@ class StationStream extends \DF\Doctrine\Entity
             return false;
     }
 
+    /*
+     * Static Functions
+     */
+
+    public static function getMainRadioStreams()
+    {
+        $em = self::getEntityManager();
+
+        $streams_raw = $em->createQuery('SELECT ss.id FROM '.__CLASS__.' ss JOIN ss.station s WHERE ss.is_default = 1 AND s.category = :category')
+            ->setParameter('category', 'audio')
+            ->getArrayResult();
+
+        $streams = array();
+        foreach($streams_raw as $row)
+            $streams[] = $row['id'];
+
+        return $streams;
+    }
+
+    /**
+     * Return an API standardized object.
+     *
+     * @param $row
+     * @return array
+     */
     public static function api($row)
     {
         return array(

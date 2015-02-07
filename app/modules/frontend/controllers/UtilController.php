@@ -14,6 +14,31 @@ class UtilController extends BaseController
         \PVL\NewsManager::syncNetwork();
     }
 
+    public function setplaysAction()
+    {
+        $this->doNotRender();
+        \PVL\Debug::setEchoMode();
+
+        $db = $this->em->getConnection();
+
+        \PVL\Debug::log('Pulling Song Counts');
+
+        $streams = \Entity\StationStream::getMainRadioStreams();
+
+        \PVL\Debug::print_r($streams);
+
+        $history_rows = $this->em->createQuery('SELECT sh.song_id, count(sh.id) AS num_plays FROM Entity\SongHistory sh WHERE (sh.stream_id IS NULL OR sh.stream_id IN (:streams)) GROUP BY sh.song_id')
+            ->setParameter('streams', $streams)
+            ->getArrayResult();
+
+        foreach($history_rows as $row)
+        {
+            $db->update('songs', array('play_count' => $row['num_plays']), array('id' => $row['song_id']));
+        }
+
+        \PVL\Debug::log('Done!');
+    }
+
     /*
     public function setdatesAction()
     {

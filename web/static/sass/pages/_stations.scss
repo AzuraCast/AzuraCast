@@ -132,12 +132,6 @@
       box-shadow: none;
     }
 
-    .song-info-button {
-      font-size: 18px;
-      line-height: 30px;
-      padding-right: 5px;
-      opacity: 0.8;
-    }
     .nowplaying-artist {
       font-size: 16px;
       line-height: 17px;
@@ -145,6 +139,11 @@
     .nowplaying-title {
       font-size: 14px;
       line-height: 15px;
+    }
+    .song-info-button {
+      font-size: 13px;
+      line-height: 13px;
+      opacity: 0.8;
     }
 
     .station-history a {
@@ -184,14 +183,6 @@
     float: right;
     margin-top: 25px;
   }
-
-  .song-info-button {
-    float: left;
-    padding: 0 3px 0 2px;
-    font-size: 17px;
-    line-height: 28px;
-    opacity: 0.4;
-  }
   .nowplaying-artist {
     font-size: 14px;
   }
@@ -203,6 +194,12 @@
     font-weight: bold;
     font-style: italic;
   }
+  .song-info-button {
+    font-size: 12px;
+    line-height: 12px;
+    opacity: 0.5;
+  }
+
   .station-history {
     margin-top: 5px;
   }

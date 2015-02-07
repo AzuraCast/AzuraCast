@@ -17,28 +17,36 @@ class Timezone
 
     public static function getInfo()
     {
-        $tz = Customization::get('timezone');
+        static $tz_info;
 
-        $utc = new \DateTimeZone('UTC');
-        $dt = new \DateTime('now', $utc);
+        if (!$tz_info)
+        {
+            $tz = Customization::get('timezone');
 
-        $current_tz = new \DateTimeZone($tz);
-        $offset =  $current_tz->getOffset($dt);
+            $utc = new \DateTimeZone('UTC');
+            $dt = new \DateTime('now', $utc);
 
-        $transition =  $current_tz->getTransitions($dt->getTimestamp(), $dt->getTimestamp());
-        $abbr = $transition[0]['abbr'];
+            $current_tz = new \DateTimeZone($tz);
+            $offset = $current_tz->getOffset($dt);
 
-        $dt_in_tz = new \DateTime('now', $current_tz);
+            $transition = $current_tz->getTransitions($dt->getTimestamp(), $dt->getTimestamp());
 
-        return array(
-            'code'          => $tz,
-            'name'          => $transition[0]['name'],
-            'abbr'          => $transition[0]['abbr'],
-            'tz_object'     => $current_tz,
-            'utc_object'    => $utc,
-            'now_utc'       => $dt,
-            'now'           => $dt_in_tz,
-        );
+            $dt_in_tz = new \DateTime('now', $current_tz);
+
+            $tz_info = array(
+                'code' => $tz,
+                'gmt_offset_seconds' => (float)$offset,
+                'gmt_offset_hours' => (float)($offset / 3600),
+                'name' => $transition[0]['name'],
+                'abbr' => $transition[0]['abbr'],
+                'tz_object' => $current_tz,
+                'utc_object' => $utc,
+                'now_utc' => $dt,
+                'now' => $dt_in_tz,
+            );
+        }
+
+        return $tz_info;
     }
 
     public static function formatOffset($offset)

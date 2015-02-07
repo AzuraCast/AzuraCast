@@ -1,6 +1,8 @@
 <?php
 header("Content-type: text/html; charset=utf-8");
+
 $skin = \PVL\Customization::get('theme');
+$tz_info = \PVL\Timezone::getInfo();
 ?>
 <!DOCTYPE html>
 <html class="full_layout theme_<?=$skin ?>">
@@ -70,6 +72,9 @@ $skin = \PVL\Customization::get('theme');
         var DF_AppEnv = '<?=DF_APPLICATION_ENV ?>';
         var DF_BaseUrl = '<?php echo rtrim($this->url->get(''), '/'); ?>';
         var DF_ContentPath = '<?php echo $this->url->getStatic(''); ?>';
+
+        var PVL_TimeZone = '<?=$e->escapeJs($tz_info['code']) ?>';
+        var PVL_UtcOffset = <?=$tz_info['gmt_offset_hours'] ?>;
     </script>
 </head>
 <body>

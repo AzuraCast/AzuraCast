@@ -1,13 +1,11 @@
 <?
 $skin = \PVL\Customization::get('theme');
+
+$tz_info = \PVL\Timezone::getInfo();
+$tz_text = $tz_info['now']->format('g:ia');
 ?>
 <ul class="loginbar pull-right">
-    <?
-    $tz_info = \PVL\Timezone::getInfo();
-    $tz_text = $tz_info['now']->format('g:ia').' '.$tz_info['abbr'];
-    ?>
-
-    <li><a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><i class="icon-time"></i> <span class="current_time"><?=$tz_text ?></span></a></li>
+    <li><a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><i class="icon-time"></i> <span class="current_time"><?=$tz_text ?></span> <?=$tz_info['abbr'] ?></a></li>
     <li class="divider">&nbsp;</li>
     <li><a href="<?=$this->url->get('profile/theme/skin/toggle') ?>"><i class="icon-adjust"></i> <? if ($skin == 'light'): ?>Dark Theme<? else: ?>Light Theme<? endif; ?></a></li>
     <li class="divider">&nbsp;</li>

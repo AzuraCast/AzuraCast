@@ -3,9 +3,6 @@
  * Made with love for the ponyfolk. /)
  */
 
-var clock_timeout;
-var clock_interval = 90000;
-
 $(function() {
 
 	if ($('html').hasClass('theme_dark'))
@@ -74,7 +71,7 @@ $(function() {
     });
 
     /* Time synchronization. */
-    clock_timeout = setTimeout('updateTime()', clock_interval);
+    updateTime();
 });
 
 /* Song biography popup. */
@@ -101,22 +98,17 @@ function showSongInfo(song_id)
 }
 
 /* Clock synchronization. */
+var clock_timeout;
+var clock_interval = 60000;
+
 function updateTime()
 {
-    clearInterval(clock_interval);
+    clearTimeout(clock_timeout);
 
-    jQuery.ajax({
-        cache: false,
-        url: DF_BaseUrl+'/api/index/time/client/pvlwebapp',
-        dataType: 'json'
-    }).done(function(data) {
-        var time_info = data.result;
-        var new_current_time = time_info.local_time+' '+time_info.local_timezone_abbr;
+    var new_current_time = moment().utcOffset(PVL_UtcOffset).format('h:mmA');
+    $('.current_time').text(new_current_time);
 
-        $('.current_time').text(new_current_time);
-
-        clock_timeout = setTimeout('updateTime()', clock_interval);
-    });
+    clock_timeout = setTimeout('updateTime()', clock_interval);
 }
 
 /* Fancybox (or iFrame if fancybox isn't available). */

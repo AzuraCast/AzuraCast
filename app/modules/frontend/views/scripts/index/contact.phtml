@@ -82,12 +82,11 @@ $manual = true;
                     </h4>
 
                     <div class="social">
-                    <? if ($station['web_url']): ?>
-                        <a href="<?=$station['web_url'] ?>" target="_blank"><img src="<?=\DF\Url::content('social/link.png') ?>" alt="Homepage"></a>
-                    <? endif; ?>
-                    <? if ($station['twitter_url']): ?>
-                        <a href="<?=$station['twitter_url'] ?>" target="_blank"><img src="<?=\DF\Url::content('social/twitter.png') ?>" alt="Twitter"></a>
-                    <? endif; ?>
+                    <? foreach($podcast_social_types as $social_type => $social_info): ?>
+                        <? if (!empty($station[$social_type])): ?>
+                            <a href="<?=$station[$social_type] ?>" target="_blank"><img src="<?=\DF\Url::content('social/'.$social_info['icon'].'.png') ?>" alt="<?=$social_info['name'] ?>"></a>
+                        <? endif; ?>
+                    <? endforeach; ?>
                     </div>
                 </div>
             </div>
@@ -114,7 +113,7 @@ $manual = true;
 
                     <div class="social">
                     <? foreach($podcast_social_types as $social_type => $social_info): ?>
-                        <? if ($podcast[$social_type]): ?>
+                        <? if (!empty($podcast[$social_type])): ?>
                             <a href="<?=$podcast[$social_type] ?>" target="_blank"><img src="<?=\DF\Url::content('social/'.$social_info['icon'].'.png') ?>" alt="<?=$social_info['name'] ?>"></a>
                         <? endif; ?>
                     <? endforeach; ?>

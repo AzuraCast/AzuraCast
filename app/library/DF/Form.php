@@ -111,6 +111,32 @@ class Form
             unset($field_options['required']);
         }
 
+        if (isset($field_options['validators']))
+        {
+            // Phalcon Bug:
+            // Cannot instruct validators to ignore empty strings.
+            // Only add other validators if "Required" validator is present.
+
+            if (!empty($element_validators))
+            {
+                foreach ($field_options['validators'] as $validator)
+                {
+                    if (!is_string($validator))
+                        continue;
+
+                    switch (strtolower($validator)) {
+                        case 'emailaddress':
+                            $element_validators[] = new \Phalcon\Validation\Validator\Email(array(
+                                'message' => 'This field must be a valid e-mail address.',
+                            ));
+                            break;
+                    }
+                }
+            }
+
+            unset($field_options['validators']);
+        }
+
         if (isset($field_options['minLength'])) {
             $element_validators[] = new \Phalcon\Validation\Validator\StringLength(array(
                 'min'       => $field_options['minLength'],

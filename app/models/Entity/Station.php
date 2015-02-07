@@ -76,12 +76,6 @@ class Station extends \DF\Doctrine\Entity
             return '';
     }
 
-    /** @Column(name="description", type="text", nullable=true) */
-    protected $description;
-
-    /** @Column(name="owner", type="string", length=100, nullable=true) */
-    protected $owner;
-
     /** @Column(name="image_url", type="string", length=100, nullable=true) */
     protected $image_url;
 
@@ -99,6 +93,9 @@ class Station extends \DF\Doctrine\Entity
         }
     }
 
+    /** @Column(name="contact_email", type="string", length=255, nullable=true) */
+    protected $contact_email;
+
     /** @Column(name="web_url", type="string", length=100, nullable=true) */
     protected $web_url;
 
@@ -111,7 +108,7 @@ class Station extends \DF\Doctrine\Entity
     public function setTwitterUrl($url)
     {
         if (substr($url, 0, 4) == "http" || empty($url))
-        {   
+        {
             $this->twitter_url = $url;
         }
         else
@@ -123,6 +120,12 @@ class Station extends \DF\Doctrine\Entity
 
     /** @Column(name="gcal_url", type="string", length=150, nullable=true) */
     protected $gcal_url;
+
+    /** @Column(name="facebook_url", type="string", length=150, nullable=true) */
+    protected $facebook_url;
+
+    /** @Column(name="tumblr_url", type="string", length=150, nullable=true) */
+    protected $tumblr_url;
 
     /** @Column(name="nowplaying_data", type="json", nullable=true) */
     protected $nowplaying_data;
@@ -317,7 +320,7 @@ class Station extends \DF\Doctrine\Entity
         $em = self::getEntityManager();
         return $em->createQuery('SELECT s, ss FROM '.__CLASS__.' s LEFT JOIN s.streams ss WHERE s.is_active = 1 ORDER BY s.category ASC, s.weight ASC')->execute();
     }
-    
+
     public static function fetchArray($cached = true)
     {
         $stations = \DF\Cache::get('stations');

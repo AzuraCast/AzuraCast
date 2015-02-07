@@ -78,6 +78,9 @@ class Podcast extends \DF\Doctrine\Entity
         }
     }
 
+    /** @Column(name="contact_email", type="string", length=255, nullable=true) */
+    protected $contact_email;
+
     /** @Column(name="web_url", type="string", length=255, nullable=true) */
     protected $web_url;
 
@@ -246,6 +249,10 @@ class Podcast extends \DF\Doctrine\Entity
             'web_url' => array(
                 'name' => 'Web Site',
                 'icon' => 'link',
+            ),
+            'contact_email' => array(
+                'name' => 'E-mail Address',
+                'icon' => 'email',
             ),
             'rss_url'   => array(
                 'name' => 'RSS',

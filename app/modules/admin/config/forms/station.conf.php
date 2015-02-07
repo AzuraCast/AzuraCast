@@ -32,16 +32,6 @@ return array(
                     'default' => '',
                 )),
 
-                'description' => array('textarea', array(
-                    'label' => 'Description',
-                    'class' => 'full-width half-height',
-                )),
-
-                'owner' => array('text', array(
-                    'label' => 'Station Owner',
-                    'class' => 'half-width',
-                )),
-
                 'image_url' => array('file', array(
                     'label' => 'Upload New Station Avatar',
                     'description' => 'To replace the existing icon associated with this station, upload a new one using the file browser below. Icons should be 150x150px in dimension.',
@@ -60,15 +50,34 @@ return array(
                     'class' => 'half-width',
                 )),
 
+                'contact_email' => array('text', array(
+                    'label' => 'Contact E-mail Address',
+                    'description' => 'Include to show an e-mail link for the station on the "Contact Us" page.',
+                    'validators' => array('EmailAddress'),
+                    'class' => 'half-width',
+                )),
+
                 'twitter_url' => array('text', array(
                     'label' => 'Twitter URL',
                     'description' => 'Include full address of the station\'s Twitter account (with http://).',
                     'class' => 'half-width',
                 )),
 
+                'facebook_url' => array('text', array(
+                    'label' => 'Facebook URL',
+                    'description' => 'Optional: This will be included in the "Contact Us" page if provided.',
+                    'class' => 'half-width',
+                )),
+
+                'tumblr_url' => array('text', array(
+                    'label' => 'Tumblr URL',
+                    'description' => 'Optional: This will be included in the "Contact Us" page if provided.',
+                    'class' => 'half-width',
+                )),
+
                 'gcal_url' => array('text', array(
                     'label' => 'Google Calendar XML Feed URL',
-                    'description' => 'Include full address of the feed (ending in /basic or /full) (with http://).',
+                    'description' => 'This URL can be retrieved by visiting Google Calendar, hovering over the station\'s calendar on the left sidebar, clicking the dropdown menu, then "Calendar Settings". From the settings page, click the "XML" link inside the Calendar Address area. Include full address of the feed (ending in /basic or /full) (with http://).',
                     'class' => 'half-width',
                 )),
 

@@ -32,6 +32,13 @@ return array(
                     'filters' => array('WebAddress'),
                 )),
 
+                'contact_email' => array('text', array(
+                    'label' => 'Contact E-mail Address',
+                    'description' => 'Include to show an e-mail link for the station on the "Contact Us" page.',
+                    'validators' => array('EmailAddress'),
+                    'class' => 'half-width',
+                )),
+
                 'image_url' => array('file', array(
                     'label' => 'Avatar (150x150 PNG)',
                     'description' => 'This is the small image that appears on your profile. Images should be under 150x150px in size. Larger images will automatically be scaled.',

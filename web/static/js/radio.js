@@ -232,6 +232,10 @@ $(function() {
         var station_image = e.station.image_url;
         var station_id = 'station_'+ e.station.shortcode;
 
+        // Only show events for visible stations.
+        if ($('#'+station_id).length == 0)
+            return false;
+
         var event_name = e.event.title;
         var event_url = e.event.web_url;
 
@@ -249,6 +253,10 @@ $(function() {
 
     socket.on('podcast.new_episode', function(e) {
         console.log(e);
+
+        // Don't show on embedded pages.
+        if (window.self !== window.top)
+            return false;
 
         var podcast_name = e.podcast.name;
         var podcast_image = e.podcast.image_url;

@@ -34,7 +34,7 @@ echo $this->viewHelper->renderHere('homelink', true);
     </thead>
     <tbody>
     <? foreach($streams as $record): ?>
-        <tr class="input <? if ($record['is_default']): ?>blue<? elseif (!$record['is_active']): ?>disabled<? endif; ?>">
+        <tr class="input <? if ($record['is_default']) { ?>blue<? } elseif (!$record['is_active']) { ?>disabled<? } ?>">
             <td class="center">
                 <div class="btn-group">
                     <?=$this->viewHelper->button(array(
@@ -72,21 +72,21 @@ echo $this->viewHelper->renderHere('homelink', true);
                 <?
                 $np = (array)$record->nowplaying_data;
                 ?>
-                <? if (!$record->is_active): ?>
+                <? if (!$record->is_active) { ?>
                     <span class="text-error">
                         <big>Stream Inactive</big><br>
                         Activate to See Data
                     </span>
-                <? elseif ($np['status'] == 'offline'): ?>
+                <? } elseif ($np['status'] == 'offline') { ?>
                     <span class="text-error">
                         <big>Stream Offline</big><br>
                         Verify correct URLs!
                     </span>
-                <? else: ?>
+                <? } else { ?>
                     <big><?=$np['current_song']['title'] ?></big><br>
                     <?=$np['current_song']['artist'] ?><br>
                     <i class="icon-user"></i> <?=$np['listeners']['current'] ?> Tuned In
-                <? endif; ?>
+                <? } ?>
             </td>
         </tr>
     <? endforeach; ?>

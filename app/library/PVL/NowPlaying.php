@@ -188,6 +188,9 @@ class NowPlaying
                 return $current_np_data;
         }
 
+        if (!$stream->is_active)
+            return $current_np_data;
+
         $np = StationStream::api($stream);
 
         $custom_class = Station::getStationClassName($station->name);

@@ -53,10 +53,16 @@ class StreamsController extends BaseController
             \DF\Cache::remove('stations');
 
             // Immediately load "Now Playing" data for the added/updated stream.
-            $np = \PVL\NowPlaying::processStream($record, $this->station, true);
+            if ($data['is_active'] == 1)
+                $np = \PVL\NowPlaying::processStream($record, $this->station, true);
+
             $record->save();
 
-            if ($np['status'] != 'offline')
+            if ($data['is_active'] == 0)
+            {
+                $this->alert('<b>Stream updated, but is currently inactive.</b><br>The system will not retrieve Now Playing data about this stream until it is activated.', 'red');
+            }
+            else if ($np['status'] != 'offline')
             {
                 $song = $np['current_song'];
 

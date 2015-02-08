@@ -21,7 +21,7 @@ class VoteController extends BaseController
 
     public function indexAction()
     {
-        $pending_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.is_active = 0 AND s.is_special = 0 ORDER BY s.id DESC')->getArrayResult();
+        $pending_raw = $this->em->createQuery('SELECT s FROM Entity\Station s WHERE s.is_active = 0 ORDER BY s.id DESC')->getArrayResult();
 
         $pending_stations = array();
         foreach($pending_raw as $station)

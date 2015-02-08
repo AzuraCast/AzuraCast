@@ -19,6 +19,9 @@ class Song extends \DF\Doctrine\Entity
         $this->created = time();
         $this->score = 0;
 
+        $this->play_count = 0;
+        $this->last_played = 0;
+
         $this->votes = new ArrayCollection;
         $this->history = new ArrayCollection;
     }

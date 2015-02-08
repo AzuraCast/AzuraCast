@@ -13,6 +13,15 @@ return array(
             'description' => 'This should describe what distinguishes this stream from your other streams. Good examples: "Music Only", or "Mobile 64kbps"',
         )),
 
+        'is_active' => array('radio', array(
+            'label' => 'Is Stream Active',
+            'multiOptions' => array(0 => 'No', 1 => 'Yes'),
+            'default' => 1,
+
+            'description' => 'Mark this stream as inactive to remove it from public displays and halt all Now Playing processing, but leave it in the database for potential later use.',
+            'required' => true,
+        )),
+
         'type' => array('radio', array(
             'label' => 'Broadcast Source',
             'multiOptions' => array(

@@ -12,6 +12,7 @@ class StationStream extends \DF\Doctrine\Entity
     public function __construct()
     {
         $this->is_default = 0;
+        $this->is_active = 0;
         $this->hidden_from_player = 0;
 
         $this->history = new ArrayCollection;
@@ -29,6 +30,9 @@ class StationStream extends \DF\Doctrine\Entity
 
     /** @Column(name="is_default", type="boolean") */
     protected $is_default;
+
+    /** @Column(name="is_active", type="boolean") */
+    protected $is_active;
 
     /** @Column(name="hidden_from_player", type="boolean") */
     protected $hidden_from_player;
@@ -80,7 +84,7 @@ class StationStream extends \DF\Doctrine\Entity
     {
         $em = self::getEntityManager();
 
-        $streams_raw = $em->createQuery('SELECT ss.id FROM '.__CLASS__.' ss JOIN ss.station s WHERE ss.is_default = 1 AND s.category = :category')
+        $streams_raw = $em->createQuery('SELECT ss.id FROM '.__CLASS__.' ss JOIN ss.station s WHERE ss.is_default = 1 AND ss.is_active = 1 AND s.category = :category')
             ->setParameter('category', 'audio')
             ->getArrayResult();
 

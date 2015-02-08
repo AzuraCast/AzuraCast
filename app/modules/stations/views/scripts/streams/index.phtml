@@ -34,7 +34,7 @@ echo $this->viewHelper->renderHere('homelink', true);
     </thead>
     <tbody>
     <? foreach($streams as $record): ?>
-        <tr class="input <? if ($record['is_default']): ?>blue<? endif; ?>">
+        <tr class="input <? if ($record['is_default']): ?>blue<? elseif (!$record['is_active']): ?>disabled<? endif; ?>">
             <td class="center">
                 <div class="btn-group">
                     <?=$this->viewHelper->button(array(
@@ -72,9 +72,14 @@ echo $this->viewHelper->renderHere('homelink', true);
                 <?
                 $np = (array)$record->nowplaying_data;
                 ?>
-                <? if ($np['status'] == 'offline'): ?>
+                <? if (!$record->is_active): ?>
                     <span class="text-error">
-                        <big>Station Offline</big><br>
+                        <big>Stream Inactive</big><br>
+                        Activate to See Data
+                    </span>
+                <? elseif ($np['status'] == 'offline'): ?>
+                    <span class="text-error">
+                        <big>Stream Offline</big><br>
                         Verify correct URLs!
                     </span>
                 <? else: ?>

@@ -126,6 +126,9 @@ class NowPlaying
 
         foreach($station->streams as $stream)
         {
+            if (!$stream->is_active)
+                continue;
+
             $np_stream = self::processStream($stream, $station);
             $np['streams'][] = $np_stream;
 
@@ -293,39 +296,39 @@ class NowPlaying
         // Merge a default stream info into main array for legacy purposes.
         foreach($np_raw['streams'] as $np_stream)
         {
-            if ($np_stream['is_default'] == true)
+            if (!$np_stream['is_default'])
+                continue;
+
+            $song = $np_stream['current_song'];
+
+            $np['title'] = $song['title'];
+            $np['text'] = $song['text'];
+            $np['artist'] = $song['artist'];
+            $np['song_id'] = $song['id'];
+            $np['song_sh_id'] = $song['sh_id'];
+            $np['song_score'] = $song['score'];
+            $np['song_external'] = $song['external'];
+
+            $np['stream_url'] = $np_stream['url'];
+
+            // Legacy "streams" container.
+            $np['streams'] = array(
+                array(
+                    'name'      => $np_stream['name'],
+                    'url'       => $np_stream['url'],
+                ),
+            );
+
+            $np['type'] = $np_stream['type'];
+            $np['is_live'] = ($np_stream['status'] == 'online');
+            $np['status'] = $np_stream['status'];
+
+            $np['song_history'] = array();
+            foreach((array)$np_stream['song_history'] as $hist_row)
             {
-                $song = $np_stream['current_song'];
-
-                $np['title'] = $song['title'];
-                $np['text'] = $song['text'];
-                $np['artist'] = $song['artist'];
-                $np['song_id'] = $song['id'];
-                $np['song_sh_id'] = $song['sh_id'];
-                $np['song_score'] = $song['score'];
-                $np['song_external'] = $song['external'];
-
-                $np['stream_url'] = $np_stream['url'];
-
-                // Legacy "streams" container.
-                $np['streams'] = array(
-                    array(
-                        'name'      => $np_stream['name'],
-                        'url'       => $np_stream['url'],
-                    ),
-                );
-
-                $np['type'] = $np_stream['type'];
-                $np['is_live'] = ($np_stream['status'] == 'online');
-                $np['status'] = $np_stream['status'];
-
-                $np['song_history'] = array();
-                foreach((array)$np_stream['song_history'] as $hist_row)
-                {
-                    $row = $hist_row['song'];
-                    $row['timestamp'] = $hist_row['played_at'];
-                    $np['song_history'][] = $row;
-                }
+                $row = $hist_row['song'];
+                $row['timestamp'] = $hist_row['played_at'];
+                $np['song_history'][] = $row;
             }
         }
 
@@ -345,6 +348,7 @@ class NowPlaying
         return $di->get('em');
     }
 
+    /*
     public static function notifyStation($station, $template)
     {
         if (true || !$station['admin_monitor_station'])
@@ -372,4 +376,5 @@ class NowPlaying
 
         return true;
     }
+    */
 }

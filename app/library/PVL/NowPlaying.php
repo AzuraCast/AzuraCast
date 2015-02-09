@@ -231,9 +231,11 @@ class NowPlaying
         }
         else
         {
+            /*
             // Send e-mail on the first instance of offline status detected.
             if ($stream_np['current_song']['text'] == 'Stream Offline')
                 self::notifyStation($station, 'offline');
+            */
 
             // Register a new item in song history.
             $np['current_song'] = array();

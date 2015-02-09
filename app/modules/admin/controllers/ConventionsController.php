@@ -77,8 +77,7 @@ class ConventionsController extends BaseController
             return;
         }
 
-        $this->view->setVar('title', 'Edit Record');
-        $this->renderForm($form);
+        $this->renderForm($form, 'edit', 'Edit Record');
     }
 
     public function deleteAction()
@@ -165,8 +164,7 @@ class ConventionsController extends BaseController
             return;
         }
 
-        $this->view->setVar('title', 'Edit Signup Record');
-        $this->renderForm($form);
+        $this->renderForm($form, 'edit', 'Edit Signup Record');
     }
 
     public function deletesignupAction()

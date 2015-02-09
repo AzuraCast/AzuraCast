@@ -304,6 +304,25 @@ class Utilities
     }
 
     /**
+     * Join one or more items into an array.
+     *
+     * @param array $items
+     * @return string
+     */
+    public static function joinCompound(array $items)
+    {
+        $count = count($items);
+
+        if ($count == 0)
+            return '';
+
+        if ($count == 1)
+            return $items[0];
+
+        return implode(', ', array_slice($items, 0, -1)) . ' and ' . end($items);
+    }
+
+    /**
      * Create an array where the keys and values match each other.
      *
      * @param $array

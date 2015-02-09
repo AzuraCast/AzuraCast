@@ -1,48 +1,84 @@
 <?php
-$title = ('Show: '.$podcast->name);
+$title = $podcast->name;
+$hide_title = true;
 ?>
 
-<div class="clearfix">
-    <img class="pull-left" src="<?=\DF\Url::content($podcast->image_url) ?>" style="width: 150px; margin-right: 10px;">
-
-    <blockquote>
-        <p><?=nl2br($podcast->description) ?></p>
-    </blockquote>
-
-    <div class="buttons">
-        <?=$this->viewHelper->button(array(
-            'type'      => 'link',
-            'icon'      => 'icon-rss',
-            'href'      => $this->viewHelper->routeFromHere(array('action' => 'feed', 'type' => 'single')),
-            'text'      => 'Episode RSS Feed',
-            'target'    => '_blank',
-        )) ?>
+<div class="pg_show_detail">
+    <div class="breadcrumb">
+        <a href="<?=$this->viewHelper->routeFromHere(array('action' => 'index', 'id' => NULL)) ?>">&laquo; Back to Shows Directory</a>
     </div>
+
+    <div class="clearfix">
+        <img class="avatar pull-left" src="<?=\DF\Url::content($podcast->image_url) ?>">
+        <div class="buttons pull-right">
+            <?=$this->viewHelper->button(array(
+                'type'      => 'link',
+                'icon'      => 'icon-rss',
+                'href'      => $this->viewHelper->routeFromHere(array('action' => 'feed', 'type' => 'single')),
+                'text'      => 'Episode RSS Feed',
+                'target'    => '_blank',
+            )) ?>
+        </div>
+
+        <h2><?=$podcast->name ?></h2>
+
+        <? if ($podcast_airs_on): ?>
+            <p><i class="icon-volume-up"></i> <?=$podcast_airs_on ?></p>
+        <? endif; ?>
+
+        <blockquote>
+            <p><?=nl2br($podcast->description) ?></p>
+        </blockquote>
+
+        <div class="social">
+        <? foreach($social_types as $social_type => $social_info): ?>
+            <? if (!empty($podcast[$social_type])): ?>
+                <a href="<?=$podcast[$social_type] ?>" target="_blank"><img src="<?=\DF\Url::content('social/'.$social_info['icon'].'.png') ?>" alt="<?=$social_info['name'] ?>"></a>
+            <? endif; ?>
+        <? endforeach; ?>
+        </div>
+    </div>
+
+    <br>
+    <h3>All Episodes (<?=count($episodes) ?>)</h3>
+
+    <table class="episode_list datatable table-striped table-bordered">
+        <colgroup>
+            <col width="20%">
+            <col width="15%">
+            <col width="65%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>Date/Time</th>
+                <th>Episode</th>
+            </tr>
+        </thead>
+        <tbody>
+        <? foreach($episodes as $ep): ?>
+            <tr class="input">
+                <td class="center">
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'icon'      => 'icon-cloud-download',
+                        'class'     => 'btn-primary',
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'episode', 'episode' => $ep['id'])),
+                        'target'    => '_blank',
+                        'text'      => 'View Episode',
+                    )) ?>
+                </td>
+                <td class="center">
+                    <?=date('M j, Y', $ep['timestamp']) ?><br><?=date('g:ia', $ep['timestamp']) ?>
+                </td>
+                <td>
+                    <big><b><a href="<?=$this->viewHelper->routeFromHere(array('action' => 'episode', 'episode' => $ep['id'])) ?>" target="_blank"><?=$ep['title'] ?></a></b></big>
+                <? if ($ep['body']): ?>
+                    <p><?=\DF\Utilities::truncateText($ep['body'], 200) ?></p>
+                <? endif; ?>
+                </td>
+            </tr>
+        <? endforeach; ?>
+        </tbody>
+    </table>
 </div>
-
-<dl>
-    <dt>URL:</dt>
-    <dd><a href="<?=$podcast->web_url ?>"><?=$podcast->web_url ?></a></dd>
-
-<? if (count($podcast->stations) > 0): ?>
-    <dt>Also airs on:</dt>
-    <dd>
-    <? foreach($podcast->stations as $station): ?>
-        <div><?=$station->name ?></div>
-    <? endforeach; ?>
-    </dd>
-<? endif; ?>
-</dl>
-
-<br>
-<h2>Recent Episodes</h2>
-
-<? foreach($episodes as $ep): ?>
-    <h4>
-        <small><?=date('l, F j, Y g:ia', $ep['timestamp']) ?></small><br>
-        <a href="<?=$ep['web_url'] ?>" target="_blank"><?=$ep['title'] ?></a>
-    </h4>
-<? if ($ep['description']): ?>
-    <p><?=\DF\Utilities::truncateText($ep['description'], 500) ?></p>
-<? endif; ?>
-<? endforeach; ?>

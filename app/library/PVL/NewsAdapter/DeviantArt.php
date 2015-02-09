@@ -43,6 +43,7 @@ class DeviantArt extends AdapterAbstract
 
                 $news_items[] = array(
                     'guid'          => 'deviantart_'.md5($item['link']),
+                    'media_format'  => 'image',
                     'timestamp'     => strtotime($item['pubDate']),
                     'title'         => $item['title'],
                     'body'          => $item['description'],

@@ -13,6 +13,17 @@ class SoundCloud extends Rss
             'feed' => $url,
         ));
 
-        return parent::fetch($feed_url, $params);
+        $records_raw = parent::fetch($feed_url, $params);
+
+        $records = array();
+        foreach((array)$records_raw as $row)
+        {
+            $row['media_format'] = 'audio';
+            $row['body'] = str_replace('SoundCloud conversion to RSS provided by Cloud Flipper: [Web] - [Facebook] - [Donate!]', '', $row['body']);
+
+            $records[] = $row;
+        }
+
+        return $records;
     }
 }

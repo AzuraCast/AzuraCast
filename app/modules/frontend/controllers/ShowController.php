@@ -31,6 +31,37 @@ class ShowController extends BaseController
 
         $this->view->podcast = $podcast;
         $this->view->episodes = $podcast->episodes;
+
+        $this->view->social_types = Podcast::getSocialTypes();
+
+        $airs_on = '';
+        if (count($podcast->stations) > 0)
+        {
+            $airs_on_array = array();
+            foreach($podcast->stations as $station)
+                $airs_on_array[] = '<a href="'.$station->web_url.'" target="_blank">'.$station->name.'</a>';
+
+            $airs_on = 'Airs on '.\DF\Utilities::joinCompound($airs_on_array);
+        }
+
+        $this->view->podcast_airs_on = $airs_on;
+    }
+
+    public function episodeAction()
+    {
+        $podcast_id = (int)$this->getParam('id');
+        $episode_id = (int)$this->getParam('episode');
+
+        $record = PodcastEpisode::getRepository()->findOneBy(array('id' => $episode_id, 'podcast_id' => $podcast_id));
+
+        if (!($record instanceof PodcastEpisode))
+            throw new \DF\Exception\DisplayOnly('Podcast episode not found!');
+
+        $record->play_count = $record->play_count + 1;
+        $record->save();
+
+        $redirect_url = $record->web_url;
+        return $this->redirect($redirect_url);
     }
 
     public function feedAction()

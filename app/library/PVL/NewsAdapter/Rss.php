@@ -61,6 +61,7 @@ class Rss extends AdapterAbstract
                 $news_item = array(
                     'guid'          => 'rss_'.md5($guid),
                     'timestamp'     => strtotime($item->pubDate()),
+                    'media_format'  => 'mixed',
                     'title'         => $title,
                     'body'          => $description,
                     'web_url'       => $web_url,

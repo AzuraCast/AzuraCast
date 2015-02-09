@@ -152,7 +152,7 @@ class Form
         }
 
         // Set up element object.
-        switch($field_type)
+        switch(strtolower($field_type))
         {
             case 'password':
                 $element = new \Phalcon\Forms\Element\Password($field_key, $field_options);
@@ -166,7 +166,7 @@ class Form
                 $element = new \Phalcon\Forms\Element\Check($field_key, $field_options);
                 break;
 
-            case 'multiCheckbox':
+            case 'multicheckbox':
                 $field_options['name'] = $field_key.'[]';
                 $element = new \Phalcon\Forms\Element\Check($field_key, $field_options);
                 break;
@@ -189,6 +189,10 @@ class Form
 
             case 'date':
                 $element = new \Phalcon\Forms\Element\Date($field_key, $field_options);
+                break;
+
+            case 'unixdate':
+                $element = new \DF\Forms\Element\UnixDate($field_key, $field_options);
                 break;
 
             case 'numeric':
@@ -489,9 +493,16 @@ class Form
 
         $form = $this->form;
 
-        array_walk_recursive($submitted_data, function($val, $key) use ($form) {
-            if (!$form->has($key))
-                return NULL;
+        array_walk_recursive($submitted_data, function(&$val, $key) use ($form) {
+            if ($form->has($key))
+            {
+                $element = $form->get($key);
+                $val = $element->getValue(true);
+            }
+            else
+            {
+                $val = null;
+            }
         });
 
         return $submitted_data;

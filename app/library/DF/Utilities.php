@@ -7,13 +7,21 @@ namespace DF;
 
 class Utilities
 {
+    /**
+     * Process RSS feed and return results.
+     *
+     * @param $feed_url
+     * @param null $cache_name
+     * @param int $cache_expires
+     * @return array|mixed
+     */
     public static function getNewsFeed($feed_url, $cache_name = NULL, $cache_expires = 900)
     {
         if (!is_null($cache_name))
         {
             $feed_cache = \DF\Cache::get('feed_'.$cache_name);
         }
-        
+
         if (!$feed_cache)
         {
             // Catch the occasional error when the RSS feed is malformed or the HTTP request times out.
@@ -21,37 +29,37 @@ class Utilities
             {
                 $http_client = \Zend_Feed::getHttpClient();
                 $http_client->setConfig(array('timeout' => 60));
-                
+
                 $news_feed = new \Zend_Feed_Rss($feed_url);
             }
             catch(Exception $e)
             {
                 $news_feed = NULL;
             }
-            
+
             if (!is_null($news_feed))
-            {   
+            {
                 $latest_news = array();
                 $article_num = 0;
-                
+
                 foreach ($news_feed as $item)
                 {
                     $article_num++;
-                    
+
                     // Process categories.
                     $categories_raw = (is_array($item->category)) ? $item->category : array($item->category);
                     $categories = array();
-                    
+
                     foreach($categories_raw as $category)
                     {
                         $categories[] = $category->__toString();
                     }
-                
+
                     // Process main description.
                     $description = trim($item->description()); // Remove extraneous tags.
                     // $description = preg_replace('/[^(\x20-\x7F)]+/',' ', $description); // Strip "exotic" non-ASCII characters.
                     // $description = preg_replace('/<a[^(>)]+>read more<\/a>/i', '', $description); // Remove "read more" link.
-                    
+
                     $news_item = array(
                         'num'           => $article_num,
                         'title'         => $item->title(),
@@ -60,12 +68,12 @@ class Utilities
                         'link'          => $item->link(),
                         'categories'    => $categories,
                     );
-                    
+
                     $latest_news[] = $news_item;
                 }
 
                 $latest_news = array_slice($latest_news, 0, 10);
-                
+
                 if (!is_null($cache_name))
                 {
                     \DF\Cache::set($latest_news, 'feed_'.$cache_name, array('feeds', $cache_name));
@@ -76,14 +84,16 @@ class Utilities
         {
             $latest_news = $feed_cache;
         }
-        
+
         return $latest_news;
     }
-    
+
     /**
-     * Random Image
+     * Generate random image from a folder.
+     *
+     * @param $static_dir
+     * @return string
      */
-    
     public static function randomImage($static_dir)
     {
         $img = null;
@@ -116,12 +126,12 @@ class Utilities
     }
 
     /**
-     * Password Generation
+     * Pretty print_r
+     *
+     * @param $var
+     * @param bool $return
+     * @return string
      */
-
-    const PASSWORD_LENGTH = 9;
-    
-    // Replacement for print_r.
     public static function print_r($var, $return = FALSE)
     {
         $return_value = '<pre style="font-size: 13px; font-family: Consolas, Courier New, Courier, monospace; color: #000; background: #EFEFEF; border: 1px solid #CCC; padding: 5px;">';
@@ -137,18 +147,13 @@ class Utilities
             echo $return_value;
         }
     }
-    
+
     /**
-     * Number handling
+     * Replacement for money_format that places the negative sign ahead of the dollar sign.
+     *
+     * @param $number
+     * @return string
      */
-    
-    public static function ceiling($value, $precision = 0) {
-        return ceil($value * pow(10, $precision)) / pow(10, $precision);
-    }
-    public static function floor($value, $precision = 0) {
-        return floor($value * pow(10, $precision)) / pow(10, $precision);
-    }
-    
     public static function money_format($number)
     {
         if ($number < 0)
@@ -156,24 +161,14 @@ class Utilities
         else
             return '$'.number_format($number, 2);
     }
-    
-    public static function getFiscalYear($timestamp = NULL)
-    {
-        if ($timestamp === NULL)
-            $timestamp = time();
-        
-        $fiscal_year = intval(date('Y', $timestamp));
-        $fiscal_month = intval(date('m', $timestamp));
-        
-        if ($fiscal_month >= 9)
-            $fiscal_year++;
-        return $fiscal_year;
-    }
-    
+
     /**
-     * Security
+     * Generate a randomized password of specified length.
+     *
+     * @param $char_length
+     * @return string
      */
-    public static function generatePassword($char_length = self::PASSWORD_LENGTH)
+    public static function generatePassword($char_length = 8)
     {
         // String of all possible characters. Avoids using certain letters and numbers that closely resemble others.
         $numeric_chars = str_split('234679');
@@ -191,14 +186,26 @@ class Utilities
         
         return str_shuffle($password);
     }
-    
-    // Get the plain-english value of a given timestamp.
+
+    /**
+     * Convert a specified number of seconds into a date range.
+     *
+     * @param $timestamp
+     * @return string
+     */
     public static function timeToText($timestamp)
     {
         return self::timeDifferenceText(0, $timestamp);
     }
-    
-    // Get the plain-english difference between two timestamps.
+
+    /**
+     * Get the textual difference between two strings.
+     *
+     * @param $timestamp1
+     * @param $timestamp2
+     * @param int $precision
+     * @return string
+     */
     public static function timeDifferenceText($timestamp1, $timestamp2, $precision = 1)
     {
         $time_diff = abs($timestamp1 - $timestamp2);
@@ -236,7 +243,30 @@ class Utilities
     }
 
     /**
+     * Forced-GMT strtotime alternative.
+     *
+     * @param $time
+     * @param null $now
+     * @return int
+     */
+    public static function gstrtotime($time, $now = NULL)
+    {
+        $prev_timezone = @date_default_timezone_get();
+        @date_default_timezone_set('UTC');
+
+        $timestamp = strtotime($time, $now);
+
+        @date_default_timezone_set($prev_timezone);
+        return $timestamp;
+    }
+
+    /**
      * Truncate text (adding "..." if needed)
+     *
+     * @param $text
+     * @param int $limit
+     * @param string $pad
+     * @return string
      */
     public static function truncateText($text, $limit = 80, $pad = '...')
     {
@@ -260,20 +290,38 @@ class Utilities
         }
     }
 
+    /**
+     * Truncate URL in text-presentable format (i.e. "http://www.example.com" becomes "example.com")
+     *
+     * @param $url
+     * @param int $length
+     * @return string
+     */
     public static function truncateUrl($url, $length=40)
     {
         $url = str_replace(array('http://', 'https://', 'www.'), array('', '', ''), $url);
         return self::truncateText(rtrim($url, '/'), $length);
     }
-    
+
     /**
-     * Array Combiner (useful for configuration files)
+     * Create an array where the keys and values match each other.
+     *
+     * @param $array
+     * @return array
      */
     public static function pairs($array)
     {
         return array_combine($array, $array);
     }
 
+    /**
+     * Split an array into "columns", typically for display purposes.
+     *
+     * @param $array
+     * @param int $num_cols
+     * @param bool $preserve_keys
+     * @return array
+     */
     public static function columns($array, $num_cols = 2, $preserve_keys = true)
     {
         $items_total = (int)count($array);
@@ -281,6 +329,14 @@ class Utilities
         return array_chunk($array, $items_per_col, $preserve_keys);
     }
 
+    /**
+     * Split an array into "rows", typically for display purposes.
+     *
+     * @param $array
+     * @param int $num_per_row
+     * @param bool $preserve_keys
+     * @return array
+     */
     public static function rows($array, $num_per_row = 3, $preserve_keys = true)
     {
         return array_chunk($array, $num_per_row, $preserve_keys);

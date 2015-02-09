@@ -11,7 +11,7 @@ class ConventionController extends BaseController
     /**
      * @param bool $required
      * @return \Entity\Convention
-     * @throws DF\Exception\DisplayOnly
+     * @throws \DF\Exception\DisplayOnly
      */
     protected function _getConvention($required = false)
     {

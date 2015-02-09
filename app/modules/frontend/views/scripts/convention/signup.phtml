@@ -20,7 +20,7 @@ $title = ('Convention Signup');
         </tr>
     </thead>
     <tbody>
-    <? foreach($this->upcoming_cons as $con): ?>
+    <? foreach($upcoming_cons as $con): ?>
         <tr class="input">
             <td class="center">
                 <div class="btn-group">
@@ -61,7 +61,7 @@ $title = ('Convention Signup');
 <p>These conventions have already passed, and you cannot update your signup record for them.</p>
 
 <dl>
-<? foreach($this->previous_cons as $con): ?>
+<? foreach($previous_cons as $con): ?>
     <dt><?=$con['name'] ?></dt>
     <dd>
         <?=$con['location'] ?><br>

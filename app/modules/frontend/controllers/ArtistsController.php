@@ -112,6 +112,10 @@ class ArtistsController extends BaseController
                 $song['votes'] = $song['score_likes'] + $song['score_dislikes'];
             }
 
+            // Remove current day, as it will always be lower.
+            $current_day = strtotime(date('Y-m-d').' 00:00:00')*1000;
+            unset($plays_per_day[$current_day]);
+
             ksort($plays_per_day);
             foreach($plays_per_day as $plays_day => $plays_total)
                 $stats['plays_per_day'][] = array($plays_day, $plays_total);

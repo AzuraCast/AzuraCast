@@ -18,7 +18,7 @@ $manual = true;
                     </div>
                     <div class="media-body">
                         <h4>
-                            <? /* <a href="<?=$this->viewHelper->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><?=$artist['name'] ?></a> */ ?><?=$artist['name'] ?><br>
+                            <a href="<?=$this->viewHelper->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><?=$artist['name'] ?></a><br>
                             <small>
                                 <div>
                                 <? foreach($artist->types as $type): ?>

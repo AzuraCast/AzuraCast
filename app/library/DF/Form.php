@@ -491,16 +491,19 @@ class Form
         if ($submitted_data === null)
             $submitted_data = $_POST;
 
-        $form = $this->form;
+        $return_data = array();
 
-        array_walk_recursive($submitted_data, function(&$val, $key) use ($form) {
-            if ($form->has($key))
-                $val = $this->_getFieldValue($key, $val);
+        foreach((array)$submitted_data as $key => $val)
+        {
+            if ($this->form->has($key))
+                $return_data[$key] = $this->_getFieldValue($key, $val);
+            elseif (is_array($val))
+                $return_data[$key] = self::getValues($val);
             else
-                $val = null;
-        });
+                continue;
+        }
 
-        return $submitted_data;
+        return $return_data;
     }
 
     protected function _getFieldValue($field_key, $post_value)

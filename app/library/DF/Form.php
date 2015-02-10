@@ -491,6 +491,34 @@ class Form
         if ($submitted_data === null)
             $submitted_data = $_POST;
 
+        // Process submitted data recursively.
+        $return_data = $this->_getValues($submitted_data);
+
+        // Create a "blank" array to merge against the resulting data for
+        $elements = $this->form->getElements();
+        $null_fill = array();
+
+        foreach($elements as $field_key => $element)
+        {
+            if (isset($this->fields[$field_key]['belongsTo']))
+            {
+                $field_belongs_to = $this->fields[$field_key]['belongsTo'];
+                $null_fill[$field_belongs_to][$field_key] = NULL;
+            }
+            else
+            {
+                $null_fill[$field_key] = NULL;
+            }
+        }
+
+        // Fill the result array with any null values.
+        $return_data = Utilities::array_merge_recursive_distinct($null_fill, $return_data);
+
+        return $return_data;
+    }
+
+    protected function _getValues($submitted_data)
+    {
         $return_data = array();
 
         foreach((array)$submitted_data as $key => $val)

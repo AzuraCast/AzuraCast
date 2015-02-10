@@ -495,17 +495,22 @@ class Form
 
         array_walk_recursive($submitted_data, function(&$val, $key) use ($form) {
             if ($form->has($key))
-            {
-                $element = $form->get($key);
-                $val = $element->getValue(true);
-            }
+                $val = $this->_getFieldValue($key, $val);
             else
-            {
                 $val = null;
-            }
         });
 
         return $submitted_data;
+    }
+
+    protected function _getFieldValue($field_key, $post_value)
+    {
+        $element = $this->form->get($field_key);
+
+        if (method_exists($element, 'processValue'))
+            return $element->processValue($post_value);
+        else
+            return $post_value;
     }
 
     public function setDefaults($default_values, $belongs_to = NULL)

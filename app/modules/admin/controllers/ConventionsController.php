@@ -58,7 +58,7 @@ class ConventionsController extends BaseController
         if($_POST && $form->isValid($_POST) )
         {
             $data = $form->getValues();
-            
+
             if (!($record instanceof Record))
                 $record = new Record;
 

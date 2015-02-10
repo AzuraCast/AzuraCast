@@ -185,65 +185,6 @@ class Artist extends \DF\Doctrine\Entity
 
     public static function getSocialTypes()
     {
-        return array(
-            'web_url' => array(
-                'name' => 'Web Site',
-                'icon' => 'sharethis',
-            ),
-            'rss_url'   => array(
-                'name' => 'RSS',
-                'icon' => 'rss',
-                'adapter' => 'Rss',
-                'threshold' => '-6 months',
-            ),
-            'twitter_url'   => array(
-                'name' => 'Twitter',
-                'icon' => 'twitter',
-                'adapter' => 'Twitter',
-                'settings' => array(
-                    'include_retweets'      => FALSE,
-                    'always_featured'       => FALSE,
-                    'use_retweet_count'     => FALSE,
-                    'no_other_social_sites' => FALSE,
-                    'max_featured_tweets'   => 3,
-                ),
-                'threshold' => '-1 week',
-            ),
-            'tumblr_url'    => array(
-                'name' => 'Tumblr',
-                'icon' => 'tumblr',
-                'adapter' => 'Tumblr',
-                'settings' => array(),
-                'threshold' => '-1 week',
-            ),
-            'facebook_url'  => array(
-                'name' => 'Facebook',
-                'icon' => 'facebook',
-                'adapter' => 'Facebook',
-                'settings' => array(),
-                'threshold' => '-1 week',
-            ),
-            'youtube_url'   => array(
-                'name' => 'YouTube',
-                'icon' => 'youtube',
-                'adapter' => 'YouTube',
-                'settings' => array(),
-                'threshold' => '-6 months',
-            ),
-            'soundcloud_url' => array(
-                'name' => 'SoundCloud',
-                'icon' => 'soundcloud',
-                'adapter' => 'SoundCloud',
-                'settings' => array(),
-                'threshold' => '-6 months',
-            ),
-            'deviantart_url' => array(
-                'name' => 'DeviantArt',
-                'icon' => 'deviantart',
-                'adapter' => 'DeviantArt',
-                'settings' => array(),
-                'threshold' => '-6 months',
-            ),
-        );
+        return Podcast::getSocialTypes();
     }
 }

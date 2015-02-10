@@ -26,7 +26,7 @@ $(function() {
 	/* Autoselect */
 	$('.autoselect').each(function() {
 		var active = $(this).attr('rel');
-		$(this).find('li[rel="'+active+'"]').addClass('active');
+		$(this).find('[rel="'+active+'"]').addClass('active');
 	});
 	
 	/* Link fixes for iOS Apps */

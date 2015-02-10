@@ -1,117 +1,211 @@
 <?php
-$title = ('Artist Profile: '.$this->artist->name);
+$title = $artist->name;
 $manual = true;
 
-$social_links = \Entity\Artist::getSocialTypes();
+$this->assets->collection('custom_js')
+    ->addJs('//code.highcharts.com/highcharts.js', false)
+    ->addJs('//code.highcharts.com/highcharts-more.js', false)
+    ->addJs('//code.highcharts.com/modules/exporting.js', false);
+
+$skin = \PVL\Customization::get('theme');
+if ($skin == "dark")
+    $this->assets->collection('custom_js')->addJs('js/highcharts/dark-blue.js');
+
+$social_types = \Entity\Artist::getSocialTypes();
 ?>
 
-<div class="row">
-    <div class="span5">
+<div class="breadcrumb">
+    <a href="<?=$this->viewHelper->routeFromHere(array('action' => 'index', 'id' => NULL)) ?>">&laquo; Back to Artists Directory</a>
+</div>
+
+<div class="row-fluid">
+    <div class="span4">
         <div class="floating">
             <div class="media-list">
                 <div class="media">
                     <div class="media-object pull-left">
-                        <img class="thumbnail" src="<?=\DF\Url::content($this->artist->image_url) ?>" style="width: 128px;">
+                        <img class="thumbnail" src="<?=\DF\Url::content($artist->image_url) ?>" style="width: 96px;">
                     </div>
                     <div class="media-body">
                         <h2>
                             Artist Profile<br>
                             <small>
                                 <div>
-                                <? foreach($this->artist->types as $type): ?>
+                                <? foreach($artist->types as $type): ?>
                                     <i class="<?=$type['icon'] ?>"></i> <?=$type['name'] ?> 
                                 <? endforeach; ?>
                                 </div>
                             </small>
                         </h2>
 
-                    <? if ($this->acl->isAllowed('administer artists')): ?>
-                        <div class="buttons">
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'link',
-                                'icon'      => 'icon-pencil',
-                                'text'      => 'Edit Profile (Administrator)',
-                                'href'      => $this->viewHelper->route(array('module' => 'admin', 'controller' => 'artists', 'action' => 'edit', 'id' => $this->artist->id, 'origin' => 'profile')),
-                                'class'     => 'btn-inverse fancybox fancybox.ajax',
-                            )) ?>
-                        </div>
-                    <? elseif ($this->artist->canEdit()): ?>
-                        <div class="buttons">
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'link',
-                                'icon'      => 'icon-pencil',
-                                'text'      => 'Edit My Profile',
-                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
-                                'class'     => 'btn-inverse fancybox fancybox.ajax',
-                            )) ?>
-                        </div>
-                    <? endif; ?>
-
-                        <p><?=nl2br($this->artist->description) ?></p>
-
-                        <div class="media-list">
-                        <? foreach($social_links as $key => $link_info): ?>
-                            <? if ($this->artist[$key]): ?>
-                                <?
-                                $link = $this->artist[$key];
-                                $text = \DF\Utilities::truncateUrl($link);
-                                $icon = $this->viewHelper->icon(array('type' => 'social32', 'image' => $link_info['icon']));
-                                ?>
-                                <div class="media">
-                                    <div class="media-object pull-left">
-                                        <?=$this->link($link, $icon, '_blank') ?>
-                                    </div>
-                                    <div class="media-body">
-                                        <b><?=$link_info['name'] ?>:</b><br>
-                                        <?=$this->link($link, $text, '_blank') ?>
-                                    </div>
-                                </div>
-                            <? endif; ?>
-                        <? endforeach; ?>
+                        <div class="social">
+                            <? foreach($social_types as $social_type => $social_info): ?>
+                                <? if (!empty($artist[$social_type])): ?>
+                                    <a href="<?=$artist[$social_type] ?>" target="_blank"><img src="<?=\DF\Url::content('social/'.$social_info['icon'].'.png') ?>" alt="<?=$social_info['name'] ?>"></a>
+                                <? endif; ?>
+                            <? endforeach; ?>
                         </div>
                     </div>
                 </div>
             </div>
+
+        <? if ($this->acl->isAllowed('administer artists')): ?>
+            <div class="buttons">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'icon'      => 'icon-pencil',
+                    'text'      => 'Edit Profile (Administrator)',
+                    'href'      => $this->viewHelper->route(array('module' => 'admin', 'controller' => 'artists', 'action' => 'edit', 'id' => $artist->id, 'origin' => 'profile')),
+                    'class'     => 'btn-inverse fancybox fancybox.ajax',
+                )) ?>
+            </div>
+        <? elseif ($artist->canEdit()): ?>
+            <div class="buttons">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'icon'      => 'icon-pencil',
+                    'text'      => 'Edit My Profile',
+                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
+                    'class'     => 'btn-inverse fancybox fancybox.ajax',
+                )) ?>
+            </div>
+        <? endif; ?>
+
+            <p><?=nl2br($artist->description) ?></p>
         </div>
     </div>
-    <div class="span7">
+    <div class="span8">
         <div class="floating">
-            <h2>Artist News &amp; Updates</h2>
+            <h2>This Artist on PVL!</h2>
 
-            <ul id="article_type_selector" class="nav nav-pills autoselect" rel="all">
-            <? foreach($this->categories as $cat_key => $cat_name): ?>
-                <li rel="<?=$cat_key ?>"><a href="#" data-toggle="tab"><?=$cat_name ?></a></li>
-            <? endforeach; ?>
-            </ul>
+            <div id="plays_by_day" style="height: 200px;"></div>
 
-            <ul class="media-list">
-            <? foreach($this->news as $article): ?>
-                <li class="media news-article article_type_all article_type_<?=$article['source'] ?>">
-                    <div class="media-object pull-left">
-                        <a href="<?=$article['web_url'] ?>"><?=$this->viewHelper->icon(array('type' => 'social32', 'image' => $social_links[$article['source']]['icon'])) ?></a>
+            <script type="text/javascript">
+            $(function () {
+                $('#plays_by_day').highcharts({
+                    legend: {
+                        enabled: false
+                    },
+                    chart: {
+                        zoomType: 'x'
+                    },
+                    title: {
+                        text: 'Song Plays by Day'
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        labels: {
+                            formatter: function () {
+                                return Highcharts.dateFormat('%a %d %b', this.value);
+                            },
+                            dateTimeLabelFormats: {
+                                minute: '%H:%M',
+                                hour: '%H:%M',
+                                day: '%e. %b',
+                                week: '%e. %b',
+                                month: '%b \'%y',
+                                year: '%Y'
+                            }
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Song Plays'
+                        },
+                        min: 0
+                    },
+                    tooltip: {
+                        crosshairs: true,
+                        xDateFormat: '%Y-%m-%d'
+                    },
+                    plotOptions: {
+                        spline: {
+                            lineWidth: 2,
+                            marker: { enabled: false },
+                            shadow: false,
+                            states: {
+                                hover: {
+                                    lineWidth: 3
+                                }
+                            },
+                            threshold: null
+                        }
+                    },
+                    colors: [
+                        '#2f7ed8'
+                    ],
+                    series: [{
+                        name: 'Total Song Plays',
+                        type: 'spline',
+                        data: <?=json_encode($stats['plays_per_day']) ?>
+                    }]
+                });
+            });
+            </script>
+
+            <div class="tabbable">
+                <ul class="nav nav-tabs autoselect" rel="most_played">
+                <? foreach($stats['song_lists'] as $list_type => $list_info): ?>
+                    <li rel="<?=$list_type ?>"><a href="#tab_<?=$list_type ?>" data-toggle="tab"><?=$list_info['label'] ?></a></li>
+                <? endforeach; ?>
+                </ul>
+
+                <div class="tab-content autoselect" rel="most_played">
+                <? foreach($stats['song_lists'] as $list_type => $list_info): ?>
+                    <div class="tab-pane" id="tab_<?=$list_type ?>" rel="<?=$list_type ?>">
+                        <h2><?=$list_info['label'] ?></h2>
+
+                        <table class="datatable table-striped">
+                            <colgroup>
+                                <col width="10%">
+                                <col width="10%">
+                                <col width="40%">
+                                <col width="15%">
+                                <col width="25%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th class="center"><i class="icon-thumbs-up"></i> / <i class="icon-thumbs-down"></i></th>
+                                    <th>&nbsp;</th>
+                                    <th>Song</th>
+                                    <th class="center">Plays</th>
+                                    <th>Last Played</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <? foreach($list_info['songs'] as $song_row): ?>
+                                <tr class="input">
+                                    <td class="center">
+                                    <? if ($song_row['score'] > 0): ?>
+                                        <span class="text-success"><i class="icon-thumbs-up"></i> <?=$song_row['score'] ?></span>
+                                    <? elseif ($song_row['score'] < 0): ?>
+                                        <span class="text-error"><i class="icon-thumbs-down"></i> <?=abs($song_row['score']) ?></span>
+                                    <? else: ?>
+                                        0
+                                    <? endif; ?>
+                                    <td>
+                                    <? if ($song_row['image_url']): ?>
+                                        <img src="<?=$song_row['image_url'] ?>">
+                                    <? endif; ?>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn-show-song-info" data-id="<?=$song_row['id'] ?>" title="Click for Song Information"><big><?=$song_row['title'] ?></big></a><br>
+                                        <?=$song_row['artist'] ?>
+                                    </td>
+                                    <td class="center">
+                                        <?=$song_row['play_count'] ?>
+                                    </td>
+                                    <td>
+                                        <div title="<?=date('F j, Y g:ia', $song_row['last_played']) ?>"><?=\DF\Utilities::timeDifferenceText($song_row['last_played'], time()) ?> ago</div>
+                                    </td>
+                                </tr>
+                            <? endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="media-body">
-                        <h4>
-                            <?=$article['title'] ?><br>
-                            <small><?=$social_links[$article['source']]['name'] ?> &bull; <?=date('F j \a\t g:ia', $article['timestamp']) ?></small>
-                        </h4>
-                        <?=$article['body'] ?>
-                    </div>
-                </li>
-            <? endforeach; ?>
-            </ul>
+                <? endforeach; ?>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-$(function() {
-    $('#article_type_selector a').click(function(e) {
-
-        var type_name = $(this).closest('li').attr('rel');
-
-        $('.news-article').hide();
-        $('.news-article.article_type_'+type_name).show();
-    });
-});
-</script>

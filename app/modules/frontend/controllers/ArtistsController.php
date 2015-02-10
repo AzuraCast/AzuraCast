@@ -3,6 +3,7 @@ namespace Modules\Frontend\Controllers;
 
 use \Entity\Artist;
 use \Entity\ArtistType;
+use \DF\Utilities;
 
 class ArtistsController extends BaseController
 {
@@ -42,20 +43,89 @@ class ArtistsController extends BaseController
     }
 
     public function reviewAction()
-    {
+    {}
 
-    }
-
-    /*
     public function viewAction()
     {
         $id = (int)$this->getParam('id');
 
         $record = Artist::find($id);
-
         if (!($record instanceof Artist))
             throw new \DF\Exception\DisplayOnly('Artist Not Found');
 
+        $this->view->artist = $record;
+
+        // Generate statistics.
+        $cache_key = 'artist_'.$record->id.'_stats';
+        $stats = \DF\Cache::get($cache_key);
+
+        if (empty($stats))
+        {
+            $stats = array(
+                'plays_per_day' => array(),
+                'song_lists' => array(
+                    'most_played' => array(
+                        'label' => 'Most Played Songs',
+                        'songs' => array(),
+                    ),
+                    'most_liked' => array(
+                        'label' => 'Most Liked Songs',
+                        'songs' => array(),
+                    ),
+                    'most_recent' => array(
+                        'label' => 'Most Recently Played',
+                        'songs' => array(),
+                    ),
+                ),
+            );
+
+            $active_streams = \Entity\StationStream::getMainRadioStreams();
+
+            $songs = $this->em->createQuery('SELECT s, sh
+                FROM Entity\Song s
+                LEFT JOIN s.history sh
+                WHERE s.artist LIKE :artist_q
+                AND sh.stream_id IN (:streams)
+                ORDER BY s.title, sh.timestamp DESC')
+                ->setParameter('artist_q', '%'.$record->name.'%')
+                ->setParameter('streams', $active_streams)
+                ->getArrayResult();
+
+            $plays_per_day = array();
+
+            foreach($songs as &$song)
+            {
+                foreach((array)$song['history'] as $i => $history)
+                {
+                    // Get day of song play, incremenet counter.
+                    $day = strtotime(date('Y-m-d', $history['timestamp']).' 00:00:00') * 1000;
+                    $plays_per_day[$day] += 1;
+
+                    // Increment votes.
+                    $song['score_likes'] += $history['score_likes'];
+                    $song['score_dislikes'] += $history['score_dislikes'];
+                }
+                unset($song['history']);
+
+                // Increment vote totals.
+                $song['score_total'] = $song['score_likes'] - $song['score_dislikes'];
+                $song['votes'] = $song['score_likes'] + $song['score_dislikes'];
+            }
+
+            ksort($plays_per_day);
+            foreach($plays_per_day as $plays_day => $plays_total)
+                $stats['plays_per_day'][] = array($plays_day, $plays_total);
+
+            $stats['song_lists']['most_played']['songs'] = array_slice(Utilities::irsort($songs, 'play_count'), 0, 10);
+            $stats['song_lists']['most_liked']['songs'] = array_slice(Utilities::irsort($songs, 'score'), 0, 10);
+            $stats['song_lists']['most_recent']['songs'] = array_slice(Utilities::irsort($songs, 'last_played'), 0, 10);
+
+            \DF\Cache::save($stats, $cache_key, array(), 300);
+        }
+
+        $this->view->stats = $stats;
+
+        /*
         // Pull overall news.
         $news = $this->em->createQuery('SELECT n FROM Entity\News n WHERE n.type = :type AND n.author_id = :artist_id ORDER BY n.timestamp DESC')
             ->setParameter('type', 'artist')
@@ -82,9 +152,9 @@ class ArtistsController extends BaseController
         $this->view->news = $news;
 
         $this->view->categories = $categories;
-        $this->view->artist = $record;
+
+        */
     }
-    */
 
     public function submitAction()
     {

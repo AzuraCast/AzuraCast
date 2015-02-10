@@ -176,10 +176,10 @@ $social_types = \Entity\Artist::getSocialTypes();
                             <? foreach($list_info['songs'] as $song_row): ?>
                                 <tr class="input">
                                     <td class="center">
-                                    <? if ($song_row['score'] > 0): ?>
-                                        <span class="text-success"><i class="icon-thumbs-up"></i> <?=$song_row['score'] ?></span>
-                                    <? elseif ($song_row['score'] < 0): ?>
-                                        <span class="text-error"><i class="icon-thumbs-down"></i> <?=abs($song_row['score']) ?></span>
+                                    <? if ($song_row['score_total'] > 0): ?>
+                                        <span class="text-success"><i class="icon-thumbs-up"></i> <?=$song_row['score_total'] ?></span>
+                                    <? elseif ($song_row['score_total'] < 0): ?>
+                                        <span class="text-error"><i class="icon-thumbs-down"></i> <?=abs($song_row['score_total']) ?></span>
                                     <? else: ?>
                                         0
                                     <? endif; ?>

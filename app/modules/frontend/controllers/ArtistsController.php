@@ -117,7 +117,7 @@ class ArtistsController extends BaseController
                 $stats['plays_per_day'][] = array($plays_day, $plays_total);
 
             $stats['song_lists']['most_played']['songs'] = array_slice(Utilities::irsort($songs, 'play_count'), 0, 10);
-            $stats['song_lists']['most_liked']['songs'] = array_slice(Utilities::irsort($songs, 'score'), 0, 10);
+            $stats['song_lists']['most_liked']['songs'] = array_slice(Utilities::irsort($songs, 'score_total'), 0, 10);
             $stats['song_lists']['most_recent']['songs'] = array_slice(Utilities::irsort($songs, 'last_played'), 0, 10);
 
             \DF\Cache::save($stats, $cache_key, array(), 300);

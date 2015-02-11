@@ -87,6 +87,10 @@ form span.help-inline {
   margin-bottom: 5px;
 }
 
+.hidden-by-default {
+  display: none;
+}
+
 /** Bootstrap 1.0 Compatibility **/
 form div.control-group {
   margin: 15px 0;

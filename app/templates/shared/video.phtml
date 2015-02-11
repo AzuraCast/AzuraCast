@@ -8,8 +8,8 @@ $this->assets->collection('custom_js')
     <div class="gutter-sizer"></div>
 
 <? foreach((array)$video_channels as $station): ?>
-    <a class="video-channel clearfix" id="channel_<?=$station['short_name'] ?>" data-id="<?=$station['id'] ?>"  data-name="<?=$station['name'] ?>" href="<?=$station['web_url'] ?>" target="_blank">
-        <img class="video-thumbnail" src="<?=\DF\Url::content('images/video_thumbnail.png') ?>" alt="Video Thumbnail">
+    <a class="video-channel clearfix" id="channel_<?=$station['short_name'] ?>" data-id="<?=$station['id'] ?>" data-name="<?=$station['name'] ?>" href="<?=$station['stream_url'] ?>" target="_blank">
+        <img class="video-thumbnail" src="<?=\DF\Url::content('images/video_thumbnail.png') ?>" alt="Video Thumbnail" width="426" height="240">
 
         <div class="station-info">
             <img class="station-image" src="<?=\DF\Url::content($station['image_url']) ?>" alt="<?=$station['name'] ?> Logo">

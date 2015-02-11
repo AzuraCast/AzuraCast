@@ -6,11 +6,6 @@
 var video_np_cache;
 
 $(function() {
-    $('.video-channels').masonry({
-        itemSelector: '.video-channel',
-        gutter: '.gutter-sizer'
-    });
-
     /* Websocket Interaction */
     if (socket)
     {
@@ -107,7 +102,10 @@ function processVideoNowPlaying()
         $('#nowplaying-listeners-video').html('<i class="icon-user"></i>&nbsp;'+listener_total);
 
         $('.video-listing').show();
-        $('.video-channels').masonry();
+        $('.video-channels').masonry({
+            itemSelector: '.video-channel',
+            gutter: '.gutter-sizer'
+        });
     }
 
 }

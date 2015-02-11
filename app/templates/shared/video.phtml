@@ -1,19 +1,20 @@
-<div class="media-list" style="padding-bottom: 0; margin-bottom: 0;">
-<? foreach((array)$stations as $station): ?>
-    <div class="media station video clearfix rendermode-<?=$render_mode ?>" id="station_<?=$station['short_name'] ?>"
-        data-id="<?=$station['id'] ?>"
-        data-name="<?=$station['name'] ?>"
-        data-inactive="<? if ($station['hide_if_inactive']): ?>hide<? else: ?>show<? endif; ?>"
-        data-defaultstream="<?=$station['default_stream_id'] ?>"
-        data-streamid="<?=$station['current_stream_id'] ?>">
+<?
+$this->assets->collection('custom_js')
+    ->addJs('//cdnjs.cloudflare.com/ajax/libs/masonry/3.2.2/masonry.pkgd.min.js', false)
+    ->addJs('js/videos.js');
+?>
 
-        <div class="media-object pull-left center">
-            <div><img class="station-image" src="<?=\DF\Url::content($station['image_url']) ?>" alt="<?=$station['name'] ?> Logo"></div>
-        </div>
+<div class="video-channels">
+    <div class="gutter-sizer"></div>
 
-        <div class="media-body">
-            <div class="station-info">
-                <!-- Station Header -->
+<? foreach((array)$video_channels as $station): ?>
+    <a class="video-channel clearfix" id="channel_<?=$station['short_name'] ?>" data-id="<?=$station['id'] ?>"  data-name="<?=$station['name'] ?>" href="<?=$station['web_url'] ?>" target="_blank">
+        <img class="video-thumbnail" src="<?=\DF\Url::content('images/video_thumbnail.png') ?>" alt="Video Thumbnail">
+
+        <div class="station-info">
+            <img class="station-image" src="<?=\DF\Url::content($station['image_url']) ?>" alt="<?=$station['name'] ?> Logo">
+
+            <div class="station-name">
                 <h4>
                     <? if (!empty($station['country'])): ?>
                         <span class="f16"><span class="flag <?=strtolower($station['country']) ?>" title="<?=\PVL\Internationalization::getCountryName($station['country']) ?>"></span></span>
@@ -32,22 +33,8 @@
                 <? else: ?>
                     <div class="nowplaying-onair underline-when-playing" style="display: none;"></div>
                 <? endif; ?>
-
-                <div class="show-when-playing">
-                    <div class="station-player-container"></div>
-                </div>
-
-                <!-- Now Playing Information -->
-                <div class="song-info underline-when-playing" title="Click for Song Information">
-                    <div><big><span class="nowplaying-artist">Loading...</span></big></div>
-                    <div><span class="nowplaying-title">Loading...</span></div>
-                </div>
-
-                <div class="video-stream-player" style="display: none;">
-                    <a href="#" class="btn btn-block btn-inverse btn-launch-video"><i class="icon-facetime-video"></i> Launch Stream</a>
-                </div>
             </div>
         </div>
-    </div>
+    </a>
 <? endforeach; ?>
 </div>

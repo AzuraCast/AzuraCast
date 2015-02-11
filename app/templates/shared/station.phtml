@@ -1,6 +1,6 @@
 <ul class="media-list" style="padding-bottom: 0; margin-bottom: 0;">
 <? foreach((array)$stations as $station): ?>
-    <li class="media station audio clearfix rendermode-<?=$render_mode ?>" id="station_<?=(isset($station['short_name']) ? $station['short_name'] :  \Entity\Station::getStationShortName($station['name'])) ?>"
+    <li class="media station audio clearfix" id="station_<?=(isset($station['short_name']) ? $station['short_name'] :  \Entity\Station::getStationShortName($station['name'])) ?>"
         data-id="<?=$station['id'] ?>" 
         data-name="<?=$station['name'] ?>"
         data-image="<?=\DF\Url::content($station['image_url']) ?>"

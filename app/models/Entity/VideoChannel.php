@@ -7,7 +7,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * @Table(name="video")
  * @Entity
  */
-class Video extends \DF\Doctrine\Entity
+class VideoChannel extends \DF\Doctrine\Entity
 {
     public function __construct()
     {
@@ -128,6 +128,25 @@ class Video extends \DF\Doctrine\Entity
         $name = str_replace('_', ' ', $name);
         $name = str_replace(' ', '', $name);
         return $name;
+    }
+
+    public static function fetchArray($cached = true)
+    {
+        $stations = \DF\Cache::get('video_channels');
+
+        if (!$stations || !$cached)
+        {
+            $em = self::getEntityManager();
+            $stations = $em->createQuery('SELECT v FROM '.__CLASS__.' v WHERE v.is_active = 1 ORDER BY v.weight ASC')
+                ->getArrayResult();
+
+            foreach($stations as &$station)
+                $station['short_name'] = self::getStationShortName($station['name']);
+
+            \DF\Cache::save($stations, 'video_channels', array(), 60);
+        }
+
+        return $stations;
     }
 
     // Retrieve the API version of the object/array.

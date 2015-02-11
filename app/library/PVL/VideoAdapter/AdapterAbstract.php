@@ -1,7 +1,7 @@
 <?php
 namespace PVL\VideoAdapter;
 
-use \Entity\Video;
+use \Entity\VideoChannel;
 
 class AdapterAbstract
 {
@@ -13,7 +13,7 @@ class AdapterAbstract
     /**
      * @param Video $station
      */
-    public function __construct(Video $station)
+    public function __construct(VideoChannel $station)
     {
         $this->station = $station;
 
@@ -39,7 +39,7 @@ class AdapterAbstract
         $np = array(
             'on_air' => array(
                 'text'          => 'Stream Offline',
-                'thumbnail'     => '',
+                'thumbnail'     => \DF\Url::content('images/video_thumbnail.png'),
             ),
             'meta' => array(
                 'status'        => 'offline',

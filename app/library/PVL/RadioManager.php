@@ -1,15 +1,18 @@
 <?php
 namespace PVL;
 
-use \Entity\Statistic;
-use \Entity\Schedule;
-use \Entity\Station;
-use \Entity\StationStream;
-use \Entity\Song;
-use \Entity\SongHistory;
-use \Entity\SongVote;
-use \Entity\Settings;
+use Entity\Statistic;
+use Entity\Schedule;
+use Entity\Station;
+use Entity\StationStream;
+use Entity\Song;
+use Entity\SongHistory;
+use Entity\SongVote;
+use Entity\Settings;
 
+use DF\Cache;
+
+use PVL\Debug;
 use PVL\Service\PvlNode;
 
 class RadioManager
@@ -48,8 +51,8 @@ class RadioManager
         foreach($np_api as $station => $np_info)
             $np_api[$station]['cache'] = 'hit';
 
-        \DF\Cache::remove('api_nowplaying_data');
-        \DF\Cache::save($np_api, 'api_nowplaying_data', array('nowplaying'), 30);
+        Cache::remove('api_nowplaying_data');
+        Cache::save($np_api, 'api_nowplaying_data', array('nowplaying'), 30);
 
         // Generate PVL API nowplaying file.
         $nowplaying_api = json_encode(array('status' => 'success', 'result' => $np_api), JSON_UNESCAPED_SLASHES);
@@ -65,7 +68,7 @@ class RadioManager
 
     public static function loadNowPlaying()
     {
-        \PVL\Debug::startTimer('Nowplaying Overall');
+        Debug::startTimer('Nowplaying Overall');
 
         $em = self::getEntityManager();
 
@@ -78,17 +81,18 @@ class RadioManager
 
         foreach($stations as $station)
         {
-            \PVL\Debug::startTimer($station->name);
+            Debug::startTimer($station->name);
 
             $name = $station->short_name;
 
             $nowplaying['api'][$name] = self::processStation($station);
             $nowplaying['legacy'][$name] = self::processLegacy($nowplaying['api'][$name]);
 
-            \PVL\Debug::endTimer($station->name);
+            Debug::endTimer($station->name);
+            Debug::divider();
         }
 
-        \PVL\Debug::endTimer('Nowplaying Overall');
+        Debug::endTimer('Nowplaying Overall');
 
         return $nowplaying;
     }
@@ -205,7 +209,7 @@ class RadioManager
         else
             return array();
 
-        \PVL\Debug::log('Adapter Class: '.get_class($np_adapter));
+        Debug::log('Adapter Class: '.get_class($np_adapter));
 
         $stream_np = $np_adapter->process();
 

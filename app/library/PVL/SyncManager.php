@@ -28,6 +28,10 @@ class SyncManager
         // Run Now Playing data for radio streams.
         RadioManager::generate();
 
+        // Run Now Playing data for video streams.
+        if (NOWPLAYING_SEGMENT % 2 == 1)
+            VideoManager::generate();
+
         Settings::setSetting('nowplaying_last_run', time());
     }
 

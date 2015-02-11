@@ -1,0 +1,64 @@
+div.video-channels {
+  margin-bottom: 10px;
+
+  .gutter-sizer {
+    width: 2.564102564102564%;
+  }
+}
+
+a.video-channel {
+  width: 31.623931623931625%;
+
+  display: block;
+  position: relative;
+  border-radius: 5px;
+  margin-bottom: 15px;
+
+  box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+  background: #13385E;
+  color: #FFF !important;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  img.video-thumbnail {
+    border-radius: 4px 4px 0 0;
+  }
+
+  .station-info {
+    img {
+      float: left;
+      width: 40px;
+      margin: 6px 6px 6px 5px;
+
+      border-radius: 5px;
+    }
+
+    .station-name {
+      padding: 10px;
+
+      h4 {
+        font-size: 16px;
+
+        padding: 0;
+        padding-bottom: 3px;
+
+        border-color: #CCC;
+      }
+
+      h4 span{
+        font-weight: normal;
+
+        font-size: 13px;
+        line-height: 13px;
+
+        color: #999999;
+      }
+
+      span.block {
+        display: block;
+      }
+    }
+  }
+}

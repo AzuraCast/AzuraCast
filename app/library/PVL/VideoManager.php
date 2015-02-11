@@ -1,10 +1,11 @@
 <?php
 namespace PVL;
 
-use \Entity\Video;
-use \Entity\Schedule;
-use \Entity\Settings;
+use Entity\Schedule;
+use Entity\Settings;
+use Entity\VideoChannel;
 
+use DF\Cache;
 use PVL\Debug;
 use PVL\Service\PvlNode;
 
@@ -20,8 +21,8 @@ class VideoManager
         $nowplaying = self::loadNowPlaying();
 
         // Generate PVL API cache.
-        \DF\Cache::remove('api_nowplaying_video');
-        \DF\Cache::save($nowplaying, 'api_nowplaying_video', 60);
+        Cache::remove('api_nowplaying_video');
+        Cache::save($nowplaying, 'api_nowplaying_video', 60);
 
         // Generate PVL API nowplaying file.
         $nowplaying_api = json_encode(array('status' => 'success', 'result' => $nowplaying), JSON_UNESCAPED_SLASHES);
@@ -38,7 +39,7 @@ class VideoManager
         Debug::startTimer('Video Nowplaying Overall');
 
         $em = self::getEntityManager();
-        $stations = Video::fetchAll();
+        $stations = VideoChannel::fetchAll();
 
         $nowplaying = array();
 
@@ -50,9 +51,10 @@ class VideoManager
             $nowplaying[$name] = self::processStation($station);
 
             Debug::endTimer($station->name);
+            Debug::divider();
         }
 
-        Debug::endTimer('Nowplaying Overall');
+        Debug::endTimer('Video Nowplaying Overall');
 
         return $nowplaying;
     }
@@ -60,10 +62,10 @@ class VideoManager
     /**
      * Generate Structured NowPlaying Data
      *
-     * @param Video $station
+     * @param VideoChannel $station
      * @return array Structured NowPlaying Data
      */
-    public static function processStation(Video $station)
+    public static function processStation(VideoChannel $station)
     {
         $em = self::getEntityManager();
 
@@ -71,10 +73,10 @@ class VideoManager
 
         $np = array();
         $np['status'] = 'offline';
-        $np['station'] = Video::api($station);
+        $np['station'] = VideoChannel::api($station);
 
         // Process stream.
-        $custom_class = Video::getStationClassName($station->name);
+        $custom_class = VideoChannel::getStationClassName($station->name);
         $custom_adapter = '\\PVL\\VideoAdapter\\'.$custom_class;
 
         $stream_np = array();
@@ -100,16 +102,18 @@ class VideoManager
             }
         }
 
+        Debug::log('Adapter Class: '.get_class($np_adapter));
         Debug::print_r($stream_np);
 
         $np = array_merge($np, $stream_np);
 
-        Debug::log('Adapter Class: '.get_class($np_adapter));
-
         $np['status'] = $np['meta']['status'];
         $np['listeners'] = $np['meta']['listeners'];
 
-        $station->nowplaying_data = $np;
+        $station->nowplaying_data = array(
+            'on_air' => $np['on_air'],
+            'meta' => $np['meta'],
+        );
 
         $em->persist($station);
         $em->flush();

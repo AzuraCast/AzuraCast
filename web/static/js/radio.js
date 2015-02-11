@@ -161,14 +161,6 @@ $(function() {
 		e.preventDefault();
 	});
 
-    /* Launch Video Player link. */
-    $('.btn-launch-video').on('click', function(e) {
-        e.preventDefault();
-
-        var station_id = $(this).closest('.station').attr('id');
-        playVideoStream(station_id);
-    });
-
     /* Switch Stream button. */
     $('.btn-switch-stream').on('click', function(e) {
         e.preventDefault();
@@ -498,72 +490,59 @@ function playStation(id)
 		{
 			stopAllPlayers();
 
-			if (stream_type == "stream")
-			{
-                // Hide radio-specific items.
-                station.find('.station-player-container').hide();
-                station.find('.radio-only').hide();
+            station.find('.station-player-container').append('<div id="pvl-jplayer"></div><div id="pvl-jplayer-controls"></div>');
+            $('#pvl-jplayer-controls').append($('#pvl-jplayer-controls-image').html());
 
-                station.find('.video-stream-player').show();
+            $("#pvl-jplayer").jPlayer({
+                ready: function (event) {
+                    ready = true;
+                    startPlayer(nowplaying_url);
+                },
+                pause: function() {
+                    stopAllPlayers();
+                },
+                play: function() {
+                    jp_is_playing = true;
+                },
+                suspend: function(event) {
+                    console.log('Stream Suspended');
 
-                station.addClass('playing');
-			}
-			else
-			{
-				station.find('.station-player-container').append('<div id="pvl-jplayer"></div><div id="pvl-jplayer-controls"></div>');
-				$('#pvl-jplayer-controls').append($('#pvl-jplayer-controls-image').html());
+                    jp_is_playing = false;
+                },
+                error: function(event) {
+                    var error_details = event.jPlayer.error;
+                    console.log('Error: '+error_details.message+' - '+error_details.hint);
+                    jp_is_playing = false;
 
-				$("#pvl-jplayer").jPlayer({
-					ready: function (event) {
-						ready = true;
-						startPlayer(nowplaying_url);
-					},
-					pause: function() {
-						stopAllPlayers();
-					},
-					play: function() {
-						jp_is_playing = true;
-					},
-					suspend: function(event) { 
-						console.log('Stream Suspended');
+                    // Auto-replay if Media URL load failure.
+                    if (error_details.message == 'Media URL could not be loaded.')
+                        startPlayer(nowplaying_url);
+                    else
+                        stopAllPlayers();
+                },
+                volumechange: function(event) {
+                    volume = Math.round(event.jPlayer.options.volume * 100);
+                },
+                wmode: 'window',
+                swfPath: DF_ContentPath+'/jplayer/jquery.jplayer.swf',
+                solution: (canPlayMp3()) ? 'html, flash' : 'flash',
+                supplied: 'mp3',
+                preload: 'none',
+                volume: (volume/100),
+                muted: false,
+                backgroundColor: '#000000',
+                cssSelectorAncestor: '#pvl-jplayer-controls',
+                errorAlerts: false,
+                warningAlerts: false
+            });
 
-						jp_is_playing = false;
-					},
-					error: function(event) {
-						var error_details = event.jPlayer.error;
-						console.log('Error: '+error_details.message+' - '+error_details.hint);
-						jp_is_playing = false;
+            station.addClass('playing');
+            nowplaying_station = id;
 
-                        // Auto-replay if Media URL load failure.
-                        if (error_details.message == 'Media URL could not be loaded.')
-                            startPlayer(nowplaying_url);
-                        else
-                            stopAllPlayers();
-					},
-					volumechange: function(event) {
-						volume = Math.round(event.jPlayer.options.volume * 100);
-					},
-                    wmode: 'window',
-					swfPath: DF_ContentPath+'/jplayer/jquery.jplayer.swf',
-					solution: (canPlayMp3()) ? 'html, flash' : 'flash',
-					supplied: 'mp3',
-					preload: 'none',
-					volume: (volume/100),
-					muted: false,
-					backgroundColor: '#000000',
-					cssSelectorAncestor: '#pvl-jplayer-controls',
-					errorAlerts: false,
-					warningAlerts: false
-				});
+            $('#tunein_player').data('current_station', station.data('id'));
 
-				station.addClass('playing');
-                nowplaying_station = id;
-
-                $('#tunein_player').data('current_station', station.data('id'));
-
-                // Force a reload of the "now playing" data.
-                processNowPlaying();
-			}
+            // Force a reload of the "now playing" data.
+            processNowPlaying();
 			
 			// Log in Google Analytics
 			ga('send', 'event', 'Station', 'Play', station.data('name'));
@@ -573,16 +552,6 @@ function playStation(id)
 			$('#player').text('Error: This stream is not currently active. Please select another stream to continue.');
 		}
 	}
-}
-
-function playVideoStream(id)
-{
-    var station = $('#'+id);
-
-    var stream_type = station.data('type');
-    var stream_url = station.data('stream');
-
-    window.open(stream_url, 'pvlive_stream', 'width=980,height=700,location=yes,menubar=yes,resizable=yes,scrollbars=yes,status=no,titlebar=yes,toolbar=no');
 }
 
 var check_interval;
@@ -639,7 +608,6 @@ function stopAllPlayers()
 
 	$('.station .station-player-container').empty();
 	$('.station-history').hide();
-    $('.video-stream-player').hide();
 
 	$('.station').removeClass('playing');
 
@@ -704,60 +672,6 @@ function showStationSchedule(station_id)
 /**
  * Utility Functions
  */
-
-function intOrZero(number)
-{
-	return parseInt(number) || 0;
-}
-
-function addParameter(url, parameterName, parameterValue, atStart)
-{
-    replaceDuplicates = true;
-    if(url.indexOf('#') > 0){
-        var cl = url.indexOf('#');
-        urlhash = url.substring(url.indexOf('#'),url.length);
-    } else {
-        urlhash = '';
-        cl = url.length;
-    }
-    sourceUrl = url.substring(0,cl);
-
-    var urlParts = sourceUrl.split("?");
-    var newQueryString = "";
-
-    if (urlParts.length > 1)
-    {
-        var parameters = urlParts[1].split("&");
-        for (var i=0; (i < parameters.length); i++)
-        {
-            var parameterParts = parameters[i].split("=");
-            if (!(replaceDuplicates && parameterParts[0] == parameterName))
-            {
-                if (newQueryString == "")
-                    newQueryString = "?";
-                else
-                    newQueryString += "&";
-                newQueryString += parameterParts[0] + "=" + (parameterParts[1]?parameterParts[1]:'');
-            }
-        }
-    }
-    if (newQueryString == "")
-        newQueryString = "?";
-
-    if(atStart){
-        newQueryString = '?'+ parameterName + "=" + parameterValue + (newQueryString.length>1?'&'+newQueryString.substring(1):'');
-    } else {
-        if (newQueryString !== "" && newQueryString != '?')
-            newQueryString += "&";
-        newQueryString += parameterName + "=" + (parameterValue?parameterValue:'');
-    }
-    return urlParts[0] + newQueryString + urlhash;
-}
-
-function getUnixTimestamp()
-{
-	return Math.round((new Date()).getTime() / 1000);
-}
 
 function notify(image, title, description, opts)
 {

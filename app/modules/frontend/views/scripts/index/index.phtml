@@ -1,7 +1,10 @@
 <?php
-$manual = TRUE;
+$manual = true;
 $hide_title = true;
-$this->render_mode = 'homepage';
+$render_mode = 'homepage';
+
+// Render player skeleton immediately, as video and other scripts depend on it.
+echo $this->viewHelper->renderHere('player-skeleton', true);
 ?>
 
 <?
@@ -98,25 +101,11 @@ $content_top = ob_get_contents();
 ob_end_clean();
 ?>
 
-<?
-/*
-<div class="hide-if-empty">
-    <h2 id="section_video"><i class="<?=$categories['video']['icon'] ?>"></i> Live Video Streams <small><span id="nowplaying-listeners-video"></span></small></h2>
+<div class="video-listing">
+    <h2 id="section_video"><i class="icon-facetime-video"></i> Live Video Streams <small><span id="nowplaying-listeners-video"></span></small></h2>
 
-    <div class="row-fluid">
-        <?
-        $cat = $categories['video'];
-        $stations = $cat['stations'];
-        foreach($stations as $station):
-        ?>
-        <div class="span4"><?=$this->viewHelper->renderCommon('video', array('stations' => array($station))); ?></div>
-        <?
-        endforeach;
-        ?>
-    </div>
+    <?=$this->viewHelper->renderCommon('video', array('video_channels' => $video_channels)); ?>
 </div>
-*/
-?>
 
 <?
 $cat = $categories['audio'];
@@ -197,11 +186,6 @@ $cols = \DF\Utilities::columns($cons, 3);
     </div>
 <? endforeach; ?>
 </div>
-
-<!-- Player Interface Skeleton Code -->
-<?
-echo $this->viewHelper->renderHere('player-skeleton', true);
-?>
 
 <!-- Schedule Reloader -->
 <script type="text/javascript">

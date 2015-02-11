@@ -1,13 +1,14 @@
 <?php
 namespace Modules\Frontend\Controllers;
 
-use \Entity\Station;
-use \Entity\Podcast;
-use \Entity\NetworkNews;
-use \Entity\Settings;
-use \Entity\Schedule;
-use \Entity\Rotator;
-use \Entity\Convention;
+use Entity\Station;
+use Entity\Podcast;
+use Entity\NetworkNews;
+use Entity\Settings;
+use Entity\Schedule;
+use Entity\Rotator;
+use Entity\Convention;
+use Entity\VideoChannel;
 
 class IndexController extends BaseController
 {
@@ -25,6 +26,12 @@ class IndexController extends BaseController
 
         // Pull stations.
         $this->_initStations();
+
+        // Pull video streams.
+        $this->view->video_channels = VideoChannel::fetchArray();
+
+        var_dump(VideoChannel::fetchArray());
+        \DF\Utilities::print_r(VideoChannel::fetchArray());
 
         // Pull conventions.
         $conventions = Convention::getAllConventions();

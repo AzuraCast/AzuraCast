@@ -4,7 +4,7 @@ namespace PVL;
 use \Entity\Settings;
 use \Entity\Station;
 
-class Utilities
+class Utilities extends \DF\Utilities
 {
     public static function showSpecialEventsMode()
     {

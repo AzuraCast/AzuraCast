@@ -14,16 +14,22 @@ class Cache
      */
     
     // Load data from the cache.
-    public static function load($id)
+    public static function load($id, $default = NULL)
     {
         $cache = self::getCache();
-        return $cache->get($id);
+
+        if ($cache->exists($id))
+            return $cache->get($id);
+        elseif (is_callable($default))
+            return $default();
+        else
+            return $default;
     }
 
     // Alias of the "load" function.
     public static function get($id, $default = NULL)
     {
-        return self::load($id);
+        return self::load($id, $default);
     }
     
     // Test whether an ID is present in the cache.
@@ -53,18 +59,20 @@ class Cache
     // Special callback function to get or save a new cache entry.
     public static function getOrSet($id, $default = NULL, $tags = array(), $specificLifetime = false)
     {
-        $result = self::load($id);
-        
-        if ($result === false)
+        $cache = self::getCache();
+
+        if ($cache->exists($id))
+        {
+            return $cache->get($id);
+        }
+        else
         {
             $result = (is_callable($default)) ? $default() : $default;
             if ($result !== null)
-            {
                 self::save($result, $id, $tags, $specificLifetime);
-            }
+
+            return $result;
         }
-        
-        return $result;
     }
     
     // Delete an item from the cache.

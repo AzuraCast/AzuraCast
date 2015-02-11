@@ -58,14 +58,10 @@ function processVideoNowPlaying()
             if (station_info.meta.status == 'offline')
             {
                 station.hide();
-
-                // $('.video-channels').masonry('hide', [station]);
             }
             else
             {
                 station.show();
-
-                // $('.video-channels').masonry('reveal', [station]);
                 online_stations++;
             }
 
@@ -100,12 +96,7 @@ function processVideoNowPlaying()
     else
     {
         $('#nowplaying-listeners-video').html('<i class="icon-user"></i>&nbsp;'+listener_total);
-
         $('.video-listing').show();
-        $('.video-channels').masonry({
-            itemSelector: '.video-channel',
-            gutter: '.gutter-sizer'
-        });
     }
 
 }

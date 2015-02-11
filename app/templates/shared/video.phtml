@@ -1,14 +1,11 @@
 <?
 $this->assets->collection('custom_js')
-    ->addJs('//cdnjs.cloudflare.com/ajax/libs/masonry/3.2.2/masonry.pkgd.min.js', false)
     ->addJs('js/videos.js');
 ?>
 
-<div class="video-channels">
-    <div class="gutter-sizer"></div>
-
+<div class="video-channels clearfix row-fluid">
 <? foreach((array)$video_channels as $station): ?>
-    <a class="video-channel clearfix" id="channel_<?=$station['short_name'] ?>" data-id="<?=$station['id'] ?>" data-name="<?=$station['name'] ?>" href="<?=$station['stream_url'] ?>" target="_blank">
+    <a class="video-channel clearfix span3" id="channel_<?=$station['short_name'] ?>" data-id="<?=$station['id'] ?>" data-name="<?=$station['name'] ?>" href="<?=$station['stream_url'] ?>" target="_blank">
         <img class="video-thumbnail" src="<?=\DF\Url::content('images/video_thumbnail.png') ?>" alt="Video Thumbnail" width="426" height="240">
 
         <div class="station-info">

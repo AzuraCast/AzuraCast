@@ -1,16 +1,9 @@
 div.video-channels {
   margin-bottom: 10px;
-
-  .gutter-sizer {
-    width: 2.564102564102564%;
-  }
 }
 
 a.video-channel {
-  width: 31.623931623931625%;
-
   display: block;
-  position: relative;
   border-radius: 5px;
   margin-bottom: 15px;
 
@@ -18,11 +11,16 @@ a.video-channel {
   background: #13385E;
   color: #FFF !important;
 
+  &:nth-child(4n+1) {
+    margin-left: 0;
+  }
+
   &:hover {
     text-decoration: none;
   }
 
   img.video-thumbnail {
+    width: 100%;
     border-radius: 4px 4px 0 0;
   }
 

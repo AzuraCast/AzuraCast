@@ -389,16 +389,6 @@ class Station extends \DF\Doctrine\Entity
                 'icon' => 'icon-music',
                 'stations' => array(),
             ),
-            'video'     => array(
-                'name' => 'Video Streams',
-                'icon' => 'icon-facetime-video',
-                'stations' => array(),
-            ),
-            'event'     => array(
-                'name' => 'Special Event Coverage',
-                'icon' => 'icon-calendar',
-                'stations' => array(),
-            ),
             'internal' => array(
                 'name' => 'Internal Tracking Station',
                 'icon' => 'icon-cog',
@@ -409,7 +399,7 @@ class Station extends \DF\Doctrine\Entity
 
     public static function getStationsInCategories()
     {
-        $stations = \Entity\Station::fetchArray();
+        $stations = self::fetchArray();
 
         $categories = self::getCategories();
         foreach($stations as $station)

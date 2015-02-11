@@ -21,7 +21,12 @@ class SyncManager
         // Sync schedules.
         Settings::setSetting('nowplaying_last_started', time());
 
-        NowPlaying::generate();
+        // Run different tasks for different "segments" of now playing data.
+        if (!defined('NOWPLAYING_SEGMENT'))
+            define('NOWPLAYING_SEGMENT', 1);
+
+        // Run Now Playing data for radio streams.
+        RadioManager::generate();
 
         Settings::setSetting('nowplaying_last_run', time());
     }

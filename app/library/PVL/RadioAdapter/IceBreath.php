@@ -1,5 +1,5 @@
 <?php
-namespace PVL\NowPlayingAdapter;
+namespace PVL\RadioAdapter;
 
 use \Entity\Station;
 

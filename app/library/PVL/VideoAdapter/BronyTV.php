@@ -1,7 +1,7 @@
 <?php
-namespace PVL\NowPlayingAdapter;
+namespace PVL\VideoAdapter;
 
-use \Entity\Station;
+use \Entity\Video;
 
 class BronyTV extends AdapterAbstract
 {
@@ -16,7 +16,7 @@ class BronyTV extends AdapterAbstract
         $return = @json_decode($return_raw, TRUE);
         $return = $return[0];
 
-        $np['listeners']['current'] = (int)$return['Total_Viewers'];
+        $np['meta']['listeners'] = (int)$return['Total_Viewers'];
 
         if ($return['Stream_Status'] == 'Stream is offline' || $return['Stream_Status'] == 'offline - Offline')
         {
@@ -29,12 +29,7 @@ class BronyTV extends AdapterAbstract
 
             // Now Playing defaults.
             $np['meta']['status'] = 'online';
-
-            $np['current_song'] = array(
-                'artist'    => $parts[0],
-                'title'     => $parts[1],
-                'text'      => implode(' - ', $parts),
-            );
+            $np['on_air']['text'] = implode(' - ', $parts);
             return true;
         }
     }

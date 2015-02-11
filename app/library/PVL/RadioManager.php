@@ -12,7 +12,7 @@ use \Entity\Settings;
 
 use PVL\Service\PvlNode;
 
-class NowPlaying
+class RadioManager
 {
     public static function generate()
     {
@@ -21,17 +21,13 @@ class NowPlaying
         // Fix DF\URL // prefixing.
         \DF\Url::forceSchemePrefix(true);
 
-        // Run different tasks for different "segments" of now playing data.
-        if (!defined('NOWPLAYING_SEGMENT'))
-            define('NOWPLAYING_SEGMENT', 1);
-
         $nowplaying = self::loadNowPlaying();
 
         // Post statistics to official record.
         Statistic::post($nowplaying['legacy']);
 
         // Clear any records that are not audio/video category.
-        $api_categories = array('audio', 'video');
+        $api_categories = array('audio');
         foreach($nowplaying['api'] as $station_shortcode => $station_info)
         {
             if (!in_array($station_info['station']['category'], $api_categories))
@@ -194,20 +190,20 @@ class NowPlaying
         $np = StationStream::api($stream);
 
         $custom_class = Station::getStationClassName($station->name);
-        $custom_adapter = '\\PVL\\NowPlayingAdapter\\'.$custom_class;
+        $custom_adapter = '\\PVL\\RadioAdapter\\'.$custom_class;
 
         if (class_exists($custom_adapter))
             $np_adapter = new $custom_adapter($stream, $station);
         elseif ($stream->type == "icecast")
-            $np_adapter = new \PVL\NowPlayingAdapter\IceCast($stream, $station);
+            $np_adapter = new \PVL\RadioAdapter\IceCast($stream, $station);
         elseif ($stream->type == "icebreath")
-            $np_adapter = new \PVL\NowPlayingAdapter\IceBreath($stream, $station);
+            $np_adapter = new \PVL\RadioAdapter\IceBreath($stream, $station);
         elseif ($stream->type == "shoutcast2")
-            $np_adapter = new \PVL\NowPlayingAdapter\ShoutCast2($stream, $station);
+            $np_adapter = new \PVL\RadioAdapter\ShoutCast2($stream, $station);
         elseif ($stream->type == "shoutcast1")
-            $np_adapter = new \PVL\NowPlayingAdapter\ShoutCast1($stream, $station);
-        elseif ($stream->type == "stream")
-            $np_adapter = new \PVL\NowPlayingAdapter\Stream($stream, $station);
+            $np_adapter = new \PVL\RadioAdapter\ShoutCast1($stream, $station);
+        else
+            return array();
 
         \PVL\Debug::log('Adapter Class: '.get_class($np_adapter));
 
@@ -231,12 +227,6 @@ class NowPlaying
         }
         else
         {
-            /*
-            // Send e-mail on the first instance of offline status detected.
-            if ($stream_np['current_song']['text'] == 'Stream Offline')
-                self::notifyStation($station, 'offline');
-            */
-
             // Register a new item in song history.
             $np['current_song'] = array();
             $np['song_history'] = $station->getRecentHistory($stream);
@@ -352,34 +342,4 @@ class NowPlaying
         $di = \Phalcon\Di::getDefault();
         return $di->get('em');
     }
-
-    /*
-    public static function notifyStation($station, $template)
-    {
-        if (true || !$station['admin_monitor_station'])
-            return false;
-
-        $di = \Phalcon\Di::getDefault();
-        $em = $di->get('em');
-
-        $managers_raw = $em->createQuery('SELECT sm.email FROM Entity\StationManager sm WHERE sm.station_id = :station_id')
-            ->setParameter('station_id', $station['id'])
-            ->getArrayResult();
-
-        $managers = array();
-        foreach($managers_raw as $manager)
-            $managers[] = $manager['email'];
-
-        \DF\Messenger::send(array(
-            'to'        => $managers,
-            'subject'   => 'Station Has Gone Offline',
-            'template'  => $template,
-            'vars'      => array(
-                'station' => $station,
-            ),
-        ));
-
-        return true;
-    }
-    */
 }

@@ -1,8 +1,8 @@
 <?php
 namespace Modules\Admin\Controllers;
 
-use \Entity\Video;
-use \Entity\Video as Record;
+use \Entity\VideoChannel;
+use \Entity\VideoChannel as Record;
 
 class VideosController extends BaseController
 {

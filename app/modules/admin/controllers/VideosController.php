@@ -13,7 +13,7 @@ class VideosController extends BaseController
     
     public function indexAction()
     {
-        $records = $this->em->createQuery('SELECT v FROM Entity\Video v ORDER BY v.weight ASC, v.id ASC')
+        $records = $this->em->createQuery('SELECT v FROM Entity\VideoChannel v ORDER BY v.weight ASC, v.id ASC')
             ->getArrayResult();
 
         $this->view->stations = $records;

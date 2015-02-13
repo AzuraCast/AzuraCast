@@ -1,3 +1,62 @@
+div.conventions {
+  margin-bottom: -10px;
+}
+
+a.convention {
+  display: block;
+  position: relative;
+  padding-bottom: 40px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+
+  box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+  background: #13385E;
+
+  /* background: #111; */
+  color: #FFF !important;
+
+  &.coverage_streaming,
+  &.convention.coverage_full {
+    background: #165787;
+  }
+
+  &.coverage_none {
+    opacity: 0.6;
+  }
+  &:hover {
+    text-decoration: none;
+  }
+
+  img {
+    border-radius: 4px 4px 0 0;
+  }
+  .coverage {
+    position: absolute;
+    bottom: 7px;
+    left: 7px;
+  }
+  .name {
+    position: absolute;
+    font-size: 12px;
+    line-height: 14px;
+    bottom: 6px;
+    left: 35px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    h4 {
+      font-size: 14px;
+      padding: 0;
+    }
+  }
+}
+
+.conventions.upcoming a.convention.coverage_none img {
+  display: none;
+}
+
 #convention_header img {
   border-radius: 15px;
   -webkit-border-radius: 15px;

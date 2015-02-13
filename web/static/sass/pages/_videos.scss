@@ -7,11 +7,10 @@ a.video-channel {
   border-radius: 5px;
   margin-bottom: 15px;
 
-  box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
   background: #13385E;
   color: #FFF !important;
 
-  &:nth-child(4n+1) {
+  &.active:nth-of-type(4n+1) {
     margin-left: 0;
   }
 

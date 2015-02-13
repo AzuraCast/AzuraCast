@@ -15,6 +15,8 @@ $(function() {
             video_np_cache = e;
             processVideoNowPlaying();
 
+            console.log(video_np_cache);
+
             // Send message to iframe listeners.
             top.postMessage({
                 type: 'nowplaying_video',
@@ -61,6 +63,11 @@ function processVideoNowPlaying()
             }
             else
             {
+                if (!station.is(':visible'))
+                {
+                    notify(station_info.station.image_url, station_info.station.name, 'Stream online!', { tag: 'nowplaying' });
+                }
+
                 station.show();
                 online_stations++;
             }
@@ -87,8 +94,6 @@ function processVideoNowPlaying()
         }
     });
 
-
-
     if (online_stations == 0)
     {
         $('.video-listing').hide();
@@ -97,6 +102,8 @@ function processVideoNowPlaying()
     {
         $('#nowplaying-listeners-video').html('<i class="icon-user"></i>&nbsp;'+listener_total);
         $('.video-listing').show();
+
+        processMultiRows();
     }
 
 }

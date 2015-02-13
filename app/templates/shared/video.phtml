@@ -3,7 +3,7 @@ $this->assets->collection('custom_js')
     ->addJs('js/videos.js');
 ?>
 
-<div class="video-channels clearfix row-fluid">
+<div class="video-channels clearfix row-fluid row-multiple">
 <? foreach((array)$video_channels as $station): ?>
     <a class="video-channel clearfix span3" id="channel_<?=$station['short_name'] ?>" data-id="<?=$station['id'] ?>" data-name="<?=$station['name'] ?>" href="<?=$station['stream_url'] ?>" target="_blank">
         <img class="video-thumbnail" src="<?=\DF\Url::content('images/video_thumbnail.png') ?>" alt="Video Thumbnail" width="426" height="240">

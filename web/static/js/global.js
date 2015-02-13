@@ -5,6 +5,8 @@
 
 $(function() {
 
+    processMultiRows();
+
 	if ($('html').hasClass('theme_dark'))
 	{
 		$('.btn.btn-inverse').addClass('btn-normal');
@@ -182,4 +184,20 @@ function addParameter(url, parameterName, parameterValue, atStart)
         newQueryString += parameterName + "=" + (parameterValue?parameterValue:'');
     }
     return urlParts[0] + newQueryString + urlhash;
+}
+
+function processMultiRows()
+{
+    // Add support for multiple rows for all divisible-by-12 columns.
+    _.forEach([2, 3, 4, 6, 12], function(j) {
+
+        var num_per_row = 12 / j;
+
+        $('.row-multiple > .span'+j).removeClass('start-of-row');
+        $('.row-multiple > .span'+j+':visible').each(function (i) {
+            if (i % num_per_row == 0)
+                $(this).addClass('start-of-row');
+        });
+
+    });
 }

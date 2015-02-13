@@ -8,7 +8,7 @@ var nowplaying_song,
     nowplaying_song_id,
     nowplaying_url,
     nowplaying_station,
-    nowplaying_cache;
+    audio_np_cache;
 
 var vote_ratelimit = false;
 
@@ -207,8 +207,10 @@ $(function() {
     socket.on('nowplaying', function(e) {
         console.log('Nowplaying updated.');
 
-        nowplaying_cache = e;
+        audio_np_cache = e;
         processNowPlaying();
+
+        console.log(audio_np_cache);
 
         // Send message to iframe listeners.
         top.postMessage({
@@ -286,9 +288,8 @@ function processNowPlaying()
     var listener_total = 0;
     var listeners_by_type = [];
 
-    for (var station_id in nowplaying_cache)
+    _.each(audio_np_cache, function(station_info, station_id)
     {
-        var station_info = nowplaying_cache[station_id];
         var station = $('#station_'+station_id);
         var station_exists = (station.length != 0);
 
@@ -461,7 +462,7 @@ function processNowPlaying()
             var song_history_id = intOrZero(stream.current_song.sh_id);
             station.data('historyid', song_history_id);
         }
-    }
+    });
 
     for(type_name in listeners_by_type)
     {

@@ -462,6 +462,10 @@ div.floating {
   display: none;
 }
 
+.row-multiple .start-of-row {
+  margin-left: 0;
+}
+
 /**
  * Google Maps Compatibility
  */
@@ -772,7 +776,7 @@ html.embedded #maintenance_header {
 
 body {
   background: transparent;
-  color: #222;
+  color: $clr_text;
 }
 
 h1, h2 {

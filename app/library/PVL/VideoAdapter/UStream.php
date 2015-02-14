@@ -41,7 +41,7 @@ class UStream extends AdapterAbstract
         $np['meta']['listeners'] = (isset($channel['stats']['viewer'])) ? (int)$channel['stats']['viewer'] : 0;
 
         $np['on_air']['text'] = $channel['title'];
-        $np['on_air']['thumbnail'] = $channel['thumbnail']['live'];
+        $np['on_air']['thumbnail'] = $channel['thumbnail']['live'].'?t='.time();
         return true;
     }
 }

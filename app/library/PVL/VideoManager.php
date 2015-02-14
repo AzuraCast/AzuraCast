@@ -90,6 +90,7 @@ class VideoManager
             $adapters = array(
                 new \PVL\VideoAdapter\Livestream($station),
                 new \PVL\VideoAdapter\TwitchTv($station),
+                new \PVL\VideoAdapter\UStream($station),
             );
 
             foreach($adapters as $np_adapter)

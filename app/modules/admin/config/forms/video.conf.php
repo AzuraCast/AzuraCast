@@ -39,7 +39,7 @@ return array(
                     'required' => true,
                 )),
 
-                'data_url' => array('text', array(
+                'nowplaying_url' => array('text', array(
                     'label' => 'Stream Now-Playing Data URL',
                     'class' => 'half-width',
 

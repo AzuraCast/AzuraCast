@@ -264,6 +264,9 @@ class Form
                 if (!empty($group_info['legend'])) {
                     $return .= '<fieldset id="' . $group_id . '">';
                     $return .= '<legend>' . $group_info['legend'] . '</legend>';
+
+                    if ($group_info['description'])
+                        $return .= '<p>'.$group_info['description'].'</p>';
                 }
 
                 foreach($group_info['elements'] as $element_key => $element_info) {

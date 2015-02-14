@@ -12,7 +12,7 @@ class StationStream extends \DF\Doctrine\Entity
     public function __construct()
     {
         $this->is_default = 0;
-        $this->is_active = 0;
+        $this->is_active = 1;
         $this->hidden_from_player = 0;
 
         $this->history = new ArrayCollection;

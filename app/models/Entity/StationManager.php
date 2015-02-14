@@ -42,4 +42,16 @@ class StationManager extends \DF\Doctrine\Entity
      * })
      */
     protected $station;
+
+    /**
+     * Static Functions
+     */
+
+    public static function getAllActiveManagers()
+    {
+        $em = self::getEntityManager();
+
+        return $em->createQuery('SELECT sm FROM '.__CLASS__.' sm JOIN sm.station s WHERE s.is_active = 1')
+            ->getArrayResult();
+    }
 }

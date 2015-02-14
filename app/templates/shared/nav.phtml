@@ -1,6 +1,7 @@
 <?
 $categories = \Entity\Station::getStationsInCategories();
-$podcasts = \Entity\Podcast::fetchArray('name');
+$video_channels = \Entity\VideoChannel::fetchArray();
+$podcasts = \Entity\Podcast::fetchArray();
 ?>
 
 <ul class="nav primary_menu">
@@ -35,7 +36,7 @@ $podcasts = \Entity\Podcast::fetchArray('name');
     <li class="dropdown">
         <a href="#" data-toggle="dropdown"><i class="icon-facetime-video"></i> Video</a>
         <ul class="dropdown-menu">
-        <? foreach($categories['video']['stations'] as $station): ?>
+        <? foreach($video_channels as $station): ?>
             <li><a href="<?=$station['web_url'] ?>" title="<?=$station['genre'] ?>" target="_blank"><?=$station['name'] ?></a></li>
         <? endforeach; ?>
         </ul>

@@ -182,6 +182,22 @@ class Podcast extends \DF\Doctrine\Entity
         return $podcasts;
     }
 
+    public static function fetchArray($cached = true)
+    {
+        $podcasts = \DF\Cache::get('podcasts');
+
+        if (!$podcasts || !$cached)
+        {
+            $em = self::getEntityManager();
+            $podcasts = $em->createQuery('SELECT p FROM '.__CLASS__.' p WHERE p.is_approved = 1 ORDER BY p.name ASC')
+                ->getArrayResult();
+
+            \DF\Cache::save($podcasts, 'podcasts', array(), 60);
+        }
+
+        return $podcasts;
+    }
+
     public static function api($row_obj, $include_episodes = TRUE)
     {
         if ($row_obj instanceof self)

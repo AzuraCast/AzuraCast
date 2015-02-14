@@ -84,7 +84,13 @@ $manual = true;
                     <div class="social">
                     <? foreach($podcast_social_types as $social_type => $social_info): ?>
                         <? if (!empty($station[$social_type])): ?>
-                            <a href="<?=$station[$social_type] ?>" target="_blank"><img src="<?=\DF\Url::content('social/'.$social_info['icon'].'.png') ?>" alt="<?=$social_info['name'] ?>"></a>
+                            <? if(filter_var($station[$social_type], FILTER_VALIDATE_EMAIL)) { ?>
+                            <a href="<?= 'mailto:'.$station[$social_type] ?>" target="_blank">
+                            <? } else { ?>
+                            <a href="<?=$station[$social_type] ?>" target="_blank">
+                            <? } ?>
+                                <img src="<?=\DF\Url::content('social/'.$social_info['icon'].'.png') ?>" alt="<?=$social_info['name'] ?>">
+                            </a>
                         <? endif; ?>
                     <? endforeach; ?>
                     </div>

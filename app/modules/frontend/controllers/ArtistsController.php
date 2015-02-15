@@ -42,9 +42,6 @@ class ArtistsController extends BaseController
         }
     }
 
-    public function reviewAction()
-    {}
-
     public function viewAction()
     {
         $id = (int)$this->getParam('id');
@@ -128,36 +125,6 @@ class ArtistsController extends BaseController
         }
 
         $this->view->stats = $stats;
-
-        /*
-        // Pull overall news.
-        $news = $this->em->createQuery('SELECT n FROM Entity\News n WHERE n.type = :type AND n.author_id = :artist_id ORDER BY n.timestamp DESC')
-            ->setParameter('type', 'artist')
-            ->setParameter('artist_id', $record->id)
-            ->getArrayResult();
-
-        $news_categories = array();
-        foreach($news as $article)
-        {
-            $news_categories['all']++;
-            $news_categories[$article['source']]++;
-        }
-
-        $categories_raw = Artist::getSocialTypes();
-        $categories = array(
-            'all'   => 'All Items ('.$news_categories['all'].')',
-        );
-        foreach($categories_raw as $cat_key => $cat_info)
-        {
-            if (isset($news_categories[$cat_key]))
-                $categories[$cat_key] = $cat_info['name'].' ('.$news_categories[$cat_key].')';
-        }
-
-        $this->view->news = $news;
-
-        $this->view->categories = $categories;
-
-        */
     }
 
     public function submitAction()

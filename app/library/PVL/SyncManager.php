@@ -49,14 +49,14 @@ class SyncManager
     {
         self::initSync(60);
 
-        // Pull the homepage news.
-        NewsManager::syncNetwork();
-
         // Sync schedules (highest priority).
         ScheduleManager::run(!DF_IS_COMMAND_LINE);
 
         // Sync show episodes and artist news (high priority).
         PodcastManager::run();
+
+        // Pull the homepage news.
+        NewsManager::syncNetwork();
 
         // Sync CentovaCast song data.
         try
@@ -161,8 +161,6 @@ class SyncManager
 
         if (DF_IS_COMMAND_LINE)
         {
-            \PVL\Debug::setEchoMode(TRUE);
-
             error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
             ini_set('display_errors', 1);
             ini_set('log_errors', 1);

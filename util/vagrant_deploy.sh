@@ -10,13 +10,10 @@ then
 
     # Set up server
     apt-get -q -y install python-software-properties
-
     apt-add-repository ppa:phalcon/stable
-
     apt-get update
 
     apt-get -q -y install vim git nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl php5-phalcon
-
     apt-get autoremove
 
     mysqladmin -u root password password
@@ -95,22 +92,9 @@ then
     npm install --no-bin-links
 
     cp $www_base/util/vagrant_initd /etc/init/pvlnode.conf
-    service pvlnode start
-
-    # Bower and Grunt install.
-    npm install -g bower grunt-cli
-
-    cd $www_base
-    npm install --no-bin-links
 
     # Mark deployment as run.
     touch $app_base/.deploy_run
-
-else
-
-    echo 'DROP DATABASE pvl;' | mysql -u root -ppassword
-    echo 'CREATE DATABASE pvl CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;' | mysql -u root -ppassword
-    service mysql restart
 
 fi
 
@@ -132,14 +116,24 @@ then
 	composer install
 fi
 
+# Shut off Cron tasks for now
+sudo service cron stop
+sudo service nginx stop
+sudo service pvlnode stop
+
 # Set up DB.
 echo "Setting up database..."
 
 cd $www_base/util
+
+sudo -u vagrant php doctrine.php orm:schema-tool:drop --force
+
 sudo -u vagrant php doctrine.php orm:schema-tool:create
 sudo -u vagrant php cli.php cache:clear
 
 sudo -u vagrant php vagrant_import.php
+
+sudo service pvlnode start
 
 echo "Importing external music databases (takes a minute)..."
 sudo -u vagrant php cli.php sync:long
@@ -153,9 +147,9 @@ sudo -u vagrant php cli.php sync:nowplaying
 # Add cron job
 echo "Installing cron job..."
 crontab -u vagrant $www_base/util/vagrant_cron
-service cron restart
 
-service nginx restart
+sudo service cron start
+sudo service nginx start
 
 echo "One-time setup complete!"
-echo "Server now live at https://dev.pvlive.me"
+echo "Server now live at http://dev.pvlive.me"

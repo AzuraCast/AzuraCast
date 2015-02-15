@@ -1,4 +1,4 @@
-20 * * * * php /var/www/vagrant/util/cli.php sync:long
+0 */6 * * * php /var/www/vagrant/util/cli.php sync:long
 */15 * * * * php /var/www/vagrant/util/cli.php sync:medium
 * * * * * php /var/www/vagrant/util/cli.php sync:short
 * * * * * php /var/www/vagrant/util/cli.php sync:nowplaying 1

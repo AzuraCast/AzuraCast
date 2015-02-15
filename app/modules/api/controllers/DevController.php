@@ -42,9 +42,11 @@ class DevController extends BaseController
             'station_streams',
             'podcast',
             'podcast_on_station',
+            'podcast_episodes',
             'songs',
             'convention',
             'convention_archives',
+            'video',
         );
 
         // Compose mysqldump command.
@@ -94,6 +96,7 @@ class DevController extends BaseController
             'songs',
             'stations',
             'conventions',
+            'videos',
         );
 
         $static_files = array();

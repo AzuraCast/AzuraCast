@@ -693,6 +693,11 @@ function notify(image, title, description, opts)
         }
     }
 
+    if (DF_AppEnv != 'production') {
+        var dev_env_name = DF_AppEnv.charAt(0).toUpperCase() + DF_AppEnv.slice(1);
+        title = '('+dev_env_name+') '+title;
+    }
+
     // Always request permission, skip to granted if already done.
     Notify.requestPermission(function() {
 

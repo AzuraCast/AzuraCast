@@ -32,7 +32,10 @@ class ArtistsController extends BaseController
     
     public function editAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->artist);
+        $form_config = $this->current_module_config->forms->artist->toArray();
+        unset($form_config['groups']['intro']);
+
+        $form = new \DF\Form($form_config);
         
         if ($this->hasParam('id'))
         {
@@ -66,8 +69,7 @@ class ArtistsController extends BaseController
             return;
         }
 
-        $this->view->setVar('title', 'Edit Record');
-        $this->renderForm($form);
+        $this->renderForm($form, 'edit', 'Edit Record');
     }
     
     public function deleteAction()

@@ -33,6 +33,7 @@ return array(
             'content'   => array('textarea', array(
                 'label' => 'Content',
                 'id'    => 'textarea-content',
+                'class' => 'full-width full-height',
                 'description' => '<b>If pasting from Word:</b> paste the text into Notepad first, or you will encounter unexpected formatting problems.',
             )),
             

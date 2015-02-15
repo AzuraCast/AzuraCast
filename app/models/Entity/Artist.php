@@ -37,9 +37,6 @@ class Artist extends \DF\Doctrine\Entity
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
 
-    /** @Column(name="contact_skype", type="string", length=25, nullable=true) */
-    protected $contact_skype;
-
     /** @Column(name="image_url", type="string", length=100, nullable=true) */
     protected $image_url;
 
@@ -91,9 +88,6 @@ class Artist extends \DF\Doctrine\Entity
 
     /** @Column(name="license_specifics", type="text", nullable=true) */
     protected $license_specifics;
-
-    /** @Column(name="interviews", type="boolean") */
-    protected $interviews;
 
     /** @Column(name="initials", type="string", length=10, nullable=true) */
     protected $initials;

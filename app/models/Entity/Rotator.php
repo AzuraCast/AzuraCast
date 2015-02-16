@@ -9,6 +9,8 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class Rotator extends \DF\Doctrine\Entity
 {
+    use Traits\FileUploads;
+
     public function __construct()
     {
         $this->timestamp = time();
@@ -30,13 +32,7 @@ class Rotator extends \DF\Doctrine\Entity
 
     public function setImageUrl($new_url)
     {
-        if ($new_url)
-        {
-            if ($this->image_url && $this->image_url != $new_url)
-                @unlink(DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$this->image_url);
-
-            $this->image_url = $new_url;
-        }
+        $this->_processAndCropImage('image_url', $new_url, 150, 150);
     }
 
     /** @Column(name="web_url", type="string", length=255, nullable=true) */

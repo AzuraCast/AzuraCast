@@ -42,6 +42,9 @@ class Station extends \DF\Doctrine\Entity
         return self::getStationShortName($this->name);
     }
 
+    /** @Column(name="description", type="text", nullable=true) */
+    protected $description;
+
     /** @Column(name="acronym", type="string", length=10, nullable=true) */
     protected $acronym;
 

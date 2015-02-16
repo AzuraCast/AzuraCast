@@ -26,6 +26,11 @@ return array(
                     'description' => 'Listed underneath the station in the player.',
                 )),
 
+                'description' => array('textarea', array(
+                    'label' => 'Station Description',
+                    'class' => 'full-width full-height',
+                )),
+
                 'country' => array('select', array(
                     'label' => 'Country of Broadcast',
                     'multiOptions' => \PVL\Internationalization::getCountryLookup(),

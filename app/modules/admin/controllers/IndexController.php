@@ -40,10 +40,11 @@ class IndexController extends BaseController
                     $network_name = 'PVL Network';
                     $network_data[$network_name]['ranges'][] = array($stat['timestamp'] * 1000, $stat['number_min'], $stat['number_max']);
                     $network_data[$network_name]['averages'][] = array($stat['timestamp'] * 1000, $stat['number_avg']);
-                } elseif (isset($internal_stations[$stat['station_id']])) {
+                /*} elseif (isset($internal_stations[$stat['station_id']])) {
                     $network_name = $internal_stations[$stat['station_id']]['name'];
                     $network_data[$network_name]['ranges'][] = array($stat['timestamp'] * 1000, $stat['number_min'], $stat['number_max']);
                     $network_data[$network_name]['averages'][] = array($stat['timestamp'] * 1000, $stat['number_avg']);
+                */
                 } else {
                     $station_averages[$stat['station_id']][] = array($stat['timestamp'] * 1000, $stat['number_avg']);
                 }

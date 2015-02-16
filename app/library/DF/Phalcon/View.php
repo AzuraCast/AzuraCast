@@ -44,7 +44,32 @@ class View
         // Register template engines.
         $view->registerEngines(array(
             ".phtml" => 'Phalcon\Mvc\View\Engine\Php',
-            ".volt" => 'Phalcon\Mvc\View\Engine\Volt'
+            ".volt" => function($view, $di) {
+
+                $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
+                $volt->setOptions(array(
+                    'compiledPath' => function($templatePath) {
+
+                        $find_replace = array(
+                            DF_INCLUDE_BASE => '',
+                            '/modules/' => '',
+                            '/views/scripts/' => '_',
+                            '/' => '_',
+                        );
+                        $templatePath = str_replace(array_keys($find_replace), array_values($find_replace), $templatePath);
+
+                        return DF_INCLUDE_CACHE.'/volt_'.$templatePath.'.compiled.php';
+                    }
+                ));
+
+                $compiler = $volt->getCompiler();
+                $compiler->addFunction('helper', function($resolvedArgs, $exprArgs) use ($di) {
+                    return '$this->viewHelper->handle('.$resolvedArgs.')';
+                });
+
+                return $volt;
+
+            }
         ));
 
         // Register global escaper.

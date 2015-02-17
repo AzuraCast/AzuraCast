@@ -1,7 +1,10 @@
 <?php
 namespace PVL;
 
-use \Entity\NetworkNews;
+use Entity\NetworkNews;
+use Entity\Podcast;
+use Entity\Schedule;
+use Entity\Station;
 
 class NewsManager
 {
@@ -127,6 +130,47 @@ class NewsManager
                 );
                 break;
             }
+        }
+
+        // Pull promoted schedule items.
+        $events_raw = $em->createQuery('SELECT st, s FROM \Entity\Schedule s
+            JOIN s.station st
+            WHERE (s.end_time >= :current AND s.start_time <= :future)
+            AND (st.banner_url != \'\' AND st.banner_url IS NOT NULL)
+            AND s.is_promoted = 1
+            ORDER BY s.start_time ASC')
+            ->setParameter('current', time())
+            ->setParameter('future', strtotime('+1 week'))
+            ->getArrayResult();
+
+        $promoted_stations = array();
+
+        foreach($events_raw as $event)
+        {
+            $station_id = $event['station_id'];
+            if (isset($promoted_stations[$station_id]))
+                continue;
+            else
+                $promoted_stations[$station_id] = true;
+
+            $range = Schedule::getRangeText($event['start_time'], $event['end_time'], $event['is_all_day']);
+
+            $description = array();
+            $description[] = $range;
+            $description[] = 'on '.$event['station']['name'];
+            $description[] = $event['body'];
+
+            $news_items[] = array(
+                'id' => 'schedule_' . $event['guid'],
+                'title' => 'Coming Up: '.trim($event['title']),
+                'body' => implode('<br>', $description),
+                'image_url' => $event['station']['banner_url'],
+                'web_url' => $event['station']['web_url'],
+                'layout' => 'vertical',
+                'tags' => array($event['station']['name'], 'Events'),
+                'timestamp' => $event['start_time'],
+            );
+            break;
         }
 
         \PVL\Debug::print_r($news_items);

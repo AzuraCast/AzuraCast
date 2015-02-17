@@ -89,6 +89,14 @@ class Station extends \DF\Doctrine\Entity
         $this->_processAndCropImage('image_url', $new_url, 150, 150);
     }
 
+    /** @Column(name="banner_url", type="string", length=100, nullable=true) */
+    protected $banner_url;
+
+    public function setBannerUrl($new_url)
+    {
+        $this->_processAndCropImage('banner_url', $new_url, 600, 300);
+    }
+
     /** @Column(name="contact_email", type="string", length=255, nullable=true) */
     protected $contact_email;
 

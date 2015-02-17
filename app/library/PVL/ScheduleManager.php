@@ -34,9 +34,15 @@ class ScheduleManager
         $schedule_items = array();
         $schedule_records = array();
 
-        $stations = $em->createQuery('SELECT s FROM Entity\Station s WHERE s.category IN (:types) AND s.is_active = 1')
-            ->setParameter('types', array('audio', 'video'))
+        $stations = $em->createQuery('SELECT s FROM Entity\Station s WHERE (s.gcal_url IS NOT NULL AND s.gcal_url != \'\') AND s.is_active = 1')
             ->getArrayResult();
+
+        $active_stations = Utilities::ipull($stations, 'id');
+
+        // Clear all invalid station records.
+        $em->createQuery('DELETE FROM Entity\Schedule s WHERE (s.station_id IS NOT NULL) AND (s.station_id NOT IN (:station_ids))')
+            ->setParameter('station_ids', $active_stations)
+            ->execute();
 
         foreach($stations as $station)
         {
@@ -159,10 +165,6 @@ class ScheduleManager
         // Add/Remove all differential records.
         Debug::startTimer('Sync DB Records');
 
-        $em->createQuery('DELETE FROM Entity\Schedule s WHERE s.station_id NOT IN (:station_ids)')
-            ->setParameter('station_ids', array_keys($schedule_records))
-            ->execute();
-
         foreach($schedule_records as $station_id => $station_records)
         {
             $station = Station::find($station_id);
@@ -217,30 +219,6 @@ class ScheduleManager
 
         Settings::setSetting('schedule_manager_last_run', time());
     }
-
-    public static function requestExternalUrl($url, $name = 'Calendar')
-    {
-        Debug::startTimer('Request URL '.$name);
-        Debug::log($url);
-
-        // Start cURL request.
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);  
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
-        curl_setopt($curl, CURLOPT_TIMEOUT, 10); 
-        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2');  
-
-        $return_raw = \PVL\Utilities::curl_exec_utf8($curl);
-        // End cURL request.
-
-        Debug::endTimer('Request URL '.$name);
-
-        $error = curl_error($curl);
-        if ($error)
-            Debug::log('Curl Error:'.$error);
-        
-        return $return_raw;
-    }
     
     public static function formatName($name)
     {
@@ -277,6 +255,11 @@ class ScheduleManager
         }
 
         return $return;
+    }
+
+    public static function requestExternalUrl($url)
+    {
+        return Service\Curl::request(array('url' => $url));
     }
 
 }

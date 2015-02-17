@@ -1,0 +1,47 @@
+<?php
+$title = 'Station Schedule';
+
+echo $this->viewHelper->renderHere('stationname', true);
+echo $this->viewHelper->renderHere('homelink', true);
+?>
+
+<h2>Station Scheduled Events</h2>
+
+<p>Promoting an event will cause it to appear in the homepage's rotating section until the event ends. Only one event can be promoted at a time; if more than one event is highlighted as being promoted below, only the first event in chronological order will be promoted. Promotions automatically start a week before the event is scheduled to begin.</p>
+
+<table class="datatable table-striped">
+    <colgroup>
+        <col width="20%">
+        <col width="25%">
+        <col width="55%">
+    </colgroup>
+<? foreach($events_by_day as $day_code => $day_info): ?>
+    <thead>
+        <tr>
+            <th colspan="3"><?=$day_info['name'] ?></th>
+        </tr>
+    </thead>
+    <tbody>
+    <? foreach($day_info['events'] as $row): ?>
+        <tr class="input">
+            <td class="center">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'small',
+                    'icon'      => ($row['is_promoted']) ? 'icon-minus-sign' : 'icon-plus-sign',
+                    'class'     => ($row['is_promoted']) ? 'btn-danger' : 'btn-success',
+                    'href'      => \DF\Url::routeFromHere(array('action' => 'promote', 'event' => $row['guid'])),
+                    'text'      => ($row['is_promoted']) ? 'Unpromote Event' : 'Promote Event',
+                )) ?>
+            </td>
+            <td class="center">
+                <?=$row['range'] ?>
+            </td>
+            <td>
+                <big><?=$row['title'] ?></big><br>
+                <?=$row['description'] ?>
+            </td>
+        </tr>
+    <? endforeach; ?>
+    </tbody>
+<? endforeach; ?>
+</table>

@@ -40,7 +40,7 @@ trait FileUploads
         if ($this->_processFile($field_name, $new_value))
         {
             $new_path = $this->_getUploadedFilePath($new_value);
-            \DF\Image::resizeImage($new_path, $new_path, 150, 150);
+            \DF\Image::resizeImage($new_path, $new_path, $width, $height);
 
             return true;
         }

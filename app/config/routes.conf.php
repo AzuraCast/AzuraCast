@@ -55,6 +55,11 @@ return array(
         ),
 
         // Old URLs.
+        '/stations/submit' => array(
+            'module' => 'frontend',
+            'controller' => 'submit',
+            'action' => 'station',
+        ),
         '/events' => array(
             'module' => 'frontend',
             'controller' => 'convention',

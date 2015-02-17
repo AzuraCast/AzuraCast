@@ -13,6 +13,7 @@ class Schedule extends \DF\Doctrine\Entity
 {
     public function __construct()
     {
+        $this->is_promoted = false;
         $this->is_notified = false;
     }
 
@@ -59,6 +60,9 @@ class Schedule extends \DF\Doctrine\Entity
 
     /** @Column(name="web_url", type="string", length=250, nullable=true) */
     protected $web_url;
+
+    /** @Column(name="is_promoted", type="boolean") */
+    protected $is_promoted;
 
     /** @Column(name="is_notified", type="boolean") */
     protected $is_notified;

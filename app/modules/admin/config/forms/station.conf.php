@@ -38,8 +38,13 @@ return array(
                 )),
 
                 'image_url' => array('file', array(
-                    'label' => 'Upload New Station Avatar',
+                    'label' => 'Upload New Station Avatar (150x150 PNG)',
                     'description' => 'To replace the existing icon associated with this station, upload a new one using the file browser below. Icons should be 150x150px in dimension.',
+                )),
+
+                'banner_url' => array('file', array(
+                    'label' => 'Upload New Promotional Banner (600x300 PNG)',
+                    'description' => 'This image will be shown in the header rotator when events are promoted. Images should be 600x300.',
                 )),
 
             ),

@@ -32,7 +32,7 @@ class Rotator extends \DF\Doctrine\Entity
 
     public function setImageUrl($new_url)
     {
-        $this->_processAndCropImage('image_url', $new_url, 150, 150);
+        $this->_processFile('image_url', $new_url);
     }
 
     /** @Column(name="web_url", type="string", length=255, nullable=true) */

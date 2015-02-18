@@ -40,7 +40,7 @@ class StationRequest extends \DF\Doctrine\Entity
     /** @Column(name="timestamp", type="integer") */
     protected $timestamp;
 
-    /** @Column(name="ip", type="string", length=15) */
+    /** @Column(name="ip", type="string", length=40) */
     protected $ip;
 
     /**

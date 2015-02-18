@@ -39,7 +39,11 @@ class TwitchTv extends AdapterAbstract
         $np['meta']['listeners'] = (int)$stream['viewers'];
 
         $np['on_air']['text'] = $stream['game'];
-        $np['on_air']['thumbnail'] = $stream['preview'];
+
+        if (is_array($stream['preview']))
+            $np['on_air']['thumbnail'] = $stream['preview']['medium'].'?t='.time();
+        else
+            $np['on_air']['thumbnail'] = $stream['preview'].'?t='.time();
         return true;
     }
 }

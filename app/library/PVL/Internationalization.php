@@ -81,6 +81,7 @@ class Internationalization
             'ER' => 'Eritrea',
             'EE' => 'Estonia',
             'ET' => 'Ethiopia',
+            'EU' => 'European Union (Squirrel)',
             'FK' => 'Falkland Islands (Malvinas)',
             'FO' => 'Faroe Islands',
             'FJ' => 'Fiji',

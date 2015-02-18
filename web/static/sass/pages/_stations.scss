@@ -171,8 +171,8 @@
     }
   }
 
-  .offline {
-    cursor: default;
+  &.offline {
+    cursor: not-allowed;
 
     &, h4 small {
       opacity: 0.6;

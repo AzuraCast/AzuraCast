@@ -63,10 +63,9 @@ class ArtistsController extends BaseController
 
             $origin = $this->getParam('origin', 'admin');
             if ($origin == 'profile')
-                $this->redirectToRoute(array('module' => 'default', 'controller' => 'artists', 'action' => 'view', 'id' => $record->id));
+                return $this->redirectToRoute(array('module' => 'default', 'controller' => 'artists', 'action' => 'view', 'id' => $record->id));
             else
-                $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
-            return;
+                return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
         }
 
         $this->renderForm($form, 'edit', 'Edit Record');

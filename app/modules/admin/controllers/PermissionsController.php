@@ -38,12 +38,10 @@ class PermissionsController extends BaseController
             $record->save();
             
             $this->alert('Action updated.', 'green');
-            $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
-            return;
+            return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
         }
 
-        $this->view->setVar('title', 'Add/Edit Action');
-        $this->renderForm($form);
+        $this->renderForm($form, 'edit', 'Edit Record');
     }
     
     public function deleteactionAction()

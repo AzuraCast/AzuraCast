@@ -110,8 +110,7 @@ class SongsController extends BaseController
 
             $this->alert('Changes saved.', 'green');
 
-            $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
-            return;
+            return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
         }
 
         $this->renderForm($form, 'edit', 'Edit Record');

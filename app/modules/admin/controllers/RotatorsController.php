@@ -52,12 +52,10 @@ class RotatorsController extends BaseController
             $record->save();
 
             $this->alert('Changes saved.', 'green');
-            $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
-            return;
+            return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
         }
 
-        $this->view->setVar('title', 'Edit Record');
-        $this->renderForm($form);
+        $this->renderForm($form, 'edit', 'Edit Record');
     }
     
     public function deleteAction()

@@ -37,11 +37,10 @@ class BlocksController extends BaseController
             $record->save();
             
             $this->alert('Changes saved.');
-            $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
-            return;
+            return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
         }
 
-        $this->view->form = $form;
+        $this->renderForm($form, 'edit', 'Edit Content Block');
     }
     
     public function previewAction()

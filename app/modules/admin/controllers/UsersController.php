@@ -59,8 +59,7 @@ class UsersController extends BaseController
             return;
         }
 
-        $this->view->setVar('title', 'Add/Edit User');
-        $this->renderForm($form);
+        $this->renderForm($form, 'edit', 'Edit Record');
     }
 
     public function deleteAction()

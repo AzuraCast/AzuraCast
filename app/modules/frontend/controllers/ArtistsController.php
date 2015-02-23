@@ -182,10 +182,10 @@ class ArtistsController extends BaseController
         }
 
         if ($user->is_artist)
-            $this->view->setVar('title', 'Update Artist Profile');
+            $title = 'Update Artist Profile';
         else
-            $this->view->setVar('title', 'Submit an Artist Profile');
+            $title = 'Submit an Artist Profile';
         
-        $this->renderForm($form);
+        $this->renderForm($form, 'edit', $title);
     }
 }

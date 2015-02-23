@@ -74,7 +74,7 @@ $hide_title = true;
                 <td>
                     <big><b><a href="<?=$this->viewHelper->routeFromHere(array('action' => 'episode', 'episode' => $ep['id'])) ?>" target="_blank"><?=$ep['title'] ?></a></b></big>
                 <? if ($ep['body']): ?>
-                    <p><?=\DF\Utilities::truncateText($ep['body'], 200) ?></p>
+                    <p><?=\DF\Utilities::truncateText(strip_tags($ep['body']), 200) ?></p>
                 <? endif; ?>
                 </td>
             </tr>

@@ -54,7 +54,7 @@ class NetworkNews extends \DF\Doctrine\Entity
 
         if (!$news)
         {
-            $news = self::fetch(5);
+            $news = self::fetch(7);
             \DF\Cache::save($news, 'homepage_featured_news', null, 300);
         }
 

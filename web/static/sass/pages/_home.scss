@@ -44,6 +44,10 @@
       color: #FFF;
     }
 
+    a:focus, a:hover {
+      text-decoration: none;
+    }
+
     &.layout-horizontal {
       img {
         border-radius: 15px 15px 0 0;

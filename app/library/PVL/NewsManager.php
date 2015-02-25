@@ -153,10 +153,13 @@ class NewsManager
             else
                 $promoted_stations[$station_id] = true;
 
+            if (empty($event['body']))
+                continue;
+
             $range = Schedule::getRangeText($event['start_time'], $event['end_time'], $event['is_all_day']);
 
             $description = array();
-            $description[] = $range.'on '.$event['station']['name'];
+            $description[] = $range.' on '.$event['station']['name'];
             $description[] = $event['body'];
 
             $news_items[] = array(

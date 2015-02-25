@@ -116,6 +116,9 @@ class NewsManager
         {
             foreach($podcast['episodes'] as $ep)
             {
+                if (empty($ep['body']))
+                    continue;
+
                 $description = \DF\Utilities::truncateText($ep['body'], self::DESCRIPTION_LENGTH);
 
                 $news_items[] = array(

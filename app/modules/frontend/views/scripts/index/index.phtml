@@ -160,29 +160,24 @@ $podcast_cols = \DF\Utilities::columns($podcasts, 3, true);
 <? endforeach; ?>
 </div>
 
+<h2><i class="icon-folder-open-alt"></i> Convention Coverage <small>Most recent conventions, <a href="<?=\DF\Url::route(array('module' => 'frontend', 'controller' => 'convention')) ?>" target="_blank">view all</a></small></h2>
 
-
-<h2><i class="icon-folder-open-alt"></i> Convention Coverage</h2>
 <?
-$cons = array_slice($conventions_archived, 0, 12);
-$cols = \DF\Utilities::columns($cons, 3);
+$cons = array_slice($conventions_archived, 0, 8);
 ?>
-
-<div class="row-fluid">
-<? foreach($cols as $col): ?>
-    <div class="span4">
-        <? foreach($col as $record): ?>
-            <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$this->viewHelper->route(array('controller' => 'convention', 'action' => 'archive', 'id' => $record['id'])) ?>">
-                <img src="<?=\DF\Url::content($record['images']['thumb']) ?>" alt="Convention Image">
-                <div class="coverage" title="<?=$record['coverage']['text'] ?>">
-                    <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
-                </div>
-                <div class="name">
-                    <h4><?=$record['name'] ?></h4>
-                    <?=$record['location'] ?> &bull; <?=$record['range'] ?>
-                </div>
-            </a>
-        <? endforeach; ?>
+<div class="row-fluid row-multiple clearfix">
+<? foreach($cons as $record): ?>
+    <div class="span3">
+        <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$this->viewHelper->route(array('controller' => 'convention', 'action' => 'archive', 'id' => $record['id'])) ?>">
+            <img src="<?=\DF\Url::content($record['image']) ?>" alt="Convention Image">
+            <div class="coverage" title="<?=$record['coverage']['text'] ?>">
+                <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
+            </div>
+            <div class="name">
+                <h4><?=$record['name'] ?></h4>
+                <?=$record['location'] ?> &bull; <?=$record['range'] ?>
+            </div>
+        </a>
     </div>
 <? endforeach; ?>
 </div>

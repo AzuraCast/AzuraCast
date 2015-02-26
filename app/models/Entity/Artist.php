@@ -6,6 +6,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 /**
  * @Table(name="artist")
  * @Entity
+ * @HasLifecycleCallbacks
  */
 class Artist extends \DF\Doctrine\Entity
 {
@@ -18,6 +19,14 @@ class Artist extends \DF\Doctrine\Entity
         $this->license = 'none';
         $this->is_approved = false;
         $this->interviews = false;
+    }
+
+    /**
+     * @PreRemove
+     */
+    public function deleting()
+    {
+        $this->_deleteFile('image_url');
     }
 
     /**

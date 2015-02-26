@@ -193,10 +193,15 @@ function processMultiRows()
 
         var num_per_row = 12 / j;
 
-        $('.row-multiple > .span'+j).removeClass('start-of-row');
-        $('.row-multiple > .span'+j+':visible').each(function (i) {
-            if (i % num_per_row == 0)
-                $(this).addClass('start-of-row');
+        $('.row-multiple').each(function() {
+            var i = 0;
+
+            $(this).find('.span'+j).removeClass('start-of-row');
+            $(this).find('.span'+j+':visible').each(function() {
+                i++;
+                if (i % num_per_row == 1)
+                    $(this).addClass('start-of-row');
+            });
         });
 
     });

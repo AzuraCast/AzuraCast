@@ -30,9 +30,6 @@ class IndexController extends BaseController
         // Pull video streams.
         $this->view->video_channels = VideoChannel::fetchArray();
 
-        var_dump(VideoChannel::fetchArray());
-        \DF\Utilities::print_r(VideoChannel::fetchArray());
-
         // Pull conventions.
         $conventions = Convention::getAllConventions();
         $this->view->conventions_upcoming = $conventions['upcoming'];

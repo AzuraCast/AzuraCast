@@ -12,8 +12,9 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class Convention extends \DF\Doctrine\Entity
 {
+    use Traits\FileUploads;
+
     const DEFAULT_IMAGE_FULL = 'images/convention_default.png';
-    const DEFAULT_IMAGE_THUMB = 'images/convention_thumb.png';
 
     public function __construct()
     {
@@ -29,8 +30,7 @@ class Convention extends \DF\Doctrine\Entity
      */
     public function deleting()
     {
-        @unlink(DF_UPLOAD_FOLDER . DIRECTORY_SEPARATOR . $this->image_url);
-        @unlink(DF_UPLOAD_FOLDER . DIRECTORY_SEPARATOR . $this->thumbnail_url);
+        $this->_deleteFile('image_url');
     }
 
     /**
@@ -66,30 +66,9 @@ class Convention extends \DF\Doctrine\Entity
     /** @Column(name="image_url", type="string", length=200, nullable=true) */
     protected $image_url;
 
-    /** @Column(name="thumbnail_url", type="string", length=200, nullable=true) */
-    protected $thumbnail_url;
-
-    public function setImageUrl($new_url_full)
+    public function setImageUrl($new_url)
     {
-        if ($new_url_full)
-        {
-            if ($this->image_url && $this->image_url != $new_url_full)
-            {
-                @unlink(DF_UPLOAD_FOLDER . DIRECTORY_SEPARATOR . $this->image_url);
-                @unlink(DF_UPLOAD_FOLDER . DIRECTORY_SEPARATOR . $this->thumbnail_url);
-            }
-
-            $new_path_full = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_url_full;
-            $new_path_thumb = \DF\File::addSuffix($new_path_full, '_thumb');
-
-            $new_url_thumb = \DF\File::addSuffix($new_url_full, '_thumb');
-
-            \DF\Image::resizeImage($new_path_full, $new_path_full, 1150, 200);
-            \DF\Image::resizeImage($new_path_full, $new_path_thumb, 575, 100);
-
-            $this->image_url = $new_url_full;
-            $this->thumbnail_url = $new_url_thumb;
-        }
+        $this->_processAndCropImage('image_url', $new_url, 600, 300);
     }
 
     /** @Column(name="schedule_url", type="string", length=250, nullable=true) */
@@ -163,7 +142,7 @@ class Convention extends \DF\Doctrine\Entity
         $coverage = self::getCoverageLevels();
         array_walk($conventions, function(&$row, $key) use ($coverage) {
             $row['short_name'] = self::getConventionShortName($row['name']);
-            $row['images'] = self::getImages($row);
+            $row['image'] = self::getConventionImage($row);
             $row['range'] = self::getDateRange($row['start_date'], $row['end_date']);
             $row['coverage'] = $coverage[$row['coverage_level']];
         });
@@ -180,9 +159,10 @@ class Convention extends \DF\Doctrine\Entity
             ->getArrayResult();
 
         $coverage = self::getCoverageLevels();
+
         array_walk($conventions, function(&$row, $key) use ($coverage) {
             $row['short_name'] = self::getConventionShortName($row['name']);
-            $row['images'] = self::getImages($row);
+            $row['image'] = self::getConventionImage($row);
             $row['range'] = self::getDateRange($row['start_date'], $row['end_date']);
             $row['coverage'] = $coverage[$row['coverage_level']];
         });
@@ -206,22 +186,12 @@ class Convention extends \DF\Doctrine\Entity
         return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', $name)));
     }
 
-    public static function getImages($row)
+    public static function getConventionImage($row)
     {
         if (isset($row['image_url']))
-        {
-            return array(
-                'full'      => $row['image_url'],
-                'thumb'     => (isset($row['thumbnail_url'])) ? $row['thumbnail_url'] : $row['image_url'],
-            );
-        }
+            return $row['image_url'];
         else
-        {
-            return array(
-                'full'      => self::DEFAULT_IMAGE_FULL,
-                'thumb'     => self::DEFAULT_IMAGE_THUMB,
-            );
-        }
+            return self::DEFAULT_IMAGE_FULL;
     }
 
     public static function getCoverageLevels()

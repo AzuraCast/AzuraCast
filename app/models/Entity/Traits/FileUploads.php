@@ -48,6 +48,40 @@ trait FileUploads
     }
 
     /**
+     * Delete a file, if it exists, with the specified field name.
+     *
+     * @param $field_name
+     */
+    protected function _deleteFile($field_name)
+    {
+        if ($this->$field_name)
+        {
+            $value = $this->$field_name;
+            @unlink($this->_getUploadedFilePath($value));
+        }
+    }
+
+    /**
+     * Detect
+     *
+     * @param $field_name
+     * @param null $default_value
+     * @return null
+     */
+    protected function _getFileValueOrDefault($field_name, $default_value=null)
+    {
+        if ($this->$field_name)
+        {
+            $value = $this->$field_name;
+
+            if (file_exists($this->_getUploadedFilePath($value)))
+                return $value;
+        }
+
+        return $default_value;
+    }
+
+    /**
      * Get the full file path for an uploaded file.
      *
      * @param $field_value

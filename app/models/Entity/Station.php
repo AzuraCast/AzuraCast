@@ -6,6 +6,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 /**
  * @Table(name="station")
  * @Entity
+ * @HasLifecycleCallbacks
  */
 class Station extends \DF\Doctrine\Entity
 {
@@ -24,6 +25,15 @@ class Station extends \DF\Doctrine\Entity
         $this->managers = new ArrayCollection;
         $this->short_urls = new ArrayCollection;
         $this->media = new ArrayCollection;
+    }
+
+    /**
+     * @PreRemove
+     */
+    public function deleting()
+    {
+        $this->_deleteFile('image_url');
+        $this->_deleteFile('banner_url');
     }
 
     /**
@@ -76,7 +86,7 @@ class Station extends \DF\Doctrine\Entity
     public function getCountryName()
     {
         if ($this->country)
-            return \PVL\Internationalization::getLanguageName($this->country);
+            return \PVL\Internationalization::getCountryName($this->country);
         else
             return '';
     }

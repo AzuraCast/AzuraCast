@@ -6,6 +6,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 /**
  * @Table(name="affiliates")
  * @Entity
+ * @HasLifecycleCallbacks
  */
 class Affiliate extends \DF\Doctrine\Entity
 {
@@ -15,6 +16,14 @@ class Affiliate extends \DF\Doctrine\Entity
     {
         $this->timestamp = time();
         $this->is_approved = true;
+    }
+
+    /**
+     * @PreRemove
+     */
+    public function deleting()
+    {
+        $this->_deleteFile('image_url');
     }
 
     /**

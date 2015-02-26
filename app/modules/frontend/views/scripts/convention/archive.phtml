@@ -1,26 +1,6 @@
 <?
 $title = $convention->name;
-$manual = true;
 ?>
-
-<? if ($convention->image_url): ?>
-    <?
-    ob_start();
-    ?>
-    <div id="convention_header" class="rich_header">
-        <div class="container">
-            <div class="well">
-                <div class="item">
-                    <img src="<?=\DF\Url::content($convention->image_url) ?>" alt="Convention Thumbnail">
-                </div>
-            </div>
-        </div>
-    </div>
-    <?
-    $content_top = ob_get_contents();
-    ob_end_clean();
-    ?>
-<? endif; ?>
 
 <div class="row-fluid">
     <div class="span3">
@@ -68,23 +48,18 @@ $manual = true;
     <? foreach($videos as $folder): ?>
         <h2 id="folder_<?=$folder['key'] ?>"><i class="icon-folder-open"></i> <?=$folder['name'] ?></h2>
 
-        <?
-        $rows = \DF\Utilities::rows($folder['videos'], 4);
-        ?>
-        <? foreach($rows as $row): ?>
-            <div class="row-fluid clearfix">
-                <? foreach($row as $record): ?>
-                    <div class="span3">
-                        <a class="video fancybox fancybox.iframe <?=$record['type'] ?>" href="<?=$record['web_url'] ?>">
-                            <img src="<?=$record['thumbnail_url'] ?>" title="<?=$record['name'] ?>">
-                            <div class="name">
-                                <h4><?=$record['name'] ?></h4>
-                            </div>
-                        </a>
+        <div class="row-fluid row-multiple clearfix">
+        <? foreach($folder['videos'] as $record): ?>
+            <div class="span3">
+                <a class="video fancybox fancybox.iframe <?=$record['type'] ?>" href="<?=$record['web_url'] ?>">
+                    <img src="<?=$record['thumbnail_url'] ?>" title="<?=$record['name'] ?>">
+                    <div class="name">
+                        <h4><?=$record['name'] ?></h4>
                     </div>
-                <? endforeach; ?>
+                </a>
             </div>
         <? endforeach; ?>
+        </div>
     <? endforeach; ?>
     </div>
 </div>

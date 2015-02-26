@@ -56,6 +56,9 @@ class YouTube extends AdapterAbstract
 
             foreach($feed_items as $item)
             {
+                if ($item['status']['privacyStatus'] != 'public')
+                    continue;
+
                 $embed_src = 'http://www.youtube.com/watch?v='.$item['contentDetails']['videoId'];
 
                 $news_items[] = array(

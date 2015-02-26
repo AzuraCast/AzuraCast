@@ -7,7 +7,7 @@ use \Entity\Settings;
 
 class PodcastManager
 {
-    public static function run($debug_mode = false)
+    public static function run()
     {
         $di = \Phalcon\Di::getDefault();
         $em = $di->get('em');

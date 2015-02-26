@@ -1,24 +1,19 @@
 <?php
-$title = ('Apps &amp; Players');
-
-// $title = ('Ponyville Live! Apps &amp; Players');
-
-$hide_title = true;
+$title = 'Apps &amp; Players';
 $manual = true;
-
-// $hide_title = true;
-// $manual = true;
 ?>
 
-<div class="row-fluid">
-    <div class="span6">
-        <h1 class="title">Desktop/Web Apps</h1>
+<div class="media clearfix">
+    <div class="media-object pull-left">
+        <a href="http://he4rtofcourage.deviantart.com/art/Chrome-poni-305866510" title="Chrome Pony by he4rtofcourage" target="_blank"><img src="<?=\DF\Url::content('images/platform_chrome.png') ?>" alt="Chrome Pony"></a>
+    </div>
+    <div class="media-body">
+        <h2>Chrome Browser</h2>
 
-        <h2>Chrome &amp; Firefox (HoofSounds)</h2>
-        <div class="well clearfix">
-            <img src="<?=\DF\Url::content('images/app_hoofsounds_1.jpg') ?>" class="pull-right" style="width: 30%; padding-left: 5px;" alt="">
-
-            <p>Ponyville Live! has partnered with the PonyHoof development team to launch a new Chrome plugin that lets you listen to pony music right from your Chrome browser. Visit the link below to learn more and install it!</p>
+        <div class="well">
+            <img src="<?=\DF\Url::content('images/app_hoofsounds_1.jpg') ?>" class="pull-right" style="width: 200px; padding-left: 5px;" alt="">
+            <h3>HoofSounds for Chrome</h3>
+            <p>Ponyville Live! has partnered with the developer behind popular plugin <a href="http://ponyhoof.little.my/" target="_blank">PonyHoof</a> to build a Chrome plugin that lets you listen to all of our pony music right from your Chrome toolbar. Visit the link below to learn more and install it!</p>
 
             <div class="buttons">
                 <?=$this->viewHelper->button(array(
@@ -31,25 +26,167 @@ $manual = true;
                 )) ?>
             </div>
         </div>
-
-        <h2>Chrome Desktop App</h2>
         <div class="well">
-            <p>Want to put pony radio right on your desktop? Now you can! Install the Ponyville Live! Chrome desktop app on any major platform (Windows, OSX, Chrome OS) and you can open the PVL radio player at any time, without needing to have your browser window open. Convenient!</p>
+            <h3>PVL Chrome Desktop App</h3>
+            <p>If you're looking for the convenience of pony music but without having to keep your browser open, we also offer a dedicated Chrome app that works on all platforms, including Chromebooks. Check it out!</p>
 
             <div class="buttons">
                 <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'class'     => 'btn-primary',
                     'icon'      => 'icon-globe',
-                    'href'      => 'https://chrome.google.com/webstore/detail/ponyville-live-desktop-ap/hladljgddjaoinnigfcokaglahhcpilm',
+                    'href'      => 'https://chrome.google.com/webstore/detail/ponyville-live-desktop-ap/hladljgddjaoinnigfcokaglahhcpilm?hl=en',
                     'target'    => '_blank',
-                    'text'      => 'Install the PVL! Desktop App',
+                    'text'      => 'Install PVL Chrome App from Google Web Store',
+                )) ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="media clearfix">
+    <div class="media-object pull-left">
+        <a href="http://paulirish.deviantart.com/art/My-Little-Browser-Firefox-260640031" title="Firefox Pony by NoReasonToHope" target="_blank"><img src="<?=\DF\Url::content('images/platform_firefox.png') ?>" alt="Firefox Pony"></a>
+    </div>
+    <div class="media-body">
+        <h2>Firefox Browser</h2>
+
+        <div class="well">
+            <h3>HoofSounds for Firefox</h3>
+            <p>The same HoofSounds plugin you know and love for Chrome has also been released as a Firefox plugin. Now you can enjoy pony music on either browser with the same experience!</p>
+
+            <div class="buttons">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'btn-primary',
+                    'icon'      => 'icon-globe',
+                    'href'      => 'http://hoofsounds.little.my/',
+                    'target'    => '_blank',
+                    'text'      => 'HoofSounds Homepage',
+                )) ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="media clearfix">
+    <div class="media-object pull-left">
+        <img src="<?=\DF\Url::content('images/platform_android.png') ?>" alt="Android Platform">
+    </div>
+    <div class="media-body">
+        <h2>Android</h2>
+
+        <div class="well">
+            <img src="<?=\DF\Url::content('images/mobile1.png') ?>" style="width: 150px;" class="pull-right" alt="">
+            <img src="<?=\DF\Url::content('images/mobile2.png') ?>" style="width: 150px; margin-right: 5px;" class="pull-right" alt="">
+            <img src="<?=\DF\Url::content('images/mobile3.png') ?>" style="width: 150px; margin-right: 5px;" class="pull-right" alt="">
+
+            <h3>PVL Mobile for Android</h3>
+            <p>The new PVL! Mobile web application lets you enjoy awesome pony radio, video stations, podcasts and more, anywhere you go. The Android app includes all the features of our web application, plus notifications and persistent playback.</p>
+
+            <a href="https://play.google.com/store/apps/details?id=com.ponyvillelive.pvlmobile">
+                <img alt="Get it on Google Play"
+                     src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+            </a>
+        </div>
+
+        <div class="well">
+            <h3>All Pony Radio</h3>
+
+            <p>Our friends at Black Apple Research Facility have worked hard on their own Android app that plays all of Ponyville Live!'s music streams.</p>
+
+            <div class="buttons">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'btn-primary',
+                    'icon'      => 'icon-download',
+                    'href'      => 'http://bit.ly/AllPonyRadioApp',
+                    'target'    => '_blank',
+                    'text'      => 'Install All Pony Radio',
+                )) ?>
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'icon'      => 'icon-globe',
+                    'href'      => 'http://www.allponyradio.com/',
+                    'target'    => '_blank',
+                    'text'      => 'All Pony Radio Homepage',
+                )) ?>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="media clearfix">
+    <div class="media-object pull-left">
+        <img src="<?=\DF\Url::content('images/platform_ios.png') ?>" alt="iOS Platform">
+    </div>
+    <div class="media-body">
+        <h2>iOS</h2>
+
+        <div class="well">
+            <h3>Pony Unite for iOS</h3>
+
+            <p>This awesome app was built completely by fans of the Ponyville Live! network, and features a modern interface, along with all of PVL's radio stations, podcasts and upcoming events. It's our favorite way to take pony with us on our iPhones!</p>
+
+            <div class="buttons">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'primary btn-tune-in',
+                    'target'    => '_blank',
+                    'icon'      => 'icon-globe',
+                    'href'      => 'https://itunes.apple.com/us/app/pony-unite/id929695987?mt=8',
+                    'text'      => 'Pony Unite on the App Store',
                 )) ?>
             </div>
         </div>
 
-        <h2>Embedded On Your Web Site</h2>
         <div class="well">
+            <h3>PVL Mobile for Web Browsers</h3>
+
+            <p>Our mobile web site, featuring all the same radio stations, podcasts and convention coverage as our homepage, is available for all major mobile browsers, and can be pinned to your homepage for even easier access! Check it out below.</p>
+
+            <div class="buttons">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'primary btn-tune-in',
+                    'target'    => '_blank',
+                    'icon'      => 'icon-globe',
+                    'href'      => 'http://m.pvlive.me',
+                    'text'      => 'PVL! Mobile',
+                )) ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="media clearfix">
+    <div class="media-object pull-left">
+        <img src="<?=\DF\Url::content('images/platform_generic.png') ?>" alt="Other Platforms">
+    </div>
+    <div class="media-body">
+        <h2>Other Platforms</h2>
+
+        <div class="well">
+            <h3>Winamp, iTunes, VLC, etc.</h3>
+
+            <p>Download playlist files containing all of the Ponyville Live! radio stations in one single file. This file can then be used in many major media players.</p>
+
+            <div class="buttons">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'btn-primary',
+                    'icon'      => 'icon-download',
+                    'href'      => $this->viewHelper->routeFromHere(array('controller' => 'station', 'action' => 'playlist', 'format' => 'pls')),
+                    'target'    => '_blank',
+                    'text'      => 'Download Station Playlist (.pls) File',
+                )) ?>
+            </div>
+        </div>
+
+        <div class="well">
+            <h3>Embedded On Your Web Site</h3>
             <p>Embed the PVL radio player, including all of its stations, directly into your web site for all of your users to enjoy! With the embedded widget, you can play music and tune into streams directly from your own web site.</p>
 
             <div class="buttons">
@@ -61,85 +198,6 @@ $manual = true;
                     'text'      => 'Web Site Embed Instructions',
                 )) ?>
             </div>
-        </div>
-
-        <h2>Winamp, iTunes, VLC, etc.</h2>
-        <div class="well">
-            <div class="buttons">
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'btn-primary',
-                    'icon'      => 'icon-download',
-                    'href'      => $this->viewHelper->routeFromHere(array('controller' => 'station', 'action' => 'playlist', 'format' => 'pls')),
-                    'target'    => '_blank',
-                    'text'      => 'Download PLS (VLC, etc)',
-                )) ?>
-            </div>
-            <p>Download playlist files containing all of the Ponyville Live! radio stations.</p>
-        </div>
-    </div>
-    <div class="span6">
-        <h1 class="title">Mobile Apps</h1>
-
-        <h2>PVL! Mobile 2.0 for Web &amp; Android</h2>
-        <div class="well">
-            <a href="https://play.google.com/store/apps/details?id=com.ponyvillelive.pvlmobile" style="float: right">
-              <img alt="Get it on Google Play"
-                   src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
-            </a>
-
-            <p>The new PVL! Mobile web application lets you enjoy awesome pony radio, video stations, podcasts and more, anywhere you go. The mobile site is compatible with all modern smartphones, and can be bookmarked or pinned to your home screen for even easier access.</p>
-
-            <p><b>Note:</b> This app is still in active development, so new features are always being added!</p>
-
-            <div class="buttons">
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'primary btn-tune-in',
-                    'icon'      => 'icon-globe',
-                    'href'      => 'http://m.pvlive.me',
-                    'text'      => 'PVL! Mobile',
-                )) ?>
-            </div>
-
-            <div>
-                <img src="<?=\DF\Url::content('images/mobile1.png') ?>" style="width: 30%;" alt="">
-                <img src="<?=\DF\Url::content('images/mobile2.png') ?>" style="width: 30%;" alt="">
-                <img src="<?=\DF\Url::content('images/mobile3.png') ?>" style="width: 30%;" alt="">
-            </div>
-        </div>
-
-        <h2><i class="icon-android"></i> Third Party Apps for Android</h2>
-        <div class="well">
-            <p>Several members of the community have also started work on their own Ponyville Live! player apps for the Android platform. Check them out below.</p>
-
-            <dl>
-                <dt><a href="http://bit.ly/AllPonyRadioApp">All Pony Radio</a></dt>
-                <dd>Created by Black Apple Research Facility, available on the Google Play store.</dd>
-            </dl>
-        </div>
-
-        <h2><i class="icon-windows"></i> Windows Phone 8 and Windows 8</h2>
-        <div class="well">
-            <div class="buttons">
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'btn-primary',
-                    'icon'      => 'icon-download',
-                    'href'      => 'http://mlp.reignofcomputer.com/Portal8/',
-                    'target'    => '_blank',
-                    'text'      => 'MLP Portal (Windows 8)',
-                )) ?>
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'btn-primary',
-                    'icon'      => 'icon-download',
-                    'href'      => 'http://mlp.reignofcomputer.com/mlpp/',
-                    'target'    => '_blank',
-                    'text'      => 'MLP Portal (Windows Phone 8)',
-                )) ?>
-            </div>
-            <p>All of Ponyville Live's stations are listed on the MLP Portal application for Windows Phone 8 and Windows 8 desktops. From the app, you can listen to our stations live, view what's playing, and visit the web sites and social media outlets for the stations.</p>
         </div>
     </div>
 </div>

@@ -144,6 +144,9 @@ class StationController extends BaseController
                 {
                     foreach($station['streams'] as $stream)
                     {
+                        if (!$stream['is_active'])
+                            continue;
+
                         $m3u_lines[] = '#EXTINF:' . $i . ',PVL! ' . $station['name'].': '.$stream['name'];
                         $m3u_lines[] = $stream['stream_url'];
                         $i++;
@@ -168,6 +171,9 @@ class StationController extends BaseController
                 {
                     foreach($station['streams'] as $stream)
                     {
+                        if (!$stream['is_active'])
+                            continue;
+
                         $output[] = 'File' . $i . '=' . $stream['stream_url'];
                         $output[] = 'Title' . $i . '=PVL! ' . $station['name'].': '.$stream['name'];
                         $output[] = 'Length' . $i . '=-1';

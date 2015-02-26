@@ -133,7 +133,7 @@ $manual = true;
             <div class="buttons">
                 <?=$this->viewHelper->button(array(
                     'type'      => 'link',
-                    'class'     => 'primary btn-tune-in',
+                    'class'     => 'primary',
                     'target'    => '_blank',
                     'icon'      => 'icon-globe',
                     'href'      => 'https://itunes.apple.com/us/app/pony-unite/id929695987?mt=8',
@@ -180,7 +180,15 @@ $manual = true;
                     'icon'      => 'icon-download',
                     'href'      => $this->viewHelper->routeFromHere(array('controller' => 'station', 'action' => 'playlist', 'format' => 'pls')),
                     'target'    => '_blank',
-                    'text'      => 'Download Station Playlist (.pls) File',
+                    'text'      => 'Download PLS File (VLC, Winamp)',
+                )) ?>
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'btn-primary',
+                    'icon'      => 'icon-download',
+                    'href'      => $this->viewHelper->routeFromHere(array('controller' => 'station', 'action' => 'playlist', 'format' => 'm3u')),
+                    'target'    => '_blank',
+                    'text'      => 'Download M3U File (iTunes)',
                 )) ?>
             </div>
         </div>

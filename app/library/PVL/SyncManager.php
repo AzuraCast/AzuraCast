@@ -47,7 +47,7 @@ class SyncManager
 
     public static function syncMedium($force = false)
     {
-        self::initSync(60);
+        self::initSync(300);
 
         // Sync schedules (highest priority).
         ScheduleManager::run(!DF_IS_COMMAND_LINE);
@@ -59,15 +59,7 @@ class SyncManager
         NewsManager::syncNetwork();
 
         // Sync CentovaCast song data.
-        try
-        {
-            CentovaCast::sync();
-        }
-        catch(\Exception $e)
-        {
-            echo "Error syncing CentovaCast:\n";
-            echo $e->getMessage()."\n";
-        }
+        CentovaCast::sync();
 
         Settings::setSetting('sync_last_run', time());
     }

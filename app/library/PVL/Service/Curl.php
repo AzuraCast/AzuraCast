@@ -24,6 +24,7 @@ class Curl
         $c_defaults = array(
             'method'    => 'GET',
             'useragent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2',
+            'timeout'   => 10,
         );
         $c_opts = array_merge($c_defaults, $c_opts);
 
@@ -53,7 +54,7 @@ class Curl
             curl_setopt($curl, CURLOPT_POSTFIELDS, $postfields);
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_TIMEOUT, $c_opts['timeout']);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_USERAGENT, $c_opts['useragent']);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);

@@ -79,8 +79,14 @@ class AdapterAbstract
     /* Fetch a remote URL. */
     protected function getUrl($c_opts = null)
     {
+        if ($c_opts === null)
+            $c_opts = array();
+
         if (!isset($c_opts['url']))
             $c_opts['url'] = $this->url;
+
+        if (!isset($c_opts['timeout']))
+            $c_opts['timeout'] = 4;
 
         return \PVL\Service\Curl::request($c_opts);
     }

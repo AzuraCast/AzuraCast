@@ -11,8 +11,11 @@ class NetworkNews extends \DF\Doctrine\Entity
 {
     public function __construct()
     {
-        $this->layout = 'horizontal';
-        $this->timestamp = time();
+        $this->layout = 'vertical';
+
+        $this->sort_timestamp = time();
+        $this->display_timestamp = time();
+
         $this->tags = array();
     }
 
@@ -26,6 +29,9 @@ class NetworkNews extends \DF\Doctrine\Entity
     /** @Column(name="title", type="string", length=400) */
     protected $title;
 
+    /** @Column(name="source", type="string", length=64, nullable=true) */
+    protected $source;
+
     /** @Column(name="layout", type="string", length=50) */
     protected $layout;
 
@@ -38,8 +44,11 @@ class NetworkNews extends \DF\Doctrine\Entity
     /** @Column(name="web_url", type="string", length=100, nullable=true) */
     protected $web_url;
 
+    /** @Column(name="sort_timestamp", type="integer") */
+    protected $sort_timestamp;
+
     /** @Column(name="timestamp", type="integer") */
-    protected $timestamp;
+    protected $display_timestamp;
 
     /** @Column(name="tags", type="json", nullable=true) */
     protected $tags;
@@ -64,7 +73,7 @@ class NetworkNews extends \DF\Doctrine\Entity
     public static function fetch($articles_num = 5)
     {
         $em = self::getEntityManager();
-        $results_raw = $em->createQuery('SELECT nn FROM '.__CLASS__.' nn ORDER BY nn.timestamp DESC')
+        $results_raw = $em->createQuery('SELECT nn FROM '.__CLASS__.' nn ORDER BY nn.sort_timestamp DESC')
             ->getArrayResult();
 
         $network_news = array();

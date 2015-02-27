@@ -38,7 +38,7 @@ ob_start();
                     <a href="<?=$article['web_url'] ?>" target="_blank"><img src="<?=$article['image_url'] ?>" alt="Article Image"></a>
                     <div class="carousel-caption">
                         <a href="<?=$article['web_url'] ?>" target="_blank">
-                            <div class="post-date"><?=date('l, F jS \a\t g:ia', $article['timestamp']) ?></div>
+                            <div class="post-date"><?=date('l, F jS \a\t g:ia', $article['display_timestamp']) ?></div>
                             <h4><?=$article['title'] ?></h4>
                             <p><?=$article['body'] ?> <span class="readmore">Read more &raquo;</span></p>
                             <div class="tags">

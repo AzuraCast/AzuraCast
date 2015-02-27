@@ -93,12 +93,14 @@ class NewsManager
                 $news_items[] = array(
                     'id' => 'tumblr_' . $post['id'],
                     'title' => trim($title),
+                    'source' => 'tumblr',
                     'body' => trim($description),
                     'image_url' => $local_url,
                     'web_url' => $post['post_url'],
                     'layout' => $post_style,
                     'tags' => (array)$post['tags'],
-                    'timestamp' => $post['timestamp'],
+                    'sort_timestamp' => $post['timestamp'],
+                    'display_timestamp' => $post['timestamp'],
                 );
             }
         }
@@ -124,12 +126,14 @@ class NewsManager
                 $news_items[] = array(
                     'id' => 'podcast_' . $ep['guid'],
                     'title' => trim($ep['title']),
+                    'source' => 'podcast',
                     'body' => trim($description),
                     'image_url' => $podcast['banner_url'],
                     'web_url' => $ep['web_url'],
                     'layout' => 'vertical',
                     'tags' => array($podcast['name'], 'Podcast Episodes'),
-                    'timestamp' => $ep['timestamp'],
+                    'sort_timestamp' => $ep['timestamp'],
+                    'display_timestamp' => $ep['timestamp'],
                 );
                 break;
             }
@@ -159,20 +163,28 @@ class NewsManager
             $range = Schedule::getRangeText($event['start_time'], $event['end_time'], $event['is_all_day']);
 
             $description = array();
-            $description[] = $range.' on '.$event['station']['name'];
+            $description[] = 'Coming up on '.$event['station']['name'];
+            $description[] = $range;
 
             if (!empty($event['body']))
                 $description[] = $event['body'];
 
+            // Manually adjust the sorting timestamp for the event if it is in the future.
+            $sort_timestamp = $event['start_time'];
+            if ($sort_timestamp >= time())
+                $sort_timestamp = time() - ($sort_timestamp - time());
+
             $news_items[] = array(
                 'id' => 'schedule_' . $event['guid'],
-                'title' => 'Coming Up: '.trim($event['title']),
+                'title' => trim($event['title']),
+                'source' => 'station',
                 'body' => implode('<br>', $description),
                 'image_url' => $event['station']['banner_url'],
                 'web_url' => $event['station']['web_url'],
                 'layout' => 'vertical',
                 'tags' => array($event['station']['name'], 'Events'),
-                'timestamp' => $event['start_time'],
+                'sort_timestamp' => $sort_timestamp,
+                'display_timestamp' => $event['start_time'],
             );
             break;
         }

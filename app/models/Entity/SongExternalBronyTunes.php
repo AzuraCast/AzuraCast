@@ -88,7 +88,7 @@ class SongExternalBronyTunes extends \DF\Doctrine\Entity
             'lyrics'    => $result['lyrics'],
             'web_url'   => 'http://bronytunes.com/songs/'.$result['song_id'],
             'image_url' => 'http://bronytunes.com/retrieve_artwork.php?song_id='.$result['song_id'].'&size=256',
-            'download_url' => 'https://bronytunes.com/retrieve_song.php?song_id='.$result['song_id'].'&client=web',
+            'download_url' => 'https://bronytunes.com/retrieve_song.php?song_id='.$result['song_id'].'&client_type=web',
             'youtube_url' => ($result['youtube_id']) ? 'http://youtu.be/'.$result['youtube_id'] : '',
             'purchase_url' => $result['purchase_link'],
         );

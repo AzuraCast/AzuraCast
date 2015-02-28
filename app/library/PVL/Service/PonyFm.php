@@ -7,12 +7,14 @@ use \Entity\SongExternalPonyFm as External;
 
 class PonyFm
 {
-    public static function load()
+    public static function load($force = false)
     {
         set_time_limit(180);
 
         // Get existing IDs to avoid unnecessary work.
         $existing_ids = External::getIds();
+        $song_ids = Song::getIds();
+
         $em = External::getEntityManager();
 
         $tracks = array();
@@ -39,9 +41,13 @@ class PonyFm
                 $id = $row['id'];
                 $processed = External::processRemote($row);
 
+                $processed['hash'] = Song::getSongHash($processed);
+                if (!in_array($processed['hash'], $song_ids))
+                    Song::getOrCreate($processed);
+
                 if (isset($existing_ids[$id]))
                 {
-                    if ($existing_ids[$id] != $processed['hash'])
+                    if ($existing_ids[$id] != $processed['hash'] || $force)
                         $record = External::find($id);
                     else
                         $record = NULL;

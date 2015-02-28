@@ -12,7 +12,11 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class SongExternalEqBeats extends \DF\Doctrine\Entity
 {
-    const SYNC_THRESHOLD = 2592000; // 2592000 = 30 days, 86400 = 1 day
+    public function __construct()
+    {
+        $this->created = time();
+        $this->updated = time();
+    }
 
     /**
      * @Column(name="id", type="integer")
@@ -23,8 +27,11 @@ class SongExternalEqBeats extends \DF\Doctrine\Entity
     /** @Column(name="hash", type="string", length=50) */
     protected $hash;
 
+    /** @Column(name="created_timestamp", type="integer") */
+    protected $created;
+
     /** @Column(name="timestamp", type="integer") */
-    protected $timestamp;
+    protected $updated;
 
     /** @Column(name="artist", type="string", length=150, nullable=true) */
     protected $artist;
@@ -38,6 +45,9 @@ class SongExternalEqBeats extends \DF\Doctrine\Entity
     /** @Column(name="image_url", type="string", length=255, nullable=true) */
     protected $image_url;
 
+    /** @Column(name="download_url", type="string", length=255, nullable=true) */
+    protected $download_url;
+
     /**
      * Static Functions
      */
@@ -45,7 +55,7 @@ class SongExternalEqBeats extends \DF\Doctrine\Entity
     public static function match(Song $song, $force_lookup = false)
     {
         $record = self::getRepository()->findOneBy(array('hash' => $song->id));
-        if ($record instanceof self) // && $record->timestamp >= $threshold)
+        if ($record instanceof self)
             return $record;
 
         return null;
@@ -74,19 +84,15 @@ class SongExternalEqBeats extends \DF\Doctrine\Entity
 
     public static function processRemote($result)
     {
-        $song_hash = Song::getSongHash(array(
-            'artist'    => $result['artist']['name'],
-            'title'     => $result['title'],
-        ));
-
         return array(
             'id'        => $result['id'],
-            'hash'      => $song_hash,
-            'timestamp' => time(),
+            'created'   => round($result['timestamp']),
+            'updated'   => time(),
             'artist'    => $result['artist']['name'],
             'title'     => $result['title'],
             'web_url'   => $result['link'],
             'image_url' => $result['download']['art'],
+            'download_url' => $result['download']['mp3'],
         );
     }
 

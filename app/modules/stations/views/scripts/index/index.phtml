@@ -42,6 +42,10 @@ Highcharts.setOptions({
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('action' => 'votes')) ?>" title="Most/least popular songs on the station over the last two weeks."><i class="icon-thumbs-up"></i> Song Vote Totals</a></li>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'urls', 'action' => 'index')) ?>" title="Use the http://pvlive.me/ URL shortener for clean, short addresses."><i class="icon-globe"></i> PVLive.me Short URLs</a></li>
 
+                <li class="nav-header">PVL Song Databases</li>
+                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'songs', 'action' => 'index')) ?>" title="Browse all songs in the PVL song directory."><i class="icon-music"></i> Search Song Directory</a></li>
+                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'songs', 'action' => 'new')) ?>" title="View songs that have been recently submitted to music databases."><i class="icon-asterisk"></i> New Songs This Week</a></li>
+
                 <li class="nav-header">Artist Interaction</li>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'artists', 'action' => 'all')) ?>" title="View the full list of artists who have agreed to (or otherwise limited) usage of their creations or interviews with them by the PVL network."><i class="icon-star"></i> Artist Licenses &amp; Interviews</a></li>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'artists', 'action' => 'copyright')) ?>"><i class="icon-group"></i> Fully Licensed Artists</a></li>

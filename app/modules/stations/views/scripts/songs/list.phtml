@@ -1,0 +1,53 @@
+<table class="table datatable table-striped table-nopadding">
+    <colgroup>
+        <col width="10%">
+        <col width="40%">
+        <col width="20%">
+        <col width="10%">
+        <col width="10%">
+        <col width="10%">
+    </colgroup>
+    <thead>
+    <tr>
+        <th>Art</th>
+        <th>Song</th>
+        <th>Posted</th>
+        <th>Pony.fm</th>
+        <th>EQBeats</th>
+        <th>BronyTunes</th>
+    </tr>
+    </thead>
+    <tbody>
+    <? foreach($songs as $record): ?>
+        <tr class="input">
+            <td class="center">
+                <? if ($record['image_url']): ?>
+                    <img src="<?=$record['image_url'] ?>" style="width: 64px; display: inline-block;">
+                <? endif; ?>
+            </td>
+            <td>
+                <big><b><a href="#" onclick="showSongInfo('<?=$record['id'] ?>'); return false;"><?=$record['title'] ?></a></b></big><br>
+                <?=$record['artist'] ?>
+            </td>
+            <td>
+                <?=date('F j, Y\<\b\r\> g:ia', $record['created']) ?>
+            </td>
+            <td class="center">
+                <? if ($record['external_ponyfm']['download_url']): ?>
+                    <a class="large-icon" title="Click to Download" href="<?=$record['external_ponyfm']['download_url'] ?>" download="<?=$record['filename'] ?>" target="_blank"><i class="icon-download"></i></a>
+                <? else: ?>&nbsp;<? endif; ?>
+            </td>
+            <td class="center">
+                <? if ($record['external_eqbeats']['download_url']): ?>
+                    <a class="large-icon" title="Click to Download" href="<?=$record['external_eqbeats']['download_url'] ?>" download="<?=$record['filename'] ?>" target="_blank"><i class="icon-download"></i></a>
+                <? else: ?>&nbsp;<? endif; ?>
+            </td>
+            <td class="center">
+                <? if ($record['external_bronytunes']['download_url']): ?>
+                    <a class="large-icon" title="Click to Download" href="<?=$record['external_bronytunes']['download_url'] ?>" download="<?=$record['filename'] ?>" target="_blank"><i class="icon-download"></i></a>
+                <? else: ?>&nbsp;<? endif; ?>
+            </td>
+        </tr>
+    <? endforeach; ?>
+    </tbody>
+</table>

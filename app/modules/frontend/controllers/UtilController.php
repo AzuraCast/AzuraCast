@@ -9,8 +9,19 @@ class UtilController extends BaseController
     {
         $this->doNotRender();
 
+        set_time_limit(0);
+
         \PVL\Debug::setEchoMode();
 
-        \PVL\VideoManager::generate();
+        // Sync the BronyTunes library.
+        \PVL\Service\BronyTunes::load(true);
+
+        // Sync the Pony.fm library.
+        \PVL\Service\PonyFm::load(true);
+
+        // Sync the EqBeats library.
+        \PVL\Service\EqBeats::load(true);
+
+        \PVL\Debug::log('Donezo!');
     }
 }

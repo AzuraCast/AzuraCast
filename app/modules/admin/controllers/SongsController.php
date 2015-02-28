@@ -1,10 +1,12 @@
 <?php
 namespace Modules\Admin\Controllers;
 
-use \Entity\Song;
-use \Entity\Song as Record;
-use \Entity\SongHistory;
-use \Entity\SongVote;
+use Entity\Song;
+use Entity\Song as Record;
+use Entity\SongHistory;
+use Entity\SongVote;
+
+use PVL\Utilities;
 
 class SongsController extends BaseController
 {
@@ -134,7 +136,7 @@ class SongsController extends BaseController
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
 
-        \PVL\Utilities::orderBy($votes_raw, 'vote_total DESC');
+        Utilities::orderBy($votes_raw, 'vote_total DESC');
 
         $votes = array();
         foreach($votes_raw as $row)

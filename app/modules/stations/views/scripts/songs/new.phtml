@@ -1,0 +1,8 @@
+<?php
+$title = 'New Songs This Week';
+
+echo $this->viewHelper->renderHere('stationname', true);
+echo $this->viewHelper->renderHere('homelink', true);
+
+echo $this->viewHelper->renderHere('list', false, array('songs' => $new_songs));
+?>

@@ -12,6 +12,12 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class SongExternalBronyTunes extends \DF\Doctrine\Entity
 {
+    public function __construct()
+    {
+        $this->created = time();
+        $this->updated = time();
+    }
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -21,8 +27,11 @@ class SongExternalBronyTunes extends \DF\Doctrine\Entity
     /** @Column(name="hash", type="string", length=50) */
     protected $hash;
 
+    /** @Column(name="created_timestamp", type="integer") */
+    protected $created;
+
     /** @Column(name="timestamp", type="integer") */
-    protected $timestamp;
+    protected $updated;
 
     /** @Column(name="artist", type="string", length=150, nullable=true) */
     protected $artist;
@@ -45,6 +54,9 @@ class SongExternalBronyTunes extends \DF\Doctrine\Entity
     /** @Column(name="image_url", type="string", length=255, nullable=true) */
     protected $image_url;
 
+    /** @Column(name="download_url", type="string", length=255, nullable=true) */
+    protected $download_url;
+
     /** @Column(name="youtube_url", type="string", length=255, nullable=true) */
     protected $youtube_url;
 
@@ -58,7 +70,7 @@ class SongExternalBronyTunes extends \DF\Doctrine\Entity
     public static function match(Song $song, $force_lookup = false)
     {
         $record = self::getRepository()->findOneBy(array('hash' => $song->id));
-        if ($record instanceof self) // && $record->timestamp >= $threshold)
+        if ($record instanceof self)
             return $record;
         else
             return NULL;
@@ -66,15 +78,9 @@ class SongExternalBronyTunes extends \DF\Doctrine\Entity
 
     public static function processRemote($result)
     {
-        $song_hash = Song::getSongHash(array(
-            'artist'    => $result['artist_name'],
-            'title'     => $result['name'],
-        ));
-
         return array(
             'id'        => $result['song_id'],
-            'hash'      => $song_hash,
-            'timestamp' => time(),
+            'updated'   => time(),
             'artist'    => $result['artist_name'],
             'title'     => $result['name'],
             'album'     => $result['album'],
@@ -82,6 +88,7 @@ class SongExternalBronyTunes extends \DF\Doctrine\Entity
             'lyrics'    => $result['lyrics'],
             'web_url'   => 'http://bronytunes.com/songs/'.$result['song_id'],
             'image_url' => 'http://bronytunes.com/retrieve_artwork.php?song_id='.$result['song_id'].'&size=256',
+            'download_url' => 'https://bronytunes.com/retrieve_song.php?song_id='.$result['song_id'].'&client=web',
             'youtube_url' => ($result['youtube_id']) ? 'http://youtu.be/'.$result['youtube_id'] : '',
             'purchase_url' => $result['purchase_link'],
         );

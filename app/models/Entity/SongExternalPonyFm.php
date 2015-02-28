@@ -1,7 +1,8 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
+use PVL\Utilities;
 
 /**
  * @Table(name="song_external_pony_fm", indexes={
@@ -12,6 +13,12 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class SongExternalPonyFm extends \DF\Doctrine\Entity
 {
+    public function __construct()
+    {
+        $this->created = time();
+        $this->updated = time();
+    }
+
     const SYNC_THRESHOLD = 2592000; // 2592000 = 30 days, 86400 = 1 day
 
     /**
@@ -23,8 +30,11 @@ class SongExternalPonyFm extends \DF\Doctrine\Entity
     /** @Column(name="hash", type="string", length=50) */
     protected $hash;
 
+    /** @Column(name="created_timestamp", type="integer") */
+    protected $created;
+
     /** @Column(name="timestamp", type="integer") */
-    protected $timestamp;
+    protected $updated;
 
     /** @Column(name="artist", type="string", length=150, nullable=true) */
     protected $artist;
@@ -43,6 +53,9 @@ class SongExternalPonyFm extends \DF\Doctrine\Entity
 
     /** @Column(name="image_url", type="string", length=255, nullable=true) */
     protected $image_url;
+
+    /** @Column(name="download_url", type="string", length=255, nullable=true) */
+    protected $download_url;
 
     /** @Column(name="is_vocal", type="boolean") */
     protected $is_vocal;
@@ -86,21 +99,17 @@ class SongExternalPonyFm extends \DF\Doctrine\Entity
 
     public static function processRemote($result)
     {
-        $song_hash = Song::getSongHash(array(
-            'artist'    => $result['user']['name'],
-            'title'     => $result['title'],
-        ));
-
         return array(
             'id'        => $result['id'],
-            'hash'      => $song_hash,
-            'timestamp' => time(),
+            'created'   => Utilities::gstrtotime($result['published_at']['date']),
+            'updated'   => time(),
             'artist'    => $result['user']['name'],
             'title'     => $result['title'],
             'description' => $result['description'],
             'lyrics'    => $result['lyrics'],
             'web_url'   => $result['url'],
             'image_url' => $result['covers']['normal'],
+            'download_url' => str_replace('stream.mp3', 'dl.mp3', $result['streams']['mp3']),
             'is_vocal'  => (int)$result['is_vocal'],
             'is_explicit' => (int)$result['is_explicit'],
         );

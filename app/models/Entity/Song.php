@@ -241,6 +241,14 @@ class Song extends \DF\Doctrine\Entity
         return null;
     }
 
+    public static function getIds()
+    {
+        $em = self::getEntityManager();
+        $ids_raw = $em->createQuery('SELECT s.id FROM '.__CLASS__.' s')->getArrayResult();
+
+        return \PVL\Utilities::ipull($ids_raw, 'id');
+    }
+
     public static function getOrCreate($song_info, $is_radio_play = false)
     {
         $song_hash = self::getSongHash($song_info);

@@ -5,6 +5,11 @@ use \Entity\Song;
 
 class UtilController extends BaseController
 {
+    public function permissions()
+    {
+        return $this->acl->isAllowed('administer all');
+    }
+
     public function testAction()
     {
         $this->doNotRender();

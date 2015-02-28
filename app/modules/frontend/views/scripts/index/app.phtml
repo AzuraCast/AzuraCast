@@ -95,7 +95,7 @@ $manual = true;
 
             <p>Our friends at Black Apple Research Facility have worked hard on their own Android app that plays all of Ponyville Live!'s music streams.</p>
 
-            <div class="buttons">
+            <div class="buttons btn-group">
                 <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'class'     => 'btn-primary',
@@ -157,6 +157,48 @@ $manual = true;
                     'text'      => 'PVL! Mobile',
                 )) ?>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="media clearfix">
+    <div class="media-object pull-left">
+        <img src="<?=\DF\Url::content('images/platform_ipony.png') ?>" alt="iPonyRadio">
+    </div>
+    <div class="media-body">
+        <h2>iPonyRadio</h2>
+
+        <div class="well">
+            <h3>iPonyRadio for iOS, Android, and Desktops</h3>
+
+            <p>Originally launched for iOS, the third-party iPonyRadio app has been updated to include Android and desktop platforms. You can listen to every Ponyville Live! station through iPonyRadio, along with Everfree Radio from Canterlot Hill.</p>
+
+            <div class="buttons btn-group">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'btn-primary',
+                    'icon'      => 'icon-download',
+                    'href'      => 'https://itunes.apple.com/us/app/iponyadio/id680943103?ls=1&mt=8',
+                    'target'    => '_blank',
+                    'text'      => 'iPonyRadio for iOS',
+                )) ?>
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'btn-primary',
+                    'icon'      => 'icon-download',
+                    'href'      => 'https://play.google.com/store/apps/details?id=com.iponyradio.android',
+                    'target'    => '_blank',
+                    'text'      => 'iPonyRadio for Android',
+                )) ?>
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'icon'      => 'icon-globe',
+                    'href'      => 'http://iponyradio.com/',
+                    'target'    => '_blank',
+                    'text'      => 'iPonyRadio Homepage',
+                )) ?>
+            </div>
+
         </div>
     </div>
 </div>

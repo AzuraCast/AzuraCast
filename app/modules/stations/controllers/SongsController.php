@@ -57,7 +57,7 @@ class SongsController extends BaseController
             $new_songs[] = $song;
         }
 
-        $new_songs = Utilities::irsort($new_songs, 'timestamp');
+        $new_songs = Utilities::irsort($new_songs, 'created');
         $this->view->new_songs = $new_songs;
     }
 }

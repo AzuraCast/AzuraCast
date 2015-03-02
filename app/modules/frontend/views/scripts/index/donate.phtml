@@ -41,7 +41,7 @@ $title = ('Support the Ponyville Live! Network');
 
 <div class="row-fluid">
     <div class="span6">
-        <h2>Donate Directly</h2>
+        <h2>Donate via PayPal</h2>
         <p>Click the button below to donate directly to the Ponyville Live! network operation fund. The PayPal account is listed as Bravely Blue Media LLC, the parent company to Ponyville Live.</p>
 
         <center>
@@ -54,26 +54,17 @@ $title = ('Support the Ponyville Live! Network');
         </center>
     </div>
     <div class="span6">
-        <h2>Donate Via Referral</h2>
+        <h2>Donate via Patreon</h2>
 
-        <p>Even if you can't donate, you can support the network just by utilizing referrals to popular services. We are always very grateful for your support in any form.</p>
+        <p>Click the button below to visit our Patreon page, where you can pledge to support our core operations every month. You can update or remove your pledge at any time!</p>
 
-        <center>
-            <a href="https://www.digitalocean.com/?refcode=3d967b113eeb"><img src="<?=\DF\Url::content('images/do.png') ?>" alt="DigitalOcean"></a>
-        </center>
-
-        <h3>Sign Up Through DigitalOcean</h3>
-        <p>Several of the Ponyville Live! servers are powered by DigitalOcean, an affordable and powerful provider of Virtual Private Server (VPS) instances. If you're looking for a place to host your own web site, sign up using our referral code, and you'll get an extra <b>$10 credit</b> toward your server bill just for signing up.</p>
-
-        <div class="buttons">
-            <?=$this->viewHelper->button(array(
-                'type' => 'link',
-                'icon' => 'icon-asterisk',
-                'text' => 'Learn More / Sign Up',
-                'href' => 'https://www.digitalocean.com/?refcode=3d967b113eeb',
-                'target' => '_blank',
-                'class' => 'btn-primary',
-            )) ?>
-        </div>
+        <iframe
+            src="https://ptrn.me/patreon-btn.html?creator=ponyvillelive&amp;size=large&amp;unit=month"
+            allowtransparency="true"
+            frameborder="0"
+            scrolling="0"
+            width="300"
+            height="30">
+        </iframe>
     </div>
 </div>

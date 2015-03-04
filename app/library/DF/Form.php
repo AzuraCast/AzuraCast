@@ -582,11 +582,13 @@ class Form
                     continue;
             }
         }
+
+        return $this;
     }
 
     public function populate($values)
     {
-        $this->setDefaults($values);
+        return $this->setDefaults($values);
     }
 
     /**

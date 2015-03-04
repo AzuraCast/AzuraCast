@@ -67,7 +67,7 @@ class SubmitController extends BaseController
                     'subject'   => 'New Station Submitted For Review',
                     'template'  => 'newstation',
                     'vars'      => array(
-                        'form'      => $form,
+                        'form'      => $form->populate($_POST),
                     ),
                 ));
             }

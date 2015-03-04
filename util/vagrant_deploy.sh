@@ -8,6 +8,13 @@ export www_base=$app_base/vagrant
 if [ ! -f $app_base/.deploy_run ]
 then
 
+    # Set up swap partition
+    sudo fallocate -l 2G /swapfile
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    sudo echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
+
     # Set up server
     apt-get -q -y install python-software-properties
     apt-add-repository ppa:phalcon/stable

@@ -20,7 +20,7 @@ then
     apt-add-repository ppa:phalcon/stable
     apt-get update
 
-    apt-get -q -y install vim git nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl php5-phalcon
+    apt-get -q -y install vim git nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl php5-phalcon nodejs npm
     apt-get autoremove
 
     mysqladmin -u root password password
@@ -93,7 +93,9 @@ then
     mv composer.phar /usr/local/bin/composer
 
     # Install Node.js and services
-    apt-get -q -y install nodejs npm
+    cd $www_base
+    sudo npm install -g gulp
+    npm install --no-bin-links
 
     cd $www_base/live
     npm install --no-bin-links

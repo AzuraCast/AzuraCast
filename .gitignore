@@ -259,6 +259,8 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+# Others
 web/test.php
 app/modules/default/controllers/UtilController.php
 node_modules/

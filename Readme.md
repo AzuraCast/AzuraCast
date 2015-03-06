@@ -67,7 +67,7 @@ Because stylesheets are written in SCSS, they must first be compiled into CSS be
 * Type `cd /var/www/vagrant`.
 * Type `gulp build`.
 
-Alternately, you can use the `grunt watch` command to constantly monitor the SCSS files for changes and rebuild them on the fly, but this may not work well with some editors that automatically save frequently.
+Alternately, you can use the `gulp watch` command to constantly monitor the SCSS files for changes and rebuild them on the fly, but this may not work well with some editors that automatically save frequently.
 
 ## Questions? Comments? Feedback?
 

@@ -21,9 +21,9 @@ Behind the scenes, the system is powered by a LEMP (Linux, [nginx](http://nginx.
 
 The PVLive codebase has now been made public, both to help our team maintain transparency and to encourage contributions from the developer community. If you see a bug or other issue with the codebase, please report an issue or submit a pull request!
 
-## Deploying Locally
+## Developing Locally
 
-It is now very easy to set up the PVLive application for local development. Just follow these steps:
+Want to help improve the PVL application codebase? Now you can run your own local virtual machine for development! Follow these steps to get started:
 
 * Clone this repository to your hard drive.
 * Install [Vagrant](http://www.vagrantup.com/) for your OS.
@@ -32,9 +32,11 @@ It is now very easy to set up the PVLive application for local development. Just
 * Open a command line prompt at the root of this repo.
 * Type `vagrant up` in the command line.
 
-In a few minutes, a full VM will be deployed and customized on your computer, complete with a working copy of this application! Ports are automatically followed as below.
+If you don't already have the Vagrant box downloaded, this process may take several minutes (or even hours, depending on your bandwidth). The box image is cached locally, though, making future vagrant runs easy.
 
-A new super-administrator account will also be created, with the username `admin@ponyvillelive.com` and the password `password`.
+**Note**: You will only see live production-grade data from the main PVL server if you have the proper API key set in `app/config/apis.conf.php`. This API key is private, and available upon request from [pr@ponyvillelive.com](mailto:pr@ponyvillelive.com).
+
+A new super-administrator account will also be created, with the username `admin@ponyvillelive.com` and the password `password`. Ports are automatically followed as below.
 
 ### SSH
 
@@ -51,3 +53,11 @@ The web application resides by default in the `/var/www/vagrant/` directory.
 MySQL can be accessed directly by connecting to the VirtualBox instance via SSH tunnel, using the SSH username `vagrant` and password `vagrant`.
 
 The default MySQL `root` password is `password`.
+
+## Questions? Comments? Feedback?
+
+Ponyville Live! is a volunteer project, and we depend on your support and feedback to keep growing.
+
+Issues for the PVLive codebase are tracked in this repository's Issues section on Github. Anyone can create a new issue for the project, and you are encouraged to do so.
+
+If you have any further questions, comments or suggestions, just visit the [Contact Us](http://ponyvillelive.com/contact) page for more information on how to reach our team.

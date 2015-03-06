@@ -6,10 +6,10 @@ The PVLive application is built on several powerful technologies:
 
 * [Twitter Bootstrap 2](http://getbootstrap.com/2.3.2/) (Frontend UI)
 * [Phalcon](http://phalconphp.com/en/) (PHP MVC Framework)
-* [Doctrine 2](http://www.doctrine-project.org/) (PHP Database ORM / Abstraction)
-* [Composer](https://getcomposer.org/) (Dependencies)
+* [Doctrine 2](http://www.doctrine-project.org/) (PHP Database Layer)
+* [Composer](https://getcomposer.org/) (Dependency Management)
 * [Vagrant](http://www.vagrantup.com/) (Local Development)
-* [Compass/SCSS](http://sass-lang.com/) (Stylesheet Coolness)
+* [Sass](http://sass-lang.com/) (Stylesheets)
 
 Behind the scenes, the system is powered by a LEMP (Linux, [nginx](http://nginx.org/), [MySQL](http://www.mysql.com/) and PHP) stack.
 
@@ -32,7 +32,14 @@ If you don't already have the Vagrant box downloaded, this process may take seve
 
 **Note**: You will only see live production-grade data from the main PVL server if you have the proper API key set in `app/config/apis.conf.php`. This API key is private, and available upon request from [pr@ponyvillelive.com](mailto:pr@ponyvillelive.com).
 
-A new super-administrator account will also be created, with the username `admin@ponyvillelive.com` and the password `password`. Ports are automatically followed as below.
+### Local Administrator
+
+By default, a super-administrator account will be created that will allow you to log in locally and access all administrative commands.
+
+* Username: `admin@ponyvillelive.com`
+* Password: `password`
+
+Any account in the PVL database with access to the `administer all` action will be granted super-administrator rights, so this can be restored via the database if lost for any reason.
 
 ### SSH
 
@@ -40,15 +47,27 @@ You can connect to the Vagrant VM by typing `vagrant ssh` into the command line 
 
 ### Web Server
 
-The web server is configured by default to respond to `dev.pvlive.me:8080`. The URL should automatically be added to your hosts file by the Vagrant hostsupdater plugin.
+The web server is configured by default to respond to `http://dev.pvlive.me`. The URL should automatically be added to your hosts file by the Vagrant hostsupdater plugin.
 
-The web application resides by default in the `/var/www/vagrant/` directory.
+The web application resides by default in the `/var/www/vagrant/` directory inside the Vagrant virtual machine.
 
 ### Database
 
 MySQL can be accessed directly by connecting to the VirtualBox instance via SSH tunnel, using the SSH username `vagrant` and password `vagrant`.
 
 The default MySQL `root` password is `password`.
+
+### Common Tasks
+
+The Vagrant virtual machine is automatically configured with Composer, Node.js and other important tools pre-installed.
+
+Because stylesheets are written in SCSS, they must first be compiled into CSS before changes will be visible in the browser. To do this:
+
+* Connect to the VM using `vagrant ssh`.
+* Type `cd /var/www/vagrant`.
+* Type `gulp build`.
+
+Alternately, you can use the `grunt watch` command to constantly monitor the SCSS files for changes and rebuild them on the fly, but this may not work well with some editors that automatically save frequently.
 
 ## Questions? Comments? Feedback?
 

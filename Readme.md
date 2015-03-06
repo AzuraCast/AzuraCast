@@ -1,10 +1,6 @@
-# PVLive: The Ponyville Live! Web Application
-
 ![PVL Logo](https://raw.githubusercontent.com/BravelyBlue/PVLive/master/web/resources/bitbucket.png)
 
----
-
-PVLive is the flagship web application for the [Ponyville Live!](http://ponyvillelive.com/) network, maintained by Bravely Blue Media LLC.
+**PVLive** is the flagship web application for the [Ponyville Live!](http://ponyvillelive.com/) network, maintained by Bravely Blue Media, LLC.
 
 The PVLive application is built on several powerful technologies:
 

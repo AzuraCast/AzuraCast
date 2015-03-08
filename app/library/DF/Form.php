@@ -461,8 +461,11 @@ class Form
                 $i = 1;
                 foreach($files as $file)
                 {
-                    $file_url = \DF\Url::content($file);
-                    $return .= '<div>#'.$i.': <a href="'.$file_url.'" target="_blank">Download File</a></div>';
+                    if (!empty($file))
+                    {
+                        $file_url = \DF\Url::content($file);
+                        $return .= '<div>#' . $i . ': <a href="' . $file_url . '" target="_blank">Download File</a></div>';
+                    }
 
                     $i++;
                 }

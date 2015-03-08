@@ -22,7 +22,12 @@ class StreamsController extends BaseController
 
     public function editAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->stream);
+        if ($this->station->category = 'video')
+            $form_config = $this->current_module_config->forms->video_stream;
+        else
+            $form_config = $this->current_module_config->forms->audio_stream;
+
+        $form = new \DF\Form($form_config);
 
         if ($this->hasParam('id'))
         {
@@ -53,24 +58,36 @@ class StreamsController extends BaseController
             \DF\Cache::remove('stations');
 
             // Immediately load "Now Playing" data for the added/updated stream.
-            if ($data['is_active'] == 1)
-                $np = \PVL\NowPlaying::processStream($record, $this->station, true);
-
-            $record->save();
-
             if ($data['is_active'] == 0)
             {
+                $record->save();
+
                 $this->alert('<b>Stream updated, but is currently inactive.</b><br>The system will not retrieve Now Playing data about this stream until it is activated.', 'red');
             }
-            else if ($np['status'] != 'offline')
+            elseif ($this->station->category == 'video')
             {
-                $song = $np['current_song'];
+                $np = \PVL\NowPlaying::processVideoStream($record, $this->station, true);
+                $record->save();
 
-                $this->alert('<b>Stream updated and successfully connected.</b><br>The currently playing song is reporting as "'.$song['title'].'" by "'.$song['artist'].'" with '.$np['listeners']['current'].' tuned in.', 'green');
+                if ($np['meta']['status'] == 'online')
+                    $this->alert('<b>Stream updated, and currently showing as online.</b>', 'green');
+                else
+                    $this->alert('<b>Stream updated, but is currently offline.</b>', 'red');
             }
             else
             {
-                $this->alert('<b>Stream updated, but is currently offline.</b><br>The system could not retrieve now-playing information about this stream. Verify that the station is online and the URLs are correct.', 'red');
+                $np = \PVL\NowPlaying::processAudioStream($record, $this->station, true);
+                $record->save();
+
+                if ($np['status'] != 'offline')
+                {
+                    $song = $np['current_song'];
+                    $this->alert('<b>Stream updated and successfully connected.</b><br>The currently playing song is reporting as "'.$song['title'].'" by "'.$song['artist'].'" with '.$np['listeners']['current'].' tuned in.', 'green');
+                }
+                else
+                {
+                    $this->alert('<b>Stream updated, but is currently offline.</b><br>The system could not retrieve now-playing information about this stream. Verify that the station is online and the URLs are correct.', 'red');
+                }
             }
 
             $this->redirectFromHere(array('action' => 'index', 'id' => NULL));

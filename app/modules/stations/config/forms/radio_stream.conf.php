@@ -79,7 +79,7 @@ return array(
             'label' => 'Stream Broadcast URL',
             'class' => 'half-width',
 
-            'description' => 'The address (including http[s]://) where listeners can tune in to your radio station or video stream."',
+            'description' => 'The address (including http[s]://) where listeners can tune in to your radio station or video stream.',
             'required' => true,
         )),
 
@@ -87,7 +87,7 @@ return array(
             'label' => 'Stream Now-Playing Data URL',
             'class' => 'half-width',
 
-            'description' => 'The address (including http[s]://) where the PVL service can connect to view now-playing data about your station."',
+            'description' => 'The address (including http[s]://) where the PVL service can connect to view now-playing data about your station.',
             'required' => true,
         )),
 

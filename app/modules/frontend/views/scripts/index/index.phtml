@@ -104,7 +104,7 @@ ob_end_clean();
 <div class="video-listing hidden-by-default">
     <h2 id="section_video"><i class="icon-facetime-video"></i> Live Video Streams <small><span id="nowplaying-listeners-video"></span></small></h2>
 
-    <?=$this->viewHelper->renderCommon('video', array('video_channels' => $video_channels)); ?>
+    <?=$this->viewHelper->renderCommon('video', array('stations' => $categories['video']['stations'])); ?>
 </div>
 
 <?

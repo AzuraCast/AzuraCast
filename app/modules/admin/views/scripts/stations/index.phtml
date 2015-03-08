@@ -1,5 +1,5 @@
 <?
-$title = 'Manage Radio Stations';
+$title = 'Manage Radio Stations &amp; Video Channels';
 ?>
 
 <div class="buttons">
@@ -17,6 +17,11 @@ $title = 'Manage Radio Stations';
 <h3>Radio Stations</h3>
 <?
 echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['audio']));
+?>
+
+<h3>Video Channels</h3>
+<?
+echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['video']));
 ?>
 
 <h3>Internal Tracking</h3>

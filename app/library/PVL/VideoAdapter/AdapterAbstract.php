@@ -1,24 +1,42 @@
 <?php
 namespace PVL\VideoAdapter;
 
-use \Entity\VideoChannel;
+use Entity\Station;
+use Entity\StationStream;
 
 class AdapterAbstract
 {
+    /**
+     * @var Station
+     */
     protected $station;
 
+    /**
+     * @var StationStream
+     */
+    protected $stream;
+
+    /**
+     * @var string URL for stream data.
+     */
     protected $stream_url;
+
+    /**
+     * @var string URL for now playing data.
+     */
     protected $data_url;
 
     /**
-     * @param Video $station
+     * @param StationStream $stream
+     * @param Station $station
      */
-    public function __construct(VideoChannel $station)
+    public function __construct(StationStream $stream, Station $station)
     {
         $this->station = $station;
+        $this->stream = $stream;
 
-        $this->stream_url = $station->stream_url;
-        $this->data_url = $station->nowplaying_url;
+        $this->stream_url = $stream->stream_url;
+        $this->data_url = $stream->nowplaying_url;
     }
 
     /**

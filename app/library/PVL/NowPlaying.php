@@ -15,7 +15,7 @@ use DF\Cache;
 use PVL\Debug;
 use PVL\Service\PvlNode;
 
-class RadioManager
+class NowPlaying
 {
     public static function generate()
     {
@@ -30,7 +30,7 @@ class RadioManager
         Statistic::post($nowplaying['legacy']);
 
         // Clear any records that are not audio/video category.
-        $api_categories = array('audio');
+        $api_categories = array('audio', 'video');
         foreach($nowplaying['api'] as $station_shortcode => $station_info)
         {
             if (!in_array($station_info['station']['category'], $api_categories))
@@ -129,11 +129,22 @@ class RadioManager
             if (!$stream->is_active)
                 continue;
 
-            $np_stream = self::processStream($stream, $station);
-            $np['streams'][] = $np_stream;
+            if ($station->category == 'video')
+            {
+                $np_stream = self::processVideoStream($stream, $station);
 
-            foreach($np_stream['listeners'] as $type => $count)
-                $listener_totals[$type] += $count;
+                foreach($listener_totals as $type => $total)
+                    $listener_totals[$type] += $np_stream['meta']['listeners'];
+            }
+            else
+            {
+                $np_stream = self::processAudioStream($stream, $station);
+
+                foreach ($np_stream['listeners'] as $type => $count)
+                    $listener_totals[$type] += $count;
+            }
+
+            $np['streams'][] = $np_stream;
 
             $em->persist($stream);
 
@@ -145,8 +156,11 @@ class RadioManager
                 $np['station']['stream_url'] = $np_stream['url'];
                 $np['station']['default_stream_id'] = $np_stream['id'];
 
-                $np['current_song'] = $np_stream['current_song'];
-                $np['song_history'] = $np_stream['song_history'];
+                if ($station->category != 'video')
+                {
+                    $np['current_song'] = $np_stream['current_song'];
+                    $np['song_history'] = $np_stream['song_history'];
+                }
             }
         }
 
@@ -159,34 +173,34 @@ class RadioManager
         $np['event'] = Schedule::api($event_current);
         $np['event_upcoming'] = Schedule::api($event_upcoming);
 
-        $station->nowplaying_data = array(
-            'current_song'      => $np['current_song'],
-            'song_history'      => $np['song_history'],
-        );
+        if ($station->category != 'video')
+        {
+            $station->nowplaying_data = array(
+                'current_song' => $np['current_song'],
+                'song_history' => $np['song_history'],
+            );
+            $em->persist($station);
+        }
 
-        $em->persist($station);
         $em->flush();
 
         return $np;
     }
 
     /**
-     * Process a single stream's NowPlaying info.
+     * Process a single audio stream's NowPlaying info.
      *
      * @param StationStream $stream
      * @param Station $station
      * @return array Structured NowPlaying Data
      */
-    public static function processStream(StationStream $stream, Station $station, $force = false)
+    public static function processAudioStream(StationStream $stream, Station $station, $force = false)
     {
         $current_np_data = (array)$stream->nowplaying_data;
 
-        if (!$stream->is_default && !$force)
-        {
-            // Only process non-default streams on odd-numbered "segments" to improve performance.
-            if (NOWPLAYING_SEGMENT % 2 == 0 && !empty($current_np_data))
-                return $current_np_data;
-        }
+        // Only process non-default streams on odd-numbered "segments" to improve performance.
+        if (!$stream->is_default && !$force && (NOWPLAYING_SEGMENT % 2 == 0) && !empty($current_np_data))
+            return $current_np_data;
 
         if (!$stream->is_active)
             return $current_np_data;
@@ -269,7 +283,62 @@ class RadioManager
         }
 
         $stream->nowplaying_data = $np;
+        return $np;
+    }
 
+    /**
+     * Process a single video stream's NowPlaying info.
+     *
+     * @param StationStream $stream
+     * @param Station $station
+     * @return array Structured NowPlaying Data
+     */
+    public static function processVideoStream(StationStream $stream, Station $station, $force = false)
+    {
+        $current_np_data = (array)$stream->nowplaying_data;
+
+        if (!$force && (NOWPLAYING_SEGMENT % 2 == 0) && !empty($current_np_data))
+            return $current_np_data;
+
+        // Process stream.
+        $custom_class = Station::getStationClassName($station->name);
+        $custom_adapter = '\\PVL\\VideoAdapter\\'.$custom_class;
+
+        $np = StationStream::api($stream);
+
+        if (class_exists($custom_adapter))
+        {
+            $np_adapter = new $custom_adapter($stream, $station);
+            $stream_np = $np_adapter->process();
+        }
+        else
+        {
+            $adapters = array(
+                new \PVL\VideoAdapter\Livestream($stream, $station),
+                new \PVL\VideoAdapter\TwitchTv($stream, $station),
+                new \PVL\VideoAdapter\UStream($stream, $station),
+            );
+
+            foreach($adapters as $np_adapter)
+            {
+                if ($np_adapter->canHandle())
+                {
+                    $stream_np = $np_adapter->process();
+                    break;
+                }
+            }
+        }
+
+        if (!empty($stream_np))
+        {
+            $np = array_merge($np, $stream_np);
+            $np['status'] = (isset($np['meta']['status'])) ? $np['meta']['status'] : 'offline';
+
+            Debug::log('Adapter Class: ' . get_class($np_adapter));
+            Debug::print_r($np);
+        }
+
+        $stream->nowplaying_data = $np;
         return $np;
     }
 
@@ -291,6 +360,9 @@ class RadioManager
         $np['listeners'] = $np_raw['listeners']['current'];
         $np['listeners_unique'] = $np_raw['listeners']['unique'];
         $np['listeners_total'] = $np_raw['listeners']['total'];
+
+        if ($np_raw['station']['category'] == 'video')
+            return $np;
 
         // Merge a default stream info into main array for legacy purposes.
         foreach($np_raw['streams'] as $np_stream)

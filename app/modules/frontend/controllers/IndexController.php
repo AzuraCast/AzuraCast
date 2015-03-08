@@ -27,9 +27,6 @@ class IndexController extends BaseController
         // Pull stations.
         $this->_initStations();
 
-        // Pull video streams.
-        $this->view->video_channels = VideoChannel::fetchArray();
-
         // Pull conventions.
         $conventions = Convention::getAllConventions();
         $this->view->conventions_upcoming = $conventions['upcoming'];

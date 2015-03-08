@@ -398,9 +398,14 @@ class Station extends \DF\Doctrine\Entity
     public static function getCategories()
     {
         return array(
-            'audio'     => array(
+            'audio'    => array(
                 'name' => 'Radio Stations',
                 'icon' => 'icon-music',
+                'stations' => array(),
+            ),
+            'video'    => array(
+                'name' => 'Video Streams',
+                'icon' => 'icon-facetime-video',
                 'stations' => array(),
             ),
             'internal' => array(

@@ -352,6 +352,10 @@ class Form
                 $return .= '</ul>';
                 break;
 
+            case 'hidden':
+                return $this->form->render($name);
+                break;
+
             default:
                 $return .= $this->form->render($name);
                 break;

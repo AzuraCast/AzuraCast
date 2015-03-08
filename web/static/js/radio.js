@@ -8,7 +8,7 @@ var nowplaying_song,
     nowplaying_song_id,
     nowplaying_url,
     nowplaying_station,
-    audio_np_cache;
+    np_cache;
 
 var vote_ratelimit = false;
 
@@ -207,10 +207,10 @@ $(function() {
     socket.on('nowplaying', function(e) {
         console.log('Nowplaying updated.');
 
-        audio_np_cache = e;
+        np_cache = e;
         processNowPlaying();
 
-        console.log(audio_np_cache);
+        console.log(np_cache);
 
         // Send message to iframe listeners.
         top.postMessage({
@@ -288,187 +288,279 @@ function processNowPlaying()
     var listener_total = 0;
     var listeners_by_type = [];
 
-    _.each(audio_np_cache, function(station_info, station_id)
+    _.each(np_cache, function(station_info, station_id)
     {
-        var station = $('#station_'+station_id);
-        var station_exists = (station.length != 0);
+        var category = station_info.station.category;
+        var listeners = 0;
 
-        if (station_exists)
-        {
-            var stream_id = parseInt(station.data('streamid'));
-            var stream = _(station_info.streams).find({'id': stream_id });
+        if (category == 'video')
+            listeners = processVideoNowPlayingRow(station_info, station_id);
+        else
+            listeners = processAudioNowPlayingRow(station_info, station_id);
 
-            // Set stream URL.
-            station.data('stream', stream.url);
-            station.data('type', stream.type);
+        listener_total += listeners;
 
-            // Highlight active stream.
-            station.find('.stream-switcher ul li').removeClass('active');
-            station.find('.stream-switcher ul li[rel="'+stream_id+'"]').addClass('active');
+        if (typeof(listeners_by_type[category]) == 'undefined')
+            listeners_by_type[category] = 0;
 
-            // Format title.
-            var song_tooltip = '';
-
-            if (!stream.current_song.title)
-            {
-                station.find('.nowplaying-artist').text(stream.current_song.text);
-                station.find('.nowplaying-title').text('');
-
-                song_tooltip += stream.current_song.text;
-            }
-            else
-            {
-                station.find('.nowplaying-artist').text(stream.current_song.title);
-                station.find('.nowplaying-title').text(stream.current_song.artist);
-
-                song_tooltip += stream.current_song.title + "\n" + stream.current_song.artist;
-            }
-
-            if (_.size(stream.current_song.external) > 0)
-            {
-                station.find('.song-info-button').show();
-
-                song_tooltip += "\n" + 'More Info Available';
-            }
-            else
-            {
-                station.find('.song-info-button').hide();
-            }
-
-            // Set hover tooltip for song.
-            station.find('.song-info').attr('title', song_tooltip);
-
-            // Show stream info if non-default.
-            if (station.data('defaultstream') != stream_id)
-            {
-                station.find('.stream-info').html('<i class="icon-code-fork"></i> '+stream.name).show();
-            }
-            else
-            {
-                station.find('.stream-info').hide();
-            }
-
-            // Trigger notification of song change.
-            if (station.hasClass('playing'))
-            {
-                if (stream.current_song.id != nowplaying_song_id && jp_is_playing) {
-                    notify(station.data('image'), station_info.station.name, stream.current_song.text, { tag: 'nowplaying' });
-                }
-
-                nowplaying_song = stream.current_song.text;
-                nowplaying_song_id = stream.current_song.id;
-            }
-
-            // Post listener count.
-            var station_listeners = intOrZero(station_info.listeners.current);
-
-            if (station_listeners >= 0)
-            {
-                listener_total += station_listeners;
-
-                if (typeof(listeners_by_type[station_info.station.category]) == 'undefined')
-                    listeners_by_type[station_info.station.category] = 0;
-
-                listeners_by_type[station_info.station.category] += station_listeners;
-
-                station.find('.nowplaying-listeners').show().html('<i class="icon-user"></i>&nbsp;'+station_listeners);
-            }
-            else
-            {
-                station.find('.nowplaying-listeners').hide();
-            }
-
-            // Post listener count for each stream.
-            _(station_info.streams).forEach(function(stream_row)
-            {
-                var stream_listeners = intOrZero(stream_row.listeners.current);
-
-                if (stream_row.status == 'online')
-                    station.find('li[rel="'+stream_row.id+'"]').show();
-                else
-                    station.find('li[rel="'+stream_row.id+'"]').hide();
-
-                station.find('li[rel="'+stream_row.id+'"] .nowplaying-stream-listeners').html('<i class="icon-user"></i>'+stream_listeners);
-            });
-
-            // Style offline/online stations properly.
-            if (stream.status == 'offline')
-            {
-                station.addClass('offline');
-
-                if (station.data('inactive') == 'hide')
-                    station.hide();
-            }
-            else
-            {
-                station.removeClass('offline');
-
-                if (!station.is(':visible'))
-                    station.show();
-            }
-
-            // Set event data.
-            var event_info;
-
-            if (station_info.event.title)
-            {
-                event_info = station_info.event;
-                station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;On Air: '+event_info.title);
-            }
-            else if (station_info.event_upcoming.title)
-            {
-                event_info = station_info.event_upcoming;
-                station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;In '+intOrZero(event_info.minutes_until)+' mins: '+event_info.title);
-            }
-            else
-            {
-                station.find('.nowplaying-onair').empty().hide();
-            }
-
-            // Set station history.
-            if (stream.song_history)
-            {
-                var history_block = '';
-                var i = 1;
-
-                _(stream.song_history).forEach(function(history_row) {
-                    var history_song;
-                    if (history_row.song.title != '')
-                        history_song = history_row.song.artist+' - '+history_row.song.title;
-                    else
-                        history_song = history_row.song.text;
-
-                    history_block += '<div>#'+i+': <a href="#" onclick="showSongInfo(\''+history_row.song.id+'\'); return false;">'+history_song+'</a></div>';
-                    i++;
-                });
-
-                station.find('.station-history').html(history_block);
-            }
-
-            var current_song_id = station.data('songid');
-            var song_id = stream.current_song.id;
-
-            // Detect a change in song.
-            if (current_song_id != song_id)
-            {
-                station.find('.vote-wrapper a').removeClass('btn-active');
-
-                var song_score = intOrZero(stream.current_song.score);
-                station.find('.nowplaying-score').data('original', song_score).text(song_score);
-            }
-
-            station.data('songid', song_id);
-
-            var song_history_id = intOrZero(stream.current_song.sh_id);
-            station.data('historyid', song_history_id);
-        }
+        listeners_by_type[category] += listeners;
     });
 
+    // Aggregate listener totals.
     for(type_name in listeners_by_type)
     {
         $('#nowplaying-listeners-'+type_name).html('<i class="icon-user"></i>&nbsp;'+listeners_by_type[type_name]);
     }
     $('#nowplaying-listeners-total').html('<i class="icon-user"></i>&nbsp;'+listener_total);
+
+    if ($('.video-channel.online').length > 0)
+    {
+        $('.video-listing').show();
+        processMultiRows();
+    }
+    else
+    {
+        $('.video-listing').hide();
+    }
+}
+
+function processAudioNowPlayingRow(station_info, station_id)
+{
+    var station = $('#station_'+station_id);
+    var station_exists = (station.length != 0);
+    var listener_total = 0;
+
+    if (!station_exists)
+        return 0;
+
+    var stream_id = parseInt(station.data('streamid'));
+    var stream = _(station_info.streams).find({'id': stream_id });
+
+    // Set stream URL.
+    station.data('stream', stream.url);
+    station.data('type', stream.type);
+
+    // Highlight active stream.
+    station.find('.stream-switcher ul li').removeClass('active');
+    station.find('.stream-switcher ul li[rel="'+stream_id+'"]').addClass('active');
+
+    // Format title.
+    var song_tooltip = '';
+
+    if (!stream.current_song.title)
+    {
+        station.find('.nowplaying-artist').text(stream.current_song.text);
+        station.find('.nowplaying-title').text('');
+
+        song_tooltip += stream.current_song.text;
+    }
+    else
+    {
+        station.find('.nowplaying-artist').text(stream.current_song.title);
+        station.find('.nowplaying-title').text(stream.current_song.artist);
+
+        song_tooltip += stream.current_song.title + "\n" + stream.current_song.artist;
+    }
+
+    if (_.size(stream.current_song.external) > 0)
+    {
+        station.find('.song-info-button').show();
+
+        song_tooltip += "\n" + 'More Info Available';
+    }
+    else
+    {
+        station.find('.song-info-button').hide();
+    }
+
+    // Set hover tooltip for song.
+    station.find('.song-info').attr('title', song_tooltip);
+
+    // Show stream info if non-default.
+    if (station.data('defaultstream') != stream_id)
+    {
+        station.find('.stream-info').html('<i class="icon-code-fork"></i> '+stream.name).show();
+    }
+    else
+    {
+        station.find('.stream-info').hide();
+    }
+
+    // Trigger notification of song change.
+    if (station.hasClass('playing'))
+    {
+        if (stream.current_song.id != nowplaying_song_id && jp_is_playing) {
+            notify(station.data('image'), station_info.station.name, stream.current_song.text, { tag: 'nowplaying' });
+        }
+
+        nowplaying_song = stream.current_song.text;
+        nowplaying_song_id = stream.current_song.id;
+    }
+
+    // Post listener count.
+    var station_listeners = intOrZero(station_info.listeners.current);
+
+    if (station_listeners >= 0)
+    {
+        listener_total += station_listeners;
+        station.find('.nowplaying-listeners').show().html('<i class="icon-user"></i>&nbsp;'+station_listeners);
+    }
+    else
+    {
+        station.find('.nowplaying-listeners').hide();
+    }
+
+    // Post listener count for each stream.
+    _(station_info.streams).forEach(function(stream_row)
+    {
+        var stream_listeners = intOrZero(stream_row.listeners.current);
+
+        if (stream_row.status == 'online')
+            station.find('li[rel="'+stream_row.id+'"]').show();
+        else
+            station.find('li[rel="'+stream_row.id+'"]').hide();
+
+        station.find('li[rel="'+stream_row.id+'"] .nowplaying-stream-listeners').html('<i class="icon-user"></i>'+stream_listeners);
+    });
+
+    // Style offline/online stations properly.
+    if (stream.status == 'offline')
+    {
+        station.addClass('offline');
+
+        if (station.data('inactive') == 'hide')
+            station.hide();
+    }
+    else
+    {
+        station.removeClass('offline');
+
+        if (!station.is(':visible'))
+            station.show();
+    }
+
+    // Set event data.
+    var event_info;
+
+    if (station_info.event.title)
+    {
+        event_info = station_info.event;
+        station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;On Air: '+event_info.title);
+    }
+    else if (station_info.event_upcoming.title)
+    {
+        event_info = station_info.event_upcoming;
+        station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;In '+intOrZero(event_info.minutes_until)+' mins: '+event_info.title);
+    }
+    else
+    {
+        station.find('.nowplaying-onair').empty().hide();
+    }
+
+    // Set station history.
+    if (stream.song_history)
+    {
+        var history_block = '';
+        var i = 1;
+
+        _(stream.song_history).forEach(function(history_row) {
+            var history_song;
+            if (history_row.song.title != '')
+                history_song = history_row.song.artist+' - '+history_row.song.title;
+            else
+                history_song = history_row.song.text;
+
+            history_block += '<div>#'+i+': <a href="#" onclick="showSongInfo(\''+history_row.song.id+'\'); return false;">'+history_song+'</a></div>';
+            i++;
+        });
+
+        station.find('.station-history').html(history_block);
+    }
+
+    var current_song_id = station.data('songid');
+    var song_id = stream.current_song.id;
+
+    // Detect a change in song.
+    if (current_song_id != song_id)
+    {
+        station.find('.vote-wrapper a').removeClass('btn-active');
+
+        var song_score = intOrZero(stream.current_song.score);
+        station.find('.nowplaying-score').data('original', song_score).text(song_score);
+    }
+
+    station.data('songid', song_id);
+
+    var song_history_id = intOrZero(stream.current_song.sh_id);
+    station.data('historyid', song_history_id);
+
+    return listener_total;
+}
+
+function processVideoNowPlayingRow(station_info, station_id)
+{
+    var listener_total = 0;
+
+    _(station_info.streams).forEach(function(stream_info) {
+        var station = $('#channel_' + station_id + '_' + stream_info.id);
+        var station_exists = (station.length != 0);
+
+        if (!station_exists)
+            return 0;
+
+        // Post listener count.
+        var station_listeners = intOrZero(stream_info.meta.listeners);
+
+        if (station_listeners >= 0)
+        {
+            listener_total += station_listeners;
+            station.find('.nowplaying-listeners').show().html('<i class="icon-user"></i>&nbsp;' + station_listeners);
+        }
+        else
+        {
+            station.find('.nowplaying-listeners').hide();
+        }
+
+        if (stream_info.on_air.thumbnail)
+        {
+            station.find('img.video-thumbnail').attr('src', stream_info.on_air.thumbnail);
+        }
+
+        // Style offline/online stations properly.
+        if (stream_info.meta.status == 'offline')
+        {
+            station.removeClass('online offline').addClass('offline').hide();
+        }
+        else
+        {
+            if (!station.is(':visible'))
+            {
+                notify(station_info.station.image_url, station_info.station.name, 'Stream online!', {tag: 'nowplaying'});
+            }
+
+            station.removeClass('online offline').addClass('online').show();
+        }
+
+        // Set event data.
+        var event_info;
+
+        if (station_info.event.title)
+        {
+            event_info = station_info.event;
+            station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;On Air: ' + event_info.title);
+        }
+        else if (station_info.event_upcoming.title)
+        {
+            event_info = station_info.event_upcoming;
+            station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;In ' + intOrZero(event_info.minutes_until) + ' mins: ' + event_info.title);
+        }
+        else
+        {
+            station.find('.nowplaying-onair').empty().hide();
+        }
+    });
+
+    return listener_total;
 }
 
 function playStation(id)

@@ -15,8 +15,7 @@ var app_local = express();
 var http_local = http.Server(app_local);
 
 // Handle local information update.
-var np_cache_radio = {};
-var np_cache_video = {};
+var np_cache = {};
 
 var current_clients = 0;
 var latest_update = 0;
@@ -27,9 +26,7 @@ app_local.post('/data', function(req, res) {
     var remote_body = req.body;
 
     if (remote_body.type == 'nowplaying')
-        np_cache_radio = remote_body.contents;
-    else if (remote_body.type == 'nowplaying_video')
-        np_cache_video = remote_body.contents;
+        np_cache = remote_body.contents;
 
     io.emit(remote_body.type, remote_body.contents);
 
@@ -50,8 +47,7 @@ io.on('connection', function(socket) {
     current_clients++;
 
     // Immediately send both types of nowplaying data.
-    socket.emit('nowplaying', np_cache_radio);
-    socket.emit('nowplaying_video', np_cache_video);
+    socket.emit('nowplaying', np_cache);
 
     socket.on('disconnect', function () {
         current_clients--;

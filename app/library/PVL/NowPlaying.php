@@ -337,6 +337,15 @@ class NowPlaying
             Debug::log('Adapter Class: ' . get_class($np_adapter));
             Debug::print_r($np);
         }
+        else
+        {
+            $np['on_air'] = array('text' => 'Stream Offline');
+            $np['meta'] = array(
+                'status' => 'offline',
+                'listeners' => 0,
+            );
+            $np['status'] = 'offline';
+        }
 
         $stream->nowplaying_data = $np;
         return $np;

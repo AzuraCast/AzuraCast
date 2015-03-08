@@ -19,8 +19,6 @@ return array(
 
                         <p><b>All new stations joining PVL must be approved by the existing station leaders.</b> This process may take a week or two after you have submitted your station. If you don\'t get voted in the first time, though, don\'t worry; our team will let you know any feedback they have, and you can always request that the team re-vote on your station after you have made any changes.</p>
 
-                        <p>Note that this submission form applies to <b>radio stations only</b>. If you are wanting to submit a video stream, please <a href="mailto:pr@ponyvillelive.com">let us know</a>.</p>
-
                         <p>If you have any questions about the new station submission process, just contact our leadership at <a href="mailto:pr@ponyvillelive.com">pr@ponyvillelive.com</a>. Thank you again for your submission, and we look forward to working with you and your team!</p>
                     ',
                 )),
@@ -39,6 +37,15 @@ return array(
                     'required' => true,
 
                     'description' => 'The full name of your station that you use to advertise it.',
+                )),
+
+                'category' => array('radio', array(
+                    'label' => 'Type of Station',
+                    'required' => true,
+                    'multiOptions' => array(
+                        'audio' => 'Radio Station',
+                        'video' => 'Video Stream',
+                    ),
                 )),
 
                 'genre' => array('text', array(
@@ -89,6 +96,7 @@ return array(
                     'belongsTo' => 'stream',
 
                     'multiOptions' => array(
+                        'video'             => 'Video Stream',
                         'shoutcast1'        => 'ShoutCast v1',
                         'shoutcast2'        => 'ShoutCast v2',
                         'icecast'           => 'IceCast',
@@ -103,7 +111,7 @@ return array(
                     'belongsTo' => 'stream',
                     'class' => 'half-width',
 
-                    'description' => 'The address where listeners can tune in to your radio station or video stream. Include the full web address, i.e. http://streamurl.stream.com:8000/."',
+                    'description' => 'The address where listeners can tune in to your radio station or video stream. Include the full web address, i.e. http://streamurl.stream.com:8000/.',
                 )),
 
             ),

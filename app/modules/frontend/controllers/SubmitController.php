@@ -32,7 +32,6 @@ class SubmitController extends BaseController
             // Set up initial station record.
             $record = new Station;
             $record->fromArray($data);
-            $record->category = 'audio';
             $record->is_active = false;
             $record->save();
 
@@ -73,7 +72,7 @@ class SubmitController extends BaseController
             }
 
             $this->alert('Your station has been submitted. Thank you! We will contact you with any questions or additional information.', 'green');
-            $this->redirectHere();
+            $this->redirectHome();
             return;
         }
 

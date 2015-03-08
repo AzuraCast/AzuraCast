@@ -203,9 +203,15 @@ class Song extends \DF\Doctrine\Entity
 
             $obj = new self;
 
+            if (empty($song_info['text']))
+                $song_info['text'] = $song_info['artist'].' - '.$song_info['title'];
+
             $obj->text = $song_info['text'];
             $obj->title = $song_info['title'];
             $obj->artist = $song_info['artist'];
+
+            if (isset($song_info['image_url']))
+                $obj->image_url = $song_info['image_url'];
 
             if ($is_radio_play)
             {

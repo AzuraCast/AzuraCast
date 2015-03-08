@@ -72,49 +72,21 @@ class Song extends \DF\Doctrine\Entity
 
     /* External Records */
 
-    /** @Column(name="external_timestamp", type="integer", nullable=true) */
-    protected $external_timestamp;
-
-
-    /** @Column(name="external_ponyfm_id", type="integer", nullable=true) */
-    protected $external_ponyfm_id;
     /**
-     * @ManyToOne(targetEntity="SongExternalPonyFm")
-     * @JoinColumns({ @JoinColumn(name="external_ponyfm_id", referencedColumnName="id", onDelete="CASCADE") })
+     * @OneToOne(targetEntity="SongExternalPonyFm", mappedBy="song")
      */
     protected $external_ponyfm;
 
-
-    /** @Column(name="external_eqbeats_id", type="integer", nullable=true) */
-    protected $external_eqbeats_id;
     /**
-     * @ManyToOne(targetEntity="SongExternalEqBeats")
-     * @JoinColumns({ @JoinColumn(name="external_eqbeats_id", referencedColumnName="id", onDelete="CASCADE") })
+     * @OneToOne(targetEntity="SongExternalEqBeats", mappedBy="song")
      */
     protected $external_eqbeats;
 
-
-    /** @Column(name="external_bronytunes_id", type="integer", nullable=true) */
-    protected $external_bronytunes_id;
     /**
-     * @ManyToOne(targetEntity="SongExternalBronyTunes")
-     * @JoinColumns({ @JoinColumn(name="external_bronytunes_id", referencedColumnName="id", onDelete="CASCADE") })
+     * @OneToOne(targetEntity="SongExternalBronyTunes", mappedBy="song")
      */
     protected $external_bronytunes;
 
-
-    public function hasExternal()
-    {
-        $adapters = self::getExternalAdapters();
-
-        foreach($adapters as $adapter_key => $adapter_class)
-        {
-            $local_key = 'external_'.$adapter_key.'_id';
-            if ($this->{$local_key} !== NULL)
-                return true;
-        }
-        return false;
-    }
 
     public function getExternal()
     {
@@ -135,49 +107,6 @@ class Song extends \DF\Doctrine\Entity
         }
 
         return $external;
-    }
-
-    public function syncExternal($force = false)
-    {
-        $threshold = time()-self::SYNC_THRESHOLD;
-        if ($this->external_timestamp >= $threshold && !$force)
-        {
-            \PVL\Debug::log('Skipping external sync, has been synced recently.');
-            return false;
-        }
-
-        $adapters = self::getExternalAdapters();
-
-        $local_from_external = array('image_url');
-        $local_values = array();
-
-        foreach($adapters as $adapter_key => $remote_class)
-        {
-            $local_key = 'external_'.$adapter_key;
-            $adapter_obj = $remote_class::match($this, $force);
-
-            $this->{$local_key} = $adapter_obj;
-
-            // Internalize values like "image_url" from remote sources.
-            if ($adapter_obj instanceof $remote_class)
-            {
-                foreach($local_from_external as $local_key)
-                {
-                    if (!empty($adapter_obj[$local_key]))
-                        $local_values[$local_key][] = $adapter_obj[$local_key];
-                }
-            }
-        }
-
-        // Load internalized values into local object.
-        foreach($local_values as $local_key => $local_vals)
-        {
-            if (empty($this->$local_key))
-                $this->$local_key = array_shift($local_vals);
-        }
-
-        $this->external_timestamp = time();
-        return true;
     }
 
     /* End External Records */
@@ -261,8 +190,6 @@ class Song extends \DF\Doctrine\Entity
             {
                 $obj->last_played = time();
                 $obj->play_count += 1;
-
-                $obj->syncExternal();
             }
 
             $obj->save();
@@ -286,10 +213,6 @@ class Song extends \DF\Doctrine\Entity
                 $obj->play_count = 1;
             }
 
-            $obj->save();
-
-            // Only trigger external sync after ID hash is generated.
-            $obj->syncExternal();
             $obj->save();
 
             return $obj;

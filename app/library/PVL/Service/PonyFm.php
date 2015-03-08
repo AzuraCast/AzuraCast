@@ -52,7 +52,7 @@ class PonyFm
                     else
                         $record = NULL;
                 }
-                else
+                else if (!in_array($processed['hash'], $existing_ids))
                 {
                     $record = new External;
                 }

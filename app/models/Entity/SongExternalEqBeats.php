@@ -27,6 +27,12 @@ class SongExternalEqBeats extends \DF\Doctrine\Entity
     /** @Column(name="hash", type="string", length=50) */
     protected $hash;
 
+    /**
+     * @OneToOne(targetEntity="Song", inversedBy="external_eqbeats")
+     * @JoinColumns({ @JoinColumn(name="hash", referencedColumnName="id", onDelete="CASCADE") })
+     */
+    protected $song;
+
     /** @Column(name="created_timestamp", type="integer") */
     protected $created;
 

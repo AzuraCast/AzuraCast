@@ -51,8 +51,10 @@ class NowPlaying
         foreach($np_api as $station => $np_info)
             $np_api[$station]['cache'] = 'hit';
 
-        Cache::remove('api_nowplaying_data');
-        Cache::save($np_api, 'api_nowplaying_data', array('nowplaying'), 30);
+        Cache::save($np_api, 'api_nowplaying_data', array('nowplaying'), 60);
+
+        foreach($np_api as $station => $np_info)
+            $np_api[$station]['cache'] = 'flatfile';
 
         // Generate PVL API nowplaying file.
         $nowplaying_api = json_encode(array('status' => 'success', 'result' => $np_api), JSON_UNESCAPED_SLASHES);

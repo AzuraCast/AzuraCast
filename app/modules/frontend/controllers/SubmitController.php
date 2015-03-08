@@ -76,6 +76,6 @@ class SubmitController extends BaseController
             return;
         }
 
-        $this->renderForm($form, 'edit', 'Submit a New Radio Station');
+        $this->renderForm($form, 'edit', 'Submit Your Station');
     }
 }

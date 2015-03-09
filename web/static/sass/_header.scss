@@ -168,24 +168,26 @@
   padding-right: 0px !important;
 }
 
-.navbar .nav > li {
-  display:block;
-  position:relative;
-}
-.navbar .nav > li > a {
-  display:block;
-  font-size:15px;
-  font-weight:400;
-  color: #687074;
-  text-shadow:none;
-  padding:9px 15px;
-  text-transform:uppercase;
-  border-bottom:solid 2px #eee;
-  font-family:'Open Sans', sans-serif;
-  -webkit-transition:all 0.4s ease-in-out;
-  -moz-transition:all 0.4s ease-in-out;
-  -o-transition:all 0.4s ease-in-out;
-  transition:all 0.4s ease-in-out;
+.navbar {
+  .nav > li {
+    display: block;
+    position: relative;
+  }
+  .nav > li > a {
+    display: block;
+    font-size: 15px;
+    font-weight: 400;
+    color: #687074;
+    text-shadow: none;
+    padding: 9px 15px;
+    text-transform: uppercase;
+    border-bottom: solid 2px #eee;
+    font-family: 'Open Sans', sans-serif;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+  }
 }
 
 .collapse.in {
@@ -396,32 +398,6 @@
 }
 
 @media (max-width: 980px) {
-  .navbar .search-open {
-    top:-39px;
-    left:38px;
-    border:0;
-    padding-top:5px;
-    padding-bottom:5px;
-    position:relative;
-  }
-  .navbar .search-open input {
-    width: 330px;
-  }
-
-  /*Search Box Menu2*/
-  .navbar .search-open-inner {
-    top:-51px;
-    left:45px;
-    border:0;
-    padding-top:6px;
-    padding-bottom:5px;
-    position:relative;
-    background:#3c495a;
-  }
-  .navbar .search-open-inner input {
-    width:330px;
-  }
-
   .top {
     text-align: center;
   }

@@ -7,7 +7,6 @@ var is_narrow;
 
 $(function() {
 	/* Auto-header navigation. */
-	$('div.navbar').addClass('navbar-inverse');
 	$('div.navbar a.here').closest('li').addClass('active');
 	
 	$('div.navbar div.nav-collapse > ul').addClass('nav');

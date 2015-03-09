@@ -12,6 +12,8 @@ $(function() {
 		$('.btn.btn-inverse').addClass('btn-normal');
 		$('.btn').not('.btn-inverse,.btn-primary,.btn-success,.btn-warning,.btn-error').addClass('btn-inverse');
 		$('.btn.btn-normal').removeClass('btn-inverse btn-normal');
+
+        $('div.navbar').addClass('navbar-inverse');
 	}
 
 	$('#btn-tune-in,.btn-tune-in').click(function(e) {

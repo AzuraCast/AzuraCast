@@ -9,15 +9,17 @@ $col_span = (12 / (count($schedule)+1));
                 <h3><?=$day_info['day_name'] ?><br><small><?=date('F j, Y', $day_info['timestamp']) ?></small></h3>
                 <ul class="unstyled nopadding">
                 <? foreach($day_info['events'] as $event): ?>
-                    <li class="clearfix">
-                        <img class="pull-left" src="<?=$event['image_url'] ?>" style="width: 32px; margin-right: 5px; margin-top: 5px;">
-                        <h5><?=\Entity\Schedule::formatName($event['title']) ?><br><small>
-                                <? if ($event['status'] == "now"): ?>
-                                    <b>Right now</b>
-                                <? else: ?>
-                                    <?=date('g:ia', $event['start_time']) ?>
-                                <? endif; ?>
-                                on <?=$event['station']['name'] ?>
+                    <li class="clearfix" itemscope itemtype="http://data-vocabulary.org/Event">
+                        <a itemprop="url" href="<?=$this->viewHelper->routeFromHere() ?>" target="_blank"><img itemprop="photo" class="pull-left" src="<?=$event['image_url'] ?>" style="width: 32px; margin-right: 5px; margin-top: 5px;"></a>
+                        <h5 itemprop="summary"><?=\Entity\Schedule::formatName($event['title']) ?><br><small>
+                                <time itemprop="startDate" datetime="<?=date('c', $event['start_time']) ?>">
+                                    <? if ($event['status'] == "now"): ?>
+                                        <b>Right now</b>
+                                    <? else: ?>
+                                        <?=date('g:ia', $event['start_time']) ?>
+                                    <? endif; ?>
+                                </time>
+                                on <span itemprop="location"><?=$event['station']['name'] ?></span>
                             </small></h5>
                     </li>
                 <? endforeach; ?>

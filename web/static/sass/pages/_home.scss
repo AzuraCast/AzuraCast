@@ -176,6 +176,14 @@
   }
 }
 
+@media (max-width: 767px) {
+  .hero {
+    .hero-text, .hero-social {
+      text-align: center;
+    }
+  }
+}
+
 #secondary-rotator {
   .well {
     margin: 0;

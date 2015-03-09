@@ -61,7 +61,7 @@ ob_start();
 <div class="hero">
     <div class="container">
         <div class="row-fluid">
-            <div class="span6 hero-text">
+            <div class="span5 hero-text">
                 <h4>Your Home for Pony Media</h4>
                 <p><a href="<?=$this->url->get('about') ?>">Ponyville Live!</a> is a network of <a href="#section_radio">radio stations</a>, <a href="#section_video">video streams</a>, and <a href="#section_shows">shows</a>.</p>
             </div>
@@ -82,15 +82,16 @@ ob_start();
                     )) ?>
                 </div>
             </div>
-            <div class="span3 hero-social">
+            <div class="span4 hero-social">
                 <div style="padding: 10px 0;">
-                    <a href="https://www.youtube.com/ponyvilleliveglobal" target="_blank"><img src="<?=\DF\Url::content('social/youtube.png') ?>" alt="YouTube"></a>
-                    <a href="https://twitter.com/PonyvilleLive" target="_blank"><img src="<?=\DF\Url::content('social/twitter.png') ?>" alt="Twitter"></a>
-                    <a href="http://news.ponyvillelive.com/" target="_blank"><img src="<?=\DF\Url::content('social/tumblr.png') ?>" alt="Tumblr"></a>
-                    <a href="https://www.facebook.com/pages/Ponyville-LIVE/517435684948331" target="_blank"><img src="<?=\DF\Url::content('social/facebook.png') ?>" alt="Facebook"></a>
-                    <a href="http://steamcommunity.com/groups/ponyvillelive" target="_blank"><img src="<?=\DF\Url::content('social/steam.png') ?>" alt="Steam"></a>
-                    <a href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" target="_blank"><img src="<?=\DF\Url::content('social/google_plus.png') ?>" alt="Google Plus"></a>
-                    <a href="<?=$this->url->get('show/feed') ?>" target="_blank"><img src="<?=\DF\Url::content('social/feed.png') ?>" alt="RSS Feed"></a>
+                    <a href="https://www.patreon.com/PonyvilleLive" title="Support our Patreon!" target="_blank"><img src="<?=\DF\Url::content('social/patreon.png') ?>" alt="Patreon"></a>
+                    <a href="https://www.youtube.com/ponyvilleliveglobal" title="YouTube" target="_blank"><img src="<?=\DF\Url::content('social/youtube.png') ?>" alt="YouTube"></a>
+                    <a href="https://twitter.com/PonyvilleLive" title="Twitter" target="_blank"><img src="<?=\DF\Url::content('social/twitter.png') ?>" alt="Twitter"></a>
+                    <a href="http://news.ponyvillelive.com/" title="Tumblr" target="_blank"><img src="<?=\DF\Url::content('social/tumblr.png') ?>" alt="Tumblr"></a>
+                    <a href="https://www.facebook.com/pages/Ponyville-LIVE/517435684948331" title="Facebook" target="_blank"><img src="<?=\DF\Url::content('social/facebook.png') ?>" alt="Facebook"></a>
+                    <a href="http://steamcommunity.com/groups/ponyvillelive" title="Steam" target="_blank"><img src="<?=\DF\Url::content('social/steam.png') ?>" alt="Steam"></a>
+                    <a href="https://plus.google.com/+PonyvilleLiveGlobal" title="Google Plus" rel="publisher" target="_blank"><img src="<?=\DF\Url::content('social/google_plus.png') ?>" alt="Google Plus"></a>
+                    <a href="<?=$this->url->get('show/feed') ?>" title="Podcasts RSS Feed" target="_blank"><img src="<?=\DF\Url::content('social/feed.png') ?>" alt="RSS Feed"></a>
                 </div>
             </div>
         </div>

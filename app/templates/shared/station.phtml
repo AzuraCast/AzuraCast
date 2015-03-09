@@ -28,14 +28,15 @@
                     <li><a href="<?=$this->url->get('station/request/id/'.$station['id']) ?>" target="_blank"><i class="icon-question-sign"></i> Request a Song</a></li>
                     <li class="divider"></li>
                 <? endif; ?>
-                    <li class="radio-only"><a href="#" class="btn-song-info"><i class="icon-info-sign"></i> Song Information</a></li>
+                    <li><a href="#" class="btn-song-info"><i class="icon-info-sign"></i> Song Information</a></li>
                     <li><a href="#" class="btn-share-station btn-share-facebook"><i class="icon-facebook-sign"></i> Share on Facebook</a></li>
                     <li><a href="#" class="btn-share-station btn-share-twitter"><i class="icon-twitter-sign"></i> Share on Twitter</a></li>
                     <li class="divider"></li>
                     <li><a href="#" class="btn-show-history"><i class="icon-time"></i> Recently Played</a></li>
                     <li><a href="#" class="btn-station-schedule"><i class="icon-calendar"></i> Upcoming Events</a></li>
                     <li><a href="<?=$station['web_url'] ?>" target="_blank"><i class="icon-globe"></i> Station Site</a></li>
-                    <li class="radio-only"><a href="<?=$this->url->get('station/playlist/id/'.$station['id'].'/format/pls') ?>"><i class="icon-download"></i> Download PLS</a></li>
+                    <li><a href="<?=$this->url->get('station/playlist/id/'.$station['id'].'/format/pls') ?>"><i class="icon-download"></i> Download PLS</a></li>
+                    <li><a href="<?=$this->url->get('station/playlist/id/'.$station['id'].'/format/m3u') ?>"><i class="icon-download"></i> Download M3U</a></li>
                 </ul>
             </div>
         </div>

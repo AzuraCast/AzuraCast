@@ -3,7 +3,7 @@
         <?
         $render_mode = 'embed';
         $stations = $cat['stations'];
-        echo $this->viewHelper->renderCommon('station');
+        echo $this->viewHelper->renderCommon('station', array('stations' => $stations));
         ?>
     <? endif; ?>
 <? endforeach; ?>

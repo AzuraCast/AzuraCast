@@ -8,7 +8,7 @@
                 $stations = $cat['stations'];
                 $render_mode = 'standalone';
 
-                echo $this->viewHelper->renderCommon('station');
+                echo $this->viewHelper->renderCommon('station', array('stations' => $stations));
                 ?>
             </div>
         </div>

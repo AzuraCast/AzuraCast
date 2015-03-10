@@ -22,7 +22,7 @@ class StreamsController extends BaseController
 
     public function editAction()
     {
-        if ($this->station->category = 'video')
+        if ($this->station->category == 'video')
             $form_config = $this->current_module_config->forms->video_stream;
         else
             $form_config = $this->current_module_config->forms->audio_stream;

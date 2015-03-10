@@ -192,6 +192,7 @@ echo $this->assets->outputJs('custom_js');
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
     ga('create', '<?=$this->config->application->analytics_code ?>', 'ponyvillelive.com');
+    ga('require', 'linkid', 'linkid.js');
     ga('send', 'pageview');
 </script>
 <!-- End Google Universal Analytics -->

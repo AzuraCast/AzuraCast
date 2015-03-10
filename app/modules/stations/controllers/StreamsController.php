@@ -25,7 +25,7 @@ class StreamsController extends BaseController
         if ($this->station->category == 'video')
             $form_config = $this->current_module_config->forms->video_stream;
         else
-            $form_config = $this->current_module_config->forms->audio_stream;
+            $form_config = $this->current_module_config->forms->radio_stream;
 
         $form = new \DF\Form($form_config);
 

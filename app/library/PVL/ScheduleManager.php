@@ -28,7 +28,7 @@ class ScheduleManager
 
         // Prevent running repeatedly in too short of a time (avoid API limits).
         $last_run = Settings::getSetting('schedule_manager_last_run', 0);
-        if ($last_run > (time() - 300) && !$force_run)
+        if ($last_run > (time() - 60) && !$force_run)
             return null;
 
         $schedule_items = array();

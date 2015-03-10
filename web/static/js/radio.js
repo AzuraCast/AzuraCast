@@ -547,12 +547,12 @@ function processVideoNowPlayingRow(station_info, station_id)
         if (station_info.event.title)
         {
             event_info = station_info.event;
-            station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;On Air: ' + event_info.title);
+            station.find('.nowplaying-onair').show().find('.nowplaying-inner').html('<i class="icon-star"></i>&nbsp;On Air: ' + event_info.title);
         }
         else if (station_info.event_upcoming.title)
         {
             event_info = station_info.event_upcoming;
-            station.find('.nowplaying-onair').show().html('<i class="icon-star"></i>&nbsp;In ' + intOrZero(event_info.minutes_until) + ' mins: ' + event_info.title);
+            station.find('.nowplaying-onair').show().find('.nowplaying-inner').html('<i class="icon-star"></i>&nbsp;In ' + intOrZero(event_info.minutes_until) + ' mins: ' + event_info.title);
         }
         else
         {

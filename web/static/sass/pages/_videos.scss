@@ -3,6 +3,7 @@ div.video-channels {
 }
 
 a.video-channel {
+  position: relative;
   display: block;
   border-radius: 5px;
   margin-bottom: 15px;
@@ -24,6 +25,8 @@ a.video-channel {
   }
 
   .station-info {
+    height: 55px;
+
     img {
       float: left;
       width: 40px;
@@ -56,6 +59,22 @@ a.video-channel {
       span.block {
         display: block;
       }
+    }
+
+    .nowplaying-onair {
+      position: absolute;
+      bottom: 55px;
+      left: 0;
+      width: 100%;
+
+      .nowplaying-inner {
+        margin-top: 20px;
+        padding: 10px;
+
+        text-shadow: 0 0 3px #000;
+      }
+
+      @include linear-gradient($start: rgba(0, 0, 0, 0), $stop: rgba(0, 0, 0, .8), $to: 100%);
     }
   }
 }

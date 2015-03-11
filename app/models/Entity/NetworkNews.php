@@ -63,14 +63,14 @@ class NetworkNews extends \DF\Doctrine\Entity
 
         if (!$news)
         {
-            $news = self::fetch(7);
+            $news = self::fetch();
             \DF\Cache::save($news, 'homepage_featured_news', null, 300);
         }
 
         return $news;
     }
 
-    public static function fetch($articles_num = 5)
+    public static function fetch($articles_num = 8)
     {
         $em = self::getEntityManager();
         $results_raw = $em->createQuery('SELECT nn FROM '.__CLASS__.' nn ORDER BY nn.sort_timestamp DESC')

@@ -133,4 +133,16 @@ class User extends \DF\Doctrine\Entity
         else
             return FALSE;
     }
+
+    public static function getOrCreate($email)
+    {
+        $user = User::getRepository()->findOneBy(array('email' => $email));
+
+        if (!($user instanceof User))
+        {
+            $user = new User;
+            $user->email = $email;
+            $user->name = $email;
+        }
+    }
 }

@@ -8,7 +8,7 @@ class UStream extends AdapterAbstract
 {
     public function canHandle()
     {
-        return (stristr($this->stream_url, 'ustream.tv') !== FALSE);
+        return (stristr($this->stream_url, 'ustream.tv') !== FALSE) || (stristr($this->data_url, 'ustream.tv') !== FALSE);
     }
 
     /* Process a nowplaying record. */

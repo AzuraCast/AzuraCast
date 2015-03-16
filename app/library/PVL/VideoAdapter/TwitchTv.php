@@ -8,7 +8,7 @@ class TwitchTv extends AdapterAbstract
 {
     public function canHandle()
     {
-        return (stristr($this->stream_url, 'twitch.tv') !== FALSE);
+        return (stristr($this->stream_url, 'twitch.tv') !== FALSE) || (stristr($this->data_url, 'twitch.tv') !== FALSE);
     }
 
     /* Process a nowplaying record. */

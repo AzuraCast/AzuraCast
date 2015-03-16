@@ -8,7 +8,7 @@ class Livestream extends AdapterAbstract
 {
     public function canHandle()
     {
-        return (stristr($this->stream_url, 'livestream') !== FALSE);
+        return (stristr($this->stream_url, 'livestream') !== FALSE) || (stristr($this->data_url, 'livestream') !== FALSE);
     }
 
     /* Process a nowplaying record. */

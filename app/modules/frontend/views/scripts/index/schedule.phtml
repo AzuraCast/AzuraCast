@@ -37,6 +37,7 @@ $col_span = (12 / (count($schedule)+1));
                 <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'target'    => '_blank',
+                    'class'     => 'btn-primary',
                     'icon'      => 'icon-twitter',
                     'text'      => '@PonyvilleLive on Twitter',
                     'href'      => 'https://twitter.com/intent/user?screen_name=PonyvilleLive',
@@ -52,16 +53,18 @@ $col_span = (12 / (count($schedule)+1));
             <h3><i class="icon-calendar-empty"></i> Subscribe for Updates</h3>
             <p>You can subscribe to the list of upcoming Ponyville Live! events using your favorite calendar software (iCal, etc.) or add the feed directly to your Google Calendar feed.</p>
 
-            <div class="buttons">
+            <div class="buttons btn-group">
                 <?=$this->viewHelper->button(array(
                     'type'      => 'link',
                     'target'    => '_blank',
+                    'class'     => 'btn-primary',
                     'icon'      => 'icon-download',
                     'text'      => 'Download ICS',
                     'href'      => $ical_url,
                 )) ?>
                 <?=$this->viewHelper->button(array(
                     'type'      => 'link',
+                    'class'     => 'btn-primary',
                     'target'    => '_blank',
                     'icon'      => 'icon-plus-sign',
                     'text'      => 'Add to Google Calendar',

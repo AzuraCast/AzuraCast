@@ -204,9 +204,6 @@ class NowPlaying
         if (!$stream->is_default && !$force && (NOWPLAYING_SEGMENT % 2 == 0) && !empty($current_np_data))
             return $current_np_data;
 
-        if (!$stream->is_active)
-            return $current_np_data;
-
         $np = StationStream::api($stream);
 
         $custom_class = Station::getStationClassName($station->name);

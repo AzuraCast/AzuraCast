@@ -65,6 +65,9 @@ class AdapterAbstract
             ),
         );
 
+        if (!$this->stream->is_active)
+            return $np;
+
         // Merge station-specific info into defaults.
         $this->_process($np);
 

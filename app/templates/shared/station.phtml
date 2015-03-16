@@ -9,38 +9,6 @@
         data-defaultstream="<?=$station['default_stream_id'] ?>"
         data-streamid="<?=$station['current_stream_id'] ?>">
 
-        <!-- Station Like/Share Buttons -->
-        <div class="show-when-playing station-link buttons btn-toolbar pull-right">
-        <? if (count($station['streams']) > 1): ?>
-            <div class="btn-group stream-switcher">
-                <a href="#" class="btn btn-small btn-inverse dropdown-toggle" type="button" data-toggle="dropdown" title="Switch Stream"><i class="icon-code-fork"></i></a>
-                <ul class="dropdown-menu">
-                <? foreach($station['streams'] as $stream): ?>
-                    <li rel="<?=$stream['id'] ?>"><a href="#" class="btn-switch-stream"><? if ($stream['is_default']): ?><i class="icon-star"></i> <? endif; ?><?=$stream['name'] ?><span class="nowplaying-stream-listeners"></span></a></li>
-                <? endforeach; ?>
-                </ul>
-            </div>
-        <? endif; ?>
-            <div class="btn-group">
-                <a href="#" class="btn btn-small btn-inverse dropdown-toggle" type="button" data-toggle="dropdown"><i class="icon-reorder"></i></a>
-                <ul class="dropdown-menu">
-                <? if ($station['requests_enabled']): ?>
-                    <li><a href="<?=$this->url->get('station/request/id/'.$station['id']) ?>" target="_blank"><i class="icon-question-sign"></i> Request a Song</a></li>
-                    <li class="divider"></li>
-                <? endif; ?>
-                    <li><a href="#" class="btn-song-info"><i class="icon-info-sign"></i> Song Information</a></li>
-                    <li><a href="#" class="btn-share-station btn-share-facebook"><i class="icon-facebook-sign"></i> Share on Facebook</a></li>
-                    <li><a href="#" class="btn-share-station btn-share-twitter"><i class="icon-twitter-sign"></i> Share on Twitter</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#" class="btn-show-history"><i class="icon-time"></i> Recently Played</a></li>
-                    <li><a href="#" class="btn-station-schedule"><i class="icon-calendar"></i> Upcoming Events</a></li>
-                    <li><a href="<?=$station['web_url'] ?>" target="_blank"><i class="icon-globe"></i> Station Site</a></li>
-                    <li><a href="<?=$this->url->get('station/playlist/id/'.$station['id'].'/format/pls') ?>"><i class="icon-download"></i> Download PLS</a></li>
-                    <li><a href="<?=$this->url->get('station/playlist/id/'.$station['id'].'/format/m3u') ?>"><i class="icon-download"></i> Download M3U</a></li>
-                </ul>
-            </div>
-        </div>
-
         <div class="media-object pull-left center">
             <div><img class="station-image" src="<?=\DF\Url::content($station['image_url']) ?>" alt="<?=$station['name'] ?> Logo"></div>
             <div class="show-when-playing vote-wrapper">
@@ -52,6 +20,38 @@
 
         <div class="media-body">
             <div class="station-info">
+                <!-- Station Like/Share Buttons -->
+                <div class="show-when-playing station-link buttons btn-toolbar pull-right">
+                    <? if (count($station['streams']) > 1): ?>
+                        <div class="btn-group stream-switcher">
+                            <a href="#" class="btn btn-small btn-inverse dropdown-toggle" type="button" data-toggle="dropdown" title="Switch Stream"><i class="icon-code-fork"></i></a>
+                            <ul class="dropdown-menu">
+                                <? foreach($station['streams'] as $stream): ?>
+                                    <li rel="<?=$stream['id'] ?>"><a href="#" class="btn-switch-stream"><? if ($stream['is_default']): ?><i class="icon-star"></i> <? endif; ?><?=$stream['name'] ?><span class="nowplaying-stream-listeners"></span></a></li>
+                                <? endforeach; ?>
+                            </ul>
+                        </div>
+                    <? endif; ?>
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-small btn-inverse dropdown-toggle" type="button" data-toggle="dropdown"><i class="icon-reorder"></i></a>
+                        <ul class="dropdown-menu">
+                            <? if ($station['requests_enabled']): ?>
+                                <li><a href="<?=$this->url->get('station/request/id/'.$station['id']) ?>" target="_blank"><i class="icon-question-sign"></i> Request a Song</a></li>
+                                <li class="divider"></li>
+                            <? endif; ?>
+                            <li><a href="#" class="btn-song-info"><i class="icon-info-sign"></i> Song Information</a></li>
+                            <li><a href="#" class="btn-share-station btn-share-facebook"><i class="icon-facebook-sign"></i> Share on Facebook</a></li>
+                            <li><a href="#" class="btn-share-station btn-share-twitter"><i class="icon-twitter-sign"></i> Share on Twitter</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#" class="btn-show-history"><i class="icon-time"></i> Recently Played</a></li>
+                            <li><a href="#" class="btn-station-schedule"><i class="icon-calendar"></i> Upcoming Events</a></li>
+                            <li><a href="<?=$station['web_url'] ?>" target="_blank"><i class="icon-globe"></i> Station Site</a></li>
+                            <li><a href="<?=$this->url->get('station/playlist/id/'.$station['id'].'/format/pls') ?>"><i class="icon-download"></i> Download PLS</a></li>
+                            <li><a href="<?=$this->url->get('station/playlist/id/'.$station['id'].'/format/m3u') ?>"><i class="icon-download"></i> Download M3U</a></li>
+                        </ul>
+                    </div>
+                </div>
+
                 <!-- Station Header -->
                 <h4>
                 <? if (!empty($station['country'])): ?>
@@ -79,7 +79,7 @@
 
                 <!-- Now Playing Information -->
                 <div class="song-info underline-when-playing" title="Click for Song Information">
-                    <div><big><span class="nowplaying-artist">Loading...</span><span class="song-info-button hidden-by-default"> <i class="icon-info-sign"></i></span></big></div>
+                    <div><big><span class="nowplaying-artist">Loading...</span><!--<span class="song-info-button hidden-by-default"> <i class="icon-info-sign"></i></span>--></big></div>
                     <div><span class="nowplaying-title">Loading...</span></div>
                 </div>
 

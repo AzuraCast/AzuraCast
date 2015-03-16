@@ -44,11 +44,6 @@
     display: none;
   }
 
-  .video-stream-player {
-    display: none;
-    margin-top: 5px;
-  }
-
   .media-object {
     position: relative;
     text-shadow: black 0.1em 0.1em 0.2em;
@@ -70,18 +65,37 @@
   }
 
   .station-info {
+
     div, li {
+      line-height: 14px;
+    }
+
+    .song-info span {
+      display: block;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-
-      line-height: 14px;
     }
+
   }
 }
 
 /* Station-specific Style */
 .station {
+
+  /* Override Bootstrap handling of floats. */
+  &.media,
+  .media-body {
+    overflow: visible;
+  }
+
+  &.media:after,
+  .media-body:after{
+    content:'';
+    clear:both;
+    display:block;
+  }
+
   &.live,
   &.live h4 span {
     color: #2C7FD2;
@@ -118,15 +132,18 @@
     &, h4 span {
       color: #EFEFEF;
     }
+
     h4 {
       font-size: 18px;
       line-height: 16px;
       padding-bottom: 0;
+
+      span {
+        font-size: 14px;
+        color: #CCC;
+      }
     }
-    h4 span {
-      font-size: 14px;
-      color: #CCC;
-    }
+
     img {
       background: none;
       box-shadow: none;
@@ -156,9 +173,6 @@
       }
     }
 
-    .station-player-container {
-      margin-top: 5px;
-    }
     .media-body {
       text-shadow: 0.1em 0.1em 0.2em #000000;
     }
@@ -203,18 +217,23 @@
   .station-history {
     margin-top: 5px;
   }
+
+  .buttons {
+    margin-top: 0;
+    margin-bottom: 3px;
+  }
+
+  /* jPlayer */
   .station-player-container {
+    height: 15px;
+    margin-top: 5px;
     padding-bottom: 5px;
 
     a {
       color: #149BDF;
     }
   }
-  .station-player .buttons {
-    margin-bottom: 3px;
-  }
 
-  /* jPlayer */
   .jp-volume-bar {
     width: 40%;
     height: 16px;

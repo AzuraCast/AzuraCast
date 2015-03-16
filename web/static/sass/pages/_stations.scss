@@ -83,26 +83,12 @@
 /* Station-specific Style */
 .station {
 
-  /* Override Bootstrap handling of floats. */
-  &.media,
-  .media-body {
-    overflow: visible;
-  }
-
-  &.media:after,
-  .media-body:after{
-    content:'';
-    clear:both;
-    display:block;
-  }
-
-  &.live,
-  &.live h4 span {
-    color: #2C7FD2;
+  &.media {
+    position: relative;
   }
 
   &.playing {
-    overflow: initial;
+    overflow: visible;
     background: rgba(19, 56, 93, 0.95); /* #13385E; */
     box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
 
@@ -219,6 +205,10 @@
   }
 
   .buttons {
+    position: absolute;
+    right: 7px;
+    top: 7px;
+
     margin-top: 0;
     margin-bottom: 3px;
   }

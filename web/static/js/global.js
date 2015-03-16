@@ -118,6 +118,8 @@ function updateTime()
 /* Fancybox (or iFrame if fancybox isn't available). */
 function modalPopup(popup_url, params)
 {
+    closeAllDropdowns();
+
     params = $.extend({
         'type': 'ajax',
         'href': popup_url,
@@ -207,4 +209,10 @@ function processMultiRows()
         });
 
     });
+}
+
+function closeAllDropdowns()
+{
+    $('.dropdown.open').removeClass('open');
+    $('.btn-group.open').removeClass('open');
 }

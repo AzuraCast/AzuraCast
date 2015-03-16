@@ -105,6 +105,8 @@ $(function() {
 		e.preventDefault();
         e.stopPropagation();
 
+        closeAllDropdowns();
+
 		var shareLink = document.URL;
 
 		var nowplaying_title = $(this).closest('.station').find('.nowplaying-artist').text();

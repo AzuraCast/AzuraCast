@@ -24,7 +24,7 @@ class AnalyticsManager
         // Get the earliest date that statistics are available for.
         try
         {
-            $earliest_timestamp = $em->createQuery('SELECT a.timestamp FROM Entity\Analytics a WHERE a.type = :type ORDER BY a.id ASC')
+            $earliest_timestamp = $em->createQuery('SELECT a.timestamp FROM Entity\Analytics a WHERE a.type = :type ORDER BY a.timestamp ASC')
                 ->setParameter('type', 'second')
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
@@ -42,13 +42,13 @@ class AnalyticsManager
         {
             set_time_limit(30);
 
-            $delete_current_analytics = $em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type != :type AND a.timestamp BETWEEN :start AND :end')
+            $em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type != :type AND a.timestamp BETWEEN :start AND :end')
                 ->setParameter('type', 'second')
                 ->setParameter('start', $i)
                 ->setParameter('end', $i+86400-1)
                 ->execute();
 
-            $current_date = date('Y-m-d', $i);
+            $current_date = gmdate('Y-m-d', $i);
             $current_date_start = strtotime($current_date.' 00:00:00');
             $current_date_end = strtotime($current_date.' 23:59:59');
 
@@ -78,9 +78,9 @@ class AnalyticsManager
                 }
                 else
                 {
-                    $totals['day']['all'][$i][] = $stat_row['total_overall'];
-                    $totals['hour']['all'][$stat_hour_interval][] = $stat_row['total_overall'];
-                    $totals['minute']['all'][$stat_minute_interval][] = $stat_row['total_overall'];
+                    $totals['day']['all'][$i][] = $total;
+                    $totals['hour']['all'][$stat_hour_interval][] = $total;
+                    $totals['minute']['all'][$stat_minute_interval][] = $total;
                 }
             }
 

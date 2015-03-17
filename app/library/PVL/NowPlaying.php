@@ -28,7 +28,6 @@ class NowPlaying
         $nowplaying = self::loadNowPlaying();
 
         // Post statistics to official record.
-        Statistic::post($nowplaying['legacy']);
         Analytics::post($nowplaying['api']);
 
         // Clear any records that are not audio/video category.

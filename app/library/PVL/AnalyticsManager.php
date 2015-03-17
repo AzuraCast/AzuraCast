@@ -15,12 +15,7 @@ class AnalyticsManager
         // Force all times to be UTC before continuing.
         date_default_timezone_set('UTC');
 
-        $stations = Station::fetchAll();
-        $short_names = array();
-        foreach($stations as $station)
-            $short_names[$station->getShortName()] = $station;
-
-        $current_date = date('Y-m-d');
+        $current_date = gmdate('Y-m-d');
 
         // Interval of seconds to use for "minute"-level statistics.
         $minute_interval = 600;
@@ -29,14 +24,14 @@ class AnalyticsManager
         // Get the earliest date that statistics are available for.
         try
         {
-            $earliest_date_raw = $em->createQuery('SELECT s.timestamp FROM Entity\Statistic s ORDER BY s.id ASC')
+            $earliest_timestamp = $em->createQuery('SELECT a.timestamp FROM Entity\Analytics a WHERE a.type = :type ORDER BY a.id ASC')
+                ->setParameter('type', 'second')
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
         }
         catch(\Exception $e) { return false; }
 
-        $earliest_timestamp = strtotime($earliest_date_raw);
-        $earliest_date = date('Y-m-d', $earliest_timestamp);
+        $earliest_date = gmdate('Y-m-d', $earliest_timestamp);
 
         if ($earliest_date == $current_date)
             return false;
@@ -47,16 +42,18 @@ class AnalyticsManager
         {
             set_time_limit(30);
 
-            $delete_current_analytics = $em->createQuery('DELETE FROM Entity\Analytics a WHERE a.timestamp BETWEEN :start AND :end')
+            $delete_current_analytics = $em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type != :type AND a.timestamp BETWEEN :start AND :end')
+                ->setParameter('type', 'second')
                 ->setParameter('start', $i)
                 ->setParameter('end', $i+86400-1)
                 ->execute();
 
             $current_date = date('Y-m-d', $i);
-            $current_date_start = $current_date.' 00:00:00';
-            $current_date_end = $current_date.' 23:59:59';
+            $current_date_start = strtotime($current_date.' 00:00:00');
+            $current_date_end = strtotime($current_date.' 23:59:59');
 
-            $current_stats = $em->createQuery('SELECT s FROM Entity\Statistic s WHERE s.timestamp BETWEEN :start AND :end')
+            $current_stats = $em->createQuery('SELECT a FROM Entity\Analytics a WHERE a.type = :type AND a.timestamp BETWEEN :start AND :end')
+                ->setParameter('type', 'second')
                 ->setParameter('start', $current_date_start)
                 ->setParameter('end', $current_date_end)
                 ->getArrayResult();
@@ -65,19 +62,25 @@ class AnalyticsManager
 
             foreach($current_stats as $stat_row)
             {
-                $stat_timestamp = $stat_row['timestamp']->getTimestamp();
+                $total = $stat_row['number_avg'];
+
+                $stat_timestamp = $stat_row['timestamp'];
                 $stat_minute_interval = $stat_timestamp - ($stat_timestamp % $minute_interval);
                 $stat_hour_interval = $stat_timestamp - ($stat_timestamp % $hour_interval);
 
-                $totals['day']['all'][$i][] = $stat_row['total_overall'];
-                $totals['hour']['all'][$stat_hour_interval][] = $stat_row['total_overall'];
-                $totals['minute']['all'][$stat_minute_interval][] = $stat_row['total_overall'];
-
-                foreach((array)$stat_row['total_stations'] as $shortcode => $total)
+                if ($stat_row['station_id'])
                 {
-                    $totals['day'][$shortcode][$i][] = $total;
-                    $totals['hour'][$shortcode][$stat_hour_interval][] = $total;
-                    $totals['minute'][$shortcode][$stat_minute_interval][] = $total;
+                    $station_id = $stat_row['station_id'];
+
+                    $totals['day'][$station_id][$i][] = $total;
+                    $totals['hour'][$station_id][$stat_hour_interval][] = $total;
+                    $totals['minute'][$station_id][$stat_minute_interval][] = $total;
+                }
+                else
+                {
+                    $totals['day']['all'][$i][] = $stat_row['total_overall'];
+                    $totals['hour']['all'][$stat_hour_interval][] = $stat_row['total_overall'];
+                    $totals['minute']['all'][$stat_minute_interval][] = $stat_row['total_overall'];
                 }
             }
 
@@ -89,10 +92,8 @@ class AnalyticsManager
                 {
                     if ($total_station == 'all')
                         $station_id = NULL;
-                    elseif (isset($short_names[$total_station]))
-                        $station_id = $short_names[$total_station]['id'];
                     else
-                        continue;
+                        $station_id = $total_station;
 
                     foreach($total_periods as $total_period => $total_contents)
                     {
@@ -110,14 +111,20 @@ class AnalyticsManager
                 $em->flush();
                 $em->clear();
             }
+        }
 
-            if ($i < (time() - 86400*2))
-            {
-                $em->createQuery('DELETE FROM Entity\Statistic s WHERE s.timestamp BETWEEN :start AND :end')
-                    ->setParameter('start', $current_date_start)
-                    ->setParameter('end', $current_date_end)
-                    ->execute();
-            }
+        $cleanup_thresholds = array(
+            'second'        => strtotime('Yesterday 00:00:00'),
+            'minute'        => strtotime('-1 month'),
+            'hour'          => strtotime('-6 months'),
+        );
+
+        foreach($cleanup_thresholds as $cleanup_type => $cleanup_timestamp)
+        {
+            $em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type = :type AND a.timestamp < :timestamp')
+                ->setParameter('type', $cleanup_type)
+                ->setParameter('timestamp', $cleanup_timestamp)
+                ->execute();
         }
     }
 }

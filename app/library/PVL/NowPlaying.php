@@ -1,6 +1,7 @@
 <?php
 namespace PVL;
 
+use Entity\Analytics;
 use Entity\Statistic;
 use Entity\Schedule;
 use Entity\Station;
@@ -28,6 +29,7 @@ class NowPlaying
 
         // Post statistics to official record.
         Statistic::post($nowplaying['legacy']);
+        Analytics::post($nowplaying['api']);
 
         // Clear any records that are not audio/video category.
         $api_categories = array('audio', 'video');

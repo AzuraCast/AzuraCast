@@ -1,7 +1,7 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Table(name="api_calls", indexes={

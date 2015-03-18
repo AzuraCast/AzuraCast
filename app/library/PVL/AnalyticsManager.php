@@ -56,12 +56,13 @@ class AnalyticsManager
                 ->setParameter('type', 'second')
                 ->setParameter('start', $current_date_start)
                 ->setParameter('end', $current_date_end)
-                ->getArrayResult();
+                ->iterate();
 
             $totals = array();
 
-            foreach($current_stats as $stat_row)
+            foreach($current_stats as $stat_iterated_row)
             {
+                $stat_row = $stat_iterated_row[0];
                 $total = $stat_row['number_avg'];
 
                 $stat_timestamp = $stat_row['timestamp'];
@@ -82,9 +83,10 @@ class AnalyticsManager
                     $totals['hour']['all'][$stat_hour_interval][] = $total;
                     $totals['minute']['all'][$stat_minute_interval][] = $total;
                 }
-            }
 
-            unset($current_stats); // Free up memory.
+                $em->detach($stat_row);
+                unset($stat_row);
+            }
 
             foreach($totals as $total_type => $total_stations)
             {

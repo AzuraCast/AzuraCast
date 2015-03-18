@@ -9,6 +9,8 @@ class AnalyticsManager
 {
     public static function run()
     {
+        set_time_limit(60*50);
+
         $di = \Phalcon\Di::getDefault();
         $em = $di->get('em');
 
@@ -40,8 +42,6 @@ class AnalyticsManager
         $start_timestamp = strtotime($earliest_date.' 00:00:00');
         for($i = $start_timestamp; $i < time(); $i += 86400)
         {
-            set_time_limit(300);
-
             $em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type != :type AND a.timestamp BETWEEN :start AND :end')
                 ->setParameter('type', 'second')
                 ->setParameter('start', $i)

@@ -86,7 +86,7 @@ class ErrorHandler
             {
                 $view = \DF\Phalcon\View::getView(array());
 
-                $view->setVar('e', $e);
+                $view->setVar('exception', $e);
 
                 $result = $view->getRender('error', 'general');
 

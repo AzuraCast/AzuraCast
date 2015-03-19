@@ -70,7 +70,7 @@ class NetworkNews extends \DF\Doctrine\Entity
         return $news;
     }
 
-    public static function fetch($articles_num = 8)
+    public static function fetch($articles_num = 10)
     {
         $em = self::getEntityManager();
         $results_raw = $em->createQuery('SELECT nn FROM '.__CLASS__.' nn ORDER BY nn.sort_timestamp DESC')

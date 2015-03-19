@@ -18,6 +18,11 @@ var is_playing,
 var socket;
 
 $(function() {
+
+    // Check webstorage for existing volume preference.
+    if (store.enabled && store.get('pvlive_player_volume') !== undefined)
+        volume = store.get('pvlive_player_volume', 70);
+
 	$('.nowplaying-status').hide();
 
 	$('.station').click(function(e) {
@@ -617,6 +622,10 @@ function playStation(id)
                 },
                 volumechange: function(event) {
                     volume = Math.round(event.jPlayer.options.volume * 100);
+
+                    // Persist to local webstorage if enabled.
+                    if (store.enabled)
+                        store.set('pvlive_player_volume', volume);
                 },
                 wmode: 'window',
                 swfPath: DF_ContentPath+'/jplayer/jquery.jplayer.swf',

@@ -15,6 +15,7 @@ class Station extends \DF\Doctrine\Entity
     public function __construct()
     {
         $this->weight = 0;
+        $this->affiliation = 'syndicated';
 
         $this->is_active = 0;
         $this->requests_enabled = 0;
@@ -57,9 +58,6 @@ class Station extends \DF\Doctrine\Entity
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
 
-    /** @Column(name="acronym", type="string", length=10, nullable=true) */
-    protected $acronym;
-
     /** @Column(name="category", type="string", length=50, nullable=true) */
     protected $category;
 
@@ -73,6 +71,9 @@ class Station extends \DF\Doctrine\Entity
         $categories = self::getCategories();
         return $categories[$this->category]['name'];
     }
+
+    /** @Column(name="affiliation", type="string", length=50, nullable=true) */
+    protected $affiliation;
 
     /** @Column(name="weight", type="smallint") */
     protected $weight;
@@ -427,6 +428,25 @@ class Station extends \DF\Doctrine\Entity
         return $categories;
     }
 
+    public static function getCategorySelect()
+    {
+        $cats_raw = self::getCategories();
+        $cats = array();
+
+        foreach($cats_raw as $cat_key => $cat_info)
+            $cats[$cat_key] = $cat_info['name'];
+
+        return $cats;
+    }
+
+    public static function getAffiliationSelect()
+    {
+        return array(
+            'partner'       => 'PVL Partner Station',
+            'syndicated'    => 'Syndicated Station',
+        );
+    }
+
     public static function canSeeStationCenter(User $user = null)
     {
         if ($user === null)
@@ -461,6 +481,7 @@ class Station extends \DF\Doctrine\Entity
             'shortcode' => self::getStationShortName($row['name']),
             'genre'     => $row['genre'],
             'category'  => $row['category'],
+            'affiliation' => $row['affiliation'],
             'image_url' => \DF\Url::content($row['image_url']),
             'web_url'   => $row['web_url'],
             'twitter_url' => $row['twitter_url'],

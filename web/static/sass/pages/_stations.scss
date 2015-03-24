@@ -12,6 +12,10 @@
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   }
 
+  &.affiliation-partner {
+    background: rgba(44,127,210, 0.05) url('../images/partner_station.png') bottom right no-repeat;
+  }
+
   h4 {
     font-size: 16px;
 
@@ -82,12 +86,14 @@
 
 /* Station-specific Style */
 .station {
+  height: 75px;
 
   &.media {
     position: relative;
   }
 
   &.playing {
+    height: auto;
     overflow: visible;
     background: rgba(19, 56, 93, 0.95); /* #13385E; */
     box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);

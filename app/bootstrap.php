@@ -131,19 +131,33 @@ if (DF_IS_COMMAND_LINE) {
 
 // Database
 $di->setShared('em', function() use ($config) {
-    $db_conf = $config->application->resources->doctrine->toArray();
-    $db_conf['conn'] = $config->db->toArray();
+    try
+    {
+        $db_conf = $config->application->resources->doctrine->toArray();
+        $db_conf['conn'] = $config->db->toArray();
 
-    $em = \DF\Phalcon\Service\Doctrine::init($db_conf);
-    return $em;
+        $em = \DF\Phalcon\Service\Doctrine::init($db_conf);
+        return $em;
+    }
+    catch(\Exception $e)
+    {
+        throw new \DF\Exception\Bootstrap($e->getMessage());
+    }
 });
 
 $di->setShared('db', function() use ($config) {
-    $db_conf = $config->application->resources->doctrine->toArray();
-    $db_conf['conn'] = $config->db->toArray();
+    try
+    {
+        $db_conf = $config->application->resources->doctrine->toArray();
+        $db_conf['conn'] = $config->db->toArray();
 
-    $config = new \Doctrine\DBAL\Configuration;
-    return \Doctrine\DBAL\DriverManager::getConnection($db_conf['conn'], $config);
+        $config = new \Doctrine\DBAL\Configuration;
+        return \Doctrine\DBAL\DriverManager::getConnection($db_conf['conn'], $config);
+    }
+    catch(\Exception $e)
+    {
+        throw new \DF\Exception\Bootstrap($e->getMessage());
+    }
 });
 
 // Auth and ACL

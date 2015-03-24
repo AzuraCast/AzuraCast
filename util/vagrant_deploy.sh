@@ -17,10 +17,17 @@ then
 
     # Set up server
     apt-get -q -y install python-software-properties
+
+    # Add Phalcon PPA
     apt-add-repository ppa:phalcon/stable
+
+    # Add MariaDB repo
+    sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+    sudo add-apt-repository 'deb http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.0/ubuntu trusty main'
+
     apt-get update
 
-    apt-get -q -y install vim git nginx mysql-server-5.6 php5-fpm php5-cli php5-gd php5-mysql php5-curl php5-phalcon nodejs npm
+    apt-get -q -y install vim git nginx mariadb-server php5-fpm php5-cli php5-gd php5-mysqlnd php5-curl php5-phalcon nodejs npm
     apt-get autoremove
 
     mysqladmin -u root password password

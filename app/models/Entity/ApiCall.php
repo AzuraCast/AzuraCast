@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @Table(name="api_calls", indexes={
  *   @index(name="sort_idx", columns={"timestamp"}),
+ *   @index(name="analytics_idx", columns={"ip", "client", "useragent", "controller", "action"}),
  * })
  * @Entity
  */

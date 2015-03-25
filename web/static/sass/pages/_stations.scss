@@ -1,15 +1,15 @@
 /* Shared Podcast/Station Styles */
 .station, .podcast {
 
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+
   &.media {
     margin-top: 0px;
     margin-bottom: 10px;
 
     padding: 10px;
-
-    border-radius: 5px;
-    background: rgba(0, 0, 0, 0.05);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
   }
 
   &.affiliation-partner {
@@ -87,9 +87,9 @@
 
 /* Station-specific Style */
 .station {
-  height: 75px;
 
   &.media {
+    height: 75px;
     position: relative;
   }
 
@@ -370,4 +370,19 @@ li.station,
 li.podcast {
   line-height: inherit;
   padding-bottom: 5px;
+}
+
+.legend {
+  padding: 1px 0 0 0;
+  line-height: 30px;
+  vertical-align: middle;
+
+  color: #555;
+
+  span {
+    display: inline-block;
+    height: 30px;
+    padding: 0 10px;
+    margin-left: 5px;
+  }
 }

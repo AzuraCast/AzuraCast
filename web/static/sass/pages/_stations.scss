@@ -10,6 +10,7 @@
     margin-bottom: 10px;
 
     padding: 10px;
+    line-height: inherit;
   }
 
   &.affiliation-partner {
@@ -89,7 +90,8 @@
 .station {
 
   &.media {
-    height: 75px;
+    cursor: pointer;
+    height: 95px;
     position: relative;
   }
 
@@ -361,15 +363,6 @@ li.media {
     left: auto;
     right: 0;
   }
-}
-
-li.station {
-  cursor: pointer;
-}
-li.station,
-li.podcast {
-  line-height: inherit;
-  padding-bottom: 5px;
 }
 
 .legend {

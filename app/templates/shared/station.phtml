@@ -1,6 +1,6 @@
-<ul class="media-list" style="padding-bottom: 0; margin-bottom: 0;">
+<div class="video-channels clearfix row-fluid row-multiple media-list">
 <? foreach((array)$stations as $station): ?>
-    <li class="media station audio clearfix affiliation-<?=$station['affiliation'] ?>" id="station_<?=(isset($station['short_name']) ? $station['short_name'] :  \Entity\Station::getStationShortName($station['name'])) ?>"
+    <div class="span4 media station audio clearfix affiliation-<?=$station['affiliation'] ?>" id="station_<?=(isset($station['short_name']) ? $station['short_name'] :  \Entity\Station::getStationShortName($station['name'])) ?>"
         data-id="<?=$station['id'] ?>" 
         data-name="<?=$station['name'] ?>"
         data-image="<?=\DF\Url::content($station['image_url']) ?>"
@@ -86,6 +86,6 @@
                 <div class="station-history" style="display: none;"></div>
             </div>
         </div>
-    </li>
+    </div>
 <? endforeach; ?>
-</ul>
+</div>

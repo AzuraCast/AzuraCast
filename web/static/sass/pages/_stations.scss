@@ -288,33 +288,7 @@
       color: #D51C1C;
     }
   }
-}
 
-/* Podcast-specific Style */
-.podcast {
-  min-height: 100px;
-
-  .media-body small {
-    font-size: 12px;
-    line-height: 12px;
-  }
-
-  .station-info {
-    ul {
-      list-style: disc inside none;
-      margin-left: 0px;
-    }
-    li {
-      padding-left: 5px;
-    }
-    div, li {
-      font-size: 14px;
-    }
-  }
-}
-
-/* Media Dropdown Menu */
-li.media {
   .dropdown-menu {
     margin-top: 5px;
     background: rgba(9, 15, 21, 0.96);
@@ -362,6 +336,29 @@ li.media {
   &.rendermode-standalone .dropdown-menu{
     left: auto;
     right: 0;
+  }
+}
+
+/* Podcast-specific Style */
+.podcast {
+  min-height: 100px;
+
+  .media-body small {
+    font-size: 12px;
+    line-height: 12px;
+  }
+
+  .station-info {
+    ul {
+      list-style: disc inside none;
+      margin-left: 0px;
+    }
+    li {
+      padding-left: 5px;
+    }
+    div, li {
+      font-size: 14px;
+    }
   }
 }
 

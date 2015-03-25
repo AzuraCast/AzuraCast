@@ -214,7 +214,7 @@ class IndexController extends BaseController
 
             foreach((array)$station['streams'] as $stream)
             {
-                if (!$stream['hidden_from_player'])
+                if (!$stream['hidden_from_player'] && $stream['is_active'])
                 {
                     if ($stream['is_default'])
                     {

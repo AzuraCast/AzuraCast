@@ -386,10 +386,12 @@ function processAudioNowPlayingRow(station_info, station_id)
     // Show stream info if non-default.
     if (station.data('defaultstream') != stream_id)
     {
+        station.find('.genre-info').hide();
         station.find('.stream-info').html('<i class="icon-code-fork"></i> '+stream.name).show();
     }
     else
     {
+        station.find('.genre-info').show();
         station.find('.stream-info').hide();
     }
 

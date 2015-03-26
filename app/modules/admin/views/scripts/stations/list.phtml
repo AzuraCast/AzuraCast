@@ -1,16 +1,20 @@
 <table class="table table-striped table-bordered table-condensed">
     <colgroup>
         <col width="17%">
+        <col width="5%">
         <col width="8%">
-        <col width="55%">
+        <col width="35%">
+        <col width="15%">
         <col width="10%">
         <col width="10%">
     </colgroup>
     <thead>
         <tr>
             <th>Actions</th>
+            <th>Weight</th>
             <th>Image</th>
             <th>Station</th>
+            <th>Affiliation</th>
             <th>Twitter</th>
             <th>Calendar</th>
         </tr>
@@ -40,10 +44,14 @@
                     )) ?>
                 </div>
             </td>
+            <td class="center"><?=$record['weight'] ?></td>
             <td class="center"><img src="<?=\DF\Url::content($record['image_url']) ?>" style="display: inline; max-width: 70px;"></td>
             <td>
                 <div><big><?=$record['name'] ?></big></div>
                 <div><a href="<?=$this->viewHelper->route(array('module' => 'stations', 'controller' => 'streams', 'action' => 'index','station' => $record['id'])) ?>" target="_blank"><?=count($record['streams']) ?> Streams</a></div>
+            </td>
+            <td class="legend">
+                <span class="station affiliation-<?=$record['affiliation'] ?>"><?=ucfirst($record['affiliation']) ?></span>
             </td>
             <td class="center">
                 <? if ($record['twitter_url']): ?>

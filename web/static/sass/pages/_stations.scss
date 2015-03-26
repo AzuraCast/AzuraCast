@@ -364,13 +364,12 @@
 
 .legend {
   padding: 1px 0 0 0;
-  line-height: 30px;
   vertical-align: middle;
 
-  color: #555;
-
   span {
+    color: #555;
     display: inline-block;
+    line-height: 30px;
     height: 30px;
     padding: 0 10px;
     margin-left: 5px;

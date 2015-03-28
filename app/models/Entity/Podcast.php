@@ -106,8 +106,7 @@ class Podcast extends \DF\Doctrine\Entity
 
     public function getLatestEpisode()
     {
-        $latest_ep = $this->episodes->slice(0, 1);
-        return $latest_ep[0];
+        return $this->episodes->first();
     }
 
     /**

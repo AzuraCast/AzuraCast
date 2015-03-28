@@ -70,6 +70,9 @@ class SongController extends BaseController
 
     protected function _vote($value)
     {
+        // Re-enable session creation.
+        \DF\Session::enable();
+
         $sh_id = (int)$this->getParam('sh_id');
         $sh = SongHistory::find($sh_id);
 

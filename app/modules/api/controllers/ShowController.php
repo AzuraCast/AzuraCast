@@ -28,17 +28,34 @@ class ShowController extends BaseController
         }
         else
         {
-            $records = $this->em->createQuery('SELECT p, s, pe FROM Entity\Podcast p LEFT JOIN p.stations s LEFT JOIN p.episodes pe WHERE p.is_approved = 1 ORDER BY p.name ASC')
-                ->execute();
+            $return = \DF\Cache::get('api_shows');
 
-            $return = array();
-            foreach($records as $record)
+            if (!$return)
             {
-                $return[] = Podcast::api($record, TRUE);
+                $records = $this->em->createQuery('SELECT p, s, pe FROM Entity\Podcast p LEFT JOIN p.stations s LEFT JOIN p.episodes pe WHERE p.is_approved = 1 ORDER BY p.name ASC')
+                    ->getArrayResult();
+
+                $return = array();
+                foreach ($records as $record)
+                {
+                    $return[] = Podcast::api($record, TRUE);
+                }
+
+                \DF\Cache::set($return, 'api_shows', array(), 60);
             }
 
             return $this->returnSuccess($return);
         }
+    }
+
+    public function listAction()
+    {
+        return $this->indexAction();
+    }
+
+    public function viewAction()
+    {
+        return $this->indexAction();
     }
 
     public function latestAction()

@@ -31,6 +31,11 @@ class StationController extends BaseController
         return $this->returnSuccess(Station::api($record));
     }
 
+    public function viewAction()
+    {
+        return $this->indexAction();
+    }
+
     public function listAction()
     {
         $category = $this->getParam('category', 'all');

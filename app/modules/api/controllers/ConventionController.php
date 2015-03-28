@@ -61,4 +61,9 @@ class ConventionController extends BaseController
 
         return $this->returnSuccess($export_data);
     }
+
+    public function viewAction()
+    {
+        return $this->indexAction();
+    }
 }

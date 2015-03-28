@@ -211,8 +211,18 @@ class Podcast extends \DF\Doctrine\Entity
         {
             $row = $row_obj;
 
-            if (!isset($row['stations']))
+            if (isset($row['stations']))
+            {
+                $stations_raw = array();
+                foreach($row['stations'] as $station)
+                    $stations_raw[] = Station::api($station);
+
+                $row['stations'] = $stations_raw;
+            }
+            else
+            {
                 $row['stations'] = array();
+            }
 
             if (!isset($row['episodes']))
                 $row['episodes'] = array();

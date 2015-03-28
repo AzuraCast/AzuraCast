@@ -104,6 +104,12 @@ class Podcast extends \DF\Doctrine\Entity
      */
     protected $episodes;
 
+    public function getLatestEpisode()
+    {
+        $latest_ep = $this->episodes->slice(0, 1);
+        return $latest_ep[0];
+    }
+
     /**
      * @ManyToMany(targetEntity="Station")
      * @JoinTable(name="podcast_on_station",

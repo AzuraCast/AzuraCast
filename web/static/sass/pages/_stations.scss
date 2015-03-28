@@ -341,7 +341,9 @@
 
 /* Podcast-specific Style */
 .podcast {
-  min-height: 100px;
+  &.media {
+    min-height: 150px;
+  }
 
   .media-body small {
     font-size: 12px;

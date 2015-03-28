@@ -158,12 +158,9 @@ $tz_info = \PVL\Timezone::getInfo();
 <?
 $podcasts = array_slice($podcasts, 0, 15);
 $podcast_cols = \DF\Utilities::columns($podcasts, 3, true);
+
+echo $this->viewHelper->renderCommon('podcast', array('podcasts' => $podcasts));
 ?>
-<div class="row-fluid">
-<? foreach($podcast_cols as $podcast_col): ?>
-    <div class="span4"><?=$this->viewHelper->renderCommon('podcast', array('podcasts' => $podcast_col)) ?></div>
-<? endforeach; ?>
-</div>
 
 <h2><i class="icon-folder-open-alt"></i> Convention Coverage <small>Most recent conventions, <a href="<?=\DF\Url::route(array('module' => 'frontend', 'controller' => 'convention')) ?>" target="_blank">view all</a></small></h2>
 

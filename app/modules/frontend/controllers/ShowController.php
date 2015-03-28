@@ -15,9 +15,17 @@ class ShowController extends BaseController
         foreach($podcasts_raw as $pc)
         {
             $pc['episodes'] = array_slice($pc['episodes'], 0, 3);
+
+            if (isset($pc['episodes'][0]))
+                $pc['latest_episode'] = $pc['episodes'][0]['timestamp'];
+
             $podcasts[$pc['id']] = $pc;
         }
 
+        if ($this->getParam('sort') == 'latest')
+            $podcasts = \DF\Utilities::irsort($podcasts, 'latest_episode');
+
+        $this->view->sort = $this->getParam('sort', 'alpha');
         $this->view->podcasts = $podcasts;
     }
 

@@ -1,6 +1,6 @@
-<ul class="media-list">
+<div class="media-list row-fluid row-multiple">
 <? foreach($podcasts as $podcast): ?>
-    <li class="media podcast">
+    <div class="media podcast span4">
         <div class="media-object pull-left">
             <a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>">
                 <img class="station-image" src="<?=\DF\Url::content($podcast['image_url']) ?>" alt="<?=$podcast['name'] ?> Logo">
@@ -42,6 +42,6 @@
             <? endforeach; ?>
             </div>
         </div>
-    </li>
+    </div>
 <? endforeach; ?>
-</ul>
+</div>

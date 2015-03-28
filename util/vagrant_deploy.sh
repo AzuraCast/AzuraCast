@@ -30,6 +30,10 @@ then
     apt-get -q -y install vim git nginx mariadb-server php5-fpm php5-cli php5-gd php5-mysqlnd php5-curl php5-phalcon nodejs npm
     apt-get autoremove
 
+    # Set Node.js bin alias
+    ln -s /usr/bin/nodejs /usr/bin/node
+
+    # Set MySQL root password
     mysqladmin -u root password password
 
     # Trigger mlocate reindex.

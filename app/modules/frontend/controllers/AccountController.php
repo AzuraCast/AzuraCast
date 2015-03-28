@@ -23,10 +23,7 @@ class AccountController extends BaseController
     public function registerAction()
     {
         if (!$_POST)
-        {
-            $this->storeReferrer('login');
             $this->forceSecure();
-        }
 
         $form = new \DF\Form($this->current_module_config->forms->register);
         
@@ -122,15 +119,14 @@ class AccountController extends BaseController
                     else
                         $default_url = \DF\Url::route(array('module' => 'default'));
 
-                    $this->redirectToStoredReferrer('login', $default_url);
-                    return;
+                    return $this->redirectToStoredReferrer('login', $default_url);
                 }
             }
         }
 
         // Auto-bounce back if logged in.
         if ($this->auth->isLoggedIn())
-            $this->redirectToStoredReferrer('login', \DF\Url::route());
+            return $this->redirectToStoredReferrer('login', \DF\Url::route());
 
         $this->view->external_providers = UserExternal::getExternalProviders();
         $this->view->form = $form;

@@ -10,6 +10,11 @@ class ErrorHandler
             // Redirect to login page for not-logged-in users.
             \DF\Flash::addMessage('You must be logged in to access this page!');
 
+            // Set referrer for login redirection.
+            $session = \DF\Session::get('referrer_login');
+            $session->url = \DF\Url::current($di);
+
+            // Redirect to login page.
             $login_url = $di->get('url')->get('account/login');
 
             $response = $di->get('response');

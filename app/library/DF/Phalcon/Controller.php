@@ -291,7 +291,7 @@ class Controller extends \Phalcon\Mvc\Controller
             else
                 $referrer = Url::baseUrl();
 
-        $this->redirect($referrer);
+        return $this->redirect($referrer);
     }
 
     protected function redirectToReferrer($default = false)
@@ -299,7 +299,7 @@ class Controller extends \Phalcon\Mvc\Controller
         if( !$default )
             $default = Url::baseUrl();
 
-        $this->redirect(Url::referrer($default));
+        return $this->redirect(Url::referrer($default));
     }
 
     /* Notifications */

@@ -22,6 +22,7 @@ if ($skin == "dark")
                 <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'blocks')) ?>"><i class="icon-list-alt"></i> Content Blocks</a></li>
                 <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'artists')) ?>"><i class="icon-star"></i> Artist Directory</a></li>
                 <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'songs')) ?>"><i class="icon-music"></i> Song Directory</a></li>
+                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'urls', 'action' => 'index')) ?>"><i class="icon-globe"></i> PVLive.me Short URLs</a></li>
 
                 <li class="nav-header">Manage PVL Records</li>
                 <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'stations')) ?>"><i class="icon-volume-up"></i> Radio Stations &amp; Video Channels</a></li>

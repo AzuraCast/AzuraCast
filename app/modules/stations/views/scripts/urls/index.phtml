@@ -57,52 +57,55 @@ echo $this->viewHelper->renderHere('homelink', true);
     </tbody>
 </table>
 
-<h2>System-Wide Short URLs</h2>
+<div class="row-fluid">
+    <div class="span6">
+        <h2>Stations</h2>
+        <p>These URLs link to the Ponyville Live! homepage and auto-play the specified station.</p>
 
-<h3>Stations</h3>
-<p>These URLs link to the Ponyville Live! homepage and auto-play the specified station.</p>
+        <table class="table table-striped table-bordered table-condensed">
+            <colgroup>
+                <col width="40%" />
+                <col width="60%" />
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Station Name</th>
+                <th>Station URL</th>
+            </tr>
+            </thead>
+            <tbody>
+            <? foreach($station_urls as $record): ?>
+                <tr class="input">
+                    <td><i class="<?=$record['icon'] ?>"></i> <?=$record['name'] ?></td>
+                    <td><a href="<?=$record['url'] ?>" target="_blank"><?=$record['url'] ?></a></td>
+                </tr>
+            <? endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <div class="span6">
+        <h2>Convention Archives</h2>
+        <p>These URLs lead to the auto-generated convention archive pages for the specified convention.</p>
 
-<table class="table table-striped table-bordered table-condensed">
-    <colgroup>
-        <col width="40%" />
-        <col width="60%" />
-    </colgroup>
-    <thead>
-        <tr>
-            <th>Station Name</th>
-            <th>Station URL</th>
-        </tr>
-    </thead>
-    <tbody>
-    <? foreach($station_urls as $record): ?>
-        <tr class="input">
-            <td><i class="<?=$record['icon'] ?>"></i> <?=$record['name'] ?></td>
-            <td><a href="<?=$record['url'] ?>" target="_blank"><?=$record['url'] ?></a></td>
-        </tr>
-    <? endforeach; ?>
-    </tbody>
-</table>
-
-<h3>Convention Archives</h3>
-<p>These URLs lead to the auto-generated convention archive pages for the specified convention.</p>
-
-<table class="table table-striped table-bordered table-condensed">
-    <colgroup>
-        <col width="40%" />
-        <col width="60%" />
-    </colgroup>
-    <thead>
-    <tr>
-        <th>Convention Name</th>
-        <th>Convention URL</th>
-    </tr>
-    </thead>
-    <tbody>
-    <? foreach($convention_urls as $record): ?>
-        <tr class="input">
-            <td><?=$record['name'] ?></td>
-            <td><a href="<?=$record['url'] ?>" target="_blank"><?=$record['url'] ?></a></td>
-        </tr>
-    <? endforeach; ?>
-    </tbody>
-</table>
+        <table class="table table-striped table-bordered table-condensed">
+            <colgroup>
+                <col width="40%" />
+                <col width="60%" />
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Convention Name</th>
+                <th>Convention URL</th>
+            </tr>
+            </thead>
+            <tbody>
+            <? foreach($convention_urls as $record): ?>
+                <tr class="input">
+                    <td><?=$record['name'] ?></td>
+                    <td><a href="<?=$record['url'] ?>" target="_blank"><?=$record['url'] ?></a></td>
+                </tr>
+            <? endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

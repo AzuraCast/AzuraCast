@@ -76,12 +76,7 @@ class UrlsController extends BaseController
             return;
         }
 
-        if ($this->hasParam('id'))
-            $this->view->setVar('title', 'Edit Short URL');
-        else
-            $this->view->setVar('title', 'Add Short URL');
-
-        $this->renderForm($form);
+        $this->renderForm($form, 'edit', ($this->hasParam('id')) ? 'Edit Short URL' : 'Add Short URL');
     }
 
     public function deleteAction()

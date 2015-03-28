@@ -1,4 +1,8 @@
 {
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:BravelyBlue/PVLive.git"
+  },
   "name": "pvlive-live-updates",
   "version": "0.0.1",
   "description": "Live updates from the Ponyville Live! service.",
@@ -6,5 +10,6 @@
     "express": "~4.10.2",
     "socket.io": "~1.2.1",
     "body-parser": "~1.9.2"
-  }
+  },
+  "private": true
 }

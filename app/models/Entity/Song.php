@@ -236,6 +236,12 @@ class Song extends \DF\Doctrine\Entity
             'text'      => $row['text'],
             'artist'    => $row['artist'],
             'title'     => $row['title'],
+
+            'image_url' => $row['image_url'],
+            'created'   => $row['created'],
+            'play_count' => $row['play_count'],
+            'last_played' => $row['last_played'],
+            'score'     => $row['score'],
         );
     }
 

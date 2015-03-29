@@ -63,37 +63,38 @@ else
             <h2><i class="icon-comment"></i> Chat with Us<br><small>Powered by <a href="http://www.canternet.org/" target="_blank">Canternet IRC</a></small></h2>
 
             <div class="flash">
-                <div id="lightIRC"></div>
-            </div>
-            <div class="noflash">
-                <div class="no-flash">
-                    <h3>Flash Not Supported</h3>
-                    <p>Your browser does not support the Flash plugin.</p>
+                <div id="lightIRC">
+                    <div class="noflash">
+                        <div class="no-flash">
+                            <h3>Flash Not Supported</h3>
+                            <p>Your browser does not support the Flash plugin.</p>
 
-                    <p>You are welcome to join us in our IRC channel using an IRC application of your choice! Just connect to <b>irc.canternet.org</b> and join channel #PonyvilleLive. If your IRC client supports special links, click the button below to connect.</p>
+                            <p>You are welcome to join us in our IRC channel using an IRC application of your choice! Just connect to <b>irc.canternet.org</b> and join channel #PonyvilleLive. If your IRC client supports special links, click the button below to connect.</p>
 
-                    <?
-                    $irc_url = 'http://client.canternet.org/?'.http_build_query(array(
-                        'nick'      => 'PVL_'.mt_rand(0, 10000),
-                        'channels'  => str_replace('#', '', implode(',', array_keys($channels))),
-                        'prompt'    => '1',
-                        'uio'       => 'Mj10cnVlJjk9dHJ1ZSYxMT0yMzYa9',
-                    ));
-                    ?>
+                            <?
+                            $irc_url = 'http://client.canternet.org/?'.http_build_query(array(
+                                    'nick'      => 'PVL_'.mt_rand(0, 10000),
+                                    'channels'  => str_replace('#', '', implode(',', array_keys($channels))),
+                                    'prompt'    => '1',
+                                    'uio'       => 'Mj10cnVlJjk9dHJ1ZSYxMT0yMzYa9',
+                                ));
+                            ?>
 
-                    <div class="buttons btn-group">
-                        <?=$this->viewHelper->button(array(
-                            'type'      => 'link',
-                            'href'      => $irc_url,
-                            'class'     => 'large primary',
-                            'text'      => 'Web Chat',
-                        )) ?>
-                        <?=$this->viewHelper->button(array(
-                            'type'      => 'link',
-                            'href'      => 'irc://irc.canternet.org/#PonyvilleLive',
-                            'class'     => 'large primary',
-                            'text'      => 'IRC Client',
-                        )) ?>
+                            <div class="buttons btn-group">
+                                <?=$this->viewHelper->button(array(
+                                    'type'      => 'link',
+                                    'href'      => $irc_url,
+                                    'class'     => 'large primary',
+                                    'text'      => 'Web Chat',
+                                )) ?>
+                                <?=$this->viewHelper->button(array(
+                                    'type'      => 'link',
+                                    'href'      => 'irc://irc.canternet.org/#PonyvilleLive',
+                                    'class'     => 'large primary',
+                                    'text'      => 'IRC Client',
+                                )) ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

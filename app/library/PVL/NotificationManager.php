@@ -52,7 +52,11 @@ class NotificationManager
                 'station'   => Station::api($station),
             ));
 
-            self::notify($tweet, $tweet_url);
+            $image_url = NULL;
+            if ($station->banner_url)
+                $image_url = \DF\Url::content($station->banner_url);
+
+            self::notify($tweet, $tweet_url, $image_url);
 
             $schedule_item->is_notified = true;
             $schedule_item->save();
@@ -77,14 +81,18 @@ class NotificationManager
             $podcast = $episode->podcast;
 
             $title = \DF\Utilities::truncateText($episode->title, 110-strlen($podcast->name)-6);
-            $tweet = $podcast->name.': "'.$title.'" -';
+            $tweet = $podcast->name.': "'.$title.'"';
 
             PvlNode::push('podcast.new_episode', array(
                 'episode' => PodcastEpisode::api($episode),
                 'podcast' => Podcast::api($podcast, false),
             ));
 
-            self::notify($tweet, $episode->web_url);
+            $image_url = NULL;
+            if ($podcast->banner_url)
+                $image_url = \DF\Url::content($podcast->banner_url);
+
+            self::notify($tweet, $episode->web_url, $image_url);
 
             $episode->is_notified = true;
             $episode->save();
@@ -93,7 +101,13 @@ class NotificationManager
         return;
     }
 
-    public static function notify($message, $url = null, $force = false)
+    /**
+     * @param $message
+     * @param null $url
+     * @param bool $force
+     * @return bool
+     */
+    public static function notify($message, $url = null, $image = null, $force = false)
     {
         static $twitter;
 
@@ -115,17 +129,44 @@ class NotificationManager
             $twitter = new \tmhOAuth($twitter_config);
         }
 
-        $message_length = ($url) ? 110 : 130;
+        $message_length = 140;
+
+        if ($url)
+            $message_length -= 23;
+        if ($image)
+            $message_length -= 23;
+
         $tweet = \DF\Utilities::truncateText($message, $message_length);
 
         if ($url)
             $tweet .= ' '.$url;
 
-        $tweet .= ' #PVLive';
+        if ($image)
+        {
+            $twitter->request('POST', 'https://upload.twitter.com/1.1/media/upload.json', array(
+                'media' => base64_encode(file_get_contents($image)),
+            ));
 
-        $twitter->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', array(
-            'status' => $tweet,
-        ));
-        \PVL\Debug::print_r($twitter->response['response']);
+            \PVL\Debug::print_r($twitter->response['response']);
+            $image_response = @json_decode($twitter->response['response'], true);
+
+            if (isset($image_response['media_id_string']))
+            {
+                $media_id = $image_response['media_id_string'];
+
+                $twitter->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', array(
+                    'status' => $tweet,
+                    'media_ids' => array($media_id),
+                ));
+                \PVL\Debug::print_r($twitter->response['response']);
+            }
+        }
+        else
+        {
+            $twitter->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', array(
+                'status' => $tweet,
+            ));
+            \PVL\Debug::print_r($twitter->response['response']);
+        }
     }
 }

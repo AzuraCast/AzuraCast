@@ -41,18 +41,18 @@ else
                 <div class="tab-pane active" id="tab_audio">
                     <?
                     $cat = $categories['audio'];
-                    echo $this->viewHelper->renderCommon('station', array('stations' => $cat['stations']));
+                    echo $this->viewHelper->renderCommon('station', array('stations' => $cat['stations'], 'columns' => 1));
                     ?>
                 </div>
                 <div class="tab-pane" id="tab_video">
                     <?
                     $cat = $categories['video'];
-                    echo $this->viewHelper->renderCommon('station', array('stations' => $cat['stations']));
+                    echo $this->viewHelper->renderCommon('video', array('stations' => $cat['stations'], 'columns' => 1));
                     ?>
                 </div>
                 <div class="tab-pane" id="tab_podcasts">
                     <?
-                    echo $this->viewHelper->renderCommon('podcast', array('podcasts' => array_slice($podcasts, 0, 12, TRUE)));
+                    echo $this->viewHelper->renderCommon('podcast', array('podcasts' => array_slice($podcasts, 0, 12, TRUE), 'columns' => 1));
                     ?>
                 </div>
             </div>

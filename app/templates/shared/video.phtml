@@ -1,7 +1,13 @@
+<?
+if (!$columns)
+    $columns = 3;
+
+$span = 12 / $columns;
+?>
 <div class="video-channels clearfix row-fluid row-multiple">
 <? foreach((array)$stations as $station): ?>
     <? foreach($station['streams'] as $stream): ?>
-        <a class="video-channel clearfix span3" id="channel_<?=$station['short_name'] ?>_<?=$stream['id'] ?>" data-id="<?=$station['id'] ?>" data-name="<?=$station['name'] ?>" href="<?=$stream['stream_url'] ?>" target="_blank">
+        <a class="video-channel clearfix span<?=$span ?>" id="channel_<?=$station['short_name'] ?>_<?=$stream['id'] ?>" data-id="<?=$station['id'] ?>" data-name="<?=$station['name'] ?>" href="<?=$stream['stream_url'] ?>" target="_blank">
             <img class="video-thumbnail" src="<?=\DF\Url::content('images/video_thumbnail.png') ?>" alt="Video Thumbnail" width="426" height="240">
 
             <div class="station-info">

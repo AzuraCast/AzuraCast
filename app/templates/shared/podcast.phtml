@@ -1,6 +1,12 @@
+<?
+if (!$columns)
+    $columns = 3;
+
+$span = 12 / $columns;
+?>
 <div class="media-list row-fluid row-multiple">
 <? foreach($podcasts as $podcast): ?>
-    <div class="media podcast span4">
+    <div class="media podcast span<?=$span ?>">
         <div class="media-object pull-left">
             <a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>">
                 <img class="station-image" src="<?=\DF\Url::content($podcast['image_url']) ?>" alt="<?=$podcast['name'] ?> Logo">

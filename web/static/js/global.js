@@ -7,6 +7,10 @@ $(function() {
 
     processMultiRows();
 
+    $('a[data-toggle="tab"]').on('shown', function (e) {
+        processMultiRows();
+    });
+
 	if ($('html').hasClass('theme_dark'))
 	{
 		$('.btn.btn-inverse').addClass('btn-normal');
@@ -203,7 +207,7 @@ function processMultiRows()
             $(this).find('.span'+j).removeClass('start-of-row');
             $(this).find('.span'+j+':visible').each(function() {
                 i++;
-                if (i % num_per_row == 1)
+                if (num_per_row == 1 || i % num_per_row == 1)
                     $(this).addClass('start-of-row');
             });
         });

@@ -1,9 +1,11 @@
 <?php
 namespace PVL;
 
-use \Entity\Settings;
-use \Entity\ApiCall;
-use \Entity\SongHistory;
+use Entity\Settings;
+use Entity\ApiCall;
+use Entity\SongHistory;
+
+use PVL\Debug;
 
 class SyncManager
 {
@@ -26,7 +28,9 @@ class SyncManager
             define('NOWPLAYING_SEGMENT', 1);
 
         // Run Now Playing data for radio streams.
-        NowPlaying::generate();
+        Debug::runTimer('Run NowPlaying update', function() {
+            NowPlaying::generate();
+        });
 
         Settings::setSetting('nowplaying_last_run', time());
     }
@@ -36,7 +40,9 @@ class SyncManager
         self::initSync(60);
 
         // Send notifications related to schedules (high priority).
-        NotificationManager::run();
+        Debug::runTimer('Run notification delivery', function() {
+            NotificationManager::run();
+        });
 
         Settings::setSetting('sync_fast_last_run', time());
     }
@@ -46,16 +52,24 @@ class SyncManager
         self::initSync(300);
 
         // Sync schedules (highest priority).
-        ScheduleManager::run(!DF_IS_COMMAND_LINE);
+        Debug::runTimer('Run schedule manager', function() {
+            ScheduleManager::run(!DF_IS_COMMAND_LINE);
+        });
 
         // Sync show episodes and artist news (high priority).
-        PodcastManager::run();
+        Debug::runTimer('Run podcast manager', function() {
+            PodcastManager::run();
+        });
 
         // Pull the homepage news.
-        NewsManager::syncNetwork();
+        Debug::runTimer('Run network news manager', function() {
+            NewsManager::syncNetwork();
+        });
 
         // Sync CentovaCast song data.
-        CentovaCast::sync();
+        Debug::runTimer('Run CentovaCast track sync', function() {
+            CentovaCast::sync();
+        });
 
         Settings::setSetting('sync_last_run', time());
     }
@@ -65,25 +79,39 @@ class SyncManager
         self::initSync(1800);
 
         // Sync analytical and statistical data (long running).
-        AnalyticsManager::run();
+        Debug::runTimer('Run analytics manager', function() {
+            AnalyticsManager::run();
+        });
 
         // Update convention archives.
-        ConventionManager::run();
+        Debug::runTimer('Run convention archives manager', function() {
+            ConventionManager::run();
+        });
 
         // Clean up old API calls.
-        ApiCall::cleanUp();
+        Debug::runTimer('Run API call cleanup', function() {
+            ApiCall::cleanUp();
+        });
 
         // Clean up old song history entries.
-        SongHistory::cleanUp();
+        Debug::runTimer('Run song history cleanup', function() {
+            SongHistory::cleanUp();
+        });
 
         // Sync the BronyTunes library.
-        Service\BronyTunes::load();
+        Debug::runTimer('Run BronyTunes sync', function() {
+            Service\BronyTunes::load();
+        });
 
         // Sync the Pony.fm library.
-        Service\PonyFm::load();
+        Debug::runTimer('Run Pony.fm sync', function() {
+            Service\PonyFm::load();
+        });
 
         // Sync the EqBeats library.
-        Service\EqBeats::load();
+        Debug::runTimer('Run EqBeats sync', function() {
+            Service\EqBeats::load();
+        });
 
         Settings::setSetting('sync_slow_last_run', time());
     }

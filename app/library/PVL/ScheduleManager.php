@@ -95,6 +95,7 @@ class ScheduleManager
                 $body = $event_orig->description;
                 $location = $event_orig->location;
                 $web_url = $event_orig->htmlLink;
+                $banner_url = null;
 
                 $is_all_day = false;
 
@@ -124,13 +125,22 @@ class ScheduleManager
                     $end_time = $start_time;
                 }
 
-                // Detect URLs.
-                if ($body)
+                // Detect URLs for link.
+                if ($body && !$web_url)
                 {
-                    preg_match('@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@',$body, $urls);
+                    preg_match('@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@', $body, $urls);
 
                     if (count($urls) > 0)
                         $web_url = $urls[0];
+                }
+
+                // Detect URLs for photo.
+                if ($location)
+                {
+                    preg_match('@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@', $location, $urls);
+
+                    if (count($urls) > 0)
+                        $banner_url = $urls[0];
                 }
 
                 $guid = md5(implode('|', array($event_orig->id, $start_time, $end_time, $title, $location)));
@@ -143,8 +153,8 @@ class ScheduleManager
                     'is_all_day' => $is_all_day,
                     'title'     => $title,
                     'location'  => $location,
-                    'body'      => $body,
-                    'image_url' => $item['image_url'],
+                    'body'      => \DF\Utilities::truncateText(strip_tags($body), 300),
+                    'banner_url' => $banner_url,
                     'web_url'   => $web_url,
                 );
 

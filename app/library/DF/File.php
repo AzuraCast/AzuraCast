@@ -25,10 +25,14 @@ class File
     }
     public static function getFilePath($file_name)
     {
+        $file_name = trim($file_name);
+        $file_name = ltrim($file_name, '/');
+        $file_name = str_replace('/', DIRECTORY_SEPARATOR, $file_name);
+
         if (is_readable($file_name) || stristr($file_name, DF_UPLOAD_FOLDER) !== FALSE)
             return $file_name;
         else
-            return DF_UPLOAD_FOLDER.'/'.str_replace('..','',$file_name);
+            return DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.str_replace('..','',$file_name);
     }
     
     public static function getFileUrl($file_name)

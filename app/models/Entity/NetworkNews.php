@@ -17,6 +17,8 @@ class NetworkNews extends \DF\Doctrine\Entity
         $this->display_timestamp = time();
 
         $this->tags = array();
+
+        $this->is_notified = false;
     }
 
     /**
@@ -52,6 +54,9 @@ class NetworkNews extends \DF\Doctrine\Entity
 
     /** @Column(name="tags", type="json", nullable=true) */
     protected $tags;
+
+    /** @Column(name="is_notified", type="boolean") */
+    protected $is_notified;
 
     /**
      * Static Functions

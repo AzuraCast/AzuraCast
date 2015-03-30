@@ -192,17 +192,42 @@ class NewsManager
         \PVL\Debug::print_r($news_items);
 
         // Replace/insert into database.
+        $news_stats = array(
+            'inserted' => 0,
+            'updated' => 0,
+            'deleted' => 0,
+        );
+
         if (!empty($news_items))
         {
-            // Delete current rotator contents.
-            $em->createQuery('DELETE FROM Entity\NetworkNews nn')->execute();
+            $old_news_raw = NetworkNews::fetchAll();
+            $old_news = array();
 
+            foreach($old_news_raw as $old_row)
+                $old_news[$old_row->id] = $old_row;
+
+            // Update or insert items.
             foreach($news_items as $item)
             {
-                $record = new NetworkNews;
-                $record->fromArray($item);
+                if (isset($old_news[$item['id']])) {
+                    $news_stats['updated']++;
+                    $record = $old_news[$item['id']];
+                } else {
+                    $news_stats['inserted']++;
+                    $record = new NetworkNews;
+                }
 
+                $record->fromArray($item);
                 $em->persist($record);
+
+                unset($old_news[$item['id']]);
+            }
+
+            // Delete unreferenced items.
+            foreach($old_news as $item_id => $item_to_remove)
+            {
+                $news_stats['deleted']++;
+                $em->remove($item_to_remove);
             }
 
             $em->flush();
@@ -210,5 +235,7 @@ class NewsManager
             // Flush cache of homepage news.
             \DF\Cache::remove('homepage_featured_news');
         }
+
+        \PVL\Debug::print_r($news_stats);
     }
 }

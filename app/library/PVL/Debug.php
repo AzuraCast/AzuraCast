@@ -135,11 +135,21 @@ class Debug
             self::display($log_row);
     }
 
-    // Timers
+    /**
+     * Start a timer with the specified name.
+     *
+     * @param $timer_name
+     */
     static function startTimer($timer_name)
     {
         self::$timers[$timer_name] = microtime(true);
     }
+
+    /**
+     * End a timer with the specified name, logging total time consumed.
+     *
+     * @param $timer_name
+     */
     static function endTimer($timer_name)
     {
         $start_time = (isset(self::$timers[$timer_name])) ? self::$timers[$timer_name] : microtime(true);
@@ -151,5 +161,18 @@ class Debug
         unset(self::$timers[$timer_name]);
     }
 
+    /**
+     * Surrounds the specified callable function with a timer for observation.
+     *
+     * @param $timer_name
+     * @param callable $timed_function
+     */
+    static function runTimer($timer_name, callable $timed_function)
+    {
+        self::startTimer($timer_name);
 
+        $timed_function();
+
+        self::endTimer($timer_name);
+    }
 }

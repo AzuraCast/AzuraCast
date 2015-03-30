@@ -20,13 +20,14 @@ class PodcastManager
 
         foreach($all_podcasts as $record)
         {
-            // Get current GUID records.
-            $existing_episodes = array();
+            $db_stats = array(
+                'record'    => $record->name,
+                'updated'   => 0,
+                'inserted'  => 0,
+                'deleted'   => 0,
+            );
 
-            foreach($record->episodes as $episode)
-                $existing_episodes[$episode->guid] = $episode;
-
-            // Pull new GUID records.
+            // Pull new records.
             $new_episodes = array();
 
             foreach($social_fields as $field_key => $field_adapter)
@@ -56,31 +57,40 @@ class PodcastManager
                 continue;
 
             // Reconcile differences.
-            $existing_guids = array_keys($existing_episodes);
-            $new_guids = array_keys($new_episodes);
+            $existing_episodes = array();
 
-            $guids_to_delete = array_diff($existing_guids, $new_guids);
-            if ($guids_to_delete)
+            foreach($record->episodes as $episode)
+                $existing_episodes[$episode->guid] = $episode;
+
+            foreach($new_episodes as $ep_guid => $ep_info)
             {
-                foreach($guids_to_delete as $guid)
+                if (isset($existing_episodes[$ep_guid]))
                 {
-                    $episode = $existing_episodes[$guid];
-                    $episode->delete();
+                    $db_stats['updated']++;
+                    $episode = $existing_episodes[$ep_guid];
                 }
-            }
-
-            $guids_to_add = array_diff($new_guids, $existing_guids);
-
-            if ($guids_to_add)
-            {
-                foreach($guids_to_add as $guid)
+                else
                 {
+                    $db_stats['inserted']++;
                     $episode = new PodcastEpisode;
                     $episode->podcast = $record;
-                    $episode->fromArray($new_episodes[$guid]);
-                    $episode->save();
                 }
+
+                $episode->fromArray($ep_info);
+                $em->persist($episode);
+
+                unset($existing_episodes[$ep_guid]);
             }
+
+            foreach($existing_episodes as $ep_guid => $ep_to_remove)
+            {
+                $db_stats['deleted']++;
+                $em->remove($ep_to_remove);
+            }
+
+            $em->flush();
+
+            \PVL\Debug::print_r($db_stats);
         }
 
         return true;

@@ -12,21 +12,71 @@ use \PVL\Service\PvlNode;
 
 class NotificationManager
 {
-    public static function run($force_run = false)
+    public static function run($force = false)
     {
         $di = \Phalcon\Di::getDefault();
 
+        self::_runNetworkNews($di, $force);
+        self::_runStationEvents($di, $force);
+        self::_runPodcastEpisodes($di, $force);
+    }
+
+    /**
+     * Run network news notifications.
+     *
+     * @param \Phalcon\DiInterface $di
+     * @param bool $force
+     */
+    public static function _runNetworkNews(\Phalcon\DiInterface $di, $force = false)
+    {
         $em = $di->get('em');
-        $config = $di->get('config');
 
-        /**
-         * Scheduled Shows from Stations
-         */
+        $earliest_post = time() - (60 * 60 * 48);
+        $latest_post = time();
 
+        $news_items = $em->createQuery('SELECT nn
+            FROM Entity\NetworkNews nn
+            WHERE nn.source = :source
+            AND nn.layout = :layout
+            AND nn.sort_timestamp BETWEEN :start AND :end
+            AND nn.is_notified = 0
+            ORDER BY nn.sort_timestamp DESC')
+            ->setParameter('source', 'tumblr')
+            ->setParameter('layout', 'vertical')
+            ->setParameter('start', $earliest_post)
+            ->setParameter('end', $latest_post)
+            ->setMaxResults(1)
+            ->execute();
+
+        if ($news_items) {
+            $article = $news_items[0];
+
+            $tweet_text = '#PVLive News: '.trim($article->title, ':').' - Read more:';
+            $tweet_url = $article->web_url;
+            $tweet_image = \DF\File::getFilePath($article->image_url);
+
+            self::notify($tweet_text, $tweet_url, $tweet_image, $force);
+
+            $article->is_notified = true;
+            $article->save();
+        }
+    }
+
+    /**
+     * Send notifications for new station events.
+     *
+     * @param \Phalcon\DiInterface $di
+     * @param bool $force
+     * @throws \DF\Exception
+     */
+    public static function _runStationEvents(\Phalcon\DiInterface $di, $force = false)
+    {
         $notify_minutes = 15;
 
+        $em = $di->get('em');
+
         $start_threshold = time();
-        $end_threshold = time()+(60*$notify_minutes);
+        $end_threshold = time() + (60 * $notify_minutes);
 
         $schedule_items = $em->createQuery('SELECT s, st FROM Entity\Schedule s JOIN s.station st WHERE s.start_time >= :start AND s.start_time <= :end AND s.is_notified = 0')
             ->setParameter('start', $start_threshold)
@@ -34,37 +84,45 @@ class NotificationManager
             ->setMaxResults(1)
             ->execute();
 
-        if ($schedule_items)
-        {
+        if ($schedule_items) {
             $schedule_item = $schedule_items[0];
             $station = $schedule_item->station;
 
             if ($station->twitter_url)
-                $twitter_handle = '@'.array_pop(explode('/', $station->twitter_url));
+                $twitter_handle = '@' . array_pop(explode('/', $station->twitter_url));
             else
                 $twitter_handle = $station->name;
 
-            $tweet = 'On The Air: '.$schedule_item->title.' in '.$notify_minutes.' minutes on '.$twitter_handle.'!';
+            $tweet = 'Tune in to ' . $schedule_item->title . ' in ' . $notify_minutes . ' minutes on ' . $twitter_handle . '!';
             $tweet_url = $station->getShortUrl();
 
             PvlNode::push('schedule.event_upcoming', array(
-                'event'     => Schedule::api($schedule_item),
-                'station'   => Station::api($station),
+                'event' => Schedule::api($schedule_item),
+                'station' => Station::api($station),
             ));
 
             $image_url = NULL;
-            if ($station->banner_url)
+            if ($schedule_item->banner_url)
+                $image_url = $schedule_item->banner_url;
+            else if ($station->banner_url)
                 $image_url = \DF\Url::content($station->banner_url);
 
-            self::notify($tweet, $tweet_url, $image_url);
+            self::notify($tweet, $tweet_url, $image_url, $force);
 
             $schedule_item->is_notified = true;
             $schedule_item->save();
         }
+    }
 
-        /**
-         * New Podcast Episodes
-         */
+    /**
+     * Send notifications for new podcast episodes.
+     *
+     * @param \Phalcon\DiInterface $di
+     * @throws \DF\Exception
+     */
+    public static function _runPodcastEpisodes(\Phalcon\DiInterface $di)
+    {
+        $em = $di->get('em');
 
         $start_threshold = time()-86400*7;
         $end_threshold = time();
@@ -97,11 +155,11 @@ class NotificationManager
             $episode->is_notified = true;
             $episode->save();
         }
-
-        return;
     }
 
     /**
+     * Send an individual notification.
+     *
      * @param $message
      * @param null $url
      * @param bool $force
@@ -110,6 +168,8 @@ class NotificationManager
     public static function notify($message, $url = null, $image = null, $force = false)
     {
         static $twitter;
+
+        \PVL\Debug::print_r(func_get_args());
 
         // Suppress notifications for non-production applications.
         if (DF_APPLICATION_ENV != "production" && !$force)

@@ -57,6 +57,10 @@ class Rss extends AdapterAbstract
 
                 if (!$web_url && substr($guid, 0, 4) == 'http')
                     $web_url = $guid;
+
+                $author = $item->author();
+                if (is_array($author))
+                    $author = $author[0]->nodeValue;
                 
                 $news_item = array(
                     'guid'          => 'rss_'.md5($guid),
@@ -65,10 +69,9 @@ class Rss extends AdapterAbstract
                     'title'         => $title,
                     'body'          => $description,
                     'web_url'       => $web_url,
-                    'author'        => $item->author(),
+                    'author'        => $author,
                 );
 
-                \PVL\Debug::print_r($item);
                 \PVL\Debug::print_r($news_item);
                 
                 $latest_news[] = $news_item;

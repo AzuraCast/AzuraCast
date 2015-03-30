@@ -58,6 +58,9 @@ class Schedule extends \DF\Doctrine\Entity
         return self::getRowImageUrl($this);
     }
 
+    /** @Column(name="banner_url", type="string", length=250, nullable=true) */
+    protected $banner_url;
+
     /** @Column(name="web_url", type="string", length=250, nullable=true) */
     protected $web_url;
 

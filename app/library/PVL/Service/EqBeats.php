@@ -1,9 +1,10 @@
 <?php
 namespace PVL\Service;
 
-use \Entity\Song;
-use \Entity\SongExternalEqBeats;
-use \Entity\SongExternalEqBeats as External;
+use Entity\Song;
+use Entity\SongExternalEqBeats as External;
+
+use PVL\Debug;
 
 class EqBeats
 {
@@ -11,13 +12,9 @@ class EqBeats
     {
         set_time_limit(300);
 
-        // Get existing IDs to avoid unnecessary work.
-        $existing_ids = External::getIds();
-        $song_ids = Song::getIds();
+        Debug::startTimer('Load remote data');
 
-        $em = External::getEntityManager();
-
-        $tracks = array();
+        $new_songs = array();
 
         for($i = 1; $i <= 200; $i++)
         {
@@ -26,45 +23,18 @@ class EqBeats
             if (count($page_tracks) == 0)
                 break;
 
-            $tracks[$i] = $page_tracks;
-        }
-
-        // Loop through tracks.
-        foreach($tracks as $page_num => $result)
-        {
-            foreach((array)$result as $row)
+            foreach ((array)$page_tracks as $row)
             {
-                $id = $row['id'];
                 $processed = External::processRemote($row);
-
                 $processed['hash'] = Song::getSongHash($processed);
-                if (!in_array($processed['hash'], $song_ids))
-                    Song::getOrCreate($processed);
 
-                if (isset($existing_ids[$id]))
-                {
-                    if ($existing_ids[$id] != $processed['hash'] || $force)
-                        $record = External::find($id);
-                    else
-                        $record = NULL;
-                }
-                else if (!in_array($processed['hash'], $existing_ids))
-                {
-                    $record = new External;
-                }
-
-                if ($record instanceof External)
-                {
-                    $record->fromArray($processed);
-                    $em->persist($record);
-                }
+                $new_songs[$processed['hash']] = $processed;
             }
-
-            $em->flush();
-            $em->clear();
         }
 
-        return true;
+        Debug::endTimer('Load remote data');
+
+        return External::import($new_songs, $force);
     }
 
     public static function loadPage($page = 1)
@@ -90,21 +60,6 @@ class EqBeats
      * Single Record Search
      */
 
-    public static function fetch(Song $song)
-    {
-        $result = self::_exactSearch($song);
-
-        if (!$result)
-            $result = self::_querySearch($song);
-
-        \PVL\Debug::print_r($result);
-
-        if ($result)
-            return $result;
-        else
-            return NULL;
-    }
-
     protected static function _exactSearch($song)
     {
         $base_url = 'https://eqbeats.org/tracks/search/exact/json';
@@ -114,7 +69,7 @@ class EqBeats
             'client'    => 'ponyvillelive',
         ));
 
-        \PVL\Debug::log('Exact Search: '.$url);
+        Debug::log('Exact Search: '.$url);
 
         $result = file_get_contents($url);
         if ($result)
@@ -136,7 +91,7 @@ class EqBeats
             'client'    => 'ponyvillelive',
         ));
 
-        \PVL\Debug::log('Query Search: '.$url);
+        Debug::log('Query Search: '.$url);
 
         $result = file_get_contents($url);
         if ($result)

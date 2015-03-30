@@ -18,7 +18,7 @@ class UtilController extends BaseController
 
         \PVL\Debug::setEchoMode();
 
-        \PVL\AnalyticsManager::run();
+        \PVL\NotificationManager::run();
 
         \PVL\Debug::log('Donezo!');
     }

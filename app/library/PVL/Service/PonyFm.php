@@ -1,21 +1,18 @@
 <?php
 namespace PVL\Service;
 
-use \Entity\Song;
-use \Entity\SongExternalPonyFm;
-use \Entity\SongExternalPonyFm as External;
+use Entity\Song;
+use Entity\SongExternalPonyFm as External;
+
+use PVL\Debug;
 
 class PonyFm
 {
     public static function load($force = false)
     {
-        set_time_limit(180);
+        set_time_limit(300);
 
-        // Get existing IDs to avoid unnecessary work.
-        $existing_ids = External::getIds();
-        $song_ids = Song::getIds();
-
-        $em = External::getEntityManager();
+        Debug::startTimer('Load remote data');
 
         $tracks = array();
         $first_page = self::loadPage(1);
@@ -34,41 +31,22 @@ class PonyFm
         }
 
         // Loop through tracks.
+        $new_songs = array();
+
         foreach($tracks as $page_num => $result)
         {
-            foreach((array)$result as $row)
+            foreach ((array)$result as $row)
             {
-                $id = $row['id'];
                 $processed = External::processRemote($row);
-
                 $processed['hash'] = Song::getSongHash($processed);
-                if (!in_array($processed['hash'], $song_ids))
-                    Song::getOrCreate($processed);
 
-                if (isset($existing_ids[$id]))
-                {
-                    if ($existing_ids[$id] != $processed['hash'] || $force)
-                        $record = External::find($id);
-                    else
-                        $record = NULL;
-                }
-                else if (!in_array($processed['hash'], $existing_ids))
-                {
-                    $record = new External;
-                }
-
-                if ($record instanceof External)
-                {
-                    $record->fromArray($processed);
-                    $em->persist($record);
-                }
+                $new_songs[$processed['hash']] = $processed;
             }
-
-            $em->flush();
-            $em->clear();
         }
 
-        return true;
+        Debug::endTimer('Load remote data');
+
+        return External::import($new_songs, $force);
     }
 
     public static function loadPage($page = 1)

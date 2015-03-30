@@ -12,6 +12,8 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class SongExternalBronyTunes extends \DF\Doctrine\Entity
 {
+    use Traits\ExternalSongs;
+
     public function __construct()
     {
         $this->created = time();
@@ -73,15 +75,6 @@ class SongExternalBronyTunes extends \DF\Doctrine\Entity
      * Static Functions
      */
 
-    public static function match(Song $song, $force_lookup = false)
-    {
-        $record = self::getRepository()->findOneBy(array('hash' => $song->id));
-        if ($record instanceof self)
-            return $record;
-        else
-            return NULL;
-    }
-
     public static function processRemote($result)
     {
         return array(
@@ -99,17 +92,4 @@ class SongExternalBronyTunes extends \DF\Doctrine\Entity
             'purchase_url' => $result['purchase_link'],
         );
     }
-
-    public static function getIds()
-    {
-        $em = self::getEntityManager();
-        $ids_raw = $em->createQuery('SELECT sebt.id, sebt.hash FROM '.__CLASS__.' sebt')->getArrayResult();
-
-        $ids = array();
-        foreach($ids_raw as $row)
-            $ids[$row['id']] = $row['hash'];
-
-        return $ids;
-    }
-
 }

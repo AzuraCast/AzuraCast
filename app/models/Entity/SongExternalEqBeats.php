@@ -12,6 +12,8 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class SongExternalEqBeats extends \DF\Doctrine\Entity
 {
+    use Traits\ExternalSongs;
+
     public function __construct()
     {
         $this->created = time();
@@ -58,36 +60,6 @@ class SongExternalEqBeats extends \DF\Doctrine\Entity
      * Static Functions
      */
 
-    public static function match(Song $song, $force_lookup = false)
-    {
-        $record = self::getRepository()->findOneBy(array('hash' => $song->id));
-        if ($record instanceof self)
-            return $record;
-
-        return null;
-    }
-
-    public static function lookUp(Song $song)
-    {
-        $result = \PVL\Service\EqBeats::fetch($song);
-
-        if ($result)
-        {
-            $record_data = self::processRemote($result);
-
-            $record = self::find($record_data['id']);
-            if (!($record instanceof self))
-                $record = new self;
-
-            $record->fromArray($record_data);
-            $record->save();
-
-            return $record;
-        }
-
-        return NULL;
-    }
-
     public static function processRemote($result)
     {
         return array(
@@ -100,17 +72,5 @@ class SongExternalEqBeats extends \DF\Doctrine\Entity
             'image_url' => $result['download']['art'],
             'download_url' => $result['download']['mp3'],
         );
-    }
-
-    public static function getIds()
-    {
-        $em = self::getEntityManager();
-        $ids_raw = $em->createQuery('SELECT se.id, se.hash FROM '.__CLASS__.' se')->getArrayResult();
-
-        $ids = array();
-        foreach($ids_raw as $row)
-            $ids[$row['id']] = $row['hash'];
-
-        return $ids;
     }
 }

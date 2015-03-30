@@ -144,7 +144,7 @@ echo $this->viewHelper->renderCommon('station', array('stations' => $cat['statio
 <?
 $tz_info = \PVL\Timezone::getInfo();
 ?>
-<h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a>, see <a href="<?=$this->url->get('schedule') ?>">entire schedule</a></small></h2>
+<h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a>, see <a href="<?=$this->url->get('schedule') ?>" target="_blank">entire schedule</a></small></h2>
 
 <div id="schedule_container">
     <?

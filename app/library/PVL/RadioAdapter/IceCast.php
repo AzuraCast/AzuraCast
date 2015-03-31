@@ -49,7 +49,18 @@ class IceCast extends AdapterAbstract
 
         $temp_array = $mounts[0];
 
-        $np['current_song'] = $this->getSongFromString($temp_array['title'], ' - ');
+        if (isset($temp_array['artist']))
+        {
+            $np['current_song'] = array(
+                'artist' => $temp_array['artist'],
+                'title' => $temp_array['title'],
+                'text' => $temp_array['artist'].' - '.$temp_array['title'],
+            );
+        }
+        else
+        {
+            $np['current_song'] = $this->getSongFromString($temp_array['title'], ' - ');
+        }
 
         $np['meta']['status'] = 'online';
         $np['meta']['bitrate'] = $temp_array['bitrate'];

@@ -105,7 +105,7 @@ class NotificationManager
             if ($schedule_item->banner_url)
                 $image_url = $schedule_item->banner_url;
             else if ($station->banner_url)
-                $image_url = \DF\Url::content($station->banner_url);
+                $image_url = \DF\File::getFilePath($station->banner_url);
 
             self::notify($tweet, $tweet_url, $image_url, $force);
 
@@ -203,30 +203,35 @@ class NotificationManager
 
         if ($image)
         {
-            $twitter->request('POST', 'https://upload.twitter.com/1.1/media/upload.json', array(
-                'media' => base64_encode(file_get_contents($image)),
-            ));
+            $image_data = base64_encode(file_get_contents($image));
 
-            \PVL\Debug::print_r($twitter->response['response']);
-            $image_response = @json_decode($twitter->response['response'], true);
-
-            if (isset($image_response['media_id_string']))
+            if (!empty($image_data))
             {
-                $media_id = $image_response['media_id_string'];
-
-                $twitter->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', array(
-                    'status' => $tweet,
-                    'media_ids' => array($media_id),
+                $twitter->request('POST', 'https://upload.twitter.com/1.1/media/upload.json', array(
+                    'media' => $image_data,
                 ));
+
                 \PVL\Debug::print_r($twitter->response['response']);
+                $image_response = @json_decode($twitter->response['response'], true);
+
+                if (isset($image_response['media_id_string']))
+                {
+                    $media_id = $image_response['media_id_string'];
+
+                    $twitter->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', array(
+                        'status' => $tweet,
+                        'media_ids' => array($media_id),
+                    ));
+                    \PVL\Debug::print_r($twitter->response['response']);
+                }
+                return true;
             }
         }
-        else
-        {
-            $twitter->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', array(
-                'status' => $tweet,
-            ));
-            \PVL\Debug::print_r($twitter->response['response']);
-        }
+
+        $twitter->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', array(
+            'status' => $tweet,
+        ));
+        \PVL\Debug::print_r($twitter->response['response']);
+        return true;
     }
 }

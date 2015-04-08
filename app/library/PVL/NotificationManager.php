@@ -160,9 +160,10 @@ class NotificationManager
     /**
      * Send an individual notification.
      *
-     * @param $message
-     * @param null $url
-     * @param bool $force
+     * @param string $message The main message body of the tweet.
+     * @param null $url URL to reference as a link in the tweet.
+     * @param null $image URL or filesystem path of an image to reference.
+     * @param bool $force Trigger a notification even in development mode.
      * @return bool
      */
     public static function notify($message, $url = null, $image = null, $force = false)
@@ -189,6 +190,12 @@ class NotificationManager
             $twitter = new \tmhOAuth($twitter_config);
         }
 
+        // Don't show images on top of YouTube videos.
+        if (stristr($url, 'youtube.com') !== false)
+        {
+            $image = NULL;
+        }
+
         $message_length = 140;
 
         if ($url)
@@ -196,6 +203,14 @@ class NotificationManager
         if ($image)
             $message_length -= 23;
 
+        // Post t.co URLs directly instead of pulling down data.
+        if (stristr($image, 't.co') !== FALSE)
+        {
+            $url .= ' '.$image;
+            $image = NULL;
+        }
+
+        // Cut off the URL
         $tweet = \DF\Utilities::truncateText($message, $message_length);
 
         if ($url)

@@ -40,7 +40,7 @@ class ConventionsController extends BaseController
     {
         $this->view->coverage = Convention::getCoverageLevels();
 
-        $query = $this->em->createQuery('SELECT c, cs, ca FROM Entity\Convention c LEFT JOIN c.signups cs LEFT JOIN c.archives ca ORDER BY c.start_date DESC');
+        $query = $this->em->createQuery('SELECT c FROM Entity\Convention c ORDER BY c.start_date DESC');
         $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 15);
     }
 

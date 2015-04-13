@@ -2,11 +2,12 @@
 namespace DF\View\Helper;
 class Paginate extends HelperAbstract
 {
+    /**
+     * @param $pager \DF\Paginator\Doctrine|\Zend_Paginator
+     * @return string
+     */
     public function paginate($pager)
     {
-        if (!($pager instanceof \Zend_Paginator))
-            return '';
-        
         $pages = (array)$pager->getPages();
 
         $query_string = '';

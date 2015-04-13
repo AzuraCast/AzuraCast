@@ -3,9 +3,9 @@
     "description": "The Ponyville Live! primary application.",
     "require": {
         "zendframework/zendframework1": "1.12.6",
-        "doctrine/orm": "v2.4.2",
+        "doctrine/orm": "2.4.*",
         "phpoffice/phpexcel": "1.8.0",
-        "james-heinrich/getid3": "v1.9.8",
+        "james-heinrich/getid3": "1.9.8",
         "electrolinux/phpquery": "0.9.6",
         "google/apiclient": "1.0.*@beta",
         "filp/whoops": "1.*"

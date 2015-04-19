@@ -15,10 +15,31 @@ class UtilController extends BaseController
         $this->doNotRender();
 
         set_time_limit(0);
+        ini_set('memory_limit', '-1');
 
         \PVL\Debug::setEchoMode();
 
-        \PVL\NotificationManager::run();
+        $influx = $this->di->get('influx');
+        $influx->setDatabase('pvlive_stations');
+
+        $old_analytics = $this->em->createQuery('SELECT a FROM Entity\Analytics a WHERE a.type = :type')
+            ->setParameter('type', 'day')
+            ->getArrayResult();
+
+        foreach($old_analytics as $row)
+        {
+            if ($row['station_id'])
+                $series = 'station.'.$row['station_id'];
+            else
+                $series = 'all';
+
+            $influx->insert('1d.'.$series.'.listeners', [
+                'time'  => $row['timestamp'],
+                'value' => $row['number_avg'],
+            ], 's');
+        }
+
+        //\PVL\NotificationManager::run();
 
         \PVL\Debug::log('Donezo!');
     }

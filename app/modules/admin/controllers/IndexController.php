@@ -23,44 +23,43 @@ class IndexController extends BaseController
 
         if (!$network_metrics || !$station_metrics) {
             // Statistics by day.
-            $daily_stats = $this->em->createQuery('SELECT a FROM Entity\Analytics a WHERE a.type = :type ORDER BY a.timestamp ASC')
-                ->setParameter('type', 'day')
-                ->getArrayResult();
+
+            $influx = $this->di->get('influx');
+            $influx->setDatabase('pvlive_stations');
 
             $station_averages = array();
             $network_data = array(
                 'PVL Network' => array(
-                    'ranges' => array(),
                     'averages' => array(),
                 ),
             );
 
-            foreach ($daily_stats as $stat) {
-                if (!$stat['station_id']) {
+            $daily_stats = $influx->query('SELECT * FROM /1d.*/', 'm');
+
+            foreach($daily_stats as $stat_series => $stat_rows)
+            {
+                $series_split = explode('.', $stat_series);
+
+                if ($series_split[1] == 'all')
+                {
                     $network_name = 'PVL Network';
-                    $network_data[$network_name]['ranges'][] = array($stat['timestamp'] * 1000, $stat['number_min'], $stat['number_max']);
-                    $network_data[$network_name]['averages'][] = array($stat['timestamp'] * 1000, $stat['number_avg']);
-                /*} elseif (isset($internal_stations[$stat['station_id']])) {
-                    $network_name = $internal_stations[$stat['station_id']]['name'];
-                    $network_data[$network_name]['ranges'][] = array($stat['timestamp'] * 1000, $stat['number_min'], $stat['number_max']);
-                    $network_data[$network_name]['averages'][] = array($stat['timestamp'] * 1000, $stat['number_avg']);
-                */
-                } else {
-                    $station_averages[$stat['station_id']][] = array($stat['timestamp'] * 1000, $stat['number_avg']);
+                    foreach($stat_rows as $stat_row)
+                    {
+                        $network_data[$network_name]['averages'][] = array($stat_row['time'], $stat_row['value']);
+                    }
+                }
+                else
+                {
+                    $station_id = $series_split[2];
+                    foreach($stat_rows as $stat_row)
+                    {
+                        $station_averages[$station_id][] = array($stat_row['time'], $stat_row['value']);
+                    }
                 }
             }
 
             $network_metrics = array();
             foreach ($network_data as $network_name => $data_charts) {
-                if (isset($data_charts['ranges'])) {
-                    $metric_row = new \stdClass;
-                    $metric_row->name = $network_name . ' Listener Range';
-                    $metric_row->type = 'arearange';
-                    $metric_row->data = $data_charts['ranges'];
-
-                    $network_metrics[] = $metric_row;
-                }
-
                 if (isset($data_charts['averages'])) {
                     $metric_row = new \stdClass;
                     $metric_row->name = $network_name . ' Daily Average';
@@ -88,8 +87,8 @@ class IndexController extends BaseController
             $network_metrics = json_encode($network_metrics);
             $station_metrics = json_encode($station_metrics);
 
-            \DF\Cache::save($network_metrics, 'admin_network_metrics', array(), 600);
-            \DF\Cache::save($station_metrics, 'admin_station_metrics', array(), 600);
+            // \DF\Cache::save($network_metrics, 'admin_network_metrics', array(), 600);
+            // \DF\Cache::save($station_metrics, 'admin_station_metrics', array(), 600);
         }
 
         $this->view->network_metrics = $network_metrics;

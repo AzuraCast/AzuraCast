@@ -75,7 +75,7 @@ then
 
     chown -R vagrant /var/log/nginx
 
-    unlink /etc/nginx/sites-enabled/default
+    unlink /etc/nginx/sites-enabled/
 
     # Set up MySQL server.
     echo "Customizing MySQL..."
@@ -85,6 +85,16 @@ then
     echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;" | mysql -u root -ppassword
     echo "CREATE DATABASE pvl CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root -ppassword
     service mysql restart
+
+    # Set up InfluxDB
+    cd ~
+    wget http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb
+    sudo dpkg -i influxdb_latest_amd64.deb
+    sudo /etc/init.d/influxdb start
+
+    # Preconfigure databases
+    cd $www_base/util
+    curl -X POST "http://localhost:8086/cluster/database_configs/pvlive_stations?u=root&p=root" --data-binary @influx_pvlive_stations.json
 
     # Enable PHP flags.
     echo "alias phpwww='sudo -u vagrant php'" >> /home/vagrant/.profile
@@ -127,6 +137,11 @@ fi
 if [ ! -f $www_base/app/config/db.conf.php ]
 then
 	cp $www_base/app/config/db.conf.sample.php $www_base/app/config/db.conf.php
+fi
+
+if [ ! -f $www_base/app/config/influx.conf.php ]
+then
+	cp $www_base/app/config/influx.conf.sample.php $www_base/app/config/influx.conf.php
 fi
 
 # Run Composer.js

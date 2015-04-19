@@ -22,9 +22,10 @@ class IndexController extends BaseController
         $threshold = strtotime('-1 month');
 
         // Statistics by day.
-        $daily_stats = $this->em->createQuery('SELECT a FROM Entity\Analytics a WHERE a.station_id = :station_id AND a.type = :type ORDER BY a.timestamp ASC')
+        $daily_stats = $this->em->createQuery('SELECT a FROM Entity\Analytics a WHERE a.station_id = :station_id AND a.type = :type AND a.timestamp >= :threshold ORDER BY a.timestamp ASC')
             ->setParameter('station_id', $this->station->id)
             ->setParameter('type', 'day')
+            ->setParameter('threshold', $threshold)
             ->getArrayResult();
 
         $daily_ranges = array();

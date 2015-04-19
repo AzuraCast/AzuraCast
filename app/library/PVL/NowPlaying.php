@@ -27,8 +27,32 @@ class NowPlaying
 
         $nowplaying = self::loadNowPlaying();
 
-        // Post statistics to official record.
+        // Post statistics to official record (legacy for duplication, for now)
         Analytics::post($nowplaying['api']);
+
+        // Post statistics to InfluxDB.
+        $influx = self::getInflux();
+        $influx->setDatabase('pvlive_stations');
+
+        $active_shortcodes = Station::getShortNameLookup();
+        $total_overall = 0;
+
+        foreach($nowplaying['api'] as $short_code => $info)
+        {
+            $listeners = (int)$info['listeners']['current'];
+            $station_id = $info['station']['id'];
+
+            if (isset($active_shortcodes[$short_code]))
+                $total_overall += $listeners;
+
+            $influx->insert('stations.'.$station_id.'.listeners', [
+                'value' => $listeners,
+            ]);
+        }
+
+        $influx->insert('all.listeners', [
+            'value' => $total_overall,
+        ]);
 
         // Clear any records that are not audio/video category.
         $api_categories = array('audio', 'video');
@@ -426,5 +450,11 @@ class NowPlaying
     {
         $di = \Phalcon\Di::getDefault();
         return $di->get('em');
+    }
+
+    public static function getInflux()
+    {
+        $di = \Phalcon\Di::getDefault();
+        return $di->get('influx');
     }
 }

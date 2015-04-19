@@ -160,6 +160,12 @@ $di->setShared('db', function() use ($config) {
     }
 });
 
+// InfluxDB
+$di->setShared('influx', function() use ($config) {
+    $opts = $config->influx->toArray();
+    return new \PVL\Service\InfluxDb($opts);
+});
+
 // Auth and ACL
 $di->setShared('auth', '\DF\Auth\Model');
 $di->setShared('acl', '\DF\Acl\Instance');

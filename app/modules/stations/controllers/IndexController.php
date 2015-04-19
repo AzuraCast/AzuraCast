@@ -44,7 +44,7 @@ class IndexController extends BaseController
             $daily_ranges[] = array($stat['time'], $stat['min'], $stat['max']);
             $daily_averages[] = array($stat['time'], $stat['value']);
 
-            $day_of_week = date('l', $stat['timestamp']+(86400/2));
+            $day_of_week = date('l', round($stat['time']/1000));
             $days_of_week[$day_of_week][] = $stat['number_avg'];
         }
 
@@ -77,7 +77,7 @@ class IndexController extends BaseController
             $hourly_ranges[] = array($stat['time'], $stat['min'], $stat['max']);
             $hourly_averages[] = array($stat['time'], $stat['value']);
 
-            $hour = date('G', $stat['timestamp']);
+            $hour = date('G', round($stat['time']/1000));
             $totals_by_hour[$hour][] = $stat['number_avg'];
         }
 

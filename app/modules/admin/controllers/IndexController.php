@@ -102,7 +102,7 @@ class IndexController extends BaseController
                 'station'   => $station_metrics,
             );
 
-            // \DF\Cache::save($network_metrics, 'admin_metrics', array(), 600);
+            \DF\Cache::save($network_metrics, 'admin_metrics', array(), 600);
         }
 
         $this->view->network_metrics = $metrics['network'];

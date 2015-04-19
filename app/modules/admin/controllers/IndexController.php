@@ -18,18 +18,18 @@ class IndexController extends BaseController
                 $internal_stations[$station->id] = $station;
         }
 
-        $network_metrics = \DF\Cache::get('admin_network_metrics');
-        $station_metrics = \DF\Cache::get('admin_station_metrics');
+        $metrics = \DF\Cache::get('admin_metrics');
 
-        if (!$network_metrics || !$station_metrics) {
+        if (!$metrics)
+        {
             // Statistics by day.
-
             $influx = $this->di->get('influx');
             $influx->setDatabase('pvlive_stations');
 
             $station_averages = array();
             $network_data = array(
                 'PVL Network' => array(
+                    'ranges' => array(),
                     'averages' => array(),
                 ),
             );
@@ -45,6 +45,7 @@ class IndexController extends BaseController
                     $network_name = 'PVL Network';
                     foreach($stat_rows as $stat_row)
                     {
+                        $network_data[$network_name]['ranges'][] = array($stat_row['time'], $stat_row['min'], $stat_row['max']);
                         $network_data[$network_name]['averages'][] = array($stat_row['time'], $stat_row['value']);
                     }
                 }
@@ -60,6 +61,15 @@ class IndexController extends BaseController
 
             $network_metrics = array();
             foreach ($network_data as $network_name => $data_charts) {
+                if (isset($data_charts['ranges'])) {
+                    $metric_row = new \stdClass;
+                    $metric_row->name = $network_name . ' Listener Range';
+                    $metric_row->type = 'arearange';
+                    $metric_row->data = $data_charts['ranges'];
+
+                    $network_metrics[] = $metric_row;
+                }
+
                 if (isset($data_charts['averages'])) {
                     $metric_row = new \stdClass;
                     $metric_row->name = $network_name . ' Daily Average';
@@ -87,12 +97,16 @@ class IndexController extends BaseController
             $network_metrics = json_encode($network_metrics);
             $station_metrics = json_encode($station_metrics);
 
-            // \DF\Cache::save($network_metrics, 'admin_network_metrics', array(), 600);
-            // \DF\Cache::save($station_metrics, 'admin_station_metrics', array(), 600);
+            $metrics = array(
+                'network'   => $network_metrics,
+                'station'   => $station_metrics,
+            );
+
+            // \DF\Cache::save($network_metrics, 'admin_metrics', array(), 600);
         }
 
-        $this->view->network_metrics = $network_metrics;
-        $this->view->station_metrics = $station_metrics;
+        $this->view->network_metrics = $metrics['network'];
+        $this->view->station_metrics = $metrics['station'];
 
         // Synchronization statuses
         if ($this->acl->isAllowed('administer all'))

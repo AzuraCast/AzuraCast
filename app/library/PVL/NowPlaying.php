@@ -45,7 +45,7 @@ class NowPlaying
             if (isset($active_shortcodes[$short_code]))
                 $total_overall += $listeners;
 
-            $influx->insert('stations.'.$station_id.'.listeners', [
+            $influx->insert('station.'.$station_id.'.listeners', [
                 'value' => $listeners,
             ]);
         }

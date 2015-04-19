@@ -36,6 +36,8 @@ class UtilController extends BaseController
             $influx->insert('1d.'.$series.'.listeners', [
                 'time'  => $row['timestamp'],
                 'value' => $row['number_avg'],
+                'min' => $row['number_min'],
+                'max' => $row['number_max'],
             ], 's');
         }
 

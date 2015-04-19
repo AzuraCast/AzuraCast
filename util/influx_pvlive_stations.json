@@ -2,8 +2,8 @@
   "spaces": [
     {
       "name": "default",
-      "retentionPolicy": "1d",
-      "shardDuration": "1h",
+      "retentionPolicy": "2d",
+      "shardDuration": "12h",
       "regex": "/.*/",
       "replicationFactor": 1,
       "split": 1
@@ -18,7 +18,7 @@
     },
     {
       "name": "1_day_rollup",
-      "retentionPolicy": "728d",
+      "retentionPolicy": "730d",
       "shardDuration": "7d",
       "regex": "/^1d.*/",
       "replicationFactor": 1,
@@ -26,7 +26,7 @@
     }
   ],
   "continuousQueries": [
-    "select mean(value) from /^[a-z]+.*$/ group by time(1h) into 1h.:series_name",
-    "select mean(value) from /^[a-z]+.*$/ group by time(1d) into 1d.:series_name"
+    "select min(value) AS min, mean(value) AS value, max(value) AS max from /^[a-z]+.*$/ group by time(1h) into 1h.:series_name",
+    "select min(value) AS min, mean(value) AS value, max(value) AS max from /^[a-z]+.*$/ group by time(1d) into 1d.:series_name"
   ]
 }

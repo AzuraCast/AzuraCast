@@ -22,11 +22,18 @@ class IndexController extends BaseController
         $threshold = strtotime('-1 month');
 
         // Statistics by day.
-        $daily_stats = $this->em->createQuery('SELECT a FROM Entity\Analytics a WHERE a.station_id = :station_id AND a.type = :type AND a.timestamp >= :threshold ORDER BY a.timestamp ASC')
-            ->setParameter('station_id', $this->station->id)
-            ->setParameter('type', 'day')
-            ->setParameter('threshold', $threshold)
-            ->getArrayResult();
+        $influx = $this->di->get('influx');
+        $influx->setDatabase('pvlive_stations');
+
+        try
+        {
+            $daily_stats = $influx->query('SELECT * FROM 1d.station.'.$this->station->id.'.listeners', 'm');
+            $daily_stats = array_pop($daily_stats);
+        }
+        catch(\Exception $e)
+        {
+            $daily_stats = array();
+        }
 
         $daily_ranges = array();
         $daily_averages = array();
@@ -34,8 +41,8 @@ class IndexController extends BaseController
 
         foreach($daily_stats as $stat)
         {
-            $daily_ranges[] = array($stat['timestamp']*1000, $stat['number_min'], $stat['number_max']);
-            $daily_averages[] = array($stat['timestamp']*1000, $stat['number_avg']);
+            $daily_ranges[] = array($stat['time'], $stat['min'], $stat['max']);
+            $daily_averages[] = array($stat['time'], $stat['value']);
 
             $day_of_week = date('l', $stat['timestamp']+(86400/2));
             $days_of_week[$day_of_week][] = $stat['number_avg'];
@@ -51,13 +58,15 @@ class IndexController extends BaseController
         $this->view->daily_averages = json_encode($daily_averages);
 
         // Statistics by hour.
-        $hourly_stats = $this->em->createQuery('SELECT a FROM Entity\Analytics a
-            WHERE a.station_id = :station_id AND a.type = :type AND a.timestamp >= :timestamp
-            ORDER BY a.timestamp ASC')
-            ->setParameter('station_id', $this->station->id)
-            ->setParameter('type', 'hour')
-            ->setParameter('timestamp', $threshold)
-            ->getArrayResult();
+        try
+        {
+            $hourly_stats = $influx->query('SELECT * FROM 1h.station.'.$this->station->id.'.listeners', 'm');
+            $hourly_stats = array_pop($hourly_stats);
+        }
+        catch(\Exception $e)
+        {
+            $hourly_stats = array();
+        }
 
         $hourly_averages = array();
         $hourly_ranges = array();
@@ -65,8 +74,8 @@ class IndexController extends BaseController
 
         foreach($hourly_stats as $stat)
         {
-            $hourly_ranges[] = array($stat['timestamp']*1000, $stat['number_min'], $stat['number_max']);
-            $hourly_averages[] = array($stat['timestamp']*1000, $stat['number_avg']);
+            $hourly_ranges[] = array($stat['time'], $stat['min'], $stat['max']);
+            $hourly_averages[] = array($stat['time'], $stat['value']);
 
             $hour = date('G', $stat['timestamp']);
             $totals_by_hour[$hour][] = $stat['number_avg'];

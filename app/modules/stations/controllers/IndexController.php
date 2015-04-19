@@ -45,7 +45,7 @@ class IndexController extends BaseController
             $daily_averages[] = array($stat['time'], $stat['value']);
 
             $day_of_week = date('l', round($stat['time']/1000));
-            $days_of_week[$day_of_week][] = $stat['number_avg'];
+            $days_of_week[$day_of_week][] = $stat['value'];
         }
 
         $day_of_week_stats = array();
@@ -78,7 +78,7 @@ class IndexController extends BaseController
             $hourly_averages[] = array($stat['time'], $stat['value']);
 
             $hour = date('G', round($stat['time']/1000));
-            $totals_by_hour[$hour][] = $stat['number_avg'];
+            $totals_by_hour[$hour][] = $stat['value'];
         }
 
         $this->view->hourly_ranges = json_encode($hourly_ranges);

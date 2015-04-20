@@ -37,7 +37,7 @@ trait ExternalSongs
 
             if (isset($existing_hashes[$song_hash]))
             {
-                if ($force)
+                if ($force && $existing_hashes[$song_hash] == $processed['id'])
                 {
                     $db_stats['updated']++;
                     $record = self::find($processed['id']);

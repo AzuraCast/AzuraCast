@@ -24,6 +24,8 @@ trait ExternalSongs
         $em = self::getEntityManager();
 
         $existing_hashes = self::getHashes();
+        $existing_ids = self::getIds();
+
         $unused_hashes = $existing_hashes;
 
         $song_ids = Song::getIds();
@@ -35,7 +37,7 @@ trait ExternalSongs
             if (!in_array($song_hash, $song_ids))
                 Song::getOrCreate($processed);
 
-            if (isset($existing_hashes[$song_hash]))
+            if (isset($existing_hashes[$song_hash])) // Song already exists in the system.
             {
                 if ($force && $existing_hashes[$song_hash] == $processed['id'])
                 {
@@ -48,7 +50,12 @@ trait ExternalSongs
                     $record = null;
                 }
             }
-            else
+            else if (isset($existing_ids[$processed['id']])) // Song ID exists, but not with the same hash.
+            {
+                $db_stats['updated']++;
+                $record = self::find($processed['id']);
+            }
+            else // Neither ID nor hash exist in the system.
             {
                 $db_stats['inserted']++;
                 $record = new self;

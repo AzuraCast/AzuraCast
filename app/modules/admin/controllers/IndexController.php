@@ -119,6 +119,8 @@ class IndexController extends BaseController
             $refined_metrics = array();
             foreach($raw_metrics as $metric_type => $metric_rows)
             {
+                ksort($metric_rows);
+
                 foreach($metric_rows as $row_timestamp => $row_value)
                     $refined_metrics[$metric_type][] = array($row_timestamp, $row_value);
             }

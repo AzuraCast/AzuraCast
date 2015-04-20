@@ -88,34 +88,28 @@ class ConventionManager
                     }
 
                     // Get playlist contents.
-                    $data = $yt_client->playlistItems->listPlaylistItems('id,snippet,status,contentDetails', array(
-                        'playlistId' => $playlist_id,
-                        'maxResults' => 50,
-                    ));
+                    $data = self::_getPlaylistItems($yt_client, $playlist_id);
 
-                    if ($data)
+                    foreach((array)$data as $item)
                     {
-                        foreach((array)$data['items'] as $item)
+                        $row_name = self::filterName($row, $item['snippet']['title']);
+                        $row_thumb = self::getThumbnail($item['snippet']['thumbnails']);
+
+                        // Apply name/thumbnail filtering to sub-videos.
+                        if (!empty($row_name) && !empty($row_thumb))
                         {
-                            $row_name = self::filterName($row, $item['snippet']['title']);
-                            $row_thumb = self::getThumbnail($item['snippet']['thumbnails']);
+                            $child_row = new ConventionArchive;
+                            $child_row->convention = $row->convention;
+                            $child_row->playlist_id = $row->id;
+                            $child_row->type = 'yt_video';
+                            $child_row->folder = $row->folder;
 
-                            // Apply name/thumbnail filtering to sub-videos.
-                            if (!empty($row_name) && !empty($row_thumb))
-                            {
-                                $child_row = new ConventionArchive;
-                                $child_row->convention = $row->convention;
-                                $child_row->playlist_id = $row->id;
-                                $child_row->type = 'yt_video';
-                                $child_row->folder = $row->folder;
+                            $child_row->name = $row_name;
+                            $child_row->description = $item['snippet']['description'];
+                            $child_row->web_url = 'http://www.youtube.com/watch?v=' . $item['contentDetails']['videoId'];
+                            $child_row->thumbnail_url = $row_thumb;
 
-                                $child_row->name = $row_name;
-                                $child_row->description = $item['snippet']['description'];
-                                $child_row->web_url = 'http://www.youtube.com/watch?v=' . $item['contentDetails']['videoId'];
-                                $child_row->thumbnail_url = $row_thumb;
-
-                                $em->persist($child_row);
-                            }
+                            $em->persist($child_row);
                         }
                     }
 
@@ -156,6 +150,36 @@ class ConventionManager
         }
 
         $em->flush();
+    }
+
+    /**
+     * Internal recursive function for getting YT playlist items.
+     *
+     * @param $yt_client
+     * @param $playlist_id
+     * @param null $page_token
+     */
+    protected static function _getPlaylistItems($yt_client, $playlist_id, $page_token = null)
+    {
+        $data = $yt_client->playlistItems->listPlaylistItems('id,snippet,status,contentDetails', array(
+            'playlistId'    => $playlist_id,
+            'maxResults'    => 50,
+            'pageToken'     => $page_token,
+        ));
+
+        if ($data)
+        {
+            $items = (array)$data['items'];
+
+            if ($data['nextPageToken'])
+                $items = array_merge($items, self::_getPlaylistItems($yt_client, $playlist_id, $data['nextPageToken']));
+
+            return $items;
+        }
+        else
+        {
+            return array();
+        }
     }
 
     public static function filterName(ConventionArchive $row, $name)

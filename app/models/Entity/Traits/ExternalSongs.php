@@ -24,6 +24,8 @@ trait ExternalSongs
         $em = self::getEntityManager();
 
         $existing_hashes = self::getHashes();
+        $unused_hashes = $existing_hashes;
+
         $song_ids = Song::getIds();
 
         $i = 0;
@@ -61,7 +63,7 @@ trait ExternalSongs
                 $em->persist($record);
             }
 
-            unset($existing_hashes[$song_hash]);
+            unset($unused_hashes[$song_hash]);
 
             $i++;
             if ($i % 200 == 0)
@@ -75,7 +77,7 @@ trait ExternalSongs
         $em->clear();
 
         // Clear out any songs not found.
-        $hashes_remaining = array_keys($existing_hashes);
+        $hashes_remaining = array_keys($unused_hashes);
         $db_stats['deleted'] = count($hashes_remaining);
 
         $em->createQuery('DELETE FROM '.__CLASS__.' e WHERE e.hash IN (:hashes)')

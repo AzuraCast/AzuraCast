@@ -10,6 +10,9 @@ class ApiController extends BaseController
 
     public function indexAction()
     {
+        $influx = $this->di->get('influx');
+        $influx->setDatabase('pvlive_analytics');
+
         set_time_limit(300);
         ini_set('memory_limit', '256M');
 
@@ -32,15 +35,21 @@ class ApiController extends BaseController
             );
 
             // Speed and Calls by Function
-            $stats_by_func = $this->em->createQuery('SELECT CONCAT(ac.controller, \'/\', ac.action) AS func_name, COUNT(ac) AS total_calls, AVG(ac.requesttime) AS request_time FROM Entity\ApiCall ac WHERE ac.timestamp >= :threshold GROUP BY func_name')
-                ->setParameter('threshold', $threshold)
-                ->getArrayResult();
+            try
+            {
+                $stats_by_func = $influx->query('SELECT count(value) AS total_calls, mean(requesttime) AS request_time, controller FROM api_calls GROUP BY controller', 's');
+                $stats_by_func = array_pop($stats_by_func);
+            }
+            catch(\Exception $e)
+            {
+                $stats_by_func = array();
+            }
 
             $total_calls = 0;
 
             foreach($stats_by_func as $func_row)
             {
-                $func = $func_row['func_name'];
+                $func = $func_row['controller'];
 
                 $total_calls += $func_row['total_calls'];
 
@@ -49,10 +58,15 @@ class ApiController extends BaseController
             }
 
             // Calls per client
-            $stats_by_client = $this->em->createQuery('SELECT ac.client, COUNT(ac.id) AS num_calls FROM \Entity\ApiCall ac WHERE ac.timestamp >= :threshold GROUP BY ac.client ORDER BY num_calls DESC')
-                ->setParameter('threshold', $threshold)
-                ->setMaxResults(10)
-                ->getArrayResult();
+            try
+            {
+                $stats_by_client = $influx->query('SELECT count(value) AS num_calls, client FROM api_calls GROUP BY client');
+                $stats_by_client = array_pop($stats_by_client);
+            }
+            catch(\Exception $e)
+            {
+                $stats_by_client = array();
+            }
 
             foreach($stats_by_client as $row)
             {
@@ -60,10 +74,15 @@ class ApiController extends BaseController
             }
 
             // Calls per user-agent
-            $stats_by_ua = $this->em->createQuery('SELECT ac.useragent, COUNT(ac.id) AS num_calls FROM \Entity\ApiCall ac WHERE ac.timestamp >= :threshold GROUP BY ac.useragent ORDER BY num_calls DESC')
-                ->setParameter('threshold', $threshold)
-                ->setMaxResults(10)
-                ->getArrayResult();
+            try
+            {
+                $stats_by_ua = $influx->query('SELECT count(value) AS num_calls, useragent FROM api_calls GROUP BY useragent');
+                $stats_by_ua = array_pop($stats_by_ua);
+            }
+            catch(\Exception $e)
+            {
+                $stats_by_ua = array();
+            }
 
             foreach($stats_by_ua as $row)
             {
@@ -71,33 +90,31 @@ class ApiController extends BaseController
             }
 
             // Calls per IP
-            $stats_by_ip = $this->em->createQuery('SELECT ac.ip, COUNT(ac.id) AS num_calls FROM \Entity\ApiCall ac WHERE ac.timestamp >= :threshold GROUP BY ac.ip ORDER BY num_calls DESC')
-                ->setParameter('threshold', $threshold)
-                ->setMaxResults(10)
-                ->getArrayResult();
+            try
+            {
+                $stats_by_ip = $influx->query('SELECT count(value) AS num_calls, ip FROM api_calls GROUP BY ip');
+                $stats_by_ip = array_pop($stats_by_ip);
+            }
+            catch(\Exception $e)
+            {
+                $stats_by_ip = array();
+            }
 
             foreach($stats_by_ip as $row)
             {
                 $stats['calls_by_ip'][$row['ip']] = $row['num_calls'];
             }
 
-            // TODO: Calls by hour
-
             /*
             // Calls by hour
-            $hour = date('G', $row['timestamp']);
 
-            if (!isset($raw_stats['calls_by_hour'][$hour]))
-                $raw_stats['calls_by_hour'][$hour] = 0;
-
-            $raw_stats['calls_by_hour'][$hour]++;
             */
-
-            arsort($stats['calls_by_function']);
-            arsort($stats['speed_by_function']);
 
             foreach($stats as $stat_category => &$stat_items)
             {
+                arsort($stat_items);
+                $stat_items = array_slice($stat_items, 0, 10);
+
                 foreach($stat_items as $stat_key => &$stat_value)
                 {
                     $stat_value = array(

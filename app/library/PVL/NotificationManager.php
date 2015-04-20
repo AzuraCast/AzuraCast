@@ -16,6 +16,8 @@ class NotificationManager
     {
         $di = \Phalcon\Di::getDefault();
 
+        \DF\Url::forceSchemePrefix(true);
+
         self::_runNetworkNews($di, $force);
         self::_runStationEvents($di, $force);
         self::_runPodcastEpisodes($di, $force);

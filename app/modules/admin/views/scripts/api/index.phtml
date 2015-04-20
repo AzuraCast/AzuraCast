@@ -61,7 +61,7 @@ $title = 'API Dashboard';
 
     </div>
     <div class="span4">
-        <h2>Calls by Hour of Day</h2>
+        <h2>Top Client Sources</h2>
 
         <table class="table datatable table-bordered table-striped">
             <colgroup>
@@ -73,16 +73,16 @@ $title = 'API Dashboard';
             <tr>
                 <th class="right">Total</th>
                 <th class="right">Percent</th>
-                <th>Hour (Local Time)</th>
+                <th>Client String</th>
             </tr>
             </thead>
             <tbody>
-            <? foreach($statistics['calls_by_hour'] as $hour => $row_info): ?>
-            <tr class="input">
-                <td class="right"><?=$row_info['total'] ?></td>
-                <td class="right"><?=$row_info['percentage'] ?></td>
-                <td><?=str_pad($hour, 2, '0', STR_PAD_LEFT) ?>:00</td>
-            </tr>
+            <? foreach($statistics['calls_by_client'] as $key => $row_info): ?>
+                <tr class="input">
+                    <td class="right"><?=$row_info['total'] ?></td>
+                    <td class="right"><?=$row_info['percentage'] ?></td>
+                    <td><?=$key ?></td>
+                </tr>
             <? endforeach; ?>
             </tbody>
         </table>
@@ -117,7 +117,7 @@ $title = 'API Dashboard';
             </tbody>
         </table>
     </div>
-    <div class="span3">
+    <div class="span6">
         <h2>Top Client IPs</h2>
 
         <table class="table datatable table-bordered table-striped">
@@ -145,30 +145,6 @@ $title = 'API Dashboard';
         </table>
     </div>
     <div class="span3">
-        <h2>Top Client Sources</h2>
 
-        <table class="table datatable table-bordered table-striped">
-            <colgroup>
-                <col width="25%">
-                <col width="25%">
-                <col width="50%">
-            </colgroup>
-            <thead>
-            <tr>
-                <th class="right">Total</th>
-                <th class="right">Percent</th>
-                <th>Client String</th>
-            </tr>
-            </thead>
-            <tbody>
-            <? foreach($statistics['calls_by_client'] as $key => $row_info): ?>
-                <tr class="input">
-                    <td class="right"><?=$row_info['total'] ?></td>
-                    <td class="right"><?=$row_info['percentage'] ?></td>
-                    <td><?=$key ?></td>
-                </tr>
-            <? endforeach; ?>
-            </tbody>
-        </table>
     </div>
 </div>

@@ -48,8 +48,17 @@ if ($skin == "dark")
         </div>
     </div>
     <div class="span9">
-        <div id="network_listeners_by_day" style="height: 250px;"></div>
-        <div id="station_listeners_by_day" style="height: 450px;"></div>
+        <div id="network_chart" style="height: 250px;"></div>
+        <div id="station_chart" style="height: 450px;"></div>
+
+        <div class="row-fluid">
+            <div class="span6">
+                <div id="api_chart" style="height: 300px;"></div>
+            </div>
+            <div class="span6">
+                <div id="podcast_chart" style="height: 300px;"></div>
+            </div>
+        </div>
 
         <h2>Synchronization Status</h2>
         <div class="well">
@@ -155,26 +164,45 @@ $(function () {
             useUTC: false
         }
     });
+
+    var datetime_axis = {
+        type: 'datetime',
+        labels: {
+            formatter: function () {
+                return Highcharts.dateFormat('%a %d %b', this.value);
+            },
+            dateTimeLabelFormats: {
+                minute: '%H:%M',
+                hour: '%H:%M',
+                day: '%e. %b',
+                week: '%e. %b',
+                month: '%b \'%y',
+                year: '%Y'
+            }
+        }
+    };
+
+    var hourly_axis = {
+        type: 'datetime',
+        labels: {
+            formatter: function () {
+                return Highcharts.dateFormat('%H:%M', this.value);
+            },
+            dateTimeLabelFormats: {
+                minute: '%H:%M',
+                hour: '%H:%M',
+                day: '%e. %b',
+                week: '%e. %b',
+                month: '%b \'%y',
+                year: '%Y'
+            }
+        }
+    };
         
-    $('#network_listeners_by_day').highcharts({
+    $('#network_chart').highcharts({
         chart: { zoomType: 'x' },
         title: { text: 'PVL Network Traffic by Day' },
-        xAxis: {
-            type: 'datetime',
-            labels: {
-                formatter: function () {
-                    return Highcharts.dateFormat('%a %d %b', this.value);
-                },
-                dateTimeLabelFormats: {
-                    minute: '%H:%M',
-                    hour: '%H:%M',
-                    day: '%e. %b',
-                    week: '%e. %b',
-                    month: '%b \'%y',
-                    year: '%Y'
-                }
-            }
-        },
+        xAxis: datetime_axis,
         plotOptions: {
             spline: {
                 marker: { enabled: false }
@@ -197,28 +225,13 @@ $(function () {
             '#8C0000'
         ],
         
-        series: <?=$network_metrics ?>
+        series: <?=$metrics['network'] ?>
     });
 
-    $('#station_listeners_by_day').highcharts({
+    $('#station_chart').highcharts({
         chart: { zoomType: 'x' },
         title: { text: 'PVL Station Traffic by Day' },
-        xAxis: {
-            type: 'datetime',
-            labels: {
-                formatter: function () {
-                    return Highcharts.dateFormat('%a %d %b', this.value);
-                },
-                dateTimeLabelFormats: {
-                    minute: '%H:%M',
-                    hour: '%H:%M',
-                    day: '%e. %b',
-                    week: '%e. %b',
-                    month: '%b \'%y',
-                    year: '%Y'
-                }
-            }
-        },
+        xAxis: datetime_axis,
         plotOptions: {
             spline: {
                 lineWidth: 1,
@@ -242,7 +255,63 @@ $(function () {
             xDateFormat: '%Y-%m-%d'
         },
         
-        series: <?=$station_metrics ?>
+        series: <?=$metrics['station'] ?>
+    });
+
+    $('#api_chart').highcharts({
+        chart: { zoomType: 'x' },
+        title: { text: 'Hourly API Traffic' },
+        xAxis: hourly_axis,
+        plotOptions: {
+            spline: {
+                lineWidth: 1,
+                marker: { enabled: false },
+                shadow: false,
+                states: {
+                    hover: {
+                        lineWidth: 3
+                    }
+                },
+                threshold: null
+            }
+        },
+        yAxis: {
+            title: { text: 'Calls' }
+        },
+        tooltip: {
+            crosshairs: true,
+            xDateFormat: '%Y-%m-%d'
+        },
+
+        series: <?=$metrics['api'] ?>
+    });
+
+    $('#podcast_chart').highcharts({
+        chart: { zoomType: 'x' },
+        title: { text: 'Hourly Podcast Traffic' },
+        xAxis: hourly_axis,
+        plotOptions: {
+            spline: {
+                lineWidth: 1,
+                marker: { enabled: false },
+                shadow: false,
+                states: {
+                    hover: {
+                        lineWidth: 3
+                    }
+                },
+                threshold: null
+            }
+        },
+        yAxis: {
+            title: { text: 'Traffic' }
+        },
+        tooltip: {
+            crosshairs: true,
+            xDateFormat: '%Y-%m-%d'
+        },
+
+        series: <?=$metrics['podcast'] ?>
     });
 });
 </script>

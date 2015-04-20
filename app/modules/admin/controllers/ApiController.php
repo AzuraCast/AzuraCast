@@ -20,7 +20,7 @@ class ApiController extends BaseController
 
         if (!$stats)
         {
-            $threshold = strtotime('-1 day');
+            $threshold = time() - (86400 * 2.5);
 
             $seconds_in_threshold = time() - $threshold;
             $minutes_in_threshold = round($seconds_in_threshold / 60);

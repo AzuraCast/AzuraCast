@@ -27,7 +27,7 @@ class IndexController extends BaseController
 
         try
         {
-            $daily_stats = $influx->query('SELECT * FROM 1d.station.'.$this->station->id.'.listeners', 'm');
+            $daily_stats = $influx->query('SELECT * FROM 1d.station.'.$this->station->id.'.listeners WHERE time > now() - 30d', 'm');
             $daily_stats = array_pop($daily_stats);
         }
         catch(\Exception $e)

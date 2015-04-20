@@ -34,7 +34,7 @@ class IndexController extends BaseController
                 ),
             );
 
-            $daily_stats = $influx->query('SELECT * FROM /1d.*/', 'm');
+            $daily_stats = $influx->query('SELECT * FROM /1d.*/ WHERE time > now() - 180d', 'm');
 
             foreach($daily_stats as $stat_series => $stat_rows)
             {

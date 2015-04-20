@@ -237,7 +237,12 @@ class Podcast extends \DF\Doctrine\Entity
         );
 
         if ($include_episodes)
-            $api_row['episodes'] = $row['episodes'];
+        {
+            $api_row['episodes'] = array();
+            foreach((array)$row['episodes'] as $ep)
+                $api_row['episodes'][] = PodcastEpisode::api($ep);
+        }
+
 
         $social_types = array_keys(self::getSocialTypes());
         foreach($social_types as $type_key)

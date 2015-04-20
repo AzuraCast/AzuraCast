@@ -150,7 +150,7 @@ class NotificationManager
             if ($podcast->banner_url)
                 $image_url = \DF\File::getFilePath($podcast->banner_url);
 
-            self::notify($tweet, $episode->web_url, $image_url);
+            self::notify($tweet, $episode->getLocalUrl('twitter'), $image_url);
 
             $episode->is_notified = true;
             $episode->save();

@@ -95,6 +95,7 @@ then
     # Preconfigure databases
     cd $www_base/util
     curl -X POST "http://localhost:8086/cluster/database_configs/pvlive_stations?u=root&p=root" --data-binary @influx_pvlive_stations.json
+    curl -X POST "http://localhost:8086/cluster/database_configs/pvlive_analytics?u=root&p=root" --data-binary @influx_pvlive_analytics.json
 
     # Enable PHP flags.
     echo "alias phpwww='sudo -u vagrant php'" >> /home/vagrant/.profile

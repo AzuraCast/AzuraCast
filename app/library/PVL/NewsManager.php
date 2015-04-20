@@ -129,7 +129,7 @@ class NewsManager
                     'source' => 'podcast',
                     'body' => trim($description),
                     'image_url' => $podcast['banner_url'],
-                    'web_url' => $ep['web_url'],
+                    'web_url' => \Entity\PodcastEpisode::getEpisodeLocalUrl($ep, 'pvlnews'),
                     'layout' => 'vertical',
                     'tags' => array($podcast['name'], 'Podcast Episodes'),
                     'sort_timestamp' => $ep['timestamp'],

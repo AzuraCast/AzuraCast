@@ -43,6 +43,9 @@ class BaseController extends \DF\Phalcon\Controller
             $remote_ip = $_SERVER['REMOTE_ADDR'];
 
         $params = array_merge((array)$this->dispatcher->getParams(), (array)$this->request->getQuery());
+
+        /*
+        // Insert into DB (legacy)
         $this->db->insert('api_calls', array(
             'timestamp'     => time(),
             'ip'            => $remote_ip,
@@ -55,6 +58,23 @@ class BaseController extends \DF\Phalcon\Controller
             'is_ajax'       => ($this->isAjax() ? '1' : '0'),
             'requesttime'   => $request_time,
         ));
+        */
+
+        // Insert into Influx
+        $influx = $this->di->get('influx');
+        $influx->setDatabase('pvlive_analytics');
+
+        $influx->insert('api_calls', [
+            'value'         => 1,
+            'ip'            => $remote_ip,
+            'client'        => $this->getParam('client', 'general'),
+            'useragent'     => $_SERVER['HTTP_USER_AGENT'],
+            'controller'    => $this->dispatcher->getControllerName().'/'.$this->dispatcher->getActionName(),
+            'parameters'    => json_encode($params),
+            'referrer'      => $_SERVER['HTTP_REFERER'],
+            'is_ajax'       => ($this->isAjax() ? '1' : '0'),
+            'requesttime'   => $request_time,
+        ]);
     }
 
     /**

@@ -68,6 +68,23 @@ class ShowController extends BaseController
         $record->play_count = $record->play_count + 1;
         $record->save();
 
+        // Insert into Influx
+        if (isset($_SERVER['CF-Connecting-IP']))
+            $remote_ip = $_SERVER['CF-Connecting-IP'];
+        else
+            $remote_ip = $_SERVER['REMOTE_ADDR'];
+
+        $influx = $this->di->get('influx');
+        $influx->setDatabase('pvlive_analytics');
+
+        $influx->insert('podcast.'.$podcast_id.'.'.$episode_id, [
+            'value'         => 1,
+            'ip'            => $remote_ip,
+            'client'        => $this->getParam('origin', 'organic'),
+            'useragent'     => $_SERVER['HTTP_USER_AGENT'],
+            'referrer'      => $_SERVER['HTTP_REFERER'],
+        ]);
+
         $redirect_url = $record->web_url;
         return $this->redirect($redirect_url);
     }

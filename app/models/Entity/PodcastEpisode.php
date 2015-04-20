@@ -59,14 +59,42 @@ class PodcastEpisode extends \DF\Doctrine\Entity
      */
     protected $podcast;
 
+    public function getLocalUrl($origin = NULL)
+    {
+        return self::getEpisodeLocalUrl($this, $origin);
+    }
+
+    /* Static Functions */
+
+    /**
+     * @param $row
+     * @return array
+     */
     public static function api($row)
     {
         if ($row instanceof self)
             $row = $row->toArray();
 
-        unset($row['podcast_id']);
-        unset($row['is_notified']);
+        $local_url = self::getEpisodeLocalUrl($row, 'api');
+        $web_url = $row['web_url'];
+
+        unset($row['podcast_id'], $row['is_notified'], $row['web_url']);
+
+        $row['raw_url'] = $local_url;
+        $row['web_url'] = $web_url;
 
         return $row;
+    }
+
+    public static function getEpisodeLocalUrl($row, $origin = NULL)
+    {
+        return \DF\Url::route(array(
+            'module'    => 'default',
+            'controller' => 'show',
+            'action'    => 'episode',
+            'id'        => $row['podcast_id'],
+            'episode'   => $row['id'],
+            'origin'    => $origin,
+        ));
     }
 }

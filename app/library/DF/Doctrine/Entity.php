@@ -403,7 +403,12 @@ class Entity implements \ArrayAccess
     /**
      * Static functions
      */
-     
+
+    /**
+     * Get an Entity Manager object from the Dependency Injector.
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
     public static function getEntityManager()
     {
         $di = \Phalcon\Di::getDefault();

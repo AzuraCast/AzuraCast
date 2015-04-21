@@ -16,10 +16,11 @@ $title = 'Manage Podcasts';
 
 <table class="table datatable table-striped table-nopadding">
     <colgroup>
-        <col width="20%" />
+        <col width="15%" />
         <col width="10%" />
         <col width="5%" />
-        <col width="35%" />
+        <col width="10%" />
+        <col width="30%" />
         <col width="30%" />
     </colgroup>
     <thead>
@@ -27,6 +28,7 @@ $title = 'Manage Podcasts';
             <th>Actions</th>
             <th>Avatar</th>
             <th>Status</th>
+            <th>Plays on PVL</th>
             <th>Podcast Name</th>
             <th>Latest Episode</th>
         </tr>
@@ -58,6 +60,9 @@ $title = 'Manage Podcasts';
             <? else: ?>
                 <span class="large-icon" title="Needs Review"><i class="icon-warning-sign"></i></span>
             <? endif; ?>
+            </td>
+            <td class="center">
+                <big><?=number_format($record->getEpisodePlays(), 0) ?></big>
             </td>
             <td>
                 <big><?=$record['name'] ?></big><br>

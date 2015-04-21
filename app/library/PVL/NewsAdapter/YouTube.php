@@ -19,7 +19,7 @@ class YouTube extends AdapterAbstract
         $gclient->setApplicationName($gclient_app_name);
         $gclient->setDeveloperKey($gclient_api_key);
 
-        $yt_client = new \Google_Service_YouTube($gclient);
+        $yt_client = new \PVL\Service\YouTube($gclient);
 
         // Retrieve account info from URL processor.
         $account_info = self::getAccount($url);
@@ -29,7 +29,7 @@ class YouTube extends AdapterAbstract
         {
             $data = $yt_client->channels->listChannels('id,contentDetails', array(
                 'forUsername' => $account_info['id'],
-                'maxResults' => 25,
+                'maxResults' => 1,
             ));
 
             if ($data)
@@ -43,38 +43,31 @@ class YouTube extends AdapterAbstract
         if (empty($playlist_id))
             return null;
 
-        $data = $yt_client->playlistItems->listPlaylistItems('id,snippet,status,contentDetails', array(
-            'playlistId' => $playlist_id,
-            'maxResults' => 25,
-        ));
-
+        $data = $yt_client->getPlaylistItems($playlist_id);
         $news_items = array();
 
-        if ($data)
+        foreach((array)$data as $item)
         {
-            $feed_items = (array)$data['items'];
+            if ($item['status']['privacyStatus'] != 'public')
+                continue;
 
-            foreach($feed_items as $item)
-            {
-                if ($item['status']['privacyStatus'] != 'public')
-                    continue;
+            $embed_src = 'http://www.youtube.com/watch?v='.$item['contentDetails']['videoId'];
 
-                $embed_src = 'http://www.youtube.com/watch?v='.$item['contentDetails']['videoId'];
-
-                $news_items[] = array(
-                    'guid'          => 'youtube_'.md5($item['id']),
-                    'timestamp'     => strtotime($item['snippet']['publishedAt']),
-                    'media_format'  => 'video',
-                    'title'         => $item['snippet']['title'],
-                    'body'          => $item['snippet']['description'],
-                    'web_url'       => $embed_src,
-                    'author'        => $item['snippet']['channelTitle'],
-                );
-            }
+            $news_items[] = array(
+                'guid'          => 'youtube_'.md5($item['id']),
+                'timestamp'     => strtotime($item['snippet']['publishedAt']),
+                'media_format'  => 'video',
+                'title'         => $item['snippet']['title'],
+                'body'          => $item['snippet']['description'],
+                'web_url'       => $embed_src,
+                'author'        => $item['snippet']['channelTitle'],
+            );
         }
 
         return $news_items;
     }
+
+
 
     public static function getAccount($url)
     {

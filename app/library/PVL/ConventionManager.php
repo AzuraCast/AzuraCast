@@ -53,7 +53,7 @@ class ConventionManager
         $gclient->setApplicationName($gclient_app_name);
         $gclient->setDeveloperKey($gclient_api_key);
 
-        $yt_client = new \Google_Service_YouTube($gclient);
+        $yt_client = new \PVL\Service\YouTube($gclient);
 
         $url = $row->web_url;
 
@@ -88,7 +88,7 @@ class ConventionManager
                     }
 
                     // Get playlist contents.
-                    $data = self::_getPlaylistItems($yt_client, $playlist_id);
+                    $data = $yt_client->getPlaylistItems($playlist_id);
 
                     foreach((array)$data as $item)
                     {

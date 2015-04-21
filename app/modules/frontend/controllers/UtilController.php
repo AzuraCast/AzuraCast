@@ -1,7 +1,8 @@
 <?php
 namespace Modules\Frontend\Controllers;
 
-use \Entity\Song;
+use \PVL\Debug;
+use \PVL\Utilities;
 
 class UtilController extends BaseController
 {
@@ -17,8 +18,13 @@ class UtilController extends BaseController
         set_time_limit(0);
         ini_set('memory_limit', '-1');
 
-        \PVL\Debug::setEchoMode();
+        Debug::setEchoMode();
 
+        $news_items = \PVL\NewsAdapter\YouTube::fetch('https://www.youtube.com/playlist?list=PLDD2A72001D65A928');
+
+        Utilities::print_r($news_items);
+
+        /*
         $influx = $this->di->get('influx');
         $influx->setDatabase('pvlive_stations');
 
@@ -42,7 +48,8 @@ class UtilController extends BaseController
         }
 
         //\PVL\NotificationManager::run();
+        */
 
-        \PVL\Debug::log('Donezo!');
+        Debug::log('Donezo!');
     }
 }

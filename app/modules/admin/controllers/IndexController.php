@@ -43,8 +43,8 @@ class IndexController extends BaseController
                     $network_name = 'PVL Network';
                     foreach($stat_rows as $stat_row)
                     {
-                        $network_data[$network_name]['ranges'][] = array($stat_row['time'], $stat_row['min'], $stat_row['max']);
-                        $network_data[$network_name]['averages'][] = array($stat_row['time'], $stat_row['value']);
+                        $network_data[$network_name]['ranges'][$stat_row['time']] = array($stat_row['time'], $stat_row['min'], $stat_row['max']);
+                        $network_data[$network_name]['averages'][$stat_row['time']] = array($stat_row['time'], round($stat_row['value'], 2));
                     }
                 }
                 else
@@ -52,7 +52,7 @@ class IndexController extends BaseController
                     $station_id = $series_split[2];
                     foreach($stat_rows as $stat_row)
                     {
-                        $station_averages[$station_id][] = array($stat_row['time'], $stat_row['value']);
+                        $station_averages[$station_id][$stat_row['time']] = array($stat_row['time'], round($stat_row['value'], 2));
                     }
                 }
             }
@@ -63,7 +63,9 @@ class IndexController extends BaseController
                     $metric_row = new \stdClass;
                     $metric_row->name = $network_name . ' Listener Range';
                     $metric_row->type = 'arearange';
-                    $metric_row->data = $data_charts['ranges'];
+
+                    ksort($data_charts['ranges']);
+                    $metric_row->data = array_values($data_charts['ranges']);
 
                     $network_metrics[] = $metric_row;
                 }
@@ -72,7 +74,9 @@ class IndexController extends BaseController
                     $metric_row = new \stdClass;
                     $metric_row->name = $network_name . ' Daily Average';
                     $metric_row->type = 'spline';
-                    $metric_row->data = $data_charts['averages'];
+
+                    ksort($data_charts['averages']);
+                    $metric_row->data = array_values($data_charts['averages']);
 
                     $network_metrics[] = $metric_row;
                 }
@@ -87,7 +91,9 @@ class IndexController extends BaseController
                     $series_obj = new \stdClass;
                     $series_obj->name = $station['name'];
                     $series_obj->type = 'spline';
-                    $series_obj->data = $station_averages[$station_id];
+
+                    ksort($station_averages[$station_id]);
+                    $series_obj->data = array_values($station_averages[$station_id]);
                     $station_metrics[] = $series_obj;
                 }
             }

@@ -39,6 +39,10 @@ $hide_title = true;
         </div>
     </div>
 
+    <? if ($show_charts): ?>
+        <?=$this->viewHelper->renderHere('view-stats') ?>
+    <? endif; ?>
+
     <br>
     <h3>All Episodes (<?=count($episodes) ?>)</h3>
 
@@ -65,7 +69,7 @@ $hide_title = true;
                         'class'     => 'btn-primary',
                         'href'      => \Entity\PodcastEpisode::getEpisodeLocalUrl($ep, 'pvlive'),
                         'target'    => '_blank',
-                        'text'      => 'View Episode',
+                        'text'      => 'View Episode'.(($show_charts) ? ' ('.$ep['play_count'].' plays)' : ''),
                     )) ?>
                 </td>
                 <td class="center">

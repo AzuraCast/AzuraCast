@@ -1,0 +1,78 @@
+<?
+$this->assets->collection('custom_js')
+    ->addJs('//code.highcharts.com/highcharts.js', false)
+    ->addJs('//code.highcharts.com/highcharts-more.js', false)
+    ->addJs('//code.highcharts.com/modules/exporting.js', false);
+
+$skin = \PVL\Customization::get('theme');
+if ($skin == "dark")
+    $this->assets->collection('custom_js')->addJs('js/highcharts/dark-blue.js');
+?>
+
+<div id="listeners_by_day" style="height: 250px;"></div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#listeners_by_day').highcharts({
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Podcast PVL Traffic by Day'
+            },
+            xAxis: {
+                type: 'datetime',
+                labels: {
+                    formatter: function () {
+                        return Highcharts.dateFormat('%a %d %b', this.value);
+                    },
+                    dateTimeLabelFormats: {
+                        minute: '%H:%M',
+                        hour: '%H:%M',
+                        day: '%e. %b',
+                        week: '%e. %b',
+                        month: '%b \'%y',
+                        year: '%Y'
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Listeners'
+                },
+                min: 0
+            },
+            tooltip: {
+                crosshairs: true,
+                xDateFormat: '%Y-%m-%d'
+            },
+            plotOptions: {
+                spline: {
+                    lineWidth: 2,
+                    marker: { enabled: false },
+                    shadow: false,
+                    states: {
+                        hover: {
+                            lineWidth: 3
+                        }
+                    },
+                    threshold: null
+                }
+            },
+            colors: [
+                '#2f7ed8',
+                '#000000'
+            ],
+
+            series: [{
+                name: 'Hourly Total Traffic',
+                type: 'spline',
+                data: <?=$chart_data['1h'] ?>
+            }, {
+                name: 'Daily Total Traffic',
+                type: 'spline',
+                data: <?=$chart_data['1d'] ?>
+            }]
+        });
+    });
+</script>

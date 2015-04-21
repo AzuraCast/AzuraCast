@@ -54,6 +54,12 @@ return array(
                         'multiOptions' => \Entity\Station::fetchSelect(TRUE),
                     )),
 
+                    'footer_message' => array('textarea', array(
+                        'label' => 'Footer Custom Message to Visitors',
+                        'class' => 'full-width double-height input-code',
+                        'spellcheck' => 'false',
+                    )),
+
                 ),
             ),
 

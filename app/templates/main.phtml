@@ -174,8 +174,18 @@ $tz_info = \PVL\Timezone::getInfo();
     </div>
 </div>
 
+<?
+$footer_msg = \Entity\Settings::getSetting('footer_message');
+?>
 <div class="copyright">
     <div class="container">
+        <? if (!empty($footer_msg)): ?>
+            <p class="footer-message">
+                <?=$footer_msg ?>
+            </p>
+            <br>
+        <? endif; ?>
+
         <p>MLP is copyright &copy; Hasbro. All creations are &copy; to their respective artists. All songs are property of their respective artists.<br>
             Copyright &copy; 2012-<?=date('Y') ?> <a href="http://www.bravelyblue.com/" target="_blank">Bravely Blue Media LLC</a> and Ponyville Live! All rights reserved.</p>
     </div>

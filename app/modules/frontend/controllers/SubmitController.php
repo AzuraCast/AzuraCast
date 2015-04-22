@@ -1,11 +1,13 @@
 <?php
 namespace Modules\Frontend\Controllers;
 
-use DF\Utilities;
+use PVL\Utilities;
 
+use Entity\Action;
 use Entity\Station;
 use Entity\StationStream;
 use Entity\StationManager;
+use Entity\Podcast;
 
 class SubmitController extends BaseController
 {
@@ -57,7 +59,12 @@ class SubmitController extends BaseController
 
             // Notify all existing managers.
             $station_managers_raw = StationManager::getAllActiveManagers();
-            $email_to = Utilities::ipull($station_managers_raw, 'email');
+            $station_emails = Utilities::ipull($station_managers_raw, 'email');
+
+            $network_administrators = Action::getUsersWithAction('administer all');
+            $network_emails = Utilities::ipull($network_administrators, 'email');
+
+            $email_to = array_merge($station_emails, $network_emails);
 
             if ($email_to)
             {
@@ -77,5 +84,55 @@ class SubmitController extends BaseController
         }
 
         $this->renderForm($form, 'edit', 'Submit Your Station');
+    }
+
+    public function showAction()
+    {
+        $form = new \DF\Form($this->current_module_config->forms->submit_show);
+
+        if($_POST && $form->isValid($_POST))
+        {
+            $data = $form->getValues();
+
+            $files = $form->processFiles('podcasts');
+            foreach($files as $file_field => $file_paths)
+                $data[$file_field] = $file_paths[1];
+
+            // Set up initial station record.
+            $record = new Podcast;
+            $record->fromArray($data);
+            $record->is_approved = false;
+
+            // Make the current user an administrator of the new station.
+            if (!$this->acl->isAllowed('administer all'))
+            {
+                $user = $this->auth->getLoggedInUser();
+                $record->contact_email = $user->email;
+            }
+
+            $record->save();
+
+            // Notify all existing managers.
+            $network_administrators = Action::getUsersWithAction('administer all');
+            $email_to = Utilities::ipull($network_administrators, 'email');
+
+            if ($email_to)
+            {
+                \DF\Messenger::send(array(
+                    'to'        => $email_to,
+                    'subject'   => 'New Podcast/Show Submitted For Review',
+                    'template'  => 'newshow',
+                    'vars'      => array(
+                        'form'      => $form->populate($_POST),
+                    ),
+                ));
+            }
+
+            $this->alert('Your show has been submitted. Thank you! We will contact you with any questions or additional information.', 'green');
+            $this->redirectHome();
+            return;
+        }
+
+        $this->renderForm($form, 'edit', 'Submit Your Show');
     }
 }

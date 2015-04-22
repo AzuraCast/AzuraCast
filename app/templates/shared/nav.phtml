@@ -48,9 +48,10 @@ $podcasts = \Entity\Podcast::fetchArray();
         <a href="#" data-toggle="dropdown"><i class="icon-rss"></i> Shows</a>
         <ul class="dropdown-menu">
             <li><a href="<?=$this->url->get('shows') ?>"><i class="icon-list"></i> Show Directory</a></li>
+            <li><a href="<?=$this->url->get('submit/show') ?>"><i class="icon-cloud-upload"></i> Submit a Show</a></li>
             <li class="divider"></li>
         <? foreach($podcasts as $podcast): ?>
-            <li><a href="<?=$podcast['web_url'] ?>" title="<?=$podcast['description'] ?>" target="_blank"><?=$podcast['name'] ?></a></li>
+            <li><a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>" title="<?=$podcast['description'] ?>" target="_blank"><?=$podcast['name'] ?></a></li>
         <? endforeach; ?>
         </ul>
     </li>

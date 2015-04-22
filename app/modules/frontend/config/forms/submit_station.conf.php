@@ -11,7 +11,7 @@ return array(
 
                 'about_text' => array('markup', array(
                     'markup' => '
-                        <p>We are honored that your station is interested in joining the Ponyville Live family. For over a year, the Ponyville Live (or, as we call it, PVL) network of stations has delivered countless hours of live programming, 24/7 radio stations, video streams, convention coverage, and more to Bronies across the world.</p>
+                        <p>We are honored that your station is interested in joining the Ponyville Live family. For over two years, the Ponyville Live (or, as we call it, PVL) network of stations has delivered countless hours of live programming, 24/7 radio stations, video streams, convention coverage, and more to Bronies across the world.</p>
 
                         <p><b>The PVL Promise:</b> Joining the PVL family of radio stations brings your station to a whole new audience, without sacrificing your station\'s independence or creativity. We do not influence the scheduling, staffing, or content of your station (as long as it\'s legal). Our goal is to give you and your team the opportunities and exposure that large stations would receive, but without needing to build an audience from scratch.</p>
 

@@ -55,6 +55,11 @@ class ShowController extends BaseController
 
         $this->view->podcast_airs_on = $airs_on;
 
+        // Paginate episodes.
+        $query = $this->em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.podcast_id = :podcast ORDER BY pe.timestamp DESC')
+            ->setParameter('podcast', $id);
+        $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 25);
+
         // Generate charts for administrators.
         if ($this->acl->isAllowed('view administration'))
         {

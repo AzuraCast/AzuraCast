@@ -16,10 +16,10 @@ $title = 'Manage Podcasts';
 
 <table class="table datatable table-striped table-nopadding">
     <colgroup>
-        <col width="15%" />
-        <col width="10%" />
-        <col width="5%" />
-        <col width="10%" />
+        <col width="20%" />
+        <col width="6%" />
+        <col width="7%" />
+        <col width="7%" />
         <col width="30%" />
         <col width="30%" />
     </colgroup>
@@ -27,17 +27,25 @@ $title = 'Manage Podcasts';
         <tr>
             <th>Actions</th>
             <th>Avatar</th>
-            <th>Status</th>
-            <th>Plays on PVL</th>
+            <th>Episodes</th>
+            <th>PVL Traffic</th>
             <th>Podcast Name</th>
             <th>Latest Episode</th>
         </tr>
     </thead>
     <tbody>
     <? foreach($pager as $record): ?>
-        <tr class="input">
+        <tr class="input <? if (!$record->is_approved): ?>disabled<? endif; ?>">
             <td class="center">
                 <div class="btn-group">
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'class'     => 'btn-primary',
+                        'icon'      => 'icon-info-sign',
+                        'href'      => $this->viewHelper->route(array('controller' => 'show', 'action' => 'view', 'id' => $record['id'])),
+                        'text'      => 'View',
+                        'target'    => '_blank',
+                    )) ?>
                     <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'icon'      => 'icon-pencil',
@@ -55,11 +63,7 @@ $title = 'Manage Podcasts';
             </td>
             <td class="center"><img src="<?=\DF\Url::content($record['image_url']) ?>" style="width: 64px;"></td>
             <td class="center">
-            <? if ($record->is_approved): ?>
-                <span class="large-icon" title="Approved"><i class="icon-ok-sign"></i></span>
-            <? else: ?>
-                <span class="large-icon" title="Needs Review"><i class="icon-warning-sign"></i></span>
-            <? endif; ?>
+                <big><?=number_format($record->getEpisodeCount(), 0) ?></big>
             </td>
             <td class="center">
                 <big><?=number_format($record->getEpisodePlays(), 0) ?></big>

@@ -127,6 +127,24 @@ class Podcast extends \DF\Doctrine\Entity
         }
     }
 
+    public function getEpisodeCount()
+    {
+        $em = self::getEntityManager();
+
+        try
+        {
+            $total_plays = $em->createQuery('SELECT COUNT(pe) FROM \Entity\PodcastEpisode pe WHERE pe.podcast_id = :podcast_id')
+                ->setParameter('podcast_id', $this->id)
+                ->getSingleScalarResult();
+
+            return (int)$total_plays;
+        }
+        catch(\Exception $e)
+        {
+            return 0;
+        }
+    }
+
     /**
      * @ManyToMany(targetEntity="Station")
      * @JoinTable(name="podcast_on_station",

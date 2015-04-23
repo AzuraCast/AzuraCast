@@ -46,6 +46,8 @@ $hide_title = true;
     <br>
     <h3>All Episodes (<?=count($episodes) ?>)</h3>
 
+    <?=$this->viewHelper->paginate($pager) ?>
+
     <table class="episode_list datatable table-striped table-bordered">
         <colgroup>
             <col width="20%">
@@ -60,7 +62,7 @@ $hide_title = true;
             </tr>
         </thead>
         <tbody>
-        <? foreach($episodes as $ep): ?>
+        <? foreach($pager as $ep): ?>
             <tr class="input">
                 <td class="center">
                     <?=$this->viewHelper->button(array(
@@ -85,4 +87,6 @@ $hide_title = true;
         <? endforeach; ?>
         </tbody>
     </table>
+
+    <?=$this->viewHelper->paginate($pager) ?>
 </div>

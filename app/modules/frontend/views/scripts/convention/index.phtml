@@ -10,7 +10,23 @@ $manual = true;
 
         <p>Below is a list of conventions our network will be attending soon. If you're hosting a MLP convention and would like to inquire about the PVL network covering your event, please contact us at <?=$this->viewHelper->mailto('pr@ponyvillelive.com') ?>.</p>
 
-        <h3>Upcoming Conventions</h3>
+        <h3>MLP Convention List</h3>
+        <p>Want to see the times and dates of all conventions past, present and future? Check out the MLP Conventions spreadsheet!</p>
+
+        <div class="buttons">
+            <?=$this->viewHelper->button(array(
+                'type'      => 'link',
+                'class'     => 'btn-block btn-large primary',
+                'text'      => 'MLP Conventions',
+                'icon'      => 'icon-group',
+                'href'      => 'http://pvlive.me/mlpcons',
+                'target'    => '_blank',
+            )) ?>
+        </div>
+
+        <h3>Upcoming PVL Conventions</h3>
+
+        <p>These are the conventions PVL will be covering in the near future. Come say hello to us!</p>
 
         <dl>
         <? foreach($conventions_upcoming as $record): ?>

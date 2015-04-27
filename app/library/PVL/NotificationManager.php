@@ -152,6 +152,10 @@ class NotificationManager
             if ($podcast->banner_url)
                 $image_url = \DF\File::getFilePath($podcast->banner_url);
 
+            // Special handling of podcast YT videos.
+            if (stristr($podcast->web_url, 'youtube.com') !== false)
+                $image_url = NULL;
+
             self::notify($tweet, $episode->getLocalUrl('twitter'), $image_url);
 
             $episode->is_notified = true;
@@ -190,12 +194,6 @@ class NotificationManager
 
             $twitter_config = $config->apis->twitter->toArray();
             $twitter = new \tmhOAuth($twitter_config);
-        }
-
-        // Don't show images on top of YouTube videos.
-        if (stristr($url, 'youtube.com') !== false)
-        {
-            $image = NULL;
         }
 
         $message_length = 140;

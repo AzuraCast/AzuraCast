@@ -486,6 +486,7 @@ class Station extends \DF\Doctrine\Entity
             'web_url'   => $row['web_url'],
             'twitter_url' => $row['twitter_url'],
             'irc'       => $row['irc'],
+            'sort_order' => $row['weight'],
         );
 
         if (isset($row['streams']))

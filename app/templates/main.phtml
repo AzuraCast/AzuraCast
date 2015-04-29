@@ -90,7 +90,7 @@ $tz_info = \PVL\Timezone::getInfo();
     </div>
 </div>
 
-<div class="header">
+<div class="header" role="banner">
     <div class="container">
         <div class="logo">
             <a href="<?=$this->url->get('') ?>"><img id="logo-header" src="<?=$this->url->getStatic('mid2013/logo_'.$skin.'.png') ?>" alt="Ponyville Live! Logo"></a>
@@ -98,12 +98,12 @@ $tz_info = \PVL\Timezone::getInfo();
 
         <div class="navbar">
             <div class="navbar-inner">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <a class="btn btn-navbar" role="button" data-toggle="collapse" data-target=".nav-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <div class="nav-collapse collapse">
+                <div class="nav-collapse collapse" role="navigation">
                     <?php $this->viewHelper->renderCommon("nav") ?>
                 </div>
             </div>
@@ -119,7 +119,7 @@ $tz_info = \PVL\Timezone::getInfo();
 <? endif; ?>
 
 <div id="body-wrapper">
-    <div id="body" class="container">
+    <div id="body" class="container" role="main">
         <div id="page_wrapper">
             <div id="page">
                 <?
@@ -170,7 +170,7 @@ $tz_info = \PVL\Timezone::getInfo();
     </div>
 </div>
 
-<div class="footer">
+<div class="footer" role="contentinfo">
     <div class="container">
         <?=$this->viewHelper->renderCommon('footer') ?>
     </div>
@@ -179,7 +179,7 @@ $tz_info = \PVL\Timezone::getInfo();
 <?
 $footer_msg = \Entity\Settings::getSetting('footer_message');
 ?>
-<div class="copyright">
+<div class="copyright" role="contentinfo">
     <div class="container">
         <? if (!empty($footer_msg)): ?>
             <p class="footer-message">

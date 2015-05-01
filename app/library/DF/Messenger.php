@@ -101,6 +101,8 @@ class Messenger
         
         if (!is_array($options['to']))
             $options['to'] = array($options['to']);
+        else
+            $options['to'] = array_unique($options['to']);
         
         foreach((array)$options['to'] as $mail_to_addr)
         {

@@ -13,7 +13,7 @@ class Instance implements \Phalcon\DI\InjectionAwareInterface
     protected $_actions = NULL;
 
     protected $_di;
-    public function setDi($di)
+    public function setDi(\Phalcon\DiInterface $di = null)
     {
         $this->_di = $di;
     }

@@ -55,6 +55,8 @@ class IndexController extends BaseController
         }
 
         $this->view->autoplay = (bool)$this->getParam('autoplay', true);
+
+        $this->view->pick('index/index');
     }
 
     public function tuneinAction()

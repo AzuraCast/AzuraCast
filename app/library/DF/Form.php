@@ -137,6 +137,10 @@ class Form
             unset($field_options['validators']);
         }
 
+        // TODO: Implement filters.
+        if (isset($field_options['filters']))
+            unset($field_options['filters']);
+
         if (isset($field_options['minLength'])) {
             $element_validators[] = new \Phalcon\Validation\Validator\StringLength(array(
                 'min'       => $field_options['minLength'],

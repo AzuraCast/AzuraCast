@@ -10,7 +10,7 @@ class RenderCommon extends HelperAbstract
     {
         $previous_partials_dir = $this->view->getPartialsDir();
 
-        $new_partials_dir = $this->view->getLayoutsDir().'/shared';
+        $new_partials_dir = $this->view->getLayoutsDir().'/shared/';
         $this->view->setPartialsDir($new_partials_dir);
 
         $partial = $this->view->partial($target, $vars);

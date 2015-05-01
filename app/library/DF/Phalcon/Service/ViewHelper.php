@@ -4,7 +4,7 @@ namespace DF\Phalcon\Service;
 class ViewHelper implements \Phalcon\DI\InjectionAwareInterface
 {
     protected $_di;
-    public function setDi($di)
+    public function setDi(\Phalcon\DiInterface $di)
     {
         $this->_di = $di;
     }

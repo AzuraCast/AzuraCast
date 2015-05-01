@@ -7,7 +7,8 @@ require __DIR__ . '/../app/bootstrap.php';
 
 try
 {
-    $application = new Application($di);
+    $application = new \DF\Phalcon\Application($di);
+    $application->useImplicitView(true);
 
     $application->bootstrap()->run();
 }

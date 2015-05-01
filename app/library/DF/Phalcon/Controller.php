@@ -33,6 +33,7 @@ class Controller extends \Phalcon\Mvc\Controller
 
         if ($is_ajax)
         {
+            $this->view->cleanTemplateAfter();
             $this->view->setLayout(null);
         }
 
@@ -317,24 +318,23 @@ class Controller extends \Phalcon\Mvc\Controller
 
     protected function renderForm(\DF\Form $form, $mode = 'edit', $form_title = NULL)
     {
-        $this->view->disable();
-
-        $view = \DF\Phalcon\View::getView();
-
-        if ($this->isAjax())
-            $view->setLayout(null);
+        $this->view->setViewsDir('modules/frontend/views/scripts/');
 
         // Show visible title.
         if ($form_title)
-            $view->title = $form_title;
+            $this->view->title = $form_title;
 
-        $view->form = $form;
-        $view->render_mode = $mode;
+        $this->view->form = $form;
+        $this->view->render_mode = $mode;
 
-        $result = $view->getRender('system', 'form');
+        $this->view->pick('system/form');
+
+        /*
+        $result = $this->view->getRender('system', 'form');
 
         $this->response->setContent($result);
         $this->response->send();
+        */
     }
 
     /* Parameter Handling */

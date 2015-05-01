@@ -8,26 +8,29 @@ export www_base=$app_base/vagrant
 if [ ! -f $app_base/.deploy_run ]
 then
 
+    # Add Vagrant user to the sudoers group
+    echo 'vagrant ALL=(ALL) ALL' >> /etc/sudoers
+
     # Set up swap partition
-    sudo fallocate -l 2G /swapfile
-    sudo chmod 600 /swapfile
-    sudo mkswap /swapfile
-    sudo swapon /swapfile
-    sudo echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
+    fallocate -l 2G /swapfile
+    chmod 600 /swapfile
+    mkswap /swapfile
+    swapon /swapfile
+    echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
 
     # Set up server
-    apt-get -q -y install python-software-properties
+    apt-get -q -y install software-properties-common python-software-properties
 
     # Add Phalcon PPA
     apt-add-repository ppa:phalcon/stable
 
     # Add MariaDB repo
-    sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
-    sudo add-apt-repository 'deb http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.0/ubuntu trusty main'
+    apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+    add-apt-repository 'deb http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.0/ubuntu trusty main'
 
     apt-get update
 
-    apt-get -q -y install vim git nginx mariadb-server php5-fpm php5-cli php5-gd php5-mysqlnd php5-curl php5-phalcon nodejs npm
+    apt-get -q -y install vim git curl nginx mariadb-server php5-fpm php5-cli php5-gd php5-mysqlnd php5-curl php5-phalcon nodejs npm
     apt-get autoremove
 
     # Set Node.js bin alias
@@ -89,8 +92,11 @@ then
     # Set up InfluxDB
     cd ~
     wget http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb
-    sudo dpkg -i influxdb_latest_amd64.deb
-    sudo /etc/init.d/influxdb start
+    dpkg -i influxdb_latest_amd64.deb
+    service influxdb start
+
+    # Force delay for InfluxDB setup
+    sleep 5
 
     # Preconfigure databases
     cd $www_base/util
@@ -116,7 +122,7 @@ then
 
     # Install Node.js and services
     cd $www_base
-    sudo npm install -g gulp
+    npm install -g gulp
     npm install --no-bin-links
 
     cd $www_base/live
@@ -153,9 +159,9 @@ then
 fi
 
 # Shut off Cron tasks for now
-sudo service cron stop
-sudo service nginx stop
-sudo service pvlnode stop
+service cron stop
+service nginx stop
+service pvlnode stop
 
 # Set up DB.
 echo "Setting up database..."
@@ -169,7 +175,7 @@ sudo -u vagrant php cli.php cache:clear
 
 sudo -u vagrant php vagrant_import.php
 
-sudo service pvlnode start
+service pvlnode start
 
 echo "Importing external music databases (takes a minute)..."
 sudo -u vagrant php cli.php sync:long
@@ -184,8 +190,8 @@ sudo -u vagrant php cli.php sync:nowplaying
 echo "Installing cron job..."
 crontab -u vagrant $www_base/util/vagrant_cron
 
-sudo service cron start
-sudo service nginx start
+service cron start
+service nginx start
 
 echo "One-time setup complete!"
 echo "Server now live at http://dev.pvlive.me"

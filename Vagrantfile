@@ -9,6 +9,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "dev.pvlive.me"
 
+  # Support for Parallels provider for Vagrant
+  # See: http://parallels.github.io/vagrant-parallels/docs/
+  config.vm.provider "parallels" do |v, override|
+    v.update_guest_tools = true
+    v.memory = 1024
+
+    override.vm.box = "parallels/ubuntu-14.04"
+  end
+
+  # Customization for Virtualbox (default provider)
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
+
   if Vagrant.has_plugin?("hostsupdater")
     config.hostsupdater.aliases = ["local.ponyvillelive.com", "dev.ponyvillelive.com", "local.pvlive.me"]
   end
@@ -17,11 +32,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.synced_folder ".", "/var/www/vagrant"
   config.vm.synced_folder ".", "/vagrant"
-
-  config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    vb.customize ["modifyvm", :id, "--memory", "1024"]
-  end
 
   config.vm.provision "shell" do |s|
     s.path = "util/vagrant_deploy.sh"

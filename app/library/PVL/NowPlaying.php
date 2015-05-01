@@ -341,6 +341,7 @@ class NowPlaying
                 new \PVL\VideoAdapter\Livestream($stream, $station),
                 new \PVL\VideoAdapter\TwitchTv($stream, $station),
                 new \PVL\VideoAdapter\UStream($stream, $station),
+                new \PVL\VideoAdapter\StreamUp($stream, $station),
             );
 
             foreach($adapters as $np_adapter)

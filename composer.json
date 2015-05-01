@@ -12,7 +12,7 @@
     "guzzlehttp/guzzle": "~5.0"
   },
   "require-dev": {
-    "phalcon/devtools": "dev-master"
+    "phalcon/devtools": "dev-master@dev"
   },
   "authors": [
     {
@@ -23,5 +23,5 @@
   "config": {
     "preferred-install": "dist"
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "stable"
 }

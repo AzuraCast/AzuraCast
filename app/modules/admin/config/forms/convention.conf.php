@@ -61,7 +61,6 @@ return array(
             'description' => 'Enable the convention signup form for camera operators and other staff.',
             'multiOptions' => array(0 => 'No', 1 => 'Yes'),
             'default' => 1,
-            'required' => true,
         )),
 
         'signup_notes' => array('textarea', array(

@@ -581,7 +581,9 @@ class Form
                 if ($set_field)
                 {
                     $element = $this->form->get($field_key);
-                    $element->setDefault($default_value);
+
+                    if (!($element instanceof \Phalcon\Forms\Element\File))
+                        $element->setDefault($default_value);
                 }
             }
             else if (is_array($default_value))
@@ -628,6 +630,9 @@ class Form
 
         foreach($all_uploaded_files as $file)
         {
+            if (!$file->isUploadedFile())
+                continue;
+
             // Validate that this form contains a field with this name.
             $element_key = $file->getKey();
             if (!$this->form->has($element_key))
@@ -649,7 +654,7 @@ class Form
             $element_name_clean = preg_replace('#[^a-zA-Z0-9\_]#', '', $element_key);
 
             $new_file_name = ($file_name_prefix) ? $file_name_prefix.'_' : '';
-            $new_file_name .= date('Ymd_His').'_'.mt_rand(100, 999).'_'.$element_name_clean.'_'.$i.'.'.File::getFileExtension($file->getName());
+            $new_file_name .= date('Ymd_His').'_'.mt_rand(100, 999).'_'.$element_name_clean.'_'.$i.'.'.$file->getExtension();
 
             $new_file_path_short = $destination_folder.DIRECTORY_SEPARATOR.$new_file_name;
             $new_file_path_full = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_file_path_short;

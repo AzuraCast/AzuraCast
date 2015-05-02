@@ -25,7 +25,7 @@ class Form
 
         $this->form = new $form;
 
-        if ($options instanceof \Phalcon\Config)
+        if ($options instanceof \DF\Config\Item)
             $options = $options->toArray();
 
         $this->options = $options;

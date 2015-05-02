@@ -42,7 +42,6 @@ class Config
             else
                 $this_config = $this->getFile($config_base); // Return single files.
             
-            
             $this->_loaded_configs[$name] = $this_config;
         }
         
@@ -52,15 +51,11 @@ class Config
     public function getFile($config_base)
     {
         if (file_exists($config_base))
-            return new \Phalcon\Config(require $config_base);
-        if (file_exists($config_base.'.conf.php'))
-            return new \Phalcon\Config(require $config_base.'.conf.php');
-        else if (file_exists($config_base.'.ini'))
-            return new \Phalcon\Config\Adapter\Ini($config_base.'.ini');
-        else if (file_exists($config_base.'.json'))
-            return new \Phalcon\Config\Adapter\Json($config_base.'.json');
+            return new Config\Item(require $config_base);
+        elseif (file_exists($config_base.'.conf.php'))
+            return new Config\Item(require $config_base.'.conf.php');
         else
-            return new \Phalcon\Config(array());
+            return new Config\Item(array());
     }
     
     /**

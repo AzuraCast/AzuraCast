@@ -41,6 +41,7 @@ $autoloader = require(DF_INCLUDE_VENDOR . DIRECTORY_SEPARATOR . 'autoload.php');
 
 // Save configuration object.
 require(DF_INCLUDE_LIB . '/DF/Config.php');
+require(DF_INCLUDE_LIB . '/DF/Config/Item.php');
 
 $config = new \DF\Config(DF_INCLUDE_BASE.'/config');
 $config->preload(array('application','general'));

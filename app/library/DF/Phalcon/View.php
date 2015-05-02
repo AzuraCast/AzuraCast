@@ -16,10 +16,10 @@ class View
             $di = \Phalcon\Di::getDefault();
 
         $defaults = array(
-            'base_dir'      => DF_INCLUDE_BASE,
-            'views_dir'     => 'modules/frontend/views/scripts',
+            'base_dir'      => DF_INCLUDE_BASE.'/',
+            'views_dir'     => 'modules/frontend/views/scripts/',
             'partials_dir'  => '',
-            'layouts_dir'   => '../../../../templates',
+            'layouts_dir'   => '../../../../templates/',
             'layout'        => 'main',
         );
         $options = array_merge($defaults, (array)$options);
@@ -36,7 +36,7 @@ class View
 
         // Relative path of main templates.
         $view->setLayoutsDir($options['layouts_dir']);
-        $view->setLayout($options['layout']);
+        $view->setTemplateAfter($options['layout']);
 
         // Use present directory for partials by default.
         $view->setPartialsDir($options['partials_dir']);
@@ -68,7 +68,6 @@ class View
                 });
 
                 return $volt;
-
             }
         ));
 

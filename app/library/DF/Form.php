@@ -25,7 +25,7 @@ class Form
 
         $this->form = new $form;
 
-        if ($options instanceof \Phalcon\Config)
+        if ($options instanceof \DF\Config\Item)
             $options = $options->toArray();
 
         $this->options = $options;
@@ -136,6 +136,10 @@ class Form
 
             unset($field_options['validators']);
         }
+
+        // TODO: Implement filters.
+        if (isset($field_options['filters']))
+            unset($field_options['filters']);
 
         if (isset($field_options['minLength'])) {
             $element_validators[] = new \Phalcon\Validation\Validator\StringLength(array(

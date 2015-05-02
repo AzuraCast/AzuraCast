@@ -55,6 +55,8 @@ class IndexController extends BaseController
         }
 
         $this->view->autoplay = (bool)$this->getParam('autoplay', true);
+
+        $this->view->pick('index/index');
     }
 
     public function tuneinAction()
@@ -65,7 +67,7 @@ class IndexController extends BaseController
         \DF\Session::disable();
 
         // Switch to maintenance theme.
-        $this->view->setLayout('maintenance');
+        $this->view->setTemplateAfter('maintenance');
 
         $this->view->embed_mode = ($this->getParam('embed', 'false') == 'true');
         $this->view->skin = ($this->getParam('skin'));

@@ -6,13 +6,20 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
     protected $_module_class_name;
     protected $_module_dir;
 
+    /**
+     * @param $class_name
+     * @param $dir
+     */
     protected function setModuleInfo($class_name, $dir)
     {
         $this->_module_class_name = $class_name;
         $this->_module_dir = $dir;
     }
 
-    public function registerAutoloaders($di)
+    /**
+     * @param \Phalcon\DiInterface $di
+     */
+    public function registerAutoloaders(\Phalcon\DiInterface $di = null)
     {
         $loader = new \Phalcon\Loader();
 
@@ -24,7 +31,10 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         $loader->register();
     }
 
-    public function registerServices($di)
+    /**
+     * @param \Phalcon\DiInterface $di
+     */
+    public function registerServices(\Phalcon\DiInterface $di = null)
     {
         // Set up MVC dispatcher.
         $controller_class = 'Modules\\'.$this->_module_class_name.'\Controllers';

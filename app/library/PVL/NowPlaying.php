@@ -28,7 +28,7 @@ class NowPlaying
         $nowplaying = self::loadNowPlaying();
 
         // Post statistics to official record (legacy for duplication, for now)
-        Analytics::post($nowplaying['api']);
+        // Analytics::post($nowplaying['api']);
 
         // Post statistics to InfluxDB.
         $influx = self::getInflux();

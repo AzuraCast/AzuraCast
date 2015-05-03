@@ -88,10 +88,12 @@ class SyncManager
             ConventionManager::run();
         });
 
+        /*
         // Clean up old API calls.
         Debug::runTimer('Run API call cleanup', function() {
             ApiCall::cleanUp();
         });
+        */
 
         // Clean up old song history entries.
         Debug::runTimer('Run song history cleanup', function() {

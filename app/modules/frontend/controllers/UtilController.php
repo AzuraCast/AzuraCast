@@ -20,9 +20,7 @@ class UtilController extends BaseController
 
         Debug::setEchoMode();
 
-        $news_items = \PVL\NewsAdapter\YouTube::fetch('https://www.youtube.com/playlist?list=PLDD2A72001D65A928');
-
-        Utilities::print_r($news_items);
+        \PVL\AnalyticsManager::run();
 
         /*
         $influx = $this->di->get('influx');

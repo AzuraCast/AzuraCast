@@ -22,7 +22,7 @@ class StreamUp extends AdapterAbstract
 
         Debug::print_r($stream);
 
-        $np['meta']['status'] = 'online';
+        $np['meta']['status'] = ($stream['live']) ? 'online' : 'offline';
         $np['meta']['listeners'] = (int)$stream['live_viewers_count'];
 
         $np['on_air']['text'] = $stream['stream_title'];

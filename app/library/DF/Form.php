@@ -562,7 +562,7 @@ class Form
     {
         foreach((array)$default_values as $field_key => $default_value)
         {
-            if ($this->form->has($field_key))
+            if ($this->form->has((string)$field_key))
             {
                 // Validate that field corresponds to proper sub-array.
                 if ($belongs_to)

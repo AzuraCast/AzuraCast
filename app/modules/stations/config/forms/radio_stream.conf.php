@@ -97,7 +97,6 @@ return array(
             'default' => 0,
 
             'description' => 'Some types of streams cannot be played by the PVL web player, including most AAC+ streams. If this stream should be included in statistics but not listed on the player, select "Yes" here.',
-            'required' => true,
         )),
 
         'submit'        => array('submit', array(

@@ -7,6 +7,7 @@ pvl.key.txt
 app/config/db.conf.php
 app/config/apis.conf.php
 app/config/influx.conf.php
+app/config/memcached.conf.php
 
 # Junk/cache files.
 *Thumbs.db

@@ -179,14 +179,13 @@ class Cache
         $cache_prefix = self::getSitePrefix().'_user_';
 
         if (DF_APPLICATION_ENV == 'production') {
+            $di = \Phalcon\Di::getDefault();
+            $config = $di->get('config');
+
+            $servers = $config->memcached->servers->toArray();
+
             return new \Phalcon\Cache\Backend\Libmemcached($frontCache, array(
-                'servers' => array(
-                    array(
-                        'host' => 'localhost',
-                        'port' => 11211,
-                        'weight' => 1
-                    ),
-                ),
+                'servers' => $servers,
                 'client' => array(
                     \Memcached::OPT_HASH => \Memcached::HASH_MD5,
                     \Memcached::OPT_PREFIX_KEY => $cache_prefix,

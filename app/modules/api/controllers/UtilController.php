@@ -4,7 +4,7 @@ namespace Modules\Api\Controllers;
 use \PVL\Debug;
 use \PVL\Utilities;
 
-class IndexController extends BaseController
+class UtilController extends BaseController
 {
     public function testAction()
     {

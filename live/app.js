@@ -59,7 +59,7 @@ app_remote.get('/', function(req, res) {
 });
 
 // Trigger listening on local and remote HTTP servers.
-http_local.listen(local_port, 'localhost', function() {
+http_local.listen(local_port, function() {
     console.log('Local listening on %d', local_port);
 });
 

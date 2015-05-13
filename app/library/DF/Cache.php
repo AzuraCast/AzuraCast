@@ -94,7 +94,7 @@ class Cache
     public static function getKeys()
     {
         $cache = self::getCache();
-        return $cache->queryKeys(self::getSitePrefix().'_user_');
+        return $cache->queryKeys(self::getSitePrefix('user'));
     }
     
     // Retrieve or initialize the cache.
@@ -162,8 +162,10 @@ class Cache
      * Generic Cache Details
      */
     
-    public static function getSitePrefix()
+    public static function getSitePrefix($cache_level = 'user')
     {
+        return $cache_level.'.';
+
         $folders = explode(DIRECTORY_SEPARATOR, DF_INCLUDE_ROOT);
         $base_folder = @array_pop($folders);
         
@@ -176,7 +178,7 @@ class Cache
     public static function getBackendCache(\Phalcon\Cache\FrontendInterface $frontCache)
     {
         $cache_dir = DF_INCLUDE_CACHE;
-        $cache_prefix = 'user.';
+        $cache_prefix = self::getSitePrefix('user');
 
         if (DF_APPLICATION_ENV == 'production') {
             $di = \Phalcon\Di::getDefault();

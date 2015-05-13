@@ -176,7 +176,7 @@ class Cache
     public static function getBackendCache(\Phalcon\Cache\FrontendInterface $frontCache)
     {
         $cache_dir = DF_INCLUDE_CACHE;
-        $cache_prefix = self::getSitePrefix().'_user_';
+        $cache_prefix = 'user.';
 
         if (DF_APPLICATION_ENV == 'production') {
             $di = \Phalcon\Di::getDefault();

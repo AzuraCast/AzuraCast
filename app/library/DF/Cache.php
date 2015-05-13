@@ -182,7 +182,7 @@ class Cache
             $di = \Phalcon\Di::getDefault();
             $config = $di->get('config');
 
-            $servers = $config->memcached->servers->toArray();
+            $servers = array_values($config->memcached->servers->toArray());
 
             return new \Phalcon\Cache\Backend\Libmemcached($frontCache, array(
                 'servers' => $servers,

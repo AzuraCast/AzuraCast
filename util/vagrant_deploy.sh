@@ -151,6 +151,11 @@ then
 	cp $www_base/app/config/influx.conf.sample.php $www_base/app/config/influx.conf.php
 fi
 
+if [ ! -f $www_base/app/config/memcached.conf.php ]
+then
+	cp $www_base/app/config/memcached.conf.sample.php $www_base/app/config/memcached.conf.php
+fi
+
 # Run Composer.js
 if [ ! -f $www_base/vendor/autoload.php ]
 then

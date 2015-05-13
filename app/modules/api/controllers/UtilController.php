@@ -1,16 +1,11 @@
 <?php
-namespace Modules\Frontend\Controllers;
+namespace Modules\Api\Controllers;
 
 use \PVL\Debug;
 use \PVL\Utilities;
 
-class UtilController extends BaseController
+class IndexController extends BaseController
 {
-    public function permissions()
-    {
-        return $this->acl->isAllowed('administer all');
-    }
-
     public function testAction()
     {
         $this->doNotRender();

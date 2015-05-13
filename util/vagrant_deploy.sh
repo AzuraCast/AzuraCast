@@ -30,7 +30,7 @@ then
 
     apt-get update
 
-    apt-get -q -y install vim git curl nginx mariadb-server php5-fpm php5-cli php5-gd php5-mysqlnd php5-curl php5-phalcon nodejs npm php5-memcached
+    apt-get -q -y install vim git curl nginx mariadb-server php5-fpm php5-cli php5-gd php5-mysqlnd php5-curl php5-phalcon php5-memcached nodejs npm php5-memcached
     apt-get autoremove
 
     # Set Node.js bin alias

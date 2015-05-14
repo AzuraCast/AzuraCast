@@ -45,8 +45,7 @@ class Rss extends AdapterAbstract
                 // Process main description.
                 $description = trim($item->description()); // Remove extraneous tags.
                 $description = str_replace(array("\r", "\n"), array('', ' '), $description); // Strip new lines.
-                $description = preg_replace('/[^(\x20-\x7F)]+/',' ', $description); // Strip "exotic" non-ASCII characters.
-                $description = preg_replace('/<a[^(>)]+>read more<\/a>/i', '', $description); // Remove "read more" link.
+                $description = preg_replace('/<a[^(>)]+>read more<\/a>/iu', '', $description); // Remove "read more" link.
 
                 $web_url = $item->link();
                 if (is_array($web_url))

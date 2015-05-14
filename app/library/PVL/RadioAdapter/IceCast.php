@@ -38,8 +38,8 @@ class IceCast extends AdapterAbstract
 
         // Sort in descending order of listeners.
         usort($mounts, function($a, $b) {
-            $a_list = (int)$a[5];
-            $b_list = (int)$b[5];
+            $a_list = (int)$a['listeners'];
+            $b_list = (int)$b['listeners'];
 
             if ($a_list == $b_list)
                 return 0;

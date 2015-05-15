@@ -38,7 +38,7 @@ class ShowController extends BaseController
                 $return = array();
                 foreach ($records as $record)
                 {
-                    $return[] = Podcast::api($record, TRUE);
+                    $return[] = Podcast::api($record, 10);
                 }
 
                 \DF\Cache::set($return, 'api_shows', array(), 60);

@@ -240,7 +240,7 @@ class Podcast extends \DF\Doctrine\Entity
             if ($include_episodes && $row_obj->episodes)
             {
                 foreach($row_obj->episodes as $episode)
-                    $row['episodes'][] = PodcastEpisode::api($episode);
+                    $row['episodes'][] = $episode;
             }
         }
         else
@@ -275,8 +275,16 @@ class Podcast extends \DF\Doctrine\Entity
         if ($include_episodes)
         {
             $api_row['episodes'] = array();
+            $i = 1;
+
             foreach((array)$row['episodes'] as $ep)
+            {
+                if (is_int($include_episodes) && $include_episodes >= $i)
+                    break;
+
                 $api_row['episodes'][] = PodcastEpisode::api($ep);
+                $i++;
+            }
         }
 
 

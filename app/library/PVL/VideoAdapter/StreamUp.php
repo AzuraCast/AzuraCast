@@ -33,6 +33,7 @@ class StreamUp extends AdapterAbstract
         return true;
     }
 
+    /*
     public function getStreamInfo($channel_slug)
     {
         $stream_data = \DF\Cache::get('streamup_stream_data');
@@ -70,4 +71,5 @@ class StreamUp extends AdapterAbstract
 
         return $streams;
     }
+    */
 }

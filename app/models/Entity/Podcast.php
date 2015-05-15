@@ -289,12 +289,17 @@ class Podcast extends \DF\Doctrine\Entity
 
     public static function getArtistImage($image_url)
     {
+        /*
         if ($image_url)
         {
             $file_path = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$image_url;
             if (file_exists($file_path))
                 return $image_url;
         }
+        */
+
+        if ($image_url)
+            return $image_url;
 
         return 'pvl_square.png';
     }

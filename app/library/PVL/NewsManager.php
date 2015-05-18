@@ -121,13 +121,11 @@ class NewsManager
                 if (empty($ep['body']))
                     continue;
 
-                $description = \DF\Utilities::truncateText($ep['body'], self::DESCRIPTION_LENGTH);
-
                 $news_items[] = array(
                     'id' => 'podcast_' . $ep['guid'],
                     'title' => trim($ep['title']),
                     'source' => 'podcast',
-                    'body' => trim($description),
+                    'body' => $ep['summary'],
                     'image_url' => $podcast['banner_url'],
                     'web_url' => \Entity\PodcastEpisode::getEpisodeLocalUrl($ep, 'pvlnews'),
                     'layout' => 'vertical',
@@ -188,8 +186,6 @@ class NewsManager
             );
             break;
         }
-
-        \PVL\Debug::print_r($news_items);
 
         // Replace/insert into database.
         $news_stats = array(

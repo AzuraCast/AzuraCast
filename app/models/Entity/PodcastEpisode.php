@@ -42,6 +42,9 @@ class PodcastEpisode extends \DF\Doctrine\Entity
     /** @Column(name="body", type="text", nullable=true) */
     protected $body;
 
+    /** @Column(name="summary", type="text", nullable=true) */
+    protected $summary;
+
     /** @Column(name="web_url", type="string", length=255, nullable=true) */
     protected $web_url;
 

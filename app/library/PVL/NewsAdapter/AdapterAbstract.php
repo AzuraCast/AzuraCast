@@ -10,4 +10,9 @@ class AdapterAbstract
 
         return $text;
     }
+
+    public static function getDi()
+    {
+        return \Phalcon\Di::getDefault();
+    }
 }

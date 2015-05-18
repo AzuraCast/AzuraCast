@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "31032eb65a41d1d299e2854c0ec0fc4d",
+    "hash": "22f8640b6a953f3d305b4415a93675bb",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -851,6 +851,54 @@
             "time": "2014-10-12 19:18:40"
         },
         {
+            "name": "ise/php-soundcloud",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/internalsystemerror/php-soundcloud.git",
+                "reference": "ac3ff2dce2a6e6d34636c58e66fd316d722c31df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/internalsystemerror/php-soundcloud/zipball/ac3ff2dce2a6e6d34636c58e66fd316d722c31df",
+                "reference": "ac3ff2dce2a6e6d34636c58e66fd316d722c31df",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Soundcloud\\": "src/",
+                    "SoundcloudTest\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anton Lindqvist",
+                    "email": "anton@qvister.se",
+                    "homepage": "http://qvister.se/",
+                    "role": "developer"
+                },
+                {
+                    "name": "Gary Lockett",
+                    "email": "ise@garylockett.com",
+                    "homepage": "http://www.garylockett.com/"
+                }
+            ],
+            "description": "API Wrapper for SoundCloud written in PHP with support for authentication using OAuth 2.0 by Anton Lindqvist (mptre), composer support added by Gary Lockett (ise)",
+            "homepage": "https://github.com/internalsystemerror/php-soundcloud",
+            "keywords": [
+                "soundcloud"
+            ],
+            "time": "2014-02-03 15:49:00"
+        },
+        {
             "name": "james-heinrich/getid3",
             "version": "v1.9.8",
             "source": {
@@ -984,17 +1032,17 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.6.6",
+            "version": "v2.6.7",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "5b91dc4ed5eb08553f57f6df04c4730a73992667"
+                "reference": "ebc5679854aa24ed7d65062e9e3ab0b18a917272"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/5b91dc4ed5eb08553f57f6df04c4730a73992667",
-                "reference": "5b91dc4ed5eb08553f57f6df04c4730a73992667",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/ebc5679854aa24ed7d65062e9e3ab0b18a917272",
+                "reference": "ebc5679854aa24ed7d65062e9e3ab0b18a917272",
                 "shasum": ""
             },
             "require": {
@@ -1028,17 +1076,17 @@
             ],
             "authors": [
                 {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                },
-                {
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
                 }
             ],
             "description": "Symfony Console Component",
-            "homepage": "http://symfony.com",
-            "time": "2015-03-30 15:54:10"
+            "homepage": "https://symfony.com",
+            "time": "2015-05-02 15:18:45"
         },
         {
             "name": "zendframework/zendframework1",
@@ -1095,12 +1143,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phalcon/phalcon-devtools.git",
-                "reference": "e1e9bd14613f5229acd4162617396914379c3e38"
+                "reference": "a8f373f27b6cdc80d261a6e16e0ad79413167b05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phalcon/phalcon-devtools/zipball/e1e9bd14613f5229acd4162617396914379c3e38",
-                "reference": "e1e9bd14613f5229acd4162617396914379c3e38",
+                "url": "https://api.github.com/repos/phalcon/phalcon-devtools/zipball/a8f373f27b6cdc80d261a6e16e0ad79413167b05",
+                "reference": "a8f373f27b6cdc80d261a6e16e0ad79413167b05",
                 "shasum": ""
             },
             "require": {
@@ -1131,13 +1179,14 @@
                 "framework",
                 "phalcon"
             ],
-            "time": "2015-05-01 07:38:17"
+            "time": "2015-05-13 21:36:44"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "google/apiclient": 10,
+        "ise/php-soundcloud": 20,
         "phalcon/devtools": 20
     },
     "prefer-stable": false,

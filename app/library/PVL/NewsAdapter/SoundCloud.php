@@ -1,29 +1,64 @@
 <?php
 namespace PVL\NewsAdapter;
 
-class SoundCloud extends Rss
+class SoundCloud extends AdapterAbstract
 {
     public static function fetch($url, $params = array())
     {
         if (empty($url))
             return null;
 
-        // Use a third-party service to convert Soundcloud URLs into RSS feed URLs.
-        $feed_url = 'http://picklemonkey.net/cloudflipper/cloudflipper.php?'.http_build_query(array(
-            'feed' => $url,
-        ));
+        // Load SoundCloud config from API.
+        $di = self::getDi();
+        $config = $di->get('config');
+        $sc_config = $config->apis->soundcloud->toArray();
 
-        $records_raw = parent::fetch($feed_url, $params);
+        if (!$sc_config)
+            return false;
 
-        $records = array();
-        foreach((array)$records_raw as $row)
+        $soundcloud = new \Soundcloud\Service($sc_config['client_id'], $sc_config['client_secret']);
+
+        $resolve_raw = $soundcloud->get('resolve', array('url' => $url));
+        if (empty($resolve_raw))
+            return false;
+
+        $resolve = json_decode($resolve_raw, true);
+        $tracks = array();
+
+        switch($resolve['kind'])
         {
-            $row['media_format'] = 'audio';
-            $row['body'] = str_replace('SoundCloud conversion to RSS provided by Cloud Flipper: [Web] - [Facebook] - [Donate!]', '', $row['body']);
+            case 'user':
+                $uid = $resolve['id'];
+                $tracks_raw = $soundcloud->get('users/'.$uid.'/tracks');
 
-            $records[] = $row;
+                if ($tracks_raw)
+                    $tracks = json_decode($tracks_raw, true);
+                break;
+
+            case 'playlist':
+                $tracks = $resolve['tracks'];
+                break;
         }
 
-        return $records;
+        if ($tracks)
+        {
+            $records = array();
+
+            foreach($tracks as $track)
+            {
+                $row = array(
+                    'guid'          => 'soundcloud_'.$track['id'],
+                    'timestamp'     => strtotime($track['last_modified']),
+                    'media_format'  => 'audio',
+                    'title'         => $track['title'],
+                    'body'          => $track['description'],
+                    'web_url'       => $track['permalink_url'],
+                    'author'        => $track['user']['username'],
+                );
+                $records[] = $row;
+            }
+
+            return $records;
+        }
     }
 }

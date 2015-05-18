@@ -5,7 +5,7 @@
 
 namespace DF;
 
-define('DF_CORE_VERSION', 'DF_Z1_D2_2011');
+define('DF_CORE_VERSION', 'DF_PHAL_D2_201505');
 
 class Version
 {

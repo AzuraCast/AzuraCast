@@ -5,8 +5,6 @@
 
 namespace DF;
 
-use \Entity\User;
-
 class Acl
 {
     public static function getInstance()

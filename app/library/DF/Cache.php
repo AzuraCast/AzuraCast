@@ -164,15 +164,14 @@ class Cache
     
     public static function getSitePrefix($cache_level = 'user')
     {
-        return $cache_level.'.';
-
         $folders = explode(DIRECTORY_SEPARATOR, DF_INCLUDE_ROOT);
         $base_folder = @array_pop($folders);
         
         if (strpos($base_folder, '.') !== FALSE)
             $base_folder = substr($base_folder, 0, strpos($base_folder, '.'));
-        
-        return ($base_folder) ? preg_replace("/[^a-zA-Z0-9]/", "", $base_folder) : 'default';
+
+        $cache_base = ($base_folder) ? preg_replace("/[^a-zA-Z0-9]/", "", $base_folder) : 'default';
+        return $cache_base.'.'.$cache_level.'.';
     }
     
     public static function getBackendCache(\Phalcon\Cache\FrontendInterface $frontCache)

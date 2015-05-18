@@ -1,25 +1,32 @@
 <?php
 namespace DF\Doctrine\Logger;
 
+use DF\Debug;
+
 class EchoSQL extends \Doctrine\DBAL\Logging\EchoSQLLogger
 {
     public function startQuery($sql, array $params = null, array $types = null)
     {
-        echo $sql.PHP_EOL;
+        static $is_started;
 
-        if ($params) {
-            var_dump($params);
+        if (!$is_started)
+        {
+            Debug::setEchoMode();
+            $is_started = true;
         }
 
-        if ($types) {
-            var_dump($types);
-        }
+        Debug::log($sql);
+
+        if ($params)
+            Debug::print_r($params);
+
+        if ($types)
+            Debug::print_r($types);
         
         $memory = memory_get_usage();
         $mb = round($memory / (1024 * 1024), 4).'M';
-        
-        echo $mb.'/'.ini_get('memory_limit').PHP_EOL;
-        
+
+        Debug::log('Memory: '.$mb.'/'.ini_get('memory_limit'));
     }
     
     public function stopQuery()

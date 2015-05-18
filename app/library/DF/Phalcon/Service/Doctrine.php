@@ -54,40 +54,6 @@ class Doctrine
         {
             $cache = new \DF\Doctrine\Cache;
             $cache->setNamespace('doctrine_');
-
-            // Clear cache in case of updated production code.
-            $upload_reference_path = DF_INCLUDE_BASE.DIRECTORY_SEPARATOR . '.env';
-            $update_reference_path = DF_INCLUDE_BASE.DIRECTORY_SEPARATOR . '.updated';
-
-            if (!file_exists($update_reference_path))
-            {
-                @file_put_contents($update_reference_path, 'This file is automatically modified to track proxy regeneration.');
-                @touch($upload_reference_path);
-            }
-
-            clearstatcache();
-            $last_upload_time = (int)@filemtime($upload_reference_path);
-            $last_update_time = (int)@filemtime($update_reference_path);
-
-            if ($last_upload_time >= $last_update_time)
-            {
-                @touch($update_reference_path);
-
-                // Flush the cache.
-                $cache->flushAll();
-
-                // Clear the proxy directory.
-                $proxy_dir = $options['proxyPath'];
-                @mkdir($proxy_dir);
-
-                $files = glob($proxy_dir.DIRECTORY_SEPARATOR.'*.php');
-                foreach((array)$files as $file)
-                    @unlink($file);
-
-                // Trigger proxy regeneration below.
-                $regen_proxies = TRUE;
-                $config->setAutoGenerateProxyClasses(TRUE);
-            }
         }
         else
         {

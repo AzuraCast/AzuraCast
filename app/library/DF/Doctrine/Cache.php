@@ -51,7 +51,7 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
     {
         $all_keys = \DF\Cache::getKeys();
         
-        if (!$this->_prefix)
+        if (!$this->getNamespace())
         {
             return $all_keys;
         }
@@ -60,9 +60,9 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
             $relevant_keys = array();
             foreach((array)$all_keys as $key_name => $key_value)
             {
-                if (strpos($key_name, $this->_prefix) === 0)
+                if (strpos($key_name, $this->getNamespace()) === 0)
                 {
-                    $filtered_name = str_replace($this->_prefix.'_', '', $key_name);
+                    $filtered_name = str_replace($this->getNamespace().'_', '', $key_name);
                     $relevant_keys[$filtered_name] = $key_value;
                 }
             }

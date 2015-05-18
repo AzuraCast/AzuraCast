@@ -7,7 +7,7 @@
   border-top: 2px solid #4878B3;
 
   .container .footer-inner {
-    padding: 0 15px;
+    padding: 0 10px;
   }
 
   h1, h2, h3, h4, h5 {
@@ -37,6 +37,7 @@
     color:#e4e4e4;
     background:none;
     text-shadow:none;
+    line-height: 20px;
   }
 
   .media-object {
@@ -49,6 +50,13 @@
 
     border-radius: 5px;
     border: 0;
+  }
+
+  .media-list {
+    margin-top: -10px;
+  }
+  .media {
+    margin-top: 10px;
   }
 
   .dl-horizontal a:hover {

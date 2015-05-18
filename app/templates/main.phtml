@@ -86,7 +86,37 @@ $tz_info = \PVL\Timezone::getInfo();
 
 <div class="top">
     <div class="container">
-        <?php $this->viewHelper->renderCommon("usernav") ?>
+        <?
+        $skin = \PVL\Customization::get('theme');
+
+        $tz_info = \PVL\Timezone::getInfo();
+        $tz_text = $tz_info['now']->format('g:ia');
+        ?>
+        <ul class="loginbar pull-right">
+            <li><a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><i class="icon-time"></i> <span class="current_time"><?=$tz_text ?></span> <?=$tz_info['abbr'] ?></a></li>
+            <li class="divider">&nbsp;</li>
+            <li><a href="<?=$this->url->get('profile/theme/skin/toggle') ?>"><i class="icon-adjust"></i> <? if ($skin == 'light'): ?>Dark Theme<? else: ?>Light Theme<? endif; ?></a></li>
+            <li class="divider">&nbsp;</li>
+
+            <? if ($this->auth->isLoggedIn()): ?>
+                <?
+                $user = $this->auth->getLoggedInUser();
+                ?>
+                <? if ($this->acl->isAllowed('view administration')): ?>
+                    <li><a href="<?=$this->url->get('admin') ?>"><i class="icon-cog"></i> Admin</a></li>
+                    <li class="divider">&nbsp;</li>
+                <? elseif (\Entity\Station::canSeeStationCenter($user)): ?>
+                    <li><a href="<?=$this->url->get('stations') ?>"><i class="icon-group"></i> Station Center</a></li>
+                    <li class="divider">&nbsp;</li>
+                <? endif; ?>
+                <li><a href="<?=$this->url->get('profile') ?>"><i class="icon-user"></i> Profile</a></li>
+                <li class="divider">&nbsp;</li>
+                <li><b><?=$user->name ?></b></li>
+                <li><a href="<?=$this->url->get('account/logout') ?>"><i class="icon-signout"></i> Sign Out</a></li>
+            <? else: ?>
+                <li><a href="<?=$this->url->get('account/login') ?>"><i class="icon-signin"></i> Sign In</a></li>
+            <? endif; ?>
+        </ul>
     </div>
 </div>
 
@@ -104,7 +134,74 @@ $tz_info = \PVL\Timezone::getInfo();
                     <span class="icon-bar"></span>
                 </a>
                 <div class="nav-collapse collapse" role="navigation">
-                    <?php $this->viewHelper->renderCommon("nav") ?>
+                    <?
+                    $categories = \Entity\Station::getStationsInCategories();
+                    $podcasts = \Entity\Podcast::fetchArray();
+                    ?>
+
+                    <ul class="nav primary_menu">
+
+                        <!-- About PVL -->
+                        <li class="dropdown">
+                            <a href="<?=$this->url->get('about') ?>"><i class="icon-info-sign"></i> About</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?=$this->url->get('about') ?>"><i class="icon-info-sign"></i> About Us</a></li>
+                                <li><a href="<?=$this->url->get('contact') ?>"><i class="icon-envelope"></i> Contact Us</a></li>
+                                <li><a href="<?=$this->url->get('donate') ?>"><i class="icon-money"></i> Support Us</a></li>
+                                <li class="divider"></li>
+                                <li><a href="http://m.pvlive.me/"><i class="icon-mobile-phone"></i> PVL! Mobile</a></li>
+                                <li><a href="<?=$this->url->get('apps') ?>"><i class="icon-cloud-download"></i> Apps &amp; Players</a></li>
+                                <li><a href="http://docs.ponyvillelive.apiary.io/" target="_blank"><i class="icon-cog"></i> PVL! Data API</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Stations -->
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown"><i class="icon-music"></i> Radio</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?=$this->url->get('schedule') ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
+                                <li><a href="<?=$this->url->get('submit/station') ?>"><i class="icon-cloud-upload"></i> Submit a Station</a></li>
+                                <li class="divider"></li>
+
+                                <? foreach($categories['audio']['stations'] as $station): ?>
+                                    <li><a href="<?=$station['web_url'] ?>" title="<?=$station['genre'] ?>" target="_blank"><?=$station['name'] ?></a></li>
+                                <? endforeach; ?>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown"><i class="icon-facetime-video"></i> Video</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?=$this->url->get('schedule') ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
+                                <li><a href="<?=$this->url->get('submit/station') ?>"><i class="icon-cloud-upload"></i> Submit a Station</a></li>
+                                <li class="divider"></li>
+
+                                <? foreach($categories['video']['stations'] as $station): ?>
+                                    <li><a href="<?=$station['web_url'] ?>" title="<?=$station['genre'] ?>" target="_blank"><?=$station['name'] ?></a></li>
+                                <? endforeach; ?>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown"><i class="icon-rss"></i> Shows</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?=$this->url->get('shows') ?>"><i class="icon-list"></i> Show Directory</a></li>
+                                <li><a href="<?=$this->url->get('submit/show') ?>"><i class="icon-cloud-upload"></i> Submit a Show</a></li>
+                                <li class="divider"></li>
+                                <? foreach($podcasts as $podcast): ?>
+                                    <li><a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>" title="<?=$podcast['description'] ?>" target="_blank"><?=$podcast['name'] ?></a></li>
+                                <? endforeach; ?>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown"><i class="icon-user"></i> Community</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?=$this->url->get('conventions') ?>"><i class="icon-building"></i> Pony Conventions</a></li>
+                                <li><a href="<?=$this->url->get('artists') ?>"><i class="icon-group"></i> Artists Directory</a></li>
+                                <li class="divider"></li>
+                                <li><a href="http://pvlive.me/forums" target="_blank">PVL Forums</a></li>
+                                <li><a href="<?=$this->url->get('index/chat') ?>">Chat + Player</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -172,7 +269,34 @@ $tz_info = \PVL\Timezone::getInfo();
 
 <div class="footer" role="contentinfo">
     <div class="container">
-        <?=$this->viewHelper->renderCommon('footer') ?>
+        <?
+        $affiliates = \Entity\Affiliate::fetch(true);
+        ?>
+        <div class="footer-inner">
+            <div class="row-fluid row-multiple clearfix">
+                <div class="media-list">
+                <? foreach($affiliates as $affiliate): ?>
+                    <div class="media span4">
+                        <div class="media-object pull-left">
+                            <a href="<?=$affiliate['web_url'] ?>" target="_blank">
+                                <img src="<?=\DF\Url::content($affiliate['image_url']) ?>" alt="<?=$affiliate['name'] ?> Logo" style="width: 40px;">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4>
+                                <? if (isset($affiliate['custom'])): ?>
+                                    <?=$affiliate['custom'] ?><br>
+                                <? else: ?>
+                                    <a href="<?=$affiliate['web_url'] ?>" target="_blank"><?=$affiliate['name'] ?></a><br>
+                                <? endif; ?>
+                                <small><?=$affiliate['description'] ?></small>
+                            </h4>
+                        </div>
+                    </div>
+                <? endforeach; ?>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

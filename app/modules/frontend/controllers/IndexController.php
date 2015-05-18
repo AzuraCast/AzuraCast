@@ -1,6 +1,8 @@
 <?php
 namespace Modules\Frontend\Controllers;
 
+use DF\Cache;
+
 use Entity\Station;
 use Entity\Podcast;
 use Entity\NetworkNews;
@@ -24,17 +26,20 @@ class IndexController extends BaseController
         $network_news = NetworkNews::fetchFeatured();
         $this->view->network_news = $network_news;
 
-        // Pull stations.
+        // Pull stations and calendar events.
         $this->_initStations();
+        $this->_initEvents();
 
         // Pull conventions.
         $conventions = Convention::getAllConventions();
         $this->view->conventions_upcoming = $conventions['upcoming'];
         $this->view->conventions_archived = $conventions['archived'];
 
+        /*
         // Pull rotators.
         $rotators = Rotator::fetch();
         $this->view->rotators = $rotators;
+        */
 
         // Special event flagging and special formatting.
         $special_event = \PVL\Utilities::showSpecialEventsMode();
@@ -55,8 +60,6 @@ class IndexController extends BaseController
         }
 
         $this->view->autoplay = (bool)$this->getParam('autoplay', true);
-
-        $this->view->pick('index/index');
     }
 
     public function tuneinAction()
@@ -141,12 +144,13 @@ class IndexController extends BaseController
     public function scheduleAction()
     {
         // Pull stations.
-        $this->_initStations();
+        $this->_initEvents();
     }
 
     public function upcomingAction()
     {
         $this->_initStations();
+        $this->_initEvents();
 
         $id = $this->view->station_id;
 
@@ -190,14 +194,14 @@ class IndexController extends BaseController
         $this->view->station_id = $station_id = $this->getParam('id', NULL);
         $this->view->volume = ($this->hasParam('volume')) ? (int)$this->getParam('volume') : 30;
 
-        $this->categories = \Entity\Station::getCategories();
+        $this->categories = Station::getCategories();
 
         $stations_raw = Station::fetchArray();
 
         // Limit to a single station if requested.
         if ($station_id && $this->getParam('showonlystation', false) == 'true')
         {
-            foreach($stations_raw as $station)
+            foreach ($stations_raw as $station)
             {
                 if ($station['id'] == $station_id)
                 {
@@ -208,13 +212,13 @@ class IndexController extends BaseController
         }
 
         $this->stations = array();
-        foreach($stations_raw as $station)
+        foreach ($stations_raw as $station)
         {
             // Build multi-stream directory.
             $streams = array();
             $current_stream_id = NULL;
 
-            foreach((array)$station['streams'] as $stream)
+            foreach ((array)$station['streams'] as $stream)
             {
                 if (!$stream['hidden_from_player'] && $stream['is_active'])
                 {
@@ -246,7 +250,7 @@ class IndexController extends BaseController
                 $this->stations[$station['id']] = $station;
         }
 
-        foreach($this->stations as $station)
+        foreach ($this->stations as $station)
         {
             if (isset($this->categories[$station['category']]))
                 $this->categories[$station['category']]['stations'][] = $station;
@@ -254,63 +258,73 @@ class IndexController extends BaseController
 
         $this->view->stations = $this->stations;
         $this->view->categories = $this->categories;
+    }
 
-        /**
-         * Compose events
-         */
+    protected function _initEvents()
+    {
+        $event_info = Cache::get('pvlive_events');
 
-        $events_raw = $this->em->createQuery('SELECT s, st FROM Entity\Schedule s JOIN s.station st WHERE (s.end_time >= :current AND s.start_time <= :future) ORDER BY s.start_time ASC')
-            ->setParameter('current', time())
-            ->setParameter('future', strtotime('+1 week'))
-            ->getArrayResult();
-
-        $all_events = array();
-        $events_by_day = array();
-
-        for($i = 0; $i < 6; $i++)
+        if (!$event_info)
         {
-            $day_timestamp = mktime(0, 0, 1, date('n'), (int)date('j') + $i);
-            $day_date = date('Y-m-d', $day_timestamp);
+            $events_raw = $this->em->createQuery('SELECT s, st FROM Entity\Schedule s JOIN s.station st WHERE (s.end_time >= :current AND s.start_time <= :future) ORDER BY s.start_time ASC')
+                ->setParameter('current', time())
+                ->setParameter('future', strtotime('+4 days'))
+                ->getArrayResult();
 
-            $is_today = ($day_date == date('Y-m-d'));
+            $all_events = array();
+            $events_by_day = array();
 
-            $events_by_day[$day_date] = array(
-                'day_name'      => ($is_today) ? 'Today' : date('l', $day_timestamp),
-                'timestamp'     => $day_timestamp,
-                'is_today'      => $is_today,
-                'events'        => array(),
-            );
-        }
-
-        foreach($events_raw as $event)
-        {
-            $event['image_url'] = \DF\Url::content(Schedule::getRowImageUrl($event));
-            $event['status'] = ($event['start_time'] <= time()) ? 'now' : 'upcoming';
-            $event['range'] = Schedule::getRangeText($event['start_time'], $event['end_time'], $event['is_all_day']);
-
-            if ($event['station_id'])
+            for ($i = 0; $i < 6; $i++)
             {
-                $sid = $event['station_id'];
+                $day_timestamp = mktime(0, 0, 1, date('n'), (int)date('j') + $i);
+                $day_date = date('Y-m-d', $day_timestamp);
 
-                if (isset($this->stations[$sid]))
-                {
-                    $event['station'] = $this->stations[$sid];
-                    $this->stations[$sid]['events'][] = $event;
+                $is_today = ($day_date == date('Y-m-d'));
 
-                    if ($event['status'] == "now")
-                        $this->stations[$sid]['now'] = $event;
-                }
+                $events_by_day[$day_date] = array(
+                    'day_name' => ($is_today) ? 'Today' : date('l', $day_timestamp),
+                    'timestamp' => $day_timestamp,
+                    'is_today' => $is_today,
+                    'events' => array(),
+                );
             }
 
-            $all_events[] = $event;
+            foreach ($events_raw as $event)
+            {
+                $event['image_url'] = \DF\Url::content(Schedule::getRowImageUrl($event));
+                $event['status'] = ($event['start_time'] <= time()) ? 'now' : 'upcoming';
+                $event['range'] = Schedule::getRangeText($event['start_time'], $event['end_time'], $event['is_all_day']);
 
-            $event_date = date('Y-m-d', $event['start_time']);
-            if (isset($events_by_day[$event_date]))
-                $events_by_day[$event_date]['events'][] = $event;
+                if ($event['station_id'])
+                {
+                    $sid = $event['station_id'];
+
+                    if (isset($this->stations[$sid]))
+                    {
+                        $station = $this->stations[$sid];
+                        unset($station['nowplaying_data'], $station['streams'], $station['intake_votes']);
+
+                        $event['station'] = $station;
+                    }
+                }
+
+                $all_events[] = $event;
+
+                $event_date = date('Y-m-d', $event['start_time']);
+                if (isset($events_by_day[$event_date]))
+                    $events_by_day[$event_date]['events'][] = $event;
+            }
+
+            $event_info = array(
+                'all' => $all_events,
+                'by_day' => $events_by_day,
+            );
+
+            Cache::save($event_info, 'pvlive_events', array(), 60);
         }
 
-        $this->view->events_by_day = $events_by_day;
-        $this->view->all_events = $all_events;
+        $this->view->all_events = $event_info['all'];
+        $this->view->events_by_day = $event_info['by_day'];
     }
 
     public function nowplayingAction()

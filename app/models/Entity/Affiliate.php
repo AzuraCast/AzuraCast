@@ -62,13 +62,19 @@ class Affiliate extends \DF\Doctrine\Entity
 
     public static function fetch($only_approved = true)
     {
-        $records = self::fetchArray();
+        $cache_name = 'pvlive_affiliates_'.(($only_approved) ? 'approved' : 'all');
+        $records = \DF\Cache::get($cache_name);
 
-        if ($only_approved)
-            $records = array_filter($records, function($record) { return $record['is_approved']; });
+        if (!$records)
+        {
+            $records = self::fetchArray();
+            if ($only_approved)
+                $records = array_filter($records, function ($record) { return $record['is_approved']; });
+
+            \DF\Cache::set($records, $cache_name, array(), 60);
+        }
 
         shuffle($records);
-
         return $records;
     }
 }

@@ -2,7 +2,7 @@
 description "PVLs Node.js fan-out daemon"
 author "berwyn <berwyn.codeweaver@gmail.com>"
 
-start on started mountall
+start on started network-interface INTERFACE=eth0
 stop on shutdown
 
 respawn

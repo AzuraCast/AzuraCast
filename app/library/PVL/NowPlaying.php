@@ -292,7 +292,7 @@ class NowPlaying
 
             foreach($vote_functions as $vote_function)
             {
-                $vote_urls[$vote_function] = \DF\Url::route(array(
+                $vote_urls[$vote_function] = \PVL\Url::api(array(
                     'module' => 'api',
                     'controller' => 'song',
                     'action' => $vote_function,

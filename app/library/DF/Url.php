@@ -3,7 +3,7 @@ namespace DF;
 
 class Url
 {
-    static $include_domain = false;
+    protected static $include_domain = false;
 
     /**
      * Get the URI for the current page.

@@ -12,16 +12,23 @@ class Url extends \DF\Url
     public static function api($path = NULL)
     {
         if (is_array($path))
+        {
+            $prev_include_domain = self::$include_domain;
+            self::$include_domain = false;
+
             $path = self::route($path);
+
+            self::$include_domain = $prev_include_domain;
+        }
 
         if (defined('DF_API_URL'))
         {
-            $path = ltrim($path, 'api');
-            return DF_API_URL.'/'.$path;
+            $path = ltrim($path, '/api');
+            return DF_API_URL.'/'.ltrim($path, '/');
         }
         else
         {
-            return $path;
+            return self::getUrl($path);
         }
     }
 
@@ -34,7 +41,7 @@ class Url extends \DF\Url
     public static function upload($path = NULL)
     {
         if (defined('DF_UPLOAD_URL'))
-            return DF_UPLOAD_URL.'/'.$path;
+            return DF_UPLOAD_URL.'/'.ltrim($path, '/');
         else
             return self::content($path);
     }

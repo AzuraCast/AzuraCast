@@ -95,7 +95,7 @@ if (DF_APPLICATION_ENV != 'production')
     $config['base_url'] = '//dev.pvlive.me';
 
     unset($config['api_url']);
-    // unset($config['upload_url']);
+    unset($config['upload_url']);
 }
 
 return $config;

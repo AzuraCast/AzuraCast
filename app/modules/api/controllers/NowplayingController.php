@@ -11,7 +11,7 @@ class NowplayingController extends BaseController
     {
         // Pull from cache, or load from flatfile otherwise.
         $np = \DF\Cache::get('api_nowplaying_data', function() {
-            $file_path_api = DF_INCLUDE_STATIC.'/api/nowplaying_api.json';
+            $file_path_api = \PVL\Service\AmazonS3::path('api/nowplaying_api.json');
             $np_raw = file_get_contents($file_path_api);
 
             $np_arr = @json_decode($np_raw, TRUE);

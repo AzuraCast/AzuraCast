@@ -66,10 +66,13 @@ class NowPlaying
         }
 
         // Generate PVL legacy nowplaying file.
-        $pvl_file_path = DF_INCLUDE_STATIC.'/api/nowplaying.json';
         $nowplaying_feed = json_encode($nowplaying['legacy'], JSON_UNESCAPED_SLASHES);
 
+        $pvl_file_path = \PVL\Service\AmazonS3::path('api/nowplaying.json');
         @file_put_contents($pvl_file_path, $nowplaying_feed);
+
+        $legacy_file_path = DF_INCLUDE_STATIC.'/api/nowplaying.json';
+        @file_put_contents($legacy_file_path, $nowplaying_feed);
 
         // Generate PVL API cache.
         $np_api = $nowplaying['api'];
@@ -82,8 +85,8 @@ class NowPlaying
             $np_api[$station]['cache'] = 'flatfile';
 
         // Generate PVL API nowplaying file.
+        $file_path_api = \PVL\Service\AmazonS3::path('api/nowplaying_api.json');
         $nowplaying_api = json_encode(array('status' => 'success', 'result' => $np_api), JSON_UNESCAPED_SLASHES);
-        $file_path_api = DF_INCLUDE_STATIC.'/api/nowplaying_api.json';
 
         @file_put_contents($file_path_api, $nowplaying_api);
 

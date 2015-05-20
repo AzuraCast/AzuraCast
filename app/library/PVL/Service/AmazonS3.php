@@ -22,11 +22,12 @@ class AmazonS3
             throw new \DF\Exception('Local file path "'.$local_file_path.'" does not exist.');
 
         $remote_path = self::path($remote_file_stub);
-        @rename($local_file_path, $remote_path, stream_context_create([
+        @copy($local_file_path, $remote_path, stream_context_create([
             's3' => [
                 'ACL'        => 'public-read',
             ],
         ]));
+        @unlink($local_file_path);
     }
 
     /**

@@ -10,6 +10,7 @@
     "electrolinux/phpquery": "0.9.6",
     "google/apiclient": "1.0.*@beta",
     "phpoffice/phpexcel": "1.8.0",
+    "aws/aws-sdk-php": "2.*",
     "ise/php-soundcloud": "dev-master"
   },
   "require-dev": {

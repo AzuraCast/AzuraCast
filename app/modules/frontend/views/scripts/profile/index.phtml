@@ -89,7 +89,7 @@ $title = ('My Profile');
                         <tbody>
                         <? foreach($list['items'] as $row): ?>
                             <tr class="input">
-                                <td class="center"><img src="<?=\DF\Url::content($row['station']['image_url']) ?>"></td>
+                                <td class="center"><img src="<?=\PVL\Url::upload($row['station']['image_url']) ?>"></td>
                                 <td>
                                     <?=$row['station']['name'] ?>
                                 </td>

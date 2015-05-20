@@ -33,7 +33,7 @@ echo $this->viewHelper->renderHere('homelink', true);
                     )) ?>
                 </div>
             </td>
-            <td class="center"><img src="<?=\DF\Url::content($record['image_url']) ?>" style="max-width: 70px;"></td>
+            <td class="center"><img src="<?=\PVL\Url::upload($record['image_url']) ?>" style="max-width: 70px;"></td>
             <td>
                 <div><big><?=$record['name'] ?></big></div>
                 <div><?=$record['description'] ?></div>

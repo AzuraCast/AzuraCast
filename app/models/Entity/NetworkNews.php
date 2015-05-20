@@ -84,7 +84,7 @@ class NetworkNews extends \DF\Doctrine\Entity
         $network_news = array();
         foreach($results_raw as $row)
         {
-            $row['image_url'] = \DF\Url::content($row['image_url']);
+            $row['image_url'] = \PVL\Url::upload($row['image_url']);
             $network_news[] = $row;
         }
 

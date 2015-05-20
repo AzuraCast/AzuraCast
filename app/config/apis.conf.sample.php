@@ -16,6 +16,13 @@ return array(
     'pvlnode_remote_url' => 'http://dev.pvlive.me/',
     'pvlnode_remote_path' => '/api/live',
 
+    // Amazon AWS Management
+    'amazon_aws' => array(
+        'access_key_id'     => '',
+        'secret_access_key' => '',
+        's3_bucket'         => 'bbm-static-uploads',
+    ),
+
     // Mandrill SMTP service.
     'smtp' => array(
         'server'        => 'smtp.mandrillapp.com',

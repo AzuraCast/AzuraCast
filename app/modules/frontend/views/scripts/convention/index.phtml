@@ -48,7 +48,7 @@ $manual = true;
             <? foreach($conventions_archived as $record): ?>
             <div class="span4">
                 <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$this->viewHelper->routeFromHere(array('action' => 'archive', 'id' => $record['id'])) ?>">
-                    <img src="<?=\DF\Url::content($record['image']) ?>" alt="Convention Image">
+                    <img src="<?=\PVL\Url::upload($record['image']) ?>" alt="Convention Image">
                     <div class="coverage" title="<?=$record['coverage']['text'] ?>">
                         <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
                     </div>

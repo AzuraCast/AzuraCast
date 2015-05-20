@@ -43,7 +43,7 @@ $title = 'Manage Rotator Banners';
                     )) ?>
                 </div>
             </td>
-            <td class="center" <? if (!$record['is_approved']): ?>style="opacity: 0.2;"<? endif; ?>><img src="<?=\DF\Url::content($record['image_url']) ?>"></td>
+            <td class="center" <? if (!$record['is_approved']): ?>style="opacity: 0.2;"<? endif; ?>><img src="<?=\PVL\Url::upload($record['image_url']) ?>"></td>
             <td>
                 <div><big><?=$this->viewHelper->link($record['web_url']) ?></big></div>
             <? if ($record['description']): ?>

@@ -9,7 +9,7 @@ $span = 12 / $columns;
     <div class="media podcast span<?=$span ?>">
         <div class="media-object pull-left">
             <a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>">
-                <img class="station-image" src="<?=\DF\Url::content($podcast['image_url']) ?>" alt="<?=$podcast['name'] ?> Logo">
+                <img class="station-image" src="<?=\PVL\Url::upload($podcast['image_url']) ?>" alt="<?=$podcast['name'] ?> Logo">
             </a>
         </div>
         <div class="media-body">

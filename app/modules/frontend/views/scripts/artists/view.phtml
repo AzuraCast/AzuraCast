@@ -24,7 +24,7 @@ $social_types = \Entity\Artist::getSocialTypes();
             <div class="media-list">
                 <div class="media">
                     <div class="media-object pull-left">
-                        <img class="thumbnail" src="<?=\DF\Url::content($artist->image_url) ?>" style="width: 96px;">
+                        <img class="thumbnail" src="<?=\PVL\Url::upload($artist->image_url) ?>" style="width: 96px;">
                     </div>
                     <div class="media-body">
                         <h2>

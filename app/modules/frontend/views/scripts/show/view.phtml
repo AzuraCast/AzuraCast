@@ -9,7 +9,7 @@ $hide_title = true;
     </div>
 
     <div class="clearfix">
-        <img class="avatar pull-left" src="<?=\DF\Url::content($podcast->image_url) ?>">
+        <img class="avatar pull-left" src="<?=\PVL\Url::upload($podcast->image_url) ?>">
         <div class="buttons pull-right">
             <?=$this->viewHelper->button(array(
                 'type'      => 'link',

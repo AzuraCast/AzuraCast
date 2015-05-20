@@ -267,10 +267,10 @@ class Convention extends \DF\Doctrine\Entity
         );
 
         if (!empty($row['image_url']))
-            $con['image_url'] = \DF\Url::content($row['image_url']);
+            $con['image_url'] = \PVL\Url::upload($row['image_url']);
 
         if (!empty($row['thumbnail_url']))
-            $con['thumbnail_url'] = \DF\Url::content($row['thumbnail_url']);
+            $con['thumbnail_url'] = \PVL\Url::upload($row['thumbnail_url']);
 
         return $con;
     }

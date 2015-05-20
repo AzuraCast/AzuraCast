@@ -171,7 +171,7 @@ $cons = array_slice($conventions_archived, 0, 8);
 <? foreach($cons as $record): ?>
     <div class="span3">
         <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$this->viewHelper->route(array('controller' => 'convention', 'action' => 'archive', 'id' => $record['id'])) ?>">
-            <img src="<?=\DF\Url::content($record['image']) ?>" alt="<?=$record['name'] ?> Graphic">
+            <img src="<?=\PVL\Url::upload($record['image']) ?>" alt="<?=$record['name'] ?> Graphic">
             <div class="coverage" title="<?=$record['coverage']['text'] ?>">
                 <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
             </div>

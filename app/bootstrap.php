@@ -46,6 +46,17 @@ require(DF_INCLUDE_LIB . '/DF/Config/Item.php');
 $config = new \DF\Config(DF_INCLUDE_BASE.'/config');
 $config->preload(array('application','general'));
 
+// Set URL constants from configuration.
+$app_cfg = $config->application;
+if ($app_cfg->base_url)
+    define('DF_BASE_URL', $app_cfg->base_url);
+
+if ($app_cfg->api_url)
+    define('DF_API_URL', $app_cfg->api_url);
+
+if ($app_cfg->upload_url)
+    define('DF_UPLOAD_URL', $app_cfg->upload_url);
+
 // Apply PHP settings.
 $php_settings = $config->application->phpSettings->toArray();
 foreach($php_settings as $setting_key => $setting_value)

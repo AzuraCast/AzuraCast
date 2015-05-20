@@ -620,7 +620,7 @@ class Form
         $return_fields = array();
 
         // Check for upload directory.
-        $base_dir = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$destination_folder;
+        $base_dir = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$destination_folder;
 
         if (!file_exists($base_dir))
             @mkdir($base_dir);
@@ -656,8 +656,8 @@ class Form
             $new_file_name = ($file_name_prefix) ? $file_name_prefix.'_' : '';
             $new_file_name .= date('Ymd_His').'_'.mt_rand(100, 999).'_'.$element_name_clean.'_'.$i.'.'.$file->getExtension();
 
-            $new_file_path_short = $destination_folder.DIRECTORY_SEPARATOR.$new_file_name;
-            $new_file_path_full = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$new_file_path_short;
+            $new_file_path_short = $destination_folder.'/'.$new_file_name;
+            $new_file_path_full = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$new_file_path_short;
 
             if (!is_writable(dirname($new_file_path_full)))
                 throw new \DF\Exception('New directory not writable.');

@@ -291,7 +291,7 @@ class IndexController extends BaseController
 
             foreach ($events_raw as $event)
             {
-                $event['image_url'] = \DF\Url::content(Schedule::getRowImageUrl($event));
+                $event['image_url'] = \PVL\Url::upload(Schedule::getRowImageUrl($event));
                 $event['status'] = ($event['start_time'] <= time()) ? 'now' : 'upcoming';
                 $event['range'] = Schedule::getRangeText($event['start_time'], $event['end_time'], $event['is_all_day']);
 
@@ -329,7 +329,7 @@ class IndexController extends BaseController
 
     public function nowplayingAction()
     {
-        $this->redirect(\DF\Url::content('api/nowplaying.json'));
+        $this->redirect(\PVL\Url::upload('api/nowplaying.json'));
         return;
     }
 }

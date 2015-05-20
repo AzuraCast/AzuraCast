@@ -12,6 +12,12 @@ $config = array(
     
     // Primary application web address
     'base_url'          => (DF_IS_SECURE ? 'https://' : 'http://').'ponyvillelive.com',
+
+    // Web address for API calls.
+    'api_url'           => (DF_IS_SECURE ? 'https://' : 'http://').'api.ponyvillelive.com',
+
+    // Web address for user uploads.
+    'upload_url'        => (DF_IS_SECURE ? 'https://' : 'http://').'uploads.ponyvillelive.com',
     
     // DF Messenger mail settings
     'mail'              => array(
@@ -85,11 +91,11 @@ if (DF_APPLICATION_ENV != 'production')
     $config['phpSettings']['display_startup_errors'] = 1;
     $config['phpSettings']['display_errors'] = 1;
 
-    unset($config['phpSettings']['session']['save_handler']);
-    $config['phpSettings']['session']['save_path'] = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'sessions';
-
     // Update if your local configuration differs.
     $config['base_url'] = '//dev.pvlive.me';
+
+    unset($config['api_url']);
+    // unset($config['upload_url']);
 }
 
 return $config;

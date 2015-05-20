@@ -279,7 +279,7 @@ $tz_info = \PVL\Timezone::getInfo();
                     <div class="media span4">
                         <div class="media-object pull-left">
                             <a href="<?=$affiliate['web_url'] ?>" target="_blank">
-                                <img src="<?=\DF\Url::content($affiliate['image_url']) ?>" alt="<?=$affiliate['name'] ?> Logo" style="width: 40px;">
+                                <img src="<?=\PVL\Url::upload($affiliate['image_url']) ?>" alt="<?=$affiliate['name'] ?> Logo" style="width: 40px;">
                             </a>
                         </div>
                         <div class="media-body">

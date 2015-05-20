@@ -108,7 +108,7 @@ class DevController extends BaseController
             {
                 $path = $dir_path.DIRECTORY_SEPARATOR.$file;
                 if (!is_dir($path))
-                    $static_files[$dir][$file] = \DF\Url::content($dir.'/'.$file);
+                    $static_files[$dir][$file] = \PVL\Url::upload($dir.'/'.$file);
             }
         }
 

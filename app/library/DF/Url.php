@@ -54,7 +54,7 @@ class Url
      */
     public static function content($file_name = NULL)
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = self::getDi();
         return self::getUrl($di->get('url')->getStatic($file_name));
     }
 

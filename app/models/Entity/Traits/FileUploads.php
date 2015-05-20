@@ -16,7 +16,10 @@ trait FileUploads
         if ($new_value)
         {
             if ($this->$field_name && $this->$field_name != $new_value)
-                @unlink($this->_getUploadedFilePath($this->$field_name));
+                \PVL\Service\AmazonS3::delete($this->$field_name);
+
+            $local_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$new_value;
+            \PVL\Service\AmazonS3::upload($local_path, $new_value);
 
             $this->$field_name = $new_value;
             return true;
@@ -37,14 +40,13 @@ trait FileUploads
      */
     protected function _processAndCropImage($field_name, $new_value, $width, $height)
     {
-        if ($this->_processFile($field_name, $new_value))
-        {
-            $new_path = $this->_getUploadedFilePath($new_value);
-            \DF\Image::resizeImage($new_path, $new_path, $width, $height);
+        if (!$new_value)
+            return false;
 
-            return true;
-        }
-        return false;
+        $local_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$new_value;
+        \DF\Image::resizeImage($local_path, $local_path, $width, $height);
+
+        return $this->_processFile($local_path, $new_value);
     }
 
     /**
@@ -57,7 +59,7 @@ trait FileUploads
         if ($this->$field_name)
         {
             $value = $this->$field_name;
-            @unlink($this->_getUploadedFilePath($value));
+            \PVL\Service\AmazonS3::delete($value);
         }
     }
 
@@ -74,21 +76,11 @@ trait FileUploads
         {
             $value = $this->$field_name;
 
-            if (file_exists($this->_getUploadedFilePath($value)))
+            $path = \PVL\Service\AmazonS3::path($value);
+            if (file_exists($path))
                 return $value;
         }
 
         return $default_value;
-    }
-
-    /**
-     * Get the full file path for an uploaded file.
-     *
-     * @param $field_value
-     * @return string
-     */
-    protected function _getUploadedFilePath($field_value)
-    {
-        return DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$field_value;
     }
 }

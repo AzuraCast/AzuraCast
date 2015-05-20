@@ -61,7 +61,7 @@ $title = 'Manage Podcasts';
                     )) ?>
                 </div>
             </td>
-            <td class="center"><img src="<?=\DF\Url::content($record['image_url']) ?>" style="width: 64px;"></td>
+            <td class="center"><img src="<?=\PVL\Url::upload($record['image_url']) ?>" style="width: 64px;"></td>
             <td class="center">
                 <big><?=number_format($record->getEpisodeCount(), 0) ?></big>
             </td>

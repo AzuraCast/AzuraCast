@@ -240,7 +240,7 @@ class Schedule extends \DF\Doctrine\Entity
             $row = $row->toArray();
 
         // Update Image URL
-        $row['image_url'] = \DF\Url::content(self::getRowImageUrl($row));
+        $row['image_url'] = \PVL\Url::upload(self::getRowImageUrl($row));
 
         // Add station shortcode.
         if (isset($row['station']))

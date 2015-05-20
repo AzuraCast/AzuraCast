@@ -80,7 +80,7 @@ $title = 'Manage Conventions';
             </td>
             <td class="center">
             <? if ($record['image_url']): ?>
-                <img src="<?=\DF\Url::content($record['image_url']) ?>" style="width: 100%;">
+                <img src="<?=\PVL\Url::upload($record['image_url']) ?>" style="width: 100%;">
             <? endif; ?>
             </td>
             <td>

@@ -14,7 +14,7 @@ $manual = true;
             <? foreach($pager as $artist): ?>
                 <li class="media">
                     <div class="media-object pull-left">
-                        <a href="<?=$this->viewHelper->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><img class="thumbnail" src="<?=\DF\Url::content($artist['image_url']) ?>" style="width: 64px;"></a>
+                        <a href="<?=$this->viewHelper->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><img class="thumbnail" src="<?=\PVL\Url::upload($artist['image_url']) ?>" style="width: 64px;"></a>
                     </div>
                     <div class="media-body">
                         <h4>

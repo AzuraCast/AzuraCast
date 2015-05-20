@@ -482,7 +482,7 @@ class Station extends \DF\Doctrine\Entity
             'genre'     => $row['genre'],
             'category'  => $row['category'],
             'affiliation' => $row['affiliation'],
-            'image_url' => \DF\Url::content($row['image_url']),
+            'image_url' => \PVL\Url::upload($row['image_url']),
             'web_url'   => $row['web_url'],
             'twitter_url' => $row['twitter_url'],
             'irc'       => $row['irc'],

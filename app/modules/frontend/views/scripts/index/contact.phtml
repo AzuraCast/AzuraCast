@@ -75,7 +75,7 @@ $manual = true;
         <div class="media-list">
         <? foreach($col[1] as $station): ?>
             <div class="media">
-                <img src="<?=\DF\Url::content($station['image_url']) ?>" alt="Station" class="pull-left" style="width: 50px;">
+                <img src="<?=\PVL\Url::upload($station['image_url']) ?>" alt="Station" class="pull-left" style="width: 50px;">
                 <div class="media-body">
                     <h4 class="media-heading">
                         <?=$station['name'] ?><br><small><?=$station['genre'] ?></small>
@@ -111,7 +111,7 @@ $manual = true;
         <div class="media-list">
         <? foreach($col as $podcast): ?>
             <div class="media">
-                <img src="<?=\DF\Url::content($podcast['image_url']) ?>" alt="Station" class="pull-left" style="width: 50px;">
+                <img src="<?=\PVL\Url::upload($podcast['image_url']) ?>" alt="Station" class="pull-left" style="width: 50px;">
                 <div class="media-body">
                     <h4 class="media-heading">
                         <?=$podcast['name'] ?>

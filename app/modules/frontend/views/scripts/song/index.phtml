@@ -113,7 +113,7 @@ $hide_title = true;
                         <tbody>
                         <? foreach($song_info['recent_history'] as $row): ?>
                             <tr class="input">
-                                <td class="center"><img src="<?=\DF\Url::content($row['station']['image_url']) ?>" alt="Station Logo"></td>
+                                <td class="center"><img src="<?=\PVL\Url::upload($row['station']['image_url']) ?>" alt="Station Logo"></td>
                                 <td>
                                     <h4>
                                         <?=$row['station']['name'] ?><br>
@@ -144,7 +144,7 @@ $hide_title = true;
                         <tbody>
                         <? foreach($song_info['request_on'] as $row): ?>
                             <tr class="input">
-                                <td class="center"><img src="<?=\DF\Url::content($row['station']['image_url']) ?>" alt="Station Logo"></td>
+                                <td class="center"><img src="<?=\PVL\Url::upload($row['station']['image_url']) ?>" alt="Station Logo"></td>
                                 <td>
                                     <h4>
                                         <?=$row['station']['name'] ?><br>

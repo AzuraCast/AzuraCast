@@ -1,7 +1,5 @@
 <?
-if (!$columns)
-    $columns = 3;
-
+if (!$columns) $columns = 3;
 $span = 12 / $columns;
 ?>
 
@@ -11,8 +9,7 @@ $span = 12 / $columns;
         data-id="<?=$station['id'] ?>" 
         data-name="<?=$station['name'] ?>"
         data-image="<?=\PVL\Url::upload($station['image_url']) ?>"
-        data-chat="<?=$station['irc'] ?>" 
-        data-inactive="<? if ($station['hide_if_inactive']): ?>hide<? else: ?>show<? endif; ?>"
+        data-chat="<?=$station['irc'] ?>"
         data-defaultstream="<?=$station['default_stream_id'] ?>"
         data-streamid="<?=$station['current_stream_id'] ?>">
 

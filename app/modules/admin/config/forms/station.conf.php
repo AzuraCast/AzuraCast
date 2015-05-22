@@ -118,16 +118,6 @@ return array(
                     'default' => 1,
                 )),
 
-                'hide_if_inactive' => array('radio', array(
-                    'label' => 'Hide if Inactive',
-                    'description' => 'Remove station from the display list if it is currently offline.',
-                    'multiOptions' => array(
-                        1 => 'Yes',
-                        0 => 'No',
-                    ),
-                    'default' => 0,
-                )),
-
                 'weight' => array('text', array(
                     'label' => 'Sort Order',
                     'description' => 'Lower numbers appear higher on the list of stations.',

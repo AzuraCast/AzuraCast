@@ -65,10 +65,14 @@ $(function() {
 		if (songhist_id == 0)
 			return false;
 
-		var remote_url = DF_BaseUrl+'/api/song/'+vote_function;
+        var remote_url;
+        if (typeof DF_ApiUrl !== 'undefined' && DF_ApiUrl != '')
+            remote_url = DF_ApiUrl+'/song/'+vote_function;
+        else
+            remote_url = DF_BaseUrl+'/api/song/'+vote_function;
 
 		jQuery.ajax({
-			'type': 'POST',
+			'type': 'GET',
 			'url': remote_url,
 			'dataType': 'json',
 			'data': {

@@ -73,8 +73,10 @@ $tz_info = \PVL\Timezone::getInfo();
     $this->assets->outputJs('header_js');
     ?>
     <script>
-        var DF_AppEnv = '<?=DF_APPLICATION_ENV ?>';
+        var DF_AppEnv = '<?=(defined('DF_APPLICATION_ENV') ? DF_APPLICATION_ENV : '') ?>';
         var DF_BaseUrl = '<?php echo rtrim($this->url->get(''), '/'); ?>';
+        var DF_ApiUrl = '<?=(defined('DF_API_URL') ? DF_API_URL : '') ?>';
+        var DF_UploadUrl = '<?=(defined('DF_UPLOAD_URL') ? DF_UPLOAD_URL : '') ?>';
         var DF_ContentPath = '<?php echo $this->url->getStatic(''); ?>';
 
         var PVL_TimeZone = '<?=$e->escapeJs($tz_info['code']) ?>';

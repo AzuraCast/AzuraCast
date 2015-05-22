@@ -8,9 +8,6 @@ return array(
     // PVL deployment API sent by this application. Contact PVL lead developer for info.
     'pvl_api_key'       => '',
 
-    // PVL deployment API keys accepted by this application.
-    'pvl_api_keys'      => array(),
-
     // PVLNode Live update service locations.
     'pvlnode_local_url'  => 'http://localhost:4001/data',
     'pvlnode_remote_url' => 'http://dev.pvlive.me/',

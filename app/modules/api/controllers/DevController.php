@@ -1,26 +1,16 @@
 <?php
 namespace Modules\Api\Controllers;
 
+use Entity\ApiKey;
+
 class DevController extends BaseController
 {
     public function preDispatch()
     {
         parent::preDispatch();
 
-        if (!$this->hasParam('key'))
-            die('ERROR: No API key specified!');
-
-        $supplied_key = $this->getParam('key');
-        $accepted_api_keys = $this->config->apis->pvl_api_keys->toArray();
-
-        $key_accepted = false;
-        foreach($accepted_api_keys as $api_key)
-        {
-            if (strcmp(md5($api_key), $supplied_key) === 0)
-                $key_accepted = true;
-        }
-
-        if (!$key_accepted)
+        $api_key = $this->getParam('key');
+        if (!ApiKey::authenticate($api_key))
             die('ERROR: API key specified is not valid.');
     }
 

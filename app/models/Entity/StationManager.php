@@ -36,7 +36,7 @@ class StationManager extends \DF\Doctrine\Entity
     protected $timestamp;
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="managers")
+     * @ManyToOne(targetEntity="Station")
      * @JoinColumns({
      *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })

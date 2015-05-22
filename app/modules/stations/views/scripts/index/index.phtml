@@ -66,7 +66,7 @@ Highcharts.setOptions({
         <div class="well">
             <? foreach($station->managers as $manager): ?>
             <div style="padding: 5px 0;">
-                <?=$manager->email ?><br>
+                <?=$manager->name ?> (<?=$this->viewHelper->mailto($manager->email) ?>)<br>
                 <small><a href="<?=$this->viewHelper->routeFromHere(array('action' => 'removeadmin', 'id' => $manager->id)) ?>"><i class="icon-minus-sign"></i> Remove</a></small>
             </div>
             <? endforeach; ?>

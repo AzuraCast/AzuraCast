@@ -295,10 +295,11 @@ class IndexController extends BaseController
     {
         $this->doNotRender();
 
-        $record = new StationManager;
-        $record->email = $_REQUEST['email'];
-        $record->station = $this->station;
-        $record->save();
+        $email = $this->getParam('email');
+        $user = \Entity\User::getOrCreate($email);
+
+        $user->stations->add($this->station);
+        $user->save();
 
         $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'email' => NULL));
     }
@@ -306,12 +307,12 @@ class IndexController extends BaseController
     public function removeadminAction()
     {
         $this->doNotRender();
-        
-        $id_hash = $this->getParam('id');
 
-        $record = StationManager::getRepository()->findOneBy(array('station_id' => $this->station->id, 'id' => $id_hash));
-        if ($record instanceof StationManager)
-            $record->delete();
+        $id = (int)$this->getParam('id');
+
+        $user = \Entity\User::find($id);
+        $user->stations->removeElement($this->station);
+        $user->save();
 
         $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
     }

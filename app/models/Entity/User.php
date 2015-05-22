@@ -15,6 +15,9 @@ class User extends \DF\Doctrine\Entity
         $this->roles = new ArrayCollection;
         $this->external_accounts = new ArrayCollection;
 
+        $this->stations = new ArrayCollection;
+        $this->podcasts = new ArrayCollection;
+
         $this->time_created = time();
         $this->time_updated = time();
     }
@@ -111,6 +114,24 @@ class User extends \DF\Doctrine\Entity
     protected $roles;
 
     /**
+     * @ManyToMany(targetEntity="Station", inversedBy="users")
+     * @JoinTable(name="user_manages_station",
+     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")},
+     *      inverseJoinColumns={@JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     */
+    protected $stations;
+
+    /**
+     * @ManyToMany(targetEntity="Podcast", inversedBy="managers")
+     * @JoinTable(name="user_manages_podcast",
+     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")},
+     *      inverseJoinColumns={@JoinColumn(name="podcast_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     */
+    protected $podcasts;
+
+    /**
      * @OneToMany(targetEntity="UserExternal", mappedBy="user")
      */
     protected $external_accounts;
@@ -134,6 +155,12 @@ class User extends \DF\Doctrine\Entity
             return FALSE;
     }
 
+    /**
+     * Creates or returns an existing user with the specified e-mail address.
+     *
+     * @param $email
+     * @return User
+     */
     public static function getOrCreate($email)
     {
         $user = User::getRepository()->findOneBy(array('email' => $email));
@@ -144,5 +171,7 @@ class User extends \DF\Doctrine\Entity
             $user->email = $email;
             $user->name = $email;
         }
+
+        return $user;
     }
 }

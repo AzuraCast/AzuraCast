@@ -19,7 +19,6 @@ class Station extends \DF\Doctrine\Entity
 
         $this->is_active = 0;
         $this->requests_enabled = 0;
-        $this->hide_if_inactive = 0;
 
         $this->streams = new ArrayCollection;
         $this->history = new ArrayCollection;
@@ -145,10 +144,6 @@ class Station extends \DF\Doctrine\Entity
     /** @Column(name="nowplaying_data", type="json", nullable=true) */
     protected $nowplaying_data;
 
-    /** @Column(name="hide_if_inactive", type="boolean") */
-    protected $hide_if_inactive;
-
-
     /** @Column(name="requests_enabled", type="boolean") */
     protected $requests_enabled;
 
@@ -188,7 +183,7 @@ class Station extends \DF\Doctrine\Entity
     protected $history;
 
     /**
-     * @OneToMany(targetEntity="StationManager", mappedBy="station")
+     * @ManyToMany(targetEntity="User", mappedBy="stations")
      */
     protected $managers;
 
@@ -240,16 +235,7 @@ class Station extends \DF\Doctrine\Entity
         if ($acl->userAllowed('manage stations', $user))
             return true;
 
-        if ($this->managers)
-        {
-            foreach($this->managers as $manager)
-            {
-                if (strtolower($manager->email) == strtolower($user->email))
-                    return true;
-            }
-        }
-
-        return false;
+        return ($this->managers->contains($user));
     }
 
     public function isPlaying()
@@ -463,10 +449,10 @@ class Station extends \DF\Doctrine\Entity
         if ($acl->userAllowed('manage stations', $user))
             return true;
 
-        $em = self::getEntityManager();
+        if ($user->stations->count() > 0)
+            return true;
 
-        $manager_positions = StationManager::getRepository()->findBy(array('email' => strtolower($user->email)));
-        return (count($manager_positions) > 0);
+        return false;
     }
 
     // Retrieve the API version of the object/array.
@@ -499,7 +485,7 @@ class Station extends \DF\Doctrine\Entity
 
                 if ($stream['is_default'])
                 {
-                    $api['default_stream_id'] = $stream['id'];
+                    $api['default_stream_id'] = (int)$stream['id'];
                     $api['stream_url'] = $stream['stream_url'];
                 }
             }

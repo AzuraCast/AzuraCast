@@ -1,0 +1,32 @@
+<div id="listeners_by_hour" style="height: 200px;"></div>
+
+<script type="text/javascript">
+$(function () {
+    $('#listeners_by_hour').highcharts({
+        chart: {},
+        title: {
+            text: 'Traffic by Hour of Day'
+        },
+        xAxis: {
+            allowDecimals: false,
+            tickInterval: 1
+        },
+        yAxis: {
+            title: {
+                text: 'Listeners'
+            },
+            min: 0
+        },
+        tooltip: {
+            crosshairs: true,
+            shared: true
+        },
+        
+        series: [{
+            name: 'Average Listeners',
+            type: 'column',
+            data: <?=$averages_by_hour ?>
+        }]
+    });
+});
+</script>

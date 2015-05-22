@@ -82,7 +82,11 @@ http {
                         fastcgi_read_timeout 1800;
                 }
 
-                location /api/live {
+                location /api {
+                        rewrite ^(.*)$ /api.php last;
+                }
+
+                location /live {
                         proxy_pass http://localhost:4002/socket.io;
                         proxy_redirect off;
                         proxy_http_version 1.1;

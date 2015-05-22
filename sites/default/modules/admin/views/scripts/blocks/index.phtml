@@ -1,0 +1,63 @@
+<?
+$title = 'Manage Blocks';
+?>
+
+<div class="buttons">
+    <?=$this->viewHelper->button(array(
+        'type'      => 'link',
+        'class'     => 'large success',
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
+        'icon'      => 'add',
+        'text'      => 'Add Block',
+    )) ?>
+</div>
+
+<table class="table table-striped">
+    <colgroup>
+        <col width="30%">
+        <col width="20%">
+        <col width="20%">
+        <col width="30%">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Actions</th>
+            <th>Short Name</th>
+            <th>URL</th>
+            <th>Title</th>
+        </tr>
+    </thead>
+    <tbody>
+    <? foreach($all_blocks as $block): ?>
+        <tr class="input">
+            <td class="center">
+                <div class="btn-group">
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'icon'      => 'find',
+                        'class'     => 'primary',
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'preview', 'id' => $block['id'])),
+                        'text'      => 'Preview',
+                    )) ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'icon'      => 'pencil',
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $block['id'])),
+                        'text'      => 'Edit',
+                    )) ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'icon'      => 'delete',
+                        'class'     => 'negative confirm-delete',
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $block['id'])),
+                        'text'      => 'Delete',
+                    )) ?>
+                </div>
+            </td>
+            <td><big><?=$block['name'] ?></big></td>
+            <td><?=$block['url'] ?></td>
+            <td><?=$block['title'] ?></td>
+        </tr>
+    <? endforeach; ?>
+    </tbody>
+</table>

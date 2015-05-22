@@ -11,13 +11,13 @@ return array(
     // PVLNode Live update service locations.
     'pvlnode_local_url'  => 'http://localhost:4001/data',
     'pvlnode_remote_url' => 'http://dev.pvlive.me/',
-    'pvlnode_remote_path' => '/api/live',
+    'pvlnode_remote_path' => '/live',
 
     // Amazon AWS Management
     'amazon_aws' => array(
         'access_key_id'     => '',
         'secret_access_key' => '',
-        's3_bucket'         => 'bbm-static-uploads',
+        's3_bucket'         => 'uploads.ponyvillelive.com',
     ),
 
     // Mandrill SMTP service.

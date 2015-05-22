@@ -1,0 +1,101 @@
+<?
+$title = 'Manage Artists';
+?>
+
+<div class="buttons">
+    <?=$this->viewHelper->button(array(
+        'type'      => 'link',
+        'class'     => 'large success',
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
+        'icon'      => 'icon-plus-sign',
+        'text'      => 'Add New Artist',
+    )) ?>
+</div>
+
+<form class="form-search" action="<?=$this->viewHelper->routeFromHere(array('page' => NULL)) ?>" method="get">
+    <div class="input-append">
+        <input type="text" name="q" title="Search terms" placeholder="Search..." class="input-large search-query" value="<?=$e->escapeHtml($q) ?>">
+        <button type="submit" class="btn">Search</button>
+    </div>
+</form>
+
+<?=$this->viewHelper->paginate($pager) ?>
+
+<table class="datatable table table-striped table-nopadding">
+    <colgroup>
+        <col width="20%" />
+        <col width="10%" />
+        <col width="5%" />
+        <col width="25%" />
+        <col width="20%" />
+        <col width="20%" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Actions</th>
+            <th>Avatar</th>
+            <th>Status</th>
+            <th>Artist Name</th>
+            <th>License</th>
+            <th>User Account</th>
+        </tr>
+    </thead>
+    <tbody>
+    <? foreach($pager as $record): ?>
+        <tr class="input">
+            <td class="center">
+                <div class="btn-group">
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'class'     => 'btn-primary',
+                        'target'    => '_blank',
+                        'href'      => $this->viewHelper->route(array('module' => 'frontend', 'controller' => 'artists', 'action' => 'view', 'id' => $record['id'])),
+                        'text'      => 'View',
+                    )) ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'icon'      => 'icon-pencil',
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'text'      => 'Edit',
+                    )) ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'small',
+                        'icon'      => 'icon-trash',
+                        'class'     => 'danger confirm-delete',
+                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'text'      => 'Delete',
+                    )) ?>
+                </div>
+            </td>
+            <td class="center"><img src="<?=\PVL\Url::upload($record['image_url']) ?>" style="display: inline; width: 64px;"></td>
+            <td class="center">
+            <? if (!$record->is_approved): ?>
+                <span class="large-icon" title="Needs Review"><i class="icon-warning-sign"></i></span>
+            <? else: ?>
+                &nbsp;
+            <? endif; ?>
+            </td>
+            <td>
+                <big><?=$record['name'] ?></big><br>
+                <? foreach($record->types as $type): ?>
+                    <span title="<?=$type->name ?>"><i class="<?=$type->icon ?>"></i></span>
+                <? endforeach; ?>
+            </td>
+            <td>
+                <div><b><?=ucfirst($record['license']) ?></b></div>
+                <div><small><?=$record['license_specifics'] ?></small></div>
+            </td>
+            <td>
+            <? if ($record['user']): ?>
+                <div><?=$record['user']['name'] ?></div>
+                <div><small><?=$this->viewHelper->mailto($record['user']['email']) ?></small></div>
+            <? else: ?>
+                <div>No user account linked.</div>
+            <? endif; ?>
+            </td>
+        </tr>
+    <? endforeach; ?>
+    </tbody>
+</table>
+
+<?=$this->viewHelper->paginate($pager) ?>

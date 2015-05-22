@@ -1,0 +1,53 @@
+<?
+$title = ('Station Center');
+$manual = true;
+?>
+
+<?=$this->viewHelper->renderHere('header') ?>
+<?=$this->viewHelper->renderHere('homelink', true) ?>
+
+<div class="row-fluid">
+    <div class="span12">
+        <h2>Song Vote Totals on Station</h2>
+
+        <table class="datatable table-striped table-condensed table-nopadding">
+            <colgroup>
+                <col width="10%">
+                <col width="90%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Score</th>
+                    <th>Song Title</th>
+                </tr>
+            </thead>
+            <tbody>
+            <? foreach($votes as $song_row): ?>
+                <tr class="input">
+                    <td class="center">
+                        <big>
+                        <? if ($song_row['vote_total'] > 0): ?>
+                            <span class="text-success"><i class="icon-thumbs-up"></i> <?=$song_row['vote_total'] ?></span>
+                        <? elseif ($song_row['vote_total'] < 0): ?>
+                            <span class="text-error"><i class="icon-thumbs-down"></i> <?=abs($song_row['vote_total']) ?></span>
+                        <? else: ?>
+                            0
+                        <? endif; ?>
+                        </big>
+                    </td>
+                    <td>
+                        <a href="#" class="btn-show-song-info" data-id="<?=$song_row['song']['id'] ?>" title="Click for Song Information">
+                        <? if ($song_row['song']['title']): ?>
+                            <b><?=$song_row['song']['title'] ?></b><br>
+                            <?=$song_row['song']['artist'] ?>
+                        <? else: ?>
+                            <?=$song_row['song']['text'] ?>
+                        <? endif; ?>
+                        </a>
+                    </td>
+                </tr>
+            <? endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

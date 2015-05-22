@@ -1,14 +1,9 @@
 <?php
-use DF\Phalcon\Application;
-
 // Force API URL
-$uri = $_SERVER['REQUEST_URI'];
-if (substr($uri, 0, 4) !== '/api')
-    $_SERVER['REQUEST_URI'] = '/api'.$uri;
+if (substr($_SERVER['REQUEST_URI'], 0, 4) == '/api')
+    $_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'], 4);
 
-
-error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
-
+define('DF_SITE', 'api');
 require __DIR__ . '/../app/bootstrap.php';
 
 try

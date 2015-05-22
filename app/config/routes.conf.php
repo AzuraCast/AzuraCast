@@ -1,7 +1,7 @@
 <?php
 return array(
 
-    'default_module' => 'frontend',
+    'default_module' => 'frontend', // Use "frontend", because "default" causes namespacing problems.
     'default_controller' => 'index',
     'default_action' => 'index',
 

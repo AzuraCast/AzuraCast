@@ -1,0 +1,34 @@
+<div id="listeners_by_day_of_week" style="height: 200px;"></div>
+
+<script type="text/javascript">
+$(function () {
+    $('#listeners_by_day_of_week').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'Traffic by Day of Week'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        
+        series: [{
+            type: 'pie',
+            name: 'Listeners',
+            data: <?=$day_of_week_stats ?>
+        }]
+    });
+});
+</script>

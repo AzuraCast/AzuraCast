@@ -16,7 +16,7 @@ class View
             $di = \Phalcon\Di::getDefault();
 
         $defaults = array(
-            'base_dir'      => DF_INCLUDE_BASE.'/',
+            'base_dir'      => DF_INCLUDE_SITE.'/',
             'views_dir'     => 'modules/frontend/views/scripts/',
             'partials_dir'  => '',
             'layouts_dir'   => '../../../../templates/',

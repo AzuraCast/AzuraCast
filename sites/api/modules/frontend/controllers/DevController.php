@@ -65,11 +65,11 @@ class DevController extends BaseController
             $s3_path = 'db_dumps/pvlive_import.sql';
             \PVL\Service\AmazonS3::upload($destination_path, $s3_path);
 
-            $this->returnSuccess($s3_path);
+            return $this->returnSuccess($s3_path);
         }
         else
         {
-            $this->returnError('MySQL Dump was not successful.');
+            return $this->returnError('MySQL Dump was not successful.');
         }
     }
 }

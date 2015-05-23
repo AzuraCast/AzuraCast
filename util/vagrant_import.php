@@ -61,6 +61,7 @@ $command = 'mysql '.implode(' ', $command_flags).' < '.$db_path_full;
 passthru($command);
 
 @unlink($db_path_full);
+@rmdir(dirname($db_path_full));
 
 // Create initial user account.
 $user = new User;
@@ -69,8 +70,12 @@ $user->setAuthPassword('password');
 $user->name = 'Administrator';
 
 $role = Role::find(1);
-$user->roles->add($role);
-$user->save();
+
+if ($role instanceof Role)
+{
+    $user->roles->add($role);
+    $user->save();
+}
 
 echo 'Database and Amazon S3 import complete.'.PHP_EOL;
 exit;

@@ -104,26 +104,24 @@ class AmazonS3
     }
 
     /**
-     * @return \Phalcon\DiInterface
-     */
-    protected static function getDi()
-    {
-        return \Phalcon\Di::getDefault();
-    }
-
-    /**
      * Initialize the Amazon S3 client.
      *
      * @return S3Client
      */
-    protected static function initClient()
+    public static function initClient()
     {
         if (!self::$client)
         {
             $di = self::getDi();
             $config = $di->get('config');
 
+            if (!$config->apis->amazon_aws)
+                return false;
+
             $creds = $config->apis->amazon_aws->toArray();
+
+            if (empty($creds['access_key_id']))
+                return false;
 
             self::$bucket = $creds['s3_bucket'];
 
@@ -158,5 +156,13 @@ class AmazonS3
     public static function setBucket($new_bucket)
     {
         self::$bucket = $new_bucket;
+    }
+
+    /**
+     * @return \Phalcon\DiInterface
+     */
+    protected static function getDi()
+    {
+        return \Phalcon\Di::getDefault();
     }
 }

@@ -63,45 +63,14 @@ class DevController extends BaseController
         // Stream file out to screen.
         if (file_exists($destination_path))
         {
-            $fp = fopen($destination_path, 'r');
+            $s3_path = 'db_dumps/pvlive_import.sql';
+            \PVL\Service\AmazonS3::upload($destination_path, $s3_path);
 
-            header("Content-Type: application/octet-stream");
-            header("Content-Length: " . filesize($destination_path));
-
-            fpassthru($fp);
-            fclose($fp);
-
-            @unlink($destination_path);
+            $this->returnSuccess($s3_path);
         }
-    }
-
-    public function staticAction()
-    {
-        $directories = array(
-            'affiliates',
-            'artists',
-            'podcasts',
-            'rotators',
-            'songs',
-            'stations',
-            'conventions',
-        );
-
-        $static_files = array();
-
-        foreach($directories as $dir)
+        else
         {
-            $dir_path = DF_INCLUDE_STATIC.DIRECTORY_SEPARATOR.$dir;
-            $files_raw = @scandir($dir_path);
-
-            foreach($files_raw as $file)
-            {
-                $path = $dir_path.DIRECTORY_SEPARATOR.$file;
-                if (!is_dir($path))
-                    $static_files[$dir][$file] = \PVL\Url::upload($dir.'/'.$file);
-            }
+            $this->returnError('MySQL Dump was not successful.');
         }
-
-        return $this->returnSuccess($static_files);
     }
 }

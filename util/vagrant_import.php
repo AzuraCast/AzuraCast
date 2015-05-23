@@ -25,52 +25,42 @@ if (empty($api_key))
 echo 'Importing database entries from production server...'.PHP_EOL;
 
 $remote_url = $remote_base.'/api/dev/import?key='.$api_key;
-$local_temp = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'vagrant_import.sql';
+$remote_response_raw = file_get_contents($remote_url);
 
-// Pull from remote API.
-$fp = fopen($local_temp, 'w');
+$remote_response = @json_decode($remote_response_raw, true);
 
-$options = array(
-    CURLOPT_FILE    => $fp,
-    CURLOPT_TIMEOUT => 28800,
-    CURLOPT_URL     => $remote_url,
-);
+if ($remote_response['status'] != 'success')
+    die('The remote server could not return a valid MySQL import response. Halting remote import.');
 
-$ch = curl_init();
-curl_setopt_array($ch, $options);
-curl_exec($ch);
-fclose($fp);
+$db_path = $remote_response['result'];
 
-// Check local file.
-if (!file_exists($local_temp))
-    die('File could not be saved locally.');
+// Force S3 enabled in development mode.
+define('DF_UPLOAD_URL', 'dev.pvlive.me');
 
-// If returned value was JSON error, decode it.
-if (filesize($local_temp) < (1024*2))
-{
-    $results = file_get_contents($local_temp);
-    echo $results.PHP_EOL;
+$s3_client = \PVL\Service\AmazonS3::initClient();
+$s3_bucket = \PVL\Service\AmazonS3::getBucket();
 
-    @unlink($local_temp);
-    exit;
-}
+if (!$s3_client)
+    die('Amazon S3 could not be initialized! Halting remote import.');
+
+// Trigger download of the entire bucket to the local static folder.
+$s3_client->downloadBucket(DF_INCLUDE_STATIC, $s3_bucket);
 
 // Prepare and execute mysqlimport command.
+$db_path_full = DF_INCLUDE_STATIC.DIRECTORY_SEPARATOR.$db_path;
+
 $db_config = $config->db->toArray();
-
-$destination_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'pvl_import.sql';
-
 $command_flags = array(
     '-h '.$db_config['host'],
     '-u '.$db_config['user'],
     '-p'.$db_config['password'],
     $db_config['dbname']
 );
-$command = 'mysql '.implode(' ', $command_flags).' < '.$local_temp;
+$command = 'mysql '.implode(' ', $command_flags).' < '.$db_path_full;
 
 passthru($command);
 
-@unlink($local_temp);
+@unlink($db_path_full);
 
 // Create initial user account.
 $user = new User;
@@ -82,52 +72,5 @@ $role = Role::find(1);
 $user->roles->add($role);
 $user->save();
 
-echo 'Database import complete.'.PHP_EOL;
-
-/**
- * Static Asset Import
- */
-
-echo 'Pulling static assets...'.PHP_EOL;
-
-@mkdir(DF_INCLUDE_STATIC.DIRECTORY_SEPARATOR.'api');
-
-$remote_url = $remote_base.'/api/dev/static?key='.$api_key;
-
-$static_raw = file_get_contents($remote_url);
-$static_result = @json_decode($static_raw, TRUE);
-
-if (isset($static_result['result']))
-{
-    $static_folders = $static_result['result'];
-    $ch = curl_init();
-
-    foreach($static_folders as $dir_name => $dir_files)
-    {
-        $local_dir = DF_INCLUDE_STATIC.DIRECTORY_SEPARATOR.$dir_name;
-        @mkdir($local_dir);
-
-        foreach($dir_files as $file_base => $remote_url)
-        {
-            $local_file = $local_dir.DIRECTORY_SEPARATOR.$file_base;
-
-            if (!file_exists($local_file))
-            {
-                $fp = fopen($local_file, 'w');
-                $options = array(
-                    CURLOPT_FILE    => $fp,
-                    CURLOPT_TIMEOUT => 28800,
-                    CURLOPT_URL     => $remote_url,
-                );
-                curl_setopt_array($ch, $options);
-                curl_exec($ch);
-                fclose($fp);
-            }
-        }
-
-        echo ' - Finished importing "'.$dir_name.'".'.PHP_EOL;
-    }
-}
-
-echo 'Static assets complete.'.PHP_EOL;
+echo 'Database and Amazon S3 import complete.'.PHP_EOL;
 exit;

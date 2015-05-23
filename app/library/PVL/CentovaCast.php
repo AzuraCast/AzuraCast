@@ -10,14 +10,17 @@ class CentovaCast
 {
     public static function isStationSupported(Station $station)
     {
+        if (DF_APPLICATION_ENV !== 'production')
+            return false;
+
         if (!$station->requests_enabled)
-            return FALSE;
+            return false;
 
         $account_username = trim($station->requests_ccast_username);
         if (empty($account_username))
-            return FALSE;
+            return false;
 
-        return TRUE;
+        return true;
     }
 
     public static function getStationID(Station $station)
@@ -38,6 +41,9 @@ class CentovaCast
 
     public static function request(Station $station, $track_id)
     {
+        if (DF_APPLICATION_ENV !== 'production')
+            throw new \DF\Exception('This operation is not permitted on development machines.');
+
         $db = self::getDatabase();
         $em = self::getEntityManager();
         $settings = self::getSettings();
@@ -155,6 +161,9 @@ class CentovaCast
     // Routine synchronization of CentovaCast settings
     public static function sync()
     {
+        if (DF_APPLICATION_ENV !== 'production')
+            return false;
+
         $db = self::getDatabase();
         $em = self::getEntityManager();
         $settings = self::getSettings();

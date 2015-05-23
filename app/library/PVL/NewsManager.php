@@ -1,6 +1,9 @@
 <?php
 namespace PVL;
 
+use DF\Image;
+use DF\Utilities;
+
 use Entity\NetworkNews;
 use Entity\Podcast;
 use Entity\Schedule;
@@ -74,12 +77,13 @@ class NewsManager
                 $s3_path = Service\AmazonS3::path($local_url);
 
                 if (!file_exists($s3_path)) {
+                    @mkdir(dirname($local_path));
                     @copy($image_url, $local_path);
 
                     // Optimize image for fast display.
-                    \DF\Image::resizeImage($local_path, $local_path, $image['width'], $image['height']);
+                    Image::resizeImage($local_path, $local_path, $image['width'], $image['height']);
 
-                    Service\AmazonS3::upload($local_path, $s3_path);
+                    Service\AmazonS3::upload($local_path, $local_path_base);
                 }
 
                 $tags = array_map('strtolower', (array)$post['tags']);
@@ -91,7 +95,7 @@ class NewsManager
                     break;
 
                 list($title, $description) = explode(':', $description, 2);
-                $description = \DF\Utilities::truncateText($description, self::DESCRIPTION_LENGTH);
+                $description = Utilities::truncateText($description, self::DESCRIPTION_LENGTH);
 
                 $news_items[] = array(
                     'id' => 'tumblr_' . $post['id'],

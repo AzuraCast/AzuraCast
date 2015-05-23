@@ -17,7 +17,6 @@ class DevController extends BaseController
     public function importAction()
     {
         ini_set('memory_limit', '250M');
-        ini_set('display_errors', 0);
 
         // Tables to export from local DB.
         $tables = array(
@@ -41,7 +40,7 @@ class DevController extends BaseController
         // Compose mysqldump command.
         $db_config = $this->config->db->toArray();
 
-        $destination_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'pvl_import.sql';
+        $destination_path = realpath(DF_INCLUDE_TEMP).DIRECTORY_SEPARATOR.'pvl_import.sql';
 
         $command_flags = array(
             '-h '.$db_config['host'],

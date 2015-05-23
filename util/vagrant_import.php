@@ -13,7 +13,7 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
 $config = $di->get('config');
 $api_key = $config->apis->pvl_api_key;
-$remote_base = 'http://ponyvillelive.com';
+$remote_base = 'http://api.ponyvillelive.com';
 
 if (empty($api_key))
     die('No API key specified in app/config/apis.conf.php. Please contact PVL developer team!');
@@ -24,7 +24,7 @@ if (empty($api_key))
 
 echo 'Importing database entries from production server...'.PHP_EOL;
 
-$remote_url = $remote_base.'/api/dev/import?key='.$api_key;
+$remote_url = $remote_base.'/dev/import?key='.$api_key;
 $remote_response_raw = file_get_contents($remote_url);
 
 $remote_response = @json_decode($remote_response_raw, true);

@@ -12,6 +12,7 @@ set_time_limit(0);
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
 $config = $di->get('config');
+
 $api_key = $config->apis->pvl_api_key;
 $remote_base = 'http://api.ponyvillelive.com';
 
@@ -45,6 +46,9 @@ if (!$s3_client)
 
 // Trigger download of the entire bucket to the local static folder.
 $s3_client->downloadBucket(DF_INCLUDE_STATIC, $s3_bucket);
+
+// Clean up S3 bucket.
+$remote_url = $remote_base.'/dev/cleanup?key='.$api_key;
 
 // Prepare and execute mysqlimport command.
 $db_path_full = DF_INCLUDE_STATIC.DIRECTORY_SEPARATOR.$db_path;

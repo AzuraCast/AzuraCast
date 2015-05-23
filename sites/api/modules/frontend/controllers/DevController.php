@@ -72,4 +72,12 @@ class DevController extends BaseController
             return $this->returnError('MySQL Dump was not successful.');
         }
     }
+
+    public function cleanupAction()
+    {
+        $s3_path = 'db_dumps/pvlive_import.sql';
+        \PVL\Service\AmazonS3::delete($s3_path);
+
+        return $this->returnSuccess('DB Import dump file deleted.');
+    }
 }

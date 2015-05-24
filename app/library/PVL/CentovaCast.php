@@ -10,6 +10,9 @@ class CentovaCast
 {
     public static function isStationSupported(Station $station)
     {
+        if (DF_APPLICATION_ENV !== 'production')
+            return false;
+
         if (!$station->requests_enabled)
             return FALSE;
 
@@ -38,6 +41,9 @@ class CentovaCast
 
     public static function request(Station $station, $track_id)
     {
+        if (DF_APPLICATION_ENV !== 'production')
+            return false;
+
         $db = self::getDatabase();
         $em = self::getEntityManager();
         $settings = self::getSettings();
@@ -155,6 +161,9 @@ class CentovaCast
     // Routine synchronization of CentovaCast settings
     public static function sync()
     {
+        if (DF_APPLICATION_ENV !== 'production')
+            return false;
+
         $db = self::getDatabase();
         $em = self::getEntityManager();
         $settings = self::getSettings();

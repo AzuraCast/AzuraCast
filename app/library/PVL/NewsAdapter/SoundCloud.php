@@ -11,6 +11,10 @@ class SoundCloud extends AdapterAbstract
         // Load SoundCloud config from API.
         $di = self::getDi();
         $config = $di->get('config');
+
+        if (!$config->apis->soundcloud)
+            return false;
+
         $sc_config = $config->apis->soundcloud->toArray();
 
         if (!$sc_config)

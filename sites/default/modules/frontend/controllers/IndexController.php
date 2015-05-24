@@ -310,9 +310,12 @@ class IndexController extends BaseController
 
                 $all_events[] = $event;
 
-                $event_date = date('Y-m-d', $event['start_time']);
-                if (isset($events_by_day[$event_date]))
-                    $events_by_day[$event_date]['events'][] = $event;
+                for($i = $event['start_time']; $i <= $event['end_time']; $i += 86400)
+                {
+                    $event_date = date('Y-m-d', $i);
+                    if (isset($events_by_day[$event_date]))
+                        $events_by_day[$event_date]['events'][] = $event;
+                }
             }
 
             $event_info = array(

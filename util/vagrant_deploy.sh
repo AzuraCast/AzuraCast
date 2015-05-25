@@ -43,8 +43,6 @@ then
     updatedb
 
     # Set up environment.
-    touch $www_base/app/.updated
-
     echo 'development' > $app_base/app/.env
 
     echo "Creating temporary folders..."
@@ -96,7 +94,7 @@ then
     service influxdb start
 
     # Force delay for InfluxDB setup
-    sleep 5
+    sleep 10
 
     # Preconfigure databases
     cd $www_base/util
@@ -157,11 +155,8 @@ then
 fi
 
 # Run Composer.js
-if [ ! -f $www_base/vendor/autoload.php ]
-then
-	cd $www_base
-	composer install
-fi
+cd $www_base
+composer install
 
 # Shut off Cron tasks for now
 service cron stop

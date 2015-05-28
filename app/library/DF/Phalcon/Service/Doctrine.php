@@ -49,16 +49,8 @@ class Doctrine
         $metadata_driver = $config->newDefaultAnnotationDriver($options['modelPath']);
         $config->setMetadataDriverImpl($metadata_driver);
 
-        $regen_proxies = FALSE;
-        if (DF_APPLICATION_ENV == "production" && !DF_IS_COMMAND_LINE)
-        {
-            $cache = new \DF\Doctrine\Cache;
-            $cache->setNamespace('doctrine_');
-        }
-        else
-        {
-            $cache = new \Doctrine\Common\Cache\ArrayCache;
-        }
+        $cache = new \DF\Doctrine\Cache;
+        // $cache->setNamespace('doctrine_');
 
         $config->setMetadataCacheImpl($cache);
         $config->setQueryCacheImpl($cache);
@@ -80,13 +72,6 @@ class Doctrine
         $em = \Doctrine\ORM\EntityManager::create($options['conn'], $config, $evm);
 
         $em->getFilters()->enable("softdelete");
-
-        // Trigger proxy regeneration.
-        if ($regen_proxies)
-        {
-            $metadatas = $em->getMetadataFactory()->getAllMetadata();
-            $em->getProxyFactory()->generateProxyClasses($metadatas);
-        }
 
         // Try the connection before rendering the page.
         $em->getConnection()->connect();

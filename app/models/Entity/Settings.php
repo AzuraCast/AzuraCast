@@ -23,7 +23,7 @@ class Settings extends \DF\Doctrine\Entity
      * Static Functions
      */
     
-    public static function setSetting($key, $value)
+    public static function setSetting($key, $value, $flush_cache = false)
     {
         $record = self::getRepository()->findOneBy(array('setting_key' => $key));
         
@@ -36,7 +36,8 @@ class Settings extends \DF\Doctrine\Entity
         $record->setting_value = $value;
         $record->save();
 
-        self::clearCache();
+        if ($flush_cache)
+            self::clearCache();
     }
     
     public static function getSetting($key, $default_value = NULL, $cached = TRUE)
@@ -63,21 +64,26 @@ class Settings extends \DF\Doctrine\Entity
     
     public static function fetchArray($cached = true)
     {
-        $settings = \DF\Cache::get('all_settings');
+        static $settings;
 
         if (!$settings || !$cached)
         {
-            $em = self::getEntityManager();
-            $settings_raw = $em->createQuery('SELECT s FROM '.__CLASS__.' s ORDER BY s.setting_key ASC')
-                ->getArrayResult();
-        
-            $settings = array();
-            foreach((array)$settings_raw as $setting)
-            {
-                $settings[$setting['setting_key']] = $setting['setting_value'];
-            }
+            $settings = \DF\Cache::get('all_settings');
 
-            \DF\Cache::save($settings, 'all_settings', array(), 86400);
+            if (!$settings || !$cached)
+            {
+                $em = self::getEntityManager();
+                $settings_raw = $em->createQuery('SELECT s FROM '.__CLASS__.' s ORDER BY s.setting_key ASC')
+                    ->getArrayResult();
+
+                $settings = array();
+                foreach((array)$settings_raw as $setting)
+                {
+                    $settings[$setting['setting_key']] = $setting['setting_value'];
+                }
+
+                \DF\Cache::save($settings, 'all_settings', array(), 8640);
+            }
         }
 
         return $settings;

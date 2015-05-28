@@ -96,26 +96,42 @@ class Cache
         $cache = self::getCache();
         return $cache->queryKeys(self::getSitePrefix('user'));
     }
-    
-    // Retrieve or initialize the cache.
-    protected static $_user_cache;
-    
-    public static function getCache()
+
+    /**
+     * @param string $cache_level
+     * @return \Phalcon\Cache\BackendInterface
+     */
+    public static function getCache($cache_level = 'user')
     {
-        return self::getUserCache();
-    }
-    public static function getUserCache()
-    {
-        if (!is_object(self::$_user_cache))
+        if ($cache_level == 'user')
+        {
+            return self::getUserCache();
+        }
+        else
         {
             $frontend = new \Phalcon\Cache\Frontend\Data();
-
-            self::$_user_cache = self::getBackendCache($frontend);
+            return self::getBackendCache($frontend, $cache_level);
         }
-        
-        return self::$_user_cache;
     }
-    
+
+    /**
+     * Get the static user cache.
+     *
+     * @return \Phalcon\Cache\BackendInterface
+     */
+    public static function getUserCache()
+    {
+        static $user_cache;
+
+        if (!$user_cache)
+        {
+            $frontend = new \Phalcon\Cache\Frontend\Data();
+            $user_cache = self::getBackendCache($frontend, 'user');
+        }
+
+        return $user_cache;
+    }
+
     /**
      * Page Cache
     public static function page()
@@ -157,46 +173,70 @@ class Cache
         return self::$_page_cache;
     }
      */
-    
+
     /**
-     * Generic Cache Details
+     * @param \Phalcon\Cache\FrontendInterface $frontCache
+     * @param string $cache_level
+     * @return \Phalcon\Cache\BackendInterface
      */
-    
-    public static function getSitePrefix($cache_level = 'user')
+    public static function getBackendCache(\Phalcon\Cache\FrontendInterface $frontCache, $cache_level = 'user')
     {
-        $folders = explode(DIRECTORY_SEPARATOR, DF_INCLUDE_ROOT);
-        $base_folder = @array_pop($folders);
-        
-        if (strpos($base_folder, '.') !== FALSE)
-            $base_folder = substr($base_folder, 0, strpos($base_folder, '.'));
+        $di = \Phalcon\Di::getDefault();
+        $config = $di->get('config');
 
-        $cache_base = ($base_folder) ? preg_replace("/[^a-zA-Z0-9]/", "", $base_folder) : 'default';
-        return $cache_base.'.'.$cache_level.'.';
-    }
-    
-    public static function getBackendCache(\Phalcon\Cache\FrontendInterface $frontCache)
-    {
-        $cache_dir = DF_INCLUDE_CACHE;
-        $cache_prefix = self::getSitePrefix('user');
+        $cache_config = $config->cache->toArray();
 
-        if (DF_APPLICATION_ENV == 'production') {
-            $di = \Phalcon\Di::getDefault();
-            $config = $di->get('config');
+        switch($cache_config['cache'])
+        {
+            case 'redis':
+                $redis_config = (array)$cache_config['redis'];
+                $redis_config['prefix'] = self::getSitePrefix($cache_level, ':');
 
-            $servers = array_values($config->memcached->servers->toArray());
+                return new \Phalcon\Cache\Backend\Redis($frontCache, $redis_config);
+                break;
 
-            return new \Phalcon\Cache\Backend\Libmemcached($frontCache, array(
-                'servers' => $servers,
-                'client' => array(
-                    \Memcached::OPT_HASH => \Memcached::HASH_MD5,
-                    \Memcached::OPT_PREFIX_KEY => $cache_prefix,
-                ),
-            ));
-        } else {
-            return new \Phalcon\Cache\Backend\File($frontCache, array(
-                'cacheDir' => $cache_dir.DIRECTORY_SEPARATOR,
-                'prefix' => $cache_prefix,
-            ));
+            case 'memcached':
+                $memcached_config = (array)$cache_config['memcached'];
+                $memcached_config['client'][\Memcached::OPT_PREFIX_KEY] = self::getSitePrefix($cache_level, '.');
+
+                return new \Phalcon\Cache\Backend\Libmemcached($frontCache, $memcached_config);
+                break;
+
+            case 'file':
+                $file_config = (array)$cache_config['file'];
+                $file_config['prefix'] = self::getSitePrefix($cache_level, '_');
+
+                return new \Phalcon\Cache\Backend\File($frontCache, $file_config);
+                break;
+
+            default:
+            case 'memory':
+            case 'ephemeral':
+                return new \Phalcon\Cache\Backend\Memory($frontCache);
+                break;
         }
+    }
+
+    /**
+     * @param string $cache_level
+     * @param string $cache_separator
+     * @return string Compiled site prefix for cache use.
+     */
+    public static function getSitePrefix($cache_level = 'user', $cache_separator = '.')
+    {
+        static $cache_base;
+
+        if (!$cache_base)
+        {
+            $folders = explode(DIRECTORY_SEPARATOR, DF_INCLUDE_ROOT);
+            $base_folder = @array_pop($folders);
+
+            if (strpos($base_folder, '.') !== FALSE)
+                $base_folder = substr($base_folder, 0, strpos($base_folder, '.'));
+
+            $cache_base = ($base_folder) ? preg_replace("/[^a-zA-Z0-9]/", "", $base_folder) : 'default';
+        }
+
+        return $cache_base.$cache_separator.$cache_level.$cache_separator;
     }
 }

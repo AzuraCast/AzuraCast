@@ -7,12 +7,22 @@ namespace DF\Doctrine;
 
 class Cache extends \Doctrine\Common\Cache\CacheProvider
 {
+    /**
+     * @var \Phalcon\Cache\BackendInterface
+     */
+    protected $_cache;
+
+    public function __construct()
+    {
+        $this->_cache = \DF\Cache::getCache('doctrine');
+    }
+
     protected function doFetch($id, $testCacheValidity = true)
     {
         $id = $this->_filterCacheId($id);
 
-        if (!$testCacheValidity || \DF\Cache::test($id))
-            return \DF\Cache::get($id);
+        if (!$testCacheValidity || $this->_cache->exists($id))
+            return $this->_cache->get($id);
         else
             return FALSE;
     }
@@ -20,21 +30,23 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
     protected function doContains($id)
     {
         $id = $this->_filterCacheId($id);
-        return \DF\Cache::test($id);
+        return $this->_cache->exists($id);
     }
     
     protected function doSave($id, $data, $lifeTime = NULL)
     {
-        if ($lifeTime == 0)
-            $lifeTime = NULL;
-        
-        \DF\Cache::save($data, $this->_filterCacheId($id), array(), $lifeTime);
+        if ($lifeTime == 0 || $lifeTime == NULL)
+            $lifeTime = 3600;
+
+        $id = $this->_filterCacheId($id);
+        $this->_cache->save($id, $data, $lifeTime);
         return true;
     }
 
     protected function doDelete($id)
     {
-        \DF\Cache::remove($this->_filterCacheId($id));
+        $id = $this->_filterCacheId($id);
+        $this->_cache->delete($id);
     }
     
     protected function doGetStats()
@@ -44,13 +56,13 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
     
     protected function doFlush()
     {
-        \DF\Cache::clean('all');
+        $this->_cache->flush();
     }
     
     public function getIds()
     {
-        $all_keys = \DF\Cache::getKeys();
-        
+        $all_keys = $this->_cache->queryKeys();
+
         if (!$this->getNamespace())
         {
             return $all_keys;

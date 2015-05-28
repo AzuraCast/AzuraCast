@@ -105,7 +105,7 @@ class SongHistory extends \DF\Doctrine\Entity
             $vote->vote = $value;
             $vote->save();
 
-            return true;
+            return $vote;
         }
 
         return false;

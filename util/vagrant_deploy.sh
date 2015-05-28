@@ -33,6 +33,12 @@ then
     apt-get -q -y install vim git curl nginx mariadb-server php5-fpm php5-cli php5-gd php5-mysqlnd php5-curl php5-phalcon php5-memcached nodejs npm php5-memcached
     apt-get autoremove
 
+    # Set up InfluxDB early (to allow time to initialize before setting up DBs.)
+    cd ~
+    wget http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb
+    dpkg -i influxdb_latest_amd64.deb
+    service influxdb start
+
     # Set Node.js bin alias
     ln -s /usr/bin/nodejs /usr/bin/node
 
@@ -86,15 +92,6 @@ then
     echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;" | mysql -u root -ppassword
     echo "CREATE DATABASE pvl CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root -ppassword
     service mysql restart
-
-    # Set up InfluxDB
-    cd ~
-    wget http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb
-    dpkg -i influxdb_latest_amd64.deb
-    service influxdb start
-
-    # Force delay for InfluxDB setup
-    sleep 10
 
     # Preconfigure databases
     cd $www_base/util

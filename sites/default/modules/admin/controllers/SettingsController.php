@@ -24,8 +24,10 @@ class SettingsController extends BaseController
             foreach($data as $key => $value)
             {
                 Settings::setSetting($key, $value);
-            }           
-            
+            }
+
+            Settings::clearCache();
+
             $this->alert('Settings updated!');
             return $this->redirectHere();
         }

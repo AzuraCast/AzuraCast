@@ -74,16 +74,14 @@ $title = ('My Profile');
                         <colgroup>
                             <col width="7%">
                             <col width="20%">
-                            <col width="25%">
-                            <col width="25%">
+                            <col width="50%">
                             <col width="23%">
                         </colgroup>
                         <thead>
                         <tr>
                             <th colspan="2">Station</th>
-                            <th>Song Title</th>
-                            <th>Artist</th>
-                            <th>Date/Time</th>
+                            <th>Song Title / Artist</th>
+                            <th>Date/Time Played</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -94,10 +92,10 @@ $title = ('My Profile');
                                     <?=$row['station']['name'] ?>
                                 </td>
                                 <td>
-                                    <?=$row['song']['title'] ?>
-                                </td>
-                                <td>
-                                    <?=$row['song']['artist'] ?>
+                                    <a href="#" class="btn-show-song-info" data-id="<?=$row['song']['id'] ?>" title="Click for Song Information">
+                                        <big><?=$row['song']['title'] ?></big><br>
+                                        <?=$row['song']['artist'] ?>
+                                    </a>
                                 </td>
                                 <td>
                                     <?=date('F j, Y g:ia', $row['timestamp']) ?>

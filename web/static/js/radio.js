@@ -65,8 +65,11 @@ $(function() {
 		if (songhist_id == 0)
 			return false;
 
-        // Only use local domain for credential passing.
-        remote_url = DF_BaseUrl+'/api/song/'+vote_function;
+        var remote_url;
+        if (typeof DF_ApiUrl !== 'undefined' && DF_ApiUrl != '')
+            remote_url = DF_ApiUrl+'/song/'+vote_function;
+        else
+            remote_url = DF_BaseUrl+'/api/song/'+vote_function;
 
 		jQuery.ajax({
 			'type': 'GET',
@@ -75,7 +78,10 @@ $(function() {
 			'data': {
 				'sh_id': songhist_id,
 				'client': 'pvlwebapp'
-			}
+			},
+            'xhrFields': {
+                'withCredentials': true
+            }
 		}).done(function(return_data) {
 			vote_ratelimit = false;
 			console.log(return_data);

@@ -3,6 +3,16 @@ $title = 'Shows Directory';
 $this->assets->collection('custom_css')->addCss('vendor/world-flags-sprite/stylesheets/flags16.css');
 ?>
 
+<div class="buttons pull-right">
+    <?=$this->viewHelper->button(array(
+        'type'      => 'link',
+        'icon'      => 'icon-rss',
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'feed')),
+        'text'      => 'All Shows RSS Feed',
+        'target'    => '_blank',
+    )) ?>
+</div>
+
 <ul class="autoselect nav nav-pills" rel="<?=$sort ?>">
     <li rel="alpha"><a href="<?=$this->viewHelper->routeFromHere(array('sort' => 'alpha')) ?>">Sort A-Z</a></li>
     <li rel="latest"><a href="<?=$this->viewHelper->routeFromHere(array('sort' => 'latest')) ?>">Sort by Latest Episode</a></li>

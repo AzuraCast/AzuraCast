@@ -146,90 +146,93 @@ class ShowController extends BaseController
     {
         $this->doNotRender();
 
-        switch(strtolower($this->getParam('type', 'default')))
+        if ($this->hasParam('id'))
         {
-            case 'single':
-                $id = (int)$this->getParam('id');
-                $record = Podcast::find($id);
+            $id = (int)$this->getParam('id');
+            $record = Podcast::find($id);
 
-                if (!($record instanceof Podcast))
-                    throw new \DF\Exception\DisplayOnly('Show record not found!');
+            if (!($record instanceof Podcast))
+                throw new \DF\Exception\DisplayOnly('Show record not found!');
 
-                $feed_title = $record->name;
-                $feed_desc = ($record->description) ? $record->description : 'A Ponyville Live! Show.';
+            $feed_title = $record->name;
+            $feed_desc = ($record->description) ? $record->description : 'A Ponyville Live! Show.';
 
-                $q = $this->em->createQuery('SELECT pe, p FROM Entity\PodcastEpisode pe JOIN pe.podcast p WHERE p.is_approved = 1 AND p.id = :id ORDER BY pe.timestamp DESC')->setParameter('id', $id);
-            break;
+            $cache_name = 'podcasts_' . $id . '_feed';
+            $q = $this->em->createQuery('SELECT pe, p FROM Entity\PodcastEpisode pe JOIN pe.podcast p WHERE p.is_approved = 1 AND p.id = :id ORDER BY pe.timestamp DESC')->setParameter('id', $id);
+        }
+        else
+        {
+            $feed_title = 'Ponyville Live! Shows';
+            $feed_desc = 'The partner shows of the Ponyville Live! network, including commentary, interviews, episode reviews, convention coverage, and more.';
 
-            case 'syndicated':
-                // TODO
-
-            case 'default':
-            default:
-                $feed_title = 'Ponyville Live! Shows';
-                $feed_desc = 'The partner shows of the Ponyville Live! network, including commentary, interviews, episode reviews, convention coverage, and more.';
-
-                $q = $this->em->createQuery('SELECT pe, p FROM Entity\PodcastEpisode pe JOIN pe.podcast p WHERE p.is_approved = 1 AND pe.timestamp >= :threshold ORDER BY pe.timestamp DESC')
-                    ->setParameter('threshold', strtotime('-3 months'));
-            break;
+            $cache_name = 'podcasts_all_feed';
+            $q = $this->em->createQuery('SELECT pe, p FROM Entity\PodcastEpisode pe JOIN pe.podcast p WHERE p.is_approved = 1 AND pe.timestamp >= :threshold ORDER BY pe.timestamp DESC')
+                ->setParameter('threshold', strtotime('-3 months'));
         }
 
-        $records = $q->getArrayResult();
+        $rss = \DF\Cache::get($cache_name);
 
-        // Initial RSS feed setup.
-        $feed = new \Zend_Feed_Writer_Feed;
-        $feed->setTitle($feed_title);
-        $feed->setLink('http://ponyvillelive.com/');
-
-        $feed->setDescription($feed_desc);
-
-        $feed->addAuthor(array(
-            'name'  => 'Ponyville Live!',
-            'email' => 'pr@ponyvillelive.com',
-            'uri'   => 'http://ponyvillelive.com',
-        ));
-        $feed->setDateModified(time());
-
-        foreach((array)$records as $episode)
+        if (!$rss)
         {
-            try
+            $records = $q->getArrayResult();
+
+            // Initial RSS feed setup.
+            $feed = new \Zend_Feed_Writer_Feed;
+            $feed->setTitle($feed_title);
+            $feed->setLink('http://ponyvillelive.com/');
+
+            $feed->setDescription($feed_desc);
+
+            $feed->addAuthor(array(
+                'name' => 'Ponyville Live!',
+                'email' => 'pr@ponyvillelive.com',
+                'uri' => 'http://ponyvillelive.com',
+            ));
+            $feed->setDateModified(time());
+
+            foreach ((array)$records as $episode)
             {
-                $podcast = $episode['podcast'];
-                $title = $episode['title'];
+                try
+                {
+                    $podcast = $episode['podcast'];
+                    $title = $episode['title'];
 
-                // Check for podcast name preceding episode name.
-                if (substr($title, 0, strlen($podcast['name'])) == $podcast['name'])
-                    $title = substr($title, strlen($podcast['name']));
+                    // Check for podcast name preceding episode name.
+                    if (substr($title, 0, strlen($podcast['name'])) == $podcast['name'])
+                        $title = substr($title, strlen($podcast['name']));
 
-                $title = trim($title, " :-\t\n\r\0\x0B");
-                $title = $podcast['name'].' - '.$title;
+                    $title = trim($title, " :-\t\n\r\0\x0B");
+                    $title = $podcast['name'] . ' - ' . $title;
 
-                // Create record.
-                $entry = $feed->createEntry();
-                $entry->setTitle($title);
-                $entry->setLink($episode['web_url']);
-                $entry->addAuthor(array(
-                    'name'  => $podcast['name'],
-                    'uri'   => $podcast['web_url'],
-                ));
-                $entry->setDateModified($episode['timestamp']);
-                $entry->setDateCreated($episode['timestamp']);
+                    // Create record.
+                    $entry = $feed->createEntry();
+                    $entry->setTitle($title);
+                    $entry->setLink($episode['web_url']);
+                    $entry->addAuthor(array(
+                        'name' => $podcast['name'],
+                        'uri' => $podcast['web_url'],
+                    ));
+                    $entry->setDateModified($episode['timestamp']);
+                    $entry->setDateCreated($episode['timestamp']);
 
-                if ($podcast['description'])
-                    $entry->setDescription($podcast['description']);
+                    if ($podcast['description'])
+                        $entry->setDescription($podcast['description']);
 
-                if ($episode['body'])
-                    $entry->setContent($episode['body']);
+                    if ($episode['body'])
+                        $entry->setContent($episode['body']);
 
-                $feed->addEntry($entry);
+                    $feed->addEntry($entry);
+                }
+                catch (\Exception $e){ }
             }
-            catch(\Exception $e) {}
-        }
 
-        // Export feed.
-        $out = $feed->export('rss');
+            // Export feed.
+            $rss = $feed->export('rss');
+
+            \DF\Cache::set($rss, $cache_name, array(), 60 * 15);
+        }
 
         header("Content-Type: application/rss+xml");
-        echo $out;
+        echo $rss;
     }
 }

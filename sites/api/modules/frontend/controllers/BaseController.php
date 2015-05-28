@@ -22,6 +22,7 @@ class BaseController extends \DF\Phalcon\Controller
 
         // Allow AJAX retrieval.
         $this->response->setHeader('Access-Control-Allow-Origin', '*');
+        $this->response->setHeader('Access-Control-Allow-Credentials', 'true');
 
         // Fix the base URL prefixed with '//'.
         \DF\Url::forceSchemePrefix(true);

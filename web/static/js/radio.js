@@ -78,7 +78,10 @@ $(function() {
 			'data': {
 				'sh_id': songhist_id,
 				'client': 'pvlwebapp'
-			}
+			},
+            'xhrFields': {
+                'withCredentials': true
+            }
 		}).done(function(return_data) {
 			vote_ratelimit = false;
 			console.log(return_data);

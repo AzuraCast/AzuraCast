@@ -97,7 +97,7 @@ class SongController extends BaseController
                 $vote_result = $sh->vote($value);
 
             if ($vote_result)
-                return $this->returnSuccess(array('message' => 'OK', 'record' => $vote_result->toArray()));
+                return $this->returnSuccess('OK');
             else
                 return $this->returnError('Vote could not be applied.');
         }

@@ -43,7 +43,7 @@ class StationController extends BaseController
             throw new \DF\Exception\DisplayOnly('This station does not support requests at this time.');
 
         if ($this->station->requests_external_url)
-            $this->redirect($this->station->requests_external_url);
+            return $this->redirect($this->station->requests_external_url);
 
         $is_supported = CentovaCast::isStationSupported($this->station);
         if (!$is_supported)

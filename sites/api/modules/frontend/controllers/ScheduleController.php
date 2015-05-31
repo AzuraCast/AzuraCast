@@ -32,7 +32,9 @@ class ScheduleController extends BaseController
             $start_timestamp = $timestamps['start'];
             $end_timestamp = $timestamps['end'];
 
+            $use_cache = true;
             $cache_name = 'month_'.$show;
+
             $calendar_name .= ' - '.date('F Y', $timestamps['mid']);
         }
         elseif ($this->hasParam('start'))
@@ -40,7 +42,10 @@ class ScheduleController extends BaseController
             $start_timestamp = (int)$this->getParam('start');
             $end_timestamp = (int)$this->getParam('end');
 
-            $cache_name = 'range_'.$start_timestamp.'_'.$end_timestamp;
+            $use_cache = false;
+            $cache_name = null;
+            // $cache_name = 'range_'.$start_timestamp.'_'.$end_timestamp;
+
             $calendar_name .= ' - '.date('F j, Y', $start_timestamp).' to '.date('F j, Y', $end_timestamp);
         }
         else
@@ -48,13 +53,22 @@ class ScheduleController extends BaseController
             $start_timestamp = time();
             $end_timestamp = time()+(86400 * 30);
 
+            $use_cache = true;
             $cache_name = 'upcoming';
+
             $calendar_name .= ' - Upcoming';
         }
 
         // Load from cache or regenerate.
-        $cache_name = 'api_schedule_'.$station_shortcode.'_'.$cache_name;
-        $events = \DF\Cache::get($cache_name);
+        if ($use_cache)
+        {
+            $cache_name = 'api_sched_' . $station_shortcode . '_' . $cache_name;
+            $events = \DF\Cache::get($cache_name);
+        }
+        else
+        {
+            $events = null;
+        }
 
         if (!$events)
         {
@@ -80,7 +94,8 @@ class ScheduleController extends BaseController
             foreach((array)$events_raw as $event)
                 $events[] = Schedule::api($event);
 
-            \DF\Cache::save($events, $cache_name, array(), 300);
+            if ($use_cache)
+                \DF\Cache::save($events, $cache_name, array(), 300);
         }
 
         $format = strtolower($this->getParam('format', 'json'));

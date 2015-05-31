@@ -51,6 +51,9 @@ http {
         # Virtual Host Configs
         ##
 
+        fastcgi_cache_path /etc/nginx/cache levels=1:2 keys_zone=PVLIVE:100m inactive=10m;
+        fastcgi_cache_key "$scheme$request_method$host$request_uri";
+
         server {
                 listen 80 default_server;
 
@@ -58,6 +61,8 @@ http {
                 index index.php;
 
                 server_name localhost pvlive.dev www.pvlive.dev;
+
+                add_header X-Fastcgi-Cache $upstream_cache_status;
 
                 location / {
                         try_files $uri @clean_url;
@@ -72,6 +77,11 @@ http {
                 }
 
                 location ~ \.php$ {
+                        fastcgi_cache PVLIVE;
+                        fastcgi_cache_valid 200 10m;
+                        fastcgi_cache_use_stale off;
+                        fastcgi_hide_header Cache-Control;
+
                         fastcgi_split_path_info ^(.+\.php)(/.+)$;
                         # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
                         fastcgi_pass 127.0.0.1:9000;

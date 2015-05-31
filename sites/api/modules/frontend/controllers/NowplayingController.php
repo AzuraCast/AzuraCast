@@ -9,6 +9,8 @@ class NowplayingController extends BaseController
 {
     public function indexAction()
     {
+        $this->setCacheLifetime(15);
+
         // Pull from cache, or load from flatfile otherwise.
         $np = \DF\Cache::get('api_nowplaying_data', function() {
             $file_path_api = \PVL\Service\AmazonS3::path('api/nowplaying_api.json');

@@ -27,6 +27,8 @@ class IndexController extends BaseController
      */
     public function timeAction()
     {
+        $this->setCacheLifetime(0);
+
         // Re-enable session management for this API function.
         \DF\Session::enable();
 

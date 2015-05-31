@@ -249,6 +249,9 @@ class AccountController extends BaseController
     public function logoutAction()
     {
         $this->auth->logout();
+
+        \DF\Session::destroy();
+
         $this->redirectToRoute(array('module' => 'default'));
     }
 

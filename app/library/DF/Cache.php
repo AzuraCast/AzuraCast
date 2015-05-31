@@ -86,8 +86,7 @@ class Cache
     public static function clean($mode = 'all', $tags = array())
     {
         $cache = self::getCache();
-        if ($mode == 'all')
-            return $cache->flush();
+        return $cache->flush();
     }
     
     // Get all cache keys.
@@ -228,6 +227,10 @@ class Cache
 
         if (!$cache_base)
         {
+            $dir_hash = md5(DF_INCLUDE_ROOT);
+            $cache_base = substr($dir_hash, 0, 3);
+
+            /* Older process, can produce much longer bases.
             $folders = explode(DIRECTORY_SEPARATOR, DF_INCLUDE_ROOT);
             $base_folder = @array_pop($folders);
 
@@ -235,7 +238,14 @@ class Cache
                 $base_folder = substr($base_folder, 0, strpos($base_folder, '.'));
 
             $cache_base = ($base_folder) ? preg_replace("/[^a-zA-Z0-9]/", "", $base_folder) : 'default';
+            */
         }
+
+        // Shortening of cache level names.
+        if ($cache_level == 'user')
+            $cache_level = 'u';
+        elseif ($cache_level == 'doctrine')
+            $cache_level = 'db';
 
         return $cache_base.$cache_separator.$cache_level.$cache_separator;
     }

@@ -55,15 +55,81 @@ class Controller extends \Phalcon\Mvc\Controller
     public function afterExecuteRoute()
     {
         $this->postDispatch();
+        $this->handleCache();
     }
 
+    /**
+     * Overridable function called after page handling is complete.
+     */
     protected function postDispatch()
-    {
-    }
+    {}
 
+    /**
+     * Overridable permissions check. Return false to generate "access denied" message.
+     * @return bool
+     */
     protected function permissions()
     {
         return true;
+    }
+
+    /* HTTP Cache Handling */
+
+    protected $_cache_privacy = null;
+    protected $_cache_lifetime = 0;
+
+    /**
+     * Set new HTTP cache "privacy" level, used by intermediate caches.
+     *
+     * @param $new_privacy "private" or "public"
+     */
+    public function setCachePrivacy($new_privacy)
+    {
+        $this->_cache_privacy = strtolower($new_privacy);
+    }
+
+    /**
+     * Set new HTTP cache "lifetime", expressed as seconds after current time.
+     *
+     * @param $new_lifetime
+     */
+    public function setCacheLifetime($new_lifetime)
+    {
+        $this->_cache_lifetime = (int)$new_lifetime;
+    }
+
+    /**
+     * Internal cache handling after page handling is complete.
+     */
+    protected function handleCache()
+    {
+        // Set default caching parameters for pages that do not customize it.
+        if ($this->_cache_privacy === null)
+        {
+            $auth = $this->di->get('auth');
+
+            if ($auth->isLoggedIn())
+            {
+                $this->_cache_privacy = 'private';
+                $this->_cache_lifetime = 0;
+            }
+            else
+            {
+                $this->_cache_privacy = 'public';
+                $this->_cache_lifetime = 30;
+            }
+        }
+
+        if ($this->_cache_privacy == 'private')
+        {
+            // $this->response->setHeader('Cache-Control', 'must-revalidate, private, max-age=' . $this->_cache_lifetime);
+            $this->response->setHeader('X-Accel-Expires', 'off');
+        }
+        else
+        {
+            // $this->response->setHeader('Cache-Control', 'public, max-age=' . $this->_cache_lifetime);
+            $this->response->setHeader('X-Accel-Expires', $this->_cache_lifetime);
+        }
     }
 
     /* URL Parameter Handling */

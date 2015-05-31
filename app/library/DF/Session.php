@@ -129,6 +129,31 @@ class Session
     }
 
     /**
+     * Destroy a session.
+     */
+
+    public static function destroy()
+    {
+        self::start();
+
+        // Unset all of the session variables.
+        $_SESSION = array();
+
+        // Destroy session cookie.
+        if (ini_get("session.use_cookies"))
+        {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+
+        // Destroy session formally.
+        session_destroy();
+    }
+
+    /**
      * Indicates if a session has already been started in this page load.
      *
      * @return bool

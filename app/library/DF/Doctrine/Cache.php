@@ -8,7 +8,7 @@ namespace DF\Doctrine;
 class Cache extends \Doctrine\Common\Cache\CacheProvider
 {
     /**
-     * @var \Phalcon\Cache\BackendInterface
+     * @var \Stash\Pool
      */
     protected $_cache;
 
@@ -20,9 +20,10 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
     protected function doFetch($id, $testCacheValidity = true)
     {
         $id = $this->_filterCacheId($id);
+        $item = $this->_cache->getItem($id);
 
-        if (!$testCacheValidity || $this->_cache->exists($id))
-            return $this->_cache->get($id);
+        if (!$testCacheValidity || !$item->isMiss())
+            return $item->get();
         else
             return FALSE;
     }
@@ -30,7 +31,9 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
     protected function doContains($id)
     {
         $id = $this->_filterCacheId($id);
-        return $this->_cache->exists($id);
+        $item = $this->_cache->getItem($id);
+
+        return !$item->isMiss();
     }
     
     protected function doSave($id, $data, $lifeTime = NULL)
@@ -39,14 +42,17 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
             $lifeTime = 3600;
 
         $id = $this->_filterCacheId($id);
-        $this->_cache->save($id, $data, $lifeTime);
-        return true;
+
+        $item = $this->_cache->getItem($id);
+        return $item->set($data, $lifeTime);
     }
 
     protected function doDelete($id)
     {
         $id = $this->_filterCacheId($id);
-        $this->_cache->delete($id);
+
+        $item = $this->_cache->getItem($id);
+        return $item->clear();
     }
     
     protected function doGetStats()
@@ -61,6 +67,8 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
     
     public function getIds()
     {
+        return null;
+        /*
         $all_keys = $this->_cache->queryKeys();
 
         if (!$this->getNamespace())
@@ -80,6 +88,7 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
             }
             return $relevant_keys;
         }
+        */
     }
     
     protected function _filterCacheId($id)

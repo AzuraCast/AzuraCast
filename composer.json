@@ -4,6 +4,7 @@
   "require": {
     "zendframework/zendframework1": "1.12.6",
     "doctrine/orm": "2.4.*",
+    "tedivm/stash": "0.12.*",
     "filp/whoops": "1.*",
     "guzzlehttp/guzzle": "~5.0",
     "james-heinrich/getid3": "1.9.8",

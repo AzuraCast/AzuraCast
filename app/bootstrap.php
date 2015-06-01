@@ -199,14 +199,10 @@ $di->set('url', function() use ($config) {
     return $url;
 });
 
-/*
-// Register session.
-$di->set('session', function() {
-    $session = new \Phalcon\Session\Adapter\Files();
-    $session->start();
-    return $session;
-});
-*/
+// Set Session handler.
+$session_pool = \DF\Cache::getCache('session');
+$session = new \Stash\Session($session_pool);
+\Stash\Session::registerHandler($session);
 
 // Register view helpers.
 $di->setShared('viewHelper', '\DF\Phalcon\Service\ViewHelper');

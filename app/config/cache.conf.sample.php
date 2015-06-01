@@ -13,30 +13,32 @@ return array(
 
     // Flatfile configuration
     'file' => array(
-        'cacheDir' => DF_INCLUDE_CACHE.DIRECTORY_SEPARATOR,
+        'path' => DF_INCLUDE_CACHE.DIRECTORY_SEPARATOR,
     ),
 
     // Redis configuration
     'redis' => array(
-        'host'      => 'localhost',
-        'port'      => 6379, // default: 6379
-        'auth'      => '',
-        'persistent' => false
+        'servers'   => array(
+            array(
+                'server'    => 'localhost',
+                'port'      => 6379, // default: 6379
+            ),
+        ),
+
+        // 'password'      => '', // Must be commented out to have no authentication
+        'database'  => 0,
     ),
 
     // Memcached configuration
     'memcached' => array(
         'servers'   => array(
-            'main'      => array(
-                // Host or IP to connect to (default: localhost, port 11211).
-                'host'          => 'localhost',
-                'port'          => 11211,
-
-                // Priority for cache storage.
+            array(
+                'server'        => 'localhost',
+                'port'          => 11211, // default: 11211
                 'weight'        => 1,
             ),
         ),
-        'client' => array(),
+        'extension' => 'memcached', // Use libmemcached instead of memcache
     ),
 
 );

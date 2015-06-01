@@ -62,7 +62,29 @@ http {
 
                 server_name localhost pvlive.dev www.pvlive.dev;
 
+                # Cache setup
                 add_header X-Fastcgi-Cache $upstream_cache_status;
+
+                #Cache everything by default
+                set $no_cache 0;
+
+                #Don't cache POST requests
+                if ($request_method = POST)
+                {
+                        set $no_cache 1;
+                }
+
+                #Don't cache if the URL contains a query string
+                if ($query_string != "")
+                {
+                        set $no_cache 1;
+                }
+
+                #Don't cache if there is a cookie called PHPSESSID
+                if ($http_cookie ~ PHPSESSID)
+                {
+                        set $no_cache 1;
+                }
 
                 location / {
                         try_files $uri @clean_url;
@@ -78,6 +100,8 @@ http {
 
                 location ~ \.php$ {
                         fastcgi_cache PVLIVE;
+                        fastcgi_cache_bypass $no_cache;
+                        fastcgi_no_cache $no_cache;
                         fastcgi_cache_valid 200 10m;
                         fastcgi_cache_use_stale off;
                         fastcgi_hide_header Cache-Control;

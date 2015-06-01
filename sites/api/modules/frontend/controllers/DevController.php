@@ -9,6 +9,10 @@ class DevController extends BaseController
     {
         parent::preDispatch();
 
+        // Prevent nginx caching of output.
+        $this->setCachePrivacy('private');
+        $this->setCacheLifetime(0);
+
         $api_key = $this->getParam('key');
         if (!ApiKey::authenticate($api_key))
             die('ERROR: API key specified is not valid.');
@@ -57,7 +61,7 @@ class DevController extends BaseController
         $command = 'mysqldump '.implode(' ', $command_flags).' > '.$destination_path;
 
         // Execute mysqldump.
-        exec($command);
+        $dump_output = exec($command);
 
         // Stream file out to screen.
         if (file_exists($destination_path))
@@ -65,7 +69,10 @@ class DevController extends BaseController
             $s3_path = 'db_dumps/pvlive_import.sql';
             \PVL\Service\AmazonS3::upload($destination_path, $s3_path);
 
-            return $this->returnSuccess($s3_path);
+            return $this->returnSuccess(array(
+                'path' => $s3_path,
+                'dump' => $dump_output,
+            ));
         }
         else
         {

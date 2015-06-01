@@ -128,6 +128,10 @@ http {
                         proxy_set_header Connection "upgrade";
                 }
 
+                location ~ /purge(/.*) {
+                        fastcgi_cache_purge PVLIVE "$scheme$request_method$host$1";
+                }
+
                 # deny access to .htaccess files, if Apache's document root
                 # concurs with nginx's one
                 #

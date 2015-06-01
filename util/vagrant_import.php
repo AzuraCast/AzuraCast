@@ -9,7 +9,8 @@ use \Entity\Role;
 require_once dirname(__FILE__) . '/../app/bootstrap.php';
 
 set_time_limit(0);
-error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+error_reporting(E_ALL & ~E_STRICT);
+ini_set('display_errors', 1);
 
 $config = $di->get('config');
 
@@ -62,7 +63,8 @@ $command_flags = array(
 );
 $command = 'mysql '.implode(' ', $command_flags).' < '.$db_path_full;
 
-passthru($command);
+echo $command."\n";
+system($command);
 
 @unlink($db_path_full);
 @rmdir(dirname($db_path_full));

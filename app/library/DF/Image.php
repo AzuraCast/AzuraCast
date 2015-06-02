@@ -33,6 +33,10 @@ class Image
             case 'png':
                 $image = imagecreatefrompng($source_file);
             break;
+
+            default:
+                throw new \DF\Exception('Image format not supported.');
+            break;
         }
         
         $image_width = imagesx($image);

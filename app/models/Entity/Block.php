@@ -70,7 +70,7 @@ class Block extends \DF\Doctrine\Entity
             {
                 $content = self::contentReplace($content, $var_value, $var_key.'.');
             }
-            else if ($var_value instanceof \Zend_Config)
+            else if ($var_value instanceof \DF\Config\Item)
             {
                 $var_value = $var_value->toArray();
                 $content = self::contentReplace($content, $var_value, $var_key.'.');

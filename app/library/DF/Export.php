@@ -128,57 +128,11 @@ class Export
     
     public static function json($table_data)
     {
-        return \Zend_Json::encode($table_data);
+        return json_encode($table_data);
     }
     public static function exportToJSON($table_data)
     {
-        return \Zend_Json::encode($table_data);
-    }
-    
-    /** 
-     * PDF
-     */
-    public static function getPdfFonts()
-    {
-        $fonts_by_name = array(
-            'courier'           => \Zend_Pdf_Font::FONT_COURIER,
-            'courier_bold'      => \Zend_Pdf_Font::FONT_COURIER_BOLD,
-            'helvetica'         => \Zend_Pdf_Font::FONT_HELVETICA,
-            'helvetica_bold'    => \Zend_Pdf_Font::FONT_HELVETICA_BOLD,
-            'helvetica_oblique' => \Zend_Pdf_Font::FONT_HELVETICA_OBLIQUE,
-        );
-        $fonts_by_path = array(
-            'trebuchet'         => DF_INCLUDE_STATIC.'/fonts/trebuc.ttf',
-            'trebuchet_bold'    => DF_INCLUDE_STATIC.'/fonts/trebucbd.ttf',
-            'trebuchet_italic'  => DF_INCLUDE_STATIC.'/fonts/trebucit.ttf',
-            'trebuchet_bolditalic' => DF_INCLUDE_STATIC.'/fonts/trebucbi.ttf',
-            'tahoma'            => DF_INCLUDE_STATIC.'/fonts/tahoma.ttf',
-            'tahoma_bold'       => DF_INCLUDE_STATIC.'/fonts/tahomabd.ttf',
-            'barcode'           => DF_INCLUDE_STATIC.'/fonts/FRE3OF9X.TTF',
-        );
-        
-        $font_results = array();
-        foreach($fonts_by_name as $font_key => $font_name)
-        {
-            $font_results[$font_key] = \Zend_Pdf_Font::fontWithName($font_name);    
-        }
-        foreach($fonts_by_path as $font_key => $font_path)
-        {
-            if (file_exists($font_path))
-                $font_results[$font_key] = \Zend_Pdf_Font::fontWithPath($font_path);
-        }
-        return $font_results;
-    }
-    
-    public static function displayPdf($pdf_obj)
-    {
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        header("Cache-Control: private", FALSE);
-        header("Content-type: application/pdf");
-        echo $pdf_obj->render();
-        exit;
+        return json_encode($table_data);
     }
     
     /**

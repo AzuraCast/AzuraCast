@@ -9,7 +9,7 @@ class PvlNode
      * @param $event_type string The event to trigger in socket.io (i.e. nowplaying)
      * @param $event_data mixed An array of contents to send to clients.
      * @return mixed
-     * @throws \Zend_Exception
+     * @throws \DF\Exception
      */
     public static function push($event_type, $event_data)
     {
@@ -44,7 +44,6 @@ class PvlNode
      * Fetch analytics from the remote service (i.e. active connections, last update)
      *
      * @return int
-     * @throws \Zend_Exception
      */
     public static function fetch()
     {

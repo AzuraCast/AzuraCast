@@ -3,7 +3,7 @@ namespace DF\View\Helper;
 class Paginate extends HelperAbstract
 {
     /**
-     * @param $pager \DF\Paginator\Doctrine|\Zend_Paginator
+     * @param $pager \DF\Paginator\Doctrine|\Zend\Paginator\Paginator
      * @return string
      */
     public function paginate($pager)

@@ -1,6 +1,6 @@
 <?php
 /**
- * View Helper that allows a current view to use the same routing mechanism for its internal template rendering that is used by the Zend_Controller_Action.
+ * View Helper that allows a current view to use the same routing mechanism for its internal template rendering that is used by the the MVC controller action.
  */
 
 namespace DF\View\Helper;

@@ -2,18 +2,22 @@
   "name": "bravelyblue/pvlive",
   "description": "The Ponyville Live! primary application.",
   "require": {
-    "zendframework/zendframework1": "1.12.6",
-    "zendframework/zend-paginator": "2.4.*",
+    "zendframework/zend-paginator": "~2.4",
+    "zendframework/zend-feed": "~2.4",
+    "zendframework/zend-http": "~2.4",
+    "zendframework/zend-servicemanager": "~2.4",
+
+    "guzzlehttp/guzzle": "~5.0",
     "doctrine/orm": "2.4.*",
     "tedivm/stash": "0.12.*",
     "filp/whoops": "1.*",
-    "guzzlehttp/guzzle": "~5.0",
     "electrolinux/phpquery": "0.9.6",
+    "nette/mail": "2.3.0",
+
     "google/apiclient": "1.0.*@beta",
-    "phpoffice/phpexcel": "1.8.0",
     "aws/aws-sdk-php": "2.*",
-    "ise/php-soundcloud": "dev-master",
-    "nette/mail": "2.3.0"
+    "phpoffice/phpexcel": "1.8.0",
+    "ise/php-soundcloud": "dev-master"
   },
   "require-dev": {
     "phalcon/devtools": "dev-master@dev"

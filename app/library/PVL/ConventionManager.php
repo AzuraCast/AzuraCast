@@ -8,7 +8,6 @@ class ConventionManager
 {
     /**
      * Routine synchronization process.
-     * @throws \Zend_Exception
      */
     public static function run()
     {
@@ -33,8 +32,6 @@ class ConventionManager
     /**
      * Process an individual convention archive row.
      * @param ConventionArchive $row
-     * @throws \Zend_Exception
-     * @throws \Zend_Http_Client_Exception
      */
     public static function process(ConventionArchive $row)
     {

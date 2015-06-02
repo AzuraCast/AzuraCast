@@ -177,7 +177,7 @@ class ShowController extends BaseController
             $records = $q->getArrayResult();
 
             // Initial RSS feed setup.
-            $feed = new \Zend_Feed_Writer_Feed;
+            $feed = new \Zend\Feed\Writer\Feed();
             $feed->setTitle($feed_title);
             $feed->setLink('http://ponyvillelive.com/');
 

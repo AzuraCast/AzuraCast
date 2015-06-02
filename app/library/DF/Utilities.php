@@ -5,6 +5,9 @@
 
 namespace DF;
 
+use DF\Cache;
+use Zend\Feed\Reader\Reader;
+
 class Utilities
 {
     /**
@@ -18,74 +21,51 @@ class Utilities
     public static function getNewsFeed($feed_url, $cache_name = NULL, $cache_expires = 900)
     {
         if (!is_null($cache_name))
-        {
-            $feed_cache = \DF\Cache::get('feed_'.$cache_name);
-        }
-
-        if (!$feed_cache)
-        {
-            // Catch the occasional error when the RSS feed is malformed or the HTTP request times out.
-            try
-            {
-                $http_client = \Zend_Feed::getHttpClient();
-                $http_client->setConfig(array('timeout' => 60));
-
-                $news_feed = new \Zend_Feed_Rss($feed_url);
-            }
-            catch(Exception $e)
-            {
-                $news_feed = NULL;
-            }
-
-            if (!is_null($news_feed))
-            {
-                $latest_news = array();
-                $article_num = 0;
-
-                foreach ($news_feed as $item)
-                {
-                    $article_num++;
-
-                    // Process categories.
-                    $categories_raw = (is_array($item->category)) ? $item->category : array($item->category);
-                    $categories = array();
-
-                    foreach($categories_raw as $category)
-                    {
-                        $categories[] = $category->__toString();
-                    }
-
-                    // Process main description.
-                    $description = trim($item->description()); // Remove extraneous tags.
-                    // $description = preg_replace('/[^(\x20-\x7F)]+/',' ', $description); // Strip "exotic" non-ASCII characters.
-                    // $description = preg_replace('/<a[^(>)]+>read more<\/a>/i', '', $description); // Remove "read more" link.
-
-                    $news_item = array(
-                        'num'           => $article_num,
-                        'title'         => $item->title(),
-                        'timestamp'     => strtotime($item->pubDate()),
-                        'description'   => $description,
-                        'link'          => $item->link(),
-                        'categories'    => $categories,
-                    );
-
-                    $latest_news[] = $news_item;
-                }
-
-                $latest_news = array_slice($latest_news, 0, 10);
-
-                if (!is_null($cache_name))
-                {
-                    \DF\Cache::set($latest_news, 'feed_'.$cache_name, array('feeds', $cache_name));
-                }
-            }
-        }
+            $feed_cache = Cache::get('feed_'.$cache_name);
         else
+            $feed_cache = null;
+
+        if ($feed_cache)
+            return $feed_cache;
+
+        // Catch the occasional error when the RSS feed is malformed or the HTTP request times out.
+        try
         {
-            $latest_news = $feed_cache;
+            $news_feed = Reader::import($feed_url);
+        }
+        catch(\Exception $e)
+        {
+            $news_feed = NULL;
         }
 
-        return $latest_news;
+        if (!is_null($news_feed))
+        {
+            $latest_news = array();
+            $article_num = 0;
+
+            foreach ($news_feed as $item)
+            {
+                $article_num++;
+
+                $news_item = array(
+                    'num'           => $article_num,
+                    'title'         => $item->getTitle(),
+                    'timestamp'     => $item->getDateModified()->getTimestamp(),
+                    'description'   => trim($item->getDescription()),
+                    'link'          => $item->getLink(),
+                    'categories'    => $item->getCategories()->getValues(),
+                );
+
+                $latest_news[] = $news_item;
+            }
+
+            $latest_news = array_slice($latest_news, 0, 10);
+
+            if (!is_null($cache_name))
+                Cache::set($latest_news, 'feed_'.$cache_name, array('feeds', $cache_name), $cache_expires);
+
+            return $latest_news;
+        }
     }
 
     /**

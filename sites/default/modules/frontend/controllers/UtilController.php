@@ -22,7 +22,8 @@ class UtilController extends BaseController
 
         // -------- START HERE -------- //
 
-        \PVL\Service\Notifico::post('Tune in to TEST THING on TEST STATION! #JustEagleThings');
+        $raw = \PVL\NewsAdapter\Tumblr::fetch('http://news.ponyvillelive.com/rss');
+        Debug::print_r($raw);
 
         // -------- END HERE -------- //
 

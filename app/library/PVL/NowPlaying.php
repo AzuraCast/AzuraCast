@@ -448,7 +448,6 @@ class NowPlaying
 
     /**
      * @return \Doctrine\ORM\EntityManager
-     * @throws \Zend_Exception
      */
     public static function getEntityManager()
     {

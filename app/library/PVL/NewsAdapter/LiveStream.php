@@ -5,27 +5,26 @@ class LiveStream extends AdapterAbstract
 {
     public static function fetch($url, $params = array())
     {
-        $client = new \Zend_Http_Client();
-        $client->setConfig(array(
+        $client = new \GuzzleHttp\Client([
             'timeout'       => 20,
             'keepalive'     => true,
-        ));
+        ]);
 
         $username = self::getAccount($url);
 
         $uri = 'http://x'.$username.'x.api.channel.livestream.com/2.0/latestclips.json';
-        $client->setUri($uri);
-        $client->setParameterGet(array(
-            'page'      => 1,
-            'maxresults' => 25,
-        ));
+        $response = $client->get($uri, [
+            'query' => [
+                'page'      => 1,
+                'maxresults' => 25,
+            ],
+        ]);
 
-        $response = $client->request('GET');
         $news_items = array();
 
-        if ($response->isSuccessful())
+        if ($response->getStatusCode() <= 300)
         {
-            $response_text = $response->getBody();
+            $response_text = $response->getBody()->getContents();
             $data = @json_decode($response_text, TRUE);
 
             $feed_items = (array)$data['channel']['item'];

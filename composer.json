@@ -20,7 +20,7 @@
     "ise/php-soundcloud": "dev-master"
   },
   "require-dev": {
-    "phalcon/devtools": "dev-master@dev"
+    "phalcon/devtools": "2.0.2@dev"
   },
   "authors": [
     {

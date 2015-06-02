@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0c20c177c202783a91dc77134c5517c5",
+    "hash": "551763e4ad36a3a1eee76dc4f9583fa6",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1926,7 +1926,7 @@
     "packages-dev": [
         {
             "name": "phalcon/devtools",
-            "version": "dev-master",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phalcon/phalcon-devtools.git",

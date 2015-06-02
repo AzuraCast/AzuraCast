@@ -131,22 +131,16 @@ class Calendar
             );
             $j++;
         }
-        
-        $today_info = array('year' => date('Y'), 'month' => date('m'), 'day' => date('d'));
-        $today = new \Zend_Date($today_info);
-        $today_timestamp = $today->getTimestamp();
+
+        // Get timestamp for midnight 00:00:00 today.
+        $today_timestamp = mktime(0, 0, 0);
         
         // Create timestamp values for each day.
         $day_timestamps = array();
         for($i = 0; $i < $days_in_current_month; $i++)
         {
-            $date_info = array(
-                'year'  => $this->_year,
-                'month' => $this->_month,
-                'day'   => $i+1,
-            );
-            $date = new \Zend_Date($date_info);
-            $date_timestamp = $date->getTimestamp();
+            // Get timestamp for 00:00:00 on specified day.
+            $date_timestamp = mktime(0, 0, 0, $this->_month, $i+1, $this->_year);
             
             $k = $starting_index+$i;
             $day_timestamps[$k] = array(

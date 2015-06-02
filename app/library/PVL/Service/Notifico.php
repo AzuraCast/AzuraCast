@@ -3,6 +3,12 @@ namespace PVL\Service;
 
 class Notifico
 {
+    /**
+     * Post a message to the Notifico IRC notification service.
+     *
+     * @param $payload
+     * @return null|string
+     */
     public static function post($payload)
     {
         $di = \Phalcon\Di::getDefault();
@@ -12,10 +18,12 @@ class Notifico
 
         if ($push_url)
         {
-            $client = new \Zend_Http_Client($push_url);
-            $client->setParameterPost('payload', $payload);
+            $client = new \GuzzleHttp\Client;
+            $response = $client->post($push_url, ['body' => ['payload' => $payload]]);
 
-            return $client->request('POST');
+            return $response->getBody()->getContents();
         }
+
+        return null;
     }
 }

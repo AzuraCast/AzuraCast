@@ -2,7 +2,6 @@
 namespace PVL;
 
 use DF\Image;
-use DF\Utilities;
 
 use Entity\NetworkNews;
 use Entity\Podcast;

@@ -59,9 +59,6 @@ class Doctrine
         $config->setProxyDir($options['proxyPath']);
         $config->setProxyNamespace($options['proxyNamespace']);
 
-        if (!$regen_proxies)
-            $config->setAutoGenerateProxyClasses($options['autoGenerateProxies']);
-
         if (isset($options['conn']['debug']) && $options['conn']['debug'])
             $config->setSQLLogger(new \DF\Doctrine\Logger\EchoSQL);
 

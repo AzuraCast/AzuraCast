@@ -31,12 +31,7 @@ class Instance
     
     public function authenticate()
     {
-        $result = $this->_adapter->authenticate();
-        
-        unset($this->_session->user_id);
-        unset($this->_session->masquerade_user_id);
-        
-        return $result;
+        return false;
     }
 
     public function logout($destination = NULL, $unset_session = true)
@@ -54,7 +49,7 @@ class Instance
 
     public function isLoggedIn()
     {
-        if( php_sapi_name() == 'cli' )
+        if (DF_IS_COMMAND_LINE)
             return false;
         
         $user = $this->getUser();
@@ -92,7 +87,7 @@ class Instance
                 $this->_user = FALSE;
                 $this->logout();
                 
-                throw new Exception\InvalidUser;
+                throw new \DF\Exception('Invalid user!');
             }
         }
         
@@ -189,6 +184,8 @@ class Instance
                 $mask_user_id = (int)$this->_session->masquerade_user_id;
                 if ($mask_user_id != 0)
                     $user = User::find($mask_user_id);
+                else
+                    $user = NULL;
                 
                 if ($user instanceof User)
                 {

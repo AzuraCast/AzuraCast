@@ -22,20 +22,7 @@ class UtilController extends BaseController
 
         // -------- START HERE -------- //
 
-        $station_managers = \Entity\StationManager::fetchAll();
-        $records = 0;
-
-        foreach($station_managers as $sm_row)
-        {
-            $user = \Entity\User::getOrCreate($sm_row->email);
-
-            $user->stations->add($sm_row->station);
-            $user->save();
-
-            $records++;
-        }
-
-        Debug::log('Processed '.$records.' records.');
+        \PVL\Service\Notifico::post('Tune in to TEST THING on TEST STATION! #JustEagleThings');
 
         // -------- END HERE -------- //
 

@@ -8,29 +8,20 @@ class Model extends Instance
     public function __construct()
     {
         parent::__construct();
-        $this->_adapter = new Adapter\Model;
     }
     
     public function authenticate($credentials = NULL)
     {
-        $this->_adapter->setOptions($credentials);
-        
-        $response = parent::authenticate();
-        if($response->isValid())
-        {
-            $identity = $response->getIdentity();
-            $user = User::find($identity['id']);
+        $user_auth = User::authenticate($credentials['username'], $credentials['password']);
 
-            $this->setUser($user);
+        if ($user_auth instanceof User)
+        {
+            $this->setUser($user_auth);
             return true;
         }
         else
         {
-            if($response->getCode() != \Zend_Auth_Result::FAILURE_UNCATEGORIZED)
-            {
-                foreach($response->getMessages() as $message)
-                    \DF\Flash::addMessage($message);
-            }
+            \DF\Flash::addMessage('Could not authenticate your credentials!', 'red');
             return false;
         }
     }

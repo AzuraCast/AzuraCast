@@ -201,8 +201,11 @@ $di->set('url', function() use ($config) {
 
 // Set Session handler.
 $session_pool = \DF\Cache::getCache('session');
-$session = new \Stash\Session($session_pool);
-\Stash\Session::registerHandler($session);
+if (!($session_pool->getDriver() instanceof \Stash\Driver\Ephemeral))
+{
+    $session = new \Stash\Session($session_pool);
+    \Stash\Session::registerHandler($session);
+}
 
 // Register view helpers.
 $di->setShared('viewHelper', '\DF\Phalcon\Service\ViewHelper');

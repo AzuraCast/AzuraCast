@@ -34,7 +34,7 @@ $remote_response = @json_decode($remote_response_raw, true);
 if ($remote_response['status'] != 'success')
     die('The remote server could not return a valid MySQL import response. Halting remote import.');
 
-$db_path = $remote_response['result'];
+$db_path = $remote_response['result']['path'];
 
 // Force S3 enabled in development mode.
 define('DF_UPLOAD_URL', 'dev.pvlive.me');
@@ -63,7 +63,6 @@ $command_flags = array(
 );
 $command = 'mysql '.implode(' ', $command_flags).' < '.$db_path_full;
 
-echo $command."\n";
 system($command);
 
 @unlink($db_path_full);

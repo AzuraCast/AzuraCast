@@ -48,7 +48,10 @@ class YouTube extends AdapterAbstract
 
         foreach((array)$data as $item)
         {
-            if ($item['status']['privacyStatus'] != 'public')
+            if ($item['status']['privacyStatus'] !== 'public')
+                continue;
+
+            if ($item['status']['uploadStatus'] !== 'processed')
                 continue;
 
             $embed_src = 'http://www.youtube.com/watch?v='.$item['contentDetails']['videoId'];

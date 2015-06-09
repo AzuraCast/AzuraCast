@@ -13,7 +13,7 @@ class YouTube extends \Google_Service_YouTube
      */
     public function getPlaylistItems($playlist_id, $page_token = null)
     {
-        $data = $this->playlistItems->listPlaylistItems('id,snippet,status,contentDetails', array(
+        $data = $this->playlistItems->listPlaylistItems('id,contentDetails', array(
             'playlistId'    => $playlist_id,
             'maxResults'    => 50,
             'pageToken'     => $page_token,
@@ -21,7 +21,15 @@ class YouTube extends \Google_Service_YouTube
 
         if ($data)
         {
-            $items = (array)$data['items'];
+            $video_ids = array();
+            foreach((array)$data['items'] as $item)
+                $video_ids[] = $item['contentDetails']['videoId'];
+
+            $videos = $this->videos->listVideos('id,snippet,status', array(
+                'id'        => implode(',', $video_ids),
+            ));
+
+            $items = (array)$videos['items'];
 
             if ($data['nextPageToken'])
                 $items = array_merge($items, $this->getPlaylistItems($playlist_id, $data['nextPageToken']));

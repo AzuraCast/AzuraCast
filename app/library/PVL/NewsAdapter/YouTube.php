@@ -71,7 +71,6 @@ class YouTube extends AdapterAbstract
     }
 
 
-
     public static function getAccount($url)
     {
         if (stristr($url, 'youtube.com') !== FALSE)

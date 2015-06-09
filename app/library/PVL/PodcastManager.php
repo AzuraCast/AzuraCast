@@ -10,9 +10,7 @@ class PodcastManager
     public static function run()
     {
         // Pull podcast news.
-        $em = self::getEntityManager();
-        $all_podcasts = $em->createQuery('SELECT p, pe FROM Entity\Podcast p LEFT JOIN p.episodes pe WHERE p.is_approved = 1 ORDER BY p.id ASC')
-            ->execute();
+        $all_podcasts = Podcast::getRepository()->findBy(array('is_approved' => 1));
 
         foreach($all_podcasts as $record)
         {

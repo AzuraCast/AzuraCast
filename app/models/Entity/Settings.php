@@ -91,6 +91,7 @@ class Settings extends \DF\Doctrine\Entity
 
     public static function clearCache()
     {
-        \DF\Cache::remove('all_settings');
+        // Regenerate cache and flush static value.
+        self::fetchArray(false);
     }
 }

@@ -120,6 +120,8 @@ class SyncManager
 
     public static function getSyncTimes()
     {
+        Settings::clearCache();
+
         $syncs = array(
             'nowplaying' => array(
                 'name'      => 'Now Playing Data',

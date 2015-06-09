@@ -103,7 +103,7 @@ class ConventionManager
 
                             $child_row->name = $row_name;
                             $child_row->description = $item['snippet']['description'];
-                            $child_row->web_url = 'http://www.youtube.com/watch?v=' . $item['contentDetails']['videoId'];
+                            $child_row->web_url = 'http://www.youtube.com/watch?v=' . $item['id'];
                             $child_row->thumbnail_url = $row_thumb;
 
                             $em->persist($child_row);

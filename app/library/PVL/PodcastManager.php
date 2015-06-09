@@ -69,7 +69,17 @@ class PodcastManager
         $existing_episodes = array();
 
         foreach($record->episodes as $episode)
-            $existing_episodes[$episode->guid] = $episode;
+        {
+            if (isset($existing_episodes[$episode->guid]))
+            {
+                $db_stats['deleted']++;
+                $em->remove($episode);
+            }
+            else
+            {
+                $existing_episodes[$episode->guid] = $episode;
+            }
+        }
 
         foreach($new_episodes as $ep_guid => $ep_info)
         {

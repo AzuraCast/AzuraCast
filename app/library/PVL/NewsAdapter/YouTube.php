@@ -54,7 +54,7 @@ class YouTube extends AdapterAbstract
             if ($item['status']['uploadStatus'] !== 'processed')
                 continue;
 
-            $embed_src = 'http://www.youtube.com/watch?v='.$item['contentDetails']['videoId'];
+            $embed_src = 'http://www.youtube.com/watch?v='.$item['id'];
 
             $news_items[] = array(
                 'guid'          => 'youtube_'.md5($item['id']),

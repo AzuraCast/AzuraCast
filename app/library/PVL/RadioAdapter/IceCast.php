@@ -28,10 +28,10 @@ class IceCast extends AdapterAbstract
 
         $sources = $return['icestats']['source'];
 
-        if (isset($sources['audio_info']))
-            $mounts = array($sources);
-        else
+        if (key($sources) === 0)
             $mounts = $sources;
+        else
+            $mounts = array($sources);
 
         if (count($mounts) == 0)
             return false;

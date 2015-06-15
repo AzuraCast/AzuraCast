@@ -37,8 +37,8 @@ then
 
     # Set up InfluxDB early (to allow time to initialize before setting up DBs.)
     cd ~
-    wget http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb
-    dpkg -i influxdb_latest_amd64.deb
+    wget http://influxdb.s3.amazonaws.com/influxdb_0.8.8_amd64.deb
+    dpkg -i influxdb_0.8.8_amd64.deb
     service influxdb start
 
     # Set Node.js bin alias

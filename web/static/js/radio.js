@@ -352,6 +352,12 @@ function processAudioNowPlayingRow(station_info, station_id)
     var stream_id = parseInt(station.data('streamid'));
     var stream = _(station_info.streams).find({'id': stream_id });
 
+    if (typeof stream == 'undefined')
+    {
+        station.hide();
+        return 0;
+    }
+
     // Set stream URL.
     station.data('stream', stream.url);
     station.data('type', stream.type);

@@ -18,6 +18,9 @@ class IceBreath extends AdapterAbstract
         if (empty($return))
             return false;
 
+        if (count($return['result']['server_streams']) == 0)
+            return false;
+
         $stream = $return['result']['server_streams'][0];
 
         $np['meta']['status'] = 'online';

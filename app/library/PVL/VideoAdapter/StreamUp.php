@@ -26,7 +26,11 @@ class StreamUp extends AdapterAbstract
         $stream = $result['channel'];
 
         $np['meta']['status'] = ($stream['live']) ? 'online' : 'offline';
-        $np['meta']['listeners'] = (int)$stream['live_viewers_count'];
+
+        if ($np['meta']['status'] == 'offline')
+            $np['meta']['listeners'] = 0;
+        else
+            $np['meta']['listeners'] = (int)$stream['live_viewers_count'];
 
         $np['on_air']['text'] = $stream['stream_title'];
         $np['on_air']['thumbnail'] = $stream['snapshot']['medium'];

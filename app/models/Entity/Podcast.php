@@ -99,6 +99,11 @@ class Podcast extends \DF\Doctrine\Entity
     protected $is_approved;
 
     /**
+     * @OnetoMany(targetEntity="PodcastSource", mappedBy="podcast")
+     */
+    protected $sources;
+
+    /**
      * @OnetoMany(targetEntity="PodcastEpisode", mappedBy="podcast")
      * @OrderBy({"timestamp" = "DESC"})
      */
@@ -297,15 +302,6 @@ class Podcast extends \DF\Doctrine\Entity
 
     public static function getArtistImage($image_url)
     {
-        /*
-        if ($image_url)
-        {
-            $file_path = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.$image_url;
-            if (file_exists($file_path))
-                return $image_url;
-        }
-        */
-
         if ($image_url)
             return $image_url;
 
@@ -326,63 +322,34 @@ class Podcast extends \DF\Doctrine\Entity
             'rss_url'   => array(
                 'name' => 'RSS',
                 'icon' => 'feed',
-                'adapter' => 'Rss',
-                'threshold' => '-6 months',
             ),
             'twitter_url'   => array(
                 'name' => 'Twitter',
                 'icon' => 'twitter',
-                'adapter' => 'Twitter',
-                'settings' => array(
-                    'include_retweets'      => FALSE,
-                    'always_featured'       => FALSE,
-                    'use_retweet_count'     => FALSE,
-                    'no_other_social_sites' => FALSE,
-                    'max_featured_tweets'   => 3,
-                ),
-                'threshold' => '-1 week',
             ),
             'tumblr_url'    => array(
                 'name' => 'Tumblr',
                 'icon' => 'tumblr',
-                'adapter' => 'Tumblr',
-                'settings' => array(),
-                'threshold' => '-1 week',
             ),
             'facebook_url'  => array(
                 'name' => 'Facebook',
                 'icon' => 'facebook',
-                'adapter' => 'Facebook',
-                'settings' => array(),
-                'threshold' => '-1 week',
             ),
             'youtube_url'   => array(
                 'name' => 'YouTube',
                 'icon' => 'youtube',
-                'adapter' => 'YouTube',
-                'settings' => array(),
-                'threshold' => '-6 months',
             ),
             'soundcloud_url' => array(
                 'name' => 'SoundCloud',
                 'icon' => 'soundcloud',
-                'adapter' => 'SoundCloud',
-                'settings' => array(),
-                'threshold' => '-6 months',
             ),
             'deviantart_url' => array(
                 'name' => 'DeviantArt',
                 'icon' => 'deviantart',
-                'adapter' => 'DeviantArt',
-                'settings' => array(),
-                'threshold' => '-6 months',
             ),
             'livestream_url' => array(
                 'name' => 'LiveStream',
                 'icon' => 'livestream',
-                'adapter' => 'LiveStream',
-                'settings' => array(),
-                'threshold' => '-6 months',
             ),
         );
     }

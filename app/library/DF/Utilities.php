@@ -639,15 +639,15 @@ class Utilities
      *
      * See @{function:mpull} for more usage examples.
      *
-     * @param   list          Some list of arrays.
-     * @param   scalar|null   Determines which **values** will appear in the result
+     * @param   array         Some list of arrays.
+     * @param   string|null   Determines which **values** will appear in the result
      *                        array. Use a scalar to select that index from each
      *                        array, or null to preserve the arrays unmodified as
      *                        values.
-     * @param   scalar|null   Determines which **keys** will appear in the result
+     * @param   string|null   Determines which **keys** will appear in the result
      *                        array. Use a scalar to select that index from each
      *                        array, or null to preserve the array keys.
-     * @return  dict          A dictionary with keys and values derived according
+     * @return  array          A dictionary with keys and values derived according
      *                        to whatever you passed for `$index` and `$key_index`.
      */
     public static function ipull(array $list, $index, $key_index = null) {

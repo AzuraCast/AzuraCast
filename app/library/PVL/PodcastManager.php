@@ -34,28 +34,12 @@ class PodcastManager
         // Pull new records.
         $new_episodes = array();
 
-        foreach($social_fields as $field_key => $field_adapter)
+        foreach($record->sources as $source)
         {
-            if (empty($record[$field_key]) || !isset($field_adapter['adapter']))
-                continue;
+            $source_episodes = $source->process();
 
-            // Look for new news items.
-            $class_name = '\\PVL\\NewsAdapter\\'.$field_adapter['adapter'];
-            $news_items = $class_name::fetch($record[$field_key], $field_adapter['settings']);
-
-            foreach((array)$news_items as $item)
-            {
-                $guid = $item['guid'];
-
-                $new_episodes[$guid] = array(
-                    'guid'      => $guid,
-                    'timestamp' => $item['timestamp'],
-                    'title'     => $item['title'],
-                    'body'      => self::cleanUpText($item['body']),
-                    'summary'   => self::getSummary($item['body']),
-                    'web_url'   => $item['web_url'],
-                );
-            }
+            if (!empty($source_episodes))
+                $new_episodes = array_merge($new_episodes, $source_episodes);
         }
 
         if (empty($new_episodes))
@@ -111,27 +95,7 @@ class PodcastManager
         return true;
     }
 
-    public static function cleanUpText($text)
-    {
-        $text = strip_tags($text);
-        return trim($text);
-    }
 
-    public static function getSummary($text)
-    {
-        $text = self::cleanUpText($text);
-
-        // Strip all but the first line.
-        $text = strtok($text, "\n");
-
-        // Remove URLs.
-        $text = preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?).*$)@ui', ' ', $text);
-
-        // Truncate to 300 characters.
-        $text = \DF\Utilities::truncateText($text, 300);
-
-        return $text;
-    }
 
     public static function getEntityManager()
     {

@@ -14,7 +14,11 @@ class PodcastManager
 
         foreach($all_podcasts as $record)
         {
+            Debug::startTimer('Process podcast: '.$record->name);
+
             self::processPodcast($record);
+
+            Debug::endTimer('Process podcast: '.$record->name);
         }
         return true;
     }
@@ -44,8 +48,6 @@ class PodcastManager
 
         if (empty($new_episodes))
             return false;
-
-        Debug::print_r($new_episodes);
 
         // Reconcile differences.
         $existing_episodes = array();

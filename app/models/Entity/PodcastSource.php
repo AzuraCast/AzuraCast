@@ -1,7 +1,8 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
+use PVL\Debug;
 
 /**
  * @Table(name="podcast_sources")
@@ -45,10 +46,15 @@ class PodcastSource extends \DF\Doctrine\Entity
      */
     public function process()
     {
+        Debug::log('Processing source: '.$this->type);
+
         $source_info = self::getSourceInfo($this->type);
 
         if (!isset($source_info['adapter']))
-            return false;
+        {
+            Debug::log('No suitable adapter found!');
+            return FALSE;
+        }
 
         $source_settings = (isset($source_info['settings'])) ? $source_info['settings'] : array();
 
@@ -57,7 +63,10 @@ class PodcastSource extends \DF\Doctrine\Entity
         $news_items = $class_name::fetch($this->url, $source_settings);
 
         if (empty($news_items))
-            return false;
+        {
+            Debug::log('No news items found! Adapter: '.$class_name);
+            return FALSE;
+        }
 
         $new_episodes = array();
         foreach((array)$news_items as $item)
@@ -72,6 +81,8 @@ class PodcastSource extends \DF\Doctrine\Entity
                 'web_url'   => $item['web_url'],
             );
         }
+
+        Debug::print_r($new_episodes);
 
         return $new_episodes;
     }

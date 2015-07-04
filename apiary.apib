@@ -1,0 +1,692 @@
+FORMAT: 1A
+HOST: http://ponyvillelive.com/api
+
+# Ponyville Live! API
+The Ponyville Live! (or PVL) API allows you to access detailed information from the PVL network database, including information on radio stations and video streams, podcasts, events, songs and more.
+
+## Important Notes
+* If you are retrieving data from the PVL system for your application, we encourage you to add a promotional link on your page back to the Ponyville Live! network. You can find the full brand kit for PVL at <http://ponyvillelive.com/resources/brand_package.zip>.
+* Currently, no rate limits exist for API calls. Please be reasonable with your usage of the system. Rate limits may be implemented in the future if necessary.
+* API calls are subject to change, and supplemental fields may be added or removed as necessary. Our development team will avoid making changes to the API schema wherever possible.
+* Timestamps:
+ * UNIX Timestamps are provided wherever possible, and are preferred.
+ * Any timestamp that is returned that is not in UNIX timestamp format is provided in the US Eastern (EST/EDT) time zone.
+* Unique Identifiers:
+ * Stations in the network use a special identifier called a "shortcode". This identifier is the name of the station, in lower case, with its special characters removed. For example, "Ponyville Live!" would become "ponyville_live".
+ * Songs are identified by a 32-character hash of their relevant details. This same hash is used across the system.
+
+# Group Now Playing
+Retrieve "Now Playing" information about active stations.
+
+### GET /nowplaying
+Returns all now playing data for active stations, indexed by the station's Short Code identifier.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: {
+                short_code: {
+                    station: {
+                        id: 1,
+                        name: "Station Name",
+                        shortcode: "short_code",
+                        genre: "Station Description",
+                        category: "audio",
+                        type: "shoutcast1",
+                        image_url: "http://ponyvillelive.com/static/image.png",
+                        web_url: "http://www.station-url.com/",
+                        stream_url: "http://station.nowplaying.url/",
+                        twitter_url: "https://twitter.com/station",
+                        irc: "#stationname"
+                    },
+                    listeners: {
+                        current: 15,
+                        unique: 15,
+                        total: 30
+                    },
+                    current_song: {
+                        id: "7c3479db4352dd2ff8918693975fe3fc",
+                        text: "Artist - Song Name",
+                        artist: "Artist",
+                        title: "Song Name",
+                        rating: {
+                            likes: 0,
+                            dislikes: 0,
+                            score: 0
+                        }
+                    },
+                    song_history: [
+                        {
+                            played_at: 1394675402,
+                            song: {
+                                id: "8af3fb4a95e0307f50af11a365583db3",
+                                text: "Artist - Song Name",
+                                artist: "Artist",
+                                title: "Song Name",
+                                rating: {
+                                    likes: 1,
+                                    dislikes: 0,
+                                    score: 1
+                                }
+                            }
+                        },
+                        ...
+                    ]
+                },
+                ...
+            }
+        }
+
+### GET /nowplaying/index/id/{id}
+**Station Specified by Numeric ID**
+
+Returns a single station's now-playing information based on a station identifier.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: {
+                station: {
+                    id: 1,
+                    name: "Station Name",
+                    shortcode: "short_code",
+                    genre: "Station Description",
+                    category: "audio",
+                    type: "shoutcast1",
+                    image_url: "http://ponyvillelive.com/static/image.png",
+                    web_url: "http://www.station-url.com/",
+                    stream_url: "http://station.nowplaying.url/",
+                    twitter_url: "https://twitter.com/station",
+                    irc: "#stationname"
+                },
+                listeners: {
+                    current: 15,
+                    unique: 15,
+                    total: 30
+                },
+                current_song: {
+                    id: "7c3479db4352dd2ff8918693975fe3fc",
+                    text: "Artist - Song Name",
+                    artist: "Artist",
+                    title: "Song Name",
+                    rating: {
+                        likes: 0,
+                        dislikes: 0,
+                        score: 0
+                    }
+                },
+                song_history: [
+                    {
+                        played_at: 1394675402,
+                        song: {
+                            id: "8af3fb4a95e0307f50af11a365583db3",
+                            text: "Artist - Song Name",
+                            artist: "Artist",
+                            title: "Song Name",
+                            rating: {
+                                likes: 1,
+                                dislikes: 0,
+                                score: 1
+                            }
+                        }
+                    },
+                    ...
+                ]
+            }
+        }
+
+### GET /nowplaying/index/station/{shortcode}
+**Station Specified by Shortcode**
+
+Returns a single station's now-playing information based on a station's "short code" identifier.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: {
+                station: {
+                    id: 1,
+                    name: "Station Name",
+                    shortcode: "short_code",
+                    genre: "Station Description",
+                    category: "audio",
+                    type: "shoutcast1",
+                    image_url: "http://ponyvillelive.com/static/image.png",
+                    web_url: "http://www.station-url.com/",
+                    stream_url: "http://station.nowplaying.url/",
+                    twitter_url: "https://twitter.com/station",
+                    irc: "#stationname"
+                },
+                listeners: {
+                    current: 15,
+                    unique: 15,
+                    total: 30
+                },
+                current_song: {
+                    id: "7c3479db4352dd2ff8918693975fe3fc",
+                    text: "Artist - Song Name",
+                    artist: "Artist",
+                    title: "Song Name",
+                    rating: {
+                        likes: 0,
+                        dislikes: 0,
+                        score: 0
+                    }
+                },
+                song_history: [
+                    {
+                        played_at: 1394675402,
+                        song: {
+                            id: "8af3fb4a95e0307f50af11a365583db3",
+                            text: "Artist - Song Name",
+                            artist: "Artist",
+                            title: "Song Name",
+                            rating: {
+                                likes: 1,
+                                dislikes: 0,
+                                score: 1
+                            }
+                        }
+                    },
+                    ...
+                ]
+            }
+        }
+
+# Group Schedules #
+Functions for retrieving the schedules of the individual stations or the PVL network itself.
+
+### GET /schedule
+**All Stations**
+
+A list of events coming up for all stations within 30 days.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: [
+                {
+                    id: 627522, // Schedule ID
+                    type: "station", // station or convention
+                    station_id: 27, // Station numeric identifier
+                    guid: "d00d1a8824968d5ded45d134b87cf5a9", // Google Calendar GUID
+                    start_time: 1394607600,
+                    end_time: 1394611200,
+                    is_all_day: false,
+                    title: "Event Name",
+                    location: "Event Location",
+                    body: "",
+                    image_url: "http://ponyvillelive.com/static/image.png",
+                    web_url: "https://www.google.com/calendar/url",
+                    station: "station_name" // Station shortcode identifier
+                },
+                ...
+            ]
+        }
+
+### GET /schedule/index/month/{YYYYMM}
+**All Stations**
+
+A list of events that occur in the month, specified in YYYYMM format (i.e. January 2014 becomes "201401").
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: [
+                {
+                    id: 627522, // Schedule ID
+                    type: "station", // station or convention
+                    station_id: 27, // Station numeric identifier
+                    guid: "d00d1a8824968d5ded45d134b87cf5a9", // Google Calendar GUID
+                    start_time: 1394607600,
+                    end_time: 1394611200,
+                    is_all_day: false,
+                    title: "Event Name",
+                    location: "Event Location",
+                    body: "",
+                    image_url: "http://ponyvillelive.com/static/image.png",
+                    web_url: "https://www.google.com/calendar/url",
+                    station: "station_name" // Station shortcode identifier
+                },
+                ...
+            ]
+        }
+
+### GET /schedule/index/start/{start_time}/end/{end_time}
+**All Stations**
+
+A list of events that occur between the UNIX timestamps specified in {start_time} and {end_time}.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: [
+                {
+                    id: 627522, // Schedule ID
+                    type: "station", // station or convention
+                    station_id: 27, // Station numeric identifier
+                    guid: "d00d1a8824968d5ded45d134b87cf5a9", // Google Calendar GUID
+                    start_time: 1394607600,
+                    end_time: 1394611200,
+                    is_all_day: false,
+                    title: "Event Name",
+                    location: "Event Location",
+                    body: "",
+                    image_url: "http://ponyvillelive.com/static/image.png",
+                    web_url: "https://www.google.com/calendar/url",
+                    station: "station_name" // Station shortcode identifier
+                },
+                ...
+            ]
+        }
+
+### GET /schedule/index/station/{shortcode}
+**Station Specified by Shortcode**
+
+A list of events coming up for the specified station within 30 days.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: [
+                {
+                    id: 627522, // Schedule ID
+                    type: "station", // station or convention
+                    guid: "d00d1a8824968d5ded45d134b87cf5a9", // Google Calendar GUID
+                    start_time: 1394607600,
+                    end_time: 1394611200,
+                    is_all_day: false,
+                    title: "Event Name",
+                    location: "Event Location",
+                    body: "",
+                    image_url: "http://ponyvillelive.com/static/image.png",
+                    web_url: "https://www.google.com/calendar/url",
+                },
+                ...
+            ]
+        }
+
+### GET /schedule/index/station/{shortcode}/month/{month}
+**All Stations**
+
+A list of events for the specified station that occur in the month, specified in YYYYMM format (i.e. January 2014 becomes "201401").
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: [
+                {
+                    id: 627522, // Schedule ID
+                    type: "station", // station or convention
+                    guid: "d00d1a8824968d5ded45d134b87cf5a9", // Google Calendar GUID
+                    start_time: 1394607600,
+                    end_time: 1394611200,
+                    is_all_day: false,
+                    title: "Event Name",
+                    location: "Event Location",
+                    body: "",
+                    image_url: "http://ponyvillelive.com/static/image.png",
+                    web_url: "https://www.google.com/calendar/url",
+                },
+                ...
+            ]
+        }
+
+### GET /schedule/index/station/{shortcode}/start/{start_time}/end/{end_time}
+**All Stations**
+
+A list of events for the specified station that occur between the UNIX timestamps specified in {start_time} and {end_time}.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: [
+                {
+                    id: 627522, // Schedule ID
+                    type: "station", // station or convention
+                    guid: "d00d1a8824968d5ded45d134b87cf5a9", // Google Calendar GUID
+                    start_time: 1394607600,
+                    end_time: 1394611200,
+                    is_all_day: false,
+                    title: "Event Name",
+                    location: "Event Location",
+                    body: "",
+                    image_url: "http://ponyvillelive.com/static/image.png",
+                    web_url: "https://www.google.com/calendar/url",
+                },
+                ...
+            ]
+        }
+        
+### GET /schedule/conventions
+A list of upcoming conventions that the PVL team is either covering or will be present at.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: [
+                {
+                    id: 123456, // ID in PVL system
+                    type: "convention",
+                    guid: "a8aa5443b8c239c53f8023d6609ba4b4", // GUID for Google Calendar event
+                    start_time: 1397793600, // UNIX Timestamp
+                    end_time: 1398052799, // UNIX Timestamp
+                    is_all_day: true,
+                    title: "Event Name",
+                    location: "Location Name",
+                    body: "http://www.babscon.com/",
+                    image_url: "http://ponyvillelive.com/static/image.png",
+                    web_url: "http://www.babscon.com/",
+                    city: "Event City",
+                    title_full: "Event Name<br><small><i class="icon-group"></i> Coverage Type</small>",
+                    category: "PVL Convention Coverage" // Type of presence at event
+                },
+                ...
+            ]
+        }
+
+# Group Songs
+Functions for retrieving detailed information about a specific song.
+
+### GET /song/index/id/{song_id}
+Detailed information about the 32-character song identifier specified.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: {
+                id: "a879faf8ed3c3dd8296442da28493a20",
+                text: "Artist - Song Title",
+                artist: "Song Artist",
+                title: "Song Title",
+                created_at: 1380289037, // UNIX timestamp
+                rate_likes: "4",
+                rate_dislikes: "0",
+                rate_score: "4"
+            }
+        }
+
+# Group Stations
+Information about the network's radio stations and video streams.
+
+### GET /station/list
+List all stations from all categories.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: [
+                {
+                    id: 1,
+                    name: "Station Name",
+                    shortcode: "station_name",
+                    genre: "Station Genre",
+                    category: "audio",
+                    type: "shoutcast1",
+                    image_url: "http://ponyvillelive.com/static/url.png",
+                    web_url: "http://www.stationsite.com/",
+                    stream_url: "http://station.stream.url/",
+                    twitter_url: "https://twitter.com/station",
+                    irc: "#stationname"
+                },
+                ...
+            ]
+        }
+        
+### GET /station/list/category/{audio|video}
+List all stations from the specified category.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: [
+                {
+                    id: 1,
+                    name: "Station Name",
+                    shortcode: "station_name",
+                    genre: "Station Genre",
+                    category: "audio",
+                    type: "shoutcast1",
+                    image_url: "http://ponyvillelive.com/static/url.png",
+                    web_url: "http://www.stationsite.com/",
+                    stream_url: "http://station.stream.url/",
+                    twitter_url: "https://twitter.com/station",
+                    irc: "#stationname"
+                },
+                ...
+            ]
+        }
+
+### GET /station/index/id/{id}
+Station info for the specified numeric identifier.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: {
+                id: 1,
+                name: "Station Name",
+                shortcode: "station_name",
+                genre: "Station Genre",
+                category: "audio",
+                type: "shoutcast2",
+                image_url: "http://ponyvillelive.com/static/url.png",
+                web_url: "http://www.stationsite.com/",
+                stream_url: "http://station.stream.url/",
+                twitter_url: "http://www.twitter.com/station",
+                irc: "#stationname"
+            }
+        }
+        
+### GET /station/index/station/{shortcode}
+Station info for the specified shortcode.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: {
+                id: 1,
+                name: "Station Name",
+                shortcode: "station_name",
+                genre: "Station Genre",
+                category: "audio",
+                type: "shoutcast2",
+                image_url: "http://ponyvillelive.com/static/url.png",
+                web_url: "http://www.stationsite.com/",
+                stream_url: "http://station.stream.url/",
+                twitter_url: "http://www.twitter.com/station",
+                irc: "#stationname"
+            }
+        }
+
+# Group Shows & Podcasts
+Information about the network's shows/podcasts and their episodes.
+
+### GET /show/index
+List all shows/podcasts sorted by name.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: [
+                {
+                    id: 16,
+                    name: "Show Name",
+                    description: "Show description.",
+                    image_url: "http://ponyvillelive.com/static/podcasts/20130917_022027_794_image_url_1.png",
+                    stations: [
+                        {
+                            id: 20,
+                            name: "Station Name",
+                            shortcode: "stationname",
+                            genre: "Station Genre",
+                            category: "audio",
+                            type: "shoutcast2",
+                            image_url: "http://ponyvillelive.com/static/stations/20140306_091601_425_image_url_1.png",
+                            web_url: "http://www.stationsite.com/",
+                            stream_url: "http://radio.ponyvillelive.com:8014/stream?sid=1;stream.nsv",
+                            twitter_url: "http://www.twitter.com/Station",
+                            irc: "#stationchannel"
+                        }
+                    ],
+                    episodes: [
+                        {
+                            id: "5597",
+                            guid: "rss_7f2e06eceba7c68f40428e0946a6ffc2",
+                            timestamp: "1399945352",
+                            title: "Episode Title",
+                            body: "Episode description in long text format.",
+                            web_url: "http://episode-url.com/"
+                        },
+                    ],
+                    web_url: "http://show.com/",
+                    rss_url: "http://show.com/rss",
+                    twitter_url: "",
+                    tumblr_url: "",
+                    facebook_url: "",
+                    youtube_url: "",
+                    soundcloud_url: "",
+                    deviantart_url: ""
+                }
+            ]
+        }
+
+### GET /show/index/id/{id}
+Detailed information on a specific show/podcast, including all episodes.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: {
+                id: 16,
+                name: "Show Name",
+                description: "Show description.",
+                image_url: "http://ponyvillelive.com/static/podcasts/20130917_022027_794_image_url_1.png",
+                stations: [
+                    {
+                        id: 20,
+                        name: "Station Name",
+                        shortcode: "stationname",
+                        genre: "Station Genre",
+                        category: "audio",
+                        type: "shoutcast2",
+                        image_url: "http://ponyvillelive.com/static/stations/20140306_091601_425_image_url_1.png",
+                        web_url: "http://www.stationsite.com/",
+                        stream_url: "http://radio.ponyvillelive.com:8014/stream?sid=1;stream.nsv",
+                        twitter_url: "http://www.twitter.com/Station",
+                        irc: "#stationchannel"
+                    }
+                ],
+                episodes: [
+                    {
+                        id: "5597",
+                        guid: "rss_7f2e06eceba7c68f40428e0946a6ffc2",
+                        timestamp: "1399945352",
+                        title: "Episode Title",
+                        body: "Episode description in long text format.",
+                        web_url: "http://episode-url.com/"
+                    },
+                ],
+                web_url: "http://show.com/",
+                rss_url: "http://show.com/rss",
+                twitter_url: "",
+                tumblr_url: "",
+                facebook_url: "",
+                youtube_url: "",
+                soundcloud_url: "",
+                deviantart_url: ""
+            }
+        }
+
+### GET /show/latest
+List all shows/podcasts sorted by the release date of their most recent episode, including only recent episodes in the "episodes" array.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: [
+                {
+                    id: 16,
+                    name: "Show Name",
+                    description: "Show description.",
+                    image_url: "http://ponyvillelive.com/static/podcasts/20130917_022027_794_image_url_1.png",
+                    stations: [
+                        {
+                            id: 20,
+                            name: "Station Name",
+                            shortcode: "stationname",
+                            genre: "Station Genre",
+                            category: "audio",
+                            type: "shoutcast2",
+                            image_url: "http://ponyvillelive.com/static/stations/20140306_091601_425_image_url_1.png",
+                            web_url: "http://www.stationsite.com/",
+                            stream_url: "http://radio.ponyvillelive.com:8014/stream?sid=1;stream.nsv",
+                            twitter_url: "http://www.twitter.com/Station",
+                            irc: "#stationchannel"
+                        }
+                    ],
+                    episodes: [
+                        {
+                            id: "5597",
+                            guid: "rss_7f2e06eceba7c68f40428e0946a6ffc2",
+                            timestamp: "1399945352",
+                            title: "Episode Title",
+                            body: "Episode description in long text format.",
+                            web_url: "http://episode-url.com/"
+                        },
+                    ],
+                    web_url: "http://show.com/",
+                    rss_url: "http://show.com/rss",
+                    twitter_url: "",
+                    tumblr_url: "",
+                    facebook_url: "",
+                    youtube_url: "",
+                    soundcloud_url: "",
+                    deviantart_url: ""
+                }
+            ]
+        }
+
+# Group Utilities
+Utility functions to verify the functionality of the system.
+
+### GET /
+The homepage of the API, that provides a basic ping function and a link to this documentation.
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: "The PVL! API is online and functioning. For more information, visit http://docs.ponyvillelive.apiary.io/"
+        }
+
+### GET /index/status
+A basic ping function that returns the current UNIX timestamp (for caching tests).
+
++ Response 200 (application/json)
+
+        {
+            status: "success",
+            result: {
+                online: "true",
+                timestamp: 0123456789
+            }
+        }

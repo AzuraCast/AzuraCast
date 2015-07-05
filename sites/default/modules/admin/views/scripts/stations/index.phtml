@@ -72,7 +72,7 @@ echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$ca
             </td>
             <td>
             <? foreach((array)$record['intake_votes'] as $station_id => $vote): ?>
-                <div class="<? if ($vote['decision'] == 'Accept'): ?>text-success<? else: ?>text-danger<? endif; ?>"><b><?=$vote['name'] ?></b>: <?=$vote['decision'] ?> - <?=$vote['comments'] ?></div>
+                <div class="<? if ($vote['decision'] == 'Accept'): ?>text-success<? else: ?>text-error<? endif; ?>"><b><?=$vote['name'] ?></b>: <?=$vote['decision'] ?> - <?=$vote['comments'] ?></div>
             <? endforeach; ?>
             </td>
         </tr>

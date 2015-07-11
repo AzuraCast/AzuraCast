@@ -104,11 +104,11 @@ class StationStream extends \DF\Doctrine\Entity
     public static function api($row)
     {
         return array(
-            'id'            => $row['id'],
+            'id'            => (int)$row['id'],
             'name'          => $row['name'],
             'url'           => $row['stream_url'],
             'type'          => $row['type'],
-            'is_default'    => $row['is_default'],
+            'is_default'    => (bool)$row['is_default'],
         );
     }
 }

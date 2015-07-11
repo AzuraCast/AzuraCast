@@ -24,58 +24,200 @@ Returns all now playing data for active stations, indexed by the station's Short
 + Response 200 (application/json)
 
         {
-            status: "success",
-            result: {
-                short_code: {
-                    station: {
-                        id: 1,
-                        name: "Station Name",
-                        shortcode: "short_code",
-                        genre: "Station Description",
-                        category: "audio",
-                        type: "shoutcast1",
-                        image_url: "http://ponyvillelive.com/static/image.png",
-                        web_url: "http://www.station-url.com/",
-                        stream_url: "http://station.nowplaying.url/",
-                        twitter_url: "https://twitter.com/station",
-                        irc: "#stationname"
+          "status": "success",
+          "result": {
+            "ponyvillefm": {
+              "status": "online",
+              "station": {
+                "id": 20,
+                "name": "PonyvilleFM",
+                "shortcode": "ponyvillefm",
+                "genre": "Pony Dance Hits & #1 DJ Station!",
+                "category": "audio",
+                "affiliation": "partner",
+                "image_url": "//dev.pvlive.me/static/stations/20150406_002857_481_image_url_1.jpg",
+                "web_url": "http://www.ponyvillefm.com/",
+                "twitter_url": "http://www.twitter.com/PonyvilleFM",
+                "irc": "#ponyvillefm",
+                "sort_order": -20,
+                "player_url": "http://pvlive.me/ponyvillefm",
+                "request_url": "//dev.pvlive.me/station/request/id/20",
+                "stream_url": "http://radio.ponyvillelive.com:8014/stream?sid=1;stream.nsv",
+                "default_stream_id": 32
+              },
+              "streams": [
+                {
+                  "id": 32,
+                  "name": "Mane Stream (North America MP3)",
+                  "url": "http://radio.ponyvillelive.com:8014/stream?sid=1;stream.nsv",
+                  "type": "shoutcast2",
+                  "is_default": true,
+                  "status": "online",
+                  "bitrate": "128",
+                  "format": "audio/mpeg",
+                  "listeners": {
+                    "current": 24,
+                    "unique": 24,
+                    "total": 28
+                  },
+                  "current_song": {
+                    "id": "2cd1037164c73dc970c15f78f0202d26",
+                    "text": "Vinylz - Eclipse (Original Mix)",
+                    "artist": "Vinylz",
+                    "title": "Eclipse (Original Mix)",
+                    "image_url": "",
+                    "created": 1436175751,
+                    "play_count": 2,
+                    "last_played": 1436611623,
+                    "score": 100,
+                    "sh_id": 2363,
+                    "vote_urls": {
+                      "like": "//dev.pvlive.me/api/song/like/sh_id/2363",
+                      "dislike": "//dev.pvlive.me/api/song/dislike/sh_id/2363",
+                      "clearvote": "//dev.pvlive.me/api/song/clearvote/sh_id/2363"
+                    }
+                  },
+                  "song_history": [
+                    {
+                      "played_at": 1436611387,
+                      "song": {
+                        "id": "d562483a0f6e873c62889735cd4af36a",
+                        "text": "Forest Rain - A Summer in the Stars (Aftermath Remix)",
+                        "artist": "Forest Rain",
+                        "title": "A Summer in the Stars (Aftermath Remix)",
+                        "image_url": null,
+                        "created": 1380236762,
+                        "play_count": 185,
+                        "last_played": 1436611387,
+                        "score": 0
+                      }
                     },
-                    listeners: {
-                        current: 15,
-                        unique: 15,
-                        total: 30
-                    },
-                    current_song: {
-                        id: "7c3479db4352dd2ff8918693975fe3fc",
-                        text: "Artist - Song Name",
-                        artist: "Artist",
-                        title: "Song Name",
-                        rating: {
-                            likes: 0,
-                            dislikes: 0,
-                            score: 0
-                        }
-                    },
-                    song_history: [
-                        {
-                            played_at: 1394675402,
-                            song: {
-                                id: "8af3fb4a95e0307f50af11a365583db3",
-                                text: "Artist - Song Name",
-                                artist: "Artist",
-                                title: "Song Name",
-                                rating: {
-                                    likes: 1,
-                                    dislikes: 0,
-                                    score: 1
-                                }
-                            }
-                        },
-                        ...
-                    ]
+                    {
+                      "played_at": 1436611144,
+                      "song": {
+                        "id": "2e37ac1be64c1ab29ab90b1a5b339075",
+                        "text": "Emforay - All Around",
+                        "artist": "Emforay",
+                        "title": "All Around",
+                        "image_url": "http://bronytunes.com/retrieve_artwork.php?song_id=5822&size=256",
+                        "created": 1380251551,
+                        "play_count": 141,
+                        "last_played": 1436611144,
+                        "score": 0
+                      }
+                    }
+                  ]
+                }
+              ],
+              "current_song": {
+                "id": "2cd1037164c73dc970c15f78f0202d26",
+                "text": "Vinylz - Eclipse (Original Mix)",
+                "artist": "Vinylz",
+                "title": "Eclipse (Original Mix)",
+                "image_url": "",
+                "created": 1436175751,
+                "play_count": 2,
+                "last_played": 1436611623,
+                "score": 100,
+                "sh_id": 2363,
+                "vote_urls": {
+                  "like": "//dev.pvlive.me/api/song/like/sh_id/2363",
+                  "dislike": "//dev.pvlive.me/api/song/dislike/sh_id/2363",
+                  "clearvote": "//dev.pvlive.me/api/song/clearvote/sh_id/2363"
+                }
+              },
+              "song_history": [
+                {
+                  "played_at": 1436611387,
+                  "song": {
+                    "id": "d562483a0f6e873c62889735cd4af36a",
+                    "text": "Forest Rain - A Summer in the Stars (Aftermath Remix)",
+                    "artist": "Forest Rain",
+                    "title": "A Summer in the Stars (Aftermath Remix)",
+                    "image_url": null,
+                    "created": 1380236762,
+                    "play_count": 185,
+                    "last_played": 1436611387,
+                    "score": 0
+                  }
                 },
-                ...
+                {
+                  "played_at": 1436611144,
+                  "song": {
+                    "id": "2e37ac1be64c1ab29ab90b1a5b339075",
+                    "text": "Emforay - All Around",
+                    "artist": "Emforay",
+                    "title": "All Around",
+                    "image_url": "http://bronytunes.com/retrieve_artwork.php?song_id=5822&size=256",
+                    "created": 1380251551,
+                    "play_count": 141,
+                    "last_played": 1436611144,
+                    "score": 0
+                  }
+                }
+              ],
+              "listeners": {
+                "current": 36,
+                "unique": 36,
+                "total": 40
+              },
+              "event": [
+
+              ],
+              "event_upcoming": [
+
+              ],
+              "cache": "flatfile"
+            },
+            "pvl_special_events": {
+              "status": "offline",
+              "station": {
+                "id": 59,
+                "name": "PVL Special Events",
+                "shortcode": "pvl_special_events",
+                "genre": "Ponyville Live! Events",
+                "category": "video",
+                "affiliation": "partner",
+                "image_url": "//dev.pvlive.me/static/stations/20150308_030714_999_image_url_1.png",
+                "web_url": "http://www.livestream.com/ponyvillelive",
+                "twitter_url": "https://twitter.com/PonyvilleLive",
+                "irc": "#PonyvilleLive",
+                "sort_order": -10,
+                "player_url": "http://pvlive.me/pvl_special_events",
+                "request_url": ""
+              },
+              "streams": [
+                {
+                  "id": 131,
+                  "name": "Primary Stream",
+                  "url": "http://www.livestream.com/ponyvillelive",
+                  "type": "video",
+                  "is_default": false,
+                  "on_air": {
+                    "text": "Stream Offline",
+                    "thumbnail": "//dev.pvlive.me/static/images/video_thumbnail.png"
+                  },
+                  "meta": {
+                    "status": "offline",
+                    "listeners": 0
+                  },
+                  "status": "offline"
+                }
+              ],
+              "listeners": {
+                "current": 0,
+                "unique": 0,
+                "total": 0
+              },
+              "event": [
+
+              ],
+              "event_upcoming": [
+
+              ],
+              "cache": "flatfile"
             }
+          }
         }
 
 ### GET /nowplaying/index/id/{id}
@@ -86,55 +228,152 @@ Returns a single station's now-playing information based on a station identifier
 + Response 200 (application/json)
 
         {
-            status: "success",
-            result: {
-                station: {
-                    id: 1,
-                    name: "Station Name",
-                    shortcode: "short_code",
-                    genre: "Station Description",
-                    category: "audio",
-                    type: "shoutcast1",
-                    image_url: "http://ponyvillelive.com/static/image.png",
-                    web_url: "http://www.station-url.com/",
-                    stream_url: "http://station.nowplaying.url/",
-                    twitter_url: "https://twitter.com/station",
-                    irc: "#stationname"
-                },
-                listeners: {
-                    current: 15,
-                    unique: 15,
-                    total: 30
-                },
-                current_song: {
-                    id: "7c3479db4352dd2ff8918693975fe3fc",
-                    text: "Artist - Song Name",
-                    artist: "Artist",
-                    title: "Song Name",
-                    rating: {
-                        likes: 0,
-                        dislikes: 0,
-                        score: 0
+          "status": "success",
+          "result": {
+            "ponyvillefm": {
+              "status": "online",
+              "station": {
+                "id": 20,
+                "name": "PonyvilleFM",
+                "shortcode": "ponyvillefm",
+                "genre": "Pony Dance Hits & #1 DJ Station!",
+                "category": "audio",
+                "affiliation": "partner",
+                "image_url": "//dev.pvlive.me/static/stations/20150406_002857_481_image_url_1.jpg",
+                "web_url": "http://www.ponyvillefm.com/",
+                "twitter_url": "http://www.twitter.com/PonyvilleFM",
+                "irc": "#ponyvillefm",
+                "sort_order": -20,
+                "player_url": "http://pvlive.me/ponyvillefm",
+                "request_url": "//dev.pvlive.me/station/request/id/20",
+                "stream_url": "http://radio.ponyvillelive.com:8014/stream?sid=1;stream.nsv",
+                "default_stream_id": 32
+              },
+              "streams": [
+                {
+                  "id": 32,
+                  "name": "Mane Stream (North America MP3)",
+                  "url": "http://radio.ponyvillelive.com:8014/stream?sid=1;stream.nsv",
+                  "type": "shoutcast2",
+                  "is_default": true,
+                  "status": "online",
+                  "bitrate": "128",
+                  "format": "audio/mpeg",
+                  "listeners": {
+                    "current": 24,
+                    "unique": 24,
+                    "total": 28
+                  },
+                  "current_song": {
+                    "id": "2cd1037164c73dc970c15f78f0202d26",
+                    "text": "Vinylz - Eclipse (Original Mix)",
+                    "artist": "Vinylz",
+                    "title": "Eclipse (Original Mix)",
+                    "image_url": "",
+                    "created": 1436175751,
+                    "play_count": 2,
+                    "last_played": 1436611623,
+                    "score": 100,
+                    "sh_id": 2363,
+                    "vote_urls": {
+                      "like": "//dev.pvlive.me/api/song/like/sh_id/2363",
+                      "dislike": "//dev.pvlive.me/api/song/dislike/sh_id/2363",
+                      "clearvote": "//dev.pvlive.me/api/song/clearvote/sh_id/2363"
                     }
-                },
-                song_history: [
+                  },
+                  "song_history": [
                     {
-                        played_at: 1394675402,
-                        song: {
-                            id: "8af3fb4a95e0307f50af11a365583db3",
-                            text: "Artist - Song Name",
-                            artist: "Artist",
-                            title: "Song Name",
-                            rating: {
-                                likes: 1,
-                                dislikes: 0,
-                                score: 1
-                            }
-                        }
+                      "played_at": 1436611387,
+                      "song": {
+                        "id": "d562483a0f6e873c62889735cd4af36a",
+                        "text": "Forest Rain - A Summer in the Stars (Aftermath Remix)",
+                        "artist": "Forest Rain",
+                        "title": "A Summer in the Stars (Aftermath Remix)",
+                        "image_url": null,
+                        "created": 1380236762,
+                        "play_count": 185,
+                        "last_played": 1436611387,
+                        "score": 0
+                      }
                     },
-                    ...
-                ]
+                    {
+                      "played_at": 1436611144,
+                      "song": {
+                        "id": "2e37ac1be64c1ab29ab90b1a5b339075",
+                        "text": "Emforay - All Around",
+                        "artist": "Emforay",
+                        "title": "All Around",
+                        "image_url": "http://bronytunes.com/retrieve_artwork.php?song_id=5822&size=256",
+                        "created": 1380251551,
+                        "play_count": 141,
+                        "last_played": 1436611144,
+                        "score": 0
+                      }
+                    }
+                  ]
+                }
+              ],
+              "current_song": {
+                "id": "2cd1037164c73dc970c15f78f0202d26",
+                "text": "Vinylz - Eclipse (Original Mix)",
+                "artist": "Vinylz",
+                "title": "Eclipse (Original Mix)",
+                "image_url": "",
+                "created": 1436175751,
+                "play_count": 2,
+                "last_played": 1436611623,
+                "score": 100,
+                "sh_id": 2363,
+                "vote_urls": {
+                  "like": "//dev.pvlive.me/api/song/like/sh_id/2363",
+                  "dislike": "//dev.pvlive.me/api/song/dislike/sh_id/2363",
+                  "clearvote": "//dev.pvlive.me/api/song/clearvote/sh_id/2363"
+                }
+              },
+              "song_history": [
+                {
+                  "played_at": 1436611387,
+                  "song": {
+                    "id": "d562483a0f6e873c62889735cd4af36a",
+                    "text": "Forest Rain - A Summer in the Stars (Aftermath Remix)",
+                    "artist": "Forest Rain",
+                    "title": "A Summer in the Stars (Aftermath Remix)",
+                    "image_url": null,
+                    "created": 1380236762,
+                    "play_count": 185,
+                    "last_played": 1436611387,
+                    "score": 0
+                  }
+                },
+                {
+                  "played_at": 1436611144,
+                  "song": {
+                    "id": "2e37ac1be64c1ab29ab90b1a5b339075",
+                    "text": "Emforay - All Around",
+                    "artist": "Emforay",
+                    "title": "All Around",
+                    "image_url": "http://bronytunes.com/retrieve_artwork.php?song_id=5822&size=256",
+                    "created": 1380251551,
+                    "play_count": 141,
+                    "last_played": 1436611144,
+                    "score": 0
+                  }
+                }
+              ],
+              "listeners": {
+                "current": 36,
+                "unique": 36,
+                "total": 40
+              },
+              "event": [
+
+              ],
+              "event_upcoming": [
+
+              ],
+              "cache": "flatfile"
             }
+          }
         }
 
 ### GET /nowplaying/index/station/{shortcode}
@@ -145,55 +384,152 @@ Returns a single station's now-playing information based on a station's "short c
 + Response 200 (application/json)
 
         {
-            status: "success",
-            result: {
-                station: {
-                    id: 1,
-                    name: "Station Name",
-                    shortcode: "short_code",
-                    genre: "Station Description",
-                    category: "audio",
-                    type: "shoutcast1",
-                    image_url: "http://ponyvillelive.com/static/image.png",
-                    web_url: "http://www.station-url.com/",
-                    stream_url: "http://station.nowplaying.url/",
-                    twitter_url: "https://twitter.com/station",
-                    irc: "#stationname"
-                },
-                listeners: {
-                    current: 15,
-                    unique: 15,
-                    total: 30
-                },
-                current_song: {
-                    id: "7c3479db4352dd2ff8918693975fe3fc",
-                    text: "Artist - Song Name",
-                    artist: "Artist",
-                    title: "Song Name",
-                    rating: {
-                        likes: 0,
-                        dislikes: 0,
-                        score: 0
+          "status": "success",
+          "result": {
+            "ponyvillefm": {
+              "status": "online",
+              "station": {
+                "id": 20,
+                "name": "PonyvilleFM",
+                "shortcode": "ponyvillefm",
+                "genre": "Pony Dance Hits & #1 DJ Station!",
+                "category": "audio",
+                "affiliation": "partner",
+                "image_url": "//dev.pvlive.me/static/stations/20150406_002857_481_image_url_1.jpg",
+                "web_url": "http://www.ponyvillefm.com/",
+                "twitter_url": "http://www.twitter.com/PonyvilleFM",
+                "irc": "#ponyvillefm",
+                "sort_order": -20,
+                "player_url": "http://pvlive.me/ponyvillefm",
+                "request_url": "//dev.pvlive.me/station/request/id/20",
+                "stream_url": "http://radio.ponyvillelive.com:8014/stream?sid=1;stream.nsv",
+                "default_stream_id": 32
+              },
+              "streams": [
+                {
+                  "id": 32,
+                  "name": "Mane Stream (North America MP3)",
+                  "url": "http://radio.ponyvillelive.com:8014/stream?sid=1;stream.nsv",
+                  "type": "shoutcast2",
+                  "is_default": true,
+                  "status": "online",
+                  "bitrate": "128",
+                  "format": "audio/mpeg",
+                  "listeners": {
+                    "current": 24,
+                    "unique": 24,
+                    "total": 28
+                  },
+                  "current_song": {
+                    "id": "2cd1037164c73dc970c15f78f0202d26",
+                    "text": "Vinylz - Eclipse (Original Mix)",
+                    "artist": "Vinylz",
+                    "title": "Eclipse (Original Mix)",
+                    "image_url": "",
+                    "created": 1436175751,
+                    "play_count": 2,
+                    "last_played": 1436611623,
+                    "score": 100,
+                    "sh_id": 2363,
+                    "vote_urls": {
+                      "like": "//dev.pvlive.me/api/song/like/sh_id/2363",
+                      "dislike": "//dev.pvlive.me/api/song/dislike/sh_id/2363",
+                      "clearvote": "//dev.pvlive.me/api/song/clearvote/sh_id/2363"
                     }
-                },
-                song_history: [
+                  },
+                  "song_history": [
                     {
-                        played_at: 1394675402,
-                        song: {
-                            id: "8af3fb4a95e0307f50af11a365583db3",
-                            text: "Artist - Song Name",
-                            artist: "Artist",
-                            title: "Song Name",
-                            rating: {
-                                likes: 1,
-                                dislikes: 0,
-                                score: 1
-                            }
-                        }
+                      "played_at": 1436611387,
+                      "song": {
+                        "id": "d562483a0f6e873c62889735cd4af36a",
+                        "text": "Forest Rain - A Summer in the Stars (Aftermath Remix)",
+                        "artist": "Forest Rain",
+                        "title": "A Summer in the Stars (Aftermath Remix)",
+                        "image_url": null,
+                        "created": 1380236762,
+                        "play_count": 185,
+                        "last_played": 1436611387,
+                        "score": 0
+                      }
                     },
-                    ...
-                ]
+                    {
+                      "played_at": 1436611144,
+                      "song": {
+                        "id": "2e37ac1be64c1ab29ab90b1a5b339075",
+                        "text": "Emforay - All Around",
+                        "artist": "Emforay",
+                        "title": "All Around",
+                        "image_url": "http://bronytunes.com/retrieve_artwork.php?song_id=5822&size=256",
+                        "created": 1380251551,
+                        "play_count": 141,
+                        "last_played": 1436611144,
+                        "score": 0
+                      }
+                    }
+                  ]
+                }
+              ],
+              "current_song": {
+                "id": "2cd1037164c73dc970c15f78f0202d26",
+                "text": "Vinylz - Eclipse (Original Mix)",
+                "artist": "Vinylz",
+                "title": "Eclipse (Original Mix)",
+                "image_url": "",
+                "created": 1436175751,
+                "play_count": 2,
+                "last_played": 1436611623,
+                "score": 100,
+                "sh_id": 2363,
+                "vote_urls": {
+                  "like": "//dev.pvlive.me/api/song/like/sh_id/2363",
+                  "dislike": "//dev.pvlive.me/api/song/dislike/sh_id/2363",
+                  "clearvote": "//dev.pvlive.me/api/song/clearvote/sh_id/2363"
+                }
+              },
+              "song_history": [
+                {
+                  "played_at": 1436611387,
+                  "song": {
+                    "id": "d562483a0f6e873c62889735cd4af36a",
+                    "text": "Forest Rain - A Summer in the Stars (Aftermath Remix)",
+                    "artist": "Forest Rain",
+                    "title": "A Summer in the Stars (Aftermath Remix)",
+                    "image_url": null,
+                    "created": 1380236762,
+                    "play_count": 185,
+                    "last_played": 1436611387,
+                    "score": 0
+                  }
+                },
+                {
+                  "played_at": 1436611144,
+                  "song": {
+                    "id": "2e37ac1be64c1ab29ab90b1a5b339075",
+                    "text": "Emforay - All Around",
+                    "artist": "Emforay",
+                    "title": "All Around",
+                    "image_url": "http://bronytunes.com/retrieve_artwork.php?song_id=5822&size=256",
+                    "created": 1380251551,
+                    "play_count": 141,
+                    "last_played": 1436611144,
+                    "score": 0
+                  }
+                }
+              ],
+              "listeners": {
+                "current": 36,
+                "unique": 36,
+                "total": 40
+              },
+              "event": [
+
+              ],
+              "event_upcoming": [
+
+              ],
+              "cache": "flatfile"
             }
+          }
         }
 
 # Group Schedules #
@@ -236,25 +572,24 @@ A list of events that occur in the month, specified in YYYYMM format (i.e. Janua
 + Response 200 (application/json)
 
         {
-            status: "success",
-            result: [
-                {
-                    id: 627522, // Schedule ID
-                    type: "station", // station or convention
-                    station_id: 27, // Station numeric identifier
-                    guid: "d00d1a8824968d5ded45d134b87cf5a9", // Google Calendar GUID
-                    start_time: 1394607600,
-                    end_time: 1394611200,
-                    is_all_day: false,
-                    title: "Event Name",
-                    location: "Event Location",
-                    body: "",
-                    image_url: "http://ponyvillelive.com/static/image.png",
-                    web_url: "https://www.google.com/calendar/url",
-                    station: "station_name" // Station shortcode identifier
-                },
-                ...
-            ]
+          "status": "success",
+          "result": [
+            {
+              "id": 2759,
+              "station_id": 61,
+              "guid": "65dbd98c5715c20ae7dabbf762d105be",
+              "start_time": 1436565600,
+              "end_time": 1436616000,
+              "is_all_day": false,
+              "title": "Random Pony Media",
+              "location": "http://bronytv.net/stream.html",
+              "body": "",
+              "banner_url": "http://bronytv.net/stream.html",
+              "web_url": "https://www.google.com/calendar/event?eid=ZTFwZzNtOTQzczR0a3NnZm0xa2UxMnR2ZGNfMjAxNTA3MTBUMjIwMDAwWiAyaG9nZmYwZTh0ZmU4b2FtcjZsZ3F2ZDFqMEBn",
+              "range": "Now to 8:00am",
+              "image_url": "//dev.pvlive.me/static/stations/20150308_030958_764_image_url_1.png"
+            }
+          }
         }
 
 ### GET /schedule/index/start/{start_time}/end/{end_time}
@@ -265,25 +600,24 @@ A list of events that occur between the UNIX timestamps specified in {start_time
 + Response 200 (application/json)
 
         {
-            status: "success",
-            result: [
-                {
-                    id: 627522, // Schedule ID
-                    type: "station", // station or convention
-                    station_id: 27, // Station numeric identifier
-                    guid: "d00d1a8824968d5ded45d134b87cf5a9", // Google Calendar GUID
-                    start_time: 1394607600,
-                    end_time: 1394611200,
-                    is_all_day: false,
-                    title: "Event Name",
-                    location: "Event Location",
-                    body: "",
-                    image_url: "http://ponyvillelive.com/static/image.png",
-                    web_url: "https://www.google.com/calendar/url",
-                    station: "station_name" // Station shortcode identifier
-                },
-                ...
-            ]
+          "status": "success",
+          "result": [
+            {
+              "id": 2759,
+              "station_id": 61,
+              "guid": "65dbd98c5715c20ae7dabbf762d105be",
+              "start_time": 1436565600,
+              "end_time": 1436616000,
+              "is_all_day": false,
+              "title": "Random Pony Media",
+              "location": "http://bronytv.net/stream.html",
+              "body": "",
+              "banner_url": "http://bronytv.net/stream.html",
+              "web_url": "https://www.google.com/calendar/event?eid=ZTFwZzNtOTQzczR0a3NnZm0xa2UxMnR2ZGNfMjAxNTA3MTBUMjIwMDAwWiAyaG9nZmYwZTh0ZmU4b2FtcjZsZ3F2ZDFqMEBn",
+              "range": "Now to 8:00am",
+              "image_url": "//dev.pvlive.me/static/stations/20150308_030958_764_image_url_1.png"
+            }
+          }
         }
 
 ### GET /schedule/index/station/{shortcode}
@@ -294,23 +628,24 @@ A list of events coming up for the specified station within 30 days.
 + Response 200 (application/json)
 
         {
-            status: "success",
-            result: [
-                {
-                    id: 627522, // Schedule ID
-                    type: "station", // station or convention
-                    guid: "d00d1a8824968d5ded45d134b87cf5a9", // Google Calendar GUID
-                    start_time: 1394607600,
-                    end_time: 1394611200,
-                    is_all_day: false,
-                    title: "Event Name",
-                    location: "Event Location",
-                    body: "",
-                    image_url: "http://ponyvillelive.com/static/image.png",
-                    web_url: "https://www.google.com/calendar/url",
-                },
-                ...
-            ]
+          "status": "success",
+          "result": [
+            {
+              "id": 2759,
+              "station_id": 61,
+              "guid": "65dbd98c5715c20ae7dabbf762d105be",
+              "start_time": 1436565600,
+              "end_time": 1436616000,
+              "is_all_day": false,
+              "title": "Random Pony Media",
+              "location": "http://bronytv.net/stream.html",
+              "body": "",
+              "banner_url": "http://bronytv.net/stream.html",
+              "web_url": "https://www.google.com/calendar/event?eid=ZTFwZzNtOTQzczR0a3NnZm0xa2UxMnR2ZGNfMjAxNTA3MTBUMjIwMDAwWiAyaG9nZmYwZTh0ZmU4b2FtcjZsZ3F2ZDFqMEBn",
+              "range": "Now to 8:00am",
+              "image_url": "//dev.pvlive.me/static/stations/20150308_030958_764_image_url_1.png"
+            }
+          }
         }
 
 ### GET /schedule/index/station/{shortcode}/month/{month}
@@ -321,23 +656,24 @@ A list of events for the specified station that occur in the month, specified in
 + Response 200 (application/json)
 
         {
-            status: "success",
-            result: [
-                {
-                    id: 627522, // Schedule ID
-                    type: "station", // station or convention
-                    guid: "d00d1a8824968d5ded45d134b87cf5a9", // Google Calendar GUID
-                    start_time: 1394607600,
-                    end_time: 1394611200,
-                    is_all_day: false,
-                    title: "Event Name",
-                    location: "Event Location",
-                    body: "",
-                    image_url: "http://ponyvillelive.com/static/image.png",
-                    web_url: "https://www.google.com/calendar/url",
-                },
-                ...
-            ]
+          "status": "success",
+          "result": [
+            {
+              "id": 2759,
+              "station_id": 61,
+              "guid": "65dbd98c5715c20ae7dabbf762d105be",
+              "start_time": 1436565600,
+              "end_time": 1436616000,
+              "is_all_day": false,
+              "title": "Random Pony Media",
+              "location": "http://bronytv.net/stream.html",
+              "body": "",
+              "banner_url": "http://bronytv.net/stream.html",
+              "web_url": "https://www.google.com/calendar/event?eid=ZTFwZzNtOTQzczR0a3NnZm0xa2UxMnR2ZGNfMjAxNTA3MTBUMjIwMDAwWiAyaG9nZmYwZTh0ZmU4b2FtcjZsZ3F2ZDFqMEBn",
+              "range": "Now to 8:00am",
+              "image_url": "//dev.pvlive.me/static/stations/20150308_030958_764_image_url_1.png"
+            }
+          }
         }
 
 ### GET /schedule/index/station/{shortcode}/start/{start_time}/end/{end_time}
@@ -348,51 +684,141 @@ A list of events for the specified station that occur between the UNIX timestamp
 + Response 200 (application/json)
 
         {
-            status: "success",
-            result: [
-                {
-                    id: 627522, // Schedule ID
-                    type: "station", // station or convention
-                    guid: "d00d1a8824968d5ded45d134b87cf5a9", // Google Calendar GUID
-                    start_time: 1394607600,
-                    end_time: 1394611200,
-                    is_all_day: false,
-                    title: "Event Name",
-                    location: "Event Location",
-                    body: "",
-                    image_url: "http://ponyvillelive.com/static/image.png",
-                    web_url: "https://www.google.com/calendar/url",
-                },
-                ...
-            ]
+          "status": "success",
+          "result": [
+            {
+              "id": 2759,
+              "station_id": 61,
+              "guid": "65dbd98c5715c20ae7dabbf762d105be",
+              "start_time": 1436565600,
+              "end_time": 1436616000,
+              "is_all_day": false,
+              "title": "Random Pony Media",
+              "location": "http://bronytv.net/stream.html",
+              "body": "",
+              "banner_url": "http://bronytv.net/stream.html",
+              "web_url": "https://www.google.com/calendar/event?eid=ZTFwZzNtOTQzczR0a3NnZm0xa2UxMnR2ZGNfMjAxNTA3MTBUMjIwMDAwWiAyaG9nZmYwZTh0ZmU4b2FtcjZsZ3F2ZDFqMEBn",
+              "range": "Now to 8:00am",
+              "image_url": "//dev.pvlive.me/static/stations/20150308_030958_764_image_url_1.png"
+            }
+          }
         }
-        
-### GET /schedule/conventions
-A list of upcoming conventions that the PVL team is either covering or will be present at.
+
+# Group Conventions
+Functions for retrieving detailed information about PVL convention coverage.
+
+### GET /convention/list
+A list of upcoming and past conventions listed in the PVL convention center.
 
 + Response 200 (application/json)
 
         {
-            status: "success",
-            result: [
+          "status": "success",
+          "result": [
+            {
+              "id": 37,
+              "name": "TrotCon 2015",
+              "location": "Columbus, OH",
+              "coverage": "none",
+              "coverage_details": {
+                "text": "No Coverage",
+                "icon": "icon-flag",
+                "short": "!"
+              },
+              "date_range": "Jul 17-19, 2015",
+              "start_date": {
+                "date": "2015-07-17 00:00:00",
+                "timezone_type": 3,
+                "timezone": "US/Eastern"
+              },
+              "end_date": {
+                "date": "2015-07-19 00:00:00",
+                "timezone_type": 3,
+                "timezone": "US/Eastern"
+              },
+              "web_url": "http://trotcon.net/",
+              "image_url": "//dev.pvlive.me/static/conventions/20150414_192057_997_image_url_1.png",
+              "archives_count": 0
+            }
+          ]
+        }
+
+### GET /convention/view/id/{id}
+Get detailed coverage archives and information about the convention with the ID specified.
+
++ Response 200 (application/json)
+
+        {
+          "status": "success",
+          "result": {
+            "id": 36,
+            "name": "Fiesta Equestria 2015",
+            "location": "Houston, TX",
+            "coverage": "streaming",
+            "coverage_details": {
+              "text": "PVL Full Streaming & Coverage",
+              "icon": "icon-globe",
+              "short": "@"
+            },
+            "date_range": "Jun 26-28, 2015",
+            "start_date": {
+              "date": "2015-06-26 00:00:00",
+              "timezone_type": 3,
+              "timezone": "US/Eastern"
+            },
+            "end_date": {
+              "date": "2015-06-28 00:00:00",
+              "timezone_type": 3,
+              "timezone": "US/Eastern"
+            },
+            "web_url": "http://fiestaequestria.com/",
+            "image_url": "//dev.pvlive.me/static/conventions/20150414_192452_968_image_url_1.png",
+            "archives": {
+              "videos": [
                 {
-                    id: 123456, // ID in PVL system
-                    type: "convention",
-                    guid: "a8aa5443b8c239c53f8023d6609ba4b4", // GUID for Google Calendar event
-                    start_time: 1397793600, // UNIX Timestamp
-                    end_time: 1398052799, // UNIX Timestamp
-                    is_all_day: true,
-                    title: "Event Name",
-                    location: "Location Name",
-                    body: "http://www.babscon.com/",
-                    image_url: "http://ponyvillelive.com/static/image.png",
-                    web_url: "http://www.babscon.com/",
-                    city: "Event City",
-                    title_full: "Event Name<br><small><i class="icon-group"></i> Coverage Type</small>",
-                    category: "PVL Convention Coverage" // Type of presence at event
+                  "id": "277554",
+                  "convention_id": "36",
+                  "playlist_id": "276924",
+                  "type": "yt_video",
+                  "folder": "pvl",
+                  "name": "Opening Ceremonies",
+                  "description": "Ponyville Live! is the pony community's largest entertainment and media network. We feature radio stations, video streams, podcasts, live and pre-recorded convention coverage, and much more. PVL is Bringing Pony People Together, join the party at http://ponyvillelive.com/ !",
+                  "web_url": "http://www.youtube.com/watch?v=BwRZIk2LIXQ",
+                  "thumbnail_url": "https://i.ytimg.com/vi/BwRZIk2LIXQ/mqdefault.jpg",
+                  "created_at": "1436598858",
+                  "synchronized_at": "0"
                 },
-                ...
-            ]
+                {
+                  "id": "277563",
+                  "convention_id": "36",
+                  "playlist_id": "276924",
+                  "type": "yt_video",
+                  "folder": "pvl",
+                  "name": "Closing Ceremonies",
+                  "description": "Closing ceremonies from Fiesta Equestria 2015 in Houston, TX.\n\n--\n\nPonyville Live! is the pony community's largest entertainment and media network. We feature radio stations, video streams, podcasts, live and pre-recorded convention coverage, and much more. PVL is Bringing Pony People Together, join the party at http://ponyvillelive.com/ !",
+                  "web_url": "http://www.youtube.com/watch?v=nUEVGCawLeo",
+                  "thumbnail_url": "https://i.ytimg.com/vi/nUEVGCawLeo/mqdefault.jpg",
+                  "created_at": "1436598858",
+                  "synchronized_at": "0"
+                }
+              ],
+              "sources": [
+                {
+                  "id": "276924",
+                  "convention_id": "36",
+                  "playlist_id": "",
+                  "type": "yt_playlist",
+                  "folder": "pvl",
+                  "name": "Fiesta Equestria 2015",
+                  "description": "",
+                  "web_url": "https://www.youtube.com/playlist?list=PLUYW7t-2KdIKLyC8HzTipficpXgXFDKdz",
+                  "thumbnail_url": "https://i.ytimg.com/vi/dMW8nK2Acxw/mqdefault.jpg",
+                  "created_at": "1436270742",
+                  "synchronized_at": "1436598858"
+                }
+              ]
+            }
+          }
         }
 
 # Group Songs

@@ -231,16 +231,29 @@ class Schedule extends \DF\Doctrine\Entity
         return $string;
     }
 
-    public static function api($row)
+    public static function api($row_raw)
     {
-        if (empty($row))
+        if (empty($row_raw))
             return array();
 
-        if ($row instanceof self)
-            $row = $row->toArray();
+        if ($row_raw instanceof self)
+            $row_raw = $row_raw->toArray();
 
-        // Update Image URL
-        $row['image_url'] = \PVL\Url::upload(self::getRowImageUrl($row));
+        $row = array(
+            'id'            => (int)$row_raw['id'],
+            'station_id'    => (int)$row_raw['station_id'],
+            'guid'          => $row_raw['guid'],
+            'start_time'    => (int)$row_raw['start_time'],
+            'end_time'      => (int)$row_raw['end_time'],
+            'is_all_day'    => (bool)$row_raw['is_all_day'],
+            'title'         => $row_raw['title'],
+            'location'      => $row_raw['location'],
+            'body'          => $row_raw['body'],
+            'banner_url'    => $row_raw['banner_url'],
+            'web_url'       => $row_raw['web_url'],
+            'range'         => self::getRangeText($row_raw['start_time'], $row_raw['end_time'], $row_raw['is_all_day']),
+            'image_url'     => \PVL\Url::upload(self::getRowImageUrl($row_raw)),
+        );
 
         // Add station shortcode.
         if (isset($row['station']))
@@ -250,13 +263,6 @@ class Schedule extends \DF\Doctrine\Entity
             $shortcode = Station::getStationShortName($row['station']['name']);
             $row['station_shortcode'] = $shortcode;
         }
-
-        // Add date range text.
-        if (!isset($row['range']))
-            $row['range'] = self::getRangeText($row['start_time'], $row['end_time'], $row['is_all_day']);
-
-        // Remove non-display variables.
-        unset($row['is_notified']);
 
         return $row;
     }

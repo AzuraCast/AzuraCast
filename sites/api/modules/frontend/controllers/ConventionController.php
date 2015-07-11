@@ -6,6 +6,14 @@ use \Entity\ConventionArchive;
 
 class ConventionController extends BaseController
 {
+    public function indexAction()
+    {
+        if ($this->hasParam('id'))
+            return $this->viewAction();
+        else
+            return $this->listAction();
+    }
+
     public function listAction()
     {
         $all_conventions = $this->em->createQuery('SELECT c, ca FROM Entity\Convention c LEFT JOIN c.archives ca ORDER BY c.start_date DESC')
@@ -33,7 +41,7 @@ class ConventionController extends BaseController
         return $this->returnSuccess($export_data);
     }
 
-    public function indexAction()
+    public function viewAction()
     {
         $id = $this->getParam('id');
         $record = Convention::find($id);
@@ -60,10 +68,5 @@ class ConventionController extends BaseController
         }
 
         return $this->returnSuccess($export_data);
-    }
-
-    public function viewAction()
-    {
-        return $this->indexAction();
     }
 }

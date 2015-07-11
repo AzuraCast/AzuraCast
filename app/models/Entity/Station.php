@@ -483,7 +483,8 @@ class Station extends \DF\Doctrine\Entity
             {
                 $api['streams'][] = StationStream::api($stream);
 
-                if ($stream['is_default'])
+                // Set first stream as default, override if a later stream is explicitly default.
+                if ($stream['is_default'] || !isset($api['default_stream_id']))
                 {
                     $api['default_stream_id'] = (int)$stream['id'];
                     $api['stream_url'] = $stream['stream_url'];
@@ -495,6 +496,8 @@ class Station extends \DF\Doctrine\Entity
 
         if ($row['requests_enabled'])
             $api['request_url'] = \DF\Url::route(array('module' => 'default', 'controller' => 'station', 'action' => 'request', 'id' => $row['id']));
+        else
+            $api['request_url'] = '';
 
         return $api;
     }

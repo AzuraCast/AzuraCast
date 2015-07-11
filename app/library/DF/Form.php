@@ -105,6 +105,7 @@ class Form
             if ($field_options['required']) {
                 $element_validators[] = new \Phalcon\Validation\Validator\PresenceOf(array(
                     'message'   => 'This field is required.',
+                    'cancelOnFail' => true,
                 ));
             }
 
@@ -113,24 +114,27 @@ class Form
 
         if (isset($field_options['validators']))
         {
-            // Phalcon Bug:
-            // Cannot instruct validators to ignore empty strings.
-            // Only add other validators if "Required" validator is present.
-
-            if (!empty($element_validators))
+            foreach ($field_options['validators'] as $validator)
             {
-                foreach ($field_options['validators'] as $validator)
-                {
-                    if (!is_string($validator))
-                        continue;
+                if (!is_string($validator))
+                    continue;
 
-                    switch (strtolower($validator)) {
-                        case 'emailaddress':
-                            $element_validators[] = new \Phalcon\Validation\Validator\Email(array(
-                                'message' => 'This field must be a valid e-mail address.',
-                            ));
-                            break;
-                    }
+                switch (strtolower($validator)) {
+                    case 'emailaddress':
+                    case 'email':
+                        $element_validators[] = new \Phalcon\Validation\Validator\Email(array(
+                            'message' => 'This field must be a valid e-mail address.',
+                            'allowEmpty' => true,
+                        ));
+                    break;
+
+                    case 'webaddress':
+                    case 'url':
+                        $element_validators[] = new \Phalcon\Validation\Validator\Url(array(
+                            'message' => 'This field must be a valid web address.',
+                            'allowEmpty' => true,
+                        ));
+                    break;
                 }
             }
 
@@ -160,64 +164,72 @@ class Form
         {
             case 'password':
                 $element = new \Phalcon\Forms\Element\Password($field_key, $field_options);
-                break;
+            break;
 
             case 'select':
                 $element = new \Phalcon\Forms\Element\Select($field_key, $select_options, $field_options);
-                break;
+            break;
 
             case 'checkbox':
                 $element = new \Phalcon\Forms\Element\Check($field_key, $field_options);
-                break;
+            break;
 
             case 'multicheckbox':
                 $field_options['name'] = $field_key.'[]';
                 $element = new \Phalcon\Forms\Element\Check($field_key, $field_options);
-                break;
+            break;
 
             case 'radio':
                 $element = new \Phalcon\Forms\Element\Radio($field_key, $field_options);
-                break;
+            break;
 
             case 'textarea':
                 $element = new \Phalcon\Forms\Element\TextArea($field_key, $field_options);
-                break;
+            break;
 
             case 'hidden':
                 $element = new \Phalcon\Forms\Element\Hidden($field_key, $field_options);
-                break;
+            break;
 
             case 'file':
                 $element = new \Phalcon\Forms\Element\File($field_key, $field_options);
-                break;
+            break;
 
             case 'date':
                 $element = new \Phalcon\Forms\Element\Date($field_key, $field_options);
-                break;
+            break;
 
             case 'unixdate':
                 $element = new \DF\Forms\Element\UnixDate($field_key, $field_options);
-                break;
+            break;
 
             case 'numeric':
                 $element = new \Phalcon\Forms\Element\Numeric($field_key, $field_options);
-                break;
+            break;
 
             case 'submit':
                 $field_options['value'] = $element_label;
                 $element_label = NULL;
 
                 $element = new \Phalcon\Forms\Element\Submit($field_key, $field_options);
-                break;
+            break;
 
             case 'markup':
                 $element = new \DF\Forms\Element\Markup($field_key, $field_options['markup'], $field_options);
-                break;
+            break;
+
+            case 'captcha':
+            case 'recaptcha':
+                $element = new \DF\Forms\Element\Recaptcha($field_key, $field_options);
+
+                $validator = new \DF\Forms\Validator\RecaptchaValidator;
+                $element->addValidator($validator);
+            break;
 
             case 'text':
             default:
                 $element = new \Phalcon\Forms\Element\Text($field_key, $field_options);
-                break;
+            break;
         }
 
         // Set element label and defaults.

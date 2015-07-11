@@ -26,6 +26,7 @@ return array(
                     'label' => 'E-mail Address',
                     'class' => 'half-width',
                     'required' => true,
+                    'validators' => array('EmailAddress'),
                 )),
         
                 'auth_password' => array('password', array(
@@ -36,28 +37,17 @@ return array(
             ),
         ),
 
-        /*
+
         'captcha_grp' => array(
             'legend' => 'Spam Protection',
             'elements' => array(
 
                 'captcha' => array('captcha', array(
                     'label' => 'Enter the code below',
-                    'captcha' => 'ReCaptcha',
-                    'captchaOptions' => array(
-                        'captcha' => 'ReCaptcha',
-                        'service' => new \Zend_Service_ReCaptcha(
-                            $captcha_config['public_key'],
-                            $captcha_config['private_key'],
-                            array('ssl' => DF_IS_SECURE)
-                        ),
-                    ),
-                    'helper' => 'formLabel',
                 )),
 
             ),
         ),
-        */
         
         'submit' => array(
             'elements' => array(

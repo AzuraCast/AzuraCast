@@ -29,7 +29,7 @@ return array(
                 'web_url' => array('text', array(
                     'label' => 'Web Site Address',
                     'class' => 'half-width',
-                    'filters' => array('WebAddress'),
+                    'validators' => array('WebAddress'),
                 )),
 
                 'contact_email' => array('text', array(
@@ -70,55 +70,55 @@ return array(
                 'rss_url' => array('text', array(
                     'label' => 'RSS Feed Address',
                     'class' => 'half-width',
-                    'filters' => array('WebAddress'),
+                    'validators' => array('WebAddress'),
                 )),
 
                 'twitter_url' => array('text', array(
                     'label' => 'Twitter Address',
                     'class' => 'half-width',
-                    'filters' => array('WebAddress'),
+                    'validators' => array('WebAddress'),
                     'placeholder' => 'http://www.twitter.com/YourUsername',
                 )),
 
                 'tumblr_url' => array('text', array(
                     'label' => 'Tumblr Address',
                     'class' => 'half-width',
-                    'filters' => array('WebAddress'),
+                    'validators' => array('WebAddress'),
                     'placeholder' => 'http://YourUsername.tumblr.com',
                 )),
 
                 'facebook_url' => array('text', array(
                     'label' => 'Facebook Address',
                     'class' => 'half-width',
-                    'filters' => array('WebAddress'),
+                    'validators' => array('WebAddress'),
                     'placeholder' => 'http://www.facebook.com/YourUserName',
                 )),
 
                 'youtube_url' => array('text', array(
                     'label' => 'YouTube Address',
                     'class' => 'half-width',
-                    'filters' => array('WebAddress'),
+                    'validators' => array('WebAddress'),
                     'placeholder' => 'http://www.youtube.com/YourUsername',
                 )),
 
                 'soundcloud_url' => array('text', array(
                     'label' => 'SoundCloud Address',
                     'class' => 'half-width',
-                    'filters' => array('WebAddress'),
+                    'validators' => array('WebAddress'),
                     'placeholder' => 'http://www.soundcloud.com/YourUsername',
                 )),
 
                 'deviantart_url' => array('text', array(
                     'label' => 'DeviantArt Address',
                     'class' => 'half-width',
-                    'filters' => array('WebAddress'),
+                    'validators' => array('WebAddress'),
                     'placeholder' => 'http://YourUsername.deviantart.com',
                 )),
 
                 'livestream_url' => array('text', array(
                     'label' => 'LiveStream Address',
                     'class' => 'half-width',
-                    'filters' => array('WebAddress'),
+                    'validators' => array('WebAddress'),
                     'placeholder' => 'http://livestream.com/username',
                 )),
 
@@ -134,8 +134,7 @@ return array(
                         0   => 'No',
                         1   => 'Yes',
                     ),
-                    'default' => 1,
-                    'required' => true,
+                    'default' => 1
                 )),
             ),
         ),

@@ -251,16 +251,19 @@ class Schedule extends \DF\Doctrine\Entity
             'body'          => $row_raw['body'],
             'banner_url'    => $row_raw['banner_url'],
             'web_url'       => $row_raw['web_url'],
-            'range'         => self::getRangeText($row_raw['start_time'], $row_raw['end_time'], $row_raw['is_all_day']),
+            'range'         => $row_raw['range'] ?: self::getRangeText($row_raw['start_time'], $row_raw['end_time'], $row_raw['is_all_day']),
             'image_url'     => \PVL\Url::upload(self::getRowImageUrl($row_raw)),
         );
 
-        // Add station shortcode.
-        if (isset($row['station']))
-        {
-            $row['station'] = Station::api($row['station']);
+        if (isset($row_raw['minutes_until']))
+            $row['minutes_until'] = (int)$row_raw['minutes_until'];
 
-            $shortcode = Station::getStationShortName($row['station']['name']);
+        // Add station shortcode.
+        if (isset($row_raw['station']))
+        {
+            $row['station'] = Station::api($row_raw['station']);
+
+            $shortcode = Station::getStationShortName($row_raw['station']['name']);
             $row['station_shortcode'] = $shortcode;
         }
 

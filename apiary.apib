@@ -275,6 +275,9 @@ Returns all now playing data for active stations, indexed by the station's Short
 
 Returns a single station's now-playing information based on a station identifier.
 
++ Parameters
+  + id (number, required) - The station ID.
+
 + Response 200 (application/json)
 
         {
@@ -455,6 +458,9 @@ Returns a single station's now-playing information based on a station identifier
 **Station Specified by Shortcode**
 
 Returns a single station's now-playing information based on a station's "short code" identifier.
+
++ Parameters
+  + shortcode (string, required) - The station "short code" identifier.
 
 + Response 200 (application/json)
 
@@ -684,6 +690,9 @@ A list of events coming up for all stations within 30 days.
 
 A list of events that occur in the month, specified in YYYYMM format (i.e. January 2014 becomes "201401").
 
++ Parameters
+  + YYYYMM: `201505` (number, required) - The year and month in YYYYMM format, without spaces.
+
 + Response 200 (application/json)
 
         {
@@ -711,6 +720,10 @@ A list of events that occur in the month, specified in YYYYMM format (i.e. Janua
 **All Stations**
 
 A list of events that occur between the UNIX timestamps specified in {start_time} and {end_time}.
+
++ Parameters
+  + start_time (number, required) - UNIX Timestamp for the starting time.
+  + end_time (number_required) - UNIX Timestamp for the ending time.
 
 + Response 200 (application/json)
 
@@ -740,6 +753,9 @@ A list of events that occur between the UNIX timestamps specified in {start_time
 
 A list of events coming up for the specified station within 30 days.
 
++ Parameters
+  + shortcode (string, required) - The station "short code" identifier.
+
 + Response 200 (application/json)
 
         {
@@ -763,10 +779,14 @@ A list of events coming up for the specified station within 30 days.
           }
         }
 
-### GET /schedule/index/station/{shortcode}/month/{month}
+### GET /schedule/index/station/{shortcode}/month/{YYYYMM}
 **All Stations**
 
 A list of events for the specified station that occur in the month, specified in YYYYMM format (i.e. January 2014 becomes "201401").
+
++ Parameters
+  + shortcode (string, required) - The station "short code" identifier.
+  + YYYYMM: `201505` (number, required) - The year and month in YYYYMM format, without spaces.
 
 + Response 200 (application/json)
 
@@ -795,6 +815,11 @@ A list of events for the specified station that occur in the month, specified in
 **All Stations**
 
 A list of events for the specified station that occur between the UNIX timestamps specified in {start_time} and {end_time}.
+
++ Parameters
+  + shortcode (string, required) - The station "short code" identifier.
+  + start_time (number, required) - UNIX Timestamp for the starting time.
+  + end_time (number_required) - UNIX Timestamp for the ending time.
 
 + Response 200 (application/json)
 
@@ -860,6 +885,9 @@ A list of upcoming and past conventions listed in the PVL convention center.
 
 ### GET /convention/view/id/{id}
 Get detailed coverage archives and information about the convention with the ID specified.
+
++ Parameters
+  + id (number, required) - The convention ID.
 
 + Response 200 (application/json)
 
@@ -942,6 +970,9 @@ Functions for retrieving detailed information about a specific song.
 ### GET /song/index/id/{song_id}
 Detailed information about the 32-character song identifier specified.
 
++ Parameters
+  + song_id: `a879faf8ed3c3dd8296442da28493a20` (string, required) - The 32-character song hash identifier.
+
 + Response 200 (application/json)
 
         {
@@ -985,8 +1016,14 @@ List all stations from all categories.
           ]
         }
         
-### GET /station/list/category/{audio|video}
+### GET /station/list/category/{category}
 List all stations from the specified category.
+
++ Parameters
+  + category (enum[string], required) - The category of stations to return.
+    + Members
+      + `audio`
+      + `video`
 
 + Response 200 (application/json)
 
@@ -1013,6 +1050,9 @@ List all stations from the specified category.
 ### GET /station/index/id/{id}
 Station info for the specified numeric identifier.
 
++ Parameters
+  + id (number, required) - The station ID.
+
 + Response 200 (application/json)
 
         {
@@ -1034,6 +1074,9 @@ Station info for the specified numeric identifier.
         
 ### GET /station/index/station/{shortcode}
 Station info for the specified shortcode.
+
++ Parameters
+  + shortcode (string, required) - The station "short code" identifier.
 
 + Response 200 (application/json)
 
@@ -1109,6 +1152,9 @@ List all shows/podcasts sorted by name.
 
 ### GET /show/index/id/{id}
 Detailed information on a specific show/podcast, including all episodes.
+
++ Parameters
+  + id (number, required) - The show/podcast ID.
 
 + Response 200 (application/json)
 

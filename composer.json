@@ -15,7 +15,7 @@
     "nette/mail": "2.3.0",
 
     "google/apiclient": "1.0.*@beta",
-    "aws/aws-sdk-php": "2.*",
+    "aws/aws-sdk-php": "3.*",
     "phpoffice/phpexcel": "1.8.0",
     "ise/php-soundcloud": "dev-master"
   },

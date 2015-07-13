@@ -127,7 +127,7 @@ class AmazonS3
 
             // Instantiate the S3 client with your AWS credentials
             self::$client = new S3Client(array(
-                'version'    => 'latest',
+                'version'    => '2006-03-01',
                 'region'     => 'us-east-1',
                 'credentials' => array(
                     'key'    => $creds['access_key_id'],

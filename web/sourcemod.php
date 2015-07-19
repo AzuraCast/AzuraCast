@@ -30,6 +30,9 @@ header('Cache-Control: must-revalidate, private, max-age=0');
 header('Pragma: no-cache');
 header('X-Accel-Expires: off');
 
+// Set content type.
+header('Content-Type: text/plain');
+
 // Attempt to pull from local filesystem cache.
 if (file_exists($cache_path))
 {

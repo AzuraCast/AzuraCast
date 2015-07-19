@@ -19,7 +19,7 @@ $api_url = 'http://api.ponyvillelive.com/nowplaying/index/category/audio';
 /**
  * @var string Local cache path, by default uses temp directory.
  */
-$cache_path = sys_get_temp_dir().DIRECTORY_SEPARATOR.'/pvlive_sourcemod.txt';
+$cache_path = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'pvlive_sourcemod.txt';
 
 /**
  * Do not modify below this section unless you intend to use another service!

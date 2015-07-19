@@ -19,7 +19,7 @@ $api_url = 'http://api.ponyvillelive.com/nowplaying/index/category/audio';
 /**
  * @var string Local cache path, by default uses temp directory.
  */
-$cache_path = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'pvlive_sourcemod.txt';
+$cache_path = dirname(__FILE__).DIRECTORY_SEPARATOR.'pvlive_sourcemod.txt';
 
 /**
  * Do not modify below this section unless you intend to use another service!
@@ -44,13 +44,13 @@ if (file_exists($cache_path))
 
 // Otherwise regenerate local filesystem cache.
 if (!is_writable($cache_path))
-    die('Error: Cache path not writable!');
+    die('Error: Cache path "'.$cache_path.'" not writable!');
 
 $api_result_raw = @file_get_contents($api_url);
 $api_result = @json_decode($api_result_raw, true);
 
 if (!isset($api_result['result']))
-    die('Error: PVLive API return malformed.');
+    die('Error: PVLive API return malformed. Raw return: '.$api_result_raw);
 
 $nowplaying = array();
 

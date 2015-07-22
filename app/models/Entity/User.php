@@ -58,8 +58,11 @@ class User extends \DF\Doctrine\Entity
     {
         if (trim($password))
         {
-            $this->auth_password_salt = sha1(mt_rand());
-            $this->auth_password = sha1($password.$this->auth_password_salt);
+            $this->auth_password_salt = 'PHP';
+            $this->auth_password = password_hash($password, \PASSWORD_DEFAULT);
+
+            // $this->auth_password_salt = sha1(mt_rand());
+            // $this->auth_password = sha1($password.$this->auth_password_salt);
         }
     }
 
@@ -147,12 +150,21 @@ class User extends \DF\Doctrine\Entity
         if (!($login_info instanceof self))
             return FALSE;
 
-        $hashed_password = sha1($password.$login_info->auth_password_salt);
+        if ($login_info->auth_password_salt === 'PHP')
+        {
+            if (password_verify($password, $login_info->auth_password))
+                return $login_info;
+            else
+                return FALSE;
+        }
+        else {
+            $hashed_password = sha1($password . $login_info->auth_password_salt);
 
-        if (strcasecmp($hashed_password, $login_info->auth_password) == 0)
-            return $login_info;
-        else
-            return FALSE;
+            if (strcasecmp($hashed_password, $login_info->auth_password) == 0)
+                return $login_info;
+            else
+                return FALSE;
+        }
     }
 
     /**

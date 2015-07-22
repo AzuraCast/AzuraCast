@@ -9,7 +9,7 @@ if [ ! -f $app_base/.deploy_run ]
 then
 
     # Add Vagrant user to the sudoers group
-    echo 'vagrant ALL=(ALL) ALL' >> /etc/sudoers
+    echo 'vagrant ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
     # Set up swap partition
     fallocate -l 2G /swapfile

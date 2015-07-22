@@ -60,10 +60,9 @@ class User extends \DF\Doctrine\Entity
         {
             $this->auth_password_salt = 'PHP';
             $this->auth_password = password_hash($password, \PASSWORD_DEFAULT);
-
-            // $this->auth_password_salt = sha1(mt_rand());
-            // $this->auth_password = sha1($password.$this->auth_password_salt);
         }
+
+        return $this;
     }
 
     public function generateRandomPassword()
@@ -150,21 +149,30 @@ class User extends \DF\Doctrine\Entity
         if (!($login_info instanceof self))
             return FALSE;
 
+        // Check for newer password style.
         if ($login_info->auth_password_salt === 'PHP')
         {
             if (password_verify($password, $login_info->auth_password))
+            {
+                if (password_needs_rehash($login_info->auth_password, \PASSWORD_DEFAULT))
+                    $login_info->setAuthPassword($password)->save();
+
                 return $login_info;
-            else
-                return FALSE;
+            }
         }
         else {
             $hashed_password = sha1($password . $login_info->auth_password_salt);
 
             if (strcasecmp($hashed_password, $login_info->auth_password) == 0)
+            {
+                // Force reset of password into newer format.
+                $login_info->setAuthPassword($password)->save();
+
                 return $login_info;
-            else
-                return FALSE;
+            }
         }
+
+        return FALSE;
     }
 
     /**

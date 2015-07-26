@@ -192,7 +192,7 @@ class IndexController extends BaseController
     protected function _initStations()
     {
         $this->view->station_id = $station_id = $this->getParam('id', NULL);
-        $this->view->volume = ($this->hasParam('volume')) ? (int)$this->getParam('volume') : 30;
+        $this->view->volume = ($this->hasParam('volume')) ? (int)$this->getParam('volume') : NULL;
 
         $this->categories = Station::getCategories();
 

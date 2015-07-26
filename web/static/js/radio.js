@@ -297,6 +297,11 @@ $(function() {
             }
         });
     }
+
+    // Remote volume parameter registration.
+    if (typeof pvl_autoplay_volume !== "undefined") {
+        volume = pvl_autoplay_volume;
+    }
 });
 
 function processNowPlaying()

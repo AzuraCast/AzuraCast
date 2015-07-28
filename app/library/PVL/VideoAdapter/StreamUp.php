@@ -16,7 +16,7 @@ class StreamUp extends AdapterAbstract
         $slug_url = parse_url($this->stream_url, PHP_URL_PATH);
         $slug_username = strtolower(trim($slug_url, '/'));
 
-        $this->data_url = 'http://api.streamup.com/1.0/channels/'.$slug_username;
+        $this->data_url = 'http://api.streamup.com/v1/channels/'.$slug_username;
         $result_raw = $this->getUrl();
 
         if (!$result_raw)

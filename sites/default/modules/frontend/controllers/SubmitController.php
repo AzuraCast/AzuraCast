@@ -57,6 +57,9 @@ class SubmitController extends BaseController
                 $manager->save();
             }
 
+            /*
+             * Now notify only PR account.
+             *
             // Notify all existing managers.
             $station_managers_raw = StationManager::getAllActiveManagers();
             $station_emails = Utilities::ipull($station_managers_raw, 'email');
@@ -65,6 +68,9 @@ class SubmitController extends BaseController
             $network_emails = Utilities::ipull($network_administrators, 'email');
 
             $email_to = array_merge($station_emails, $network_emails);
+             */
+
+            $email_to = array('pr@ponyvillelive.com');
 
             if ($email_to)
             {

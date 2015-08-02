@@ -1,0 +1,3 @@
+[submodule "web/sourcemod"]
+	path = web/sourcemod
+	url = git@github.com:BravelyBlue/PVLive-SourceMod.git

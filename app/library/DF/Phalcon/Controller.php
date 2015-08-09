@@ -143,7 +143,9 @@ class Controller extends \Phalcon\Mvc\Controller
      */
     public function getParam($param_name, $default_value = NULL)
     {
-        if ($param = $this->dispatcher->getParam($param_name))
+        $param = $this->dispatcher->getParam($param_name);
+
+        if ($param !== NULL)
             return $param;
         elseif ($this->request->has($param_name))
             return $this->request->get($param_name);

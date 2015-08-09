@@ -10,7 +10,7 @@ return array(
 
     // PVLNode Live update service locations.
     'pvlnode_local_url'  => 'http://localhost:4001/data',
-    'pvlnode_remote_url' => 'http://dev.pvlive.me/',
+    'pvlnode_remote_url' => 'http://localhost:8080/',
     'pvlnode_remote_path' => '/live',
 
     // Amazon AWS Management

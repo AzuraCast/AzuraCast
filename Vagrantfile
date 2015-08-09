@@ -28,7 +28,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.hostsupdater.aliases = ["local.ponyvillelive.com", "dev.ponyvillelive.com", "local.pvlive.me"]
   end
 
-  config.vm.network "private_network", ip: "192.168.33.120"
+  # Disabled for Windows 10 + VirtualBox
+  # config.vm.network "private_network", ip: "192.168.33.120"
+  config.vm.network :forwarded_port, guest: 80, host: 8080
 
   config.vm.synced_folder ".", "/var/www/vagrant"
   config.vm.synced_folder ".", "/vagrant"

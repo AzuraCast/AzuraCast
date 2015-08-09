@@ -1,5 +1,5 @@
 <?php
-namespace Modules\Frontend\Controllers;
+namespace Modules\Api\Controllers;
 
 use \Entity\Station;
 use \Entity\Song;

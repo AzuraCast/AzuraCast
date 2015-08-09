@@ -23,6 +23,10 @@ class UtilController extends BaseController
         // -------- START HERE -------- //
 
         $em = $this->getDI()->get('em');
+
+
+
+        /*
         $em->createQuery('DELETE FROM Entity\PodcastSource ps')->execute();
 
         // Pull podcast news.
@@ -58,6 +62,7 @@ class UtilController extends BaseController
         Debug::log('Done importing new sources.');
 
         \PVL\PodcastManager::run();
+        */
 
         // -------- END HERE -------- //
 

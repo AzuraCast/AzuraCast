@@ -15,12 +15,7 @@ define("DF_INCLUDE_STATIC", DF_INCLUDE_WEB.'/static');
 
 define("DF_INCLUDE_APP", DF_INCLUDE_BASE);
 define("DF_INCLUDE_MODELS", DF_INCLUDE_BASE.'/models');
-
-if (!defined('DF_SITE'))
-    define('DF_SITE', 'default');
-
-define('DF_INCLUDE_SITE', DF_INCLUDE_ROOT.'/sites/'.DF_SITE);
-define("DF_INCLUDE_MODULES", DF_INCLUDE_SITE.'/modules');
+define("DF_INCLUDE_MODULES", DF_INCLUDE_BASE.'/modules');
 
 define("DF_INCLUDE_TEMP", DF_INCLUDE_ROOT.'/../www_tmp');
 define("DF_INCLUDE_CACHE", DF_INCLUDE_TEMP.'/cache');

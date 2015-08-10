@@ -3,6 +3,11 @@ namespace Modules\Admin\Controllers;
 
 class IndexController extends BaseController
 {
+    public function permissions()
+    {
+        return $this->acl->canSeeAdminDashboard();
+    }
+
     /**
      * Main display.
      */

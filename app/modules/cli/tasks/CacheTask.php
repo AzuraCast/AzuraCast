@@ -6,6 +6,20 @@ class CacheTask extends Task
 {
     public function clearAction()
     {
+        // Flush Doctrine cache.
+        $em = $this->di->get('em');
+
+        $cacheDriver = $em->getConfiguration()->getMetadataCacheImpl();
+        $cacheDriver->deleteAll();
+
+        $queryCacheDriver = $em->getConfiguration()->getQueryCacheImpl();
+        $queryCacheDriver->deleteAll();
+
+        $resultCacheDriver = $em->getConfiguration()->getResultCacheImpl();
+        $resultCacheDriver->deleteAll();
+
+        $this->printLn('Doctrine ORM cache flushed.');
+
         // Flush local cache.
         \DF\Cache::clean();
 

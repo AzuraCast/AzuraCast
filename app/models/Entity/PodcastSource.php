@@ -24,6 +24,9 @@ class PodcastSource extends \DF\Doctrine\Entity
      */
     protected $id;
 
+    /** @Column(name="podcast_id", type="integer", nullable=true) */
+    protected $podcast_id;
+
     /** @Column(name="type", type="string", length=150, nullable=true) */
     protected $type;
 

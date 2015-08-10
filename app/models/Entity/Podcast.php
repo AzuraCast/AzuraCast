@@ -193,7 +193,7 @@ class Podcast extends \DF\Doctrine\Entity
         if (!$podcasts)
         {
             // Pull all recent episodes.
-            $latest_podcast_episodes = $em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold ORDER BY pe.timestamp DESC')
+            $latest_podcast_episodes = $em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold AND pe.is_active = 1 ORDER BY pe.timestamp DESC')
                 ->setParameter('threshold', strtotime('-3 months'))
                 ->getArrayResult();
 

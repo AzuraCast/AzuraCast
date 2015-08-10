@@ -116,6 +116,7 @@ class NewsManager
             WHERE (p.banner_url IS NOT NULL AND p.banner_url != \'\')
             AND (p.is_approved = 1)
             AND (pe.timestamp >= :threshold)
+            AND (pe.is_active = 1)
             ORDER BY p.id ASC, pe.timestamp DESC')
             ->setParameter('threshold', strtotime('-1 month'))
             ->getArrayResult();

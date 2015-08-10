@@ -1,14 +1,3 @@
-<?
-$this->assets->collection('custom_js')
-    ->addJs('//code.highcharts.com/highcharts.js', false)
-    ->addJs('//code.highcharts.com/highcharts-more.js', false)
-    ->addJs('//code.highcharts.com/modules/exporting.js', false);
-
-$skin = \PVL\Customization::get('theme');
-if ($skin == "dark")
-    $this->assets->collection('custom_js')->addJs('js/highcharts/dark-blue.js');
-?>
-
 <div id="listeners_by_day" style="height: 250px;"></div>
 
 <script type="text/javascript">

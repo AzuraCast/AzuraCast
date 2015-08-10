@@ -1,11 +1,7 @@
 <?php
-$title = ('Station Stream Manager');
-
-echo $this->viewHelper->renderHere('stationname', true);
-echo $this->viewHelper->renderHere('homelink', true);
+$title = 'Stream Manager';
+echo $this->viewHelper->renderHere('header', true, array('title' => $title));
 ?>
-
-<h2>Station Stream Manager</h2>
 
 <div class="buttons">
     <?=$this->viewHelper->button(array(

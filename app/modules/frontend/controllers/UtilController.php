@@ -24,7 +24,10 @@ class UtilController extends BaseController
 
         $em = $this->getDI()->get('em');
 
+        $em->createQuery('UPDATE \Entity\PodcastEpisode pe SET pe.is_active = 1')->execute();
+        Debug::log('Set all existing episodes to active.');
 
+        \PVL\PodcastManager::run();
 
         /*
         $em->createQuery('DELETE FROM Entity\PodcastSource ps')->execute();

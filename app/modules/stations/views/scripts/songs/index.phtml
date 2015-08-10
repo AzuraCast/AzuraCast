@@ -1,8 +1,6 @@
 <?
 $title = 'Song Directory';
-
-echo $this->viewHelper->renderHere('stationname', true);
-echo $this->viewHelper->renderHere('homelink', true);
+echo $this->viewHelper->renderHere('header', true, array('title' => $title));
 ?>
 
 <form class="form-search" action="<?=$this->viewHelper->routeFromHere(array('page' => NULL)) ?>" method="get">

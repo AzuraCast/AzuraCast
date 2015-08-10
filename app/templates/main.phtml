@@ -104,11 +104,8 @@ $tz_info = \PVL\Timezone::getInfo();
                 <?
                 $user = $this->auth->getLoggedInUser();
                 ?>
-                <? if ($this->acl->isAllowed('view administration')): ?>
+                <? if ($this->acl->canSeeAdminDashboard()): ?>
                     <li><a href="<?=$this->url->get('admin') ?>"><i class="icon-cog"></i> Admin</a></li>
-                    <li class="divider">&nbsp;</li>
-                <? elseif (\Entity\Station::canSeeStationCenter($user)): ?>
-                    <li><a href="<?=$this->url->get('stations') ?>"><i class="icon-group"></i> Station Center</a></li>
                     <li class="divider">&nbsp;</li>
                 <? endif; ?>
                 <li><a href="<?=$this->url->get('profile') ?>"><i class="icon-user"></i> Profile</a></li>
@@ -237,6 +234,12 @@ $tz_info = \PVL\Timezone::getInfo();
 
                 <div id="content_wrapper">
                     <div id="content">
+                        <? if ($breadcrumbs): ?>
+                            <div id="breadcrumbs">
+                                <?=$breadcrumbs ?>
+                            </div>
+                        <? endif; ?>
+
                         <? if (!$hide_title): ?>
                             <h1 class="title"><?=$title ?></h1>
                         <? endif; ?>

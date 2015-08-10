@@ -12,14 +12,14 @@ class Instance implements \Phalcon\DI\InjectionAwareInterface
 {
     protected $_actions = NULL;
 
-    protected $_di;
+    protected $di;
     public function setDi(\Phalcon\DiInterface $di = null)
     {
-        $this->_di = $di;
+        $this->di = $di;
     }
     public function getDi()
     {
-        return $this->_di;
+        return $this->di;
     }
     
     public function __construct()
@@ -31,7 +31,7 @@ class Instance implements \Phalcon\DI\InjectionAwareInterface
         {
             $this->_actions = array();
             
-            $em = $this->_di->get('em');
+            $em = $this->di->get('em');
             $query = $em->createQuery('SELECT r, a FROM \Entity\Role r JOIN r.actions a');
             $roles_with_actions = $query->getArrayResult();
             
@@ -86,9 +86,14 @@ class Instance implements \Phalcon\DI\InjectionAwareInterface
 
     public function isAllowed($action)
     {
-        $auth = $this->_di->get('auth');
-        $user = $auth->getLoggedInUser();
-        $is_logged_in = ($user instanceof User);
+        static $is_logged_in, $user;
+
+        if ($is_logged_in === NULL)
+        {
+            $auth = $this->di->get('auth');
+            $user = $auth->getLoggedInUser();
+            $is_logged_in = ($user instanceof User);
+        }
         
         if ($action == "is logged in")
             return ($is_logged_in);
@@ -140,16 +145,20 @@ class Instance implements \Phalcon\DI\InjectionAwareInterface
             return false;
         }
     }
-    
+
     /**
      * Pretty wrapper around the 'isAllowed' function that throws a UI-friendly exception upon failure.
+     *
+     * @param $action
+     * @throws \DF\Exception\NotLoggedIn
+     * @throws \DF\Exception\PermissionDenied
      */
     public function checkPermission($action)
     {
-        $auth = $this->_di->get('auth');
-
         if (!$this->isAllowed($action))
         {
+            $auth = $this->di->get('auth');
+
             if (!$auth->isLoggedIn())
                 throw new \DF\Exception\NotLoggedIn();
             else

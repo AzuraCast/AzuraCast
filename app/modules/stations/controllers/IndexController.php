@@ -2,7 +2,6 @@
 namespace Modules\Stations\Controllers;
 
 use \Entity\Station;
-use \Entity\StationManager;
 
 use \Entity\Song;
 use \Entity\SongHistory;
@@ -10,9 +9,6 @@ use \Entity\SongVote;
 
 class IndexController extends BaseController
 {
-    public function selectAction()
-    {}
-
     public function indexAction()
     {
         /**

@@ -1,5 +1,5 @@
 <?
-$title = 'System Administration';
+$title = 'PVL! Administration Dashboard';
 $manual = true;
 
 $this->assets->collection('custom_js')
@@ -12,39 +12,145 @@ $this->assets->collection('custom_js')
 $skin = \PVL\Customization::get('theme');
 if ($skin == "dark")
     $this->assets->collection('custom_js')->addJs('js/highcharts/dark-blue.js');
+
+// Admin sidebar.
+$sidebar = array(
+    'System Maintenance' => array(
+        'System Settings' => array(
+            'url'       => 'admin/settings',
+            'icon'      => 'icon-cog',
+            'permission' => $this->acl->isAllowed('administer all'),
+        ),
+        'User Accounts' => array(
+            'url'       => 'admin/users',
+            'icon'      => 'icon-user',
+            'permission' => $this->acl->isAllowed('administer all'),
+        ),
+        'Roles and Permissions' => array(
+            'url'       => 'admin/permissions',
+            'icon'      => 'icon-key',
+            'permission' => $this->acl->isAllowed('administer all'),
+        ),
+        'API Usage Report' => array(
+            'url'       => 'admin/api',
+            'icon'      => 'icon-puzzle-piece',
+            'permission' => $this->acl->isAllowed('administer all'),
+            'title'     => 'WARNING: This script can take a long time!!',
+        ),
+    ),
+    'Site Content' => array(
+        'Manage Affiliates' => array(
+            'url'       => 'admin/affiliates',
+            'icon'      => 'icon-group',
+            'permission' => $this->acl->isAllowed('administer affiliates'),
+        ),
+        'Manage Conventions' => array(
+            'url'       => 'admin/conventions',
+            'icon'      => 'icon-flag',
+            'permission' => $this->acl->isAllowed('administer conventions'),
+        ),
+        'Manage Content Blocks' => array(
+            'url'       => 'admin/blocks',
+            'icon'      => 'icon-list-alt',
+            'permission' => $this->acl->isAllowed('administer blocks'),
+        ),
+        'PVLive.me Short URLs' => array(
+            'url'       => 'admin/urls',
+            'icon'      => 'icon-globe',
+            'permission' => $this->acl->isAllowed('view administration'),
+        ),
+    ),
+    'Music and Artists' => array(
+        'Manage Artists' => array(
+            'url'       => 'admin/artists',
+            'icon'      => 'icon-star',
+            'permission' => $this->acl->isAllowed('administer artists'),
+        ),
+        'Manage Songs' => array(
+            'url'       => 'admin/songs',
+            'icon'      => 'icon-music',
+            'permission' => $this->acl->isAllowed('administer songs'),
+        ),
+        'Top Songs for Week' => array(
+            'url'       => 'admin/songs/votes',
+            'icon'      => 'icon-sort-by-order',
+            'permission' => $this->acl->isAllowed('administer songs'),
+        ),
+    ),
+
+    'Stations' => array(
+        'Manage Stations' => array(
+            'url'       => 'admin/stations',
+            'icon'      => 'icon-cog',
+            'permission' => $this->acl->isAllowed('administer stations'),
+        ),
+    ),
+    'Podcasts' => array(
+        'Manage Podcasts' => array(
+            'url'       => 'admin/podcasts',
+            'icon'      => 'icon-cog',
+            'permission' => $this->acl->isAllowed('administer podcasts'),
+        ),
+    ),
+);
+
+foreach($stations as $station)
+{
+    $sidebar['Stations'][$station->name] = array(
+        'url'       => array('module' => 'stations', 'action' => 'index', 'station' => $station->id),
+        'icon'      => $station->getCategoryIcon(),
+        'permission' => $station->canManage(),
+    );
+}
+
+$sidebar_podcasts = array();
+foreach($podcasts as $podcast)
+{
+    $sidebar_podcasts[$podcast->name] = array(
+        'url'       => array('module' => 'podcasts', 'action' => 'index', 'podcast' => $podcast->id),
+        'icon'      => 'icon-rss',
+        'permission' => $podcast->canManage(),
+    );
+}
+
+// Add podcasts listed alphabetically.
+ksort($sidebar_podcasts);
+$sidebar['Podcasts'] = array_merge($sidebar['Podcasts'], $sidebar_podcasts);
+
+/* Retired links:
+admin/rotators | icon-refresh | Rotating Banners
+ */
+
+// Process and purge based on permissions.
+foreach($sidebar as $sidebar_category => &$sidebar_items)
+{
+    foreach($sidebar_items as $item_name => $item_params)
+    {
+        if (!$item_params['permission'])
+            unset($sidebar_items[$item_name]);
+    }
+
+    if (empty($sidebar_items))
+        unset($sidebar[$sidebar_category]);
+}
 ?>
 
 <div class="row-fluid">
     <div class="span3">
         <div class="well">
-            <ul class="nav nav-list">
-                <li class="nav-header">Manage Content</li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'blocks')) ?>"><i class="icon-list-alt"></i> Content Blocks</a></li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'artists')) ?>"><i class="icon-star"></i> Artist Directory</a></li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'songs')) ?>"><i class="icon-music"></i> Song Directory</a></li>
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'urls', 'action' => 'index')) ?>"><i class="icon-globe"></i> PVLive.me Short URLs</a></li>
+            <? foreach($sidebar as $category_name => $category_items): ?>
+            <h4><?=$category_name ?></h4>
 
-                <li class="nav-header">Manage PVL Records</li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'stations')) ?>"><i class="icon-volume-up"></i> Radio Stations &amp; Video Channels</a></li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'podcasts')) ?>"><i class="icon-rss"></i> Podcasts</a></li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'rotators')) ?>"><i class="icon-refresh"></i> Rotating Banners</a></li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'affiliates')) ?>"><i class="icon-group"></i> Affiliates</a></li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'conventions')) ?>"><i class="icon-flag"></i> Conventions</a></li>
-
-                <li class="nav-header">Network Statistics</li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'songs', 'action' => 'votes')) ?>"><i class="icon-sort-by-order"></i> Top Songs for Week</a></li>
-
-                <li class="nav-header">Manage Core System</li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'api')) ?>"><i class="icon-puzzle-piece"></i> API Usage</a></li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'users')) ?>"><i class="icon-user"></i> User Accounts</a></li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'permissions')) ?>"><i class="icon-key"></i> Roles &amp; Permissions</a></li>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'settings')) ?>"><i class="icon-cog"></i> System Settings</a></li>
-
-                <li class="nav-header">Station Centers</li>
-            <? foreach($stations as $station): ?>
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'stations', 'action' => 'index', 'station' => $station->id)) ?>"><i class="<?=$station->getCategoryIcon() ?>"></i> <?=$station->name ?></a></li>
-            <? endforeach; ?>
+            <ul class="nav nav-list" <? if (count($category_items) >= 15): ?>style="height: 300px; overflow-y: scroll;"<? endif; ?>>
+                <? foreach($category_items as $item_name => $item_params): ?>
+                <li>
+                    <a href="<?=(is_array($item_params['url']) ? $this->viewHelper->route($item_params['url']) : $this->url->get($item_params['url'])) ?>" target="_blank" title="<?=$item_params['title'] ?>">
+                        <i class="<?=$item_params['icon'] ?>"></i> <?=$item_name ?>
+                    </a>
+                </li>
+                <? endforeach; ?>
             </ul>
+            <? endforeach; ?>
         </div>
     </div>
     <div class="span9">
@@ -60,6 +166,7 @@ if ($skin == "dark")
             </div>
         </div>
 
+    <? if ($this->acl->isAllowed('administer all')): ?>
         <h2>Synchronization Status</h2>
         <div class="well">
             <div class="row-fluid">
@@ -106,6 +213,7 @@ if ($skin == "dark")
                 </div>
             </div>
         </div>
+    <? endif; ?>
     </div>
 </div>
 

@@ -433,28 +433,6 @@ class Station extends \DF\Doctrine\Entity
         );
     }
 
-    public static function canSeeStationCenter(User $user = null)
-    {
-        if ($user === null)
-        {
-            if (\DF\Auth::isLoggedIn())
-                $user = \DF\Auth::getLoggedInUser();
-            else
-                return false;
-        }
-
-        $di = \Phalcon\Di::getDefault();
-        $acl = $di->get('acl');
-
-        if ($acl->userAllowed('manage stations', $user))
-            return true;
-
-        if ($user->stations->count() > 0)
-            return true;
-
-        return false;
-    }
-
     // Retrieve the API version of the object/array.
     public static function api($row)
     {

@@ -1,13 +1,12 @@
 <?php
-$title = ('Artist Licensing Documentation');
+$title = 'Artist Licensing Documentation';
+echo $this->viewHelper->renderHere('header', true, array('title' => $title));
 ?>
 
-<h4><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'index', 'action' => 'index')) ?>"><i class="icon-arrow-left"></i> Station Center Home</a></h4>
-
-<h2>Fully Licensed Artists</h2>
+<h3>Fully Licensed Artists</h3>
 
 <ul class="media-list">
-<? foreach($this->artists as $artist): ?>
+<? foreach($artists as $artist): ?>
     <li class="media">
         <img class="media-object pull-left" src="<?=\PVL\Url::upload($artist['image_url']) ?>" style="width: 40px;">
         <div class="media-body">

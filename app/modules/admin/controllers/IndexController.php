@@ -8,16 +8,15 @@ class IndexController extends BaseController
      */
     public function indexAction()
     {
+        // Inject all stations.
         $stations = \Entity\Station::fetchAll();
         $this->view->stations = $stations;
 
-        $internal_stations = array();
-        foreach($stations as $station)
-        {
-            if ($station->category == "internal")
-                $internal_stations[$station->id] = $station;
-        }
+        // Inject all podcasts.
+        $podcasts = \Entity\Podcast::fetchAll();
+        $this->view->podcasts = $podcasts;
 
+        // Pull cached statistic charts if available.
         $metrics = \DF\Cache::get('admin_metrics');
 
         if (!$metrics)

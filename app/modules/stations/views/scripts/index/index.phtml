@@ -1,5 +1,5 @@
 <?
-$title = ('Station Center');
+$title = 'Station Center';
 $manual = true;
 
 $this->assets->collection('custom_js')
@@ -11,7 +11,7 @@ $skin = \PVL\Customization::get('theme');
 if ($skin == "dark")
     $this->assets->collection('custom_js')->addJs('js/highcharts/dark-blue.js');
 
-echo $this->viewHelper->renderHere('stationname', true);
+echo $this->viewHelper->renderHere('header', true, array('title' => $title));
 ?>
 
 <script type="text/javascript">
@@ -32,34 +32,42 @@ Highcharts.setOptions({
     <div class="span3">
 
         <div class="well">
+            <h4>Network Tools</h4>
             <ul class="nav nav-list">
-                <li class="nav-header">PVL Network Tools</li>
                 <!-- Universal for all stations -->
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'profile', 'action' => 'index')) ?>" title="View and edit the station's public profile and contact information."><i class="icon-picture"></i> Station Profile</a></li>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'streams', 'action' => 'index')) ?>" title="Update your existing radio/video streams or add new ones."><i class="icon-code-fork"></i> Stream Manager</a></li>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'schedule', 'action' => 'index')) ?>" title=""><i class="icon-calendar"></i> Promote Scheduled Events</a></li>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'vote', 'action' => 'index')) ?>" title="Submit your recommendation on whether PVL should accept new station applicants."><i class="icon-check-sign"></i> Vote on New PVL Stations</a></li>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'urls', 'action' => 'index')) ?>" title="Use the http://pvlive.me/ URL shortener for clean, short addresses."><i class="icon-globe"></i> PVLive.me Short URLs</a></li>
-
             <? if ($station['category'] != 'video'): ?>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('action' => 'timeline')) ?>" title="View the entire playback history of your station over the last 48 hours, along with the rise and fall of listener counts and special events."><i class="icon-time"></i> Song Playback Timeline</a></li>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('action' => 'votes')) ?>" title="Most/least popular songs on the station over the last two weeks."><i class="icon-thumbs-up"></i> Song Vote Totals</a></li>
+            <? endif; ?>
+            </ul>
 
-                <li class="nav-header">PVL Song Databases</li>
+        <? if ($station['category'] != 'video'): ?>
+            <h4>Song Database</h4>
+            <ul class="nav nav-list">
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'songs', 'action' => 'index')) ?>" title="Browse all songs in the PVL song directory."><i class="icon-music"></i> Search Song Directory</a></li>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'songs', 'action' => 'new')) ?>" title="View songs that have been recently submitted to music databases."><i class="icon-asterisk"></i> New Songs This Week</a></li>
+            </ul>
 
-                <li class="nav-header">Artist Interaction</li>
+            <h4>Artist Interaction</h4>
+            <ul class="nav nav-list">
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'artists', 'action' => 'all')) ?>" title="View the full list of artists who have agreed to (or otherwise limited) usage of their creations or interviews with them by the PVL network."><i class="icon-star"></i> Artist Licenses &amp; Interviews</a></li>
                 <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'artists', 'action' => 'copyright')) ?>"><i class="icon-group"></i> Fully Licensed Artists</a></li>
-            <? endif; ?>
+            </ul>
+        <? endif; ?>
 
-                <li class="nav-header">Shortcuts</li>
+            <h4>Shortcuts</h4>
+            <ul class="nav nav-list">
                 <li><a href="<?=$this->viewHelper->route(array('module' => 'default', 'controller' => 'convention', 'action' => 'signup')) ?>" title="Send this form to your station staff if they are interested in attending conventions as PVL press members."><i class="icon-building"></i> Convention Sign-up Form</a></li>
                 <li><a href="<?=$this->viewHelper->route(array('controller' => 'widget', 'action' => 'index')) ?>"><i class="icon-cogs"></i> Radio Player Embed Instructions</a></li>
                 <li><a href="//www.ponyvillelive.com/resources/brand_package.zip"><i class="icon-download-alt"></i> PVL Network Logos &amp; Branding Kit</a></li>
                 <li><a href="http://radio.ponyvillelive.com:2199/" target="_blank"><i class="icon-external-link-sign"></i> CentovaCast Station Manager</a></li>
                 <li><a href="http://hosting.ponyvillelive.com:8443/" target="_blank"><i class="icon-external-link-sign"></i> Plesk Web Hosting Manager</a></li>
+            </ul>
         </div>
 
         <h2>Station Managers</h2>

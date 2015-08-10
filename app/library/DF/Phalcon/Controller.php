@@ -386,6 +386,7 @@ class Controller extends \Phalcon\Mvc\Controller
 
     protected function renderForm(\DF\Form $form, $mode = 'edit', $form_title = NULL)
     {
+        $this->view->hide_title = false;
         $this->view->setViewsDir('modules/frontend/views/scripts/');
 
         // Show visible title.

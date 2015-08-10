@@ -14,6 +14,7 @@ class PodcastEpisode extends \DF\Doctrine\Entity
         $this->media_format = 'mixed';
 
         $this->is_notified = false;
+        $this->is_active = true;
         $this->play_count = 0;
     }
 
@@ -26,6 +27,9 @@ class PodcastEpisode extends \DF\Doctrine\Entity
 
     /** @Column(name="podcast_id", type="integer") */
     protected $podcast_id;
+
+    /** @Column(name="source_id", type="integer", nullable=true) */
+    protected $source_id;
 
     /** @Column(name="guid", type="string", length=128, nullable=true) */
     protected $guid;
@@ -51,6 +55,9 @@ class PodcastEpisode extends \DF\Doctrine\Entity
     /** @Column(name="is_notified", type="boolean") */
     protected $is_notified;
 
+    /** @Column(name="is_active", type="boolean") */
+    protected $is_active;
+
     /** @Column(name="play_count", type="integer") */
     protected $play_count;
 
@@ -61,6 +68,14 @@ class PodcastEpisode extends \DF\Doctrine\Entity
      * })
      */
     protected $podcast;
+
+    /**
+     * @ManyToOne(targetEntity="PodcastSource", inversedBy="episodes")
+     * @JoinColumns({
+     *   @JoinColumn(name="source_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    protected $source;
 
     public function getLocalUrl($origin = NULL)
     {

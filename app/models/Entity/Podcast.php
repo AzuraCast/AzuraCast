@@ -14,7 +14,9 @@ class Podcast extends \DF\Doctrine\Entity
     public function __construct()
     {
         $this->episodes = new ArrayCollection;
+        $this->sources = new ArrayCollection;
         $this->stations = new ArrayCollection;
+        $this->managers = new ArrayCollection;
     }
 
     /**
@@ -109,6 +111,11 @@ class Podcast extends \DF\Doctrine\Entity
      */
     protected $episodes;
 
+    /**
+     * @ManyToMany(targetEntity="User", mappedBy="podcasts")
+     */
+    protected $managers;
+
     public function getLatestEpisode()
     {
         return $this->episodes->first();
@@ -158,6 +165,20 @@ class Podcast extends \DF\Doctrine\Entity
      * )
      */
     protected $stations;
+
+    public function canManage(User $user = null)
+    {
+        if ($user === null)
+            $user = \DF\Auth::getLoggedInUser();
+
+        $di = \Phalcon\Di::getDefault();
+        $acl = $di->get('acl');
+
+        if ($acl->userAllowed('manage podcasts', $user))
+            return true;
+
+        return ($this->managers->contains($user));
+    }
 
     /**
      * Static Functions

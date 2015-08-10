@@ -97,8 +97,6 @@ class PodcastManager
         return true;
     }
 
-
-
     public static function getEntityManager()
     {
         $di = \Phalcon\Di::getDefault();

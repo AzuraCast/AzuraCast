@@ -181,7 +181,7 @@ $di->setShared('influx', function() use ($config) {
 
 // Auth and ACL
 $di->setShared('auth', '\DF\Auth\Model');
-$di->setShared('acl', '\DF\Acl\Instance');
+$di->setShared('acl', '\PVL\Acl\Instance');
 $di->setShared('cache', '\DF\Cache');
 
 // Register URL handler.

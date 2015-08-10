@@ -1,8 +1,6 @@
 <?php
 $title = 'Station Schedule';
-
-echo $this->viewHelper->renderHere('stationname', true);
-echo $this->viewHelper->renderHere('homelink', true);
+echo $this->viewHelper->renderHere('header', true, array('title' => $title));
 ?>
 
 <h2>Station Scheduled Events</h2>

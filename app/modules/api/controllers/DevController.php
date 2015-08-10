@@ -24,19 +24,34 @@ class DevController extends BaseController
 
         // Tables to export from local DB.
         $tables = array(
+            // System
             'settings',
             'block',
-            'affiliates',
-            'rotators',
             'action',
             'role',
             'role_has_action',
+
+            // Artists
+            'artist_type',
+            'artist',
+            'artist_has_type',
+
+            // PVL Settings
+            'affiliates',
+            'rotators',
+            'songs',
+
+            // Stations
             'station',
             'station_streams',
+
+            // Podcasts
             'podcast',
             'podcast_on_station',
+            'podcast_sources',
             'podcast_episodes',
-            'songs',
+
+            // Conventions
             'convention',
             'convention_archives',
         );

@@ -13,6 +13,8 @@ class PodcastSource extends \DF\Doctrine\Entity
     public function __construct()
     {
         $this->is_active = true;
+
+        $this->episodes = new ArrayCollection;
     }
 
     /**
@@ -38,6 +40,11 @@ class PodcastSource extends \DF\Doctrine\Entity
      * })
      */
     protected $podcast;
+
+    /**
+     * @OnetoMany(targetEntity="PodcastEpisode", mappedBy="source")
+     */
+    protected $episodes;
 
     /**
      * Process a podcast source and return remote data from it.
@@ -74,6 +81,7 @@ class PodcastSource extends \DF\Doctrine\Entity
             $guid = $item['guid'];
             $new_episodes[$guid] = array(
                 'guid'      => $guid,
+                'source_id' => $this->id,
                 'timestamp' => $item['timestamp'],
                 'title'     => $item['title'],
                 'body'      => self::cleanUpText($item['body']),

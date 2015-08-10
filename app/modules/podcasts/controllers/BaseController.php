@@ -1,19 +1,19 @@
 <?php
-namespace Modules\Stations\Controllers;
+namespace Modules\Podcasts\Controllers;
 
-use Entity\Station;
+use Entity\Podcast;
 
 class BaseController extends \DF\Phalcon\Controller
 {
     /*
-     * @var array All available stations.
+     * @var array All available podcasts.
      */
-    protected $stations;
+    protected $podcasts;
 
     /**
-     * @var Station The current active station.
+     * @var Podcast The current active podcast.
      */
-    protected $station;
+    protected $podcast;
 
     protected function preDispatch()
     {
@@ -24,27 +24,26 @@ class BaseController extends \DF\Phalcon\Controller
         $user = $this->auth->getLoggedInUser();
 
         // Compile list of visible stations.
-        $all_stations = Station::fetchAll();
-        $stations = array();
+        $all_podcasts = Podcast::fetchAll();
 
-        foreach($all_stations as $station)
+        $podcasts = array();
+        foreach($all_podcasts as $podcast)
         {
-            if ($station->canManage($user))
-                $stations[$station->id] = $station;
+            if ($podcast->canManage($user))
+                $podcasts[$podcast->id] = $podcast;
         }
 
-        $this->stations = $stations;
-        $this->view->stations = $stations;
+        $this->podcasts = $podcasts;
+        $this->view->podcasts = $podcasts;
 
         // Assign a station if one is selected.
-        if ($this->hasParam('station'))
+        if ($this->hasParam('podcast'))
         {
-            $station_id = (int)$this->getParam('station');
-
-            if (isset($stations[$station_id]))
+            $podcast_id = (int)$this->getParam('podcast');
+            if (isset($podcasts[$podcast_id]))
             {
-                $this->station = $stations[$station_id];
-                $this->view->station = $this->station;
+                $this->podcast = $podcasts[$podcast_id];
+                $this->view->podcast = $this->podcast;
 
                 $this->view->hide_title = true;
             }
@@ -53,15 +52,15 @@ class BaseController extends \DF\Phalcon\Controller
                 throw new \DF\Exception\PermissionDenied;
             }
         }
-        else if (count($this->stations) == 1)
+        else if (count($this->podcasts) == 1)
         {
             // Convenience auto-redirect for single-station admins.
-            $this->redirectFromHere(array('station' => key($this->stations)));
+            $this->redirectFromHere(array('podcast' => key($this->podcasts)));
             return false;
         }
 
         // Force a redirect to the "Select" page if no station ID is specified.
-        if (!$this->station)
+        if (!$this->podcast)
             throw new \DF\Exception\PermissionDenied;
     }
 

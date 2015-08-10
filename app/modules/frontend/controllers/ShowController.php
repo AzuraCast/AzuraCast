@@ -38,8 +38,6 @@ class ShowController extends BaseController
             throw new \DF\Exception\DisplayOnly('Podcast not found!');
 
         $this->view->podcast = $podcast;
-        $this->view->episodes = $podcast->episodes;
-
         $this->view->social_types = Podcast::getSocialTypes();
 
         // Stringify list of stations that play this podcast.
@@ -56,56 +54,9 @@ class ShowController extends BaseController
         $this->view->podcast_airs_on = $airs_on;
 
         // Paginate episodes.
-        $query = $this->em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.podcast_id = :podcast ORDER BY pe.timestamp DESC')
+        $query = $this->em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.podcast_id = :podcast AND pe.is_active = 1 ORDER BY pe.timestamp DESC')
             ->setParameter('podcast', $id);
         $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 25);
-
-        // Generate charts for administrators.
-        if ($this->acl->isAllowed('view administration'))
-        {
-            $influx = $this->di->get('influx');
-            $raw_analytics = $influx->setDatabase('pvlive_analytics')->query('SELECT * FROM /^1(d|h).podcast.'.$id.'.*/ WHERE time > now() - 180d', 'm');
-
-            $analytic_totals = array();
-            foreach($raw_analytics as $row_schema => $row_entries)
-            {
-                $schema_parts = explode('.', $row_schema);
-                $duration = $schema_parts[0];
-
-                foreach($row_entries as $row_entry)
-                {
-                    $time = $row_entry['time'];
-
-                    if (!isset($analytic_totals[$duration][$time]))
-                        $analytic_totals[$duration][$time] = 0;
-
-                    $analytic_totals[$duration][$time] += $row_entry['count'];
-                }
-            }
-
-            @ksort($analytic_totals['1d']);
-            @ksort($analytic_totals['1h']);
-
-            $chart_data = array(
-                '1d' => '[]',
-                '1h' => '[]',
-            );
-            foreach($analytic_totals as $total_duration => $total_entries)
-            {
-                $new_chart_data = array();
-                foreach($total_entries as $entry_timestamp => $entry_value)
-                    $new_chart_data[] = array($entry_timestamp, $entry_value);
-
-                $chart_data[$total_duration] = json_encode($new_chart_data);
-            }
-
-            $this->view->show_charts = true;
-            $this->view->chart_data = $chart_data;
-        }
-        else
-        {
-            $this->view->show_charts = false;
-        }
     }
 
     public function episodeAction()

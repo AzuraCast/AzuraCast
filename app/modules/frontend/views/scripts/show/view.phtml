@@ -5,7 +5,8 @@ $hide_title = true;
 
 <div class="pg_show_detail">
     <div class="breadcrumb">
-        <a href="<?=$this->viewHelper->routeFromHere(array('action' => 'index', 'id' => NULL)) ?>">&laquo; Back to Shows Directory</a>
+        <a href="<?=$this->url->get('') ?>">Ponyville Live!</a> /
+        <a href="<?=$this->url->get('shows') ?>">Shows</a> /
     </div>
 
     <div class="clearfix">
@@ -39,12 +40,8 @@ $hide_title = true;
         </div>
     </div>
 
-    <? if ($show_charts): ?>
-        <?=$this->viewHelper->renderHere('view-stats') ?>
-    <? endif; ?>
-
     <br>
-    <h3>All Episodes (<?=count($episodes) ?>)</h3>
+    <h3>All Episodes (<?=count($pager) ?>)</h3>
 
     <?=$this->viewHelper->paginate($pager) ?>
 
@@ -71,7 +68,7 @@ $hide_title = true;
                         'class'     => 'btn-primary',
                         'href'      => \Entity\PodcastEpisode::getEpisodeLocalUrl($ep, 'pvlive'),
                         'target'    => '_blank',
-                        'text'      => 'View Episode'.(($show_charts) ? ' ('.$ep['play_count'].' plays)' : ''),
+                        'text'      => 'View Episode',
                     )) ?>
                 </td>
                 <td class="center">

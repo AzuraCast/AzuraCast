@@ -1,8 +1,6 @@
 <?php
-$title = ('New Station Intake Voting');
-
-echo $this->viewHelper->renderHere('stationname', true);
-echo $this->viewHelper->renderHere('homelink', true);
+$title = 'New Station Intake Voting';
+echo $this->viewHelper->renderHere('header', true, array('title' => $title));
 ?>
 
 <table class="table table-striped table-bordered table-condensed">

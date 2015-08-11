@@ -84,7 +84,6 @@ class PodcastSource extends \DF\Doctrine\Entity
             $guid = $item['guid'];
             $new_episodes[$guid] = array(
                 'guid'      => $guid,
-                'source_id' => $this->id,
                 'timestamp' => $item['timestamp'],
                 'title'     => $item['title'],
                 'body'      => self::cleanUpText($item['body']),

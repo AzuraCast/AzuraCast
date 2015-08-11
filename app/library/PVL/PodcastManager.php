@@ -27,7 +27,6 @@ class PodcastManager
     {
         $em = self::getEntityManager();
 
-        $social_fields = Podcast::getSocialTypes();
         $db_stats = array(
             'record'    => $record->name,
             'updated'   => 0,
@@ -35,63 +34,68 @@ class PodcastManager
             'deleted'   => 0,
         );
 
-        // Pull new records.
-        $new_episodes = array();
-
         foreach($record->sources as $source)
         {
-            $source_episodes = $source->process();
-
-            if (!empty($source_episodes))
-                $new_episodes = array_merge($new_episodes, $source_episodes);
-        }
-
-        if (empty($new_episodes))
-            return false;
-
-        // Reconcile differences.
-        $existing_episodes = array();
-
-        foreach($record->episodes as $episode)
-        {
-            if (isset($existing_episodes[$episode->guid]))
+            if ($source->is_active)
             {
-                $db_stats['deleted']++;
-                $em->remove($episode);
+                $new_episodes = $source->process();
+
+                if (empty($new_episodes))
+                    continue;
+
+                // Reconcile differences.
+                $existing_episodes = array();
+
+                foreach($source->episodes as $episode)
+                {
+                    // Remove duplicate episode.
+                    if (isset($existing_episodes[$episode->guid]))
+                    {
+                        $db_stats['deleted']++;
+                        $em->remove($episode);
+                    }
+                    else
+                    {
+                        $existing_episodes[$episode->guid] = $episode;
+                    }
+                }
+
+                foreach($new_episodes as $ep_guid => $ep_info)
+                {
+                    if (isset($existing_episodes[$ep_guid]))
+                    {
+                        $db_stats['updated']++;
+                        $episode = $existing_episodes[$ep_guid];
+                    }
+                    else
+                    {
+                        $db_stats['inserted']++;
+                        $episode = new PodcastEpisode;
+                        $episode->source = $source;
+                        $episode->podcast = $record;
+                    }
+
+                    $episode->fromArray($ep_info);
+                    $em->persist($episode);
+
+                    unset($existing_episodes[$ep_guid]);
+                }
+
+                foreach($existing_episodes as $ep_guid => $ep_to_remove)
+                {
+                    $db_stats['deleted']++;
+                    $em->remove($ep_to_remove);
+                }
+
             }
             else
             {
-                $existing_episodes[$episode->guid] = $episode;
-            }
-        }
-
-        foreach($new_episodes as $ep_guid => $ep_info)
-        {
-            if (isset($existing_episodes[$ep_guid]))
-            {
-                $db_stats['updated']++;
-                $episode = $existing_episodes[$ep_guid];
-            }
-            else
-            {
-                $db_stats['inserted']++;
-                $episode = new PodcastEpisode;
-                $episode->podcast = $record;
+                foreach($source->episodes as $episode)
+                    $em->remove($episode);
             }
 
-            $episode->fromArray($ep_info);
-            $em->persist($episode);
-
-            unset($existing_episodes[$ep_guid]);
+            $em->flush();
         }
-
-        foreach($existing_episodes as $ep_guid => $ep_to_remove)
-        {
-            $db_stats['deleted']++;
-            $em->remove($ep_to_remove);
-        }
-
-        $em->flush();
 
         Debug::print_r($db_stats);
         return true;

@@ -63,7 +63,7 @@ class SyncManager
 
         // Pull the homepage news.
         Debug::runTimer('Run network news manager', function() {
-            NewsManager::syncNetwork();
+            NewsManager::run();
         });
 
         // Sync CentovaCast song data.

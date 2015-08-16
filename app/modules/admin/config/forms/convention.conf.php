@@ -35,10 +35,12 @@ return array(
 
         'start_date' => array('unixDate', array(
             'label' => 'Start Date',
+            'default' => time(),
         )),
 
         'end_date' => array('unixDate', array(
             'label' => 'End Date',
+            'default' => time(),
         )),
 
         'web_url' => array('text', array(
@@ -51,9 +53,9 @@ return array(
             'description' => 'Use the same size image as the main PVL banner rotator (1150x200). PNG preferred.',
         )),
 
-        'schedule_url' => array('text', array(
-            'label' => 'Schedule URL',
-            'class' => 'half-width',
+        'discount_code' => array('text', array(
+            'label' => 'Discount Code for Registration',
+            'description' => 'If this convention offers a discount code for PVL viewers, enter it here for it to be automatically promoted.',
         )),
 
         'signup_enabled' => array('radio', array(

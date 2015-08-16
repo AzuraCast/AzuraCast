@@ -84,8 +84,10 @@ $title = 'Manage Conventions';
             <? endif; ?>
             </td>
             <td>
-                Web: <a href="<?=$record['web_url'] ?>" target="_blank"><?=$record['web_url'] ?></a><br>
-                Schedule: <a href="<?=$record['schedule_url'] ?>" target="_blank"><?=$record['schedule_url'] ?></a>
+                <div>Web: <a href="<?=$record['web_url'] ?>" target="_blank"><?=$record['web_url'] ?></a></div>
+            <? if ($record['discount_code']): ?>
+                <div>Discount Code: <b><?=$record['discount_code'] ?></b></div>
+            <? endif; ?>
             </td>
         </tr>
     <? endforeach; ?>

@@ -122,7 +122,7 @@ class NotificationManager
      * @param \Phalcon\DiInterface $di
      * @throws \DF\Exception
      */
-    public static function _runPodcastEpisodes(\Phalcon\DiInterface $di)
+    public static function _runPodcastEpisodes(\Phalcon\DiInterface $di, $force = false)
     {
         $em = $di->get('em');
 

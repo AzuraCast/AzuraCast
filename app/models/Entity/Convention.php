@@ -14,15 +14,20 @@ class Convention extends \DF\Doctrine\Entity
 {
     use Traits\FileUploads;
 
-    const DEFAULT_IMAGE_FULL = 'images/convention_default.png';
+    const DEFAULT_IMAGE_FULL    = 'images/convention_default.png';
+
+    const COVERAGE_STREAMING    = 'streaming';
+    const COVERAGE_FULL         = 'full';
+    const COVERAGE_PARTIAL      = 'partial';
+    const COVERAGE_NONE         = 'none';
 
     public function __construct()
     {
         $this->coverage_level = 'full';
         $this->signup_enabled = true;
 
-        $this->archives = new ArrayCollection();
-        $this->signups = new ArrayCollection();
+        $this->archives = new ArrayCollection;
+        $this->signups = new ArrayCollection;
     }
 
     /**
@@ -71,8 +76,8 @@ class Convention extends \DF\Doctrine\Entity
         $this->_processAndCropImage('image_url', $new_url, 600, 300);
     }
 
-    /** @Column(name="schedule_url", type="string", length=250, nullable=true) */
-    protected $schedule_url;
+    /** @Column(name="discount_code", type="string", length=50, nullable=true) */
+    protected $discount_code;
 
     /** @Column(name="signup_notes", type="text", nullable=true) */
     protected $signup_notes;
@@ -197,22 +202,22 @@ class Convention extends \DF\Doctrine\Entity
     public static function getCoverageLevels()
     {
         return array(
-            'streaming' => array(
+            self::COVERAGE_STREAMING => array(
                 'text'      => 'PVL Full Streaming & Coverage',
                 'icon'      => 'icon-globe',
                 'short'     => '@',
             ),
-            'full'      => array(
+            self::COVERAGE_FULL => array(
                 'text'      => 'PVL Full Recorded Coverage',
                 'icon'      => 'icon-star',
                 'short'     => '*',
             ),
-            'partial'   => array(
+            self::COVERAGE_PARTIAL => array(
                 'text'      => 'PVL Partial Recorded Coverage',
                 'icon'      => 'icon-star-half-full',
                 'short'     => '+',
             ),
-            'none'      => array(
+            self::COVERAGE_NONE => array(
                 'text'      => 'No Coverage',
                 'icon'      => 'icon-flag',
                 'short'     => '!',

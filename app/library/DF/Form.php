@@ -192,7 +192,11 @@ class Form
             break;
 
             case 'file':
-                $element = new \Phalcon\Forms\Element\File($field_key, $field_options);
+                $element = new \DF\Forms\Element\File($field_key, $field_options);
+            break;
+
+            case 'image':
+                $element = new \DF\Forms\Element\Image($field_key, $field_options);
             break;
 
             case 'date':
@@ -448,7 +452,7 @@ class Form
             case 'markup':
             case 'submit':
                 return '';
-                break;
+            break;
 
             case 'multiCheckbox':
             case 'radio':
@@ -468,32 +472,21 @@ class Form
                     if (isset($options[$value]))
                         $return .= '<dd>'.$options[$value].'</dd>';
                 }
-                break;
+            break;
 
             case 'file':
-                $files = (array)$element->getValue();
-
-                $return .= '<dd>';
-                $i = 1;
-                foreach($files as $file)
-                {
-                    if (!empty($file))
-                    {
-                        $file_url = \DF\Url::content($file);
-                        $return .= '<div>#' . $i . ': <a href="' . $file_url . '" target="_blank">Download File</a></div>';
-                    }
-
-                    $i++;
-                }
-                $return .= '</dd>';
-                break;
+            case 'image':
+                $file_list = $element->renderView();
+                if ($file_list)
+                    $return = '<dd>'.$file_list.'</dd>';
+            break;
 
             default:
                 $value = trim($element->getValue());
 
                 if (!empty($value))
                     $return .= '<dd>'.$value.'</dd>';
-                break;
+            break;
         }
 
         // Only add label for non-empty elements.
@@ -594,7 +587,9 @@ class Form
                 {
                     $element = $this->form->get($field_key);
 
-                    if (!($element instanceof \Phalcon\Forms\Element\File))
+                    if ($element instanceof \DF\Forms\Element\File)
+                        $element->setPreviousValue($default_value);
+                    else
                         $element->setDefault($default_value);
                 }
             }

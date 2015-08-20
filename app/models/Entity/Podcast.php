@@ -13,6 +13,9 @@ class Podcast extends \DF\Doctrine\Entity
 
     public function __construct()
     {
+        $this->is_adult = true;
+        $this->is_approved = false;
+
         $this->episodes = new ArrayCollection;
         $this->sources = new ArrayCollection;
         $this->stations = new ArrayCollection;
@@ -96,6 +99,9 @@ class Podcast extends \DF\Doctrine\Entity
 
     /** @Column(name="sync_timestamp", type="datetime", nullable=true) */
     protected $sync_timestamp;
+
+    /** @Column(name="is_adult", type="boolean") */
+    protected $is_adult;
 
     /** @Column(name="is_approved", type="boolean") */
     protected $is_approved;
@@ -293,9 +299,12 @@ class Podcast extends \DF\Doctrine\Entity
         $api_row = array(
             'id'        => (int)$row['id'],
             'name'      => $row['name'],
+            'country'   => $row['country'],
             'description' => $row['description'],
             'image_url' => \PVL\Url::upload(self::getArtistImage($row['image_url'])),
-            'stations'  => $row['stations'],
+            'banner_url' => \PVL\Url::upload($row['banner_url']),
+            'stations'  => (array)$row['stations'],
+            'is_adult'  => (boolean)$row['is_adult'],
         );
 
         if ($include_episodes)
@@ -312,7 +321,6 @@ class Podcast extends \DF\Doctrine\Entity
                 $i++;
             }
         }
-
 
         $social_types = array_keys(self::getSocialTypes());
         foreach($social_types as $type_key)

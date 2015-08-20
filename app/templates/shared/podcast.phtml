@@ -18,7 +18,11 @@ $span = 12 / $columns;
                 <? if (!empty($podcast['country'])): ?>
                     <span class="f16"><span class="flag <?=strtolower($podcast['country']) ?>" title="<?=\PVL\Internationalization::getCountryName($podcast['country']) ?>"></span></span>
                 <? endif; ?>
-                    <a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>"><?=$podcast['name'] ?></a><br>
+                    <a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>"><?=$podcast['name'] ?></a>
+                <? if ($podcast['is_adult']): ?>
+                    <span class="label label-adults-only" title="This podcast contains adult material and is suitable only for people aged 18 and above.">18+</span>
+                <? endif; ?>
+                    <br>
                     <span class="block genre-info">
                         <?=$podcast['description'] ?>
                     </span>

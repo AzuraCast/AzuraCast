@@ -39,8 +39,14 @@ $hide_title = true;
         <? endforeach; ?>
         </div>
     </div>
-
     <br>
+
+    <? if ($podcast->is_adult): ?>
+        <div class="alert alert-danger">
+            <b>Warning: Contains Adult Content</b> -- Episodes of this podcast may contain adult material, and are suitable only for people aged 18 and above.
+        </div>
+    <? endif; ?>
+
     <h3>All Episodes (<?=count($pager) ?>)</h3>
 
     <?=$this->viewHelper->paginate($pager) ?>

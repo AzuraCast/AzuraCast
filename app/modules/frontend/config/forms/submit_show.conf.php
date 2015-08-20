@@ -69,6 +69,13 @@ return array(
                     'description' => 'This image will be shown on Twitter and in our homepage rotator when new episodes are posted. Images should be 600x300.',
                 )),
 
+                'is_adult' => array('radio', array(
+                    'label' => 'Contains Adult (18+) Content',
+                    'description' => 'If this podcast contains any content that may be considered "R-rated", or suitable only for adults 18 years or older, please select "Yes" below to indicate this on public pages.',
+                    'multiOptions' => array(0 => 'No', 1 => 'Yes'),
+                    'default' => 0,
+                )),
+
             ),
         ),
 

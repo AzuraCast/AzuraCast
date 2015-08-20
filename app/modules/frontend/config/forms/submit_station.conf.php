@@ -85,7 +85,7 @@ return array(
 
             'elements' => array(
 
-                'image_url' => array('file', array(
+                'image_url' => array('image', array(
                     'label' => 'Station Logo Graphic',
 
                     'description' => 'If you have a logo for your station, upload it here. Images should be square in size, at least 150x150px large, and preferably PNG.',

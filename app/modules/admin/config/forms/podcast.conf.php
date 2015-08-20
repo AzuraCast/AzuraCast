@@ -39,12 +39,12 @@ return array(
                     'class' => 'half-width',
                 )),
 
-                'image_url' => array('file', array(
+                'image_url' => array('image', array(
                     'label' => 'Avatar (150x150 PNG)',
                     'description' => 'This is the small image that appears on your profile. Images should be under 150x150px in size. Larger images will automatically be scaled.',
                 )),
 
-                'banner_url' => array('file', array(
+                'banner_url' => array('image', array(
                     'label' => 'Promotional Banner (600x300 PNG)',
                     'description' => 'This image will be shown in the header rotator when new episodes are posted. Images should be 600x300.',
                 )),
@@ -53,6 +53,13 @@ return array(
                     'label' => 'Airs on Station(s)',
                     'description' => 'Select the station(s) that this podcast broadcasts on.',
                     'multiOptions' => \Entity\Station::fetchSelect(),
+                )),
+
+                'is_adult' => array('radio', array(
+                    'label' => 'Contains Adult (18+) Content',
+                    'description' => 'If this podcast contains any content that may be considered "R-rated", or suitable only for adults 18 years or older, please select "Yes" below to indicate this on public pages.',
+                    'multiOptions' => array(0 => 'No', 1 => 'Yes'),
+                    'default' => 0,
                 )),
 
             ),

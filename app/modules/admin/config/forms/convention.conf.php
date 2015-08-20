@@ -48,7 +48,7 @@ return array(
             'class' => 'half-width',
         )),
 
-        'image_url' => array('file', array(
+        'image_url' => array('image', array(
             'label' => 'Convention Image',
             'description' => 'Use the same size image as the main PVL banner rotator (1150x200). PNG preferred.',
         )),

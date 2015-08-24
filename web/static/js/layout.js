@@ -176,13 +176,16 @@ function initPage(page) {
 	/* Form validation. */
 	if (jQuery.fn.fancybox)
 	{
+		var height = screen.height/2;
+
 		$(page).find('.fancybox').fancybox({
-			maxWidth	: 800,
-			maxHeight	: 600,
+			maxWidth	: 1280,
+			maxHeight	: 720,
 			autoSize	: true,
 			fitToView	: true,
-			width		: '50%',
-			height		: '70%',
+			width		: height * 16/9,
+			height		: height,
+			aspectRatio : true,
 			arrows		: false,
 			closeClick	: false,
 			closeBtn	: true,

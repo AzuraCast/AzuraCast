@@ -89,6 +89,8 @@ class PodcastSource extends \DF\Doctrine\Entity
                 'body'      => self::cleanUpText($item['body']),
                 'summary'   => self::getSummary($item['body']),
                 'web_url'   => $item['web_url'],
+                'thumbnail_url' => isset($item['thumbnail_url']) ? $item['thumbnail_url'] : NULL,
+                'banner_url' => isset($item['banner_url']) ? $item['banner_url'] : NULL,
             );
         }
 
@@ -111,6 +113,7 @@ class PodcastSource extends \DF\Doctrine\Entity
                 'adapter'   => 'Rss',
                 'threshold' => '-6 months',
             ),
+            /*
             'twitter_url'   => array(
                 'name'      => 'Twitter URL',
                 'adapter'   => 'Twitter',
@@ -133,6 +136,7 @@ class PodcastSource extends \DF\Doctrine\Entity
                 'adapter'   => 'Facebook',
                 'threshold' => '-1 week',
             ),
+            */
             'youtube_url'   => array(
                 'name'      => 'YouTube Account or Playlist URL',
                 'adapter'   => 'YouTube',
@@ -143,6 +147,7 @@ class PodcastSource extends \DF\Doctrine\Entity
                 'adapter'   => 'SoundCloud',
                 'threshold' => '-6 months',
             ),
+            /*
             'deviantart_url' => array(
                 'name'      => 'DeviantArt Account URL',
                 'adapter'   => 'DeviantArt',
@@ -153,6 +158,7 @@ class PodcastSource extends \DF\Doctrine\Entity
                 'adapter'   => 'LiveStream',
                 'threshold' => '-6 months',
             ),
+            */
         );
 
         if ($type !== null)

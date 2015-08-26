@@ -59,10 +59,11 @@ class YouTube extends AdapterAbstract
             $news_items[] = array(
                 'guid'          => 'youtube_'.md5($item['id']),
                 'timestamp'     => strtotime($item['snippet']['publishedAt']),
-                'media_format'  => 'video',
                 'title'         => $item['snippet']['title'],
                 'body'          => $item['snippet']['description'],
                 'web_url'       => $embed_src,
+                'thumbnail_url' => \PVL\Service\YouTube::getThumbnail($item['snippet']['thumbnails'], 'medium'),
+                'banner_url'    => \PVL\Service\YouTube::getThumbnail($item['snippet']['thumbnails'], 'large'),
                 'author'        => $item['snippet']['channelTitle'],
             );
         }

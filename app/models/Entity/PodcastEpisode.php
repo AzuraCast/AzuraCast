@@ -11,8 +11,6 @@ class PodcastEpisode extends \DF\Doctrine\Entity
 {
     public function __construct()
     {
-        $this->media_format = 'mixed';
-
         $this->is_notified = false;
         $this->is_active = true;
         $this->play_count = 0;
@@ -37,9 +35,6 @@ class PodcastEpisode extends \DF\Doctrine\Entity
     /** @Column(name="timestamp", type="integer") */
     protected $timestamp;
 
-    /** @Column(name="media_format", type="string", length=50, nullable=true) */
-    protected $media_format;
-
     /** @Column(name="title", type="string", length=400, nullable=true) */
     protected $title;
 
@@ -51,6 +46,30 @@ class PodcastEpisode extends \DF\Doctrine\Entity
 
     /** @Column(name="web_url", type="string", length=255, nullable=true) */
     protected $web_url;
+
+    public function getPlayerUrl()
+    {
+        return self::getEpisodePlayerUrl($this->web_url);
+    }
+
+    /** @Column(name="thumbnail_url", type="string", length=255, nullable=true) */
+    protected $thumbnail_url;
+
+    public function getThumbnail()
+    {
+        if ($this->thumbnail_url)
+        {
+            return $this->thumbnail_url;
+        }
+        else
+        {
+            $source_type = $this->source->type;
+            return \DF\Url::content('images/podcast_'.$source_type.'.png');
+        }
+    }
+
+    /** @Column(name="banner_url", type="string", length=255, nullable=true) */
+    protected $banner_url;
 
     /** @Column(name="is_notified", type="boolean") */
     protected $is_notified;
@@ -114,5 +133,14 @@ class PodcastEpisode extends \DF\Doctrine\Entity
             'episode'   => $row['id'],
             'origin'    => $origin,
         ));
+    }
+
+    public static function getEpisodePlayerUrl($web_url)
+    {
+        // Special handling for SoundCloud URLs.
+        if (stristr($web_url, 'soundcloud.com'))
+            return 'https://w.soundcloud.com/player/?'.http_build_query(array('auto_play' => 'true', 'url' => $web_url));
+        else
+            return $web_url;
     }
 }

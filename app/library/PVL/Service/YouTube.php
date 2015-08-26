@@ -41,4 +41,32 @@ class YouTube extends \Google_Service_YouTube
             return array();
         }
     }
+
+    /**
+     * Return the appropriate thumbnail to use, given a collection of options.
+     *
+     * @param $thumbnails
+     * @return null
+     */
+    public static function getThumbnail($thumbnails, $size = 'medium')
+    {
+        switch($size)
+        {
+            case 'large':
+                if ($thumbnails['maxres'])
+                    return $thumbnails['maxres']['url'];
+            break;
+
+            case 'small':
+            case 'medium':
+            default:
+                if ($thumbnails['medium'])
+                    return $thumbnails['medium']['url'];
+                elseif ($thumbnails['maxres'])
+                    return $thumbnails['maxres']['url'];
+            break;
+        }
+
+        return NULL;
+    }
 }

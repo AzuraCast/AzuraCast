@@ -57,6 +57,7 @@ class SoundCloud extends AdapterAbstract
                     'title'         => $track['title'],
                     'body'          => $track['description'],
                     'web_url'       => $track['permalink_url'],
+
                     'author'        => $track['user']['username'],
                 );
                 $records[] = $row;

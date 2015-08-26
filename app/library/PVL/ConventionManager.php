@@ -137,7 +137,7 @@ class ConventionManager
 
                         $row->name = self::filterName($row, $video['title']);
                         $row->description = $video['description'];
-                        $row->thumbnail_url = self::getThumbnail($video['thumbnails']);
+                        $row->thumbnail_url = \PVL\Service\YouTube::getThumbnail($video['thumbnails']);
 
                         $row->synchronized_at = time();
                         $em->persist($row);
@@ -198,15 +198,5 @@ class ConventionManager
 
         $name = trim($name, " -@:\t\n\r\0");
         return $name;
-    }
-
-    public static function getThumbnail($thumbnails)
-    {
-        if ($thumbnails['medium'])
-            return $thumbnails['medium']['url'];
-        elseif ($thumbnails['maxres'])
-            return $thumbnails['maxres']['url'];
-        else
-            return NULL;
     }
 }

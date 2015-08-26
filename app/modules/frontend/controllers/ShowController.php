@@ -89,8 +89,16 @@ class ShowController extends BaseController
             'referrer'      => $_SERVER['HTTP_REFERER'],
         ]);
 
-        $redirect_url = $record->web_url;
-        return $this->redirect($redirect_url);
+        // If request made by AJAX, just return confirmation.
+        if ($this->isAjax())
+        {
+            return $this->renderJson(array('result' => 'OK'));
+        }
+        else
+        {
+            $redirect_url = $record->web_url;
+            return $this->redirect($redirect_url);
+        }
     }
 
     public function feedAction()

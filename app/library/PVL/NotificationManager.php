@@ -133,7 +133,8 @@ class NotificationManager
             FROM Entity\PodcastEpisode pe JOIN pe.podcast p
             WHERE pe.timestamp BETWEEN :start AND :end
             AND pe.is_notified = 0
-            AND p.is_active = 1
+            AND pe.is_active = 1
+            AND p.is_approved = 1
             AND p.is_adult = 0')
             ->setParameter('start', $start_threshold)
             ->setParameter('end', $end_threshold)

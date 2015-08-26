@@ -129,7 +129,12 @@ class NotificationManager
         $start_threshold = time()-86400*7;
         $end_threshold = time();
 
-        $podcast_episodes = $em->createQuery('SELECT pe, p FROM Entity\PodcastEpisode pe JOIN pe.podcast p WHERE pe.timestamp BETWEEN :start AND :end AND pe.is_notified = 0')
+        $podcast_episodes = $em->createQuery('SELECT pe, p
+            FROM Entity\PodcastEpisode pe JOIN pe.podcast p
+            WHERE pe.timestamp BETWEEN :start AND :end
+            AND pe.is_notified = 0
+            AND p.is_active = 1
+            AND p.is_adult = 0')
             ->setParameter('start', $start_threshold)
             ->setParameter('end', $end_threshold)
             ->setMaxResults(1)

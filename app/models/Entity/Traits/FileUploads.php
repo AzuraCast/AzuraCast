@@ -44,7 +44,7 @@ trait FileUploads
             return false;
 
         $local_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$new_value;
-        \DF\Image::resizeImage($local_path, $local_path, $width, $height);
+        \DF\Image::resizeImage($local_path, $local_path, $width, $height, true);
 
         return $this->_processFile($field_name, $new_value);
     }

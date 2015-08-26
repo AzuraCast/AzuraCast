@@ -6,7 +6,7 @@
 namespace DF;
 class Image
 {
-    public static function resizeImage($source_file, $dest_file, $width, $height)
+    public static function resizeImage($source_file, $dest_file, $width, $height, $crop = false)
     {
         if (!is_readable($source_file))
             $source_file = File::getFilePath($source_file);
@@ -23,76 +23,82 @@ class Image
         {
             case 'jpg':
             case 'jpeg':
-                $image = imagecreatefromjpeg($source_file);
+                $img = imagecreatefromjpeg($source_file);
             break;
             
             case 'gif':
-                $image = imagecreatefromgif($source_file);
+                $img = imagecreatefromgif($source_file);
             break;
-            
+
             case 'png':
-                $image = imagecreatefrompng($source_file);
+                $img = imagecreatefrompng($source_file);
             break;
 
             default:
-                throw new \DF\Exception('Image format not supported.');
+                throw new Exception('Image format not supported.');
             break;
         }
-        
-        $image_width = imagesx($image);
-        $image_height = imagesy($image);
-        
-        // Don't resize if the uploaded picture if smaller than the requirements.
-        if ($image_width <= $width && $image_height <= $height)
+
+        list($w, $h) = getimagesize($source_file);
+
+        if ($crop)
         {
-            $resized_image = $image;
+            if($w < $width or $h < $height)
+                $new = $img;
 
-            if ($dest_extension == 'png')
-            {
-                imagealphablending($resized_image, false);
-                imagesavealpha($resized_image, true);
-
-                $transparent = imagecolorallocatealpha($resized_image, 255, 255, 255, 127);
-                imagefilledrectangle($resized_image, 0, 0, $resized_width, $resized_height, $transparent);
-            }
+            $ratio = max($width/$w, $height/$h);
+            $h = $height / $ratio;
+            $x = ($w - $width / $ratio) / 2;
+            $w = $width / $ratio;
         }
         else
         {
-            // Create file resized to the proper proportions.
-            $resized_ratio_width = $width / $image_width;
-            $resized_ratio_height = $height / $image_height;
-            $resized_ratio = min($resized_ratio_width, $resized_ratio_height);
-            
-            $resized_width = round($image_width * $resized_ratio);
-            $resized_height = round($image_height * $resized_ratio);
+            if($w < $width and $h < $height)
+                $new = $img;
 
-            $resized_image = imagecreatetruecolor($resized_width, $resized_height);
+            $ratio = min($width/$w, $height/$h);
+            $width = $w * $ratio;
+            $height = $h * $ratio;
+            $x = 0;
+        }
 
-            if ($dest_extension == 'png')
+        if (!isset($new))
+        {
+            $new = imagecreatetruecolor($width, $height);
+
+            // Preserve transparency
+            if ($source_extension == "gif" || $source_extension == "png")
             {
-                imagealphablending($resized_image, false);
-                imagesavealpha($resized_image, true);
-
-                $transparent = imagecolorallocatealpha($resized_image, 255, 255, 255, 127);
-                imagefilledrectangle($resized_image, 0, 0, $resized_width, $resized_height, $transparent);
+                imagecolortransparent($new, imagecolorallocatealpha($new, 0, 0, 0, 127));
+                imagealphablending($new, false);
+                imagesavealpha($new, true);
             }
 
-            imagecopyresampled($resized_image, $image, 0, 0, 0, 0, $resized_width, $resized_height, $image_width, $image_height);
+            imagecopyresampled($new, $img, 0, 0, $x, 0, $width, $height, $w, $h);
         }
+
+        /*
+         * Old transparency method, keep around:
+        imagealphablending($resized_image, false);
+        imagesavealpha($resized_image, true);
+
+        $transparent = imagecolorallocatealpha($resized_image, 255, 255, 255, 127);
+        imagefilledrectangle($resized_image, 0, 0, $resized_width, $resized_height, $transparent);
+         */
         
         switch($dest_extension)
         {
             case 'jpg':
             case 'jpeg':
-                imagejpeg($resized_image, $dest_file, 90);
+                imagejpeg($new, $dest_file, 90);
             break;
             
             case 'gif':
-                imagegif($resized_image, $dest_file);
+                imagegif($new, $dest_file);
             break;
             
             case 'png':
-                imagepng($resized_image, $dest_file, 5);
+                imagepng($new, $dest_file, 5);
             break;
         }
     }   

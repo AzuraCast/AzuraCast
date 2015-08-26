@@ -222,7 +222,7 @@ class Controller extends \Phalcon\Mvc\Controller
     public function renderJson($json_data)
     {
         $this->doNotRender();
-        $this->response->setJsonContent($json_data);
+        return $this->response->setJsonContent($json_data);
     }
 
     /**

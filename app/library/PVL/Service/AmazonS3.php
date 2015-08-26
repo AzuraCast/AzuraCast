@@ -79,9 +79,18 @@ class AmazonS3
     public static function path($remote_file_path)
     {
         if (self::isEnabled())
-            return 's3://'.self::getBucket().'/'.ltrim($remote_file_path, '/');
+        {
+            return 's3://' . self::getBucket() . '/' . ltrim($remote_file_path, '/');
+        }
         else
-            return DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.ltrim($remote_file_path, '/');
+        {
+            $local_path = DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.ltrim($remote_file_path, '/');
+
+            if (!is_dir(dirname($local_path)))
+                @mkdir(dirname($local_path));
+
+            return $local_path;
+        }
     }
 
     /**

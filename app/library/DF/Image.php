@@ -41,29 +41,43 @@ class Image
 
         list($w, $h) = getimagesize($source_file);
 
-        if ($crop)
+        if ($w === $width && $h === $height)
         {
-            if($w < $width or $h < $height)
-                $new = $img;
-
-            $ratio = max($width/$w, $height/$h);
-            $h = $height / $ratio;
-            $x = ($w - $width / $ratio) / 2;
-            $w = $width / $ratio;
+            $new = $img;
         }
         else
         {
-            if($w < $width and $h < $height)
-                $new = $img;
+            if ($crop)
+            {
+                $width_new = $h * $width / $height;
+                $height_new = $w * $height / $width;
 
-            $ratio = min($width/$w, $height/$h);
-            $width = $w * $ratio;
-            $height = $h * $ratio;
-            $x = 0;
-        }
+                //if the new width is greater than the actual width of the image, then the height is too large and the rest cut off, or vice versa
+                if($width_new > $width)
+                {
+                    $x = 0;
+                    $y = (($h - $height_new) / 2);
 
-        if (!isset($new))
-        {
+                    $h = $height_new;
+                }
+                else
+                {
+                    $x = (($w - $width_new) / 2);
+                    $y = 0;
+
+                    $w = $width_new;
+                }
+            }
+            else
+            {
+                $ratio = min($width/$w, $height/$h);
+                $width = $w * $ratio;
+                $height = $h * $ratio;
+
+                $x = 0;
+                $y = 0;
+            }
+
             $new = imagecreatetruecolor($width, $height);
 
             // Preserve transparency
@@ -74,17 +88,8 @@ class Image
                 imagesavealpha($new, true);
             }
 
-            imagecopyresampled($new, $img, 0, 0, $x, 0, $width, $height, $w, $h);
+            imagecopyresampled($new, $img, 0, 0, $x, $y, $width, $height, $w, $h);
         }
-
-        /*
-         * Old transparency method, keep around:
-        imagealphablending($resized_image, false);
-        imagesavealpha($resized_image, true);
-
-        $transparent = imagecolorallocatealpha($resized_image, 255, 255, 255, 127);
-        imagefilledrectangle($resized_image, 0, 0, $resized_width, $resized_height, $transparent);
-         */
         
         switch($dest_extension)
         {

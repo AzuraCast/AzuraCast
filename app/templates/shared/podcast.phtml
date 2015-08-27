@@ -38,20 +38,20 @@ $this->assets->collection('custom_js')
                         <span class="block genre-info">
                             <?=$podcast['description'] ?>
                         </span>
-                    <? endif; ?>
-                    <?
-                    if (count($podcast['stations']) > 0)
-                    {
-                        $station_links = array();
-                        foreach($podcast['stations'] as $station)
+                        <?
+                        if (count($podcast['stations']) > 0)
                         {
-                            $station_link = '<a href="'.$station['web_url'].'" target="_blank">'.$station['name'].'</a>';
-                            $station_links[] = $station_link;
-                        }
+                            $station_links = array();
+                            foreach($podcast['stations'] as $station)
+                            {
+                                $station_link = '<a href="'.$station['web_url'].'" target="_blank">'.$station['name'].'</a>';
+                                $station_links[] = $station_link;
+                            }
 
-                        echo '<span class="block airson-info"><i class="icon-star"></i> Airs on '.implode(', ', $station_links).'</span>';
-                    }
-                    ?>
+                            echo '<span class="block airson-info"><i class="icon-star"></i> Airs on '.implode(', ', $station_links).'</span>';
+                        }
+                        ?>
+                    <? endif; ?>
                     </h4>
 
                 <? foreach($podcast['episodes'] as $ep): ?>

@@ -10,7 +10,12 @@ class PodcastManager
     public static function run()
     {
         // Pull podcast news.
-        $all_podcasts = Podcast::getRepository()->findBy(array('is_approved' => 1));
+        $em = self::getEntityManager();
+        $all_podcasts = $em->createQuery('SELECT p, ps, pe FROM Entity\Podcast p
+            JOIN p.sources ps
+            JOIN ps.episodes pe
+            WHERE p.is_approved = 1
+            AND ps.is_active = 1')->execute();
 
         foreach($all_podcasts as $record)
         {
@@ -73,6 +78,10 @@ class PodcastManager
                         $episode = new PodcastEpisode;
                         $episode->source = $source;
                         $episode->podcast = $record;
+
+                        // Preload banner URL if specified.
+                        if ($ep_info['banner_url'])
+                            PodcastEpisode::getEpisodeRotatorUrl($ep_info, $record, $source);
                     }
 
                     $episode->fromArray($ep_info);

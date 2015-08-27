@@ -1,7 +1,10 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use DF\Image;
+use DF\Url;
+use Doctrine\Common\Collections\ArrayCollection;
+use PVL\Service\AmazonS3;
 
 /**
  * @Table(name="podcast_episodes")
@@ -64,12 +67,17 @@ class PodcastEpisode extends \DF\Doctrine\Entity
         else
         {
             $source_type = $this->source->type;
-            return \DF\Url::content('images/podcast_'.$source_type.'.png');
+            return Url::content('images/podcast_'.$source_type.'.png');
         }
     }
 
     /** @Column(name="banner_url", type="string", length=255, nullable=true) */
     protected $banner_url;
+
+    public function getRotatorUrl()
+    {
+        return self::getEpisodeRotatorUrl($this, $this->podcast, $this->source);
+    }
 
     /** @Column(name="is_notified", type="boolean") */
     protected $is_notified;
@@ -125,7 +133,7 @@ class PodcastEpisode extends \DF\Doctrine\Entity
 
     public static function getEpisodeLocalUrl($row, $origin = NULL)
     {
-        return \DF\Url::route(array(
+        return Url::route(array(
             'module'    => 'default',
             'controller' => 'show',
             'action'    => 'episode',
@@ -142,5 +150,49 @@ class PodcastEpisode extends \DF\Doctrine\Entity
             return 'https://w.soundcloud.com/player/?'.http_build_query(array('auto_play' => 'true', 'url' => $web_url));
         else
             return $web_url;
+    }
+
+    public static function getEpisodeRotatorUrl($episode, $podcast = NULL, $source = NULL)
+    {
+        if ($episode instanceof self)
+        {
+            if ($podcast === null)
+                $podcast = $episode->podcast;
+
+            if ($source === null)
+                $source = $episode->source;
+        }
+
+        if ($episode['banner_url'])
+        {
+            $image_path_base = 'podcast_episodes/'.$episode['guid'].'.jpg';
+            $image_path = AmazonS3::path($image_path_base);
+
+            // Crop remote banner URL if the local version doesn't already exist.
+            if (!file_exists($image_path))
+            {
+                $temp_path_ext = \DF\File::getFileExtension($episode['banner_url']);
+                $temp_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'/podcast_episodes/podcast_episode_'.$episode['id'].'_temp.'.$temp_path_ext;
+
+                @mkdir(dirname($temp_path));
+                @copy($episode['banner_url'], $temp_path);
+
+                Image::resizeImage($temp_path, $temp_path, 600, 300, TRUE);
+                AmazonS3::upload($temp_path, $image_path_base);
+            }
+
+            return AmazonS3::url($image_path_base);
+        }
+        elseif ($podcast !== null && !empty($podcast['banner_url']))
+        {
+            // Reference the podcast's existing banner URL.
+            return AmazonS3::url($podcast['banner_url']);
+        }
+        elseif ($source !== null)
+        {
+            return Url::content('images/podcast_'.$source['type'].'_banner.png');
+        }
+
+        return Url::content('images/podcast_default.png');
     }
 }

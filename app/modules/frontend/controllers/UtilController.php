@@ -25,6 +25,7 @@ class UtilController extends BaseController
         $di = $this->getDI();
 
         \PVL\PodcastManager::run();
+        \PVL\NewsManager::run();
 
         /*
         $em->createQuery('DELETE FROM Entity\PodcastSource ps')->execute();

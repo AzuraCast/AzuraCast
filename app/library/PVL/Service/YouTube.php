@@ -55,6 +55,10 @@ class YouTube extends \Google_Service_YouTube
             case 'large':
                 if ($thumbnails['maxres'])
                     return $thumbnails['maxres']['url'];
+                elseif ($thumbnails['standard'])
+                    return $thumbnails['standard']['url'];
+                elseif ($thumbnails['high'])
+                    return $thumbnails['high']['url'];
             break;
 
             case 'small':

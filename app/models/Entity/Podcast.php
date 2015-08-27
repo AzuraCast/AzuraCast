@@ -190,51 +190,58 @@ class Podcast extends \DF\Doctrine\Entity
      * Static Functions
      */
 
-    public static function fetchLatest($num_to_fetch = 10)
+    /**
+     * Pull the latest podcasts.
+     *
+     * @param int $num_to_fetch Number of podcasts to list. Specify 0 or another false value to remove limit.
+     * @return array
+     */
+    public static function fetchLatest($num_to_fetch = 8)
     {
         $em = self::getEntityManager();
 
-        $podcasts = \DF\Cache::get('homepage_podcasts');
+        // $podcasts = \DF\Cache::get('homepage_podcasts');
 
         if (!$podcasts)
         {
             // Pull all recent episodes.
-            $latest_podcast_episodes = $em->createQuery('SELECT pe FROM Entity\PodcastEpisode pe WHERE pe.timestamp > :threshold AND pe.is_active = 1 ORDER BY pe.timestamp DESC')
-                ->setParameter('threshold', strtotime('-3 months'))
+            $latest_podcast_episodes = $em->createQuery('SELECT pe, ps, p FROM Entity\PodcastEpisode pe
+                JOIN pe.source ps
+                JOIN pe.podcast p
+                WHERE pe.timestamp > :threshold
+                AND pe.is_active = 1
+                AND ps.is_active = 1
+                AND p.is_approved = 1
+                ORDER BY pe.timestamp DESC')
+                ->setParameter('threshold', strtotime('-2 months'))
                 ->getArrayResult();
 
-            $eps = array();
+            $podcasts = array();
+
             foreach($latest_podcast_episodes as $ep)
             {
-                $pcid = $ep['podcast_id'];
-
-                if (!isset($eps[$pcid]))
-                    $eps[$pcid] = $ep;
-            }
-
-            // Bulk query for all podcasts related to recent episodes.
-            $podcasts_raw = $em->createQuery('SELECT p, s FROM Entity\Podcast p LEFT JOIN p.stations s WHERE p.id IN (:podcasts) AND p.is_approved = 1')
-                ->setParameter('podcasts', array_keys($eps))
-                ->getArrayResult();
-
-            foreach($podcasts_raw as $pc)
-                $eps[$pc['id']]['podcast'] = $pc;
-
-            // Reassign together into sensible array.
-            $podcasts = array();
-            foreach($eps as $ep)
-            {
-                $pc = $ep['podcast'];
+                $podcast = $ep['podcast'];
                 unset($ep['podcast']);
-                $pc['episodes'] = array($ep);
 
-                $podcasts[] = $pc;
+                // Limit to one episode (newest only) per podcast.
+                $podcast_id = $podcast['id'];
+                if (!isset($podcasts[$podcast_id]))
+                {
+                    // Generate banner URL.
+                    $podcast['rotator_mode'] = true;
+                    $podcast['rotator_url'] = PodcastEpisode::getEpisodeRotatorUrl($ep, $podcast, $ep['source']);
+
+                    $podcasts[$podcast_id] = $podcast;
+                    $podcasts[$podcast_id]['episodes'] = array($ep);
+                }
             }
-
-            array_slice($podcasts, 0, $num_to_fetch);
 
             \DF\Cache::save($podcasts, 'homepage_podcasts', array(), 300);
         }
+
+        // Only slice podcasts if $num_to_fetch is non-zero/true.
+        if ($num_to_fetch)
+            $podcasts = array_slice($podcasts, 0, $num_to_fetch);
 
         return $podcasts;
     }

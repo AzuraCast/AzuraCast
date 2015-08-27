@@ -164,7 +164,7 @@ class NewsManager
                     'title' => trim($title),
                     'source' => 'tumblr',
                     'body' => trim($description),
-                    'image_url' => $local_url,
+                    'image_url' => \PVL\Url::upload($local_url),
                     'web_url' => $post['post_url'],
                     'layout' => $post_style,
                     'tags' => (array)$post['tags'],
@@ -202,7 +202,7 @@ class NewsManager
                 'title'     => $convention['name'],
                 'source'    => 'convention',
                 'body'      => '',
-                'image_url' => $convention['image_url'],
+                'image_url' => \PVL\Url::upload($convention['image_url']),
                 'web_url'   => $convention['web_url'],
                 'layout'    => 'vertical',
                 'tags'      => array($convention['name'], 'Conventions'),
@@ -267,7 +267,7 @@ class NewsManager
         $em = $di->get('em');
 
         // Pull podcast episodes.
-        $podcasts_raw = $em->createQuery('SELECT p, pe FROM Entity\Podcast p LEFT JOIN p.episodes pe
+        $podcasts_raw = $em->createQuery('SELECT p, pe, ps FROM Entity\Podcast p LEFT JOIN p.episodes pe JOIN pe.source ps
             WHERE (p.banner_url IS NOT NULL AND p.banner_url != \'\')
             AND (p.is_approved = 1)
             AND (pe.timestamp >= :threshold)
@@ -288,7 +288,7 @@ class NewsManager
                     'title' => trim($ep['title']),
                     'source' => 'podcast',
                     'body' => $ep['summary'],
-                    'image_url' => $podcast['banner_url'],
+                    'image_url' => \Entity\PodcastEpisode::getEpisodeRotatorUrl($ep, $podcast, $ep['source']),
                     'web_url' => \Entity\PodcastEpisode::getEpisodeLocalUrl($ep, 'pvlnews'),
                     'layout' => 'vertical',
                     'tags' => array($podcast['name'], 'Podcast Episodes'),
@@ -347,7 +347,7 @@ class NewsManager
                 'title' => trim($event['title']),
                 'source' => 'station',
                 'body' => implode('<br>', $description),
-                'image_url' => $event['station']['banner_url'],
+                'image_url' => \PVL\Url::upload($event['station']['banner_url']),
                 'web_url' => $event['station']['web_url'],
                 'layout' => 'vertical',
                 'tags' => array($event['station']['name'], 'Events'),

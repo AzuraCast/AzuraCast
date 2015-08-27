@@ -40,9 +40,6 @@ class Url extends \DF\Url
      */
     public static function upload($path = NULL)
     {
-        if (defined('DF_UPLOAD_URL'))
-            return DF_UPLOAD_URL.'/'.ltrim($path, '/');
-        else
-            return self::content($path);
+        return \PVL\Service\AmazonS3::url($path);
     }
 }

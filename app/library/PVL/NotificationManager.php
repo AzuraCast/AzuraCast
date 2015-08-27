@@ -55,7 +55,7 @@ class NotificationManager
 
             $tweet_text = '#PVLive News: '.trim($article->title, ':').' - Read more:';
             $tweet_url = $article->web_url;
-            $tweet_image = \DF\File::getFilePath($article->image_url);
+            $tweet_image = \PVL\Service\AmazonS3::path($article->image_url);
 
             self::notify($tweet_text, $tweet_url, $tweet_image, $force);
 
@@ -107,7 +107,7 @@ class NotificationManager
             if ($schedule_item->banner_url)
                 $image_url = $schedule_item->banner_url;
             else if ($station->banner_url)
-                $image_url = \DF\File::getFilePath($station->banner_url);
+                $image_url = \PVL\Service\AmazonS3::path($station->banner_url);
 
             self::notify($tweet, $tweet_url, $image_url, $force);
 
@@ -156,7 +156,7 @@ class NotificationManager
 
             $image_url = NULL;
             if ($podcast->banner_url)
-                $image_url = \DF\File::getFilePath($podcast->banner_url);
+                $image_url = \PVL\Service\AmazonS3::path($podcast->banner_url);
 
             // Special handling of podcast YT videos.
             if (stristr($podcast->web_url, 'youtube.com') !== false)

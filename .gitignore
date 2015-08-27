@@ -38,6 +38,7 @@ util/test.php
 /web/static/songs/*
 /web/static/conventions/*
 /web/static/videos/*
+/web/static/podcast_episodes/*
 
 # Log files.
 util/php_errors.log

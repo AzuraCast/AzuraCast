@@ -10,6 +10,7 @@ a.video-channel {
 
   background: #13385E;
   color: #FFF !important;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
 
   &.active:nth-of-type(4n+1) {
     margin-left: 0;

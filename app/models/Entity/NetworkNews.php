@@ -78,15 +78,8 @@ class NetworkNews extends \DF\Doctrine\Entity
     public static function fetch($articles_num = 10)
     {
         $em = self::getEntityManager();
-        $results_raw = $em->createQuery('SELECT nn FROM '.__CLASS__.' nn ORDER BY nn.sort_timestamp DESC')
+        $network_news = $em->createQuery('SELECT nn FROM '.__CLASS__.' nn ORDER BY nn.sort_timestamp DESC')
             ->getArrayResult();
-
-        $network_news = array();
-        foreach($results_raw as $row)
-        {
-            $row['image_url'] = \PVL\Url::upload($row['image_url']);
-            $network_news[] = $row;
-        }
 
         if ($articles_num)
             $network_news = array_slice($network_news, 0, $articles_num);

@@ -193,6 +193,9 @@ class NewsManager
 
         foreach((array)$conventions_raw as $convention)
         {
+            if (empty($convention['web_url']))
+                continue;
+
             $create_post = false;
             $start_date = $convention['start_date']->getTimestamp();
             $end_date = $convention['end_date']->getTimestamp();
@@ -213,7 +216,7 @@ class NewsManager
             if ($start_date > time())
             {
                 // Pre-convention: Check for discount code promotion.
-                if (!empty($convention['discount_code']) && $start_date >= time()+86400*14 && !empty($convention['web_url']))
+                if (!empty($convention['discount_code']) && $start_date >= time()+86400*14)
                 {
                     $create_post = true;
                     $convention_details = array(
@@ -227,10 +230,12 @@ class NewsManager
                     $post_body_raw = 'Ponyville Live! is partnering with :convention to offer a special discount to our visitors. Visit the convention\'s registration page and enter discount code ":discount" to save on your registration!';
                     $post_item['body'] = strtr($post_body_raw, $convention_details);
 
-                    $post_item['sort_timestamp'] = time() - 86400;
+                    // More distant conventions sort lower on the list than closer ones.
+                    $time_diff = $start_date - time();
+                    $post_item['sort_timestamp'] = time() - round($time_diff / 60);
                 }
             }
-            elseif ($start_date <= time() && $end_date >= time())
+            elseif ($start_date <= time()+86400*7 && $end_date >= time())
             {
                 // Mid-convention: Check for live coverage.
                 $coverage_types = array(
@@ -270,7 +275,6 @@ class NewsManager
         $podcasts_raw = $em->createQuery('SELECT p, pe, ps FROM Entity\Podcast p LEFT JOIN p.episodes pe JOIN pe.source ps
             WHERE (p.banner_url IS NOT NULL AND p.banner_url != \'\')
             AND p.is_approved = 1
-            AND p.is_adult = 0
             AND pe.timestamp >= :threshold
             AND pe.is_active = 1
             ORDER BY p.id ASC, pe.timestamp DESC')

@@ -1,6 +1,6 @@
 <?
 if (!$columns)
-    $columns = ($podcasts[0]['rotator_mode']) ? 4 : 3;
+    $columns = 3;
 
 $span = 12 / $columns;
 
@@ -9,61 +9,60 @@ $this->assets->collection('custom_js')
 ?>
 <div class="media-list row-fluid row-multiple">
 <? foreach($podcasts as $podcast): ?>
-    <div class="podcast-outer span<?=$span ?> <? if ($podcast['rotator_mode']): ?>rotator-mode<? endif; ?>">
-    <? if ($podcast['rotator_mode']): ?>
-        <div class="episode-image">
-            <a class="podcast-episode" href="<?=\Entity\PodcastEpisode::getEpisodePlayerUrl($podcast['episodes'][0]['web_url']); ?>" data-log="<?=\Entity\PodcastEpisode::getEpisodeLocalUrl($podcast['episodes'][0], 'pvlive') ?>">
-                <img class="episode-image" src="<?=$podcast['rotator_url'] ?>">
+    <div class="media podcast span<?=$span ?> <? if ($podcast['rotator_mode']): ?>rotator-mode<? endif; ?>">
+        <div class="media-object pull-left">
+            <a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>">
+                <img class="station-image" src="<?=\PVL\Url::upload($podcast['image_url']) ?>" alt="<?=$podcast['name'] ?> Logo">
             </a>
         </div>
-    <? endif; ?>
-        <div class="media podcast">
-            <div class="media-object pull-left">
-                <a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>">
-                    <img class="station-image" src="<?=\PVL\Url::upload($podcast['image_url']) ?>" alt="<?=$podcast['name'] ?> Logo">
-                </a>
-            </div>
-            <div class="media-body">
-                <div class="station-info">
-                    <h4>
-                    <? if (!empty($podcast['country'])): ?>
-                        <span class="f16"><span class="flag <?=strtolower($podcast['country']) ?>" title="<?=\PVL\Internationalization::getCountryName($podcast['country']) ?>"></span></span>
-                    <? endif; ?>
-                        <a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>"><?=$podcast['name'] ?></a>
-                    <? if ($podcast['is_adult']): ?>
-                        <span class="label label-adults-only" title="This podcast contains adult material and is suitable only for people aged 18 and above.">18+</span>
-                    <? endif; ?>
-                    <? if (!$podcast['rotator_mode']): ?>
-                        <br>
-                        <span class="block genre-info">
-                            <?=$podcast['description'] ?>
-                        </span>
-                        <?
-                        if (count($podcast['stations']) > 0)
+        <div class="media-body">
+            <div class="station-info">
+                <h4>
+                <? if (!empty($podcast['country'])): ?>
+                    <span class="f16"><span class="flag <?=strtolower($podcast['country']) ?>" title="<?=\PVL\Internationalization::getCountryName($podcast['country']) ?>"></span></span>
+                <? endif; ?>
+                    <a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>"><?=$podcast['name'] ?></a>
+                <? if ($podcast['is_adult']): ?>
+                    <span class="label label-adults-only" title="This podcast contains adult material and is suitable only for people aged 18 and above.">18+</span>
+                <? endif; ?>
+                    <br>
+                    <span class="block genre-info">
+                        <?=$podcast['description'] ?>
+                    </span>
+                    <?
+                    if (count($podcast['stations']) > 0)
+                    {
+                        $station_links = array();
+                        foreach($podcast['stations'] as $station)
                         {
-                            $station_links = array();
-                            foreach($podcast['stations'] as $station)
-                            {
-                                $station_link = '<a href="'.$station['web_url'].'" target="_blank">'.$station['name'].'</a>';
-                                $station_links[] = $station_link;
-                            }
-
-                            echo '<span class="block airson-info"><i class="icon-star"></i> Airs on '.implode(', ', $station_links).'</span>';
+                            $station_link = '<a href="'.$station['web_url'].'" target="_blank">'.$station['name'].'</a>';
+                            $station_links[] = $station_link;
                         }
-                        ?>
-                    <? endif; ?>
-                    </h4>
 
-                <? foreach($podcast['episodes'] as $ep): ?>
-                    <div class="podcast-episode">
+                        echo '<span class="block airson-info"><i class="icon-star"></i> Airs on '.implode(', ', $station_links).'</span>';
+                    }
+                    ?>
+                </h4>
+
+            <? foreach($podcast['episodes'] as $ep): ?>
+                <div class="podcast-episode">
+
+                    <div class="episode-details">
                         <?
                         $time_diff = \DF\Utilities::timeDifferenceText(time(), $ep['timestamp'], 0);
                         ?>
                         <small><span title="<?=date('l, F j, Y g:ia', $ep['timestamp']) ?>"><?=$time_diff?> ago</span>:</small><br>
                         <a class="podcast-episode" href="<?=\Entity\PodcastEpisode::getEpisodePlayerUrl($ep['web_url']); ?>" data-log="<?=\Entity\PodcastEpisode::getEpisodeLocalUrl($ep, 'pvlive') ?>"><b><?=$ep['title'] ?></b></a>
                     </div>
-                <? endforeach; ?>
+                    <? if ($podcast['rotator_mode']): ?>
+                        <div class="episode-image">
+                            <a class="podcast-episode" href="<?=\Entity\PodcastEpisode::getEpisodePlayerUrl($ep['web_url']); ?>" data-log="<?=\Entity\PodcastEpisode::getEpisodeLocalUrl($ep, 'pvlive') ?>">
+                                <img class="episode-image" src="<?=$podcast['rotator_url'] ?>">
+                            </a>
+                        </div>
+                    <? endif; ?>
                 </div>
+            <? endforeach; ?>
             </div>
         </div>
     </div>

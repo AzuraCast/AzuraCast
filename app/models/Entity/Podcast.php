@@ -196,11 +196,11 @@ class Podcast extends \DF\Doctrine\Entity
      * @param int $num_to_fetch Number of podcasts to list. Specify 0 or another false value to remove limit.
      * @return array
      */
-    public static function fetchLatest($num_to_fetch = 8)
+    public static function fetchLatest($num_to_fetch = 12)
     {
         $em = self::getEntityManager();
 
-        // $podcasts = \DF\Cache::get('homepage_podcasts');
+        $podcasts = \DF\Cache::get('homepage_podcasts');
 
         if (!$podcasts)
         {

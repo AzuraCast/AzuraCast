@@ -3,6 +3,7 @@ namespace Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PVL\Debug;
+use Snipe\BanBuilder\CensorWords;
 
 /**
  * @Table(name="podcast_sources")
@@ -85,7 +86,7 @@ class PodcastSource extends \DF\Doctrine\Entity
             $new_episodes[$guid] = array(
                 'guid'      => $guid,
                 'timestamp' => $item['timestamp'],
-                'title'     => $item['title'],
+                'title'     => self::cleanUpText($item['title']),
                 'body'      => self::cleanUpText($item['body']),
                 'summary'   => self::getSummary($item['body']),
                 'web_url'   => $item['web_url'],
@@ -185,8 +186,24 @@ class PodcastSource extends \DF\Doctrine\Entity
      */
     public static function cleanUpText($text)
     {
+        // Clean up output.
+        $text = trim($text);
         $text = strip_tags($text);
-        return trim($text);
+
+        // Filter some basic profanity.
+        $filter_words = array(
+            'fuck'      => 'f***',
+            'shit'      => 's***',
+            'bitch'     => 'b****',
+            'cunt'      => 'c***',
+            'cock'      => 'c***',
+            'pussy'     => 'p****',
+        );
+
+        foreach($filter_words as $find => $replace)
+            $text = preg_replace('/'.$find.'/i', $replace, $text);
+
+        return $text;
     }
 
     /**

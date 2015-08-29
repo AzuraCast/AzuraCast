@@ -134,8 +134,7 @@ class NotificationManager
             WHERE pe.timestamp BETWEEN :start AND :end
             AND pe.is_notified = 0
             AND pe.is_active = 1
-            AND p.is_approved = 1
-            AND p.is_adult = 0')
+            AND p.is_approved = 1')
             ->setParameter('start', $start_threshold)
             ->setParameter('end', $end_threshold)
             ->setMaxResults(1)
@@ -146,8 +145,12 @@ class NotificationManager
             $episode = $podcast_episodes[0];
             $podcast = $episode->podcast;
 
-            $title = \DF\Utilities::truncateText($episode->title, 110-strlen($podcast->name)-6);
-            $tweet = $podcast->name.': "'.$title.'"';
+            $podcast_name = $podcast->name;
+            if ($podcast->is_adult)
+                $podcast_name = '[18+] '.$podcast_name;
+
+            $title = \DF\Utilities::truncateText($episode->title, 110-strlen($podcast_name)-6);
+            $tweet = $podcast_name.': "'.$title.'"';
 
             PvlNode::push('podcast.new_episode', array(
                 'episode' => PodcastEpisode::api($episode),

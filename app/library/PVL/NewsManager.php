@@ -288,9 +288,14 @@ class NewsManager
                 if (empty($ep['body']))
                     continue;
 
+                $title = trim($ep['title']);
+
+                if ($podcast['is_adult'])
+                    $title = '[18+] '.$title;
+
                 $news_items[] = array(
                     'id' => 'podcast_' . $ep['guid'],
-                    'title' => trim($ep['title']),
+                    'title' => $title,
                     'source' => 'podcast',
                     'body' => $ep['summary'],
                     'image_url' => \Entity\PodcastEpisode::getEpisodeRotatorUrl($ep, $podcast, $ep['source']),

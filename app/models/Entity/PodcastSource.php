@@ -198,6 +198,7 @@ class PodcastSource extends \DF\Doctrine\Entity
             'cunt'      => 'c***',
             'cock'      => 'c***',
             'pussy'     => 'p****',
+            'fag'       => 'f**',
         );
 
         foreach($filter_words as $find => $replace)

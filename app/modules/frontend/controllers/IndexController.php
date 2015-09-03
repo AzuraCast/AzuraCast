@@ -133,9 +133,6 @@ class IndexController extends BaseController
         $this->view->podcast_social_types = Podcast::getSocialTypes();
     }
 
-    public function donateAction()
-    {}
-
     public function mobileAction()
     {
         return $this->response->redirect('http://m.pvlive.me');

@@ -159,6 +159,15 @@
   bottom:-6px;
 }
 
+.navbar .nav .dropdown-menu li {
+  [class^="icon-"]:before,
+  [class*=" icon-"]:before {
+    width: 15px;
+    text-align: center;
+    margin-right: 5px;
+  }
+}
+
 .navbar-inverse .navbar-inner {
   background: none !important;
 }

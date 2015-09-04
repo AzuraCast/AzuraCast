@@ -17,7 +17,8 @@
     "google/apiclient": "1.0.*@beta",
     "aws/aws-sdk-php": "3.*",
     "phpoffice/phpexcel": "1.8.0",
-    "ise/php-soundcloud": "dev-master"
+    "ise/php-soundcloud": "dev-master",
+    "phansys/getid3": "~2.0@beta"
   },
   "require-dev": {
     "phalcon/devtools": "2.0.2@dev"

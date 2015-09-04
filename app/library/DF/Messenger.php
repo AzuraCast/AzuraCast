@@ -30,6 +30,7 @@ class Messenger
         // Render the template as the message if a template is specified.
         if (isset($options['template']))
         {
+            $previous_sp_setting = \DF\Url::getSchemePrefixSetting();
             \DF\Url::forceSchemePrefix(TRUE);
 
             $view = \DF\Phalcon\View::getView(array(
@@ -42,6 +43,8 @@ class Messenger
             $view->setVars((array)$options['vars']);
 
             $options['message'] = $view->getRender('', $options['template']);
+
+            \DF\Url::forceSchemePrefix($previous_sp_setting);
         }
         else if (isset($options['body']) && !isset($options['message']))
         {

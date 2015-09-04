@@ -174,9 +174,9 @@ class Form
                 $element = new \Phalcon\Forms\Element\Check($field_key, $field_options);
             break;
 
+            case 'checkboxes':
             case 'multicheckbox':
-                $field_options['name'] = $field_key.'[]';
-                $element = new \Phalcon\Forms\Element\Check($field_key, $field_options);
+                $element = new \DF\Forms\Element\MultiCheckbox($field_key, $select_options, $field_options);
             break;
 
             case 'radio':
@@ -346,13 +346,28 @@ class Form
             }
         }
 
-        switch($field_type)
+        switch(strtolower($field_type))
         {
             case 'submit':
                 return $this->form->render($name);
-                break;
+            break;
 
-            case 'multiCheckbox':
+            case 'checkboxes':
+            case 'multicheckbox':
+                $return .= '<ul class="inputs-list inline">';
+
+                $checkboxes = $element->getElements();
+                $list_items = array();
+
+                foreach($checkboxes as $checkbox)
+                {
+                    $list_items[] = '<li><label>'.$checkbox.' <span>'.$checkbox->getLabel().'</span></label></li>';
+                }
+
+                $return .= implode('<br>', $list_items);
+                $return .= '</ul>';
+            break;
+
             case 'radio':
                 $return .= '<ul class="inputs-list inline">';
 
@@ -370,15 +385,15 @@ class Form
 
                 $return .= implode('<br>', $list_items);
                 $return .= '</ul>';
-                break;
+            break;
 
             case 'hidden':
                 return $this->form->render($name);
-                break;
+            break;
 
             default:
                 $return .= $this->form->render($name);
-                break;
+            break;
         }
 
         $return .= '</div>';
@@ -447,14 +462,15 @@ class Form
 
         $return = '';
 
-        switch($field_type)
+        switch(strtolower($field_type))
         {
             case 'markup':
             case 'submit':
                 return '';
             break;
 
-            case 'multiCheckbox':
+            case 'multicheckbox':
+            case 'checkboxes':
             case 'radio':
                 $options = $field_options['multiOptions'];
                 $value = $element->getValue();
@@ -501,6 +517,8 @@ class Form
     {
         if ($submitted_data === null)
             $submitted_data = $_POST;
+
+        $this->populate($submitted_data);
 
         return $this->form->isValid($submitted_data);
     }
@@ -586,11 +604,7 @@ class Form
                 if ($set_field)
                 {
                     $element = $this->form->get($field_key);
-
-                    if ($element instanceof \DF\Forms\Element\File)
-                        $element->setPreviousValue($default_value);
-                    else
-                        $element->setDefault($default_value);
+                    $element->setDefault($default_value);
                 }
             }
             else if (is_array($default_value))

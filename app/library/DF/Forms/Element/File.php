@@ -15,6 +15,15 @@ class File extends \Phalcon\Forms\Element\File
         return $this->_previous_value;
     }
 
+    public function setDefault($value)
+    {
+        $this->setPreviousValue($value);
+    }
+    public function getDefault()
+    {
+        return NULL;
+    }
+
     public function renderView()
     {
         if (empty($this->_previous_value))

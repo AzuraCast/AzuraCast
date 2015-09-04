@@ -190,6 +190,11 @@ class Url
             return  \Phalcon\Di::getDefault();
     }
 
+    public static function getSchemePrefixSetting()
+    {
+        return self::$include_domain;
+    }
+
     public static function forceSchemePrefix($new_value = true)
     {
         self::$include_domain = $new_value;

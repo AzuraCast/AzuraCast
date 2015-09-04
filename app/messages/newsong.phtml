@@ -1,0 +1,19 @@
+<h2><?=$subject ?></h2>
+
+<p>A musician has submitted a song through the Ponyville Live! web site, and has selected your station as a potential recipient.</p>
+
+<p>Song details are included below for your reference. By submitting this song through the PVL system, the uploader has indicated that they are the legitimate copyright holder for the tracks below, and that they are granting your station full permission to add the song to your regular rotation.</p>
+
+<h3>Song Details</h3>
+
+<dl>
+    <dt>Download File:</dt>
+    <dd><a href="<?=$download_url ?>"><?=$download_url ?></a></dd>
+
+<? foreach($metadata as $meta_key => $meta_val): ?>
+    <dt><?=$meta_key ?>:</dt>
+    <dd><?=$meta_val ?></dd>
+<? endforeach; ?>
+</dl>
+
+<?=$form->renderView() ?>

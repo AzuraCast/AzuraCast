@@ -24,7 +24,9 @@ $this->assets->collection('custom_css')
 
 <p>If you have any questions about this submission process, contact our team at <a href="mailto:pr@ponyvillelive.com">pr@ponyvillelive.com</a>. Thank you again for your submission!</p>
 
-<form action="<?=$this->viewHelper->routeFromHere(array('action' => 'songconfirm', 'token' => $token)) ?>" method="post" class="form-stacked df-form" enctype="multipart/form-data">
+<form action="<?=$this->viewHelper->routeFromHere(array('action' => 'songconfirm')) ?>" method="post" class="form-stacked df-form" enctype="multipart/form-data">
+
+    <input type="hidden" name="token" value="<?=$token ?>">
 
     <h2>Step 1: Upload File(s)</h2>
     <p>Click and drag or manually select the file(s) you would like to upload. You may upload up to 10 files at one time. Each file must meet the following qualifications:</p>

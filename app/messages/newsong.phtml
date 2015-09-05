@@ -4,16 +4,10 @@
 
 <p>Song details are included below for your reference. By submitting this song through the PVL system, the uploader has indicated that they are the legitimate copyright holder for the tracks below, and that they are granting your station full permission to add the song to your regular rotation.</p>
 
-<h3>Song Details</h3>
+<? foreach($songs as $song): ?>
+    <h3><?=$song['Artist'] ?> - <?=$song['Title'] ?></h3>
 
-<dl>
-    <dt>Download File:</dt>
-    <dd><a href="<?=$download_url ?>"><?=$download_url ?></a></dd>
-
-<? foreach($metadata as $meta_key => $meta_val): ?>
-    <dt><?=$meta_key ?>:</dt>
-    <dd><?=$meta_val ?></dd>
+    <? foreach($song as $meta_key => $meta_val): ?>
+    <div><b><?=$meta_key ?>:</b> <?=$meta_val ?></div>
+    <? endforeach; ?>
 <? endforeach; ?>
-</dl>
-
-<?=$form->renderView() ?>

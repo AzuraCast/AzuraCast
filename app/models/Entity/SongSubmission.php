@@ -10,8 +10,6 @@ use PVL\Utilities;
  */
 class SongSubmission extends \DF\Doctrine\Entity
 {
-    use Traits\FileUploads;
-
     public function __construct()
     {
         $this->created = time();
@@ -42,12 +40,27 @@ class SongSubmission extends \DF\Doctrine\Entity
     /** @Column(name="song_url", type="string", length=255, nullable=true) */
     protected $song_url;
 
-    public function setSongUrl($new_song_url)
+    public function uploadSong($local_path)
     {
-        if ($this->_processFile('song_url', $new_song_url))
-        {
-            $this->song_url = $new_song_url;
-        }
+        if (!$this->title)
+            $this->title = 'No Title';
+
+        if (!$this->artist)
+            $this->artist = 'Various Artists';
+
+        // Create a new path based on the song metadata.
+        $song_path_base = $this->artist.' - '.$this->title;
+        $song_path_base = preg_replace('/[^\w\s-]+/', '', $song_path_base);
+        $song_path_base = preg_replace('/\s\s+/', ' ', $song_path_base);
+
+        $new_path = 'song_uploads/'.$song_path_base.'.'.\DF\File::getFileExtension($local_path);
+
+        // Upload to remote service.
+        \PVL\Service\AmazonS3::upload($local_path, $new_path);
+
+        $this->song_url = $new_path;
+
+        return \PVL\Service\AmazonS3::url($new_path);
     }
 
     /** @Column(name="song_metadata", type="json", nullable=true) */

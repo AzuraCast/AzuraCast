@@ -354,7 +354,7 @@ class Form
 
             case 'checkboxes':
             case 'multicheckbox':
-                $return .= '<ul class="inputs-list inline">';
+                $return .= '<ul class="inputs-list">';
 
                 $checkboxes = $element->getElements();
                 $list_items = array();
@@ -364,12 +364,12 @@ class Form
                     $list_items[] = '<li><label>'.$checkbox.' <span>'.$checkbox->getLabel().'</span></label></li>';
                 }
 
-                $return .= implode('<br>', $list_items);
+                $return .= implode('', $list_items);
                 $return .= '</ul>';
             break;
 
             case 'radio':
-                $return .= '<ul class="inputs-list inline">';
+                $return .= '<ul class="inputs-list">';
 
                 $list_items = array();
                 $default = $element->getDefault();
@@ -383,7 +383,7 @@ class Form
                     $list_items[] = '<li><label>' . $this->form->render($name, array('value' => $option_value)) . ' <span>' . $option_label . '</span></label></li>';
                 }
 
-                $return .= implode('<br>', $list_items);
+                $return .= implode('', $list_items);
                 $return .= '</ul>';
             break;
 

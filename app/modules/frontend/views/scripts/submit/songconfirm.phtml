@@ -1,0 +1,17 @@
+<?php
+$title = 'Submit a Song';
+?>
+
+<h2>Submission Successful!</h2>
+
+<p>The songs listed below were successfully submitted to the PVL stations you specified. Look forward to hearing your music on the radio soon!</p>
+
+<? foreach($songs as $song): ?>
+    <h3><?=$song['Artist'] ?> - <?=$song['Title'] ?></h3>
+    <dl class="dl-horizontal">
+    <? foreach($song as $meta_key => $meta_val): ?>
+        <dt><?=$meta_key ?>:</dt>
+        <dd><?=$meta_val ?></dd>
+    <? endforeach; ?>
+    </dl>
+<? endforeach; ?>

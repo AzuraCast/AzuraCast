@@ -191,7 +191,7 @@ class SubmitController extends BaseController
         // Validate song identifier token.
         $token = $this->_getSongHashToken();
         if (!$this->_validateSongHash($token))
-            throw new \DF\Exception\DisplayOnly('Could not validate unique ID token.');
+            return $this->redirectFromHere(array('action' => 'song'));
 
         // Check that any stations were selected
         if (!$this->hasParam('stations'))

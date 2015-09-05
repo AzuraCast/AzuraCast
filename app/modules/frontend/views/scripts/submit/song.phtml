@@ -14,13 +14,16 @@ $this->assets->collection('custom_css')
 
 <p>Just so we're on the same page, here are just a few guidelines about our music submission process and notes about what to expect once your song is submitted to our network:</p>
 
-<ul>
-    <li><b>Only upload music you created yourself:</b> This form is only for musicians themselves to upload their own content for playback on Ponyville Live! stations. Don't submit a song you found on YouTube or downloaded elsewhere.</li>
+<dl>
+    <dt>Only upload music you created yourself:</dt>
+    <dd>This form is only for musicians themselves to upload their own content for playback on Ponyville Live! stations. Don't submit a song you found on YouTube or downloaded elsewhere.</dd>
 
-    <li><b>Stations may not add all music:</b> Each station can use their own discretion when choosing to add a song submitted through this web site to their rotation. They may not find every song to be a great fit for their station's playlist. Don't take it personally!</li>
+    <dt>Stations may not add all music:</dt>
+    <dd>Each station can use their own discretion when choosing to add a song submitted through this web site to their rotation. They may not find every song to be a great fit for their station's playlist. Don't take it personally!</dd>
 
-    <li><b>Submitting a song gives our stations permissions to play it:</b> This should go without saying, but by submitting a song through this service, you are granting our radio stations a permanent license to play the song in their rotations. Radio stations only periodically stream music, and do not directly offer the files for listeners to download.</li>
-</ul>
+    <dt>Submitting a song gives our stations permissions to play it:</dt>
+    <dd>This should go without saying, but by submitting a song through this service, you are granting our radio stations a permanent license to play the song in their rotations. Radio stations only periodically stream music, and do not directly offer the files for listeners to download.</dd>
+</dl>
 
 <p>If you have any questions about this submission process, contact our team at <a href="mailto:pr@ponyvillelive.com">pr@ponyvillelive.com</a>. Thank you again for your submission!</p>
 
@@ -32,7 +35,8 @@ $this->assets->collection('custom_css')
     <p>Click and drag or manually select the file(s) you would like to upload. You may upload up to 10 files at one time. Each file must meet the following qualifications:</p>
     <ul>
         <li>Must be an MP3 file;</li>
-        <li>Must be under 20MB in size; and</li>
+        <li>Must be under 20MB in size;</li>
+        <li>Must have the "Title" and "Artist" in the file's metadata (ID3 tags); and</li>
         <li>Should have a bitrate of 128kbps or higher.</li>
     </ul>
 
@@ -41,11 +45,11 @@ $this->assets->collection('custom_css')
     <input type="hidden" name="ignore_files" value="0">
 
     <br>
-    <h2>Step 2: Select Stations</h2>
-    <p>Choose the stations that you feel your music would be a good fit for. If you have multiple genres of music to upload, you can return to this page to upload another set of songs at any point.</p>
+    <h2>Step 2: Select Station(s)</h2>
+    <p>Choose one or more stations that you feel your music would be a good fit for. If you have multiple genres of music to upload, you can return to this page to upload another set of songs at any point.</p>
 
     <div class="clearfix control-group">
-        <label for="stations[]" class="required">Select Stations:</label>
+        <label for="stations[]" class="required">Select Station(s):</label>
 
         <ul class="inputs-list">
             <li>

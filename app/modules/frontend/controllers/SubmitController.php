@@ -1,16 +1,16 @@
 <?php
 namespace Modules\Frontend\Controllers;
 
-use Entity\Song;
-use Entity\SongSubmission;
+
 use PVL\Utilities;
 use \GetId3\GetId3Core as GetId3;
 
 use Entity\Action;
 use Entity\Station;
 use Entity\StationStream;
-use Entity\StationManager;
 use Entity\Podcast;
+use Entity\Song;
+use Entity\SongSubmission;
 
 class SubmitController extends BaseController
 {
@@ -19,6 +19,11 @@ class SubmitController extends BaseController
         return $this->acl->isAllowed('is logged in');
     }
 
+    /**
+     * Submit a new station.
+     *
+     * @throws \DF\Exception
+     */
     public function stationAction()
     {
         $form = new \DF\Form($this->current_module_config->forms->submit_station);
@@ -95,6 +100,11 @@ class SubmitController extends BaseController
         $this->renderForm($form, 'edit', 'Submit Your Station');
     }
 
+    /**
+     * Submit a new show/podcast.
+     *
+     * @throws \DF\Exception
+     */
     public function showAction()
     {
         $form = new \DF\Form($this->current_module_config->forms->submit_show);
@@ -145,50 +155,57 @@ class SubmitController extends BaseController
         $this->renderForm($form, 'edit', 'Submit Your Show');
     }
 
+    /*
+     * Submit a new song.
+     */
     public function songAction()
     {
-        $auth = $this->di->get('auth');
-        $user = $auth->getLoggedInUser();
+        // Generate temporary token for this session.
+        $this->view->token = $this->_generateSongHash();
 
-        $defaults = array(
-            'artist'        => $user->name,
-        );
+        // Produce list of stations.
+        $stations = array();
+        $all_stations = Station::fetchArray();
 
-        $form = new \DF\Form($this->current_module_config->forms->submit_song);
-        $form->setDefaults($defaults);
-
-        if($_POST && $form->isValid($_POST))
+        foreach($all_stations as $station)
         {
-            $data = $form->getValues();
-
-            // Check if existing submission exists.
-            $song = Song::getOrCreate($data);
-
-            $existing_submission = SongSubmission::getRepository()->findOneBy(array('hash' => $song->id));
-            if ($existing_submission instanceof SongSubmission)
-                throw new \DF\Exception\DisplayOnly('This song has already been submitted through this system!');
-
-            // Process song upload.
-            $files = $form->processFiles('song_uploads');
-            foreach($files as $file_field => $file_paths)
-                $data[$file_field] = $file_paths[1];
-
-            // Check song status.
-            $song_file = $data['song_url'];
-            if (empty($song_file))
-                throw new \DF\Exception\DisplayOnly('No file uploaded! Please go back and select a file to submit.');
-
-            $song_file_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$song_file;
-
-            // Verify MP3 extension.
-            $song_file_extension = \DF\File::getFileExtension($song_file);
-            if (strtolower($song_file_extension) !== 'mp3')
+            if ($station['category'] == 'audio')
             {
-                @unlink($song_file_path);
-                throw new \DF\Exception\DisplayOnly('The file you uploaded was not an MP3 file! Please go back and resubmit your file.');
+                $stations[$station['short_name']] = '<b>'.$station['name'].'</b> - '.$station['genre'];
             }
+        }
 
-            // Analyze and clean up ID3 metadata.
+        $this->view->stations = $stations;
+    }
+
+    public function songconfirmAction()
+    {
+        // Handle files submitted directly to page.
+        $request = $this->di->get('request');
+        if ($request->hasFiles())
+            $this->_processSongUpload();
+
+        // Validate song identifier token.
+        $token = $this->_getSongHashToken();
+        if (!$this->_validateSongHash($token))
+            throw new \DF\Exception\DisplayOnly('Could not validate unique ID token.');
+
+        // Check for uploaded songs.
+        $temp_dir_name = 'song_uploads';
+        $temp_dir = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$temp_dir_name;
+
+        $all_files = glob($temp_dir.DIRECTORY_SEPARATOR.$token.'*.mp3');
+
+        if (empty($all_files))
+            throw new \DF\Exception\DisplayOnly('No files were uploaded!');
+
+        $songs = array();
+
+        foreach($all_files as $song_file_base)
+        {
+            $song_file_path = $temp_dir.DIRECTORY_SEPARATOR.$song_file_base;
+
+            // Attempt to analyze the MP3.
             $getId3 = new GetId3();
             $getId3->encoding = 'UTF-8';
 
@@ -200,6 +217,27 @@ class SubmitController extends BaseController
                 throw new \DF\Exception\DisplayOnly(sprintf('Error at reading audio properties with GetId3: %s.', $audio['error']));
             }
 
+            // Assemble data from the ID3 record.
+            \DF\Utilities::print_r($audio);
+
+            $song_data = array(
+                'title' => '',
+                'artist' => '',
+            );
+
+
+
+            // Check if existing submission exists.
+            $song = Song::getOrCreate($song_data);
+
+            $existing_submission = SongSubmission::getRepository()->findOneBy(array('hash' => $song->id));
+            if ($existing_submission instanceof SongSubmission)
+            {
+                @unlink($song_file_path);
+                continue;
+            }
+
+            // Create record in database.
             $metadata = array(
                 'File Format'       => strtoupper($audio['fileformat']),
                 'Play Time'         => $audio['playtime_string'],
@@ -209,69 +247,174 @@ class SubmitController extends BaseController
                 'Sample Rate'       => $audio['audio']['sample_rate'],
             );
 
-            $data['song_metadata'] = $metadata;
-
-            // TODO: Write the Artist / Title specified back into the MP3 file directly.
-
-            // Set up initial station record.
             $record = new SongSubmission;
             $record->song = $song;
 
             $auth = $this->di->get('auth');
             $record->user = $auth->getLoggedInUser();
 
+            $record->title = $song_data['title'];
+            $record->artist = $song_data['artist'];
+
             $record->fromArray($data);
             $record->save();
 
-            // Notify all existing managers.
-            $network_administrators = Action::getUsersWithAction('administer all');
-            $email_to = Utilities::ipull($network_administrators, 'email');
 
-            // Pull list of station managers for the specified stations.
-            $station_managers = array();
 
-            $short_names = Station::getShortNameLookup();
-            foreach($data['stations'] as $station_key)
-            {
-                if (isset($short_names[$station_key]))
-                {
-                    $station_id = $short_names[$station_key]['id'];
-                    $station = Station::find($station_id);
 
-                    foreach($station->managers as $manager)
-                    {
-                        $station_managers[] = $manager->email;
-                    }
-                }
-            }
 
-            $email_to = array_merge($email_to, $station_managers);
 
-            // Trigger e-mail notice.
-            define('DF_FORCE_EMAIL', true);
+            // Append information to e-mail to stations.
+            $song_row = array(
+                'Download URL'      => '',
+                'Title'             => $song_data['title'],
+                'Artist'            => $song_data['artist'],
+            ) + $metadata;
 
-            if ($email_to)
-            {
-                \DF\Url::forceSchemePrefix(true);
-                $download_url = \PVL\Service\AmazonS3::url($data['song_url']);
-
-                \DF\Messenger::send(array(
-                    'to'        => $email_to,
-                    'subject'   => 'New Song Submitted to Station',
-                    'template'  => 'newsong',
-                    'vars'      => array(
-                        'download_url'  => $download_url,
-                        'metadata'      => $metadata,
-                        'form'          => $form->populate($_POST),
-                    ),
-                ));
-            }
-
-            $this->alert('Your song has been submitted. Thank you!', 'green');
-            $this->redirectHome();
-            return;
+            $songs[] = $song_row;
         }
 
-        $this->renderForm($form, 'edit', 'Submit a Song');
+
+
+
+
+
+        $song_file_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$song_file;
+
+
+        // Analyze and clean up ID3 metadata.
+
+
+
+
+        $data['song_metadata'] = $metadata;
+
+        // TODO: Write the Artist / Title specified back into the MP3 file directly.
+
+
+
+        // Notify all existing managers.
+        $network_administrators = Action::getUsersWithAction('administer all');
+        $email_to = Utilities::ipull($network_administrators, 'email');
+
+        // Pull list of station managers for the specified stations.
+        $station_managers = array();
+
+        $short_names = Station::getShortNameLookup();
+        foreach($data['stations'] as $station_key)
+        {
+            if (isset($short_names[$station_key]))
+            {
+                $station_id = $short_names[$station_key]['id'];
+                $station = Station::find($station_id);
+
+                foreach($station->managers as $manager)
+                {
+                    $station_managers[] = $manager->email;
+                }
+            }
+        }
+
+        $email_to = array_merge($email_to, $station_managers);
+
+        // Trigger e-mail notice.
+        define('DF_FORCE_EMAIL', true);
+
+        if ($email_to)
+        {
+            \DF\Url::forceSchemePrefix(true);
+            $download_url = \PVL\Service\AmazonS3::url($data['song_url']);
+
+            \DF\Messenger::send(array(
+                'to'        => $email_to,
+                'subject'   => 'New Song Submitted to Station',
+                'template'  => 'newsong',
+                'vars'      => array(
+                    'download_url'  => $download_url,
+                    'metadata'      => $metadata,
+                    'form'          => $form->populate($_POST),
+                ),
+            ));
+        }
+
+        $this->alert('Your song has been submitted. Thank you!', 'green');
+        $this->redirectHome();
+    }
+
+    public function songuploadAction()
+    {
+        return $this->_processSongUpload();
+    }
+
+    protected function _processSongUpload()
+    {
+        // Validate token.
+        $token = $this->_getSongHashToken();
+        if (!$this->_validateSongHash($token))
+            die('Could not validate unique ID token.');
+
+        // Validate that any files are uploaded.
+        $request = $this->di->get('request');
+        if (!$request->hasFiles())
+            die('No files uploaded!');
+
+        // Check for upload directory.
+        $base_dir = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'song_uploads';
+
+        if (!file_exists($base_dir))
+            @mkdir($base_dir);
+
+        // Loop through all uploaded files.
+        $all_uploaded_files = $request->getUploadedFiles();
+
+        foreach($all_uploaded_files as $file)
+        {
+            if (!$file->isUploadedFile())
+                continue;
+
+            $file_ext = strtolower($file->getExtension());
+            if ($file_ext !== 'mp3')
+                die('File uploaded is not an MP3!');
+
+            $new_file_path = $base_dir.DIRECTORY_SEPARATOR.$token.'_'.mt_rand(100, 999).'.'.$file->getExtension();
+            $file->moveTo($new_file_path);
+        }
+
+        // Return a success code.
+        $this->doNotRender();
+        return $this->response->setContent('1');
+    }
+
+    protected function _getSongHashToken()
+    {
+        $token = $this->getParam('token');
+
+        if (empty($token) || strlen($token) < 15)
+            return false;
+
+        // Clean up token string.
+        $token = preg_replace("/[^A-Za-z0-9_]/", '', $token);
+
+        return $token;
+    }
+
+    protected function _validateSongHash($hash)
+    {
+        $old_hash_prefix = substr($hash, 0, 10);
+
+        $new_hash = $this->_generateSongHash();
+        $new_hash_prefix = substr($new_hash, 0, 10);
+
+        return (strcmp($old_hash_prefix, $new_hash_prefix) === 0);
+    }
+
+    protected function _generateSongHash()
+    {
+        $auth = $this->di->get('auth');
+        $user = $auth->getLoggedInUser();
+
+        $upload_hash_prefix = substr(md5($user->id.$user->email), 0, 10);
+        $upload_hash = $upload_hash_prefix.'_'.time().'_'.mt_rand(10000, 99999);
+        return $upload_hash;
     }
 }

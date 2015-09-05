@@ -1,0 +1,32 @@
+UploadiFive Change Log
+
+v1.1.2
+* Fixed typo on line 424 'uplaodAll' => 'uploadAll'
+
+v1.1.1
+* Changed method of file input positioning for added compatibility with touch devices
+
+v1.1.0
+* Added itemTemplate option
+* Added fileObjName option
+
+v1.0.5
+* Fixed onSelect issue with queue not being available
+
+v1.0.4
+* Added compatibility with Safari
+
+v1.0.3
+* Using new and faster FormData object if available
+* Added extra security and image only uploadifive.php file
+* formData is sent to the check script along with the filename
+* Removed index from Filedata object
+
+v1.0.2
+* Changed $data.uploadFile method to use boundary for uploads
+
+v1.0.1
+* Fixed bug with onQueueComplete event
+
+v1.0
+* Initial creation of UploadiFive plugin

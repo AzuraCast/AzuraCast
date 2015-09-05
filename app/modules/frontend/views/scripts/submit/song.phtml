@@ -75,6 +75,7 @@ $(function() {
 
     $('#file_upload').uploadifive({
         'auto': true,
+        'fileType': 'audio/mpeg',
         'fileSizeLimit': '20MB',
         'queueID': 'queue',
         'uploadScript': '<?=$this->viewHelper->routeFromHere(array('action' => 'songupload', 'token' => $token)) ?>',

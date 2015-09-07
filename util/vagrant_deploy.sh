@@ -118,9 +118,9 @@ then
     mv composer.phar /usr/local/bin/composer
 
     # Install Node.js and services
-    cd $www_base
-    npm install -g gulp
-    npm install --no-bin-links
+    #cd $www_base
+    #npm install -g gulp
+    #npm install --no-bin-links
 
     cd $www_base/live
     npm install --no-bin-links

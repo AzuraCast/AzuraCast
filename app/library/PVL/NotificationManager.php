@@ -134,7 +134,8 @@ class NotificationManager
             WHERE pe.timestamp BETWEEN :start AND :end
             AND pe.is_notified = 0
             AND pe.is_active = 1
-            AND p.is_approved = 1')
+            AND p.is_approved = 1
+            ORDER BY pe.timestamp DESC')
             ->setParameter('start', $start_threshold)
             ->setParameter('end', $end_threshold)
             ->setMaxResults(1)
@@ -167,8 +168,10 @@ class NotificationManager
 
             self::notify($tweet, $episode->getLocalUrl('twitter'), $image_url);
 
-            $episode->is_notified = true;
-            $episode->save();
+            // Set all episodes of the same podcast to be notified, to prevent spam.
+            $em->createQuery('UPDATE Entity\PodcastEpisode pe SET pe.is_notified=1 WHERE pe.podcast_id = :podcast_id')
+                ->setParameter('podcast_id', $podcast->id)
+                ->execute();
         }
     }
 

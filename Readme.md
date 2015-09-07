@@ -61,13 +61,7 @@ The default MySQL `root` password is `password`.
 
 The Vagrant virtual machine is automatically configured with Composer, Node.js and other important tools pre-installed.
 
-Because stylesheets are written in SCSS, they must first be compiled into CSS before changes will be visible in the browser. To do this:
-
-* Connect to the VM using `vagrant ssh`.
-* Type `cd /var/www/vagrant`.
-* Type `gulp build`.
-
-Alternately, you can use the `gulp watch` command to constantly monitor the SCSS files for changes and rebuild them on the fly, but this may not work well with some editors that automatically save frequently.
+Because stylesheets are written in SCSS, they must first be compiled into CSS before changes will be visible in the browser. We strongly recommend a tool like [Koala](http://koala-app.com/) (Free) or [Compass.app](http://compass.kkbox.com/) (Paid) to handle this task. Both can be pointed at the `web/static/sass` folder, and should automatically build files inside `web/static/compiled`.
 
 ## Questions? Comments? Feedback?
 

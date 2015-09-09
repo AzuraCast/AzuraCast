@@ -79,8 +79,8 @@ class PodcastManager
                         $episode->source = $source;
                         $episode->podcast = $record;
 
-                        // Preload banner URL if specified.
-                        if ($ep_info['banner_url'])
+                        // Preload banner URL if specified, and if episode is new enough.
+                        if ($ep_info['banner_url'] && $ep_info['timestamp'] > time()-86400*14)
                             PodcastEpisode::getEpisodeRotatorUrl($ep_info, $record, $source);
                     }
 

@@ -81,6 +81,15 @@ class IndexController extends BaseController
         $user->podcasts->add($this->podcast);
         $user->save();
 
+        \DF\Messenger::send(array(
+            'to' => $user->email,
+            'subject' => 'Access Granted to Podcast Center',
+            'template' => 'newperms',
+            'vars' => array(
+                'areas' => array('Podcast Center: '.$this->podcast->name),
+            ),
+        ));
+
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'email' => NULL));
     }
 

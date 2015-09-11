@@ -315,9 +315,7 @@ class SubmitController extends BaseController
             $email_to = array_merge($email_to, $station_managers);
 
             // Trigger e-mail notice.
-            define('DF_FORCE_EMAIL', true);
-
-            if ($email_to)
+            if (!empty($email_to))
             {
                 \DF\Messenger::send(array(
                     'to' => $email_to,

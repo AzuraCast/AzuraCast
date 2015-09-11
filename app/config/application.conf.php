@@ -22,7 +22,7 @@ $config = array(
     // DF Messenger mail settings
     'mail'              => array(
         'templates'         => DF_INCLUDE_BASE.'/messages',
-        'from_addr'         => 'info@ponyvillelive.com',
+        'from_addr'         => 'pr@ponyvillelive.com',
         'from_name'         => 'Ponyville Live!',
         'use_smtp'          => true,
     ),
@@ -92,7 +92,7 @@ if (DF_APPLICATION_ENV != 'production')
     $config['phpSettings']['display_errors'] = 1;
 
     // Update if your local configuration differs.
-    $config['base_url'] = '//dev.pvlive.me';
+    $config['base_url'] = '//localhost:8080';
 
     unset($config['api_url']);
     unset($config['upload_url']);

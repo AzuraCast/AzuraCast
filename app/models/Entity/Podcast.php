@@ -6,6 +6,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 /**
  * @Table(name="podcast")
  * @Entity
+ * @HasLifecycleCallbacks
  */
 class Podcast extends \DF\Doctrine\Entity
 {
@@ -20,6 +21,29 @@ class Podcast extends \DF\Doctrine\Entity
         $this->sources = new ArrayCollection;
         $this->stations = new ArrayCollection;
         $this->managers = new ArrayCollection;
+    }
+
+    /**
+     * @PrePersist
+     */
+    public function _createSources()
+    {
+        $em = self::getEntityManager();
+        $source_info = PodcastSource::getSourceInfo();
+
+        foreach($source_info as $source_type => $source_data)
+        {
+            if (!empty($this->$source_type))
+            {
+                $record = new PodcastSource;
+                $record->podcast = $this;
+                $record->type = $source_type;
+                $record->url = $this->$source_type;
+                $record->is_active = 1;
+
+                $em->persist($record);
+            }
+        }
     }
 
     /**

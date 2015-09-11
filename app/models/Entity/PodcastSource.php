@@ -14,7 +14,6 @@ class PodcastSource extends \DF\Doctrine\Entity
     public function __construct()
     {
         $this->is_active = true;
-
         $this->episodes = new ArrayCollection;
     }
 

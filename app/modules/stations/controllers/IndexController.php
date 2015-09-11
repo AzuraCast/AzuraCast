@@ -297,6 +297,15 @@ class IndexController extends BaseController
         $user->stations->add($this->station);
         $user->save();
 
+        \DF\Messenger::send(array(
+            'to' => $user->email,
+            'subject' => 'Access Granted to Station Center',
+            'template' => 'newperms',
+            'vars' => array(
+                'areas' => array('Station Center: '.$this->station->name),
+            ),
+        ));
+
         $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'email' => NULL));
     }
 

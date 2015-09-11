@@ -12,8 +12,11 @@ use Nette\Mail\SmtpMailer;
 class Messenger
 {
     /**
-     * New messenger method.
+     * New messenger method:
      * Uses an expandable array of options and supports direct template rendering and subject prepending.
+     *
+     * @param array $message_options An array of message options.
+     * @return bool|void
      */
     public static function send($message_options)
     {
@@ -59,16 +62,16 @@ class Messenger
             $options['subject'] = $app_name.': '.$options['subject'];
         }
         
-        self::sendMail($options);
+        return self::sendMail($options);
     }
-    
-    // Deliver a message.
+
+    /**
+     * Handle message delivery.
+     *
+     * @return bool
+     */
     public static function sendMail()
     {
-        // Do not deliver mail on development environments.
-        if (DF_APPLICATION_ENV == "development" && !defined('DF_FORCE_EMAIL'))
-            return;
-        
         // Allow support for legacy argument style or new style.
         $args = func_get_args();
         if (func_num_args() == 1)
@@ -90,6 +93,16 @@ class Messenger
         $config = $di->get('config');
 
         $mail_config = $config->application->mail->toArray();
+
+        // Do not deliver mail on development environments.
+        if (DF_APPLICATION_ENV == "development" && !defined('DF_FORCE_EMAIL'))
+        {
+            $email_to = $mail_config['from_addr'];
+            if (!empty($email_to))
+                $options['to'] = $email_to;
+            else
+                return false;
+        }
 
         if (isset($mail_config['use_smtp']) && $mail_config['use_smtp'])
         {
@@ -157,5 +170,7 @@ class Messenger
 
             $transport->send($mail);
         }
+
+        return true;
     }
 }

@@ -356,6 +356,28 @@ class Station extends \DF\Doctrine\Entity
         return $stations;
     }
 
+    public static function fetchSelect($add_blank = FALSE, \Closure $display = NULL, $pk = 'id', $order_by = 'name')
+    {
+        $select = array();
+
+        // Specify custom text in the $add_blank parameter to override.
+        if ($add_blank !== FALSE)
+            $select[''] = ($add_blank === TRUE) ? 'Select...' : $add_blank;
+
+        // Build query for records.
+        $results = self::fetchArray();
+
+        // Assemble select values and, if necessary, call $display callback.
+        foreach((array)$results as $result)
+        {
+            $key = $result[$pk];
+            $value = ($display === NULL) ? $result['name'] : $display($result);
+            $select[$key] = $value;
+        }
+
+        return $select;
+    }
+
     public static function getShortNameLookup($cached = true)
     {
         $stations = self::fetchArray($cached);

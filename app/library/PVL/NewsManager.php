@@ -198,7 +198,7 @@ class NewsManager
 
             $create_post = false;
             $start_date = $convention['start_date']->getTimestamp();
-            $end_date = $convention['end_date']->getTimestamp();
+            $end_date = $convention['end_date']->getTimestamp()+86400; // Adjust for midnight.
 
             $post_item = array(
                 'id'        => 'convention_'.$convention['id'],
@@ -256,7 +256,7 @@ class NewsManager
                     $post_item['title'] = strtr($post_title_raw, $convention_details);
 
                     $post_item['body'] = strtr($coverage_types[$convention['coverage_level']], $convention_details);
-                    $post_item['sort_timestamp'] = $end_date+86400;
+                    $post_item['sort_timestamp'] = $end_date;
                 }
             }
 

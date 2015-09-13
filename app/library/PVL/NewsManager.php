@@ -198,7 +198,7 @@ class NewsManager
 
             $create_post = false;
             $start_date = $convention['start_date']->getTimestamp();
-            $end_date = $convention['end_date']->getTimestamp()+86400; // Adjust for midnight.
+            $end_date = $convention['end_date']->add(new \DateInterval('P1D'))->getTimestamp(); // Adjust for midnight.
 
             $post_item = array(
                 'id'        => 'convention_'.$convention['id'],

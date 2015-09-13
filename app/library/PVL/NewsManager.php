@@ -256,7 +256,7 @@ class NewsManager
                     $post_item['title'] = strtr($post_title_raw, $convention_details);
 
                     $post_item['body'] = strtr($coverage_types[$convention['coverage_level']], $convention_details);
-                    $post_item['sort_timestamp'] = $convention['end_date'];
+                    $post_item['sort_timestamp'] = $end_date+86400;
                 }
             }
 

@@ -163,7 +163,7 @@ class PodcastEpisode extends \DF\Doctrine\Entity
                 $source = $episode->source;
         }
 
-        if ($episode['banner_url'] && !$podcast['is_adult'])
+        if ($episode['banner_url'] && !$podcast['is_adult'] && !$podcast['always_use_banner_url'])
         {
             $image_path_base = 'podcast_episodes/'.$episode['guid'].'.jpg';
             $image_path = AmazonS3::path($image_path_base);

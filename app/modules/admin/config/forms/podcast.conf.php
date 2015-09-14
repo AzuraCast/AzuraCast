@@ -62,13 +62,20 @@ return array(
                     'default' => 0,
                 )),
 
+                'always_use_banner_url' => array('radio', array(
+                    'label' => 'Always Use Promotional Banner for New Episode Promotion',
+                    'description' => 'When promoting an individual episode, if PVL is able to pull an individual thumbnail for the video, it will use this for promoting the episode instead of the one you supply above. To force the banner URL above to always be used, select "Yes" here.',
+                    'multiOptions' => array(0 => 'No', 1 => 'Yes'),
+                    'default' => 0,
+                )),
+
             ),
         ),
 
         'social' => array(
             'legend' => 'Social Networking Links',
             'description' => '
-                Adding links to these services allows us to automatically update our users about your new releases and other social activity.<br>
+                <b>Note: Updating these links does not automatically update the source of your podcast episodes.</b> To do this, visit the "Syndication Sources" page in the Podcast Center.<br>
                 All fields are optional. Most of the time, your web address for these services will match the format shown in the field.
             ',
 

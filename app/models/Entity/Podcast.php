@@ -14,8 +14,9 @@ class Podcast extends \DF\Doctrine\Entity
 
     public function __construct()
     {
-        $this->is_adult = true;
+        $this->is_adult = false;
         $this->is_approved = false;
+        $this->always_use_banner_url = false;
 
         $this->episodes = new ArrayCollection;
         $this->sources = new ArrayCollection;
@@ -129,6 +130,9 @@ class Podcast extends \DF\Doctrine\Entity
 
     /** @Column(name="is_approved", type="boolean") */
     protected $is_approved;
+
+    /** @Column(name="always_use_banner_url", type="boolean") */
+    protected $always_use_banner_url;
 
     /**
      * @OnetoMany(targetEntity="PodcastSource", mappedBy="podcast")

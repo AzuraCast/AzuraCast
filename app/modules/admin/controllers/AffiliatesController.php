@@ -44,9 +44,6 @@ class AffiliatesController extends BaseController
                 if (!empty($file_paths))
                     $data[$file_field] = $file_paths[1];
             }
-
-            if ($data['image_url'])
-                \DF\Image::resizeImage($data['image_url'], $data['image_url'], 336, 280);
             
             $record->fromArray($data);
             $record->save();

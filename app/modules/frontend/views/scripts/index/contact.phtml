@@ -120,7 +120,7 @@ $manual = true;
                     <div class="social">
                     <? foreach($podcast_social_types as $social_type => $social_info): ?>
                         <? if (!empty($podcast[$social_type])): ?>
-                            <a href="<?=$podcast[$social_type] ?>" target="_blank"><img src="<?=\DF\Url::content('social/'.$social_info['icon'].'.png') ?>" alt="<?=$social_info['name'] ?>"></a>
+                            <a href="<?=($social_type == 'contact_email' ? 'mailto:' : '').$podcast[$social_type] ?>" target="_blank"><img src="<?=\DF\Url::content('social/'.$social_info['icon'].'.png') ?>" alt="<?=$social_info['name'] ?>"></a>
                         <? endif; ?>
                     <? endforeach; ?>
                     </div>

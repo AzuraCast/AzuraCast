@@ -163,7 +163,7 @@ class NotificationManager
                 $image_url = \PVL\Service\AmazonS3::path($podcast->banner_url);
 
             // Special handling of podcast YT videos.
-            if (stristr($podcast->web_url, 'youtube.com') !== false)
+            if (stristr($episode->web_url, 'youtube.com') !== false)
                 $image_url = NULL;
 
             self::notify($tweet, $episode->getLocalUrl('twitter'), $image_url);

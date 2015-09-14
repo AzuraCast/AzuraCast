@@ -7,6 +7,32 @@ use \Entity\Statistic;
 
 class AnalyticsManager
 {
+    public static function addTracking($url, $utm_data = array())
+    {
+        $utm_defaults = array(
+            'source'        => 'pvlive',
+            'medium'        => 'direct',
+            'campaign'      => 'pvlive',
+            'term'          => NULL,
+            'content'       => NULL,
+        );
+
+        $utm_data = array_merge($utm_defaults, $utm_data);
+
+        $url_parts = Utilities::parseUrl($url);
+
+        $url_params = (array)$url_parts['query_arr'];
+
+        foreach($utm_data as $utm_key => $utm_val)
+        {
+            if (!empty($utm_val))
+                $url_params['utm_' . $utm_key] = $utm_val;
+        }
+
+        $url_parts['query'] = http_build_query($url_params);
+        return Utilities::buildUrl($url_parts);
+    }
+
     public static function run()
     {
         $di = \Phalcon\Di::getDefault();

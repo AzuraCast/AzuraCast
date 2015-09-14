@@ -78,13 +78,15 @@ class ShowController extends BaseController
         else
             $remote_ip = $_SERVER['REMOTE_ADDR'];
 
+        $origin = $this->getParam('origin', 'organic');
+
         $influx = $this->di->get('influx');
         $influx->setDatabase('pvlive_analytics');
 
         $influx->insert('podcast.'.$podcast_id.'.'.$episode_id, [
             'value'         => 1,
             'ip'            => $remote_ip,
-            'client'        => $this->getParam('origin', 'organic'),
+            'client'        => $origin,
             'useragent'     => $_SERVER['HTTP_USER_AGENT'],
             'referrer'      => $_SERVER['HTTP_REFERER'],
         ]);
@@ -96,7 +98,8 @@ class ShowController extends BaseController
         }
         else
         {
-            $redirect_url = $record->web_url;
+            $redirect_url = \PVL\AnalyticsManager::addTracking($record->web_url, array('source' => $origin));
+
             return $this->redirect($redirect_url);
         }
     }

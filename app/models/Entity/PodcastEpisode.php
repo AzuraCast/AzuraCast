@@ -147,9 +147,9 @@ class PodcastEpisode extends \DF\Doctrine\Entity
     {
         // Special handling for SoundCloud URLs.
         if (stristr($web_url, 'soundcloud.com'))
-            return 'https://w.soundcloud.com/player/?'.http_build_query(array('auto_play' => 'true', 'url' => $web_url));
-        else
-            return $web_url;
+            $web_url = 'https://w.soundcloud.com/player/?'.http_build_query(array('auto_play' => 'true', 'url' => $web_url));
+
+        return \PVL\AnalyticsManager::addTracking($web_url);
     }
 
     public static function getEpisodeRotatorUrl($episode, $podcast = NULL, $source = NULL)

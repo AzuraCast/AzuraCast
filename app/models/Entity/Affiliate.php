@@ -71,6 +71,12 @@ class Affiliate extends \DF\Doctrine\Entity
             if ($only_approved)
                 $records = array_filter($records, function ($record) { return $record['is_approved']; });
 
+            // Add affiliate tracking info.
+            foreach($records as &$record)
+            {
+                $record['web_url'] = \PVL\AnalyticsManager::addTracking($record['web_url'], array('source' => 'pvliveaffiliate'));
+            }
+
             \DF\Cache::set($records, $cache_name, array(), 60);
         }
 

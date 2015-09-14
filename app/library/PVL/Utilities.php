@@ -45,7 +45,51 @@ class Utilities extends \DF\Utilities
             $params[$item[0]] = $item[1]; 
         } 
         return $params; 
-    } 
+    }
+
+    public static function buildUrl($url)
+    {
+        is_array($url) || $url = parse_url($url);
+
+        if (is_array($url['query']))
+            $url['query'] = http_build_query($url['query']);
+
+        if (isset($url['path']) && substr($url['path'], 0, 1) !== '/')
+            $url['path'] = '/' . $url['path'];
+
+        $parsed_string = '';
+        if (isset($url['scheme']))
+            $parsed_string .= $url['scheme'] . '://';
+
+        if (isset($url['user']))
+        {
+            $parsed_string .= $url['user'];
+
+            if (isset($url['pass']))
+                $parsed_string .= ':' . $url['pass'];
+
+            $parsed_string .= '@';
+        }
+
+        if (isset($url['host']))
+            $parsed_string .= $url['host'];
+
+        if (isset($url['port']))
+            $parsed_string .= ':' . $url['port'];
+
+        if (!empty($url['path']))
+            $parsed_string .= $url['path'];
+        else
+            $parsed_string .= '/';
+
+        if (isset($url['query']))
+            $parsed_string .= '?' . $url['query'];
+
+        if (isset($url['fragment']))
+            $parsed_string .= '#' . $url['fragment'];
+
+        return $parsed_string;
+    }
 
     public static function curl_exec_utf8($ch)
     {

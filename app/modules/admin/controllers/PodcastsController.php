@@ -13,7 +13,7 @@ class PodcastsController extends BaseController
     
     public function indexAction()
     {
-        $query = $this->em->createQuery('SELECT p FROM Entity\Podcast p ORDER BY p.name ASC');
+        $query = $this->em->createQuery('SELECT p FROM Entity\Podcast p ORDER BY p.is_approved DESC, p.name ASC');
         $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 50);
     }
     

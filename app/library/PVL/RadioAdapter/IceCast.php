@@ -23,10 +23,13 @@ class IceCast extends AdapterAbstract
     {
         $return = @json_decode($return_raw, true);
 
-        if (!$return)
+        if (!$return || !isset($return['icestats']['source']))
             return false;
 
         $sources = $return['icestats']['source'];
+
+        if (empty($sources))
+            return false;
 
         if (key($sources) === 0)
             $mounts = $sources;

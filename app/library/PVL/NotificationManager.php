@@ -230,7 +230,7 @@ class NotificationManager
 
         if ($image)
         {
-            $image_data = base64_encode(file_get_contents($image));
+            $image_data = base64_encode(@file_get_contents($image));
 
             if (!empty($image_data))
             {

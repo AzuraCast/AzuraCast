@@ -169,7 +169,11 @@ class PodcastEpisode extends \DF\Doctrine\Entity
             $image_path = AmazonS3::path($image_path_base);
 
             // Crop remote banner URL if the local version doesn't already exist.
-            if (!file_exists($image_path))
+            if (file_exists($image_path))
+            {
+                return AmazonS3::url($image_path_base);
+            }
+            else
             {
                 $temp_path_ext = \DF\File::getFileExtension($episode['banner_url']);
                 $temp_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'/podcast_episodes/podcast_episode_'.$episode['id'].'_temp.'.$temp_path_ext;
@@ -177,18 +181,27 @@ class PodcastEpisode extends \DF\Doctrine\Entity
                 @mkdir(dirname($temp_path));
                 @copy($episode['banner_url'], $temp_path);
 
-                Image::resizeImage($temp_path, $temp_path, 600, 300, TRUE);
-                AmazonS3::upload($temp_path, $image_path_base);
-            }
+                if (file_exists($temp_path))
+                {
+                    try
+                    {
+                        Image::resizeImage($temp_path, $temp_path, 600, 300, TRUE);
+                        AmazonS3::upload($temp_path, $image_path_base);
 
-            return AmazonS3::url($image_path_base);
+                        return AmazonS3::url($image_path_base);
+                    }
+                    catch(\Exception $e) {}
+                }
+            }
         }
-        elseif ($podcast !== null && !empty($podcast['banner_url']))
+
+        if ($podcast !== null && !empty($podcast['banner_url']))
         {
             // Reference the podcast's existing banner URL.
             return AmazonS3::url($podcast['banner_url']);
         }
-        elseif ($source !== null)
+
+        if ($source !== null)
         {
             return Url::content('images/podcast_'.$source['type'].'_banner.png');
         }

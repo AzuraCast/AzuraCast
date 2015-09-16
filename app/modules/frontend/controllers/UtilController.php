@@ -24,6 +24,12 @@ class UtilController extends BaseController
 
         $di = $this->getDI();
 
+        \PVL\Service\PonyFm::load(true);
+
+        Debug::log('Pony.fm records reloaded.');
+
+        exit;
+
         \PVL\PodcastManager::run();
         \PVL\NewsManager::run();
 

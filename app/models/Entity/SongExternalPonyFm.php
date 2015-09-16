@@ -71,6 +71,9 @@ class SongExternalPonyFm extends \DF\Doctrine\Entity
     /** @Column(name="is_explicit", type="boolean") */
     protected $is_explicit;
 
+    /** @Column(type="float", nullable=true) */
+    protected $duration;
+
     /**
      * Static Functions
      */
@@ -90,6 +93,7 @@ class SongExternalPonyFm extends \DF\Doctrine\Entity
             'download_url' => str_replace('stream.mp3', 'dl.mp3', $result['streams']['mp3']),
             'is_vocal'  => (int)$result['is_vocal'],
             'is_explicit' => (int)$result['is_explicit'],
+            'duration'  => (float)$result['duration'],
         );
     }
 }

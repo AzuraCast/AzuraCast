@@ -1,8 +1,9 @@
 <?php
 namespace PVL;
 
-use \Entity\Convention;
-use \Entity\ConventionArchive;
+use Entity\Convention;
+use Entity\ConventionArchive;
+use PVL\Service\YouTube;
 
 class ConventionManager
 {
@@ -50,7 +51,7 @@ class ConventionManager
         $gclient->setApplicationName($gclient_app_name);
         $gclient->setDeveloperKey($gclient_api_key);
 
-        $yt_client = new \PVL\Service\YouTube($gclient);
+        $yt_client = new YouTube($gclient);
 
         $url = $row->web_url;
 
@@ -81,7 +82,7 @@ class ConventionManager
 
                         $row->name = $playlist['title'];
                         $row->description = $playlist['description'];
-                        $row->thumbnail_url = self::getThumbnail($playlist['thumbnails']);
+                        $row->thumbnail_url = YouTube::getThumbnail($playlist['thumbnails']);
                     }
 
                     // Get playlist contents.
@@ -90,7 +91,7 @@ class ConventionManager
                     foreach((array)$data as $item)
                     {
                         $row_name = self::filterName($row, $item['snippet']['title']);
-                        $row_thumb = self::getThumbnail($item['snippet']['thumbnails']);
+                        $row_thumb = YouTube::getThumbnail($item['snippet']['thumbnails']);
 
                         // Apply name/thumbnail filtering to sub-videos.
                         if (!empty($row_name) && !empty($row_thumb))
@@ -137,7 +138,7 @@ class ConventionManager
 
                         $row->name = self::filterName($row, $video['title']);
                         $row->description = $video['description'];
-                        $row->thumbnail_url = \PVL\Service\YouTube::getThumbnail($video['thumbnails']);
+                        $row->thumbnail_url = YouTube::getThumbnail($video['thumbnails']);
 
                         $row->synchronized_at = time();
                         $em->persist($row);

@@ -8,20 +8,20 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.3.4",
+            "version": "3.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "acbd3e0a1333479dac05cf6d8b8e9a0d533562b7"
+                "reference": "c1b2a140502271c185eb102352d9b225bc5e91e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/acbd3e0a1333479dac05cf6d8b8e9a0d533562b7",
-                "reference": "acbd3e0a1333479dac05cf6d8b8e9a0d533562b7",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c1b2a140502271c185eb102352d9b225bc5e91e0",
+                "reference": "c1b2a140502271c185eb102352d9b225bc5e91e0",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/guzzle": ">=5.3|~6.0.1|~6.1",
+                "guzzlehttp/guzzle": "~5.3|~6.0.1|~6.1",
                 "guzzlehttp/promises": "~1.0",
                 "guzzlehttp/psr7": "~1.0",
                 "mtdowling/jmespath.php": "~2.2",
@@ -80,7 +80,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2015-09-03 22:28:06"
+            "time": "2015-09-15 20:31:07"
         },
         {
             "name": "container-interop/container-interop",
@@ -1227,16 +1227,16 @@
         },
         {
             "name": "nette/utils",
-            "version": "v2.3.4",
+            "version": "v2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "89a7973a4da73b47a13e23f13207d53d18c4de32"
+                "reference": "298e955ad903c212dc766aa3f9f8ca840b6936eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/89a7973a4da73b47a13e23f13207d53d18c4de32",
-                "reference": "89a7973a4da73b47a13e23f13207d53d18c4de32",
+                "url": "https://api.github.com/repos/nette/utils/zipball/298e955ad903c212dc766aa3f9f8ca840b6936eb",
+                "reference": "298e955ad903c212dc766aa3f9f8ca840b6936eb",
                 "shasum": ""
             },
             "require": {
@@ -1278,7 +1278,7 @@
             ],
             "description": "Nette Utility Classes",
             "homepage": "http://nette.org",
-            "time": "2015-08-23 12:31:04"
+            "time": "2015-09-09 00:59:33"
         },
         {
             "name": "phansys/getid3",
@@ -1477,16 +1477,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.7.3",
+            "version": "v2.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "d6cf02fe73634c96677e428f840704bfbcaec29e"
+                "reference": "9ff9032151186bd66ecee727d728f1319f52d1d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/d6cf02fe73634c96677e428f840704bfbcaec29e",
-                "reference": "d6cf02fe73634c96677e428f840704bfbcaec29e",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/9ff9032151186bd66ecee727d728f1319f52d1d8",
+                "reference": "9ff9032151186bd66ecee727d728f1319f52d1d8",
                 "shasum": ""
             },
             "require": {
@@ -1530,7 +1530,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2015-07-28 15:18:12"
+            "time": "2015-09-03 11:40:38"
         },
         {
             "name": "tedivm/stash",
@@ -1691,16 +1691,16 @@
         },
         {
             "name": "zendframework/zend-http",
-            "version": "2.5.2",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-http.git",
-                "reference": "abe2e56464cd467214489672f103669957047548"
+                "reference": "21174ba162cfda8d0b1d172d9f80a8bea0b767be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-http/zipball/abe2e56464cd467214489672f103669957047548",
-                "reference": "abe2e56464cd467214489672f103669957047548",
+                "url": "https://api.github.com/repos/zendframework/zend-http/zipball/21174ba162cfda8d0b1d172d9f80a8bea0b767be",
+                "reference": "21174ba162cfda8d0b1d172d9f80a8bea0b767be",
                 "shasum": ""
             },
             "require": {
@@ -1737,7 +1737,7 @@
                 "http",
                 "zf2"
             ],
-            "time": "2015-08-05 15:47:13"
+            "time": "2015-09-14 15:58:07"
         },
         {
             "name": "zendframework/zend-loader",

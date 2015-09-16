@@ -91,16 +91,14 @@ class SubmitController extends BaseController
             $stream_record->name = 'Primary Stream';
             $stream_record->station = $record;
             $stream_record->is_default = 1;
-            $stream_record->is_active = 0;
+            $stream_record->is_active = 1;
             $stream_record->save();
 
             // Make the current user an administrator of the new station.
             if (!$this->acl->isAllowed('administer all'))
             {
-                $manager = new StationManager;
-                $manager->email = $user->email;
-                $manager->station = $record;
-                $manager->save();
+                $user->stations->add($record);
+                $user->save();
             }
 
             /*
@@ -199,15 +197,15 @@ class SubmitController extends BaseController
             $record = new Podcast;
             $record->fromArray($data);
             $record->is_approved = false;
+            $record->contact_email = $user->email;
+            $record->save();
 
-            // Make the current user an administrator of the new station.
+            // Make the current user an administrator of the new podcast.
             if (!$this->acl->isAllowed('administer all'))
             {
-                $user = $this->auth->getLoggedInUser();
-                $record->contact_email = $user->email;
+                $user->podcasts->add($record);
+                $user->save();
             }
-
-            $record->save();
 
             // Notify all existing managers.
             $network_administrators = Action::getUsersWithAction('administer all');

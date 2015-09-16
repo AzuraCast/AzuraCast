@@ -26,6 +26,41 @@ class SubmitController extends BaseController
      */
     public function stationAction()
     {
+        $this->em->getFilters()->disable('softdelete');
+
+        $user = $this->auth->getLoggedInUser();
+
+        // Check for existing submissions.
+        $existing_submissions = $this->em->createQuery('SELECT s, u FROM Entity\Station s JOIN s.managers u
+            WHERE (s.deleted_at IS NULL OR s.deleted_at IS NOT NULL)
+            AND u.id = :user_id')
+            ->setParameter('user_id', $user->id)
+            ->getArrayResult();
+
+        if ($existing_submissions)
+        {
+            $message = '<b>You have already submitted the following stations to the system:</b>';
+            $message .= '<ul>';
+
+            foreach($existing_submissions as $station)
+            {
+                if ($station['deleted_at'])
+                    $status = 'Declined';
+                elseif ($station['is_active'])
+                    $status = 'Approved';
+                else
+                    $status = 'Pending Review';
+
+                $message .= '<li><b>'.$station['name'].':</b> '.$status.'</li>';
+            }
+
+            $message .= '</ul>';
+            $message .= 'Please contact the PVL team for questions related to these stations, and do not resubmit them!';
+
+            $this->flash($message, 'info');
+        }
+
+        // Initialize the form.
         $form = new \DF\Form($this->current_module_config->forms->submit_station);
 
         if($_POST && $form->isValid($_POST))
@@ -38,6 +73,11 @@ class SubmitController extends BaseController
             $files = $form->processFiles('stations');
             foreach($files as $file_field => $file_paths)
                 $data[$file_field] = $file_paths[1];
+
+            // Check for existing station by name.
+            $existing_station = Station::getRepository()->findOneBy(array('name' => $data['name']));
+            if ($existing_station instanceof Station)
+                throw new \DF\Exception('A station with this name already exists! Please do not submit duplicate stations.');
 
             // Set up initial station record.
             $record = new Station;
@@ -57,8 +97,6 @@ class SubmitController extends BaseController
             // Make the current user an administrator of the new station.
             if (!$this->acl->isAllowed('administer all'))
             {
-                $user = $this->auth->getLoggedInUser();
-
                 $manager = new StationManager;
                 $manager->email = $user->email;
                 $manager->station = $record;
@@ -107,6 +145,41 @@ class SubmitController extends BaseController
      */
     public function showAction()
     {
+        $this->em->getFilters()->disable('softdelete');
+
+        $user = $this->auth->getLoggedInUser();
+
+        // Check for existing submissions.
+        $existing_submissions = $this->em->createQuery('SELECT p, u FROM Entity\Podcast p JOIN p.managers u
+            WHERE (p.deleted_at IS NULL OR p.deleted_at IS NOT NULL)
+            AND u.id = :user_id')
+            ->setParameter('user_id', $user->id)
+            ->getArrayResult();
+
+        if ($existing_submissions)
+        {
+            $message = '<b>You have already submitted the following shows to the system:</b>';
+            $message .= '<ul>';
+
+            foreach($existing_submissions as $podcast)
+            {
+                if ($podcast['deleted_at'])
+                    $status = 'Declined';
+                elseif ($podcast['is_approved'])
+                    $status = 'Approved';
+                else
+                    $status = 'Pending Review';
+
+                $message .= '<li><b>'.$podcast['name'].':</b> '.$status.'</li>';
+            }
+
+            $message .= '</ul>';
+            $message .= 'Please contact the PVL team for questions related to these shows, and do not resubmit them!';
+
+            $this->flash($message, 'info');
+        }
+
+        // Initialize the form.
         $form = new \DF\Form($this->current_module_config->forms->submit_show);
 
         if($_POST && $form->isValid($_POST))
@@ -116,6 +189,11 @@ class SubmitController extends BaseController
             $files = $form->processFiles('podcasts');
             foreach($files as $file_field => $file_paths)
                 $data[$file_field] = $file_paths[1];
+
+            // Check for existing podcast by name.
+            $existing_podcast = Podcast::getRepository()->findOneBy(array('name' => $data['name']));
+            if ($existing_podcast instanceof Podcast)
+                throw new \DF\Exception('A podcast with this name already exists! Please do not submit duplicate stations.');
 
             // Set up initial station record.
             $record = new Podcast;

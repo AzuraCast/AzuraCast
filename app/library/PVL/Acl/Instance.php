@@ -57,7 +57,17 @@ class Instance extends \DF\Acl\Instance
             return false;
 
         $user = $auth->getLoggedInUser();
-        return ($user->stations->count() > 0);
+
+        if ($user->stations->count() > 0)
+        {
+            foreach($user->stations as $station)
+            {
+                if ($station->is_active)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -75,7 +85,17 @@ class Instance extends \DF\Acl\Instance
             return false;
 
         $user = $auth->getLoggedInUser();
-        return ($user->podcasts->count() > 0);
+
+        if ($user->podcasts->count() > 0)
+        {
+            foreach($user->podcasts as $podcast)
+            {
+                if ($podcast->is_approved)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
 }

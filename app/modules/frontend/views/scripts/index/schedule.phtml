@@ -7,6 +7,8 @@ $col_span = (12 / (count($schedule)+1));
         <div class="span<?=$col_span ?>">
             <div class="well">
                 <h3><?=$day_info['day_name'] ?><br><small><?=date('F j, Y', $day_info['timestamp']) ?></small></h3>
+
+            <? if (!empty($day_info['events'])): ?>
                 <ul class="unstyled nopadding">
                 <? foreach($day_info['events'] as $event): ?>
                     <li class="clearfix" itemscope itemtype="http://data-vocabulary.org/Event">
@@ -24,6 +26,9 @@ $col_span = (12 / (count($schedule)+1));
                     </li>
                 <? endforeach; ?>
                 </ul>
+            <? else: ?>
+                <p>No events are scheduled for this date.</p>
+            <? endif; ?>
             </div>
         </div>
     <? endforeach; ?>

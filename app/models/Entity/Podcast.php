@@ -134,6 +134,9 @@ class Podcast extends \DF\Doctrine\Entity
     /** @Column(name="always_use_banner_url", type="boolean") */
     protected $always_use_banner_url;
 
+    /** @Column(name="deleted_at", type="datetime", nullable=true) */
+    protected $deleted_at;
+
     /**
      * @OnetoMany(targetEntity="PodcastSource", mappedBy="podcast")
      */

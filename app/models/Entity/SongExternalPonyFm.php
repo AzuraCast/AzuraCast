@@ -71,7 +71,7 @@ class SongExternalPonyFm extends \DF\Doctrine\Entity
     /** @Column(name="is_explicit", type="boolean") */
     protected $is_explicit;
 
-    /** @Column(type="float", nullable=true) */
+    /** @Column(name="duration", type="float", nullable=true) */
     protected $duration;
 
     /**

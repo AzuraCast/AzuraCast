@@ -51,8 +51,8 @@ $title = $convention->name;
         <div class="row-fluid row-multiple clearfix">
         <? foreach($folder['videos'] as $record): ?>
             <div class="span3">
-                <a class="video fancybox fancybox.iframe <?=$record['type'] ?>" href="<?=$record['web_url'] ?>">
-                    <img src="<?=$record['thumbnail_url'] ?>" title="<?=$record['name'] ?>">
+                <a class="video fancybox fancybox.iframe <?=$record['type'] ?>" href="<?=$record['web_url'] ?>" title="<?=$record['name'] ?>">
+                    <img src="<?=$record['thumbnail_url'] ?>" alt="<?=$record['name'] ?>">
                     <div class="name">
                         <h4><?=$record['name'] ?></h4>
                     </div>

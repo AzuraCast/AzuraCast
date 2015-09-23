@@ -28,8 +28,7 @@ return array(
                 'shoutcast1'        => 'ShoutCast v1',
                 'shoutcast2'        => 'ShoutCast v2',
                 'icecast'           => 'IceCast',
-                'icebreath'         => 'IceCast with IceBreath Tool',
-                'stream'            => 'Other / Video Stream',
+                'icebreath'         => 'IceBreath',
             ),
 
             'description' => 'The system used by your station to stream audio or video. If you are a video stream, just select "Other".',
@@ -43,32 +42,32 @@ return array(
                 <dl class="dl-horizontal">
                     <dt>ShoutCast 1</dt>
                     <dd>
-                        <b>Broadcast URL:</b> <span class="text-disabled">http://listen.fillyradio.com:8000</span>/;stream.nsv<br>
-                        <b>Now Playing URL:</b> <span class="text-disabled">http://listen.fillyradio.com:8000</span>/7.html
+                        <b>Broadcast URL:</b> <span class="text-disabled">http://domainname.com:8000</span>/;stream.nsv<br>
+                        <b>Now Playing URL:</b> <span class="text-disabled">http://domainname.com:8000</span>/7.html
                     </dd>
 
                     <dt>SC 2 &amp; CentovaCast</dt>
                     <dd>
-                        <b>Broadcast URL:</b> <span class="text-disabled">http://pvlradio.bravelyblue.com:8020</span>/stream?sid=1;stream.nsv<br>
-                        <b>Now Playing URL:</b> <span class="text-disabled">http://pvlradio.bravelyblue.com:8020</span>/stats?sid=1
+                        <b>Broadcast URL:</b> <span class="text-disabled">http://domainname.com:8000</span>/stream?sid=1;stream.nsv<br>
+                        <b>Now Playing URL:</b> <span class="text-disabled">http://domainname.com:8000</span>/stats?sid=1
                     </dd>
 
-                    <dt>IceCast</dt>
+                    <dt>IceCast < 2.4</dt>
                     <dd>
-                        <b>Broadcast URL:</b> <span class="text-disabled">http://www.radiobrony.fr:8000</span>/live<br>
-                        <b>Now Playing URL:</b> <span class="text-disabled">http://www.radiobrony.fr:8000</span>/
+                        <b>Broadcast URL:</b> <span class="text-disabled">http://domainname.com:8000</span>/live<br>
+                        <b>Now Playing URL:</b> <span class="text-disabled">http://domainname.com:8000</span>/
+                    </dd>
+
+                    <dt>Icecast >= 2.4</dt>
+                    <dd>
+                        <b>Broadcast URL:</b> <span class="text-disabled">http://domainname.com:8000</span>/live<br>
+                        <b>Now Playing URL:</b> <span class="text-disabled">http://domainname.com:8000</span>/status-json.xsl?mount=/live
                     </dd>
 
                     <dt>IceBreath</dt>
                     <dd>
-                        <b>Broadcast URL:</b> <span class="text-disabled">http://url.com:8000</span>/live.mp3<br>
-                        <b>Now Playing URL:</b> <span class="text-disabled">http://url.com</span>/icebreath/icecast/stats/live.mp3
-                    </dd>
-
-                    <dt>LiveStream</dt>
-                    <dd>
-                        <b>Broadcast URL:</b> <span class="text-disabled">http://www.livestream.com</span>/ponyvillelive<br>
-                        <b>Now Playing URL:</b> <span class="text-disabled">http://x</span>ponyvillelive<span class="text-disabled">x.api.channel.livestream.com/2.0/livestatus.xml</span>
+                        <b>Broadcast URL:</b> <span class="text-disabled">http://domainname.com:8000</span>/live.mp3<br>
+                        <b>Now Playing URL:</b> <span class="text-disabled">http://domainname.com</span>/icebreath/icecast/stats/live.mp3
                     </dd>
                 </dl>
 

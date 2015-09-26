@@ -3,8 +3,10 @@ $title = 'Bulk Contact Form';
 ?>
 
 <div class="buttons btn-group">
-    <button id="btn-selectall" class="btn" type="button">Select All</button>
-    <button id="btn-selectnone" class="btn" type="button">Select None</button>
+    <button class="btn btn-select" data-select="all" type="button">Select All</button>
+    <button class="btn btn-select" data-select="stations" type="button">Stations Only</button>
+    <button class="btn btn-select" data-select="podcasts" type="button">Podcasts Only</button>
+    <button class="btn btn-select" data-select="none" type="button">Select None</button>
 </div>
 
 <div class="row-fluid">
@@ -22,15 +24,20 @@ $(function() {
     $('#textarea-content').css('height', '400px');
     $('input[type=submit]').css('margin-left', '30px');
 
-    $('#btn-selectall').click(function(e) {
-        $('fieldset#recipients input').prop('checked', true);
+    $('.btn-select').click(function(e) {
+        var select_type = $(this).data('select');
 
-        e.preventDefault();
-        return false;
-    });
-
-    $('#btn-selectnone').click(function(e) {
-        $('fieldset#recipients input').prop('checked', false);
+        if (select_type == 'all') {
+            $('fieldset#recipients input').prop('checked', true);
+        } else if (select_type == 'stations') {
+            $("fieldset#recipients input[name='stations[]'").prop('checked', true);
+            $("fieldset#recipients input[name='podcasts[]'").prop('checked', false);
+        } else if (select_type == 'podcasts') {
+            $("fieldset#recipients input[name='stations[]'").prop('checked', false);
+            $("fieldset#recipients input[name='podcasts[]'").prop('checked', true);
+        } else if (select_type == 'none') {
+            $('fieldset#recipients input').prop('checked', false);
+        }
 
         e.preventDefault();
         return false;

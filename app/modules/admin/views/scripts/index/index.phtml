@@ -31,6 +31,11 @@ $sidebar = array(
             'icon'      => 'icon-key',
             'permission' => $this->acl->isAllowed('administer all'),
         ),
+        'Send Bulk Message' => array(
+            'url'       => 'admin/contact',
+            'icon'      => 'icon-envelope',
+            'permission' => $this->acl->isAllowed('administer all'),
+        ),
         'API Usage Report' => array(
             'url'       => 'admin/api',
             'icon'      => 'icon-puzzle-piece',

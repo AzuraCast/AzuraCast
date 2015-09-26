@@ -1,0 +1,40 @@
+<?
+$title = 'Bulk Contact Form';
+?>
+
+<div class="buttons btn-group">
+    <button id="btn-selectall" class="btn" type="button">Select All</button>
+    <button id="btn-selectnone" class="btn" type="button">Select None</button>
+</div>
+
+<div class="row-fluid">
+    <?=$form->render() ?>
+</div>
+
+<script type="text/javascript">
+$(function() {
+
+    $('fieldset#recipients').addClass('span3');
+    $('fieldset#recipients ul.inputs-list').css('overflow-y', 'scroll').css('height', '300px');
+
+    $('fieldset#message').addClass('span9');
+
+    $('#textarea-content').css('height', '400px');
+    $('input[type=submit]').css('margin-left', '30px');
+
+    $('#btn-selectall').click(function(e) {
+        $('fieldset#recipients input').prop('checked', true);
+
+        e.preventDefault();
+        return false;
+    });
+
+    $('#btn-selectnone').click(function(e) {
+        $('fieldset#recipients input').prop('checked', false);
+
+        e.preventDefault();
+        return false;
+    });
+
+});
+</script>

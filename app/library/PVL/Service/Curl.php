@@ -54,11 +54,16 @@ class Curl
             curl_setopt($curl, CURLOPT_POSTFIELDS, $postfields);
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $c_opts['timeout']);
         curl_setopt($curl, CURLOPT_TIMEOUT, $c_opts['timeout']);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_USERAGENT, $c_opts['useragent']);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
         curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
+
+        // Custom DNS management.
+        curl_setopt($curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        curl_setopt($curl, CURLOPT_DNS_CACHE_TIMEOUT, 600);
 
         // Set custom HTTP headers.
         if (!empty($c_opts['headers']))
@@ -68,6 +73,17 @@ class Curl
         // End cURL request.
 
         Debug::endTimer('Make cURL Request');
+
+        // Log more detailed information to screen about resolution times.
+        $conn_info = curl_getinfo($curl);
+
+        $important_conn_info = array('url', 'http_code', 'total_time', 'namelookup_time', 'connect_time', 'pretransfer_time', 'starttransfer_time', 'redirect_time');
+        $debug_conn_info = array();
+
+        foreach($important_conn_info as $conn_param)
+            $debug_conn_info[$conn_param] = $conn_info[$conn_param];
+
+        Debug::print_r($debug_conn_info);
 
         $error = curl_error($curl);
         if ($error)

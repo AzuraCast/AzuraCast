@@ -127,6 +127,8 @@ class Messenger
             if (empty($mail_to_addr))
                 continue;
 
+            $mail_to_addr = str_replace('mailto:', '', $mail_to_addr);
+
             $mail = new Message;
             $mail->setSubject($options['subject']);
 
@@ -166,7 +168,15 @@ class Messenger
                 $mail->setType($options['type']);
             */
 
-            $mail->addTo($mail_to_addr);
+            // Catch invalid e-mails.
+            try
+            {
+                $mail->addTo($mail_to_addr);
+            }
+            catch(\Nette\Utils\AssertionException $e)
+            {
+                continue;
+            }
 
             $transport->send($mail);
         }

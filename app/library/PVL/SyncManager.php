@@ -17,7 +17,7 @@ class SyncManager
         $last_start = Settings::getSetting('nowplaying_last_started', 0);
         $last_end = Settings::getSetting('nowplaying_last_run', 0);
 
-        if ($last_start > $last_end && $last_start >= (time() - 60) && !$force)
+        if ($last_start > $last_end && $last_start >= (time() - 300) && !$force)
             return;
 
         // Sync schedules.

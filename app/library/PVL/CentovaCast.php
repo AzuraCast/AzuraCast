@@ -221,13 +221,7 @@ class CentovaCast
                 $existing_records[$row['id']] = $row;
 
             // Find all tracks in active playlists.
-            $new_records_raw = $db->fetchAll('SELECT DISTINCT t.id, t.title, t.length, tal.name AS album_name, tar.name AS artist_name 
-                FROM playlists AS p 
-                RIGHT JOIN playlist_tracks AS pt ON pt.playlistid = p.id 
-                INNER JOIN tracks AS t ON pt.trackid = t.id 
-                INNER JOIN track_albums AS tal ON t.albumid = tal.id 
-                INNER JOIN track_artists AS tar ON t.artistid = tar.id 
-                WHERE p.accountid = ? AND p.status = ?', array($account_id, 'enabled'));
+            $new_records_raw = self::fetchTracks($station);
 
             $records_by_hash = array();
             foreach($new_records_raw as $track_info)
@@ -235,11 +229,14 @@ class CentovaCast
                 if ($track_info['length'] < 60)
                     continue;
 
+                if ($track_info['playlist_status'] !== 'enabled')
+                    continue;
+
                 $row = array(
                     'id'        => $track_info['id'],
                     'title'     => $track_info['title'],
-                    'artist'    => $track_info['artist_name'],
-                    'album'     => $track_info['album_name'],
+                    'artist'    => $track_info['artist'],
+                    'album'     => $track_info['album'],
                     'length'    => $track_info['length'],
                 );
 
@@ -285,6 +282,29 @@ class CentovaCast
 
             $em->flush();
         }
+
+        return true;
+    }
+
+    public static function fetchTracks(Station $station)
+    {
+        $account_id = self::getStationID($station);
+
+        if ($account_id === null)
+            return null;
+
+        $db = self::getDatabase();
+
+        $tracks = $db->fetchAll('SELECT t.id, t.title, tartist.name AS artist, talbum.name AS album, t.pathname, t.bitrate, t.length, p.title AS playlist_name, p.status AS playlist_status
+          FROM tracks AS t
+          INNER JOIN track_artists AS tartist ON t.artistid = tartist.id
+          INNER JOIN track_albums AS talbum ON t.albumid = talbum.id
+          INNER JOIN playlist_tracks AS pt ON pt.trackid = t.id
+          INNER JOIN playlists AS p ON pt.playlistid = p.id
+          WHERE p.accountid = ?
+          ORDER BY playlist_status ASC, playlist_name ASC, artist ASC, t.title', array($account_id));
+
+        return $tracks;
     }
 
     public static function getEntityManager()

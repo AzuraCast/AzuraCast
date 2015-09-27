@@ -295,7 +295,7 @@ class CentovaCast
 
         $db = self::getDatabase();
 
-        $tracks = $db->fetchAll('SELECT t.id, t.title, tartist.name AS artist, talbum.name AS album, t.pathname, t.bitrate, t.length, p.title AS playlist_name, p.status AS playlist_status
+        $tracks = $db->fetchAll('SELECT DISTINCT t.id, t.title, tartist.name AS artist, talbum.name AS album, t.pathname, t.bitrate, t.length, p.title AS playlist_name, p.status AS playlist_status
           FROM tracks AS t
           INNER JOIN track_artists AS tartist ON t.artistid = tartist.id
           INNER JOIN track_albums AS talbum ON t.albumid = talbum.id

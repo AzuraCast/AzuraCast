@@ -2,18 +2,19 @@
 
 html {
   background: #FFF;
-}
 
-html.embedded,
-html.embedded body {
-  background: none !important;
-  background-color: transparent !important;
-}
+  &.embedded {
+    &, body {
+      background: none !important;
+      background-color: transparent !important;
+    }
 
-html.embedded div#body {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
+    div#body {
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+  }
 }
 
 body, p, input, button, select, textarea, th, td,

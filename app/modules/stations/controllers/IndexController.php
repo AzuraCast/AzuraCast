@@ -248,7 +248,7 @@ class IndexController extends BaseController
                 $export_all[] = $export_row;
             }
 
-            \DF\Export::csv($export_all);
+            \DF\Export::csv($export_all, true, $this->station->getShortName().'_timeline_'.date('Ymd'));
             return;
         }
         else

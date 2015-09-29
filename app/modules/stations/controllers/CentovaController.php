@@ -16,6 +16,6 @@ class CentovaController extends BaseController
         if (empty($centova_tracks))
             throw new \DF\Exception\DisplayOnly('Track list could not be loaded from CentovaCast.');
 
-        \DF\Export::csv($centova_tracks, false);
+        \DF\Export::csv($centova_tracks, false, $this->station->getShortName().'_tracks_'.date('Ymd'));
     }
 }

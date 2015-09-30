@@ -2,7 +2,7 @@
 .station, .podcast {
 
   border-radius: 5px;
-  background: rgba(0, 0, 0, 0.05) url('../images/syndicated_station.png') bottom right no-repeat;
+  background: rgba(0, 0, 0, 0.05);
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
 
   &.media {
@@ -13,10 +13,12 @@
     line-height: inherit;
   }
 
+  /*
   &.affiliation-partner {
     box-shadow: 0px 0px 5px rgba(44,127,210, 0.5);
     background: rgba(44,127,210, 0.05) url('../images/partner_station.png') bottom right no-repeat;
   }
+  */
 
   h4 {
     font-size: 16px;
@@ -88,6 +90,8 @@
 
 /* Station-specific Style */
 .station {
+
+  background: rgba(0, 0, 0, 0.05) url('../images/playbutton.png') center right no-repeat;
 
   &.media {
     cursor: pointer;

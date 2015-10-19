@@ -152,11 +152,11 @@
 }
 
 .hero {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.05) url('../images/header_hero.png') center center no-repeat;
   border-bottom: solid 2px #eee;
 
   .hero-text {
-    padding: 15px 10px;
+    padding: 18px 10px;
   }
   h4, p {
     margin: 0;
@@ -173,6 +173,10 @@
   .hero-social {
     padding: 5px 10px;
     text-align: right;
+
+    img {
+      padding-left: 10px;
+    }
   }
 }
 

@@ -7,14 +7,14 @@ $session_lifetime = 86400*1;
 
 $config = array(
     // Application name
-    'name'              => 'Ponyville Live!',
+    'name'              => 'Bravely Blue Media',
     'analytics_code'    => 'UA-37359273-1',
     
     // Primary application web address
-    'base_url'          => (DF_IS_SECURE ? 'https://' : 'http://').'ponyvillelive.com',
+    'base_url'          => (DF_IS_SECURE ? 'https://' : 'http://').'bravelyblue.com',
 
     // Web address for API calls.
-    'api_url'           => (DF_IS_SECURE ? 'https://' : 'http://').'api.ponyvillelive.com',
+    'api_url'           => (DF_IS_SECURE ? 'https://' : 'http://').'api.bravelyblue.com',
 
     // Web address for user uploads.
     'upload_url'        => (DF_IS_SECURE ? 'https://' : 'http://').'uploads.ponyvillelive.com',
@@ -22,8 +22,8 @@ $config = array(
     // DF Messenger mail settings
     'mail'              => array(
         'templates'         => DF_INCLUDE_BASE.'/messages',
-        'from_addr'         => 'pr@ponyvillelive.com',
-        'from_name'         => 'Ponyville Live!',
+        'from_addr'         => 'pr@bravelyblue.com',
+        'from_name'         => 'Bravely Blue Media',
         'use_smtp'          => true,
     ),
 

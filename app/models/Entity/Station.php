@@ -25,6 +25,8 @@ class Station extends \DF\Doctrine\Entity
         $this->managers = new ArrayCollection;
         $this->short_urls = new ArrayCollection;
         $this->media = new ArrayCollection;
+
+        $this->fandom = Fandom::fetchDefault();
     }
 
     /**
@@ -196,6 +198,18 @@ class Station extends \DF\Doctrine\Entity
      * @OneToMany(targetEntity="StationMedia", mappedBy="station")
      */
     protected $media;
+
+
+    /** @Column(name="fandom_id", type="integer", nullable=true) */
+    protected $fandom_id;
+
+    /**
+     * @ManyToOne(targetEntity="Fandom", inversedBy="stations")
+     * @JoinColumns({
+     *   @JoinColumn(name="fandom_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     */
+    protected $fandom;
 
     public function getShortUrl()
     {

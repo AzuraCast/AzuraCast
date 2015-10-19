@@ -22,12 +22,41 @@ class UtilController extends BaseController
 
         // -------- START HERE -------- //
 
-        \PVL\CentovaCast::sync();
-        Debug::log('CCast Sync Complete');
+        $this->em->createQuery('DELETE FROM Entity\Fandom f')->execute();
 
-        $station = \Entity\Station::getRepository()->findOneBy(array('name' => 'PonyvilleFM'));
-        $tracks = \PVL\CentovaCast::fetchTracks($station);
-        Debug::print_r($tracks);
+        // Create new fandom.
+        $fandom = new \Entity\Fandom;
+        $fandom->name = 'My Little Pony';
+        $fandom->abbr = 'Pony';
+        $fandom->class = 'pony';
+        $fandom->save();
+
+        $fandom_id = $fandom->id;
+
+        // Update all records of all types.
+        $this->em->createQuery('UPDATE \Entity\Song s SET s.fandom_id = :fandom_id')
+            ->setParameter('fandom_id', $fandom_id)
+            ->execute();
+
+        $this->em->createQuery('UPDATE \Entity\Station s SET s.fandom_id = :fandom_id')
+            ->setParameter('fandom_id', $fandom_id)
+            ->execute();
+
+        $this->em->createQuery('UPDATE \Entity\Podcast p SET p.fandom_id = :fandom_id')
+            ->setParameter('fandom_id', $fandom_id)
+            ->execute();
+
+        $this->em->createQuery('UPDATE \Entity\Convention c SET c.fandom_id = :fandom_id')
+            ->setParameter('fandom_id', $fandom_id)
+            ->execute();
+
+        $this->em->createQuery('UPDATE \Entity\NetworkNews nn SET nn.fandom_id = :fandom_id')
+            ->setParameter('fandom_id', $fandom_id)
+            ->execute();
+
+        // Test the "fetch default" function.
+        $default_fandom = \Entity\Fandom::fetchDefault();
+        Debug::log('Default Fandom: '.$default_fandom->name);
 
         // -------- END HERE -------- //
 

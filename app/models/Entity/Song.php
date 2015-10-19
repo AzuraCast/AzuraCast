@@ -24,6 +24,8 @@ class Song extends \DF\Doctrine\Entity
 
         $this->votes = new ArrayCollection;
         $this->history = new ArrayCollection;
+
+        $this->fandom = Fandom::fetchDefault();
     }
 
     /** @PrePersist */
@@ -86,6 +88,18 @@ class Song extends \DF\Doctrine\Entity
      * @OneToOne(targetEntity="SongExternalBronyTunes", mappedBy="song")
      */
     protected $external_bronytunes;
+
+
+    /** @Column(name="fandom_id", type="integer", nullable=true) */
+    protected $fandom_id;
+
+    /**
+     * @ManyToOne(targetEntity="Fandom", inversedBy="songs")
+     * @JoinColumns({
+     *   @JoinColumn(name="fandom_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     */
+    protected $fandom;
 
 
     public function getExternal()

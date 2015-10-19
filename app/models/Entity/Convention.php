@@ -28,6 +28,8 @@ class Convention extends \DF\Doctrine\Entity
 
         $this->archives = new ArrayCollection;
         $this->signups = new ArrayCollection;
+
+        $this->fandom = Fandom::fetchDefault();
     }
 
     /**
@@ -110,6 +112,18 @@ class Convention extends \DF\Doctrine\Entity
      * @OneToMany(targetEntity="ConventionArchive", mappedBy="convention")
      */
     protected $archives;
+
+
+    /** @Column(name="fandom_id", type="integer", nullable=true) */
+    protected $fandom_id;
+
+    /**
+     * @ManyToOne(targetEntity="Fandom", inversedBy="songs")
+     * @JoinColumns({
+     *   @JoinColumn(name="fandom_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     */
+    protected $fandom;
 
     /**
      * Static Functions

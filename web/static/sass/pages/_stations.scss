@@ -91,7 +91,7 @@
 /* Station-specific Style */
 .station {
 
-  background: rgba(0, 0, 0, 0.05) url('../images/playbutton.png') center right no-repeat;
+  background: rgba(0, 0, 0, 0.05) url('../images/fandom_pony_bg.png') bottom right no-repeat;
 
   &.media {
     cursor: pointer;
@@ -346,6 +346,9 @@
 
 /* Podcast-specific Style */
 .podcast {
+
+  background: rgba(0, 0, 0, 0.05) url('../images/fandom_pony_bg.png') bottom right no-repeat;
+
   &.media {
     min-height: 150px;
   }

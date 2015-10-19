@@ -34,7 +34,7 @@ class Doctrine
         $config = new \Doctrine\ORM\Configuration;
 
         // Handling for class names specified as platform types.
-        if ($options['conn']['platform'])
+        if (isset($options['conn']['platform']))
         {
             $class_obj = new \ReflectionClass($options['conn']['platform']);
             $options['conn']['platform'] = $class_obj->newInstance();

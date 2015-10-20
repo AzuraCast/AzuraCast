@@ -7,7 +7,7 @@ $session_lifetime = 86400*1;
 
 $config = array(
     // Application name
-    'name'              => 'Bravely Blue Media',
+    'name'              => 'Bravely Blue',
     'analytics_code'    => 'UA-37359273-1',
     
     // Primary application web address

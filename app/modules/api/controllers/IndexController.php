@@ -8,7 +8,7 @@ class IndexController extends BaseController
      */
     public function indexAction()
     {
-        return $this->returnSuccess('The PVL! API is online and functioning. For more information, visit http://docs.ponyvillelive.apiary.io/');
+        return $this->returnSuccess('The Bravely Blue API is online and functioning. For more information, visit http://docs.ponyvillelive.apiary.io/');
     }
 
     /**

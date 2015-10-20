@@ -1,6 +1,6 @@
 <h2><?=$subject ?></h2>
 
-<p>Your account has been granted access to the following section of the Ponyville Live! administration center:</p>
+<p>Your account has been granted access to the following section of the <?=$this->config->application->name ?> administration center:</p>
 
 <ul>
 <? foreach($areas as $area): ?>
@@ -13,4 +13,4 @@
     <a href="<?=$this->viewHelper->route(array('module' => 'admin')) ?>" target="_blank"><strong>PVL Administration Center</strong></a>
 </p>
 
-<p><b>Note:</b> If you didn't already have an account on the Ponyville Live! system before receiving this e-mail, one was automatically created for you. Use the "Forgot My Password" tool the first time you log in to generate a one-time login code.</p>
+<p><b>Note:</b> If you didn't already have an account on the Bravely Blue web site before receiving this e-mail, one was automatically created for you. Use the "Forgot My Password" tool the first time you log in to generate a one-time login code.</p>

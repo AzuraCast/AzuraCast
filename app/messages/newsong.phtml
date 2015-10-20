@@ -1,8 +1,8 @@
 <h2><?=$subject ?></h2>
 
-<p>A musician has submitted a song through the Ponyville Live! web site, and has selected your station as a potential recipient.</p>
+<p>A musician has submitted a song through the <?=$this->config->application->name ?> web site, and has selected your station as a potential recipient.</p>
 
-<p>Song details are included below for your reference. By submitting this song through the PVL system, the uploader has indicated that they are the legitimate copyright holder for the tracks below, and that they are granting your station full permission to add the song to your regular rotation.</p>
+<p>Song details are included below for your reference. By submitting this song through this system, the uploader has indicated that they are the legitimate copyright holder for the tracks below, and that they are granting your station full permission to add the song to your regular rotation.</p>
 
 <? foreach($songs as $song): ?>
     <h3><?=$song['Artist'] ?> - <?=$song['Title'] ?></h3>

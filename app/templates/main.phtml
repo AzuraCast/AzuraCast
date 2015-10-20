@@ -15,7 +15,7 @@ $tz_info = \PVL\Timezone::getInfo();
 
     <meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, MLP, MLP:FiM" />
     <meta name="description" content="Equestria's newest Brony multimedia network, featuring 24/7 pony radio, videos, podcasts, convention coverage, and more." />
-    <link rel="canonical" href="http://ponyvillelive.com" />
+    <link rel="canonical" href="<?=$this->config->application->base_url ?>" />
 
     <!-- Facebook and Other Social Sites -->
     <meta property="og:site_name" content="Ponyville Live!" />
@@ -122,7 +122,7 @@ $tz_info = \PVL\Timezone::getInfo();
 <div class="header" role="banner">
     <div class="container">
         <div class="logo">
-            <a href="<?=$this->url->get('') ?>"><img id="logo-header" src="<?=$this->url->getStatic('mid2013/logo_'.$skin.'.png') ?>" alt="Ponyville Live! Logo"></a>
+            <a href="<?=$this->url->get('') ?>"><img id="logo-header" src="<?=$this->url->getStatic('mid2013/logo_'.$skin.'.png') ?>" alt="<?=$this->config->application->name ?> Logo"></a>
         </div>
 
         <div class="navbar">
@@ -139,8 +139,6 @@ $tz_info = \PVL\Timezone::getInfo();
                     ?>
 
                     <ul class="nav primary_menu">
-
-                        <!-- About PVL -->
                         <li class="dropdown">
                             <a href="<?=$this->url->get('about') ?>"><i class="icon-info-sign"></i> About</a>
                             <ul class="dropdown-menu">
@@ -150,12 +148,10 @@ $tz_info = \PVL\Timezone::getInfo();
                                 <li class="divider"></li>
                                 <li><a href="http://m.pvlive.me/"><i class="icon-mobile-phone"></i> PVL! Mobile</a></li>
                                 <li><a href="<?=$this->url->get('apps') ?>"><i class="icon-cloud-download"></i> Apps &amp; Players</a></li>
-                                <li><a href="http://docs.ponyvillelive.apiary.io/" target="_blank"><i class="icon-cog"></i> PVL! Data API</a></li>
-                                <li><a href="https://github.com/BravelyBlue/PVLive" target="_blank"><i class="icon-code-fork"></i> Fork Us on Github</a></li>
+                                <li><a href="http://docs.bravelyblue.apiary.io/" target="_blank"><i class="icon-cog"></i> API Documentation</a></li>
+                                <li><a href="https://github.com/BravelyBlue/BravelyBlue" target="_blank"><i class="icon-code-fork"></i> Fork Us on Github</a></li>
                             </ul>
                         </li>
-
-                        <!-- Stations -->
                         <li class="dropdown">
                             <a href="#" data-toggle="dropdown"><i class="icon-music"></i> Radio</a>
                             <ul class="dropdown-menu">
@@ -182,10 +178,10 @@ $tz_info = \PVL\Timezone::getInfo();
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="#" data-toggle="dropdown"><i class="icon-rss"></i> Shows</a>
+                            <a href="#" data-toggle="dropdown"><i class="icon-rss"></i> Podcasts</a>
                             <ul class="dropdown-menu">
-                                <li><a href="<?=$this->url->get('shows') ?>"><i class="icon-list"></i> Show Directory</a></li>
-                                <li><a href="<?=$this->url->get('submit/show') ?>"><i class="icon-cloud-upload"></i> Submit a Show</a></li>
+                                <li><a href="<?=$this->url->get('shows') ?>"><i class="icon-list"></i> Podcast Directory</a></li>
+                                <li><a href="<?=$this->url->get('submit/show') ?>"><i class="icon-cloud-upload"></i> Submit a Podcast</a></li>
                                 <li class="divider"></li>
                                 <? foreach($podcasts as $podcast): ?>
                                     <li><a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>" title="<?=$podcast['description'] ?>" target="_blank"><?=$podcast['name'] ?></a></li>
@@ -198,7 +194,6 @@ $tz_info = \PVL\Timezone::getInfo();
                                 <li><a href="<?=$this->url->get('conventions') ?>"><i class="icon-building"></i> Pony Conventions</a></li>
                                 <li><a href="<?=$this->url->get('artists') ?>"><i class="icon-group"></i> Artists Directory</a></li>
                                 <li class="divider"></li>
-                                <li><a href="http://pvlive.me/forums" target="_blank">PVL Forums</a></li>
                                 <li><a href="<?=$this->url->get('index/chat') ?>">Chat + Player</a></li>
                             </ul>
                         </li>

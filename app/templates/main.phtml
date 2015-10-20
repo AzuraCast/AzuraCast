@@ -13,16 +13,16 @@ $tz_info = \PVL\Timezone::getInfo();
     <meta name="viewport" content="width=device-width">
     <meta name="theme-color" content="#2C7FD2">
 
-    <meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, MLP, MLP:FiM" />
-    <meta name="description" content="Equestria's newest Brony multimedia network, featuring 24/7 pony radio, videos, podcasts, convention coverage, and more." />
+    <meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, Bravely, Blue, MLP, MLP:FiM" />
+    <meta name="description" content="Home of fandom radio, video, podcasts, conventions and more, from the Internet's favorite fandoms." />
     <link rel="canonical" href="<?=$this->config->application->base_url ?>" />
 
     <!-- Facebook and Other Social Sites -->
-    <meta property="og:site_name" content="Ponyville Live!" />
-    <meta property="og:url" content="http://ponyvillelive.com/" />
-    <meta property="og:image" content="<?=$this->url->getStatic('pvl_square.png') ?>" />
+    <meta property="og:site_name" content="<?=$this->config->application->name ?>" />
+    <meta property="og:url" content="<?=$this->config->application->base_url ?>" />
+    <meta property="og:image" content="<?=$this->url->getStatic('images/og_icon.png') ?>" />
 
-    <link rel="image_src" href="<?=$this->url->getStatic('pvl_square.png') ?>" />
+    <link rel="image_src" href="<?=$this->url->getStatic('images/og_icon.png') ?>" />
     <link href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" />
 
     <?php

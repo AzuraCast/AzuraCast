@@ -3,8 +3,7 @@
         <col width="17%">
         <col width="5%">
         <col width="8%">
-        <col width="35%">
-        <col width="15%">
+        <col width="50%">
         <col width="10%">
         <col width="10%">
     </colgroup>
@@ -14,7 +13,6 @@
             <th>Weight</th>
             <th>Image</th>
             <th>Station</th>
-            <th>Affiliation</th>
             <th>Twitter</th>
             <th>Calendar</th>
         </tr>
@@ -49,9 +47,6 @@
             <td>
                 <div><big><?=$record['name'] ?></big></div>
                 <div><a href="<?=$this->viewHelper->route(array('module' => 'stations', 'controller' => 'streams', 'action' => 'index','station' => $record['id'])) ?>" target="_blank"><?=count($record['streams']) ?> Streams</a></div>
-            </td>
-            <td class="legend">
-                <span class="station affiliation-<?=$record['affiliation'] ?>"><?=ucfirst($record['affiliation']) ?></span>
             </td>
             <td class="center">
                 <? if ($record['twitter_url']): ?>

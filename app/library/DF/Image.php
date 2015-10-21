@@ -44,6 +44,14 @@ class Image
         if ($w === $width && $h === $height)
         {
             $new = $img;
+
+            // Preserve transparency
+            if ($source_extension == "gif" || $source_extension == "png")
+            {
+                imagecolortransparent($new, imagecolorallocatealpha($new, 0, 0, 0, 127));
+                imagealphablending($new, false);
+                imagesavealpha($new, true);
+            }
         }
         else
         {

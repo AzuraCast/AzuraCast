@@ -1,12 +1,14 @@
 <?
-$title = 'Convention Center';
+$title = ('Convention Center');
 $manual = true;
 ?>
 
 <div class="row-fluid">
     <div class="span3">
-        <h2>Convention Coverage</h2>
-        <p>Below is a list of conventions our team will be attending soon. If you're hosting a MLP convention and would like to inquire about <?=$this->config->application->name ?> covering your event, please contact us at <?=$this->viewHelper->mailto($this->config->application->mail->from_addr) ?>.</p>
+        <h2>PVL! Convention Coverage</h2>
+        <p>The <b>Ponyville Live!</b> network is proud to offer free-of-charge convention streaming and recording services, when available, to any convention within the My Little Pony fan community. This is a service we are able to provide thanks to our international team of videographers.</p>
+
+        <p>Below is a list of conventions our network will be attending soon. If you're hosting a MLP convention and would like to inquire about the PVL network covering your event, please contact us at <?=$this->viewHelper->mailto('pr@ponyvillelive.com') ?>.</p>
 
         <h3>MLP Convention List</h3>
         <p>Want to see the times and dates of all conventions past, present and future? Check out the MLP Conventions spreadsheet!</p>
@@ -22,7 +24,9 @@ $manual = true;
             )) ?>
         </div>
 
-        <h3>Upcoming Conventions</h3>
+        <h3>Upcoming PVL Conventions</h3>
+
+        <p>These are the conventions PVL will be covering in the near future. Come say hello to us!</p>
 
         <dl>
         <? foreach($conventions_upcoming as $record): ?>

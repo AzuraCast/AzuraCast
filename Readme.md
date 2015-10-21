@@ -1,8 +1,8 @@
-![Logo](https://raw.githubusercontent.com/BravelyBlue/BravelyBlue/master/web/static/images/github.png)
+![PVL Logo](https://raw.githubusercontent.com/BravelyBlue/PVLive/master/web/resources/bitbucket.png)
 
-**BravelyBlue** is the flagship web application for the [Bravely Blue](http://bravelyblue.com/) fan media network, formerly Ponyville Live!.
+**PVLive** is the flagship web application for the [Ponyville Live!](http://ponyvillelive.com/) network, maintained by Bravely Blue Media, LLC.
 
-The web application is built on several powerful technologies:
+The PVLive application is built on several powerful technologies:
 
 * [Twitter Bootstrap 2](http://getbootstrap.com/2.3.2/) (Frontend UI)
 * [Phalcon](http://phalconphp.com/en/) (PHP MVC Framework)
@@ -15,7 +15,7 @@ Behind the scenes, the system is powered by a LEMP (Linux, [nginx](http://nginx.
 
 ## Contribute!
 
-This codebase has now been made public, both to help our team maintain transparency and to encourage contributions from the developer community. If you see a bug or other issue with the codebase, please report an issue or submit a pull request!
+The PVLive codebase has now been made public, both to help our team maintain transparency and to encourage contributions from the developer community. If you see a bug or other issue with the codebase, please report an issue or submit a pull request!
 
 ## Developing Locally
 
@@ -30,7 +30,7 @@ Want to help improve the PVL application codebase? Now you can run your own loca
 
 If you don't already have the Vagrant box downloaded, this process may take several minutes (or even hours, depending on your bandwidth). The box image is cached locally, though, making future vagrant runs easy.
 
-**Note**: You will only see live production-grade data from the main server if you have the proper API key set in `app/config/apis.conf.php`. This API key is private, and available upon request from [pr@bravelyblue.com](mailto:pr@bravelyblue.com).
+**Note**: You will only see live production-grade data from the main PVL server if you have the proper API key set in `app/config/apis.conf.php`. This API key is private, and available upon request from [pr@ponyvillelive.com](mailto:pr@ponyvillelive.com).
 
 ### Local Administrator
 
@@ -67,6 +67,6 @@ Because stylesheets are written in SCSS, they must first be compiled into CSS be
 
 Ponyville Live! is a volunteer project, and we depend on your support and feedback to keep growing.
 
-Issues for the BravelyBlue codebase are tracked in this repository's Issues section on Github. Anyone can create a new issue for the project, and you are encouraged to do so.
+Issues for the PVLive codebase are tracked in this repository's Issues section on Github. Anyone can create a new issue for the project, and you are encouraged to do so.
 
-If you have any further questions, comments or suggestions, just visit the [Contact Us](http://bravelyblue.com/contact) page for more information on how to reach our team.
+If you have any further questions, comments or suggestions, just visit the [Contact Us](http://ponyvillelive.com/contact) page for more information on how to reach our team.

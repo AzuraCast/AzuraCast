@@ -2,8 +2,8 @@
 
 <p>Station Name: <b><?=$station['name'] ?></b></p>
 
-<p>The <?=$this->config->application->name ?> system has detected that your station is currently offline. This may require action on your part to correct.</p>
+<p>The Ponyville Live! system has detected that your station is currently offline. This may require action on your part to correct.</p>
 
 <p>If this is intentional, you may safely disregard this message and your station will continue to function normally.</p>
 
-<p>In certain rare circumstances, the <?=$this->config->application->name ?> system may incorrectly list your station as being offline, when it continues to be online, as a result of a brief outage of the connection between our servers and your broadcast area. Most of the time, this issue will resolve itself in a few short minutes. If, however, you have tested and verified that your station is streaming, but the web site is still reading it as offline, please contact <?=$this->viewHelper->mailto($this->config->application->mail->from_addr) ?>.</p>
+<p>In certain rare circumstances, the PVL system may incorrectly list your station as being offline, when it continues to be online, as a result of a brief outage of the connection between our servers and your broadcast area. Most of the time, this issue will resolve itself in a few short minutes. If, however, you have tested and verified that your station is streaming, but the PVL system is still reading it as offline, please contact <?=$this->viewHelper->mailto('silvereagle@ponyvillelive.com') ?>.</p>

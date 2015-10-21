@@ -1,5 +1,5 @@
 <?
-$title = ('Sign In to '.$this->config->application->name);
+$title = ('Sign In to Ponyville Live!');
 $manual = true;
 
 $this->assets->collection('custom_css')->addCss('zocial/zocial.css');
@@ -8,8 +8,8 @@ $this->assets->collection('custom_css')->addCss('zocial/zocial.css');
 <div class="row-fluid">
     <div class="span8">
         <div class="floating">
-            <h2>Create an Account</h2>
-            <p>Don't have an account within the Bravely Blue/Ponyville Live system? Create one below.</p>
+            <h2>Create a PVL Account</h2>
+            <p>Don't have an account within the Ponyville Live! system? Create one below.</p>
 
             <div class="buttons">
                 <?=$this->viewHelper->button(array(
@@ -17,13 +17,13 @@ $this->assets->collection('custom_css')->addCss('zocial/zocial.css');
                     'class'     => 'large',
                     'href'      => $this->viewHelper->routeFromHere(array('action' => 'register')),
                     'icon'      => 'icon-asterisk',
-                    'text'      => 'Create New Account',
+                    'text'      => 'Create New PVL Account',
                 )) ?>
             </div>
 
             <br>
-            <h2>Sign In with Your Account</h2>
-            <p>If you have an account inside the Bravely Blue/Ponyville Live system, enter your username and password below.</p>
+            <h2>Sign In with PVL Account</h2>
+            <p>If you have an account inside the Ponyville Live! system, enter your username and password below.</p>
 
             <?=$form->render() ?>
         </div>

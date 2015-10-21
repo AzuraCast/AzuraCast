@@ -10,68 +10,6 @@ echo $this->viewHelper->renderHere('player-skeleton', true);
 <?
 ob_start();
 ?>
-<div class="hero">
-    <div class="container">
-        <div class="row-fluid">
-            <div class="span6 hero-text">
-                <h4>Your Home for Fandom Media!</h4>
-                <p>We are a network of fan radio, video, podcasts and convention footage.</p>
-            </div>
-            <!--
-            <div class="span3 hidden-phone hero-apps">
-                <h5>Take Ponyville Live! With You</h5>
-                <div class="btn-group">
-                    <?=$this->viewHelper->button(array(
-                        'type'      => 'link',
-                        'class'     => 'btn-primary',
-                        'icon'      => 'icon-cloud-download',
-                        'text'      => 'Apps &amp; Players',
-                        'href'      => $this->url->get('index/app'),
-                    )) ?>
-                    <?=$this->viewHelper->button(array(
-                        'type'      => 'link',
-                        'class'     => 'btn-primary',
-                        'icon'      => 'icon-mobile-phone',
-                        'text'      => 'PVL! Mobile',
-                        'href'      => 'http://m.pvlive.me/',
-                    )) ?>
-                </div>
-            </div>
-            <div class="span3 visible-phone hero-apps">
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'btn-block btn-large btn-primary',
-                    'icon'      => 'icon-cloud-download',
-                    'text'      => 'Apps &amp; Players',
-                    'href'      => $this->url->get('index/app'),
-                )) ?>
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'btn-block btn-large btn-primary',
-                    'icon'      => 'icon-mobile-phone',
-                    'text'      => 'PVL! Mobile',
-                    'href'      => 'http://m.pvlive.me/',
-                )) ?>
-            </div>
-            -->
-            <div class="span6 hero-social">
-                <?
-                $fandoms = array(
-                    'pony'      => 'My Little Pony',
-                    'furry'     => 'Furry (Coming Soon)',
-                    'su'        => 'Steven Universe (Coming Soon)',
-                    'anime'     => 'Anime (Coming Soon)',
-                    'etc'       => '...and more!',
-                );
-                ?>
-                <? foreach($fandoms as $fandom_icon => $fandom_text): ?>
-                <img src="<?=$this->url->getStatic('images/fandom_'.$fandom_icon.'_icon.png') ?>" alt="" title="<?=$fandom_text ?>">
-                <? endforeach; ?>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div id="home_header" class="rich_header hidden-phone">
     <div class="container">
     <? if ($special_event): ?>
@@ -120,7 +58,63 @@ ob_start();
     <? endif; ?>
     </div>
 </div>
-
+<div class="hero">
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span5 hero-text">
+                <h4>Your Home for Pony Media!</h4>
+                <p><a href="<?=$this->url->get('about') ?>" target="_blank">Ponyville Live!</a> is a network of radio stations, video streams, and shows.</p>
+            </div>
+            <div class="span3 hidden-phone hero-apps">
+                <h5>Take Ponyville Live! With You</h5>
+                <div class="btn-group">
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'link',
+                        'class'     => 'btn-primary',
+                        'icon'      => 'icon-cloud-download',
+                        'text'      => 'Apps &amp; Players',
+                        'href'      => $this->url->get('index/app'),
+                    )) ?>
+                    <?=$this->viewHelper->button(array(
+                        'type'      => 'link',
+                        'class'     => 'btn-primary',
+                        'icon'      => 'icon-mobile-phone',
+                        'text'      => 'PVL! Mobile',
+                        'href'      => 'http://m.pvlive.me/',
+                    )) ?>
+                </div>
+            </div>
+            <div class="span3 visible-phone hero-apps">
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'btn-block btn-large btn-primary',
+                    'icon'      => 'icon-cloud-download',
+                    'text'      => 'Apps &amp; Players',
+                    'href'      => $this->url->get('index/app'),
+                )) ?>
+                <?=$this->viewHelper->button(array(
+                    'type'      => 'link',
+                    'class'     => 'btn-block btn-large btn-primary',
+                    'icon'      => 'icon-mobile-phone',
+                    'text'      => 'PVL! Mobile',
+                    'href'      => 'http://m.pvlive.me/',
+                )) ?>
+            </div>
+            <div class="span4 hero-social">
+                <div style="padding: 10px 0;">
+                    <a href="https://www.patreon.com/PonyvilleLive" title="Support our Patreon!" target="_blank"><img src="<?=\DF\Url::content('social/patreon.png') ?>" alt="Patreon"></a>
+                    <a href="https://www.youtube.com/ponyvilleliveglobal" title="YouTube" target="_blank"><img src="<?=\DF\Url::content('social/youtube.png') ?>" alt="YouTube"></a>
+                    <a href="https://twitter.com/PonyvilleLive" title="Twitter" target="_blank"><img src="<?=\DF\Url::content('social/twitter.png') ?>" alt="Twitter"></a>
+                    <a href="http://news.ponyvillelive.com/" title="Tumblr" target="_blank"><img src="<?=\DF\Url::content('social/tumblr.png') ?>" alt="Tumblr"></a>
+                    <a href="https://www.facebook.com/pages/Ponyville-LIVE/517435684948331" title="Facebook" target="_blank"><img src="<?=\DF\Url::content('social/facebook.png') ?>" alt="Facebook"></a>
+                    <a href="http://steamcommunity.com/groups/ponyvillelive" title="Steam" target="_blank"><img src="<?=\DF\Url::content('social/steam.png') ?>" alt="Steam"></a>
+                    <a href="https://plus.google.com/+PonyvilleLiveGlobal" title="Google Plus" rel="publisher" target="_blank"><img src="<?=\DF\Url::content('social/google_plus.png') ?>" alt="Google Plus"></a>
+                    <a href="<?=$this->url->get('show/feed') ?>" title="Podcasts RSS Feed" target="_blank"><img src="<?=\DF\Url::content('social/feed.png') ?>" alt="RSS Feed"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <?
 $content_top = ob_get_contents();
 ob_end_clean();
@@ -141,7 +135,7 @@ $cat = $categories['audio'];
     <span class="station">Syndicated Station</span>
 </div>
 -->
-<h2 id="section_radio"><i class="<?=$cat['icon'] ?>"></i> Live Radio Stations <small><span id="nowplaying-listeners-audio"></span></small></h2>
+<h2 id="section_radio"><i class="<?=$cat['icon'] ?>"></i> Pony Radio Stations <small><span id="nowplaying-listeners-audio"></span></small></h2>
 
 <?
 $stations = $station_cols[0];
@@ -152,7 +146,7 @@ echo $this->viewHelper->renderCommon('station', array('stations' => $cat['statio
 <?
 $tz_info = \PVL\Timezone::getInfo();
 ?>
-<h2><i class="icon-calendar"></i> Upcoming Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a>, see <a href="<?=$this->url->get('schedule') ?>" target="_blank">entire schedule</a></small></h2>
+<h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a>, see <a href="<?=$this->url->get('schedule') ?>" target="_blank">entire schedule</a></small></h2>
 
 <div id="schedule_container">
     <?
@@ -161,7 +155,7 @@ $tz_info = \PVL\Timezone::getInfo();
 </div>
 
 <!-- Shows/Podcasts -->
-<h2 id="section_shows"><i class="icon-rss"></i> Podcasts &amp; Shows <small>Newer episodes first, <a href="<?=$this->url->get('show') ?>">view all</a></small></h2>
+<h2 id="section_shows"><i class="icon-rss"></i> Podcasts &amp; Show Archives <small>Newer episodes first, <a href="<?=$this->url->get('show') ?>">view all</a></small></h2>
 
 <?
 $podcasts = array_slice($podcasts, 0, 15);
@@ -170,7 +164,7 @@ $podcast_cols = \DF\Utilities::columns($podcasts, 3, true);
 echo $this->viewHelper->renderCommon('podcast', array('podcasts' => $podcasts));
 ?>
 
-<h2><i class="icon-folder-open-alt"></i> Convention Archives <small>Most recent conventions, <a href="<?=\DF\Url::route(array('module' => 'frontend', 'controller' => 'convention')) ?>" target="_blank">view all</a></small></h2>
+<h2><i class="icon-folder-open-alt"></i> Convention Coverage <small>Most recent conventions, <a href="<?=\DF\Url::route(array('module' => 'frontend', 'controller' => 'convention')) ?>" target="_blank">view all</a></small></h2>
 
 <?
 $cons = array_slice($conventions_archived, 0, 8);

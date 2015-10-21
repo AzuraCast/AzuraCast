@@ -13,23 +13,23 @@ $tz_info = \PVL\Timezone::getInfo();
     <meta name="viewport" content="width=device-width">
     <meta name="theme-color" content="#2C7FD2">
 
-    <meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, Bravely, Blue, MLP, MLP:FiM" />
-    <meta name="description" content="Home of fandom radio, video, podcasts, conventions and more, from the Internet's favorite fandoms." />
-    <link rel="canonical" href="<?=$this->config->application->base_url ?>" />
+    <meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, MLP, MLP:FiM" />
+    <meta name="description" content="Equestria's newest Brony multimedia network, featuring 24/7 pony radio, videos, podcasts, convention coverage, and more." />
+    <link rel="canonical" href="http://ponyvillelive.com" />
 
     <!-- Facebook and Other Social Sites -->
-    <meta property="og:site_name" content="<?=$this->config->application->name ?>" />
-    <meta property="og:url" content="<?=$this->config->application->base_url ?>" />
-    <meta property="og:image" content="<?=$this->url->getStatic('images/og_icon.png') ?>" />
+    <meta property="og:site_name" content="Ponyville Live!" />
+    <meta property="og:url" content="http://ponyvillelive.com/" />
+    <meta property="og:image" content="<?=$this->url->getStatic('pvl_square.png') ?>" />
 
-    <link rel="image_src" href="<?=$this->url->getStatic('images/og_icon.png') ?>" />
+    <link rel="image_src" href="<?=$this->url->getStatic('pvl_square.png') ?>" />
     <link href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" />
 
     <?php
     if ($title)
         $page_title = $title.' - '.$this->config->application->name;
     else
-        $page_title = $this->config->application->name.' - Live Radio, Video, Podcasts, Conventions & More';
+        $page_title = $this->config->application->name.' - Live Pony Radio, Video, Podcasts, Convention Coverage & More';
 
     $this->tag->setTitle($page_title);
     if (DF_APPLICATION_ENV != "production")
@@ -122,7 +122,7 @@ $tz_info = \PVL\Timezone::getInfo();
 <div class="header" role="banner">
     <div class="container">
         <div class="logo">
-            <a href="<?=$this->url->get('') ?>"><img id="logo-header" src="<?=$this->url->getStatic('mid2013/logo_'.$skin.'.png') ?>" alt="<?=$this->config->application->name ?> Logo"></a>
+            <a href="<?=$this->url->get('') ?>"><img id="logo-header" src="<?=$this->url->getStatic('mid2013/logo_'.$skin.'.png') ?>" alt="Ponyville Live! Logo"></a>
         </div>
 
         <div class="navbar">
@@ -139,6 +139,8 @@ $tz_info = \PVL\Timezone::getInfo();
                     ?>
 
                     <ul class="nav primary_menu">
+
+                        <!-- About PVL -->
                         <li class="dropdown">
                             <a href="<?=$this->url->get('about') ?>"><i class="icon-info-sign"></i> About</a>
                             <ul class="dropdown-menu">
@@ -148,10 +150,12 @@ $tz_info = \PVL\Timezone::getInfo();
                                 <li class="divider"></li>
                                 <li><a href="http://m.pvlive.me/"><i class="icon-mobile-phone"></i> PVL! Mobile</a></li>
                                 <li><a href="<?=$this->url->get('apps') ?>"><i class="icon-cloud-download"></i> Apps &amp; Players</a></li>
-                                <li><a href="http://docs.bravelyblue.apiary.io/" target="_blank"><i class="icon-cog"></i> API Documentation</a></li>
-                                <li><a href="https://github.com/BravelyBlue/BravelyBlue" target="_blank"><i class="icon-code-fork"></i> Fork Us on Github</a></li>
+                                <li><a href="http://docs.ponyvillelive.apiary.io/" target="_blank"><i class="icon-cog"></i> PVL! Data API</a></li>
+                                <li><a href="https://github.com/BravelyBlue/PVLive" target="_blank"><i class="icon-code-fork"></i> Fork Us on Github</a></li>
                             </ul>
                         </li>
+
+                        <!-- Stations -->
                         <li class="dropdown">
                             <a href="#" data-toggle="dropdown"><i class="icon-music"></i> Radio</a>
                             <ul class="dropdown-menu">
@@ -178,10 +182,10 @@ $tz_info = \PVL\Timezone::getInfo();
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a href="#" data-toggle="dropdown"><i class="icon-rss"></i> Podcasts</a>
+                            <a href="#" data-toggle="dropdown"><i class="icon-rss"></i> Shows</a>
                             <ul class="dropdown-menu">
-                                <li><a href="<?=$this->url->get('shows') ?>"><i class="icon-list"></i> Podcast Directory</a></li>
-                                <li><a href="<?=$this->url->get('submit/show') ?>"><i class="icon-cloud-upload"></i> Submit a Podcast</a></li>
+                                <li><a href="<?=$this->url->get('shows') ?>"><i class="icon-list"></i> Show Directory</a></li>
+                                <li><a href="<?=$this->url->get('submit/show') ?>"><i class="icon-cloud-upload"></i> Submit a Show</a></li>
                                 <li class="divider"></li>
                                 <? foreach($podcasts as $podcast): ?>
                                     <li><a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>" title="<?=$podcast['description'] ?>" target="_blank"><?=$podcast['name'] ?></a></li>
@@ -194,6 +198,7 @@ $tz_info = \PVL\Timezone::getInfo();
                                 <li><a href="<?=$this->url->get('conventions') ?>"><i class="icon-building"></i> Pony Conventions</a></li>
                                 <li><a href="<?=$this->url->get('artists') ?>"><i class="icon-group"></i> Artists Directory</a></li>
                                 <li class="divider"></li>
+                                <li><a href="http://pvlive.me/forums" target="_blank">PVL Forums</a></li>
                                 <li><a href="<?=$this->url->get('index/chat') ?>">Chat + Player</a></li>
                             </ul>
                         </li>
@@ -307,29 +312,15 @@ $footer_msg = \Entity\Settings::getSetting('footer_message');
 ?>
 <div class="copyright" role="contentinfo">
     <div class="container">
-        <div class="row-fluid">
-            <div class="span8">
-                <? if (!empty($footer_msg)): ?>
-                    <p class="footer-message">
-                        <?=$footer_msg ?>
-                    </p>
-                    <br>
-                <? endif; ?>
+        <? if (!empty($footer_msg)): ?>
+            <p class="footer-message">
+                <?=$footer_msg ?>
+            </p>
+            <br>
+        <? endif; ?>
 
-                <p>MLP is copyright &copy; Hasbro. All creations are &copy; to their respective artists. All songs are property of their respective artists.<br>
-                    Copyright &copy; 2012-<?=date('Y') ?> Bravely Blue Media LLC; All rights reserved.</p>
-            </div>
-            <div class="span4 text-right" style="padding: 10px 0">
-                <a href="https://www.patreon.com/PonyvilleLive" title="Support our Patreon!" target="_blank"><img src="<?=\DF\Url::content('social/patreon.png') ?>" alt="Patreon"></a>
-                <a href="https://www.youtube.com/ponyvilleliveglobal" title="YouTube" target="_blank"><img src="<?=\DF\Url::content('social/youtube.png') ?>" alt="YouTube"></a>
-                <a href="https://twitter.com/PonyvilleLive" title="Twitter" target="_blank"><img src="<?=\DF\Url::content('social/twitter.png') ?>" alt="Twitter"></a>
-                <a href="http://news.ponyvillelive.com/" title="Tumblr" target="_blank"><img src="<?=\DF\Url::content('social/tumblr.png') ?>" alt="Tumblr"></a>
-                <a href="https://www.facebook.com/pages/Ponyville-LIVE/517435684948331" title="Facebook" target="_blank"><img src="<?=\DF\Url::content('social/facebook.png') ?>" alt="Facebook"></a>
-                <a href="http://steamcommunity.com/groups/ponyvillelive" title="Steam" target="_blank"><img src="<?=\DF\Url::content('social/steam.png') ?>" alt="Steam"></a>
-                <a href="https://plus.google.com/+PonyvilleLiveGlobal" title="Google Plus" rel="publisher" target="_blank"><img src="<?=\DF\Url::content('social/google_plus.png') ?>" alt="Google Plus"></a>
-                <a href="<?=$this->url->get('show/feed') ?>" title="Podcasts RSS Feed" target="_blank"><img src="<?=\DF\Url::content('social/feed.png') ?>" alt="RSS Feed"></a>
-            </div>
-        </div>
+        <p>MLP is copyright &copy; Hasbro. All creations are &copy; to their respective artists. All songs are property of their respective artists.<br>
+            Copyright &copy; 2012-<?=date('Y') ?> <a href="http://www.bravelyblue.com/" target="_blank">Bravely Blue Media LLC</a> and Ponyville Live! All rights reserved.</p>
     </div>
 </div>
 

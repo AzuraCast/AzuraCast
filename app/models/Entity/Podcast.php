@@ -22,8 +22,6 @@ class Podcast extends \DF\Doctrine\Entity
         $this->sources = new ArrayCollection;
         $this->stations = new ArrayCollection;
         $this->managers = new ArrayCollection;
-
-        $this->fandom = Fandom::fetchDefault();
     }
 
     /**
@@ -154,18 +152,6 @@ class Podcast extends \DF\Doctrine\Entity
      * @ManyToMany(targetEntity="User", mappedBy="podcasts")
      */
     protected $managers;
-
-
-    /** @Column(name="fandom_id", type="integer", nullable=true) */
-    protected $fandom_id;
-
-    /**
-     * @ManyToOne(targetEntity="Fandom", inversedBy="podcasts")
-     * @JoinColumns({
-     *   @JoinColumn(name="fandom_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
-     */
-    protected $fandom;
 
     public function getLatestEpisode()
     {

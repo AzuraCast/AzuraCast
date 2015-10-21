@@ -12,12 +12,13 @@ class NetworkNews extends \DF\Doctrine\Entity
     public function __construct()
     {
         $this->layout = 'vertical';
+
         $this->sort_timestamp = time();
         $this->display_timestamp = time();
-        $this->tags = array();
-        $this->is_notified = false;
 
-        $this->fandom = Fandom::fetchDefault();
+        $this->tags = array();
+
+        $this->is_notified = false;
     }
 
     /**
@@ -56,18 +57,6 @@ class NetworkNews extends \DF\Doctrine\Entity
 
     /** @Column(name="is_notified", type="boolean") */
     protected $is_notified;
-
-
-    /** @Column(name="fandom_id", type="integer", nullable=true) */
-    protected $fandom_id;
-
-    /**
-     * @ManyToOne(targetEntity="Fandom", inversedBy="songs")
-     * @JoinColumns({
-     *   @JoinColumn(name="fandom_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
-     */
-    protected $fandom;
 
     /**
      * Static Functions

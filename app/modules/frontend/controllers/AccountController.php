@@ -242,7 +242,7 @@ class AccountController extends BaseController
         $this->auth->authenticate(array('username' => $user->email, 'password' => $temp_pw));
 
         $this->alert('<b>Logged in successfully.</b><br>Your account password has been reset. Please change your password using the form below.', 'green');
-        $this->redirectToRoute(array('controller' => 'account', 'action' => 'editprofile'));
+        $this->redirectToRoute(array('controller' => 'profile', 'action' => 'edit'));
         return;
     }
 

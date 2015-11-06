@@ -135,6 +135,7 @@ class StationController extends BaseController
         $format = strtolower($this->getParam('format', 'pls'));
         switch($format)
         {
+            // M3U Playlist Format
             case "m3u":
                 $m3u_lines = array();
                 $m3u_lines[] = '#EXTM3U';
@@ -160,6 +161,43 @@ class StationController extends BaseController
                 echo $m3u_file;
             break;
 
+            // Euro Truck Simulator 2
+            case "ets":
+                $ets_lines = array();
+                $ets_i = 0;
+
+                foreach($stations as $station)
+                {
+                    foreach($station['streams'] as $stream)
+                    {
+                        if (!$stream['is_active'] || !$stream['is_default'])
+                            continue;
+
+                        $ets_line = array(
+                            str_replace('|', '', $stream['stream_url']),
+                            str_replace('|', '', $station['name']),
+                            str_replace('|', '', $station['genre']),
+                            ($station['country']) ? strtoupper($station['country']) : 'EN',
+                            128,
+                            1,
+                        );
+
+                        $ets_lines[] = ' stream_data['.$ets_i.']: "'.implode('|', $ets_line).'"';
+                        $ets_i++;
+                    }
+                }
+
+                $ets_file =  "SiiNunit\n{\nlive_stream_def : _nameless.0662.83F8 {\n";
+                $ets_file .= " stream_data: ".count($ets_lines)."\n";
+                $ets_file .= implode("\n", $ets_lines);
+                $ets_file .= "\n}\n\n}";
+
+                header('Content-Type: text/plain');
+                header('Content-Disposition: attachment; filename="live_streams.sii"');
+                echo $ets_file;
+            break;
+
+            // PLS Playlist Format
             case "pls":
             default:
                 $output = array();

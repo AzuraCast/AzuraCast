@@ -1,45 +1,28 @@
-![PVL Logo](https://raw.githubusercontent.com/BravelyBlue/PVLive/master/web/resources/bitbucket.png)
+**AzuraCast** is a standalone web radio management kit.
+ 
+You can either use AzuraCast to spin up a brand new radio station from the ground up (using its built-in installer scripts), or use the web application to manage an existing radio setup.
 
-**PVLive** is the flagship web application for the [Ponyville Live!](http://ponyvillelive.com/) network, maintained by Bravely Blue Media, LLC.
+Currently, AzuraCast supports [LiquidSoap](http://liquidsoap.fm/) for playlist and station setup, and [IceCast](http://icecast.org/) for broadcasting to the web. AzuraCast has been tested to work with Ubuntu 14.04 and 16.04 LTS editions.
 
-The PVLive application is built on several powerful technologies:
+AzuraCast offers the following functionality to radio station operators:
 
-* [Twitter Bootstrap 2](http://getbootstrap.com/2.3.2/) (Frontend UI)
-* [Phalcon](http://phalconphp.com/en/) (PHP MVC Framework)
-* [Doctrine 2](http://www.doctrine-project.org/) (PHP Database Layer)
-* [Composer](https://getcomposer.org/) (Dependency Management)
-* [Vagrant](http://www.vagrantup.com/) (Local Development)
-* [Sass](http://sass-lang.com/) (Stylesheets)
+* Create and manage administrator accounts to delegate station management to others
+* Upload and manage playlists
+* Hourly and daily station listener statistics
+* Listener metrics arranged by time of day and day of week 
+* A timeline of all songs played in the last 48 hours
 
-Behind the scenes, the system is powered by a LEMP (Linux, [nginx](http://nginx.org/), [MySQL](http://www.mysql.com/) and PHP) stack.
+## Local Development with Vagrant
 
-## Contribute!
-
-The PVLive codebase has now been made public, both to help our team maintain transparency and to encourage contributions from the developer community. If you see a bug or other issue with the codebase, please report an issue or submit a pull request!
-
-## Developing Locally
-
-Want to help improve the PVL application codebase? Now you can run your own local virtual machine for development! Follow these steps to get started:
+This application supports **Vagrant** for local development and testing before launching a production 
 
 * Clone this repository to your hard drive.
 * Install [Vagrant](http://www.vagrantup.com/) for your OS.
-* Install [the Vagrant hostsupdater plugin](https://github.com/cogitatio/vagrant-hostsupdater) via Vagrant.
 * Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) for your OS.
 * Open a command line prompt at the root of this repo.
 * Type `vagrant up` in the command line.
 
 If you don't already have the Vagrant box downloaded, this process may take several minutes (or even hours, depending on your bandwidth). The box image is cached locally, though, making future vagrant runs easy.
-
-**Note**: You will only see live production-grade data from the main PVL server if you have the proper API key set in `app/config/apis.conf.php`. This API key is private, and available upon request from [pr@ponyvillelive.com](mailto:pr@ponyvillelive.com).
-
-### Local Administrator
-
-By default, a super-administrator account will be created that will allow you to log in locally and access all administrative commands.
-
-* Username: `admin@ponyvillelive.com`
-* Password: `password`
-
-Any account in the PVL database with access to the `administer all` action will be granted super-administrator rights, so this can be restored via the database if lost for any reason.
 
 ### SSH
 
@@ -47,7 +30,7 @@ You can connect to the Vagrant VM by typing `vagrant ssh` into the command line 
 
 ### Web Server
 
-The web server is configured by default to respond to `http://dev.pvlive.me`. The URL should automatically be added to your hosts file by the Vagrant hostsupdater plugin.
+The web server is configured by default to respond to `http://localhost:8080`.
 
 The web application resides by default in the `/var/www/vagrant/` directory inside the Vagrant virtual machine.
 
@@ -65,8 +48,12 @@ Because stylesheets are written in SCSS, they must first be compiled into CSS be
 
 ## Questions? Comments? Feedback?
 
-Ponyville Live! is a volunteer project, and we depend on your support and feedback to keep growing.
+AzuraCast is a volunteer project, and we depend on your support and feedback to keep growing.
 
 Issues for the PVLive codebase are tracked in this repository's Issues section on Github. Anyone can create a new issue for the project, and you are encouraged to do so.
 
 If you have any further questions, comments or suggestions, just visit the [Contact Us](http://ponyvillelive.com/contact) page for more information on how to reach our team.
+
+## Contribute to AzuraCast
+
+This codebase is Free and Open Source Software, both to help our team maintain transparency and to encourage contributions from the developer community. If you see a bug or other issue with the codebase, please report an issue or submit a pull request!

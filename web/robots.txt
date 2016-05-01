@@ -18,11 +18,4 @@
 # http://www.sxw.org.uk/computing/robots/check.html
 
 User-agent: *
-Crawl-delay: 1
-Host: ponyvillelive.com
-
-# Prevent GoogleBot from requesting tracks!
-Disallow: /station/request/*
-
-# Allow all others.
-Allow: /
+Disallow: /

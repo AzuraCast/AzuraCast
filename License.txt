@@ -186,7 +186,8 @@
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
-   Copyright 2012-2014 Bravely Blue Media LLC dba. Ponyville Live!
+   Copyright 2012-2015 Bravely Blue Media LLC dba. Ponyville Live!
+   Copyright 2016 Buster "Silver Eagle" Neece
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

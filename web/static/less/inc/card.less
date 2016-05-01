@@ -1,0 +1,87 @@
+.card {
+    position: relative;
+    background: #fff;
+    box-shadow: @card-shadow;
+    margin-bottom: @grid-gutter-width;
+
+    .card-header {
+        position: relative; 
+        
+        &:not(.ch-alt) {
+            @media screen and (min-width: @screen-sm-min) {
+                padding: 23px 25px;
+            }
+            
+            @media screen and (max-width: @screen-sm-max) {
+                padding: 18px; 
+            }
+        }
+
+        h2 {
+            margin: 0;
+            line-height: 100%;
+            font-size: 17px;
+            font-weight: 400;
+            
+            small {
+                display: block;
+                margin-top: 8px;
+                color: #AEAEAE;
+                line-height: 160%;
+            }
+        } 
+
+        &.ch-alt {
+            @media screen and (min-width: @screen-sm-min) {
+                padding: 23px 26px;
+            } 
+            
+            @media screen and (max-width: @screen-sm-max) {
+                padding: 18px 18px 28px;
+            }
+                        
+            &:not([class*="bgm-"]) {
+                background-color: #f7f7f7;
+            }
+        }
+
+        &[class*="bgm-"] {
+            h2, h2 small { 
+                color: #fff;
+            }
+        }
+        
+        .actions {
+            position: absolute; 
+            right: 10px;
+            z-index: 2; 
+            top: 15px;
+        }
+        
+        .btn-float {
+            right: 25px;
+            bottom: -23px;
+            z-index: 1;
+        }
+    }
+    
+    .card-body { 
+        &.card-padding {
+            @media screen and (min-width: @screen-sm-min) {
+                padding: 23px 26px;
+            }
+            
+            @media screen and (max-width: @screen-sm-max) {
+                padding: 18px;
+            }
+        }
+        
+        &.card-padding-sm {
+            padding: 15px;
+        }
+    }
+}
+
+.card-header:not(.ch-alt):not([class*="bgm-"]) + .card-padding {
+    padding-top: 0;
+}

@@ -1,0 +1,71 @@
+#chat {
+    padding: 20px 0;
+    width: @sidebar-right-width;
+    right: -(@sidebar-right-width + 20);
+
+    &.toggled {
+        right: 0;
+    }
+    
+    .chat-search {
+        padding: 20px 20px 15px 20px;
+        
+        .form-control {
+            .img-retina('../img/icons/search-2.png', '../img/icons/search-2@2x.png', 24px, 24px);
+            background-repeat: no-repeat;
+            background-position: left center;
+            padding-left: 30px;
+            .transition(all); 
+            .transition-duration(300ms);
+            
+            &:focus {
+                background-position: right center;
+                padding: 0 30px 0 0;
+            }
+        }
+    }
+}
+
+/*
+ * Chat Status Icons
+ */
+[class*="chat-status"] {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    top: -3px;
+    right: 12px;
+    border: 2px solid #FFF;
+ }
+ 
+/* Simple Mixin */
+.chat-status(@color) {
+   box-shadow: 0 0 0 1px @color;
+   background: @color;
+}
+
+.chat-status-online {
+    .chat-status(#1EC01E);
+}
+
+.chat-status-offline {
+    .chat-status(#E73F3F);
+}
+
+.chat-status-busy {
+    .chat-status(#FFA500);
+}
+
+/*
+ * For Stupid IE9
+ */
+.ie9 {
+    #chat {
+        right: 0;
+        
+        &:not(.toggled) {
+            display: none;
+        }
+    }
+}

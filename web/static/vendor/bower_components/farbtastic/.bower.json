@@ -1,0 +1,24 @@
+{
+  "name": "farbtastic",
+  "version": "2.0.0-alpha.1",
+  "description": "jQuery Color Wheel",
+  "keywords": [
+    "jquery"
+  ],
+  "main": "src/farbtastic.js",
+  "dependencies": {
+    "jquery": "*"
+  },
+  "license": "GPL-2.0",
+  "homepage": "https://github.com/mattfarina/farbtastic",
+  "_release": "2.0.0-alpha.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.0-alpha.1",
+    "commit": "449c5a27de73efecf526594a19b0e1b2789255e1"
+  },
+  "_source": "git://github.com/mattfarina/farbtastic.git",
+  "_target": "~2.0.0-alpha.1",
+  "_originalSource": "mattfarina/farbtastic",
+  "_direct": true
+}

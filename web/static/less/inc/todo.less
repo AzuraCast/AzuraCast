@@ -1,0 +1,186 @@
+#todo-lists {
+    background: @m-amber;
+    color: #fff;
+    margin-bottom: 30px;
+    font-family: 'shadowsintolight', cursive;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.tl-header {
+    position: relative;
+    padding: 25px;
+    
+    & > h2 {
+        margin: 0;
+        color: #fff;
+        line-height: 100%;
+    }
+    
+    & > small {
+        font-size: 17px;
+        display: block;
+        margin-top: 3px;
+    }
+    
+    .actions {
+        position: absolute; 
+        right: 10px;
+        padding: 0;
+        list-style: none;
+        top: 15px;
+        
+        & > li {
+            display: inline-block;
+            vertical-align: baseline;
+        }
+    }
+}
+
+.tl-body {
+    min-height: 300px;
+    position: relative;
+    padding: 20px 10px 20px 25px;
+    background: rgba(0, 0, 0, 0.03);
+
+    .media-body {
+        padding-top: 3px;
+        font-size: 18px;
+    }
+
+    .checkbox {
+        margin-bottom: 15px;
+        
+        span {
+            display: inline-block;
+            margin-top: -3px;
+        }
+
+        input:checked + i + span {
+            text-decoration: line-through;
+        }
+        
+        .input-helper {
+            &:before {
+                border-color: rgba(255,255,255,0.8);
+                border-width: 2px;
+            }
+            
+            &:after {
+                border-color: #fff;
+            } 
+        } 
+    }
+}
+
+#add-tl-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    background: #fff;
+    top: -25px;
+    right: 23px;
+    .transition(all);
+    .backface-visibility(hidden);
+    .transition-duration(200ms);
+    
+    .add-new-item {
+        .transition(all);
+        .transition-duration(200ms);
+        .scale(1);
+    }
+    
+    .add-tl-body {
+        overflow: hidden;
+        .opacity(0);
+        .transition(all);
+        .transition-duration(300ms);
+        
+        textarea {
+            padding: 25px 25px 45px;
+            resize: none;
+            width: 100%;
+            font-size: 24px;
+            color: @m-amber;
+            position: absolute;
+            height: 100%;
+            border: 0;
+            outline: none;
+        }
+    }
+    
+    &:not(.toggled) {
+        overflow: hidden;
+        
+        .add-new-item {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            .bg-option();
+            cursor: pointer;
+            text-align: center;
+            font-size: 23px;
+            color: @m-orange;
+            line-height: 50px;
+        }
+    }
+    
+    &.toggled {
+        width: ~"calc(100% - 47px)";
+        height: ~"calc(100% - 25px)";
+        border-radius: 2px;
+        top: 0;
+        z-index: 1;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+        max-height: 300px;
+        overflow: visible;
+        
+        .add-new-item {
+            .scale(0);
+            height: 0;
+            overflow: hidden;
+            float: left;
+        }
+
+        .add-tl-body {
+            .opacity(1);
+            
+            .add-tl-actions {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                padding: 5px 10px;
+                border-top: 1px solid #EEE;
+                z-index: 1;
+
+                & > a {
+                    font-size: 25px;
+                    padding: 0 6px;
+                    border-radius: 50%; 
+                    text-align: center;
+                    height: 40px;
+                    width: 40px;
+                    display: inline-block;
+                    line-height: 41px;
+                    border-radius: 50%;
+                    .transition(background-color);
+                    .transition-duration(300ms);
+                    
+                    &:hover {
+                        background-color: #eee;
+                    }
+                }
+                
+                [data-tl-action="dismiss"] {
+                    color: @m-red;
+                }
+                
+                [data-tl-action="save"] {
+                    color: @m-green;
+                }
+            } 
+        }
+    }
+}

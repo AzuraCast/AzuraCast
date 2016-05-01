@@ -1,0 +1,150 @@
+/*
+ * For header type 1 only
+ * You may remove these if you opt header 2
+ */
+#header {
+    .skin-switch {
+        padding: 10px 0 2px;
+        text-align: center;
+    }
+    
+    .ss-skin {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: inline-block;
+        margin: 2px 3px;
+    }
+}
+/* ----------------------------- End header type 1 ------------------------------------- */
+
+
+/*
+ * For header type 2 only
+ * You may remove these if you opt header 1
+ */
+
+#header-2 {
+    .skin-switch {
+        position: absolute;
+        right: 50px;
+        bottom: 23px;
+        z-index: 1;
+        
+        .btn {
+            background: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 25px;
+            z-index: 2;
+        }
+        
+        .dropdown-menu {
+            min-width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            width: 130px;
+            top: -42px;
+            left: -40px;
+            z-index: 1;
+            .transform-origin(center);
+            .scale-rotate(0, -360deg);
+            .transition-duration(500ms); 
+            
+            .ss-skin {
+                position: absolute;
+                
+                &.ss-1 {
+                    margin-left: -8px;
+                    top: 12px;
+                    left: 50%;
+                }
+                
+                &.ss-2 {
+                    right: 24px;
+                    top: 26px;
+                }
+                
+                &.ss-3 {
+                    top: 50%;
+                    margin-top: -8px;
+                    right: 12px;
+                }
+                
+                &.ss-4 {
+                    right: 24px;
+                    bottom: 26px;
+                }
+                
+                &.ss-5 {
+                    margin-left: -8px;
+                    bottom: 12px;
+                    left: 50%;
+                }
+                
+                &.ss-6 {
+                    left: 24px;
+                    bottom: 26px;
+                }
+                
+                &.ss-7 {
+                    top: 50%;
+                    margin-top: -8px;
+                    left: 12px;
+                }
+                
+                &.ss-8 {
+                    left: 24px;
+                    top: 26px;
+                }
+            }
+        }
+        
+        &.open {
+            .dropdown-menu {
+                .scale-rotate(1, 0deg);
+            }
+        }
+    }
+}
+/* ----------------------------- End header type 2 ------------------------------------- */
+
+
+
+/*
+ * Do not remove these
+ * This is common for both
+ */
+.ss-skin {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    
+    &:hover {
+        .opacity(0.8);
+    }
+}
+.current-skin(@color) {
+    background-color: @color;
+    
+    .ss-icon { color: @color; }
+    
+    .ha-menu {
+        @media (max-width: @screen-xs-max) {
+            background: @color;
+        }
+    }
+}
+
+[data-current-skin="lightblue"] { .current-skin(@m-lightblue); }
+[data-current-skin="bluegray"] { .current-skin(@m-bluegray); }
+[data-current-skin="blue"] { .current-skin(@m-blue); }
+[data-current-skin="purple"] { .current-skin(@m-purple); }
+[data-current-skin="orange"] { .current-skin(@m-orange); }
+[data-current-skin="cyan"] { .current-skin(@m-cyan); }
+[data-current-skin="green"] { .current-skin(@m-green); }
+[data-current-skin="teal"] { .current-skin(@m-teal); }
+[data-current-skin="pink"] { .current-skin(@m-pink); }

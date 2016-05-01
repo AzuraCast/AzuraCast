@@ -1,0 +1,97 @@
+.preloader {
+  position: relative;
+  margin: 0px auto;
+  display: inline-block;
+
+  &:not([class*="pl-"]) {
+    width: 40px;
+  }
+
+  &:before {
+    content:'';
+    display: block;
+    padding-top: 100%;
+  }
+
+  &.pl-xs { width: 20px; }
+  &.pl-sm { width: 30px; }
+  &.pl-lg { width: 50px; }
+  &.pl-xl { width: 80px; }
+  &.pl-xxl { width: 100px; }
+
+  &:not([class*="pls-"]) {
+    .plc-path {
+      animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+    }
+  }
+
+  &[class*="pls-"] .plc-path {
+    animation: dash 1.5s ease-in-out infinite;
+  }
+
+  &.pls-red .plc-path { stroke: @m-red; }
+  &.pls-blue .plc-path { stroke: @m-blue; }
+  &.pls-green .plc-path { stroke: @m-green; }
+  &.pls-yellow .plc-path { stroke: @m-yellow; }
+  &.pls-bluegray .plc-path { stroke: @m-bluegray; }
+  &.pls-amber .plc-path { stroke: @m-amber; }
+  &.pls-teal .plc-path { stroke: @m-teal; }
+  &.pls-gray .plc-path { stroke: @m-gray; }
+  &.pls-pink .plc-path { stroke: @m-pink; }
+  &.pls-purple .plc-path { stroke: @m-purple; }
+  &.pls-white .plc-path { stroke: #fff; }
+}
+
+.pl-circular {
+  animation: rotate 2s linear infinite;
+  height: 100%;
+  transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  margin: auto;
+}
+
+.plc-path {
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  fill: none;
+}
+
+@keyframes rotate{
+  100%{
+    transform: rotate(360deg);
+  }
+}
+@keyframes dash{
+  0%{
+    stroke-dasharray: 1,200;
+    stroke-dashoffset: 0;
+  }
+  50%{
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -35px;
+  }
+  100%{
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+@keyframes color{
+  100%, 0%{
+    stroke: @m-red;
+  }
+  40%{
+    stroke: @m-blue;
+  }
+  66%{
+    stroke: @m-green;
+  }
+  80%, 90%{
+    stroke: @m-amber;
+  }
+}

@@ -1,0 +1,145 @@
+.btn {
+    border: 0;
+    text-transform: uppercase;
+
+
+    &[class*="bgm-"]:not(.bgm-white) {
+        color: #fff;
+    }
+
+    .caret {
+        margin-top: -3px;
+    }
+     
+    &:not(.btn-link) {
+        .z-depth(1);
+    }
+}
+
+.btn-group, .btn-group-vertical {
+    &:not(.bootstrap-select) {
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .btn,
+    .btn:active,
+    .btn:focus,
+    .btn-group {
+        box-shadow: none !important;
+    }
+    
+    .btn {
+        margin: 0;
+    }
+}
+
+.btn-xs {
+  .button-size(2px; @padding-xs-horizontal; 11px; @line-height-small; @border-radius-small);
+}
+
+.btn-link {
+    color: #797979;
+    text-decoration: none;
+    border-radius: 2px;
+
+    &:hover {
+        color: #0a0a0a;
+    }
+
+    &:hover,
+    &:active,
+    &:focus  {
+        text-decoration: none;
+    }
+}
+
+.btn-inverse {
+    .button-variant(#fff, #454545, transparent);
+}
+
+.btn-icon {
+    border-radius: 50%;
+    width: 40px;
+    line-height: 42px;
+    height: 40px;
+    padding: 0;
+    text-align: center;
+    
+    .zmdi {
+        font-size: 17px;
+    }
+}
+
+.btn-icon-text {
+    & > .zmdi {
+        font-size: 15px;
+        vertical-align: top;
+        display: inline-block;
+        margin-top: 2px;
+        line-height: 100%;
+        margin-right: 5px;
+    }
+}
+
+.btn-float { 
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    line-height: 45px !important;
+    
+    &:not(.m-btn) {
+        position: absolute !important;
+    }
+
+    i {
+        font-size: 23px;
+        .transition(all);
+        .transition-duration(500ms);
+    }
+    
+    &:hover {
+        i {
+            .rotate(360deg);
+        }
+    }
+    
+    &:not(.bgm-white):not(.bgm-gray) {
+        & > i {
+            color: #fff;
+        }
+    }
+
+    &:not(.bgm-white):not(.bgm-gray) {
+        & > i {
+            color: #fff;
+        }
+    }
+    
+    &.bgm-white,
+    &.bgm-gray {
+        & > i {
+            color: #333;
+        }
+    }
+}
+
+
+.open .btn {
+    outline: none !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+    
+    &:focus, &:active {
+        outline: none !important;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+    }
+}
+
+/*
+ * Material Design Add button
+ */
+.m-btn {
+    z-index: 1;
+    bottom: 40px;
+    right: 40px;
+    position: fixed !important;
+}

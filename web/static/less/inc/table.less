@@ -1,0 +1,103 @@
+.table {
+    background-color: @table-bg;
+    margin-bottom: 0;
+    
+    & > thead > tr > th {
+        background-color: #fff;
+        vertical-align: middle;
+        font-weight: 500;
+        color: #333;
+        border-width: 1px;
+        text-transform: uppercase;
+    }
+    
+    [class*="bg-"] {
+        & > tr > th {
+            color: #fff;
+            border-bottom: 0; 
+        }
+        
+        & + tbody > tr > td {
+            border-top: 0;
+        }
+    }
+    
+    &.table-inner {
+        border: 0;
+    }
+    
+    & > thead > tr,
+    & > tbody > tr,
+    & > tfoot > tr {
+        & > th, & > td {
+            &:first-child {
+                padding-left: 30px;
+            }
+            
+            &:last-child {
+                padding-right: 30px;
+            }
+            
+        }
+    }
+    
+    & > tbody, & > tfoot {
+        & > tr {
+            &.active,
+            &.info,
+            &.warning,
+            &.succes,
+            &.danger {
+                & > td {
+                    border: 0;
+                }
+            }
+            
+            &:last-child > td >  {
+                padding-bottom: 20px;
+            }
+        }
+    }
+}
+
+.table-striped {
+    td, th {
+        border: 0 !important;
+    }
+}
+
+.table-bordered {
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0; 
+    
+    & > tbody > tr {
+        & > td, & > th {
+            border-bottom: 0;
+            border-left: 0;
+            
+            &:last-child {
+                border-right: 0;
+            }
+        }
+    }
+    
+    & > thead > tr > th {
+        border-left: 0;
+        
+        &:last-child {
+            border-right: 0;
+        }
+    }
+}
+
+.table-vmiddle {
+    td {
+        vertical-align: middle !important;
+    }
+}
+
+.table-responsive {
+    border: 0;
+}
+

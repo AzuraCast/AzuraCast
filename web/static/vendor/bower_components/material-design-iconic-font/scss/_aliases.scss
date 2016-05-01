@@ -1,0 +1,554 @@
+// Alias for backward capability with 2.0.x version
+
+.#{$zmdi-icon-prefix}-import-export {
+  &:before {
+    content: $zmdi-var-swap-vertical;
+  }
+}
+.#{$zmdi-icon-prefix}-swap-vertical- {
+  &:before {
+    content: $zmdi-var-swap-vertical;
+  }
+}
+.#{$zmdi-icon-prefix}-airplanemode-inactive {
+  &:before {
+    content: $zmdi-var-airplane-off;
+  }
+}
+.#{$zmdi-icon-prefix}-airplanemode-active {
+  &:before {
+    content: $zmdi-var-airplane;
+  }
+}
+.#{$zmdi-icon-prefix}-rate-review {
+  &:before {
+    content: $zmdi-var-airplane;
+  }
+}
+.#{$zmdi-icon-prefix}-comment-sign {
+  &:before {
+    content: $zmdi-var-comment-alert;
+  }
+}
+.#{$zmdi-icon-prefix}-network-warning {
+  &:before {
+    content: $zmdi-var-network-alert;
+  }
+}
+.#{$zmdi-icon-prefix}-shopping-cart-add {
+  &:before {
+    content: $zmdi-var-shopping-cart-plus;
+  }
+}
+.#{$zmdi-icon-prefix}-file-add {
+  &:before {
+    content: $zmdi-var-file-plus;
+  }
+}
+.#{$zmdi-icon-prefix}-network-wifi-scan {
+  &:before {
+    content: $zmdi-var-wifi-info;
+  }
+}
+.#{$zmdi-icon-prefix}-collection-add {
+  &:before {
+    content: $zmdi-var-collection-plus;
+  }
+}
+.#{$zmdi-icon-prefix}-format-playlist-add {
+  &:before {
+    content: $zmdi-var-playlist-plus;
+  }
+}
+.#{$zmdi-icon-prefix}-format-queue-music {
+  &:before {
+    content: $zmdi-var-playlist-audio;
+  }
+}
+.#{$zmdi-icon-prefix}-plus-box {
+  &:before {
+    content: $zmdi-var-plus-square;
+  }
+}
+.#{$zmdi-icon-prefix}-tag-backspace {
+  &:before {
+    content: $zmdi-var-tag-close;
+  }
+}
+.#{$zmdi-icon-prefix}-alarm-add {
+  &:before {
+    content: $zmdi-var-alarm-plus;
+  }
+}
+.#{$zmdi-icon-prefix}-battery-charging {
+  &:before {
+    content: $zmdi-var-battery-flash;
+  }
+}
+.#{$zmdi-icon-prefix}-daydream-setting {
+  &:before {
+    content: $zmdi-var-cloud-box;
+  }
+}
+.#{$zmdi-icon-prefix}-more-horiz {
+  &:before {
+    content: $zmdi-var-more;
+  }
+}
+.#{$zmdi-icon-prefix}-book-photo {
+  &:before {
+    content: $zmdi-var-book-image;
+  }
+}
+.#{$zmdi-icon-prefix}-incandescent {
+  &:before {
+    content: $zmdi-var-lamp;
+  }
+}
+.#{$zmdi-icon-prefix}-wb-iridescent {
+  &:before {
+    content: $zmdi-var-iridescent;
+  }
+}
+.#{$zmdi-icon-prefix}-calendar-remove {
+  &:before {
+    content: $zmdi-var-calendar-close;
+  }
+}
+.#{$zmdi-icon-prefix}-refresh-sync-disabled {
+  &:before {
+    content: $zmdi-var-refresh-sync-off;
+  }
+}
+.#{$zmdi-icon-prefix}-refresh-sync-problem {
+  &:before {
+    content: $zmdi-var-refresh-sync-alert;
+  }
+}
+.#{$zmdi-icon-prefix}-crop-original {
+  &:before {
+    content: $zmdi-var-image-o;
+  }
+}
+.#{$zmdi-icon-prefix}-power-off {
+  &:before {
+    content: $zmdi-var-power;
+  }
+}
+.#{$zmdi-icon-prefix}-power-off-setting {
+  &:before {
+    content: $zmdi-var-power-setting;
+  }
+}
+.#{$zmdi-icon-prefix}-leak-remove {
+  &:before {
+    content: $zmdi-var-leak-off;
+  }
+}
+.#{$zmdi-icon-prefix}-star-border {
+  &:before {
+    content: $zmdi-var-star-outline;
+  }
+}
+.#{$zmdi-icon-prefix}-brightness-low {
+  &:before {
+    content: $zmdi-var-brightness-5;
+  }
+}
+.#{$zmdi-icon-prefix}-brightness-medium {
+  &:before {
+    content: $zmdi-var-brightness-6;
+  }
+}
+.#{$zmdi-icon-prefix}-brightness-high {
+  &:before {
+    content: $zmdi-var-brightness-7;
+  }
+}
+.#{$zmdi-icon-prefix}-smartphone-portrait {
+  &:before {
+    content: $zmdi-var-smartphone;
+  }
+}
+.#{$zmdi-icon-prefix}-live-tv {
+  &:before {
+    content: $zmdi-var-tv-alt-play;
+  }
+}
+.#{$zmdi-icon-prefix}-format-textdirection-l-to-r {
+  &:before {
+    content: $zmdi-var-format-ltr;
+  }
+}
+.#{$zmdi-icon-prefix}-format-textdirection-r-to-l {
+  &:before {
+    content: $zmdi-var-format-rtl;
+  }
+}
+.#{$zmdi-icon-prefix}-arrow-back {
+  &:before {
+    content: $zmdi-var-arrow-left;
+  }
+}
+.#{$zmdi-icon-prefix}-arrow-forward {
+  &:before {
+    content: $zmdi-var-arrow-right;
+  }
+}
+.#{$zmdi-icon-prefix}-arrow-in {
+  &:before {
+    content: $zmdi-var-arrow-left-bottom;
+  }
+}
+.#{$zmdi-icon-prefix}-arrow-out {
+  &:before {
+    content: $zmdi-var-arrow-right-top;
+  }
+}
+.#{$zmdi-icon-prefix}-rotate-90-degrees-ccw {
+  &:before {
+    content: $zmdi-var-rotate-ccw;
+  }
+}
+.#{$zmdi-icon-prefix}-adb {
+  &:before {
+    content: $zmdi-var-android-alt;
+  }
+}
+.#{$zmdi-icon-prefix}-network-wifi {
+  &:before {
+    content: $zmdi-var-wifi;
+  }
+}
+.#{$zmdi-icon-prefix}-network-wifi-alt {
+  &:before {
+    content: $zmdi-var-wifi-alt;
+  }
+}
+.#{$zmdi-icon-prefix}-network-wifi-lock {
+  &:before {
+    content: $zmdi-var-wifi-lock;
+  }
+}
+.#{$zmdi-icon-prefix}-network-wifi-off {
+  &:before {
+    content: $zmdi-var-wifi-off;
+  }
+}
+.#{$zmdi-icon-prefix}-network-wifi-outline {
+  &:before {
+    content: $zmdi-var-wifi-outline;
+  }
+}
+.#{$zmdi-icon-prefix}-network-wifi-info {
+  &:before {
+    content: $zmdi-var-wifi-info;
+  }
+}
+.#{$zmdi-icon-prefix}-layers-clear {
+  &:before {
+    content: $zmdi-var-layers-off;
+  }
+}
+.#{$zmdi-icon-prefix}-colorize {
+  &:before {
+    content: $zmdi-var-eyedropper;
+  }
+}
+.#{$zmdi-icon-prefix}-format-paint {
+  &:before {
+    content: $zmdi-var-roller;
+  }
+}
+.#{$zmdi-icon-prefix}-format-quote {
+  &:before {
+    content: $zmdi-var-quote;
+  }
+}
+.#{$zmdi-icon-prefix}-camera-monochrome-photos {
+  &:before {
+    content: $zmdi-var-camera-bw;
+  }
+}
+.#{$zmdi-icon-prefix}-sort-by-alpha {
+  &:before {
+    content: $zmdi-var-sort-asc;
+  }
+}
+.#{$zmdi-icon-prefix}-folder-shared {
+  &:before {
+    content: $zmdi-var-folder-person;
+  }
+}
+.#{$zmdi-icon-prefix}-folder-special {
+  &:before {
+    content: $zmdi-var-folder-star-alt;
+  }
+}
+.#{$zmdi-icon-prefix}-comment-dots {
+  &:before {
+    content: $zmdi-var-comment-more;
+  }
+}
+.#{$zmdi-icon-prefix}-reorder {
+  &:before {
+    content: $zmdi-var-view-headline;
+  }
+}
+.#{$zmdi-icon-prefix}-dehaze {
+  &:before {
+    content: $zmdi-var-menu;
+  }
+}
+.#{$zmdi-icon-prefix}-sort {
+  &:before {
+    content: $zmdi-var-sort-amount-desc;
+  }
+}
+.#{$zmdi-icon-prefix}-pages {
+  &:before {
+    content: $zmdi-var-google-pages;
+  }
+}
+
+// Alias for better searchable on page
+// -----------------------------------
+.#{$zmdi-icon-prefix}-calendar-account {
+  &:before {
+    content: $zmdi-var-account-calendar;
+  }
+}
+.#{$zmdi-icon-prefix}-paste {
+  &:before {
+    content: $zmdi-var-assignment-o;
+  }
+}
+.#{$zmdi-icon-prefix}-cut {
+  &:before {
+    content: $zmdi-var-scissors;
+  }
+}
+.#{$zmdi-icon-prefix}-save {
+  &:before {
+    content: $zmdi-var-floppy;
+  }
+}
+.#{$zmdi-icon-prefix}-smartphone-code {
+  &:before {
+    content: $zmdi-var-code-smartphone;
+  }
+}
+
+
+// Alias for map section
+// -----------------------------------
+.#{$zmdi-icon-prefix}-directions-bike {
+  &:before {
+    content: $zmdi-var-bike;
+  }
+}
+.#{$zmdi-icon-prefix}-directions-boat {
+  &:before {
+    content: $zmdi-var-boat;
+  }
+}
+.#{$zmdi-icon-prefix}-directions-bus {
+  &:before {
+    content: $zmdi-var-bus;
+  }
+}
+.#{$zmdi-icon-prefix}-directions-car {
+  &:before {
+    content: $zmdi-var-car;
+  }
+}
+.#{$zmdi-icon-prefix}-directions-railway {
+  &:before {
+    content: $zmdi-var-railway;
+  }
+}
+.#{$zmdi-icon-prefix}-directions-run {
+  &:before {
+    content: $zmdi-var-run;
+  }
+}
+.#{$zmdi-icon-prefix}-directions-subway {
+  &:before {
+    content: $zmdi-var-subway;
+  }
+}
+.#{$zmdi-icon-prefix}-directions-walk {
+  &:before {
+    content: $zmdi-var-walk;
+  }
+}
+.#{$zmdi-icon-prefix}-local-hotel {
+  &:before {
+    content: $zmdi-var-hotel;
+  }
+}
+.#{$zmdi-icon-prefix}-local-activity {
+  &:before {
+    content: $zmdi-var-ticket-star;
+  }
+}
+.#{$zmdi-icon-prefix}-local-play {
+  &:before {
+    content: $zmdi-var-ticket-star;
+  }
+}
+.#{$zmdi-icon-prefix}-local-airport {
+  &:before {
+    content: $zmdi-var-airplane;
+  }
+}
+.#{$zmdi-icon-prefix}-local-atm {
+  &:before {
+    content: $zmdi-var-money-box;
+  }
+}
+.#{$zmdi-icon-prefix}-local-bar {
+  &:before {
+    content: $zmdi-var-cocktail;
+  }
+}
+.#{$zmdi-icon-prefix}-local-cafe {
+  &:before {
+    content: $zmdi-var-coffee;
+  }
+}
+.#{$zmdi-icon-prefix}-local-car-wash {
+  &:before {
+    content: $zmdi-var-car-wash;
+  }
+}
+.#{$zmdi-icon-prefix}-local-convenience-store {
+  &:before {
+    content: $zmdi-var-store-24;
+  }
+}
+.#{$zmdi-icon-prefix}-local-dining {
+  &:before {
+    content: $zmdi-var-cutlery;
+  }
+}
+.#{$zmdi-icon-prefix}-local-drink {
+  &:before {
+    content: $zmdi-var-drink;
+  }
+}
+.#{$zmdi-icon-prefix}-local-florist {
+  &:before {
+    content: $zmdi-var-flower-alt;
+  }
+}
+.#{$zmdi-icon-prefix}-local-gas-station {
+  &:before {
+    content: $zmdi-var-gas-station;
+  }
+}
+.#{$zmdi-icon-prefix}-local-grocery-store {
+  &:before {
+    content: $zmdi-var-shopping-cart;
+  }
+}
+.#{$zmdi-icon-prefix}-local-hospital {
+  &:before {
+    content: $zmdi-var-hospital;
+  }
+}
+.#{$zmdi-icon-prefix}-local-laundry-service {
+  &:before {
+    content: $zmdi-var-washing-machine;
+  }
+}
+.#{$zmdi-icon-prefix}-local-library {
+  &:before {
+    content: $zmdi-var-library;
+  }
+}
+.#{$zmdi-icon-prefix}-local-mall {
+  &:before {
+    content: $zmdi-var-mall;
+  }
+}
+.#{$zmdi-icon-prefix}-local-movies {
+  &:before {
+    content: $zmdi-var-movie-alt;
+  }
+}
+.#{$zmdi-icon-prefix}-local-offer {
+  &:before {
+    content: $zmdi-var-label;
+  }
+}
+.#{$zmdi-icon-prefix}-local-parking {
+  &:before {
+    content: $zmdi-var-parking;
+  }
+}
+.#{$zmdi-icon-prefix}-local-parking {
+  &:before {
+    content: $zmdi-var-parking;
+  }
+}
+.#{$zmdi-icon-prefix}-local-pharmacy {
+  &:before {
+    content: $zmdi-var-hospital-alt;
+  }
+}
+.#{$zmdi-icon-prefix}-local-phone {
+  &:before {
+    content: $zmdi-var-phone;
+  }
+}
+.#{$zmdi-icon-prefix}-local-pizza {
+  &:before {
+    content: $zmdi-var-pizza;
+  }
+}
+.#{$zmdi-icon-prefix}-local-post-office {
+  &:before {
+    content: $zmdi-var-email;
+  }
+}
+.#{$zmdi-icon-prefix}-local-printshop {
+  &:before {
+    content: $zmdi-var-print;
+  }
+}
+.#{$zmdi-icon-prefix}-local-see {
+  &:before {
+    content: $zmdi-var-camera;
+  }
+}
+.#{$zmdi-icon-prefix}-local-shipping {
+  &:before {
+    content: $zmdi-var-truck;
+  }
+}
+.#{$zmdi-icon-prefix}-local-store {
+  &:before {
+    content: $zmdi-var-store;
+  }
+}
+.#{$zmdi-icon-prefix}-local-taxi {
+  &:before {
+    content: $zmdi-var-car-taxi;
+  }
+}
+.#{$zmdi-icon-prefix}-local-wc {
+  &:before {
+    content: $zmdi-var-male-female;
+  }
+}
+.#{$zmdi-icon-prefix}-my-location {
+  &:before {
+    content: $zmdi-var-gps-dot;
+  }
+}
+.#{$zmdi-icon-prefix}-directions {
+  &:before {
+    content: $zmdi-var-turning-sign;
+  }
+}

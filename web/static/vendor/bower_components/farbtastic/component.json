@@ -1,0 +1,15 @@
+{
+  "name": "farbtastic",
+  "version": "2.0.0-alpha.1",
+  "description": "jQuery Color Wheel",
+  "keywords": [
+    "jquery"
+  ],
+  "scripts": [
+    "src/farbtastic.js"
+  ],
+  "dependencies": {
+    "components/jquery": "*"
+  },
+  "license": "GPL-2.0"
+}

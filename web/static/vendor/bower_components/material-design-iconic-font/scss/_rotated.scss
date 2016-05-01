@@ -1,0 +1,19 @@
+// Rotated & Flipped icons
+// -------------------------
+
+.#{$zmdi-css-prefix}-rotate-90  {
+  transform: rotate(90deg);
+}
+.#{$zmdi-css-prefix}-rotate-180 {
+  transform: rotate(180deg);
+}
+.#{$zmdi-css-prefix}-rotate-270 {
+  transform: rotate(270deg);
+}
+
+.#{$zmdi-css-prefix}-flip-horizontal {
+  transform: scale(-1, 1);
+}
+.#{$zmdi-css-prefix}-flip-vertical {
+  transform: scale(1, -1);
+}

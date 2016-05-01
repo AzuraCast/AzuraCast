@@ -1,0 +1,116 @@
+.dropdown-menu {
+    box-shadow: @dropdown-shadow;
+    .transition(all);
+    .transition-duration(250ms); 
+    
+    & > li > a { 
+        padding: 8px 17px;
+        .transition(background-color);
+        .transition-duration(300ms);
+    }
+
+    &.dropdown-menu-lg {
+        width: 300px;
+    }
+    
+    &.dropdown-menu-sm {
+        width: 150px;
+    }
+    
+    &.dropdown-menu-right {
+        right: 0;
+        left: auto;
+        
+        & > li > a {
+            text-align: right;
+        }
+    }
+
+    &.dm-icon {
+        & > li > a > .zmdi {
+            line-height: 100%;
+            vertical-align: top;
+            font-size: 18px;
+            width: 28px;
+        }
+    }
+    
+    &:not([class*="bgm-"]) {
+        & > li > a {
+            color: #4C4C4C;
+            
+            &:hover {
+                color: #000;
+            }
+        }
+    }
+    
+    &[class*="bgm-"] {
+        & > li > a {
+            font-weight: 300;
+            color: #fff;
+        }
+    }
+}
+
+.dropdown, .btn-group {
+    &:not([data-animation]) {
+        .dropdown-menu {
+            .scale(0);
+            .opacity(0);
+            display: block
+        }
+    }
+}
+
+.dropdown, .bootstrap-select, .btn-group {
+    .dropdown-menu {
+        &:not([data-animation]) {
+            &.pull-right, &.dropdown-menu-right {
+                .transform-origin(top right);
+            }
+            
+            &:not(.pull-right):not(.dropdown-menu-right) {
+                .transform-origin(top left);
+            }
+        }
+    }
+}
+
+
+.dropup {
+    .dropdown-menu {
+        &:not([data-animation]) {
+            &.pull-right, &.dropdown-menu-right {
+                .transform-origin(bottom right);
+            }
+            
+            &:not(.pull-right):not(.dropdown-menu-right) {
+                .transform-origin(bottom left);
+            }
+        }
+    }
+}
+
+.dropdown, .dropup, .bootstrap-select, .btn-group {
+    &.open {
+        .dropdown-menu {
+            &:not([data-animation]) {
+                .scale(1);
+                .opacity(1);
+            }
+        }
+    }
+}
+
+.dropdown-header {
+    padding: 3px 17px;
+    margin-top: 10px;
+    color: #b1b1b1;
+    text-transform: uppercase;
+    font-weight: normal;
+}
+
+.btn-group.open .dropdown-toggle {
+    box-shadow: none;
+}

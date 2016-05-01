@@ -1,0 +1,30 @@
+.mCSB_scrollTools {
+    width: 5px;
+    
+    .mCSB_dragger_bar {
+        border-radius: 0 !important;
+    }
+    
+    &.mCSB_scrollTools_horizontal,
+    &.mCSB_scrollTools_vertical {
+        margin: 0 !important;  
+    }
+    
+    &.mCSB_scrollTools_horizontal {
+        height: 10px;
+    }
+}
+
+.mCS-minimal-dark {
+    &.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+        background: rgba(0,0,0,0.4); 
+    }
+    
+    &.mCSB_scrollTools_onDrag .mCSB_dragger .mCSB_dragger_bar {
+        background: rgba(0,0,0,0.5) !important; 
+    }
+}
+
+.mCSB_inside > .mCSB_container {
+    margin-right: 0;
+}

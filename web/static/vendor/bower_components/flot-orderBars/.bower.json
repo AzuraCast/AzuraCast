@@ -1,0 +1,14 @@
+{
+  "name": "flot-orderBars",
+  "homepage": "https://github.com/emmerich/flot-orderBars",
+  "_release": "d44ff4f2fe",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "d44ff4f2fec4c8bb1254e59567ee39fa3684372e"
+  },
+  "_source": "git://github.com/emmerich/flot-orderBars.git",
+  "_target": "*",
+  "_originalSource": "emmerich/flot-orderBars",
+  "_direct": true
+}

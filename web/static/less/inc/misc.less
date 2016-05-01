@@ -1,0 +1,225 @@
+/*
+ * Block Header
+ * Used for Heading outside the Cards.
+ */
+.block-header {
+    @media screen and (min-width: @screen-sm-min) {
+        padding: 0 22px;
+    }
+
+    @media screen and (max-width: @screen-sm-max) {
+        padding: 0 18px;
+    }
+
+    margin-bottom: 25px;
+    position: relative;
+
+    & > h2 {
+        font-size: 15px;
+        color: #777;
+        margin: 0;
+        font-weight: 400;
+        text-transform: uppercase;
+
+        & > small {
+            display: block;
+            text-transform: none;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            color: #9E9E9E;
+            line-height: 140%;
+        }
+    }
+
+    .actions {
+        position: absolute;
+        right: 10px;
+        top: -5px;
+        z-index: 4;
+    }
+}
+
+/*
+ * Header Actions
+ */
+.actions {
+    list-style: none;
+    padding: 0;
+    z-index: 3;
+    margin: 0;
+
+    & > li {
+        display: inline-block;
+        vertical-align: baseline;
+    }
+
+    & > li > a,
+    & > a {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        text-align: center;
+        padding-top: 5px;
+
+        & > i {
+            color: #adadad;
+            font-size: 20px;
+        }
+
+        &:hover {
+            & > i {
+                color: #000;
+            }
+        }
+
+        .hover-pop(rgba(0,0,0,0.1), 50%, 250ms, 0);
+    }
+
+    & > li.open,
+    &.open {
+        & > a {
+            & > i {
+                color: #000;
+            }
+
+            &:before {
+                .scale(1);
+                .opacity(1);
+            }
+        }
+    }
+
+    &.actions-alt {
+        & > li {
+            & > a > i {
+                color: #fff;
+
+                &:hover {
+                    color: #fff;
+                }
+            }
+
+            &.open {
+                & > a {
+                    & > i {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+
+    &.open {
+        z-index: 3;
+    }
+}
+
+/*
+ * Collapse Menu Icons
+ */
+.line-wrap {
+    width: 18px;
+    height: 12px;
+    .transition(all);
+    .transition-duration(300ms);
+    margin: 12px 20px;
+
+    .line{
+        width: 18px;
+        height: 2px;
+        .transition(all);
+        .transition-duration(300ms);
+
+        &.center {
+            margin: 3px 0;
+        }
+    }
+}
+
+&.open {
+    .line-wrap {
+        .rotate(180deg);
+
+        .line {
+            &.top {
+                width: 12px;
+                transform: translateX(8px) translateY(1px) rotate(45deg);
+                -webkit-transform: translateX(8px) translateY(1px) rotate(45deg);
+            }
+
+            &.bottom {
+                width: 12px;
+                transform: translateX(8px) translateY(-1px) rotate(-45deg);
+                -webkit-transform: translateX(8px) translateY(-1px) rotate(-45deg);
+            }
+        }
+    }
+}
+
+/*
+ * Load More
+ */
+.load-more {
+    text-align: center;
+    margin-top: 30px;
+
+    a {
+        padding: 5px 10px 3px;
+        display: inline-block;
+        background-color: @m-red;
+        color: #FFF;
+        border-radius: 2px;
+        white-space: nowrap;
+
+        i {
+            font-size: 20px;
+            vertical-align: middle;
+            position: relative;
+            margin-top: -2px;
+        }
+
+        &:hover {
+            background-color: darken(@m-red, 10%);
+        }
+    }
+}
+
+/*
+ * Page Loader
+ */
+
+html {
+    &:not(.ismobile) {
+        .page-loader {
+            background: #fff;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+
+            .preloader {
+                width: 50px;
+                position: absolute;
+                left: 50%;
+                margin-left: -25px;
+                top: 50%;
+                margin-top: -55px;
+                .animated(fadeIn, 3000ms);
+
+                p {
+                    white-space: nowrap;
+                    position: relative;
+                    left: -9px;
+                    top: 22px;
+                    color: #CCC;
+                }
+            }
+        }
+    }
+    
+    &.ismobile .page-loader {
+        display: none;
+    }
+}

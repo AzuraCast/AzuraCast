@@ -1,0 +1,141 @@
+.login-content {
+    overflow: hidden;
+    height: 100%;
+}
+
+.lc-block {
+    background: #fff;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
+    border-radius: 2px;
+    width: 500px;
+    display: inline-block;
+    margin-top: 42px;
+    vertical-align: middle;
+    position: relative;
+    
+    &:not(.toggled) {
+        display: none;
+    }
+    
+    &.toggled {
+        .animated(fadeInUp, 300ms);
+        z-index: 10;
+    } 
+    
+    &:not(.lcb-alt) {
+        padding: 35px 55px 35px;
+    }
+
+    @media (max-width: @screen-xs-max) {
+        padding: 15px 35px 25px 20px;
+        width: ~"calc(100% - 60px)";
+    }
+
+    .checkbox {
+        margin: 5px 0 0 42px;
+        text-align: left; 
+    }
+
+    &:not(.lcb-alt) {
+        .btn-login {
+            top: 50%;
+            margin-top: -25px; 
+            right: -25px; 
+        }
+    }
+}
+
+.login-navigation {     
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    left: 0%;
+    bottom: -45px;
+
+    & > li {
+        display: inline-block;
+        margin: 0 2px;
+        .transition(all);
+        .transition-duration(150ms);
+        cursor: pointer;
+        vertical-align: top;
+        color: #fff;
+        line-height: 16px;
+        min-width: 16px;
+        min-height: 16px;
+        text-transform: uppercase;
+        .backface-visibility(hidden);
+
+        & > span {
+            .opacity(0);
+        }
+
+        &:not(:hover) {
+            font-size: 0px;
+            border-radius: 100%;
+        }
+
+        &:hover {
+            border-radius: 10px;
+            padding: 0 5px;
+            font-size: 8px; 
+
+            & > span {
+                .opacity(1);
+            } 
+        }
+
+    }
+}
+ 
+.lcb-alt {
+    padding: 70px 55px 60px;
+    
+    .btn-login {
+        bottom: -25px;
+        left: 50%;
+        margin-left: -25px;
+    }
+    
+    .login-navigation {
+        bottom: -75px;
+    }
+}
+
+.lcb-user {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    margin-left: -50px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.18);
+}
+
+body.login-content {
+    text-align: center;
+    
+    &:after {
+        content: "";
+        vertical-align: middle; 
+        display: inline-block;
+        width: 1px;
+        height: 100%;
+    }
+    
+    &:before {
+        height: 50%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: @m-cyan;
+        content: "";
+        z-index: 0;
+    }
+}

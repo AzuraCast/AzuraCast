@@ -1,0 +1,114 @@
+<div id="api" class="content section page hide">
+            <h1>API</h1>
+
+            <div class="box shadow">
+                <h3 class="code-head">Waves.init(config)</h3>
+                <p>Initialise Waves with an optional config.</p>
+
+                <p>
+                    <strong>Arguments</strong>
+                </p>
+
+                <ul>
+                    <li><span class="code">config</span> - (optional) Configuration object for displaying Waves effect.</li>
+                </ul>
+
+{{#code class="lang-javascript"}}
+var config = {
+    // How long Waves effect duration 
+    // when it's clicked (in milliseconds)
+    duration: 500,
+
+    // Delay showing Waves effect on touch
+    // and hide the effect if user scrolls
+    // (0 to disable delay) (in milliseconds)
+    delay: 200
+};
+                
+// Initialise Waves with the config
+Waves.init(config);
+{{/code}}
+                
+                <hr>
+                
+                
+                <h3 class="code-head">Waves.attach(elements, classes)</h3>
+                <p>Attach ripple effect by adding <span class="code">.waves-effect</span> to HTML element. Make sure you call <span class="code">Waves.init()</span> to activated the ripple.</p>
+                <p><strong>Arguments</strong></p>
+
+                <ul>
+                    <li><span class="code">elements</span> - A string selector, DOM element, or array of DOM elements to add <span class="code">.waves-effect</span> and other <span class="code">classes</span> to.</li>
+                    <li><span class="code">classes</span> - (optional) Waves classes to add to theses elements, for example: <span class="code">'waves-light waves-classic'</span>. Accepts a single string, or array of classes.</li>
+                </ul>
+
+{{#code class="lang-javascript"}}
+// Adds .waves-effect and .waves-light to <button> elems
+Waves.attach('button', 'waves-light');
+                
+// Make .box ripple when user moves the mouse over it
+// with no additional classes
+Waves.attach('.box', null);
+{{/code}}
+                
+                <hr>
+                
+                
+                <h3 class="code-head">Waves.ripple(elements, options)</h3>
+                <p>Create a ripple effect in HTML element programmaticaly.</p>
+                <p><strong>Arguments</strong></p>
+                <ul>
+                    <li><span class="code">elements</span> - A string selector, DOM element, or array of DOM elements. <strong>Note:</strong> the elements must have the <span class="code">.waves-effect</span> class already applied, it can be added via <span class="code">Waves.attach(elements)</span></li>
+                    <li><span class="code">options</span> - (optional) Specify how long to wait between starting and stopping the ripple, and it's position inside the element.</li>
+                </ul>
+      
+{{#code class="lang-javascript"}}
+// Default values for options
+var options = {
+    wait: 0,        // null = infinite
+    position: null  // null = centre
+};
+{{/code}}
+                
+{{#code class="lang-javascript"}}
+// Cause a ripple to occur on .box
+Waves.ripple('.box');
+                
+// Ripple with a 1s delay between starting
+// and stopping the ripple, centred at 
+// (20px, 20px) inside .box
+var options = {
+    wait: 1000, //ms
+    position: { // This position relative to HTML element.
+        x: 20, //px
+        y: 20  //px
+    }
+};
+Waves.ripple('.box', options);
+{{/code}}
+                
+                <hr>
+                <h3 class="code-head">Waves.calm(elements)</h3>
+                <p>Remove all ripples from inside an element immediately.</p>
+                <p><strong>Arguments</strong></p>
+                <ul>
+                    <li><span class="code">elements</span> - A string selector for elements to remove ripples from.
+                </ul>
+                
+{{#code class="lang-javascript"}}
+// Cause a non-terminating ripple at centre of .box
+Waves.ripple('.box', {wait: null});
+                
+// ...
+                
+// Clear all ripples from .box
+Waves.calm('.box');
+                
+// Ripple on hover
+$('button').mouseenter(function() {
+    Waves.ripple(this, {wait: null});
+}).mouseleave(function() {
+    Waves.calm(this);
+});
+{{/code}}
+            </div>
+        </div>

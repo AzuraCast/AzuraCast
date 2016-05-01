@@ -1,0 +1,21 @@
+// List Icons
+// -------------------------
+
+.@{zmdi-css-prefix}-ul {
+  padding-left: 0;
+  margin-left: @zmdi-li-width;
+  list-style-type: none;
+  > li {
+    position: relative;
+  }
+}
+.@{zmdi-css-prefix}-li {
+  position: absolute;
+  left: -@zmdi-li-width;
+  width: @zmdi-li-width;
+  top: (2em / 14);
+  text-align: center;
+  &.@{zmdi-css-prefix}-lg {
+    left: (-@zmdi-li-width + (4em / 14));
+  }
+}

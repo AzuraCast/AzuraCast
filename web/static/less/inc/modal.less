@@ -1,0 +1,106 @@
+.modal {
+	.modal-content {
+		box-shadow: 0 5px 20px rgba(0, 0, 0, 0.31);
+		border-radius: 3px;
+		border: 0;
+	}
+
+	.modal-header {
+		padding: 23px 26px;
+	}
+
+	.modal-body {
+		padding: 0 26px 10px;
+	}
+
+	.modal-footer {
+		.btn-link {
+			font-size: 14px;
+			color: #000;
+			font-weight: 500;
+
+			&:hover {
+				background-color: #eee;
+			}
+		}
+	}
+
+	&:not([data-modal-color]) {
+		.modal-footer {
+			.btn-link {
+				font-weight: 500;
+
+				&:hover {
+					background-color: #eee;
+				}
+			}
+		}
+	}
+
+	&[data-modal-color] {
+		color: #fff;
+
+		.modal-title,
+		.modal-footer .btn-link {
+			color: #fff;
+		}
+
+		.modal-footer {
+			background: rgba(0,0,0,0.1);
+		}
+
+		.modal-backdrop {
+			background: #fff;
+		}
+
+		.modal-footer {
+			.btn-link {
+				font-weight: 400;
+
+				&:hover {
+					background-color: rgba(0,0,0,0.1);
+				}
+			}
+		}
+	}
+
+	&[data-modal-color="blue"] .modal-content {
+		background: @m-blue;
+	}
+
+	&[data-modal-color="cyan"] .modal-content {
+		background: @m-cyan;
+	}
+
+	&[data-modal-color="green"] .modal-content {
+		background: @m-green;
+	}
+
+	&[data-modal-color="lightgreen"] .modal-content {
+		background: @m-lightgreen;
+	}
+
+	&[data-modal-color="lightblue"] .modal-content {
+		background: @m-lightblue;
+	}
+
+	&[data-modal-color="amber"] .modal-content {
+		background: @m-amber;
+	}
+
+	&[data-modal-color="teal"] .modal-content {
+		background: @m-teal;
+	}
+
+	&[data-modal-color="orange"] .modal-content {
+		background: @m-orange;
+	}
+
+	&[data-modal-color="bluegray"] .modal-content {
+		background: @m-bluegray;
+	}
+
+	&[data-modal-color="red"] .modal-content {
+		background: @m-red;
+	}
+}

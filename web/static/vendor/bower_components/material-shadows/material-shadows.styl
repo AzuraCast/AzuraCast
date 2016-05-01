@@ -1,0 +1,70 @@
+//
+// Name:           Material Shadows
+// Description:    Paper shadows of material design.
+// Version:        2.0.1
+//
+// Author:         Denis Malinochkin
+// Git:            https://github.com/mrmlnc/material-shadows
+//
+// twitter:        @mrmlnc
+//
+// ------------------------------------
+
+
+// Mixins
+// ------------------------------------
+
+// Generator for top shadow
+z-depth-top($depth = 1)
+  $color =    .12, .19, .19, .21, .22
+  $offset-y = 2px, 6px, 17px, 25px, 40px
+  $blur =     10px, 20px, 50px, 55px, 77px
+
+  box-shadow: 0 $offset-y[$depth] $blur[$depth] rgba(0, 0, 0, $color[$depth])
+
+// Generator for bottom shadow
+z-depth-bottom($depth = 1)
+  $color =    .16, .2, .24, .22, .2
+  $offset-y = 2px, 8px, 12px, 16px, 27px
+  $blur =     5px, 17px, 15px, 28px, 24px
+
+  box-shadow: 0 $offset-y[$depth] $blur[$depth] rgba(0, 0, 0, $color[$depth])
+
+// Generator for top and bottom shadow
+z-depth($depth = 1)
+  box-shadow: 0 values(z-depth-bottom($depth)), 0 values(z-depth-top($depth))
+
+// Generator animation hover and focus effect
+z-depth-animation($depth, $orientation = full)
+  &:hover,
+  &:focus
+    if $orientation == top
+      z-depth-top($depth)
+    else if $orientation == bottom
+      z-depth-bottom($depth)
+    else
+      z-depth($depth)
+
+
+// Classes
+// ------------------------------------
+
+z-depth-class($animation = true, $time = .28s, $function = cubic-bezier(.4, 0, .2, 1))
+  for $i in 0..4
+    &-{$i + 1}
+      z-depth($i)
+      &-top
+        z-depth-top($i)
+      &-bottom
+        z-depth-bottom($i)
+
+  // z-depth-animation
+  if $animation
+    &-animation
+      &:hover
+        .z-depth-1
+        .z-depth-2
+        .z-depth-3
+        .z-depth-4
+        .z-depth-5
+          transition: box-shadow $time $function

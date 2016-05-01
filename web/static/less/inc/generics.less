@@ -1,0 +1,141 @@
+/*
+ * Generate Margin Class
+ * margin, margin-top, margin-bottom, margin-left, margin-right
+ */
+
+.margin (@label, @size: 1, @key:1) when (@size =< 30){
+    .m-@{key} {
+        margin: @size !important;
+    }
+    
+    .m-t-@{key} {
+        margin-top: @size !important;
+    }
+    
+    .m-b-@{key} {
+        margin-bottom: @size !important;
+    }
+    
+    .m-l-@{key} {
+        margin-left: @size !important;
+    }
+    
+    .m-r-@{key} {
+        margin-right: @size !important;
+    }
+    
+    .margin(@label - 5; @size + 5; @key + 5);
+}
+
+.margin(25, 0px, 0);
+
+/*
+ * Generate Padding Class
+ * padding, padding-top, padding-bottom, padding-left, padding-right
+ */
+
+.padding (@label, @size: 1, @key:1) when (@size =< 30){
+    .p-@{key} {
+        padding: @size !important;
+    }
+    
+    .p-t-@{key} {
+        padding-top: @size !important;
+    }
+    
+    .p-b-@{key} {
+        padding-bottom: @size !important;
+    }
+    
+    .p-l-@{key} {
+        padding-left: @size !important;
+    }
+    
+    .p-r-@{key} {
+        padding-right: @size !important; 
+    }
+    
+    .padding(@label - 5; @size + 5; @key + 5);
+} 
+
+.padding(25, 0px, 0);
+
+/*
+ * Generate Font-Size Classes (8px - 20px)
+ */
+.font-size (@label, @size: 8, @key:10) when (@size =< 20){
+    .f-@{key} {
+        font-size: @size !important;
+    }
+    
+    .font-size(@label - 1; @size + 1; @key + 1);
+} 
+
+.font-size(20, 8px, 8);
+
+/*
+ * Font Weight
+ */
+.f-300 { font-weight: 300 !important; }
+.f-400 { font-weight: 400 !important; }
+.f-500 { font-weight: 500 !important; }
+.f-700 { font-weight: 700 !important; }
+
+/*
+ * Position Classes
+ */
+.p-relative { position: relative !important; }
+.p-absolute { position: absolute !important; }
+.p-fixed { position: fixed !important; }
+.p-static { position: static !important; }
+
+/*
+ * Overflow
+ */
+.o-hidden { overflow: hidden !important; }
+.o-visible { overflow: visible !important; }
+.o-auto { overflow: auto !important; }
+
+/*
+ * Display
+ */
+.d-block { display: block !important; }
+.di-block { display: inline-block !important; } 
+
+/* 
+ * Material Background Colors
+ */
+@array: c-white bgm-white @m-white, c-black bgm-black @m-black, c-brown bgm-brown @m-brown, c-pink bgm-pink @m-pink, c-red bgm-red @m-red, c-blue bgm-blue @m-blue, c-purple bgm-purple @m-purple, c-deeppurple bgm-deeppurple @m-deeppurple, c-lightblue bgm-lightblue @m-lightblue, c-cyan bgm-cyan @m-cyan, c-teal bgm-teal @m-teal, c-green bgm-green @m-green, c-lightgreen bgm-lightgreen @m-lightgreen, c-lime bgm-lime @m-lime, c-yellow bgm-yellow @m-yellow, c-amber bgm-amber @m-amber, c-orange bgm-orange @m-orange, c-deeporange bgm-deeporange @m-deeporange, c-gray bgm-gray @m-gray, c-bluegray bgm-bluegray @m-bluegray, c-indigo bgm-indigo @m-indigo;
+
+.for(@array); .-each(@value) {
+    @name:  extract(@value, 1);
+    @name2:  extract(@value, 2);
+    @color: extract(@value, 3); 
+    &.@{name2} {
+        background-color: @color !important;
+    }
+    
+    &.@{name} {
+        color: @color !important;
+    }
+} 
+
+/*
+ * Background Colors
+ */
+.bg-black-trp { background-color: rgba(0,0,0,0.1) !important; }
+
+/*
+ * Border
+ */
+.b-0 { border: 0 !important; }
+
+/*
+ * width
+ */
+.w-100 { width: 100% !important; }
+
+/*
+ * Border Radius 
+ */ 
+.brd-2 { border-radius: 2px; }

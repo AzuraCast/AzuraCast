@@ -1,0 +1,246 @@
+.chart-edge {
+    margin: 20px -8px 0 -10px;
+    overflow: hidden;
+    
+    .flot-chart {
+        bottom: -14px;
+    }
+}
+
+.charts-row {
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.mini-charts-item {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    position: relative;
+    margin-bottom: 30px;
+    
+    .chart {
+        padding: 15px;
+        float: left;
+        
+        &.chart-pie {
+            margin: 0 20px;
+        }
+    } 
+    
+    .count {
+        overflow: hidden;
+        color: rgba(255, 255, 255, 0.9);
+        padding: 16px 12px;
+        
+        & > h2 {
+            margin: 0;
+            line-height: 100%;
+            font-size: 22px;
+            font-weight: 300;
+            color: #fff;   
+        }
+        
+        & > small {
+            margin-bottom: 2px;
+            display: block;
+        }
+        
+        & > h2,
+        & > small {
+            .text-overflow();
+        }
+    }
+    
+    
+    
+    & > .clearfix {
+        position: relative;
+        z-index: 1;
+    }
+    
+    &:before {
+        .transition(width);
+        .transition-duration(500ms);
+        .backface-visibility(hidden);
+        content: "";
+        width: 113px;
+        height: 100%;
+        background: rgba(0,0,0,0.1);
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    
+    &:hover {
+        .count {
+            color: #fff !important;
+        }
+        
+        &:before {
+            width: 100%;
+        }
+    }
+}
+
+/*
+ * Sparkline Tooltip
+ */
+#jqstooltip {
+    min-width: 21px;
+    min-height: 23px;
+    text-align: center;
+    border: 0;
+    background: #fff;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    background-color: #fff;
+
+    .jqsfield {
+        font-size: 12px;
+        font-weight: 700;
+        font-family: inherit;
+        text-align: center;
+        color: #333;
+
+        & > span {
+            display: none;
+        }
+    }
+}
+
+/*
+ * Easy Pie Charts
+ */
+
+.epc-item {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    position: relative;
+    margin-bottom: 30px;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.easy-pie {
+    display: inline-block;
+    position: relative;
+    padding: 0 5px 10px;
+    
+    .percent {
+       position: absolute;
+       font-weight: 300;
+       width: 100%;
+       line-height: 100%;
+       left: 0;
+       
+        &:after {
+            content: "%";
+        } 
+    }
+    
+    &.main-pie {
+        .percent {
+            margin-top: 49px;
+            font-size: 50px;
+            text-align: center;
+            
+            &:not([class*="c-"]) {
+                color: rgba(255,255,255,0.7);
+            }
+            
+            &:after {
+                font-size: 30px;
+            } 
+        }
+        
+        .pie-title {
+            color: #fff;
+        }
+    }
+    
+    &:not(.main-pie) {
+        .percent {
+            font-size: 26px;
+            margin-top: 37px;
+            
+            &:after {
+                font-size: 20px;
+            }
+        }
+    }
+    
+    .pie-title {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        bottom: -3px;
+        left: 0;
+    }
+    
+}
+
+/*
+ * Recet Items Table Chart
+ */
+#recent-items-chart {
+    width: ~"calc(100% + 19px)";
+    height: 150px;
+    margin: -20px -10px 0;
+    bottom: -10px;
+
+}
+
+/*
+ * Flot Chart
+ */
+[class*="flot-chart"] {
+    width: 100%;
+    display: block;
+}
+
+.flot-chart {
+    height: 200px;
+}
+
+.flot-chart-pie {
+    height: 300px;
+    
+    @media (min-width: @screen-sm-min) {
+        margin-bottom: 20px;
+    }
+}
+
+.flot-tooltip, #flotTip {
+    position: absolute;
+    color: #333;
+    display: none;
+    font-size: 12px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    padding: 3px 10px;
+    background-color: #fff;
+    z-index: 99999;
+}
+
+[class*="flc-"] {
+    text-align: center;
+    margin: 10px 0 5px;
+    
+    table {
+        display: inline-block;
+    }
+    
+    .legendColorBox {
+        & > div {
+            border: #fff !important;
+            
+            & > div {
+                border-radius: 50%;
+            }
+        }
+    }
+    
+    .legendLabel {
+        padding: 0 8px 0 3px;
+    }
+}
+
+
+
+    

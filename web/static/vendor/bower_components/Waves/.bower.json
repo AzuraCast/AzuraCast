@@ -1,0 +1,35 @@
+{
+  "name": "Waves",
+  "homepage": "http://fian.my.id/Waves",
+  "authors": [
+    "Alfiana E. Sibuea <alfian.sibuea@gmail.com>"
+  ],
+  "description": "Click effect inspired by Google's Material Design",
+  "main": [
+    "dist/waves.min.js",
+    "dist/waves.min.css"
+  ],
+  "keywords": [
+    "click",
+    "material-design"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "version": "0.7.4",
+  "_release": "0.7.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.7.4",
+    "commit": "57e4bfe612e0c0aece4e03bb944cf7073b36cef2"
+  },
+  "_source": "git://github.com/fians/Waves.git",
+  "_target": "~0.7.4",
+  "_originalSource": "waves",
+  "_direct": true
+}

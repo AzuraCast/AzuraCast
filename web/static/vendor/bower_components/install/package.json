@@ -1,0 +1,31 @@
+{
+  "name": "detect-zoom",
+  "version": "1.0.4",
+  "description": "Cross Browser Zoom and Pixel Ratio Detector",
+  "main": "detect-zoom.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tombigel/detect-zoom.git"
+  },
+  "keywords": [
+    "browser",
+    "zoom",
+    "compatibility",
+    "pixel",
+    "ratio",
+    "retina"
+  ],
+  "author": "Yonathan Randolph",
+  "contributors": [
+    "Tom Bigelajzen <public@tombigel.com>"
+  ],
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "6eaf3107a6913a4f7b93665ba6d5bc16cdf0f3ab",
+  "devDependencies": {
+    "uglify-js": "~2.2.5"
+  }
+}

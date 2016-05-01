@@ -1,0 +1,36 @@
+{
+  "name": "material-shadows",
+  "version": "2.0.1",
+  "authors": [
+    "@mrmlnc (Denis Malinochkin)"
+  ],
+  "description": "Mixins library: Paper shadows of material design",
+  "keywords": [
+    "google",
+    "material",
+    "material-design",
+    "google-material-design",
+    "shadows",
+    "shadow",
+    "depth",
+    "less",
+    "sass",
+    "stylus"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/mrmlnc/material-shadows",
+  "ignore": [
+    "example.html",
+    "test"
+  ],
+  "_release": "2.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.1",
+    "commit": "7d8efdd88c77965a8d5b29870485fa2f513cb362"
+  },
+  "_source": "git://github.com/mrmlnc/material-shadows.git",
+  "_target": "~2.0.1",
+  "_originalSource": "material-shadows",
+  "_direct": true
+}

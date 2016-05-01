@@ -1,0 +1,128 @@
+.bootstrap-select {
+    .dropdown-menu {
+        padding: 0;
+    }
+    
+    .dropdown-toggle:focus {
+        outline: none !important;
+    }
+    
+    & > .btn-default {
+        background: none !important;
+        border-bottom: 1px solid #e0e0e0 !important;
+        border-radius: 0;
+        padding-left: 0;
+        padding-right: 0;
+        
+        &:before {
+            position: absolute;
+            top: 0; 
+            right: 0;
+            content: "";
+            height: ~"calc(100% - 2px)";
+            width: 30px;
+            background-color: #FFF;
+            background-position: right ~"calc(100% - 7px)";
+            background-repeat: no-repeat;
+            .img-retina('../img/select.png', '../img/select@2x.png', 12px, 12px);
+            pointer-events: none;
+            z-index: 5;
+        }
+            
+        &:after {
+            position: absolute;
+            z-index: 3; 
+            bottom: -1px;
+            left: 0;
+            height: 2px;
+            width: 0;
+            content: ""; 
+            .transition(all);
+            .transition-duration(300ms);
+        }
+        
+        &:not(.disabled):after,
+        &:not(.readonly):after { 
+            background: @m-blue;
+        }
+        
+        &.disabled:after,
+        &.readonly:after {
+            background: #ccc;
+        }
+    }
+    
+    &.open {
+        & > .btn-default:after {
+            width: 100%;
+        }
+    }
+    
+    .bs-searchbox {
+        padding: 5px 5px 5px 40px;
+        position: relative;
+        background: @ace;
+        
+        &:before {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 100%;
+            content: "\f1c3";
+            font-family: @font-icon-md;
+            font-size: 25px;
+            padding: 4px 0 0 15px;
+        }
+        
+        input {
+            border: 0;
+            background: transparent;
+        }
+    }
+    
+    &.btn-group {
+        .dropdown-menu li a.opt {
+            padding-left: 17px;
+        }
+    }
+    
+    .check-mark {
+        margin-top: -5px !important;
+        font-size: 19px;
+        .transition(all);
+        .transition-duration(200ms);
+        .scale(0);
+        display: block !important;
+        position: absolute;
+        top: 11px;
+        right: 15px; 
+        
+        &:before {
+            content: "\f26b";
+            font-family: @font-icon-md;
+        }
+    }
+    
+    .selected {
+        .check-mark {
+            .scale(1);
+        }
+    }
+    
+    .notify {
+        bottom: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        border: 0 !important;
+        background: @m-red !important;
+        color: #fff !important;
+        text-align: center;
+    }
+    
+    &:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+        width: 100%;
+    }
+}
+
+

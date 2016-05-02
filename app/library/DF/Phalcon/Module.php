@@ -102,7 +102,7 @@ class Module implements \Phalcon\Mvc\ModuleDefinitionInterface
         $views_dir = 'modules/'.$module_base_name.'/views/scripts/';
 
         $di['view'] = function () use($views_dir) {
-            return \DF\Phalcon\View::getView(array(
+            return \App\Phalcon\View::getView(array(
                 'views_dir' => $views_dir,
             ));
         };

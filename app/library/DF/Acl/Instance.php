@@ -150,8 +150,8 @@ class Instance implements \Phalcon\DI\InjectionAwareInterface
      * Pretty wrapper around the 'isAllowed' function that throws a UI-friendly exception upon failure.
      *
      * @param $action
-     * @throws \DF\Exception\NotLoggedIn
-     * @throws \DF\Exception\PermissionDenied
+     * @throws \App\Exception\NotLoggedIn
+     * @throws \App\Exception\PermissionDenied
      */
     public function checkPermission($action)
     {
@@ -160,9 +160,9 @@ class Instance implements \Phalcon\DI\InjectionAwareInterface
             $auth = $this->di->get('auth');
 
             if (!$auth->isLoggedIn())
-                throw new \DF\Exception\NotLoggedIn();
+                throw new \App\Exception\NotLoggedIn();
             else
-                throw new \DF\Exception\PermissionDenied();
+                throw new \App\Exception\PermissionDenied();
         }
     }
 }

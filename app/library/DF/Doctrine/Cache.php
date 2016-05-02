@@ -14,7 +14,7 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
 
     public function __construct()
     {
-        $this->_cache = \DF\Cache::getCache('doctrine');
+        $this->_cache = \App\Cache::getCache('doctrine');
     }
 
     protected function doFetch($id, $testCacheValidity = true)

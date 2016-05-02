@@ -7,7 +7,7 @@ use \Doctrine\ORM\Mapping as ORM;
  * @Table(name="settings")
  * @Entity
  */
-class Settings extends \DF\Doctrine\Entity
+class Settings extends \App\Doctrine\Entity
 {
     /**
      * @Column(name="setting_key", type="string", length=64)
@@ -68,7 +68,7 @@ class Settings extends \DF\Doctrine\Entity
 
         if (!$settings || !$cached)
         {
-            $settings = \DF\Cache::get('all_settings');
+            $settings = \App\Cache::get('all_settings');
 
             if (!$settings || !$cached)
             {
@@ -82,7 +82,7 @@ class Settings extends \DF\Doctrine\Entity
                     $settings[$setting['setting_key']] = $setting['setting_value'];
                 }
 
-                \DF\Cache::save($settings, 'all_settings', array(), 8640);
+                \App\Cache::save($settings, 'all_settings', array(), 8640);
             }
         }
 

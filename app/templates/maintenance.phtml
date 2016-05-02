@@ -2,7 +2,7 @@
 $skin = ($skin) ? $skin : 'dark';
 $embed = ($embed_mode) ? 'embedded' : 'non-embedded';
 
-$tz_info = \PVL\Timezone::getInfo();
+$tz_info = \App\Timezone::getInfo();
 ?>
 <!DOCTYPE html>
 <html class="compact_layout theme_<?=$skin ?> <?=$embed ?>">
@@ -17,8 +17,8 @@ $tz_info = \PVL\Timezone::getInfo();
         $page_title = $this->config->application->name.' - Live Pony Radio, Video, Podcasts, Convention Coverage & More';
 
     $this->tag->setTitle($page_title);
-    if (DF_APPLICATION_ENV != "production")
-        $this->tag->prependTitle('('.ucfirst(DF_APPLICATION_ENV).') ');
+    if (APP_APPLICATION_ENV != "production")
+        $this->tag->prependTitle('('.ucfirst(APP_APPLICATION_ENV).') ');
 
     echo $this->tag->getTitle();
 
@@ -57,9 +57,9 @@ $tz_info = \PVL\Timezone::getInfo();
     $this->assets->outputJs('header_js');
     ?>
     <script>
-        var DF_AppEnv = '<?=DF_APPLICATION_ENV ?>';
-        var DF_BaseUrl = '<?php echo rtrim($this->url->get(''), '/'); ?>';
-        var DF_ContentPath = '<?php echo $this->url->getStatic(''); ?>';
+        var APP_AppEnv = '<?=APP_APPLICATION_ENV ?>';
+        var APP_BaseUrl = '<?php echo rtrim($this->url->get(''), '/'); ?>';
+        var APP_ContentPath = '<?php echo $this->url->getStatic(''); ?>';
 
         var PVL_TimeZone = '<?=$e->escapeJs($tz_info['code']) ?>';
         var PVL_UtcOffset = <?=$tz_info['gmt_offset_hours'] ?>;

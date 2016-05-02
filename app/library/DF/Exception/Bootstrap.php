@@ -1,7 +1,7 @@
 <?php
 namespace DF\Exception;
 
-class Bootstrap extends \DF\Exception
+class Bootstrap extends \App\Exception
 {
 
 }

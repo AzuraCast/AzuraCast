@@ -13,7 +13,7 @@ class Flash
 
     public static function addMessage($message, $level = self::INFO)
     {
-        $session = \DF\Session::get('alerts');
+        $session = \App\Session::get('alerts');
 
         $color_chart = array(
             'green'     => 'success',
@@ -38,7 +38,7 @@ class Flash
 
     public static function hasMessages()
     {
-        $session = \DF\Session::get('alerts');
+        $session = \App\Session::get('alerts');
 
         $messages = (array)$session->messages;
         return count($messages) > 0;
@@ -46,7 +46,7 @@ class Flash
 
     public static function getMessages()
     {
-        $session = \DF\Session::get('alerts');
+        $session = \App\Session::get('alerts');
 
         $messages = (array)$session->messages;
         unset($session->messages);

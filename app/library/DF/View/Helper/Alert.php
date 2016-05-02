@@ -2,8 +2,8 @@
 namespace DF\View\Helper;
 class Alert extends HelperAbstract
 {
-    public function alert($message, $level = \DF\Flash::INFO)
+    public function alert($message, $level = \App\Flash::INFO)
     {
-        \DF\Flash::addMessage($message, $level);
+        \App\Flash::addMessage($message, $level);
     }
 }

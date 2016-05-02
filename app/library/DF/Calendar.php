@@ -33,7 +33,7 @@ class Calendar
         
         if (!$this->isValidDate($mid_timestamp))
         {
-            throw new \DF\Exception\DisplayOnly('Invalid date/time specified.');
+            throw new \App\Exception\DisplayOnly('Invalid date/time specified.');
         }
         
         $this->_start_timestamp = mktime(0, 0, 0, $this->_month, 1, $this->_year);

@@ -18,7 +18,7 @@ trait FileUploads
             if ($this->$field_name && $this->$field_name != $new_value)
                 \App\Service\AmazonS3::delete($this->$field_name);
 
-            $local_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$new_value;
+            $local_path = APP_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$new_value;
             \App\Service\AmazonS3::upload($local_path, $new_value);
 
             $this->$field_name = $new_value;
@@ -36,15 +36,15 @@ trait FileUploads
      * @param $width
      * @param $height
      * @return bool
-     * @throws \DF\Exception
+     * @throws \App\Exception
      */
     protected function _processAndCropImage($field_name, $new_value, $width, $height)
     {
         if (!$new_value)
             return false;
 
-        $local_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$new_value;
-        \DF\Image::resizeImage($local_path, $local_path, $width, $height, true);
+        $local_path = APP_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$new_value;
+        \App\Image::resizeImage($local_path, $local_path, $width, $height, true);
 
         return $this->_processFile($field_name, $new_value);
     }

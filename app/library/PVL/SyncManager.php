@@ -53,7 +53,7 @@ class SyncManager
 
         // Sync schedules (highest priority).
         Debug::runTimer('Run schedule manager', function() {
-            ScheduleManager::run(!DF_IS_COMMAND_LINE);
+            ScheduleManager::run(!APP_IS_COMMAND_LINE);
         });
 
         // Sync show episodes and artist news (high priority).
@@ -168,7 +168,7 @@ class SyncManager
             $sync_latest = $sync_info['latest'];
 
             $syncs[$sync_key]['diff'] = time()-$sync_latest;
-            $syncs[$sync_key]['diff_text'] = \DF\Utilities::timeDifferenceText($sync_latest, time());
+            $syncs[$sync_key]['diff_text'] = \App\Utilities::timeDifferenceText($sync_latest, time());
         }
 
         return $syncs;
@@ -179,7 +179,7 @@ class SyncManager
         set_time_limit($script_timeout);
         ini_set('memory_limit', '256M');
 
-        if (DF_IS_COMMAND_LINE)
+        if (APP_IS_COMMAND_LINE)
         {
             error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
             ini_set('display_errors', 1);

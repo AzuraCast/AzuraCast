@@ -72,10 +72,10 @@ class NewsManager
             $em->flush();
 
             // Flush cache of homepage news.
-            \DF\Cache::remove('homepage_featured_news');
+            \App\Cache::remove('homepage_featured_news');
         }
 
-        \PVL\Debug::print_r($news_stats);
+        \App\Debug::print_r($news_stats);
     }
 
     public static function _runTumblrNews(\Phalcon\DiInterface $di)
@@ -134,7 +134,7 @@ class NewsManager
                 $local_path_base = 'rotators/' . $image_url_basename;
                 $local_url = $local_path_base;
 
-                $local_path = DF_INCLUDE_TEMP . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $local_path_base);
+                $local_path = APP_INCLUDE_TEMP . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $local_path_base);
                 $s3_path = App\Service\AmazonS3::path($local_url);
 
                 if (!file_exists($s3_path))
@@ -164,7 +164,7 @@ class NewsManager
                     'title' => trim($title),
                     'source' => 'tumblr',
                     'body' => trim($description),
-                    'image_url' => \PVL\Url::upload($local_url),
+                    'image_url' => \App\Url::upload($local_url),
                     'web_url' => $post['post_url'],
                     'layout' => $post_style,
                     'tags' => (array)$post['tags'],
@@ -205,7 +205,7 @@ class NewsManager
                 'title'     => $convention['name'],
                 'source'    => 'convention',
                 'body'      => '',
-                'image_url' => \PVL\Url::upload($convention['image_url']),
+                'image_url' => \App\Url::upload($convention['image_url']),
                 'web_url'   => $convention['web_url'],
                 'layout'    => 'vertical',
                 'tags'      => array($convention['name'], 'Conventions'),
@@ -358,7 +358,7 @@ class NewsManager
                 'title' => trim($event['title']),
                 'source' => 'station',
                 'body' => implode('<br>', $description),
-                'image_url' => \PVL\Url::upload($event['station']['banner_url']),
+                'image_url' => \App\Url::upload($event['station']['banner_url']),
                 'web_url' => $event['station']['web_url'],
                 'layout' => 'vertical',
                 'tags' => array($event['station']['name'], 'Events'),

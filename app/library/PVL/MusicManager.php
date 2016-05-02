@@ -69,7 +69,7 @@ class MusicManager
                     @file_put_contents($image_path, $photo_data);
                     @file_put_contents($thumb_path, $photo_data);
 
-                    \DF\Image::resizeImage($image_path, $thumb_path, 150, 150);
+                    \App\Image::resizeImage($image_path, $thumb_path, 150, 150);
                     @unlink($image_path);
                 }
                 catch(\Exception $e)

@@ -8,7 +8,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * @Table(name="users")
  * @Entity
  */
-class User extends \DF\Doctrine\Entity
+class User extends \App\Doctrine\Entity
 {
     public function __construct()
     {
@@ -34,7 +34,7 @@ class User extends \DF\Doctrine\Entity
 
     public function getAvatar($size = 50)
     {
-        return \DF\Service\Gravatar::get($this->email, $size, 'identicon');
+        return \App\Service\Gravatar::get($this->email, $size, 'identicon');
     }
 
     /** @Column(name="auth_password", type="string", length=255, nullable=true) */

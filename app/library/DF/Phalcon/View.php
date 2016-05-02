@@ -16,7 +16,7 @@ class View
             $di = \Phalcon\Di::getDefault();
 
         $defaults = array(
-            'base_dir'      => DF_INCLUDE_BASE.'/',
+            'base_dir'      => APP_INCLUDE_BASE.'/',
             'views_dir'     => 'modules/frontend/views/scripts/',
             'partials_dir'  => '',
             'layouts_dir'   => '../../../../templates/',
@@ -51,14 +51,14 @@ class View
                     'compiledPath' => function($templatePath) {
 
                         $find_replace = array(
-                            DF_INCLUDE_BASE => '',
+                            APP_INCLUDE_BASE => '',
                             '/modules/' => '',
                             '/views/scripts/' => '_',
                             '/' => '_',
                         );
                         $templatePath = str_replace(array_keys($find_replace), array_values($find_replace), $templatePath);
 
-                        return DF_INCLUDE_CACHE.'/volt_'.$templatePath.'.compiled.php';
+                        return APP_INCLUDE_CACHE.'/volt_'.$templatePath.'.compiled.php';
                     }
                 ));
 

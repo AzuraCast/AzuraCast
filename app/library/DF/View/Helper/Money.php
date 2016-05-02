@@ -4,6 +4,6 @@ class Money extends HelperAbstract
 {
     public function money($amount)
     {
-        return \DF\Utilities::money_format($amount);    
+        return \App\Utilities::money_format($amount);    
     }
 }

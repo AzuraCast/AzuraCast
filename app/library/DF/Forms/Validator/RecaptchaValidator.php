@@ -16,7 +16,7 @@ class RecaptchaValidator extends Validator implements ValidatorInterface
         $apis_config = $config->apis->toArray();
 
         if (empty($apis_config) || !isset($apis_config['recaptcha']))
-            throw new \DF\Exception('Recaptcha is not configured in apis.conf.php!');
+            throw new \App\Exception('Recaptcha is not configured in apis.conf.php!');
 
         $this->config = $apis_config['recaptcha'];
     }

@@ -1,7 +1,7 @@
 <?php
 namespace PVL;
 
-class Url extends \DF\Url
+class Url extends \App\Url
 {
     /**
      * Return path for API function call.
@@ -21,10 +21,10 @@ class Url extends \DF\Url
             self::$include_domain = $prev_include_domain;
         }
 
-        if (defined('DF_API_URL'))
+        if (defined('APP_API_URL'))
         {
             $path = ltrim($path, '/api');
-            return DF_API_URL.'/'.ltrim($path, '/');
+            return APP_API_URL.'/'.ltrim($path, '/');
         }
         else
         {

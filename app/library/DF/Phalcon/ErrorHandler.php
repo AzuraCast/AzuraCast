@@ -5,14 +5,14 @@ class ErrorHandler
 {
     public static function handle(\Exception $e, \Phalcon\DiInterface $di)
     {
-        if ($e instanceof \DF\Exception\NotLoggedIn)
+        if ($e instanceof \App\Exception\NotLoggedIn)
         {
             // Redirect to login page for not-logged-in users.
-            \DF\Flash::addMessage('You must be logged in to access this page!');
+            \App\Flash::addMessage('You must be logged in to access this page!');
 
             // Set referrer for login redirection.
-            $session = \DF\Session::get('referrer_login');
-            $session->url = \DF\Url::current($di);
+            $session = \App\Session::get('referrer_login');
+            $session->url = \App\Url::current($di);
 
             // Redirect to login page.
             $login_url = $di->get('url')->get('account/login');
@@ -22,10 +22,10 @@ class ErrorHandler
             $response->send();
             return;
         }
-        elseif ($e instanceof \DF\Exception\PermissionDenied)
+        elseif ($e instanceof \App\Exception\PermissionDenied)
         {
             // Bounce back to homepage for permission-denied users.
-            \DF\Flash::addMessage('You do not have permission to access this portion of the site.', \DF\Flash::ERROR);
+            \App\Flash::addMessage('You do not have permission to access this portion of the site.', \App\Flash::ERROR);
 
             $home_url = $di->get('url')->get('');
 
@@ -42,7 +42,7 @@ class ErrorHandler
                 $view->disable();
             }
 
-            $view = \DF\Phalcon\View::getView(array());
+            $view = \App\Phalcon\View::getView(array());
             $result = $view->getRender('error', 'pagenotfound');
 
             $response = $di->get('response');
@@ -52,10 +52,10 @@ class ErrorHandler
             $response->send();
             return;
         }
-        elseif ($e instanceof \DF\Exception\Bootstrap)
+        elseif ($e instanceof \App\Exception\Bootstrap)
         {
             // Bootstrapping error; cannot render template for error display.
-            if (DF_APPLICATION_ENV != 'production')
+            if (APP_APPLICATION_ENV != 'production')
             {
                 self::renderPretty($e, $di);
                 return;
@@ -94,7 +94,7 @@ class ErrorHandler
                     $show_debug = true;
             }
 
-            if (DF_APPLICATION_ENV != 'production')
+            if (APP_APPLICATION_ENV != 'production')
                 $show_debug = true;
 
             if ($show_debug)
@@ -104,7 +104,7 @@ class ErrorHandler
             }
             else
             {
-                $view = \DF\Phalcon\View::getView(array());
+                $view = \App\Phalcon\View::getView(array());
 
                 $view->setVar('exception', $e);
 

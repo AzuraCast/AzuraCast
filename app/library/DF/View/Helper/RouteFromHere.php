@@ -8,6 +8,6 @@ class RouteFromHere extends HelperAbstract
 {
     public function routeFromHere($params)
     {
-        return \DF\Url::routeFromHere($params, $this->di);
+        return \App\Url::routeFromHere($params, $this->di);
     }
 }

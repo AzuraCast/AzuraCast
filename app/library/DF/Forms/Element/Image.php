@@ -13,7 +13,7 @@ class Image extends File
 
         foreach((array)$this->_previous_value as $file)
         {
-            $file_url = \PVL\Url::upload($file);
+            $file_url = \App\Url::upload($file);
             $file_rows[] = '<div><img class="thumbnail" src="'.$file_url.'" alt="Image #'.$i.'" style="max-width: 300px;"></div>';
 
             $i++;

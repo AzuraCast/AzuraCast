@@ -10,7 +10,7 @@ class CentovaCast
 {
     public static function isStationSupported(Station $station)
     {
-        if (DF_APPLICATION_ENV !== 'production')
+        if (APP_APPLICATION_ENV !== 'production')
             return false;
 
         if (!$station->requests_enabled)
@@ -41,7 +41,7 @@ class CentovaCast
 
     public static function request(Station $station, $track_id)
     {
-        if (DF_APPLICATION_ENV !== 'production')
+        if (APP_APPLICATION_ENV !== 'production')
             return false;
 
         $db = self::getDatabase();
@@ -49,18 +49,18 @@ class CentovaCast
         $settings = self::getSettings();
 
         // Forbid web crawlers from using this feature.
-        if (\PVL\Utilities::isCrawler())
-            throw new \DF\Exception('Search engine crawlers are not permitted to use this feature.');
+        if (\App\Utilities::isCrawler())
+            throw new \App\Exception('Search engine crawlers are not permitted to use this feature.');
 
         // Verify that the station supports CentovaCast requests.
         $station_id = self::getStationID($station);
         if (!$station_id)
-            throw new \DF\Exception('This radio station is not capable of handling requests at this time.');
+            throw new \App\Exception('This radio station is not capable of handling requests at this time.');
 
         // Verify that Track ID exists with station.
         $media_item = StationMedia::getRepository()->findOneBy(array('id' => $track_id, 'station_id' => $station->id));
         if (!($media_item instanceof StationMedia))
-            throw new \DF\Exception('The song ID you specified could not be found in the station playlist.');
+            throw new \App\Exception('The song ID you specified could not be found in the station playlist.');
 
         // Check the most recent song history.
         try
@@ -77,7 +77,7 @@ class CentovaCast
         }
 
         if ($last_play_time && $last_play_time > (time() - 60*30))
-            throw new \DF\Exception('This song has been played too recently on the station.');
+            throw new \App\Exception('This song has been played too recently on the station.');
 
         // Get or create a "requests" playlist for the station.
         $request_playlist_raw = $db->fetchAssoc('SELECT p.id FROM playlists AS p WHERE p.type = ? AND p.accountid = ?', array('request', $station_id));
@@ -119,7 +119,7 @@ class CentovaCast
         $existing_request = $db->fetchAll('SELECT ptr.* FROM playlist_tracks_requests AS ptr WHERE ptr.playlistid = ? AND ptr.senderip = ?', array($playlist_id, $user_ip));
 
         if (count($existing_request) > 0)
-            throw new \DF\Exception('You already have a pending request with this station! Please try again later.');
+            throw new \App\Exception('You already have a pending request with this station! Please try again later.');
 
         // Check for any request (on any station) within 5 minutes.
         $recent_threshold = time()-(60*5);
@@ -130,7 +130,7 @@ class CentovaCast
             ->getArrayResult();
 
         if (count($recent_requests) > 0)
-            throw new \DF\Exception('You have submitted a request too recently! Please wait a while before submitting another one.');
+            throw new \App\Exception('You have submitted a request too recently! Please wait a while before submitting another one.');
 
         // Enable the "Automated Song Requests" playlist.
         $db->update('playlists', array('status' => 'enabled'), array('id' => $playlist_id));
@@ -161,7 +161,7 @@ class CentovaCast
     // Routine synchronization of CentovaCast settings
     public static function sync()
     {
-        if (DF_APPLICATION_ENV !== 'production')
+        if (APP_APPLICATION_ENV !== 'production')
             return false;
 
         $db = self::getDatabase();
@@ -322,7 +322,7 @@ class CentovaCast
 
             // CentovaCast isn't configured in apis.conf.php
             if (empty($settings['db_pass']))
-                throw new \DF\Exception('CentovaCast is not set up.');
+                throw new \App\Exception('CentovaCast is not set up.');
 
             $config = new \Doctrine\DBAL\Configuration;
             $connectionParams = array(

@@ -15,7 +15,7 @@ class ViewHelper implements \Phalcon\DI\InjectionAwareInterface
 
     public function __call($function, $args)
     {
-        $class_name = '\DF\View\Helper\\'.ucfirst($function);
+        $class_name = '\App\View\Helper\\'.ucfirst($function);
 
         if (class_exists($class_name))
         {

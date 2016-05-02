@@ -7,7 +7,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * @Table(name="station_streams")
  * @Entity
  */
-class StationStream extends \DF\Doctrine\Entity
+class StationStream extends \App\Doctrine\Entity
 {
     public function __construct()
     {

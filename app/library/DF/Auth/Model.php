@@ -21,7 +21,7 @@ class Model extends Instance
         }
         else
         {
-            \DF\Flash::addMessage('Could not authenticate your credentials!', 'red');
+            \App\Flash::addMessage('Could not authenticate your credentials!', 'red');
             return false;
         }
     }

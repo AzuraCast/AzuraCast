@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-export util_base="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-export app_base = "$(dirname "$util_base")"
-export www_base = $app_base
-export tmp_base= $app_base/tmp
+export app_base=/var/azuracast
+export util_base=$app_base/www/util
+export www_base=$app_base/www
+export tmp_base=$app_base/tmp
 
 #
 # Vagrant-specific Deploy Commands
@@ -39,12 +39,12 @@ usermod -G www-data vagrant
 # Run Common Installers
 #
 
-cd $util_base;
-chmod a+x ./install_app.sh
+cd $util_base
 chmod a+x ./install_radio.sh
+chmod a+x ./install_app.sh
 
-./install_app.sh
 ./install_radio.sh
+./install_app.sh
 
 #
 # Post-installer messages

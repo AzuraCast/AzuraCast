@@ -8,7 +8,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * @Entity
  * @HasLifecycleCallbacks
  */
-class ApiKey extends \DF\Doctrine\Entity
+class ApiKey extends \App\Doctrine\Entity
 {
     public function __construct()
     {

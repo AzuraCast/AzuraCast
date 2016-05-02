@@ -43,13 +43,13 @@ class Doctrine
         // Special handling for the utf8mb4 type.
         if ($options['conn']['driver'] == 'pdo_mysql' && $options['conn']['charset'] == 'utf8mb4')
         {
-            $options['conn']['platform'] = new \DF\Doctrine\Platform\MysqlUnicode;
+            $options['conn']['platform'] = new \App\Doctrine\Platform\MysqlUnicode;
         }
 
         $metadata_driver = $config->newDefaultAnnotationDriver($options['modelPath']);
         $config->setMetadataDriverImpl($metadata_driver);
 
-        $cache = new \DF\Doctrine\Cache;
+        $cache = new \App\Doctrine\Cache;
         // $cache->setNamespace('doctrine_');
 
         $config->setMetadataCacheImpl($cache);
@@ -60,10 +60,10 @@ class Doctrine
         $config->setProxyNamespace($options['proxyNamespace']);
 
         if (isset($options['conn']['debug']) && $options['conn']['debug'])
-            $config->setSQLLogger(new \DF\Doctrine\Logger\EchoSQL);
+            $config->setSQLLogger(new \App\Doctrine\Logger\EchoSQL);
 
-        $config->addFilter('softdelete', '\DF\Doctrine\Filter\SoftDelete');
-        $config->addCustomNumericFunction('RAND', '\DF\Doctrine\Functions\Rand');
+        $config->addFilter('softdelete', '\App\Doctrine\Filter\SoftDelete');
+        $config->addCustomNumericFunction('RAND', '\App\Doctrine\Functions\Rand');
 
         $evm = new \Doctrine\Common\EventManager();
         $em = \Doctrine\ORM\EntityManager::create($options['conn'], $config, $evm);

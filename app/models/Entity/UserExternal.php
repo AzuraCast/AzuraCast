@@ -8,7 +8,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * @Table(name="users_external")
  * @Entity
  */
-class UserExternal extends \DF\Doctrine\Entity
+class UserExternal extends \App\Doctrine\Entity
 {
     public function __construct()
     {}
@@ -84,7 +84,7 @@ class UserExternal extends \DF\Doctrine\Entity
         else
         {
             // Not enough information to auto-create account; throw exception.
-            throw new \PVL\Exception\AccountNotLinked;
+            throw new \App\Exception\AccountNotLinked;
         }
 
         // Create new external record (if none exists)

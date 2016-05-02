@@ -7,31 +7,13 @@ $session_lifetime = 86400*1;
 
 $config = array(
     // Application name
-    'name'              => 'Ponyville Live!',
-    'analytics_code'    => 'UA-37359273-1',
-    
-    // Primary application web address
-    'base_url'          => (DF_IS_SECURE ? 'https://' : 'http://').'ponyvillelive.com',
-
-    // Web address for API calls.
-    'api_url'           => (DF_IS_SECURE ? 'https://' : 'http://').'api.ponyvillelive.com',
-
-    // Web address for user uploads.
-    'upload_url'        => (DF_IS_SECURE ? 'https://' : 'http://').'uploads.ponyvillelive.com',
-    
-    // DF Messenger mail settings
-    'mail'              => array(
-        'templates'         => DF_INCLUDE_BASE.'/messages',
-        'from_addr'         => 'pr@ponyvillelive.com',
-        'from_name'         => 'Ponyville Live!',
-        'use_smtp'          => true,
-    ),
+    'name'              => 'AzuraCast',
 
     'phpSettings'       => array(
         'display_startup_errors' => 0,
         'display_errors'        => 0,
         'log_errors'            => 1,
-        'error_log'             => DF_INCLUDE_TEMP.'/php_errors.log',
+        'error_log'             => APP_INCLUDE_TEMP.'/php_errors.log',
         'error_reporting'       => E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT,
         'session' => array(
             'use_only_cookies'  => 1,
@@ -45,7 +27,7 @@ $config = array(
     ),
     
     'includePaths'      => array(
-        DF_INCLUDE_LIB.'/ThirdParty',
+        APP_INCLUDE_LIB.'/ThirdParty',
     ),
     
     'pluginpaths'       => array(
@@ -54,15 +36,11 @@ $config = array(
     
     'autoload'          => array(
         'psr0'      => array(
-            'DF'        => DF_INCLUDE_LIB,
-            'PVL'       => DF_INCLUDE_LIB,
-            'Entity'    => DF_INCLUDE_MODELS,
-            'Hybrid'    => DF_INCLUDE_LIB.'/ThirdParty',
-            'Hybrid_'   => DF_INCLUDE_LIB.'/ThirdParty/Hybrid',
-            'tmhOAuth'  => DF_INCLUDE_LIB.'/ThirdParty',
+            'App'       => APP_INCLUDE_LIB,
+            'Entity'    => APP_INCLUDE_MODELS,
         ),
         'psr4'      => array(
-            '\\Proxy\\'     => DF_INCLUDE_TEMP.'/proxies',
+            '\\Proxy\\'     => APP_INCLUDE_TEMP.'/proxies',
         ),
     ),
 
@@ -74,10 +52,10 @@ $config = array(
 
         /* RESOURCES: Doctrine ORM Layer */
         'doctrine'          => array(
-            'autoGenerateProxies' => (DF_APPLICATION_ENV == "development"),
+            'autoGenerateProxies' => (APP_APPLICATION_ENV == "development"),
             'proxyNamespace'    => 'Proxy',
-            'proxyPath'         => DF_INCLUDE_TEMP.'/proxies',
-            'modelPath'         => DF_INCLUDE_MODELS,
+            'proxyPath'         => APP_INCLUDE_TEMP.'/proxies',
+            'modelPath'         => APP_INCLUDE_MODELS,
         ),
     ),
 );
@@ -86,7 +64,7 @@ $config = array(
  * Development mode changes.
  */
 
-if (DF_APPLICATION_ENV != 'production')
+if (APP_APPLICATION_ENV != 'production')
 {
     $config['phpSettings']['display_startup_errors'] = 1;
     $config['phpSettings']['display_errors'] = 1;

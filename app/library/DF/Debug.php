@@ -58,7 +58,7 @@ class Debug
         switch($info['type'])
         {
             case 'divider':
-                if (DF_IS_COMMAND_LINE)
+                if (APP_IS_COMMAND_LINE)
                 {
                     echo '---------------------------------------------'."\n";
                 }
@@ -74,7 +74,7 @@ class Debug
             break;
 
             case 'array':
-                if (DF_IS_COMMAND_LINE)
+                if (APP_IS_COMMAND_LINE)
                 {
                     echo print_r($info['message'], TRUE);
                     echo "\n";
@@ -103,7 +103,7 @@ class Debug
 
             case 'log':
             default:
-                if (DF_IS_COMMAND_LINE)
+                if (APP_IS_COMMAND_LINE)
                 {
                     echo $info['message']."\n";
                 }

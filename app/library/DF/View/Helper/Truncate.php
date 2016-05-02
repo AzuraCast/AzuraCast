@@ -4,6 +4,6 @@ class Truncate extends HelperAbstract
 {
     public function truncate($text, $length=80)
     {
-        return \DF\Utilities::truncateText($text, $length);
+        return \App\Utilities::truncateText($text, $length);
     }
 }

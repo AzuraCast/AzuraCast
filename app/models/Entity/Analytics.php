@@ -9,7 +9,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * })
  * @Entity
  */
-class Analytics extends \DF\Doctrine\Entity
+class Analytics extends \App\Doctrine\Entity
 {
     public function __construct()
     {

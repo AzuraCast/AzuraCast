@@ -33,7 +33,7 @@ class DeviantArt extends AdapterAbstract
         {
             $article_num = 0;
 
-            $feed_array = \DF\Export::XmlToArray($news_feed);
+            $feed_array = \App\Export::XmlToArray($news_feed);
             $items = $feed_array['rss']['channel'][0]['item'];
             
             foreach ((array)$items as $item)

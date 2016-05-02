@@ -78,7 +78,7 @@ class Utilities
     {
         $img = null;
         
-        $folder = DF_INCLUDE_STATIC.DIRECTORY_SEPARATOR.$static_dir;
+        $folder = APP_INCLUDE_STATIC.DIRECTORY_SEPARATOR.$static_dir;
         $extList = array(
           'gif'     => 'image/gif',
           'jpg'     => 'image/jpeg',
@@ -102,7 +102,7 @@ class Utilities
           $img = $fileList[$imageNumber];
         }
         
-        return \DF\Url::content($static_dir.'/'.$img);
+        return \App\Url::content($static_dir.'/'.$img);
     }
 
     /**

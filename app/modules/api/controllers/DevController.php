@@ -59,7 +59,7 @@ class DevController extends BaseController
         // Compose mysqldump command.
         $db_config = $this->config->db->toArray();
 
-        $destination_path = realpath(DF_INCLUDE_TEMP).DIRECTORY_SEPARATOR.'pvl_import.sql';
+        $destination_path = realpath(APP_INCLUDE_TEMP).DIRECTORY_SEPARATOR.'pvl_import.sql';
 
         $command_flags = array(
             '-h '.$db_config['host'],

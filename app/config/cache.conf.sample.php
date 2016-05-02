@@ -13,7 +13,7 @@ return array(
 
     // Flatfile configuration
     'file' => array(
-        'path' => DF_INCLUDE_CACHE.DIRECTORY_SEPARATOR,
+        'path' => APP_INCLUDE_CACHE.DIRECTORY_SEPARATOR,
     ),
 
     // Redis configuration

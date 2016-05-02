@@ -77,7 +77,7 @@ class PonyFm
         $song_hash = self::_getHash($song);
 
         $url = $base_url.$song_hash.'?client=ponyvillelive';
-        \PVL\Debug::log('Hash Search: '.$url);
+        \App\Debug::log('Hash Search: '.$url);
 
         $result_raw = @file_get_contents($url);
 
@@ -85,7 +85,7 @@ class PonyFm
         {
             $result = json_decode($result_raw, TRUE);
 
-            \PVL\Debug::print_r($result);
+            \App\Debug::print_r($result);
 
             return $result;
         }

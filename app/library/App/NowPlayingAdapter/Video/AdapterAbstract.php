@@ -57,7 +57,7 @@ class AdapterAbstract
         $np = array(
             'on_air' => array(
                 'text'          => 'Stream Offline',
-                'thumbnail'     => \DF\Url::content('images/video_thumbnail.png'),
+                'thumbnail'     => \App\Url::content('images/video_thumbnail.png'),
             ),
             'meta' => array(
                 'status'        => 'offline',

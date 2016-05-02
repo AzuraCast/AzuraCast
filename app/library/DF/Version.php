@@ -6,12 +6,12 @@
 
 namespace DF;
 
-define('DF_CORE_VERSION', 'DF_PHAL_D2_201505');
+define('APP_CORE_VERSION', 'APP_PHAL_D2_201505');
 
 class Version
 {
     public static function getVersion()
     {
-        return DF_CORE_VERSION;
+        return APP_CORE_VERSION;
     }
 }

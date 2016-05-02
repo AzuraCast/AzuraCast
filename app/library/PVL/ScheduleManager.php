@@ -53,7 +53,7 @@ class ScheduleManager
                     'url'       => $station['gcal_url'],
                     'type'      => 'station',
                     'station_id' => $station['id'],
-                    'image_url' => \DF\Url::content($station['image_url']),
+                    'image_url' => \App\Url::content($station['image_url']),
                 );
             }
         }
@@ -153,12 +153,12 @@ class ScheduleManager
                     'is_all_day' => $is_all_day,
                     'title'     => $title,
                     'location'  => $location,
-                    'body'      => \DF\Utilities::truncateText(strip_tags($body), 300),
+                    'body'      => \App\Utilities::truncateText(strip_tags($body), 300),
                     'banner_url' => $banner_url,
                     'web_url'   => $web_url,
                 );
 
-                \PVL\Debug::print_r($schedule_record);
+                \App\Debug::print_r($schedule_record);
 
                 $schedule_records[$item['station_id']][$guid] = $schedule_record;
             }

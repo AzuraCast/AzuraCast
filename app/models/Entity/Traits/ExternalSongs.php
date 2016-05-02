@@ -111,7 +111,7 @@ trait ExternalSongs
         $em = self::getEntityManager();
         $ids_raw = $em->createQuery('SELECT sebt.id, sebt.hash FROM '.__CLASS__.' sebt')->getArrayResult();
 
-        return \DF\Utilities::ipull($ids_raw, 'hash', 'id');
+        return \App\Utilities::ipull($ids_raw, 'hash', 'id');
     }
 
     public static function getHashes()
@@ -119,6 +119,6 @@ trait ExternalSongs
         $em = self::getEntityManager();
         $ids_raw = $em->createQuery('SELECT sebt.id, sebt.hash FROM '.__CLASS__.' sebt')->getArrayResult();
 
-        return \DF\Utilities::ipull($ids_raw, 'id', 'hash');
+        return \App\Utilities::ipull($ids_raw, 'id', 'hash');
     }
 }

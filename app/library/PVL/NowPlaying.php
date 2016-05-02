@@ -23,7 +23,7 @@ class NowPlaying
         set_time_limit(60);
 
         // Fix DF\URL // prefixing.
-        \DF\Url::forceSchemePrefix(true);
+        \App\Url::forceSchemePrefix(true);
 
         $nowplaying = self::loadNowPlaying();
 
@@ -71,7 +71,7 @@ class NowPlaying
         $pvl_file_path = \App\Service\AmazonS3::path('api/nowplaying.json');
         @file_put_contents($pvl_file_path, $nowplaying_feed);
 
-        $legacy_file_path = DF_INCLUDE_STATIC.'/api/nowplaying.json';
+        $legacy_file_path = APP_INCLUDE_STATIC.'/api/nowplaying.json';
         @file_put_contents($legacy_file_path, $nowplaying_feed);
 
         // Generate PVL API cache.
@@ -235,7 +235,7 @@ class NowPlaying
         $np = StationStream::api($stream);
 
         $custom_class = Station::getStationClassName($station->name);
-        $custom_adapter = '\\PVL\\RadioAdapter\\'.$custom_class;
+        $custom_adapter = '\\App\\RadioAdapter\\'.$custom_class;
 
         if (class_exists($custom_adapter))
             $np_adapter = new $custom_adapter($stream, $station);
@@ -292,7 +292,7 @@ class NowPlaying
 
             foreach($vote_functions as $vote_function)
             {
-                $vote_urls[$vote_function] = \PVL\Url::api(array(
+                $vote_urls[$vote_function] = \App\Url::api(array(
                     'module' => 'api',
                     'controller' => 'song',
                     'action' => $vote_function,
@@ -329,7 +329,7 @@ class NowPlaying
 
         // Process stream.
         $custom_class = Station::getStationClassName($station->name);
-        $custom_adapter = '\\PVL\\VideoAdapter\\'.$custom_class;
+        $custom_adapter = '\\App\\VideoAdapter\\'.$custom_class;
 
         $np = StationStream::api($stream);
 

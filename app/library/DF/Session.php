@@ -50,9 +50,9 @@ class Session
         if (!isset($sessions[$session_name]))
         {
             if (self::isActive())
-                $sessions[$session_name] = new \DF\Session\Instance($session_name);
+                $sessions[$session_name] = new \App\Session\Instance($session_name);
             else
-                $sessions[$session_name] = new \DF\Session\Temporary($session_name);
+                $sessions[$session_name] = new \App\Session\Temporary($session_name);
         }
         
         return $sessions[$session_name];
@@ -66,8 +66,8 @@ class Session
      */
     public static function getNamespaceName($suffix = 'default')
     {
-        $app_hash = strtoupper(substr(md5(DF_INCLUDE_BASE), 0, 5));
-        return 'DF_'.$app_hash.'_'.$suffix;
+        $app_hash = strtoupper(substr(md5(APP_INCLUDE_BASE), 0, 5));
+        return 'APP_'.$app_hash.'_'.$suffix;
     }
 
     /**
@@ -119,7 +119,7 @@ class Session
      */
     public static function isActive()
     {
-        if (DF_IS_COMMAND_LINE)
+        if (APP_IS_COMMAND_LINE)
             return false;
 
         if (self::$prevent_sessions)

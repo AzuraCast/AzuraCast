@@ -1,7 +1,7 @@
 <?php
 namespace PVL\Acl;
 
-class Instance extends \DF\Acl\Instance
+class Instance extends \App\Acl\Instance
 {
     /**
      * Returns TRUE if the user can see the "Admin" tab at the top of the page.

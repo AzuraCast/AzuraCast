@@ -8,7 +8,7 @@ use PVL\Utilities;
  * @Table(name="song_submissions")
  * @Entity
  */
-class SongSubmission extends \DF\Doctrine\Entity
+class SongSubmission extends \App\Doctrine\Entity
 {
     public function __construct()
     {
@@ -53,7 +53,7 @@ class SongSubmission extends \DF\Doctrine\Entity
         $song_path_base = preg_replace('/[^\w\s-]+/', '', $song_path_base);
         $song_path_base = preg_replace('/\s\s+/', ' ', $song_path_base);
 
-        $new_path = 'song_uploads/'.$song_path_base.'.'.\DF\File::getFileExtension($local_path);
+        $new_path = 'song_uploads/'.$song_path_base.'.'.\App\File::getFileExtension($local_path);
 
         // Upload to remote service.
         \App\Service\AmazonS3::upload($local_path, $new_path);

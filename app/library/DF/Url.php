@@ -231,7 +231,7 @@ class Url
                 $http_host = trim($di->get('request')->getHttpHost(), ':');
 
                 if (!empty($http_host))
-                    $url_domain = ((DF_IS_SECURE) ? 'https://' : 'http://') . $http_host;
+                    $url_domain = ((APP_IS_SECURE) ? 'https://' : 'http://') . $http_host;
             }
 
             $url_raw = $url_domain . $url_raw;

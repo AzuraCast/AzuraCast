@@ -10,16 +10,16 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * })
  * @Entity
  */
-class SongVote extends \DF\Doctrine\Entity
+class SongVote extends \App\Doctrine\Entity
 {
     public function __construct()
     {
         $this->ip = self::getIp();
         $this->timestamp = time();
 
-        if (\DF\Auth::isLoggedIn())
+        if (\App\Auth::isLoggedIn())
         {
-            $user = \DF\Auth::getLoggedInUser();
+            $user = \App\Auth::getLoggedInUser();
             $this->user = $user;
         }
     }

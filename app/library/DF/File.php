@@ -29,18 +29,18 @@ class File
         $file_name = ltrim($file_name, '/');
         $file_name = str_replace('/', DIRECTORY_SEPARATOR, $file_name);
 
-        if (is_readable($file_name) || stristr($file_name, DF_UPLOAD_FOLDER) !== FALSE)
+        if (is_readable($file_name) || stristr($file_name, APP_UPLOAD_FOLDER) !== FALSE)
             return $file_name;
         else
-            return DF_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.str_replace('..','',$file_name);
+            return APP_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.str_replace('..','',$file_name);
     }
     
     public static function getFileUrl($file_name)
     {
-        if (defined('DF_UPLOAD_URL'))
-            return DF_UPLOAD_URL.'/'.$file_name;
+        if (defined('APP_UPLOAD_URL'))
+            return APP_UPLOAD_URL.'/'.$file_name;
         else
-            return \DF\Url::content($file_name);
+            return \App\Url::content($file_name);
     }
     
     public static function isValidFile($uploaded_file, $allowed_extensions = NULL)
@@ -67,35 +67,35 @@ class File
             switch($uploaded_file['error'])
             {
                 case UPLOAD_ERR_INI_SIZE:
-                    throw new \DF\Exception\DisplayOnly('File Upload Error: The file you are attempting to upload is larger than allowed (upload_max_filesize).');
+                    throw new \App\Exception\DisplayOnly('File Upload Error: The file you are attempting to upload is larger than allowed (upload_max_filesize).');
                     break;
                 
                 case UPLOAD_ERR_FORM_SIZE:
-                    throw new \DF\Exception\DisplayOnly('File Upload Error: The file you are attempting to upload is larger than allowed (MAX_FILE_SIZE).');
+                    throw new \App\Exception\DisplayOnly('File Upload Error: The file you are attempting to upload is larger than allowed (MAX_FILE_SIZE).');
                     break;
                     
                 case UPLOAD_ERR_PARTIAL:
-                    throw new \DF\Exception\DisplayOnly('File Upload Error: The file you are attempting to upload was only partially uploaded.');
+                    throw new \App\Exception\DisplayOnly('File Upload Error: The file you are attempting to upload was only partially uploaded.');
                     break;
                 
                 case UPLOAD_ERR_NO_FILE:
-                    throw new \DF\Exception\DisplayOnly('File Upload Error: No file was uploaded.');
+                    throw new \App\Exception\DisplayOnly('File Upload Error: No file was uploaded.');
                     break;
                 
                 case UPLOAD_ERR_NO_TMP_DIR:
-                    throw new \DF\Exception\DisplayOnly('File Upload Error: Missing a temporary folder.');
+                    throw new \App\Exception\DisplayOnly('File Upload Error: Missing a temporary folder.');
                     break;
                 
                 case UPLOAD_ERR_CANT_WRITE:
-                    throw new \DF\Exception\DisplayOnly('File Upload Error: Failed to write file to disk.');
+                    throw new \App\Exception\DisplayOnly('File Upload Error: Failed to write file to disk.');
                     break;
                 
                 case UPLOAD_ERR_EXTENSION:
-                    throw new \DF\Exception\DisplayOnly('File Upload Error: Upload stopped by extension.');
+                    throw new \App\Exception\DisplayOnly('File Upload Error: Upload stopped by extension.');
                     break;
                     
                 default:
-                    throw new \DF\Exception\DisplayOnly('File Upload Error: No file was specified.');
+                    throw new \App\Exception\DisplayOnly('File Upload Error: No file was specified.');
                     break;
             }
             exit;
@@ -117,7 +117,7 @@ class File
         }
         else
         {
-            throw new \DF\Exception\DisplayOnly('File Upload Error: Could not upload the file requested.');
+            throw new \App\Exception\DisplayOnly('File Upload Error: Could not upload the file requested.');
             exit;
         }
     }

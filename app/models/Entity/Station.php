@@ -8,7 +8,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * @Entity
  * @HasLifecycleCallbacks
  */
-class Station extends \DF\Doctrine\Entity
+class Station extends \App\Doctrine\Entity
 {
     use Traits\FileUploads;
 
@@ -86,7 +86,7 @@ class Station extends \DF\Doctrine\Entity
     public function getCountryName()
     {
         if ($this->country)
-            return \PVL\Internationalization::getCountryName($this->country);
+            return \App\Internationalization::getCountryName($this->country);
         else
             return '';
     }
@@ -227,7 +227,7 @@ class Station extends \DF\Doctrine\Entity
     public function canManage(User $user = null)
     {
         if ($user === null)
-            $user = \DF\Auth::getLoggedInUser();
+            $user = \App\Auth::getLoggedInUser();
 
         $di = \Phalcon\Di::getDefault();
         $acl = $di->get('acl');
@@ -324,7 +324,7 @@ class Station extends \DF\Doctrine\Entity
 
     public static function fetchArray($cached = true)
     {
-        $stations = \DF\Cache::get('stations');
+        $stations = \App\Cache::get('stations');
 
         if (!$stations || !$cached)
         {
@@ -350,7 +350,7 @@ class Station extends \DF\Doctrine\Entity
                 }
             }
 
-            \DF\Cache::save($stations, 'stations', array(), 60);
+            \App\Cache::save($stations, 'stations', array(), 60);
         }
 
         return $stations;
@@ -468,7 +468,7 @@ class Station extends \DF\Doctrine\Entity
             'genre'     => $row['genre'],
             'category'  => $row['category'],
             'affiliation' => $row['affiliation'],
-            'image_url' => \PVL\Url::upload($row['image_url']),
+            'image_url' => \App\Url::upload($row['image_url']),
             'web_url'   => $row['web_url'],
             'twitter_url' => $row['twitter_url'],
             'irc'       => $row['irc'],
@@ -495,7 +495,7 @@ class Station extends \DF\Doctrine\Entity
         $api['player_url'] = ShortUrl::stationUrl($api['shortcode']);
 
         if ($row['requests_enabled'])
-            $api['request_url'] = \DF\Url::route(array('module' => 'default', 'controller' => 'station', 'action' => 'request', 'id' => $row['id']));
+            $api['request_url'] = \App\Url::route(array('module' => 'default', 'controller' => 'station', 'action' => 'request', 'id' => $row['id']));
         else
             $api['request_url'] = '';
 

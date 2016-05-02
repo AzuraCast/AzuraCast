@@ -7,7 +7,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * @Table(name="role")
  * @Entity
  */
-class Role extends \DF\Doctrine\Entity
+class Role extends \App\Doctrine\Entity
 {
     public function __construct()
     {

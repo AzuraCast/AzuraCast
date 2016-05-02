@@ -47,7 +47,7 @@ class LiveStream extends AdapterAbstract
 
     public static function getAccount($url)
     {
-        $url_parts = \PVL\Utilities::parseUrl($url);
+        $url_parts = \App\Utilities::parseUrl($url);
 
         $url_components = explode('/', $url_parts['path']);
         $url_last_element = array_pop($url_components);

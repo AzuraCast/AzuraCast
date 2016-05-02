@@ -25,7 +25,7 @@ class Form
 
         $this->form = new $form;
 
-        if ($options instanceof \DF\Config\Item)
+        if ($options instanceof \App\Config\Item)
             $options = $options->toArray();
 
         $this->options = $options;
@@ -176,7 +176,7 @@ class Form
 
             case 'checkboxes':
             case 'multicheckbox':
-                $element = new \DF\Forms\Element\MultiCheckbox($field_key, $select_options, $field_options);
+                $element = new \App\Forms\Element\MultiCheckbox($field_key, $select_options, $field_options);
             break;
 
             case 'radio':
@@ -192,11 +192,11 @@ class Form
             break;
 
             case 'file':
-                $element = new \DF\Forms\Element\File($field_key, $field_options);
+                $element = new \App\Forms\Element\File($field_key, $field_options);
             break;
 
             case 'image':
-                $element = new \DF\Forms\Element\Image($field_key, $field_options);
+                $element = new \App\Forms\Element\Image($field_key, $field_options);
             break;
 
             case 'date':
@@ -204,7 +204,7 @@ class Form
             break;
 
             case 'unixdate':
-                $element = new \DF\Forms\Element\UnixDate($field_key, $field_options);
+                $element = new \App\Forms\Element\UnixDate($field_key, $field_options);
             break;
 
             case 'numeric':
@@ -219,14 +219,14 @@ class Form
             break;
 
             case 'markup':
-                $element = new \DF\Forms\Element\Markup($field_key, $field_options['markup'], $field_options);
+                $element = new \App\Forms\Element\Markup($field_key, $field_options['markup'], $field_options);
             break;
 
             case 'captcha':
             case 'recaptcha':
-                $element = new \DF\Forms\Element\Recaptcha($field_key, $field_options);
+                $element = new \App\Forms\Element\Recaptcha($field_key, $field_options);
 
-                $validator = new \DF\Forms\Validator\RecaptchaValidator;
+                $validator = new \App\Forms\Validator\RecaptchaValidator;
                 $element->addValidator($validator);
             break;
 
@@ -261,7 +261,7 @@ class Form
 
         $form_defaults = array(
             'method'        => 'POST',
-            'action'        => \DF\Url::current(),
+            'action'        => \App\Url::current(),
             'class'         => 'form-stacked df-form',
         );
 
@@ -641,7 +641,7 @@ class Form
         $return_fields = array();
 
         // Check for upload directory.
-        $base_dir = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$destination_folder;
+        $base_dir = APP_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$destination_folder;
 
         if (!file_exists($base_dir))
             @mkdir($base_dir);
@@ -678,10 +678,10 @@ class Form
             $new_file_name .= date('Ymd_His').'_'.mt_rand(100, 999).'_'.$element_name_clean.'_'.$i.'.'.$file->getExtension();
 
             $new_file_path_short = $destination_folder.'/'.$new_file_name;
-            $new_file_path_full = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$new_file_path_short;
+            $new_file_path_full = APP_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$new_file_path_short;
 
             if (!is_writable(dirname($new_file_path_full)))
-                throw new \DF\Exception('New directory not writable.');
+                throw new \App\Exception('New directory not writable.');
 
             $file->moveTo($new_file_path_full);
 

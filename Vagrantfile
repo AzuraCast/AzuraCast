@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Support for Parallels provider for Vagrant
   # See: http://parallels.github.io/vagrant-parallels/docs/
   config.vm.provider "parallels" do |v, override|
-    v.update_guest_tools = true
+    # v.update_guest_tools = true
     v.memory = 1024
 
     override.vm.box = "parallels/ubuntu-14.04"
@@ -24,15 +24,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
 
-  if Vagrant.has_plugin?("hostsupdater")
-    config.hostsupdater.aliases = ["local.ponyvillelive.com", "dev.ponyvillelive.com", "local.pvlive.me"]
-  end
-
   # Disabled for Windows 10 + VirtualBox
   # config.vm.network "private_network", ip: "192.168.33.120"
   config.vm.network :forwarded_port, guest: 80, host: 8080
 
-  config.vm.synced_folder ".", "/var/www/vagrant"
+  config.vm.synced_folder ".", "/var/azuracast/www", create: true, user: "root", group: "www-data"
   config.vm.synced_folder ".", "/vagrant"
 
   config.vm.provision "shell" do |s|

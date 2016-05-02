@@ -1,4 +1,4 @@
-user vagrant;
+user root;
 worker_processes 4;
 pid /run/nginx.pid;
 
@@ -56,10 +56,10 @@ http {
         server {
                 listen 80 default_server;
 
-                root /var/www/vagrant/web;
+                root AZURABASEDIR;
                 index index.php;
 
-                server_name localhost pvlive.dev www.pvlive.dev;
+                server_name localhost;
 
                 location / {
                         try_files $uri @clean_url;
@@ -69,10 +69,6 @@ http {
                         rewrite ^(.*)$ /index.php last;
                 }
 
-                location ~ /static/(api|stations)/ {
-                        add_header Access-Control-Allow-Origin *;
-                }
-
                 location ~ \.php$ {
                         fastcgi_hide_header Cache-Control;
 
@@ -80,22 +76,10 @@ http {
                         # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
                         fastcgi_pass 127.0.0.1:9000;
                         fastcgi_index index.php;
-                        fastcgi_param SCRIPT_FILENAME /var/www/vagrant/web$fastcgi_script_name;
+                        fastcgi_param SCRIPT_FILENAME AZURABASEDIR$fastcgi_script_name;
                         include fastcgi_params;
 
                         fastcgi_read_timeout 1800;
-                }
-
-                location /api {
-                        rewrite ^(.*)$ /api.php last;
-                }
-
-                location /live {
-                        proxy_pass http://localhost:4002/socket.io;
-                        proxy_redirect off;
-                        proxy_http_version 1.1;
-                        proxy_set_header Upgrade $http_upgrade;
-                        proxy_set_header Connection "upgrade";
                 }
 
                 # deny access to .htaccess files, if Apache's document root

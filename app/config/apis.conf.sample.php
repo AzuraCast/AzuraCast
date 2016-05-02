@@ -61,7 +61,7 @@ return array(
 
     // Hybrid/oAuth API settings.
     'hybrid_auth' => array(
-        'base_url' => \DF\Url::baseUrl(),
+        'base_url' => \App\Url::baseUrl(),
 
         // Enable debug mode (specify "debug_file" below).
         'debug_mode' => false,

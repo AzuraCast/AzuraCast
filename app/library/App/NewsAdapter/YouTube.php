@@ -76,7 +76,7 @@ class YouTube extends AdapterAbstract
     {
         if (stristr($url, 'youtube.com') !== FALSE)
         {
-            $url_parts = \PVL\Utilities::parseUrl($url);
+            $url_parts = \App\Utilities::parseUrl($url);
 
             if ($url_parts['path_clean'] == 'playlist')
             {

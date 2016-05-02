@@ -18,7 +18,7 @@ AzuraCast offers the following functionality to radio station operators:
 
 ## Local Development with Vagrant
 
-This application supports **Vagrant** for local development and testing before launching a production 
+This application supports **Vagrant** for local development and testing before launching a production station.
 
 * Clone this repository to your hard drive.
 * Install [Vagrant](http://www.vagrantup.com/) for your OS.
@@ -54,9 +54,7 @@ Because stylesheets are written in SCSS, they must first be compiled into CSS be
 
 AzuraCast is a volunteer project, and we depend on your support and feedback to keep growing.
 
-Issues for the PVLive codebase are tracked in this repository's Issues section on Github. Anyone can create a new issue for the project, and you are encouraged to do so.
-
-If you have any further questions, comments or suggestions, just visit the [Contact Us](http://ponyvillelive.com/contact) page for more information on how to reach our team.
+Issues for this codebase are tracked in this repository's Issues section on GitHub. Anyone can create a new issue for the project, and you are encouraged to do so.
 
 ## Contribute to AzuraCast
 

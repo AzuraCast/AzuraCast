@@ -34,7 +34,7 @@ class Icon extends HelperAbstract
         else
         {
             $icon_name = str_replace('.png', '', $params['image']).'.png';
-            $params['src'] = \DF\Url::content('common/icons/'.$params['type'].'/'.$icon_name);
+            $params['src'] = \App\Url::content('common/icons/'.$params['type'].'/'.$icon_name);
             unset($params['size'], $params['image'], $params['type']);
             
             return $this->iconComposeTag('img', $params, '');

@@ -7,16 +7,16 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * @Table(name="station_requests")
  * @Entity
  */
-class StationRequest extends \DF\Doctrine\Entity
+class StationRequest extends \App\Doctrine\Entity
 {
     public function __construct()
     {
         $this->timestamp = time();
         $this->ip = $_SERVER['REMOTE_ADDR'];
 
-        if (\DF\Auth::isLoggedIn())
+        if (\App\Auth::isLoggedIn())
         {
-            $user = \DF\Auth::getLoggedInUser();
+            $user = \App\Auth::getLoggedInUser();
             $this->user = $user;
         }
     }

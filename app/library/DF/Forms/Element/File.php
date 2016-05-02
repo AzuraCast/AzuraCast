@@ -33,7 +33,7 @@ class File extends \Phalcon\Forms\Element\File
 
         foreach((array)$this->_previous_value as $file)
         {
-            $file_url = \PVL\Url::upload($file);
+            $file_url = \App\Url::upload($file);
             $file_rows[] = '<a href="' . $file_url . '" target="_blank">' . $file . '</a>';
         }
 
@@ -51,7 +51,7 @@ class File extends \Phalcon\Forms\Element\File
             $existing_files = array();
             foreach((array)$this->_previous_value as $file)
             {
-                $file_url = \PVL\Url::upload($file);
+                $file_url = \App\Url::upload($file);
                 $existing_files[] = '<a href="' . $file_url . '" target="_blank">Download</a>';
             }
 

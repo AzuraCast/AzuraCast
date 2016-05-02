@@ -11,9 +11,9 @@ class Instance implements \ArrayAccess
         $this->_namespace = $namespace;
 
         // Lazy load session.
-        if (\DF\Session::exists())
+        if (\App\Session::exists())
         {
-            \DF\Session::start();
+            \App\Session::start();
             $this->_data = $_SESSION[$this->_namespace];
         }
         else
@@ -32,8 +32,8 @@ class Instance implements \ArrayAccess
     {
         $this->_data[$name] = $value;
 
-        if (\DF\Session::isActive()) {
-            \DF\Session::start();
+        if (\App\Session::isActive()) {
+            \App\Session::start();
 
             if (!isset($_SESSION[$this->_namespace]))
                 $_SESSION[$this->_namespace] = array();
@@ -52,8 +52,8 @@ class Instance implements \ArrayAccess
     {
         $this->_data[$name] = $value;
 
-        if (\DF\Session::isActive()) {
-            \DF\Session::start();
+        if (\App\Session::isActive()) {
+            \App\Session::start();
 
             if (!isset($_SESSION[$this->_namespace]))
                 $_SESSION[$this->_namespace] = array();
@@ -121,8 +121,8 @@ class Instance implements \ArrayAccess
     {
         unset($this->_data[$name]);
 
-        if (\DF\Session::isActive()) {
-            \DF\Session::start();
+        if (\App\Session::isActive()) {
+            \App\Session::start();
             unset($_SESSION[$this->_namespace][$name]);
         }
     }
@@ -136,8 +136,8 @@ class Instance implements \ArrayAccess
     {
         unset($this->_data[$name]);
 
-        if (\DF\Session::isActive()) {
-            \DF\Session::start();
+        if (\App\Session::isActive()) {
+            \App\Session::start();
             unset($_SESSION[$this->_namespace][$name]);
         }
     }

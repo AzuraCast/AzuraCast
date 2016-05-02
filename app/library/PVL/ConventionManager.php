@@ -60,7 +60,7 @@ class ConventionManager
             switch($row->type)
             {
                 case "yt_playlist":
-                    $url_parts = \PVL\Utilities::parseUrl($url);
+                    $url_parts = \App\Utilities::parseUrl($url);
                     $playlist_id = $url_parts['query_arr']['list'];
 
                     if (!$playlist_id)

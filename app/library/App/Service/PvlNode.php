@@ -9,7 +9,7 @@ class PvlNode
      * @param $event_type string The event to trigger in socket.io (i.e. nowplaying)
      * @param $event_data mixed An array of contents to send to clients.
      * @return mixed
-     * @throws \DF\Exception
+     * @throws \App\Exception
      */
     public static function push($event_type, $event_data)
     {
@@ -33,7 +33,7 @@ class PvlNode
         $response = curl_exec($ch);
 
         if(curl_errno($ch))
-            throw new \DF\Exception('cURL Error: '.curl_error($ch));
+            throw new \App\Exception('cURL Error: '.curl_error($ch));
 
         curl_close($ch);
 

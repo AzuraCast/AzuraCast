@@ -40,8 +40,8 @@ class File
         $di = \Phalcon\Di::getDefault();
         $url = $di['url'];
 
-        if (defined('DF_UPLOAD_URL'))
-            return DF_UPLOAD_URL.'/'.$file_name;
+        if (defined('APP_UPLOAD_URL'))
+            return APP_UPLOAD_URL.'/'.$file_name;
         else
             return $url->content($file_name);
     }

@@ -33,10 +33,10 @@ class Messenger
         // Render the template as the message if a template is specified.
         if (isset($options['template']))
         {
-            $previous_sp_setting = \DF\Url::getSchemePrefixSetting();
-            \DF\Url::forceSchemePrefix(TRUE);
+            $previous_sp_setting = \App\Url::getSchemePrefixSetting();
+            \App\Url::forceSchemePrefix(TRUE);
 
-            $view = \DF\Phalcon\View::getView(array(
+            $view = \App\Phalcon\View::getView(array(
                 'views_dir' => 'messages',
                 'layouts_dir' => '../templates',
                 'layout'    => 'message',
@@ -47,7 +47,7 @@ class Messenger
 
             $options['message'] = $view->getRender('', $options['template']);
 
-            \DF\Url::forceSchemePrefix($previous_sp_setting);
+            \App\Url::forceSchemePrefix($previous_sp_setting);
         }
         else if (isset($options['body']) && !isset($options['message']))
         {
@@ -95,7 +95,7 @@ class Messenger
         $mail_config = $config->application->mail->toArray();
 
         // Do not deliver mail on development environments.
-        if (DF_APPLICATION_ENV == "development" && !defined('DF_FORCE_EMAIL'))
+        if (APP_APPLICATION_ENV == "development" && !defined('APP_FORCE_EMAIL'))
         {
             $email_to = $mail_config['from_addr'];
             if (!empty($email_to))

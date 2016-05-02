@@ -1,8 +1,8 @@
 <?php
 namespace DF\Phalcon;
 
-use \DF\Session;
-use \DF\Url;
+use \App\Session;
+use \App\Url;
 
 class Controller extends \Phalcon\Mvc\Controller
 {
@@ -20,9 +20,9 @@ class Controller extends \Phalcon\Mvc\Controller
         if (!$isAllowed)
         {
             if (!$this->auth->isLoggedIn())
-                throw new \DF\Exception\NotLoggedIn;
+                throw new \App\Exception\NotLoggedIn;
             else
-                throw new \DF\Exception\PermissionDenied;
+                throw new \App\Exception\PermissionDenied;
         }
     }
 
@@ -305,7 +305,7 @@ class Controller extends \Phalcon\Mvc\Controller
      */
     protected function forceSecure()
     {
-        if (DF_APPLICATION_ENV == 'production' && !DF_IS_SECURE)
+        if (APP_APPLICATION_ENV == 'production' && !APP_IS_SECURE)
         {
             $this->doNotRender();
 
@@ -319,7 +319,7 @@ class Controller extends \Phalcon\Mvc\Controller
      */
     protected function forceInsecure()
     {
-        if (DF_APPLICATION_ENV == 'production' && DF_IS_SECURE)
+        if (APP_APPLICATION_ENV == 'production' && APP_IS_SECURE)
         {
             $this->doNotRender();
 
@@ -373,18 +373,18 @@ class Controller extends \Phalcon\Mvc\Controller
 
     /* Notifications */
 
-    public function flash($message, $level = \DF\Flash::INFO)
+    public function flash($message, $level = \App\Flash::INFO)
     {
         $this->alert($message, $level);
     }
-    public function alert($message, $level = \DF\Flash::INFO)
+    public function alert($message, $level = \App\Flash::INFO)
     {
-        \DF\Flash::addMessage($message, $level);
+        \App\Flash::addMessage($message, $level);
     }
 
     /* Form Rendering */
 
-    protected function renderForm(\DF\Form $form, $mode = 'edit', $form_title = NULL)
+    protected function renderForm(\App\Form $form, $mode = 'edit', $form_title = NULL)
     {
         $this->view->hide_title = false;
         $this->view->setViewsDir('modules/frontend/views/scripts/');

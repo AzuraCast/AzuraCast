@@ -18,7 +18,7 @@ class Instance
     public function getSession()
     {
         $class_name = strtolower(str_replace(array('\\', '_'), array('', ''), get_called_class()));
-        return \DF\Session::get('auth_'.$class_name.'_user');
+        return \App\Session::get('auth_'.$class_name.'_user');
     }
     
     public function login()
@@ -49,7 +49,7 @@ class Instance
 
     public function isLoggedIn()
     {
-        if (DF_IS_COMMAND_LINE)
+        if (APP_IS_COMMAND_LINE)
             return false;
         
         $user = $this->getUser();
@@ -87,7 +87,7 @@ class Instance
                 $this->_user = FALSE;
                 $this->logout();
                 
-                throw new \DF\Exception('Invalid user!');
+                throw new \App\Exception('Invalid user!');
             }
         }
         

@@ -2,7 +2,7 @@
 
 apt-get update
 
-apt-get -q -y install icecast2 liquidsoap
+apt-get -q -y install pwgen icecast2 liquidsoap
 
 # Generate new passwords for Icecast
 

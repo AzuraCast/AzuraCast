@@ -10,7 +10,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * @Entity
  * @HasLifecycleCallbacks
  */
-class StationMedia extends \DF\Doctrine\Entity
+class StationMedia extends \App\Doctrine\Entity
 {
     public function __construct()
     {

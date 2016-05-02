@@ -10,7 +10,7 @@ add-apt-repository 'deb http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.0/u
 apt-get update
 
 # Install app dependencies
-apt-get -q -y install php5-fpm php5-cli php5-gd php5-mysqlnd php5-curl php5-phalcon
+apt-get -q -y install mariadb-server php5-fpm php5-cli php5-gd php5-mysqlnd php5-curl php5-phalcon
 apt-get -q -y install nodejs npm
 
 # Set up InfluxDB early (to allow time to initialize before setting up DBs.)
@@ -45,8 +45,9 @@ service nginx stop
 
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 cp /vagrant/util/vagrant_nginx /etc/nginx/nginx.conf
+sed -e '/AZURABASEDIR/'$www_base'/' /etc/nginx/nginx.conf
 
-chown -R vagrant /var/log/nginx
+# chown -R vagrant /var/log/nginx
 
 unlink /etc/nginx/sites-enabled/
 
@@ -120,3 +121,28 @@ composer install
 # Shut off Cron tasks for now
 service cron stop
 service nginx stop
+
+# Set up DB.
+echo "Setting up database..."
+
+cd $www_base/util
+
+php doctrine.php orm:schema-tool:drop --force
+
+php doctrine.php orm:schema-tool:create
+php cli.php cache:clear
+
+#echo "Importing external music databases (takes a minute)..."
+#sudo -u vagrant php cli.php sync:long
+
+#echo "Running regular tasks..."
+#sudo -u vagrant php cli.php sync:short
+#sudo -u vagrant php cli.php sync:medium
+#sudo -u vagrant php cli.php sync:nowplaying
+
+# Add cron job
+echo "Installing cron job..."
+crontab -u vagrant $www_base/util/vagrant_cron
+
+service cron start
+service nginx start

@@ -40,12 +40,12 @@ class StreamUp extends AdapterAbstract
     /*
     public function getStreamInfo($channel_slug)
     {
-        $stream_data = \DF\Cache::get('streamup_stream_data');
+        $stream_data = \App\Cache::get('streamup_stream_data');
 
         if (!$stream_data)
         {
             $stream_data = $this->_getStreamData('http://api.streamup.com/1.0/channels');
-            \DF\Cache::set($stream_data, 'streamup_stream_data', array(), 50);
+            \App\Cache::set($stream_data, 'streamup_stream_data', array(), 50);
         }
 
         if (isset($stream_data[$channel_slug]))

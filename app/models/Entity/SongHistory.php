@@ -9,7 +9,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * })
  * @Entity
  */
-class SongHistory extends \DF\Doctrine\Entity
+class SongHistory extends \App\Doctrine\Entity
 {
     public function __construct()
     {

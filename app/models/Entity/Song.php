@@ -10,7 +10,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * @Entity
  * @HasLifecycleCallbacks
  */
-class Song extends \DF\Doctrine\Entity
+class Song extends \App\Doctrine\Entity
 {
     const SYNC_THRESHOLD = 604800; // 604800 = 1 week
 
@@ -175,7 +175,7 @@ class Song extends \DF\Doctrine\Entity
         $em = self::getEntityManager();
         $ids_raw = $em->createQuery('SELECT s.id FROM '.__CLASS__.' s')->getArrayResult();
 
-        return \PVL\Utilities::ipull($ids_raw, 'id');
+        return \App\Utilities::ipull($ids_raw, 'id');
     }
 
     public static function getOrCreate($song_info, $is_radio_play = false)

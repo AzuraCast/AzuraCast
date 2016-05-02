@@ -9,7 +9,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * })
  * @Entity
  */
-class Schedule extends \DF\Doctrine\Entity
+class Schedule extends \App\Doctrine\Entity
 {
     public function __construct()
     {
@@ -252,7 +252,7 @@ class Schedule extends \DF\Doctrine\Entity
             'banner_url'    => $row_raw['banner_url'],
             'web_url'       => $row_raw['web_url'],
             'range'         => $row_raw['range'] ?: self::getRangeText($row_raw['start_time'], $row_raw['end_time'], $row_raw['is_all_day']),
-            'image_url'     => \PVL\Url::upload(self::getRowImageUrl($row_raw)),
+            'image_url'     => \App\Url::upload(self::getRowImageUrl($row_raw)),
         );
 
         if (isset($row_raw['minutes_until']))

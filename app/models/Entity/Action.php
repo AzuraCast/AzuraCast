@@ -5,7 +5,7 @@ namespace Entity;
  * @Table(name="action")
  * @Entity
  */
-class Action extends \DF\Doctrine\Entity
+class Action extends \App\Doctrine\Entity
 {
     public function __construct()
     {

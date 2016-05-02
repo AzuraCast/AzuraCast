@@ -275,7 +275,7 @@ class SubmitController extends BaseController
 
         // Check for uploaded songs.
         $temp_dir_name = 'song_uploads';
-        $temp_dir = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$temp_dir_name;
+        $temp_dir = APP_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$temp_dir_name;
 
         $all_files = glob($temp_dir.DIRECTORY_SEPARATOR.$token.'*.mp3');
 
@@ -434,7 +434,7 @@ class SubmitController extends BaseController
             die('No files uploaded!');
 
         // Check for upload directory.
-        $base_dir = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'song_uploads';
+        $base_dir = APP_INCLUDE_TEMP.DIRECTORY_SEPARATOR.'song_uploads';
 
         if (!file_exists($base_dir))
             @mkdir($base_dir);

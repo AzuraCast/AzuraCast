@@ -16,7 +16,7 @@ class NotificationManager
     {
         $di = \Phalcon\Di::getDefault();
 
-        \DF\Url::forceSchemePrefix(true);
+        \App\Url::forceSchemePrefix(true);
 
         self::_runNetworkNews($di, $force);
         self::_runStationEvents($di, $force);
@@ -69,7 +69,7 @@ class NotificationManager
      *
      * @param \Phalcon\DiInterface $di
      * @param bool $force
-     * @throws \DF\Exception
+     * @throws \App\Exception
      */
     public static function _runStationEvents(\Phalcon\DiInterface $di, $force = false)
     {
@@ -120,7 +120,7 @@ class NotificationManager
      * Send notifications for new podcast episodes.
      *
      * @param \Phalcon\DiInterface $di
-     * @throws \DF\Exception
+     * @throws \App\Exception
      */
     public static function _runPodcastEpisodes(\Phalcon\DiInterface $di, $force = false)
     {
@@ -150,7 +150,7 @@ class NotificationManager
             if ($podcast->is_adult)
                 $podcast_name = '[18+] '.$podcast_name;
 
-            $title = \DF\Utilities::truncateText($episode->title, 110-strlen($podcast_name)-6);
+            $title = \App\Utilities::truncateText($episode->title, 110-strlen($podcast_name)-6);
             $tweet = $podcast_name.': "'.$title.'"';
 
             PvlNode::push('podcast.new_episode', array(
@@ -188,10 +188,10 @@ class NotificationManager
     {
         static $twitter;
 
-        \PVL\Debug::print_r(func_get_args());
+        \App\Debug::print_r(func_get_args());
 
         // Suppress notifications for non-production applications.
-        if (DF_APPLICATION_ENV != "production" && !$force)
+        if (APP_APPLICATION_ENV != "production" && !$force)
             return false;
 
         // Send through Notifico hook.
@@ -223,7 +223,7 @@ class NotificationManager
         }
 
         // Cut off the URL
-        $tweet = \DF\Utilities::truncateText($message, $message_length);
+        $tweet = \App\Utilities::truncateText($message, $message_length);
 
         if ($url)
             $tweet .= ' '.$url;
@@ -238,7 +238,7 @@ class NotificationManager
                     'media' => $image_data,
                 ));
 
-                \PVL\Debug::print_r($twitter->response['response']);
+                \App\Debug::print_r($twitter->response['response']);
                 $image_response = @json_decode($twitter->response['response'], true);
 
                 if (isset($image_response['media_id_string']))
@@ -249,7 +249,7 @@ class NotificationManager
                         'status' => $tweet,
                         'media_ids' => array($media_id),
                     ));
-                    \PVL\Debug::print_r($twitter->response['response']);
+                    \App\Debug::print_r($twitter->response['response']);
                 }
                 return true;
             }
@@ -258,7 +258,7 @@ class NotificationManager
         $twitter->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', array(
             'status' => $tweet,
         ));
-        \PVL\Debug::print_r($twitter->response['response']);
+        \App\Debug::print_r($twitter->response['response']);
         return true;
     }
 }

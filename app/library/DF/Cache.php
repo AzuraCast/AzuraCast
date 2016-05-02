@@ -102,7 +102,7 @@ class Cache
     // Get all cache keys.
     public static function getKeys()
     {
-        throw new \DF\Exception('Function not implemented.');
+        throw new \App\Exception('Function not implemented.');
     }
 
     /**
@@ -181,7 +181,7 @@ class Cache
 
         if (!$cache_base)
         {
-            $dir_hash = md5(DF_INCLUDE_ROOT);
+            $dir_hash = md5(APP_INCLUDE_ROOT);
             $cache_base = substr($dir_hash, 0, 3);
         }
 

@@ -4,59 +4,53 @@
  */
 
 // Security settings
-define('DF_IS_COMMAND_LINE', (PHP_SAPI == "cli"));
-define("DF_IS_SECURE", (!DF_IS_COMMAND_LINE && (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on")) ? TRUE : FALSE);
+define("APP_IS_COMMAND_LINE", (PHP_SAPI == "cli"));
+define("APP_IS_SECURE", (!APP_IS_COMMAND_LINE && (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on")) ? TRUE : FALSE);
 
 // General includes
-define("DF_INCLUDE_BASE", dirname(__FILE__));
-define("DF_INCLUDE_ROOT", realpath(DF_INCLUDE_BASE.'/..'));
-define("DF_INCLUDE_WEB", DF_INCLUDE_ROOT.'/web');
-define("DF_INCLUDE_STATIC", DF_INCLUDE_WEB.'/static');
+define("APP_INCLUDE_BASE", dirname(__FILE__));
+define("APP_INCLUDE_ROOT", realpath(APP_INCLUDE_BASE.'/..'));
+define("APP_INCLUDE_WEB", APP_INCLUDE_ROOT.'/web');
+define("APP_INCLUDE_STATIC", APP_INCLUDE_WEB.'/static');
 
-define("DF_INCLUDE_APP", DF_INCLUDE_BASE);
-define("DF_INCLUDE_MODELS", DF_INCLUDE_BASE.'/models');
-define("DF_INCLUDE_MODULES", DF_INCLUDE_BASE.'/modules');
+define("APP_INCLUDE_MODELS", APP_INCLUDE_BASE.'/models');
+define("APP_INCLUDE_MODULES", APP_INCLUDE_BASE.'/modules');
 
-define("DF_INCLUDE_TEMP", DF_INCLUDE_ROOT.'/../www_tmp');
-define("DF_INCLUDE_CACHE", DF_INCLUDE_TEMP.'/cache');
+define("APP_INCLUDE_TEMP", APP_INCLUDE_ROOT.'/../www_tmp');
+define("APP_INCLUDE_CACHE", APP_INCLUDE_TEMP.'/cache');
 
-define("DF_INCLUDE_LIB", DF_INCLUDE_BASE.'/library');
-define("DF_INCLUDE_VENDOR", DF_INCLUDE_ROOT.'/vendor');
+define("APP_INCLUDE_LIB", APP_INCLUDE_BASE.'/library');
+define("APP_INCLUDE_VENDOR", APP_INCLUDE_ROOT.'/vendor');
 
-define("DF_UPLOAD_FOLDER", DF_INCLUDE_STATIC);
-
-// Self-reference to current script.
-if (isset($_SERVER['REQUEST_URI']))
-    define("DF_THIS_PAGE", reset(explode("?", $_SERVER['REQUEST_URI'])));
-else
-    define("DF_THIS_PAGE", '');
+define("APP_UPLOAD_FOLDER", APP_INCLUDE_STATIC);
 
 // Application environment.
-define('DF_APPLICATION_ENV_PATH', DF_INCLUDE_BASE.DIRECTORY_SEPARATOR.'.env');
+if (isset($_SERVER['APP_APPLICATION_ENV']))
+    define('APP_APPLICATION_ENV', $_SERVER['APP_APPLICATION_ENV']);
+elseif (file_exists(APP_INCLUDE_BASE.'/.env'))
+    define('APP_APPLICATION_ENV', ($env = @file_get_contents(APP_INCLUDE_BASE.'/.env')) ? trim($env) : 'development');
+elseif (isset($_SERVER['X-App-Dev-Environment']) && $_SERVER['X-App-Dev-Environment'])
+    define('APP_APPLICATION_ENV', 'development');
+else
+    define('APP_APPLICATION_ENV', 'development');
 
-if (!defined('DF_APPLICATION_ENV'))
-    define('DF_APPLICATION_ENV', ($env = @file_get_contents(DF_APPLICATION_ENV_PATH)) ? trim($env) : 'development');
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']))
+    $_SERVER['HTTPS'] = (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https');
 
 // Composer autoload.
-$autoloader = require(DF_INCLUDE_VENDOR . DIRECTORY_SEPARATOR . 'autoload.php');
+$autoloader = require(APP_INCLUDE_VENDOR . DIRECTORY_SEPARATOR . 'autoload.php');
 
 // Save configuration object.
-require(DF_INCLUDE_LIB . '/DF/Config.php');
-require(DF_INCLUDE_LIB . '/DF/Config/Item.php');
+require(APP_INCLUDE_LIB . '/App/Config.php');
+require(APP_INCLUDE_LIB . '/App/Config/Item.php');
 
-$config = new \DF\Config(DF_INCLUDE_BASE.'/config');
-$config->preload(array('application','general'));
+$config = new \App\Config(APP_INCLUDE_BASE.'/config');
+$config->preload(array('application'));
 
 // Set URL constants from configuration.
 $app_cfg = $config->application;
 if ($app_cfg->base_url)
-    define('DF_BASE_URL', $app_cfg->base_url);
-
-if ($app_cfg->api_url)
-    define('DF_API_URL', $app_cfg->api_url);
-
-if ($app_cfg->upload_url)
-    define('DF_UPLOAD_URL', $app_cfg->upload_url);
+    define('APP_BASE_URL', $app_cfg->base_url);
 
 // Apply PHP settings.
 $php_settings = $config->application->phpSettings->toArray();
@@ -72,7 +66,7 @@ foreach($php_settings as $setting_key => $setting_value)
 
 // Loop through modules to find configuration files or libraries.
 $module_config_dirs = array();
-$modules = scandir(DF_INCLUDE_MODULES);
+$modules = scandir(APP_INCLUDE_MODULES);
 
 $module_config = array();
 $phalcon_modules = array();
@@ -82,17 +76,11 @@ foreach($modules as $module)
     if ($module == '.' || $module == '..')
         continue;
 
-    $config_directory = DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'config';
+    $config_directory = APP_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'config';
     if (file_exists($config_directory))
-        $module_config[$module] = new \DF\Config($config_directory);
+        $module_config[$module] = new \App\Config($config_directory);
 
-    $phalcon_modules[$module] = array(
-        'className' => 'Modules\\'.ucfirst($module).'\Module',
-        'path' => DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'/Module.php',
-
-        'controllerClass' => 'Modules\\'.ucfirst($module).'\Controllers',
-        'controllerPath' => DF_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'/controllers',
-    );
+    $phalcon_modules[$module] = ucfirst($module);
 }
 
 $autoload_classes = $config->application->autoload->toArray();
@@ -103,7 +91,7 @@ foreach($autoload_classes['psr4'] as $class_key => $class_dir)
     $autoloader->addPsr4($class_key, $class_dir);
 
 // Set up Dependency Injection
-if (DF_IS_COMMAND_LINE)
+if (APP_IS_COMMAND_LINE)
     $di = new \Phalcon\DI\FactoryDefault\CLI;
 else
     $di = new \Phalcon\DI\FactoryDefault;
@@ -114,13 +102,13 @@ $di->setShared('module_config', function() use ($module_config) { return $module
 $di->setShared('phalcon_modules', function() use ($phalcon_modules) { return $phalcon_modules; });
 
 // Router
-if (DF_IS_COMMAND_LINE) {
+if (APP_IS_COMMAND_LINE) {
     $router = new \Phalcon\CLI\Router;
     $di->setShared('router', $router);
 } else {
     $di->setShared('router', function () use ($di) {
-        $router = new \DF\Phalcon\Router(false);
-        $router->setUriSource(\DF\Phalcon\Router::URI_SOURCE_SERVER_REQUEST_URI);
+        $router = new \App\Phalcon\Router(false);
+        $router->setUriSource(\App\Phalcon\Router::URI_SOURCE_SERVER_REQUEST_URI);
 
         $router->setDi($di);
 
@@ -131,7 +119,8 @@ if (DF_IS_COMMAND_LINE) {
         $router->setDefaultAction($router_config['default_action']);
         $router->removeExtraSlashes(true);
 
-        foreach ((array)$router_config['custom_routes'] as $route_path => $route_params) {
+        foreach ((array)$router_config['custom_routes'] as $route_path => $route_params)
+        {
             $route = $router->add($route_path, $route_params);
 
             if (isset($route_params['name']))
@@ -144,17 +133,16 @@ if (DF_IS_COMMAND_LINE) {
 
 // Database
 $di->setShared('em', function() use ($config) {
-    try
-    {
+    try    {
         $db_conf = $config->application->resources->doctrine->toArray();
         $db_conf['conn'] = $config->db->toArray();
 
-        $em = \DF\Phalcon\Service\Doctrine::init($db_conf);
+        $em = \App\Phalcon\Service\Doctrine::init($db_conf);
         return $em;
     }
     catch(\Exception $e)
     {
-        throw new \DF\Exception\Bootstrap($e->getMessage());
+        throw new \App\Exception\Bootstrap($e->getMessage());
     }
 });
 
@@ -169,43 +157,123 @@ $di->setShared('db', function() use ($config) {
     }
     catch(\Exception $e)
     {
-        throw new \DF\Exception\Bootstrap($e->getMessage());
+        throw new \App\Exception\Bootstrap($e->getMessage());
     }
 });
 
-// InfluxDB
-$di->setShared('influx', function() use ($config) {
-    $opts = $config->influx->toArray();
-    return new \PVL\Service\InfluxDb($opts);
+// Auth and ACL
+$di->setShared('auth', array(
+    'className' => '\App\Auth',
+    'arguments' => array(
+        array('type' => 'service', 'name' => 'session'),
+    )
+));
+
+$di->setShared('acl', array(
+    'className' => '\App\Acl',
+    'arguments' => array(
+        array('type' => 'service', 'name' => 'em'),
+        array('type' => 'service', 'name' => 'auth'),
+    )
+));
+
+// Caching
+$di->setShared('cache_driver', function() use ($config) {
+    $cache_config = $config->cache->toArray();
+
+    switch($cache_config['cache'])
+    {
+        case 'redis':
+            $cache_driver = new \Stash\Driver\Redis;
+            $cache_driver->setOptions($cache_config['redis']);
+            break;
+
+        case 'memcached':
+            $cache_driver = new \Stash\Driver\Memcache;
+            $cache_driver->setOptions($cache_config['memcached']);
+            break;
+
+        case 'file':
+            $cache_driver = new \Stash\Driver\FileSystem;
+            $cache_driver->setOptions($cache_config['file']);
+            break;
+
+        default:
+        case 'memory':
+        case 'ephemeral':
+            $cache_driver = new \Stash\Driver\Ephemeral;
+            break;
+    }
+
+    // Register Stash as session handler if necessary.
+    if (!($cache_driver instanceof \Stash\Driver\Ephemeral))
+    {
+        $pool = new \Stash\Pool($cache_driver);
+        $pool->setNamespace(\App\Cache::getSitePrefix('session'));
+
+        $session = new \Stash\Session($pool);
+        \Stash\Session::registerHandler($session);
+    }
+
+    return $cache_driver;
 });
 
-// Auth and ACL
-$di->setShared('auth', '\DF\Auth\Model');
-$di->setShared('acl', '\PVL\Acl\Instance');
-$di->setShared('cache', '\DF\Cache');
+$di->set('cache', array(
+    'className' => '\App\Cache',
+    'arguments' => array(
+        array('type' => 'service', 'name' => 'cache_driver'),
+        array('type' => 'parameter', 'value' => 'user'),
+    )
+));
 
 // Register URL handler.
-$di->set('url', function() use ($config) {
-    $url = new \Phalcon\Mvc\Url();
+$di->setShared('url', array(
+    'className' => '\App\Url',
+    'arguments' => array(
+        array('type' => 'service', 'name' => 'config'),
+        array('type' => 'service', 'name' => 'request'),
+        array('type' => 'service', 'name' => 'dispatcher'),
+    )
+));
 
-    $url->setBaseUri('/');
-    $url->setStaticBaseUri('/static/');
+// Register session service.
+$di->setShared('session', '\App\Session');
 
-    return $url;
-});
-
-// Set Session handler.
-$session_pool = \DF\Cache::getCache('session');
-if (!($session_pool->getDriver() instanceof \Stash\Driver\Ephemeral))
-{
-    $session = new \Stash\Session($session_pool);
-    \Stash\Session::registerHandler($session);
-}
+// Register CSRF prevention security token service.
+$di->setShared('csrf', array(
+    'className' => '\App\Csrf',
+    'arguments' => array(
+        array('type' => 'service', 'name' => 'session'),
+    )
+));
 
 // Register view helpers.
-$di->setShared('viewHelper', '\DF\Phalcon\Service\ViewHelper');
+$di->setShared('viewHelper', '\App\Phalcon\Service\ViewHelper');
 
-// PVL-specific customization.
-$system_tz = \PVL\Customization::get('timezone');
-@date_default_timezone_set($system_tz);
+// Register Flash notification service.
+$di->setShared('flash', array(
+    'className' => '\App\Flash',
+    'arguments' => array(
+        array('type' => 'service', 'name' => 'session'),
+    )
+));
 
+// Register cryptography helper.
+$di->setShared('crypto', array(
+    'className' => '\App\Crypto',
+    'arguments' => array(
+        array('type' => 'service', 'name' => 'config'),
+    )
+));
+
+$di->setShared('user', function() use ($di) {
+    $auth = $di['auth'];
+
+    if ($auth->isLoggedIn())
+        return $auth->getLoggedInUser();
+    else
+        return new \App\Auth\AnonymousUser();
+});
+
+// Initialize cache.
+$cache = $di->get('cache');

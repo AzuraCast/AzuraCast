@@ -43,7 +43,7 @@ $title = 'Manage Affiliates';
                     )) ?>
                 </div>
             </td>
-            <td class="center" <? if (!$record['is_approved']): ?>style="opacity: 0.2;"<? endif; ?>><img src="<?=\PVL\Url::upload($record['image_url']) ?>"></td>
+            <td class="center" <? if (!$record['is_approved']): ?>style="opacity: 0.2;"<? endif; ?>><img src="<?=\App\Url::upload($record['image_url']) ?>"></td>
             <td>
                 <div><big><?=$record['name'] ?></big></div>
                 <div><?=$this->viewHelper->link($record['web_url']) ?></div>

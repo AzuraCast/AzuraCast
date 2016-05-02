@@ -9,7 +9,7 @@ class SongController extends BaseController
 {
     public function listAction()
     {
-        $return = \DF\Cache::get('api_songs');
+        $return = \App\Cache::get('api_songs');
 
         if (!$return)
         {
@@ -21,7 +21,7 @@ class SongController extends BaseController
             foreach ($all_songs as $song)
                 $return[$song['id']] = Song::api($song);
 
-            \DF\Cache::save($return, 'api_songs', array(), 60);
+            \App\Cache::save($return, 'api_songs', array(), 60);
         }
 
         return $this->returnSuccess($return);
@@ -84,7 +84,7 @@ class SongController extends BaseController
     protected function _vote($value)
     {
         // Re-enable session creation.
-        \DF\Session::enable();
+        \App\Session::enable();
 
         $sh_id = (int)$this->getParam('sh_id');
         $sh = SongHistory::find($sh_id);

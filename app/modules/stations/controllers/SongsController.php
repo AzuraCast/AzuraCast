@@ -21,7 +21,7 @@ class SongsController extends BaseController
                 ->setParameter('q', '%'.addcslashes($q, "%_").'%')
                 ->setParameter('q_exact', $q);
 
-            $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 30);
+            $this->view->pager = new \App\Paginator\Doctrine($query, $this->getParam('page', 1), 30);
         }
     }
 

@@ -7,7 +7,7 @@ return array(
 
         'timezone' => array('radio', array(
             'label' => 'Select New Timezone',
-            'multiOptions' => \PVL\Timezone::fetchSelect(),
+            'multiOptions' => \App\Timezone::fetchSelect(),
             'required' => true,
         )),
 

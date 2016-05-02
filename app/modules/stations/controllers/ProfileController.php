@@ -10,7 +10,7 @@ class ProfileController extends BaseController
         $base_form = $this->module_config['admin']->forms->station->toArray();
         unset($base_form['groups']['admin']);
 
-        return new \DF\Form($base_form);
+        return new \App\Form($base_form);
     }
 
     public function indexAction()
@@ -39,7 +39,7 @@ class ProfileController extends BaseController
             $this->station->save();
 
             // Clear station cache.
-            \DF\Cache::remove('stations');
+            \App\Cache::remove('stations');
 
             $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
             return;

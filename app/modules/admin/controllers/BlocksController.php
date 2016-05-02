@@ -17,7 +17,7 @@ class BlocksController extends BaseController
     
     public function editAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->block->form);
+        $form = new \App\Form($this->current_module_config->forms->block->form);
         
         if ($this->hasParam('id'))
         {

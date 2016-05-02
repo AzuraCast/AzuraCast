@@ -22,7 +22,7 @@ class IndexController extends BaseController
         $this->view->podcasts = $podcasts;
 
         // Pull cached statistic charts if available.
-        $metrics = \DF\Cache::get('admin_metrics');
+        $metrics = \App\Cache::get('admin_metrics');
 
         if (!$metrics)
         {
@@ -156,17 +156,17 @@ class IndexController extends BaseController
                 'podcast'   => json_encode($podcast_metrics),
             );
 
-            \DF\Cache::save($metrics, 'admin_metrics', array(), 600);
+            \App\Cache::save($metrics, 'admin_metrics', array(), 600);
         }
 
         $this->view->metrics = $metrics;
 
         // Synchronization statuses
         if ($this->acl->isAllowed('administer all'))
-            $this->view->sync_times = \PVL\SyncManager::getSyncTimes();
+            $this->view->sync_times = \App\SyncManager::getSyncTimes();
 
         // PVLNode service stats.
-        $this->view->pvlnode_stats = \PVL\Service\PvlNode::fetch();
+        $this->view->pvlnode_stats = \App\Service\PvlNode::fetch();
     }
 
     public function syncAction()
@@ -175,22 +175,22 @@ class IndexController extends BaseController
 
         $this->doNotRender();
 
-        \PVL\Debug::setEchoMode(TRUE);
-        \PVL\Debug::startTimer('sync_task');
+        \App\Debug::setEchoMode(TRUE);
+        \App\Debug::startTimer('sync_task');
 
         $type = $this->getParam('type', 'nowplaying');
         switch($type)
         {
             case "long":
-                \PVL\SyncManager::syncLong();
+                \App\SyncManager::syncLong();
             break;
 
             case "medium":
-                \PVL\SyncManager::syncMedium();
+                \App\SyncManager::syncMedium();
             break;
 
             case "short":
-                \PVL\SyncManager::syncShort();
+                \App\SyncManager::syncShort();
             break;
 
             case "nowplaying":
@@ -198,11 +198,11 @@ class IndexController extends BaseController
                 $segment = $this->getParam('segment', 1);
                 define('NOWPLAYING_SEGMENT', $segment);
 
-                \PVL\SyncManager::syncNowplaying(true);
+                \App\SyncManager::syncNowplaying(true);
             break;
         }
 
-        \PVL\Debug::endTimer('sync_task');
-        \PVL\Debug::log('Sync task complete. See log above.');
+        \App\Debug::endTimer('sync_task');
+        \App\Debug::log('Sync task complete. See log above.');
     }
 }

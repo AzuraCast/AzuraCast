@@ -3,7 +3,7 @@ namespace Modules\Frontend\Controllers;
 
 use \Entity\Artist;
 use \Entity\ArtistType;
-use \DF\Utilities;
+use \App\Utilities;
 
 class ArtistsController extends BaseController
 {
@@ -36,7 +36,7 @@ class ArtistsController extends BaseController
 
         if ($query)
         {
-            $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1));
+            $this->view->pager = new \App\Paginator\Doctrine($query, $this->getParam('page', 1));
             $this->render('list');
             return;
         }
@@ -48,13 +48,13 @@ class ArtistsController extends BaseController
 
         $record = Artist::find($id);
         if (!($record instanceof Artist))
-            throw new \DF\Exception\DisplayOnly('Artist Not Found');
+            throw new \App\Exception\DisplayOnly('Artist Not Found');
 
         $this->view->artist = $record;
 
         // Generate statistics.
         $cache_key = 'artist_'.$record->id.'_stats';
-        $stats = \DF\Cache::get($cache_key);
+        $stats = \App\Cache::get($cache_key);
 
         if (empty($stats))
         {
@@ -121,7 +121,7 @@ class ArtistsController extends BaseController
             $stats['song_lists']['most_liked']['songs'] = array_slice(Utilities::irsort($songs, 'score_total'), 0, 10);
             $stats['song_lists']['most_recent']['songs'] = array_slice(Utilities::irsort($songs, 'last_played'), 0, 10);
 
-            \DF\Cache::save($stats, $cache_key, array(), 300);
+            \App\Cache::save($stats, $cache_key, array(), 300);
         }
 
         $this->view->stats = $stats;
@@ -140,7 +140,7 @@ class ArtistsController extends BaseController
         $form_config = $this->module_config['admin']->forms->artist->toArray();
         unset($form_config['groups']['admin']);
 
-        $form = new \DF\Form($form_config);
+        $form = new \App\Form($form_config);
 
         if ($user->artist instanceof Artist)
         {

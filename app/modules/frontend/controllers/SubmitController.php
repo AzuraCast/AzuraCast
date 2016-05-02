@@ -22,7 +22,7 @@ class SubmitController extends BaseController
     /**
      * Submit a new station.
      *
-     * @throws \DF\Exception
+     * @throws \App\Exception
      */
     public function stationAction()
     {
@@ -61,7 +61,7 @@ class SubmitController extends BaseController
         }
 
         // Initialize the form.
-        $form = new \DF\Form($this->current_module_config->forms->submit_station);
+        $form = new \App\Form($this->current_module_config->forms->submit_station);
 
         if($_POST && $form->isValid($_POST))
         {
@@ -77,7 +77,7 @@ class SubmitController extends BaseController
             // Check for existing station by name.
             $existing_station = Station::getRepository()->findOneBy(array('name' => $data['name']));
             if ($existing_station instanceof Station)
-                throw new \DF\Exception('A station with this name already exists! Please do not submit duplicate stations.');
+                throw new \App\Exception('A station with this name already exists! Please do not submit duplicate stations.');
 
             // Set up initial station record.
             $record = new Station;
@@ -118,7 +118,7 @@ class SubmitController extends BaseController
 
             if ($email_to)
             {
-                \DF\Messenger::send(array(
+                \App\Messenger::send(array(
                     'to'        => $email_to,
                     'subject'   => 'New Station Submitted For Review',
                     'template'  => 'newstation',
@@ -139,7 +139,7 @@ class SubmitController extends BaseController
     /**
      * Submit a new show/podcast.
      *
-     * @throws \DF\Exception
+     * @throws \App\Exception
      */
     public function showAction()
     {
@@ -178,7 +178,7 @@ class SubmitController extends BaseController
         }
 
         // Initialize the form.
-        $form = new \DF\Form($this->current_module_config->forms->submit_show);
+        $form = new \App\Form($this->current_module_config->forms->submit_show);
 
         if($_POST && $form->isValid($_POST))
         {
@@ -191,7 +191,7 @@ class SubmitController extends BaseController
             // Check for existing podcast by name.
             $existing_podcast = Podcast::getRepository()->findOneBy(array('name' => $data['name']));
             if ($existing_podcast instanceof Podcast)
-                throw new \DF\Exception('A podcast with this name already exists! Please do not submit duplicate stations.');
+                throw new \App\Exception('A podcast with this name already exists! Please do not submit duplicate stations.');
 
             // Set up initial station record.
             $record = new Podcast;
@@ -213,7 +213,7 @@ class SubmitController extends BaseController
 
             if ($email_to)
             {
-                \DF\Messenger::send(array(
+                \App\Messenger::send(array(
                     'to'        => $email_to,
                     'subject'   => 'New Podcast/Show Submitted For Review',
                     'template'  => 'newshow',
@@ -271,7 +271,7 @@ class SubmitController extends BaseController
 
         // Check that any stations were selected
         if (!$this->hasParam('stations'))
-            throw new \DF\Exception\DisplayOnly('You did not specify any stations!');
+            throw new \App\Exception\DisplayOnly('You did not specify any stations!');
 
         // Check for uploaded songs.
         $temp_dir_name = 'song_uploads';
@@ -280,7 +280,7 @@ class SubmitController extends BaseController
         $all_files = glob($temp_dir.DIRECTORY_SEPARATOR.$token.'*.mp3');
 
         if (empty($all_files))
-            throw new \DF\Exception\DisplayOnly('No files were uploaded!');
+            throw new \App\Exception\DisplayOnly('No files were uploaded!');
 
         $songs = array();
         $getId3 = new GetId3();
@@ -296,7 +296,7 @@ class SubmitController extends BaseController
             if (isset($audio['error']))
             {
                 @unlink($song_file_path);
-                throw new \DF\Exception\DisplayOnly(sprintf('Error at reading audio properties with GetId3: %s.', $audio['error'][0]));
+                throw new \App\Exception\DisplayOnly(sprintf('Error at reading audio properties with GetId3: %s.', $audio['error'][0]));
             }
 
             if (isset($audio['tags']['id3v1']['title']))
@@ -393,7 +393,7 @@ class SubmitController extends BaseController
             // Trigger e-mail notice.
             if (!empty($email_to))
             {
-                \DF\Messenger::send(array(
+                \App\Messenger::send(array(
                     'to' => $email_to,
                     'subject' => 'New Song(s) Submitted to Station',
                     'template' => 'newsong',

@@ -31,7 +31,7 @@ echo $this->viewHelper->renderHere('header', true, array('title' => $title));
                     )) ?>
                 </div>
             </td>
-            <td class="center"><img src="<?=\PVL\Url::upload($record['image_url']) ?>" style="max-width: 70px;"></td>
+            <td class="center"><img src="<?=\App\Url::upload($record['image_url']) ?>" style="max-width: 70px;"></td>
             <td>
                 <div><big><?=$record['name'] ?></big></div>
                 <div><?=$record['description'] ?></div>

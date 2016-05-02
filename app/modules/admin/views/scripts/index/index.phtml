@@ -9,7 +9,7 @@ $this->assets->collection('custom_js')
     ->addJs('//code.highcharts.com/modules/exporting.js', false)
     ->addJs('vendor/moment/moment.js');
 
-$skin = \PVL\Customization::get('theme');
+$skin = \App\Customization::get('theme');
 if ($skin == "dark")
     $this->assets->collection('custom_js')->addJs('js/highcharts/dark-blue.js');
 
@@ -208,7 +208,7 @@ foreach($sidebar as $sidebar_category => &$sidebar_items)
                         <dt><?=(int)$pvlnode_stats['clients'] ?></dt>
                         <dd>Active Connections</dd>
 
-                        <dt><?=\DF\Utilities::timeDifferenceText(time(), $pvlnode_stats['latest_update']) ?></dt>
+                        <dt><?=\App\Utilities::timeDifferenceText(time(), $pvlnode_stats['latest_update']) ?></dt>
                         <dd>Since Last Update</dd>
                     </dl>
                 </div>

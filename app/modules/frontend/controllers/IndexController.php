@@ -42,7 +42,7 @@ class IndexController extends BaseController
         */
 
         // Special event flagging and special formatting.
-        $special_event = \PVL\Utilities::showSpecialEventsMode();
+        $special_event = \App\Utilities::showSpecialEventsMode();
         $this->view->special_event = $special_event;
 
         if ($special_event)
@@ -67,7 +67,7 @@ class IndexController extends BaseController
         $this->forceInsecure();
 
         // Disable session creation.
-        \DF\Session::disable();
+        \App\Session::disable();
 
         // Switch to maintenance theme.
         $this->view->setTemplateAfter('maintenance');
@@ -109,7 +109,7 @@ class IndexController extends BaseController
     {
         $all_categories = Station::getStationsInCategories();
 
-        $audio_stations = \DF\Utilities::columns($all_categories['audio']['stations'], 2);
+        $audio_stations = \App\Utilities::columns($all_categories['audio']['stations'], 2);
         $video_stations = $all_categories['video']['stations'];
 
         $this->view->station_columns = array(
@@ -128,7 +128,7 @@ class IndexController extends BaseController
         );
 
         $active_podcasts = array_filter(Podcast::fetchArray('name'), function($row) { return $row['is_approved']; });
-        $this->view->podcasts = \DF\Utilities::columns($active_podcasts, 3);
+        $this->view->podcasts = \App\Utilities::columns($active_podcasts, 3);
 
         $this->view->podcast_social_types = Podcast::getSocialTypes();
     }
@@ -153,7 +153,7 @@ class IndexController extends BaseController
 
         $station = Station::find($id);
         if (!($station instanceof Station))
-            throw new \DF\Exception\DisplayOnly('Station not found!');
+            throw new \App\Exception\DisplayOnly('Station not found!');
 
         $this->view->station = $station;
 
@@ -230,7 +230,7 @@ class IndexController extends BaseController
             }
 
             // Pull from user preferences to potentially override defaults.
-            $default_streams = (array)\PVL\Customization::get('stream_defaults');
+            $default_streams = (array)\App\Customization::get('stream_defaults');
 
             if (isset($default_streams[$station['id']]))
             {
@@ -288,7 +288,7 @@ class IndexController extends BaseController
 
             foreach ($events_raw as $event)
             {
-                $event['image_url'] = \PVL\Url::upload(Schedule::getRowImageUrl($event));
+                $event['image_url'] = \App\Url::upload(Schedule::getRowImageUrl($event));
                 $event['status'] = ($event['start_time'] <= time()) ? 'now' : 'upcoming';
                 $event['range'] = Schedule::getRangeText($event['start_time'], $event['end_time'], $event['is_all_day']);
 
@@ -329,7 +329,7 @@ class IndexController extends BaseController
 
     public function nowplayingAction()
     {
-        $this->redirect(\PVL\Url::upload('api/nowplaying.json'));
+        $this->redirect(\App\Url::upload('api/nowplaying.json'));
         return;
     }
 }

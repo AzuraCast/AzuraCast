@@ -4,7 +4,7 @@ namespace Modules\Frontend\Controllers;
 use \Entity\Station;
 use \Entity\StationMedia;
 
-use \PVL\CentovaCast;
+use \App\CentovaCast;
 
 class StationController extends BaseController
 {
@@ -29,7 +29,7 @@ class StationController extends BaseController
     public function stationRequired()
     {
         if (!($this->station instanceof Station))
-            throw new \DF\Exception\DisplayOnly('Station ID is not valid.');
+            throw new \App\Exception\DisplayOnly('Station ID is not valid.');
     }
 
     public function indexAction()
@@ -40,14 +40,14 @@ class StationController extends BaseController
         $this->stationRequired();
 
         if (!$this->station->requests_enabled)
-            throw new \DF\Exception\DisplayOnly('This station does not support requests at this time.');
+            throw new \App\Exception\DisplayOnly('This station does not support requests at this time.');
 
         if ($this->station->requests_external_url)
             return $this->redirect($this->station->requests_external_url);
 
         $is_supported = CentovaCast::isStationSupported($this->station);
         if (!$is_supported)
-            throw new \DF\Exception\DisplayOnly('This station is not functioning properly and cannot accept requests at this time.');
+            throw new \App\Exception\DisplayOnly('This station is not functioning properly and cannot accept requests at this time.');
 
         // Search redirection.
         if ($_GET)
@@ -64,7 +64,7 @@ class StationController extends BaseController
                 $track = StationMedia::find($track_id);
                 $this->alert('<b>Your song, "'.$track->title.'" by '.$track->artist.', has been requested.</b><br>Stay tuned to the station to hear it!', 'green');
             }
-            catch(\DF\Exception $e)
+            catch(\App\Exception $e)
             {
                 $this->alert('<b>Your song could not be requested. An error occurred:</b><br>'.$e->getMessage(), 'red');
             }
@@ -114,7 +114,7 @@ class StationController extends BaseController
             $this->view->reset_button = false;
         }
 
-        $pager = new \DF\Paginator($media, $this->getParam('page'), 50);
+        $pager = new \App\Paginator($media, $this->getParam('page'), 50);
         $this->view->pager = $pager;
     }
 

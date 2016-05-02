@@ -43,12 +43,12 @@ class VoteController extends BaseController
         $station = Station::find($id);
 
         if ($station->is_active)
-            throw new \DF\Exception\DisplayOnly('This station has already been reviewed and is active.');
+            throw new \App\Exception\DisplayOnly('This station has already been reviewed and is active.');
 
-        $station_form = new \DF\Form($this->module_config['frontend']->forms->submit_station);
+        $station_form = new \App\Form($this->module_config['frontend']->forms->submit_station);
         $station_form->populate($station->toArray());
 
-        $form = new \DF\Form($this->current_module_config->forms->vote);
+        $form = new \App\Form($this->current_module_config->forms->vote);
 
         if($_POST && $form->isValid($_POST))
         {

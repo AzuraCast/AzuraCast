@@ -26,7 +26,7 @@ class ScheduleController extends BaseController
         if ($this->hasParam('month'))
         {
             $show = $this->getParam('month');
-            $calendar = new \DF\Calendar($show);
+            $calendar = new \App\Calendar($show);
             $timestamps = $calendar->getTimestamps();
             
             $start_timestamp = $timestamps['start'];
@@ -63,7 +63,7 @@ class ScheduleController extends BaseController
         if ($use_cache)
         {
             $cache_name = 'api_sched_' . $station_shortcode . '_' . $cache_name;
-            $events = \DF\Cache::get($cache_name);
+            $events = \App\Cache::get($cache_name);
         }
         else
         {
@@ -95,7 +95,7 @@ class ScheduleController extends BaseController
                 $events[] = Schedule::api($event);
 
             if ($use_cache)
-                \DF\Cache::save($events, $cache_name, array(), 300);
+                \App\Cache::save($events, $cache_name, array(), 300);
         }
 
         $format = strtolower($this->getParam('format', 'json'));

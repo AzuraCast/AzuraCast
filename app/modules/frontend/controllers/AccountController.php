@@ -25,7 +25,7 @@ class AccountController extends BaseController
         if (!$_POST)
             $this->forceSecure();
 
-        $form = new \DF\Form($this->current_module_config->forms->register);
+        $form = new \App\Form($this->current_module_config->forms->register);
         
         if ($_POST)
         {
@@ -53,7 +53,7 @@ class AccountController extends BaseController
                     
                     $this->alert('<b>Your account has been successfully created.</b><br>You have been automatically logged in to your new account.', 'green');
 
-                    $default_url = \DF\Url::route(array('module' => 'default'));
+                    $default_url = \App\Url::route(array('module' => 'default'));
                     $this->redirectToStoredReferrer('login', $default_url);
                     return;
                 }
@@ -72,7 +72,7 @@ class AccountController extends BaseController
             $this->forceSecure();
         }
 
-        $form = new \DF\Form($this->current_module_config->forms->login);
+        $form = new \App\Form($this->current_module_config->forms->login);
 
         if ($this->hasParam('provider'))
         {
@@ -96,7 +96,7 @@ class AccountController extends BaseController
             }
             catch(\Exception $e)
             {
-                if ($e instanceof \PVL\Exception\AccountNotLinked)
+                if ($e instanceof \App\Exception\AccountNotLinked)
                     $this->alert('<b>Your social network account is not linked to a PVL account yet!</b><br>Sign in below, or create a new PVL account, then link your social accounts from your profile.', 'red');
                 else
                     $this->alert($e->getMessage(), 'red');
@@ -115,9 +115,9 @@ class AccountController extends BaseController
                     $this->alert('<b>Logged in successfully. Welcome back, '.$user->name.'!</b><br>For security purposes, log off when your session is complete.', 'green');
 
                     if ($this->acl->isAllowed('view administration'))
-                        $default_url = \DF\Url::route(array('module' => 'admin'));
+                        $default_url = \App\Url::route(array('module' => 'admin'));
                     else
-                        $default_url = \DF\Url::route(array('module' => 'default'));
+                        $default_url = \App\Url::route(array('module' => 'default'));
 
                     return $this->redirectToStoredReferrer('login', $default_url);
                 }
@@ -126,7 +126,7 @@ class AccountController extends BaseController
 
         // Auto-bounce back if logged in.
         if ($this->auth->isLoggedIn())
-            return $this->redirectToStoredReferrer('login', \DF\Url::route());
+            return $this->redirectToStoredReferrer('login', \App\Url::route());
 
         $this->view->external_providers = UserExternal::getExternalProviders();
         $this->view->form = $form;
@@ -192,7 +192,7 @@ class AccountController extends BaseController
 
     public function forgotAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->forgot);
+        $form = new \App\Form($this->current_module_config->forms->forgot);
 
         if ($_POST && $form->isValid($_POST))
         {
@@ -204,7 +204,7 @@ class AccountController extends BaseController
                 $user->generateAuthRecoveryCode();
                 $user->save();
 
-                \DF\Messenger::send(array(
+                \App\Messenger::send(array(
                     'to'        => $user->email,
                     'subject'   => 'Password Recovery Code',
                     'template'  => 'forgotpw',
@@ -231,7 +231,7 @@ class AccountController extends BaseController
         $user = User::getRepository()->findOneBy(array('id' => $id, 'auth_recovery_code' => $code));
 
         if (!($user instanceof User))
-            throw new \DF\Exception\DisplayOnly('Invalid ID or recovery code provided!');
+            throw new \App\Exception\DisplayOnly('Invalid ID or recovery code provided!');
 
         $temp_pw = substr(sha1(mt_rand()), 0, 8);
 
@@ -250,7 +250,7 @@ class AccountController extends BaseController
     {
         $this->auth->logout();
 
-        \DF\Session::destroy();
+        \App\Session::destroy();
 
         $this->redirectToRoute(array('module' => 'default'));
     }
@@ -285,7 +285,7 @@ class AccountController extends BaseController
     {
         // Force "scheme" injection for base URLs.
         $ha_config = $this->config->apis->hybrid_auth->toArray();
-        $ha_config['base_url'] = \DF\Url::addSchemePrefix(\DF\Url::routeFromHere(array('action' => 'hybrid')));
+        $ha_config['base_url'] = \App\Url::addSchemePrefix(\App\Url::routeFromHere(array('action' => 'hybrid')));
 
         return $ha_config;
     }

@@ -22,7 +22,7 @@ return array(
 
                 'country' => array('select', array(
                     'label' => 'Country of Broadcast',
-                    'multiOptions' => \PVL\Internationalization::getCountryLookup(),
+                    'multiOptions' => \App\Internationalization::getCountryLookup(),
                     'default' => '',
                 )),
 

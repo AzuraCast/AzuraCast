@@ -43,11 +43,11 @@ class ScheduleController extends BaseController
         $event = Schedule::getRepository()->findOneBy(array('guid' => $event_guid, 'station_id' => $this->station->id));
 
         if (!($event instanceof Schedule))
-            throw new \DF\Exception\DisplayOnly('Event not found!');
+            throw new \App\Exception\DisplayOnly('Event not found!');
 
         $banner_url = $this->station->banner_url;
         if (empty($banner_url))
-            throw new \DF\Exception\DisplayOnly('You have not supplied a banner for your station yet! Please visit the "Edit Profile" page to supply a banner image.');
+            throw new \App\Exception\DisplayOnly('You have not supplied a banner for your station yet! Please visit the "Edit Profile" page to supply a banner image.');
 
         $event->is_promoted = !($event->is_promoted);
         $event->save();

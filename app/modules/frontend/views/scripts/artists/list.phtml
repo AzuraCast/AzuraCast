@@ -14,7 +14,7 @@ $manual = true;
             <? foreach($pager as $artist): ?>
                 <li class="media">
                     <div class="media-object pull-left">
-                        <a href="<?=$this->viewHelper->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><img class="thumbnail" src="<?=\PVL\Url::upload($artist['image_url']) ?>" style="width: 64px;"></a>
+                        <a href="<?=$this->viewHelper->route(array('controller' => 'artists', 'action' => 'view', 'id' => $artist['id'])) ?>"><img class="thumbnail" src="<?=\App\Url::upload($artist['image_url']) ?>" style="width: 64px;"></a>
                     </div>
                     <div class="media-body">
                         <h4>
@@ -27,7 +27,7 @@ $manual = true;
                                 </div>
                             </small>
                         </h4>
-                        <div><?=\DF\Utilities::truncateText($artist['description'], 150) ?></div>
+                        <div><?=\App\Utilities::truncateText($artist['description'], 150) ?></div>
                     </div>
                 </li>
             <? endforeach; ?>

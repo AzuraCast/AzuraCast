@@ -1,0 +1,345 @@
+<?php
+header("Content-type: text/html; charset=utf-8");
+
+$skin = \PVL\Customization::get('theme');
+$tz_info = \PVL\Timezone::getInfo();
+?>
+<!DOCTYPE html>
+<html lang="en" class="full_layout theme_<?=$skin ?>">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true">
+
+    <meta name="viewport" content="width=device-width">
+    <meta name="theme-color" content="#2C7FD2">
+
+    <meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, MLP, MLP:FiM" />
+    <meta name="description" content="Equestria's largest Brony multimedia network, featuring 24/7 pony radio, videos, podcasts, convention coverage, and more." />
+    <link rel="canonical" href="http://ponyvillelive.com" />
+
+    <!-- Facebook and Other Social Sites -->
+    <meta property="og:site_name" content="Ponyville Live!" />
+    <meta property="og:url" content="http://ponyvillelive.com/" />
+    <meta property="og:image" content="<?=$this->url->getStatic('pvl_square.png') ?>" />
+
+    <link rel="image_src" href="<?=$this->url->getStatic('pvl_square.png') ?>" />
+    <link href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" />
+
+    <?php
+    if ($title)
+        $page_title = $title.' - '.$this->config->application->name;
+    else
+        $page_title = $this->config->application->name.' - Live Pony Radio, Video, Podcasts, Convention Coverage & More';
+
+    $this->tag->setTitle($page_title);
+    if (DF_APPLICATION_ENV != "production")
+        $this->tag->prependTitle('('.ucfirst(DF_APPLICATION_ENV).') ');
+
+    echo $this->tag->getTitle();
+
+    // Set up CSS includes.
+    $this->assets->collection('header_css')
+        ->addCss('//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css', false)
+        ->addCss('//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css', false)
+        ->addCss('//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', false)
+        ->addCss('//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css', false)
+        ->addCss('compiled/style.css');
+
+    // Establish custom CSS/JS collections in case they don't exist.
+    $this->assets->collection('custom_css');
+    $this->assets->collection('custom_js');
+
+    // Output header CSS.
+    $this->assets->outputCss('header_css');
+    $this->assets->outputCss('custom_css');
+
+    // Set up JS includes.
+    $this->assets->collection('header_js')
+        ->addJs('//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js', false)
+        ->addJs('//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.compat.min.js', false);
+
+    $this->assets->collection('footer_js')
+        ->addJs('//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js', false)
+        ->addJs('//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/helpers/jquery.fancybox-media.js', false)
+        ->addJs('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js', false)
+        ->addJs('//cdnjs.cloudflare.com/ajax/libs/swfobject/2.2/swfobject.min.js', false)
+        ->addJs('//cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js', false)
+        ->addJs('//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js', false)
+        ->addJs('//cdnjs.cloudflare.com/ajax/libs/store.js/1.3.14/store.min.js', false)
+        ->addJs('js/layout.js')
+        ->addJs('js/notify.js')
+        ->addJs('js/global.js');
+
+    $this->assets->outputJs('header_js');
+    ?>
+    <script>
+        var DF_AppEnv = '<?=(defined('DF_APPLICATION_ENV') ? DF_APPLICATION_ENV : '') ?>';
+        var DF_BaseUrl = '<?php echo rtrim($this->url->get(''), '/'); ?>';
+        var DF_ApiUrl = '<?=(defined('DF_API_URL') ? DF_API_URL : '') ?>';
+        var DF_UploadUrl = '<?=(defined('DF_UPLOAD_URL') ? DF_UPLOAD_URL : '') ?>';
+        var DF_ContentPath = '<?php echo $this->url->getStatic(''); ?>';
+
+        var PVL_TimeZone = '<?=$e->escapeJs($tz_info['code']) ?>';
+        var PVL_UtcOffset = <?=$tz_info['gmt_offset_hours'] ?>;
+    </script>
+
+    <!-- Google Universal Analytics -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', '<?=$this->config->application->analytics_code ?>', 'ponyvillelive.com');
+        ga('require', 'linkid', 'linkid.js');
+        ga('send', 'pageview');
+    </script>
+    <!-- End Google Universal Analytics -->
+</head>
+<body>
+<a class="hidden" href="#body">Skip Navigation</a>
+
+<div class="top">
+    <div class="container">
+        <?
+        $skin = \PVL\Customization::get('theme');
+
+        $tz_info = \PVL\Timezone::getInfo();
+        $tz_text = $tz_info['now']->format('g:ia');
+        ?>
+        <ul class="loginbar pull-right">
+            <li><a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><i class="icon-time"></i> <span class="current_time"><?=$tz_text ?></span> <?=$tz_info['abbr'] ?></a></li>
+            <li class="divider">&nbsp;</li>
+            <li><a href="<?=$this->url->get('profile/theme/skin/toggle') ?>"><i class="icon-adjust"></i> <? if ($skin == 'light'): ?>Dark Theme<? else: ?>Light Theme<? endif; ?></a></li>
+            <li class="divider">&nbsp;</li>
+
+            <? if ($this->auth->isLoggedIn()): ?>
+                <?
+                $user = $this->auth->getLoggedInUser();
+                ?>
+                <? if ($this->acl->canSeeAdminDashboard()): ?>
+                    <li><a href="<?=$this->url->get('admin') ?>"><i class="icon-cog"></i> Admin</a></li>
+                    <li class="divider">&nbsp;</li>
+                <? endif; ?>
+                <li><a href="<?=$this->url->get('profile') ?>"><i class="icon-user"></i> Profile</a></li>
+                <li class="divider">&nbsp;</li>
+                <li><b><?=$user->name ?></b></li>
+                <li><a href="<?=$this->url->get('account/logout') ?>"><i class="icon-signout"></i> Sign Out</a></li>
+            <? else: ?>
+                <li><a href="<?=$this->url->get('account/login') ?>"><i class="icon-signin"></i> Sign In</a></li>
+            <? endif; ?>
+        </ul>
+    </div>
+</div>
+
+<div class="header" role="banner">
+    <div class="container">
+        <div class="logo">
+            <a href="<?=$this->url->get('') ?>"><img id="logo-header" src="<?=$this->url->getStatic('mid2013/logo_'.$skin.'.png') ?>" alt="Ponyville Live! Logo"></a>
+        </div>
+
+        <div class="navbar">
+            <div class="navbar-inner">
+                <a class="btn btn-navbar" role="button" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="nav-collapse collapse" role="navigation">
+                    <?
+                    $categories = \Entity\Station::getStationsInCategories();
+                    $podcasts = \Entity\Podcast::fetchArray();
+                    ?>
+
+                    <ul class="nav primary_menu">
+
+                        <!-- About PVL -->
+                        <li class="dropdown">
+                            <a href="<?=$this->url->get('about') ?>"><i class="icon-info-sign"></i> About</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?=$this->url->get('about') ?>"><i class="icon-info-sign"></i> About Us</a></li>
+                                <li><a href="<?=$this->url->get('contact') ?>"><i class="icon-envelope"></i> Contact Us</a></li>
+                                <li><a href="http://patreon.com/ponyvillelive" target="_blank"><i class="icon-money"></i> Support Us on Patreon</a></li>
+                                <li class="divider"></li>
+                                <li><a href="http://m.pvlive.me/"><i class="icon-mobile-phone"></i> PVL! Mobile</a></li>
+                                <li><a href="<?=$this->url->get('apps') ?>"><i class="icon-cloud-download"></i> Apps &amp; Players</a></li>
+                                <li><a href="http://docs.ponyvillelive.apiary.io/" target="_blank"><i class="icon-cog"></i> PVL! Data API</a></li>
+                                <li><a href="https://github.com/BravelyBlue/PVLive" target="_blank"><i class="icon-code-fork"></i> Fork Us on Github</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Stations -->
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown"><i class="icon-music"></i> Radio</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?=$this->url->get('schedule') ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
+                                <li><a href="<?=$this->url->get('submit/station') ?>"><i class="icon-cloud-upload"></i> Submit Your Station</a></li>
+                                <li><a href="<?=$this->url->get('submit/song') ?>"><i class="icon-music"></i> Submit Your Song</a></li>
+                                <li class="divider"></li>
+
+                                <? foreach($categories['audio']['stations'] as $station): ?>
+                                    <li><a href="<?=$station['web_url'] ?>" title="<?=$station['genre'] ?>" target="_blank"><?=$station['name'] ?></a></li>
+                                <? endforeach; ?>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown"><i class="icon-facetime-video"></i> Video</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?=$this->url->get('schedule') ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
+                                <li><a href="<?=$this->url->get('submit/station') ?>"><i class="icon-cloud-upload"></i> Submit a Station</a></li>
+                                <li class="divider"></li>
+
+                                <? foreach($categories['video']['stations'] as $station): ?>
+                                    <li><a href="<?=$station['web_url'] ?>" title="<?=$station['genre'] ?>" target="_blank"><?=$station['name'] ?></a></li>
+                                <? endforeach; ?>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown"><i class="icon-rss"></i> Shows</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?=$this->url->get('shows') ?>"><i class="icon-list"></i> Show Directory</a></li>
+                                <li><a href="<?=$this->url->get('submit/show') ?>"><i class="icon-cloud-upload"></i> Submit a Show</a></li>
+                                <li class="divider"></li>
+                                <? foreach($podcasts as $podcast): ?>
+                                    <li><a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>" title="<?=$podcast['description'] ?>" target="_blank"><?=$podcast['name'] ?></a></li>
+                                <? endforeach; ?>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown"><i class="icon-user"></i> Community</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?=$this->url->get('conventions') ?>"><i class="icon-building"></i> Pony Conventions</a></li>
+                                <li><a href="<?=$this->url->get('artists') ?>"><i class="icon-group"></i> Artists Directory</a></li>
+                                <li class="divider"></li>
+                                <li><a href="http://pvlive.me/forums" target="_blank">PVL Forums</a></li>
+                                <li><a href="<?=$this->url->get('index/chat') ?>">Chat + Player</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<? if ($content_top): ?>
+    <?=$content_top ?>
+<? else: ?>
+    <div id="secondary_header_stripe" class="rich_header">&nbsp;</div>
+<? endif; ?>
+
+<div id="body-wrapper">
+    <div id="body" class="container" role="main">
+        <div id="page_wrapper">
+            <div id="page">
+                <?
+                if (\DF\Flash::hasMessages()):
+                    $messages = \DF\Flash::getMessages();
+                    foreach($messages as $message):
+                        ?>
+                        <div class="content-top-alert alert alert-<?=$message['color'] ?>" data-alert="alert">
+                            <a class="close" data-dismiss="alert" href="#">×</a>
+                            <?=$message['message'] ?>
+                        </div>
+                    <?
+                    endforeach;
+                endif;
+                ?>
+
+                <div id="content_wrapper">
+                    <div id="content">
+                        <? if ($breadcrumbs): ?>
+                            <div id="breadcrumbs">
+                                <?=$breadcrumbs ?>
+                            </div>
+                        <? endif; ?>
+
+                        <? if (!$hide_title): ?>
+                            <h1 class="title"><?=$title ?></h1>
+                        <? endif; ?>
+
+                        <? if ($tabs): ?>
+                            <div id="content_tabs">
+                                <?=$tabs ?>
+                            </div>
+                        <? endif; ?>
+
+                        <? if ($subtitle): ?>
+                            <h2 class="title"><?=$subtitle ?></h2>
+                        <? endif; ?>
+
+                        <? if ($manual): ?>
+                            <?php echo $this->getContent(); ?>
+                        <? else: ?>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="content_inner">
+                                        <?php echo $this->getContent(); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <? endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer" role="contentinfo">
+    <div class="container">
+        <?
+        $affiliates = \Entity\Affiliate::fetch(true);
+        ?>
+        <div class="footer-inner">
+            <div class="row-fluid row-multiple clearfix">
+                <div class="media-list">
+                <? foreach($affiliates as $affiliate): ?>
+                    <div class="media span4">
+                        <div class="media-object pull-left">
+                            <a href="<?=$affiliate['web_url'] ?>" target="_blank">
+                                <img src="<?=\PVL\Url::upload($affiliate['image_url']) ?>" alt="<?=$affiliate['name'] ?> Logo" style="width: 40px;">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4>
+                                <? if (isset($affiliate['custom'])): ?>
+                                    <?=$affiliate['custom'] ?><br>
+                                <? else: ?>
+                                    <a href="<?=$affiliate['web_url'] ?>" target="_blank"><?=$affiliate['name'] ?></a><br>
+                                <? endif; ?>
+                                <small><?=$affiliate['description'] ?></small>
+                            </h4>
+                        </div>
+                    </div>
+                <? endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?
+$footer_msg = \Entity\Settings::getSetting('footer_message');
+?>
+<div class="copyright" role="contentinfo">
+    <div class="container">
+        <? if (!empty($footer_msg)): ?>
+            <p class="footer-message">
+                <?=$footer_msg ?>
+            </p>
+            <br>
+        <? endif; ?>
+
+        <p>MLP is copyright &copy; Hasbro. All creations are &copy; to their respective artists. All songs are property of their respective artists.<br>
+            Copyright &copy; 2012-<?=date('Y') ?> <a href="http://www.bravelyblue.com/" target="_blank">Bravely Blue Media LLC</a> and Ponyville Live! All rights reserved.</p>
+    </div>
+</div>
+
+<?
+echo $this->assets->outputJs('footer_js');
+echo $this->assets->outputJs('custom_js');
+?>
+</body>
+</html>

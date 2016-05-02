@@ -85,10 +85,10 @@ class ProfileController extends BaseController
         $this->acl->checkPermission('is logged in');
 
         $user = $this->auth->getLoggedInUser();
-        $form = new \DF\Form($this->current_module_config->forms->profile);
+        $form = new \App\Form($this->current_module_config->forms->profile);
 
         $user_profile = $user->toArray();
-        $user_profile['customization'] = array_merge(\PVL\Customization::getDefaults(), $user_profile['customization']);
+        $user_profile['customization'] = array_merge(\App\Customization::getDefaults(), $user_profile['customization']);
         unset($user_profile['auth_password']);
 
         $form->setDefaults($user_profile);
@@ -101,7 +101,7 @@ class ProfileController extends BaseController
             $user->save();
 
             foreach($data['customization'] as $custom_key => $custom_val)
-                \PVL\Customization::set($custom_key, $custom_val);
+                \App\Customization::set($custom_key, $custom_val);
 
             $this->alert('Profile saved!', 'green');
             $this->redirectFromHere(array('action' => 'index'));
@@ -115,14 +115,14 @@ class ProfileController extends BaseController
     {
         $skin = $this->getParam('skin', 'toggle');
 
-        $current_skin = \PVL\Customization::get('theme');
+        $current_skin = \App\Customization::get('theme');
 
         if ($skin == "toggle")
             $new_skin = ($current_skin == "dark") ? 'light' : 'dark';
         else
             $new_skin = $skin;
 
-        \PVL\Customization::set('theme', $new_skin);
+        \App\Customization::set('theme', $new_skin);
 
         $this->redirectToReferrer();
         return;
@@ -130,16 +130,16 @@ class ProfileController extends BaseController
 
     public function timezoneAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->timezone);
+        $form = new \App\Form($this->current_module_config->forms->timezone);
         $form->setDefaults(array(
-            'timezone'      => \PVL\Customization::get('timezone'),
+            'timezone'      => \App\Customization::get('timezone'),
         ));
 
         if($_POST && $form->isValid($_POST))
         {
             $data = $form->getValues();
 
-            \PVL\Customization::set('timezone', $data['timezone']);
+            \App\Customization::set('timezone', $data['timezone']);
 
             $this->alert('Time zone updated!', 'green');
             $this->redirectToStoredReferrer('customization');
@@ -162,10 +162,10 @@ class ProfileController extends BaseController
         $station_id = (int)$this->getParam('station', 0);
         $stream_id = (int)$this->getParam('stream', 0);
 
-        $default_streams = (array)\PVL\Customization::get('stream_defaults');
+        $default_streams = (array)\App\Customization::get('stream_defaults');
         $default_streams[$station_id] = $stream_id;
 
-        \PVL\Customization::set('stream_defaults', $default_streams);
+        \App\Customization::set('stream_defaults', $default_streams);
 
         echo 'OK';
     }

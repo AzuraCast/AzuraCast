@@ -40,6 +40,6 @@ class Url extends \DF\Url
      */
     public static function upload($path = NULL)
     {
-        return \PVL\Service\AmazonS3::url($path);
+        return \App\Service\AmazonS3::url($path);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 namespace Modules\Frontend\Controllers;
 
-use \PVL\Debug;
-use \PVL\Utilities;
+use \App\Debug;
+use \App\Utilities;
 
 class UtilController extends BaseController
 {
@@ -22,11 +22,11 @@ class UtilController extends BaseController
 
         // -------- START HERE -------- //
 
-        \PVL\CentovaCast::sync();
+        \App\CentovaCast::sync();
         Debug::log('CCast Sync Complete');
 
         $station = \Entity\Station::getRepository()->findOneBy(array('name' => 'PonyvilleFM'));
-        $tracks = \PVL\CentovaCast::fetchTracks($station);
+        $tracks = \App\CentovaCast::fetchTracks($station);
         Debug::print_r($tracks);
 
         // -------- END HERE -------- //

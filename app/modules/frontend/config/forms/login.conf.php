@@ -16,7 +16,7 @@ return array(
 
         'password'      => array('password', array(
             'label' => 'Password',
-            'description' => '<a href="'.\DF\Url::route(array('module' => 'default', 'controller' => 'account', 'action' => 'forgot')).'">Forgot your password?</a>',
+            'description' => '<a href="'.\App\Url::route(array('module' => 'default', 'controller' => 'account', 'action' => 'forgot')).'">Forgot your password?</a>',
             'class' => 'half-width',
             'required' => true,
         )),

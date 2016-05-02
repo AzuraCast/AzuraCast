@@ -16,10 +16,10 @@ trait FileUploads
         if ($new_value)
         {
             if ($this->$field_name && $this->$field_name != $new_value)
-                \PVL\Service\AmazonS3::delete($this->$field_name);
+                \App\Service\AmazonS3::delete($this->$field_name);
 
             $local_path = DF_INCLUDE_TEMP.DIRECTORY_SEPARATOR.$new_value;
-            \PVL\Service\AmazonS3::upload($local_path, $new_value);
+            \App\Service\AmazonS3::upload($local_path, $new_value);
 
             $this->$field_name = $new_value;
             return true;
@@ -59,7 +59,7 @@ trait FileUploads
         if ($this->$field_name)
         {
             $value = $this->$field_name;
-            \PVL\Service\AmazonS3::delete($value);
+            \App\Service\AmazonS3::delete($value);
         }
     }
 
@@ -76,7 +76,7 @@ trait FileUploads
         {
             $value = $this->$field_name;
 
-            $path = \PVL\Service\AmazonS3::path($value);
+            $path = \App\Service\AmazonS3::path($value);
             if (file_exists($path))
                 return $value;
         }

@@ -60,7 +60,7 @@ $title = 'Manage Podcasts';
                     )) ?>
                 </div>
             </td>
-            <td class="center"><img src="<?=\PVL\Url::upload($record['image_url']) ?>" style="width: 64px;"></td>
+            <td class="center"><img src="<?=\App\Url::upload($record['image_url']) ?>" style="width: 64px;"></td>
             <td class="center">
                 <big><?=number_format($record->getEpisodeCount(), 0) ?></big>
             </td>
@@ -78,7 +78,7 @@ $title = 'Manage Podcasts';
             if ($ep): ?>
                 <div class="podcast-episode">
                     <?
-                    $time_diff = \DF\Utilities::timeDifferenceText(time(), $ep['timestamp'], 0);
+                    $time_diff = \App\Utilities::timeDifferenceText(time(), $ep['timestamp'], 0);
                     ?>
                     <small><span title="<?=date('l, F j, Y g:ia', $ep['timestamp']) ?>"><?=$time_diff ?> ago</span>:</small><br>
                     <a href="<?=$ep['web_url'] ?>" target="_blank"><b><?=$ep['title'] ?></b></a>

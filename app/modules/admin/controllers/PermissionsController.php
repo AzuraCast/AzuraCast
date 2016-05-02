@@ -19,7 +19,7 @@ class PermissionsController extends BaseController
     
     public function editactionAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->action->form);
+        $form = new \App\Form($this->current_module_config->forms->action->form);
         
         if ($this->hasParam('id'))
         {
@@ -66,7 +66,7 @@ class PermissionsController extends BaseController
     {
         $form_config = $this->current_module_config->forms->role->form->toArray();
         
-        $form = new \DF\Form($form_config);
+        $form = new \App\Form($form_config);
         
         if ($this->hasParam('id'))
         {

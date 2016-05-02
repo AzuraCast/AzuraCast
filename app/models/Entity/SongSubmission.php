@@ -56,11 +56,11 @@ class SongSubmission extends \DF\Doctrine\Entity
         $new_path = 'song_uploads/'.$song_path_base.'.'.\DF\File::getFileExtension($local_path);
 
         // Upload to remote service.
-        \PVL\Service\AmazonS3::upload($local_path, $new_path);
+        \App\Service\AmazonS3::upload($local_path, $new_path);
 
         $this->song_url = $new_path;
 
-        return \PVL\Service\AmazonS3::url($new_path);
+        return \App\Service\AmazonS3::url($new_path);
     }
 
     /** @Column(name="song_metadata", type="json", nullable=true) */

@@ -20,7 +20,7 @@ class RotatorsController extends BaseController
     
     public function editAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->rotator);
+        $form = new \App\Form($this->current_module_config->forms->rotator);
         
         if ($this->hasParam('id'))
         {
@@ -46,7 +46,7 @@ class RotatorsController extends BaseController
             }
 
             if ($data['image_url'])
-                \DF\Image::resizeImage($data['image_url'], $data['image_url'], 336, 280);
+                \App\Image::resizeImage($data['image_url'], $data['image_url'], 336, 280);
             
             $record->fromArray($data);
             $record->save();

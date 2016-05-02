@@ -13,7 +13,7 @@ echo $this->viewHelper->renderHere('header', true, array('title' => $title));
             <ul class="media-list">
             <? foreach($artists as $artist): ?>
                 <li class="media">
-                    <img class="media-object pull-left" src="<?=\PVL\Url::upload($artist['image_url']) ?>" style="width: 40px;">
+                    <img class="media-object pull-left" src="<?=\App\Url::upload($artist['image_url']) ?>" style="width: 40px;">
                     <div class="media-body">
                         <h4>
                             <?=$artist['name'] ?><br>
@@ -42,7 +42,7 @@ echo $this->viewHelper->renderHere('header', true, array('title' => $title));
             <ul class="media-list">
             <? foreach($interviews as $artist): ?>
                 <li class="media">
-                    <img class="media-object pull-left" src="<?=\PVL\Url::upload($artist['image_url']) ?>" style="width: 40px;">
+                    <img class="media-object pull-left" src="<?=\App\Url::upload($artist['image_url']) ?>" style="width: 40px;">
                     <div class="media-body">
                         <h4>
                             <?=$artist['name'] ?><br>

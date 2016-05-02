@@ -3,7 +3,7 @@ namespace PVL;
 
 use Entity\Convention;
 use Entity\ConventionArchive;
-use PVL\Service\YouTube;
+use App\Service\YouTube;
 
 class ConventionManager
 {

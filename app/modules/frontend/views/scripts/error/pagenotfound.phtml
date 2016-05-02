@@ -14,7 +14,7 @@ $snarky_subtitle = current($sayings);
 <div class="row-fluid">
     <div class="span8">
         <h2><?=$snarky_subtitle ?></h2>
-        <center><img src="<?=\DF\Url::content('images/404.png') ?>" alt="Happy Derpeh" title="Who can be mad at a face like that?" /></center>
+        <center><img src="<?=\App\Url::content('images/404.png') ?>" alt="Happy Derpeh" title="Who can be mad at a face like that?" /></center>
     </div>
     <div class="span4">
         <h2>Where Am I?</h2>
@@ -24,7 +24,7 @@ $snarky_subtitle = current($sayings);
 
         <div class="buttons">
             <?=$this->viewHelper->button(array(
-                'href'      => \DF\Url::route(),
+                'href'      => \App\Url::route(),
                 'text'      => 'Ponyville Live! Homepage',
                 'class'     => 'btn-large btn-primary',
                 'icon'      => 'icon-home',

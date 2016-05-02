@@ -3,7 +3,7 @@ namespace Modules\Stations\Controllers;
 
 use Entity\Station;
 
-class BaseController extends \DF\Phalcon\Controller
+class BaseController extends \App\Phalcon\Controller
 {
     /*
      * @var array All available stations.
@@ -50,7 +50,7 @@ class BaseController extends \DF\Phalcon\Controller
             }
             else
             {
-                throw new \DF\Exception\PermissionDenied;
+                throw new \App\Exception\PermissionDenied;
             }
         }
         else if (count($this->stations) == 1)
@@ -62,7 +62,7 @@ class BaseController extends \DF\Phalcon\Controller
 
         // Force a redirect to the "Select" page if no station ID is specified.
         if (!$this->station)
-            throw new \DF\Exception\PermissionDenied;
+            throw new \App\Exception\PermissionDenied;
     }
 
     protected function permissions()

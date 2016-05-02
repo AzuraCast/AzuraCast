@@ -9,7 +9,7 @@ else
     $chat_username = 'PVL_'.mt_rand(0, 10000);
 }
 
-$skin = \PVL\Customization::get('theme');
+$skin = \App\Customization::get('theme');
 if ($skin == 'dark')
     $chat_skin = 'css/black.css';
 else

@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Admin\Controllers;
 
-class BaseController extends \DF\Phalcon\Controller
+class BaseController extends \App\Phalcon\Controller
 {
     protected function preDispatch()
     {

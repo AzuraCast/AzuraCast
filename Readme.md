@@ -1,3 +1,7 @@
+![AzuraCast](https://raw.githubusercontent.com/SlvrEagle23/AzuraCast/master/resources/azuracast.png)
+
+**WARNING: This project is in very early development, and is not yet ready for use in development or production environments! Follow the project for updates as it rolls out into pre-alpha, alpha and release states.**
+
 **AzuraCast** is a standalone web radio management kit.
  
 You can either use AzuraCast to spin up a brand new radio station from the ground up (using its built-in installer scripts), or use the web application to manage an existing radio setup.

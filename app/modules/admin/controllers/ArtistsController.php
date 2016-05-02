@@ -27,7 +27,7 @@ class ArtistsController extends BaseController
             $query = $this->em->createQuery('SELECT a, at FROM Entity\Artist a LEFT JOIN a.types at ORDER BY a.is_approved ASC, a.name ASC');
         }
         
-        $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 30);
+        $this->view->pager = new \App\Paginator\Doctrine($query, $this->getParam('page', 1), 30);
     }
     
     public function editAction()
@@ -35,7 +35,7 @@ class ArtistsController extends BaseController
         $form_config = $this->current_module_config->forms->artist->toArray();
         unset($form_config['groups']['intro']);
 
-        $form = new \DF\Form($form_config);
+        $form = new \App\Form($form_config);
         
         if ($this->hasParam('id'))
         {

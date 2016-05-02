@@ -28,7 +28,7 @@ class ShowController extends BaseController
         }
         else
         {
-            $return = \DF\Cache::get('api_shows');
+            $return = \App\Cache::get('api_shows');
 
             if (!$return)
             {
@@ -41,7 +41,7 @@ class ShowController extends BaseController
                     $return[] = Podcast::api($record, 10);
                 }
 
-                \DF\Cache::set($return, 'api_shows', array(), 60);
+                \App\Cache::set($return, 'api_shows', array(), 60);
             }
 
             return $this->returnSuccess($return);

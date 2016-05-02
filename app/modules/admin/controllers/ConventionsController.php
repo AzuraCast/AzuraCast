@@ -16,7 +16,7 @@ class ConventionsController extends BaseController
     protected function _getConvention()
     {
         if (!$this->hasParam('convention'))
-            throw new \DF\Exception\DisplayOnly('No convention specified!');
+            throw new \App\Exception\DisplayOnly('No convention specified!');
 
         $con_id = (int)$this->getParam('convention');
         $con = Convention::find($con_id);
@@ -28,12 +28,12 @@ class ConventionsController extends BaseController
         }
         else
         {
-            throw new \DF\Exception\DisplayOnly('Convention ID not found!');
+            throw new \App\Exception\DisplayOnly('Convention ID not found!');
         }
     }
     protected function _flushConventionCache()
     {
-        \DF\Cache::remove('homepage_conventions');
+        \App\Cache::remove('homepage_conventions');
     }
 
     public function indexAction()
@@ -41,12 +41,12 @@ class ConventionsController extends BaseController
         $this->view->coverage = Convention::getCoverageLevels();
 
         $query = $this->em->createQuery('SELECT c FROM Entity\Convention c LEFT JOIN c.signups cs LEFT JOIN c.archives ca ORDER BY c.start_date DESC');
-        $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 15);
+        $this->view->pager = new \App\Paginator\Doctrine($query, $this->getParam('page', 1), 15);
     }
 
     public function editAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->convention);
+        $form = new \App\Form($this->current_module_config->forms->convention);
 
         if ($this->hasParam('id'))
         {
@@ -126,7 +126,7 @@ class ConventionsController extends BaseController
                     );
                 }
 
-                \DF\Export::csv($export_data, TRUE, 'Signups - '.$con->name);
+                \App\Export::csv($export_data, TRUE, 'Signups - '.$con->name);
             break;
 
             case "html":
@@ -149,7 +149,7 @@ class ConventionsController extends BaseController
         if ($record instanceof ConventionSignup)
             $form->setDefaults($record->toArray(TRUE, TRUE));
         else
-            throw new \DF\Exception\DisplayOnly('Cannot create new signup records from this page.');
+            throw new \App\Exception\DisplayOnly('Cannot create new signup records from this page.');
 
         if($_POST && $form->isValid($_POST) )
         {
@@ -226,7 +226,7 @@ class ConventionsController extends BaseController
     {
         $con = $this->_getConvention();
 
-        $form = new \DF\Form($this->current_module_config->forms->conventionarchive);
+        $form = new \App\Form($this->current_module_config->forms->conventionarchive);
 
         if ($this->hasParam('id'))
         {

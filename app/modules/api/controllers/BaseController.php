@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Api\Controllers;
 
-class BaseController extends \DF\Phalcon\Controller
+class BaseController extends \App\Phalcon\Controller
 {
     public function permissions()
     {
@@ -15,7 +15,7 @@ class BaseController extends \DF\Phalcon\Controller
         parent::preDispatch();
 
         // Disable session creation.
-        \DF\Session::disable();
+        \App\Session::disable();
 
         // Disable rendering.
         $this->doNotRender();
@@ -24,7 +24,7 @@ class BaseController extends \DF\Phalcon\Controller
         $this->response->setHeader('Access-Control-Allow-Origin', '*');
 
         // Fix the base URL prefixed with '//'.
-        \DF\Url::forceSchemePrefix(true);
+        \App\Url::forceSchemePrefix(true);
 
         $this->_time_start = microtime(true);
 
@@ -100,7 +100,7 @@ class BaseController extends \DF\Phalcon\Controller
         $format = strtolower($this->getParam('format', 'json'));
 
         if ($format == 'xml')
-            return $this->returnRaw(\DF\Export::ArrayToXml($obj), 'xml');
+            return $this->returnRaw(\App\Export::ArrayToXml($obj), 'xml');
         else
             return $this->returnRaw(json_encode($obj, \JSON_UNESCAPED_SLASHES), 'json');
     }

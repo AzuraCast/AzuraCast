@@ -1,345 +1,1181 @@
-<?php
-header("Content-type: text/html; charset=utf-8");
-
-$skin = \PVL\Customization::get('theme');
-$tz_info = \PVL\Timezone::getInfo();
-?>
 <!DOCTYPE html>
-<html lang="en" class="full_layout theme_<?=$skin ?>">
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,requiresActiveX=true">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Material Admin</title>
 
-    <meta name="viewport" content="width=device-width">
-    <meta name="theme-color" content="#2C7FD2">
+    <!-- Vendor CSS -->
+    <link href="vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+    <link href="vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
+    <link href="vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
+    <link href="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
 
-    <meta name="keywords" content="Pony, Brony, Radio, Video, Podcast, Multimedia, Convention, Ponyville, Live, MLP, MLP:FiM" />
-    <meta name="description" content="Equestria's largest Brony multimedia network, featuring 24/7 pony radio, videos, podcasts, convention coverage, and more." />
-    <link rel="canonical" href="http://ponyvillelive.com" />
-
-    <!-- Facebook and Other Social Sites -->
-    <meta property="og:site_name" content="Ponyville Live!" />
-    <meta property="og:url" content="http://ponyvillelive.com/" />
-    <meta property="og:image" content="<?=$this->url->getStatic('pvl_square.png') ?>" />
-
-    <link rel="image_src" href="<?=$this->url->getStatic('pvl_square.png') ?>" />
-    <link href="https://plus.google.com/+PonyvilleLiveGlobal" rel="publisher" />
-
-    <?php
-    if ($title)
-        $page_title = $title.' - '.$this->config->application->name;
-    else
-        $page_title = $this->config->application->name.' - Live Pony Radio, Video, Podcasts, Convention Coverage & More';
-
-    $this->tag->setTitle($page_title);
-    if (DF_APPLICATION_ENV != "production")
-        $this->tag->prependTitle('('.ucfirst(DF_APPLICATION_ENV).') ');
-
-    echo $this->tag->getTitle();
-
-    // Set up CSS includes.
-    $this->assets->collection('header_css')
-        ->addCss('//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css', false)
-        ->addCss('//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css', false)
-        ->addCss('//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700', false)
-        ->addCss('//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css', false)
-        ->addCss('compiled/style.css');
-
-    // Establish custom CSS/JS collections in case they don't exist.
-    $this->assets->collection('custom_css');
-    $this->assets->collection('custom_js');
-
-    // Output header CSS.
-    $this->assets->outputCss('header_css');
-    $this->assets->outputCss('custom_css');
-
-    // Set up JS includes.
-    $this->assets->collection('header_js')
-        ->addJs('//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js', false)
-        ->addJs('//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.compat.min.js', false);
-
-    $this->assets->collection('footer_js')
-        ->addJs('//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js', false)
-        ->addJs('//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/helpers/jquery.fancybox-media.js', false)
-        ->addJs('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js', false)
-        ->addJs('//cdnjs.cloudflare.com/ajax/libs/swfobject/2.2/swfobject.min.js', false)
-        ->addJs('//cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js', false)
-        ->addJs('//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js', false)
-        ->addJs('//cdnjs.cloudflare.com/ajax/libs/store.js/1.3.14/store.min.js', false)
-        ->addJs('js/layout.js')
-        ->addJs('js/notify.js')
-        ->addJs('js/global.js');
-
-    $this->assets->outputJs('header_js');
-    ?>
-    <script>
-        var DF_AppEnv = '<?=(defined('DF_APPLICATION_ENV') ? DF_APPLICATION_ENV : '') ?>';
-        var DF_BaseUrl = '<?php echo rtrim($this->url->get(''), '/'); ?>';
-        var DF_ApiUrl = '<?=(defined('DF_API_URL') ? DF_API_URL : '') ?>';
-        var DF_UploadUrl = '<?=(defined('DF_UPLOAD_URL') ? DF_UPLOAD_URL : '') ?>';
-        var DF_ContentPath = '<?php echo $this->url->getStatic(''); ?>';
-
-        var PVL_TimeZone = '<?=$e->escapeJs($tz_info['code']) ?>';
-        var PVL_UtcOffset = <?=$tz_info['gmt_offset_hours'] ?>;
-    </script>
-
-    <!-- Google Universal Analytics -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', '<?=$this->config->application->analytics_code ?>', 'ponyvillelive.com');
-        ga('require', 'linkid', 'linkid.js');
-        ga('send', 'pageview');
-    </script>
-    <!-- End Google Universal Analytics -->
+    <!-- CSS -->
+    <link href="css/app.min.1.css" rel="stylesheet">
+    <link href="css/app.min.2.css" rel="stylesheet">
 </head>
 <body>
-<a class="hidden" href="#body">Skip Navigation</a>
-
-<div class="top">
-    <div class="container">
-        <?
-        $skin = \PVL\Customization::get('theme');
-
-        $tz_info = \PVL\Timezone::getInfo();
-        $tz_text = $tz_info['now']->format('g:ia');
-        ?>
-        <ul class="loginbar pull-right">
-            <li><a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><i class="icon-time"></i> <span class="current_time"><?=$tz_text ?></span> <?=$tz_info['abbr'] ?></a></li>
-            <li class="divider">&nbsp;</li>
-            <li><a href="<?=$this->url->get('profile/theme/skin/toggle') ?>"><i class="icon-adjust"></i> <? if ($skin == 'light'): ?>Dark Theme<? else: ?>Light Theme<? endif; ?></a></li>
-            <li class="divider">&nbsp;</li>
-
-            <? if ($this->auth->isLoggedIn()): ?>
-                <?
-                $user = $this->auth->getLoggedInUser();
-                ?>
-                <? if ($this->acl->canSeeAdminDashboard()): ?>
-                    <li><a href="<?=$this->url->get('admin') ?>"><i class="icon-cog"></i> Admin</a></li>
-                    <li class="divider">&nbsp;</li>
-                <? endif; ?>
-                <li><a href="<?=$this->url->get('profile') ?>"><i class="icon-user"></i> Profile</a></li>
-                <li class="divider">&nbsp;</li>
-                <li><b><?=$user->name ?></b></li>
-                <li><a href="<?=$this->url->get('account/logout') ?>"><i class="icon-signout"></i> Sign Out</a></li>
-            <? else: ?>
-                <li><a href="<?=$this->url->get('account/login') ?>"><i class="icon-signin"></i> Sign In</a></li>
-            <? endif; ?>
-        </ul>
-    </div>
-</div>
-
-<div class="header" role="banner">
-    <div class="container">
-        <div class="logo">
-            <a href="<?=$this->url->get('') ?>"><img id="logo-header" src="<?=$this->url->getStatic('mid2013/logo_'.$skin.'.png') ?>" alt="Ponyville Live! Logo"></a>
-        </div>
-
-        <div class="navbar">
-            <div class="navbar-inner">
-                <a class="btn btn-navbar" role="button" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <div class="nav-collapse collapse" role="navigation">
-                    <?
-                    $categories = \Entity\Station::getStationsInCategories();
-                    $podcasts = \Entity\Podcast::fetchArray();
-                    ?>
-
-                    <ul class="nav primary_menu">
-
-                        <!-- About PVL -->
-                        <li class="dropdown">
-                            <a href="<?=$this->url->get('about') ?>"><i class="icon-info-sign"></i> About</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="<?=$this->url->get('about') ?>"><i class="icon-info-sign"></i> About Us</a></li>
-                                <li><a href="<?=$this->url->get('contact') ?>"><i class="icon-envelope"></i> Contact Us</a></li>
-                                <li><a href="http://patreon.com/ponyvillelive" target="_blank"><i class="icon-money"></i> Support Us on Patreon</a></li>
-                                <li class="divider"></li>
-                                <li><a href="http://m.pvlive.me/"><i class="icon-mobile-phone"></i> PVL! Mobile</a></li>
-                                <li><a href="<?=$this->url->get('apps') ?>"><i class="icon-cloud-download"></i> Apps &amp; Players</a></li>
-                                <li><a href="http://docs.ponyvillelive.apiary.io/" target="_blank"><i class="icon-cog"></i> PVL! Data API</a></li>
-                                <li><a href="https://github.com/BravelyBlue/PVLive" target="_blank"><i class="icon-code-fork"></i> Fork Us on Github</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Stations -->
-                        <li class="dropdown">
-                            <a href="#" data-toggle="dropdown"><i class="icon-music"></i> Radio</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="<?=$this->url->get('schedule') ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
-                                <li><a href="<?=$this->url->get('submit/station') ?>"><i class="icon-cloud-upload"></i> Submit Your Station</a></li>
-                                <li><a href="<?=$this->url->get('submit/song') ?>"><i class="icon-music"></i> Submit Your Song</a></li>
-                                <li class="divider"></li>
-
-                                <? foreach($categories['audio']['stations'] as $station): ?>
-                                    <li><a href="<?=$station['web_url'] ?>" title="<?=$station['genre'] ?>" target="_blank"><?=$station['name'] ?></a></li>
-                                <? endforeach; ?>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" data-toggle="dropdown"><i class="icon-facetime-video"></i> Video</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="<?=$this->url->get('schedule') ?>"><i class="icon-calendar"></i> Station Schedules</a></li>
-                                <li><a href="<?=$this->url->get('submit/station') ?>"><i class="icon-cloud-upload"></i> Submit a Station</a></li>
-                                <li class="divider"></li>
-
-                                <? foreach($categories['video']['stations'] as $station): ?>
-                                    <li><a href="<?=$station['web_url'] ?>" title="<?=$station['genre'] ?>" target="_blank"><?=$station['name'] ?></a></li>
-                                <? endforeach; ?>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" data-toggle="dropdown"><i class="icon-rss"></i> Shows</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="<?=$this->url->get('shows') ?>"><i class="icon-list"></i> Show Directory</a></li>
-                                <li><a href="<?=$this->url->get('submit/show') ?>"><i class="icon-cloud-upload"></i> Submit a Show</a></li>
-                                <li class="divider"></li>
-                                <? foreach($podcasts as $podcast): ?>
-                                    <li><a href="<?=$this->url->get('show/view/id/'.$podcast['id']) ?>" title="<?=$podcast['description'] ?>" target="_blank"><?=$podcast['name'] ?></a></li>
-                                <? endforeach; ?>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" data-toggle="dropdown"><i class="icon-user"></i> Community</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="<?=$this->url->get('conventions') ?>"><i class="icon-building"></i> Pony Conventions</a></li>
-                                <li><a href="<?=$this->url->get('artists') ?>"><i class="icon-group"></i> Artists Directory</a></li>
-                                <li class="divider"></li>
-                                <li><a href="http://pvlive.me/forums" target="_blank">PVL Forums</a></li>
-                                <li><a href="<?=$this->url->get('index/chat') ?>">Chat + Player</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+<header id="header" class="clearfix" data-current-skin="blue">
+    <ul class="header-inner">
+        <li id="menu-trigger" data-trigger="#sidebar">
+            <div class="line-wrap">
+                <div class="line top"></div>
+                <div class="line center"></div>
+                <div class="line bottom"></div>
             </div>
-        </div>
-    </div>
-</div>
+        </li>
 
+        <li class="logo hidden-xs">
+            <a href="index.html">Material Admin</a>
+        </li>
 
-<? if ($content_top): ?>
-    <?=$content_top ?>
-<? else: ?>
-    <div id="secondary_header_stripe" class="rich_header">&nbsp;</div>
-<? endif; ?>
+        <li class="pull-right">
+            <ul class="top-menu">
+                <li id="toggle-width">
+                    <div class="toggle-switch">
+                        <input id="tw-switch" type="checkbox" hidden="hidden">
+                        <label for="tw-switch" class="ts-helper"></label>
+                    </div>
+                </li>
 
-<div id="body-wrapper">
-    <div id="body" class="container" role="main">
-        <div id="page_wrapper">
-            <div id="page">
-                <?
-                if (\DF\Flash::hasMessages()):
-                    $messages = \DF\Flash::getMessages();
-                    foreach($messages as $message):
-                        ?>
-                        <div class="content-top-alert alert alert-<?=$message['color'] ?>" data-alert="alert">
-                            <a class="close" data-dismiss="alert" href="#">×</a>
-                            <?=$message['message'] ?>
+                <li id="top-search">
+                    <a href=""><i class="tm-icon zmdi zmdi-search"></i></a>
+                </li>
+
+                <li class="dropdown">
+                    <a data-toggle="dropdown" href="">
+                        <i class="tm-icon zmdi zmdi-email"></i>
+                        <i class="tmn-counts">6</i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg pull-right">
+                        <div class="listview">
+                            <div class="lv-header">
+                                Messages
+                            </div>
+                            <div class="lv-body">
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="img/profile-pics/1.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">David Belle</div>
+                                            <small class="lv-small">Cum sociis natoque penatibus et magnis dis parturient montes</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="img/profile-pics/2.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Jonathan Morris</div>
+                                            <small class="lv-small">Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="img/profile-pics/3.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Fredric Mitchell Jr.</div>
+                                            <small class="lv-small">Phasellus a ante et est ornare accumsan at vel magnauis blandit turpis at augue ultricies</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="img/profile-pics/4.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Glenn Jecobs</div>
+                                            <small class="lv-small">Ut vitae lacus sem ellentesque maximus, nunc sit amet varius dignissim, dui est consectetur neque</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="img/profile-pics/4.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Bill Phillips</div>
+                                            <small class="lv-small">Proin laoreet commodo eros id faucibus. Donec ligula quam, imperdiet vel ante placerat</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <a class="lv-footer" href="">View All</a>
                         </div>
-                    <?
-                    endforeach;
-                endif;
-                ?>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a data-toggle="dropdown" href="">
+                        <i class="tm-icon zmdi zmdi-notifications"></i>
+                        <i class="tmn-counts">9</i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg pull-right">
+                        <div class="listview" id="notifications">
+                            <div class="lv-header">
+                                Notification
 
-                <div id="content_wrapper">
-                    <div id="content">
-                        <? if ($breadcrumbs): ?>
-                            <div id="breadcrumbs">
-                                <?=$breadcrumbs ?>
+                                <ul class="actions">
+                                    <li class="dropdown">
+                                        <a href="" data-clear="notification">
+                                            <i class="zmdi zmdi-check-all"></i>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
-                        <? endif; ?>
-
-                        <? if (!$hide_title): ?>
-                            <h1 class="title"><?=$title ?></h1>
-                        <? endif; ?>
-
-                        <? if ($tabs): ?>
-                            <div id="content_tabs">
-                                <?=$tabs ?>
+                            <div class="lv-body">
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="img/profile-pics/1.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">David Belle</div>
+                                            <small class="lv-small">Cum sociis natoque penatibus et magnis dis parturient montes</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="img/profile-pics/2.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Jonathan Morris</div>
+                                            <small class="lv-small">Nunc quis diam diamurabitur at dolor elementum, dictum turpis vel</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="img/profile-pics/3.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Fredric Mitchell Jr.</div>
+                                            <small class="lv-small">Phasellus a ante et est ornare accumsan at vel magnauis blandit turpis at augue ultricies</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="img/profile-pics/4.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Glenn Jecobs</div>
+                                            <small class="lv-small">Ut vitae lacus sem ellentesque maximus, nunc sit amet varius dignissim, dui est consectetur neque</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="lv-item" href="">
+                                    <div class="media">
+                                        <div class="pull-left">
+                                            <img class="lv-img-sm" src="img/profile-pics/4.jpg" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="lv-title">Bill Phillips</div>
+                                            <small class="lv-small">Proin laoreet commodo eros id faucibus. Donec ligula quam, imperdiet vel ante placerat</small>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                        <? endif; ?>
 
-                        <? if ($subtitle): ?>
-                            <h2 class="title"><?=$subtitle ?></h2>
-                        <? endif; ?>
+                            <a class="lv-footer" href="">View Previous</a>
+                        </div>
 
-                        <? if ($manual): ?>
-                            <?php echo $this->getContent(); ?>
-                        <? else: ?>
-                            <div class="row-fluid">
-                                <div class="span12">
-                                    <div class="content_inner">
-                                        <?php echo $this->getContent(); ?>
+                    </div>
+                </li>
+                <li class="dropdown hidden-xs">
+                    <a data-toggle="dropdown" href="">
+                        <i class="tm-icon zmdi zmdi-view-list-alt"></i>
+                        <i class="tmn-counts">2</i>
+                    </a>
+                    <div class="dropdown-menu pull-right dropdown-menu-lg">
+                        <div class="listview">
+                            <div class="lv-header">
+                                Tasks
+                            </div>
+                            <div class="lv-body">
+                                <div class="lv-item">
+                                    <div class="lv-title m-b-5">HTML5 Validation Report</div>
+
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%">
+                                            <span class="sr-only">95% Complete (success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lv-item">
+                                    <div class="lv-title m-b-5">Google Chrome Extension</div>
+
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                            <span class="sr-only">80% Complete (success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lv-item">
+                                    <div class="lv-title m-b-5">Social Intranet Projects</div>
+
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                                            <span class="sr-only">20% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lv-item">
+                                    <div class="lv-title m-b-5">Bootstrap Admin Template</div>
+
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                            <span class="sr-only">60% Complete (warning)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lv-item">
+                                    <div class="lv-title m-b-5">Youtube Client App</div>
+
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                            <span class="sr-only">80% Complete (danger)</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        <? endif; ?>
+
+                            <a class="lv-footer" href="">View All</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a data-toggle="dropdown" href=""><i class="tm-icon zmdi zmdi-more-vert"></i></a>
+                    <ul class="dropdown-menu dm-icon pull-right">
+                        <li class="skin-switch hidden-xs">
+                            <span class="ss-skin bgm-lightblue" data-skin="lightblue"></span>
+                            <span class="ss-skin bgm-bluegray" data-skin="bluegray"></span>
+                            <span class="ss-skin bgm-cyan" data-skin="cyan"></span>
+                            <span class="ss-skin bgm-teal" data-skin="teal"></span>
+                            <span class="ss-skin bgm-orange" data-skin="orange"></span>
+                            <span class="ss-skin bgm-blue" data-skin="blue"></span>
+                        </li>
+                        <li class="divider hidden-xs"></li>
+                        <li class="hidden-xs">
+                            <a data-action="fullscreen" href=""><i class="zmdi zmdi-fullscreen"></i> Toggle Fullscreen</a>
+                        </li>
+                        <li>
+                            <a data-action="clear-localstorage" href=""><i class="zmdi zmdi-delete"></i> Clear Local Storage</a>
+                        </li>
+                        <li>
+                            <a href=""><i class="zmdi zmdi-face"></i> Privacy Settings</a>
+                        </li>
+                        <li>
+                            <a href=""><i class="zmdi zmdi-settings"></i> Other Settings</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="hidden-xs" id="chat-trigger" data-trigger="#chat">
+                    <a href=""><i class="tm-icon zmdi zmdi-comment-alt-text"></i></a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+
+    <!-- Top Search Content -->
+    <div id="top-search-wrap">
+        <div class="tsw-inner">
+            <i id="top-search-close" class="zmdi zmdi-arrow-left"></i>
+            <input type="text">
+        </div>
+    </div>
+</header>
+
+<section id="main">
+    <aside id="sidebar" class="sidebar c-overflow">
+        <div class="profile-menu">
+            <a href="">
+                <div class="profile-pic">
+                    <img src="img/profile-pics/1.jpg" alt="">
+                </div>
+
+                <div class="profile-info">
+                    Malinda Hollaway
+
+                    <i class="zmdi zmdi-caret-down"></i>
+                </div>
+            </a>
+
+            <ul class="main-menu">
+                <li>
+                    <a href="profile-about.html"><i class="zmdi zmdi-account"></i> View Profile</a>
+                </li>
+                <li>
+                    <a href=""><i class="zmdi zmdi-input-antenna"></i> Privacy Settings</a>
+                </li>
+                <li>
+                    <a href=""><i class="zmdi zmdi-settings"></i> Settings</a>
+                </li>
+                <li>
+                    <a href=""><i class="zmdi zmdi-time-restore"></i> Logout</a>
+                </li>
+            </ul>
+        </div>
+
+        <ul class="main-menu">
+            <li><a href="index.html"><i class="zmdi zmdi-home"></i> Home</a></li>
+            <li class="sub-menu">
+                <a href=""><i class="zmdi zmdi-view-compact"></i> Headers</a>
+
+                <ul>
+                    <li><a href="textual-menu.html">Textual menu</a></li>
+                    <li><a href="image-logo.html">Image logo</a></li>
+                    <li><a href="top-mainmenu.html">Mainmenu on top</a></li>
+                </ul>
+            </li>
+            <li><a href="typography.html"><i class="zmdi zmdi-format-underlined"></i> Typography</a></li>
+            <li class="sub-menu active toggled">
+                <a href=""><i class="zmdi zmdi-widgets"></i> Widgets</a>
+
+                <ul>
+                    <li><a class="active" href="widget-templates.html">Templates</a></li>
+                    <li><a href="widgets.html">Widgets</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href=""><i class="zmdi zmdi-view-list"></i> Tables</a>
+
+                <ul>
+                    <li><a href="tables.html">Normal Tables</a></li>
+                    <li><a href="data-tables.html">Data Tables</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href=""><i class="zmdi zmdi-collection-text"></i> Forms</a>
+
+                <ul>
+                    <li><a href="form-elements.html">Basic Form Elements</a></li>
+                    <li><a href="form-components.html">Form Components</a></li>
+                    <li><a href="form-examples.html">Form Examples</a></li>
+                    <li><a href="form-validations.html">Form Validation</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href=""><i class="zmdi zmdi-swap-alt"></i>User Interface</a>
+                <ul>
+                    <li><a href="colors.html">Colors</a></li>
+                    <li><a href="animations.html">Animations</a></li>
+                    <li><a href="box-shadow.html">Box Shadow</a></li>
+                    <li><a href="buttons.html">Buttons</a></li>
+                    <li><a href="icons.html">Icons</a></li>
+                    <li><a href="alerts.html">Alerts</a></li>
+                    <li><a href="preloaders.html">Preloaders</a></li>
+                    <li><a href="notification-dialog.html">Notifications & Dialogs</a></li>
+                    <li><a href="media.html">Media</a></li>
+                    <li><a href="components.html">Components</a></li>
+                    <li><a href="other-components.html">Others</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href=""><i class="zmdi zmdi-trending-up"></i>Charts</a>
+                <ul>
+                    <li><a href="flot-charts.html">Flot Charts</a></li>
+                    <li><a href="other-charts.html">Other Charts</a></li>
+                </ul>
+            </li>
+            <li><a href="calendar.html"><i class="zmdi zmdi-calendar"></i> Calendar</a></li>
+            <li class="sub-menu">
+                <a href=""><i class="zmdi zmdi-image"></i>Photo Gallery</a>
+                <ul>
+                    <li><a href="photos.html">Default</a></li>
+                    <li><a href="photo-timeline.html">Timeline</a></li>
+                </ul>
+            </li>
+
+            <li><a href="generic-classes.html"><i class="zmdi zmdi-layers"></i> Generic Classes</a></li>
+            <li class="sub-menu">
+                <a href=""><i class="zmdi zmdi-collection-item"></i> Sample Pages</a>
+                <ul>
+
+                    <li><a href="profile-about.html">Profile</a></li>
+                    <li><a href="list-view.html">List View</a></li>
+                    <li><a href="messages.html">Messages</a></li>
+                    <li><a href="pricing-table.html">Pricing Table</a></li>
+                    <li><a href="contacts.html">Contacts</a></li>
+                    <li><a href="wall.html">Wall</a></li>
+                    <li><a href="invoice.html">Invoice</a></li>
+                    <li><a href="login.html">Login and Sign Up</a></li>
+                    <li><a href="lockscreen.html">Lockscreen</a></li>
+                    <li><a href="404.html">Error 404</a></li>
+
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="form-examples.html"><i class="zmdi zmdi-menu"></i> 3 Level Menu</a>
+
+                <ul>
+                    <li><a href="form-elements.html">Level 2 link</a></li>
+                    <li><a href="form-components.html">Another level 2 Link</a></li>
+                    <li class="sub-menu">
+                        <a href="form-examples.html">I have children too</a>
+
+                        <ul>
+                            <li><a href="">Level 3 link</a></li>
+                            <li><a href="">Another Level 3 link</a></li>
+                            <li><a href="">Third one</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="form-validations.html">One more 2</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <aside id="chat" class="sidebar c-overflow">
+
+        <div class="chat-search">
+            <div class="fg-line">
+                <input type="text" class="form-control" placeholder="Search People">
+            </div>
+        </div>
+
+        <div class="listview">
+            <a class="lv-item" href="">
+                <div class="media">
+                    <div class="pull-left p-relative">
+                        <img class="lv-img-sm" src="img/profile-pics/2.jpg" alt="">
+                        <i class="chat-status-busy"></i>
+                    </div>
+                    <div class="media-body">
+                        <div class="lv-title">Jonathan Morris</div>
+                        <small class="lv-small">Available</small>
+                    </div>
+                </div>
+            </a>
+
+            <a class="lv-item" href="">
+                <div class="media">
+                    <div class="pull-left">
+                        <img class="lv-img-sm" src="img/profile-pics/1.jpg" alt="">
+                    </div>
+                    <div class="media-body">
+                        <div class="lv-title">David Belle</div>
+                        <small class="lv-small">Last seen 3 hours ago</small>
+                    </div>
+                </div>
+            </a>
+
+            <a class="lv-item" href="">
+                <div class="media">
+                    <div class="pull-left p-relative">
+                        <img class="lv-img-sm" src="img/profile-pics/3.jpg" alt="">
+                        <i class="chat-status-online"></i>
+                    </div>
+                    <div class="media-body">
+                        <div class="lv-title">Fredric Mitchell Jr.</div>
+                        <small class="lv-small">Availble</small>
+                    </div>
+                </div>
+            </a>
+
+            <a class="lv-item" href="">
+                <div class="media">
+                    <div class="pull-left p-relative">
+                        <img class="lv-img-sm" src="img/profile-pics/4.jpg" alt="">
+                        <i class="chat-status-online"></i>
+                    </div>
+                    <div class="media-body">
+                        <div class="lv-title">Glenn Jecobs</div>
+                        <small class="lv-small">Availble</small>
+                    </div>
+                </div>
+            </a>
+
+            <a class="lv-item" href="">
+                <div class="media">
+                    <div class="pull-left">
+                        <img class="lv-img-sm" src="img/profile-pics/5.jpg" alt="">
+                    </div>
+                    <div class="media-body">
+                        <div class="lv-title">Bill Phillips</div>
+                        <small class="lv-small">Last seen 3 days ago</small>
+                    </div>
+                </div>
+            </a>
+
+            <a class="lv-item" href="">
+                <div class="media">
+                    <div class="pull-left">
+                        <img class="lv-img-sm" src="img/profile-pics/6.jpg" alt="">
+                    </div>
+                    <div class="media-body">
+                        <div class="lv-title">Wendy Mitchell</div>
+                        <small class="lv-small">Last seen 2 minutes ago</small>
+                    </div>
+                </div>
+            </a>
+            <a class="lv-item" href="">
+                <div class="media">
+                    <div class="pull-left p-relative">
+                        <img class="lv-img-sm" src="img/profile-pics/7.jpg" alt="">
+                        <i class="chat-status-busy"></i>
+                    </div>
+                    <div class="media-body">
+                        <div class="lv-title">Teena Bell Ann</div>
+                        <small class="lv-small">Busy</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </aside>
+
+
+    <section id="content">
+        <div class="container">
+
+            <!-- Basic -->
+            <div class="block-header">
+                <h2>Basic Examples</h2>
+
+                <ul class="actions">
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-trending-up"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-check-all"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-more-vert"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="">Refresh</a>
+                            </li>
+                            <li>
+                                <a href="">Manage Widgets</a>
+                            </li>
+                            <li>
+                                <a href="">Widgets Settings</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Default Example <small>You can type anything here...</small></h2>
+
+                            <ul class="actions">
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Refresh</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Manage Widgets</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Widgets Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body card-padding">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header ch-alt">
+                            <h2>Alternative Example <small>You can type anything here...</small></h2>
+
+                            <ul class="actions">
+                                <li>
+                                    <a href="">
+                                        <i class="zmdi zmdi-refresh-alt"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <i class="zmdi zmdi-download"></i>
+                                    </a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Change Date Range</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Change Graph Type</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Other Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body card-padding">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+
+            <!-- Colored Headers -->
+            <div class="block-header">
+                <h2>Custom Colored Headers <small>Please refer 'Colors' page in 'User Interface' for more color classes</small></h2>
+
+                <ul class="actions">
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-trending-up"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-check-all"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-more-vert"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="">Refresh</a>
+                            </li>
+                            <li>
+                                <a href="">Manage Widgets</a>
+                            </li>
+                            <li>
+                                <a href="">Widgets Settings</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header bgm-cyan">
+                            <h2>Cyan <small>You can type anything here...</small></h2>
+
+                            <ul class="actions actions-alt">
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Refresh</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Manage Widgets</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Widgets Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body card-padding">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header bgm-red">
+                            <h2>Red <small>You can type anything here...</small></h2>
+
+                            <ul class="actions actions-alt">
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Refresh</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Manage Widgets</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Widgets Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body card-padding">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header bgm-orange">
+                            <h2>Orange <small>You can type anything here...</small></h2>
+
+                            <ul class="actions actions-alt">
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Refresh</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Manage Widgets</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Widgets Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body card-padding">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header bgm-green">
+                            <h2>Green <small>You can type anything here...</small></h2>
+
+                            <ul class="actions actions-alt">
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Refresh</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Manage Widgets</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Widgets Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body card-padding">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header bgm-purple">
+                            <h2>Purple <small>You can type anything here...</small></h2>
+
+                            <ul class="actions actions-alt">
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Refresh</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Manage Widgets</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Widgets Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body card-padding">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header bgm-bluegray">
+                            <h2>Blue Gray <small>You can type anything here...</small></h2>
+
+                            <ul class="actions actions-alt">
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Refresh</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Manage Widgets</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Widgets Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body card-padding">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+
+            <!-- No Header -->
+            <div class="block-header">
+                <h2>No Header <small>Please refer 'Colors' page in 'User Interface' for more color classes</small></h2>
+
+                <ul class="actions">
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-trending-up"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-check-all"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-more-vert"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="">Refresh</a>
+                            </li>
+                            <li>
+                                <a href="">Manage Widgets</a>
+                            </li>
+                            <li>
+                                <a href="">Widgets Settings</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body card-padding">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body card-padding bgm-teal c-white">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body card-padding bgm-lime c-white">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body card-padding bgm-pink c-white">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body card-padding bgm-amber c-white">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body card-padding bgm-gray c-white">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+
+            <!-- Extra -->
+            <div class="block-header">
+                <h2>Some Material Design Flavour</h2>
+
+                <ul class="actions">
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-trending-up"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <i class="zmdi zmdi-check-all"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" data-toggle="dropdown">
+                            <i class="zmdi zmdi-more-vert"></i>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li>
+                                <a href="">Refresh</a>
+                            </li>
+                            <li>
+                                <a href="">Manage Widgets</a>
+                            </li>
+                            <li>
+                                <a href="">Widgets Settings</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header ch-alt m-b-20">
+                            <h2>Some Title <small>Phasellus condimentum ipsum id auctor</small></h2>
+                            <ul class="actions">
+                                <li>
+                                    <a href="">
+                                        <i class="zmdi zmdi-refresh-alt"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <i class="zmdi zmdi-download"></i>
+                                    </a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Change Date Range</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Change Graph Type</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Other Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
+                        </div>
+
+                        <div class="card-body card-padding">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-header bgm-bluegray m-b-20">
+                            <h2>Some Title <small>Phasellus condimentum ipsum id auctor</small></h2>
+                            <ul class="actions actions-alt">
+                                <li class="dropdown">
+                                    <a href="" data-toggle="dropdown">
+                                        <i class="zmdi zmdi-more-vert"></i>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <a href="">Change Date Range</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Change Graph Type</a>
+                                        </li>
+                                        <li>
+                                            <a href="">Other Settings</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <button class="btn bgm-blue btn-float waves-effect"><i class="zmdi zmdi-mail-send"></i></button>
+                        </div>
+
+                        <div class="card-body card-padding">
+                            Cras leo sem, egestas a accumsan eget, euismod at nunc. Praesent vel mi blandit, tempus ex gravida, accumsan dui. Sed sed aliquam augue. Nullam vel suscipit purus, eu facilisis ante. Mauris nec commodo felis.
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+</section>
+
+<footer id="footer">
+    Copyright &copy; 2015 Material Admin
+
+    <ul class="f-menu">
+        <li><a href="">Home</a></li>
+        <li><a href="">Dashboard</a></li>
+        <li><a href="">Reports</a></li>
+        <li><a href="">Support</a></li>
+        <li><a href="">Contact</a></li>
+    </ul>
+</footer>
+
+<!-- Page Loader -->
+<div class="page-loader">
+    <div class="preloader pls-blue">
+        <svg class="pl-circular" viewBox="25 25 50 50">
+            <circle class="plc-path" cx="50" cy="50" r="20" />
+        </svg>
+
+        <p>Please wait...</p>
     </div>
 </div>
 
-<div class="footer" role="contentinfo">
-    <div class="container">
-        <?
-        $affiliates = \Entity\Affiliate::fetch(true);
-        ?>
-        <div class="footer-inner">
-            <div class="row-fluid row-multiple clearfix">
-                <div class="media-list">
-                <? foreach($affiliates as $affiliate): ?>
-                    <div class="media span4">
-                        <div class="media-object pull-left">
-                            <a href="<?=$affiliate['web_url'] ?>" target="_blank">
-                                <img src="<?=\PVL\Url::upload($affiliate['image_url']) ?>" alt="<?=$affiliate['name'] ?> Logo" style="width: 40px;">
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <h4>
-                                <? if (isset($affiliate['custom'])): ?>
-                                    <?=$affiliate['custom'] ?><br>
-                                <? else: ?>
-                                    <a href="<?=$affiliate['web_url'] ?>" target="_blank"><?=$affiliate['name'] ?></a><br>
-                                <? endif; ?>
-                                <small><?=$affiliate['description'] ?></small>
-                            </h4>
-                        </div>
-                    </div>
-                <? endforeach; ?>
-                </div>
-            </div>
-        </div>
+<!-- Older IE warning message -->
+<!--[if lt IE 9]>
+<div class="ie-warning">
+    <h1 class="c-white">Warning!!</h1>
+    <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+    <div class="iew-container">
+        <ul class="iew-download">
+            <li>
+                <a href="http://www.google.com/chrome/">
+                    <img src="img/browsers/chrome.png" alt="">
+                    <div>Chrome</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.mozilla.org/en-US/firefox/new/">
+                    <img src="img/browsers/firefox.png" alt="">
+                    <div>Firefox</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://www.opera.com">
+                    <img src="img/browsers/opera.png" alt="">
+                    <div>Opera</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.apple.com/safari/">
+                    <img src="img/browsers/safari.png" alt="">
+                    <div>Safari</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                    <img src="img/browsers/ie.png" alt="">
+                    <div>IE (New)</div>
+                </a>
+            </li>
+        </ul>
     </div>
+    <p>Sorry for the inconvenience!</p>
 </div>
+<![endif]-->
 
-<?
-$footer_msg = \Entity\Settings::getSetting('footer_message');
-?>
-<div class="copyright" role="contentinfo">
-    <div class="container">
-        <? if (!empty($footer_msg)): ?>
-            <p class="footer-message">
-                <?=$footer_msg ?>
-            </p>
-            <br>
-        <? endif; ?>
 
-        <p>MLP is copyright &copy; Hasbro. All creations are &copy; to their respective artists. All songs are property of their respective artists.<br>
-            Copyright &copy; 2012-<?=date('Y') ?> <a href="http://www.bravelyblue.com/" target="_blank">Bravely Blue Media LLC</a> and Ponyville Live! All rights reserved.</p>
-    </div>
-</div>
+<!-- Javascript Libraries -->
+<script src="vendors/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-<?
-echo $this->assets->outputJs('footer_js');
-echo $this->assets->outputJs('custom_js');
-?>
+<script src="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="vendors/bower_components/Waves/dist/waves.min.js"></script>
+<script src="vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+<script src="vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
+
+<!-- Placeholder for IE9 -->
+<!--[if IE 9 ]>
+<script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+<![endif]-->
+
+<script src="js/functions.js"></script>
+<script src="js/demo.js"></script>
 </body>
 </html>

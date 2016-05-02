@@ -27,7 +27,7 @@ class SongsController extends BaseController
                 ->setParameter('q', '%'.addcslashes($q, "%_").'%')
                 ->setParameter('q_exact', $q);
 
-            $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 30);
+            $this->view->pager = new \App\Paginator\Doctrine($query, $this->getParam('page', 1), 30);
         }
     }
 
@@ -40,7 +40,7 @@ class SongsController extends BaseController
         $song_to_merge = Record::find($id);
 
         if (!($song_to_merge instanceof Record))
-            throw new \DF\Exception('Song not found!');
+            throw new \App\Exception('Song not found!');
 
         $this->view->song_to_merge = $song_to_merge;
 
@@ -85,7 +85,7 @@ class SongsController extends BaseController
 
     public function editAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->song);
+        $form = new \App\Form($this->current_module_config->forms->song);
 
         if ($this->hasParam('id'))
         {

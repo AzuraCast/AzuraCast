@@ -67,7 +67,7 @@ $title = 'Manage Artists';
                     )) ?>
                 </div>
             </td>
-            <td class="center"><img src="<?=\PVL\Url::upload($record['image_url']) ?>" style="display: inline; width: 64px;"></td>
+            <td class="center"><img src="<?=\App\Url::upload($record['image_url']) ?>" style="display: inline; width: 64px;"></td>
             <td class="center">
             <? if (!$record->is_approved): ?>
                 <span class="large-icon" title="Needs Review"><i class="icon-warning-sign"></i></span>

@@ -27,7 +27,7 @@ class StreamsController extends BaseController
         else
             $form_config = $this->current_module_config->forms->radio_stream;
 
-        $form = new \DF\Form($form_config);
+        $form = new \App\Form($form_config);
 
         if ($this->hasParam('id'))
         {
@@ -55,7 +55,7 @@ class StreamsController extends BaseController
             $this->station->checkDefaultStream();
 
             // Clear station cache.
-            \DF\Cache::remove('stations');
+            \App\Cache::remove('stations');
 
             // Immediately load "Now Playing" data for the added/updated stream.
             if ($data['is_active'] == 0)
@@ -66,7 +66,7 @@ class StreamsController extends BaseController
             }
             elseif ($this->station->category == 'video')
             {
-                $np = \PVL\NowPlaying::processVideoStream($record, $this->station, true);
+                $np = \App\NowPlaying::processVideoStream($record, $this->station, true);
                 $record->save();
 
                 if ($np['meta']['status'] == 'online')
@@ -76,7 +76,7 @@ class StreamsController extends BaseController
             }
             else
             {
-                $np = \PVL\NowPlaying::processAudioStream($record, $this->station, true);
+                $np = \App\NowPlaying::processAudioStream($record, $this->station, true);
                 $record->save();
 
                 if ($np['status'] != 'offline')

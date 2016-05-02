@@ -27,12 +27,12 @@ class UsersController extends BaseController
             $query = $this->em->createQuery('SELECT u, r FROM Entity\User u LEFT JOIN u.roles r ORDER BY u.name ASC');
         }
         
-        $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 50);
+        $this->view->pager = new \App\Paginator\Doctrine($query, $this->getParam('page', 1), 50);
     }
 
     public function editAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->user_edit->form);
+        $form = new \App\Form($this->current_module_config->forms->user_edit->form);
         
         if ($this->hasParam('id'))
         {
@@ -80,7 +80,7 @@ class UsersController extends BaseController
         $user = User::find($id);
 
         if (!($user instanceof User))
-            throw new \DF\Exception\DisplayOnly('User not found!');
+            throw new \App\Exception\DisplayOnly('User not found!');
         
         // Set new identity in Zend_Auth
         $this->auth->masqueradeAsUser($user);

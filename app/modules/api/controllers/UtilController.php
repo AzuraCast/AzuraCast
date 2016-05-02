@@ -1,8 +1,8 @@
 <?php
 namespace Modules\Api\Controllers;
 
-use \PVL\Debug;
-use \PVL\Utilities;
+use \App\Debug;
+use \App\Utilities;
 
 class UtilController extends BaseController
 {

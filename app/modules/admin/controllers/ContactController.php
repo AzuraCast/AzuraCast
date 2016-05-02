@@ -75,7 +75,7 @@ class ContactController extends BaseController
         $form_info['groups']['recipients']['elements']['stations'][1]['multiOptions'] = $station_select;
         $form_info['groups']['recipients']['elements']['podcasts'][1]['multiOptions'] = $podcast_select;
 
-        $form = new \DF\Form($form_info);
+        $form = new \App\Form($form_info);
 
         if($_POST && $form->isValid($_POST) )
         {
@@ -91,7 +91,7 @@ class ContactController extends BaseController
 
             $email_to = array_unique($email_to);
 
-            \DF\Messenger::send(array(
+            \App\Messenger::send(array(
                 'to'        => $email_to,
                 'subject'   => $data['subject'],
                 'template'  => 'bulkcontact',

@@ -135,7 +135,7 @@ class NewsManager
                 $local_url = $local_path_base;
 
                 $local_path = DF_INCLUDE_TEMP . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $local_path_base);
-                $s3_path = Service\AmazonS3::path($local_url);
+                $s3_path = App\Service\AmazonS3::path($local_url);
 
                 if (!file_exists($s3_path))
                 {
@@ -145,7 +145,7 @@ class NewsManager
                     // Optimize image for fast display.
                     Image::resizeImage($local_path, $local_path, $image['width'], $image['height']);
 
-                    Service\AmazonS3::upload($local_path, $local_path_base);
+                    App\Service\AmazonS3::upload($local_path, $local_path_base);
                 }
 
                 $tags = array_map('strtolower', (array)$post['tags']);

@@ -27,7 +27,7 @@ echo $this->viewHelper->renderHere('header', true, array('title' => $title));
                     'type'      => 'small',
                     'icon'      => ($row['is_promoted']) ? 'icon-minus-sign' : 'icon-plus-sign',
                     'class'     => ($row['is_promoted']) ? 'btn-danger' : 'btn-success',
-                    'href'      => \DF\Url::routeFromHere(array('action' => 'promote', 'event' => $row['guid'])),
+                    'href'      => \App\Url::routeFromHere(array('action' => 'promote', 'event' => $row['guid'])),
                     'text'      => ($row['is_promoted']) ? 'Unpromote Event' : 'Promote Event',
                 )) ?>
             </td>

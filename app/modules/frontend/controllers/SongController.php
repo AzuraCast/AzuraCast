@@ -17,7 +17,7 @@ class SongController extends BaseController
         $record = Song::find($id);
 
         if (!($record instanceof Song))
-            throw new \DF\Exception\DisplayOnly('Song not found!');
+            throw new \App\Exception\DisplayOnly('Song not found!');
 
         $song_info = array();
         $song_info['record'] = $record;
@@ -44,7 +44,7 @@ class SongController extends BaseController
 
         $song_info['image_url'] = $record->image_url;
         if (!$song_info['image_url'])
-            $song_info['image_url'] = \DF\Url::content('images/song_generic.png');
+            $song_info['image_url'] = \App\Url::content('images/song_generic.png');
 
         $song_info['description'] = $this->_cleanUpText($song_info['description']);
         $song_info['lyrics'] = $this->_cleanUpText($song_info['lyrics']);

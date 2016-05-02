@@ -39,8 +39,8 @@ $db_path = $remote_response['result']['path'];
 // Force S3 enabled in development mode.
 define('DF_UPLOAD_URL', 'dev.pvlive.me');
 
-$s3_client = \PVL\Service\AmazonS3::initClient();
-$s3_bucket = \PVL\Service\AmazonS3::getBucket();
+$s3_client = \App\Service\AmazonS3::initClient();
+$s3_bucket = \App\Service\AmazonS3::getBucket();
 
 if (!$s3_client)
     die('Amazon S3 could not be initialized! Halting remote import.');

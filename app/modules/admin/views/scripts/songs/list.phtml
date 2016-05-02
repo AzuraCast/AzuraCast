@@ -95,7 +95,7 @@
                 <div>Merged with <a href="#" onclick="showSongInfo('<?=$record['merge_song_id'] ?>'); return false;"><?=$record['merge_song_id'] ?></a></div>
             <? endif; ?>
             <? if ($record['last_played']): ?>
-                <div title="<?=date('F j, Y g:ia', $record['last_played']) ?>">Last Played <?=\DF\Utilities::timeDifferenceText($record['last_played'], time(), 0) ?> ago</div>
+                <div title="<?=date('F j, Y g:ia', $record['last_played']) ?>">Last Played <?=\App\Utilities::timeDifferenceText($record['last_played'], time(), 0) ?> ago</div>
             <? endif; ?>
             <? if ($record['play_count']): ?>
                 <div>Played <?=$record['play_count'] ?> time(s)</div>

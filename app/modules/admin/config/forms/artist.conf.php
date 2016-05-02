@@ -21,7 +21,7 @@ return array(
                     <ul>
                         <li>Send a tweet to <a href="http://twitter.com/ponyvillelive" target="_blank">@PonyvilleLive</a> from your Twitter account,</li>
                         <li>Send an e-mail to <a href="mailto:pr@ponyvillelive.com" target="_blank">our PR team</a> with your contact information, or</li>
-                        <li>Contact a member of our team on Skype or elsewhere. You can find all of our essential contact information from our <a href="'.\DF\Url::route(array('module' => 'frontend', 'controller' => 'index', 'action' => 'contact')).'" target="_blank">Contact Us page</a>.</li>
+                        <li>Contact a member of our team on Skype or elsewhere. You can find all of our essential contact information from our <a href="'.\App\Url::route(array('module' => 'frontend', 'controller' => 'index', 'action' => 'contact')).'" target="_blank">Contact Us page</a>.</li>
                     </ul>
                     <p>Once your profile has been approved, you will be able to access the Artist Center by logging in to the Ponyville Live! homepage.</p>
                 ')),

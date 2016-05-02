@@ -269,7 +269,7 @@ class ScheduleManager
 
     public static function requestExternalUrl($url)
     {
-        return Service\Curl::request(array('url' => $url));
+        return App\Service\Curl::request(array('url' => $url));
     }
 
 }

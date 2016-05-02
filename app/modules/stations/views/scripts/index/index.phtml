@@ -7,7 +7,7 @@ $this->assets->collection('custom_js')
     ->addJs('//code.highcharts.com/highcharts-more.js', false)
     ->addJs('//code.highcharts.com/modules/exporting.js', false);
 
-$skin = \PVL\Customization::get('theme');
+$skin = \App\Customization::get('theme');
 if ($skin == "dark")
     $this->assets->collection('custom_js')->addJs('js/highcharts/dark-blue.js');
 

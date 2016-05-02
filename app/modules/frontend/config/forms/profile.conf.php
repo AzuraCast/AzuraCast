@@ -55,7 +55,7 @@ return array(
                 'timezone' => array('select', array(
                     'label' => 'Time Zone',
                     'belongsTo' => 'customization',
-                    'multiOptions' => \PVL\Timezone::fetchSelect(),
+                    'multiOptions' => \App\Timezone::fetchSelect(),
                     'default' => 'UTC',
                 )),
 

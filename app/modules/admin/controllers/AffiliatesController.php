@@ -20,7 +20,7 @@ class AffiliatesController extends BaseController
     
     public function editAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->affiliate);
+        $form = new \App\Form($this->current_module_config->forms->affiliate);
         
         if ($this->hasParam('id'))
         {

@@ -14,7 +14,7 @@ use Entity\Settings;
 use DF\Cache;
 
 use PVL\Debug;
-use PVL\Service\PvlNode;
+use App\Service\PvlNode;
 
 class NowPlaying
 {
@@ -68,7 +68,7 @@ class NowPlaying
         // Generate PVL legacy nowplaying file.
         $nowplaying_feed = json_encode($nowplaying['legacy'], JSON_UNESCAPED_SLASHES);
 
-        $pvl_file_path = \PVL\Service\AmazonS3::path('api/nowplaying.json');
+        $pvl_file_path = \App\Service\AmazonS3::path('api/nowplaying.json');
         @file_put_contents($pvl_file_path, $nowplaying_feed);
 
         $legacy_file_path = DF_INCLUDE_STATIC.'/api/nowplaying.json';
@@ -85,7 +85,7 @@ class NowPlaying
             $np_api[$station]['cache'] = 'flatfile';
 
         // Generate PVL API nowplaying file.
-        $file_path_api = \PVL\Service\AmazonS3::path('api/nowplaying_api.json');
+        $file_path_api = \App\Service\AmazonS3::path('api/nowplaying_api.json');
         $nowplaying_api = json_encode(array('status' => 'success', 'result' => $np_api), JSON_UNESCAPED_SLASHES);
 
         @file_put_contents($file_path_api, $nowplaying_api);
@@ -240,13 +240,13 @@ class NowPlaying
         if (class_exists($custom_adapter))
             $np_adapter = new $custom_adapter($stream, $station);
         elseif ($stream->type == "icecast")
-            $np_adapter = new \PVL\RadioAdapter\IceCast($stream, $station);
+            $np_adapter = new \App\NowPlayingAdapter\Radio\IceCast($stream, $station);
         elseif ($stream->type == "icebreath")
-            $np_adapter = new \PVL\RadioAdapter\IceBreath($stream, $station);
+            $np_adapter = new \App\NowPlayingAdapter\Radio\IceBreath($stream, $station);
         elseif ($stream->type == "shoutcast2")
-            $np_adapter = new \PVL\RadioAdapter\ShoutCast2($stream, $station);
+            $np_adapter = new \App\NowPlayingAdapter\Radio\ShoutCast2($stream, $station);
         elseif ($stream->type == "shoutcast1")
-            $np_adapter = new \PVL\RadioAdapter\ShoutCast1($stream, $station);
+            $np_adapter = new \App\NowPlayingAdapter\Radio\ShoutCast1($stream, $station);
         else
             return array();
 
@@ -341,10 +341,10 @@ class NowPlaying
         else
         {
             $adapters = array(
-                new \PVL\VideoAdapter\Livestream($stream, $station),
-                new \PVL\VideoAdapter\TwitchTv($stream, $station),
-                new \PVL\VideoAdapter\UStream($stream, $station),
-                new \PVL\VideoAdapter\StreamUp($stream, $station),
+                new \App\NowPlayingAdapter\Video\Livestream($stream, $station),
+                new \App\NowPlayingAdapter\Video\TwitchTv($stream, $station),
+                new \App\NowPlayingAdapter\Video\UStream($stream, $station),
+                new \App\NowPlayingAdapter\Video\StreamUp($stream, $station),
             );
 
             foreach($adapters as $np_adapter)

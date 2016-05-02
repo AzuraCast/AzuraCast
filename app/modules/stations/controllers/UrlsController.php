@@ -45,7 +45,7 @@ class UrlsController extends BaseController
 
     public function editAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->url);
+        $form = new \App\Form($this->current_module_config->forms->url);
         
         if ($this->hasParam('id'))
         {
@@ -67,7 +67,7 @@ class UrlsController extends BaseController
             $record->fromArray($data);
 
             if (!$record->checkUrl())
-                throw new \DF\Exception\DisplayOnly('This URL is already taken! Please go back and try another.');
+                throw new \App\Exception\DisplayOnly('This URL is already taken! Please go back and try another.');
 
             $record->save();
             

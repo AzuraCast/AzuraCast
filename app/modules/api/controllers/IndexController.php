@@ -30,9 +30,9 @@ class IndexController extends BaseController
         $this->setCacheLifetime(0);
 
         // Re-enable session management for this API function.
-        \DF\Session::enable();
+        \App\Session::enable();
 
-        $tz_info = \PVL\Timezone::getInfo();
+        $tz_info = \App\Timezone::getInfo();
 
         return $this->returnSuccess(array(
             'timestamp'             => time(),

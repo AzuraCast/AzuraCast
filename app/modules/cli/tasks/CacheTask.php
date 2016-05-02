@@ -1,6 +1,6 @@
 <?php
-use \DF\Phalcon\Cli\Task;
-use \PVL\SyncManager;
+use \App\Phalcon\Cli\Task;
+use \App\SyncManager;
 
 class CacheTask extends Task
 {
@@ -21,7 +21,7 @@ class CacheTask extends Task
         $this->printLn('Doctrine ORM cache flushed.');
 
         // Flush local cache.
-        \DF\Cache::clean();
+        \App\Cache::clean();
 
         $this->printLn('Local cache flushed.');
 

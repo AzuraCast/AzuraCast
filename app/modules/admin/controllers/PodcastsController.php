@@ -14,12 +14,12 @@ class PodcastsController extends BaseController
     public function indexAction()
     {
         $query = $this->em->createQuery('SELECT p FROM Entity\Podcast p ORDER BY p.is_approved DESC, p.name ASC');
-        $this->view->pager = new \DF\Paginator\Doctrine($query, $this->getParam('page', 1), 50);
+        $this->view->pager = new \App\Paginator\Doctrine($query, $this->getParam('page', 1), 50);
     }
     
     public function editAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->podcast);
+        $form = new \App\Form($this->current_module_config->forms->podcast);
         
         if ($this->hasParam('id'))
         {

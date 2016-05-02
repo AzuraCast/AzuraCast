@@ -16,7 +16,7 @@ class ApiController extends BaseController
         set_time_limit(300);
         ini_set('memory_limit', '256M');
 
-        $stats = \DF\Cache::get('admin_api_calls');
+        $stats = \App\Cache::get('admin_api_calls');
 
         if (!$stats)
         {
@@ -130,7 +130,7 @@ class ApiController extends BaseController
                 'calls_per_minute' => round($total_calls / $minutes_in_threshold, 3),
             );
 
-            \DF\Cache::save($stats, 'admin_api_calls', array(), 300);
+            \App\Cache::save($stats, 'admin_api_calls', array(), 300);
         }
 
         $this->view->statistics = $stats;

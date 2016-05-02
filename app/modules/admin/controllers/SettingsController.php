@@ -12,7 +12,7 @@ class SettingsController extends BaseController
     
     public function indexAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->settings->form);
+        $form = new \App\Form($this->current_module_config->forms->settings->form);
 
         $existing_settings = Settings::fetchArray(FALSE);
         $form->setDefaults($existing_settings);

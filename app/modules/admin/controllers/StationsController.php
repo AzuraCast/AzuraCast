@@ -33,7 +33,7 @@ class StationsController extends BaseController
     
     public function editAction()
     {
-        $form = new \DF\Form($this->current_module_config->forms->station);
+        $form = new \App\Form($this->current_module_config->forms->station);
         
         if ($this->hasParam('id'))
         {
@@ -58,7 +58,7 @@ class StationsController extends BaseController
             $record->save();
 
             // Clear station cache.
-            \DF\Cache::remove('stations');
+            \App\Cache::remove('stations');
 
             $this->alert('Changes saved.', 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));

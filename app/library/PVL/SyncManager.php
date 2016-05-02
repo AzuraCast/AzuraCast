@@ -102,17 +102,17 @@ class SyncManager
 
         // Sync the BronyTunes library.
         Debug::runTimer('Run BronyTunes sync', function() {
-            Service\BronyTunes::load();
+            App\Service\BronyTunes::load();
         });
 
         // Sync the Pony.fm library.
         Debug::runTimer('Run Pony.fm sync', function() {
-            Service\PonyFm::load();
+            App\Service\PonyFm::load();
         });
 
         // Sync the EqBeats library.
         Debug::runTimer('Run EqBeats sync', function() {
-            Service\EqBeats::load();
+            App\Service\EqBeats::load();
         });
 
         Settings::setSetting('sync_slow_last_run', time());

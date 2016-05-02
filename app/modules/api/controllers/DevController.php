@@ -82,7 +82,7 @@ class DevController extends BaseController
         if (file_exists($destination_path))
         {
             $s3_path = 'db_dumps/pvlive_import.sql';
-            \PVL\Service\AmazonS3::upload($destination_path, $s3_path);
+            \App\Service\AmazonS3::upload($destination_path, $s3_path);
 
             return $this->returnSuccess(array(
                 'path' => $s3_path,
@@ -98,7 +98,7 @@ class DevController extends BaseController
     public function cleanupAction()
     {
         $s3_path = 'db_dumps/pvlive_import.sql';
-        \PVL\Service\AmazonS3::delete($s3_path);
+        \App\Service\AmazonS3::delete($s3_path);
 
         return $this->returnSuccess('DB Import dump file deleted.');
     }

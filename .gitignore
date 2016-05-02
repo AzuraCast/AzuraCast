@@ -3,6 +3,7 @@
 #################
 
 # Environment-specific files.
+/tmp/
 pvl.key.txt
 app/config/db.conf.php
 app/config/apis.conf.php

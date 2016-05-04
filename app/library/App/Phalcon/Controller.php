@@ -1,31 +1,26 @@
 <?php
 namespace App\Phalcon;
 
+use Entity\Settings;
+
 class Controller extends \Phalcon\Mvc\Controller
 {
     /* Phalcon Initialization */
 
     public function beforeExecuteRoute()
     {
-        $this->init();
-
-        $this->assets->collection('header_css')
-            ->addCss('css/default.css');
-
-        $this->assets->collection('header_js')
-            ->addJs('//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js', false);
-
-        $this->assets->collection('footer_js')
-            ->addJs('//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', false, false, array('async' => 'async'))
-            ->addJs('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js', false)
-            ->addJs('//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.43/jquery.form-validator.min.js', false)
-            ->addJs('js/layout.js');
+        $init_return = $this->init();
+        if ($init_return !== NULL)
+            return $init_return;
 
         return $this->preDispatch();
     }
 
     public function init()
     {
+        if (Settings::getSetting('setup_complete', 0) == 0)
+            return $this->redirectToRoute(['module' => 'frontend', 'controller' => 'setup']);
+
         $isAllowed = $this->permissions();
         if (!$isAllowed)
         {
@@ -34,6 +29,8 @@ class Controller extends \Phalcon\Mvc\Controller
             else
                 throw new \App\Exception\PermissionDenied;
         }
+
+        return null;
     }
 
     protected function preDispatch()

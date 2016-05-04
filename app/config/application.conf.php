@@ -9,6 +9,12 @@ $config = array(
     // Application name
     'name'              => 'AzuraCast',
 
+    // Subfolder for the application (if applicable)
+    'base_uri'          => '/',
+
+    // Base of the static URL.
+    'static_uri'        => '/static/',
+
     'phpSettings'       => array(
         'display_startup_errors' => 0,
         'display_errors'        => 0,

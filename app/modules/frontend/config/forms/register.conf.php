@@ -7,7 +7,6 @@ $di = \Phalcon\Di::getDefault();
 $config = $di->get('config');
 
 $general_config = $config->general->toArray();
-$captcha_config = $config->apis->recaptcha->toArray();
 
 return array(
     'method' => 'post',
@@ -34,18 +33,6 @@ return array(
                     'required' => true,
                 )),
                 
-            ),
-        ),
-
-
-        'captcha_grp' => array(
-            'legend' => 'Spam Protection',
-            'elements' => array(
-
-                'captcha' => array('captcha', array(
-                    'label' => 'Enter the code below',
-                )),
-
             ),
         ),
         

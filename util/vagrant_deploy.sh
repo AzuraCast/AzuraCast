@@ -3,7 +3,7 @@
 export app_base=/var/azuracast
 export util_base=$app_base/www/util
 export www_base=$app_base/www
-export tmp_base=$app_base/tmp
+export tmp_base=$app_base/www_tmp
 
 #
 # Vagrant-specific Deploy Commands

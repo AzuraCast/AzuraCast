@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+function sedeasy {
+  sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
+}
+
 # Add Phalcon PPA
 apt-add-repository ppa:phalcon/stable
 
@@ -44,8 +48,9 @@ echo "Customizing nginx..."
 service nginx stop
 
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
-cp /vagrant/util/vagrant_nginx /etc/nginx/nginx.conf
-sed -e '/AZURABASEDIR/'$www_base'/' /etc/nginx/nginx.conf
+cp $util_base/vagrant_nginx /etc/nginx/nginx.conf
+
+sedeasy "AZURABASEDIR" $app_base /etc/nginx/nginx.conf
 
 # chown -R vagrant /var/log/nginx
 
@@ -68,8 +73,8 @@ curl -X POST "http://localhost:8086/cluster/database_configs/pvlive_analytics?u=
 # Enable PHP flags.
 echo "alias phpwww='sudo -u vagrant php'" >> /home/vagrant/.profile
 
-sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i.bak /etc/php5/fpm/php.ini
-sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i.bak /etc/php5/cli/php.ini
+sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i /etc/php5/fpm/php.ini
+sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i /etc/php5/cli/php.ini
 
 mv /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/www.conf.bak
 cp /vagrant/util/vagrant_phpfpm.conf /etc/php5/fpm/pool.d/www.conf

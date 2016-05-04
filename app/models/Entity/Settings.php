@@ -68,7 +68,10 @@ class Settings extends \App\Doctrine\Entity
 
         if (!$settings || !$cached)
         {
-            $settings = \App\Cache::get('all_settings');
+            $di = \Phalcon\Di::getDefault();
+            $cache = $di->get('cache');
+
+            $settings = $cache->get('all_settings');
 
             if (!$settings || !$cached)
             {
@@ -82,7 +85,7 @@ class Settings extends \App\Doctrine\Entity
                     $settings[$setting['setting_key']] = $setting['setting_value'];
                 }
 
-                \App\Cache::save($settings, 'all_settings', array(), 8640);
+                $cache->save($settings, 'all_settings', array(), 8640);
             }
         }
 

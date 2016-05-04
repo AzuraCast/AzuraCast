@@ -32,8 +32,8 @@ http {
         # Logging Settings
         ##
 
-        access_log /var/www/www_tmp/access.log;
-        error_log /var/www/www_tmp/error.log;
+        access_log AZURABASEDIR/www_tmp/access.log;
+        error_log AZURABASEDIR/www_tmp/error.log;
 
         ##
         # Gzip Settings
@@ -56,7 +56,7 @@ http {
         server {
                 listen 80 default_server;
 
-                root AZURABASEDIR;
+                root AZURABASEDIR/www/web;
                 index index.php;
 
                 server_name localhost;
@@ -76,7 +76,7 @@ http {
                         # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
                         fastcgi_pass 127.0.0.1:9000;
                         fastcgi_index index.php;
-                        fastcgi_param SCRIPT_FILENAME AZURABASEDIR$fastcgi_script_name;
+                        fastcgi_param SCRIPT_FILENAME AZURABASEDIR/www/web$fastcgi_script_name;
                         include fastcgi_params;
 
                         fastcgi_read_timeout 1800;

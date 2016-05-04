@@ -5,129 +5,24 @@ $page_class = 'login-content';
 
 <!-- Login -->
 <div class="lc-block toggled" id="l-login">
+    <h3 class="text-left">Welcome to <?=$this->config->application->name ?>!</h3>
+    <P class="text-left">Begin setup by creating a Super Administrator account.</p>
+
     <div class="input-group m-b-20">
         <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
         <div class="fg-line">
-            <input type="text" class="form-control" placeholder="Username">
+            <input type="text" name="username" class="form-control" placeholder="E-mail Address">
         </div>
     </div>
 
     <div class="input-group m-b-20">
         <span class="input-group-addon"><i class="zmdi zmdi-male"></i></span>
         <div class="fg-line">
-            <input type="password" class="form-control" placeholder="Password">
+            <input type="password" name="password" class="form-control" placeholder="Password">
         </div>
     </div>
 
     <div class="clearfix"></div>
 
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" value="">
-            <i class="input-helper"></i>
-            Keep me signed in
-        </label>
-    </div>
-
     <a href="" class="btn btn-login btn-danger btn-float"><i class="zmdi zmdi-arrow-forward"></i></a>
-
-    <ul class="login-navigation">
-        <li data-block="#l-register" class="bgm-red">Register</li>
-        <li data-block="#l-forget-password" class="bgm-orange">Forgot Password?</li>
-    </ul>
-</div>
-
-<!-- Register -->
-<div class="lc-block" id="l-register">
-    <div class="input-group m-b-20">
-        <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
-        <div class="fg-line">
-            <input type="text" class="form-control" placeholder="Username">
-        </div>
-    </div>
-
-    <div class="input-group m-b-20">
-        <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
-        <div class="fg-line">
-            <input type="text" class="form-control" placeholder="Email Address">
-        </div>
-    </div>
-
-    <div class="input-group m-b-20">
-        <span class="input-group-addon"><i class="zmdi zmdi-male"></i></span>
-        <div class="fg-line">
-            <input type="password" class="form-control" placeholder="Password">
-        </div>
-    </div>
-
-    <div class="clearfix"></div>
-
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" value="">
-            <i class="input-helper"></i>
-            Accept the license agreement
-        </label>
-    </div>
-
-    <a href="" class="btn btn-login btn-danger btn-float"><i class="zmdi zmdi-arrow-forward"></i></a>
-
-    <ul class="login-navigation">
-        <li data-block="#l-login" class="bgm-green">Login</li>
-        <li data-block="#l-forget-password" class="bgm-orange">Forgot Password?</li>
-    </ul>
-</div>
-
-<!-- Forgot Password -->
-<div class="lc-block" id="l-forget-password">
-    <p class="text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu risus. Curabitur commodo lorem fringilla enim feugiat commodo sed ac lacus.</p>
-
-    <div class="input-group m-b-20">
-        <span class="input-group-addon"><i class="zmdi zmdi-email"></i></span>
-        <div class="fg-line">
-            <input type="text" class="form-control" placeholder="Email Address">
-        </div>
-    </div>
-
-    <a href="" class="btn btn-login btn-danger btn-float"><i class="zmdi zmdi-arrow-forward"></i></a>
-
-    <ul class="login-navigation">
-        <li data-block="#l-login" class="bgm-green">Login</li>
-        <li data-block="#l-register" class="bgm-red">Register</li>
-    </ul>
-</div>
-
-<? /*
-<div class="row-fluid">
-    <div class="span8">
-        <div class="floating">
-            <h2>Create a PVL Account</h2>
-            <p>Don't have an account within the Ponyville Live! system? Create one below.</p>
-
-            <div class="buttons">
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'large',
-                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'register')),
-                    'icon'      => 'icon-asterisk',
-                    'text'      => 'Create New PVL Account',
-                )) ?>
-            </div>
-
-            <br>
-            <h2>Sign In with PVL Account</h2>
-            <p>If you have an account inside the Ponyville Live! system, enter your username and password below.</p>
-
-            <?=$form->render() ?>
-        </div>
-    </div>
-    <div class="span4">
-        <div class="floating">
-            <h2>Social Sign-In</h2>
-
-            <? foreach($external_providers as $provider_key => $provider_info): ?>
-                <div class="buttons"><a href="<?=$this->viewHelper->routeFromHere(array('provider' => $provider_key)) ?>" class="zocial <?=$provider_info['class'] ?>">Sign in with <?=$provider_info['name'] ?></a></div>
-            <? endforeach; ?>
-        </div>
-    </div>
 </div>

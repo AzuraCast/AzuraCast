@@ -5,6 +5,8 @@ export app_base=$www_base/..
 export util_base=$www_base/util
 export tmp_base=$app_base/www_tmp
 
+export app_env="production"
+
 cd $util_base
 chmod a+x ./install_radio.sh
 chmod a+x ./install_app.sh

@@ -21,10 +21,12 @@ class CacheTask extends Task
         $this->printLn('Doctrine ORM cache flushed.');
 
         // Flush local cache.
-        \App\Cache::clean();
+        $cache = $this->di->get('cache');
+        $cache->clean();
 
         $this->printLn('Local cache flushed.');
 
+        /*
         // Flush CloudFlare cache.
         if (APP_APPLICATION_ENV == 'production') {
             $apis = $this->config->apis->toArray();
@@ -49,5 +51,6 @@ class CacheTask extends Task
                     $this->printLn('CloudFlare error: ' . $result['msg']);
             }
         }
+        */
     }
 }

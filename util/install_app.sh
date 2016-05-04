@@ -4,6 +4,23 @@ function sedeasy {
   sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
 }
 
+# Copy sample files.
+if [ ! -f $www_base/app/config/apis.conf.php ]; then
+	cp $www_base/app/config/apis.conf.sample.php $www_base/app/config/apis.conf.php
+fi
+
+if [ ! -f $www_base/app/config/db.conf.php ]; then
+	cp $www_base/app/config/db.conf.sample.php $www_base/app/config/db.conf.php
+fi
+
+if [ ! -f $www_base/app/config/influx.conf.php ]; then
+	cp $www_base/app/config/influx.conf.sample.php $www_base/app/config/influx.conf.php
+fi
+
+if [ ! -f $www_base/app/config/cache.conf.php ]; then
+	cp $www_base/app/config/cache.conf.sample.php $www_base/app/config/cache.conf.php
+fi
+
 # Add Phalcon PPA
 apt-add-repository ppa:phalcon/stable
 
@@ -19,18 +36,15 @@ apt-get -q -y install nodejs npm
 
 # Set up InfluxDB early (to allow time to initialize before setting up DBs.)
 cd ~
-wget http://influxdb.s3.amazonaws.com/influxdb_0.8.8_amd64.deb
+wget -q http://influxdb.s3.amazonaws.com/influxdb_0.8.8_amd64.deb
 dpkg -i influxdb_0.8.8_amd64.deb
 service influxdb start
 
 # Set Node.js bin alias
 ln -s /usr/bin/nodejs /usr/bin/node
 
-# Set MySQL root password
-mysqladmin -u root password password
-
 # Set up environment.
-echo 'development' > $app_base/app/.env
+echo $app_env > $app_base/app/.env
 
 echo "Creating temporary folders..."
 mkdir -p $tmp_base
@@ -52,17 +66,25 @@ cp $util_base/vagrant_nginx /etc/nginx/nginx.conf
 
 sedeasy "AZURABASEDIR" $app_base /etc/nginx/nginx.conf
 
-# chown -R vagrant /var/log/nginx
-
 unlink /etc/nginx/sites-enabled/
 
 # Set up MySQL server.
 echo "Customizing MySQL..."
 
+# Set MySQL root password
+if [ $app_env = "development" ]; then
+    export mysql_pw=password
+else
+    export mysql_pw=$(pwgen 8 -sn 1)
+fi
+
+mysqladmin -u root password $mysql_pw
+
+sedeasy "'password'," "'$mysql_pw'," $www_base/app/config/db.conf.php
+
 cat $www_base/util/vagrant_mycnf >> /etc/mysql/my.cnf
 
-echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;" | mysql -u root -ppassword
-echo "CREATE DATABASE azuracast CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root -ppassword
+echo "CREATE DATABASE azuracast CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root -p$mysql_pw
 service mysql restart
 
 # Preconfigure databases
@@ -71,8 +93,6 @@ curl -X POST "http://localhost:8086/cluster/database_configs/pvlive_stations?u=r
 curl -X POST "http://localhost:8086/cluster/database_configs/pvlive_analytics?u=root&p=root" --data-binary @influx_pvlive_analytics.json
 
 # Enable PHP flags.
-echo "alias phpwww='sudo -u vagrant php'" >> /home/vagrant/.profile
-
 sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i /etc/php5/fpm/php.ini
 sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i /etc/php5/cli/php.ini
 
@@ -83,41 +103,24 @@ service php5-fpm restart
 
 # Install composer.
 echo "Installing Composer..."
-cd /root
+cd ~
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
-# Install Node.js and services
-#cd $www_base
-#npm install -g gulp
-#npm install --no-bin-links
+# Install node.js and dependencies
+if [ $app_env = "development" ]; then
+    mkdir -p /var/azuracast/build
+    cp $www_base/web/static/gruntfile.js /var/azuracast/build
+    cp $www_base/web/static/package.json /var/azuracast/build
 
-#cd $www_base/live
-#npm install --no-bin-links
+    cd /var/azuracast/build
+    npm install --loglevel warn
+    npm install -g bower --loglevel warn
+    npm install -g grunt --loglevel warn
+fi
 
 # Mark deployment as run.
 touch $app_base/.deploy_run
-
-# Copy sample files.
-if [ ! -f $www_base/app/config/apis.conf.php ]
-then
-	cp $www_base/app/config/apis.conf.sample.php $www_base/app/config/apis.conf.php
-fi
-
-if [ ! -f $www_base/app/config/db.conf.php ]
-then
-	cp $www_base/app/config/db.conf.sample.php $www_base/app/config/db.conf.php
-fi
-
-if [ ! -f $www_base/app/config/influx.conf.php ]
-then
-	cp $www_base/app/config/influx.conf.sample.php $www_base/app/config/influx.conf.php
-fi
-
-if [ ! -f $www_base/app/config/cache.conf.php ]
-then
-	cp $www_base/app/config/cache.conf.sample.php $www_base/app/config/cache.conf.php
-fi
 
 # Run Composer.js
 cd $www_base
@@ -130,7 +133,7 @@ service nginx stop
 # Set up DB.
 echo "Setting up database..."
 
-cd $www_base/util
+cd $util_base
 
 php doctrine.php orm:schema-tool:drop --force
 

@@ -8,7 +8,7 @@ define('VERSION', '1.0.0');
 
 $loader = new \Phalcon\Loader();
 $loader->registerDirs(array(
-    DF_INCLUDE_MODULES.'/cli/tasks',
+    APP_INCLUDE_MODULES.'/cli/tasks',
 ));
 $loader->register();
 

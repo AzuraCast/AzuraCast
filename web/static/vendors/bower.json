@@ -43,6 +43,7 @@
     "Waves": "waves#~0.7.4",
     "jquery": "~2.1.4",
     "moment": "~2.10.6",
-    "chosen": "~1.4.2"
+    "chosen": "~1.4.2",
+    "components-font-awesome": "#4.6.1"
   }
 }

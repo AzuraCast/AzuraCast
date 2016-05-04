@@ -30,13 +30,13 @@ If you don't already have the Vagrant box downloaded, this process may take seve
 
 ### SSH
 
-You can connect to the Vagrant VM by typing `vagrant ssh` into the command line of the host computer.
+You can connect to the Vagrant VM by typing `vagrant ssh` into the command line of the host computer. By default, the server is also available at `localhost:2222`.
 
 ### Web Server
 
 The web server is configured by default to respond to `http://localhost:8080`.
 
-The web application resides by default in the `/var/www/vagrant/` directory inside the Vagrant virtual machine.
+The web application resides by default in the `/var/azuracast/www` directory inside the Vagrant virtual machine.
 
 ### Database
 
@@ -46,9 +46,16 @@ The default MySQL `root` password is `password`.
 
 ### Common Tasks
 
-The Vagrant virtual machine is automatically configured with Composer, Node.js and other important tools pre-installed.
+The Vagrant virtual machine is automatically configured with Composer (PHP dependencies), NPM (Grunt and Bower) and other important tools pre-installed.
 
-Because stylesheets are written in SCSS, they must first be compiled into CSS before changes will be visible in the browser. We strongly recommend a tool like [Koala](http://koala-app.com/) (Free) or [Compass.app](http://compass.kkbox.com/) (Paid) to handle this task. Both can be pointed at the `web/static/sass` folder, and should automatically build files inside `web/static/compiled`.
+Stylesheets are managed by Grunt, which is installed on the Vagrant VM by default. To make changes to stylesheets:
+
+* Connect to the server via SSH.
+* `cd /var/azuracast/build`
+* `grunt watch`
+* Make changes to LESS files in the `web/static/less` directory.
+
+Do not directly make changes to the compiled CSS files, as they will automatically be overwritten by this automated system.
 
 ## Questions? Comments? Feedback?
 

@@ -5,6 +5,8 @@ export util_base=$app_base/www/util
 export www_base=$app_base/www
 export tmp_base=$app_base/www_tmp
 
+export app_env="development"
+
 #
 # Vagrant-specific Deploy Commands
 #

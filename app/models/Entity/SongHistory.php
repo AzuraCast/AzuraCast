@@ -117,6 +117,7 @@ class SongHistory extends \App\Doctrine\Entity
                 // Calculate "delta" data for previous item, based on all data points.
                 $delta_points = (array)$last_sh->delta_points;
                 $delta_points[] = $listeners;
+                $last_sh->delta_points = $delta_points;
 
                 $delta_positive = 0;
                 $delta_negative = 0;

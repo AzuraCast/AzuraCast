@@ -17,19 +17,17 @@ class Song extends \App\Doctrine\Entity
     public function __construct()
     {
         $this->created = time();
-        $this->score = 0;
-
         $this->play_count = 0;
         $this->last_played = 0;
 
-        $this->votes = new ArrayCollection;
         $this->history = new ArrayCollection;
     }
 
     /** @PrePersist */
     public function preSave()
     {
-        $this->id = self::getSongHash($this);
+        if (empty($this->id))
+            $this->id = self::getSongHash($this);
     }
 
     /**
@@ -47,9 +45,6 @@ class Song extends \App\Doctrine\Entity
     /** @Column(name="title", type="string", length=150, nullable=true) */
     protected $title;
 
-    /** @Column(name="image_url", type="string", length=250, nullable=true) */
-    protected $image_url;
-
     /** @Column(name="created", type="integer") */
     protected $created;
 
@@ -61,61 +56,6 @@ class Song extends \App\Doctrine\Entity
 
     /** @Column(name="score", type="smallint") */
     protected $score;
-
-    public function updateScore()
-    {
-        $this->score = SongVote::getScore($this);
-    }
-
-    /** @Column(name="merge_song_id", type="string", length=50, nullable=true) */
-    protected $merge_song_id;
-
-    /* External Records */
-
-    /**
-     * @OneToOne(targetEntity="SongExternalPonyFm", mappedBy="song")
-     */
-    protected $external_ponyfm;
-
-    /**
-     * @OneToOne(targetEntity="SongExternalEqBeats", mappedBy="song")
-     */
-    protected $external_eqbeats;
-
-    /**
-     * @OneToOne(targetEntity="SongExternalBronyTunes", mappedBy="song")
-     */
-    protected $external_bronytunes;
-
-
-    public function getExternal()
-    {
-        $adapters = self::getExternalAdapters();
-
-        $external = array();
-        foreach($adapters as $adapter_key => $adapter_class)
-        {
-            $local_key = 'external_'.$adapter_key;
-
-            if ($this->{$local_key} instanceof $adapter_class)
-            {
-                $local_row = $this->{$local_key}->toArray();
-                unset($local_row['__isInitialized__']);
-
-                $external[$adapter_key] = $local_row;
-            }
-        }
-
-        return $external;
-    }
-
-    /* End External Records */
-
-    /** 
-     * @OneToMany(targetEntity="SongVote", mappedBy="song")
-     * @OrderBy({"timestamp" = "DESC"})
-     */
-    protected $votes;
 
     /** 
      * @OneToMany(targetEntity="SongHistory", mappedBy="song")
@@ -202,6 +142,7 @@ class Song extends \App\Doctrine\Entity
                 $song_info = array('text' => $song_info);
 
             $obj = new self;
+            $obj->id = $song_hash;
 
             if (empty($song_info['text']))
                 $song_info['text'] = $song_info['artist'].' - '.$song_info['title'];
@@ -242,15 +183,6 @@ class Song extends \App\Doctrine\Entity
             'play_count' => (int)$row['play_count'],
             'last_played' => (int)$row['last_played'],
             'score'     => (int)$row['score'],
-        );
-    }
-
-    public static function getExternalAdapters()
-    {
-        return array(
-            'ponyfm'        => '\Entity\SongExternalPonyFm',
-            'eqbeats'       => '\Entity\SongExternalEqBeats',
-            'bronytunes'    => '\Entity\SongExternalBronyTunes',
         );
     }
 }

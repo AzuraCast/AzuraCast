@@ -16,8 +16,8 @@ class StationMedia extends \App\Doctrine\Entity
     {
         $this->length = 0;
         $this->length_text = '0:00';
-        $this->requests = 0;
-        $this->newest_request = 0;
+
+        $this->playlists = new ArrayCollection();
     }
 
     /** @PrePersist */
@@ -55,26 +55,6 @@ class StationMedia extends \App\Doctrine\Entity
     /** @Column(name="length", type="smallint") */
     protected $length;
 
-    /** @Column(name="length_text", type="string", length=10, nullable=true) */
-    protected $length_text;
-
-    /** @Column(name="requests", type="smallint") */
-    protected $requests;
-
-    /** @Column(name="newest_request", type="integer") */
-    protected $newest_request;
-
-    public function logRequest()
-    {
-        $this->requests = (int)$this->requests + 1;
-        $this->newest_request = time();
-
-        $record = new StationRequest;
-        $record->track = $this;
-        $record->station = $this->station;
-        $record->save();
-    }
-
     public function setLength($length)
     {
         $length_min = floor($length / 60);
@@ -83,6 +63,12 @@ class StationMedia extends \App\Doctrine\Entity
         $this->length = $length;
         $this->length_text = $length_min.':'.str_pad($length_sec, 2, '0', STR_PAD_LEFT);
     }
+
+    /** @Column(name="length_text", type="string", length=10, nullable=true) */
+    protected $length_text;
+
+    /** @Column(name="path", type="string", length=255, nullable=true) */
+    protected $path;
 
     /**
      * @ManyToOne(targetEntity="Station", inversedBy="media")
@@ -99,6 +85,11 @@ class StationMedia extends \App\Doctrine\Entity
      * })
      */
     protected $song;
+
+    /**
+     * @ManyToMany(targetEntity="StationPlaylist", mappedBy="media")
+     */
+    protected $playlists;
 
     /**
      * Static Functions

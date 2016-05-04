@@ -11,7 +11,7 @@ return array(
     'host'          => 'localhost',
 
     // Name of the primary application database.
-    'dbname'        => 'pvl',
+    'dbname'        => 'azuracast',
 
     // Username for the database user with read/write access to the above database.
     'user'          => 'root',

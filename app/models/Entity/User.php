@@ -13,10 +13,7 @@ class User extends \App\Doctrine\Entity
     public function __construct()
     {
         $this->roles = new ArrayCollection;
-        $this->external_accounts = new ArrayCollection;
-
         $this->stations = new ArrayCollection;
-        $this->podcasts = new ArrayCollection;
 
         $this->time_created = time();
         $this->time_updated = time();
@@ -43,12 +40,6 @@ class User extends \App\Doctrine\Entity
     /** @Column(name="auth_password_salt", type="string", length=255, nullable=true) */
     protected $auth_password_salt;
 
-    /** @Column(name="auth_external_provider", type="string", length=255, nullable=true) */
-    protected $auth_external_provider;
-
-    /** @Column(name="auth_external_id", type="string", length=255, nullable=true) */
-    protected $auth_external_id;
-
     public function getAuthPassword()
     {
         return '';
@@ -67,7 +58,7 @@ class User extends \App\Doctrine\Entity
 
     public function generateRandomPassword()
     {
-        $this->setAuthPassword(md5('PVL_EXTERNAL_'.mt_rand(0, 10000)));
+        $this->setAuthPassword(md5('APP_EXTERNAL_'.mt_rand(0, 10000)));
     }
 
     /** @Column(name="auth_last_login_time", type="integer", nullable=true) */
@@ -84,22 +75,7 @@ class User extends \App\Doctrine\Entity
 
     /** @Column(name="name", type="string", length=100, nullable=true) */
     protected $name;
-
-    /** @Column(name="legal_name", type="string", length=100, nullable=true) */
-    protected $legal_name;
-
-    /** @Column(name="pony_name", type="string", length=100, nullable=true) */
-    protected $pony_name;
-
-    /** @Column(name="phone", type="string", length=50, nullable=true) */
-    protected $phone;
-
-    /** @Column(name="pvl_affiliation", type="string", length=50, nullable=true) */
-    protected $pvl_affiliation;
-
-    /** @Column(name="title", type="string", length=100, nullable=true) */
-    protected $title;
-
+    
     /** @Column(name="gender", type="string", length=1, nullable=true) */
     protected $gender;
 
@@ -123,21 +99,7 @@ class User extends \App\Doctrine\Entity
      * )
      */
     protected $stations;
-
-    /**
-     * @ManyToMany(targetEntity="Podcast", inversedBy="managers")
-     * @JoinTable(name="user_manages_podcast",
-     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")},
-     *      inverseJoinColumns={@JoinColumn(name="podcast_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     */
-    protected $podcasts;
-
-    /**
-     * @OneToMany(targetEntity="UserExternal", mappedBy="user")
-     */
-    protected $external_accounts;
-
+    
     /**
      * Static Functions
      */

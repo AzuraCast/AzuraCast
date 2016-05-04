@@ -14,17 +14,11 @@ class Station extends \App\Doctrine\Entity
 
     public function __construct()
     {
-        $this->weight = 0;
-        $this->affiliation = 'syndicated';
-
-        $this->is_active = 0;
-        $this->requests_enabled = 0;
-
-        $this->streams = new ArrayCollection;
         $this->history = new ArrayCollection;
         $this->managers = new ArrayCollection;
-        $this->short_urls = new ArrayCollection;
+
         $this->media = new ArrayCollection;
+        $this->playlists = new ArrayCollection;
     }
 
     /**
@@ -43,9 +37,6 @@ class Station extends \App\Doctrine\Entity
      */
     protected $id;
 
-    /** @Column(name="is_active", type="boolean") */
-    protected $is_active;
-
     /** @Column(name="name", type="string", length=100, nullable=true) */
     protected $name;
 
@@ -56,43 +47,6 @@ class Station extends \App\Doctrine\Entity
 
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
-
-    /** @Column(name="category", type="string", length=50, nullable=true) */
-    protected $category;
-
-    public function getCategoryIcon()
-    {
-        $categories = self::getCategories();
-        return $categories[$this->category]['icon'];
-    }
-    public function getCategoryName()
-    {
-        $categories = self::getCategories();
-        return $categories[$this->category]['name'];
-    }
-
-    /** @Column(name="affiliation", type="string", length=50, nullable=true) */
-    protected $affiliation;
-
-    /** @Column(name="weight", type="smallint") */
-    protected $weight;
-
-    /** @Column(name="genre", type="string", length=50, nullable=true) */
-    protected $genre;
-
-    /** @Column(name="country", type="string", length=5, nullable=true) */
-    protected $country;
-
-    public function getCountryName()
-    {
-        if ($this->country)
-            return \App\Internationalization::getCountryName($this->country);
-        else
-            return '';
-    }
-
-    /** @Column(name="image_url", type="string", length=100, nullable=true) */
-    protected $image_url;
 
     public function setImageUrl($new_url)
     {
@@ -107,74 +61,11 @@ class Station extends \App\Doctrine\Entity
         $this->_processAndCropImage('banner_url', $new_url, 600, 300);
     }
 
-    /** @Column(name="contact_email", type="string", length=255, nullable=true) */
-    protected $contact_email;
-
-    /** @Column(name="web_url", type="string", length=100, nullable=true) */
-    protected $web_url;
-
-    /** @Column(name="irc", type="string", length=25, nullable=true) */
-    protected $irc;
-
-    /** @Column(name="twitter_url", type="string", length=100, nullable=true) */
-    protected $twitter_url;
-
-    public function setTwitterUrl($url)
-    {
-        if (substr($url, 0, 4) == "http" || empty($url))
-        {
-            $this->twitter_url = $url;
-        }
-        else
-        {
-            $url = 'http://www.twitter.com/'.str_replace('@', '', $url);
-            $this->twitter_url = $url;
-        }
-    }
-
-    /** @Column(name="gcal_url", type="string", length=150, nullable=true) */
-    protected $gcal_url;
-
-    /** @Column(name="facebook_url", type="string", length=150, nullable=true) */
-    protected $facebook_url;
-
-    /** @Column(name="tumblr_url", type="string", length=150, nullable=true) */
-    protected $tumblr_url;
-
     /** @Column(name="nowplaying_data", type="json", nullable=true) */
     protected $nowplaying_data;
 
     /** @Column(name="requests_enabled", type="boolean") */
     protected $requests_enabled;
-
-    /** @Column(name="requests_ccast_username", type="string", length=50, nullable=true) */
-    protected $requests_ccast_username;
-
-    /** @Column(name="requests_external_url", type="string", length=255, nullable=true) */
-    protected $requests_external_url;
-
-
-    /** @Column(name="admin_notes", type="text", nullable=true) */
-    protected $admin_notes;
-
-    /** @Column(name="admin_monitor_station", type="boolean", nullable=true) */
-    protected $admin_monitor_station;
-
-    /** @Column(name="station_notes", type="text", nullable=true) */
-    protected $station_notes;
-
-
-    /** @Column(name="intake_votes", type="json", nullable=true) */
-    protected $intake_votes;
-
-    /** @Column(name="deleted_at", type="datetime", nullable=true) */
-    protected $deleted_at;
-
-    /**
-     * @OneToMany(targetEntity="StationStream", mappedBy="station")
-     * @OrderBy({"name" = "ASC"})
-     */
-    protected $streams;
 
     /**
      * @OneToMany(targetEntity="SongHistory", mappedBy="station")
@@ -188,19 +79,14 @@ class Station extends \App\Doctrine\Entity
     protected $managers;
 
     /**
-     * @OneToMany(targetEntity="ShortUrl", mappedBy="station")
-     */
-    protected $short_urls;
-
-    /**
      * @OneToMany(targetEntity="StationMedia", mappedBy="station")
      */
     protected $media;
 
-    public function getShortUrl()
-    {
-        return ShortUrl::stationUrl($this);
-    }
+    /**
+     * @OneToMany(targetEntity="StationPlaylist", mappedBy="station")
+     */
+    protected $playlists;
 
     public function getRecentHistory(StationStream $stream, $num_entries = 5)
     {
@@ -404,57 +290,6 @@ class Station extends \App\Doctrine\Entity
         return NULL;
     }
 
-    public static function getCategories()
-    {
-        return array(
-            'audio'    => array(
-                'name' => 'Radio Stations',
-                'icon' => 'icon-music',
-                'stations' => array(),
-            ),
-            'video'    => array(
-                'name' => 'Video Streams',
-                'icon' => 'icon-facetime-video',
-                'stations' => array(),
-            ),
-            'internal' => array(
-                'name' => 'Internal Tracking Station',
-                'icon' => 'icon-cog',
-                'stations' => array(),
-            ),
-        );
-    }
-
-    public static function getStationsInCategories()
-    {
-        $stations = self::fetchArray();
-
-        $categories = self::getCategories();
-        foreach($stations as $station)
-            $categories[$station['category']]['stations'][] = $station;
-
-        return $categories;
-    }
-
-    public static function getCategorySelect()
-    {
-        $cats_raw = self::getCategories();
-        $cats = array();
-
-        foreach($cats_raw as $cat_key => $cat_info)
-            $cats[$cat_key] = $cat_info['name'];
-
-        return $cats;
-    }
-
-    public static function getAffiliationSelect()
-    {
-        return array(
-            'partner'       => 'PVL Partner Station',
-            'syndicated'    => 'Syndicated Station',
-        );
-    }
-
     // Retrieve the API version of the object/array.
     public static function api($row)
     {
@@ -465,16 +300,9 @@ class Station extends \App\Doctrine\Entity
             'id'        => (int)$row['id'],
             'name'      => $row['name'],
             'shortcode' => self::getStationShortName($row['name']),
-            'genre'     => $row['genre'],
-            'category'  => $row['category'],
-            'affiliation' => $row['affiliation'],
-            'image_url' => \App\Url::upload($row['image_url']),
-            'web_url'   => $row['web_url'],
-            'twitter_url' => $row['twitter_url'],
-            'irc'       => $row['irc'],
-            'sort_order' => (int)$row['weight'],
         );
 
+        /*
         if (isset($row['streams']))
         {
             $api['streams'] = array();
@@ -491,13 +319,9 @@ class Station extends \App\Doctrine\Entity
                 }
             }
         }
+        */
 
-        $api['player_url'] = ShortUrl::stationUrl($api['shortcode']);
-
-        if ($row['requests_enabled'])
-            $api['request_url'] = \App\Url::route(array('module' => 'default', 'controller' => 'station', 'action' => 'request', 'id' => $row['id']));
-        else
-            $api['request_url'] = '';
+        // $api['player_url'] = ShortUrl::stationUrl($api['shortcode']);
 
         return $api;
     }

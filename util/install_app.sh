@@ -57,7 +57,7 @@ echo "Customizing MySQL..."
 cat $www_base/util/vagrant_mycnf >> /etc/mysql/my.cnf
 
 echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;" | mysql -u root -ppassword
-echo "CREATE DATABASE pvl CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root -ppassword
+echo "CREATE DATABASE azuracast CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" | mysql -u root -ppassword
 service mysql restart
 
 # Preconfigure databases

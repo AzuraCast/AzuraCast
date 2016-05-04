@@ -10,7 +10,7 @@ add-apt-repository 'deb http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.0/u
 apt-get update
 
 # Install app dependencies
-apt-get -q -y install mariadb-server php5-fpm php5-cli php5-gd php5-mysqlnd php5-curl php5-phalcon
+apt-get -q -y install nginx mariadb-server php5-fpm php5-cli php5-gd php5-mysqlnd php5-curl php5-phalcon
 apt-get -q -y install nodejs npm
 
 # Set up InfluxDB early (to allow time to initialize before setting up DBs.)

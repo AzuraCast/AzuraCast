@@ -272,7 +272,7 @@ $di->setShared('user', function() use ($di) {
     if ($auth->isLoggedIn())
         return $auth->getLoggedInUser();
     else
-        return new \App\Auth\AnonymousUser();
+        return NULL;
 });
 
 // Initialize cache.

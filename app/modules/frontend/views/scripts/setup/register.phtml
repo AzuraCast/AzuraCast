@@ -8,21 +8,23 @@ $page_class = 'login-content';
     <h3 class="text-left">Welcome to <?=$this->config->application->name ?>!</h3>
     <P class="text-left">Begin setup by creating a Super Administrator account.</p>
 
-    <div class="input-group m-b-20">
-        <span class="input-group-addon"><i class="fa fa-user"></i></span>
-        <div class="fg-line">
-            <input type="text" name="username" class="form-control" placeholder="E-mail Address">
+    <form action="" method="post">
+        <div class="input-group m-b-20">
+            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+            <div class="fg-line">
+                <input type="email" name="email" class="form-control" placeholder="E-mail Address">
+            </div>
         </div>
-    </div>
 
-    <div class="input-group m-b-20">
-        <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-        <div class="fg-line">
-            <input type="password" name="password" class="form-control" placeholder="Password">
+        <div class="input-group m-b-20">
+            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+            <div class="fg-line">
+                <input type="password" name="password" class="form-control" placeholder="Password">
+            </div>
         </div>
-    </div>
 
-    <div class="clearfix"></div>
+        <div class="clearfix"></div>
 
-    <a href="" class="btn btn-login btn-primary btn-float"><i class="zmdi zmdi-arrow-forward"></i></a>
+        <button type="submit" class="btn btn-login btn-primary btn-float"><i class="zmdi zmdi-arrow-forward"></i></button>
+    </form>
 </div>

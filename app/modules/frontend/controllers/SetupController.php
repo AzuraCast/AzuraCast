@@ -2,7 +2,6 @@
 namespace Modules\Frontend\Controllers;
 
 use Entity\Settings;
-use Entity\User;
 
 class SetupController extends BaseController
 {
@@ -14,21 +13,13 @@ class SetupController extends BaseController
         return NULL;
     }
     
-    public function indexAction()
-    {
-        // Check for user accounts.
-        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')
-            ->getSingleScalarResult();
-
-        if ($num_users == 0)
-            return $this->redirectFromHere(['action' => 'register']);
-
-        // New station setup form.
-
-    }
-
+    /**
+     * Setup Step 1:
+     * Create Super Administrator Account
+     */
     public function registerAction()
     {
+        // Check for user accounts.
         $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')
             ->getSingleScalarResult();
 
@@ -44,30 +35,53 @@ class SetupController extends BaseController
         {
             $data = $form->getValues();
 
-            $existing_user = User::getRepository()->findOneBy(array('email' => $data['email']));
+            // Create actions and roles supporting Super Admninistrator.
+            $action = new \Entity\Action;
+            $action->name = 'administer all';
+            $this->em->persist($action);
 
-            if ($existing_user instanceof User)
-            {
-                $this->alert('A user with that e-mail address already exists!', 'red');
-            }
-            else
-            {
-                $new_user = new User;
-                $new_user->fromArray($data);
-                $new_user->save();
+            $role = new \Entity\Role;
+            $role->name = 'Super Administrator';
+            $role->actions->add($action);
+            $this->em->persist($role);
 
-                $login_credentials = array(
-                    'username'  => $data['email'],
-                    'password'  => $data['auth_password'],
-                );
-                $login_success = $this->auth->authenticate($login_credentials);
+            // Create user account.
+            $user = new \Entity\User;
+            $user->email = $data['email'];
+            $user->setAuthPassword($data['password']);
+            $user->roles->add($role);
+            $this->em->persist($user);
 
-                $this->alert('<b>Your account has been successfully created.</b><br>You have been automatically logged in to your new account.', 'green');
+            // Write to DB.
+            $this->em->flush();
 
-                $default_url = \App\Url::route(array('module' => 'default'));
-                $this->redirectToStoredReferrer('login', $default_url);
-                return;
-            }
+            $login_credentials = array(
+                'username'  => $data['email'],
+                'password'  => $data['auth_password'],
+            );
+            $login_success = $this->auth->authenticate($login_credentials);
+
+            return $this->redirectFromHere(['action' => 'index']);
         }
+    }
+
+    /**
+     * Setup Step 2:
+     * Create Station and Parse Metadata
+     */
+    public function indexAction()
+    {
+        // Check for user accounts.
+        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')
+            ->getSingleScalarResult();
+
+        if ($num_users == 0)
+            return $this->redirectFromHere(['action' => 'register']);
+
+        // New station setup form.
+        $this->flash('<b>Test!</b><br>Test');
+        $this->flash('<b>Test!</b><br>This is a longer message. Success message. Thingy success. Yay.', 'green');
+        $this->flash('<b>Test!</b><br>An error has occurred! This is an error message!', 'red');
+
     }
 }

@@ -31,15 +31,19 @@ header("Content-type: text/html; charset=utf-8");
     $this->assets->outputCss('header_css');
 
     // Set up JS includes.
-    $this->assets->collection('footer_js')
+    $this->assets->collection('header_js')
         ->addJs('vendors/bower_components/jquery/dist/jquery.min.js')
-        ->addJs('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js')
+        ->addJs('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js');
+
+    $this->assets->outputJs('header_js');
+
+    $this->assets->collection('footer_js')
         ->addJs('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js')
         ->addJs('vendors/bower_components/Waves/dist/waves.min.js')
         ->addJs('vendors/bootstrap-growl/bootstrap-growl.min.js')
         ->addJs('vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js')
         ->addJs('js/functions.js')
-        ->addJs('js/demo.js');
+        ->addJs('js/app.js');
     ?>
     <script>
         var APP_AppEnv = '<?=(defined('APP_APPLICATION_ENV') ? APP_APPLICATION_ENV : '') ?>';
@@ -59,7 +63,7 @@ header("Content-type: text/html; charset=utf-8");
         </li>
 
         <li class="logo hidden-xs">
-            <a href="<?=$this->url->get('') ?>"><?=$this->config->application->name ?></a>
+            <a href="<?=$this->url->get('') ?>"><strong><?=$this->config->application->name ?></strong> alpha</a>
         </li>
 
         <li class="pull-right">
@@ -1127,21 +1131,13 @@ header("Content-type: text/html; charset=utf-8");
 
 <footer id="footer">
     Copyright &copy; <?=date('Y') ?> <?=$this->config->application->name ?>.
-
-    <ul class="f-menu">
-        <li><a href="">Home</a></li>
-        <li><a href="">Dashboard</a></li>
-        <li><a href="">Reports</a></li>
-        <li><a href="">Support</a></li>
-        <li><a href="">Contact</a></li>
-    </ul>
 </footer>
 
 <!-- Page Loader -->
 <div class="page-loader">
     <div class="preloader pls-blue">
         <svg class="pl-circular" viewBox="25 25 50 50">
-            <circle class="plc-path" cx="50" cy="50" r="20" />
+            <circle class="plc-path" cx="50" cy="50" r="20"></circle>
         </svg>
 
         <p>Please wait...</p>
@@ -1149,7 +1145,17 @@ header("Content-type: text/html; charset=utf-8");
 </div>
 
 <?
-echo $this->assets->outputJs('footer_js');
+$this->assets->outputJs('footer_js');
 ?>
+
+<? if ($this->flash->hasMessages()): ?>
+    <script type="text/javascript">
+        $(function() {
+            <? foreach($this->flash->getMessages() as $message): ?>
+            notify('<?=$this->escaper->escapeJs($message['text']) ?>', '<?=$message['color'] ?>');
+            <? endforeach; ?>
+        });
+    </script>
+<? endif; ?>
 </body>
 </html>

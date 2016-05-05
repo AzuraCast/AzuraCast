@@ -1,13 +1,4 @@
 <?php
-/**
- * Register Form
- */
-
-$di = \Phalcon\Di::getDefault();
-$config = $di->get('config');
-
-$general_config = $config->general->toArray();
-
 return array(
     'method' => 'post',
     'groups' => array(
@@ -15,11 +6,6 @@ return array(
         'account' => array(
             'legend' => 'Account Information',
             'elements' => array(
-
-                'name' => array('text', array(
-                    'label' => 'Your Name',
-                    'required' => true,
-                )),
                 
                 'email' => array('text', array(
                     'label' => 'E-mail Address',
@@ -28,7 +14,7 @@ return array(
                     'validators' => array('EmailAddress'),
                 )),
         
-                'auth_password' => array('password', array(
+                'password' => array('password', array(
                     'label' => 'Password',
                     'required' => true,
                 )),
@@ -40,7 +26,7 @@ return array(
             'elements' => array(
                 'submit'        => array('submit', array(
                     'type'  => 'submit',
-                    'label' => 'Create Account and Log In',
+                    'label' => 'Create Account',
                     'helper' => 'formButton',
                     'class' => 'ui-button',
                 )),

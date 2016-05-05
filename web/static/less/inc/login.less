@@ -119,10 +119,26 @@
 
 body.login-content {
     text-align: center;
+
+    background: #FFFFFF url('../img/hexbg.png') center center;
+    background-size: cover;
+
+    &:after {
+        content: "";
+        vertical-align: middle;
+        display: inline-block;
+        width: 1px;
+        height: 100%;
+    }
+}
+
+/*
+body.login-content {
+    text-align: center;
     
     &:after {
         content: "";
-        vertical-align: middle; 
+        vertical-align: middle;
         display: inline-block;
         width: 1px;
         height: 100%;
@@ -139,3 +155,4 @@ body.login-content {
         z-index: 0;
     }
 }
+*/

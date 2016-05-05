@@ -6,7 +6,12 @@ module.exports = function(grunt) {
         less: {
             development: {
                 options: {
-                    paths: ["/var/azuracast/www/web/static/css"]
+                    paths: ["/var/azuracast/www/web/static/css"],
+                    compress: true,
+                    sourceMap: true,
+                    sourceMapURL: '/static/css/app.css.map',
+                    sourceMapBasepath: '/var/azuracast/www/web',
+                    sourceMapRootpath: '/'
                 },
                 files: {
                     "/var/azuracast/www/web/static/css/app.css": "/var/azuracast/www/web/static/less/app.less",
@@ -27,7 +32,7 @@ module.exports = function(grunt) {
         watch: {
             //styles: {
                 files: ['/var/azuracast/www/web/static/less/**/*.less'], // which files to watch
-                tasks: ['less', 'csssplit'],
+                tasks: ['less'],
                 options: {
                     nospawn: true,
                     livereload: 8122,

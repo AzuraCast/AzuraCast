@@ -31,7 +31,7 @@ class MultiCheckbox extends \Phalcon\Forms\Element implements \Phalcon\Forms\Ele
                 $field_options['checked'] = 'checked';
 
             $checkbox_code = \Phalcon\Tag::checkField($field_options);
-            $checkboxes[] = '<label>'.$checkbox_code.' <span>'.$check_val.'</span></label>';
+            $checkboxes[] = '<label>'.$checkbox_code.' '.$check_val.'</label>';
         }
 
         return $checkboxes;

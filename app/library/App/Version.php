@@ -1,4 +1,3 @@
-
 <?php
 /**
  * App Core Framework Version

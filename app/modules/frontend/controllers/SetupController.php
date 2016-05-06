@@ -12,6 +12,25 @@ class SetupController extends BaseController
 
         return NULL;
     }
+
+    /**
+     * Setup Routing Controls
+     */
+    public function indexAction()
+    {
+        // Step 1: Register
+        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
+        if ($num_users == 0)
+            return $this->redirectFromHere(['action' => 'register']);
+
+        // Step 2: Set up Station
+        $num_stations = $this->em->createQuery('SELECT COUNT(s.id) FROM Entity\Station s')->getSingleScalarResult();
+        if ($num_stations == 0)
+            return $this->redirectFromHere(['action' => 'station']);
+
+        // Step 3: System Settings
+        return $this->redirectFromHere(['action' => 'settings']);
+    }
     
     /**
      * Setup Step 1:
@@ -20,9 +39,7 @@ class SetupController extends BaseController
     public function registerAction()
     {
         // Check for user accounts.
-        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')
-            ->getSingleScalarResult();
-
+        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
         if ($num_users != 0)
             return $this->redirectFromHere(['action' => 'index']);
 
@@ -69,19 +86,41 @@ class SetupController extends BaseController
      * Setup Step 2:
      * Create Station and Parse Metadata
      */
-    public function indexAction()
+    public function stationAction()
     {
-        // Check for user accounts.
-        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')
-            ->getSingleScalarResult();
+        $form_config = $this->module_config['admin']->forms->station->toArray();
+        unset($form_config['groups']['admin']);
 
-        if ($num_users == 0)
-            return $this->redirectFromHere(['action' => 'register']);
+        $form = new \App\Form($form_config);
 
-        // New station setup form.
-        $this->flash('<b>Test!</b><br>Test');
-        $this->flash('<b>Test!</b><br>This is a longer message. Success message. Thingy success. Yay.', 'green');
-        $this->flash('<b>Test!</b><br>An error has occurred! This is an error message!', 'red');
+        if (!empty($_POST) && $form->isValid($_POST))
+        {
+            $data = $form->getValues();
+
+            $station = new \Entity\Station;
+            $station->fromArray($data);
+
+            // Create path for station.
+            $station_base_dir = realpath(APP_INCLUDE_ROOT.'/..').'/stations';
+            @mkdir($station_base_dir);
+
+            $station_dir = $station_base_dir.'/'.$station->getShortName();
+            $station->radio_base_dir = $station_dir;
+
+            // Load configuration from adapter to pull source and admin PWs.
+            $frontend_adapter = $station->getFrontendAdapter();
+            $frontend_adapter->read();
+        }
+
+        $this->view->form = $form;
+    }
+
+    /**
+     * Setup Step 3:
+     * Set site settings.
+     */
+    public function settingsAction()
+    {
 
     }
 }

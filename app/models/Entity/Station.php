@@ -45,27 +45,61 @@ class Station extends \App\Doctrine\Entity
         return self::getStationShortName($this->name);
     }
 
+    /** @Column(name="frontend_type", type="string", length=100, nullable=true) */
+    protected $frontend_type;
+
+    /**
+     * @return \App\RadioFrontend\AdapterAbstract
+     */
+    public function getFrontendAdapter()
+    {
+        $adapters = self::getFrontendAdapters();
+
+        if (!isset($adapters['adapters'][$this->frontend_type]))
+            throw new \Exception('Adapter not found: '.$this->frontend_type);
+
+        $class_name = $adapters['adapters'][$this->frontend_type]['class'];
+        return new $class_name($this);
+    }
+
+    /** @Column(name="backend_type", type="string", length=100, nullable=true) */
+    protected $backend_type;
+
+    /**
+     * @return \App\RadioBackend\AdapterAbstract
+     */
+    public function getBackendAdapter()
+    {
+        $adapters = self::getBackendAdapters();
+
+        if (!isset($adapters['adapters'][$this->backend_type]))
+            throw new \Exception('Adapter not found: '.$this->backend_type);
+
+        $class_name = $adapters['adapters'][$this->backend_type]['class'];
+        return new $class_name($this);
+    }
+
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
 
-    public function setImageUrl($new_url)
-    {
-        $this->_processAndCropImage('image_url', $new_url, 150, 150);
-    }
-
-    /** @Column(name="banner_url", type="string", length=100, nullable=true) */
-    protected $banner_url;
-
-    public function setBannerUrl($new_url)
-    {
-        $this->_processAndCropImage('banner_url', $new_url, 600, 300);
-    }
+    /*
+     * Administrative Data
+     */
 
     /** @Column(name="nowplaying_data", type="json", nullable=true) */
     protected $nowplaying_data;
 
-    /** @Column(name="requests_enabled", type="boolean") */
-    protected $requests_enabled;
+    /** @Column(name="radio_port", type="smallint", nullable=true) */
+    protected $radio_port;
+
+    /** @Column(name="radio_source_pw", type="string", length=100, nullable=true) */
+    protected $radio_source_pw;
+
+    /** @Column(name="radio_admin_pw", type="string", length=100, nullable=true) */
+    protected $radio_admin_pw;
+
+    /** @Column(name="radio_base_dir", type="string", length=255, nullable=true) */
+    protected $radio_base_dir;
 
     /**
      * @OneToMany(targetEntity="SongHistory", mappedBy="station")
@@ -124,67 +158,6 @@ class Station extends \App\Doctrine\Entity
         return ($this->managers->contains($user));
     }
 
-    public function isPlaying()
-    {
-        $stream = $this->getDefaultStream();
-        return $stream->isPlaying();
-    }
-
-    public function setDefaultStream($sid)
-    {
-        if ($sid instanceof StationStream)
-            $sid = $sid->id;
-
-        $em = self::getEntityManager();
-
-        foreach($this->streams as $stream)
-        {
-            if ($stream->id == $sid)
-                $stream->is_default = true;
-            else
-                $stream->is_default = false;
-
-            $em->persist($stream);
-        }
-
-        $em->flush();
-
-        // Ensure at least one stream is "default" for the station.
-        $this->checkDefaultStream();
-    }
-
-    public function getDefaultStream()
-    {
-        foreach($this->streams as $stream)
-        {
-            if ($stream->is_default)
-                return $stream;
-        }
-
-        return NULL;
-    }
-
-    public function checkDefaultStream()
-    {
-        if (count($this->streams) == 0)
-            return false;
-
-        $has_default = false;
-
-        foreach($this->streams as $stream)
-        {
-            if ($stream->is_default)
-                $has_default = true;
-        }
-
-        if (!$has_default)
-        {
-            $stream = $this->streams->first();
-            $stream->is_default = true;
-            $stream->save();
-        }
-    }
-
     /**
      * Static Functions
      */
@@ -210,33 +183,13 @@ class Station extends \App\Doctrine\Entity
 
     public static function fetchArray($cached = true)
     {
-        $stations = \App\Cache::get('stations');
+        $em = self::getEntityManager();
+        $stations = $em->createQuery('SELECT s FROM '.__CLASS__.' s ORDER BY s.name ASC')
+            ->getArrayResult();
 
-        if (!$stations || !$cached)
+        foreach($stations as &$station)
         {
-            $em = self::getEntityManager();
-            $stations = $em->createQuery('SELECT s, ss FROM '.__CLASS__.' s
-                LEFT JOIN s.streams ss
-                WHERE s.is_active = 1 AND s.category IN (:types)
-                ORDER BY s.category ASC, s.weight ASC')
-                ->setParameter('types', array('audio', 'video'))
-                ->getArrayResult();
-
-            foreach($stations as &$station)
-            {
-                $station['short_name'] = self::getStationShortName($station['name']);
-
-                foreach((array)$station['streams'] as $stream)
-                {
-                    if ($stream['is_default'])
-                    {
-                        $station['default_stream_id'] = $stream['id'];
-                        $station['stream_url'] = $stream['stream_url'];
-                    }
-                }
-            }
-
-            \App\Cache::save($stations, 'stations', array(), 60);
+            $station['short_name'] = self::getStationShortName($station['name']);
         }
 
         return $stations;
@@ -324,5 +277,41 @@ class Station extends \App\Doctrine\Entity
         // $api['player_url'] = ShortUrl::stationUrl($api['shortcode']);
 
         return $api;
+    }
+
+    public static function getFrontendAdapters()
+    {
+        return array(
+            'default' => 'icecast',
+            'adapters' => array(
+                'icecast' => array(
+                    'name'      => 'IceCast v2.4 or Above',
+                    'class'     => '\App\RadioFrontend\IceCast',
+                ),
+                /*
+                'shoutcast1' => array(
+                    'name'      => 'ShoutCast 1',
+                    'class'     => '\App\RadioFrontend\ShoutCast1',
+                ),
+                'shoutcast2' => array(
+                    'name'      => 'ShoutCast 2',
+                    'class'     => '\App\RadioFrontend\ShoutCast2',
+                ),
+                */
+            ),
+        );
+    }
+
+    public static function getBackendAdapters()
+    {
+        return array(
+            'default' => 'liquidsoap',
+            'adapters' => array(
+                'liquidsoap' => array(
+                    'name'      => 'LiquidSoap',
+                    'class'     => '\App\RadioBackend\LiquidSoap',
+                ),
+            ),
+        );
     }
 }

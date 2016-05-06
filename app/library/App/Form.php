@@ -400,7 +400,7 @@ class Form extends \Phalcon\Forms\Form
             'method'        => 'POST',
             'action'        => '',
             'id'            => 'fa-form-'.substr(md5(mt_rand()), 0, 5),
-            'class'         => 'form-stacked fa-form-engine fa-form',
+            'class'         => 'fa-form-engine fa-form',
         );
 
         $form_options = (array)$this->options;
@@ -454,7 +454,7 @@ class Form extends \Phalcon\Forms\Form
 
         $element = $this->get($name);
 
-        $wrapper_class = 'clearfix control-group';
+        $wrapper_class = 'form-group';
         if (isset($field_options['layout']))
             $wrapper_class .= ' '.implode(' ', (array)$field_options['layout']);
 
@@ -482,7 +482,7 @@ class Form extends \Phalcon\Forms\Form
         }
 
         if (!empty($field_options['description']))
-            $return .= '<span class="help-block">'.$field_options['description'].'</span>';
+            $return .= '<small class="help-block">'.$field_options['description'].'</small>';
 
         // Get any generated messages for the current element
         $messages = array();
@@ -497,7 +497,7 @@ class Form extends \Phalcon\Forms\Form
 
         if (!empty($messages)) {
             foreach ($messages as $message) {
-                $return .= '<span class="help-block form-error">'.$message.'</span>';
+                $return .= '<small class="help-block form-error">'.$message.'</small>';
             }
         }
 
@@ -509,22 +509,22 @@ class Form extends \Phalcon\Forms\Form
 
             case 'checkboxes':
             case 'multicheckbox':
-                $return .= '<ul class="inputs-list">';
+                $return .= '<div class="checkbox-group">';
 
                 $checkboxes = $element->getCheckboxes();
                 $list_items = array();
 
                 foreach($checkboxes as $checkbox)
                 {
-                    $list_items[] = '<li>'.$checkbox.'</li>';
+                    $list_items[] = '<div class="checkbox">'.$checkbox.'</div>';
                 }
 
                 $return .= implode('', $list_items);
-                $return .= '</ul>';
+                $return .= '</div>';
             break;
 
             case 'radio':
-                $return .= '<ul class="inputs-list">';
+                $return .= '<div class="radio-group">';
 
                 $list_items = array();
                 $default = $element->getDefault();
@@ -535,11 +535,11 @@ class Form extends \Phalcon\Forms\Form
                     if (is_array($default) && in_array($option_value, $default))
                         $element->setDefault($option_value);
 
-                    $list_items[] = '<li><label>' . parent::render($name, array('value' => $option_value)) . ' <span>' . $option_label . '</span></label></li>';
+                    $list_items[] = '<div class="radio"><label>' . parent::render($name, array('value' => $option_value)) . $option_label . '</label></div>';
                 }
 
                 $return .= implode('', $list_items);
-                $return .= '</ul>';
+                $return .= '</div>';
             break;
 
             case 'hidden':

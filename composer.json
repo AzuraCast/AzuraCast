@@ -2,10 +2,11 @@
   "name": "bravelyblue/pvlive",
   "description": "The Ponyville Live! primary application.",
   "require": {
-    "zendframework/zend-paginator": "~2.4",
-    "zendframework/zend-feed": "~2.4",
-    "zendframework/zend-http": "~2.4",
-    "zendframework/zend-servicemanager": "~2.4",
+    "zendframework/zend-paginator": "~2.5",
+    "zendframework/zend-feed": "~2.5",
+    "zendframework/zend-http": "~2.5",
+    "zendframework/zend-servicemanager": "~2.5",
+    "zendframework/zend-config": "~2.5",
 
     "guzzlehttp/guzzle": "~5.0",
     "doctrine/orm": "2.4.*",

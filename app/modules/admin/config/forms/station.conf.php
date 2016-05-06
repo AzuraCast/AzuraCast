@@ -1,4 +1,16 @@
 <?php
+$frontends = \Entity\Station::getFrontendAdapters();
+$frontend_types = array();
+foreach($frontends['adapters'] as $adapter_nickname => $adapter_info)
+    $frontend_types[$adapter_nickname] = $adapter_info['name'];
+$frontend_default = $frontends['default'];
+
+$backends = \Entity\Station::getBackendAdapters();
+$backend_types = array();
+foreach($backends['adapters'] as $adapter_nickname => $adapter_info)
+    $backend_types[$adapter_nickname] = $adapter_info['name'];
+$backend_default = $backends['default'];
+
 return array(   
     'method'        => 'post',
     'enctype'       => 'multipart/form-data',
@@ -6,7 +18,7 @@ return array(
     'groups' => array(
 
         'profile' => array(
-            'legend' => 'Profile Information',
+            'legend' => 'Station Details',
             'elements' => array(
 
                 'name' => array('text', array(
@@ -15,79 +27,23 @@ return array(
                     'required' => true,
                 )),
 
-                'genre' => array('text', array(
-                    'label' => 'Station Genre',
-                    'description' => 'Listed underneath the station in the player.',
-                )),
-
                 'description' => array('textarea', array(
                     'label' => 'Station Description',
                     'class' => 'full-width full-height',
                 )),
-
-                'country' => array('select', array(
-                    'label' => 'Country of Broadcast',
-                    'multiOptions' => \App\Internationalization::getCountryLookup(),
-                    'default' => '',
+                
+                'frontend_type' => array('radio', array(
+                    'label' => 'Station Frontend Type',
+                    'description' => 'The type of software you use to deliver your broadcast to the audience.',
+                    'options' => $frontend_types,
+                    'default' => $frontend_default,
                 )),
 
-                'image_url' => array('image', array(
-                    'label' => 'Upload New Station Avatar (150x150 PNG)',
-                    'description' => 'To replace the existing icon associated with this station, upload a new one using the file browser below. Icons should be 150x150px in dimension.',
-                )),
-
-                'banner_url' => array('image', array(
-                    'label' => 'Upload New Promotional Banner (600x300 PNG)',
-                    'description' => 'This image will be shown in the header rotator when events are promoted. Images should be 600x300.',
-                )),
-
-            ),
-        ),
-
-        'contact' => array(
-            'legend' => 'Contact Information',
-            'elements' => array(
-
-                'web_url' => array('text', array(
-                    'label' => 'Web URL',
-                    'description' => 'Include full address (with http://).',
-                    'class' => 'half-width',
-                )),
-
-                'contact_email' => array('text', array(
-                    'label' => 'Contact E-mail Address',
-                    'description' => 'Include to show an e-mail link for the station on the "Contact Us" page.',
-                    'validators' => array('EmailAddress'),
-                    'class' => 'half-width',
-                )),
-
-                'twitter_url' => array('text', array(
-                    'label' => 'Twitter URL',
-                    'description' => 'Include full address of the station\'s Twitter account (with http://).',
-                    'class' => 'half-width',
-                )),
-
-                'facebook_url' => array('text', array(
-                    'label' => 'Facebook URL',
-                    'description' => 'Optional: This will be included in the "Contact Us" page if provided.',
-                    'class' => 'half-width',
-                )),
-
-                'tumblr_url' => array('text', array(
-                    'label' => 'Tumblr URL',
-                    'description' => 'Optional: This will be included in the "Contact Us" page if provided.',
-                    'class' => 'half-width',
-                )),
-
-                'gcal_url' => array('text', array(
-                    'label' => 'Google Calendar XML Feed URL',
-                    'description' => 'This URL can be retrieved by visiting Google Calendar, hovering over the station\'s calendar on the left sidebar, clicking the dropdown menu, then "Calendar Settings". From the settings page, click the "XML" link inside the Calendar Address area. Include full address of the feed (ending in /basic or /full) (with http://).',
-                    'class' => 'half-width',
-                )),
-
-                'irc' => array('text', array(
-                    'label' => 'IRC Channel Name',
-                    'description' => 'Include hash tag: #channelname',
+                'backend_type' => array('radio', array(
+                    'label' => 'Station Backend Type',
+                    'description' => 'The type of software you use to manage the station\'s playlists and media.',
+                    'options' => $backend_types,
+                    'default' => $backend_default,
                 )),
 
             ),
@@ -97,64 +53,20 @@ return array(
             'legend' => 'Administrator Settings',
             'elements' => array(
 
-                'category' => array('radio', array(
-                    'label' => 'Station Category',
-                    'multiOptions' => \Entity\Station::getCategorySelect(),
-                    'required' => true,
+                'radio_port' => array('text', array(
+                    'label' => 'Radio Frontend Broadcast Port',
                 )),
 
-                'affiliation' => array('radio', array(
-                    'label' => 'PVL Affiliation Level',
-                    'multiOptions' => \Entity\Station::getAffiliationSelect(),
+                'radio_source_pw' => array('text', array(
+                    'label' => 'Radio Source Password',
                 )),
 
-                'is_active' => array('radio', array(
-                    'label' => 'Is Active',
-                    'description' => 'Is visible in the PVL network player interface.',
-                    'multiOptions' => array(
-                        1 => 'Yes',
-                        0 => 'No',
-                    ),
-                    'default' => 1,
+                'radio_admin_pw' => array('text', array(
+                    'label' => 'Radio Administrator Password',
                 )),
 
-                'weight' => array('text', array(
-                    'label' => 'Sort Order',
-                    'description' => 'Lower numbers appear higher on the list of stations.',
-                )),
-
-                'requests_enabled' => array('radio', array(
-                    'label' => 'Enable Request System',
-                    'description' => 'Enable the "Submit Request" button under this station.',
-                    'multiOptions' => array(
-                        1 => 'Yes',
-                        0 => 'No',
-                    ),
-                    'default' => 0,
-                )),
-
-                'requests_ccast_username' => array('text', array(
-                    'label' => 'Request System CentovaCast Account Name',
-                    'description' => 'Account username in the CentovaCast system, if requests are enabled.',
-                    'class' => 'half-width',
-                )),
-
-                'requests_external_url' => array('text', array(
-                    'label' => 'External URL for Third-Party Request System',
-                    'description' => 'If the station is using a non-CentovaCast request system, enter the URL for it below.',
-                    'class' => 'half-width',
-                )),
-
-                'admin_notes' => array('textarea', array(
-                    'label' => 'Administration Notes',
-                    'description' => 'These notes are only visible by network administration.',
-                    'class' => 'full-width half-height',
-                )),
-
-                'station_notes' => array('textarea', array(
-                    'label' => 'Station Notes',
-                    'description' => 'These notes are visible/editable by station owners.',
-                    'class' => 'full-width half-height',
+                'radio_base_dir' => array('text', array(
+                    'label' => 'Radio Base Path',
                 )),
 
             ),
@@ -165,8 +77,7 @@ return array(
                 'submit'        => array('submit', array(
                     'type'  => 'submit',
                     'label' => 'Save Changes',
-                    'helper' => 'formButton',
-                    'class' => 'ui-button',
+                    'class' => 'btn btn-lg btn-primary',
                 )),
             ),
         ),

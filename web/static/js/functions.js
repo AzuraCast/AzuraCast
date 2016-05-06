@@ -17,40 +17,9 @@ $(window).load(function () {
 
         }
     }
-})
+});
 
 $(document).ready(function(){
-    /* --------------------------------------------------------
-        Layout
-    -----------------------------------------------------------*/
-    (function () {
-
-        //Get saved layout type from LocalStorage
-        var layoutStatus = localStorage.getItem('ma-layout-status');
-
-        if(!$('#header-2')[0]) {  //Make it work only on normal headers
-            if (layoutStatus == 1) {
-                $('body').addClass('sw-toggled');
-                $('#tw-switch').prop('checked', true);
-            }
-        }
-
-        $('body').on('change', '#toggle-width input:checkbox', function () {
-            if ($(this).is(':checked')) {
-                setTimeout(function () {
-                    $('body').addClass('toggled sw-toggled');
-                    localStorage.setItem('ma-layout-status', 1);
-                }, 250);
-            }
-            else {
-                setTimeout(function () {
-                    $('body').removeClass('toggled sw-toggled');
-                    localStorage.setItem('ma-layout-status', 0);
-                }, 250);
-            }
-        });
-    })();
-
     /* --------------------------------------------------------
         Scrollbar
     -----------------------------------------------------------*/
@@ -238,126 +207,6 @@ $(document).ready(function(){
 
     		}, $animationDuration);
     	    }
-    	});
-    }
-
-    /*
-     * Calendar Widget
-     */
-    if($('#calendar-widget')[0]) {
-        (function(){
-            $('#calendar-widget').fullCalendar({
-		        contentHeight: 'auto',
-		        theme: true,
-                header: {
-                    right: '',
-                    center: 'prev, title, next',
-                    left: ''
-                },
-                defaultDate: '2014-06-12',
-                editable: true,
-                events: [
-                    {
-                        title: 'All Day',
-                        start: '2014-06-01',
-                        className: 'bgm-cyan'
-                    },
-                    {
-                        title: 'Long Event',
-                        start: '2014-06-07',
-                        end: '2014-06-10',
-                        className: 'bgm-orange'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeat',
-                        start: '2014-06-09',
-                        className: 'bgm-lightgreen'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeat',
-                        start: '2014-06-16',
-                        className: 'bgm-lightblue'
-                    },
-                    {
-                        title: 'Meet',
-                        start: '2014-06-12',
-                        end: '2014-06-12',
-                        className: 'bgm-green'
-                    },
-                    {
-                        title: 'Lunch',
-                        start: '2014-06-12',
-                        className: 'bgm-cyan'
-                    },
-                    {
-                        title: 'Birthday',
-                        start: '2014-06-13',
-                        className: 'bgm-amber'
-                    },
-                    {
-                        title: 'Google',
-                        url: 'http://google.com/',
-                        start: '2014-06-28',
-                        className: 'bgm-amber'
-                    }
-                ]
-            });
-        })();
-    }
-
-    /*
-     * Weather Widget
-     */
-    if ($('#weather-widget')[0]) {
-        $.simpleWeather({
-            location: 'Austin, TX',
-            woeid: '',
-            unit: 'f',
-            success: function(weather) {
-                html = '<div class="weather-status">'+weather.temp+'&deg;'+weather.units.temp+'</div>';
-                html += '<ul class="weather-info"><li>'+weather.city+', '+weather.region+'</li>';
-                html += '<li class="currently">'+weather.currently+'</li></ul>';
-                html += '<div class="weather-icon wi-'+weather.code+'"></div>';
-                html += '<div class="dash-widget-footer"><div class="weather-list tomorrow">';
-                html += '<span class="weather-list-icon wi-'+weather.forecast[2].code+'"></span><span>'+weather.forecast[1].high+'/'+weather.forecast[1].low+'</span><span>'+weather.forecast[1].text+'</span>';
-                html += '</div>';
-                html += '<div class="weather-list after-tomorrow">';
-                html += '<span class="weather-list-icon wi-'+weather.forecast[2].code+'"></span><span>'+weather.forecast[2].high+'/'+weather.forecast[2].low+'</span><span>'+weather.forecast[2].text+'</span>';
-                html += '</div></div>';
-                $("#weather-widget").html(html);
-            },
-            error: function(error) {
-                $("#weather-widget").html('<p>'+error+'</p>');
-            }
-        });
-    }
-
-    /*
-     * Todo Add new item
-     */
-    if ($('#todo-lists')[0]) {
-    	//Add Todo Item
-    	$('body').on('click', '#add-tl-item .add-new-item', function(){
-    	    $(this).parent().addClass('toggled');
-    	});
-
-            //Dismiss
-            $('body').on('click', '.add-tl-actions > a', function(e){
-                e.preventDefault();
-                var x = $(this).closest('#add-tl-item');
-                var y = $(this).data('tl-action');
-
-                if (y == "dismiss") {
-                    x.find('textarea').val('');
-                    x.removeClass('toggled');
-                }
-
-                if (y == "save") {
-                    x.find('textarea').val('');
-                    x.removeClass('toggled');
-                }
     	});
     }
 
@@ -826,39 +675,6 @@ $(document).ready(function(){
     }
 
     /*
-     * Typeahead Auto Complete
-     */
-     if($('.typeahead')[0]) {
-
-          var statesArray = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-            'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-            'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-            'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-            'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-            'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-            'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
-            'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-            'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-          ];
-        var states = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace,
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            local: statesArray
-        });
-
-        $('.typeahead').typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 1
-        },
-        {
-          name: 'states',
-          source: states
-        });
-    }
-
-
-    /*
      * Wall
      */
     if ($('.wcc-toggle')[0]) {
@@ -884,16 +700,5 @@ $(document).ready(function(){
         });
 
     }
-
-    /*
-     * Skin Change
-     */
-    $('body').on('click', '[data-skin]', function() {
-        var currentSkin = $('[data-current-skin]').data('current-skin');
-        var skin = $(this).data('skin');
-
-        $('[data-current-skin]').attr('data-current-skin', skin)
-
-    });
 
 });

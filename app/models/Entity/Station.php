@@ -22,15 +22,6 @@ class Station extends \App\Doctrine\Entity
     }
 
     /**
-     * @PreRemove
-     */
-    public function deleting()
-    {
-        $this->_deleteFile('image_url');
-        $this->_deleteFile('banner_url');
-    }
-
-    /**
      * @Column(name="id", type="integer")
      * @Id
      * @GeneratedValue(strategy="IDENTITY")
@@ -100,6 +91,17 @@ class Station extends \App\Doctrine\Entity
 
     /** @Column(name="radio_base_dir", type="string", length=255, nullable=true) */
     protected $radio_base_dir;
+
+    public function setRadioBaseDir($new_dir)
+    {
+        if ($new_dir != $this->radio_base_dir)
+        {
+            @mkdir($this->radio_base_dir.'/playlists');
+            @mkdir($this->radio_base_dir.'/media');
+
+            $this->radio_base_dir;
+        }
+    }
 
     /**
      * @OneToMany(targetEntity="SongHistory", mappedBy="station")

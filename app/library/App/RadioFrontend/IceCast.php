@@ -71,7 +71,13 @@ class IceCast extends AdapterAbstract
 
     public function read()
     {
-        $this->_getConfig();
+        $config = $this->_getConfig();
+
+        $this->station->radio_port = $config['listen_socket']['port'];
+        $this->station->radio_source_pw = $config['authentication']['source-password'];
+        $this->station->radio_admin_pw = $config['authentication']['admin-password'];
+
+        return true;
     }
 
     public function write()
@@ -81,7 +87,7 @@ class IceCast extends AdapterAbstract
 
     public function restart()
     {
-        return exec('service icecast2 restart');
+        return exec('sudo service icecast2 restart');
     }
 
     protected function _getConfig()
@@ -90,8 +96,6 @@ class IceCast extends AdapterAbstract
 
         $reader = new \Zend\Config\Reader\Xml();
         $data = $reader->fromFile($config_path);
-
-        \App\Utilities::print_r($data);
-        exit;
+        return $data;
     }
 }

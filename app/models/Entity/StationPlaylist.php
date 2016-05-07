@@ -33,6 +33,11 @@ class StationPlaylist extends \App\Doctrine\Entity
     /** @Column(name="name", type="string", length=200) */
     protected $name;
 
+    public function getShortName()
+    {
+        return Station::getStationShortName($this->name);
+    }
+
     /** @Column(name="weight", type="smallint") */
     protected $weight;
 

@@ -1,4 +1,4 @@
-user root;
+user vagrant;
 worker_processes 4;
 pid /run/nginx.pid;
 

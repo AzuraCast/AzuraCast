@@ -110,6 +110,16 @@ class SetupController extends BaseController
             // Load configuration from adapter to pull source and admin PWs.
             $frontend_adapter = $station->getFrontendAdapter();
             $frontend_adapter->read();
+
+            // Write an empty placeholder configuration.
+            $backend_adapter = $station->getBackendAdapter();
+            $backend_adapter->write();
+            $backend_adapter->restart();
+
+            // Save changes and continue to the last setup step.
+            $station->save();
+
+            return $this->redirectFromHere(['action' => 'settings']);
         }
 
         $this->view->form = $form;

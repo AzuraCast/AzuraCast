@@ -15,16 +15,14 @@ class BaseController extends \App\Phalcon\Controller
         parent::preDispatch();
 
         // Disable session creation.
-        \App\Session::disable();
+        $session = $this->di->get('session');
+        $session->disable();
 
         // Disable rendering.
         $this->doNotRender();
 
         // Allow AJAX retrieval.
-        $this->response->setHeader('Access-Control-Allow-Origin', '*');
-
-        // Fix the base URL prefixed with '//'.
-        \App\Url::forceSchemePrefix(true);
+        $this->response->setHeader('Access-Control-Allow-Origin', '*');;
 
         $this->_time_start = microtime(true);
 
@@ -48,9 +46,10 @@ class BaseController extends \App\Phalcon\Controller
 
         $params = array_merge((array)$this->dispatcher->getParams(), (array)$this->request->getQuery());
 
+        /*
         // Insert into Influx
         $influx = $this->di->get('influx');
-        $influx->setDatabase('pvlive_analytics');
+        $influx->setDatabase('analytics');
 
         $influx->insert('api_calls', [
             'value'         => 1,
@@ -63,6 +62,7 @@ class BaseController extends \App\Phalcon\Controller
             'is_ajax'       => ($this->isAjax() ? '1' : '0'),
             'requesttime'   => $request_time,
         ]);
+        */
     }
 
     /**

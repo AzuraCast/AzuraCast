@@ -27,7 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Disabled for Windows 10 + VirtualBox
   # config.vm.network "private_network", ip: "192.168.33.120"
   config.vm.network :forwarded_port, guest: 80, host: 8080
-  config.vm.network :forwarded_port, guest: 8000, host: 8000
+  config.vm.network :forwarded_port, guest: 8000, host: 8088
 
   config.vm.synced_folder ".", "/var/azuracast/www", create: true, user: "root", group: "www-data"
   config.vm.synced_folder ".", "/vagrant"

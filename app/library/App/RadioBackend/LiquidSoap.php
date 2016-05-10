@@ -25,15 +25,9 @@ class LiquidSoap extends AdapterAbstract
         $ls_config = array();
 
         // Clear out existing playlists directory.
-        $current_playlists = scandir($playlist_path);
-
+        $current_playlists = array_diff(scandir($playlist_path), array('..', '.'));
         foreach($current_playlists as $list)
-        {
-            if ($list == '.' && $list == '..')
-                continue;
-
             @unlink($playlist_path.'/'.$list);
-        }
 
         // Write new playlists.
         $playlist_weights = array();

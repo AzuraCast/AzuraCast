@@ -131,6 +131,6 @@ class SetupController extends BaseController
      */
     public function settingsAction()
     {
-
+        
     }
 }

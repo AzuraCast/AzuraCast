@@ -19,7 +19,7 @@ class IndexController extends BaseController
 
         // Statistics by day.
         $influx = $this->di->get('influx');
-        $influx->setDatabase('pvlive_stations');
+        $influx->setDatabase('stations');
 
         try
         {

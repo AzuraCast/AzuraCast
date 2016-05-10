@@ -1,28 +1,27 @@
 <?php
 use \App\Phalcon\Cli\Task;
-use \App\SyncManager;
+use \App\Sync\Manager;
 
 class SyncTask extends Task
 {
     public function nowplayingAction($segment = 1)
     {
         define('NOWPLAYING_SEGMENT', $segment);
-
-        SyncManager::syncNowplaying();
+        Manager::syncNowplaying();
     }
 
     public function shortAction($params = null)
     {
-        SyncManager::syncShort();
+        Manager::syncShort();
     }
 
     public function mediumAction($params = null)
     {
-        SyncManager::syncMedium();
+        Manager::syncMedium();
     }
 
     public function longAction($params = null)
     {
-        SyncManager::syncLong();
+        Manager::syncLong();
     }
 }

@@ -81,7 +81,7 @@ class SongHistory extends \App\Doctrine\Entity
      * Static Functions
      */
 
-    public static function register(Song $song, Station $station, StationStream $stream, $np)
+    public static function register(Song $song, Station $station, $np)
     {
         $em = self::getEntityManager();
 

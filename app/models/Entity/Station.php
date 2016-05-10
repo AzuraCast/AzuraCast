@@ -124,12 +124,11 @@ class Station extends \App\Doctrine\Entity
      */
     protected $playlists;
 
-    public function getRecentHistory(StationStream $stream, $num_entries = 5)
+    public function getRecentHistory($num_entries = 5)
     {
         $em = self::getEntityManager();
-        $history = $em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id AND sh.stream_id = :stream_id ORDER BY sh.id DESC')
+        $history = $em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id ORDER BY sh.id DESC')
             ->setParameter('station_id', $this->id)
-            ->setParameter('stream_id', $stream->id)
             ->setMaxResults($num_entries)
             ->getArrayResult();
 
@@ -148,12 +147,15 @@ class Station extends \App\Doctrine\Entity
 
     public function canManage(User $user = null)
     {
-        if ($user === null)
-            $user = \App\Auth::getLoggedInUser();
-
         $di = \Phalcon\Di::getDefault();
-        $acl = $di->get('acl');
 
+        if ($user === null)
+        {
+            $auth = $di->get('auth');
+            $user = $auth->getLoggedInUser();
+        }
+
+        $acl = $di->get('acl');
         if ($acl->userAllowed('manage stations', $user))
             return true;
 

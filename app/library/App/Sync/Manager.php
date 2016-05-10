@@ -1,13 +1,11 @@
 <?php
-namespace PVL;
+namespace App\Sync;
 
 use Entity\Settings;
-use Entity\ApiCall;
 use Entity\SongHistory;
+use App\Debug;
 
-use PVL\Debug;
-
-class SyncManager
+class Manager
 {
     public static function syncNowplaying($force = false)
     {
@@ -17,19 +15,15 @@ class SyncManager
         $last_start = Settings::getSetting('nowplaying_last_started', 0);
         $last_end = Settings::getSetting('nowplaying_last_run', 0);
 
-        if ($last_start > $last_end && $last_start >= (time() - 300) && !$force)
+        if ($last_start > $last_end && $last_start >= (time() - 10) && !$force)
             return;
 
         // Sync schedules.
         Settings::setSetting('nowplaying_last_started', time());
 
-        // Run different tasks for different "segments" of now playing data.
-        if (!defined('NOWPLAYING_SEGMENT'))
-            define('NOWPLAYING_SEGMENT', 1);
-
         // Run Now Playing data for radio streams.
         Debug::runTimer('Run NowPlaying update', function() {
-            NowPlaying::generate();
+            NowPlaying::sync();
         });
 
         Settings::setSetting('nowplaying_last_run', time());
@@ -39,11 +33,6 @@ class SyncManager
     {
         self::initSync(60);
 
-        // Send notifications related to schedules (high priority).
-        Debug::runTimer('Run notification delivery', function() {
-            NotificationManager::run();
-        });
-
         Settings::setSetting('sync_fast_last_run', time());
     }
 
@@ -51,24 +40,9 @@ class SyncManager
     {
         self::initSync(300);
 
-        // Sync schedules (highest priority).
-        Debug::runTimer('Run schedule manager', function() {
-            ScheduleManager::run(!APP_IS_COMMAND_LINE);
-        });
-
-        // Sync show episodes and artist news (high priority).
-        Debug::runTimer('Run podcast manager', function() {
-            PodcastManager::run();
-        });
-
-        // Pull the homepage news.
-        Debug::runTimer('Run network news manager', function() {
-            NewsManager::run();
-        });
-
         // Sync CentovaCast song data.
-        Debug::runTimer('Run CentovaCast track sync', function() {
-            CentovaCast::sync();
+        Debug::runTimer('Run radio station track sync', function() {
+            Media::sync();
         });
 
         Settings::setSetting('sync_last_run', time());
@@ -80,39 +54,12 @@ class SyncManager
 
         // Sync analytical and statistical data (long running).
         Debug::runTimer('Run analytics manager', function() {
-            AnalyticsManager::run();
+            Analytics::sync();
         });
-
-        // Update convention archives.
-        Debug::runTimer('Run convention archives manager', function() {
-            ConventionManager::run();
-        });
-
-        /*
-        // Clean up old API calls.
-        Debug::runTimer('Run API call cleanup', function() {
-            ApiCall::cleanUp();
-        });
-        */
 
         // Clean up old song history entries.
         Debug::runTimer('Run song history cleanup', function() {
             SongHistory::cleanUp();
-        });
-
-        // Sync the BronyTunes library.
-        Debug::runTimer('Run BronyTunes sync', function() {
-            App\Service\BronyTunes::load();
-        });
-
-        // Sync the Pony.fm library.
-        Debug::runTimer('Run Pony.fm sync', function() {
-            App\Service\PonyFm::load();
-        });
-
-        // Sync the EqBeats library.
-        Debug::runTimer('Run EqBeats sync', function() {
-            App\Service\EqBeats::load();
         });
 
         Settings::setSetting('sync_slow_last_run', time());
@@ -130,22 +77,18 @@ class SyncManager
                     'Now Playing Data',
                 ),
             ),
-            'short' => array(
+            /* 'short' => array(
                 'name'      => '1-Minute Sync',
                 'latest'    => Settings::getSetting('sync_fast_last_run', 0),
                 'contents'  => array(
                     'Schedule Notifications',
                 ),
-            ),
+            ), */
             'medium' => array(
                 'name'      => '5-Minute Sync',
                 'latest'    => Settings::getSetting('sync_last_run', 0),
                 'contents'  => array(
-                    'Homepage Tumblr Rotator',
-                    'Station Schedules',
-                    'Podcast Episodes',
-                    'CentovaCast Metadata',
-                    'Slim Player Cache',
+                    'Media Folder Updates',
                 ),
             ),
             'long' => array(
@@ -153,12 +96,7 @@ class SyncManager
                 'latest'    => Settings::getSetting('sync_slow_last_run', 0),
                 'contents'  => array(
                     'Analytics and Statistics',
-                    'Convention Archives',
-                    'API Call Cleanup',
                     'Song History Cleanup',
-                    'BronyTunes Sync',
-                    'Pony.fm Sync',
-                    'EqBeats Sync',
                 ),
             ),
         );

@@ -1,10 +1,12 @@
 <?php
-namespace PVL;
+namespace App\Sync;
 
-use \Entity\ArchiveSong;
-
-class MusicManager
+class Media
 {
+    public static function sync()
+    {}
+
+    /*
     const CHECK_DIR = '/www/mlpmusicarchive.com/music-to-add';
     const MUSIC_DIR = '/www/mlpmusicarchive.com/music';
     const ART_DIR = '/www/mlpmusicarchive.com/art';
@@ -160,20 +162,16 @@ class MusicManager
         }
     }
 
-    /**
-     * Utility Functions
-     */
-
     // Recursively search a directory based on a pattern.
     public static function globDirectory($pattern, $flags = 0)
     {
         $files = (array)glob($pattern, $flags);
-        
+
         foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir)
         {
             $files = array_merge($files, self::globDirectory($dir.'/'.basename($pattern), $flags));
         }
-        
+
         return $files;
     }
 
@@ -181,20 +179,20 @@ class MusicManager
     public static function clearDirectory($dir, $remove_current = true)
     {
         if (!file_exists($dir))
-            return true; 
+            return true;
         if (!is_dir($dir) || is_link($dir))
-            return unlink($dir); 
+            return unlink($dir);
 
         foreach (scandir($dir) as $item)
-        { 
+        {
             if ($item == '.' || $item == '..')
-                continue; 
+                continue;
 
             if (!self::clearDirectory($dir . "/" . $item))
-            { 
-                @chmod($dir . "/" . $item, 0777); 
+            {
+                @chmod($dir . "/" . $item, 0777);
                 if (!self::clearDirectory($dir . "/" . $item))
-                    return false; 
+                    return false;
             }
         }
 
@@ -211,7 +209,7 @@ class MusicManager
         foreach (scandir($dir) as $item)
         {
             if ($item == '.' || $item == '..')
-                continue; 
+                continue;
 
             if (is_dir($dir.'/'.$item))
                 self::cleanUpDirectory($dir."/".$item, true);
@@ -226,5 +224,5 @@ class MusicManager
         self::cleanUpDirectory(self::MUSIC_DIR);
         self::cleanUpDirectory(self::ART_DIR);
     }
-
+    */
 }

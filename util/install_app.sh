@@ -89,8 +89,7 @@ service mysql restart
 
 # Preconfigure databases
 cd $www_base/util
-curl -X POST "http://localhost:8086/cluster/database_configs/pvlive_stations?u=root&p=root" --data-binary @influx_pvlive_stations.json
-curl -X POST "http://localhost:8086/cluster/database_configs/pvlive_analytics?u=root&p=root" --data-binary @influx_pvlive_analytics.json
+curl -X POST "http://localhost:8086/cluster/database_configs/stations?u=root&p=root" --data-binary @influx_stations.json
 
 # Enable PHP flags.
 sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i /etc/php5/fpm/php.ini

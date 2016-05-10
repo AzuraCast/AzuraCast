@@ -11,7 +11,7 @@ class ApiController extends BaseController
     public function indexAction()
     {
         $influx = $this->di->get('influx');
-        $influx->setDatabase('pvlive_analytics');
+        $influx->setDatabase('analytics');
 
         set_time_limit(300);
         ini_set('memory_limit', '256M');

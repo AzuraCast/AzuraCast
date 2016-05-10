@@ -36,7 +36,7 @@ class IndexController extends BaseController
                 ),
             );
 
-            $daily_stats = $influx->setDatabase('pvlive_stations')->query('SELECT * FROM /1d.*/ WHERE time > now() - 180d', 'm');
+            $daily_stats = $influx->setDatabase('stations')->query('SELECT * FROM /1d.*/ WHERE time > now() - 180d', 'm');
 
             foreach($daily_stats as $stat_series => $stat_rows)
             {
@@ -103,7 +103,7 @@ class IndexController extends BaseController
             }
 
             // Podcast and API Call Metrics
-            $analytics_raw = $influx->setDatabase('pvlive_analytics')->query('SELECT * FROM /1h.*/', 'm');
+            $analytics_raw = $influx->setDatabase('analytics')->query('SELECT * FROM /1h.*/', 'm');
 
             $raw_metrics = array();
 

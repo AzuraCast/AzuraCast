@@ -21,7 +21,7 @@ return array(
                 'type'  => 'submit',
                 'label' => 'Save Changes',
                 'helper' => 'formButton',
-                'class' => 'ui-button',
+                'class' => 'btn btn-lg btn-primary',
             )),
         ),
     ),

@@ -7,9 +7,6 @@ class SetupController extends BaseController
 {
     public function init()
     {
-        if (Settings::getSetting('setup_complete', 0) != 0)
-            return $this->redirectToRoute([]);
-
         return NULL;
     }
 
@@ -18,18 +15,18 @@ class SetupController extends BaseController
      */
     public function indexAction()
     {
-        // Step 1: Register
-        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
-        if ($num_users == 0)
-            return $this->redirectFromHere(['action' => 'register']);
+        $current_step = $this->_getSetupStep();
+        return $this->redirectFromHere(['action' => $current_step]);
+    }
 
-        // Step 2: Set up Station
-        $num_stations = $this->em->createQuery('SELECT COUNT(s.id) FROM Entity\Station s')->getSingleScalarResult();
-        if ($num_stations == 0)
-            return $this->redirectFromHere(['action' => 'station']);
+    /**
+     * Placeholder function for "setup complete" redirection.
+     */
+    public function completeAction()
+    {
+        $this->alert('<b>Setup has already been completed!</b>', 'red');
 
-        // Step 3: System Settings
-        return $this->redirectFromHere(['action' => 'settings']);
+        return $this->redirectHome();
     }
     
     /**
@@ -38,10 +35,10 @@ class SetupController extends BaseController
      */
     public function registerAction()
     {
-        // Check for user accounts.
-        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
-        if ($num_users != 0)
-            return $this->redirectFromHere(['action' => 'index']);
+        // Verify current step.
+        $current_step = $this->_getSetupStep();
+        if ($current_step != 'register')
+            return $this->redirectFromHere(['action' => $current_step]);
 
         // Create first account form.
         $this->view->setTemplateAfter('minimal');
@@ -64,7 +61,7 @@ class SetupController extends BaseController
 
             // Create user account.
             $user = new \Entity\User;
-            $user->email = $data['email'];
+            $user->email = $data['username'];
             $user->setAuthPassword($data['password']);
             $user->roles->add($role);
             $this->em->persist($user);
@@ -72,11 +69,8 @@ class SetupController extends BaseController
             // Write to DB.
             $this->em->flush();
 
-            $login_credentials = array(
-                'username'  => $data['email'],
-                'password'  => $data['auth_password'],
-            );
-            $login_success = $this->auth->authenticate($login_credentials);
+            // Log in the newly created user.
+            $this->auth->authenticate($data);
 
             return $this->redirectFromHere(['action' => 'index']);
         }
@@ -88,8 +82,15 @@ class SetupController extends BaseController
      */
     public function stationAction()
     {
+        // Verify current step.
+        $current_step = $this->_getSetupStep();
+        if ($current_step != 'station')
+            return $this->redirectFromHere(['action' => $current_step]);
+
+        // Set up station form.
         $form_config = $this->module_config['admin']->forms->station->toArray();
         unset($form_config['groups']['admin']);
+        unset($form_config['groups']['profile']['legend']);
 
         $form = new \App\Form($form_config);
 
@@ -131,6 +132,63 @@ class SetupController extends BaseController
      */
     public function settingsAction()
     {
-        
+        // Verify current step.
+        $current_step = $this->_getSetupStep();
+        if ($current_step != 'settings')
+            return $this->redirectFromHere(['action' => $current_step]);
+
+        $form = new \App\Form($this->module_config['admin']->forms->settings->form);
+
+        $existing_settings = Settings::fetchArray(FALSE);
+        $form->setDefaults($existing_settings);
+
+        if (!empty($_POST) && $form->isValid($_POST))
+        {
+            $data = $form->getValues();
+
+            foreach($data as $key => $value)
+            {
+                Settings::setSetting($key, $value);
+            }
+
+            Settings::clearCache();
+
+            // Mark setup as complete, notify the user and redirect to homepage.
+            Settings::setSetting('setup_complete', time());
+
+            $this->alert('<b>Setup is now complete!</b><br>Continue setting up your station in the main AzuraCast app.', 'green');
+            return $this->redirectHome();
+        }
+
+        $this->renderForm($form, 'edit', 'Site Settings');
+    }
+
+    /**
+     * Determine which step of setup is currently active.
+     * 
+     * @return string
+     * @throws \App\Exception\NotLoggedIn
+     */
+    protected function _getSetupStep()
+    {
+        if (Settings::getSetting('setup_complete', 0) != 0)
+            return 'complete';
+
+        // Step 1: Register
+        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
+        if ($num_users == 0)
+            return 'register';
+
+        // If past "register" step, require login.
+        if (!$this->auth->isLoggedIn())
+            throw new \App\Exception\NotLoggedIn;
+
+        // Step 2: Set up Station
+        $num_stations = $this->em->createQuery('SELECT COUNT(s.id) FROM Entity\Station s')->getSingleScalarResult();
+        if ($num_stations == 0)
+            return 'station';
+
+        // Step 3: System Settings
+        return 'settings';
     }
 }

@@ -6,190 +6,67 @@ use \Entity\UserExternal;
 
 class AccountController extends BaseController
 {
+    public function init()
+    {
+        return null;
+    }
+
     public function indexAction()
     {
         if ($this->auth->isLoggedIn())
-            $this->redirectToRoute(array('module' => 'default', 'controller' => 'profile'));
+            return $this->redirectHome();
         else
-            $this->redirectFromHere(array('action' => 'login'));
-    }
-
-    public function profileAction()
-    {
-        $this->redirectToRoute(array('controller' => 'profile'));
-        return;
-    }
-    
-    public function registerAction()
-    {
-        if (!$_POST)
-            $this->forceSecure();
-
-        $form = new \App\Form($this->current_module_config->forms->register);
-        
-        if ($_POST)
-        {
-            if ($form->isValid($_POST))
-            {
-                $data = $form->getValues();
-                
-                $existing_user = User::getRepository()->findOneBy(array('email' => $data['email']));
-                
-                if ($existing_user instanceof User)
-                {
-                    $this->alert('A user with that e-mail address already exists!', 'red');
-                }
-                else
-                {
-                    $new_user = new User;
-                    $new_user->fromArray($data);
-                    $new_user->save();
-                    
-                    $login_credentials = array(
-                        'username'  => $data['email'],
-                        'password'  => $data['auth_password'],
-                    );
-                    $login_success = $this->auth->authenticate($login_credentials);
-                    
-                    $this->alert('<b>Your account has been successfully created.</b><br>You have been automatically logged in to your new account.', 'green');
-
-                    $default_url = \App\Url::route(array('module' => 'default'));
-                    $this->redirectToStoredReferrer('login', $default_url);
-                    return;
-                }
-            }
-        }
-
-        $this->view->title = 'Create New Account';
-        $this->renderForm($form);
+            return $this->redirectFromHere(array('action' => 'login'));
     }
 
     public function loginAction()
     {
         if (!$_POST)
-        {
             $this->storeReferrer('login', false);
-            $this->forceSecure();
-        }
+
+        $this->view->setTemplateAfter('minimal');
 
         $form = new \App\Form($this->current_module_config->forms->login);
 
-        if ($this->hasParam('provider'))
+        if (!empty($_POST) && $form->isValid($_POST))
         {
-            $provider_name = $this->getParam('provider');
- 
-            try
-            {
-                $ha_config = $this->_getHybridConfig();
-                $hybridauth = new \Hybrid_Auth($ha_config);
-     
-                // try to authenticate with the selected provider
-                $adapter = $hybridauth->authenticate($provider_name);
+            $data = $form->getValues();
 
-                if ($hybridauth->isConnectedWith($provider_name))
-                {
-                    $user_profile = $adapter->getUserProfile();
+            $login_success = $this->auth->authenticate($form->getValues());
 
-                    $user = UserExternal::processExternal($provider_name, $user_profile);
-                    $this->auth->setUser($user);
-                }
-            }
-            catch(\Exception $e)
+            if($login_success)
             {
-                if ($e instanceof \App\Exception\AccountNotLinked)
-                    $this->alert('<b>Your social network account is not linked to a PVL account yet!</b><br>Sign in below, or create a new PVL account, then link your social accounts from your profile.', 'red');
+                $user = $this->auth->getLoggedInUser();
+
+                $this->alert('<b>Logged in successfully.</b><br>User: '.$user->email, 'green');
+
+                $url = $this->di->get('url');
+
+                if ($this->acl->isAllowed('view administration'))
+                    $default_url = $url->route(array('module' => 'admin'));
                 else
-                    $this->alert($e->getMessage(), 'red');
-            }
-        }
-        else if ($_POST)
-        {
-            if ($form->isValid($_POST))
-            {
-                $login_success = $this->auth->authenticate($form->getValues());
-                
-                if($login_success)
-                {
-                    $user = $this->auth->getLoggedInUser();
-                    
-                    $this->alert('<b>Logged in successfully. Welcome back, '.$user->name.'!</b><br>For security purposes, log off when your session is complete.', 'green');
+                    $default_url = $url->route(array('module' => 'default'));
 
-                    if ($this->acl->isAllowed('view administration'))
-                        $default_url = \App\Url::route(array('module' => 'admin'));
-                    else
-                        $default_url = \App\Url::route(array('module' => 'default'));
-
-                    return $this->redirectToStoredReferrer('login', $default_url);
-                }
+                return $this->redirectToStoredReferrer('login', $default_url);
             }
+
+            return $this->redirectFromHere(['action' => 'index']);
         }
 
-        // Auto-bounce back if logged in.
-        if ($this->auth->isLoggedIn())
-            return $this->redirectToStoredReferrer('login', \App\Url::route());
-
-        $this->view->external_providers = UserExternal::getExternalProviders();
         $this->view->form = $form;
     }
 
-    public function linkAction()
+    public function logoutAction()
     {
-        $this->acl->checkPermission('is logged in');
-        $this->doNotRender();
+        $this->auth->logout();
 
-        // Link external account.
-        $user = $this->auth->getLoggedInUser();
+        $session = $this->di->get('session');
+        $session->destroy();
 
-        $provider_name = $this->getParam('provider');
-
-        $ha_config = $this->_getHybridConfig();
-        $hybridauth = new \Hybrid_Auth($ha_config);
-
-        // try to authenticate with the selected provider
-        $adapter = $hybridauth->authenticate($provider_name);
-
-        if ($hybridauth->isConnectedWith($provider_name))
-        {
-            $user_profile = $adapter->getUserProfile();
-            UserExternal::processExternal($provider_name, $user_profile, $user);
-
-            $this->alert('<b>Account successfully linked!</b>', 'green');
-
-            $this->redirectToRoute(array('module' => 'default', 'controller' => 'profile'));
-            return;
-        }
+        $this->redirectToRoute(array('module' => 'default'));
     }
 
-    public function unlinkAction()
-    {
-        $this->acl->checkPermission('is logged in');
-        $this->doNotRender();
-
-        // Unlink external account.
-        $user = $this->auth->getLoggedInUser();
-
-        $provider_name = $this->getParam('provider');
-
-        foreach($user->external_accounts as $acct)
-        {
-            if ($acct->provider == $provider_name)
-                $acct->delete();
-        }
-
-        $this->alert('<b>Account successfully unlinked!</b>', 'green');
-
-        $this->redirectToRoute(array('module' => 'default', 'controller' => 'profile'));
-        return;
-    }
-
-    public function hybridAction()
-    {
-        $ha_config = $this->_getHybridConfig();
-
-        \Hybrid_Auth::initialize($ha_config);
-        \Hybrid_Endpoint::process();
-    }
-
+    /*
     public function forgotAction()
     {
         $form = new \App\Form($this->current_module_config->forms->forgot);
@@ -245,48 +122,5 @@ class AccountController extends BaseController
         $this->redirectToRoute(array('controller' => 'profile', 'action' => 'edit'));
         return;
     }
-
-    public function logoutAction()
-    {
-        $this->auth->logout();
-
-        \App\Session::destroy();
-
-        $this->redirectToRoute(array('module' => 'default'));
-    }
-
-    public function endimpersonateAction()
-    {
-        $this->auth->endMasquerade();
-
-        $this->alert('<b>Switched back to main account successfully.</b>', 'green');
-        $this->redirectHome();
-    }
-
-    public function removeAction()
-    {
-        $this->acl->checkPermission('is logged in');
-
-        if ($_POST['confirm'] == 'confirm')
-        {
-            $user = $this->auth->getLoggedInUser();
-            $this->auth->logout();
-
-            // Parting is such sweet sorrow...
-            $user->delete();
-
-            $this->alert('<b>Account successfully deleted.</b><br>You can recreate your PVL account at any time by registering again.', 'green');
-            $this->redirectHome();
-            return;
-        }
-    }
-
-    protected function _getHybridConfig()
-    {
-        // Force "scheme" injection for base URLs.
-        $ha_config = $this->config->apis->hybrid_auth->toArray();
-        $ha_config['base_url'] = \App\Url::addSchemePrefix(\App\Url::routeFromHere(array('action' => 'hybrid')));
-
-        return $ha_config;
-    }
+    */
 }

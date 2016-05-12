@@ -7,7 +7,7 @@ return array(
             'legend' => 'Account Information',
             'elements' => array(
                 
-                'email' => array('text', array(
+                'username' => array('text', array(
                     'label' => 'E-mail Address',
                     'class' => 'half-width',
                     'required' => true,
@@ -28,7 +28,7 @@ return array(
                     'type'  => 'submit',
                     'label' => 'Create Account',
                     'helper' => 'formButton',
-                    'class' => 'ui-button',
+                    'class' => 'btn btn-lg btn-primary',
                 )),
             ),
         ),

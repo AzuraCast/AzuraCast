@@ -77,7 +77,7 @@ class Controller extends \Phalcon\Mvc\Controller
      */
     protected function permissions()
     {
-        return true;
+        return $this->acl->isAllowed('is logged in');
     }
 
     /* HTTP Cache Handling */

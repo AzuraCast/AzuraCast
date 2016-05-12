@@ -68,7 +68,7 @@ return array(
                     'type'  => 'submit',
                     'label' => 'Save Profile',
                     'helper' => 'formButton',
-                    'class' => 'ui-button',
+                    'class' => 'btn btn-lg btn-primary',
                 )),
             ),
         ),

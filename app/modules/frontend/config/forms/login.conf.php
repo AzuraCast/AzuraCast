@@ -16,7 +16,6 @@ return array(
 
         'password'      => array('password', array(
             'label' => 'Password',
-            'description' => '<a href="'.\App\Url::route(array('module' => 'default', 'controller' => 'account', 'action' => 'forgot')).'">Forgot your password?</a>',
             'class' => 'half-width',
             'required' => true,
         )),
@@ -25,7 +24,7 @@ return array(
             'type'  => 'submit',
             'label' => 'Log in',
             'helper' => 'formButton',
-            'class' => 'ui-button',
+            'class' => 'btn btn-lg btn-primary',
         )),
     ),
 );

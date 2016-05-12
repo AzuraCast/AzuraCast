@@ -29,8 +29,13 @@ header("Content-type: text/html; charset=utf-8");
         ->addCss('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css')
         ->addCss('css/app.css');
 
+    // Establish custom CSS/JS collections in case they don't exist.
+    $this->assets->collection('custom_css');
+    $this->assets->collection('custom_js');
+
     // Output header CSS.
     $this->assets->outputCss('header_css');
+    $this->assets->outputCss('custom_css');
 
     // Set up JS includes.
     $this->assets->collection('header_js')
@@ -292,6 +297,7 @@ header("Content-type: text/html; charset=utf-8");
 </div>
 
 <?
+$this->assets->outputJs('custom_js');
 $this->assets->outputJs('footer_js');
 ?>
 

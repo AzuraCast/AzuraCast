@@ -182,7 +182,7 @@ class Station extends \App\Doctrine\Entity
     public static function fetchAll()
     {
         $em = self::getEntityManager();
-        return $em->createQuery('SELECT s, ss FROM '.__CLASS__.' s LEFT JOIN s.streams ss WHERE s.is_active = 1 ORDER BY s.category ASC, s.weight ASC')->execute();
+        return $em->createQuery('SELECT s FROM '.__CLASS__.' s ORDER BY s.name ASC')->execute();
     }
 
     public static function fetchArray($cached = true)

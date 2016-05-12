@@ -1,220 +1,174 @@
-<?php
+<?
+$title = 'Dashboard';
 $manual = true;
-$hide_title = true;
-$render_mode = 'homepage';
 
-// Render player skeleton immediately, as video and other scripts depend on it.
-echo $this->viewHelper->renderHere('player-skeleton', true);
-?>
+$this->assets->collection('custom_js')
+    ->addJs('//code.highcharts.com/highcharts.js', false)
+    ->addJs('//code.highcharts.com/highcharts-more.js', false)
+    ->addJs('//code.highcharts.com/modules/exporting.js', false);
 
-<?
-ob_start();
-?>
-<div id="home_header" class="rich_header hidden-phone">
-    <div class="container">
-    <? if ($special_event): ?>
-        <div class="well">
-            <div class="special_event">
-                <div class="row-fluid">
-                    <? if (empty($special_chat_embed)): ?>
-                        <div class="span12"><?=$special_event_embed ?></div>
-                    <? else: ?>
-                        <div class="span7"><?=$special_event_embed ?></div>
-                        <div class="span5"><?=$this->viewHelper->renderHere('chat', TRUE) ?></div>
-                    <? endif; ?>
-                </div>
-            </div>
-        </div>
-    <? elseif (count($network_news) > 0): ?>
-        <div class="well carousel slide" id="rotator" data-interval="5000">     
-            <ol class="carousel-indicators">
-            <? for($i = 0; $i < count($network_news); $i++): ?>
-                <li data-target="#rotator" data-slide-to="<?=$i ?>" <? if ($i == 0): ?>class="active"<? endif; ?>></li>
-            <? endfor; ?>
-            </ol>
-            <div class="carousel-inner">
-            <? foreach($network_news as $i => $article): ?>
-                <div class="item layout-<?=$article['layout'] ?> <? if ($i == 0): ?>active<? endif; ?>">
-                    <a href="<?=$article['web_url'] ?>" target="_blank"><img src="<?=$article['image_url'] ?>" alt="Article Image"></a>
-                    <div class="carousel-caption">
-                        <a href="<?=$article['web_url'] ?>" target="_blank">
-                            <div class="post-date"><?=date('l, F jS \a\t g:ia', $article['display_timestamp']) ?></div>
-                            <h4><?=$article['title'] ?></h4>
-                            <p><?=$article['body'] ?> <span class="readmore">Read more &raquo;</span></p>
-                            <div class="tags">
-                            <? foreach((array)$article['tags'] as $tag): ?>
-                                <span class="tag"><?=$tag ?></span>
-                            <? endforeach; ?>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            <? endforeach; ?>
-            </div>
+// ->addJs('vendor/moment/moment.js');
 
-            <a class="carousel-control left" href="#rotator" data-slide="prev">&lsaquo;</a>
-            <a class="carousel-control right" href="#rotator" data-slide="next">&rsaquo;</a>
-        </div>
-    <? endif; ?>
-    </div>
-</div>
-<div class="hero">
-    <div class="container">
-        <div class="row-fluid">
-            <div class="span5 hero-text">
-                <h4>Your Home for Pony Media!</h4>
-                <p><a href="<?=$this->url->get('about') ?>" target="_blank">Ponyville Live!</a> is a network of radio stations, video streams, and shows.</p>
-            </div>
-            <div class="span3 hidden-phone hero-apps">
-                <h5>Take Ponyville Live! With You</h5>
-                <div class="btn-group">
-                    <?=$this->viewHelper->button(array(
-                        'type'      => 'link',
-                        'class'     => 'btn-primary',
-                        'icon'      => 'icon-cloud-download',
-                        'text'      => 'Apps &amp; Players',
-                        'href'      => $this->url->get('index/app'),
-                    )) ?>
-                    <?=$this->viewHelper->button(array(
-                        'type'      => 'link',
-                        'class'     => 'btn-primary',
-                        'icon'      => 'icon-mobile-phone',
-                        'text'      => 'PVL! Mobile',
-                        'href'      => 'http://m.pvlive.me/',
-                    )) ?>
-                </div>
-            </div>
-            <div class="span3 visible-phone hero-apps">
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'btn-block btn-large btn-primary',
-                    'icon'      => 'icon-cloud-download',
-                    'text'      => 'Apps &amp; Players',
-                    'href'      => $this->url->get('index/app'),
-                )) ?>
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'btn-block btn-large btn-primary',
-                    'icon'      => 'icon-mobile-phone',
-                    'text'      => 'PVL! Mobile',
-                    'href'      => 'http://m.pvlive.me/',
-                )) ?>
-            </div>
-            <div class="span4 hero-social">
-                <div style="padding: 10px 0;">
-                    <a href="https://www.patreon.com/PonyvilleLive" title="Support our Patreon!" target="_blank"><img src="<?=\App\Url::content('social/patreon.png') ?>" alt="Patreon"></a>
-                    <a href="https://www.youtube.com/ponyvilleliveglobal" title="YouTube" target="_blank"><img src="<?=\App\Url::content('social/youtube.png') ?>" alt="YouTube"></a>
-                    <a href="https://twitter.com/PonyvilleLive" title="Twitter" target="_blank"><img src="<?=\App\Url::content('social/twitter.png') ?>" alt="Twitter"></a>
-                    <a href="http://news.ponyvillelive.com/" title="Tumblr" target="_blank"><img src="<?=\App\Url::content('social/tumblr.png') ?>" alt="Tumblr"></a>
-                    <a href="https://www.facebook.com/pages/Ponyville-LIVE/517435684948331" title="Facebook" target="_blank"><img src="<?=\App\Url::content('social/facebook.png') ?>" alt="Facebook"></a>
-                    <a href="http://steamcommunity.com/groups/ponyvillelive" title="Steam" target="_blank"><img src="<?=\App\Url::content('social/steam.png') ?>" alt="Steam"></a>
-                    <a href="https://plus.google.com/+PonyvilleLiveGlobal" title="Google Plus" rel="publisher" target="_blank"><img src="<?=\App\Url::content('social/google_plus.png') ?>" alt="Google Plus"></a>
-                    <a href="<?=$this->url->get('show/feed') ?>" title="Podcasts RSS Feed" target="_blank"><img src="<?=\App\Url::content('social/feed.png') ?>" alt="RSS Feed"></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<?
-$content_top = ob_get_contents();
-ob_end_clean();
-?>
-
-<div class="video-listing hidden-by-default">
-    <h2 id="section_video"><i class="icon-facetime-video"></i> Live Video Streams <small><span id="nowplaying-listeners-video"></span></small></h2>
-
-    <?=$this->viewHelper->renderCommon('video', array('stations' => $categories['video']['stations'])); ?>
-</div>
-
-<?
-$cat = $categories['audio'];
-?>
-<!--
-<div class="pull-right legend">
-    <span class="station affiliation-partner">PVL! Partner Station</span>&nbsp;
-    <span class="station">Syndicated Station</span>
-</div>
--->
-<h2 id="section_radio"><i class="<?=$cat['icon'] ?>"></i> Pony Radio Stations <small><span id="nowplaying-listeners-audio"></span></small></h2>
-
-<?
-$stations = $station_cols[0];
-echo $this->viewHelper->renderCommon('station', array('stations' => $cat['stations']));
-?>
-
-<!-- Upcoming on the Schedule -->
-<?
-$tz_info = \App\Timezone::getInfo();
-?>
-<h2><i class="icon-calendar"></i> Upcoming Shows &amp; Events <small><i class="icon-time"></i> Times listed in <a href="<?=$this->url->get('profile/timezone') ?>" class="fancybox fancybox.ajax"><?=$tz_info['abbr'] ?></a>, see <a href="<?=$this->url->get('schedule') ?>" target="_blank">entire schedule</a></small></h2>
-
-<div id="schedule_container">
-    <?
-    echo $this->viewHelper->renderHere('schedule');
-    ?>
-</div>
-
-<!-- Shows/Podcasts -->
-<h2 id="section_shows"><i class="icon-rss"></i> Podcasts &amp; Show Archives <small>Newer episodes first, <a href="<?=$this->url->get('show') ?>">view all</a></small></h2>
-
-<?
-$podcasts = array_slice($podcasts, 0, 15);
-$podcast_cols = \App\Utilities::columns($podcasts, 3, true);
-
-echo $this->viewHelper->renderCommon('podcast', array('podcasts' => $podcasts));
-?>
-
-<h2><i class="icon-folder-open-alt"></i> Convention Coverage <small>Most recent conventions, <a href="<?=\App\Url::route(array('module' => 'frontend', 'controller' => 'convention')) ?>" target="_blank">view all</a></small></h2>
-
-<?
-$cons = array_slice($conventions_archived, 0, 8);
-?>
-<div class="row-fluid row-multiple clearfix">
-<? foreach($cons as $record): ?>
-    <div class="span3">
-        <a class="convention coverage_<?=$record['coverage_level'] ?>" href="<?=$this->viewHelper->route(array('controller' => 'convention', 'action' => 'archive', 'id' => $record['id'])) ?>">
-            <img src="<?=\App\Url::upload($record['image']) ?>" alt="<?=$record['name'] ?> Graphic">
-            <div class="coverage" title="<?=$record['coverage']['text'] ?>">
-                <i class="large-icon <?=$record['coverage']['icon'] ?>"></i>
-            </div>
-            <div class="name">
-                <h4><?=$record['name'] ?></h4>
-                <?=$record['location'] ?> &bull; <?=$record['range'] ?>
-            </div>
-        </a>
-    </div>
-<? endforeach; ?>
-</div>
-
-<!-- Schedule Reloader -->
-<script type="text/javascript">
-var schedule_timeout;
-var schedule_interval = 600000;
-
-$(function() {
-
-    $('.btn-play-station').click(function(e) {
-        e.preventDefault();
-
-        var station_id = $(this).data('station');
-        playStation(station_id);
-
-        return false;
-    });
-
-    schedule_timeout = setTimeout('updateSchedule()', schedule_interval);
-
-});
-
-function updateSchedule()
+/*
+foreach($stations as $station)
 {
-    $('#schedule_container').load('<?=$this->url->get('index/schedule') ?>', function(rt, status)
-    {
-        if (status == 'success')
-        {
-            clearTimeout(schedule_timeout);
-            schedule_timeout = setTimeout('updateSchedule()', schedule_interval);
+    $sidebar['Stations'][$station->name] = array(
+        'url'       => array('module' => 'stations', 'action' => 'index', 'station' => $station->id),
+        'icon'      => $station->getCategoryIcon(),
+        'permission' => $station->canManage(),
+    );
+}
+*/
+?>
+
+<div class="block-header">
+    <h2>Dashboard</h2>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Listeners Across All Stations</h2>
+            </div>
+            <div class="card-body card-padding-sm">
+                <div id="network_chart" style="height: 250px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Listeners Per Station</h2>
+            </div>
+            <div class="card-body card-padding-sm">
+                <div id="station_chart" style="height: 250px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Station Overview</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Station Name</th>
+                            <th>Now Playing</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <? foreach($stations as $row): ?>
+                        <tr style="vertical-align: middle;">
+                            <td>&nbsp;</td>
+                            <td>
+                                <big><?=$row->name ?></big>
+                            </td>
+                            <td>
+                                <strong><span class="nowplaying-title">Song Title</span></strong><br>
+                                <span class="nowplaying-artist">Song Artist</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary">Manage</a>
+                            </td>
+                        </tr>
+                    <? endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
         }
     });
-}
+
+    var datetime_axis = {
+        type: 'datetime',
+        labels: {
+            formatter: function () {
+                return Highcharts.dateFormat('%a %d %b', this.value);
+            },
+            dateTimeLabelFormats: {
+                minute: '%H:%M',
+                hour: '%H:%M',
+                day: '%e. %b',
+                week: '%e. %b',
+                month: '%b \'%y',
+                year: '%Y'
+            }
+        }
+    };
+
+    $('#network_chart').highcharts({
+        chart: { zoomType: 'x' },
+        title: {text: ''},
+        xAxis: datetime_axis,
+        plotOptions: {
+            spline: {
+                marker: { enabled: false }
+            }
+        },
+        yAxis: {
+            title: { text: 'Listeners' },
+            min: 0,
+            max: 500
+        },
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            xDateFormat: '%Y-%m-%d'
+        },
+        colors: [
+            '#AEE1FF',
+            '#0091E5',
+            '#FFA6A6',
+            '#8C0000'
+        ],
+
+        series: <?=$metrics['network'] ?>
+    });
+
+    $('#station_chart').highcharts({
+        chart: { zoomType: 'x' },
+        title: {text: ''},
+        xAxis: datetime_axis,
+        plotOptions: {
+            spline: {
+                lineWidth: 1,
+                marker: { enabled: false },
+                shadow: false,
+                states: {
+                    hover: {
+                        lineWidth: 3
+                    }
+                },
+                threshold: null
+            }
+        },
+        yAxis: {
+            title: { text: 'Listeners' },
+            min: 0,
+            max: 100
+        },
+        tooltip: {
+            crosshairs: true,
+            xDateFormat: '%Y-%m-%d'
+        },
+
+        series: <?=$metrics['station'] ?>
+    });
+});
 </script>

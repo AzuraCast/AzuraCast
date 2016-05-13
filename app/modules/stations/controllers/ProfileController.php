@@ -45,6 +45,6 @@ class ProfileController extends BaseController
             return;
         }
 
-        $this->renderForm($form, 'edit', 'Edit Station Profile');
+        return $this->renderForm($form, 'edit', 'Edit Station Profile');
     }
 }

@@ -76,7 +76,7 @@ foreach($stations as $station)
                                 <span class="nowplaying-artist">Song Artist</span>
                             </td>
                             <td>
-                                <a class="btn btn-primary">Manage</a>
+                                <a class="btn btn-primary" href="<?=$this->url->route(['module' => 'stations', 'id' => $row->id]) ?>">Manage</a>
                             </td>
                         </tr>
                     <? endforeach; ?>

@@ -42,7 +42,7 @@ class View
 
         // Relative path of main templates.
         $view->setLayoutsDir($options['layouts_dir']);
-        $view->setTemplateAfter($options['layout']);
+        $view->setLayout($options['layout']);
 
         // Use present directory for partials by default.
         $view->setPartialsDir($options['partials_dir']);

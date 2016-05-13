@@ -1,6 +1,8 @@
 .four-zero-content {
-	background: #fff;
 	padding: 20px;
+
+	background: #FFFFFF url('../img/hexbg.png') center center;
+	background-size: cover;
 	
 	&:before {
 		height: 50%;
@@ -8,13 +10,12 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		background: #EDECEC;
 		content: "";
 	}
 }
 
 .four-zero {
-	background: @m-cyan;
+	background: @m-blue;
 	box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
 	border-radius: 2px;
 	position: absolute;
@@ -31,7 +32,6 @@
 	h2 {
 		font-size: 130px;
 	}
-
 	
 	@media (max-width: @screen-xs-max) {
 		width: ~"calc(100% - 40px)";

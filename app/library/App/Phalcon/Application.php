@@ -23,6 +23,8 @@ class Application extends \Phalcon\Mvc\Application
             };
         }
 
+        $this->setDefaultModule('frontend');
+
         $this->registerModules($modules);
         return $this;
     }

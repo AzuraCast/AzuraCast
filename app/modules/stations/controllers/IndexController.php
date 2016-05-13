@@ -102,11 +102,10 @@ class IndexController extends BaseController
         $song_totals_raw = array();
         $song_totals_raw['played'] = $this->em->createQuery('SELECT sh.song_id, COUNT(sh.id) AS records
             FROM Entity\SongHistory sh
-            WHERE sh.station_id = :station_id AND sh.stream_id = :stream_id AND sh.timestamp >= :timestamp
+            WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp
             GROUP BY sh.song_id
             ORDER BY records DESC')
             ->setParameter('station_id', $this->station->id)
-            ->setParameter('stream_id', $default_stream->id)
             ->setParameter('timestamp', $threshold)
             ->setMaxResults(40)
             ->getArrayResult();
@@ -173,16 +172,7 @@ class IndexController extends BaseController
 
     public function timelineAction()
     {
-        $stream_id = $this->getParam('stream');
-        if (!$stream_id)
-        {
-            $default_stream = $this->station->getDefaultStream();
-            $stream_id = $default_stream->id;
-        }
-
-        $this->view->stream_id = $stream_id;
-
-        $songs_played_raw = $this->_getEligibleHistory($stream_id);
+        $songs_played_raw = $this->_getEligibleHistory();
 
         // Get current events within threshold.
         $threshold = $songs_played_raw[0]['timestamp'];
@@ -326,26 +316,21 @@ class IndexController extends BaseController
      * Utility Functions
      */
 
-    protected function _getEligibleHistory($stream_id = null)
+    protected function _getEligibleHistory()
     {
-        if ($stream_id === null)
-        {
-            $default_stream = $this->station->getDefaultStream();
-            $stream_id = $default_stream->id;
-        }
+        $cache = $this->di->get('cache');
+        $cache_name = 'station_center_history_'.$this->station->id;
 
-        $cache_name = 'station_center_history_'.$this->station->id.'_'.$stream_id;
-        $songs_played_raw = \App\Cache::get($cache_name);
+        $songs_played_raw = $cache->get($cache_name);
 
         if (!$songs_played_raw)
         {
             try
             {
-                $first_song = $this->em->createQuery('SELECT sh.timestamp FROM Entity\SongHistory sh
-                    WHERE sh.station_id = :station_id AND sh.stream_id = :stream_id AND sh.listeners IS NOT NULL
-                    ORDER BY sh.timestamp ASC')
+                $first_song = $this->em->createQuery('SELECT sh.timestamp_start FROM Entity\SongHistory sh
+                    WHERE sh.station_id = :station_id AND sh.listeners_start IS NOT NULL
+                    ORDER BY sh.timestamp_start ASC')
                     ->setParameter('station_id', $this->station->id)
-                    ->setParameter('stream_id', $stream_id)
                     ->setMaxResults(1)
                     ->getSingleScalarResult();
             }
@@ -361,10 +346,9 @@ class IndexController extends BaseController
             $songs_played_raw = $this->em->createQuery('SELECT sh, s
                 FROM Entity\SongHistory sh
                 LEFT JOIN sh.song s
-                WHERE sh.station_id = :station_id AND sh.stream_id = :stream_id AND sh.timestamp >= :timestamp AND sh.listeners IS NOT NULL
-                ORDER BY sh.timestamp ASC')
+                WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp AND sh.listeners_start IS NOT NULL
+                ORDER BY sh.timestamp_start ASC')
                 ->setParameter('station_id', $this->station->id)
-                ->setParameter('stream_id', $stream_id)
                 ->setParameter('timestamp', $threshold)
                 ->getArrayResult();
 
@@ -376,7 +360,7 @@ class IndexController extends BaseController
 
             $songs_played_raw = array_values($songs_played_raw);
 
-            \App\Cache::save($songs_played_raw, $cache_name, array(), 60*5);
+            $cache->save($songs_played_raw, $cache_name, array(), 60*5);
         }
 
         return $songs_played_raw;
@@ -384,7 +368,8 @@ class IndexController extends BaseController
 
     protected function _getIgnoredSongs()
     {
-        $song_hashes = \App\Cache::get('station_center_ignored_songs');
+        $cache = $this->di->get('cache');
+        $song_hashes = $cache->get('station_center_ignored_songs');
 
         if (!$song_hashes)
         {
@@ -405,7 +390,7 @@ class IndexController extends BaseController
             foreach($song_hashes_raw as $row)
                 $song_hashes[$row['id']] = $row['id'];
 
-            \App\Cache::save($song_hashes, 'station_center_ignored_songs', array(), 86400);
+            $cache->save($song_hashes, 'station_center_ignored_songs', array(), 86400);
         }
 
         return $song_hashes;

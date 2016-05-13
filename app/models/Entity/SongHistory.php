@@ -40,8 +40,18 @@ class SongHistory extends \App\Doctrine\Entity
     /** @Column(name="timestamp_start", type="integer") */
     protected $timestamp_start;
 
+    public function getTimestamp()
+    {
+        return $this->timestamp_start;
+    }
+
     /** @Column(name="listeners_start", type="integer", nullable=true) */
     protected $listeners_start;
+
+    public function getListeners()
+    {
+        return $this->listeners_start;
+    }
 
     /** @Column(name="timestamp_end", type="integer") */
     protected $timestamp_end;

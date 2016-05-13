@@ -1,7 +1,17 @@
 <?php
-$title = 'An Error Occurred';
+$title = 'Error';
+$page_class = 'four-zero-content';
 ?>
 
-<h2><?=$exception->getMessage() ?></h2>
-<p>An error has occurred on this page. Please retry your request again later, or contact the administrators if the issue continues.</p>
-<p><small>Exception found on line <?=$exception->getLine() ?> of <?=$exception->getFile() ?></small></p>
+<div class="four-zero">
+    <h2>500</h2>
+    <small>
+        <?=$exception->getMessage() ?><br>
+        <?=$exception->getFile() ?> : <?=$exception->getLine() ?>
+    </small>
+
+    <footer>
+        <a href="javascript:history.back()"><i class="zmdi zmdi-arrow-back"></i></a>
+        <a href="<?=$this->url->route([]) ?>"><i class="zmdi zmdi-home"></i></a>
+    </footer>
+</div>

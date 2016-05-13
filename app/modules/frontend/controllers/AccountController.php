@@ -24,7 +24,7 @@ class AccountController extends BaseController
         if (!$_POST)
             $this->storeReferrer('login', false);
 
-        $this->view->setTemplateAfter('minimal');
+        $this->view->setLayout('minimal');
 
         $form = new \App\Form($this->current_module_config->forms->login);
 
@@ -38,7 +38,7 @@ class AccountController extends BaseController
             {
                 $user = $this->auth->getLoggedInUser();
 
-                $this->alert('<b>Logged in successfully.</b><br>User: '.$user->email, 'green');
+                $this->alert('<b>Logged in successfully.</b><br>'.$user->email, 'green');
 
                 $url = $this->di->get('url');
 

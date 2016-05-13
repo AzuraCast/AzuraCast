@@ -1,34 +1,14 @@
 <?php
 $title = '404: Page Not Found';
-$manual = true;
-
-$sayings = array(
-    'Yeah...It\'s a Mystery.',
-    'We Just Don\'t Know What Went Wrong!',
-    'Derpy Ate This Page.',
-);
-shuffle($sayings);
-$snarky_subtitle = current($sayings);
+$page_class = 'four-zero-content';
 ?>
 
-<div class="row-fluid">
-    <div class="span8">
-        <h2><?=$snarky_subtitle ?></h2>
-        <center><img src="<?=\App\Url::content('images/404.png') ?>" alt="Happy Derpeh" title="Who can be mad at a face like that?" /></center>
-    </div>
-    <div class="span4">
-        <h2>Where Am I?</h2>
-        <p>You're on the web site of <b>Ponyville Live!</b>, a network of My Little Pony-based radio stations, video streams, podcasts, and more. Together, we offer 24/7 streaming content, live convention coverage, and much more.</p>
+<div class="four-zero">
+    <h2>404</h2>
+    <small>Page Not Found</small>
 
-        <p>Visit our homepage and explore our network by clicking the link below!</p>
-
-        <div class="buttons">
-            <?=$this->viewHelper->button(array(
-                'href'      => \App\Url::route(),
-                'text'      => 'Ponyville Live! Homepage',
-                'class'     => 'btn-large btn-primary',
-                'icon'      => 'icon-home',
-            )) ?>
-        </div>
-    </div>
+    <footer>
+        <a href="javascript:history.back()"><i class="zmdi zmdi-arrow-back"></i></a>
+        <a href="<?=$this->url->route([]) ?>"><i class="zmdi zmdi-home"></i></a>
+    </footer>
 </div>

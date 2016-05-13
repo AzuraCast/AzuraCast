@@ -6,12 +6,6 @@ $this->assets->collection('custom_js')
     ->addJs('//code.highcharts.com/highcharts.js', false)
     ->addJs('//code.highcharts.com/highcharts-more.js', false)
     ->addJs('//code.highcharts.com/modules/exporting.js', false);
-
-$skin = \App\Customization::get('theme');
-if ($skin == "dark")
-    $this->assets->collection('custom_js')->addJs('js/highcharts/dark-blue.js');
-
-echo $this->viewHelper->renderHere('header', true, array('title' => $title));
 ?>
 
 <script type="text/javascript">
@@ -22,179 +16,142 @@ Highcharts.setOptions({
 });
 </script>
 
-<div class="row-fluid">
-    <div class="span12">
-        <?=$this->viewHelper->renderHere('index-dailystats') ?>
+<div class="block-header">
+    <h2>Station Center</h2>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Listeners By Day</h2>
+            </div>
+            <div class="card-body card-padding-sm">
+                <?=$this->viewHelper->renderHere('index-dailystats') ?>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="row-fluid">
-    <div class="span3">
-
-        <div class="well">
-            <h4>Network Tools</h4>
-            <ul class="nav nav-list">
-                <!-- Universal for all stations -->
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'profile', 'action' => 'index')) ?>" title="View and edit the station's public profile and contact information."><i class="icon-picture"></i> Station Profile</a></li>
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'streams', 'action' => 'index')) ?>" title="Update your existing radio/video streams or add new ones."><i class="icon-code-fork"></i> Stream Manager</a></li>
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'schedule', 'action' => 'index')) ?>" title=""><i class="icon-calendar"></i> Promote Scheduled Events</a></li>
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'vote', 'action' => 'index')) ?>" title="Submit your recommendation on whether PVL should accept new station applicants."><i class="icon-check-sign"></i> Vote on New PVL Stations</a></li>
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'urls', 'action' => 'index')) ?>" title="Use the http://pvlive.me/ URL shortener for clean, short addresses."><i class="icon-globe"></i> PVLive.me Short URLs</a></li>
-            <? if ($station['category'] != 'video'): ?>
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('action' => 'timeline')) ?>" title="View the entire playback history of your station over the last 48 hours, along with the rise and fall of listener counts and special events."><i class="icon-time"></i> Song Playback Timeline</a></li>
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('action' => 'votes')) ?>" title="Most/least popular songs on the station over the last two weeks."><i class="icon-thumbs-up"></i> Song Vote Totals</a></li>
-            <? endif; ?>
-            </ul>
-
-        <? if ($station['category'] != 'video'): ?>
-            <h4>Song Database</h4>
-            <ul class="nav nav-list">
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'songs', 'action' => 'index')) ?>" title="Browse all songs in the PVL song directory."><i class="icon-music"></i> Search Song Directory</a></li>
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'songs', 'action' => 'new')) ?>" title="View songs that have been recently submitted to music databases."><i class="icon-asterisk"></i> New Songs This Week</a></li>
-            </ul>
-
-            <h4>Artist Interaction</h4>
-            <ul class="nav nav-list">
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'artists', 'action' => 'all')) ?>" title="View the full list of artists who have agreed to (or otherwise limited) usage of their creations or interviews with them by the PVL network."><i class="icon-star"></i> Artist Licenses &amp; Interviews</a></li>
-                <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'artists', 'action' => 'copyright')) ?>"><i class="icon-group"></i> Fully Licensed Artists</a></li>
-            </ul>
-
-            <? if ($station['requests_enabled'] == 1 && $station['requests_ccast_username']): ?>
-                <h4>CentovaCast</h4>
-                <ul class="nav nav-list">
-                    <li><a href="http://radio.ponyvillelive.com:2199/" target="_blank"><i class="icon-external-link-sign"></i> CentovaCast Console</a></li>
-                    <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'centova', 'action' => 'tracks')) ?>"><i class="icon-download"></i> CentovaCast Track Report (CSV)</a></li>
-                </ul>
-            <? endif; ?>
-        <? endif; ?>
-
-            <h4>Shortcuts</h4>
-            <ul class="nav nav-list">
-                <li><a href="<?=$this->viewHelper->route(array('module' => 'default', 'controller' => 'convention', 'action' => 'signup')) ?>" title="Send this form to your station staff if they are interested in attending conventions as PVL press members."><i class="icon-building"></i> Convention Sign-up Form</a></li>
-                <li><a href="<?=$this->viewHelper->route(array('controller' => 'widget', 'action' => 'index')) ?>"><i class="icon-cogs"></i> Radio Player Embed Instructions</a></li>
-                <li><a href="//www.ponyvillelive.com/resources/brand_package.zip"><i class="icon-download-alt"></i> PVL Network Logos &amp; Branding Kit</a></li>
-                <li><a href="http://hosting.ponyvillelive.com:8443/" target="_blank"><i class="icon-external-link-sign"></i> Plesk Web Hosting Manager</a></li>
-            </ul>
-        </div>
-
-        <h2>Station Managers</h2>
-        <div class="well">
-            <? foreach($station->managers as $manager): ?>
-            <div style="padding: 5px 0;">
-                <?=$manager->name ?> (<?=$this->viewHelper->mailto($manager->email) ?>)<br>
-                <small><a href="<?=$this->viewHelper->routeFromHere(array('action' => 'removeadmin', 'id' => $manager->id)) ?>"><i class="icon-minus-sign"></i> Remove</a></small>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Listeners by Hour of Day</h2>
             </div>
-            <? endforeach; ?>
-
-            <form action="<?=$this->viewHelper->routeFromHere(array('action' => 'addadmin')) ?>" method="post">
-                <input type="email" name="email" placeholder="E-mail Address" class="full-width" style="margin: 0;">
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'submit',
-                    'icon'      => 'icon-plus-sign',
-                    'text'      => 'Add Admin',
-                    'class'     => 'btn-small btn-success',
-                )) ?>
-            </form>
-        </div>
-        
-    </div>
-
-<? if ($station['category'] == 'video'): ?>
-    <div class="span5">
-        <?=$this->viewHelper->renderHere('index-hourlystats') ?>
-    </div>
-    <div class="span4">
-        <?=$this->viewHelper->renderHere('index-dayofweek') ?>
-    </div>
-<? else: ?>
-    <div class="span5">
-
-        <?=$this->viewHelper->renderHere('index-hourlystats') ?>
-
-        <h2><i class="icon-circle-arrow-up"></i> Best Performing Songs<br><small>In the last 48 hours</small></h2>
-
-        <div class="well">
-            <table class="datatable table-striped table-condensed table-nopadding">
-                <colgroup>
-                    <col width="20%">
-                    <col width="80%">
-                </colgroup>
-                <tbody>
-                <? foreach($best_performing_songs as $song_row): ?>
-                    <tr>
-                        <td class="center text-success"><i class="icon-caret-up"></i> <?=abs($song_row['stat_delta']) ?><br><small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?></td>
-                        <td>
-                            <a href="<?=$this->viewHelper->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>">
-                        <? if ($song_row['song']['title']): ?>
-                            <b><?=$song_row['song']['title'] ?></b><br>
-                            <?=$song_row['song']['artist'] ?>
-                        <? else: ?>
-                            <?=$song_row['song']['text'] ?>
-                        <? endif; ?>
-                            </a>
-                        </td>
-                    </tr>
-                <? endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-
-        <h2><i class="icon-circle-arrow-down"></i> Worst Performing Songs<br><small>In the last 48 hours</small></h2>
-
-        <div class="well">
-            <table class="datatable table-striped table-condensed table-nopadding">
-                <colgroup>
-                    <col width="20%">
-                    <col width="80%">
-                </colgroup>
-                <tbody>
-                <? foreach($worst_performing_songs as $song_row): ?>
-                    <tr>
-                        <td class="center text-error"><i class="icon-caret-down"></i> <?=abs($song_row['stat_delta']) ?><br><small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?></td>
-                        <td>
-                            <a href="<?=$this->viewHelper->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>">
-                        <? if ($song_row['song']['title']): ?>
-                            <b><?=$song_row['song']['title'] ?></b><br>
-                            <?=$song_row['song']['artist'] ?>
-                        <? else: ?>
-                            <?=$song_row['song']['text'] ?>
-                        <? endif; ?>
-                            </a>
-                        </td>
-                    </tr>
-                <? endforeach; ?>
-                </tbody>
-            </table>
+            <div class="card-body card-padding-sm">
+                <?=$this->viewHelper->renderHere('index-hourlystats') ?>
+            </div>
         </div>
     </div>
-    <div class="span4">
-        <?=$this->viewHelper->renderHere('index-dayofweek') ?>
-
-        <h2>Most Played Songs<br><small>In the last month</small></h2>
-
-        <div class="well">
-            <table class="datatable table-striped table-condensed table-nopadding">
-                <colgroup>
-                    <col width="20%">
-                    <col width="80%">
-                </colgroup>
-                <tbody>
-                <? foreach($song_totals['played'] as $song_row): ?>
-                    <tr>
-                        <td class="center"><?=$song_row['records'] ?></td>
-                        <td>
-                        <? if ($song_row['song']['title']): ?>
-                            <b><?=$song_row['song']['title'] ?></b><br>
-                            <?=$song_row['song']['artist'] ?>
-                        <? else: ?>
-                            <?=$song_row['song']['text'] ?>
-                        <? endif; ?>
-                        </td>
-                    </tr>
-                <? endforeach; ?>
-                </tbody>
-            </table>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Listeners by Day of Week</h2>
+            </div>
+            <div class="card-body card-padding-sm">
+                <?=$this->viewHelper->renderHere('index-dayofweek') ?>
+            </div>
         </div>
     </div>
-<? endif; ?>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2><i class="zmdi zmdi-thumb-up"></i> Best Performing Songs<br><small>in the last 48 hours</small></h2>
+            </div>
+            <div class="table-responsive">
+                <table class="datatable table-striped table-condensed table-nopadding">
+                    <colgroup>
+                        <col width="20%">
+                        <col width="80%">
+                    </colgroup>
+                    <tbody>
+                    <? foreach($best_performing_songs as $song_row): ?>
+                        <tr>
+                            <td class="center text-success"><i class="icon-caret-up"></i> <?=abs($song_row['stat_delta']) ?><br><small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?></td>
+                            <td>
+                                <a href="<?=$this->viewHelper->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>">
+                                    <? if ($song_row['song']['title']): ?>
+                                        <b><?=$song_row['song']['title'] ?></b><br>
+                                        <?=$song_row['song']['artist'] ?>
+                                    <? else: ?>
+                                        <?=$song_row['song']['text'] ?>
+                                    <? endif; ?>
+                                </a>
+                            </td>
+                        </tr>
+                    <? endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2><i class="zmdi zmdi-thumb-down"></i> Worst Performing Songs<br><small>in the last 48 hours</small></h2>
+            </div>
+            <div class="table-responsive">
+                <table class="datatable table-striped table-condensed table-nopadding">
+                    <colgroup>
+                        <col width="20%">
+                        <col width="80%">
+                    </colgroup>
+                    <tbody>
+                    <? foreach($worst_performing_songs as $song_row): ?>
+                        <tr>
+                            <td class="center text-error"><i class="icon-caret-down"></i> <?=abs($song_row['stat_delta']) ?><br><small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?></td>
+                            <td>
+                                <a href="<?=$this->viewHelper->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>">
+                                    <? if ($song_row['song']['title']): ?>
+                                        <b><?=$song_row['song']['title'] ?></b><br>
+                                        <?=$song_row['song']['artist'] ?>
+                                    <? else: ?>
+                                        <?=$song_row['song']['text'] ?>
+                                    <? endif; ?>
+                                </a>
+                            </td>
+                        </tr>
+                    <? endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Most Played Songs<br><small>in the last month</small></h2>
+            </div>
+            <div class="table-responsive">
+                <table class="datatable table-striped table-condensed table-nopadding">
+                    <colgroup>
+                        <col width="20%">
+                        <col width="80%">
+                    </colgroup>
+                    <tbody>
+                    <? foreach($song_totals['played'] as $song_row): ?>
+                        <tr>
+                            <td class="center"><?=$song_row['records'] ?></td>
+                            <td>
+                            <? if ($song_row['song']['title']): ?>
+                                <b><?=$song_row['song']['title'] ?></b><br>
+                                <?=$song_row['song']['artist'] ?>
+                            <? else: ?>
+                                <?=$song_row['song']['text'] ?>
+                            <? endif; ?>
+                            </td>
+                        </tr>
+                    <? endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>

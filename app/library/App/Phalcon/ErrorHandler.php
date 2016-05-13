@@ -45,7 +45,9 @@ class ErrorHandler
                 $view->disable();
             }
 
-            $view = \App\Phalcon\View::getView(array());
+            $view = \App\Phalcon\View::getView(array(), $di);
+            $view->setLayout('minimal');
+
             $result = $view->getRender('error', 'pagenotfound');
 
             $response = $di['response'];
@@ -107,7 +109,8 @@ class ErrorHandler
             }
             else
             {
-                $view = \App\Phalcon\View::getView(array());
+                $view = \App\Phalcon\View::getView(array(), $di);
+                $view->setLayout('minimal');
 
                 $view->setVar('exception', $e);
 

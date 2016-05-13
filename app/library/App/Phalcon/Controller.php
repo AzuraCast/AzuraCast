@@ -413,17 +413,21 @@ class Controller extends \Phalcon\Mvc\Controller
 
     protected function renderForm(\App\Form $form, $mode = 'edit', $form_title = NULL)
     {
-        $this->view->hide_title = false;
-        $this->view->setViewsDir(APP_INCLUDE_BASE.'/modules/frontend/views/scripts/');
+        $view_vars = $this->view->getParamsToView();
+        $this->view->disable();
 
-        // Show visible title.
+        $view = \App\Phalcon\View::getView(array(), $this->di);
+
         if ($form_title)
-            $this->view->title = $form_title;
+            $view->title = $form_title;
 
-        $this->view->form = $form;
-        $this->view->render_mode = $mode;
+        $view->setVars($view_vars);
+        $view->form = $form;
+        $view->render_mode = $mode;
 
-        return $this->view->pick('system/form');
+        $result = $view->getRender('system', 'form');
+        $this->response->setContent($result);
+        return $this->response->send();
     }
 
     /* Parameter Handling */

@@ -61,7 +61,6 @@ header("Content-type: text/html; charset=utf-8");
 <body class="<?=$page_class ?> <? if (!empty($station)): ?>toggled sw-toggled<? endif; ?>">
 <header id="header" class="clearfix" data-current-skin="blue">
     <ul class="header-inner">
-        <!--
         <? if (!empty($station)): ?>
         <li id="menu-trigger" data-trigger="#sidebar">
             <div class="line-wrap">
@@ -71,22 +70,15 @@ header("Content-type: text/html; charset=utf-8");
             </div>
         </li>
         <? endif; ?>
-        -->
 
-        <li class="logo hidden-xs">
-            <a href="<?=$this->url->get('') ?>"><strong><?=$this->config->application->name ?></strong> alpha</a>
+        <li class="logo">
+            <a href="<?=$this->url->get('') ?>">
+                <strong><?=$this->config->application->name ?></strong> alpha
+            </a>
         </li>
 
         <li class="pull-right">
             <ul class="top-menu">
-                <!--
-                <li id="toggle-width">
-                    <div class="toggle-switch">
-                        <input id="tw-switch" type="checkbox" hidden="hidden">
-                        <label for="tw-switch" class="ts-helper"></label>
-                    </div>
-                </li>
-                -->
 
                 <li id="top-search">
                     <a href=""><i class="tm-icon zmdi zmdi-search"></i></a>
@@ -141,52 +133,12 @@ header("Content-type: text/html; charset=utf-8");
         </div>
 
         <ul class="main-menu">
-            <? /*
-            <div class="well">
-                <h4>Network Tools</h4>
-                <ul class="nav nav-list">
-                    <!-- Universal for all stations -->
-
-                </ul>
-
-                <? if ($station['category'] != 'video'): ?>
-                    <h4>Song Database</h4>
-                    <ul class="nav nav-list">
-                        <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'songs', 'action' => 'index')) ?>" title="Browse all songs in the PVL song directory."><i class="icon-music"></i> Search Song Directory</a></li>
-                        <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'songs', 'action' => 'new')) ?>" title="View songs that have been recently submitted to music databases."><i class="icon-asterisk"></i> New Songs This Week</a></li>
-                    </ul>
-
-                    <h4>Artist Interaction</h4>
-                    <ul class="nav nav-list">
-                        <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'artists', 'action' => 'all')) ?>" title="View the full list of artists who have agreed to (or otherwise limited) usage of their creations or interviews with them by the PVL network."><i class="icon-star"></i> Artist Licenses &amp; Interviews</a></li>
-                        <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'artists', 'action' => 'copyright')) ?>"><i class="icon-group"></i> Fully Licensed Artists</a></li>
-                    </ul>
-
-                    <? if ($station['requests_enabled'] == 1 && $station['requests_ccast_username']): ?>
-                        <h4>CentovaCast</h4>
-                        <ul class="nav nav-list">
-                            <li><a href="http://radio.ponyvillelive.com:2199/" target="_blank"><i class="icon-external-link-sign"></i> CentovaCast Console</a></li>
-                            <li><a href="<?=$this->viewHelper->routeFromHere(array('controller' => 'centova', 'action' => 'tracks')) ?>"><i class="icon-download"></i> CentovaCast Track Report (CSV)</a></li>
-                        </ul>
-                    <? endif; ?>
-                <? endif; ?>
-
-                <h4>Shortcuts</h4>
-                <ul class="nav nav-list">
-                    <li><a href="<?=$this->viewHelper->route(array('module' => 'default', 'controller' => 'convention', 'action' => 'signup')) ?>" title="Send this form to your station staff if they are interested in attending conventions as PVL press members."><i class="icon-building"></i> Convention Sign-up Form</a></li>
-                    <li><a href="<?=$this->viewHelper->route(array('controller' => 'widget', 'action' => 'index')) ?>"><i class="icon-cogs"></i> Radio Player Embed Instructions</a></li>
-                    <li><a href="//www.ponyvillelive.com/resources/brand_package.zip"><i class="icon-download-alt"></i> PVL Network Logos &amp; Branding Kit</a></li>
-                    <li><a href="http://hosting.ponyvillelive.com:8443/" target="_blank"><i class="icon-external-link-sign"></i> Plesk Web Hosting Manager</a></li>
-                </ul>
-            </div>
-            */ ?>
-
-            <li><a href="<?=$this->url->route(['module' => 'stations', 'id' => $station->id]) ?>"><i class="zmdi zmdi-home"></i> Home</a></li>
+            <li><a href="<?=$this->url->route(['module' => 'stations', 'station' => $station->id]) ?>"><i class="zmdi zmdi-home"></i> Home</a></li>
             <li class="sub-menu">
                 <a href=""><i class="zmdi zmdi-settings"></i> Management</a>
 
                 <ul>
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'profile', 'id' => $station->id]) ?>">Station Profile</a></li>
+                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'profile', 'station' => $station->id]) ?>">Station Profile</a></li>
                 </ul>
             </li>
 
@@ -198,7 +150,7 @@ header("Content-type: text/html; charset=utf-8");
                 <a href=""><i class="zmdi zmdi-assignment"></i> Reports</a>
 
                 <ul>
-                    <li><a href="<?=$this->viewHelper->routeFromHere(array('action' => 'timeline')) ?>" title="View the entire playback history of your station over the last 48 hours, along with the rise and fall of listener counts and special events."><i class="icon-time"></i> Song Playback Timeline</a></li>
+                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'index', 'action' => 'timeline', 'station' => $station->id]) ?>" title="View the entire playback history of your station over the last 48 hours, along with the rise and fall of listener counts and special events."><i class="icon-time"></i> Song Playback Timeline</a></li>
                 </ul>
             </li>
         </ul>

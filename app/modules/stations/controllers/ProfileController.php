@@ -31,18 +31,20 @@ class ProfileController extends BaseController
         {
             $data = $form->getValues();
 
+            /*
             $files = $form->processFiles('stations');
             foreach($files as $file_field => $file_paths)
                 $data[$file_field] = $file_paths[1];
+            */
 
             $this->station->fromArray($data);
             $this->station->save();
 
             // Clear station cache.
-            \App\Cache::remove('stations');
+            $cache = $this->di->get('cache');
+            $cache->remove('stations');
 
-            $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
-            return;
+            return $this->redirectFromHere(array('action' => 'index'));
         }
 
         return $this->renderForm($form, 'edit', 'Edit Station Profile');

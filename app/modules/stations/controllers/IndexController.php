@@ -176,7 +176,10 @@ class IndexController extends BaseController
 
         // Get current events within threshold.
         $threshold = $songs_played_raw[0]['timestamp'];
+
+        /*
         $events = \Entity\Schedule::getEventsInRange($this->station->id, $threshold, time());
+        */
 
         $songs = array();
 
@@ -201,6 +204,7 @@ class IndexController extends BaseController
 
             $song_row['stat_delta'] = $song_row['stat_end'] - $song_row['stat_start'];
 
+            /*
             foreach($events as $event)
             {
                 if ($event['end_time'] >= $start_timestamp && $event['start_time'] <= $end_timestamp)
@@ -209,6 +213,7 @@ class IndexController extends BaseController
                     break;
                 }
             }
+            */
 
             $songs[] = $song_row;
         }

@@ -41,7 +41,7 @@ class SetupController extends BaseController
             return $this->redirectFromHere(['action' => $current_step]);
 
         // Create first account form.
-        $this->view->setTemplateAfter('minimal');
+        $this->view->setLayout('minimal');
 
         $form = new \App\Form($this->current_module_config->forms->register);
         

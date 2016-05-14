@@ -4,6 +4,36 @@ function sedeasy {
   sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
 }
 
+apt-get update
+apt-get install pwgen
+
+# Create user.
+useradd -d /var/azuracast -m azuracast
+
+# Switch user's shell to bash.
+chsh -s /bin/bash azuracast
+
+if [ $app_env = "development" ]; then
+    export user_pw=azuracast
+else
+    export user_pw=$(pwgen 8 -sn 1)
+fi
+
+echo azuracast:$user_pw | chpasswd
+
+echo 'azuracast ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+
+export icecast_pw_source=$(pwgen 8 -sn 1)
+
+# Update Vagrant account permissions.
+usermod -G azuracast www-data
+usermod -G azuracast nobody
+usermod -G www-data azuracast
+
+if [ $app_env = "development" ]; then
+    usermod -G azuracast vagrant
+fi
+
 # Copy sample files.
 if [ ! -f $www_base/app/config/apis.conf.php ]; then
 	cp $www_base/app/config/apis.conf.sample.php $www_base/app/config/apis.conf.php
@@ -44,7 +74,7 @@ service influxdb start
 ln -s /usr/bin/nodejs /usr/bin/node
 
 # Set up environment.
-echo $app_env > $app_base/app/.env
+echo $app_env > $www_base/app/.env
 
 echo "Creating temporary folders..."
 mkdir -p $tmp_base
@@ -89,7 +119,7 @@ service mysql restart
 
 # Preconfigure databases
 cd $www_base/util
-curl -X POST "http://localhost:8086/cluster/database_configs/stations?u=root&p=root" --data-binary @influx_stations.json
+curl -s -X POST "http://localhost:8086/cluster/database_configs/stations?u=root&p=root" --data-binary @influx_stations.json
 
 # Enable PHP flags.
 sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i /etc/php5/fpm/php.ini
@@ -109,7 +139,7 @@ mv composer.phar /usr/local/bin/composer
 # Install node.js and dependencies
 if [ $app_env = "development" ]; then
     mkdir -p /var/azuracast/build
-    chown -R vagrant:www-data /var/azuracast/build
+    chown -R azuracast:www-data /var/azuracast/build
 
     ln -s $www_base/web/static/gruntfile.js /var/azuracast/build/gruntfile.js
     ln -s $www_base/web/static/package.json /var/azuracast/build/package.json
@@ -122,6 +152,11 @@ fi
 
 # Mark deployment as run.
 touch $app_base/.deploy_run
+
+# Create stations directory
+mkdir $app_base/stations
+chmod -R 777 $app_base/stations
+chown -R azuracast:www-data $app_base/stations
 
 # Run Composer.js
 cd $www_base
@@ -155,3 +190,23 @@ crontab -u vagrant $www_base/util/vagrant_cron
 
 service cron start
 service nginx start
+
+# Echo success message
+if [ $app_env = "development" ]; then
+    echo "One-time setup complete!"
+    echo "Complete remaining setup steps at http://localhost:8080"
+else
+    export external_ip = `dig +short myip.opendns.com @resolver1.opendns.com`
+    echo "Base installation complete!"
+    echo "Continue setup at http://$external_ip:8080"
+fi
+
+# Echo account credentials
+echo " "
+echo "-- SSH Instructions --"
+echo "Username: azuracast"
+echo "Password: $user_pw"
+echo " "
+echo "-- MySQL --"
+echo "Username: root"
+echo "Password: $mysql_pw"

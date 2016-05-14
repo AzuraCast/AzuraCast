@@ -1,4 +1,4 @@
-user vagrant;
+user azuracast;
 worker_processes 4;
 pid /run/nginx.pid;
 

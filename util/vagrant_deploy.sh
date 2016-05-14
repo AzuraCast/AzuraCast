@@ -47,10 +47,3 @@ chmod a+x ./install_app.sh
 
 ./install_radio.sh
 ./install_app.sh
-
-#
-# Post-installer messages
-#
-
-echo "One-time setup complete!"
-echo "Complete remaining setup steps at http://localhost:8080"

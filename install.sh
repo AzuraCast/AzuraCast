@@ -13,7 +13,3 @@ chmod a+x ./install_app.sh
 
 ./install_radio.sh
 ./install_app.sh
-
-export external_ip = `dig +short myip.opendns.com @resolver1.opendns.com`
-echo "Base installation complete!"
-echo "Continue setup at http://$external_ip:8080"

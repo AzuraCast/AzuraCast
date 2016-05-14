@@ -29,7 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 80, host: 8080
   config.vm.network :forwarded_port, guest: 8000, host: 8088
 
-  config.vm.synced_folder ".", "/var/azuracast/www", create: true, user: "root", group: "www-data"
+  config.vm.synced_folder ".", "/var/azuracast/www", create: true, user: "azuracast", group: "www-data"
   config.vm.synced_folder ".", "/vagrant"
 
   config.vm.provision "shell" do |s|

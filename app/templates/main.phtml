@@ -139,11 +139,18 @@ header("Content-type: text/html; charset=utf-8");
 
                 <ul>
                     <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'profile', 'station' => $station->id]) ?>">Station Profile</a></li>
+
+                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'restart', 'station' => $station->id]) ?>">Restart Broadcasting</a></li>
                 </ul>
             </li>
 
             <li class="sub-menu">
                 <a href=""><i class="zmdi zmdi-collection-music"></i> Media</a>
+
+                <ul>
+                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'files', 'station' => $station->id]) ?>">Music Files</a></li>
+                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'playlists', 'station' => $station->id]) ?>">Playlists</a></li>
+                </ul>
             </li>
 
             <li class="sub-menu">

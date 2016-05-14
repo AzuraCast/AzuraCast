@@ -1,15 +1,6 @@
 <?
 $title = 'Recent Playback Timeline';
-$manual = true;
-
-echo $this->viewHelper->renderHere('header', true, array('title' => $title));
 ?>
-
-<ul class="nav nav-tabs autoselect" rel="<?=$stream_id ?>">
-<? foreach($station->streams as $stream): ?>
-    <li rel="<?=$stream->id ?>"><a href="<?=$this->viewHelper->routeFromHere(array('stream' => $stream->id, 'page' => NULL)) ?>"><? if ($stream->is_default): ?><i class="icon-star"></i> <? endif; ?><?=$stream->name ?></a></li>
-<? endforeach; ?>
-</ul>
 
 <div class="buttons">
     <?=$this->viewHelper->button(array(

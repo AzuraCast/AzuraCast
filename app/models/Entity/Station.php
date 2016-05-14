@@ -41,6 +41,7 @@ class Station extends \App\Doctrine\Entity
 
     /**
      * @return \App\RadioFrontend\AdapterAbstract
+     * @throws \Exception
      */
     public function getFrontendAdapter()
     {
@@ -58,6 +59,7 @@ class Station extends \App\Doctrine\Entity
 
     /**
      * @return \App\RadioBackend\AdapterAbstract
+     * @throws \Exception
      */
     public function getBackendAdapter()
     {
@@ -96,10 +98,10 @@ class Station extends \App\Doctrine\Entity
     {
         if ($new_dir != $this->radio_base_dir)
         {
-            @mkdir($this->radio_base_dir.'/playlists');
-            @mkdir($this->radio_base_dir.'/media');
+            $this->radio_base_dir = $new_dir;
 
-            $this->radio_base_dir;
+            @mkdir($this->radio_base_dir.'/playlists', 0777, TRUE);
+            @mkdir($this->radio_base_dir.'/media', 0777, TRUE);
         }
     }
 
@@ -168,7 +170,7 @@ class Station extends \App\Doctrine\Entity
 
     public static function getStationShortName($name)
     {
-        return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', $name)));
+        return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', trim($name))));
     }
 
     public static function getStationClassName($name)

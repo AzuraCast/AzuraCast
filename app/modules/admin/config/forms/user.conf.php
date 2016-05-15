@@ -11,10 +11,6 @@ return array(
         'method'        => 'post',
         'elements'      => array(
             
-            'name'      => array('text', array(
-                'label' => 'Name',
-            )),
-            
             'email' => array('text', array(
                 'label' => 'E-mail Address (Username)',
                 'validators' => array('EmailAddress'),

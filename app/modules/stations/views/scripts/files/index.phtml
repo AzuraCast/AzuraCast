@@ -255,6 +255,7 @@ $(function() {
     function list() {
         var hashval = window.location.hash.substr(1);
         $.get('<?=$this->url->routeFromHere(['action' => 'list']) ?>',{'file':hashval},function(data) {
+            $('#file-check-all').prop('checked', false);
             $tbody.empty();
             $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
             

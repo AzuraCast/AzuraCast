@@ -1,9 +1,7 @@
 <?php
 namespace Modules\Api\Controllers;
 
-use \Entity\Station;
-use \Entity\Song;
-use \Entity\Schedule;
+use Entity\Settings;
 
 class NowplayingController extends BaseController
 {
@@ -12,13 +10,10 @@ class NowplayingController extends BaseController
         $this->setCacheLifetime(15);
 
         // Pull from cache, or load from flatfile otherwise.
-        $np = \App\Cache::get('api_nowplaying_data', function() {
-            $file_path_api = \App\Service\AmazonS3::path('api/nowplaying_api.json');
-            $np_raw = file_get_contents($file_path_api);
-
-            $np_arr = @json_decode($np_raw, TRUE);
-            $np = $np_arr['result'];
-            return $np;
+        $cache = $this->di->get('cache');
+        
+        $np = $cache->get('api_nowplaying_data', function() {
+            return Settings::getSetting('nowplaying');
         });
 
         // Sanity check for now playing data.

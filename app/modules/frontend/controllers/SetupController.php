@@ -108,6 +108,9 @@ class SetupController extends BaseController
             $station_dir = $station_base_dir.'/'.$station->getShortName();
             $station->radio_base_dir = $station_dir;
 
+            // Generate station ID.
+            $station->save();
+
             // Load configuration from adapter to pull source and admin PWs.
             $frontend_adapter = $station->getFrontendAdapter();
             $frontend_adapter->read();
@@ -146,16 +149,12 @@ class SetupController extends BaseController
         {
             $data = $form->getValues();
 
-            foreach($data as $key => $value)
-            {
-                Settings::setSetting($key, $value);
-            }
+            // Mark setup as complete along with other settings changes.
+            $data['setup_complete'] = time();
 
-            Settings::clearCache();
+            Settings::setSettings($data);
 
-            // Mark setup as complete, notify the user and redirect to homepage.
-            Settings::setSetting('setup_complete', time());
-
+            // Notify the user and redirect to homepage.
             $this->alert('<b>Setup is now complete!</b><br>Continue setting up your station in the main AzuraCast app.', 'green');
             return $this->redirectHome();
         }

@@ -66,7 +66,7 @@ foreach($stations as $station)
                     </thead>
                     <tbody>
                     <? foreach($stations as $row): ?>
-                        <tr style="vertical-align: middle;">
+                        <tr id="station_<?=$row->id ?>" style="vertical-align: middle;">
                             <td>&nbsp;</td>
                             <td>
                                 <big><?=$row->name ?></big>
@@ -170,5 +170,22 @@ $(function () {
 
         series: <?=$metrics['station'] ?>
     });
+});
+
+function nowPlaying() {
+    $.getJSON('<?=$this->url->route(['module' => 'api', 'controller' => 'nowplaying']) ?>', {}, function(data) {
+        $.each(data.result, function(i, row) {
+            var station_row = $('#station_'+row.station.id);
+
+            station_row.find('.nowplaying-title').text(row.current_song.title);
+            station_row.find('.nowplaying-artist').text(row.current_song.artist);
+        });
+
+        setTimeout('nowPlaying()', 30*1000);
+    });
+}
+
+$(function() {
+    nowPlaying();
 });
 </script>

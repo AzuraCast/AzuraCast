@@ -1,113 +1,111 @@
 <?
 $title = 'Manage Permissions';
-$manual = TRUE;
+$manual = true;
 ?>
+<div class="block-header">
+    <h2>Manage Permissions</h2>
+</div>
 
-<div class="row-fluid">
-    <div class="span6">
-        <div class="floating">
-            <h2>Roles</h2>
-
-            <div class="buttons btn-group">
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'large success',
-                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'editrole')),
-                    'icon'      => 'icon-plus-sign',
-                    'text'      => 'Add Role',
-                )) ?>
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'large',
-                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'rolemembers')),
-                    'icon'      => 'icon-user',
-                    'text'      => 'Members',
-                )) ?>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Roles</h2>
+                <a class="btn bgm-blue btn-float" href="<?=$this->url->routeFromHere(array('action' => 'editrole')) ?>"><i class="zmdi zmdi-plus"></i></a>
             </div>
-
-            <table class="table table-striped">
-                <colgroup>
-                    <col width="40%" />
-                    <col width="60%" />
-                </colgroup>
-                <tbody>
-                <? foreach($roles as $role): ?>
-                    <tr class="input">
-                        <td class="center">
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'small',
-                                'icon'      => 'icon-pencil',
-                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])),
-                                'text'      => 'Edit',
-                            )) ?>
-                        <? if( $role['id'] != 1 ): ?>
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'small',
-                                'icon'      => 'icon-trash',
-                                'class'     => 'danger confirm-delete',
-                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'])),
-                                'text'      => 'Delete',
-                            )) ?>
-                        <? else: ?>
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'small',
-                                'icon'      => 'icon-trash',
-                                'class'     => 'disabled',
-                                'href'      => 'javascript:;',
-                                'onclick'   => 'alert(\'This role is the super administrator and cannot be deleted.\'); return false;',
-                                'text'      => 'Delete',
-                            )) ?>
-                        <? endif; ?>
-                        </td>
-                        <td align="left"><?=$role['name'] ?></td>
-                    </tr>
-                <? endforeach; ?>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <colgroup>
+                        <col width="40%" />
+                        <col width="60%" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>Role Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <? foreach($roles as $role): ?>
+                        <tr class="input">
+                            <td class="center">
+                                <?=$this->viewHelper->button(array(
+                                    'type'      => 'small',
+                                    'icon'      => 'icon-pencil',
+                                    'class'     => 'btn-primary',
+                                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])),
+                                    'text'      => 'Edit',
+                                )) ?>
+                                <? if( $role['id'] != 1 ): ?>
+                                    <?=$this->viewHelper->button(array(
+                                        'type'      => 'small',
+                                        'icon'      => 'icon-trash',
+                                        'class'     => 'btn-danger confirm-delete',
+                                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'])),
+                                        'text'      => 'Delete',
+                                    )) ?>
+                                <? else: ?>
+                                    <?=$this->viewHelper->button(array(
+                                        'type'      => 'small',
+                                        'icon'      => 'icon-trash',
+                                        'class'     => 'btn-danger disabled',
+                                        'href'      => 'javascript:;',
+                                        'onclick'   => 'alert(\'This role is the super administrator and cannot be deleted.\'); return false;',
+                                        'text'      => 'Delete',
+                                    )) ?>
+                                <? endif; ?>
+                            </td>
+                            <td align="left"><?=$role['name'] ?></td>
+                        </tr>
+                    <? endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <div class="span6">
-        <div class="floating">
-            <h2>Actions</h2>
-
-            <div class="buttons">
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'link',
-                    'class'     => 'large success',
-                    'href'      => $this->viewHelper->route(array('module' => 'admin', 'controller' => 'permissions', 'action' => 'editaction')),
-                    'icon'      => 'icon-plus-sign',
-                    'text'      => 'Add Action',
-                )) ?>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Actions</h2>
+                <a class="btn bgm-blue btn-float" href="<?=$this->url->routeFromHere(array('action' => 'editaction')) ?>"><i class="zmdi zmdi-plus"></i></a>
             </div>
-
-            <table class="table table-striped">
-                <colgroup>
-                    <col width="40%" />
-                    <col width="60%" />
-                </colgroup>
-                <tbody>
-                <? foreach($actions as $action): ?>
-                    <tr class="input">
-                        <td class="center">
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'small',
-                                'icon'      => 'icon-pencil',
-                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])),
-                                'text'      => 'Edit',
-                            )) ?>
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'small',
-                                'icon'      => 'icon-trash',
-                                'class'     => 'danger confirm-delete',
-                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'])),
-                                'text'      => 'Delete',
-                            )) ?>
-                        </td>
-                        <td align="left"><?=$action['name'] ?></td>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <colgroup>
+                        <col width="40%" />
+                        <col width="60%" />
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Action Name</th>
                     </tr>
-                <? endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <? foreach($actions as $action): ?>
+                        <tr class="input">
+                            <td class="center">
+                                <?=$this->viewHelper->button(array(
+                                    'type'      => 'small',
+                                    'icon'      => 'icon-pencil',
+                                    'class'     => 'btn-primary',
+                                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])),
+                                    'text'      => 'Edit',
+                                )) ?>
+                                <?=$this->viewHelper->button(array(
+                                    'type'      => 'small',
+                                    'icon'      => 'icon-trash',
+                                    'class'     => 'btn-danger confirm-delete',
+                                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'])),
+                                    'text'      => 'Delete',
+                                )) ?>
+                            </td>
+                            <td align="left"><?=$action['name'] ?></td>
+                        </tr>
+                    <? endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

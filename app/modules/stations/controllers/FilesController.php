@@ -179,7 +179,10 @@ class FilesController extends BaseController
                     foreach($music_files as $file)
                     {
                         $media = StationMedia::getOrCreate($this->station, $file);
-                        $media->playlists->add($playlist);
+
+                        if (!$media->playlists->contains($playlist))
+                            $media->playlists->add($playlist);
+
                         $this->em->persist($media);
                     }
 

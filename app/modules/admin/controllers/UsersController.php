@@ -32,7 +32,7 @@ class UsersController extends BaseController
 
     public function editAction()
     {
-        $form = new \App\Form($this->current_module_config->forms->user_edit->form);
+        $form = new \App\Form($this->current_module_config->forms->user->form);
         
         if ($this->hasParam('id'))
         {

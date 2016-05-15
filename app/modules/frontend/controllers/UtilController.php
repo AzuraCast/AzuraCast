@@ -3,6 +3,7 @@ namespace Modules\Frontend\Controllers;
 
 use \App\Debug;
 use \App\Utilities;
+use Entity\StationPlaylist;
 
 class UtilController extends BaseController
 {
@@ -22,7 +23,9 @@ class UtilController extends BaseController
 
         // -------- START HERE -------- //
 
-        \App\Sync\Media::sync();
+        $station = \Entity\Station::find(1);
+        $fe = $station->getFrontendAdapter();
+        $fe->read();
 
         // -------- END HERE -------- //
 

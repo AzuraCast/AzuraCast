@@ -24,15 +24,15 @@ class Paginate extends HelperAbstract
             
             // First page link
             if ($pages['first'] != $pages['current'])
-                $return_string .= '<li class="prev"><a href="'.$url->routeFromHere(array('page' => $pages['first'])).$query_string.'" rel="'.$pages['first'].'">&laquo; First</a></li>';
+                $return_string .= '<li class="prev"><a href="'.$url->routeFromHere(array('page' => $pages['first'])).$query_string.'" rel="'.$pages['first'].'">&laquo;</a></li>';
             else
-                $return_string .= '<li class="prev disabled"><a href="#">&laquo; First</a></li>';
+                $return_string .= '<li class="prev disabled"><a href="#">&laquo;</a></li>';
             
             // Previous page link
             if ($pages['previous'])
-                $return_string .= '<li><a href="'.$url->routeFromHere(array('page' => $pages['previous'])).$query_string.'" rel="'.$pages['previous'].'">&lt; Previous</a></li>';
+                $return_string .= '<li><a href="'.$url->routeFromHere(array('page' => $pages['previous'])).$query_string.'" rel="'.$pages['previous'].'">&lt;</a></li>';
             else
-                $return_string .= '<li class="disabled"><a href="#">&lt; Previous</a></li>';
+                $return_string .= '<li class="disabled"><a href="#">&lt;</a></li>';
             
             // Produce full page range
             foreach($pages['pagesInRange'] as $page)
@@ -45,15 +45,15 @@ class Paginate extends HelperAbstract
             
             // Next page link
             if ($pages['next'])
-                $return_string .= '<li><a href="'.$url->routeFromHere(array('page' => $pages['next'])).$query_string.'" rel="'.$pages['next'].'">Next &gt;</a></li>';
+                $return_string .= '<li><a href="'.$url->routeFromHere(array('page' => $pages['next'])).$query_string.'" rel="'.$pages['next'].'">&gt;</a></li>';
             else
-                $return_string .= '<li class="disabled"><a href="#">Next &gt;</a></li>';
+                $return_string .= '<li class="disabled"><a href="#">&gt;</a></li>';
             
             // Last page link
             if ($pages['last'] != $pages['current'])
-                $return_string .= '<li class="next"><a href="'.$url->routeFromHere(array('page' => $pages['last'])).$query_string.'" rel="'.$pages['last'].'">Last &raquo;</a></li>';
+                $return_string .= '<li class="next"><a href="'.$url->routeFromHere(array('page' => $pages['last'])).$query_string.'" rel="'.$pages['last'].'">&raquo;</a></li>';
             else
-                $return_string .= '<li class="next disabled"><a href="#">Last &raquo;</a></li>';
+                $return_string .= '<li class="next disabled"><a href="#">&raquo;</a></li>';
             
             $return_string .= '</ul></nav>';
         }

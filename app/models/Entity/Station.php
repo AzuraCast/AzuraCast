@@ -148,7 +148,7 @@ class Station extends \App\Doctrine\Entity
         foreach($history as $sh)
         {
             $history = array(
-                'played_at'     => $sh['timestamp'],
+                'played_at'     => $sh['timestamp_start'],
                 'song'          => Song::api($sh['song']),
             );
             $return[] = $history;

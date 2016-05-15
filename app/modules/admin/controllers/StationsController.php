@@ -13,7 +13,7 @@ class StationsController extends BaseController
     
     public function indexAction()
     {
-        $records = $this->em->createQuery('SELECT s, ss FROM Entity\Station s LEFT JOIN s.streams ss ORDER BY s.category ASC, s.weight ASC, s.id ASC')
+        $records = $this->em->createQuery('SELECT s FROM Entity\Station s ORDER BY s.name ASC')
             ->getArrayResult();
 
         $stations_by_category = array();
@@ -58,7 +58,8 @@ class StationsController extends BaseController
             $record->save();
 
             // Clear station cache.
-            \App\Cache::remove('stations');
+            $cache = $this->di->get('cache');
+            $cache->remove('stations');
 
             $this->alert('Changes saved.', 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));

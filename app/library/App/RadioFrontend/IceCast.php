@@ -11,12 +11,17 @@ class IceCast extends AdapterAbstract
         $radio_port = $this->station->radio_port;
 
         $np_url = 'http://localhost:'.$radio_port.'/status-json.xsl';
+
+        \App\Debug::log($np_url);
+
         $return_raw = $this->getUrl($np_url);
 
         if (!$return_raw)
             return false;
 
         $return = @json_decode($return_raw, true);
+
+        \App\Debug::print_r($return);
 
         if (!$return || !isset($return['icestats']['source']))
             return false;
@@ -73,7 +78,7 @@ class IceCast extends AdapterAbstract
     {
         $config = $this->_getConfig();
 
-        $this->station->radio_port = $config['listen_socket']['port'];
+        $this->station->radio_port = $config['listen-socket']['port'];
         $this->station->radio_source_pw = $config['authentication']['source-password'];
         $this->station->radio_admin_pw = $config['authentication']['admin-password'];
 

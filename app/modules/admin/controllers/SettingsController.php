@@ -20,13 +20,8 @@ class SettingsController extends BaseController
         if (!empty($_POST) && $form->isValid($_POST))
         {
             $data = $form->getValues();
-            
-            foreach($data as $key => $value)
-            {
-                Settings::setSetting($key, $value);
-            }
 
-            Settings::clearCache();
+            Settings::setSettings($data);
 
             $this->alert('Settings updated!');
             return $this->redirectHere();

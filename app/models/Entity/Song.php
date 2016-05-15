@@ -168,20 +168,15 @@ class Song extends \App\Doctrine\Entity
     // Retrieve the API version of the object/array.
     public static function api($row)
     {
-        if ($row instanceof self)
-            $row = $row->toArray();
-
         return array(
             'id'        => $row['id'],
             'text'      => $row['text'],
             'artist'    => $row['artist'],
             'title'     => $row['title'],
-
-            'image_url' => $row['image_url'],
+            
             'created'   => (int)$row['created'],
             'play_count' => (int)$row['play_count'],
             'last_played' => (int)$row['last_played'],
-            'score'     => (int)$row['score'],
         );
     }
 }

@@ -1,23 +1,85 @@
 <?
 $title = 'Manage Users';
+$manual = true;
 ?>
 
-<div class="buttons">
-    <?=$this->viewHelper->button(array(
-        'type'      => 'link',
-        'class'     => 'success',
-        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
-        'icon'      => 'icon-plus-sign',
-        'text'      => 'Add New User',
-    )) ?>
+<div class="block-header">
+    <h2>Manage Users</h2>
 </div>
 
-<? if ($q): ?>
-    <h2>Search Results for "<?=$q ?>"</h2>
-<? else: ?>
-    <h2>View All Users</h2>
-<? endif; ?>
+<div class="card">
+    <div class="card-header ch-alt">
+        <? if ($q): ?>
+            <h2>Search Results for "<?=$q ?>"</h2>
+        <? else: ?>
+            <h2>All Users</h2>
+        <? endif; ?>
 
+        <a class="btn bgm-blue btn-float" href="<?=$this->url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
+    </div>
+    <div id="data-table-basic-header" class="bootgrid-header container-fluid">
+        <?=$this->viewHelper->paginate($pager) ?>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="30%">
+                <col width="40%">
+                <col width="30%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Actions</th>
+                <th>E-mail Address</th>
+                <th>Roles</th>
+            </tr>
+            </thead>
+            <tbody>
+            <? foreach($pager as $user): ?>
+                <tr class="input">
+                    <td>
+                        <?=$this->viewHelper->button(array(
+                            'type'      => 'small',
+                            'class'     => 'btn-primary',
+                            'href'      => $this->viewHelper->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)),
+                            'icon'      => 'key_go',
+                            'text'      => 'Log In',
+                        )) ?>
+                        <?=$this->viewHelper->button(array(
+                            'type'      => 'small',
+                            'class'     => 'btn-primary',
+                            'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $user->id)),
+                            'icon'      => 'pencil',
+                            'text'      => 'Edit',
+                        )) ?>
+                        <?=$this->viewHelper->button(array(
+                            'type'      => 'small',
+                            'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $user->id)),
+                            'class'     => 'btn-danger confirm-delete',
+                            'icon'      => 'delete',
+                            'text'      => 'Delete',
+                        )) ?>
+                    </td>
+                    <td><?=$this->viewHelper->mailto($user->email) ?></td>
+                    <td>
+                        <small>
+                            <?
+                            if (count($user->roles) > 0)
+                            {
+                                foreach($user->roles as $role)
+                                    echo '<div>'.$role->name.'</div>';
+                            }
+                            ?>
+                        </small>
+                    </td>
+                </tr>
+            <? endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--
 <form class="form-search" action="<?=$this->viewHelper->routeFromHere(array('page' => NULL)) ?>" method="get">
     <input type="text" name="q" title="Search terms" placeholder="Search..." class="input-medium span3 search-query" value="<?=$q ?>">
     <?=$this->viewHelper->button(array(
@@ -26,67 +88,5 @@ $title = 'Manage Users';
         'text'      => 'Search Users',
     )) ?>
 </form>
-
 <?=$this->viewHelper->paginate($pager) ?>
-
-<table class="table table-striped" width="100%">
-    <colgroup>
-        <col width="20%">
-        <col width="25%">
-        <col width="25%">
-        <col width="30%">
-    </colgroup>
-    <thead>
-        <tr>
-            <th>Actions</th>
-            <th>Name</th>
-            <th>E-mail Address</th>
-            <th>Roles</th>
-        </tr>
-    </thead>
-    <tbody>
-    <? foreach($pager as $user): ?>
-        <tr class="input">
-            <td>
-                <div class="btn-group">
-                    <?=$this->viewHelper->button(array(
-                        'type'      => 'small',
-                        'class'     => 'primary',
-                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)),
-                        'icon'      => 'key_go',
-                        'text'      => 'Log In',
-                    )) ?>
-                    <?=$this->viewHelper->button(array(
-                        'type'      => 'small',
-                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $user->id)),
-                        'icon'      => 'pencil',
-                        'text'      => 'Edit',
-                    )) ?>
-                    <?=$this->viewHelper->button(array(
-                        'type'      => 'small',
-                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $user->id)),
-                        'class'     => 'danger confirm-delete',
-                        'icon'      => 'delete',
-                        'text'      => 'Delete',
-                    )) ?>
-                </div>
-            </td>
-            <td><big><?=$user->name ?></big></td>
-            <td><?=$this->viewHelper->mailto($user->email) ?></td>
-            <td>
-                <small>
-                <?
-                if (count($user->roles) > 0)
-                {
-                    foreach($user->roles as $role)
-                        echo '<div>'.$role->name.'</div>';
-                }
-                ?>
-                </small>
-            </td>
-        </tr>
-    <? endforeach; ?>
-    </tbody>
-</table>
-
-<?=$this->viewHelper->paginate($pager) ?>
+-->

@@ -61,8 +61,8 @@ class NowPlaying
         {
             Debug::startTimer($station->name);
 
-            $name = $station->short_name;
-            $nowplaying[$name] = self::processStation($station);
+            // $name = $station->short_name;
+            $nowplaying[] = self::processStation($station);
 
             Debug::endTimer($station->name);
             Debug::divider();
@@ -84,14 +84,7 @@ class NowPlaying
         $np_old = (array)$station->nowplaying_data;
 
         $np = array();
-        $np['status'] = 'offline';
         $np['station'] = Station::api($station);
-
-        $listener_totals = array(
-            'current' => 0,
-            'unique' => 0,
-            'total' => 0,
-        );
 
         $frontend_adapter = $station->getFrontendAdapter();
         $np_new = $frontend_adapter->getNowPlaying();
@@ -107,7 +100,7 @@ class NowPlaying
             $np['current_song'] = $np_old['current_song'];
             $np['song_history'] = $np_old['song_history'];
         }
-        else if (empty($stream_np['current_song']['text']))
+        else if (empty($np['current_song']['text']))
         {
             $np['current_song'] = array();
             $np['song_history'] = $station->getRecentHistory();

@@ -23,7 +23,15 @@ class Settings extends \App\Doctrine\Entity
      * Static Functions
      */
     
-    public static function setSetting($key, $value, $flush_cache = false)
+    public static function setSettings($settings)
+    {
+        foreach($settings as $setting_key => $setting_value)
+            self::setSetting($setting_key, $setting_value, false);
+
+        self::clearCache();
+    }
+    
+    public static function setSetting($key, $value, $flush_cache = true)
     {
         $record = self::getRepository()->findOneBy(array('setting_key' => $key));
         

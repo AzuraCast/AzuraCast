@@ -22,12 +22,7 @@ class UtilController extends BaseController
 
         // -------- START HERE -------- //
 
-        \App\CentovaCast::sync();
-        Debug::log('CCast Sync Complete');
-
-        $station = \Entity\Station::getRepository()->findOneBy(array('name' => 'PonyvilleFM'));
-        $tracks = \App\CentovaCast::fetchTracks($station);
-        Debug::print_r($tracks);
+        \App\Sync\Media::sync();
 
         // -------- END HERE -------- //
 

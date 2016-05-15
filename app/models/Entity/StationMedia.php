@@ -2,10 +2,12 @@
 namespace Entity;
 
 use \Doctrine\Common\Collections\ArrayCollection;
+use \GetId3\GetId3Core as GetId3;
 
 /**
  * @Table(name="station_media", indexes={
- *   @index(name="search_idx", columns={"title", "artist", "album"})
+ *   @index(name="search_idx", columns={"title", "artist", "album"}),
+ *   @index(name="path_idx", columns={"path"})
  * })
  * @Entity
  * @HasLifecycleCallbacks
@@ -16,24 +18,16 @@ class StationMedia extends \App\Doctrine\Entity
     {
         $this->length = 0;
         $this->length_text = '0:00';
+        
+        $this->mtime = 0;
 
         $this->playlists = new ArrayCollection();
-    }
-
-    /** @PrePersist */
-    public function preSave()
-    {
-        $this->song = Song::getOrCreate(array(
-            'text'      => $this->artist.' - '.$this->title,
-            'artist'    => $this->artist,
-            'title'     => $this->title,
-        ));
     }
 
     /**
      * @Column(name="id", type="integer")
      * @Id
-     * @GeneratedValue(strategy="NONE")
+     * @GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
 
@@ -70,6 +64,9 @@ class StationMedia extends \App\Doctrine\Entity
     /** @Column(name="path", type="string", length=255, nullable=true) */
     protected $path;
 
+    /** @Column(name="mtime", type="integer", nullable=true) */
+    protected $mtime;
+
     /**
      * @ManyToOne(targetEntity="Station", inversedBy="media")
      * @JoinColumns({
@@ -87,9 +84,76 @@ class StationMedia extends \App\Doctrine\Entity
     protected $song;
 
     /**
-     * @ManyToMany(targetEntity="StationPlaylist", mappedBy="media")
+     * @ManyToMany(targetEntity="StationPlaylist", inversedBy="playlists")
+     * @JoinTable(name="station_playlist_has_media",
+     *   joinColumns={@JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")},
+     *   inverseJoinColumns={@JoinColumn(name="playlists_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
      */
     protected $playlists;
+
+    /**
+     * Process metadata information from media file.
+     */
+    public function loadFromFile()
+    {
+        if (empty($this->path))
+            return false;
+        
+        $media_base_dir = $this->station->getRadioMediaDir();
+        $media_path = $media_base_dir.'/'.$this->path;
+
+        // Only update metadata if the file has been updated.
+        $media_mtime = filemtime($media_path);
+        if ($media_mtime >= $this->mtime)
+        {
+            // Load metadata from MP3 file.
+            $id3 = new GetId3();
+
+            $file_info = $id3->setOptionMD5Data(true)
+                ->setOptionMD5DataSource(true)
+                ->setEncoding('UTF-8')
+                ->analyze($media_path);
+
+            if (isset($file_info['error']))
+                \App\Debug::log('Error processing file: '.$file_info['error']);
+
+            $this->setLength($file_info['playtime_seconds']);
+
+            if (!empty($file_info['tags']['id3v2']['title'][0]))
+            {
+                $id3_tags = $file_info['tags']['id3v2'];
+
+                $this->title = $id3_tags['title'][0];
+                $this->artist = $id3_tags['artist'][0];
+                $this->album = $id3_tags['album'][0];
+            }
+            elseif (!empty($file_info['tags']['id3v1']['title'][0]))
+            {
+                $id3_tags = $file_info['tags']['id3v1'];
+
+                $this->title = $id3_tags['title'][0];
+                $this->artist = $id3_tags['artist'][0];
+                $this->album = $id3_tags['album'][0];
+            }
+            else
+            {
+                $path_parts = pathinfo($media_path);
+                $this->title = $path_parts['filename'];
+            }
+
+            // Associate song from new record.
+            $this->song = Song::getOrCreate(array(
+                'artist'    => $this->artist,
+                'title'     => $this->title,
+            ));
+            
+            $this->mtime = $media_mtime;
+            return true;
+        }
+        
+        return false;
+    }
 
     /**
      * Static Functions
@@ -129,5 +193,22 @@ class StationMedia extends \App\Doctrine\Entity
         $results = $stmt->fetchAll();
 
         return $results;
+    }
+
+    public static function getOrCreate(Station $station, $path)
+    {
+        $short_path = ltrim(str_replace($station->getRadioMediaDir(), '', $path), '/');
+
+        $record = self::getRepository()->findOneBy(['station_id' => $station->id, 'path' => $short_path]);
+
+        if (!($record instanceof self))
+        {
+            $record = new self;
+            $record->station = $station;
+            $record->path = $short_path;
+        }
+
+        $record->loadFromFile();
+        return $record;
     }
 }

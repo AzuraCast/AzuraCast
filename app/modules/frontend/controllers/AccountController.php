@@ -1,13 +1,21 @@
 <?php
 namespace Modules\Frontend\Controllers;
 
-use \Entity\User;
-use \Entity\UserExternal;
+use Entity\Settings;
+use Entity\User;
 
 class AccountController extends BaseController
 {
     public function init()
     {
+        if (Settings::getSetting('setup_complete', 0) == 0)
+        {
+            $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
+
+            if ($num_users == 0)
+                return $this->redirectToRoute(['module' => 'frontend', 'controller' => 'setup']);
+        }
+
         return null;
     }
 

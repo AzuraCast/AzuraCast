@@ -1,6 +1,6 @@
 {
-  "name": "bravelyblue/pvlive",
-  "description": "The Ponyville Live! primary application.",
+  "name": "slvreagle23/azuracast",
+  "description": "The AzuraCast standalone radio station management tool.",
   "require": {
     "zendframework/zend-paginator": "~2.5",
     "zendframework/zend-feed": "~2.5",
@@ -19,7 +19,7 @@
     "aws/aws-sdk-php": "3.*",
     "phpoffice/phpexcel": "1.8.0",
     "ise/php-soundcloud": "dev-master",
-    "phansys/getid3": "~2.0@beta"
+    "phansys/getid3": "~2.1@dev"
   },
   "require-dev": {
     "phalcon/devtools": "2.0.2@dev"

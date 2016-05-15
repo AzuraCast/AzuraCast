@@ -10,27 +10,64 @@ $page_class = 'page-file-manager';
             <div class="card-header ch-alt">
                 <h2>Music File Manager</h2>
             </div>
+
             <div class="card-body">
-                <form action="?" method="post" id="mkdir" />
-                <label for=dirname>Create New Folder</label><input id=dirname type=text name=name value="" />
-                <input type="submit" value="create" />
-                </form>
+                <div id="breadcrumb" class="breadcrumb m-b-0">&nbsp;</div>
+            </div>
+            <div class="card-body card-padding-sm">
+                <div id="upload_progress"></div>
                 <div id="file_drop_target">
-                    Drag Files Here To Upload
+                    Drag files here to upload to this folder
                     <b>or</b>
                     <input type="file" multiple />
                 </div>
-                <div id="breadcrumb">&nbsp;</div>
+
+                <div class="row p-t-20">
+                    <div class="col-sm-6">
+                        With selected:
+
+                    <? if (!empty($playlists)): ?>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                Add to Playlist
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                            <? foreach($playlists as $playlist_id => $playlist_name): ?>
+                                <li><a href="#" class="btn-batch" data-action="playlist_<?=$playlist_id ?>"><?=$playlist_name ?></a></li>
+                            <? endforeach; ?>
+                            </ul>
+                        </div>
+                    <? endif; ?>
+                        <button type="button" class="btn btn-warning btn-batch" data-action="clear">Clear Playlists</button>
+                        <button type="button" class="btn btn-danger btn-batch" data-action="delete">Delete</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <form method="post" id="mkdir">
+                        <div class="input-group">
+                            <input name="name" type="text" class="form-control" placeholder="New Folder Name" aria-label="...">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default">Create Folder</button>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped" id="file-table">
                     <thead>
                         <tr>
+                            <th class="non-sort">
+                                <div class="checkbox checkbox-inline">
+                                    <input type="checkbox" id="file-check-all" title="Select All" />
+                                    <i class="input-helper"></i>
+                                </div>
+                            </th>
                             <th>Name</th>
                             <th>Size</th>
                             <th>Modified</th>
-                            <th>Permissions</th>
-                            <th>Actions</th>
+                            <th>Playlists</th>
                         </tr>
                     </thead>
                     <tbody id="list"></tbody>
@@ -44,7 +81,7 @@ $page_class = 'page-file-manager';
 (function($){
     $.fn.tablesorter = function() {
         var $table = this;
-        this.find('th').click(function() {
+        this.find('th:not(.non-sort)').click(function() {
             var idx = $(this).index();
             var direction = $(this).hasClass('sort_asc');
             $table.tablesortby(idx,direction);
@@ -98,29 +135,55 @@ $(function() {
 
     $table.tablesorter();
 
-    $('.delete').on('click',function(data) {
-        $.post("", {
-            'do':'delete',
-            file:$(this).attr('data-file'),
-            xsrf:XSRF
-        }, function(response){
-            list();
-        },'json');
-        return false;
-    });
-
-    $('#mkdir').submit(function(e) {
-        var hashval = window.location.hash.substr(1),
-            $dir = $(this).find('[name=name]');
+    // Create new directory
+    $('form#mkdir').submit(function(e) {
         e.preventDefault();
-        $dir.val().length && $.post('?',{'do':'mkdir',name:$dir.val(),xsrf:XSRF,file:hashval},function(data){
+
+        var hashval = window.location.hash.substr(1);
+        var $dir = $(this).find('[name=name]');
+
+        $dir.val().length && $.post('<?=$this->url->routeFromHere(['action' => 'mkdir']) ?>',{
+            name: $dir.val(),
+            xsrf: XSRF,
+            file: hashval
+        },function(data){
             list();
         },'json');
+
         $dir.val('');
         return false;
     });
 
-    // file upload stuff
+    $('.btn-batch').on('click', function(e) {
+        e.preventDefault();
+
+        var hashval = window.location.hash.substr(1);
+
+        var $files = [];
+        $('#file-table').find('tbody input[type=checkbox]:checked').each(function() {
+            $files.push($(this).attr('value'));
+        });
+
+        console.log($files);
+
+        $files.length && $.post('<?=$this->url->routeFromHere(['action' => 'batch']) ?>',{
+            'do': $(this).data('action'),
+            'files': $files.join('|'),
+            'xsrf': XSRF,
+            'file': hashval
+        },function(data){
+            list();
+        },'json');
+
+        return false;
+    });
+
+    $('#file-check-all').on('change', function(e) {
+        var $is_checked = $(this).prop('checked');
+        $('#file-table').find('tbody input[type=checkbox]').prop('checked', $is_checked);
+    });
+
+    // File upload stuff
     $('#file_drop_target').bind('dragover',function(){
         $(this).addClass('drag_over');
         return false;
@@ -134,10 +197,9 @@ $(function() {
             uploadFile(file);
         });
         $(this).removeClass('drag_over');
-    });
-
-    $('input[type=file]').change(function(e) {
+    }).find('input[type=file]').on('change', function(e) {
         e.preventDefault();
+
         $.each(this.files,function(k,file) {
             uploadFile(file);
         });
@@ -161,10 +223,9 @@ $(function() {
         fd.append('file_data',file);
         fd.append('file',folder);
         fd.append('xsrf',XSRF);
-        fd.append('do','upload');
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '?');
+        xhr.open('POST', '<?=$this->url->routeFromHere(['action' => 'upload']) ?>');
         xhr.onload = function() {
             $row.remove();
             list();
@@ -196,38 +257,42 @@ $(function() {
         $.get('<?=$this->url->routeFromHere(['action' => 'list']) ?>',{'file':hashval},function(data) {
             $tbody.empty();
             $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
+            
             if(data.success) {
-                $.each(data.results,function(k,v){
-                    $tbody.append(renderFileRow(v));
-                });
-                !data.results.length && $tbody.append('<tr><td class="empty" colspan=5>This folder is empty</td></tr>')
-                data.is_writable ? $('body').removeClass('no_write') : $('body').addClass('no_write');
+                if (data.results.length) {
+                    $.each(data.results,function(k,v){
+                        $tbody.append(renderFileRow(v));
+                    });
+                } else {
+                    $tbody.append('<tr><td class="empty" colspan="5">This folder is empty</td></tr>');
+                }
             } else {
                 console.warn(data.error.msg);
             }
+
             $('#file-table').retablesort();
         },'json');
     }
 
     function renderFileRow(data) {
+        var $checkbox = $('<div />').addClass('checkbox checkbox-inline')
+            .append('<input type="checkbox" class="file-check" value="'+data.name+'" />')
+            .append('<i class="input-helper"></i>');
+
+        var $icon = '<i class="zmdi zmdi-'+(data.is_dir ? 'folder' : 'file')+'"></i>';
+
         var $link = $('<a class="name" />')
-            .attr('href', data.is_dir ? '#' + data.path : './'+data.path)
+            .attr('href', data.is_dir ? '#' + data.path : '<?=$this->url->routeFromHere(['action' => 'download']) ?>?file='+encodeURIComponent(data.path))
             .text(data.name);
-        var $dl_link = $('<a/>').attr('href','?do=download&file='+encodeURIComponent(data.path))
-            .addClass('download').text('download');
-        var $delete_link = $('<a href="#" />').attr('data-file',data.path).addClass('delete').text('delete');
-        var perms = [];
-        if(data.is_readable) perms.push('read');
-        if(data.is_writable) perms.push('write');
-        if(data.is_executable) perms.push('exec');
+
         var $html = $('<tr />')
-            .addClass(data.is_dir ? 'is_dir' : '')
-            .append( $('<td class="first" />').append($link) )
-            .append( $('<td/>').attr('data-sort',data.is_dir ? -1 : data.size)
+            .addClass(data.is_dir ? 'is_dir' : 'is_file')
+            .append( $('<td />').append($checkbox) )
+            .append( $('<td class="first" />').append($icon).append($link).append('<br><small>'+data.media.name+'</small>') )
+            .append( $('<td/>').data('sort',data.is_dir ? -1 : data.size)
                 .html($('<span class="size" />').text(formatFileSize(data.size))) )
-            .append( $('<td/>').attr('data-sort',data.mtime).text(formatTimestamp(data.mtime)) )
-            .append( $('<td/>').text(perms.join('+')) )
-            .append( $('<td/>').append($dl_link).append( data.is_deleteable ? $delete_link : '') )
+            .append( $('<td/>').data('sort',data.mtime).text(formatTimestamp(data.mtime)) )
+            .append( $('<td/>').text(data.media.playlists.join('<br>')) );
         return $html;
     }
 

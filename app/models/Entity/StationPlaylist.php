@@ -12,7 +12,7 @@ class StationPlaylist extends \App\Doctrine\Entity
 {
     public function __construct()
     {
-        $this->weight = 0;
+        $this->weight = 5;
 
         $this->media = new ArrayCollection;
     }
@@ -26,9 +26,6 @@ class StationPlaylist extends \App\Doctrine\Entity
 
     /** @Column(name="station_id", type="integer") */
     protected $station_id;
-
-    /** @Column(name="song_id", type="string", length=50, nullable=true) */
-    protected $song_id;
 
     /** @Column(name="name", type="string", length=200) */
     protected $name;
@@ -50,11 +47,7 @@ class StationPlaylist extends \App\Doctrine\Entity
     protected $station;
 
     /**
-     * @ManyToMany(targetEntity="StationMedia", inversedBy="playlists")
-     * @JoinTable(name="station_playlist_has_media",
-     *   joinColumns={@JoinColumn(name="playlist_id", referencedColumnName="id", onDelete="CASCADE")},
-     *   inverseJoinColumns={@JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
+     * @ManyToMany(targetEntity="StationMedia", mappedBy="playlists")
      */
     protected $media;
 }

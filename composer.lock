@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "841e74b441d0a4e47cf1432d88c870f4",
-    "content-hash": "647b71127799a1cf31cfa0f3ccec72d5",
+    "hash": "8e84afcf99c4b120bc2d2fad95a66c14",
+    "content-hash": "11cf6db3f52aaec1ca97bf9977da1f67",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1286,18 +1286,20 @@
         },
         {
             "name": "phansys/getid3",
-            "version": "v2.0.0-BETA1",
-            "target-dir": "GetId3",
+            "version": "2.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phansys/GetId3.git",
-                "reference": "ec3847c935d25efc3c0184c691e00399ef9e72f0"
+                "reference": "6d3f04b2781bb3d545fabfc4d1636c9bf5ac03f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phansys/GetId3/zipball/ec3847c935d25efc3c0184c691e00399ef9e72f0",
-                "reference": "ec3847c935d25efc3c0184c691e00399ef9e72f0",
+                "url": "https://api.github.com/repos/phansys/GetId3/zipball/6d3f04b2781bb3d545fabfc4d1636c9bf5ac03f9",
+                "reference": "6d3f04b2781bb3d545fabfc4d1636c9bf5ac03f9",
                 "shasum": ""
+            },
+            "require": {
+                "php": "~5.3"
             },
             "suggest": {
                 "ext-exif": "EXIF extension is required for graphic modules.",
@@ -1305,8 +1307,8 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "GetId3": ""
+                "psr-4": {
+                    "GetId3\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1320,14 +1322,14 @@
                     "homepage": "http://www.getid3.org"
                 }
             ],
-            "description": "This release of GetId3 library updates to PSR-0 CS, add namespaces and makes it Symfony 2.x installable by deps or composer mechanisms.",
+            "description": "This fork of GetId3 library updates to PSR-2 / PSR-4 CS, adds namespaces and makes it installable by composer.",
             "homepage": "http://www.getid3.org",
             "keywords": [
                 "getid3",
                 "metadata",
                 "tags"
             ],
-            "time": "2012-12-04 17:31:30"
+            "time": "2015-06-28 12:06:17"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -1481,7 +1483,7 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.8.5",
+            "version": "v2.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
@@ -2241,7 +2243,7 @@
     "stability-flags": {
         "google/apiclient": 10,
         "ise/php-soundcloud": 20,
-        "phansys/getid3": 10,
+        "phansys/getid3": 20,
         "phalcon/devtools": 20
     },
     "prefer-stable": false,

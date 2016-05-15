@@ -98,7 +98,7 @@ class SongHistory extends \App\Doctrine\Entity
         // Pull the most recent history item for this station.
         $last_sh = $em->createQuery('SELECT sh FROM '.__CLASS__.' sh
             WHERE sh.station_id = :station_id
-            ORDER BY sh.timestamp DESC')
+            ORDER BY sh.timestamp_start DESC')
             ->setParameter('station_id', $station->id)
             ->setMaxResults(1)
             ->getOneOrNullResult();
@@ -174,7 +174,7 @@ class SongHistory extends \App\Doctrine\Entity
 
         $threshold = strtotime('-1 month');
 
-        $em->createQuery('DELETE FROM '.__CLASS__.' sh WHERE sh.timestamp <= :threshold')
+        $em->createQuery('DELETE FROM '.__CLASS__.' sh WHERE sh.timestamp_start <= :threshold')
             ->setParameter('threshold', $threshold)
             ->execute();
 

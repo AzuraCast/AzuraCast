@@ -54,9 +54,6 @@ class Song extends \App\Doctrine\Entity
     /** @Column(name="last_played", type="integer") */
     protected $last_played;
 
-    /** @Column(name="score", type="smallint") */
-    protected $score;
-
     /** 
      * @OneToMany(targetEntity="SongHistory", mappedBy="song")
      * @OrderBy({"timestamp" = "DESC"})
@@ -88,8 +85,10 @@ class Song extends \App\Doctrine\Entity
         // Generate hash.
         if (!empty($song_info['text']))
             $song_text = $song_info['text'];
-        else
+        else if (!empty($song_info['artist']))
             $song_text = $song_info['artist'].' - '.$song_info['title'];
+        else
+            $song_text = $song_info['title'];
 
         $hash_base = strtolower(preg_replace("/[^A-Za-z0-9]/", '', $song_text));
         return md5($hash_base);

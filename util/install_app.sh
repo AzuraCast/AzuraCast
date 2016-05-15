@@ -4,6 +4,10 @@ function sedeasy {
   sed -i "s/$(echo $1 | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo $2 | sed -e 's/[\/&]/\\&/g')/g" $3
 }
 
+function phpuser {
+  sudo -u azuracast php $@
+}
+
 apt-get update
 apt-get install pwgen
 
@@ -83,7 +87,7 @@ mkdir -p $tmp_base/sessions
 mkdir -p $tmp_base/proxies
 
 # Create log files.
-chown -R www-data:www-data $app_base/
+chown -R azuracast:www-data $app_base/
 chmod -R 777 $tmp_base
 
 # Nginx setup.
@@ -124,6 +128,9 @@ curl -s -X POST "http://localhost:8086/cluster/database_configs/stations?u=root&
 # Enable PHP flags.
 sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i /etc/php5/fpm/php.ini
 sed -e '/^[^;]*short_open_tag/s/=.*$/= On/' -i /etc/php5/cli/php.ini
+
+sedeasy "post_max_size = 8M" "post_max_size = 50M" /etc/php5/fpm/php.ini
+sedeasy "upload_max_filesize = 2M" "upload_max_filesize = 25M" /etc/php5/fpm/php.ini
 
 mv /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/www.conf.bak
 cp /vagrant/util/vagrant_phpfpm.conf /etc/php5/fpm/pool.d/www.conf
@@ -171,22 +178,21 @@ echo "Setting up database..."
 
 cd $util_base
 
-php doctrine.php orm:schema-tool:drop --force
+phpuser doctrine.php orm:schema-tool:drop --force
 
-php doctrine.php orm:schema-tool:create
-php cli.php cache:clear
+phpuser doctrine.php orm:schema-tool:create
+phpuser cli.php cache:clear
 
-#echo "Importing external music databases (takes a minute)..."
-#sudo -u vagrant php cli.php sync:long
+echo "Running regular tasks..."
+phpuser cli.php sync:nowplaying
+phpuser cli.php sync:short
+phpuser cli.php sync:medium
+phpuser cli.php sync:long
 
-#echo "Running regular tasks..."
-#sudo -u vagrant php cli.php sync:short
-#sudo -u vagrant php cli.php sync:medium
-#sudo -u vagrant php cli.php sync:nowplaying
 
 # Add cron job
 echo "Installing cron job..."
-crontab -u vagrant $www_base/util/vagrant_cron
+crontab -u azuracast $www_base/util/vagrant_cron
 
 service cron start
 service nginx start

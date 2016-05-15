@@ -1,5 +1,5 @@
-0 */6 * * * php /var/www/vagrant/util/cli.php sync:long
-*/15 * * * * php /var/www/vagrant/util/cli.php sync:medium
-* * * * * php /var/www/vagrant/util/cli.php sync:short
-* * * * * php /var/www/vagrant/util/cli.php sync:nowplaying 1
-* * * * * sleep 30; php /var/www/vagrant/util/cli.php sync:nowplaying 2
+0 */6 * * * php /var/azuracast/www/util/cli.php sync:long
+*/15 * * * * php /var/azuracast/www/util/cli.php sync:medium
+* * * * * php /var/azuracast/www/util/cli.php sync:short
+* * * * * php /var/azuracast/www/util/cli.php sync:nowplaying 1
+* * * * * sleep 30; php /var/azuracast/www/util/cli.php sync:nowplaying 2

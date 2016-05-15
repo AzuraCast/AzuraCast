@@ -25,9 +25,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Disabled for Windows 10 + VirtualBox
-  # config.vm.network "private_network", ip: "192.168.33.120"
+  # config.vm.network "private_network", ip: "192.168.80.80"
+
+  # Web Server
   config.vm.network :forwarded_port, guest: 80, host: 8080
+
+  # InfluxDB
+  config.vm.network :forwarded_port, guest: 8083, host: 8083
+  config.vm.network :forwarded_port, guest: 8086, host: 8086
+
+  # IceCast
   config.vm.network :forwarded_port, guest: 8000, host: 8088
+
+  # MySQL
+  config.vm.network :forwarded_port, guest: 3306, host: 8306
 
   config.vm.synced_folder ".", "/var/azuracast/www", create: true, user: "azuracast", group: "www-data"
   config.vm.synced_folder ".", "/vagrant"

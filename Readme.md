@@ -6,7 +6,7 @@
  
 You can either use AzuraCast to spin up a brand new radio station from the ground up (using its built-in installer scripts), or use the web application to manage an existing radio setup.
 
-Currently, AzuraCast supports [LiquidSoap](http://liquidsoap.fm/) for playlist and station setup, and [IceCast](http://icecast.org/) for broadcasting to the web. AzuraCast has been tested to work with Ubuntu 14.04 and 16.04 LTS editions.
+Currently, AzuraCast supports [LiquidSoap](http://liquidsoap.fm/) for playlist and station setup, and [IceCast](http://icecast.org/) for broadcasting to the web. AzuraCast has been tested to work with Ubuntu 14.04 LTS edition.
 
 AzuraCast offers the following functionality to radio station operators:
 

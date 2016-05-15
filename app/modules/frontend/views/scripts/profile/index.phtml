@@ -1,113 +1,15 @@
 <?
-$title = ('My Profile');
+$title = 'My Profile';
 ?>
 
-<div class="row-fluid">
-    <div class="span4">
-        <div class="buttons pull-right">
-            <?=$this->viewHelper->button(array(
-                'type'      => 'small',
-                'class'     => 'pull-right',
-                'icon'      => 'icon-pencil',
-                'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
-                'text'      => 'Edit Profile',
-            )) ?>
-        </div>
-        <h2>Basic Info</h2>
-
-        <div class="well">
-            <div class="media clearfix">
-                <a class="pull-left" href="http://gravatar.com" target="_blank" title="Click to configure your avatar on Gravatar's web site.">
-                    <img class="media-object" src="<?=$user->avatar ?>">
-                </a>
-                <div class="media-body">
-                    <div><big><?=$user->name ?></big></div>
-                    <div><?=$this->viewHelper->mailto($user->email) ?></div>
-                </div>
-            </div>
-        </div>
-
-        <h2>Linked Accounts</h2>
-        <table class="datatable table-striped">
-            <colgroup>
-                <col width="10%">
-                <col width="90%">
-            </colgroup>
-            <tbody>
-            <? foreach($external_providers as $provider_key => $provider_info): ?>
-                <tr class="input">
-                    <td class="center"><i class="large-icon <?=$provider_info['icon'] ?>"></i></td>
-                    <td>
-                    <? if ($provider_info['existing']): ?>
-                        <div><small><?=$provider_info['name'] ?>:</small></div>
-                        <div><big><?=$provider_info['existing']->name ?></big></div>
-                        <div><a href="<?=$this->viewHelper->route(array('module' => 'default', 'controller' => 'account', 'action' => 'unlink', 'provider' => $provider_key)) ?>">Unlink Account</a></div>
-                    <? else: ?>
-                        <div><big><?=$provider_info['name'] ?></big></div>
-                        <div><a href="<?=$this->viewHelper->route(array('module' => 'default', 'controller' => 'account', 'action' => 'link', 'provider' => $provider_key)) ?>">Link Account</a></div>
-                    <? endif; ?>
-                    </td>
-                </tr>
-            <? endforeach; ?>
-            </tbody>
-        </table>
-        <div class="text-center">
-            <a class="text-error" href="<?=$this->viewHelper->route(array('module' => 'default', 'controller' => 'account', 'action' => 'remove')) ?>">Delete PVL Account</a>
-        </div>
-    </div>
-    <div class="span8">
-        <div class="tabbable">
-            <ul class="nav nav-tabs">
-            <? $i = 0; ?>
-            <? foreach($song_lists as $list_key => $list): ?>
-                <li class="<? if ($i == 0): ?>active<? endif; ?>"><a href="#list_<?=$list_key ?>" data-toggle="tab"><i class="<?=$list['icon'] ?>"></i> <?=$list['name'] ?> (<?=count($list['items']) ?>)</a></li>
-                <? $i++; ?>
-            <? endforeach; ?>
-            </ul>
-            <div class="tab-content">
-            <? $i = 0; ?>
-            <? foreach($song_lists as $list_key => $list): ?>
-                <div class="tab-pane <? if ($i == 0): ?>active<? endif; ?>" id="list_<?=$list_key ?>">
-                    <h2><i class="<?=$list['icon'] ?>"></i> <?=$list['name'] ?></h2>
-
-                    <table class="datatable table-striped">
-                        <colgroup>
-                            <col width="7%">
-                            <col width="20%">
-                            <col width="50%">
-                            <col width="23%">
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th colspan="2">Station</th>
-                            <th>Song Title / Artist</th>
-                            <th>Date/Time Played</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <? foreach($list['items'] as $row): ?>
-                            <tr class="input">
-                                <td class="center"><img src="<?=\App\Url::upload($row['station']['image_url']) ?>"></td>
-                                <td>
-                                    <?=$row['station']['name'] ?>
-                                </td>
-                                <td>
-                                    <a href="#" class="btn-show-song-info" data-id="<?=$row['song']['id'] ?>" title="Click for Song Information">
-                                        <big><?=$row['song']['title'] ?></big><br>
-                                        <?=$row['song']['artist'] ?>
-                                    </a>
-                                </td>
-                                <td>
-                                    <?=date('F j, Y g:ia', $row['timestamp']) ?>
-                                </td>
-                            </tr>
-                        <? endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-                <? $i++; ?>
-            <? endforeach; ?>
-            </div>
-        </div>
-    </div>
+<div class="buttons">
+    <?=$this->viewHelper->button(array(
+        'type'      => 'small',
+        'class'     => 'btn-primary btn-large',
+        'icon'      => 'icon-pencil',
+        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
+        'text'      => 'Edit Profile',
+    )) ?>
 </div>
+
+<?=$form->renderView() ?>

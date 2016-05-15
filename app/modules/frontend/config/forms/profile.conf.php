@@ -16,11 +16,13 @@ return array(
             'legend' => 'Account Information',
             'elements' => array(
 
+                /*
                 'name' => array('text', array(
                     'label' => 'Your Name',
                     'class' => 'half-width',
                     'required' => true,
                 )),
+                */
                 
                 'email' => array('text', array(
                     'label' => 'E-mail Address',
@@ -42,6 +44,7 @@ return array(
             'legend' => 'Site Customization',
             'elements' => array(
 
+                /*
                 'theme' => array('radio', array(
                     'label' => 'Site Theme',
                     'belongsTo' => 'customization',
@@ -51,6 +54,7 @@ return array(
                     ),
                     'default' => 'light',
                 )),
+                */
 
                 'timezone' => array('select', array(
                     'label' => 'Time Zone',

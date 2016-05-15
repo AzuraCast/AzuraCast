@@ -13,22 +13,8 @@ class StationsController extends BaseController
     
     public function indexAction()
     {
-        $records = $this->em->createQuery('SELECT s FROM Entity\Station s ORDER BY s.name ASC')
+        $this->view->stations = $this->em->createQuery('SELECT s FROM Entity\Station s ORDER BY s.name ASC')
             ->getArrayResult();
-
-        $stations_by_category = array();
-        $pending_stations = array();
-
-        foreach($records as $station)
-        {
-            if ($station['is_active'] || $station['is_special'])
-                $stations_by_category[$station['category']][] = $station;
-            else
-                $pending_stations[] = $station;
-        }
-
-        $this->view->categories = $stations_by_category;
-        $this->view->pending_stations = $pending_stations;
     }
     
     public function editAction()
@@ -49,11 +35,6 @@ class StationsController extends BaseController
             if (!($record instanceof Record))
                 $record = new Record;
 
-            $files = $form->processFiles('stations');
-
-            foreach($files as $file_field => $file_paths)
-                $data[$file_field] = $file_paths[1];
-            
             $record->fromArray($data);
             $record->save();
 

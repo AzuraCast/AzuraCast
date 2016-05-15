@@ -37,9 +37,6 @@ class User extends \App\Doctrine\Entity
     /** @Column(name="auth_password", type="string", length=255, nullable=true) */
     protected $auth_password;
 
-    /** @Column(name="auth_password_salt", type="string", length=255, nullable=true) */
-    protected $auth_password_salt;
-
     public function getAuthPassword()
     {
         return '';
@@ -48,10 +45,7 @@ class User extends \App\Doctrine\Entity
     public function setAuthPassword($password)
     {
         if (trim($password))
-        {
-            $this->auth_password_salt = 'PHP';
             $this->auth_password = password_hash($password, \PASSWORD_DEFAULT);
-        }
 
         return $this;
     }
@@ -111,27 +105,12 @@ class User extends \App\Doctrine\Entity
         if (!($login_info instanceof self))
             return FALSE;
 
-        // Check for newer password style.
-        if ($login_info->auth_password_salt === 'PHP')
+        if (password_verify($password, $login_info->auth_password))
         {
-            if (password_verify($password, $login_info->auth_password))
-            {
-                if (password_needs_rehash($login_info->auth_password, \PASSWORD_DEFAULT))
-                    $login_info->setAuthPassword($password)->save();
-
-                return $login_info;
-            }
-        }
-        else {
-            $hashed_password = sha1($password . $login_info->auth_password_salt);
-
-            if (strcasecmp($hashed_password, $login_info->auth_password) == 0)
-            {
-                // Force reset of password into newer format.
+            if (password_needs_rehash($login_info->auth_password, \PASSWORD_DEFAULT))
                 $login_info->setAuthPassword($password)->save();
 
-                return $login_info;
-            }
+            return $login_info;
         }
 
         return FALSE;

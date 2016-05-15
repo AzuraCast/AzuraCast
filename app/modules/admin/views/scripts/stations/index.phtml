@@ -1,81 +1,62 @@
 <?
-$title = 'Manage Radio Stations &amp; Video Channels';
+$title = 'Manage Stations';
+$manual = true;
 ?>
 
-<div class="buttons">
-    <?=$this->viewHelper->button(array(
-        'type'      => 'link',
-        'class'     => 'large success',
-        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit')),
-        'icon'      => 'icon-plus-sign',
-        'text'      => 'Add New Station',
-    )) ?>
+<div class="block-header">
+    <h2>Manage Stations</h2>
 </div>
 
-<h2>Current Active Stations</h2>
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2>All Stations</h2>
 
-<h3>Radio Stations</h3>
-<?
-echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['audio']));
-?>
-
-<h3>Video Channels</h3>
-<?
-echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['video']));
-?>
-
-<h3>Internal Tracking</h3>
-<?
-echo $this->viewHelper->renderHere('list', false, array('stations' => (array)$categories['internal']));
-?>
-
-<h2>Stations Pending Review</h2>
-
-<table class="table table-striped table-bordered table-condensed">
-    <colgroup>
-        <col width="17%" />
-        <col width="8%" />
-        <col width="40%" />
-        <col width="35%" />
-    </colgroup>
-    <thead>
-        <tr>
-            <th>Actions</th>
-            <th>Image</th>
-            <th>Station</th>
-            <th>Votes</th>
-        </tr>
-    </thead>
-    <tbody>
-    <? foreach($pending_stations as $record): ?>
-        <tr class="input">
-            <td class="center">
-                <div class="btn-group">
-                    <?=$this->viewHelper->button(array(
-                        'type'      => 'small',
-                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
-                        'text'      => 'Edit',
-                    )) ?>
-                    <?=$this->viewHelper->button(array(
-                        'type'      => 'small',
-                        'class'     => 'danger confirm-delete',
-                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
-                        'text'      => 'Delete',
-                    )) ?>
-                </div>
-            </td>
-            <td class="center"><img src="<?=\App\Url::upload($record['image_url']) ?>" style="display: inline; max-width: 70px;"></td>
-            <td>
-                <div><big><?=$record['name'] ?></big></div>
-                <div><?=$record['description'] ?></div>
-                <div><?=$record['station_notes'] ?></div>
-            </td>
-            <td>
-            <? foreach((array)$record['intake_votes'] as $station_id => $vote): ?>
-                <div class="<? if ($vote['decision'] == 'Accept'): ?>text-success<? else: ?>text-error<? endif; ?>"><b><?=$vote['name'] ?></b>: <?=$vote['decision'] ?> - <?=$vote['comments'] ?></div>
+        <a class="btn bgm-blue btn-float" href="<?=$this->url->routeFromHere(['action' => 'edit']) ?>"><i class="zmdi zmdi-plus"></i></a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="25%">
+                <col width="75%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Actions</th>
+                <th>Station</th>
+            </tr>
+            </thead>
+            <tbody>
+            <? foreach((array)$stations as $record): ?>
+                <tr class="input">
+                    <td class="center">
+                        <div class="btn-group">
+                            <?=$this->viewHelper->button(array(
+                                'type'      => 'small',
+                                'class'     => 'btn-primary',
+                                'target'    => '_blank',
+                                'href'      => $this->viewHelper->route(array('module' => 'stations', 'station' => $record['id'])),
+                                'text'      => 'Manage',
+                            )) ?>
+                            <?=$this->viewHelper->button(array(
+                                'type'      => 'small',
+                                'class'     => 'btn-default',
+                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                                'text'      => 'Edit',
+                            )) ?>
+                            <?=$this->viewHelper->button(array(
+                                'type'      => 'small',
+                                'class'     => 'btn-danger confirm-delete',
+                                'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                                'text'      => 'Delete',
+                            )) ?>
+                        </div>
+                    </td>
+                    <td>
+                        <big><?=$record['name'] ?></big>
+                    </td>
+                </tr>
             <? endforeach; ?>
-            </td>
-        </tr>
-    <? endforeach; ?>
-    </tbody>
-</table>
+            </tbody>
+        </table>
+    </div>
+</div>

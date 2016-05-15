@@ -8,17 +8,6 @@ $this->assets->collection('custom_js')
     ->addJs('//code.highcharts.com/modules/exporting.js', false);
 
 // ->addJs('vendor/moment/moment.js');
-
-/*
-foreach($stations as $station)
-{
-    $sidebar['Stations'][$station->name] = array(
-        'url'       => array('module' => 'stations', 'action' => 'index', 'station' => $station->id),
-        'icon'      => $station->getCategoryIcon(),
-        'permission' => $station->canManage(),
-    );
-}
-*/
 ?>
 
 <div class="block-header">

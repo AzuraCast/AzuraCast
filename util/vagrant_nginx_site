@@ -1,0 +1,39 @@
+server {
+    listen 80 default_server;
+
+    root AZURABASEDIR/www/web;
+    index index.php;
+
+    server_name localhost;
+
+    access_log AZURABASEDIR/www_tmp/access.log;
+    error_log AZURABASEDIR/www_tmp/error.log;
+
+    location / {
+        try_files $uri @clean_url;
+    }
+
+    location @clean_url {
+        rewrite ^(.*)$ /index.php last;
+    }
+
+    location ~ \.php$ {
+        fastcgi_hide_header Cache-Control;
+
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME AZURABASEDIR/www/web$fastcgi_script_name;
+        include fastcgi_params;
+
+        fastcgi_read_timeout 1800;
+    }
+
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    #
+    location ~ /\.ht {
+        deny all;
+    }
+}

@@ -114,6 +114,10 @@ class Manager
 
     public static function initSync($script_timeout = 60)
     {
+        // Immediately halt if setup is not complete.
+        if (Settings::getSetting('setup_complete', 0) == 0)
+            die('Setup not complete; halting synchronized task.');
+
         set_time_limit($script_timeout);
         ini_set('memory_limit', '256M');
 

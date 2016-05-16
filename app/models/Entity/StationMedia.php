@@ -37,10 +37,10 @@ class StationMedia extends \App\Doctrine\Entity
     /** @Column(name="song_id", type="string", length=50, nullable=true) */
     protected $song_id;
 
-    /** @Column(name="title", type="string", length=200) */
+    /** @Column(name="title", type="string", length=200, nullable=true) */
     protected $title;
 
-    /** @Column(name="artist", type="string", length=200) */
+    /** @Column(name="artist", type="string", length=200, nullable=true) */
     protected $artist;
 
     /** @Column(name="album", type="string", length=200, nullable=true) */
@@ -63,6 +63,12 @@ class StationMedia extends \App\Doctrine\Entity
 
     /** @Column(name="path", type="string", length=255, nullable=true) */
     protected $path;
+
+    public function getFullPath()
+    {
+        $media_base_dir = $this->station->getRadioMediaDir();
+        return $media_base_dir.'/'.$this->path;
+    }
 
     /** @Column(name="mtime", type="integer", nullable=true) */
     protected $mtime;

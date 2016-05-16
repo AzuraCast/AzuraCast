@@ -133,6 +133,7 @@ class Station extends \App\Doctrine\Entity
 
     /**
      * @OneToMany(targetEntity="StationPlaylist", mappedBy="station")
+     * @OrderBy({"weight" = "DESC"})
      */
     protected $playlists;
 

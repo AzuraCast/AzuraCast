@@ -89,6 +89,8 @@ class LiquidSoap extends AdapterAbstract
                     'host = "localhost"',
                     'port = '.$icecast_port,
                     'password = "'.$icecast_source_pw.'"',
+                    'name = "'.str_replace('"', '\'', $this->station->name).'"',
+                    'description = "'.str_replace('"', '\'', $this->station->description).'"',
                     'mount = "radio.mp3"',
                     'radio', // Required
                 ];

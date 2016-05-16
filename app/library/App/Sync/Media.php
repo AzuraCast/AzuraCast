@@ -3,6 +3,7 @@ namespace App\Sync;
 
 use Entity\Station;
 use Entity\StationMedia;
+use Entity\StationPlaylist;
 
 class Media
 {
@@ -10,10 +11,10 @@ class Media
     {
         $stations = Station::fetchAll();
         foreach($stations as $station)
-            self::processStation($station);
+            self::importMusic($station);
     }
 
-    public static function processStation(Station $station)
+    public static function importMusic(Station $station)
     {
         $base_dir = $station->getRadioMediaDir();
         if (empty($base_dir))
@@ -64,6 +65,70 @@ class Media
             $record->loadFromFile();
 
             $em->persist($record);
+        }
+
+        $em->flush();
+    }
+
+    public static function importPlaylists(Station $station)
+    {
+        $base_dir = $station->getRadioPlaylistsDir();
+        if (empty($base_dir))
+            return false;
+
+        // Create a lookup cache of all valid imported media.
+        $media_lookup = array();
+        foreach($station->media as $media)
+        {
+            $media_path = $media->getFullPath();
+            $media_hash = md5($media_path);
+
+            $media_lookup[$media_hash] = $media;
+        }
+
+        // Iterate through playlists.
+        $di = \Phalcon\Di::getDefault();
+        $em = $di->get('em');
+
+        $playlist_files_raw = self::globDirectory($base_dir.'/*.{m3u,pls}', \GLOB_BRACE);
+
+        foreach($playlist_files_raw as $playlist_file_path)
+        {
+            // Create new StationPlaylist record.
+            $record = new StationPlaylist;
+            $record->station = $station;
+            $record->weight = 5;
+
+            $path_parts = pathinfo($playlist_file_path);
+            $playlist_name = str_replace('playlist_', '', $path_parts['filename']);
+            $record->name = $playlist_name;
+
+            $playlist_file = file_get_contents($playlist_file_path);
+            $playlist_lines = explode("\n", $playlist_file);
+            $em->persist($record);
+
+            foreach($playlist_lines as $line_raw)
+            {
+                $line = trim($line_raw);
+                if (substr($line, 0, 1) == '#' || empty($line))
+                    continue;
+
+                if (file_exists($line))
+                {
+                    $line_hash = md5($line);
+                    if (isset($media_lookup[$line_hash]))
+                    {
+                        $media_record = $media_lookup[$line_hash];
+
+                        $media_record->playlists->add($record);
+                        $record->media->add($media_record);
+
+                        $em->persist($media_record);
+                    }
+                }
+            }
+
+            @unlink($playlist_file_path);
         }
 
         $em->flush();

@@ -284,7 +284,8 @@ $(function() {
 
         var $link = $('<a class="name" />')
             .attr('href', data.is_dir ? '#' + data.path : '<?=$this->url->routeFromHere(['action' => 'download']) ?>?file='+encodeURIComponent(data.path))
-            .text(data.name);
+            .attr('title', data.name)
+            .text(data.text);
 
         var $html = $('<tr />')
             .addClass(data.is_dir ? 'is_dir' : 'is_file')

@@ -108,10 +108,17 @@ class FilesController extends BaseController
                         $media = ['name' => 'File Not Processed', 'playlists' => []];
 
                     $stat = stat($i);
+
+                    $max_length = 60;
+                    $shortname = basename($i);
+                    if (strlen($shortname) > $max_length)
+                        $shortname = substr($shortname, 0, $max_length-15).'...'.substr($shortname, -12);
+
                     $result[] = array(
                         'mtime' => $stat['mtime'],
                         'size' => $stat['size'],
                         'name' => basename($i),
+                        'text' => $shortname,
                         'path' => $short,
                         'is_dir' => is_dir($i),
                         'media' => $media,

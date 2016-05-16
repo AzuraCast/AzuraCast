@@ -95,12 +95,11 @@ echo "Customizing nginx..."
 
 service nginx stop
 
-mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
-cp $util_base/vagrant_nginx /etc/nginx/nginx.conf
+# mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+cp $util_base/vagrant_nginx_site /etc/nginx/sites-enabled/azuracast
+sedeasy "AZURABASEDIR" $app_base /etc/nginx/sites-enabled/azuracast
 
-sedeasy "AZURABASEDIR" $app_base /etc/nginx/nginx.conf
-
-unlink /etc/nginx/sites-enabled/
+unlink /etc/nginx/sites-enabled/default
 
 # Set up MySQL server.
 echo "Customizing MySQL..."

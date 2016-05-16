@@ -111,9 +111,18 @@ class SetupController extends BaseController
             // Generate station ID.
             $station->save();
 
+            // Scan directory for any existing files.
+            set_time_limit(600);
+            \App\Sync\Media::importMusic($station);
+            $this->em->refresh($station);
+
+            \App\Sync\Media::importPlaylists($station);
+            $this->em->refresh($station);
+            
             // Load configuration from adapter to pull source and admin PWs.
             $frontend_adapter = $station->getFrontendAdapter();
             $frontend_adapter->read();
+            $frontend_adapter->restart();
 
             // Write an empty placeholder configuration.
             $backend_adapter = $station->getBackendAdapter();

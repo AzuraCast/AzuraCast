@@ -93,12 +93,6 @@ class IndexController extends BaseController
          * Play Count Statistics
          */
 
-        // Song statistics.
-        $song_totals = array();
-        
-        // Most played songs.
-        $default_stream = $this->station->getDefaultStream();
-
         $song_totals_raw = array();
         $song_totals_raw['played'] = $this->em->createQuery('SELECT sh.song_id, COUNT(sh.id) AS records
             FROM Entity\SongHistory sh
@@ -142,17 +136,13 @@ class IndexController extends BaseController
 
         foreach($songs_played_raw as $i => $song_row)
         {
-            if (!isset($songs_played_raw[$i+1]))
-                break;
+            // Song has no recorded ending.
+            if ($song_row['timestamp_end'] == 0)
+                continue;
 
-            $song_row['stat_start'] = $song_row['listeners'];
-
-            if ($i+1 == count($songs_played_raw))
-                $song_row['stat_end'] = $song_row['stat_start'];
-            else
-                $song_row['stat_end'] = $songs_played_raw[$i+1]['listeners'];
-
-            $song_row['stat_delta'] = $song_row['stat_end'] - $song_row['stat_start'];
+            $song_row['stat_start'] = $song_row['listeners_start'];
+            $song_row['stat_end'] = $song_row['listeners_end'];
+            $song_row['stat_delta'] = $song_row['listeners_delta'];
 
             $songs[] = $song_row;
         }
@@ -164,7 +154,6 @@ class IndexController extends BaseController
             if ($a == $b) return 0;
             return ($a > $b) ? 1 : -1;
         });
-
 
         $this->view->best_performing_songs = array_reverse(array_slice($songs, -5));
         $this->view->worst_performing_songs = array_slice($songs, 0, 5);
@@ -183,23 +172,22 @@ class IndexController extends BaseController
 
         $songs = array();
 
-        foreach($songs_played_raw as $i => $song_row)
+        foreach ($songs_played_raw as $i => $song_row)
         {
-            if (!isset($songs_played_raw[$i+1]))
+            if (!isset($songs_played_raw[$i + 1]))
                 break;
 
             $start_timestamp = $song_row['timestamp'];
             $song_row['stat_start'] = $song_row['listeners'];
 
-            if ($i+1 == count($songs_played_raw))
+            if ($i + 1 == count($songs_played_raw))
             {
                 $end_timestamp = $start_timestamp;
                 $song_row['stat_end'] = $song_row['stat_start'];
-            }
-            else
+            } else
             {
-                $end_timestamp = $songs_played_raw[$i+1]['timestamp'];
-                $song_row['stat_end'] = $songs_played_raw[$i+1]['listeners'];
+                $end_timestamp = $songs_played_raw[$i + 1]['timestamp'];
+                $song_row['stat_end'] = $songs_played_raw[$i + 1]['listeners'];
             }
 
             $song_row['stat_delta'] = $song_row['stat_end'] - $song_row['stat_start'];
@@ -226,7 +214,7 @@ class IndexController extends BaseController
             $export_all = array();
             $export_all[] = array('Date', 'Time', 'Listeners', 'Delta', 'Likes', 'Dislikes', 'Track', 'Artist', 'Event');
 
-            foreach($songs as $song_row)
+            foreach ($songs as $song_row)
             {
                 $export_row = array(
                     date('Y-m-d', $song_row['timestamp']),
@@ -243,7 +231,7 @@ class IndexController extends BaseController
                 $export_all[] = $export_row;
             }
 
-            \App\Export::csv($export_all, true, $this->station->getShortName().'_timeline_'.date('Ymd'));
+            \App\Export::csv($export_all, true, $this->station->getShortName() . '_timeline_' . date('Ymd'));
             return;
         }
         else
@@ -253,68 +241,6 @@ class IndexController extends BaseController
 
             $this->view->pager = $pager;
         }
-    }
-
-    public function votesAction()
-    {
-        $threshold = strtotime('-2 weeks');
-
-        $votes_raw = $this->em->createQuery('SELECT sv.song_id, SUM(sv.vote) AS vote_total FROM Entity\SongVote sv WHERE sv.station_id = :station_id AND sv.timestamp >= :threshold GROUP BY sv.song_id')
-            ->setParameter('station_id', $this->station->id)
-            ->setParameter('threshold', $threshold)
-            ->getArrayResult();
-
-        $ignored_songs = $this->_getIgnoredSongs();
-        $votes_raw = array_filter($votes_raw, function($value) use ($ignored_songs)
-        {
-            return !(isset($ignored_songs[$value['song_id']]));
-        });
-
-        \App\Utilities::orderBy($votes_raw, 'vote_total DESC');
-
-        $votes = array();
-        foreach($votes_raw as $row)
-        {
-            $row['song'] = Song::find($row['song_id']);
-            $votes[] = $row;
-        }
-
-        $this->view->votes = $votes;
-    }
-
-    public function addadminAction()
-    {
-        $this->doNotRender();
-
-        $email = $this->getParam('email');
-        $user = \Entity\User::getOrCreate($email);
-
-        $user->stations->add($this->station);
-        $user->save();
-
-        \App\Messenger::send(array(
-            'to' => $user->email,
-            'subject' => 'Access Granted to Station Center',
-            'template' => 'newperms',
-            'vars' => array(
-                'areas' => array('Station Center: '.$this->station->name),
-            ),
-        ));
-
-        $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'email' => NULL));
-    }
-
-    public function removeadminAction()
-    {
-        $this->doNotRender();
-
-        $id = (int)$this->getParam('id');
-
-        $user = \Entity\User::find($id);
-        $user->stations->removeElement($this->station);
-        $user->save();
-
-        $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
     }
 
     /**

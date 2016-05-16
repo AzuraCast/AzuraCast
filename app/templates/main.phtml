@@ -136,17 +136,7 @@ header("Content-type: text/html; charset=utf-8");
 
         <ul class="main-menu">
             <li><a href="<?=$this->url->route(['module' => 'stations', 'station' => $station->id]) ?>"><i class="zmdi zmdi-home"></i> Home</a></li>
-            <li class="sub-menu">
-                <a href=""><i class="zmdi zmdi-settings"></i> Management</a>
-
-                <ul>
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'profile', 'station' => $station->id]) ?>">Station Profile</a></li>
-
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'write', 'station' => $station->id]) ?>">Rebuild Backend Configuration</a></li>
-
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'restart', 'station' => $station->id]) ?>">Restart Broadcasting</a></li>
-                </ul>
-            </li>
+            <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'profile', 'station' => $station->id]) ?>"><i class="zmdi zmdi-image"></i> Profile</a></li>
 
             <li class="sub-menu">
                 <a href=""><i class="zmdi zmdi-collection-music"></i> Media</a>
@@ -162,6 +152,16 @@ header("Content-type: text/html; charset=utf-8");
 
                 <ul>
                     <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'index', 'action' => 'timeline', 'station' => $station->id]) ?>" title="View the entire playback history of your station over the last 48 hours, along with the rise and fall of listener counts and special events."><i class="icon-time"></i> Song Playback Timeline</a></li>
+                </ul>
+            </li>
+
+            <li class="sub-menu">
+                <a href=""><i class="zmdi zmdi-settings"></i> Utilities</a>
+
+                <ul>
+                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'write', 'station' => $station->id]) ?>">Rebuild Backend Configuration</a></li>
+
+                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'restart', 'station' => $station->id]) ?>">Restart Broadcasting</a></li>
                 </ul>
             </li>
         </ul>

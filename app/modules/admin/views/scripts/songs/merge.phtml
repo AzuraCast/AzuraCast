@@ -22,7 +22,7 @@ $title = 'Song Directory';
 
 <h2>...Into This Song:</h2>
 
-<form class="form-search" action="<?=$this->viewHelper->routeFromHere(array('merge_q' => NULL, 'page' => NULL)) ?>" method="get">
+<form class="form-search" action="<?=$this->url->routeFromHere(array('merge_q' => NULL, 'page' => NULL)) ?>" method="get">
     <div class="input-append">
         <input type="text" name="merge_q" title="Search terms" placeholder="Search..." class="input-large search-query" value="<?=$e->escapeHtml($q) ?>">
         <button type="submit" class="btn">Search</button>

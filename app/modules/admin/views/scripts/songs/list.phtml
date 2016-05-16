@@ -35,32 +35,32 @@
                     <? if ($record['merge_song_id']): ?>
                         <?=$this->viewHelper->button(array(
                             'type'      => 'small',
-                            'href'      => $this->viewHelper->routeFromHere(array('action' => 'unmerge', 'id' => $record['id'])),
+                            'href'      => $this->url->routeFromHere(array('action' => 'unmerge', 'id' => $record['id'])),
                             'text'      => 'Unmerge',
                         )) ?>
                     <? else: ?>
                         <?=$this->viewHelper->button(array(
                             'type'      => 'small',
-                            'href'      => $this->viewHelper->routeFromHere(array('action' => 'merge', 'id' => $record['id'])),
+                            'href'      => $this->url->routeFromHere(array('action' => 'merge', 'id' => $record['id'])),
                             'text'      => 'Merge',
                         )) ?>
                     <? endif; ?>
                     <?=$this->viewHelper->button(array(
                         'type'      => 'small',
-                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
+                        'href'      => $this->url->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
                         'text'      => 'Edit',
                     )) ?>
                     <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'class'     => 'danger confirm-delete',
-                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
+                        'href'      => $this->url->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
                         'text'      => 'Delete',
                     )) ?>
                 <? elseif ($display_mode == 'merge'): ?>
                     <?=$this->viewHelper->button(array(
                         'type'      => 'small',
                         'class'     => 'btn-primary',
-                        'href'      => $this->viewHelper->routeFromHere(array('merge_id' => $record['id'])),
+                        'href'      => $this->url->routeFromHere(array('merge_id' => $record['id'])),
                         'text'      => 'Merge Song',
                     )) ?>
                 <? endif; ?>

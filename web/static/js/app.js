@@ -32,6 +32,10 @@ $(function() {
         autosize(form.find('textarea'));
 
         form.find('input[type=checkbox],input[type=radio]').after('<i class="input-helper"></i>');
+
+        form.find('input[type=checkbox].inline').removeClass('inline').closest('div.checkbox').addClass('checkbox-inline');
+        form.find('input[type=radio].inline').removeClass('inline').closest('div.radio').addClass('radio-inline');
+
         form.find('div.checkbox:not(.checkbox-inline)').addClass('m-b-15');
         form.find('div.radio:not(.radio-inline)').addClass('m-b-15');
 

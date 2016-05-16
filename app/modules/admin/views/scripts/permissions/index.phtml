@@ -33,7 +33,7 @@ $manual = true;
                                     'type'      => 'small',
                                     'icon'      => 'icon-pencil',
                                     'class'     => 'btn-primary',
-                                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])),
+                                    'href'      => $this->url->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])),
                                     'text'      => 'Edit',
                                 )) ?>
                                 <? if( $role['id'] != 1 ): ?>
@@ -41,7 +41,7 @@ $manual = true;
                                         'type'      => 'small',
                                         'icon'      => 'icon-trash',
                                         'class'     => 'btn-danger confirm-delete',
-                                        'href'      => $this->viewHelper->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'])),
+                                        'href'      => $this->url->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'])),
                                         'text'      => 'Delete',
                                     )) ?>
                                 <? else: ?>
@@ -89,14 +89,14 @@ $manual = true;
                                     'type'      => 'small',
                                     'icon'      => 'icon-pencil',
                                     'class'     => 'btn-primary',
-                                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])),
+                                    'href'      => $this->url->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])),
                                     'text'      => 'Edit',
                                 )) ?>
                                 <?=$this->viewHelper->button(array(
                                     'type'      => 'small',
                                     'icon'      => 'icon-trash',
                                     'class'     => 'btn-danger confirm-delete',
-                                    'href'      => $this->viewHelper->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'])),
+                                    'href'      => $this->url->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'])),
                                     'text'      => 'Delete',
                                 )) ?>
                             </td>

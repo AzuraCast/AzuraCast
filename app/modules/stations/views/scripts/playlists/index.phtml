@@ -1,0 +1,59 @@
+<?
+$title = 'Manage Playlists';
+$manual = true;
+?>
+
+<div class="block-header">
+    <h2>Manage Playlists</h2>
+</div>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2>All Playlists</h2>
+
+        <a class="btn bgm-blue btn-float" href="<?=$this->url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="25%">
+                <col width="45%">
+                <col width="15%">
+                <col width="15%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Actions</th>
+                <th>Playlist</th>
+                <th>Weight</th>
+                <th># Songs</th>
+            </tr>
+            </thead>
+            <tbody>
+            <? foreach($playlists as $row): ?>
+                <tr class="vertical-align-middle">
+                    <td>
+                        <?=$this->viewHelper->button(array(
+                            'type'      => 'small',
+                            'class'     => 'btn-primary',
+                            'href'      => $this->url->routeFromHere(array('action' => 'edit', 'id' => $row->id)),
+                            'icon'      => 'pencil',
+                            'text'      => 'Edit',
+                        )) ?>
+                        <?=$this->viewHelper->button(array(
+                            'type'      => 'small',
+                            'href'      => $this->url->routeFromHere(array('action' => 'delete', 'id' => $row->id)),
+                            'class'     => 'btn-danger confirm-delete',
+                            'icon'      => 'delete',
+                            'text'      => 'Delete',
+                        )) ?>
+                    </td>
+                    <td><big><?=$row->name ?></big></td>
+                    <td><?=$row->weight ?></td>
+                    <td><?=count($row->media) ?></td>
+                </tr>
+            <? endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

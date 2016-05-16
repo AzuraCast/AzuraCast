@@ -20,7 +20,7 @@ class StationPlaylist extends \App\Doctrine\Entity
     /**
      * @Column(name="id", type="integer")
      * @Id
-     * @GeneratedValue(strategy="NONE")
+     * @GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
 
@@ -47,7 +47,7 @@ class StationPlaylist extends \App\Doctrine\Entity
     protected $station;
 
     /**
-     * @ManyToMany(targetEntity="StationMedia", mappedBy="playlists")
+     * @ManyToMany(targetEntity="StationMedia", mappedBy="playlists", fetch="EXTRA_LAZY")
      */
     protected $media;
 }

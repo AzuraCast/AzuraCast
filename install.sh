@@ -8,8 +8,8 @@ export tmp_base=$app_base/www_tmp
 export app_env="production"
 
 cd $util_base
-chmod a+x ./util/install_radio.sh
-chmod a+x ./util/install_app.sh
+chmod a+x ./install_radio.sh
+chmod a+x ./install_app.sh
 
-./util/install_radio.sh
-./util/install_app.sh
+./install_radio.sh
+./install_app.sh

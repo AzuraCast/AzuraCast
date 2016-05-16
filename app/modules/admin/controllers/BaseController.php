@@ -7,7 +7,7 @@ class BaseController extends \App\Phalcon\Controller
     {
         parent::preDispatch();
 
-        $this->forceSecure();
+        // $this->forceSecure();
 
         return true;
     }

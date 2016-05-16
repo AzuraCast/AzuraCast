@@ -8,6 +8,9 @@ function phpuser {
   sudo -u azuracast php $@
 }
 
+# Suppress some visual prompts.
+export DEBIAN_FRONTEND=noninteractive
+
 apt-get update
 apt-get install pwgen
 
@@ -132,7 +135,7 @@ sedeasy "post_max_size = 8M" "post_max_size = 50M" /etc/php5/fpm/php.ini
 sedeasy "upload_max_filesize = 2M" "upload_max_filesize = 25M" /etc/php5/fpm/php.ini
 
 mv /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/www.conf.bak
-cp /vagrant/util/vagrant_phpfpm.conf /etc/php5/fpm/pool.d/www.conf
+cp $util_base/vagrant_phpfpm.conf /etc/php5/fpm/pool.d/www.conf
 
 service php5-fpm restart
 
@@ -201,7 +204,7 @@ if [ $app_env = "development" ]; then
     echo "One-time setup complete!"
     echo "Complete remaining setup steps at http://localhost:8080"
 else
-    export external_ip = `dig +short myip.opendns.com @resolver1.opendns.com`
+    export external_ip=`dig +short myip.opendns.com @resolver1.opendns.com`
     echo "Base installation complete!"
     echo "Continue setup at http://$external_ip:8080"
 fi

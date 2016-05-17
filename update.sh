@@ -10,7 +10,6 @@ export util_base=$www_base/util
 export tmp_base=$app_base/www_tmp
 
 # Stop system tasks
-service cron stop
 service nginx stop
 service php5-fpm stop
 
@@ -28,6 +27,5 @@ phpuser cli.php cache:clear
 phpuser doctrine.php orm:schema-tool:update --force
 
 # Restart services
-service cron start
 service php5-fpm start
 service nginx start

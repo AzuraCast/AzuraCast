@@ -33,6 +33,17 @@ chmod a+x install.sh
 ./install.sh
 ```
 
+### Updating
+
+AzuraCast also includes a handy updater script that pulls down the latest copy of the codebase from Git, flushes the site caches and makes any necessary database updates. You should also run this script as the `root` user.
+
+```bash
+cd /var/azuracast/www
+
+chmod a+x update.sh
+./update.sh
+```
+
 ## Local Development with Vagrant
 
 This application supports **Vagrant** for local development and testing before launching a production station.

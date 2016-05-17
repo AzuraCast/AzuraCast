@@ -84,6 +84,7 @@ class FilesController extends BaseController
                     $playlists[] = $playlist_row['name'];
 
                 $media_in_dir[$media_row['path']] = array(
+                    'is_playable' => true,
                     'name' => $media_row['artist'].' - '.$media_row['title'].' ('.$media_row['length_text'].')',
                     'playlists' => $playlists,
                 );
@@ -101,11 +102,11 @@ class FilesController extends BaseController
                     $short = ltrim(str_replace($this->base_dir, '', $i), '/');
 
                     if (is_dir($i))
-                        $media = ['name' => 'Directory', 'playlists' => []];
+                        $media = ['name' => 'Directory', 'playlists' => [], 'is_playable' => false];
                     elseif (isset($media_in_dir[$short]))
                         $media = $media_in_dir[$short];
                     else
-                        $media = ['name' => 'File Not Processed', 'playlists' => []];
+                        $media = ['name' => 'File Not Processed', 'playlists' => [], 'is_playable' => false];
 
                     $stat = stat($i);
 

@@ -7,6 +7,11 @@ $this->assets->collection('custom_js')
     ->addJs('//code.highcharts.com/highcharts-more.js', false)
     ->addJs('//code.highcharts.com/modules/exporting.js', false);
 
+$this->assets->collection('custom_js')
+    ->addJs('vendors/bower_components/jPlayer/dist/jplayer/jquery.jplayer.min.js')
+    ->addJs('vendors/bower_components/store-js/store.min.js')
+    ->addJs('js/radio.js');
+
 // ->addJs('vendor/moment/moment.js');
 ?>
 
@@ -45,6 +50,12 @@ $this->assets->collection('custom_js')
             </div>
             <div class="table-responsive">
                 <table class="table table-striped">
+                    <colgroup>
+                        <col width="5%">
+                        <col width="45%">
+                        <col width="35%">
+                        <col width="15%">
+                    </colgroup>
                     <thead>
                         <tr>
                             <th>&nbsp;</th>
@@ -55,8 +66,12 @@ $this->assets->collection('custom_js')
                     </thead>
                     <tbody>
                     <? foreach($stations as $row): ?>
-                        <tr id="station_<?=$row->id ?>" style="vertical-align: middle;">
-                            <td>&nbsp;</td>
+                        <tr class="input" id="station_<?=$row->id ?>">
+                            <td class="text-center">
+                                <a class="btn-audio" href="#" data-url="<?=$row->getRadioStreamUrl() ?>">
+                                    <i class="zmdi zmdi-play"></i>
+                                </a>
+                            </td>
                             <td>
                                 <big><?=$row->name ?></big>
                             </td>

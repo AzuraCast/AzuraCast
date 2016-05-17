@@ -85,6 +85,19 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="radio_port", type="smallint", nullable=true) */
     protected $radio_port;
 
+    public function getRadioStreamUrl()
+    {
+        $base_url = Settings::getSetting('base_url');
+        $radio_port = $this->radio_port;
+
+        // Vagrant port-forwarding mode.
+        if (APP_APPLICATION_ENV == 'development' && $radio_port == 8000)
+            $radio_port = 8088;
+
+        /* TODO: Abstract out mountpoint names */
+        return 'http://'.$base_url.':'.$radio_port.'/radio.mp3?played='.time();
+    }
+
     /** @Column(name="radio_source_pw", type="string", length=100, nullable=true) */
     protected $radio_source_pw;
 

@@ -1,0 +1,20 @@
+{
+  "name": "store-js",
+  "description": "A localStorage wrapper for all browsers without using cookies or flash. Uses localStorage, globalStorage, and userData behavior under the hood",
+  "main": "store.js",
+  "scripts": [
+    "store.js"
+  ],
+  "homepage": "https://github.com/marcuswestin/store.js",
+  "version": "1.3.20",
+  "_release": "1.3.20",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.3.20",
+    "commit": "750cac7cbbf8ee4723780edcecee6989a25eade2"
+  },
+  "_source": "https://github.com/marcuswestin/store.js.git",
+  "_target": "^1.3.20",
+  "_originalSource": "store.js",
+  "_direct": true
+}

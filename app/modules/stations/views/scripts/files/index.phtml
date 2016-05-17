@@ -2,6 +2,11 @@
 $title = 'File Manager';
 $manual = true;
 $page_class = 'page-file-manager';
+
+$this->assets->collection('custom_js')
+    ->addJs('vendors/bower_components/jPlayer/dist/jplayer/jquery.jplayer.min.js')
+    ->addJs('vendors/bower_components/store-js/store.min.js')
+    ->addJs('js/radio.js');
 ?>
 
 <div class="block-header">
@@ -186,6 +191,7 @@ $(function() {
             list();
         },'json');
 
+        $(this).closest('.btn-group').removeClass('open');
         return false;
     });
 
@@ -287,14 +293,20 @@ $(function() {
     }
 
     function renderFileRow(data) {
+        var $url = data.is_dir ? '#' + data.path : '<?=$this->url->routeFromHere(['action' => 'download']) ?>?file='+encodeURIComponent(data.path);
+
         var $checkbox = $('<div />').addClass('checkbox checkbox-inline')
             .append('<input type="checkbox" class="file-check" value="'+data.name+'" />')
             .append('<i class="input-helper"></i>');
 
-        var $icon = '<i class="zmdi zmdi-'+(data.is_dir ? 'folder' : 'file')+'"></i>';
+        var $icon = '';
+        if (data.media.is_playable)
+            $icon = '<a class="file-icon btn-audio" href="#" data-url="'+$url+'"><i class="zmdi zmdi-play"></i></a>';
+        else
+            $icon = '<span class="file-icon"><i class="zmdi zmdi-'+(data.is_dir ? 'folder' : 'file')+'"></i></span>';
 
         var $link = $('<a class="name" />')
-            .attr('href', data.is_dir ? '#' + data.path : '<?=$this->url->routeFromHere(['action' => 'download']) ?>?file='+encodeURIComponent(data.path))
+            .attr('href', $url)
             .attr('title', data.name)
             .text(data.text);
 
@@ -305,7 +317,7 @@ $(function() {
             .append( $('<td/>').data('sort',data.is_dir ? -1 : data.size)
                 .html($('<span class="size" />').text(formatFileSize(data.size))) )
             .append( $('<td/>').data('sort',data.mtime).text(formatTimestamp(data.mtime)) )
-            .append( $('<td/>').text(data.media.playlists.join('<br>')) );
+            .append( $('<td/>').html(data.media.playlists.join('<br>')) );
         return $html;
     }
 

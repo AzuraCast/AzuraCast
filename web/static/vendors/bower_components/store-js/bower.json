@@ -1,0 +1,6 @@
+{
+  "name" : "store-js",
+  "description": "A localStorage wrapper for all browsers without using cookies or flash. Uses localStorage, globalStorage, and userData behavior under the hood",
+  "main" : "store.js",
+  "scripts" : [ "store.js" ]
+}

@@ -173,7 +173,9 @@ header("Content-type: text/html; charset=utf-8");
                 <a href=""><i class="zmdi zmdi-assignment"></i> Reports</a>
 
                 <ul>
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'index', 'action' => 'timeline', 'station' => $station->id]) ?>" title="View the entire playback history of your station over the last 48 hours, along with the rise and fall of listener counts and special events."><i class="icon-time"></i> Song Playback Timeline</a></li>
+                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'index', 'action' => 'timeline', 'station' => $station->id]) ?>">Song Playback Timeline</a></li>
+
+                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'reports', 'action' => 'performance', 'station' => $station->id]) ?>">Media Playback Performance</a></li>
                 </ul>
             </li>
 

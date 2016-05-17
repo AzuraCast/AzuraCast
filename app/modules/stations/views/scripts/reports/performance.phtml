@@ -1,0 +1,56 @@
+<?
+$title = 'Media Playback Performance';
+$manual = true;
+?>
+
+<div class="block-header">
+    <h2><?=$station->name ?></h2>
+</div>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2>Media Playback Performance Report</h2>
+
+        <ul class="actions">
+            <li>
+                <a href="<?=$this->url->routeFromHere(['format' => 'csv']) ?>" title="Download Excel CSV">
+                    <i class="zmdi zmdi-download"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Filename</th>
+                    <th>Length</th>
+                    <th>Current Playlist(s)</th>
+                    <th>&delta; Joins</th>
+                    <th>&delta; Losses</th>
+                    <th>&delta; Total</th>
+                    <th>Plays</th>
+                    <th>Play %</th>
+                </tr>
+            </thead>
+            <tbody>
+            <? foreach($report_data as $row): ?>
+                <tr class="input">
+                    <td><?=$row['title'] ?></td>
+                    <td><?=$row['artist'] ?></td>
+                    <td><?=$row['path'] ?></td>
+                    <td><?=$row['length'] ?></td>
+                    <td><?=implode(', ', $row['playlists']) ?></td>
+                    <td class="text-success"><?=$row['delta_positive'] ?></td>
+                    <td class="text-danger"><?=$row['delta_negative'] ?></td>
+                    <td><?=$row['delta_total'] ?></td>
+                    <td><?=$row['num_plays'] ?></td>
+                    <td><?=$row['percent_plays'] ?>%</td>
+                </tr>
+            <? endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

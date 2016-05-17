@@ -16,6 +16,23 @@ AzuraCast offers the following functionality to radio station operators:
 * Listener metrics arranged by time of day and day of week 
 * A timeline of all songs played in the last 48 hours
 
+## Installing on a Production Server
+
+**NOTE: This application is in early development stages. Lots of essential features work, but additional features are being added constantly, and things may change rapidly in subsequent updates. Use at your own risk!**
+
+As the `root` user, execute the following commands to begin installation and setup of a fresh AzuraCast server:
+
+```bash
+apt-get update && apt-get install -q -y git
+
+mkdir -p /var/azuracast/www
+cd /var/azuracast/www
+git clone https://github.com/SlvrEagle23/AzuraCast.git .
+
+chmod a+x install.sh
+./install.sh
+```
+
 ## Local Development with Vagrant
 
 This application supports **Vagrant** for local development and testing before launching a production station.

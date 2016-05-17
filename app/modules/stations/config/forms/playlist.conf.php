@@ -13,7 +13,7 @@ return array(
         'weight' => array('radio', array(
             'label' => 'Playlist Weight',
             'description' => 'How often the playlist\'s songs will be played. 1 is the most infrequent, 5 is the most frequent.',
-            'default' => 5,
+            'default' => 3,
             'required' => true,
             'class' => 'inline',
             'options' => array(

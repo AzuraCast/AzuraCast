@@ -4,12 +4,19 @@ $manual = true;
 ?>
 
 <div class="block-header">
-    <h2>Manage Playlists</h2>
+    <h2><?=$station->name ?></h2>
+    <ul class="actions">
+        <li>
+            <a href="<?=$this->url->routeFromHere(['controller' => 'util', 'action' => 'write']) ?>" title="Save Changes and Restart Station">
+                <i class="zmdi zmdi-save"></i>
+            </a>
+        </li>
+    </ul>
 </div>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2>All Playlists</h2>
+        <h2>Station Playlists</h2>
 
         <a class="btn bgm-blue btn-float" href="<?=$this->url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>

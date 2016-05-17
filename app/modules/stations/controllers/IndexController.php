@@ -142,7 +142,7 @@ class IndexController extends BaseController
 
             $song_row['stat_start'] = $song_row['listeners_start'];
             $song_row['stat_end'] = $song_row['listeners_end'];
-            $song_row['stat_delta'] = $song_row['listeners_delta'];
+            $song_row['stat_delta'] = $song_row['delta_total'];
 
             $songs[] = $song_row;
         }
@@ -166,42 +166,16 @@ class IndexController extends BaseController
         // Get current events within threshold.
         $threshold = $songs_played_raw[0]['timestamp'];
 
-        /*
-        $events = \Entity\Schedule::getEventsInRange($this->station->id, $threshold, time());
-        */
-
         $songs = array();
-
         foreach ($songs_played_raw as $i => $song_row)
         {
-            if (!isset($songs_played_raw[$i + 1]))
-                break;
+            // Song has no recorded ending.
+            if ($song_row['timestamp_end'] == 0)
+                continue;
 
-            $start_timestamp = $song_row['timestamp'];
-            $song_row['stat_start'] = $song_row['listeners'];
-
-            if ($i + 1 == count($songs_played_raw))
-            {
-                $end_timestamp = $start_timestamp;
-                $song_row['stat_end'] = $song_row['stat_start'];
-            } else
-            {
-                $end_timestamp = $songs_played_raw[$i + 1]['timestamp'];
-                $song_row['stat_end'] = $songs_played_raw[$i + 1]['listeners'];
-            }
-
-            $song_row['stat_delta'] = $song_row['stat_end'] - $song_row['stat_start'];
-
-            /*
-            foreach($events as $event)
-            {
-                if ($event['end_time'] >= $start_timestamp && $event['start_time'] <= $end_timestamp)
-                {
-                    $song_row['event'] = $event;
-                    break;
-                }
-            }
-            */
+            $song_row['stat_start'] = $song_row['listeners_start'];
+            $song_row['stat_end'] = $song_row['listeners_end'];
+            $song_row['stat_delta'] = $song_row['delta_total'];
 
             $songs[] = $song_row;
         }
@@ -217,8 +191,8 @@ class IndexController extends BaseController
             foreach ($songs as $song_row)
             {
                 $export_row = array(
-                    date('Y-m-d', $song_row['timestamp']),
-                    date('g:ia', $song_row['timestamp']),
+                    date('Y-m-d', $song_row['timestamp_start']),
+                    date('g:ia', $song_row['timestamp_start']),
                     $song_row['stat_start'],
                     $song_row['stat_delta'],
                     $song_row['score_likes'],

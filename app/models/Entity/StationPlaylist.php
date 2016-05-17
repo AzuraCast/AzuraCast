@@ -12,7 +12,7 @@ class StationPlaylist extends \App\Doctrine\Entity
 {
     public function __construct()
     {
-        $this->weight = 5;
+        $this->weight = 3;
 
         $this->media = new ArrayCollection;
     }

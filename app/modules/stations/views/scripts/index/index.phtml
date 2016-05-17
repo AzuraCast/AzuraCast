@@ -77,19 +77,18 @@ Highcharts.setOptions({
                     <tbody>
                     <? foreach($best_performing_songs as $song_row): ?>
                         <tr>
-                            <td class="center text-success">
+                            <td class="text-center text-success">
                                 <i class="zmdi zmdi-thumb-up"></i> <?=abs($song_row['stat_delta']) ?><br>
                                 <small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?>
                             </td>
                             <td>
-                                <a href="<?=$this->url->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>">
-                                    <? if ($song_row['song']['title']): ?>
-                                        <b><?=$song_row['song']['title'] ?></b><br>
-                                        <?=$song_row['song']['artist'] ?>
-                                    <? else: ?>
-                                        <?=$song_row['song']['text'] ?>
-                                    <? endif; ?>
-                                </a>
+                                <? if ($song_row['song']['title']): ?>
+                                    <b><?=$song_row['song']['title'] ?></b><br>
+                                    <?=$song_row['song']['artist'] ?>
+                                <? else: ?>
+                                    <?=$song_row['song']['text'] ?>
+                                <? endif; ?>
+                                <!-- <a href="<?=$this->url->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>"> </a> -->
                             </td>
                         </tr>
                     <? endforeach; ?>
@@ -118,19 +117,18 @@ Highcharts.setOptions({
                     <tbody>
                     <? foreach($worst_performing_songs as $song_row): ?>
                         <tr>
-                            <td class="center text-error">
+                            <td class="text-center text-danger">
                                 <i class="zmdi zmdi-thumb-down"></i> <?=abs($song_row['stat_delta']) ?><br>
                                 <small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?>
                             </td>
                             <td>
-                                <a href="<?=$this->url->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>">
-                                    <? if ($song_row['song']['title']): ?>
-                                        <b><?=$song_row['song']['title'] ?></b><br>
-                                        <?=$song_row['song']['artist'] ?>
-                                    <? else: ?>
-                                        <?=$song_row['song']['text'] ?>
-                                    <? endif; ?>
-                                </a>
+                                <? if ($song_row['song']['title']): ?>
+                                    <b><?=$song_row['song']['title'] ?></b><br>
+                                    <?=$song_row['song']['artist'] ?>
+                                <? else: ?>
+                                    <?=$song_row['song']['text'] ?>
+                                <? endif; ?>
+                                <!--  <a href="<?=$this->url->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>"> </a> -->
                             </td>
                         </tr>
                     <? endforeach; ?>

@@ -12,6 +12,13 @@ class UtilController extends BaseController
         return $this->acl->isAllowed('administer all');
     }
 
+    public function indexAction()
+    {
+        $this->doNotRender();
+
+        phpinfo();
+    }
+
     public function testAction()
     {
         $this->doNotRender();

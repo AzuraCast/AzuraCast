@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+apt-get update && apt-get -q -y install realpath
+
 export www_base="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export app_base=`realpath $www_base/..`
 export util_base=$www_base/util

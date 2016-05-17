@@ -27,7 +27,7 @@ echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
 apt-get update
 
 apt-get -q -y install software-properties-common python-software-properties
-apt-get -q -y install vim git curl
+apt-get -q -y install vim git curl realpath
 
 # Trigger mlocate reindex.
 updatedb

@@ -18,6 +18,8 @@ service php5-fpm stop
 git reset --hard
 git pull
 
+chmod a+x ./update.sh
+
 # Clear cache
 rm -rf $tmp_base/cache/*
 

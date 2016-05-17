@@ -11,8 +11,7 @@ function phpuser {
 # Suppress some visual prompts.
 export DEBIAN_FRONTEND=noninteractive
 
-apt-get update
-apt-get install pwgen
+apt-get -q -y install pwgen
 
 # Create user.
 useradd -d /var/azuracast -m azuracast

@@ -113,7 +113,7 @@ class SongHistory extends \App\Doctrine\Entity
 
             $last_sh->delta_points = $delta_points;
             $em->persist($last_sh);
-
+            $em->flush();
             return null;
         }
         else

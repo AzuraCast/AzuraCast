@@ -95,27 +95,29 @@ class NowPlaying
         // Pull from current NP data if song details haven't changed.
         $current_song_hash = Song::getSongHash($np_new['current_song']);
 
-        if (strcmp($current_song_hash, $np_old['current_song']['id']) == 0)
-        {
-            $np['current_song'] = $np_old['current_song'];
-            $np['song_history'] = $np_old['song_history'];
-        }
-        else if (empty($np['current_song']['text']))
+        if (empty($np['current_song']['text']))
         {
             $np['current_song'] = array();
             $np['song_history'] = $station->getRecentHistory();
         }
         else
         {
-            // Register a new item in song history.
-            $np['current_song'] = array();
-            $np['song_history'] = $station->getRecentHistory();
+            if (strcmp($current_song_hash, $np_old['current_song']['id']) == 0)
+            {
+                $np['song_history'] = $np_old['song_history'];
 
-            // Determine whether to log this song play for analytics.
-            $song_obj = Song::getOrCreate($np_new['current_song'], true);
+                $song_obj = Song::find($current_song_hash);
+            }
+            else
+            {
+                $np['song_history'] = $station->getRecentHistory();
+
+                $song_obj = Song::getOrCreate($np_new['current_song'], true);
+            }
+
+            // Register a new item in song history.
             $sh_obj = SongHistory::register($song_obj, $station, $np);
 
-            // Compose "current_song" object for API.
             $current_song = Song::api($song_obj);
             $current_song['sh_id'] = $sh_obj->id;
 

@@ -52,14 +52,16 @@ $this->assets->collection('custom_js')
                 <table class="table table-striped">
                     <colgroup>
                         <col width="5%">
-                        <col width="45%">
-                        <col width="35%">
+                        <col width="30%">
+                        <col width="10%">
+                        <col width="40%">
                         <col width="15%">
                     </colgroup>
                     <thead>
                         <tr>
                             <th>&nbsp;</th>
                             <th>Station Name</th>
+                            <th class="text-center">Listeners</th>
                             <th>Now Playing</th>
                             <th>Options</th>
                         </tr>
@@ -74,6 +76,9 @@ $this->assets->collection('custom_js')
                             </td>
                             <td>
                                 <big><?=$row->name ?></big>
+                            </td>
+                            <td class="text-center">
+                                <span class="nowplaying-listeners">0</span>
                             </td>
                             <td>
                                 <strong><span class="nowplaying-title">Song Title</span></strong><br>
@@ -181,6 +186,7 @@ function nowPlaying() {
 
             station_row.find('.nowplaying-title').text(row.current_song.title);
             station_row.find('.nowplaying-artist').text(row.current_song.artist);
+            station_row.find('.nowplaying-listeners').text(row.listeners.total)
         });
 
         setTimeout('nowPlaying()', 30*1000);

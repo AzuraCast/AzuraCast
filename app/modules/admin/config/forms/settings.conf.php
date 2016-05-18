@@ -19,7 +19,7 @@ return array(
                     'base_url' => array('text', array(
                         'label' => 'Site Base URL',
                         'description' => 'The base URL where this service is located. For local testing, use "localhost". Otherwise, use either the external IP address or fully-qualified domain name pointing to the server.',
-                        'default' => 'localhost',
+                        'default' => $_SERVER["HTTP_HOST"],
                     )),
 
                 ),

@@ -11,7 +11,7 @@ export tmp_base=$app_base/www_tmp
 
 # Stop system tasks
 service nginx stop
-service php5-fpm stop
+service cron stop
 
 # Pull down update
 git reset --hard
@@ -27,5 +27,5 @@ phpuser cli.php cache:clear
 phpuser doctrine.php orm:schema-tool:update --force
 
 # Restart services
-service php5-fpm start
+service cron start
 service nginx start

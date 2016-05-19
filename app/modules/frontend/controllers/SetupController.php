@@ -118,10 +118,13 @@ class SetupController extends BaseController
 
             \App\Sync\Media::importPlaylists($station);
             $this->em->refresh($station);
-            
+
             // Load configuration from adapter to pull source and admin PWs.
             $frontend_adapter = $station->getFrontendAdapter();
             $frontend_adapter->read();
+
+            // Write initial XML file (if it doesn't exist).
+            $frontend_adapter->write();
             $frontend_adapter->restart();
 
             // Write an empty placeholder configuration.

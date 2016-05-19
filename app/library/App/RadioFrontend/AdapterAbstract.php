@@ -71,6 +71,11 @@ class AdapterAbstract
         return $np;
     }
 
+    public function getStreamUrl()
+    {
+        return '';
+    }
+
     /* Stub function for the process internal handler. */
     protected function _getNowPlaying(&$np)
     {

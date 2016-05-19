@@ -39,6 +39,9 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="frontend_type", type="string", length=100, nullable=true) */
     protected $frontend_type;
 
+    /** @Column(name="frontend_config", type="json", nullable=true) */
+    protected $frontend_config;
+
     /**
      * @return \App\RadioFrontend\AdapterAbstract
      * @throws \Exception
@@ -56,6 +59,9 @@ class Station extends \App\Doctrine\Entity
 
     /** @Column(name="backend_type", type="string", length=100, nullable=true) */
     protected $backend_type;
+
+    /** @Column(name="backend_config", type="json", nullable=true) */
+    protected $backend_config;
 
     /**
      * @return \App\RadioBackend\AdapterAbstract
@@ -75,34 +81,14 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
 
-    /*
-     * Administrative Data
-     */
-
-    /** @Column(name="nowplaying_data", type="json", nullable=true) */
-    protected $nowplaying_data;
-
     /** @Column(name="radio_port", type="smallint", nullable=true) */
     protected $radio_port;
 
     public function getRadioStreamUrl()
     {
-        $base_url = Settings::getSetting('base_url');
-        $radio_port = $this->radio_port;
-
-        // Vagrant port-forwarding mode.
-        if (APP_APPLICATION_ENV == 'development' && $radio_port == 8000)
-            $radio_port = 8088;
-
-        /* TODO: Abstract out mountpoint names */
-        return 'http://'.$base_url.':'.$radio_port.'/radio.mp3?played='.time();
+        $frontend_adapter = $this->getFrontendAdapter();
+        return $frontend_adapter->getStreamUrl();
     }
-
-    /** @Column(name="radio_source_pw", type="string", length=100, nullable=true) */
-    protected $radio_source_pw;
-
-    /** @Column(name="radio_admin_pw", type="string", length=100, nullable=true) */
-    protected $radio_admin_pw;
 
     /** @Column(name="radio_base_dir", type="string", length=255, nullable=true) */
     protected $radio_base_dir;
@@ -115,6 +101,7 @@ class Station extends \App\Doctrine\Entity
 
             @mkdir($this->getRadioMediaDir(), 0777, TRUE);
             @mkdir($this->getRadioPlaylistsDir(), 0777, TRUE);
+            @mkdir($this->getRadioConfigDir(), 0777, TRUE);
         }
     }
 
@@ -127,6 +114,14 @@ class Station extends \App\Doctrine\Entity
     {
         return $this->radio_base_dir.'/playlists';
     }
+
+    public function getRadioConfigDir()
+    {
+        return $this->radio_base_dir.'/config';
+    }
+
+    /** @Column(name="nowplaying_data", type="json", nullable=true) */
+    protected $nowplaying_data;
 
     /**
      * @OneToMany(targetEntity="SongHistory", mappedBy="station")

@@ -30,9 +30,20 @@ class UtilController extends BaseController
 
         // -------- START HERE -------- //
 
-        $station = \Entity\Station::find(1);
-        $fe = $station->getFrontendAdapter();
-        $fe->read();
+        $config_path = '/etc/icecast2/icecast.xml';
+
+        $reader = new \App\Xml\Reader();
+        $data = $reader->fromFile($config_path);
+
+        \App\Utilities::print_r($data);
+
+        $data['mount'] = array(
+            array('asdf' => array('true')),
+            array('foo' => array('true')),
+        );
+
+        $writer = new \App\Xml\Writer();
+        \App\Utilities::print_r($writer->toString($data, 'icecast'));
 
         // -------- END HERE -------- //
 

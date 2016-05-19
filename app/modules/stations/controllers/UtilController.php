@@ -11,8 +11,8 @@ class UtilController extends BaseController
     public function writeAction()
     {
         $backend = $this->station->getBackendAdapter();
-
         $backend->write();
+
         $this->view->backend_result = $backend->restart();
     }
 
@@ -21,10 +21,16 @@ class UtilController extends BaseController
      */
     public function restartAction()
     {
-        $backend = $this->station->getBackendAdapter();
-        $this->view->backend_result = $backend->restart();
-
         $frontend = $this->station->getFrontendAdapter();
-        $this->view->frontend_result = $frontend->restart();
+        $backend = $this->station->getBackendAdapter();
+
+        $frontend->stop();
+        $backend->stop();
+
+        $frontend->write();
+        $backend->write();
+
+        $this->view->frontend_result = $frontend->start();
+        $this->view->backend_result = $backend->start();
     }
 }

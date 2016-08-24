@@ -27,6 +27,7 @@ class ReportsController extends BaseController
                     'Delta Total',
                     'Play Count',
                     'Play Percentage',
+                    'Weighted Ratio',
                 ]];
 
                 foreach($report_data as $row)
@@ -44,6 +45,7 @@ class ReportsController extends BaseController
 
                         $row['num_plays'],
                         $row['percent_plays'].'%',
+                        $row['ratio'],
                     ];
                 }
 
@@ -80,6 +82,8 @@ class ReportsController extends BaseController
 
         $total_plays = 0;
         $data_points = array();
+        $data_points_by_hour = array();
+
         foreach($data_points_raw as $row)
         {
             $total_plays += $row['num_plays'];
@@ -87,7 +91,30 @@ class ReportsController extends BaseController
             if (!isset($data_points[$row['song_id']]))
                 $data_points[$row['song_id']] = [];
 
+            $row['hour'] = date('H', $row['timestamp_start']);
+
+            if (!isset($totals_by_hour[$row['hour']]))
+                $data_points_by_hour[$row['hour']] = array();
+
+            $data_points_by_hour[$row['hour']][] = $row;
+
             $data_points[$row['song_id']][] = $row;
+        }
+
+        // Build hourly data point totals.
+        $hourly_distributions = array();
+
+        foreach($data_points_by_hour as $hour_code => $hour_rows)
+        {
+            $hour_listener_points = array();
+            foreach($hour_rows as $row)
+                $hour_listener_points[] = $row['listeners_start'];
+
+            $hour_plays = count($hour_rows);
+            $hour_listeners = array_sum($hour_listener_points) / $hour_plays;
+
+            // ((#CALC#DELTA-X-HR * 100) / #CALC#AVG-LISTENERS-X-HR) / ( #CALC#SONGS-IN-PERIOD / #VAR#MIN-CALC-PLAYS / 24 )
+            $hourly_distributions[$hour_code] = (100 / $hour_listeners) / ($hour_plays / 24);
         }
 
         // Pull all media and playlists.
@@ -114,6 +141,8 @@ class ReportsController extends BaseController
                 'delta_negative' => 0,
                 'delta_positive' => 0,
                 'delta_total' => 0,
+
+                'ratio' => 0,
             );
 
             if (!empty($row['playlists']))
@@ -124,16 +153,26 @@ class ReportsController extends BaseController
 
             if (isset($data_points[$row['song_id']]))
             {
+                $ratio_points = array();
+
                 foreach($data_points[$row['song_id']] as $data_row)
                 {
                     $media['num_plays'] += $data_row['num_plays'];
 
                     $media['delta_positive'] += $data_row['delta_positive'];
                     $media['delta_negative'] -= $data_row['delta_negative'];
+
+                    $delta_total = $data_row['delta_positive'] - $data_row['delta_negative'];
+                    $hour_dist = $hourly_distributions[$data_row['hour']];
+
+                    // ((#REC#PLAY-DELTA*100)/#REC#PLAY-LISTENS)- #CALC#AVG-HOUR-DELTA<#REC#PLAY-TIME>
+                    $ratio_points[] = (($delta_total * 100) / $media['listeners_start']) - $hour_dist;
                 }
 
                 $media['delta_total'] = $media['delta_positive'] + $media['delta_negative'];
                 $media['percent_plays'] = round(($media['num_plays'] / $total_plays)*100, 2);
+
+                $media['ratio'] = round(array_sum($ratio_points) / count($ratio_points), 3);
             }
 
             $report[$row['song_id']] = $media;

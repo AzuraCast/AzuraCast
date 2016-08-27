@@ -75,7 +75,7 @@ class ReportsController extends BaseController
         $threshold = strtotime('-14 days');
 
         // Pull all SongHistory data points.
-        $data_points_raw = $this->em->createQuery('SELECT sh.song_id, COUNT(sh.id) AS num_plays, SUM(sh.delta_positive) AS delta_positive, SUM(sh.delta_negative) AS delta_negative FROM Entity\SongHistory sh WHERE sh.station_id = :station_id AND sh.timestamp_end != 0 AND sh.timestamp_start >= :threshold GROUP BY sh.song_id')
+        $data_points_raw = $this->em->createQuery('SELECT sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start FROM Entity\SongHistory sh WHERE sh.station_id = :station_id AND sh.timestamp_end != 0 AND sh.timestamp_start >= :threshold')
             ->setParameter('station_id', $this->station->id)
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
@@ -86,7 +86,7 @@ class ReportsController extends BaseController
 
         foreach($data_points_raw as $row)
         {
-            $total_plays += $row['num_plays'];
+            $total_plays ++;
 
             if (!isset($data_points[$row['song_id']]))
                 $data_points[$row['song_id']] = [];
@@ -114,7 +114,7 @@ class ReportsController extends BaseController
             $hour_listeners = array_sum($hour_listener_points) / $hour_plays;
 
             // ((#CALC#DELTA-X-HR * 100) / #CALC#AVG-LISTENERS-X-HR) / ( #CALC#SONGS-IN-PERIOD / #VAR#MIN-CALC-PLAYS / 24 )
-            $hourly_distributions[$hour_code] = (100 / $hour_listeners) / ($hour_plays / 24);
+            $hourly_distributions[$hour_code] = ($hour_listeners) * ($hour_plays / 24);
         }
 
         // Pull all media and playlists.
@@ -157,17 +157,20 @@ class ReportsController extends BaseController
 
                 foreach($data_points[$row['song_id']] as $data_row)
                 {
-                    $media['num_plays'] += $data_row['num_plays'];
+                    $media['num_plays'] ++;
 
                     $media['delta_positive'] += $data_row['delta_positive'];
                     $media['delta_negative'] -= $data_row['delta_negative'];
 
-                    $delta_total = $data_row['delta_positive'] - $data_row['delta_negative'];
+                    $delta_total = $data_row['delta_positive'] - 1.5*$data_row['delta_negative'];
                     $hour_dist = $hourly_distributions[$data_row['hour']];
 
                     // ((#REC#PLAY-DELTA*100)/#REC#PLAY-LISTENS)- #CALC#AVG-HOUR-DELTA<#REC#PLAY-TIME>
-                    $ratio_points[] = (($delta_total * 100) / $media['listeners_start']) - $hour_dist;
+                    $ratio_points[] = (($delta_total * 100) / $data_row['listeners_start']) - $hour_dist;
                 }
+
+                if (!empty($ratio_points))
+                    \App\Utilities::print_r($ratio_points);
 
                 $media['delta_total'] = $media['delta_positive'] + $media['delta_negative'];
                 $media['percent_plays'] = round(($media['num_plays'] / $total_plays)*100, 2);

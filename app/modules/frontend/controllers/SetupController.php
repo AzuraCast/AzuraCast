@@ -149,6 +149,7 @@ class SetupController extends BaseController
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
+
         if ($current_step != 'settings')
             return $this->redirectFromHere(['action' => $current_step]);
 

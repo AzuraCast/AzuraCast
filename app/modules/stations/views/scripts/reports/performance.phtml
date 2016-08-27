@@ -19,8 +19,12 @@ $manual = true;
             </li>
         </ul>
     </div>
+    <div class="card-body card-padding">
+        <a class="btn btn-default" href="#" id="btn-toggle-unplayed">Toggle Unplayed Songs</a>
+    </div>
+
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table id="tbl-report" class="table table-striped">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -47,7 +51,7 @@ $manual = true;
                     <td class="text-success"><?=$row['delta_positive'] ?></td>
                     <td class="text-danger"><?=$row['delta_negative'] ?></td>
                     <td><?=$row['delta_total'] ?></td>
-                    <td><?=$row['num_plays'] ?></td>
+                    <td class="num_plays"><?=$row['num_plays'] ?></td>
                     <td><?=$row['percent_plays'] ?>%</td>
                     <td><?=$row['ratio'] ?></td>
                 </tr>
@@ -56,3 +60,20 @@ $manual = true;
         </table>
     </div>
 </div>
+
+<script type="text/javascript">
+$(function() {
+    $.expr[':'].textEquals = $.expr.createPseudo(function(arg) {
+        return function( elem ) {
+            return $(elem).text().match("^" + arg + "$");
+        };
+    });
+
+    $('#btn-toggle-unplayed').on('click', function(e) {
+        e.preventDefault();
+
+        $("#tbl-report").find("td.num_plays:textEquals('0')").closest('tr').toggle();
+        return false;
+    });
+});
+</script>

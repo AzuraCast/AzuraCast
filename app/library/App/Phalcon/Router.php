@@ -7,7 +7,7 @@ class Router extends \Phalcon\Mvc\Router
 
     public function handle($path = null)
     {
-        if ($path === null)
+        if (empty($path))
             $path = $this->getRewriteUri();
 
         // First attempt regular resolution.

@@ -22,7 +22,7 @@
     "phansys/getid3": "~2.1@dev"
   },
   "require-dev": {
-    "phalcon/devtools": "2.0.2@dev"
+    "phalcon/devtools": "~3@dev"
   },
   "authors": [
     {

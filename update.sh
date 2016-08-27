@@ -17,6 +17,10 @@ service cron stop
 git reset --hard
 git pull
 
+# Update Phalcon
+apt-get update
+apt-get -q -y install php5-phalcon
+
 chmod a+x ./update.sh
 
 # Clear cache

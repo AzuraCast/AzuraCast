@@ -179,17 +179,8 @@ echo "Setting up database..."
 
 cd $util_base
 
-phpuser doctrine.php orm:schema-tool:drop --force
-
 phpuser doctrine.php orm:schema-tool:create
 phpuser cli.php cache:clear
-
-echo "Running regular tasks..."
-phpuser cli.php sync:nowplaying
-phpuser cli.php sync:short
-phpuser cli.php sync:medium
-phpuser cli.php sync:long
-
 
 # Add cron job
 echo "Installing cron job..."

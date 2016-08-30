@@ -1,6 +1,9 @@
 <?
 $title = 'Media Playback Performance';
 $manual = true;
+
+$this->assets->collection('custom_js')
+    ->addJs('vendors/bootgrid/jquery.bootgrid.updated.min.js');
 ?>
 
 <div class="block-header">
@@ -19,25 +22,27 @@ $manual = true;
             </li>
         </ul>
     </div>
+    <!--
     <div class="card-body card-padding">
         <a class="btn btn-default" href="#" id="btn-toggle-unplayed">Toggle Unplayed Songs</a>
     </div>
+    -->
 
     <div class="table-responsive">
-        <table id="tbl-report" class="table table-striped">
+        <table id="tbl-report" class="data-table table table-striped">
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Artist</th>
-                    <th>Filename</th>
-                    <th>Length</th>
-                    <th>Current Playlist(s)</th>
-                    <th>&delta; Joins</th>
-                    <th>&delta; Losses</th>
-                    <th>&delta; Total</th>
-                    <th>Plays</th>
-                    <th>Play %</th>
-                    <th>Ratio</th>
+                    <th data-column-id="title">Title</th>
+                    <th data-column-id="artist">Artist</th>
+                    <th data-column-id="path">Filename</th>
+                    <th data-column-id="length">Length</th>
+                    <th data-column-id="playlists">Current Playlist(s)</th>
+                    <th data-column-id="delta_positive">&delta; Joins</th>
+                    <th data-column-id="delta_negative">&delta; Losses</th>
+                    <th data-column-id="delta_total">&delta; Total</th>
+                    <th data-column-id="num_plays">Plays</th>
+                    <th data-column-id="percent_plays">Play %</th>
+                    <th data-column-id="ratio">Ratio</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,6 +79,16 @@ $(function() {
 
         $("#tbl-report").find("td.num_plays:textEquals('0')").closest('tr').toggle();
         return false;
+    });
+
+    $(".data-table").bootgrid({
+        css: {
+            icon: 'zmdi icon',
+            iconColumns: 'zmdi-view-module',
+            iconDown: 'zmdi-sort-amount-desc',
+            iconRefresh: 'zmdi-refresh',
+            iconUp: 'zmdi-sort-amount-asc'
+        }
     });
 });
 </script>

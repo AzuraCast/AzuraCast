@@ -69,6 +69,8 @@ class FilesController extends BaseController
 
     public function listAction()
     {
+        $result = array();
+
         if (is_dir($this->file_path))
         {
             $media_in_dir_raw = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id AND sm.path LIKE :path')
@@ -86,14 +88,13 @@ class FilesController extends BaseController
                 $media_in_dir[$media_row['path']] = array(
                     'is_playable' => true,
                     'name' => $media_row['artist'].' - '.$media_row['title'].' ('.$media_row['length_text'].')',
-                    'playlists' => $playlists,
+                    'playlists' => implode('<br>', $playlists),
                 );
             }
 
             $directory = $this->file_path;
-            $result = array();
-            $files = array_diff(scandir($directory), array('.', '..'));
 
+            $files = array_diff(scandir($directory), array('.', '..'));
             foreach ($files as $entry)
             {
                 if ($entry !== basename(__FILE__))
@@ -115,15 +116,19 @@ class FilesController extends BaseController
                     if (strlen($shortname) > $max_length)
                         $shortname = substr($shortname, 0, $max_length-15).'...'.substr($shortname, -12);
 
-                    $result[] = array(
+                    $result_row = array(
                         'mtime' => $stat['mtime'],
                         'size' => $stat['size'],
                         'name' => basename($i),
                         'text' => $shortname,
                         'path' => $short,
                         'is_dir' => is_dir($i),
-                        'media' => $media,
                     );
+
+                    foreach($media as $media_key => $media_val)
+                        $result_row['media_'.$media_key] = $media_val;
+
+                    $result[] = $result_row;
                 }
                 else
                 {
@@ -132,7 +137,61 @@ class FilesController extends BaseController
             }
         }
 
-        return $this->response->setJsonContent(array('success' => true, 'results' => $result));
+        // Example from bootgrid docs:
+        // current=1&rowCount=10&sort[sender]=asc&searchPhrase=&id=b0df282a-0d67-40e5-8558-c9e93b7befed
+
+        // Apply sorting, limiting and searching.
+        $search_phrase = trim($_REQUEST['searchPhrase']);
+
+        if (!empty($search_phrase))
+        {
+            $result = array_filter($result, function($row) use($search_phrase) {
+                $search_fields = array('media_name', 'text');
+
+                foreach($search_fields as $field_name)
+                {
+                    if (stripos($row[$field_name], $search_phrase) !== false)
+                        return true;
+                }
+
+                return false;
+            });
+        }
+
+        $sort_by = array('is_dir', \SORT_DESC);
+
+        if (!empty($_REQUEST['sort']))
+        {
+            foreach ($_REQUEST['sort'] as $sort_key => $sort_direction)
+            {
+                $sort_dir = (strtolower($sort_direction) == 'desc') ? \SORT_DESC : \SORT_ASC;
+
+                $sort_by[] = $sort_key;
+                $sort_by[] = $sort_dir;
+            }
+        }
+        else
+        {
+            $sort_by[] = 'name';
+            $sort_by[] = \SORT_ASC;
+        }
+
+        $result = \App\Utilities::arrayOrderBy($result, $sort_by);
+
+        $num_results = count($result);
+
+        $page = @$_REQUEST['current'] ?: 1;
+        $row_count = @$_REQUEST['rowCount'] ?: 15;
+
+        $offset_start = ($page - 1) * $row_count;
+        $return_result = array_slice($result, $offset_start, $row_count);
+
+        return $this->response->setJsonContent(array(
+            'current' => $page,
+            'rowCount' => $row_count,
+            'total' => $num_results,
+            'rows' => $return_result,
+        ));
     }
 
     public function batchAction()

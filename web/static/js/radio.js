@@ -13,26 +13,30 @@ $(function() {
 
     $(document).on("click", ".btn-audio", function(e) {
         e.preventDefault();
-        
-        if ($(this).hasClass('playing'))
-        {
-            stopAllPlayers();
-        }
-        else 
-        {
-            if ($('.btn-audio.playing').length != 0)
-                stopAllPlayers();
-
-            var audio_source = $(this).data('url');
-            playAudio(audio_source);
-
-            $(this).addClass('playing').find('i').removeClass('zmdi-play').addClass('zmdi-stop');
-        }
-        
+        handlePlayClick($(this).data('url'));
         return false;
     });
 
 });
+
+function handlePlayClick(audio_source)
+{
+    btn = $('.btn-audio[data-url="'+audio_source+'"]');
+
+    if (btn.hasClass('playing'))
+    {
+        stopAllPlayers();
+    }
+    else
+    {
+        if ($('.btn-audio.playing').length != 0)
+            stopAllPlayers();
+
+        playAudio(audio_source);
+
+        btn.addClass('playing').find('i').removeClass('zmdi-play').addClass('zmdi-stop');
+    }
+}
 
 function playAudio(source_url)
 {

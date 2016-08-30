@@ -11,64 +11,6 @@ use Zend\Feed\Reader\Reader;
 class Utilities
 {
     /**
-     * Process RSS feed and return results.
-     *
-     * @param $feed_url
-     * @param null $cache_name
-     * @param int $cache_expires
-     * @return array|mixed
-     */
-    public static function getNewsFeed($feed_url, $cache_name = NULL, $cache_expires = 900)
-    {
-        if (!is_null($cache_name))
-            $feed_cache = Cache::get('feed_'.$cache_name);
-        else
-            $feed_cache = null;
-
-        if ($feed_cache)
-            return $feed_cache;
-
-        // Catch the occasional error when the RSS feed is malformed or the HTTP request times out.
-        try
-        {
-            $news_feed = Reader::import($feed_url);
-        }
-        catch(\Exception $e)
-        {
-            $news_feed = NULL;
-        }
-
-        if (!is_null($news_feed))
-        {
-            $latest_news = array();
-            $article_num = 0;
-
-            foreach ($news_feed as $item)
-            {
-                $article_num++;
-
-                $news_item = array(
-                    'num'           => $article_num,
-                    'title'         => $item->getTitle(),
-                    'timestamp'     => $item->getDateModified()->getTimestamp(),
-                    'description'   => trim($item->getDescription()),
-                    'link'          => $item->getLink(),
-                    'categories'    => $item->getCategories()->getValues(),
-                );
-
-                $latest_news[] = $news_item;
-            }
-
-            $latest_news = array_slice($latest_news, 0, 10);
-
-            if (!is_null($cache_name))
-                Cache::set($latest_news, 'feed_'.$cache_name, array('feeds', $cache_name), $cache_expires);
-
-            return $latest_news;
-        }
-    }
-
-    /**
      * Pretty print_r
      *
      * @param $var
@@ -940,6 +882,37 @@ class Utilities
     }
 
     /**
+     * Sort a supplied array (the first argument) by one or more indices, specified in this format:
+     * arrayOrderBy($data, [ 'index_name', SORT_ASC, 'index2_name', SORT_DESC ])
+     *
+     * Internally uses array_multisort().
+     *
+     * @param $data
+     * @param array $args
+     * @return mixed
+     */
+    public static function arrayOrderBy($data, array $args = array())
+    {
+        if (empty($args))
+            return $data;
+
+        foreach ($args as $n => $field)
+        {
+            if (is_string($field))
+            {
+                $tmp = array();
+                foreach ($data as $key => $row)
+                    $tmp[$key] = $row[$field];
+                $args[$n] = $tmp;
+            }
+        }
+
+        $args[] = &$data;
+        call_user_func_array('array_multisort', $args);
+        return array_pop($args);
+    }
+
+    /**
      * Split a URL into an array (similar to parse_url() itself) but with cleaner parameter handling.
      *
      * @param $url
@@ -1045,19 +1018,5 @@ class Utilities
         }
         
         return false;
-    }
-    
-    /**
-     * Generates a date string to be globally used throughout the site for uniformity
-     * NOTE: Will need to find a better place for this.
-     * LEGACY
-     *
-     * @param $date         The date we'd like formatted
-     * @param $time_zone    The desired time zone
-     * @return string
-     */
-    public static function fa_date_format($date, $time_zone = 0)
-    {
-        return date("M dS, Y h:i A", $date + ($time_zone * 3600));
     }
 }

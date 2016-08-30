@@ -19,32 +19,17 @@
       vertical-align: middle;
       white-space: nowrap;
 
-      &.empty {
-        color:#777;
-        font-style: italic;
-        text-align: center;
-        padding:3em 0;
-      }
+      .file-icon {
+        display: inline-block;
+        float: left;
+        width: 30px;
 
-      &.first {
-        white-space: normal;
-
-        .file-icon {
-          display: inline-block;
-          float: left;
-          width: 30px;
-
-          i:before {
-            font-size: 25px;
-            vertical-align: middle;
-          }
+        i:before {
+          font-size: 25px;
+          vertical-align: middle;
         }
       }
     }
-
-    .is_dir .size {color:transparent;font-size:0;}
-    .is_dir .size:before {content: "--"; font-size:14px;color:#333;}
-    .is_dir .download{visibility: hidden}
   }
 
   #file_drop_target {
@@ -71,7 +56,5 @@
 
   .progress_track {display:inline-block;width:200px;height:10px;border:1px solid #333;margin: 0 4px 0 10px;}
   .progress {background-color: #82CFFA;height:10px; }
-
-  .sort_hide{ display:none; }
 }
 

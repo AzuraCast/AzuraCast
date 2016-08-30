@@ -6,7 +6,8 @@ $page_class = 'page-file-manager';
 $this->assets->collection('custom_js')
     ->addJs('vendors/bower_components/jPlayer/dist/jplayer/jquery.jplayer.min.js')
     ->addJs('vendors/bower_components/store-js/store.min.js')
-    ->addJs('js/radio.js');
+    ->addJs('js/radio.js')
+    ->addJs('vendors/bootgrid/jquery.bootgrid.updated.min.js');
 ?>
 
 <div class="block-header">
@@ -71,85 +72,71 @@ $this->assets->collection('custom_js')
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-striped" id="file-table">
+                <table class="data-table table table-striped" id="file-table">
                     <thead>
                         <tr>
-                            <th class="non-sort">
-                                <div class="checkbox checkbox-inline">
-                                    <input type="checkbox" id="file-check-all" title="Select All" />
-                                    <i class="input-helper"></i>
-                                </div>
-                            </th>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Modified</th>
-                            <th>Playlists</th>
+                            <th data-column-id="name" data-formatter="playable" data-identifier="true">Name</th>
+                            <th data-column-id="size" data-formatter="file_size">Size</th>
+                            <th data-column-id="mtime" data-formatter="file_mtime">Modified</th>
+                            <th data-column-id="media_playlists">Playlists</th>
                         </tr>
                     </thead>
-                    <tbody id="list"></tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-(function($){
-    $.fn.tablesorter = function() {
-        var $table = this;
-        this.find('th:not(.non-sort)').click(function() {
-            var idx = $(this).index();
-            var direction = $(this).hasClass('sort_asc');
-            $table.tablesortby(idx,direction);
-        });
-        return this;
-    };
-
-    $.fn.tablesortby = function(idx,direction) {
-        var $rows = this.find('tbody tr');
-        function elementToVal(a) {
-            var $a_elem = $(a).find('td:nth-child('+(idx+1)+')');
-            var a_val = $a_elem.attr('data-sort') || $a_elem.text();
-            return (a_val == parseInt(a_val) ? parseInt(a_val) : a_val);
-        }
-        $rows.sort(function(a,b){
-            var a_val = elementToVal(a), b_val = elementToVal(b);
-            return (a_val > b_val ? 1 : (a_val == b_val ? 0 : -1)) * (direction ? 1 : -1);
-        });
-        this.find('th').removeClass('sort_asc sort_desc');
-        $(this).find('thead th:nth-child('+(idx+1)+')').addClass(direction ? 'sort_desc' : 'sort_asc');
-        for(var i =0;i<$rows.length;i++)
-            this.append($rows[i]);
-        this.settablesortmarkers();
-        return this;
-    };
-
-    $.fn.retablesort = function() {
-        var $e = this.find('thead th.sort_asc, thead th.sort_desc');
-        if($e.length)
-            this.tablesortby($e.index(), $e.hasClass('sort_desc') );
-
-        return this;
-    };
-
-    $.fn.settablesortmarkers = function() {
-        this.find('thead th span.indicator').remove();
-        this.find('thead th.sort_asc').append('<span class="indicator">&darr;<span>');
-        this.find('thead th.sort_desc').append('<span class="indicator">&uarr;<span>');
-        return this;
-    };
-})(jQuery);
-
+<script type="text/javascript">
 $(function() {
     var XSRF = '<?=$CSRF ?>';
     var MAX_UPLOAD_SIZE = <?=$MAX_UPLOAD_SIZE ?>;
 
-    var $table = $('#file-table');
-    var $tbody = $table.find('tbody');
+    var $current_dir = '';
 
-    $(window).bind('hashchange',list).trigger('hashchange');
+    $(window).bind('hashchange',list);
 
-    $table.tablesorter();
+    $("#file-table").bootgrid({
+        ajax: true,
+        selection: true,
+        multiSelect: true,
+        rowSelect: false,
+        css: {
+            icon: 'zmdi icon',
+            iconColumns: 'zmdi-view-module',
+            iconDown: 'zmdi-sort-amount-desc',
+            iconRefresh: 'zmdi-refresh',
+            iconUp: 'zmdi-sort-amount-asc'
+        },
+        url: "<?=$this->url->routeFromHere(['action' => 'list']) ?>",
+        post: function() {
+            return { 'file': $current_dir };
+        },
+        formatters: {
+            "playable": function(column, row) {
+                var $url = row.is_dir ? '#' + row.path : '<?=$this->url->routeFromHere(['action' => 'download']) ?>?file='+encodeURIComponent(row.path);
+                var $icon = '';
+
+                if (row.media_is_playable)
+                    $icon = '<a class="file-icon btn-audio" href="javascript:handlePlayClick(\''+$url+'\');" data-url="'+$url+'"><i class="zmdi zmdi-play"></i></a>';
+                else
+                    $icon = '<span class="file-icon"><i class="zmdi zmdi-'+(row.is_dir ? 'folder' : 'file')+'"></i></span>';
+
+                var $link = '<a class="name" href="'+$url+'" title="'+row.name+'">'+row.text+'</a>';
+
+                return '<div class="'+(row.is_dir ? 'is_dir' : 'is_file')+'">'+$icon + $link + '<br><small>'+row.media_name+'</small></div>';
+            },
+            "file_size": function(column, row) {
+                return formatFileSize(row.size);
+            },
+            "file_mtime": function(column, row) {
+                return formatTimestamp(row.mtime);
+            }
+        }
+    }).on('click.rs.jquery.bootgrid', function(e, columns, row) {
+        // whole-row click handler
+    });
 
     // Create new directory
     $('form#mkdir').submit(function(e) {
@@ -175,9 +162,9 @@ $(function() {
 
         var hashval = window.location.hash.substr(1);
 
-        var $files = [];
-        $('#file-table').find('tbody input[type=checkbox]:checked').each(function() {
-            $files.push($(this).attr('value'));
+        $files = [];
+        $('#file-table').find('tr.active').each(function() {
+            $files.push($(this).data('row-id'));
         });
 
         console.log($files);
@@ -195,10 +182,12 @@ $(function() {
         return false;
     });
 
+    /*
     $('#file-check-all').on('change', function(e) {
         var $is_checked = $(this).prop('checked');
         $('#file-table').find('tbody input[type=checkbox]').prop('checked', $is_checked);
     });
+    */
 
     // File upload stuff
     $('#file_drop_target').bind('dragover',function(){
@@ -271,29 +260,17 @@ $(function() {
 
     function list() {
         var hashval = window.location.hash.substr(1);
-        $.get('<?=$this->url->routeFromHere(['action' => 'list']) ?>',{'file':hashval},function(data) {
-            $('#file-check-all').prop('checked', false);
-            $tbody.empty();
-            $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
-            
-            if(data.success) {
-                if (data.results.length) {
-                    $.each(data.results,function(k,v){
-                        $tbody.append(renderFileRow(v));
-                    });
-                } else {
-                    $tbody.append('<tr><td class="empty" colspan="5">This folder is empty</td></tr>');
-                }
-            } else {
-                console.warn(data.error.msg);
-            }
+        $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
 
-            $('#file-table').retablesort();
-        },'json');
+        console.log('Relisting for directory: #'+hashval);
+
+        $current_dir = hashval;
+        $('#file-table').bootgrid("clear").bootgrid("reload");
     }
 
+    /*
     function renderFileRow(data) {
-        var $url = data.is_dir ? '#' + data.path : '<?=$this->url->routeFromHere(['action' => 'download']) ?>?file='+encodeURIComponent(data.path);
+
 
         var $checkbox = $('<div />').addClass('checkbox checkbox-inline')
             .append('<input type="checkbox" class="file-check" value="'+data.name+'" />')
@@ -320,6 +297,7 @@ $(function() {
             .append( $('<td/>').html(data.media.playlists.join('<br>')) );
         return $html;
     }
+    */
 
     function renderBreadcrumbs(path) {
         var base = "",

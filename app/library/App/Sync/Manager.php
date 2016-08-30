@@ -1,6 +1,7 @@
 <?php
 namespace App\Sync;
 
+use App\Radio\Automation;
 use Entity\Settings;
 use Entity\SongHistory;
 use App\Debug;
@@ -55,6 +56,11 @@ class Manager
         // Sync analytical and statistical data (long running).
         Debug::runTimer('Run analytics manager', function() {
             Analytics::sync();
+        });
+
+        // Run automated playlist assignment.
+        Debug::runTimer('Run automated playlist assignment', function() {
+            Automation::run();
         });
 
         // Clean up old song history entries.

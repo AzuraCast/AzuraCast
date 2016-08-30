@@ -55,7 +55,12 @@ $manual = true;
                             'text'      => 'Delete',
                         )) ?>
                     </td>
-                    <td><big><?=$row->name ?></big></td>
+                    <td>
+                        <big><?=$row->name ?></big>
+                        <? if ($row->include_in_automation): ?>
+                            <br><span class="label label-success">Auto-Assigned</span>
+                        <? endif; ?>
+                    </td>
                     <td><?=$row->weight ?></td>
                     <td><?=count($row->media) ?></td>
                 </tr>

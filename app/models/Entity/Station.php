@@ -14,6 +14,8 @@ class Station extends \App\Doctrine\Entity
 
     public function __construct()
     {
+        $this->automation_timestamp = 0;
+
         $this->history = new ArrayCollection;
         $this->managers = new ArrayCollection;
 
@@ -122,6 +124,12 @@ class Station extends \App\Doctrine\Entity
 
     /** @Column(name="nowplaying_data", type="json", nullable=true) */
     protected $nowplaying_data;
+
+    /** @Column(name="automation_settings", type="json", nullable=true) */
+    protected $automation_settings;
+
+    /** @Column(name="automation_timestamp", type="integer", nullable=true) */
+    protected $automation_timestamp;
 
     /**
      * @OneToMany(targetEntity="SongHistory", mappedBy="station")

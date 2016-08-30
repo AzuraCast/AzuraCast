@@ -25,6 +25,17 @@ return array(
             ),
         )),
 
+        'include_in_automation' => array('radio', array(
+            'label' => 'Include in Automated Assignment',
+            'description' => 'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.',
+            'required' => true,
+            'default' => '0',
+            'options' => array(
+                0 => 'No',
+                1 => 'Yes',
+            ),
+        )),
+
         'submit'        => array('submit', array(
             'type'  => 'submit',
             'label' => 'Save Changes',

@@ -12,6 +12,7 @@ class StationPlaylist extends \App\Doctrine\Entity
 {
     public function __construct()
     {
+        $this->include_in_automation = false;
         $this->weight = 3;
 
         $this->media = new ArrayCollection;
@@ -37,6 +38,9 @@ class StationPlaylist extends \App\Doctrine\Entity
 
     /** @Column(name="weight", type="smallint") */
     protected $weight;
+
+    /** @Column(name="include_in_automation", type="boolean", nullable=false) */
+    protected $include_in_automation;
 
     /**
      * @ManyToOne(targetEntity="Station", inversedBy="playlists")

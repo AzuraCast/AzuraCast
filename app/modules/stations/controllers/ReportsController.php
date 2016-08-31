@@ -11,6 +11,14 @@ class ReportsController extends BaseController
     {
         $report_data = \App\Radio\Automation::generateReport($this->station);
 
+        // Do not show songs that are not in playlists.
+        $report_data = array_filter($report_data, function($media) {
+            if (empty($media['playlists']))
+                return false;
+
+            return true;
+        });
+
         switch(strtolower($this->getParam('format')))
         {
             case 'csv':

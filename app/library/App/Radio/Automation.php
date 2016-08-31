@@ -120,8 +120,13 @@ class Automation
         $em->flush();
 
         // Sort songs by ratio descending.
-        $media_report = Utilities::irsort($media_report, 'ratio');
+        uasort($media_report, function($a_media, $b_media) {
+            $a = (int)$a_media['ratio'];
+            $b = (int)$b_media['ratio'];
 
+            return ($a < $b) ? 1 : (($a > $b) ? -1 : 0);
+        });
+        
         // Distribute media across the enabled playlists and assign media to playlist.
         $num_songs = count($media_report);
         $num_playlists = count($playlists);

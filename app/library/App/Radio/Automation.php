@@ -65,8 +65,11 @@ class Automation
             return false; // No error, but no need to run assignment.
 
         $playlists = array();
+        $original_playlists = array();
 
         // Related playlists are already automatically sorted by weight.
+        $i = 0;
+
         foreach($station->playlists as $playlist)
         {
             if ($playlist->include_in_automation)
@@ -74,11 +77,15 @@ class Automation
                 // Clear all related media.
                 foreach($playlist->media as $media)
                 {
+                    $original_playlists[$media->id][] = $i;
+
                     $media->playlists->removeElement($playlist);
                     $em->persist($media);
                 }
 
-                $playlists[] = $playlist;
+                $playlists[$i] = $playlist;
+
+                $i++;
             }
         }
 
@@ -91,8 +98,26 @@ class Automation
 
         // Remove all songs that were not played or that are in non-auto-assigned playlists.
         $media_report = array_filter($media_report, function($media) {
-            return ($media['num_plays'] > 0 && empty($media['playlists']));
+            return empty($media['playlists']);
         });
+
+        // Place all songs with 0 plays back in their original playlists.
+        foreach($media_report as $song_id => $media)
+        {
+            if ($media['num_plays'] == 0 && isset($original_playlists[$song_id]))
+            {
+                $media_row = $media['record'];
+
+                foreach($original_playlists[$song_id] as $playlist_key)
+                    $media_row->playlists->add($playlists[$playlist_key]);
+
+                $em->persist($media_row);
+
+                unset($media_report[$song_id]);
+            }
+        }
+
+        $em->flush();
 
         // Sort songs by ratio descending.
         $media_report = Utilities::irsort($media_report, 'ratio');

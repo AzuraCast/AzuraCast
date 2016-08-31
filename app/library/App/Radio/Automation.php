@@ -77,7 +77,7 @@ class Automation
                 // Clear all related media.
                 foreach($playlist->media as $media)
                 {
-                    $original_playlists[$media->id][] = $i;
+                    $original_playlists[$media->song_id][] = $i;
 
                     $media->playlists->removeElement($playlist);
                     $em->persist($media);
@@ -102,7 +102,7 @@ class Automation
                 return false;
 
             // Remove songs that weren't already in auto-assigned playlists.
-            if (!isset($original_playlists[$media['id']]))
+            if (!isset($original_playlists[$media['song_id']]))
                 return false;
 
             return true;
@@ -234,7 +234,7 @@ class Automation
         foreach($media_raw as $row)
         {
             $media = array(
-                'id'        => $row['song_id'],
+                'song_id'   => $row['song_id'],
                 'record'    => $row,
 
                 'title'     => $row['title'],

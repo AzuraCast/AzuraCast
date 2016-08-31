@@ -21,16 +21,6 @@ class UtilController extends BaseController
      */
     public function restartAction()
     {
-        $frontend = $this->station->getFrontendAdapter();
-        $backend = $this->station->getBackendAdapter();
-
-        $frontend->stop();
-        $backend->stop();
-
-        $frontend->write();
-        $backend->write();
-
-        $this->view->frontend_result = $frontend->start();
-        $this->view->backend_result = $backend->start();
+        $this->station->writeAndRestartRadio();
     }
 }

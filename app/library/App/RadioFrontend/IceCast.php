@@ -159,10 +159,9 @@ class IceCast extends AdapterAbstract
             $kill_result = exec('kill -9 '.$icecast_pid);
 
             @unlink($icecast_pid_file);
-            return $kill_result;
-        }
 
-        return null;
+            $this->log($kill_result);
+        }
     }
 
     public function start()
@@ -171,16 +170,13 @@ class IceCast extends AdapterAbstract
         $icecast_config = $config_path.'/icecast.xml';
 
         exec('icecast2 -b -c '.$icecast_config, $output);
-        return implode("\n", $output);
+        $this->log(implode("\n", $output));
     }
 
     public function restart()
     {
-        $return = array();
-        $return[] = $this->stop();
-        $return[] = $this->start();
-
-        return implode("\n", $return);
+        $this->stop();
+        $this->start();
     }
 
     /*

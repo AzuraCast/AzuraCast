@@ -92,6 +92,21 @@ class Station extends \App\Doctrine\Entity
         return $frontend_adapter->getStreamUrl();
     }
 
+    public function writeAndRestartRadio()
+    {
+        $frontend = $this->getFrontendAdapter();
+        $backend = $this->getBackendAdapter();
+
+        $frontend->stop();
+        $backend->stop();
+
+        $frontend->write();
+        $backend->write();
+
+        $this->view->frontend_result = $frontend->start();
+        $this->view->backend_result = $backend->start();
+    }
+
     /** @Column(name="radio_base_dir", type="string", length=255, nullable=true) */
     protected $radio_base_dir;
 

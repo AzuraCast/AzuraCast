@@ -138,10 +138,9 @@ class LiquidSoap extends AdapterAbstract
             $kill_result = exec('kill -9 '.$ls_pid);
 
             @unlink($ls_pid_file);
-            return $kill_result;
-        }
 
-        return null;
+            $this->log($kill_result);
+        }
     }
 
     public function start()
@@ -153,15 +152,13 @@ class LiquidSoap extends AdapterAbstract
          * TODO: Figure out why this works, but simply running this script AS
          * the 'azuracast' user (the default state) doesn't. No idea.
          */
-        return shell_exec('sudo -u azuracast liquidsoap '.$ls_config.' 2>&1');
+
+        $this->log(shell_exec('sudo -u azuracast liquidsoap '.$ls_config.' 2>&1'));
     }
 
     public function restart()
     {
-        $return = array();
-        $return[] = $this->stop();
-        $return[] = $this->start();
-
-        return implode("\n", $return);
+        $this->stop();
+        $this->start();
     }
 }

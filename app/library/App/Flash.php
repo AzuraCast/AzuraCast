@@ -35,7 +35,7 @@ class Flash
      * @param string $level
      * @param bool|false $save_in_session
      */
-    public function addMessage($message, $level = self::INFO, $save_in_session = false)
+    public function addMessage($message, $level = self::INFO, $save_in_session = true)
     {
         $color_chart = array(
             'green'     => 'success',
@@ -54,12 +54,14 @@ class Flash
             'color' => (isset($color_chart[$level])) ? $color_chart[$level] : $color_chart['default'],
         );
 
-        $this->messages[] = $message_row;
+        $message_hash = md5(json_encode($message_row));
+
+        $this->messages[$message_hash] = $message_row;
 
         if ($save_in_session)
         {
             $messages = $this->_session->messages;
-            $messages[] = $message_row;
+            $messages[$message_hash] = $message_row;
             $this->_session->messages = $messages;
         }
     }

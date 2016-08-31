@@ -238,7 +238,7 @@ $this->assets->outputJs('footer_js');
     <script type="text/javascript">
         $(function() {
             <? foreach($this->flash->getMessages() as $message): ?>
-            notify('<?=$this->escaper->escapeJs($message['text']) ?>', '<?=$message['color'] ?>');
+            notify('<?=$this->escaper->escapeJs(str_replace(array("\n", "\r"), array('<br>', ''), $message['text'])) ?>', '<?=$message['color'] ?>');
             <? endforeach; ?>
         });
     </script>

@@ -162,8 +162,9 @@ class Automation
 
         $station->automation_timestamp = time();
         $em->persist($station);
-
         $em->flush();
+
+        $station->writeAndRestartRadio();
         return true;
     }
 

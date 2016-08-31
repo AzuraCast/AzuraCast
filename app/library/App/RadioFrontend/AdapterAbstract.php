@@ -155,4 +155,27 @@ class AdapterAbstract
     {
         return null;
     }
+
+    /**
+     * Log a message to console or to flash (if interactive session).
+     *
+     * @param $message
+     */
+    public function log($message)
+    {
+        if (empty($message))
+            return false;
+
+        if (!APP_IS_COMMAND_LINE)
+        {
+            $di = \Phalcon\Di::getDefault();
+            $flash = $di->get('flash');
+
+            $flash->addMessage('<b>Radio Frontend:</b><br>'.$message, 'info', true);
+        }
+        else
+        {
+            // TODO: Implement system file logging.
+        }
+    }
 }

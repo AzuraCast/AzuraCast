@@ -23,7 +23,7 @@ class SettingsController extends BaseController
 
             Settings::setSettings($data);
 
-            $this->alert('Settings updated!');
+            $this->alert('Settings updated!', 'green');
             return $this->redirectHere();
         }
 

@@ -286,3 +286,7 @@ $di->setShared('user', function() use ($di) {
 
 // Initialize cache.
 $cache = $di->get('cache');
+
+// Set time zone and localization.
+$timezone = \Entity\Settings::getSetting('timezone', date_default_timezone_get());
+date_default_timezone_set($timezone);

@@ -18,7 +18,7 @@ return array(
             'label' => 'Days Between Automated Assignments',
             'description' => 'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.',
             'class' => 'inline',
-            'default' => '14',
+            'default' => \App\Radio\Automation::DEFAULT_THRESHOLD_DAYS,
             'options' => array(
                 7 => '7 days',
                 14 => '14 days',

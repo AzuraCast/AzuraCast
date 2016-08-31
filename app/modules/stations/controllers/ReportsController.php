@@ -9,7 +9,14 @@ class ReportsController extends BaseController
 {
     public function performanceAction()
     {
-        $report_data = \App\Radio\Automation::generateReport($this->station);
+        $automation_config = (array)$this->station->automation_settings;
+
+        if (isset($automation_config['threshold_days']))
+            $threshold_days = (int)$automation_config['threshold_days'];
+        else
+            $threshold_days = \App\Radio\Automation::DEFAULT_THRESHOLD_DAYS;
+
+        $report_data = \App\Radio\Automation::generateReport($this->station, $threshold_days);
 
         // Do not show songs that are not in playlists.
         $report_data = array_filter($report_data, function($media) {

@@ -96,17 +96,17 @@ class Automation
 
         $media_report = self::generateReport($station, $threshold_days);
 
-        $media_report = array_filter($media_report, function($media, $song_id) use ($original_playlists) {
+        $media_report = array_filter($media_report, function($media) use ($original_playlists) {
             // Remove songs that are already in non-auto-assigned playlists.
             if (!empty($media['playlists']))
                 return false;
 
             // Remove songs that weren't already in auto-assigned playlists.
-            if (!isset($original_playlists[$song_id]))
+            if (!isset($original_playlists[$media['id']]))
                 return false;
 
             return true;
-        }, ARRAY_FILTER_USE_BOTH);
+        });
 
         // Place all songs with 0 plays back in their original playlists.
         foreach($media_report as $song_id => $media)
@@ -234,6 +234,7 @@ class Automation
         foreach($media_raw as $row)
         {
             $media = array(
+                'id'        => $row['song_id'],
                 'record'    => $row,
 
                 'title'     => $row['title'],

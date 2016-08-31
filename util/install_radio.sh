@@ -17,4 +17,4 @@ if [ $DISTRIB_RELEASE = "14.04" ]; then
 fi
 
 apt-get update
-apt-get -q -y install icecast2 liquidsoap
+apt-get -q -y --force-yes install icecast2 liquidsoap

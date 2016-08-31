@@ -28,7 +28,8 @@ $manual = true;
                 <col width="15%">
                 <col width="10%">
                 <col width="10%">
-                <col width="65%">
+                <col width="45%">
+                <col width="20%">
             </colgroup>
             <thead>
                 <tr>
@@ -36,6 +37,7 @@ $manual = true;
                     <th>Listeners</th>
                     <th>Change</th>
                     <th>Song Title</th>
+                    <th>Playlist(s)</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,6 +65,7 @@ $manual = true;
                         <? endif; ?>
                         <!-- <a href="#" class="btn-show-song-info" data-id="<?=$song_row['song']['id'] ?>" title="Click for Song Information"></a> -->
                     </td>
+                    <td><?=implode('<br>', $song_row['playlists']) ?></td>
                 </tr>
             <? endforeach; ?>
             </tbody>

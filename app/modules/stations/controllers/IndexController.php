@@ -166,6 +166,14 @@ class IndexController extends BaseController
         // Get current events within threshold.
         $threshold = $songs_played_raw[0]['timestamp'];
 
+        $station_media_raw = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id')
+            ->setParameter('station_id', $this->station->id)
+            ->getArrayResult();
+
+        $station_media = array();
+        foreach($station_media_raw as $media)
+            $station_media[$media['song_id']] = $media;
+
         $songs = array();
         foreach ($songs_played_raw as $i => $song_row)
         {
@@ -177,6 +185,17 @@ class IndexController extends BaseController
             $song_row['stat_end'] = $song_row['listeners_end'];
             $song_row['stat_delta'] = $song_row['delta_total'];
 
+            if (isset($station_media[$song_row['song']['id']]))
+            {
+                $media = $station_media[$song_row['song']['id']];
+
+                $song_row['playlists'] = \App\Utilities::ipull($media['playlists'], 'name', 'id');
+            }
+            else
+            {
+                $song_row['playlists'] = array();
+            }
+
             $songs[] = $song_row;
         }
 
@@ -186,7 +205,7 @@ class IndexController extends BaseController
             $this->doNotRender();
 
             $export_all = array();
-            $export_all[] = array('Date', 'Time', 'Listeners', 'Delta', 'Likes', 'Dislikes', 'Track', 'Artist', 'Event');
+            $export_all[] = array('Date', 'Time', 'Listeners', 'Delta', 'Likes', 'Dislikes', 'Track', 'Artist', 'Playlist(s)');
 
             foreach ($songs as $song_row)
             {
@@ -199,7 +218,7 @@ class IndexController extends BaseController
                     $song_row['score_dislikes'],
                     ($song_row['song']['title']) ? $song_row['song']['title'] : $song_row['song']['text'],
                     $song_row['song']['artist'],
-                    ($song_row['event']) ? $song_row['event']['title'] : '',
+                    implode(', ', $song_row['playlists']),
                 );
 
                 $export_all[] = $export_row;
@@ -264,6 +283,8 @@ class IndexController extends BaseController
             });
 
             $songs_played_raw = array_values($songs_played_raw);
+
+
 
             $cache->save($songs_played_raw, $cache_name, array(), 60*5);
         }

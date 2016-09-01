@@ -21,6 +21,10 @@ git pull
 apt-get update
 apt-get -q -y install php5-phalcon
 
+# Relink fallback mp3 file to IceCast web directory.
+sudo rm -f /usr/share/icecast2/web/error.mp3
+sudo ln -s $www_base/resources/error.mp3 /usr/share/icecast2/web/
+
 chmod a+x ./update.sh
 
 # Clear cache

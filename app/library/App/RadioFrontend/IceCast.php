@@ -230,8 +230,18 @@ class IceCast extends AdapterAbstract
                 'port' => 8000,
             ],
             'mount' => [
-                '@type'     => 'normal',
-                'mount-name' => '/radio.mp3',
+                [
+                    '@type'     => 'normal',
+                    'mount-name' => '/radio.mp3',
+                    'fallback-mount' => '/autodj.mp3',
+                    'fallback-override' => 1,
+                ],
+                [
+                    '@type'     => 'normal',
+                    'mount-name' => '/autodj.mp3',
+                    'fallback-mount' => '/error.mp3',
+                    'fallback-override' => 1,
+                ],
             ],
             'fileserve' => 1,
             'paths' => [

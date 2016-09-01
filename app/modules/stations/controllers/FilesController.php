@@ -227,6 +227,9 @@ class FilesController extends BaseController
                 }
 
                 $this->em->flush();
+
+                // Write new PLS playlist configuration.
+                $this->station->getBackendAdapter()->write();
             break;
 
             default:
@@ -254,6 +257,9 @@ class FilesController extends BaseController
                     }
 
                     $this->em->flush();
+
+                    // Write new PLS playlist configuration.
+                    $this->station->getBackendAdapter()->write();
                 }
             break;
         }

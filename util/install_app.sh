@@ -166,6 +166,9 @@ mkdir $app_base/stations
 chmod -R 777 $app_base/stations
 chown -R azuracast:www-data $app_base/stations
 
+# Link fallback mp3 file to IceCast web directory.
+ln -s $www_base/resources/error.mp3 /usr/share/icecast2/web/
+
 # Run Composer.js
 cd $www_base
 composer install

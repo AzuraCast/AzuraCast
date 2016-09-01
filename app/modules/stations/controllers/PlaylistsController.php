@@ -33,10 +33,21 @@ class PlaylistsController extends BaseController
             {
                 $record = new StationPlaylist;
                 $record->station = $this->station;
+
+                // Always force a reload for new stations.
+                $reload_station = true;
+            }
+            else
+            {
+                // Only reload for a rename.
+                $reload_station = (strcmp($record->name, $data['name']) !== 0);
             }
 
             $record->fromArray($data);
             $record->save();
+
+            if ($reload_station)
+                $this->_reloadStation();
 
             $this->alert('<b>Stream updated!</b>', 'green');
 
@@ -59,7 +70,20 @@ class PlaylistsController extends BaseController
         if ($record instanceof StationPlaylist)
             $record->delete();
 
+        $this->_reloadStation();
+
         $this->alert('<b>Record deleted.</b>', 'green');
         return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);
+    }
+
+    protected function _reloadStation()
+    {
+        $backend = $this->station->getBackendAdapter();
+
+        $backend->stop();
+        $backend->write();
+        $backend->start();
+
+        $this->alert('<b>Radio backend reloaded.</b><br>Your listeners will not be disconnected by playlist changes, but songs may change abruptly.', 'green');
     }
 }

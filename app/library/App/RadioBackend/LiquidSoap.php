@@ -60,7 +60,7 @@ class LiquidSoap extends AdapterAbstract
 
             file_put_contents($playlist_file_path, $playlist_file_contents);
 
-            $ls_config[] = $playlist_var_name.' = playlist("'.$playlist_file_path.'")';
+            $ls_config[] = $playlist_var_name.' = playlist(reload=1800,"'.$playlist_file_path.'")';
 
             $playlist_weights[] = $playlist->weight;
             $playlist_vars[] = $playlist_var_name;
@@ -97,7 +97,7 @@ class LiquidSoap extends AdapterAbstract
                     'password = "'.$icecast_source_pw.'"',
                     'name = "'.str_replace('"', '\'', $this->station->name).'"',
                     'description = "'.str_replace('"', '\'', $this->station->description).'"',
-                    'mount = "radio.mp3"',
+                    'mount = "autodj.mp3"',
                     'radio', // Required
                 ];
                 $ls_config[] = 'output.icecast('.implode(', ', $output_params).')';

@@ -164,7 +164,8 @@ class Automation
         $em->persist($station);
         $em->flush();
 
-        $station->writeAndRestartRadio();
+        // Write new PLS playlist configuration.
+        $station->getBackendAdapter()->write();
         return true;
     }
 

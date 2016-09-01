@@ -46,9 +46,22 @@ return array(
                     'default' => $backend_default,
                 )),
 
+                'enable_requests' => array('radio', array(
+                    'label' => 'Allow Song Requests',
+                    'description' => 'Setting this enables listeners to request a song for play on your station. Only songs that are already in your playlists are listed as requestable.',
+                    'options' => array(0 => 'No', 1 => 'Yes'),
+                )),
+
+                'enable_streamers' => array('radio', array(
+                    'label' => 'Allow Streamers / DJs',
+                    'description' => 'If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.',
+                    'options' => array(0 => 'No', 1 => 'Yes'),
+                )),
+
             ),
         ),
 
+        /*
         'admin' => array(
             'legend' => 'Administrator Settings',
             'elements' => array(
@@ -71,6 +84,7 @@ return array(
 
             ),
         ),
+        */
 
         'submit_grp' => array(
             'elements'      => array(

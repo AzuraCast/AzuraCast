@@ -15,6 +15,8 @@ class Station extends \App\Doctrine\Entity
     public function __construct()
     {
         $this->automation_timestamp = 0;
+        $this->enable_streamers = false;
+        $this->enable_requests = false;
 
         $this->history = new ArrayCollection;
         $this->managers = new ArrayCollection;
@@ -130,6 +132,12 @@ class Station extends \App\Doctrine\Entity
 
     /** @Column(name="automation_timestamp", type="integer", nullable=true) */
     protected $automation_timestamp;
+
+    /** @Column(name="enable_requests", type="boolean", nullable=false) */
+    protected $enable_requests;
+
+    /** @Column(name="enable_streamers", type="boolean", nullable=false) */
+    protected $enable_streamers;
 
     /**
      * @OneToMany(targetEntity="SongHistory", mappedBy="station")

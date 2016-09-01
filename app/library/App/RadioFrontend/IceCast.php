@@ -116,6 +116,20 @@ class IceCast extends AdapterAbstract
 
         $frontend_config = (array)$this->station->frontend_config;
 
+        // Set up streamer support.
+        $di = \Phalcon\Di::getDefault();
+        $url = $di->get('url');
+
+        $config['mount'][0]['authentication'] = array(
+            '@type' => 'url',
+            'option' => [
+                [
+                    '@name' => 'stream_auth',
+                    '@value' => $url->route(['module' => 'api', 'controller' => 'internal', 'action' => 'streamauth', 'id' => $this->station->id], true)
+                ],
+            ],
+        );
+
         $config['listen-socket']['port'] = $frontend_config['port'];
         $config['authentication']['source-password'] = $frontend_config['source_pw'];
         $config['authentication']['admin-password'] = $frontend_config['admin_pw'];
@@ -214,7 +228,7 @@ class IceCast extends AdapterAbstract
             'admin' => 'icemaster@localhost',
             'limits' => [
                 'clients' => 100,
-                'sources' => 2,
+                'sources' => 3,
                 'threadpool' => 5,
                 'queue-size' => 524288,
                 'client-timeout' => 30,
@@ -233,6 +247,7 @@ class IceCast extends AdapterAbstract
             'listen-socket' => [
                 'port' => 8000,
             ],
+            'shoutcast-mount' => '/radio.mp3',
             'mount' => [
                 [
                     '@type'     => 'normal',

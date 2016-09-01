@@ -95,7 +95,7 @@ class Url extends \Phalcon\Mvc\Url
      * @param $path_info
      * @return string The routed URL.
      */
-    public function route($path_info = array())
+    public function route($path_info = array(), $absolute = null)
     {
         $router_config = $this->_config->routes->toArray();
 
@@ -162,7 +162,7 @@ class Url extends \Phalcon\Mvc\Url
         }
 
         $url_full = implode($url_separator, $url_parts);
-        return $this->getUrl($this->get($url_full));
+        return $this->getUrl($this->get($url_full), $absolute);
     }
 
     /**
@@ -230,14 +230,7 @@ class Url extends \Phalcon\Mvc\Url
 
     public function addSchemePrefix($url_raw)
     {
-        $prev_include_domain = $this->_include_domain;
-        $this->_include_domain = true;
-
-        $url = $this->getUrl($url_raw);
-
-        $this->_include_domain = $prev_include_domain;
-
-        return $url;
+        return $this->getUrl($url_raw, true);
     }
 
     public function getUrl($url_raw, $absolute = false)
@@ -248,11 +241,16 @@ class Url extends \Phalcon\Mvc\Url
 
         // Retrieve domain from either MVC controller or config file.
         if ($this->_include_domain || $absolute) {
-            $url_domain = null;
 
-            $url_domain = $this->_config->application->base_url;
+            $url_domain = \Entity\Settings::getSetting('base_url', '');
 
-            if (!$url_domain) {
+            if (empty($url_domain))
+                $url_domain = $this->_config->application->base_url;
+            else
+                $url_domain = ((APP_IS_SECURE) ? 'https://' : 'http://') . $url_domain;
+
+            if (empty($url_domain))
+            {
                 $http_host = trim($this->_request->getHttpHost(), ':');
 
                 if (!empty($http_host))

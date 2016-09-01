@@ -38,21 +38,7 @@ class StationController extends BaseController
 
     public function listAction()
     {
-        $category = $this->getParam('category', 'all');
-
-        if ($category == 'all')
-        {
-            $stations_raw = Station::fetchArray();
-        }
-        else
-        {
-            $cats = Station::getStationsInCategories();
-
-            if (!isset($cats[$category]))
-                return $this->returnError('Category not found.');
-
-            $stations_raw = $cats[$category]['stations'];
-        }
+        $stations_raw = Station::fetchArray();
 
         $stations = array();
         foreach($stations_raw as $row)

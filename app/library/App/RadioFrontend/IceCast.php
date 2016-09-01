@@ -42,6 +42,10 @@ class IceCast extends AdapterAbstract
         if (count($mounts) == 0)
             return false;
 
+        array_filter($mounts, function($mount) {
+            return (!empty($mount['title']) || !empty($mount['artist']));
+        });
+
         // Sort in descending order of listeners.
         usort($mounts, function($a, $b) {
             $a_list = (int)$a['listeners'];

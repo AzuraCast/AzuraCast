@@ -161,6 +161,7 @@ header("Content-type: text/html; charset=utf-8");
         <ul class="main-menu">
             <li><a href="<?=$this->url->route(['module' => 'stations', 'station' => $station->id]) ?>"><i class="zmdi zmdi-home"></i> Home</a></li>
             <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'profile', 'station' => $station->id]) ?>"><i class="zmdi zmdi-image"></i> Profile</a></li>
+            <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'streamers', 'station' => $station->id]) ?>"><i class="zmdi zmdi-account"></i> Streamer/DJ Accounts</a></li>
 
             <li class="sub-menu">
                 <a href=""><i class="zmdi zmdi-collection-music"></i> Media</a>

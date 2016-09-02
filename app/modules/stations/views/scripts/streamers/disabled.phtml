@@ -1,0 +1,19 @@
+<?
+$title = 'Manage Streamers/DJ Accounts';
+$manual = true;
+?>
+
+<div class="block-header">
+    <h2><?=$station->name ?></h2>
+</div>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2>Streamer/DJ Accounts</h2>
+    </div>
+    <div class="card-body card-padding">
+        <p>Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.</p>
+
+        <a class="btn btn-lg btn-success" href="<?=$this->url->routeFromHere(['enable' => 'true']) ?>">Enable Streaming</a>
+    </div>
+</div>

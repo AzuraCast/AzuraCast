@@ -2,6 +2,7 @@
 namespace Modules\Api\Controllers;
 
 use \Entity\Station;
+use Entity\StationStreamer;
 
 class InternalController extends BaseController
 {
@@ -16,6 +17,11 @@ class InternalController extends BaseController
         if (!($station instanceof Station))
             return $this->_authFail('Invalid station specified');
 
+        // Log requests to a temp file for debugging.
+        $request_vars = "-------\n".date('F j, Y g:i:s')."\n".print_r($_REQUEST, true)."\n".print_r($this->dispatcher->getParams(), true);
+        $log_path = APP_INCLUDE_TEMP.'/icecast_stream_auth.txt';
+        file_put_contents($log_path, $request_vars, \FILE_APPEND);
+
         /* Passed via POST from IceCast
          * [action] => stream_auth
          * [mount] => /radio.mp3
@@ -26,15 +32,13 @@ class InternalController extends BaseController
          * [pass] => testpass
          */
 
-        // Log requests to a temp file for debugging.
-        $request_vars = "-------\n".date('F j, Y g:i:s')."\n".print_r($_REQUEST, true)."\n".print_r($this->dispatcher->getParams(), true);
-        $log_path = APP_INCLUDE_TEMP.'/icecast_stream_auth.txt';
-        file_put_contents($log_path, $request_vars, \FILE_APPEND);
-
         if (!$station->enable_streamers)
             return $this->_authFail('Support for streamers/DJs on this station is disabled.');
 
-        return $this->_authSuccess();
+        if (StationStreamer::authenticate($station, $_REQUEST['user'], $_REQUEST['pass']))
+            return $this->_authSuccess();
+        else
+            return $this->_authFail('Could not authenticate streamer account.');
     }
 
     protected function _authFail($message)

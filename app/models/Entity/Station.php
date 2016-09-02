@@ -23,6 +23,8 @@ class Station extends \App\Doctrine\Entity
 
         $this->media = new ArrayCollection;
         $this->playlists = new ArrayCollection;
+
+        $this->streamers = new ArrayCollection;
     }
 
     /**
@@ -84,9 +86,6 @@ class Station extends \App\Doctrine\Entity
 
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
-
-    /** @Column(name="radio_port", type="smallint", nullable=true) */
-    protected $radio_port;
 
     public function getRadioStreamUrl()
     {
@@ -154,6 +153,11 @@ class Station extends \App\Doctrine\Entity
      * @OneToMany(targetEntity="StationMedia", mappedBy="station")
      */
     protected $media;
+
+    /**
+     * @OneToMany(targetEntity="StationStreamer", mappedBy="station")
+     */
+    protected $streamers;
 
     /**
      * @OneToMany(targetEntity="StationPlaylist", mappedBy="station")

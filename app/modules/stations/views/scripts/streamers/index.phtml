@@ -1,0 +1,105 @@
+<?
+$title = 'Manage Streamers/DJ Accounts';
+$manual = true;
+?>
+
+<div class="block-header">
+    <h2><?=$station->name ?></h2>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Streamer/DJ Accounts</h2>
+
+                <a class="btn bgm-blue btn-float" href="<?=$this->url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <colgroup>
+                        <col width="25%">
+                        <col width="15%">
+                        <col width="15%">
+                        <col width="45%">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>Actions</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Notes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <? foreach($streamers as $row): ?>
+                        <tr class="vertical-align-middle <? if (!$row->is_active): ?>text-muted<? endif; ?>">
+                            <td>
+                                <?=$this->viewHelper->button(array(
+                                    'type'      => 'small',
+                                    'class'     => 'btn-primary',
+                                    'href'      => $this->url->routeFromHere(array('action' => 'edit', 'id' => $row->id)),
+                                    'icon'      => 'pencil',
+                                    'text'      => 'Edit',
+                                )) ?>
+                                <?=$this->viewHelper->button(array(
+                                    'type'      => 'small',
+                                    'href'      => $this->url->routeFromHere(array('action' => 'delete', 'id' => $row->id)),
+                                    'class'     => 'btn-danger confirm-delete',
+                                    'icon'      => 'delete',
+                                    'text'      => 'Delete',
+                                )) ?>
+                            </td>
+                            <td><code><?=$row->streamer_username ?></code></td>
+                            <td><code><?=$row->streamer_password ?></code></td>
+                            <td><?=nl2br($row->comments) ?></td>
+                        </tr>
+                    <? endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Connection Information</h2>
+            </div>
+            <div class="card-body card-padding">
+                <?
+                $frontend_type = $station->frontend_type;
+                $frontend_info = (array)$station->frontend_config;
+
+                if ($frontend_type == 'icecast'):
+                ?>
+                    <h4>IceCast Clients</h4>
+                    <dl>
+                        <dt>Server:</dt>
+                        <dd><?=$server_url ?></dd>
+
+                        <dt>Port:</dt>
+                        <dd><?=(int)$frontend_info['port'] ?></dd>
+
+                        <dt>Mount Name:</dt>
+                        <dd>/radio.mp3</dd>
+                    </dl>
+
+                    <h4>ShoutCast Clients</h4>
+                    <dl>
+                        <dt>Server:</dt>
+                        <dd><?=$server_url ?></dd>
+
+                        <dt>Port:</dt>
+                        <dd><?=(int)$frontend_info['port']+1 ?></dd>
+
+                        <dt>Password Format:</dt>
+                        <dd>djusername:djpassword</dd>
+                    </dl>
+                <?
+                endif;
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+

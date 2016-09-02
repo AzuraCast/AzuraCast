@@ -32,7 +32,7 @@ rm -rf $tmp_base/cache/*
 
 cd $util_base
 phpuser cli.php cache:clear
-phpuser doctrine.php orm:schema-tool:update --force
+phpuser doctrine.php orm:schema-tool:update --force --complete
 
 # Restart services
 service cron start

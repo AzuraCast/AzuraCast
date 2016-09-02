@@ -30,6 +30,12 @@ class LiquidSoap extends AdapterAbstract
         $ls_config[] = 'set("init.daemon",true)';
         $ls_config[] = 'set("init.daemon.pidfile.path","'.$config_path.'/liquidsoap.pid")';
         $ls_config[] = 'set("log.file.path","'.$config_path.'/liquidsoap.log")';
+
+        $ls_config[] = 'set("server.telnet",true)';
+        $ls_config[] = 'set("server.telnet.bind_addr","127.0.0.1")';
+        $ls_config[] = 'set("server.telnet.port", '.$this->_getTelnetPort().')';
+        $ls_config[] = 'set("server.telnet.reverse_dns",false)';
+
         $ls_config[] = '';
 
         // Clear out existing playlists directory.
@@ -76,7 +82,10 @@ class LiquidSoap extends AdapterAbstract
         $ls_config[] = '';
         $ls_config[] = '# Fallback Media File';
         $ls_config[] = 'security = single("'.$error_song_path.'")';
-        $ls_config[] = 'radio = fallback(track_sensitive = false, [radio, security])';
+        $ls_config[] = 'requests = request.queue(id="requests")';
+
+        // $ls_config[] = 'radio = fallback(track_sensitive = true, [playlists, security])';
+        $ls_config[] = 'radio = fallback(track_sensitive = true, [requests, radio, security])';
 
         $ls_config[] = '';
         $ls_config[] = '# Outbound Broadcast';
@@ -91,13 +100,13 @@ class LiquidSoap extends AdapterAbstract
                 $icecast_source_pw = $ic_settings['source_pw'];
 
                 $output_params = [
-                    '%mp3', // Required output format (%mp3 or %ogg)
+                    '%mp3(samplerate=44100,stereo=true,bitrate=128)', // Required output format (%mp3 or %ogg)
                     'host = "localhost"',
                     'port = '.$icecast_port,
                     'password = "'.$icecast_source_pw.'"',
                     'name = "'.str_replace('"', '\'', $this->station->name).'"',
                     'description = "'.str_replace('"', '\'', $this->station->description).'"',
-                    'mount = "autodj.mp3"',
+                    'mount = "/autodj.mp3"',
                     'radio', // Required
                 ];
                 $ls_config[] = 'output.icecast('.implode(', ', $output_params).')';
@@ -160,5 +169,27 @@ class LiquidSoap extends AdapterAbstract
     {
         $this->stop();
         $this->start();
+    }
+
+    public function request($music_file)
+    {
+        $fp = stream_socket_client('tcp://localhost:'.$this->_getTelnetPort(), $errno, $errstr, 20);
+
+        if (!$fp)
+            throw new \App\Exception('Telnet failure: '.$errstr.' ('.$errno.')');
+
+        fwrite($fp, "requests.push ".str_replace(array("\\'", '&amp;'), array("'",'&'),urldecode($music_file))."\nquit\n");
+
+        $eat = '';
+        while (!feof($fp))
+            $eat .= fgets($fp, 1024);
+
+        fclose($fp);
+        return true;
+    }
+
+    protected function _getTelnetPort()
+    {
+        return (8500 + (($this->station->id - 1) * 10));
     }
 }

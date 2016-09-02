@@ -263,7 +263,7 @@ class IceCast extends AdapterAbstract
             'hostname' => 'localhost',
 
             'listen-socket' => [
-                'port' => 8000,
+                'port' => $this->_getRadioPort(),
                 'shoutcast-mount' => '/radio.mp3',
             ],
 
@@ -306,5 +306,10 @@ class IceCast extends AdapterAbstract
                 'chroot' => 0,
             ],
         ];
+    }
+
+    protected function _getRadioPort()
+    {
+        return (8000 + (($this->station->id - 1) * 10));
     }
 }

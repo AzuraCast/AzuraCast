@@ -3,6 +3,7 @@ namespace Modules\Frontend\Controllers;
 
 use \App\Debug;
 use \App\Utilities;
+use Entity\Station;
 use Entity\StationPlaylist;
 
 class UtilController extends BaseController
@@ -30,20 +31,11 @@ class UtilController extends BaseController
 
         // -------- START HERE -------- //
 
-        $config_path = '/etc/icecast2/icecast.xml';
+        $mp3_file = '/var/azuracast/stations/best_pony_radio/media/Vinylicious.mp3';
 
-        $reader = new \App\Xml\Reader();
-        $data = $reader->fromFile($config_path);
-
-        \App\Utilities::print_r($data);
-
-        $data['mount'] = array(
-            array('asdf' => array('true')),
-            array('foo' => array('true')),
-        );
-
-        $writer = new \App\Xml\Writer();
-        \App\Utilities::print_r($writer->toString($data, 'icecast'));
+        $station = Station::find(1);
+        $ba = $station->getBackendAdapter();
+        $ba->request($mp3_file);
 
         // -------- END HERE -------- //
 

@@ -24,8 +24,8 @@ class UtilController extends BaseController
         $frontend = $this->station->getFrontendAdapter();
         $backend = $this->station->getBackendAdapter();
 
-        $frontend->stop();
         $backend->stop();
+        $frontend->stop();
 
         $frontend->write();
         $backend->write();

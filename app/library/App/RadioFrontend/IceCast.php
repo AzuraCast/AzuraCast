@@ -42,7 +42,7 @@ class IceCast extends AdapterAbstract
         if (count($mounts) == 0)
             return false;
 
-        array_filter($mounts, function($mount) {
+        $mounts = array_filter($mounts, function($mount) {
             return (!empty($mount['title']) || !empty($mount['artist']));
         });
 

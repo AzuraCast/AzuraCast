@@ -84,7 +84,7 @@ $manual = true;
                         <dd>/radio.mp3</dd>
                     </dl>
 
-                    <h4>ShoutCast Clients</h4>
+                    <h4>ShoutCast 1.x Legacy Clients</h4>
                     <dl>
                         <dt>Server:</dt>
                         <dd><?=$server_url ?></dd>
@@ -92,8 +92,11 @@ $manual = true;
                         <dt>Port:</dt>
                         <dd><?=(int)$frontend_info['port']+1 ?></dd>
 
-                        <dt>Password Format:</dt>
-                        <dd>djusername:djpassword</dd>
+                        <dt>Username:</dt>
+                        <dd>(Leave blank)</dd>
+
+                        <dt>Password:</dt>
+                        <dd><?=$frontend_info['streamer_pw'] ?></dd>
                     </dl>
                 <?
                 endif;

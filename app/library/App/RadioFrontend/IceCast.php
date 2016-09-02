@@ -130,9 +130,26 @@ class IceCast extends AdapterAbstract
             ],
         );
 
-        $config['listen-socket']['port'] = $frontend_config['port'];
-        $config['authentication']['source-password'] = $frontend_config['source_pw'];
-        $config['authentication']['admin-password'] = $frontend_config['admin_pw'];
+        if (!empty($frontend_config['port']))
+            $config['listen-socket']['port'] = $frontend_config['port'];
+
+        if (!empty($frontend_config['source_pw']))
+            $config['authentication']['source-password'] = $frontend_config['source_pw'];
+
+        if (!empty($frontend_config['admin_pw']))
+            $config['authentication']['admin-password'] = $frontend_config['admin_pw'];
+
+        if (!empty($frontend_config['streamer_pw']))
+            $config['mount'][0]['password'] = $frontend_config['streamer_pw'];
+
+        // Set any unset values back to the DB config.
+        $frontend_config['port'] = $config['listen-socket']['port'];
+        $frontend_config['source_pw'] = $config['authentication']['source-password'];
+        $frontend_config['admin_pw'] = $config['authentication']['admin-password'];
+        $frontend_config['streamer_pw'] = $config['mount'][0]['password'];
+
+        $this->station->frontend_config = $frontend_config;
+        $this->station->save();
 
         $config_path = $this->station->getRadioConfigDir();
         $icecast_path = $config_path.'/icecast.xml';
@@ -244,16 +261,21 @@ class IceCast extends AdapterAbstract
                 'admin-password' => Utilities::generatePassword(),
             ],
             'hostname' => 'localhost',
+
             'listen-socket' => [
                 'port' => 8000,
+                'shoutcast-mount' => '/radio.mp3',
             ],
-            'shoutcast-mount' => '/radio.mp3',
+
             'mount' => [
                 [
                     '@type'     => 'normal',
                     'mount-name' => '/radio.mp3',
                     'fallback-mount' => '/autodj.mp3',
                     'fallback-override' => 1,
+
+                    'username' => 'shoutcast',
+                    'password' => Utilities::generatePassword(),
                 ],
                 [
                     '@type'     => 'normal',

@@ -177,7 +177,7 @@ class IceCast extends AdapterAbstract
             $icecast_pid = file_get_contents($icecast_pid_file);
             $pid_result = exec('ps --pid '.$icecast_pid.' &>/dev/null');
 
-            return ($pid_result == 0);
+            return !empty($pid_result);
         }
 
         return false;

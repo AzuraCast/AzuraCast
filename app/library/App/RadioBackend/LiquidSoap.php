@@ -130,7 +130,7 @@ class LiquidSoap extends AdapterAbstract
             $ls_pid = file_get_contents($ls_pid_file);
             $pid_result = exec('ps --pid '.$ls_pid.' &>/dev/null');
 
-            return ($pid_result == 0);
+            return !empty($pid_result);
         }
 
         return false;

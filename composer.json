@@ -10,7 +10,7 @@
 
     "guzzlehttp/guzzle": "~5.0",
     "doctrine/orm": "2.4.*",
-    "tedivm/stash": "0.12.*",
+    "tedivm/stash": "0.14.*",
     "filp/whoops": "1.*",
     "electrolinux/phpquery": "0.9.6",
     "nette/mail": "2.3.0",

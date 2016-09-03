@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cfd5d6d9062e7e64af48dbc0356a0f35",
-    "content-hash": "f0650fa6ded011267aeed7b664ed78ba",
+    "hash": "fca2e10d1f6100695c06bddcbea07298",
+    "content-hash": "b6b73096c6732da2bc257b77718c959d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.2",
+            "version": "3.19.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3cb90413129da42c9d3289d542bee0ae1049892c"
+                "reference": "f67bc37fa4b76d85423052eae2a9577aab99adc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3cb90413129da42c9d3289d542bee0ae1049892c",
-                "reference": "3cb90413129da42c9d3289d542bee0ae1049892c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f67bc37fa4b76d85423052eae2a9577aab99adc1",
+                "reference": "f67bc37fa4b76d85423052eae2a9577aab99adc1",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-08-23 20:58:48"
+            "time": "2016-09-01 21:37:32"
         },
         {
             "name": "container-interop/container-interop",
@@ -1383,6 +1383,52 @@
             "time": "2014-03-02 15:22:49"
         },
         {
+            "name": "psr/cache",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/cache.git",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for caching libraries",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr-6"
+            ],
+            "time": "2016-08-06 20:24:11"
+        },
+        {
             "name": "psr/http-message",
             "version": "1.0.1",
             "source": {
@@ -1597,25 +1643,29 @@
         },
         {
             "name": "tedivm/stash",
-            "version": "v0.12.3",
+            "version": "v0.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tedious/Stash.git",
-                "reference": "5b830f6a0e4626e5cd02c862d37721ca16820a13"
+                "reference": "bcb739b08b22571e35589ebe5403af9b89a33394"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tedious/Stash/zipball/5b830f6a0e4626e5cd02c862d37721ca16820a13",
-                "reference": "5b830f6a0e4626e5cd02c862d37721ca16820a13",
+                "url": "https://api.github.com/repos/tedious/Stash/zipball/bcb739b08b22571e35589ebe5403af9b89a33394",
+                "reference": "bcb739b08b22571e35589ebe5403af9b89a33394",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": "^5.4|^7.0",
+                "psr/cache": "~1.0"
+            },
+            "provide": {
+                "psr/cache-implementation": "1.0.0"
             },
             "require-dev": {
-                "fabpot/php-cs-fixer": "1.1.*",
-                "phpunit/phpunit": "4.3.*",
-                "satooshi/php-coveralls": "dev-master"
+                "fabpot/php-cs-fixer": "^1.9",
+                "phpunit/phpunit": "4.8.*",
+                "satooshi/php-coveralls": "1.0.*"
             },
             "type": "library",
             "autoload": {
@@ -1644,10 +1694,12 @@
                 "cache",
                 "caching",
                 "memcached",
+                "psr-6",
+                "psr6",
                 "redis",
                 "sessions"
             ],
-            "time": "2015-01-17 07:51:57"
+            "time": "2016-02-10 22:23:16"
         },
         {
             "name": "zendframework/zend-config",
@@ -1970,16 +2022,16 @@
         },
         {
             "name": "zendframework/zend-servicemanager",
-            "version": "2.7.6",
+            "version": "2.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-servicemanager.git",
-                "reference": "a6db4d13b9141fccce5dcb553df0295d6ad7d477"
+                "reference": "eeecb78945c2a9f653caded36ba5274e8a8f5468"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-servicemanager/zipball/a6db4d13b9141fccce5dcb553df0295d6ad7d477",
-                "reference": "a6db4d13b9141fccce5dcb553df0295d6ad7d477",
+                "url": "https://api.github.com/repos/zendframework/zend-servicemanager/zipball/eeecb78945c2a9f653caded36ba5274e8a8f5468",
+                "reference": "eeecb78945c2a9f653caded36ba5274e8a8f5468",
                 "shasum": ""
             },
             "require": {
@@ -2018,7 +2070,7 @@
                 "servicemanager",
                 "zf2"
             ],
-            "time": "2016-04-27 19:07:40"
+            "time": "2016-09-01 19:03:15"
         },
         {
             "name": "zendframework/zend-stdlib",

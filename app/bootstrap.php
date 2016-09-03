@@ -186,18 +186,15 @@ $di->setShared('cache_driver', function() use ($config) {
     switch($cache_config['cache'])
     {
         case 'redis':
-            $cache_driver = new \Stash\Driver\Redis;
-            $cache_driver->setOptions($cache_config['redis']);
+            $cache_driver = new \Stash\Driver\Redis($cache_config['redis']);
             break;
 
         case 'memcached':
-            $cache_driver = new \Stash\Driver\Memcache;
-            $cache_driver->setOptions($cache_config['memcached']);
+            $cache_driver = new \Stash\Driver\Memcache($cache_config['memcached']);
             break;
 
         case 'file':
-            $cache_driver = new \Stash\Driver\FileSystem;
-            $cache_driver->setOptions($cache_config['file']);
+            $cache_driver = new \Stash\Driver\FileSystem($cache_config['file']);
             break;
 
         default:

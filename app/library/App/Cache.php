@@ -42,7 +42,7 @@ class Cache
     {
         $item = $this->_cache->getItem($id);
 
-        if (!$item->isMiss())
+        if ($item->isHit())
             return $item->get();
         elseif (is_callable($default))
             return $default();
@@ -71,7 +71,7 @@ class Cache
     public function test($id)
     {
         $item = $this->_cache->getItem($id);
-        return !$item->isMiss();
+        return $item->isHit();
     }
 
     /**
@@ -87,7 +87,8 @@ class Cache
             $specificLifetime = $this->_cache_lifetime;
 
         $item = $this->_cache->getItem($id);
-        $item->set($data, $specificLifetime);
+        $item->set($data);
+        $item->expiresAfter($specificLifetime);
     }
 
     /**
@@ -153,7 +154,7 @@ class Cache
      */
     public function clean()
     {
-        return $this->_cache->flush();
+        return $this->_cache->clear();
     }
 
     /**

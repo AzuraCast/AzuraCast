@@ -30,6 +30,9 @@ sudo crontab -u azuracast $www_base/util/vagrant_cron
 
 chmod a+x ./update.sh
 
+# Update Composer dependencies
+composer install
+
 # Clear cache
 rm -rf $tmp_base/cache/*
 

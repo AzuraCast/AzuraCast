@@ -25,13 +25,13 @@
 }
 
 .profile-menu {
+    display: block;
+    height: 50px;
+    margin-bottom: 5px;
+    width: 100%;
+
     & > a {
-        display: block;
-        height: 129px;
-        margin-bottom: 5px;
-        width: 100%;
-        background: url(../img/profile-menu.png) no-repeat left top;
-        background-size: 100%;
+
         
         .profile-pic {
             padding: 12px;
@@ -85,6 +85,14 @@
     margin: 20px 0 0 0;
     
     & > li {
+
+        &.menu-header > a {
+            padding: 14px 20px 14px 20px;
+            color: #333333;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
         & > a {
             padding: 14px 20px 14px 52px;
             display: block;

@@ -75,7 +75,7 @@ header("Content-type: text/html; charset=utf-8");
 
         <li class="logo">
             <a href="<?=$this->url->get('') ?>">
-                <strong><?=$this->config->application->name ?></strong> alpha
+                <img src="<?=$this->url->getStatic('img/logo.png') ?>" alt="<?=$this->config->application->name ?>">
             </a>
         </li>
 
@@ -141,25 +141,13 @@ header("Content-type: text/html; charset=utf-8");
 <section id="main">
     <? if (!empty($station)): ?>
     <aside id="sidebar" class="sidebar c-overflow">
-        <div class="profile-menu">
-            <a href="">
-                <div class="profile-pic">
-                    <img src="<?=\App\Service\Gravatar::get($this->user->email) ?>" alt="">
-                </div>
-
-                <div class="profile-info">
-                    <?=$station->name ?>
-                    <i class="zmdi zmdi-caret-down"></i>
-                </div>
-            </a>
-
-            <ul class="main-menu">
-                <li><a href="<?=$this->url->route([]) ?>"><i class="zmdi zmdi-account"></i> Switch Station</a></li>
-            </ul>
-        </div>
-
         <ul class="main-menu">
-            <li><a href="<?=$this->url->route(['module' => 'stations', 'station' => $station->id]) ?>"><i class="zmdi zmdi-home"></i> Home</a></li>
+            <li class="menu-header">
+                <a href="<?=$this->url->route(['module' => 'stations', 'station' => $station->id]) ?>">
+                    <?=$station->name ?>
+                </a>
+            </li>
+
             <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'profile', 'station' => $station->id]) ?>"><i class="zmdi zmdi-image"></i> Profile</a></li>
             <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'streamers', 'station' => $station->id]) ?>"><i class="zmdi zmdi-account"></i> Streamer/DJ Accounts</a></li>
 

@@ -105,6 +105,8 @@ $di->setShared('phalcon_modules', function() use ($phalcon_modules) { return $ph
 if (APP_IS_COMMAND_LINE) {
     $router = new \Phalcon\CLI\Router;
     $di->setShared('router', $router);
+
+    $di->setShared('request', '\App\Phalcon\Cli\Request');
 } else {
     $di->setShared('router', function () use ($di) {
         $router = new \App\Phalcon\Router(false);

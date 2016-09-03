@@ -175,7 +175,12 @@ class AdapterAbstract
         }
         else
         {
-            // TODO: Implement system file logging.
+            $log_file = APP_INCLUDE_TEMP.'/radio_frontend_log.txt';
+            $log_message = "\n".$message;
+
+            file_put_contents($log_file, $log_message, FILE_APPEND);
+
+            \App\Debug::log('Radio Frontend: '.$message);
         }
     }
 }

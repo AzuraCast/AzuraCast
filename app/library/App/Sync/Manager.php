@@ -8,6 +8,13 @@ use App\Debug;
 
 class Manager
 {
+    /**
+     * Now-Playing Synchronization
+     * The most frequent sync process, which must be optimized for speed,
+     * as it runs approx. every 15 seconds.
+     *
+     * @param bool $force
+     */
     public static function syncNowplaying($force = false)
     {
         self::initSync(60);
@@ -30,6 +37,12 @@ class Manager
         Settings::setSetting('nowplaying_last_run', time());
     }
 
+    /**
+     * Short Synchronization
+     * This task runs automatically every minute.
+     *
+     * @param bool $force
+     */
     public static function syncShort($force = false)
     {
         self::initSync(60);
@@ -37,18 +50,35 @@ class Manager
         Settings::setSetting('sync_fast_last_run', time());
     }
 
+    /**
+     * Medium Synchronization
+     * This task runs automatically every 5 minutes.
+     *
+     * @param bool $force
+     */
     public static function syncMedium($force = false)
     {
         self::initSync(300);
 
-        // Sync CentovaCast song data.
+        // Sync uploaded media.
         Debug::runTimer('Run radio station track sync', function() {
             Media::sync();
+        });
+
+        // Check station uptime.
+        Debug::runTimer('Check radio station stream uptime', function() {
+            Radio::checkUptime();
         });
 
         Settings::setSetting('sync_last_run', time());
     }
 
+    /**
+     * Long Synchronization
+     * This task runs automatically every hour.
+     *
+     * @param bool $force
+     */
     public static function syncLong($force = false)
     {
         self::initSync(1800);

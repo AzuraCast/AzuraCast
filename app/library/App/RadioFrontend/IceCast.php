@@ -241,8 +241,9 @@ class IceCast extends AdapterAbstract
         $config_dir = $this->station->getRadioConfigDir();
 
         return [
-            'location' => 'Earth',
+            'location' => 'AzuraCast',
             'admin' => 'icemaster@localhost',
+            'hostname' => \Entity\Settings::getSetting('base_url', 'localhost'),
             'limits' => [
                 'clients' => 100,
                 'sources' => 3,
@@ -260,7 +261,6 @@ class IceCast extends AdapterAbstract
                 'admin-user' => 'admin',
                 'admin-password' => Utilities::generatePassword(),
             ],
-            'hostname' => 'localhost',
 
             'listen-socket' => [
                 'port' => $this->_getRadioPort(),

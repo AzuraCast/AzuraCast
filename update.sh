@@ -25,6 +25,9 @@ apt-get -q -y install php5-phalcon
 sudo rm -f /usr/share/icecast2/web/error.mp3
 sudo ln -s $www_base/resources/error.mp3 /usr/share/icecast2/web/
 
+# Reset cron tasks for AzuraCast account
+sudo crontab -u azuracast $www_base/util/vagrant_cron
+
 chmod a+x ./update.sh
 
 # Clear cache

@@ -24,7 +24,7 @@ class Url extends \Phalcon\Mvc\Url
     protected $_include_domain = false;
 
 
-    public function __construct(\App\Config $config, \Phalcon\Http\Request $request, \Phalcon\Mvc\Dispatcher $dispatcher)
+    public function __construct(\App\Config $config, \Phalcon\Http\Request $request, \Phalcon\Dispatcher $dispatcher)
     {
         $this->_config = $config;
         $this->_request = $request;

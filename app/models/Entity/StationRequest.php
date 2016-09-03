@@ -87,12 +87,12 @@ class StationRequest extends \App\Doctrine\Entity
         // Check for an existing request from this user.
         $user_ip = $_SERVER['REMOTE_ADDR'];
 
-        // Check for any request (on any station) within 5 minutes.
-        $recent_threshold = time()-(60*5);
+        // Check for any request (on any station) within the last $threshold_seconds.
+        $threshold_seconds = 30;
 
         $recent_requests = $em->createQuery('SELECT sr FROM '.__CLASS__.' sr WHERE sr.ip = :user_ip AND sr.timestamp >= :threshold')
             ->setParameter('user_ip', $user_ip)
-            ->setParameter('threshold', $recent_threshold)
+            ->setParameter('threshold', time()-$threshold_seconds)
             ->getArrayResult();
 
         if (count($recent_requests) > 0)

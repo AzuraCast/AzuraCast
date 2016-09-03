@@ -4,6 +4,9 @@ app/config/apis.conf.php
 app/config/influx.conf.php
 app/config/cache.conf.php
 
+# Local development files.
+app/modules/frontend/controllers/UtilController.php
+
 # Junk/cache files.
 *Thumbs.db
 tmp/cache/*---*

@@ -101,6 +101,7 @@ class LiquidSoap extends AdapterAbstract
 
                 $output_params = [
                     '%mp3(samplerate=44100,stereo=true,bitrate=128)', // Required output format (%mp3 or %ogg)
+                    'id="radio_out"',
                     'host = "localhost"',
                     'port = '.$icecast_port,
                     'password = "'.$icecast_source_pw.'"',
@@ -173,12 +174,22 @@ class LiquidSoap extends AdapterAbstract
 
     public function request($music_file)
     {
+        return $this->command('requests.push '.$music_file);
+    }
+
+    public function skip()
+    {
+        return $this->command('radio_out.skip');
+    }
+
+    public function command($command_str)
+    {
         $fp = stream_socket_client('tcp://localhost:'.$this->_getTelnetPort(), $errno, $errstr, 20);
 
         if (!$fp)
             throw new \App\Exception('Telnet failure: '.$errstr.' ('.$errno.')');
 
-        fwrite($fp, "requests.push ".str_replace(array("\\'", '&amp;'), array("'",'&'),urldecode($music_file))."\nquit\n");
+        fwrite($fp, str_replace(array("\\'", '&amp;'), array("'",'&'),urldecode($command_str))."\nquit\n");
 
         $eat = '';
         while (!feof($fp))

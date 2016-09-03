@@ -1,0 +1,59 @@
+<?
+$title = 'Radio Services Control Panel';
+$manual = true;
+?>
+
+<div class="block-header">
+    <h2><?=$station->name ?></h2>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Radio Backend</h2>
+            </div>
+            <div class="card-body card-padding">
+            <? if ($backend_type == 'liquidsoap'): ?>
+                <h3>
+                    LiquidSoap<br>
+                    <small><? if ($backend_is_running): ?>Running<? else: ?>NOT Running<? endif; ?></small>
+                </h3>
+
+                <h4>Service Controls</h4>
+                <a class="btn btn-default" href="<?=$this->url->routeFromHere(['action' => 'rebootbackend']) ?>">Restart Backend Only</a>
+
+                <h4>Playback Controls</h4>
+                <a class="btn btn-default" href="<?=$this->url->routeFromHere(['action' => 'backendskip']) ?>">Skip Current Song</a>
+            <? endif; ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Radio Frontend</h2>
+            </div>
+            <div class="card-body card-padding">
+                <? if ($frontend_type == 'icecast'): ?>
+                    <h3 class="header-inner">
+                        IceCast<br>
+                        <small><? if ($frontend_is_running): ?>Running<? else: ?>NOT Running<? endif; ?></small>
+                    </h3>
+
+                    <h4>Service Controls</h4>
+                    <a class="btn btn-default" href="<?=$this->url->routeFromHere(['action' => 'rebootfrontend']) ?>">Restart Frontend Only</a>
+
+                    <h4>Administration</h4>
+                    <a class="btn btn-default" href="http://<?=$base_url ?>:<?=$frontend_config['port'] ?>">IceCast Status</a>
+
+                    <dl>
+                        <dt>Administrator Password:</dt>
+                        <dd><?=$frontend_config['admin_pw'] ?></dd>
+                    </dl>
+                <? endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+

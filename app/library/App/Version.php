@@ -5,7 +5,8 @@
 
 namespace App;
 
-define('APP_CORE_VERSION', 'Pre-Alpha');
+define('APP_CORE_VERSION', '20160903');
+define('APP_CORE_RELEASE', 'Pre-Alpha');
 
 class Version
 {
@@ -13,4 +14,10 @@ class Version
     {
         return APP_CORE_VERSION;
     }
+
+    public static function getVersionText()
+    {
+        return 'v'.APP_CORE_VERSION.' '.APP_CORE_RELEASE;
+    }
+
 }

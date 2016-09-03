@@ -188,6 +188,7 @@ header("Content-type: text/html; charset=utf-8");
                 <ul>
                     <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'automation', 'station' => $station->id]) ?>">Automated Assignment</a></li>
 
+                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'control', 'station' => $station->id]) ?>">Streaming Service Manager</a></li>
                     <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'write', 'station' => $station->id]) ?>">Rebuild Backend Configuration</a></li>
                     <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'restart', 'station' => $station->id]) ?>">Restart Broadcasting</a></li>
                 </ul>
@@ -216,7 +217,7 @@ header("Content-type: text/html; charset=utf-8");
 </section>
 
 <footer id="footer">
-    Powered by <a href="https://github.com/SlvrEagle23/AzuraCast" target="_blank"><?=$this->config->application->name ?></a> <?=\App\Version::getVersion() ?>.
+    Powered by <a href="https://github.com/SlvrEagle23/AzuraCast" target="_blank"><?=$this->config->application->name ?></a> <?=\App\Version::getVersionText() ?>.
 </footer>
 
 <!-- Page Loader -->

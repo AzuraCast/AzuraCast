@@ -1,6 +1,6 @@
 ![AzuraCast](https://raw.githubusercontent.com/SlvrEagle23/AzuraCast/master/resources/azuracast.png)
 
-**WARNING: This project is in very early development, and is not yet ready for use in development or production environments! Follow the project for updates as it rolls out into pre-alpha, alpha and release states.**
+**NOTE: This project is currently in "Pre-Alpha". The web application is stable and includes a number of powerful features, and can be used in a development (and, in some cases, a production) environment; however, new updates are released very frequently, and these updates may result in loss of data. You should maintain frequent backups of files, especially files contained in `/var/azuracast/stations/{station_name}`.**
 
 **AzuraCast** is a standalone web radio management kit.
  
@@ -18,72 +18,11 @@ AzuraCast offers the following functionality to radio station operators:
 
 ## Installing on a Production Server
 
-**NOTE: This application is in early development stages. Lots of essential features work, but additional features are being added constantly, and things may change rapidly in subsequent updates. Use at your own risk!**
-
-As the `root` user, execute the following commands to begin installation and setup of a fresh AzuraCast server:
-
-```bash
-apt-get update && apt-get install -q -y git
-
-mkdir -p /var/azuracast/www
-cd /var/azuracast/www
-git clone https://github.com/SlvrEagle23/AzuraCast.git .
-
-chmod a+x install.sh
-./install.sh
-```
-
-### Updating
-
-AzuraCast also includes a handy updater script that pulls down the latest copy of the codebase from Git, flushes the site caches and makes any necessary database updates. You should also run this script as the `root` user.
-
-```bash
-cd /var/azuracast/www
-
-chmod a+x update.sh
-./update.sh
-```
+See [the AzuraCast Wiki](https://github.com/SlvrEagle23/AzuraCast/wiki/Deploying-to-an-Existing-Server) for more information on installing to a production server.
 
 ## Local Development with Vagrant
 
-This application supports **Vagrant** for local development and testing before launching a production station.
-
-* Clone this repository to your hard drive.
-* Install [Vagrant](http://www.vagrantup.com/) for your OS.
-* Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) for your OS.
-* Open a command line prompt at the root of this repo.
-* Type `vagrant up` in the command line.
-
-If you don't already have the Vagrant box downloaded, this process may take several minutes (or even hours, depending on your bandwidth). The box image is cached locally, though, making future vagrant runs easy.
-
-### SSH
-
-You can connect to the Vagrant VM by typing `vagrant ssh` into the command line of the host computer. By default, the server is also available at `localhost:2222`.
-
-### Web Server
-
-The web server is configured by default to respond to `http://localhost:8080`.
-
-The web application resides by default in the `/var/azuracast/www` directory inside the Vagrant virtual machine.
-
-### Database
-
-MySQL can be accessed directly by connecting to the VirtualBox instance via SSH tunnel, using the SSH username `vagrant` and password `vagrant`.
-
-The default MySQL `root` password is `password`.
-
-### Common Tasks
-
-The Vagrant virtual machine is automatically configured with Composer (PHP dependencies), NPM (Grunt and Bower) and other important tools pre-installed.
-
-Stylesheets are managed by Grunt, which is installed on the Vagrant VM by default. To make changes to stylesheets:
-
-* Connect to the server via SSH.
-* `cd /var/azuracast/build`
-* `grunt watch`
-* Make changes to LESS files in the `web/static/less` directory.
-
-Do not directly make changes to the compiled CSS files, as they will automatically be overwritten by this automated system.
+See [the AzuraCast Wiki](https://github.com/SlvrEagle23/AzuraCast/wiki/Developing-Locally) for more information on developing locally with Vagrant.
 
 ## Questions? Comments? Feedback?
 

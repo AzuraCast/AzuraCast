@@ -52,6 +52,12 @@ return array(
                     'options' => array(0 => 'No', 1 => 'Yes'),
                 )),
 
+                'request_delay' => array('text', array(
+                    'label' => 'Request Minimum Delay (Minutes)',
+                    'description' => 'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.',
+                    'default' => '5',
+                )),
+
                 'enable_streamers' => array('radio', array(
                     'label' => 'Allow Streamers / DJs',
                     'description' => 'If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.',

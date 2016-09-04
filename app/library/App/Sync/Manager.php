@@ -5,6 +5,7 @@ use App\Radio\Automation;
 use Entity\Settings;
 use Entity\SongHistory;
 use App\Debug;
+use Entity\StationRequest;
 
 class Manager
 {
@@ -46,6 +47,8 @@ class Manager
     public static function syncShort($force = false)
     {
         self::initSync(60);
+
+        StationRequest::processPending();
 
         Settings::setSetting('sync_fast_last_run', time());
     }
@@ -113,13 +116,13 @@ class Manager
                     'Now Playing Data',
                 ),
             ),
-            /* 'short' => array(
+            'short' => array(
                 'name'      => '1-Minute Sync',
                 'latest'    => Settings::getSetting('sync_fast_last_run', 0),
                 'contents'  => array(
-                    'Schedule Notifications',
+                    'Song Requests Queue',
                 ),
-            ), */
+            ),
             'medium' => array(
                 'name'      => '5-Minute Sync',
                 'latest'    => Settings::getSetting('sync_last_run', 0),
@@ -131,8 +134,8 @@ class Manager
                 'name'      => '1-Hour Sync',
                 'latest'    => Settings::getSetting('sync_slow_last_run', 0),
                 'contents'  => array(
-                    'Analytics and Statistics',
-                    'Song History Cleanup',
+                    'Analytics/Statistics',
+                    'Cleanup',
                 ),
             ),
         );

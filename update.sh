@@ -10,16 +10,16 @@ export util_base=$www_base/util
 export tmp_base=$app_base/www_tmp
 
 # Stop system tasks
-service nginx stop
-service cron stop
+sudo service nginx stop
+sudo service cron stop
 
 # Pull down update
 git reset --hard
 git pull
 
 # Update Phalcon
-apt-get update
-apt-get -q -y install php5-phalcon
+sudo apt-add-repository -u ppa:phalcon/stable
+sudo apt-get -q -y install php5-phalcon
 
 # Relink fallback mp3 file to IceCast web directory.
 sudo rm -f /usr/share/icecast2/web/error.mp3

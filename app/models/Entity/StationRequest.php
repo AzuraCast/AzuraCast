@@ -85,7 +85,7 @@ class StationRequest extends \App\Doctrine\Entity
         // Check the most recent song history.
         try
         {
-            $last_play_time = $em->createQuery('SELECT sh.timestamp_start FROM Entity\SongHistory sh WHERE sh.song_id = :song_id AND sh.station_id = :station_id ORDER BY sh.timestamp DESC')
+            $last_play_time = $em->createQuery('SELECT sh.timestamp_start FROM Entity\SongHistory sh WHERE sh.song_id = :song_id AND sh.station_id = :station_id ORDER BY sh.timestamp_start DESC')
                 ->setParameter('song_id', $media_item->song_id)
                 ->setParameter('station_id', $station->id)
                 ->setMaxResults(1)

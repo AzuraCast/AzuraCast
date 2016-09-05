@@ -1,6 +1,8 @@
 <?php
 namespace Modules\Api\Controllers;
 
+use Entity\ApiKey;
+
 class BaseController extends \App\Phalcon\Controller
 {
     public function permissions()
@@ -69,10 +71,32 @@ class BaseController extends \App\Phalcon\Controller
      * Authentication
      */
 
+    /**
+     * Require that an API key be supplied by the requesting user.
+     *
+     * @throws \App\Exception\PermissionDenied
+     */
     public function requireKey()
     {
-        $this->returnError('API keys are not yet implemented.');
-        return;
+        if (!$this->authenticate())
+            throw new \App\Exception\PermissionDenied('No valid API key specified.');
+    }
+
+    /**
+     * Check that the API key supplied by the requesting user is valid.
+     *
+     * @return bool
+     */
+    public function authenticate()
+    {
+        if (isset($_SERVER['X-API-Key']))
+            $api_key = $_SERVER['X-API-Key'];
+        elseif ($this->hasParam('key'))
+            $api_key = $this->getParam('key');
+        else
+            return false;
+
+        return ApiKey::authenticate($api_key);
     }
 
     /**

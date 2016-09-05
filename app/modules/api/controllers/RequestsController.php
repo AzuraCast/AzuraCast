@@ -45,7 +45,7 @@ class RequestsController extends BaseController
 
         try
         {
-            StationRequest::submit($station, $song);
+            StationRequest::submit($station, $song, $this->authenticate());
 
             return $this->returnSuccess('Request submitted successfully.');
         }

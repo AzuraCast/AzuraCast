@@ -55,7 +55,7 @@ class StationRequest extends \App\Doctrine\Entity
      */
     protected $track;
 
-    public static function submit(Station $station, $track_id)
+    public static function submit(Station $station, $track_id, $is_authenticated = false)
     {
         $em = self::getEntityManager();
 
@@ -89,19 +89,22 @@ class StationRequest extends \App\Doctrine\Entity
         if ($last_play_time && $last_play_time > (time() - 60*30))
             throw new \App\Exception('This song has been played too recently on the station.');
 
-        // Check for an existing request from this user.
-        $user_ip = $_SERVER['REMOTE_ADDR'];
+        if (!$is_authenticated)
+        {
+            // Check for an existing request from this user.
+            $user_ip = $_SERVER['REMOTE_ADDR'];
 
-        // Check for any request (on any station) within the last $threshold_seconds.
-        $threshold_seconds = 30;
+            // Check for any request (on any station) within the last $threshold_seconds.
+            $threshold_seconds = 30;
 
-        $recent_requests = $em->createQuery('SELECT sr FROM '.__CLASS__.' sr WHERE sr.ip = :user_ip AND sr.timestamp >= :threshold')
-            ->setParameter('user_ip', $user_ip)
-            ->setParameter('threshold', time()-$threshold_seconds)
-            ->getArrayResult();
+            $recent_requests = $em->createQuery('SELECT sr FROM ' . __CLASS__ . ' sr WHERE sr.ip = :user_ip AND sr.timestamp >= :threshold')
+                ->setParameter('user_ip', $user_ip)
+                ->setParameter('threshold', time() - $threshold_seconds)
+                ->getArrayResult();
 
-        if (count($recent_requests) > 0)
-            throw new \App\Exception('You have submitted a request too recently! Please wait a while before submitting another one.');
+            if (count($recent_requests) > 0)
+                throw new \App\Exception('You have submitted a request too recently! Please wait a while before submitting another one.');
+        }
 
         // Save request locally.
         $record = new self;

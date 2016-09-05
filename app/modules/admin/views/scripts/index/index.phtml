@@ -20,6 +20,11 @@ $panels = array(
             'icon'      => 'fa fa-key',
             'permission' => $this->acl->isAllowed('administer all'),
         ),
+        'API Keys' => array(
+            'url'      => 'admin/api',
+            'icon'     => 'fa fa-share-alt',
+            'permission' => $this->acl->isAllowed('administer api keys'),
+        ),
     ),
     'Stations' => array(
         'Manage Stations' => array(

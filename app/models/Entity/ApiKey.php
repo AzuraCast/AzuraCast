@@ -52,6 +52,15 @@ class ApiKey extends \App\Doctrine\Entity
             return false;
 
         $record = self::find($key);
-        return ($record instanceof self);
+
+        if ($record instanceof self)
+        {
+            $record->calls_made++;
+            $record->save();
+
+            return true;
+        }
+
+        return false;
     }
 }

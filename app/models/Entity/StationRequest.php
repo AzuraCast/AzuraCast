@@ -72,6 +72,16 @@ class StationRequest extends \App\Doctrine\Entity
         if (!($media_item instanceof StationMedia))
             throw new \App\Exception('The song ID you specified could not be found in the station.');
 
+        // Check if the song is already enqueued as a request.
+        $pending_request = $em->createQuery('SELECT sr FROM '.__CLASS__.' sr WHERE sr.track_id = :track_id AND sr.station_id = :station_id AND sr.played_at = 0')
+            ->setParameter('track_id', $track_id)
+            ->setParameter('station_id', $station->id)
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        if ($pending_request)
+            throw new \App\Exception('Duplicate request: this song is already a pending request on this station.');
+
         // Check the most recent song history.
         try
         {

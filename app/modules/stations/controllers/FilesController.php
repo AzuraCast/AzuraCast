@@ -87,7 +87,11 @@ class FilesController extends BaseController
 
                 $media_in_dir[$media_row['path']] = array(
                     'is_playable' => true,
-                    'name' => $media_row['artist'].' - '.$media_row['title'].' ('.$media_row['length_text'].')',
+                    'length' => $media_row['length'],
+                    'length_text' => $media_row['length_text'],
+                    'artist' => $media_row['artist'],
+                    'title' => $media_row['title'],
+                    'name' => $media_row['artist'].' - '.$media_row['title'],
                     'playlists' => implode('<br>', $playlists),
                 );
             }

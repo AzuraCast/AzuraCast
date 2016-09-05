@@ -75,6 +75,9 @@ $this->assets->collection('custom_js')
                     <thead>
                         <tr>
                             <th data-column-id="name" data-formatter="playable" data-identifier="true">Name</th>
+                            <th data-column-id="media_title" data-visible="false">Title</th>
+                            <th data-column-id="media_artist" data-visible="false">Artist</th>
+                            <th data-column-id="media_length" data-formatter="file_length">Length</th>
                             <th data-column-id="size" data-formatter="file_size">Size</th>
                             <th data-column-id="mtime" data-formatter="file_mtime">Modified</th>
                             <th data-column-id="media_playlists">Playlists</th>
@@ -123,9 +126,15 @@ $(function() {
                 else
                     $icon = '<span class="file-icon"><i class="zmdi zmdi-'+(row.is_dir ? 'folder' : 'file')+'"></i></span>';
 
-                var $link = '<a class="name" href="'+$url+'" title="'+row.name+'">'+row.text+'</a>';
+                var $link = '<a class="name" href="'+$url+'" title="'+row.name+'">'+row.media_name+'</a>';
 
-                return '<div class="'+(row.is_dir ? 'is_dir' : 'is_file')+'">'+$icon + $link + '<br><small>'+row.media_name+'</small></div>';
+                return '<div class="'+(row.is_dir ? 'is_dir' : 'is_file')+'">'+$icon + $link + '<br><small>'+row.text+'</small></div>';
+            },
+            "file_length": function(column, row) {
+                if (row.media_length_text)
+                    return row.media_length_text;
+                else
+                    return 'N/A';
             },
             "file_size": function(column, row) {
                 return formatFileSize(row.size);

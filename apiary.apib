@@ -163,6 +163,7 @@ Returns a single station's now-playing information based on a station identifier
     Returned if an invalid station ID is specified.
 
     +Body
+
         {
             status: "error",
             error: "Station not found."
@@ -241,6 +242,7 @@ Returns a single station's now-playing information based on a station's "short c
     Returned if an invalid station shortcode is specified.
 
     +Body
+
         {
             status: "error",
             error: "Station not found."
@@ -287,6 +289,7 @@ Station info for the specified numeric identifier.
     Returned if an invalid station ID is specified.
 
     +Body
+
         {
             status: "error",
             error: "Station not found."
@@ -314,6 +317,7 @@ Station info for the specified shortcode.
     Returned if an invalid station shortcode is specified.
 
     +Body
+
         {
             status: "error",
             error: "Station not found."
@@ -367,6 +371,7 @@ Get all currently requestable songs from the specified station.
     Returned if an invalid station ID is specified.
 
     +Body
+
         {
             status: "error",
             error: "Station not found."
@@ -397,6 +402,7 @@ Submit a request for a station to play a song with the specified ID.
     * Duplicate request (already pending)
 
     +Body
+
         {
             status: "error",
             error: "(Detailed error message)"

@@ -29,6 +29,12 @@ See [the AzuraCast Wiki](https://github.com/SlvrEagle23/AzuraCast/wiki/Deploying
 
 See [the AzuraCast Wiki](https://github.com/SlvrEagle23/AzuraCast/wiki/Developing-Locally) for more information on developing locally with Vagrant.
 
+## AzuraCast API
+
+Once installed and running, AzuraCast exposes an API that allows you to monitor and interact with your stations.
+
+Documentation about this API and its endpoints are available on the [AzuraCast APIary Documentation](http://docs.azuracast.apiary.io/).
+
 ## License
 
 AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/SlvrEagle23/AzuraCast/blob/master/License.txt).

@@ -241,6 +241,7 @@ class Automation
 
                 'title'     => $row['title'],
                 'artist'    => $row['artist'],
+                'length_raw' => $row['length'],
                 'length'    => $row['length_text'],
                 'path'      => $row['path'],
 

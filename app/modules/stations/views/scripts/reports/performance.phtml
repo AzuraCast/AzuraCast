@@ -32,7 +32,8 @@ $manual = true;
                     <th data-column-id="title">Title</th>
                     <th data-column-id="artist">Artist</th>
                     <th data-column-id="path">Filename</th>
-                    <th data-column-id="length">Length</th>
+                    <th data-column-id="length_raw" data-formatter="length" data-type="numeric">Length</th>
+                    <th data-column-id="length" data-visible="false" data-visibleInSelection="false">Length Text</th>
                     <th data-column-id="playlists">Current Playlist(s)</th>
                     <th data-column-id="delta_positive" data-type="numeric">&delta; Joins</th>
                     <th data-column-id="delta_negative" data-type="numeric">&delta; Losses</th>
@@ -48,6 +49,7 @@ $manual = true;
                     <td><?=$row['title'] ?></td>
                     <td><?=$row['artist'] ?></td>
                     <td><?=$row['path'] ?></td>
+                    <td><?=$row['length_raw'] ?></td>
                     <td><?=$row['length'] ?></td>
                     <td><?=implode(', ', $row['playlists']) ?></td>
                     <td class="text-success"><?=$row['delta_positive'] ?></td>
@@ -86,6 +88,11 @@ $(function() {
             iconDown: 'zmdi-sort-amount-desc',
             iconRefresh: 'zmdi-refresh',
             iconUp: 'zmdi-sort-amount-asc'
+        },
+        formatters: {
+            "length": function (column, row) {
+                return row.length;
+            }
         }
     });
 });

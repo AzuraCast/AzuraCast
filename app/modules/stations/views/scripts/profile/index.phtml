@@ -1,9 +1,122 @@
-<?php
+<?
 $title = 'Station Profile';
+$manual = true;
 ?>
 
-<div class="buttons">
-    <a class="btn btn-primary" href="<?=$this->url->routeFromHere(array('action' => 'edit')) ?>">Edit Profile</a>
+<div class="block-header">
+    <h2><?=$station->name ?></h2>
 </div>
 
-<?=$form->renderView() ?>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2>Basic Profile</h2>
+                <a class="btn bgm-blue btn-float" title="Edit Profile" href="<?=$this->url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-edit"></i></a>
+            </div>
+            <div class="card-body card-padding">
+                <dl>
+                    <dt>Station Name:</dt>
+                    <dd><?=$station->name ?></dd>
+
+                    <dt>Description:</dt>
+                    <dd><?=$station->description ?></dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header <? if ($station->enable_requests): ?>bgm-green<? else: ?>bgm-red<? endif; ?>">
+                <h2>Song Requests</h2>
+            </div>
+            <div class="card-body card-padding">
+            <? if ($station->enable_requests): ?>
+                <p>Song requests are currently <b>enabled</b> for this station.</p>
+                <? if ($station->request_delay == 0): ?>
+                    <p>Requests are queued for playback immediately after the currently playing song.</p>
+                <? else: ?>
+                    <p>Requests are queued for playback on the station within <b><?=$station->request_delay ?> to <?=($station->request_delay*2) ?> minutes</b> of being submitted.</p>
+                <? endif; ?>
+            <? else: ?>
+                <p>Song requests are currently <b>disabled</b> for this station. Edit your profile above to enable them.</p>
+            <? endif; ?>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header <? if ($station->enable_streamers): ?>bgm-green<? else: ?>bgm-red<? endif; ?>">
+                <h2>Streamers/DJs</h2>
+            </div>
+            <div class="card-body card-padding">
+                <? if ($station->enable_streamers): ?>
+                    <p>Support for live streamers / DJs is currently <b>enabled</b> for this station. Edit your profile above to enable it.</p>
+                    <p>Manage streamer accounts <a href="<?=$this->url->routeFromHere(['controller' => 'streamers']) ?>">on the Streamers / DJ Accounts page</a>.</p>
+                <? else: ?>
+                    <p>Support for live streamers / DJs is currently <b>disabled</b> for this station.</p>
+                    <p>Only the AutoDJ (based on your uploaded media and playlists) will be able to play on the air.</p>
+                <? endif; ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <? if ($frontend_type == 'icecast'): ?>
+        <div class="card">
+            <div class="card-header <? if ($frontend_is_running): ?>bgm-green<? else: ?>bgm-red<? endif; ?> ch-alt">
+                <h2>
+                    IceCast (Broadcasting Service)<br>
+                    <small><? if ($frontend_is_running): ?>Running<? else: ?>Not Running<? endif; ?></small>
+                </h2>
+
+                <ul class="actions">
+                    <li>
+                        <a href="<?=$this->url->routeFromHere(['action' => 'rebootfrontend']) ?>" title="Restart Service">
+                            <i class="zmdi zmdi-refresh-alt"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body card-padding">
+                <dl>
+                    <dt>Stream Public URL:</dt>
+                    <dd><a href="<?=$frontend_url ?>/radio.mp3"><?=$frontend_url ?>/radio.mp3</a></dd>
+                </dl>
+
+                <dl>
+                    <dt>Administration URL:</dt>
+                    <dd><a href="<?=$frontend_url ?>/admin/"><?=$frontend_url ?>/admin/</a></dd>
+
+                    <dt>Administrator Password:</dt>
+                    <dd><?=$frontend_config['admin_pw'] ?></dd>
+
+                    <dt>Source Password:</dt>
+                    <dd><?=$frontend_config['source_pw'] ?></dd>
+                </dl>
+            </div>
+        </div>
+        <? endif; ?>
+
+        <? if ($backend_type == 'liquidsoap'): ?>
+        <div class="card">
+            <div class="card-header <? if ($backend_is_running): ?>bgm-green<? else: ?>bgm-red<? endif; ?> ch-alt">
+                <h2>
+                    LiquidSoap (AutoDJ Service)<br>
+                    <small><? if ($backend_is_running): ?>Running<? else: ?>Not Running<? endif; ?></small>
+                </h2>
+
+                <ul class="actions">
+                    <li>
+                        <a href="<?=$this->url->routeFromHere(['action' => 'rebootbackend']) ?>" title="Restart Service">
+                            <i class="zmdi zmdi-refresh-alt"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body card-padding">
+                <p>LiquidSoap is currently shuffling from <b><?=$num_songs ?> uploaded songs</b> in <b><?=$num_playlists ?> playlists</b>.</p>
+
+                <a class="btn btn-primary" href="<?=$this->url->routeFromHere(['action' => 'backendskip']) ?>">Skip Current Song</a>
+            </div>
+        </div>
+        <? endif; ?>
+    </div>
+</div>

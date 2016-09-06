@@ -40,21 +40,10 @@ return array(
             ),
         ),
 
+        /*
         'customization_details' => array(
             'legend' => 'Site Customization',
             'elements' => array(
-
-                /*
-                'theme' => array('radio', array(
-                    'label' => 'Site Theme',
-                    'belongsTo' => 'customization',
-                    'multiOptions' => array(
-                        'light'     => 'Light Theme',
-                        'dark'      => 'Dark Theme',
-                    ),
-                    'default' => 'light',
-                )),
-                */
 
                 'timezone' => array('select', array(
                     'label' => 'Time Zone',
@@ -65,6 +54,7 @@ return array(
 
             ),
         ),
+        */
         
         'submit' => array(
             'elements' => array(

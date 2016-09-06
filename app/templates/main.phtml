@@ -120,7 +120,7 @@ header("Content-type: text/html; charset=utf-8");
                         <? if ($this->acl->isAllowed('administer all')): ?>
                             <li><a href="<?=$this->url->get('admin') ?>"><i class="fa fa-cog"></i> System Administration</a></li>
                         <? endif; ?>
-                        <li><a href="<?=$this->url->get('profile') ?>"><i class="fa fa-user"></i> Profile</a></li>
+                        <li><a href="<?=$this->url->get('profile') ?>"><i class="fa fa-user"></i> My Account</a></li>
                         <li class="divider">&nbsp;</li>
                         <li><a href="<?=$this->url->get('account/logout') ?>"><i class="fa fa-sign-out"></i> Sign Out</a></li>
                     </ul>
@@ -176,7 +176,6 @@ header("Content-type: text/html; charset=utf-8");
                 <ul>
                     <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'automation', 'station' => $station->id]) ?>">Automated Assignment</a></li>
 
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'control', 'station' => $station->id]) ?>">Streaming Service Manager</a></li>
                     <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'write', 'station' => $station->id]) ?>">Rebuild Backend Configuration</a></li>
                     <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'restart', 'station' => $station->id]) ?>">Restart Broadcasting</a></li>
                 </ul>

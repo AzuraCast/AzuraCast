@@ -2,28 +2,45 @@
 namespace Modules\Stations\Controllers;
 
 use \Entity\Station;
+use \Entity\Settings;
 
 class ProfileController extends BaseController
 {
-    protected function _getForm()
-    {
-        $base_form = $this->module_config['admin']->forms->station->toArray();
-        unset($base_form['groups']['admin']);
-
-        return new \App\Form($base_form);
-    }
-
     public function indexAction()
     {
-        $form = $this->_getForm();
-        $form->populate($this->station->toArray());
+        // Backend controller.
+        $ba = $this->station->getBackendAdapter();
 
-        $this->view->form = $form;
+        $this->view->backend_type = $this->station->backend_type;
+        $this->view->backend_config = (array)$this->station->backend_config;
+        $this->view->backend_is_running = $ba->isRunning();
+
+        $base_url = Settings::getSetting('base_url', 'localhost');
+
+        // Frontend controller.
+        $fa = $this->station->getFrontendAdapter();
+
+        $this->view->frontend_type = $this->station->frontend_type;
+        $this->view->frontend_config = $frontend_config = (array)$this->station->frontend_config;
+        $this->view->frontend_url = 'http://'.$base_url.':'.$frontend_config['port'];
+        $this->view->frontend_is_running = $fa->isRunning();
+
+        // Statistics about backend playback.
+        $this->view->num_songs = $this->em->createQuery('SELECT COUNT(sm.id) FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sp.id IS NOT NULL AND sm.station_id = :station_id')
+            ->setParameter('station_id', $this->station->id)
+            ->getSingleScalarResult();
+
+        $this->view->num_playlists = $this->em->createQuery('SELECT COUNT(sp.id) FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id')
+            ->setParameter('station_id', $this->station->id)
+            ->getSingleScalarResult();
     }
 
     public function editAction()
     {
-        $form = $this->_getForm();
+        $base_form = $this->module_config['admin']->forms->station->toArray();
+        unset($base_form['groups']['admin']);
+
+        $form = new \App\Form($base_form);
 
         $form->setDefaults($this->station->toArray());
 
@@ -48,5 +65,38 @@ class ProfileController extends BaseController
         }
 
         return $this->renderForm($form, 'edit', 'Edit Station Profile');
+    }
+
+    public function rebootbackendAction()
+    {
+        $backend = $this->station->getBackendAdapter();
+
+        $backend->stop();
+        $backend->write();
+        $backend->start();
+
+        $this->alert('<b>Backend rebooted.</b>', 'green');
+        return $this->redirectFromHere(['action' => 'index']);
+    }
+
+    public function backendskipAction()
+    {
+        $ba = $this->station->getBackendAdapter();
+        $ba->skip();
+
+        $this->alert('<b>Song skipped.</b>', 'green');
+        return $this->redirectFromHere(['action' => 'index']);
+    }
+
+    public function rebootfrontendAction()
+    {
+        $frontend = $this->station->getFrontendAdapter();
+
+        $frontend->stop();
+        $frontend->write();
+        $frontend->start();
+
+        $this->alert('<b>Frontend rebooted.</b>', 'green');
+        return $this->redirectFromHere(['action' => 'index']);
     }
 }

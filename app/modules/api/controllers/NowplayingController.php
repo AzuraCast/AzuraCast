@@ -31,7 +31,7 @@ class NowplayingController extends BaseController
                         return $this->returnSuccess($np_row);
                 }
 
-                return $this->returnError('Station not found!');
+                return $this->returnError('Station not found.');
             }
             elseif ($this->hasParam('station'))
             {
@@ -43,7 +43,7 @@ class NowplayingController extends BaseController
                         return $this->returnSuccess($np_row);
                 }
 
-                return $this->returnError('Station not found!');
+                return $this->returnError('Station not found.');
             }
         }
         else

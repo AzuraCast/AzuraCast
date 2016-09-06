@@ -19,7 +19,7 @@ Some request types require an API key, either to perform administrative steps or
 ## Station "Short Codes"
 In lieu of a station ID, some station-related API calls allow for what is called a "shortcode". This is the name of the station, in lower case, with its special characters removed. For example, "My Awesome Radio!" would become "my_awesome_radio".
 
-## Song identifiers.
+## Song Identifiers
 Most database entries have an auto-incrementing unique identifier, but songs use a hash-based identification system that avoids collisions based on spacing or punctuation differences.
 
 # Group Now Playing
@@ -158,6 +158,16 @@ Returns a single station's now-playing information based on a station identifier
             }
         }
 
++ Response 400 (application/json)
+
+        Returned if an invalid station ID is specified.
+
+        +Body
+        {
+            status: "error",
+            error: "Station not found."
+        }
+
 ### GET /nowplaying/index/station/{shortcode}
 **Station Specified by Shortcode**
 
@@ -226,6 +236,16 @@ Returns a single station's now-playing information based on a station's "short c
             }
         }
 
++ Response 400 (application/json)
+
+        Returned if an invalid station shortcode is specified.
+
+        +Body
+        {
+            status: "error",
+            error: "Station not found."
+        }
+
 # Group Stations
 Information about the service's hosted radio stations.
 
@@ -261,7 +281,17 @@ Station info for the specified numeric identifier.
                 shortcode: "best_pony_radio"
             }
         }
-        
+
++ Response 400 (application/json)
+
+        Returned if an invalid station ID is specified.
+
+        +Body
+        {
+            status: "error",
+            error: "Station not found."
+        }
+
 ### GET /stations/index/station/{shortcode}
 Station info for the specified shortcode.
 
@@ -277,6 +307,16 @@ Station info for the specified shortcode.
                 name: "Best Pony Radio",
                 shortcode: "best_pony_radio"
             }
+        }
+
++ Response 400 (application/json)
+
+        Returned if an invalid station shortcode is specified.
+
+        +Body
+        {
+            status: "error",
+            error: "Station not found."
         }
 
 # Group Song Requests
@@ -322,6 +362,16 @@ Get all currently requestable songs from the specified station.
             ]
         }
 
++ Response 400 (application/json)
+
+        Returned if an invalid station ID is specified.
+
+        +Body
+        {
+            status: "error",
+            error: "Station not found."
+        }
+
 ### POST /requests/submit/id/{station_id}/song_id/{song_id}
 Submit a request for a station to play a song with the specified ID.
 
@@ -334,6 +384,22 @@ Submit a request for a station to play a song with the specified ID.
         {
             status: "success",
             result: "Request submitted successfully."
+        }
+
++ Response 400 (application/json)
+
+        Returned if any of the following circumstances occur:
+        * Invalid station ID specified
+        * Invalid song ID specified
+        * Song requests disabled by station
+        * Song played too recently on the station
+        * Request was rate-limited by IP
+        * Duplicate request (already pending)
+
+        +Body
+        {
+            status: "error",
+            error: "(Detailed error message)"
         }
 
 # Group Utilities

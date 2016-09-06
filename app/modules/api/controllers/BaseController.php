@@ -111,8 +111,10 @@ class BaseController extends \App\Phalcon\Controller
         ));
     }
 
-    public function returnError($message)
+    public function returnError($message, $error_code = 400)
     {
+        $this->response->setStatusCode($error_code);
+
         return $this->returnToScreen(array(
             'status'    => 'error',
             'error'     => $message,

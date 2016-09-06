@@ -29,6 +29,18 @@ class Station extends \App\Doctrine\Entity
     }
 
     /**
+     * @PreDelete
+     */
+    public function deleting()
+    {
+        $ba = $this->getBackendAdapter();
+        $fa = $this->getFrontendAdapter();
+
+        $ba->stop();
+        $fa->stop();
+    }
+
+    /**
      * @Column(name="id", type="integer")
      * @Id
      * @GeneratedValue(strategy="IDENTITY")
@@ -304,28 +316,49 @@ class Station extends \App\Doctrine\Entity
             'shortcode' => self::getStationShortName($row['name']),
         );
 
-        /*
-        if (isset($row['streams']))
-        {
-            $api['streams'] = array();
-
-            foreach ((array)$row['streams'] as $stream)
-            {
-                $api['streams'][] = StationStream::api($stream);
-
-                // Set first stream as default, override if a later stream is explicitly default.
-                if ($stream['is_default'] || !isset($api['default_stream_id']))
-                {
-                    $api['default_stream_id'] = (int)$stream['id'];
-                    $api['stream_url'] = $stream['stream_url'];
-                }
-            }
-        }
-        */
-
-        // $api['player_url'] = ShortUrl::stationUrl($api['shortcode']);
-
         return $api;
+    }
+
+    public static function create($data)
+    {
+        $em = self::getEntityManager();
+
+        $station = new self;
+        $station->fromArray($data);
+
+        // Create path for station.
+        $station_base_dir = realpath(APP_INCLUDE_ROOT.'/..').'/stations';
+        @mkdir($station_base_dir);
+
+        $station_dir = $station_base_dir.'/'.$station->getShortName();
+        $station->radio_base_dir = $station_dir;
+
+        // Generate station ID.
+        $station->save();
+
+        // Scan directory for any existing files.
+        set_time_limit(600);
+        \App\Sync\Media::importMusic($station);
+        $em->refresh($station);
+
+        \App\Sync\Media::importPlaylists($station);
+        $em->refresh($station);
+
+        // Load configuration from adapter to pull source and admin PWs.
+        $frontend_adapter = $station->getFrontendAdapter();
+        $frontend_adapter->read();
+
+        // Write initial XML file (if it doesn't exist).
+        $frontend_adapter->write();
+        $frontend_adapter->restart();
+
+        // Write an empty placeholder configuration.
+        $backend_adapter = $station->getBackendAdapter();
+        $backend_adapter->write();
+        $backend_adapter->restart();
+
+        // Save changes and continue to the last setup step.
+        $station->save();
     }
 
     public static function getFrontendAdapters()

@@ -33,10 +33,14 @@ class StationsController extends BaseController
             $data = $form->getValues();
 
             if (!($record instanceof Record))
-                $record = new Record;
-
-            $record->fromArray($data);
-            $record->save();
+            {
+                Record::create($data);
+            }
+            else
+            {
+                $record->fromArray($data);
+                $record->save();
+            }
 
             // Clear station cache.
             $cache = $this->di->get('cache');

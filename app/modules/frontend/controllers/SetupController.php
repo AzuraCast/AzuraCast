@@ -2,6 +2,7 @@
 namespace Modules\Frontend\Controllers;
 
 use Entity\Settings;
+use Entity\Station;
 
 class SetupController extends BaseController
 {
@@ -98,42 +99,7 @@ class SetupController extends BaseController
         {
             $data = $form->getValues();
 
-            $station = new \Entity\Station;
-            $station->fromArray($data);
-
-            // Create path for station.
-            $station_base_dir = realpath(APP_INCLUDE_ROOT.'/..').'/stations';
-            @mkdir($station_base_dir);
-
-            $station_dir = $station_base_dir.'/'.$station->getShortName();
-            $station->radio_base_dir = $station_dir;
-
-            // Generate station ID.
-            $station->save();
-
-            // Scan directory for any existing files.
-            set_time_limit(600);
-            \App\Sync\Media::importMusic($station);
-            $this->em->refresh($station);
-
-            \App\Sync\Media::importPlaylists($station);
-            $this->em->refresh($station);
-
-            // Load configuration from adapter to pull source and admin PWs.
-            $frontend_adapter = $station->getFrontendAdapter();
-            $frontend_adapter->read();
-
-            // Write initial XML file (if it doesn't exist).
-            $frontend_adapter->write();
-            $frontend_adapter->restart();
-
-            // Write an empty placeholder configuration.
-            $backend_adapter = $station->getBackendAdapter();
-            $backend_adapter->write();
-            $backend_adapter->restart();
-
-            // Save changes and continue to the last setup step.
-            $station->save();
+            Station::create($data);
 
             return $this->redirectFromHere(['action' => 'settings']);
         }

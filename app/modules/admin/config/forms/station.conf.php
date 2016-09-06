@@ -49,6 +49,7 @@ return array(
                 'enable_requests' => array('radio', array(
                     'label' => 'Allow Song Requests',
                     'description' => 'Setting this enables listeners to request a song for play on your station. Only songs that are already in your playlists are listed as requestable.',
+                    'default' => '0',
                     'options' => array(0 => 'No', 1 => 'Yes'),
                 )),
 
@@ -61,6 +62,7 @@ return array(
                 'enable_streamers' => array('radio', array(
                     'label' => 'Allow Streamers / DJs',
                     'description' => 'If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.',
+                    'default' => '0',
                     'options' => array(0 => 'No', 1 => 'Yes'),
                 )),
 

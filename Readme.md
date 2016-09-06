@@ -11,16 +11,15 @@ AzuraCast uses [LiquidSoap](http://liquidsoap.fm/) for "AutoDJ" and song request
 AzuraCast supports the following host operating systems, with more to come:
 * Ubuntu 14.04 (Trusty Tahr)
 
-AzuraCast offers the following functionality to radio station operators:
+With AzuraCast, radio station owners can:
 
-* Automate the process of configuring and setting up both a broadcasting service (IceCast) and an AutoDJ service (LiquidSoap)
+* Automate the process of setting up and running both a broadcasting service (IceCast) and an AutoDJ service (LiquidSoap)
 * Accept song requests (with a configurable delay) via an API
 * Manage streamer/DJ accounts for live broadcasting
-* Create and manage administrator accounts to delegate station management to others
-* Upload and manage playlists
-* Hourly and daily station listener statistics
-* Listener metrics arranged by time of day and day of week 
-* A timeline of all songs played in the last 48 hours
+* Create individual administrator accounts to delegate station management to others
+* Upload and manage playlists and media files directly from the web
+* Automatically assign songs to playlists based on their previous performance
+* View detailed statistics about listeners and peak/low audience times
 
 ## Installing on a Production Server
 
@@ -29,6 +28,10 @@ See [the AzuraCast Wiki](https://github.com/SlvrEagle23/AzuraCast/wiki/Deploying
 ## Local Development with Vagrant
 
 See [the AzuraCast Wiki](https://github.com/SlvrEagle23/AzuraCast/wiki/Developing-Locally) for more information on developing locally with Vagrant.
+
+## License
+
+AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/SlvrEagle23/AzuraCast/blob/master/License.txt).
 
 ## Questions? Comments? Feedback?
 

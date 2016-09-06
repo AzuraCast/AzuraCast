@@ -8,7 +8,7 @@ class IndexController extends BaseController
      */
     public function indexAction()
     {
-        return $this->returnSuccess('The PVL! API is online and functioning. For more information, visit http://docs.ponyvillelive.apiary.io/');
+        return $this->returnSuccess('The '.$this->config->application->name.' API is online and functioning.');
     }
 
     /**
@@ -28,9 +28,6 @@ class IndexController extends BaseController
     public function timeAction()
     {
         $this->setCacheLifetime(0);
-
-        // Re-enable session management for this API function.
-        \App\Session::enable();
 
         $tz_info = \App\Timezone::getInfo();
 

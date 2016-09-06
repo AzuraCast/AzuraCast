@@ -21,7 +21,7 @@ class Timezone
 
         if (!$tz_info)
         {
-            $tz = Customization::get('timezone');
+            $tz = date_default_timezone_get();
 
             $utc = new \DateTimeZone('UTC');
             $dt = new \DateTime('now', $utc);

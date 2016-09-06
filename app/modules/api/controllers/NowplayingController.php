@@ -28,33 +28,23 @@ class NowplayingController extends BaseController
                 foreach($np as $key => $np_row)
                 {
                     if ($np_row['station']['id'] == $id)
-                    {
-                        $sc = $key;
-                        break;
-                    }
+                        return $this->returnSuccess($np_row);
                 }
 
-                if (empty($sc))
-                    return $this->returnError('Station not found!');
+                return $this->returnError('Station not found!');
             }
             elseif ($this->hasParam('station'))
             {
                 $sc = $this->getParam('station');
-            }
 
-            if (isset($np[$sc]))
-                return $this->returnSuccess($np[$sc]);
-            else
+                foreach($np as $key => $np_row)
+                {
+                    if ($np_row['station']['shortcode'] == $sc)
+                        return $this->returnSuccess($np_row);
+                }
+
                 return $this->returnError('Station not found!');
-        }
-        elseif ($this->hasParam('category'))
-        {
-            $type = $this->getParam('category');
-            $np = array_filter($np, function($station_row) use ($type) {
-                return ($station_row['station']['category'] == $type);
-            });
-
-            return $this->returnSuccess($np);
+            }
         }
         else
         {

@@ -3,7 +3,7 @@ namespace Modules\Api\Controllers;
 
 use \Entity\Station;
 
-class StationController extends BaseController
+class StationsController extends BaseController
 {
     public function indexAction()
     {

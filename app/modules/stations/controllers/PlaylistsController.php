@@ -8,7 +8,22 @@ class PlaylistsController extends BaseController
 {
     public function indexAction()
     {
-        $this->view->playlists = $this->station->playlists;
+        $all_playlists = $this->station->playlists;
+
+        $total_weights = 0;
+        foreach($all_playlists as $playlist)
+            $total_weights += $playlist->weight;
+
+        $playlists = array();
+        foreach($all_playlists as $playlist)
+        {
+            $playlist_row = $playlist->toArray();
+            $playlist_row['probability'] = round(($playlist->weight / $total_weights) * 100, 1).'%';
+
+            $playlists[$playlist->id] = $playlist_row;
+        }
+
+        $this->view->playlists = $playlists;
     }
 
     public function editAction()

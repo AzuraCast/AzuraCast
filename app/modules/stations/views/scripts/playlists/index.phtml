@@ -17,7 +17,8 @@ $manual = true;
         <table class="table table-striped">
             <colgroup>
                 <col width="25%">
-                <col width="45%">
+                <col width="30%">
+                <col width="15%">
                 <col width="15%">
                 <col width="15%">
             </colgroup>
@@ -26,6 +27,7 @@ $manual = true;
                 <th>Actions</th>
                 <th>Playlist</th>
                 <th>Weight</th>
+                <th><abbr title="The likelihood that this playlist will be the source of the next song.">Probability</abbr></th>
                 <th># Songs</th>
             </tr>
             </thead>
@@ -36,26 +38,27 @@ $manual = true;
                         <?=$this->viewHelper->button(array(
                             'type'      => 'small',
                             'class'     => 'btn-primary',
-                            'href'      => $this->url->routeFromHere(array('action' => 'edit', 'id' => $row->id)),
+                            'href'      => $this->url->routeFromHere(array('action' => 'edit', 'id' => $row['id'])),
                             'icon'      => 'pencil',
                             'text'      => 'Edit',
                         )) ?>
                         <?=$this->viewHelper->button(array(
                             'type'      => 'small',
-                            'href'      => $this->url->routeFromHere(array('action' => 'delete', 'id' => $row->id)),
+                            'href'      => $this->url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])),
                             'class'     => 'btn-danger confirm-delete',
                             'icon'      => 'delete',
                             'text'      => 'Delete',
                         )) ?>
                     </td>
                     <td>
-                        <big><?=$row->name ?></big>
-                        <? if ($row->include_in_automation): ?>
+                        <big><?=$row['name'] ?></big>
+                        <? if ($row['include_in_automation']): ?>
                             <br><span class="label label-success">Auto-Assigned</span>
                         <? endif; ?>
                     </td>
-                    <td><?=$row->weight ?></td>
-                    <td><?=count($row->media) ?></td>
+                    <td><?=$row['weight'] ?></td>
+                    <td><?=$row['probability'] ?></td>
+                    <td><?=count($row['media']) ?></td>
                 </tr>
             <? endforeach; ?>
             </tbody>

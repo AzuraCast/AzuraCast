@@ -97,6 +97,14 @@ $(function() {
 
     var $current_dir = '';
 
+    // Check if initial URL has a hash.
+    var hashval = window.location.hash.substr(1);
+
+    if (hashval.length > 0)
+        list();
+    else
+        $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
+
     $(window).bind('hashchange',list);
 
     $("#file-table").bootgrid({

@@ -18,7 +18,7 @@ git reset --hard
 git pull
 
 # Update Phalcon
-sudo apt-add-repository -u ppa:phalcon/stable
+sudo apt-get update
 sudo apt-get -q -y install php5-phalcon
 
 # Relink fallback mp3 file to IceCast web directory.

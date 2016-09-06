@@ -19,6 +19,7 @@ class PlaylistsController extends BaseController
         {
             $playlist_row = $playlist->toArray();
             $playlist_row['probability'] = round(($playlist->weight / $total_weights) * 100, 1).'%';
+            $playlist_row['num_songs'] = count($playlist->media);
 
             $playlists[$playlist->id] = $playlist_row;
         }

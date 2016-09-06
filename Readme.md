@@ -1,15 +1,21 @@
 ![AzuraCast](https://raw.githubusercontent.com/SlvrEagle23/AzuraCast/master/resources/azuracast.png)
 
-**NOTE: This project is currently in "Pre-Alpha". The web application is stable and includes a number of powerful features, and can be used in a development (and, in some cases, a production) environment; however, new updates are released very frequently, and these updates may result in loss of data. You should maintain frequent backups of files, especially files contained in `/var/azuracast/stations/{station_name}`.**
+**NOTE: This project is currently in the Alpha stage of development. The web application is stable and includes a number of powerful features, and can be used in a development (and, in some cases, a production) environment; however, new updates are released very frequently, and these updates may result in loss of data. You should maintain frequent backups of files, especially files contained in `/var/azuracast/stations`.**
 
-**AzuraCast** is a standalone web radio management kit.
+**AzuraCast** is a standalone turnkey web radio management kit.
  
 You can either use AzuraCast to spin up a brand new radio station from the ground up (using its built-in installer scripts), or use the web application to manage an existing radio setup.
 
-Currently, AzuraCast supports [LiquidSoap](http://liquidsoap.fm/) for playlist and station setup, and [IceCast](http://icecast.org/) for broadcasting to the web. AzuraCast has been tested to work with Ubuntu 14.04 LTS edition.
+AzuraCast uses [LiquidSoap](http://liquidsoap.fm/) for "AutoDJ" and song requests and [IceCast](http://icecast.org/) for broadcasting and accepting live streamers.
+
+AzuraCast supports the following host operating systems, with more to come:
+* Ubuntu 14.04 (Trusty Tahr)
 
 AzuraCast offers the following functionality to radio station operators:
 
+* Automate the process of configuring and setting up both a broadcasting service (IceCast) and an AutoDJ service (LiquidSoap)
+* Accept song requests (with a configurable delay) via an API
+* Manage streamer/DJ accounts for live broadcasting
 * Create and manage administrator accounts to delegate station management to others
 * Upload and manage playlists
 * Hourly and daily station listener statistics

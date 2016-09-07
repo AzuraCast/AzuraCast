@@ -210,6 +210,7 @@ class Automation
             $data_points[$row['song_id']][] = $row;
         }
 
+        /*
         // Build hourly data point totals.
         $hourly_distributions = array();
 
@@ -225,6 +226,7 @@ class Automation
             // ((#CALC#DELTA-X-HR * 100) / #CALC#AVG-LISTENERS-X-HR) / ( #CALC#SONGS-IN-PERIOD / #VAR#MIN-CALC-PLAYS / 24 )
             $hourly_distributions[$hour_code] = ($hour_listeners) * ($hour_plays / 24);
         }
+        */
 
         // Pull all media and playlists.
         $media_raw = $em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
@@ -275,11 +277,13 @@ class Automation
                     $media['delta_positive'] += $data_row['delta_positive'];
                     $media['delta_negative'] -= $data_row['delta_negative'];
 
-                    $delta_total = $data_row['delta_positive'] - 1.5*$data_row['delta_negative'];
-                    $hour_dist = $hourly_distributions[$data_row['hour']];
+                    $delta_total = $data_row['delta_positive'] - $data_row['delta_negative'];
 
+                    $ratio_points[] = ($delta_total / $data_row['listeners_start']) * 100;
+
+                    // $hour_dist = $hourly_distributions[$data_row['hour']];
                     // ((#REC#PLAY-DELTA*100)/#REC#PLAY-LISTENS)- #CALC#AVG-HOUR-DELTA<#REC#PLAY-TIME>
-                    $ratio_points[] = (($delta_total * 100) / $data_row['listeners_start']) - $hour_dist;
+                    // $ratio_points[] = (($delta_total * 100) / $data_row['listeners_start']) - $hour_dist;
                 }
 
                 $media['delta_total'] = $media['delta_positive'] + $media['delta_negative'];

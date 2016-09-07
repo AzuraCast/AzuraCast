@@ -81,11 +81,15 @@ class LiquidSoap extends AdapterAbstract
 
         $ls_config[] = '';
         $ls_config[] = '# Fallback Media File';
-        $ls_config[] = 'security = single("'.$error_song_path.'")';
+        // $ls_config[] = 'security = single("'.$error_song_path.'")';
         $ls_config[] = 'requests = request.queue(id="requests")';
 
         // $ls_config[] = 'radio = fallback(track_sensitive = true, [playlists, security])';
-        $ls_config[] = 'radio = fallback(track_sensitive = true, [requests, radio, security])';
+        $ls_config[] = 'radio = fallback(track_sensitive = true, [requests, radio, blank(duration=2.)])';
+
+        $ls_config[] = '';
+        $ls_config[] = '# Crossfading';
+        $ls_config[] = 'radio = crossfade(start_next=3.,fade_out=2.,fade_in=2.,radio)';
 
         $ls_config[] = '';
         $ls_config[] = '# Outbound Broadcast';

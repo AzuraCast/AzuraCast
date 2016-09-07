@@ -1,0 +1,81 @@
+---
+ - name: (Prod) Generate MySQL Root Password
+   command: pwgen 8 -sn 1
+   register: mysql_root_password
+   when: app_env == "production"
+
+ - name: Add repo file
+   template: src=mariadb_ubuntu.list.j2 dest=/etc/apt/sources.list.d/mariadb.list owner=root group=root mode=0644
+   register: mariadb_list
+
+ - name: Add repo key
+   apt_key: id=1BB943DB url=http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xCBCB082A1BB943DB state=present
+   register: mariadb_key
+
+ - name: Update apt cache
+   apt: update_cache=yes
+   when: mariadb_list.changed == True or mariadb_key.changed == True
+
+ - name: Unattended package installation
+   shell: export DEBIAN_FRONTEND=noninteractive
+   changed_when: false
+
+ - name: Install MariaDB
+   apt: pkg={{ item }} state=present
+   with_items:
+     - mariadb-server
+     - mariadb-client
+
+ - name: Add configuration
+   template: src=my.cnf.j2 dest=/etc/mysql/conf.d/my.cnf owner=root group=root mode=0644
+   notify: restart mysql
+
+ - name: Start and enable service
+   service: name=mysql state=started enabled=yes
+
+ # MySQL Secure Installation
+ - name: Set root Password
+   mysql_user: name=root host={{ item }} password={{ mysql_root_password }} state=present
+   with_items:
+     - localhost
+     - 127.0.0.1
+     - ::1
+
+ - name: Reload privilege tables
+   command: 'mysql -ne "{{ item }}"'
+   with_items:
+     - FLUSH PRIVILEGES
+   changed_when: False
+
+ - name: Remove anonymous users
+   command: 'mysql -ne "{{ item }}"'
+   with_items:
+     - DELETE FROM mysql.user WHERE User=''
+   changed_when: False
+
+ - name: Disallow root login remotely
+   command: 'mysql -ne "{{ item }}"'
+   with_items:
+     - DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')
+   changed_when: False
+
+ - name: Remove test database and access to it
+   command: 'mysql -ne "{{ item }}"'
+   with_items:
+     - DROP DATABASE test
+     - DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'
+   changed_when: False
+   ignore_errors: True
+
+ - name: Reload privilege tables
+   command: 'mysql -ne "{{ item }}"'
+   with_items:
+     - FLUSH PRIVILEGES
+   changed_when: False
+
+ # Create Database
+ - name: Create MySQL Database
+   command: mysql -u root -e "CREATE DATABASE IF NOT EXISTS azuracast CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+ - name: Set MySQL Password in Application
+   replace: dest={{ www_base }}/app/config/db.conf.php regexp="'password'," replace="'{{ mysql_root_password }}',"

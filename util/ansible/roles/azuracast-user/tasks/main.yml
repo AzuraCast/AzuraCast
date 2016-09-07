@@ -1,0 +1,24 @@
+---
+  - name: (Prod) Generate AzuraCast Password
+    command: pwgen 8 -sn 1
+    register: azuracast_user_password
+    when: app_env == "production"
+
+  - name: Create AzuraCast User
+    sudo: yes
+    user: name=azuracast home={{ app_base }} comment="AzuraCast" shell=/bin/bash groups='sudo,admin,www-data,nobody' password={{ azuracast_user_password }}
+
+  - name: Modify www-data User
+    user: name=www-data groups='azuracast' append=yes
+
+  - name: (Dev) Modify vagrant User
+    user: name=vagrant groups='www-data,nobody', append=yes
+    when: app_env == "development"
+
+  - name: (Dev) Modify www-data User
+    user: name=www-data groups='vagrant', append=yes
+    when: app_env == "development"
+
+  - name: (Dev) Add azuracast User to vagrant Group
+    user: name=azuracast groups='vagrant' append=yes
+    when: app_env == "development"

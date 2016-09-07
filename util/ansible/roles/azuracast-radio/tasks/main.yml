@@ -1,0 +1,11 @@
+---
+  - name: Install IceCast2
+    sudo: yes
+    apt: deb=http://download.opensuse.org/repositories/multimedia:/xiph/xUbuntu_14.04/amd64/icecast2_2.4.2-2_amd64.deb
+
+  - name: Install LiquidSoap
+    sudo: yes
+    apt: pkg=liquidsoap state=latest
+
+  - name: Link Fallback Error MP3
+    file: src={{ www_base }}/resources/error.mp3 dest=/usr/share/icecast2/web/error.mp3 state=link

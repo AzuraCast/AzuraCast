@@ -1,0 +1,48 @@
+---
+  - name: Add PHP PPA repository
+    sudo: yes
+    apt_repository: repo=ppa:ondrej/php5
+
+  - name: Add Phalcon PPA repository
+    sudo: yes
+    apt_repository: repo=ppa:phalcon/stable
+
+  - name: Update apt again
+    sudo: yes
+    apt:  update_cache=yes
+
+  - name: Install PHP Libraries
+    sudo: yes
+    apt:  package=php5-fpm state=latest
+    with_items:
+     - php5-fpm
+     - php5-cli
+     - php5-gd
+     - php5-mysqlnd
+     - php5-curl
+     - php5-phalcon
+
+  - name: Configure PHP FPM Pool
+    copy: src=fpmpool.j2 dest=/etc/php5/fpm/pool.d/www.conf force=true
+    notify: restart php5-fpm
+
+  - name: Configure php5-fpm php.ini
+    ini_file:
+      dest: /etc/php5/fpm/php.ini
+      section: PHP
+      option: "{{ item.option }}"
+      value: "{{ item.value }}"
+    with_items:
+      - { option: 'post_max_size',       value: "50M" }
+      - { option: 'short_open_tag',      value: "On" }
+      - { option: 'upload_max_filesize', value: "25M" }
+    notify: restart php5-fpm
+
+  - name: Configure php5-cli php.ini
+    ini_file:
+      dest: /etc/php5/cli/php.ini
+      section: PHP
+      option: "{{ item.option }}"
+      value: "{{ item.value }}"
+    with_items:
+      - { option: 'short_open_tag',      value: "On" }

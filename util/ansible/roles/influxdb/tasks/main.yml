@@ -1,0 +1,9 @@
+---
+  - name: Install InfluxDB 0.8.8
+    sudo: yes
+    apt: deb=http://influxdb.s3.amazonaws.com/influxdb_0.8.8_amd64.deb
+    notify: restart influxdb
+
+  - name: Set up Initial InfluxDB Database
+    shell: curl -s -X POST "http://localhost:8086/cluster/database_configs/stations?u=root&p=root" --data-binary @influx_stations.json
+    chdir: {{ www_base }}/util

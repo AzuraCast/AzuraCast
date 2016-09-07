@@ -1,0 +1,10 @@
+---
+  - name: Clear AzuraCast Cache
+    become: true
+    become_user: azuracast
+    shell: php {{ util_base }}/cli.php cache:clear
+
+  - name: Install Doctrine Database
+    become: true
+    become_user: azuracast
+    shell: php {{ util_base }}/doctrine.php orm:schema-tool:create

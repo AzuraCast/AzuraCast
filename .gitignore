@@ -21,4 +21,7 @@ app/.env
 
 # Composer-generated content
 /vendor/
+
+# Ansible deployment files
 ansible/
+/util/ansible/deploy.retry

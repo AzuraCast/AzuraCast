@@ -1,4 +1,5 @@
 ---
   - name: Install AzuraCast Cron jobs
-    sudo: true
+    become: true
     shell: crontab -u azuracast {{ util_base }}/vagrant_cron
+    notify: restart cron

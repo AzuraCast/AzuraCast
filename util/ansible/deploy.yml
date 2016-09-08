@@ -12,7 +12,6 @@
     dev_mysql_root_password: "password"
 
   roles:
-    - debug-dump
     - init
     - git
     - azuracast-radio

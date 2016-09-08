@@ -3,14 +3,16 @@
     shell: git reset --hard
     args:
       chdir: "{{ www_base }}"
+      warn: no
 
   - name: Pull new Git repository
     shell: git pull
     args:
       chdir: "{{ www_base }}"
+      warn: no
 
   - name: Make update script executable again
-    shell: "chmod a+x {{ www_base }}/update.sh"
+    file: path="{{ www_base }}/update.sh" state=touch mode="a+x"
 
   - name: Clear AzuraCast Cache
     become: true

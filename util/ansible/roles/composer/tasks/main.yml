@@ -2,6 +2,8 @@
 - name: Install Composer
   become: true
   shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+  args:
+    warn: no
 
 - name: Run Composer in Local Directory
   become: true

@@ -8,8 +8,7 @@
     apt: pkg="{{ item }}" state=latest
     with_items:
      - liquidsoap
-     - liquidsoap-plugin-icecast
-     - liquidsoap-plugin-lame
+     - liquidsoap-plugin-all
 
   - name: Link Fallback Error MP3
     file: src="{{ www_base }}/resources/error.mp3" dest="/usr/share/icecast2/web/error.mp3" state=link

@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: localhost
   become: true
   vars:
     util_base: "{{ playbook_dir | dirname }}"

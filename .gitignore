@@ -23,5 +23,6 @@ app/.env
 /vendor/
 
 # Ansible deployment files
-ansible/
+/ansible/
 /util/ansible/deploy.retry
+/util/ansible/update.retry

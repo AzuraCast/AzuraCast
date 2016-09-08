@@ -1,0 +1,24 @@
+---
+  - name: Reset local git
+    shell: git reset --hard
+    args:
+      chdir: "{{ www_base }}"
+
+  - name: Pull new Git repository
+    shell: git pull
+    args:
+      chdir: "{{ www_base }}"
+
+  - name: Make update script executable again
+    shell: "chmod a+x {{ www_base }}/update.sh"
+
+  - name: Clear AzuraCast Cache
+    become: true
+    become_user: azuracast
+    shell: php {{ util_base }}/cli.php cache:clear
+
+  - name: Update Doctrine Database
+    become: true
+    become_user: azuracast
+    shell: php {{ util_base }}/doctrine.php orm:schema-tool:update --force --complete
+

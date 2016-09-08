@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  become: true
+  vars:
+    util_base: "{{ playbook_dir | dirname }}"
+    www_base: "{{ util_base | dirname }}"
+    app_base: "{{ www_base | dirname }}"
+    tmp_base: "{{ app_base }}/www_tmp"
+    app_env: "production"
+
+  roles:
+    - init
+    - azuracast-radio
+    - php-phalcon
+    - composer
+    - azuracast-cron
+    - azuracast-update

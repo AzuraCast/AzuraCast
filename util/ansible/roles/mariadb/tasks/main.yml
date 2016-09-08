@@ -43,7 +43,12 @@
 
  # MySQL Secure Installation
  - name: Set root Password
-   mysql_user: name=root host="localhost" password="{{ mysql_root_password }}" priv=*.*:ALL,GRANT state=present
+   mysql_user:
+     name: root
+     host: "localhost"
+     password: "{{ mysql_root_password }}"
+     priv: *.*:ALL,GRANT
+     state: present
    notify: restart mysql
 
  #- name: Reload privilege tables
@@ -53,7 +58,7 @@
  #  changed_when: False
 
  - name: Add .my.cnf
-   template: src=root_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600
+   template: src=root_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600 force=yes
 
  - name: Remove anonymous users
    command: 'mysql -ne "{{ item }}"'
@@ -83,7 +88,15 @@
 
  # Create Database
  - name: Create MySQL Database
-   command: mysql -ne "CREATE DATABASE IF NOT EXISTS azuracast CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+   mysql_db:
+     name: azuracast
+     state: present
+     collation: utf8mb4_unicode_ci
+     encoding: utf8mb4
+   register: azuracast_db_created
+
+ - name: Copy default DB config again
+   copy: src="{{ www_base }}/app/config/db.conf.sample.php" dest="{{ www_base }}/app/config/db.conf.php" force=yes
 
  - name: Set MySQL Password in Application
-   replace: dest="{{ www_base }}/app/config/db.conf.php" regexp="'password'," replace="'{{ mysql_root_password }}',"
+   replace:  dest="{{ www_base }}/app/config/db.conf.php" regexp="'password'," replace="'{{ mysql_root_password }}',"

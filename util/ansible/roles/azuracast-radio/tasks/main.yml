@@ -5,7 +5,11 @@
 
   - name: Install LiquidSoap
     become: true
-    apt: pkg=liquidsoap state=latest
+    apt: pkg="{{ item }}" state=latest
+    with_items:
+     - liquidsoap
+     - liquidsoap-plugin-icecast
+     - liquidsoap-plugin-lame
 
   - name: Link Fallback Error MP3
     file: src="{{ www_base }}/resources/error.mp3" dest="/usr/share/icecast2/web/error.mp3" state=link

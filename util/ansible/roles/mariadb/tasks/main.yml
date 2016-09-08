@@ -6,7 +6,7 @@
 
  - name: Assign User Password
    set_fact:
-     mysql_root_password: "{{ prod_mysql_root_password if app_env == 'production' else dev_mysql_root_password }}"
+     mysql_root_password: "{{ prod_mysql_root_password.stdout if app_env == 'production' else dev_mysql_root_password }}"
 
  - name: Add repo file
    template: src=mariadb_ubuntu.list.j2 dest=/etc/apt/sources.list.d/mariadb.list owner=root group=root mode=0644

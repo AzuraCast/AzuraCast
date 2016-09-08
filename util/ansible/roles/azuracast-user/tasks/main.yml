@@ -6,7 +6,7 @@
 
   - name: Assign User Password
     set_fact:
-      azuracast_user_password: "{{ prod_azuracast_user_password if app_env == 'production' else dev_azuracast_user_password }}"
+      azuracast_user_password: "{{ prod_azuracast_user_password.stdout if app_env == 'production' else dev_azuracast_user_password }}"
 
   - name: Create AzuraCast User
     become: true

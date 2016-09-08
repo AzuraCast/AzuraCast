@@ -4,6 +4,13 @@
     register: prod_azuracast_user_password
     when: app_env == "production"
 
+  - name: Create Groups
+    become: true
+    group: name="{{ item }}" state=present
+    with_items:
+     - www-data
+     - admin
+
   - name: Assign User Password
     set_fact:
       azuracast_user_password: "{{ prod_azuracast_user_password.stdout if app_env == 'production' else dev_azuracast_user_password }}"
@@ -17,10 +24,6 @@
       shell: /bin/bash
       groups: 'sudo,admin,www-data'
       password: "{{ azuracast_user_password|password_hash('sha512') }}"
-
-  - name: Create www-data group
-    become: true
-    group: name=www-data state=present
 
   - name: Modify www-data User
     become: true

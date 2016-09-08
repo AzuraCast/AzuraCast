@@ -1,6 +1,6 @@
 ---
   - name: Use Default Configuration Files
-    copy: src={{ www_base }}/app/configs/{{ item }}.conf.sample.php dest={{ www_base }}/app/configs/{{ item }}.conf.php
+    copy: src="{{ www_base }}/app/config/{{ item }}.conf.sample.php" dest="{{ www_base }}/app/config/{{ item }}.conf.php"
     with_items:
      - apis
      - db
@@ -8,16 +8,16 @@
      - cache
 
   - name: Write current environment to file.
-    copy: content="{{ app_env }}" dest={{ www_base }}/app/.env
+    copy: content="{{ app_env }}" dest="{{ www_base }}/app/.env"
 
   - name: Touch .deploy_run file
-    file: path={{ app_base }}/.deploy_run state=touch
+    file: path="{{ app_base }}/.deploy_run" state=touch
 
   - name: Create System Folders
-    file: path={{ item }} state=directory owner=azuracast group=www-data mode=0777
+    file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0777
     with_items:
-     - {{ tmp_base }}
-     - {{ tmp_base }}/cache
-     - {{ tmp_base }}/sessions
-     - {{ tmp_base }}/proxies
-     - {{ app_base }}/stations
+     - "{{ tmp_base }}"
+     - "{{ tmp_base }}/cache"
+     - "{{ tmp_base }}/sessions"
+     - "{{ tmp_base }}/proxies"
+     - "{{ app_base }}/stations"

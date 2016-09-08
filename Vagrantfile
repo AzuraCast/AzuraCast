@@ -45,7 +45,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder ".", "/vagrant"
 
   config.vm.provision "shell" do |s|
-    s.path = "util/vagrant_deploy.sh"
+    s.path = "util/ansible_setup.sh"
+  end
+
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.provisioning_path = "/var/azuracast/www"
+    ansible.tmp_path = "/vagrant/ansible/tmp"
+    ansible.playbook = "util/ansible/deploy.yml"
   end
 
 end

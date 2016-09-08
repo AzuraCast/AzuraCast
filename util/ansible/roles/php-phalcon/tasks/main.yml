@@ -1,19 +1,19 @@
 ---
   - name: Add PHP PPA repository
-    sudo: yes
+    become: true
     apt_repository: repo=ppa:ondrej/php5
 
   - name: Add Phalcon PPA repository
-    sudo: yes
+    become: true
     apt_repository: repo=ppa:phalcon/stable
 
   - name: Update apt again
-    sudo: yes
+    become: true
     apt:  update_cache=yes
 
   - name: Install PHP Libraries
-    sudo: yes
-    apt:  package=php5-fpm state=latest
+    become: true
+    apt:  package="{{ item }}" state=latest
     with_items:
      - php5-fpm
      - php5-cli
@@ -23,7 +23,7 @@
      - php5-phalcon
 
   - name: Configure PHP FPM Pool
-    copy: src=fpmpool.j2 dest=/etc/php5/fpm/pool.d/www.conf force=true
+    template: src=fpmpool.j2 dest=/etc/php5/fpm/pool.d/www.conf force=true
     notify: restart php5-fpm
 
   - name: Configure php5-fpm php.ini

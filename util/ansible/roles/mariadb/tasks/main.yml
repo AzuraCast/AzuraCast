@@ -1,8 +1,12 @@
 ---
  - name: (Prod) Generate MySQL Root Password
    command: pwgen 8 -sn 1
-   register: mysql_root_password
+   register: prod_mysql_root_password
    when: app_env == "production"
+
+ - name: Assign User Password
+   set_fact:
+     mysql_root_password: "{{ prod_mysql_root_password if app_env == 'production' else dev_mysql_root_password }}"
 
  - name: Add repo file
    template: src=mariadb_ubuntu.list.j2 dest=/etc/apt/sources.list.d/mariadb.list owner=root group=root mode=0644
@@ -21,7 +25,7 @@
    changed_when: false
 
  - name: Install MariaDB
-   apt: pkg={{ item }} state=present
+   apt: pkg="{{ item }}" state=present
    with_items:
      - mariadb-server
      - mariadb-client
@@ -33,49 +37,53 @@
  - name: Start and enable service
    service: name=mysql state=started enabled=yes
 
+ #- name: Set root password
+ #  command: "mysqladmin -u root password {{ mysql_root_password }}"
+ #  notify: restart mysql
+
  # MySQL Secure Installation
  - name: Set root Password
-   mysql_user: name=root host={{ item }} password={{ mysql_root_password }} state=present
-   with_items:
-     - localhost
-     - 127.0.0.1
-     - ::1
+   mysql_user: name=root host="localhost" password="{{ mysql_root_password }}" priv=*.*:ALL,GRANT state=present
+   notify: restart mysql
 
- - name: Reload privilege tables
-   command: 'mysql -ne "{{ item }}"'
-   with_items:
-     - FLUSH PRIVILEGES
-   changed_when: False
+ #- name: Reload privilege tables
+ #  command: 'mysql -ne "{{ item }}"'
+ #  with_items:
+ #    - "FLUSH PRIVILEGES"
+ #  changed_when: False
+
+ - name: Add .my.cnf
+   template: src=root_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600
 
  - name: Remove anonymous users
    command: 'mysql -ne "{{ item }}"'
    with_items:
-     - DELETE FROM mysql.user WHERE User=''
+     - "DELETE FROM mysql.user WHERE User=''"
    changed_when: False
 
  - name: Disallow root login remotely
    command: 'mysql -ne "{{ item }}"'
    with_items:
-     - DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')
+     - "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
    changed_when: False
 
  - name: Remove test database and access to it
    command: 'mysql -ne "{{ item }}"'
    with_items:
-     - DROP DATABASE test
-     - DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'
+     - "DROP DATABASE test"
+     - "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"
    changed_when: False
    ignore_errors: True
 
  - name: Reload privilege tables
    command: 'mysql -ne "{{ item }}"'
    with_items:
-     - FLUSH PRIVILEGES
+     - "FLUSH PRIVILEGES"
    changed_when: False
 
  # Create Database
  - name: Create MySQL Database
-   command: mysql -u root -e "CREATE DATABASE IF NOT EXISTS azuracast CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+   command: mysql -ne "CREATE DATABASE IF NOT EXISTS azuracast CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
  - name: Set MySQL Password in Application
-   replace: dest={{ www_base }}/app/config/db.conf.php regexp="'password'," replace="'{{ mysql_root_password }}',"
+   replace: dest="{{ www_base }}/app/config/db.conf.php" regexp="'password'," replace="'{{ mysql_root_password }}',"

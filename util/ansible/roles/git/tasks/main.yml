@@ -1,4 +1,4 @@
 ---
 - name: Install Git
-  sudo: yes
+  become: true
   apt:  pkg=git state=latest

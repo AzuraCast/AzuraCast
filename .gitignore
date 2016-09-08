@@ -21,3 +21,4 @@ app/.env
 
 # Composer-generated content
 /vendor/
+ansible/

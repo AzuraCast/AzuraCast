@@ -1,9 +1,17 @@
 ---
   - name: Install InfluxDB 0.8.8
-    sudo: yes
+    become: true
     apt: deb=http://influxdb.s3.amazonaws.com/influxdb_0.8.8_amd64.deb
-    notify: restart influxdb
+
+  - name: restart influxdb
+    service: name=influxdb enabled=yes state=restarted
+
+  - pause: seconds=15 prompt="Wait for InfluxDB to initialize"
 
   - name: Set up Initial InfluxDB Database
-    shell: curl -s -X POST "http://localhost:8086/cluster/database_configs/stations?u=root&p=root" --data-binary @influx_stations.json
-    chdir: {{ www_base }}/util
+    uri:
+      url: http://localhost:8086/cluster/database_configs/stations?u=root&p=root
+      method: POST
+      body: "{{ lookup('file', util_base+'/influx_stations.json') }}"
+      body_format: json
+      status_code: 201

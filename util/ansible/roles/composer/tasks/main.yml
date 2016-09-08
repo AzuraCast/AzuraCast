@@ -1,10 +1,10 @@
 ---
 - name: Install Composer
-  sudo: true
+  become: true
   shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 - name: Run Composer in Local Directory
-  chdir: {{ www_base }}
   become: true
-  become_user: azuracast
   shell: composer install
+  args:
+    chdir: "{{ www_base }}"

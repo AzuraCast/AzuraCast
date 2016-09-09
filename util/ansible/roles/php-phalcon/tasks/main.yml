@@ -24,6 +24,16 @@
      - php7.0-curl
      - php7.0-xml
      - php7.0-phalcon
+     - php7.0-zip
+
+  - name: Remove Old PHP Libraries
+    become: true
+    apt:  package="{{ item }}" state=absent
+    with_items:
+     - php5-common
+     - php5-fpm
+     - php5-cli
+     - php5-phalcon
 
   - name: Configure PHP FPM Pool
     template: src=fpmpool.j2 dest=/etc/php/7.0/fpm/pool.d/www.conf force=true

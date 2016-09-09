@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/xenial64"
 
   # Support for Parallels provider for Vagrant
   # See: http://parallels.github.io/vagrant-parallels/docs/
@@ -14,13 +14,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # v.update_guest_tools = true
     v.memory = 1024
 
-    override.vm.box = "parallels/ubuntu-14.04"
+    override.vm.box = "parallels/ubuntu-16.04"
   end
 
   # Customization for Virtualbox (default provider)
   config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    vb.customize ["modifyvm", :id, "--memory", "1024"]
+    vb.memory = 1024
+    vb.customize [
+      'modifyvm', :id,
+      '--natdnshostresolver1', 'on',
+    ]
   end
 
   # Disabled for Windows 10 + VirtualBox

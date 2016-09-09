@@ -11,10 +11,12 @@
  - name: Add repo file
    template: src=mariadb_ubuntu.list.j2 dest=/etc/apt/sources.list.d/mariadb.list owner=root group=root mode=0644
    register: mariadb_list
+   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
  - name: Add repo key
    apt_key: id=1BB943DB url=http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xCBCB082A1BB943DB state=present
    register: mariadb_key
+   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
  - name: Update apt cache
    apt: update_cache=yes
@@ -40,6 +42,10 @@
  #- name: Set root password
  #  command: "mysqladmin -u root password {{ mysql_root_password }}"
  #  notify: restart mysql
+
+ - name: MySQL Root Account Fix (Ubuntu 16.04)
+   shell: "cat {{ util_base }}/xenial_mysql_fix.sql | mysql"
+   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
 
  # MySQL Secure Installation
  - name: Set root Password

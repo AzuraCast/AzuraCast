@@ -15,6 +15,7 @@ app/models/Proxy/*.php
 *.apdisk
 .vagrant
 .idea
+/ubuntu-*-console.log
 
 # Local development files.
 app/.env

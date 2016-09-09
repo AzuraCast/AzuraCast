@@ -204,7 +204,8 @@ header("Content-type: text/html; charset=utf-8");
 </section>
 
 <footer id="footer">
-    Powered by <a href="https://github.com/SlvrEagle23/AzuraCast" target="_blank"><?=$this->config->application->name ?></a> <?=\App\Version::getVersionText() ?>.
+    Powered by <a href="https://github.com/SlvrEagle23/AzuraCast" target="_blank"><?=$this->config->application->name ?></a> <?=\App\Version::getVersionText() ?>.<br>
+    PHP <?=\PHP_VERSION ?>, Phalcon <?=phpversion('phalcon') ?>.
 </footer>
 
 <!-- Page Loader -->
@@ -229,7 +230,7 @@ $this->assets->outputJs('footer_js');
     <script type="text/javascript">
         $(function() {
             <? foreach($this->flash->getMessages() as $message): ?>
-            notify('<?=$this->escaper->escapeJs(str_replace(array("\n", "\r"), array('<br>', ''), $message['text'])) ?>', '<?=$message['color'] ?>');
+            notify("<?=str_replace(array('"', "\n"), array('\'', '<br>'), $message['text']) ?>", '<?=$message['color'] ?>');
             <? endforeach; ?>
         });
     </script>

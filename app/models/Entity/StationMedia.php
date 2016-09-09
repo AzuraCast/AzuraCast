@@ -2,7 +2,6 @@
 namespace Entity;
 
 use \Doctrine\Common\Collections\ArrayCollection;
-use \GetId3\GetId3Core as GetId3;
 
 /**
  * @Table(name="station_media", indexes={
@@ -114,12 +113,13 @@ class StationMedia extends \App\Doctrine\Entity
         if ($media_mtime >= $this->mtime)
         {
             // Load metadata from MP3 file.
-            $id3 = new GetId3();
+            $id3 = new \getID3();
 
-            $file_info = $id3->setOptionMD5Data(true)
-                ->setOptionMD5DataSource(true)
-                ->setEncoding('UTF-8')
-                ->analyze($media_path);
+            $id3->option_md5_data = true;
+            $id3->option_md5_data_source = true;
+            $id3->encoding = 'UTF-8';
+
+            $file_info = $id3->analyze($media_path);
 
             if (isset($file_info['error']))
                 \App\Debug::log('Error processing file: '.$file_info['error']);

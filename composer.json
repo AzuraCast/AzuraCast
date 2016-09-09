@@ -19,7 +19,7 @@
     "aws/aws-sdk-php": "3.*",
     "phpoffice/phpexcel": "1.8.0",
     "ise/php-soundcloud": "dev-master",
-    "phansys/getid3": "~2.1@dev"
+    "james-heinrich/getid3": "~1.9"
   },
   "require-dev": {
     "phalcon/devtools": "~3@dev"

@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fca2e10d1f6100695c06bddcbea07298",
-    "content-hash": "b6b73096c6732da2bc257b77718c959d",
+    "hash": "98a3c4a314b9a11c3898bb5ac6964571",
+    "content-hash": "7b197beedcc0e08d1b0420a743d4de84",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.4",
+            "version": "3.19.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f67bc37fa4b76d85423052eae2a9577aab99adc1"
+                "reference": "34060bf0db260031697b17dbb37fa1bbec92f1c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f67bc37fa4b76d85423052eae2a9577aab99adc1",
-                "reference": "f67bc37fa4b76d85423052eae2a9577aab99adc1",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/34060bf0db260031697b17dbb37fa1bbec92f1c4",
+                "reference": "34060bf0db260031697b17dbb37fa1bbec92f1c4",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-09-01 21:37:32"
+            "time": "2016-09-08 20:27:15"
         },
         {
             "name": "container-interop/container-interop",
@@ -1109,6 +1109,42 @@
             "time": "2016-03-26 04:30:24"
         },
         {
+            "name": "james-heinrich/getid3",
+            "version": "v1.9.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JamesHeinrich/getID3.git",
+                "reference": "41c05612d532d30f07680cad3a4a6efbec7fc7f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/41c05612d532d30f07680cad3a4a6efbec7fc7f5",
+                "reference": "41c05612d532d30f07680cad3a4a6efbec7fc7f5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "getid3/getid3.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL"
+            ],
+            "description": "PHP script that extracts useful information from popular multimedia file formats",
+            "homepage": "http://www.getid3.org/",
+            "keywords": [
+                "codecs",
+                "php",
+                "tags"
+            ],
+            "time": "2016-03-02 13:13:30"
+        },
+        {
             "name": "mtdowling/jmespath.php",
             "version": "2.3.0",
             "source": {
@@ -1277,53 +1313,6 @@
             "description": "Nette Utility Classes",
             "homepage": "https://nette.org",
             "time": "2016-06-17 13:28:41"
-        },
-        {
-            "name": "phansys/getid3",
-            "version": "2.1.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phansys/GetId3.git",
-                "reference": "6d3f04b2781bb3d545fabfc4d1636c9bf5ac03f9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phansys/GetId3/zipball/6d3f04b2781bb3d545fabfc4d1636c9bf5ac03f9",
-                "reference": "6d3f04b2781bb3d545fabfc4d1636c9bf5ac03f9",
-                "shasum": ""
-            },
-            "require": {
-                "php": "~5.3"
-            },
-            "suggest": {
-                "ext-exif": "EXIF extension is required for graphic modules.",
-                "ext-rar": "RAR extension is required for RAR archive module."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "GetId3\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL"
-            ],
-            "authors": [
-                {
-                    "name": "James Heinrich",
-                    "email": "info@getid3.org",
-                    "homepage": "http://www.getid3.org"
-                }
-            ],
-            "description": "This fork of GetId3 library updates to PSR-2 / PSR-4 CS, adds namespaces and makes it installable by composer.",
-            "homepage": "http://www.getid3.org",
-            "keywords": [
-                "getid3",
-                "metadata",
-                "tags"
-            ],
-            "time": "2015-06-28 12:06:17"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -1524,16 +1513,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.8.9",
+            "version": "v2.8.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "36e62335caca8a6e909c5c5bac4a8128149911c9"
+                "reference": "3d3e4fa5f0614c8e45220e5de80332322e33bd90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/36e62335caca8a6e909c5c5bac4a8128149911c9",
-                "reference": "36e62335caca8a6e909c5c5bac4a8128149911c9",
+                "url": "https://api.github.com/repos/symfony/console/zipball/3d3e4fa5f0614c8e45220e5de80332322e33bd90",
+                "reference": "3d3e4fa5f0614c8e45220e5de80332322e33bd90",
                 "shasum": ""
             },
             "require": {
@@ -1580,7 +1569,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-30 07:20:35"
+            "time": "2016-09-06 10:55:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -2304,7 +2293,6 @@
     "stability-flags": {
         "google/apiclient": 10,
         "ise/php-soundcloud": 20,
-        "phansys/getid3": 20,
         "phalcon/devtools": 20
     },
     "prefer-stable": false,

@@ -184,7 +184,10 @@ class InfluxDb
             throw new \Exception($message, $statusCode);
         } else if ($statusCode == self::STATUS_CODE_OK) {
             try {
-                return $response->json();
+                if (!empty((string)$response->getBody()))
+                    return $response->json();
+                else
+                    return array();
             } catch (ParseException $ex) {
                 throw new \Exception(
                     sprintf("%s; Response is '%s'", $ex->getMessage(), (string)$response->getBody()),

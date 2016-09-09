@@ -1,11 +1,13 @@
 ---
   - name: Add PHP PPA repository
     become: true
-    apt_repository: repo=ppa:ondrej/php5
+    apt_repository: repo=ppa:ondrej/php
 
   - name: Add Phalcon PPA repository
     become: true
-    apt_repository: repo=ppa:phalcon/stable
+    shell: curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash
+    args:
+      warn: no
 
   - name: Update apt again
     become: true
@@ -15,20 +17,21 @@
     become: true
     apt:  package="{{ item }}" state=latest
     with_items:
-     - php5-fpm
-     - php5-cli
-     - php5-gd
-     - php5-mysqlnd
-     - php5-curl
-     - php5-phalcon
+     - php7.0-fpm
+     - php7.0-cli
+     - php7.0-gd
+     - php7.0-mysqlnd
+     - php7.0-curl
+     - php7.0-xml
+     - php7.0-phalcon
 
   - name: Configure PHP FPM Pool
-    template: src=fpmpool.j2 dest=/etc/php5/fpm/pool.d/www.conf force=true
-    notify: restart php5-fpm
+    template: src=fpmpool.j2 dest=/etc/php/7.0/fpm/pool.d/www.conf force=true
+    notify: restart php-fpm
 
-  - name: Configure php5-fpm php.ini
+  - name: Configure php-fpm php.ini
     ini_file:
-      dest: /etc/php5/fpm/php.ini
+      dest: /etc/php/7.0/fpm/php.ini
       section: PHP
       option: "{{ item.option }}"
       value: "{{ item.value }}"
@@ -36,11 +39,11 @@
       - { option: 'post_max_size',       value: "50M" }
       - { option: 'short_open_tag',      value: "On" }
       - { option: 'upload_max_filesize', value: "25M" }
-    notify: restart php5-fpm
+    notify: restart php-fpm
 
-  - name: Configure php5-cli php.ini
+  - name: Configure php-cli php.ini
     ini_file:
-      dest: /etc/php5/cli/php.ini
+      dest: /etc/php/7.0/cli/php.ini
       section: PHP
       option: "{{ item.option }}"
       value: "{{ item.value }}"

@@ -9,7 +9,8 @@ You can either use AzuraCast to spin up a brand new radio station from the groun
 AzuraCast uses [LiquidSoap](http://liquidsoap.fm/) for "AutoDJ" and song requests and [IceCast](http://icecast.org/) for broadcasting and accepting live streamers.
 
 AzuraCast supports the following host operating systems, with more to come:
-* Ubuntu 14.04 (Trusty Tahr)
+* Ubuntu 14.04 LTS (Trusty)
+* Ubuntu 16.04 LTS (Xenial)
 
 With AzuraCast, radio station owners can:
 

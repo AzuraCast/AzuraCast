@@ -6,4 +6,4 @@ sudo apt-add-repository ppa:ansible/ansible
 sudo apt-get update
 sudo apt-get install -q -y ansible python-mysqldb
 
-ansible-playbook util/ansible/deploy.yml --extra-vars "app_env=production"
+ansible-playbook util/ansible/deploy.yml --inventory=util/ansible/hosts --extra-vars "app_env=production"

@@ -5,7 +5,7 @@
 
   - name: Install LiquidSoap
     become: true
-    apt: pkg="{{ item }}" state=latest
+    apt: pkg="{{ item }}" install_recommends=yes state=latest
     with_items:
      - liquidsoap
      - liquidsoap-plugin-all

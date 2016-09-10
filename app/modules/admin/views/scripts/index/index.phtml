@@ -64,7 +64,7 @@ foreach($panels as $sidebar_category => &$sidebar_items)
                 <ul class="nav nav-list" <? if (count($category_items) >= 15): ?>style="height: 300px; overflow-y: scroll;"<? endif; ?>>
                     <? foreach($category_items as $item_name => $item_params): ?>
                         <li>
-                            <a href="<?=(is_array($item_params['url']) ? $this->viewHelper->route($item_params['url']) : $this->url->get($item_params['url'])) ?>" title="<?=$item_params['title'] ?>">
+                            <a href="<?=(is_array($item_params['url']) ? $this->url->route($item_params['url']) : $this->url->get($item_params['url'])) ?>" title="<?=$item_params['title'] ?>">
                                 <i class="<?=$item_params['icon'] ?>"></i> <?=$item_name ?>
                             </a>
                         </li>

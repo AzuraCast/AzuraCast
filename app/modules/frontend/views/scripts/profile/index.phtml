@@ -3,13 +3,7 @@ $title = 'My Profile';
 ?>
 
 <div class="buttons">
-    <?=$this->viewHelper->button(array(
-        'type'      => 'small',
-        'class'     => 'btn-primary btn-large',
-        'icon'      => 'icon-pencil',
-        'href'      => $this->url->routeFromHere(array('action' => 'edit')),
-        'text'      => 'Edit Profile',
-    )) ?>
+    <a class="btn btn-lg btn-primary" href="<?=$this->url->routeFromHere(array('action' => 'edit')) ?>">Edit Profile</a>
 </div>
 
 <?=$form->renderView() ?>

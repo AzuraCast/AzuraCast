@@ -31,20 +31,8 @@ $manual = true;
             <? foreach($records as $record): ?>
                 <tr class="input">
                     <td class="center">
-                        <?=$this->viewHelper->button(array(
-                            'type'      => 'small',
-                            'icon'      => 'icon-pencil',
-                            'class'     => 'btn-primary',
-                            'href'      => $this->url->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
-                            'text'      => 'Edit',
-                        )) ?>
-                        <?=$this->viewHelper->button(array(
-                            'type'      => 'small',
-                            'icon'      => 'icon-trash',
-                            'class'     => 'btn-danger confirm-delete',
-                            'href'      => $this->url->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
-                            'text'      => 'Revoke',
-                        )) ?>
+                        <a class="btn btn-sm btn-primary" href="<?=$this->url->routeFromHere(array('action' => 'edit', 'id' => $record['id'])) ?>">Edit</a>
+                        <a class="btn btn-sm btn-danger" href="<?=$this->url->routeFromHere(array('action' => 'delete', 'id' => $record['id'])) ?>">Revoke</a>
                     </td>
                     <td><code><?=$record['id'] ?></code></td>
                     <td><?=$record['calls_made'] ?></td>

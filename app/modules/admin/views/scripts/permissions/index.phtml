@@ -29,31 +29,12 @@ $manual = true;
                     <? foreach($roles as $role): ?>
                         <tr class="input">
                             <td class="center">
-                                <?=$this->viewHelper->button(array(
-                                    'type'      => 'small',
-                                    'icon'      => 'icon-pencil',
-                                    'class'     => 'btn-primary',
-                                    'href'      => $this->url->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])),
-                                    'text'      => 'Edit',
-                                )) ?>
-                                <? if( $role['id'] != 1 ): ?>
-                                    <?=$this->viewHelper->button(array(
-                                        'type'      => 'small',
-                                        'icon'      => 'icon-trash',
-                                        'class'     => 'btn-danger confirm-delete',
-                                        'href'      => $this->url->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'])),
-                                        'text'      => 'Delete',
-                                    )) ?>
-                                <? else: ?>
-                                    <?=$this->viewHelper->button(array(
-                                        'type'      => 'small',
-                                        'icon'      => 'icon-trash',
-                                        'class'     => 'btn-danger disabled',
-                                        'href'      => 'javascript:;',
-                                        'onclick'   => 'alert(\'This role is the super administrator and cannot be deleted.\'); return false;',
-                                        'text'      => 'Delete',
-                                    )) ?>
-                                <? endif; ?>
+                                <a class="btn btn-sm btn-primary" href="<?=$this->url->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])) ?>">Edit</a>
+                            <? if( $role['id'] != 1 ): ?>
+                                <a class="btn btn-sm btn-danger" href="<?=$this->url->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'])) ?>">Delete</a>
+                            <? else: ?>
+                                <a class="btn btn-sm btn-danger disabled" href="#" onclick="alert('This role cannot be deleted.'); return false;">Delete</a>
+                            <? endif; ?>
                             </td>
                             <td align="left"><?=$role['name'] ?></td>
                         </tr>
@@ -85,20 +66,8 @@ $manual = true;
                     <? foreach($actions as $action): ?>
                         <tr class="input">
                             <td class="center">
-                                <?=$this->viewHelper->button(array(
-                                    'type'      => 'small',
-                                    'icon'      => 'icon-pencil',
-                                    'class'     => 'btn-primary',
-                                    'href'      => $this->url->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])),
-                                    'text'      => 'Edit',
-                                )) ?>
-                                <?=$this->viewHelper->button(array(
-                                    'type'      => 'small',
-                                    'icon'      => 'icon-trash',
-                                    'class'     => 'btn-danger confirm-delete',
-                                    'href'      => $this->url->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'])),
-                                    'text'      => 'Delete',
-                                )) ?>
+                                <a class="btn btn-sm btn-primary" href="<?=$this->url->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])) ?>">Edit</a>
+                                <a class="btn btn-sm btn-danger" href="<?=$this->url->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'])) ?>">Delete</a>
                             </td>
                             <td align="left"><?=$action['name'] ?></td>
                         </tr>

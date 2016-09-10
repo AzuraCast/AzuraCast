@@ -38,27 +38,9 @@ $manual = true;
             <? foreach($pager as $user): ?>
                 <tr class="input">
                     <td>
-                        <?=$this->viewHelper->button(array(
-                            'type'      => 'small',
-                            'class'     => 'btn-primary',
-                            'href'      => $this->url->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)),
-                            'icon'      => 'key_go',
-                            'text'      => 'Log In',
-                        )) ?>
-                        <?=$this->viewHelper->button(array(
-                            'type'      => 'small',
-                            'class'     => 'btn-primary',
-                            'href'      => $this->url->routeFromHere(array('action' => 'edit', 'id' => $user->id)),
-                            'icon'      => 'pencil',
-                            'text'      => 'Edit',
-                        )) ?>
-                        <?=$this->viewHelper->button(array(
-                            'type'      => 'small',
-                            'href'      => $this->url->routeFromHere(array('action' => 'delete', 'id' => $user->id)),
-                            'class'     => 'btn-danger confirm-delete',
-                            'icon'      => 'delete',
-                            'text'      => 'Delete',
-                        )) ?>
+                        <a class="btn btn-sm btn-primary" href="<?=$this->url->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)) ?>">Log In</a>
+                        <a class="btn btn-sm btn-default" href="<?=$this->url->routeFromHere(array('action' => 'edit', 'id' => $user->id)) ?>">Edit</a>
+                        <a class="btn btn-sm btn-danger" href="<?=$this->url->routeFromHere(array('action' => 'delete', 'id' => $user->id)) ?>">Delete</a>
                     </td>
                     <td><?=$this->viewHelper->mailto($user->email) ?></td>
                     <td>
@@ -78,15 +60,3 @@ $manual = true;
         </table>
     </div>
 </div>
-
-<!--
-<form class="form-search" action="<?=$this->url->routeFromHere(array('page' => NULL)) ?>" method="get">
-    <input type="text" name="q" title="Search terms" placeholder="Search..." class="input-medium span3 search-query" value="<?=$q ?>">
-    <?=$this->viewHelper->button(array(
-        'type'      => 'submit',
-        'class'     => 'primary btn-small',
-        'text'      => 'Search Users',
-    )) ?>
-</form>
-<?=$this->viewHelper->paginate($pager) ?>
--->

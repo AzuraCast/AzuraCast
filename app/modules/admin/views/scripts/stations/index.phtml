@@ -30,25 +30,9 @@ $manual = true;
                 <tr class="input">
                     <td class="center">
                         <div class="btn-group">
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'small',
-                                'class'     => 'btn-primary',
-                                'target'    => '_blank',
-                                'href'      => $this->viewHelper->route(array('module' => 'stations', 'station' => $record['id'])),
-                                'text'      => 'Manage',
-                            )) ?>
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'small',
-                                'class'     => 'btn-default',
-                                'href'      => $this->url->routeFromHere(array('action' => 'edit', 'id' => $record['id'])),
-                                'text'      => 'Edit',
-                            )) ?>
-                            <?=$this->viewHelper->button(array(
-                                'type'      => 'small',
-                                'class'     => 'btn-danger confirm-delete',
-                                'href'      => $this->url->routeFromHere(array('action' => 'delete', 'id' => $record['id'])),
-                                'text'      => 'Delete',
-                            )) ?>
+                            <a class="btn btn-sm btn-primary" href="<?=$this->url->route(array('module' => 'stations', 'station' => $record['id'])) ?>" target="_blank">Manage</a>
+                            <a class="btn btn-sm btn-default" href="<?=$this->url->routeFromHere(array('action' => 'edit', 'id' => $record['id'])) ?>">Edit</a>
+                            <a class="btn btn-sm btn-danger" href="<?=$this->url->routeFromHere(array('action' => 'delete', 'id' => $record['id'])) ?>">Delete</a>
                         </div>
                     </td>
                     <td>

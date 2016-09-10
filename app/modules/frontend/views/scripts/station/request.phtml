@@ -11,12 +11,8 @@ $manual = true;
             <h3>Find a Song</h3>
             <form class="form-inline" action="<?=$this->url->routeFromHere(array('page' => NULL, 'artist' => NULL, 'q' => NULL)) ?>" method="get">
                 <input type="text" name="q" title="Search terms" placeholder="Song or Artist Name..." class="half-width" value="<?=$e->escapeHtml($q) ?>">
-                <?=$this->viewHelper->button(array(
-                    'type'      => 'submit',
-                    'class'     => 'primary',
-                    'icon'      => 'icon-search',
-                    'text'      => 'Search',
-                )) ?>
+
+                <button type="submit" class="btn btn-primary">Search</button>
             </form>
 
             <br>
@@ -54,12 +50,7 @@ $manual = true;
 
     <? if ($reset_button): ?>
         <div class="buttons">
-            <?=$this->viewHelper->button(array(
-                'type'      => 'link',
-                'icon'      => 'icon-chevron-sign-left',
-                'text'      => 'Reset Search',
-                'href'      => $this->url->routeFromHere(array('q' => NULL, 'artist' => NULL, 'page' => 1)),
-            )) ?>
+            <a class="btn btn-sm" href="<?=$this->url->routeFromHere(array('q' => NULL, 'artist' => NULL, 'page' => 1)) ?>">Reset Search</a>
         </div>
     <? endif; ?>
 
@@ -86,13 +77,7 @@ $manual = true;
             <? foreach($pager as $record): ?>
                 <tr class="input">
                     <td class="center">
-                        <?=$this->viewHelper->button(array(
-                            'type'      => 'small',
-                            'class'     => 'primary',
-                            'href'      => $this->url->routeFromHere(array('track' => $record['id'])),
-                            'icon'      => 'icon-play-sign',
-                            'text'      => 'Request',
-                        )) ?>
+                        <a class="btn btn-sm btn-primary" href="<?=$this->url->routeFromHere(array('track' => $record['id'])) ?>">Request</a>
                     </td>
                     <td><big><a href="#" class="btn-show-song-info" data-id="<?=$record['song_id'] ?>" title="Click for Song Information"><?=$record['title'] ?></a></big></td>
                     <td><?=$record['artist'] ?></td>

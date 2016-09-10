@@ -404,6 +404,7 @@ class Controller extends \Phalcon\Mvc\Controller
     {
         $this->alert($message, $level);
     }
+
     public function alert($message, $level = \App\Flash::INFO)
     {
         $this->di['flash']->addMessage($message, $level, TRUE);

@@ -18,7 +18,7 @@ $title = 'Role Membership Report';
 
     <ul>
     <? foreach($role['users'] as $user): ?>
-        <li><a href="<?=$this->viewHelper->route(array('module' => 'admin', 'controller' => 'users', 'action' => 'edit', 'id' => $user['id'])) ?>" target="_blank"><?=$user['name'] ?></a></li>
+        <li><a href="<?=$this->url->route(array('module' => 'admin', 'controller' => 'users', 'action' => 'edit', 'id' => $user['id'])) ?>" target="_blank"><?=$user['name'] ?></a></li>
     <? endforeach; ?>
     </ul>
 <? endforeach; ?>

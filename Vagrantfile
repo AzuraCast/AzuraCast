@@ -52,7 +52,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "ansible_local" do |ansible|
     ansible.provisioning_path = "/var/azuracast/www"
-    ansible.tmp_path = "/vagrant/ansible/tmp"
+    ansible.tmp_path = "/var/azuracast/www/ansible/tmp"
     ansible.playbook = "util/ansible/deploy.yml"
   end
 

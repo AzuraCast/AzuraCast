@@ -7,10 +7,10 @@
 
   - name: Add Phalcon PPA repository
     become: true
-    shell: curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash
     register: installed_phalcon_ppa
-    creates: /etc/apt/sources.list.d/phalcon_stable.list
+    shell: curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash
     args:
+      creates: /etc/apt/sources.list.d/phalcon_stable.list
       warn: no
 
   - name: Update apt again

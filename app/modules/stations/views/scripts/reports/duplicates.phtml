@@ -21,15 +21,13 @@ $manual = true;
             <table class="table table-striped">
                 <colgroup>
                     <col width="25%">
-                    <col width="30%">
-                    <col width="30%">
+                    <col width="60%">
                     <col width="15%">
                 </colgroup>
                 <thead>
                     <tr>
                         <th>Actions</th>
-                        <th>Title</th>
-                        <th>Artist</th>
+                        <th>Title / File Path</th>
                         <th>Length</th>
                     </tr>
                 </thead>
@@ -39,8 +37,10 @@ $manual = true;
                         <td>
                             <a class="btn btn-sm btn-danger" href="<?=$this->url->routeFromHere(['action' => 'deletedupe', 'media_id' => $media_row['id']]) ?>">Delete</a>
                         </td>
-                        <td><?=$media_row['song']['title'] ?></td>
-                        <td><?=$media_row['song']['artist'] ?></td>
+                        <td>
+                            <big><?=$media_row['song']['artist'] ?> - <?=$media_row['song']['title'] ?></big><br>
+                            <?=$media_row['path'] ?>
+                        </td>
                         <td><?=$media_row['length_text'] ?></td>
                     </tr>
                 <? endforeach; ?>

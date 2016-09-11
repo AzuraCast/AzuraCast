@@ -83,7 +83,7 @@ class ReportsController extends BaseController
 
     public function duplicatesAction()
     {
-        $media_raw = $this->em->createQuery('SELECT sm, s FROM Entity\StationMedia sm JOIN sm.song s WHERE sm.station_id = :station_id ORDER BY sm.mtime ASC')
+        $media_raw = $this->em->createQuery('SELECT sm, s, sp FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id ORDER BY sm.mtime ASC')
             ->setParameter('station_id', $this->station->id)
             ->getArrayResult();
 

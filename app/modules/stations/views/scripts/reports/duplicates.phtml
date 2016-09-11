@@ -20,14 +20,16 @@ $manual = true;
         <div class="table-responsive">
             <table class="table table-striped">
                 <colgroup>
-                    <col width="25%">
-                    <col width="60%">
+                    <col width="15%">
+                    <col width="55%">
+                    <col width="15%">
                     <col width="15%">
                 </colgroup>
                 <thead>
                     <tr>
                         <th>Actions</th>
                         <th>Title / File Path</th>
+                        <th>Playlists</th>
                         <th>Length</th>
                     </tr>
                 </thead>
@@ -41,7 +43,14 @@ $manual = true;
                             <big><?=$media_row['song']['artist'] ?> - <?=$media_row['song']['title'] ?></big><br>
                             <?=$media_row['path'] ?>
                         </td>
-                        <td><?=$media_row['length_text'] ?></td>
+                        <td class="text-right">
+                        <? if (count($media_row['playlists']) == 0): ?>
+                            0
+                        <? else: ?>
+                            <abbr title="<?=implode(', ', \App\Utilities::ipull($media_row['playlists'], 'name')) ?>"><?=count($media_row['playlists']) ?></abbr>
+                        <? endif; ?>
+                        </td>
+                        <td class="text-right"><?=$media_row['length_text'] ?></td>
                     </tr>
                 <? endforeach; ?>
                 </tbody>

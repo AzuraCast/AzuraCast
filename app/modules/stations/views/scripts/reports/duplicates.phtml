@@ -1,0 +1,52 @@
+<?
+$title = 'Song Duplicates';
+$manual = true;
+?>
+
+<div class="block-header">
+    <h2><?=$station->name ?></h2>
+</div>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2>Possible Song Duplicates</h2>
+    </div>
+<? if (empty($dupes)): ?>
+    <div class="card-body card-padding">
+        No duplicates were found. Nice work!
+    </div>
+<? else: ?>
+    <? foreach($dupes as $dupe_row): ?>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <colgroup>
+                    <col width="25%">
+                    <col width="30%">
+                    <col width="30%">
+                    <col width="15%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Actions</th>
+                        <th>Title</th>
+                        <th>Artist</th>
+                        <th>Length</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <? foreach($dupe_row as $media_row): ?>
+                    <tr class="input">
+                        <td>
+                            <a class="btn btn-sm btn-danger" href="<?=$this->url->routeFromHere(['action' => 'deletedupe', 'media_id' => $media_row['id']]) ?>">Delete</a>
+                        </td>
+                        <td><?=$media_row['song']['title'] ?></td>
+                        <td><?=$media_row['song']['artist'] ?></td>
+                        <td><?=$media_row['length_text'] ?></td>
+                    </tr>
+                <? endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <? endforeach; ?>
+<? endif; ?>
+</div>

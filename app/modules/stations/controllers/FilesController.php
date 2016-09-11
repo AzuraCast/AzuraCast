@@ -214,6 +214,17 @@ class FilesController extends BaseController
         switch($action)
         {
             case 'delete':
+                // Remove the database entries of any music being removed.
+                $music_files = $this->_getMusicFiles($files);
+
+                foreach($music_files as $file)
+                {
+                    $media = StationMedia::getOrCreate($this->station, $file);
+                    $this->em->remove($media);
+                }
+
+                $this->em->flush();
+
                 // Delete all selected files.
                 foreach($files as $file)
                     $this->_rmrf($file);

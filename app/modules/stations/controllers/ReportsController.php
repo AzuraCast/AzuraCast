@@ -80,4 +80,64 @@ class ReportsController extends BaseController
 
         return true;
     }
+
+    public function duplicatesAction()
+    {
+        $media_raw = $this->em->createQuery('SELECT sm, s FROM Entity\StationMedia sm JOIN sm.song s WHERE sm.station_id = :station_id ORDER BY sm.mtime ASC')
+            ->setParameter('station_id', $this->station->id)
+            ->getArrayResult();
+
+        $dupes = array();
+        $songs_to_compare = array();
+
+        // Find exact duplicates and sort other songs into a searchable array.
+        foreach($media_raw as $media_row)
+        {
+            if (isset($songs_to_compare[$media_row['song_id']]))
+                $dupes[] = [$songs_to_compare[$media_row['song_id']], $media_row];
+            else
+                $songs_to_compare[$media_row['song_id']] = $media_row;
+        }
+
+        foreach($songs_to_compare as $song_id => $media_row)
+        {
+            unset($songs_to_compare[$song_id]);
+
+            $song_dupes = array();
+            foreach($songs_to_compare as $search_song_id => $search_media_row)
+            {
+                $similarity = levenshtein($media_row['song']['text'], $search_media_row['song']['text']);
+
+                if ($similarity < 10)
+                    $song_dupes[] = $search_media_row;
+            }
+
+            if (count($song_dupes) > 0)
+            {
+                $song_dupes[] = $media_row;
+                $dupes[] = $song_dupes;
+            }
+        }
+
+        $this->view->dupes = $dupes;
+    }
+
+    public function deletedupeAction()
+    {
+        $media_id = (int)$this->getParam('media_id');
+
+        $media = StationMedia::getRepository()->findOneBy(['id' => $media_id, 'station_id' => $this->station->id]);
+
+        if ($media instanceof StationMedia)
+        {
+            $path = $media->getFullPath();
+            @unlink($path);
+
+            $media->delete();
+
+            $this->alert('<b>Duplicate file deleted!</b>', 'green');
+        }
+
+        return $this->redirectFromHere(['action' => 'duplicates', 'media_id' => null]);
+    }
 }

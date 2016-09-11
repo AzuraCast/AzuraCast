@@ -10,8 +10,8 @@
 
   roles:
     - init
+    - azuracast-update
     - azuracast-radio
     - php-phalcon
     - composer
     - azuracast-cron
-    - azuracast-update

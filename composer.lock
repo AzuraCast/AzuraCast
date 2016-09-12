@@ -4,89 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "98a3c4a314b9a11c3898bb5ac6964571",
-    "content-hash": "7b197beedcc0e08d1b0420a743d4de84",
+    "hash": "2f32908f4aac4f123566444e0c082a0b",
+    "content-hash": "4f814421700889a9bcc083bb2dcf832e",
     "packages": [
-        {
-            "name": "aws/aws-sdk-php",
-            "version": "3.19.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "34060bf0db260031697b17dbb37fa1bbec92f1c4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/34060bf0db260031697b17dbb37fa1bbec92f1c4",
-                "reference": "34060bf0db260031697b17dbb37fa1bbec92f1c4",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^5.3.1|^6.2.1",
-                "guzzlehttp/promises": "~1.0",
-                "guzzlehttp/psr7": "~1.3.1",
-                "mtdowling/jmespath.php": "~2.2",
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "andrewsville/php-token-reflection": "^1.4",
-                "aws/aws-php-sns-message-validator": "~1.0",
-                "behat/behat": "~3.0",
-                "doctrine/cache": "~1.4",
-                "ext-dom": "*",
-                "ext-json": "*",
-                "ext-openssl": "*",
-                "ext-pcre": "*",
-                "ext-simplexml": "*",
-                "ext-spl": "*",
-                "nette/neon": "^2.3",
-                "phpunit/phpunit": "~4.0|~5.0",
-                "psr/cache": "^1.0"
-            },
-            "suggest": {
-                "aws/aws-php-sns-message-validator": "To validate incoming SNS notifications",
-                "doctrine/cache": "To use the DoctrineCacheAdapter",
-                "ext-curl": "To send requests using cURL",
-                "ext-openssl": "Allows working with CloudFront private distributions and verifying received SNS messages"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Aws\\": "src/"
-                },
-                "files": [
-                    "src/functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Amazon Web Services",
-                    "homepage": "http://aws.amazon.com"
-                }
-            ],
-            "description": "AWS SDK for PHP - Use Amazon Web Services in your PHP project",
-            "homepage": "http://aws.amazon.com/sdkforphp",
-            "keywords": [
-                "amazon",
-                "aws",
-                "cloud",
-                "dynamodb",
-                "ec2",
-                "glacier",
-                "s3",
-                "sdk"
-            ],
-            "time": "2016-09-08 20:27:15"
-        },
         {
             "name": "container-interop/container-interop",
             "version": "1.1.0",
@@ -393,16 +313,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.4",
+            "version": "v2.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "abbdfd1cff43a7b99d027af3be709bc8fc7d4769"
+                "reference": "9f8c05cd5225a320d56d4bfdb4772f10d045a0c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/abbdfd1cff43a7b99d027af3be709bc8fc7d4769",
-                "reference": "abbdfd1cff43a7b99d027af3be709bc8fc7d4769",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/9f8c05cd5225a320d56d4bfdb4772f10d045a0c9",
+                "reference": "9f8c05cd5225a320d56d4bfdb4772f10d045a0c9",
                 "shasum": ""
             },
             "require": {
@@ -411,7 +331,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "4.*",
-                "symfony/console": "2.*"
+                "symfony/console": "2.*||^3.0"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
@@ -460,7 +380,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2016-01-05 22:11:12"
+            "time": "2016-09-09 19:13:33"
         },
         {
             "name": "doctrine/inflector",
@@ -530,6 +450,60 @@
             "time": "2015-11-06 14:35:42"
         },
         {
+            "name": "doctrine/instantiator",
+            "version": "1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/instantiator.git",
+                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/8e884e78f9f0eb1329e445619e04456e64d8051d",
+                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3,<8.0-DEV"
+            },
+            "require-dev": {
+                "athletic/athletic": "~0.1.8",
+                "ext-pdo": "*",
+                "ext-phar": "*",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com",
+                    "homepage": "http://ocramius.github.com/"
+                }
+            ],
+            "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
+            "homepage": "https://github.com/doctrine/instantiator",
+            "keywords": [
+                "constructor",
+                "instantiate"
+            ],
+            "time": "2015-06-14 21:17:01"
+        },
+        {
             "name": "doctrine/lexer",
             "version": "v1.0.1",
             "source": {
@@ -585,28 +559,31 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "v2.4.8",
+            "version": "v2.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "5aedac1e5c5caaeac14798822c70325dc242d467"
+                "reference": "73e4be7c7b3ba26f96b781a40b33feba4dfa6d45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/5aedac1e5c5caaeac14798822c70325dc242d467",
-                "reference": "5aedac1e5c5caaeac14798822c70325dc242d467",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/73e4be7c7b3ba26f96b781a40b33feba4dfa6d45",
+                "reference": "73e4be7c7b3ba26f96b781a40b33feba4dfa6d45",
                 "shasum": ""
             },
             "require": {
-                "doctrine/collections": "~1.1",
-                "doctrine/dbal": "~2.4",
+                "doctrine/cache": "~1.4",
+                "doctrine/collections": "~1.2",
+                "doctrine/common": ">=2.5-dev,<2.7-dev",
+                "doctrine/dbal": ">=2.5-dev,<2.6-dev",
+                "doctrine/instantiator": "~1.0.1",
                 "ext-pdo": "*",
-                "php": ">=5.3.2",
-                "symfony/console": "~2.0"
+                "php": ">=5.4",
+                "symfony/console": "~2.5|~3.0"
             },
             "require-dev": {
-                "satooshi/php-coveralls": "dev-master",
-                "symfony/yaml": "~2.1"
+                "phpunit/phpunit": "~4.0",
+                "symfony/yaml": "~2.3|~3.0"
             },
             "suggest": {
                 "symfony/yaml": "If you want to use YAML Metadata Mapping Driver"
@@ -618,7 +595,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4.x-dev"
+                    "dev-master": "2.6.x-dev"
                 }
             },
             "autoload": {
@@ -654,7 +631,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2015-08-31 13:19:01"
+            "time": "2016-09-10 18:51:13"
         },
         {
             "name": "electrolinux/phpquery",
@@ -755,74 +732,39 @@
             "time": "2015-06-29 05:42:04"
         },
         {
-            "name": "google/apiclient",
-            "version": "1.0.6-beta",
+            "name": "guzzlehttp/guzzle",
+            "version": "6.2.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/google/google-api-php-client.git",
-                "reference": "a41a9dc0662e36420030eaab802dbb1f85459479"
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "3f808fba627f2c5b69e2501217bf31af349c1427"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client/zipball/a41a9dc0662e36420030eaab802dbb1f85459479",
-                "reference": "a41a9dc0662e36420030eaab802dbb1f85459479",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/3f808fba627f2c5b69e2501217bf31af349c1427",
+                "reference": "3f808fba627f2c5b69e2501217bf31af349c1427",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.1"
+                "guzzlehttp/promises": "^1.0",
+                "guzzlehttp/psr7": "^1.3.1",
+                "php": ">=5.5"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "ext-curl": "*",
+                "phpunit/phpunit": "^4.0",
+                "psr/log": "^1.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "6.2-dev"
                 }
             },
             "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                "src/"
-            ],
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Client library for Google APIs",
-            "homepage": "http://developers.google.com/api-client-library/php",
-            "keywords": [
-                "google"
-            ],
-            "time": "2014-09-30 19:33:59"
-        },
-        {
-            "name": "guzzlehttp/guzzle",
-            "version": "5.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "70f1fa53b71c4647bf2762c09068a95f77e12fb8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/70f1fa53b71c4647bf2762c09068a95f77e12fb8",
-                "reference": "70f1fa53b71c4647bf2762c09068a95f77e12fb8",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/ringphp": "^1.1",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "ext-curl": "*",
-                "phpunit/phpunit": "^4.0"
-            },
-            "type": "library",
-            "autoload": {
+                "files": [
+                    "src/functions_include.php"
+                ],
                 "psr-4": {
                     "GuzzleHttp\\": "src/"
                 }
@@ -838,7 +780,7 @@
                     "homepage": "https://github.com/mtdowling"
                 }
             ],
-            "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
+            "description": "Guzzle is a PHP HTTP client library",
             "homepage": "http://guzzlephp.org/",
             "keywords": [
                 "client",
@@ -849,7 +791,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2016-07-15 19:28:39"
+            "time": "2016-07-15 17:22:37"
         },
         {
             "name": "guzzlehttp/promises",
@@ -961,40 +903,37 @@
             "time": "2016-06-24 23:00:38"
         },
         {
-            "name": "guzzlehttp/ringphp",
-            "version": "1.1.0",
+            "name": "influxdb/influxdb-php",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/guzzle/RingPHP.git",
-                "reference": "dbbb91d7f6c191e5e405e900e3102ac7f261bc0b"
+                "url": "https://github.com/influxdata/influxdb-php.git",
+                "reference": "7083df8fc77df771dc804b072cf1c3bfc41d8648"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/dbbb91d7f6c191e5e405e900e3102ac7f261bc0b",
-                "reference": "dbbb91d7f6c191e5e405e900e3102ac7f261bc0b",
+                "url": "https://api.github.com/repos/influxdata/influxdb-php/zipball/7083df8fc77df771dc804b072cf1c3bfc41d8648",
+                "reference": "7083df8fc77df771dc804b072cf1c3bfc41d8648",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/streams": "~3.0",
-                "php": ">=5.4.0",
-                "react/promise": "~2.0"
+                "guzzlehttp/guzzle": "6.*",
+                "php": "^5.5 | ^7.0",
+                "symfony/event-dispatcher": "2.*|3.*"
             },
             "require-dev": {
-                "ext-curl": "*",
-                "phpunit/phpunit": "~4.0"
-            },
-            "suggest": {
-                "ext-curl": "Guzzle will use specific adapters if cURL is present"
+                "codeclimate/php-test-reporter": "0.*",
+                "phpunit/phpunit": "^4.0",
+                "symfony/config": "~2.8",
+                "symfony/console": "~2.8",
+                "symfony/filesystem": "~2.8",
+                "symfony/stopwatch": "~2.8",
+                "symfony/yaml": "~2.8"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
-                    "GuzzleHttp\\Ring\\": "src/"
+                    "InfluxDB\\": "src/InfluxDB"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1003,110 +942,28 @@
             ],
             "authors": [
                 {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
-            "time": "2015-05-20 03:37:09"
-        },
-        {
-            "name": "guzzlehttp/streams",
-            "version": "3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/streams.git",
-                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/streams/zipball/47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
-                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Stream\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "Provides a simple abstraction over streams of data",
-            "homepage": "http://guzzlephp.org/",
-            "keywords": [
-                "Guzzle",
-                "stream"
-            ],
-            "time": "2014-10-12 19:18:40"
-        },
-        {
-            "name": "ise/php-soundcloud",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/internalsystemerror/php-soundcloud.git",
-                "reference": "a23f575419fe70d2a61588f132b29848e8fca4c6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/internalsystemerror/php-soundcloud/zipball/a23f575419fe70d2a61588f132b29848e8fca4c6",
-                "reference": "a23f575419fe70d2a61588f132b29848e8fca4c6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Soundcloud\\": "src/",
-                    "SoundcloudTest\\": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Gary Lockett",
-                    "email": "ise@garylockett.com",
-                    "homepage": "http://www.garylockett.com/"
+                    "name": "Gianluca Arbezzano",
+                    "email": "gianarb92@gmail.com"
                 },
                 {
-                    "name": "Anton Lindqvist",
-                    "email": "anton@qvister.se",
-                    "homepage": "http://qvister.se/"
+                    "name": "Daniel Martinez",
+                    "email": "danimartcas@hotmail.com"
+                },
+                {
+                    "name": "Stephen Hoogendijk",
+                    "email": "stephen@tca0.nl"
                 }
             ],
-            "description": "API Wrapper for SoundCloud written in PHP with support for authentication using OAuth 2.0 by Anton Lindqvist (mptre), composer support added by Gary Lockett (ise)",
-            "homepage": "https://github.com/internalsystemerror/php-soundcloud",
+            "description": "InfluxDB client library for PHP",
             "keywords": [
-                "soundcloud"
+                "client",
+                "influxdb",
+                "influxdb class",
+                "influxdb client",
+                "influxdb library",
+                "time series"
             ],
-            "time": "2016-03-26 04:30:24"
+            "time": "2016-05-26 14:13:27"
         },
         {
             "name": "james-heinrich/getid3",
@@ -1143,61 +1000,6 @@
                 "tags"
             ],
             "time": "2016-03-02 13:13:30"
-        },
-        {
-            "name": "mtdowling/jmespath.php",
-            "version": "2.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jmespath/jmespath.php.git",
-                "reference": "192f93e43c2c97acde7694993ab171b3de284093"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/192f93e43c2c97acde7694993ab171b3de284093",
-                "reference": "192f93e43c2c97acde7694993ab171b3de284093",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "bin": [
-                "bin/jp.php"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "JmesPath\\": "src/"
-                },
-                "files": [
-                    "src/JmesPath.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "Declaratively specify how to extract elements from a JSON document",
-            "keywords": [
-                "json",
-                "jsonpath"
-            ],
-            "time": "2016-01-05 18:25:05"
         },
         {
             "name": "nette/mail",
@@ -1261,26 +1063,27 @@
         },
         {
             "name": "nette/utils",
-            "version": "v2.3.10",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "66ceba196e4535ca3bf8f835db50d7e02339fdb0"
+                "reference": "c455ade9f24a1f99aa81772516764045296b8ca0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/66ceba196e4535ca3bf8f835db50d7e02339fdb0",
-                "reference": "66ceba196e4535ca3bf8f835db50d7e02339fdb0",
+                "url": "https://api.github.com/repos/nette/utils/zipball/c455ade9f24a1f99aa81772516764045296b8ca0",
+                "reference": "c455ade9f24a1f99aa81772516764045296b8ca0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.1"
+                "php": ">=5.6.0"
             },
             "conflict": {
                 "nette/nette": "<2.2"
             },
             "require-dev": {
-                "nette/tester": "~1.0"
+                "nette/tester": "~2.0",
+                "tracy/tracy": "^2.3"
             },
             "suggest": {
                 "ext-gd": "to use Image",
@@ -1289,6 +1092,11 @@
                 "ext-mbstring": "to use Strings::lower() etc..."
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "src/"
@@ -1312,64 +1120,7 @@
             ],
             "description": "Nette Utility Classes",
             "homepage": "https://nette.org",
-            "time": "2016-06-17 13:28:41"
-        },
-        {
-            "name": "phpoffice/phpexcel",
-            "version": "1.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPOffice/PHPExcel.git",
-                "reference": "e69a5e4d0ffa7fb6f171859e0a04346e580df30b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/e69a5e4d0ffa7fb6f171859e0a04346e580df30b",
-                "reference": "e69a5e4d0ffa7fb6f171859e0a04346e580df30b",
-                "shasum": ""
-            },
-            "require": {
-                "ext-xml": "*",
-                "ext-xmlwriter": "*",
-                "php": ">=5.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PHPExcel": "Classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL"
-            ],
-            "authors": [
-                {
-                    "name": "Maarten Balliauw",
-                    "homepage": "http://blog.maartenballiauw.be"
-                },
-                {
-                    "name": "Mark Baker"
-                },
-                {
-                    "name": "Franck Lefevre",
-                    "homepage": "http://blog.rootslabs.net"
-                },
-                {
-                    "name": "Erik Tilt"
-                }
-            ],
-            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
-            "homepage": "http://phpexcel.codeplex.com",
-            "keywords": [
-                "OpenXML",
-                "excel",
-                "php",
-                "spreadsheet",
-                "xls",
-                "xlsx"
-            ],
-            "time": "2014-03-02 15:22:49"
+            "time": "2016-06-17 13:15:10"
         },
         {
             "name": "psr/cache",
@@ -1468,71 +1219,27 @@
             "time": "2016-08-06 14:39:51"
         },
         {
-            "name": "react/promise",
-            "version": "v2.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp/promise.git",
-                "reference": "8025426794f1944de806618671d4fa476dc7626f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/8025426794f1944de806618671d4fa476dc7626f",
-                "reference": "8025426794f1944de806618671d4fa476dc7626f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "React\\Promise\\": "src/"
-                },
-                "files": [
-                    "src/functions_include.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jan Sorgalla",
-                    "email": "jsorgalla@gmail.com"
-                }
-            ],
-            "description": "A lightweight implementation of CommonJS Promises/A for PHP",
-            "time": "2016-05-03 17:50:52"
-        },
-        {
             "name": "symfony/console",
-            "version": "v2.8.11",
+            "version": "v3.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "3d3e4fa5f0614c8e45220e5de80332322e33bd90"
+                "reference": "8ea494c34f0f772c3954b5fbe00bffc5a435e563"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/3d3e4fa5f0614c8e45220e5de80332322e33bd90",
-                "reference": "3d3e4fa5f0614c8e45220e5de80332322e33bd90",
+                "url": "https://api.github.com/repos/symfony/console/zipball/8ea494c34f0f772c3954b5fbe00bffc5a435e563",
+                "reference": "8ea494c34f0f772c3954b5fbe00bffc5a435e563",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.9",
+                "php": ">=5.5.9",
                 "symfony/polyfill-mbstring": "~1.0"
             },
             "require-dev": {
                 "psr/log": "~1.0",
-                "symfony/event-dispatcher": "~2.1|~3.0.0",
-                "symfony/process": "~2.1|~3.0.0"
+                "symfony/event-dispatcher": "~2.8|~3.0",
+                "symfony/process": "~2.8|~3.0"
             },
             "suggest": {
                 "psr/log": "For using the console logger",
@@ -1542,7 +1249,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.8-dev"
+                    "dev-master": "3.1-dev"
                 }
             },
             "autoload": {
@@ -1569,7 +1276,67 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-09-06 10:55:00"
+            "time": "2016-08-19 06:48:39"
+        },
+        {
+            "name": "symfony/event-dispatcher",
+            "version": "v3.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/event-dispatcher.git",
+                "reference": "c0c00c80b3a69132c4e55c3e7db32b4a387615e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/c0c00c80b3a69132c4e55c3e7db32b4a387615e5",
+                "reference": "c0c00c80b3a69132c4e55c3e7db32b4a387615e5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/config": "~2.8|~3.0",
+                "symfony/dependency-injection": "~2.8|~3.0",
+                "symfony/expression-language": "~2.8|~3.0",
+                "symfony/stopwatch": "~2.8|~3.0"
+            },
+            "suggest": {
+                "symfony/dependency-injection": "",
+                "symfony/http-kernel": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\EventDispatcher\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony EventDispatcher Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-07-19 10:45:57"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1789,67 +1556,6 @@
                 "zf2"
             ],
             "time": "2016-06-30 19:48:38"
-        },
-        {
-            "name": "zendframework/zend-feed",
-            "version": "2.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-feed.git",
-                "reference": "12b328d382aa5200f1de53d4147033b885776b67"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-feed/zipball/12b328d382aa5200f1de53d4147033b885776b67",
-                "reference": "12b328d382aa5200f1de53d4147033b885776b67",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.5 || ^7.0",
-                "zendframework/zend-escaper": "^2.5",
-                "zendframework/zend-stdlib": "^2.7 || ^3.0"
-            },
-            "require-dev": {
-                "fabpot/php-cs-fixer": "1.7.*",
-                "phpunit/phpunit": "~4.0",
-                "psr/http-message": "^1.0",
-                "zendframework/zend-cache": "^2.5",
-                "zendframework/zend-db": "^2.5",
-                "zendframework/zend-http": "^2.5",
-                "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
-                "zendframework/zend-validator": "^2.5"
-            },
-            "suggest": {
-                "psr/http-message": "PSR-7 ^1.0, if you wish to use Zend\\Feed\\Reader\\Http\\Psr7ResponseDecorator",
-                "zendframework/zend-cache": "Zend\\Cache component, for optionally caching feeds between requests",
-                "zendframework/zend-db": "Zend\\Db component, for use with PubSubHubbub",
-                "zendframework/zend-http": "Zend\\Http for PubSubHubbub, and optionally for use with Zend\\Feed\\Reader",
-                "zendframework/zend-servicemanager": "Zend\\ServiceManager component, for easily extending ExtensionManager implementations",
-                "zendframework/zend-validator": "Zend\\Validator component, for validating email addresses used in Atom feeds and entries ehen using the Writer subcomponent"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.7-dev",
-                    "dev-develop": "2.8-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zend\\Feed\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "provides functionality for consuming RSS and Atom feeds",
-            "homepage": "https://github.com/zendframework/zend-feed",
-            "keywords": [
-                "feed",
-                "zf2"
-            ],
-            "time": "2016-02-11 18:54:29"
         },
         {
             "name": "zendframework/zend-http",
@@ -2291,8 +1997,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "google/apiclient": 10,
-        "ise/php-soundcloud": 20,
         "phalcon/devtools": 20
     },
     "prefer-stable": false,

@@ -65,62 +65,6 @@ class Export
     {
         return str_replace('"', '""', $text);
     }
-    
-    /**
-     * Excel
-     */
-    
-    public static function excel($data, $version = 'Excel2007')
-    {
-        $doc = new \PHPExcel();
-        $doc->setActiveSheetIndex(0);
-        
-        $sheet = $doc->getActiveSheet();
-        $sheet->setTitle('Exported Data');
-        $sheet->fromArray($data);
-        
-        $version_specific = array(
-            'xlsx' => array(
-                'writer'        => 'Excel2007',
-                'extension'     => '.xlsx',
-                'mime-type'     => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            ),
-            'xls' => array(
-                'writer'        => 'Excel5',
-                'extension'     => '.xls',
-                'mime-type'     => 'application/vnd.ms-excel',
-            ),
-            'csv' => array(
-                'writer'        => 'CSV',
-                'extension'     => '.csv',
-                'mime-type'     => 'text/csv',
-            ),
-            'html' => array(
-                'writer'        => 'HTML',
-                'extension'     => '.html',
-                'mime-type'     => 'text/html',
-            ),
-            'pdf' => array(
-                'writer'        => 'PDF',
-                'extension'     => '.pdf',
-                'mime-type'     => 'application/pdf',
-            ),
-        );
-        
-        $filename = 'Exported Data ('.date('Y-m-d').')';
-        $filename .= $version_specific[$version]['extension'];
-        $mime_type = $version_specific[$version]['mime-type'];
-        
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        header("Cache-Control: private", FALSE);
-        header("Content-Type: ".$mime_type);
-        header("Content-Disposition: attachment; filename=".$filename);
-        
-        $writer = \PHPExcel_IOFactory::createWriter($doc, $version_specific[$version]['writer']);
-        $writer->save('php://output');
-    }
         
     /**
      * JSON

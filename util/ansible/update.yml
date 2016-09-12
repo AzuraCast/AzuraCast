@@ -14,4 +14,5 @@
     - azuracast-radio
     - php-phalcon
     - composer
+    - influxdb
     - azuracast-cron

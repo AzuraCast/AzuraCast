@@ -19,17 +19,12 @@ class IndexController extends BaseController
 
         // Statistics by day.
         $influx = $this->di->get('influx');
-        $influx->setDatabase('stations');
 
-        try
-        {
-            $daily_stats = $influx->query('SELECT * FROM 1d.station.'.$this->station->id.'.listeners WHERE time > now() - 30d', 'm');
-            $daily_stats = array_pop($daily_stats);
-        }
-        catch(\Exception $e)
-        {
-            $daily_stats = array();
-        }
+        $resultset = $influx->query('SELECT * FROM "1d"."station.'.$this->station->id.'.listeners" WHERE time > now() - 30d', [
+            'epoch' => 'ms',
+        ]);
+
+        $daily_stats = $resultset->getPoints();
 
         $daily_ranges = array();
         $daily_averages = array();
@@ -54,15 +49,12 @@ class IndexController extends BaseController
         $this->view->daily_averages = json_encode($daily_averages);
 
         // Statistics by hour.
-        try
-        {
-            $hourly_stats = $influx->query('SELECT * FROM 1h.station.'.$this->station->id.'.listeners', 'm');
-            $hourly_stats = array_pop($hourly_stats);
-        }
-        catch(\Exception $e)
-        {
-            $hourly_stats = array();
-        }
+        $influx = $this->di->get('influx');
+        $resultset = $influx->query('SELECT * FROM "1h"."station.'.$this->station->id.'.listeners"', [
+            'epoch' => 'ms',
+        ]);
+
+        $hourly_stats = $resultset->getPoints();
 
         $hourly_averages = array();
         $hourly_ranges = array();

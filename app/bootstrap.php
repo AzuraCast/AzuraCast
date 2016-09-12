@@ -269,9 +269,8 @@ $di->setShared('crypto', array(
 $di->setShared('influx', function() use ($config) {
     $opts = $config->influx->toArray();
 
-    $influx = new \App\Service\InfluxDb($opts);
-    $influx->setDatabase('stations');
-    return $influx;
+    $influx = new \InfluxDB\Client($opts['host'], $opts['port']);
+    return $influx->selectDB('stations');
 });
 
 $di->setShared('user', function() use ($di) {

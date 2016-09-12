@@ -19,6 +19,7 @@ class NowPlaying
 
         // Post statistics to InfluxDB.
         $influx = $di->get('influx');
+        $influx_points = array();
 
         $total_overall = 0;
 
@@ -28,14 +29,25 @@ class NowPlaying
             $total_overall += $listeners;
 
             $station_id = $info['station']['id'];
-            $influx->insert('station.'.$station_id.'.listeners', [
-                'value' => $listeners,
-            ]);
+
+            $influx_points[] = new \InfluxDB\Point(
+                'station.'.$station_id.'.listeners',
+                $listeners,
+                [],
+                ['station' => $station_id],
+                time()
+            );
         }
 
-        $influx->insert('all.listeners', [
-            'value' => $total_overall,
-        ]);
+        $influx_points[] = new \InfluxDB\Point(
+            'station.all.listeners',
+            $total_overall,
+            [],
+            ['station' => 0],
+            time()
+        );
+
+        $influx->writePoints($influx_points, \InfluxDB\Database::PRECISION_SECONDS);
 
         // Generate PVL API cache.
         foreach($nowplaying as $station => $np_info)

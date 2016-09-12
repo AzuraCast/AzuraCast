@@ -19,7 +19,6 @@ class IndexController extends BaseController
         if (!$metrics)
         {
             // Statistics by day.
-            $influx = $this->di->get('influx');
             $station_averages = array();
             $network_data = array(
                 'All Stations' => array(
@@ -28,9 +27,24 @@ class IndexController extends BaseController
                 ),
             );
 
-            $daily_stats = $influx->query('SELECT * FROM /1d.*/ WHERE time > now() - 180d', 'm');
+            // Query InfluxDB database.
+            $influx = $this->di->get('influx');
+            $resultset = $influx->query('SELECT * FROM "1h"./.*/ WHERE time > now() - 180d', [
+                'epoch' => 'ms',
+            ]);
 
-            foreach($daily_stats as $stat_series => $stat_rows)
+            $results_raw = $resultset->getSeries();
+            $results = array();
+            foreach($results_raw as $serie)
+            {
+                $points = [];
+                foreach ($serie['values'] as $point)
+                    $points[] = array_combine($serie['columns'], $point);
+
+                $results[$serie['name']] = $points;
+            }
+
+            foreach($results as $stat_series => $stat_rows)
             {
                 $series_split = explode('.', $stat_series);
 
@@ -45,7 +59,7 @@ class IndexController extends BaseController
                 }
                 else
                 {
-                    $station_id = $series_split[2];
+                    $station_id = $series_split[1];
                     foreach($stat_rows as $stat_row)
                     {
                         $station_averages[$station_id][$stat_row['time']] = array($stat_row['time'], round($stat_row['value'], 2));

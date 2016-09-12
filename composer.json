@@ -3,23 +3,19 @@
   "description": "The AzuraCast standalone radio station management tool.",
   "require": {
     "zendframework/zend-paginator": "~2.5",
-    "zendframework/zend-feed": "~2.5",
     "zendframework/zend-http": "~2.5",
     "zendframework/zend-servicemanager": "~2.5",
     "zendframework/zend-config": "~2.5",
 
-    "guzzlehttp/guzzle": "~5.0",
-    "doctrine/orm": "2.4.*",
+    "guzzlehttp/guzzle": ">6.0",
+    "doctrine/orm": "~2.5",
     "tedivm/stash": "0.14.*",
     "filp/whoops": "1.*",
     "electrolinux/phpquery": "0.9.6",
     "nette/mail": "2.3.0",
 
-    "google/apiclient": "1.0.*@beta",
-    "aws/aws-sdk-php": "3.*",
-    "phpoffice/phpexcel": "1.8.0",
-    "ise/php-soundcloud": "dev-master",
-    "james-heinrich/getid3": "~1.9"
+    "james-heinrich/getid3": "~1.9",
+    "influxdb/influxdb-php": "~1.4.1"
   },
   "require-dev": {
     "phalcon/devtools": "~3@dev"

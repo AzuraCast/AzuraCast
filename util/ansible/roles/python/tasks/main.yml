@@ -1,0 +1,25 @@
+---
+  - name: Add key for ppa python repository
+    apt_key: keyserver=keyserver.ubuntu.com id=DB82666C state=present
+    become: yes
+    become_user: root
+    become_method: sudo
+
+  - name: Add ppa python repository
+    apt_repository: repo='deb http://ppa.launchpad.net/fkrull/deadsnakes-python2.7/ubuntu {{ ansible_distribution_release }} main' state=present update_cache=yes
+    become: yes
+    become_user: root
+    become_method: sudo
+
+  - name: Update apt
+    become: true
+    apt:  update_cache=yes
+
+  - name: Ensure python2.7 latest is installed
+    apt:
+      pkg: python2.7
+      state: latest
+      install_recommends: no
+    become: yes
+    become_user: root
+    become_method: sudo

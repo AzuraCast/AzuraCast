@@ -1,7 +1,7 @@
 ---
   - name: Install InfluxDB
     become: true
-    apt: deb=https://dl.influxdata.com/influxdb/releases/influxdb_1.0.0_amd64.deb validate_certs=no
+    apt: deb=https://dl.influxdata.com/influxdb/releases/influxdb_1.0.0_amd64.deb
     register: influx_installed
 
   - name: restart influxdb

@@ -33,7 +33,7 @@ class IndexController extends BaseController
         foreach($daily_stats as $stat)
         {
             $daily_ranges[] = array($stat['time'], $stat['min'], $stat['max']);
-            $daily_averages[] = array($stat['time'], $stat['value']);
+            $daily_averages[] = array($stat['time'], round($stat['value'], 2));
 
             $day_of_week = date('l', round($stat['time']/1000));
             $days_of_week[$day_of_week][] = $stat['value'];
@@ -63,7 +63,7 @@ class IndexController extends BaseController
         foreach($hourly_stats as $stat)
         {
             $hourly_ranges[] = array($stat['time'], $stat['min'], $stat['max']);
-            $hourly_averages[] = array($stat['time'], $stat['value']);
+            $hourly_averages[] = array($stat['time'], round($stat['value'], 2));
 
             $hour = date('G', round($stat['time']/1000));
             $totals_by_hour[$hour][] = $stat['value'];

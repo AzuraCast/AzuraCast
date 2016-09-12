@@ -29,7 +29,7 @@ class IndexController extends BaseController
 
             // Query InfluxDB database.
             $influx = $this->di->get('influx');
-            $resultset = $influx->query('SELECT * FROM "1h"./.*/ WHERE time > now() - 180d', [
+            $resultset = $influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 180d', [
                 'epoch' => 'ms',
             ]);
 

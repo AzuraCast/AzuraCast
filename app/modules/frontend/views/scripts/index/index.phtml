@@ -102,6 +102,7 @@ $this->assets->collection('custom_js')
 $(function () {
     Highcharts.setOptions({
         global: {
+            timezoneOffset: <?=\App\Timezone::getOffsetMinutes() ?>,
             useUTC: false
         }
     });

@@ -49,6 +49,20 @@ class Timezone
         return $tz_info;
     }
 
+    public static function getOffsetMinutes($tz = null)
+    {
+        if ($tz === null)
+            $tz = date_default_timezone_get();
+
+        $utc = new \DateTimeZone('UTC');
+        $dt = new \DateTime('now', $utc);
+
+        $current_tz = new \DateTimeZone($tz);
+        $offset = $current_tz->getOffset($dt);
+
+        return (int)($offset / 60);
+    }
+
     public static function formatOffset($offset)
     {
         $hours = $offset / 3600;

@@ -9,10 +9,13 @@ $this->assets->collection('custom_js')
 ?>
 
 <script type="text/javascript">
-Highcharts.setOptions({
-    global: {
-        useUTC: false
-    }
+$(function () {
+    Highcharts.setOptions({
+        global: {
+            timezoneOffset: <?=\App\Timezone::getOffsetMinutes() ?>,
+            useUTC: false
+        }
+    });
 });
 </script>
 

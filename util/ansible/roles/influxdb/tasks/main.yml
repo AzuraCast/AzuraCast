@@ -16,7 +16,7 @@
     with_lines: "cat {{ util_base }}/influx_create.txt"
 
   - name: Update InfluxDB
-    when: !influx_installed.changed
+    when: influx_installed.changed == false
     shell: "curl -i -XPOST http://localhost:8086/query --data-urlencode 'q={{ item }}'"
     args:
       warn: no

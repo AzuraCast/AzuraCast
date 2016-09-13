@@ -1,6 +1,0 @@
-CREATE DATABASE "stations";
-CREATE RETENTION POLICY "15s" ON "stations" DURATION 2d REPLICATION 1 DEFAULT;
-CREATE RETENTION POLICY "1h" ON "stations" DURATION 7d REPLICATION 1;
-CREATE RETENTION POLICY "1d" ON "stations" DURATION 730d REPLICATION 1;
-CREATE CONTINUOUS QUERY "cq_1h" ON "stations" BEGIN SELECT min(value) AS min, mean(value) AS value, max(value) AS max INTO "1h".:MEASUREMENT FROM /.*/ GROUP BY station, time(1h) END;
-CREATE CONTINUOUS QUERY "cq_1d" ON "stations" BEGIN SELECT min(value) AS min, mean(value) AS value, max(value) AS max INTO "1d".:MEASUREMENT FROM "1h"./.*/ GROUP BY time(1d) END;

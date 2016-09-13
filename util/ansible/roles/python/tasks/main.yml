@@ -10,10 +10,12 @@
     become: yes
     become_user: root
     become_method: sudo
+    register: python_ppa_added
 
   - name: Update apt
     become: true
     apt:  update_cache=yes
+    when: python_ppa_added.changed
 
   - name: Ensure python2.7 latest is installed
     apt:

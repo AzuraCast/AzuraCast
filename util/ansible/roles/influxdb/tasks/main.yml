@@ -21,3 +21,12 @@
     args:
       warn: no
     with_lines: "cat {{ util_base }}/influx_update.txt"
+
+  - name: Lock down InfluxDB to localhost requests
+    replace:
+      dest: /etc/influxdb/influxdb.conf
+      regexp: 'bind-address = ":80'
+      replace: 'bind-address = "localhost:80'
+      backup: yes
+    when: app_env == "production"
+    notify: restart influxdb

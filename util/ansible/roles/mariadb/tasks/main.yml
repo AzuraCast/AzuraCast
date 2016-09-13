@@ -46,6 +46,11 @@
  - name: MySQL Root Account Fix (Ubuntu 16.04)
    shell: "cat {{ util_base }}/xenial_mysql_fix.sql | mysql"
    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
+   register: mysql_xenial_fix
+
+ - name: Delete existing .my.cnf if present
+   file: path="~/.my.cnf" state=absent
+   when: mysql_xenial_fix.changed
 
  # MySQL Secure Installation
  - name: Set root Password
@@ -64,7 +69,7 @@
  #  changed_when: False
 
  - name: Add .my.cnf
-   template: src=root_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600 force=yes
+   template: src=root_my.cnf.j2 dest="~/.my.cnf" owner=root group=root mode=0600 force=yes
 
  - name: Remove anonymous users
    command: 'mysql -ne "{{ item }}"'

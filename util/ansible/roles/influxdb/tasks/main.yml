@@ -21,15 +21,3 @@
     args:
       warn: no
     with_lines: "cat {{ util_base }}/influx_update.txt"
-
-  - name: Lock down InfluxDB query and admin ports
-    ini_file:
-      dest: /etc/influxdb/influxdb.conf
-      section: "{{ item.section }}"
-      option: "{{ item.option }}"
-      value: "{{ item.value }}"
-    with_items:
-      - { section: "admin", option: "bind-address", value: "localhost:8083" }
-      - { section: "http", option: "bind-address", value: "localhost:8086" }
-    when: app_env == "production"
-    notify: restart-influxdb

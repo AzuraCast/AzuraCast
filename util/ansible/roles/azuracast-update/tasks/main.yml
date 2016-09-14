@@ -4,12 +4,14 @@
     args:
       chdir: "{{ www_base }}"
       warn: no
+    when: app_env == "production"
 
   - name: Pull new Git repository
     shell: git pull
     args:
       chdir: "{{ www_base }}"
       warn: no
+    when: app_env == "production"
 
   - name: Make update script executable again
     file: path="{{ www_base }}/update.sh" state=touch mode="a+x"

@@ -6,8 +6,16 @@
     creates: /usr/bin/composer
     warn: no
 
-- name: Run Composer in Local Directory
+- name: Install Composer Dependencies (Development)
   become: true
   shell: composer install
   args:
     chdir: "{{ www_base }}"
+  when: app_env == "development"
+
+- name: Install Composer Dependencies (Production)
+  become: true
+  shell: composer install --no-dev
+  args:
+    chdir: "{{ www_base }}"
+  when: app_env == "production"

@@ -53,6 +53,9 @@ class IndexController extends BaseController
                     $network_name = 'All Stations';
                     foreach($stat_rows as $stat_row)
                     {
+                        // Add 12 hours to statistics so they always land inside the day they represent.
+                        $stat_row['time'] = $stat_row['time'] + (60*60*12*1000);
+
                         $network_data[$network_name]['ranges'][$stat_row['time']] = array($stat_row['time'], $stat_row['min'], $stat_row['max']);
                         $network_data[$network_name]['averages'][$stat_row['time']] = array($stat_row['time'], round($stat_row['value'], 2));
                     }
@@ -62,6 +65,9 @@ class IndexController extends BaseController
                     $station_id = $series_split[1];
                     foreach($stat_rows as $stat_row)
                     {
+                        // Add 12 hours to statistics so they always land inside the day they represent.
+                        $stat_row['time'] = $stat_row['time'] + (60*60*12*1000);
+
                         $station_averages[$station_id][$stat_row['time']] = array($stat_row['time'], round($stat_row['value'], 2));
                     }
                 }

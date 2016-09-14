@@ -32,6 +32,9 @@ class IndexController extends BaseController
 
         foreach($daily_stats as $stat)
         {
+            // Add 12 hours to statistics so they always land inside the day they represent.
+            $stat['time'] = $stat['time'] + (60*60*12*1000);
+
             $daily_ranges[] = array($stat['time'], $stat['min'], $stat['max']);
             $daily_averages[] = array($stat['time'], round($stat['value'], 2));
 
@@ -75,7 +78,7 @@ class IndexController extends BaseController
         $averages_by_hour = array();
         for($i = 0; $i < 24; $i++)
         {
-            $totals = $totals_by_hour[$i];
+            $totals = $totals_by_hour[$i] ?: array(0);
             $averages_by_hour[] = array($i.':00', round(array_sum($totals) / count($totals), 2));
         }
 

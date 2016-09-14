@@ -3,5 +3,5 @@ ALTER RETENTION POLICY "1h" ON "stations" DURATION 2w REPLICATION 1;
 ALTER RETENTION POLICY "1d" ON "stations" DURATION INF REPLICATION 1;
 DROP CONTINUOUS QUERY "cq_1h" ON "stations";
 DROP CONTINUOUS QUERY "cq_1d" ON "stations";
-CREATE CONTINUOUS QUERY "cq_1h" ON "stations" RESAMPLE EVERY 15m BEGIN SELECT min(value) AS min, mean(value) AS value, max(value) AS max INTO "1h".:MEASUREMENT FROM /.*/ GROUP BY time(1h) END;
-CREATE CONTINUOUS QUERY "cq_1d" ON "stations" RESAMPLE EVERY 6h BEGIN SELECT min(value) AS min, mean(value) AS value, max(value) AS max INTO "1d".:MEASUREMENT FROM /.*/ GROUP BY time(1d) END;
+CREATE CONTINUOUS QUERY "cq_1h" ON "stations" RESAMPLE EVERY 30m BEGIN SELECT min(value) AS min, mean(value) AS value, max(value) AS max INTO "1h".:MEASUREMENT FROM /.*/ WHERE time > now() - 2d GROUP BY time(1h) END;
+CREATE CONTINUOUS QUERY "cq_1d" ON "stations" RESAMPLE EVERY 6h BEGIN SELECT min(value) AS min, mean(value) AS value, max(value) AS max INTO "1d".:MEASUREMENT FROM /.*/  WHERE time > now() - 2d GROUP BY time(1d) END;

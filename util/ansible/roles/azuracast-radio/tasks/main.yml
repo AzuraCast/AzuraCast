@@ -1,7 +1,13 @@
 ---
-  - name: Install IceCast2
+  - name: Install IceCast2 (14.04)
     become: true
     apt: deb=http://download.opensuse.org/repositories/multimedia:/xiph/xUbuntu_14.04/amd64/icecast2_2.4.2-2_amd64.deb
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+
+  - name: Install IceCast2 (16.04)
+    become: true
+    apt: pkg=icecast2 state=latest
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
 
   - name: Install LiquidSoap
     become: true

@@ -24,5 +24,7 @@ if [ "" == "$PKG_OK" ]; then
     sudo apt-get install -q -y ansible python-mysqldb
 fi
 
+APP_ENV="${APP_ENV:-production}"
+
 echo "Installing AzuraCast (Environment: $APP_ENV)"
 ansible-playbook util/ansible/deploy.yml --inventory=util/ansible/hosts --extra-vars "app_env=$APP_ENV"

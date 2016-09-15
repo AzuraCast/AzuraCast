@@ -13,6 +13,7 @@
 
 - name: Install InfluxDB
   apt: pkg="{{ item }}" state=present
+  register: influx_installed
   with_items:
    - influxdb
 

@@ -10,8 +10,6 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class Station extends \App\Doctrine\Entity
 {
-    use Traits\FileUploads;
-
     public function __construct()
     {
         $this->automation_timestamp = 0;

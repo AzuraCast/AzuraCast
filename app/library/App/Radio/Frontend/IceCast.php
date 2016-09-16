@@ -81,21 +81,6 @@ class IceCast extends AdapterAbstract
         return true;
     }
 
-    public function getStreamUrl()
-    {
-        $base_url = Settings::getSetting('base_url');
-        
-        $fe_config = (array)$this->station->frontend_config;
-        $radio_port = $fe_config['port'];
-
-        // Vagrant port-forwarding mode.
-        if (APP_APPLICATION_ENV == 'development' && $radio_port == 8000)
-            $radio_port = 8088;
-
-        /* TODO: Abstract out mountpoint names */
-        return 'http://'.$base_url.':'.$radio_port.'/radio.mp3?played='.time();
-    }
-
     public function read()
     {
         $config = $this->_getConfig();
@@ -214,9 +199,9 @@ class IceCast extends AdapterAbstract
         $this->start();
     }
 
-    public function getListenUrl()
+    public function getStreamUrl()
     {
-        return $this->getPublicUrl().'/radio.mp3';
+        return $this->getPublicUrl().'/radio.mp3?played='.time();
     }
 
     public function getAdminUrl()
@@ -226,10 +211,17 @@ class IceCast extends AdapterAbstract
 
     public function getPublicUrl()
     {
-        $frontend_config = (array)$this->station->frontend_config;
+        $fe_config = (array)$this->station->frontend_config;
+        $radio_port = $fe_config['port'];
+
         $base_url = Settings::getSetting('base_url', 'localhost');
 
-        return 'http://'.$base_url.':'.$frontend_config['port'];
+        // Vagrant port-forwarding mode.
+        if (APP_APPLICATION_ENV == 'development' && $radio_port == 8000)
+            $radio_port = 8088;
+
+        /* TODO: Abstract out mountpoint names */
+        return 'http://'.$base_url.':'.$radio_port;
     }
 
     /*

@@ -25,7 +25,7 @@ class UtilController extends BaseController
                 foreach($stations as $station)
                 {
                     $fa = $station->getFrontendAdapter();
-                    $stream_url = $fa->getListenUrl();
+                    $stream_url = $fa->getStreamUrl();
 
                     $m3u_lines[] = '#EXTINF:' . $i . ',' . $station['name'];
                     $m3u_lines[] = $stream_url;
@@ -86,7 +86,7 @@ class UtilController extends BaseController
                 foreach($stations as $station)
                 {
                     $fa = $station->getFrontendAdapter();
-                    $stream_url = $fa->getListenUrl();
+                    $stream_url = $fa->getStreamUrl();
 
                     $output[] = 'File' . $i . '=' . $stream_url;
                     $output[] = 'Title' . $i . '=' . $station['name'];

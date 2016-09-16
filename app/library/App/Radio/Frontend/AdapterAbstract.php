@@ -76,6 +76,11 @@ class AdapterAbstract
         return '';
     }
 
+    public function getAdminUrl()
+    {
+        return '';
+    }
+
     /* Stub function for the process internal handler. */
     protected function _getNowPlaying(&$np)
     {

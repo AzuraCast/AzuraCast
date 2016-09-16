@@ -15,15 +15,29 @@ class Analytics
 
         // Pull statistics in from influx.
         $influx = $di->get('influx');
-        $daily_stats = $influx->query('SELECT * FROM /1d.*/ WHERE time > now() - 14d', 's');
+
+        $resultset = $influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 14d', [
+            'epoch' => 's',
+        ]);
+
+        $results_raw = $resultset->getSeries();
+        $results = array();
+        foreach($results_raw as $serie)
+        {
+            $points = [];
+            foreach ($serie['values'] as $point)
+                $points[] = array_combine($serie['columns'], $point);
+
+            $results[$serie['name']] = $points;
+        }
 
         $new_records = array();
         $earliest_timestamp = time();
 
-        foreach($daily_stats as $stat_series => $stat_rows)
+        foreach($results as $stat_series => $stat_rows)
         {
             $series_split = explode('.', $stat_series);
-            $station_id = ($series_split[1] == 'all') ? NULL : $series_split[2];
+            $station_id = ($series_split[1] == 'all') ? NULL : $series_split[1];
 
             foreach($stat_rows as $stat_row)
             {

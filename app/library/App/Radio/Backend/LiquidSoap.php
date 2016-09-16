@@ -1,5 +1,5 @@
 <?php
-namespace App\RadioBackend;
+namespace App\Radio\Backend;
 
 class LiquidSoap extends AdapterAbstract
 {

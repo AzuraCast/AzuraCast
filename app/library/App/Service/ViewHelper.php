@@ -1,5 +1,5 @@
 <?php
-namespace App\Phalcon\Service;
+namespace App\Service;
 
 class ViewHelper implements \Phalcon\DI\InjectionAwareInterface
 {

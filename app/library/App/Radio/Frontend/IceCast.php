@@ -1,5 +1,5 @@
 <?php
-namespace App\RadioFrontend;
+namespace App\Radio\Frontend;
 
 use App\Utilities;
 use Entity\Station;
@@ -212,6 +212,24 @@ class IceCast extends AdapterAbstract
     {
         $this->stop();
         $this->start();
+    }
+
+    public function getListenUrl()
+    {
+        return $this->getPublicUrl().'/radio.mp3';
+    }
+
+    public function getAdminUrl()
+    {
+        return $this->getPublicUrl().'/admin/';
+    }
+
+    public function getPublicUrl()
+    {
+        $frontend_config = (array)$this->station->frontend_config;
+        $base_url = Settings::getSetting('base_url', 'localhost');
+
+        return 'http://'.$base_url.':'.$frontend_config['port'];
     }
 
     /*

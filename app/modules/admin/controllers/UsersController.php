@@ -80,7 +80,7 @@ class UsersController extends BaseController
         $user = User::find($id);
 
         if (!($user instanceof User))
-            throw new \App\Exception\DisplayOnly('User not found!');
+            throw new \App\Exception('User not found!');
         
         // Set new identity in Zend_Auth
         $this->auth->masqueradeAsUser($user);

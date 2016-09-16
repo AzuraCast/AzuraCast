@@ -51,11 +51,11 @@ class Config
     public function getFile($config_base)
     {
         if (file_exists($config_base))
-            return new Config\Item(require $config_base);
+            return new \Zend\Config\Config(require $config_base);
         elseif (file_exists($config_base.'.conf.php'))
-            return new Config\Item(require $config_base.'.conf.php');
+            return new \Zend\Config\Config(require $config_base.'.conf.php');
         else
-            return new Config\Item(array());
+            return new \Zend\Config\Config(array());
     }
     
     /**

@@ -1,5 +1,5 @@
 <?php
-namespace App\RadioFrontend;
+namespace App\Radio\Frontend;
 
 use App\Service\Curl;
 use Entity\Station;

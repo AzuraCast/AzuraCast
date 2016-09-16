@@ -1,11 +1,12 @@
 <?php
 namespace Modules\Stations\Controllers;
 
-use \Entity\Station;
+use Entity\Station;
+use Entity\Song;
+use Entity\SongHistory;
 
-use \Entity\Song;
-use \Entity\SongHistory;
-use \Entity\SongVote;
+use Zend\Paginator\Adapter\ArrayAdapter;
+use Zend\Paginator\Paginator;
 
 class IndexController extends BaseController
 {
@@ -225,7 +226,10 @@ class IndexController extends BaseController
         else
         {
             $songs = array_reverse($songs);
-            $pager = new \App\Paginator($songs, $this->getParam('page', 1), 50);
+
+            $pager = new Paginator(new ArrayAdapter((array)$songs));
+            $pager->setItemCountPerPage(50);
+            $pager->setCurrentPageNumber($this->getParam('page', 1));
 
             $this->view->pager = $pager;
         }

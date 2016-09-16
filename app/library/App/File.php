@@ -4,6 +4,8 @@
  */
 
 namespace App;
+use App\Exception;
+
 class File
 {
     // Add a suffix to a file *before* its extension.
@@ -70,38 +72,37 @@ class File
             switch($uploaded_file['error'])
             {
                 case UPLOAD_ERR_INI_SIZE:
-                    throw new \App\Exception\DisplayOnly('File Upload Error: The file you are attempting to upload is larger than allowed (upload_max_filesize).');
-                    break;
+                    throw new Exception('File Upload Error: The file you are attempting to upload is larger than allowed (upload_max_filesize).');
+                break;
                 
                 case UPLOAD_ERR_FORM_SIZE:
-                    throw new \App\Exception\DisplayOnly('File Upload Error: The file you are attempting to upload is larger than allowed (MAX_FILE_SIZE).');
-                    break;
+                    throw new Exception('File Upload Error: The file you are attempting to upload is larger than allowed (MAX_FILE_SIZE).');
+                break;
                     
                 case UPLOAD_ERR_PARTIAL:
-                    throw new \App\Exception\DisplayOnly('File Upload Error: The file you are attempting to upload was only partially uploaded.');
-                    break;
+                    throw new Exception('File Upload Error: The file you are attempting to upload was only partially uploaded.');
+                break;
                 
                 case UPLOAD_ERR_NO_FILE:
-                    throw new \App\Exception\DisplayOnly('File Upload Error: No file was uploaded.');
-                    break;
+                    throw new Exception('File Upload Error: No file was uploaded.');
+                break;
                 
                 case UPLOAD_ERR_NO_TMP_DIR:
-                    throw new \App\Exception\DisplayOnly('File Upload Error: Missing a temporary folder.');
-                    break;
+                    throw new Exception('File Upload Error: Missing a temporary folder.');
+                break;
                 
                 case UPLOAD_ERR_CANT_WRITE:
-                    throw new \App\Exception\DisplayOnly('File Upload Error: Failed to write file to disk.');
-                    break;
+                    throw new Exception('File Upload Error: Failed to write file to disk.');
+                break;
                 
                 case UPLOAD_ERR_EXTENSION:
-                    throw new \App\Exception\DisplayOnly('File Upload Error: Upload stopped by extension.');
-                    break;
+                    throw new Exception('File Upload Error: Upload stopped by extension.');
+                break;
                     
                 default:
-                    throw new \App\Exception\DisplayOnly('File Upload Error: No file was specified.');
-                    break;
+                    throw new Exception('File Upload Error: No file was specified.');
+                break;
             }
-            exit;
         }
         
         if (empty($file_name))
@@ -115,14 +116,9 @@ class File
         $upload_path = self::getFilePath($file_name);
         
         if (move_uploaded_file($uploaded_file['tmp_name'], $upload_path))
-        {
             return $file_name;
-        }
         else
-        {
-            throw new \App\Exception\DisplayOnly('File Upload Error: Could not upload the file requested.');
-            exit;
-        }
+            throw new Exception('File Upload Error: Could not upload the file requested.');
     }
     
     public static function createFileFromData($file_name, $file_data)

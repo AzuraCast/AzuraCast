@@ -116,7 +116,7 @@ class AccountController extends BaseController
         $user = User::getRepository()->findOneBy(array('id' => $id, 'auth_recovery_code' => $code));
 
         if (!($user instanceof User))
-            throw new \App\Exception\DisplayOnly('Invalid ID or recovery code provided!');
+            throw new \App\Exception('Invalid ID or recovery code provided!');
 
         $temp_pw = substr(sha1(mt_rand()), 0, 8);
 

@@ -73,7 +73,7 @@ class View
                 ));
 
                 $compiler = $volt->getCompiler();
-                $compiler->addExtension(new \App\Phalcon\Service\ViewHelper());
+                $compiler->addExtension(new \App\Service\ViewHelper());
 
                 return $volt;
             }

@@ -39,13 +39,19 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']))
 
 // Composer autoload.
 $autoloader = require(APP_INCLUDE_VENDOR . DIRECTORY_SEPARATOR . 'autoload.php');
+$autoloader->add('App', APP_INCLUDE_LIB);
 
 // Save configuration object.
-require(APP_INCLUDE_LIB . '/App/Config.php');
-require(APP_INCLUDE_LIB . '/App/Config/Item.php');
-
 $config = new \App\Config(APP_INCLUDE_BASE.'/config');
 $config->preload(array('application'));
+
+// Add application autoloaders to Composer's autoloader handler.
+$autoload_classes = $config->application->autoload->toArray();
+foreach($autoload_classes['psr0'] as $class_key => $class_dir)
+    $autoloader->add($class_key, $class_dir);
+
+foreach($autoload_classes['psr4'] as $class_key => $class_dir)
+    $autoloader->addPsr4($class_key, $class_dir);
 
 // Set URL constants from configuration.
 $app_cfg = $config->application;
@@ -83,18 +89,11 @@ foreach($modules as $module)
     $phalcon_modules[$module] = ucfirst($module);
 }
 
-$autoload_classes = $config->application->autoload->toArray();
-foreach($autoload_classes['psr0'] as $class_key => $class_dir)
-    $autoloader->add($class_key, $class_dir);
-
-foreach($autoload_classes['psr4'] as $class_key => $class_dir)
-    $autoloader->addPsr4($class_key, $class_dir);
-
 // Set up Dependency Injection
 if (APP_IS_COMMAND_LINE)
-    $di = new \Phalcon\DI\FactoryDefault\CLI;
+    $di = new \Phalcon\Di\FactoryDefault\CLI;
 else
-    $di = new \Phalcon\DI\FactoryDefault;
+    $di = new \Phalcon\Di\FactoryDefault;
 
 // Configs
 $di->setShared('config', $config);
@@ -139,7 +138,7 @@ $di->setShared('em', function() use ($config) {
         $db_conf = $config->application->resources->doctrine->toArray();
         $db_conf['conn'] = $config->db->toArray();
 
-        $em = \App\Phalcon\Service\Doctrine::init($db_conf);
+        $em = \App\Service\Doctrine::init($db_conf);
         return $em;
     }
     catch(\Exception $e)
@@ -247,7 +246,7 @@ $di->setShared('csrf', array(
 ));
 
 // Register view helpers.
-$di->setShared('viewHelper', '\App\Phalcon\Service\ViewHelper');
+$di->setShared('viewHelper', '\App\Service\ViewHelper');
 
 // Register Flash notification service.
 $di->setShared('flash', array(

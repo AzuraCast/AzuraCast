@@ -1,9 +1,9 @@
 <?php
-namespace App\RadioFrontend;
+namespace App\Radio\Frontend;
 
 use Entity\Station;
 
-class ShoutCast2 extends AdapterAbstract
+class ShoutCast1 extends AdapterAbstract
 {
     /* TODO: This class not fully implemented! */
 
@@ -15,17 +15,17 @@ class ShoutCast2 extends AdapterAbstract
         if (empty($return_raw))
             return false;
 
-        $current_data = \App\Export::XmlToArray($return_raw);
-        $song_data = $current_data['SHOUTCASTSERVER'];
+        preg_match("/<body.*>(.*)<\/body>/smU", $return_raw, $return);
+        $parts = explode(",", $return[1], 7);
 
         $np['meta']['status'] = 'online';
-        $np['meta']['bitrate'] = $song_data['BITRATE'];
-        $np['meta']['format'] = $song_data['CONTENT'];
+        $np['meta']['bitrate'] = $parts[5];
+        $np['meta']['format'] = 'audio/mpeg';
 
-        $np['current_song'] = $this->getSongFromString($song_data['SONGTITLE'], '-');
+        $np['current_song'] = $this->getSongFromString($parts[6], ' - ');
 
-        $u_list = (int)$song_data['UNIQUELISTENERS'];
-        $t_list = (int)$song_data['CURRENTLISTENERS'];
+        $u_list = (int)$parts[4];
+        $t_list = (int)$parts[0];
         $np['listeners'] = array(
             'current'       => $this->getListenerCount($u_list, $t_list),
             'unique'        => $u_list,

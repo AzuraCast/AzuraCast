@@ -42,7 +42,6 @@ $config = array(
     
     'autoload'          => array(
         'psr0'      => array(
-            'App'       => APP_INCLUDE_LIB,
             'Entity'    => APP_INCLUDE_MODELS,
         ),
         'psr4'      => array(

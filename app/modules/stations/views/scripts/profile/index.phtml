@@ -78,12 +78,12 @@ $manual = true;
             <div class="card-body card-padding">
                 <dl>
                     <dt>Stream Public URL:</dt>
-                    <dd><a href="<?=$frontend_url ?>/radio.mp3"><?=$frontend_url ?>/radio.mp3</a></dd>
+                    <dd><a href="<?=$frontend_adapter->getListenUrl() ?>"><?=$frontend_adapter->getListenUrl() ?></a></dd>
                 </dl>
 
                 <dl>
                     <dt>Administration URL:</dt>
-                    <dd><a href="<?=$frontend_url ?>/admin/"><?=$frontend_url ?>/admin/</a></dd>
+                    <dd><a href="<?=$frontend_adapter->getAdminUrl() ?>"><?=$frontend_adapter->getAdminUrl() ?></a></dd>
 
                     <dt>Administrator Password:</dt>
                     <dd><?=$frontend_config['admin_pw'] ?></dd>

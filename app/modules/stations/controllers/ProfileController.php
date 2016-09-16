@@ -11,18 +11,17 @@ class ProfileController extends BaseController
         // Backend controller.
         $ba = $this->station->getBackendAdapter();
 
+        $this->view->backend_adapter = $ba;
         $this->view->backend_type = $this->station->backend_type;
         $this->view->backend_config = (array)$this->station->backend_config;
         $this->view->backend_is_running = $ba->isRunning();
 
-        $base_url = Settings::getSetting('base_url', 'localhost');
-
         // Frontend controller.
         $fa = $this->station->getFrontendAdapter();
 
+        $this->view->frontend_adapter = $fa;
         $this->view->frontend_type = $this->station->frontend_type;
         $this->view->frontend_config = $frontend_config = (array)$this->station->frontend_config;
-        $this->view->frontend_url = 'http://'.$base_url.':'.$frontend_config['port'];
         $this->view->frontend_is_running = $fa->isRunning();
 
         // Statistics about backend playback.

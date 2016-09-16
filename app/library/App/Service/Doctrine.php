@@ -1,5 +1,5 @@
 <?php
-namespace App\Phalcon\Service;
+namespace App\Service;
 
 use \Doctrine\Common\ClassLoader;
 use \Doctrine\DBAL\Types\Type;
@@ -14,8 +14,8 @@ class Doctrine
         // Register custom data types.
         Type::addType('json', 'App\Doctrine\Type\Json');
         Type::addType('unixdatetime', 'App\Doctrine\Type\UnixDateTime');
-        Type::addtype('binary_uuid', 'App\Doctrine\Type\BinaryUuid');
-        Type::addtype('ip_integer', 'App\Doctrine\Type\IpAddrInteger');
+        Type::addType('binary_uuid', 'App\Doctrine\Type\BinaryUuid');
+        Type::addType('ip_integer', 'App\Doctrine\Type\IpAddrInteger');
 
         Type::overrideType('array', 'App\Doctrine\Type\SoftArray');
         Type::overrideType('datetime', 'App\Doctrine\Type\UTCDateTime');
@@ -81,11 +81,8 @@ class Doctrine
         $em->getFilters()->enable("softdelete");
 
         // Workaround to allow ENUM types to exist as strings in Doctrine.
-        $platform = $em->getconnection()->getDatabasePlatform();
+        $platform = $em->getConnection()->getDatabasePlatform();
         $platform->registerDoctrineTypeMapping('enum', 'string');
-
-        // Try the connection before rendering the page.
-
 
         return $em;
     }

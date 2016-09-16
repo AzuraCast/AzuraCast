@@ -62,7 +62,7 @@ class Station extends \App\Doctrine\Entity
     protected $frontend_config;
 
     /**
-     * @return \App\RadioFrontend\AdapterAbstract
+     * @return \App\Radio\Frontend\AdapterAbstract
      * @throws \Exception
      */
     public function getFrontendAdapter()
@@ -83,7 +83,7 @@ class Station extends \App\Doctrine\Entity
     protected $backend_config;
 
     /**
-     * @return \App\RadioBackend\AdapterAbstract
+     * @return \App\Radio\Backend\AdapterAbstract
      * @throws \Exception
      */
     public function getBackendAdapter()
@@ -368,16 +368,16 @@ class Station extends \App\Doctrine\Entity
             'adapters' => array(
                 'icecast' => array(
                     'name'      => 'IceCast v2.4 or Above',
-                    'class'     => '\App\RadioFrontend\IceCast',
+                    'class'     => '\App\Radio\Frontend\IceCast',
                 ),
                 /*
                 'shoutcast1' => array(
                     'name'      => 'ShoutCast 1',
-                    'class'     => '\App\RadioFrontend\ShoutCast1',
+                    'class'     => '\App\Radio\Frontend\ShoutCast1',
                 ),
                 'shoutcast2' => array(
                     'name'      => 'ShoutCast 2',
-                    'class'     => '\App\RadioFrontend\ShoutCast2',
+                    'class'     => '\App\Radio\Frontend\ShoutCast2',
                 ),
                 */
             ),
@@ -391,7 +391,7 @@ class Station extends \App\Doctrine\Entity
             'adapters' => array(
                 'liquidsoap' => array(
                     'name'      => 'LiquidSoap',
-                    'class'     => '\App\RadioBackend\LiquidSoap',
+                    'class'     => '\App\Radio\Backend\LiquidSoap',
                 ),
             ),
         );

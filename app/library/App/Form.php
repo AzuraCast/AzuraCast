@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use Zend\Config\Config;
+
 /**
  * A helper class that extends the Phalcon Form engine and allows flatfile configuration form management.
  *
@@ -32,7 +34,7 @@ class Form extends \Phalcon\Forms\Form
     {
         parent::__construct();
 
-        if ($options instanceof \App\Config\Item)
+        if ($options instanceof Config)
             $options = $options->toArray();
 
         $this->options = $options;

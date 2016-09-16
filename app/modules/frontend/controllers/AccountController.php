@@ -29,6 +29,9 @@ class AccountController extends BaseController
 
     public function loginAction()
     {
+        if ($this->auth->isLoggedIn())
+            return $this->redirectHome();
+
         if (!$_POST)
             $this->storeReferrer('login', false);
 
@@ -38,8 +41,6 @@ class AccountController extends BaseController
 
         if (!empty($_POST) && $form->isValid($_POST))
         {
-            $data = $form->getValues();
-
             $login_success = $this->auth->authenticate($form->getValues());
 
             if($login_success)

@@ -14,42 +14,34 @@ header("Content-type: text/html; charset=utf-8");
     else
         $page_title = $config->application->name;
 
-    $this->tag->setTitle($page_title);
     if (APP_APPLICATION_ENV != "production")
-        $this->tag->prependTitle('('.ucfirst(APP_APPLICATION_ENV).') ');
-
-    echo $this->tag->getTitle();
-
-    // Set up CSS includes.
-    $this->assets->collection('header_css')
-        ->addCss('vendors/bower_components/animate.css/animate.min.css')
-        ->addCss('vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css')
-        ->addCss('vendors/bower_components/components-font-awesome/css/font-awesome.min.css')
-        ->addCss('css/app.css');
-
-    // Output header CSS.
-    $this->assets->outputCss('header_css');
-
-    // Set up JS includes.
-    $this->assets->collection('footer_js')
-        ->addJs('vendors/bower_components/jquery/dist/jquery.min.js')
-        ->addJs('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js')
-        ->addJs('vendors/bower_components/Waves/dist/waves.min.js')
-        ->addJs('js/functions.js');
+        $page_title = '('.ucfirst(APP_APPLICATION_ENV).') '.$page_title;
     ?>
+    <title><?=$page_title ?></title>
+
+    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/animate.css/animate.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/components-font-awesome/css/font-awesome.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?=$url->content('css/app.css') ?>">
+
+    <?=$this->section('custom_css') ?>
+
+    <script type="text/javascript" src="<?=$url->content('vendors/bower_components/jquery/dist/jquery.min.js') ?>"></script>
+    <script type="text/javascript" src="<?=$url->content('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
+
     <script>
-    var APP_AppEnv = '<?=(defined('APP_APPLICATION_ENV') ? APP_APPLICATION_ENV : '') ?>';
-    var APP_BaseUrl = '<?php echo rtrim($url->get(''), '/'); ?>';
-    var APP_ContentPath = '<?php echo $url->content(''); ?>';
+        var APP_AppEnv = '<?=(defined('APP_APPLICATION_ENV') ? APP_APPLICATION_ENV : '') ?>';
+        var APP_BaseUrl = '<?=$url->named('home') ?>';
+        var APP_ContentPath = '<?=$url->content('') ?>';
     </script>
 </head>
 
 <body class="<?=$page_class ?>">
+<?=$this->section('content') ?>
 
-<?php echo $this->getContent(); ?>
+<?=$this->section('custom_js') ?>
 
-<?
-echo $this->assets->outputJs('footer_js');
-?>
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/Waves/dist/waves.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('js/functions.js') ?>"></script>
 </body>
 </html>

@@ -79,6 +79,22 @@ $di['callableResolver'] = function($di) {
     return new \App\Mvc\Resolver($di);
 };
 
+$di['errorHandler'] = function($di) {
+    return function ($request, $response, $exception) use ($di) {
+        return \App\Mvc\ErrorHandler::handle($di, $request, $response, $exception);
+    };
+};
+
+$di['notFoundHandler'] = function ($di) {
+    return function ($request, $response) use ($di) {
+        $view = $di['view'];
+        $template = $view->render('system/error_pagenotfound');
+
+        $response->getBody()->write($template);
+        return $response;
+    };
+};
+
 // Loop through modules to find configuration files.
 $modules = array_diff(scandir(APP_INCLUDE_MODULES), ['..', '.']);
 $module_config = array();

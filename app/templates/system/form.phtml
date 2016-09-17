@@ -1,0 +1,9 @@
+<?php
+$this->layout('main');
+?>
+
+<?php if ($render_mode == 'edit'): ?>
+    <?=$form->render() ?>
+<?php else: ?>
+    <?=$form->renderView() ?>
+<?php endif; ?>

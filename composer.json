@@ -4,18 +4,18 @@
   "require": {
     "slim/slim": "^3.0",
     "league/plates": "^3.1",
+    "filp/whoops": "1.*",
+    "doctrine/orm": "~2.5",
+    "tedivm/stash": "0.14.*",
+
     "zendframework/zend-paginator": "^2.7",
     "zendframework/zend-http": "^2.5",
     "zendframework/zend-servicemanager": "^3.1",
     "zendframework/zend-config": "^2.6",
 
     "guzzlehttp/guzzle": ">6.0",
-    "doctrine/orm": "~2.5",
-    "tedivm/stash": "0.14.*",
-    "filp/whoops": "1.*",
     "electrolinux/phpquery": "0.9.6",
     "nette/mail": "2.3.0",
-
     "james-heinrich/getid3": "~1.9",
     "influxdb/influxdb-php": "~1.4.1"
   },

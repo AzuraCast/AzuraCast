@@ -1,7 +1,4 @@
-<?php
-$title = '404: Page Not Found';
-$page_class = 'four-zero-content';
-?>
+<?php $this->layout('minimal', ['title' => '404: Page Not Found', 'page_class' => 'four-zero-content']) ?>
 
 <div class="four-zero">
     <h2>404</h2>
@@ -9,6 +6,6 @@ $page_class = 'four-zero-content';
 
     <footer>
         <a href="javascript:history.back()"><i class="zmdi zmdi-arrow-back"></i></a>
-        <a href="<?=$url->route([]) ?>"><i class="zmdi zmdi-home"></i></a>
+        <a href="<?=$url->named('home') ?>"><i class="zmdi zmdi-home"></i></a>
     </footer>
 </div>

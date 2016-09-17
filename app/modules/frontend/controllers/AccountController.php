@@ -35,8 +35,6 @@ class AccountController extends BaseController
         if (!$_POST)
             $this->storeReferrer('login', false);
 
-        $this->view->setLayout('minimal');
-
         $form = new \App\Form($this->current_module_config->forms->login);
 
         if (!empty($_POST) && $form->isValid($_POST))
@@ -51,11 +49,7 @@ class AccountController extends BaseController
 
                 $url = $this->di->get('url');
 
-                if ($this->acl->isAllowed('view administration'))
-                    $default_url = $url->route(array('module' => 'admin'));
-                else
-                    $default_url = $url->route(array('module' => 'default'));
-
+                $default_url = $url->route(array('module' => 'default'));
                 return $this->redirectToStoredReferrer('login', $default_url);
             }
 

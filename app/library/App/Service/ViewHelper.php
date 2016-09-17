@@ -1,20 +1,15 @@
 <?php
 namespace App\Service;
 
-class ViewHelper implements \Phalcon\DI\InjectionAwareInterface
-{
-    /**
-     * Standalone handling of viewHelper calls.
-     */
+use Interop\Container\ContainerInterface;
 
+class ViewHelper
+{
     protected $_di;
-    public function setDi(\Phalcon\DiInterface $di)
+
+    public function __construct(ContainerInterface $di)
     {
         $this->_di = $di;
-    }
-    public function getDi()
-    {
-        return $this->_di;
     }
 
     public function __call($function, $args)

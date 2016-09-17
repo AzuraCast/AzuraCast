@@ -1,37 +1,27 @@
 <?php
 namespace App;
 
-class Url extends \Phalcon\Mvc\Url
+use Interop\Container\ContainerInterface;
+
+class Url
 {
-    /**
-     * @var \App\Config
-     */
-    protected $_config;
+    /** @var ContainerInterface */
+    protected $di;
 
-    /**
-     * @var \Phalcon\Http\Request
-     */
-    protected $_request;
+    /** @var \App\Config */
+    protected $config;
 
-    /**
-     * @var \Phalcon\Mvc\Dispatcher
-     */
-    protected $_dispatcher;
+    /** @var bool Whether to include the domain in the URLs generated. */
+    protected $include_domain = false;
 
-    /**
-     * @var bool Whether to include the domain in the URLs generated.
-     */
-    protected $_include_domain = false;
-
-
-    public function __construct(\App\Config $config, \Phalcon\Http\Request $request, \Phalcon\Dispatcher $dispatcher)
+    public function __construct(ContainerInterface $di)
     {
-        $this->_config = $config;
-        $this->_request = $request;
-        $this->_dispatcher = $dispatcher;
+        $this->di = $di;
+        $this->config = $di['config'];
 
-        $this->setBaseUri($config->application->base_uri);
-        $this->setStaticBaseUri($config->application->static_uri);
+        /*
+        $this->setBaseUri($this->config->application->base_uri);
+        */
     }
 
     /**
@@ -41,7 +31,7 @@ class Url extends \Phalcon\Mvc\Url
      */
     public function current($absolute = false)
     {
-        return $this->getUrl($this->_request->getURI(), $absolute);
+        return $this->getUrl($_SERVER['REQUEST_URI'], $absolute);
     }
 
     /**
@@ -60,7 +50,7 @@ class Url extends \Phalcon\Mvc\Url
      */
     public function referrer($default_url = null)
     {
-        return $this->getUrl($this->_request->getHTTPReferer());
+        return $this->getUrl($_SERVER['HTTP_REFERER']);
     }
 
     /**
@@ -70,7 +60,8 @@ class Url extends \Phalcon\Mvc\Url
      */
     public function baseUrl($include_host = false)
     {
-        $uri = $this->get('');
+        $router = $this->di['router'];
+        $uri = $router->pathFor('home');
 
         if ($include_host)
             return $this->addSchemePrefix($uri);
@@ -86,7 +77,7 @@ class Url extends \Phalcon\Mvc\Url
      */
     public function content($file_name = NULL)
     {
-        return $this->getStatic($file_name);
+        return $this->config->application->static_uri.$file_name;
     }
 
     /**
@@ -97,15 +88,13 @@ class Url extends \Phalcon\Mvc\Url
      */
     public function route($path_info = array(), $absolute = null)
     {
-        $router_config = $this->_config->routes->toArray();
+        $router = $this->di['router'];
 
-        $url_separator = '/';
-        $default_module = $router_config['default_module'];
-
+        $default_module = 'frontend';
         $components = array(
             'module'    => $default_module,
-            'controller' => $router_config['default_controller'],
-            'action'    => $router_config['default_action'],
+            'controller' => 'index',
+            'action'    => 'index',
         );
 
         if (isset($path_info['module']))
@@ -135,10 +124,11 @@ class Url extends \Phalcon\Mvc\Url
 
         // Special exception for homepage.
         if ($components['module'] == $default_module &&
-            $components['controller'] == $router_config['default_controller'] &&
-            $components['action'] == $router_config['default_action'] &&
-            empty($path_info)) {
-            return $this->get('');
+            $components['controller'] == 'index' &&
+            $components['action'] == 'index' &&
+            empty($path_info))
+        {
+            return $router->pathFor('home');
         }
 
         // Otherwise compile URL using a uniform format.
@@ -150,19 +140,15 @@ class Url extends \Phalcon\Mvc\Url
         $url_parts[] = $components['controller'];
         $url_parts[] = $components['action'];
 
-        $path_info = array_filter($path_info);
+        $router_path = implode(':', $url_parts);
+        return $this->getUrl($router->pathFor($router_path, $path_info), 'absolute');
+    }
 
-        if (count($path_info) > 0)
-        {
-            foreach ((array)$path_info as $param_key => $param_value)
-            {
-                $url_parts[] = urlencode($param_key);
-                $url_parts[] = urlencode($param_value);
-            }
-        }
+    protected $current_route;
 
-        $url_full = implode($url_separator, $url_parts);
-        return $this->getUrl($this->get($url_full), $absolute);
+    public function setCurrentRoute($route_info)
+    {
+        $this->current_route = $route_info;
     }
 
     /**
@@ -173,12 +159,7 @@ class Url extends \Phalcon\Mvc\Url
      */
     public function routeFromHere($path_info)
     {
-        $new_path = array(
-            'module'        => $this->_dispatcher->getModuleName(),
-            'controller'    => $this->_dispatcher->getControllerName(),
-            'action'        => $this->_dispatcher->getActionName(),
-            'params'        => (array)$this->_dispatcher->getParams(),
-        );
+        $new_path = (array)$this->current_route;
 
         if (isset($path_info['module']))
         {
@@ -220,12 +201,12 @@ class Url extends \Phalcon\Mvc\Url
 
     public function getSchemePrefixSetting()
     {
-        return $this->_include_domain;
+        return $this->include_domain;
     }
 
     public function forceSchemePrefix($new_value = true)
     {
-        $this->_include_domain = $new_value;
+        $this->include_domain = $new_value;
     }
 
     public function addSchemePrefix($url_raw)
@@ -240,18 +221,18 @@ class Url extends \Phalcon\Mvc\Url
             return $url_raw;
 
         // Retrieve domain from either MVC controller or config file.
-        if ($this->_include_domain || $absolute) {
+        if ($this->include_domain || $absolute) {
 
             $url_domain = \Entity\Settings::getSetting('base_url', '');
 
             if (empty($url_domain))
-                $url_domain = $this->_config->application->base_url;
+                $url_domain = $this->config->application->base_url;
             else
                 $url_domain = ((APP_IS_SECURE) ? 'https://' : 'http://') . $url_domain;
 
             if (empty($url_domain))
             {
-                $http_host = trim($this->_request->getHttpHost(), ':');
+                $http_host = trim($_SERVER['HTTP_HOST'], ':');
 
                 if (!empty($http_host))
                     $url_domain = ((APP_IS_SECURE) ? 'https://' : 'http://') . $http_host;
@@ -272,10 +253,8 @@ class Url extends \Phalcon\Mvc\Url
      */
     public function named($route_name, $route_params = array())
     {
-        $route_params = (array)$route_params;
-        $route_params['for'] = $route_name;
-
-        return $this->get($route_params);
+        $router = $this->di['router'];
+        return $router->pathFor($route_name, $route_params);
     }
     
     /**

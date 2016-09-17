@@ -5,7 +5,7 @@ class Analytics
 {
     public static function sync()
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $em = $di->get('em');
 
         // Clear out any non-daily statistics.

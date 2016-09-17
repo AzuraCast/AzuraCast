@@ -2,6 +2,7 @@
 $title = 'Dashboard';
 $manual = true;
 
+/*
 $this->assets->collection('custom_js')
     ->addJs('//code.highcharts.com/highcharts.js', false)
     ->addJs('//code.highcharts.com/highcharts-more.js', false)
@@ -11,6 +12,7 @@ $this->assets->collection('custom_js')
     ->addJs('vendors/bower_components/jPlayer/dist/jplayer/jquery.jplayer.min.js')
     ->addJs('vendors/bower_components/store-js/store.min.js')
     ->addJs('js/radio.js');
+*/
 
 // ->addJs('vendor/moment/moment.js');
 ?>
@@ -48,7 +50,7 @@ $this->assets->collection('custom_js')
             <div class="card-header ch-alt">
                 <h2>Station Overview</h2>
 
-                <a class="btn bgm-blue btn-float" href="<?=$this->url->route(['module' => 'admin', 'controller' => 'stations', 'action' => 'edit']) ?>"><i class="zmdi zmdi-plus"></i></a>
+                <a class="btn bgm-blue btn-float" href="<?=$url->route(['module' => 'admin', 'controller' => 'stations', 'action' => 'edit']) ?>"><i class="zmdi zmdi-plus"></i></a>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -87,7 +89,7 @@ $this->assets->collection('custom_js')
                                 <span class="nowplaying-artist">Song Artist</span>
                             </td>
                             <td>
-                                <a class="btn btn-primary" href="<?=$this->url->route(['module' => 'stations', 'station' => $row->id]) ?>">Manage</a>
+                                <a class="btn btn-primary" href="<?=$url->route(['module' => 'stations', 'station' => $row->id]) ?>">Manage</a>
                             </td>
                         </tr>
                     <? endforeach; ?>
@@ -183,7 +185,7 @@ $(function () {
 });
 
 function nowPlaying() {
-    $.getJSON('<?=$this->url->route(['module' => 'api', 'controller' => 'nowplaying']) ?>', {}, function(data) {
+    $.getJSON('<?=$url->route(['module' => 'api', 'controller' => 'nowplaying']) ?>', {}, function(data) {
         $.each(data.result, function(i, row) {
             var station_row = $('#station_'+row.station.id);
 

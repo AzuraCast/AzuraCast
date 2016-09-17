@@ -3,7 +3,7 @@ namespace Modules\Api\Controllers;
 
 use Entity\ApiKey;
 
-class BaseController extends \App\Phalcon\Controller
+class BaseController extends \App\Mvc\Controller
 {
     public function permissions()
     {

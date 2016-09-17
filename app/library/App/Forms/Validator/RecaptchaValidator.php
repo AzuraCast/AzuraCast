@@ -11,7 +11,7 @@ class RecaptchaValidator extends Validator implements ValidatorInterface
 
     public function __construct()
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $config = $di->get('config');
         $apis_config = $config->apis->toArray();
 

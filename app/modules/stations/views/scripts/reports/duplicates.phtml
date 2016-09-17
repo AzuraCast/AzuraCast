@@ -37,7 +37,7 @@ $manual = true;
                 <? foreach($dupe_row as $media_row): ?>
                     <tr class="input">
                         <td>
-                            <a class="btn btn-sm btn-danger" href="<?=$this->url->routeFromHere(['action' => 'deletedupe', 'media_id' => $media_row['id']]) ?>">Delete</a>
+                            <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(['action' => 'deletedupe', 'media_id' => $media_row['id']]) ?>">Delete</a>
                         </td>
                         <td>
                             <big><?=$media_row['song']['artist'] ?> - <?=$media_row['song']['title'] ?></big><br>

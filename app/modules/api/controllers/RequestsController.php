@@ -57,18 +57,16 @@ class RequestsController extends BaseController
 
     protected function _getStation()
     {
-        if ($this->hasParam('station'))
-        {
-            $record = Station::findByShortCode($this->getParam('station'));
-        }
-        elseif ($this->hasParam('id'))
+        $station = $this->getParam('station');
+
+        if (is_numeric($station))
         {
             $id = (int)$this->getParam('id');
             $record = Station::find($id);
         }
         else
         {
-            return null;
+            $record = Station::findByShortCode($this->getParam('station'));
         }
 
         if (!($record instanceof Station) || $record->deleted_at)

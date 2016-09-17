@@ -14,7 +14,7 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
 
     public function __construct()
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $cache_driver = $di['cache_driver'];
 
         $pool = new \Stash\Pool($cache_driver);

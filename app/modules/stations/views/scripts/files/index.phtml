@@ -113,13 +113,13 @@ $(function() {
             iconRefresh: 'zmdi-refresh',
             iconUp: 'zmdi-sort-amount-asc'
         },
-        url: "<?=$this->url->routeFromHere(['action' => 'list']) ?>",
+        url: "<?=$url->routeFromHere(['action' => 'list']) ?>",
         post: function() {
             return { 'file': $current_dir };
         },
         formatters: {
             "playable": function(column, row) {
-                var $url = row.is_dir ? '#' + row.path : '<?=$this->url->routeFromHere(['action' => 'download']) ?>?file='+encodeURIComponent(row.path);
+                var $url = row.is_dir ? '#' + row.path : '<?=$url->routeFromHere(['action' => 'download']) ?>?file='+encodeURIComponent(row.path);
                 var $icon = '';
 
                 if (row.media_is_playable)
@@ -155,7 +155,7 @@ $(function() {
         var hashval = window.location.hash.substr(1);
         var $dir = $(this).find('[name=name]');
 
-        $dir.val().length && $.post('<?=$this->url->routeFromHere(['action' => 'mkdir']) ?>',{
+        $dir.val().length && $.post('<?=$url->routeFromHere(['action' => 'mkdir']) ?>',{
             name: $dir.val(),
             xsrf: XSRF,
             file: hashval
@@ -179,7 +179,7 @@ $(function() {
 
         console.log($files);
 
-        $files.length && $.post('<?=$this->url->routeFromHere(['action' => 'batch']) ?>',{
+        $files.length && $.post('<?=$url->routeFromHere(['action' => 'batch']) ?>',{
             'do': $(this).data('action'),
             'files': $files.join('|'),
             'xsrf': XSRF,
@@ -241,7 +241,7 @@ $(function() {
         fd.append('xsrf',XSRF);
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '<?=$this->url->routeFromHere(['action' => 'upload']) ?>');
+        xhr.open('POST', '<?=$url->routeFromHere(['action' => 'upload']) ?>');
         xhr.onload = function() {
             $row.remove();
             list();

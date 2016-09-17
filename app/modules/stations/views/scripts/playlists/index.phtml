@@ -11,7 +11,7 @@ $manual = true;
     <div class="card-header ch-alt">
         <h2>Station Playlists</h2>
 
-        <a class="btn bgm-blue btn-float" href="<?=$this->url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -35,8 +35,8 @@ $manual = true;
             <? foreach($playlists as $row): ?>
                 <tr class="vertical-align-middle">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$this->url->routeFromHere(array('action' => 'edit', 'id' => $row['id'])) ?>">Edit</a>
-                        <a class="btn btn-sm btn-danger" href="<?=$this->url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])) ?>">Delete</a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $row['id'])) ?>">Edit</a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])) ?>">Delete</a>
                     </td>
                     <td>
                         <big><?=$row['name'] ?></big>

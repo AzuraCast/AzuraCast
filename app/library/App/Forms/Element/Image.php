@@ -10,7 +10,7 @@ class Image extends File
 
         $file_rows = array();
         $i = 1;
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
 
         foreach((array)$this->_previous_value as $file)
         {

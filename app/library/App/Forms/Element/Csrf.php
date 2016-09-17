@@ -7,7 +7,7 @@ class Csrf extends \Phalcon\Forms\Element\Hidden implements \Phalcon\Forms\Eleme
 
     public function __construct($name, $attributes = null)
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $this->_csrf = $di['csrf'];
 
         parent::__construct($name, $attributes);

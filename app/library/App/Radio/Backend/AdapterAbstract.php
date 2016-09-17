@@ -54,7 +54,7 @@ class AdapterAbstract
 
         if (!APP_IS_COMMAND_LINE)
         {
-            $di = \Phalcon\Di::getDefault();
+            $di = $GLOBALS['di'];
             $flash = $di->get('flash');
 
             $flash->addMessage('<b>Radio Backend:</b><br>'.$message, 'info', true);

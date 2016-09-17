@@ -3,7 +3,7 @@
  * Profile Form
  */
 
-$di = \Phalcon\Di::getDefault();
+$di = $GLOBALS['di'];
 $config = $di->get('config');
 
 $general_config = $config->general->toArray();

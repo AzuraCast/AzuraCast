@@ -15,7 +15,7 @@ class View
     public static function getView($options = array(), \Phalcon\DiInterface $di = null)
     {
         if ($di == null)
-            $di = \Phalcon\Di::getDefault();
+            $di = $GLOBALS['di'];
 
         $defaults = array(
             'base_dir'      => APP_INCLUDE_BASE.'/',

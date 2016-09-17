@@ -15,10 +15,10 @@ $manual = true;
             <h2>All Users</h2>
         <? endif; ?>
 
-        <a class="btn bgm-blue btn-float" href="<?=$this->url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div id="data-table-basic-header" class="bootgrid-header container-fluid">
-        <?=$this->viewHelper->paginate($pager) ?>
+        <?=$viewHelper->paginate($pager) ?>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -38,11 +38,11 @@ $manual = true;
             <? foreach($pager as $user): ?>
                 <tr class="input">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$this->url->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)) ?>">Log In</a>
-                        <a class="btn btn-sm btn-default" href="<?=$this->url->routeFromHere(array('action' => 'edit', 'id' => $user->id)) ?>">Edit</a>
-                        <a class="btn btn-sm btn-danger" href="<?=$this->url->routeFromHere(array('action' => 'delete', 'id' => $user->id)) ?>">Delete</a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)) ?>">Log In</a>
+                        <a class="btn btn-sm btn-default" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $user->id)) ?>">Edit</a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $user->id)) ?>">Delete</a>
                     </td>
-                    <td><?=$this->viewHelper->mailto($user->email) ?></td>
+                    <td><?=$viewHelper->mailto($user->email) ?></td>
                     <td>
                         <small>
                             <?

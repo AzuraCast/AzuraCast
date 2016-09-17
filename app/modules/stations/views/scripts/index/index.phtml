@@ -30,7 +30,7 @@ $(function () {
                 <h2>Listeners By Day</h2>
             </div>
             <div class="card-body card-padding-sm">
-                <?=$this->viewHelper->renderHere('index-dailystats') ?>
+                <?=$viewHelper->renderHere('index-dailystats') ?>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@ $(function () {
                 <h2>Listeners by Hour of Day</h2>
             </div>
             <div class="card-body card-padding-sm">
-                <?=$this->viewHelper->renderHere('index-hourlystats') ?>
+                <?=$viewHelper->renderHere('index-hourlystats') ?>
             </div>
         </div>
     </div>
@@ -53,7 +53,7 @@ $(function () {
                 <h2>Listeners by Day of Week</h2>
             </div>
             <div class="card-body card-padding-sm">
-                <?=$this->viewHelper->renderHere('index-dayofweek') ?>
+                <?=$viewHelper->renderHere('index-dayofweek') ?>
             </div>
         </div>
     </div>
@@ -91,7 +91,7 @@ $(function () {
                                 <? else: ?>
                                     <?=$song_row['song']['text'] ?>
                                 <? endif; ?>
-                                <!-- <a href="<?=$this->url->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>"> </a> -->
+                                <!-- <a href="<?=$url->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>"> </a> -->
                             </td>
                         </tr>
                     <? endforeach; ?>
@@ -131,7 +131,7 @@ $(function () {
                                 <? else: ?>
                                     <?=$song_row['song']['text'] ?>
                                 <? endif; ?>
-                                <!--  <a href="<?=$this->url->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>"> </a> -->
+                                <!--  <a href="<?=$url->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>"> </a> -->
                             </td>
                         </tr>
                     <? endforeach; ?>

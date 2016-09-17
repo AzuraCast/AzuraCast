@@ -12,7 +12,7 @@ $manual = true;
         <div class="card">
             <div class="card-header ch-alt">
                 <h2>Basic Profile</h2>
-                <a class="btn bgm-blue btn-float" title="Edit Profile" href="<?=$this->url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-edit"></i></a>
+                <a class="btn bgm-blue btn-float" title="Edit Profile" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-edit"></i></a>
             </div>
             <div class="card-body card-padding">
                 <dl>
@@ -50,7 +50,7 @@ $manual = true;
             <div class="card-body card-padding">
                 <? if ($station->enable_streamers): ?>
                     <p>Support for live streamers / DJs is currently <b>enabled</b> for this station. Edit your profile above to enable it.</p>
-                    <p>Manage streamer accounts <a href="<?=$this->url->routeFromHere(['controller' => 'streamers']) ?>">on the Streamers / DJ Accounts page</a>.</p>
+                    <p>Manage streamer accounts <a href="<?=$url->routeFromHere(['controller' => 'streamers']) ?>">on the Streamers / DJ Accounts page</a>.</p>
                 <? else: ?>
                     <p>Support for live streamers / DJs is currently <b>disabled</b> for this station.</p>
                     <p>Only the AutoDJ (based on your uploaded media and playlists) will be able to play on the air.</p>
@@ -69,7 +69,7 @@ $manual = true;
 
                 <ul class="actions">
                     <li>
-                        <a href="<?=$this->url->routeFromHere(['action' => 'rebootfrontend']) ?>" title="Restart Service">
+                        <a href="<?=$url->routeFromHere(['action' => 'rebootfrontend']) ?>" title="Restart Service">
                             <i class="zmdi zmdi-refresh-alt"></i>
                         </a>
                     </li>
@@ -105,7 +105,7 @@ $manual = true;
 
                 <ul class="actions">
                     <li>
-                        <a href="<?=$this->url->routeFromHere(['action' => 'rebootbackend']) ?>" title="Restart Service">
+                        <a href="<?=$url->routeFromHere(['action' => 'rebootbackend']) ?>" title="Restart Service">
                             <i class="zmdi zmdi-refresh-alt"></i>
                         </a>
                     </li>
@@ -114,7 +114,7 @@ $manual = true;
             <div class="card-body card-padding">
                 <p>LiquidSoap is currently shuffling from <b><?=$num_songs ?> uploaded songs</b> in <b><?=$num_playlists ?> playlists</b>.</p>
 
-                <a class="btn btn-primary" href="<?=$this->url->routeFromHere(['action' => 'backendskip']) ?>">Skip Current Song</a>
+                <a class="btn btn-primary" href="<?=$url->routeFromHere(['action' => 'backendskip']) ?>">Skip Current Song</a>
             </div>
         </div>
         <? endif; ?>

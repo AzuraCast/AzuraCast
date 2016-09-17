@@ -89,7 +89,7 @@ foreach($panels as $sidebar_category => &$sidebar_items)
                     <?=$sync_info['name'] ?>
                     <small><?=implode(', ', $sync_info['contents']) ?></small>
                 </h2>
-                <a class="btn bgm-blue btn-float" href="<?=$this->url->routeFromHere(array('action' => 'sync', 'type' => $sync_key)) ?>" title="Run Manually"><i class="zmdi zmdi-mail-send"></i></a>
+                <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'sync', 'type' => $sync_key)) ?>" title="Run Manually"><i class="zmdi zmdi-mail-send"></i></a>
             </div>
             <div class="card-body card-padding">
                 <p><?=date('F j, Y g:ia', $sync_info['latest']) ?><br><small><?=$sync_info['diff_text'] ?> ago</small></p>

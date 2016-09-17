@@ -2,6 +2,8 @@
   "name": "slvreagle23/azuracast",
   "description": "The AzuraCast standalone radio station management tool.",
   "require": {
+    "slim/slim": "^3.0",
+    "league/plates": "^3.1",
     "zendframework/zend-paginator": "^2.7",
     "zendframework/zend-http": "^2.5",
     "zendframework/zend-servicemanager": "^3.1",

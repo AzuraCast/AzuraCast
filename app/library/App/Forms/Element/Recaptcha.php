@@ -9,7 +9,7 @@ class Recaptcha extends \Phalcon\Forms\Element implements \Phalcon\Forms\Element
     {
         parent::__construct($name, $attributes);
 
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $config = $di->get('config');
         $apis_config = $config->apis->toArray();
 

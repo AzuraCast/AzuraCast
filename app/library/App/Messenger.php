@@ -20,7 +20,7 @@ class Messenger
      */
     public static function send($message_options)
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $config = $di->get('config');
         
         $default_options = array(
@@ -89,7 +89,7 @@ class Messenger
             ), $args[5]);
         }
 
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $config = $di->get('config');
 
         $mail_config = $config->application->mail->toArray();

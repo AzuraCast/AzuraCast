@@ -408,7 +408,7 @@ class Entity implements \ArrayAccess
      */
     public static function getEntityManager()
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         return $di->get('em');
     }
     

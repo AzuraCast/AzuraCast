@@ -202,7 +202,7 @@ class Station extends \App\Doctrine\Entity
 
     public function canManage(User $user = null)
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
 
         if ($user === null)
         {

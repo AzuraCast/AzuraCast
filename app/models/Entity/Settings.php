@@ -76,7 +76,7 @@ class Settings extends \App\Doctrine\Entity
 
         if (!$settings || !$cached)
         {
-            $di = \Phalcon\Di::getDefault();
+            $di = $GLOBALS['di'];
             $cache = $di->get('cache');
 
             $settings = $cache->get('all_settings');

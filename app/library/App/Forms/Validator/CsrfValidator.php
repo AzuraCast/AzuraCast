@@ -11,7 +11,7 @@ class CsrfValidator extends Validator implements ValidatorInterface
 
     public function __construct()
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $this->_csrf = $di['csrf'];
     }
 

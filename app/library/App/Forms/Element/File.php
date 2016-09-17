@@ -9,7 +9,7 @@ class File extends \Phalcon\Forms\Element\File
             return '';
 
         $file_rows = array();
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
 
         foreach((array)$this->_previous_value as $file)
         {

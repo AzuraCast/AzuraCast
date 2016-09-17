@@ -13,14 +13,14 @@ $manual = true;
 
         <ul class="actions">
             <li>
-                <a href="<?=$this->url->routeFromHere(['format' => 'csv']) ?>" title="Download Excel CSV">
+                <a href="<?=$url->routeFromHere(['format' => 'csv']) ?>" title="Download Excel CSV">
                     <i class="zmdi zmdi-download"></i>
                 </a>
             </li>
         </ul>
     </div>
     <div id="data-table-basic-header" class="bootgrid-header container-fluid">
-        <?=$this->viewHelper->paginate($pager) ?>
+        <?=$viewHelper->paginate($pager) ?>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">

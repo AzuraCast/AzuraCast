@@ -3,7 +3,7 @@ namespace Modules\Stations\Controllers;
 
 use Entity\Station;
 
-class BaseController extends \App\Phalcon\Controller
+class BaseController extends \App\Mvc\Controller
 {
     /*
      * @var array All available stations.

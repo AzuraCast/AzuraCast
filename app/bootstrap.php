@@ -70,71 +70,41 @@ foreach($php_settings as $setting_key => $setting_value)
     }
 }
 
-// Loop through modules to find configuration files or libraries.
-$module_config_dirs = array();
-$modules = scandir(APP_INCLUDE_MODULES);
+$di = new \Slim\Container(['settings' => [
+    'displayErrorDetails' => true,
+    'addContentLengthHeader' => false,
+]]);
 
+$di['callableResolver'] = function($di) {
+    return new \App\Mvc\Resolver($di);
+};
+
+// Loop through modules to find configuration files.
+$modules = array_diff(scandir(APP_INCLUDE_MODULES), ['..', '.']);
 $module_config = array();
-$phalcon_modules = array();
 
 foreach($modules as $module)
 {
-    if ($module == '.' || $module == '..')
-        continue;
+    $full_path = APP_INCLUDE_MODULES.'/'.$module;
 
-    $config_directory = APP_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'config';
+    $config_directory = $full_path.'/config';
     if (file_exists($config_directory))
         $module_config[$module] = new \App\Config($config_directory);
 
-    $phalcon_modules[$module] = ucfirst($module);
+    $module_class = 'Modules\\'.ucfirst($module).'\\Controllers\\';
+    $autoloader->addPsr4($module_class, $full_path.'/controllers');
 }
-
-// Set up Dependency Injection
-if (APP_IS_COMMAND_LINE)
-    $di = new \Phalcon\Di\FactoryDefault\CLI;
-else
-    $di = new \Phalcon\Di\FactoryDefault;
 
 // Configs
-$di->setShared('config', $config);
-$di->setShared('module_config', function() use ($module_config) { return $module_config; });
-$di->setShared('phalcon_modules', function() use ($phalcon_modules) { return $phalcon_modules; });
-
-// Router
-if (APP_IS_COMMAND_LINE) {
-    $router = new \Phalcon\CLI\Router;
-    $di->setShared('router', $router);
-
-    $di->setShared('request', '\App\Phalcon\Cli\Request');
-} else {
-    $di->setShared('router', function () use ($di) {
-        $router = new \App\Phalcon\Router(false);
-        $router->setUriSource(\App\Phalcon\Router::URI_SOURCE_SERVER_REQUEST_URI);
-
-        $router->setDi($di);
-
-        $router_config = $di->get('config')->routes->toArray();
-
-        $router->setDefaultModule($router_config['default_module']);
-        $router->setDefaultController($router_config['default_controller']);
-        $router->setDefaultAction($router_config['default_action']);
-        $router->removeExtraSlashes(true);
-
-        foreach ((array)$router_config['custom_routes'] as $route_path => $route_params)
-        {
-            $route = $router->add($route_path, $route_params);
-
-            if (isset($route_params['name']))
-                $route->setName($route_params['name']);
-        }
-
-        return $router;
-    });
-}
+$di['config'] = $config;
+$di['module_config'] = $module_config;
 
 // Database
-$di->setShared('em', function() use ($config) {
-    try    {
+$di['em'] = function($di) {
+    try
+    {
+        $config = $di['config'];
+
         $db_conf = $config->application->resources->doctrine->toArray();
         $db_conf['conn'] = $config->db->toArray();
 
@@ -145,11 +115,13 @@ $di->setShared('em', function() use ($config) {
     {
         throw new \App\Exception\Bootstrap($e->getMessage());
     }
-});
+};
 
-$di->setShared('db', function() use ($config) {
+$di['db'] = function($di) {
     try
     {
+        $config = $di['config'];
+
         $db_conf = $config->application->resources->doctrine->toArray();
         $db_conf['conn'] = $config->db->toArray();
 
@@ -160,26 +132,20 @@ $di->setShared('db', function() use ($config) {
     {
         throw new \App\Exception\Bootstrap($e->getMessage());
     }
-});
+};
 
 // Auth and ACL
-$di->setShared('auth', array(
-    'className' => '\App\Auth',
-    'arguments' => array(
-        array('type' => 'service', 'name' => 'session'),
-    )
-));
+$di['auth'] = function($di) {
+    return new \App\Auth($di['session']);
+};
 
-$di->setShared('acl', array(
-    'className' => '\App\Acl',
-    'arguments' => array(
-        array('type' => 'service', 'name' => 'em'),
-        array('type' => 'service', 'name' => 'auth'),
-    )
-));
+$di['acl'] = function($di) {
+    return new \App\Acl($di['em'], $di['auth']);
+};
 
 // Caching
-$di->setShared('cache_driver', function() use ($config) {
+$di['cache_driver'] = function($di) {
+    $config = $di['config'];
     $cache_config = $config->cache->toArray();
 
     switch($cache_config['cache'])
@@ -214,72 +180,68 @@ $di->setShared('cache_driver', function() use ($config) {
     }
 
     return $cache_driver;
-});
+};
 
-$di->set('cache', array(
-    'className' => '\App\Cache',
-    'arguments' => array(
-        array('type' => 'service', 'name' => 'cache_driver'),
-        array('type' => 'parameter', 'value' => 'user'),
-    )
-));
+$di['cache'] = function($di) {
+    return new \App\Cache($di['cache_driver'], 'user');
+};
 
 // Register URL handler.
-$di->setShared('url', array(
-    'className' => '\App\Url',
-    'arguments' => array(
-        array('type' => 'service', 'name' => 'config'),
-        array('type' => 'service', 'name' => 'request'),
-        array('type' => 'service', 'name' => 'dispatcher'),
-    )
-));
+$di['url'] = function($di) {
+    return new \App\Url($di);
+};
 
 // Register session service.
-$di->setShared('session', '\App\Session');
+$di['session'] = function($di) {
+    return new \App\Session;
+};
 
 // Register CSRF prevention security token service.
-$di->setShared('csrf', array(
-    'className' => '\App\Csrf',
-    'arguments' => array(
-        array('type' => 'service', 'name' => 'session'),
-    )
-));
-
-// Register view helpers.
-$di->setShared('viewHelper', '\App\Service\ViewHelper');
+$di['csrf'] = function($di) {
+    return new \App\Csrf($di['session']);
+};
 
 // Register Flash notification service.
-$di->setShared('flash', array(
-    'className' => '\App\Flash',
-    'arguments' => array(
-        array('type' => 'service', 'name' => 'session'),
-    )
-));
-
-// Register cryptography helper.
-$di->setShared('crypto', array(
-    'className' => '\App\Crypto',
-    'arguments' => array(
-        array('type' => 'service', 'name' => 'config'),
-    )
-));
+$di['flash'] = function($di) {
+    return new \App\Flash($di['session']);
+};
 
 // InfluxDB
-$di->setShared('influx', function() use ($config) {
+$di['influx'] = function($di) {
+    $config = $di['config'];
     $opts = $config->influx->toArray();
 
     $influx = new \InfluxDB\Client($opts['host'], $opts['port']);
     return $influx->selectDB('stations');
-});
+};
 
-$di->setShared('user', function() use ($di) {
+$di['user'] = function($di) {
     $auth = $di['auth'];
 
     if ($auth->isLoggedIn())
         return $auth->getLoggedInUser();
     else
         return NULL;
-});
+};
+
+$di['view'] = function($di) {
+    $view = new \App\Mvc\View(APP_INCLUDE_BASE.'/templates');
+    $view->setFileExtension('phtml');
+
+    $view->addData([
+        'di'    => $di,
+        'url'   => $di['url'],
+        'config' => $di['config'],
+        'viewHelper' => $di['view_helper'],
+    ]);
+
+    return $view;
+};
+
+// Register view helpers.
+$di['view_helper'] = function($di) {
+    return new \App\Service\ViewHelper($di);
+};
 
 // Initialize cache.
 $cache = $di->get('cache');
@@ -289,4 +251,32 @@ if (!APP_IS_COMMAND_LINE)
     // Set time zone and localization.
     $timezone = \Entity\Settings::getSetting('timezone', date_default_timezone_get());
     date_default_timezone_set($timezone);
+}
+
+// Set up application and routing.
+$app = new \Slim\App($di);
+
+// Remove trailing slash from all URLs when routing.
+$app->add(function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response, callable $next) {
+    $uri = $request->getUri();
+    $path = $uri->getPath();
+
+    if ($path != '/' && substr($path, -1) == '/')
+    {
+        // permanently redirect paths with a trailing slash
+        // to their non-trailing counterpart
+        $uri = $uri->withPath(substr($path, 0, -1));
+        return $response->withRedirect((string)$uri, 301);
+    }
+
+    return $next($request, $response);
+});
+
+// Loop through modules to configure routes.
+foreach($modules as $module)
+{
+    $routes_file = APP_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'routes.php';
+
+    if (file_exists($routes_file))
+        include($routes_file);
 }

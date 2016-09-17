@@ -806,7 +806,7 @@ class Form extends \Phalcon\Forms\Form
     {
         if ($request === null)
         {
-            $di = \Phalcon\Di::getDefault();
+            $di = $GLOBALS['di'];
             $request = $di->get('request');
         }
 

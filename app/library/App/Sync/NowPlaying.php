@@ -14,7 +14,7 @@ class NowPlaying
     {
         set_time_limit(60);
 
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $nowplaying = self::loadNowPlaying();
 
         // Post statistics to InfluxDB.

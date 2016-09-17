@@ -30,7 +30,7 @@ class Media
             $music_files[$path_hash] = $path_short;
         }
         
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $em = $di->get('em');
 
         $existing_media = $station->media;
@@ -87,7 +87,7 @@ class Media
         }
 
         // Iterate through playlists.
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $em = $di->get('em');
 
         $playlist_files_raw = self::globDirectory($base_dir.'/*.{m3u,pls}', \GLOB_BRACE);

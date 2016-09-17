@@ -39,7 +39,7 @@ class File
     
     public static function getFileUrl($file_name)
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $url = $di['url'];
 
         if (defined('APP_UPLOAD_URL'))

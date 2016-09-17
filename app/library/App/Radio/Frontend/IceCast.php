@@ -102,7 +102,7 @@ class IceCast extends AdapterAbstract
         $frontend_config = (array)$this->station->frontend_config;
 
         // Set up streamer support.
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $url = $di->get('url');
 
         $config['mount'][0]['authentication'] = array(

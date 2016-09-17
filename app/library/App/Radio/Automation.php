@@ -46,7 +46,7 @@ class Automation
      */
     public static function runStation(Station $station, $force = false)
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $em = $di->get('em');
 
         $settings = (array)$station->automation_settings;
@@ -178,7 +178,7 @@ class Automation
      */
     public static function generateReport(Station $station, $threshold_days = self::DEFAULT_THRESHOLD_DAYS)
     {
-        $di = \Phalcon\Di::getDefault();
+        $di = $GLOBALS['di'];
         $em = $di->get('em');
 
         $threshold = strtotime('-'.(int)$threshold_days.' days');

@@ -1,21 +1,16 @@
 <?
-$title = 'Dashboard';
-$manual = true;
-
-/*
-$this->assets->collection('custom_js')
-    ->addJs('//code.highcharts.com/highcharts.js', false)
-    ->addJs('//code.highcharts.com/highcharts-more.js', false)
-    ->addJs('//code.highcharts.com/modules/exporting.js', false);
-
-$this->assets->collection('custom_js')
-    ->addJs('vendors/bower_components/jPlayer/dist/jplayer/jquery.jplayer.min.js')
-    ->addJs('vendors/bower_components/store-js/store.min.js')
-    ->addJs('js/radio.js');
-*/
-
-// ->addJs('vendor/moment/moment.js');
+$this->layout('main', ['title' => 'Dashboard', 'manual' => true]);
 ?>
+
+<?php $this->start('custom_js') ?>
+<script type="text/javascript" src="//code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript" src="//code.highcharts.com/highcharts-more.js"></script>
+<script type="text/javascript" src="//code.highcharts.com/modules/exporting.js"></script>
+
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/jPlayer/dist/jplayer/jquery.jplayer.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/store-js/store.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('js/radio.js') ?>"></script>
+<?php $this->stop('custom_js') ?>
 
 <div class="block-header">
     <h2>Dashboard</h2>

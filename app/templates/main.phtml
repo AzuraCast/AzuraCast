@@ -10,60 +10,38 @@ header("Content-type: text/html; charset=utf-8");
 
     <?php
     if ($title)
-        $page_title = $title.' - '.$this->config->application->name;
+        $page_title = $title.' - '.$config->application->name;
     else
-        $page_title = $this->config->application->name;
+        $page_title = $config->application->name;
 
-    $this->tag->setTitle($page_title);
     if (APP_APPLICATION_ENV != "production")
-        $this->tag->prependTitle('('.ucfirst(APP_APPLICATION_ENV).') ');
-
-    echo $this->tag->getTitle();
-
-    // Set up CSS includes.
-    $this->assets->collection('header_css')
-        ->addCss('vendors/bower_components/animate.css/animate.min.css')
-        ->addCss('vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css')
-        ->addCss('vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css')
-        ->addCss('vendors/bower_components/components-font-awesome/css/font-awesome.min.css')
-        ->addCss('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css')
-        ->addCss('vendors/bootgrid/jquery.bootgrid.min.css')
-        ->addCss('css/app.css');
-
-    // Establish custom CSS/JS collections in case they don't exist.
-    $this->assets->collection('custom_css');
-    $this->assets->collection('custom_js');
-
-    // Output header CSS.
-    $this->assets->outputCss('header_css');
-    $this->assets->outputCss('custom_css');
-
-    // Set up JS includes.
-    $this->assets->collection('header_js')
-        ->addJs('vendors/bower_components/jquery/dist/jquery.min.js')
-        ->addJs('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js');
-
-    $this->assets->outputJs('header_js');
-
-    $this->assets->collection('footer_js')
-        ->addJs('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js')
-        ->addJs('vendors/bootstrap-growl/bootstrap-growl.min.js')
-        ->addJs('vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js')
-        ->addJs('vendors/bower_components/autosize/dist/autosize.js')
-        ->addJs('vendors/bootgrid/jquery.bootgrid.updated.min.js')
-        ->addJs('js/functions.js')
-        ->addJs('js/app.js');
+        $page_title = '('.ucfirst(APP_APPLICATION_ENV).') '.$page_title;
     ?>
+    <title><?=$page_title ?></title>
+
+    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/animate.css/animate.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/components-font-awesome/css/font-awesome.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bootgrid/jquery.bootgrid.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?=$url->content('css/app.css') ?>">
+
+    <?=$this->section('custom_css') ?>
+
+    <script type="text/javascript" src="<?=$url->content('vendors/bower_components/jquery/dist/jquery.min.js') ?>"></script>
+    <script type="text/javascript" src="<?=$url->content('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
+
     <script>
-        var APP_AppEnv = '<?=(defined('APP_APPLICATION_ENV') ? APP_APPLICATION_ENV : '') ?>';
-        var APP_BaseUrl = '<?php echo rtrim($this->url->get(''), '/'); ?>';
-        var APP_ContentPath = '<?php echo $this->url->getStatic(''); ?>';
+    var APP_AppEnv = '<?=(defined('APP_APPLICATION_ENV') ? APP_APPLICATION_ENV : '') ?>';
+    var APP_BaseUrl = '<?=$url->named('home') ?>';
+    var APP_ContentPath = '<?=$url->content('') ?>';
     </script>
 </head>
-<body class="<?=$page_class ?> <? if (!empty($station)): ?>toggled sw-toggled<? endif; ?>">
+<body class="<?=$page_class ?> <?php if (!empty($station)): ?>toggled sw-toggled<?php endif; ?>">
 <header id="header" class="clearfix" data-current-skin="blue">
     <ul class="header-inner">
-        <? if (!empty($station)): ?>
+        <?php if (!empty($station)): ?>
         <li id="menu-trigger" data-trigger="#sidebar">
             <div class="line-wrap">
                 <div class="line top"></div>
@@ -71,11 +49,11 @@ header("Content-type: text/html; charset=utf-8");
                 <div class="line bottom"></div>
             </div>
         </li>
-        <? endif; ?>
+        <?php endif; ?>
 
         <li class="logo">
-            <a href="<?=$this->url->get('') ?>">
-                <img src="<?=$this->url->getStatic('img/logo.png') ?>" alt="<?=$this->config->application->name ?>">
+            <a href="<?=$url->named('home') ?>">
+                <img src="<?=$url->content('img/logo.png') ?>" alt="<?=$config->application->name ?>">
             </a>
         </li>
 
@@ -117,12 +95,12 @@ header("Content-type: text/html; charset=utf-8");
                             <a data-action="fullscreen" href=""><i class="zmdi zmdi-fullscreen"></i> Toggle Fullscreen</a>
                         </li>
                         <li class="divider">&nbsp;</li>
-                        <? if ($this->acl->isAllowed('administer all')): ?>
-                            <li><a href="<?=$this->url->get('admin') ?>"><i class="fa fa-cog"></i> System Administration</a></li>
+                        <? if ($di['acl']->isAllowed('administer all')): ?>
+                            <li><a href="<?=$url->named('admin:index:index') ?>"><i class="fa fa-cog"></i> System Administration</a></li>
                         <? endif; ?>
-                        <li><a href="<?=$this->url->get('profile') ?>"><i class="fa fa-user"></i> My Account</a></li>
+                        <li><a href="<?=$url->named('profile:index') ?>"><i class="fa fa-user"></i> My Account</a></li>
                         <li class="divider">&nbsp;</li>
-                        <li><a href="<?=$this->url->get('account/logout') ?>"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+                        <li><a href="<?=$url->named('account:logout') ?>"><i class="fa fa-sign-out"></i> Sign Out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -139,24 +117,24 @@ header("Content-type: text/html; charset=utf-8");
 </header>
 
 <section id="main">
-    <? if (!empty($station)): ?>
+    <?php if (!empty($station)): ?>
     <aside id="sidebar" class="sidebar c-overflow">
         <ul class="main-menu">
             <li class="menu-header">
-                <a href="<?=$this->url->route(['module' => 'stations', 'station' => $station->id]) ?>">
+                <a href="<?=$url->route(['module' => 'stations', 'station' => $station->id]) ?>">
                     <?=$station->name ?>
                 </a>
             </li>
 
-            <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'profile', 'station' => $station->id]) ?>"><i class="zmdi zmdi-image"></i> Profile</a></li>
-            <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'streamers', 'station' => $station->id]) ?>"><i class="zmdi zmdi-account"></i> Streamer/DJ Accounts</a></li>
+            <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'profile', 'station' => $station->id]) ?>"><i class="zmdi zmdi-image"></i> Profile</a></li>
+            <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'streamers', 'station' => $station->id]) ?>"><i class="zmdi zmdi-account"></i> Streamer/DJ Accounts</a></li>
 
             <li class="sub-menu">
                 <a href=""><i class="zmdi zmdi-collection-music"></i> Media</a>
 
                 <ul>
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'files', 'station' => $station->id]) ?>">Music Files</a></li>
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'playlists', 'station' => $station->id]) ?>">Playlists</a></li>
+                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'files', 'station' => $station->id]) ?>">Music Files</a></li>
+                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'playlists', 'station' => $station->id]) ?>">Playlists</a></li>
                 </ul>
             </li>
 
@@ -164,9 +142,9 @@ header("Content-type: text/html; charset=utf-8");
                 <a href=""><i class="zmdi zmdi-assignment"></i> Reports</a>
 
                 <ul>
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'index', 'action' => 'timeline', 'station' => $station->id]) ?>">Song Playback Timeline</a></li>
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'reports', 'action' => 'performance', 'station' => $station->id]) ?>">Song Listener Impact</a></li>
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'reports', 'action' => 'duplicates', 'station' => $station->id]) ?>">Duplicate Songs</a></li>
+                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'index', 'action' => 'timeline', 'station' => $station->id]) ?>">Song Playback Timeline</a></li>
+                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'reports', 'action' => 'performance', 'station' => $station->id]) ?>">Song Listener Impact</a></li>
+                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'reports', 'action' => 'duplicates', 'station' => $station->id]) ?>">Duplicate Songs</a></li>
                 </ul>
             </li>
 
@@ -174,41 +152,41 @@ header("Content-type: text/html; charset=utf-8");
                 <a href=""><i class="zmdi zmdi-settings"></i> Utilities</a>
 
                 <ul>
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'automation', 'station' => $station->id]) ?>">Automated Assignment</a></li>
+                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'automation', 'station' => $station->id]) ?>">Automated Assignment</a></li>
 
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'playlist', 'station' => $station->id, 'format' => 'pls']) ?>">Download Playlist File (PLS)</a></li>
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'playlist', 'station' => $station->id, 'format' => 'm3u']) ?>">Download Playlist File (M3U)</a></li>
+                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'playlist', 'station' => $station->id, 'format' => 'pls']) ?>">Download Playlist File (PLS)</a></li>
+                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'playlist', 'station' => $station->id, 'format' => 'm3u']) ?>">Download Playlist File (M3U)</a></li>
 
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'write', 'station' => $station->id]) ?>">Rebuild Backend Configuration</a></li>
-                    <li><a href="<?=$this->url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'restart', 'station' => $station->id]) ?>">Restart Broadcasting</a></li>
+                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'write', 'station' => $station->id]) ?>">Rebuild Backend Configuration</a></li>
+                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'restart', 'station' => $station->id]) ?>">Restart Broadcasting</a></li>
                 </ul>
             </li>
         </ul>
     </aside>
-    <? endif; ?>
+    <?php endif; ?>
 
     <section id="content">
         <div class="container">
-        <? if ($manual): ?>
-            <?php echo $this->getContent(); ?>
-        <? else: ?>
+        <?php if ($manual): ?>
+            <?=$this->section('content') ?>
+        <?php else: ?>
             <div class="block-header">
                 <h2><?=$title ?></h2>
             </div>
 
             <div class="card">
                 <div class="card-body card-padding">
-                    <?php echo $this->getContent(); ?>
+                    <?=$this->section('content') ?>
                 </div>
             </div>
-        <? endif; ?>
+        <?php endif; ?>
         </div>
     </section>
 </section>
 
 <footer id="footer">
-    Powered by <a href="https://github.com/SlvrEagle23/AzuraCast" target="_blank"><?=$this->config->application->name ?></a> <?=\App\Version::getVersionText() ?>.<br>
-    PHP <?=\PHP_VERSION ?>, Phalcon <?=phpversion('phalcon') ?>.
+    Powered by <a href="https://github.com/SlvrEagle23/AzuraCast" target="_blank"><?=$config->application->name ?></a> <?=\App\Version::getVersionText() ?>.<br>
+    PHP <?=\PHP_VERSION ?>, SlimPHP 3
 </footer>
 
 <!-- Page Loader -->
@@ -224,15 +202,20 @@ header("Content-type: text/html; charset=utf-8");
 
 <div id="radio-player"></div>
 
-<?
-$this->assets->outputJs('custom_js');
-$this->assets->outputJs('footer_js');
-?>
+<?=$this->section('custom_js') ?>
 
-<? if ($this->flash->hasMessages()): ?>
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('vendors/bootstrap-growl/bootstrap-growl.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/autosize/dist/autosize.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('vendors/bootgrid/jquery.bootgrid.updated.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('js/functions.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('js/app.js') ?>"></script>
+
+<? if ($flash->hasMessages()): ?>
     <script type="text/javascript">
         $(function() {
-            <? foreach($this->flash->getMessages() as $message): ?>
+            <? foreach($flash->getMessages() as $message): ?>
             notify("<?=str_replace(array('"', "\n"), array('\'', '<br>'), $message['text']) ?>", '<?=$message['color'] ?>');
             <? endforeach; ?>
         });

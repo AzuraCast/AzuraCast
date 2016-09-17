@@ -141,7 +141,7 @@ class Url
         $url_parts[] = $components['action'];
 
         $router_path = implode(':', $url_parts);
-        return $this->getUrl($router->pathFor($router_path, $path_info), 'absolute');
+        return $this->getUrl($router->pathFor($router_path, $path_info), $absolute);
     }
 
     protected $current_route;

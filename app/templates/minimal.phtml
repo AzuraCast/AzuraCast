@@ -10,9 +10,9 @@ header("Content-type: text/html; charset=utf-8");
 
     <?php
     if ($title)
-        $page_title = $title.' - '.$this->config->application->name;
+        $page_title = $title.' - '.$config->application->name;
     else
-        $page_title = $this->config->application->name;
+        $page_title = $config->application->name;
 
     $this->tag->setTitle($page_title);
     if (APP_APPLICATION_ENV != "production")
@@ -39,8 +39,8 @@ header("Content-type: text/html; charset=utf-8");
     ?>
     <script>
     var APP_AppEnv = '<?=(defined('APP_APPLICATION_ENV') ? APP_APPLICATION_ENV : '') ?>';
-    var APP_BaseUrl = '<?php echo rtrim($this->url->get(''), '/'); ?>';
-    var APP_ContentPath = '<?php echo $this->url->getStatic(''); ?>';
+    var APP_BaseUrl = '<?php echo rtrim($url->get(''), '/'); ?>';
+    var APP_ContentPath = '<?php echo $url->content(''); ?>';
     </script>
 </head>
 

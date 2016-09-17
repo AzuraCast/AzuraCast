@@ -233,6 +233,7 @@ $di['view'] = function($di) {
         'url'   => $di['url'],
         'config' => $di['config'],
         'viewHelper' => $di['view_helper'],
+        'flash' => $di['flash'],
     ]);
 
     return $view;

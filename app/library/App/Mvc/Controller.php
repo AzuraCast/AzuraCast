@@ -3,7 +3,6 @@ namespace App\Mvc;
 
 use App\Url;
 use Interop\Container\ContainerInterface;
-use Phalcon\Http\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -35,6 +34,7 @@ class Controller
         $this->view = $di['view'];
         $this->url = $di['url'];
 
+        $this->view->addFolder('common', APP_INCLUDE_MODULES.'/'.$module.'/views/scripts');
         $this->view->addFolder('controller', APP_INCLUDE_MODULES.'/'.$module.'/views/scripts/'.$controller);
     }
 
@@ -72,9 +72,10 @@ class Controller
 
         $action_result = $this->$action_name();
 
-        if ($action_result === null)
+        if ($action_result === null && !$this->view->isRendered())
         {
-            $response->withBody($this->view->render('controller::'.$this->action));
+            $template = $this->view->render('controller::'.$this->action);
+            $response->getBody()->write($template);
         }
     }
 

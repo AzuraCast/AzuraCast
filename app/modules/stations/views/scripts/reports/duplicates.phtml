@@ -1,7 +1,4 @@
-<?
-$title = 'Song Duplicates';
-$manual = true;
-?>
+<?php $this->layout('main', ['title' => 'Song Duplicates', 'manual' => true]) ?>
 
 <div class="block-header">
     <h2><?=$station->name ?></h2>
@@ -11,12 +8,12 @@ $manual = true;
     <div class="card-header ch-alt">
         <h2>Possible Song Duplicates</h2>
     </div>
-<? if (empty($dupes)): ?>
+<?php if (empty($dupes)): ?>
     <div class="card-body card-padding">
         No duplicates were found. Nice work!
     </div>
-<? else: ?>
-    <? foreach($dupes as $dupe_row): ?>
+<?php else: ?>
+    <?php foreach($dupes as $dupe_row): ?>
         <div class="table-responsive">
             <table class="table table-striped">
                 <colgroup>
@@ -34,7 +31,7 @@ $manual = true;
                     </tr>
                 </thead>
                 <tbody>
-                <? foreach($dupe_row as $media_row): ?>
+                <?php foreach($dupe_row as $media_row): ?>
                     <tr class="input">
                         <td>
                             <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(['action' => 'deletedupe', 'media_id' => $media_row['id']]) ?>">Delete</a>
@@ -44,18 +41,18 @@ $manual = true;
                             <?=$media_row['path'] ?>
                         </td>
                         <td class="text-right">
-                        <? if (count($media_row['playlists']) == 0): ?>
+                        <?php if (count($media_row['playlists']) == 0): ?>
                             0
-                        <? else: ?>
+                        <?php else: ?>
                             <abbr title="<?=implode(', ', \App\Utilities::ipull($media_row['playlists'], 'name')) ?>"><?=count($media_row['playlists']) ?></abbr>
-                        <? endif; ?>
+                        <?php endif; ?>
                         </td>
                         <td class="text-right"><?=$media_row['length_text'] ?></td>
                     </tr>
-                <? endforeach; ?>
+                <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
-    <? endforeach; ?>
-<? endif; ?>
+    <?php endforeach; ?>
+<?php endif; ?>
 </div>

@@ -1,7 +1,4 @@
-<?
-$title = 'Station Profile';
-$manual = true;
-?>
+<?php $this->layout('main', ['title' => 'Station Profile', 'manual' => true]) ?>
 
 <div class="block-header">
     <h2><?=$station->name ?></h2>
@@ -26,45 +23,45 @@ $manual = true;
         </div>
 
         <div class="card">
-            <div class="card-header <? if ($station->enable_requests): ?>bgm-green<? else: ?>bgm-red<? endif; ?>">
+            <div class="card-header <?php if ($station->enable_requests): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?>">
                 <h2>Song Requests</h2>
             </div>
             <div class="card-body card-padding">
-            <? if ($station->enable_requests): ?>
+            <?php if ($station->enable_requests): ?>
                 <p>Song requests are currently <b>enabled</b> for this station.</p>
-                <? if ($station->request_delay == 0): ?>
+                <?php if ($station->request_delay == 0): ?>
                     <p>Requests are queued for playback immediately after the currently playing song.</p>
-                <? else: ?>
+                <?php else: ?>
                     <p>Requests are queued for playback on the station within <b><?=$station->request_delay ?> to <?=($station->request_delay*2) ?> minutes</b> of being submitted.</p>
-                <? endif; ?>
-            <? else: ?>
+                <?php endif; ?>
+            <?php else: ?>
                 <p>Song requests are currently <b>disabled</b> for this station. Edit your profile above to enable them.</p>
-            <? endif; ?>
+            <?php endif; ?>
             </div>
         </div>
 
         <div class="card">
-            <div class="card-header <? if ($station->enable_streamers): ?>bgm-green<? else: ?>bgm-red<? endif; ?>">
+            <div class="card-header <?php if ($station->enable_streamers): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?>">
                 <h2>Streamers/DJs</h2>
             </div>
             <div class="card-body card-padding">
-                <? if ($station->enable_streamers): ?>
+                <?php if ($station->enable_streamers): ?>
                     <p>Support for live streamers / DJs is currently <b>enabled</b> for this station. Edit your profile above to enable it.</p>
                     <p>Manage streamer accounts <a href="<?=$url->routeFromHere(['controller' => 'streamers']) ?>">on the Streamers / DJ Accounts page</a>.</p>
-                <? else: ?>
+                <?php else: ?>
                     <p>Support for live streamers / DJs is currently <b>disabled</b> for this station.</p>
                     <p>Only the AutoDJ (based on your uploaded media and playlists) will be able to play on the air.</p>
-                <? endif; ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
     <div class="col-sm-6">
-        <? if ($frontend_type == 'icecast'): ?>
+        <?php if ($frontend_type == 'icecast'): ?>
         <div class="card">
-            <div class="card-header <? if ($frontend_is_running): ?>bgm-green<? else: ?>bgm-red<? endif; ?> ch-alt">
+            <div class="card-header <?php if ($frontend_is_running): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?> ch-alt">
                 <h2>
                     IceCast (Broadcasting Service)<br>
-                    <small><? if ($frontend_is_running): ?>Running<? else: ?>Not Running<? endif; ?></small>
+                    <small><?php if ($frontend_is_running): ?>Running<?php else: ?>Not Running<?php endif; ?></small>
                 </h2>
 
                 <ul class="actions">
@@ -93,14 +90,14 @@ $manual = true;
                 </dl>
             </div>
         </div>
-        <? endif; ?>
+        <?php endif; ?>
 
-        <? if ($backend_type == 'liquidsoap'): ?>
+        <?php if ($backend_type == 'liquidsoap'): ?>
         <div class="card">
-            <div class="card-header <? if ($backend_is_running): ?>bgm-green<? else: ?>bgm-red<? endif; ?> ch-alt">
+            <div class="card-header <?php if ($backend_is_running): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?> ch-alt">
                 <h2>
                     LiquidSoap (AutoDJ Service)<br>
-                    <small><? if ($backend_is_running): ?>Running<? else: ?>Not Running<? endif; ?></small>
+                    <small><?php if ($backend_is_running): ?>Running<?php else: ?>Not Running<?php endif; ?></small>
                 </h2>
 
                 <ul class="actions">
@@ -117,6 +114,6 @@ $manual = true;
                 <a class="btn btn-primary" href="<?=$url->routeFromHere(['action' => 'backendskip']) ?>">Skip Current Song</a>
             </div>
         </div>
-        <? endif; ?>
+        <?php endif; ?>
     </div>
 </div>

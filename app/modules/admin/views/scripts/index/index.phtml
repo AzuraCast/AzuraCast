@@ -1,36 +1,35 @@
-<?
-$title = 'Administration';
-$manual = true;
+<?php $this->layout('main', ['title' => 'Administration', 'manual' => true]); ?>
 
+<?php
 // Admin sidebar.
 $panels = array(
     'System Maintenance' => array(
         'System Settings' => array(
-            'url'       => 'admin/settings',
+            'url'       => 'admin:settings:index',
             'icon'      => 'fa fa-cog',
-            'permission' => $this->acl->isAllowed('administer all'),
+            'permission' => $di['acl']->isAllowed('administer all'),
         ),
         'User Accounts' => array(
-            'url'       => 'admin/users',
+            'url'       => 'admin:users:index',
             'icon'      => 'fa fa-user',
-            'permission' => $this->acl->isAllowed('administer all'),
+            'permission' => $di['acl']->isAllowed('administer all'),
         ),
         'Roles and Permissions' => array(
-            'url'       => 'admin/permissions',
+            'url'       => 'admin:permissions:index',
             'icon'      => 'fa fa-key',
-            'permission' => $this->acl->isAllowed('administer all'),
+            'permission' => $di['acl']->isAllowed('administer all'),
         ),
         'API Keys' => array(
-            'url'      => 'admin/api',
+            'url'      => 'admin:api:index',
             'icon'     => 'fa fa-share-alt',
-            'permission' => $this->acl->isAllowed('administer api keys'),
+            'permission' => $di['acl']->isAllowed('administer api keys'),
         ),
     ),
     'Stations' => array(
         'Manage Stations' => array(
-            'url'       => 'admin/stations',
+            'url'       => 'admin:stations:index',
             'icon'      => 'fa fa-cog',
-            'permission' => $this->acl->isAllowed('administer stations'),
+            'permission' => $di['acl']->isAllowed('administer stations'),
         ),
     ),
 );
@@ -54,26 +53,26 @@ foreach($panels as $sidebar_category => &$sidebar_items)
 </div>
 
 <div class="row">
-    <? foreach($panels as $category_name => $category_items): ?>
+    <?php foreach($panels as $category_name => $category_items): ?>
     <div class="col-sm-4">
         <div class="card">
             <div class="card-header ch-alt">
                 <h2><?=$category_name ?></h2>
             </div>
             <div class="card-body card-padding-sm">
-                <ul class="nav nav-list" <? if (count($category_items) >= 15): ?>style="height: 300px; overflow-y: scroll;"<? endif; ?>>
-                    <? foreach($category_items as $item_name => $item_params): ?>
+                <ul class="nav nav-list" <?php if (count($category_items) >= 15): ?>style="height: 300px; overflow-y: scroll;"<?php endif; ?>>
+                    <?php foreach($category_items as $item_name => $item_params): ?>
                         <li>
-                            <a href="<?=(is_array($item_params['url']) ? $this->url->route($item_params['url']) : $this->url->get($item_params['url'])) ?>" title="<?=$item_params['title'] ?>">
+                            <a href="<?=(is_array($item_params['url']) ? $url->route($item_params['url']) : $url->named($item_params['url'])) ?>" title="<?=$item_params['title'] ?>">
                                 <i class="<?=$item_params['icon'] ?>"></i> <?=$item_name ?>
                             </a>
                         </li>
-                    <? endforeach; ?>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         </div>
     </div>
-    <? endforeach; ?>
+    <?php endforeach; ?>
 </div>
 
 <div class="block-header">
@@ -81,7 +80,7 @@ foreach($panels as $sidebar_category => &$sidebar_items)
 </div>
 
 <div class="row">
-    <? foreach($sync_times as $sync_key => $sync_info): ?>
+    <?php foreach($sync_times as $sync_key => $sync_info): ?>
     <div class="col-sm-3">
         <div class="card">
             <div class="card-header bgm-bluegray">
@@ -96,5 +95,5 @@ foreach($panels as $sidebar_category => &$sidebar_items)
             </div>
         </div>
     </div>
-    <? endforeach; ?>
+    <?php endforeach; ?>
 </div>

@@ -1,7 +1,5 @@
-<?
-$title = 'Manage API Keys';
-$manual = true;
-?>
+<?php $this->layout('main', ['title' => 'API Keys', 'manual' => true]); ?>
+
 <div class="block-header">
     <h2>Administration</h2>
 </div>
@@ -28,7 +26,7 @@ $manual = true;
             </tr>
             </thead>
             <tbody>
-            <? foreach($records as $record): ?>
+            <?php foreach($records as $record): ?>
                 <tr class="input">
                     <td class="center">
                         <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $record['id'])) ?>">Edit</a>
@@ -38,7 +36,7 @@ $manual = true;
                     <td><?=$record['calls_made'] ?></td>
                     <td><?=$record['owner'] ?></td>
                 </tr>
-            <? endforeach; ?>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>

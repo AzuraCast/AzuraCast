@@ -1,13 +1,10 @@
-<?php
-$title = 'File Manager';
-$manual = true;
-$page_class = 'page-file-manager';
+<?php $this->layout('main', ['title' => 'File Manager', 'manual' => true, 'page_class' => 'page-file-manager']) ?>
 
-$this->assets->collection('custom_js')
-    ->addJs('vendors/bower_components/jPlayer/dist/jplayer/jquery.jplayer.min.js')
-    ->addJs('vendors/bower_components/store-js/store.min.js')
-    ->addJs('js/radio.js');
-?>
+<?php $this->start('custom_js') ?>
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/jPlayer/dist/jplayer/jquery.jplayer.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/store-js/store.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('js/radio.js') ?>"></script>
+<?php $this->stop('custom_js') ?>
 
 <div class="block-header">
     <h2><?=$station->name ?></h2>
@@ -35,19 +32,19 @@ $this->assets->collection('custom_js')
                     <div class="col-sm-6">
                         With selected:
 
-                    <? if (!empty($playlists)): ?>
+                    <?php if (!empty($playlists)): ?>
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 Add to Playlist
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
-                            <? foreach($playlists as $playlist_id => $playlist_name): ?>
+                            <?php foreach($playlists as $playlist_id => $playlist_name): ?>
                                 <li><a href="#" class="btn-batch" data-action="playlist_<?=$playlist_id ?>"><?=$playlist_name ?></a></li>
-                            <? endforeach; ?>
+                            <?php endforeach; ?>
                             </ul>
                         </div>
-                    <? endif; ?>
+                    <?php endif; ?>
                         <button type="button" class="btn btn-warning btn-batch" data-action="clear">Clear Playlists</button>
                         <button type="button" class="btn btn-danger btn-batch" data-action="delete">Delete</button>
                     </div>

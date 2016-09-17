@@ -119,49 +119,7 @@ header("Content-type: text/html; charset=utf-8");
 <section id="main">
     <?php if (!empty($station)): ?>
     <aside id="sidebar" class="sidebar c-overflow">
-        <ul class="main-menu">
-            <li class="menu-header">
-                <a href="<?=$url->route(['module' => 'stations', 'station' => $station->id]) ?>">
-                    <?=$station->name ?>
-                </a>
-            </li>
-
-            <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'profile', 'station' => $station->id]) ?>"><i class="zmdi zmdi-image"></i> Profile</a></li>
-            <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'streamers', 'station' => $station->id]) ?>"><i class="zmdi zmdi-account"></i> Streamer/DJ Accounts</a></li>
-
-            <li class="sub-menu">
-                <a href=""><i class="zmdi zmdi-collection-music"></i> Media</a>
-
-                <ul>
-                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'files', 'station' => $station->id]) ?>">Music Files</a></li>
-                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'playlists', 'station' => $station->id]) ?>">Playlists</a></li>
-                </ul>
-            </li>
-
-            <li class="sub-menu">
-                <a href=""><i class="zmdi zmdi-assignment"></i> Reports</a>
-
-                <ul>
-                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'index', 'action' => 'timeline', 'station' => $station->id]) ?>">Song Playback Timeline</a></li>
-                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'reports', 'action' => 'performance', 'station' => $station->id]) ?>">Song Listener Impact</a></li>
-                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'reports', 'action' => 'duplicates', 'station' => $station->id]) ?>">Duplicate Songs</a></li>
-                </ul>
-            </li>
-
-            <li class="sub-menu">
-                <a href=""><i class="zmdi zmdi-settings"></i> Utilities</a>
-
-                <ul>
-                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'automation', 'station' => $station->id]) ?>">Automated Assignment</a></li>
-
-                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'playlist', 'station' => $station->id, 'format' => 'pls']) ?>">Download Playlist File (PLS)</a></li>
-                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'playlist', 'station' => $station->id, 'format' => 'm3u']) ?>">Download Playlist File (M3U)</a></li>
-
-                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'write', 'station' => $station->id]) ?>">Rebuild Backend Configuration</a></li>
-                    <li><a href="<?=$url->route(['module' => 'stations', 'controller' => 'util', 'action' => 'restart', 'station' => $station->id]) ?>">Restart Broadcasting</a></li>
-                </ul>
-            </li>
-        </ul>
+        <?=$this->insert('sidebar/station') ?>
     </aside>
     <?php endif; ?>
 

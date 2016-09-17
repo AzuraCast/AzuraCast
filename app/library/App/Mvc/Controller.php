@@ -40,11 +40,14 @@ class Controller
         $this->view = $di['view'];
         $this->url = $di['url'];
 
-        $views_dir = APP_INCLUDE_MODULES.'/'.$module.'/views/scripts';
-        if (file_exists($views_dir))
+        $common_views_dir = APP_INCLUDE_MODULES.'/'.$module.'/views/scripts';
+        if (is_dir($common_views_dir))
         {
-            $this->view->addFolder('common', $views_dir);
-            $this->view->addFolder('controller', $views_dir.'/'.$controller);
+            $this->view->addFolder('common', $common_views_dir);
+
+            $controller_views_dir = $common_views_dir.'/'.$controller;
+            if (is_dir($controller_views_dir))
+                $this->view->addFolder('controller', $controller_views_dir);
         }
     }
 

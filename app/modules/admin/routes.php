@@ -10,6 +10,9 @@ $app->group('/admin', function() {
     $this->any('', 'admin:index:index')
         ->setName('admin:index:index');
 
+    $this->any('/sync/{type}', 'admin:index:sync')
+        ->setName('admin:index:sync');
+
     $this->group('/api', function() {
 
         $this->any('', 'admin:api:index')
@@ -33,6 +36,9 @@ $app->group('/admin', function() {
 
         $this->any('/role/delete/{id}', 'admin:permissions:deleterole')
             ->setName('admin:permissions:deleterole');
+
+        $this->any('/role/members/{id}', 'admin:permissions:rolemembers')
+            ->setName('admin:permissions:rolemembers');
 
         $this->any('/action/edit[/{id}]', 'admin:permissions:editaction')
             ->setName('admin:permissions:editaction');

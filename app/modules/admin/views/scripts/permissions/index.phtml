@@ -1,7 +1,5 @@
-<?
-$title = 'Manage Permissions';
-$manual = true;
-?>
+<?php $this->layout('main', ['title' => 'Permissions', 'manual' => true]); ?>
+
 <div class="block-header">
     <h2>Manage Permissions</h2>
 </div>
@@ -26,19 +24,19 @@ $manual = true;
                         </tr>
                     </thead>
                     <tbody>
-                    <? foreach($roles as $role): ?>
+                    <?php foreach($roles as $role): ?>
                         <tr class="input">
                             <td class="center">
                                 <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])) ?>">Edit</a>
-                            <? if( $role['id'] != 1 ): ?>
+                            <?php if( $role['id'] != 1 ): ?>
                                 <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'])) ?>">Delete</a>
-                            <? else: ?>
+                            <?php else: ?>
                                 <a class="btn btn-sm btn-danger disabled" href="#" onclick="alert('This role cannot be deleted.'); return false;">Delete</a>
-                            <? endif; ?>
+                            <?php endif; ?>
                             </td>
                             <td align="left"><?=$role['name'] ?></td>
                         </tr>
-                    <? endforeach; ?>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -63,7 +61,7 @@ $manual = true;
                     </tr>
                     </thead>
                     <tbody>
-                    <? foreach($actions as $action): ?>
+                    <?php foreach($actions as $action): ?>
                         <tr class="input">
                             <td class="center">
                                 <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])) ?>">Edit</a>
@@ -71,7 +69,7 @@ $manual = true;
                             </td>
                             <td align="left"><?=$action['name'] ?></td>
                         </tr>
-                    <? endforeach; ?>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

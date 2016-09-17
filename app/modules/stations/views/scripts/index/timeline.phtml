@@ -1,7 +1,4 @@
-<?
-$title = 'Recent Playback Timeline';
-$manual = true;
-?>
+<?php $this->layout('main', ['title' => 'Recent Playback Timeline', 'manual' => true]) ?>
 
 <div class="block-header">
     <h2><?=$station->name ?></h2>
@@ -41,33 +38,33 @@ $manual = true;
                 </tr>
             </thead>
             <tbody>
-            <? foreach($pager as $song_row): ?>
+            <?php foreach($pager as $song_row): ?>
                 <tr class="input" id="song_<?=$song_row['timestamp'] ?>">
                     <td class="text-center"><?=date('D g:ia', $song_row['timestamp_start']) ?></td>
                     <td class="text-center"><big><?=$song_row['stat_start'] ?></big></td>
                     <td class="text-center">
                         <big>
-                    <? if ($song_row['stat_delta'] > 0): ?>
+                    <?php if ($song_row['stat_delta'] > 0): ?>
                         <span class="text-success"><i class="icon-caret-up"></i> <?=$song_row['stat_delta'] ?></span>
-                    <? elseif ($song_row['stat_delta'] < 0): ?>
+                    <?php elseif ($song_row['stat_delta'] < 0): ?>
                         <span class="text-error"><i class="icon-caret-down"></i> <?=abs($song_row['stat_delta']) ?></span>
-                    <? else: ?>
+                    <?php else: ?>
                         0
-                    <? endif; ?>
+                    <?php endif; ?>
                         </big>
                     </td>
                     <td>
-                        <? if ($song_row['song']['title']): ?>
+                        <?php if ($song_row['song']['title']): ?>
                             <b><?=$song_row['song']['title'] ?></b><br>
                             <?=$song_row['song']['artist'] ?>
-                        <? else: ?>
+                        <?php else: ?>
                             <?=$song_row['song']['text'] ?>
-                        <? endif; ?>
+                        <?php endif; ?>
                         <!-- <a href="#" class="btn-show-song-info" data-id="<?=$song_row['song']['id'] ?>" title="Click for Song Information"></a> -->
                     </td>
                     <td><?=implode('<br>', $song_row['playlists']) ?></td>
                 </tr>
-            <? endforeach; ?>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>

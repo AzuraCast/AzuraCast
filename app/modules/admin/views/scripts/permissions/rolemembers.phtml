@@ -1,8 +1,6 @@
-<?
-$title = 'Role Membership Report';
-?>
+<?php $this->layout('main', ['title' => 'Role Members']); ?>
 
-<? foreach($roles as $role): ?>
+<?php foreach($roles as $role): ?>
     <h2>
         <?=$role['name'] ?><br>
         <small>
@@ -17,8 +15,8 @@ $title = 'Role Membership Report';
     </h2>
 
     <ul>
-    <? foreach($role['users'] as $user): ?>
+    <?php foreach($role['users'] as $user): ?>
         <li><a href="<?=$url->route(array('module' => 'admin', 'controller' => 'users', 'action' => 'edit', 'id' => $user['id'])) ?>" target="_blank"><?=$user['name'] ?></a></li>
-    <? endforeach; ?>
+    <?php endforeach; ?>
     </ul>
-<? endforeach; ?>
+<?php endforeach; ?>

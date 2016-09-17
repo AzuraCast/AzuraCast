@@ -1,6 +1,4 @@
-<?
-$title = 'My Profile';
-?>
+<?php $this->layout('main', ['title' => 'My Profile']); ?>
 
 <div class="buttons">
     <a class="btn btn-lg btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>">Edit Profile</a>

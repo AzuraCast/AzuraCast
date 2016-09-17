@@ -1,7 +1,4 @@
-<?
-$title = 'Song Listener Impact Report';
-$manual = true;
-?>
+<?php $this->layout('main', ['title' => 'Listener Impact Report', 'manual' => true]) ?>
 
 <div class="block-header">
     <h2><?=$station->name ?></h2>
@@ -44,7 +41,7 @@ $manual = true;
                 </tr>
             </thead>
             <tbody>
-            <? foreach($report_data as $row): ?>
+            <?php foreach($report_data as $row): ?>
                 <tr class="input">
                     <td><?=$row['title'] ?></td>
                     <td><?=$row['artist'] ?></td>
@@ -59,7 +56,7 @@ $manual = true;
                     <td><?=$row['percent_plays'] ?>%</td>
                     <td><?=$row['ratio'] ?></td>
                 </tr>
-            <? endforeach; ?>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>

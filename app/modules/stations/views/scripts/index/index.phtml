@@ -1,12 +1,10 @@
-<?
-$title = 'Station Center';
-$manual = true;
+<?php $this->layout('main', ['title' => 'Station Center', 'manual' => true]) ?>
 
-$this->assets->collection('custom_js')
-    ->addJs('//code.highcharts.com/highcharts.js', false)
-    ->addJs('//code.highcharts.com/highcharts-more.js', false)
-    ->addJs('//code.highcharts.com/modules/exporting.js', false);
-?>
+<?php $this->start('custom_js') ?>
+<script type="text/javascript" src="//code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript" src="//code.highcharts.com/highcharts-more.js"></script>
+<script type="text/javascript" src="//code.highcharts.com/modules/exporting.js"></script>
+<?php $this->stop('custom_js') ?>
 
 <script type="text/javascript">
 $(function () {
@@ -30,7 +28,7 @@ $(function () {
                 <h2>Listeners By Day</h2>
             </div>
             <div class="card-body card-padding-sm">
-                <?=$viewHelper->renderHere('index-dailystats') ?>
+                <?php $this->insert('controller::index-dailystats') ?>
             </div>
         </div>
     </div>
@@ -43,7 +41,7 @@ $(function () {
                 <h2>Listeners by Hour of Day</h2>
             </div>
             <div class="card-body card-padding-sm">
-                <?=$viewHelper->renderHere('index-hourlystats') ?>
+                <?php $this->insert('controller::index-hourlystats') ?>
             </div>
         </div>
     </div>
@@ -53,7 +51,7 @@ $(function () {
                 <h2>Listeners by Day of Week</h2>
             </div>
             <div class="card-body card-padding-sm">
-                <?=$viewHelper->renderHere('index-dayofweek') ?>
+                <?php $this->insert('controller::index-dayofweek') ?>
             </div>
         </div>
     </div>
@@ -78,23 +76,23 @@ $(function () {
                         </tr>
                     </thead>
                     <tbody>
-                    <? foreach($best_performing_songs as $song_row): ?>
+                    <?php foreach($best_performing_songs as $song_row): ?>
                         <tr>
                             <td class="text-center text-success">
                                 <i class="zmdi zmdi-thumb-up"></i> <?=abs($song_row['stat_delta']) ?><br>
                                 <small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?>
                             </td>
                             <td>
-                                <? if ($song_row['song']['title']): ?>
+                                <?php if ($song_row['song']['title']): ?>
                                     <b><?=$song_row['song']['title'] ?></b><br>
                                     <?=$song_row['song']['artist'] ?>
-                                <? else: ?>
+                                <?php else: ?>
                                     <?=$song_row['song']['text'] ?>
-                                <? endif; ?>
+                                <?php endif; ?>
                                 <!-- <a href="<?=$url->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>"> </a> -->
                             </td>
                         </tr>
-                    <? endforeach; ?>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -118,23 +116,23 @@ $(function () {
                         </tr>
                     </thead>
                     <tbody>
-                    <? foreach($worst_performing_songs as $song_row): ?>
+                    <?php foreach($worst_performing_songs as $song_row): ?>
                         <tr>
                             <td class="text-center text-danger">
                                 <i class="zmdi zmdi-thumb-down"></i> <?=abs($song_row['stat_delta']) ?><br>
                                 <small><?=$song_row['stat_start'] ?> to <?=$song_row['stat_end'] ?>
                             </td>
                             <td>
-                                <? if ($song_row['song']['title']): ?>
+                                <?php if ($song_row['song']['title']): ?>
                                     <b><?=$song_row['song']['title'] ?></b><br>
                                     <?=$song_row['song']['artist'] ?>
-                                <? else: ?>
+                                <?php else: ?>
                                     <?=$song_row['song']['text'] ?>
-                                <? endif; ?>
+                                <?php endif; ?>
                                 <!--  <a href="<?=$url->routeFromHere(array('action' => 'timeline', '#target' => 'song_'.$song_row['timestamp'])) ?>"> </a> -->
                             </td>
                         </tr>
-                    <? endforeach; ?>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -161,19 +159,19 @@ $(function () {
                         </tr>
                     </thead>
                     <tbody>
-                    <? foreach($song_totals['played'] as $song_row): ?>
+                    <?php foreach($song_totals['played'] as $song_row): ?>
                         <tr>
                             <td class="text-center"><?=$song_row['records'] ?></td>
                             <td>
-                            <? if ($song_row['song']['title']): ?>
+                            <?php if ($song_row['song']['title']): ?>
                                 <b><?=$song_row['song']['title'] ?></b><br>
                                 <?=$song_row['song']['artist'] ?>
-                            <? else: ?>
+                            <?php else: ?>
                                 <?=$song_row['song']['text'] ?>
-                            <? endif; ?>
+                            <?php endif; ?>
                             </td>
                         </tr>
-                    <? endforeach; ?>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

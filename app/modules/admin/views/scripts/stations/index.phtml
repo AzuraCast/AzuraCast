@@ -1,7 +1,4 @@
-<?
-$title = 'Manage Stations';
-$manual = true;
-?>
+<?php $this->layout('main', ['title' => 'Stations', 'manual' => true]); ?>
 
 <div class="block-header">
     <h2>Manage Stations</h2>
@@ -26,7 +23,7 @@ $manual = true;
             </tr>
             </thead>
             <tbody>
-            <? foreach((array)$stations as $record): ?>
+            <?php foreach((array)$stations as $record): ?>
                 <tr class="input">
                     <td class="center">
                         <div class="btn-group">
@@ -39,7 +36,7 @@ $manual = true;
                         <big><?=$record['name'] ?></big>
                     </td>
                 </tr>
-            <? endforeach; ?>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>

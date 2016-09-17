@@ -190,7 +190,7 @@ class FilesController extends BaseController
         $offset_start = ($page - 1) * $row_count;
         $return_result = array_slice($result, $offset_start, $row_count);
 
-        return $this->response->setJsonContent(array(
+        return $this->_returnJson(array(
             'current' => $page,
             'rowCount' => $row_count,
             'total' => $num_results,
@@ -278,8 +278,8 @@ class FilesController extends BaseController
                 }
             break;
         }
-        
-        return $this->response->setJsonContent(['success' => true]);
+
+        return $this->_returnJson(['success' => true]);
     }
 
     protected function _getMusicFiles($path)
@@ -337,11 +337,13 @@ class FilesController extends BaseController
 
         @mkdir($this->file_path.'/'.$dir);
 
-        return $this->response->setJsonContent(['success' => true]);
+        return $this->_returnJson(['success' => true]);
     }
 
     public function uploadAction()
     {
+        $this->doNotRender();
+
         var_dump($_POST);
         var_dump($_FILES);
         var_dump($_FILES['file_data']['tmp_name']);
@@ -351,12 +353,12 @@ class FilesController extends BaseController
 
         $station_media = StationMedia::getOrCreate($this->station, $upload_file_path);
         $station_media->save();
-
-        return null;
     }
 
     public function downloadAction()
     {
+        $this->doNotRender();
+
         $filename = basename($this->file_path);
         header('Content-Type: ' . mime_content_type($this->file_path));
         header('Content-Length: '. filesize($this->file_path));
@@ -384,6 +386,14 @@ class FilesController extends BaseController
 
     protected function _err($code, $msg)
     {
-        return $this->response->setJsonContent(array('error' => array('code'=>intval($code), 'msg' => $msg)));
+        return $this->_returnJson(array('error' => array('code'=>intval($code), 'msg' => $msg)));
+    }
+
+    protected function _returnJson($data)
+    {
+        $this->doNotRender();
+
+        $this->response->getBody()->write(json_encode($data));
+        return $this->response;
     }
 }

@@ -138,7 +138,7 @@ class Form
             $field_options['choices'] = $field_options['options'];
         unset($field_options['options']);
 
-        if (!empty($field_options['default']))
+        if (isset($field_options['default']))
             $this->form->addData([$element_name => (string)$field_options['default']]);
         unset($field_options['default']);
 

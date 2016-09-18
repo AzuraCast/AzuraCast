@@ -42,13 +42,9 @@ class SetupController extends BaseController
             return $this->redirectFromHere(['action' => $current_step]);
 
         // Create first account form.
-        $this->view->setLayout('minimal');
-
-        $form = new \App\Form($this->current_module_config->forms->register);
-        
-        if (!empty($_POST) && $form->isValid($_POST))
+        if (!empty($_POST['username']) && !empty($_POST['password']))
         {
-            $data = $form->getValues();
+            $data = $_POST;
 
             // Create actions and roles supporting Super Admninistrator.
             $action = new \Entity\Action;
@@ -138,7 +134,7 @@ class SetupController extends BaseController
             return $this->redirectHome();
         }
 
-        $this->renderForm($form, 'edit', 'Site Settings');
+        return $this->renderForm($form, 'edit', 'Site Settings');
     }
 
     /**

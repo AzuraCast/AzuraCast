@@ -73,22 +73,21 @@ class Controller
             'params'        => $args,
         ]);
 
-        $this->init();
-        $this->preDispatch();
+        $init_result = $this->init();
+        if ($init_result instanceof Response)
+            return $init_result;
+
+        $predispatch_result = $this->preDispatch();
+        if ($predispatch_result instanceof Response)
+            return $predispatch_result;
 
         $action_name = $this->action.'Action';
-
         $action_result = $this->$action_name();
-
         if ($action_result instanceof Response)
-        {
             return $action_result;
-        }
-        else
-        {
-            $template = $this->view->render('controller::'.$this->action);
-            return $response->getBody()->write($template);
-        }
+
+        $template = $this->view->render('controller::'.$this->action);
+        return $response->getBody()->write($template);
     }
 
     public function __get($key)

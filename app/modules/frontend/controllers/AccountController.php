@@ -35,11 +35,9 @@ class AccountController extends BaseController
         if (!$_POST)
             $this->storeReferrer('login', false);
 
-        $form = new \App\Form($this->current_module_config->forms->login);
-
-        if (!empty($_POST) && $form->isValid($_POST))
+        if (!empty($_POST['username']) && !empty($_POST['password']))
         {
-            $login_success = $this->auth->authenticate($form->getValues());
+            $login_success = $this->auth->authenticate($_POST);
 
             if($login_success)
             {
@@ -55,8 +53,6 @@ class AccountController extends BaseController
 
             return $this->redirectFromHere(['action' => 'index']);
         }
-
-        $this->view->form = $form;
     }
 
     public function logoutAction()
@@ -66,7 +62,7 @@ class AccountController extends BaseController
         $session = $this->di->get('session');
         $session->destroy();
 
-        $this->redirectToRoute(array('module' => 'default'));
+        return $this->redirectHome();
     }
 
     /*

@@ -16,6 +16,20 @@
   - name: Make update script executable again
     file: path="{{ www_base }}/update.sh" state=touch mode="a+x"
 
+  - name: Install Composer Dependencies (Development)
+    become: true
+    shell: composer install
+    args:
+      chdir: "{{ www_base }}"
+    when: app_env == "development"
+
+  - name: Install Composer Dependencies (Production)
+    become: true
+    shell: composer install --no-dev
+    args:
+      chdir: "{{ www_base }}"
+    when: app_env == "production"
+
   - name: Clear AzuraCast Cache
     become: true
     become_user: azuracast

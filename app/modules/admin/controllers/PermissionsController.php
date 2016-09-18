@@ -41,7 +41,7 @@ class PermissionsController extends BaseController
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
         }
 
-        $this->renderForm($form, 'edit', 'Edit Record');
+        return $this->renderForm($form, 'edit', 'Edit Action');
     }
     
     public function deleteactionAction()
@@ -51,7 +51,7 @@ class PermissionsController extends BaseController
             $action->delete();
             
         $this->alert('Action deleted!', 'green');
-        $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
+        return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
     }
 
     public function rolemembersAction()
@@ -85,12 +85,10 @@ class PermissionsController extends BaseController
             $record->save();
 
             $this->alert('<b>Role updated!</b>', 'green');
-            $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
-            return;
+            return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
         }
 
-        $this->view->setVar('title', 'Add/Edit Role');
-        $this->renderForm($form);
+        return $this->renderForm($form, 'edit', 'Edit Role');
     }
 
     public function deleteroleAction()
@@ -100,6 +98,6 @@ class PermissionsController extends BaseController
             $record->delete();
         
         $this->alert('<b>Role deleted!</b>', 'green');
-        $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
+        return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
     }
 }

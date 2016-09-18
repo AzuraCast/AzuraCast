@@ -41,7 +41,7 @@ class ApiController extends BaseController
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
         }
 
-        $this->renderForm($form, 'edit', 'Edit Record');
+        return $this->renderForm($form, 'edit', 'Edit Record');
     }
 
     public function deleteAction()
@@ -51,6 +51,6 @@ class ApiController extends BaseController
             $record->delete();
 
         $this->alert('Record deleted.', 'green');
-        $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
+        return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
     }
 }

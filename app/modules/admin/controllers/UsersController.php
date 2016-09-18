@@ -55,11 +55,10 @@ class UsersController extends BaseController
             $record->save();
             
             $this->alert('User updated.', 'green');
-            $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
-            return;
+            return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
         }
 
-        $this->renderForm($form, 'edit', 'Edit Record');
+        return $this->renderForm($form, 'edit', 'Edit Record');
     }
 
     public function deleteAction()
@@ -71,7 +70,7 @@ class UsersController extends BaseController
             $user->delete();
 
         $this->alert('<b>User deleted.</b>', 'green');
-        $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
+        return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
     }
 
     public function impersonateAction()
@@ -86,7 +85,6 @@ class UsersController extends BaseController
         $this->auth->masqueradeAsUser($user);
 
         $this->alert('<b>Logged in as '.$user->firstname.' '.$user->lastname.'.</b>', 'green');
-        $this->redirectHome();
-        return;
+        return $this->redirectHome();
     }
 }

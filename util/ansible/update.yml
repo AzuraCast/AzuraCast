@@ -13,7 +13,7 @@
     - { role: python, when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty' }
     - azuracast-update
     - azuracast-radio
-    - php-phalcon
+    - php
     - composer
     - influxdb
     - azuracast-cron

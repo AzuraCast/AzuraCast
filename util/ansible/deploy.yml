@@ -20,7 +20,7 @@
     - azuracast-config
     - influxdb
     - nginx
-    - php-phalcon
+    - php
     - mariadb
     - composer
     - azuracast-db

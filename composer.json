@@ -7,6 +7,7 @@
     "filp/whoops": "1.*",
     "doctrine/orm": "~2.5",
     "tedivm/stash": "0.14.*",
+    "nibble/nibble-forms": "dev-master",
 
     "zendframework/zend-paginator": "^2.7",
     "zendframework/zend-http": "^2.5",
@@ -20,7 +21,6 @@
     "influxdb/influxdb-php": "~1.4.1"
   },
   "require-dev": {
-    "phalcon/devtools": "~3@dev"
   },
   "authors": [
     {

@@ -27,6 +27,6 @@ class SettingsController extends BaseController
             return $this->redirectHere();
         }
 
-        $this->renderForm($form, 'edit', 'Site Settings');
+        return $this->renderForm($form, 'edit', 'Site Settings');
     }
 }

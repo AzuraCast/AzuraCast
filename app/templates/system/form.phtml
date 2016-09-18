@@ -1,9 +1,84 @@
 <?php
-$this->layout('main');
+$options = $form->getOptions();
+$inner_form = $form->getForm();
 ?>
 
-<?php if ($render_mode == 'edit'): ?>
-    <?=$form->render() ?>
-<?php else: ?>
-    <?=$form->renderView() ?>
-<?php endif; ?>
+
+<?=$inner_form->openForm() ?>
+<?=$inner_form->renderHidden() ?>
+
+<?php foreach($options['groups'] as $fieldset_id => $fieldset): ?>
+
+    <?php if (!empty($fieldset['legend'])): ?>
+    <fieldset id="<?=$fieldset_id ?>">
+        <legend><?=$fieldset['legend'] ?></legend>
+    <?php endif; ?>
+
+    <?php foreach($fieldset['elements'] as $element_id => $element_info): ?>
+        <?php if ($element_info[0] == 'submit'): ?>
+            <input type="submit" value="Save Changes" class="btn btn-lg btn-primary" />
+        <?php else: ?>
+            <div class="form-group">
+                <?=$inner_form->renderLabel($element_id) ?>
+            <?php if (!empty($element_info[1]['description'])): ?>
+                <small class="help-block"><?=$element_info[1]['description'] ?></small>
+            <?php endif; ?>
+            <?php if ($inner_form->hasError($element_id)): ?>
+                <small class="help-block form-error"><?=$inner_form->renderError($element_id) ?></small>
+            <?php endif; ?>
+                <div class="form-field">
+                    <?=$inner_form->renderField($element_id) ?>
+                </div>
+            </div>
+        <? endif; ?>
+    <?php endforeach; ?>
+
+    <?php if (!empty($fieldset['legend'])): ?>
+    </fieldset>
+    <?php endif; ?>
+
+<?php endforeach; ?>
+
+<?=$inner_form->closeForm() ?>
+
+<script type="text/javascript">
+$(function() {
+
+    $('form.form').each(function() {
+        var $form = $(this);
+
+        $form.addClass('fa-form-engine fa-form');
+
+        $form.find('.form-group > label').addClass('control-label');
+
+        $form.find('input:not(input[type=button],input[type=submit],input[type=reset],input[type=radio],input[type=checkbox]),textarea,select').addClass('form-control');
+        $form.find('select').wrap('<div class="select" />');
+
+        autosize($form.find('textarea'));
+
+        $form.find('input[type=radio]').each(function() {
+            $(this).closest('.form-field').addClass('radio-group');
+            $(this).next('label').andSelf().wrapAll('<div class="radio m-b-15" />');
+        });
+        $form.find('input[type=checkbox]').each(function() {
+            $(this).closest('.form-field').addClass('checkbox-group');
+            $(this).next('label').andSelf().wrapAll('<div class="checkbox m-b-15" />');
+        });
+
+        $form.find('input[type=checkbox],input[type=radio]').after('<i class="input-helper"></i>');
+
+        $form.find('input[type=checkbox].inline').removeClass('inline').closest('div.checkbox').addClass('checkbox-inline');
+        $form.find('input[type=radio].inline').removeClass('inline').closest('div.radio').addClass('radio-inline');
+
+        $form.find('div.checkbox:not(.checkbox-inline)').addClass('m-b-15');
+        $form.find('div.radio:not(.radio-inline)').addClass('m-b-15');
+
+        $form.find('.help-block.form-error').parent().addClass('has-error');
+        $form.find('.help-block.form-success').parent().addClass('has-success');
+        $form.find('.help-block.form-warning').parent().addClass('has-warning');
+
+        $form.find('input[type=button],input[type=submit],input[type=reset]').addClass('btn m-t-10');
+    });
+
+});
+</script>

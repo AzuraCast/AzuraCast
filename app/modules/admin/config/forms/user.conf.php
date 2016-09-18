@@ -22,6 +22,7 @@ return array(
                 'label' => 'Reset Password',
                 'description' => 'Leave blank to persist current password.',
                 'autocomplete' => 'off',
+                'required' => false,
             )),
             
             'roles'         => array('multiCheckbox', array(

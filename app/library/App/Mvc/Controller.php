@@ -225,7 +225,7 @@ class Controller
      * Trigger rendering of template.
      *
      * @param null $template_name
-     * @return bool
+     * @return Response
      */
     public function render($template_name = NULL, $template_args = array())
     {
@@ -233,7 +233,9 @@ class Controller
             $template_name = 'controller::'.$this->action;
 
         $template = $this->view->render($template_name, $template_args);
-        return $this->response->getBody()->write($template);
+        $this->response->getBody()->write($template);
+
+        return $this->response;
     }
 
     /**
@@ -242,7 +244,7 @@ class Controller
      * @param \App\Form $form
      * @param string $mode
      * @param null $form_title
-     * @return bool
+     * @return Response
      */
     protected function renderForm(\App\Form $form, $mode = 'edit', $form_title = NULL)
     {
@@ -252,7 +254,7 @@ class Controller
         $this->view->form = $form;
         $this->view->render_mode = $mode;
 
-        return $this->render('system/form');
+        return $this->render('system/form_page');
     }
 
     /**

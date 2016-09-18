@@ -25,3 +25,22 @@ $app->any('/profile/edit', 'frontend:profile:edit')
 
 $app->any('/profile/timezone', 'frontend:profile:timezone')
     ->setName('profile:timezone');
+
+$app->group('/setup', function() {
+
+    $this->any('', 'frontend:setup:index')
+        ->setName('setup:index');
+
+    $this->any('/complete', 'frontend:setup:complete')
+        ->setName('setup:complete');
+
+    $this->any('/register', 'frontend:setup:register')
+        ->setName('setup:register');
+
+    $this->any('/station', 'frontend:setup:station')
+        ->setName('setup:station');
+
+    $this->any('/settings', 'frontend:setup:settings')
+        ->setName('setup:settings');
+
+});

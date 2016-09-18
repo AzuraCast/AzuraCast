@@ -117,6 +117,7 @@ class Form
         $field_type_lookup = [
             'checkboxes' => 'checkbox',
             'multicheckbox' => 'checkbox',
+            'textarea'  => 'textArea',
         ];
 
         $defaults = [

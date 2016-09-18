@@ -23,7 +23,7 @@ $app->group('/api', function() {
 
     });
 
-    $this->group('/nowplaying', function() {
+    $this->group('/nowplaying[/{id}]', function() {
 
         $this->any('', 'api:nowplaying:index')
             ->setName('api:nowplaying:index');

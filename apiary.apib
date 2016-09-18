@@ -90,7 +90,7 @@ Returns all now playing data for active stations.
             ]
         }
 
-### GET /nowplaying/index/id/{id}
+### GET /nowplaying/{id}
 **Station Specified by Numeric ID**
 
 Returns a single station's now-playing information based on a station identifier.
@@ -169,89 +169,10 @@ Returns a single station's now-playing information based on a station identifier
             error: "Station not found."
         }
 
-### GET /nowplaying/index/station/{shortcode}
-**Station Specified by Shortcode**
-
-Returns a single station's now-playing information based on a station's "short code" identifier.
-
-+ Parameters
-  + shortcode (string, required) - The station "short code" identifier.
-
-+ Response 200 (application/json)
-
-        {
-            status: "success",
-            result: {
-                station: {
-                    id: 1,
-                    name: "Pony Radio Station",
-                    shortcode: "pony_radio_station"
-                },
-                current_song: {
-                    id: "178ebfae95842a543f30a449f2420125",
-                    text: "YourEnigma - On Hold (Feat. Rhyme Flow)",
-                    artist: "YourEnigma",
-                    title: "On Hold (Feat. Rhyme Flow)",
-                    created: 1472973486,
-                    play_count: 2,
-                    last_played: 1473192908,
-                    sh_id: null
-                },
-                listeners: {
-                    current: 0,
-                    unique: 0,
-                    total: 0
-                },
-                meta: {
-                    status: "online",
-                    bitrate: null,
-                    format: "audio/mpeg"
-                },
-                song_history: [
-                    {
-                        played_at: 1473192663,
-                        song: {
-                            id: "86125d7861a62e19b773a5911b490675",
-                            text: "PhonyBrony, Feather - I'll Show You My Loyalty (1st Capital Rock Version)",
-                            artist: "PhonyBrony, Feather",
-                            title: "I'll Show You My Loyalty (1st Capital Rock Version)",
-                            created: 1472973505,
-                            play_count: 2,
-                            last_played: 1473192663
-                        }
-                    },
-                    {
-                        played_at: 1473192423,
-                        song: {
-                            id: "d631a2196db79ab1e6b5e8e0db69dea4",
-                            text: "StormWolf - BBBFF (Stormwolf Remix)",
-                            artist: "StormWolf",
-                            title: "BBBFF (Stormwolf Remix)",
-                            created: 1472973497,
-                            play_count: 3,
-                            last_played: 1473192423
-                        }
-                    }
-                ],
-                cache: "database"
-            }
-        }
-
-+ Response 400 (application/json)
-
-    Returned if an invalid station shortcode is specified.
-
-    +Body
-
-        {
-            status: "error",
-            error: "Station not found."
-        }
-
 # Group Stations
 Information about the service's hosted radio stations.
 
-### GET /stations/list
+### GET /stations
 List all stations from all categories.
 
 + Response 200 (application/json)
@@ -267,7 +188,7 @@ List all stations from all categories.
             ]
         }
 
-### GET /stations/index/id/{id}
+### GET /stations/{id}
 Station info for the specified numeric identifier.
 
 + Parameters
@@ -295,42 +216,14 @@ Station info for the specified numeric identifier.
             error: "Station not found."
         }
 
-### GET /stations/index/station/{shortcode}
-Station info for the specified shortcode.
-
-+ Parameters
-  + shortcode (string, required) - The station "short code" identifier.
-
-+ Response 200 (application/json)
-
-        {
-            status: "success",
-            result: {
-                id: 1,
-                name: "Best Pony Radio",
-                shortcode: "best_pony_radio"
-            }
-        }
-
-+ Response 400 (application/json)
-
-    Returned if an invalid station shortcode is specified.
-
-    +Body
-
-        {
-            status: "error",
-            error: "Station not found."
-        }
-
 # Group Song Requests
 Information about available tracks that can be requested, and functionality to submit those requests programmatically.
 
-### GET /requests/list/id/{id}
+### GET /requests/{station_id}/list
 Get all currently requestable songs from the specified station.
 
 + Parameters
-  + id (number, required) - The station ID.
+  + station_id (number, required) - The station ID.
 
 + Response 200 (application/json)
 
@@ -377,7 +270,7 @@ Get all currently requestable songs from the specified station.
             error: "Station not found."
         }
 
-### POST /requests/submit/id/{station_id}/song_id/{song_id}
+### POST /requests/{station_id}/submit/{song_id}
 Submit a request for a station to play a song with the specified ID.
 
 + Parameters
@@ -421,7 +314,7 @@ The homepage of the API, that provides a basic ping function and a link to this 
             result: "The AzuraCast API is online and functioning."
         }
 
-### GET /index/status
+### GET /status
 A basic ping function that returns the current UNIX timestamp (for caching tests).
 
 + Response 200 (application/json)
@@ -434,7 +327,7 @@ A basic ping function that returns the current UNIX timestamp (for caching tests
             }
         }
 
-### GET /index/time
+### GET /time
 Return the server's timezone configuration, as well as several formats of the current UTC and localized timestamp.
 
 + Response 200 (application/json)

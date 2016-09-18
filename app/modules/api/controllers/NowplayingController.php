@@ -33,18 +33,6 @@ class NowplayingController extends BaseController
 
                 return $this->returnError('Station not found.');
             }
-            elseif ($this->hasParam('station'))
-            {
-                $sc = $this->getParam('station');
-
-                foreach($np as $key => $np_row)
-                {
-                    if ($np_row['station']['shortcode'] == $sc)
-                        return $this->returnSuccess($np_row);
-                }
-
-                return $this->returnError('Station not found.');
-            }
         }
         else
         {

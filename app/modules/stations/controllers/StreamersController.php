@@ -23,7 +23,7 @@ class StreamersController extends BaseController
             }
             else
             {
-                return $this->render('disabled');
+                return $this->render('controller::disabled');
             }
         }
 

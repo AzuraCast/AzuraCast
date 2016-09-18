@@ -1,5 +1,5 @@
-0 * * * * php /var/azuracast/www/util/cli.php sync:long
-*/5 * * * * php /var/azuracast/www/util/cli.php sync:medium
-* * * * * php /var/azuracast/www/util/cli.php sync:short
-* * * * * php /var/azuracast/www/util/cli.php sync:nowplaying 1
-* * * * * sleep 30; php /var/azuracast/www/util/cli.php sync:nowplaying 2
+0 * * * * php /var/azuracast/www/util/cli.php sync:run long
+*/5 * * * * php /var/azuracast/www/util/cli.php sync:run medium
+* * * * * php /var/azuracast/www/util/cli.php sync:run short
+* * * * * php /var/azuracast/www/util/cli.php sync:run nowplaying
+* * * * * sleep 30; php /var/azuracast/www/util/cli.php sync:run nowplaying

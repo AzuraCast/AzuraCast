@@ -1,12 +1,24 @@
 <?php
-use \App\Phalcon\Cli\Task;
+namespace App\Console\Command;
 
-class RadioTask extends Task
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+class RestartRadio extends CommandAbstract
 {
     /**
-     * Restart all radio stations across the system.
+     * {@inheritdoc}
      */
-    public function restartAction()
+    protected function configure()
+    {
+        $this->setName('radio:restart')
+            ->setDescription('Restart all radio stations.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         \App\Debug::setEchoMode(true);
 

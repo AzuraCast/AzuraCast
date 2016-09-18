@@ -4,40 +4,22 @@ ini_set('display_errors', 1);
 
 require dirname(__FILE__).'/../app/bootstrap.php';
 
-define('VERSION', '1.0.0');
-
-$loader = new \Phalcon\Loader();
-$loader->registerDirs(array(
-    APP_INCLUDE_MODULES.'/cli/tasks',
+$em = $di->get('em');
+$helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(
+    'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($em->getConnection()),
+    'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($em),
 ));
-$loader->register();
 
-// Create a console application
-$console = new \Phalcon\CLI\Console;
-$console->setDI($di);
+$cli = new \Symfony\Component\Console\Application($config->application->name.' Command Line Tools', \App\Version::getVersion());
+$cli->setCatchExceptions(true);
+$cli->setHelperSet($helperSet);
 
-// Process the console arguments
-$arguments = array();
-foreach($argv as $k => $arg) {
-    if ($k == 1) {
-        $task_parts = explode(':', $arg);
-        $arguments['task'] = $task_parts[0];
-        $arguments['action'] = (isset($task_parts[1])) ? $task_parts[1] : 'index';
-    } elseif ($k > 1) {
-        $arguments['params'][] = $arg;
-    }
-}
+\Doctrine\ORM\Tools\Console\ConsoleRunner::addCommands($cli);
 
-// define global constants for the current task and action
-define('CURRENT_TASK', $arguments['task']);
-define('CURRENT_ACTION', $arguments['action']);
+$cli->addCommands(array(
+    new \App\Console\Command\ClearCache($di),
+    new \App\Console\Command\RestartRadio($di),
+    new \App\Console\Command\Sync($di),
+));
 
-try
-{
-    // handle incoming arguments
-    $console->handle($arguments);
-}
-catch (\Phalcon\Exception $e) {
-    echo $e->getMessage();
-    exit(255);
-}
+$cli->run();

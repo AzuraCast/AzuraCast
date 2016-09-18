@@ -15,7 +15,7 @@
         <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div id="data-table-basic-header" class="bootgrid-header container-fluid">
-        <?=$viewHelper->paginate($pager) ?>
+        <?=$this->paginate($pager) ?>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -39,7 +39,7 @@
                         <a class="btn btn-sm btn-default" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $user->id)) ?>">Edit</a>
                         <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $user->id)) ?>">Delete</a>
                     </td>
-                    <td><?=$viewHelper->mailto($user->email) ?></td>
+                    <td><?=$this->mailto($user->email) ?></td>
                     <td>
                         <small>
                             <?

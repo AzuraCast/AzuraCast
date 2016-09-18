@@ -28,7 +28,7 @@ $(function () {
                 <h2>Listeners By Day</h2>
             </div>
             <div class="card-body card-padding-sm">
-                <?php $this->insert('controller::index-dailystats') ?>
+                <?=$this->fetch('controller::index-dailystats') ?>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@ $(function () {
                 <h2>Listeners by Hour of Day</h2>
             </div>
             <div class="card-body card-padding-sm">
-                <?php $this->insert('controller::index-hourlystats') ?>
+                <?=$this->fetch('controller::index-hourlystats') ?>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@ $(function () {
                 <h2>Listeners by Day of Week</h2>
             </div>
             <div class="card-body card-padding-sm">
-                <?php $this->insert('controller::index-dayofweek') ?>
+                <?=$this->fetch('controller::index-dayofweek') ?>
             </div>
         </div>
     </div>

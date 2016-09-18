@@ -244,20 +244,16 @@ $di['view'] = function($di) {
     $view = new \App\Mvc\View(APP_INCLUDE_BASE.'/templates');
     $view->setFileExtension('phtml');
 
+    $view->addAppCommands($di);
+
     $view->addData([
         'di'    => $di,
         'url'   => $di['url'],
         'config' => $di['config'],
-        'viewHelper' => $di['view_helper'],
         'flash' => $di['flash'],
     ]);
 
     return $view;
-};
-
-// Register view helpers.
-$di['view_helper'] = function($di) {
-    return new \App\Service\ViewHelper($di);
 };
 
 // Initialize cache.

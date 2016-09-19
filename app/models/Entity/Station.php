@@ -109,14 +109,14 @@ class Station extends \App\Doctrine\Entity
 
     public function setRadioBaseDir($new_dir)
     {
-        if ($new_dir != $this->radio_base_dir)
+        if (strcmp($this->radio_base_dir, $new_dir) !== 0)
         {
             $this->radio_base_dir = $new_dir;
 
-            @mkdir($this->radio_base_dir, 0777, TRUE);
-            @mkdir($this->getRadioMediaDir(), 0777, TRUE);
-            @mkdir($this->getRadioPlaylistsDir(), 0777, TRUE);
-            @mkdir($this->getRadioConfigDir(), 0777, TRUE);
+            mkdir($this->radio_base_dir, 0777);
+            mkdir($this->getRadioMediaDir(), 0777);
+            mkdir($this->getRadioPlaylistsDir(), 0777);
+            mkdir($this->getRadioConfigDir(), 0777);
         }
     }
 
@@ -327,10 +327,9 @@ class Station extends \App\Doctrine\Entity
 
         // Create path for station.
         $station_base_dir = realpath(APP_INCLUDE_ROOT.'/..').'/stations';
-        @mkdir($station_base_dir);
 
         $station_dir = $station_base_dir.'/'.$station->getShortName();
-        $station->radio_base_dir = $station_dir;
+        $station->setRadioBaseDir($station_dir);
 
         // Generate station ID.
         $station->save();

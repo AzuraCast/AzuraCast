@@ -33,21 +33,11 @@ class Messenger
         // Render the template as the message if a template is specified.
         if (isset($options['template']))
         {
-            $previous_sp_setting = $di['url']->getSchemePrefixSetting();
-            $di['url']->forceSchemePrefix(TRUE);
+            $vars = (array)$options['vars'];
+            $vars['subject'] = $options['subject'];
 
-            $view = \App\Phalcon\View::getView(array(
-                'views_dir' => 'messages',
-                'layouts_dir' => '../templates',
-                'layout'    => 'message',
-            ));
-            
-            $view->subject = $options['subject'];
-            $view->setVars((array)$options['vars']);
-
-            $options['message'] = $view->getRender('', $options['template']);
-
-            $di['url']->forceSchemePrefix($previous_sp_setting);
+            $view = $di['view'];
+            $options->message = $view->fetch($options['template'], $vars);
         }
         else if (isset($options['body']) && !isset($options['message']))
         {
@@ -139,14 +129,6 @@ class Messenger
             if (isset($mail_config['bounce_addr']))
                 $mail->setReturnPath($mail_config['bounce_addr']);
 
-            /*
-            // Include a specific "Direct replies to" header if specified.
-            if ($options['reply_to'] && $validator->isValid($options['reply_to']))
-                $mail->setReplyTo($options['reply_to']);
-            else if (isset($mail_config['reply_to']) && $mail_config['reply_to'])
-                $mail->setReplyTo($mail_config['reply_to']);
-            */
-
             // Change the type of the e-mail's body if specified in the options.
             if (isset($options['text_only']) && $options['text_only'])
                 $mail->setBody(strip_tags($options['message']));
@@ -161,12 +143,6 @@ class Messenger
                     $mail->addAttachment($attachment);
                 }
             }
-
-            /*
-            // Modify the mail type if specified.
-            if (isset($options['type']))
-                $mail->setType($options['type']);
-            */
 
             // Catch invalid e-mails.
             try

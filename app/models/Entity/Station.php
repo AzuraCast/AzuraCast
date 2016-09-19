@@ -113,6 +113,7 @@ class Station extends \App\Doctrine\Entity
         {
             $this->radio_base_dir = $new_dir;
 
+            @mkdir($this->radio_base_dir, 0777, TRUE);
             @mkdir($this->getRadioMediaDir(), 0777, TRUE);
             @mkdir($this->getRadioPlaylistsDir(), 0777, TRUE);
             @mkdir($this->getRadioConfigDir(), 0777, TRUE);

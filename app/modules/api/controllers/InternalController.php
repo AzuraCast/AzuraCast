@@ -18,7 +18,7 @@ class InternalController extends BaseController
             return $this->_authFail('Invalid station specified');
 
         // Log requests to a temp file for debugging.
-        $request_vars = "-------\n".date('F j, Y g:i:s')."\n".print_r($_REQUEST, true)."\n".print_r($this->dispatcher->getParams(), true);
+        $request_vars = "-------\n".date('F j, Y g:i:s')."\n".print_r($_REQUEST, true)."\n".print_r($this->params, true);
         $log_path = APP_INCLUDE_TEMP.'/icecast_stream_auth.txt';
         file_put_contents($log_path, $request_vars, \FILE_APPEND);
 
@@ -43,16 +43,18 @@ class InternalController extends BaseController
 
     protected function _authFail($message)
     {
-        $this->response->setHeader('icecast-auth-user', '0');
-        $this->response->setHeader('Icecast-Auth-Message', $message);
+        $this->response->withHeader('icecast-auth-user', '0');
+        $this->response->withHeader('Icecast-Auth-Message', $message);
 
-        return $this->response->setContent('Authentication failure: '.$message);
+        $this->response->getBody()->write('Authentication failure: '.$message);
+        return $this->response;
     }
 
     protected function _authSuccess()
     {
-        $this->response->setHeader('icecast-auth-user', 1);
+        $this->response->withHeader('icecast-auth-user', 1);
 
-        return $this->response->setContent('Success!');
+        $this->response->getBody()->write('Success!');
+        return $this->response;
     }
 }

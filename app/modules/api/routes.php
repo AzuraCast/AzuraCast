@@ -18,7 +18,7 @@ $app->group('/api', function() {
 
     $this->group('/internal', function() {
 
-        $this->any('/streamauth', 'api:internal:streamauth')
+        $this->any('/streamauth/{id}', 'api:internal:streamauth')
             ->setName('api:internal:streamauth');
 
     });

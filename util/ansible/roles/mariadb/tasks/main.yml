@@ -55,7 +55,7 @@
      password: "{{ mysql_root_password }}"
      priv: "*.*:ALL,GRANT"
      state: present
-   notify: restart mysql
+   notify: send mysql notification
 
  #- name: Reload privilege tables
  #  command: 'mysql -ne "{{ item }}"'

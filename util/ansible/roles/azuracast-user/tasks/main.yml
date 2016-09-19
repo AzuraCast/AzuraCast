@@ -24,6 +24,7 @@
       shell: /bin/bash
       groups: 'sudo,admin,www-data'
       password: "{{ azuracast_user_password|password_hash('sha512') }}"
+    notify: send user notification
 
   - name: Modify www-data User
     become: true

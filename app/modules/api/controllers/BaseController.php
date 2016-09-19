@@ -24,7 +24,7 @@ class BaseController extends \App\Mvc\Controller
         $this->doNotRender();
 
         // Allow AJAX retrieval.
-        $this->response->withHeader('Access-Control-Allow-Origin', '*');;
+        $this->response = $this->response->withHeader('Access-Control-Allow-Origin', '*');;
 
         $this->_time_start = microtime(true);
 
@@ -113,7 +113,7 @@ class BaseController extends \App\Mvc\Controller
 
     public function returnError($message, $error_code = 400)
     {
-        $this->response->withStatus($error_code);
+        $this->response = $this->response->withStatus($error_code);
 
         return $this->returnToScreen(array(
             'status'    => 'error',
@@ -133,10 +133,8 @@ class BaseController extends \App\Mvc\Controller
 
     public function returnRaw($message, $format = 'json')
     {
-        if ($format == 'xml')
-            $this->response->withHeader('Content-Type', 'text/xml');
-        else
-            $this->response->withHeader('Content-Type', 'application/json');
+        $content_type = ($format == 'xml') ? 'text/xml' : 'application/json';
+        $this->response = $this->response->withHeader('Content-Type', $content_type);
 
         $this->response->getBody()->write($message);
         return $this->response;

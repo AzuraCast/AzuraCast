@@ -66,16 +66,17 @@ class ReportsController extends BaseController
 
                 $filename = $this->station->getShortName().'_media_'.date('Ymd').'.csv';
                 \App\Export::csv($export_csv, TRUE, $filename);
-                break;
+            break;
 
             case 'json':
-                return $this->response->setJsonContent($report_data);
-                break;
+                $this->response->getBody()->write(json_encode($report_data));
+                return $this->response;
+            break;
 
             case 'html':
             default:
                 $this->view->report_data = $report_data;
-                break;
+            break;
         }
 
         return true;

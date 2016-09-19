@@ -43,8 +43,9 @@ class InternalController extends BaseController
 
     protected function _authFail($message)
     {
-        $this->response->withHeader('icecast-auth-user', '0');
-        $this->response->withHeader('Icecast-Auth-Message', $message);
+        $this->response = $this->response
+            ->withHeader('icecast-auth-user', '0')
+            ->withHeader('Icecast-Auth-Message', $message);
 
         $this->response->getBody()->write('Authentication failure: '.$message);
         return $this->response;
@@ -52,7 +53,8 @@ class InternalController extends BaseController
 
     protected function _authSuccess()
     {
-        $this->response->withHeader('icecast-auth-user', 1);
+        $this->response = $this->response
+            ->withHeader('icecast-auth-user', 1);
 
         $this->response->getBody()->write('Success!');
         return $this->response;

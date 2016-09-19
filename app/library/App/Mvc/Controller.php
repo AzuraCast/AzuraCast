@@ -87,7 +87,8 @@ class Controller
             return $action_result;
 
         $template = $this->view->render('controller::'.$this->action);
-        return $response->getBody()->write($template);
+        $this->response->getBody()->write($template);
+        return $this->response;
     }
 
     public function __get($key)
@@ -179,12 +180,12 @@ class Controller
         if ($this->_cache_privacy == 'private')
         {
             // $this->response->setHeader('Cache-Control', 'must-revalidate, private, max-age=' . $this->_cache_lifetime);
-            $this->response->withHeader('X-Accel-Expires', 'off');
+            $this->response = $this->response->withHeader('X-Accel-Expires', 'off');
         }
         else
         {
             // $this->response->setHeader('Cache-Control', 'public, max-age=' . $this->_cache_lifetime);
-            $this->response->withHeader('X-Accel-Expires', $this->_cache_lifetime);
+            $this->response = $this->response->withHeader('X-Accel-Expires', $this->_cache_lifetime);
         }
     }
 

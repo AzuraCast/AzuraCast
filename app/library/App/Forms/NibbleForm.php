@@ -16,10 +16,46 @@ class NibbleForm extends \Nibble\NibbleForms\NibbleForm
         return parent::__construct($action, $submit_value, $html5, $method, $sticky, $message_type, $format, $multiple_errors);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function addField($field_name, $type = 'text', array $attributes = array(), $overwrite = false)
+    {
+        $namespace_options = [
+            "\\App\\Forms\\Element\\" . ucfirst($type),
+            "\\Nibble\\NibbleForms\\Field\\" . ucfirst($type),
+        ];
+
+        foreach($namespace_options as $namespace_option)
+        {
+            if (class_exists($namespace_option))
+            {
+                $namespace = $namespace_option;
+                break;
+            }
+        }
+
+        if (!isset($namespace))
+            return false;
+
+        if (isset($attributes['label']))
+            $label = $attributes['label'];
+        else
+            $label = ucfirst(str_replace('_', ' ', $field_name));
+
+        $field_name = \Nibble\NibbleForms\Useful::slugify($field_name, '_');
+
+        if (isset($this->fields->$field_name) && !$overwrite)
+            return false;
+
+        $this->fields->$field_name = new $namespace($label, $attributes);
+        $this->fields->$field_name->setForm($this);
+
+        return $this->fields->$field_name;
+    }
+
     public function getField($key)
     {
         return $this->fields->$key;
     }
-
-
 }

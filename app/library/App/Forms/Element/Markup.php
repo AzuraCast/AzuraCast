@@ -1,19 +1,33 @@
 <?php
 namespace App\Forms\Element;
 
-class Markup extends \Phalcon\Forms\Element implements \Phalcon\Forms\ElementInterface
+use Nibble\NibbleForms\Field;
+
+class Markup extends Field
 {
+    public $error = array();
+
+    protected $label;
     protected $markup;
 
-    public function __construct($name, $markup=null, $attributes=null)
+    public function __construct($label = 'CAPTCHA', $attributes = array())
     {
-        parent::__construct($name, $attributes);
-
-        $this->markup = $markup;
+        $this->label = $label;
+        $this->markup = $attributes['markup'];
     }
 
-    public function render($attributes=null)
+    public function returnField($form_name, $name, $value = '')
     {
-        return $this->markup;
+        return array(
+            'messages' => !empty($this->custom_error) && !empty($this->error) ? $this->custom_error : $this->error,
+            'label' => $this->label == false ? false : sprintf('<label for="%s">%s</label>', $name, $this->label),
+            'field' => $this->markup,
+            'html' => $this->html
+        );
+    }
+
+    public function validate($val)
+    {
+        return true;
     }
 }

@@ -1,29 +1,49 @@
 <?php
 namespace App\Forms\Element;
 
-class Recaptcha extends \Phalcon\Forms\Element implements \Phalcon\Forms\ElementInterface
+use Nibble\NibbleForms\Field;
+
+class Captcha extends Field
 {
-    protected $config;
+    public $error = array();
 
-    public function __construct($name, $attributes=null)
+    protected $label;
+    protected $attributes;
+
+    public function __construct($label = 'CAPTCHA', $attributes = array())
     {
-        parent::__construct($name, $attributes);
-
-        $di = $GLOBALS['di'];
-        $config = $di->get('config');
-        $apis_config = $config->apis->toArray();
-
-        if (empty($apis_config) || !isset($apis_config['recaptcha']))
-            throw new \App\Exception('Recaptcha is not configured in apis.conf.php!');
-
-        $this->config = $apis_config['recaptcha'];
+        $this->label = $label;
+        $this->attributes = $attributes;
     }
 
-    public function render($attributes = null)
+    public function returnField($form_name, $name, $value = '')
     {
-        $return = '';
-        $return .= '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
-        $return .= '<div class="g-recaptcha" data-sitekey="'.$this->config['public_key'].'" data-theme="dark"></div>';
-        return $return;
+        $field = <<<FIELD
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
+<div class="g-recaptcha" data-sitekey="%S" data-theme="dark"></div>
+FIELD;
+
+        $class = !empty($this->error) ? ' class="error"' : '';
+
+        return array(
+            'messages' => !empty($this->custom_error) && !empty($this->error) ? $this->custom_error : $this->error,
+            'label' => $this->label == false ? false : sprintf('<label for="%s"%s>%s</label>', $name, $class, $this->label),
+            'field' => sprintf($field, $this->attributes['public_key']),
+            'html' => $this->html
+        );
     }
+
+    public function validate($val)
+    {
+        $params = array(
+            'secret' => $this->attributes['private_key'],
+            'response' => $val,
+            'remoteip' => $_SERVER['REMOTE_ADDR']
+        );
+
+        $url = 'https://www.google.com/recaptcha/api/siteverify?' .http_build_query($params);
+        $response = json_decode(file_get_contents($url));
+        return $response->success;
+    }
+
 }

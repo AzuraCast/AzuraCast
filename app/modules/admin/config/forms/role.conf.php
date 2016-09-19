@@ -4,37 +4,35 @@
  */
 
 $actions_raw = \Entity\Action::fetchArray('name');
-$actions = array();
-foreach($actions_raw as $action)
-{
+$actions = [];
+foreach ($actions_raw as $action)
     $actions[$action['id']] = $action['name'];
-}
- 
-return array(   
+
+return [
     /**
      * Form Configuration
      */
-    'form' => array(
-        'method'        => 'post',
-        'elements'      => array(
-                    
-            'name'      => array('text', array(
+    'form' => [
+        'method' => 'post',
+        'elements' => [
+
+            'name' => ['text', [
                 'label' => 'Role Name',
                 'class' => 'half-width',
                 'required' => true,
-            )),
-            
-            'actions' => array('multiCheckbox', array(
+            ]],
+
+            'actions' => ['multiCheckbox', [
                 'label' => 'Actions',
                 'multiOptions' => $actions,
-            )),
-            
-            'submit'        => array('submit', array(
-                'type'  => 'submit',
+            ]],
+
+            'submit' => ['submit', [
+                'type' => 'submit',
                 'label' => 'Save Changes',
                 'helper' => 'formButton',
                 'class' => 'btn btn-lg btn-primary',
-            )),
-        ),
-    ),
-);
+            ]],
+        ],
+    ],
+];

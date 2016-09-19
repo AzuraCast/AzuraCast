@@ -1,20 +1,20 @@
 <?php
 
-return array(
-    'method'        => 'post',
-    'elements'      => array(
+return [
+    'method' => 'post',
+    'elements' => [
 
-        'owner'      => array('text', array(
+        'owner' => ['text', [
             'label' => 'API Key Owner',
             'class' => 'half-width',
             'required' => true,
-        )),
+        ]],
 
-        'submit'        => array('submit', array(
-            'type'  => 'submit',
+        'submit' => ['submit', [
+            'type' => 'submit',
             'label' => 'Save Changes',
             'helper' => 'formButton',
             'class' => 'btn btn-lg btn-primary',
-        )),
-    ),
-);
+        ]],
+    ],
+];

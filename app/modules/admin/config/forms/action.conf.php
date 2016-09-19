@@ -3,26 +3,26 @@
  * Add Action Form
  */
 
-return array(   
+return [
     /**
      * Form Configuration
      */
-    'form' => array(
-        'method'        => 'post',
-        'elements'      => array(
-                    
-            'name'      => array('text', array(
+    'form' => [
+        'method' => 'post',
+        'elements' => [
+
+            'name' => ['text', [
                 'label' => 'Action Name',
                 'class' => 'half-width',
                 'required' => true,
-            )),
-            
-            'submit'        => array('submit', array(
-                'type'  => 'submit',
+            ]],
+
+            'submit' => ['submit', [
+                'type' => 'submit',
                 'label' => 'Save Changes',
                 'helper' => 'formButton',
                 'class' => 'btn btn-lg btn-primary',
-            )),
-        ),
-    ),
-);
+            ]],
+        ],
+    ],
+];

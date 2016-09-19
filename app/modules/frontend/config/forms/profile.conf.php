@@ -8,13 +8,13 @@ $config = $di->get('config');
 
 $general_config = $config->general->toArray();
 
-return array(
+return [
     'method' => 'post',
-    'groups' => array(
-        
-        'account_info' => array(
+    'groups' => [
+
+        'account_info' => [
             'legend' => 'Account Information',
-            'elements' => array(
+            'elements' => [
 
                 /*
                 'name' => array('text', array(
@@ -23,22 +23,22 @@ return array(
                     'required' => true,
                 )),
                 */
-                
-                'email' => array('text', array(
+
+                'email' => ['text', [
                     'label' => 'E-mail Address',
                     'class' => 'half-width',
                     'required' => true,
                     'autocomplete' => 'off',
-                )),
-        
-                'auth_password' => array('password', array(
+                ]],
+
+                'auth_password' => ['password', [
                     'label' => 'Reset Password',
                     'description' => 'To change your password, enter the new password in the field below.',
                     'autocomplete' => 'off',
-                )),
-                
-            ),
-        ),
+                ]],
+
+            ],
+        ],
 
         /*
         'customization_details' => array(
@@ -55,17 +55,17 @@ return array(
             ),
         ),
         */
-        
-        'submit' => array(
-            'elements' => array(
-                'submit'        => array('submit', array(
-                    'type'  => 'submit',
+
+        'submit' => [
+            'elements' => [
+                'submit' => ['submit', [
+                    'type' => 'submit',
                     'label' => 'Save Profile',
                     'helper' => 'formButton',
                     'class' => 'btn btn-lg btn-primary',
-                )),
-            ),
-        ),
-        
-    ),
-);
+                ]],
+            ],
+        ],
+
+    ],
+];

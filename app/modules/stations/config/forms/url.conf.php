@@ -1,29 +1,29 @@
-<?php 
-return array(
-    'elements' => array(
+<?php
+return [
+    'elements' => [
 
-        'long_url' => array('text', array(
-            'label'     => 'Original URL (Target)',
+        'long_url' => ['text', [
+            'label' => 'Original URL (Target)',
             'description' => 'The URL you would like the short address to redirect to.',
-            'required'  => true,
+            'required' => true,
             'maxlength' => 300,
-            'class'     => 'full-width',
+            'class' => 'full-width',
             'placeholder' => 'http://full-url.here.com/',
-        )),
+        ]],
 
-        'short_url' => array('text', array(
-            'label'     => 'Short URL',
+        'short_url' => ['text', [
+            'label' => 'Short URL',
             'maxlength' => 50,
             'description' => 'If you want to specify the short URL, enter it in this field. Leave this field blank to automatically generate one.',
-            'class'     => 'half-width',
-        )),
+            'class' => 'half-width',
+        ]],
 
-        'submit'        => array('submit', array(
-            'type'  => 'submit',
+        'submit' => ['submit', [
+            'type' => 'submit',
             'label' => 'Save Changes',
             'helper' => 'formButton',
             'class' => 'btn btn-lg btn-primary',
-        )),
+        ]],
 
-    ),
-);
+    ],
+];

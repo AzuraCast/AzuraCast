@@ -1,32 +1,32 @@
-<?php 
-return array(   
-    'method'        => 'post',
-    'enctype'       => 'multipart/form-data',
+<?php
+return [
+    'method' => 'post',
+    'enctype' => 'multipart/form-data',
 
-    'elements' => array(
+    'elements' => [
 
-        'decision' => array('radio', array(
+        'decision' => ['radio', [
             'label' => 'Your Recommendation',
             'required' => true,
-            'multiOptions' => array(
+            'multiOptions' => [
                 'Accept' => 'Accept the Station',
                 'Decline' => 'Decline the Station',
                 'Abstain' => 'Abstain / No Vote',
-            ),
+            ],
             'default' => 'Abstain',
-        )),
+        ]],
 
-        'comments' => array('textarea', array(
+        'comments' => ['textarea', [
             'label' => 'Comments',
             'class' => 'full-width half-height',
-        )),
+        ]],
 
-        'submit'        => array('submit', array(
-            'type'  => 'submit',
+        'submit' => ['submit', [
+            'type' => 'submit',
             'label' => 'Submit Vote',
             'helper' => 'formButton',
             'class' => 'btn btn-lg btn-primary',
-        )),
+        ]],
 
-    ),
-);
+    ],
+];

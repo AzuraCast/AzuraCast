@@ -1,41 +1,41 @@
 <?php
 /**
- * Edit User form 
+ * Edit User form
  */
 
-return array(   
+return [
     /**
      * Form Configuration
      */
-    'form' => array(
-        'method'        => 'post',
-        'elements'      => array(
-            
-            'email' => array('text', array(
+    'form' => [
+        'method' => 'post',
+        'elements' => [
+
+            'email' => ['text', [
                 'label' => 'E-mail Address (Username)',
-                'validators' => array('EmailAddress'),
+                'validators' => ['EmailAddress'],
                 'required' => true,
                 'autocomplete' => 'off',
-            )),
+            ]],
 
-            'auth_password' => array('password', array(
+            'auth_password' => ['password', [
                 'label' => 'Reset Password',
                 'description' => 'Leave blank to persist current password.',
                 'autocomplete' => 'off',
                 'required' => false,
-            )),
-            
-            'roles'         => array('multiCheckbox', array(
+            ]],
+
+            'roles' => ['multiCheckbox', [
                 'label' => 'Roles',
                 'multiOptions' => \Entity\Role::fetchSelect(),
-            )),
-            
-            'submit'        => array('submit', array(
-                'type'  => 'submit',
+            ]],
+
+            'submit' => ['submit', [
+                'type' => 'submit',
                 'label' => 'Save Changes',
                 'helper' => 'formButton',
                 'class' => 'btn btn-lg btn-primary',
-            )),
-        ),
-    ),
-);
+            ]],
+        ],
+    ],
+];

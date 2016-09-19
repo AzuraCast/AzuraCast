@@ -3,4 +3,5 @@
   service: name=mysql enabled=yes state=restarted
 
 - name: send mysql notification
-  debug: "The MySQL 'root'@'localhost' account has had its password updated. The new password is: {{ mysql_root_password }}"
+  debug:
+    msg: "The MySQL 'root'@'localhost' account has had its password updated. The new password is: {{ mysql_root_password }}"

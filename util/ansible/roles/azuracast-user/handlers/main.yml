@@ -1,3 +1,5 @@
 ---
 - name: send user notification
-  debug: "A user account named 'azuracast' has been created. The password associated with this account is: {{ azuracast_user_password }}"
+  debug:
+    msg: "A user account named 'azuracast' has been created. The password associated with this account is: {{ azuracast_user_password }}"
+S

@@ -46,6 +46,12 @@ AzuraCast is a volunteer project, and we depend on your support and feedback to 
 
 Issues for this codebase are tracked in this repository's Issues section on GitHub. Anyone can create a new issue for the project, and you are encouraged to do so.
 
+## Support AzuraCast Development
+
+AzuraCast will always be available free of charge, but if you find the software useful and would like to support the project's lead developer, click the link below to buy me a coffee. Your support is greatly appreciated.
+
+<a href='https://ko-fi.com/A736ATQ' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=b' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a> 
+
 ## Contribute to AzuraCast
 
 This codebase is Free and Open Source Software, both to help our team maintain transparency and to encourage contributions from the developer community. If you see a bug or other issue with the codebase, please report an issue or submit a pull request!

@@ -107,11 +107,11 @@ class FilesController extends BaseController
                     $short = ltrim(str_replace($this->base_dir, '', $i), '/');
 
                     if (is_dir($i))
-                        $media = ['name' => 'Directory', 'playlists' => [], 'is_playable' => false];
+                        $media = ['name' => 'Directory', 'playlists' => '', 'is_playable' => false];
                     elseif (isset($media_in_dir[$short]))
                         $media = $media_in_dir[$short];
                     else
-                        $media = ['name' => 'File Not Processed', 'playlists' => [], 'is_playable' => false];
+                        $media = ['name' => 'File Not Processed', 'playlists' => '', 'is_playable' => false];
 
                     $stat = stat($i);
 

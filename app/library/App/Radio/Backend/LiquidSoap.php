@@ -69,7 +69,7 @@ class LiquidSoap extends AdapterAbstract
 
             file_put_contents($playlist['file_path'], $playlist_file_contents);
 
-            $ls_config[] = $playlist['var_name'].' = playlist(reload=1800,"'.$playlist['file_path'].'")';
+            $ls_config[] = $playlist['var_name'].' = playlist(reload_mode="watch","'.$playlist['file_path'].'")';
 
             $playlist_type = $playlist['type'] ?: 'default';
             $playlists_by_type[$playlist_type][] = $playlist;

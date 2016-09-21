@@ -76,7 +76,7 @@ $app->group('/station/{station}', function() {
 
     $this->group('/reports', function() {
 
-        $this->any('/timeline[/page/{page}]', 'stations:index:timeline')
+        $this->any('/timeline[/format/{format}]', 'stations:index:timeline')
             ->setName('stations:index:timeline');
 
         $this->any('/performance[/format/{format}]', 'stations:reports:performance')

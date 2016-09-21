@@ -16,11 +16,8 @@
             </li>
         </ul>
     </div>
-    <div id="data-table-basic-header" class="bootgrid-header container-fluid">
-        <?=$this->paginate($pager) ?>
-    </div>
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="data-table table table-striped">
             <colgroup>
                 <col width="15%">
                 <col width="10%">
@@ -30,15 +27,15 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th>Date/Time</th>
-                    <th>Listeners</th>
-                    <th>Change</th>
-                    <th>Song Title</th>
-                    <th>Playlist(s)</th>
+                    <th data-column-id="date_time">Date/Time</th>
+                    <th data-column-id="listeners">Listeners</th>
+                    <th data-column-id="delta">Change</th>
+                    <th data-column-id="song">Song Title</th>
+                    <th data-column-id="playlists">Playlist(s)</th>
                 </tr>
             </thead>
             <tbody>
-            <?php foreach($pager as $song_row): ?>
+            <?php foreach($songs as $song_row): ?>
                 <tr class="input" id="song_<?=$song_row['timestamp'] ?>">
                     <td class="text-center"><?=date('D g:ia', $song_row['timestamp_start']) ?></td>
                     <td class="text-center"><big><?=$song_row['stat_start'] ?></big></td>
@@ -69,3 +66,19 @@
         </table>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function() {
+        $(".data-table").bootgrid({
+            caseSensitive: false,
+            sorting: false,
+            css: {
+                icon: 'zmdi icon',
+                iconColumns: 'zmdi-view-module',
+                iconDown: 'zmdi-sort-amount-desc',
+                iconRefresh: 'zmdi-refresh',
+                iconUp: 'zmdi-sort-amount-asc'
+            }
+        });
+    });
+</script>

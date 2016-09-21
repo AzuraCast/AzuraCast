@@ -226,12 +226,7 @@ class IndexController extends BaseController
         else
         {
             $songs = array_reverse($songs);
-
-            $pager = new Paginator(new ArrayAdapter((array)$songs));
-            $pager->setItemCountPerPage(50);
-            $pager->setCurrentPageNumber($this->getParam('page', 1));
-
-            $this->view->pager = $pager;
+            $this->view->songs = $songs;
         }
     }
 

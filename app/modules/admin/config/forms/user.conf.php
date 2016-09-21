@@ -11,16 +11,15 @@ return [
         'method' => 'post',
         'elements' => [
 
-            'email' => ['text', [
-                'label' => 'E-mail Address (Username)',
-                'validators' => ['EmailAddress'],
+            'email' => ['email', [
+                'label' => 'E-mail Address',
                 'required' => true,
                 'autocomplete' => 'off',
             ]],
 
             'auth_password' => ['password', [
                 'label' => 'Reset Password',
-                'description' => 'Leave blank to persist current password.',
+                'description' => 'Leave blank to use the current password.',
                 'autocomplete' => 'off',
                 'required' => false,
             ]],

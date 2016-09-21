@@ -162,6 +162,44 @@ class StationMedia extends \App\Doctrine\Entity
     }
 
     /**
+     * Write modified metadata directly to the file as ID3 information.
+     */
+    public function writeToFile()
+    {
+        $getID3 = new \getID3;
+        $getID3->setOption(array('encoding'=> 'UTF8'));
+
+        require_once(APP_INCLUDE_VENDOR.'/james-heinrich/getid3/getid3/write.php');
+
+        $tagwriter = new \getid3_writetags;
+        $tagwriter->filename = $this->getFullPath();
+
+        $tagwriter->tagformats = array('id3v1', 'id3v2.3');
+        $tagwriter->overwrite_tags = true;
+        $tagwriter->tag_encoding = 'UTF8';
+        $tagwriter->remove_other_tags = true;
+
+        $tag_data = array(
+            'title'         => array($this->title),
+            'artist'        => array($this->artist),
+            'album'         => array($this->album),
+        );
+
+        $tagwriter->tag_data = $tag_data;
+
+        // write tags
+        if ($tagwriter->WriteTags())
+        {
+            $this->mtime = time();
+            return true;
+        }
+        else
+        {
+            throw new \Exception(implode('<br><br>', $tagwriter->errors));
+        }
+    }
+
+    /**
      * Static Functions
      */
 

@@ -25,6 +25,9 @@ $app->group('/station/{station}', function() {
         $this->any('', 'stations:files:index')
             ->setName('stations:files:index');
 
+        $this->any('/edit/{id}', 'stations:files:edit')
+            ->setName('stations:files:edit');
+
         $this->any('/list', 'stations:files:list')
             ->setName('stations:files:list');
 

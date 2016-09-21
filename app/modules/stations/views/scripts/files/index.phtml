@@ -71,6 +71,7 @@
                             <th data-column-id="size" data-formatter="file_size">Size</th>
                             <th data-column-id="mtime" data-formatter="file_mtime">Modified</th>
                             <th data-column-id="media_playlists">Playlists</th>
+                            <th data-column-id="commands" data-formatter="commands" data-sortable="false">Actions</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -117,6 +118,12 @@ $(function() {
                 var $link = '<a class="name" href="'+$url+'" title="'+row.name+'">'+row.media_name+'</a>';
 
                 return '<div class="'+(row.is_dir ? 'is_dir' : 'is_file')+'">'+$icon + $link + '<br><small>'+row.text+'</small></div>';
+            },
+            "commands": function(column, row) {
+                if (row.media_edit_url)
+                    return '<a class="btn btn-sm btn-primary" href="'+row.media_edit_url+'">Edit</a>';
+                else
+                    return '';
             },
             "file_length": function(column, row) {
                 if (row.media_length_text)

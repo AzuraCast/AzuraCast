@@ -67,6 +67,39 @@ class FilesController extends BaseController
         $this->view->playlists = $playlists;
     }
 
+    public function editAction()
+    {
+        $media_id = (int)$this->getParam('id');
+        $media = StationMedia::getRepository()->findOneBy(['station_id' => $this->station->id, 'id' => $media_id]);
+
+        if (!($media instanceof StationMedia))
+            throw new \Exception('Media not found.');
+
+        if (empty($_POST))
+            $this->storeReferrer('media_edit');
+
+        $form_config = $this->current_module_config->forms->media->toArray();
+        $form = new \App\Form($form_config);
+
+        $form->populate($media->toArray());
+
+        if (!empty($_POST) && $form->isValid())
+        {
+            $data = $form->getValues();
+
+            $media->fromArray($data);
+            $media->writeToFile();
+            $media->save();
+
+            $this->alert('<b>Media metadata updated!</b>', 'green');
+
+            $default_url = $this->url->routeFromHere(['action' => 'index']);
+            return $this->redirectToStoredReferrer('media_edit', $default_url);
+        }
+
+        return $this->renderForm($form, 'edit', 'Edit Media Metadata');
+    }
+
     public function listAction()
     {
         $result = array();
@@ -92,6 +125,7 @@ class FilesController extends BaseController
                     'artist' => $media_row['artist'],
                     'title' => $media_row['title'],
                     'name' => $media_row['artist'].' - '.$media_row['title'],
+                    'edit_url' => $this->url->routeFromHere(['action' => 'edit', 'id' => $media_row['id']]),
                     'playlists' => implode('<br>', $playlists),
                 );
             }

@@ -91,12 +91,47 @@ class Form
         return $values;
     }
 
+    public function getValue($key)
+    {
+        return $this->form->getData($key);
+    }
+
     protected function _cleanUpConfig($options)
     {
         if (empty($options['groups']))
             $options['groups'] = array();
 
         $options['groups'][] = ['elements' => $options['elements']];
+        unset($options['elements']);
+
+        // Standardize some field input.
+        $field_type_lookup = [
+            'checkboxes' => 'checkbox',
+            'multicheckbox' => 'checkbox',
+            'textarea'  => 'textArea',
+        ];
+
+        foreach($options['groups'] as &$group)
+        {
+            foreach($group['elements'] as &$element)
+            {
+                if (!empty($element[1]['label']) && substr($element[1]['label'], -1) !== ':')
+                    $element[1]['label'] = $element[1]['label'].':';
+
+                $element[0] = strtolower($element[0]);
+                if (isset($field_type_lookup[$element[0]]))
+                    $element[0] = $field_type_lookup[$element[0]];
+
+                if (!empty($element[1]['multiOptions']))
+                    $element[1]['choices'] = $element[1]['multiOptions'];
+                unset($element[1]['multiOptions']);
+
+                if (!empty($element[1]['options']))
+                    $element[1]['choices'] = $element[1]['options'];
+                unset($element[1]['options']);
+            }
+        }
+
         return $options;
     }
 
@@ -114,30 +149,13 @@ class Form
         $field_type = strtolower($element_info[0]);
         $field_options = $element_info[1];
 
-        $field_type_lookup = [
-            'checkboxes' => 'checkbox',
-            'multicheckbox' => 'checkbox',
-            'textarea'  => 'textArea',
-        ];
-
         $defaults = [
             'required' => false,
         ];
         $field_options = array_merge($defaults, $field_options);
 
-        if (isset($field_type_lookup[$field_type]))
-            $field_type = $field_type_lookup[$field_type];
-
         if ($field_type == 'submit')
             return null;
-
-        if (!empty($field_options['multiOptions']))
-            $field_options['choices'] = $field_options['multiOptions'];
-        unset($field_options['multiOptions']);
-
-        if (!empty($field_options['options']))
-            $field_options['choices'] = $field_options['options'];
-        unset($field_options['options']);
 
         if (isset($field_options['default']))
             $this->form->addData([$element_name => (string)$field_options['default']]);

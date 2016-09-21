@@ -210,7 +210,8 @@ class FilesController extends BaseController
                 $files[] = $file_path;
         }
 
-        $action = $_POST['do'];
+        list($action, $action_id) = explode('_', $_POST['do']);
+
         switch($action)
         {
             case 'delete':
@@ -247,35 +248,30 @@ class FilesController extends BaseController
                 $this->station->getBackendAdapter()->write();
             break;
 
-            default:
-                // Add all selected files to a playlist.
-                if (substr($action, 0, 8) == 'playlist')
+            // Add all selected files to a playlist.
+            case 'playlist':
+                $playlist_id = (int)$action_id;
+                $playlist = StationPlaylist::getRepository()->findOneBy(['station_id' => $this->station->id, 'id' => $playlist_id]);
+
+                if (!($playlist instanceof StationPlaylist))
+                    return $this->_err(500, 'Playlist Not Found');
+
+                $music_files = $this->_getMusicFiles($files);
+
+                foreach($music_files as $file)
                 {
-                    $action_parts = explode('_', $action);
-                    $playlist_id = (int)$action_parts[1];
+                    $media = StationMedia::getOrCreate($this->station, $file);
 
-                    $playlist = StationPlaylist::getRepository()->findOneBy(['station_id' => $this->station->id, 'id' => $playlist_id]);
+                    if (!$media->playlists->contains($playlist))
+                        $media->playlists->add($playlist);
 
-                    if (!($playlist instanceof StationPlaylist))
-                        return $this->_err(500, 'Playlist Not Found');
-
-                    $music_files = $this->_getMusicFiles($files);
-
-                    foreach($music_files as $file)
-                    {
-                        $media = StationMedia::getOrCreate($this->station, $file);
-
-                        if (!$media->playlists->contains($playlist))
-                            $media->playlists->add($playlist);
-
-                        $this->em->persist($media);
-                    }
-
-                    $this->em->flush();
-
-                    // Write new PLS playlist configuration.
-                    $this->station->getBackendAdapter()->write();
+                    $this->em->persist($media);
                 }
+
+                $this->em->flush();
+
+                // Write new PLS playlist configuration.
+                $this->station->getBackendAdapter()->write();
             break;
         }
 
@@ -295,6 +291,7 @@ class FilesController extends BaseController
         if (is_dir($path))
         {
             $music_files = array();
+
             $files = array_diff(scandir($path), array('.','..'));
             foreach ($files as $file)
             {
@@ -304,6 +301,8 @@ class FilesController extends BaseController
                 else
                     $music_files[] = $file_path;
             }
+
+            return $music_files;
         }
         else
         {

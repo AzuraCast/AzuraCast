@@ -87,16 +87,6 @@ $(function() {
 
     var $current_dir = '';
 
-    // Check if initial URL has a hash.
-    var hashval = window.location.hash.substr(1);
-
-    if (hashval.length > 0)
-        list();
-    else
-        $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
-
-    $(window).bind('hashchange',list);
-
     $("#file-table").bootgrid({
         ajax: true,
         selection: true,
@@ -144,6 +134,16 @@ $(function() {
     }).on('click.rs.jquery.bootgrid', function(e, columns, row) {
         // whole-row click handler
     });
+
+    // Check if initial URL has a hash.
+    var hashval = window.location.hash.substr(1);
+
+    if (hashval.length > 0)
+        list();
+    else
+        $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
+
+    $(window).bind('hashchange',list);
 
     // Create new directory
     $('form#mkdir').submit(function(e) {

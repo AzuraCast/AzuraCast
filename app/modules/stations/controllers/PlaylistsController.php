@@ -55,14 +55,6 @@ class PlaylistsController extends BaseController
             {
                 $record = new StationPlaylist;
                 $record->station = $this->station;
-
-                // Always force a reload for new stations.
-                $reload_station = true;
-            }
-            else
-            {
-                // Only reload for a rename.
-                $reload_station = (strcmp($record->name, $data['name']) !== 0);
             }
 
             $record->fromArray($data);

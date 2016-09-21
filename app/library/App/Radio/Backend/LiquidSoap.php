@@ -44,16 +44,17 @@ class LiquidSoap extends AdapterAbstract
             @unlink($playlist_path.'/'.$list);
 
         // Write new playlists.
-        $playlist_weights = array();
-        $playlist_vars = array();
+        $playlists_by_type = array();
 
         $ls_config[] = '# Playlists';
         
-        foreach($this->station->playlists as $playlist)
+        foreach($this->station->playlists as $playlist_raw)
         {
-            $playlist_file = array();
+            if (!$playlist_raw->is_enabled)
+                continue;
 
-            foreach($playlist->media as $media_file)
+            $playlist_file = array();
+            foreach($playlist_raw->media as $media_file)
             {
                 $media_file_path = $media_path.'/'.$media_file->path;
                 $playlist_file[] = $media_file_path;
@@ -61,31 +62,108 @@ class LiquidSoap extends AdapterAbstract
 
             $playlist_file_contents = implode("\n", $playlist_file);
 
-            $playlist_var_name = 'playlist_'.$playlist->getShortName();
-            $playlist_file_path = $playlist_path.'/'.$playlist_var_name.'.pls';
+            $playlist = $playlist_raw->toArray();
 
-            file_put_contents($playlist_file_path, $playlist_file_contents);
+            $playlist['var_name'] = 'playlist_'.$playlist_raw->getShortName();
+            $playlist['file_path'] = $playlist_path.'/'.$playlist['var_name'].'.pls';
 
-            $ls_config[] = $playlist_var_name.' = playlist(reload=1800,"'.$playlist_file_path.'")';
+            file_put_contents($playlist['file_path'], $playlist_file_contents);
 
-            $playlist_weights[] = $playlist->weight;
-            $playlist_vars[] = $playlist_var_name;
+            $ls_config[] = $playlist['var_name'].' = playlist(reload=1800,"'.$playlist['file_path'].'")';
+
+            $playlist_type = $playlist['type'] ?: 'default';
+            $playlists_by_type[$playlist_type][] = $playlist;
         }
 
         $ls_config[] = '';
         $ls_config[] = '# Build Radio Station';
-        $ls_config[] = 'radio = random(weights = ['.implode(', ', $playlist_weights).'],['.implode(', ', $playlist_vars).']);';
-        
+        $ls_config[] = '';
+
+        // Cannot build a LiquidSoap playlist with
+        if (count($playlists_by_type['default']) == 0)
+            return false;
+
+        // Build "default" type playlists.
+        $playlist_weights = array();
+        $playlist_vars = array();
+
+        foreach($playlists_by_type['default'] as $playlist)
+        {
+            $playlist_weights[] = $playlist['weight'];
+            $playlist_vars[] = $playlist['var_name'];
+        }
+
+        $ls_config[] = '# Standard Playlists';
+        $ls_config[] = 'radio = random(weights=['.implode(', ', $playlist_weights).'], ['.implode(', ', $playlist_vars).']);';
+        $ls_config[] = '';
+
+        // Once per X songs playlists
+        if (count($playlists_by_type['once_per_x_songs']) > 0)
+        {
+            $ls_config[] = '# Once per x Songs Playlists';
+
+            foreach($playlists_by_type['once_per_x_songs'] as $playlist)
+            {
+                $ls_config[] = 'radio = rotate(weights=[1,' . $playlist['play_per_songs'] . '], [' . $playlist['var_name'] . ', radio])';
+            }
+
+            $ls_config[] = '';
+        }
+
+        // Once per X minutes playlists
+        if (count($playlists_by_type['once_per_x_minutes']) > 0)
+        {
+            $ls_config[] = '# Once per x Minutes Playlists';
+
+            foreach($playlists_by_type['once_per_x_minutes'] as $playlist)
+            {
+                $delay_seconds = $playlist['play_per_minutes']*60;
+                $ls_config[] = 'delay_'.$playlist['var_name'].' = delay('.$delay_seconds.'., '.$playlist['var_name'].')';
+                $ls_config[] = 'radio = fallback([delay_'.$playlist['var_name'].', radio])';
+            }
+
+            $ls_config[] = '';
+        }
+
+        // Set up "switch" conditionals
+        $switches = [];
+
+        // Scheduled playlists
+        if (count($playlists_by_type['scheduled']) > 0)
+        {
+            foreach($playlists_by_type['scheduled'] as $playlist)
+            {
+                $play_time = $this->_getTime($playlist['schedule_start_time']).'-'.$this->_getTime($playlist['schedule_end_time']);
+                $switches[] = '({ ' . $play_time . ' }, ' . $playlist['var_name'] . ')';
+            }
+        }
+
+        // Once per day playlists
+        if (count($playlists_by_type['once_per_day']) > 0)
+        {
+            foreach($playlists_by_type['once_per_day'] as $playlist)
+            {
+                $play_time = $this->_getTime($playlist['play_once_time']);
+                $switches[] = '({ ' . $play_time . ' }, ' . $playlist['var_name'] . ')';
+            }
+        }
+
         // Add fallback error file.
         $error_song_path = APP_INCLUDE_ROOT.'/resources/error.mp3';
 
-        $ls_config[] = '';
-        $ls_config[] = '# Fallback Media File';
+        $ls_config[] = '# Assemble Fallback';
         // $ls_config[] = 'security = single("'.$error_song_path.'")';
         $ls_config[] = 'requests = request.queue(id="requests")';
 
+        $fallbacks = [];
+        $fallbacks[] = 'requests';
+
+        $switches[] = '({ true }, radio)';
+        $fallbacks[] = 'switch([ '.implode(', ', $switches).' ])';
+        $fallbacks[] = 'blank(duration=2.)';
+
         // $ls_config[] = 'radio = fallback(track_sensitive = true, [playlists, security])';
-        $ls_config[] = 'radio = fallback(track_sensitive = true, [requests, radio, blank(duration=2.)])';
+        $ls_config[] = 'radio = fallback(track_sensitive = true, ['.implode(', ', $fallbacks).'])';
 
         $ls_config[] = '';
         $ls_config[] = '# Crossfading';
@@ -123,6 +201,32 @@ class LiquidSoap extends AdapterAbstract
         $ls_config_path = $config_path.'/liquidsoap.liq';
         file_put_contents($ls_config_path, $ls_config_contents);
         return true;
+    }
+
+    protected function _getTime($time_code)
+    {
+        $hours = floor($time_code / 100);
+        $mins = $time_code % 100;
+
+        $system_time_zone = \App\Utilities::getSystemTimeZone();
+        $system_tz = new \DateTimeZone($system_time_zone);
+        $system_dt = new \DateTime('now', $system_tz);
+        $system_offset = $system_tz->getOffset($system_dt);
+
+        $app_tz = new \DateTimeZone(date_default_timezone_get());
+        $app_dt = new \DateTime('now', $app_tz);
+        $app_offset = $app_tz->getOffset($app_dt);
+
+        $offset = $system_offset - $app_offset;
+        $offset_hours = floor($offset / 3600);
+
+        $hours += $offset_hours;
+
+        $hours = $hours % 24;
+        if ($hours < 0)
+            $hours += 24;
+
+        return $hours.'h'.$mins.'m';
     }
 
     public function isRunning()

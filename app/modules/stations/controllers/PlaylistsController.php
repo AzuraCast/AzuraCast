@@ -12,13 +12,19 @@ class PlaylistsController extends BaseController
 
         $total_weights = 0;
         foreach($all_playlists as $playlist)
-            $total_weights += $playlist->weight;
+        {
+            if ($playlist->is_enabled && $playlist->type == 'default')
+                $total_weights += $playlist->weight;
+        }
 
         $playlists = array();
         foreach($all_playlists as $playlist)
         {
             $playlist_row = $playlist->toArray();
-            $playlist_row['probability'] = round(($playlist->weight / $total_weights) * 100, 1).'%';
+
+            if ($playlist->is_enabled && $playlist->type == 'default')
+                $playlist_row['probability'] = round(($playlist->weight / $total_weights) * 100, 1).'%';
+
             $playlist_row['num_songs'] = count($playlist->media);
 
             $playlists[$playlist->id] = $playlist_row;
@@ -62,16 +68,15 @@ class PlaylistsController extends BaseController
             $record->fromArray($data);
             $record->save();
 
-            if ($reload_station)
-                $this->_reloadStation();
+            $this->_reloadStation();
 
             $this->alert('<b>Stream updated!</b>', 'green');
 
             return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);
         }
 
-        $title = (($this->hasParam('id')) ? 'Edit' : 'Add').' Playlist';
-        return $this->renderForm($form, 'edit', $title);
+        $this->view->form = $form;
+        $this->view->title = (($this->hasParam('id')) ? 'Edit' : 'Add').' Playlist';
     }
 
     public function deleteAction()

@@ -15,16 +15,14 @@
             <colgroup>
                 <col width="25%">
                 <col width="30%">
-                <col width="15%">
-                <col width="15%">
+                <col width="30%">
                 <col width="15%">
             </colgroup>
             <thead>
             <tr>
                 <th>Actions</th>
                 <th>Playlist</th>
-                <th>Weight</th>
-                <th><abbr title="The likelihood that this playlist will be the source of the next song.">Probability</abbr></th>
+                <th>Type</th>
                 <th># Songs</th>
             </tr>
             </thead>
@@ -41,8 +39,25 @@
                             <br><span class="label label-success">Auto-Assigned</span>
                         <?php endif; ?>
                     </td>
-                    <td><?=$row['weight'] ?></td>
-                    <td><?=$row['probability'] ?></td>
+                    <td>
+                    <?php if (!$row['is_enabled']): ?>
+                        Disabled
+                    <?php elseif ($row['type'] == 'default'): ?>
+                        Standard Playlist<br>
+                        Weight: <?=$row['weight'] ?> (<?=$row['probability'] ?>)
+                    <?php elseif ($row['type'] == 'scheduled'): ?>
+                        Scheduled Playlist<br>
+                        Plays between <?=\Entity\StationPlaylist::formatTimeCode($row['schedule_start_time']) ?>
+                        and <?=\Entity\StationPlaylist::formatTimeCode($row['schedule_end_time']) ?>
+                    <?php elseif ($row['type'] == 'once_per_x_songs'): ?>
+                        Once per <?=$row['play_per_songs'] ?> Songs
+                    <?php elseif ($row['type'] == 'once_per_x_minutes'): ?>
+                        Once per <?=$row['play_per_minutes'] ?> Minutes
+                    <?php elseif ($row['type'] == 'once_per_day'): ?>
+                        Once per Day<br>
+                        Plays at <?=\Entity\StationPlaylist::formatTimeCode($row['play_once_time']) ?>
+                    <?php endif; ?>
+                    </td>
                     <td><?=$row['num_songs'] ?></td>
                 </tr>
             <?php endforeach; ?>

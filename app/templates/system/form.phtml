@@ -3,22 +3,26 @@ $options = $form->getOptions();
 $inner_form = $form->getForm();
 ?>
 
-
 <?=$inner_form->openForm() ?>
 <?=$inner_form->renderHidden() ?>
 
 <?php foreach($options['groups'] as $fieldset_id => $fieldset): ?>
 
     <?php if (!empty($fieldset['legend'])): ?>
-    <fieldset id="<?=$fieldset_id ?>">
+    <fieldset id="<?=$fieldset_id ?>" <?php if (!empty($fieldset['class'])): ?>class="<?=$fieldset['class'] ?>"<?php endif; ?>>
         <legend><?=$fieldset['legend'] ?></legend>
+
+        <?php if (!empty($fieldset['description'])): ?>
+        <p><?=$fieldset['description'] ?></p>
+        <?php endif; ?>
+
     <?php endif; ?>
 
     <?php foreach($fieldset['elements'] as $element_id => $element_info): ?>
         <?php if ($element_info[0] == 'submit'): ?>
             <input type="submit" value="Save Changes" class="btn btn-lg btn-primary" />
         <?php else: ?>
-            <div class="form-group">
+            <div class="form-group" id="field_<?=$element_id ?>">
                 <?=$inner_form->renderLabel($element_id) ?>
             <?php if (!empty($element_info[1]['description'])): ?>
                 <small class="help-block"><?=$element_info[1]['description'] ?></small>

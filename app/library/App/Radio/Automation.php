@@ -72,7 +72,9 @@ class Automation
 
         foreach($station->playlists as $playlist)
         {
-            if ($playlist->include_in_automation)
+            if ($playlist->is_enabled &&
+                $playlist->type == 'default' &&
+                $playlist->include_in_automation == true)
             {
                 // Clear all related media.
                 foreach($playlist->media as $media)

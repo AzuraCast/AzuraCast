@@ -1042,4 +1042,37 @@ class Utilities
 
         return false;
     }
+
+    /**
+     * Get the system time zone.
+     * @return string
+     */
+    public static function getSystemTimeZone()
+    {
+        if (file_exists('/etc/timezone'))
+        {
+            // Ubuntu / Debian.
+            $data = file_get_contents('/etc/timezone');
+            if ($data)
+                return trim($data);
+        }
+        elseif (is_link('/etc/localtime'))
+        {
+            // Mac OS X (and older Linuxes)
+            // /etc/localtime is a symlink to the
+            // timezone in /usr/share/zoneinfo.
+            $filename = readlink('/etc/localtime');
+            if (strpos($filename, '/usr/share/zoneinfo/') === 0)
+                return substr($filename, 20);
+        }
+        elseif (file_exists('/etc/sysconfig/clock'))
+        {
+            // RHEL / CentOS
+            $data = parse_ini_file('/etc/sysconfig/clock');
+            if (!empty($data['ZONE']))
+                return trim($data['ZONE']);
+        }
+
+        return 'UTC';
+    }
 }

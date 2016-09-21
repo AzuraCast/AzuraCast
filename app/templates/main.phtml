@@ -91,15 +91,14 @@ header("Content-type: text/html; charset=utf-8");
                 <li class="dropdown">
                     <a data-toggle="dropdown" href=""><i class="tm-icon zmdi zmdi-more-vert"></i></a>
                     <ul class="dropdown-menu dm-icon pull-right">
-                        <li class="hidden-xs">
-                            <a data-action="fullscreen" href=""><i class="zmdi zmdi-fullscreen"></i> Toggle Fullscreen</a>
-                        </li>
-                        <li class="divider">&nbsp;</li>
                         <? if ($di['acl']->isAllowed('administer all')): ?>
                             <li><a href="<?=$url->named('admin:index:index') ?>"><i class="fa fa-cog"></i> System Administration</a></li>
                         <? endif; ?>
                         <li><a href="<?=$url->named('profile:index') ?>"><i class="fa fa-user"></i> My Account</a></li>
                         <li class="divider">&nbsp;</li>
+                        <li class="hidden-xs">
+                            <a data-action="fullscreen" href=""><i class="zmdi zmdi-fullscreen"></i> Toggle Fullscreen</a>
+                        </li>
                         <li><a href="<?=$url->named('account:logout') ?>"><i class="fa fa-sign-out"></i> Sign Out</a></li>
                     </ul>
                 </li>

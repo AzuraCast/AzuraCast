@@ -69,8 +69,8 @@ class Settings extends \App\Doctrine\Entity
         }
         return $all_records;
     }
-    
-    public static function fetchArray($cached = true)
+
+    public static function fetchArray($cached = true, $order_by = NULL, $order_dir = 'ASC')
     {
         static $settings;
 

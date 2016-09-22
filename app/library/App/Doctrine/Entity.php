@@ -428,7 +428,7 @@ class Entity implements \ArrayAccess
         return $repo->findAll();
     }
     
-    public static function fetchArray($order_by = NULL, $order_dir = 'ASC')
+    public static function fetchArray($cached = true, $order_by = NULL, $order_dir = 'ASC')
     {
         $class = get_called_class();
         $em = self::getEntityManager();

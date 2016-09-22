@@ -241,16 +241,11 @@ class Station extends \App\Doctrine\Entity
         return $em->createQuery('SELECT s FROM '.__CLASS__.' s ORDER BY s.name ASC')->execute();
     }
 
-    public static function fetchArray($cached = true)
+    public static function fetchArray($cached = true, $order_by = NULL, $order_dir = 'ASC')
     {
-        $em = self::getEntityManager();
-        $stations = $em->createQuery('SELECT s FROM '.__CLASS__.' s ORDER BY s.name ASC')
-            ->getArrayResult();
-
+        $stations = parent::fetchArray($cached, $order_by, $order_dir);
         foreach($stations as &$station)
-        {
             $station['short_name'] = self::getStationShortName($station['name']);
-        }
 
         return $stations;
     }

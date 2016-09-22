@@ -3,10 +3,7 @@
  * Edit Role Form
  */
 
-$actions_raw = \Entity\Action::fetchArray('name');
-$actions = [];
-foreach ($actions_raw as $action)
-    $actions[$action['id']] = $action['name'];
+$actions = \Entity\Action::fetchSelect();
 
 return [
     /**

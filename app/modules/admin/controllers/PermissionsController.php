@@ -13,8 +13,8 @@ class PermissionsController extends BaseController
     
     public function indexAction()
     {
-        $this->view->actions = Action::fetchArray('name');
-        $this->view->roles = Role::fetchArray('name');
+        $this->view->actions = Action::fetchArray(false, 'name');
+        $this->view->roles = Role::fetchArray(false, 'name');
     }
     
     public function editactionAction()

@@ -36,19 +36,13 @@ class Role extends \App\Doctrine\Entity
      * )
      */
     protected $actions;
-    
-    public static function fetchSelect($add_blank = FALSE)
+
+    /**
+     * @inheritdoc
+     */
+    public static function fetchSelect($add_blank = FALSE, \Closure $display = NULL, $pk = 'id', $order_by = 'name')
     {
-        $roles_raw = self::getRepository()->findAll();
-        $roles = array();
-        
-        if ($add_blank)
-            $roles[0] = 'N/A';
-        
-        foreach((array)$roles_raw as $role)
-        {
-            $roles[$role['id']] = $role['name'];
-        }
-        return $roles;
+        $add_blank = ($add_blank) ? 'N/A' : FALSE;
+        return parent::fetchSelect($add_blank, $display, $pk, $order_by);
     }
 }

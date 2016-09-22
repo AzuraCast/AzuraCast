@@ -40,3 +40,8 @@
     become_user: azuracast
     shell: php {{ util_base }}/cli.php orm:schema-tool:update --force --complete
 
+  - name: Restart Radio Stations
+    become: true
+    become_user: azuracast
+    shell: php {{ util_base }}/cli.php radio:restart
+

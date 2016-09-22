@@ -135,43 +135,36 @@ class FilesController extends BaseController
             $files = array_diff(scandir($directory), array('.', '..'));
             foreach ($files as $entry)
             {
-                if ($entry !== basename(__FILE__))
-                {
-                    $i = $directory . '/' . $entry;
-                    $short = ltrim(str_replace($this->base_dir, '', $i), '/');
+                $i = $directory . '/' . $entry;
+                $short = ltrim(str_replace($this->base_dir, '', $i), '/');
 
-                    if (is_dir($i))
-                        $media = ['name' => 'Directory', 'playlists' => '', 'is_playable' => false];
-                    elseif (isset($media_in_dir[$short]))
-                        $media = $media_in_dir[$short];
-                    else
-                        $media = ['name' => 'File Not Processed', 'playlists' => '', 'is_playable' => false];
-
-                    $stat = stat($i);
-
-                    $max_length = 60;
-                    $shortname = basename($i);
-                    if (strlen($shortname) > $max_length)
-                        $shortname = substr($shortname, 0, $max_length-15).'...'.substr($shortname, -12);
-
-                    $result_row = array(
-                        'mtime' => $stat['mtime'],
-                        'size' => $stat['size'],
-                        'name' => basename($i),
-                        'text' => $shortname,
-                        'path' => $short,
-                        'is_dir' => is_dir($i),
-                    );
-
-                    foreach($media as $media_key => $media_val)
-                        $result_row['media_'.$media_key] = $media_val;
-
-                    $result[] = $result_row;
-                }
+                if (is_dir($i))
+                    $media = ['name' => 'Directory', 'playlists' => '', 'is_playable' => false];
+                elseif (isset($media_in_dir[$short]))
+                    $media = $media_in_dir[$short];
                 else
-                {
-                    return $this->_err(412, "Not a Directory");
-                }
+                    $media = ['name' => 'File Not Processed', 'playlists' => '', 'is_playable' => false];
+
+                $stat = stat($i);
+
+                $max_length = 60;
+                $shortname = basename($i);
+                if (mb_strlen($shortname) > $max_length)
+                    $shortname = mb_substr($shortname, 0, $max_length-15).'...'.mb_substr($shortname, -12);
+
+                $result_row = array(
+                    'mtime' => $stat['mtime'],
+                    'size' => $stat['size'],
+                    'name' => basename($i),
+                    'text' => $shortname,
+                    'path' => $short,
+                    'is_dir' => is_dir($i),
+                );
+
+                foreach($media as $media_key => $media_val)
+                    $result_row['media_'.$media_key] = $media_val;
+
+                $result[] = $result_row;
             }
         }
 
@@ -224,7 +217,7 @@ class FilesController extends BaseController
         $offset_start = ($page - 1) * $row_count;
         $return_result = array_slice($result, $offset_start, $row_count);
 
-        return $this->_returnJson(array(
+        return $this->renderJson(array(
             'current' => $page,
             'rowCount' => $row_count,
             'total' => $num_results,
@@ -309,7 +302,7 @@ class FilesController extends BaseController
             break;
         }
 
-        return $this->_returnJson(['success' => true]);
+        return $this->renderJson(['success' => true]);
     }
 
     protected function _getMusicFiles($path)
@@ -370,7 +363,7 @@ class FilesController extends BaseController
 
         @mkdir($this->file_path.'/'.$dir);
 
-        return $this->_returnJson(['success' => true]);
+        return $this->renderJson(['success' => true]);
     }
 
     public function uploadAction()
@@ -419,14 +412,6 @@ class FilesController extends BaseController
 
     protected function _err($code, $msg)
     {
-        return $this->_returnJson(array('error' => array('code'=>intval($code), 'msg' => $msg)));
-    }
-
-    protected function _returnJson($data)
-    {
-        $this->doNotRender();
-
-        $this->response->getBody()->write(json_encode($data));
-        return $this->response;
+        return $this->renderJson(array('error' => array('code'=>intval($code), 'msg' => $msg)));
     }
 }

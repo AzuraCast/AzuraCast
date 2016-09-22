@@ -232,6 +232,8 @@ class Controller
         if ($template_name === null)
             $template_name = 'controller::'.$this->action;
 
+        $this->response = $this->response->withHeader('Content-type', 'text/html; charset=utf-8');
+
         $template = $this->view->render($template_name, $template_args);
         $this->response->getBody()->write($template);
 
@@ -269,14 +271,16 @@ class Controller
      * Render the page output as the supplied JSON.
      *
      * @param $json_data
-     * @return bool
+     * @return Response
      */
     public function renderJson($json_data)
     {
         $this->doNotRender();
 
+        $this->response = $this->response->withHeader('Content-type', 'application/json; charset=utf-8');
         $this->response->getBody()->write(json_encode($json_data));
-        return true;
+
+        return $this->response;
     }
 
     /* URL Redirection */

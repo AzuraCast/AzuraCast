@@ -110,7 +110,7 @@ class StationMedia extends \App\Doctrine\Entity
 
         // Only update metadata if the file has been updated.
         $media_mtime = filemtime($media_path);
-        if ($media_mtime >= $this->mtime)
+        if ($media_mtime > $this->mtime)
         {
             // Load metadata from MP3 file.
             $id3 = new \getID3();

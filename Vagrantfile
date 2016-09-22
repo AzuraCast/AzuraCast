@@ -36,9 +36,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 8083, host: 8083
   config.vm.network :forwarded_port, guest: 8086, host: 8086
 
-  # IceCast
+  # IceCast and LiquidSoap
+  config.vm.network :forwarded_port, guest: 8005, host: 8095
+  config.vm.network :forwarded_port, guest: 8006, host: 8096
   config.vm.network :forwarded_port, guest: 8000, host: 8088
-  config.vm.network :forwarded_port, guest: 8001, host: 8089
 
   # MySQL
   config.vm.network :forwarded_port, guest: 3306, host: 8306

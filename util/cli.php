@@ -20,6 +20,7 @@ $cli->addCommands(array(
     new \App\Console\Command\ClearCache($di),
     new \App\Console\Command\RestartRadio($di),
     new \App\Console\Command\Sync($di),
+    new \App\Console\Command\StreamerAuth($di),
 ));
 
 $cli->run();

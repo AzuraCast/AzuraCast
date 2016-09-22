@@ -1,6 +1,8 @@
 <?php
 namespace App\Radio\Backend;
 
+use Entity\Settings;
+
 class LiquidSoap extends AdapterAbstract
 {
     /**
@@ -36,6 +38,15 @@ class LiquidSoap extends AdapterAbstract
         $ls_config[] = 'set("server.telnet.port", '.$this->_getTelnetPort().')';
         $ls_config[] = 'set("server.telnet.reverse_dns",false)';
 
+        $ls_config[] = '';
+
+        // Set up harbor auth script.
+        $ls_config[] = '# DJ Authentication';
+        $ls_config[] = 'def dj_auth(user,password) =';
+        $ls_config[] = '  ret = get_process_lines("/usr/bin/php '.APP_INCLUDE_ROOT.'/util/cli.php streamer:auth '.$this->station->id.' #{user} #{password}")';
+        $ls_config[] = '  ret = list.hd(ret)';
+        $ls_config[] = '  bool_of_string(ret)';
+        $ls_config[] = 'end';
         $ls_config[] = '';
 
         // Clear out existing playlists directory.
@@ -148,6 +159,11 @@ class LiquidSoap extends AdapterAbstract
             }
         }
 
+        // Add harbor live.
+        $ls_config[] = '# Harbor Live DJs';
+        $ls_config[] = 'live = input.harbor("/", port='.$this->_getHarborPort().', user="shoutcast", auth=dj_auth, icy=true)';
+        $ls_config[] = '';
+
         // Add fallback error file.
         $error_song_path = APP_INCLUDE_ROOT.'/resources/error.mp3';
 
@@ -156,6 +172,7 @@ class LiquidSoap extends AdapterAbstract
         $ls_config[] = 'requests = request.queue(id="requests")';
 
         $fallbacks = [];
+        $fallbacks[] = 'live';
         $fallbacks[] = 'requests';
 
         $switches[] = '({ true }, radio)';
@@ -305,6 +322,20 @@ class LiquidSoap extends AdapterAbstract
 
         fclose($fp);
         return true;
+    }
+
+    public function getStreamerInfo()
+    {
+        return [
+            'host'          => Settings::getSetting('base_url', 'localhost'),
+            'icecast_port'  => $this->_getHarborPort(),
+            'shoutcast_port' => $this->_getHarborPort()+1,
+        ];
+    }
+
+    protected function _getHarborPort()
+    {
+        return (8000 + (($this->station->id - 1) * 10) + 5);
     }
 
     protected function _getTelnetPort()

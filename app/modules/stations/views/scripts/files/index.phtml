@@ -115,9 +115,9 @@ $(function() {
                 else
                     $icon = '<span class="file-icon"><i class="zmdi zmdi-'+(row.is_dir ? 'folder' : 'file')+'"></i></span>';
 
-                var $link = '<a class="name" href="'+$url+'" title="'+row.name+'">'+row.media_name+'</a>';
+                var $link = '<a class="name" href="'+$url+'" title="'+row.name+'">'+(row.is_dir ? row.text : row.media_name)+'</a>';
 
-                return '<div class="'+(row.is_dir ? 'is_dir' : 'is_file')+'">'+$icon + $link + '<br><small>'+row.text+'</small></div>';
+                return '<div class="'+(row.is_dir ? 'is_dir' : 'is_file')+'">'+$icon + $link + '<br><small>'+(row.is_dir ? 'Directory' : row.text)+'</small></div>';
             },
             "commands": function(column, row) {
                 if (row.media_edit_url)

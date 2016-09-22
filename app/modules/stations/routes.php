@@ -66,14 +66,11 @@ $app->group('/station/{station}', function() {
         $this->any('/edit', 'stations:profile:edit')
             ->setName('stations:profile:edit');
 
-        $this->any('/backend/reboot', 'stations:profile:rebootbackend')
-            ->setName('stations:profile:rebootbackend');
+        $this->any('/backend[/{do}]', 'stations:profile:backend')
+            ->setName('stations:profile:backend');
 
-        $this->any('/backend/skip', 'stations:profile:backendskip')
-            ->setName('stations:profile:backendskip');
-
-        $this->any('/frontend/reboot', 'stations:profile:rebootfrontend')
-            ->setName('stations:profile:rebootfrontend');
+        $this->any('/frontend[/{do}]', 'stations:profile:frontend')
+            ->setName('stations:profile:frontend');
 
     });
 

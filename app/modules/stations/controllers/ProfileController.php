@@ -66,36 +66,71 @@ class ProfileController extends BaseController
         return $this->renderForm($form, 'edit', 'Edit Station Profile');
     }
 
-    public function rebootbackendAction()
+    public function backendAction()
     {
-        $backend = $this->station->getBackendAdapter();
+        $adapter = $this->station->getBackendAdapter();
 
-        $backend->stop();
-        $backend->write();
-        $backend->start();
+        switch($this->getParam('do', 'restart'))
+        {
+            case "skip":
+                $adapter->skip();
 
-        $this->alert('<b>Backend rebooted.</b>', 'green');
+                $this->alert('<b>Song skipped.</b>', 'green');
+            break;
+
+            case "stop":
+                $adapter->stop();
+
+                $this->alert('<b>Adapter stopped.</b>', 'green');
+            break;
+
+            case "start":
+                $adapter->start();
+
+                $this->alert('<b>Adapter started.</b>', 'green');
+            break;
+
+            case "restart":
+            default:
+                $adapter->stop();
+                $adapter->write();
+                $adapter->start();
+
+                $this->alert('<b>Adapter rebooted.</b>', 'green');
+            break;
+        }
+
         return $this->redirectFromHere(['action' => 'index']);
     }
 
-    public function backendskipAction()
+    public function frontendAction()
     {
-        $ba = $this->station->getBackendAdapter();
-        $ba->skip();
+        $adapter = $this->station->getFrontendAdapter();
 
-        $this->alert('<b>Song skipped.</b>', 'green');
-        return $this->redirectFromHere(['action' => 'index']);
-    }
+        switch($this->getParam('do', 'restart'))
+        {
+            case "stop":
+                $adapter->stop();
 
-    public function rebootfrontendAction()
-    {
-        $frontend = $this->station->getFrontendAdapter();
+                $this->alert('<b>Adapter stopped.</b>', 'green');
+            break;
 
-        $frontend->stop();
-        $frontend->write();
-        $frontend->start();
+            case "start":
+                $adapter->start();
 
-        $this->alert('<b>Frontend rebooted.</b>', 'green');
+                $this->alert('<b>Adapter started.</b>', 'green');
+            break;
+
+            case "restart":
+            default:
+                $adapter->stop();
+                $adapter->write();
+                $adapter->start();
+
+                $this->alert('<b>Frontend rebooted.</b>', 'green');
+            break;
+        }
+
         return $this->redirectFromHere(['action' => 'index']);
     }
 }

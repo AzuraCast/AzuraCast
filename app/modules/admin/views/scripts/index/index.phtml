@@ -1,53 +1,5 @@
 <?php $this->layout('main', ['title' => 'Administration', 'manual' => true]); ?>
 
-<?php
-// Admin sidebar.
-$panels = array(
-    'System Maintenance' => array(
-        'System Settings' => array(
-            'url'       => 'admin:settings:index',
-            'icon'      => 'fa fa-cog',
-            'permission' => $di['acl']->isAllowed('administer all'),
-        ),
-        'User Accounts' => array(
-            'url'       => 'admin:users:index',
-            'icon'      => 'fa fa-user',
-            'permission' => $di['acl']->isAllowed('administer all'),
-        ),
-        'Roles and Permissions' => array(
-            'url'       => 'admin:permissions:index',
-            'icon'      => 'fa fa-key',
-            'permission' => $di['acl']->isAllowed('administer all'),
-        ),
-        'API Keys' => array(
-            'url'      => 'admin:api:index',
-            'icon'     => 'fa fa-share-alt',
-            'permission' => $di['acl']->isAllowed('administer api keys'),
-        ),
-    ),
-    'Stations' => array(
-        'Manage Stations' => array(
-            'url'       => 'admin:stations:index',
-            'icon'      => 'fa fa-cog',
-            'permission' => $di['acl']->isAllowed('administer stations'),
-        ),
-    ),
-);
-
-// Process and purge based on permissions.
-foreach($panels as $sidebar_category => &$sidebar_items)
-{
-    foreach($sidebar_items as $item_name => $item_params)
-    {
-        if (!$item_params['permission'])
-            unset($sidebar_items[$item_name]);
-    }
-
-    if (empty($sidebar_items))
-        unset($panels[$sidebar_category]);
-}
-?>
-
 <div class="block-header">
     <h2>Administration</h2>
 </div>

@@ -5,8 +5,9 @@ use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Table(name="station_media", indexes={
- *   @index(name="search_idx", columns={"title", "artist", "album"}),
- *   @index(name="path_idx", columns={"path"})
+ *   @index(name="search_idx", columns={"title", "artist", "album"})
+ * }, uniqueConstraints={
+ *   @UniqueConstraint(name="path_unique_idx", columns={"path"})
  * })
  * @Entity
  * @HasLifecycleCallbacks

@@ -38,7 +38,7 @@
   - name: Update Database
     become: true
     become_user: azuracast
-    shell: php {{ util_base }}/cli.php migrations:migrate --no-interaction
+    shell: php {{ util_base }}/cli.php migrations:migrate --no-interaction --allow-no-migration
 
   - name: Restart Radio Stations
     become: true

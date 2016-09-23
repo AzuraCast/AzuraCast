@@ -237,6 +237,9 @@ class FilesController extends BaseController
                 $files[] = $file_path;
         }
 
+        $files_found = 0;
+        $files_affected = 0;
+
         list($action, $action_id) = explode('_', $_POST['do']);
 
         switch($action)
@@ -244,11 +247,14 @@ class FilesController extends BaseController
             case 'delete':
                 // Remove the database entries of any music being removed.
                 $music_files = $this->_getMusicFiles($files);
+                $files_found = count($music_files);
 
                 foreach($music_files as $file)
                 {
                     $media = StationMedia::getOrCreate($this->station, $file);
                     $this->em->remove($media);
+
+                    $files_affected++;
                 }
 
                 $this->em->flush();
@@ -261,12 +267,15 @@ class FilesController extends BaseController
             case 'clear':
                 // Clear all assigned playlists from the selected files.
                 $music_files = $this->_getMusicFiles($files);
+                $files_found = count($music_files);
 
                 foreach($music_files as $file)
                 {
                     $media = StationMedia::getOrCreate($this->station, $file);
                     $media->playlists->clear();
                     $this->em->persist($media);
+
+                    $files_affected++;
                 }
 
                 $this->em->flush();
@@ -284,6 +293,7 @@ class FilesController extends BaseController
                     return $this->_err(500, 'Playlist Not Found');
 
                 $music_files = $this->_getMusicFiles($files);
+                $files_found = count($music_files);
 
                 foreach($music_files as $file)
                 {
@@ -293,6 +303,8 @@ class FilesController extends BaseController
                         $media->playlists->add($playlist);
 
                     $this->em->persist($media);
+
+                    $files_affected++;
                 }
 
                 $this->em->flush();
@@ -302,7 +314,7 @@ class FilesController extends BaseController
             break;
         }
 
-        return $this->renderJson(['success' => true]);
+        return $this->renderJson(['success' => true, 'files_found' => $files_found, 'files_affected' => $files_affected]);
     }
 
     protected function _getMusicFiles($path)

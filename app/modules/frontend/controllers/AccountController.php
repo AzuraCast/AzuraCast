@@ -50,8 +50,11 @@ class AccountController extends BaseController
                 $default_url = $url->route(array('module' => 'default'));
                 return $this->redirectToStoredReferrer('login', $default_url);
             }
-
-            return $this->redirectFromHere(['action' => 'index']);
+            else
+            {
+                $this->alert('<b>Login unsuccessful.</b><br>Your credentials could not be verified.', 'red');
+                return $this->redirectHere();
+            }
         }
     }
 

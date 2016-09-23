@@ -70,10 +70,15 @@ foreach($php_settings as $setting_key => $setting_value)
     }
 }
 
-$di = new \Slim\Container(['settings' => [
+$app_settings = [
     'displayErrorDetails' => true,
     'addContentLengthHeader' => false,
-]]);
+];
+
+if (APP_APPLICATION_ENV !== 'development')
+    $app_settings['routerCacheFile'] = APP_INCLUDE_TEMP.'/app_routes.cache.php';
+
+$di = new \Slim\Container(['settings' => $app_settings]);
 
 $di['callableResolver'] = function($di) {
     return new \App\Mvc\Resolver($di);

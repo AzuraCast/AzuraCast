@@ -20,6 +20,13 @@ class ClearCache extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Flush route cache.
+        $app_settings = $this->di->get('settings');
+        if (!empty($app_settings['routerCacheFile']))
+            @unlink($app_settings['routerCacheFile']);
+
+        $output->writeln('Router cache file cleared.');
+
         // Flush Doctrine cache.
         $em = $this->di->get('em');
 

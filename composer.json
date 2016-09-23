@@ -12,6 +12,9 @@
     "zendframework/zend-paginator": "^2.7",
     "zendframework/zend-config": "^2.6",
 
+    "doctrine/migrations": "^1.4",
+    "jdorn/sql-formatter": "^1.2",
+
     "guzzlehttp/guzzle": ">6.0",
     "electrolinux/phpquery": "0.9.6",
     "nette/mail": "2.3.0",

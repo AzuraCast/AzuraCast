@@ -5,8 +5,12 @@
     shell: php {{ util_base }}/cli.php cache:clear
     when: azuracast_db_created.changed
 
-  - name: Install Doctrine Database
+  - name: Install Initial Database
+    mysql_db: state=import name="azuracast" target="{{ util_base }}/azuracast_db.sql"
+    when: azuracast_db_created.changed
+
+  - name: Apply All DB Migrations
     become: true
     become_user: azuracast
-    shell: php {{ util_base }}/cli.php orm:schema-tool:create
+    shell: php {{ util_base }}/cli.php migrations:migrate --no-interaction
     when: azuracast_db_created.changed

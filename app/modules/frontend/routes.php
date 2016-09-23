@@ -11,7 +11,7 @@ $app->get('/', 'frontend:index:index')
 $app->get('/account', 'frontend:account:index')
     ->setName('account:index');
 
-$app->get('/login', 'frontend:account:login')
+$app->map(['GET', 'POST'], '/login', 'frontend:account:login')
     ->setName('account:login');
 
 $app->get('/logout', 'frontend:account:logout')

@@ -7,45 +7,45 @@
 
 $app->group('/api', function() {
 
-    $this->any('', 'api:index:index')
+    $this->map(['GET', 'POST'], '', 'api:index:index')
         ->setName('api:index:index');
 
-    $this->any('/status', 'api:index:status')
+    $this->map(['GET', 'POST'], '/status', 'api:index:status')
         ->setName('api:index:status');
 
-    $this->any('/time', 'api:index:time')
+    $this->map(['GET', 'POST'], '/time', 'api:index:time')
         ->setName('api:index:time');
 
     $this->group('/internal', function() {
 
-        $this->any('/streamauth/{id}', 'api:internal:streamauth')
+        $this->map(['GET', 'POST'], '/streamauth/{id}', 'api:internal:streamauth')
             ->setName('api:internal:streamauth');
 
     });
 
     $this->group('/nowplaying[/{id}]', function() {
 
-        $this->any('', 'api:nowplaying:index')
+        $this->map(['GET', 'POST'], '', 'api:nowplaying:index')
             ->setName('api:nowplaying:index');
 
     });
 
     $this->group('/requests/{station}', function() {
 
-        $this->any('/list', 'api:requests:list')
+        $this->map(['GET', 'POST'], '/list', 'api:requests:list')
             ->setName('api:requests:list');
 
-        $this->any('/submit/{song_id}', 'api:requests:submit')
+        $this->map(['GET', 'POST'], '/submit/{song_id}', 'api:requests:submit')
             ->setName('api:requests:submit');
 
     });
 
     $this->group('/stations', function() {
 
-        $this->any('', 'api:stations:list')
+        $this->map(['GET', 'POST'], '', 'api:stations:list')
             ->setName('api:stations:list');
 
-        $this->any('/{id}', 'api:stations:index')
+        $this->map(['GET', 'POST'], '/{id}', 'api:stations:index')
             ->setName('api:stations:index');
 
     });

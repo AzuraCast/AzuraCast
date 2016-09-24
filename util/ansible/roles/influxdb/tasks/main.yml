@@ -12,7 +12,7 @@
   when: influxdb_list.changed == True or influxdb_key.changed == True
 
 - name: Install InfluxDB
-  apt: pkg="{{ item }}" state=present
+  apt: pkg="{{ item }}" state=latest
   register: influx_installed
   with_items:
    - influxdb

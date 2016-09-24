@@ -1,26 +1,28 @@
-![AzuraCast](https://raw.githubusercontent.com/SlvrEagle23/AzuraCast/master/resources/azuracast.png)
+# AzuraCast: A Self-Hosted Web Radio Manager
 
-**NOTE: This project is currently in the Alpha stage of development. The web application is stable and includes a number of powerful features, and can be used in a development (and, in some cases, a production) environment; however, new updates are released very frequently, and these updates may result in loss of data. You should maintain frequent backups of files, especially files contained in `/var/azuracast/stations`.**
+**AzuraCast** is a standalone, turnkey web radio management kit. Using its easy installer, you can go from a fresh Linux installation to a fully working web radio station in about 5 minutes. 
 
-**AzuraCast** is a standalone turnkey web radio management kit.
- 
-You can either use AzuraCast to spin up a brand new radio station from the ground up (using its built-in installer scripts), or use the web application to manage an existing radio setup.
+Under the hood, AzuraCast uses [LiquidSoap](http://liquidsoap.fm/) as an "AutoDJ" and [IceCast](http://icecast.org/) for broadcasting and live DJs. Once installed, every aspect of your radio station can be managed via AzuraCast's web interface with no advanced Linux knowledge required.
 
-AzuraCast uses [LiquidSoap](http://liquidsoap.fm/) for "AutoDJ" and song requests and [IceCast](http://icecast.org/) for broadcasting and accepting live streamers.
+Although AzuraCast's code history is extensive, the AzuraCast project itself is fairly new. That's because AzuraCast was built on top of [PVLive](https://github.com/SlvrEagle23/Ponyville-Live), a project originally built for a single fan community, then expanded to serve radio stations of all types as a standalone piece of software.
 
-AzuraCast supports the following host operating systems, with more to come:
-* Ubuntu 14.04 LTS (Trusty)
-* Ubuntu 16.04 LTS (Xenial)
+**AzuraCast is currently in alpha.** The web application is stable and includes a number of powerful features, but if you want to keep up to date with the latest version of the software, keep in mind that updates may cause unexpected issues or data loss. Always make sure to keep your files backed up, especially the files contained in `/var/azuracast/stations`.
 
-With AzuraCast, radio station owners can:
+AzuraCast supports the following operating systems and architectures out of the box:
+* Ubuntu 14.04 LTS (Trusty) x64
+* Ubuntu 16.04 LTS (Xenial) x64
+* Ubuntu 16.04 LTS (Xenial) ARM
 
-* Automate the process of setting up and running both a broadcasting service (IceCast) and an AutoDJ service (LiquidSoap)
-* Accept song requests (with a configurable delay) via an API
-* Manage streamer/DJ accounts for live broadcasting
-* Create individual administrator accounts to delegate station management to others
-* Upload and manage playlists and media files directly from the web
-* Automatically assign songs to playlists based on their previous performance
-* View detailed statistics about listeners and peak/low audience times
+With AzuraCast, you can:
+
+* **Manage your Media:** Upload songs from the web, organize music into folders, and preview songs in your browser.
+* **Create Playlists:** Set up standard playlists that play all the time, scheduled playlists for time periods, or special playlists that play once per x songs, or once per x minutes.
+* **Set Up Live DJs:** Enable or disable live broadcasting from streamers/DJs, and create individual accounts for each streamer to use.
+* **Take Listener Requests:** Let your listeners request specific songs from your playlists, currently via an API with a web interface coming soon.
+* **Analytics and Reports:** Keep track of every aspect of your station's listeners over time. View reports of each song's performance and
+* **Station Autopilot:** AzuraCast can automatically assign songs to a playlist based on the song's impact on listener numbers. 
+* **Delegate Management:** Create and remove separate administrator accounts for each station manager.
+* ...and more.
 
 ## Installing on a Production Server
 

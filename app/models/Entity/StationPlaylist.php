@@ -13,10 +13,15 @@ class StationPlaylist extends \App\Doctrine\Entity
     public function __construct()
     {
         $this->type = 'default';
-        $this->weight = 3;
         $this->is_enabled = 1;
 
+        $this->weight = 3;
         $this->include_in_automation = false;
+        $this->play_once_time = 0;
+        $this->play_per_minutes = 0;
+        $this->play_per_songs = 0;
+        $this->schedule_start_time = 0;
+        $this->schedule_end_time = 0;
 
         $this->media = new ArrayCollection;
     }

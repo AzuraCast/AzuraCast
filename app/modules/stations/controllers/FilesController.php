@@ -334,10 +334,12 @@ class FilesController extends BaseController
             $files = array_diff(scandir($path), array('.','..'));
             foreach ($files as $file)
             {
+                $file_ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
                 $file_path = $path . '/' . $file;
                 if (is_dir($file_path))
                     $music_files = array_merge($music_files, $this->_getMusicFiles($file_path));
-                else
+                elseif ($file_ext == 'mp3')
                     $music_files[] = $file_path;
             }
 
@@ -345,7 +347,8 @@ class FilesController extends BaseController
         }
         else
         {
-            return array($path);
+            $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+            return ($file_ext == 'mp3') ? [$path] : [];
         }
     }
 

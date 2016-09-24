@@ -97,7 +97,6 @@ class Media
             // Create new StationPlaylist record.
             $record = new StationPlaylist;
             $record->station = $station;
-            $record->weight = 5;
 
             $path_parts = pathinfo($playlist_file_path);
             $playlist_name = str_replace('playlist_', '', $path_parts['filename']);

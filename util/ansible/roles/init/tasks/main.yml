@@ -1,4 +1,7 @@
 ---
+  - debug:
+      msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}"
+
   - name: Update apt
     become: true
     apt:  update_cache=yes

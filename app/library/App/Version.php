@@ -5,7 +5,7 @@
 
 namespace App;
 
-define('APP_CORE_VERSION', '20160922');
+define('APP_CORE_VERSION', '0.3.0-20160923');
 define('APP_CORE_RELEASE', 'Alpha');
 
 class Version

@@ -1,7 +1,7 @@
 <?php $this->layout('main'); ?>
 
 <?php if ($render_mode == 'edit'): ?>
-    <?=$this->insert('system/form') ?>
+    <?=$this->insert('partials/form') ?>
 <?php else: ?>
-    <?=$this->insert('system/form_view') ?>
+    <?=$this->insert('partials/form_view') ?>
 <?php endif; ?>

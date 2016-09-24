@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <?php
-    if ($title)
-        $page_title = $title.' - '.$config->application->name;
-    else
-        $page_title = $config->application->name;
+<?php
+if ($title)
+    $page_title = $title.' - '.$config->application->name;
+else
+    $page_title = $config->application->name;
 
-    if (APP_APPLICATION_ENV != "production")
-        $page_title = '('.ucfirst(APP_APPLICATION_ENV).') '.$page_title;
-    ?>
-    <title><?=$page_title ?></title>
+if (APP_APPLICATION_ENV != "production")
+    $page_title = '('.ucfirst(APP_APPLICATION_ENV).') '.$page_title;
+?>
+<title><?=$page_title ?></title>
 
-    <?=$this->fetch('system/icons') ?>
+<?=$this->fetch('partials/icons') ?>
 
-    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/animate.css/animate.min.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/components-font-awesome/css/font-awesome.min.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bootgrid/jquery.bootgrid.min.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?=$url->content('css/app.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/animate.css/animate.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/components-font-awesome/css/font-awesome.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bootgrid/jquery.bootgrid.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('css/app.css') ?>">
 
-    <?=$this->section('custom_css') ?>
+<?=$this->section('custom_css') ?>
 
-    <script type="text/javascript" src="<?=$url->content('vendors/bower_components/jquery/dist/jquery.min.js') ?>"></script>
-    <script type="text/javascript" src="<?=$url->content('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/jquery/dist/jquery.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
 
-    <script>
-    var APP_AppEnv = '<?=(defined('APP_APPLICATION_ENV') ? APP_APPLICATION_ENV : '') ?>';
-    var APP_BaseUrl = '<?=$url->named('home') ?>';
-    var APP_ContentPath = '<?=$url->content('') ?>';
-    </script>
+<script>
+var APP_AppEnv = '<?=(defined('APP_APPLICATION_ENV') ? APP_APPLICATION_ENV : '') ?>';
+var APP_BaseUrl = '<?=$url->named('home') ?>';
+var APP_ContentPath = '<?=$url->content('') ?>';
+</script>
 </head>
 <body class="<?=$page_class ?> <?php if (!empty($station)): ?>toggled sw-toggled<?php endif; ?>">
 <header id="header" class="clearfix" data-current-skin="blue">

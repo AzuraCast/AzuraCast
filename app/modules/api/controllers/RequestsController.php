@@ -61,7 +61,7 @@ class RequestsController extends BaseController
 
         if (is_numeric($station))
         {
-            $id = (int)$this->getParam('id');
+            $id = (int)$station;
             $record = Station::find($id);
         }
         else

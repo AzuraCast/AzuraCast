@@ -31,14 +31,14 @@ if (APP_APPLICATION_ENV != "production")
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/jquery/dist/jquery.min.js') ?>"></script>
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
 
-<script>
+<script type="text/javascript">
 var APP_AppEnv = '<?=(defined('APP_APPLICATION_ENV') ? APP_APPLICATION_ENV : '') ?>';
 var APP_BaseUrl = '<?=$url->named('home') ?>';
 var APP_ContentPath = '<?=$url->content('') ?>';
 </script>
 </head>
 <body class="<?=$page_class ?> <?php if (!empty($station)): ?>toggled sw-toggled<?php endif; ?>">
-<header id="header" class="clearfix" data-current-skin="blue">
+<header id="header" class="clearfix" data-current-skin="blue" style="background-image: url('<?=$url->content('img/header_bg.png') ?>');" data-rjs="3">
     <ul class="header-inner">
         <?php if (!empty($station)): ?>
         <li id="menu-trigger" data-trigger="#sidebar">
@@ -52,7 +52,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 
         <li class="logo">
             <a href="<?=$url->named('home') ?>">
-                <img src="<?=$url->content('img/logo.png') ?>" alt="<?=$config->application->name ?>">
+                <img src="<?=$url->content('img/logo.png') ?>" alt="<?=$config->application->name ?>" data-rjs="3">
             </a>
         </li>
 
@@ -167,6 +167,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js') ?>"></script>
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/autosize/dist/autosize.js') ?>"></script>
 <script type="text/javascript" src="<?=$url->content('vendors/bootgrid/jquery.bootgrid.updated.js') ?>"></script>
+
 <script type="text/javascript" src="<?=$url->content('js/functions.js') ?>"></script>
 <script type="text/javascript" src="<?=$url->content('js/app.js') ?>"></script>
 
@@ -179,5 +180,8 @@ var APP_ContentPath = '<?=$url->content('') ?>';
         });
     </script>
 <? endif; ?>
+
+<script type="text/javascript" src="<?=$url->content('js/retinajs/retina.min.js') ?>"></script>
+<script type="text/javascript">retinajs();</script>
 </body>
 </html>

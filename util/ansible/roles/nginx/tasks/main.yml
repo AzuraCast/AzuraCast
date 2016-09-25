@@ -7,3 +7,11 @@
     become: true
     template: src=default.j2 dest=/etc/nginx/sites-available/default
     notify: restart nginx
+
+  - name: Turn sendfile off on nginx for local development
+    become: true
+    replace:
+      dest: /etc/nginx/nginx.conf
+      regexp: 'sendfile on;'
+      replace: 'sendfile off;'
+    when: app_env == "development"

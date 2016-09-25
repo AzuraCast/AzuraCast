@@ -217,11 +217,10 @@ class IceCast extends AdapterAbstract
         $base_url = Settings::getSetting('base_url', 'localhost');
 
         // Vagrant port-forwarding mode.
-        if (APP_APPLICATION_ENV == 'development' && $radio_port == 8000)
-            $radio_port = 8088;
-
-        /* TODO: Abstract out mountpoint names */
-        return 'http://'.$base_url.':'.$radio_port;
+        if (APP_APPLICATION_ENV == 'development')
+            return 'http://'.$base_url.':8080/radio/'.$radio_port;
+        else
+            return 'http://'.$base_url.':'.$radio_port;
     }
 
     /*

@@ -71,6 +71,8 @@ class LiquidSoap extends AdapterAbstract
                 $playlist_file[] = $media_file_path;
             }
 
+            // Add a little extra randomness!
+            shuffle($playlist_file);
             $playlist_file_contents = implode("\n", $playlist_file);
 
             $playlist = $playlist_raw->toArray();

@@ -236,6 +236,17 @@ $di['influx'] = function($di) {
     return $influx->selectDB('stations');
 };
 
+// E-mail Messenger
+$di['messenger'] = function($di) {
+    return new \App\Messenger($di);
+};
+
+// Scheduled synchronization manager
+$di['sync'] = function($di) {
+    return new \App\Sync($di);
+};
+
+// Currently logged in user
 $di['user'] = function($di) {
     $auth = $di['auth'];
 

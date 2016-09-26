@@ -1,12 +1,11 @@
 <?php
 namespace App\Sync;
 
-class Analytics
+class Analytics extends SyncAbstract
 {
-    public static function sync()
+    public function run()
     {
-        $di = $GLOBALS['di'];
-        $em = $di->get('em');
+        $em = $this->di['em'];
 
         // Clear out any non-daily statistics.
         $em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type != :type')
@@ -14,7 +13,7 @@ class Analytics
             ->execute();
 
         // Pull statistics in from influx.
-        $influx = $di->get('influx');
+        $influx = $this->di['influx'];
 
         $resultset = $influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 14d', [
             'epoch' => 's',

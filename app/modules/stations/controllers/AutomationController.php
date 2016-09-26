@@ -32,7 +32,9 @@ class AutomationController extends BaseController
     {
         try
         {
-            if (\App\Radio\Automation::runStation($this->station, true))
+            $automation = new \App\Sync\RadioAutomation($this->di);
+
+            if ($automation->runStation($this->station, true))
                 $this->alert('<b>Automated assignment complete!</b>', 'green');
         }
         catch(\Exception $e)

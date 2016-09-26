@@ -330,11 +330,13 @@ class Station extends \App\Doctrine\Entity
         $station->save();
 
         // Scan directory for any existing files.
+        $media_sync = new \App\Sync\Media($GLOBALS['di']);
+
         set_time_limit(600);
-        \App\Sync\Media::importMusic($station);
+        $media_sync->importMusic($station);
         $em->refresh($station);
 
-        \App\Sync\Media::importPlaylists($station);
+        $media_sync->importPlaylists($station);
         $em->refresh($station);
 
         // Load configuration from adapter to pull source and admin PWs.

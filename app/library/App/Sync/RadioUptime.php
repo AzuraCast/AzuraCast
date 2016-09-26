@@ -5,9 +5,9 @@ use Entity\Station;
 use Entity\StationMedia;
 use Entity\StationPlaylist;
 
-class Radio
+class RadioUptime extends SyncAbstract
 {
-    public static function checkUptime()
+    public function run()
     {
         \App\Debug::setEchoMode(true);
 

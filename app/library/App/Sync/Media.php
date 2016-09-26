@@ -5,22 +5,22 @@ use Entity\Station;
 use Entity\StationMedia;
 use Entity\StationPlaylist;
 
-class Media
+class Media extends SyncAbstract
 {
-    public static function sync()
+    public function run()
     {
         $stations = Station::fetchAll();
         foreach($stations as $station)
-            self::importMusic($station);
+            $this->importMusic($station);
     }
 
-    public static function importMusic(Station $station)
+    public function importMusic(Station $station)
     {
         $base_dir = $station->getRadioMediaDir();
         if (empty($base_dir))
-            return false;
+            return;
 
-        $music_files_raw = self::globDirectory($base_dir.'/*.mp3');
+        $music_files_raw = $this->globDirectory($base_dir.'/*.mp3');
         $music_files = array();
 
         foreach($music_files_raw as $music_file_path)
@@ -29,9 +29,8 @@ class Media
             $path_hash = md5($path_short);
             $music_files[$path_hash] = $path_short;
         }
-        
-        $di = $GLOBALS['di'];
-        $em = $di->get('em');
+
+        $em = $this->di['em'];
 
         $existing_media = $station->media;
         foreach($existing_media as $media_row)
@@ -70,11 +69,11 @@ class Media
         $em->flush();
     }
 
-    public static function importPlaylists(Station $station)
+    public function importPlaylists(Station $station)
     {
         $base_dir = $station->getRadioPlaylistsDir();
         if (empty($base_dir))
-            return false;
+            return;
 
         // Create a lookup cache of all valid imported media.
         $media_lookup = array();
@@ -87,10 +86,9 @@ class Media
         }
 
         // Iterate through playlists.
-        $di = $GLOBALS['di'];
-        $em = $di->get('em');
+        $em = $this->di['em'];
 
-        $playlist_files_raw = self::globDirectory($base_dir.'/*.{m3u,pls}', \GLOB_BRACE);
+        $playlist_files_raw = $this->globDirectory($base_dir.'/*.{m3u,pls}', \GLOB_BRACE);
 
         foreach($playlist_files_raw as $playlist_file_path)
         {
@@ -133,11 +131,11 @@ class Media
         $em->flush();
     }
 
-    public static function globDirectory($pattern, $flags = 0)
+    public function globDirectory($pattern, $flags = 0)
     {
         $files = (array)glob($pattern, $flags);
         foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir)
-            $files = array_merge($files, self::globDirectory($dir.'/'.basename($pattern), $flags));
+            $files = array_merge($files, $this->globDirectory($dir.'/'.basename($pattern), $flags));
 
         return $files;
     }

@@ -1,24 +1,22 @@
 <?php
 namespace App\Sync;
 
-use Entity\Analytics;
 use Entity\Station;
 use Entity\Song;
 use Entity\SongHistory;
 use Entity\Settings;
 use App\Debug;
 
-class NowPlaying
+class NowPlaying extends SyncAbstract
 {
-    public static function sync()
+    public function run()
     {
         set_time_limit(60);
 
-        $di = $GLOBALS['di'];
-        $nowplaying = self::loadNowPlaying();
+        $nowplaying = $this->_loadNowPlaying();
 
         // Post statistics to InfluxDB.
-        $influx = $di->get('influx');
+        $influx = $this->di->get('influx');
         $influx_points = array();
 
         $total_overall = 0;
@@ -53,7 +51,7 @@ class NowPlaying
         foreach($nowplaying as $station => $np_info)
             $nowplaying[$station]['cache'] = 'hit';
 
-        $cache = $di->get('cache');
+        $cache = $this->di->get('cache');
         $cache->save($nowplaying, 'api_nowplaying_data', array('nowplaying'), 60);
 
         foreach($nowplaying as $station => $np_info)
@@ -62,7 +60,7 @@ class NowPlaying
         Settings::setSetting('nowplaying', $nowplaying);
     }
 
-    public static function loadNowPlaying()
+    protected function _loadNowPlaying()
     {
         Debug::startTimer('Nowplaying Overall');
 
@@ -74,7 +72,7 @@ class NowPlaying
             Debug::startTimer($station->name);
 
             // $name = $station->short_name;
-            $nowplaying[] = self::processStation($station);
+            $nowplaying[] = $this->_processStation($station);
 
             Debug::endTimer($station->name);
             Debug::divider();
@@ -91,7 +89,7 @@ class NowPlaying
      * @param Station $station
      * @return array Structured NowPlaying Data
      */
-    public static function processStation(Station $station)
+    protected function _processStation(Station $station)
     {
         $np_old = (array)$station->nowplaying_data;
 

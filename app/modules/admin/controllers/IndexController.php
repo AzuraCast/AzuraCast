@@ -31,7 +31,11 @@ class IndexController extends BaseController
 
         // Synchronization statuses
         if ($this->acl->isAllowed('administer all'))
-            $this->view->sync_times = \App\Sync\Manager::getSyncTimes();
+        {
+            /** @var \App\Sync $sync */
+            $sync = $this->di['sync'];
+            $this->view->sync_times = $sync->getSyncTimes();
+        }
     }
 
     public function syncAction()
@@ -44,18 +48,22 @@ class IndexController extends BaseController
         \App\Debug::startTimer('sync_task');
 
         $type = $this->getParam('type', 'nowplaying');
+
+        /** @var \App\Sync $sync */
+        $sync = $this->di['sync'];
+
         switch($type)
         {
             case "long":
-                \App\Sync\Manager::syncLong();
+                $sync->syncLong();
             break;
 
             case "medium":
-                \App\Sync\Manager::syncMedium();
+                $sync->syncMedium();
             break;
 
             case "short":
-                \App\Sync\Manager::syncShort();
+                $sync->syncShort();
             break;
 
             case "nowplaying":
@@ -63,7 +71,7 @@ class IndexController extends BaseController
                 $segment = $this->getParam('segment', 1);
                 define('NOWPLAYING_SEGMENT', $segment);
 
-                \App\Sync\Manager::syncNowplaying(true);
+                $sync->syncNowplaying(true);
             break;
         }
 

@@ -3,7 +3,7 @@ namespace App\Radio\Backend;
 
 use Entity\Station;
 
-class AdapterAbstract
+abstract class AdapterAbstract
 {
     protected $station;
 

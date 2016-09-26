@@ -4,7 +4,7 @@ namespace App\Radio\Frontend;
 use App\Service\Curl;
 use Entity\Station;
 
-class AdapterAbstract
+abstract class AdapterAbstract
 {
     protected $station;
 

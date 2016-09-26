@@ -29,24 +29,27 @@ class Sync extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var \App\Sync $sync */
+        $sync = $this->di['sync'];
+
         switch($input->getArgument('task'))
         {
             case 'long':
                 $output->writeln('Running Long (1-hour) Sync...');
 
-                Manager::syncLong();
+                $sync->syncLong();
             break;
 
             case 'medium':
                 $output->writeln('Running Medium (5-minutes) Sync...');
 
-                Manager::syncMedium();
+                $sync->syncMedium();
             break;
 
             case 'short':
                 $output->writeln('Running Short (1-minute) Sync...');
 
-                Manager::syncShort();
+                $sync->syncShort();
             break;
 
             case 'nowplaying':
@@ -54,7 +57,7 @@ class Sync extends CommandAbstract
                 $output->writeln('Running Now-Playing (15-second) Sync...');
 
                 define('NOWPLAYING_SEGMENT', 1);
-                Manager::syncNowplaying();
+                $sync->syncNowplaying();
             break;
         }
     }

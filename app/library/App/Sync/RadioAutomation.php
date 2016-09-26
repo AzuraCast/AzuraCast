@@ -1,19 +1,20 @@
 <?php
-namespace App\Radio;
+namespace App\Sync;
 
 use App\Exception;
 use App\Utilities;
+use Doctrine\ORM\EntityManager;
 use Entity\Settings;
 use Entity\Station;
 
-class Automation
+class RadioAutomation extends SyncAbstract
 {
     const DEFAULT_THRESHOLD_DAYS = 14;
 
     /**
      * Iterate through all stations and attempt to run automated assignment.
      */
-    public static function run()
+    public function run()
     {
         // Check all stations for automation settings.
         $stations = Station::fetchAll();
@@ -24,7 +25,7 @@ class Automation
         {
             try
             {
-                if (self::runStation($station))
+                if ($this->runStation($station))
                     $automation_log[$station->id] = $station->name.': SUCCESS';
             }
             catch(Exception $e)
@@ -44,10 +45,10 @@ class Automation
      * @return bool
      * @throws Exception
      */
-    public static function runStation(Station $station, $force = false)
+    public function runStation(Station $station, $force = false)
     {
-        $di = $GLOBALS['di'];
-        $em = $di->get('em');
+        /** @var EntityManager $em */
+        $em = $this->di['em'];
 
         $settings = (array)$station->automation_settings;
 
@@ -96,7 +97,7 @@ class Automation
 
         $em->flush();
 
-        $media_report = self::generateReport($station, $threshold_days);
+        $media_report = $this->generateReport($station, $threshold_days);
 
         $media_report = array_filter($media_report, function($media) use ($original_playlists) {
             // Remove songs that are already in non-auto-assigned playlists.
@@ -135,7 +136,7 @@ class Automation
 
             return ($a < $b) ? 1 : (($a > $b) ? -1 : 0);
         });
-        
+
         // Distribute media across the enabled playlists and assign media to playlist.
         $num_songs = count($media_report);
         $num_playlists = count($playlists);
@@ -178,10 +179,10 @@ class Automation
      * @param int $threshold_days
      * @return array
      */
-    public static function generateReport(Station $station, $threshold_days = self::DEFAULT_THRESHOLD_DAYS)
+    public function generateReport(Station $station, $threshold_days = self::DEFAULT_THRESHOLD_DAYS)
     {
-        $di = $GLOBALS['di'];
-        $em = $di->get('em');
+        /** @var EntityManager $em */
+        $em = $this->di['em'];
 
         $threshold = strtotime('-'.(int)$threshold_days.' days');
 

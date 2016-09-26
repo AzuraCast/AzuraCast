@@ -4,7 +4,7 @@ namespace App\Console\Command;
 use Interop\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 
-class CommandAbstract extends Command
+abstract class CommandAbstract extends Command
 {
     /**
      * @var ContainerInterface

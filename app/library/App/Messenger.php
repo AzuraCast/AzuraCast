@@ -5,6 +5,8 @@
 
 namespace App;
 
+use Interop\Container\ContainerInterface;
+
 use Nette\Mail\Message;
 use Nette\Mail\SendmailMailer;
 use Nette\Mail\SmtpMailer;
@@ -12,16 +14,25 @@ use Nette\Mail\SmtpMailer;
 class Messenger
 {
     /**
+     * @var ContainerInterface
+     */
+    protected $di;
+
+    public function __construct(ContainerInterface $di)
+    {
+        $this->di = $di;
+    }
+
+    /**
      * New messenger method:
      * Uses an expandable array of options and supports direct template rendering and subject prepending.
      *
      * @param array $message_options An array of message options.
      * @return bool|void
      */
-    public static function send($message_options)
+    public function send($message_options)
     {
-        $di = $GLOBALS['di'];
-        $config = $di->get('config');
+        $config = $this->di['config'];
         
         $default_options = array(
             'reply_to'          => NULL,
@@ -36,7 +47,7 @@ class Messenger
             $vars = (array)$options['vars'];
             $vars['subject'] = $options['subject'];
 
-            $view = $di['view'];
+            $view = $this->di['view'];
             $options->message = $view->fetch($options['template'], $vars);
         }
         else if (isset($options['body']) && !isset($options['message']))
@@ -51,36 +62,6 @@ class Messenger
             $app_name = $config->application->name;
             $options['subject'] = $app_name.': '.$options['subject'];
         }
-        
-        return self::sendMail($options);
-    }
-
-    /**
-     * Handle message delivery.
-     *
-     * @return bool
-     */
-    public static function sendMail()
-    {
-        // Allow support for legacy argument style or new style.
-        $args = func_get_args();
-        if (func_num_args() == 1)
-        {
-            $options = $args[0];
-        }
-        else
-        {
-            $options = array_merge(array(
-                'to'        => $args[0],
-                'subject'   => $args[1],
-                'message'   => $args[2],
-                'reply_to'  => $args[3],
-                'delivery_date' => $args[4],
-            ), $args[5]);
-        }
-
-        $di = $GLOBALS['di'];
-        $config = $di->get('config');
 
         $mail_config = $config->application->mail->toArray();
 

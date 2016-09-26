@@ -96,7 +96,7 @@ class SongHistory extends \App\Doctrine\Entity
         $em = self::getEntityManager();
 
         // Pull the most recent history item for this station.
-        $last_sh = $em->createQuery('SELECT sh FROM '.__CLASS__.' sh
+        $last_sh = $em->createQuery('SELECT sh FROM ' . __CLASS__ . ' sh
             WHERE sh.station_id = :station_id
             ORDER BY sh.timestamp_start DESC')
             ->setParameter('station_id', $station->id)
@@ -115,8 +115,7 @@ class SongHistory extends \App\Doctrine\Entity
             $em->persist($last_sh);
             $em->flush();
             return null;
-        }
-        else
+        } else
         {
             // Wrapping up processing on the previous SongHistory item (if present).
             if ($last_sh instanceof self)
@@ -133,10 +132,10 @@ class SongHistory extends \App\Doctrine\Entity
                 $delta_negative = 0;
                 $delta_total = 0;
 
-                for($i = 1; $i < count($delta_points); $i++)
+                for ($i = 1; $i < count($delta_points); $i++)
                 {
                     $current_delta = $delta_points[$i];
-                    $previous_delta = $delta_points[$i-1];
+                    $previous_delta = $delta_points[$i - 1];
 
                     $delta_delta = $current_delta - $previous_delta;
                     $delta_total += $delta_delta;
@@ -159,25 +158,12 @@ class SongHistory extends \App\Doctrine\Entity
             $sh->station = $station;
 
             $sh->listeners_start = $listeners;
-            $sh->delta_points = array($listeners);
+            $sh->delta_points = [$listeners];
 
             $em->persist($sh);
             $em->flush();
 
             return $sh;
         }
-    }
-
-    public static function cleanUp()
-    {
-        $em = self::getEntityManager();
-
-        $threshold = strtotime('-1 month');
-
-        $em->createQuery('DELETE FROM '.__CLASS__.' sh WHERE sh.timestamp_start <= :threshold')
-            ->setParameter('threshold', $threshold)
-            ->execute();
-
-        return true;
     }
 }

@@ -404,6 +404,7 @@ class Entity implements \ArrayAccess
     /**
      * Get an Entity Manager object from the Dependency Injector.
      *
+     * @deprecated
      * @return \Doctrine\ORM\EntityManager
      */
     public static function getEntityManager()

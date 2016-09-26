@@ -1,14 +1,45 @@
 <?php
-namespace App\Sync;
+namespace App;
 
-use App\Radio\Automation;
-use Entity\Settings;
-use Entity\SongHistory;
 use App\Debug;
-use Entity\StationRequest;
+use Entity\Settings;
+use Interop\Container\ContainerInterface;
 
-class Manager
+/**
+ * The runner of scheduled synchronization tasks.
+ *
+ * Class Sync
+ * @package App
+ */
+class Sync
 {
+    /**
+     * @var ContainerInterface
+     */
+    protected $di;
+
+    public function __construct(ContainerInterface $di)
+    {
+        $this->di = $di;
+    }
+
+    protected function _initSync($script_timeout = 60)
+    {
+        // Immediately halt if setup is not complete.
+        if (Settings::getSetting('setup_complete', 0) == 0)
+            die('Setup not complete; halting synchronized task.');
+
+        set_time_limit($script_timeout);
+        ini_set('memory_limit', '256M');
+
+        if (APP_IS_COMMAND_LINE)
+        {
+            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
+            ini_set('display_errors', 1);
+            ini_set('log_errors', 1);
+        }
+    }
+
     /**
      * Now-Playing Synchronization
      * The most frequent sync process, which must be optimized for speed,
@@ -16,9 +47,9 @@ class Manager
      *
      * @param bool $force
      */
-    public static function syncNowplaying($force = false)
+    public function syncNowplaying($force = false)
     {
-        self::initSync(60);
+        $this->_initSync(60);
 
         // Prevent nowplaying from running on top of itself.
         $last_start = Settings::getSetting('nowplaying_last_started', 0);
@@ -32,7 +63,8 @@ class Manager
 
         // Run Now Playing data for radio streams.
         Debug::runTimer('Run NowPlaying update', function() {
-            NowPlaying::sync();
+            $task = new Sync\NowPlaying($this->di);
+            $task->run();
         });
 
         Settings::setSetting('nowplaying_last_run', time());
@@ -44,11 +76,14 @@ class Manager
      *
      * @param bool $force
      */
-    public static function syncShort($force = false)
+    public function syncShort($force = false)
     {
-        self::initSync(60);
+        $this->_initSync(60);
 
-        StationRequest::processPending();
+        Debug::runTimer('Handle pending song requests', function() {
+            $task = new Sync\RadioRequests($this->di);
+            $task->run();
+        });
 
         Settings::setSetting('sync_fast_last_run', time());
     }
@@ -59,18 +94,20 @@ class Manager
      *
      * @param bool $force
      */
-    public static function syncMedium($force = false)
+    public function syncMedium($force = false)
     {
-        self::initSync(300);
+        $this->_initSync(300);
 
         // Sync uploaded media.
         Debug::runTimer('Run radio station track sync', function() {
-            Media::sync();
+            $task = new Sync\Media($this->di);
+            $task->run();
         });
 
         // Check station uptime.
         Debug::runTimer('Check radio station stream uptime', function() {
-            Radio::checkUptime();
+            $task = new Sync\RadioUptime($this->di);
+            $task->run();
         });
 
         Settings::setSetting('sync_last_run', time());
@@ -82,29 +119,32 @@ class Manager
      *
      * @param bool $force
      */
-    public static function syncLong($force = false)
+    public function syncLong($force = false)
     {
-        self::initSync(1800);
+        $this->_initSync(1800);
 
         // Sync analytical and statistical data (long running).
         Debug::runTimer('Run analytics manager', function() {
-            Analytics::sync();
+            $task = new Sync\Analytics($this->di);
+            $task->run();
         });
 
         // Run automated playlist assignment.
         Debug::runTimer('Run automated playlist assignment', function() {
-            Automation::run();
+            $task = new Sync\RadioAutomation($this->di);
+            $task->run();
         });
 
         // Clean up old song history entries.
         Debug::runTimer('Run song history cleanup', function() {
-            SongHistory::cleanUp();
+            $task = new Sync\HistoryCleanup($this->di);
+            $task->run();
         });
 
         Settings::setSetting('sync_slow_last_run', time());
     }
 
-    public static function getSyncTimes()
+    public function getSyncTimes()
     {
         Settings::clearCache();
 
@@ -151,20 +191,4 @@ class Manager
         return $syncs;
     }
 
-    public static function initSync($script_timeout = 60)
-    {
-        // Immediately halt if setup is not complete.
-        if (Settings::getSetting('setup_complete', 0) == 0)
-            die('Setup not complete; halting synchronized task.');
-
-        set_time_limit($script_timeout);
-        ini_set('memory_limit', '256M');
-
-        if (APP_IS_COMMAND_LINE)
-        {
-            error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
-            ini_set('display_errors', 1);
-            ini_set('log_errors', 1);
-        }
-    }
 }

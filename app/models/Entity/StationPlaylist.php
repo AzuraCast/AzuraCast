@@ -102,6 +102,7 @@ class StationPlaylist extends \App\Doctrine\Entity
     /**
      * Given a time code i.e. "2300", return a time i.e. "11:00 PM"
      * @param $time_code
+     * @return string
      */
     public static function formatTimeCode($time_code)
     {

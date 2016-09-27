@@ -54,17 +54,4 @@ class StationRequest extends \App\Doctrine\Entity
      * })
      */
     protected $track;
-
-    /**
-     * @deprecated
-     * @param Station $station
-     * @param $track_id
-     * @param bool $is_authenticated
-     * @return mixed
-     * @throws \App\Exception
-     */
-    public static function submit(Station $station, $track_id, $is_authenticated = false)
-    {
-        return self::getRepository()->submit($station, $track_id, $is_authenticated);
-    }
 }

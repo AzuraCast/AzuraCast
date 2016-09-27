@@ -9,7 +9,7 @@ class ProfileController extends BaseController
     public function indexAction()
     {
         // Backend controller.
-        $ba = $this->station->getBackendAdapter();
+        $ba = $this->station->getBackendAdapter($this->di);
 
         $this->view->backend_adapter = $ba;
         $this->view->backend_type = $this->station->backend_type;
@@ -17,7 +17,7 @@ class ProfileController extends BaseController
         $this->view->backend_is_running = $ba->isRunning();
 
         // Frontend controller.
-        $fa = $this->station->getFrontendAdapter();
+        $fa = $this->station->getFrontendAdapter($this->di);
 
         $this->view->frontend_adapter = $fa;
         $this->view->frontend_type = $this->station->frontend_type;
@@ -69,7 +69,7 @@ class ProfileController extends BaseController
 
     public function backendAction()
     {
-        $adapter = $this->station->getBackendAdapter();
+        $adapter = $this->station->getBackendAdapter($this->di);
 
         switch($this->getParam('do', 'restart'))
         {
@@ -106,7 +106,7 @@ class ProfileController extends BaseController
 
     public function frontendAction()
     {
-        $adapter = $this->station->getFrontendAdapter();
+        $adapter = $this->station->getFrontendAdapter($this->di);
 
         switch($this->getParam('do', 'restart'))
         {

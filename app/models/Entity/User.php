@@ -98,31 +98,4 @@ class User extends \App\Doctrine\Entity
      * )
      */
     protected $stations;
-    
-    /**
-     * Static Functions
-     */
-
-    /**
-     * @deprecated
-     * @param $username
-     * @param $password
-     * @return bool|null|object
-     */
-    public static function authenticate($username, $password)
-    {
-        return self::getRepository()->authenticate($username, $password);
-    }
-
-    /**
-     * Creates or returns an existing user with the specified e-mail address.
-     *
-     * @deprecated
-     * @param $email
-     * @return User
-     */
-    public static function getOrCreate($email)
-    {
-        return self::getRepository()->getOrCreate($email);
-    }
 }

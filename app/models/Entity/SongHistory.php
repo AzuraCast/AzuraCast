@@ -86,16 +86,4 @@ class SongHistory extends \App\Doctrine\Entity
      * })
      */
     protected $station;
-
-    /**
-     * @deprecated
-     * @param Song $song
-     * @param Station $station
-     * @param $np
-     * @return SongHistory|null
-     */
-    public static function register(Song $song, Station $station, $np)
-    {
-        return self::getRepository()->register($song, $station, $np);
-    }
 }

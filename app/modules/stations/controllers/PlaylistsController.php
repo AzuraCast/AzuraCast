@@ -95,7 +95,7 @@ class PlaylistsController extends BaseController
 
     protected function _reloadStation()
     {
-        $backend = $this->station->getBackendAdapter();
+        $backend = $this->station->getBackendAdapter($this->di);
 
         $backend->stop();
         $backend->write();

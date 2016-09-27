@@ -117,34 +117,4 @@ class Song extends \App\Doctrine\Entity
             'last_played' => (int)$row['last_played'],
         );
     }
-
-    /**
-     * @deprecated
-     * @param $song_hash
-     * @return null|object
-     */
-    public static function getById($song_hash)
-    {
-        return self::getRepository()->getById($song_hash);
-    }
-
-    /**
-     * @deprecated
-     * @return array
-     */
-    public static function getIds()
-    {
-        return self::getRepository()->getIds();
-    }
-
-    /**
-     * @deprecated
-     * @param $song_info
-     * @param bool $is_radio_play
-     * @return Song|null|object
-     */
-    public static function getOrCreate($song_info, $is_radio_play = false)
-    {
-        return self::getRepository()->getOrCreate($song_info, $is_radio_play);
-    }
 }

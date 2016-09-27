@@ -3,8 +3,6 @@ namespace App\Sync;
 
 use Doctrine\ORM\EntityManager;
 use Entity\Station;
-use Entity\StationMedia;
-use Entity\StationPlaylist;
 
 class RadioUptime extends SyncAbstract
 {
@@ -21,8 +19,10 @@ class RadioUptime extends SyncAbstract
 
         foreach($stations as $station)
         {
-            $backend = $station->getBackendAdapter();
-            $frontend = $station->getFrontendAdapter();
+            /** @var Station $station */
+
+            $backend = $station->getBackendAdapter($this->di);
+            $frontend = $station->getFrontendAdapter($this->di);
 
             if (!$backend->isRunning() || !$frontend->isRunning())
             {

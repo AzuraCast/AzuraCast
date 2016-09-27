@@ -33,10 +33,12 @@ class RestartRadio extends CommandAbstract
 
         foreach($stations as $station)
         {
+            /** @var Station $station */
+
             \App\Debug::log('Restarting station #'.$station->id.': '.$station->name);
 
-            $backend = $station->getBackendAdapter();
-            $frontend = $station->getFrontendAdapter();
+            $backend = $station->getBackendAdapter($this->di);
+            $frontend = $station->getFrontendAdapter($this->di);
 
             $backend->stop();
             $frontend->stop();

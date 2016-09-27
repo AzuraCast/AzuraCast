@@ -47,22 +47,4 @@ class StationStreamer extends \App\Doctrine\Entity
      * })
      */
     protected $station;
-
-    /**
-     * Static Functions
-     */
-
-    /**
-     * Attempt to authenticate a streamer.
-     *
-     * @deprecated
-     * @param Station $station
-     * @param $username
-     * @param $password
-     * @return bool
-     */
-    public static function authenticate(Station $station, $username, $password)
-    {
-        return self::getRepository()->authenticate($station, $username, $password);
-    }
 }

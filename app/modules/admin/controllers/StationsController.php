@@ -60,7 +60,16 @@ class StationsController extends BaseController
     {
         $record = $this->em->getRepository(Record::class)->find($this->getParam('id'));
         if ($record)
-            $record->delete();
+        {
+            $ba = $record->getBackendAdapter($this->di);
+            $fa = $record->getFrontendAdapter($this->di);
+
+            $ba->stop();
+            $fa->stop();
+
+            $this->em->remove($record);
+            $this->em->flush();
+        }
             
         $this->alert('Record deleted.', 'green');
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));

@@ -122,7 +122,7 @@ class StationRepository extends Repository
         $this->_em->refresh($station);
 
         // Load configuration from adapter to pull source and admin PWs.
-        $frontend_adapter = $station->getFrontendAdapter();
+        $frontend_adapter = $station->getFrontendAdapter($di);
         $frontend_adapter->read();
 
         // Write initial XML file (if it doesn't exist).
@@ -130,7 +130,7 @@ class StationRepository extends Repository
         $frontend_adapter->restart();
 
         // Write an empty placeholder configuration.
-        $backend_adapter = $station->getBackendAdapter();
+        $backend_adapter = $station->getBackendAdapter($di);
         $backend_adapter->write();
         $backend_adapter->restart();
 

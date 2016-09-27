@@ -171,7 +171,7 @@ class RadioAutomation extends SyncAbstract
         $em->flush();
 
         // Write new PLS playlist configuration.
-        $station->getBackendAdapter()->write();
+        $station->getBackendAdapter($this->di)->write();
         return true;
     }
 

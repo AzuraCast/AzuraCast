@@ -24,7 +24,7 @@ class UtilController extends BaseController
                 $i = 0;
                 foreach($stations as $station)
                 {
-                    $fa = $station->getFrontendAdapter();
+                    $fa = $station->getFrontendAdapter($this->di);
                     $stream_url = $fa->getStreamUrl();
 
                     $m3u_lines[] = '#EXTINF:' . $i . ',' . $station['name'];
@@ -85,7 +85,7 @@ class UtilController extends BaseController
                 $i = 1;
                 foreach($stations as $station)
                 {
-                    $fa = $station->getFrontendAdapter();
+                    $fa = $station->getFrontendAdapter($this->di);
                     $stream_url = $fa->getStreamUrl();
 
                     $output[] = 'File' . $i . '=' . $stream_url;
@@ -108,7 +108,7 @@ class UtilController extends BaseController
      */
     public function writeAction()
     {
-        $backend = $this->station->getBackendAdapter();
+        $backend = $this->station->getBackendAdapter($this->di);
         $backend->write();
 
         $this->view->backend_result = $backend->restart();
@@ -119,8 +119,8 @@ class UtilController extends BaseController
      */
     public function restartAction()
     {
-        $frontend = $this->station->getFrontendAdapter();
-        $backend = $this->station->getBackendAdapter();
+        $frontend = $this->station->getFrontendAdapter($this->di);
+        $backend = $this->station->getBackendAdapter($this->di);
 
         $backend->stop();
         $frontend->stop();

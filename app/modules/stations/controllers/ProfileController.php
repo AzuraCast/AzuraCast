@@ -41,7 +41,7 @@ class ProfileController extends BaseController
 
         $form = new \App\Form($base_form);
 
-        $form->setDefaults($this->station->toArray());
+        $form->setDefaults($this->station->toArray($this->em));
 
         if(!empty($_POST) && $form->isValid($_POST))
         {
@@ -53,8 +53,9 @@ class ProfileController extends BaseController
                 $data[$file_field] = $file_paths[1];
             */
 
-            $this->station->fromArray($data);
-            $this->station->save();
+            $this->station->fromArray($this->em, $data);
+            $this->em->persist($this->station);
+            $this->em->flush();
 
             // Clear station cache.
             $cache = $this->di->get('cache');

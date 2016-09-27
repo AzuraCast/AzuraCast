@@ -15,7 +15,9 @@ class StreamersController extends BaseController
             if ($this->hasParam('enable'))
             {
                 $this->station->enable_streamers = true;
-                $this->station->save();
+
+                $this->em->persist($this->station);
+                $this->em->flush();
 
                 $this->alert('<b>Streamers enabled!</b><br>You can now set up streamer (DJ) accounts.', 'green');
 
@@ -42,7 +44,7 @@ class StreamersController extends BaseController
                 'id' => $this->getParam('id'),
                 'station_id' => $this->station->id
             ));
-            $form->setDefaults($record->toArray());
+            $form->setDefaults($record->toArray($this->em));
         }
 
         if(!empty($_POST) && $form->isValid($_POST))
@@ -55,8 +57,9 @@ class StreamersController extends BaseController
                 $record->station = $this->station;
             }
 
-            $record->fromArray($data);
-            $record->save();
+            $record->fromArray($this->em, $data);
+            $this->em->persist($record);
+            $this->em->flush();
 
             $this->alert('<b>Streamer account updated!</b>', 'green');
 
@@ -77,7 +80,9 @@ class StreamersController extends BaseController
         ));
 
         if ($record instanceof Record)
-            $record->delete();
+            $this->em->remove($record);
+
+        $this->em->flush();
 
         $this->alert('<b>Record deleted.</b>', 'green');
         return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);

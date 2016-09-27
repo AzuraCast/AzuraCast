@@ -8,7 +8,10 @@ class RadioRequests extends SyncAbstract
 {
     public function run()
     {
-        $stations = Station::fetchAll();
+        /** @var EntityManager $em */
+        $em = $this->di['em'];
+
+        $stations = $em->getRepository(Station::class)->findAll();
 
         foreach($stations as $station)
         {
@@ -21,9 +24,6 @@ class RadioRequests extends SyncAbstract
             \App\Debug::log($station->name . ': Random minutes threshold: ' . $threshold_minutes);
 
             $threshold = time() - ($threshold_minutes * 60);
-
-            /** @var EntityManager $em */
-            $em = $this->di['em'];
 
             // Look up all requests that have at least waited as long as the threshold.
             $requests = $em->createQuery('SELECT sr, sm FROM \Entity\StationRequest sr JOIN sr.track sm
@@ -39,7 +39,9 @@ class RadioRequests extends SyncAbstract
 
                 // Log the request as played.
                 $request->played_at = time();
-                $request->save();
+
+                $em->persist($request);
+                $em->flush();
 
                 // Send request to the station to play the request.
                 $backend = $station->getBackendAdapter();

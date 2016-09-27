@@ -1,10 +1,13 @@
 <?php
 namespace App\Sync;
 
+use Doctrine\ORM\EntityManager;
+
 class Analytics extends SyncAbstract
 {
     public function run()
     {
+        /** @var EntityManager $em */
         $em = $this->di['em'];
 
         // Clear out any non-daily statistics.
@@ -61,7 +64,8 @@ class Analytics extends SyncAbstract
         foreach($new_records as $new_record)
         {
             $row = new \Entity\Analytics;
-            $row->fromArray($new_record);
+            $row->fromArray($em, $new_record);
+
             $em->persist($row);
         }
 

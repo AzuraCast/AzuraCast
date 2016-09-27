@@ -4,12 +4,16 @@ namespace App\Sync;
 use Entity\Station;
 use Entity\StationMedia;
 use Entity\StationPlaylist;
+use Doctrine\ORM\EntityManager;
 
 class Media extends SyncAbstract
 {
     public function run()
     {
-        $stations = Station::fetchAll();
+        /** @var EntityManager $em */
+        $em = $this->di['em'];
+        $stations = $em->getRepository(Station::class)->findAll();
+
         foreach($stations as $station)
             $this->importMusic($station);
     }

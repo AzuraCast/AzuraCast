@@ -75,7 +75,7 @@ class LiquidSoap extends AdapterAbstract
             shuffle($playlist_file);
             $playlist_file_contents = implode("\n", $playlist_file);
 
-            $playlist = $playlist_raw->toArray();
+            $playlist = $playlist_raw->toArray($this->di['em']);
 
             $playlist['var_name'] = 'playlist_'.$playlist_raw->getShortName();
             $playlist['file_path'] = $playlist_path.'/'.$playlist['var_name'].'.pls';

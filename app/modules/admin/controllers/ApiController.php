@@ -23,7 +23,7 @@ class ApiController extends BaseController
         {
             $id = $this->getParam('id');
             $record = Record::find($id);
-            $form->setDefaults($record->toArray(TRUE, TRUE));
+            $form->setDefaults($record->toArray($this->em, TRUE, TRUE));
         }
 
         if($_POST && $form->isValid($_POST) )
@@ -33,8 +33,10 @@ class ApiController extends BaseController
             if (!($record instanceof Record))
                 $record = new Record;
 
-            $record->fromArray($data);
-            $record->save();
+            $record->fromArray($this->em, $data);
+
+            $this->em->persist($record);
+            $this->em->flush();
 
             $this->alert('Changes saved.', 'green');
 
@@ -47,8 +49,11 @@ class ApiController extends BaseController
     public function deleteAction()
     {
         $record = Record::find($this->getParam('id'));
+
         if ($record instanceof Record)
-            $record->delete();
+            $this->em->remove($record);
+
+        $this->em->flush();
 
         $this->alert('Record deleted.', 'green');
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));

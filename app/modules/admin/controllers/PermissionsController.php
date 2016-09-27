@@ -24,7 +24,7 @@ class PermissionsController extends BaseController
         if ($this->hasParam('id'))
         {
             $record = Action::find($this->getParam('id'));
-            $form->setDefaults($record->toArray());
+            $form->setDefaults($record->toArray($this->em));
         }
 
         if(!empty($_POST) && $form->isValid($_POST))
@@ -34,8 +34,10 @@ class PermissionsController extends BaseController
             if (!($record instanceof Action))
                 $record = new Action;
             
-            $record->fromArray($data);
-            $record->save();
+            $record->fromArray($this->em, $data);
+
+            $this->em->persist($record);
+            $this->em->flush();
             
             $this->alert('Action updated.', 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
@@ -71,7 +73,7 @@ class PermissionsController extends BaseController
         if ($this->hasParam('id'))
         {
             $record = Role::find($this->getParam('id'));
-            $form->setDefaults($record->toArray(TRUE, TRUE));
+            $form->setDefaults($record->toArray($this->em, TRUE, TRUE));
         }
 
         if( !empty($_POST) && $form->isValid($_POST) )
@@ -81,8 +83,10 @@ class PermissionsController extends BaseController
             if (!($record instanceof Role))
                 $record = new Role;
 
-            $record->fromArray($data);
-            $record->save();
+            $record->fromArray($this->em, $data);
+
+            $this->em->persist($record);
+            $this->em->flush();
 
             $this->alert('<b>Role updated!</b>', 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
@@ -95,7 +99,9 @@ class PermissionsController extends BaseController
     {
         $record = Role::find($this->getParam('id'));
         if ($record instanceof Role)
-            $record->delete();
+            $this->em->remove($record);
+
+        $this->em->flush();
         
         $this->alert('<b>Role deleted!</b>', 'green');
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));

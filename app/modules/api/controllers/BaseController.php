@@ -90,13 +90,28 @@ class BaseController extends \App\Mvc\Controller
     public function authenticate()
     {
         if (isset($_SERVER['X-API-Key']))
-            $api_key = $_SERVER['X-API-Key'];
+            $key = $_SERVER['X-API-Key'];
         elseif ($this->hasParam('key'))
-            $api_key = $this->getParam('key');
+            $key = $this->getParam('key');
         else
             return false;
 
-        return ApiKey::authenticate($api_key);
+        if (empty($key))
+            return false;
+
+        $record = $this->em->getRepository(ApiKey::class)->find($key);
+        // $record = self::find($key);
+
+        if ($record instanceof ApiKey)
+        {
+            $record->calls_made++;
+
+            $this->em->persist($record);
+            $this->em->flush();
+            return true;
+        }
+
+        return false;
     }
 
     /**

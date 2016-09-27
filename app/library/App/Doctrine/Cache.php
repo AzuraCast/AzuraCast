@@ -12,11 +12,8 @@ class Cache extends \Doctrine\Common\Cache\CacheProvider
      */
     protected $_cache;
 
-    public function __construct()
+    public function __construct($cache_driver)
     {
-        $di = $GLOBALS['di'];
-        $cache_driver = $di['cache_driver'];
-
         $pool = new \Stash\Pool($cache_driver);
         $pool->setNamespace(\App\Cache::getSitePrefix('doctrine'));
 

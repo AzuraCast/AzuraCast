@@ -1,6 +1,8 @@
 <?php
 namespace Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @Table(name="action")
  * @Entity
@@ -9,7 +11,7 @@ class Action extends \App\Doctrine\Entity
 {
     public function __construct()
     {
-        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
     
     /**

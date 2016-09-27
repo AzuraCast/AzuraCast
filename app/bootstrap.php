@@ -125,12 +125,10 @@ $di['em'] = function($di) {
     try
     {
         $config = $di['config'];
-
         $db_conf = $config->application->resources->doctrine->toArray();
         $db_conf['conn'] = $config->db->toArray();
 
-        $em = \App\Service\Doctrine::init($db_conf);
-        return $em;
+        return \App\Doctrine\EntityManagerFactory::create($di, $db_conf);
     }
     catch(\Exception $e)
     {

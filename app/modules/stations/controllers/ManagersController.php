@@ -15,9 +15,14 @@ class ManagersController extends BaseController
         $user = \Entity\User::getOrCreate($email);
 
         $user->stations->add($this->station);
-        $user->save();
 
-        \App\Messenger::send(array(
+        $this->em->persist($user);
+        $this->em->flush();
+
+        /** @var \App\Messenger $messenger */
+        $messenger = $this->di['messenger'];
+
+        $messenger->send(array(
             'to' => $user->email,
             'subject' => 'Access Granted to Station Center',
             'template' => 'newperms',

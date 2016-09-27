@@ -19,7 +19,9 @@ class AutomationController extends BaseController
             $data = $form->getValues();
 
             $this->station->automation_settings = $data;
-            $this->station->save();
+
+            $this->em->persist($this->station);
+            $this->em->flush();
 
             $this->alert('Changes saved!', 'green');
             return $this->redirectHere();

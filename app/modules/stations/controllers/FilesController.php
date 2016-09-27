@@ -81,15 +81,17 @@ class FilesController extends BaseController
         $form_config = $this->current_module_config->forms->media->toArray();
         $form = new \App\Form($form_config);
 
-        $form->populate($media->toArray());
+        $form->populate($media->toArray($this->em));
 
         if (!empty($_POST) && $form->isValid())
         {
             $data = $form->getValues();
 
-            $media->fromArray($data);
+            $media->fromArray($this->em, $data);
             $media->writeToFile();
-            $media->save();
+
+            $this->em->persist($media);
+            $this->em->flush();
 
             $this->alert('<b>Media metadata updated!</b>', 'green');
 
@@ -393,7 +395,9 @@ class FilesController extends BaseController
         var_dump(move_uploaded_file($_FILES['file_data']['tmp_name'], $upload_file_path));
 
         $station_media = StationMedia::getOrCreate($this->station, $upload_file_path);
-        $station_media->save();
+
+        $this->em->persist($station_media);
+        $this->em->flush();
     }
 
     public function downloadAction()

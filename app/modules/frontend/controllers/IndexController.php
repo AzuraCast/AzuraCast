@@ -9,7 +9,7 @@ class IndexController extends BaseController
     public function indexAction()
     {
         // Inject all stations.
-        $stations = \Entity\Station::fetchAll();
+        $stations = $this->em->getRepository(Station::class)->findAll();
         $this->view->stations = $stations;
 
         // Pull cached statistic charts if available.

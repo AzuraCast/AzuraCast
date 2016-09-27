@@ -2,16 +2,22 @@
 namespace App\Radio\Backend;
 
 use Entity\Station;
+use Interop\Container\ContainerInterface;
 
 abstract class AdapterAbstract
 {
+    /** @var ContainerInterface */
+    protected $di;
+
+    /** @var Station */
     protected $station;
 
     /**
      * @param Station $station
      */
-    public function __construct(Station $station)
+    public function __construct(ContainerInterface $di, Station $station)
     {
+        $this->di = $di;
         $this->station = $station;
     }
 
@@ -54,9 +60,7 @@ abstract class AdapterAbstract
 
         if (!APP_IS_COMMAND_LINE)
         {
-            $di = $GLOBALS['di'];
-            $flash = $di->get('flash');
-
+            $flash = $this->di['flash'];
             $flash->addMessage('<b>Radio Backend:</b><br>'.$message, 'info', true);
         }
         else

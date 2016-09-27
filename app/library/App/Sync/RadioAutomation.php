@@ -16,8 +16,11 @@ class RadioAutomation extends SyncAbstract
      */
     public function run()
     {
+        /** @var EntityManager $em */
+        $em = $this->di['em'];
+
         // Check all stations for automation settings.
-        $stations = Station::fetchAll();
+        $stations = $em->getRepository(Station::class)->findAll();
 
         $automation_log = Settings::getSetting('automation_log', array());
 

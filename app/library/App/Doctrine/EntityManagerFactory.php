@@ -1,12 +1,12 @@
 <?php
-namespace App\Service;
+namespace App\Doctrine;
 
-use \Doctrine\Common\ClassLoader;
-use \Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Type;
+use Interop\Container\ContainerInterface;
 
-class Doctrine
+class EntityManagerFactory
 {
-    public static function init($options)
+    public static function create(ContainerInterface $di, $options)
     {
         if(empty($options))
             return false;
@@ -21,23 +21,6 @@ class Doctrine
         Type::overrideType('datetime', 'App\Doctrine\Type\UTCDateTime');
 
         // Fetch and store entity manager.
-        $em = self::getEntityManager($options);
-
-        $conn = $em->getConnection();
-        $platform = $conn->getDatabasePlatform();
-
-        $platform->markDoctrineTypeCommented('json');
-        $platform->markDoctrineTypeCommented('unixdatetime');
-        $platform->markDoctrineTypeCommented('binary_uuid');
-        $platform->markDoctrineTypeCommented('ip_integer');
-
-        $conn->connect();
-
-        return $em;
-    }
-
-    protected static function getEntityManager($options)
-    {
         $config = new \Doctrine\ORM\Configuration;
 
         // Handling for class names specified as platform types.
@@ -56,8 +39,7 @@ class Doctrine
         $metadata_driver = $config->newDefaultAnnotationDriver($options['modelPath']);
         $config->setMetadataDriverImpl($metadata_driver);
 
-        $cache = new \App\Doctrine\Cache;
-        // $cache->setNamespace('doctrine_');
+        $cache = new \App\Doctrine\Cache($di['cache_driver']);
 
         $config->setMetadataCacheImpl($cache);
         $config->setQueryCacheImpl($cache);
@@ -65,6 +47,8 @@ class Doctrine
 
         $config->setProxyDir($options['proxyPath']);
         $config->setProxyNamespace($options['proxyNamespace']);
+
+        $config->setDefaultRepositoryClassName('\App\Doctrine\Repository');
 
         if (isset($options['conn']['debug']) && $options['conn']['debug'])
             $config->setSQLLogger(new \App\Doctrine\Logger\EchoSQL);
@@ -81,8 +65,16 @@ class Doctrine
         $em->getFilters()->enable("softdelete");
 
         // Workaround to allow ENUM types to exist as strings in Doctrine.
-        $platform = $em->getConnection()->getDatabasePlatform();
+        $conn = $em->getConnection();
+        $platform = $conn->getDatabasePlatform();
         $platform->registerDoctrineTypeMapping('enum', 'string');
+
+        $platform->markDoctrineTypeCommented('json');
+        $platform->markDoctrineTypeCommented('unixdatetime');
+        $platform->markDoctrineTypeCommented('binary_uuid');
+        $platform->markDoctrineTypeCommented('ip_integer');
+
+        $conn->connect();
 
         return $em;
     }

@@ -37,30 +37,4 @@ class ApiKey extends \App\Doctrine\Entity
 
     /** @Column(name="created", type="integer") */
     protected $created;
-
-    /* Static Functions */
-
-    /**
-     * Authenticate a supplied API key.
-     *
-     * @param $key
-     * @return bool
-     */
-    public static function authenticate($key)
-    {
-        if (empty($key))
-            return false;
-
-        $record = self::find($key);
-
-        if ($record instanceof self)
-        {
-            $record->calls_made++;
-            $record->save();
-
-            return true;
-        }
-
-        return false;
-    }
 }

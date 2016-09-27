@@ -13,7 +13,7 @@ class ProfileController extends BaseController
 
         $form = new \App\Form($this->current_module_config->forms->profile);
 
-        $user_profile = $user->toArray();
+        $user_profile = $user->toArray($this->em);
         unset($user_profile['auth_password']);
         $form->setDefaults($user_profile);
 
@@ -27,7 +27,7 @@ class ProfileController extends BaseController
         $user = $this->auth->getLoggedInUser();
         $form = new \App\Form($this->current_module_config->forms->profile);
 
-        $user_profile = $user->toArray();
+        $user_profile = $user->toArray($this->em);
         unset($user_profile['auth_password']);
 
         /*
@@ -41,7 +41,7 @@ class ProfileController extends BaseController
         {
             $data = $form->getValues();
 
-            $user->fromArray($data);
+            $user->fromArray($this->em, $data);
             $user->save();
 
             /*
@@ -50,11 +50,10 @@ class ProfileController extends BaseController
             */
 
             $this->alert('Profile saved!', 'green');
-            $this->redirectFromHere(array('action' => 'index'));
-            return;
+            return $this->redirectFromHere(array('action' => 'index'));
         }
 
-        $this->renderForm($form, 'edit', 'Edit Profile');
+        return $this->renderForm($form, 'edit', 'Edit Profile');
     }
 
     public function timezoneAction()

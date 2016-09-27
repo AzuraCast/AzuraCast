@@ -20,7 +20,7 @@ class PlaylistsController extends BaseController
         $playlists = array();
         foreach($all_playlists as $playlist)
         {
-            $playlist_row = $playlist->toArray();
+            $playlist_row = $playlist->toArray($this->em);
 
             if ($playlist->is_enabled && $playlist->type == 'default')
                 $playlist_row['probability'] = round(($playlist->weight / $total_weights) * 100, 1).'%';
@@ -44,7 +44,7 @@ class PlaylistsController extends BaseController
                 'id' => $this->getParam('id'),
                 'station_id' => $this->station->id
             ));
-            $form->setDefaults($record->toArray());
+            $form->setDefaults($record->toArray($this->em));
         }
 
         if(!empty($_POST) && $form->isValid($_POST))
@@ -57,8 +57,10 @@ class PlaylistsController extends BaseController
                 $record->station = $this->station;
             }
 
-            $record->fromArray($data);
-            $record->save();
+            $record->fromArray($this->em, $data);
+
+            $this->em->persist($record);
+            $this->em->flush();
 
             $this->_reloadStation();
 
@@ -81,7 +83,9 @@ class PlaylistsController extends BaseController
         ));
 
         if ($record instanceof StationPlaylist)
-            $record->delete();
+            $this->em->remove($record);
+
+        $this->em->flush();
 
         $this->_reloadStation();
 

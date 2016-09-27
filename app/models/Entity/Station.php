@@ -71,7 +71,7 @@ class Station extends \App\Doctrine\Entity
             throw new \Exception('Adapter not found: '.$this->frontend_type);
 
         $class_name = $adapters['adapters'][$this->frontend_type]['class'];
-        return new $class_name($this);
+        return new $class_name($GLOBALS['di'], $this);
     }
 
     /** @Column(name="backend_type", type="string", length=100, nullable=true) */
@@ -92,7 +92,7 @@ class Station extends \App\Doctrine\Entity
             throw new \Exception('Adapter not found: '.$this->backend_type);
 
         $class_name = $adapters['adapters'][$this->backend_type]['class'];
-        return new $class_name($this);
+        return new $class_name($GLOBALS['di'], $this);
     }
 
     /** @Column(name="description", type="text", nullable=true) */
@@ -318,7 +318,7 @@ class Station extends \App\Doctrine\Entity
         $em = self::getEntityManager();
 
         $station = new self;
-        $station->fromArray($data);
+        $station->fromArray($em, $data);
 
         // Create path for station.
         $station_base_dir = realpath(APP_INCLUDE_ROOT.'/..').'/stations';

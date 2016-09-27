@@ -24,7 +24,7 @@ class BaseController extends \App\Mvc\Controller
         $user = $this->auth->getLoggedInUser();
 
         // Compile list of visible stations.
-        $all_stations = Station::fetchAll();
+        $all_stations = $this->em->getRepository(Station::class)->findAll();
         $stations = array();
 
         foreach($all_stations as $station)

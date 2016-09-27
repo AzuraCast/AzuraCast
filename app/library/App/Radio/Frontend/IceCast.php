@@ -102,8 +102,7 @@ class IceCast extends AdapterAbstract
         $frontend_config = (array)$this->station->frontend_config;
 
         // Set up streamer support.
-        $di = $GLOBALS['di'];
-        $url = $di->get('url');
+        $url = $this->di['url'];
 
         $config['mount'][0]['authentication'] = array(
             '@type' => 'url',
@@ -134,7 +133,10 @@ class IceCast extends AdapterAbstract
         $frontend_config['streamer_pw'] = $config['mount'][0]['password'];
 
         $this->station->frontend_config = $frontend_config;
-        $this->station->save();
+
+        $em = $this->di['em'];
+        $em->persist($this->station);
+        $em->flush();
 
         $config_path = $this->station->getRadioConfigDir();
         $icecast_path = $config_path.'/icecast.xml';

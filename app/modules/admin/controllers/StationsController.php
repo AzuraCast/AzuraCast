@@ -38,8 +38,10 @@ class StationsController extends BaseController
             }
             else
             {
-                $record->fromArray($data);
-                $record->save();
+                $record->fromArray($this->em, $data);
+
+                $this->em->persist($record);
+                $this->em->flush();
             }
 
             // Clear station cache.

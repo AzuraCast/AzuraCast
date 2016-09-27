@@ -43,6 +43,7 @@ $config = array(
     'autoload'          => array(
         'psr0'      => array(
             'Entity'    => APP_INCLUDE_MODELS,
+            'Repository' => APP_INCLUDE_MODELS,
         ),
         'psr4'      => array(
             '\\Proxy\\'     => APP_INCLUDE_TEMP.'/proxies',

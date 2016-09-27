@@ -81,7 +81,7 @@ class Analytics extends \App\Doctrine\Entity
                 $total_overall += $listeners;
 
             $record = new self;
-            $record->fromArray(array(
+            $record->fromArray($em, array(
                 'station_id'    => $station_id,
                 'type'          => 'second',
                 'timestamp'     => time(),
@@ -94,7 +94,7 @@ class Analytics extends \App\Doctrine\Entity
 
         // Create "overall" statistic.
         $record = new self;
-        $record->fromArray(array(
+        $record->fromArray($em, array(
             'type'          => 'second',
             'timestamp'     => time(),
             'number_min'    => $total_overall,

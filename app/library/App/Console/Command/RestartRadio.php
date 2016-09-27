@@ -1,6 +1,8 @@
 <?php
 namespace App\Console\Command;
 
+use Doctrine\ORM\EntityManager;
+use Entity\Station;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -25,7 +27,9 @@ class RestartRadio extends CommandAbstract
         \App\Debug::log('Restarting all radio stations...');
         \App\Debug::divider();
 
-        $stations = \Entity\Station::fetchAll();
+        /** @var EntityManager $em */
+        $em = $this->di['em'];
+        $stations = $em->getRepository(Station::class)->findAll();
 
         foreach($stations as $station)
         {

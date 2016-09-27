@@ -37,7 +37,7 @@ class UsersController extends BaseController
         if ($this->hasParam('id'))
         {
             $record = User::find($this->getParam('id'));
-            $record_defaults = $record->toArray(TRUE, TRUE);
+            $record_defaults = $record->toArray($this->em, TRUE, TRUE);
 
             unset($record_defaults['auth_password']);
 
@@ -51,8 +51,10 @@ class UsersController extends BaseController
             if (!($record instanceof User))
                 $record = new User;
             
-            $record->fromArray($data);
-            $record->save();
+            $record->fromArray($this->em, $data);
+
+            $this->em->persist($record);
+            $this->em->flush();
             
             $this->alert('User updated.', 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
@@ -67,7 +69,9 @@ class UsersController extends BaseController
         $user = User::find($id);
 
         if ($user instanceof User)
-            $user->delete();
+            $this->em->remove($user);
+
+        $this->em->flush();
 
         $this->alert('<b>User deleted.</b>', 'green');
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));

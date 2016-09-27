@@ -1,6 +1,7 @@
 <?php
 namespace App\Sync;
 
+use Doctrine\ORM\EntityManager;
 use Entity\Station;
 use Entity\Song;
 use Entity\SongHistory;
@@ -64,7 +65,10 @@ class NowPlaying extends SyncAbstract
     {
         Debug::startTimer('Nowplaying Overall');
 
-        $stations = Station::fetchAll();
+        /** @var EntityManager $em */
+        $em = $this->di['em'];
+        $stations = $em->getRepository(Station::class)->findAll();
+
         $nowplaying = array();
 
         foreach($stations as $station)
@@ -135,7 +139,10 @@ class NowPlaying extends SyncAbstract
         }
 
         $station->nowplaying_data = $np;
-        $station->save();
+
+        $em = $this->di['em'];
+        $em->persist($station);
+        $em->flush();
 
         return $np;
     }

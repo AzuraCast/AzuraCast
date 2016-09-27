@@ -138,7 +138,8 @@ class ReportsController extends BaseController
             $path = $media->getFullPath();
             @unlink($path);
 
-            $media->delete();
+            $this->em->remove($media);
+            $this->em->flush();
 
             $this->alert('<b>Duplicate file deleted!</b>', 'green');
         }

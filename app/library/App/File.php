@@ -37,17 +37,6 @@ class File
             return APP_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.str_replace('..','',$file_name);
     }
     
-    public static function getFileUrl($file_name)
-    {
-        $di = $GLOBALS['di'];
-        $url = $di['url'];
-
-        if (defined('APP_UPLOAD_URL'))
-            return APP_UPLOAD_URL.'/'.$file_name;
-        else
-            return $url->content($file_name);
-    }
-    
     public static function isValidFile($uploaded_file, $allowed_extensions = NULL)
     {
         $is_valid_upload = (!empty($uploaded_file) && $uploaded_file['error'] == UPLOAD_ERR_OK);

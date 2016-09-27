@@ -1,6 +1,7 @@
 <?php
 namespace App\Sync;
 
+use Doctrine\ORM\EntityManager;
 use Entity\Station;
 use Entity\StationMedia;
 use Entity\StationPlaylist;
@@ -14,7 +15,9 @@ class RadioUptime extends SyncAbstract
         \App\Debug::log('Checking all stations for active running status...');
         \App\Debug::divider();
 
-        $stations = \Entity\Station::fetchAll();
+        /** @var EntityManager $em */
+        $em = $this->di['em'];
+        $stations = $em->getRepository(Station::class)->findAll();
 
         foreach($stations as $station)
         {

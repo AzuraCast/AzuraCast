@@ -3,11 +3,6 @@
  * Profile Form
  */
 
-$di = $GLOBALS['di'];
-$config = $di->get('config');
-
-$general_config = $config->general->toArray();
-
 return [
     'method' => 'post',
     'groups' => [
@@ -39,22 +34,6 @@ return [
 
             ],
         ],
-
-        /*
-        'customization_details' => array(
-            'legend' => 'Site Customization',
-            'elements' => array(
-
-                'timezone' => array('select', array(
-                    'label' => 'Time Zone',
-                    'belongsTo' => 'customization',
-                    'multiOptions' => \App\Timezone::fetchSelect(),
-                    'default' => 'UTC',
-                )),
-
-            ),
-        ),
-        */
 
         'submit' => [
             'elements' => [

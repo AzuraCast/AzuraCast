@@ -16,7 +16,7 @@ class SongRepository extends Repository
     {
         $record = $this->find($song_hash);
 
-        if ($record instanceof self)
+        if ($record instanceof Record)
         {
             if (!empty($record->merge_song_id))
                 return $this->getById($record->merge_song_id);
@@ -46,7 +46,7 @@ class SongRepository extends Repository
 
         $obj = $this->getById($song_hash);
 
-        if ($obj instanceof self)
+        if ($obj instanceof Record)
         {
             if ($is_radio_play)
             {

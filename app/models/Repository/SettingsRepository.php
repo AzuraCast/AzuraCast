@@ -78,12 +78,17 @@ class SettingsRepository extends Repository
      */
     public function fetchArray($cached = true, $order_by = NULL, $order_dir = 'ASC')
     {
-        $settings_raw = $this->_em->createQuery('SELECT s FROM Entity\Settings s ORDER BY s.setting_key ASC')
-            ->getArrayResult();
+        static $settings;
 
-        $settings = array();
-        foreach((array)$settings_raw as $setting)
-            $settings[$setting['setting_key']] = $setting['setting_value'];
+        if (!$settings || !$cached)
+        {
+            $settings_raw = $this->_em->createQuery('SELECT s FROM Entity\Settings s ORDER BY s.setting_key ASC')
+                ->getArrayResult();
+
+            $settings = array();
+            foreach((array)$settings_raw as $setting)
+                $settings[$setting['setting_key']] = $setting['setting_value'];
+        }
 
         return $settings;
     }

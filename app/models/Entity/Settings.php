@@ -5,7 +5,7 @@ use \Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Table(name="settings")
- * @Entity(repositoryClass="Repository\Settings")
+ * @Entity(repositoryClass="Repository\SettingsRepository")
  */
 class Settings extends \App\Doctrine\Entity
 {

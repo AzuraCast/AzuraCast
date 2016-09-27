@@ -301,9 +301,6 @@ class Station extends \App\Doctrine\Entity
     // Retrieve the API version of the object/array.
     public static function api($row)
     {
-        if ($row instanceof self)
-            $row = $row->toArray();
-
         $api = array(
             'id'        => (int)$row['id'],
             'name'      => $row['name'],

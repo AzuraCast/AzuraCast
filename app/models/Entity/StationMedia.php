@@ -9,7 +9,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * }, uniqueConstraints={
  *   @UniqueConstraint(name="path_unique_idx", columns={"path"})
  * })
- * @Entity
+ * @Entity(repositoryClass="Repository\StationMediaRepository")
  * @HasLifecycleCallbacks
  */
 class StationMedia extends \App\Doctrine\Entity
@@ -204,56 +204,46 @@ class StationMedia extends \App\Doctrine\Entity
      * Static Functions
      */
 
+    /**
+     * @deprecated
+     * @param Station $station
+     * @return array
+     */
     public static function getRequestable(Station $station)
     {
-        $em = self::getEntityManager();
-
-        $requestable = $em->createQuery('SELECT sm FROM '.__CLASS__.' sm WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
-            ->setParameter('station_id', $station->id)
-            ->getArrayResult();
-
-        return $requestable;
+        return self::getRepository()->getRequestable($station);
     }
 
+    /**
+     * @deprecated
+     * @param Station $station
+     * @param $artist_name
+     * @return mixed
+     */
     public static function getByArtist(Station $station, $artist_name)
     {
-        $em = self::getEntityManager();
-
-        $requestable = $em->createQuery('SELECT sm FROM '.__CLASS__.' sm WHERE sm.station_id = :station_id AND sm.artist LIKE :artist ORDER BY sm.title ASC')
-            ->setParameter('station_id', $station->id)
-            ->setParameter('artist', $artist_name)
-            ->getArrayResult();
-
-        return $requestable;
+        return self::getRepository()->getByArtist($station, $artist_name);
     }
 
+    /**
+     * @deprecated
+     * @param Station $station
+     * @param $query
+     * @return mixed
+     */
     public static function search(Station $station, $query)
     {
-        $em = self::getEntityManager();
-        $db = $em->getConnection();
-
-        $table_name = $em->getClassMetadata(__CLASS__)->getTableName();
-
-        $stmt = $db->executeQuery('SELECT sm.* FROM '.$db->quoteIdentifier($table_name).' AS sm WHERE sm.station_id = ? AND CONCAT(sm.title, \' \', sm.artist, \' \', sm.album) LIKE ?', array($station->id, '%'.addcslashes($query, "%_").'%'));
-        $results = $stmt->fetchAll();
-
-        return $results;
+        return self::getRepository()->search($station, $query);
     }
 
+    /**
+     * @deprecated
+     * @param Station $station
+     * @param $path
+     * @return mixed
+     */
     public static function getOrCreate(Station $station, $path)
     {
-        $short_path = ltrim(str_replace($station->getRadioMediaDir(), '', $path), '/');
-
-        $record = self::getRepository()->findOneBy(['station_id' => $station->id, 'path' => $short_path]);
-
-        if (!($record instanceof self))
-        {
-            $record = new self;
-            $record->station = $station;
-            $record->path = $short_path;
-        }
-
-        $record->loadFromFile();
-        return $record;
+        return self::getRepository()->getOrCreate($station, $path);
     }
 }

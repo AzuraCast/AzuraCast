@@ -6,7 +6,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Table(name="users")
- * @Entity
+ * @Entity(repositoryClass="Repository\UserRepository")
  */
 class User extends \App\Doctrine\Entity
 {
@@ -97,42 +97,27 @@ class User extends \App\Doctrine\Entity
     /**
      * Static Functions
      */
-    
+
+    /**
+     * @deprecated
+     * @param $username
+     * @param $password
+     * @return bool|null|object
+     */
     public static function authenticate($username, $password)
     {
-        $login_info = self::getRepository()->findOneBy(array('email' => $username));
-
-        if (!($login_info instanceof self))
-            return FALSE;
-
-        if (password_verify($password, $login_info->auth_password))
-        {
-            if (password_needs_rehash($login_info->auth_password, \PASSWORD_DEFAULT))
-                $login_info->setAuthPassword($password)->save();
-
-            return $login_info;
-        }
-
-        return FALSE;
+        return self::getRepository()->authenticate($username, $password);
     }
 
     /**
      * Creates or returns an existing user with the specified e-mail address.
      *
+     * @deprecated
      * @param $email
      * @return User
      */
     public static function getOrCreate($email)
     {
-        $user = User::getRepository()->findOneBy(array('email' => $email));
-
-        if (!($user instanceof User))
-        {
-            $user = new User;
-            $user->email = $email;
-            $user->name = $email;
-        }
-
-        return $user;
+        return self::getRepository()->getOrCreate($email);
     }
 }

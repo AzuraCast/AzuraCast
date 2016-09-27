@@ -60,49 +60,4 @@ class Analytics extends \App\Doctrine\Entity
         $this->number_max = (int)max($number_set);
         $this->number_avg = (int)(array_sum($number_set) / count($number_set));
     }
-
-    /**
-     * Static Functions
-     */
-
-    public static function post($nowplaying)
-    {
-        $em = self::getEntityManager();
-
-        $active_shortcodes = Station::getShortNameLookup();
-        $total_overall = 0;
-
-        foreach($nowplaying as $short_code => $info)
-        {
-            $listeners = (int)$info['listeners']['current'];
-            $station_id = $info['station']['id'];
-
-            if (isset($active_shortcodes[$short_code]))
-                $total_overall += $listeners;
-
-            $record = new self;
-            $record->fromArray($em, array(
-                'station_id'    => $station_id,
-                'type'          => 'second',
-                'timestamp'     => time(),
-                'number_min'    => $listeners,
-                'number_max'    => $listeners,
-                'number_avg'    => $listeners,
-            ));
-            $em->persist($record);
-        }
-
-        // Create "overall" statistic.
-        $record = new self;
-        $record->fromArray($em, array(
-            'type'          => 'second',
-            'timestamp'     => time(),
-            'number_min'    => $total_overall,
-            'number_max'    => $total_overall,
-            'number_avg'    => $total_overall,
-        ));
-        $em->persist($record);
-
-        $em->flush();
-    }
 }

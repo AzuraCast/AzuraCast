@@ -36,13 +36,4 @@ class Role extends \App\Doctrine\Entity
      * )
      */
     protected $actions;
-
-    /**
-     * @inheritdoc
-     */
-    public static function fetchSelect($add_blank = FALSE, \Closure $display = NULL, $pk = 'id', $order_by = 'name')
-    {
-        $add_blank = ($add_blank) ? 'N/A' : FALSE;
-        return parent::fetchSelect($add_blank, $display, $pk, $order_by);
-    }
 }

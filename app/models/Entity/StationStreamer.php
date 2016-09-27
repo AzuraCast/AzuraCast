@@ -8,7 +8,7 @@ use \GetId3\GetId3Core as GetId3;
  * Station streamers (DJ accounts) allowed to broadcast to a station.
  *
  * @Table(name="station_streamers")
- * @Entity
+ * @Entity(repositoryClass="Repository\StationStreamerRepository")
  * @HasLifecycleCallbacks
  */
 class StationStreamer extends \App\Doctrine\Entity
@@ -55,6 +55,7 @@ class StationStreamer extends \App\Doctrine\Entity
     /**
      * Attempt to authenticate a streamer.
      *
+     * @deprecated
      * @param Station $station
      * @param $username
      * @param $password
@@ -62,15 +63,6 @@ class StationStreamer extends \App\Doctrine\Entity
      */
     public static function authenticate(Station $station, $username, $password)
     {
-        // Extra safety check for the station's streamer status.
-        if (!$station->enable_streamers)
-            return false;
-
-        $streamer = self::getRepository()->findOneBy(['station_id' => $station->id, 'streamer_username' => $username, 'is_active' => 1]);
-
-        if (!($streamer instanceof self))
-            return false;
-
-        return (strcmp($streamer->streamer_password, $password) === 0);
+        return self::getRepository()->authenticate($station, $username, $password);
     }
 }

@@ -7,7 +7,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * @Table(name="songs", indexes={
  *   @index(name="search_idx", columns={"text", "artist", "title"})
  * })
- * @Entity
+ * @Entity(repositoryClass="Repository\SongRepository")
  * @HasLifecycleCallbacks
  */
 class Song extends \App\Doctrine\Entity
@@ -64,6 +64,10 @@ class Song extends \App\Doctrine\Entity
      * Static Functions
      */
 
+    /**
+     * @param $song_info
+     * @return string
+     */
     public static function getSongHash($song_info)
     {
         // Handle various input types.
@@ -94,78 +98,12 @@ class Song extends \App\Doctrine\Entity
         return md5($hash_base);
     }
 
-    public static function getById($song_hash)
-    {
-        $record = self::find($song_hash);
-
-        if ($record instanceof self)
-        {
-            if (!empty($record->merge_song_id))
-                return self::getById($record->merge_song_id);
-            else
-                return $record;
-        }
-
-        return null;
-    }
-
-    public static function getIds()
-    {
-        $em = self::getEntityManager();
-        $ids_raw = $em->createQuery('SELECT s.id FROM '.__CLASS__.' s')->getArrayResult();
-
-        return \App\Utilities::ipull($ids_raw, 'id');
-    }
-
-    public static function getOrCreate($song_info, $is_radio_play = false)
-    {
-        $song_hash = self::getSongHash($song_info);
-
-        $obj = self::getById($song_hash);
-
-        if ($obj instanceof self)
-        {
-            if ($is_radio_play)
-            {
-                $obj->last_played = time();
-                $obj->play_count += 1;
-            }
-
-            $obj->save();
-
-            return $obj;
-        }
-        else
-        {
-            if (!is_array($song_info))
-                $song_info = array('text' => $song_info);
-
-            $obj = new self;
-            $obj->id = $song_hash;
-
-            if (empty($song_info['text']))
-                $song_info['text'] = $song_info['artist'].' - '.$song_info['title'];
-
-            $obj->text = $song_info['text'];
-            $obj->title = $song_info['title'];
-            $obj->artist = $song_info['artist'];
-
-            if (isset($song_info['image_url']))
-                $obj->image_url = $song_info['image_url'];
-
-            if ($is_radio_play)
-            {
-                $obj->last_played = time();
-                $obj->play_count = 1;
-            }
-
-            $obj->save();
-
-            return $obj;
-        }
-    }
-
-    // Retrieve the API version of the object/array.
+    /**
+     * Retrieve the API version of the object/array.
+     *
+     * @param $row
+     * @return array
+     */
     public static function api($row)
     {
         return array(
@@ -173,10 +111,40 @@ class Song extends \App\Doctrine\Entity
             'text'      => $row['text'],
             'artist'    => $row['artist'],
             'title'     => $row['title'],
-            
+
             'created'   => (int)$row['created'],
             'play_count' => (int)$row['play_count'],
             'last_played' => (int)$row['last_played'],
         );
+    }
+
+    /**
+     * @deprecated
+     * @param $song_hash
+     * @return null|object
+     */
+    public static function getById($song_hash)
+    {
+        return self::getRepository()->getById($song_hash);
+    }
+
+    /**
+     * @deprecated
+     * @return array
+     */
+    public static function getIds()
+    {
+        return self::getRepository()->getIds();
+    }
+
+    /**
+     * @deprecated
+     * @param $song_info
+     * @param bool $is_radio_play
+     * @return Song|null|object
+     */
+    public static function getOrCreate($song_info, $is_radio_play = false)
+    {
+        return self::getRepository()->getOrCreate($song_info, $is_radio_play);
     }
 }

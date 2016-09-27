@@ -29,7 +29,7 @@ class BaseController extends \App\Mvc\Controller
 
         foreach($all_stations as $station)
         {
-            if ($station->canManage($user))
+            if ($this->_canManageStation($station, $user))
                 $stations[$station->id] = $station;
         }
 
@@ -63,6 +63,21 @@ class BaseController extends \App\Mvc\Controller
         // Force a redirect to the "Select" page if no station ID is specified.
         if (!$this->station)
             throw new \App\Exception\PermissionDenied;
+    }
+
+    protected function _canManageStation(Station $station, \Entity\User $user = null)
+    {
+        if ($user === null)
+        {
+            $auth = $this->di->get('auth');
+            $user = $auth->getLoggedInUser();
+        }
+
+        $acl = $this->di->get('acl');
+        if ($acl->userAllowed('manage stations', $user))
+            return true;
+
+        return ($station->managers->contains($user));
     }
 
     protected function permissions()

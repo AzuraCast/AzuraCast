@@ -3,6 +3,7 @@ namespace App\Mvc;
 
 use App\Config;
 use App\Url;
+use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -19,6 +20,9 @@ class Controller
 
     /** @var Url */
     protected $url;
+
+    /** @var EntityManager */
+    protected $em;
 
     /** @var Config */
     protected $current_module_config;
@@ -39,6 +43,7 @@ class Controller
 
         $this->view = $di['view'];
         $this->url = $di['url'];
+        $this->em = $di['em'];
 
         $common_views_dir = APP_INCLUDE_MODULES.'/'.$module.'/views/scripts';
         if (is_dir($common_views_dir))
@@ -101,7 +106,7 @@ class Controller
 
     public function init()
     {
-        if (Settings::getSetting('setup_complete', 0) == 0)
+        if ($this->em->getRepository('Entity\Settings')->getSetting('setup_complete', 0) == 0)
             return $this->redirectToRoute(['module' => 'frontend', 'controller' => 'setup']);
 
         $isAllowed = $this->permissions();
@@ -366,7 +371,7 @@ class Controller
         {
             $this->doNotRender();
 
-            $url = 'https://'.$this->request->getHttpHost().$this->request->getURI();
+            $url = 'https://'.$this->request->getHttpHost().$this->request->getUri();
             return $this->redirect($url, 301);
         }
     }

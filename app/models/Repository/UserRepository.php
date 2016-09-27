@@ -18,20 +18,10 @@ class UserRepository extends Repository
         if (!($login_info instanceof Record))
             return FALSE;
 
-        if (password_verify($password, $login_info->auth_password))
-        {
-            if (password_needs_rehash($login_info->auth_password, \PASSWORD_DEFAULT))
-            {
-                $login_info->setAuthPassword($password);
-
-                $this->_em->persist($login_info);
-                $this->_em->flush();
-            }
-
+        if ($login_info->verifyPassword($password))
             return $login_info;
-        }
-
-        return FALSE;
+        else
+            return FALSE;
     }
 
     /**

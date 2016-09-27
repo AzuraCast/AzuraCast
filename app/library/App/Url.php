@@ -223,7 +223,7 @@ class Url
         // Retrieve domain from either MVC controller or config file.
         if ($this->include_domain || $absolute) {
 
-            $url_domain = \Entity\Settings::getSetting('base_url', '');
+            $url_domain = $this->di['em']->getRepository('Entity\Settings')->getSetting('base_url', '');
 
             if (empty($url_domain))
                 $url_domain = $this->config->application->base_url;

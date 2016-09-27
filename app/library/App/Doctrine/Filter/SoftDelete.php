@@ -1,6 +1,6 @@
 <?php
 namespace App\Doctrine\Filter;
-use Doctrine\ORM\Mapping\ClassMetaData,
+use Doctrine\ORM\Mapping\ClassMetadata,
     Doctrine\ORM\Query\Filter\SQLFilter;
 
 class SoftDelete extends SQLFilter

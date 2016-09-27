@@ -9,19 +9,20 @@ class SongController extends BaseController
 {
     public function listAction()
     {
-        $return = \App\Cache::get('api_songs');
+        $cache = $this->di['cache'];
+        $return = $cache->get('api_songs');
 
         if (!$return)
         {
             ini_set('memory_limit', '-1');
 
-            $all_songs = Song::fetchArray();
+            $all_songs = $this->em->getRepository(Song::class)->fetchArray();
             $return = array();
 
             foreach ($all_songs as $song)
                 $return[$song['id']] = Song::api($song);
 
-            \App\Cache::save($return, 'api_songs', array(), 60);
+            $cache->save($return, 'api_songs', array(), 60);
         }
 
         return $this->returnSuccess($return);
@@ -34,7 +35,7 @@ class SongController extends BaseController
 
         $id = $this->getParam('id');
 
-        $record = Song::find($id);
+        $record = $this->em->getRepository(Song::class)->find($id);
 
         if (!($record instanceof Song))
             return $this->returnError('Song not found.');

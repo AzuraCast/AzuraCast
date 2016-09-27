@@ -3,6 +3,7 @@ namespace Modules\Frontend\Controllers;
 
 use Entity\Settings;
 use Entity\Station;
+use Repository\SettingsRepository;
 
 class SetupController extends BaseController
 {
@@ -95,7 +96,8 @@ class SetupController extends BaseController
         {
             $data = $form->getValues();
 
-            Station::create($data);
+            $station_repo = $this->em->getRepository(Station::class);
+            $station_repo->create($data, $this->di);
 
             return $this->redirectFromHere(['action' => 'settings']);
         }
@@ -117,7 +119,10 @@ class SetupController extends BaseController
 
         $form = new \App\Form($this->module_config['admin']->forms->settings->form);
 
-        $existing_settings = Settings::fetchArray(FALSE);
+        /** @var SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Settings::class);
+
+        $existing_settings = $settings_repo->fetchArray(FALSE);
         $form->setDefaults($existing_settings);
 
         if (!empty($_POST) && $form->isValid($_POST))
@@ -127,7 +132,7 @@ class SetupController extends BaseController
             // Mark setup as complete along with other settings changes.
             $data['setup_complete'] = time();
 
-            Settings::setSettings($data);
+            $settings_repo->setSettings($data);
 
             // Notify the user and redirect to homepage.
             $this->alert('<b>Setup is now complete!</b><br>Continue setting up your station in the main AzuraCast app.', 'green');
@@ -145,7 +150,7 @@ class SetupController extends BaseController
      */
     protected function _getSetupStep()
     {
-        if (Settings::getSetting('setup_complete', 0) != 0)
+        if ($this->em->getRepository('Entity\Settings')->getSetting('setup_complete', 0) != 0)
             return 'complete';
 
         // Step 1: Register

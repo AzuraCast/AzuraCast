@@ -26,7 +26,7 @@ return [
 
             'roles' => ['multiCheckbox', [
                 'label' => 'Roles',
-                'multiOptions' => \Entity\Role::fetchSelect(),
+                // Supply options in controller class.
             ]],
 
             'submit' => ['submit', [

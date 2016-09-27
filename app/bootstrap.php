@@ -155,7 +155,7 @@ $di['db'] = function($di) {
 
 // Auth and ACL
 $di['auth'] = function($di) {
-    return new \App\Auth($di['session']);
+    return new \App\Auth($di['session'], $di['em']->getRepository('Entity\User'));
 };
 
 $di['acl'] = function($di) {
@@ -276,7 +276,7 @@ $cache = $di->get('cache');
 if (!APP_IS_COMMAND_LINE)
 {
     // Set time zone and localization.
-    $timezone = \Entity\Settings::getSetting('timezone', date_default_timezone_get());
+    $timezone = $di['em']->getRepository('Entity\Settings')->getSetting('timezone', date_default_timezone_get());
     date_default_timezone_set($timezone);
 }
 

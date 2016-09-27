@@ -37,6 +37,11 @@ class User extends \App\Doctrine\Entity
     /** @Column(name="auth_password", type="string", length=255, nullable=true) */
     protected $auth_password;
 
+    public function verifyPassword($password)
+    {
+        return password_verify($password, $this->auth_password);
+    }
+
     public function getAuthPassword()
     {
         return '';

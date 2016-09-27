@@ -112,7 +112,7 @@ class IndexController extends BaseController
         {
             foreach($total_records as $total_record)
             {
-                $song = \Entity\Song::find($total_record['song_id']);
+                $song = $this->em->getRepository(Song::class)->find($total_record['song_id']);
                 $total_record['song'] = $song;
 
                 $song_totals[$total_type][] = $total_record;

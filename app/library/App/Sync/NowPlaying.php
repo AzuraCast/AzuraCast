@@ -58,7 +58,7 @@ class NowPlaying extends SyncAbstract
         foreach($nowplaying as $station => $np_info)
             $nowplaying[$station]['cache'] = 'database';
 
-        Settings::setSetting('nowplaying', $nowplaying);
+        $this->di['em']->getRepository('Entity\Settings')->setSetting('nowplaying', $nowplaying);
     }
 
     protected function _loadNowPlaying()
@@ -95,6 +95,9 @@ class NowPlaying extends SyncAbstract
      */
     protected function _processStation(Station $station)
     {
+        /** @var EntityManager $em */
+        $em = $this->di['em'];
+
         $np_old = (array)$station->nowplaying_data;
 
         $np = array();
@@ -112,7 +115,7 @@ class NowPlaying extends SyncAbstract
         if (empty($np['current_song']['text']))
         {
             $np['current_song'] = array();
-            $np['song_history'] = $station->getRecentHistory();
+            $np['song_history'] = $em->getRepository(SongHistory::class)->getHistoryForStation($station);
         }
         else
         {
@@ -120,17 +123,17 @@ class NowPlaying extends SyncAbstract
             {
                 $np['song_history'] = $np_old['song_history'];
 
-                $song_obj = Song::find($current_song_hash);
+                $song_obj = $em->getRepository(Song::class)->find($current_song_hash);
             }
             else
             {
-                $np['song_history'] = $station->getRecentHistory();
+                $np['song_history'] = $em->getRepository(SongHistory::class)->getHistoryForStation($station);
 
-                $song_obj = Song::getOrCreate($np_new['current_song'], true);
+                $song_obj = $em->getRepository(Song::class)->getOrCreate($np_new['current_song'], true);
             }
 
             // Register a new item in song history.
-            $sh_obj = SongHistory::register($song_obj, $station, $np);
+            $sh_obj = $em->getRepository(SongHistory::class)->register($song_obj, $station, $np);
 
             $current_song = Song::api($song_obj);
             $current_song['sh_id'] = $sh_obj->id;
@@ -140,7 +143,6 @@ class NowPlaying extends SyncAbstract
 
         $station->nowplaying_data = $np;
 
-        $em = $this->di['em'];
         $em->persist($station);
         $em->flush();
 

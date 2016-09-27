@@ -4,6 +4,7 @@ namespace App;
 use App\Debug;
 use Entity\Settings;
 use Interop\Container\ContainerInterface;
+use Repository\SettingsRepository;
 
 /**
  * The runner of scheduled synchronization tasks.
@@ -18,15 +19,21 @@ class Sync
      */
     protected $di;
 
+    /**
+     * @var SettingsRepository
+     */
+    protected $settings;
+
     public function __construct(ContainerInterface $di)
     {
         $this->di = $di;
+        $this->settings = $di['em']->getRepository(Settings::class);
     }
 
     protected function _initSync($script_timeout = 60)
     {
         // Immediately halt if setup is not complete.
-        if (Settings::getSetting('setup_complete', 0) == 0)
+        if ($this->settings->getSetting('setup_complete', 0) == 0)
             die('Setup not complete; halting synchronized task.');
 
         set_time_limit($script_timeout);
@@ -52,14 +59,14 @@ class Sync
         $this->_initSync(60);
 
         // Prevent nowplaying from running on top of itself.
-        $last_start = Settings::getSetting('nowplaying_last_started', 0);
-        $last_end = Settings::getSetting('nowplaying_last_run', 0);
+        $last_start = $this->settings->getSetting('nowplaying_last_started', 0);
+        $last_end = $this->settings->getSetting('nowplaying_last_run', 0);
 
         if ($last_start > $last_end && $last_start >= (time() - 10) && !$force)
             return;
 
         // Sync schedules.
-        Settings::setSetting('nowplaying_last_started', time());
+        $this->settings->setSetting('nowplaying_last_started', time());
 
         // Run Now Playing data for radio streams.
         Debug::runTimer('Run NowPlaying update', function() {
@@ -67,7 +74,7 @@ class Sync
             $task->run();
         });
 
-        Settings::setSetting('nowplaying_last_run', time());
+        $this->settings->setSetting('nowplaying_last_run', time());
     }
 
     /**
@@ -85,7 +92,7 @@ class Sync
             $task->run();
         });
 
-        Settings::setSetting('sync_fast_last_run', time());
+        $this->settings->setSetting('sync_fast_last_run', time());
     }
 
     /**
@@ -110,7 +117,7 @@ class Sync
             $task->run();
         });
 
-        Settings::setSetting('sync_last_run', time());
+        $this->settings->setSetting('sync_last_run', time());
     }
 
     /**
@@ -141,38 +148,38 @@ class Sync
             $task->run();
         });
 
-        Settings::setSetting('sync_slow_last_run', time());
+        $this->settings->setSetting('sync_slow_last_run', time());
     }
 
     public function getSyncTimes()
     {
-        Settings::clearCache();
+        $this->settings->clearCache();
 
         $syncs = array(
             'nowplaying' => array(
                 'name'      => 'Now Playing Data',
-                'latest'    => Settings::getSetting('nowplaying_last_run', 0),
+                'latest'    => $this->settings->getSetting('nowplaying_last_run', 0),
                 'contents'  => array(
                     'Now Playing Data',
                 ),
             ),
             'short' => array(
                 'name'      => '1-Minute Sync',
-                'latest'    => Settings::getSetting('sync_fast_last_run', 0),
+                'latest'    => $this->settings->getSetting('sync_fast_last_run', 0),
                 'contents'  => array(
                     'Song Requests Queue',
                 ),
             ),
             'medium' => array(
                 'name'      => '5-Minute Sync',
-                'latest'    => Settings::getSetting('sync_last_run', 0),
+                'latest'    => $this->settings->getSetting('sync_last_run', 0),
                 'contents'  => array(
                     'Media Folder Updates',
                 ),
             ),
             'long' => array(
                 'name'      => '1-Hour Sync',
-                'latest'    => Settings::getSetting('sync_slow_last_run', 0),
+                'latest'    => $this->settings->getSetting('sync_slow_last_run', 0),
                 'contents'  => array(
                     'Analytics/Statistics',
                     'Cleanup',

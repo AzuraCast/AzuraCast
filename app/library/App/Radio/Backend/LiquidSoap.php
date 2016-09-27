@@ -329,7 +329,7 @@ class LiquidSoap extends AdapterAbstract
     public function getStreamerInfo()
     {
         return [
-            'host'          => Settings::getSetting('base_url', 'localhost'),
+            'host'          => $this->di['em']->getRepository('Entity\Settings')->getSetting('base_url', 'localhost'),
             'icecast_port'  => $this->_getHarborPort(),
             'shoutcast_port' => $this->_getHarborPort()+1,
         ];

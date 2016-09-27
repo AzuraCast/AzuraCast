@@ -5,7 +5,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Table(name="station")
- * @Entity
+ * @Entity(repositoryClass="Repository\StationRepository")
  * @HasLifecycleCallbacks
  */
 class Station extends \App\Doctrine\Entity
@@ -180,53 +180,90 @@ class Station extends \App\Doctrine\Entity
      */
     protected $playlists;
 
+    /**
+     * @deprecated
+     * @param int $num_entries
+     * @return array
+     */
     public function getRecentHistory($num_entries = 5)
     {
         $em = self::getEntityManager();
-        $history = $em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id ORDER BY sh.id DESC')
-            ->setParameter('station_id', $this->id)
-            ->setMaxResults($num_entries)
-            ->getArrayResult();
+        $history_repo = $em->getRepository(SongHistory::class);
 
-        $return = array();
-        foreach($history as $sh)
-        {
-            $history = array(
-                'played_at'     => $sh['timestamp_start'],
-                'song'          => Song::api($sh['song']),
-            );
-            $return[] = $history;
-        }
-
-        return $return;
-    }
-
-    public function canManage(User $user = null)
-    {
-        $di = $GLOBALS['di'];
-
-        if ($user === null)
-        {
-            $auth = $di->get('auth');
-            $user = $auth->getLoggedInUser();
-        }
-
-        $acl = $di->get('acl');
-        if ($acl->userAllowed('manage stations', $user))
-            return true;
-
-        return ($this->managers->contains($user));
+        return $history_repo->getHistoryForStation($this, $num_entries = 5);
     }
 
     /**
      * Static Functions
      */
 
+    /**
+     * @deprecated
+     * @return mixed
+     */
+    public static function fetchAll()
+    {
+        return self::getRepository()->fetchAll();
+    }
+
+    /**
+     * @deprecated
+     * @param bool $cached
+     * @param null $order_by
+     * @param string $order_dir
+     * @return array
+     */
+    public static function fetchArray($cached = true, $order_by = NULL, $order_dir = 'ASC')
+    {
+        return self::getRepository()->fetchArray($cached, $order_by, $order_dir);
+    }
+
+    /**
+     * @deprecated
+     * @param bool $add_blank
+     * @param \Closure|NULL $display
+     * @param string $pk
+     * @param string $order_by
+     * @return array
+     */
+    public static function fetchSelect($add_blank = FALSE, \Closure $display = NULL, $pk = 'id', $order_by = 'name')
+    {
+        return self::getRepository()->fetchSelect($add_blank, $display, $pk, $order_by);
+    }
+
+    /**
+     * @deprecated
+     * @param bool $cached
+     * @return array
+     */
+    public static function getShortNameLookup($cached = true)
+    {
+        return self::getRepository()->getShortNameLookup($cached);
+    }
+
+    /**
+     * @deprecated
+     * @param $short_code
+     * @return null|object
+     */
+    public static function findByShortCode($short_code)
+    {
+        return self::getRepository()->findByShortCode($short_code);
+    }
+
+    /**
+     * @param $name
+     * @return string
+     */
     public static function getStationShortName($name)
     {
         return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', trim($name))));
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     public static function getStationClassName($name)
     {
         $name = preg_replace("/[^A-Za-z0-9_ ]/", '', $name);
@@ -235,124 +272,9 @@ class Station extends \App\Doctrine\Entity
         return $name;
     }
 
-    public static function fetchAll()
-    {
-        $em = self::getEntityManager();
-        return $em->createQuery('SELECT s FROM '.__CLASS__.' s ORDER BY s.name ASC')->execute();
-    }
-
-    public static function fetchArray($cached = true, $order_by = NULL, $order_dir = 'ASC')
-    {
-        $stations = parent::fetchArray($cached, $order_by, $order_dir);
-        foreach($stations as &$station)
-            $station['short_name'] = self::getStationShortName($station['name']);
-
-        return $stations;
-    }
-
-    public static function fetchSelect($add_blank = FALSE, \Closure $display = NULL, $pk = 'id', $order_by = 'name')
-    {
-        $select = array();
-
-        // Specify custom text in the $add_blank parameter to override.
-        if ($add_blank !== FALSE)
-            $select[''] = ($add_blank === TRUE) ? 'Select...' : $add_blank;
-
-        // Build query for records.
-        $results = self::fetchArray();
-
-        // Assemble select values and, if necessary, call $display callback.
-        foreach((array)$results as $result)
-        {
-            $key = $result[$pk];
-            $value = ($display === NULL) ? $result['name'] : $display($result);
-            $select[$key] = $value;
-        }
-
-        return $select;
-    }
-
-    public static function getShortNameLookup($cached = true)
-    {
-        $stations = self::fetchArray($cached);
-
-        $lookup = array();
-        foreach ($stations as $station)
-        {
-            $lookup[$station['short_name']] = $station;
-        }
-
-        return $lookup;
-    }
-
-    public static function findByShortCode($short_code)
-    {
-        $short_names = self::getShortNameLookup();
-
-        if (isset($short_names[$short_code]))
-        {
-            $id = $short_names[$short_code]['id'];
-            return self::find($id);
-        }
-
-        return NULL;
-    }
-
-    // Retrieve the API version of the object/array.
-    public static function api($row)
-    {
-        $api = array(
-            'id'        => (int)$row['id'],
-            'name'      => $row['name'],
-            'shortcode' => self::getStationShortName($row['name']),
-        );
-
-        return $api;
-    }
-
-    public static function create($data)
-    {
-        $em = self::getEntityManager();
-
-        $station = new self;
-        $station->fromArray($em, $data);
-
-        // Create path for station.
-        $station_base_dir = realpath(APP_INCLUDE_ROOT.'/..').'/stations';
-
-        $station_dir = $station_base_dir.'/'.$station->getShortName();
-        $station->setRadioBaseDir($station_dir);
-
-        // Generate station ID.
-        $station->save();
-
-        // Scan directory for any existing files.
-        $media_sync = new \App\Sync\Media($GLOBALS['di']);
-
-        set_time_limit(600);
-        $media_sync->importMusic($station);
-        $em->refresh($station);
-
-        $media_sync->importPlaylists($station);
-        $em->refresh($station);
-
-        // Load configuration from adapter to pull source and admin PWs.
-        $frontend_adapter = $station->getFrontendAdapter();
-        $frontend_adapter->read();
-
-        // Write initial XML file (if it doesn't exist).
-        $frontend_adapter->write();
-        $frontend_adapter->restart();
-
-        // Write an empty placeholder configuration.
-        $backend_adapter = $station->getBackendAdapter();
-        $backend_adapter->write();
-        $backend_adapter->restart();
-
-        // Save changes and continue to the last setup step.
-        $station->save();
-    }
-
+    /**
+     * @return array
+     */
     public static function getFrontendAdapters()
     {
         return array(
@@ -376,6 +298,9 @@ class Station extends \App\Doctrine\Entity
         );
     }
 
+    /**
+     * @return array
+     */
     public static function getBackendAdapters()
     {
         return array(
@@ -387,5 +312,22 @@ class Station extends \App\Doctrine\Entity
                 ),
             ),
         );
+    }
+
+    /**
+     * Retrieve the API version of the object/array.
+     *
+     * @param $row
+     * @return array
+     */
+    public static function api($row)
+    {
+        $api = array(
+            'id'        => (int)$row['id'],
+            'name'      => $row['name'],
+            'shortcode' => self::getStationShortName($row['name']),
+        );
+
+        return $api;
     }
 }

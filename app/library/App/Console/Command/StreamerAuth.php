@@ -43,7 +43,7 @@ class StreamerAuth extends CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $station_id = (int)$input->getArgument('station_id');
-        $station = Station::find($station_id);
+        $station = $this->di['em']->getRepository(Station::class)->find($station_id);
 
         if (!($station instanceof Station))
             return $this->_return($output, 'false');
@@ -61,7 +61,7 @@ class StreamerAuth extends CommandAbstract
         if (!$station->enable_streamers)
             return $this->_return($output, 'false');
 
-        if (StationStreamer::authenticate($station, $user, $pass))
+        if ($this->di['em']->getRepository(StationStreamer::class)->authenticate($station, $user, $pass))
             return $this->_return($output, 'true');
         else
             return $this->_return($output, 'false');

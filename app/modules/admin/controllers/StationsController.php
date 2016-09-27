@@ -24,7 +24,7 @@ class StationsController extends BaseController
         if ($this->hasParam('id'))
         {
             $id = (int)$this->getParam('id');
-            $record = Record::find($id);
+            $record = $this->em->getRepository(Record::class)->find($id);
             $form->setDefaults($record->toArray(FALSE, TRUE));
         }
 
@@ -34,7 +34,8 @@ class StationsController extends BaseController
 
             if (!($record instanceof Record))
             {
-                Record::create($data);
+                $station_repo = $this->em->getRepository(Record::class);
+                $station_repo->create($data, $this->di);
             }
             else
             {
@@ -57,7 +58,7 @@ class StationsController extends BaseController
     
     public function deleteAction()
     {
-        $record = Record::find($this->getParam('id'));
+        $record = $this->em->getRepository(Record::class)->find($this->getParam('id'));
         if ($record)
             $record->delete();
             

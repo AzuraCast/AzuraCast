@@ -45,7 +45,7 @@ class RequestsController extends BaseController
 
         try
         {
-            StationRequest::submit($station, $song, $this->authenticate());
+            $this->em->getRepository(StationRequest::class)->submit($station, $song, $this->authenticate());
 
             return $this->returnSuccess('Request submitted successfully.');
         }
@@ -62,11 +62,11 @@ class RequestsController extends BaseController
         if (is_numeric($station))
         {
             $id = (int)$station;
-            $record = Station::find($id);
+            $record = $this->em->getRepository(Station::class)->find($id);
         }
         else
         {
-            $record = Station::findByShortCode($this->getParam('station'));
+            $record = $this->em->getRepository(Station::class)->findByShortCode($this->getParam('station'));
         }
 
         if (!($record instanceof Station) || $record->deleted_at)

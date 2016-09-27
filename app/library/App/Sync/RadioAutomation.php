@@ -22,7 +22,7 @@ class RadioAutomation extends SyncAbstract
         // Check all stations for automation settings.
         $stations = $em->getRepository(Station::class)->findAll();
 
-        $automation_log = Settings::getSetting('automation_log', array());
+        $automation_log = $this->di['em']->getRepository('Entity\Settings')->getSetting('automation_log', array());
 
         foreach($stations as $station)
         {
@@ -37,7 +37,7 @@ class RadioAutomation extends SyncAbstract
             }
         }
 
-        Settings::setSetting('automation_log', $automation_log);
+        $this->di['em']->getRepository('Entity\Settings')->setSetting('automation_log', $automation_log);
     }
 
     /**

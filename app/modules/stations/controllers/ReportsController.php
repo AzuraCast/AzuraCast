@@ -131,7 +131,10 @@ class ReportsController extends BaseController
     {
         $media_id = (int)$this->getParam('media_id');
 
-        $media = StationMedia::getRepository()->findOneBy(['id' => $media_id, 'station_id' => $this->station->id]);
+        $media = $this->em->getRepository(StationMedia::class)->findOneBy([
+            'id' => $media_id,
+            'station_id' => $this->station->id
+        ]);
 
         if ($media instanceof StationMedia)
         {

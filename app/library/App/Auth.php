@@ -1,23 +1,34 @@
 <?php
 namespace App;
 
-use \Entity\User;
+use Entity\User;
+use Repository\UserRepository;
 
 class Auth
 {
+    /** @var Session */
     protected $_session;
-    protected $_user = NULL;
-    protected $_masqueraded_user = NULL;
 
-    public function __construct(Session $session)
+    /** @var User|null */
+    protected $_user = null;
+
+    /** @var UserRepository */
+    protected $_user_repo;
+
+    /** @var User|null */
+    protected $_masqueraded_user = null;
+
+    public function __construct(Session $session, UserRepository $user_repo)
     {
+        $this->_user_repo = $user_repo;
+
         $class_name = strtolower(str_replace(array('\\', '_'), array('', ''), get_called_class()));
         $this->_session = $session->get('auth_' . $class_name . '_user');
     }
     
     public function authenticate($credentials = NULL)
     {
-        $user_auth = User::authenticate($credentials['username'], $credentials['password']);
+        $user_auth = $this->_user_repo->authenticate($credentials['username'], $credentials['password']);
 
         if ($user_auth instanceof User)
         {
@@ -46,9 +57,6 @@ class Auth
 
         if ($unset_session)
             @session_unset();
-
-        if (method_exists($this->_adapter, 'logout'))
-            $this->_adapter->logout($destination);
     }
 
     public function isLoggedIn()
@@ -80,7 +88,7 @@ class Auth
                 return false;
             }
 
-            $user = User::find($user_id);
+            $user = $this->_user_repo->find($user_id);
             if ($user instanceof User)
             {
                 $this->_user = $user;
@@ -114,7 +122,7 @@ class Auth
     public function exists($response = null)
     {
         $user_id = (int)$this->_session->user_id;
-        $user = User::find($user_id);
+        $user = $this->_user_repo->find($user_id);
         return ($user instanceof User);
     }
 
@@ -138,7 +146,7 @@ class Auth
     public function masqueradeAsUser($user_info)
     {
         if (!($user_info instanceof User))
-            $user_info = User::getRepository()->findOneByUsername($user_info);
+            $user_info = $this->_user_repo->findOneBy(['username' => $user_info]);
 
         $this->_session->masquerade_user_id = $user_info->id;
         $this->_masqueraded_user = $user_info;
@@ -173,7 +181,7 @@ class Auth
             {
                 $mask_user_id = (int)$this->_session->masquerade_user_id;
                 if ($mask_user_id != 0)
-                    $user = User::find($mask_user_id);
+                    $user = $this->_user_repo->find($mask_user_id);
                 else
                     $user = NULL;
 

@@ -8,7 +8,7 @@ class AccountController extends BaseController
 {
     public function init()
     {
-        if (Settings::getSetting('setup_complete', 0) == 0)
+        if ($this->em->getRepository(Settings::class)->getSetting('setup_complete', 0) == 0)
         {
             $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
 
@@ -77,11 +77,12 @@ class AccountController extends BaseController
         {
             $data = $form->getValues();
 
-            $user = User::getRepository()->findOneBy(array('email' => $data['contact_email']));
+            $user = $this->em->getRepository(User::class)->findOneBy(array('email' => $data['contact_email']));
             if ($user instanceof User)
             {
                 $user->generateAuthRecoveryCode();
-                $user->save();
+                $this->em->persist($user);
+                $this->em->flush();
 
                 \App\Messenger::send(array(
                     'to'        => $user->email,
@@ -116,7 +117,9 @@ class AccountController extends BaseController
 
         $user->setAuthPassword($temp_pw);
         $user->auth_recovery_code = '';
-        $user->save();
+
+        $this->em->persist($user);
+        $this->em->flush();
 
         $this->auth->authenticate(array('username' => $user->email, 'password' => $temp_pw));
 

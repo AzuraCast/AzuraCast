@@ -44,9 +44,9 @@ class Export
                 $col_count++;
                 if (!$headers_first_row && $row_count == 1)
                 {
-                    $display_row1[] = '"'.self::filterTexttoCSV($table_col).'"';
+                    $display_row1[] = '"'.self::filterTextToCSV($table_col).'"';
                 }
-                $display_row2[] = '"'.self::filterTexttoCSV($table_val).'"';
+                $display_row2[] = '"'.self::filterTextToCSV($table_val).'"';
             }
             
             if ($display_row1)

@@ -2,6 +2,7 @@
 namespace Modules\Stations\Controllers;
 
 use Entity\Station;
+use Entity\User;
 
 class ManagersController extends BaseController
 {
@@ -12,8 +13,8 @@ class ManagersController extends BaseController
         $this->doNotRender();
 
         $email = $this->getParam('email');
-        $user = \Entity\User::getOrCreate($email);
 
+        $user = $this->em->getRepository(User::class)->getOrCreate($email);
         $user->stations->add($this->station);
 
         $this->em->persist($user);
@@ -40,9 +41,11 @@ class ManagersController extends BaseController
 
         $id = (int)$this->getParam('id');
 
-        $user = \Entity\User::find($id);
+        $user = $this->em->getRepository(User::class)->find($id);
         $user->stations->removeElement($this->station);
-        $user->save();
+
+        $this->em->persist($user);
+        $this->em->flush();
 
         $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
     }

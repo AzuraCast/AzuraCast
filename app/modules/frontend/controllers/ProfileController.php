@@ -40,9 +40,10 @@ class ProfileController extends BaseController
         if($_POST && $form->isValid($_POST))
         {
             $data = $form->getValues();
-
             $user->fromArray($this->em, $data);
-            $user->save();
+
+            $this->em->persist($user);
+            $this->em->flush();
 
             /*
             foreach($data['customization'] as $custom_key => $custom_val)

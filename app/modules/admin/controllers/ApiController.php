@@ -12,7 +12,7 @@ class ApiController extends BaseController
 
     public function indexAction()
     {
-        $this->view->records = Record::fetchArray();
+        $this->view->records = $this->em->getRepository(Record::class)->fetchArray();
     }
 
     public function editAction()
@@ -22,7 +22,7 @@ class ApiController extends BaseController
         if ($this->hasParam('id'))
         {
             $id = $this->getParam('id');
-            $record = Record::find($id);
+            $record = $this->em->getRepository(Record::class)->find($id);
             $form->setDefaults($record->toArray($this->em, TRUE, TRUE));
         }
 
@@ -48,7 +48,7 @@ class ApiController extends BaseController
 
     public function deleteAction()
     {
-        $record = Record::find($this->getParam('id'));
+        $record = $this->em->getRepository(Record::class)->find($this->getParam('id'));
 
         if ($record instanceof Record)
             $this->em->remove($record);

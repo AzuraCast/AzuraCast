@@ -3,8 +3,6 @@
  * Edit Role Form
  */
 
-$actions = \Entity\Action::fetchSelect();
-
 return [
     /**
      * Form Configuration
@@ -21,7 +19,7 @@ return [
 
             'actions' => ['multiCheckbox', [
                 'label' => 'Actions',
-                'multiOptions' => $actions,
+                // Supply options in controller class.
             ]],
 
             'submit' => ['submit', [

@@ -1,6 +1,7 @@
 <?php
 namespace Modules\Admin\Controllers;
 
+use Entity\Role;
 use \Entity\User;
 
 class UsersController extends BaseController
@@ -26,17 +27,20 @@ class UsersController extends BaseController
         {
             $query = $this->em->createQuery('SELECT u, r FROM Entity\User u LEFT JOIN u.roles r ORDER BY u.name ASC');
         }
-        
+
         $this->view->pager = new \App\Paginator\Doctrine($query, $this->getParam('page', 1), 50);
     }
 
     public function editAction()
     {
-        $form = new \App\Form($this->current_module_config->forms->user->form);
+        $form_config = $this->current_module_config->forms->user->form->toArray();
+        $form_config['elements']['roles'][1]['options'] = $this->em->getRepository(Role::class)->fetchSelect();
+
+        $form = new \App\Form($form_config);
         
         if ($this->hasParam('id'))
         {
-            $record = User::find($this->getParam('id'));
+            $record = $this->em->getRepository(User::class)->find($this->getParam('id'));
             $record_defaults = $record->toArray($this->em, TRUE, TRUE);
 
             unset($record_defaults['auth_password']);
@@ -66,7 +70,7 @@ class UsersController extends BaseController
     public function deleteAction()
     {
         $id = (int)$this->getParam('id');
-        $user = User::find($id);
+        $user = $this->em->getRepository(User::class)->find($id);
 
         if ($user instanceof User)
             $this->em->remove($user);

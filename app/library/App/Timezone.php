@@ -9,7 +9,7 @@ class Timezone
     }
     public static function localize(\DateTime $date_time)
     {
-        $tz_name = \Entity\Settings::getSetting('timezone', date_default_timezone_get());
+        $tz_name = date_default_timezone_get();
         $tz = new \DateTimeZone($tz_name);
 
         return $date_time->setTimezone($tz);

@@ -12,7 +12,7 @@ class InternalController extends BaseController
             return $this->_authFail('No station specified!');
 
         $id = (int)$this->getParam('id');
-        $station = Station::find($id);
+        $station = $this->em->getRepository(Station::class)->find($id);
 
         if (!($station instanceof Station))
             return $this->_authFail('Invalid station specified');
@@ -35,7 +35,7 @@ class InternalController extends BaseController
         if (!$station->enable_streamers)
             return $this->_authFail('Support for streamers/DJs on this station is disabled.');
 
-        if (StationStreamer::authenticate($station, $_REQUEST['user'], $_REQUEST['pass']))
+        if ($this->em->getRepository(StationStreamer::class)->authenticate($station, $_REQUEST['user'], $_REQUEST['pass']))
             return $this->_authSuccess();
         else
             return $this->_authFail('Could not authenticate streamer account.');

@@ -70,7 +70,7 @@ class FilesController extends BaseController
     public function editAction()
     {
         $media_id = (int)$this->getParam('id');
-        $media = StationMedia::getRepository()->findOneBy(['station_id' => $this->station->id, 'id' => $media_id]);
+        $media = $this->em->getRepository(StationMedia::class)->findOneBy(['station_id' => $this->station->id, 'id' => $media_id]);
 
         if (!($media instanceof StationMedia))
             throw new \Exception('Media not found.');
@@ -253,7 +253,7 @@ class FilesController extends BaseController
 
                 foreach($music_files as $file)
                 {
-                    $media = StationMedia::getOrCreate($this->station, $file);
+                    $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
                     $this->em->remove($media);
 
                     $files_affected++;
@@ -273,7 +273,7 @@ class FilesController extends BaseController
 
                 foreach($music_files as $file)
                 {
-                    $media = StationMedia::getOrCreate($this->station, $file);
+                    $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
                     $media->playlists->clear();
                     $this->em->persist($media);
 
@@ -289,7 +289,7 @@ class FilesController extends BaseController
             // Add all selected files to a playlist.
             case 'playlist':
                 $playlist_id = (int)$action_id;
-                $playlist = StationPlaylist::getRepository()->findOneBy(['station_id' => $this->station->id, 'id' => $playlist_id]);
+                $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy(['station_id' => $this->station->id, 'id' => $playlist_id]);
 
                 if (!($playlist instanceof StationPlaylist))
                     return $this->_err(500, 'Playlist Not Found');
@@ -299,7 +299,7 @@ class FilesController extends BaseController
 
                 foreach($music_files as $file)
                 {
-                    $media = StationMedia::getOrCreate($this->station, $file);
+                    $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
 
                     if (!$media->playlists->contains($playlist))
                         $media->playlists->add($playlist);
@@ -394,7 +394,7 @@ class FilesController extends BaseController
         $upload_file_path = $this->file_path.'/'.$_FILES['file_data']['name'];
         var_dump(move_uploaded_file($_FILES['file_data']['tmp_name'], $upload_file_path));
 
-        $station_media = StationMedia::getOrCreate($this->station, $upload_file_path);
+        $station_media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $upload_file_path);
 
         $this->em->persist($station_media);
         $this->em->flush();

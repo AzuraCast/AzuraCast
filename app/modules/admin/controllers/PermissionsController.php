@@ -13,8 +13,8 @@ class PermissionsController extends BaseController
     
     public function indexAction()
     {
-        $this->view->actions = Action::fetchArray(false, 'name');
-        $this->view->roles = Role::fetchArray(false, 'name');
+        $this->view->actions = $this->em->getRepository(Action::class)->fetchArray(false, 'name');
+        $this->view->roles = $this->em->getRepository(Role::class)->fetchArray(false, 'name');
     }
     
     public function editactionAction()
@@ -23,7 +23,7 @@ class PermissionsController extends BaseController
         
         if ($this->hasParam('id'))
         {
-            $record = Action::find($this->getParam('id'));
+            $record = $this->em->getRepository(Action::class)->find($this->getParam('id'));
             $form->setDefaults($record->toArray($this->em));
         }
 
@@ -48,7 +48,7 @@ class PermissionsController extends BaseController
     
     public function deleteactionAction()
     {
-        $action = Action::find($this->getParam('id'));
+        $action = $this->em->getRepository(Action::class)->find($this->getParam('id'));
         if ($action)
             $action->delete();
             
@@ -67,12 +67,13 @@ class PermissionsController extends BaseController
     public function editroleAction()
     {
         $form_config = $this->current_module_config->forms->role->form->toArray();
-        
+        $form_config['elements']['actions'][1]['options'] = $this->em->getRepository(Action::class)->fetchSelect();
+
         $form = new \App\Form($form_config);
         
         if ($this->hasParam('id'))
         {
-            $record = Role::find($this->getParam('id'));
+            $record = $this->em->getRepository(Role::class)->find($this->getParam('id'));
             $form->setDefaults($record->toArray($this->em, TRUE, TRUE));
         }
 
@@ -97,7 +98,7 @@ class PermissionsController extends BaseController
 
     public function deleteroleAction()
     {
-        $record = Role::find($this->getParam('id'));
+        $record = $this->em->getRepository(Role::class)->find($this->getParam('id'));
         if ($record instanceof Role)
             $this->em->remove($record);
 

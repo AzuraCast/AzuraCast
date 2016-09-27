@@ -29,7 +29,7 @@ class StreamersController extends BaseController
             }
         }
 
-        $this->view->server_url = Settings::getSetting('base_url', '');
+        $this->view->server_url = $this->em->getRepository('Entity\Settings')->getSetting('base_url', '');
         $this->view->streamers = $this->station->streamers;
     }
 
@@ -40,7 +40,7 @@ class StreamersController extends BaseController
 
         if ($this->hasParam('id'))
         {
-            $record = Record::getRepository()->findOneBy(array(
+            $record = $this->em->getRepository(Record::class)->findOneBy(array(
                 'id' => $this->getParam('id'),
                 'station_id' => $this->station->id
             ));
@@ -74,7 +74,7 @@ class StreamersController extends BaseController
     {
         $id = (int)$this->getParam('id');
 
-        $record = Record::getRepository()->findOneBy(array(
+        $record = $this->em->getRepository(Record::class)->findOneBy(array(
             'id' => $id,
             'station_id' => $this->station->id
         ));

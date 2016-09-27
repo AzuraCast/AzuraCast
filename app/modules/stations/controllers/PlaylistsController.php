@@ -40,7 +40,7 @@ class PlaylistsController extends BaseController
 
         if ($this->hasParam('id'))
         {
-            $record = StationPlaylist::getRepository()->findOneBy(array(
+            $record = $this->em->getRepository(StationPlaylist::class)->findOneBy(array(
                 'id' => $this->getParam('id'),
                 'station_id' => $this->station->id
             ));
@@ -77,7 +77,7 @@ class PlaylistsController extends BaseController
     {
         $id = (int)$this->getParam('id');
 
-        $record = StationPlaylist::getRepository()->findOneBy(array(
+        $record = $this->em->getRepository(StationPlaylist::class)->findOneBy(array(
             'id' => $id,
             'station_id' => $this->station->id
         ));

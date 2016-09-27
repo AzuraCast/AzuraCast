@@ -6,6 +6,36 @@ use Entity\SongHistory as Record;
 
 class SongHistoryRepository extends Repository
 {
+    /**
+     * @param int $num_entries
+     * @return array
+     */
+    public function getHistoryForStation(\Entity\Station $station, $num_entries = 5)
+    {
+        $history = $this->_em->createQuery('SELECT sh, s FROM Entity\SongHistory sh JOIN sh.song s WHERE sh.station_id = :station_id ORDER BY sh.id DESC')
+            ->setParameter('station_id', $station->id)
+            ->setMaxResults($num_entries)
+            ->getArrayResult();
+
+        $return = array();
+        foreach($history as $sh)
+        {
+            $history = array(
+                'played_at'     => $sh['timestamp_start'],
+                'song'          => \Entity\Song::api($sh['song']),
+            );
+            $return[] = $history;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param \Entity\Song $song
+     * @param \Entity\Station $station
+     * @param $np
+     * @return Record|null
+     */
     public function register(\Entity\Song $song, \Entity\Station $station, $np)
     {
         // Pull the most recent history item for this station.

@@ -216,7 +216,7 @@ class IceCast extends AdapterAbstract
         $fe_config = (array)$this->station->frontend_config;
         $radio_port = $fe_config['port'];
 
-        $base_url = Settings::getSetting('base_url', 'localhost');
+        $base_url = $this->di['em']->getRepository('Entity\Settings')->getSetting('base_url', 'localhost');
 
         // Vagrant port-forwarding mode.
         if (APP_APPLICATION_ENV == 'development')
@@ -254,7 +254,7 @@ class IceCast extends AdapterAbstract
         return [
             'location' => 'AzuraCast',
             'admin' => 'icemaster@localhost',
-            'hostname' => \Entity\Settings::getSetting('base_url', 'localhost'),
+            'hostname' => $this->di['em']->getRepository('Entity\Settings')->getSetting('base_url', 'localhost'),
             'limits' => [
                 'clients' => 100,
                 'sources' => 3,

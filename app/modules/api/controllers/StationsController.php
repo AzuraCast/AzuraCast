@@ -9,12 +9,12 @@ class StationsController extends BaseController
     {
         if ($this->hasParam('station'))
         {
-            $record = Station::findByShortCode($this->getParam('station'));
+            $record = $this->em->getRepository(Station::class)->findByShortCode($this->getParam('station'));
         }
         elseif ($this->hasParam('id'))
         {
             $id = (int)$this->getParam('id');
-            $record = Station::find($id);
+            $record = $this->em->getRepository(Station::class)->find($id);
         }
         else
         {
@@ -38,7 +38,7 @@ class StationsController extends BaseController
 
     public function listAction()
     {
-        $stations_raw = Station::fetchArray();
+        $stations_raw = $this->em->getRepository(Station::class)->fetchArray();
 
         $stations = array();
         foreach($stations_raw as $row)

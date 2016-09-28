@@ -4,7 +4,7 @@ namespace App;
 use App\Debug;
 use Entity\Settings;
 use Interop\Container\ContainerInterface;
-use Repository\SettingsRepository;
+use Entity\SettingsRepository;
 
 /**
  * The runner of scheduled synchronization tasks.

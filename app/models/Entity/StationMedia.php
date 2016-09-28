@@ -9,7 +9,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
  * }, uniqueConstraints={
  *   @UniqueConstraint(name="path_unique_idx", columns={"path"})
  * })
- * @Entity(repositoryClass="Repository\StationMediaRepository")
+ * @Entity(repositoryClass="StationMediaRepository")
  * @HasLifecycleCallbacks
  */
 class StationMedia extends \App\Doctrine\Entity
@@ -149,14 +149,12 @@ class StationMedia extends \App\Doctrine\Entity
                 $this->title = $path_parts['filename'];
             }
 
-            // Associate song from new record.
-            $this->song = Song::getOrCreate(array(
+            $this->mtime = $media_mtime;
+
+            return array(
                 'artist'    => $this->artist,
                 'title'     => $this->title,
-            ));
-            
-            $this->mtime = $media_mtime;
-            return true;
+            );
         }
         
         return false;
@@ -198,5 +196,74 @@ class StationMedia extends \App\Doctrine\Entity
         {
             throw new \Exception(implode('<br><br>', $tagwriter->errors));
         }
+    }
+}
+
+use App\Doctrine\Repository;
+
+class StationMediaRepository extends Repository
+{
+    /**
+     * @param Station $station
+     * @return array
+     */
+    public function getRequestable(Station $station)
+    {
+        return $this->_em->createQuery('SELECT sm FROM '.$this->_entityName.' sm WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
+            ->setParameter('station_id', $station->id)
+            ->getArrayResult();
+    }
+
+    /**
+     * @param Station $station
+     * @param $artist_name
+     * @return array
+     */
+    public function getByArtist(Station $station, $artist_name)
+    {
+        return $this->_em->createQuery('SELECT sm FROM '.$this->_entityName.' sm WHERE sm.station_id = :station_id AND sm.artist LIKE :artist ORDER BY sm.title ASC')
+            ->setParameter('station_id', $station->id)
+            ->setParameter('artist', $artist_name)
+            ->getArrayResult();
+    }
+
+    /**
+     * @param Station $station
+     * @param $query
+     * @return array
+     */
+    public function search(Station $station, $query)
+    {
+        $db = $this->_em->getConnection();
+        $table_name = $this->_em->getClassMetadata(__CLASS__)->getTableName();
+
+        $stmt = $db->executeQuery('SELECT sm.* FROM '.$db->quoteIdentifier($table_name).' AS sm WHERE sm.station_id = ? AND CONCAT(sm.title, \' \', sm.artist, \' \', sm.album) LIKE ?', array($station->id, '%'.addcslashes($query, "%_").'%'));
+        $results = $stmt->fetchAll();
+        return $results;
+    }
+
+    /**
+     * @param Station $station
+     * @param $path
+     * @return Station
+     */
+    public function getOrCreate(Station $station, $path)
+    {
+        $short_path = ltrim(str_replace($station->getRadioMediaDir(), '', $path), '/');
+
+        $record = $this->findOneBy(['station_id' => $station->id, 'path' => $short_path]);
+
+        if (!($record instanceof Station))
+        {
+            $record = new Station;
+            $record->station = $station;
+            $record->path = $short_path;
+        }
+
+        $song_info = $record->loadFromFile();
+        if (!empty($song_info))
+            $record->song = $this->_em->getRepository(Song::class)->getOrCreate($song_info);
+
+        return $record;
     }
 }

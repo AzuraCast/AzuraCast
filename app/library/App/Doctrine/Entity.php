@@ -176,7 +176,7 @@ class Entity implements \ArrayAccess
                             {
                                 foreach((array)$value as $field_id)
                                 {
-                                    if(($field_item = $obj_class::find((int)$field_id)) instanceof $obj_class)
+                                    if(($field_item = $em->getRepository($obj_class)->find((int)$field_id)) instanceof $obj_class)
                                     {
                                         $this->$field->add($field_item);
                                     }

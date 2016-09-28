@@ -1,8 +1,8 @@
 <?php
 namespace Modules\Admin\Controllers;
 
-use \Entity\Station;
-use \Entity\Station as Record;
+use Entity\Station;
+use Entity\Station as Record;
 
 class StationsController extends BaseController
 {
@@ -25,7 +25,7 @@ class StationsController extends BaseController
         {
             $id = (int)$this->getParam('id');
             $record = $this->em->getRepository(Record::class)->find($id);
-            $form->setDefaults($record->toArray(FALSE, TRUE));
+            $form->setDefaults($record->toArray($this->em, FALSE, TRUE));
         }
 
         if($_POST && $form->isValid($_POST) )

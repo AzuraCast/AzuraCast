@@ -56,6 +56,7 @@ class LiquidSoap extends AdapterAbstract
 
         // Write new playlists.
         $playlists_by_type = array();
+        $playlists = array();
 
         $ls_config[] = '# Playlists';
         
@@ -86,6 +87,7 @@ class LiquidSoap extends AdapterAbstract
 
             $playlist_type = $playlist['type'] ?: 'default';
             $playlists_by_type[$playlist_type][] = $playlist;
+            $playlists[] = $playlist;
         }
 
         $ls_config[] = '';
@@ -94,7 +96,12 @@ class LiquidSoap extends AdapterAbstract
 
         // Cannot build a LiquidSoap playlist with
         if (count($playlists_by_type['default']) == 0)
-            return false;
+        {
+            if (count($playlists) > 0)
+                throw new \App\Exception('You have playlists configured, but none are set as "Default" type. You need at least one default playlist, so the AutoDJ has something to play when scheduled playlists are not active.');
+            else
+                return false;
+        }
 
         // Build "default" type playlists.
         $playlist_weights = array();

@@ -245,7 +245,7 @@ class StationMediaRepository extends Repository
     /**
      * @param Station $station
      * @param $path
-     * @return Station
+     * @return StationMedia
      */
     public function getOrCreate(Station $station, $path)
     {

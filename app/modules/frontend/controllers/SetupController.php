@@ -3,7 +3,7 @@ namespace Modules\Frontend\Controllers;
 
 use Entity\Settings;
 use Entity\Station;
-use Repository\SettingsRepository;
+use Entity\SettingsRepository;
 
 class SetupController extends BaseController
 {

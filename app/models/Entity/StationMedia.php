@@ -253,9 +253,9 @@ class StationMediaRepository extends Repository
 
         $record = $this->findOneBy(['station_id' => $station->id, 'path' => $short_path]);
 
-        if (!($record instanceof Station))
+        if (!($record instanceof StationMedia))
         {
-            $record = new Station;
+            $record = new StationMedia;
             $record->station = $station;
             $record->path = $short_path;
         }

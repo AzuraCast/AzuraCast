@@ -5,7 +5,7 @@ use App\Utilities;
 use Entity\Station;
 use Entity\Settings;
 
-class IceCast extends AdapterAbstract
+class IceCast extends FrontendAbstract
 {
     /* Process a nowplaying record. */
     protected function _getNowPlaying(&$np)

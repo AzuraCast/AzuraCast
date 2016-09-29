@@ -5,22 +5,11 @@ use App\Service\Curl;
 use Entity\Station;
 use Interop\Container\ContainerInterface;
 
-abstract class AdapterAbstract
+abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
 {
-    /** @var ContainerInterface */
-    protected $di;
+    abstract public function getStreamUrl();
 
-    /** @var Station */
-    protected $station;
-
-    /**
-     * @param Station $station
-     */
-    public function __construct(ContainerInterface $di, Station $station)
-    {
-        $this->di = $di;
-        $this->station = $station;
-    }
+    abstract public function getAdminUrl();
 
     /* Fetch a remote URL. */
     protected function getUrl($url, $c_opts = null)
@@ -77,21 +66,8 @@ abstract class AdapterAbstract
         return $np;
     }
 
-    public function getStreamUrl()
-    {
-        return '';
-    }
-
-    public function getAdminUrl()
-    {
-        return '';
-    }
-
     /* Stub function for the process internal handler. */
-    protected function _getNowPlaying(&$np)
-    {
-        return false;
-    }
+    abstract protected function _getNowPlaying(&$np);
 
     protected function _cleanUpString(&$value)
     {
@@ -141,55 +117,12 @@ abstract class AdapterAbstract
     }
 
     /**
-     * Read configuration from external service to Station object.
-     * @return bool
-     */
-    public function read()
-    {
-        return false;
-    }
-
-    /**
-     * Write configuration from Station object to the external service.
-     * @return bool
-     */
-    public function write()
-    {
-        return false;
-    }
-
-    /**
-     * Restart the executable service.
-     * @return mixed
-     */
-    public function restart()
-    {
-        return null;
-    }
-
-    /**
      * Log a message to console or to flash (if interactive session).
      *
      * @param $message
      */
-    public function log($message)
+    public function log($message, $class = 'info')
     {
-        if (empty($message))
-            return false;
-
-        if (!APP_IS_COMMAND_LINE)
-        {
-            $flash = $this->di['flash'];
-            $flash->addMessage('<b>Radio Frontend:</b><br>'.$message, 'info', true);
-        }
-        else
-        {
-            $log_file = APP_INCLUDE_TEMP.'/radio_frontend_log.txt';
-            $log_message = "\n".$message;
-
-            file_put_contents($log_file, $log_message, FILE_APPEND);
-
-            \App\Debug::log('Radio Frontend: '.$message);
-        }
+        parent::log('Radio Frontend: '.$message, $class);
     }
 }

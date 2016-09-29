@@ -3,11 +3,10 @@ namespace App\Radio\Backend;
 
 use Entity\Settings;
 
-class LiquidSoap extends AdapterAbstract
+class LiquidSoap extends BackendAbstract
 {
     /**
      * Read configuration from external service to Station object.
-     * @return bool
      */
     public function read()
     {
@@ -98,9 +97,8 @@ class LiquidSoap extends AdapterAbstract
         if (count($playlists_by_type['default']) == 0)
         {
             if (count($playlists) > 0)
-                throw new \App\Exception('You have playlists configured, but none are set as "Default" type. You need at least one default playlist, so the AutoDJ has something to play when scheduled playlists are not active.');
-            else
-                return false;
+                $this->log('LiquidSoap will not start until at least one playlist is set as the "Default" type.', 'error');
+            return false;
         }
 
         // Build "default" type playlists.

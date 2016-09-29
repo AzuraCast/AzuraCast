@@ -1,5 +1,5 @@
 <?php
-namespace App\Radio\Backend;
+namespace App\Radio;
 
 use Entity\Station;
 use Interop\Container\ContainerInterface;
@@ -25,43 +25,52 @@ abstract class AdapterAbstract
      * Read configuration from external service to Station object.
      * @return bool
      */
-    public function read()
-    {
-        return false;
-    }
+    abstract public function read();
 
     /**
      * Write configuration from Station object to the external service.
      * @return bool
      */
-    public function write()
-    {
-        return false;
-    }
+    abstract public function write();
 
     /**
      * Restart the executable service.
      * @return mixed
      */
-    public function restart()
-    {
-        return null;
-    }
+    abstract public function restart();
+
+    /**
+     * Stop the executable service.
+     * @return mixed
+     */
+    abstract public function stop();
+
+    /**
+     * Stop the executable service.
+     * @return mixed
+     */
+    abstract public function start();
+
+    /**
+     * Determine if the executable service is running.
+     * @return bool
+     */
+    abstract public function isRunning();
 
     /**
      * Log a message to console or to flash (if interactive session).
      *
      * @param $message
      */
-    public function log($message)
+    public function log($message, $class = 'info')
     {
         if (empty($message))
-            return false;
+            return;
 
         if (!APP_IS_COMMAND_LINE)
         {
             $flash = $this->di['flash'];
-            $flash->addMessage('<b>Radio Backend:</b><br>'.$message, 'info', true);
+            $flash->addMessage($message, $class, true);
         }
         else
         {
@@ -70,7 +79,7 @@ abstract class AdapterAbstract
 
             file_put_contents($log_file, $log_message, FILE_APPEND);
 
-            \App\Debug::log('Radio Backend: '.$message);
+            \App\Debug::log('['.strtoupper($class).'] '.$message);
         }
     }
 }

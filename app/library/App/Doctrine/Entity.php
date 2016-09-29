@@ -170,7 +170,7 @@ class Entity implements \ArrayAccess
 
                         if ($mapping['is_owning_side'])
                         {
-                            $em->clear($obj_class);
+                            $this->$field->clear();
 
                             if ($value)
                             {

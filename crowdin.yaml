@@ -1,0 +1,4 @@
+files:
+  - 
+    source: /app/locale/default.pot
+    translation: '/app/locale/%locale_with_underscore%/LC_MESSAGES/default.po'

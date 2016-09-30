@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-30 22:30+0000\n"
-"PO-Revision-Date: 2016-09-30 19:24-0400\n"
+"PO-Revision-Date: 2016-09-30 19:34-0400\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -113,7 +113,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/config/forms/playlist.conf.php:159
 #, php-format
 msgid "Current server time is <b>%s</b>."
-msgstr ""
+msgstr "Hora actual del servidor es <b>%s</b>."
 
 #: /var/azuracast/www/app/modules/admin/config/forms/song.conf.php:8
 msgid "Metadata"
@@ -121,7 +121,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/forms/song.conf.php:12
 msgid "Full Text"
-msgstr ""
+msgstr "Texto completo"
 
 #: /var/azuracast/www/app/modules/admin/config/forms/song.conf.php:19
 msgid "Artist Name"
@@ -217,22 +217,22 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/controllers/StationsController.php:56
 #: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:67
 msgid "Edit Record"
-msgstr ""
+msgstr "Editar Registro"
 
 #: /var/azuracast/www/app/modules/admin/controllers/ApiController.php:58
 #: /var/azuracast/www/app/modules/admin/controllers/StationsController.php:74
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:92
 #: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:87
 msgid "Record deleted."
-msgstr ""
+msgstr "Registro borrado."
 
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:42
 msgid "Action updated."
-msgstr ""
+msgstr "Acción actualizada."
 
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:46
 msgid "Edit Action"
-msgstr ""
+msgstr "Editar Acción"
 
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:55
 msgid "Action deleted."
@@ -257,7 +257,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/controllers/SettingsController.php:33
 #: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:142
 msgid "Site Settings"
-msgstr ""
+msgstr "Configuración del Sitio"
 
 #: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:63
 msgid "Record updated."
@@ -274,14 +274,14 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:95
 #, php-format
 msgid "Logged in as %s."
-msgstr ""
+msgstr "Conectado como %s."
 
 #: /var/azuracast/www/app/modules/admin/views/scripts/api/index.phtml:4
 #: /var/azuracast/www/app/modules/admin/views/scripts/index/index.phtml:4
 #: /var/azuracast/www/app/modules/admin/views/scripts/stations/index.phtml:4
 #: /var/azuracast/www/app/modules/admin/views/scripts/users/index.phtml:4
 msgid "Administration"
-msgstr ""
+msgstr "Administración"
 
 #: /var/azuracast/www/app/modules/admin/views/scripts/api/index.phtml:23
 msgid "API Key"
@@ -302,7 +302,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/views/scripts/users/index.phtml:39
 #: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:123
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: /var/azuracast/www/app/modules/admin/views/scripts/api/index.phtml:33
 msgid "Revoke"
@@ -310,7 +310,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:4
 msgid "Manage Permissions"
-msgstr ""
+msgstr "Administrar Permisos"
 
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:11
 #: /var/azuracast/www/app/modules/admin/views/scripts/users/index.phtml:31
@@ -325,7 +325,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:48
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/duplicates.phtml:37
 msgid "Delete"
-msgstr ""
+msgstr "Eliminar"
 
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:34
 msgid "This role cannot be deleted."
@@ -397,7 +397,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/controllers/AccountController.php:55
 msgid "Your credentials could not be verified."
-msgstr ""
+msgstr "No se pudieron comprobar sus credenciales."
 
 #: /var/azuracast/www/app/modules/frontend/controllers/IndexController.php:80
 #, php-format
@@ -438,11 +438,11 @@ msgstr ""
 #: /var/azuracast/www/app/modules/frontend/views/scripts/setup/register.phtml:5
 #, php-format
 msgid "Welcome to %s!"
-msgstr ""
+msgstr "¡Bienvenido a %s!"
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/account/login.phtml:6
 msgid "Please log in to continue."
-msgstr ""
+msgstr "Inicia sesión para continuar."
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:1
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:14
@@ -463,7 +463,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:61
 msgid "Listeners"
-msgstr ""
+msgstr "Oyentes"
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:62
 msgid "Now Playing"
@@ -471,7 +471,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:63
 msgid "Options"
-msgstr ""
+msgstr "Opciones"
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:82
 #: /var/azuracast/www/app/modules/stations/config/forms/media.conf.php:11
@@ -658,7 +658,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/config/forms/streamer.conf.php:19
 msgid "Comments"
-msgstr ""
+msgstr "Comentarios"
 
 #: /var/azuracast/www/app/modules/stations/config/forms/streamer.conf.php:20
 msgid "Internal notes or comments about the user, visible only on this control panel."
@@ -690,7 +690,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:144
 msgid "Directory"
-msgstr ""
+msgstr "Directorio"
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:148
 msgid "File Not Processed"
@@ -812,15 +812,15 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:66
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:67
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:68
 msgid "Artist"
-msgstr ""
+msgstr "Artista"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:69
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/duplicates.phtml:30
@@ -878,7 +878,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/index.phtml:115
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/index.phtml:158
 msgid "Song"
-msgstr ""
+msgstr "Canción"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/index.phtml:104
 msgid "Worst Performing Songs"
@@ -902,7 +902,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/playlists/index.phtml:25
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/playlists/index.phtml:26
 msgid "# Songs"
@@ -997,27 +997,27 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:64
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:105
 msgid "Running"
-msgstr ""
+msgstr "Funcionamiento"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:64
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:105
 msgid "Not Running"
-msgstr ""
+msgstr "No funciona"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:73
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:116
 msgid "Restart Service"
-msgstr ""
+msgstr "Reiniciar servicio"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:74
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:117
 msgid "Start Service"
-msgstr ""
+msgstr "Iniciar servicio"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:75
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:118
 msgid "Stop Service"
-msgstr ""
+msgstr "Detener servicio"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:82
 msgid "Stream Public URL"
@@ -1111,7 +1111,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/scripts/streamers/index.phtml:65
 #: /var/azuracast/www/app/modules/stations/views/scripts/streamers/index.phtml:77
 msgid "Port"
-msgstr ""
+msgstr "Puerto"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/streamers/index.phtml:68
 msgid "Mount Name"

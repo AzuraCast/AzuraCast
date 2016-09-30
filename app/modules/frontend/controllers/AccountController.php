@@ -43,7 +43,7 @@ class AccountController extends BaseController
             {
                 $user = $this->auth->getLoggedInUser();
 
-                $this->alert('<b>Logged in successfully.</b><br>'.$user->email, 'green');
+                $this->alert('<b>'._('Logged in successfully.').'</b><br>'.$user->email, 'green');
 
                 $url = $this->di->get('url');
 
@@ -52,7 +52,7 @@ class AccountController extends BaseController
             }
             else
             {
-                $this->alert('<b>Login unsuccessful.</b><br>Your credentials could not be verified.', 'red');
+                $this->alert('<b>'._('Login unsuccessful').'</b><br>'._('Your credentials could not be verified.'), 'red');
                 return $this->redirectHere();
             }
         }

@@ -1,56 +1,56 @@
 <?php $this->layout('main', ['title' => 'Station Profile', 'manual' => true]) ?>
 
 <div class="block-header">
-    <h2><?=$station->name ?></h2>
+    <h2><?=$this->e($station->name) ?></h2>
 </div>
 
 <div class="row">
     <div class="col-sm-6">
         <div class="card">
             <div class="card-header ch-alt">
-                <h2>Basic Profile</h2>
+                <h2><?=_('Basic Profile') ?></h2>
                 <a class="btn bgm-blue btn-float" title="Edit Profile" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-edit"></i></a>
             </div>
             <div class="card-body card-padding">
                 <dl>
-                    <dt>Station Name:</dt>
-                    <dd><?=$station->name ?></dd>
+                    <dt><?=_('Station Name') ?>:</dt>
+                    <dd><?=$this->e($station->name) ?></dd>
 
-                    <dt>Description:</dt>
-                    <dd><?=$station->description ?></dd>
+                    <dt><?=_('Station Description') ?>:</dt>
+                    <dd><?=$this->e($station->description) ?></dd>
                 </dl>
             </div>
         </div>
 
         <div class="card">
             <div class="card-header <?php if ($station->enable_requests): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?>">
-                <h2>Song Requests</h2>
+                <h2><?=_('Song Requests') ?></h2>
             </div>
             <div class="card-body card-padding">
             <?php if ($station->enable_requests): ?>
-                <p>Song requests are currently <b>enabled</b> for this station.</p>
+                <p><?=_('Song requests are currently <b>enabled</b> for this station.') ?></p>
                 <?php if ($station->request_delay == 0): ?>
-                    <p>Requests are queued for playback immediately after the currently playing song.</p>
+                    <p><?=_('Requests are queued for playback immediately after the currently playing song.') ?></p>
                 <?php else: ?>
-                    <p>Requests are queued for playback on the station within <b><?=$station->request_delay ?> to <?=($station->request_delay*2) ?> minutes</b> of being submitted.</p>
+                    <p><?=sprintf(_('Requests are queued for playback on the station within <b>%d to %d minutes</b> of being submitted.'), $station->request_delay, $station->request_delay*2) ?></p>
                 <?php endif; ?>
             <?php else: ?>
-                <p>Song requests are currently <b>disabled</b> for this station. Edit your profile above to enable them.</p>
+                <p><?=_('Song requests are currently <b>disabled</b> for this station. Edit your profile above to enable them.') ?></p>
             <?php endif; ?>
             </div>
         </div>
 
         <div class="card">
             <div class="card-header <?php if ($station->enable_streamers): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?>">
-                <h2>Streamers/DJs</h2>
+                <h2><?=_('Streamers/DJs') ?></h2>
             </div>
             <div class="card-body card-padding">
                 <?php if ($station->enable_streamers): ?>
-                    <p>Support for live streamers / DJs is currently <b>enabled</b> for this station. Edit your profile above to enable it.</p>
-                    <p>Manage streamer accounts <a href="<?=$url->routeFromHere(['controller' => 'streamers']) ?>">on the Streamers / DJ Accounts page</a>.</p>
+                    <p><?=_('Support for live streamers / DJs is currently <b>enabled</b> for this station. Edit your profile above to enable it.') ?></p>
+                    <p><?=sprintf(_('Manage streamer accounts <a href="%s">on the Streamers / DJ Accounts page</a>.'), $url->routeFromHere(['controller' => 'streamers'])) ?></p>
                 <?php else: ?>
-                    <p>Support for live streamers / DJs is currently <b>disabled</b> for this station.</p>
-                    <p>Only the AutoDJ (based on your uploaded media and playlists) will be able to play on the air.</p>
+                    <p><?=_('Support for live streamers / DJs is currently <b>disabled</b> for this station.') ?></p>
+                    <p><?=_('Only the AutoDJ (based on your uploaded media and playlists) will be able to play on the air.') ?></p>
                 <?php endif; ?>
             </div>
         </div>
@@ -60,8 +60,8 @@
         <div class="card">
             <div class="card-header <?php if ($frontend_is_running): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?> ch-alt">
                 <h2>
-                    IceCast (Broadcasting Service)<br>
-                    <small><?php if ($frontend_is_running): ?>Running<?php else: ?>Not Running<?php endif; ?></small>
+                    <?=_('IceCast (Broadcasting Service)') ?><br>
+                    <small><?php if ($frontend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>
 
                 <ul class="actions">
@@ -70,27 +70,27 @@
                             <i class="zmdi zmdi-more-vert"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="<?=$url->routeFromHere(['action' => 'frontend', 'do' => 'restart']) ?>">Restart Service</a></li>
-                            <li><a href="<?=$url->routeFromHere(['action' => 'frontend', 'do' => 'start']) ?>">Start Service</a></li>
-                            <li><a href="<?=$url->routeFromHere(['action' => 'frontend', 'do' => 'stop']) ?>">Stop Service</a></li>
+                            <li><a href="<?=$url->routeFromHere(['action' => 'frontend', 'do' => 'restart']) ?>"><?=_('Restart Service') ?></a></li>
+                            <li><a href="<?=$url->routeFromHere(['action' => 'frontend', 'do' => 'start']) ?>"><?=_('Start Service') ?></a></li>
+                            <li><a href="<?=$url->routeFromHere(['action' => 'frontend', 'do' => 'stop']) ?>"><?=_('Stop Service') ?></a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
             <div class="card-body card-padding">
                 <dl>
-                    <dt>Stream Public URL:</dt>
+                    <dt><?=_('Stream Public URL') ?>:</dt>
                     <dd><a href="<?=$frontend_adapter->getStreamUrl() ?>"><?=$frontend_adapter->getStreamUrl() ?></a></dd>
                 </dl>
 
                 <dl>
-                    <dt>Administration URL:</dt>
+                    <dt><?=_('Administration URL') ?>:</dt>
                     <dd><a href="<?=$frontend_adapter->getAdminUrl() ?>"><?=$frontend_adapter->getAdminUrl() ?></a></dd>
 
-                    <dt>Administrator Password:</dt>
+                    <dt><?=_('Administrator Password') ?>:</dt>
                     <dd><?=$frontend_config['admin_pw'] ?></dd>
 
-                    <dt>Source Password:</dt>
+                    <dt><?=_('Source Password') ?>:</dt>
                     <dd><?=$frontend_config['source_pw'] ?></dd>
                 </dl>
             </div>
@@ -101,8 +101,8 @@
         <div class="card">
             <div class="card-header <?php if ($backend_is_running): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?> ch-alt">
                 <h2>
-                    LiquidSoap (AutoDJ Service)<br>
-                    <small><?php if ($backend_is_running): ?>Running<?php else: ?>Not Running<?php endif; ?></small>
+                    <?=_('LiquidSoap (AutoDJ Service)') ?><br>
+                    <small><?php if ($backend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>
 
                 <ul class="actions">
@@ -111,17 +111,17 @@
                             <i class="zmdi zmdi-more-vert"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="<?=$url->routeFromHere(['action' => 'backend', 'do' => 'skip']) ?>">Skip Song</a></li>
+                            <li><a href="<?=$url->routeFromHere(['action' => 'backend', 'do' => 'skip']) ?>"><?=_('Skip Song') ?></a></li>
                             <li class="divider">&nbsp;</li>
-                            <li><a href="<?=$url->routeFromHere(['action' => 'backend', 'do' => 'restart']) ?>">Restart Service</a></li>
-                            <li><a href="<?=$url->routeFromHere(['action' => 'backend', 'do' => 'start']) ?>">Start Service</a></li>
-                            <li><a href="<?=$url->routeFromHere(['action' => 'backend', 'do' => 'stop']) ?>">Stop Service</a></li>
+                            <li><a href="<?=$url->routeFromHere(['action' => 'backend', 'do' => 'restart']) ?>"><?=_('Restart Service') ?></a></li>
+                            <li><a href="<?=$url->routeFromHere(['action' => 'backend', 'do' => 'start']) ?>"><?=_('Start Service') ?></a></li>
+                            <li><a href="<?=$url->routeFromHere(['action' => 'backend', 'do' => 'stop']) ?>"><?=_('Stop Service') ?></a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
             <div class="card-body card-padding">
-                <p>LiquidSoap is currently shuffling from <b><?=$num_songs ?> uploaded songs</b> in <b><?=$num_playlists ?> playlists</b>.</p>
+                <p><?=sprintf(_('LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.'), $num_songs, $num_playlists) ?></p>
             </div>
         </div>
         <?php endif; ?>

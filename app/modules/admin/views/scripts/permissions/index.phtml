@@ -1,14 +1,14 @@
 <?php $this->layout('main', ['title' => 'Permissions', 'manual' => true]); ?>
 
 <div class="block-header">
-    <h2>Manage Permissions</h2>
+    <h2><?=_('Manage Permissions') ?></h2>
 </div>
 
 <div class="row">
     <div class="col-sm-6">
         <div class="card">
             <div class="card-header ch-alt">
-                <h2>Roles</h2>
+                <h2><?=_('Roles') ?></h2>
                 <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'editrole')) ?>"><i class="zmdi zmdi-plus"></i></a>
             </div>
             <div class="table-responsive">
@@ -20,21 +20,21 @@
                     <thead>
                         <tr>
                             <th>&nbsp;</th>
-                            <th>Role Name</th>
+                            <th><?=_('Role Name') ?></th>
                         </tr>
                     </thead>
                     <tbody>
                     <?php foreach($roles as $role): ?>
                         <tr class="input">
                             <td class="center">
-                                <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])) ?>">Edit</a>
+                                <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])) ?>"><?=_('Edit') ?></a>
                             <?php if( $role['id'] != 1 ): ?>
-                                <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'])) ?>">Delete</a>
+                                <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'])) ?>"><?=_('Delete') ?></a>
                             <?php else: ?>
-                                <a class="btn btn-sm btn-danger disabled" href="#" onclick="alert('This role cannot be deleted.'); return false;">Delete</a>
+                                <a class="btn btn-sm btn-danger disabled" href="#" onclick="alert('<?=_('This role cannot be deleted.') ?>'); return false;"><?=_('Delete') ?></a>
                             <?php endif; ?>
                             </td>
-                            <td align="left"><?=$role['name'] ?></td>
+                            <td align="left"><?=$this->e($role['name']) ?></td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -45,7 +45,7 @@
     <div class="col-sm-6">
         <div class="card">
             <div class="card-header ch-alt">
-                <h2>Actions</h2>
+                <h2><?=_('Actions') ?></h2>
                 <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'editaction')) ?>"><i class="zmdi zmdi-plus"></i></a>
             </div>
             <div class="table-responsive">
@@ -57,17 +57,17 @@
                     <thead>
                     <tr>
                         <th>&nbsp;</th>
-                        <th>Action Name</th>
+                        <th><?=_('Action Name') ?></th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php foreach($actions as $action): ?>
                         <tr class="input">
                             <td class="center">
-                                <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])) ?>">Edit</a>
-                                <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'])) ?>">Delete</a>
+                                <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])) ?>"><?=_('Edit') ?></a>
+                                <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'])) ?>"><?=_('Delete') ?></a>
                             </td>
-                            <td align="left"><?=$action['name'] ?></td>
+                            <td align="left"><?=$this->e($action['name']) ?></td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>

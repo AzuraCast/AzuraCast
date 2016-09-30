@@ -1,7 +1,7 @@
-<?php $this->layout('main', ['title' => 'My Profile']); ?>
+<?php $this->layout('main', ['title' => _('My Profile')]); ?>
 
 <div class="buttons">
-    <a class="btn btn-lg btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>">Edit Profile</a>
+    <a class="btn btn-lg btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><?=_('Edit Profile') ?></a>
 </div>
 
 <?=$this->insert('partials/form_view') ?>

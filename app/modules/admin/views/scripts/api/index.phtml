@@ -1,12 +1,12 @@
-<?php $this->layout('main', ['title' => 'API Keys', 'manual' => true]); ?>
+<?php $this->layout('main', ['title' => _('API Keys'), 'manual' => true]); ?>
 
 <div class="block-header">
-    <h2>Administration</h2>
+    <h2><?=_('Administration') ?></h2>
 </div>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2>API Keys</h2>
+        <h2><?=_('API Keys') ?></h2>
         <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div class="table-responsive">
@@ -20,21 +20,21 @@
             <thead>
             <tr>
                 <th>&nbsp;</th>
-                <th>API Key</th>
-                <th>Calls</th>
-                <th>Owner</th>
+                <th><?=_('API Key') ?></th>
+                <th><?=_('Calls') ?></th>
+                <th><?=_('Owner') ?></th>
             </tr>
             </thead>
             <tbody>
             <?php foreach($records as $record): ?>
                 <tr class="input">
                     <td class="center">
-                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $record['id'])) ?>">Edit</a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $record['id'])) ?>">Revoke</a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $record['id'])) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $record['id'])) ?>"><?=_('Revoke') ?></a>
                     </td>
                     <td><code><?=$record['id'] ?></code></td>
                     <td><?=$record['calls_made'] ?></td>
-                    <td><?=$record['owner'] ?></td>
+                    <td><?=$this->e($record['owner']) ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

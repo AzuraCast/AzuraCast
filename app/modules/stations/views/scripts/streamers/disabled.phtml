@@ -1,16 +1,16 @@
-<?php $this->layout('main', ['title' => 'Manage Streamers/DJs', 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => _('Streamer/DJ Accounts'), 'manual' => true]) ?>
 
 <div class="block-header">
-    <h2><?=$station->name ?></h2>
+    <h2><?=$this->e($station->name) ?></h2>
 </div>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2>Streamer/DJ Accounts</h2>
+        <h2><?=_('Streamer/DJ Accounts') ?></h2>
     </div>
     <div class="card-body card-padding">
-        <p>Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.</p>
+        <p><?=_('Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.') ?></p>
 
-        <a class="btn btn-lg btn-success" href="<?=$url->current() ?>?enable=true">Enable Streaming</a>
+        <a class="btn btn-lg btn-success" href="<?=$url->current() ?>?enable=true"><?=_('Enable Streaming') ?></a>
     </div>
 </div>

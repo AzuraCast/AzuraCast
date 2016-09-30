@@ -4,20 +4,20 @@ return [
     'elements' => [
 
         'title' => ['text', [
-            'label' => 'Song Title',
+            'label' => _('Song Title'),
         ]],
 
         'artist' => ['text', [
-            'label' => 'Song Artist',
+            'label' => _('Song Artist'),
         ]],
 
         'album' => ['text', [
-            'label' => 'Song Album',
+            'label' => _('Song Album'),
         ]],
 
         'submit' => ['submit', [
             'type' => 'submit',
-            'label' => 'Save Changes',
+            'label' => _('Save Changes'),
             'helper' => 'formButton',
             'class' => 'ui-button btn-lg btn-primary',
         ]],

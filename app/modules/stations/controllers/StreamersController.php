@@ -19,7 +19,7 @@ class StreamersController extends BaseController
                 $this->em->persist($this->station);
                 $this->em->flush();
 
-                $this->alert('<b>Streamers enabled!</b><br>You can now set up streamer (DJ) accounts.', 'green');
+                $this->alert('<b>'._('Streamers enabled!').'</b><br>'._('You can now set up streamer (DJ) accounts.'), 'green');
 
                 return $this->redirectFromHere(['enable' => null]);
             }
@@ -61,12 +61,12 @@ class StreamersController extends BaseController
             $this->em->persist($record);
             $this->em->flush();
 
-            $this->alert('<b>Streamer account updated!</b>', 'green');
+            $this->alert('<b>'._('Streamer account updated!').'</b>', 'green');
 
             return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);
         }
 
-        $title = (($this->hasParam('id')) ? 'Edit' : 'Add').' Streamer (DJ) Account';
+        $title = (($this->hasParam('id')) ? _('Edit Streamer') : _('Add Streamer'));
         return $this->renderForm($form, 'edit', $title);
     }
 
@@ -84,7 +84,7 @@ class StreamersController extends BaseController
 
         $this->em->flush();
 
-        $this->alert('<b>Record deleted.</b>', 'green');
+        $this->alert('<b>'._('Record deleted.').'</b>', 'green');
         return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);
     }
 }

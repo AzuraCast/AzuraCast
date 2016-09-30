@@ -1,4 +1,4 @@
-<?php $this->layout('main', ['title' => 'Dashboard', 'manual' => true]); ?>
+<?php $this->layout('main', ['title' => _('Dashboard'), 'manual' => true]); ?>
 
 <?php $this->start('custom_js') ?>
 <script type="text/javascript" src="//code.highcharts.com/highcharts.js"></script>
@@ -11,14 +11,14 @@
 <?php $this->stop('custom_js') ?>
 
 <div class="block-header">
-    <h2>Dashboard</h2>
+    <h2><?=_('Dashboard') ?></h2>
 </div>
 
 <div class="row">
     <div class="col-sm-6">
         <div class="card">
             <div class="card-header ch-alt">
-                <h2>Listeners Across All Stations</h2>
+                <h2><?=_('Listeners Across All Stations') ?></h2>
             </div>
             <div class="card-body card-padding-sm">
                 <div id="network_chart" style="height: 250px;"></div>
@@ -28,7 +28,7 @@
     <div class="col-sm-6">
         <div class="card">
             <div class="card-header ch-alt">
-                <h2>Listeners Per Station</h2>
+                <h2><?=_('Listeners Per Station') ?></h2>
             </div>
             <div class="card-body card-padding-sm">
                 <div id="station_chart" style="height: 250px;"></div>
@@ -41,7 +41,7 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header ch-alt">
-                <h2>Station Overview</h2>
+                <h2><?=_('Station Overview') ?></h2>
 
                 <a class="btn bgm-blue btn-float" href="<?=$url->route(['module' => 'admin', 'controller' => 'stations', 'action' => 'edit']) ?>"><i class="zmdi zmdi-plus"></i></a>
             </div>
@@ -57,10 +57,10 @@
                     <thead>
                         <tr>
                             <th>&nbsp;</th>
-                            <th>Station Name</th>
-                            <th class="text-center">Listeners</th>
-                            <th>Now Playing</th>
-                            <th>Options</th>
+                            <th><?=_('Station Name') ?></th>
+                            <th class="text-center"><?=_('Listeners') ?></th>
+                            <th><?=_('Now Playing') ?></th>
+                            <th><?=_('Options') ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,17 +72,17 @@
                                 </a>
                             </td>
                             <td>
-                                <big><?=$row->name ?></big>
+                                <big><?=$this->e($row->name) ?></big>
                             </td>
                             <td class="text-center">
                                 <span class="nowplaying-listeners">0</span>
                             </td>
                             <td>
-                                <strong><span class="nowplaying-title">Song Title</span></strong><br>
-                                <span class="nowplaying-artist">Song Artist</span>
+                                <strong><span class="nowplaying-title"><?=_('Song Title') ?></span></strong><br>
+                                <span class="nowplaying-artist"><?=_('Song Artist') ?></span>
                             </td>
                             <td>
-                                <a class="btn btn-primary" href="<?=$url->route(['module' => 'stations', 'station' => $row->id]) ?>">Manage</a>
+                                <a class="btn btn-primary" href="<?=$url->route(['module' => 'stations', 'station' => $row->id]) ?>"><?=_('Manage') ?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

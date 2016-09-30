@@ -1,16 +1,16 @@
-<?php $this->layout('main', ['title' => 'Song Duplicates', 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => _('Song Duplicates'), 'manual' => true]) ?>
 
 <div class="block-header">
-    <h2><?=$station->name ?></h2>
+    <h2><?=$this->e($station->name) ?></h2>
 </div>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2>Possible Song Duplicates</h2>
+        <h2><?=_('Song Duplicates') ?></h2>
     </div>
 <?php if (empty($dupes)): ?>
     <div class="card-body card-padding">
-        No duplicates were found. Nice work!
+        <?=_('No duplicates were found. Nice work!') ?>
     </div>
 <?php else: ?>
     <?php foreach($dupes as $dupe_row): ?>
@@ -24,17 +24,17 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>Actions</th>
-                        <th>Title / File Path</th>
-                        <th class="text-right">Playlists</th>
-                        <th class="text-right">Length</th>
+                        <th><?=_('Actions') ?></th>
+                        <th><?=_('Title / File Path') ?></th>
+                        <th class="text-right"><?=_('Playlists') ?></th>
+                        <th class="text-right"><?=_('Length') ?></th>
                     </tr>
                 </thead>
                 <tbody>
                 <?php foreach($dupe_row as $media_row): ?>
                     <tr class="input">
                         <td>
-                            <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(['action' => 'deletedupe', 'media_id' => $media_row['id']]) ?>">Delete</a>
+                            <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(['action' => 'deletedupe', 'media_id' => $media_row['id']]) ?>"><?=_('Delete') ?></a>
                         </td>
                         <td>
                             <big><?=$media_row['song']['artist'] ?> - <?=$media_row['song']['title'] ?></big><br>

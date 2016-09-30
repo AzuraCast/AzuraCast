@@ -60,11 +60,11 @@ class UsersController extends BaseController
             $this->em->persist($record);
             $this->em->flush();
             
-            $this->alert('User updated.', 'green');
+            $this->alert(_('Record updated.'), 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
         }
 
-        return $this->renderForm($form, 'edit', 'Edit Record');
+        return $this->renderForm($form, 'edit', _('Edit Record'));
     }
 
     public function deleteAction()
@@ -77,7 +77,7 @@ class UsersController extends BaseController
 
         $this->em->flush();
 
-        $this->alert('<b>User deleted.</b>', 'green');
+        $this->alert('<b>'._('User deleted.').'</b>', 'green');
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
     }
 
@@ -87,12 +87,12 @@ class UsersController extends BaseController
         $user = User::find($id);
 
         if (!($user instanceof User))
-            throw new \App\Exception('User not found!');
+            throw new \App\Exception(_('User not found!'));
         
         // Set new identity in Zend_Auth
         $this->auth->masqueradeAsUser($user);
 
-        $this->alert('<b>Logged in as '.$user->firstname.' '.$user->lastname.'.</b>', 'green');
+        $this->alert('<b>'.sprintf(_('Logged in as %s.'), $user->firstname.' '.$user->lastname).'</b>', 'green');
         return $this->redirectHome();
     }
 }

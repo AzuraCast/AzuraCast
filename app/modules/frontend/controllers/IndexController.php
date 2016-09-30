@@ -77,7 +77,7 @@ class IndexController extends BaseController
             foreach ($network_data as $network_name => $data_charts) {
                 if (isset($data_charts['ranges'])) {
                     $metric_row = new \stdClass;
-                    $metric_row->name = $network_name . ' Listener Range';
+                    $metric_row->name = sprintf(_('%s Listener Range'), $network_name);
                     $metric_row->type = 'arearange';
 
                     ksort($data_charts['ranges']);
@@ -88,7 +88,7 @@ class IndexController extends BaseController
 
                 if (isset($data_charts['averages'])) {
                     $metric_row = new \stdClass;
-                    $metric_row->name = $network_name . ' Daily Average';
+                    $metric_row->name = sprintf(_('%s Daily Average'), $network_name);
                     $metric_row->type = 'spline';
 
                     ksort($data_charts['averages']);

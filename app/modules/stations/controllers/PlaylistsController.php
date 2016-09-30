@@ -64,13 +64,13 @@ class PlaylistsController extends BaseController
 
             $this->_reloadStation();
 
-            $this->alert('<b>Stream updated!</b>', 'green');
+            $this->alert('<b>'._('Playlist updated.').'</b>', 'green');
 
             return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);
         }
 
         $this->view->form = $form;
-        $this->view->title = (($this->hasParam('id')) ? 'Edit' : 'Add').' Playlist';
+        $this->view->title = ($this->hasParam('id')) ? _('Edit Playlist') : _('Add Playlist');
     }
 
     public function deleteAction()
@@ -89,7 +89,7 @@ class PlaylistsController extends BaseController
 
         $this->_reloadStation();
 
-        $this->alert('<b>Record deleted.</b>', 'green');
+        $this->alert('<b>'._('Record deleted.').'</b>', 'green');
         return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);
     }
 
@@ -101,6 +101,6 @@ class PlaylistsController extends BaseController
         $backend->write();
         $backend->start();
 
-        $this->alert('<b>Radio backend reloaded.</b><br>Your listeners will not be disconnected by playlist changes, but songs may change abruptly.', 'green');
+        $this->alert('<b>'._('Radio backend reloaded.').'</b><br>'._('Your listeners will not be disconnected by playlist changes, but songs may change abruptly.'), 'green');
     }
 }

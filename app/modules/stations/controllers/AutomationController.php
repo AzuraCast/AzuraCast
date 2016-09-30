@@ -23,7 +23,7 @@ class AutomationController extends BaseController
             $this->em->persist($this->station);
             $this->em->flush();
 
-            $this->alert('Changes saved!', 'green');
+            $this->alert(_('Changes saved.'), 'green');
             return $this->redirectHere();
         }
 
@@ -37,11 +37,11 @@ class AutomationController extends BaseController
             $automation = new \App\Sync\RadioAutomation($this->di);
 
             if ($automation->runStation($this->station, true))
-                $this->alert('<b>Automated assignment complete!</b>', 'green');
+                $this->alert('<b>'._('Automated assignment complete!').'</b>', 'green');
         }
         catch(\Exception $e)
         {
-            $this->alert('<b>Automated assignment error:</b><br>'.$e->getMessage(), 'red');
+            $this->alert('<b>'._('Automated assignment error').':</b><br>'.$e->getMessage(), 'red');
         }
 
         return $this->redirectFromHere(['action' => 'index']);

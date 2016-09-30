@@ -2,7 +2,7 @@
 namespace Modules\Admin\Controllers;
 
 use Entity\Settings;
-use Repository\SettingsRepository;
+use Entity\SettingsRepository;
 
 class SettingsController extends BaseController
 {
@@ -26,10 +26,10 @@ class SettingsController extends BaseController
             $data = $form->getValues();
             $settings_repo->setSettings($data);
 
-            $this->alert('Settings updated!', 'green');
+            $this->alert(_('Settings updated!'), 'green');
             return $this->redirectHere();
         }
 
-        return $this->renderForm($form, 'edit', 'Site Settings');
+        return $this->renderForm($form, 'edit', _('Site Settings'));
     }
 }

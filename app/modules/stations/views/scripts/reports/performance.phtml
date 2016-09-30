@@ -1,16 +1,16 @@
-<?php $this->layout('main', ['title' => 'Listener Impact Report', 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => _('Song Listener Impact'), 'manual' => true]) ?>
 
 <div class="block-header">
-    <h2><?=$station->name ?></h2>
+    <h2><?=$this->e($station->name) ?></h2>
 </div>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2>Song Listener Impact Report</h2>
+        <h2><?=_('Song Listener Impact') ?></h2>
 
         <ul class="actions">
             <li>
-                <a href="<?=$url->routeFromHere(['format' => 'csv']) ?>" title="Download Excel CSV">
+                <a href="<?=$url->routeFromHere(['format' => 'csv']) ?>" title="<?=_('Download CSV') ?>">
                     <i class="zmdi zmdi-download"></i>
                 </a>
             </li>

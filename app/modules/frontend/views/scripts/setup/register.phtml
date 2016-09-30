@@ -2,21 +2,21 @@
 
 <!-- Login -->
 <div class="lc-block toggled" id="l-login">
-    <h3 class="text-left">Welcome to <?=$config->application->name ?>!</h3>
-    <P class="text-left">Begin setup by creating a Super Administrator account.</p>
+    <h3 class="text-left"><?=sprintf(_('Welcome to %s!'), $config->application->name) ?>!</h3>
+    <P class="text-left"><?=_('Begin setup by creating a Super Administrator account.') ?></p>
 
     <form action="" method="post">
         <div class="input-group m-b-20">
             <span class="input-group-addon"><i class="fa fa-user"></i></span>
             <div class="fg-line">
-                <input type="email" name="username" class="form-control" placeholder="E-mail Address">
+                <input type="email" name="username" class="form-control" placeholder="<?=_('E-mail Address') ?>">
             </div>
         </div>
 
         <div class="input-group m-b-20">
             <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
             <div class="fg-line">
-                <input type="password" name="password" class="form-control" placeholder="Password">
+                <input type="password" name="password" class="form-control" placeholder="<?=_('Password') ?>">
             </div>
         </div>
 

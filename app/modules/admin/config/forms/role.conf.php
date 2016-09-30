@@ -12,19 +12,19 @@ return [
         'elements' => [
 
             'name' => ['text', [
-                'label' => 'Role Name',
+                'label' => _('Role Name'),
                 'class' => 'half-width',
                 'required' => true,
             ]],
 
             'actions' => ['multiCheckbox', [
-                'label' => 'Actions',
+                'label' => _('Actions'),
                 // Supply options in controller class.
             ]],
 
             'submit' => ['submit', [
                 'type' => 'submit',
-                'label' => 'Save Changes',
+                'label' => _('Save Changes'),
                 'helper' => 'formButton',
                 'class' => 'btn btn-lg btn-primary',
             ]],

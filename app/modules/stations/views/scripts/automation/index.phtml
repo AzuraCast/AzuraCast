@@ -1,25 +1,25 @@
-<?php $this->layout('main', ['title' => 'Automated Playlist Assignment', 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => _('Automated Playlist Assignment'), 'manual' => true]) ?>
 
 <div class="block-header">
-    <h2><?=$station->name ?></h2>
+    <h2><?=$this->e($station->name) ?></h2>
 </div>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2>Automated Playlist Assignment</h2>
+        <h2><?=_('Automated Playlist Assignment') ?></h2>
     </div>
     <div class="card-body card-padding">
-        <p>Based on the previous performance of your station's songs, <?=$config->application->name ?> can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.</p>
+        <p><?=sprintf(_('Based on the previous performance of your station\'s songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.'), $config->application->name) ?></p>
 
-        <p>Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.</p>
+        <p><?=_('Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.') ?></p>
 
-        <a class="btn btn-warning" href="<?=$url->routeFromHere(['action' => 'run']) ?>">Run Automated Assignment</a>
+        <a class="btn btn-warning" href="<?=$url->routeFromHere(['action' => 'run']) ?>"><?=_('Run Automated Assignment') ?></a>
     </div>
 </div>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2>Configure Automated Assignment</h2>
+        <h2><?=_('Configure Automated Assignment') ?></h2>
     </div>
     <div class="card-body card-padding">
         <?=$this->fetch('partials/form') ?>

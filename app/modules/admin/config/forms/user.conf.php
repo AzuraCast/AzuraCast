@@ -12,14 +12,14 @@ return [
         'elements' => [
 
             'email' => ['email', [
-                'label' => 'E-mail Address',
+                'label' => _('E-mail Address'),
                 'required' => true,
                 'autocomplete' => 'off',
             ]],
 
             'auth_password' => ['password', [
-                'label' => 'Reset Password',
-                'description' => 'Leave blank to use the current password.',
+                'label' => _('Reset Password'),
+                'description' => _('Leave blank to use the current password.'),
                 'autocomplete' => 'off',
                 'required' => false,
             ]],
@@ -31,7 +31,7 @@ return [
 
             'submit' => ['submit', [
                 'type' => 'submit',
-                'label' => 'Save Changes',
+                'label' => _('Save Changes'),
                 'helper' => 'formButton',
                 'class' => 'btn btn-lg btn-primary',
             ]],

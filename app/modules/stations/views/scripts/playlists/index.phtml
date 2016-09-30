@@ -1,12 +1,12 @@
-<?php $this->layout('main', ['title' => 'Playlists', 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => _('Playlists'), 'manual' => true]) ?>
 
 <div class="block-header">
-    <h2><?=$station->name ?></h2>
+    <h2><?=$this->e($station->name) ?></h2>
 </div>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2>Station Playlists</h2>
+        <h2><?=_('Playlists') ?></h2>
 
         <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
@@ -20,10 +20,10 @@
             </colgroup>
             <thead>
             <tr>
-                <th>Actions</th>
-                <th>Playlist</th>
-                <th>Type</th>
-                <th># Songs</th>
+                <th><?=_('Actions') ?></th>
+                <th><?=_('Playlist') ?></th>
+                <th><?=_('Type') ?></th>
+                <th><?=_('# Songs') ?></th>
             </tr>
             </thead>
             <tbody>
@@ -36,26 +36,25 @@
                     <td>
                         <big><?=$row['name'] ?></big>
                         <?php if ($row['include_in_automation']): ?>
-                            <br><span class="label label-success">Auto-Assigned</span>
+                            <br><span class="label label-success"><?=_('Auto-Assigned') ?></span>
                         <?php endif; ?>
                     </td>
                     <td>
                     <?php if (!$row['is_enabled']): ?>
-                        Disabled
+                        <?=_('Disabled') ?>
                     <?php elseif ($row['type'] == 'default'): ?>
-                        Standard Playlist<br>
-                        Weight: <?=$row['weight'] ?> (<?=$row['probability'] ?>)
+                        <?=_('Standard Playlist') ?><br>
+                        <?=_('Weight') ?>: <?=$row['weight'] ?> (<?=$row['probability'] ?>)
                     <?php elseif ($row['type'] == 'scheduled'): ?>
-                        Scheduled Playlist<br>
-                        Plays between <?=\Entity\StationPlaylist::formatTimeCode($row['schedule_start_time']) ?>
-                        and <?=\Entity\StationPlaylist::formatTimeCode($row['schedule_end_time']) ?>
+                        <?=_('Scheduled Playlist') ?><br>
+                        <?=sprintf(_('Plays between %s and %s'), \Entity\StationPlaylist::formatTimeCode($row['schedule_start_time']), \Entity\StationPlaylist::formatTimeCode($row['schedule_end_time'])) ?>
                     <?php elseif ($row['type'] == 'once_per_x_songs'): ?>
-                        Once per <?=$row['play_per_songs'] ?> Songs
+                        <?=sprintf(_('Once per %d Songs'), $row['play_per_songs']) ?>
                     <?php elseif ($row['type'] == 'once_per_x_minutes'): ?>
-                        Once per <?=$row['play_per_minutes'] ?> Minutes
+                        <?=sprintf(_('Once per %d Minutes'), $row['play_per_minutes']) ?>
                     <?php elseif ($row['type'] == 'once_per_day'): ?>
-                        Once per Day<br>
-                        Plays at <?=\Entity\StationPlaylist::formatTimeCode($row['play_once_time']) ?>
+                        <?=_('Once per Day') ?><br>
+                        <?=sprintf(_('Plays at %s'), \Entity\StationPlaylist::formatTimeCode($row['play_once_time'])) ?>
                     <?php endif; ?>
                     </td>
                     <td><?=$row['num_songs'] ?></td>

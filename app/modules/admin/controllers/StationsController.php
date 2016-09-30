@@ -49,11 +49,11 @@ class StationsController extends BaseController
             $cache = $this->di->get('cache');
             $cache->remove('stations');
 
-            $this->alert('Changes saved.', 'green');
+            $this->alert(_('Changes saved.'), 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
         }
 
-        return $this->renderForm($form, 'edit', 'Edit Record');
+        return $this->renderForm($form, 'edit', _('Edit Record'));
     }
     
     public function deleteAction()
@@ -71,7 +71,7 @@ class StationsController extends BaseController
             $this->em->flush();
         }
             
-        $this->alert('Record deleted.', 'green');
+        $this->alert(_('Record deleted.'), 'green');
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
     }
 }

@@ -1,15 +1,15 @@
 <?php $this->layout('main', ['title' => 'Users', 'manual' => true]); ?>
 
 <div class="block-header">
-    <h2>Manage Users</h2>
+    <h2><?=_('Administration') ?></h2>
 </div>
 
 <div class="card">
     <div class="card-header ch-alt">
         <?php if ($q): ?>
-            <h2>Search Results for "<?=$q ?>"</h2>
+            <h2><?=sprintf(_('Search Results for "%s"'), $this->e($q)) ?></h2>
         <?php else: ?>
-            <h2>All Users</h2>
+            <h2><?=_('All Users') ?></h2>
         <?php endif; ?>
 
         <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
@@ -26,18 +26,18 @@
             </colgroup>
             <thead>
             <tr>
-                <th>Actions</th>
-                <th>E-mail Address</th>
-                <th>Roles</th>
+                <th><?=_('Actions') ?></th>
+                <th><?=_('E-mail Address') ?></th>
+                <th><?=_('Roles') ?></th>
             </tr>
             </thead>
             <tbody>
             <?php foreach($pager as $user): ?>
                 <tr class="input">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)) ?>">Log In</a>
-                        <a class="btn btn-sm btn-default" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $user->id)) ?>">Edit</a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $user->id)) ?>">Delete</a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)) ?>"><?=_('Log In') ?></a>
+                        <a class="btn btn-sm btn-default" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $user->id)) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $user->id)) ?>"><?=_('Delete') ?></a>
                     </td>
                     <td><?=$this->mailto($user->email) ?></td>
                     <td>

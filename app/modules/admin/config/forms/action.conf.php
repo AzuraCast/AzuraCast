@@ -12,14 +12,14 @@ return [
         'elements' => [
 
             'name' => ['text', [
-                'label' => 'Action Name',
+                'label' => _('Action Name'),
                 'class' => 'half-width',
                 'required' => true,
             ]],
 
             'submit' => ['submit', [
                 'type' => 'submit',
-                'label' => 'Save Changes',
+                'label' => _('Save Changes'),
                 'helper' => 'formButton',
                 'class' => 'btn btn-lg btn-primary',
             ]],

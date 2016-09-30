@@ -4,25 +4,25 @@ return [
     'elements' => [
 
         'streamer_username' => ['text', [
-            'label' => 'Login Username',
-            'description' => 'The streamer will use this username to connect to the radio server.',
+            'label' => _('Streamer Username'),
+            'description' => _('The streamer will use this username to connect to the radio server.'),
             'required' => true,
         ]],
 
         'streamer_password' => ['text', [
-            'label' => 'Login Password',
-            'description' => 'The streamer will use this password to connect to the radio server.',
+            'label' => _('Streamer Password'),
+            'description' => _('The streamer will use this password to connect to the radio server.'),
             'required' => true,
         ]],
 
         'comments' => ['textarea', [
-            'label' => 'Account Comments',
-            'description' => 'Internal notes or comments about the user, visible only on this control panel.',
+            'label' => _('Comments'),
+            'description' => _('Internal notes or comments about the user, visible only on this control panel.'),
         ]],
 
         'is_active' => ['radio', [
-            'label' => 'Account is Active',
-            'description' => 'Set to "Yes" to allow this account to log in and stream.',
+            'label' => _('Account is Active'),
+            'description' => _('Set to "Yes" to allow this account to log in and stream.'),
             'required' => true,
             'default' => '1',
             'options' => [
@@ -33,7 +33,7 @@ return [
 
         'submit' => ['submit', [
             'type' => 'submit',
-            'label' => 'Save Changes',
+            'label' => _('Save Changes'),
             'helper' => 'formButton',
             'class' => 'ui-button btn-lg btn-primary',
         ]],

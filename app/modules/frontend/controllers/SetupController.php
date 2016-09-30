@@ -26,7 +26,7 @@ class SetupController extends BaseController
      */
     public function completeAction()
     {
-        $this->alert('<b>Setup has already been completed!</b>', 'red');
+        $this->alert('<b>'._('Setup has already been completed!').'</b>', 'red');
 
         return $this->redirectHome();
     }
@@ -53,7 +53,7 @@ class SetupController extends BaseController
             $this->em->persist($action);
 
             $role = new \Entity\Role;
-            $role->name = 'Super Administrator';
+            $role->name = _('Super Administrator');
             $role->actions->add($action);
             $this->em->persist($role);
 
@@ -135,11 +135,11 @@ class SetupController extends BaseController
             $settings_repo->setSettings($data);
 
             // Notify the user and redirect to homepage.
-            $this->alert('<b>Setup is now complete!</b><br>Continue setting up your station in the main AzuraCast app.', 'green');
+            $this->alert('<b>'._('Setup is now complete!').'</b><br>'._('Continue setting up your station in the main AzuraCast app.'), 'green');
             return $this->redirectHome();
         }
 
-        return $this->renderForm($form, 'edit', 'Site Settings');
+        return $this->renderForm($form, 'edit', _('Site Settings'));
     }
 
     /**

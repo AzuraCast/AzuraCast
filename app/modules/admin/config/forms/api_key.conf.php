@@ -5,14 +5,14 @@ return [
     'elements' => [
 
         'owner' => ['text', [
-            'label' => 'API Key Owner',
+            'label' => _('API Key Owner'),
             'class' => 'half-width',
             'required' => true,
         ]],
 
         'submit' => ['submit', [
             'type' => 'submit',
-            'label' => 'Save Changes',
+            'label' => _('Save Changes'),
             'helper' => 'formButton',
             'class' => 'btn btn-lg btn-primary',
         ]],

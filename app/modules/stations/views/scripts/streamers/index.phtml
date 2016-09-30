@@ -1,14 +1,14 @@
-<?php $this->layout('main', ['title' => 'Manage Streamers/DJs', 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => _('Streamer/DJ Accounts'), 'manual' => true]) ?>
 
 <div class="block-header">
-    <h2><?=$station->name ?></h2>
+    <h2><?=$this->e($station->name) ?></h2>
 </div>
 
 <div class="row">
     <div class="col-md-8">
         <div class="card">
             <div class="card-header ch-alt">
-                <h2>Streamer/DJ Accounts</h2>
+                <h2><?=_('Streamer/DJ Accounts') ?></h2>
 
                 <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
             </div>
@@ -22,10 +22,10 @@
                     </colgroup>
                     <thead>
                     <tr>
-                        <th>Actions</th>
-                        <th>Username</th>
-                        <th>Password</th>
-                        <th>Notes</th>
+                        <th><?=_('Actions') ?></th>
+                        <th><?=_('Username') ?></th>
+                        <th><?=_('Password') ?></th>
+                        <th><?=_('Notes') ?></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -35,9 +35,9 @@
                                 <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $row->id)) ?>">Edit</a>
                                 <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row->id)) ?>">Delete</a>
                             </td>
-                            <td><code><?=$row->streamer_username ?></code></td>
-                            <td><code><?=$row->streamer_password ?></code></td>
-                            <td><?=nl2br($row->comments) ?></td>
+                            <td><code><?=$this->e($row->streamer_username) ?></code></td>
+                            <td><code><?=$this->e($row->streamer_password) ?></code></td>
+                            <td><?=nl2br($this->e($row->comments)) ?></td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -48,7 +48,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-header ch-alt">
-                <h2>Connection Information</h2>
+                <h2><?=_('Connection Information') ?></h2>
             </div>
             <div class="card-body card-padding">
                 <?
@@ -57,30 +57,30 @@
 
                 if ($frontend_type == 'icecast'):
                 ?>
-                    <h4>IceCast Clients</h4>
+                    <h4><?=_('IceCast Clients') ?></h4>
                     <dl>
-                        <dt>Server:</dt>
+                        <dt><?=_('Server') ?>:</dt>
                         <dd><?=$server_url ?></dd>
 
-                        <dt>Port:</dt>
+                        <dt><?=_('Port') ?>:</dt>
                         <dd><?=(int)$frontend_info['port'] ?></dd>
 
-                        <dt>Mount Name:</dt>
+                        <dt><?=_('Mount Name') ?>:</dt>
                         <dd>/radio.mp3</dd>
                     </dl>
 
-                    <h4>ShoutCast 1.x Legacy Clients</h4>
+                    <h4><?=_('ShoutCast 1.x Legacy Clients') ?></h4>
                     <dl>
-                        <dt>Server:</dt>
+                        <dt><?=_('Server') ?>:</dt>
                         <dd><?=$server_url ?></dd>
 
-                        <dt>Port:</dt>
+                        <dt><?=_('Port') ?>:</dt>
                         <dd><?=(int)$frontend_info['port']+1 ?></dd>
 
-                        <dt>Username:</dt>
+                        <dt><?=('Username') ?>:</dt>
                         <dd>(Leave blank)</dd>
 
-                        <dt>Password:</dt>
+                        <dt><?=_('Password') ?>:</dt>
                         <dd><?=$frontend_info['streamer_pw'] ?></dd>
                     </dl>
                 <?

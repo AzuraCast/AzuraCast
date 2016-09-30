@@ -275,9 +275,22 @@ $cache = $di->get('cache');
 
 if (!APP_IS_COMMAND_LINE)
 {
-    // Set time zone and localization.
+    // Set time zone.
     $timezone = $di['em']->getRepository('Entity\Settings')->getSetting('timezone', date_default_timezone_get());
     date_default_timezone_set($timezone);
+
+    // Set up localization.
+    $locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    if (!$locale)
+        $locale = $di['em']->getRepository('Entity\Settings')->getSetting('locale', 'en_US');
+
+    putenv("LANG=".$locale);
+    setlocale(LC_ALL, $locale);
+
+    $locale_domain = 'default';
+    bindtextdomain($locale_domain, APP_INCLUDE_BASE.'/locale');
+    bind_textdomain_codeset($locale_domain, 'UTF-8');
+    textdomain($locale_domain);
 }
 
 // Set up application and routing.

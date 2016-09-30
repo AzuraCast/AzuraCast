@@ -16,18 +16,18 @@ return [
         'groups' => [
 
             'system' => [
-                'legend' => 'System Settings',
+                'legend' => _('System Settings'),
                 'elements' => [
 
                     'base_url' => ['text', [
-                        'label' => 'Site Base URL',
-                        'description' => 'The base URL where this service is located. For local testing, use "localhost". Otherwise, use either the external IP address or fully-qualified domain name pointing to the server.',
+                        'label' => _('Site Base URL'),
+                        'description' => _('The base URL where this service is located. For local testing, use "localhost". Otherwise, use either the external IP address or fully-qualified domain name pointing to the server.'),
                         'default' => $base_url_default,
                     ]],
 
                     'timezone' => ['select', [
-                        'label' => 'Server Timezone',
-                        'description' => 'All times displayed on the site will be based on this time zone.<br><b>Current server time is ' . date('F j, Y g:ia') . '.</b>',
+                        'label' => _('Server Timezone'),
+                        'description' => _('All times displayed on the site will be based on this time zone.').'<br>'.sprintf(_('Current server time is <b>%s</b>.'), date('g:ia')),
                         'options' => \App\Timezone::fetchSelect(),
                         'default' => date_default_timezone_get(),
                     ]],
@@ -40,7 +40,7 @@ return [
                 'elements' => [
                     'submit' => ['submit', [
                         'type' => 'submit',
-                        'label' => 'Save Changes',
+                        'label' => _('Save Changes'),
                         'helper' => 'formButton',
                         'class' => 'btn btn-lg btn-primary',
                     ]],

@@ -8,7 +8,7 @@ return [
     'groups' => [
 
         'account_info' => [
-            'legend' => 'Account Information',
+            'legend' => _('Account Information'),
             'elements' => [
 
                 /*
@@ -20,15 +20,15 @@ return [
                 */
 
                 'email' => ['text', [
-                    'label' => 'E-mail Address',
+                    'label' => _('E-mail Address'),
                     'class' => 'half-width',
                     'required' => true,
                     'autocomplete' => 'off',
                 ]],
 
                 'auth_password' => ['password', [
-                    'label' => 'Reset Password',
-                    'description' => 'To change your password, enter the new password in the field below.',
+                    'label' => _('Reset Password'),
+                    'description' => _('To change your password, enter the new password in the field below.'),
                     'autocomplete' => 'off',
                 ]],
 
@@ -39,7 +39,7 @@ return [
             'elements' => [
                 'submit' => ['submit', [
                     'type' => 'submit',
-                    'label' => 'Save Profile',
+                    'label' => _('Save Profile'),
                     'helper' => 'formButton',
                     'class' => 'btn btn-lg btn-primary',
                 ]],

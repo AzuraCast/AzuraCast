@@ -39,11 +39,11 @@ class PermissionsController extends BaseController
             $this->em->persist($record);
             $this->em->flush();
             
-            $this->alert('Action updated.', 'green');
+            $this->alert(_('Action updated.'), 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
         }
 
-        return $this->renderForm($form, 'edit', 'Edit Action');
+        return $this->renderForm($form, 'edit', _('Edit Action'));
     }
     
     public function deleteactionAction()
@@ -52,7 +52,7 @@ class PermissionsController extends BaseController
         if ($action)
             $action->delete();
             
-        $this->alert('Action deleted!', 'green');
+        $this->alert(_('Action deleted.'), 'green');
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
     }
 
@@ -89,11 +89,11 @@ class PermissionsController extends BaseController
             $this->em->persist($record);
             $this->em->flush();
 
-            $this->alert('<b>Role updated!</b>', 'green');
+            $this->alert('<b>'._('Role updated.').'</b>', 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
         }
 
-        return $this->renderForm($form, 'edit', 'Edit Role');
+        return $this->renderForm($form, 'edit', _('Edit Role'));
     }
 
     public function deleteroleAction()
@@ -104,7 +104,7 @@ class PermissionsController extends BaseController
 
         $this->em->flush();
         
-        $this->alert('<b>Role deleted!</b>', 'green');
+        $this->alert('<b>'._('Role deleted!').'</b>', 'green');
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
     }
 }

@@ -50,13 +50,14 @@ class ProfileController extends BaseController
                 \App\Customization::set($custom_key, $custom_val);
             */
 
-            $this->alert('Profile saved!', 'green');
+            $this->alert(_('Profile saved!'), 'green');
             return $this->redirectFromHere(array('action' => 'index'));
         }
 
-        return $this->renderForm($form, 'edit', 'Edit Profile');
+        return $this->renderForm($form, 'edit', _('Edit Profile'));
     }
 
+    /*
     public function timezoneAction()
     {
         $form = new \App\Form($this->current_module_config->forms->timezone);
@@ -80,4 +81,5 @@ class ProfileController extends BaseController
         $this->view->setVar('title', 'Set Time Zone');
         $this->renderForm($form);
     }
+    */
 }

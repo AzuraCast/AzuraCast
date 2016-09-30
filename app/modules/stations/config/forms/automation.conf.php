@@ -5,8 +5,8 @@ return [
     'elements' => [
 
         'is_enabled' => ['radio', [
-            'label' => 'Enable Automated Assignment',
-            'description' => 'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".',
+            'label' => _('Enable Automated Assignment'),
+            'description' => _('Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".'),
             'default' => '0',
             'options' => [
                 0 => 'Disabled',
@@ -15,8 +15,8 @@ return [
         ]],
 
         'threshold_days' => ['radio', [
-            'label' => 'Days Between Automated Assignments',
-            'description' => 'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.',
+            'label' => _('Days Between Automated Assignments'),
+            'description' => _('Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.'),
             'class' => 'inline',
             'default' => \App\Sync\RadioAutomation::DEFAULT_THRESHOLD_DAYS,
             'options' => [
@@ -29,7 +29,7 @@ return [
 
         'submit' => ['submit', [
             'type' => 'submit',
-            'label' => 'Save Changes',
+            'label' => _('Save Changes'),
             'helper' => 'formButton',
             'class' => 'btn btn-lg btn-primary',
         ]],

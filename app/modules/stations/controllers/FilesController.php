@@ -93,13 +93,13 @@ class FilesController extends BaseController
             $this->em->persist($media);
             $this->em->flush();
 
-            $this->alert('<b>Media metadata updated!</b>', 'green');
+            $this->alert('<b>'._('Media metadata updated!').'</b>', 'green');
 
             $default_url = $this->url->routeFromHere(['action' => 'index']);
             return $this->redirectToStoredReferrer('media_edit', $default_url);
         }
 
-        return $this->renderForm($form, 'edit', 'Edit Media Metadata');
+        return $this->renderForm($form, 'edit', _('Edit Media Metadata'));
     }
 
     public function listAction()
@@ -141,11 +141,11 @@ class FilesController extends BaseController
                 $short = ltrim(str_replace($this->base_dir, '', $i), '/');
 
                 if (is_dir($i))
-                    $media = ['name' => 'Directory', 'playlists' => '', 'is_playable' => false];
+                    $media = ['name' => _('Directory'), 'playlists' => '', 'is_playable' => false];
                 elseif (isset($media_in_dir[$short]))
                     $media = $media_in_dir[$short];
                 else
-                    $media = ['name' => 'File Not Processed', 'playlists' => '', 'is_playable' => false];
+                    $media = ['name' => _('File Not Processed'), 'playlists' => '', 'is_playable' => false];
 
                 $stat = stat($i);
 

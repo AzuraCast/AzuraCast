@@ -1,4 +1,4 @@
-<?php $this->layout('main', ['title' => 'Role Members']); ?>
+<?php $this->layout('main', ['title' => _('Role Members')]); ?>
 
 <?php foreach($roles as $role): ?>
     <h2>
@@ -16,7 +16,7 @@
 
     <ul>
     <?php foreach($role['users'] as $user): ?>
-        <li><a href="<?=$url->route(array('module' => 'admin', 'controller' => 'users', 'action' => 'edit', 'id' => $user['id'])) ?>" target="_blank"><?=$user['name'] ?></a></li>
+        <li><a href="<?=$url->route(array('module' => 'admin', 'controller' => 'users', 'action' => 'edit', 'id' => $user['id'])) ?>" target="_blank"><?=$this->e($user['name']) ?></a></li>
     <?php endforeach; ?>
     </ul>
 <?php endforeach; ?>

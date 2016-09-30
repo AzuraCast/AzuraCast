@@ -64,7 +64,7 @@ class ProfileController extends BaseController
             return $this->redirectFromHere(array('action' => 'index'));
         }
 
-        return $this->renderForm($form, 'edit', 'Edit Station Profile');
+        return $this->renderForm($form, 'edit', _('Edit Station Profile'));
     }
 
     public function backendAction()
@@ -76,19 +76,19 @@ class ProfileController extends BaseController
             case "skip":
                 $adapter->skip();
 
-                $this->alert('<b>Song skipped.</b>', 'green');
+                $this->alert('<b>'._('Song skipped.').'</b>', 'green');
             break;
 
             case "stop":
                 $adapter->stop();
 
-                $this->alert('<b>Adapter stopped.</b>', 'green');
+                $this->alert('<b>'._('Adapter stopped.').'</b>', 'green');
             break;
 
             case "start":
                 $adapter->start();
 
-                $this->alert('<b>Adapter started.</b>', 'green');
+                $this->alert('<b>'._('Adapter started.').'</b>', 'green');
             break;
 
             case "restart":
@@ -97,7 +97,7 @@ class ProfileController extends BaseController
                 $adapter->write();
                 $adapter->start();
 
-                $this->alert('<b>Adapter rebooted.</b>', 'green');
+                $this->alert('<b>'._('Adapter rebooted.').'</b>', 'green');
             break;
         }
 
@@ -113,13 +113,13 @@ class ProfileController extends BaseController
             case "stop":
                 $adapter->stop();
 
-                $this->alert('<b>Adapter stopped.</b>', 'green');
+                $this->alert('<b>'._('Adapter stopped.').'</b>', 'green');
             break;
 
             case "start":
                 $adapter->start();
 
-                $this->alert('<b>Adapter started.</b>', 'green');
+                $this->alert('<b>'._('Adapter started.').'</b>', 'green');
             break;
 
             case "restart":
@@ -128,7 +128,7 @@ class ProfileController extends BaseController
                 $adapter->write();
                 $adapter->start();
 
-                $this->alert('<b>Frontend rebooted.</b>', 'green');
+                $this->alert('<b>'._('Adapter rebooted.').'</b>', 'green');
             break;
         }
 

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-30 22:30+0000\n"
-"PO-Revision-Date: 2016-09-30 18:37-0400\n"
+"PO-Revision-Date: 2016-09-30 19:24-0400\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -18,12 +18,12 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:7
 msgid "System Maintenance"
-msgstr ""
+msgstr "Mantenimiento del Sistema"
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:8
 #: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:19
 msgid "System Settings"
-msgstr ""
+msgstr "Configuración del Sistema"
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:13
 #: /var/azuracast/www/app/modules/admin/views/scripts/api/index.phtml:1
@@ -33,30 +33,30 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:19
 msgid "Users"
-msgstr ""
+msgstr "Usuarios"
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:20
 msgid "User Accounts"
-msgstr ""
+msgstr "Cuentas de Usuario"
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:25
 msgid "Roles and Permissions"
-msgstr ""
+msgstr "Permisos"
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:31
 #: /var/azuracast/www/app/modules/admin/views/scripts/stations/index.phtml:1
 msgid "Stations"
-msgstr ""
+msgstr "Estaciones"
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:32
 #: /var/azuracast/www/app/modules/admin/views/scripts/stations/index.phtml:9
 msgid "Manage Stations"
-msgstr ""
+msgstr "Gestión de Estaciones"
 
 #: /var/azuracast/www/app/modules/admin/config/forms/action.conf.php:15
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:60
 msgid "Action Name"
-msgstr ""
+msgstr "Nombre de la Acción"
 
 #: /var/azuracast/www/app/modules/admin/config/forms/action.conf.php:22
 #: /var/azuracast/www/app/modules/admin/config/forms/api_key.conf.php:15
@@ -70,7 +70,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/config/forms/playlist.conf.php:171
 #: /var/azuracast/www/app/modules/stations/config/forms/streamer.conf.php:36
 msgid "Save Changes"
-msgstr ""
+msgstr "Guardar los Cambios"
 
 #: /var/azuracast/www/app/modules/admin/config/forms/api_key.conf.php:8
 msgid "API Key Owner"
@@ -90,11 +90,11 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/duplicates.phtml:27
 #: /var/azuracast/www/app/modules/stations/views/scripts/streamers/index.phtml:25
 msgid "Actions"
-msgstr ""
+msgstr "Acciones"
 
 #: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:23
 msgid "Site Base URL"
-msgstr ""
+msgstr "URL básica sitio"
 
 #: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:24
 msgid "The base URL where this service is located. For local testing, use \"localhost\". Otherwise, use either the external IP address or fully-qualified domain name pointing to the server."
@@ -102,7 +102,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:29
 msgid "Server Timezone"
-msgstr ""
+msgstr "Zona Horaria del Servidor"
 
 #: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:30
 msgid "All times displayed on the site will be based on this time zone."

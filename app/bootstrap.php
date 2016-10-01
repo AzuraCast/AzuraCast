@@ -279,10 +279,34 @@ if (!APP_IS_COMMAND_LINE)
     $timezone = $di['em']->getRepository('Entity\Settings')->getSetting('timezone', date_default_timezone_get());
     date_default_timezone_set($timezone);
 
+    /*
+     * Commands:
+     * find /var/azuracast/www -type f \( -name '*.php' -or -name '*.phtml' \) -print > list
+     * xgettext --files-from=list --language=PHP -o /var/azuracast/www/app/locale/messages.pot
+     *
+     * find /var/azuracast/www/app/locale -name \*.po -execdir msgfmt default.po -o default.mo \;
+     */
+
     // Set up localization.
     $locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
     if (!$locale)
-        $locale = $di['em']->getRepository('Entity\Settings')->getSetting('locale', 'en_US');
+        $locale = $di['em']->getRepository('Entity\Settings')->getSetting('locale', 'en_US.UTF-8');
+
+    $langs = [
+        'es' => 'es_ES.UTF-8',
+        'fr' => 'fr_FR.UTF-8',
+        'de' => 'de_DE.UTF-8',
+        'ru' => 'ru_RU.UTF-8',
+    ];
+
+    foreach($langs as $lang_prefix => $lang_resolved)
+    {
+        if (substr($locale, 0, strlen($lang_prefix)) == $lang_prefix)
+        {
+            $locale = $lang_resolved;
+            break;
+        }
+    }
 
     putenv("LANG=".$locale);
     setlocale(LC_ALL, $locale);

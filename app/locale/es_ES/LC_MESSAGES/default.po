@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-30 22:30+0000\n"
-"PO-Revision-Date: 2016-09-30 20:44-0400\n"
+"PO-Revision-Date: 2016-09-30 20:54-0400\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -23,7 +23,7 @@ msgstr "Mantenimiento del Sistema"
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:8
 #: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:19
 msgid "System Settings"
-msgstr "Configuración del Sistema"
+msgstr "Configuraciones"
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:13
 #: /var/azuracast/www/app/modules/admin/views/scripts/api/index.phtml:1
@@ -51,7 +51,7 @@ msgstr "Estaciones"
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:32
 #: /var/azuracast/www/app/modules/admin/views/scripts/stations/index.phtml:9
 msgid "Manage Stations"
-msgstr "Gestión de Estaciones"
+msgstr "Dirigiendo las Estaciones"
 
 #: /var/azuracast/www/app/modules/admin/config/forms/action.conf.php:15
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:60
@@ -170,7 +170,7 @@ msgstr "Permitir a pedir canciones"
 
 #: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:51
 msgid "Setting this enables listeners to request a song for play on your station. Only songs that are already in your playlists are listed as requestable."
-msgstr ""
+msgstr "El parámetro permite oyentes a solicitarse una canción para jugarla en la estación. Solamente las canciones que ya están en sus listas de reproducción aparecen como solicitable."
 
 #: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:57
 msgid "Request Minimum Delay (Minutes)"
@@ -442,7 +442,7 @@ msgstr "¡Bienvenido a %s!"
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/account/login.phtml:6
 msgid "Please log in to continue."
-msgstr "Inicia sesión para continuar."
+msgstr "Por favor, inicia la sesión para continuarte."
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:1
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:14

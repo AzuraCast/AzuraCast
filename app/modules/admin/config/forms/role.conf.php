@@ -3,6 +3,9 @@
  * Edit Role Form
  */
 
+/** @var \Doctrine\ORM\EntityManager $em */
+$em = $di['em'];
+
 return [
     /**
      * Form Configuration
@@ -19,7 +22,7 @@ return [
 
             'actions' => ['multiCheckbox', [
                 'label' => _('Actions'),
-                // Supply options in controller class.
+                'options' => $em->getRepository(\Entity\Action::class)->fetchSelect(),
             ]],
 
             'submit' => ['submit', [

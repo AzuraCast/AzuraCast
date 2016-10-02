@@ -38,12 +38,22 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']))
     $_SERVER['HTTPS'] = (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https');
 
 // Composer autoload.
-$autoloader = require(APP_INCLUDE_VENDOR . DIRECTORY_SEPARATOR . 'autoload.php');
+$autoloader = require(APP_INCLUDE_VENDOR . '/autoload.php');
 $autoloader->add('App', APP_INCLUDE_LIB);
 
+// Set up DI container.
+$app_settings = [
+    'displayErrorDetails' => true,
+    'addContentLengthHeader' => false,
+];
+
+if (APP_APPLICATION_ENV !== 'development')
+    $app_settings['routerCacheFile'] = APP_INCLUDE_TEMP.'/app_routes.cache.php';
+
+$di = new \Slim\Container(['settings' => $app_settings]);
+
 // Save configuration object.
-$config = new \App\Config(APP_INCLUDE_BASE.'/config');
-$config->preload(array('application'));
+$config = new \App\Config(APP_INCLUDE_BASE.'/config', $di);
 
 // Add application autoloaders to Composer's autoloader handler.
 $autoload_classes = $config->application->autoload->toArray();
@@ -70,16 +80,7 @@ foreach($php_settings as $setting_key => $setting_value)
     }
 }
 
-$app_settings = [
-    'displayErrorDetails' => true,
-    'addContentLengthHeader' => false,
-];
-
-if (APP_APPLICATION_ENV !== 'development')
-    $app_settings['routerCacheFile'] = APP_INCLUDE_TEMP.'/app_routes.cache.php';
-
-$di = new \Slim\Container(['settings' => $app_settings]);
-
+// Override Slim handlers.
 $di['callableResolver'] = function($di) {
     return new \App\Mvc\Resolver($di);
 };
@@ -110,7 +111,7 @@ foreach($modules as $module)
 
     $config_directory = $full_path.'/config';
     if (file_exists($config_directory))
-        $module_config[$module] = new \App\Config($config_directory);
+        $module_config[$module] = new \App\Config($config_directory, $di);
 
     $module_class = 'Modules\\'.ucfirst($module).'\\Controllers\\';
     $autoloader->addPsr4($module_class, $full_path.'/controllers');
@@ -125,7 +126,7 @@ $di['em'] = function($di) {
     try
     {
         $config = $di['config'];
-        $db_conf = $config->application->resources->doctrine->toArray();
+        $db_conf = $config->application->doctrine->toArray();
         $db_conf['conn'] = $config->db->toArray();
 
         return \App\Doctrine\EntityManagerFactory::create($di, $db_conf);
@@ -141,7 +142,7 @@ $di['db'] = function($di) {
     {
         $config = $di['config'];
 
-        $db_conf = $config->application->resources->doctrine->toArray();
+        $db_conf = $config->application->doctrine->toArray();
         $db_conf['conn'] = $config->db->toArray();
 
         $config = new \Doctrine\DBAL\Configuration;
@@ -282,31 +283,26 @@ if (!APP_IS_COMMAND_LINE)
     /*
      * Commands:
      * find /var/azuracast/www -type f \( -name '*.php' -or -name '*.phtml' \) -print > list
-     * xgettext --files-from=list --language=PHP -o /var/azuracast/www/app/locale/messages.pot
+     * xgettext --files-from=list --language=PHP -o /var/azuracast/www/app/locale/default.pot
      *
      * find /var/azuracast/www/app/locale -name \*.po -execdir msgfmt default.po -o default.mo \;
      */
 
     // Set up localization.
-    $locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-    if (!$locale)
-        $locale = $di['em']->getRepository('Entity\Settings')->getSetting('locale', 'en_US.UTF-8');
+    $browser_locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 
-    $langs = [
-        'es' => 'es_ES.UTF-8',
-        'fr' => 'fr_FR.UTF-8',
-        'de' => 'de_DE.UTF-8',
-        'ru' => 'ru_RU.UTF-8',
-    ];
-
-    foreach($langs as $lang_prefix => $lang_resolved)
+    $supported_locales = $config->application->locale->supported->toArray();
+    foreach($supported_locales as $lang_code => $lang_name)
     {
-        if (substr($locale, 0, strlen($lang_prefix)) == $lang_prefix)
+        if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0)
         {
-            $locale = $lang_resolved;
+            $locale = $lang_code;
             break;
         }
     }
+
+    if (empty($locale))
+        $locale = $di['em']->getRepository('Entity\Settings')->getSetting('locale', $config->application->locale->default);
 
     putenv("LANG=".$locale);
     setlocale(LC_ALL, $locale);

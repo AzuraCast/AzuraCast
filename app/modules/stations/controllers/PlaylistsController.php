@@ -64,13 +64,13 @@ class PlaylistsController extends BaseController
 
             $this->_reloadStation();
 
-            $this->alert('<b>'._('Playlist updated.').'</b>', 'green');
+            $this->alert('<b>'._('Record updated.').'</b>', 'green');
 
             return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);
         }
 
         $this->view->form = $form;
-        $this->view->title = ($this->hasParam('id')) ? _('Edit Playlist') : _('Add Playlist');
+        $this->view->title = ($this->hasParam('id')) ? _('Edit Record') : _('Add Record');
     }
 
     public function deleteAction()

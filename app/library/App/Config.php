@@ -1,13 +1,19 @@
 <?php
 namespace App;
 
+use Interop\Container\ContainerInterface;
+
 class Config
 {
     protected $_baseFolder;
     protected $_loaded_configs;
+
+    /** @var ContainerInterface */
+    protected $di;
     
-    public function __construct($baseFolder)
+    public function __construct($baseFolder, ContainerInterface $di)
     {
+        $this->di = $di;
         $this->_loaded_configs = array();
         
         if(is_dir($baseFolder))
@@ -38,7 +44,7 @@ class Config
             $config_base = $this->_baseFolder.DIRECTORY_SEPARATOR.$config_name;
             
             if (is_dir($config_base))
-                return new self($config_base); // Return entire directories.
+                return new self($config_base, $this->di); // Return entire directories.
             else
                 $this_config = $this->getFile($config_base); // Return single files.
             
@@ -50,34 +56,15 @@ class Config
 
     public function getFile($config_base)
     {
+        $di = $this->di;
+
         if (file_exists($config_base))
-            return new \Zend\Config\Config(require $config_base);
+            $config = require $config_base;
         elseif (file_exists($config_base.'.conf.php'))
-            return new \Zend\Config\Config(require $config_base.'.conf.php');
+            $config = require $config_base.'.conf.php';
         else
-            return new \Zend\Config\Config(array());
-    }
-    
-    /**
-     * Static Functions
-     */
-    
-    public static function loadConfig($directory)
-    {
-        return new self($directory);
-    }
-    public static function loadModuleConfig($directory)
-    {
-        $module_config = array();
-        foreach(new \DirectoryIterator($directory) as $item)
-        {
-            if($item->isDir() && !$item->isDot())
-            {
-                $config = $item->getPathname().DIRECTORY_SEPARATOR.'config';
-                if(file_exists($config))
-                    $module_config[$item->getFilename()] = new self($config);
-            }
-        }
-        return $module_config;
+            $config = [];
+
+        return new \Zend\Config\Config($config);
     }
 }

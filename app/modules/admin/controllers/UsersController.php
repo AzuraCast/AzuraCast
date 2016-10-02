@@ -34,8 +34,6 @@ class UsersController extends BaseController
     public function editAction()
     {
         $form_config = $this->current_module_config->forms->user->form->toArray();
-        $form_config['elements']['roles'][1]['options'] = $this->em->getRepository(Role::class)->fetchSelect();
-
         $form = new \App\Form($form_config);
         
         if ($this->hasParam('id'))
@@ -77,17 +75,17 @@ class UsersController extends BaseController
 
         $this->em->flush();
 
-        $this->alert('<b>'._('User deleted.').'</b>', 'green');
+        $this->alert('<b>'._('Record deleted.').'</b>', 'green');
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
     }
 
     public function impersonateAction()
     {
         $id = (int)$this->getParam('id');
-        $user = User::find($id);
+        $user = $this->em->getRepository(User::class)->find($id);
 
         if (!($user instanceof User))
-            throw new \App\Exception(_('User not found!'));
+            throw new \App\Exception(_('Record not found!'));
         
         // Set new identity in Zend_Auth
         $this->auth->masqueradeAsUser($user);

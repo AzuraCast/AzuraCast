@@ -26,7 +26,7 @@ class SettingsController extends BaseController
             $data = $form->getValues();
             $settings_repo->setSettings($data);
 
-            $this->alert(_('Settings updated!'), 'green');
+            $this->alert(_('Changes saved.'), 'green');
             return $this->redirectHere();
         }
 

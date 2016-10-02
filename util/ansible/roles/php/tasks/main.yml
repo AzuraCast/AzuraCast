@@ -33,11 +33,7 @@
   - name: Create Locales
     become: true
     locale_gen: name="{{ item }}" state=present
-    with_items:
-     - es_ES.UTF-8
-     - fr_FR.UTF-8
-     - de_DE.UTF-8
-     - ru_RU.UTF-8
+    with_lines: "cd {{ www_base }}/app/locale/; for i in $(ls -d */); do echo ${i%%/}; done"
 
   - name: Remove Old PHP Libraries
     become: true

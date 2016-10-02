@@ -39,11 +39,11 @@ class PermissionsController extends BaseController
             $this->em->persist($record);
             $this->em->flush();
             
-            $this->alert(_('Action updated.'), 'green');
+            $this->alert(_('Record updated.'), 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
         }
 
-        return $this->renderForm($form, 'edit', _('Edit Action'));
+        return $this->renderForm($form, 'edit', _('Edit Record'));
     }
     
     public function deleteactionAction()
@@ -52,7 +52,7 @@ class PermissionsController extends BaseController
         if ($action)
             $action->delete();
             
-        $this->alert(_('Action deleted.'), 'green');
+        $this->alert(_('Record deleted.'), 'green');
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
     }
 
@@ -67,8 +67,6 @@ class PermissionsController extends BaseController
     public function editroleAction()
     {
         $form_config = $this->current_module_config->forms->role->form->toArray();
-        $form_config['elements']['actions'][1]['options'] = $this->em->getRepository(Action::class)->fetchSelect();
-
         $form = new \App\Form($form_config);
         
         if ($this->hasParam('id'))
@@ -89,11 +87,11 @@ class PermissionsController extends BaseController
             $this->em->persist($record);
             $this->em->flush();
 
-            $this->alert('<b>'._('Role updated.').'</b>', 'green');
+            $this->alert('<b>'._('Record updated.').'</b>', 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
         }
 
-        return $this->renderForm($form, 'edit', _('Edit Role'));
+        return $this->renderForm($form, 'edit', _('Edit Record'));
     }
 
     public function deleteroleAction()
@@ -104,7 +102,7 @@ class PermissionsController extends BaseController
 
         $this->em->flush();
         
-        $this->alert('<b>'._('Role deleted!').'</b>', 'green');
+        $this->alert('<b>'._('Record deleted.').'</b>', 'green');
         return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
     }
 }

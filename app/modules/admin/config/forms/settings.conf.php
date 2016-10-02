@@ -6,6 +6,9 @@
 $base_url_parts = parse_url($_SERVER['HTTP_HOST']);
 $base_url_default = $base_url_parts['host'];
 
+/** @var \App\Config $config */
+$config = $di['config'];
+
 return [
     /**
      * Form Configuration
@@ -25,8 +28,14 @@ return [
                         'default' => $base_url_default,
                     ]],
 
+                    'locale' => ['radio', [
+                        'label' => _('Default Language'),
+                        'options' => $config->application->locale->supported->toArray(),
+                        'default' => $config->application->locale->default,
+                    ]],
+
                     'timezone' => ['select', [
-                        'label' => _('Server Timezone'),
+                        'label' => _('Server Time Zone'),
                         'description' => _('All times displayed on the site will be based on this time zone.').'<br>'.sprintf(_('Current server time is <b>%s</b>.'), date('g:ia')),
                         'options' => \App\Timezone::fetchSelect(),
                         'default' => date_default_timezone_get(),

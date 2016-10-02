@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-30 22:30+0000\n"
+"POT-Creation-Date: 2016-10-02 03:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgid "System Maintenance"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:8
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:19
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:22
 msgid "System Settings"
 msgstr ""
 
@@ -61,11 +61,11 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/forms/action.conf.php:22
 #: /var/azuracast/www/app/modules/admin/config/forms/api_key.conf.php:15
-#: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:27
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:43
+#: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:30
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:52
 #: /var/azuracast/www/app/modules/admin/config/forms/song.conf.php:36
 #: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:101
-#: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:34
+#: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:37
 #: /var/azuracast/www/app/modules/stations/config/forms/automation.conf.php:32
 #: /var/azuracast/www/app/modules/stations/config/forms/media.conf.php:20
 #: /var/azuracast/www/app/modules/stations/config/forms/playlist.conf.php:171
@@ -77,12 +77,12 @@ msgstr ""
 msgid "API Key Owner"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:15
+#: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:18
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:23
 msgid "Role Name"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:21
+#: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:24
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:48
 #: /var/azuracast/www/app/modules/admin/views/scripts/stations/index.phtml:21
 #: /var/azuracast/www/app/modules/admin/views/scripts/users/index.phtml:29
@@ -93,26 +93,30 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:23
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:26
 msgid "Site Base URL"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:24
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:27
 msgid ""
 "The base URL where this service is located. For local testing, use "
 "\"localhost\". Otherwise, use either the external IP address or fully-"
 "qualified domain name pointing to the server."
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:29
-msgid "Server Timezone"
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:32
+msgid "Default Language"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:30
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:38
+msgid "Server Time Zone"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:39
 msgid "All times displayed on the site will be based on this time zone."
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:30
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:39
 #: /var/azuracast/www/app/modules/stations/config/forms/playlist.conf.php:94
 #: /var/azuracast/www/app/modules/stations/config/forms/playlist.conf.php:159
 #, php-format
@@ -203,7 +207,7 @@ msgid ""
 "stream."
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:15
+#: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:18
 #: /var/azuracast/www/app/modules/admin/views/scripts/users/index.phtml:30
 #: /var/azuracast/www/app/modules/frontend/config/forms/login.conf.php:11
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:23
@@ -213,60 +217,52 @@ msgstr ""
 msgid "E-mail Address"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:21
+#: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:24
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:30
 msgid "Reset Password"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:22
+#: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:25
 msgid "Leave blank to use the current password."
 msgstr ""
 
+#: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:31
+#: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:11
+#: /var/azuracast/www/app/modules/admin/views/scripts/users/index.phtml:31
+msgid "Roles"
+msgstr ""
+
 #: /var/azuracast/www/app/modules/admin/controllers/ApiController.php:41
+#: /var/azuracast/www/app/modules/admin/controllers/SettingsController.php:29
 #: /var/azuracast/www/app/modules/admin/controllers/StationsController.php:52
 #: /var/azuracast/www/app/modules/stations/controllers/AutomationController.php:26
 msgid "Changes saved."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/controllers/ApiController.php:46
+#: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:46
+#: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:94
 #: /var/azuracast/www/app/modules/admin/controllers/StationsController.php:56
-#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:67
+#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:65
+#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:73
 msgid "Edit Record"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/controllers/ApiController.php:58
+#: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:55
+#: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:105
 #: /var/azuracast/www/app/modules/admin/controllers/StationsController.php:74
+#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:78
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:92
 #: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:87
 msgid "Record deleted."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:42
-msgid "Action updated."
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:46
-msgid "Edit Action"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:55
-msgid "Action deleted."
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:92
-msgid "Role updated."
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:96
-msgid "Edit Role"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:107
-msgid "Role deleted!"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/controllers/SettingsController.php:29
-msgid "Settings updated!"
+#: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:90
+#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:61
+#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:67
+msgid "Record updated."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/controllers/SettingsController.php:33
@@ -274,19 +270,11 @@ msgstr ""
 msgid "Site Settings"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:63
-msgid "Record updated."
+#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:88
+msgid "Record not found!"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:80
-msgid "User deleted."
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:90
-msgid "User not found!"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:95
+#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:93
 #, php-format
 msgid "Logged in as %s."
 msgstr ""
@@ -325,11 +313,6 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:4
 msgid "Manage Permissions"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:11
-#: /var/azuracast/www/app/modules/admin/views/scripts/users/index.phtml:31
-msgid "Roles"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:32
@@ -738,16 +721,8 @@ msgstr ""
 msgid "File Not Processed"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:67
-msgid "Playlist updated."
-msgstr ""
-
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:73
-msgid "Edit Playlist"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:73
-msgid "Add Playlist"
+msgid "Add Record"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:104

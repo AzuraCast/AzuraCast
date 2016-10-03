@@ -35,7 +35,7 @@ class RoleHasAction extends \App\Doctrine\Entity
     /**
      * @ManyToOne(targetEntity="Action", inversedBy="has_roles")
      * @JoinColumns({
-     *   @JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @JoinColumn(name="action_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     protected $action;

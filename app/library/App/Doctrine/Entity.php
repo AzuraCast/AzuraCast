@@ -355,7 +355,6 @@ class Entity implements \ArrayAccess
     /**
      * Internal function for pulling metadata, used in toArray and fromArray
      *
-     * @deprecated
      * @param null $class
      * @return array
      */

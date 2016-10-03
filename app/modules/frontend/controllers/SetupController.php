@@ -50,11 +50,14 @@ class SetupController extends BaseController
             // Create actions and roles supporting Super Admninistrator.
             $action = new \Entity\Action;
             $action->name = 'administer all';
+            $action->is_global = true;
             $this->em->persist($action);
 
             $role = new \Entity\Role;
             $role->name = _('Super Administrator');
             $this->em->persist($role);
+
+            $this->em->flush();
 
             $rha = new \Entity\RoleHasAction;
             $rha->fromArray($this->em, [
@@ -74,7 +77,7 @@ class SetupController extends BaseController
             $this->em->flush();
 
             // Log in the newly created user.
-            $this->auth->authenticate($data);
+            $this->auth->authenticate($data['username'], $data['password']);
 
             return $this->redirectFromHere(['action' => 'index']);
         }

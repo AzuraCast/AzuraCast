@@ -75,8 +75,6 @@ class Form
 
     public function isValid()
     {
-
-
         return $this->form->validate();
     }
 

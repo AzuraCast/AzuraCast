@@ -54,8 +54,14 @@ class SetupController extends BaseController
 
             $role = new \Entity\Role;
             $role->name = _('Super Administrator');
-            $role->actions->add($action);
             $this->em->persist($role);
+
+            $rha = new \Entity\RoleHasAction;
+            $rha->fromArray($this->em, [
+                'role' => $role,
+                'action' => $action,
+            ]);
+            $this->em->persist($rha);
 
             // Create user account.
             $user = new \Entity\User;

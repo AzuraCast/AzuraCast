@@ -26,4 +26,3 @@
     - azuracast-db
     - azuracast-cron
     - { role: azuracast-build, when: app_env == 'development' }
-    - { role: vim, when: app_env == 'development' }

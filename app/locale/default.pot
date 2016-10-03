@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-03 07:48+0000\n"
+"POT-Creation-Date: 2016-10-03 19:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -285,7 +285,7 @@ msgid "Record updated."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/controllers/SettingsController.php:33
-#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:142
+#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:151
 msgid "Site Settings"
 msgstr ""
 
@@ -439,15 +439,15 @@ msgstr ""
 msgid "Setup has already been completed!"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:56
+#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:57
 msgid "Super Administrator"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:138
+#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:147
 msgid "Setup is now complete!"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:138
+#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:147
 msgid "Continue setting up your station in the main AzuraCast app."
 msgstr ""
 
@@ -1232,6 +1232,11 @@ msgstr ""
 
 #: /var/azuracast/www/app/templates/main.phtml:101
 msgid "Sign Out"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/main.phtml:144
+#, php-format
+msgid "Powered by %s Version %s."
 msgstr ""
 
 #: /var/azuracast/www/app/templates/partials/sidebar.phtml:8

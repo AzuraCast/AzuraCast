@@ -8,7 +8,7 @@ class UsersController extends BaseController
 {
     public function permissions()
     {
-        return $this->acl->isAllowed('administer all');
+        return $this->acl->isAllowed('administer users');
     }
 
     public function indexAction()

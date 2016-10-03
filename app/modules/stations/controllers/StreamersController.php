@@ -8,6 +8,11 @@ use Entity\StationStreamer as Record;
 
 class StreamersController extends BaseController
 {
+    protected function permissions()
+    {
+        return $this->acl->isAllowed('manage station streamers', $this->station->id);
+    }
+
     public function indexAction()
     {
         if (!$this->station->enable_streamers)

@@ -36,6 +36,8 @@ class ProfileController extends BaseController
 
     public function editAction()
     {
+        $this->acl->checkPermission('manage station profile', $this->station->id);
+
         $base_form = $this->module_config['admin']->forms->station->toArray();
         unset($base_form['groups']['admin']);
 
@@ -69,6 +71,8 @@ class ProfileController extends BaseController
 
     public function backendAction()
     {
+        $this->acl->checkPermission('manage station broadcasting', $this->station->id);
+
         $adapter = $this->station->getBackendAdapter($this->di);
 
         switch($this->getParam('do', 'restart'))
@@ -106,6 +110,8 @@ class ProfileController extends BaseController
 
     public function frontendAction()
     {
+        $this->acl->checkPermission('manage station broadcasting', $this->station->id);
+
         $adapter = $this->station->getFrontendAdapter($this->di);
 
         switch($this->getParam('do', 'restart'))

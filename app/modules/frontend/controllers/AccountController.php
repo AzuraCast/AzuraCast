@@ -37,7 +37,7 @@ class AccountController extends BaseController
 
         if (!empty($_POST['username']) && !empty($_POST['password']))
         {
-            $login_success = $this->auth->authenticate($_POST);
+            $login_success = $this->auth->authenticate($_POST['username'], $_POST['password']);
 
             if($login_success)
             {

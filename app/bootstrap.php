@@ -160,7 +160,7 @@ $di['auth'] = function($di) {
 };
 
 $di['acl'] = function($di) {
-    return new \App\Acl($di['em'], $di['auth']);
+    return new \App\Acl\StationAcl($di['em'], $di['auth']);
 };
 
 // Caching
@@ -262,8 +262,9 @@ $di['view'] = function($di) {
     $view->addAppCommands($di);
 
     $view->addData([
-        'di'    => $di,
-        'url'   => $di['url'],
+        'di' => $di,
+        'acl' => $di['acl'],
+        'url' => $di['url'],
         'config' => $di['config'],
         'flash' => $di['flash'],
     ]);

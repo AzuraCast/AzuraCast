@@ -7,6 +7,11 @@ use Entity\StationPlaylist;
 
 class AutomationController extends BaseController
 {
+    protected function permissions()
+    {
+        return $this->acl->isAllowed('manage station automation', $this->station->id);
+    }
+
     public function indexAction()
     {
         $automation_settings = (array)$this->station->automation_settings;

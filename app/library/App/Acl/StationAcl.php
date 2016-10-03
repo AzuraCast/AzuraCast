@@ -3,38 +3,14 @@
  * Access Control List (ACL) manager
  */
 
-namespace App;
+namespace App\Acl;
 
-use Entity\User;
-use Entity\Role;
-use Entity\RoleHasAction;
+use \Entity\User;
+use \Entity\Role;
+use \Entity\Station;
 
-class Acl
+class StationAcl extends \App\Acl
 {
-    /** @var \Doctrine\ORM\EntityManager  */
-    protected $_em;
-
-    /** @var Auth */
-    protected $_auth;
-
-    /** @var array|null An array of actions enabled by each role. */
-    protected $_actions = NULL;
-
-    public function __construct(\Doctrine\ORM\EntityManager $em, Auth $auth)
-    {
-        $this->_em = $em;
-        $this->_auth = $auth;
-    }
-
-    /**
-     * Initialize role/actions cache upon the first permission check.
-     */
-    protected function init()
-    {
-        if (null === $this->_actions)
-            $this->_actions = $this->_em->getRepository(RoleHasAction::class)->getActionsForAllRoles();
-    }
-
     /**
      * Check if a specified User entity is allowed to perform an action (or array of actions).
      *
@@ -42,7 +18,7 @@ class Acl
      * @param User|null $user
      * @return mixed
      */
-    public function userAllowed($action, User $user = null)
+    public function userAllowed($action, User $user = null, $station_id = null)
     {
         static $roles;
         static $cache;
@@ -51,7 +27,9 @@ class Acl
         $action = array_map('strtolower', (array)$action);
         asort($action);
 
-        $memoize = md5(serialize($action));
+        $memoize_text = serialize($action);
+        $memoize = ($station_id !== null) ? md5($memoize_text.'_'.$station_id) : md5($memoize_text);
+
         $user_id = ($user instanceof User) ? $user->id : 'anonymous';
 
         if( !isset($cache[$user_id][$memoize]) )
@@ -69,11 +47,11 @@ class Acl
                     }
                 }
 
-                $cache[$user_id][$memoize] = $this->roleAllowed($roles[$user_id], $action);
+                $cache[$user_id][$memoize] = $this->roleAllowed($roles[$user_id], $action, $station_id);
             }
             else
             {
-                $cache[$user_id][$memoize] = $this->roleAllowed(array('Unauthenticated'), $action);
+                $cache[$user_id][$memoize] = $this->roleAllowed(array('Unauthenticated'), $action, $station_id);
             }
         }
 
@@ -86,7 +64,7 @@ class Acl
      * @param string $action
      * @return bool|mixed
      */
-    public function isAllowed($action)
+    public function isAllowed($action, $station_id = null)
     {
         static $is_logged_in, $user;
 
@@ -101,7 +79,7 @@ class Acl
         elseif ($action == "is not logged in")
             return (!$is_logged_in);
         elseif ($is_logged_in)
-            return $this->userAllowed($action, $user);
+            return $this->userAllowed($action, $user, $station_id);
         else
             return false;
     }
@@ -113,7 +91,7 @@ class Acl
      * @param string|array $action
      * @return bool
      */
-    public function roleAllowed($role_id, $action)
+    public function roleAllowed($role_id, $action, $station_id = null)
     {
         $this->init();
 
@@ -121,7 +99,7 @@ class Acl
         {
             foreach($role_id as $r)
             {
-                if($this->roleAllowed($r, $action))
+                if($this->roleAllowed($r, $action, $station_id))
                     return true;
             }
             return false;
@@ -130,7 +108,7 @@ class Acl
         {
             foreach($action as $a)
             {
-                if($this->roleAllowed($role_id, $a))
+                if($this->roleAllowed($role_id, $a, $station_id))
                     return true;
             }
             return false;
@@ -140,11 +118,23 @@ class Acl
             if($role_id == 1) // Default super-administrator role.
                 return true;
 
-            if (in_array('administer all', (array)$this->_actions[$role_id]))
+            if (in_array('administer all', (array)$this->_actions[$role_id]['global']))
                 return true;
 
-            if (isset($this->_actions[$role_id]) && in_array($action, $this->_actions[$role_id]))
-                return true;
+            if (isset($this->_actions[$role_id]))
+            {
+                if ($station_id !== null)
+                {
+                    if (in_array('administer stations', (array)$this->_actions[$role_id]['global']))
+                        return true;
+
+                    return in_array($action, (array)$this->_actions[$role_id]['stations'][$station_id]);
+                }
+                else
+                {
+                    return in_array($action, (array)$this->_actions[$role_id]['global']);
+                }
+            }
 
             return false;
         }
@@ -157,9 +147,9 @@ class Acl
      * @throws \App\Exception\NotLoggedIn
      * @throws \App\Exception\PermissionDenied
      */
-    public function checkPermission($action)
+    public function checkPermission($action, $station_id = null)
     {
-        if (!$this->isAllowed($action))
+        if (!$this->isAllowed($action, $station_id))
         {
             if (!$this->_auth->isLoggedIn())
                 throw new \App\Exception\NotLoggedIn();

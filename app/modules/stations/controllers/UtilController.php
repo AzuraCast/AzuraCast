@@ -108,6 +108,8 @@ class UtilController extends BaseController
      */
     public function writeAction()
     {
+        $this->acl->checkPermission('manage station broadcasting', $this->station->id);
+
         $backend = $this->station->getBackendAdapter($this->di);
         $backend->write();
 
@@ -119,6 +121,8 @@ class UtilController extends BaseController
      */
     public function restartAction()
     {
+        $this->acl->checkPermission('manage station broadcasting', $this->station->id);
+
         $frontend = $this->station->getFrontendAdapter($this->di);
         $backend = $this->station->getBackendAdapter($this->di);
 

@@ -8,7 +8,7 @@ class SettingsController extends BaseController
 {
     public function permissions()
     {
-        return $this->acl->isAllowed('administer all');
+        return $this->acl->isAllowed('administer settings');
     }
     
     public function indexAction()

@@ -5,7 +5,6 @@ use Entity\Station;
 use Entity\StationMedia;
 use Entity\StationPlaylist;
 
-
 /**
  * Class FilesController
  *
@@ -18,6 +17,11 @@ class FilesController extends BaseController
     protected $base_dir = NULL;
     protected $file = '';
     protected $file_path = NULL;
+
+    protected function permissions()
+    {
+        return $this->acl->isAllowed('manage station media', $this->station->id);
+    }
 
     public function preDispatch()
     {

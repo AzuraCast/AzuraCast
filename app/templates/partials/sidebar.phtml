@@ -6,8 +6,12 @@
     </li>
 
     <li><a href="<?=$url->named('stations:profile:index', ['station' => $station->id]) ?>"><i class="zmdi zmdi-image"></i> <?=_('Profile') ?></a></li>
-    <li><a href="<?=$url->named('stations:streamers:index', ['station' => $station->id]) ?>"><i class="zmdi zmdi-account"></i> <?=_('Streamer/DJ Accounts') ?></a></li>
 
+    <?php if ($acl->isAllowed('manage station streamers', $station->id)): ?>
+    <li><a href="<?=$url->named('stations:streamers:index', ['station' => $station->id]) ?>"><i class="zmdi zmdi-account"></i> <?=_('Streamer/DJ Accounts') ?></a></li>
+    <?php endif; ?>
+
+    <?php if ($acl->isAllowed('manage station media', $station->id)): ?>
     <li class="sub-menu">
         <a href=""><i class="zmdi zmdi-collection-music"></i> <?=_('Media') ?></a>
 
@@ -16,7 +20,9 @@
             <li><a href="<?=$url->named('stations:playlists:index', ['station' => $station->id]) ?>"><?=_('Playlists') ?></a></li>
         </ul>
     </li>
+    <?php endif; ?>
 
+    <?php if ($acl->isAllowed('view station reports', $station->id)): ?>
     <li class="sub-menu">
         <a href=""><i class="zmdi zmdi-assignment"></i> <?=_('Reports') ?></a>
 
@@ -26,18 +32,24 @@
             <li><a href="<?=$url->named('stations:reports:duplicates', ['station' => $station->id]) ?>"><?=_('Duplicate Songs') ?></a></li>
         </ul>
     </li>
+    <?php endif; ?>
+
 
     <li class="sub-menu">
         <a href=""><i class="zmdi zmdi-settings"></i> <?=_('Utilities') ?></a>
 
         <ul>
+        <?php if ($acl->isAllowed('manage station automation', $station->id)): ?>
             <li><a href="<?=$url->named('stations:automation:index', ['station' => $station->id]) ?>"><?=_('Automated Assignment') ?></a></li>
+        <?php endif; ?>
 
             <li><a href="<?=$url->named('stations:util:playlist', ['station' => $station->id, 'format' => 'pls']) ?>"><?=_('Download Playlist File') ?> (PLS)</a></li>
             <li><a href="<?=$url->named('stations:util:playlist', ['station' => $station->id, 'format' => 'm3u']) ?>"><?=_('Download Playlist File') ?> (M3U)</a></li>
 
+        <?php if ($acl->isAllowed('manage station broadcasting', $station->id)): ?>
             <li><a href="<?=$url->named('stations:util:write', ['station' => $station->id]) ?>"><?=_('Write Configuration') ?></a></li>
             <li><a href="<?=$url->named('stations:util:restart', ['station' => $station->id]) ?>"><?=_('Restart Broadcasting') ?></a></li>
+        <?php endif; ?>
         </ul>
     </li>
 </ul>

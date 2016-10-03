@@ -12,7 +12,7 @@ class Role extends \App\Doctrine\Entity
     public function __construct()
     {
         $this->users = new ArrayCollection;
-        $this->actions = new ArrayCollection;
+        $this->has_action = new ArrayCollection;
     }
     
     /**
@@ -27,13 +27,7 @@ class Role extends \App\Doctrine\Entity
 
     /** @ManyToMany(targetEntity="User", mappedBy="roles")*/
     protected $users;
-    
-    /**
-     * @ManyToMany(targetEntity="Action", inversedBy="roles")
-     * @JoinTable(name="role_has_action",
-     *      joinColumns={@JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@JoinColumn(name="action_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     */
-    protected $actions;
+
+    /** @OneToMany(targetEntity="Entity\RoleHasAction", mappedBy="role") */
+    protected $has_action;
 }

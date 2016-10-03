@@ -58,4 +58,13 @@ class NibbleForm extends \Nibble\NibbleForms\NibbleForm
     {
         return $this->fields->$key;
     }
+
+    public function validate()
+    {
+        $request = strtoupper($this->method) == 'POST' ? $_POST : $_GET;
+        if (isset($request[$this->name]))
+            $this->data = $request[$this->name];
+
+        return parent::validate();
+    }
 }

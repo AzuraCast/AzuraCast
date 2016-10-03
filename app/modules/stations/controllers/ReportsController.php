@@ -7,6 +7,11 @@ use Entity\StationPlaylist;
 
 class ReportsController extends BaseController
 {
+    protected function permissions()
+    {
+        return $this->acl->isAllowed('view station reports', $this->station->id);
+    }
+
     public function performanceAction()
     {
         $automation_config = (array)$this->station->automation_settings;

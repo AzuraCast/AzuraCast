@@ -3,12 +3,13 @@ namespace Modules\Admin\Controllers;
 
 use \Entity\Action;
 use \Entity\Role;
+use Entity\RoleHasAction;
 
 class PermissionsController extends BaseController
 {
     public function permissions()
     {
-        return $this->acl->isAllowed('administer all');
+        return $this->acl->isAllowed('administer permissions');
     }
     
     public function indexAction()
@@ -19,7 +20,7 @@ class PermissionsController extends BaseController
     
     public function editactionAction()
     {
-        $form = new \App\Form($this->current_module_config->forms->action->form);
+        $form = new \App\Form($this->current_module_config->forms->action->toArray());
         
         if ($this->hasParam('id'))
         {
@@ -66,13 +67,16 @@ class PermissionsController extends BaseController
 
     public function editroleAction()
     {
-        $form_config = $this->current_module_config->forms->role->form->toArray();
-        $form = new \App\Form($form_config);
+        $form = new \App\Form($this->current_module_config->forms->role->toArray());
         
         if ($this->hasParam('id'))
         {
             $record = $this->em->getRepository(Role::class)->find($this->getParam('id'));
-            $form->setDefaults($record->toArray($this->em, TRUE, TRUE));
+            $record_info = $record->toArray($this->em, true, true);
+
+            $actions = $this->em->getRepository(RoleHasAction::class)->getActionsForRole($record);
+
+            $form->setDefaults(array_merge($record_info, $actions));
         }
 
         if( !empty($_POST) && $form->isValid($_POST) )
@@ -86,6 +90,8 @@ class PermissionsController extends BaseController
 
             $this->em->persist($record);
             $this->em->flush();
+
+            $this->em->getRepository(RoleHasAction::class)->setActionsForRole($record, $data);
 
             $this->alert('<b>'._('Record updated.').'</b>', 'green');
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));

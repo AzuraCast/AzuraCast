@@ -11,7 +11,8 @@ class Action extends \App\Doctrine\Entity
 {
     public function __construct()
     {
-        $this->roles = new ArrayCollection();
+        $this->is_global = false;
+        $this->has_role = new ArrayCollection;
     }
     
     /**
@@ -23,20 +24,17 @@ class Action extends \App\Doctrine\Entity
 
     /** @Column(name="name", type="string", length=100, nullable=true) */
     protected $name;
+
+    /** @Column(name="is_global", type="boolean") */
+    protected $is_global;
     
-    /** @ManyToMany(targetEntity="Entity\Role", mappedBy="actions") */
-    protected $roles;
+    /** @OneToMany(targetEntity="Entity\RoleHasAction", mappedBy="action") */
+    protected $has_role;
 }
 
 use App\Doctrine\Repository;
 
 class ActionRepository extends Repository
 {
-    public function getUsersWithAction($action_name)
-    {
-        return $this->_em->createQuery('SELECT u FROM Entity\User u LEFT JOIN u.roles r LEFT JOIN r.actions a WHERE (a.name = :action OR a.name = :admin_action)')
-            ->setParameter('action', $action_name)
-            ->setParameter('admin_action', 'administer all')
-            ->getArrayResult();
-    }
+
 }

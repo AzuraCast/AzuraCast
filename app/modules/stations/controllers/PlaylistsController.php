@@ -6,6 +6,11 @@ use Entity\StationPlaylist;
 
 class PlaylistsController extends BaseController
 {
+    protected function permissions()
+    {
+        return $this->acl->isAllowed('manage station media', $this->station->id);
+    }
+
     public function indexAction()
     {
         $all_playlists = $this->station->playlists;

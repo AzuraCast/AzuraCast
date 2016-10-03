@@ -90,7 +90,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                 <li class="dropdown">
                     <a data-toggle="dropdown" href=""><i class="tm-icon zmdi zmdi-more-vert"></i></a>
                     <ul class="dropdown-menu dm-icon pull-right">
-                        <? if ($di['acl']->isAllowed('administer all')): ?>
+                        <? if ($acl->isAllowed('view administration')): ?>
                             <li><a href="<?=$url->named('admin:index:index') ?>"><i class="fa fa-cog"></i> <?=_('System Administration') ?></a></li>
                         <? endif; ?>
                         <li><a href="<?=$url->named('profile:index') ?>"><i class="fa fa-user"></i> <?=_('My Account') ?></a></li>

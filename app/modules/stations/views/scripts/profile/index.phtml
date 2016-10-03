@@ -9,7 +9,10 @@
         <div class="card">
             <div class="card-header ch-alt">
                 <h2><?=_('Basic Profile') ?></h2>
+
+                <?php if ($acl->isAllowed('manage station profile', $station->id)): ?>
                 <a class="btn bgm-blue btn-float" title="Edit Profile" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-edit"></i></a>
+                <?php endif; ?>
             </div>
             <div class="card-body card-padding">
                 <dl>
@@ -64,6 +67,7 @@
                     <small><?php if ($frontend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>
 
+                <?php if ($acl->isAllowed('manage station broadcasting', $station->id)): ?>
                 <ul class="actions">
                     <li class="dropdown">
                         <a href="" data-toggle="dropdown" aria-expanded="false">
@@ -76,6 +80,7 @@
                         </ul>
                     </li>
                 </ul>
+                <?php endif; ?>
             </div>
             <div class="card-body card-padding">
                 <dl>
@@ -105,6 +110,7 @@
                     <small><?php if ($backend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>
 
+                <?php if ($acl->isAllowed('manage station broadcasting', $station->id)): ?>
                 <ul class="actions">
                     <li class="dropdown">
                         <a href="" data-toggle="dropdown" aria-expanded="false">
@@ -119,6 +125,7 @@
                         </ul>
                     </li>
                 </ul>
+                <?php endif; ?>
             </div>
             <div class="card-body card-padding">
                 <p><?=sprintf(_('LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.'), $num_songs, $num_playlists) ?></p>

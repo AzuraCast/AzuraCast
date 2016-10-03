@@ -8,7 +8,7 @@ return [
         _('System Settings') => [
             'url' => 'admin:settings:index',
             'icon' => 'fa fa-cog',
-            'permission' => 'administer all',
+            'permission' => 'administer settings',
         ],
         _('API Keys') => [
             'url' => 'admin:api:index',
@@ -20,12 +20,12 @@ return [
         _('User Accounts') => [
             'url' => 'admin:users:index',
             'icon' => 'fa fa-user',
-            'permission' => 'administer all',
+            'permission' => 'administer user accounts',
         ],
         _('Roles and Permissions') => [
             'url' => 'admin:permissions:index',
             'icon' => 'fa fa-key',
-            'permission' => 'administer all',
+            'permission' => 'administer permissions',
         ],
     ],
     _('Stations') => [

@@ -33,7 +33,7 @@
 
   - name: Install Developer Tools
     become: true
-    apt:  pkg="{{ item }} state=latest
+    apt:  pkg="{{ item }}" state=latest
     with_items:
      - vim
      - gettext

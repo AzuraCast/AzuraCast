@@ -291,7 +291,7 @@ class LiquidSoap extends BackendAbstract
 
         if (!file_exists($config_path))
         {
-            $this->log('Not starting backend, nothing to play yet.');
+            $this->log(_('Not starting backend, nothing to play yet.'));
             return;
         }
 

@@ -5,6 +5,7 @@ abstract class BackendAbstract extends \App\Radio\AdapterAbstract
 {
     public function log($message, $class = 'info')
     {
-        parent::log('Radio Backend: '.$message, $class);
+        if (!empty(trim($message)))
+            parent::log('Radio Backend: '.$message, $class);
     }
 }

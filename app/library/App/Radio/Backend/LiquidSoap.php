@@ -287,15 +287,20 @@ class LiquidSoap extends BackendAbstract
 
     public function start()
     {
-        $config_path = $this->station->getRadioConfigDir();
-        $ls_config = escapeshellarg($config_path.'/liquidsoap.liq');
+        $config_path = $this->station->getRadioConfigDir().'/liquidsoap.liq';
+
+        if (!file_exists($config_path))
+        {
+            $this->log('Not starting backend, nothing to play yet.');
+            return;
+        }
 
         /*
          * TODO: Figure out why this works, but simply running this script AS
          * the 'azuracast' user (the default state) doesn't. No idea.
          */
 
-        $this->log(shell_exec('sudo -u azuracast liquidsoap '.$ls_config.' 2>&1'));
+        $this->log(shell_exec('sudo -u azuracast liquidsoap '.escapeshellarg($config_path).' 2>&1'));
     }
 
     public function restart()

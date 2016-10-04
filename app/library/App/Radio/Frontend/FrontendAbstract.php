@@ -123,6 +123,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
      */
     public function log($message, $class = 'info')
     {
-        parent::log('Radio Frontend: '.$message, $class);
+        if (!empty(trim($message)))
+            parent::log('Radio Frontend: '.$message, $class);
     }
 }

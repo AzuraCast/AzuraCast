@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-04 21:05+0000\n"
+"POT-Creation-Date: 2016-10-06 05:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgid "System Maintenance"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:8
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:22
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:19
 msgid "System Settings"
 msgstr ""
 
@@ -80,10 +80,11 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/config/forms/action.conf.php:27
 #: /var/azuracast/www/app/modules/admin/config/forms/api_key.conf.php:15
 #: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:60
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:52
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:36
 #: /var/azuracast/www/app/modules/admin/config/forms/song.conf.php:36
 #: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:101
 #: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:37
+#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:65
 #: /var/azuracast/www/app/modules/stations/config/forms/automation.conf.php:32
 #: /var/azuracast/www/app/modules/stations/config/forms/media.conf.php:20
 #: /var/azuracast/www/app/modules/stations/config/forms/playlist.conf.php:171
@@ -116,34 +117,15 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:26
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:23
 msgid "Site Base URL"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:27
+#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:24
 msgid ""
 "The base URL where this service is located. For local testing, use "
 "\"localhost\". Otherwise, use either the external IP address or fully-"
 "qualified domain name pointing to the server."
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:32
-msgid "Default Language"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:38
-msgid "Server Time Zone"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:39
-msgid "All times displayed on the site will be based on this time zone."
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:39
-#: /var/azuracast/www/app/modules/stations/config/forms/playlist.conf.php:94
-#: /var/azuracast/www/app/modules/stations/config/forms/playlist.conf.php:159
-#, php-format
-msgid "Current server time is <b>%s</b>."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/forms/song.conf.php:8
@@ -233,7 +215,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:18
 #: /var/azuracast/www/app/modules/admin/views/scripts/users/index.phtml:30
 #: /var/azuracast/www/app/modules/frontend/config/forms/login.conf.php:11
-#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:23
+#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:26
 #: /var/azuracast/www/app/modules/frontend/config/forms/register.conf.php:11
 #: /var/azuracast/www/app/modules/frontend/views/scripts/account/login.phtml:12
 #: /var/azuracast/www/app/modules/frontend/views/scripts/setup/register.phtml:12
@@ -241,7 +223,7 @@ msgid "E-mail Address"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:24
-#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:30
+#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:33
 msgid "Reset Password"
 msgstr ""
 
@@ -391,17 +373,45 @@ msgstr ""
 msgid "Log in"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:11
+#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:10
+msgid "Use Browser Default"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:17
 #: /var/azuracast/www/app/modules/frontend/config/forms/register.conf.php:7
 msgid "Account Information"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:31
+#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:21
+#: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:66
+msgid "Name"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:34
 msgid "To change your password, enter the new password in the field below."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:42
-msgid "Save Profile"
+msgid "Customization"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:46
+msgid "Server Time Zone"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:47
+msgid "All times displayed on the site will be based on this time zone."
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:47
+#: /var/azuracast/www/app/modules/stations/config/forms/playlist.conf.php:94
+#: /var/azuracast/www/app/modules/stations/config/forms/playlist.conf.php:159
+#, php-format
+msgid "Current server time is <b>%s</b>."
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:53
+msgid "Default Language"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/register.conf.php:29
@@ -856,10 +866,6 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:55
 msgid "Create Folder"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:66
-msgid "Name"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:67

@@ -29,6 +29,16 @@ class Entity implements \ArrayAccess
             return $this->_setVar($key, $value);
     }
 
+    public function __isset($key)
+    {
+        $method_name = $this->_getMethodName($key, 'get');
+
+        if (method_exists($this, $method_name))
+            return $this->$method_name();
+        else
+            return property_exists($this, $key);
+    }
+
     public function __call($method, $arguments)
     {
         if (substr($method, 0, 3) == "get") {

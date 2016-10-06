@@ -277,9 +277,12 @@ $cache = $di->get('cache');
 
 if (!APP_IS_COMMAND_LINE)
 {
+    /** @var \Entity\User|null $user */
+    $user = $di->get('user');
+
     // Set time zone.
-    $timezone = $di['em']->getRepository('Entity\Settings')->getSetting('timezone', date_default_timezone_get());
-    date_default_timezone_set($timezone);
+    if ($user !== null && !empty($user->timezone))
+        date_default_timezone_set($user->timezone);
 
     /*
      * Commands:
@@ -289,21 +292,34 @@ if (!APP_IS_COMMAND_LINE)
      * find /var/azuracast/www/app/locale -name \*.po -execdir msgfmt default.po -o default.mo \;
      */
 
-    // Set up localization.
-    $browser_locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-
+    $locale = null;
     $supported_locales = $config->application->locale->supported->toArray();
-    foreach($supported_locales as $lang_code => $lang_name)
+
+    // Prefer user-based profile locale.
+    if ($user !== null && !empty($user->locale) && $user->locale !== 'default')
     {
-        if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0)
+        if (isset($supported_locales[$user->locale]))
+            $locale = $user->locale;
+    }
+
+    // Attempt to load from browser headers.
+    if (!$locale)
+    {
+        $browser_locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+
+        foreach($supported_locales as $lang_code => $lang_name)
         {
-            $locale = $lang_code;
-            break;
+            if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0)
+            {
+                $locale = $lang_code;
+                break;
+            }
         }
     }
 
-    if (empty($locale))
-        $locale = $di['em']->getRepository('Entity\Settings')->getSetting('locale', $config->application->locale->default);
+    // Default to system option.
+    if (!$locale)
+        $locale = $config->application->locale->default;
 
     putenv("LANG=".$locale);
     setlocale(LC_ALL, $locale);

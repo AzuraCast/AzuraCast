@@ -24,13 +24,19 @@ With AzuraCast, you can:
 * **Delegate Management:** Create and remove separate administrator accounts for each station manager.
 * ...and more.
 
-## Installing on a Production Server
+## Installing AzuraCast
+
+### Installing on a Production Server
 
 See [the AzuraCast Wiki](https://github.com/SlvrEagle23/AzuraCast/wiki/Deploying-to-an-Existing-Server) for more information on installing to a production server.
 
-## Local Development with Vagrant
+### Local Development with Vagrant
 
 See [the AzuraCast Wiki](https://github.com/SlvrEagle23/AzuraCast/wiki/Developing-Locally) for more information on developing locally with Vagrant.
+
+## Screenshots
+
+Take a look at samples of the AzuraCast interface on the [Screenshots](https://github.com/SlvrEagle23/AzuraCast/wiki/Screenshots) page on the Wiki.
 
 ## AzuraCast API
 

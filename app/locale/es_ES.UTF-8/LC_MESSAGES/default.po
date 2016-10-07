@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-10-06 05:59+0000\n"
-"PO-Revision-Date: 2016-10-06 02:54-0400\n"
+"PO-Revision-Date: 2016-10-07 17:03-0400\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -179,7 +179,7 @@ msgstr "Permitir a Pedir Canciones"
 
 #: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:51
 msgid "Setting this enables listeners to request a song for play on your station. Only songs that are already in your playlists are listed as requestable."
-msgstr "El parámetro permite oyentes a solicitarse una canción para jugarla en la estación. Solamente las canciones que ya están en sus listas de reproducción aparecen como solicitable."
+msgstr "El parámetro permite oyentes a pedirse una canción para jugarla en la estación. Solamente las canciones que ya están en sus listas de reproducción aparecen como solicitable."
 
 #: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:57
 msgid "Request Minimum Delay (Minutes)"
@@ -954,11 +954,11 @@ msgstr "Perfil básico"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:30
 msgid "Song Requests"
-msgstr "Petición de Canción"
+msgstr "Pedidos de Canciónes"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:34
 msgid "Song requests are currently <b>enabled</b> for this station."
-msgstr "Las solicitudes de la canción son actualmente <b>habilitado</b> para esta estación."
+msgstr "Los pedidos para canciones son actualmente <b>habilitado</b> para esta estación."
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/index.phtml:36
 msgid "Requests are queued for playback immediately after the currently playing song."

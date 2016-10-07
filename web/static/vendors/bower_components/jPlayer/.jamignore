@@ -1,9 +1,0 @@
-.*
-*.json
-*.md
-*.txt
-artwork
-examples
-lib
-skin/circle.player
-src

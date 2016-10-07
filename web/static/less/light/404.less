@@ -1,0 +1,66 @@
+.four-zero {
+	height: 100vh;
+	background-color: @m-bluegray;
+}
+
+.fz-block {
+	background: #557382;
+	border-radius: 2px;
+	position: absolute;
+	top: 50%;
+	margin-top: -150px;
+	color: #ECF0F1;
+	text-align: center;
+	padding: 25px;
+	height: 300px;
+	width: 500px;
+	left: 50%;
+	margin-left: -250px;
+
+	h2 {
+		font-size: 130px;
+		line-height: 100%;
+		color: #ECF0F1;
+		font-weight: 100;
+	}
+
+
+	@media (max-width: @screen-xs-max) {
+		width: ~"calc(100% - 40px)";
+		left: 20px;
+		margin-left: 0;
+		height: 260px;
+		margin-top: -130px;
+
+		h2 {
+			font-size: 90px;
+		}
+	}
+
+	small {
+		display: block;
+		font-size: 26px;
+		margin-top: -10px
+	}
+}
+
+.fzb-links {
+	margin-top: 20px;
+
+	& > a {
+		font-size: 16px;
+		display: inline-block;
+		color: #ECF0F1;
+		margin: 0 1px;
+		line-height: 30px;
+		width: 30px;
+		height: 30px;
+		background: rgba(0, 0, 0, 0.09);
+		border-radius: 50%;
+		text-align: center;
+
+		&:hover {
+			background: rgba(0, 0, 0, 0.2);
+		}
+	}
+}

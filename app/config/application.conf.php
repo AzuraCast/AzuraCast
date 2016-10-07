@@ -61,6 +61,14 @@ $config = [
         ],
     ],
 
+    'themes' => [
+        'default' => 'light',
+        'available' => [
+            'light' => 'Light (Default)',
+            'dark' => 'Dark',
+        ],
+    ],
+
     /* RESOURCES: Doctrine ORM Layer */
     'doctrine' => [
         'autoGenerateProxies' => (APP_APPLICATION_ENV == "development"),

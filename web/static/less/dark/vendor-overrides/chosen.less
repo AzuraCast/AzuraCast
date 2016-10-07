@@ -1,0 +1,158 @@
+.chosen-container {
+    .chosen-drop {
+        box-shadow: @dropdown-shadow;
+        margin-top: 1px;
+        border: 0;
+        top: 0;
+        border-radius: 2px;
+    }
+
+    .chosen-results {
+        margin: 0;
+        padding: 0;
+        max-height: 300px;
+
+        li {
+            padding: 10px 17px;
+            width: 100%;
+
+            &.highlighted {
+                background: @dropdown-link-hover-bg;
+                color: @dropdown-link-hover-color;
+            }
+
+            &.result-selected {
+                background: transparent;
+                color: @text-color;
+                position: relative;
+                color: #444;
+
+                &:before {
+                    content: "\f26b";
+                    font-family: @font-icon-md;
+                    position: absolute;
+                    right: 15px;
+                    top: 10px;
+                    font-size: 19px;
+                    color: @card-bg;
+                }
+            }
+
+            &.group-result {
+                &:not(:first-child) {
+                    border-top: 1px solid #eee;
+                }
+
+                color: #B2B2B2;
+                font-weight: normal;
+                padding: 16px 15px 6px;
+                margin-top: 9px;
+            }
+        }
+    }
+}
+
+.chosen-container-single {
+
+    .chosen-single {
+        border-radius: 0;
+        overflow: visible;
+        height: 34px;
+        padding: 6px 0 6px;
+        text-transform: uppercase;
+        border: 0;
+        border-bottom: 1px solid @input-border;
+        background: none;
+        box-shadow: none;
+        color: @off-white;
+        text-transform: none;
+
+        .select-bg();
+
+        div b {
+            display: none;
+        }
+    }
+
+    .chosen-search {
+        padding: 5px 5px 5px 40px;
+        background: #F7F7F7;
+
+        &:before {
+            content: "\f1c3";
+            font-family: @font-icon-md;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 100%;
+            font-size: 25px;
+            padding: 5px 0 0 15px;
+            color: @card-bg;
+        }
+
+        input[type=text] {
+            border: 0;
+            height: 35px;
+            line-height: 1.42857143;
+            background-image: none !important;
+            color: @card-bg;
+        }
+    }
+}
+
+.chosen-container-active.chosen-with-drop .chosen-single {
+    border:0;
+    background: none;
+}
+
+.chosen-container-multi {
+
+    .chosen-choices {
+        padding: 0;
+        border: 0;
+        border-bottom: 1px solid @input-border;
+        background: none;
+        box-shadow: none;
+
+        li {
+            &.search-choice {
+                border-radius: 2px;
+                margin: 4px 4px 0 0;
+                background: rgba(266,255,255,0.1);
+                padding: 5px 23px 5px 8px;
+                border: 0;
+                box-shadow: none;
+                color: @off-white;
+                font-size: 12px;
+            }
+
+            &.search-field {
+                input[type=text] {
+                    padding: 0;
+                    height: 31px;
+                }
+            }
+        }
+    }
+}
+
+.search-choice-close {
+    cursor: pointer;
+
+    &:before {
+        display: inline-block;
+        font-family: @font-icon-md;
+        content: "\f135";
+        position: relative;
+        top: 1px;
+        color: @off-white;
+        z-index: 2;
+        background: #454F55;
+        font-size: 12px;
+    }
+}
+
+select.chosen {
+    display: none;
+}

@@ -1,0 +1,35 @@
+#footer {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    height: @footer-height;
+    color: #a2a2a2;
+    padding-top: 35px;
+    padding-bottom: 15px;
+
+    @media (min-width: (@screen-lg-min + 80)) {
+        padding-left: @sidebar-left-width;
+    }
+    
+    .f-menu {
+        display: block;
+        width: 100%;
+        .list-inline();
+        margin-top: 8px;
+        
+        & > li > a {
+            color: #a2a2a2;
+            
+            &:hover {
+                color: #777;
+            }
+        } 
+    }
+}
+
+.sidebar-toggled {
+    #footer {
+        display: none;
+    }
+}

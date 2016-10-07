@@ -1,0 +1,68 @@
+.pt-inner {
+  text-align: center;
+
+  .pti-header {
+    padding: 45px 10px 70px;
+    position: relative;
+    margin-bottom: 15px;
+
+    & > h2 {
+      margin: 0;
+      line-height: 100%;
+      font-weight: 100;
+      font-size: 50px;
+
+      small {
+        letter-spacing: 0;
+        vertical-align: top;
+        font-size: 16px;
+        font-weight: 100;
+      }
+    }
+
+    .ptih-title {
+      background-color: rgba(255,255,255,0.04);
+      padding: 8px 10px 9px;
+      text-transform: uppercase;
+      margin: 0 -10px;
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+    }
+  }
+
+  .pti-body {
+    padding: 0 23px;
+
+    .ptib-item {
+      padding: 15px 0;
+      font-weight: 400;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid @input-border;
+      }
+    }
+  }
+
+  .pti-footer {
+    padding: 10px 20px 30px;
+    margin-top: 20px;
+
+    & > a {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      text-align: center;
+      display: inline-block;
+      line-height: 60px;
+      font-size: 30px;
+      background-color: @off-white;
+      color: @text-dark;
+
+      &:hover {
+        background-color: #fff;
+      }
+    }
+  }
+
+}

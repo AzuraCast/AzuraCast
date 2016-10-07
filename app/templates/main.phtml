@@ -24,7 +24,7 @@ if (APP_APPLICATION_ENV != "production")
 <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/components-font-awesome/css/font-awesome.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bootgrid/jquery.bootgrid.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('css/app.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('css/'.$customization->getTheme().'.css') ?>">
 
 <?=$this->section('custom_css') ?>
 
@@ -37,11 +37,11 @@ var APP_BaseUrl = '<?=$url->named('home') ?>';
 var APP_ContentPath = '<?=$url->content('') ?>';
 </script>
 </head>
-<body class="<?=$page_class ?> <?php if (!empty($station)): ?>toggled sw-toggled<?php endif; ?>">
-<header id="header" class="clearfix" data-current-skin="blue" style="background-image: url('<?=$url->content('img/header_bg.png') ?>');" data-rjs="3">
-    <ul class="header-inner">
+<body class="<?=$page_class ?>">
+<header id="header" class="clearfix" data-ma-theme="blue" style="background-image: url('<?=$url->content('img/header_bg.png') ?>');" data-rjs="3">
+    <ul class="h-inner">
         <?php if (!empty($station)): ?>
-        <li id="menu-trigger" data-trigger="#sidebar">
+        <li class="hi-trigger ma-trigger" data-ma-action="sidebar-open" data-ma-target="#sidebar">
             <div class="line-wrap">
                 <div class="line top"></div>
                 <div class="line center"></div>
@@ -57,7 +57,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
         </li>
 
         <li class="pull-right">
-            <ul class="top-menu">
+            <ul class="hi-menu">
                 <!--
                 <li id="top-search">
                     <a href=""><i class="tm-icon zmdi zmdi-search"></i></a>
@@ -65,7 +65,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                 -->
 
                 <li class="dropdown" id="radio-player-controls">
-                    <a data-toggle="dropdown" href=""><i class="tm-icon zmdi zmdi-radio"></i></a>
+                    <a data-toggle="dropdown" href=""><i class="him-icon zmdi zmdi-radio"></i></a>
                     <ul class="dropdown-menu dm-icon pull-right">
                         <li>
                             <a href="javascript:;" class="jp-pause"><i class="zmdi zmdi-pause"></i> <?=_('Pause') ?></a>
@@ -88,7 +88,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                 </li>
 
                 <li class="dropdown">
-                    <a data-toggle="dropdown" href=""><i class="tm-icon zmdi zmdi-more-vert"></i></a>
+                    <a data-toggle="dropdown" href=""><i class="him-icon zmdi zmdi-more-vert"></i></a>
                     <ul class="dropdown-menu dm-icon pull-right">
                         <? if ($acl->isAllowed('view administration')): ?>
                             <li><a href="<?=$url->named('admin:index:index') ?>"><i class="fa fa-cog"></i> <?=_('System Administration') ?></a></li>
@@ -121,7 +121,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
     </aside>
     <?php endif; ?>
 
-    <section id="content">
+    <section id="content" <?php if (empty($station)): ?>class="content-alt"<?php endif; ?>>
         <div class="container">
         <?php if ($manual): ?>
             <?=$this->section('content') ?>
@@ -168,8 +168,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/autosize/dist/autosize.js') ?>"></script>
 <script type="text/javascript" src="<?=$url->content('vendors/bootgrid/jquery.bootgrid.updated.js') ?>"></script>
 
-<script type="text/javascript" src="<?=$url->content('js/functions.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('js/app.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('js/app.min.js') ?>"></script>
 
 <? if ($flash->hasMessages()): ?>
     <script type="text/javascript">

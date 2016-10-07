@@ -1,0 +1,387 @@
+/*--------------------------------------------------
+    Common header classes & IDs
+    Do not remove this
+---------------------------------------------------*/
+.h-inner {
+    list-style: none;
+    padding: 17px 0;
+    margin-bottom: 0;
+    position: relative;
+
+    & > li {
+        &:not(.pull-right) {
+            float: left;
+        }
+    }
+}
+
+.hi-logo {
+    a {
+        color: @off-white;
+        text-transform: uppercase;
+        display: block;
+        font-size: 16px;
+    }
+}
+
+.hi-trigger {
+    position: relative;
+    cursor: pointer;
+    margin-left: -5px;
+    display: none;
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: @card-bg;
+        .transition(all);
+        .transition-duration(300ms);
+        .scale(0);
+        z-index: 0;
+        margin-top: -22px;
+        margin-left: -22px;
+    }
+
+    &.toggled {
+        &:before {
+            .scale(1);
+        }
+    }
+}
+
+.hi-menu {
+    list-style: none;
+    padding: 0;
+
+    & > li {
+        display: inline-block;
+        margin: 0 1px;
+        vertical-align: top;
+        min-width: 50px;
+
+        @media (max-width: @screen-xs-max) {
+            position: static !important;
+        }
+
+        .dropdown-menu {
+            top: -5px;
+        }
+
+        .dropdown-menu-lg {
+            padding: 0;
+
+            .lg-body {
+                min-height: 350px;
+                overflow-x: hidden;
+            }
+        }
+
+        & > a {
+            color: @off-white;
+            display: block;
+            text-align: center;
+            z-index: 1;
+            position: relative;
+
+            & > .him-icon {
+                font-size: 24px;
+                line-height: 36px;
+            }
+
+            & > .him-label {
+                line-height: 35px;
+                white-space: nowrap;
+                padding: 0 10px;
+                font-size: @font-size-base + 1;
+                text-transform: uppercase;
+            }
+
+            & > .him-counts {
+                position: absolute;
+                font-style: normal;
+                background: #C13228;
+                padding: 1px 5px;
+                border-radius: 2px;
+                right: 7px;
+                top: -3px;
+                font-size: 10px;
+                line-height: 15px;
+            }
+        }
+
+        &.toggled > a,
+        &:hover > a {
+            background-color: rgba(255,255,255,0.04);
+        }
+    }
+
+    @media (max-width: @screen-xs-max) {
+        .dropdown-menu-lg {
+            width: ~"calc(100% - 28px)" !important;
+        }
+
+        .dropdown-menu {
+            right: 14px;
+            top: 55px !important;
+        }
+    }
+}
+
+.him-notification {
+    &:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: ~"calc(100% - 70px)";
+        background: url(../img/notifications.png) no-repeat center;
+        .transition(all);
+        .transition-duration(400ms);
+        .scale-rotate(0, -180deg);
+        .opacity(0);
+        top: 42px;
+    }
+
+    &.empty:before {
+        .scale-rotate(1, 0deg);
+        .opacity(1);
+    }
+}
+
+/* Full Screen */
+:-webkit-full-screen [data-ma-action="fullscreen"] { display: none; }
+:-moz-full-screen [data-ma-action="fullscreen"] { display: none; }
+:-ms-fullscreen [data-ma-action="fullscreen"] { display: none; }
+:full-screen [data-ma-action="fullscreen"] { display: none; }
+:fullscreen [data-ma-action="fullscreen"] { display: none; }
+
+/* ----------------------------- End common header classes and IDs------------------------------------- */
+
+
+
+/*--------------------------------------------------
+    For header type 1 only
+    You may remove these if you opt header 2
+---------------------------------------------------*/
+#header {
+    background-color: @header-bg;
+    min-height: @header-height;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    .user-select(none);
+
+    position: fixed;
+    z-index: 11;
+    width: 100%;
+    left: 0;
+    top: 0;
+    padding: 0 20px;
+
+    @media(max-width: @screen-xs-max) {
+        padding: 0px 8px;
+    }
+
+    .hi-logo a {
+        padding: 7px 10px;
+    }
+
+    .ma-backdrop {
+        position: absolute;
+    }
+
+    .hi-trigger  {
+        @media(max-width: (@screen-md-max + 80)) {
+            display: inline-block;
+        }
+    }
+
+    &.search-toggled {
+        .h-search-wrap {
+            top: 0;
+            .opacity(1);
+        }
+    }
+}
+
+.h-search-wrap {
+    position: absolute;
+    top: -65px;
+    left: 0;
+    width: 100%;
+    height: @header-height;
+    background: @header-bg;
+    .transition(all);
+    .transition-duration(300ms);
+    .opacity(0);
+    z-index: 10;
+
+    input[type="text"] {
+        border: 0;
+        height: 40px;
+        padding: 0 10px 0 55px;
+        font-size: 18px;
+        border-radius: 2px;
+        background-color: #fff;
+        width: 100%;
+        color: @text-dark;
+    }
+
+    .hsw-close {
+        position: absolute;
+        top: 15px;
+        font-size: 23px;
+        font-style: normal;
+        width: 45px;
+        text-align: center;
+        border-radius: 2px 0px 0px 2px;
+        cursor: pointer;
+        left: 15px;
+        height: 40px;
+        padding-top: 9px;
+        color: @header-bg;
+
+        &:hover {
+            background-color: #eee;
+        }
+
+        @media (max-width: @screen-xs-max) {
+            right: 7px;
+        }
+    }
+}
+
+.hsw-inner {
+    position: relative;
+    padding: 15px;
+    max-width: 700px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ----------------------------- End header type 1 ------------------------------------- */
+
+
+
+/*--------------------------------------------------
+    For Header type 2 only
+    You may remove these if you opt header 1
+---------------------------------------------------*/
+
+#header-alt {
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-bottom: -50px;
+    z-index: 10;
+    background-color: @header-bg;
+    padding: 15px 10px 0 35px;
+
+    @media (min-width: @screen-md-min) {
+        &:before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: rgba(0,0,0,0.08);
+            width: 100%;
+            height: 49px;
+            z-index: -1;
+        }
+    }
+
+    @media (max-width: @screen-xs-max) {
+        padding: 5px 5px 0 25px;
+    }
+
+    .hi-trigger  {
+        top: -7px;
+        left: -15px;
+
+        @media (max-width: @screen-sm-max) {
+            display: inline-block;
+        }
+    }
+
+    .ma-backdrop {
+        position: absolute;
+    }
+
+    .ha-search {
+        margin-bottom: 25px;
+        padding-right: 25px;
+
+        input[type="text"] {
+            width: 100%;
+            background: transparent;
+            border: 0;
+            border-bottom: 1px solid @input-border;
+            font-size: 15px;
+            font-weight: 300;
+            padding: 6px 0 6px 30px;
+
+            .placeholder(@off-white);
+
+            &.ie9-placeholder {
+                color: @off-white !important;
+            }
+        }
+
+        .fg-line {
+            max-width: 500px;
+            position: relative;
+
+            &:before {
+                content: '\f1c3';
+                font-family: @font-icon-md;
+                position: absolute;
+                left: 0;
+                bottom: 1px;
+                font-size: 22px;
+            }
+        }
+    }
+}
+
+.ha-menu {
+    @media(min-width: @screen-md-min) {
+        & > ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            & > li {
+                display: inline-block;
+                vertical-align: top;
+
+                &:not(.active) > a {
+                    color: rgba(255,255,255,0.3);
+                }
+
+                &.active > a {
+                    color: @off-white;
+                    box-shadow: inset 0px -2px 0 0px @off-white;
+                }
+
+                & > a {
+                    text-transform: uppercase;
+                    padding: 15px 12px;
+                    display: block;
+
+                    &:hover {
+                        color: #fff;
+                    }
+                }
+
+                .dropdown-menu {
+                    min-width: 100%;
+                }
+            }
+        }
+    }
+
+    @media(max-width: @screen-sm-max) {
+        display: none;
+    }
+}

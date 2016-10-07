@@ -5,9 +5,9 @@
 
 Highcharts.theme = {
 	chart: {
-		backgroundColor: 'rgba(51, 51, 51, 0)',
+		backgroundColor: '#2b343a',
 		className: 'dark-container',
-		plotBackgroundColor: 'rgba(51, 51, 51, 0)',
+		plotBackgroundColor: '#2b343a',
 		plotBorderColor: '#888888',
 		plotBorderWidth: 1
 	},

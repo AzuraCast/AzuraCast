@@ -77,6 +77,9 @@ class User extends \App\Doctrine\Entity
     /** @Column(name="locale", type="string", length=25, nullable=true) */
     protected $locale;
 
+    /** @Column(name="theme", type="string", length=25, nullable=true) */
+    protected $theme;
+
     /** @Column(name="created_at", type="integer") */
     protected $created_at;
 

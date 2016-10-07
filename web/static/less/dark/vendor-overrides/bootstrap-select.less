@@ -1,0 +1,103 @@
+.bootstrap-select {
+    .dropdown-toggle:focus {
+        outline: none !important;
+    }
+
+    .bs-caret {
+        display: none;
+    }
+
+    & > .btn-default {
+        background: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 0;
+        padding-left: 0;
+        padding-right: 0;
+        position: relative;
+        color: @off-white;
+
+        &:hover {
+            color: @off-white;
+        }
+
+        .select-bg();
+    }
+
+    .bs-searchbox {
+        padding: 5px 5px 5px 40px;
+        position: relative;
+        background: #f7f7f7;
+        margin-top: -10px;
+
+        &:before {
+            position: absolute;
+            left: 0;
+            top: 1px;
+            width: 40px;
+            height: 100%;
+            content: "\f1c3";
+            font-family: @font-icon-md;
+            font-size: 25px;
+            padding: 4px 0 0 15px;
+            color: #313C42;
+        }
+
+        input {
+            border: 0;
+            background: transparent;
+            color: @text-dark;
+        }
+    }
+
+    &.btn-group {
+        .dropdown-menu {
+            li {
+                a.opt {
+                    padding-left: 17px;
+                }
+            }
+
+            .no-results {
+                padding: 8px 8px 0;
+                background-color: #fff;
+            }
+        }
+    }
+
+    .check-mark {
+        margin-top: -5px !important;
+        font-size: 19px;
+        .transition(all);
+        .transition-duration(200ms);
+        .scale(0);
+        display: block !important;
+        position: absolute;
+        top: 11px;
+        right: 15px;
+
+        &:before {
+            content: "\f26b";
+            font-family: @font-icon-md;
+        }
+    }
+
+    .selected {
+        .check-mark {
+            .scale(1);
+        }
+    }
+
+    .notify {
+        bottom: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        border: 0 !important;
+        background: @m-red !important;
+        color: #fff !important;
+        text-align: center;
+    }
+
+    &:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+        width: 100%;
+    }
+}

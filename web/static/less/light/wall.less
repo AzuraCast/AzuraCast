@@ -1,0 +1,195 @@
+/*-------------------------------
+    Post
+--------------------------------*/
+.wp-text {
+    border: 0;
+    display: block;
+    width: 100%;
+    resize: none !important;
+    padding: 20px 25px;
+}
+
+
+.wp-media {
+    background: @app-gray;
+    border: 1px solid #E4E4E4;
+    padding: 12px 15px;
+    margin: 10px 20px 20px;
+    text-align: center;
+}
+
+.wp-actions {
+    padding: 10px 15px 10px 20px;
+    background-color: #F7F7F7;
+}
+
+.wpa-media-list {
+    & > a {
+        font-size: 20px;
+        margin-right: 8px;
+
+        &:hover {
+            .opacity(0.7);
+        }
+    }
+}
+
+
+/*-------------------------------
+    Post Listings
+--------------------------------*/
+.wis-numbers {
+    float: left;
+
+    & > span {
+        margin-right: -1px;
+        padding: 7px 12px;
+        border: 1px solid #E0E0E0;
+        float: left;
+        font-weight: 500;
+
+        & > i {
+            line-height: 100%;
+            vertical-align: top;
+            position: relative;
+            top: 3px;
+            font-size: 15px;
+            margin-right: 2px;
+        }
+
+        &.active {
+            color: @m-green;
+        }
+    }
+}
+
+.wis-commentors {
+    float: right;
+
+    & > a {
+        display: inline-block;
+        margin-left: 2px;
+
+        & > img {
+            width: 33px;
+            height: 33px;
+            border-radius: 50%;
+
+            &:hover {
+                .opacity(0.85);
+            }
+        }
+    }
+}
+
+
+/*-------------------------------
+   Post Gallery
+--------------------------------*/
+.wi-preview {
+    text-align: center;
+
+    @media screen and (min-width: @screen-sm-min) {
+        margin: 0 -23px 20px;
+    }
+
+    @media screen and (max-width: @screen-sm-max) {
+        margin: 0 -16px 20px;
+    }
+
+    .wip-item {
+        display: block;
+        float: left;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid #fff;
+        .bg-cover-inline();
+        cursor: pointer;
+
+        &:hover {
+            .opacity(0.9);
+        }
+        
+        & > img {
+            display: none;
+        }
+
+        &:first-child:nth-last-child(2),
+        &:first-child:nth-last-child(2) ~ div {
+            width: 50%;
+            padding-bottom: 40%;
+        }
+
+        &:first-child:nth-last-child(3),
+        &:first-child:nth-last-child(3) ~ div,
+        &:first-child:nth-last-child(4),
+        &:first-child:nth-last-child(4) ~ div:not(:last-child),
+        &:first-child:nth-last-child(5),
+        &:first-child:nth-last-child(5) ~ div:not(:nth-last-of-type(-n+2)),
+        &:first-child:nth-last-child(6),
+        &:first-child:nth-last-child(6) ~ div,
+        &:first-child:nth-last-child(7) ~ div:nth-last-of-type(-n+3) {
+            width: 33.333333%;
+            padding-bottom: 30%;
+        }
+
+        &:first-child:nth-last-child(5) ~ div:nth-last-of-type(-n+2) {
+            width: 50%;
+            padding-bottom: 40%;
+        }
+
+        &:first-child:nth-last-child(7),
+        &:first-child:nth-last-child(7) ~ div:not(:nth-last-of-type(-n+3)),
+        &:first-child:nth-last-child(n+8),
+        &:first-child:nth-last-child(n+8) ~ div {
+            width: 25%;
+            padding-bottom: 22%;
+        }
+
+        &:only-child,
+        &:first-child:nth-last-child(4) ~ div:nth-child(4) {
+            width: 100%;
+            padding-bottom: 50%;
+        }
+    }
+}
+
+
+/*-------------------------------
+   Post Comments
+--------------------------------*/
+.wi-comments {
+    background: @app-gray;
+
+    .list-group {
+        margin-bottom: -10px;
+        padding-top: 10px;
+    }
+}
+
+.wic-form {
+    padding: 20px 23px;
+
+    textarea {
+        width: 100%;
+        resize: none;
+        border: 1px solid #E8E8E8;
+        padding: 12px 15px;
+        height: 45px;
+    }
+
+    &.toggled {
+        textarea {
+            height: auto;
+        }
+
+        .wicf-actions {
+            display: block;
+        }
+    }
+}
+
+.wicf-actions {
+    margin-top: 10px;
+    display: none;
+}

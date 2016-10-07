@@ -4,6 +4,10 @@
 <script type="text/javascript" src="//code.highcharts.com/highcharts.js"></script>
 <script type="text/javascript" src="//code.highcharts.com/highcharts-more.js"></script>
 <script type="text/javascript" src="//code.highcharts.com/modules/exporting.js"></script>
+
+<?php if ($customization->getTheme() == 'dark'): ?>
+<script type="text/javascript" src="<?=$url->content('js/highcharts/dark-blue.js') ?>"></script>
+<?php endif; ?>
 <?php $this->stop('custom_js') ?>
 
 <script type="text/javascript">

@@ -1,0 +1,87 @@
+.mejs-container {
+  outline: none;
+
+  .mejs-controls {
+    background: #1E262B;
+    height: 50px;
+    padding: 10px 5px 0;
+
+    div {
+      height: 5px;
+    }
+
+    div.mejs-time-rail {
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: 0;
+      width: 100% !important;
+
+      .mejs-time-total {
+        margin: 0;
+        width: 100% !important;
+        background: #1E262B;
+      }
+
+      .mejs-time-loaded {
+        background: #4f5f6a;
+      }
+
+      .mejs-time-current {
+        background: @off-white;
+      }
+
+      .mejs-time-buffering {
+        background: #1E262B;
+      }
+
+      span:not(.mejs-time-float), a {
+        border-radius: 0;
+        height: 3px;
+      }
+    }
+
+
+
+    .mejs-button {
+      button {
+        background-color: #1E262B;
+        width: 15px;
+        height: 15px;
+        background-position: center;
+
+        &:focus {
+          outline: none !important;
+        }
+      }
+    }
+    .mejs-volume-button {
+      position: absolute;
+      right: 35px;
+    }
+
+    .mejs-play button {
+      .img-retina('../img/icons/play.png', '../img/icons/play@2x.png', 15px, 15px);
+    }
+
+    .mejs-pause button {
+      .img-retina('../img/icons/pause.png', '../img/icons/pause@2x.png', 15px, 15px);
+    }
+
+    .mejs-mute button {
+      .img-retina('../img/icons/speaker.png', '../img/icons/speaker@2x.png', 15px, 15px);
+    }
+
+    .mejs-unmute button {
+      .img-retina('../img/icons/speaker-2.png', '../img/icons/speaker-2@2x.png', 15px, 15px);
+    }
+ 
+    .mejs-fullscreen-button {
+      position: absolute;
+      right: 5px;
+      button {
+        .img-retina('../img/icons/fullscreen.png', '../img/icons/fullscreen@2x.png', 15px, 15px);
+      }
+    }
+  }
+}

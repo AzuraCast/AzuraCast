@@ -55,6 +55,12 @@ return [
                     'default' => 'default',
                 ]],
 
+                'theme' => ['radio', [
+                    'label' => _('Site Theme'),
+                    'options' => $config->application->themes->available->toArray(),
+                    'default' => $config->application->themes->default,
+                ]],
+
             ],
         ],
 

@@ -1,0 +1,206 @@
+.bootstrap-datetimepicker-widget {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    bottom: auto !important;
+    top: 0 !important;
+
+    &:after, &:before { display: none !important; }
+
+    table td {
+        text-shadow: none;
+        
+        span {
+            margin: 0;
+            
+            &:hover { background: transparent; }
+        }
+    }
+    
+    .glyphicon { font-family: @font-icon-md; font-size: 18px; }
+    .glyphicon-chevron-left:before { content: "\f2ff"; }
+    .glyphicon-chevron-right:before { content: "\f301"; }
+    .glyphicon-time:before { content: "\f337"; }
+    .glyphicon-calendar:before { content: "\f32e"; }
+    .glyphicon-chevron-up:before { content: "\f1e5"; }
+    .glyphicon-chevron-down:before { content: "\f1e4"; }
+    
+    a[data-action] {
+        color: @m-teal;
+    }
+}
+
+.timepicker-picker {
+    .btn { box-shadow: none !important; }
+    
+    table {
+        tbody tr + tr:not(:last-child) {
+            background: @m-teal;
+            color: #fff;
+            
+            td {
+                border-radius: 0;
+            }
+        }
+    }
+    
+    .btn,
+    .btn:hover {
+        background: #fff; 
+        color: #333;
+    }
+}
+
+.datepicker {
+    table {
+        thead {
+            tr {
+                th {
+                    border-radius: 0;
+                    color: #fff;
+                    
+                    .glyphicon {
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        line-height: 29px;
+                    }
+                    
+                    &:hover .glyphicon {
+                        background: rgba(0, 0, 0, 0.2);
+                    }
+                }
+                
+                &:first-child {
+                    th {
+                        background: @m-teal;
+                        padding: 20px 0;
+                        
+                        &:hover {
+                            background: @m-teal;
+                        }
+                        
+                        &.picker-switch { 
+                            font-size: 16px;
+                            font-weight: 400;
+                            text-transform: uppercase;
+                        }
+                    }
+                }
+                
+                &:last-child {
+                    th {
+                        &:first-child { padding-left: 20px; }
+                        &:last-child { padding-right: 20px; }
+                        
+                        text-transform: uppercase;
+                        font-weight: normal;
+                        font-size: 11px;
+                    }
+                    
+                    &:not(:only-child) {
+                        background: darken(@m-teal, 3%);  
+                    }
+                }
+            } 
+        }
+        
+        tbody {
+            tr {
+                &:last-child {
+                    td {
+                        padding-bottom: 25px;
+                    }
+                }
+                    
+                td {
+                    &:first-child {
+                        padding-left: 13px;
+                    }
+                    
+                    &:last-child {
+                        padding-right: 13px;
+                    } 
+                }
+            }
+        }
+        
+        td {
+    
+            &.day {
+                width: 35px;
+                height: 35px;
+                line-height: 20px;
+                color: #333;
+                position: relative;
+                padding: 0;
+                background: transparent;
+                
+                &:hover {
+                    background: none;
+                }
+                
+                &:before {
+                    content: "";
+                    width: 35px;
+                    height: 35px;
+                    border-radius: 50%;
+                    margin-bottom: -33px;
+                    display: inline-block;
+                    background: transparent;
+                    position: static;
+                    text-shadow: none;
+                    border-bottom-color: transparent !important;
+                }
+                
+                &.old, &.new {
+                    color: #CDCDCD;
+                }
+            }
+            
+            &:not(.today):not(.active) {
+                &:hover:before {
+                    background: #F0F0F0;
+                }
+            }
+            
+            &.today {
+                color: #333;
+                
+                &:before {
+                    background-color: #E2E2E2;
+                }
+            }
+            
+            &.active {
+                color: #fff;
+                
+                &:before {
+                    background-color: @m-teal;
+                }
+            }
+        }
+    }
+}
+
+.datepicker-months .month,
+.datepicker-years .year,
+.timepicker-minutes .minute,
+.timepicker-hours .hour {
+    border-radius: 50%;
+    
+    &:not(.active) {
+        &:hover {
+            background: #F0F0F0;
+        }
+    }
+    
+    &.active {
+        background: @m-teal;
+    }
+}
+
+.timepicker-minutes .minute,
+.timepicker-hours .hour {
+    padding: 0;
+}

@@ -1,0 +1,28 @@
+.alert {
+    padding-left: 30px;
+    font-size: 13px;
+    
+    span {
+        cursor: pointer;
+    }
+
+    &:not(.alert-dismissible) {
+        padding-right: 30px;
+    }
+
+    &.alert-dismissable {
+        padding-right: 44px;
+    }
+
+    &.growl-animated {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    }
+}
+
+.alert-default {
+    .alert-variant(#fff; #fff; @text-dark);
+}
+
+.alert-link {
+    color: #fff !important;
+}

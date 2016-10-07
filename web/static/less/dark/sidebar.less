@@ -1,0 +1,228 @@
+.sidebar {
+    position: fixed;
+    background: @card-bg;
+    height: ~"calc(100% - 65px)";
+    top: @header-height;
+    .transition(all);
+    .transition-duration(300ms);
+    z-index: 10;
+    overflow-y: auto;
+    box-shadow: @card-shadow;
+
+}
+
+#sidebar {
+    width: @sidebar-left-width;
+
+    @media(max-width: (@screen-md-max + 80)) {
+        .translate3d(-@sidebar-left-width, 0, 0);
+        box-shadow: 0 0 30px #0E1215;
+
+        &.toggled {
+            .translate3d(0, 0, 0);
+        }
+    }
+}
+
+.sidebar-alt {
+    top: 0;
+    height: 100%;
+
+    .translate3d(-@sidebar-left-width, 0, 0);
+
+    &.toggled {
+        .translate3d(0, 0, 0);
+    }
+}
+
+.main-menu {
+    list-style: none;
+    padding-left: 0;
+
+    a {
+        .transition(color);
+        .transition-duration(300ms);
+    }
+
+    a:hover,
+    .active > a,
+    a.active {
+        color: #fff;
+    }
+
+    & > li {
+        & > a {
+            display: block;
+            position: relative;
+            color: rgba(255, 255, 255, 0.65);
+
+            & > i {
+                position: absolute;
+                left: 25px;
+                font-size: 20px;
+                top: 0;
+                width: 25px;
+                text-align: center;
+                padding: 13px 0;
+            }
+        }
+
+        &:not(.mm-profile) > a {
+            padding: 14px 20px 14px 65px;
+        }
+
+        & > a:hover,
+        &.active > a {
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+    }
+}
+
+.mm-profile {
+    & > a {
+        display: block;
+        padding: 20px;
+        color: #fff;
+
+        & > img {
+            width: 30px;
+            height: 30px;
+            padding-right: 0 !important;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.13);
+            margin-top: 3px;
+            float: left;
+        }
+    }
+
+    .media-body {
+        padding: 2px 10px 0px 15px;
+
+        small {
+            display: block;
+            color: rgba(255, 255, 255, 0.35);
+        }
+    }
+}
+
+.sub-menu {
+    a {
+        color: rgba(255, 255, 255, 0.4);
+    }
+    
+    & > a {
+        position: relative;
+
+        &:before, &:after {
+            position: absolute;
+            top: 50%;
+            margin-top: -11px;
+            font-family: @font-icon-md;
+            font-size: 17px;
+            right: 15px;
+            .transition(all);
+            .transition-duration(250ms);
+            .backface-visibility(hidden);
+            .opacity(0);
+        }
+
+        &:before {
+            content: "\f278";
+            .scale(1);
+        }
+
+        &:after {
+            content: "\f273";
+            .scale(0);
+        }
+
+        &:hover {
+            &:before,
+            &:after {
+                .opacity(0.7);
+            }
+        }
+    }
+
+    &.toggled,
+    &.active {
+        & > a {
+            &:before,
+            &:after {
+                .opacity(0.7);
+            }
+        }
+    }
+
+    &.toggled {
+        & > a {
+            &:before {
+                content: "\f278";
+                .scale(0);
+            }
+
+            &:after {
+                content: "\f273";
+                .scale(1);
+            }
+        }
+    }
+
+    ul {
+        list-style: none;
+        display: none;
+        padding: 0;
+
+        & > li {
+            & > a {
+                padding: 8px 20px 8px 65px;
+                display: block;
+            }
+
+            &:first-child > a {
+                padding-top: 14px;
+            }
+
+            &:last-child > a {
+                padding-bottom: 16px;
+            }
+
+            ul {
+                font-size: 12px;
+                margin: 10px 0;
+                background-color: rgba(255, 255, 255, 0.03);
+            }
+        }
+    }
+
+    &.active {
+        & > ul {
+            display: block;
+        }
+    }
+}
+
+
+/*-------------------------
+    For Stupid IE9
+--------------------------*/
+.ie9 {
+    #sidebar {
+        @media(max-width: (@screen-md-max + 80)) {
+            display: none;
+
+            &.toggled {
+                display: block;
+            }
+        }
+    }
+
+    .sidebar-alt {
+        display: none;
+
+        &.toggled {
+            display: block;
+        }
+    }
+
+}

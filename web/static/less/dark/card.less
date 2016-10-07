@@ -1,0 +1,69 @@
+.card {
+    position: relative;
+    background: @card-bg;
+    box-shadow: @card-shadow;
+    margin-bottom: @grid-gutter-width;
+
+    .card-header {
+        position: relative;
+        padding: 23px 25px;
+
+        h2 {
+            margin: 0;
+            line-height: 100%;
+            font-size: 17px;
+            font-weight: 400;
+            
+            small {
+                display: block;
+                margin-top: 5px;
+                line-height: 160%;
+            }
+        } 
+
+        &.ch-alt {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        &[class*="bgm-"] {
+            h2, h2 small { 
+                color: #fff;
+            }
+        }
+        
+        .actions {
+            position: absolute; 
+            right: 10px;
+            z-index: 2; 
+            top: 15px;
+        }
+        
+        .btn-float {
+            right: 25px;
+            bottom: -23px;
+            z-index: 1;
+        }
+    }
+    
+    a.card-header {
+        display: block;
+    }
+
+    a.ch-alt:hover {
+        background-color: rgba(255, 255, 255, 0.055);
+    }
+    
+    .card-body { 
+        &.card-padding {
+            padding: 25px 27px;
+        }
+        
+        &.card-padding-sm {
+            padding: 15px;
+        }
+    }
+}
+
+.card-header:not(.ch-alt):not([class*="bgm-"]) + .card-padding {
+    padding-top: 0;
+}

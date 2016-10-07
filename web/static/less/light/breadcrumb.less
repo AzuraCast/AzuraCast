@@ -1,0 +1,25 @@
+.breadcrumb {
+    border-bottom: 1px solid #E5E5E5;
+    border-radius: 0;
+    margin-top: -27px;
+    margin-bottom: 50px;
+
+    @media(min-width: (@screen-lg-min + 80)) {
+        padding: 10px 33px 11px 300px;
+    }
+
+    @media(max-width: (@screen-md-max + 80)) {
+        padding: 10px 33px 11px;
+    }
+
+    & > li {
+
+        & > a {
+            color: @text-color;
+
+            &:hover {
+                color: @breadcrumb-active-color;
+            }
+        }
+    }
+}

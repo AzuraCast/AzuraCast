@@ -1,0 +1,167 @@
+/*-------------------------
+    Font Face
+--------------------------*/
+.font-face(@family, @name, @weight: 300, @style){
+    @font-face{
+        font-family: @family;
+        src:url('../fonts/@{family}/@{name}.eot');
+        src:url('../fonts/@{family}/@{name}.eot?#iefix') format('embedded-opentype'),
+            url('../fonts/@{family}/@{name}.woff') format('woff'),
+            url('../fonts/@{family}/@{name}.ttf') format('truetype'),
+            url('../fonts/@{family}/@{name}.svg#icon') format('svg');
+        font-weight: @weight;
+        font-style: @style;
+    }
+}
+
+/*--------------------------------------------------
+    Background Repeat + Position
+---------------------------------------------------*/
+.bg-option(@repeat: no-repeat, @position: center) {
+    background-repeat: @repeat;
+    background-position: @position;
+}
+
+/*--------------------------------------------------
+    CSS Animations based on animate.css
+---------------------------------------------------*/
+.animated(@name, @duration) {
+    -webkit-animation-name: @name;
+    animation-name: @name;
+    -webkit-animation-duration: @duration;
+    animation-duration: @duration;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+/*--------------------------------------------------
+    CSS Transform - Scale and Rotate
+---------------------------------------------------*/
+.scale-rotate(@scale, @rotate) {
+    -webkit-transform: scale(@scale) rotate(@rotate);
+    -ms-transform: scale(@scale) rotate(@rotate);
+    -o-transform: scale(@scale) rotate(@rotate);
+    transform: scale(@scale) rotate(@rotate);
+}
+
+/*-------------------------
+    User Select
+--------------------------*/
+.user-select (@val) {
+    -webkit-touch-callout:  @val;
+    -webkit-user-select:    @val;
+    -khtml-user-select:     @val;
+    -moz-user-select:       @val;
+    -ms-user-select:        @val;
+    user-select:            @val;
+}
+
+/*-------------------------
+    Background Image Cover
+--------------------------*/
+.bg-cover(@image) {
+    background-image: url(@image);
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-cover-inline() {
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center;
+}
+
+/*-------------------------
+    Tab Focus
+--------------------------*/
+.tab-focus() {
+    outline: none !important;
+}
+
+/*--------------------------------------------------
+    Override Bootstrap Button Mixin
+---------------------------------------------------*/
+.button-variant(@color; @background; @border) {
+    color: @color;
+    background-color: @background;
+    border-color: @border;
+
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    .open > .dropdown-toggle& {
+        color: @color;
+        background-color: @background;
+        border-color: transparent;
+        
+        &:hover,
+        &:focus,
+        &.focus {
+          color: @color;
+          background-color: @background;
+              border-color: transparent
+        }
+    }
+    &:active,
+    &.active,
+    .open > .dropdown-toggle& {
+        background-image: none;
+    }
+    &.disabled,
+    &[disabled],
+    fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active {
+        background-color: @background;
+            border-color: @border;
+        }
+    }
+
+    .badge {
+        color: @background;
+        background-color: @color;
+    }
+}
+
+/*-------------------------
+    Scale 3d
+--------------------------*/
+.scale3d(...) {
+  @process: ~`(function(e){return e=e||"1, 1, 1"})((function(){var e="@{arguments}";return e=e.replace(/^\[|\]$/g,"")})())`;
+  -webkit-transform: scale3d(@process);
+  -moz-transform: scale3d(@process);
+  -ms-transform: scale3d(@process);
+  -o-transform: scale3d(@process);
+  transform: scale3d(@process);
+}
+
+/*-------------------------
+    Select BG
+--------------------------*/
+.select-bg() {
+    &:before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        content: "";
+        height: ~"calc(100% - 2px)";
+        width: 30px;
+        background-color: #FFF;
+        background-position: right ~"calc(100% - 7px)";
+        background-repeat: no-repeat;
+        .img-retina('../img/select.png', '../img/select@2x.png', 12px, 12px);
+        pointer-events: none;
+        z-index: 5;
+    }
+}

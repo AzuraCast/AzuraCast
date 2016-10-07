@@ -9,14 +9,33 @@ module.exports = function(grunt) {
                     paths: ["/var/azuracast/www/web/static/css"],
                     compress: true,
                     sourceMap: true,
-                    sourceMapURL: '/static/css/app.css.map',
-                    sourceMapBasepath: '/var/azuracast/www/web',
-                    sourceMapRootpath: '/'
+                    sourceMapRootpath: '/',
+                    sourceMapBasepath: function (f) {
+                        this.sourceMapURL = this.sourceMapFilename.substr(this.sourceMapFilename.lastIndexOf('/') + 1);
+                        return "wwwroot/";
+                    }
                 },
                 files: {
-                    "/var/azuracast/www/web/static/css/app.css": "/var/azuracast/www/web/static/less/app.less",
+                    "/var/azuracast/www/web/static/css/light.css": "/var/azuracast/www/web/static/less/light.less",
+                    "/var/azuracast/www/web/static/css/dark.css": "/var/azuracast/www/web/static/less/dark.less"
                 },
                 cleancss: true
+            }
+        },
+        concat: {
+            dist: {
+                src: ['/var/azuracast/www/web/static/js/inc/**/*.js'],
+                dest: '/var/azuracast/www/web/static/js/app.js'
+            }
+        },
+        uglify: {
+            options: {
+                mangle: false
+            },
+            my_target: {
+                files: {
+                    '/var/azuracast/www/web/static/js/app.min.js': ['/var/azuracast/www/web/static/js/app.js']
+                }
             }
         },
         csssplit: {
@@ -30,14 +49,18 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            //styles: {
+            less: {
                 files: ['/var/azuracast/www/web/static/less/**/*.less'], // which files to watch
                 tasks: ['less'],
                 options: {
                     nospawn: true,
-                    livereload: 8122,
+                    livereload: 8122
                 } 
-            //}
+            },
+            js: {
+                files: ['/var/azuracast/www/web/static/js/inc/**/*.js'], // which files to watch
+                tasks: ['concat', 'uglify']
+            }
         }
     });
   
@@ -46,8 +69,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-csssplit');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-concat');
   
     // Default task(s).
-    grunt.registerTask('default', ['less']);
+    grunt.registerTask('default', ['less', 'concat', 'uglify']);
+    grunt.registerTask('js', ['concat', 'uglify']);
     
 };

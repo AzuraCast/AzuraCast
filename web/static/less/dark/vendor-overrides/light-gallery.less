@@ -1,0 +1,111 @@
+.lg-outer {
+    .lg-thumb-outer {
+        background-color: #1D1D1D;
+    }
+
+    .lg-thumb-item {
+        border-radius: 50%;
+        width: 60px !important;
+        display: inline-block;
+        height: 60px;
+        border: 0;
+        float: none;
+        margin: 0 5px;
+
+        &:hover {
+            box-shadow: 0 0 0px 4px rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    .lg-image {
+        border-radius: 3px;
+    }
+
+    .lg-toogle-thumb {
+        border-radius: 50%;
+        color: #333;
+        height: 51px;
+        width: 51px;
+        line-height: 41px;
+        background-color: #fff;
+        .transition(all);
+        .transition-duration(800ms);
+
+        &:hover {
+            .rotate(360deg);
+            color: #000;
+        }
+    }
+
+    &:not(.lg-thumb-open) .lg-toogle-thumb {
+        top: -70px;
+    }
+
+    &.lg-thumb-open .lg-toogle-thumb {
+        top: -26px;
+    }
+}
+
+.lg-thumb.group {
+    padding: 20px 0;
+}
+
+.lg-slide {
+    em {
+        font-style: normal;
+
+        h3 {
+            color: #fff;
+            margin-bottom: 5px;
+        }
+    }
+
+    .video-cont {
+        .z-depth(2);
+    }
+}
+
+.lg-outer .lg-item {
+    background-image: none !important;
+
+    &:before {
+        content: '';
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid rgba(255,255,255,0.1);
+        border-right-color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        .animation-name(loader);
+        .animation-duration(1000ms);
+        .animation-iteration-count(infinite);
+        .animation-timing-function(linear);
+    }
+}
+
+@-webkit-keyframes loader {
+    0% {
+        .rotate(0deg)
+    }
+    100% {
+        .rotate(360deg)
+    }
+}
+
+.loading > i {
+    width: 100%;
+    height: 100%;
+    display: block;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: loader 1.1s infinite linear;
+    animation: loader 1.1s infinite linear;
+    border-left-color: #fff;
+    border-style: solid;
+}

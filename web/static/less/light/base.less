@@ -1,0 +1,90 @@
+*, button, input, i, a {
+    -webkit-font-smoothing: antialiased;
+}
+
+*,
+*:active,
+*:hover,
+*:focus {
+    outline: none !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+}
+
+html {
+    overflow-x: ~"hidden\0/";
+    -ms-overflow-style: none;
+
+    &:not(.ie9) {
+        body {
+            overflow-y: scroll; 
+        }
+    }
+    
+    &.ismobile * {
+        cursor: pointer;
+    }
+}
+
+html, body {
+    min-height: 100vh;
+}
+
+body {
+    font-weight: 400;
+    position: relative;
+    overflow-x: hidden;
+}
+
+audio, video {
+    outline: none;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    small {
+        font-size: 12px;
+    }
+}
+
+#main {
+    position: relative;
+    padding-bottom: @footer-height;
+    padding-top: @header-height + 30;
+    min-height: 100vh;
+}
+
+.sidebar-toggled {
+    #main {
+        height: 100vh;
+        overflow: hidden;
+    }
+}
+
+.container {
+    &.container-alt {
+        max-width: 1170px;
+    }
+}
+
+#content {
+    &:not(.content-alt) {
+        @media (min-width: (@screen-lg-min + 80)) {
+            padding-left: @sidebar-left-width + 15;
+            padding-right: 15px;
+        }
+    }
+
+    @media (min-width: (@screen-sm-min)) and (max-width: (@screen-md-max + 80)) {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    &.content-alt {
+        max-width: 1200px;
+        margin: 0 auto;
+
+    }
+}

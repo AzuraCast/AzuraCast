@@ -1,0 +1,222 @@
+.messages {
+    height: ~"calc(100vh - 130px)";
+    position: relative;
+    overflow: hidden;
+
+    header {
+        min-height: 55px;
+
+        .actions {
+            position: absolute;
+            top: 12px;
+            right: 13px;
+        }
+    }
+}
+
+/*-----------------------------------
+    Sidebar
+------------------------------------*/
+.m-sidebar {
+    width: 300px;
+    border-right: 1px solid #eee;
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+
+    @media(max-width: @screen-xs-max) {
+        width: 60px;
+
+        .list-group-item {
+            padding: 10px !important;
+        }
+
+        .ms-time {
+            display: none;
+        }
+    }
+
+    header {
+        background-color: #F7F7F7;
+        padding: 20px;
+
+        h2 {
+            line-height: 100%;
+            font-size: 15px;
+            margin: 0;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+    }
+
+    .lgi-heading {
+        max-width: 120px;
+    }
+
+    .list-group {
+        height: ~"calc(100% - 130px)";
+    }
+
+    /* Scrollbar fix */
+    .mCSB_scrollTools {
+        z-index: 2;
+    }
+}
+
+.ms-time {
+    position: absolute;
+    top: 16px;
+    right: 25px;
+    color: @text-muted;
+}
+
+.ms-search {
+    padding: 20px 25px;
+    position: relative;
+
+    .zmdi-search {
+        position: absolute;
+        left: 0px;
+        top: 8px;
+        font-size: 20px;
+
+    }
+
+    input {
+        padding-left: 25px !important;
+    }
+}
+
+
+
+/*-----------------------------------
+    Body
+------------------------------------*/
+.m-body {
+    position: relative;
+    height: 100%;
+
+    @media(min-width: @screen-sm-min) {
+        padding-left: 300px;
+    }
+
+    @media(max-width: @screen-xs-max) {
+        padding-left: 60px;
+
+    }
+}
+
+.mb-header {
+    background-color: #F7F7F7;
+    box-shadow: 0px -1px 0px 1px #eaeaea;
+    position: relative;
+    z-index: 2;
+}
+
+.mbh-user {
+    padding: 12px 20px;
+
+    & > img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        float: left;
+        margin-right: 15px;
+    }
+}
+
+.mb-list {
+    height: ~"calc(100% - 55px)";
+    position: relative;
+}
+
+.mbl-messages {
+    padding: 50px 50px 0;
+    height: ~"calc(100vh - 259px)";
+    overflow-x: hidden;
+
+    @media(max-width: @screen-xs-max) {
+        padding: 20px 20px 0;
+    }
+}
+
+.mblm-item {
+    position: relative;
+    margin-bottom: 10px;
+
+    & > div {
+        display: inline-block;
+        max-width: 70%;
+        padding: 15px 20px;
+        border-radius: 2px;
+        position: relative;
+    }
+
+    small {
+        display: block;
+        color: @text-muted;
+        padding: 5px 20px;
+    }
+}
+
+.mblm-item-left > div {
+    background-color: #eee;
+}
+
+.mblm-item-right {
+    text-align: right;
+
+    & > div {
+        background-color: @m-amber;
+        color: #fff;
+    }
+}
+
+.mblmi-img {
+    margin: -10px -15px;
+    cursor: pointer;
+
+    img {
+        max-width: 250px;
+        border-radius: 2px;
+    }
+}
+
+.mbl-compose {
+    border-top: 1px solid #eee;
+    height: 70px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 65px 15px 15px;
+
+    textarea {
+        height: 100%;
+        width: 100%;
+        border-radius: 2px;
+        border: 0;
+        resize: none;
+        background: #eee;
+        padding: 5px 10px;
+        color: @text-color;
+        .transition(background-color);
+        .transition-duration(300ms);
+    }
+
+    button {
+        position: absolute;
+        top: 14px;
+        right: 15px;
+        background: transparent;
+        border: 0;
+        font-size: 25px;
+
+        &:hover {
+            color: #333;
+        }
+    }
+}

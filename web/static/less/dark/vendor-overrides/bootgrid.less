@@ -1,0 +1,141 @@
+.bootgrid-footer .infoBar, .bootgrid-header .actionBar {
+    text-align: left;
+}
+
+.bootgrid-footer .search, .bootgrid-header .search {
+    vertical-align: top;
+}
+
+.bootgrid-header {
+    padding: 0 25px 10px;
+
+    .search {
+        border: 1px solid @input-border;
+
+        .form-control, .input-group-addon {
+            border: 0;
+        }
+
+        .glyphicon-search {
+            vertical-align: top;
+            padding: 9px 10px 0;
+
+            &:before {
+                content: "\f1c3";
+                font-family: @font-icon-md;
+                font-size: 17px;
+                vertical-align: top;
+                line-height: 100%;
+            }
+        }
+
+        @media (min-width: @screen-xs-min) {
+            width: 300px;
+        }
+
+        @media (max-width: @screen-xs-min) {
+            width: 100%;
+            padding-right: 90px;
+        }
+    }
+
+    .actions {
+        box-shadow: none;
+
+        .btn-group {
+            border: 1px solid @input-border;
+
+            .btn {
+                height: 35px;
+                box-shadow: none !important;
+                background: transparent;
+                color: @off-white;
+            }
+
+            .dropdown-menu {
+                .dropdown-item {
+                    color: #747474;
+                }
+
+                @media (min-width: @screen-sm-min) {
+                    left: 0;
+                    margin-top: 1px;
+                }
+            }
+
+            .caret {
+                display: none;
+            }
+
+            .zmdi {
+                line-height: 100%;
+                font-size: 18px;
+                vertical-align: top;
+            }
+        }
+
+        @media (max-width: @screen-xs-min) {
+            position: absolute;
+            top: 0;
+            right: 15px;
+        }
+    }
+
+    .checkbox {
+        color: @text-dark;
+        margin: 10px 15px;
+    }
+}
+
+.bootgrid-table th > .column-header-anchor {
+    color: @off-white;
+}
+
+.bootgrid-table th:active, .bootgrid-table th:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bootgrid-table th > .column-header-anchor > .icon {
+    top: 0;
+    font-size: 20px;
+    line-height: 100%;
+}
+
+.bootgrid-footer {
+    .col-sm-6 {
+        padding: 10px 30px 20px;
+
+        @media (max-width: @screen-sm-min) {
+            text-align: center;
+        }
+    }
+
+    .infoBar {
+        @media (max-width: @screen-sm-min) {
+            display: none;
+        }
+
+        .infos {
+            border: 1px solid @input-border;
+            display: inline-block;
+            float: right;
+            padding: 7px 30px;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    }
+}
+
+.select-cell {
+    .checkbox {
+        margin: 0;
+    }
+}
+
+.command-edit, .command-delete {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.bootgrid-table td.loading, .bootgrid-table td.no-results {
+    background-color: @card-bg;
+}

@@ -1,0 +1,78 @@
+#chat {
+    padding: 20px 0 5px;
+    width: @sidebar-right-width;
+    right: -(@sidebar-right-width + 20);
+    box-shadow: 0 0 20px rgba(14, 18, 21, 0.38);
+
+    &.toggled {
+        right: 0;
+    }
+
+    .chat-search {
+        padding: 20px 20px 15px 20px;
+
+        .form-control {
+            background-repeat: no-repeat;
+            background-position: left center;
+            padding-left: 30px;
+            background-color: transparent;
+
+            &:focus {
+                padding: 0 30px 0 0;
+
+                & + .zmdi-search {
+                    left: ~"calc(100% - 15px)";
+                }
+            }
+        }
+
+        .form-control, .zmdi-search {
+            .transition(all);
+            .transition-duration(300ms);
+        }
+
+        .zmdi-search {
+            position: absolute;
+            left: 0;
+            bottom: 6px;
+            font-size: 20px;
+        }
+    }
+
+    .lg-body {
+        height: ~"calc(100% - 70px)";
+    }
+}
+
+/*------------------------------
+    Chat Status Icons
+-------------------------------*/
+[class*="chat-status"] {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    top: -3px;
+    right: 12px;
+    border: 2px solid #FFF;
+ }
+
+/* Simple Mixin */
+.chat-status(@color) {
+   box-shadow: 0 0 0 1px @color;
+   background: @color;
+}
+
+.chat-status-online {
+    .chat-status(#1EC01E);
+}
+
+.chat-status-offline {
+    .chat-status(#E73F3F);
+}
+
+.chat-status-busy {
+    .chat-status(#FFA500);
+}
+
+

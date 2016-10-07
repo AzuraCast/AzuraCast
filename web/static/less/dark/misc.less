@@ -1,0 +1,333 @@
+/*--------------------------------------------------
+    Block Header
+    Used for Heading outside the Cards.
+---------------------------------------------------*/
+.block-header {
+    @media screen and (min-width: @screen-sm-min) {
+        padding: 0 22px;
+    }
+
+    @media screen and (max-width: @screen-sm-max) {
+        padding: 0 18px;
+    }
+
+    margin-bottom: 25px;
+    position: relative;
+
+    & > h2 {
+        font-size: 15px;
+        margin: 0;
+        text-transform: uppercase;
+        font-weight: 400;
+
+        & > small {
+            display: block;
+            text-transform: none;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            color: @headings-small-color;
+            line-height: 140%;
+        }
+    }
+
+    .actions {
+        position: absolute;
+        right: 10px;
+        top: -5px;
+        z-index: 4;
+    }
+}
+
+
+/*-------------------------
+    Actions
+--------------------------*/
+.actions {
+    list-style: none;
+    padding: 0;
+    z-index: 3;
+    margin: 0;
+
+    & > li {
+        display: inline-block;
+        vertical-align: baseline;
+    }
+
+    & > li > a,
+    & > a {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        text-align: center;
+        padding-top: 5px;
+        border-radius: 50%;
+        margin: 0 2px;
+
+        & > i {
+            color: rgba(255,255,255,0.5);
+            font-size: 20px;
+        }
+
+        &:hover {
+            background-color: rgba(255,255,255,0.07);
+
+            & > i {
+                color: @off-white
+            }
+        }
+    }
+}
+
+.actions-alt {
+    & > li {
+        & > a {
+            & > i {
+                color: #adadad;
+            }
+
+            &:hover {
+                background-color: rgba(0,0,0,0.07);
+
+                & > i {
+                    color: #333;
+                }
+            }
+        }
+    }
+}
+
+
+/*-------------------------
+    Collapse Menu Icons
+--------------------------*/
+.line-wrap {
+    width: 18px;
+    height: 12px;
+    margin: 12px 17px;
+    cursor: pointer;
+
+    &, .line {
+        .transition(all);
+        .transition-duration(300ms);
+    }
+
+    .line{
+        width: 18px;
+        height: 2px;
+        background-color: #fff;
+
+        &.center {
+            margin: 3px 0;
+        }
+    }
+}
+
+.toggled {
+    .line-wrap {
+        .rotate(180deg);
+
+        .line {
+            &.top {
+                width: 12px;
+                transform: translateX(8px) translateY(1px) rotate(45deg);
+                -webkit-transform: translateX(8px) translateY(1px) rotate(45deg);
+            }
+
+            &.bottom {
+                width: 12px;
+                transform: translateX(8px) translateY(-1px) rotate(-45deg);
+                -webkit-transform: translateX(8px) translateY(-1px) rotate(-45deg);
+            }
+        }
+    }
+}
+
+
+/*-------------------------
+    Load More
+--------------------------*/
+.load-more {
+    text-align: center;
+    margin-top: 30px;
+
+    a {
+        padding: 8px 10px 6px;
+        display: inline-block;
+        background-color: @off-white;
+        border-radius: 2px;
+        white-space: nowrap;
+        color: #333;
+
+        i {
+            font-size: 20px;
+            vertical-align: middle;
+            position: relative;
+            margin-top: -2px;
+            margin-right: 3px;
+        }
+
+        &:hover {
+            background-color: #fff;
+        }
+    }
+}
+
+
+/*-------------------------
+    View More
+--------------------------*/
+.view-more {
+    display: block;
+    text-align: center;
+    padding: 10px 10px 11px;
+    line-height: 100%;
+    font-size: 11px;
+    margin-top: 20px;
+    text-transform: uppercase;
+
+    &:not(.view-more-light) {
+        color: @text-muted;
+
+        &:hover {
+            color: @off-white;
+        }
+    }
+
+    &.view-more-light {
+        color: #828282;
+
+        &:hover {
+            color: #333;
+        }
+    }
+}
+
+
+/*-------------------------
+    Page Loader
+--------------------------*/
+.page-loader {
+    background: #1E262B;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    .preloader {
+        width: 50px;
+        position: absolute;
+        left: 50%;
+        margin-left: -25px;
+        top: 50%;
+        margin-top: -55px;
+        .animated(fadeIn, 3000ms);
+
+        p {
+            white-space: nowrap;
+            position: relative;
+            left: -9px;
+            top: 22px;
+            color: rgba(255,255,255,0.3);
+        }
+    }
+}
+
+
+/*----------------------------------------
+    Action Header
+-----------------------------------------*/
+.action-header {
+    padding: 25px 30px;
+    line-height: 100%;
+    position: relative;
+    z-index: 1;
+    min-height: 65px;
+    background-color: rgba(255, 255, 255, 0.04);
+
+    .actions {
+        position: absolute;
+        top: 18px;
+        right: 17px;
+        z-index: 10;
+    }
+}
+
+.ah-label {
+    font-size: 15px;
+}
+
+.ah-search {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 11;
+    background-color: #454E53;
+    display: none;
+}
+
+.ahs-input {
+    border: 0;
+    padding: 0 26px;
+    height: 100%;
+    font-size: 15px;
+    width: 100%;
+    background: transparent;
+    line-height: 60px;
+    color: #fff;
+
+    .placeholder(@off-white);
+}
+
+.ahs-close {
+    font-style: normal;
+    position: absolute;
+    top: 23px;
+    right: 25px;
+    font-size: 17px;
+    line-height: 100%;
+    text-align: center;
+    cursor: pointer;
+    background: @off-white;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    color: #333;
+
+    &:hover {
+        opacity: 0.7;
+    }
+}
+
+
+/*----------------------------------
+    Backdrop
+-----------------------------------*/
+.ma-backdrop {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 9;
+    cursor: pointer;
+}
+
+.ma-backdrop-alt {
+    position: absolute;
+}
+
+
+/*----------------------------------
+    Avatar
+-----------------------------------*/
+[class*="avatar-img"] {
+    border-radius: 50%;
+}
+
+.avatar-img {
+    width: 42px;
+}

@@ -1,0 +1,137 @@
+#todo {
+    background: @m-amber;
+    color: #fff;
+    font-family: 'satisfy', cursive;
+
+    .card-header {
+        padding: 28px 35px 20px;
+        background-color: rgba(0, 0, 0, 0.03);
+
+        h2 {
+            font-size: 25px;
+
+            small {
+                font-size: 18px;
+                margin-top: 0;
+            }
+        }
+    }
+
+    .card-body {
+        font-size: 20px;
+        position: relative;
+    }
+
+    .list-group-item {
+        padding: 0;
+    }
+
+    .checkbox {
+        .input-helper {
+            &:before,
+            &:after {
+                top: 5px;
+            }
+        }
+
+        input:checked + i + span {
+            text-decoration: line-through;
+        }
+    }
+}
+
+.t-add,
+.ta-block,
+.ta-btn {
+    .transition(all);
+    .backface-visibility(hidden);
+    .transition-duration(250ms);
+}
+
+.t-add {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    background: #fff;
+    top: -25px;
+    right: 23px;
+    max-height: 300px;
+
+    .ta-block {
+        overflow: hidden;
+        .opacity(0);
+
+        textarea {
+            padding: 25px 25px 45px;
+            resize: none;
+            width: 100%;
+            font-size: 24px;
+            color: @m-amber;
+            position: absolute;
+            height: 100%;
+            border: 0;
+            outline: none;
+        }
+    }
+
+    &:not(.toggled) {
+        overflow: hidden;
+
+        .ta-btn {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 23px;
+            color: @m-orange;
+            line-height: 51px;
+        }
+    }
+
+    &.toggled {
+        width: ~"calc(100% - 47px)";
+        height: ~"calc(100% - 25px)";
+        border-radius: 2px;
+        top: 0;
+        z-index: 1;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+        overflow: visible;
+
+        .ta-btn {
+            .scale(0);
+            display: none;
+        }
+
+        .ta-block {
+            .opacity(1);
+
+            .tab-actions {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                padding: 5px 10px;
+                border-top: 1px solid #EEE;
+                z-index: 1;
+
+                & > a {
+                    font-size: 25px;
+                    padding: 0 6px;
+                    border-radius: 50%;
+                    text-align: center;
+                    height: 40px;
+                    width: 40px;
+                    line-height: 48px;
+                    display: inline-block;
+
+                    &:hover {
+                        background-color: #eee;
+                    }
+                }
+            }
+        }
+    }
+}

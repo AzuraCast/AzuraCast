@@ -255,6 +255,10 @@ $di['user'] = function($di) {
         return NULL;
 };
 
+$di['customization'] = function($di) {
+    return new \App\Customization($di);
+};
+
 $di['view'] = function($di) {
     $view = new \App\Mvc\View(APP_INCLUDE_BASE.'/templates');
     $view->setFileExtension('phtml');
@@ -267,6 +271,7 @@ $di['view'] = function($di) {
         'url' => $di['url'],
         'config' => $di['config'],
         'flash' => $di['flash'],
+        'customization' => $di['customization'],
     ]);
 
     return $view;
@@ -277,50 +282,14 @@ $cache = $di->get('cache');
 
 if (!APP_IS_COMMAND_LINE)
 {
-    /** @var \Entity\User|null $user */
-    $user = $di->get('user');
+    /** @var \App\Customization $customization */
+    $customization = $di->get('customization');
 
     // Set time zone.
-    if ($user !== null && !empty($user->timezone))
-        date_default_timezone_set($user->timezone);
+    date_default_timezone_set($customization->getTimeZone());
 
-    /*
-     * Commands:
-     * find /var/azuracast/www -type f \( -name '*.php' -or -name '*.phtml' \) -print > list
-     * xgettext --files-from=list --language=PHP -o /var/azuracast/www/app/locale/default.pot
-     *
-     * find /var/azuracast/www/app/locale -name \*.po -execdir msgfmt default.po -o default.mo \;
-     */
-
-    $locale = null;
-    $supported_locales = $config->application->locale->supported->toArray();
-
-    // Prefer user-based profile locale.
-    if ($user !== null && !empty($user->locale) && $user->locale !== 'default')
-    {
-        if (isset($supported_locales[$user->locale]))
-            $locale = $user->locale;
-    }
-
-    // Attempt to load from browser headers.
-    if (!$locale)
-    {
-        $browser_locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-
-        foreach($supported_locales as $lang_code => $lang_name)
-        {
-            if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0)
-            {
-                $locale = $lang_code;
-                break;
-            }
-        }
-    }
-
-    // Default to system option.
-    if (!$locale)
-        $locale = $config->application->locale->default;
-
+    // Localization
+    $locale = $customization->getLocale();
     putenv("LANG=".$locale);
     setlocale(LC_ALL, $locale);
 

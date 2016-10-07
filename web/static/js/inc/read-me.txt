@@ -1,0 +1,3 @@
+I have created a seperate folder(flot-charts) for Flot Chart items.
+Each and every Flot chart I have used in this template have it's own js file inside flot-charts folder
+in order to get a clear picture of codes.

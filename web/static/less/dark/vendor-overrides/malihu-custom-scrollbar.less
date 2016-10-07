@@ -1,0 +1,34 @@
+.mCSB_scrollTools {
+    width: 5px;
+    
+    .mCSB_dragger_bar {
+        border-radius: 0 !important;
+    }
+    
+    &.mCSB_scrollTools_horizontal,
+    &.mCSB_scrollTools_vertical {
+        margin: 0 !important;  
+    }
+    
+    &.mCSB_scrollTools_horizontal {
+        height: 10px;
+    }
+
+    .mCSB_draggerContainer {
+      z-index: 10;
+    }
+}
+
+.mCS-minimal-dark {
+    &.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+        background: #6b7175;
+    }
+    
+    &.mCSB_scrollTools_onDrag .mCSB_dragger .mCSB_dragger_bar {
+        background: #6b7175 !important;
+    }
+}
+
+.mCSB_inside > .mCSB_container {
+    margin-right: 0;
+}

@@ -1,0 +1,145 @@
+.login-content {
+    min-height: 100vh;
+    text-align: center;
+    background-color: @m-teal;
+
+    &:before {
+        display: inline-block;
+        content: '';
+        height: 100vh;
+        width: 1px;
+        vertical-align: middle;
+    }
+}
+
+.lc-block {
+    max-width: 500px;
+    padding: 20px 0;
+    width: 80%;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+
+    &:not(.toggled) {
+        display: none;
+    }
+
+    &.toggled {
+        .animated(fadeInUp, 300ms);
+        z-index: 10;
+    }
+
+    &:not(.lc-block-alt) {
+        .lcb-form {
+            padding: 35px 55px 35px 25px;
+        }
+
+        .btn-login {
+            top: 50%;
+            margin-top: -43px;
+            right: -25px;
+        }
+    }
+
+    .checkbox {
+        margin: 5px 0 0 41px;
+        text-align: left;
+    }
+}
+
+.lcb-form {
+    background: #fff;
+    box-shadow: @card-shadow;
+    border-radius: 2px;
+}
+
+
+/*-----------------------------
+    Login Navigation
+------------------------------*/
+.lcb-navigation {
+    margin-top: 15px;
+
+    a, a span {
+        .transition(width);
+        .transition-duration(200ms);
+    }
+
+    a {
+        color: #fff;
+        display: inline-block;
+        background: rgba(255,255,255,.2);
+        margin: 0 1px;
+        width: 30px;
+        height: 30px;
+        border-radius: 20px;
+        vertical-align: top;
+        white-space: nowrap;
+        text-align: left;
+
+        i {
+            width: 30px;
+            font-style: normal;
+            font-size: 16px;
+            display: inline-block;
+            vertical-align: top;
+            text-align: center;
+            line-height: 30px;
+        }
+
+        span {
+            width: 0;
+            overflow: hidden;
+            display: inline-block;
+            line-height: 29px;
+            margin-left: -3px;
+        }
+
+        &:hover {
+            span {
+                width: 100%;
+            }
+        }
+
+        &[data-ma-block="#l-register"]:hover {
+            width: 95px;
+        }
+
+        &[data-ma-block="#l-forget-password"]:hover {
+            width: 147px;
+        }
+
+        &[data-ma-block="#l-login"]:hover {
+            width: 85px;
+        }
+
+    }
+}
+
+
+/*-----------------------------
+    Lockscreen
+------------------------------*/
+.lc-block-alt {
+    .lcb-form {
+        padding: 70px 35px 60px;
+    }
+
+    .btn-login {
+        bottom: 0;
+        left: 50%;
+        margin-left: -25px;
+    }
+}
+
+.lcb-user {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    margin-left: -50px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.18);
+}

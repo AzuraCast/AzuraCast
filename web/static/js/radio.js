@@ -11,7 +11,7 @@ $(function() {
     if (store.enabled && store.get('player_volume') !== undefined)
         volume = store.get('player_volume', 70);
 
-    $(document).on("click", ".btn-audio", function(e) {
+    $('.btn-audio').on('click', function(e) {
         e.preventDefault();
         handlePlayClick($(this).data('url'));
         return false;

@@ -132,6 +132,7 @@ class FilesController extends BaseController
                     'title' => $media_row['title'],
                     'name' => $media_row['artist'].' - '.$media_row['title'],
                     'edit_url' => $this->url->routeFromHere(['action' => 'edit', 'id' => $media_row['id']]),
+                    'play_url' => $this->url->routeFromHere(['action' => 'download']).'?file='.urlencode($media_row['path']),
                     'playlists' => implode('<br>', $playlists),
                 );
             }

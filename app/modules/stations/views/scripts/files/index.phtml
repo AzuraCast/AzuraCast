@@ -16,10 +16,10 @@
             <div class="card-header ch-alt">
                 <h2><?=_('Media Manager') ?></h2>
             </div>
-
-            <div class="card-body">
-                <div id="breadcrumb" class="breadcrumb m-b-0">&nbsp;</div>
+            <div class="card-body card-padding">
+                <div id="breadcrumb" class="">&nbsp;</div>
             </div>
+
             <div class="card-body card-padding-sm">
                 <div id="upload_progress"></div>
                 <div id="file_drop_target">
@@ -87,7 +87,7 @@ $(function() {
 
     var $current_dir = '';
 
-    $("#file-table").bootgrid({
+    var grid = $("#file-table").bootgrid({
         ajax: true,
         selection: true,
         multiSelect: true,
@@ -106,11 +106,11 @@ $(function() {
         },
         formatters: {
             "playable": function(column, row) {
-                var $url = row.is_dir ? '#' + row.path : '<?=$url->routeFromHere(['action' => 'download']) ?>?file='+encodeURIComponent(row.path);
+                var $url = row.is_dir ? '#' + row.path : row.media_play_url;
                 var $icon = '';
 
                 if (row.media_is_playable)
-                    $icon = '<a class="file-icon btn-audio" href="javascript:handlePlayClick(\''+$url+'\');" data-url="'+$url+'"><i class="zmdi zmdi-play"></i></a>';
+                    $icon = '<a class="file-icon btn-audio" href="#" data-url="'+$url+'"><i class="zmdi zmdi-play"></i></a>';
                 else
                     $icon = '<span class="file-icon"><i class="zmdi zmdi-'+(row.is_dir ? 'folder' : 'file')+'"></i></span>';
 
@@ -137,8 +137,15 @@ $(function() {
                 return formatTimestamp(row.mtime);
             }
         }
-    }).on('click.rs.jquery.bootgrid', function(e, columns, row) {
-        // whole-row click handler
+    }).on("loaded.rs.jquery.bootgrid", function()
+    {
+        /* Executes after data is loaded and rendered */
+        grid.find(".btn-audio").on("click", function(e)
+        {
+            e.preventDefault();
+            handlePlayClick($(this).data('url'));
+            return false;
+        });
     });
 
     // Check if initial URL has a hash.

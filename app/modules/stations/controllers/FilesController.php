@@ -408,6 +408,7 @@ class FilesController extends BaseController
     public function downloadAction()
     {
         $this->doNotRender();
+        set_time_limit(600);
 
         $filename = basename($this->file_path);
         header('Content-Type: ' . mime_content_type($this->file_path));

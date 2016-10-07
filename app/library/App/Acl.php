@@ -5,9 +5,9 @@
 
 namespace App;
 
+use Entity\RolePermission;
 use Entity\User;
 use Entity\Role;
-use Entity\RoleHasAction;
 
 class Acl
 {
@@ -32,7 +32,7 @@ class Acl
     protected function init()
     {
         if (null === $this->_actions)
-            $this->_actions = $this->_em->getRepository(RoleHasAction::class)->getActionsForAllRoles();
+            $this->_actions = $this->_em->getRepository(RolePermission::class)->getActionsForAllRoles();
     }
 
     /**

@@ -31,20 +31,14 @@ $app->group('/admin', function() {
         $this->get('', 'admin:permissions:index')
             ->setName('admin:permissions:index');
 
-        $this->map(['GET', 'POST'], '/role/edit[/{id}]', 'admin:permissions:editrole')
-            ->setName('admin:permissions:editrole');
+        $this->map(['GET', 'POST'], '/edit[/{id}]', 'admin:permissions:edit')
+            ->setName('admin:permissions:edit');
 
-        $this->get('/role/delete/{id}', 'admin:permissions:deleterole')
-            ->setName('admin:permissions:deleterole');
+        $this->get('/delete/{id}', 'admin:permissions:delete')
+            ->setName('admin:permissions:delete');
 
-        $this->get('/role/members/{id}', 'admin:permissions:rolemembers')
-            ->setName('admin:permissions:rolemembers');
-
-        $this->map(['GET', 'POST'], '/action/edit[/{id}]', 'admin:permissions:editaction')
-            ->setName('admin:permissions:editaction');
-
-        $this->get('/action/delete/{id}', 'admin:permissions:deleteaction')
-            ->setName('admin:permissions:deleteaction');
+        $this->get('/members/{id}', 'admin:permissions:members')
+            ->setName('admin:permissions:members');
 
     });
 

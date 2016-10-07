@@ -27,7 +27,7 @@ return [
                 'icon' => 'fa fa-user',
                 'permission' => 'administer user accounts',
             ],
-            _('Roles and Permissions') => [
+            _('Permissions') => [
                 'url' => 'admin:permissions:index',
                 'icon' => 'fa fa-key',
                 'permission' => 'administer permissions',

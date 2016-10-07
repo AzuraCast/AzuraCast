@@ -12,7 +12,7 @@ class Role extends \App\Doctrine\Entity
     public function __construct()
     {
         $this->users = new ArrayCollection;
-        $this->has_action = new ArrayCollection;
+        $this->permissions = new ArrayCollection;
     }
     
     /**
@@ -28,6 +28,6 @@ class Role extends \App\Doctrine\Entity
     /** @ManyToMany(targetEntity="User", mappedBy="roles")*/
     protected $users;
 
-    /** @OneToMany(targetEntity="Entity\RoleHasAction", mappedBy="role") */
-    protected $has_action;
+    /** @OneToMany(targetEntity="Entity\RolePermission", mappedBy="role") */
+    protected $permissions;
 }

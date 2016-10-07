@@ -4,83 +4,53 @@
     <h2><?=_('Manage Permissions') ?></h2>
 </div>
 
-<div class="row">
-    <div class="col-sm-6">
-        <div class="card">
-            <div class="card-header ch-alt">
-                <h2><?=_('Roles') ?></h2>
-                <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'editrole')) ?>"><i class="zmdi zmdi-plus"></i></a>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <colgroup>
-                        <col width="40%" />
-                        <col width="60%" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th><?=_('Role Name') ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach($roles as $role): ?>
-                        <tr class="input">
-                            <td class="center">
-                                <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'editrole', 'id' => $role['id'])) ?>"><?=_('Edit') ?></a>
-                            <?php if( $role['id'] != 1 ): ?>
-                                <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'deleterole', 'id' => $role['id'])) ?>"><?=_('Delete') ?></a>
-                            <?php else: ?>
-                                <a class="btn btn-sm btn-danger disabled" href="#" onclick="alert('<?=_('This role cannot be deleted.') ?>'); return false;"><?=_('Delete') ?></a>
-                            <?php endif; ?>
-                            </td>
-                            <td align="left"><?=$this->e($role['name']) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2><?=_('Roles') ?></h2>
+        <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
-    <div class="col-sm-6">
-        <div class="card">
-            <div class="card-header ch-alt">
-                <h2><?=_('Actions') ?></h2>
-                <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'editaction')) ?>"><i class="zmdi zmdi-plus"></i></a>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <colgroup>
-                        <col width="40%" />
-                        <col width="60%" />
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th>&nbsp;</th>
-                        <th><?=_('Action Name') ?></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach($actions as $action): ?>
-                        <tr class="input">
-                            <td class="center">
-                                <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'editaction', 'id' => $action['id'])) ?>"><?=_('Edit') ?></a>
-                                <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'deleteaction', 'id' => $action['id'])) ?>"><?=_('Delete') ?></a>
-                            </td>
-                            <td align="left">
-                                <?=$this->e($action['name']) ?><br><small>
-                                <?php if ($action['is_global']): ?>
-                                    <?=_('System-Wide') ?>
-                                <?php else: ?>
-                                    <?=_('Per-Station') ?>
-                                <? endif; ?>
-                                </small>
-                            </td>
-                        </tr>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="20%">
+                <col width="20%">
+                <col width="30%">
+                <col width="30%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th><?=_('Actions') ?></th>
+                <th><?=_('Role Name') ?></th>
+                <th><?=_('System-Wide Permissions') ?></th>
+                <th><?=_('Per-Station Permissions') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($roles as $role): ?>
+                <tr class="input">
+                    <td class="center">
+                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $role['id'])) ?>"><?=_('Edit') ?></a>
+
+                        <?php if( $role['id'] != 1 ): ?>
+                            <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $role['id'])) ?>"><?=_('Delete') ?></a>
+                        <?php else: ?>
+                            <a class="btn btn-sm btn-danger disabled" href="#" onclick="alert('<?=_('This role cannot be deleted.') ?>'); return false;"><?=_('Delete') ?></a>
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <big><?=$this->e($role['name']) ?></big>
+                    </td>
+                    <td>
+                        <?=implode($role['permissions_global'], ', ') ?>
+                    </td>
+                    <td>
+                    <?php foreach($role['permissions_station'] as $station_name => $station_perms): ?>
+                        <div><b><?=$station_name ?></b>: <?=implode($station_perms, ', ') ?></div>
                     <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 </div>

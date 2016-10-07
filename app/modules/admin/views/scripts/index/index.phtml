@@ -5,15 +5,15 @@
 </div>
 
 <div class="row">
-    <?php foreach($panels as $category_name => $category_items): ?>
+    <?php foreach($admin_panels as $category_name => $category_info): ?>
     <div class="col-sm-4">
         <div class="card">
             <div class="card-header ch-alt">
-                <h2><?=$category_name ?></h2>
+                <h2><i class="<?=$category_info['icon'] ?>"></i> <?=$category_name ?></h2>
             </div>
             <div class="card-body card-padding-sm">
-                <ul class="nav nav-list" <?php if (count($category_items) >= 15): ?>style="height: 300px; overflow-y: scroll;"<?php endif; ?>>
-                    <?php foreach($category_items as $item_name => $item_params): ?>
+                <ul class="nav nav-list" <?php if (count($category_info['items']) >= 15): ?>style="height: 300px; overflow-y: scroll;"<?php endif; ?>>
+                    <?php foreach($category_info['items'] as $item_name => $item_params): ?>
                         <li>
                             <a href="<?=(is_array($item_params['url']) ? $url->route($item_params['url']) : $url->named($item_params['url'])) ?>" title="<?=$item_params['title'] ?>">
                                 <i class="<?=$item_params['icon'] ?>"></i> <?=$item_name ?>

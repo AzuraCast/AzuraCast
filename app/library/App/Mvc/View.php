@@ -69,4 +69,9 @@ class View extends \League\Plates\Engine
         return null;
     }
 
+    public function fetch($name, array $data = array())
+    {
+        return parent::render($name, $data);
+    }
+
 }

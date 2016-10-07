@@ -18,6 +18,8 @@ class BaseController extends \App\Mvc\Controller
         if (!($this->station instanceof Station))
             throw new \App\Exception\PermissionDenied;
 
+        $this->view->sidebar = $this->view->fetch('common::sidebar');
+
         parent::init();
     }
 

@@ -8,27 +8,6 @@ class IndexController extends BaseController
      */
     public function indexAction()
     {
-        // Load dashboard.
-        $panels = $this->current_module_config->dashboard->toArray();
-
-        foreach($panels as $sidebar_category => &$sidebar_items)
-        {
-            foreach($sidebar_items as $item_name => $item_params)
-            {
-                $permission = $item_params['permission'];
-                if (!is_bool($permission))
-                    $permission = $this->di['acl']->isAllowed($permission);
-
-                if (!$permission)
-                    unset($sidebar_items[$item_name]);
-            }
-
-            if (empty($sidebar_items))
-                unset($panels[$sidebar_category]);
-        }
-
-        $this->view->panels = $panels;
-
         // Synchronization statuses
         if ($this->acl->isAllowed('administer all'))
         {

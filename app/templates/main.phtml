@@ -40,7 +40,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 <body class="<?=$page_class ?>">
 <header id="header" class="clearfix" data-ma-theme="blue" style="background-image: url('<?=$url->content('img/header_bg.png') ?>');" data-rjs="3">
     <ul class="h-inner">
-        <?php if (!empty($station)): ?>
+        <?php if (!empty($sidebar)): ?>
         <li class="hi-trigger ma-trigger" data-ma-action="sidebar-open" data-ma-target="#sidebar">
             <div class="line-wrap">
                 <div class="line top"></div>
@@ -114,13 +114,13 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 </header>
 
 <section id="main">
-    <?php if (!empty($station)): ?>
+    <?php if (!empty($sidebar)): ?>
     <aside id="sidebar" class="sidebar c-overflow">
-        <?=$this->insert('partials/sidebar') ?>
+        <?=$sidebar ?>
     </aside>
     <?php endif; ?>
 
-    <section id="content" <?php if (empty($station)): ?>class="content-alt"<?php endif; ?>>
+    <section id="content" <?php if (empty($sidebar)): ?>class="content-alt"<?php endif; ?>>
         <div class="container">
         <?php if ($manual): ?>
             <?=$this->section('content') ?>
@@ -139,7 +139,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
     </section>
 </section>
 
-<footer id="footer" <?php if (empty($station)): ?>class="footer-alt"<?php endif; ?>>
+<footer id="footer" <?php if (empty($sidebar)): ?>class="footer-alt"<?php endif; ?>>
     <?=sprintf(_('Powered by %s Version %s.'), '<a href="https://github.com/SlvrEagle23/AzuraCast" target="_blank">'.$config->application->name.'</a>', \App\Version::getVersionText()) ?><br>
     PHP <?=\PHP_VERSION ?>, SlimPHP 3
 </footer>

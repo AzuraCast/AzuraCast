@@ -7,7 +7,29 @@ class BaseController extends \App\Mvc\Controller
     {
         parent::preDispatch();
 
-        // $this->forceSecure();
+        // Load dashboard.
+        $panels = $this->current_module_config->dashboard->toArray();
+
+        foreach($panels as $sidebar_category => &$sidebar_info)
+        {
+            foreach($sidebar_info['items'] as $item_name => $item_params)
+            {
+                $permission = $item_params['permission'];
+                if (!is_bool($permission))
+                    $permission = $this->di['acl']->isAllowed($permission);
+
+                if (!$permission)
+                    unset($sidebar_info['items'][$item_name]);
+            }
+
+            if (empty($sidebar_info['items']))
+                unset($panels[$sidebar_category]);
+        }
+
+        $this->view->admin_panels = $panels;
+
+        if (!($this->controller == 'index' && $this->action == 'index'))
+            $this->view->sidebar = $this->view->fetch('common::sidebar');
 
         return true;
     }

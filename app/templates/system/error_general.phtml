@@ -4,14 +4,16 @@ $page_class = 'four-zero-content';
 ?>
 
 <div class="four-zero">
-    <h2>500</h2>
-    <small>
-        <?=$exception->getMessage() ?><br>
-        <?=$exception->getFile() ?> : <?=$exception->getLine() ?>
-    </small>
+    <div class="fz-block">
+        <h2>500</h2>
+        <small>
+            <?=$exception->getMessage() ?><br>
+            <?=$exception->getFile() ?> : <?=$exception->getLine() ?>
+        </small>
 
-    <footer>
-        <a href="javascript:history.back()"><i class="zmdi zmdi-arrow-back"></i></a>
-        <a href="<?=$url->route([]) ?>"><i class="zmdi zmdi-home"></i></a>
-    </footer>
+        <div class="fzb-links">
+            <a href="javascript:history.back()"><i class="zmdi zmdi-arrow-back"></i></a>
+            <a href="<?=$url->named('home') ?>"><i class="zmdi zmdi-home"></i></a>
+        </div>
+    </div>
 </div>

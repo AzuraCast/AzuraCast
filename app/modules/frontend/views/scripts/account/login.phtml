@@ -2,26 +2,29 @@
 
 <!-- Login -->
 <div class="lc-block toggled" id="l-login">
-    <h3 class="text-left"><?=sprintf(_('Welcome to %s!'), $config->application->name) ?></h3>
-    <P class="text-left"><?=_('Please log in to continue.') ?></p>
+    <div class="lcb-form">
+        <h3 class="text-left"><?=sprintf(_('Welcome to %s!'), $config->application->name) ?></h3>
+        <p class="text-left"><?=_('Please log in to continue.') ?></p>
 
-    <form action="" method="post">
-        <div class="input-group m-b-20">
-            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-            <div class="fg-line">
-                <input type="email" name="username" class="form-control" placeholder="<?=_('E-mail Address') ?>">
+        <form action="" method="post">
+            <div class="input-group m-b-20">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <div class="fg-line">
+                    <input type="email" name="username" class="form-control" placeholder="<?=_('E-mail Address') ?>">
+                </div>
             </div>
-        </div>
 
-        <div class="input-group m-b-20">
-            <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-            <div class="fg-line">
-                <input type="password" name="password" class="form-control" placeholder="<?=_('Password') ?>">
+            <div class="input-group m-b-20">
+                <span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+                <div class="fg-line">
+                    <input type="password" name="password" class="form-control" placeholder="<?=_('Password') ?>">
+                </div>
             </div>
-        </div>
 
-        <div class="clearfix"></div>
+            <div class="clearfix"></div>
 
-        <button type="submit" class="btn btn-login btn-primary btn-float"><i class="zmdi zmdi-arrow-forward"></i></button>
-    </form>
+            <button type="submit" class="btn btn-login btn-primary btn-float"><i class="zmdi zmdi-arrow-forward"></i></button>
+        </form>
+    </div>
+
 </div>

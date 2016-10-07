@@ -13,7 +13,7 @@
 
     <?php if ($acl->isAllowed('manage station media', $station->id)): ?>
     <li class="sub-menu">
-        <a href=""><i class="zmdi zmdi-collection-music"></i> <?=_('Media') ?></a>
+        <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-music"></i> <?=_('Media') ?></a>
 
         <ul>
             <li><a href="<?=$url->named('stations:files:index', ['station' => $station->id]) ?>"><?=_('Music Files') ?></a></li>
@@ -24,7 +24,7 @@
 
     <?php if ($acl->isAllowed('view station reports', $station->id)): ?>
     <li class="sub-menu">
-        <a href=""><i class="zmdi zmdi-assignment"></i> <?=_('Reports') ?></a>
+        <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i> <?=_('Reports') ?></a>
 
         <ul>
             <li><a href="<?=$url->named('stations:index:timeline', ['station' => $station->id]) ?>"><?=_('Song Playback Timeline') ?></a></li>
@@ -36,7 +36,7 @@
 
 
     <li class="sub-menu">
-        <a href=""><i class="zmdi zmdi-settings"></i> <?=_('Utilities') ?></a>
+        <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-settings"></i> <?=_('Utilities') ?></a>
 
         <ul>
         <?php if ($acl->isAllowed('manage station automation', $station->id)): ?>

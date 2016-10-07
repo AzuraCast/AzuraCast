@@ -1,0 +1,54 @@
+/* Login and 404 Pages */
+.login-content,
+.four-zero {
+  min-height: inherit;
+  background: #FFFFFF url('../img/hexbg.png') center center;
+  background-size: cover;
+}
+
+/* Header */
+#header {
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: 500px 100px;
+
+  .logo a {
+    margin: -5px 0 8px 0;
+    display: block;
+  }
+}
+
+/* Sidebar */
+.main-menu {
+  margin: 20px 0 0 0;
+
+  & > li {
+    &.menu-header > a {
+      padding: 14px 20px 14px 20px;
+      color: @headings-color;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+}
+
+/* Forms */
+form {
+  legend {
+    color: @headings-color;
+    border-bottom: 0;
+  }
+}
+
+/* Footer */
+#footer {
+  padding-top: 20px;
+  padding-bottom: 15px;
+  height: 75px;
+
+  &.footer-alt {
+    @media (min-width: (@screen-lg-min + 80)) {
+      padding-left: 0;
+    }
+  }
+}

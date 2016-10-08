@@ -164,6 +164,8 @@ class IceCast extends FrontendAbstract
             $icecast_pid = file_get_contents($icecast_pid_file);
             $pid_result = exec('ps --pid '.$icecast_pid.' &>/dev/null');
 
+            $this->log($pid_result);
+
             return !empty($pid_result);
         }
 
@@ -189,8 +191,15 @@ class IceCast extends FrontendAbstract
     public function start()
     {
         $config_path = $this->station->getRadioConfigDir();
-        $icecast_config = $config_path.'/icecast.xml';
 
+        $icecast_pid_file = $config_path.'/icecast.pid';
+        if (file_exists($icecast_pid_file))
+        {
+            $this->log(_('Not starting, process is already running.'));
+            return;
+        }
+
+        $icecast_config = $config_path.'/icecast.xml';
         exec('icecast2 -b -c '.$icecast_config, $output);
         $this->log(implode("\n", $output));
     }

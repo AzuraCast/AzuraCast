@@ -263,6 +263,8 @@ class LiquidSoap extends BackendAbstract
             $ls_pid = file_get_contents($ls_pid_file);
             $pid_result = exec('ps --pid '.$ls_pid.' &>/dev/null');
 
+            $this->log($pid_result);
+
             return !empty($pid_result);
         }
 
@@ -291,7 +293,14 @@ class LiquidSoap extends BackendAbstract
 
         if (!file_exists($config_path))
         {
-            $this->log(_('Not starting backend, nothing to play yet.'));
+            $this->log(_('Not starting, nothing to play yet.'));
+            return;
+        }
+
+        $ls_pid_file = $this->station->getRadioConfigDir().'/liquidsoap.pid';
+        if (file_exists($ls_pid_file))
+        {
+            $this->log(_('Not starting, process is already running.'));
             return;
         }
 

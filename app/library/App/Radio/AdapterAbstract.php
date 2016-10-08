@@ -72,14 +72,12 @@ abstract class AdapterAbstract
             $flash = $this->di['flash'];
             $flash->addMessage($message, $class, true);
         }
-        else
-        {
-            $log_file = APP_INCLUDE_TEMP.'/radio_backend_log.txt';
-            $log_message = "\n".$message;
 
-            file_put_contents($log_file, $log_message, FILE_APPEND);
+        $log_file = APP_INCLUDE_TEMP.'/radio_adapter_log.txt';
+        $log_message = str_pad(date('Y-m-d g:ia'), 20, ' ', STR_PAD_RIGHT).$message."\n";
 
-            \App\Debug::log('['.strtoupper($class).'] '.$message);
-        }
+        file_put_contents($log_file, $log_message, FILE_APPEND);
+
+        \App\Debug::log('['.strtoupper($class).'] '.$message);
     }
 }

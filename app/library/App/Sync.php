@@ -155,39 +155,39 @@ class Sync
     {
         $this->settings->clearCache();
 
-        $syncs = array(
-            'nowplaying' => array(
-                'name'      => 'Now Playing Data',
-                'latest'    => $this->settings->getSetting('nowplaying_last_run', 0),
-                'contents'  => array(
-                    'Now Playing Data',
-                ),
-            ),
-            'short' => array(
-                'name'      => '1-Minute Sync',
-                'latest'    => $this->settings->getSetting('sync_fast_last_run', 0),
-                'contents'  => array(
-                    'Song Requests Queue',
-                ),
-            ),
-            'medium' => array(
-                'name'      => '5-Minute Sync',
-                'latest'    => $this->settings->getSetting('sync_last_run', 0),
-                'contents'  => array(
-                    'Media Folder Updates',
-                ),
-            ),
-            'long' => array(
-                'name'      => '1-Hour Sync',
-                'latest'    => $this->settings->getSetting('sync_slow_last_run', 0),
-                'contents'  => array(
-                    'Analytics/Statistics',
-                    'Cleanup',
-                ),
-            ),
-        );
+        $syncs = [
+            'nowplaying' => [
+                'name' => _('Now Playing Data'),
+                'latest' => $this->settings->getSetting('nowplaying_last_run', 0),
+                'contents' => [
+                    _('Now Playing Data'),
+                ],
+            ],
+            'short' => [
+                'name' => _('1-Minute Sync'),
+                'latest' => $this->settings->getSetting('sync_fast_last_run', 0),
+                'contents' => [
+                    _('Song Requests Queue'),
+                ],
+            ],
+            'medium' => [
+                'name' => _('5-Minute Sync'),
+                'latest' => $this->settings->getSetting('sync_last_run', 0),
+                'contents' => [
+                    _('Check Media Folders'),
+                ],
+            ],
+            'long' => [
+                'name' => _('1-Hour Sync'),
+                'latest' => $this->settings->getSetting('sync_slow_last_run', 0),
+                'contents' => [
+                    _('Analytics/Statistics'),
+                    _('Cleanup'),
+                ],
+            ],
+        ];
 
-        foreach($syncs as $sync_key => $sync_info)
+        foreach ($syncs as $sync_key => $sync_info)
         {
             $sync_latest = $sync_info['latest'];
 

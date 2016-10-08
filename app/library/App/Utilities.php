@@ -94,37 +94,32 @@ class Utilities
     public static function timeDifferenceText($timestamp1, $timestamp2, $precision = 1)
     {
         $time_diff = abs($timestamp1 - $timestamp2);
-        $diff_text = "";
         
         if ($time_diff < 60)
         {
             $time_num = intval($time_diff);
-            $time_unit = 'second';
+            return sprintf(ngettext("%d second", "%d seconds", $time_num), $time_num);
         }
         else if ($time_diff >= 60 && $time_diff < 3600)
         {
             $time_num = round($time_diff / 60, $precision);
-            $time_unit = 'minute';
+            return sprintf(ngettext("%d minute", "%d minutes", $time_num), $time_num);
         }
         else if ($time_diff >= 3600 && $time_diff < 216000)
         {
             $time_num = round($time_diff / 3600, $precision);
-            $time_unit = 'hour';
+            return sprintf(ngettext("%d hour", "%d hours", $time_num), $time_num);
         }
         else if ($time_diff >= 216000 && $time_diff < 10368000)
         {
             $time_num = round($time_diff / 86400);
-            $time_unit = 'day';
+            return sprintf(ngettext("%d day", "%d days", $time_num), $time_num);
         }
         else
         {
             $time_num = round($time_diff / 2592000);
-            $time_unit = 'month';
+            return sprintf(ngettext("%d month", "%d months", $time_num), $time_num);
         }
-        
-        $diff_text = $time_num.' '.$time_unit.(($time_num != 1)?'s':'');
-        
-        return $diff_text;
     }
 
     /**

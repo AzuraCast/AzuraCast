@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-08 07:06+0000\n"
+"POT-Creation-Date: 2016-10-08 23:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,10 +16,84 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:294
-msgid "Not starting backend, nothing to play yet."
+#: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:296
+msgid "Not starting, nothing to play yet."
 msgstr ""
+
+#: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:303
+#: /var/azuracast/www/app/library/App/Radio/Frontend/IceCast.php:198
+msgid "Not starting, process is already running."
+msgstr ""
+
+#: /var/azuracast/www/app/library/App/Sync.php:160
+#: /var/azuracast/www/app/library/App/Sync.php:163
+msgid "Now Playing Data"
+msgstr ""
+
+#: /var/azuracast/www/app/library/App/Sync.php:167
+msgid "1-Minute Sync"
+msgstr ""
+
+#: /var/azuracast/www/app/library/App/Sync.php:170
+msgid "Song Requests Queue"
+msgstr ""
+
+#: /var/azuracast/www/app/library/App/Sync.php:174
+msgid "5-Minute Sync"
+msgstr ""
+
+#: /var/azuracast/www/app/library/App/Sync.php:177
+msgid "Check Media Folders"
+msgstr ""
+
+#: /var/azuracast/www/app/library/App/Sync.php:181
+msgid "1-Hour Sync"
+msgstr ""
+
+#: /var/azuracast/www/app/library/App/Sync.php:184
+msgid "Analytics/Statistics"
+msgstr ""
+
+#: /var/azuracast/www/app/library/App/Sync.php:185
+msgid "Cleanup"
+msgstr ""
+
+#: /var/azuracast/www/app/library/App/Utilities.php:101
+#, php-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: /var/azuracast/www/app/library/App/Utilities.php:106
+#, php-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: /var/azuracast/www/app/library/App/Utilities.php:111
+#, php-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: /var/azuracast/www/app/library/App/Utilities.php:116
+#, php-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: /var/azuracast/www/app/library/App/Utilities.php:121
+#, php-format
+msgid "%d month"
+msgid_plural "%d months"
+msgstr[0] ""
+msgstr[1] ""
 
 #: /var/azuracast/www/app/modules/admin/config/dashboard.conf.php:7
 msgid "System Maintenance"
@@ -309,6 +383,11 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/views/scripts/api/index.phtml:33
 msgid "Revoke"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/admin/views/scripts/index/index.phtml:46
+#, php-format
+msgid "%s ago"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:4

@@ -17,6 +17,9 @@ $app->map(['GET', 'POST'], '/login', 'frontend:account:login')
 $app->get('/logout', 'frontend:account:logout')
     ->setName('account:logout');
 
+$app->get('/endsession', 'frontend:account:endmasquerade')
+    ->setName('account:endmasquerade');
+
 $app->get('/profile', 'frontend:profile:index')
     ->setName('profile:index');
 

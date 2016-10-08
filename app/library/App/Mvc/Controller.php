@@ -313,7 +313,7 @@ class Controller
      */
     public function redirectToRoute($route, $code = 302)
     {
-        return $this->redirect($this->di['url']->route($route, $this->di), $code);
+        return $this->redirect($this->di['url']->route($route), $code);
     }
 
     /**

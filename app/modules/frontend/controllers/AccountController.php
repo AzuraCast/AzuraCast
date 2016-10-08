@@ -68,6 +68,15 @@ class AccountController extends BaseController
         return $this->redirectHome();
     }
 
+    public function endmasqueradeAction()
+    {
+        $this->doNotRender();
+
+        $this->auth->endMasquerade();
+
+        return $this->redirectToRoute(['module' => 'admin', 'controller' => 'users']);
+    }
+
     /*
     public function forgotAction()
     {

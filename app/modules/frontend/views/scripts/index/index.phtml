@@ -46,7 +46,9 @@
             <div class="card-header ch-alt">
                 <h2><?=_('Station Overview') ?></h2>
 
+            <?php if ($acl->isAllowed('administer stations')): ?>
                 <a class="btn bgm-blue btn-float" href="<?=$url->route(['module' => 'admin', 'controller' => 'stations', 'action' => 'edit']) ?>"><i class="zmdi zmdi-plus"></i></a>
+            <?php endif; ?>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -85,7 +87,9 @@
                                 <span class="nowplaying-artist"><?=_('Song Artist') ?></span>
                             </td>
                             <td>
+                            <?php if ($acl->isAllowed('view station management', $row->id)): ?>
                                 <a class="btn btn-primary" href="<?=$url->route(['module' => 'stations', 'station' => $row->id]) ?>"><?=_('Manage') ?></a>
+                            <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

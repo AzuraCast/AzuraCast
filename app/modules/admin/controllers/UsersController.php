@@ -90,7 +90,7 @@ class UsersController extends BaseController
         // Set new identity in Zend_Auth
         $this->auth->masqueradeAsUser($user);
 
-        $this->alert('<b>'.sprintf(_('Logged in as %s.'), $user->firstname.' '.$user->lastname).'</b>', 'green');
+        $this->alert('<b>'._('Logged in successfully.').'</b><br>'.$user->email, 'green');
         return $this->redirectHome();
     }
 }

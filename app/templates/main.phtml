@@ -97,7 +97,11 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                             <a data-action="fullscreen" href=""><i class="zmdi zmdi-fullscreen"></i> <?=_('Toggle Fullscreen') ?></a>
                         </li>
                         -->
+                    <?php if ($auth->isMasqueraded()): ?>
+                        <li><a href="<?=$url->named('account:endmasquerade') ?>"><i class="fa fa-sign-out"></i> <?=_('End Session') ?></a></li>
+                    <?php else: ?>
                         <li><a href="<?=$url->named('account:logout') ?>"><i class="fa fa-sign-out"></i> <?=_('Sign Out') ?></a></li>
+                    <?php endif; ?>
                     </ul>
                 </li>
             </ul>

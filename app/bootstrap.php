@@ -267,6 +267,7 @@ $di['view'] = function($di) {
 
     $view->addData([
         'di' => $di,
+        'auth' => $di['auth'],
         'acl' => $di['acl'],
         'url' => $di['url'],
         'config' => $di['config'],

@@ -1,5 +1,11 @@
 ---
-  - name: Install AzuraCast Cron jobs
-    become: true
-    shell: crontab -u azuracast {{ util_base }}/vagrant_cron
-    notify: restart cron
+- name: Generate Cron Template
+  template: src=azuracast_cron.j2 dest="{{ tmp_base }}/azuracast_cron" force=true
+
+- name: Install Cron file
+  become: true
+  shell: "crontab -u azuracast {{ tmp_base }}/azuracast_cron"
+  notify: restart cron
+
+- name: Clean up temp Cron file
+  file: path="{{ tmp_base }}/azuracast_cron" state=absent

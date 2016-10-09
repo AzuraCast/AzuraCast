@@ -11,11 +11,15 @@
   apt: update_cache=yes
   when: influxdb_list.changed == True or influxdb_key.changed == True
 
+- name: Install python-influxdb
+  pip: name="{{ item }}" state=latest
+  with_items:
+   - influxdb
+
 - name: Install InfluxDB
   apt: pkg="{{ item }}" state=latest
   register: influx_installed
   with_items:
-   - python-influxdb
    - influxdb
 
 - name: restart influxdb

@@ -17,3 +17,9 @@
       - python-software-properties
       - pwgen
       - whois
+      - python-pip
+
+  - name: Update pip components
+    pip: name="{{ item }}" state=latest
+    with_items:
+     - pip

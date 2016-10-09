@@ -48,21 +48,15 @@ class SetupController extends BaseController
             $data = $_POST;
 
             // Create actions and roles supporting Super Admninistrator.
-            $action = new \Entity\Action;
-            $action->name = 'administer all';
-            $action->is_global = true;
-            $this->em->persist($action);
-
             $role = new \Entity\Role;
             $role->name = _('Super Administrator');
             $this->em->persist($role);
-
             $this->em->flush();
 
-            $rha = new \Entity\RoleHasAction;
+            $rha = new \Entity\RolePermission;
             $rha->fromArray($this->em, [
                 'role' => $role,
-                'action' => $action,
+                'action_name' => 'administer all',
             ]);
             $this->em->persist($rha);
 

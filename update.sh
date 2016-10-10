@@ -27,4 +27,9 @@ fi
 APP_ENV="${APP_ENV:-production}"
 
 echo "Updating AzuraCast (Environment: $APP_ENV)"
+
+if [ $APP_ENV = "production" ]; then
+    git reset --hard && git pull
+fi
+
 ansible-playbook util/ansible/update.yml --inventory=util/ansible/hosts --extra-vars "app_env=$APP_ENV"

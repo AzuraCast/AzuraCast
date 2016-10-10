@@ -19,11 +19,13 @@ echo Checking for Ansible: $PKG_OK
 if [ "" == "$PKG_OK" ]; then
     sudo apt-get update
     sudo apt-get install -q -y software-properties-common
+
+    sudo add-apt-repository -y ppa:ansible/ansible
     sudo add-apt-repository -y ppa:fkrull/deadsnakes
     sudo apt-get update
 
-    sudo apt-get install -q -y python2.7 python-pip python-mysqldb
-    sudo pip install --upgrade pip ansible
+    sudo apt-get install -q -y python2.7 python-pip python-mysqldb ansible
+    sudo pip install --upgrade pip
 fi
 
 APP_ENV="${APP_ENV:-production}"

@@ -13,7 +13,6 @@
 
   roles:
     - init
-    - { role: python, when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty' }
     - git
     - azuracast-radio
     - azuracast-user

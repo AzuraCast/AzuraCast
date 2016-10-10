@@ -73,13 +73,13 @@
    changed_when: False
 
  - name: Disallow root login remotely
-   command: 'mysql -ne "{{ item }}"'
+   command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
    with_items:
      - "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
    changed_when: False
 
  - name: Remove test database and access to it
-   command: 'mysql -ne "{{ item }}"'
+   command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
    with_items:
      - "DROP DATABASE test"
      - "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"
@@ -87,7 +87,7 @@
    ignore_errors: True
 
  - name: Reload privilege tables
-   command: 'mysql -ne "{{ item }}"'
+   command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
    with_items:
      - "FLUSH PRIVILEGES"
    changed_when: False
@@ -95,6 +95,7 @@
  # Create Database
  - name: Create MySQL Database
    mysql_db:
+     config_file: "/root/.my.cnf"
      name: azuracast
      state: present
      collation: utf8mb4_unicode_ci

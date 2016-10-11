@@ -46,7 +46,7 @@ $form_config = [
             'legend' => _('System-Wide Permissions'),
             'elements' => [
 
-                'actions_global' => ['multiCheckbox', [
+                'actions_global' => ['multiSelect', [
                     'label' => _('Actions'),
                     'multiOptions' => $actions['global'],
                 ]],
@@ -63,7 +63,7 @@ foreach($all_stations as $station)
         'legend' => $station['name'],
         'elements' => [
 
-            'actions_'.$station['id'] => ['multiCheckbox', [
+            'actions_'.$station['id'] => ['multiSelect', [
                 'label' => _('Actions'),
                 'multiOptions' => $actions['station'],
             ]],

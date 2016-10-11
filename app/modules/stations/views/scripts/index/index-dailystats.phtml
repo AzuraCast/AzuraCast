@@ -25,7 +25,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: 'Listeners'
+                text: '<?=_('Listeners') ?>'
             },
             min: 0
         },
@@ -53,15 +53,15 @@ $(function () {
         ],
         
         series: [{
-            name: 'Daily Listener Range',
+            name: '<?=_('Daily Listener Range') ?>',
             type: 'arearange',
             data: <?=$daily_ranges ?>
         }, {
-            name: 'Hourly Average Listeners',
+            name: '<?=_('Hourly Average Listeners') ?>',
             type: 'spline',
             data: <?=$hourly_averages ?>
         }, {
-            name: 'Daily Average Listeners',
+            name: '<?=_('Daily Average Listeners') ?>',
             type: 'spline',
             data: <?=$daily_averages ?>
         }]

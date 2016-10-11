@@ -24,9 +24,12 @@ if (APP_APPLICATION_ENV != "production")
 <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/components-font-awesome/css/font-awesome.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bootgrid/jquery.bootgrid.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('css/'.$customization->getTheme().'.css') ?>">
 
 <?=$this->section('custom_css') ?>
+
+<link rel="stylesheet" type="text/css" href="<?=$url->content('css/'.$customization->getTheme().'.css') ?>">
+
+
 
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/jquery/dist/jquery.min.js') ?>"></script>
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>

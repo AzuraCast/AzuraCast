@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-11 01:53+0000\n"
+"POT-Creation-Date: 2016-10-12 00:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -132,23 +132,10 @@ msgstr ""
 msgid "Manage Stations"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/action.conf.php:11
-msgid "Action Name"
+#: /var/azuracast/www/app/modules/admin/config/forms/api_key.conf.php:8
+msgid "API Key Owner"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/action.conf.php:17
-msgid "System-Wide or Per-Station"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/config/forms/action.conf.php:19
-msgid "System-Wide"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/config/forms/action.conf.php:20
-msgid "Per-Station"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/config/forms/action.conf.php:27
 #: /var/azuracast/www/app/modules/admin/config/forms/api_key.conf.php:15
 #: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:79
 #: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:36
@@ -162,10 +149,6 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/config/forms/streamer.conf.php:36
 #: /var/azuracast/www/app/templates/partials/form.phtml:23
 msgid "Save Changes"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/config/forms/api_key.conf.php:8
-msgid "API Key Owner"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:37
@@ -308,6 +291,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:31
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:9
 #: /var/azuracast/www/app/modules/admin/views/scripts/users/index.phtml:31
+#: /var/azuracast/www/app/modules/frontend/views/scripts/profile/index.phtml:30
 msgid "Roles"
 msgstr ""
 
@@ -458,6 +442,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:17
 #: /var/azuracast/www/app/modules/frontend/config/forms/register.conf.php:7
+#: /var/azuracast/www/app/modules/frontend/views/scripts/profile/index.phtml:43
 msgid "Account Information"
 msgstr ""
 
@@ -471,11 +456,12 @@ msgid "To change your password, enter the new password in the field below."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:42
+#: /var/azuracast/www/app/modules/frontend/views/scripts/profile/index.phtml:56
 msgid "Customization"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:46
-msgid "Server Time Zone"
+msgid "Time Zone"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:47
@@ -490,7 +476,7 @@ msgid "Current server time is <b>%s</b>."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:53
-msgid "Default Language"
+msgid "Language"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:59
@@ -524,7 +510,7 @@ msgid "Profile saved!"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/controllers/ProfileController.php:57
-#: /var/azuracast/www/app/modules/frontend/views/scripts/profile/index.phtml:4
+#: /var/azuracast/www/app/modules/frontend/views/scripts/profile/index.phtml:26
 msgid "Edit Profile"
 msgstr ""
 
@@ -593,7 +579,12 @@ msgid "Song Artist"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/profile/index.phtml:1
+#: /var/azuracast/www/app/modules/frontend/views/scripts/profile/index.phtml:8
 msgid "My Profile"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/views/scripts/profile/index.phtml:20
+msgid "Update Profile Picture"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/setup/register.phtml:7
@@ -1394,39 +1385,48 @@ msgid ""
 "this page."
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:71
+#: /var/azuracast/www/app/templates/main.phtml:74
 msgid "Pause"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:74
+#: /var/azuracast/www/app/templates/main.phtml:77
 msgid "Mute"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:77
+#: /var/azuracast/www/app/templates/main.phtml:80
 msgid "Unmute"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:91
+#: /var/azuracast/www/app/templates/main.phtml:94
 msgid "System Administration"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:93
+#: /var/azuracast/www/app/templates/main.phtml:96
 msgid "My Account"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:97
+#: /var/azuracast/www/app/templates/main.phtml:100
 msgid "Toggle Fullscreen"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:101
+#: /var/azuracast/www/app/templates/main.phtml:104
 msgid "End Session"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:103
+#: /var/azuracast/www/app/templates/main.phtml:106
 msgid "Sign Out"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:147
+#: /var/azuracast/www/app/templates/main.phtml:150
 #, php-format
 msgid "Powered by %s Version %s."
+msgstr ""
+
+#: /var/azuracast/www/app/templates/system/form_page.phtml:19
+#: /var/azuracast/www/app/templates/system/form_page.phtml:20
+msgid "Select..."
+msgstr ""
+
+#: /var/azuracast/www/app/templates/system/form_page.phtml:21
+msgid "No results found!"
 msgstr ""

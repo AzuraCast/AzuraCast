@@ -43,14 +43,14 @@ return [
             'elements' => [
 
                 'timezone' => ['select', [
-                    'label' => _('Server Time Zone'),
+                    'label' => _('Time Zone'),
                     'description' => _('All times displayed on the site will be based on this time zone.').'<br>'.sprintf(_('Current server time is <b>%s</b>.'), date('g:ia')),
                     'options' => \App\Timezone::fetchSelect(),
                     'default' => date_default_timezone_get(),
                 ]],
 
                 'locale' => ['radio', [
-                    'label' => _('Default Language'),
+                    'label' => _('Language'),
                     'options' => $locale_select,
                     'default' => 'default',
                 ]],

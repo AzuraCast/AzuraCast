@@ -15,6 +15,10 @@
 
 <script type="text/javascript">
 $(function() {
-    $('select').chosen();
+    $('select').chosen({
+        placeholder_text_single: '<?=_('Select...') ?>',
+        placeholder_text_multiple: '<?=_('Select...') ?>',
+        no_results_text: '<?=_('No results found!') ?>'
+    });
 });
 </script>

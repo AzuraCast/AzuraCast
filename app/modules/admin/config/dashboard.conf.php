@@ -5,41 +5,41 @@
 
 return [
     _('System Maintenance') => [
-        'icon' => 'fa fa-database',
+        'icon' => 'zmdi zmdi-router',
         'items' => [
             _('System Settings') => [
                 'url' => 'admin:settings:index',
-                'icon' => 'fa fa-cog',
+                'icon' => 'zmdi zmdi-settings',
                 'permission' => 'administer settings',
             ],
             _('API Keys') => [
                 'url' => 'admin:api:index',
-                'icon' => 'fa fa-share-alt',
+                'icon' => 'zmdi zmdi-key',
                 'permission' => 'administer api keys',
             ],
         ],
     ],
     _('Users') => [
-        'icon' => 'fa fa-group',
+        'icon' => 'zmdi zmdi-accounts',
         'items' => [
             _('User Accounts') => [
                 'url' => 'admin:users:index',
-                'icon' => 'fa fa-user',
+                'icon' => 'zmdi zmdi-account',
                 'permission' => 'administer user accounts',
             ],
             _('Permissions') => [
                 'url' => 'admin:permissions:index',
-                'icon' => 'fa fa-key',
+                'icon' => 'zmdi zmdi-lock',
                 'permission' => 'administer permissions',
             ],
         ],
     ],
     _('Stations') => [
-        'icon' => 'fa fa-volume-up',
+        'icon' => 'zmdi zmdi-volume-up',
         'items' => [
             _('Manage Stations') => [
                 'url' => 'admin:stations:index',
-                'icon' => 'fa fa-gears',
+                'icon' => 'zmdi zmdi-surround-sound',
                 'permission' => 'administer stations',
             ],
         ],

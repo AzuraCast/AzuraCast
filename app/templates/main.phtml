@@ -21,7 +21,6 @@ if (APP_APPLICATION_ENV != "production")
 <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/animate.css/animate.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/components-font-awesome/css/font-awesome.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bootgrid/jquery.bootgrid.min.css') ?>">
 
@@ -91,9 +90,9 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                     <a data-toggle="dropdown" href=""><i class="him-icon zmdi zmdi-more-vert"></i></a>
                     <ul class="dropdown-menu dm-icon pull-right">
                         <? if ($acl->isAllowed('view administration')): ?>
-                            <li><a href="<?=$url->named('admin:index:index') ?>"><i class="fa fa-cog"></i> <?=_('System Administration') ?></a></li>
+                            <li><a href="<?=$url->named('admin:index:index') ?>"><i class="zmdi zmdi-settings"></i> <?=_('System Administration') ?></a></li>
                         <? endif; ?>
-                        <li><a href="<?=$url->named('profile:index') ?>"><i class="fa fa-user"></i> <?=_('My Account') ?></a></li>
+                        <li><a href="<?=$url->named('profile:index') ?>"><i class="zmdi zmdi-account"></i> <?=_('My Account') ?></a></li>
                         <li class="divider">&nbsp;</li>
                         <!--
                         <li class="hidden-xs">
@@ -101,9 +100,9 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                         </li>
                         -->
                     <?php if ($auth->isMasqueraded()): ?>
-                        <li><a href="<?=$url->named('account:endmasquerade') ?>"><i class="fa fa-sign-out"></i> <?=_('End Session') ?></a></li>
+                        <li><a href="<?=$url->named('account:endmasquerade') ?>"><i class="zmdi zmdi-power"></i> <?=_('End Session') ?></a></li>
                     <?php else: ?>
-                        <li><a href="<?=$url->named('account:logout') ?>"><i class="fa fa-sign-out"></i> <?=_('Sign Out') ?></a></li>
+                        <li><a href="<?=$url->named('account:logout') ?>"><i class="zmdi zmdi-power"></i> <?=_('Sign Out') ?></a></li>
                     <?php endif; ?>
                     </ul>
                 </li>

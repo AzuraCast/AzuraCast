@@ -1,7 +1,67 @@
-<?php $this->layout('main', ['title' => _('My Profile')]); ?>
+<?php $this->layout('main', ['title' => _('My Profile'), 'manual' => true]); ?>
 
-<div class="buttons">
-    <a class="btn btn-lg btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><?=_('Edit Profile') ?></a>
+<?php
+$options = $form->getOptions();
+?>
+
+<div class="block-header">
+    <h2><?=_('My Profile') ?></h2>
 </div>
+<div class="card" id="profile-main">
+    <div class="pm-overview c-overflow">
 
-<?=$this->insert('partials/form_view') ?>
+        <div class="pmo-pic">
+            <div class="p-relative">
+                <a href="http://www.gravatar.com/" target="_blank">
+                    <img class="img-responsive" src="<?=$user->getAvatar(500) ?>" alt="">
+                </a>
+                <a href="http://www.gravatar.com/" target="_blank" class="pmop-edit">
+                    <i class="zmdi zmdi-camera"></i>
+                    <span class="hidden-xs"><?=_('Update Profile Picture') ?></span>
+                </a>
+            </div>
+        </div>
+
+        <div class="pmo-block">
+            <a class="btn btn-block btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><?=_('Edit Profile') ?></a>
+        </div>
+
+        <div class="pmo-block pmo-contact hidden-xs">
+            <h2><?=_('Roles') ?></h2>
+
+            <ul>
+            <?php foreach($user->roles as $role): ?>
+                <li><?=$role->name ?></li>
+            <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+
+    <div class="pm-body clearfix">
+        <div class="pmb-block">
+            <div class="pmbb-header">
+                <h2><i class="zmdi zmdi-account m-r-10"></i> <?=_('Account Information') ?></h2>
+            </div>
+            <div class="pmbb-body p-l-30">
+                <div class="pmbb-view">
+                    <dl class="dl-horizontal">
+                        <?=$this->fetch('partials/form_view_fields', ['fieldset' => $options['groups']['account_info']]) ?>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="pmb-block">
+            <div class="pmbb-header">
+                <h2><i class="zmdi zmdi-settings m-r-10"></i> <?=_('Customization') ?></h2>
+            </div>
+            <div class="pmbb-body p-l-30">
+                <div class="pmbb-view">
+                    <dl class="dl-horizontal">
+                        <?=$this->fetch('partials/form_view_fields', ['fieldset' => $options['groups']['customization']]) ?>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

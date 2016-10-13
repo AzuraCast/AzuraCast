@@ -1,12 +1,14 @@
 module.exports = function(grunt) {
 
+    var static_dir = '/var/azuracast/www/web/static';
+
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         less: {
             development: {
                 options: {
-                    paths: ["/var/azuracast/www/web/static/css"],
+                    paths: [static_dir+"/css"],
                     compress: true,
                     sourceMap: true,
                     sourceMapRootpath: '/',
@@ -16,16 +18,16 @@ module.exports = function(grunt) {
                     }
                 },
                 files: {
-                    "/var/azuracast/www/web/static/css/light.css": "/var/azuracast/www/web/static/less/light.less",
-                    "/var/azuracast/www/web/static/css/dark.css": "/var/azuracast/www/web/static/less/dark.less"
+                    [static_dir+"/css/light.css"]: static_dir+"/less/light.less",
+                    [static_dir+"/css/dark.css"]: static_dir+"/less/dark.less"
                 },
                 cleancss: true
             }
         },
         concat: {
             dist: {
-                src: ['/var/azuracast/www/web/static/js/inc/**/*.js'],
-                dest: '/var/azuracast/www/web/static/js/app.js'
+                src: [static_dir+'/js/inc/**/*.js'],
+                dest: static_dir+'/js/app.js'
             }
         },
         uglify: {
@@ -34,14 +36,14 @@ module.exports = function(grunt) {
             },
             my_target: {
                 files: {
-                    '/var/azuracast/www/web/static/js/app.min.js': ['/var/azuracast/www/web/static/js/app.js']
+                    [static_dir+'/js/app.min.js']: [static_dir+'/js/app.js']
                 }
             }
         },
         csssplit: {
             your_target: {
-                src: ['/var/azuracast/www/web/static/css/app.css'],
-                dest: '/var/azuracast/www/web/static/css/app.min.css',
+                src: [static_dir+'/css/app.css'],
+                dest: static_dir+'/css/app.min.css',
                 options: {
                     maxSelectors: 4095,
                     suffix: '.'
@@ -50,7 +52,7 @@ module.exports = function(grunt) {
         },
         watch: {
             less: {
-                files: ['/var/azuracast/www/web/static/less/**/*.less'], // which files to watch
+                files: [static_dir+'/less/**/*.less'], // which files to watch
                 tasks: ['less'],
                 options: {
                     nospawn: true,
@@ -58,7 +60,7 @@ module.exports = function(grunt) {
                 } 
             },
             js: {
-                files: ['/var/azuracast/www/web/static/js/inc/**/*.js'], // which files to watch
+                files: [static_dir+'/js/inc/**/*.js'], // which files to watch
                 tasks: ['concat', 'uglify']
             }
         }

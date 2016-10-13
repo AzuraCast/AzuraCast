@@ -232,7 +232,7 @@ class LiquidSoap extends BackendAbstract
         $hours = floor($time_code / 100);
         $mins = $time_code % 100;
 
-        $system_time_zone = \App\Utilities::getSystemTimeZone();
+        $system_time_zone = \App\Utilities::get_system_time_zone();
         $system_tz = new \DateTimeZone($system_time_zone);
         $system_dt = new \DateTime('now', $system_tz);
         $system_offset = $system_tz->getOffset($system_dt);

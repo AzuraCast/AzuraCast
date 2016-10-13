@@ -185,7 +185,7 @@ class IndexController extends BaseController
             {
                 $media = $station_media[$song_row['song']['id']];
 
-                $song_row['playlists'] = \App\Utilities::ipull($media['playlists'], 'name', 'id');
+                $song_row['playlists'] = \Packaged\Helpers\Arrays::ipull($media['playlists'], 'name', 'id');
             }
             else
             {

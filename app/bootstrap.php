@@ -41,6 +41,9 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']))
 $autoloader = require(APP_INCLUDE_VENDOR . '/autoload.php');
 $autoloader->add('App', APP_INCLUDE_LIB);
 
+// Include general utility functions
+include(APP_INCLUDE_VENDOR.'/packaged/helpers/src/includes/Phutil.php');
+
 // Set up DI container.
 $app_settings = [
     'displayErrorDetails' => true,

@@ -154,7 +154,7 @@ class SongRepository extends Repository
         $ids_raw = $this->_em->createQuery('SELECT s.id FROM '.$this->_entityName.' s')
             ->getArrayResult();
 
-        return \App\Utilities::ipull($ids_raw, 'id');
+        return \Packaged\Helpers\Arrays::ipull($ids_raw, 'id');
     }
 
     public function getOrCreate($song_info, $is_radio_play = false)

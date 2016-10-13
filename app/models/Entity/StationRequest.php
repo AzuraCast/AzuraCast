@@ -72,7 +72,7 @@ class StationRequestRepository extends Repository
     public function submit(Station $station, $track_id, $is_authenticated = false)
     {
         // Forbid web crawlers from using this feature.
-        if (\App\Utilities::isCrawler())
+        if (\App\Utilities::is_crawler())
             throw new \App\Exception('Search engine crawlers are not permitted to use this feature.');
 
         // Verify that the station supports requests.

@@ -44,7 +44,7 @@
                         <?php if (count($media_row['playlists']) == 0): ?>
                             0
                         <?php else: ?>
-                            <abbr title="<?=implode(', ', \App\Utilities::ipull($media_row['playlists'], 'name')) ?>"><?=count($media_row['playlists']) ?></abbr>
+                            <abbr title="<?=implode(', ', \Packaged\Helpers\Arrays::ipull($media_row['playlists'], 'name')) ?>"><?=count($media_row['playlists']) ?></abbr>
                         <?php endif; ?>
                         </td>
                         <td class="text-right"><?=$media_row['length_text'] ?></td>

@@ -27,7 +27,7 @@ class View extends \League\Plates\Engine
         });
 
         $this->registerFunction('truncate', function($text, $length=80) {
-            return \App\Utilities::truncateText($text, $length);
+            return \App\Utilities::truncate_text($text, $length);
         });
     }
 

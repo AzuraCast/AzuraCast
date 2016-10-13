@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "38472efa8a18840736fda28d8a90fad2",
-    "content-hash": "86a415f953295a4305f61cbd03d79446",
+    "hash": "f1d91078477e63c491e4e346a315a024",
+    "content-hash": "88adf9b1de0348b3d21917390b69d908",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1491,6 +1491,45 @@
                 "service proxies"
             ],
             "time": "2016-07-01 12:11:54"
+        },
+        {
+            "name": "packaged/helpers",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/packaged/helpers.git",
+                "reference": "9bd8fc09e11298cc0901da1d7db90a8c5a812a4d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/packaged/helpers/zipball/9bd8fc09e11298cc0901da1d7db90a8c5a812a4d",
+                "reference": "9bd8fc09e11298cc0901da1d7db90a8c5a812a4d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Packaged\\Helpers\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brooke Bryan",
+                    "email": "brooke@bajb.net"
+                }
+            ],
+            "description": "Generic PHP Helper Classes",
+            "time": "2016-06-17 10:27:19"
         },
         {
             "name": "pimple/pimple",

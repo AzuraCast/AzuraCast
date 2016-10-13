@@ -19,7 +19,8 @@
     "electrolinux/phpquery": "0.9.6",
     "nette/mail": "2.3.0",
     "james-heinrich/getid3": "~1.9",
-    "influxdb/influxdb-php": "~1.4.1"
+    "influxdb/influxdb-php": "~1.4.1",
+    "packaged/helpers": "^1.5"
   },
   "require-dev": {
   },

@@ -16,6 +16,9 @@ engines:
     enabled: true
   phpmd:
     enabled: true
+    config:
+      file_extensions: php,phtml
+      rulesets: cleancode,codesize,design,naming,unusedcode
 ratings:
   paths:
   - "**.js"

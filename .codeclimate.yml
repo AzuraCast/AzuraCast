@@ -24,3 +24,5 @@ ratings:
   - "**.phtml"
 exclude_paths:
   - web/static/vendors
+  - web/static/js/app.js
+  - web/static/js/app.min.js

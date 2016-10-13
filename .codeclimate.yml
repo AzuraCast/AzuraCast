@@ -1,7 +1,7 @@
 ---
 engines:
   csslint:
-    enabled: true
+    enabled: false
   coffeelint:
     enabled: false
   duplication:
@@ -18,7 +18,6 @@ engines:
     enabled: true
 ratings:
   paths:
-  - "**.css"
   - "**.js"
   - "**.php"
   - "**.phtml"

@@ -1,5 +1,7 @@
 # AzuraCast: A Self-Hosted Web Radio Manager
 
+[![Code Climate](https://codeclimate.com/github/SlvrEagle23/AzuraCast/badges/gpa.svg)](https://codeclimate.com/github/SlvrEagle23/AzuraCast)
+
 **AzuraCast** is a standalone, turnkey web radio management kit. Using its easy installer, you can go from a fresh Linux installation to a fully working web radio station in about 5 minutes. 
 
 Under the hood, AzuraCast uses [LiquidSoap](http://liquidsoap.fm/) as an "AutoDJ" and [IceCast](http://icecast.org/) for broadcasting and live DJs. Once installed, every aspect of your radio station can be managed via AzuraCast's web interface with no advanced Linux knowledge required.

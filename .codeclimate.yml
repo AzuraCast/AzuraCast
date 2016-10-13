@@ -1,0 +1,26 @@
+---
+engines:
+  csslint:
+    enabled: true
+  coffeelint:
+    enabled: false
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+      - php
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+ratings:
+  paths:
+  - "**.css"
+  - "**.js"
+  - "**.php"
+  - "**.phtml"
+exclude_paths:
+  - web/static/vendors

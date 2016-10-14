@@ -15,7 +15,7 @@ class ShoutCast2 extends AdapterAbstract
         if (empty($return_raw))
             return false;
 
-        $current_data = \App\Export::XmlToArray($return_raw);
+        $current_data = \App\Export::xml_to_array($return_raw);
         $song_data = $current_data['SHOUTCASTSERVER'];
 
         $np['meta']['status'] = 'online';

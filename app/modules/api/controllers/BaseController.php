@@ -141,7 +141,7 @@ class BaseController extends \App\Mvc\Controller
         $format = strtolower($this->getParam('format', 'json'));
 
         if ($format == 'xml')
-            return $this->returnRaw(\App\Export::ArrayToXml($obj), 'xml');
+            return $this->returnRaw(\App\Export::array_to_xml($obj), 'xml');
         else
             return $this->returnRaw(json_encode($obj, \JSON_UNESCAPED_SLASHES), 'json');
     }

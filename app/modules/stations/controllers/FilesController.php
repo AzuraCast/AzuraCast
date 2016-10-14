@@ -381,7 +381,7 @@ class FilesController extends BaseController
         $dir = $_POST['name'];
         $dir = str_replace('/', '', $dir);
         if(substr($dir, 0, 2) === '..')
-            exit;
+            return $this->_err(403, 'Cannot create directory: ..');
 
         @mkdir($this->file_path.'/'.$dir);
 

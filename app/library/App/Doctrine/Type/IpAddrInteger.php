@@ -45,7 +45,7 @@ class IpAddrInteger extends IntegerType
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         if (!$fieldDeclaration['unsigned'])
-            die('"'.$fieldDeclaration['name'].'": IPInteger fields must always be unsigned.');
+            throw new \Exception('"'.$fieldDeclaration['name'].'": IPInteger fields must always be unsigned.');
 
         return parent::getSQLDeclaration($fieldDeclaration, $platform);
     }

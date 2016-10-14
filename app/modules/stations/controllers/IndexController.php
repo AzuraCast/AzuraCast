@@ -159,9 +159,6 @@ class IndexController extends BaseController
     {
         $songs_played_raw = $this->_getEligibleHistory();
 
-        // Get current events within threshold.
-        $threshold = $songs_played_raw[0]['timestamp'];
-
         $station_media_raw = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $this->station->id)
             ->getArrayResult();
@@ -171,7 +168,7 @@ class IndexController extends BaseController
             $station_media[$media['song_id']] = $media;
 
         $songs = array();
-        foreach ($songs_played_raw as $i => $song_row)
+        foreach ($songs_played_raw as $song_row)
         {
             // Song has no recorded ending.
             if ($song_row['timestamp_end'] == 0)
@@ -220,8 +217,10 @@ class IndexController extends BaseController
                 $export_all[] = $export_row;
             }
 
-            \App\Export::csv($export_all, true, $this->station->getShortName() . '_timeline_' . date('Ymd'));
-            return;
+            $csv_file = \App\Export::csv($export_all);
+            $csv_filename = $this->station->getShortName() . '_timeline_' . date('Ymd').'.csv';
+
+            return $this->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
         }
         else
         {
@@ -277,8 +276,6 @@ class IndexController extends BaseController
             });
 
             $songs_played_raw = array_values($songs_played_raw);
-
-
 
             $cache->save($songs_played_raw, $cache_name, array(), 60*5);
         }

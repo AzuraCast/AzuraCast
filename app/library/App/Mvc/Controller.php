@@ -5,6 +5,7 @@ use App\Config;
 use App\Url;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -285,6 +286,55 @@ class Controller
         $this->response = $this->response->withHeader('Content-type', 'application/json; charset=utf-8');
         $this->response->getBody()->write(json_encode($json_data));
 
+        return $this->response;
+    }
+
+    /**
+     * @param string $file_path
+     * @param string|null $file_name
+     * @return Response
+     */
+    public function renderFile($file_path, $file_name = null)
+    {
+        $this->doNotRender();
+        set_time_limit(600);
+
+        if ($file_name == null)
+            $file_name = basename($file_path);
+
+        $this->response = $this->response
+            ->withHeader('Pragma', 'public')
+            ->withHeader('Expires', '0')
+            ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
+            ->withHeader('Content-Type', mime_content_type($file_path))
+            ->withHeader('Content-Length', filesize($file_path))
+            ->withHeader('Content-Disposition', 'attachment; filename='.$file_name);
+
+        $fh = fopen($file_path, 'rb');
+        $stream = new \Slim\Http\Stream($fh);
+        return $this->response->withBody($stream);
+    }
+
+    /**
+     * @param string $file_data The body of the file contents.
+     * @param string $content_type The HTTP header content-type (i.e. text/csv)
+     * @param string|null $file_name
+     * @return Response
+     */
+    public function renderStringAsFile($file_data, $content_type, $file_name = null)
+    {
+        $this->doNotRender();
+
+        $this->response = $this->response
+            ->withHeader('Pragma', 'public')
+            ->withHeader('Expires', '0')
+            ->withHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
+            ->withHeader('Content-Type', $content_type);
+
+        if ($file_name !== null)
+            $this->response = $this->response->withHeader('Content-Disposition', 'attachment; filename='.$file_name);
+
+        $this->response->getBody()->write($file_data);
         return $this->response;
     }
 

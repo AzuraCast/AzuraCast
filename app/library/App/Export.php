@@ -4,85 +4,54 @@
  */
 
 namespace App;
+
 class Export
 {
     /**
-     * CSV
-     **/
-    
-    public static function csv($table_data, $headers_first_row = TRUE, $file_name = "ExportedData")
+     * Generate a CSV-compatible file body given an array.
+     *
+     * @param $table_data
+     * @param bool $headers_first_row
+     * @return string
+     */
+    public static function csv($table_data, $headers_first_row = true)
     {
-        self::exportToCSV($table_data, $headers_first_row, $file_name);
-    }
-    
-    public static function exportToCSV($table_data, $headers_first_row = TRUE, $file_name = "ExportedData")
-    {
-        // Header data associated with CSV files.
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        header("Cache-Control: private", FALSE);
-        header("Content-Type: text/csv");
-        header("Content-Disposition: attachment; filename=".$file_name.".csv");
-        
-        echo self::convertToCSV($table_data, $headers_first_row);
-        exit;
-    }
-    
-    public static function convertToCSV($table_data, $headers_first_row = FALSE)
-    {
-        $final_display = array();
+        $final_display = [];
         $row_count = 0;
-        foreach($table_data as $table_row)
+        foreach ($table_data as $table_row)
         {
             $row_count++;
             $col_count = 0;
-            $display_row1 = array();
-            $display_row2 = array();
-            foreach($table_row as $table_col => $table_val)
+
+            $header_row = [];
+            $body_row = [];
+
+            foreach ($table_row as $table_col => $table_val)
             {
                 $col_count++;
                 if (!$headers_first_row && $row_count == 1)
-                {
-                    $display_row1[] = '"'.self::filterTextToCSV($table_col).'"';
-                }
-                $display_row2[] = '"'.self::filterTextToCSV($table_val).'"';
+                    $header_row[] = '"' . str_replace('"', '""', $table_col) . '"';
+
+                $body_row[] = '"' . str_replace('"', '""', $table_val) . '"';
             }
-            
-            if ($display_row1)
-            {
-                $final_display[] = implode(',', $display_row1);
-            }
-            if ($display_row2)
-            {
-                $final_display[] = implode(',', $display_row2);
-            }
+
+            if ($header_row)
+                $final_display[] = implode(',', $header_row);
+
+            if ($body_row)
+                $final_display[] = implode(',', $body_row);
         }
+
         return implode("\n", $final_display);
     }
-    
-    public static function filterTextToCSV($text)
-    {
-        return str_replace('"', '""', $text);
-    }
-        
+
     /**
-     * JSON
-     **/
-    
-    public static function json($table_data)
-    {
-        return json_encode($table_data);
-    }
-    public static function exportToJSON($table_data)
-    {
-        return json_encode($table_data);
-    }
-    
-    /**
-     * XML to Array
-     */ 
-    public static function XmlToArray($xml)
+     * Convert from an XML string into a PHP array.
+     *
+     * @param $xml
+     * @return array
+     */
+    public static function xml_to_array($xml)
     {
         $values = $index = $array = array();
         $parser = xml_parser_create();
@@ -132,7 +101,13 @@ class Export
         return $child;
     }
 
-    public static function ArrayToXml($array)
+    /**
+     * Convert a PHP array into an XML string.
+     *
+     * @param $array
+     * @return mixed
+     */
+    public static function array_to_xml($array)
     {
         $xml_info = new \SimpleXMLElement('<?xml version="1.0"?><return></return>');
         self::_arr_to_xml($array, $xml_info);
@@ -157,49 +132,5 @@ class Export
                 $xml->addChild("$key", htmlspecialchars($value));
             }
         }
-    }
-    
-    /**
-     * iCal
-     */
-    
-    public static function iCal($options)
-    {
-        $defaults = array(
-            'priority'  => 0,
-            'uid'       => date('Ymd').'T'.date('His').'-'.rand().'-dsa.tamu.edu',
-            'organizer' => 'noreply@dsa.tamu.edu',
-            'reminder'  => '-PT15M',
-            'name'      => 'Event',
-            'desc'      => 'Event Invitation',
-            'location'  => 'TBD',
-        );
-        $options = array_merge($defaults, $options);
-        
-        $ical_lines = array(
-            'BEGIN:VCALENDAR',
-            'VERSION:2.0',
-            'PRODID:-//Microsoft Corporation//Outlook 12.0 MIMEDIR//EN',
-            'METHOD:REQUEST',
-            'BEGIN:VEVENT',
-            'ORGANIZER:MAILTO:'.$options['organizer'],
-            'UID:'.$options['uid'], // required by Outlok
-            'DTSTAMP:'.date('Ymd').'T'.date('His').'Z', // required by Outlook
-            'CREATED:'.date('Ymd').'T'.date('His').'Z', // required by Outlook
-            'LAST-MODIFIED:'.date('Ymd').'T'.date('His').'Z', // required by Outlook
-            'DTSTART:'.date('Ymd', $options['start_timestamp']).'T'.date('His', $options['start_timestamp']).'Z',
-            'DTEND:'.date('Ymd', $options['end_timestamp']).'T'.date('His', $options['end_timestamp']).'Z',
-            'SUMMARY:'.$options['name'],
-            'DESCRIPTION:'.$options['desc'],
-            'LOCATION:'.$options['location'],
-            'PRIORITY:'.$options['priority'],
-            'CLASS:PUBLIC',
-            'TRANSP:OPAQUE',
-            'TRIGGER:'.$options['reminder'],
-            'END:VEVENT',
-            'END:VCALENDAR',
-        );
-        
-        return trim(implode("\r\n", $ical_lines));
     }
 }

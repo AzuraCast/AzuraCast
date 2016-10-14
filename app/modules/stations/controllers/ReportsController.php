@@ -70,8 +70,10 @@ class ReportsController extends BaseController
                     ];
                 }
 
-                $filename = $this->station->getShortName().'_media_'.date('Ymd').'.csv';
-                \App\Export::csv($export_csv, TRUE, $filename);
+                $csv_file = \App\Export::csv($export_csv);
+                $csv_filename = $this->station->getShortName().'_media_'.date('Ymd').'.csv';
+
+                return $this->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
             break;
 
             case 'json':

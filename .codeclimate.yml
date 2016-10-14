@@ -18,7 +18,7 @@ engines:
     enabled: true
     config:
       file_extensions: php,phtml
-      rulesets: codesize,design,naming,unusedcode
+      rulesets: codesize,design,unusedcode
 ratings:
   paths:
   - "**.js"

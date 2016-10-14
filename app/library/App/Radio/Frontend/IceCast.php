@@ -156,50 +156,25 @@ class IceCast extends FrontendAbstract
 
     public function isRunning()
     {
-        $config_path = $this->station->getRadioConfigDir();
-        $icecast_pid_file = $config_path.'/icecast.pid';
-
-        if (file_exists($icecast_pid_file))
-        {
-            $icecast_pid = file_get_contents($icecast_pid_file);
-            $pid_result = exec('ps --pid '.$icecast_pid.' &>/dev/null');
-
-            $this->log($pid_result);
-
-            return !empty($pid_result);
-        }
-
-        return false;
+        return $this->_isPidRunning($this->station->getRadioConfigDir().'/icecast.pid');
     }
 
     public function stop()
     {
-        $config_path = $this->station->getRadioConfigDir();
-        $icecast_pid_file = $config_path.'/icecast.pid';
-
-        if (file_exists($icecast_pid_file))
-        {
-            $icecast_pid = file_get_contents($icecast_pid_file);
-            $kill_result = exec('kill -9 '.$icecast_pid);
-
-            @unlink($icecast_pid_file);
-
-            $this->log($kill_result);
-        }
+        $this->_killPid($this->station->getRadioConfigDir().'/icecast.pid');
     }
 
     public function start()
     {
         $config_path = $this->station->getRadioConfigDir();
+        $icecast_config = $config_path.'/icecast.xml';
 
-        $icecast_pid_file = $config_path.'/icecast.pid';
-        if (file_exists($icecast_pid_file))
+        if ($this->isRunning())
         {
             $this->log(_('Not starting, process is already running.'));
             return;
         }
 
-        $icecast_config = $config_path.'/icecast.xml';
         exec('icecast2 -b -c '.$icecast_config, $output);
         $this->log(implode("\n", $output));
     }

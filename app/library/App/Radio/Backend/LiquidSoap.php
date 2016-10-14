@@ -172,7 +172,7 @@ class LiquidSoap extends BackendAbstract
         $ls_config[] = '';
 
         // Add fallback error file.
-        $error_song_path = APP_INCLUDE_ROOT.'/resources/error.mp3';
+        // $error_song_path = APP_INCLUDE_ROOT.'/resources/error.mp3';
 
         $ls_config[] = '# Assemble Fallback';
         // $ls_config[] = 'security = single("'.$error_song_path.'")';
@@ -255,36 +255,12 @@ class LiquidSoap extends BackendAbstract
 
     public function isRunning()
     {
-        $config_path = $this->station->getRadioConfigDir();
-        $ls_pid_file = $config_path.'/liquidsoap.pid';
-
-        if (file_exists($ls_pid_file))
-        {
-            $ls_pid = file_get_contents($ls_pid_file);
-            $pid_result = exec('ps --pid '.$ls_pid.' &>/dev/null');
-
-            $this->log($pid_result);
-
-            return !empty($pid_result);
-        }
-
-        return false;
+        return $this->_isPidRunning($this->station->getRadioConfigDir().'/liquidsoap.pid');
     }
 
     public function stop()
     {
-        $config_path = $this->station->getRadioConfigDir();
-        $ls_pid_file = $config_path.'/liquidsoap.pid';
-
-        if (file_exists($ls_pid_file))
-        {
-            $ls_pid = file_get_contents($ls_pid_file);
-            $kill_result = exec('kill -9 '.$ls_pid);
-
-            @unlink($ls_pid_file);
-
-            $this->log($kill_result);
-        }
+        $this->_killPid($this->station->getRadioConfigDir().'/liquidsoap.pid');
     }
 
     public function start()
@@ -297,8 +273,7 @@ class LiquidSoap extends BackendAbstract
             return;
         }
 
-        $ls_pid_file = $this->station->getRadioConfigDir().'/liquidsoap.pid';
-        if (file_exists($ls_pid_file))
+        if ($this->isRunning())
         {
             $this->log(_('Not starting, process is already running.'));
             return;

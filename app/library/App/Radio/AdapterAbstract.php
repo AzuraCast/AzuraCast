@@ -46,6 +46,28 @@ abstract class AdapterAbstract
     abstract public function stop();
 
     /**
+     * Attempt to kill the process represented by the specified pidfile.
+     *
+     * @param $pid_file
+     */
+    protected function _killPid($pid_file)
+    {
+        if (file_exists($pid_file))
+        {
+            $pid = file_get_contents($pid_file);
+            $kill_result = exec('kill -9 '.$pid);
+
+            @unlink($pid_file);
+
+            $this->log($kill_result);
+        }
+        else
+        {
+            $this->log('No PID file found.');
+        }
+    }
+
+    /**
      * Stop the executable service.
      * @return mixed
      */
@@ -56,6 +78,26 @@ abstract class AdapterAbstract
      * @return bool
      */
     abstract public function isRunning();
+
+    /**
+     * Check the running status of the process identified by the specified pidfile.
+     *
+     * @param $pid_file
+     * @return bool
+     */
+    protected function _isPidRunning($pid_file)
+    {
+        if (file_exists($pid_file))
+        {
+            $pid = file_get_contents($pid_file);
+            $pid_result = exec('ps --pid '.$pid.' &>/dev/null');
+
+            $this->log($pid_result);
+            return !empty($pid_result);
+        }
+
+        return false;
+    }
 
     /**
      * Log a message to console or to flash (if interactive session).

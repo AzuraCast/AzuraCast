@@ -4,59 +4,106 @@
  */
 
 namespace App;
-use App\Exception;
 
 class File
 {
-    // Add a suffix to a file *before* its extension.
-    public static function addSuffix($file_name, $suffix)
+    /**
+     * @var string The file's name (the portion after the base directory).
+     */
+    protected $name;
+
+    /**
+     * @var string The base directory in which the file is uploaded.
+     */
+    protected $base_dir;
+
+    public function __construct($file_name, $base_dir = null)
     {
-        $file_parts = pathinfo($file_name);
+        $this->name = $file_name;
+        $this->base_dir = $base_dir ?: APP_UPLOAD_FOLDER;
+    }
+
+    /**
+     * @param $file_name
+     */
+    public function setName($file_name)
+    {
+        $this->name = $file_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Add a suffix to a file *before* its extension.
+     *
+     * @param $suffix
+     * @return $this
+     */
+    public function addSuffix($suffix)
+    {
+        $file_parts = pathinfo($this->name);
         $new_file_name = $file_parts['filename'].$suffix.'.'.$file_parts['extension'];
 
         if ($file_parts['dirname'])
-            return $file_parts['dirname'].DIRECTORY_SEPARATOR.$new_file_name;
+            $this->name = $file_parts['dirname'].DIRECTORY_SEPARATOR.$new_file_name;
         else
-            return $new_file_name;
+            $this->name = $new_file_name;
+
+        return $this;
     }
 
-    public static function getFileExtension($file_name)
+    /**
+     * Get the file's extension.
+     *
+     * @return string
+     */
+    public function getExtension()
     {
         // Significantly more performant than using pathinfo function.
-        return substr($file_name, strrpos($file_name, '.')+1);
+        return substr($this->name, strrpos($this->name, '.')+1);
     }
-    public static function getFilePath($file_name)
+
+    /**
+     * Return the full path of the file.
+     *
+     * @return string
+     */
+    public function getPath()
     {
-        $file_name = trim($file_name);
+        $file_name = trim($this->name);
         $file_name = ltrim($file_name, '/');
         $file_name = str_replace('/', DIRECTORY_SEPARATOR, $file_name);
 
-        if (is_readable($file_name) || stristr($file_name, APP_UPLOAD_FOLDER) !== FALSE)
-            return $file_name;
-        else
-            return APP_UPLOAD_FOLDER.DIRECTORY_SEPARATOR.str_replace('..','',$file_name);
+        return $this->base_dir.DIRECTORY_SEPARATOR.$file_name;
     }
-    
-    public static function isValidFile($uploaded_file, $allowed_extensions = NULL)
+
+    /**
+     * Check if an uploaded file (from the $_FILES array) is valid.
+     *
+     * @param $uploaded_file
+     * @return bool
+     */
+    public function isValid($uploaded_file)
     {
-        $is_valid_upload = (!empty($uploaded_file) && $uploaded_file['error'] == UPLOAD_ERR_OK);
-        
-        if (!is_null($allowed_extensions))
-        {
-            $file_extension = self::getFileExtension($uploaded_file['name']);
-            $is_valid_extension = in_array($file_extension, $allowed_extensions);
-        }
-        else
-        {
-            $is_valid_extension = TRUE;
-        }
-        
-        return $is_valid_upload && $is_valid_extension;
+        return (!empty($uploaded_file) && $uploaded_file['error'] == UPLOAD_ERR_OK);
     }
-    
-    public static function moveUploadedFile($uploaded_file, $file_name = '')
+
+    /**
+     * Attempt to move an uploaded file to the file name specified by the object.
+     *
+     * @param $uploaded_file
+     * @return bool
+     * @throws Exception
+     */
+    public function upload($uploaded_file)
     {
-        if (!self::isValidFile($uploaded_file))
+        if (!$this->isValid($uploaded_file))
         {
             switch($uploaded_file['error'])
             {
@@ -93,45 +140,60 @@ class File
                 break;
             }
         }
-        
-        if (empty($file_name))
-        {
-            $file_name = basename($uploaded_file['name']);
-        }
-        
-        // Replace .??? with the correct file extension if listed.
-        $file_name = str_replace('.???', '.'.self::getFileExtension($uploaded_file['name']), $file_name);
-        
-        $upload_path = self::getFilePath($file_name);
-        
-        if (move_uploaded_file($uploaded_file['tmp_name'], $upload_path))
-            return $file_name;
+
+        if (move_uploaded_file($uploaded_file['tmp_name'], $this->getPath()))
+            return true;
         else
             throw new Exception('File Upload Error: Could not upload the file requested.');
     }
-    
-    public static function createFileFromData($file_name, $file_data)
+
+    /**
+     * Create the specified file containing a string passed to the function.
+     * Passes flags on to file_put_contents.
+     *
+     * @param $file_data
+     * @param null $flags
+     * @return $this
+     */
+    public function putContents($file_data, $flags = null)
     {
-        file_put_contents(self::getFilePath($file_name), $file_data);
-        return $file_name;
-    }
-        
-    public static function getFilePointer($file_name)
-    {
-        return fopen(self::getFilePath($file_name), 'r');
+        file_put_contents($this->getPath(), $file_data, $flags);
+        return $this;
     }
 
-    public static function getFileContents($file_name)
+    /**
+     * Return the file's contents as a string.
+     *
+     * @param $file_name
+     * @return string
+     */
+    public function getContents()
     {
-        return file_get_contents(self::getFilePath($file_name));
+        return file_get_contents($this->getPath());
     }
-    
-    public static function getCSV($file_name)
+
+    /**
+     * Get a fopen resource pointer to the file.
+     *
+     * @param string $mode
+     * @return resource
+     */
+    public function getPointer($mode = 'r')
+    {
+        return fopen($this->getPath(), $mode);
+    }
+
+    /**
+     * Get raw CSV data from a file.
+     *
+     * @return array
+     */
+    public function getCsv()
     {
         @ini_set('auto_detect_line_endings', 1);
         
         $csv_data = array();
-        $handle = fopen(self::getFilePath($file_name), "r");
+        $handle = $this->getPointer();
         while (($data = fgetcsv($handle)) !== FALSE)
         {
             $csv_data[] = $data;
@@ -140,11 +202,15 @@ class File
         fclose($handle);
         return $csv_data;
     }
-    
-    // Returns a "clean" array with the first row's text as the column names.
-    public static function getCleanCSV($file_name)
+
+    /**
+     * Returns a "clean" array with the first row's text as the column names.
+     *
+     * @return array
+     */
+    public function getCleanCsv()
     {
-        $csv_data = self::getCSV($file_name);
+        $csv_data = $this->getCsv();
         $clean_data = array();
         
         if ($csv_data)
@@ -177,21 +243,34 @@ class File
                 $row_num++;
             }
         }
+
         return $clean_data;
     }
-    
-    public static function renameFile($old_file, $new_file)
+
+    /**
+     * Rename the file to the new name specified, preserving the base directory.
+     *
+     * @param $new_name
+     * @return $this
+     */
+    public function rename($new_name)
     {
-        $old_file_path = self::getFilePath($old_file);
-        $new_file_path = self::getFilePath($new_file);
-        
-        rename($old_file_path, $new_file_path);
-        
-        return $new_file;
+        $old_path = $this->getPath();
+
+        $this->setName($new_name);
+        $new_path = $this->getPath();
+
+        if (file_exists($old_path))
+            rename($old_path, $new_path);
+
+        return $this;
     }
-    
-    public static function deleteFile($file_name)
+
+    /**
+     * Delete the file.
+     */
+    public function delete()
     {
-        unlink(self::getFilePath($file_name));
+        unlink($this->getPath());
     }
 }

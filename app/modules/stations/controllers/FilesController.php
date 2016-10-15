@@ -392,17 +392,25 @@ class FilesController extends BaseController
     {
         $this->doNotRender();
 
-        var_dump($_POST);
-        var_dump($_FILES);
-        var_dump($_FILES['file_data']['tmp_name']);
+        try
+        {
+            $uploaded_file = $_FILES['file_data'];
 
-        $upload_file_path = $this->file_path.'/'.$_FILES['file_data']['name'];
-        var_dump(move_uploaded_file($_FILES['file_data']['tmp_name'], $upload_file_path));
+            $file = new \App\File(basename($uploaded_file['name']), $this->file_path);
+            $file->upload($uploaded_file);
+
+            $upload_file_path = $file->getPath();
+        }
+        catch(\Exception $e)
+        {
+            return $this->_err(500, $e->getMessage());
+        }
 
         $station_media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $upload_file_path);
-
         $this->em->persist($station_media);
         $this->em->flush();
+
+        return $this->renderJson(['success' => true]);
     }
 
     public function downloadAction()

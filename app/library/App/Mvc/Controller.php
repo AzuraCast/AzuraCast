@@ -46,14 +46,16 @@ class Controller
         $this->url = $di['url'];
         $this->em = $di['em'];
 
+        $this->view->reset();
+
         $common_views_dir = APP_INCLUDE_MODULES.'/'.$module.'/views/scripts';
         if (is_dir($common_views_dir))
         {
-            $this->view->addFolder('common', $common_views_dir);
+            $this->view->setFolder('common', $common_views_dir);
 
             $controller_views_dir = $common_views_dir.'/'.$controller;
             if (is_dir($controller_views_dir))
-                $this->view->addFolder('controller', $controller_views_dir);
+                $this->view->setFolder('controller', $controller_views_dir);
         }
     }
 
@@ -66,6 +68,14 @@ class Controller
     /** @var array */
     protected $params;
 
+    /**
+     * Handle the MVC-style dispatching of a controller action.
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param $args
+     * @return Response
+     */
     public function dispatch(Request $request, Response $response, $args)
     {
         $this->request = $request;
@@ -93,8 +103,11 @@ class Controller
             return $action_result;
 
         $template = $this->view->render('controller::'.$this->action);
-        $this->response->getBody()->write($template);
-        return $this->response;
+
+        $body = $this->response->getBody();
+        $body->write($template);
+
+        return $this->response->withBody($body);
     }
 
     public function __get($key)
@@ -241,9 +254,11 @@ class Controller
         $this->response = $this->response->withHeader('Content-type', 'text/html; charset=utf-8');
 
         $template = $this->view->render($template_name, $template_args);
-        $this->response->getBody()->write($template);
 
-        return $this->response;
+        $body = $this->response->getBody();
+        $body->write($template);
+
+        return $this->response->withBody($body);
     }
 
     /**
@@ -283,10 +298,12 @@ class Controller
     {
         $this->doNotRender();
 
-        $this->response = $this->response->withHeader('Content-type', 'application/json; charset=utf-8');
-        $this->response->getBody()->write(json_encode($json_data));
+        $body = $this->response->getBody();
+        $body->write(json_encode($json_data));
 
-        return $this->response;
+        return $this->response
+            ->withHeader('Content-type', 'application/json; charset=utf-8')
+            ->withBody($body);
     }
 
     /**
@@ -334,8 +351,10 @@ class Controller
         if ($file_name !== null)
             $this->response = $this->response->withHeader('Content-Disposition', 'attachment; filename='.$file_name);
 
-        $this->response->getBody()->write($file_data);
-        return $this->response;
+        $body = $this->response->getBody();
+        $body->write($file_data);
+
+        return $this->response->withBody($body);
     }
 
     /* URL Redirection */

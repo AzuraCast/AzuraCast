@@ -12,10 +12,11 @@ class EntityManagerFactory
             return false;
 
         // Register custom data types.
-        Type::addType('json', 'App\Doctrine\Type\Json');
-        Type::addType('unixdatetime', 'App\Doctrine\Type\UnixDateTime');
-        Type::addType('binary_uuid', 'App\Doctrine\Type\BinaryUuid');
-        Type::addType('ip_integer', 'App\Doctrine\Type\IpAddrInteger');
+        if (!Type::hasType('json'))
+            Type::addType('json', 'App\Doctrine\Type\Json');
+
+        if (!Type::hasType('unixdatetime'))
+            Type::addType('unixdatetime', 'App\Doctrine\Type\UnixDateTime');
 
         Type::overrideType('array', 'App\Doctrine\Type\SoftArray');
         Type::overrideType('datetime', 'App\Doctrine\Type\UTCDateTime');
@@ -24,7 +25,7 @@ class EntityManagerFactory
         $config = new \Doctrine\ORM\Configuration;
 
         // Handling for class names specified as platform types.
-        if ($options['conn']['platform'])
+        if (!empty($options['conn']['platform']))
         {
             $class_obj = new \ReflectionClass($options['conn']['platform']);
             $options['conn']['platform'] = $class_obj->newInstance();

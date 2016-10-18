@@ -26,10 +26,11 @@
      - php7.0-cli
      - php7.0-gd
      - php7.0-curl
-     - php7.0-xml
-     - php7.0-zip
-     - php7.0-mysqlnd
-     - php7.0-intl
+     - php7.0-xml         # IceCast XML config
+     - php7.0-zip         # Composer installs
+     - php7.0-mysqlnd     # MySQL Native Driver (Doctrine)
+     - php7.0-mbstring    # Codeception Tests
+     - php7.0-intl        # Localization
 
   - name: List locales
     shell: "cd {{ www_base }}/app/locale/; for i in $(ls -d */); do echo ${i%%/}; done"

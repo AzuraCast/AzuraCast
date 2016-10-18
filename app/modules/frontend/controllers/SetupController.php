@@ -128,7 +128,7 @@ class SetupController extends BaseController
         $existing_settings = $settings_repo->fetchArray(FALSE);
         $form->setDefaults($existing_settings);
 
-        if (!empty($_POST) && $form->isValid($_POST))
+        if ($this->request->getMethod() == 'POST' && $form->isValid($this->request->getQueryParams()))
         {
             $data = $form->getValues();
 

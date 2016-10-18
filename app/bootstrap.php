@@ -7,6 +7,9 @@
 define("APP_IS_COMMAND_LINE", (PHP_SAPI == "cli"));
 define("APP_IS_SECURE", (!APP_IS_COMMAND_LINE && (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on")) ? TRUE : FALSE);
 
+if (!defined('APP_TESTING_MODE'))
+    define('APP_TESTING_MODE', false);
+
 // General includes
 define("APP_INCLUDE_BASE", dirname(__FILE__));
 define("APP_INCLUDE_ROOT", realpath(APP_INCLUDE_BASE.'/..'));
@@ -41,11 +44,9 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']))
 $autoloader = require(APP_INCLUDE_VENDOR . '/autoload.php');
 $autoloader->add('App', APP_INCLUDE_LIB);
 
-// Include general utility functions
-include(APP_INCLUDE_VENDOR.'/packaged/helpers/src/includes/Phutil.php');
-
 // Set up DI container.
 $app_settings = [
+    'outputBuffering' => false,
     'displayErrorDetails' => true,
     'addContentLengthHeader' => false,
 ];
@@ -216,6 +217,9 @@ $di['url'] = function($di) {
 
 // Register session service.
 $di['session'] = function($di) {
+    // Depends on cache driver.
+    $di->get('cache_driver');
+
     return new \App\Session;
 };
 
@@ -304,29 +308,38 @@ if (!APP_IS_COMMAND_LINE)
 }
 
 // Set up application and routing.
-$app = new \Slim\App($di);
+$di['app'] = function($di) use ($modules) {
 
-// Remove trailing slash from all URLs when routing.
-$app->add(function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response, callable $next) {
-    $uri = $request->getUri();
-    $path = $uri->getPath();
+    $app = new \Slim\App($di);
 
-    if ($path != '/' && substr($path, -1) == '/')
+    // Remove trailing slash from all URLs when routing.
+    $app->add(function (\Psr\Http\Message\RequestInterface $request, \Psr\Http\Message\ResponseInterface $response, callable $next)
     {
-        // permanently redirect paths with a trailing slash
-        // to their non-trailing counterpart
-        $uri = $uri->withPath(substr($path, 0, -1));
-        return $response->withRedirect((string)$uri, 301);
+        $uri = $request->getUri();
+        $path = $uri->getPath();
+
+        if ($path != '/' && substr($path, -1) == '/')
+        {
+            // permanently redirect paths with a trailing slash
+            // to their non-trailing counterpart
+            $uri = $uri->withPath(substr($path, 0, -1));
+            return $response->withRedirect((string)$uri, 301);
+        }
+
+        return $next($request, $response);
+    });
+
+    // Loop through modules to configure routes.
+    foreach ($modules as $module)
+    {
+        $routes_file = APP_INCLUDE_MODULES . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'routes.php';
+
+        if (file_exists($routes_file))
+            include($routes_file);
     }
 
-    return $next($request, $response);
-});
+    return $app;
 
-// Loop through modules to configure routes.
-foreach($modules as $module)
-{
-    $routes_file = APP_INCLUDE_MODULES.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'routes.php';
+};
 
-    if (file_exists($routes_file))
-        include($routes_file);
-}
+return $di;

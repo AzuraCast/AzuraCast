@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 7.0
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
+sudo: true
+
+install:
+  - chmod a+x install.sh
+  - install.sh
+
+script:
+  - php codecept run

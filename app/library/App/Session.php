@@ -20,7 +20,8 @@ class Session
         if (!$this->isActive())
             return false;
 
-        $this->_is_started = session_start();
+        $this->_is_started = @session_start();
+
         return $this->_is_started;
     }
 
@@ -117,7 +118,7 @@ class Session
      */
     public function isActive()
     {
-        if (APP_IS_COMMAND_LINE)
+        if (APP_IS_COMMAND_LINE && !APP_TESTING_MODE)
             return false;
 
         if ($this->_prevent_sessions)

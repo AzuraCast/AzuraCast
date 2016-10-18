@@ -31,7 +31,10 @@ class Url
      */
     public function current($absolute = false)
     {
-        return $this->getUrl($_SERVER['REQUEST_URI'], $absolute);
+        if (!empty($_SERVER['REQUEST_URI']))
+            return $this->getUrl($_SERVER['REQUEST_URI'], $absolute);
+        else
+            return '';
     }
 
     /**
@@ -50,7 +53,10 @@ class Url
      */
     public function referrer($default_url = null)
     {
-        return $this->getUrl($_SERVER['HTTP_REFERER']);
+        if (isset($_SERVER['HTTP_REFERER']))
+            return $this->getUrl($_SERVER['HTTP_REFERER']);
+
+        return null;
     }
 
     /**

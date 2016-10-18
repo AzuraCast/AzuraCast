@@ -69,7 +69,7 @@ class Auth
      */
     public function isLoggedIn()
     {
-        if (APP_IS_COMMAND_LINE)
+        if (APP_IS_COMMAND_LINE && !APP_TESTING_MODE)
             return false;
 
         $user = $this->getUser();
@@ -135,7 +135,7 @@ class Auth
     public function setUser(User $user)
     {
         // Prevent any previous identity from being used.
-        session_regenerate_id(TRUE);
+        // @session_regenerate_id(true);
 
         $this->_session->user_id = $user->id;
 

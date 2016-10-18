@@ -101,8 +101,11 @@ class Form
         if (empty($options['groups']))
             $options['groups'] = array();
 
-        $options['groups'][] = ['elements' => $options['elements']];
-        unset($options['elements']);
+        if (!empty($options['elements']))
+        {
+            $options['groups'][] = ['elements' => $options['elements']];
+            unset($options['elements']);
+        }
 
         // Standardize some field input.
         $field_type_lookup = [

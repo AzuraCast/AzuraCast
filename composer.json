@@ -23,6 +23,7 @@
     "packaged/helpers": "^1.5"
   },
   "require-dev": {
+    "codeception/codeception": "^2.2"
   },
   "authors": [
     {

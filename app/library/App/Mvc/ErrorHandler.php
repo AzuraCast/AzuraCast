@@ -35,6 +35,18 @@ class ErrorHandler
             $home_url = $di['url']->named('home');
             return $res->withStatus(302)->withHeader('Location', $home_url);
         }
+        elseif (APP_IS_COMMAND_LINE)
+        {
+            $body = $res->getBody();
+            $body->write(json_encode([
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'stack_trace' => $e->getTraceAsString(),
+            ]));
+
+            return $res->withStatus(500)
+                ->withBody($body);
+        }
         else
         {
             $show_debug = false;
@@ -48,8 +60,6 @@ class ErrorHandler
             if (APP_APPLICATION_ENV != 'production')
                 $show_debug = true;
 
-            $res->withStatus(500);
-
             if ($show_debug)
             {
                 $view = $di->get('view');
@@ -62,19 +72,24 @@ class ErrorHandler
                 $run = new \Whoops\Run;
                 $run->pushHandler($handler);
 
-                $res->getBody()->write($run->handleException($e));
+                $body = $res->getBody();
+                $body->write($run->handleException($e));
 
-                return $res;
+                return $res->withStatus(500)
+                    ->withBody($body);
             }
             else
             {
                 $view = $di->get('view');
-
                 $view->exception = $e;
 
                 $template = $view->render('system/error_general');
-                $res->getBody()->write($template);
-                return $res;
+
+                $body = $res->getBody();
+                $body->write($template);
+
+                return $res->withStatus(500)
+                    ->withBody($body);
             }
         }
     }

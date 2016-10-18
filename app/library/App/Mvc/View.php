@@ -34,6 +34,12 @@ class View extends \League\Plates\Engine
     protected $rendered = false;
     protected $disabled = false;
 
+    public function reset()
+    {
+        $this->rendered = false;
+        $this->disabled = false;
+    }
+
     public function disable()
     {
         $this->disabled = true;
@@ -74,4 +80,12 @@ class View extends \League\Plates\Engine
         return parent::render($name, $data);
     }
 
+    public function setFolder($name, $directory, $fallback = false)
+    {
+        if ($this->folders->exists($name))
+            $this->folders->remove($name);
+
+        $this->folders->add($name, $directory, $fallback);
+        return $this;
+    }
 }

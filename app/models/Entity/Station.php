@@ -96,10 +96,12 @@ class Station extends \App\Doctrine\Entity
         {
             $this->radio_base_dir = $new_dir;
 
-            mkdir($this->radio_base_dir, 0777);
-            mkdir($this->getRadioMediaDir(), 0777);
-            mkdir($this->getRadioPlaylistsDir(), 0777);
-            mkdir($this->getRadioConfigDir(), 0777);
+            $radio_dirs = [$this->radio_base_dir, $this->getRadioMediaDir(), $this->getRadioPlaylistsDir(), $this->getRadioConfigDir()];
+            foreach($radio_dirs as $radio_dir)
+            {
+                if (!file_exists($radio_dir))
+                    mkdir($radio_dir, 0777);
+            }
         }
     }
 

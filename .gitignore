@@ -27,3 +27,4 @@ app/.env
 /ansible/
 /util/ansible/deploy.retry
 /util/ansible/update.retry
+tests/_output/*

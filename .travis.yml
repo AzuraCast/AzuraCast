@@ -8,7 +8,8 @@ cache:
     - vendor
     - $HOME/.composer/cache
 
-sudo: true
+sudo: required
+dist: trusty
 
 install:
   - chmod a+x $TRAVIS_BUILD_DIR/install.sh

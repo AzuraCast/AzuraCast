@@ -11,8 +11,8 @@ cache:
 sudo: true
 
 install:
-  - chmod a+x install.sh
-  - install.sh
+  - chmod a+x $TRAVIS_BUILD_DIR/install.sh
+  - $TRAVIS_BUILD_DIR/install.sh
 
 script:
   - php codecept run

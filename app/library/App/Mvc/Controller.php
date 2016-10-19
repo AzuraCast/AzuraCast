@@ -46,8 +46,6 @@ class Controller
         $this->url = $di['url'];
         $this->em = $di['em'];
 
-        $this->view->reset();
-
         $common_views_dir = APP_INCLUDE_MODULES.'/'.$module.'/views/scripts';
         if (is_dir($common_views_dir))
         {
@@ -102,12 +100,10 @@ class Controller
         if ($action_result instanceof Response)
             return $action_result;
 
-        $template = $this->view->render('controller::'.$this->action);
+        if (!$this->view->isDisabled())
+            return $this->render();
 
-        $body = $this->response->getBody();
-        $body->write($template);
-
-        return $this->response->withBody($body);
+        return $this->response;
     }
 
     public function __get($key)

@@ -142,20 +142,7 @@ $di['em'] = function($di) {
 };
 
 $di['db'] = function($di) {
-    try
-    {
-        $config = $di['config'];
-
-        $db_conf = $config->application->doctrine->toArray();
-        $db_conf['conn'] = $config->db->toArray();
-
-        $config = new \Doctrine\DBAL\Configuration;
-        return \Doctrine\DBAL\DriverManager::getConnection($db_conf['conn'], $config);
-    }
-    catch(\Exception $e)
-    {
-        throw new \App\Exception\Bootstrap($e->getMessage());
-    }
+    return $di['em']->getConnection();
 };
 
 // Auth and ACL
@@ -253,23 +240,22 @@ $di['sync'] = function($di) {
 };
 
 // Currently logged in user
-$di['user'] = function($di) {
+$di['user'] = $di->factory(function($di) {
     $auth = $di['auth'];
 
     if ($auth->isLoggedIn())
         return $auth->getLoggedInUser();
     else
         return NULL;
-};
+});
 
-$di['customization'] = function($di) {
+$di['customization'] = $di->factory(function($di) {
     return new \App\Customization($di);
-};
+});
 
-$di['view'] = function($di) {
+$di['view'] = $di->factory(function($di) {
     $view = new \App\Mvc\View(APP_INCLUDE_BASE.'/templates');
     $view->setFileExtension('phtml');
-
     $view->addAppCommands($di);
 
     $view->addData([
@@ -283,12 +269,12 @@ $di['view'] = function($di) {
     ]);
 
     return $view;
-};
+});
 
 // Initialize cache.
 $cache = $di->get('cache');
 
-if (!APP_IS_COMMAND_LINE)
+if (!APP_IS_COMMAND_LINE || APP_TESTING_MODE)
 {
     /** @var \App\Customization $customization */
     $customization = $di->get('customization');

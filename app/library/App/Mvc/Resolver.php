@@ -36,7 +36,10 @@ class Resolver implements CallableResolverInterface
             if (!class_exists($class))
                 throw new RuntimeException(sprintf('Callable %s does not exist', $class));
 
-            $resolved = [new $class($this->di, $module, $controller, $action), 'dispatch'];
+            $resolved = function($request, $response, $args) use ($class, $module, $controller, $action) {
+                $controller = new $class($this->di, $module, $controller, $action);
+                return $controller->dispatch($request, $response, $args);
+            };
         }
 
         if (!is_callable($resolved)) {

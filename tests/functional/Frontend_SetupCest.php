@@ -12,18 +12,18 @@ class Frontend_SetupCest extends CestAbstract
      */
     public function setupStart(FunctionalTester $I)
     {
-        $I->wantTo('Check for a setup redirect.');
+        $I->wantTo('Complete the initial setup process.');
+
         $I->amOnPage('/');
 
         $I->see('Begin setup');
         $I->seeCurrentUrlEquals('/setup/register');
+
+        $I->comment('Setup redirect found.');
     }
 
     protected function setupRegister(FunctionalTester $I)
     {
-        $I->wantTo('Create a user account.');
-        $I->amOnPage('/setup/register');
-
         $I->submitForm('#login-form', [
             'username' => $this->login_username,
             'password' => $this->login_password,
@@ -32,14 +32,13 @@ class Frontend_SetupCest extends CestAbstract
         $I->seeInSource('continue the setup process');
         $I->seeInRepository('Entity\User', ['email' => $this->login_username]);
 
-        $this->login_cookie = $I->grabCookie('PHPSESSID');
+        $I->comment('User account created.');
+
+        // $this->login_cookie = $I->grabCookie('PHPSESSID');
     }
 
     protected function setupStation(FunctionalTester $I)
     {
-        $I->wantTo('Set up a station.');
-        $I->amOnPage('/setup/station');
-
         $I->seeCurrentUrlEquals('/setup/station');
 
         $I->see('continue the setup process');
@@ -51,17 +50,14 @@ class Frontend_SetupCest extends CestAbstract
             ],
         ]);
 
+        $I->comment('Station created.');
+
         $I->seeCurrentUrlEquals('/setup/settings');
     }
 
     protected function setupSettings(FunctionalTester $I)
     {
-        $I->wantTo('Set up site settings.');
-        $I->amOnPage('/setup/settings');
-
         $I->submitForm('.form', []);
-
-        $I->wantTo('See a set up site.');
 
         $I->seeResponseCodeIs(200);
         $I->seeCurrentUrlEquals('/');

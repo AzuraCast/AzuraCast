@@ -2,6 +2,7 @@
 namespace App\Mvc;
 
 use Interop\Container\ContainerInterface;
+use League\Plates\Template\Data;
 
 class View extends \League\Plates\Engine
 {
@@ -38,6 +39,7 @@ class View extends \League\Plates\Engine
     {
         $this->rendered = false;
         $this->disabled = false;
+        $this->data = new Data();
     }
 
     public function disable()

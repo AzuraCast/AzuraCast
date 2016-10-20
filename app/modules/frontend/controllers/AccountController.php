@@ -41,13 +41,13 @@ class AccountController extends BaseController
 
             if($login_success)
             {
+                $this->acl->reload();
+
                 $user = $this->auth->getLoggedInUser();
 
                 $this->alert('<b>'._('Logged in successfully.').'</b><br>'.$user->email, 'green');
 
-                $url = $this->di->get('url');
-
-                $default_url = $url->route(array('module' => 'default'));
+                $default_url = $this->url->named('home');
                 return $this->redirectToStoredReferrer('login', $default_url);
             }
             else

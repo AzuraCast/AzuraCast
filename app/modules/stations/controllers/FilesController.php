@@ -268,7 +268,7 @@ class FilesController extends BaseController
 
                 // Delete all selected files.
                 foreach($files as $file)
-                    $this->_rmrf($file);
+                    \App\Utilities::rmdir_recursive($file);
             break;
 
             case 'clear':
@@ -356,22 +356,6 @@ class FilesController extends BaseController
         {
             $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
             return ($file_ext == 'mp3') ? [$path] : [];
-        }
-    }
-
-    protected function _rmrf($dir)
-    {
-        if(is_dir($dir))
-        {
-            $files = array_diff(scandir($dir), array('.','..'));
-            foreach ($files as $file)
-                $this->_rmrf($dir.'/'.$file);
-
-            rmdir($dir);
-        }
-        else
-        {
-            unlink($dir);
         }
     }
 

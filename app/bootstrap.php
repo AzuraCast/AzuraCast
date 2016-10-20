@@ -259,12 +259,12 @@ $di['view'] = $di->factory(function($di) {
     $view->addAppCommands($di);
 
     $view->addData([
-        'di' => $di,
-        'auth' => $di['auth'],
-        'acl' => $di['acl'],
-        'url' => $di['url'],
-        'config' => $di['config'],
-        'flash' => $di['flash'],
+        'di'        => $di,
+        'auth'      => $di['auth'],
+        'acl'       => $di['acl'],
+        'url'       => $di['url'],
+        'config'    => $di['config'],
+        'flash'     => $di['flash'],
         'customization' => $di['customization'],
     ]);
 

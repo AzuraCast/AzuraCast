@@ -2,6 +2,7 @@
 namespace App\Doctrine;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Entity implements \ArrayAccess
 {
@@ -118,7 +119,7 @@ class Entity implements \ArrayAccess
     /**
      * FromArray (A Doctrine 1 Classic)
      *
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @param $source
      * @return $this
      */
@@ -283,7 +284,7 @@ class Entity implements \ArrayAccess
     /**
      * ToArray (A Doctrine 1 Classic)
      *
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @param bool $deep Iterate through collections associated with this item.
      * @param bool $form_mode Return values in a format suitable for ZendForm setDefault function.
      * @return array

@@ -1,7 +1,4 @@
 <?php
-/**
- * @group frontend
- */
 class Frontend_SetupCest extends CestAbstract
 {
     /**

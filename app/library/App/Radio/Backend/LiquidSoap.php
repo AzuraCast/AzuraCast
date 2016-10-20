@@ -211,8 +211,8 @@ class LiquidSoap extends BackendAbstract
                     'host = "localhost"',
                     'port = '.$icecast_port,
                     'password = "'.$icecast_source_pw.'"',
-                    'name = "'.str_replace('"', '\'', $this->station->name).'"',
-                    'description = "'.str_replace('"', '\'', $this->station->description).'"',
+                    'name = "'.$this->_cleanUpString($this->station->name).'"',
+                    'description = "'.$this->_cleanUpString($this->station->description).'"',
                     'mount = "/autodj.mp3"',
                     'radio', // Required
                 ];
@@ -225,6 +225,11 @@ class LiquidSoap extends BackendAbstract
         $ls_config_path = $config_path.'/liquidsoap.liq';
         file_put_contents($ls_config_path, $ls_config_contents);
         return true;
+    }
+
+    protected function _cleanUpString($string)
+    {
+        return str_replace(['"', "\n", "\r"], ['\'', '', ''], $string);
     }
 
     protected function _getTime($time_code)
@@ -284,7 +289,13 @@ class LiquidSoap extends BackendAbstract
          * the 'azuracast' user (the default state) doesn't. No idea.
          */
 
-        $this->log(shell_exec('sudo -u azuracast liquidsoap '.escapeshellarg($config_path).' 2>&1'));
+        $cmd = \App\Utilities::run_command('sudo -u azuracast liquidsoap '.$config_path.' 2>&1');
+
+        if (!empty($cmd['output']))
+            $this->log($cmd['output']);
+
+        if (!empty($cmd['error']))
+            $this->log($cmd['error'], 'red');
     }
 
     public function restart()

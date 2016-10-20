@@ -55,11 +55,16 @@ abstract class AdapterAbstract
         if (file_exists($pid_file))
         {
             $pid = file_get_contents($pid_file);
-            $kill_result = exec('kill -9 '.$pid);
+
+            $cmd = \App\Utilities::run_command('kill -9 '.$pid);
+
+            if (!empty($cmd['output']))
+                $this->log($cmd['output']);
+
+            if (!empty($cmd['error']))
+                $this->log($cmd['error'], 'red');
 
             @unlink($pid_file);
-
-            $this->log($kill_result);
         }
         else
         {
@@ -90,10 +95,16 @@ abstract class AdapterAbstract
         if (file_exists($pid_file))
         {
             $pid = file_get_contents($pid_file);
-            $pid_result = exec('ps --pid '.$pid.' &>/dev/null');
 
-            $this->log($pid_result);
-            return !empty($pid_result);
+            $cmd = \App\Utilities::run_command('ps --pid '.$pid);
+
+            if (!empty($cmd['output']))
+                $this->log($cmd['output']);
+
+            if (!empty($cmd['error']))
+                $this->log($cmd['error'], 'red');
+
+            return !empty($cmd['output']);
         }
 
         return false;

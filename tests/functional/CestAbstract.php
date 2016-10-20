@@ -46,12 +46,54 @@ abstract class CestAbstract
 
     protected function setupComplete(FunctionalTester $I)
     {
-        $settings_repo = $this->em->getRepository(\Entity\Settings::class);
-        $settings_repo->setSetting('setup_complete', time());
-
         $this->_cleanTables();
 
+        /* Walk through the steps of completing setup automatically. */
 
+        // Create administrator account.
+        $role = new \Entity\Role;
+        $role->name = 'Super Administrator';
+
+        $this->em->persist($role);
+        $this->em->flush();
+
+        $rha = new \Entity\RolePermission;
+        $rha->fromArray($this->em, [
+            'role' => $role,
+            'action_name' => 'administer all',
+        ]);
+        $this->em->persist($rha);
+
+        // Create user account.
+        $user = new \Entity\User;
+        $user->email = $this->login_username;
+        $user->setAuthPassword($this->login_password);
+        $user->roles->add($role);
+
+        $this->em->persist($user);
+        $this->em->flush();
+
+        $this->di['acl']->reload();
+
+        // Create station.
+        $frontends = \Entity\Station::getFrontendAdapters();
+        $backends = \Entity\Station::getBackendAdapters();
+
+        $station_info = [
+            'id'            => 25,
+            'name'          => 'Functional Test Radio',
+            'description'   => 'Test radio station.',
+            'frontend_type' => $frontends['default'],
+            'backend_type'  => $backends['default'],
+        ];
+
+        $station_repo = $this->em->getRepository(\Entity\Station::class);
+        $station_repo->create($station_info, $this->di);
+
+        // Set settings.
+        $settings_repo = $this->em->getRepository(\Entity\Settings::class);
+        $settings_repo->setSetting('setup_complete', time());
+        $settings_repo->setSetting('base_url', 'localhost');
     }
 
     protected function _cleanTables()

@@ -340,7 +340,10 @@ class StationRepository extends Repository
     }
 
     /**
+     * Create a station based on the specified data.
+     *
      * @param $data
+     * @param ContainerInterface $di
      */
     public function create($data, ContainerInterface $di)
     {
@@ -382,6 +385,28 @@ class StationRepository extends Repository
 
         // Save changes and continue to the last setup step.
         $this->_em->persist($station);
+        $this->_em->flush();
+    }
+
+    /**
+     * @param Station $station
+     * @param ContainerInterface $di
+     */
+    public function destroy(Station $station, ContainerInterface $di)
+    {
+        // Stop the radio adapters.
+        $frontend_adapter = $station->getFrontendAdapter($di);
+        $frontend_adapter->stop();
+
+        $backend_adapter = $station->getBackendAdapter($di);
+        $backend_adapter->stop();
+
+        // Remove media folders.
+        $radio_dir = $station->getRadioBaseDir();
+        \App\Utilities::rmdir_recursive($radio_dir);
+
+        // Save changes and continue to the last setup step.
+        $this->_em->remove($station);
         $this->_em->flush();
     }
 }

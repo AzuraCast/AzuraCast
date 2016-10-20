@@ -1,6 +1,7 @@
 <?php
 namespace App\Mvc;
 
+use App\Acl\StationAcl;
 use App\Config;
 use App\Url;
 use Doctrine\ORM\EntityManager;
@@ -25,6 +26,9 @@ class Controller
     /** @var EntityManager */
     protected $em;
 
+    /** @var StationAcl */
+    protected $acl;
+
     /** @var Config */
     protected $current_module_config;
 
@@ -45,6 +49,7 @@ class Controller
         $this->view = $di['view'];
         $this->url = $di['url'];
         $this->em = $di['em'];
+        $this->acl = $di['acl'];
 
         $common_views_dir = APP_INCLUDE_MODULES.'/'.$module.'/views/scripts';
         if (is_dir($common_views_dir))
@@ -142,7 +147,7 @@ class Controller
      */
     protected function permissions()
     {
-        return $this->acl->isAllowed('is logged in');
+        return $this->auth->isLoggedIn();
     }
 
     /* HTTP Cache Handling */
@@ -467,11 +472,13 @@ class Controller
         $referrer = $this->getStoredReferrer($namespace);
         $this->clearStoredReferrer($namespace);
 
+        $home_url = $this->di['url']->named('home');
+
+        if (strcmp($referrer, $this->request->getUri()->getPath()) == 0)
+            $referrer = $home_url;
+
         if( trim($referrer) == '' )
-            if( $default_url )
-                $referrer = $default_url;
-            else
-                $referrer = $this->di['url']->baseUrl();
+            $referrer = ($default_url) ? $default_url : $home_url;
 
         return $this->redirect($referrer);
     }

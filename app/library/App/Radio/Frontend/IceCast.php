@@ -175,8 +175,13 @@ class IceCast extends FrontendAbstract
             return;
         }
 
-        exec('icecast2 -b -c '.$icecast_config, $output);
-        $this->log(implode("\n", $output));
+        $cmd = \App\Utilities::run_command('icecast2 -b -c '.$icecast_config.' 2>&1');
+
+        if (!empty($cmd['output']))
+            $this->log($cmd['output']);
+
+        if (!empty($cmd['error']))
+            $this->log($cmd['error'], 'red');
     }
 
     public function restart()

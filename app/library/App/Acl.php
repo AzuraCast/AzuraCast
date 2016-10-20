@@ -36,6 +36,15 @@ class Acl
     }
 
     /**
+     * Force a reload of the internal ACL cache (used in the event of a user status change.
+     */
+    public function reload()
+    {
+        $this->_actions = null;
+        $this->init();
+    }
+
+    /**
      * Check if a specified User entity is allowed to perform an action (or array of actions).
      *
      * @param string|array $action

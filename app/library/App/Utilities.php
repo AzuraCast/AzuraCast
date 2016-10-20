@@ -532,4 +532,45 @@ class Utilities
 
         return 'UTC';
     }
+
+    /**
+     * Execute a command using the proc_open function and pipe stderr and stdout back to the caller.
+     *
+     * @param $command
+     * @param string $base_dir
+     * @return array
+     */
+    public static function run_command($command)
+    {
+        ob_start();
+        exec($command, $stdout, $return_code);
+        $stderr = ob_get_flush();
+
+        return [
+            'output'=> trim(implode("\n", $stdout)),
+            'error' => (string)$stderr,
+            'code'  => $return_code,
+        ];
+    }
+
+    /**
+     * Recursively remove a directory and its contents.
+     *
+     * @param $dir
+     */
+    public static function rmdir_recursive($dir)
+    {
+        if(is_dir($dir))
+        {
+            $files = array_diff(scandir($dir), array('.','..'));
+            foreach ($files as $file)
+                self::rmdir_recursive($dir.'/'.$file);
+
+            @rmdir($dir);
+        }
+        else
+        {
+            @unlink($dir);
+        }
+    }
 }

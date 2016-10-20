@@ -72,6 +72,7 @@ class SetupController extends BaseController
 
             // Log in the newly created user.
             $this->auth->authenticate($data['username'], $data['password']);
+            $this->acl->reload();
 
             return $this->redirectFromHere(['action' => 'index']);
         }

@@ -16,4 +16,5 @@ install:
   - $TRAVIS_BUILD_DIR/install.sh
 
 script:
-  - php codecept run
+  - chmod a+rx -R $TRAVIS_BUILD_DIR
+  - cd $TRAVIS_BUILD_DIR && ./vendor/bin/codecept run

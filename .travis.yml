@@ -13,8 +13,8 @@ dist: trusty
 
 install:
   - chmod a+x $TRAVIS_BUILD_DIR/install.sh
+  - chmod a+rx -R $TRAVIS_BUILD_DIR
   - $TRAVIS_BUILD_DIR/install.sh
 
 script:
-  - chmod a+rx -R $TRAVIS_BUILD_DIR
   - cd $TRAVIS_BUILD_DIR && ./vendor/bin/codecept run

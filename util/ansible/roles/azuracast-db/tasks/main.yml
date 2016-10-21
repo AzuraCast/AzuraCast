@@ -1,9 +1,13 @@
 ---
+  - name: Assign PHP User
+    set_fact:
+      php_become_user: "{{ 'root' if testing_mode == true else 'azuracast' }}"
+
   - name: Clear AzuraCast Cache
     become: true
-    become_user: azuracast
+    become_user: "{{ php_become_user }}"
     shell: php {{ util_base }}/cli.php cache:clear
-    when: azuracast_db_created.changed and testing_mode == false
+    when: azuracast_db_created.changed
 
   - name: Install Initial Database
     mysql_db: state=import name="azuracast" target="{{ util_base }}/azuracast_db.sql"
@@ -11,11 +15,6 @@
 
   - name: Apply All DB Migrations
     become: true
-    become_user: azuracast
+    become_user: "{{ php_become_user }}"
     shell: php {{ util_base }}/cli.php migrations:migrate --no-interaction --allow-no-migration
-    when: azuracast_db_created.changed and testing_mode == false
-
-  - name: Apply DB Migrations (Testing Mode)
-    become: true
-    shell: php {{ util_base }}/cli.php migrations:migrate --no-interaction --allow-no-migration
-    when: azuracast_db_created.changed and testing_mode == true
+    when: azuracast_db_created.changed

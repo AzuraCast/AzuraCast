@@ -1,4 +1,4 @@
-<?
+<?php
 namespace App\Session;
 
 class Instance implements \ArrayAccess

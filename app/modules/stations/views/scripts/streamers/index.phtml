@@ -51,7 +51,7 @@
                 <h2><?=_('Connection Information') ?></h2>
             </div>
             <div class="card-body card-padding">
-                <?
+                <?php
                 $frontend_type = $station->frontend_type;
                 $frontend_info = (array)$station->frontend_config;
 
@@ -83,7 +83,7 @@
                         <dt><?=_('Password') ?>:</dt>
                         <dd><?=$frontend_info['streamer_pw'] ?></dd>
                     </dl>
-                <?
+                <?php
                 endif;
                 ?>
             </div>

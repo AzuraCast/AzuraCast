@@ -4,7 +4,6 @@ class A01_Frontend_ProfileCest extends CestAbstract
     /**
      * @before setupComplete
      * @before login
-     * @after cleanup
      */
     public function setProfileInfo(FunctionalTester $I)
     {

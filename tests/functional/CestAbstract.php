@@ -25,7 +25,16 @@ abstract class CestAbstract
     {}
 
     public function _after(FunctionalTester $I)
-    {}
+    {
+        $auth = $this->di['auth'];
+        $auth->logout();
+
+        if ($this->test_station instanceof \Entity\Station)
+        {
+            $station_repo = $this->em->getRepository(\Entity\Station::class);
+            $this->test_station = $station_repo->destroy($this->test_station, $this->di);
+        }
+    }
 
     protected $login_username = 'azuracast@azuracast.com';
     protected $login_password = 'AzuraCastFunctionalTests!';
@@ -98,6 +107,9 @@ abstract class CestAbstract
         $clean_tables = ['Entity\User', 'Entity\Role', 'Entity\Station'];
         foreach($clean_tables as $clean_table)
             $this->em->createQuery('DELETE FROM '.$clean_table.' t')->execute();
+
+        $auth = $this->di['auth'];
+        $auth->logout();
     }
 
     protected function login(FunctionalTester $I)
@@ -125,18 +137,6 @@ abstract class CestAbstract
             $I->seeInCurrentUrl('/login');
 
             $this->login_cookie = null;
-        }
-    }
-
-    protected function cleanup(FunctionalTester $I)
-    {
-        $auth = $this->di['auth'];
-        $auth->logout();
-
-        if ($this->test_station instanceof \Entity\Station)
-        {
-            $station_repo = $this->em->getRepository(\Entity\Station::class);
-            $this->test_station = $station_repo->destroy($this->test_station, $this->di);
         }
     }
 }

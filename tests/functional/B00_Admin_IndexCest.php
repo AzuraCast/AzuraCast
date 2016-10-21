@@ -5,7 +5,6 @@ class B00_Admin_IndexCest extends CestAbstract
      * @before setupComplete
      * @before login
      * @after runSync
-     * @after cleanup
      */
     public function seeAdminHomepage(FunctionalTester $I)
     {

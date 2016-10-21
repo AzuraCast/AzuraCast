@@ -11,4 +11,7 @@ modules:
             container: app/bootstrap.php
         - Doctrine2:
             depends: \App\Tests\Module
+        - REST:
+            depends: \App\Tests\Module
+            url: '/api'
 error_level: "E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"

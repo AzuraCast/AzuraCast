@@ -66,6 +66,7 @@ class PlaylistsController extends BaseController
 
             $this->em->persist($record);
             $this->em->flush();
+            $this->em->refresh($this->station);
 
             $this->_reloadStation();
 
@@ -91,6 +92,7 @@ class PlaylistsController extends BaseController
             $this->em->remove($record);
 
         $this->em->flush();
+        $this->em->refresh($this->station);
 
         $this->_reloadStation();
 

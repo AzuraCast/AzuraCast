@@ -66,6 +66,8 @@ class StreamersController extends BaseController
             $this->em->persist($record);
             $this->em->flush();
 
+            $this->em->refresh($this->station);
+
             $this->alert('<b>'._('Streamer account updated!').'</b>', 'green');
 
             return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);
@@ -88,6 +90,8 @@ class StreamersController extends BaseController
             $this->em->remove($record);
 
         $this->em->flush();
+
+        $this->em->refresh($this->station);
 
         $this->alert('<b>'._('Record deleted.').'</b>', 'green');
         return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);

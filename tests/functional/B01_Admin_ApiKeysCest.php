@@ -4,7 +4,6 @@ class B01_Admin_ApiKeysCest extends CestAbstract
     /**
      * @before setupComplete
      * @before login
-     * @after cleanup
      */
     public function manageApiKeys(FunctionalTester $I)
     {

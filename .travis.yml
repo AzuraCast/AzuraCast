@@ -23,7 +23,7 @@ before_script:
   - phpenv config-add $TRAVIS_BUILD_DIR/util/travis_php.ini
 
 script:
-  - cd $TRAVIS_BUILD_DIR && ./vendor/bin/codecept run --debug --no-interaction --fail-fast
+  - cd $TRAVIS_BUILD_DIR && ./vendor/bin/codecept run --no-interaction --fail-fast
 
 after_failure:
   - cat $TRAVIS_BUILD_DIR/tests/_output/*

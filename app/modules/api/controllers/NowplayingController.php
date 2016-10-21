@@ -13,7 +13,7 @@ class NowplayingController extends BaseController
         $cache = $this->di->get('cache');
         
         $np = $cache->get('api_nowplaying_data', function() {
-            return $this->di['em']->getRepository('Entity\Settings')->getSetting('nowplaying');
+            return $this->di['em']->getRepository(Settings::class)->getSetting('nowplaying');
         });
 
         // Sanity check for now playing data.

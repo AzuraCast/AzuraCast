@@ -25,4 +25,4 @@
     - composer
     - azuracast-db
     - { role: azuracast-cron, when: testing_mode == false }
-    - { role: azuracast-build, when: testing_mode == false && app_env == 'development' }
+    - { role: azuracast-build, when: testing_mode == false and app_env == 'development' }

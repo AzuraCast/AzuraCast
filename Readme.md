@@ -1,6 +1,7 @@
 # AzuraCast: A Self-Hosted Web Radio Manager
 
 [![Code Climate](https://codeclimate.com/github/SlvrEagle23/AzuraCast/badges/gpa.svg)](https://codeclimate.com/github/SlvrEagle23/AzuraCast)
+[![Build Status](https://travis-ci.org/SlvrEagle23/AzuraCast.svg?branch=master)](https://travis-ci.org/SlvrEagle23/AzuraCast)
 
 **AzuraCast** is a standalone, turnkey web radio management kit. Using its easy installer, you can go from a fresh Linux installation to a fully working web radio station in about 5 minutes. 
 

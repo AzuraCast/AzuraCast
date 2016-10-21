@@ -3,6 +3,9 @@ language: php
 php:
   - 7.0
 
+git:
+  depth: 1
+
 cache:
   directories:
     - vendor
@@ -20,4 +23,4 @@ script:
   - cd $TRAVIS_BUILD_DIR && ./vendor/bin/codecept run --debug --no-interaction --fail-fast
 
 after_failure:
-  - cat $TRAVIS_BUIlD_DIR/tests/_output/*
+  - cat $TRAVIS_BUILD_DIR/tests/_output/*

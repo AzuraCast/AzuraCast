@@ -89,9 +89,9 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                 <li class="dropdown">
                     <a data-toggle="dropdown" href=""><i class="him-icon zmdi zmdi-more-vert"></i></a>
                     <ul class="dropdown-menu dm-icon pull-right">
-                        <? if ($acl->isAllowed('view administration')): ?>
+                        <?php if ($acl->isAllowed('view administration')): ?>
                             <li><a href="<?=$url->named('admin:index:index') ?>"><i class="zmdi zmdi-settings"></i> <?=_('System Administration') ?></a></li>
-                        <? endif; ?>
+                        <?php endif; ?>
                         <li><a href="<?=$url->named('profile:index') ?>"><i class="zmdi zmdi-account"></i> <?=_('My Account') ?></a></li>
                         <li class="divider">&nbsp;</li>
                         <!--
@@ -175,15 +175,15 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 
 <script type="text/javascript" src="<?=$url->content('js/app.min.js') ?>"></script>
 
-<? if ($flash->hasMessages()): ?>
+<?php if ($flash->hasMessages()): ?>
     <script type="text/javascript">
         $(function() {
-            <? foreach($flash->getMessages() as $message): ?>
+            <?php foreach($flash->getMessages() as $message): ?>
             notify("<?=str_replace(array('"', "\n"), array('\'', '<br>'), $message['text']) ?>", '<?=$message['color'] ?>');
-            <? endforeach; ?>
+            <?php endforeach; ?>
         });
     </script>
-<? endif; ?>
+<?php endif; ?>
 
 <script type="text/javascript" src="<?=$url->content('js/retinajs/retina.min.js') ?>"></script>
 <script type="text/javascript">retinajs();</script>

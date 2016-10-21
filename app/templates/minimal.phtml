@@ -43,14 +43,14 @@ if (APP_APPLICATION_ENV != "production")
 <script type="text/javascript" src="<?=$url->content('vendors/bootstrap-growl/bootstrap-growl.min.js') ?>"></script>
 <script type="text/javascript" src="<?=$url->content('js/app.min.js') ?>"></script>
 
-<? if ($flash->hasMessages()): ?>
+<?php if ($flash->hasMessages()): ?>
     <script type="text/javascript">
         $(function() {
-            <? foreach($flash->getMessages() as $message): ?>
+            <?php foreach($flash->getMessages() as $message): ?>
             notify("<?=str_replace(array('"', "\n"), array('\'', '<br>'), $message['text']) ?>", '<?=$message['color'] ?>');
-            <? endforeach; ?>
+            <?php endforeach; ?>
         });
     </script>
-<? endif; ?>
+<?php endif; ?>
 </body>
 </html>

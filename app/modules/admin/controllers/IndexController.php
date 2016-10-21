@@ -23,6 +23,8 @@ class IndexController extends BaseController
 
         $this->doNotRender();
 
+        ob_start();
+
         \App\Debug::setEchoMode(TRUE);
         \App\Debug::startTimer('sync_task');
 
@@ -56,5 +58,12 @@ class IndexController extends BaseController
 
         \App\Debug::endTimer('sync_task');
         \App\Debug::log('Sync task complete. See log above.');
+
+        $result = ob_get_clean();
+
+        $body = $this->response->getBody();
+        $body->write($result);
+
+        return $this->response->withBody($body);
     }
 }

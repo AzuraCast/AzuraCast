@@ -1,11 +1,12 @@
 <?php
-class Frontend_SetupCest extends CestAbstract
+class A00_Frontend_SetupCest extends CestAbstract
 {
     /**
      * @before setupIncomplete
      * @after setupRegister
      * @after setupStation
      * @after setupSettings
+     * @after cleanup
      */
     public function setupStart(FunctionalTester $I)
     {

@@ -20,9 +20,6 @@ class StationAcl extends \App\Acl
      */
     public function userAllowed($action, User $user = null, $station_id = null)
     {
-        static $roles;
-        static $cache;
-
         // Make all actions lower-case and sort alphabetically (so memoization returns the same result).
         $action = array_map('strtolower', (array)$action);
         asort($action);
@@ -32,30 +29,30 @@ class StationAcl extends \App\Acl
 
         $user_id = ($user instanceof User) ? $user->id : 'anonymous';
 
-        if( !isset($cache[$user_id][$memoize]) )
+        if( !isset($this->_cache[$user_id][$memoize]) )
         {
             if($user instanceof User)
             {
-                if(!isset($roles[$user_id]))
+                if(!isset($this->_roles[$user_id]))
                 {
-                    $roles[$user_id] = array();
+                    $this->_roles[$user_id] = array();
 
                     if (count($user->roles) > 0)
                     {
                         foreach($user->roles as $role)
-                            $roles[$user_id][] = $role->id;
+                            $this->_roles[$user_id][] = $role->id;
                     }
                 }
 
-                $cache[$user_id][$memoize] = $this->roleAllowed($roles[$user_id], $action, $station_id);
+                $this->_cache[$user_id][$memoize] = $this->roleAllowed($this->_roles[$user_id], $action, $station_id);
             }
             else
             {
-                $cache[$user_id][$memoize] = $this->roleAllowed(array('Unauthenticated'), $action, $station_id);
+                $this->_cache[$user_id][$memoize] = $this->roleAllowed(array('Unauthenticated'), $action, $station_id);
             }
         }
 
-        return $cache[$user_id][$memoize];
+        return $this->_cache[$user_id][$memoize];
     }
 
     /**
@@ -66,13 +63,8 @@ class StationAcl extends \App\Acl
      */
     public function isAllowed($action, $station_id = null)
     {
-        static $is_logged_in, $user;
-
-        if ($is_logged_in === NULL)
-        {
-            $user = $this->_auth->getLoggedInUser();
-            $is_logged_in = ($user instanceof User);
-        }
+        $user = $this->_auth->getLoggedInUser();
+        $is_logged_in = ($user instanceof User);
 
         if ($action == "is logged in")
             return ($is_logged_in);

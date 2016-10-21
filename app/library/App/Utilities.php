@@ -544,7 +544,7 @@ class Utilities
     {
         ob_start();
         exec($command, $stdout, $return_code);
-        $stderr = ob_get_flush();
+        $stderr = ob_get_clean();
 
         return [
             'output'=> trim(implode("\n", $stdout)),

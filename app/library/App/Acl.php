@@ -18,7 +18,13 @@ class Acl
     protected $_auth;
 
     /** @var array|null An array of actions enabled by each role. */
-    protected $_actions = NULL;
+    protected $_actions = null;
+
+    /** @var array|null The roles of the currently logged in user. */
+    protected $_roles = null;
+
+    /** @var array|null A cache of permissions and return statuses. */
+    protected $_cache = null;
 
     public function __construct(\Doctrine\ORM\EntityManager $em, Auth $auth)
     {
@@ -41,6 +47,9 @@ class Acl
     public function reload()
     {
         $this->_actions = null;
+        $this->_roles = null;
+        $this->_cache = null;
+
         $this->init();
     }
 
@@ -53,9 +62,6 @@ class Acl
      */
     public function userAllowed($action, User $user = null)
     {
-        static $roles;
-        static $cache;
-
         // Make all actions lower-case and sort alphabetically (so memoization returns the same result).
         $action = array_map('strtolower', (array)$action);
         asort($action);
@@ -63,30 +69,30 @@ class Acl
         $memoize = md5(serialize($action));
         $user_id = ($user instanceof User) ? $user->id : 'anonymous';
 
-        if( !isset($cache[$user_id][$memoize]) )
+        if( !isset($this->_cache[$user_id][$memoize]) )
         {
             if($user instanceof User)
             {
-                if(!isset($roles[$user_id]))
+                if(!isset($this->_roles[$user_id]))
                 {
-                    $roles[$user_id] = array();
+                    $this->_roles[$user_id] = array();
 
                     if (count($user->roles) > 0)
                     {
                         foreach($user->roles as $role)
-                            $roles[$user_id][] = $role->id;
+                            $this->_roles[$user_id][] = $role->id;
                     }
                 }
 
-                $cache[$user_id][$memoize] = $this->roleAllowed($roles[$user_id], $action);
+                $this->_cache[$user_id][$memoize] = $this->roleAllowed($this->_roles[$user_id], $action);
             }
             else
             {
-                $cache[$user_id][$memoize] = $this->roleAllowed(array('Unauthenticated'), $action);
+                $this->_cache[$user_id][$memoize] = $this->roleAllowed(array('Unauthenticated'), $action);
             }
         }
 
-        return $cache[$user_id][$memoize];
+        return $this->_cache[$user_id][$memoize];
     }
 
     /**

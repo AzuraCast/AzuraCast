@@ -22,12 +22,7 @@ abstract class CestAbstract
     }
 
     public function _before(FunctionalTester $I)
-    {
-        if (!empty($this->login_cookie))
-        {
-            $I->setCookie('PHPSESSID', $this->login_cookie);
-        }
-    }
+    {}
 
     public function _after(FunctionalTester $I)
     {}
@@ -35,6 +30,8 @@ abstract class CestAbstract
     protected $login_username = 'azuracast@azuracast.com';
     protected $login_password = 'AzuraCastFunctionalTests!';
     protected $login_cookie = null;
+
+    protected $test_station = null;
 
     protected function setupIncomplete(FunctionalTester $I)
     {
@@ -88,7 +85,7 @@ abstract class CestAbstract
         ];
 
         $station_repo = $this->em->getRepository(\Entity\Station::class);
-        $station_repo->create($station_info, $this->di);
+        $this->test_station = $station_repo->create($station_info, $this->di);
 
         // Set settings.
         $settings_repo = $this->em->getRepository(\Entity\Settings::class);
@@ -105,22 +102,17 @@ abstract class CestAbstract
 
     protected function login(FunctionalTester $I)
     {
-        if (empty($this->login_cookie))
-        {
-            $I->wantTo('Log in to the application.');
+        $I->wantTo('Log in to the application.');
 
-            $I->amOnPage('/');
-            $I->seeInCurrentUrl('/login');
+        $I->amOnPage('/');
+        $I->seeInCurrentUrl('/login');
 
-            $I->submitForm('#login-form', [
-                'username' => $this->login_username,
-                'password' => $this->login_password,
-            ]);
+        $I->submitForm('#login-form', [
+            'username' => $this->login_username,
+            'password' => $this->login_password,
+        ]);
 
-            $I->seeInSource('Logged in');
-
-            $this->login_cookie = $I->grabCookie('PHPSESSID');
-        }
+        $I->seeInSource('Logged in');
     }
 
     protected function logout(FunctionalTester $I)
@@ -133,6 +125,18 @@ abstract class CestAbstract
             $I->seeInCurrentUrl('/login');
 
             $this->login_cookie = null;
+        }
+    }
+
+    protected function cleanup(FunctionalTester $I)
+    {
+        $auth = $this->di['auth'];
+        $auth->logout();
+
+        if ($this->test_station instanceof \Entity\Station)
+        {
+            $station_repo = $this->em->getRepository(\Entity\Station::class);
+            $this->test_station = $station_repo->destroy($this->test_station, $this->di);
         }
     }
 }

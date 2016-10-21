@@ -131,6 +131,7 @@ abstract class AdapterAbstract
 
         file_put_contents($log_file, $log_message, FILE_APPEND);
 
-        \App\Debug::log('['.strtoupper($class).'] '.$message);
+        if (!APP_TESTING_MODE)
+            \App\Debug::log('['.strtoupper($class).'] '.$message);
     }
 }

@@ -49,7 +49,7 @@ class Station extends \App\Doctrine\Entity
     protected $frontend_config;
 
     /**
-     * @return \App\Radio\Frontend\AdapterAbstract
+     * @return \App\Radio\AdapterAbstract
      * @throws \Exception
      */
     public function getFrontendAdapter(ContainerInterface $di)
@@ -70,7 +70,7 @@ class Station extends \App\Doctrine\Entity
     protected $backend_config;
 
     /**
-     * @return \App\Radio\Backend\AdapterAbstract
+     * @return \App\Radio\AdapterAbstract
      * @throws \Exception
      */
     public function getBackendAdapter(ContainerInterface $di)
@@ -143,11 +143,6 @@ class Station extends \App\Doctrine\Entity
      * @OrderBy({"timestamp" = "DESC"})
      */
     protected $history;
-
-    /**
-     * @ManyToMany(targetEntity="User", mappedBy="stations")
-     */
-    protected $managers;
 
     /**
      * @OneToMany(targetEntity="StationMedia", mappedBy="station")
@@ -344,6 +339,7 @@ class StationRepository extends Repository
      *
      * @param $data
      * @param ContainerInterface $di
+     * @return Station
      */
     public function create($data, ContainerInterface $di)
     {
@@ -386,6 +382,8 @@ class StationRepository extends Repository
         // Save changes and continue to the last setup step.
         $this->_em->persist($station);
         $this->_em->flush();
+
+        return $station;
     }
 
     /**

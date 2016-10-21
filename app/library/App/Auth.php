@@ -59,6 +59,8 @@ class Auth
         unset($this->_session->user_id);
         unset($this->_session->masquerade_user_id);
 
+        $this->_user = null;
+
         @session_unset();
     }
 

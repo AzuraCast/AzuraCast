@@ -3,7 +3,7 @@
     become: true
     become_user: azuracast
     shell: php {{ util_base }}/cli.php cache:clear
-    when: azuracast_db_created.changed and testing_mode == false
+    when: azuracast_db_created.changed and testing_mode|bool == false
 
   - name: Install Initial Database
     mysql_db: state=import name="azuracast" target="{{ util_base }}/azuracast_db.sql"
@@ -13,9 +13,9 @@
     become: true
     become_user: azuracast
     shell: php {{ util_base }}/cli.php migrations:migrate --no-interaction --allow-no-migration
-    when: azuracast_db_created.changed and testing_mode == false
+    when: azuracast_db_created.changed and testing_mode|bool == false
 
   - name: Apply DB Migrations (Testing Mode)
     become: true
     shell: php {{ util_base }}/cli.php migrations:migrate --no-interaction --allow-no-migration
-    when: azuracast_db_created.changed and testing_mode == true
+    when: azuracast_db_created.changed and testing_mode|bool == true

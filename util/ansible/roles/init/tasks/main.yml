@@ -1,6 +1,10 @@
 ---
   - debug:
-      msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}"
+      msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }} ({{ app_env }})"
+
+  - debug:
+      msg: "Running in Testing Mode."
+    when: testing_mode|bool == true
 
   - name: Update apt
     become: true

@@ -17,7 +17,6 @@
     become: true
     file: src="{{ www_base }}/web/static/{{ item }}" dest="{{ app_base }}/build/{{ item }}" state=link
     with_items:
-     - yarn.lock
      - gruntfile.js
      - package.json
 
@@ -26,10 +25,9 @@
     with_items:
      - bower
      - grunt
-     - yarn
 
   - name: Install Node packages
-    shell: "yarn --loglevel warn"
+    shell: "npm install --loglevel warn"
     args:
       chdir: "{{ app_base }}/build"
 

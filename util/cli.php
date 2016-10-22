@@ -4,6 +4,9 @@ ini_set('display_errors', 1);
 
 $di = require dirname(__FILE__).'/../app/bootstrap.php';
 
+// Load app, to generate routes, etc.
+$di->get('app');
+
 $em = $di['em'];
 $db = $em->getConnection();
 

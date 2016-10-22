@@ -13,23 +13,34 @@ modules:
       depends: \App\Tests\Module
    - REST:
       depends: \App\Tests\Module
+   - Cli
 
 coverage:
   enabled: true
   include:
    - app/*
   exclude:
-   - app/library/App/Tests/Module.php # Loaded before tests
-   - app/library/App/Doctrine/EntityManagerFactory.php # Loaded before tests
-   - app/library/App/Doctrine/Logger/EchoSQL.php # Not used in tests
-   - app/library/App/Doctrine/Type/*.php # Not used in tests
-   - app/library/App/Forms/Element/Recaptcha.php # Not used in tests
-   - app/library/App/Paginator/Doctrine.php # Not used in tests
-   - app/**/route.php         # Not detected properly
-   - app/**/*.conf.php        # Not detected properly
-   - app/**/*.conf.sample.php # Not used in tests
-   - app/models/Migration/*   # Not used in tests
-   - app/locale/**/*          # Not used in tests
-   - app/locale/*             # Not used in tests
+   # Loaded before tests
+   - app/library/App/Tests/Module.php
+   - app/library/App/Doctrine/EntityManagerFactory.php
+
+   # Not used in entire application
+   - app/library/App/Crypto.php
+   - app/library/App/Forms/Element/Recaptcha.php
+   - app/library/App/Paginator/Doctrine.php
+   - app/library/App/Doctrine/Type/*.php
+   - app/library/App/Radio/Frontend/Shoutcast*.php
+
+   # Used in application, but not used in tests
+   - app/library/App/Doctrine/Logger/EchoSQL.php
+   - app/library/App/Console/Command/*.php
+   - app/**/*.conf.sample.php
+   - app/models/Migration/*
+   - app/locale/**/*
+   - app/locale/*
+
+   # Used in application, but not detected properly by the coverage tool :(
+   - app/**/route.php
+   - app/**/*.conf.php
 
 error_level: "E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"

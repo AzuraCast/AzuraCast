@@ -383,11 +383,13 @@ class FilesController extends BaseController
 
             if (isset($files['file_data']))
             {
-                /** @var UploadedFile $file */
-                $file = $files['file_data'];
-                $upload_file_path = basename($file->getClientFilename());
+                /** @var UploadedFile $uploaded_file */
+                $uploaded_file = $files['file_data'];
 
-                $file->moveTo($this->file_path.DIRECTORY_SEPARATOR.$upload_file_path);
+                $file = new \App\File(basename($uploaded_file->getClientFilename()), $this->file_path);
+                $file->upload($uploaded_file);
+
+                $upload_file_path = $file->getPath();
             }
         }
         catch(\Exception $e)

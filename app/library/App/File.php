@@ -5,6 +5,8 @@
 
 namespace App;
 
+use Psr\Http\Message\UploadedFileInterface;
+
 class File
 {
     /**
@@ -103,6 +105,9 @@ class File
      */
     public function upload($uploaded_file)
     {
+        if ($uploaded_file instanceof UploadedFileInterface)
+            return $uploaded_file->moveTo($this->getPath());
+
         if (!$this->isValid($uploaded_file))
         {
             switch($uploaded_file['error'])

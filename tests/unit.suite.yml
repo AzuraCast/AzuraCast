@@ -1,0 +1,6 @@
+class_name: UnitTester
+modules:
+    enabled:
+        - \Helper\Unit
+
+error_level: "E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"

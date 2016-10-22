@@ -13,6 +13,8 @@ engines:
     checks:
       Similar code:
         enabled: false
+      Identical code:
+        enabled: false
   eslint:
     enabled: true
   fixme:
@@ -28,6 +30,7 @@ ratings:
   - "**.php"
   - "**.phtml"
 exclude_paths:
+  - tests/_support/_generated/
   - web/static/vendors
   - web/static/js/app.js
   - web/static/js/app.min.js

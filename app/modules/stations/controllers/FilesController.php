@@ -4,6 +4,7 @@ namespace Modules\Stations\Controllers;
 use Entity\Station;
 use Entity\StationMedia;
 use Entity\StationPlaylist;
+use Slim\Http\UploadedFile;
 
 /**
  * Class FilesController
@@ -378,12 +379,16 @@ class FilesController extends BaseController
 
         try
         {
-            $uploaded_file = $_FILES['file_data'];
+            $files = $this->request->getUploadedFiles();
 
-            $file = new \App\File(basename($uploaded_file['name']), $this->file_path);
-            $file->upload($uploaded_file);
+            if (isset($files['file_data']))
+            {
+                /** @var UploadedFile $file */
+                $file = $files['file_data'];
+                $upload_file_path = basename($file->getClientFilename());
 
-            $upload_file_path = $file->getPath();
+                $file->moveTo($this->file_path.DIRECTORY_SEPARATOR.$upload_file_path);
+            }
         }
         catch(\Exception $e)
         {

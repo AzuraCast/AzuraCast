@@ -8,17 +8,17 @@ class D00_Api_IndexCest extends CestAbstract
     {
         $I->wantTo('Check basic API functions.');
 
-        $I->sendGET('');
+        $I->sendGET('/api');
         $I->seeResponseContainsJson([
             'status' => 'success',
         ]);
 
-        $I->sendGET('/status');
+        $I->sendGET('/api/status');
         $I->seeResponseContainsJson([
             'online' => 'true',
         ]);
 
-        $I->sendGET('/time');
+        $I->sendGET('/api/time');
         $I->seeResponseContainsJson([
             'gmt_timezone' => 'GMT',
         ]);

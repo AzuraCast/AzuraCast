@@ -6,12 +6,21 @@
 
 class_name: FunctionalTester
 modules:
-    enabled:
-        - \App\Tests\Module:
-            container: app/bootstrap.php
-        - Doctrine2:
-            depends: \App\Tests\Module
-        - REST:
-            depends: \App\Tests\Module
-            url: '/api'
+  enabled:
+   - \App\Tests\Module:
+      container: app/bootstrap.php
+   - Doctrine2:
+      depends: \App\Tests\Module
+   - REST:
+      depends: \App\Tests\Module
+
+coverage:
+  enabled: true
+  include:
+   - app/*
+  exclude:
+   - app/models/Migration/*
+   - app/locale/**/*
+   - app/locale/*
+
 error_level: "E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"

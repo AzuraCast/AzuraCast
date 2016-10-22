@@ -100,8 +100,10 @@ $di['notFoundHandler'] = function ($di) {
         $view = $di['view'];
         $template = $view->render('system/error_pagenotfound');
 
-        $response->getBody()->write($template);
-        return $response;
+        $body = $response->getBody();
+        $body->write($template);
+
+        return $response->withStatus(404)->withBody($body);
     };
 };
 

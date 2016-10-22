@@ -35,5 +35,6 @@
     become: true
     apt:  pkg="{{ item }}" state=latest
     with_items:
+     - php7.0-xdebug
      - vim
      - gettext

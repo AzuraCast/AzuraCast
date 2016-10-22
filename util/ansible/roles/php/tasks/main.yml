@@ -3,7 +3,7 @@
     become: true
     apt_repository: repo=ppa:ondrej/php
     register: installed_php_ppa
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+#    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
 #  - name: Add Phalcon PPA repository
 #    become: true

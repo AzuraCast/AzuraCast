@@ -27,3 +27,6 @@ script:
 
 after_failure:
   - cat $TRAVIS_BUILD_DIR/tests/_output/*
+
+after_success:
+  - cd $TRAVIS_BUILD_DIR && CODECLIMATE_REPO_TOKEN=88a1e1f82e680833f40445f1455b2a4a8f92628db1f0ea4bb9c4a5057b70e889 ./vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml

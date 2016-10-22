@@ -23,7 +23,8 @@
     "packaged/helpers": "^1.5"
   },
   "require-dev": {
-    "codeception/codeception": "^2.2"
+    "codeception/codeception": "^2.2",
+    "codeclimate/php-test-reporter": "^0.3.2"
   },
   "authors": [
     {

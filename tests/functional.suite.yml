@@ -19,8 +19,17 @@ coverage:
   include:
    - app/*
   exclude:
-   - app/models/Migration/*
-   - app/locale/**/*
-   - app/locale/*
+   - app/library/App/Tests/Module.php # Loaded before tests
+   - app/library/App/Doctrine/EntityManagerFactory.php # Loaded before tests
+   - app/library/App/Doctrine/Logger/EchoSQL.php # Not used in tests
+   - app/library/App/Doctrine/Type/*.php # Not used in tests
+   - app/library/App/Forms/Element/Recaptcha.php # Not used in tests
+   - app/library/App/Paginator/Doctrine.php # Not used in tests
+   - app/**/route.php         # Not detected properly
+   - app/**/*.conf.php        # Not detected properly
+   - app/**/*.conf.sample.php # Not used in tests
+   - app/models/Migration/*   # Not used in tests
+   - app/locale/**/*          # Not used in tests
+   - app/locale/*             # Not used in tests
 
 error_level: "E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED"

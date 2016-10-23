@@ -118,7 +118,7 @@ class IndexController extends BaseController
                 $song_totals[$total_type][] = $total_record;
             }
 
-            $song_totals[$total_type] = array_slice($song_totals[$total_type], 0, 10, TRUE);
+            $song_totals[$total_type] = array_slice((array)$song_totals[$total_type], 0, 10, TRUE);
         }
 
         $this->view->song_totals = $song_totals;
@@ -151,8 +151,8 @@ class IndexController extends BaseController
             return ($a > $b) ? 1 : -1;
         });
 
-        $this->view->best_performing_songs = array_reverse(array_slice($songs, -5));
-        $this->view->worst_performing_songs = array_slice($songs, 0, 5);
+        $this->view->best_performing_songs = array_reverse(array_slice((array)$songs, -5));
+        $this->view->worst_performing_songs = array_slice((array)$songs, 0, 5);
     }
 
     public function timelineAction()

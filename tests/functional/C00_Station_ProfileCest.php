@@ -10,6 +10,11 @@ class C00_Station_ProfileCest extends CestAbstract
         $I->wantTo('Edit a station profile.');
 
         $station_id = $this->test_station->id;
+
+        $I->amOnPage('/station/'.$station_id);
+
+        $I->see('Listeners By Day');
+
         $I->amOnPage('/station/'.$station_id.'/profile');
 
         $I->see('Functional Test Radio');

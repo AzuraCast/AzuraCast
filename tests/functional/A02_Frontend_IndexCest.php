@@ -9,8 +9,6 @@ class A01_Frontend_IndexCest extends CestAbstract
     {
         $I->wantTo('See the proper data on the homepage.');
 
-
-
         $I->amOnPage('/');
         $I->see('Dashboard');
 

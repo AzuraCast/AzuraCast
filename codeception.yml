@@ -46,6 +46,10 @@ coverage:
    - app/locale/*
    - app/templates/system/error_general.phtml
 
+   # Exceptions
+   - app/library/App/Exception.php
+   - app/library/App/Exception/*.php
+
    # Used in application, but not detected properly by the coverage tool :(
    - app/**/routes.php
    - app/**/*.conf.php

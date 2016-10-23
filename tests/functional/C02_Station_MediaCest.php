@@ -13,7 +13,6 @@ class C01_Station_MediaCest extends CestAbstract
 
         $test_song_orig = APP_INCLUDE_ROOT.'/resources/error.mp3';
         $test_song = tempnam(sys_get_temp_dir(), 'azuracast');
-
         copy($test_song_orig, $test_song);
 
         $csrf = $this->di->get('csrf');

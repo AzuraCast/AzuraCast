@@ -68,6 +68,7 @@ class Connector extends Client
             $_POST = $_REQUEST;
         }
 
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $_SERVER['REQUEST_METHOD'] = strtoupper($request->getMethod());
         $_SERVER['REQUEST_URI'] = $uri;
 

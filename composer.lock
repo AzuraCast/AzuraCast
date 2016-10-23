@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9ddb550540055a2478402a4e5fb26b0d",
-    "content-hash": "0e3bd62ab4556319d197d69e47f97c9a",
+    "hash": "357a32c10d06fc288dc9b34b535c0d20",
+    "content-hash": "bcc8358649fa7a1e0aea7ade080ca433",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -803,6 +803,47 @@
                 "zf2"
             ],
             "time": "2015-06-29 05:42:04"
+        },
+        {
+            "name": "flow/jsonpath",
+            "version": "0.3.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FlowCommunications/JSONPath.git",
+                "reference": "00aa9c361e4d0a210dd95f3c917a1e0dde3a957f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FlowCommunications/JSONPath/zipball/00aa9c361e4d0a210dd95f3c917a1e0dde3a957f",
+                "reference": "00aa9c361e4d0a210dd95f3c917a1e0dde3a957f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "peekmo/jsonpath": "dev-master",
+                "phpunit/phpunit": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Flow\\JSONPath": "src/",
+                    "Flow\\JSONPath\\Test": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Frank",
+                    "email": "stephen@flowsa.com"
+                }
+            ],
+            "description": "JSONPath implementation for parsing, searching and flattening arrays",
+            "time": "2016-09-06 17:43:18"
         },
         {
             "name": "guzzlehttp/guzzle",

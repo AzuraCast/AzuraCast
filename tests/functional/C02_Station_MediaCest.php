@@ -35,5 +35,9 @@ class C01_Station_MediaCest extends CestAbstract
         $I->seeResponseContainsJson([
             'media_name' => 'AzuraCast - AzuraCast Is Live!',
         ]);
+
+        $I->amOnPage('/station/'.$station_id.'/files');
+
+        $I->see('Media Manager');
     }
 }

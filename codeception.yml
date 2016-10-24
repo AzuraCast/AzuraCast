@@ -49,6 +49,7 @@ coverage:
    # Exceptions
    - app/library/App/Exception.php
    - app/library/App/Exception/*.php
+   - app/library/App/Mvc/ErrorHandler.php
 
    # Used in application, but not detected properly by the coverage tool :(
    - app/**/routes.php

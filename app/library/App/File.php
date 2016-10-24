@@ -52,7 +52,7 @@ class File
         $file_parts = pathinfo($this->name);
         $new_file_name = $file_parts['filename'].$suffix.'.'.$file_parts['extension'];
 
-        if ($file_parts['dirname'])
+        if ($file_parts['dirname'] != '.')
             $this->name = $file_parts['dirname'].DIRECTORY_SEPARATOR.$new_file_name;
         else
             $this->name = $new_file_name;

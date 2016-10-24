@@ -38,7 +38,7 @@ class Utilities
      */
     public static function money_format($number)
     {
-        return (($number < 0) ? '-' : '') . money_format(abs($number), 2);
+        return (($number < 0) ? '-' : '') .'$'.number_format(abs($number), 2);
     }
 
     /**

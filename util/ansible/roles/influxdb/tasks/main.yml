@@ -27,7 +27,7 @@
   when: influx_installed.changed
 
 - name: Pause to allow InfluxDB to spin up
-  pause: seconds=10
+  pause: seconds=15
   when: influx_installed.changed
 
 - name: Create 'stations' database

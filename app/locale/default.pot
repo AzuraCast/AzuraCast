@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-12 00:53+0000\n"
+"POT-Creation-Date: 2016-11-01 14:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:296
+#: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:277
 msgid "Not starting, nothing to play yet."
 msgstr ""
 
-#: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:303
-#: /var/azuracast/www/app/library/App/Radio/Frontend/IceCast.php:198
+#: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:283
+#: /var/azuracast/www/app/library/App/Radio/Frontend/IceCast.php:174
 msgid "Not starting, process is already running."
 msgstr ""
 
@@ -60,35 +60,35 @@ msgstr ""
 msgid "Cleanup"
 msgstr ""
 
-#: /var/azuracast/www/app/library/App/Utilities.php:101
+#: /var/azuracast/www/app/library/App/Utilities.php:95
 #, php-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: /var/azuracast/www/app/library/App/Utilities.php:106
+#: /var/azuracast/www/app/library/App/Utilities.php:100
 #, php-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: /var/azuracast/www/app/library/App/Utilities.php:111
+#: /var/azuracast/www/app/library/App/Utilities.php:105
 #, php-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] ""
 msgstr[1] ""
 
-#: /var/azuracast/www/app/library/App/Utilities.php:116
+#: /var/azuracast/www/app/library/App/Utilities.php:110
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: /var/azuracast/www/app/library/App/Utilities.php:121
+#: /var/azuracast/www/app/library/App/Utilities.php:115
 #, php-format
 msgid "%d month"
 msgid_plural "%d months"
@@ -306,7 +306,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:80
 #: /var/azuracast/www/app/modules/admin/controllers/StationsController.php:56
 #: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:65
-#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:78
+#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:79
 msgid "Edit Record"
 msgstr ""
 
@@ -314,19 +314,19 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:91
 #: /var/azuracast/www/app/modules/admin/controllers/StationsController.php:74
 #: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:78
-#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:97
-#: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:92
+#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:99
+#: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:96
 msgid "Record deleted."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:76
 #: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:61
-#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:72
+#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:73
 msgid "Record updated."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/controllers/SettingsController.php:33
-#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:145
+#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:146
 msgid "Site Settings"
 msgstr ""
 
@@ -335,7 +335,7 @@ msgid "Record not found!"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:93
-#: /var/azuracast/www/app/modules/frontend/controllers/AccountController.php:46
+#: /var/azuracast/www/app/modules/frontend/controllers/AccountController.php:48
 msgid "Logged in successfully."
 msgstr ""
 
@@ -522,11 +522,11 @@ msgstr ""
 msgid "Super Administrator"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:141
+#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:142
 msgid "Setup is now complete!"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:141
+#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:142
 msgid "Continue setting up your station in the main AzuraCast app."
 msgstr ""
 
@@ -542,6 +542,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:1
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:17
+#: /var/azuracast/www/app/templates/main.phtml:92
 msgid "Dashboard"
 msgstr ""
 
@@ -812,31 +813,31 @@ msgstr ""
 msgid "Automated assignment error"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:100
+#: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:101
 msgid "Media metadata updated!"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:106
+#: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:107
 msgid "Edit Media Metadata"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:149
+#: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:150
 msgid "Directory"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:153
+#: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:154
 msgid "File Not Processed"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:78
+#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:79
 msgid "Add Record"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:109
+#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:111
 msgid "Radio backend reloaded."
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:109
+#: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:111
 msgid ""
 "Your listeners will not be disconnected by playlist changes, but songs may "
 "change abruptly."
@@ -873,15 +874,15 @@ msgstr ""
 msgid "You can now set up streamer (DJ) accounts."
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:69
+#: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:71
 msgid "Streamer account updated!"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:74
+#: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:76
 msgid "Edit Streamer"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:74
+#: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:76
 msgid "Add Streamer"
 msgstr ""
 
@@ -1385,15 +1386,15 @@ msgid ""
 "this page."
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:74
+#: /var/azuracast/www/app/templates/main.phtml:73
 msgid "Pause"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:77
+#: /var/azuracast/www/app/templates/main.phtml:76
 msgid "Mute"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:80
+#: /var/azuracast/www/app/templates/main.phtml:79
 msgid "Unmute"
 msgstr ""
 

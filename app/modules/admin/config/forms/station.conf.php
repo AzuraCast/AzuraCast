@@ -69,30 +69,55 @@ return [
             ],
         ],
 
-        /*
-        'admin' => array(
-            'legend' => 'Administrator Settings',
-            'elements' => array(
+        'frontend_icecast' => [
+            'legend' => _('Advanced Settings: IceCast 2'),
+            'class'  => 'frontend_fieldset',
+            'description' => _('These settings are intended for advanced users only. You can safely leave all of these options blank and sensible defaults will be used for them.'),
 
-                'radio_port' => array('text', array(
-                    'label' => 'Radio Frontend Broadcast Port',
-                )),
+            'elements' => [
 
-                'radio_source_pw' => array('text', array(
-                    'label' => 'Radio Source Password',
-                )),
+                'port' => ['text', [
+                    'label' => _('Broadcasting Port'),
+                    'description' => _('No other program can be using this port. An available port is automatically assigned to each new station.'),
+                    'belongsTo' => 'frontend_config',
+                ]],
 
-                'radio_admin_pw' => array('text', array(
-                    'label' => 'Radio Administrator Password',
-                )),
+                'source_pw' => ['text', [
+                    'label' => _('Source Password'),
+                    'belongsTo' => 'frontend_config',
+                ]],
 
-                'radio_base_dir' => array('text', array(
-                    'label' => 'Radio Base Path',
-                )),
+                'admin_pw' => ['text', [
+                    'label' => _('Admin Password'),
+                    'belongsTo' => 'frontend_config',
+                ]],
 
-            ),
-        ),
-        */
+                'listen_mount' => ['text', [
+                    'label' => _('Listen Mount Point Name'),
+                ]],
+
+                'autodj_mount' => ['text', [
+                    'label' => _('Auto-DJ Mount Point Name'),
+                ]],
+
+            ],
+        ],
+
+        'backend_liquidsoap' => [
+            'legend' => _('Advanced Settings: LiquidSoap'),
+            'class'  => 'backend_fieldset',
+            'description' => _('These settings are intended for advanced users only. You can safely leave all of these options blank and sensible defaults will be used for them.'),
+
+            'elements' => [
+
+                'custom_config' => ['textarea', [
+                    'label' => _('Custom Configuration'),
+                    'belongsTo' => 'backend_config',
+                    'description' => _('This code will be inserted into your station\'s LiquidSoap configuration, below the playlist configuration and just before the IceCast output. Only use valid LiquidSoap code for this section!'),
+                ]],
+
+            ],
+        ],
 
         'submit_grp' => [
             'elements' => [

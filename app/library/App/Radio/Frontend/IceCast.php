@@ -85,13 +85,7 @@ class IceCast extends FrontendAbstract
     {
         $config = $this->_getConfig();
 
-        $frontend_config = [
-            'port'      => $config['listen-socket']['port'],
-            'source_pw' => $config['authentication']['source-password'],
-            'admin_pw'  => $config['authentication']['admin-password'],
-        ];
-
-        $this->station->frontend_config = $frontend_config;
+        $this->station->frontend_config = $this->_loadFromConfig($config);
         return true;
     }
 
@@ -126,13 +120,20 @@ class IceCast extends FrontendAbstract
         if (!empty($frontend_config['streamer_pw']))
             $config['mount'][0]['password'] = $frontend_config['streamer_pw'];
 
-        // Set any unset values back to the DB config.
-        $frontend_config['port'] = $config['listen-socket']['port'];
-        $frontend_config['source_pw'] = $config['authentication']['source-password'];
-        $frontend_config['admin_pw'] = $config['authentication']['admin-password'];
-        $frontend_config['streamer_pw'] = $config['mount'][0]['password'];
+        if (!empty($frontend_config['listen_mount']))
+        {
+            $config['mount'][0]['mount-name'] = $frontend_config['listen_mount'];
+            $config['listen-socket']['shoutcast-mount'] = $frontend_config['listen_mount'];
+        }
 
-        $this->station->frontend_config = $frontend_config;
+        if (!empty($frontend_config['autodj_mount']))
+        {
+            $config['mount'][0]['fallback-mount'] = $frontend_config['autodj_mount'];
+            $config['mount'][1]['mount-name'] = $frontend_config['autodj_mount'];
+        }
+
+        // Set any unset values back to the DB config.
+        $this->station->frontend_config = $this->_loadFromConfig($config);
 
         $em = $this->di['em'];
         $em->persist($this->station);
@@ -234,6 +235,19 @@ class IceCast extends FrontendAbstract
         }
 
         return $defaults;
+    }
+
+    protected function _loadFromConfig($config)
+    {
+        return [
+            'port' => $config['listen-socket']['port'],
+            'source_pw' => $config['authentication']['source-password'],
+            'admin_pw' => $config['authentication']['admin-password'],
+            'streamer_pw' => $config['mount'][0]['password'],
+
+            'listen_mount' => $config['mount'][0]['mount-name'],
+            'autodj_mount' => $config['mount'][1]['mount-name'],
+        ];
     }
 
     protected function _getDefaults()

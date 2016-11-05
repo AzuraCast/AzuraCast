@@ -66,7 +66,7 @@ class ProfileController extends BaseController
             return $this->redirectFromHere(array('action' => 'index'));
         }
 
-        return $this->renderForm($form, 'edit', _('Edit Station Profile'));
+        $this->view->form = $form;
     }
 
     public function backendAction()

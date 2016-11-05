@@ -19,6 +19,8 @@ class LiquidSoap extends BackendAbstract
      */
     public function write()
     {
+        $settings = (array)$this->station->backend_config;
+
         $playlist_path = $this->station->getRadioPlaylistsDir();
         $media_path = $this->station->getRadioMediaDir();
         $config_path = $this->station->getRadioConfigDir();
@@ -204,6 +206,7 @@ class LiquidSoap extends BackendAbstract
 
                 $icecast_port = $ic_settings['port'];
                 $icecast_source_pw = $ic_settings['source_pw'];
+                $icecast_mount = $ic_settings['autodj_mount'];
 
                 $output_params = [
                     '%mp3(samplerate=44100,stereo=true,bitrate=128)', // Required output format (%mp3 or %ogg)
@@ -213,7 +216,7 @@ class LiquidSoap extends BackendAbstract
                     'password = "'.$icecast_source_pw.'"',
                     'name = "'.$this->_cleanUpString($this->station->name).'"',
                     'description = "'.$this->_cleanUpString($this->station->description).'"',
-                    'mount = "/autodj.mp3"',
+                    'mount = "'.$icecast_mount.'"',
                     'radio', // Required
                 ];
                 $ls_config[] = 'output.icecast('.implode(', ', $output_params).')';

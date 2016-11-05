@@ -58,19 +58,28 @@ class Form
 
     public function populate($data)
     {
-        foreach($data as $field_name => &$field_value)
-        {
-            $field = $this->form->getField($field_name);
+        $set_data = [];
 
-            if ($field instanceof \Nibble\NibbleForms\Field\Radio ||
-                $field instanceof \Nibble\NibbleForms\Field\Checkbox)
+        // Flatten arrays that may be multidimensional.
+        $it = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($data));
+        foreach($it as $field_name => $field_value)
+        {
+            if ($this->form->checkField($field_name))
             {
-                if ($field_value === "")
-                    $field_value = '0';
+                $field = $this->form->getField($field_name);
+
+                if ($field instanceof \Nibble\NibbleForms\Field\Radio ||
+                    $field instanceof \Nibble\NibbleForms\Field\Checkbox)
+                {
+                    if ($field_value === "")
+                        $field_value = '0';
+                }
+
+                $set_data[$field_name] = $field_value;
             }
         }
 
-        $this->form->addData($data);
+        $this->form->addData($set_data);
     }
 
     public function isValid()
@@ -85,7 +94,14 @@ class Form
         foreach($this->options['groups'] as $fieldset)
         {
             foreach($fieldset['elements'] as $element_id => $element_info)
-                $values[$element_id] = $this->form->getData($element_id);
+            {
+                $value = $this->form->getData($element_id);
+
+                if (!empty($element_info[1]['belongsTo']))
+                    $values[$element_info[1]['belongsTo']][$element_id] = $value;
+                else
+                    $values[$element_id] = $value;
+            }
         }
 
         return $values;

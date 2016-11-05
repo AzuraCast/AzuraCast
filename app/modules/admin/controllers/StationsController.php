@@ -53,7 +53,7 @@ class StationsController extends BaseController
             return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
         }
 
-        return $this->renderForm($form, 'edit', _('Edit Record'));
+        $this->view->form = $form;
     }
     
     public function deleteAction()

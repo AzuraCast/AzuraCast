@@ -94,10 +94,12 @@ return [
 
                 'listen_mount' => ['text', [
                     'label' => _('Listen Mount Point Name'),
+                    'belongsTo' => 'frontend_config',
                 ]],
 
                 'autodj_mount' => ['text', [
                     'label' => _('Auto-DJ Mount Point Name'),
+                    'belongsTo' => 'frontend_config',
                 ]],
 
             ],

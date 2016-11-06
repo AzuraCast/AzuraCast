@@ -195,6 +195,13 @@ class LiquidSoap extends BackendAbstract
         $ls_config[] = '# Crossfading';
         $ls_config[] = 'radio = crossfade(start_next=3.,fade_out=2.,fade_in=2.,radio)';
 
+        if (!empty($settings['custom_config']))
+        {
+            $ls_config[] = '';
+            $ls_config[] = '# Custom Configuration (Specified in Station Profile)';
+            $ls_config[] = $settings['custom_config'];
+        }
+
         $ls_config[] = '';
         $ls_config[] = '# Outbound Broadcast';
         

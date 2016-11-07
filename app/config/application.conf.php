@@ -54,10 +54,12 @@ $config = [
         'default' => 'en_US.UTF-8',
         'supported' => [
             'en_US.UTF-8' => 'English (Default)',
+            'de_DE.UTF-8' => 'Deutsch',
             'es_ES.UTF-8' => 'Español',
             'fr_FR.UTF-8' => 'Français',
-            // 'de_DE.UTF-8' => 'Deutsch',
-            // 'ru_RU.UTF-8' => 'Русский язык',
+            'pt_PT.UTF-8' => 'Português',
+            'ru_RU.UTF-8' => 'Русский язык',
+            'sv_SE.UTF-8' => 'Svenska',
         ],
     ],
 

@@ -146,7 +146,7 @@ $(function() {
     });
 
     // Check if initial URL has a hash.
-    var hashval = window.location.hash.substr(1);
+    var hashval = getUrlHash();
 
     if (hashval.length > 0)
         list();
@@ -159,7 +159,7 @@ $(function() {
     $('form#mkdir').submit(function(e) {
         e.preventDefault();
 
-        var hashval = window.location.hash.substr(1);
+        var hashval = getUrlHash();
         var $dir = $(this).find('[name=name]');
 
         $dir.val().length && $.post('<?=$url->routeFromHere(['action' => 'mkdir']) ?>',{
@@ -177,7 +177,7 @@ $(function() {
     $('.btn-batch').on('click', function(e) {
         e.preventDefault();
 
-        var hashval = window.location.hash.substr(1);
+        var hashval = getUrlHash();
 
         $files = [];
         $('#file-table').find('tr.active').each(function() {
@@ -229,7 +229,7 @@ $(function() {
     });
 
     function uploadFile(file) {
-        var folder = window.location.hash.substr(1);
+        var folder = getUrlHash();
 
         if(file.size > MAX_UPLOAD_SIZE) {
             var $error_row = renderFileSizeErrorRow(file,folder);
@@ -276,13 +276,18 @@ $(function() {
     }
 
     function list() {
-        var hashval = window.location.hash.substr(1);
+        var hashval = getUrlHash();
         $('#breadcrumb').empty().html(renderBreadcrumbs(hashval));
 
         console.log('Relisting for directory: #'+hashval);
 
         $current_dir = hashval;
         $('#file-table').bootgrid("clear").bootgrid("reload");
+    }
+
+    function getUrlHash()
+    {
+        return decodeURIComponent(window.location.hash.substr(1));
     }
 
     /*

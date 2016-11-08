@@ -30,11 +30,6 @@ class ProfileController extends BaseController
         $user_profile = $user->toArray($this->em);
         unset($user_profile['auth_password']);
 
-        /*
-        $user_profile['customization'] = array_merge(\App\Customization::getDefaults(), $user_profile['customization']);
-        unset($user_profile['auth_password']);
-        */
-
         $form->setDefaults($user_profile);
 
         if($_POST && $form->isValid($_POST))
@@ -45,41 +40,10 @@ class ProfileController extends BaseController
             $this->em->persist($user);
             $this->em->flush();
 
-            /*
-            foreach($data['customization'] as $custom_key => $custom_val)
-                \App\Customization::set($custom_key, $custom_val);
-            */
-
             $this->alert(_('Profile saved!'), 'green');
             return $this->redirectFromHere(array('action' => 'index'));
         }
 
         return $this->renderForm($form, 'edit', _('Edit Profile'));
     }
-
-    /*
-    public function timezoneAction()
-    {
-        $form = new \App\Form($this->current_module_config->forms->timezone);
-        $form->setDefaults(array(
-            'timezone'      => \App\Customization::get('timezone'),
-        ));
-
-        if($_POST && $form->isValid($_POST))
-        {
-            $data = $form->getValues();
-
-            \App\Customization::set('timezone', $data['timezone']);
-
-            $this->alert('Time zone updated!', 'green');
-            $this->redirectToStoredReferrer('customization');
-            return;
-        }
-
-        $this->storeReferrer('customization');
-
-        $this->view->setVar('title', 'Set Time Zone');
-        $this->renderForm($form);
-    }
-    */
 }

@@ -1,0 +1,166 @@
+<?php $this->layout('minimal', ['page_class' => 'public-page-content']) ?>
+
+<?php $this->start('custom_js') ?>
+<script type="text/javascript" src="<?=$url->content('vendors/bootgrid/jquery.bootgrid.updated.js') ?>"></script>
+
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/store-js/store.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('js/radio.js') ?>"></script>
+<?php $this->stop('custom_js') ?>
+
+<div class="public-page">
+    <div class="public-block">
+
+        <ul class="actions pull-right">
+            <?=$this->fetch('partials/radio_controls') ?>
+
+            <li class="dropdown">
+                <a href="" data-toggle="dropdown" aria-expanded="false" title="<?=_('Select Station') ?>">
+                    <i class="zmdi zmdi-view-list-alt"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                <?php foreach($stations as $row): ?>
+                    <li><a href="<?=$url->routeFromHere(['station' => $row->id]) ?>"><?=$row->name ?></a></li>
+                <?php endforeach; ?>
+                </ul>
+            </li>
+        </ul>
+        <h3 class="text-left"><?=$this->e($station->name) ?></h3>
+
+        <div class="stations">
+            <div class="media media-left" id="station_<?=$station->id ?>">
+                <div class="pull-left">
+                    <a class="btn-audio" href="#" data-url="<?=$station->getFrontendAdapter($di)->getStreamUrl() ?>">
+                        <i class="zmdi zmdi-play"></i>
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading nowplaying-title"><?=_('Song Title') ?></h4>
+                    <span class="nowplaying-artist"><?=_('Song Artist') ?></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <a class="btn" data-toggle="modal" data-target="#modal-history"><i class="zmdi zmdi-time-restore"></i> <?=_('Song History') ?></a>
+        <?php if ($station->enable_requests): ?>
+            <a class="btn" data-toggle="modal" data-target="#modal-request"><i class="zmdi zmdi-help-outline"></i> <?=_('Request a Song') ?></a>
+        <?php endif; ?>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="modal-history" tabindex="-1" role="dialog" aria-labelledby="modal-history-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modal-history-label"><?=_('Song History') ?></h4>
+            </div>
+            <div class="modal-body">
+                <ol type="1" id="song-history">
+
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-request" tabindex="-1" role="dialog" aria-labelledby="modal-request-label">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modal-request-label"><?=_('Request a Song') ?></h4>
+            </div>
+            <div class="modal-body">
+
+                <table class="data-table table table-striped" id="requests-table">
+                    <thead>
+                    <tr>
+                        <th data-column-id="song_id" data-identifier="true" data-visible="false">ID</th>
+                        <th data-column-id="song_title"><?=_('Title') ?></th>
+                        <th data-column-id="song_artist"><?=_('Artist') ?></th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false"><?=_('Actions') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+function nowPlaying() {
+    $.getJSON('<?=$url->route(['module' => 'api', 'controller' => 'nowplaying', 'id' => $station->id]) ?>', {}, function(data) {
+        var row = data.result;
+        var station_row = $('#station_'+row.station.id);
+
+        station_row.find('.nowplaying-title').text(row.current_song.title);
+        station_row.find('.nowplaying-artist').text(row.current_song.artist);
+        station_row.find('.nowplaying-listeners').text(row.listeners.total);
+
+        $('#song-history').empty();
+        $.each(row.song_history, function(i, history_row) {
+            var li = $('<li>').append('<b>'+history_row.song.title+'</b><br>'+history_row.song.artist);
+            $('#song-history').append(li);
+        });
+
+        setTimeout('nowPlaying()', 30*1000);
+    });
+}
+
+$(function() {
+    nowPlaying();
+});
+
+var request_dialog = $('#modal-request');
+
+request_dialog.on('show.bs.modal', function (event) {
+
+    if (!request_dialog.data('request_loaded'))
+    {
+        var grid = $("#requests-table").bootgrid({
+            ajax: true,
+            rowSelect: false,
+            caseSensitive: false,
+            css: {
+                icon: 'zmdi icon',
+                iconColumns: 'zmdi-view-module',
+                iconDown: 'zmdi-sort-amount-desc',
+                iconRefresh: 'zmdi-refresh',
+                iconUp: 'zmdi-sort-amount-asc'
+            },
+            url: "<?=$url->route(['module' => 'api', 'controller' => 'requests', 'action' => 'list', 'station' => $station->id]) ?>",
+            formatters: {
+                "commands": function(column, row) {
+                    return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=_('Request') ?></a>';
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function()
+        {
+            /* Executes after data is loaded and rendered */
+            grid.find(".btn-request").on("click", function(e)
+            {
+                e.preventDefault();
+                request_dialog.modal('hide');
+
+                $.ajax({
+                    dataType: "json",
+                    url: $(this).data('url')
+                }).done(function(data) {
+                    notify(data.result, 'success');
+                }).fail(function(jqXhr) {
+                    notify('Error: '+jqXhr.responseJSON.error, 'danger');
+                });
+
+                return false;
+            });
+        });
+
+        request_dialog.data('request_loaded', true);
+    }
+
+});
+</script>

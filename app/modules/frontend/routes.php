@@ -47,3 +47,10 @@ $app->group('/setup', function() {
         ->setName('setup:settings');
 
 });
+
+$app->group('/public', function() {
+
+    $this->get('[/{station}]', 'frontend:public:index')
+        ->setName('public:index');
+
+});

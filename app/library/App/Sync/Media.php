@@ -1,6 +1,7 @@
 <?php
 namespace App\Sync;
 
+use Entity\Song;
 use Entity\Station;
 use Entity\StationMedia;
 use Entity\StationPlaylist;
@@ -45,7 +46,10 @@ class Media extends SyncAbstract
             if (file_exists($full_path))
             {
                 // Check for modifications.
-                $media_row->loadFromFile();
+                $song_info = $media_row->loadFromFile();
+                if (!empty($song_info))
+                    $media_row->song = $em->getRepository(Song::class)->getOrCreate($song_info);
+
                 $em->persist($media_row);
 
                 $path_hash = md5($media_row->path);
@@ -65,7 +69,9 @@ class Media extends SyncAbstract
             $record->station = $station;
             $record->path = $new_file_path;
 
-            $record->loadFromFile();
+            $song_info = $media_row->loadFromFile();
+            if (!empty($song_info))
+                $media_row->song = $em->getRepository(Song::class)->getOrCreate($song_info);
 
             $em->persist($record);
         }

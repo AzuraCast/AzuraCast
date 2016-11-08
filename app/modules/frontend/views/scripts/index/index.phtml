@@ -77,7 +77,7 @@
                                 </a>
                             </td>
                             <td>
-                                <big><?=$this->e($row->name) ?></big>
+                                <big><a href="<?=$url->route(['controller' => 'public', 'station' => $row->id]) ?>" target="_blank"><?=$this->e($row->name) ?></a></big>
                             </td>
                             <td class="text-center">
                                 <span class="nowplaying-listeners">0</span>

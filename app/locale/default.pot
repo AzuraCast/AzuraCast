@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-05 23:35+0000\n"
+"POT-Creation-Date: 2016-11-08 07:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:280
+#: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:287
 msgid "Not starting, nothing to play yet."
 msgstr ""
 
-#: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:286
+#: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:293
 #: /var/azuracast/www/app/library/App/Radio/Frontend/IceCast.php:175
 msgid "Not starting, process is already running."
 msgstr ""
@@ -140,7 +140,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:79
 #: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:36
 #: /var/azuracast/www/app/modules/admin/config/forms/song.conf.php:36
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:126
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:128
 #: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:37
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:71
 #: /var/azuracast/www/app/modules/stations/config/forms/automation.conf.php:32
@@ -166,6 +166,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/views/scripts/permissions/index.phtml:22
 #: /var/azuracast/www/app/modules/admin/views/scripts/stations/index.phtml:21
 #: /var/azuracast/www/app/modules/admin/views/scripts/users/index.phtml:29
+#: /var/azuracast/www/app/modules/frontend/views/scripts/public/index.phtml:84
 #: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:70
 #: /var/azuracast/www/app/modules/stations/views/scripts/playlists/index.phtml:23
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/duplicates.phtml:27
@@ -198,6 +199,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/forms/song.conf.php:25
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:86
+#: /var/azuracast/www/app/modules/frontend/views/scripts/public/index.phtml:37
 #: /var/azuracast/www/app/modules/stations/config/forms/media.conf.php:7
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/timeline.phtml:33
 msgid "Song Title"
@@ -274,7 +276,7 @@ msgid "Advanced Settings: IceCast 2"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:75
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:109
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:111
 msgid ""
 "These settings are intended for advanced users only. You can safely leave "
 "all of these options blank and sensible defaults will be used for them."
@@ -303,19 +305,19 @@ msgstr ""
 msgid "Listen Mount Point Name"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:100
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:101
 msgid "Auto-DJ Mount Point Name"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:107
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:109
 msgid "Advanced Settings: LiquidSoap"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:114
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:116
 msgid "Custom Configuration"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:116
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:118
 msgid ""
 "This code will be inserted into your station's LiquidSoap configuration, "
 "below the playlist configuration and just before the IceCast output. Only "
@@ -561,14 +563,18 @@ msgstr ""
 msgid "%s Daily Average"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/controllers/ProfileController.php:53
+#: /var/azuracast/www/app/modules/frontend/controllers/ProfileController.php:43
 msgid "Profile saved!"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/controllers/ProfileController.php:57
+#: /var/azuracast/www/app/modules/frontend/controllers/ProfileController.php:47
 #: /var/azuracast/www/app/modules/frontend/views/scripts/profile/index.phtml:26
 #: /var/azuracast/www/app/modules/stations/views/scripts/profile/edit.phtml:1
 msgid "Edit Profile"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/controllers/PublicController.php:30
+msgid "Station not found!"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:29
@@ -599,7 +605,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:1
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:17
-#: /var/azuracast/www/app/templates/main.phtml:92
+#: /var/azuracast/www/app/templates/main.phtml:74
 msgid "Dashboard"
 msgstr ""
 
@@ -632,6 +638,7 @@ msgid "Options"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/index/index.phtml:87
+#: /var/azuracast/www/app/modules/frontend/views/scripts/public/index.phtml:38
 #: /var/azuracast/www/app/modules/stations/config/forms/media.conf.php:11
 msgid "Song Artist"
 msgstr ""
@@ -643,6 +650,36 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/profile/index.phtml:20
 msgid "Update Profile Picture"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/views/scripts/public/index.phtml:17
+msgid "Select Station"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/views/scripts/public/index.phtml:44
+#: /var/azuracast/www/app/modules/frontend/views/scripts/public/index.phtml:58
+msgid "Song History"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/views/scripts/public/index.phtml:46
+#: /var/azuracast/www/app/modules/frontend/views/scripts/public/index.phtml:74
+msgid "Request a Song"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/views/scripts/public/index.phtml:82
+#: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:64
+#: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:29
+msgid "Title"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/views/scripts/public/index.phtml:83
+#: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:65
+#: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:30
+msgid "Artist"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/views/scripts/public/index.phtml:138
+msgid "Request"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/setup/register.phtml:7
@@ -996,16 +1033,6 @@ msgstr ""
 msgid "Create Folder"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:64
-#: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:29
-msgid "Title"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:65
-#: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:30
-msgid "Artist"
-msgstr ""
-
 #: /var/azuracast/www/app/modules/stations/views/scripts/files/index.phtml:66
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/duplicates.phtml:30
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:32
@@ -1024,7 +1051,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/scripts/playlists/index.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/scripts/playlists/index.phtml:9
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/duplicates.phtml:29
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:20
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:22
 msgid "Playlists"
 msgstr ""
 
@@ -1295,7 +1322,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:9
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:31
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:33
 msgid "Song Listener Impact"
 msgstr ""
 
@@ -1332,10 +1359,14 @@ msgid "Ratio"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:8
+msgid "Public Page"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:10
 msgid "Profile"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:11
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:13
 #: /var/azuracast/www/app/modules/stations/views/scripts/streamers/disabled.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/scripts/streamers/disabled.phtml:9
 #: /var/azuracast/www/app/modules/stations/views/scripts/streamers/index.phtml:1
@@ -1343,46 +1374,46 @@ msgstr ""
 msgid "Streamer/DJ Accounts"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:16
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:18
 msgid "Media"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:19
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:21
 msgid "Music Files"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:27
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:29
 msgid "Reports"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:30
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:32
 msgid "Song Playback Timeline"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:32
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:34
 msgid "Duplicate Songs"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:39
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:41
 msgid "Utilities"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:43
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:45
 msgid "Automated Assignment"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:46
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:47
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:48
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:49
 msgid "Download Playlist File"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:50
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:52
 #: /var/azuracast/www/app/modules/stations/views/scripts/util/write.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/scripts/util/write.phtml:3
 msgid "Write Configuration"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:51
+#: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:53
 #: /var/azuracast/www/app/modules/stations/views/scripts/util/restart.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/scripts/util/restart.phtml:3
 msgid "Restart Broadcasting"
@@ -1439,41 +1470,41 @@ msgid ""
 "this page."
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:73
-msgid "Pause"
-msgstr ""
-
 #: /var/azuracast/www/app/templates/main.phtml:76
-msgid "Mute"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/main.phtml:79
-msgid "Unmute"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/main.phtml:94
 msgid "System Administration"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:96
+#: /var/azuracast/www/app/templates/main.phtml:78
 msgid "My Account"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:100
+#: /var/azuracast/www/app/templates/main.phtml:82
 msgid "Toggle Fullscreen"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:104
+#: /var/azuracast/www/app/templates/main.phtml:86
 msgid "End Session"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:106
+#: /var/azuracast/www/app/templates/main.phtml:88
 msgid "Sign Out"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:150
+#: /var/azuracast/www/app/templates/main.phtml:132
 #, php-format
 msgid "Powered by %s Version %s."
+msgstr ""
+
+#: /var/azuracast/www/app/templates/partials/radio_controls.phtml:5
+msgid "Pause"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/partials/radio_controls.phtml:8
+msgid "Mute"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/partials/radio_controls.phtml:11
+msgid "Unmute"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/system/form_page.phtml:19

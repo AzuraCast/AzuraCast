@@ -1,6 +1,7 @@
 <?php
 namespace Modules\Stations\Controllers;
 
+use App\Utilities;
 use Entity\Station;
 use Entity\StationMedia;
 use Entity\StationPlaylist;
@@ -70,6 +71,17 @@ class FilesController extends BaseController
             $playlists[$row['id']] = $row['name'];
 
         $this->view->playlists = $playlists;
+
+        // Show available file space in the station directory.
+        $media_dir = $this->station->getRadioMediaDir();
+        $space_free = disk_free_space($media_dir);
+        $space_total = disk_total_space($media_dir);
+        $space_used = $space_total - $space_free;
+
+        $this->view->space_free = Utilities::bytes_to_text($space_free);
+        $this->view->space_used = Utilities::bytes_to_text($space_used);
+        $this->view->space_total = Utilities::bytes_to_text($space_total);
+        $this->view->space_percent = round(($space_used / $space_total) * 100);
     }
 
     public function editAction()

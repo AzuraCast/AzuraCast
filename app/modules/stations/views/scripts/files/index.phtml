@@ -13,8 +13,20 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header ch-alt">
-                <h2><?=_('Media Manager') ?></h2>
-                <div id="breadcrumb" class="">&nbsp;</div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <h2><?=_('Media Manager') ?></h2>
+                        <div id="breadcrumb" class="">&nbsp;</div>
+                    </div>
+                    <div class="col-md-4 pull-right text-right">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="<?=$space_percent ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?=$space_percent ?>%;">
+                                <span class="sr-only"><?=$space_percent ?>%</span>
+                            </div>
+                        </div>
+                        <?=sprintf(_('%s of %s Used (%s Free)'), $space_used, $space_total, $space_free) ?>
+                    </div>
+                </div>
             </div>
 
             <div class="card-body card-padding-sm">

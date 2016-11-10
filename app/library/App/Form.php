@@ -166,7 +166,7 @@ class Form
 
     protected function _setUpElement($element_name, $element_info)
     {
-        $field_type = strtolower($element_info[0]);
+        $field_type = $element_info[0];
         $field_options = $element_info[1];
 
         $defaults = [

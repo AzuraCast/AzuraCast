@@ -269,10 +269,17 @@ class FilesController extends BaseController
                 $music_files = $this->_getMusicFiles($files);
                 $files_found = count($music_files);
 
-                foreach($music_files as $file)
+                foreach($music_files as $i => $file)
                 {
-                    $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
-                    $this->em->remove($media);
+                    try
+                    {
+                        $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
+                        $this->em->remove($media);
+                    }
+                    catch(\Exception $e)
+                    {
+                        @unlink($file);
+                    }
 
                     $files_affected++;
                 }
@@ -291,9 +298,15 @@ class FilesController extends BaseController
 
                 foreach($music_files as $file)
                 {
-                    $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
-                    $media->playlists->clear();
-                    $this->em->persist($media);
+                    try
+                    {
+                        $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
+                        $media->playlists->clear();
+                        $this->em->persist($media);
+                    }
+                    catch(\Exception $e)
+                    {}
+
 
                     $files_affected++;
                 }
@@ -317,12 +330,17 @@ class FilesController extends BaseController
 
                 foreach($music_files as $file)
                 {
-                    $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
+                    try
+                    {
+                        $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
 
-                    if (!$media->playlists->contains($playlist))
-                        $media->playlists->add($playlist);
+                        if (!$media->playlists->contains($playlist))
+                            $media->playlists->add($playlist);
 
-                    $this->em->persist($media);
+                        $this->em->persist($media);
+                    }
+                    catch(\Exception $e)
+                    {}
 
                     $files_affected++;
                 }
@@ -347,6 +365,8 @@ class FilesController extends BaseController
             return $music_files;
         }
 
+        $supported = StationMedia::getSupportedFormats();
+
         if (is_dir($path))
         {
             $music_files = array();
@@ -359,7 +379,7 @@ class FilesController extends BaseController
                 $file_path = $path . '/' . $file;
                 if (is_dir($file_path))
                     $music_files = array_merge($music_files, $this->_getMusicFiles($file_path));
-                elseif ($file_ext == 'mp3')
+                elseif (in_array($file_ext, $supported))
                     $music_files[] = $file_path;
             }
 
@@ -368,7 +388,7 @@ class FilesController extends BaseController
         else
         {
             $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-            return ($file_ext == 'mp3') ? [$path] : [];
+            return (in_array($file_ext, $supported)) ? [$path] : [];
         }
     }
 
@@ -409,8 +429,16 @@ class FilesController extends BaseController
             return $this->_err(500, $e->getMessage());
         }
 
-        $station_media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $upload_file_path);
-        $this->em->persist($station_media);
+        try
+        {
+            $station_media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $upload_file_path);
+            $this->em->persist($station_media);
+        }
+        catch(\Exception $e)
+        {
+            return $this->_err(500, $e->getMessage());
+        }
+
         $this->em->flush();
 
         return $this->renderJson(['success' => true]);

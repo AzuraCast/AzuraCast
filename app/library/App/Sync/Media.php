@@ -25,12 +25,17 @@ class Media extends SyncAbstract
         if (empty($base_dir))
             return;
 
-        $music_files_raw = $this->globDirectory($base_dir.'/*.mp3');
+        $glob_formats = implode(',', StationMedia::getSupportedFormats());
+        $music_files_raw = $this->globDirectory($base_dir.'/*.{'.$glob_formats.'}', \GLOB_BRACE);
         $music_files = array();
 
         foreach($music_files_raw as $music_file_path)
         {
             $path_short = str_replace($base_dir.'/', '', $music_file_path);
+
+            if (substr($path_short, 0, strlen('not-processed')) == 'not-processed')
+                continue;
+
             $path_hash = md5($path_short);
             $music_files[$path_hash] = $path_short;
         }
@@ -46,11 +51,20 @@ class Media extends SyncAbstract
             if (file_exists($full_path))
             {
                 // Check for modifications.
-                $song_info = $media_row->loadFromFile();
-                if (!empty($song_info))
-                    $media_row->song = $em->getRepository(Song::class)->getOrCreate($song_info);
+                try
+                {
+                    $song_info = $media_row->loadFromFile();
+                    if (!empty($song_info))
+                        $media_row->song = $em->getRepository(Song::class)->getOrCreate($song_info);
 
-                $em->persist($media_row);
+                    $em->persist($media_row);
+                }
+                catch(\Exception $e)
+                {
+                    $media_row->moveToNotProcessed();
+
+                    $em->remove($media_row);
+                }
 
                 $path_hash = md5($media_row->path);
                 unset($music_files[$path_hash]);
@@ -65,15 +79,22 @@ class Media extends SyncAbstract
         // Create files that do not currently exist.
         foreach($music_files as $new_file_path)
         {
-            $record = new StationMedia;
-            $record->station = $station;
-            $record->path = $new_file_path;
+            $media_row = new StationMedia;
+            $media_row->station = $station;
+            $media_row->path = $new_file_path;
 
-            $song_info = $media_row->loadFromFile();
-            if (!empty($song_info))
-                $media_row->song = $em->getRepository(Song::class)->getOrCreate($song_info);
+            try
+            {
+                $song_info = $media_row->loadFromFile();
+                if (!empty($song_info))
+                    $media_row->song = $em->getRepository(Song::class)->getOrCreate($song_info);
 
-            $em->persist($record);
+                $em->persist($media_row);
+            }
+            catch(\Exception $e)
+            {
+                $media_row->moveToNotProcessed();
+            }
         }
 
         $em->flush();

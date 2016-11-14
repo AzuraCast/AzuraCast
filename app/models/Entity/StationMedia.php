@@ -1,6 +1,7 @@
 <?php
 namespace Entity;
 
+use App\Exception;
 use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -123,27 +124,25 @@ class StationMedia extends \App\Doctrine\Entity
             $file_info = $id3->analyze($media_path);
 
             if (isset($file_info['error']))
-                \App\Debug::log('Error processing file: '.$file_info['error']);
+                throw new \App\Exception($file_info['error']);
 
             $this->setLength($file_info['playtime_seconds']);
 
-            if (!empty($file_info['tags']['id3v2']['title'][0]))
-            {
-                $id3_tags = $file_info['tags']['id3v2'];
+            $tags_to_set = ['title', 'artist', 'album'];
 
-                $this->title = $id3_tags['title'][0];
-                $this->artist = $id3_tags['artist'][0];
-                $this->album = $id3_tags['album'][0];
-            }
-            elseif (!empty($file_info['tags']['id3v1']['title'][0]))
+            if (!empty($file_info['tags']))
             {
-                $id3_tags = $file_info['tags']['id3v1'];
-
-                $this->title = $id3_tags['title'][0];
-                $this->artist = $id3_tags['artist'][0];
-                $this->album = $id3_tags['album'][0];
+                foreach($file_info['tags'] as $tag_type => $tag_data)
+                {
+                    foreach($tags_to_set as $tag)
+                    {
+                        if (!empty($tag_data[$tag][0]))
+                            $this->{$tag} = $tag_data[$tag][0];
+                    }
+                }
             }
-            else
+
+            if (empty($this->title))
             {
                 $path_parts = pathinfo($media_path);
                 $this->title = $path_parts['filename'];
@@ -192,10 +191,32 @@ class StationMedia extends \App\Doctrine\Entity
             $this->mtime = time();
             return true;
         }
-        else
-        {
-            throw new \Exception(implode('<br><br>', $tagwriter->errors));
-        }
+    }
+
+    /**
+     * Move this media file to the "not-processed" directory.
+     */
+    public function moveToNotProcessed()
+    {
+        $old_path = $this->getFullPath();
+
+        $media_base_dir = $this->station->getRadioMediaDir();
+        $unprocessed_dir = $media_base_dir.'/not-processed';
+
+        @mkdir($unprocessed_dir);
+
+        $new_path = $unprocessed_dir.'/'.basename($this->path);
+        @rename($old_path, $new_path);
+    }
+
+    /**
+     * Return a list of supported formats.
+     *
+     * @return array
+     */
+    public static function getSupportedFormats()
+    {
+        return ['mp3', 'ogg', 'm4a', 'flac'];
     }
 }
 
@@ -260,9 +281,17 @@ class StationMediaRepository extends Repository
             $record->path = $short_path;
         }
 
-        $song_info = $record->loadFromFile();
-        if (!empty($song_info))
-            $record->song = $this->_em->getRepository(Song::class)->getOrCreate($song_info);
+        try
+        {
+            $song_info = $record->loadFromFile();
+            if (!empty($song_info))
+                $record->song = $this->_em->getRepository(Song::class)->getOrCreate($song_info);
+        }
+        catch(\Exception $e)
+        {
+            $record->moveToNotProcessed();
+            throw $e;
+        }
 
         return $record;
     }

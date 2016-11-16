@@ -112,6 +112,29 @@ return [
 
             'elements' => [
 
+                'format' => ['radio', [
+                    'label' => _('Broadcast Format'),
+                    'belongsTo' => 'backend_config',
+                    'options' => [
+                        'mp3' => 'MP3',
+                        'ogg' => 'OGG Vorbis',
+                    ],
+                    'default' => 'mp3',
+                ]],
+
+                'bitrate' => ['radio', [
+                    'label' => _('Bitrate (kbps)'),
+                    'belongsTo' => 'backend_config',
+                    'options' => [
+                        64 => '64',
+                        96 => '96',
+                        128 => '128',
+                        192 => '192',
+                        256 => '256',
+                    ],
+                    'default' => 128,
+                ]],
+
                 'custom_config' => ['textarea', [
                     'label' => _('Custom Configuration'),
                     'belongsTo' => 'backend_config',

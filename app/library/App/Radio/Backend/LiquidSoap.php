@@ -215,8 +215,24 @@ class LiquidSoap extends BackendAbstract
                 $icecast_source_pw = $ic_settings['source_pw'];
                 $icecast_mount = $ic_settings['autodj_mount'];
 
+                // Determine output format.
+                $format = $settings['format'] ?: 'mp3';
+                $bitrate = $settings['bitrate'] ?: 128;
+
+                switch(strtolower($format))
+                {
+                    case 'ogg':
+                        $output_format = '%vorbis.cbr(samplerate=44100, channels=2, bitrate='.(int)$bitrate.')';
+                    break;
+
+                    case 'mp3':
+                    default:
+                        $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate='.(int)$bitrate.')';
+                    break;
+                }
+
                 $output_params = [
-                    '%mp3(samplerate=44100,stereo=true,bitrate=128)', // Required output format (%mp3 or %ogg)
+                    $output_format, // Required output format (%mp3 or %ogg)
                     'id="radio_out"',
                     'host = "localhost"',
                     'port = '.$icecast_port,

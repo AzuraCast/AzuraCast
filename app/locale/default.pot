@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-09 16:39+0000\n"
+"POT-Creation-Date: 2016-11-16 04:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -140,7 +140,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:79
 #: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:36
 #: /var/azuracast/www/app/modules/admin/config/forms/song.conf.php:36
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:128
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:151
 #: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:37
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:71
 #: /var/azuracast/www/app/modules/stations/config/forms/automation.conf.php:32
@@ -314,10 +314,18 @@ msgid "Advanced Settings: LiquidSoap"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:116
+msgid "Broadcast Format"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:126
+msgid "Bitrate (kbps)"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:139
 msgid "Custom Configuration"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:118
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:141
 msgid ""
 "This code will be inserted into your station's LiquidSoap configuration, "
 "below the playlist configuration and just before the IceCast output. Only "

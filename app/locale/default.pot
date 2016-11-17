@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-17 18:23+0000\n"
+"POT-Creation-Date: 2016-11-17 20:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgid "Not starting, nothing to play yet."
 msgstr ""
 
 #: /var/azuracast/www/app/library/App/Radio/Backend/LiquidSoap.php:306
-#: /var/azuracast/www/app/library/App/Radio/Frontend/IceCast.php:153
+#: /var/azuracast/www/app/library/App/Radio/Frontend/IceCast.php:165
 msgid "Not starting, process is already running."
 msgstr ""
 
@@ -140,7 +140,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/config/forms/role.conf.php:79
 #: /var/azuracast/www/app/modules/admin/config/forms/settings.conf.php:36
 #: /var/azuracast/www/app/modules/admin/config/forms/song.conf.php:36
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:118
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:124
 #: /var/azuracast/www/app/modules/admin/config/forms/user.conf.php:37
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:71
 #: /var/azuracast/www/app/modules/stations/config/forms/automation.conf.php:32
@@ -148,7 +148,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/config/forms/mount.conf.php:78
 #: /var/azuracast/www/app/modules/stations/config/forms/playlist.conf.php:171
 #: /var/azuracast/www/app/modules/stations/config/forms/streamer.conf.php:36
-#: /var/azuracast/www/app/templates/partials/form.phtml:23
+#: /var/azuracast/www/app/templates/partials/form.phtml:27
 msgid "Save Changes"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgid "Advanced Settings: IceCast 2"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:75
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:101
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:107
 msgid ""
 "These settings are intended for advanced users only. You can safely leave "
 "all of these options blank and sensible defaults will be used for them."
@@ -303,15 +303,23 @@ msgstr ""
 msgid "Admin Password"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:99
-msgid "Advanced Settings: LiquidSoap"
-msgstr ""
-
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:106
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:96
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:112
 msgid "Custom Configuration"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:108
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:98
+msgid ""
+"This code will be included in the frontend configuration. You can use either "
+"JSON {\"new_key\": \"new_value\"} format or XML &lt;new_key&gt;new_value&lt;/"
+"new_key&gt;."
+msgstr ""
+
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:105
+msgid "Advanced Settings: LiquidSoap"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/admin/config/forms/station.conf.php:114
 msgid ""
 "This code will be inserted into your station's LiquidSoap configuration, "
 "below the playlist configuration and just before the IceCast output. Only "

@@ -92,6 +92,12 @@ return [
                     'belongsTo' => 'frontend_config',
                 ]],
 
+                'custom_config' => ['textarea', [
+                    'label' => _('Custom Configuration'),
+                    'belongsTo' => 'frontend_config',
+                    'description' => _('This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.'),
+                ]],
+
             ],
         ],
 

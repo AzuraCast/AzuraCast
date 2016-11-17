@@ -19,6 +19,10 @@ $inner_form = $form->getForm();
     <?php endif; ?>
 
     <?php foreach($fieldset['elements'] as $element_id => $element_info): ?>
+        <?php
+        if (!empty($element_info[1]['belongsTo']))
+            $element_id = $element_info[1]['belongsTo'].'_'.$element_id;
+        ?>
         <?php if ($element_info[0] == 'submit'): ?>
             <input type="submit" value="<?=_('Save Changes') ?>" class="btn btn-lg btn-primary" />
         <?php else: ?>

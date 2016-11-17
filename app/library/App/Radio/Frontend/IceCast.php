@@ -107,8 +107,20 @@ class IceCast extends FrontendAbstract
             $config['authentication']['admin-password'] = $frontend_config['admin_pw'];
 
         if (!empty($frontend_config['streamer_pw']))
-            $config['mount'][0]['password'] = $frontend_config['streamer_pw'];
+        {
+            foreach($config['mount'] as &$mount)
+            {
+                if (!empty($mount['password']))
+                    $mount['password'] = $frontend_config['streamer_pw'];
+            }
+        }
 
+        if (!empty($frontend_config['custom_config']))
+        {
+            $custom_conf = $this->_processCustomConfig($frontend_config['custom_config']);
+            if (!empty($custom_conf))
+                $config = \App\Utilities::array_merge_recursive_distinct($config, $custom_conf);
+        }
 
         // Set any unset values back to the DB config.
         $this->station->frontend_config = $this->_loadFromConfig($config);
@@ -320,29 +332,32 @@ class IceCast extends FrontendAbstract
 
             if ($mount_row->frontend_config)
             {
-                $mount_conf = [];
-                $mount_conf_raw = $mount_row->frontend_config;
-
-                if (substr($mount_conf_raw, 0, 1) == '{')
-                {
-                    $mount_conf = @json_decode($mount_conf_raw, true);
-                }
-                elseif (substr($mount_conf_raw, 0, 1) == '<')
-                {
-                    $reader = new \App\Xml\Reader;
-                    $mount_conf = $reader->fromString('<icecast>'.$mount_conf_raw.'</icecast>');
-                }
-
+                $mount_conf = $this->_processCustomConfig($mount_row->frontend_config);
                 if (!empty($mount_conf))
-                {
                     $mount = \App\Utilities::array_merge_recursive_distinct($mount, $mount_conf);
-                }
             }
 
             $defaults['mount'][] = $mount;
         }
 
         return $defaults;
+    }
+
+    protected function _processCustomConfig($custom_config_raw)
+    {
+        $custom_config = [];
+
+        if (substr($custom_config_raw, 0, 1) == '{')
+        {
+            $custom_config = @json_decode($custom_config_raw, true);
+        }
+        elseif (substr($custom_config_raw, 0, 1) == '<')
+        {
+            $reader = new \App\Xml\Reader;
+            $custom_config = $reader->fromString('<icecast>'.$custom_config_raw.'</icecast>');
+        }
+
+        return $custom_config;
     }
 
     protected function _getRadioPort()

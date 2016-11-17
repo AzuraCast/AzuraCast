@@ -21,6 +21,11 @@ class Form
     protected $options;
 
     /**
+     * @var array An array of "belongsTo" lookup groups (for processing data).
+     */
+    protected $groups;
+
+    /**
      * Form constructor.
      * @param $options
      */
@@ -30,6 +35,7 @@ class Form
             $options = $options->toArray();
 
         // Clean up options.
+        $this->groups = [];
         $this->options = $this->_cleanUpConfig($options);
 
         $form_name = $options['name'] ?: 'app_form';
@@ -60,9 +66,20 @@ class Form
     {
         $set_data = [];
 
-        // Flatten arrays that may be multidimensional.
-        $it = new \RecursiveIteratorIterator(new \RecursiveArrayIterator($data));
-        foreach($it as $field_name => $field_value)
+        foreach((array)$data as $row_key => $row_value)
+        {
+            if (is_array($row_value) && isset($this->groups[$row_key]))
+            {
+                foreach($row_value as $row_subkey => $row_subvalue)
+                    $set_data[$row_key.'_'.$row_subkey] = $row_subvalue;
+            }
+            else
+            {
+                $set_data[$row_key] = $row_value;
+            }
+        }
+
+        foreach($set_data as $field_name => $field_value)
         {
             if ($this->form->checkField($field_name))
             {
@@ -95,12 +112,15 @@ class Form
         {
             foreach($fieldset['elements'] as $element_id => $element_info)
             {
-                $value = $this->form->getData($element_id);
-
                 if (!empty($element_info[1]['belongsTo']))
-                    $values[$element_info[1]['belongsTo']][$element_id] = $value;
+                {
+                    $group = $element_info[1]['belongsTo'];
+                    $values[$group][$element_id] = $this->form->getData($group.'_'.$element_id);
+                }
                 else
-                    $values[$element_id] = $value;
+                {
+                    $values[$element_id] = $this->form->getData($element_id);
+                }
             }
         }
 
@@ -168,6 +188,14 @@ class Form
     {
         $field_type = $element_info[0];
         $field_options = $element_info[1];
+
+        if (!empty($field_options['belongsTo']))
+        {
+            $group = $field_options['belongsTo'];
+            $this->groups[$group][] = $element_name;
+
+            $element_name = $group.'_'.$element_name;
+        }
 
         $defaults = [
             'required' => false,

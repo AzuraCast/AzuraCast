@@ -109,6 +109,7 @@ class IceCast extends FrontendAbstract
         if (!empty($frontend_config['streamer_pw']))
             $config['mount'][0]['password'] = $frontend_config['streamer_pw'];
 
+
         // Set any unset values back to the DB config.
         $this->station->frontend_config = $this->_loadFromConfig($config);
 
@@ -315,8 +316,30 @@ class IceCast extends FrontendAbstract
                 );
 
                 $defaults['listen-socket']['shoutcast-mount'] = $mount_row->name;
-                $defaults['mount'][] = $mount;
             }
+
+            if ($mount_row->frontend_config)
+            {
+                $mount_conf = [];
+                $mount_conf_raw = $mount_row->frontend_config;
+
+                if (substr($mount_conf_raw, 0, 1) == '{')
+                {
+                    $mount_conf = @json_decode($mount_conf_raw, true);
+                }
+                elseif (substr($mount_conf_raw, 0, 1) == '<')
+                {
+                    $reader = new \App\Xml\Reader;
+                    $mount_conf = $reader->fromString('<icecast>'.$mount_conf_raw.'</icecast>');
+                }
+
+                if (!empty($mount_conf))
+                {
+                    $mount = \App\Utilities::array_merge_recursive_distinct($mount, $mount_conf);
+                }
+            }
+
+            $defaults['mount'][] = $mount;
         }
 
         return $defaults;

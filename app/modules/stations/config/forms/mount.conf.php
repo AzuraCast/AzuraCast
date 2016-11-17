@@ -62,6 +62,11 @@ return [
                     'default' => 128,
                 ]],
 
+                'frontend_config' => ['textarea', [
+                    'label' => _('Advanced Frontend Configuration'),
+                    'description' => _('You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;'),
+                ]],
+
             ],
         ],
 

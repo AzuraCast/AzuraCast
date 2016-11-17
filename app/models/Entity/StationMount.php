@@ -60,6 +60,9 @@ class StationMount extends \App\Doctrine\Entity
     /** @Column(name="autodj_bitrate", type="smallint", nullable=true) */
     protected $autodj_bitrate;
 
+    /** @Column(name="frontend_config", type="text", nullable=true) */
+    protected $frontend_config;
+
     /**
      * @ManyToOne(targetEntity="Station", inversedBy="mounts")
      * @JoinColumns({

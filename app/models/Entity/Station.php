@@ -23,6 +23,7 @@ class Station extends \App\Doctrine\Entity
 
         $this->media = new ArrayCollection;
         $this->playlists = new ArrayCollection;
+        $this->mounts = new ArrayCollection;
 
         $this->streamers = new ArrayCollection;
     }
@@ -159,6 +160,11 @@ class Station extends \App\Doctrine\Entity
      * @OrderBy({"type" = "ASC","weight" = "DESC"})
      */
     protected $playlists;
+
+    /**
+     * @OneToMany(targetEntity="StationMount", mappedBy="station")
+     */
+    protected $mounts;
 
     /**
      * Static Functions
@@ -352,9 +358,40 @@ class StationRepository extends Repository
         $station_dir = $station_base_dir.'/'.$station->getShortName();
         $station->setRadioBaseDir($station_dir);
 
-        // Generate station ID.
         $this->_em->persist($station);
+
+        // Generate station ID.
         $this->_em->flush();
+
+        // Create default mount points.
+        $mount_points = [
+            [
+                'name'          => '/radio.mp3',
+                'is_default'    => 1,
+                'fallback_mount' => '/autodj.mp3',
+                'enable_streamers' => 1,
+                'enable_autodj' => 0,
+            ],
+            [
+                'name'          => '/autodj.mp3',
+                'is_default'    => 0,
+                'fallback_mount' => '/error.mp3',
+                'enable_streamers' => 0,
+                'enable_autodj' => 1,
+                'autodj_format' => 'mp3',
+                'autodj_bitrate' => 128,
+            ]
+        ];
+
+        foreach($mount_points as $mount_point)
+        {
+            $mount_point['station'] = $station;
+
+            $mount_record = new StationMount;
+            $mount_record->fromArray($this->_em, $mount_point);
+
+            $this->_em->persist($mount_record);
+        }
 
         // Scan directory for any existing files.
         $media_sync = new \App\Sync\Media($di);

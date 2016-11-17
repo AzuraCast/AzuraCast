@@ -9,6 +9,10 @@
 
     <li><a href="<?=$url->named('stations:profile:index', ['station' => $station->id]) ?>"><i class="zmdi zmdi-image"></i> <?=_('Profile') ?></a></li>
 
+    <?php if ($acl->isAllowed('manage station mounts', $station->id)): ?>
+        <li><a href="<?=$url->named('stations:mounts:index', ['station' => $station->id]) ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=_('Mount Points') ?></a></li>
+    <?php endif; ?>
+
     <?php if ($acl->isAllowed('manage station streamers', $station->id)): ?>
         <li><a href="<?=$url->named('stations:streamers:index', ['station' => $station->id]) ?>"><i class="zmdi zmdi-account"></i> <?=_('Streamer/DJ Accounts') ?></a></li>
     <?php endif; ?>
@@ -35,7 +39,6 @@
             </ul>
         </li>
     <?php endif; ?>
-
 
     <li class="sub-menu">
         <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-settings"></i> <?=_('Utilities') ?></a>

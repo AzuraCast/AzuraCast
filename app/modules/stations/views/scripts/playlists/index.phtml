@@ -30,8 +30,8 @@
             <?php foreach($playlists as $row): ?>
                 <tr class="vertical-align-middle">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $row['id'])) ?>">Edit</a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])) ?>">Delete</a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $row['id'])) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])) ?>"><?=_('Delete') ?></a>
                     </td>
                     <td>
                         <big><?=$row['name'] ?></big>

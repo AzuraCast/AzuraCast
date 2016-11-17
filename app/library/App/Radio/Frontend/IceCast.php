@@ -2,8 +2,10 @@
 namespace App\Radio\Frontend;
 
 use App\Utilities;
+use Doctrine\ORM\EntityManager;
 use Entity\Station;
 use Entity\Settings;
+use Entity\StationMount;
 
 class IceCast extends FrontendAbstract
 {
@@ -95,19 +97,6 @@ class IceCast extends FrontendAbstract
 
         $frontend_config = (array)$this->station->frontend_config;
 
-        // Set up streamer support.
-        $url = $this->di['url'];
-
-        $config['mount'][0]['authentication'] = array(
-            '@type' => 'url',
-            'option' => [
-                [
-                    '@name' => 'stream_auth',
-                    '@value' => $url->route(['module' => 'api', 'controller' => 'internal', 'action' => 'streamauth', 'id' => $this->station->id], true)
-                ],
-            ],
-        );
-
         if (!empty($frontend_config['port']))
             $config['listen-socket']['port'] = $frontend_config['port'];
 
@@ -119,18 +108,6 @@ class IceCast extends FrontendAbstract
 
         if (!empty($frontend_config['streamer_pw']))
             $config['mount'][0]['password'] = $frontend_config['streamer_pw'];
-
-        if (!empty($frontend_config['listen_mount']))
-        {
-            $config['mount'][0]['mount-name'] = $frontend_config['listen_mount'];
-            $config['listen-socket']['shoutcast-mount'] = $frontend_config['listen_mount'];
-        }
-
-        if (!empty($frontend_config['autodj_mount']))
-        {
-            $config['mount'][0]['fallback-mount'] = $frontend_config['autodj_mount'];
-            $config['mount'][1]['mount-name'] = $frontend_config['autodj_mount'];
-        }
 
         // Set any unset values back to the DB config.
         $this->station->frontend_config = $this->_loadFromConfig($config);
@@ -193,7 +170,14 @@ class IceCast extends FrontendAbstract
 
     public function getStreamUrl()
     {
-        return $this->getPublicUrl().'/radio.mp3?played='.time();
+        /** @var EntityManager */
+        $em = $this->di->get('em');
+
+        $mount_repo = $em->getRepository(StationMount::class);
+        $default_mount = $mount_repo->getDefaultMount($this->station);
+
+        $mount_name = ($default_mount instanceof StationMount) ? $default_mount->name : '/radio.mp3';
+        return $this->getPublicUrl().$mount_name.'?played='.time();
     }
 
     public function getAdminUrl()
@@ -244,9 +228,6 @@ class IceCast extends FrontendAbstract
             'source_pw' => $config['authentication']['source-password'],
             'admin_pw' => $config['authentication']['admin-password'],
             'streamer_pw' => $config['mount'][0]['password'],
-
-            'listen_mount' => $config['mount'][0]['mount-name'],
-            'autodj_mount' => $config['mount'][1]['mount-name'],
         ];
     }
 
@@ -254,7 +235,7 @@ class IceCast extends FrontendAbstract
     {
         $config_dir = $this->station->getRadioConfigDir();
 
-        return [
+        $defaults = [
             'location' => 'AzuraCast',
             'admin' => 'icemaster@localhost',
             'hostname' => $this->di['em']->getRepository('Entity\Settings')->getSetting('base_url', 'localhost'),
@@ -278,26 +259,9 @@ class IceCast extends FrontendAbstract
 
             'listen-socket' => [
                 'port' => $this->_getRadioPort(),
-                'shoutcast-mount' => '/radio.mp3',
             ],
 
-            'mount' => [
-                [
-                    '@type'     => 'normal',
-                    'mount-name' => '/radio.mp3',
-                    'fallback-mount' => '/autodj.mp3',
-                    'fallback-override' => 1,
-
-                    'username' => 'shoutcast',
-                    'password' => Utilities::generatePassword(),
-                ],
-                [
-                    '@type'     => 'normal',
-                    'mount-name' => '/autodj.mp3',
-                    'fallback-mount' => '/error.mp3',
-                    'fallback-override' => 1,
-                ],
-            ],
+            'mount' => [],
             'fileserve' => 1,
             'paths' => [
                 'basedir' => '/usr/share/icecast2',
@@ -320,6 +284,42 @@ class IceCast extends FrontendAbstract
                 'chroot' => 0,
             ],
         ];
+
+        $url = $this->di['url'];
+
+        foreach($this->station->mounts as $mount_row)
+        {
+            $mount = [
+                '@type'     => 'normal',
+                'mount-name' => $mount_row->name,
+            ];
+
+            if (!empty($mount_row->fallback_mount))
+            {
+                $mount['fallback-mount'] = $mount_row->fallback_mount;
+                $mount['fallback-override'] = 1;
+            }
+
+            if ($mount_row->enable_streamers)
+            {
+                $mount['username'] ='shoutcast';
+                $mount['password'] = Utilities::generatePassword();
+                $mount['authentication'] = array(
+                    '@type' => 'url',
+                    'option' => [
+                        [
+                            '@name' => 'stream_auth',
+                            '@value' => $url->route(['module' => 'api', 'controller' => 'internal', 'action' => 'streamauth', 'id' => $this->station->id], true)
+                        ],
+                    ],
+                );
+
+                $defaults['listen-socket']['shoutcast-mount'] = $mount_row->name;
+                $defaults['mount'][] = $mount;
+            }
+        }
+
+        return $defaults;
     }
 
     protected function _getRadioPort()

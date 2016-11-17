@@ -213,36 +213,33 @@ class LiquidSoap extends BackendAbstract
 
                 $icecast_port = $ic_settings['port'];
                 $icecast_source_pw = $ic_settings['source_pw'];
-                $icecast_mount = $ic_settings['autodj_mount'];
 
-                // Determine output format.
-                $format = $settings['format'] ?: 'mp3';
-                $bitrate = $settings['bitrate'] ?: 128;
-
-                switch(strtolower($format))
+                foreach($this->station->mounts as $mount_row)
                 {
-                    case 'ogg':
+                    if (!$mount_row->enable_autodj)
+                        continue;
+
+                    $format = strtolower($mount_row->autodj_format ?: 'mp3');
+                    $bitrate = $mount_row->autodj_bitrate ?: 128;
+
+                    if ($format == 'ogg')
                         $output_format = '%vorbis.cbr(samplerate=44100, channels=2, bitrate='.(int)$bitrate.')';
-                    break;
-
-                    case 'mp3':
-                    default:
+                    else
                         $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate='.(int)$bitrate.')';
-                    break;
-                }
 
-                $output_params = [
-                    $output_format, // Required output format (%mp3 or %ogg)
-                    'id="radio_out"',
-                    'host = "localhost"',
-                    'port = '.$icecast_port,
-                    'password = "'.$icecast_source_pw.'"',
-                    'name = "'.$this->_cleanUpString($this->station->name).'"',
-                    'description = "'.$this->_cleanUpString($this->station->description).'"',
-                    'mount = "'.$icecast_mount.'"',
-                    'radio', // Required
-                ];
-                $ls_config[] = 'output.icecast('.implode(', ', $output_params).')';
+                    $output_params = [
+                        $output_format, // Required output format (%mp3 or %ogg)
+                        'id="radio_out_'.$mount_row->id.'"',
+                        'host = "localhost"',
+                        'port = '.$icecast_port,
+                        'password = "'.$icecast_source_pw.'"',
+                        'name = "'.$this->_cleanUpString($this->station->name).'"',
+                        'description = "'.$this->_cleanUpString($this->station->description).'"',
+                        'mount = "'.$mount_row->name.'"',
+                        'radio', // Required
+                    ];
+                    $ls_config[] = 'output.icecast('.implode(', ', $output_params).')';
+                }
             break;
         }
 

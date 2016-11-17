@@ -92,16 +92,6 @@ return [
                     'belongsTo' => 'frontend_config',
                 ]],
 
-                'listen_mount' => ['text', [
-                    'label' => _('Listen Mount Point Name'),
-                    'belongsTo' => 'frontend_config',
-                ]],
-
-                'autodj_mount' => ['text', [
-                    'label' => _('Auto-DJ Mount Point Name'),
-                    'belongsTo' => 'frontend_config',
-                ]],
-
             ],
         ],
 
@@ -111,29 +101,6 @@ return [
             'description' => _('These settings are intended for advanced users only. You can safely leave all of these options blank and sensible defaults will be used for them.'),
 
             'elements' => [
-
-                'format' => ['radio', [
-                    'label' => _('Broadcast Format'),
-                    'belongsTo' => 'backend_config',
-                    'options' => [
-                        'mp3' => 'MP3',
-                        'ogg' => 'OGG Vorbis',
-                    ],
-                    'default' => 'mp3',
-                ]],
-
-                'bitrate' => ['radio', [
-                    'label' => _('Bitrate (kbps)'),
-                    'belongsTo' => 'backend_config',
-                    'options' => [
-                        64 => '64',
-                        96 => '96',
-                        128 => '128',
-                        192 => '192',
-                        256 => '256',
-                    ],
-                    'default' => 128,
-                ]],
 
                 'custom_config' => ['textarea', [
                     'label' => _('Custom Configuration'),

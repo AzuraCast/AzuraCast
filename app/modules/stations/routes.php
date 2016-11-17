@@ -58,6 +58,19 @@ $app->group('/station/{station}', function() {
 
     });
 
+    $this->group('/mounts', function() {
+
+        $this->get('', 'stations:mounts:index')
+            ->setName('stations:mounts:index');
+
+        $this->map(['GET', 'POST'], '/edit[/{id}]', 'stations:mounts:edit')
+            ->setName('stations:mounts:edit');
+
+        $this->get('/delete/{id}', 'stations:mounts:delete')
+            ->setName('stations:mounts:delete');
+
+    });
+
     $this->group('/profile', function() {
 
         $this->get('', 'stations:profile:index')

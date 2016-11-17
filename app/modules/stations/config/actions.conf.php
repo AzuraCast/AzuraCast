@@ -12,6 +12,7 @@ return [
         'manage station profile',
         'manage station broadcasting',
         'manage station streamers',
+        'manage station mounts',
         'manage station media',
         'manage station automation',
     ],

@@ -13,6 +13,8 @@ class MountsController extends BaseController
 
     public function indexAction()
     {
+        $this->view->frontend_adapter = $this->station->getFrontendAdapter($this->di);
+
         $this->view->mounts = $this->station->mounts;
     }
 

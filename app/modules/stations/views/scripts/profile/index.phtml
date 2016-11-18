@@ -85,7 +85,11 @@
             <div class="card-body card-padding">
                 <dl>
                     <dt><?=_('Stream Public URL') ?>:</dt>
-                    <dd><a href="<?=$frontend_adapter->getStreamUrl() ?>"><?=$frontend_adapter->getStreamUrl() ?></a></dd>
+                    <dd>
+                    <?php foreach($stream_urls as $stream_url): ?>
+                        <div><a href="<?=$stream_url ?>"><?=$stream_url ?></a></div>
+                    <?php endforeach; ?>
+                    </dd>
                 </dl>
 
                 <dl>

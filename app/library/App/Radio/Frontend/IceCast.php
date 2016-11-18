@@ -190,7 +190,21 @@ class IceCast extends FrontendAbstract
         $default_mount = $mount_repo->getDefaultMount($this->station);
 
         $mount_name = ($default_mount instanceof StationMount) ? $default_mount->name : '/radio.mp3';
-        return $this->getPublicUrl().$mount_name.'?played='.time();
+        return $this->getUrlForMount($mount_name);
+    }
+
+    public function getStreamUrls()
+    {
+        $urls = [];
+        foreach($this->station->mounts as $mount)
+            $urls[] = $this->getUrlForMount($mount->name);
+
+        return $urls;
+    }
+
+    public function getUrlForMount($mount_name)
+    {
+        return $this->getPublicUrl().$mount_name.'?'.time();
     }
 
     public function getAdminUrl()

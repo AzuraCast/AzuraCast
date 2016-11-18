@@ -24,6 +24,8 @@ class ProfileController extends BaseController
         $this->view->frontend_config = $frontend_config = (array)$this->station->frontend_config;
         $this->view->frontend_is_running = $fa->isRunning();
 
+        $this->view->stream_urls = $fa->getStreamUrls();
+
         // Statistics about backend playback.
         $this->view->num_songs = $this->em->createQuery('SELECT COUNT(sm.id) FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sp.id IS NOT NULL AND sm.station_id = :station_id')
             ->setParameter('station_id', $this->station->id)

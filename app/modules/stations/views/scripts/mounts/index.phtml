@@ -34,7 +34,7 @@
                         <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])) ?>"><?=_('Delete') ?></a>
                     </td>
                     <td>
-                        <big><?=$row['name'] ?></big>
+                        <big><a href="<?=$frontend_adapter->getUrlForMount($row['name']) ?>" target="_blank"><?=$row['name'] ?></a></big>
                         <?php if ($row['is_default']): ?>
                             <br><span class="label label-success"><?=_('Default Mount') ?></span>
                         <?php endif; ?>

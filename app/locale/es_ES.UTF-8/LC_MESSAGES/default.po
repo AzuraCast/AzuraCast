@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-10-12 00:53+0000\n"
-"PO-Revision-Date: 2016-11-06 23:09-0500\n"
+"PO-Revision-Date: 2016-11-19 15:11-0500\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -446,7 +446,7 @@ msgstr "Personalización"
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:46
 msgid "Time Zone"
-msgstr ""
+msgstr "Zona Horaria"
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:47
 msgid "All times displayed on the site will be based on this time zone."
@@ -461,7 +461,7 @@ msgstr "Hora actual del servidor es <b>%s</b>."
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:53
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #: /var/azuracast/www/app/modules/frontend/config/forms/profile.conf.php:59
 msgid "Site Theme"
@@ -569,7 +569,7 @@ msgstr "Mi Perfil"
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/profile/index.phtml:20
 msgid "Update Profile Picture"
-msgstr ""
+msgstr "Cambiar la Foto del Perfil"
 
 #: /var/azuracast/www/app/modules/frontend/views/scripts/setup/register.phtml:7
 msgid "Begin setup by creating a Super Administrator account."
@@ -925,19 +925,19 @@ msgstr "Listas"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/index-dailystats.phtml:56
 msgid "Daily Listener Range"
-msgstr ""
+msgstr "El Rango de Oyentes cada Día"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/index-dailystats.phtml:60
 msgid "Hourly Average Listeners"
-msgstr ""
+msgstr "El Promedio de Oyentes por Hora"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/index-dailystats.phtml:64
 msgid "Daily Average Listeners"
-msgstr ""
+msgstr "El Promedio de Oyentes por Día"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/index-hourlystats.phtml:24
 msgid "Average Listeners"
-msgstr ""
+msgstr "El Promedio de Oyentes"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/index.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/index.phtml:25
@@ -996,16 +996,16 @@ msgstr "Juegos"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/timeline.phtml:9
 msgid "Station Playback Timeline"
-msgstr ""
+msgstr "Línea de Tiempo de Reproducción para la Estación"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/timeline.phtml:30
 msgid "Date/Time"
-msgstr ""
+msgstr "Fecha/Hora"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/index/timeline.phtml:34
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:34
 msgid "Playlist(s)"
-msgstr ""
+msgstr "Lista(s)"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/playlists/index.phtml:24
 msgid "Playlist"
@@ -1184,31 +1184,31 @@ msgstr "Descargar CSV"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:31
 msgid "Filename"
-msgstr ""
+msgstr "Nombre del Archivo"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:33
 msgid "Length Text"
-msgstr ""
+msgstr "Duración"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:35
 msgid "Joins"
-msgstr ""
+msgstr "Oyentes ganados"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:36
 msgid "Losses"
-msgstr ""
+msgstr "Oyentes perdidos"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:37
 msgid "Total"
-msgstr ""
+msgstr "Conjunto"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:39
 msgid "Play %"
-msgstr ""
+msgstr "Porcentage de jugar"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/reports/performance.phtml:40
 msgid "Ratio"
-msgstr ""
+msgstr "Proporción"
 
 #: /var/azuracast/www/app/modules/stations/views/scripts/sidebar.phtml:8
 msgid "Profile"
@@ -1354,9 +1354,9 @@ msgstr "Usando %s Versión %s."
 #: /var/azuracast/www/app/templates/system/form_page.phtml:19
 #: /var/azuracast/www/app/templates/system/form_page.phtml:20
 msgid "Select..."
-msgstr ""
+msgstr "Seleccionar..."
 
 #: /var/azuracast/www/app/templates/system/form_page.phtml:21
 msgid "No results found!"
-msgstr ""
+msgstr "¡No se han encontrado resultados!"
 

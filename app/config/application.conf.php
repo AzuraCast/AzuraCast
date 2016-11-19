@@ -57,9 +57,10 @@ $config = [
             'de_DE.UTF-8' => 'Deutsch',
             'es_ES.UTF-8' => 'Español',
             'fr_FR.UTF-8' => 'Français',
-            'pt_PT.UTF-8' => 'Português',
+            'pl_PL.UTF-8' => 'Polski',
+            // 'pt_PT.UTF-8' => 'Português',
             'ru_RU.UTF-8' => 'Русский язык',
-            'sv_SE.UTF-8' => 'Svenska',
+            // 'sv_SE.UTF-8' => 'Svenska',
         ],
     ],
 

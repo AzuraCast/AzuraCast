@@ -104,19 +104,6 @@ class UtilController extends BaseController
     }
 
     /**
-     * Write configuration changes to the station backend and restart it.
-     */
-    public function writeAction()
-    {
-        $this->acl->checkPermission('manage station broadcasting', $this->station->id);
-
-        $backend = $this->station->getBackendAdapter($this->di);
-        $backend->write();
-
-        $this->view->backend_result = $backend->restart();
-    }
-
-    /**
      * Restart all services associated with the radio.
      */
     public function restartAction()
@@ -132,7 +119,11 @@ class UtilController extends BaseController
         $frontend->write();
         $backend->write();
 
-        $this->view->frontend_result = $frontend->start();
-        $this->view->backend_result = $backend->start();
+        $frontend->start();
+        $backend->start();
+
+        $this->station->needs_restart = false;
+        $this->em->persist($this->station);
+        $this->em->flush();
     }
 }

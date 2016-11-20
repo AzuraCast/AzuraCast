@@ -18,6 +18,8 @@ class Station extends \App\Doctrine\Entity
         $this->enable_requests = false;
         $this->request_delay = 5;
 
+        $this->needs_restart = false;
+
         $this->history = new ArrayCollection;
         $this->managers = new ArrayCollection;
 
@@ -139,6 +141,9 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="enable_streamers", type="boolean", nullable=false) */
     protected $enable_streamers;
 
+    /** @Column(name="needs_restart", type="boolean") */
+    protected $needs_restart;
+
     /**
      * @OneToMany(targetEntity="SongHistory", mappedBy="station")
      * @OrderBy({"timestamp" = "DESC"})
@@ -200,7 +205,7 @@ class Station extends \App\Doctrine\Entity
             'default' => 'icecast',
             'adapters' => array(
                 'icecast' => array(
-                    'name'      => 'IceCast v2.4 or Above',
+                    'name'      => 'IceCast v2.4',
                     'class'     => '\App\Radio\Frontend\IceCast',
                 ),
                 /*

@@ -5,6 +5,12 @@
         </a>
     </li>
 
+    <?php if ($acl->isAllowed('manage station broadcasting', $station->id) && $station->needs_restart): ?>
+        <li class="menu-alert">
+            <a href="<?=$url->named('stations:util:restart', ['station' => $station->id]) ?>"><i class="zmdi zmdi-refresh-sync-alert"></i> <?=_('<b>Apply Pending Changes</b><br>Click to Restart Station') ?></a>
+        </li>
+    <?php endif; ?>
+
     <li><a href="<?=$url->named('public:index', ['station' => $station->id]) ?>" target="_blank"><i class="zmdi zmdi-globe"></i> <?=_('Public Page') ?></a></li>
 
     <li><a href="<?=$url->named('stations:profile:index', ['station' => $station->id]) ?>"><i class="zmdi zmdi-image"></i> <?=_('Profile') ?></a></li>
@@ -52,7 +58,6 @@
             <li><a href="<?=$url->named('stations:util:playlist', ['station' => $station->id, 'format' => 'm3u']) ?>"><?=_('Download Playlist File') ?> (M3U)</a></li>
 
             <?php if ($acl->isAllowed('manage station broadcasting', $station->id)): ?>
-                <li><a href="<?=$url->named('stations:util:write', ['station' => $station->id]) ?>"><?=_('Write Configuration') ?></a></li>
                 <li><a href="<?=$url->named('stations:util:restart', ['station' => $station->id]) ?>"><?=_('Restart Broadcasting') ?></a></li>
             <?php endif; ?>
         </ul>

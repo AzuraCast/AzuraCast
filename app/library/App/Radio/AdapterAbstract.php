@@ -98,8 +98,10 @@ abstract class AdapterAbstract
 
             $cmd = \App\Utilities::run_command('ps --pid '.$pid);
 
-            if (!empty($cmd['output']))
+            /*
+             * if (!empty($cmd['output']))
                 $this->log($cmd['output']);
+            */
 
             if (!empty($cmd['error']))
                 $this->log($cmd['error'], 'red');

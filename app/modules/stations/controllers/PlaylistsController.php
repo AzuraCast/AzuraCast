@@ -65,10 +65,17 @@ class PlaylistsController extends BaseController
             $record->fromArray($this->em, $data);
 
             $this->em->persist($record);
+
+            $uow = $this->em->getUnitOfWork();
+            $uow->computeChangeSets();
+            if ($uow->isEntityScheduled($record))
+            {
+                $this->station->needs_restart = true;
+                $this->em->persist($this->station);
+            }
+
             $this->em->flush();
             $this->em->refresh($this->station);
-
-            $this->_reloadStation();
 
             $this->alert('<b>'._('Record updated.').'</b>', 'green');
 
@@ -94,20 +101,7 @@ class PlaylistsController extends BaseController
         $this->em->flush();
         $this->em->refresh($this->station);
 
-        $this->_reloadStation();
-
         $this->alert('<b>'._('Record deleted.').'</b>', 'green');
         return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);
-    }
-
-    protected function _reloadStation()
-    {
-        $backend = $this->station->getBackendAdapter($this->di);
-
-        $backend->stop();
-        $backend->write();
-        $backend->start();
-
-        $this->alert('<b>'._('Radio backend reloaded.').'</b><br>'._('Your listeners will not be disconnected by playlist changes, but songs may change abruptly.'), 'green');
     }
 }

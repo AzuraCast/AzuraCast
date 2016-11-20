@@ -24,6 +24,15 @@
   margin: 20px 0 0 0;
 
   & > li {
+    &.menu-alert > a {
+      background: @alert-warning-bg;
+      color: @alert-warning-text;
+
+      &:hover {
+        background: darken(@alert-warning-bg, 5%);
+      }
+    }
+
     &.menu-header > a {
       padding: 14px 20px 14px 20px;
       color: @headings-color;

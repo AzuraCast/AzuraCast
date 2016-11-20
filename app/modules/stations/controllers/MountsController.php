@@ -45,6 +45,15 @@ class MountsController extends BaseController
             $record->fromArray($this->em, $data);
 
             $this->em->persist($record);
+
+            $uow = $this->em->getUnitOfWork();
+            $uow->computeChangeSets();
+            if ($uow->isEntityScheduled($record))
+            {
+                $this->station->needs_restart = true;
+                $this->em->persist($this->station);
+            }
+
             $this->em->flush();
             $this->em->refresh($this->station);
 
@@ -69,7 +78,10 @@ class MountsController extends BaseController
         if ($record instanceof StationMount)
             $this->em->remove($record);
 
+        $this->station->needs_restart = true;
+        $this->em->persist($this->station);
         $this->em->flush();
+
         $this->em->refresh($this->station);
 
         $this->alert('<b>'._('Record deleted.').'</b>', 'green');

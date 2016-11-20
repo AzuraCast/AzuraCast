@@ -39,12 +39,13 @@
  - name: Start and enable service
    service: name=mysql state=started enabled=yes
 
- #- name: Set root password
- #  command: "mysqladmin -u root password {{ mysql_root_password }}"
- #  notify: restart mysql
+ - name: Add empty .my.cnf (if none exists)
+   become: true
+   template: src=root_empty_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600
 
  - name: MySQL Root Account Fix (Ubuntu 16.04)
-   shell: "cat {{ util_base }}/xenial_mysql_fix.sql | mysql"
+   become: true
+   shell: "cat {{ util_base }}/xenial_mysql_fix.sql | mysql --defaults-extra-file=/root/.my.cnf -NB"
    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
 
  # MySQL Secure Installation
@@ -64,10 +65,11 @@
  #  changed_when: False
 
  - name: Add .my.cnf
+   become: true
    template: src=root_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600 force=yes
 
  - name: Remove anonymous users
-   command: 'mysql -ne "{{ item }}"'
+   command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
    with_items:
      - "DELETE FROM mysql.user WHERE User=''"
    changed_when: False

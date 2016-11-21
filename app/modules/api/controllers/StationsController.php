@@ -28,7 +28,7 @@ class StationsController extends BaseController
         if (!($record instanceof Station) || $record->deleted_at)
             return $this->returnError('Station not found.');
 
-        return $this->returnSuccess(Station::api($record));
+        return $this->returnSuccess(Station::api($record, $this->di));
     }
 
     public function viewAction()
@@ -38,11 +38,11 @@ class StationsController extends BaseController
 
     public function listAction()
     {
-        $stations_raw = $this->em->getRepository(Station::class)->fetchArray();
+        $stations_raw = $this->em->getRepository(Station::class)->findAll();
 
         $stations = array();
         foreach($stations_raw as $row)
-            $stations[] = Station::api($row);
+            $stations[] = Station::api($row, $this->di);
 
         return $this->returnSuccess($stations);
     }

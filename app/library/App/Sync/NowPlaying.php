@@ -101,7 +101,7 @@ class NowPlaying extends SyncAbstract
         $np_old = (array)$station->nowplaying_data;
 
         $np = array();
-        $np['station'] = Station::api($station->toArray($this->di['em']));
+        $np['station'] = Station::api($station, $this->di);
 
         $frontend_adapter = $station->getFrontendAdapter($this->di);
         $np_new = $frontend_adapter->getNowPlaying();

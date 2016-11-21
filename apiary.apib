@@ -36,7 +36,18 @@ Returns all now playing data for active stations.
                     station: {
                         id: 1,
                         name: "Pony Radio Station",
-                        shortcode: "pony_radio_station"
+                        shortcode: "pony_radio_station",
+                        description: "Test",
+                        frontend: "icecast",
+                        backend: "liquidsoap",
+                        listen_url: "http://localhost:8080/radio/8000/radio.mp3?1479695912",
+                        mounts: [
+                            {
+                                name: "/radio.mp3",
+                                is_default: true,
+                                url: "http://localhost:8080/radio/8000/radio.mp3?1479695912"
+                            }
+                        ]
                     },
                     current_song: {
                         id: "178ebfae95842a543f30a449f2420125",
@@ -105,7 +116,18 @@ Returns a single station's now-playing information based on a station identifier
                 station: {
                     id: 1,
                     name: "Pony Radio Station",
-                    shortcode: "pony_radio_station"
+                    shortcode: "pony_radio_station",
+                    description: "Test",
+                    frontend: "icecast",
+                    backend: "liquidsoap",
+                    listen_url: "http://localhost:8080/radio/8000/radio.mp3?1479695912",
+                    mounts: [
+                       {
+                           name: "/radio.mp3",
+                           is_default: true,
+                           url: "http://localhost:8080/radio/8000/radio.mp3?1479695912"
+                       }
+                    ]
                 },
                 current_song: {
                     id: "178ebfae95842a543f30a449f2420125",
@@ -182,7 +204,18 @@ List all stations from all categories.
                 {
                     id: 1,
                     name: "Best Pony Radio",
-                    shortcode: "best_pony_radio"
+                    shortcode: "best_pony_radio",
+                    description: "Test",
+                    frontend: "icecast",
+                    backend: "liquidsoap",
+                    listen_url: "http://localhost:8080/radio/8000/radio.mp3?1479695912",
+                    mounts: [
+                        {
+                            name: "/radio.mp3",
+                            is_default: true,
+                            url: "http://localhost:8080/radio/8000/radio.mp3?1479695912"
+                        }
+                    ]
                 }
             ]
         }
@@ -200,7 +233,18 @@ Station info for the specified numeric identifier.
             result: {
                 id: 1,
                 name: "Best Pony Radio",
-                shortcode: "best_pony_radio"
+                shortcode: "best_pony_radio",
+                description: "Test",
+                frontend: "icecast",
+                backend: "liquidsoap",
+                listen_url: "http://localhost:8080/radio/8000/radio.mp3?1479695912",
+                mounts: [
+                    {
+                        name: "/radio.mp3",
+                        is_default: true,
+                        url: "http://localhost:8080/radio/8000/radio.mp3?1479695912"
+                    }
+                ]
             }
         }
 

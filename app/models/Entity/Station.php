@@ -244,13 +244,34 @@ class Station extends \App\Doctrine\Entity
      * @param $row
      * @return array
      */
-    public static function api($row)
+    public static function api(Station $row, ContainerInterface $di)
     {
-        $api = array(
-            'id'        => (int)$row['id'],
-            'name'      => $row['name'],
+        $api = [
+            'id'        => (int)$row->id,
+            'name'      => $row->name,
             'shortcode' => self::getStationShortName($row['name']),
-        );
+            'description' => $row->description,
+            'frontend'  => $row->frontend_type,
+            'backend'   => $row->backend_type,
+            'listen_url' => '',
+            'mounts'    => [],
+        ];
+
+        if ($row->mounts->count() > 0)
+        {
+            $fa = $row->getFrontendAdapter($di);
+
+            $api['listen_url'] = $fa->getStreamUrl();
+
+            foreach($row->mounts as $mount_row)
+            {
+                $api['mounts'][] = [
+                    'name'  => $mount_row->name,
+                    'is_default' => (bool)$mount_row->is_default,
+                    'url'   => $fa->getUrlForMount($mount_row->name),
+                ];
+            }
+        }
 
         return $api;
     }

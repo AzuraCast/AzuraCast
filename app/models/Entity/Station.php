@@ -269,10 +269,10 @@ class Station extends \App\Doctrine\Entity
         {
             $fa = $row->getFrontendAdapter($di);
 
+            $api['listen_url'] = $fa->getStreamUrl();
+
             if ($fa->supportsMounts())
             {
-                $api['listen_url'] = $fa->getStreamUrl();
-
                 foreach($row->mounts as $mount_row)
                 {
                     $api['mounts'][] = [

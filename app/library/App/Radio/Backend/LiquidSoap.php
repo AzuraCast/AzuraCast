@@ -41,6 +41,7 @@ class LiquidSoap extends BackendAbstract
 
         $ls_config[] = '';
 
+        /*
         // Set up harbor auth script.
         $ls_config[] = '# DJ Authentication';
         $ls_config[] = 'def dj_auth(user,password) =';
@@ -49,6 +50,7 @@ class LiquidSoap extends BackendAbstract
         $ls_config[] = '  bool_of_string(ret)';
         $ls_config[] = 'end';
         $ls_config[] = '';
+        */
 
         // Clear out existing playlists directory.
         $current_playlists = array_diff(scandir($playlist_path), array('..', '.'));
@@ -168,10 +170,12 @@ class LiquidSoap extends BackendAbstract
             }
         }
 
+        /*
         // Add harbor live.
         $ls_config[] = '# Harbor Live DJs';
         $ls_config[] = 'live = input.harbor("/", port='.$this->_getHarborPort().', user="shoutcast", auth=dj_auth, icy=true)';
         $ls_config[] = '';
+        */
 
         // Add fallback error file.
         // $error_song_path = APP_INCLUDE_ROOT.'/resources/error.mp3';
@@ -181,7 +185,7 @@ class LiquidSoap extends BackendAbstract
         $ls_config[] = 'requests = request.queue(id="requests")';
 
         $fallbacks = [];
-        $fallbacks[] = 'live';
+        // $fallbacks[] = 'live';
         $fallbacks[] = 'requests';
 
         $switches[] = '({ true }, radio)';
@@ -354,6 +358,7 @@ class LiquidSoap extends BackendAbstract
         return true;
     }
 
+    /*
     public function getStreamerInfo()
     {
         return [
@@ -367,6 +372,7 @@ class LiquidSoap extends BackendAbstract
     {
         return (8000 + (($this->station->id - 1) * 10) + 5);
     }
+    */
 
     protected function _getTelnetPort()
     {

@@ -175,12 +175,6 @@ class IceCast extends FrontendAbstract
             $this->log($cmd['error'], 'red');
     }
 
-    public function restart()
-    {
-        $this->stop();
-        $this->start();
-    }
-
     public function getStreamUrl()
     {
         /** @var EntityManager */

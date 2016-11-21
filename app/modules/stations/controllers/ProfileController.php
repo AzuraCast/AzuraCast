@@ -80,7 +80,8 @@ class ProfileController extends BaseController
         switch($this->getParam('do', 'restart'))
         {
             case "skip":
-                $adapter->skip();
+                if (method_exists($adapter, 'skip'))
+                    $adapter->skip();
 
                 $this->alert('<b>'._('Song skipped.').'</b>', 'green');
             break;

@@ -35,9 +35,11 @@ abstract class AdapterAbstract
 
     /**
      * Restart the executable service.
-     * @return mixed
      */
-    abstract public function restart();
+    public function restart() {
+        $this->stop();
+        $this->start();
+    }
 
     /**
      * Stop the executable service.

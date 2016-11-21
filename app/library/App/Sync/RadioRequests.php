@@ -15,6 +15,8 @@ class RadioRequests extends SyncAbstract
 
         foreach($stations as $station)
         {
+            /** @var $station Station */
+
             if (!$station->enable_requests)
                 continue;
 
@@ -44,8 +46,10 @@ class RadioRequests extends SyncAbstract
                 $em->flush();
 
                 // Send request to the station to play the request.
-                $backend = $station->getBackendAdapter();
-                $backend->request($request->track->getFullPath());
+                $backend = $station->getBackendAdapter($this->di);
+
+                if (method_exists($backend, 'request'))
+                    $backend->request($request->track->getFullPath());
             }
         }
     }

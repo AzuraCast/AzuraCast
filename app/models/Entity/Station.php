@@ -201,13 +201,13 @@ class Station extends \App\Doctrine\Entity
      */
     public static function getFrontendAdapters()
     {
-        return array(
+        return [
             'default' => 'icecast',
-            'adapters' => array(
-                'icecast' => array(
-                    'name'      => 'IceCast v2.4',
-                    'class'     => '\App\Radio\Frontend\IceCast',
-                ),
+            'adapters' => [
+                'icecast' => [
+                    'name' => 'IceCast v2.4',
+                    'class' => '\App\Radio\Frontend\IceCast',
+                ],
                 /*
                 'shoutcast1' => array(
                     'name'      => 'ShoutCast 1',
@@ -218,8 +218,12 @@ class Station extends \App\Doctrine\Entity
                     'class'     => '\App\Radio\Frontend\ShoutCast2',
                 ),
                 */
-            ),
-        );
+                'remote' => [
+                    'name' => _('External Radio Server (Statistics Only)'),
+                    'class' => '\App\Radio\Frontend\Remote',
+                ],
+            ],
+        ];
     }
 
     /**
@@ -227,15 +231,19 @@ class Station extends \App\Doctrine\Entity
      */
     public static function getBackendAdapters()
     {
-        return array(
+        return [
             'default' => 'liquidsoap',
-            'adapters' => array(
-                'liquidsoap' => array(
-                    'name'      => 'LiquidSoap',
-                    'class'     => '\App\Radio\Backend\LiquidSoap',
-                ),
-            ),
-        );
+            'adapters' => [
+                'liquidsoap' => [
+                    'name' => 'LiquidSoap',
+                    'class' => '\App\Radio\Backend\LiquidSoap',
+                ],
+                'none' => [
+                    'name' => _('Disabled'),
+                    'class' => '\App\Radio\Backend\None',
+                ],
+            ],
+        ];
     }
 
     /**

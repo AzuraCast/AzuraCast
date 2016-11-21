@@ -8,6 +8,15 @@ use Entity\StationStreamer as Record;
 
 class StreamersController extends BaseController
 {
+    protected function preDispatch()
+    {
+        $fa = $this->station->getFrontendAdapter($this->di);
+        if (!$fa->supportsStreamers())
+            throw new \App\Exception(_('This station does not currently support streamers.'));
+
+        return parent::preDispatch();
+    }
+
     protected function permissions()
     {
         return $this->acl->isAllowed('manage station streamers', $this->station->id);

@@ -6,6 +6,15 @@ use Entity\StationMount;
 
 class MountsController extends BaseController
 {
+    protected function preDispatch()
+    {
+        $fa = $this->station->getFrontendAdapter($this->di);
+        if (!$fa->supportsMounts())
+            throw new \App\Exception(_('This station does not currently support mount points. Switch to a different frontend to enable mount point management.'));
+
+        return parent::preDispatch();
+    }
+
     protected function permissions()
     {
         return $this->acl->isAllowed('manage station mounts', $this->station->id);
@@ -14,7 +23,6 @@ class MountsController extends BaseController
     public function indexAction()
     {
         $this->view->frontend_adapter = $this->station->getFrontendAdapter($this->di);
-
         $this->view->mounts = $this->station->mounts;
     }
 

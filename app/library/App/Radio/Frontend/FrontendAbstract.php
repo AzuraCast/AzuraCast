@@ -7,6 +7,20 @@ use Interop\Container\ContainerInterface;
 
 abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
 {
+    protected $supports_mounts = true;
+
+    public function supportsMounts()
+    {
+        return $this->supports_mounts;
+    }
+
+    protected $supports_streamers = true;
+
+    public function supportsStreamers()
+    {
+        return $this->supports_streamers;
+    }
+
     abstract public function getStreamUrl();
 
     abstract public function getAdminUrl();

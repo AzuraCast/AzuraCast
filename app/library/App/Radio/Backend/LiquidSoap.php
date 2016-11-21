@@ -208,9 +208,19 @@ class LiquidSoap extends BackendAbstract
 
         $ls_config[] = '';
         $ls_config[] = '# Outbound Broadcast';
-        
+
+        // Configure the outbound broadcast.
         switch($this->station->frontend_type)
         {
+            case 'shoutcast2':
+                // TODO: Implement Shoutcast 2 Broadcasting
+            break;
+
+            case 'remote':
+                $this->log(_('You cannot use an AutoDJ with a remote frontend. Please change the frontend type or update the backend to be "Disabled".'), 'error');
+                return false;
+            break;
+
             case 'icecast':
             default:
                 $ic_settings = (array)$this->station->frontend_config;

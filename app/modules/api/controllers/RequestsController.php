@@ -13,6 +13,10 @@ class RequestsController extends BaseController
         if (!$station)
             return $this->returnError('Station not found!');
 
+        $ba = $station->getBackendAdapter($this->di);
+        if (!$ba->supportsRequests())
+            return $this->returnError('This station does not support requests.');
+
         $requestable_media = $this->em->createQuery('SELECT sm, s, sp 
             FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlists sp
             WHERE sm.station_id = :station_id AND sp.id IS NOT NULL')
@@ -105,6 +109,10 @@ class RequestsController extends BaseController
         if (!$station)
             return $this->returnError('Station not found!');
 
+        $ba = $station->getBackendAdapter($this->di);
+        if (!$ba->supportsRequests())
+            return $this->returnError('This station does not support requests.');
+
         $song = $this->getParam('song_id');
 
         try
@@ -119,6 +127,9 @@ class RequestsController extends BaseController
         }
     }
 
+    /**
+     * @return Station|null
+     */
     protected function _getStation()
     {
         $station = $this->getParam('station');

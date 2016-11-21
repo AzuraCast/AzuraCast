@@ -1,13 +1,13 @@
 <?php
 namespace App\Radio\Frontend;
 
-use App\Utilities;
-use Doctrine\ORM\EntityManager;
-use Entity\Station;
-use Entity\Settings;
+use App\Debug;
 
 class Remote extends FrontendAbstract
 {
+    protected $supports_mounts = false;
+    protected $supports_streamers = false;
+
     /* Process a nowplaying record. */
     protected function _getNowPlaying(&$np)
     {
@@ -44,7 +44,7 @@ class Remote extends FrontendAbstract
         $settings = (array)$this->station->frontend_config;
         $remote_url = $this->getPublicUrl();
 
-        \App\Debug::print_r($settings);
+        Debug::print_r($settings);
 
         switch($settings['remote_type'])
         {
@@ -57,7 +57,7 @@ class Remote extends FrontendAbstract
 
                 $return = @json_decode($return_raw, true);
 
-                \App\Debug::print_r($return);
+                Debug::print_r($return);
 
                 if (!$return || !isset($return['icestats']['source']))
                     return false;
@@ -103,7 +103,7 @@ class Remote extends FrontendAbstract
                 preg_match("/<body.*>(.*)<\/body>/smU", $return_raw, $return);
                 $parts = explode(",", $return[1], 7);
 
-                \App\Debug::print_r($parts);
+                Debug::print_r($parts);
 
                 return [[
                     'title'     => $parts[6],
@@ -124,7 +124,7 @@ class Remote extends FrontendAbstract
                 $current_data = \App\Export::xml_to_array($return_raw);
                 $song_data = $current_data['SHOUTCASTSERVER'];
 
-                \App\Debug::print_r($song_data);
+                Debug::print_r($song_data);
 
                 return [[
                     'title'     => $song_data['SONGTITLE'],

@@ -52,7 +52,7 @@ class Station extends \App\Doctrine\Entity
     protected $frontend_config;
 
     /**
-     * @return \App\Radio\AdapterAbstract
+     * @return \App\Radio\Frontend\FrontendAbstract
      * @throws \Exception
      */
     public function getFrontendAdapter(ContainerInterface $di)
@@ -73,7 +73,7 @@ class Station extends \App\Doctrine\Entity
     protected $backend_config;
 
     /**
-     * @return \App\Radio\AdapterAbstract
+     * @return \App\Radio\Backend\BackendAbstract
      * @throws \Exception
      */
     public function getBackendAdapter(ContainerInterface $di)
@@ -269,15 +269,18 @@ class Station extends \App\Doctrine\Entity
         {
             $fa = $row->getFrontendAdapter($di);
 
-            $api['listen_url'] = $fa->getStreamUrl();
-
-            foreach($row->mounts as $mount_row)
+            if ($fa->supportsMounts())
             {
-                $api['mounts'][] = [
-                    'name'  => $mount_row->name,
-                    'is_default' => (bool)$mount_row->is_default,
-                    'url'   => $fa->getUrlForMount($mount_row->name),
-                ];
+                $api['listen_url'] = $fa->getStreamUrl();
+
+                foreach($row->mounts as $mount_row)
+                {
+                    $api['mounts'][] = [
+                        'name'  => $mount_row->name,
+                        'is_default' => (bool)$mount_row->is_default,
+                        'url'   => $fa->getUrlForMount($mount_row->name),
+                    ];
+                }
             }
         }
 
@@ -397,36 +400,6 @@ class StationRepository extends Repository
         // Generate station ID.
         $this->_em->flush();
 
-        // Create default mount points.
-        $mount_points = [
-            [
-                'name'          => '/radio.mp3',
-                'is_default'    => 1,
-                'fallback_mount' => '/autodj.mp3',
-                'enable_streamers' => 1,
-                'enable_autodj' => 0,
-            ],
-            [
-                'name'          => '/autodj.mp3',
-                'is_default'    => 0,
-                'fallback_mount' => '/error.mp3',
-                'enable_streamers' => 0,
-                'enable_autodj' => 1,
-                'autodj_format' => 'mp3',
-                'autodj_bitrate' => 128,
-            ]
-        ];
-
-        foreach($mount_points as $mount_point)
-        {
-            $mount_point['station'] = $station;
-
-            $mount_record = new StationMount;
-            $mount_record->fromArray($this->_em, $mount_point);
-
-            $this->_em->persist($mount_record);
-        }
-
         // Scan directory for any existing files.
         $media_sync = new \App\Sync\Media($di);
 
@@ -437,8 +410,48 @@ class StationRepository extends Repository
         $media_sync->importPlaylists($station);
         $this->_em->refresh($station);
 
-        // Load configuration from adapter to pull source and admin PWs.
+        // Load adapters.
         $frontend_adapter = $station->getFrontendAdapter($di);
+        $backend_adapter = $station->getBackendAdapter($di);
+
+        // Create default mountpoints if station supports them.
+        if ($frontend_adapter->supportsMounts())
+        {
+            // Create default mount points.
+            $mount_points = [
+                [
+                    'name'          => '/radio.mp3',
+                    'is_default'    => 1,
+                    'fallback_mount' => '/autodj.mp3',
+                    'enable_streamers' => 1,
+                    'enable_autodj' => 0,
+                ],
+                [
+                    'name'          => '/autodj.mp3',
+                    'is_default'    => 0,
+                    'fallback_mount' => '/error.mp3',
+                    'enable_streamers' => 0,
+                    'enable_autodj' => 1,
+                    'autodj_format' => 'mp3',
+                    'autodj_bitrate' => 128,
+                ]
+            ];
+
+            foreach($mount_points as $mount_point)
+            {
+                $mount_point['station'] = $station;
+
+                $mount_record = new StationMount;
+                $mount_record->fromArray($this->_em, $mount_point);
+
+                $this->_em->persist($mount_record);
+            }
+
+            $this->_em->flush();
+            $this->_em->refresh($station);
+        }
+
+        // Load configuration from adapter to pull source and admin PWs.
         $frontend_adapter->read();
 
         // Write initial XML file (if it doesn't exist).
@@ -446,7 +459,7 @@ class StationRepository extends Repository
         $frontend_adapter->restart();
 
         // Write an empty placeholder configuration.
-        $backend_adapter = $station->getBackendAdapter($di);
+
         $backend_adapter->write();
         $backend_adapter->restart();
 

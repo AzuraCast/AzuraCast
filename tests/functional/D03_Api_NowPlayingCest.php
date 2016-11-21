@@ -17,6 +17,6 @@ class D03_Api_NowPlayingCest extends CestAbstract
         $I->sendGET('/api/nowplaying');
 
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson(\Entity\Station::api($this->test_station, $this->di));
+        $I->seeResponseContainsJson(['status' => 'success']);
     }
 }

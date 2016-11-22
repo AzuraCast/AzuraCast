@@ -1,6 +1,6 @@
 ---
   - name: Use Default Configuration Files
-    copy: src="{{ www_base }}/app/config/{{ item }}.conf.sample.php" dest="{{ www_base }}/app/config/{{ item }}.conf.php"
+    copy: src="{{ www_base }}/app/config/{{ item }}.conf.sample.php" dest="{{ www_base }}/app/config/{{ item }}.conf.php" force=no
     with_items:
      - db
      - influx

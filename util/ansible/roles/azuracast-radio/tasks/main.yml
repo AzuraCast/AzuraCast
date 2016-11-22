@@ -42,7 +42,14 @@
       dest: "{{ app_base }}/servers/sc_serv.tar.gz"
     when: ansible_architecture == 'x86_64'
 
-  - name: Extract ShoutCast 2
-    command: "tar xvzf {{ app_base }}/servers/sc_serv.tar.gz"
+  - name: Extract ShoutCast 2 Binary
+    unarchive:
+      src: "{{ app_base }}/servers/sc_serv.tar.gz"
+      dest: "{{ app_base }}/servers/"
+      remote_src: yes
+      creates: "{{ app_base }}/servers/sc_serv"
+      mode: "u=rwx,g=rx,o=rx"
+      owner: "azuracast"
+      group: "www-data"
     when: ansible_architecture == 'x86_64' or ansible_architecture == 'i386'
 

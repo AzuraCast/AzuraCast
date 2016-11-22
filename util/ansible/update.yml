@@ -11,6 +11,7 @@
 
   roles:
     - init
+    - azuracast-config
     - azuracast-update
     - azuracast-radio
     - php

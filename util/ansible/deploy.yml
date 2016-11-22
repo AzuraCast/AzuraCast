@@ -15,9 +15,9 @@
   roles:
     - init
     - git
+    - azuracast-config
     - azuracast-radio
     - azuracast-user
-    - azuracast-config
     - influxdb
     - nginx
     - php

@@ -1,25 +1,3 @@
 <?php $this->layout('main', ['title' => _('Edit Station Profile')]); ?>
 
-<?=$this->fetch('partials/form') ?>
-
-<script type="text/javascript">
-$(function() {
-
-    showFieldset('frontend', $('form #field_frontend_type input:checked').val());
-    showFieldset('backend', $('form #field_backend_type input:checked').val());
-
-    $('form #field_frontend_type input').on('change', function() {
-        showFieldset('frontend', $(this).val());
-    });
-    $('form #field_backend_type input').on('change', function() {
-        showFieldset('backend', $(this).val());
-    });
-
-});
-
-function showFieldset(fieldset_group, fieldset_id)
-{
-    $('form fieldset.'+fieldset_group+'_fieldset').hide();
-    $('form fieldset#'+fieldset_group+'_'+fieldset_id).show();
-}
-</script>
+<?=$this->fetch('partials/station_form') ?>

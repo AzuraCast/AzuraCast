@@ -205,19 +205,13 @@ class Station extends \App\Doctrine\Entity
             'default' => 'icecast',
             'adapters' => [
                 'icecast' => [
-                    'name' => 'IceCast v2.4',
+                    'name' => 'IceCast 2.4',
                     'class' => '\App\Radio\Frontend\IceCast',
                 ],
-                /*
-                'shoutcast1' => array(
-                    'name'      => 'ShoutCast 1',
-                    'class'     => '\App\Radio\Frontend\ShoutCast1',
-                ),
                 'shoutcast2' => array(
                     'name'      => 'ShoutCast 2',
                     'class'     => '\App\Radio\Frontend\ShoutCast2',
                 ),
-                */
                 'remote' => [
                     'name' => _('External Radio Server (Statistics Only)'),
                     'class' => '\App\Radio\Frontend\Remote',
@@ -254,6 +248,8 @@ class Station extends \App\Doctrine\Entity
      */
     public static function api(Station $row, ContainerInterface $di)
     {
+        $fa = $row->getFrontendAdapter($di);
+
         $api = [
             'id'        => (int)$row->id,
             'name'      => $row->name,
@@ -261,16 +257,12 @@ class Station extends \App\Doctrine\Entity
             'description' => $row->description,
             'frontend'  => $row->frontend_type,
             'backend'   => $row->backend_type,
-            'listen_url' => '',
+            'listen_url' => $fa->getStreamUrl(),
             'mounts'    => [],
         ];
 
         if ($row->mounts->count() > 0)
         {
-            $fa = $row->getFrontendAdapter($di);
-
-            $api['listen_url'] = $fa->getStreamUrl();
-
             if ($fa->supportsMounts())
             {
                 foreach($row->mounts as $mount_row)
@@ -418,29 +410,11 @@ class StationRepository extends Repository
         if ($frontend_adapter->supportsMounts())
         {
             // Create default mount points.
-            $mount_points = [
-                [
-                    'name'          => '/radio.mp3',
-                    'is_default'    => 1,
-                    'fallback_mount' => '/autodj.mp3',
-                    'enable_streamers' => 1,
-                    'enable_autodj' => 0,
-                ],
-                [
-                    'name'          => '/autodj.mp3',
-                    'is_default'    => 0,
-                    'fallback_mount' => '/error.mp3',
-                    'enable_streamers' => 0,
-                    'enable_autodj' => 1,
-                    'autodj_format' => 'mp3',
-                    'autodj_bitrate' => 128,
-                ]
-            ];
+            $mount_points = $frontend_adapter->getDefaultMounts();
 
             foreach($mount_points as $mount_point)
             {
                 $mount_point['station'] = $station;
-
                 $mount_record = new StationMount;
                 $mount_record->fromArray($this->_em, $mount_point);
 

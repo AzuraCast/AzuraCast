@@ -9,6 +9,9 @@
     apt: pkg=icecast2 state=latest
     when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
 
+  - name: Link Fallback Error MP3
+    file: src="{{ www_base }}/resources/error.mp3" dest="/usr/share/icecast2/web/error.mp3" state=link
+
   - name: Remove problematic LiquidSoap plugins
     become: true
     apt: pkg="{{ item }}" state=absent
@@ -27,5 +30,15 @@
      - liquidsoap-plugin-flac
      - liquidsoap-plugin-icecast
 
-  - name: Link Fallback Error MP3
-    file: src="{{ www_base }}/resources/error.mp3" dest="/usr/share/icecast2/web/error.mp3" state=link
+  - name: Download ShoutCast 2 (x86)
+    command: "wget http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux-latest.tar.gz -O {{ app_base }}/servers/sc_serv.tar.gz"
+    when: ansible_architecture == 'i386'
+
+  - name: Download ShoutCast 2 (x64)
+    command: "wget http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz -O {{ app_base }}/servers/sc_serv.tar.gz"
+    when: ansible_architecture == 'x86_64'
+
+  - name: Extract ShoutCast 2
+    command: "tar xvzf {{ app_base }}/servers/sc_serv.tar.gz"
+    when: ansible_architecture == 'x86_64' or ansible_architecture == 'i386'
+

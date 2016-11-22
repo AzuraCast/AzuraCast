@@ -1,0 +1,33 @@
+<?=$this->fetch('partials/form') ?>
+
+<script type="text/javascript">
+$(function() {
+
+    showFrontend($('form #field_frontend_type input:checked').val());
+    showBackend($('form #field_backend_type input:checked').val());
+
+    $('form #field_frontend_type input').on('change', function() {
+        showFrontend($(this).val());
+    });
+    $('form #field_backend_type input').on('change', function() {
+        showBackend($(this).val());
+    });
+
+});
+
+function showFrontend(selected)
+{
+    $('form fieldset.frontend_fieldset').hide();
+
+    if (selected == 'remote')
+        $('form fieldset#frontend_remote').show();
+    else
+        $('form fieldset#frontend_local').show();
+}
+
+function showBackend(selected)
+{
+    $('form fieldset.backend_fieldset').hide();
+    $('form fieldset#backend_'+selected).show();
+}
+</script>

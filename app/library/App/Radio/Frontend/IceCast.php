@@ -351,25 +351,25 @@ class IceCast extends FrontendAbstract
         return $defaults;
     }
 
-    protected function _processCustomConfig($custom_config_raw)
+    public function getDefaultMounts()
     {
-        $custom_config = [];
-
-        if (substr($custom_config_raw, 0, 1) == '{')
-        {
-            $custom_config = @json_decode($custom_config_raw, true);
-        }
-        elseif (substr($custom_config_raw, 0, 1) == '<')
-        {
-            $reader = new \App\Xml\Reader;
-            $custom_config = $reader->fromString('<icecast>'.$custom_config_raw.'</icecast>');
-        }
-
-        return $custom_config;
-    }
-
-    protected function _getRadioPort()
-    {
-        return (8000 + (($this->station->id - 1) * 10));
+        return [
+            [
+                'name'          => '/radio.mp3',
+                'is_default'    => 1,
+                'fallback_mount' => '/autodj.mp3',
+                'enable_streamers' => 1,
+                'enable_autodj' => 0,
+            ],
+            [
+                'name'          => '/autodj.mp3',
+                'is_default'    => 0,
+                'fallback_mount' => '/error.mp3',
+                'enable_streamers' => 0,
+                'enable_autodj' => 1,
+                'autodj_format' => 'mp3',
+                'autodj_bitrate' => 128,
+            ]
+        ];
     }
 }

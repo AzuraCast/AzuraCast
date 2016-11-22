@@ -46,6 +46,15 @@ return [
                     'default' => $backend_default,
                 ]],
 
+            ],
+        ],
+
+        'frontend_local' => [
+            'legend' => _('Configure Radio Broadcasting'),
+            'class'  => 'frontend_fieldset',
+
+            'elements' => [
+
                 'enable_streamers' => ['radio', [
                     'label' => _('Allow Streamers / DJs'),
                     'description' => _('If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.'),
@@ -53,29 +62,21 @@ return [
                     'options' => [0 => 'No', 1 => 'Yes'],
                 ]],
 
-            ],
-        ],
-
-        'frontend_icecast' => [
-            'legend' => _('Configure IceCast 2'),
-            'class'  => 'frontend_fieldset',
-            'description' => _('These settings are intended for advanced users only. You can safely leave all of these options blank and sensible defaults will be used for them.'),
-
-            'elements' => [
-
                 'port' => ['text', [
                     'label' => _('Broadcasting Port'),
-                    'description' => _('No other program can be using this port. An available port is automatically assigned to each new station.'),
+                    'description' => _('No other program can be using this port. Leave blank to automatically assign a port.'),
                     'belongsTo' => 'frontend_config',
                 ]],
 
                 'source_pw' => ['text', [
                     'label' => _('Source Password'),
+                    'description' => _('Leave blank to automatically generate a new password.'),
                     'belongsTo' => 'frontend_config',
                 ]],
 
                 'admin_pw' => ['text', [
                     'label' => _('Admin Password'),
+                    'description' => _('Leave blank to automatically generate a new password.'),
                     'belongsTo' => 'frontend_config',
                 ]],
 

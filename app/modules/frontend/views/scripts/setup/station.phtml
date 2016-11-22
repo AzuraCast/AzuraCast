@@ -2,30 +2,8 @@
 
 <p><?=_('To continue the setup process, enter the basic details of your first station below. Some technical details will automatically be retrieved from the system after you complete this step.') ?></p>
 
-<?=$this->fetch('partials/form') ?>
+<?=$this->fetch('partials/station_form') ?>
 
 <div class="alert alert-info m-b-0 m-t-25">
     <?=_('Note: If you are not starting with an empty station directory, it may take a while to process any existing MP3 files or playlists that are in this station\'s directory.') ?>
 </div>
-
-<script type="text/javascript">
-$(function() {
-
-    showFieldset('frontend', $('form #field_frontend_type input:checked').val());
-    showFieldset('backend', $('form #field_backend_type input:checked').val());
-
-    $('form #field_frontend_type input').on('change', function() {
-        showFieldset('frontend', $(this).val());
-    });
-    $('form #field_backend_type input').on('change', function() {
-        showFieldset('backend', $(this).val());
-    });
-
-});
-
-function showFieldset(fieldset_group, fieldset_id)
-{
-    $('form fieldset.'+fieldset_group+'_fieldset').hide();
-    $('form fieldset#'+fieldset_group+'_'+fieldset_id).show();
-}
-</script>

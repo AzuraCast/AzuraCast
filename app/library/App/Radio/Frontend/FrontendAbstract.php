@@ -14,6 +14,8 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         return $this->supports_mounts;
     }
 
+    public function getDefaultMounts() {}
+
     protected $supports_streamers = true;
 
     public function supportsStreamers()
@@ -139,5 +141,27 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     {
         if (!empty(trim($message)))
             parent::log(str_pad('Radio Frontend: ', 20, ' ', STR_PAD_RIGHT).$message, $class);
+    }
+
+    protected function _processCustomConfig($custom_config_raw)
+    {
+        $custom_config = [];
+
+        if (substr($custom_config_raw, 0, 1) == '{')
+        {
+            $custom_config = @json_decode($custom_config_raw, true);
+        }
+        elseif (substr($custom_config_raw, 0, 1) == '<')
+        {
+            $reader = new \App\Xml\Reader;
+            $custom_config = $reader->fromString('<icecast>'.$custom_config_raw.'</icecast>');
+        }
+
+        return $custom_config;
+    }
+
+    protected function _getRadioPort()
+    {
+        return (8000 + (($this->station->id - 1) * 10));
     }
 }

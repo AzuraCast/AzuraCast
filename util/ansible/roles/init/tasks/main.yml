@@ -1,6 +1,6 @@
 ---
   - debug:
-      msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }} ({{ app_env }})"
+      msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }} {{ ansible_architecture }} ({{ app_env }})"
 
   - debug:
       msg: "Running in Testing Mode."
@@ -17,6 +17,7 @@
       - apt-transport-https
       - curl
       - wget
+      - tar
       - build-essential
       - python-software-properties
       - pwgen

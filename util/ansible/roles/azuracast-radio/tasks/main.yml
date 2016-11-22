@@ -31,11 +31,15 @@
      - liquidsoap-plugin-icecast
 
   - name: Download ShoutCast 2 (x86)
-    command: "wget http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux-latest.tar.gz -O {{ app_base }}/servers/sc_serv.tar.gz"
+    get_url:
+      url: http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux-latest.tar.gz
+      dest: "{{ app_base }}/servers/sc_serv.tar.gz"
     when: ansible_architecture == 'i386'
 
   - name: Download ShoutCast 2 (x64)
-    command: "wget http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz -O {{ app_base }}/servers/sc_serv.tar.gz"
+    get_url:
+      url: http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz
+      dest: "{{ app_base }}/servers/sc_serv.tar.gz"
     when: ansible_architecture == 'x86_64'
 
   - name: Extract ShoutCast 2

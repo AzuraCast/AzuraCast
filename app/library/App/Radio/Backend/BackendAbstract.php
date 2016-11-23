@@ -3,6 +3,13 @@ namespace App\Radio\Backend;
 
 abstract class BackendAbstract extends \App\Radio\AdapterAbstract
 {
+    protected $supports_media = true;
+
+    public function supportsMedia()
+    {
+        return $this->supports_media;
+    }
+
     protected $supports_requests = true;
 
     public function supportsRequests()

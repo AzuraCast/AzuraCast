@@ -6,6 +6,13 @@ use Entity\StationPlaylist;
 
 class PlaylistsController extends BaseController
 {
+    protected function preDispatch()
+    {
+        if (!$this->backend->supportsMedia())
+            throw new \App\Exception(_('This feature is not currently supported on this station.'));
+        return parent::preDispatch();
+    }
+
     protected function permissions()
     {
         return $this->acl->isAllowed('manage station media', $this->station->id);

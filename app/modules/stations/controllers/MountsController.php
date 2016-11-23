@@ -8,10 +8,8 @@ class MountsController extends BaseController
 {
     protected function preDispatch()
     {
-        $fa = $this->station->getFrontendAdapter($this->di);
-        if (!$fa->supportsMounts())
-            throw new \App\Exception(_('This station does not currently support mount points. Switch to a different frontend to enable mount point management.'));
-
+        if (!$this->frontend->supportsMounts())
+            throw new \App\Exception(_('This feature is not currently supported on this station.'));
         return parent::preDispatch();
     }
 
@@ -22,7 +20,6 @@ class MountsController extends BaseController
 
     public function indexAction()
     {
-        $this->view->frontend_adapter = $this->station->getFrontendAdapter($this->di);
         $this->view->mounts = $this->station->mounts;
     }
 

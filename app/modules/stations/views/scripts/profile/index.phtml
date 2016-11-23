@@ -25,6 +25,7 @@
             </div>
         </div>
 
+        <?php if ($backend->supportsRequests()): ?>
         <div class="card">
             <div class="card-header <?php if ($station->enable_requests): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?>">
                 <h2><?=_('Song Requests') ?></h2>
@@ -42,12 +43,24 @@
             <?php endif; ?>
             </div>
         </div>
+        <?php else: ?>
+        <div class="card">
+            <div class="card-header bgm-bluegray">
+                <h2><?=_('Song Requests') ?></h2>
+            </div>
+            <div class="card-body card-padding">
+                <p><?=_('This feature is not currently supported on this station.') ?></p>
+            </div>
+        </div>
+        <?php endif; ?>
 
+        <?php if ($frontend->supportsStreamers()): ?>
         <div class="card">
             <div class="card-header <?php if ($station->enable_streamers): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?>">
                 <h2><?=_('Streamers/DJs') ?></h2>
             </div>
             <div class="card-body card-padding">
+
                 <?php if ($station->enable_streamers): ?>
                     <p><?=_('Support for live streamers / DJs is currently <b>enabled</b> for this station. Edit your profile above to enable it.') ?></p>
                     <p><?=sprintf(_('Manage streamer accounts <a href="%s">on the Streamers / DJ Accounts page</a>.'), $url->routeFromHere(['controller' => 'streamers'])) ?></p>
@@ -57,14 +70,46 @@
                 <?php endif; ?>
             </div>
         </div>
+        <?php else: ?>
+        <div class="card">
+            <div class="card-header bgm-bluegray">
+                <h2><?=_('Streamers/DJs') ?></h2>
+            </div>
+            <div class="card-body card-padding">
+                <p><?=_('This feature is not currently supported on this station.') ?></p>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
     <div class="col-sm-6">
-        <?php if ($frontend_type == 'icecast'): ?>
+        <?php if ($frontend_type == 'remote'): ?>
+        <div class="card">
+            <div class="card-header bgm-bluegray ch-alt">
+                <h2>
+                    <?=_('External Radio Server') ?>
+                </h2>
+            </div>
+            <div class="card-body card-padding">
+                <dl>
+                    <dt><?=_('Stream Public URL') ?>:</dt>
+                    <dd>
+                        <?php foreach($stream_urls as $stream_url): ?>
+                            <div><a href="<?=$stream_url ?>"><?=$stream_url ?></a></div>
+                        <?php endforeach; ?>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <?php else: ?>
         <div class="card">
             <div class="card-header <?php if ($frontend_is_running): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?> ch-alt">
                 <h2>
-                    <?=_('IceCast (Broadcasting Service)') ?><br>
-                    <small><?php if ($frontend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
+                    <?php if ($frontend_type == 'icecast'): ?>
+                        <?=_('IceCast (Broadcasting Service)') ?>
+                    <?php elseif ($frontend_type == 'shoutcast2'): ?>
+                        <?=_('ShoutCast (Broadcasting Service)') ?>
+                    <?php endif; ?>
+                    <br><small><?php if ($frontend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>
 
                 <?php if ($acl->isAllowed('manage station broadcasting', $station->id)): ?>
@@ -94,7 +139,7 @@
 
                 <dl>
                     <dt><?=_('Administration URL') ?>:</dt>
-                    <dd><a href="<?=$frontend_adapter->getAdminUrl() ?>"><?=$frontend_adapter->getAdminUrl() ?></a></dd>
+                    <dd><a href="<?=$frontend->getAdminUrl() ?>"><?=$frontend->getAdminUrl() ?></a></dd>
 
                     <dt><?=_('Administrator Password') ?>:</dt>
                     <dd><?=$frontend_config['admin_pw'] ?></dd>
@@ -106,11 +151,22 @@
         </div>
         <?php endif; ?>
 
-        <?php if ($backend_type == 'liquidsoap'): ?>
+        <?php if ($backend_type == 'none'): ?>
+        <div class="card">
+            <div class="card-header bgm-bluegray ch-alt">
+                <h2><?=_('AutoDJ Disabled') ?></h2>
+            </div>
+            <div class="card-body card-padding">
+                <p><?=_('AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.') ?></p>
+            </div>
+        </div>
+        <?php else: ?>
         <div class="card">
             <div class="card-header <?php if ($backend_is_running): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?> ch-alt">
                 <h2>
+                <?php if ($backend_type == 'liquidsoap'): ?>
                     <?=_('LiquidSoap (AutoDJ Service)') ?><br>
+                <?php endif; ?>
                     <small><?php if ($backend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>
 

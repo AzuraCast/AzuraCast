@@ -5,6 +5,9 @@ use Entity\Settings;
 
 class None extends BackendAbstract
 {
+    protected $supports_media = false;
+    protected $supports_requests = false;
+
     public function read()
     {}
 

@@ -29,6 +29,9 @@ class FilesController extends BaseController
     {
         parent::preDispatch();
 
+        if (!$this->backend->supportsMedia())
+            throw new \App\Exception(_('This feature is not currently supported on this station.'));
+
         $this->base_dir = realpath($this->station->radio_base_dir.'/media');
         $this->view->base_dir = $this->base_dir;
 
@@ -314,7 +317,7 @@ class FilesController extends BaseController
                 $this->em->flush();
 
                 // Write new PLS playlist configuration.
-                $this->station->getBackendAdapter($this->di)->write();
+                $this->backend->write();
             break;
 
             // Add all selected files to a playlist.
@@ -348,7 +351,7 @@ class FilesController extends BaseController
                 $this->em->flush();
 
                 // Write new PLS playlist configuration.
-                $this->station->getBackendAdapter($this->di)->write();
+                $this->backend->write();
             break;
         }
 

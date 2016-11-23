@@ -10,9 +10,8 @@ class StreamersController extends BaseController
 {
     protected function preDispatch()
     {
-        $fa = $this->station->getFrontendAdapter($this->di);
-        if (!$fa->supportsStreamers())
-            throw new \App\Exception(_('This station does not currently support streamers.'));
+        if (!$this->frontend->supportsStreamers())
+            throw new \App\Exception(_('This feature is not currently supported on this station.'));
 
         return parent::preDispatch();
     }

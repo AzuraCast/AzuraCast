@@ -9,22 +9,16 @@ class ProfileController extends BaseController
     public function indexAction()
     {
         // Backend controller.
-        $ba = $this->station->getBackendAdapter($this->di);
-
-        $this->view->backend_adapter = $ba;
         $this->view->backend_type = $this->station->backend_type;
         $this->view->backend_config = (array)$this->station->backend_config;
-        $this->view->backend_is_running = $ba->isRunning();
+        $this->view->backend_is_running = $this->backend->isRunning();
 
         // Frontend controller.
-        $fa = $this->station->getFrontendAdapter($this->di);
-
-        $this->view->frontend_adapter = $fa;
         $this->view->frontend_type = $this->station->frontend_type;
         $this->view->frontend_config = $frontend_config = (array)$this->station->frontend_config;
-        $this->view->frontend_is_running = $fa->isRunning();
+        $this->view->frontend_is_running = $this->frontend->isRunning();
 
-        $this->view->stream_urls = $fa->getStreamUrls();
+        $this->view->stream_urls = $this->frontend->getStreamUrls();
 
         // Statistics about backend playback.
         $this->view->num_songs = $this->em->createQuery('SELECT COUNT(sm.id) FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sp.id IS NOT NULL AND sm.station_id = :station_id')
@@ -75,34 +69,32 @@ class ProfileController extends BaseController
     {
         $this->acl->checkPermission('manage station broadcasting', $this->station->id);
 
-        $adapter = $this->station->getBackendAdapter($this->di);
-
         switch($this->getParam('do', 'restart'))
         {
             case "skip":
-                if (method_exists($adapter, 'skip'))
-                    $adapter->skip();
+                if (method_exists($this->backend, 'skip'))
+                    $this->backend->skip();
 
                 $this->alert('<b>'._('Song skipped.').'</b>', 'green');
             break;
 
             case "stop":
-                $adapter->stop();
+                $this->backend->stop();
 
                 $this->alert('<b>'._('Adapter stopped.').'</b>', 'green');
             break;
 
             case "start":
-                $adapter->start();
+                $this->backend->start();
 
                 $this->alert('<b>'._('Adapter started.').'</b>', 'green');
             break;
 
             case "restart":
             default:
-                $adapter->stop();
-                $adapter->write();
-                $adapter->start();
+                $this->backend->stop();
+                $this->backend->write();
+                $this->backend->start();
 
                 $this->alert('<b>'._('Adapter rebooted.').'</b>', 'green');
             break;
@@ -115,27 +107,25 @@ class ProfileController extends BaseController
     {
         $this->acl->checkPermission('manage station broadcasting', $this->station->id);
 
-        $adapter = $this->station->getFrontendAdapter($this->di);
-
         switch($this->getParam('do', 'restart'))
         {
             case "stop":
-                $adapter->stop();
+                $this->frontend->stop();
 
                 $this->alert('<b>'._('Adapter stopped.').'</b>', 'green');
             break;
 
             case "start":
-                $adapter->start();
+                $this->frontend->start();
 
                 $this->alert('<b>'._('Adapter started.').'</b>', 'green');
             break;
 
             case "restart":
             default:
-                $adapter->stop();
-                $adapter->write();
-                $adapter->start();
+                $this->frontend->stop();
+                $this->frontend->write();
+                $this->frontend->start();
 
                 $this->alert('<b>'._('Adapter rebooted.').'</b>', 'green');
             break;

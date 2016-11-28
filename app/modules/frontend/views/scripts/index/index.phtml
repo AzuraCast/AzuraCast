@@ -46,9 +46,15 @@
             <div class="card-header ch-alt">
                 <h2><?=_('Station Overview') ?></h2>
 
-            <?php if ($acl->isAllowed('administer stations')): ?>
-                <a class="btn bgm-blue btn-float" href="<?=$url->route(['module' => 'admin', 'controller' => 'stations', 'action' => 'edit']) ?>"><i class="zmdi zmdi-plus"></i></a>
-            <?php endif; ?>
+
+
+
+                <ul class="actions">
+                    <li><a class="btn-refresh" href="#" title="<?=_('Refresh') ?>"><i class="zmdi zmdi-refresh"></i></a></li>
+                <?php if ($acl->isAllowed('administer stations')): ?>
+                    <li><a class="" title="<?=_('Add') ?>" href="<?=$url->route(['module' => 'admin', 'controller' => 'stations', 'action' => 'edit']) ?>"><i class="zmdi zmdi-plus"></i></a></li>
+                <?php endif; ?>
+                </ul>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -184,7 +190,12 @@ $(function () {
     });
 });
 
+var np_timeout;
+
 function nowPlaying() {
+    clearTimeout(np_timeout);
+    $('.btn-refresh i').addClass('zmdi-hc-spin');
+
     $.getJSON('<?=$url->route(['module' => 'api', 'controller' => 'nowplaying']) ?>', {}, function(data) {
         $.each(data.result, function(i, row) {
             var station_row = $('#station_'+row.station.id);
@@ -194,11 +205,18 @@ function nowPlaying() {
             station_row.find('.nowplaying-listeners').text(row.listeners.total)
         });
 
-        setTimeout('nowPlaying()', 15*1000);
+        $('.btn-refresh i').removeClass('zmdi-hc-spin');
+        np_timeout = setTimeout('nowPlaying()', 15*1000);
     });
 }
 
 $(function() {
     nowPlaying();
+
+    $('.btn-refresh').on('click', function (e) {
+        e.preventDefault();
+        nowPlaying();
+        return false;
+    });
 });
 </script>

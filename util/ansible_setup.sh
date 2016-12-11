@@ -21,7 +21,7 @@ sudo apt-get update
 
 sudo apt-get install -q -y python2.7 python-pip python-mysqldb ansible
 
-cat > /home/ubuntu/.ansible.cfg <<EOF
+cat > $HOME/.ansible.cfg <<EOF
 [defaults]
 remote_tmp = /var/azuracast/www/ansible/tmp
 log_path = /var/azuracast/www/ansible/ansible.log

@@ -232,7 +232,6 @@ class Station extends \App\Doctrine\Entity
         if ($backend->hasCommand())
         {
             $supervisor_config[] = '[program:'.$backend_program.']';
-
             $supervisor_config[] = 'directory='.$config_path;
             $supervisor_config[] = 'command='.$backend->getCommand();
             $supervisor_config[] = 'user=azuracast';

@@ -1,7 +1,7 @@
 ---
   - name: Install supervisord
     become: true
-    apt:  pkg=supervisord state=latest
+    apt:  pkg=supervisor state=latest
 
   - name: Change supervisord configuration
     become: true

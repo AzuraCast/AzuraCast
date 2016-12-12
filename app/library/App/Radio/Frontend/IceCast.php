@@ -145,34 +145,10 @@ class IceCast extends FrontendAbstract
      * Process Management
      */
 
-    public function isRunning()
+    public function getCommand()
     {
-        return $this->_isPidRunning($this->station->getRadioConfigDir().'/icecast.pid');
-    }
-
-    public function stop()
-    {
-        $this->_killPid($this->station->getRadioConfigDir().'/icecast.pid');
-    }
-
-    public function start()
-    {
-        $config_path = $this->station->getRadioConfigDir();
-        $icecast_config = $config_path.'/icecast.xml';
-
-        if ($this->isRunning())
-        {
-            $this->log(_('Not starting, process is already running.'));
-            return;
-        }
-
-        $cmd = \App\Utilities::run_command('icecast2 -b -c '.$icecast_config.' 2>&1');
-
-        if (!empty($cmd['output']))
-            $this->log($cmd['output']);
-
-        if (!empty($cmd['error']))
-            $this->log($cmd['error'], 'red');
+        $config_path = $this->station->getRadioConfigDir().'/icecast.xml';
+        return 'icecast2 -c '.$config_path;
     }
 
     public function getStreamUrl()

@@ -172,6 +172,105 @@ class Station extends \App\Doctrine\Entity
     protected $mounts;
 
     /**
+     * Write all configuration changes to the filesystem and reload supervisord.
+     *
+     * @param ContainerInterface $di
+     */
+    public function writeConfiguration(ContainerInterface $di)
+    {
+        /** @var \Supervisor\Supervisor */
+        $supervisor = $di['supervisor'];
+
+        $config_path = $this->getRadioConfigDir();
+        $supervisor_config = [];
+        $supervisor_config_path = $config_path.'/supervisord.conf';
+
+        $frontend = $this->getFrontendAdapter($di);
+        $backend = $this->getBackendAdapter($di);
+
+        // If no processes need to be managed, remove any existing config.
+        if (!$frontend->hasCommand() && !$backend->hasCommand())
+        {
+            @unlink($supervisor_config_path);
+            return;
+        }
+
+        // Write config files for both backend and frontend.
+        $frontend->write();
+        $backend->write();
+
+        // Get group information
+        $backend_name = $backend->getProgramName();
+        list($backend_group, $backend_program) = explode(':', $backend_name);
+
+        $frontend_name = $frontend->getProgramName();
+        list($frontend_group, $frontend_program) = explode(':', $frontend_name);
+
+        // Write group section of config
+        $programs = [];
+        if ($backend->hasCommand())
+            $programs[] = $backend_program;
+        if ($frontend->hasCommand())
+            $programs[] = $frontend_program;
+
+        $supervisor_config[] = '[group:'.$backend_group.']';
+        $supervisor_config[] = 'programs='.implode(',', $programs);
+        $supervisor_config[] = '';
+
+        // Write frontend
+        if ($frontend->hasCommand())
+        {
+            $supervisor_config[] = '[program:'.$frontend_program.']';
+            $supervisor_config[] = 'directory='.$config_path;
+            $supervisor_config[] = 'command='.$frontend->getCommand();
+            $supervisor_config[] = 'user=azuracast';
+            $supervisor_config[] = 'priority=90';
+            $supervisor_config[] = '';
+        }
+
+        // Write backend
+        if ($backend->hasCommand())
+        {
+            $supervisor_config[] = '[program:'.$backend_program.']';
+
+            $supervisor_config[] = 'directory='.$config_path;
+            $supervisor_config[] = 'command='.$backend->getCommand();
+            $supervisor_config[] = 'user=azuracast';
+            $supervisor_config[] = 'priority=100';
+            $supervisor_config[] = '';
+        }
+
+        // Write config contents
+        $supervisor_config_data = implode("\n", $supervisor_config);
+        file_put_contents($supervisor_config_path, $supervisor_config_data);
+
+        // Trigger a supervisord reload and restart all relevant services.
+        $reload_result = $supervisor->reloadConfig();
+
+        $reload_added = $reload_result[0][0];
+        $reload_changed = $reload_result[0][1];
+        $reload_removed = $reload_result[0][2];
+
+        foreach($reload_removed as $group)
+        {
+            $supervisor->stopProcessGroup($group);
+            $supervisor->removeProcessGroup($group);
+        }
+
+        foreach($reload_changed as $group)
+        {
+            $supervisor->stopProcessGroup($group);
+            $supervisor->removeProcessGroup($group);
+            $supervisor->addProcessGroup($group);
+        }
+
+        foreach($reload_added as $group)
+        {
+            $supervisor->addProcessGroup($group);
+        }
+    }
+
+    /**
      * Static Functions
      */
 
@@ -428,14 +527,8 @@ class StationRepository extends Repository
         // Load configuration from adapter to pull source and admin PWs.
         $frontend_adapter->read();
 
-        // Write initial XML file (if it doesn't exist).
-        $frontend_adapter->write();
-        $frontend_adapter->restart();
-
-        // Write an empty placeholder configuration.
-
-        $backend_adapter->write();
-        $backend_adapter->restart();
+        // Write the adapter configurations and update supervisord.
+        $station->writeConfiguration($di);
 
         // Save changes and continue to the last setup step.
         $this->_em->persist($station);
@@ -450,12 +543,15 @@ class StationRepository extends Repository
      */
     public function destroy(Station $station, ContainerInterface $di)
     {
-        // Stop the radio adapters.
-        $frontend_adapter = $station->getFrontendAdapter($di);
-        $frontend_adapter->stop();
+        /** @var \Supervisor\Supervisor */
+        $supervisor = $di['supervisor'];
 
-        $backend_adapter = $station->getBackendAdapter($di);
-        $backend_adapter->stop();
+        $frontend = $station->getFrontendAdapter($di);
+
+        $frontend_name = $frontend->getProgramName();
+        list($frontend_group, $frontend_program) = explode(':', $frontend_name);
+
+        $supervisor->stopProcessGroup($frontend_group);
 
         // Remove media folders.
         $radio_dir = $station->getRadioBaseDir();

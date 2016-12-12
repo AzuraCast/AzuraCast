@@ -12,12 +12,17 @@ abstract class AdapterAbstract
     /** @var Station */
     protected $station;
 
+    /** @var \Supervisor\Supervisor */
+    protected $supervisor;
+
     /**
      * @param Station $station
      */
     public function __construct(ContainerInterface $di, Station $station)
     {
         $this->di = $di;
+        $this->supervisor = $di['supervisor'];
+
         $this->station = $station;
     }
 
@@ -34,85 +39,73 @@ abstract class AdapterAbstract
     abstract public function write();
 
     /**
+     * Return the shell command required to run the program.
+     * @return string|null
+     */
+    public function getCommand()
+    {
+        return NULL;
+    }
+
+    /**
+     * Return a boolean indicating whether the adapter has an executable command associated with it.
+     * @return bool
+     */
+    public function hasCommand()
+    {
+        return ($this->getCommand() !== null);
+    }
+
+    public function isRunning()
+    {
+        if ($this->hasCommand())
+        {
+            $program_name = $this->getProgramName();
+            $process = $this->supervisor->getProcess($program_name);
+            return $process->isRunning();
+        }
+    }
+
+    /**
+     * Stop the executable service.
+     * @return mixed
+     */
+    public function stop()
+    {
+        if ($this->hasCommand())
+        {
+            $program_name = $this->getProgramName();
+            $this->supervisor->stopProcess($program_name);
+        }
+    }
+
+    /**
+     * Start the executable service.
+     * @return mixed
+     */
+    public function start()
+    {
+        if ($this->hasCommand())
+        {
+            $program_name = $this->getProgramName();
+            $this->supervisor->startProcess($program_name);
+        }
+    }
+
+    /**
      * Restart the executable service.
      */
-    public function restart() {
+    public function restart()
+    {
         $this->stop();
         $this->start();
     }
 
     /**
-     * Stop the executable service.
-     * @return mixed
-     */
-    abstract public function stop();
-
-    /**
-     * Attempt to kill the process represented by the specified pidfile.
-     *
-     * @param $pid_file
-     */
-    protected function _killPid($pid_file)
-    {
-        if (file_exists($pid_file))
-        {
-            $pid = file_get_contents($pid_file);
-
-            $cmd = \App\Utilities::run_command('kill -9 '.$pid);
-
-            if (!empty($cmd['output']))
-                $this->log($cmd['output']);
-
-            if (!empty($cmd['error']))
-                $this->log($cmd['error'], 'red');
-
-            @unlink($pid_file);
-        }
-        else
-        {
-            $this->log('No PID file found.');
-        }
-    }
-
-    /**
-     * Stop the executable service.
-     * @return mixed
-     */
-    abstract public function start();
-
-    /**
-     * Determine if the executable service is running.
+     * Return the program's fully qualified supervisord name.
      * @return bool
      */
-    abstract public function isRunning();
-
-    /**
-     * Check the running status of the process identified by the specified pidfile.
-     *
-     * @param $pid_file
-     * @return bool
-     */
-    protected function _isPidRunning($pid_file)
-    {
-        if (file_exists($pid_file))
-        {
-            $pid = file_get_contents($pid_file);
-
-            $cmd = \App\Utilities::run_command('ps --pid '.$pid);
-
-            /*
-             * if (!empty($cmd['output']))
-                $this->log($cmd['output']);
-            */
-
-            if (!empty($cmd['error']))
-                $this->log($cmd['error'], 'red');
-
-            return !empty($cmd['output']);
-        }
-
-        return false;
-    }
+    abstract public function getProgramName();
 
     /**
      * Log a message to console or to flash (if interactive session).

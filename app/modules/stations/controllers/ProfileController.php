@@ -55,6 +55,8 @@ class ProfileController extends BaseController
             $this->em->persist($this->station);
             $this->em->flush();
 
+            $this->station->writeConfiguration($this->di);
+
             // Clear station cache.
             $cache = $this->di->get('cache');
             $cache->remove('stations');

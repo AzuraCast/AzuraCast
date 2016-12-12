@@ -111,11 +111,13 @@ class Sync
             $task->run();
         });
 
+        /*
         // Check station uptime.
         Debug::runTimer('Check radio station stream uptime', function() {
             $task = new Sync\RadioUptime($this->di);
             $task->run();
         });
+        */
 
         $this->settings->setSetting('sync_last_run', time());
     }

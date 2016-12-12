@@ -20,7 +20,13 @@
     "nette/mail": "2.3.0",
     "james-heinrich/getid3": "~1.9",
     "influxdb/influxdb-php": "~1.4.1",
-    "packaged/helpers": "^1.5"
+    "packaged/helpers": "^1.5",
+
+    "supervisorphp/supervisor": "^3.0",
+    "lstrojny/fxmlrpc": "^0.13.0",
+    "php-http/socket-client": "^1.2",
+    "php-http/message": "^1.4",
+    "php-http/guzzle6-adapter": "^1.1"
   },
   "require-dev": {
     "codeception/codeception": "^2.2",

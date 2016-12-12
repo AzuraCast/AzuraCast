@@ -23,6 +23,11 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         return $this->supports_streamers;
     }
 
+    public function getProgramName()
+    {
+        return 'station_'.$this->station->id.':station_'.$this->station->id.'_frontend';
+    }
+
     abstract public function getStreamUrl();
 
     abstract public function getAdminUrl();

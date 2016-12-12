@@ -16,4 +16,5 @@
     - azuracast-radio
     - php
     - influxdb
+    - supervisord
     - azuracast-cron

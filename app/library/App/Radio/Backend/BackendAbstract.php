@@ -22,4 +22,9 @@ abstract class BackendAbstract extends \App\Radio\AdapterAbstract
         if (!empty(trim($message)))
             parent::log(str_pad('Radio Backend: ', 20, ' ', STR_PAD_RIGHT).$message, $class);
     }
+
+    public function getProgramName()
+    {
+        return 'station_'.$this->station->id.':station_'.$this->station->id.'_backend';
+    }
 }

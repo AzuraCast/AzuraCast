@@ -5,13 +5,7 @@ use Entity\Settings;
 
 class LiquidSoap extends BackendAbstract
 {
-    /**
-     * Read configuration from external service to Station object.
-     */
-    public function read()
-    {
-        /* TODO: Implement read config */
-    }
+    public function read() {}
 
     /**
      * Write configuration from Station object to the external service.
@@ -30,7 +24,7 @@ class LiquidSoap extends BackendAbstract
         $ls_config[] = '# Do not update it directly!';
         $ls_config[] = '';
 
-        $ls_config[] = 'set("init.daemon",true)';
+        $ls_config[] = 'set("init.daemon", false)';
         $ls_config[] = 'set("init.daemon.pidfile.path","'.$config_path.'/liquidsoap.pid")';
         $ls_config[] = 'set("log.file.path","'.$config_path.'/liquidsoap.log")';
 
@@ -313,50 +307,10 @@ class LiquidSoap extends BackendAbstract
         return $hours.'h'.$mins.'m';
     }
 
-    public function isRunning()
-    {
-        return $this->_isPidRunning($this->station->getRadioConfigDir().'/liquidsoap.pid');
-    }
-
-    public function stop()
-    {
-        $this->_killPid($this->station->getRadioConfigDir().'/liquidsoap.pid');
-    }
-
-    public function start()
+    public function getCommand()
     {
         $config_path = $this->station->getRadioConfigDir().'/liquidsoap.liq';
-
-        if (!file_exists($config_path))
-        {
-            $this->log(_('Not starting, nothing to play yet.'));
-            return;
-        }
-
-        if ($this->isRunning())
-        {
-            $this->log(_('Not starting, process is already running.'));
-            return;
-        }
-
-        /*
-         * TODO: Figure out why this works, but simply running this script AS
-         * the 'azuracast' user (the default state) doesn't. No idea.
-         */
-
-        $cmd = \App\Utilities::run_command('sudo -u azuracast liquidsoap '.$config_path.' 2>&1');
-
-        if (!empty($cmd['output']))
-            $this->log($cmd['output']);
-
-        if (!empty($cmd['error']))
-            $this->log($cmd['error'], 'red');
-    }
-
-    public function restart()
-    {
-        $this->stop();
-        $this->start();
+        return 'liquidsoap '.$config_path;
     }
 
     public function request($music_file)
@@ -385,22 +339,6 @@ class LiquidSoap extends BackendAbstract
         fclose($fp);
         return true;
     }
-
-    /*
-    public function getStreamerInfo()
-    {
-        return [
-            'host'          => $this->di['em']->getRepository('Entity\Settings')->getSetting('base_url', 'localhost'),
-            'icecast_port'  => $this->_getHarborPort(),
-            'shoutcast_port' => $this->_getHarborPort()+1,
-        ];
-    }
-
-    protected function _getHarborPort()
-    {
-        return (8000 + (($this->station->id - 1) * 10) + 5);
-    }
-    */
 
     protected function _getTelnetPort()
     {

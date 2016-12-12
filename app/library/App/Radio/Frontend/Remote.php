@@ -154,12 +154,6 @@ class Remote extends FrontendAbstract
         return true;
     }
 
-    public function stop()
-    {}
-
-    public function start()
-    {}
-
     public function getStreamUrl()
     {
         $mounts = $this->_getMounts();

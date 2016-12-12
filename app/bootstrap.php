@@ -236,6 +236,22 @@ $di['messenger'] = function($di) {
     return new \App\Messenger($di);
 };
 
+// Supervisord Interaction
+$di['supervisor'] = function($di) {
+    $guzzle_client = new \GuzzleHttp\Client();
+    $client = new \fXmlRpc\Client(
+        'http://127.0.0.1:9001/RPC2',
+        new \fXmlRpc\Transport\HttpAdapterTransport(
+            new \Http\Message\MessageFactory\GuzzleMessageFactory(),
+            new \Http\Adapter\Guzzle6\Client($guzzle_client)
+        )
+    );
+
+    $connector = new \Supervisor\Connector\XmlRpc($client);
+    $supervisor = new \Supervisor\Supervisor($connector);
+    return $supervisor;
+};
+
 // Scheduled synchronization manager
 $di['sync'] = function($di) {
     return new \App\Sync($di);

@@ -99,50 +99,13 @@ class ShoutCast2 extends FrontendAbstract
      * Process Management
      */
 
-    public function isRunning()
-    {
-        return $this->_isPidRunning($this->station->getRadioConfigDir().'/sc_serv.pid');
-    }
-
-    public function stop()
-    {
-        $this->_killPid($this->station->getRadioConfigDir().'/sc_serv.pid');
-    }
-
-    public function start()
+    public function getCommand()
     {
         $config_path = $this->station->getRadioConfigDir();
-
         $sc_binary = realpath(APP_INCLUDE_ROOT.'/..').'/servers/sc_serv';
         $sc_config = $config_path.'/sc_serv.conf';
 
-        if ($this->isRunning())
-        {
-            $this->log(_('Not starting, process is already running.'));
-            return;
-        }
-
-        $cmd = \App\Utilities::run_command($sc_binary.' daemon '.$sc_config.' > '.$config_path.'/sc_pid_raw.txt');
-
-        if (file_exists($config_path.'/sc_pid_raw.txt'))
-        {
-            $pid_raw = file_get_contents($config_path.'/sc_pid_raw.txt');
-            $this->log($pid_raw);
-
-            preg_match('#\[(.*?)\]#', $pid_raw, $match);
-            $pid = (int)$match[1];
-
-            if ($pid != 0)
-                file_put_contents($config_path.'/sc_serv.pid', $pid);
-
-            @unlink($config_path.'/sc_pid_raw.txt');
-        }
-
-        if (!empty($cmd['output']))
-            $this->log($cmd['output']);
-
-        if (!empty($cmd['error']))
-            $this->log($cmd['error'], 'red');
+        return $sc_binary.' '.$sc_config;
     }
 
     public function getStreamUrl()

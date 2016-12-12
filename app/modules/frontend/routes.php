@@ -54,3 +54,6 @@ $app->group('/public', function() {
         ->setName('public:index');
 
 });
+
+$app->get('/test', 'frontend:util:test')
+    ->setName('util:test');

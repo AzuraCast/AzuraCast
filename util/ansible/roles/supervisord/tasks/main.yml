@@ -2,8 +2,19 @@
   - name: Install supervisord
     become: true
     apt:  pkg=supervisor state=latest
+    register: supervisord_install
 
   - name: Change supervisord configuration
     become: true
     template: src=supervisord.conf.j2 dest=/etc/supervisor/supervisord.conf force=yes
-    notify: restart supervisord
+
+  - name: Kill legacy radio processes (if upgrading from older version)
+    become: true
+    command: killall -9 icecast2 sc_serv liquidsoap
+    ignore_errors: True
+    when: supervisord_install.changed
+
+  - name: Trigger manual restart of supervisord (if not already running)
+    become: true
+    service: name=supervisor enabled=yes state=restarted
+    when: supervisord_install.changed

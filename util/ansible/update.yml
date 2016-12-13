@@ -12,9 +12,9 @@
   roles:
     - init
     - azuracast-config
-    - azuracast-update
     - azuracast-radio
     - php
     - influxdb
     - supervisord
     - azuracast-cron
+    - azuracast-update

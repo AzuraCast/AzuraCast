@@ -27,9 +27,17 @@ class RestartRadio extends CommandAbstract
         \App\Debug::log('Restarting all radio stations...');
         \App\Debug::divider();
 
+        /** @var \Supervisor\Supervisor */
+        $supervisor = $this->di['supervisor'];
+
         /** @var EntityManager $em */
         $em = $this->di['em'];
         $stations = $em->getRepository(Station::class)->findAll();
+
+        $supervisor->stopAllProcesses();
+
+        // Get rid of any processes running from legacy tooling.
+        exec('sudo killall -9 liquidsoap icecast2 sc_serv');
 
         foreach($stations as $station)
         {
@@ -37,19 +45,11 @@ class RestartRadio extends CommandAbstract
 
             \App\Debug::log('Restarting station #'.$station->id.': '.$station->name);
 
-            $backend = $station->getBackendAdapter($this->di);
-            $frontend = $station->getFrontendAdapter($this->di);
-
-            $backend->stop();
-            $frontend->stop();
-
-            $frontend->write();
-            $backend->write();
-
-            $frontend->start();
-            $backend->start();
+            $station->writeConfiguration($this->di);
 
             \App\Debug::divider();
         }
+
+        $supervisor->startAllProcesses();
     }
 }

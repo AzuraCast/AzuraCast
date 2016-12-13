@@ -36,9 +36,6 @@ class RestartRadio extends CommandAbstract
 
         $supervisor->stopAllProcesses();
 
-        // Get rid of any processes running from legacy tooling.
-        exec('sudo killall -9 liquidsoap icecast2 sc_serv');
-
         foreach($stations as $station)
         {
             /** @var Station $station */

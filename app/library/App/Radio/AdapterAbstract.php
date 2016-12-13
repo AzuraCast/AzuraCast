@@ -53,6 +53,9 @@ abstract class AdapterAbstract
      */
     public function hasCommand()
     {
+        if (APP_TESTING_MODE)
+            return false;
+
         return ($this->getCommand() !== null);
     }
 

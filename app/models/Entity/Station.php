@@ -178,6 +178,9 @@ class Station extends \App\Doctrine\Entity
      */
     public function writeConfiguration(ContainerInterface $di)
     {
+        if (APP_TESTING_MODE)
+            return;
+
         /** @var \Supervisor\Supervisor */
         $supervisor = $di['supervisor'];
 
@@ -542,15 +545,19 @@ class StationRepository extends Repository
      */
     public function destroy(Station $station, ContainerInterface $di)
     {
-        /** @var \Supervisor\Supervisor */
-        $supervisor = $di['supervisor'];
-
         $frontend = $station->getFrontendAdapter($di);
+        $backend = $station->getBackendAdapter($di);
 
-        $frontend_name = $frontend->getProgramName();
-        list($frontend_group, $frontend_program) = explode(':', $frontend_name);
+        if ($frontend->hasCommand() || $backend->hasCommand())
+        {
+            /** @var \Supervisor\Supervisor */
+            $supervisor = $di['supervisor'];
 
-        $supervisor->stopProcessGroup($frontend_group);
+            $frontend_name = $frontend->getProgramName();
+            list($frontend_group, $frontend_program) = explode(':', $frontend_name);
+
+            $supervisor->stopProcessGroup($frontend_group);
+        }
 
         // Remove media folders.
         $radio_dir = $station->getRadioBaseDir();

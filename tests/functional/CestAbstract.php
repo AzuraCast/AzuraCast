@@ -33,6 +33,8 @@ abstract class CestAbstract
         {
             $station_repo = $this->em->getRepository(\Entity\Station::class);
             $this->test_station = $station_repo->destroy($this->test_station, $this->di);
+
+            sleep(5);
         }
     }
 

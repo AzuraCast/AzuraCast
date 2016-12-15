@@ -2,7 +2,9 @@
 namespace App\Radio;
 
 use Entity\Station;
+use fXmlRpc\Exception\FaultException;
 use Interop\Container\ContainerInterface;
+use Supervisor\Process;
 
 abstract class AdapterAbstract
 {
@@ -59,39 +61,70 @@ abstract class AdapterAbstract
         return ($this->getCommand() !== null);
     }
 
+    /**
+     * Check if the service is running.
+     *
+     * @return bool
+     */
     public function isRunning()
     {
         if ($this->hasCommand())
         {
             $program_name = $this->getProgramName();
             $process = $this->supervisor->getProcess($program_name);
-            return $process->isRunning();
+
+            if ($process instanceof Process)
+                return $process->isRunning();
         }
+
+        return false;
     }
 
     /**
      * Stop the executable service.
-     * @return mixed
      */
     public function stop()
     {
         if ($this->hasCommand())
         {
-            $program_name = $this->getProgramName();
-            $this->supervisor->stopProcess($program_name);
+            try
+            {
+                $program_name = $this->getProgramName();
+                $this->supervisor->stopProcess($program_name);
+
+                $this->log(_('Process stopped.'), 'green');
+            }
+            catch(FaultException $e)
+            {
+                if (stristr($e->getMessage(), 'NOT_RUNNING') !== false)
+                    $this->log(_('Process was not running!'), 'red');
+                else
+                    throw $e;
+            }
         }
     }
 
     /**
      * Start the executable service.
-     * @return mixed
      */
     public function start()
     {
         if ($this->hasCommand())
         {
-            $program_name = $this->getProgramName();
-            $this->supervisor->startProcess($program_name);
+            try
+            {
+                $program_name = $this->getProgramName();
+                $this->supervisor->startProcess($program_name);
+
+                $this->log(_('Process started.'), 'green');
+            }
+            catch(FaultException $e)
+            {
+                if (stristr($e->getMessage(), 'ALREADY_STARTED') !== false)
+                    $this->log(_('Process is already running!'), 'red');
+                else
+                    throw $e;
+            }
         }
     }
 

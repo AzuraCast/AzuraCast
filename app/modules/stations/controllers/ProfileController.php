@@ -82,14 +82,10 @@ class ProfileController extends BaseController
 
             case "stop":
                 $this->backend->stop();
-
-                $this->alert('<b>'._('Adapter stopped.').'</b>', 'green');
             break;
 
             case "start":
                 $this->backend->start();
-
-                $this->alert('<b>'._('Adapter started.').'</b>', 'green');
             break;
 
             case "restart":
@@ -97,8 +93,6 @@ class ProfileController extends BaseController
                 $this->backend->stop();
                 $this->backend->write();
                 $this->backend->start();
-
-                $this->alert('<b>'._('Adapter rebooted.').'</b>', 'green');
             break;
         }
 
@@ -113,14 +107,10 @@ class ProfileController extends BaseController
         {
             case "stop":
                 $this->frontend->stop();
-
-                $this->alert('<b>'._('Adapter stopped.').'</b>', 'green');
             break;
 
             case "start":
                 $this->frontend->start();
-
-                $this->alert('<b>'._('Adapter started.').'</b>', 'green');
             break;
 
             case "restart":
@@ -128,8 +118,6 @@ class ProfileController extends BaseController
                 $this->frontend->stop();
                 $this->frontend->write();
                 $this->frontend->start();
-
-                $this->alert('<b>'._('Adapter rebooted.').'</b>', 'green');
             break;
         }
 

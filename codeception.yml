@@ -19,37 +19,16 @@ coverage:
   include:
    - app/*
   exclude:
-   # Loaded before tests
-   - app/library/App/Tests/Module.php
-   - app/library/App/Doctrine/EntityManagerFactory.php
-
-   # Not used in entire application
-   - app/library/App/Crypto.php
-   - app/library/App/Messenger.php
-   - app/library/App/Forms/Element/Recaptcha.php
-   - app/library/App/Paginator/Doctrine.php
-   - app/library/App/Doctrine/Type/*.php
-   - app/library/App/Doctrine/Platform/*.php
-   - app/library/App/Doctrine/Filter/*.php
-   - app/library/App/Doctrine/Paginate/*.php
-   - app/library/App/Doctrine/Functions/*.php
-   - app/library/App/Radio/Frontend/ShoutCast1.php
-   - app/library/App/Radio/Frontend/ShoutCast2.php
+   # Not used in application
+   - app/library/AzuraCast/Radio/Frontend/ShoutCast2.php
 
    # Used in application, but not used in tests
-   - app/library/App/Doctrine/Logger/EchoSQL.php
-   - app/library/App/Session/Temporary.php
-   - app/library/App/Console/Command/*.php
+   - app/library/AzuraCast/Console/Command/*.php
    - app/**/*.conf.sample.php
    - app/models/Migration/*
    - app/locale/**/*
    - app/locale/*
    - app/templates/system/error_general.phtml
-
-   # Exceptions
-   - app/library/App/Exception.php
-   - app/library/App/Exception/*.php
-   - app/library/App/Mvc/ErrorHandler.php
 
    # Used in application, but not detected properly by the coverage tool :(
    - app/**/routes.php

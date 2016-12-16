@@ -2,25 +2,13 @@
   "name": "slvreagle23/azuracast",
   "description": "The AzuraCast standalone radio station management tool.",
   "require": {
-    "slim/slim": "^3.0",
-    "league/plates": "^3.1",
-    "filp/whoops": "1.*",
-    "doctrine/orm": "~2.5",
-    "tedivm/stash": "0.14.*",
-    "nibble/nibble-forms": "dev-master",
-
-    "zendframework/zend-paginator": "^2.7",
-    "zendframework/zend-config": "^2.6",
-
-    "doctrine/migrations": "^1.4",
-    "jdorn/sql-formatter": "^1.2",
+    "slvreagle23/azuracore": "dev-master",
 
     "guzzlehttp/guzzle": ">6.0",
     "electrolinux/phpquery": "0.9.6",
-    "nette/mail": "2.3.0",
+
     "james-heinrich/getid3": "~1.9",
     "influxdb/influxdb-php": "~1.4.1",
-    "packaged/helpers": "^1.5",
 
     "supervisorphp/supervisor": "^3.0",
     "lstrojny/fxmlrpc": "^0.13.0",
@@ -42,5 +30,6 @@
   "config": {
     "preferred-install": "dist"
   },
-  "minimum-stability": "stable"
+  "prefer-stable": true,
+  "minimum-stability": "dev"
 }

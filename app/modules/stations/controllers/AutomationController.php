@@ -39,7 +39,7 @@ class AutomationController extends BaseController
     {
         try
         {
-            $automation = new \App\Sync\RadioAutomation($this->di);
+            $automation = new \AzuraCast\Sync\RadioAutomation($this->di);
 
             if ($automation->runStation($this->station, true))
                 $this->alert('<b>'._('Automated assignment complete!').'</b>', 'green');

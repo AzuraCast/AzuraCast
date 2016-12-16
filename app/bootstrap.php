@@ -42,7 +42,7 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']))
 
 // Composer autoload.
 $autoloader = require(APP_INCLUDE_VENDOR . '/autoload.php');
-$autoloader->add('App', APP_INCLUDE_LIB);
+$autoloader->add('AzuraCast', APP_INCLUDE_LIB);
 
 // Set up DI container.
 $app_settings = [
@@ -153,7 +153,7 @@ $di['auth'] = function($di) {
 };
 
 $di['acl'] = function($di) {
-    return new \App\Acl\StationAcl($di['em'], $di['auth']);
+    return new \AzuraCast\Acl\StationAcl($di['em'], $di['auth']);
 };
 
 // Caching
@@ -254,7 +254,7 @@ $di['supervisor'] = function($di) {
 
 // Scheduled synchronization manager
 $di['sync'] = function($di) {
-    return new \App\Sync($di);
+    return new \AzuraCast\Sync($di);
 };
 
 // Currently logged in user
@@ -268,7 +268,7 @@ $di['user'] = $di->factory(function($di) {
 });
 
 $di['customization'] = $di->factory(function($di) {
-    return new \App\Customization($di);
+    return new \AzuraCast\Customization($di);
 });
 
 $di['view'] = $di->factory(function($di) {

@@ -18,7 +18,7 @@ return [
             'label' => _('Days Between Automated Assignments'),
             'description' => _('Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.'),
             'class' => 'inline',
-            'default' => \App\Sync\RadioAutomation::DEFAULT_THRESHOLD_DAYS,
+            'default' => \AzuraCast\Sync\RadioAutomation::DEFAULT_THRESHOLD_DAYS,
             'options' => [
                 7 => '7 days',
                 14 => '14 days',

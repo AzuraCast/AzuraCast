@@ -32,10 +32,6 @@ $config = [
         ],
     ],
 
-    'includePaths' => [
-        APP_INCLUDE_LIB . '/ThirdParty',
-    ],
-
     'pluginpaths' => [
         'DF\Application\Resource\\' => 'DF/Application/Resource',
     ],

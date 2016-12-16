@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Admin\Controllers;
 
-class BaseController extends \App\Mvc\Controller
+class BaseController extends \AzuraCast\Mvc\Controller
 {
     protected function preDispatch()
     {

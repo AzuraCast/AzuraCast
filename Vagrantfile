@@ -6,19 +6,13 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "ubuntu/xenial64"
-
-  config.vm.provider "hyperv" do |v, override|
-    override.vm.box = "nikel/xerus64"
-  end
+  config.vm.box = "bento/ubuntu-16.04"
 
   # Support for Parallels provider for Vagrant
   # See: http://parallels.github.io/vagrant-parallels/docs/
   config.vm.provider "parallels" do |v, override|
     # v.update_guest_tools = true
     v.memory = 1024
-
-    override.vm.box = "parallels/ubuntu-16.04"
   end
 
   # Customization for Virtualbox (default provider)

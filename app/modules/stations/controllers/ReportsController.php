@@ -19,9 +19,9 @@ class ReportsController extends BaseController
         if (isset($automation_config['threshold_days']))
             $threshold_days = (int)$automation_config['threshold_days'];
         else
-            $threshold_days = \App\Sync\RadioAutomation::DEFAULT_THRESHOLD_DAYS;
+            $threshold_days = \AzuraCast\Sync\RadioAutomation::DEFAULT_THRESHOLD_DAYS;
 
-        $automation = new \App\Sync\RadioAutomation($this->di);
+        $automation = new \AzuraCast\Sync\RadioAutomation($this->di);
         $report_data = $automation->generateReport($this->station, $threshold_days);
 
         // Do not show songs that are not in playlists.

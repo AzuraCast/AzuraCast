@@ -44,10 +44,10 @@ $cli->addCommands($migration_commands);
 
 // App-specific commands
 $cli->addCommands(array(
-    new \App\Console\Command\ClearCache($di),
-    new \App\Console\Command\RestartRadio($di),
-    new \App\Console\Command\Sync($di),
-    new \App\Console\Command\StreamerAuth($di),
+    new \AzuraCast\Console\Command\ClearCache($di),
+    new \AzuraCast\Console\Command\RestartRadio($di),
+    new \AzuraCast\Console\Command\Sync($di),
+    new \AzuraCast\Console\Command\StreamerAuth($di),
 ));
 
 $cli->run();

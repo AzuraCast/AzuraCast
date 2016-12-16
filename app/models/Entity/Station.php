@@ -52,7 +52,7 @@ class Station extends \App\Doctrine\Entity
     protected $frontend_config;
 
     /**
-     * @return \App\Radio\Frontend\FrontendAbstract
+     * @return \AzuraCast\Radio\Frontend\FrontendAbstract
      * @throws \Exception
      */
     public function getFrontendAdapter(ContainerInterface $di)
@@ -73,7 +73,7 @@ class Station extends \App\Doctrine\Entity
     protected $backend_config;
 
     /**
-     * @return \App\Radio\Backend\BackendAbstract
+     * @return \AzuraCast\Radio\Backend\BackendAbstract
      * @throws \Exception
      */
     public function getBackendAdapter(ContainerInterface $di)
@@ -307,15 +307,15 @@ class Station extends \App\Doctrine\Entity
             'adapters' => [
                 'icecast' => [
                     'name' => 'IceCast 2.4',
-                    'class' => '\App\Radio\Frontend\IceCast',
+                    'class' => '\AzuraCast\Radio\Frontend\IceCast',
                 ],
-                'shoutcast2' => array(
-                    'name'      => 'ShoutCast 2',
-                    'class'     => '\App\Radio\Frontend\ShoutCast2',
-                ),
+                'shoutcast2' => [
+                    'name' => 'ShoutCast 2',
+                    'class' => '\AzuraCast\Radio\Frontend\ShoutCast2',
+                ],
                 'remote' => [
                     'name' => _('External Radio Server (Statistics Only)'),
-                    'class' => '\App\Radio\Frontend\Remote',
+                    'class' => '\AzuraCast\Radio\Frontend\Remote',
                 ],
             ],
         ];
@@ -331,11 +331,11 @@ class Station extends \App\Doctrine\Entity
             'adapters' => [
                 'liquidsoap' => [
                     'name' => 'LiquidSoap',
-                    'class' => '\App\Radio\Backend\LiquidSoap',
+                    'class' => '\AzuraCast\Radio\Backend\LiquidSoap',
                 ],
                 'none' => [
                     'name' => _('Disabled'),
-                    'class' => '\App\Radio\Backend\None',
+                    'class' => '\AzuraCast\Radio\Backend\None',
                 ],
             ],
         ];
@@ -494,7 +494,7 @@ class StationRepository extends Repository
         $this->_em->flush();
 
         // Scan directory for any existing files.
-        $media_sync = new \App\Sync\Media($di);
+        $media_sync = new \AzuraCast\Sync\Media($di);
 
         set_time_limit(600);
         $media_sync->importMusic($station);

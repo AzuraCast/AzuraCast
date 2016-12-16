@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2ac95916b8b5015a2ce8313dbfbf4171",
+    "hash": "99984f23e7feb88819b266c44b50eee7",
     "content-hash": "de00a74b354904ee833e184b3afeebad",
     "packages": [
         {
@@ -2322,12 +2322,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SlvrEagle23/AzuraCore.git",
-                "reference": "e79208553b1ed749f88cc52487110a3ce64f7cb7"
+                "reference": "c7bd91319e1ad0ba6de86336c00770ae63401ff9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SlvrEagle23/AzuraCore/zipball/e79208553b1ed749f88cc52487110a3ce64f7cb7",
-                "reference": "e79208553b1ed749f88cc52487110a3ce64f7cb7",
+                "url": "https://api.github.com/repos/SlvrEagle23/AzuraCore/zipball/c7bd91319e1ad0ba6de86336c00770ae63401ff9",
+                "reference": "c7bd91319e1ad0ba6de86336c00770ae63401ff9",
                 "shasum": ""
             },
             "require": {
@@ -2356,6 +2356,9 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
             "authors": [
                 {
                     "name": "Buster Neece",
@@ -2363,7 +2366,7 @@
                 }
             ],
             "description": "The common web application framework code powering AzuraCast and other similar MVC PHP web applications.",
-            "time": "2016-12-16 20:37:40"
+            "time": "2016-12-16 20:53:11"
         },
         {
             "name": "supervisorphp/supervisor",

@@ -16,7 +16,7 @@ $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(
     'dialog' => new \Symfony\Component\Console\Helper\QuestionHelper(),
 ));
 
-$cli = new \Symfony\Component\Console\Application($config->application->name.' Command Line Tools', \App\Version::getVersion());
+$cli = new \Symfony\Component\Console\Application($config->application->name.' Command Line Tools', \AzuraCast\Version::getVersion());
 $cli->setCatchExceptions(true);
 $cli->setHelperSet($helperSet);
 

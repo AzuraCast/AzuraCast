@@ -182,23 +182,6 @@ class IceCast extends FrontendAbstract
         return $this->getPublicUrl().'/admin/';
     }
 
-    public function getPublicUrl()
-    {
-        $fe_config = (array)$this->station->frontend_config;
-        $radio_port = $fe_config['port'];
-
-        $settings_repo = $this->di['em']->getRepository('Entity\Settings');
-
-        $base_url = $settings_repo->getSetting('base_url', 'localhost');
-        $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
-
-        // Web proxy support.
-        if (APP_APPLICATION_ENV == 'development' || $use_radio_proxy)
-            return '/radio/'.$radio_port;
-        else
-            return 'http://'.$base_url.':'.$radio_port;
-    }
-
     /*
      * Configuration
      */

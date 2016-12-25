@@ -128,20 +128,6 @@ class ShoutCast2 extends FrontendAbstract
         return $this->getPublicUrl().'/admin.cgi';
     }
 
-    public function getPublicUrl()
-    {
-        $fe_config = (array)$this->station->frontend_config;
-        $radio_port = $fe_config['port'];
-
-        $base_url = $this->di['em']->getRepository('Entity\Settings')->getSetting('base_url', 'localhost');
-
-        // Vagrant port-forwarding mode.
-        if (APP_APPLICATION_ENV == 'development')
-            return 'http://'.$base_url.':8080/radio/'.$radio_port;
-        else
-            return 'http://'.$base_url.':'.$radio_port;
-    }
-
     /*
      * Configuration
      */

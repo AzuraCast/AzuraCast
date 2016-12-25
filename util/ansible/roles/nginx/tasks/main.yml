@@ -4,7 +4,7 @@
     apt:  pkg=nginx state=latest
 
   - name: Create nginx ssl directory
-    file: path="{{ item }}" state=directory owner=root group=root mode=0733
+    file: path="{{ item }}" state=directory owner=root group=root mode=0744
     with_items:
      - "/etc/nginx/ssl"
 

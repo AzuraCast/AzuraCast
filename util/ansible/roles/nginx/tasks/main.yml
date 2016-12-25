@@ -3,6 +3,10 @@
     become: true
     apt:  pkg=nginx state=latest
 
+  - name: create self-signed SSL cert
+    command: openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=${ansible_fqdn}" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca creates=/etc/nginx/ssl/server.crt
+    notify: reload nginx
+
   - name: Change default nginx site
     become: true
     template: src=default.j2 dest=/etc/nginx/sites-available/default

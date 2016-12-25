@@ -13,6 +13,7 @@
     - init
     - azuracast-config
     - azuracast-radio
+    - nginx
     - php
     - influxdb
     - supervisord

@@ -25,6 +25,16 @@ return [
                         'default' => $base_url_default,
                     ]],
 
+                    'use_radio_proxy' => ['radio', [
+                        'label' => _('Use Web Proxy for Radio'),
+                        'description' => _('By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).'),
+                        'options' => [
+                            0 => 'No',
+                            1 => 'Yes',
+                        ],
+                        'default' => 0,
+                    ]],
+
                 ],
             ],
 

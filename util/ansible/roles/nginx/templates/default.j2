@@ -1,7 +1,11 @@
 client_max_body_size 50M;
 
 server {
-    listen 80 default_server;
+    listen 80;
+    listen 443 default_server ssl;
+
+    ssl_certificate    /etc/nginx/ssl/server.crt;
+    ssl_certificate_key    /etc/nginx/ssl/server.key;
 
     root {{ app_base }}/www/web;
     index index.php;

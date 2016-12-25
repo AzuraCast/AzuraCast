@@ -187,11 +187,14 @@ class IceCast extends FrontendAbstract
         $fe_config = (array)$this->station->frontend_config;
         $radio_port = $fe_config['port'];
 
-        $base_url = $this->di['em']->getRepository('Entity\Settings')->getSetting('base_url', 'localhost');
+        $settings_rep   o = $this->di['em']->getRepository('Entity\Settings');
 
-        // Vagrant port-forwarding mode.
-        if (APP_APPLICATION_ENV == 'development')
-            return 'http://'.$base_url.':8080/radio/'.$radio_port;
+        $base_url = $settings_repo->getSetting('base_url', 'localhost');
+        $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
+
+        // Web proxy support.
+        if (APP_APPLICATION_ENV == 'development' || $use_radio_proxy)
+            return '/radio/'.$radio_port;
         else
             return 'http://'.$base_url.':'.$radio_port;
     }

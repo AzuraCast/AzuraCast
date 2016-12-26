@@ -7,6 +7,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "bento/ubuntu-16.04"
+  config.ssh.insert_key = false
 
   # Support for Parallels provider for Vagrant
   # See: http://parallels.github.io/vagrant-parallels/docs/
@@ -29,6 +30,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Web Server
   config.vm.network :forwarded_port, guest: 80, host: 8080
+  config.vm.network :forwarded_port, guest: 443, host: 8443
 
   # InfluxDB
   config.vm.network :forwarded_port, guest: 8083, host: 8083

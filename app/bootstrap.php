@@ -22,6 +22,7 @@ define("APP_INCLUDE_MODULES", APP_INCLUDE_BASE.'/modules');
 define("APP_INCLUDE_TEMP", APP_INCLUDE_ROOT.'/../www_tmp');
 define("APP_INCLUDE_CACHE", APP_INCLUDE_TEMP.'/cache');
 
+define("APP_INCLUDE_LIB", APP_INCLUDE_BASE.'/library');
 define("APP_INCLUDE_VENDOR", APP_INCLUDE_ROOT.'/vendor');
 
 define("APP_UPLOAD_FOLDER", APP_INCLUDE_STATIC);
@@ -41,6 +42,7 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']))
 
 // Composer autoload.
 $autoloader = require(APP_INCLUDE_VENDOR . '/autoload.php');
+$autoloader->add('AzuraCast', APP_INCLUDE_LIB);
 
 // Set up DI container.
 $app_settings = [

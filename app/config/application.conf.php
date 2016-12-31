@@ -32,10 +32,6 @@ $config = [
         ],
     ],
 
-    'pluginpaths' => [
-        'DF\Application\Resource\\' => 'DF/Application/Resource',
-    ],
-
     'autoload' => [
         'psr0' => [
             'Entity' => APP_INCLUDE_MODELS,
@@ -88,9 +84,6 @@ if (APP_APPLICATION_ENV != 'production')
 
     // Update if your local configuration differs.
     $config['base_url'] = '//localhost:8080';
-
-    unset($config['api_url']);
-    unset($config['upload_url']);
 }
 
 return $config;

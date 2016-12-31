@@ -42,7 +42,6 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']))
 
 // Composer autoload.
 $autoloader = require(APP_INCLUDE_VENDOR . '/autoload.php');
-$autoloader->add('AzuraCast', APP_INCLUDE_LIB);
 
 // Set up DI container.
 $app_settings = [
@@ -294,7 +293,7 @@ $cache = $di->get('cache');
 
 if (!APP_IS_COMMAND_LINE || APP_TESTING_MODE)
 {
-    /** @var \App\Customization $customization */
+    /** @var \AzuraCast\Customization $customization */
     $customization = $di->get('customization');
 
     // Set time zone.

@@ -29,6 +29,11 @@
       "email": "buster@busterneece.com"
     }
   ],
+  "autoload": {
+    "psr-4": {
+      "AzuraCast\\": "app/library/AzuraCast"
+    }
+  },
   "config": {
     "preferred-install": "dist"
   },

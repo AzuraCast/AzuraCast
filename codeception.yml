@@ -18,12 +18,13 @@ coverage:
   enabled: true
   include:
    - app/*
+   - src/*
   exclude:
    # Not used in application
-   - app/library/AzuraCast/Radio/Frontend/ShoutCast2.php
+   - src/AzuraCast/Radio/Frontend/ShoutCast2.php
 
    # Used in application, but not used in tests
-   - app/library/AzuraCast/Console/Command/*.php
+   - src/AzuraCast/Console/Command/*.php
    - app/**/*.conf.sample.php
    - app/models/Migration/*
    - app/locale/**/*

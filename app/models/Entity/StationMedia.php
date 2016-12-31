@@ -124,7 +124,7 @@ class StationMedia extends \App\Doctrine\Entity
             $file_info = $id3->analyze($media_path);
 
             if (isset($file_info['error']))
-                throw new \App\Exception($file_info['error']);
+                throw new \App\Exception($file_info['error'][0]);
 
             $this->setLength($file_info['playtime_seconds']);
 

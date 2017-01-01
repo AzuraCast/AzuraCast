@@ -59,7 +59,7 @@ class Media extends SyncAbstract
 
                     $em->persist($media_row);
                 }
-                catch(\Exception $e)
+                catch(\App\Exception $e)
                 {
                     $media_row->moveToNotProcessed();
 

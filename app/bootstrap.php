@@ -16,14 +16,15 @@ define("APP_INCLUDE_ROOT", realpath(APP_INCLUDE_BASE.'/..'));
 define("APP_INCLUDE_WEB", APP_INCLUDE_ROOT.'/web');
 define("APP_INCLUDE_STATIC", APP_INCLUDE_WEB.'/static');
 
-define("APP_INCLUDE_MODELS", APP_INCLUDE_BASE.'/models');
+define("APP_INCLUDE_VENDOR", APP_INCLUDE_ROOT.'/vendor');
+
+define("APP_INCLUDE_LIB", APP_INCLUDE_ROOT.'/src');
+define("APP_INCLUDE_MODELS", APP_INCLUDE_LIB);
+
 define("APP_INCLUDE_MODULES", APP_INCLUDE_BASE.'/modules');
 
 define("APP_INCLUDE_TEMP", APP_INCLUDE_ROOT.'/../www_tmp');
 define("APP_INCLUDE_CACHE", APP_INCLUDE_TEMP.'/cache');
-
-define("APP_INCLUDE_LIB", APP_INCLUDE_BASE.'/library');
-define("APP_INCLUDE_VENDOR", APP_INCLUDE_ROOT.'/vendor');
 
 define("APP_UPLOAD_FOLDER", APP_INCLUDE_STATIC);
 

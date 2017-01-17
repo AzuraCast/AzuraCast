@@ -31,7 +31,9 @@
   ],
   "autoload": {
     "psr-4": {
-      "AzuraCast\\": "app/library/AzuraCast"
+      "AzuraCast\\": "src/AzuraCast",
+      "Entity\\": "src/Entity",
+      "Migration\\": "src/Migration"
     }
   },
   "config": {

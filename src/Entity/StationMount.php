@@ -5,7 +5,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Table(name="station_mounts")
- * @Entity(repositoryClass="StationMountRepository")
+ * @Entity(repositoryClass="Entity\Repository\StationMountRepository")
  * @HasLifecycleCallbacks
  */
 class StationMount extends \App\Doctrine\Entity
@@ -70,14 +70,4 @@ class StationMount extends \App\Doctrine\Entity
      * })
      */
     protected $station;
-}
-
-use App\Doctrine\Repository;
-
-class StationMountRepository extends Repository
-{
-    public function getDefaultMount(Station $station)
-    {
-        return $this->findOneBy(['station_id' => $station->id, 'is_default' => true]);
-    }
 }

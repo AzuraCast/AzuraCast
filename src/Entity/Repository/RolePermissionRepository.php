@@ -1,52 +1,9 @@
 <?php
-namespace Entity;
+namespace Entity\Repository;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Entity;
 
-/**
- * @Table(name="role_permissions", uniqueConstraints={
- *   @UniqueConstraint(name="role_permission_unique_idx", columns={"role_id","action_name","station_id"})
- * })
- * @Entity(repositoryClass="RolePermissionRepository")
- */
-class RolePermission extends \App\Doctrine\Entity
-{
-    /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
-     */
-    protected $id;
-
-    /** @Column(name="role_id", type="integer") */
-    protected $role_id;
-
-    /**
-     * @ManyToOne(targetEntity="Role", inversedBy="permissions")
-     * @JoinColumns({
-     *   @JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
-    protected $role;
-
-    /** @Column(name="action_name", type="string", length=50, nullable=false) */
-    protected $action_name;
-
-    /** @Column(name="station_id", type="integer", nullable=true) */
-    protected $station_id;
-
-    /**
-     * @ManyToOne(targetEntity="Station")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
-    protected $station;
-}
-
-use App\Doctrine\Repository;
-
-class RolePermissionRepository extends Repository
+class RolePermissionRepository extends \App\Doctrine\Repository
 {
     public function getActionsForAllRoles()
     {
@@ -64,7 +21,7 @@ class RolePermissionRepository extends Repository
         return $roles;
     }
 
-    public function getActionsForRole(Role $role)
+    public function getActionsForRole(Entity\Role $role)
     {
         $role_has_action = $this->findBy(['role_id' => $role->id]);
 
@@ -80,7 +37,7 @@ class RolePermissionRepository extends Repository
         return $result;
     }
 
-    public function setActionsForRole(Role $role, $post_values)
+    public function setActionsForRole(Entity\Role $role, $post_values)
     {
         $this->_em->createQuery('DELETE FROM '.$this->_entityName.' rp WHERE rp.role_id = :role_id')
             ->setParameter('role_id', $role->id)
@@ -103,7 +60,7 @@ class RolePermissionRepository extends Repository
                 if ($post_key_id !== 'global')
                     $record_info['station_id'] = $post_key_id;
 
-                $record = new RolePermission;
+                $record = new Entity\RolePermission;
                 $record->fromArray($this->_em, $record_info);
 
                 $this->_em->persist($record);

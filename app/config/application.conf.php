@@ -33,9 +33,7 @@ $config = [
     ],
 
     'autoload' => [
-        'psr0' => [
-            'Entity' => APP_INCLUDE_MODELS,
-        ],
+        'psr0' => [],
         'psr4' => [
             '\\Proxy\\' => APP_INCLUDE_TEMP . '/proxies',
         ],

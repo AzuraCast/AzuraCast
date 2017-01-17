@@ -1,28 +1,9 @@
 <?php
-namespace Entity;
+namespace Entity\Repository;
 
-use \Doctrine\ORM\Mapping as ORM;
+use Entity;
 
-/**
- * @Table(name="settings")
- * @Entity(repositoryClass="SettingsRepository")
- */
-class Settings extends \App\Doctrine\Entity
-{
-    /**
-     * @Column(name="setting_key", type="string", length=64)
-     * @Id
-     * @GeneratedValue(strategy="NONE")
-     */
-    protected $setting_key;
-
-    /** @Column(name="setting_value", type="json", nullable=true) */
-    protected $setting_value;
-}
-
-use App\Doctrine\Repository;
-
-class SettingsRepository extends Repository
+class SettingsRepository extends \App\Doctrine\Repository
 {
     /**
      * @param $settings
@@ -44,9 +25,9 @@ class SettingsRepository extends Repository
     {
         $record = $this->findOneBy(['setting_key' => $key]);
 
-        if (!($record instanceof Settings))
+        if (!($record instanceof Entity\Settings))
         {
-            $record = new Settings;
+            $record = new Entity\Settings;
             $record->setting_key = $key;
         }
 
@@ -101,7 +82,7 @@ class SettingsRepository extends Repository
 
         if (!$settings || !$cached)
         {
-            $settings_raw = $this->_em->createQuery('SELECT s FROM Entity\Settings s ORDER BY s.setting_key ASC')
+            $settings_raw = $this->_em->createQuery('SELECT s FROM '.$this->_entityName.' s ORDER BY s.setting_key ASC')
                 ->getArrayResult();
 
             $settings = array();

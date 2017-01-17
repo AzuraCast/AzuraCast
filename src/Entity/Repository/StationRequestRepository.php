@@ -1,75 +1,20 @@
 <?php
-namespace Entity;
+namespace Entity\Repository;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use Entity;
 
-/**
- * @Table(name="station_requests")
- * @Entity(repositoryClass="StationRequestRepository")
- */
-class StationRequest extends \App\Doctrine\Entity
-{
-    public function __construct()
-    {
-        $this->timestamp = time();
-        $this->played_at = 0;
-
-        $this->ip = $_SERVER['REMOTE_ADDR'];
-    }
-
-    /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
-     */
-    protected $id;
-
-    /** @Column(name="station_id", type="integer") */
-    protected $station_id;
-
-    /** @Column(name="track_id", type="integer") */
-    protected $track_id;
-
-    /** @Column(name="timestamp", type="integer") */
-    protected $timestamp;
-
-    /** @Column(name="played_at", type="integer") */
-    protected $played_at;
-
-    /** @Column(name="ip", type="string", length=40) */
-    protected $ip;
-
-    /**
-     * @ManyToOne(targetEntity="Station", inversedBy="media")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
-    protected $station;
-
-    /**
-     * @ManyToOne(targetEntity="StationMedia")
-     * @JoinColumns({
-     *   @JoinColumn(name="track_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
-    protected $track;
-}
-
-use App\Doctrine\Repository;
-
-class StationRequestRepository extends Repository
+class StationRequestRepository extends \App\Doctrine\Repository
 {
     /**
      * Submit a new request.
      *
-     * @param Station $station
+     * @param Entity\Station $station
      * @param $track_id
      * @param bool $is_authenticated
      * @return mixed
      * @throws \App\Exception
      */
-    public function submit(Station $station, $track_id, $is_authenticated = false)
+    public function submit(Entity\Station $station, $track_id, $is_authenticated = false)
     {
         // Forbid web crawlers from using this feature.
         if (\App\Utilities::is_crawler())
@@ -80,10 +25,10 @@ class StationRequestRepository extends Repository
             throw new \App\Exception('This station does not accept requests currently.');
 
         // Verify that Track ID exists with station.
-        $media_repo = $this->_em->getRepository(StationMedia::class);
+        $media_repo = $this->_em->getRepository(Entity\StationMedia::class);
         $media_item = $media_repo->findOneBy(array('id' => $track_id, 'station_id' => $station->id));
 
-        if (!($media_item instanceof StationMedia))
+        if (!($media_item instanceof Entity\StationMedia))
             throw new \App\Exception('The song ID you specified could not be found in the station.');
 
         // Check if the song is already enqueued as a request.
@@ -131,7 +76,7 @@ class StationRequestRepository extends Repository
         }
 
         // Save request locally.
-        $record = new StationRequest;
+        $record = new Entity\StationRequest;
         $record->track = $media_item;
         $record->station = $station;
 

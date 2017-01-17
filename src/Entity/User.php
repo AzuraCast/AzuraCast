@@ -6,7 +6,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Table(name="users")
- * @Entity(repositoryClass="UserRepository")
+ * @Entity(repositoryClass="Entity\Repository\UserRepository")
  * @HasLifecycleCallbacks
  */
 class User extends \App\Doctrine\Entity
@@ -94,47 +94,4 @@ class User extends \App\Doctrine\Entity
      * )
      */
     protected $roles;
-}
-
-use App\Doctrine\Repository;
-
-class UserRepository extends Repository
-{
-    /**
-     * @param $username
-     * @param $password
-     * @return bool|null|object
-     */
-    public function authenticate($username, $password)
-    {
-        $login_info = $this->findOneBy(['email' => $username]);
-
-        if (!($login_info instanceof User))
-            return FALSE;
-
-        if ($login_info->verifyPassword($password))
-            return $login_info;
-        else
-            return FALSE;
-    }
-
-    /**
-     * Creates or returns an existing user with the specified e-mail address.
-     *
-     * @param $email
-     * @return User
-     */
-    public function getOrCreate($email)
-    {
-        $user = $this->findOneBy(['email' => $email]);
-
-        if (!($user instanceof User))
-        {
-            $user = new User;
-            $user->email = $email;
-            $user->name = $email;
-        }
-
-        return $user;
-    }
 }

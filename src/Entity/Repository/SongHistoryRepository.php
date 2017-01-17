@@ -1,102 +1,15 @@
 <?php
-namespace Entity;
+namespace Entity\Repository;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use Entity;
 
-/**
- * @Table(name="song_history", indexes={
- *   @index(name="sort_idx", columns={"timestamp_start"}),
- * })
- * @Entity(repositoryClass="SongHistoryRepository")
- */
-class SongHistory extends \App\Doctrine\Entity
-{
-    public function __construct()
-    {
-        $this->timestamp_start = time();
-        $this->listeners_start = 0;
-
-        $this->timestamp_end = 0;
-        $this->listeners_end = 0;
-
-        $this->delta_total = 0;
-        $this->delta_negative = 0;
-        $this->delta_positive = 0;
-    }
-
-    /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /** @Column(name="song_id", type="string", length=50) */
-    protected $song_id;
-
-    /** @Column(name="station_id", type="integer") */
-    protected $station_id;
-
-    /** @Column(name="timestamp_start", type="integer") */
-    protected $timestamp_start;
-
-    public function getTimestamp()
-    {
-        return $this->timestamp_start;
-    }
-
-    /** @Column(name="listeners_start", type="integer", nullable=true) */
-    protected $listeners_start;
-
-    public function getListeners()
-    {
-        return $this->listeners_start;
-    }
-
-    /** @Column(name="timestamp_end", type="integer") */
-    protected $timestamp_end;
-
-    /** @Column(name="listeners_end", type="smallint", nullable=true) */
-    protected $listeners_end;
-
-    /** @Column(name="delta_total", type="smallint") */
-    protected $delta_total;
-
-    /** @Column(name="delta_positive", type="smallint") */
-    protected $delta_positive;
-
-    /** @Column(name="delta_negative", type="smallint") */
-    protected $delta_negative;
-
-    /** @Column(name="delta_points", type="json", nullable=true) */
-    protected $delta_points;
-
-    /**
-     * @ManyToOne(targetEntity="Song", inversedBy="history")
-     * @JoinColumns({
-     *   @JoinColumn(name="song_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
-    protected $song;
-
-    /**
-     * @ManyToOne(targetEntity="Station", inversedBy="history")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
-    protected $station;
-}
-
-use App\Doctrine\Repository;
-
-class SongHistoryRepository extends Repository
+class SongHistoryRepository extends \App\Doctrine\Repository
 {
     /**
      * @param int $num_entries
      * @return array
      */
-    public function getHistoryForStation(\Entity\Station $station, $num_entries = 5)
+    public function getHistoryForStation(Entity\Station $station, $num_entries = 5)
     {
         $history = $this->_em->createQuery('SELECT sh, s FROM '.$this->_entityName.' sh JOIN sh.song s WHERE sh.station_id = :station_id ORDER BY sh.id DESC')
             ->setParameter('station_id', $station->id)
@@ -108,7 +21,7 @@ class SongHistoryRepository extends Repository
         {
             $history = array(
                 'played_at'     => $sh['timestamp_start'],
-                'song'          => Song::api($sh['song']),
+                'song'          => Entity\Song::api($sh['song']),
             );
             $return[] = $history;
         }
@@ -117,12 +30,12 @@ class SongHistoryRepository extends Repository
     }
 
     /**
-     * @param Song $song
-     * @param Station $station
+     * @param Entity\Song $song
+     * @param Entity\Station $station
      * @param $np
-     * @return SongHistory|null
+     * @return Entity\SongHistory|null
      */
-    public function register(Song $song, Station $station, $np)
+    public function register(Entity\Song $song, Entity\Station $station, $np)
     {
         // Pull the most recent history item for this station.
         $last_sh = $this->_em->createQuery('SELECT sh FROM Entity\SongHistory sh
@@ -149,7 +62,7 @@ class SongHistoryRepository extends Repository
         else
         {
             // Wrapping up processing on the previous SongHistory item (if present).
-            if ($last_sh instanceof SongHistory)
+            if ($last_sh instanceof Entity\SongHistory)
             {
                 $last_sh->timestamp_end = time();
                 $last_sh->listeners_end = $listeners;
@@ -185,7 +98,7 @@ class SongHistoryRepository extends Repository
             }
 
             // Processing a new SongHistory item.
-            $sh = new SongHistory;
+            $sh = new Entity\SongHistory;
             $sh->song = $song;
             $sh->station = $station;
 

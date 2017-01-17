@@ -206,7 +206,10 @@ class IceCast extends FrontendAbstract
 
     protected function _loadFromConfig($config)
     {
+        $frontend_config = (array)$this->station->frontend_config;
+
         return [
+            'custom_config' => $frontend_config['custom_config'],
             'port' => $config['listen-socket']['port'],
             'source_pw' => $config['authentication']['source-password'],
             'admin_pw' => $config['authentication']['admin-password'],

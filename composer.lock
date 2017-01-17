@@ -2326,12 +2326,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SlvrEagle23/AzuraCore.git",
-                "reference": "0e048095646490c3d860eb30b0c63429a9c06db8"
+                "reference": "62508bf866fda8e6c7222f9293c6b6f72f19d462"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SlvrEagle23/AzuraCore/zipball/0e048095646490c3d860eb30b0c63429a9c06db8",
-                "reference": "0e048095646490c3d860eb30b0c63429a9c06db8",
+                "url": "https://api.github.com/repos/SlvrEagle23/AzuraCore/zipball/62508bf866fda8e6c7222f9293c6b6f72f19d462",
+                "reference": "62508bf866fda8e6c7222f9293c6b6f72f19d462",
                 "shasum": ""
             },
             "require": {
@@ -2370,7 +2370,7 @@
                 }
             ],
             "description": "The common web application framework code powering AzuraCast and other similar MVC PHP web applications.",
-            "time": "2017-01-17T08:42:31+00:00"
+            "time": "2017-01-17T09:38:10+00:00"
         },
         {
             "name": "supervisorphp/supervisor",

@@ -20,16 +20,16 @@ coverage:
    - app/*
   exclude:
    # Not used in application
-   - app/library/AzuraCast/Radio/Frontend/ShoutCast2.php
+   - src/AzuraCast/Radio/Frontend/ShoutCast2.php
 
    # Used in application, but not used in tests
-   - app/library/AzuraCast/Console/Command/*.php
+   - src/AzuraCast/Console/Command/*.php
+   - src/Migration/*
    - app/**/*.conf.sample.php
-   - app/models/Migration/*
    - app/locale/**/*
    - app/locale/*
    - app/templates/system/error_general.phtml
 
    # Used in application, but not detected properly by the coverage tool :(
-   - app/**/routes.php
+   - app/**/routes.conf.php
    - app/**/*.conf.php

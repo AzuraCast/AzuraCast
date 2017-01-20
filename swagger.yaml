@@ -1,0 +1,438 @@
+swagger: 2.0
+info:
+  version: 1.0
+  title: AzuraCast
+  description: 'TODO: Add a description'
+  license:
+    name: MIT
+    url: http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
+host: localhost:8080
+basePath: /api
+schemes:
+- http
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /nowplaying:
+    get:
+      description: Returns all now playing data for active stations.
+      tags:
+      - Now Playing
+      operationId: Nowplaying
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: 
+          schema:
+            $ref: '#/definitions/NowplayingResponse'
+      x-unitTests:
+      - request:
+          method: GET
+          uri: /nowplaying
+        expectedResponse:
+          x-allowExtraHeaders: true
+          x-bodyMatchMode: RAW
+          x-arrayOrderedMatching: false
+          x-arrayCheckCount: false
+          x-matchResponseSchema: true
+          headers:
+            Content-Type: application/json
+          body: '{    status: "success",    result: [        {            station: {                id: 1,                name: "Pony Radio Station",                shortcode: "pony_radio_station",                description: "Test",                frontend: "icecast",                backend: "liquidsoap",                listen_url: "http://localhost:8080/radio/8000/radio.mp3?1479695912",                mounts: [                    {                        name: "/radio.mp3",                        is_default: true,                        url: "http://localhost:8080/radio/8000/radio.mp3?1479695912"                    }                ]            },            current_song: {                id: "178ebfae95842a543f30a449f2420125",                text: "YourEnigma - On Hold (Feat. Rhyme Flow)",                artist: "YourEnigma",                title: "On Hold (Feat. Rhyme Flow)",                created: 1472973486,                play_count: 2,                last_played: 1473192908,                sh_id: null            },            listeners: {                current: 0,                unique: 0,                total: 0            },            meta: {                status: "online",                bitrate: null,                format: "audio/mpeg"            },            song_history: [                {                    played_at: 1473192663,                    song: {                        id: "86125d7861a62e19b773a5911b490675",                        text: "PhonyBrony, Feather - I''ll Show You My Loyalty (1st Capital Rock Version)",                        artist: "PhonyBrony, Feather",                        title: "I''ll Show You My Loyalty (1st Capital Rock Version)",                        created: 1472973505,                        play_count: 2,                        last_played: 1473192663                    }                },                {                    played_at: 1473192423,                    song: {                        id: "d631a2196db79ab1e6b5e8e0db69dea4",                        text: "StormWolf - BBBFF (Stormwolf Remix)",                        artist: "StormWolf",                        title: "BBBFF (Stormwolf Remix)",                        created: 1472973497,                        play_count: 3,                        last_played: 1473192423                    }                }            ],            cache: "database"        }    ]}'
+        x-testShouldPass: true
+        x-testEnabled: true
+        x-testName: Nowplaying1
+        x-testDescription: Returns all now playing data for active stations.
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /nowplaying/{id}:
+    get:
+      description: >-
+        **Station Specified by Numeric ID**
+
+        Returns a single station's now-playing information based on a station identifier.
+      tags:
+      - Now Playing
+      operationId: NowplayingById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: number
+        format: double
+        description: The station ID.
+      responses:
+        200:
+          description: 
+          schema:
+            $ref: '#/definitions/NowplayingbyidResponse'
+        400:
+          description: >-
+            Returned if an invalid station ID is specified.
+
+
+            +Body
+
+
+            {
+                status: "error",
+                error: "Station not found."
+            }
+          schema: {}
+      x-unitTests: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /stations:
+    get:
+      description: List all stations from all categories.
+      tags:
+      - Stations
+      operationId: Stations
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: 
+          schema:
+            $ref: '#/definitions/StationsResponse'
+      x-unitTests:
+      - request:
+          method: GET
+          uri: /stations
+        expectedResponse:
+          x-allowExtraHeaders: true
+          x-bodyMatchMode: RAW
+          x-arrayOrderedMatching: false
+          x-arrayCheckCount: false
+          x-matchResponseSchema: true
+          headers:
+            Content-Type: application/json
+          body: '{    status: "success",    result: [        {            id: 1,            name: "Best Pony Radio",            shortcode: "best_pony_radio",            description: "Test",            frontend: "icecast",            backend: "liquidsoap",            listen_url: "http://localhost:8080/radio/8000/radio.mp3?1479695912",            mounts: [                {                    name: "/radio.mp3",                    is_default: true,                    url: "http://localhost:8080/radio/8000/radio.mp3?1479695912"                }            ]        }    ]}'
+        x-testShouldPass: true
+        x-testEnabled: true
+        x-testName: Stations1
+        x-testDescription: List all stations from all categories.
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /stations/{id}:
+    get:
+      description: Station info for the specified numeric identifier.
+      tags:
+      - Stations
+      operationId: StationsById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: number
+        format: double
+        description: The station ID.
+      responses:
+        200:
+          description: 
+          schema:
+            $ref: '#/definitions/StationsbyidResponse'
+        400:
+          description: >-
+            Returned if an invalid station ID is specified.
+
+
+            +Body
+
+
+            {
+                status: "error",
+                error: "Station not found."
+            }
+          schema: {}
+      x-unitTests: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /requests/{station_id}/list:
+    get:
+      description: Get all currently requestable songs from the specified station.
+      tags:
+      - Song Requests
+      operationId: RequestsListByStationId
+      produces:
+      - application/json
+      parameters:
+      - name: station_id
+        in: path
+        required: true
+        type: number
+        format: double
+        description: The station ID.
+      responses:
+        200:
+          description: 
+          schema:
+            $ref: '#/definitions/RequestslistbystationidResponse'
+        400:
+          description: >-
+            Returned if an invalid station ID is specified.
+
+
+            +Body
+
+
+            {
+                status: "error",
+                error: "Station not found."
+            }
+          schema: {}
+      x-unitTests: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /requests/{station_id}/submit/{song_id}:
+    post:
+      description: Submit a request for a station to play a song with the specified ID.
+      tags:
+      - Song Requests
+      operationId: RequestsSubmitByStationIdAndSongId
+      produces:
+      - application/json
+      parameters:
+      - name: station_id
+        in: path
+        required: true
+        type: number
+        format: double
+        description: The station ID.
+      - name: song_id
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: 
+          schema:
+            $ref: '#/definitions/RequestssubmitbystationidandsongidResponse'
+        400:
+          description: >-
+            Returned if any of the following circumstances occur:
+
+            * Invalid station ID specified
+
+            * Invalid song ID specified
+
+            * Song requests disabled by station
+
+            * Song played too recently on the station
+          schema: {}
+      x-unitTests: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /:
+    get:
+      description: The homepage of the API, that provides a basic ping function and a link to this documentation.
+      tags:
+      - Utilities
+      operationId: Unnammed Endpoint
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: 
+          schema:
+            $ref: '#/definitions/UnnammedEndpointResponse'
+      x-unitTests:
+      - request:
+          method: GET
+          uri: /
+        expectedResponse:
+          x-allowExtraHeaders: true
+          x-bodyMatchMode: RAW
+          x-arrayOrderedMatching: false
+          x-arrayCheckCount: false
+          x-matchResponseSchema: true
+          headers:
+            Content-Type: application/json
+          body: '{    status: "success",    result: "The AzuraCast API is online and functioning."}'
+        x-testShouldPass: true
+        x-testEnabled: true
+        x-testName: Unnammed Endpoint1
+        x-testDescription: The homepage of the API, that provides a basic ping function and a link to this documentation.
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /status:
+    get:
+      description: A basic ping function that returns the current UNIX timestamp (for caching tests).
+      tags:
+      - Utilities
+      operationId: Status
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: 
+          schema:
+            type: string
+      x-unitTests: []
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+  /time:
+    get:
+      description: Return the server's timezone configuration, as well as several formats of the current UTC and localized timestamp.
+      tags:
+      - Utilities
+      operationId: Time
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: 
+          schema:
+            $ref: '#/definitions/TimeResponse'
+      x-unitTests:
+      - request:
+          method: GET
+          uri: /time
+        expectedResponse:
+          x-allowExtraHeaders: true
+          x-bodyMatchMode: RAW
+          x-arrayOrderedMatching: false
+          x-arrayCheckCount: false
+          x-matchResponseSchema: true
+          headers:
+            Content-Type: application/json
+          body: '{    status: "success",    result: {        timestamp: 1473194546,        gmt_datetime: "2016-09-06 8:42:26",        gmt_date: "September 6, 2016",        gmt_time: "8:42pm",        gmt_timezone: "GMT",        gmt_timezone_abbr: "GMT",        local_datetime: "2016-09-06 3:42:26",        local_date: "September 6, 2016",        local_time: "3:42pm",        local_timezone: "US/Central",        local_timezone_abbr: "CDT"    }}'
+        x-testShouldPass: true
+        x-testEnabled: true
+        x-testName: Time1
+        x-testDescription: Return the server's timezone configuration, as well as several formats of the current UTC and localized timestamp.
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+definitions:
+  NowplayingResponse:
+    title: Nowplaying Response
+    type: object
+    properties:
+      status:
+        type: string
+      result:
+        type: array
+        items:
+          type: string
+    required:
+    - status
+    - result
+  NowplayingbyidResponse:
+    title: NowplayingById Response
+    type: object
+    properties:
+      status:
+        type: string
+      result:
+        type: string
+    required:
+    - status
+    - result
+  StationsResponse:
+    title: Stations Response
+    type: object
+    properties:
+      status:
+        type: string
+      result:
+        type: array
+        items:
+          type: string
+    required:
+    - status
+    - result
+  StationsbyidResponse:
+    title: StationsById Response
+    type: object
+    properties:
+      status:
+        type: string
+      result:
+        type: string
+    required:
+    - status
+    - result
+  RequestslistbystationidResponse:
+    title: RequestsListByStationId Response
+    type: object
+    properties:
+      status:
+        type: string
+      result:
+        type: array
+        items:
+          type: string
+    required:
+    - status
+    - result
+  RequestssubmitbystationidandsongidResponse:
+    title: RequestsSubmitByStationIdAndSongId Response
+    type: object
+    properties:
+      status:
+        type: string
+      result:
+        type: string
+    required:
+    - status
+    - result
+  UnnammedEndpointResponse:
+    title: Unnammed Endpoint Response
+    type: object
+    properties:
+      status:
+        type: string
+      result:
+        type: string
+    required:
+    - status
+    - result
+  TimeResponse:
+    title: Time Response
+    type: object
+    properties:
+      status:
+        type: string
+      result:
+        type: string
+    required:
+    - status
+    - result

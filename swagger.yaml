@@ -1,11 +1,38 @@
-swagger: 2.0
+swagger: "2.0"
 info:
-  version: 1.0
+  version: "0.5.0"
   title: AzuraCast
-  description: 'TODO: Add a description'
+  description: '
+AzuraCast is a standalone, turnkey web radio management tool. Radio stations hosted by AzuraCast expose a public API for viewing now playing data, making requests and more.
+    
+### Authenticating
+
+Some request types require an API key, either to perform administrative steps or avoid public rate-limiting. API keys can be generated from the AzuraCast global administration panel. When making an authenticated request, any of the following methods can be used to supply the key:
+
+* The "X-API-Key" HTTP header supplied in the request
+
+* The "key" parameter supplied via GET or POST (?key=a1b2c3...)
+
+
+### Important Notes
+
+* Many API calls are cached for performance reasons, and some implement rate-limits to prevent flooding the system. Typically, calls authenticated with an API key have rate limits removed.
+
+* API signatures may change between software versions. Check the GitHub repository for more information when updating.
+
+* All timestamps in API calls are supplied as UNIX timestamps, i.e. seconds from 1/1/1970.
+
+
+### Station "Short Codes"
+
+In lieu of a station ID, some station-related API calls allow for what is called a "shortcode". This is the name of the station, in lower case, with its special characters removed. For example, "My Awesome Radio!" would become "my_awesome_radio".
+
+### Song Identifiers
+
+Most database entries have an auto-incrementing unique identifier, but songs use a hash-based identification system that avoids collisions based on spacing or punctuation differences.'
   license:
-    name: MIT
-    url: http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
+    name: Apache 2.0
+    url: https://github.com/SlvrEagle23/AzuraCast/blob/master/License.txt
 host: localhost:8080
 basePath: /api
 schemes:
@@ -26,26 +53,9 @@ paths:
       parameters: []
       responses:
         200:
-          description: 
+          description: "Now Playing Songs"
           schema:
             $ref: '#/definitions/NowplayingResponse'
-      x-unitTests:
-      - request:
-          method: GET
-          uri: /nowplaying
-        expectedResponse:
-          x-allowExtraHeaders: true
-          x-bodyMatchMode: RAW
-          x-arrayOrderedMatching: false
-          x-arrayCheckCount: false
-          x-matchResponseSchema: true
-          headers:
-            Content-Type: application/json
-          body: '{    status: "success",    result: [        {            station: {                id: 1,                name: "Pony Radio Station",                shortcode: "pony_radio_station",                description: "Test",                frontend: "icecast",                backend: "liquidsoap",                listen_url: "http://localhost:8080/radio/8000/radio.mp3?1479695912",                mounts: [                    {                        name: "/radio.mp3",                        is_default: true,                        url: "http://localhost:8080/radio/8000/radio.mp3?1479695912"                    }                ]            },            current_song: {                id: "178ebfae95842a543f30a449f2420125",                text: "YourEnigma - On Hold (Feat. Rhyme Flow)",                artist: "YourEnigma",                title: "On Hold (Feat. Rhyme Flow)",                created: 1472973486,                play_count: 2,                last_played: 1473192908,                sh_id: null            },            listeners: {                current: 0,                unique: 0,                total: 0            },            meta: {                status: "online",                bitrate: null,                format: "audio/mpeg"            },            song_history: [                {                    played_at: 1473192663,                    song: {                        id: "86125d7861a62e19b773a5911b490675",                        text: "PhonyBrony, Feather - I''ll Show You My Loyalty (1st Capital Rock Version)",                        artist: "PhonyBrony, Feather",                        title: "I''ll Show You My Loyalty (1st Capital Rock Version)",                        created: 1472973505,                        play_count: 2,                        last_played: 1473192663                    }                },                {                    played_at: 1473192423,                    song: {                        id: "d631a2196db79ab1e6b5e8e0db69dea4",                        text: "StormWolf - BBBFF (Stormwolf Remix)",                        artist: "StormWolf",                        title: "BBBFF (Stormwolf Remix)",                        created: 1472973497,                        play_count: 3,                        last_played: 1473192423                    }                }            ],            cache: "database"        }    ]}'
-        x-testShouldPass: true
-        x-testEnabled: true
-        x-testName: Nowplaying1
-        x-testDescription: Returns all now playing data for active stations.
       x-operation-settings:
         CollectParameters: false
         AllowDynamicQueryParameters: false
@@ -71,7 +81,7 @@ paths:
         description: The station ID.
       responses:
         200:
-          description: 
+          description: "The now playing information for the specified station."
           schema:
             $ref: '#/definitions/NowplayingbyidResponse'
         400:
@@ -104,26 +114,9 @@ paths:
       parameters: []
       responses:
         200:
-          description: 
+          description: "List of all stations."
           schema:
             $ref: '#/definitions/StationsResponse'
-      x-unitTests:
-      - request:
-          method: GET
-          uri: /stations
-        expectedResponse:
-          x-allowExtraHeaders: true
-          x-bodyMatchMode: RAW
-          x-arrayOrderedMatching: false
-          x-arrayCheckCount: false
-          x-matchResponseSchema: true
-          headers:
-            Content-Type: application/json
-          body: '{    status: "success",    result: [        {            id: 1,            name: "Best Pony Radio",            shortcode: "best_pony_radio",            description: "Test",            frontend: "icecast",            backend: "liquidsoap",            listen_url: "http://localhost:8080/radio/8000/radio.mp3?1479695912",            mounts: [                {                    name: "/radio.mp3",                    is_default: true,                    url: "http://localhost:8080/radio/8000/radio.mp3?1479695912"                }            ]        }    ]}'
-        x-testShouldPass: true
-        x-testEnabled: true
-        x-testName: Stations1
-        x-testDescription: List all stations from all categories.
       x-operation-settings:
         CollectParameters: false
         AllowDynamicQueryParameters: false
@@ -146,7 +139,7 @@ paths:
         description: The station ID.
       responses:
         200:
-          description: 
+          description: "List of stations by ID."
           schema:
             $ref: '#/definitions/StationsbyidResponse'
         400:
@@ -162,7 +155,6 @@ paths:
                 error: "Station not found."
             }
           schema: {}
-      x-unitTests: []
       x-operation-settings:
         CollectParameters: false
         AllowDynamicQueryParameters: false
@@ -185,7 +177,7 @@ paths:
         description: The station ID.
       responses:
         200:
-          description: 
+          description: "A list of all requestable songs on the station."
           schema:
             $ref: '#/definitions/RequestslistbystationidResponse'
         400:
@@ -228,7 +220,7 @@ paths:
         type: string
       responses:
         200:
-          description: 
+          description: "Successful request."
           schema:
             $ref: '#/definitions/RequestssubmitbystationidandsongidResponse'
         400:
@@ -260,26 +252,9 @@ paths:
       parameters: []
       responses:
         200:
-          description: 
+          description: "Heartbeat status."
           schema:
             $ref: '#/definitions/UnnammedEndpointResponse'
-      x-unitTests:
-      - request:
-          method: GET
-          uri: /
-        expectedResponse:
-          x-allowExtraHeaders: true
-          x-bodyMatchMode: RAW
-          x-arrayOrderedMatching: false
-          x-arrayCheckCount: false
-          x-matchResponseSchema: true
-          headers:
-            Content-Type: application/json
-          body: '{    status: "success",    result: "The AzuraCast API is online and functioning."}'
-        x-testShouldPass: true
-        x-testEnabled: true
-        x-testName: Unnammed Endpoint1
-        x-testDescription: The homepage of the API, that provides a basic ping function and a link to this documentation.
       x-operation-settings:
         CollectParameters: false
         AllowDynamicQueryParameters: false
@@ -296,10 +271,9 @@ paths:
       parameters: []
       responses:
         200:
-          description: 
+          description: "Pong"
           schema:
             type: string
-      x-unitTests: []
       x-operation-settings:
         CollectParameters: false
         AllowDynamicQueryParameters: false
@@ -316,26 +290,9 @@ paths:
       parameters: []
       responses:
         200:
-          description: 
+          description: "The system time."
           schema:
             $ref: '#/definitions/TimeResponse'
-      x-unitTests:
-      - request:
-          method: GET
-          uri: /time
-        expectedResponse:
-          x-allowExtraHeaders: true
-          x-bodyMatchMode: RAW
-          x-arrayOrderedMatching: false
-          x-arrayCheckCount: false
-          x-matchResponseSchema: true
-          headers:
-            Content-Type: application/json
-          body: '{    status: "success",    result: {        timestamp: 1473194546,        gmt_datetime: "2016-09-06 8:42:26",        gmt_date: "September 6, 2016",        gmt_time: "8:42pm",        gmt_timezone: "GMT",        gmt_timezone_abbr: "GMT",        local_datetime: "2016-09-06 3:42:26",        local_date: "September 6, 2016",        local_time: "3:42pm",        local_timezone: "US/Central",        local_timezone_abbr: "CDT"    }}'
-        x-testShouldPass: true
-        x-testEnabled: true
-        x-testName: Time1
-        x-testDescription: Return the server's timezone configuration, as well as several formats of the current UTC and localized timestamp.
       x-operation-settings:
         CollectParameters: false
         AllowDynamicQueryParameters: false

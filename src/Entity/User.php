@@ -1,8 +1,8 @@
 <?php
 namespace Entity;
 
-use \Doctrine\ORM\Mapping as ORM;
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Table(name="users")
@@ -11,22 +11,6 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class User extends \App\Doctrine\Entity
 {
-    public function __construct()
-    {
-        $this->roles = new ArrayCollection;
-
-        $this->created_at = time();
-        $this->updated_at = time();
-    }
-
-    /**
-     * @PrePersist
-     */
-    public function preSave()
-    {
-        $this->updated_at = time();
-    }
-
     /**
      * @Column(name="uid", type="integer")
      * @Id
@@ -37,36 +21,8 @@ class User extends \App\Doctrine\Entity
     /** @Column(name="email", type="string", length=100, nullable=true) */
     protected $email;
 
-    public function getAvatar($size = 50)
-    {
-        return \App\Service\Gravatar::get($this->email, $size, 'identicon');
-    }
-
     /** @Column(name="auth_password", type="string", length=255, nullable=true) */
     protected $auth_password;
-
-    public function verifyPassword($password)
-    {
-        return password_verify($password, $this->auth_password);
-    }
-
-    public function getAuthPassword()
-    {
-        return '';
-    }
-
-    public function setAuthPassword($password)
-    {
-        if (trim($password))
-            $this->auth_password = password_hash($password, \PASSWORD_DEFAULT);
-
-        return $this;
-    }
-
-    public function generateRandomPassword()
-    {
-        $this->setAuthPassword(md5('APP_EXTERNAL_'.mt_rand()));
-    }
 
     /** @Column(name="name", type="string", length=100, nullable=true) */
     protected $name;
@@ -94,4 +50,49 @@ class User extends \App\Doctrine\Entity
      * )
      */
     protected $roles;
+
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection;
+
+        $this->created_at = time();
+        $this->updated_at = time();
+    }
+
+    /**
+     * @PrePersist
+     */
+    public function preSave()
+    {
+        $this->updated_at = time();
+    }
+
+    public function getAvatar($size = 50)
+    {
+        return \App\Service\Gravatar::get($this->email, $size, 'identicon');
+    }
+
+    public function verifyPassword($password)
+    {
+        return password_verify($password, $this->auth_password);
+    }
+
+    public function getAuthPassword()
+    {
+        return '';
+    }
+
+    public function setAuthPassword($password)
+    {
+        if (trim($password)) {
+            $this->auth_password = password_hash($password, \PASSWORD_DEFAULT);
+        }
+
+        return $this;
+    }
+
+    public function generateRandomPassword()
+    {
+        $this->setAuthPassword(md5('APP_EXTERNAL_' . mt_rand()));
+    }
 }

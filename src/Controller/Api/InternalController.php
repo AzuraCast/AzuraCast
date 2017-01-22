@@ -1,25 +1,28 @@
 <?php
 namespace Controller\Api;
 
-use \Entity\Station;
+use Entity\Station;
 use Entity\StationStreamer;
 
 class InternalController extends BaseController
 {
     public function streamauthAction()
     {
-        if (!$this->hasParam('id'))
+        if (!$this->hasParam('id')) {
             return $this->_authFail('No station specified!');
+        }
 
         $id = (int)$this->getParam('id');
         $station = $this->em->getRepository(Station::class)->find($id);
 
-        if (!($station instanceof Station))
+        if (!($station instanceof Station)) {
             return $this->_authFail('Invalid station specified');
+        }
 
         // Log requests to a temp file for debugging.
-        $request_vars = "-------\n".date('F j, Y g:i:s')."\n".print_r($_REQUEST, true)."\n".print_r($this->params, true);
-        $log_path = APP_INCLUDE_TEMP.'/icecast_stream_auth.txt';
+        $request_vars = "-------\n" . date('F j, Y g:i:s') . "\n" . print_r($_REQUEST,
+                true) . "\n" . print_r($this->params, true);
+        $log_path = APP_INCLUDE_TEMP . '/icecast_stream_auth.txt';
         file_put_contents($log_path, $request_vars, \FILE_APPEND);
 
         /* Passed via POST from IceCast
@@ -32,13 +35,17 @@ class InternalController extends BaseController
          * [pass] => testpass
          */
 
-        if (!$station->enable_streamers)
+        if (!$station->enable_streamers) {
             return $this->_authFail('Support for streamers/DJs on this station is disabled.');
+        }
 
-        if ($this->em->getRepository(StationStreamer::class)->authenticate($station, $_REQUEST['user'], $_REQUEST['pass']))
+        if ($this->em->getRepository(StationStreamer::class)->authenticate($station, $_REQUEST['user'],
+            $_REQUEST['pass'])
+        ) {
             return $this->_authSuccess();
-        else
+        } else {
             return $this->_authFail('Could not authenticate streamer account.');
+        }
     }
 
     protected function _authFail($message)
@@ -47,7 +54,7 @@ class InternalController extends BaseController
             ->withHeader('icecast-auth-user', '0')
             ->withHeader('Icecast-Auth-Message', $message);
 
-        $this->response->getBody()->write('Authentication failure: '.$message);
+        $this->response->getBody()->write('Authentication failure: ' . $message);
         return $this->response;
     }
 

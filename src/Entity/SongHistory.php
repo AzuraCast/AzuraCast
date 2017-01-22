@@ -1,8 +1,6 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * @Table(name="song_history", indexes={
  *   @index(name="sort_idx", columns={"timestamp_start"}),
@@ -11,19 +9,6 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class SongHistory extends \App\Doctrine\Entity
 {
-    public function __construct()
-    {
-        $this->timestamp_start = time();
-        $this->listeners_start = 0;
-
-        $this->timestamp_end = 0;
-        $this->listeners_end = 0;
-
-        $this->delta_total = 0;
-        $this->delta_negative = 0;
-        $this->delta_positive = 0;
-    }
-
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -40,18 +25,8 @@ class SongHistory extends \App\Doctrine\Entity
     /** @Column(name="timestamp_start", type="integer") */
     protected $timestamp_start;
 
-    public function getTimestamp()
-    {
-        return $this->timestamp_start;
-    }
-
     /** @Column(name="listeners_start", type="integer", nullable=true) */
     protected $listeners_start;
-
-    public function getListeners()
-    {
-        return $this->listeners_start;
-    }
 
     /** @Column(name="timestamp_end", type="integer") */
     protected $timestamp_end;
@@ -86,4 +61,27 @@ class SongHistory extends \App\Doctrine\Entity
      * })
      */
     protected $station;
+
+    public function __construct()
+    {
+        $this->timestamp_start = time();
+        $this->listeners_start = 0;
+
+        $this->timestamp_end = 0;
+        $this->listeners_end = 0;
+
+        $this->delta_total = 0;
+        $this->delta_negative = 0;
+        $this->delta_positive = 0;
+    }
+
+    public function getTimestamp()
+    {
+        return $this->timestamp_start;
+    }
+
+    public function getListeners()
+    {
+        return $this->listeners_start;
+    }
 }

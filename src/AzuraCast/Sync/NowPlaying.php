@@ -1,12 +1,11 @@
 <?php
 namespace AzuraCast\Sync;
 
+use App\Debug;
 use Doctrine\ORM\EntityManager;
-use Entity\Station;
 use Entity\Song;
 use Entity\SongHistory;
-use Entity\Settings;
-use App\Debug;
+use Entity\Station;
 
 class NowPlaying extends SyncAbstract
 {
@@ -18,19 +17,18 @@ class NowPlaying extends SyncAbstract
 
         // Post statistics to InfluxDB.
         $influx = $this->di->get('influx');
-        $influx_points = array();
+        $influx_points = [];
 
         $total_overall = 0;
 
-        foreach($nowplaying as $short_code => $info)
-        {
+        foreach ($nowplaying as $short_code => $info) {
             $listeners = (int)$info['listeners']['current'];
             $total_overall += $listeners;
 
             $station_id = $info['station']['id'];
 
             $influx_points[] = new \InfluxDB\Point(
-                'station.'.$station_id.'.listeners',
+                'station.' . $station_id . '.listeners',
                 $listeners,
                 [],
                 ['station' => $station_id],
@@ -49,14 +47,16 @@ class NowPlaying extends SyncAbstract
         $influx->writePoints($influx_points, \InfluxDB\Database::PRECISION_SECONDS);
 
         // Generate PVL API cache.
-        foreach($nowplaying as $station => $np_info)
+        foreach ($nowplaying as $station => $np_info) {
             $nowplaying[$station]['cache'] = 'hit';
+        }
 
         $cache = $this->di->get('cache');
-        $cache->save($nowplaying, 'api_nowplaying_data', array('nowplaying'), 60);
+        $cache->save($nowplaying, 'api_nowplaying_data', ['nowplaying'], 60);
 
-        foreach($nowplaying as $station => $np_info)
+        foreach ($nowplaying as $station => $np_info) {
             $nowplaying[$station]['cache'] = 'database';
+        }
 
         $this->di['em']->getRepository('Entity\Settings')->setSetting('nowplaying', $nowplaying);
     }
@@ -69,10 +69,9 @@ class NowPlaying extends SyncAbstract
         $em = $this->di['em'];
         $stations = $em->getRepository(Station::class)->findAll();
 
-        $nowplaying = array();
+        $nowplaying = [];
 
-        foreach($stations as $station)
-        {
+        foreach ($stations as $station) {
             Debug::startTimer($station->name);
 
             // $name = $station->short_name;
@@ -100,33 +99,27 @@ class NowPlaying extends SyncAbstract
 
         $np_old = (array)$station->nowplaying_data;
 
-        $np = array();
+        $np = [];
         $np['station'] = Station::api($station, $this->di);
 
         $frontend_adapter = $station->getFrontendAdapter($this->di);
         $np_new = $frontend_adapter->getNowPlaying();
-        
+
         $np = array_merge($np, $np_new);
         $np['listeners'] = $np_new['listeners'];
 
         // Pull from current NP data if song details haven't changed.
         $current_song_hash = Song::getSongHash($np_new['current_song']);
 
-        if (empty($np['current_song']['text']))
-        {
-            $np['current_song'] = array();
+        if (empty($np['current_song']['text'])) {
+            $np['current_song'] = [];
             $np['song_history'] = $em->getRepository(SongHistory::class)->getHistoryForStation($station);
-        }
-        else
-        {
-            if (strcmp($current_song_hash, $np_old['current_song']['id']) == 0)
-            {
+        } else {
+            if (strcmp($current_song_hash, $np_old['current_song']['id']) == 0) {
                 $np['song_history'] = $np_old['song_history'];
 
                 $song_obj = $em->getRepository(Song::class)->find($current_song_hash);
-            }
-            else
-            {
+            } else {
                 $np['song_history'] = $em->getRepository(SongHistory::class)->getHistoryForStation($station);
 
                 $song_obj = $em->getRepository(Song::class)->getOrCreate($np_new['current_song'], true);

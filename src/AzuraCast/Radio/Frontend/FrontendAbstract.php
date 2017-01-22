@@ -2,21 +2,21 @@
 namespace AzuraCast\Radio\Frontend;
 
 use App\Service\Curl;
-use Entity\Station;
-use Interop\Container\ContainerInterface;
 
 abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 {
     protected $supports_mounts = true;
+
+    protected $supports_streamers = true;
 
     public function supportsMounts()
     {
         return $this->supports_mounts;
     }
 
-    public function getDefaultMounts() {}
-
-    protected $supports_streamers = true;
+    public function getDefaultMounts()
+    {
+    }
 
     public function supportsStreamers()
     {
@@ -25,7 +25,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
     public function getProgramName()
     {
-        return 'station_'.$this->station->id.':station_'.$this->station->id.'_frontend';
+        return 'station_' . $this->station->id . ':station_' . $this->station->id . '_frontend';
     }
 
     abstract public function getStreamUrl();
@@ -43,69 +43,92 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
 
         // Web proxy support.
-        if (APP_APPLICATION_ENV == 'development' || $use_radio_proxy)
-            return '/radio/'.$radio_port;
-        else
-            return 'http://'.$base_url.':'.$radio_port;
+        if (APP_APPLICATION_ENV == 'development' || $use_radio_proxy) {
+            return '/radio/' . $radio_port;
+        } else {
+            return 'http://' . $base_url . ':' . $radio_port;
+        }
     }
 
     /* Fetch a remote URL. */
-    protected function getUrl($url, $c_opts = null)
-    {
-        if ($c_opts === null)
-            $c_opts = array();
-
-        if (!isset($c_opts['url']))
-            $c_opts['url'] = $url;
-
-        if (!isset($c_opts['timeout']))
-            $c_opts['timeout'] = 4;
-
-        return Curl::request($c_opts);
-    }
 
     public function getNowPlaying()
     {
         // Now Playing defaults.
-        $np = array(
-            'current_song' => array(
-                'text'          => 'Stream Offline',
-                'title'         => '',
-                'artist'        => '',
-            ),
-            'listeners' => array(
-                'current'       => 0,
-                'unique'        => null,
-                'total'         => null,
-            ),
-            'meta' => array(
-                'status'        => 'offline',
-                'bitrate'       => 0,
-                'format'        => '',
-            ),
-        );
+        $np = [
+            'current_song' => [
+                'text' => 'Stream Offline',
+                'title' => '',
+                'artist' => '',
+            ],
+            'listeners' => [
+                'current' => 0,
+                'unique' => null,
+                'total' => null,
+            ],
+            'meta' => [
+                'status' => 'offline',
+                'bitrate' => 0,
+                'format' => '',
+            ],
+        ];
 
         // Merge station-specific info into defaults.
         $this->_getNowPlaying($np);
 
         // Update status code for offline stations, clean up song info for online ones.
-        if ($np['current_song']['text'] == 'Stream Offline')
+        if ($np['current_song']['text'] == 'Stream Offline') {
             $np['meta']['status'] = 'offline';
-        else
-            array_walk($np['current_song'], array($this, '_cleanUpString'));
+        } else {
+            array_walk($np['current_song'], [$this, '_cleanUpString']);
+        }
 
         // Fill in any missing listener info.
-        if ($np['listeners']['unique'] === null)
+        if ($np['listeners']['unique'] === null) {
             $np['listeners']['unique'] = $np['listeners']['current'];
+        }
 
-        if ($np['listeners']['total'] === null)
+        if ($np['listeners']['total'] === null) {
             $np['listeners']['total'] = $np['listeners']['current'];
+        }
 
         return $np;
     }
 
-    /* Stub function for the process internal handler. */
     abstract protected function _getNowPlaying(&$np);
+
+    /* Stub function for the process internal handler. */
+
+    /**
+     * Log a message to console or to flash (if interactive session).
+     *
+     * @param $message
+     */
+    public function log($message, $class = 'info')
+    {
+        if (!empty(trim($message))) {
+            parent::log(str_pad('Radio Frontend: ', 20, ' ', STR_PAD_RIGHT) . $message, $class);
+        }
+    }
+
+    protected function getUrl($url, $c_opts = null)
+    {
+        if ($c_opts === null) {
+            $c_opts = [];
+        }
+
+        if (!isset($c_opts['url'])) {
+            $c_opts['url'] = $url;
+        }
+
+        if (!isset($c_opts['timeout'])) {
+            $c_opts['timeout'] = 4;
+        }
+
+        return Curl::request($c_opts);
+    }
+
+    /* Calculate listener count from unique and current totals. */
 
     protected function _cleanUpString(&$value)
     {
@@ -113,19 +136,20 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         $value = trim($value);
     }
 
-    /* Calculate listener count from unique and current totals. */
+    /* Return the artist and title from a string in the format "Artist - Title" */
+
     protected function getListenerCount($unique_listeners = 0, $current_listeners = 0)
     {
         $unique_listeners = (int)$unique_listeners;
         $current_listeners = (int)$current_listeners;
 
-        if ($unique_listeners == 0 || $current_listeners == 0)
+        if ($unique_listeners == 0 || $current_listeners == 0) {
             return max($unique_listeners, $current_listeners);
-        else
+        } else {
             return min($unique_listeners, $current_listeners);
+        }
     }
 
-    /* Return the artist and title from a string in the format "Artist - Title" */
     protected function getSongFromString($song_string, $delimiter = '-')
     {
         // Filter for CR AutoDJ
@@ -140,43 +164,30 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         $string_parts = explode($delimiter, $song_string);
 
         // If not normally delimited, return "text" only.
-        if (count($string_parts) == 1)
-            return array('text' => $song_string, 'artist' => '', 'title' => $song_string);
+        if (count($string_parts) == 1) {
+            return ['text' => $song_string, 'artist' => '', 'title' => $song_string];
+        }
 
         // Title is the last element, artist is all other elements (artists are far more likely to have hyphens).
         $title = trim(array_pop($string_parts));
         $artist = trim(implode($delimiter, $string_parts));
 
-        return array(
+        return [
             'text' => $song_string,
             'artist' => $artist,
             'title' => $title,
-        );
-    }
-
-    /**
-     * Log a message to console or to flash (if interactive session).
-     *
-     * @param $message
-     */
-    public function log($message, $class = 'info')
-    {
-        if (!empty(trim($message)))
-            parent::log(str_pad('Radio Frontend: ', 20, ' ', STR_PAD_RIGHT).$message, $class);
+        ];
     }
 
     protected function _processCustomConfig($custom_config_raw)
     {
         $custom_config = [];
 
-        if (substr($custom_config_raw, 0, 1) == '{')
-        {
+        if (substr($custom_config_raw, 0, 1) == '{') {
             $custom_config = @json_decode($custom_config_raw, true);
-        }
-        elseif (substr($custom_config_raw, 0, 1) == '<')
-        {
+        } elseif (substr($custom_config_raw, 0, 1) == '<') {
             $reader = new \App\Xml\Reader;
-            $custom_config = $reader->fromString('<icecast>'.$custom_config_raw.'</icecast>');
+            $custom_config = $reader->fromString('<icecast>' . $custom_config_raw . '</icecast>');
         }
 
         return $custom_config;

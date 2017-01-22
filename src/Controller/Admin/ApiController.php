@@ -19,19 +19,18 @@ class ApiController extends BaseController
     {
         $form = new \App\Form($this->config->forms->api_key);
 
-        if ($this->hasParam('id'))
-        {
+        if ($this->hasParam('id')) {
             $id = $this->getParam('id');
             $record = $this->em->getRepository(Record::class)->find($id);
-            $form->setDefaults($record->toArray($this->em, TRUE, TRUE));
+            $form->setDefaults($record->toArray($this->em, true, true));
         }
 
-        if($_POST && $form->isValid($_POST) )
-        {
+        if ($_POST && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            if (!($record instanceof Record))
+            if (!($record instanceof Record)) {
                 $record = new Record;
+            }
 
             $record->fromArray($this->em, $data);
 
@@ -40,7 +39,7 @@ class ApiController extends BaseController
 
             $this->alert(_('Changes saved.'), 'green');
 
-            return $this->redirectFromHere(array('action' => 'index', 'id' => NULL));
+            return $this->redirectFromHere(['action' => 'index', 'id' => null]);
         }
 
         return $this->renderForm($form, 'edit', _('Edit Record'));
@@ -50,12 +49,13 @@ class ApiController extends BaseController
     {
         $record = $this->em->getRepository(Record::class)->find($this->getParam('id'));
 
-        if ($record instanceof Record)
+        if ($record instanceof Record) {
             $this->em->remove($record);
+        }
 
         $this->em->flush();
 
         $this->alert(_('Record deleted.'), 'green');
-        return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
+        return $this->redirectFromHere(['action' => 'index', 'id' => null, 'csrf' => null]);
     }
 }

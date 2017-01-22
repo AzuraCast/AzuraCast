@@ -1,7 +1,7 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Interop\Container\ContainerInterface;
 
 /**
@@ -11,25 +11,6 @@ use Interop\Container\ContainerInterface;
  */
 class Station extends \App\Doctrine\Entity
 {
-    public function __construct()
-    {
-        $this->automation_timestamp = 0;
-        $this->enable_streamers = false;
-        $this->enable_requests = false;
-        $this->request_delay = 5;
-
-        $this->needs_restart = false;
-
-        $this->history = new ArrayCollection;
-        $this->managers = new ArrayCollection;
-
-        $this->media = new ArrayCollection;
-        $this->playlists = new ArrayCollection;
-        $this->mounts = new ArrayCollection;
-
-        $this->streamers = new ArrayCollection;
-    }
-
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -40,31 +21,11 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="name", type="string", length=100, nullable=true) */
     protected $name;
 
-    public function getShortName()
-    {
-        return self::getStationShortName($this->name);
-    }
-
     /** @Column(name="frontend_type", type="string", length=100, nullable=true) */
     protected $frontend_type;
 
     /** @Column(name="frontend_config", type="json", nullable=true) */
     protected $frontend_config;
-
-    /**
-     * @return \AzuraCast\Radio\Frontend\FrontendAbstract
-     * @throws \Exception
-     */
-    public function getFrontendAdapter(ContainerInterface $di)
-    {
-        $adapters = self::getFrontendAdapters();
-
-        if (!isset($adapters['adapters'][$this->frontend_type]))
-            throw new \Exception('Adapter not found: '.$this->frontend_type);
-
-        $class_name = $adapters['adapters'][$this->frontend_type]['class'];
-        return new $class_name($di, $this);
-    }
 
     /** @Column(name="backend_type", type="string", length=100, nullable=true) */
     protected $backend_type;
@@ -72,56 +33,11 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="backend_config", type="json", nullable=true) */
     protected $backend_config;
 
-    /**
-     * @return \AzuraCast\Radio\Backend\BackendAbstract
-     * @throws \Exception
-     */
-    public function getBackendAdapter(ContainerInterface $di)
-    {
-        $adapters = self::getBackendAdapters();
-
-        if (!isset($adapters['adapters'][$this->backend_type]))
-            throw new \Exception('Adapter not found: '.$this->backend_type);
-
-        $class_name = $adapters['adapters'][$this->backend_type]['class'];
-        return new $class_name($di, $this);
-    }
-
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
 
     /** @Column(name="radio_base_dir", type="string", length=255, nullable=true) */
     protected $radio_base_dir;
-
-    public function setRadioBaseDir($new_dir)
-    {
-        if (strcmp($this->radio_base_dir, $new_dir) !== 0)
-        {
-            $this->radio_base_dir = $new_dir;
-
-            $radio_dirs = [$this->radio_base_dir, $this->getRadioMediaDir(), $this->getRadioPlaylistsDir(), $this->getRadioConfigDir()];
-            foreach($radio_dirs as $radio_dir)
-            {
-                if (!file_exists($radio_dir))
-                    mkdir($radio_dir, 0777);
-            }
-        }
-    }
-
-    public function getRadioMediaDir()
-    {
-        return $this->radio_base_dir.'/media';
-    }
-
-    public function getRadioPlaylistsDir()
-    {
-        return $this->radio_base_dir.'/playlists';
-    }
-
-    public function getRadioConfigDir()
-    {
-        return $this->radio_base_dir.'/config';
-    }
 
     /** @Column(name="nowplaying_data", type="json", nullable=true) */
     protected $nowplaying_data;
@@ -171,118 +87,23 @@ class Station extends \App\Doctrine\Entity
      */
     protected $mounts;
 
-    /**
-     * Write all configuration changes to the filesystem and reload supervisord.
-     *
-     * @param ContainerInterface $di
-     */
-    public function writeConfiguration(ContainerInterface $di)
+    public function __construct()
     {
-        if (APP_TESTING_MODE)
-            return;
+        $this->automation_timestamp = 0;
+        $this->enable_streamers = false;
+        $this->enable_requests = false;
+        $this->request_delay = 5;
 
-        /** @var \Supervisor\Supervisor */
-        $supervisor = $di['supervisor'];
+        $this->needs_restart = false;
 
-        $config_path = $this->getRadioConfigDir();
-        $supervisor_config = [];
-        $supervisor_config_path = $config_path.'/supervisord.conf';
+        $this->history = new ArrayCollection;
+        $this->managers = new ArrayCollection;
 
-        $frontend = $this->getFrontendAdapter($di);
-        $backend = $this->getBackendAdapter($di);
+        $this->media = new ArrayCollection;
+        $this->playlists = new ArrayCollection;
+        $this->mounts = new ArrayCollection;
 
-        // If no processes need to be managed, remove any existing config.
-        if (!$frontend->hasCommand() && !$backend->hasCommand())
-        {
-            @unlink($supervisor_config_path);
-            return;
-        }
-
-        // Write config files for both backend and frontend.
-        $frontend->write();
-        $backend->write();
-
-        // Get group information
-        $backend_name = $backend->getProgramName();
-        list($backend_group, $backend_program) = explode(':', $backend_name);
-
-        $frontend_name = $frontend->getProgramName();
-        list($frontend_group, $frontend_program) = explode(':', $frontend_name);
-
-        // Write group section of config
-        $programs = [];
-        if ($backend->hasCommand())
-            $programs[] = $backend_program;
-        if ($frontend->hasCommand())
-            $programs[] = $frontend_program;
-
-        $supervisor_config[] = '[group:'.$backend_group.']';
-        $supervisor_config[] = 'programs='.implode(',', $programs);
-        $supervisor_config[] = '';
-
-        // Write frontend
-        if ($frontend->hasCommand())
-        {
-            $supervisor_config[] = '[program:'.$frontend_program.']';
-            $supervisor_config[] = 'directory='.$config_path;
-            $supervisor_config[] = 'command='.$frontend->getCommand();
-            $supervisor_config[] = 'user=azuracast';
-            $supervisor_config[] = 'priority=90';
-            $supervisor_config[] = '';
-        }
-
-        // Write backend
-        if ($backend->hasCommand())
-        {
-            $supervisor_config[] = '[program:'.$backend_program.']';
-            $supervisor_config[] = 'directory='.$config_path;
-            $supervisor_config[] = 'command='.$backend->getCommand();
-            $supervisor_config[] = 'user=azuracast';
-            $supervisor_config[] = 'priority=100';
-            $supervisor_config[] = '';
-        }
-
-        // Write config contents
-        $supervisor_config_data = implode("\n", $supervisor_config);
-        file_put_contents($supervisor_config_path, $supervisor_config_data);
-
-        // Trigger a supervisord reload and restart all relevant services.
-        $reload_result = $supervisor->reloadConfig();
-
-        $reload_added = $reload_result[0][0];
-        $reload_changed = $reload_result[0][1];
-        $reload_removed = $reload_result[0][2];
-
-        foreach($reload_removed as $group)
-        {
-            $supervisor->stopProcessGroup($group);
-            $supervisor->removeProcessGroup($group);
-        }
-
-        foreach($reload_changed as $group)
-        {
-            $supervisor->stopProcessGroup($group);
-            $supervisor->removeProcessGroup($group);
-            $supervisor->addProcessGroup($group);
-        }
-
-        foreach($reload_added as $group)
-        {
-            $supervisor->addProcessGroup($group);
-        }
-    }
-
-    /**
-     * Static Functions
-     */
-
-    /**
-     * @param $name
-     * @return string
-     */
-    public static function getStationShortName($name)
-    {
-        return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', trim($name))));
+        $this->streamers = new ArrayCollection;
     }
 
     /**
@@ -295,6 +116,58 @@ class Station extends \App\Doctrine\Entity
         $name = str_replace('_', ' ', $name);
         $name = str_replace(' ', '', $name);
         return $name;
+    }
+
+    /**
+     * Retrieve the API version of the object/array.
+     *
+     * @param $row
+     * @return array
+     */
+    public static function api(Station $row, ContainerInterface $di)
+    {
+        $fa = $row->getFrontendAdapter($di);
+
+        $api = [
+            'id' => (int)$row->id,
+            'name' => $row->name,
+            'shortcode' => self::getStationShortName($row['name']),
+            'description' => $row->description,
+            'frontend' => $row->frontend_type,
+            'backend' => $row->backend_type,
+            'listen_url' => $fa->getStreamUrl(),
+            'mounts' => [],
+        ];
+
+        if ($row->mounts->count() > 0) {
+            if ($fa->supportsMounts()) {
+                foreach ($row->mounts as $mount_row) {
+                    $api['mounts'][] = [
+                        'name' => $mount_row->name,
+                        'is_default' => (bool)$mount_row->is_default,
+                        'url' => $fa->getUrlForMount($mount_row->name),
+                    ];
+                }
+            }
+        }
+
+        return $api;
+    }
+
+    /**
+     * @return \AzuraCast\Radio\Frontend\FrontendAbstract
+     * @throws \Exception
+     */
+    public function getFrontendAdapter(ContainerInterface $di)
+    {
+        $adapters = self::getFrontendAdapters();
+
+        if (!isset($adapters['adapters'][$this->frontend_type])) {
+            throw new \Exception('Adapter not found: ' . $this->frontend_type);
+        }
+
+        $class_name = $adapters['adapters'][$this->frontend_type]['class'];
+        return new $class_name($di, $this);
     }
 
     /**
@@ -322,6 +195,172 @@ class Station extends \App\Doctrine\Entity
     }
 
     /**
+     * @param $name
+     * @return string
+     */
+    public static function getStationShortName($name)
+    {
+        return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', trim($name))));
+    }
+
+    public function getShortName()
+    {
+        return self::getStationShortName($this->name);
+    }
+
+    public function setRadioBaseDir($new_dir)
+    {
+        if (strcmp($this->radio_base_dir, $new_dir) !== 0) {
+            $this->radio_base_dir = $new_dir;
+
+            $radio_dirs = [
+                $this->radio_base_dir,
+                $this->getRadioMediaDir(),
+                $this->getRadioPlaylistsDir(),
+                $this->getRadioConfigDir()
+            ];
+            foreach ($radio_dirs as $radio_dir) {
+                if (!file_exists($radio_dir)) {
+                    mkdir($radio_dir, 0777);
+                }
+            }
+        }
+    }
+
+    public function getRadioMediaDir()
+    {
+        return $this->radio_base_dir . '/media';
+    }
+
+    /**
+     * Static Functions
+     */
+
+    public function getRadioPlaylistsDir()
+    {
+        return $this->radio_base_dir . '/playlists';
+    }
+
+    public function getRadioConfigDir()
+    {
+        return $this->radio_base_dir . '/config';
+    }
+
+    /**
+     * Write all configuration changes to the filesystem and reload supervisord.
+     *
+     * @param ContainerInterface $di
+     */
+    public function writeConfiguration(ContainerInterface $di)
+    {
+        if (APP_TESTING_MODE) {
+            return;
+        }
+
+        /** @var \Supervisor\Supervisor */
+        $supervisor = $di['supervisor'];
+
+        $config_path = $this->getRadioConfigDir();
+        $supervisor_config = [];
+        $supervisor_config_path = $config_path . '/supervisord.conf';
+
+        $frontend = $this->getFrontendAdapter($di);
+        $backend = $this->getBackendAdapter($di);
+
+        // If no processes need to be managed, remove any existing config.
+        if (!$frontend->hasCommand() && !$backend->hasCommand()) {
+            @unlink($supervisor_config_path);
+            return;
+        }
+
+        // Write config files for both backend and frontend.
+        $frontend->write();
+        $backend->write();
+
+        // Get group information
+        $backend_name = $backend->getProgramName();
+        list($backend_group, $backend_program) = explode(':', $backend_name);
+
+        $frontend_name = $frontend->getProgramName();
+        list($frontend_group, $frontend_program) = explode(':', $frontend_name);
+
+        // Write group section of config
+        $programs = [];
+        if ($backend->hasCommand()) {
+            $programs[] = $backend_program;
+        }
+        if ($frontend->hasCommand()) {
+            $programs[] = $frontend_program;
+        }
+
+        $supervisor_config[] = '[group:' . $backend_group . ']';
+        $supervisor_config[] = 'programs=' . implode(',', $programs);
+        $supervisor_config[] = '';
+
+        // Write frontend
+        if ($frontend->hasCommand()) {
+            $supervisor_config[] = '[program:' . $frontend_program . ']';
+            $supervisor_config[] = 'directory=' . $config_path;
+            $supervisor_config[] = 'command=' . $frontend->getCommand();
+            $supervisor_config[] = 'user=azuracast';
+            $supervisor_config[] = 'priority=90';
+            $supervisor_config[] = '';
+        }
+
+        // Write backend
+        if ($backend->hasCommand()) {
+            $supervisor_config[] = '[program:' . $backend_program . ']';
+            $supervisor_config[] = 'directory=' . $config_path;
+            $supervisor_config[] = 'command=' . $backend->getCommand();
+            $supervisor_config[] = 'user=azuracast';
+            $supervisor_config[] = 'priority=100';
+            $supervisor_config[] = '';
+        }
+
+        // Write config contents
+        $supervisor_config_data = implode("\n", $supervisor_config);
+        file_put_contents($supervisor_config_path, $supervisor_config_data);
+
+        // Trigger a supervisord reload and restart all relevant services.
+        $reload_result = $supervisor->reloadConfig();
+
+        $reload_added = $reload_result[0][0];
+        $reload_changed = $reload_result[0][1];
+        $reload_removed = $reload_result[0][2];
+
+        foreach ($reload_removed as $group) {
+            $supervisor->stopProcessGroup($group);
+            $supervisor->removeProcessGroup($group);
+        }
+
+        foreach ($reload_changed as $group) {
+            $supervisor->stopProcessGroup($group);
+            $supervisor->removeProcessGroup($group);
+            $supervisor->addProcessGroup($group);
+        }
+
+        foreach ($reload_added as $group) {
+            $supervisor->addProcessGroup($group);
+        }
+    }
+
+    /**
+     * @return \AzuraCast\Radio\Backend\BackendAbstract
+     * @throws \Exception
+     */
+    public function getBackendAdapter(ContainerInterface $di)
+    {
+        $adapters = self::getBackendAdapters();
+
+        if (!isset($adapters['adapters'][$this->backend_type])) {
+            throw new \Exception('Adapter not found: ' . $this->backend_type);
+        }
+
+        $class_name = $adapters['adapters'][$this->backend_type]['class'];
+        return new $class_name($di, $this);
+    }
+
+    /**
      * @return array
      */
     public static function getBackendAdapters()
@@ -339,44 +378,5 @@ class Station extends \App\Doctrine\Entity
                 ],
             ],
         ];
-    }
-
-    /**
-     * Retrieve the API version of the object/array.
-     *
-     * @param $row
-     * @return array
-     */
-    public static function api(Station $row, ContainerInterface $di)
-    {
-        $fa = $row->getFrontendAdapter($di);
-
-        $api = [
-            'id'        => (int)$row->id,
-            'name'      => $row->name,
-            'shortcode' => self::getStationShortName($row['name']),
-            'description' => $row->description,
-            'frontend'  => $row->frontend_type,
-            'backend'   => $row->backend_type,
-            'listen_url' => $fa->getStreamUrl(),
-            'mounts'    => [],
-        ];
-
-        if ($row->mounts->count() > 0)
-        {
-            if ($fa->supportsMounts())
-            {
-                foreach($row->mounts as $mount_row)
-                {
-                    $api['mounts'][] = [
-                        'name'  => $mount_row->name,
-                        'is_default' => (bool)$mount_row->is_default,
-                        'url'   => $fa->getUrlForMount($mount_row->name),
-                    ];
-                }
-            }
-        }
-
-        return $api;
     }
 }

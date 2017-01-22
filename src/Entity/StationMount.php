@@ -1,8 +1,6 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * @Table(name="station_mounts")
  * @Entity(repositoryClass="Entity\Repository\StationMountRepository")
@@ -10,16 +8,6 @@ use \Doctrine\Common\Collections\ArrayCollection;
  */
 class StationMount extends \App\Doctrine\Entity
 {
-    public function __construct()
-    {
-        $this->is_default = false;
-        $this->enable_autodj = true;
-        $this->enable_streamers = false;
-
-        $this->autodj_format = 'mp3';
-        $this->autodj_bitrate = 128;
-    }
-
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -32,15 +20,6 @@ class StationMount extends \App\Doctrine\Entity
 
     /** @Column(name="name", type="string", length=100) */
     protected $name;
-
-    /**
-     * Ensure all mountpoint names start with a leading slash.
-     * @param $new_name
-     */
-    public function setName($new_name)
-    {
-        $this->name = '/'.ltrim($new_name, '/');
-    }
 
     /** @Column(name="is_default", type="boolean", nullable=false) */
     protected $is_default;
@@ -70,4 +49,23 @@ class StationMount extends \App\Doctrine\Entity
      * })
      */
     protected $station;
+
+    public function __construct()
+    {
+        $this->is_default = false;
+        $this->enable_autodj = true;
+        $this->enable_streamers = false;
+
+        $this->autodj_format = 'mp3';
+        $this->autodj_bitrate = 128;
+    }
+
+    /**
+     * Ensure all mountpoint names start with a leading slash.
+     * @param $new_name
+     */
+    public function setName($new_name)
+    {
+        $this->name = '/' . ltrim($new_name, '/');
+    }
 }

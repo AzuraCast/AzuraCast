@@ -2,18 +2,17 @@
 namespace Controller\Frontend;
 
 use Entity\Settings;
-use Entity\User;
 
 class AccountController extends BaseController
 {
     public function init()
     {
-        if ($this->em->getRepository(Settings::class)->getSetting('setup_complete', 0) == 0)
-        {
+        if ($this->em->getRepository(Settings::class)->getSetting('setup_complete', 0) == 0) {
             $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
 
-            if ($num_users == 0)
+            if ($num_users == 0) {
                 return $this->redirectToRoute(['module' => 'frontend', 'controller' => 'setup']);
+            }
         }
 
         return null;
@@ -21,38 +20,38 @@ class AccountController extends BaseController
 
     public function indexAction()
     {
-        if ($this->auth->isLoggedIn())
+        if ($this->auth->isLoggedIn()) {
             return $this->redirectHome();
-        else
-            return $this->redirectFromHere(array('action' => 'login'));
+        } else {
+            return $this->redirectFromHere(['action' => 'login']);
+        }
     }
 
     public function loginAction()
     {
-        if ($this->auth->isLoggedIn())
+        if ($this->auth->isLoggedIn()) {
             return $this->redirectHome();
+        }
 
-        if (!$_POST)
+        if (!$_POST) {
             $this->storeReferrer('login', false);
+        }
 
-        if (!empty($_POST['username']) && !empty($_POST['password']))
-        {
+        if (!empty($_POST['username']) && !empty($_POST['password'])) {
             $login_success = $this->auth->authenticate($_POST['username'], $_POST['password']);
 
-            if($login_success)
-            {
+            if ($login_success) {
                 $this->acl->reload();
 
                 $user = $this->auth->getLoggedInUser();
 
-                $this->alert('<b>'._('Logged in successfully.').'</b><br>'.$user->email, 'green');
+                $this->alert('<b>' . _('Logged in successfully.') . '</b><br>' . $user->email, 'green');
 
                 $default_url = $this->url->named('home');
                 return $this->redirectToStoredReferrer('login', $default_url);
-            }
-            else
-            {
-                $this->alert('<b>'._('Login unsuccessful').'</b><br>'._('Your credentials could not be verified.'), 'red');
+            } else {
+                $this->alert('<b>' . _('Login unsuccessful') . '</b><br>' . _('Your credentials could not be verified.'),
+                    'red');
                 return $this->redirectHere();
             }
         }

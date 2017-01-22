@@ -10,7 +10,7 @@ class PermissionsController extends BaseController
     {
         return $this->acl->isAllowed('administer permissions');
     }
-    
+
     public function indexAction()
     {
         $all_roles = $this->em->createQuery('SELECT r, rp, s FROM Entity\Role r LEFT JOIN r.users u LEFT JOIN r.permissions rp LEFT JOIN rp.station s ORDER BY r.id ASC')
@@ -18,17 +18,16 @@ class PermissionsController extends BaseController
 
         $roles = [];
 
-        foreach($all_roles as $role)
-        {
+        foreach ($all_roles as $role) {
             $role['permissions_global'] = [];
             $role['permissions_station'] = [];
 
-            foreach($role['permissions'] as $permission)
-            {
-                if ($permission['station'])
+            foreach ($role['permissions'] as $permission) {
+                if ($permission['station']) {
                     $role['permissions_station'][$permission['station']['name']][] = $permission['action_name'];
-                else
+                } else {
                     $role['permissions_global'][] = $permission['action_name'];
+                }
             }
 
             $roles[] = $role;
@@ -48,9 +47,8 @@ class PermissionsController extends BaseController
     public function editAction()
     {
         $form = new \App\Form($this->config->forms->role->toArray());
-        
-        if ($this->hasParam('id'))
-        {
+
+        if ($this->hasParam('id')) {
             $record = $this->em->getRepository(Role::class)->find($this->getParam('id'));
             $record_info = $record->toArray($this->em, true, true);
 
@@ -59,12 +57,12 @@ class PermissionsController extends BaseController
             $form->setDefaults(array_merge($record_info, $actions));
         }
 
-        if( !empty($_POST) && $form->isValid($_POST) )
-        {
+        if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
-            
-            if (!($record instanceof Role))
+
+            if (!($record instanceof Role)) {
                 $record = new Role;
+            }
 
             $record->fromArray($this->em, $data);
 
@@ -73,8 +71,8 @@ class PermissionsController extends BaseController
 
             $this->em->getRepository(RolePermission::class)->setActionsForRole($record, $data);
 
-            $this->alert('<b>'._('Record updated.').'</b>', 'green');
-            return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
+            $this->alert('<b>' . _('Record updated.') . '</b>', 'green');
+            return $this->redirectFromHere(['action' => 'index', 'id' => null, 'csrf' => null]);
         }
 
         return $this->renderForm($form, 'edit', _('Edit Record'));
@@ -83,12 +81,13 @@ class PermissionsController extends BaseController
     public function deleteAction()
     {
         $record = $this->em->getRepository(Role::class)->find($this->getParam('id'));
-        if ($record instanceof Role)
+        if ($record instanceof Role) {
             $this->em->remove($record);
+        }
 
         $this->em->flush();
-        
-        $this->alert('<b>'._('Record deleted.').'</b>', 'green');
-        return $this->redirectFromHere(array('action' => 'index', 'id' => NULL, 'csrf' => NULL));
+
+        $this->alert('<b>' . _('Record deleted.') . '</b>', 'green');
+        return $this->redirectFromHere(['action' => 'index', 'id' => null, 'csrf' => null]);
     }
 }

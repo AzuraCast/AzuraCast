@@ -41,10 +41,11 @@ class BaseController extends \AzuraCast\Mvc\Controller
         $request_time = $end_time - $this->_time_start;
 
         // Log request using a raw SQL query for higher performance.
-        if (isset($_SERVER['CF-Connecting-IP']))
+        if (isset($_SERVER['CF-Connecting-IP'])) {
             $remote_ip = $_SERVER['CF-Connecting-IP'];
-        else
+        } else {
             $remote_ip = $_SERVER['REMOTE_ADDR'];
+        }
 
         $params = array_merge((array)$this->dispatcher->getParams(), (array)$this->request->getQuery());
 
@@ -78,8 +79,9 @@ class BaseController extends \AzuraCast\Mvc\Controller
      */
     public function requireKey()
     {
-        if (!$this->authenticate())
+        if (!$this->authenticate()) {
             throw new \App\Exception\PermissionDenied('No valid API key specified.');
+        }
     }
 
     /**
@@ -89,25 +91,27 @@ class BaseController extends \AzuraCast\Mvc\Controller
      */
     public function authenticate()
     {
-        if (isset($_SERVER['X-API-Key']))
+        if (isset($_SERVER['X-API-Key'])) {
             $key = $_SERVER['X-API-Key'];
-        elseif ($this->hasParam('key'))
+        } elseif ($this->hasParam('key')) {
             $key = $this->getParam('key');
-        else
+        } else {
             return false;
+        }
 
-        if (empty($key))
+        if (empty($key)) {
             return false;
+        }
 
         $record = $this->em->getRepository(ApiKey::class)->find($key);
         // $record = self::find($key);
 
-        if ($record instanceof ApiKey)
-        {
+        if ($record instanceof ApiKey) {
             $record->calls_made++;
 
             $this->em->persist($record);
             $this->em->flush();
+
             return true;
         }
 
@@ -120,30 +124,31 @@ class BaseController extends \AzuraCast\Mvc\Controller
 
     public function returnSuccess($data)
     {
-        return $this->returnToScreen(array(
-            'status'    => 'success',
-            'result'    => $data,
-        ));
+        return $this->returnToScreen([
+            'status' => 'success',
+            'result' => $data,
+        ]);
     }
 
     public function returnError($message, $error_code = 400)
     {
         $this->response = $this->response->withStatus($error_code);
 
-        return $this->returnToScreen(array(
-            'status'    => 'error',
-            'error'     => $message,
-        ));
+        return $this->returnToScreen([
+            'status' => 'error',
+            'error' => $message,
+        ]);
     }
 
     public function returnToScreen($obj)
     {
         $format = strtolower($this->getParam('format', 'json'));
 
-        if ($format == 'xml')
+        if ($format == 'xml') {
             return $this->returnRaw(\App\Export::array_to_xml($obj), 'xml');
-        else
+        } else {
             return $this->returnRaw(json_encode($obj, \JSON_UNESCAPED_SLASHES), 'json');
+        }
     }
 
     public function returnRaw($message, $format = 'json')
@@ -152,6 +157,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
         $this->response = $this->response->withHeader('Content-Type', $content_type);
 
         $this->response->getBody()->write($message);
+
         return $this->response;
     }
 }

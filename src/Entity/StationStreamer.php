@@ -1,8 +1,6 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * Station streamers (DJ accounts) allowed to broadcast to a station.
  *

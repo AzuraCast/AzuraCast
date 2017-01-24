@@ -14,30 +14,42 @@ return [
         'method' => 'post',
         'elements' => [
 
-            'email' => ['email', [
-                'label' => _('E-mail Address'),
-                'required' => true,
-                'autocomplete' => 'off',
-            ]],
+            'email' => [
+                'email',
+                [
+                    'label' => _('E-mail Address'),
+                    'required' => true,
+                    'autocomplete' => 'off',
+                ]
+            ],
 
-            'auth_password' => ['password', [
-                'label' => _('Reset Password'),
-                'description' => _('Leave blank to use the current password.'),
-                'autocomplete' => 'off',
-                'required' => false,
-            ]],
+            'auth_password' => [
+                'password',
+                [
+                    'label' => _('Reset Password'),
+                    'description' => _('Leave blank to use the current password.'),
+                    'autocomplete' => 'off',
+                    'required' => false,
+                ]
+            ],
 
-            'roles' => ['multiCheckbox', [
-                'label' => _('Roles'),
-                'options' => $em->getRepository(\Entity\Role::class)->fetchSelect(),
-            ]],
+            'roles' => [
+                'multiCheckbox',
+                [
+                    'label' => _('Roles'),
+                    'options' => $em->getRepository(\Entity\Role::class)->fetchSelect(),
+                ]
+            ],
 
-            'submit' => ['submit', [
-                'type' => 'submit',
-                'label' => _('Save Changes'),
-                'helper' => 'formButton',
-                'class' => 'btn btn-lg btn-primary',
-            ]],
+            'submit' => [
+                'submit',
+                [
+                    'type' => 'submit',
+                    'label' => _('Save Changes'),
+                    'helper' => 'formButton',
+                    'class' => 'btn btn-lg btn-primary',
+                ]
+            ],
         ],
     ],
 ];

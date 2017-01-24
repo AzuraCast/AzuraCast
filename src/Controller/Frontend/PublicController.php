@@ -2,7 +2,6 @@
 namespace Controller\Frontend;
 
 use Entity\Station;
-use Entity\Settings;
 
 class PublicController extends BaseController
 {
@@ -17,17 +16,18 @@ class PublicController extends BaseController
         $stations = $this->em->getRepository(Station::class)->findAll();
         $this->view->stations = $stations;
 
-        if (!$this->hasParam('station'))
-        {
+        if (!$this->hasParam('station')) {
             $station = reset($stations);
+
             return $this->redirectFromHere(['station' => $station->id]);
         }
 
         $station_id = (int)$this->getParam('station');
         $station = $this->em->getRepository(Station::class)->find($station_id);
 
-        if (!($station instanceof Station))
+        if (!($station instanceof Station)) {
             throw new \App\Exception(_('Station not found!'));
+        }
 
         $this->view->station = $station;
     }

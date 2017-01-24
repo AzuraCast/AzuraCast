@@ -1,8 +1,6 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * @Table(name="station_requests")
  * @Entity(repositoryClass="Entity\Repository\StationRequestRepository")

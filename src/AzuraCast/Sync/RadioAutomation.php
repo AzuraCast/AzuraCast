@@ -2,9 +2,7 @@
 namespace AzuraCast\Sync;
 
 use App\Exception;
-use App\Utilities;
 use Doctrine\ORM\EntityManager;
-use Entity\Settings;
 use Entity\Station;
 
 class RadioAutomation extends SyncAbstract
@@ -22,18 +20,15 @@ class RadioAutomation extends SyncAbstract
         // Check all stations for automation settings.
         $stations = $em->getRepository(Station::class)->findAll();
 
-        $automation_log = $this->di['em']->getRepository('Entity\Settings')->getSetting('automation_log', array());
+        $automation_log = $this->di['em']->getRepository('Entity\Settings')->getSetting('automation_log', []);
 
-        foreach($stations as $station)
-        {
-            try
-            {
-                if ($this->runStation($station))
-                    $automation_log[$station->id] = $station->name.': SUCCESS';
-            }
-            catch(Exception $e)
-            {
-                $automation_log[$station->id] = $station->name.': ERROR - '.$e->getMessage();
+        foreach ($stations as $station) {
+            try {
+                if ($this->runStation($station)) {
+                    $automation_log[$station->id] = $station->name . ': SUCCESS';
+                }
+            } catch (Exception $e) {
+                $automation_log[$station->id] = $station->name . ': ERROR - ' . $e->getMessage();
             }
         }
 
@@ -55,34 +50,35 @@ class RadioAutomation extends SyncAbstract
 
         $settings = (array)$station->automation_settings;
 
-        if (empty($settings))
+        if (empty($settings)) {
             throw new Exception('Automation has not been configured for this station yet.');
+        }
 
-        if (!$settings['is_enabled'])
+        if (!$settings['is_enabled']) {
             throw new Exception('Automation is not enabled for this station.');
+        }
 
         // Check whether assignment needs to be run.
         $threshold_days = (int)$settings['threshold_days'];
-        $threshold = time()-(86400 * $threshold_days);
+        $threshold = time() - (86400 * $threshold_days);
 
-        if (!$force && $station->automation_timestamp >= $threshold)
-            return false; // No error, but no need to run assignment.
+        if (!$force && $station->automation_timestamp >= $threshold) {
+            return false;
+        } // No error, but no need to run assignment.
 
-        $playlists = array();
-        $original_playlists = array();
+        $playlists = [];
+        $original_playlists = [];
 
         // Related playlists are already automatically sorted by weight.
         $i = 0;
 
-        foreach($station->playlists as $playlist)
-        {
+        foreach ($station->playlists as $playlist) {
             if ($playlist->is_enabled &&
                 $playlist->type == 'default' &&
-                $playlist->include_in_automation == true)
-            {
+                $playlist->include_in_automation == true
+            ) {
                 // Clear all related media.
-                foreach($playlist->media as $media)
-                {
+                foreach ($playlist->media as $media) {
                     $original_playlists[$media->song_id][] = $i;
 
                     $media->playlists->removeElement($playlist);
@@ -95,34 +91,36 @@ class RadioAutomation extends SyncAbstract
             }
         }
 
-        if (count($playlists) == 0)
+        if (count($playlists) == 0) {
             throw new Exception('No playlists have automation enabled.');
+        }
 
         $em->flush();
 
         $media_report = $this->generateReport($station, $threshold_days);
 
-        $media_report = array_filter($media_report, function($media) use ($original_playlists) {
+        $media_report = array_filter($media_report, function ($media) use ($original_playlists) {
             // Remove songs that are already in non-auto-assigned playlists.
-            if (!empty($media['playlists']))
+            if (!empty($media['playlists'])) {
                 return false;
+            }
 
             // Remove songs that weren't already in auto-assigned playlists.
-            if (!isset($original_playlists[$media['song_id']]))
+            if (!isset($original_playlists[$media['song_id']])) {
                 return false;
+            }
 
             return true;
         });
 
         // Place all songs with 0 plays back in their original playlists.
-        foreach($media_report as $song_id => $media)
-        {
-            if ($media['num_plays'] == 0 && isset($original_playlists[$song_id]))
-            {
+        foreach ($media_report as $song_id => $media) {
+            if ($media['num_plays'] == 0 && isset($original_playlists[$song_id])) {
                 $media_row = $media['record'];
 
-                foreach($original_playlists[$song_id] as $playlist_key)
+                foreach ($original_playlists[$song_id] as $playlist_key) {
                     $media_row->playlists->add($playlists[$playlist_key]);
+                }
 
                 $em->persist($media_row);
 
@@ -133,7 +131,7 @@ class RadioAutomation extends SyncAbstract
         $em->flush();
 
         // Sort songs by ratio descending.
-        uasort($media_report, function($a_media, $b_media) {
+        uasort($media_report, function ($a_media, $b_media) {
             $a = (int)$a_media['ratio'];
             $b = (int)$b_media['ratio'];
 
@@ -147,16 +145,15 @@ class RadioAutomation extends SyncAbstract
 
         $i = 0;
 
-        foreach($playlists as $playlist)
-        {
-            if ($i == 0)
+        foreach ($playlists as $playlist) {
+            if ($i == 0) {
                 $playlist_num_songs = $songs_per_playlist + ($num_songs % $num_playlists);
-            else
+            } else {
                 $playlist_num_songs = $songs_per_playlist;
+            }
 
             $media_in_playlist = array_slice($media_report, $i, $playlist_num_songs);
-            foreach($media_in_playlist as $media)
-            {
+            foreach ($media_in_playlist as $media) {
                 $media_row = $media['record'];
                 $media_row->playlists->add($playlist);
 
@@ -172,6 +169,7 @@ class RadioAutomation extends SyncAbstract
 
         // Write new PLS playlist configuration.
         $station->getBackendAdapter($this->di)->write();
+
         return true;
     }
 
@@ -187,7 +185,7 @@ class RadioAutomation extends SyncAbstract
         /** @var EntityManager $em */
         $em = $this->di['em'];
 
-        $threshold = strtotime('-'.(int)$threshold_days.' days');
+        $threshold = strtotime('-' . (int)$threshold_days . ' days');
 
         // Pull all SongHistory data points.
         $data_points_raw = $em->createQuery('SELECT sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start FROM Entity\SongHistory sh WHERE sh.station_id = :station_id AND sh.timestamp_end != 0 AND sh.timestamp_start >= :threshold')
@@ -196,20 +194,21 @@ class RadioAutomation extends SyncAbstract
             ->getArrayResult();
 
         $total_plays = 0;
-        $data_points = array();
-        $data_points_by_hour = array();
+        $data_points = [];
+        $data_points_by_hour = [];
 
-        foreach($data_points_raw as $row)
-        {
-            $total_plays ++;
+        foreach ($data_points_raw as $row) {
+            $total_plays++;
 
-            if (!isset($data_points[$row['song_id']]))
+            if (!isset($data_points[$row['song_id']])) {
                 $data_points[$row['song_id']] = [];
+            }
 
             $row['hour'] = date('H', $row['timestamp_start']);
 
-            if (!isset($totals_by_hour[$row['hour']]))
-                $data_points_by_hour[$row['hour']] = array();
+            if (!isset($totals_by_hour[$row['hour']])) {
+                $data_points_by_hour[$row['hour']] = [];
+            }
 
             $data_points_by_hour[$row['hour']][] = $row;
 
@@ -239,22 +238,21 @@ class RadioAutomation extends SyncAbstract
             ->setParameter('station_id', $station->id)
             ->execute();
 
-        $report = array();
+        $report = [];
 
-        foreach($media_raw as $row)
-        {
-            $media = array(
-                'song_id'   => $row['song_id'],
-                'record'    => $row,
+        foreach ($media_raw as $row) {
+            $media = [
+                'song_id' => $row['song_id'],
+                'record' => $row,
 
-                'title'     => $row['title'],
-                'artist'    => $row['artist'],
+                'title' => $row['title'],
+                'artist' => $row['artist'],
                 'length_raw' => $row['length'],
-                'length'    => $row['length_text'],
-                'path'      => $row['path'],
+                'length' => $row['length_text'],
+                'path' => $row['path'],
 
-                'playlists' => array(),
-                'data_points' => array(),
+                'playlists' => [],
+                'data_points' => [],
 
                 'num_plays' => 0,
                 'percent_plays' => 0,
@@ -264,21 +262,19 @@ class RadioAutomation extends SyncAbstract
                 'delta_total' => 0,
 
                 'ratio' => 0,
-            );
+            ];
 
-            if (!empty($row['playlists']))
-            {
-                foreach($row['playlists'] as $playlist)
+            if (!empty($row['playlists'])) {
+                foreach ($row['playlists'] as $playlist) {
                     $media['playlists'][] = $playlist['name'];
+                }
             }
 
-            if (isset($data_points[$row['song_id']]))
-            {
-                $ratio_points = array();
+            if (isset($data_points[$row['song_id']])) {
+                $ratio_points = [];
 
-                foreach($data_points[$row['song_id']] as $data_row)
-                {
-                    $media['num_plays'] ++;
+                foreach ($data_points[$row['song_id']] as $data_row) {
+                    $media['num_plays']++;
 
                     $media['delta_positive'] += $data_row['delta_positive'];
                     $media['delta_negative'] -= $data_row['delta_negative'];
@@ -293,7 +289,7 @@ class RadioAutomation extends SyncAbstract
                 }
 
                 $media['delta_total'] = $media['delta_positive'] + $media['delta_negative'];
-                $media['percent_plays'] = round(($media['num_plays'] / $total_plays)*100, 2);
+                $media['percent_plays'] = round(($media['num_plays'] / $total_plays) * 100, 2);
 
                 $media['ratio'] = round(array_sum($ratio_points) / count($ratio_points), 3);
             }

@@ -3,8 +3,8 @@ namespace AzuraCast;
 
 use App\Debug;
 use Entity\Settings;
-use Interop\Container\ContainerInterface;
 use Entity\SettingsRepository;
+use Interop\Container\ContainerInterface;
 
 /**
  * The runner of scheduled synchronization tasks.
@@ -33,14 +33,14 @@ class Sync
     protected function _initSync($script_timeout = 60)
     {
         // Immediately halt if setup is not complete.
-        if ($this->settings->getSetting('setup_complete', 0) == 0)
+        if ($this->settings->getSetting('setup_complete', 0) == 0) {
             die('Setup not complete; halting synchronized task.');
+        }
 
         set_time_limit($script_timeout);
         ini_set('memory_limit', '256M');
 
-        if (APP_IS_COMMAND_LINE)
-        {
+        if (APP_IS_COMMAND_LINE) {
             error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
             ini_set('display_errors', 1);
             ini_set('log_errors', 1);
@@ -62,14 +62,15 @@ class Sync
         $last_start = $this->settings->getSetting('nowplaying_last_started', 0);
         $last_end = $this->settings->getSetting('nowplaying_last_run', 0);
 
-        if ($last_start > $last_end && $last_start >= (time() - 10) && !$force)
+        if ($last_start > $last_end && $last_start >= (time() - 10) && !$force) {
             return;
+        }
 
         // Sync schedules.
         $this->settings->setSetting('nowplaying_last_started', time());
 
         // Run Now Playing data for radio streams.
-        Debug::runTimer('Run NowPlaying update', function() {
+        Debug::runTimer('Run NowPlaying update', function () {
             $task = new Sync\NowPlaying($this->di);
             $task->run();
         });
@@ -87,7 +88,7 @@ class Sync
     {
         $this->_initSync(60);
 
-        Debug::runTimer('Handle pending song requests', function() {
+        Debug::runTimer('Handle pending song requests', function () {
             $task = new Sync\RadioRequests($this->di);
             $task->run();
         });
@@ -106,7 +107,7 @@ class Sync
         $this->_initSync(300);
 
         // Sync uploaded media.
-        Debug::runTimer('Run radio station track sync', function() {
+        Debug::runTimer('Run radio station track sync', function () {
             $task = new Sync\Media($this->di);
             $task->run();
         });
@@ -133,19 +134,19 @@ class Sync
         $this->_initSync(1800);
 
         // Sync analytical and statistical data (long running).
-        Debug::runTimer('Run analytics manager', function() {
+        Debug::runTimer('Run analytics manager', function () {
             $task = new Sync\Analytics($this->di);
             $task->run();
         });
 
         // Run automated playlist assignment.
-        Debug::runTimer('Run automated playlist assignment', function() {
+        Debug::runTimer('Run automated playlist assignment', function () {
             $task = new Sync\RadioAutomation($this->di);
             $task->run();
         });
 
         // Clean up old song history entries.
-        Debug::runTimer('Run song history cleanup', function() {
+        Debug::runTimer('Run song history cleanup', function () {
             $task = new Sync\HistoryCleanup($this->di);
             $task->run();
         });
@@ -189,11 +190,10 @@ class Sync
             ],
         ];
 
-        foreach ($syncs as $sync_key => $sync_info)
-        {
+        foreach ($syncs as $sync_key => $sync_info) {
             $sync_latest = $sync_info['latest'];
 
-            $syncs[$sync_key]['diff'] = time()-$sync_latest;
+            $syncs[$sync_key]['diff'] = time() - $sync_latest;
             $syncs[$sync_key]['diff_text'] = \App\Utilities::timeDifferenceText($sync_latest, time());
         }
 

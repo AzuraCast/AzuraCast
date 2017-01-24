@@ -1,8 +1,6 @@
 <?php
 namespace Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * @Table(name="role_permissions", uniqueConstraints={
  *   @UniqueConstraint(name="role_permission_unique_idx", columns={"role_id","action_name","station_id"})

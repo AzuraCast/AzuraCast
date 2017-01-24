@@ -1,8 +1,7 @@
 <?php
 namespace Entity;
 
-use App\Exception;
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Table(name="station_media", indexes={
@@ -19,7 +18,7 @@ class StationMedia extends \App\Doctrine\Entity
     {
         $this->length = 0;
         $this->length_text = '0:00';
-        
+
         $this->mtime = 0;
 
         $this->playlists = new ArrayCollection();
@@ -56,7 +55,7 @@ class StationMedia extends \App\Doctrine\Entity
         $length_sec = $length % 60;
 
         $this->length = $length;
-        $this->length_text = $length_min.':'.str_pad($length_sec, 2, '0', STR_PAD_LEFT);
+        $this->length_text = $length_min . ':' . str_pad($length_sec, 2, '0', STR_PAD_LEFT);
     }
 
     /** @Column(name="length_text", type="string", length=10, nullable=true) */
@@ -68,7 +67,8 @@ class StationMedia extends \App\Doctrine\Entity
     public function getFullPath()
     {
         $media_base_dir = $this->station->getRadioMediaDir();
-        return $media_base_dir.'/'.$this->path;
+
+        return $media_base_dir . '/' . $this->path;
     }
 
     /** @Column(name="mtime", type="integer", nullable=true) */
@@ -104,16 +104,16 @@ class StationMedia extends \App\Doctrine\Entity
      */
     public function loadFromFile()
     {
-        if (empty($this->path))
+        if (empty($this->path)) {
             return false;
-        
+        }
+
         $media_base_dir = $this->station->getRadioMediaDir();
-        $media_path = $media_base_dir.'/'.$this->path;
+        $media_path = $media_base_dir . '/' . $this->path;
 
         // Only update metadata if the file has been updated.
         $media_mtime = filemtime($media_path);
-        if ($media_mtime > $this->mtime || !$this->song)
-        {
+        if ($media_mtime > $this->mtime || !$this->song) {
             // Load metadata from MP3 file.
             $id3 = new \getID3();
 
@@ -123,39 +123,37 @@ class StationMedia extends \App\Doctrine\Entity
 
             $file_info = $id3->analyze($media_path);
 
-            if (isset($file_info['error']))
+            if (isset($file_info['error'])) {
                 throw new \App\Exception($file_info['error'][0]);
+            }
 
             $this->setLength($file_info['playtime_seconds']);
 
             $tags_to_set = ['title', 'artist', 'album'];
 
-            if (!empty($file_info['tags']))
-            {
-                foreach($file_info['tags'] as $tag_type => $tag_data)
-                {
-                    foreach($tags_to_set as $tag)
-                    {
-                        if (!empty($tag_data[$tag][0]))
+            if (!empty($file_info['tags'])) {
+                foreach ($file_info['tags'] as $tag_type => $tag_data) {
+                    foreach ($tags_to_set as $tag) {
+                        if (!empty($tag_data[$tag][0])) {
                             $this->{$tag} = $tag_data[$tag][0];
+                        }
                     }
                 }
             }
 
-            if (empty($this->title))
-            {
+            if (empty($this->title)) {
                 $path_parts = pathinfo($media_path);
                 $this->title = $path_parts['filename'];
             }
 
             $this->mtime = $media_mtime;
 
-            return array(
-                'artist'    => $this->artist,
-                'title'     => $this->title,
-            );
+            return [
+                'artist' => $this->artist,
+                'title' => $this->title,
+            ];
         }
-        
+
         return false;
     }
 
@@ -165,30 +163,30 @@ class StationMedia extends \App\Doctrine\Entity
     public function writeToFile()
     {
         $getID3 = new \getID3;
-        $getID3->setOption(array('encoding'=> 'UTF8'));
+        $getID3->setOption(['encoding' => 'UTF8']);
 
-        require_once(APP_INCLUDE_VENDOR.'/james-heinrich/getid3/getid3/write.php');
+        require_once(APP_INCLUDE_VENDOR . '/james-heinrich/getid3/getid3/write.php');
 
         $tagwriter = new \getid3_writetags;
         $tagwriter->filename = $this->getFullPath();
 
-        $tagwriter->tagformats = array('id3v1', 'id3v2.3');
+        $tagwriter->tagformats = ['id3v1', 'id3v2.3'];
         $tagwriter->overwrite_tags = true;
         $tagwriter->tag_encoding = 'UTF8';
         $tagwriter->remove_other_tags = true;
 
-        $tag_data = array(
-            'title'         => array($this->title),
-            'artist'        => array($this->artist),
-            'album'         => array($this->album),
-        );
+        $tag_data = [
+            'title' => [$this->title],
+            'artist' => [$this->artist],
+            'album' => [$this->album],
+        ];
 
         $tagwriter->tag_data = $tag_data;
 
         // write tags
-        if ($tagwriter->WriteTags())
-        {
+        if ($tagwriter->WriteTags()) {
             $this->mtime = time();
+
             return true;
         }
     }
@@ -201,11 +199,11 @@ class StationMedia extends \App\Doctrine\Entity
         $old_path = $this->getFullPath();
 
         $media_base_dir = $this->station->getRadioMediaDir();
-        $unprocessed_dir = $media_base_dir.'/not-processed';
+        $unprocessed_dir = $media_base_dir . '/not-processed';
 
         @mkdir($unprocessed_dir);
 
-        $new_path = $unprocessed_dir.'/'.basename($this->path);
+        $new_path = $unprocessed_dir . '/' . basename($this->path);
         @rename($old_path, $new_path);
     }
 

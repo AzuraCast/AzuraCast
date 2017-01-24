@@ -1,7 +1,7 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Table(name="station_playlists")
@@ -111,13 +111,14 @@ class StationPlaylist extends \App\Doctrine\Entity
 
         $ampm = ($hours < 12) ? 'AM' : 'PM';
 
-        if ($hours == 0)
+        if ($hours == 0) {
             $hours_text = '12';
-        elseif ($hours > 12)
-            $hours_text = $hours-12;
-        else
+        } elseif ($hours > 12) {
+            $hours_text = $hours - 12;
+        } else {
             $hours_text = $hours;
+        }
 
-        return $hours_text.':'.str_pad($mins, 2, '0', STR_PAD_LEFT).' '.$ampm;
+        return $hours_text . ':' . str_pad($mins, 2, '0', STR_PAD_LEFT) . ' ' . $ampm;
     }
 }

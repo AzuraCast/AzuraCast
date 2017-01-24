@@ -10,8 +10,9 @@ class SettingsRepository extends \App\Doctrine\Repository
      */
     public function setSettings($settings)
     {
-        foreach($settings as $setting_key => $setting_value)
+        foreach ($settings as $setting_key => $setting_value) {
             $this->setSetting($setting_key, $setting_value, false);
+        }
 
         $this->clearCache();
     }
@@ -25,8 +26,7 @@ class SettingsRepository extends \App\Doctrine\Repository
     {
         $record = $this->findOneBy(['setting_key' => $key]);
 
-        if (!($record instanceof Entity\Settings))
-        {
+        if (!($record instanceof Entity\Settings)) {
             $record = new Entity\Settings;
             $record->setting_key = $key;
         }
@@ -36,8 +36,9 @@ class SettingsRepository extends \App\Doctrine\Repository
         $this->_em->persist($record);
         $this->_em->flush();
 
-        if ($flush_cache)
+        if ($flush_cache) {
             $this->clearCache();
+        }
     }
 
     /**
@@ -46,14 +47,15 @@ class SettingsRepository extends \App\Doctrine\Repository
      * @param bool $cached
      * @return mixed|null
      */
-    public function getSetting($key, $default_value = NULL, $cached = TRUE)
+    public function getSetting($key, $default_value = null, $cached = true)
     {
         $settings = $this->fetchArray($cached);
 
-        if (isset($settings[$key]))
+        if (isset($settings[$key])) {
             return $settings[$key];
-        else
+        } else {
             return $default_value;
+        }
     }
 
     /**
@@ -63,9 +65,10 @@ class SettingsRepository extends \App\Doctrine\Repository
     {
         $all_records_raw = $this->findAll();
 
-        $all_records = array();
-        foreach($all_records_raw as $record)
+        $all_records = [];
+        foreach ($all_records_raw as $record) {
             $all_records[$record['setting_key']] = $record['setting_value'];
+        }
 
         return $all_records;
     }
@@ -76,18 +79,18 @@ class SettingsRepository extends \App\Doctrine\Repository
      * @param string $order_dir
      * @return array
      */
-    public function fetchArray($cached = true, $order_by = NULL, $order_dir = 'ASC')
+    public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC')
     {
         static $settings;
 
-        if (!$settings || !$cached)
-        {
-            $settings_raw = $this->_em->createQuery('SELECT s FROM '.$this->_entityName.' s ORDER BY s.setting_key ASC')
+        if (!$settings || !$cached) {
+            $settings_raw = $this->_em->createQuery('SELECT s FROM ' . $this->_entityName . ' s ORDER BY s.setting_key ASC')
                 ->getArrayResult();
 
-            $settings = array();
-            foreach((array)$settings_raw as $setting)
+            $settings = [];
+            foreach ((array)$settings_raw as $setting) {
                 $settings[$setting['setting_key']] = $setting['setting_value'];
+            }
         }
 
         return $settings;

@@ -1,8 +1,8 @@
 <?php
 namespace Entity;
 
-use \Doctrine\ORM\Mapping as ORM;
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Table(name="users")
@@ -57,15 +57,16 @@ class User extends \App\Doctrine\Entity
 
     public function setAuthPassword($password)
     {
-        if (trim($password))
+        if (trim($password)) {
             $this->auth_password = password_hash($password, \PASSWORD_DEFAULT);
+        }
 
         return $this;
     }
 
     public function generateRandomPassword()
     {
-        $this->setAuthPassword(md5('APP_EXTERNAL_'.mt_rand()));
+        $this->setAuthPassword(md5('APP_EXTERNAL_' . mt_rand()));
     }
 
     /** @Column(name="name", type="string", length=100, nullable=true) */

@@ -1,32 +1,29 @@
 <?php
 namespace Controller\Api;
 
-use \Entity\Station;
+use Entity\Station;
 
 class StationsController extends BaseController
 {
     public function indexAction()
     {
-        if ($this->hasParam('station'))
-        {
+        if ($this->hasParam('station')) {
             $record = $this->em->getRepository(Station::class)->findByShortCode($this->getParam('station'));
-        }
-        elseif ($this->hasParam('id'))
-        {
+        } elseif ($this->hasParam('id')) {
             $id = (int)$this->getParam('id');
             $record = $this->em->getRepository(Station::class)->find($id);
-        }
-        else
-        {
-            $this->dispatcher->forward(array(
+        } else {
+            $this->dispatcher->forward([
                 'controller' => 'station',
                 'action' => 'list',
-            ));
+            ]);
+
             return false;
         }
 
-        if (!($record instanceof Station) || $record->deleted_at)
+        if (!($record instanceof Station) || $record->deleted_at) {
             return $this->returnError('Station not found.');
+        }
 
         return $this->returnSuccess(Station::api($record, $this->di));
     }
@@ -40,9 +37,10 @@ class StationsController extends BaseController
     {
         $stations_raw = $this->em->getRepository(Station::class)->findAll();
 
-        $stations = array();
-        foreach($stations_raw as $row)
+        $stations = [];
+        foreach ($stations_raw as $row) {
             $stations[] = Station::api($row, $this->di);
+        }
 
         return $this->returnSuccess($stations);
     }

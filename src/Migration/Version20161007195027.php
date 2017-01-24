@@ -16,7 +16,8 @@ class Version20161007195027 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql',
+            'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE role_permissions (id INT AUTO_INCREMENT NOT NULL, role_id INT NOT NULL, station_id INT DEFAULT NULL, action_name VARCHAR(50) NOT NULL, INDEX IDX_1FBA94E6D60322AC (role_id), INDEX IDX_1FBA94E621BDB235 (station_id), UNIQUE INDEX role_permission_unique_idx (role_id, action_name, station_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE role_permissions ADD CONSTRAINT FK_1FBA94E6D60322AC FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE CASCADE');
@@ -35,7 +36,8 @@ class Version20161007195027 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql',
+            'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE action (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(100) DEFAULT NULL COLLATE utf8_unicode_ci, is_global TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE role_has_actions (id INT AUTO_INCREMENT NOT NULL, station_id INT DEFAULT NULL, action_id INT NOT NULL, role_id INT NOT NULL, UNIQUE INDEX role_action_unique_idx (role_id, action_id, station_id), INDEX IDX_50EEC1BDD60322AC (role_id), INDEX IDX_50EEC1BD21BDB235 (station_id), INDEX IDX_50EEC1BD9D32F035 (action_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');

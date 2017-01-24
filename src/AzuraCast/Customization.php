@@ -29,10 +29,11 @@ class Customization
      */
     public function getTimeZone()
     {
-        if ($this->user !== null && !empty($this->user->timezone))
+        if ($this->user !== null && !empty($this->user->timezone)) {
             return $this->user->timezone;
-        else
+        } else {
             return date_default_timezone_get();
+        }
     }
 
     /*
@@ -54,21 +55,18 @@ class Customization
         $supported_locales = $this->config->application->locale->supported->toArray();
 
         // Prefer user-based profile locale.
-        if ($this->user !== null && !empty($this->user->locale) && $this->user->locale !== 'default')
-        {
-            if (isset($supported_locales[$this->user->locale]))
+        if ($this->user !== null && !empty($this->user->locale) && $this->user->locale !== 'default') {
+            if (isset($supported_locales[$this->user->locale])) {
                 $locale = $this->user->locale;
+            }
         }
 
         // Attempt to load from browser headers.
-        if (!$locale)
-        {
+        if (!$locale) {
             $browser_locale = \Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 
-            foreach($supported_locales as $lang_code => $lang_name)
-            {
-                if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0)
-                {
+            foreach ($supported_locales as $lang_code => $lang_name) {
+                if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0) {
                     $locale = $lang_code;
                     break;
                 }
@@ -76,8 +74,9 @@ class Customization
         }
 
         // Default to system option.
-        if (!$locale)
+        if (!$locale) {
             $locale = $this->config->application->locale->default;
+        }
 
         return $locale;
     }
@@ -89,11 +88,11 @@ class Customization
      */
     public function getTheme()
     {
-        if ($this->user !== null && !empty($this->user->theme))
-        {
+        if ($this->user !== null && !empty($this->user->theme)) {
             $available_themes = $this->config->application->themes->available->toArray();
-            if (isset($available_themes[$this->user->theme]))
+            if (isset($available_themes[$this->user->theme])) {
                 return $this->user->theme;
+            }
         }
 
         return $this->config->application->themes->default;

@@ -1,8 +1,6 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * @Table(name="api_keys")
  * @Entity
@@ -19,8 +17,9 @@ class ApiKey extends \App\Doctrine\Entity
     /** @PrePersist */
     public function preSave()
     {
-        if (!$this->id)
+        if (!$this->id) {
             $this->id = sha1(mt_rand(0, microtime(true)));
+        }
     }
 
     /**

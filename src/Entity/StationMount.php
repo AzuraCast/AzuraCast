@@ -1,8 +1,6 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * @Table(name="station_mounts")
  * @Entity(repositoryClass="Entity\Repository\StationMountRepository")
@@ -39,7 +37,7 @@ class StationMount extends \App\Doctrine\Entity
      */
     public function setName($new_name)
     {
-        $this->name = '/'.ltrim($new_name, '/');
+        $this->name = '/' . ltrim($new_name, '/');
     }
 
     /** @Column(name="is_default", type="boolean", nullable=false) */

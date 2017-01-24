@@ -46,7 +46,7 @@ abstract class AdapterAbstract
      */
     public function getCommand()
     {
-        return NULL;
+        return null;
     }
 
     /**
@@ -55,8 +55,9 @@ abstract class AdapterAbstract
      */
     public function hasCommand()
     {
-        if (APP_TESTING_MODE)
+        if (APP_TESTING_MODE) {
             return false;
+        }
 
         return ($this->getCommand() !== null);
     }
@@ -68,13 +69,13 @@ abstract class AdapterAbstract
      */
     public function isRunning()
     {
-        if ($this->hasCommand())
-        {
+        if ($this->hasCommand()) {
             $program_name = $this->getProgramName();
             $process = $this->supervisor->getProcess($program_name);
 
-            if ($process instanceof Process)
+            if ($process instanceof Process) {
                 return $process->isRunning();
+            }
         }
 
         return false;
@@ -85,21 +86,18 @@ abstract class AdapterAbstract
      */
     public function stop()
     {
-        if ($this->hasCommand())
-        {
-            try
-            {
+        if ($this->hasCommand()) {
+            try {
                 $program_name = $this->getProgramName();
                 $this->supervisor->stopProcess($program_name);
 
                 $this->log(_('Process stopped.'), 'green');
-            }
-            catch(FaultException $e)
-            {
-                if (stristr($e->getMessage(), 'NOT_RUNNING') !== false)
+            } catch (FaultException $e) {
+                if (stristr($e->getMessage(), 'NOT_RUNNING') !== false) {
                     $this->log(_('Process was not running!'), 'red');
-                else
+                } else {
                     throw $e;
+                }
             }
         }
     }
@@ -109,21 +107,18 @@ abstract class AdapterAbstract
      */
     public function start()
     {
-        if ($this->hasCommand())
-        {
-            try
-            {
+        if ($this->hasCommand()) {
+            try {
                 $program_name = $this->getProgramName();
                 $this->supervisor->startProcess($program_name);
 
                 $this->log(_('Process started.'), 'green');
-            }
-            catch(FaultException $e)
-            {
-                if (stristr($e->getMessage(), 'ALREADY_STARTED') !== false)
+            } catch (FaultException $e) {
+                if (stristr($e->getMessage(), 'ALREADY_STARTED') !== false) {
                     $this->log(_('Process is already running!'), 'red');
-                else
+                } else {
                     throw $e;
+                }
             }
         }
     }
@@ -150,21 +145,22 @@ abstract class AdapterAbstract
      */
     public function log($message, $class = 'info')
     {
-        if (empty($message))
+        if (empty($message)) {
             return;
+        }
 
-        if (!APP_IS_COMMAND_LINE)
-        {
+        if (!APP_IS_COMMAND_LINE) {
             $flash = $this->di['flash'];
             $flash->addMessage($message, $class, true);
         }
 
-        $log_file = APP_INCLUDE_TEMP.'/radio_adapter_log.txt';
-        $log_message = str_pad(date('Y-m-d g:ia'), 20, ' ', STR_PAD_RIGHT).$message."\n";
+        $log_file = APP_INCLUDE_TEMP . '/radio_adapter_log.txt';
+        $log_message = str_pad(date('Y-m-d g:ia'), 20, ' ', STR_PAD_RIGHT) . $message . "\n";
 
         file_put_contents($log_file, $log_message, FILE_APPEND);
 
-        if (!APP_TESTING_MODE)
-            \App\Debug::log('['.strtoupper($class).'] '.$message);
+        if (!APP_TESTING_MODE) {
+            \App\Debug::log('[' . strtoupper($class) . '] ' . $message);
+        }
     }
 }

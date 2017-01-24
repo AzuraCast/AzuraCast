@@ -19,12 +19,13 @@ abstract class BackendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
     public function log($message, $class = 'info')
     {
-        if (!empty(trim($message)))
-            parent::log(str_pad('Radio Backend: ', 20, ' ', STR_PAD_RIGHT).$message, $class);
+        if (!empty(trim($message))) {
+            parent::log(str_pad('Radio Backend: ', 20, ' ', STR_PAD_RIGHT) . $message, $class);
+        }
     }
 
     public function getProgramName()
     {
-        return 'station_'.$this->station->id.':station_'.$this->station->id.'_backend';
+        return 'station_' . $this->station->id . ':station_' . $this->station->id . '_backend';
     }
 }

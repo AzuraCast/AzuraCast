@@ -1,7 +1,7 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Interop\Container\ContainerInterface;
 
 /**
@@ -59,10 +59,12 @@ class Station extends \App\Doctrine\Entity
     {
         $adapters = self::getFrontendAdapters();
 
-        if (!isset($adapters['adapters'][$this->frontend_type]))
-            throw new \Exception('Adapter not found: '.$this->frontend_type);
+        if (!isset($adapters['adapters'][$this->frontend_type])) {
+            throw new \Exception('Adapter not found: ' . $this->frontend_type);
+        }
 
         $class_name = $adapters['adapters'][$this->frontend_type]['class'];
+
         return new $class_name($di, $this);
     }
 
@@ -80,10 +82,12 @@ class Station extends \App\Doctrine\Entity
     {
         $adapters = self::getBackendAdapters();
 
-        if (!isset($adapters['adapters'][$this->backend_type]))
-            throw new \Exception('Adapter not found: '.$this->backend_type);
+        if (!isset($adapters['adapters'][$this->backend_type])) {
+            throw new \Exception('Adapter not found: ' . $this->backend_type);
+        }
 
         $class_name = $adapters['adapters'][$this->backend_type]['class'];
+
         return new $class_name($di, $this);
     }
 
@@ -95,32 +99,36 @@ class Station extends \App\Doctrine\Entity
 
     public function setRadioBaseDir($new_dir)
     {
-        if (strcmp($this->radio_base_dir, $new_dir) !== 0)
-        {
+        if (strcmp($this->radio_base_dir, $new_dir) !== 0) {
             $this->radio_base_dir = $new_dir;
 
-            $radio_dirs = [$this->radio_base_dir, $this->getRadioMediaDir(), $this->getRadioPlaylistsDir(), $this->getRadioConfigDir()];
-            foreach($radio_dirs as $radio_dir)
-            {
-                if (!file_exists($radio_dir))
+            $radio_dirs = [
+                $this->radio_base_dir,
+                $this->getRadioMediaDir(),
+                $this->getRadioPlaylistsDir(),
+                $this->getRadioConfigDir()
+            ];
+            foreach ($radio_dirs as $radio_dir) {
+                if (!file_exists($radio_dir)) {
                     mkdir($radio_dir, 0777);
+                }
             }
         }
     }
 
     public function getRadioMediaDir()
     {
-        return $this->radio_base_dir.'/media';
+        return $this->radio_base_dir . '/media';
     }
 
     public function getRadioPlaylistsDir()
     {
-        return $this->radio_base_dir.'/playlists';
+        return $this->radio_base_dir . '/playlists';
     }
 
     public function getRadioConfigDir()
     {
-        return $this->radio_base_dir.'/config';
+        return $this->radio_base_dir . '/config';
     }
 
     /** @Column(name="nowplaying_data", type="json", nullable=true) */
@@ -178,23 +186,24 @@ class Station extends \App\Doctrine\Entity
      */
     public function writeConfiguration(ContainerInterface $di)
     {
-        if (APP_TESTING_MODE)
+        if (APP_TESTING_MODE) {
             return;
+        }
 
         /** @var \Supervisor\Supervisor */
         $supervisor = $di['supervisor'];
 
         $config_path = $this->getRadioConfigDir();
         $supervisor_config = [];
-        $supervisor_config_path = $config_path.'/supervisord.conf';
+        $supervisor_config_path = $config_path . '/supervisord.conf';
 
         $frontend = $this->getFrontendAdapter($di);
         $backend = $this->getBackendAdapter($di);
 
         // If no processes need to be managed, remove any existing config.
-        if (!$frontend->hasCommand() && !$backend->hasCommand())
-        {
+        if (!$frontend->hasCommand() && !$backend->hasCommand()) {
             @unlink($supervisor_config_path);
+
             return;
         }
 
@@ -211,32 +220,32 @@ class Station extends \App\Doctrine\Entity
 
         // Write group section of config
         $programs = [];
-        if ($backend->hasCommand())
+        if ($backend->hasCommand()) {
             $programs[] = $backend_program;
-        if ($frontend->hasCommand())
+        }
+        if ($frontend->hasCommand()) {
             $programs[] = $frontend_program;
+        }
 
-        $supervisor_config[] = '[group:'.$backend_group.']';
-        $supervisor_config[] = 'programs='.implode(',', $programs);
+        $supervisor_config[] = '[group:' . $backend_group . ']';
+        $supervisor_config[] = 'programs=' . implode(',', $programs);
         $supervisor_config[] = '';
 
         // Write frontend
-        if ($frontend->hasCommand())
-        {
-            $supervisor_config[] = '[program:'.$frontend_program.']';
-            $supervisor_config[] = 'directory='.$config_path;
-            $supervisor_config[] = 'command='.$frontend->getCommand();
+        if ($frontend->hasCommand()) {
+            $supervisor_config[] = '[program:' . $frontend_program . ']';
+            $supervisor_config[] = 'directory=' . $config_path;
+            $supervisor_config[] = 'command=' . $frontend->getCommand();
             $supervisor_config[] = 'user=azuracast';
             $supervisor_config[] = 'priority=90';
             $supervisor_config[] = '';
         }
 
         // Write backend
-        if ($backend->hasCommand())
-        {
-            $supervisor_config[] = '[program:'.$backend_program.']';
-            $supervisor_config[] = 'directory='.$config_path;
-            $supervisor_config[] = 'command='.$backend->getCommand();
+        if ($backend->hasCommand()) {
+            $supervisor_config[] = '[program:' . $backend_program . ']';
+            $supervisor_config[] = 'directory=' . $config_path;
+            $supervisor_config[] = 'command=' . $backend->getCommand();
             $supervisor_config[] = 'user=azuracast';
             $supervisor_config[] = 'priority=100';
             $supervisor_config[] = '';
@@ -253,21 +262,18 @@ class Station extends \App\Doctrine\Entity
         $reload_changed = $reload_result[0][1];
         $reload_removed = $reload_result[0][2];
 
-        foreach($reload_removed as $group)
-        {
+        foreach ($reload_removed as $group) {
             $supervisor->stopProcessGroup($group);
             $supervisor->removeProcessGroup($group);
         }
 
-        foreach($reload_changed as $group)
-        {
+        foreach ($reload_changed as $group) {
             $supervisor->stopProcessGroup($group);
             $supervisor->removeProcessGroup($group);
             $supervisor->addProcessGroup($group);
         }
 
-        foreach($reload_added as $group)
-        {
+        foreach ($reload_added as $group) {
             $supervisor->addProcessGroup($group);
         }
     }
@@ -294,6 +300,7 @@ class Station extends \App\Doctrine\Entity
         $name = preg_replace("/[^A-Za-z0-9_ ]/", '', $name);
         $name = str_replace('_', ' ', $name);
         $name = str_replace(' ', '', $name);
+
         return $name;
     }
 
@@ -352,26 +359,23 @@ class Station extends \App\Doctrine\Entity
         $fa = $row->getFrontendAdapter($di);
 
         $api = [
-            'id'        => (int)$row->id,
-            'name'      => $row->name,
+            'id' => (int)$row->id,
+            'name' => $row->name,
             'shortcode' => self::getStationShortName($row['name']),
             'description' => $row->description,
-            'frontend'  => $row->frontend_type,
-            'backend'   => $row->backend_type,
+            'frontend' => $row->frontend_type,
+            'backend' => $row->backend_type,
             'listen_url' => $fa->getStreamUrl(),
-            'mounts'    => [],
+            'mounts' => [],
         ];
 
-        if ($row->mounts->count() > 0)
-        {
-            if ($fa->supportsMounts())
-            {
-                foreach($row->mounts as $mount_row)
-                {
+        if ($row->mounts->count() > 0) {
+            if ($fa->supportsMounts()) {
+                foreach ($row->mounts as $mount_row) {
                     $api['mounts'][] = [
-                        'name'  => $mount_row->name,
+                        'name' => $mount_row->name,
                         'is_default' => (bool)$mount_row->is_default,
-                        'url'   => $fa->getUrlForMount($mount_row->name),
+                        'url' => $fa->getUrlForMount($mount_row->name),
                     ];
                 }
             }

@@ -1,8 +1,6 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * @Table(name="song_history", indexes={
  *   @index(name="sort_idx", columns={"timestamp_start"}),

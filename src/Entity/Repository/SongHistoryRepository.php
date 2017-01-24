@@ -11,18 +11,17 @@ class SongHistoryRepository extends \App\Doctrine\Repository
      */
     public function getHistoryForStation(Entity\Station $station, $num_entries = 5)
     {
-        $history = $this->_em->createQuery('SELECT sh, s FROM '.$this->_entityName.' sh JOIN sh.song s WHERE sh.station_id = :station_id ORDER BY sh.id DESC')
+        $history = $this->_em->createQuery('SELECT sh, s FROM ' . $this->_entityName . ' sh JOIN sh.song s WHERE sh.station_id = :station_id ORDER BY sh.id DESC')
             ->setParameter('station_id', $station->id)
             ->setMaxResults($num_entries)
             ->getArrayResult();
 
-        $return = array();
-        foreach($history as $sh)
-        {
-            $history = array(
-                'played_at'     => $sh['timestamp_start'],
-                'song'          => Entity\Song::api($sh['song']),
-            );
+        $return = [];
+        foreach ($history as $sh) {
+            $history = [
+                'played_at' => $sh['timestamp_start'],
+                'song' => Entity\Song::api($sh['song']),
+            ];
             $return[] = $history;
         }
 
@@ -47,8 +46,7 @@ class SongHistoryRepository extends \App\Doctrine\Repository
 
         $listeners = (int)$np['listeners']['current'];
 
-        if ($last_sh->song_id == $song->id)
-        {
+        if ($last_sh->song_id == $song->id) {
             // Updating the existing SongHistory item with a new data point.
             $delta_points = (array)$last_sh->delta_points;
             $delta_points[] = $listeners;
@@ -57,13 +55,11 @@ class SongHistoryRepository extends \App\Doctrine\Repository
 
             $this->_em->persist($last_sh);
             $this->_em->flush();
+
             return null;
-        }
-        else
-        {
+        } else {
             // Wrapping up processing on the previous SongHistory item (if present).
-            if ($last_sh instanceof Entity\SongHistory)
-            {
+            if ($last_sh instanceof Entity\SongHistory) {
                 $last_sh->timestamp_end = time();
                 $last_sh->listeners_end = $listeners;
 
@@ -76,18 +72,18 @@ class SongHistoryRepository extends \App\Doctrine\Repository
                 $delta_negative = 0;
                 $delta_total = 0;
 
-                for ($i = 1; $i < count($delta_points); $i++)
-                {
+                for ($i = 1; $i < count($delta_points); $i++) {
                     $current_delta = $delta_points[$i];
                     $previous_delta = $delta_points[$i - 1];
 
                     $delta_delta = $current_delta - $previous_delta;
                     $delta_total += $delta_delta;
 
-                    if ($delta_delta > 0)
+                    if ($delta_delta > 0) {
                         $delta_positive += $delta_delta;
-                    elseif ($delta_delta < 0)
+                    } elseif ($delta_delta < 0) {
                         $delta_negative += abs($delta_delta);
+                    }
                 }
 
                 $last_sh->delta_positive = $delta_positive;

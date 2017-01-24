@@ -1,17 +1,15 @@
 <?php
 namespace Controller\Stations;
 
-use Entity\Settings;
-use Entity\Station;
-use Entity\StationStreamer;
 use Entity\StationStreamer as Record;
 
 class StreamersController extends BaseController
 {
     protected function preDispatch()
     {
-        if (!$this->frontend->supportsStreamers())
+        if (!$this->frontend->supportsStreamers()) {
             throw new \App\Exception(_('This feature is not currently supported on this station.'));
+        }
 
         return parent::preDispatch();
     }
@@ -23,21 +21,18 @@ class StreamersController extends BaseController
 
     public function indexAction()
     {
-        if (!$this->station->enable_streamers)
-        {
-            if ($this->hasParam('enable'))
-            {
+        if (!$this->station->enable_streamers) {
+            if ($this->hasParam('enable')) {
                 $this->station->enable_streamers = true;
 
                 $this->em->persist($this->station);
                 $this->em->flush();
 
-                $this->alert('<b>'._('Streamers enabled!').'</b><br>'._('You can now set up streamer (DJ) accounts.'), 'green');
+                $this->alert('<b>' . _('Streamers enabled!') . '</b><br>' . _('You can now set up streamer (DJ) accounts.'),
+                    'green');
 
                 return $this->redirectFromHere(['enable' => null]);
-            }
-            else
-            {
+            } else {
                 return $this->render('controller::disabled');
             }
         }
@@ -51,21 +46,18 @@ class StreamersController extends BaseController
         $form_config = $this->config->forms->streamer;
         $form = new \App\Form($form_config);
 
-        if ($this->hasParam('id'))
-        {
-            $record = $this->em->getRepository(Record::class)->findOneBy(array(
+        if ($this->hasParam('id')) {
+            $record = $this->em->getRepository(Record::class)->findOneBy([
                 'id' => $this->getParam('id'),
                 'station_id' => $this->station->id
-            ));
+            ]);
             $form->setDefaults($record->toArray($this->em));
         }
 
-        if(!empty($_POST) && $form->isValid($_POST))
-        {
+        if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            if (!($record instanceof Record))
-            {
+            if (!($record instanceof Record)) {
                 $record = new Record;
                 $record->station = $this->station;
             }
@@ -76,12 +68,13 @@ class StreamersController extends BaseController
 
             $this->em->refresh($this->station);
 
-            $this->alert('<b>'._('Streamer account updated!').'</b>', 'green');
+            $this->alert('<b>' . _('Streamer account updated!') . '</b>', 'green');
 
-            return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);
+            return $this->redirectFromHere(['action' => 'index', 'id' => null]);
         }
 
         $title = (($this->hasParam('id')) ? _('Edit Streamer') : _('Add Streamer'));
+
         return $this->renderForm($form, 'edit', $title);
     }
 
@@ -89,19 +82,21 @@ class StreamersController extends BaseController
     {
         $id = (int)$this->getParam('id');
 
-        $record = $this->em->getRepository(Record::class)->findOneBy(array(
+        $record = $this->em->getRepository(Record::class)->findOneBy([
             'id' => $id,
             'station_id' => $this->station->id
-        ));
+        ]);
 
-        if ($record instanceof Record)
+        if ($record instanceof Record) {
             $this->em->remove($record);
+        }
 
         $this->em->flush();
 
         $this->em->refresh($this->station);
 
-        $this->alert('<b>'._('Record deleted.').'</b>', 'green');
-        return $this->redirectFromHere(['action' => 'index', 'id' => NULL]);
+        $this->alert('<b>' . _('Record deleted.') . '</b>', 'green');
+
+        return $this->redirectFromHere(['action' => 'index', 'id' => null]);
     }
 }

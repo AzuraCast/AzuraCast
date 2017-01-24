@@ -18,11 +18,14 @@ $form_config = [
         'basic_info' => [
             'elements' => [
 
-                'name' => ['text', [
-                    'label' => _('Role Name'),
-                    'class' => 'half-width',
-                    'required' => true,
-                ]],
+                'name' => [
+                    'text',
+                    [
+                        'label' => _('Role Name'),
+                        'class' => 'half-width',
+                        'required' => true,
+                    ]
+                ],
 
             ],
         ],
@@ -31,10 +34,13 @@ $form_config = [
             'legend' => _('System-Wide Permissions'),
             'elements' => [
 
-                'actions_global' => ['multiSelect', [
-                    'label' => _('Actions'),
-                    'multiOptions' => $actions['global'],
-                ]],
+                'actions_global' => [
+                    'multiSelect',
+                    [
+                        'label' => _('Actions'),
+                        'multiOptions' => $actions['global'],
+                    ]
+                ],
 
             ],
         ],
@@ -42,16 +48,18 @@ $form_config = [
     ],
 ];
 
-foreach($all_stations as $station)
-{
-    $form_config['groups']['grp_station_'.$station['id']] = [
+foreach ($all_stations as $station) {
+    $form_config['groups']['grp_station_' . $station['id']] = [
         'legend' => $station['name'],
         'elements' => [
 
-            'actions_'.$station['id'] => ['multiSelect', [
-                'label' => _('Actions'),
-                'multiOptions' => $actions['station'],
-            ]],
+            'actions_' . $station['id'] => [
+                'multiSelect',
+                [
+                    'label' => _('Actions'),
+                    'multiOptions' => $actions['station'],
+                ]
+            ],
 
         ],
     ];
@@ -59,12 +67,15 @@ foreach($all_stations as $station)
 
 $form_config['groups']['grp_submit'] = [
     'elements' => [
-        'submit' => ['submit', [
-            'type' => 'submit',
-            'label' => _('Save Changes'),
-            'helper' => 'formButton',
-            'class' => 'btn btn-lg btn-primary',
-        ]],
+        'submit' => [
+            'submit',
+            [
+                'type' => 'submit',
+                'label' => _('Save Changes'),
+                'helper' => 'formButton',
+                'class' => 'btn btn-lg btn-primary',
+            ]
+        ],
     ],
 ];
 

@@ -1,7 +1,7 @@
 <?php
 namespace Entity;
 
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Table(name="songs", indexes={
@@ -26,8 +26,9 @@ class Song extends \App\Doctrine\Entity
     /** @PrePersist */
     public function preSave()
     {
-        if (empty($this->id))
+        if (empty($this->id)) {
             $this->id = self::getSongHash($this);
+        }
     }
 
     /**
@@ -54,7 +55,7 @@ class Song extends \App\Doctrine\Entity
     /** @Column(name="last_played", type="integer") */
     protected $last_played;
 
-    /** 
+    /**
      * @OneToMany(targetEntity="SongHistory", mappedBy="song")
      * @OrderBy({"timestamp" = "DESC"})
      */
@@ -71,30 +72,31 @@ class Song extends \App\Doctrine\Entity
     public static function getSongHash($song_info)
     {
         // Handle various input types.
-        if ($song_info instanceof self)
-        {
-            $song_info = array(
-                'text'  => $song_info->text,
+        if ($song_info instanceof self) {
+            $song_info = [
+                'text' => $song_info->text,
                 'artist' => $song_info->artist,
                 'title' => $song_info->title,
-            );
-        }
-        elseif (!is_array($song_info))
-        {
-            $song_info = array(
+            ];
+        } elseif (!is_array($song_info)) {
+            $song_info = [
                 'text' => $song_info,
-            );
+            ];
         }
 
         // Generate hash.
-        if (!empty($song_info['text']))
+        if (!empty($song_info['text'])) {
             $song_text = $song_info['text'];
-        else if (!empty($song_info['artist']))
-            $song_text = $song_info['artist'].' - '.$song_info['title'];
-        else
-            $song_text = $song_info['title'];
+        } else {
+            if (!empty($song_info['artist'])) {
+                $song_text = $song_info['artist'] . ' - ' . $song_info['title'];
+            } else {
+                $song_text = $song_info['title'];
+            }
+        }
 
         $hash_base = strtolower(preg_replace("/[^A-Za-z0-9]/", '', $song_text));
+
         return md5($hash_base);
     }
 
@@ -106,15 +108,15 @@ class Song extends \App\Doctrine\Entity
      */
     public static function api($row)
     {
-        return array(
-            'id'        => $row['id'],
-            'text'      => $row['text'],
-            'artist'    => $row['artist'],
-            'title'     => $row['title'],
+        return [
+            'id' => $row['id'],
+            'text' => $row['text'],
+            'artist' => $row['artist'],
+            'title' => $row['title'],
 
-            'created'   => (int)$row['created'],
+            'created' => (int)$row['created'],
             'play_count' => (int)$row['play_count'],
             'last_played' => (int)$row['last_played'],
-        );
+        ];
     }
 }

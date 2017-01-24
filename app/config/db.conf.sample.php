@@ -3,27 +3,27 @@
  * Database configuration and credentials.
  */
 
-return array(
+return [
     // Backend driver to use with the database.
-    'driver'        => 'pdo_mysql',
+    'driver' => 'pdo_mysql',
 
     // Host or IP to connect to (default: localhost).
-    'host'          => 'localhost',
+    'host' => 'localhost',
 
     // Name of the primary application database.
-    'dbname'        => 'azuracast',
+    'dbname' => 'azuracast',
 
     // Username for the database user with read/write access to the above database.
-    'user'          => 'root',
+    'user' => 'root',
 
     // Password for the user account specified above.
-    'password'      => 'password',
+    'password' => 'password',
 
     // Character set.
-    'charset'       => 'utf8',
+    'charset' => 'utf8',
 
     // Other options to send to the PDO adapter for the database.
-    'driverOptions' => array(
-        1002    => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
-    ),
-);
+    'driverOptions' => [
+        1002 => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
+    ],
+];

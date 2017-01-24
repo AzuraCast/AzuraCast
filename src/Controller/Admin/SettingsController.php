@@ -1,8 +1,8 @@
 <?php
 namespace Controller\Admin;
 
-use Entity\Repository;
 use Entity\Settings;
+use Entity\Repository;
 
 class SettingsController extends BaseController
 {
@@ -10,7 +10,7 @@ class SettingsController extends BaseController
     {
         return $this->acl->isAllowed('administer settings');
     }
-
+    
     public function indexAction()
     {
         /** @var Repository\SettingsRepository $settings_repo */
@@ -18,10 +18,11 @@ class SettingsController extends BaseController
 
         $form = new \App\Form($this->config->forms->settings->form);
 
-        $existing_settings = $settings_repo->fetchArray(false);
+        $existing_settings = $settings_repo->fetchArray(FALSE);
         $form->setDefaults($existing_settings);
-
-        if (!empty($_POST) && $form->isValid($_POST)) {
+        
+        if (!empty($_POST) && $form->isValid($_POST))
+        {
             $data = $form->getValues();
             $settings_repo->setSettings($data);
 

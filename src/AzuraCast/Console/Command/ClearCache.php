@@ -22,9 +22,8 @@ class ClearCache extends \App\Console\Command\CommandAbstract
     {
         // Flush route cache.
         $app_settings = $this->di->get('settings');
-        if (!empty($app_settings['routerCacheFile'])) {
+        if (!empty($app_settings['routerCacheFile']))
             @unlink($app_settings['routerCacheFile']);
-        }
 
         $output->writeln('Router cache file cleared.');
 

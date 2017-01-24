@@ -14,15 +14,13 @@ class UserRepository extends \App\Doctrine\Repository
     {
         $login_info = $this->findOneBy(['email' => $username]);
 
-        if (!($login_info instanceof Entity\User)) {
-            return false;
-        }
+        if (!($login_info instanceof Entity\User))
+            return FALSE;
 
-        if ($login_info->verifyPassword($password)) {
+        if ($login_info->verifyPassword($password))
             return $login_info;
-        } else {
-            return false;
-        }
+        else
+            return FALSE;
     }
 
     /**
@@ -35,7 +33,8 @@ class UserRepository extends \App\Doctrine\Repository
     {
         $user = $this->findOneBy(['email' => $email]);
 
-        if (!($user instanceof Entity\User)) {
+        if (!($user instanceof Entity\User))
+        {
             $user = new Entity\User;
             $user->email = $email;
             $user->name = $email;

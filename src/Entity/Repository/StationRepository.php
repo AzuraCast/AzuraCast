@@ -11,8 +11,23 @@ class StationRepository extends \App\Doctrine\Repository
      */
     public function fetchAll()
     {
-        return $this->_em->createQuery('SELECT s FROM ' . $this->_entityName . ' s ORDER BY s.name ASC')
+        return $this->_em->createQuery('SELECT s FROM '.$this->_entityName.' s ORDER BY s.name ASC')
             ->execute();
+    }
+
+    /**
+     * @param bool $cached
+     * @param null $order_by
+     * @param string $order_dir
+     * @return array
+     */
+    public function fetchArray($cached = true, $order_by = NULL, $order_dir = 'ASC')
+    {
+        $stations = parent::fetchArray($cached, $order_by, $order_dir);
+        foreach($stations as &$station)
+            $station['short_name'] = Entity\Station::getStationShortName($station['name']);
+
+        return $stations;
     }
 
     /**
@@ -22,58 +37,26 @@ class StationRepository extends \App\Doctrine\Repository
      * @param string $order_by
      * @return array
      */
-    public function fetchSelect($add_blank = false, \Closure $display = null, $pk = 'id', $order_by = 'name')
+    public function fetchSelect($add_blank = FALSE, \Closure $display = NULL, $pk = 'id', $order_by = 'name')
     {
-        $select = [];
+        $select = array();
 
         // Specify custom text in the $add_blank parameter to override.
-        if ($add_blank !== false) {
-            $select[''] = ($add_blank === true) ? 'Select...' : $add_blank;
-        }
+        if ($add_blank !== FALSE)
+            $select[''] = ($add_blank === TRUE) ? 'Select...' : $add_blank;
 
         // Build query for records.
         $results = $this->fetchArray();
 
         // Assemble select values and, if necessary, call $display callback.
-        foreach ((array)$results as $result) {
+        foreach((array)$results as $result)
+        {
             $key = $result[$pk];
-            $value = ($display === null) ? $result['name'] : $display($result);
+            $value = ($display === NULL) ? $result['name'] : $display($result);
             $select[$key] = $value;
         }
 
         return $select;
-    }
-
-    /**
-     * @param bool $cached
-     * @param null $order_by
-     * @param string $order_dir
-     * @return array
-     */
-    public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC')
-    {
-        $stations = parent::fetchArray($cached, $order_by, $order_dir);
-        foreach ($stations as &$station) {
-            $station['short_name'] = Entity\Station::getStationShortName($station['name']);
-        }
-
-        return $stations;
-    }
-
-    /**
-     * @param $short_code
-     * @return null|object
-     */
-    public function findByShortCode($short_code)
-    {
-        $short_names = $this->getShortNameLookup();
-
-        if (isset($short_names[$short_code])) {
-            $id = $short_names[$short_code]['id'];
-            return $this->find($id);
-        }
-
-        return null;
     }
 
     /**
@@ -84,12 +67,28 @@ class StationRepository extends \App\Doctrine\Repository
     {
         $stations = $this->fetchArray($cached);
 
-        $lookup = [];
-        foreach ($stations as $station) {
+        $lookup = array();
+        foreach ($stations as $station)
             $lookup[$station['short_name']] = $station;
-        }
 
         return $lookup;
+    }
+
+    /**
+     * @param $short_code
+     * @return null|object
+     */
+    public function findByShortCode($short_code)
+    {
+        $short_names = $this->getShortNameLookup();
+
+        if (isset($short_names[$short_code]))
+        {
+            $id = $short_names[$short_code]['id'];
+            return $this->find($id);
+        }
+
+        return NULL;
     }
 
     /**
@@ -105,9 +104,9 @@ class StationRepository extends \App\Doctrine\Repository
         $station->fromArray($this->_em, $data);
 
         // Create path for station.
-        $station_base_dir = realpath(APP_INCLUDE_ROOT . '/..') . '/stations';
+        $station_base_dir = realpath(APP_INCLUDE_ROOT.'/..').'/stations';
 
-        $station_dir = $station_base_dir . '/' . $station->getShortName();
+        $station_dir = $station_base_dir.'/'.$station->getShortName();
         $station->setRadioBaseDir($station_dir);
 
         $this->_em->persist($station);
@@ -130,11 +129,13 @@ class StationRepository extends \App\Doctrine\Repository
         $backend_adapter = $station->getBackendAdapter($di);
 
         // Create default mountpoints if station supports them.
-        if ($frontend_adapter->supportsMounts()) {
+        if ($frontend_adapter->supportsMounts())
+        {
             // Create default mount points.
             $mount_points = $frontend_adapter->getDefaultMounts();
 
-            foreach ($mount_points as $mount_point) {
+            foreach($mount_points as $mount_point)
+            {
                 $mount_point['station'] = $station;
                 $mount_record = new Entity\StationMount;
                 $mount_record->fromArray($this->_em, $mount_point);
@@ -168,7 +169,8 @@ class StationRepository extends \App\Doctrine\Repository
         $frontend = $station->getFrontendAdapter($di);
         $backend = $station->getBackendAdapter($di);
 
-        if ($frontend->hasCommand() || $backend->hasCommand()) {
+        if ($frontend->hasCommand() || $backend->hasCommand())
+        {
             /** @var \Supervisor\Supervisor */
             $supervisor = $di['supervisor'];
 

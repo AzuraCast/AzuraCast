@@ -1,7 +1,7 @@
 <?php
 namespace Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Table(name="role")
@@ -9,6 +9,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Role extends \App\Doctrine\Entity
 {
+    public function __construct()
+    {
+        $this->users = new ArrayCollection;
+        $this->permissions = new ArrayCollection;
+    }
+    
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -19,15 +25,9 @@ class Role extends \App\Doctrine\Entity
     /** @Column(name="name", type="string", length=100) */
     protected $name;
 
-    /** @ManyToMany(targetEntity="User", mappedBy="roles") */
+    /** @ManyToMany(targetEntity="User", mappedBy="roles")*/
     protected $users;
 
     /** @OneToMany(targetEntity="Entity\RolePermission", mappedBy="role") */
     protected $permissions;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection;
-        $this->permissions = new ArrayCollection;
-    }
 }

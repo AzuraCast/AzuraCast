@@ -1,6 +1,8 @@
 <?php
 namespace Entity;
 
+use \Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Station streamers (DJ accounts) allowed to broadcast to a station.
  *
@@ -10,6 +12,11 @@ namespace Entity;
  */
 class StationStreamer extends \App\Doctrine\Entity
 {
+    public function __construct()
+    {
+        $this->is_active = true;
+    }
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -39,9 +46,4 @@ class StationStreamer extends \App\Doctrine\Entity
      * })
      */
     protected $station;
-
-    public function __construct()
-    {
-        $this->is_active = true;
-    }
 }

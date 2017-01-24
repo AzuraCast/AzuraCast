@@ -3,6 +3,8 @@ namespace AzuraCast\Mvc;
 
 use AzuraCast\Acl\StationAcl;
 
+use Entity\Settings;
+
 class Controller extends \App\Mvc\Controller
 {
     /** @var StationAcl */
@@ -10,9 +12,8 @@ class Controller extends \App\Mvc\Controller
 
     public function init()
     {
-        if ($this->em->getRepository('Entity\Settings')->getSetting('setup_complete', 0) == 0) {
+        if ($this->em->getRepository('Entity\Settings')->getSetting('setup_complete', 0) == 0)
             return $this->redirectToRoute(['module' => 'frontend', 'controller' => 'setup']);
-        }
 
         return parent::init();
     }

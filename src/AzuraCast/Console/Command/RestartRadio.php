@@ -36,10 +36,11 @@ class RestartRadio extends \App\Console\Command\CommandAbstract
 
         $supervisor->stopAllProcesses();
 
-        foreach ($stations as $station) {
+        foreach($stations as $station)
+        {
             /** @var Station $station */
 
-            \App\Debug::log('Restarting station #' . $station->id . ': ' . $station->name);
+            \App\Debug::log('Restarting station #'.$station->id.': '.$station->name);
 
             $station->writeConfiguration($this->di);
 

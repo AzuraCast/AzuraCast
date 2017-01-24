@@ -17,7 +17,7 @@ class Version
 
     public static function getVersionText()
     {
-        return 'v' . APP_CORE_VERSION . ' ' . APP_CORE_RELEASE;
+        return 'v'.APP_CORE_VERSION.' '.APP_CORE_RELEASE;
     }
 
 }

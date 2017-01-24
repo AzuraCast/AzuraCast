@@ -1,53 +1,58 @@
 <?php
 namespace Controller\Stations;
 
+use Entity\Station;
 use Entity\StationMedia;
+use Entity\StationPlaylist;
 
 class ReportsController extends BaseController
 {
+    protected function permissions()
+    {
+        return $this->acl->isAllowed('view station reports', $this->station->id);
+    }
+
     public function performanceAction()
     {
         $automation_config = (array)$this->station->automation_settings;
 
-        if (isset($automation_config['threshold_days'])) {
+        if (isset($automation_config['threshold_days']))
             $threshold_days = (int)$automation_config['threshold_days'];
-        } else {
+        else
             $threshold_days = \AzuraCast\Sync\RadioAutomation::DEFAULT_THRESHOLD_DAYS;
-        }
 
         $automation = new \AzuraCast\Sync\RadioAutomation($this->di);
         $report_data = $automation->generateReport($this->station, $threshold_days);
 
         // Do not show songs that are not in playlists.
-        $report_data = array_filter($report_data, function ($media) {
-            if (empty($media['playlists'])) {
+        $report_data = array_filter($report_data, function($media) {
+            if (empty($media['playlists']))
                 return false;
-            }
 
             return true;
         });
 
-        switch (strtolower($this->getParam('format'))) {
+        switch(strtolower($this->getParam('format')))
+        {
             case 'csv':
                 $this->doNotRender();
 
-                $export_csv = [
-                    [
-                        'Song Title',
-                        'Song Artist',
-                        'Filename',
-                        'Length',
-                        'Current Playlist',
-                        'Delta Joins',
-                        'Delta Losses',
-                        'Delta Total',
-                        'Play Count',
-                        'Play Percentage',
-                        'Weighted Ratio',
-                    ]
-                ];
+                $export_csv = [[
+                    'Song Title',
+                    'Song Artist',
+                    'Filename',
+                    'Length',
+                    'Current Playlist',
+                    'Delta Joins',
+                    'Delta Losses',
+                    'Delta Total',
+                    'Play Count',
+                    'Play Percentage',
+                    'Weighted Ratio',
+                ]];
 
-                foreach ($report_data as $row) {
+                foreach($report_data as $row)
+                {
                     $export_csv[] = [
                         $row['title'],
                         $row['artist'],
@@ -60,26 +65,26 @@ class ReportsController extends BaseController
                         $row['delta_total'],
 
                         $row['num_plays'],
-                        $row['percent_plays'] . '%',
+                        $row['percent_plays'].'%',
                         $row['ratio'],
                     ];
                 }
 
                 $csv_file = \App\Export::csv($export_csv);
-                $csv_filename = $this->station->getShortName() . '_media_' . date('Ymd') . '.csv';
+                $csv_filename = $this->station->getShortName().'_media_'.date('Ymd').'.csv';
 
                 return $this->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
-                break;
+            break;
 
             case 'json':
                 $this->response->getBody()->write(json_encode($report_data));
                 return $this->response;
-                break;
+            break;
 
             case 'html':
             default:
                 $this->view->report_data = $report_data;
-                break;
+            break;
         }
 
         return true;
@@ -91,34 +96,36 @@ class ReportsController extends BaseController
             ->setParameter('station_id', $this->station->id)
             ->getArrayResult();
 
-        $dupes = [];
-        $songs_to_compare = [];
+        $dupes = array();
+        $songs_to_compare = array();
 
         // Find exact duplicates and sort other songs into a searchable array.
-        foreach ($media_raw as $media_row) {
-            if (isset($songs_to_compare[$media_row['song_id']])) {
+        foreach($media_raw as $media_row)
+        {
+            if (isset($songs_to_compare[$media_row['song_id']]))
                 $dupes[] = [$songs_to_compare[$media_row['song_id']], $media_row];
-            } else {
+            else
                 $songs_to_compare[$media_row['song_id']] = $media_row;
-            }
         }
 
-        foreach ($songs_to_compare as $song_id => $media_row) {
+        foreach($songs_to_compare as $song_id => $media_row)
+        {
             unset($songs_to_compare[$song_id]);
 
             $media_text = strtolower(preg_replace("/[^A-Za-z0-9]/", '', $media_row['song']['text']));
 
-            $song_dupes = [];
-            foreach ($songs_to_compare as $search_song_id => $search_media_row) {
+            $song_dupes = array();
+            foreach($songs_to_compare as $search_song_id => $search_media_row)
+            {
                 $search_media_text = strtolower(preg_replace("/[^A-Za-z0-9]/", '', $search_media_row['song']['text']));
                 $similarity = levenshtein($media_text, $search_media_text);
 
-                if ($similarity <= 5) {
+                if ($similarity <= 5)
                     $song_dupes[] = $search_media_row;
-                }
             }
 
-            if (count($song_dupes) > 0) {
+            if (count($song_dupes) > 0)
+            {
                 $song_dupes[] = $media_row;
                 $dupes[] = $song_dupes;
             }
@@ -136,7 +143,8 @@ class ReportsController extends BaseController
             'station_id' => $this->station->id
         ]);
 
-        if ($media instanceof StationMedia) {
+        if ($media instanceof StationMedia)
+        {
             $path = $media->getFullPath();
             @unlink($path);
 
@@ -147,10 +155,5 @@ class ReportsController extends BaseController
         }
 
         return $this->redirectFromHere(['action' => 'duplicates', 'media_id' => null]);
-    }
-
-    protected function permissions()
-    {
-        return $this->acl->isAllowed('view station reports', $this->station->id);
     }
 }

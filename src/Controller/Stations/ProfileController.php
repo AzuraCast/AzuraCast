@@ -1,6 +1,9 @@
 <?php
 namespace Controller\Stations;
 
+use \Entity\Station;
+use \Entity\Settings;
+
 class ProfileController extends BaseController
 {
     public function indexAction()
@@ -38,7 +41,8 @@ class ProfileController extends BaseController
 
         $form->setDefaults($this->station->toArray($this->em));
 
-        if (!empty($_POST) && $form->isValid($_POST)) {
+        if(!empty($_POST) && $form->isValid($_POST))
+        {
             $data = $form->getValues();
 
             /*
@@ -57,7 +61,7 @@ class ProfileController extends BaseController
             $cache = $this->di->get('cache');
             $cache->remove('stations');
 
-            return $this->redirectFromHere(['action' => 'index']);
+            return $this->redirectFromHere(array('action' => 'index'));
         }
 
         $this->view->form = $form;
@@ -67,29 +71,29 @@ class ProfileController extends BaseController
     {
         $this->acl->checkPermission('manage station broadcasting', $this->station->id);
 
-        switch ($this->getParam('do', 'restart')) {
+        switch($this->getParam('do', 'restart'))
+        {
             case "skip":
-                if (method_exists($this->backend, 'skip')) {
+                if (method_exists($this->backend, 'skip'))
                     $this->backend->skip();
-                }
 
-                $this->alert('<b>' . _('Song skipped.') . '</b>', 'green');
-                break;
+                $this->alert('<b>'._('Song skipped.').'</b>', 'green');
+            break;
 
             case "stop":
                 $this->backend->stop();
-                break;
+            break;
 
             case "start":
                 $this->backend->start();
-                break;
+            break;
 
             case "restart":
             default:
                 $this->backend->stop();
                 $this->backend->write();
                 $this->backend->start();
-                break;
+            break;
         }
 
         return $this->redirectFromHere(['action' => 'index']);
@@ -99,21 +103,22 @@ class ProfileController extends BaseController
     {
         $this->acl->checkPermission('manage station broadcasting', $this->station->id);
 
-        switch ($this->getParam('do', 'restart')) {
+        switch($this->getParam('do', 'restart'))
+        {
             case "stop":
                 $this->frontend->stop();
-                break;
+            break;
 
             case "start":
                 $this->frontend->start();
-                break;
+            break;
 
             case "restart":
             default:
                 $this->frontend->stop();
                 $this->frontend->write();
                 $this->frontend->start();
-                break;
+            break;
         }
 
         return $this->redirectFromHere(['action' => 'index']);

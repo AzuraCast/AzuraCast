@@ -1,6 +1,8 @@
 <?php
 namespace Entity;
 
+use \Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @Table(name="api_keys")
  * @Entity
@@ -8,6 +10,19 @@ namespace Entity;
  */
 class ApiKey extends \App\Doctrine\Entity
 {
+    public function __construct()
+    {
+        $this->calls_made = 0;
+        $this->created = time();
+    }
+
+    /** @PrePersist */
+    public function preSave()
+    {
+        if (!$this->id)
+            $this->id = sha1(mt_rand(0, microtime(true)));
+    }
+
     /**
      * @Column(name="id", type="string", length=50)
      * @Id
@@ -22,18 +37,4 @@ class ApiKey extends \App\Doctrine\Entity
 
     /** @Column(name="created", type="integer") */
     protected $created;
-
-    public function __construct()
-    {
-        $this->calls_made = 0;
-        $this->created = time();
-    }
-
-    /** @PrePersist */
-    public function preSave()
-    {
-        if (!$this->id) {
-            $this->id = sha1(mt_rand(0, microtime(true)));
-        }
-    }
 }

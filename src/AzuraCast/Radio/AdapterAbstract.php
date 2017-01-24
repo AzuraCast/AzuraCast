@@ -41,22 +41,12 @@ abstract class AdapterAbstract
     abstract public function write();
 
     /**
-     * Check if the service is running.
-     *
-     * @return bool
+     * Return the shell command required to run the program.
+     * @return string|null
      */
-    public function isRunning()
+    public function getCommand()
     {
-        if ($this->hasCommand()) {
-            $program_name = $this->getProgramName();
-            $process = $this->supervisor->getProcess($program_name);
-
-            if ($process instanceof Process) {
-                return $process->isRunning();
-            }
-        }
-
-        return false;
+        return NULL;
     }
 
     /**
@@ -65,27 +55,78 @@ abstract class AdapterAbstract
      */
     public function hasCommand()
     {
-        if (APP_TESTING_MODE) {
+        if (APP_TESTING_MODE)
             return false;
-        }
 
         return ($this->getCommand() !== null);
     }
 
     /**
-     * Return the shell command required to run the program.
-     * @return string|null
+     * Check if the service is running.
+     *
+     * @return bool
      */
-    public function getCommand()
+    public function isRunning()
     {
-        return null;
+        if ($this->hasCommand())
+        {
+            $program_name = $this->getProgramName();
+            $process = $this->supervisor->getProcess($program_name);
+
+            if ($process instanceof Process)
+                return $process->isRunning();
+        }
+
+        return false;
     }
 
     /**
-     * Return the program's fully qualified supervisord name.
-     * @return bool
+     * Stop the executable service.
      */
-    abstract public function getProgramName();
+    public function stop()
+    {
+        if ($this->hasCommand())
+        {
+            try
+            {
+                $program_name = $this->getProgramName();
+                $this->supervisor->stopProcess($program_name);
+
+                $this->log(_('Process stopped.'), 'green');
+            }
+            catch(FaultException $e)
+            {
+                if (stristr($e->getMessage(), 'NOT_RUNNING') !== false)
+                    $this->log(_('Process was not running!'), 'red');
+                else
+                    throw $e;
+            }
+        }
+    }
+
+    /**
+     * Start the executable service.
+     */
+    public function start()
+    {
+        if ($this->hasCommand())
+        {
+            try
+            {
+                $program_name = $this->getProgramName();
+                $this->supervisor->startProcess($program_name);
+
+                $this->log(_('Process started.'), 'green');
+            }
+            catch(FaultException $e)
+            {
+                if (stristr($e->getMessage(), 'ALREADY_STARTED') !== false)
+                    $this->log(_('Process is already running!'), 'red');
+                else
+                    throw $e;
+            }
+        }
+    }
 
     /**
      * Restart the executable service.
@@ -97,25 +138,10 @@ abstract class AdapterAbstract
     }
 
     /**
-     * Stop the executable service.
+     * Return the program's fully qualified supervisord name.
+     * @return bool
      */
-    public function stop()
-    {
-        if ($this->hasCommand()) {
-            try {
-                $program_name = $this->getProgramName();
-                $this->supervisor->stopProcess($program_name);
-
-                $this->log(_('Process stopped.'), 'green');
-            } catch (FaultException $e) {
-                if (stristr($e->getMessage(), 'NOT_RUNNING') !== false) {
-                    $this->log(_('Process was not running!'), 'red');
-                } else {
-                    throw $e;
-                }
-            }
-        }
-    }
+    abstract public function getProgramName();
 
     /**
      * Log a message to console or to flash (if interactive session).
@@ -124,43 +150,21 @@ abstract class AdapterAbstract
      */
     public function log($message, $class = 'info')
     {
-        if (empty($message)) {
+        if (empty($message))
             return;
-        }
 
-        if (!APP_IS_COMMAND_LINE) {
+        if (!APP_IS_COMMAND_LINE)
+        {
             $flash = $this->di['flash'];
             $flash->addMessage($message, $class, true);
         }
 
-        $log_file = APP_INCLUDE_TEMP . '/radio_adapter_log.txt';
-        $log_message = str_pad(date('Y-m-d g:ia'), 20, ' ', STR_PAD_RIGHT) . $message . "\n";
+        $log_file = APP_INCLUDE_TEMP.'/radio_adapter_log.txt';
+        $log_message = str_pad(date('Y-m-d g:ia'), 20, ' ', STR_PAD_RIGHT).$message."\n";
 
         file_put_contents($log_file, $log_message, FILE_APPEND);
 
-        if (!APP_TESTING_MODE) {
-            \App\Debug::log('[' . strtoupper($class) . '] ' . $message);
-        }
-    }
-
-    /**
-     * Start the executable service.
-     */
-    public function start()
-    {
-        if ($this->hasCommand()) {
-            try {
-                $program_name = $this->getProgramName();
-                $this->supervisor->startProcess($program_name);
-
-                $this->log(_('Process started.'), 'green');
-            } catch (FaultException $e) {
-                if (stristr($e->getMessage(), 'ALREADY_STARTED') !== false) {
-                    $this->log(_('Process is already running!'), 'red');
-                } else {
-                    throw $e;
-                }
-            }
-        }
+        if (!APP_TESTING_MODE)
+            \App\Debug::log('['.strtoupper($class).'] '.$message);
     }
 }

@@ -2,6 +2,7 @@
 namespace Controller\Frontend;
 
 use Entity\Station;
+use Entity\Settings;
 
 class IndexController extends BaseController
 {
@@ -15,15 +16,16 @@ class IndexController extends BaseController
         $cache = $this->di->get('cache');
         $metrics = $cache->get('admin_metrics');
 
-        if (!$metrics) {
+        if (!$metrics)
+        {
             // Statistics by day.
-            $station_averages = [];
-            $network_data = [
-                'All Stations' => [
-                    'ranges' => [],
-                    'averages' => [],
-                ],
-            ];
+            $station_averages = array();
+            $network_data = array(
+                'All Stations' => array(
+                    'ranges' => array(),
+                    'averages' => array(),
+                ),
+            );
 
             // Query InfluxDB database.
             $influx = $this->di->get('influx');
@@ -32,50 +34,46 @@ class IndexController extends BaseController
             ]);
 
             $results_raw = $resultset->getSeries();
-            $results = [];
-            foreach ($results_raw as $serie) {
+            $results = array();
+            foreach($results_raw as $serie)
+            {
                 $points = [];
-                foreach ($serie['values'] as $point) {
+                foreach ($serie['values'] as $point)
                     $points[] = array_combine($serie['columns'], $point);
-                }
 
                 $results[$serie['name']] = $points;
             }
 
-            foreach ($results as $stat_series => $stat_rows) {
+            foreach($results as $stat_series => $stat_rows)
+            {
                 $series_split = explode('.', $stat_series);
 
-                if ($series_split[1] == 'all') {
+                if ($series_split[1] == 'all')
+                {
                     $network_name = 'All Stations';
-                    foreach ($stat_rows as $stat_row) {
+                    foreach($stat_rows as $stat_row)
+                    {
                         // Add 12 hours to statistics so they always land inside the day they represent.
-                        $stat_row['time'] = $stat_row['time'] + (60 * 60 * 12 * 1000);
+                        $stat_row['time'] = $stat_row['time'] + (60*60*12*1000);
 
-                        $network_data[$network_name]['ranges'][$stat_row['time']] = [
-                            $stat_row['time'],
-                            $stat_row['min'],
-                            $stat_row['max']
-                        ];
-                        $network_data[$network_name]['averages'][$stat_row['time']] = [
-                            $stat_row['time'],
-                            round($stat_row['value'], 2)
-                        ];
+                        $network_data[$network_name]['ranges'][$stat_row['time']] = array($stat_row['time'], $stat_row['min'], $stat_row['max']);
+                        $network_data[$network_name]['averages'][$stat_row['time']] = array($stat_row['time'], round($stat_row['value'], 2));
                     }
-                } else {
+                }
+                else
+                {
                     $station_id = $series_split[1];
-                    foreach ($stat_rows as $stat_row) {
+                    foreach($stat_rows as $stat_row)
+                    {
                         // Add 12 hours to statistics so they always land inside the day they represent.
-                        $stat_row['time'] = $stat_row['time'] + (60 * 60 * 12 * 1000);
+                        $stat_row['time'] = $stat_row['time'] + (60*60*12*1000);
 
-                        $station_averages[$station_id][$stat_row['time']] = [
-                            $stat_row['time'],
-                            round($stat_row['value'], 2)
-                        ];
+                        $station_averages[$station_id][$stat_row['time']] = array($stat_row['time'], round($stat_row['value'], 2));
                     }
                 }
             }
 
-            $network_metrics = [];
+            $network_metrics = array();
             foreach ($network_data as $network_name => $data_charts) {
                 if (isset($data_charts['ranges'])) {
                     $metric_row = new \stdClass;
@@ -100,7 +98,7 @@ class IndexController extends BaseController
                 }
             }
 
-            $station_metrics = [];
+            $station_metrics = array();
 
             foreach ($stations as $station) {
                 $station_id = $station['id'];
@@ -116,12 +114,12 @@ class IndexController extends BaseController
                 }
             }
 
-            $metrics = [
-                'network' => json_encode($network_metrics),
-                'station' => json_encode($station_metrics),
-            ];
+            $metrics = array(
+                'network'   => json_encode($network_metrics),
+                'station'   => json_encode($station_metrics),
+            );
 
-            $cache->save($metrics, 'admin_metrics', [], 600);
+            $cache->save($metrics, 'admin_metrics', array(), 600);
         }
 
         $this->view->metrics = $metrics;

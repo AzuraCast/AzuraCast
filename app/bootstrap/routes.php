@@ -5,7 +5,7 @@
  * i.e. frontend:index:index -> \Modules\Frontend\Controllers\IndexController::indexAction
  */
 
-$app->group('/admin', function () {
+$app->group('/admin', function() {
 
     $this->get('', 'admin:index:index')
         ->setName('admin:index:index');
@@ -13,7 +13,7 @@ $app->group('/admin', function () {
     $this->get('/sync/{type}', 'admin:index:sync')
         ->setName('admin:index:sync');
 
-    $this->group('/api', function () {
+    $this->group('/api', function() {
 
         $this->get('', 'admin:api:index')
             ->setName('admin:api:index');
@@ -26,7 +26,7 @@ $app->group('/admin', function () {
 
     });
 
-    $this->group('/permissions', function () {
+    $this->group('/permissions', function() {
 
         $this->get('', 'admin:permissions:index')
             ->setName('admin:permissions:index');
@@ -45,7 +45,7 @@ $app->group('/admin', function () {
     $this->map(['GET', 'POST'], '/settings', 'admin:settings:index')
         ->setName('admin:settings:index');
 
-    $this->group('/stations', function () {
+    $this->group('/stations', function() {
 
         $this->get('', 'admin:stations:index')
             ->setName('admin:stations:index');
@@ -58,7 +58,7 @@ $app->group('/admin', function () {
 
     });
 
-    $this->group('/users', function () {
+    $this->group('/users', function() {
 
         $this->get('', 'admin:users:index')
             ->setName('admin:users:index');
@@ -76,7 +76,7 @@ $app->group('/admin', function () {
 
 });
 
-$app->group('/api', function () {
+$app->group('/api', function() {
 
     $this->map(['GET', 'POST'], '', 'api:index:index')
         ->setName('api:index:index');
@@ -87,21 +87,21 @@ $app->group('/api', function () {
     $this->map(['GET', 'POST'], '/time', 'api:index:time')
         ->setName('api:index:time');
 
-    $this->group('/internal', function () {
+    $this->group('/internal', function() {
 
         $this->map(['GET', 'POST'], '/streamauth/{id}', 'api:internal:streamauth')
             ->setName('api:internal:streamauth');
 
     });
 
-    $this->group('/nowplaying[/{id}]', function () {
+    $this->group('/nowplaying[/{id}]', function() {
 
         $this->map(['GET', 'POST'], '', 'api:nowplaying:index')
             ->setName('api:nowplaying:index');
 
     });
 
-    $this->group('/requests/{station}', function () {
+    $this->group('/requests/{station}', function() {
 
         $this->map(['GET', 'POST'], '/list', 'api:requests:list')
             ->setName('api:requests:list');
@@ -111,7 +111,7 @@ $app->group('/api', function () {
 
     });
 
-    $this->group('/stations', function () {
+    $this->group('/stations', function() {
 
         $this->map(['GET', 'POST'], '', 'api:stations:list')
             ->setName('api:stations:list');
@@ -147,7 +147,7 @@ $app->map(['GET', 'POST'], '/profile/edit', 'frontend:profile:edit')
 $app->map(['GET', 'POST'], '/profile/timezone', 'frontend:profile:timezone')
     ->setName('profile:timezone');
 
-$app->group('/setup', function () {
+$app->group('/setup', function() {
 
     $this->map(['GET', 'POST'], '', 'frontend:setup:index')
         ->setName('setup:index');
@@ -166,7 +166,7 @@ $app->group('/setup', function () {
 
 });
 
-$app->group('/public', function () {
+$app->group('/public', function() {
 
     $this->get('[/{station}]', 'frontend:public:index')
         ->setName('public:index');
@@ -176,12 +176,12 @@ $app->group('/public', function () {
 $app->get('/test', 'frontend:util:test')
     ->setName('util:test');
 
-$app->group('/station/{station}', function () {
+$app->group('/station/{station}', function() {
 
     $this->get('', 'stations:index:index')
         ->setName('stations:index:index');
 
-    $this->group('/automation', function () {
+    $this->group('/automation', function() {
 
         $this->map(['GET', 'POST'], '', 'stations:automation:index')
             ->setName('stations:automation:index');
@@ -191,7 +191,7 @@ $app->group('/station/{station}', function () {
 
     });
 
-    $this->group('/files', function () {
+    $this->group('/files', function() {
 
         $this->get('', 'stations:files:index')
             ->setName('stations:files:index');
@@ -216,7 +216,7 @@ $app->group('/station/{station}', function () {
 
     });
 
-    $this->group('/playlists', function () {
+    $this->group('/playlists', function() {
 
         $this->get('', 'stations:playlists:index')
             ->setName('stations:playlists:index');
@@ -229,7 +229,7 @@ $app->group('/station/{station}', function () {
 
     });
 
-    $this->group('/mounts', function () {
+    $this->group('/mounts', function() {
 
         $this->get('', 'stations:mounts:index')
             ->setName('stations:mounts:index');
@@ -242,7 +242,7 @@ $app->group('/station/{station}', function () {
 
     });
 
-    $this->group('/profile', function () {
+    $this->group('/profile', function() {
 
         $this->get('', 'stations:profile:index')
             ->setName('stations:profile:index');
@@ -258,7 +258,7 @@ $app->group('/station/{station}', function () {
 
     });
 
-    $this->group('/reports', function () {
+    $this->group('/reports', function() {
 
         $this->get('/timeline[/format/{format}]', 'stations:index:timeline')
             ->setName('stations:index:timeline');
@@ -274,7 +274,7 @@ $app->group('/station/{station}', function () {
 
     });
 
-    $this->group('/streamers', function () {
+    $this->group('/streamers', function() {
 
         $this->get('', 'stations:streamers:index')
             ->setName('stations:streamers:index');
@@ -287,7 +287,7 @@ $app->group('/station/{station}', function () {
 
     });
 
-    $this->group('/util', function () {
+    $this->group('/util', function() {
 
         $this->get('/playlist[/{format}]', 'stations:util:playlist')
             ->setName('stations:util:playlist');

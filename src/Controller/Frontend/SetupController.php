@@ -2,14 +2,14 @@
 namespace Controller\Frontend;
 
 use Entity\Settings;
-use Entity\SettingsRepository;
 use Entity\Station;
+use Entity\SettingsRepository;
 
 class SetupController extends BaseController
 {
     public function init()
     {
-        return null;
+        return NULL;
     }
 
     /**
@@ -22,48 +22,15 @@ class SetupController extends BaseController
     }
 
     /**
-     * Determine which step of setup is currently active.
-     *
-     * @return string
-     * @throws \App\Exception\NotLoggedIn
-     */
-    protected function _getSetupStep()
-    {
-        if ($this->em->getRepository('Entity\Settings')->getSetting('setup_complete', 0) != 0) {
-            return 'complete';
-        }
-
-        // Step 1: Register
-        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
-        if ($num_users == 0) {
-            return 'register';
-        }
-
-        // If past "register" step, require login.
-        if (!$this->auth->isLoggedIn()) {
-            throw new \App\Exception\NotLoggedIn;
-        }
-
-        // Step 2: Set up Station
-        $num_stations = $this->em->createQuery('SELECT COUNT(s.id) FROM Entity\Station s')->getSingleScalarResult();
-        if ($num_stations == 0) {
-            return 'station';
-        }
-
-        // Step 3: System Settings
-        return 'settings';
-    }
-
-    /**
      * Placeholder function for "setup complete" redirection.
      */
     public function completeAction()
     {
-        $this->alert('<b>' . _('Setup has already been completed!') . '</b>', 'red');
+        $this->alert('<b>'._('Setup has already been completed!').'</b>', 'red');
 
         return $this->redirectHome();
     }
-
+    
     /**
      * Setup Step 1:
      * Create Super Administrator Account
@@ -72,12 +39,12 @@ class SetupController extends BaseController
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
-        if ($current_step != 'register') {
+        if ($current_step != 'register')
             return $this->redirectFromHere(['action' => $current_step]);
-        }
 
         // Create first account form.
-        if (!empty($_POST['username']) && !empty($_POST['password'])) {
+        if (!empty($_POST['username']) && !empty($_POST['password']))
+        {
             $data = $_POST;
 
             // Create actions and roles supporting Super Admninistrator.
@@ -119,9 +86,8 @@ class SetupController extends BaseController
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
-        if ($current_step != 'station') {
+        if ($current_step != 'station')
             return $this->redirectFromHere(['action' => $current_step]);
-        }
 
         // Set up station form.
         $form_config = $this->config->forms->station->toArray();
@@ -130,7 +96,8 @@ class SetupController extends BaseController
 
         $form = new \App\Form($form_config);
 
-        if (!empty($_POST) && $form->isValid($_POST)) {
+        if (!empty($_POST) && $form->isValid($_POST))
+        {
             $data = $form->getValues();
 
             $station_repo = $this->em->getRepository(Station::class);
@@ -151,19 +118,19 @@ class SetupController extends BaseController
         // Verify current step.
         $current_step = $this->_getSetupStep();
 
-        if ($current_step != 'settings') {
+        if ($current_step != 'settings')
             return $this->redirectFromHere(['action' => $current_step]);
-        }
 
         $form = new \App\Form($this->config->forms->settings->form);
 
         /** @var SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Settings::class);
 
-        $existing_settings = $settings_repo->fetchArray(false);
+        $existing_settings = $settings_repo->fetchArray(FALSE);
         $form->setDefaults($existing_settings);
 
-        if ($this->request->getMethod() == 'POST' && $form->isValid($this->request->getQueryParams())) {
+        if ($this->request->getMethod() == 'POST' && $form->isValid($this->request->getQueryParams()))
+        {
             $data = $form->getValues();
 
             // Mark setup as complete along with other settings changes.
@@ -172,11 +139,39 @@ class SetupController extends BaseController
             $settings_repo->setSettings($data);
 
             // Notify the user and redirect to homepage.
-            $this->alert('<b>' . _('Setup is now complete!') . '</b><br>' . _('Continue setting up your station in the main AzuraCast app.'),
-                'green');
+            $this->alert('<b>'._('Setup is now complete!').'</b><br>'._('Continue setting up your station in the main AzuraCast app.'), 'green');
             return $this->redirectHome();
         }
 
         return $this->renderForm($form, 'edit', _('Site Settings'));
+    }
+
+    /**
+     * Determine which step of setup is currently active.
+     * 
+     * @return string
+     * @throws \App\Exception\NotLoggedIn
+     */
+    protected function _getSetupStep()
+    {
+        if ($this->em->getRepository('Entity\Settings')->getSetting('setup_complete', 0) != 0)
+            return 'complete';
+
+        // Step 1: Register
+        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
+        if ($num_users == 0)
+            return 'register';
+
+        // If past "register" step, require login.
+        if (!$this->auth->isLoggedIn())
+            throw new \App\Exception\NotLoggedIn;
+
+        // Step 2: Set up Station
+        $num_stations = $this->em->createQuery('SELECT COUNT(s.id) FROM Entity\Station s')->getSingleScalarResult();
+        if ($num_stations == 0)
+            return 'station';
+
+        // Step 3: System Settings
+        return 'settings';
     }
 }

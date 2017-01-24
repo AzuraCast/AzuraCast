@@ -1,9 +1,11 @@
 <?php
 namespace AzuraCast\Console\Command;
 
-use App\Sync\Manager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
+
+use App\Sync\Manager;
 
 class Sync extends \App\Console\Command\CommandAbstract
 {
@@ -30,24 +32,25 @@ class Sync extends \App\Console\Command\CommandAbstract
         /** @var \App\Sync $sync */
         $sync = $this->di['sync'];
 
-        switch ($input->getArgument('task')) {
+        switch($input->getArgument('task'))
+        {
             case 'long':
                 $output->writeln('Running Long (1-hour) Sync...');
 
                 $sync->syncLong();
-                break;
+            break;
 
             case 'medium':
                 $output->writeln('Running Medium (5-minutes) Sync...');
 
                 $sync->syncMedium();
-                break;
+            break;
 
             case 'short':
                 $output->writeln('Running Short (1-minute) Sync...');
 
                 $sync->syncShort();
-                break;
+            break;
 
             case 'nowplaying':
             default:
@@ -55,7 +58,7 @@ class Sync extends \App\Console\Command\CommandAbstract
 
                 define('NOWPLAYING_SEGMENT', 1);
                 $sync->syncNowplaying();
-                break;
+            break;
         }
     }
 }

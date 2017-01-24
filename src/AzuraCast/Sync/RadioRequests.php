@@ -13,12 +13,12 @@ class RadioRequests extends SyncAbstract
 
         $stations = $em->getRepository(Station::class)->findAll();
 
-        foreach ($stations as $station) {
+        foreach($stations as $station)
+        {
             /** @var $station Station */
 
-            if (!$station->enable_requests) {
+            if (!$station->enable_requests)
                 continue;
-            }
 
             $min_minutes = (int)$station->request_delay;
             $threshold_minutes = $min_minutes + mt_rand(0, $min_minutes);
@@ -35,7 +35,8 @@ class RadioRequests extends SyncAbstract
                 ->setParameter('threshold', $threshold)
                 ->execute();
 
-            foreach ($requests as $request) {
+            foreach ($requests as $request)
+            {
                 \App\Debug::log($station->name . ': Request to play ' . $request->track->artist . ' - ' . $request->track->title);
 
                 // Log the request as played.
@@ -47,9 +48,8 @@ class RadioRequests extends SyncAbstract
                 // Send request to the station to play the request.
                 $backend = $station->getBackendAdapter($this->di);
 
-                if (method_exists($backend, 'request')) {
+                if (method_exists($backend, 'request'))
                     $backend->request($request->track->getFullPath());
-                }
             }
         }
     }

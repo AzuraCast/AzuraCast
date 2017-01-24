@@ -75,7 +75,8 @@ $config = [
  * Development mode changes.
  */
 
-if (APP_APPLICATION_ENV != 'production') {
+if (APP_APPLICATION_ENV != 'production')
+{
     $config['phpSettings']['display_startup_errors'] = 1;
     $config['phpSettings']['display_errors'] = 1;
 

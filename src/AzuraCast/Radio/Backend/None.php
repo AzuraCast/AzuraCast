@@ -1,19 +1,18 @@
 <?php
 namespace AzuraCast\Radio\Backend;
 
+use Entity\Settings;
+
 class None extends BackendAbstract
 {
     protected $supports_media = false;
-
     protected $supports_requests = false;
 
     public function read()
-    {
-    }
+    {}
 
     public function write()
-    {
-    }
+    {}
 
     public function isRunning()
     {

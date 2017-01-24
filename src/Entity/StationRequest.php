@@ -1,12 +1,22 @@
 <?php
 namespace Entity;
 
+use \Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @Table(name="station_requests")
  * @Entity(repositoryClass="Entity\Repository\StationRequestRepository")
  */
 class StationRequest extends \App\Doctrine\Entity
 {
+    public function __construct()
+    {
+        $this->timestamp = time();
+        $this->played_at = 0;
+
+        $this->ip = $_SERVER['REMOTE_ADDR'];
+    }
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -44,12 +54,4 @@ class StationRequest extends \App\Doctrine\Entity
      * })
      */
     protected $track;
-
-    public function __construct()
-    {
-        $this->timestamp = time();
-        $this->played_at = 0;
-
-        $this->ip = $_SERVER['REMOTE_ADDR'];
-    }
 }

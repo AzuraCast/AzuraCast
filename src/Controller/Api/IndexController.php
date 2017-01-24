@@ -8,7 +8,7 @@ class IndexController extends BaseController
      */
     public function indexAction()
     {
-        return $this->returnSuccess('The ' . $this->config->application->name . ' API is online and functioning.');
+        return $this->returnSuccess('The '.$this->config->application->name.' API is online and functioning.');
     }
 
     /**
@@ -16,10 +16,10 @@ class IndexController extends BaseController
      */
     public function statusAction()
     {
-        return $this->returnSuccess([
+        return $this->returnSuccess(array(
             'online' => 'true',
             'timestamp' => time(),
-        ]);
+        ));
     }
 
     /**
@@ -31,20 +31,20 @@ class IndexController extends BaseController
 
         $tz_info = \App\Timezone::getInfo();
 
-        return $this->returnSuccess([
-            'timestamp' => time(),
+        return $this->returnSuccess(array(
+            'timestamp'             => time(),
 
-            'gmt_datetime' => $tz_info['now_utc']->format('Y-m-d g:i:s'),
-            'gmt_date' => $tz_info['now_utc']->format('F j, Y'),
-            'gmt_time' => $tz_info['now_utc']->format('g:ia'),
-            'gmt_timezone' => 'GMT',
-            'gmt_timezone_abbr' => 'GMT',
+            'gmt_datetime'          => $tz_info['now_utc']->format('Y-m-d g:i:s'),
+            'gmt_date'              => $tz_info['now_utc']->format('F j, Y'),
+            'gmt_time'              => $tz_info['now_utc']->format('g:ia'),
+            'gmt_timezone'          => 'GMT',
+            'gmt_timezone_abbr'     => 'GMT',
 
-            'local_datetime' => $tz_info['now']->format('Y-m-d g:i:s'),
-            'local_date' => $tz_info['now']->format('F j, Y'),
-            'local_time' => $tz_info['now']->format('g:ia'),
-            'local_timezone' => $tz_info['code'],
-            'local_timezone_abbr' => $tz_info['abbr'],
-        ]);
+            'local_datetime'        => $tz_info['now']->format('Y-m-d g:i:s'),
+            'local_date'            => $tz_info['now']->format('F j, Y'),
+            'local_time'            => $tz_info['now']->format('g:ia'),
+            'local_timezone'        => $tz_info['code'],
+            'local_timezone_abbr'   => $tz_info['abbr'],
+        ));
     }
 }

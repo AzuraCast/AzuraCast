@@ -9,7 +9,8 @@ class IndexController extends BaseController
     public function indexAction()
     {
         // Synchronization statuses
-        if ($this->acl->isAllowed('administer all')) {
+        if ($this->acl->isAllowed('administer all'))
+        {
             /** @var \AzuraCast\Sync $sync */
             $sync = $this->di['sync'];
             $this->view->sync_times = $sync->getSyncTimes();
@@ -24,7 +25,7 @@ class IndexController extends BaseController
 
         ob_start();
 
-        \App\Debug::setEchoMode(true);
+        \App\Debug::setEchoMode(TRUE);
         \App\Debug::startTimer('sync_task');
 
         $type = $this->getParam('type', 'nowplaying');
@@ -32,18 +33,19 @@ class IndexController extends BaseController
         /** @var \AzuraCast\Sync $sync */
         $sync = $this->di['sync'];
 
-        switch ($type) {
+        switch($type)
+        {
             case "long":
                 $sync->syncLong();
-                break;
+            break;
 
             case "medium":
                 $sync->syncMedium();
-                break;
+            break;
 
             case "short":
                 $sync->syncShort();
-                break;
+            break;
 
             case "nowplaying":
             default:
@@ -51,7 +53,7 @@ class IndexController extends BaseController
                 define('NOWPLAYING_SEGMENT', $segment);
 
                 $sync->syncNowplaying(true);
-                break;
+            break;
         }
 
         \App\Debug::endTimer('sync_task');

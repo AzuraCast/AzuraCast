@@ -1,7 +1,8 @@
 <?php
 namespace Controller\Frontend;
 
-use Entity\UserExternal;
+use \Entity\User;
+use \Entity\UserExternal;
 
 class ProfileController extends BaseController
 {
@@ -31,7 +32,8 @@ class ProfileController extends BaseController
 
         $form->setDefaults($user_profile);
 
-        if ($_POST && $form->isValid($_POST)) {
+        if($_POST && $form->isValid($_POST))
+        {
             $data = $form->getValues();
             $user->fromArray($this->em, $data);
 
@@ -39,7 +41,7 @@ class ProfileController extends BaseController
             $this->em->flush();
 
             $this->alert(_('Profile saved!'), 'green');
-            return $this->redirectFromHere(['action' => 'index']);
+            return $this->redirectFromHere(array('action' => 'index'));
         }
 
         return $this->renderForm($form, 'edit', _('Edit Profile'));

@@ -16,8 +16,7 @@ class Version20161003041904 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE role_has_actions (id INT AUTO_INCREMENT NOT NULL, station_id INT DEFAULT NULL, role_id INT NOT NULL, action_id INT NOT NULL, INDEX IDX_50EEC1BDD60322AC (role_id), INDEX IDX_50EEC1BD21BDB235 (station_id), UNIQUE INDEX role_action_unique_idx (role_id, action_id, station_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE role_has_actions ADD CONSTRAINT FK_50EEC1BD21BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE');
@@ -45,7 +44,8 @@ class Version20161003041904 extends AbstractMigration
             ['manage station automation', 0],
         ];
 
-        foreach ($actions as $action) {
+        foreach($actions as $action)
+        {
             $this->addSql('DELETE FROM action WHERE name = :name', [
                 'name' => $action[0],
             ], [
@@ -68,8 +68,7 @@ class Version20161003041904 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql',
-            'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE role_has_action (role_id INT NOT NULL, action_id INT NOT NULL, INDEX IDX_E4DAF125D60322AC (role_id), INDEX IDX_E4DAF1259D32F035 (action_id), PRIMARY KEY(role_id, action_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE role_has_action ADD CONSTRAINT FK_E4DAF1259D32F035 FOREIGN KEY (action_id) REFERENCES action (id) ON DELETE CASCADE');

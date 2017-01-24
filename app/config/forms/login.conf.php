@@ -7,33 +7,24 @@ return [
     'method' => 'post',
     'elements' => [
 
-        'username' => [
-            'text',
-            [
-                'label' => _('E-mail Address'),
-                'class' => 'half-width',
-                'spellcheck' => 'false',
-                'required' => true,
-            ]
-        ],
+        'username' => ['text', [
+            'label' => _('E-mail Address'),
+            'class' => 'half-width',
+            'spellcheck' => 'false',
+            'required' => true,
+        ]],
 
-        'password' => [
-            'password',
-            [
-                'label' => _('Password'),
-                'class' => 'half-width',
-                'required' => true,
-            ]
-        ],
+        'password' => ['password', [
+            'label' => _('Password'),
+            'class' => 'half-width',
+            'required' => true,
+        ]],
 
-        'submit' => [
-            'submit',
-            [
-                'type' => 'submit',
-                'label' => _('Log in'),
-                'helper' => 'formButton',
-                'class' => 'btn btn-lg btn-primary',
-            ]
-        ],
+        'submit' => ['submit', [
+            'type' => 'submit',
+            'label' => _('Log in'),
+            'helper' => 'formButton',
+            'class' => 'btn btn-lg btn-primary',
+        ]],
     ],
 ];

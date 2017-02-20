@@ -54,7 +54,7 @@ AzuraCast is highly optimized for speed and performance, and can run on very ine
 
 Since AzuraCast installs its own radio tools, databases and web servers, you should always install AzuraCast on a "clean" server instance with no other web or radio software installed previously.
 
-As the `root` user, execute these commands to set up your AzuraCast server:
+Execute these commands **as the root user** to set up your AzuraCast server:
 
 ```bash
 apt-get update
@@ -67,6 +67,8 @@ git clone https://github.com/SlvrEagle23/AzuraCast.git .
 chmod a+x install.sh
 ./install.sh
 ```
+
+If you cannot directly log in as the root account on your server, try running `sudo su` before running the commands above.
 
 The installation process will take between 5 and 15 minutes, depending on your Internet connection. If you encounter an error, let us know in the [Issues section](https://github.com/SlvrEagle23/AzuraCast/issues).
 

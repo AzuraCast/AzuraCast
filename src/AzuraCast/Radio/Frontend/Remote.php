@@ -42,13 +42,12 @@ class Remote extends FrontendAbstract
     protected function _getMounts()
     {
         $settings = (array)$this->station->frontend_config;
-        $remote_url = $this->getPublicUrl();
 
         Debug::print_r($settings);
 
         switch ($settings['remote_type']) {
             case 'icecast':
-                $remote_stats_url = $remote_url . '/status-json.xsl';
+                $remote_stats_url = $this->getPublicUrl('/status-json.xsl');
                 $return_raw = $this->getUrl($remote_stats_url);
 
                 if (!$return_raw) {
@@ -99,7 +98,7 @@ class Remote extends FrontendAbstract
                 break;
 
             case 'shoutcast1':
-                $remote_stats_url = $remote_url . '/7.html';
+                $remote_stats_url = $this->getPublicUrl('/7.html');
                 $return_raw = $this->getUrl($remote_stats_url);
 
                 if (empty($return_raw)) {
@@ -115,7 +114,7 @@ class Remote extends FrontendAbstract
                     [
                         'title' => $parts[6],
                         'bitrate' => $parts[5],
-                        'listenurl' => $remote_url . '/;stream.nsv',
+                        'listenurl' => $this->getPublicUrl('/;stream.nsv'),
                         'server_type' => 'audio/mpeg',
                         'listeners' => $this->getListenerCount((int)$parts[4], (int)$parts[0]),
                     ]
@@ -123,7 +122,7 @@ class Remote extends FrontendAbstract
                 break;
 
             case 'shoutcast2':
-                $remote_stats_url = $remote_url . '/stats';
+                $remote_stats_url = $this->getPublicUrl('/stats');
                 $return_raw = $this->getUrl($remote_stats_url);
 
                 if (empty($return_raw)) {
@@ -139,7 +138,7 @@ class Remote extends FrontendAbstract
                     [
                         'title' => $song_data['SONGTITLE'],
                         'bitrate' => $song_data['BITRATE'],
-                        'listenurl' => $remote_url . $song_data['STREAMPATH'],
+                        'listenurl' => $this->getPublicUrl($song_data['STREAMPATH']),
                         'server_type' => $song_data['CONTENT'],
                         'listeners' => $this->getListenerCount((int)$song_data['UNIQUELISTENERS'],
                             (int)$song_data['CURRENTLISTENERS']),
@@ -201,38 +200,38 @@ class Remote extends FrontendAbstract
 
         switch ($settings['remote_type']) {
             case 'icecast':
-                return $this->getPublicUrl() . '/admin/';
+                return $this->getPublicUrl('/admin/');
                 break;
 
             case 'shoutcast1':
             case 'shoutcast2':
-                return $this->getPublicUrl() . '/admin.cgi';
+                return $this->getPublicUrl('/admin.cgi');
                 break;
         }
 
         return false;
     }
 
-    public function getPublicUrl()
+    public function getPublicUrl($custom_path = null)
     {
         $settings = (array)$this->station->frontend_config;
+        $remote_url = $settings['remote_url'];
 
-        $remote_url = rtrim($settings['remote_url'], '/');
+        $parsed_url = parse_url($remote_url);
 
-        switch ($settings['remote_type']) {
-            case 'icecast':
-                return str_replace('/status-json.xsl', '', $remote_url);
-                break;
+        $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
+        $host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+        $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
+        $path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+        $query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
+        $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
 
-            case 'shoutcast1':
-                return str_replace('/7.html', '', $remote_url);
-                break;
+        $filter_from_original = ['/status-json.xsl','/7.html','/stats'];
+        $path = str_replace($filter_from_original, array_fill(0, count($filter_from_original), ''), $path);
 
-            case 'shoutcast2':
-                return str_replace('/stats', '', $remote_url);
-                break;
-        }
+        if ($custom_path !== null)
+            $path .= $custom_path;
 
-        return $remote_url;
+        return "$scheme$host$port$path$query$fragment";
     }
 }

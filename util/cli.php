@@ -16,6 +16,8 @@ $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(
     'dialog' => new \Symfony\Component\Console\Helper\QuestionHelper(),
 ));
 
+$config = $di['config'];
+
 $cli = new \Symfony\Component\Console\Application($config->application->name.' Command Line Tools', \AzuraCast\Version::getVersion());
 $cli->setCatchExceptions(true);
 $cli->setHelperSet($helperSet);
@@ -25,7 +27,7 @@ $cli->setHelperSet($helperSet);
 // Migrations commands
 $migrate_config = new \Doctrine\DBAL\Migrations\Configuration\Configuration($db);
 $migrate_config->setMigrationsTableName('app_migrations');
-$migrate_config->setMigrationsDirectory(APP_INCLUDE_MODELS.'/Migration');
+$migrate_config->setMigrationsDirectory(__DIR__.'/../src/Migration');
 $migrate_config->setMigrationsNamespace('Migration');
 
 $migration_commands = array(

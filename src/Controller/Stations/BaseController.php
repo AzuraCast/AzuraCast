@@ -1,8 +1,8 @@
 <?php
 namespace Controller\Stations;
 
-use App\Radio\Backend\BackendAbstract;
-use App\Radio\Frontend\FrontendAbstract;
+use AzuraCast\Radio\Backend\BackendAbstract;
+use AzuraCast\Radio\Frontend\FrontendAbstract;
 use Entity\Station;
 
 class BaseController extends \AzuraCast\Mvc\Controller

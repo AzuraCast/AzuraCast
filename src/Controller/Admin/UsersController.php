@@ -25,6 +25,7 @@ class UsersController extends BaseController
             $query = $this->em->createQuery('SELECT u, r FROM Entity\User u LEFT JOIN u.roles r ORDER BY u.name ASC');
         }
 
+        $this->view->user = $this->auth->getLoggedInUser();
         $this->view->pager = new \App\Paginator\Doctrine($query, $this->getParam('page', 1), 50);
     }
 

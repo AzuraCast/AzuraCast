@@ -20,24 +20,16 @@ define("APP_INCLUDE_STATIC", APP_INCLUDE_WEB . '/static');
 
 define("APP_INCLUDE_VENDOR", APP_INCLUDE_ROOT . '/vendor');
 
-define("APP_INCLUDE_LIB", APP_INCLUDE_ROOT . '/src');
-define("APP_INCLUDE_MODELS", APP_INCLUDE_LIB);
-
 define("APP_INCLUDE_TEMP", APP_INCLUDE_ROOT . '/../www_tmp');
 define("APP_INCLUDE_CACHE", APP_INCLUDE_TEMP . '/cache');
 
 define("APP_UPLOAD_FOLDER", APP_INCLUDE_STATIC);
 
 // Application environment.
-if (isset($_SERVER['APP_APPLICATION_ENV'])) {
-    define('APP_APPLICATION_ENV', $_SERVER['APP_APPLICATION_ENV']);
-} elseif (file_exists(APP_INCLUDE_BASE . '/.env')) {
-    define('APP_APPLICATION_ENV', ($env = @file_get_contents(APP_INCLUDE_BASE . '/.env')) ? trim($env) : 'development');
-} elseif (isset($_SERVER['X-App-Dev-Environment']) && $_SERVER['X-App-Dev-Environment']) {
-    define('APP_APPLICATION_ENV', 'development');
-} else {
-    define('APP_APPLICATION_ENV', 'development');
-}
+define('APP_APPLICATION_ENV', $_SERVER['APP_APPLICATION_ENV']
+    ?? @file_get_contents(APP_INCLUDE_BASE . '/.env')
+    ?? $_SERVER['X-App-Dev-Environment']
+    ?? 'development');
 
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
     $_SERVER['HTTPS'] = (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https');
@@ -91,5 +83,26 @@ foreach ($php_settings as $setting_key => $setting_value) {
 }
 
 call_user_func(include(__DIR__.'/bootstrap/services.php'), $di, $config);
+
+// Initialize cache.
+$cache = $di->get('cache');
+
+if (!APP_IS_COMMAND_LINE || APP_TESTING_MODE) {
+    /** @var \AzuraCast\Customization $customization */
+    $customization = $di->get('customization');
+
+    // Set time zone.
+    date_default_timezone_set($customization->getTimeZone());
+
+    // Localization
+    $locale = $customization->getLocale();
+    putenv("LANG=" . $locale);
+    setlocale(LC_ALL, $locale);
+
+    $locale_domain = 'default';
+    bindtextdomain($locale_domain, APP_INCLUDE_BASE . '/locale');
+    bind_textdomain_codeset($locale_domain, 'UTF-8');
+    textdomain($locale_domain);
+}
 
 return $di;

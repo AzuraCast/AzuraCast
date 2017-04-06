@@ -187,27 +187,6 @@ return function (\Slim\Container $di, \App\Config $config) {
         return $view;
     });
 
-    // Initialize cache.
-    $cache = $di->get('cache');
-
-    if (!APP_IS_COMMAND_LINE || APP_TESTING_MODE) {
-        /** @var \AzuraCast\Customization $customization */
-        $customization = $di->get('customization');
-
-        // Set time zone.
-        date_default_timezone_set($customization->getTimeZone());
-
-        // Localization
-        $locale = $customization->getLocale();
-        putenv("LANG=" . $locale);
-        setlocale(LC_ALL, $locale);
-
-        $locale_domain = 'default';
-        bindtextdomain($locale_domain, APP_INCLUDE_BASE . '/locale');
-        bind_textdomain_codeset($locale_domain, 'UTF-8');
-        textdomain($locale_domain);
-    }
-
     // Set up application and routing.
     $di['app'] = function ($di) {
 

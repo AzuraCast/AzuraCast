@@ -32,20 +32,22 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach($pager as $user): ?>
+            <?php foreach($pager as $user_row): ?>
                 <tr class="input">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'impersonate', 'id' => $user->id)) ?>"><?=_('Log In') ?></a>
-                        <a class="btn btn-sm btn-default" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $user->id)) ?>"><?=_('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $user->id)) ?>"><?=_('Delete') ?></a>
+                    <?php if ($user_row->id !== $user->id): ?>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'impersonate', 'id' => $user_row->id)) ?>"><?=_('Log In') ?></a>
+                    <?php endif; ?>
+                        <a class="btn btn-sm btn-default" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $user_row->id)) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $user_row->id)) ?>"><?=_('Delete') ?></a>
                     </td>
-                    <td><?=$this->mailto($user->email) ?></td>
+                    <td><?=$this->mailto($user_row->email) ?> <?php if ($user_row->id === $user->id): ?>(You)<?php endif; ?></td>
                     <td>
                         <small>
                             <?php
-                            if (count($user->roles) > 0)
+                            if (count($user_row->roles) > 0)
                             {
-                                foreach($user->roles as $role)
+                                foreach($user_row->roles as $role)
                                     echo '<div>'.$role->name.'</div>';
                             }
                             ?>

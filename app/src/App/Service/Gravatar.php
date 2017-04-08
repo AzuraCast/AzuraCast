@@ -8,7 +8,7 @@ class Gravatar
 {
     public static function get($email, $size = 50, $default = 'mm')
     {
-        $grav_prefix = (APP_IS_SECURE) ? 'https://secure.gravatar.com' : 'http://www.gravatar.com';
+        $grav_prefix = 'https://www.gravatar.com';
 
         $url_params = [
             'd' => $default,

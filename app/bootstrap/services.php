@@ -212,7 +212,13 @@ return function (\Slim\Container $di, \App\Config $config) {
             return $next($request, $response);
         });
 
-        call_user_func(include(__DIR__ . '/routes.php'), $app);
+        foreach($di['modules'] as $module) {
+            $module_routes = APP_INCLUDE_MODULES.'/'.$module.'/routes.php';
+            if (file_exists($module_routes)) {
+                call_user_func(include($module_routes), $app);
+            }
+        }
+
         return $app;
     };
 

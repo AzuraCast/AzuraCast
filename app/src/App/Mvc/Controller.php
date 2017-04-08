@@ -44,7 +44,7 @@ class Controller
         $this->em = $di['em'];
         $this->acl = $di['acl'];
 
-        $common_views_dir = APP_INCLUDE_BASE . '/templates/' . $module;
+        $common_views_dir = APP_INCLUDE_MODULES.'/'.$module.'/views';
         if (is_dir($common_views_dir)) {
             $this->view->setFolder('common', $common_views_dir);
 

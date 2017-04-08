@@ -23,6 +23,8 @@ define("APP_INCLUDE_VENDOR", APP_INCLUDE_ROOT . '/vendor');
 define("APP_INCLUDE_TEMP", APP_INCLUDE_ROOT . '/../www_tmp');
 define("APP_INCLUDE_CACHE", APP_INCLUDE_TEMP . '/cache');
 
+define("APP_INCLUDE_MODULES", APP_INCLUDE_BASE.'/modules');
+
 define("APP_UPLOAD_FOLDER", APP_INCLUDE_STATIC);
 
 // Application environment.
@@ -82,6 +84,19 @@ foreach ($php_settings as $setting_key => $setting_value) {
     }
 }
 
+// Iterate through modules.
+$modules = array_diff(scandir(APP_INCLUDE_MODULES), ['..', '.']);
+
+foreach($modules as $module) {
+    $full_path = APP_INCLUDE_MODULES.'/'.$module;
+
+    $controller_prefix = 'Controller\\'.ucfirst($module).'\\';
+    $autoloader->addPsr4($controller_prefix, $full_path.'/controllers');
+}
+
+$di['modules'] = $modules;
+
+// Define services.
 call_user_func(include(__DIR__.'/bootstrap/services.php'), $di, $config);
 
 // Initialize cache.

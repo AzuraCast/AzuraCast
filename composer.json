@@ -45,11 +45,10 @@
   ],
   "autoload": {
     "psr-4": {
-      "App\\": "src/App",
-      "AzuraCast\\": "src/AzuraCast",
-      "Controller\\": "src/Controller",
-      "Entity\\": "src/Entity",
-      "Migration\\": "src/Migration"
+      "App\\": "app/src/App",
+      "AzuraCast\\": "app/src/AzuraCast",
+      "Entity\\": "app/models",
+      "Migration\\": "app/models/Migration"
     }
   },
   "config": {

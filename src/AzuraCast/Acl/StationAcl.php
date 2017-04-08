@@ -108,13 +108,18 @@ class StationAcl extends \App\Acl
                     return true;
                 }
 
-                if (isset($this->_actions[$role_id])) {
+                if (!empty($this->_actions[$role_id])) {
                     if ($station_id !== null) {
                         if (in_array('administer stations', (array)$this->_actions[$role_id]['global'])) {
                             return true;
                         }
 
-                        return in_array($action, (array)$this->_actions[$role_id]['stations'][$station_id]);
+                        if (!empty($this->_actions[$role_id]['stations'][$station_id])) {
+                            if (in_array('administer all', (array)$this->_actions[$role_id]['stations'][$station_id])) {
+                                return true;
+                            }
+                            return in_array($action, (array)$this->_actions[$role_id]['stations'][$station_id]);
+                        }
                     } else {
                         return in_array($action, (array)$this->_actions[$role_id]['global']);
                     }

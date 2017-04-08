@@ -14,6 +14,7 @@ return [
         'administer stations',
     ],
     'station' => [
+        'administer all',
         'view station management',
         'view station reports',
         'manage station profile',

@@ -38,7 +38,7 @@ $form_config = [
                     'multiSelect',
                     [
                         'label' => _('Actions'),
-                        'multiOptions' => $actions['global'],
+                        'multiOptions' => array_combine(array_values($actions['global']), array_values($actions['global'])),
                     ]
                 ],
 
@@ -50,14 +50,14 @@ $form_config = [
 
 foreach ($all_stations as $station) {
     $form_config['groups']['grp_station_' . $station['id']] = [
-        'legend' => $station['name'],
+        'legend' => _('Per-Station').': '.$station['name'],
         'elements' => [
 
             'actions_' . $station['id'] => [
                 'multiSelect',
                 [
                     'label' => _('Actions'),
-                    'multiOptions' => $actions['station'],
+                    'multiOptions' => array_combine(array_values($actions['station']), array_values($actions['station'])),
                 ]
             ],
 

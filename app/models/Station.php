@@ -190,9 +190,6 @@ class Station extends \App\Doctrine\Entity
             return;
         }
 
-        /** @var \Supervisor\Supervisor */
-        $supervisor = $di['supervisor'];
-
         $config_path = $this->getRadioConfigDir();
         $supervisor_config = [];
         $supervisor_config_path = $config_path . '/supervisord.conf';
@@ -203,7 +200,7 @@ class Station extends \App\Doctrine\Entity
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand() && !$backend->hasCommand()) {
             @unlink($supervisor_config_path);
-
+            $this->_reloadSupervisor($di['supervisor']);
             return;
         }
 
@@ -255,7 +252,33 @@ class Station extends \App\Doctrine\Entity
         $supervisor_config_data = implode("\n", $supervisor_config);
         file_put_contents($supervisor_config_path, $supervisor_config_data);
 
-        // Trigger a supervisord reload and restart all relevant services.
+        $this->_reloadSupervisor($di['supervisor']);
+    }
+
+    /**
+     * Remove configuration (i.e. prior to station removal) and trigger a Supervisor refresh.
+     * @param ContainerInterface $di
+     */
+    public function removeConfiguration(ContainerInterface $di)
+    {
+        if (APP_TESTING_MODE) {
+            return;
+        }
+
+        $config_path = $this->getRadioConfigDir();
+        $supervisor_config_path = $config_path . '/supervisord.conf';
+
+        @unlink($supervisor_config_path);
+
+        $this->_reloadSupervisor($di['supervisor']);
+    }
+
+    /**
+     * Trigger a supervisord reload and restart all relevant services.
+     * @param \Supervisor\Supervisor $supervisor
+     */
+    protected function _reloadSupervisor(\Supervisor\Supervisor $supervisor)
+    {
         $reload_result = $supervisor->reloadConfig();
 
         $reload_added = $reload_result[0][0];
@@ -277,6 +300,8 @@ class Station extends \App\Doctrine\Entity
             $supervisor->addProcessGroup($group);
         }
     }
+
+
 
     /**
      * Static Functions

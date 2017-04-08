@@ -54,12 +54,9 @@ class StationsController extends BaseController
     public function deleteAction()
     {
         $record = $this->em->getRepository(Record::class)->find($this->getParam('id'));
-        if ($record) {
-            $ba = $record->getBackendAdapter($this->di);
-            $fa = $record->getFrontendAdapter($this->di);
 
-            $ba->stop();
-            $fa->stop();
+        if ($record) {
+            $record->removeConfiguration($this->di);
 
             $this->em->remove($record);
             $this->em->flush();

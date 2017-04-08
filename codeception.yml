@@ -18,7 +18,6 @@ coverage:
   enabled: true
   include:
    - app/*
-   - src/*
   exclude:
    # Not used in application
    - app/src/AzuraCast/Radio/Frontend/ShoutCast2.php

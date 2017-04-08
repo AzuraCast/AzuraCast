@@ -27,7 +27,7 @@ $cli->setHelperSet($helperSet);
 // Migrations commands
 $migrate_config = new \Doctrine\DBAL\Migrations\Configuration\Configuration($db);
 $migrate_config->setMigrationsTableName('app_migrations');
-$migrate_config->setMigrationsDirectory(__DIR__.'/../src/Migration');
+$migrate_config->setMigrationsDirectory(__DIR__.'/../app/models/Migration');
 $migrate_config->setMigrationsNamespace('Migration');
 
 $migration_commands = array(

@@ -21,11 +21,11 @@ coverage:
    - src/*
   exclude:
    # Not used in application
-   - src/AzuraCast/Radio/Frontend/ShoutCast2.php
+   - app/src/AzuraCast/Radio/Frontend/ShoutCast2.php
 
    # Used in application, but not used in tests
-   - src/AzuraCast/Console/Command/*.php
-   - src/Migration/*
+   - app/src/AzuraCast/Console/Command/*.php
+   - app/models/Migration/*
    - app/config/*.conf.sample.php
    - app/locale/**/*
    - app/locale/*
@@ -33,4 +33,4 @@ coverage:
 
    # Used in application, but not detected properly by the coverage tool :(
    - app/bootstrap/routes.php
-   - app/**/*.conf.php
+   - app/config/**/*.conf.php

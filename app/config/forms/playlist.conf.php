@@ -129,19 +129,11 @@ return [
             'elements' => [
 
                 'play_per_songs' => [
-                    'radio',
+                    'select',
                     [
                         'label' => _('Number of Songs Between Plays'),
                         'description' => _('This playlist will play every $x songs, where $x is specified below.'),
-                        'options' => \App\Utilities::pairs([
-                            5,
-                            10,
-                            15,
-                            20,
-                            25,
-                            50,
-                            100
-                        ]),
+                        'options' => \App\Utilities::pairs(range(1, 100)),
                     ]
                 ],
 
@@ -154,20 +146,11 @@ return [
             'elements' => [
 
                 'play_per_minutes' => [
-                    'radio',
+                    'select',
                     [
                         'label' => _('Number of Minutes Between Plays'),
                         'description' => _('This playlist will play every $x minutes, where $x is specified below.'),
-                        'options' => \App\Utilities::pairs([
-                            5,
-                            10,
-                            15,
-                            30,
-                            45,
-                            60,
-                            120,
-                            240,
-                        ]),
+                        'options' => \App\Utilities::pairs(range(1, 240)),
                     ]
                 ],
 

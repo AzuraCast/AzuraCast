@@ -18,10 +18,24 @@ class PublicController extends BaseController
 
         if (!$this->hasParam('station')) {
             $station = reset($stations);
-
             return $this->redirectFromHere(['station' => $station->id]);
         }
 
+        $this->view->station = $this->_getStation();
+    }
+
+    public function embedAction()
+    {
+        $this->view->station = $this->_getStation();
+    }
+
+    public function embedrequestsAction()
+    {
+        $this->view->station = $this->_getStation();
+    }
+
+    protected function _getStation()
+    {
         $station_id = (int)$this->getParam('station');
         $station = $this->em->getRepository(Station::class)->find($station_id);
 
@@ -29,6 +43,6 @@ class PublicController extends BaseController
             throw new \App\Exception(_('Station not found!'));
         }
 
-        $this->view->station = $station;
+        return $station;
     }
 }

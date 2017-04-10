@@ -29,6 +29,8 @@ return function(\Slim\App $app) {
 
     $app->group('/public', function () {
 
+        $this->get('/embed/{station}', 'frontend:public:embed')->setName('public:embed');
+        $this->get('/embed-requests/{station}', 'frontend:public:embedrequests')->setName('public:embedrequests');
         $this->get('[/{station}]', 'frontend:public:index')->setName('public:index');
 
     });

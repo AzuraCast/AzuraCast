@@ -21,6 +21,11 @@
 
                     <dt><?=_('Station Description') ?>:</dt>
                     <dd><?=$this->e($station->description) ?></dd>
+
+                    <dt><?=_('Player Embed Code') ?>:</dt>
+                    <dd class="form-field">
+                        <textarea class="full-width form-control" style="height: 50px;" readonly><iframe src="<?=$url->named('public:embed', ['station' => $station->id], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
+                    </dd>
                 </dl>
             </div>
         </div>
@@ -32,12 +37,24 @@
             </div>
             <div class="card-body card-padding">
             <?php if ($station->enable_requests): ?>
-                <p><?=_('Song requests are currently <b>enabled</b> for this station.') ?></p>
+                <dl>
+                    <dd><?=_('Song requests are currently <b>enabled</b> for this station.') ?></dd>
+
+                    <dt><?=_('Request Delay') ?>:</dt>
                 <?php if ($station->request_delay == 0): ?>
-                    <p><?=_('Requests are queued for playback immediately after the currently playing song.') ?></p>
+                    <dd><?=_('Requests are queued for playback immediately after the currently playing song.') ?></dd>
                 <?php else: ?>
-                    <p><?=sprintf(_('Requests are queued for playback on the station within <b>%d to %d minutes</b> of being submitted.'), $station->request_delay, $station->request_delay*2) ?></p>
+                    <dd><?=sprintf(_('Requests are queued for playback on the station within <b>%d to %d minutes</b> of being submitted.'), $station->request_delay, $station->request_delay*2) ?></dd>
                 <?php endif; ?>
+
+                    <dt><?=_('Request Embed Code') ?></dt>
+                    <dd class="form-field">
+                        <textarea class="full-width form-control" style="height: 50px;" readonly><iframe src="<?=$url->named('public:embedrequests', ['station' => $station->id], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 600px; border: 0;"></iframe></textarea>
+                    </dd>
+                </dl>
+
+                <p></p>
+
             <?php else: ?>
                 <p><?=_('Song requests are currently <b>disabled</b> for this station. Edit your profile above to enable them.') ?></p>
             <?php endif; ?>

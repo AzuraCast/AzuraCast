@@ -251,13 +251,13 @@ class Url
      *
      * @param $route_name
      * @param array $route_params
+     * @param boolean $absolute Whether to include the full URL.
      * @return string
      */
-    public function named($route_name, $route_params = [])
+    public function named($route_name, $route_params = [], $absolute = false)
     {
         $router = $this->di['router'];
-
-        return $router->pathFor($route_name, $route_params);
+        return $this->getUrl($router->pathFor($route_name, $route_params), $absolute);
     }
 
     /**

@@ -106,7 +106,7 @@ class LiquidSoap extends BackendAbstract
         $playlist_vars = [];
 
         foreach ($playlists_by_type['default'] as $playlist) {
-            $playlist_weights[] = $playlist['weight'];
+            $playlist_weights[] = pow($playlist['weight'], 2); // Exponential to increase weight differential
             $playlist_vars[] = $playlist['var_name'];
         }
 

@@ -21,8 +21,10 @@ class RequestsController extends BaseController
 
         $requestable_media = $this->em->createQuery('SELECT sm, s, sp 
             FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlists sp
-            WHERE sm.station_id = :station_id AND sp.id IS NOT NULL')
+            WHERE sm.station_id = :station_id AND sp.id IS NOT NULL
+            AND sp.is_enabled = 1 AND sp.type = :playlist_type')
             ->setParameter('station_id', $station->id)
+            ->setParameter('playlist_type', 'default')
             ->getArrayResult();
 
         $result = [];

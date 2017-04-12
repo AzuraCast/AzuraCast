@@ -6,8 +6,6 @@ $inner_form = $form->getForm();
 <?=$inner_form->openForm() ?>
 <?=$inner_form->renderHidden() ?>
 
-<?=$inner_form->renderErrors() ?>
-
 <?php foreach($options['groups'] as $fieldset_id => $fieldset): ?>
 
     <?php if (!empty($fieldset['legend'])): ?>

@@ -203,8 +203,8 @@ class Form
         if (isset($field_options['default'])) {
             $this->form->addData([$element_name => (string)$field_options['default']]);
         }
-        unset($field_options['default']);
 
+        unset($field_options['default']);
         unset($field_options['description']);
 
         $this->form->addField($element_name, $field_type, $field_options);

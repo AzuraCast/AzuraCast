@@ -3,9 +3,6 @@
  * Settings form.
  */
 
-$base_url_parts = parse_url($_SERVER['HTTP_HOST']);
-$base_url_default = $base_url_parts['host'];
-
 return [
     /**
      * Form Configuration
@@ -23,8 +20,11 @@ return [
                         'text',
                         [
                             'label' => _('Site Base URL'),
-                            'description' => _('The base URL where this service is located. For local testing, use "localhost". Otherwise, use either the external IP address or fully-qualified domain name pointing to the server.'),
-                            'default' => $base_url_default,
+                            'description' => _('The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.'),
+                            'default' => $_SERVER['HTTP_HOST'],
+                            'filter' => function($str) {
+                                return str_replace(['http://', 'https://'], ['', ''], trim($str));
+                            },
                         ]
                     ],
 

@@ -3,6 +3,9 @@ namespace App\Forms;
 
 class NibbleForm extends \Nibble\NibbleForms\NibbleForm
 {
+    protected $filters;
+    protected $validators;
+
     public function __construct(
         $action = '',
         $submit_value = 'Submit',
@@ -13,6 +16,9 @@ class NibbleForm extends \Nibble\NibbleForms\NibbleForm
         $format = 'list',
         $multiple_errors = false
     ) {
+        $this->filters = [];
+        $this->validators = [];
+
         return parent::__construct($action, $submit_value, $html5, $method, $sticky, $message_type, $format,
             $multiple_errors);
     }
@@ -50,6 +56,15 @@ class NibbleForm extends \Nibble\NibbleForms\NibbleForm
             return false;
         }
 
+        if (!empty($attributes['filter'])) {
+            $this->filters[$field_name] = $attributes['filter'];
+            unset($attributes['filter']);
+        }
+        if (!empty($attributes['validator'])) {
+            $this->validators[$field_name] = $attributes['validator'];
+            unset($attributes['validator']);
+        }
+
         $this->fields->$field_name = new $namespace($label, $attributes);
         $this->fields->$field_name->setForm($this);
 
@@ -61,6 +76,15 @@ class NibbleForm extends \Nibble\NibbleForms\NibbleForm
         return $this->fields->$key;
     }
 
+    public function getData($key)
+    {
+        if (isset($this->filters[$key]) && is_callable($this->filters[$key])) {
+            return $this->filters[$key]($this->data[$key] ?? false);
+        }
+
+        return $this->data[$key] ?? false;
+    }
+
     public function validate()
     {
         $request = strtoupper($this->method) == 'POST' ? $_POST : $_GET;
@@ -68,6 +92,19 @@ class NibbleForm extends \Nibble\NibbleForms\NibbleForm
             $this->data = $request[$this->name];
         }
 
-        return parent::validate();
+        if (!parent::validate()) {
+            return false;
+        }
+
+        foreach($this->validators as $key => $validator) {
+            if (!$validator($this->data[$key] ?? $_FILES[$this->name][$key] ?? '')) {
+                $this->fields->$key->error[] = 'Invalid data';
+
+                $this->valid = false;
+                return false;
+            }
+        }
+
+        return $this->valid;
     }
 }

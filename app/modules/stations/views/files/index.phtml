@@ -43,7 +43,7 @@
                     <?php if (!empty($playlists)): ?>
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <?=_('Add to Playlist') ?>
+                                <i class="zmdi zmdi-playlist-plus"></i> <?=_('Add to Playlist') ?>
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
@@ -53,15 +53,15 @@
                             </ul>
                         </div>
                     <?php endif; ?>
-                        <button type="button" class="btn btn-warning btn-batch" data-action="clear"><?=_('Clear Playlists') ?></button>
-                        <button type="button" class="btn btn-danger btn-batch" data-action="delete"><?=_('Delete') ?></button>
+                        <button type="button" class="btn btn-warning btn-batch" data-action="clear"><i class="zmdi zmdi-playlist-audio"></i> <?=_('Clear Playlists') ?></button>
+                        <button type="button" class="btn btn-danger btn-batch" data-action="delete"><i class="zmdi zmdi-delete"></i> <?=_('Delete') ?></button>
                     </div>
                     <div class="col-sm-6">
                         <form method="post" id="mkdir">
                         <div class="input-group">
                             <input name="name" type="text" class="form-control" placeholder="<?=_('New Folder Name') ?>" aria-label="...">
                             <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><?=_('Create Folder') ?></button>
+                                <button type="submit" class="btn btn-default"><i class="zmdi zmdi-folder"></i> <?=_('Create Folder') ?></button>
                             </div>
                         </div>
                         </form>

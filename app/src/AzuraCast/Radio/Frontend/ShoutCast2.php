@@ -6,7 +6,7 @@ use App\Utilities;
 
 class ShoutCast2 extends FrontendAbstract
 {
-    protected $supports_mounts = false;
+    protected $supports_mounts = true;
 
     /* Process a nowplaying record. */
     protected function _getNowPlaying(&$np)
@@ -170,5 +170,19 @@ class ShoutCast2 extends FrontendAbstract
         ];
 
         return $defaults;
+    }
+
+    public function getDefaultMounts()
+    {
+        return [
+            [
+                'name' => '/radio.mp3',
+                'is_default' => 1,
+                'enable_streamers' => 1,
+                'enable_autodj' => 1,
+                'autodj_format' => 'mp3',
+                'autodj_bitrate' => 128,
+            ]
+        ];
     }
 }

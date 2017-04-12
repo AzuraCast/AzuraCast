@@ -26,7 +26,7 @@ class MountsController extends BaseController
 
     public function editAction()
     {
-        $form_config = $this->config->forms->mount;
+        $form_config = $this->config->forms->{'mount_'.$this->station->frontend_type};
         $form = new \App\Form($form_config);
 
         if ($this->hasParam('id')) {

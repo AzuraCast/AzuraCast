@@ -318,6 +318,17 @@ class IceCast extends FrontendAbstract
                 }
             }
 
+            if ($mount_row->relay_url) {
+                $relay_parts = parse_url($mount_row->relay_url);
+
+                $defaults['relay'][] = [
+                    'server' => $relay_parts['host'],
+                    'port' => $relay_parts['port'],
+                    'mount' => $relay_parts['path'],
+                    'local-mount' => $mount_row->name,
+                ];
+            }
+
             $defaults['mount'][] = $mount;
         }
 

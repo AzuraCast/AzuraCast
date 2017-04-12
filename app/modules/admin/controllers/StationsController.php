@@ -28,16 +28,22 @@ class StationsController extends BaseController
 
         if ($_POST && $form->isValid($_POST)) {
             $data = $form->getValues();
+            $station_repo = $this->em->getRepository(Record::class);
 
             if (!($record instanceof Record)) {
-                $station_repo = $this->em->getRepository(Record::class);
                 $station_repo->create($data, $this->di);
             } else {
+                $oldAdapter = $record->frontend_type;
                 $record->fromArray($this->em, $data);
-
                 $this->em->persist($record);
                 $this->em->flush();
+
+                if ($oldAdapter !== $record->frontend_type) {
+                    $station_repo->resetMounts($record, $this->di);
+                }
             }
+
+            $record->writeConfiguration($this->di);
 
             // Clear station cache.
             $cache = $this->di->get('cache');

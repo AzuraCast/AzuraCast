@@ -211,22 +211,30 @@ class LiquidSoap extends BackendAbstract
                 break;
 
             case 'shoutcast2':
-                $format = 'mp3';
-                $bitrate = 128;
+                foreach ($this->station->mounts as $mount_row) {
+                    if (!$mount_row->enable_autodj) {
+                        continue;
+                    }
 
-                $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
+                    $bitrate = $mount_row->autodj_bitrate ?: 128;
 
-                $output_params = [
-                    'id="radio_out"',
-                    'host = "localhost"',
-                    'port = ' . ($broadcast_port),
-                    'password = "' . $broadcast_source_pw . '"',
-                    'name = "' . $this->_cleanUpString($this->station->name) . '"',
-                    'public = false',
-                    $output_format, // Required output format (%mp3 etc)
-                    'radio', // Required
-                ];
-                $ls_config[] = 'output.shoutcast(' . implode(', ', $output_params) . ')';
+                    $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
+
+                    $output_params = [
+                        $output_format, // Required output format (%mp3 etc)
+                        'id="radio_out_' . $mount_row->id . '"',
+                        'host = "localhost"',
+                        'port = ' . ($broadcast_port),
+                        'password = "' . $broadcast_source_pw . '"',
+                        'name = "' . $this->_cleanUpString($this->station->name) . '"',
+                        'public = false',
+                        'radio', // Required
+                    ];
+                    $ls_config[] = 'output.shoutcast(' . implode(', ', $output_params) . ')';
+
+                    // Only broadcast to one stream for Shoutcast 2
+                    break;
+                }
                 break;
 
             case 'icecast':

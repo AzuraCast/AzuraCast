@@ -1,6 +1,8 @@
 <?php
 namespace Controller\Stations;
 
+use Entity\Station;
+
 class ProfileController extends BaseController
 {
     public function indexAction()
@@ -39,6 +41,7 @@ class ProfileController extends BaseController
         $form->setDefaults($this->station->toArray($this->em));
 
         if (!empty($_POST) && $form->isValid($_POST)) {
+
             $data = $form->getValues();
 
             /*
@@ -47,9 +50,16 @@ class ProfileController extends BaseController
                 $data[$file_field] = $file_paths[1];
             */
 
+            $oldAdapter = $this->station->frontend_type;
+
             $this->station->fromArray($this->em, $data);
             $this->em->persist($this->station);
             $this->em->flush();
+
+            if ($oldAdapter !== $this->station->frontend_type) {
+                $station_repo = $this->em->getRepository(Station::class);
+                $station_repo->resetMounts($this->station, $this->di);
+            }
 
             $this->station->writeConfiguration($this->di);
 

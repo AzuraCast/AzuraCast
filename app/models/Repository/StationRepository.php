@@ -161,6 +161,38 @@ class StationRepository extends \App\Doctrine\Repository
     }
 
     /**
+     * Reset mount points to their adapter defaults (in the event of an adapter change).
+     *
+     * @param Entity\Station $station
+     * @param ContainerInterface $di
+     */
+    public function resetMounts(Entity\Station $station, ContainerInterface $di)
+    {
+        foreach($station->mounts as $mount) {
+            $this->_em->remove($mount);
+        }
+
+        $frontend_adapter = $station->getFrontendAdapter($di);
+
+        // Create default mountpoints if station supports them.
+        if ($frontend_adapter->supportsMounts()) {
+            // Create default mount points.
+            $mount_points = $frontend_adapter->getDefaultMounts();
+
+            foreach ($mount_points as $mount_point) {
+                $mount_point['station'] = $station;
+                $mount_record = new Entity\StationMount;
+                $mount_record->fromArray($this->_em, $mount_point);
+
+                $this->_em->persist($mount_record);
+            }
+        }
+
+        $this->_em->flush();
+        $this->_em->refresh($station);
+    }
+
+    /**
      * @param Entity\Station $station
      * @param ContainerInterface $di
      */

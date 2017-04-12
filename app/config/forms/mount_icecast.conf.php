@@ -36,6 +36,15 @@ return [
                     ]
                 ],
 
+                'relay_url' => [
+                    'text',
+                    [
+                        'label' => _('Relay Stream URL'),
+                        'description' => _('Enter the full URL of another stream to relay its broadcast through this mount point.'),
+                        'default' => '',
+                    ]
+                ],
+
                 'enable_streamers' => [
                     'radio',
                     [

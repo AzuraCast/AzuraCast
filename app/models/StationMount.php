@@ -10,6 +10,7 @@ class StationMount extends \App\Doctrine\Entity
 {
     public function __construct()
     {
+        $this->name = '';
         $this->is_default = false;
         $this->enable_autodj = true;
         $this->enable_streamers = false;
@@ -45,6 +46,9 @@ class StationMount extends \App\Doctrine\Entity
 
     /** @Column(name="fallback_mount", type="string", length=100, nullable=true) */
     protected $fallback_mount;
+
+    /** @Column(name="relay_url", type="string", length=255, nullable=true) */
+    protected $relay_url;
 
     /** @Column(name="enable_streamers", type="boolean", nullable=false) */
     protected $enable_streamers;

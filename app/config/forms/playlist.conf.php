@@ -39,20 +39,19 @@ return [
                 ],
 
                 'weight' => [
-                    'radio',
+                    'select',
                     [
                         'label' => _('Playlist Weight'),
-                        'description' => _('For standard playlists, this determines how often the playlist\'s songs will be played. 1 is the most infrequent, 5 is the most frequent.<br>For other playlists, it is used to sort by highest weight first.'),
+                        'description' => _('Higher weight playlists are played more frequently compared to other lower-weight playlists.'),
                         'default' => 3,
                         'required' => true,
-                        'class' => 'inline',
                         'options' => [
-                            1 => '1 - Lowest',
+                            1 => '1 - Low',
                             2 => '2',
                             3 => '3 - Default',
                             4 => '4',
-                            5 => '5 - Highest',
-                        ],
+                            5 => '5 - High',
+                        ] + \App\Utilities::pairs(range(6, 25)),
                     ]
                 ],
 

@@ -183,9 +183,14 @@ class LiquidSoap extends BackendAbstract
         // $ls_config[] = 'radio = fallback(track_sensitive = true, [playlists, security])';
         $ls_config[] = 'radio = fallback(track_sensitive = true, [' . implode(', ', $fallbacks) . '])';
 
-        $ls_config[] = '';
-        $ls_config[] = '# Crossfading';
-        $ls_config[] = 'radio = crossfade(start_next=3.,fade_out=2.,fade_in=2.,radio)';
+        $crossfade = (int)($settings['crossfade'] ?? 2);
+        if ($crossfade > 0) {
+            $start_next = round($crossfade * 1.5);
+
+            $ls_config[] = '';
+            $ls_config[] = '# Crossfading';
+            $ls_config[] = 'radio = crossfade(start_next=' . $start_next . '.,fade_out=' . $crossfade . '.,fade_in=' . $crossfade . '.,radio)';
+        }
 
         if (!empty($settings['custom_config'])) {
             $ls_config[] = '';

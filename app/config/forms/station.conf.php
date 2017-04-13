@@ -173,6 +173,19 @@ return [
                     ]
                 ],
 
+                'crossfade' => [
+                    'text',
+                    [
+                        'label' => _('Crossfade Duration (Seconds)'),
+                        'belongsTo' => 'backend_config',
+                        'description' => _('Number of seconds to overlap songs. Set to 0 to disable crossfade completely.'),
+                        'default' => 2,
+                        'filter' => function($str) {
+                            return (int)$str;
+                        }
+                    ]
+                ],
+
                 'custom_config' => [
                     'textarea',
                     [

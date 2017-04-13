@@ -429,6 +429,7 @@ class FilesController extends BaseController
                 $uploaded_file = $files['file_data'];
 
                 $file = new \App\File(basename($uploaded_file->getClientFilename()), $this->file_path);
+                $file->sanitizeName();
                 $file->upload($uploaded_file);
 
                 $upload_file_path = $file->getPath();

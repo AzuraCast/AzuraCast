@@ -42,6 +42,29 @@ class File
     }
 
     /**
+     * Sanitize a user-specified filename for storage.
+     * Credit to: http://stackoverflow.com/a/19018736
+     *
+     * @return mixed|string
+     */
+    public function sanitizeName()
+    {
+        $str = strip_tags($this->name);
+        $str = preg_replace('/[\r\n\t ]+/', ' ', $str);
+        $str = preg_replace('/[\"\*\/\:\<\>\?\'\|]+/', ' ', $str);
+        $str = strtolower($str);
+        $str = html_entity_decode( $str, ENT_QUOTES, "utf-8" );
+        $str = htmlentities($str, ENT_QUOTES, "utf-8");
+        $str = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $str);
+        $str = str_replace(' ', '-', $str);
+        $str = rawurlencode($str);
+        $str = str_replace('%', '-', $str);
+
+        $this->name = $str;
+        return $str;
+    }
+
+    /**
      * Add a suffix to a file *before* its extension.
      *
      * @param $suffix

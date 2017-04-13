@@ -35,29 +35,50 @@ class StationRequestRepository extends \App\Doctrine\Repository
         }
 
         // Check if the song is already enqueued as a request.
-        $pending_request = $this->_em->createQuery('SELECT sr FROM ' . $this->_entityName . ' sr WHERE sr.track_id = :track_id AND sr.station_id = :station_id AND sr.played_at = 0')
-            ->setParameter('track_id', $track_id)
-            ->setParameter('station_id', $station->id)
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+        $pending_request_threshold = time() - (60 * 30);
 
-        if ($pending_request) {
-            throw new \App\Exception('Duplicate request: this song is already a pending request on this station.');
+        try {
+            $pending_request = $this->_em->createQuery('SELECT sr.timestamp 
+                FROM ' . $this->_entityName . ' sr
+                WHERE sr.track_id = :track_id 
+                AND sr.station_id = :station_id 
+                AND (sr.timestamp >= :threshold OR sr.played_at = 0)
+                ORDER BY sr.timestamp DESC')
+                ->setParameter('track_id', $track_id)
+                ->setParameter('station_id', $station->id)
+                ->setParameter('threshold', $pending_request_threshold)
+                ->setMaxResults(1)
+                ->getSingleScalarResult();
+        } catch (\Exception $e) {
+            $pending_request = 0;
+        }
+
+        if ($pending_request > 0) {
+            throw new \App\Exception('Duplicate request: this song was already requested and will play soon.');
         }
 
         // Check the most recent song history.
+        $last_play_threshold = time() - (60 * 60);
+
         try {
-            $last_play_time = $this->_em->createQuery('SELECT sh.timestamp_start FROM Entity\SongHistory sh WHERE sh.song_id = :song_id AND sh.station_id = :station_id ORDER BY sh.timestamp_start DESC')
+            $last_play_time = $this->_em->createQuery('SELECT sh.timestamp_start 
+                FROM Entity\SongHistory sh 
+                WHERE sh.song_id = :song_id 
+                AND sh.station_id = :station_id
+                AND sh.timestamp_start >= :threshold
+                ORDER BY sh.timestamp_start DESC')
                 ->setParameter('song_id', $media_item->song_id)
                 ->setParameter('station_id', $station->id)
+                ->setParameter('threshold', $last_play_threshold)
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
         } catch (\Exception $e) {
             $last_play_time = 0;
         }
 
-        if ($last_play_time && $last_play_time > (time() - 60 * 30)) {
-            throw new \App\Exception('This song has been played too recently on the station.');
+        if ($last_play_time > 0) {
+            $threshold_text = \App\Utilities::timeDifferenceText(time(), $last_play_time);
+            throw new \App\Exception('This song was already played '.$threshold_text.' ago! Wait a while before requesting it again.');
         }
 
         if (!$is_authenticated) {
@@ -65,7 +86,7 @@ class StationRequestRepository extends \App\Doctrine\Repository
             $user_ip = $_SERVER['REMOTE_ADDR'];
 
             // Check for any request (on any station) within the last $threshold_seconds.
-            $threshold_seconds = 30;
+            $threshold_seconds = 300;
 
             $recent_requests = $this->_em->createQuery('SELECT sr FROM ' . $this->_entityName . ' sr WHERE sr.ip = :user_ip AND sr.timestamp >= :threshold')
                 ->setParameter('user_ip', $user_ip)
@@ -73,7 +94,8 @@ class StationRequestRepository extends \App\Doctrine\Repository
                 ->getArrayResult();
 
             if (count($recent_requests) > 0) {
-                throw new \App\Exception('You have submitted a request too recently! Please wait a while before submitting another one.');
+                $threshold_text = \App\Utilities::timeToText($threshold_seconds);
+                throw new \App\Exception('You have submitted a request too recently! Please wait '.$threshold_text.' before submitting another one.');
             }
         }
 

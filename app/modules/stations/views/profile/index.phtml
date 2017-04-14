@@ -24,7 +24,7 @@
 
                     <dt><?=_('Player Embed Code') ?>:</dt>
                     <dd class="form-field">
-                        <textarea class="full-width form-control" style="height: 50px;" readonly><iframe src="<?=$url->named('public:embed', ['station' => $station->id], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
+                        <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$url->named('public:embed', ['station' => $station->id], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
                     </dd>
                 </dl>
             </div>
@@ -49,7 +49,7 @@
 
                     <dt><?=_('Request Embed Code') ?></dt>
                     <dd class="form-field">
-                        <textarea class="full-width form-control" style="height: 50px;" readonly><iframe src="<?=$url->named('public:embedrequests', ['station' => $station->id], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
+                        <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$url->named('public:embedrequests', ['station' => $station->id], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
                     </dd>
                 </dl>
 

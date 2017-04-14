@@ -102,7 +102,7 @@ class StationMedia extends \App\Doctrine\Entity
     /**
      * Process metadata information from media file.
      */
-    public function loadFromFile()
+    public function loadFromFile($force = false)
     {
         if (empty($this->path)) {
             return false;
@@ -113,7 +113,7 @@ class StationMedia extends \App\Doctrine\Entity
 
         // Only update metadata if the file has been updated.
         $media_mtime = filemtime($media_path);
-        if ($media_mtime > $this->mtime || !$this->song) {
+        if ($media_mtime > $this->mtime || !$this->song || $force) {
             // Load metadata from MP3 file.
             $id3 = new \getID3();
 

@@ -29,7 +29,9 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
 
         /** @var EntityManager $em */
         $em = $this->di['em'];
+
         $stations = $em->getRepository(Entity\Station::class)->findAll();
+        $song_repo = $em->getRepository(Entity\Song::class);
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
@@ -40,12 +42,14 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
                 /** @var Entity\StationMedia $media */
 
                 try {
-                    $song_info = $media->loadFromFile();
+                    $song_info = $media->loadFromFile(true);
                     if (!empty($song_info)) {
-                        $media->song = $em->getRepository(Entity\Song::class)->getOrCreate($song_info);
+                        $media->song = $song_repo->getOrCreate($song_info);
                     }
 
                     $em->persist($media);
+
+                    \App\Debug::log('Processed: '.$media->getFullPath());
                 } catch (\Exception $e) {
                     \App\Debug::log('Could not read source file for: '.$media->getFullPath());
                     continue;

@@ -44,7 +44,7 @@
                     <?php if ($song_row['stat_delta'] > 0): ?>
                         <span class="text-success"><i class="icon-caret-up"></i> <?=$song_row['stat_delta'] ?></span>
                     <?php elseif ($song_row['stat_delta'] < 0): ?>
-                        <span class="text-error"><i class="icon-caret-down"></i> <?=abs($song_row['stat_delta']) ?></span>
+                        <span class="text-danger"><i class="icon-caret-down"></i> <?=abs($song_row['stat_delta']) ?></span>
                     <?php else: ?>
                         0
                     <?php endif; ?>

@@ -4,6 +4,7 @@ namespace Controller\Stations;
 use App\Utilities;
 use Entity\StationMedia;
 use Entity\StationPlaylist;
+use Entity;
 use Slim\Http\UploadedFile;
 
 /**
@@ -121,7 +122,12 @@ class FilesController extends BaseController
             $data = $form->getValues();
 
             $media->fromArray($this->em, $data);
-            $media->writeToFile();
+            if ($media->writeToFile()) {
+                $media->song = $this->em->getRepository(Entity\Song::class)->getOrCreate([
+                    'title' => $media->title,
+                    'artist' => $media->artist,
+                ]);
+            }
 
             $this->em->persist($media);
             $this->em->flush();

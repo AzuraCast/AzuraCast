@@ -38,11 +38,11 @@
                     <?php endif; ?>
                     </td>
                     <td>
-                        <?php if ($request_row['track']['song']['title']): ?>
-                            <b><?=$request_row['track']['song']['title'] ?></b><br>
-                            <?=$request_row['track']['song']['artist'] ?>
+                        <?php if ($request_row['track']['title']): ?>
+                            <b><?=$request_row['track']['title'] ?></b><br>
+                            <?=$request_row['track']['artist'] ?>
                         <?php else: ?>
-                            <?=$request_row['track']['song']['text'] ?>
+                            <?=$request_row['track']['text'] ?>
                         <?php endif; ?>
                     </td>
                     <td><?=$request_row['ip'] ?></td>

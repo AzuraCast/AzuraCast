@@ -44,6 +44,9 @@
             <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i> <?=_('Reports') ?></a>
 
             <ul>
+            <?php if ($station->enable_requests): ?>
+                <li><a href="<?=$url->named('stations:requests:index', ['station' => $station->id]) ?>"><?=_('Song Requests') ?></a></li>
+            <?php endif; ?>
                 <li><a href="<?=$url->named('stations:index:timeline', ['station' => $station->id]) ?>"><?=_('Song Playback Timeline') ?></a></li>
             <?php if ($backend->supportsMedia()): ?>
                 <li><a href="<?=$url->named('stations:reports:performance', ['station' => $station->id]) ?>"><?=_('Song Listener Impact') ?></a></li>

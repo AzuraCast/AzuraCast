@@ -55,6 +55,13 @@ return function(\Slim\App $app) {
 
         });
 
+        $this->group('/requests', function () {
+
+            $this->get('', 'stations:requests:index')->setName('stations:requests:index');
+            $this->get('/delete/{request_id}', 'stations:requests:delete')->setName('stations:requests:delete');
+
+        });
+
         $this->group('/reports', function () {
 
             $this->get('/timeline[/format/{format}]', 'stations:index:timeline')->setName('stations:index:timeline');

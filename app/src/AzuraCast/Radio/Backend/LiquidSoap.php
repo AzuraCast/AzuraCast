@@ -325,6 +325,12 @@ class LiquidSoap extends BackendAbstract
 
     public function request($music_file)
     {
+        $queue = $this->command('requests.queue');
+
+        if (!empty($queue[0])) {
+            throw new \Exception('Song(s) still pending in request queue.');
+        }
+
         return $this->command('requests.push ' . $music_file);
     }
 
@@ -343,14 +349,14 @@ class LiquidSoap extends BackendAbstract
 
         fwrite($fp, str_replace(["\\'", '&amp;'], ["'", '&'], urldecode($command_str)) . "\nquit\n");
 
-        $eat = '';
+        $response = [];
         while (!feof($fp)) {
-            $eat .= fgets($fp, 1024);
+            $response[] = trim(fgets($fp, 1024));
         }
 
         fclose($fp);
 
-        return true;
+        return $response;
     }
 
     protected function _getTelnetPort()

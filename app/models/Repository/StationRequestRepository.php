@@ -35,7 +35,7 @@ class StationRequestRepository extends \App\Doctrine\Repository
         }
 
         // Check if the song is already enqueued as a request.
-        $pending_request_threshold = time() - (60 * 30);
+        $pending_request_threshold = time() - (60 * 10);
 
         try {
             $pending_request = $this->_em->createQuery('SELECT sr.timestamp 

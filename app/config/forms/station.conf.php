@@ -173,6 +173,15 @@ return [
                     ]
                 ],
 
+                'request_threshold' => [
+                    'text',
+                    [
+                        'label' => _('Request Last Played Threshold (Minutes)'),
+                        'description' => _('If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.'),
+                        'default' => '15',
+                    ]
+                ],
+
                 'crossfade' => [
                     'text',
                     [

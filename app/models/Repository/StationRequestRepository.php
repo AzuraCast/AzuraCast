@@ -58,27 +58,32 @@ class StationRequestRepository extends \App\Doctrine\Repository
         }
 
         // Check the most recent song history.
-        $last_play_threshold = time() - (60 * 60);
+        $last_play_threshold_mins = (int)($station->request_threshold ?? 15);
 
-        try {
-            $last_play_time = $this->_em->createQuery('SELECT sh.timestamp_start 
+        if ($last_play_threshold_mins > 0)
+        {
+            $last_play_threshold = time() - ($last_play_threshold_mins * 60);
+
+            try {
+                $last_play_time = $this->_em->createQuery('SELECT sh.timestamp_start 
                 FROM Entity\SongHistory sh 
                 WHERE sh.song_id = :song_id 
                 AND sh.station_id = :station_id
                 AND sh.timestamp_start >= :threshold
                 ORDER BY sh.timestamp_start DESC')
-                ->setParameter('song_id', $media_item->song_id)
-                ->setParameter('station_id', $station->id)
-                ->setParameter('threshold', $last_play_threshold)
-                ->setMaxResults(1)
-                ->getSingleScalarResult();
-        } catch (\Exception $e) {
-            $last_play_time = 0;
-        }
+                    ->setParameter('song_id', $media_item->song_id)
+                    ->setParameter('station_id', $station->id)
+                    ->setParameter('threshold', $last_play_threshold)
+                    ->setMaxResults(1)
+                    ->getSingleScalarResult();
+            } catch (\Exception $e) {
+                $last_play_time = 0;
+            }
 
-        if ($last_play_time > 0) {
-            $threshold_text = \App\Utilities::timeDifferenceText(time(), $last_play_time);
-            throw new \App\Exception('This song was already played '.$threshold_text.' ago! Wait a while before requesting it again.');
+            if ($last_play_time > 0) {
+                $threshold_text = \App\Utilities::timeDifferenceText(time(), $last_play_time);
+                throw new \App\Exception('This song was already played '.$threshold_text.' ago! Wait a while before requesting it again.');
+            }
         }
 
         if (!$is_authenticated) {

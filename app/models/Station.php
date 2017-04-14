@@ -16,7 +16,9 @@ class Station extends \App\Doctrine\Entity
         $this->automation_timestamp = 0;
         $this->enable_streamers = false;
         $this->enable_requests = false;
+
         $this->request_delay = 5;
+        $this->request_threshold = 15;
 
         $this->needs_restart = false;
 
@@ -145,6 +147,9 @@ class Station extends \App\Doctrine\Entity
 
     /** @Column(name="request_delay", type="integer", nullable=true) */
     protected $request_delay;
+
+    /** @Column(name="request_threshold", type="integer", nullable=true) */
+    protected $request_threshold;
 
     /** @Column(name="enable_streamers", type="boolean", nullable=false) */
     protected $enable_streamers;

@@ -173,7 +173,7 @@ class IndexController extends BaseController
             JOIN s.history sh
             WHERE sr.station_id = :station_id
             AND sr.played_at > :threshold
-            AND sh.timestamp_start > sr.played_at
+            AND sh.timestamp_start BETWEEN sr.played_at AND sr.played_at + 21600
             GROUP BY sr.id ORDER BY sh.timestamp_start ASC')
             ->setParameter('threshold', $station_requests_threshold)
             ->setParameter('station_id', $this->station->id)

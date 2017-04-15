@@ -31,7 +31,7 @@ class StationsController extends BaseController
             $station_repo = $this->em->getRepository(Record::class);
 
             if (!($record instanceof Record)) {
-                $station_repo->create($data, $this->di);
+                $record = $station_repo->create($data, $this->di);
             } else {
                 $oldAdapter = $record->frontend_type;
                 $record->fromArray($this->em, $data);

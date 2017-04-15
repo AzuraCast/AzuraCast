@@ -174,9 +174,16 @@ class FilesController extends BaseController
 
             $directory = $this->file_path;
 
-            $files = array_diff(scandir($directory), ['.', '..']);
-            foreach ($files as $entry) {
-                $i = $directory . '/' . $entry;
+            // Search all recursive files
+            if (!empty($_REQUEST['searchPhrase'])) {
+                $files = $this->_getMusicFiles($directory);
+            } else {
+                $files = array_diff(scandir($directory), ['.', '..']);
+                foreach($files as &$file)
+                    $file = $directory.'/'.$file;
+            }
+
+            foreach ($files as $i) {
                 $short = ltrim(str_replace($this->base_dir, '', $i), '/');
 
                 if (is_dir($i)) {
@@ -198,7 +205,7 @@ class FilesController extends BaseController
                 $result_row = [
                     'mtime' => $stat['mtime'],
                     'size' => $stat['size'],
-                    'name' => basename($i),
+                    'name' => $short,
                     'text' => $shortname,
                     'path' => $short,
                     'is_dir' => is_dir($i),

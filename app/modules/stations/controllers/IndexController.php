@@ -153,6 +153,7 @@ class IndexController extends BaseController
     {
         $songs_played_raw = $this->_getEligibleHistory();
 
+        // Assemble station media playlist details
         $station_media_raw = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $this->station->id)
             ->getArrayResult();
@@ -160,6 +161,27 @@ class IndexController extends BaseController
         $station_media = [];
         foreach ($station_media_raw as $media) {
             $station_media[$media['song_id']] = $media;
+        }
+
+        // Assemble request records and nearest played song
+        $station_requests_threshold = strtotime('-2 weeks');
+
+        $station_requests_raw = $this->em->createQuery('SELECT sr.timestamp, sh.id AS sh_id 
+            FROM Entity\StationRequest sr
+            JOIN sr.track sm
+            JOIN sm.song s
+            JOIN s.history sh
+            WHERE sr.station_id = :station_id
+            AND sr.played_at > :threshold
+            AND sh.timestamp_start > sr.played_at
+            GROUP BY sr.id ORDER BY sh.timestamp_start ASC')
+            ->setParameter('threshold', $station_requests_threshold)
+            ->setParameter('station_id', $this->station->id)
+            ->getArrayResult();
+
+        $station_requests = [];
+        foreach($station_requests_raw as $request) {
+            $station_requests[$request['sh_id']] = $request['timestamp'];
         }
 
         $songs = [];
@@ -179,6 +201,12 @@ class IndexController extends BaseController
                 $song_row['playlists'] = \Packaged\Helpers\Arrays::ipull($media['playlists'], 'name', 'id');
             } else {
                 $song_row['playlists'] = [];
+            }
+
+            if (isset($station_requests[$song_row['id']])) {
+                $song_row['requested'] = $station_requests[$song_row['id']];
+            } else {
+                $song_row['requested'] = null;
             }
 
             $songs[] = $song_row;

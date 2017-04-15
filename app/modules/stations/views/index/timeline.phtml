@@ -57,6 +57,10 @@
                         <?php else: ?>
                             <?=$song_row['song']['text'] ?>
                         <?php endif; ?>
+                        <?php if ($song_row['requested']): ?>
+                            <br>
+                            <span class="label label-default">Requested on <?=date('D g:ia', $song_row['requested']) ?></span>
+                        <?php endif; ?>
                         <!-- <a href="#" class="btn-show-song-info" data-id="<?=$song_row['song']['id'] ?>" title="Click for Song Information"></a> -->
                     </td>
                     <td><?=implode('<br>', $song_row['playlists']) ?></td>

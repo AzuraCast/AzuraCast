@@ -35,56 +35,10 @@ class StationRequestRepository extends \App\Doctrine\Repository
         }
 
         // Check if the song is already enqueued as a request.
-        $pending_request_threshold = time() - (60 * 10);
-
-        try {
-            $pending_request = $this->_em->createQuery('SELECT sr.timestamp 
-                FROM ' . $this->_entityName . ' sr
-                WHERE sr.track_id = :track_id 
-                AND sr.station_id = :station_id 
-                AND (sr.timestamp >= :threshold OR sr.played_at = 0)
-                ORDER BY sr.timestamp DESC')
-                ->setParameter('track_id', $track_id)
-                ->setParameter('station_id', $station->id)
-                ->setParameter('threshold', $pending_request_threshold)
-                ->setMaxResults(1)
-                ->getSingleScalarResult();
-        } catch (\Exception $e) {
-            $pending_request = 0;
-        }
-
-        if ($pending_request > 0) {
-            throw new \App\Exception('Duplicate request: this song was already requested and will play soon.');
-        }
+        $this->checkPendingRequest($media_item, $station);
 
         // Check the most recent song history.
-        $last_play_threshold_mins = (int)($station->request_threshold ?? 15);
-
-        if ($last_play_threshold_mins > 0)
-        {
-            $last_play_threshold = time() - ($last_play_threshold_mins * 60);
-
-            try {
-                $last_play_time = $this->_em->createQuery('SELECT sh.timestamp_start 
-                FROM Entity\SongHistory sh 
-                WHERE sh.song_id = :song_id 
-                AND sh.station_id = :station_id
-                AND sh.timestamp_start >= :threshold
-                ORDER BY sh.timestamp_start DESC')
-                    ->setParameter('song_id', $media_item->song_id)
-                    ->setParameter('station_id', $station->id)
-                    ->setParameter('threshold', $last_play_threshold)
-                    ->setMaxResults(1)
-                    ->getSingleScalarResult();
-            } catch (\Exception $e) {
-                $last_play_time = 0;
-            }
-
-            if ($last_play_time > 0) {
-                $threshold_text = \App\Utilities::timeDifferenceText(time(), $last_play_time);
-                throw new \App\Exception('This song was already played '.$threshold_text.' ago! Wait a while before requesting it again.');
-            }
-        }
+        $this->checkRecentPlay($media_item, $station);
 
         if (!$is_authenticated) {
             // Check for an existing request from this user.
@@ -113,5 +67,78 @@ class StationRequestRepository extends \App\Doctrine\Repository
         $this->_em->flush();
 
         return $record->id;
+    }
+
+    /**
+     * Check if the song is already enqueued as a request.
+     *
+     * @param Entity\StationMedia $media
+     * @param Entity\Station $station
+     * @return bool
+     * @throws \App\Exception
+     */
+    public function checkPendingRequest(Entity\StationMedia $media, Entity\Station $station)
+    {
+        $pending_request_threshold = time() - (60 * 10);
+
+        try {
+            $pending_request = $this->_em->createQuery('SELECT sr.timestamp 
+                FROM ' . $this->_entityName . ' sr
+                WHERE sr.track_id = :track_id 
+                AND sr.station_id = :station_id 
+                AND (sr.timestamp >= :threshold OR sr.played_at = 0)
+                ORDER BY sr.timestamp DESC')
+                ->setParameter('track_id', $media->id)
+                ->setParameter('station_id', $station->id)
+                ->setParameter('threshold', $pending_request_threshold)
+                ->setMaxResults(1)
+                ->getSingleScalarResult();
+        } catch (\Exception $e) {
+            return true;
+        }
+
+        if ($pending_request > 0) {
+            throw new \App\Exception('Duplicate request: this song was already requested and will play soon.');
+        }
+    }
+
+    /**
+     * Check the most recent song history.
+     *
+     * @param Entity\StationMedia $media
+     * @param Entity\Station $station
+     * @return bool
+     * @throws \App\Exception
+     */
+    public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station)
+    {
+        $last_play_threshold_mins = (int)($station->request_threshold ?? 15);
+
+        if ($last_play_threshold_mins == 0) {
+            return true;
+        }
+
+        $last_play_threshold = time() - ($last_play_threshold_mins * 60);
+
+        try {
+            $last_play_time = $this->_em->createQuery('SELECT sh.timestamp_start 
+                FROM Entity\SongHistory sh 
+                WHERE sh.song_id = :song_id 
+                AND sh.station_id = :station_id
+                AND sh.timestamp_start >= :threshold
+                ORDER BY sh.timestamp_start DESC')
+                ->setParameter('song_id', $media->song_id)
+                ->setParameter('station_id', $station->id)
+                ->setParameter('threshold', $last_play_threshold)
+                ->setMaxResults(1)
+                ->getSingleScalarResult();
+        } catch (\Exception $e) {
+            return true;
+        }
+
+        if ($last_play_time > 0) {
+            $threshold_text = \App\Utilities::timeDifferenceText(time(), $last_play_time);
+            throw new \App\Exception('This song was already played '.$threshold_text.' ago! Wait a while before requesting it again.');
+        }
     }
 }

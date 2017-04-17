@@ -8,14 +8,15 @@
     tmp_base: "{{ app_base }}/www_tmp"
     app_env: "production"
     testing_mode: false
+    update_revision: 1
 
   roles:
     - init
     - azuracast-config
-    - azuracast-radio
-    - nginx
-    - php
-    - influxdb
-    - supervisord
-    - azuracast-cron
+    - { role: azuracast-radio, when: update_revision < 2 }
+    - { role: nginx, when: update_revision < 2 }
+    - { role: php, when: update_revision < 2 }
+    - { role: influxdb, when: update_revision < 2 }
+    - { role: supervisord, when: update_revision < 2 }
+    - { role: azuracast-cron, when: update_revision < 2 }
     - azuracast-update

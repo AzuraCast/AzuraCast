@@ -216,7 +216,10 @@ class LiquidSoap extends BackendAbstract
                 break;
 
             case 'shoutcast2':
+                $i = 0;
                 foreach ($this->station->mounts as $mount_row) {
+                    $i++;
+
                     if (!$mount_row->enable_autodj) {
                         continue;
                     }
@@ -230,15 +233,12 @@ class LiquidSoap extends BackendAbstract
                         'id="radio_out_' . $mount_row->id . '"',
                         'host = "localhost"',
                         'port = ' . ($broadcast_port),
-                        'password = "' . $broadcast_source_pw . '"',
+                        'password = "' . $broadcast_source_pw . ':#'.$i.'"',
                         'name = "' . $this->_cleanUpString($this->station->name) . '"',
                         'public = false',
                         'radio', // Required
                     ];
                     $ls_config[] = 'output.shoutcast(' . implode(', ', $output_params) . ')';
-
-                    // Only broadcast to one stream for Shoutcast 2
-                    break;
                 }
                 break;
 

@@ -3,6 +3,8 @@ namespace AzuraCast\Radio\Frontend;
 
 use App\Debug;
 use App\Utilities;
+use Doctrine\ORM\EntityManager;
+use Entity;
 
 class ShoutCast2 extends FrontendAbstract
 {
@@ -81,6 +83,17 @@ class ShoutCast2 extends FrontendAbstract
             }
         }
 
+        $i = 0;
+        foreach ($this->station->mounts as $mount_row) {
+            $i++;
+            $config['streamid_'.$i] = $i;
+            $config['streampath_'.$i] = $mount_row->name;
+
+            if ($mount_row->relay_url) {
+                $config['streamrelayurl_'.$i] = $mount_row->relay_url;
+            }
+        }
+
         // Set any unset values back to the DB config.
         $this->station->frontend_config = $this->_loadFromConfig($config);
 
@@ -114,12 +127,25 @@ class ShoutCast2 extends FrontendAbstract
 
     public function getStreamUrl()
     {
-        return $this->getUrlForMount('/stream/1/');
+        /** @var EntityManager */
+        $em = $this->di->get('em');
+
+        $mount_repo = $em->getRepository(Entity\StationMount::class);
+        $default_mount = $mount_repo->getDefaultMount($this->station);
+
+        $mount_name = ($default_mount instanceof Entity\StationMount) ? $default_mount->name : '/stream/1/';
+
+        return $this->getUrlForMount($mount_name);
     }
 
     public function getStreamUrls()
     {
-        return [$this->getUrlForMount('/stream/1/')];
+        $urls = [];
+        foreach ($this->station->mounts as $mount) {
+            $urls[] = $this->getUrlForMount($mount->name);
+        }
+
+        return $urls;
     }
 
     public function getUrlForMount($mount_name)

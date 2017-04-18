@@ -74,16 +74,9 @@ class FilesController extends BaseController
 
     public function indexAction()
     {
-        $playlists_raw = $this->em->createQuery('SELECT sp.id, sp.name FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id ORDER BY sp.name ASC')
+        $this->view->playlists = $this->em->createQuery('SELECT sp.id, sp.name FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id ORDER BY sp.name ASC')
             ->setParameter('station_id', $this->station->id)
             ->getArrayResult();
-
-        $playlists = [];
-        foreach ($playlists_raw as $row) {
-            $playlists[$row['id']] = $row['name'];
-        }
-
-        $this->view->playlists = $playlists;
 
         // Show available file space in the station directory.
         $media_dir = $this->station->getRadioMediaDir();
@@ -286,6 +279,8 @@ class FilesController extends BaseController
         $files_found = 0;
         $files_affected = 0;
 
+        $response_record = null;
+
         list($action, $action_id) = explode('_', $_POST['do']);
 
         switch ($action) {
@@ -323,9 +318,7 @@ class FilesController extends BaseController
                         $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
                         $media->playlists->clear();
                         $this->em->persist($media);
-                    } catch (\Exception $e) {
-                    }
-
+                    } catch (\Exception $e) { }
 
                     $files_affected++;
                 }
@@ -338,14 +331,28 @@ class FilesController extends BaseController
 
             // Add all selected files to a playlist.
             case 'playlist':
-                $playlist_id = (int)$action_id;
-                $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy([
-                    'station_id' => $this->station->id,
-                    'id' => $playlist_id
-                ]);
+                if ($action_id === 'new') {
+                    $playlist = new StationPlaylist;
+                    $playlist->station = $this->station;
+                    $playlist->name = $_POST['name'];
 
-                if (!($playlist instanceof StationPlaylist)) {
-                    return $this->_err(500, 'Playlist Not Found');
+                    $this->em->persist($playlist);
+                    $this->em->flush();
+
+                    $response_record = [
+                        'id' => $playlist->id,
+                        'name' => $playlist->name,
+                    ];
+                } else {
+                    $playlist_id = (int)$action_id;
+                    $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy([
+                        'station_id' => $this->station->id,
+                        'id' => $playlist_id
+                    ]);
+
+                    if (!($playlist instanceof StationPlaylist)) {
+                        return $this->_err(500, 'Playlist Not Found');
+                    }
                 }
 
                 $music_files = $this->_getMusicFiles($files);
@@ -376,7 +383,8 @@ class FilesController extends BaseController
         return $this->renderJson([
             'success' => true,
             'files_found' => $files_found,
-            'files_affected' => $files_affected
+            'files_affected' => $files_affected,
+            'record' => $response_record,
         ]);
     }
 

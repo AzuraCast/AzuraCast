@@ -36,25 +36,24 @@
                     <input type="file" multiple />
                 </div>
 
-                <div class="row p-t-20">
+                <div class="row p-t-20" id="app-toolbar">
                     <div class="col-sm-6">
                         <?=_('With selected:') ?>
 
-                    <?php if (!empty($playlists)): ?>
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 <i class="zmdi zmdi-playlist-plus"></i> <?=_('Add to Playlist') ?>
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
-                            <?php foreach($playlists as $playlist_id => $playlist_name): ?>
-                                <li><a href="#" class="btn-batch" data-action="playlist_<?=$playlist_id ?>"><?=$this->e($playlist_name) ?></a></li>
-                            <?php endforeach; ?>
+                                <li v-for="playlist in playlists">
+                                    <a href="#" class="btn-batch" v-on:click="doBatch" v-bind:data-action="'playlist_' + playlist.id">{{ playlist.name }}</a>
+                                </li>
+                                <li><a href="#" class="btn-new-playlist" data-toggle="modal" data-target="#mdl-new-playlist"><?=_('Create new...') ?></a></li>
                             </ul>
                         </div>
-                    <?php endif; ?>
-                        <button type="button" class="btn btn-warning btn-batch" data-action="clear"><i class="zmdi zmdi-playlist-audio"></i> <?=_('Clear Playlists') ?></button>
-                        <button type="button" class="btn btn-danger btn-batch" data-action="delete"><i class="zmdi zmdi-delete"></i> <?=_('Delete') ?></button>
+                        <button type="button" class="btn btn-warning" v-on:click="doBatch" data-action="clear"><i class="zmdi zmdi-playlist-audio"></i> <?=_('Clear Playlists') ?></button>
+                        <button type="button" class="btn btn-danger" v-on:click="doBatch" data-action="delete"><i class="zmdi zmdi-delete"></i> <?=_('Delete') ?></button>
                     </div>
                     <div class="col-sm-6">
                         <form method="post" id="mkdir">
@@ -89,12 +88,60 @@
     </div>
 </div>
 
+<div class="modal fade" id="mdl-new-playlist" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form id="frm-create-playlist">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel"><?=_('Create Playlist') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name" class="control-label"><?=_('Playlist Name') ?>:</label>
+                        <input type="text" class="form-control" id="fld-playlist-name" name="name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn-create-new-playlist" class="btn btn-primary"><?=_('Create Playlist') ?></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script type="text/javascript">
 $(function() {
     var XSRF = '<?=$CSRF ?>';
     var MAX_UPLOAD_SIZE = <?=$MAX_UPLOAD_SIZE ?>;
 
     var $current_dir = '';
+
+    var appToolbar = new Vue({
+        el: '#app-toolbar',
+        data: {
+            playlists: <?=json_encode($playlists) ?>
+        },
+        methods: {
+            doBatch: function (e) {
+                e.preventDefault();
+
+                var $files = getSelectedFiles();
+                $files.length && $.post('<?=$url->routeFromHere(['action' => 'batch']) ?>',{
+                    'do': $(e.target).data('action'),
+                    'files': $files.join('|'),
+                    'xsrf': XSRF,
+                    'file': getUrlHash()
+                },function(data){
+                    list();
+                },'json');
+
+                $(this).closest('.btn-group').removeClass('open');
+                return false;
+            }
+        }
+    });
 
     var grid = $("#file-table").bootgrid({
         ajax: true,
@@ -186,37 +233,32 @@ $(function() {
         return false;
     });
 
-    $('.btn-batch').on('click', function(e) {
+    $('.btn-new-playlist').on('click', function(e) {
+        $(this).closest('.btn-group').removeClass('open');
+    });
+
+    $('#frm-create-playlist').submit(function(e) {
         e.preventDefault();
 
-        var hashval = getUrlHash();
-
-        $files = [];
-        $('#file-table').find('tr.active').each(function() {
-            $files.push($(this).data('row-id'));
-        });
-
-        console.log($files);
-
+        var $files = getSelectedFiles();
         $files.length && $.post('<?=$url->routeFromHere(['action' => 'batch']) ?>',{
-            'do': $(this).data('action'),
+            'do': 'playlist_new',
+            'name': $('#fld-playlist-name').val(),
             'files': $files.join('|'),
             'xsrf': XSRF,
-            'file': hashval
+            'file': getUrlHash()
         },function(data){
+            if (data.success) {
+                appToolbar.playlists.push(data.record);
+            }
             list();
         },'json');
 
-        $(this).closest('.btn-group').removeClass('open');
+        $('#fld-playlist-name').val('');
+        $('#mdl-new-playlist').modal('hide');
+
         return false;
     });
-
-    /*
-    $('#file-check-all').on('change', function(e) {
-        var $is_checked = $(this).prop('checked');
-        $('#file-table').find('tbody input[type=checkbox]').prop('checked', $is_checked);
-    });
-    */
 
     // File upload stuff
     $('#file_drop_target').bind('dragover',function(){
@@ -302,36 +344,16 @@ $(function() {
         return decodeURIComponent(window.location.hash.substr(1));
     }
 
-    /*
-    function renderFileRow(data) {
+    function getSelectedFiles()
+    {
+        $files = [];
+        $('#file-table').find('tr.active').each(function() {
+            $files.push($(this).data('row-id'));
+        });
 
-
-        var $checkbox = $('<div />').addClass('checkbox checkbox-inline')
-            .append('<input type="checkbox" class="file-check" value="'+data.name+'" />')
-            .append('<i class="input-helper"></i>');
-
-        var $icon = '';
-        if (data.media.is_playable)
-            $icon = '<a class="file-icon btn-audio" href="#" data-url="'+$url+'"><i class="zmdi zmdi-play"></i></a>';
-        else
-            $icon = '<span class="file-icon"><i class="zmdi zmdi-'+(data.is_dir ? 'folder' : 'file')+'"></i></span>';
-
-        var $link = $('<a class="name" />')
-            .attr('href', $url)
-            .attr('title', data.name)
-            .text(data.text);
-
-        var $html = $('<tr />')
-            .addClass(data.is_dir ? 'is_dir' : 'is_file')
-            .append( $('<td />').append($checkbox) )
-            .append( $('<td class="first" />').append($icon).append($link).append('<br><small>'+data.media.name+'</small>') )
-            .append( $('<td/>').data('sort',data.is_dir ? -1 : data.size)
-                .html($('<span class="size" />').text(formatFileSize(data.size))) )
-            .append( $('<td/>').data('sort',data.mtime).text(formatTimestamp(data.mtime)) )
-            .append( $('<td/>').html(data.media.playlists.join('<br>')) );
-        return $html;
+        console.log($files);
+        return $files;
     }
-    */
 
     function renderBreadcrumbs(path) {
         var base = "",

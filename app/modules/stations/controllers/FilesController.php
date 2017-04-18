@@ -127,9 +127,8 @@ class FilesController extends BaseController
 
             $this->alert('<b>' . _('Media metadata updated!') . '</b>', 'green');
 
-            $default_url = $this->url->routeFromHere(['action' => 'index']);
-
-            return $this->redirectToStoredReferrer('media_edit', $default_url);
+            $file_dir = (dirname($media->path) == '.') ? '' : dirname($media->path);
+            return $this->redirect($this->url->routeFromHere(['action' => 'index']).'#'.$file_dir);
         }
 
         return $this->renderForm($form, 'edit', _('Edit Media Metadata'));

@@ -101,6 +101,9 @@ class PlaylistsController extends BaseController
 
         if ($record instanceof StationPlaylist) {
             $this->em->remove($record);
+
+            $this->station->needs_restart = true;
+            $this->em->persist($this->station);
         }
 
         $this->em->flush();

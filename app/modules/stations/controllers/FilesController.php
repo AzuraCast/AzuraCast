@@ -269,7 +269,7 @@ class FilesController extends BaseController
         $files = [];
 
         foreach ($files_raw as $file) {
-            $file_path = $this->file_path . '/' . $file;
+            $file_path = $this->base_dir . '/' . $file;
             if (file_exists($file_path)) {
                 $files[] = $file_path;
             }

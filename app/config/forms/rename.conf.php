@@ -11,27 +11,6 @@ return [
             ],
         ],
 
-        'title' => [
-            'text',
-            [
-                'label' => _('Song Title'),
-            ]
-        ],
-
-        'artist' => [
-            'text',
-            [
-                'label' => _('Song Artist'),
-            ]
-        ],
-
-        'album' => [
-            'text',
-            [
-                'label' => _('Song Album'),
-            ]
-        ],
-
         'submit' => [
             'submit',
             [

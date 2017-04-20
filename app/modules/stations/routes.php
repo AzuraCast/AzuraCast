@@ -22,6 +22,7 @@ return function(\Slim\App $app) {
 
             $this->get('', 'stations:files:index')->setName('stations:files:index');
             $this->map(['GET', 'POST'], '/edit/{id}', 'stations:files:edit')->setName('stations:files:edit');
+            $this->map(['GET', 'POST'], '/rename/{path}', 'stations:files:rename')->setName('stations:files:rename');
             $this->map(['GET', 'POST'], '/list', 'stations:files:list')->setName('stations:files:list');
             $this->map(['GET', 'POST'], '/batch', 'stations:files:batch')->setName('stations:files:batch');
             $this->map(['GET', 'POST'], '/mkdir', 'stations:files:mkdir')->setName('stations:files:mkdir');

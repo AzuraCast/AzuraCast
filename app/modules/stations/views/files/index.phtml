@@ -178,7 +178,7 @@ $(function() {
                 if (row.media_edit_url)
                     return '<a class="btn btn-sm btn-primary" href="'+row.media_edit_url+'"><?=_('Edit') ?></a>';
                 else
-                    return '';
+                    return '<a class="btn btn-sm btn-primary" href="'+row.rename_url+'"><?=_('Rename') ?></a>';
             },
             "file_length": function(column, row) {
                 if (row.media_length_text)

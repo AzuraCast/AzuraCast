@@ -102,10 +102,6 @@ class FilesController extends BaseController
             throw new \Exception('Media not found.');
         }
 
-        if (empty($_POST)) {
-            $this->storeReferrer('media_edit');
-        }
-
         $form_config = $this->config->forms->media->toArray();
         $form = new \App\Form($form_config);
 
@@ -113,6 +109,12 @@ class FilesController extends BaseController
 
         if (!empty($_POST) && $form->isValid()) {
             $data = $form->getValues();
+
+            // Detect rename.
+            if ($data['path'] !== $media->path) {
+                list($data['path'], $path_full) = $this->_filterPath($data['path']);
+                rename($media->getFullPath(), $path_full);
+            }
 
             $media->fromArray($this->em, $data);
             if ($media->writeToFile()) {
@@ -132,6 +134,72 @@ class FilesController extends BaseController
         }
 
         return $this->renderForm($form, 'edit', _('Edit Media Metadata'));
+    }
+
+    public function renameAction()
+    {
+        $path = base64_decode($this->getParam('path'));
+        list($path, $path_full) = $this->_filterPath($path);
+
+        $form_config = $this->config->forms->rename->toArray();
+        $form = new \App\Form($form_config);
+
+        $form->populate(['path' => $path]);
+
+        if (!empty($_POST) && $form->isValid()) {
+            $data = $form->getValues();
+
+            // Detect rename.
+            if ($data['path'] !== $path) {
+                list($new_path, $new_path_full) = $this->_filterPath($data['path']);
+                rename($path_full, $new_path_full);
+
+                if (is_dir($new_path_full)) {
+                    // Update the paths of all media contained within the directory.
+                    $media_in_dir = $this->em->createQuery('SELECT sm FROM Entity\StationMedia sm
+                        WHERE sm.station_id = :station_id AND sm.path LIKE :path')
+                        ->setParameter('station_id', $this->station->id)
+                        ->setParameter('path', $path . '%')
+                        ->execute();
+
+                    foreach($media_in_dir as $media_row) {
+                        $media_row->path = substr_replace($media_row->path, $new_path,0, strlen($path));
+                        $this->em->persist($media_row);
+                    }
+
+                    $this->em->flush();
+                }
+
+                $path = $new_path;
+            }
+
+            $this->alert('<b>' . _('File renamed!') . '</b>', 'green');
+
+            $file_dir = (dirname($path) == '.') ? '' : dirname($path);
+            return $this->redirect($this->url->routeFromHere(['action' => 'index']).'#'.$file_dir);
+        }
+
+        return $this->renderForm($form, 'edit', _('Rename File/Directory'));
+    }
+
+    protected function _filterPath($path)
+    {
+        $path = str_replace(['../', './'], ['', ''], $path);
+        $path = trim($path, '/');
+
+        $base_path = $this->station->getRadioMediaDir();
+        $dir_path = $base_path.DIRECTORY_SEPARATOR.dirname($path);
+        $full_path = $base_path.DIRECTORY_SEPARATOR.$path;
+
+        if ($real_path = realpath($dir_path)) {
+            if (substr($full_path, 0, strlen($base_path)) !== $base_path) {
+                throw new \Exception('New location not inside station media directory.');
+            }
+        } else {
+            throw new \Exception('Parent directory could not be resolved.');
+        }
+
+        return [$path, $full_path];
     }
 
     public function listAction()
@@ -198,9 +266,10 @@ class FilesController extends BaseController
                     'mtime' => $stat['mtime'],
                     'size' => $stat['size'],
                     'name' => $short,
-                    'text' => $shortname,
                     'path' => $short,
+                    'text' => $shortname,
                     'is_dir' => is_dir($i),
+                    'rename_url' => $this->url->routeFromHere(['action' => 'rename', 'path' => base64_encode($short)]),
                 ];
 
                 foreach ($media as $media_key => $media_val) {

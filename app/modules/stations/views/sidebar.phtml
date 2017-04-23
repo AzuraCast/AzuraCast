@@ -24,7 +24,7 @@
         <li><a href="<?=$url->named('stations:mounts:index', ['station' => $station->id]) ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=_('Mount Points') ?></a></li>
     <?php endif; ?>
 
-    <?php if ($acl->isAllowed('manage station streamers', $station->id) && $frontend->supportsStreamers()): ?>
+    <?php if ($acl->isAllowed('manage station streamers', $station->id) && $backend->supportsStreamers()): ?>
         <li><a href="<?=$url->named('stations:streamers:index', ['station' => $station->id]) ?>"><i class="zmdi zmdi-account"></i> <?=_('Streamer/DJ Accounts') ?></a></li>
     <?php endif; ?>
 

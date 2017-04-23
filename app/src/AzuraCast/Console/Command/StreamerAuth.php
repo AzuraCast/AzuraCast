@@ -57,6 +57,11 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
             return $this->_return($output, 'false');
         }
 
+        $fe_config = (array)$station->frontend_config;
+        if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
+            return $this->_return($output, 'true');
+        }
+
         if ($this->di['em']->getRepository(StationStreamer::class)->authenticate($station, $user, $pass)) {
             return $this->_return($output, 'true');
         } else {

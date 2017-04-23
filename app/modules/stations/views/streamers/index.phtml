@@ -47,41 +47,32 @@
                 <h2><?=_('Connection Information') ?></h2>
             </div>
             <div class="card-body card-padding">
-                <?php
-                $frontend_type = $station->frontend_type;
-                $frontend_info = (array)$station->frontend_config;
+                <h4><?=_('IceCast Clients') ?></h4>
+                <dl>
+                    <dt><?=_('Server') ?>:</dt>
+                    <dd><?=$server_url ?></dd>
 
-                if ($frontend_type == 'icecast'):
-                ?>
-                    <h4><?=_('IceCast Clients') ?></h4>
-                    <dl>
-                        <dt><?=_('Server') ?>:</dt>
-                        <dd><?=$server_url ?></dd>
+                    <dt><?=_('Port') ?>:</dt>
+                    <dd><?=$stream_port ?></dd>
 
-                        <dt><?=_('Port') ?>:</dt>
-                        <dd><?=(int)$frontend_info['port'] ?></dd>
+                    <dt><?=_('Mount Name') ?>:</dt>
+                    <dd>/</dd>
+                </dl>
 
-                        <dt><?=_('Mount Name') ?>:</dt>
-                        <dd>/radio.mp3</dd>
-                    </dl>
+                <h4><?=_('ShoutCast v1 Clients') ?></h4>
+                <dl>
+                    <dt><?=_('Server') ?>:</dt>
+                    <dd><?=$server_url ?></dd>
 
-                    <h4><?=_('ShoutCast 1.x Legacy Clients') ?></h4>
-                    <dl>
-                        <dt><?=_('Server') ?>:</dt>
-                        <dd><?=$server_url ?></dd>
+                    <dt><?=_('Port') ?>:</dt>
+                    <dd><?=($stream_port + 1) ?></dd>
 
-                        <dt><?=_('Port') ?>:</dt>
-                        <dd><?=(int)$frontend_info['port']+1 ?></dd>
-
-                        <dt><?=('Username') ?>:</dt>
-                        <dd>(Leave blank)</dd>
-
-                        <dt><?=_('Password') ?>:</dt>
-                        <dd><?=$frontend_info['streamer_pw'] ?></dd>
-                    </dl>
-                <?php
-                endif;
-                ?>
+                    <dt><?=_('Password') ?>:</dt>
+                    <dd>
+                        dj_username:dj_password<br>
+                        <small><?=_('(DJ username and password separated by a colon)') ?></small>
+                    </dd>
+                </dl>
             </div>
         </div>
     </div>

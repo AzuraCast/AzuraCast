@@ -7,7 +7,7 @@ class StreamersController extends BaseController
 {
     protected function preDispatch()
     {
-        if (!$this->frontend->supportsStreamers()) {
+        if (!$this->backend->supportsStreamers()) {
             throw new \App\Exception(_('This feature is not currently supported on this station.'));
         }
 
@@ -38,6 +38,8 @@ class StreamersController extends BaseController
         }
 
         $this->view->server_url = $this->em->getRepository('Entity\Settings')->getSetting('base_url', '');
+        $this->view->stream_port = $this->backend->getStreamPort();
+
         $this->view->streamers = $this->station->streamers;
     }
 

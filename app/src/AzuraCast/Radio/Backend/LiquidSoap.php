@@ -33,18 +33,10 @@ class LiquidSoap extends BackendAbstract
         $ls_config[] = 'set("server.telnet.port", ' . $this->_getTelnetPort() . ')';
         $ls_config[] = 'set("server.telnet.reverse_dns",false)';
 
-        $ls_config[] = '';
+        $ls_config[] = 'set("harbor.bind_addr","0.0.0.0")';
+        $ls_config[] = 'set("harbor.reverse_dns",false)';
 
-        /*
-        // Set up harbor auth script.
-        $ls_config[] = '# DJ Authentication';
-        $ls_config[] = 'def dj_auth(user,password) =';
-        $ls_config[] = '  ret = get_process_lines("/usr/bin/php '.APP_INCLUDE_ROOT.'/util/cli.php streamer:auth '.$this->station->id.' #{user} #{password}")';
-        $ls_config[] = '  ret = list.hd(ret)';
-        $ls_config[] = '  bool_of_string(ret)';
-        $ls_config[] = 'end';
         $ls_config[] = '';
-        */
 
         // Clear out existing playlists directory.
         $current_playlists = array_diff(scandir($playlist_path), ['..', '.']);
@@ -158,12 +150,28 @@ class LiquidSoap extends BackendAbstract
             }
         }
 
-        /*
-        // Add harbor live.
-        $ls_config[] = '# Harbor Live DJs';
-        $ls_config[] = 'live = input.harbor("/", port='.$this->_getHarborPort().', user="shoutcast", auth=dj_auth, icy=true)';
+        // Set up harbor auth script.
+        $ls_config[] = '# DJ Authentication';
+        $ls_config[] = 'def dj_auth(user,password) =';
+        $ls_config[] = '  ret = get_process_lines("/usr/bin/php '.APP_INCLUDE_ROOT.'/util/cli.php streamer:auth '.$this->station->id.' #{user} #{password}")';
+        $ls_config[] = '  ret = list.hd(ret)';
+        $ls_config[] = '  bool_of_string(ret)';
+        $ls_config[] = 'end';
         $ls_config[] = '';
-        */
+
+        // Add harbor live.
+        $harbor_params = [
+            '"/"',
+            'port='.$this->getStreamPort(),
+            'user="shoutcast"',
+            'auth=dj_auth',
+            'icy=true',
+        ];
+
+        $ls_config[] = '# Harbor Live DJs';
+        $ls_config[] = 'live = input.harbor('.implode(', ', $harbor_params).')';
+        $ls_config[] = 'radio = fallback(track_sensitive = false, [live, radio])';
+        $ls_config[] = '';
 
         // Add fallback error file.
         // $error_song_path = APP_INCLUDE_ROOT.'/resources/error.mp3';
@@ -357,6 +365,11 @@ class LiquidSoap extends BackendAbstract
         fclose($fp);
 
         return $response;
+    }
+
+    public function getStreamPort()
+    {
+        return (8000 + (($this->station->id - 1) * 10) + 5);
     }
 
     protected function _getTelnetPort()

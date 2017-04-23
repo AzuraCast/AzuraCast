@@ -16,12 +16,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
     {
     }
 
-    protected $supports_streamers = true;
 
-    public function supportsStreamers()
-    {
-        return $this->supports_streamers;
-    }
 
     public function getProgramName()
     {

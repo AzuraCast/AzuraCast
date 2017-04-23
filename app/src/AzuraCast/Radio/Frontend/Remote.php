@@ -7,8 +7,6 @@ class Remote extends FrontendAbstract
 {
     protected $supports_mounts = false;
 
-    protected $supports_streamers = false;
-
     /* Process a nowplaying record. */
     protected function _getNowPlaying(&$np)
     {

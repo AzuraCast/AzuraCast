@@ -7,6 +7,8 @@ class None extends BackendAbstract
 
     protected $supports_requests = false;
 
+    protected $supports_streamers = false;
+
     public function read()
     {
     }

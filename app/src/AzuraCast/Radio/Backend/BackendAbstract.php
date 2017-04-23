@@ -17,6 +17,18 @@ abstract class BackendAbstract extends \AzuraCast\Radio\AdapterAbstract
         return $this->supports_requests;
     }
 
+    protected $supports_streamers = true;
+
+    public function supportsStreamers()
+    {
+        return $this->supports_streamers;
+    }
+
+    public function getStreamPort()
+    {
+        return null;
+    }
+
     public function log($message, $class = 'info')
     {
         if (!empty(trim($message))) {

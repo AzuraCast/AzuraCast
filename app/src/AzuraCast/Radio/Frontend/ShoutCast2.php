@@ -193,6 +193,7 @@ class ShoutCast2 extends FrontendAbstract
             'ripfile' => $config_path . '/sc_serv.rip',
             'maxuser' => 500,
             'portbase' => $this->_getRadioPort(),
+            'requirestreamconfigs' => 1,
         ];
 
         return $defaults;

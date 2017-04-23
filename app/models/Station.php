@@ -96,6 +96,9 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
 
+    /** @Column(name="url", type="string", length=255, nullable=true) */
+    protected $url;
+
     /** @Column(name="radio_base_dir", type="string", length=255, nullable=true) */
     protected $radio_base_dir;
 

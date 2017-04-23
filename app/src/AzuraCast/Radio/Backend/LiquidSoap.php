@@ -215,6 +215,9 @@ class LiquidSoap extends BackendAbstract
         $broadcast_port = $fe_settings['port'];
         $broadcast_source_pw = $fe_settings['source_pw'];
 
+        $settings_repo = $this->di['em']->getRepository('Entity\Settings');
+        $base_url = $settings_repo->getSetting('base_url', 'localhost');
+
         switch ($this->station->frontend_type) {
             case 'remote':
                 $this->log(_('You cannot use an AutoDJ with a remote frontend. Please change the frontend type or update the backend to be "Disabled".'),
@@ -243,6 +246,7 @@ class LiquidSoap extends BackendAbstract
                         'port = ' . ($broadcast_port),
                         'password = "' . $broadcast_source_pw . ':#'.$i.'"',
                         'name = "' . $this->_cleanUpString($this->station->name) . '"',
+                        'url = "' . $this->_cleanUpString($this->station->url ?: $base_url) . '"',
                         'public = false',
                         'radio', // Required
                     ];
@@ -275,6 +279,7 @@ class LiquidSoap extends BackendAbstract
                             'password = "' . $broadcast_source_pw . '"',
                             'name = "' . $this->_cleanUpString($this->station->name) . '"',
                             'description = "' . $this->_cleanUpString($this->station->description) . '"',
+                            'url = "' . $this->_cleanUpString($this->station->url ?: $base_url) . '"',
                             'mount = "' . $mount_row->name . '"',
                             'radio', // Required
                         ];

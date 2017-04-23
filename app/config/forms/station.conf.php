@@ -40,6 +40,14 @@ return [
                     ]
                 ],
 
+                'url' => [
+                    'text',
+                    [
+                        'label' => _('Station Web Site URL'),
+                        'class' => 'full-width full-height',
+                    ]
+                ],
+
                 'frontend_type' => [
                     'radio',
                     [

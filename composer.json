@@ -6,7 +6,7 @@
   "require": {
     "slim/slim": "^3.0",
     "league/plates": "^3.1",
-    "filp/whoops": "1.*",
+    "filp/whoops": "2.*",
     "tedivm/stash": "0.14.*",
     "nibble/nibble-forms": "dev-master",
 

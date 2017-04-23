@@ -64,6 +64,13 @@ class ErrorHandler
                 $handler = new \Whoops\Handler\PrettyPageHandler;
                 $handler->setPageTitle('An error occurred!');
 
+                if ($e instanceof \App\Exception) {
+                    $extra_tables = $e->getExtraData();
+                    foreach($extra_tables as $legend => $data) {
+                        $handler->addDataTable($legend, $data);
+                    }
+                }
+
                 $run = new \Whoops\Run;
                 $run->pushHandler($handler);
 

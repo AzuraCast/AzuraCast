@@ -87,16 +87,22 @@ abstract class AdapterAbstract
     public function stop()
     {
         if ($this->hasCommand()) {
-            try {
-                $program_name = $this->getProgramName();
-                $this->supervisor->stopProcess($program_name);
+            $program_name = $this->getProgramName();
 
+            try {
+                $this->supervisor->stopProcess($program_name);
                 $this->log(_('Process stopped.'), 'green');
             } catch (FaultException $e) {
                 if (stristr($e->getMessage(), 'NOT_RUNNING') !== false) {
                     $this->log(_('Process was not running!'), 'red');
                 } else {
-                    throw $e;
+                    $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
+                    $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
+                    $app_e->addExtraData('Supervisord Log', explode("\n", $this->supervisor->readProcessLog($program_name, 0, 0)));
+
+                    $this->supervisor->clearProcessLogs($program_name);
+
+                    throw $app_e;
                 }
             }
         }
@@ -108,16 +114,22 @@ abstract class AdapterAbstract
     public function start()
     {
         if ($this->hasCommand()) {
-            try {
-                $program_name = $this->getProgramName();
-                $this->supervisor->startProcess($program_name);
+            $program_name = $this->getProgramName();
 
+            try {
+                $this->supervisor->startProcess($program_name);
                 $this->log(_('Process started.'), 'green');
             } catch (FaultException $e) {
                 if (stristr($e->getMessage(), 'ALREADY_STARTED') !== false) {
                     $this->log(_('Process is already running!'), 'red');
                 } else {
-                    throw $e;
+                    $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
+                    $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
+                    $app_e->addExtraData('Supervisord Log', explode("\n", $this->supervisor->readProcessLog($program_name, 0, 0)));
+
+                    $this->supervisor->clearProcessLog($program_name);
+
+                    throw $app_e;
                 }
             }
         }

@@ -245,7 +245,6 @@ class LiquidSoap extends BackendAbstract
                         'host = "localhost"',
                         'port = ' . ($broadcast_port),
                         'password = "' . $broadcast_source_pw . ':#'.$i.'"',
-                        'description = "' . $this->_cleanUpString($this->station->description) . '"',
                         'name = "' . $this->_cleanUpString($this->station->name) . '"',
                         'url = "' . $this->_cleanUpString($this->station->url ?: $base_url) . '"',
                         'public = false',

@@ -19,17 +19,38 @@ coverage:
   include:
    - app/*
   exclude:
-   # Not used in application
+   # Loaded before tests
+   - app/src/App/Tests/Module.php
+   - app/src/App/Doctrine/EntityManagerFactory.php
+  
+   # Not used in entire application
+   - app/src/App/Crypto.php
+   - app/src/App/Messenger.php
+   - app/src/App/Forms/Element/Recaptcha.php
+   - app/src/App/Paginator/Doctrine.php
+   - app/src/App/Doctrine/Type/*.php
+   - app/src/App/Doctrine/Platform/*.php
+   - app/src/App/Doctrine/Filter/*.php
+   - app/src/App/Doctrine/Paginate/*.php
+   - app/src/App/Doctrine/Functions/*.php
    - app/src/AzuraCast/Radio/Frontend/ShoutCast2.php
-
+  
    # Used in application, but not used in tests
    - app/src/AzuraCast/Console/Command/*.php
+   - app/src/App/Doctrine/Logger/EchoSQL.php
+   - app/src/App/Session/Temporary.php
+   - app/src/App/Console/Command/*.php
+   - app/**/*.conf.sample.php
    - app/models/Migration/*
-   - app/config/*.conf.sample.php
    - app/locale/**/*
    - app/locale/*
    - app/templates/system/error_general.phtml
+  
+   # Exceptions
+   - app/src/App/Exception.php
+   - app/src/App/Exception/*.php
+   - app/src/App/Mvc/ErrorHandler.php
 
    # Used in application, but not detected properly by the coverage tool :(
-   - app/bootstrap/routes.php
    - app/config/**/*.conf.php
+   - app/**/routes.php

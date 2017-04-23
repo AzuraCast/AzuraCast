@@ -67,7 +67,7 @@
         </div>
         <?php endif; ?>
 
-        <?php if ($frontend->supportsStreamers()): ?>
+        <?php if ($backend->supportsStreamers()): ?>
         <div class="card">
             <div class="card-header <?php if ($station->enable_streamers): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?>">
                 <h2><?=_('Streamers/DJs') ?></h2>
@@ -75,10 +75,10 @@
             <div class="card-body card-padding">
 
                 <?php if ($station->enable_streamers): ?>
-                    <p><?=_('Support for live streamers / DJs is currently <b>enabled</b> for this station. Edit your profile above to enable it.') ?></p>
+                    <p><?=_('Support for live streamers / DJs is currently <b>enabled</b> for this station.') ?></p>
                     <p><?=sprintf(_('Manage streamer accounts <a href="%s">on the Streamers / DJ Accounts page</a>.'), $url->routeFromHere(['controller' => 'streamers'])) ?></p>
                 <?php else: ?>
-                    <p><?=_('Support for live streamers / DJs is currently <b>disabled</b> for this station.') ?></p>
+                    <p><?=_('Support for live streamers / DJs is currently <b>disabled</b> for this station. Edit your profile above to enable it.') ?></p>
                     <p><?=_('Only the AutoDJ (based on your uploaded media and playlists) will be able to play on the air.') ?></p>
                 <?php endif; ?>
             </div>

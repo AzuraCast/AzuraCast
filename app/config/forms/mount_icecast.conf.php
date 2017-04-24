@@ -45,16 +45,6 @@ return [
                     ]
                 ],
 
-                'enable_streamers' => [
-                    'radio',
-                    [
-                        'label' => _('Enable Streamers'),
-                        'description' => _('If set to "Yes", streamers will be able to broadcast to this mount point.'),
-                        'options' => [0 => _('No'), 1 => _('Yes')],
-                        'default' => 0,
-                    ]
-                ],
-
                 'enable_autodj' => [
                     'radio',
                     [

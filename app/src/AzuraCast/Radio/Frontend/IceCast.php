@@ -277,8 +277,6 @@ class IceCast extends FrontendAbstract
             ],
         ];
 
-        $url = $this->di['url'];
-
         foreach ($this->station->mounts as $mount_row) {
             $mount = [
                 '@type' => 'normal',
@@ -288,27 +286,6 @@ class IceCast extends FrontendAbstract
             if (!empty($mount_row->fallback_mount)) {
                 $mount['fallback-mount'] = $mount_row->fallback_mount;
                 $mount['fallback-override'] = 1;
-            }
-
-            if ($mount_row->enable_streamers) {
-                $mount['username'] = 'shoutcast';
-                $mount['password'] = Utilities::generatePassword();
-                $mount['authentication'] = [
-                    '@type' => 'url',
-                    'option' => [
-                        [
-                            '@name' => 'stream_auth',
-                            '@value' => $url->route([
-                                'module' => 'api',
-                                'controller' => 'internal',
-                                'action' => 'streamauth',
-                                'id' => $this->station->id
-                            ], true)
-                        ],
-                    ],
-                ];
-
-                $defaults['listen-socket']['shoutcast-mount'] = $mount_row->name;
             }
 
             if ($mount_row->frontend_config) {
@@ -333,27 +310,5 @@ class IceCast extends FrontendAbstract
         }
 
         return $defaults;
-    }
-
-    public function getDefaultMounts()
-    {
-        return [
-            [
-                'name' => '/radio.mp3',
-                'is_default' => 1,
-                'fallback_mount' => '/autodj.mp3',
-                'enable_streamers' => 1,
-                'enable_autodj' => 0,
-            ],
-            [
-                'name' => '/autodj.mp3',
-                'is_default' => 0,
-                'fallback_mount' => '/error.mp3',
-                'enable_streamers' => 0,
-                'enable_autodj' => 1,
-                'autodj_format' => 'mp3',
-                'autodj_bitrate' => 128,
-            ]
-        ];
     }
 }

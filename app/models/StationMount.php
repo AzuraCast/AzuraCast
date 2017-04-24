@@ -13,7 +13,6 @@ class StationMount extends \App\Doctrine\Entity
         $this->name = '';
         $this->is_default = false;
         $this->enable_autodj = true;
-        $this->enable_streamers = false;
 
         $this->autodj_format = 'mp3';
         $this->autodj_bitrate = 128;
@@ -49,9 +48,6 @@ class StationMount extends \App\Doctrine\Entity
 
     /** @Column(name="relay_url", type="string", length=255, nullable=true) */
     protected $relay_url;
-
-    /** @Column(name="enable_streamers", type="boolean", nullable=false) */
-    protected $enable_streamers;
 
     /** @Column(name="enable_autodj", type="boolean", nullable=false) */
     protected $enable_autodj;

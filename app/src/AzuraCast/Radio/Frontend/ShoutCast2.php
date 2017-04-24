@@ -198,18 +198,4 @@ class ShoutCast2 extends FrontendAbstract
 
         return $defaults;
     }
-
-    public function getDefaultMounts()
-    {
-        return [
-            [
-                'name' => '/radio.mp3',
-                'is_default' => 1,
-                'enable_streamers' => 1,
-                'enable_autodj' => 1,
-                'autodj_format' => 'mp3',
-                'autodj_bitrate' => 128,
-            ]
-        ];
-    }
 }

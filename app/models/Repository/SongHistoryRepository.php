@@ -32,7 +32,7 @@ class SongHistoryRepository extends \App\Doctrine\Repository
      * @param Entity\Song $song
      * @param Entity\Station $station
      * @param $np
-     * @return Entity\SongHistory|null
+     * @return Entity\SongHistory
      */
     public function register(Entity\Song $song, Entity\Station $station, $np)
     {
@@ -56,7 +56,7 @@ class SongHistoryRepository extends \App\Doctrine\Repository
             $this->_em->persist($last_sh);
             $this->_em->flush();
 
-            return null;
+            return $last_sh;
         } else {
             // Wrapping up processing on the previous SongHistory item (if present).
             if ($last_sh instanceof Entity\SongHistory) {

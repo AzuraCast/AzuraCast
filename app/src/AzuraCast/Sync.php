@@ -78,6 +78,9 @@ class Sync
             });
             Debug::divider();
 
+            // Clear the entity manager.
+            $this->di['em']->clear();
+
             if ($force) {
                 break;
             }

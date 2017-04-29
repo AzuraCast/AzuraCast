@@ -1,12 +1,12 @@
 ---
- - name: (Prod) Generate MySQL Root Password
+ - name: (Prod) Generate MySQL User Password
    command: pwgen 8 -sn 1
-   register: prod_mysql_root_password
+   register: prod_mysql_user_password
    when: app_env == "production"
 
  - name: Assign User Password
    set_fact:
-     mysql_root_password: "{{ prod_mysql_root_password.stdout if app_env == 'production' else dev_mysql_root_password }}"
+     mysql_user_password: "{{ prod_mysql_user_password.stdout if app_env == 'production' else dev_mysql_user_password }}"
 
  - name: Add repo file
    template: src=mariadb_ubuntu.list.j2 dest=/etc/apt/sources.list.d/mariadb.list owner=root group=root mode=0644
@@ -39,34 +39,14 @@
  - name: Start and enable service
    service: name=mysql state=started enabled=yes
 
- - name: Add empty .my.cnf (if none exists)
+ - name: Add empty root .my.cnf (if none exists)
    become: true
    template: src=root_empty_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600
 
- - name: MySQL Root Account Fix (Ubuntu 16.04)
-   become: true
-   shell: "cat {{ util_base }}/xenial_mysql_fix.sql | mysql --defaults-extra-file=/root/.my.cnf -NB"
-   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
-
- # MySQL Secure Installation
- - name: Set root Password
-   mysql_user:
-     name: root
-     host: "localhost"
-     password: "{{ mysql_root_password }}"
-     priv: "*.*:ALL,GRANT"
-     state: present
-   notify: send mysql notification
-
- #- name: Reload privilege tables
- #  command: 'mysql -ne "{{ item }}"'
- #  with_items:
- #    - "FLUSH PRIVILEGES"
- #  changed_when: False
-
- - name: Add .my.cnf
-   become: true
-   template: src=root_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600 force=yes
+# - name: MySQL Root Account Fix (Ubuntu 16.04)
+#   become: true
+#   shell: "cat {{ util_base }}/xenial_mysql_fix.sql | mysql --defaults-extra-file=/root/.my.cnf -NB"
+#   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
 
  - name: Remove anonymous users
    command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
@@ -88,6 +68,26 @@
    changed_when: False
    ignore_errors: True
 
+ # MySQL Secure Installation
+ - name: Set up AzuraCast database user
+   mysql_user:
+     name: azuracast
+     host: "localhost"
+     password: "{{ mysql_user_password }}"
+     priv: "azuracast.*:ALL,GRANT"
+     state: present
+   notify: send mysql notification
+
+ #- name: Reload privilege tables
+ #  command: 'mysql -ne "{{ item }}"'
+ #  with_items:
+ #    - "FLUSH PRIVILEGES"
+ #  changed_when: False
+
+ - name: Add .my.cnf
+   become: true
+   template: src=user_my.cnf.j2 dest="{{ app_base }}/.my.cnf" owner=azuracast group=azuracast mode=0600 force=yes
+
  - name: Reload privilege tables
    command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
    with_items:
@@ -104,8 +104,6 @@
      encoding: utf8mb4
    register: azuracast_db_created
 
- - name: Copy default DB config again
-   copy: src="{{ www_base }}/app/config/db.conf.sample.php" dest="{{ www_base }}/app/config/db.conf.php" force=yes
-
- - name: Set MySQL Password in Application
-   replace:  dest="{{ www_base }}/app/config/db.conf.php" regexp="'password'," replace="'{{ mysql_root_password }}',"
+ - name: Write DB configuration
+   become: true
+   template: src=db.conf.php.j2 dest="{{ www_base }}/app/config/db.conf.php" owner=azuracast group=azuracast mode=0600 force=yes

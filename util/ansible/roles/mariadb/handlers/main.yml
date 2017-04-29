@@ -4,4 +4,4 @@
 
 - name: send mysql notification
   debug:
-    msg: "The MySQL 'root'@'localhost' account has had its password updated. The new password is: {{ mysql_root_password }}"
+    msg: "The MySQL 'azuracast'@'localhost' account has been created. Its password is: {{ mysql_user_password }}"

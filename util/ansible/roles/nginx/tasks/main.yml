@@ -9,13 +9,28 @@
      - "/etc/nginx/ssl"
 
   - name: Create self-signed SSL cert
-    command: openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=${ansible_fqdn}" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca creates=/etc/nginx/ssl/server.crt
+    command: openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=${ansible_fqdn}" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca
+    args:
+      creates: /etc/nginx/ssl/server.crt
     notify: restart nginx
 
-  - name: Change default nginx site
+  - name: Remove default nginx site symlink
     become: true
-    template: src=default.j2 dest=/etc/nginx/sites-available/default
+    file:
+      path: "/etc/nginx/sites-enabled/default"
+      state: absent
+
+  - name: Add app-specific nginx site
+    become: true
+    template: src=default.j2 dest=/etc/nginx/sites-available/00-azuracast
     notify: restart nginx
+
+  - name: Link app-specific nginx site
+    become: true
+    file:
+      path: "/etc/nginx/sites-enabled/00-azuracast"
+      state: link
+      src: "/etc/nginx/sites-available/00-azuracast"
 
   - name: Turn sendfile off on nginx for local development
     become: true

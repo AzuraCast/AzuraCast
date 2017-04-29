@@ -56,7 +56,7 @@ class Sync
      */
     public function syncNowplaying($force = false)
     {
-        $this->_initSync(60);
+        $this->_initSync(59);
 
         // Prevent nowplaying from running on top of itself.
         $last_start = $this->settings->getSetting('nowplaying_last_started', 0);
@@ -66,14 +66,24 @@ class Sync
             return;
         }
 
-        // Sync schedules.
         $this->settings->setSetting('nowplaying_last_started', time());
 
-        // Run Now Playing data for radio streams.
-        Debug::runTimer('Run NowPlaying update', function () {
-            $task = new Sync\NowPlaying($this->di);
-            $task->run();
-        });
+        $start_time = time();
+        $task = new Sync\NowPlaying($this->di);
+        while(time() < $start_time+55)
+        {
+            // Run Now Playing data for radio streams.
+            Debug::runTimer('Run NowPlaying update', function () use ($task) {
+                $task->run();
+            });
+            Debug::divider();
+
+            if ($force) {
+                break;
+            }
+
+            sleep(10);
+        }
 
         $this->settings->setSetting('nowplaying_last_run', time());
     }

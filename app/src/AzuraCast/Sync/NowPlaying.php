@@ -11,8 +11,6 @@ class NowPlaying extends SyncAbstract
 {
     public function run()
     {
-        set_time_limit(60);
-
         $nowplaying = $this->_loadNowPlaying();
 
         // Post statistics to InfluxDB.
@@ -46,7 +44,7 @@ class NowPlaying extends SyncAbstract
 
         $influx->writePoints($influx_points, \InfluxDB\Database::PRECISION_SECONDS);
 
-        // Generate PVL API cache.
+        // Generate API cache.
         foreach ($nowplaying as $station => $np_info) {
             $nowplaying[$station]['cache'] = 'hit';
         }
@@ -63,8 +61,6 @@ class NowPlaying extends SyncAbstract
 
     protected function _loadNowPlaying()
     {
-        Debug::startTimer('Nowplaying Overall');
-
         /** @var EntityManager $em */
         $em = $this->di['em'];
         $stations = $em->getRepository(Station::class)->findAll();
@@ -78,10 +74,7 @@ class NowPlaying extends SyncAbstract
             $nowplaying[] = $this->_processStation($station);
 
             Debug::endTimer($station->name);
-            Debug::divider();
         }
-
-        Debug::endTimer('Nowplaying Overall');
 
         return $nowplaying;
     }

@@ -5,22 +5,38 @@
     register: installed_php_ppa
 #    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
-#  - name: Add Phalcon PPA repository
-#    become: true
-#    register: installed_phalcon_ppa
-#    shell: curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash
-#    args:
-#      creates: /etc/apt/sources.list.d/phalcon_stable.list
-#      warn: no
-
   - name: Update apt again
     become: true
     apt:  update_cache=yes
     when: installed_php_ppa.changed
 
-  - name: Install PHP Libraries
+  - name: Remove Old PHP Libraries
+    become: true
+    apt:  package="{{ item }}" state=absent
+    with_items:
+     - php5-common
+     - php5-fpm
+     - php5-cli
+     - php5-phalcon
+     - php7.0-phalcon
+
+  - name: Install PHP 7.1
     become: true
     apt:  package="{{ item }}" state=latest
+    with_items:
+     - php7.1-fpm
+     - php7.1-cli
+     - php7.1-gd
+     - php7.1-curl
+     - php7.1-xml         # IceCast XML config
+     - php7.1-zip         # Composer installs
+     - php7.1-mysqlnd     # MySQL Native Driver (Doctrine)
+     - php7.1-mbstring    # Codeception Tests
+     - php7.1-intl        # Localization
+
+  - name: Remove PHP 7.0
+    become: true
+    apt:  package="{{ item }}" state=absent
     with_items:
      - php7.0-fpm
      - php7.0-cli
@@ -41,23 +57,13 @@
     locale_gen: name="{{ item }}" state=present
     with_items: "{{ locale_list.stdout_lines }}"
 
-  - name: Remove Old PHP Libraries
-    become: true
-    apt:  package="{{ item }}" state=absent
-    with_items:
-     - php5-common
-     - php5-fpm
-     - php5-cli
-     - php5-phalcon
-     - php7.0-phalcon
-
   - name: Configure PHP FPM Pool
-    template: src=fpmpool.j2 dest=/etc/php/7.0/fpm/pool.d/www.conf force=true
+    template: src=fpmpool.j2 dest=/etc/php/7.1/fpm/pool.d/www.conf force=true
     notify: restart php-fpm
 
   - name: Configure php-fpm php.ini
     ini_file:
-      dest: /etc/php/7.0/fpm/php.ini
+      dest: /etc/php/7.1/fpm/php.ini
       section: PHP
       option: "{{ item.option }}"
       value: "{{ item.value }}"
@@ -69,7 +75,7 @@
 
   - name: Configure php-cli php.ini
     ini_file:
-      dest: /etc/php/7.0/cli/php.ini
+      dest: /etc/php/7.1/cli/php.ini
       section: PHP
       option: "{{ item.option }}"
       value: "{{ item.value }}"

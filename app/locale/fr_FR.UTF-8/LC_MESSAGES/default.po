@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-20 08:20+0000\n"
-"PO-Revision-Date: 2017-04-30 08:30-0400\n"
+"PO-Revision-Date: 2017-04-30 08:40-0400\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -253,7 +253,7 @@ msgstr "Poids de la playlist"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:45
 msgid "Higher weight playlists are played more frequently compared to other lower-weight playlists."
-msgstr ""
+msgstr "Les playlists de poids plus élevé joueront plus régulièrement que ceux au poids plus faible."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:61
 msgid "Playlist Type"
@@ -307,11 +307,11 @@ msgstr "Jouer une fois par jour à l’heure indiquée. Pratique pour les top ho
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:68
 msgid "Custom Playlist"
-msgstr ""
+msgstr "Playlist personnalisée"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:68
 msgid "Manually define how this playlist is used in LiquidSoap configuration. For advanced users only!"
-msgstr ""
+msgstr "Définir manuellement comme cette playlist est utilisée dans LiquidSoap. Pour les utilisateurs avancés seulement !"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:86
 msgid "Include in Automated Assignment"
@@ -441,7 +441,7 @@ msgstr "Actions"
 
 #: /var/azuracast/www/app/config/forms/role.conf.php:53
 msgid "Per-Station"
-msgstr ""
+msgstr "Spécifique par station"
 
 #: /var/azuracast/www/app/config/forms/settings.conf.php:22
 msgid "Site Base URL"
@@ -449,15 +449,15 @@ msgstr "URL de base du site"
 
 #: /var/azuracast/www/app/config/forms/settings.conf.php:23
 msgid "The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server."
-msgstr ""
+msgstr "L'URL de base où se trouve ce service. Utilisez soit l'IP externe, soit un nom de domaine complet (le cas échéant) pointant vers ce serveur."
 
 #: /var/azuracast/www/app/config/forms/settings.conf.php:34
 msgid "Use Web Proxy for Radio"
-msgstr ""
+msgstr "Utiliser un Proxy Web pour la radio"
 
 #: /var/azuracast/www/app/config/forms/settings.conf.php:35
 msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."
-msgstr ""
+msgstr "Par défaut, les stations diffusent sur leurs propres port (par ex. 8000). Si vous utilisez un service comme CloudFlare ou que vous accédez à votre radio via SSL, vous devriez activer cette fonctionnalité qui dirigera la radio à travers les ports web (80 et 443)."
 
 #: /var/azuracast/www/app/config/forms/song.conf.php:8
 msgid "Metadata"
@@ -504,7 +504,7 @@ msgstr "Le type de logiciel vous permet de gérer les playlists et les médias d
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:67
 msgid "Configure Radio Broadcasting"
-msgstr ""
+msgstr "Configurer la diffusion radio"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:75
 msgid "Allow Streamers / DJs"
@@ -516,11 +516,11 @@ msgstr "Si ce paramètre est activé, les streamers (ou DJs) seront en mesure de
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:85
 msgid "Broadcasting Port"
-msgstr ""
+msgstr "Port de diffusion"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:86
 msgid "No other program can be using this port. Leave blank to automatically assign a port."
-msgstr ""
+msgstr "Aucun autre programme ne peut utiliser ce port. Laissez vide pour assigner automatiquement un port."
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:94
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:160
@@ -530,47 +530,47 @@ msgstr "Mot de passe de la source"
 #: /var/azuracast/www/app/config/forms/station.conf.php:95
 #: /var/azuracast/www/app/config/forms/station.conf.php:104
 msgid "Leave blank to automatically generate a new password."
-msgstr ""
+msgstr "Laissez vide pour générer automatiquement un nouveau mot de passe."
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:103
 msgid "Admin Password"
-msgstr ""
+msgstr "Mot de passe de l'administrateur"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:112
 msgid "Custom Configuration"
-msgstr ""
+msgstr "Configuration personnalisée"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:114
 msgid "This code will be included in the frontend configuration. You can use either JSON {\"new_key\": \"new_value\"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;."
-msgstr ""
+msgstr "Ce code sera inclus dans la configuration du frontend. Vous pouvez utiliser le format JSON {\"new_key\": \"new_value\"} ou le format XML &lt;new_key&gt;new_value&lt;/new_key&gt;."
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:122
 msgid "Configure External Radio Server"
-msgstr ""
+msgstr "Configurer un serveur de radio externe"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:130
 msgid "Radio Station Type"
-msgstr ""
+msgstr "Type de station radio"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:133
 msgid "ShoutCast v1"
-msgstr ""
+msgstr "ShoutCast v1"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:134
 msgid "ShoutCast v2"
-msgstr ""
+msgstr "ShoutCast v2"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:135
 msgid "IceCast v2.4+"
-msgstr ""
+msgstr "IceCast v2.4+"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:143
 msgid "Radio Station Base URL"
-msgstr ""
+msgstr "URL de base de la station"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:152
 msgid "Configure LiquidSoap"
-msgstr ""
+msgstr "Configuration LiquidSoap"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:160
 msgid "Allow Song Requests"

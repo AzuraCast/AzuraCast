@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-20 08:20+0000\n"
-"PO-Revision-Date: 2017-04-30 08:50-0400\n"
+"PO-Revision-Date: 2017-04-30 09:00-0400\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -1329,7 +1329,7 @@ msgstr "Les demandes seront joués entre <b>%d et %d minutes</b> après avoir é
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:46
 msgid "Request Embed Code"
-msgstr ""
+msgstr "Code des demandes de titres embarqué"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:55
 msgid "Song requests are currently <b>disabled</b> for this station. Edit your profile above to enable them."
@@ -1359,7 +1359,7 @@ msgstr "Seul l'AutoDJ (basé sur vos médias téléversés et les playlists) ser
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:102
 msgid "External Radio Server"
-msgstr ""
+msgstr "Serveur de radio externe"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:107
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:145
@@ -1372,7 +1372,7 @@ msgstr "IceCast (Service de Diffusion)"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:123
 msgid "ShoutCast (Broadcasting Service)"
-msgstr ""
+msgstr "ShoutCast (Service de Diffusion)"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:125
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:183
@@ -1409,11 +1409,11 @@ msgstr "Mot de passe de l'administrateur"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:170
 msgid "AutoDJ Disabled"
-msgstr ""
+msgstr "AutoDJ désactivé"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:173
 msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
-msgstr ""
+msgstr "AutoDJ a été désactivé pour cette station. Aucun musique ne se jouera automatiquement lorsqu’une source n’est pas en direct."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:181
 msgid "LiquidSoap (AutoDJ Service)"
@@ -1481,27 +1481,27 @@ msgstr "Ratio"
 
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:18
 msgid "Date Requested"
-msgstr ""
+msgstr "Date demandée"
 
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:19
 msgid "Date Played"
-msgstr ""
+msgstr "Date de lecture"
 
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:21
 msgid "Requester IP"
-msgstr ""
+msgstr "IP du demandeur"
 
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:33
 msgid "Not Played"
-msgstr ""
+msgstr "Pas joué"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:15
 msgid "<b>Apply Pending Changes</b><br>Click to Restart Station"
-msgstr ""
+msgstr "<b>Appliquer les modifications</b><br>Cliquer pour redémarrer la station"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:19
 msgid "Public Page"
-msgstr ""
+msgstr "Page publique"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:21
 msgid "Profile"
@@ -1598,7 +1598,7 @@ msgstr "Anciens clients ShoutCast 1.x"
 
 #: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:4
 msgid "Status messages related to this process are listed below."
-msgstr ""
+msgstr "Les messages en rapport avec ce processus sont affichés ci-dessous."
 
 #: /var/azuracast/www/app/src/App/Utilities.php:91
 #, php-format
@@ -1637,27 +1637,27 @@ msgstr[1] "%d mois"
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:94
 msgid "Process stopped."
-msgstr ""
+msgstr "Processus stoppé."
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:97
 msgid "Process was not running!"
-msgstr ""
+msgstr "Le processus ne fonctionnait pas !"
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:115
 msgid "Process started."
-msgstr ""
+msgstr "Processus démarré."
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:118
 msgid "Process is already running!"
-msgstr ""
+msgstr "Le processus est déjà lancé !"
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/LiquidSoap.php:212
 msgid "You cannot use an AutoDJ with a remote frontend. Please change the frontend type or update the backend to be \"Disabled\"."
-msgstr ""
+msgstr "Vous ne pouvez pas utiliser l'AutoDJ avec un frontend externe. Veuillez changer le type de frontend ou désactivez votre backend."
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/None.php:25
 msgid "AutoDJ is currently disabled. Enable it from the station profile."
-msgstr ""
+msgstr "L'AutoDJ est actuellement désactivé. Vous pouvez l'activer dans le profil de la station."
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:163
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:166

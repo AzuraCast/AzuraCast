@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-20 08:20+0000\n"
-"PO-Revision-Date: 2017-04-30 08:40-0400\n"
+"PO-Revision-Date: 2017-04-30 08:50-0400\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -590,27 +590,27 @@ msgstr "Si les demandes sont activées, vous pouvez spécifier un délai (en min
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:179
 msgid "Request Last Played Threshold (Minutes)"
-msgstr ""
+msgstr "Temps d'attente avant de redemander un titre (en minutes)"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:180
 msgid "If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold."
-msgstr ""
+msgstr "Si les requêtes sont activés, ceci permet de spécifier le temps minimum (en minutes) entre le moment où le titre est joué à la radio et quand il peut être demandé à nouveau. Spécifiez 0 pour aucune attente."
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:188
 msgid "Crossfade Duration (Seconds)"
-msgstr ""
+msgstr "Durée du fondu enchaîné (en secondes)"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:190
 msgid "Number of seconds to overlap songs. Set to 0 to disable crossfade completely."
-msgstr ""
+msgstr "Nombre de seconds pour la transition douce. Spécifiez 0 pour désactiver le fondu enchaîné."
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:201
 msgid "Advanced: Custom Configuration"
-msgstr ""
+msgstr "Avancé : configuration personnalisée"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:203
 msgid "This code will be inserted into your station's LiquidSoap configuration, below the playlist configuration and just before the IceCast output. Only use valid LiquidSoap code for this section!"
-msgstr ""
+msgstr "Ce code sera inséré dans la configuration LiquidSoap de la station, en dessous de la configuration des playlists et juste avant la sortie vers IceCast. N'utilisez que du code LiquidSoap valide dans cette section !"
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:9
 msgid "Streamer Username"
@@ -657,7 +657,7 @@ msgstr "Rôles"
 
 #: /var/azuracast/www/app/models/Station.php:354
 msgid "External Radio Server (Statistics Only)"
-msgstr ""
+msgstr "Serveur radio externe (statistiques uniquement)"
 
 #: /var/azuracast/www/app/models/Station.php:374
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:42
@@ -835,7 +835,7 @@ msgstr "Modifier le profil"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/PublicController.php:43
 msgid "Station not found!"
-msgstr ""
+msgstr "Station non trouvée !"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:30
 msgid "Setup has already been completed!"
@@ -883,11 +883,11 @@ msgstr "Vue d’ensemble de la station"
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:53
 msgid "Refresh"
-msgstr ""
+msgstr "Actualiser"
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:55
 msgid "Add"
-msgstr ""
+msgstr "Ajouter"
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:72
 #: /var/azuracast/www/app/modules/stations/views/index/index-dailystats.phtml:28
@@ -931,21 +931,21 @@ msgstr "Artiste"
 #: /var/azuracast/www/app/modules/frontend/views/public/embedrequests.phtml:40
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:143
 msgid "Request"
-msgstr ""
+msgstr "Demander"
 
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:21
 msgid "Select Station"
-msgstr ""
+msgstr "Sélectionnez la station"
 
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:48
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:62
 msgid "Song History"
-msgstr ""
+msgstr "Historique des titres"
 
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:50
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:78
 msgid "Request a Song"
-msgstr ""
+msgstr "Demander un titre"
 
 #: /var/azuracast/www/app/modules/frontend/views/setup/register.phtml:7
 msgid "Begin setup by creating a Super Administrator account."
@@ -986,7 +986,7 @@ msgstr "Erreur lors de l'affectation automatique"
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:65
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:92
 msgid "This feature is not currently supported on this station."
-msgstr ""
+msgstr "Cette fonctionnalité n'est pas compatible avec cette station."
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:130
 msgid "Media metadata updated!"
@@ -998,11 +998,11 @@ msgstr "Modifier les métadonnées"
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:176
 msgid "File renamed!"
-msgstr ""
+msgstr "Fichier renommé !"
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:182
 msgid "Rename File/Directory"
-msgstr ""
+msgstr "Renommer le fichier/répertoire"
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:250
 msgid "Directory"
@@ -1071,7 +1071,7 @@ msgstr "Gestionnaire des médias"
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:23
 #, php-format
 msgid "%s of %s Used (%s Free)"
-msgstr ""
+msgstr "%s sur %s utilisé (%s libre)"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:31
 msgid "Drag files here to upload to this folder or "
@@ -1087,7 +1087,7 @@ msgstr "Ajouter à la playlist"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:48
 msgid "Create new..."
-msgstr ""
+msgstr "Créer nouveau..."
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:51
 msgid "Clear Playlists"
@@ -1126,11 +1126,11 @@ msgstr "Playlists"
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:93
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:103
 msgid "Create Playlist"
-msgstr ""
+msgstr "Créer une playlist"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:177
 msgid "Rename"
-msgstr ""
+msgstr "Renommer"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index-dailystats.phtml:56
 msgid "Daily Listener Range"
@@ -1219,28 +1219,28 @@ msgstr "Playlist(s)"
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:5
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:24
 msgid "Mount Points"
-msgstr ""
+msgstr "Points de montage"
 
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:20
 msgid "Mount Point"
-msgstr ""
+msgstr "Point de montage"
 
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:21
 msgid "Streamers"
-msgstr ""
+msgstr "Streamers"
 
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:22
 msgid "AutoDJ"
-msgstr ""
+msgstr "AutoDJ"
 
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:35
 msgid "Default Mount"
-msgstr ""
+msgstr "Point de montage par défaut"
 
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:40
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:47
 msgid "Enabled"
-msgstr ""
+msgstr "Activé"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:20
 msgid "Playlist"
@@ -1288,11 +1288,11 @@ msgstr "Joue à %s"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:55
 msgid "Custom"
-msgstr ""
+msgstr "Personnalisé"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:1
 msgid "Station Profile"
-msgstr ""
+msgstr "Profil de la station"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:7
 msgid "Basic Profile"
@@ -1300,7 +1300,7 @@ msgstr "Profil de base"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:21
 msgid "Player Embed Code"
-msgstr ""
+msgstr "Code du lecteur embarqué"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:32
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:62
@@ -1316,7 +1316,7 @@ msgstr "Les demandes de titres sont actuellement <b>activés</b> pour cette stat
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:39
 msgid "Request Delay"
-msgstr ""
+msgstr "Délai de demande"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:41
 msgid "Requests are queued for playback immediately after the currently playing song."

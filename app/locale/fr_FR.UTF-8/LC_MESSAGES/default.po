@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-20 08:20+0000\n"
-"PO-Revision-Date: 2017-04-30 08:20-0400\n"
+"PO-Revision-Date: 2017-04-30 08:30-0400\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -153,17 +153,17 @@ msgstr "Nom/URL du point de montage"
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:15
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:15
 msgid "This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3"
-msgstr ""
+msgstr "Ce nom doit toujours commencer par un slash (/) et doit être une URL valide, par exemple /autodj.mp3"
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:23
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:23
 msgid "Is Default Mount"
-msgstr ""
+msgstr "Point de montage par défaut"
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:24
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:24
 msgid "If this mount is the default, it will be played on the radio preview and the public radio page in this system."
-msgstr ""
+msgstr "Ceci ce point est celui par défaut, il sera lu en premier sur l'aperçu de la radio et sur la page publique du système."
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:25
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:53
@@ -171,7 +171,7 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:25
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:35
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:25
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:53
@@ -179,60 +179,60 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:25
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:35
 msgid "Yes"
-msgstr ""
+msgstr "Oui"
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:33
 msgid "Fallback Mount"
-msgstr ""
+msgstr "Point de montage de secours"
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:34
 msgid "If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message."
-msgstr ""
+msgstr "Si ce point de montage ne joue plus d'audio, les auditeurs seront redirigés automatiquement vers ce point. Par défaut /error.mp3, un message d'erreur, sera lu."
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:42
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:59
 msgid "Relay Stream URL"
-msgstr ""
+msgstr "URL du flux a relayer"
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:43
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:60
 msgid "Enter the full URL of another stream to relay its broadcast through this mount point."
-msgstr ""
+msgstr "Entrez l’URL complète d’un autre flux pour relayer sa diffusion par le biais de ce point de montage."
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:51
 msgid "Enable Streamers"
-msgstr ""
+msgstr "Activer les Streamers"
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:52
 msgid "If set to \"Yes\", streamers will be able to broadcast to this mount point."
-msgstr ""
+msgstr "Si oui, les streamers pourront diffuser sur ce point de montage."
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:61
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:33
 msgid "Enable AutoDJ"
-msgstr ""
+msgstr "Activer l'AutoDJ"
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:62
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:34
 msgid "If set to \"Yes\", the AutoDJ will automatically play music to this mount point."
-msgstr ""
+msgstr "Si oui, l'AutoDJ jouera automatiquement de la musique sur ce point de montage."
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:71
 msgid "AutoDJ Format"
-msgstr ""
+msgstr "Format de l'AutoDJ"
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:83
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:43
 msgid "AutoDJ Bitrate (kbps)"
-msgstr ""
+msgstr "Taux de l'AutoDJ (Kb/s)"
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:99
 msgid "Advanced Frontend Configuration"
-msgstr ""
+msgstr "Configuration avancée du Frontend"
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:100
 msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
-msgstr ""
+msgstr "Vous pouvez inclure des paramètres spéciaux pour ce point de montage, au format JSON { key: 'value' } ou au format XML &lt;key&gt;value&lt;/key&gt;"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:22
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:97

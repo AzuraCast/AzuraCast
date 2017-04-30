@@ -106,4 +106,4 @@
 
  - name: Write DB configuration
    become: true
-   template: src=db.conf.php.j2 dest="{{ www_base }}/app/config/db.conf.php" owner=azuracast group=azuracast mode=0600 force=yes
+   template: src=db.conf.php.j2 dest="{{ www_base }}/app/config/db.conf.php" owner=azuracast group=www-data mode=0644 force=yes

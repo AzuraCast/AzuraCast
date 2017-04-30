@@ -3,7 +3,7 @@ namespace AzuraCast;
 
 use App\Debug;
 use Entity\Settings;
-use Entity\SettingsRepository;
+use Entity\Repository\SettingsRepository;
 use Interop\Container\ContainerInterface;
 
 /**

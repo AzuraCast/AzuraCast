@@ -90,8 +90,11 @@ class Cache
         }
 
         $item = $this->_cache->getItem($id);
+
+        $item->lock();
         $item->set($data);
-        $item->expiresAfter($specificLifetime);
+
+        $this->_cache->save($item);
     }
 
     /**
@@ -130,8 +133,11 @@ class Cache
 
             $result = (is_callable($default)) ? $default() : $default;
             if ($result !== null) {
-                $item->set($result, $specificLifetime);
+                $item->set($result);
+                $item->expiresAfter($specificLifetime);
             }
+
+            $this->_cache->save($item);
 
             return $result;
         }

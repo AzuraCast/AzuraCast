@@ -19,6 +19,7 @@ class SongHistoryRepository extends \App\Doctrine\Repository
         $return = [];
         foreach ($history as $sh) {
             $history = [
+                'sh_id' => $sh['id'],
                 'played_at' => $sh['timestamp_start'],
                 'song' => Entity\Song::api($sh['song']),
             ];

@@ -10,6 +10,8 @@ class NowplayingController extends BaseController
         $this->setCacheLifetime(15);
 
         // Pull from cache, or load from flatfile otherwise.
+
+        /** @var \App\Cache $cache */
         $cache = $this->di->get('cache');
 
         $np = $cache->get('api_nowplaying_data', function () {

@@ -53,7 +53,7 @@ return function (\Slim\Container $di, \App\Config $config) {
         return new \AzuraCast\Acl\StationAcl($di['em'], $di['auth']);
     };
 
-// Caching
+    // Caching
     $di['cache_driver'] = function ($di) {
         $config = $di['config'];
         $cache_config = $config->cache->toArray();

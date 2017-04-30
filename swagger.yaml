@@ -32,7 +32,7 @@ In lieu of a station ID, some station-related API calls allow for what is called
 Most database entries have an auto-incrementing unique identifier, but songs use a hash-based identification system that avoids collisions based on spacing or punctuation differences.'
   license:
     name: Apache 2.0
-    url: https://github.com/SlvrEagle23/AzuraCast/blob/master/License.txt
+    url: https://github.com/AzuraCast/AzuraCast/blob/master/License.txt
 host: localhost:8080
 basePath: /api
 schemes:

@@ -1,10 +1,10 @@
-![](https://github.com/SlvrEagle23/AzuraCast/raw/master/resources/azuracast.png)
+![](https://github.com/AzuraCast/AzuraCast/raw/master/resources/azuracast.png)
 
 # AzuraCast: A Self-Hosted Web Radio Manager
 
-[![Code Climate](https://codeclimate.com/github/SlvrEagle23/AzuraCast/badges/gpa.svg)](https://codeclimate.com/github/SlvrEagle23/AzuraCast)
-[![Test Coverage](https://codeclimate.com/github/SlvrEagle23/AzuraCast/badges/coverage.svg)](https://codeclimate.com/github/SlvrEagle23/AzuraCast/coverage)
-[![Build Status](https://travis-ci.org/SlvrEagle23/AzuraCast.svg?branch=master)](https://travis-ci.org/SlvrEagle23/AzuraCast)
+[![Code Climate](https://codeclimate.com/github/AzuraCast/AzuraCast/badges/gpa.svg)](https://codeclimate.com/github/AzuraCast/AzuraCast)
+[![Test Coverage](https://codeclimate.com/github/AzuraCast/AzuraCast/badges/coverage.svg)](https://codeclimate.com/github/AzuraCast/AzuraCast/coverage)
+[![Build Status](https://travis-ci.org/AzuraCast/AzuraCast.svg?branch=master)](https://travis-ci.org/AzuraCast/AzuraCast)
 
 **AzuraCast** is a standalone, turnkey web radio management kit. Using its easy installer, you can go from a fresh Linux installation to a fully working web radio station in about 5 minutes. 
 
@@ -62,7 +62,7 @@ apt-get install -q -y git
 
 mkdir -p /var/azuracast/www
 cd /var/azuracast/www
-git clone https://github.com/SlvrEagle23/AzuraCast.git .
+git clone https://github.com/AzuraCast/AzuraCast.git .
 
 chmod a+x install.sh
 ./install.sh
@@ -70,7 +70,7 @@ chmod a+x install.sh
 
 If you cannot directly log in as the root account on your server, try running `sudo su` before running the commands above.
 
-The installation process will take between 5 and 15 minutes, depending on your Internet connection. If you encounter an error, let us know in the [Issues section](https://github.com/SlvrEagle23/AzuraCast/issues).
+The installation process will take between 5 and 15 minutes, depending on your Internet connection. If you encounter an error, let us know in the [Issues section](https://github.com/AzuraCast/AzuraCast/issues).
 
 Once the terminal-based installation is complete, you can visit your server's public IP address (`http://ip.of.your.server/`) to finish the web-based setup.
 
@@ -89,11 +89,11 @@ chmod a+x update.sh
 
 To make local development and testing easier, AzuraCast also includes the necessary configuration to set up a Vagrant box on your computer.
 
-See [the AzuraCast Wiki](https://github.com/SlvrEagle23/AzuraCast/wiki/Developing-Locally) for detailed instructions on the installation process.
+See [the AzuraCast Wiki](https://github.com/AzuraCast/AzuraCast/wiki/Developing-Locally) for detailed instructions on the installation process.
 
 ## Screenshots
 
-Take a look at samples of the AzuraCast interface on the [Screenshots](https://github.com/SlvrEagle23/AzuraCast/wiki/Screenshots) page on the Wiki.
+Take a look at samples of the AzuraCast interface on the [Screenshots](https://github.com/AzuraCast/AzuraCast/wiki/Screenshots) page on the Wiki.
 
 ## AzuraCast API
 
@@ -103,7 +103,7 @@ Documentation about this API and its endpoints are available on the [AzuraCast A
 
 ## License
 
-AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/SlvrEagle23/AzuraCast/blob/master/License.txt).
+AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/AzuraCast/AzuraCast/blob/master/License.txt).
 
 ## Questions? Comments? Feedback?
 

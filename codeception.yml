@@ -20,10 +20,12 @@ coverage:
    - app/*
   exclude:
    # Loaded before tests
+   - app/bootstrap.php
    - app/src/App/Tests/Module.php
    - app/src/App/Doctrine/EntityManagerFactory.php
   
    # Not used in entire application
+   - app/**/*.conf.sample.php
    - app/src/App/Crypto.php
    - app/src/App/Messenger.php
    - app/src/App/Forms/Element/Recaptcha.php
@@ -33,14 +35,13 @@ coverage:
    - app/src/App/Doctrine/Filter/*.php
    - app/src/App/Doctrine/Paginate/*.php
    - app/src/App/Doctrine/Functions/*.php
-   - app/src/AzuraCast/Radio/Frontend/ShoutCast2.php
-  
+
    # Used in application, but not used in tests
+   - app/src/AzuraCast/Radio/Frontend/ShoutCast2.php
    - app/src/AzuraCast/Console/Command/*.php
    - app/src/App/Doctrine/Logger/EchoSQL.php
    - app/src/App/Session/Temporary.php
    - app/src/App/Console/Command/*.php
-   - app/**/*.conf.sample.php
    - app/models/Migration/*
    - app/locale/**/*
    - app/locale/*
@@ -52,5 +53,6 @@ coverage:
    - app/src/App/Mvc/ErrorHandler.php
 
    # Used in application, but not detected properly by the coverage tool :(
+   - app/config/*.conf.php
    - app/config/**/*.conf.php
    - app/**/routes.php

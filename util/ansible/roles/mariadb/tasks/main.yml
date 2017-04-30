@@ -86,7 +86,7 @@
 
  - name: Add .my.cnf
    become: true
-   template: src=user_my.cnf.j2 dest="{{ app_base }}/.my.cnf" owner=azuracast group=azuracast mode=0600 force=yes
+   template: src=user_my.cnf.j2 dest="{{ app_base }}/.my.cnf" owner=azuracast group=www-data mode=0644 force=yes
 
  - name: Reload privilege tables
    command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'

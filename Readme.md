@@ -8,11 +8,11 @@
 
 **AzuraCast** is a standalone, turnkey web radio management kit. Using its easy installer, you can go from a fresh Linux installation to a fully working web radio station in about 5 minutes. 
 
-Although AzuraCast's code history is extensive, the AzuraCast project itself is fairly new. That's because AzuraCast was built on top of [PVLive](https://github.com/SlvrEagle23/Ponyville-Live), a project originally built for a single fan community, then expanded to serve radio stations of all types as a standalone piece of software.
+Today, AzuraCast can help you create and maintain radio stations of all types and sizes. If you look far enough back in the project's history, you'll find the project upon which AzuraCast was based, called [Ponyville Live](https://github.com/SlvrEagle23/Ponyville-Live). This project was built for one specific fan community, but its radio station management code was made standalone, in the process rebranding as AzuraCast. This project's name comes from "Azura Peavielle", the mascot of the former project's namesake media network. 
 
-**AzuraCast is currently in alpha.** The web application is stable and includes a number of powerful features, but if you want to keep up to date with the latest version of the software, keep in mind that updates may cause unexpected issues or data loss. Always make sure to keep your files backed up, especially the files contained in `/var/azuracast/stations`.
+**AzuraCast is currently in alpha.** Many web radio stations already run AzuraCast, and each individual release is stable, but keeping your server up-to-date with the latest code from the GitHub repository is strongly recommended for security, bug fixes and new feature releases. It's unlikely, but updates may result in unexpected issues or data loss, so always make sure to keep your station's media files backed up elsewhere, especially the files contained in `/var/azuracast/stations`.
 
-To use AzuraCast, you should have a basic understanding of the Linux shell terminal. Once installed, every aspect of your radio station can be managed via AzuraCast's web interface with no advanced Linux knowledge required.
+To install AzuraCast, you should have a basic understanding of the Linux shell terminal. Once installed, every aspect of your radio station can be managed via AzuraCast's web interface.
 
 ## Features
 
@@ -27,30 +27,28 @@ With AzuraCast, you can:
 * **Delegate Management:** Create and remove separate administrator accounts for each station manager.
 * ...and more.
 
-### Supported AutoDJ Software
+### Supported Web Radio Software
 
-AzuraCast uses [LiquidSoap](http://liquidsoap.fm/) as an "AutoDJ" to shuffle songs and playlists and provide an always-online radio stream.
- 
-### Supported Radio Frontends
+AzuraCast uses [LiquidSoap](http://liquidsoap.fm/) as an "AutoDJ" to shuffle songs and playlists and provide an always-online radio stream. You can connect to LiquidSoap and broadcast your own live events as a DJ as well.
 
-AzuraCast currently has modules to support these radio broadcasting services:
-* [IceCast](http://icecast.org/) v2.4
-* [ShoutCast](http://wiki.shoutcast.com/wiki/SHOUTcast_Broadcaster) v2.x
+To broadcast your radio station to the public, AzuraCast supports both of the gold standards in web radio, [IceCast](http://icecast.org/) (v2.4) and [ShoutCast](http://wiki.shoutcast.com/wiki/SHOUTcast_Broadcaster) (v2). You can switch which of these your station uses anytime you want.
 
-You can also use AzuraCast as a tool for syndicating remote stations. This allows you to take advantage of the powerful analytics and reporting tools in AzuraCast for any radio station that uses IceCast or ShoutCast 1 or 2.
+You can also use AzuraCast as a tool for relaying or collecting listener statistics and other data about stations that AzuraCast doesn't manage.
 
 ### Supported Operating Systems
 
 AzuraCast supports these operating systems and architectures out of the box:
-* Ubuntu 14.04 LTS (Trusty) x64
-* Ubuntu 16.04 LTS (Xenial) x64
+* Ubuntu 16.04 LTS (Xenial) x64 (Recommended)
 * Ubuntu 16.04 LTS (Xenial) ARM
+* Ubuntu 14.04 LTS (Trusty) x64
+
+We are always looking to expand our compatibility with host operating systems, and we welcome any assistance in building new deployment scripts for other environments.
 
 ## Installing AzuraCast
 
 ### Installing on a Production Server
 
-AzuraCast is highly optimized for speed and performance, and can run on very inexpensive hardware, from the Raspberry Pi 3 to the lowest-level VPSes offered by most providers.
+AzuraCast is optimized for speed and performance, and can run on very inexpensive hardware, from the Raspberry Pi 3 to the lowest-level VPSes offered by most providers.
 
 Since AzuraCast installs its own radio tools, databases and web servers, you should always install AzuraCast on a "clean" server instance with no other web or radio software installed previously.
 
@@ -81,8 +79,8 @@ AzuraCast also includes a handy updater script that pulls down the latest copy o
 ```bash
 cd /var/azuracast/www
 
-chmod a+x update.sh
-./update.sh
+sudo chmod a+x update.sh
+sudo ./update.sh
 ```
 
 ### Local Development with Vagrant
@@ -103,7 +101,7 @@ Documentation about this API and its endpoints are available on the [AzuraCast A
 
 ## License
 
-AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/AzuraCast/AzuraCast/blob/master/License.txt).
+AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/AzuraCast/AzuraCast/blob/master/License.txt). This project is free and open-source software, and pull requests are always welcome.
 
 ## Questions? Comments? Feedback?
 
@@ -113,10 +111,6 @@ Issues for this codebase are tracked in this repository's Issues section on GitH
 
 ## Support AzuraCast Development
 
-AzuraCast will always be available free of charge, but if you find the software useful and would like to support the project's lead developer, click the link below to buy me a coffee. Your support is greatly appreciated.
+AzuraCast will always be available free of charge, but if you find the software useful and would like to support the project's lead developer, click the link below to buy him a coffee. Your support is greatly appreciated.
 
-<a href='https://ko-fi.com/A736ATQ' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=b' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a> 
-
-## Contribute to AzuraCast
-
-This codebase is Free and Open Source Software, both to help our team maintain transparency and to encourage contributions from the developer community. If you see a bug or other issue with the codebase, please report an issue or submit a pull request!
+<a href='https://ko-fi.com/A736ATQ' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=b' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>

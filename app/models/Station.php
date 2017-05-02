@@ -50,7 +50,7 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="frontend_type", type="string", length=100, nullable=true) */
     protected $frontend_type;
 
-    /** @Column(name="frontend_config", type="json", nullable=true) */
+    /** @Column(name="frontend_config", type="json_array", nullable=true) */
     protected $frontend_config;
 
     /**
@@ -73,7 +73,7 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="backend_type", type="string", length=100, nullable=true) */
     protected $backend_type;
 
-    /** @Column(name="backend_config", type="json", nullable=true) */
+    /** @Column(name="backend_config", type="json_array", nullable=true) */
     protected $backend_config;
 
     /**
@@ -136,10 +136,10 @@ class Station extends \App\Doctrine\Entity
         return $this->radio_base_dir . '/config';
     }
 
-    /** @Column(name="nowplaying_data", type="json", nullable=true) */
+    /** @Column(name="nowplaying_data", type="json_array", nullable=true) */
     protected $nowplaying_data;
 
-    /** @Column(name="automation_settings", type="json", nullable=true) */
+    /** @Column(name="automation_settings", type="json_array", nullable=true) */
     protected $automation_settings;
 
     /** @Column(name="automation_timestamp", type="integer", nullable=true) */

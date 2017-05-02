@@ -66,7 +66,7 @@ class SongHistory extends \App\Doctrine\Entity
     /** @Column(name="delta_negative", type="smallint") */
     protected $delta_negative;
 
-    /** @Column(name="delta_points", type="json", nullable=true) */
+    /** @Column(name="delta_points", type="json_array", nullable=true) */
     protected $delta_points;
 
     /**

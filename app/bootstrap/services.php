@@ -1,4 +1,6 @@
 <?php
+use Doctrine\DBAL\Types\Type;
+
 return function (\Slim\Container $di, \App\Config $config) {
 
     // Override Slim handlers.
@@ -31,10 +33,51 @@ return function (\Slim\Container $di, \App\Config $config) {
     $di['em'] = function ($di) {
         try {
             $config = $di['config'];
-            $db_conf = $config->application->doctrine->toArray();
-            $db_conf['conn'] = $config->db->toArray();
+            $options = $config->application->doctrine->toArray();
+            $options['conn'] = $config->db->toArray();
 
-            return \App\Doctrine\EntityManagerFactory::create($di, $db_conf);
+            if (!Type::hasType('json')) {
+                Type::addType('json', 'App\Doctrine\Type\Json');
+            }
+
+            // Fetch and store entity manager.
+            $config = new \Doctrine\ORM\Configuration;
+
+            // Handling for class names specified as platform types.
+            if (!empty($options['conn']['platform'])) {
+                $class_obj = new \ReflectionClass($options['conn']['platform']);
+                $options['conn']['platform'] = $class_obj->newInstance();
+            }
+
+            // Special handling for the utf8mb4 type.
+            if ($options['conn']['driver'] == 'pdo_mysql' && $options['conn']['charset'] == 'utf8mb4') {
+                $options['conn']['platform'] = new \App\Doctrine\Platform\MysqlUnicode;
+            }
+
+            $metadata_driver = $config->newDefaultAnnotationDriver($options['modelPath']);
+            $config->setMetadataDriverImpl($metadata_driver);
+
+            $cache = new \App\Doctrine\Cache($di['cache_driver']);
+
+            $config->setMetadataCacheImpl($cache);
+            $config->setQueryCacheImpl($cache);
+            $config->setResultCacheImpl($cache);
+
+            $config->setProxyDir($options['proxyPath']);
+            $config->setProxyNamespace($options['proxyNamespace']);
+
+            $config->setDefaultRepositoryClassName('\App\Doctrine\Repository');
+
+            if (isset($options['conn']['debug']) && $options['conn']['debug']) {
+                $config->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger);
+            }
+
+            $config->addCustomStringFunction('FIELD', 'DoctrineExtensions\Query\Mysql\Field');
+            $config->addCustomStringFunction('IF', 'DoctrineExtensions\Query\Mysql\IfElse');
+
+            $em = \Doctrine\ORM\EntityManager::create($options['conn'], $config, new \Doctrine\Common\EventManager);
+
+            return $em;
         } catch (\Exception $e) {
             throw new \App\Exception\Bootstrap($e->getMessage());
         }

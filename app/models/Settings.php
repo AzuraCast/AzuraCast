@@ -16,6 +16,6 @@ class Settings extends \App\Doctrine\Entity
      */
     protected $setting_key;
 
-    /** @Column(name="setting_value", type="json", nullable=true) */
+    /** @Column(name="setting_value", type="json_array", nullable=true) */
     protected $setting_value;
 }

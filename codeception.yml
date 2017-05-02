@@ -30,11 +30,8 @@ coverage:
    - app/src/App/Messenger.php
    - app/src/App/Forms/Element/Recaptcha.php
    - app/src/App/Paginator/Doctrine.php
-   - app/src/App/Doctrine/Type/*.php
    - app/src/App/Doctrine/Platform/*.php
-   - app/src/App/Doctrine/Filter/*.php
    - app/src/App/Doctrine/Paginate/*.php
-   - app/src/App/Doctrine/Functions/*.php
 
    # Used in application, but not used in tests
    - app/src/AzuraCast/Radio/Frontend/ShoutCast2.php

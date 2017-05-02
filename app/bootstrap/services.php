@@ -36,10 +36,6 @@ return function (\Slim\Container $di, \App\Config $config) {
             $options = $config->application->doctrine->toArray();
             $options['conn'] = $config->db->toArray();
 
-            if (!Type::hasType('json')) {
-                Type::addType('json', 'App\Doctrine\Type\Json');
-            }
-
             // Fetch and store entity manager.
             $config = new \Doctrine\ORM\Configuration;
 

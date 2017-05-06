@@ -93,6 +93,7 @@ class Cache
 
         $item->lock();
         $item->set($data);
+        $item->expiresAfter($specificLifetime);
 
         $this->_cache->save($item);
     }

@@ -85,7 +85,7 @@ class Cache
      */
     public function save($data, $id, $specificLifetime = false)
     {
-        if ($specificLifetime === false) {
+        if ($specificLifetime === false || !is_numeric($specificLifetime)) {
             $specificLifetime = $this->_cache_lifetime;
         }
 
@@ -121,7 +121,7 @@ class Cache
      */
     public function getOrSet($id, $default = null, $specificLifetime = false)
     {
-        if ($specificLifetime === false) {
+        if ($specificLifetime === false || !is_numeric($specificLifetime)) {
             $specificLifetime = $this->_cache_lifetime;
         }
 

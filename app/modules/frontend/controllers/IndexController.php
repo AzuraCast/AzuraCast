@@ -121,7 +121,7 @@ class IndexController extends BaseController
                 'station' => json_encode($station_metrics),
             ];
 
-            $cache->save($metrics, 'admin_metrics', [], 600);
+            $cache->save($metrics, 'admin_metrics', 600);
         }
 
         $this->view->metrics = $metrics;

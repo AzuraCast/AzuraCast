@@ -109,10 +109,10 @@ class Song extends \App\Doctrine\Entity
     public static function api($row)
     {
         return [
-            'id' => $row['id'],
-            'text' => $row['text'],
-            'artist' => $row['artist'],
-            'title' => $row['title'],
+            'id' => (string)$row['id'],
+            'text' => (string)$row['text'],
+            'artist' => (string)$row['artist'],
+            'title' => (string)$row['title'],
 
             'created' => (int)$row['created'],
             'play_count' => (int)$row['play_count'],

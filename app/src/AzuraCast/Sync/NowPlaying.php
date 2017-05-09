@@ -51,7 +51,7 @@ class NowPlaying extends SyncAbstract
 
         /** @var \App\Cache $cache */
         $cache = $this->di->get('cache');
-        $cache->save($nowplaying, 'api_nowplaying_data', 60);
+        $cache->save($nowplaying, 'api_nowplaying_data', 120);
 
         foreach ($nowplaying as $station => $np_info) {
             $nowplaying[$station]['cache'] = 'database';

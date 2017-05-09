@@ -136,9 +136,8 @@ class Cache
             if ($result !== null) {
                 $item->set($result);
                 $item->expiresAfter($specificLifetime);
+                $item->save();
             }
-
-            $this->_cache->save($item);
 
             return $result;
         }

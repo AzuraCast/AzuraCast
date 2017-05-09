@@ -393,12 +393,12 @@ class Station extends \App\Doctrine\Entity
 
         $api = [
             'id' => (int)$row->id,
-            'name' => $row->name,
-            'shortcode' => self::getStationShortName($row['name']),
-            'description' => $row->description,
-            'frontend' => $row->frontend_type,
-            'backend' => $row->backend_type,
-            'listen_url' => $fa->getStreamUrl(),
+            'name' => (string)$row->name,
+            'shortcode' => (string)self::getStationShortName($row['name']),
+            'description' => (string)$row->description,
+            'frontend' => (string)$row->frontend_type,
+            'backend' => (string)$row->backend_type,
+            'listen_url' => (string)$fa->getStreamUrl(),
             'mounts' => [],
         ];
 
@@ -406,9 +406,9 @@ class Station extends \App\Doctrine\Entity
             if ($fa->supportsMounts()) {
                 foreach ($row->mounts as $mount_row) {
                     $api['mounts'][] = [
-                        'name' => $mount_row->name,
+                        'name' => (string)$mount_row->name,
                         'is_default' => (bool)$mount_row->is_default,
-                        'url' => $fa->getUrlForMount($mount_row->name),
+                        'url' => (string)$fa->getUrlForMount($mount_row->name),
                     ];
                 }
             }

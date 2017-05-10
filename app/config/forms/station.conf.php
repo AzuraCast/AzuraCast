@@ -83,22 +83,6 @@ return [
                     ]
                 ],
 
-                'radio_playlists_dir' => [
-                    'text',
-                    [
-                        'label' => _('Station Playlists Directory'),
-                        'description' => _('The directory where playlists are stored. Leave blank to use default directory.'),
-                    ]
-                ],
-
-                'radio_config_dir' => [
-                    'text',
-                    [
-                        'label' => _('Station Configuration Directory'),
-                        'description' => _('The directory where station configuration is stored. Leave blank to use default directory.'),
-                    ]
-                ],
-
             ],
         ],
 

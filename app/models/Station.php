@@ -99,40 +99,37 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="url", type="string", length=255, nullable=true) */
     protected $url;
 
+    /** @Column(name="radio_base_dir", type="string", length=255, nullable=true) */
+    protected $radio_base_dir;
+
+    public function setRadioBaseDir($new_dir)
+    {
+        if (strcmp($this->radio_base_dir, $new_dir) !== 0) {
+            $this->radio_base_dir = $new_dir;
+
+            $radio_dirs = [
+                $this->radio_base_dir,
+                $this->getRadioMediaDir(),
+                $this->getRadioPlaylistsDir(),
+                $this->getRadioConfigDir()
+            ];
+            foreach ($radio_dirs as $radio_dir) {
+                if (!file_exists($radio_dir)) {
+                    mkdir($radio_dir, 0777);
+                }
+            }
+        }
+    }
+
     /** @Column(name="radio_media_dir", type="string", length=255, nullable=true) */
     protected $radio_media_dir;
 
     public function setRadioMediaDir($new_dir)
     {
-        $this->_updateRadioDir('media', $new_dir);
-    }
-
-    /** @Column(name="radio_playlists_dir", type="string", length=255, nullable=true) */
-    protected $radio_playlists_dir;
-
-    public function setRadioPlaylistsDir($new_dir)
-    {
-        $this->_updateRadioDir('playlists', $new_dir);
-    }
-
-    /** @Column(name="radio_config_dir", type="string", length=255, nullable=true) */
-    protected $radio_config_dir;
-
-    public function setRadioConfigDir($new_dir)
-    {
-        $this->_updateRadioDir('config', $new_dir);
-    }
-
-    protected function _updateRadioDir($dir_type, $new_dir)
-    {
-        if ($new_dir !== $this->{'radio_'.$dir_type.'_dir'}) {
+        if ($new_dir !== $this->radio_media_dir) {
             $new_dir = trim($new_dir);
 
-            if ($new_dir === '') {
-                $new_dir = $this->_getDefaultDir($dir_type);
-            }
-
-            if (!file_exists($new_dir)) {
+            if (!empty($new_dir) && !file_exists($new_dir)) {
                 mkdir($new_dir, 0777, true);
             }
 
@@ -140,10 +137,21 @@ class Station extends \App\Doctrine\Entity
         }
     }
 
-    protected function _getDefaultDir($suffix)
+    public function getRadioMediaDir()
     {
-        $station_base_dir = realpath(APP_INCLUDE_ROOT . '/..') . '/stations';
-        return $station_base_dir . '/' . $this->getShortName() . '/' . $suffix;
+        return (!empty($this->radio_media_dir))
+            ? $this->radio_media_dir
+            : $this->radio_base_dir.'/media';
+    }
+
+    public function getRadioPlaylistsDir()
+    {
+        return $this->radio_base_dir.'/playlists';
+    }
+
+    public function getRadioConfigDir()
+    {
+        return $this->radio_base_dir.'/config';
     }
 
     /** @Column(name="nowplaying_data", type="json_array", nullable=true) */

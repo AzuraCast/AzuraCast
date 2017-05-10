@@ -48,6 +48,13 @@ return [
                     ]
                 ],
 
+            ],
+        ],
+
+        'advanced' => [
+            'legend' => _('Advanced Configuration'),
+            'elements' => [
+
                 'frontend_type' => [
                     'radio',
                     [
@@ -65,6 +72,30 @@ return [
                         'description' => _('The type of software you use to manage the station\'s playlists and media.'),
                         'options' => $backend_types,
                         'default' => $backend_default,
+                    ]
+                ],
+
+                'radio_media_dir' => [
+                    'text',
+                    [
+                        'label' => _('Station Media Directory'),
+                        'description' => _('The directory where media files are stored. Leave blank to use default directory.'),
+                    ]
+                ],
+
+                'radio_playlists_dir' => [
+                    'text',
+                    [
+                        'label' => _('Station Playlists Directory'),
+                        'description' => _('The directory where playlists are stored. Leave blank to use default directory.'),
+                    ]
+                ],
+
+                'radio_config_dir' => [
+                    'text',
+                    [
+                        'label' => _('Station Configuration Directory'),
+                        'description' => _('The directory where station configuration is stored. Leave blank to use default directory.'),
                     ]
                 ],
 

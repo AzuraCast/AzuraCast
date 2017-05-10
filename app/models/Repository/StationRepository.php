@@ -104,13 +104,6 @@ class StationRepository extends \App\Doctrine\Repository
     {
         $station = new Entity\Station;
         $station->fromArray($this->_em, $data);
-
-        // Create path for station.
-        $station_base_dir = realpath(APP_INCLUDE_ROOT . '/..') . '/stations';
-
-        $station_dir = $station_base_dir . '/' . $station->getShortName();
-        $station->setRadioBaseDir($station_dir);
-
         $this->_em->persist($station);
 
         // Generate station ID.

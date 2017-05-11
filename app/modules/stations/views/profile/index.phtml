@@ -17,6 +17,16 @@
 
                     <dt><?=_('Station Description') ?>:</dt>
                     <dd><?=$this->e($station->description) ?></dd>
+                </dl>
+
+                <h4><?=_('Technical Details') ?></h4>
+
+                <dl>
+                    <dt><?=_('Station Base Directory') ?></dt>
+                    <dd class="text-preformatted"><?=$station->getRadioBaseDir() ?></dd>
+
+                    <dt><?=_('Station Media Directory') ?></dt>
+                    <dd class="text-preformatted"><?=$station->getRadioMediaDir() ?></dd>
 
                     <dt><?=_('Player Embed Code') ?>:</dt>
                     <dd class="form-field">

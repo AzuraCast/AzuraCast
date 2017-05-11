@@ -97,9 +97,9 @@ class Form
         $this->form->addData($set_data);
     }
 
-    public function isValid()
+    public function isValid($request = null)
     {
-        return $this->form->validate();
+        return $this->form->validate($request);
     }
 
     public function getValues()

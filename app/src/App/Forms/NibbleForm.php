@@ -85,15 +85,41 @@ class NibbleForm extends \Nibble\NibbleForms\NibbleForm
         return $this->data[$key] ?? false;
     }
 
-    public function validate()
+    public function validate($request = null)
     {
-        $request = strtoupper($this->method) == 'POST' ? $_POST : $_GET;
-        if (isset($request[$this->name])) {
-            $this->data = $request[$this->name];
+        if ($request === null) {
+            $request = strtoupper($this->method) == 'POST' ? $_POST : $_GET;
         }
 
-        if (!parent::validate()) {
+        if (isset($request[$this->name])) {
+            $this->data = $request[$this->name];
+            $form_data = $request[$this->name];
+        } else {
+            $this->valid = false;
             return false;
+        }
+
+        // Check CSRF token.
+        if ((isset($_SESSION["nibble_forms"]["_crsf_token"], $_SESSION["nibble_forms"]["_crsf_token"][$this->name])
+                && $form_data["_crsf_token"] !== $_SESSION["nibble_forms"]["_crsf_token"][$this->name])
+            || !isset($_SESSION["nibble_forms"]["_crsf_token"])
+            || !isset($form_data["_crsf_token"])
+        ) {
+            $title = preg_replace('/_/', ' ', ucfirst('CRSF error'));
+            if ($this->message_type == 'list') {
+                $this->messages[] = array('title' => $title, 'message' => ucfirst('CRSF token invalid'));
+            }
+
+            $this->valid = false;
+        }
+
+        $_SESSION["nibble_forms"]["_crsf_token"] = array();
+
+        foreach ($this->fields as $key => $value) {
+            if (!$value->validate($form_data[$key] ?? $_FILES[$this->name][$key] ?? '')) {
+                $this->valid = false;
+                return false;
+            }
         }
 
         foreach($this->validators as $key => $validator) {

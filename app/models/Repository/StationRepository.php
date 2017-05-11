@@ -131,21 +131,7 @@ class StationRepository extends \App\Doctrine\Repository
         $backend_adapter = $station->getBackendAdapter($di);
 
         // Create default mountpoints if station supports them.
-        if ($frontend_adapter->supportsMounts()) {
-            // Create default mount points.
-            $mount_points = $frontend_adapter->getDefaultMounts();
-
-            foreach ($mount_points as $mount_point) {
-                $mount_point['station'] = $station;
-                $mount_record = new Entity\StationMount;
-                $mount_record->fromArray($this->_em, $mount_point);
-
-                $this->_em->persist($mount_record);
-            }
-
-            $this->_em->flush();
-            $this->_em->refresh($station);
-        }
+        $this->resetMounts($station, $di);
 
         // Load configuration from adapter to pull source and admin PWs.
         $frontend_adapter->read();
@@ -186,10 +172,10 @@ class StationRepository extends \App\Doctrine\Repository
 
                 $this->_em->persist($mount_record);
             }
-        }
 
-        $this->_em->flush();
-        $this->_em->refresh($station);
+            $this->_em->flush();
+            $this->_em->refresh($station);
+        }
     }
 
     /**

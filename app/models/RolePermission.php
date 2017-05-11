@@ -34,7 +34,7 @@ class RolePermission extends \App\Doctrine\Entity
     protected $station_id;
 
     /**
-     * @ManyToOne(targetEntity="Station")
+     * @ManyToOne(targetEntity="Station", inversedBy="permissions")
      * @JoinColumns({
      *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })

@@ -195,6 +195,11 @@ class Station extends \App\Doctrine\Entity
     protected $streamers;
 
     /**
+     * @OneToMany(targetEntity="RolePermission", mappedBy="station")
+     */
+    protected $permissions;
+
+    /**
      * @OneToMany(targetEntity="StationPlaylist", mappedBy="station")
      * @OrderBy({"type" = "ASC","weight" = "DESC"})
      */

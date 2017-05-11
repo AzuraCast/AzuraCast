@@ -35,6 +35,7 @@ return function(\Slim\App $app) {
 
             $this->get('', 'admin:stations:index')->setName('admin:stations:index');
             $this->map(['GET', 'POST'], '/edit[/{id}]', 'admin:stations:edit')->setName('admin:stations:edit');
+            $this->map(['GET', 'POST'], '/clone/{id}', 'admin:stations:clone')->setName('admin:stations:clone');
             $this->get('/delete/{id}', 'admin:stations:delete')->setName('admin:stations:delete');
 
         });

@@ -384,7 +384,7 @@ class Controller
     /**
      * Redirect with parameters from the current URL.
      *
-     * @param string $route
+     * @param mixed $route
      * @param int $code
      * @return Response
      */

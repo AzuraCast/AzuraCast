@@ -35,7 +35,7 @@ class FilesController extends BaseController
             throw new \App\Exception(_('This feature is not currently supported on this station.'));
         }
 
-        $this->base_dir = realpath($this->station->radio_base_dir . '/media');
+        $this->base_dir = $this->station->getRadioMediaDir();
         $this->view->base_dir = $this->base_dir;
 
         if (!empty($_REQUEST['file'])) {

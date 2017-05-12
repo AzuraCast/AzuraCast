@@ -225,16 +225,42 @@ class NextSong extends \App\Console\Command\CommandAbstract
         /** @var EntityManager $em */
         $em = $this->di['em'];
 
-        // Get random song from playlist.
-        $random_song = $em->createQuery('SELECT sm, s, st FROM Entity\StationMedia sm
+        // Get some random songs from playlist.
+        $random_songs = $em->createQuery('SELECT sm, s, st FROM Entity\StationMedia sm
             JOIN sm.song s 
             JOIN sm.station st 
             LEFT JOIN sm.playlists sp
             WHERE sp.id = :playlist_id
-            ORDER BY RAND()')
+            GROUP BY sm.id ORDER BY RAND()')
             ->setParameter('playlist_id', $playlist->id)
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+            ->setMaxResults(15)
+            ->execute();
+
+        // Get all song IDs from the random songs.
+        $song_timestamps = [];
+        $songs_by_id = [];
+        foreach($random_songs as $media_row) {
+            $song_timestamps[$media_row->song_id] = 0;
+            $songs_by_id[$media_row->song_id] = $media_row;
+        }
+
+        // Get the last played timestamps of each song.
+        $last_played = $em->createQuery('SELECT sh.song_id AS song_id, MAX(sh.timestamp_end) AS latest_played
+            FROM Entity\SongHistory sh
+            WHERE sh.song_id IN (:ids)
+            GROUP BY sh.song_id')
+            ->setParameter('ids', array_keys($song_timestamps))
+            ->getArrayResult();
+
+        // Sort to always play the least recently played song out of the random selection.
+        foreach($last_played as $last_played_row) {
+            $song_timestamps[$last_played_row['song_id']] = $last_played_row['latest_played'];
+        }
+
+        asort($song_timestamps);
+        $id_to_play = key($song_timestamps);
+
+        $random_song = $songs_by_id[$id_to_play];
 
         if ($random_song instanceof Entity\StationMedia) {
             // Log in history

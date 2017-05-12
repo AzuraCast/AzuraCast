@@ -100,7 +100,7 @@ class SongHistoryRepository extends \App\Doctrine\Repository
                 AND sh.song_id = :song_id
                 AND sh.timestamp_cued != 0
                 AND sh.timestamp_start = 0
-                ORDER BY sh.timestamp_start DESC')
+                ORDER BY sh.timestamp_cued DESC')
                 ->setParameter('station_id', $station->id)
                 ->setParameter('song_id', $song->id)
                 ->setMaxResults(1)

@@ -245,9 +245,12 @@ class NextSong extends \App\Console\Command\CommandAbstract
         }
 
         // Get the last played timestamps of each song.
-        $last_played = $em->createQuery('SELECT sh.song_id AS song_id, MAX(sh.timestamp_end) AS latest_played
+        $last_played = $em->createQuery('SELECT sh.song_id AS song_id, MAX(sh.timestamp_start) AS latest_played
             FROM Entity\SongHistory sh
-            WHERE sh.song_id IN (:ids) AND sh.station_id = :station_id AND sh.playlist_id = :playlist_id 
+            WHERE  sh.song_id IN (:ids) 
+            AND sh.station_id = :station_id 
+            AND sh.playlist_id = :playlist_id
+            AND sh.timestamp_start != 0
             GROUP BY sh.song_id')
             ->setParameter('ids', array_keys($song_timestamps))
             ->setParameter('station_id', $playlist->station_id)
@@ -260,6 +263,7 @@ class NextSong extends \App\Console\Command\CommandAbstract
         }
 
         asort($song_timestamps);
+        reset($song_timestamps);
         $id_to_play = key($song_timestamps);
 
         $random_song = $songs_by_id[$id_to_play];
@@ -289,10 +293,15 @@ class NextSong extends \App\Console\Command\CommandAbstract
             'song_id="'.$media->song_id.'"',
         ];
 
-        // TODO: Add crossfading
-        // $annotations[] = 'liq_start_next="2.5"';
-        // $annotations[] = 'liq_fade_in="10."';
-        // $annotations[] = 'liq_fade_out="3.5"';
+        if ($media->fade_overlap !== null) {
+            $annotations[] = 'liq_start_next="'.$media->fade_overlap.'"';
+        }
+        if ($media->fade_in !== null) {
+            $annotations[] = 'liq_fade_in="'.$media->fade_in.'"';
+        }
+        if ($media->fade_out !== null) {
+            $annotations[] = 'liq_fade_out="'.$media->fade_out.'"';
+        }
 
         // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
         $song_path = $media->getFullPath();

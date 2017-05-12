@@ -74,6 +74,15 @@ class StationMedia extends \App\Doctrine\Entity
     /** @Column(name="mtime", type="integer", nullable=true) */
     protected $mtime;
 
+    /** @Column(name="fade_overlap", type="decimal", precision=3, scale=1, nullable=true) */
+    protected $fade_overlap;
+
+    /** @Column(name="fade_in", type="decimal", precision=3, scale=1, nullable=true) */
+    protected $fade_in;
+
+    /** @Column(name="fade_out", type="decimal", precision=3, scale=1, nullable=true) */
+    protected $fade_out;
+
     /**
      * @ManyToOne(targetEntity="Station", inversedBy="media")
      * @JoinColumns({

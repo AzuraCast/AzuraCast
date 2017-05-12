@@ -250,8 +250,12 @@ class Entity implements \ArrayAccess
 
                     case "decimal":
                     case "float":
-                        if ($value !== null && !is_float($value)) {
-                            $value = (float)$value;
+                        if ($value !== null) {
+                            if (is_numeric($value)) {
+                                $value = (float)$value;
+                            } elseif (empty($value)) {
+                                $value = ($field_info['nullable']) ? NULL : 0.0;
+                            }
                         }
                         break;
 

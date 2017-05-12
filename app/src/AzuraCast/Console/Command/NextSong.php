@@ -248,13 +248,11 @@ class NextSong extends \App\Console\Command\CommandAbstract
         $last_played = $em->createQuery('SELECT sh.song_id AS song_id, MAX(sh.timestamp_start) AS latest_played
             FROM Entity\SongHistory sh
             WHERE  sh.song_id IN (:ids) 
-            AND sh.station_id = :station_id 
-            AND sh.playlist_id = :playlist_id
+            AND sh.station_id = :station_id
             AND sh.timestamp_start != 0
             GROUP BY sh.song_id')
             ->setParameter('ids', array_keys($song_timestamps))
             ->setParameter('station_id', $playlist->station_id)
-            ->setParameter('playlist_id', $playlist->id)
             ->getArrayResult();
 
         // Sort to always play the least recently played song out of the random selection.

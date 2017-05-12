@@ -12,10 +12,9 @@ class RequestsController extends BaseController
 
     public function indexAction()
     {
-        $this->view->requests = $this->em->createQuery('SELECT sr, sm, s, sh FROM Entity\StationRequest sr
+        $this->view->requests = $this->em->createQuery('SELECT sr, sm, s FROM Entity\StationRequest sr
             JOIN sr.track sm
             JOIN sm.song s
-            LEFT JOIN sr.played sh
             WHERE sr.station_id = :station_id
             ORDER BY sr.timestamp DESC')
             ->setParameter('station_id', $this->station->id)

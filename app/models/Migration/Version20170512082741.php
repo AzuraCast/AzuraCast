@@ -21,7 +21,6 @@ class Version20170512082741 extends AbstractMigration
         $this->addSql('ALTER TABLE song_history ADD request_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE song_history ADD CONSTRAINT FK_2AD16164427EB8A5 FOREIGN KEY (request_id) REFERENCES station_requests (id) ON DELETE CASCADE');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_2AD16164427EB8A5 ON song_history (request_id)');
-        $this->addSql('ALTER TABLE station_requests DROP played_at');
     }
 
     /**
@@ -35,6 +34,5 @@ class Version20170512082741 extends AbstractMigration
         $this->addSql('ALTER TABLE song_history DROP FOREIGN KEY FK_2AD16164427EB8A5');
         $this->addSql('DROP INDEX UNIQ_2AD16164427EB8A5 ON song_history');
         $this->addSql('ALTER TABLE song_history DROP request_id');
-        $this->addSql('ALTER TABLE station_requests ADD played_at INT NOT NULL');
     }
 }

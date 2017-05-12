@@ -220,20 +220,9 @@ class LiquidSoap extends BackendAbstract
         return 'liquidsoap ' . $config_path;
     }
 
-    public function request($music_file)
-    {
-        $queue = $this->command('requests.queue');
-
-        if (!empty($queue[0])) {
-            throw new \Exception('Song(s) still pending in request queue.');
-        }
-
-        return $this->command('requests.push ' . $music_file);
-    }
-
     public function skip()
     {
-        return $this->command('radio_out.skip');
+        return $this->command('radio_out_1.skip');
     }
 
     public function command($command_str)

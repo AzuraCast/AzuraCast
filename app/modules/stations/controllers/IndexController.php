@@ -269,7 +269,7 @@ class IndexController extends BaseController
 
             $songs_played_raw = array_values($songs_played_raw);
 
-            $cache->save($songs_played_raw, $cache_name, [], 60 * 5);
+            $cache->save($songs_played_raw, $cache_name, 60 * 5);
         }
 
         return $songs_played_raw;
@@ -298,7 +298,7 @@ class IndexController extends BaseController
                 $song_hashes[$row['id']] = $row['id'];
             }
 
-            $cache->save($song_hashes, 'station_center_ignored_songs', [], 86400);
+            $cache->save($song_hashes, 'station_center_ignored_songs', 86400);
         }
 
         return $song_hashes;

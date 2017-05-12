@@ -1,9 +1,7 @@
 <?php
 namespace Controller\Frontend;
 
-use Entity\Settings;
-use Entity\SettingsRepository;
-use Entity\Station;
+use Entity;
 
 class SetupController extends BaseController
 {
@@ -49,12 +47,12 @@ class SetupController extends BaseController
             $data = $_POST;
 
             // Create actions and roles supporting Super Admninistrator.
-            $role = new \Entity\Role;
+            $role = new Entity\Role;
             $role->name = _('Super Administrator');
             $this->em->persist($role);
             $this->em->flush();
 
-            $rha = new \Entity\RolePermission;
+            $rha = new Entity\RolePermission;
             $rha->fromArray($this->em, [
                 'role' => $role,
                 'action_name' => 'administer all',
@@ -62,7 +60,7 @@ class SetupController extends BaseController
             $this->em->persist($rha);
 
             // Create user account.
-            $user = new \Entity\User;
+            $user = new Entity\User;
             $user->email = $data['username'];
             $user->setAuthPassword($data['password']);
             $user->roles->add($role);
@@ -101,7 +99,8 @@ class SetupController extends BaseController
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            $station_repo = $this->em->getRepository(Station::class);
+            /** @var Entity\Repository\StationRepository $station_repo */
+            $station_repo = $this->em->getRepository(Entity\Station::class);
             $station_repo->create($data, $this->di);
 
             return $this->redirectFromHere(['action' => 'settings']);
@@ -125,8 +124,8 @@ class SetupController extends BaseController
 
         $form = new \App\Form($this->config->forms->settings->form);
 
-        /** @var SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository(Settings::class);
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
         $existing_settings = $settings_repo->fetchArray(false);
         $form->setDefaults($existing_settings);

@@ -1,7 +1,7 @@
 <?php
 namespace AzuraCast\Console\Command;
 
-use App\Sync\Manager;
+use AzuraCast;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -27,7 +27,7 @@ class Sync extends \App\Console\Command\CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var \App\Sync $sync */
+        /** @var AzuraCast\Sync $sync */
         $sync = $this->di['sync'];
 
         switch ($input->getArgument('task')) {

@@ -12,6 +12,7 @@ class SongHistory extends \App\Doctrine\Entity
     public function __construct()
     {
         $this->timestamp_cued = 0;
+
         $this->timestamp_start = 0;
         $this->listeners_start = 0;
 
@@ -38,6 +39,9 @@ class SongHistory extends \App\Doctrine\Entity
 
     /** @Column(name="playlist_id", type="integer", nullable=true) */
     protected $playlist_id;
+
+    /** @Column(name="request_id", type="integer", nullable=true) */
+    protected $request_id;
 
     /** @Column(name="timestamp_cued", type="integer", nullable=true) */
     protected $timestamp_cued;
@@ -99,4 +103,12 @@ class SongHistory extends \App\Doctrine\Entity
      * })
      */
     protected $playlist;
+
+    /**
+     * @OneToOne(targetEntity="StationRequest")
+     * @JoinColumns({
+     *   @JoinColumn(name="request_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    protected $request;
 }

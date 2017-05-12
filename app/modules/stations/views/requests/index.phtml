@@ -27,8 +27,8 @@
                 <tr class="input" id="request_<?=$request_row['id'] ?>">
                     <td class="text-center"><?=date('F j, Y g:ia', $request_row['timestamp']) ?></td>
                     <td class="text-center">
-                    <?php if ($request_row['played_at'] > 0): ?>
-                        <?=date('F j, Y g:ia', $request_row['played_at']) ?>
+                    <?php if (isset($request_row['played'])): ?>
+                        <?=date('F j, Y g:ia', $request_row['played']['timestamp_start']) ?>
                     <?php else: ?>
                         <?=_('Not Played') ?>
                     <?php endif; ?>
@@ -43,7 +43,7 @@
                     </td>
                     <td><?=$request_row['ip'] ?></td>
                     <td>
-                    <?php if ($request_row['played_at'] == 0): ?>
+                    <?php if (!isset($request_row['played'])): ?>
                         <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(['action' => 'delete', 'request_id' => $request_row['id']]) ?>"><?=_('Delete') ?></a>
                     <?php else: ?>
 

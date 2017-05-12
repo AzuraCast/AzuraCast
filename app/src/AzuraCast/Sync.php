@@ -86,11 +86,6 @@ class Sync
     {
         $this->_initSync(60);
 
-        Debug::runTimer('Handle pending song requests', function () {
-            $task = new Sync\RadioRequests($this->di);
-            $task->run();
-        });
-
         $this->settings->setSetting('sync_fast_last_run', time());
     }
 

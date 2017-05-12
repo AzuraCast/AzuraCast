@@ -38,6 +38,30 @@ class NextSong extends \App\Console\Command\CommandAbstract
             return $this->_return($output, 'false');
         }
 
+        // Process requests first (if applicable)
+        if ($station->enable_requests) {
+
+            $min_minutes = (int)$station->request_delay;
+            $threshold_minutes = $min_minutes + mt_rand(0, $min_minutes);
+
+            $threshold = time() - ($threshold_minutes * 60);
+
+            // Look up all requests that have at least waited as long as the threshold.
+            $request = $em->createQuery('SELECT sr, sm 
+                FROM Entity\StationRequest sr JOIN sr.track sm
+                WHERE sr.station_id = :station_id AND sr.timestamp <= :threshold
+                ORDER BY sr.id ASC')
+                ->setParameter('station_id', $station->id)
+                ->setParameter('threshold', $threshold)
+                ->setMaxResults(1)
+                ->getOneOrNullResult();
+
+            if ($request instanceof Entity\StationRequest) {
+                return $this->_playSongFromRequest($output, $request);
+            }
+
+        }
+
         // Pull all active, non-empty playlists and sort by type.
         $playlists_by_type = [];
         foreach($station->playlists as $playlist) {
@@ -174,14 +198,37 @@ class NextSong extends \App\Console\Command\CommandAbstract
         return (int)gmdate('Gi');
     }
 
+    protected function _playSongFromRequest(OutputInterface $output, Entity\StationRequest $request)
+    {
+        /** @var EntityManager $em */
+        $em = $this->di['em'];
+
+        // Log in history
+        $sh = new Entity\SongHistory;
+        $sh->song = $request->track->song;
+        $sh->station = $request->station;
+        $sh->request = $request;
+
+        $sh->timestamp_cued = time();
+        $em->persist($sh);
+
+        $request->played_at = time();
+        $em->persist($request);
+
+        $em->flush();
+
+        return $this->_playMedia($output, $request->track);
+    }
+
     protected function _playSongFromPlaylist(OutputInterface $output, Entity\StationPlaylist $playlist)
     {
         /** @var EntityManager $em */
         $em = $this->di['em'];
 
         // Get random song from playlist.
-        $random_song = $em->createQuery('SELECT sm, s FROM Entity\StationMedia sm
+        $random_song = $em->createQuery('SELECT sm, s, st FROM Entity\StationMedia sm
             JOIN sm.song s 
+            JOIN sm.station st 
             LEFT JOIN sm.playlists sp
             WHERE sp.id = :playlist_id
             ORDER BY RAND()')
@@ -200,23 +247,28 @@ class NextSong extends \App\Console\Command\CommandAbstract
             $em->persist($sh);
             $em->flush();
 
-            // Build annotations to send to LiquidSoap
-            $annotations = [
-                'type="song"',
-                'song_id="'.$random_song->song_id.'"',
-            ];
-
-            // TODO: Add crossfading
-            // $annotations[] = 'liq_start_next="2.5"';
-            // $annotations[] = 'liq_fade_in="3.5"';
-            // $annotations[] = 'liq_fade_out="3.5"';
-
-            // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
-            $song_path = $random_song->getFullPath();
-            return $this->_return($output, 'annotate:'.implode(',', $annotations).':'.$song_path);
+            return $this->_playMedia($output, $random_song);
         }
 
         return $this->_playFallback($output);
+    }
+
+    protected function _playMedia(OutputInterface $output, Entity\StationMedia $media)
+    {
+        // Build annotations to send to LiquidSoap
+        $annotations = [
+            'type="song"',
+            'song_id="'.$media->song_id.'"',
+        ];
+
+        // TODO: Add crossfading
+        // $annotations[] = 'liq_start_next="2.5"';
+        // $annotations[] = 'liq_fade_in="10."';
+        // $annotations[] = 'liq_fade_out="3.5"';
+
+        // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
+        $song_path = $media->getFullPath();
+        return $this->_return($output, 'annotate:'.implode(',', $annotations).':'.$song_path);
     }
 
     protected function _playFallback(OutputInterface $output)

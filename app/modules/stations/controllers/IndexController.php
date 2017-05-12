@@ -153,37 +153,6 @@ class IndexController extends BaseController
     {
         $songs_played_raw = $this->_getEligibleHistory();
 
-        // Assemble station media playlist details
-        $station_media_raw = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id')
-            ->setParameter('station_id', $this->station->id)
-            ->getArrayResult();
-
-        $station_media = [];
-        foreach ($station_media_raw as $media) {
-            $station_media[$media['song_id']] = $media;
-        }
-
-        // Assemble request records and nearest played song
-        $station_requests_threshold = strtotime('-2 weeks');
-
-        $station_requests_raw = $this->em->createQuery('SELECT sr.timestamp, sh.id AS sh_id 
-            FROM Entity\StationRequest sr
-            JOIN sr.track sm
-            JOIN sm.song s
-            JOIN s.history sh
-            WHERE sr.station_id = :station_id
-            AND sr.played_at > :threshold
-            AND sh.timestamp_start BETWEEN sr.played_at AND sr.played_at + 21600
-            GROUP BY sr.id ORDER BY sh.timestamp_start ASC')
-            ->setParameter('threshold', $station_requests_threshold)
-            ->setParameter('station_id', $this->station->id)
-            ->getArrayResult();
-
-        $station_requests = [];
-        foreach($station_requests_raw as $request) {
-            $station_requests[$request['sh_id']] = $request['timestamp'];
-        }
-
         $songs = [];
         foreach ($songs_played_raw as $song_row) {
             // Song has no recorded ending.
@@ -226,7 +195,7 @@ class IndexController extends BaseController
                 'Dislikes',
                 'Track',
                 'Artist',
-                'Playlist(s)'
+                'Playlist'
             ];
 
             foreach ($songs as $song_row) {
@@ -237,9 +206,9 @@ class IndexController extends BaseController
                     $song_row['stat_delta'],
                     $song_row['score_likes'],
                     $song_row['score_dislikes'],
-                    ($song_row['song']['title']) ? $song_row['song']['title'] : $song_row['song']['text'],
+                    $song_row['song']['title'] ?: $song_row['song']['text'],
                     $song_row['song']['artist'],
-                    implode(', ', $song_row['playlists']),
+                    $song_row['playlist']['name'] ?? '',
                 ];
 
                 $export_all[] = $export_row;
@@ -282,8 +251,10 @@ class IndexController extends BaseController
             $threshold = max($first_song, $min_threshold);
 
             // Get all songs played in timeline.
-            $songs_played_raw = $this->em->createQuery('SELECT sh, s
+            $songs_played_raw = $this->em->createQuery('SELECT sh, sr, sp, s
                 FROM Entity\SongHistory sh
+                LEFT JOIN sh.request sr
+                LEFT JOIN sh.playlist sp 
                 LEFT JOIN sh.song s
                 WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp AND sh.listeners_start IS NOT NULL
                 ORDER BY sh.timestamp_start ASC')

@@ -31,9 +31,6 @@ class StationRequest extends \App\Doctrine\Entity
     /** @Column(name="timestamp", type="integer") */
     protected $timestamp;
 
-    /** @Column(name="played_at", type="integer") */
-    protected $played_at;
-
     /** @Column(name="ip", type="string", length=40) */
     protected $ip;
 
@@ -52,4 +49,9 @@ class StationRequest extends \App\Doctrine\Entity
      * })
      */
     protected $track;
+
+    /**
+     * @OneToOne(targetEntity="SongHistory", mappedBy="request")
+     */
+    protected $played;
 }

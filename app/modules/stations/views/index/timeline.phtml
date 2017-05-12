@@ -18,8 +18,8 @@
                 <col width="15%">
                 <col width="10%">
                 <col width="10%">
-                <col width="45%">
-                <col width="20%">
+                <col width="40%">
+                <col width="25%">
             </colgroup>
             <thead>
                 <tr>
@@ -27,7 +27,7 @@
                     <th data-column-id="listeners"><?=_('Listeners') ?></th>
                     <th data-column-id="delta"><?=_('Change') ?></th>
                     <th data-column-id="song"><?=_('Song Title') ?></th>
-                    <th data-column-id="playlists"><?=_('Playlist(s)') ?></th>
+                    <th data-column-id="playlists"><?=_('Source') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -47,19 +47,22 @@
                         </big>
                     </td>
                     <td>
-                        <?php if ($song_row['song']['title']): ?>
-                            <b><?=$song_row['song']['title'] ?></b><br>
-                            <?=$song_row['song']['artist'] ?>
-                        <?php else: ?>
-                            <?=$song_row['song']['text'] ?>
-                        <?php endif; ?>
-                        <?php if ($song_row['requested']): ?>
-                            <br>
-                            <span class="label label-default">Requested on <?=date('D g:ia', $song_row['requested']) ?></span>
-                        <?php endif; ?>
-                        <!-- <a href="#" class="btn-show-song-info" data-id="<?=$song_row['song']['id'] ?>" title="Click for Song Information"></a> -->
+                    <?php if ($song_row['song']['title']): ?>
+                        <b><?=$song_row['song']['title'] ?></b><br>
+                        <?=$song_row['song']['artist'] ?>
+                    <?php else: ?>
+                        <?=$song_row['song']['text'] ?>
+                    <?php endif; ?>
                     </td>
-                    <td><?=implode('<br>', $song_row['playlists']) ?></td>
+                    <td>
+                    <?php if (isset($song_row['request'])): ?>
+                        <?=sprintf(_('Request: %s'), date('D g:ia', $song_row['request']['timestamp'])) ?>
+                    <?php elseif (isset($song_row['playlist'])): ?>
+                        <?=sprintf(_('Playlist: %s'), $song_row['playlist']['name']) ?>
+                    <?php else: ?>
+                        <?=_('Live Broadcast') ?>
+                    <?php endif; ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

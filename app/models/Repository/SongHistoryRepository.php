@@ -47,7 +47,7 @@ class SongHistoryRepository extends \App\Doctrine\Repository
 
         $listeners = (int)$np['listeners']['current'];
 
-        if ($last_sh->song_id == $song->id) {
+        if ($last_sh instanceof Entity\SongHistory && $last_sh->song_id == $song->id) {
             // Updating the existing SongHistory item with a new data point.
             $delta_points = (array)$last_sh->delta_points;
             $delta_points[] = $listeners;
@@ -94,11 +94,27 @@ class SongHistoryRepository extends \App\Doctrine\Repository
                 $this->_em->persist($last_sh);
             }
 
-            // Processing a new SongHistory item.
-            $sh = new Entity\SongHistory;
-            $sh->song = $song;
-            $sh->station = $station;
+            // Look for an already cued but unplayed song.
+            $sh = $this->_em->createQuery('SELECT sh FROM Entity\SongHistory sh
+                WHERE sh.station_id = :station_id
+                AND sh.song_id = :song_id
+                AND sh.timestamp_cued != 0
+                AND sh.timestamp_start = 0
+                ORDER BY sh.timestamp_start DESC')
+                ->setParameter('station_id', $station->id)
+                ->setParameter('song_id', $song->id)
+                ->setMaxResults(1)
+                ->getOneOrNullResult();
 
+            // Processing a new SongHistory item.
+            if (!($sh instanceof Entity\SongHistory))
+            {
+                $sh = new Entity\SongHistory;
+                $sh->song = $song;
+                $sh->station = $station;
+            }
+
+            $sh->timestamp_start = time();
             $sh->listeners_start = $listeners;
             $sh->delta_points = [$listeners];
 

@@ -68,6 +68,7 @@ return function (\Slim\Container $di, \App\Config $config) {
                 $config->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger);
             }
 
+            $config->addCustomNumericFunction('RAND', '\App\Doctrine\Functions\Rand');
             $config->addCustomStringFunction('FIELD', 'DoctrineExtensions\Query\Mysql\Field');
             $config->addCustomStringFunction('IF', 'DoctrineExtensions\Query\Mysql\IfElse');
 

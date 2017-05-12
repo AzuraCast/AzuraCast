@@ -14,7 +14,7 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
      */
     protected function configure()
     {
-        $this->setName('streamer:auth')
+        $this->setName('azuracast:internal:streamer-auth')
             ->setDescription('Authorize a streamer to connect as a source for the radio service.')
             ->addArgument(
                 'station_id',

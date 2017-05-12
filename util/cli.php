@@ -50,6 +50,7 @@ $cli->addCommands(array(
     new \AzuraCast\Console\Command\RestartRadio($di),
     new \AzuraCast\Console\Command\Sync($di),
     new \AzuraCast\Console\Command\StreamerAuth($di),
+    new \AzuraCast\Console\Command\NextSong($di),
     new \AzuraCast\Console\Command\ReprocessMedia($di),
 ));
 

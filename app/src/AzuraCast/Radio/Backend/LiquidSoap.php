@@ -35,6 +35,7 @@ class LiquidSoap extends BackendAbstract
             '# AutoDJ Next Song Script',
             'def azuracast_next_song() =',
             '  uri = get_process_lines("/usr/bin/php '.APP_INCLUDE_ROOT.'/util/cli.php azuracast:internal:next-song '.$this->station->id.'")',
+            '  log("AzuraCast Raw Response: #{uri}")',
             '  uri = list.hd(uri)',
             '  request.create(uri)',
             'end',

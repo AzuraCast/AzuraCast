@@ -13,22 +13,9 @@ class LiquidSoap extends BackendAbstract
      */
     public function write()
     {
-        $has_default_playlist = false;
-        foreach ($this->station->playlists as $playlist_raw) {
-            if ($playlist_raw->type == 'default') {
-                $has_default_playlist = true;
-                break;
-            }
-        }
-
-        if (!$has_default_playlist) {
-            $this->log('LiquidSoap will not start until at least one playlist is set as the "Default" type.',
-                'error');
-            return false;
-        }
-
         $settings = (array)$this->station->backend_config;
 
+        $playlist_path = $this->station->getRadioPlaylistsDir();
         $config_path = $this->station->getRadioConfigDir();
 
         $ls_config = [
@@ -61,6 +48,61 @@ class LiquidSoap extends BackendAbstract
             ''
         ];
 
+        // Clear out existing playlists directory.
+        $current_playlists = array_diff(scandir($playlist_path), ['..', '.']);
+        foreach ($current_playlists as $list) {
+            @unlink($playlist_path . '/' . $list);
+        }
+
+        // Set up playlists using older format as a fallback.
+        $ls_config[] = '# Fallback Playlists';
+
+        $playlists_by_type = [];
+        $playlists = [];
+
+        foreach ($this->station->playlists as $playlist_raw) {
+            /** @var \Entity\StationPlaylist $playlist_raw */
+            if (!$playlist_raw->is_enabled) {
+                continue;
+            }
+
+            $playlist_file_contents = $playlist_raw->export('pls', true);
+
+            $playlist = $playlist_raw->toArray($this->di['em']);
+            $playlist['var_name'] = 'playlist_' . $playlist_raw->getShortName();
+            $playlist['file_path'] = $playlist_path . '/' . $playlist['var_name'] . '.pls';
+
+            file_put_contents($playlist['file_path'], $playlist_file_contents);
+
+            $ls_config[] = $playlist['var_name'] . ' = playlist(reload_mode="watch","' . $playlist['file_path'] . '")';
+
+            $playlist_type = $playlist['type'] ?: 'default';
+            $playlists_by_type[$playlist_type][] = $playlist;
+            $playlists[] = $playlist;
+        }
+
+        if (empty($playlists_by_type['default'])) {
+            if (count($playlists) > 0) {
+                $this->log('LiquidSoap will not start until at least one playlist is set as the "Default" type.',
+                    'error');
+            }
+
+            return false;
+        }
+
+        $ls_config[] = '';
+
+        // Create fallback playlist based on all default playlists.
+        $playlist_weights = [];
+        $playlist_vars = [];
+        foreach ($playlists_by_type['default'] as $playlist) {
+            $playlist_weights[] = $playlist['weight'];
+            $playlist_vars[] = $playlist['var_name'];
+        }
+
+        $ls_config[] = 'playlists = random(weights=[' . implode(', ', $playlist_weights) . '], [' . implode(', ',
+                $playlist_vars) . ']);';
+
         // Add harbor live.
         $harbor_params = [
             '"/"',
@@ -74,7 +116,7 @@ class LiquidSoap extends BackendAbstract
         $ls_config[] = 'live = input.harbor('.implode(', ', $harbor_params).')';
         $ls_config[] = '';
 
-        $ls_config[] = 'radio = fallback(track_sensitive = false, [live, dynamic, blank(duration=2.)])';
+        $ls_config[] = 'radio = fallback(track_sensitive = false, [live, dynamic, playlists, blank(duration=2.)])';
         $ls_config[] = '';
 
         $crossfade = (int)($settings['crossfade'] ?? 2);

@@ -100,6 +100,34 @@ class StationPlaylist extends \App\Doctrine\Entity
     protected $media;
 
     /**
+     * Export the playlist into a reusable format.
+     *
+     * @param string $file_format
+     * @param bool $absolute_paths
+     * @return string
+     */
+    public function export($file_format = 'pls', $absolute_paths = false)
+    {
+        $media_path = ($absolute_paths) ? $this->station->getRadioMediaDir().'/' : '';
+
+        $playlist_file = [];
+        foreach ($this->media as $media_file) {
+            $media_file_path = $media_path . $media_file->path;
+            $playlist_file[] = $media_file_path;
+        }
+
+        shuffle($playlist_file);
+
+        switch($file_format)
+        {
+            case 'pls':
+            default:
+                return implode("\n", $playlist_file);
+            break;
+        }
+    }
+
+    /**
      * Given a time code i.e. "2300", return a time i.e. "11:00 PM"
      * @param $time_code
      * @return string

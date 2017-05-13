@@ -46,6 +46,47 @@ class PlaylistsController extends BaseController
         $this->view->playlists = $playlists;
     }
 
+    public function importAction()
+    {
+
+    }
+
+    public function exportAction()
+    {
+        $id = (int)$this->getParam('id');
+
+        $record = $this->em->getRepository(StationPlaylist::class)->findOneBy([
+            'id' => $id,
+            'station_id' => $this->station->id
+        ]);
+
+        if (!($record instanceof StationPlaylist)) {
+            throw new \Exception('Playlist not found!');
+        }
+
+        $format = $this->getParam('format', 'pls');
+        $formats = [
+            'pls' => 'audio/x-scpls',
+            'm3u' => 'application/x-mpegURL',
+        ];
+
+        if (!isset($formats[$format])) {
+            throw new \Exception('Format not found!');
+        }
+
+        $file_name = 'playlist_' . $record->getShortName().'.'.$format;
+
+        $this->doNotRender();
+
+        $body = $this->response->getBody();
+        $body->write($record->export($format));
+
+        return $this->response
+            ->withHeader('Content-Type', $formats[$format])
+            ->withHeader('Content-Disposition', 'attachment; filename=' . $file_name)
+            ->withBody($body);
+    }
+
     public function editAction()
     {
         $form_config = $this->config->forms->playlist;

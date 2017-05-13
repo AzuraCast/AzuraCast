@@ -6,59 +6,69 @@
 
         <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <colgroup>
-                <col width="25%">
-                <col width="30%">
-                <col width="30%">
-                <col width="15%">
-            </colgroup>
-            <thead>
-            <tr>
-                <th><?=_('Actions') ?></th>
-                <th><?=_('Playlist') ?></th>
-                <th><?=_('Type') ?></th>
-                <th><?=_('# Songs') ?></th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach($playlists as $row): ?>
-                <tr class="vertical-align-middle">
-                    <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $row['id'])) ?>"><?=_('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])) ?>"><?=_('Delete') ?></a>
-                    </td>
-                    <td>
-                        <big><?=$row['name'] ?></big>
-                        <?php if ($row['include_in_automation']): ?>
-                            <br><span class="label label-success"><?=_('Auto-Assigned') ?></span>
-                        <?php endif; ?>
-                    </td>
-                    <td>
-                    <?php if (!$row['is_enabled']): ?>
-                        <?=_('Disabled') ?>
-                    <?php elseif ($row['type'] == 'default'): ?>
-                        <?=_('Standard Playlist') ?><br>
-                        <?=_('Weight') ?>: <?=$row['weight'] ?> (<?=$row['probability'] ?>)
-                    <?php elseif ($row['type'] == 'scheduled'): ?>
-                        <?=_('Scheduled Playlist') ?><br>
-                        <?=sprintf(_('Plays between %s and %s'), \Entity\StationPlaylist::formatTimeCode($row['schedule_start_time']), \Entity\StationPlaylist::formatTimeCode($row['schedule_end_time'])) ?>
-                    <?php elseif ($row['type'] == 'once_per_x_songs'): ?>
-                        <?=sprintf(_('Once per %d Songs'), $row['play_per_songs']) ?>
-                    <?php elseif ($row['type'] == 'once_per_x_minutes'): ?>
-                        <?=sprintf(_('Once per %d Minutes'), $row['play_per_minutes']) ?>
-                    <?php elseif ($row['type'] == 'once_per_day'): ?>
-                        <?=_('Once per Day') ?><br>
-                        <?=sprintf(_('Plays at %s'), \Entity\StationPlaylist::formatTimeCode($row['play_once_time'])) ?>
-                    <?php elseif ($row['type'] == 'custom'): ?>
-                        <?=_('Custom') ?>
+    <table class="table table-striped">
+        <colgroup>
+            <col width="25%">
+            <col width="30%">
+            <col width="30%">
+            <col width="15%">
+        </colgroup>
+        <thead>
+        <tr>
+            <th><?=_('Actions') ?></th>
+            <th><?=_('Playlist') ?></th>
+            <th><?=_('Type') ?></th>
+            <th><?=_('# Songs') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($playlists as $row): ?>
+            <tr class="vertical-align-middle">
+                <td>
+                    <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $row['id'])) ?>"><?=_('Edit') ?></a>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <?=_('Export') ?> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                        <?php foreach(['pls', 'm3u'] as $format): ?>
+                            <li><a href="<?=$url->routeFromHere(['action' => 'export', 'id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(_('Export as %s'), strtoupper($format)) ?></a></li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </div>
+
+                    <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])) ?>"><?=_('Delete') ?></a>
+                </td>
+                <td>
+                    <big><?=$row['name'] ?></big>
+                    <?php if ($row['include_in_automation']): ?>
+                        <br><span class="label label-success"><?=_('Auto-Assigned') ?></span>
                     <?php endif; ?>
-                    </td>
-                    <td><?=$row['num_songs'] ?></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
+                </td>
+                <td>
+                <?php if (!$row['is_enabled']): ?>
+                    <?=_('Disabled') ?>
+                <?php elseif ($row['type'] == 'default'): ?>
+                    <?=_('Standard Playlist') ?><br>
+                    <?=_('Weight') ?>: <?=$row['weight'] ?> (<?=$row['probability'] ?>)
+                <?php elseif ($row['type'] == 'scheduled'): ?>
+                    <?=_('Scheduled Playlist') ?><br>
+                    <?=sprintf(_('Plays between %s and %s'), \Entity\StationPlaylist::formatTimeCode($row['schedule_start_time']), \Entity\StationPlaylist::formatTimeCode($row['schedule_end_time'])) ?>
+                <?php elseif ($row['type'] == 'once_per_x_songs'): ?>
+                    <?=sprintf(_('Once per %d Songs'), $row['play_per_songs']) ?>
+                <?php elseif ($row['type'] == 'once_per_x_minutes'): ?>
+                    <?=sprintf(_('Once per %d Minutes'), $row['play_per_minutes']) ?>
+                <?php elseif ($row['type'] == 'once_per_day'): ?>
+                    <?=_('Once per Day') ?><br>
+                    <?=sprintf(_('Plays at %s'), \Entity\StationPlaylist::formatTimeCode($row['play_once_time'])) ?>
+                <?php elseif ($row['type'] == 'custom'): ?>
+                    <?=_('Custom') ?>
+                <?php endif; ?>
+                </td>
+                <td><?=$row['num_songs'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
 </div>

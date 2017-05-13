@@ -110,18 +110,40 @@ class StationPlaylist extends \App\Doctrine\Entity
     {
         $media_path = ($absolute_paths) ? $this->station->getRadioMediaDir().'/' : '';
 
-        $playlist_file = [];
-        foreach ($this->media as $media_file) {
-            $media_file_path = $media_path . $media_file->path;
-            $playlist_file[] = $media_file_path;
-        }
-
-        shuffle($playlist_file);
-
         switch($file_format)
         {
+            case 'm3u':
+                $playlist_file = [];
+                foreach ($this->media as $media_file) {
+                    $media_file_path = $media_path . $media_file->path;
+                    $playlist_file[] = $media_file_path;
+                }
+
+                shuffle($playlist_file);
+
+                return implode("\n", $playlist_file);
+            break;
+
             case 'pls':
             default:
+                $playlist_file = [
+                    '[playlist]',
+                ];
+
+                $i = 0;
+                foreach($this->media as $media_file) {
+                    $i++;
+
+                    $media_file_path = $media_path . $media_file->path;
+                    $playlist_file[] = 'File'.$i.'='.$media_file_path;
+                    $playlist_file[] = 'Title'.$i.'='.$media_file->artist.' - '.$media_file->title;
+                    $playlist_file[] = 'Length'.$i.'='.$media_file->length;
+                    $playlist_file[] = '';
+                }
+
+                $playlist_file[] = 'NumberOfEntries='.$i;
+                $playlist_file[] = 'Version=2';
+
                 return implode("\n", $playlist_file);
             break;
         }

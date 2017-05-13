@@ -66,11 +66,11 @@ class LiquidSoap extends BackendAbstract
                 continue;
             }
 
-            $playlist_file_contents = $playlist_raw->export('pls', true);
+            $playlist_file_contents = $playlist_raw->export('m3u', true);
 
             $playlist = $playlist_raw->toArray($this->di['em']);
             $playlist['var_name'] = 'playlist_' . $playlist_raw->getShortName();
-            $playlist['file_path'] = $playlist_path . '/' . $playlist['var_name'] . '.pls';
+            $playlist['file_path'] = $playlist_path . '/' . $playlist['var_name'] . '.m3u';
 
             file_put_contents($playlist['file_path'], $playlist_file_contents);
 

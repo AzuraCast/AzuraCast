@@ -1,59 +1,52 @@
 {
-  "name": "AzuraCast/AzuraCast",
-  "description": "The AzuraCast standalone radio station management tool.",
-  "license": "Apache-2.0",
-
-  "require": {
-    "slim/slim": "^3.0",
-    "league/plates": "^3.1",
-    "filp/whoops": "2.*",
-    "tedivm/stash": "0.14.*",
-    "nibble/nibble-forms": "dev-master",
-
-    "zendframework/zend-paginator": "^2.7",
-    "zendframework/zend-config": "^2.6",
-
-    "doctrine/orm": "~2.5",
-    "doctrine/migrations": "^1.4",
-    "jdorn/sql-formatter": "^1.2",
-
-    "nette/mail": "2.3.0",
-    "packaged/helpers": "^1.5",
-
-    "guzzlehttp/guzzle": ">6.0",
-    "electrolinux/phpquery": "0.9.6",
-
-    "james-heinrich/getid3": "~1.9",
-    "influxdb/influxdb-php": "~1.4.1",
-
-    "supervisorphp/supervisor": "^3.0",
-    "lstrojny/fxmlrpc": "^0.13.0",
-    "php-http/socket-client": "^1.2",
-    "php-http/message": "^1.4",
-    "php-http/guzzle6-adapter": "^1.1"
-  },
-  "require-dev": {
-    "codeception/codeception": "^2.2",
-    "codeclimate/php-test-reporter": "^0.3.2",
-    "flow/jsonpath": "^0.3.4"
-  },
-  "authors": [
-    {
-      "name": "Buster Neece",
-      "email": "buster@busterneece.com"
-    }
-  ],
-  "autoload": {
-    "psr-4": {
-      "App\\": "app/src/App",
-      "AzuraCast\\": "app/src/AzuraCast",
-      "Entity\\": "app/models",
-      "Migration\\": "app/models/Migration"
-    }
-  },
-  "config": {
-    "preferred-install": "dist"
-  },
-  "prefer-stable": true,
-  "minimum-stability": "dev"
+    "name": "AzuraCast/AzuraCast",
+    "description": "The AzuraCast standalone radio station management tool.",
+    "license": "Apache-2.0",
+    "require": {
+        "slim/slim": "^3.0",
+        "league/plates": "^3.1",
+        "filp/whoops": "2.*",
+        "tedivm/stash": "0.14.*",
+        "nibble/nibble-forms": "dev-master",
+        "zendframework/zend-paginator": "^2.7",
+        "zendframework/zend-config": "^3.1.0",
+        "doctrine/orm": "~2.5",
+        "doctrine/migrations": "^1.4",
+        "jdorn/sql-formatter": "^1.2",
+        "nette/mail": "^2.4.2",
+        "packaged/helpers": "^1.5",
+        "guzzlehttp/guzzle": ">6.0",
+        "electrolinux/phpquery": "0.9.6",
+        "james-heinrich/getid3": "~1.9",
+        "influxdb/influxdb-php": "^1.14.3",
+        "supervisorphp/supervisor": "^3.0",
+        "lstrojny/fxmlrpc": "^0.14.0",
+        "php-http/socket-client": "^1.2",
+        "php-http/message": "^1.4",
+        "php-http/guzzle6-adapter": "^1.1"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.2",
+        "codeclimate/php-test-reporter": "^0.4.4",
+        "flow/jsonpath": "^0.3.4"
+    },
+    "authors": [
+        {
+            "name": "Buster Neece",
+            "email": "buster@busterneece.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/src/App",
+            "AzuraCast\\": "app/src/AzuraCast",
+            "Entity\\": "app/models",
+            "Migration\\": "app/models/Migration"
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }

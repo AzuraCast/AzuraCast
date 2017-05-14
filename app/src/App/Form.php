@@ -1,7 +1,7 @@
 <?php
 namespace App;
 
-use App\Forms\NibbleForm;
+use Nibble\NibbleForms\NibbleForm;
 
 /**
  * A helper class that extends allows flatfile configuration form management.
@@ -12,7 +12,7 @@ use App\Forms\NibbleForm;
 class Form
 {
     /**
-     * @var Forms\NibbleForm
+     * @var NibbleForm
      */
     protected $form;
 

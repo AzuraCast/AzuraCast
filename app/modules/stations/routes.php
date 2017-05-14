@@ -35,7 +35,6 @@ return function(\Slim\App $app) {
 
             $this->get('', 'stations:playlists:index')->setName('stations:playlists:index');
             $this->map(['GET', 'POST'], '/edit[/{id}]', 'stations:playlists:edit')->setName('stations:playlists:edit');
-            $this->map(['GET', 'POST'], '/import', 'stations:playlists:import')->setName('stations:playlists:import');
             $this->get('/delete/{id}', 'stations:playlists:delete')->setName('stations:playlists:delete');
             $this->get('/export/{id}[/{format}]', 'stations:playlists:export')->setName('stations:playlists:export');
 

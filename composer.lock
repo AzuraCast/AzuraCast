@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9826270c9913b666c2a53b549ec209dd",
+    "content-hash": "d2737801c8790c5a852367480643c736",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -1447,17 +1447,17 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/LRotherfield/Nibble-Forms.git",
-                "reference": "b9fbc2ed6ee33932f2266f1755f2720bf61ce3d9"
+                "url": "https://github.com/SlvrEagle23/Nibble-Forms.git",
+                "reference": "b7001138264fded91acb1d98fe7b18c90f6f8b6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LRotherfield/Nibble-Forms/zipball/b9fbc2ed6ee33932f2266f1755f2720bf61ce3d9",
-                "reference": "b9fbc2ed6ee33932f2266f1755f2720bf61ce3d9",
+                "url": "https://api.github.com/repos/SlvrEagle23/Nibble-Forms/zipball/b7001138264fded91acb1d98fe7b18c90f6f8b6f",
+                "reference": "b7001138264fded91acb1d98fe7b18c90f6f8b6f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=7.0"
             },
             "type": "library",
             "autoload": {
@@ -1465,7 +1465,6 @@
                     "Nibble": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1479,7 +1478,10 @@
             ],
             "description": "PHP form library to generate and validate HTML5 forms",
             "homepage": "https://github.com/LRotherfield/Nibble-Forms",
-            "time": "2014-11-12T14:21:02+00:00"
+            "support": {
+                "source": "https://github.com/SlvrEagle23/Nibble-Forms/tree/master"
+            },
+            "time": "2017-05-14T02:20:36+00:00"
         },
         {
             "name": "nikic/fast-route",

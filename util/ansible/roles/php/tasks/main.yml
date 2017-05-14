@@ -56,6 +56,7 @@
     become: true
     locale_gen: name="{{ item }}" state=present
     with_items: "{{ locale_list.stdout_lines }}"
+    when: locale_list.stdout_lines is defined
 
   - name: Configure PHP FPM Pool
     template: src=fpmpool.j2 dest=/etc/php/7.1/fpm/pool.d/www.conf force=true

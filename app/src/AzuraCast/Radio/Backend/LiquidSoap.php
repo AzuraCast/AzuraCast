@@ -42,11 +42,24 @@ class LiquidSoap extends BackendAbstract
             '',
             '# DJ Authentication',
             'def dj_auth(user,password) =',
+            '  log("Authenticating DJ: #{user}")',
             '  ret = get_process_lines("/usr/bin/php '.APP_INCLUDE_ROOT.'/util/cli.php azuracast:internal:streamer-auth '.$this->station->id.' #{user} #{password}")',
             '  ret = list.hd(ret)',
             '  bool_of_string(ret)',
             'end',
-            ''
+            '',
+            'live_enabled = ref false',
+            '',
+            'def live_connected(header) =',
+            '    log("DJ Source connected!")',
+            '    live_enabled := true',
+            'end',
+            '',
+            'def live_disconnected() =',
+            '   log("DJ Source disconnected!")',
+            '   live_enabled := false',
+            'end',
+            '',
         ];
 
         // Clear out existing playlists directory.
@@ -104,6 +117,10 @@ class LiquidSoap extends BackendAbstract
         $ls_config[] = 'playlists = random(weights=[' . implode(', ', $playlist_weights) . '], [' . implode(', ',
                 $playlist_vars) . ']);';
 
+        $ls_config[] = 'dynamic = request.dynamic(id="azuracast_next_song", azuracast_next_song)';
+        $ls_config[] = 'radio = fallback(track_sensitive = false, [dynamic, playlists, blank(duration=2.)])';
+        $ls_config[] = '';
+
         // Add harbor live.
         $harbor_params = [
             '"/"',
@@ -111,15 +128,21 @@ class LiquidSoap extends BackendAbstract
             'user="shoutcast"',
             'auth=dj_auth',
             'icy=true',
+            'max=30.',
+            'buffer=5.',
+            'on_connect=live_connected',
+            'on_disconnect=live_disconnected',
         ];
 
-        $ls_config[] = 'dynamic = request.dynamic(id="azuracast_next_song", azuracast_next_song)';
-        $ls_config[] = 'live = input.harbor('.implode(', ', $harbor_params).')';
+        $ls_config[] = 'live = audio_to_stereo(input.harbor('.implode(', ', $harbor_params).'))';
+        $ls_config[] = 'ignore(output.dummy(live, fallible=true))';
+        $ls_config[] = 'live = fallback(track_sensitive=false, [live, blank(duration=2.)])';
+
+        $ls_config[] = '';
+        $ls_config[] = 'radio = switch(id="live_switch", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)])';
         $ls_config[] = '';
 
-        $ls_config[] = 'radio = fallback(track_sensitive = false, [live, dynamic, playlists, blank(duration=2.)])';
-        $ls_config[] = '';
-
+        // Crossfading
         $crossfade = (int)($settings['crossfade'] ?? 2);
         if ($crossfade > 0) {
             $start_next = round($crossfade * 1.5);

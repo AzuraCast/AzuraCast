@@ -2,6 +2,7 @@
 namespace Controller\Stations;
 
 use Entity\StationPlaylist;
+use Slim\Http\UploadedFile;
 
 class PlaylistsController extends BaseController
 {
@@ -44,11 +45,6 @@ class PlaylistsController extends BaseController
         }
 
         $this->view->playlists = $playlists;
-    }
-
-    public function importAction()
-    {
-
     }
 
     public function exportAction()
@@ -109,8 +105,17 @@ class PlaylistsController extends BaseController
             }
 
             $record->fromArray($this->em, $data);
-
             $this->em->persist($record);
+
+            // Handle importing a playlist file, if necessary.
+            $files = $this->request->getUploadedFiles();
+
+            /** @var UploadedFile $import_file */
+            $import_file = $files['app_form']['import'];
+            if ($import_file->getError() == UPLOAD_ERR_OK) {
+                $this->_importPlaylist($record, $import_file);
+            }
+
             $this->em->flush();
 
             $this->em->refresh($this->station);
@@ -122,6 +127,95 @@ class PlaylistsController extends BaseController
 
         $this->view->form = $form;
         $this->view->title = ($this->hasParam('id')) ? _('Edit Record') : _('Add Record');
+    }
+
+    protected function _importPlaylist(StationPlaylist $playlist, UploadedFile $playlist_file)
+    {
+        $playlist_raw = (string)$playlist_file->getStream();
+        if (empty($playlist_raw)) {
+            return false;
+        }
+
+        // Process as full PLS if the header is present.
+        if (substr($playlist_raw, 0, 10) === '[playlist]') {
+
+            $parsed_playlist = (array)parse_ini_string($playlist_raw, true, INI_SCANNER_RAW);
+
+            $paths = [];
+            foreach($parsed_playlist['playlist'] as $playlist_key => $playlist_file) {
+                if (substr(strtolower($playlist_key), 0, 4) === 'file') {
+                    $paths[] = $playlist_file;
+                }
+            }
+
+        } else {
+
+            // Process as a simple list of files or M3U-style playlist.
+            $lines = explode("\n", $playlist_raw);
+            $paths = array_filter(array_map('trim', $lines), function($line) {
+                return !empty($line) && substr($line, 0, 1) !== '#';
+            });
+
+        }
+
+        if (empty($paths)) {
+            return false;
+        }
+
+        // Assemble list of station media to match against.
+        $media_lookup = [];
+
+        $media_info_raw = $this->em->createQuery('SELECT sm.id, sm.path FROM Entity\StationMedia sm WHERE sm.station_id = :station_id')
+            ->setParameter('station_id', $this->station->id)
+            ->getArrayResult();
+
+        foreach($media_info_raw as $row) {
+            $path_hash = md5($row['path']);
+            $media_lookup[$path_hash] = $row['id'];
+        }
+
+        // Run all paths against the lookup list of hashes.
+        $matches = [];
+
+        foreach($paths as $path_raw) {
+            // De-Windows paths (if applicable)
+            $path_raw = str_replace('\\', '/', $path_raw);
+
+            // Work backwards from the basename to try to find matches.
+            $path_parts = explode('/', $path_raw);
+            for($i = 1; $i <= count($path_parts); $i++) {
+                $path_attempt = implode('/', array_slice($path_parts, 0-$i));
+                $path_hash = md5($path_attempt);
+
+                if (isset($media_lookup[$path_hash])) {
+                    $matches[] = $media_lookup[$path_hash];
+                }
+            }
+        }
+
+        // Assign all matched media to the playlist.
+        if (!empty($matches)) {
+            $matched_media = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm
+                LEFT JOIN sm.playlists sp
+                WHERE sm.station_id = :station_id AND sm.id IN (:matched_ids)')
+                ->setParameter('station_id', $this->station->id)
+                ->setParameter('matched_ids', $matches)
+                ->execute();
+
+            foreach($matched_media as $media) {
+                if (!$media->playlists->contains($playlist)) {
+                    $media->playlists->add($playlist);
+                    $playlist->media->add($media);
+
+                    $this->em->persist($media);
+                }
+            }
+
+            $this->em->persist($playlist);
+        }
+
+        $this->alert('<b>' . _('Existing playlist imported.') . '</b><br>' . sprintf(_('%d song(s) were imported into the playlist.'), count($matches)), 'blue');
+        return true;
     }
 
     public function deleteAction()

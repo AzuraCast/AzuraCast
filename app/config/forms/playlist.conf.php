@@ -38,6 +38,24 @@ return [
                     ]
                 ],
 
+                'import' => [
+                    'file',
+                    [
+                        'label' => _('Import Existing Playlist'),
+                        'description' => _('Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.'),
+                        'required' => false,
+                        'type' => [
+                            'audio/x-scpls',
+                            'application/vnd.apple.mpegurl',
+                            'application/mpegurl',
+                            'application/x-mpegurl',
+                            'audio/mpegurl',
+                            'audio/x-mpegurl',
+                            'application/octet-stream',
+                        ],
+                    ]
+                ],
+
                 'weight' => [
                     'select',
                     [

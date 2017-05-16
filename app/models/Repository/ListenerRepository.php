@@ -15,12 +15,11 @@ class ListenerRepository extends \App\Doctrine\Repository
      */
     public function getUniqueListeners(Entity\Station $station, $timestamp_start, $timestamp_end)
     {
-        return $this->_em->createQuery('SELECT COUNT(l.id)
+        return $this->_em->createQuery('SELECT COUNT(DISTINCT l.listener_hash)
             FROM '.$this->_entityName.' l
             WHERE l.station_id = :station_id
             AND l.timestamp_start <= :end
-            AND l.timestamp_end >= :start
-            GROUP BY l.listener_hash')
+            AND l.timestamp_end >= :start')
             ->setParameter('station_id', $station->id)
             ->setParameter('end', $timestamp_end)
             ->setParameter('start', $timestamp_start)

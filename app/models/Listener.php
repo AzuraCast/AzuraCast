@@ -3,7 +3,7 @@ namespace Entity;
 
 /**
  * @Table(name="listener", indexes={
- *   @index(name="update_idx", columns={"listener_uid", "listener_ip"}),
+ *   @index(name="update_idx", columns={"listener_hash"}),
  * })
  * @Entity(repositoryClass="Entity\Repository\ListenerRepository")
  */

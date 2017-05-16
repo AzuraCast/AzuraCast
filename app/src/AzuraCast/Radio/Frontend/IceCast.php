@@ -153,7 +153,7 @@ class IceCast extends FrontendAbstract
     {
         $config_path = $this->station->getRadioConfigDir() . '/icecast.xml';
 
-        return 'icecast2 -c ' . $config_path;
+        return '/usr/bin/icecast2 -c ' . $config_path;
     }
 
     public function getStreamUrl()

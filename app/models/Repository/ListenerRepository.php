@@ -31,30 +31,41 @@ class ListenerRepository extends \App\Doctrine\Repository
      *
      * @param Entity\Station $station
      * @param $clients
-     * @return Entity\SongHistory|mixed
      */
     public function update(Entity\Station $station, $clients)
     {
         $clients = (array)$clients;
 
-        $listener_ids = [];
+        $listener_ids = [0];
 
         foreach($clients as $client) {
             // Check for an existing record for this client.
-            $existing_id = $this->_em->createQuery('SELECT l.id FROM '.$this->_entityName.' l
-                WHERE l.station_id = :station_id
-                AND l.listener_uid = :uid
-                AND l.listener_ip = :ip
-                AND l.timestamp_end = 0')
-                ->setParameter('station_id', $station->id)
-                ->setParameter('uid', $client['uid'])
-                ->setParameter('ip', $client['ip'])
-                ->getSingleScalarResult();
+            try {
+                $existing_id = $this->_em->createQuery('SELECT l.id FROM '.$this->_entityName.' l
+                    WHERE l.station_id = :station_id
+                    AND l.listener_uid = :uid
+                    AND l.listener_ip = :ip
+                    AND l.timestamp_end = 0')
+                        ->setParameter('station_id', $station->id)
+                        ->setParameter('uid', $client['uid'])
+                        ->setParameter('ip', $client['ip'])
+                        ->getSingleScalarResult();
 
-            $listener_ids[] = $existing_id;
+                $listener_ids[] = $existing_id;
+            } catch(\Doctrine\ORM\NoResultException $e) {
+                // Create a new record.
+                $record = new Entity\Listener;
+                $record->station = $station;
+                $record->listener_uid = $client['uid'];
+                $record->listener_ip = $client['ip'];
+                $record->listener_user_agent = $client['user_agent'];
+
+                $this->_em->persist($record);
+                $this->_em->flush();
+
+                $listener_ids[] = $record->id;
+            }
         }
-
-        $this->_em->flush();
 
         // Mark the end of all other clients on this station.
         $this->_em->createQuery('UPDATE '.$this->_entityName.' l

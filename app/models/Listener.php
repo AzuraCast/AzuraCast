@@ -12,6 +12,9 @@ class Listener extends \App\Doctrine\Entity
     public function __construct()
     {
         $this->timestamp_start = time();
+        $this->timestamp_end = 0;
+
+        $this->listener_user_agent = '';
     }
 
     /**

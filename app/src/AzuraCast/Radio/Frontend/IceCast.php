@@ -1,6 +1,7 @@
 <?php
 namespace AzuraCast\Radio\Frontend;
 
+use App\Debug;
 use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use Entity\StationMount;
@@ -11,40 +12,34 @@ class IceCast extends FrontendAbstract
     protected function _getNowPlaying(&$np)
     {
         $fe_config = (array)$this->station->frontend_config;
+        $reader = new \App\Xml\Reader();
+
         $radio_port = $fe_config['port'];
+        $np_url = 'http://localhost:' . $radio_port . '/admin/stats';
 
-        $np_url = 'http://localhost:' . $radio_port . '/status-json.xsl';
+        Debug::log($np_url);
 
-        \App\Debug::log($np_url);
-
-        $return_raw = $this->getUrl($np_url);
+        $return_raw = $this->getUrl($np_url, [
+            'basic_auth' => 'admin:'.$fe_config['admin_pw'],
+        ]);
 
         if (!$return_raw) {
             return false;
         }
 
-        $return = @json_decode($return_raw, true);
+        $return = $reader->fromString($return_raw);
+        Debug::print_r($return);
 
-        \App\Debug::print_r($return);
-
-        if (!$return || !isset($return['icestats']['source'])) {
+        if (!$return || empty($return['source'])) {
             return false;
         }
 
-        $sources = $return['icestats']['source'];
-
-        if (empty($sources)) {
-            return false;
-        }
+        $sources = $return['source'];
 
         if (key($sources) === 0) {
             $mounts = $sources;
         } else {
             $mounts = [$sources];
-        }
-
-        if (count($mounts) == 0) {
-            return false;
         }
 
         $mounts = array_filter($mounts, function ($mount) {
@@ -80,6 +75,41 @@ class IceCast extends FrontendAbstract
         $np['meta']['format'] = $temp_array['server_type'];
 
         $np['listeners']['current'] = (int)$temp_array['listeners'];
+
+        if (!empty($temp_array['@mount'])) {
+            // Attempt to fetch detailed listener information for better unique statistics.
+            $selected_mount = $temp_array['@mount'];
+
+            $listeners_url = 'http://localhost:' . $radio_port . '/admin/listclients?mount='.urlencode($selected_mount);
+
+            $return_raw = $this->getUrl($listeners_url, [
+                'basic_auth' => 'admin:'.$fe_config['admin_pw'],
+            ]);
+
+            if (!empty($return_raw)) {
+                $listeners_raw = $reader->fromString($return_raw);
+
+                $np['listeners']['clients'] = [];
+
+                if (!empty($listeners_raw['source']['listener']))
+                {
+                    if (key($listeners_raw['source']['listener']) === 0) {
+                        $listeners = $listeners_raw['source']['listener'];
+                    } else {
+                        $listeners = [$listeners_raw['source']['listener']];
+                    }
+
+                    foreach($listeners as $listener) {
+                        $np['listeners']['clients'][] = [
+                            'uid' => $listener['ID'],
+                            'ip' => $listener['IP'],
+                            'user_agent' => $listener['UserAgent'],
+                            'connected_seconds' => $listener['Connected'],
+                        ];
+                    }
+                }
+            }
+        }
 
         return true;
     }

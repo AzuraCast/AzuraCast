@@ -191,7 +191,7 @@ class LiquidSoap extends BackendAbstract
 
                     $output_params = [
                         $output_format, // Required output format (%mp3 etc)
-                        'id="radio_out_' . $mount_row->id . '"',
+                        'id="radio_out_' . $i . '"',
                         'host = "localhost"',
                         'port = ' . ($broadcast_port),
                         'password = "' . $broadcast_source_pw . ':#'.$i.'"',
@@ -206,7 +206,10 @@ class LiquidSoap extends BackendAbstract
 
             case 'icecast':
             default:
+                $i = 0;
                 foreach ($this->station->mounts as $mount_row) {
+                    $i++;
+
                     if (!$mount_row->enable_autodj) {
                         continue;
                     }
@@ -223,7 +226,7 @@ class LiquidSoap extends BackendAbstract
                     if (!empty($output_format)) {
                         $output_params = [
                             $output_format, // Required output format (%mp3 or %ogg)
-                            'id="radio_out_' . $mount_row->id . '"',
+                            'id="radio_out_' . $i . '"',
                             'host = "localhost"',
                             'port = ' . $broadcast_port,
                             'password = "' . $broadcast_source_pw . '"',

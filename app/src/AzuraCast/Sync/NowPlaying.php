@@ -3,9 +3,7 @@ namespace AzuraCast\Sync;
 
 use App\Debug;
 use Doctrine\ORM\EntityManager;
-use Entity\Song;
-use Entity\SongHistory;
-use Entity\Station;
+use Entity;
 
 class NowPlaying extends SyncAbstract
 {
@@ -57,15 +55,29 @@ class NowPlaying extends SyncAbstract
             $nowplaying[$station]['cache'] = 'database';
         }
 
-        $this->di['em']->getRepository('Entity\Settings')->setSetting('nowplaying', $nowplaying);
+        $this->di['em']->getRepository(Entity\Settings::class)
+            ->setSetting('nowplaying', $nowplaying);
     }
+
+    /** @var Entity\Repository\SongHistoryRepository */
+    protected $history_repo;
+
+    /** @var Entity\Repository\SongRepository */
+    protected $song_repo;
+
+    /** @var Entity\Repository\ListenerRepository */
+    protected $listener_repo;
 
     protected function _loadNowPlaying()
     {
         /** @var EntityManager $em */
         $em = $this->di['em'];
-        $stations = $em->getRepository(Station::class)->findAll();
 
+        $this->history_repo = $em->getRepository(Entity\SongHistory::class);
+        $this->song_repo = $em->getRepository(Entity\Song::class);
+        $this->listener_repo = $em->getRepository(Entity\Listener::class);
+
+        $stations = $em->getRepository(Entity\Station::class)->findAll();
         $nowplaying = [];
 
         foreach ($stations as $station) {
@@ -83,10 +95,10 @@ class NowPlaying extends SyncAbstract
     /**
      * Generate Structured NowPlaying Data
      *
-     * @param Station $station
+     * @param Entity\Station $station
      * @return array Structured NowPlaying Data
      */
-    protected function _processStation(Station $station)
+    protected function _processStation(Entity\Station $station)
     {
         /** @var EntityManager $em */
         $em = $this->di['em'];
@@ -94,7 +106,7 @@ class NowPlaying extends SyncAbstract
         $np_old = (array)$station->nowplaying_data;
 
         $np = [];
-        $np['station'] = Station::api($station, $this->di);
+        $np['station'] = Entity\Station::api($station, $this->di);
 
         $frontend_adapter = $station->getFrontendAdapter($this->di);
         $np_new = $frontend_adapter->getNowPlaying();
@@ -103,26 +115,32 @@ class NowPlaying extends SyncAbstract
         $np['listeners'] = $np_new['listeners'];
 
         // Pull from current NP data if song details haven't changed.
-        $current_song_hash = Song::getSongHash($np_new['current_song']);
+        $current_song_hash = Entity\Song::getSongHash($np_new['current_song']);
 
         if (empty($np['current_song']['text'])) {
             $np['current_song'] = [];
-            $np['song_history'] = $em->getRepository(SongHistory::class)->getHistoryForStation($station);
+            $np['song_history'] = $this->history_repo->getHistoryForStation($station);
         } else {
             if (strcmp($current_song_hash, $np_old['current_song']['id']) == 0) {
                 $np['song_history'] = $np_old['song_history'];
 
-                $song_obj = $em->getRepository(Song::class)->find($current_song_hash);
+                $song_obj = $this->song_repo->find($current_song_hash);
             } else {
-                $np['song_history'] = $em->getRepository(SongHistory::class)->getHistoryForStation($station);
+                $np['song_history'] = $this->history_repo->getHistoryForStation($station);
 
-                $song_obj = $em->getRepository(Song::class)->getOrCreate($np_new['current_song'], true);
+                $song_obj = $this->song_repo->getOrCreate($np_new['current_song'], true);
+            }
+
+            // Update detailed listener statistics, if they exist for the station
+            if (isset($np['listeners']['clients'])) {
+                $this->listener_repo->update($station, $np['listeners']['clients']);
+                unset($np['listeners']['clients']);
             }
 
             // Register a new item in song history.
-            $sh_obj = $em->getRepository(SongHistory::class)->register($song_obj, $station, $np);
+            $sh_obj = $this->history_repo->register($song_obj, $station, $np);
 
-            $current_song = Song::api($song_obj);
+            $current_song = Entity\Song::api($song_obj);
             $current_song['sh_id'] = $sh_obj->id;
 
             $np['current_song'] = $current_song;

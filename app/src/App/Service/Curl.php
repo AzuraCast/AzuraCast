@@ -64,6 +64,10 @@ class Curl
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
 
+        if (!empty($c_opts['basic_auth'])) {
+            curl_setopt($curl, CURLOPT_USERPWD, $c_opts['basic_auth']);
+        }
+
         // Custom DNS management.
         curl_setopt($curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($curl, CURLOPT_DNS_CACHE_TIMEOUT, 600);

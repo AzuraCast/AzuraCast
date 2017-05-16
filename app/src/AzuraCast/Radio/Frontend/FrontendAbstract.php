@@ -1,6 +1,7 @@
 <?php
 namespace AzuraCast\Radio\Frontend;
 
+use App\Debug;
 use App\Service\Curl;
 
 abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
@@ -109,6 +110,8 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         if ($np['listeners']['total'] === null) {
             $np['listeners']['total'] = $np['listeners']['current'];
         }
+
+        Debug::print_r($np);
 
         return $np;
     }

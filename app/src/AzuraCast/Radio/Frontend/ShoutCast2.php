@@ -16,34 +16,54 @@ class ShoutCast2 extends FrontendAbstract
         $fe_config = (array)$this->station->frontend_config;
         $radio_port = $fe_config['port'];
 
-        $np_url = 'http://localhost:' . $radio_port . '/stats';
+        $np_url = 'http://localhost:' . $radio_port . '/statistics?json=1';
         $return_raw = $this->getUrl($np_url);
 
         if (empty($return_raw)) {
             return false;
         }
 
-        $current_data = \App\Export::xml_to_array($return_raw);
+        $current_data = json_decode($return_raw, true);
 
-        Debug::print_r($return_raw);
+        Debug::print_r($current_data);
 
-        $song_data = $current_data['SHOUTCASTSERVER'];
-
-        Debug::print_r($song_data);
+        $song_data = $current_data['streams'][0];
 
         $np['meta']['status'] = 'online';
-        $np['meta']['bitrate'] = $song_data['BITRATE'];
-        $np['meta']['format'] = $song_data['CONTENT'];
+        $np['meta']['bitrate'] = $song_data['bitrate'];
+        $np['meta']['format'] = $song_data['content'];
 
-        $np['current_song'] = $this->getSongFromString($song_data['SONGTITLE'], '-');
+        $np['current_song'] = $this->getSongFromString($song_data['songtitle'], '-');
 
-        $u_list = (int)$song_data['UNIQUELISTENERS'];
-        $t_list = (int)$song_data['CURRENTLISTENERS'];
+        $u_list = (int)$song_data['uniquelisteners'];
+        $t_list = (int)$song_data['currentlisteners'];
         $np['listeners'] = [
             'current' => $this->getListenerCount($u_list, $t_list),
             'unique' => $u_list,
             'total' => $t_list,
         ];
+
+        // Attempt to fetch detailed listener information for better unique statistics.
+        $listeners_url = 'http://localhost:' . $radio_port . '/admin.cgi?sid=1&mode=viewjson&page=3';
+
+        $return_raw = $this->getUrl($listeners_url, [
+            'basic_auth' => 'admin:'.$fe_config['admin_pw'],
+        ]);
+
+        if (!empty($return_raw)) {
+            $listeners = json_decode($return_raw, true);
+
+            $np['listeners']['clients'] = [];
+
+            foreach((array)$listeners as $listener) {
+                $np['listeners']['clients'][] = [
+                    'uid' => $listener['uid'],
+                    'ip' => $listener['xff'] ?: $listener['hostname'],
+                    'user_agent' => $listener['useragent'],
+                    'connected_seconds' => $listener['connecttime'],
+                ];
+            }
+        }
 
         return true;
     }

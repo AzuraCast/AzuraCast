@@ -19,6 +19,8 @@ class SongHistory extends \App\Doctrine\Entity
         $this->timestamp_end = 0;
         $this->listeners_end = 0;
 
+        $this->unique_listeners = 0;
+
         $this->delta_total = 0;
         $this->delta_negative = 0;
         $this->delta_positive = 0;
@@ -67,6 +69,9 @@ class SongHistory extends \App\Doctrine\Entity
 
     /** @Column(name="listeners_end", type="smallint", nullable=true) */
     protected $listeners_end;
+
+    /** @Column(name="unique_listeners", type="smallint", nullable=true) */
+    protected $unique_listeners;
 
     /** @Column(name="delta_total", type="smallint") */
     protected $delta_total;

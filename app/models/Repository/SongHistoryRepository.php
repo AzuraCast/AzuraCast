@@ -91,6 +91,10 @@ class SongHistoryRepository extends \App\Doctrine\Repository
                 $last_sh->delta_negative = $delta_negative;
                 $last_sh->delta_total = $delta_total;
 
+                /** @var ListenerRepository $listener_repo */
+                $listener_repo = $this->_em->getRepository(Entity\Listener::class);
+                $last_sh->unique_listeners = $listener_repo->getUniqueListeners($station, $last_sh->timestamp_start, time());
+
                 $this->_em->persist($last_sh);
             }
 

@@ -19,7 +19,8 @@ class ListenerRepository extends \App\Doctrine\Repository
             FROM '.$this->_entityName.' l
             WHERE l.station_id = :station_id
             AND l.timestamp_start <= :end
-            AND l.timestamp_end >= :start')
+            AND l.timestamp_end >= :start
+            GROUP BY l.listener_hash')
             ->setParameter('station_id', $station->id)
             ->setParameter('end', $timestamp_end)
             ->setParameter('start', $timestamp_start)
@@ -41,25 +42,20 @@ class ListenerRepository extends \App\Doctrine\Repository
         foreach($clients as $client) {
             // Check for an existing record for this client.
             try {
+                $listener_hash = Entity\Listener::getListenerHash($client);
+
                 $existing_id = $this->_em->createQuery('SELECT l.id FROM '.$this->_entityName.' l
                     WHERE l.station_id = :station_id
-                    AND l.listener_uid = :uid
-                    AND l.listener_ip = :ip
+                    AND l.listener_hash = :hash
                     AND l.timestamp_end = 0')
                         ->setParameter('station_id', $station->id)
-                        ->setParameter('uid', $client['uid'])
-                        ->setParameter('ip', $client['ip'])
+                        ->setParameter('hash', $listener_hash)
                         ->getSingleScalarResult();
 
                 $listener_ids[] = $existing_id;
             } catch(\Doctrine\ORM\NoResultException $e) {
                 // Create a new record.
-                $record = new Entity\Listener;
-                $record->station = $station;
-                $record->listener_uid = $client['uid'];
-                $record->listener_ip = $client['ip'];
-                $record->listener_user_agent = $client['user_agent'];
-
+                $record = new Entity\Listener($station, $client);
                 $this->_em->persist($record);
                 $this->_em->flush();
 

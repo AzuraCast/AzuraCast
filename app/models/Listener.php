@@ -9,10 +9,17 @@ namespace Entity;
  */
 class Listener extends \App\Doctrine\Entity
 {
-    public function __construct()
+    public function __construct(Station $station, $client)
     {
+        $this->station = $station;
+
         $this->timestamp_start = time();
         $this->timestamp_end = 0;
+
+        $this->listener_uid = $client['uid'];
+        $this->listener_user_agent = $client['user_agent'];
+        $this->listener_ip = $client['ip'];
+        $this->listener_hash = self::getListenerHash($client);
 
         $this->listener_user_agent = '';
     }
@@ -35,6 +42,9 @@ class Listener extends \App\Doctrine\Entity
 
     /** @Column(name="listener_user_agent", type="string", length=255) */
     protected $listener_user_agent;
+
+    /** @Column(name="listener_hash", type="string", length=32) */
+    protected $listener_hash;
 
     /** @Column(name="timestamp_start", type="integer") */
     protected $timestamp_start;
@@ -59,4 +69,9 @@ class Listener extends \App\Doctrine\Entity
      * })
      */
     protected $station;
+
+    public static function getListenerHash($client)
+    {
+        return md5($client['ip'].$client['user_agent']);
+    }
 }

@@ -45,9 +45,11 @@ class ListenerRepository extends \App\Doctrine\Repository
 
                 $existing_id = $this->_em->createQuery('SELECT l.id FROM '.$this->_entityName.' l
                     WHERE l.station_id = :station_id
+                    AND l.listener_uid = :uid
                     AND l.listener_hash = :hash
                     AND l.timestamp_end = 0')
                         ->setParameter('station_id', $station->id)
+                        ->setParameter('uid', $client['uid'])
                         ->setParameter('hash', $listener_hash)
                         ->getSingleScalarResult();
 

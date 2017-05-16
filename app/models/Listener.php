@@ -4,6 +4,7 @@ namespace Entity;
 /**
  * @Table(name="listener", indexes={
  *   @index(name="update_idx", columns={"listener_hash"}),
+ *   @index(name="search_idx", columns={"listener_uid", "timestamp_end"})
  * })
  * @Entity(repositoryClass="Entity\Repository\ListenerRepository")
  */

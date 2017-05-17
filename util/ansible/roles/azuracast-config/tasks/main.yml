@@ -9,13 +9,21 @@
   - name: Write current environment to file.
     copy: content="{{ app_env }}" dest="{{ www_base }}/app/.env"
 
-  - name: Touch .deploy_run file
-    file: path="{{ app_base }}/.deploy_run" state=touch
+  - name: Set Permissions on Base App Folder
+    file: path="{{ item }}" state=directory owner=azuracast group=www-data
+    with_items:
+     - "{{ app_base }}"
+
+  - name: Touch base-level files
+    file: path="{{ item }}" state=touch
+    with_items:
+     - "{{ app_base }}/.deploy_run"
+     - "{{ app_base }}/.bash_profile"
+     - "{{ app_base }}/.ocamlinit"
 
   - name: Create System Folders
     file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0774
     with_items:
-     - "{{ app_base }}"
      - "{{ tmp_base }}"
      - "{{ tmp_base }}/cache"
      - "{{ tmp_base }}/sessions"

@@ -28,3 +28,4 @@
      - "{{ app_base }}/servers"
      - "{{ app_base }}/servers/shoutcast2"
      - "{{ app_base }}/servers/icecast2"
+     - "{{ app_base }}/.opam"

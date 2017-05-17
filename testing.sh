@@ -14,5 +14,9 @@ if [ "" == "$PKG_OK" ]; then
     sudo apt-get install -q -y python2.7 python-pip python-mysqldb ansible
 fi
 
+mkdir -p /var/azuracast/www
+ln -s . /var/azuracast/www
+cd /var/azuracast/www
+
 echo "Installing AzuraCast (Functional Testing Mode)"
 ansible-playbook util/ansible/deploy.yml --inventory=util/ansible/hosts --extra-vars "app_env=development testing_mode=true"

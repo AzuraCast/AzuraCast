@@ -16,7 +16,7 @@ dist: trusty
 
 install:
   - sudo mkdir -p /var/azuracast/www
-  - sudo ln -s $TRAVIS_BUILD_DIR /var/azuracast/www
+  - sudo ln -s $TRAVIS_BUILD_DIR/ /var/azuracast/www
   - ls /var/azuracast/www
   - sudo chmod a+x /var/azuracast/www/testing.sh
   - /var/azuracast/www/testing.sh

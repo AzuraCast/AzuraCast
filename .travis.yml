@@ -15,18 +15,19 @@ sudo: required
 dist: trusty
 
 install:
-  - chmod a+x $TRAVIS_BUILD_DIR/testing.sh
-  - chmod a+rx -R $TRAVIS_BUILD_DIR
-  - $TRAVIS_BUILD_DIR/testing.sh
+  - mkdir -p /var/azuracast/www
+  - ln -s $TRAVIS_BUILD_DIR /var/azuracast/www
+  - chmod a+x /var/azuracast/www/testing.sh
+  - /var/azuracast/www/testing.sh
 
 before_script:
   - phpenv config-add $TRAVIS_BUILD_DIR/util/travis_php.ini
 
 script:
-  - cd $TRAVIS_BUILD_DIR && ./vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast
+  - cd /var/azuracast/www && ./vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast
 
 after_failure:
-  - cat $TRAVIS_BUILD_DIR/tests/_output/*
+  - cat /var/azuracast/www/tests/_output/*
 
 after_success:
-  - cd $TRAVIS_BUILD_DIR && CODECLIMATE_REPO_TOKEN=edde4245d0d06902bb370736f67d02f38a3fa10207a01fe6c459b39137c4386a ./vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml
+  - cd /var/azuracast/www && CODECLIMATE_REPO_TOKEN=edde4245d0d06902bb370736f67d02f38a3fa10207a01fe6c459b39137c4386a ./vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml

@@ -12,14 +12,10 @@
   - name: Touch .deploy_run file
     file: path="{{ app_base }}/.deploy_run" state=touch
 
-  - name: Set Permissions on Base App Folder
-    file: path="{{ item }}" state=directory owner=azuracast group=www-data
+  - name: Create System Folders
+    file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0774
     with_items:
      - "{{ app_base }}"
-
-  - name: Create System Folders
-    file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0777
-    with_items:
      - "{{ tmp_base }}"
      - "{{ tmp_base }}/cache"
      - "{{ tmp_base }}/sessions"

@@ -21,8 +21,6 @@ class Listener extends \App\Doctrine\Entity
         $this->listener_user_agent = $client['user_agent'];
         $this->listener_ip = $client['ip'];
         $this->listener_hash = self::getListenerHash($client);
-
-        $this->listener_user_agent = '';
     }
 
     /**

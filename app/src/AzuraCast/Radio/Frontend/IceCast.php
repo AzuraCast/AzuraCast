@@ -183,7 +183,7 @@ class IceCast extends FrontendAbstract
     {
         $config_path = $this->station->getRadioConfigDir() . '/icecast.xml';
 
-        return '/usr/bin/icecast2 -c ' . $config_path;
+        return '/usr/local/bin/icecast -c ' . $config_path;
     }
 
     public function getStreamUrl()
@@ -264,12 +264,12 @@ class IceCast extends FrontendAbstract
             'limits' => [
                 'clients' => 100,
                 'sources' => 3,
-                'threadpool' => 5,
+                // 'threadpool' => 5,
                 'queue-size' => 524288,
                 'client-timeout' => 30,
                 'header-timeout' => 15,
                 'source-timeout' => 10,
-                'burst-on-connect' => 1,
+                // 'burst-on-connect' => 1,
                 'burst-size' => 65535,
             ],
             'authentication' => [
@@ -286,14 +286,15 @@ class IceCast extends FrontendAbstract
             'mount' => [],
             'fileserve' => 1,
             'paths' => [
-                'basedir' => '/usr/share/icecast2',
+                'basedir' => '/usr/local/share/icecast',
                 'logdir' => $config_dir,
-                'webroot' => '/usr/share/icecast2/web',
-                'adminroot' => '/usr/share/icecast2/admin',
+                'webroot' => '/usr/local/share/icecast/web',
+                'adminroot' => '/usr/local/share/icecast/admin',
                 'pidfile' => $config_dir . '/icecast.pid',
+                'x-forwarded-for' => '127.0.0.1',
                 'alias' => [
                     '@source' => '/',
-                    '@destination' => '/status.xsl',
+                    '@dest' => '/status.xsl',
                 ],
             ],
             'logging' => [

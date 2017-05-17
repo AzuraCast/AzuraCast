@@ -1,16 +1,43 @@
 ---
-  - name: Install IceCast2 (14.04)
+  - name: Install IceCast-KH Dependencies
     become: true
-    apt: deb=http://downloadcontent.opensuse.org/repositories/multimedia:/xiph/xUbuntu_14.04/amd64/icecast2_2.4.2-2_amd64.deb
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+    apt: pkg="{{ item }}" install_recommends=no state=latest
+    with_items:
+     - libxml2
+     - libxslt1-dev
+     - libvorbis-dev
+     - libcurl4-openssl-dev
+     - pkg-config
 
-  - name: Install IceCast2 (16.04)
+  - name: Download IceCast-KH Source
+    get_url:
+      url: https://github.com/karlheyes/icecast-kh/archive/icecast-2.4.0-kh5.tar.gz
+      dest: "{{ app_base }}/servers/icecast2/icecast2.tar.gz"
+
+  - name: Extract IceCast-KH Source
+    unarchive:
+      src: "{{ app_base }}/servers/icecast2/icecast2.tar.gz"
+      dest: "{{ app_base }}/servers/icecast2"
+      remote_src: yes
+      creates: "{{ app_base }}/servers/icecast2/configure"
+      mode: "u=rwx,g=rx,o=rx"
+      owner: "azuracast"
+      group: "www-data"
+      extra_opts: "--strip-components=1"
+
+  - name: Build IceCast-KH
     become: true
-    apt: pkg=icecast2 state=latest
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
+    shell: "cd {{ app_base }}/servers/icecast2 && ./configure && make && make install"
+    args:
+      chdir: "{{ app_base }}/servers/icecast2"
+      creates: "/usr/local/bin/icecast"
 
-  - name: Link Fallback Error MP3
-    file: src="{{ www_base }}/resources/error.mp3" dest="/usr/share/icecast2/web/error.mp3" state=link
+  - name: Link IceCast Resource Files
+    file: src="{{ item.src }}" dest="{{ item.dest }}" state=link
+    with_items:
+     - { src: "{{ www_base }}/resources/error.mp3", dest: "/usr/local/share/icecast/web/error.mp3" }
+     - { src: "{{ www_base }}/resources/status-json.xsl", dest: "/usr/local/share/icecast/web/status-json.xsl" }
+     - { src: "{{ www_base }}/resources/xml2json.xslt", dest: "/usr/local/share/icecast/web/xml2json.xslt" }
 
   - name: Remove problematic LiquidSoap plugins
     become: true
@@ -33,21 +60,21 @@
   - name: Download ShoutCast 2 (x86)
     get_url:
       url: http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux-latest.tar.gz
-      dest: "{{ app_base }}/servers/sc_serv.tar.gz"
+      dest: "{{ app_base }}/servers/shoutcast2/sc_serv.tar.gz"
     when: ansible_architecture == 'i386'
 
   - name: Download ShoutCast 2 (x64)
     get_url:
       url: http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz
-      dest: "{{ app_base }}/servers/sc_serv.tar.gz"
+      dest: "{{ app_base }}/servers/shoutcast2/sc_serv.tar.gz"
     when: ansible_architecture == 'x86_64'
 
   - name: Extract ShoutCast 2 Binary
     unarchive:
-      src: "{{ app_base }}/servers/sc_serv.tar.gz"
-      dest: "{{ app_base }}/servers/"
+      src: "{{ app_base }}/servers/shoutcast2/sc_serv.tar.gz"
+      dest: "{{ app_base }}/servers/shoutcast2"
       remote_src: yes
-      creates: "{{ app_base }}/servers/sc_serv"
+      creates: "{{ app_base }}/servers/shoutcast2/sc_serv"
       mode: "u=rwx,g=rx,o=rx"
       owner: "azuracast"
       group: "www-data"

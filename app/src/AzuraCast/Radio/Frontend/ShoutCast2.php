@@ -139,7 +139,7 @@ class ShoutCast2 extends FrontendAbstract
     public function getCommand()
     {
         $config_path = $this->station->getRadioConfigDir();
-        $sc_binary = realpath(APP_INCLUDE_ROOT . '/..') . '/servers/sc_serv';
+        $sc_binary = realpath(APP_INCLUDE_ROOT . '/..') . '/servers/shoutcast2/sc_serv';
         $sc_config = $config_path . '/sc_serv.conf';
 
         return $sc_binary . ' ' . $sc_config;

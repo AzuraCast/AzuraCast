@@ -18,8 +18,6 @@
     file: path="{{ item }}" state=touch
     with_items:
      - "{{ app_base }}/.deploy_run"
-     - "{{ app_base }}/.bash_profile"
-     - "{{ app_base }}/.ocamlinit"
 
   - name: Create System Folders
     file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0774

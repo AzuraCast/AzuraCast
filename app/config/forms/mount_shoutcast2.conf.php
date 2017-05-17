@@ -37,6 +37,18 @@ return [
                     ]
                 ],
 
+                'autodj_format' => [
+                    'radio',
+                    [
+                        'label' => _('AutoDJ Format'),
+                        'options' => [
+                            'mp3' => 'MP3',
+                            'aac' => 'AAC+ (MPEG4 HE-AAC v2)',
+                        ],
+                        'default' => 'mp3',
+                    ]
+                ],
+
                 'autodj_bitrate' => [
                     'radio',
                     [

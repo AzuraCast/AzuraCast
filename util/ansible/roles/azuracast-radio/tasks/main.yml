@@ -40,23 +40,30 @@
      - { src: "{{ www_base }}/resources/status-json.xsl", dest: "/usr/local/share/icecast/web/status-json.xsl" }
      - { src: "{{ www_base }}/resources/xml2json.xslt", dest: "/usr/local/share/icecast/web/xml2json.xslt" }
 
-  - name: Remove problematic LiquidSoap plugins
+  - name: Install OPAM
     become: true
-    apt: pkg="{{ item }}" state=absent
-    with_items:
-     - liquidsoap-plugin-all
-     - liquidsoap-plugin-opus
+    apt: pkg="opam" install_recommends=yes state=latest
 
-  - name: Install LiquidSoap
+  - name: Install LiquidSoap Dependencies
     become: true
-    apt: pkg="{{ item }}" install_recommends=yes state=latest
+    apt: pkg="{{ item }}" install_recommends=no state=latest
     with_items:
-     - liquidsoap
-     - liquidsoap-plugin-ogg
-     - liquidsoap-plugin-vorbis
-     - liquidsoap-plugin-lame
-     - liquidsoap-plugin-flac
-     - liquidsoap-plugin-icecast
+     - libpcre3-dev
+     - libfdk-aac-dev
+     - libmad0-dev
+     - libmp3lame-dev
+     - libtag1-dev
+     - libfaad-dev
+     - pkg-config
+     - m4
+
+  - name: Build LiquidSoap
+    become: true
+    become_user: azuracast
+    shell: "opam init -y && opam install -y taglib mad faad fdkaac lame vorbis cry liquidsoap"
+    args:
+      chdir: "{{ app_base }}"
+      creates: "{{ app_base }}/.opam/system/bin/liquidsoap"
 
   - name: Download ShoutCast 2 (x86)
     get_url:
@@ -80,4 +87,3 @@
       owner: "azuracast"
       group: "www-data"
     when: ansible_architecture == 'x86_64' or ansible_architecture == 'i386'
-

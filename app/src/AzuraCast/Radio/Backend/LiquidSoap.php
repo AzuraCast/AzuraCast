@@ -36,7 +36,7 @@ class LiquidSoap extends BackendAbstract
             'def azuracast_next_song() =',
             '  uri = get_process_lines("/usr/bin/php '.APP_INCLUDE_ROOT.'/util/cli.php azuracast:internal:next-song '.$this->station->id.'")',
             '  log("AzuraCast Raw Response: #{uri}")',
-            '  uri = list.hd(uri)',
+            '  uri = string_of(list.hd(uri))',
             '  request.create(uri)',
             'end',
             '',
@@ -44,7 +44,7 @@ class LiquidSoap extends BackendAbstract
             'def dj_auth(user,password) =',
             '  log("Authenticating DJ: #{user}")',
             '  ret = get_process_lines("/usr/bin/php '.APP_INCLUDE_ROOT.'/util/cli.php azuracast:internal:streamer-auth '.$this->station->id.' #{user} #{password}")',
-            '  ret = list.hd(ret)',
+            '  ret = string_of(list.hd(ret))',
             '  bool_of_string(ret)',
             'end',
             '',
@@ -185,9 +185,14 @@ class LiquidSoap extends BackendAbstract
                         continue;
                     }
 
+                    $format = strtolower($mount_row->autodj_format ?: 'mp3');
                     $bitrate = $mount_row->autodj_bitrate ?: 128;
 
-                    $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
+                    if ($format == 'aac') {
+                        $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.(int)$bitrate.', afterburner=false, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=false)';
+                    } else {
+                        $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
+                    }
 
                     $output_params = [
                         $output_format, // Required output format (%mp3 etc)
@@ -284,9 +289,10 @@ class LiquidSoap extends BackendAbstract
 
     public function getCommand()
     {
+        $user_base = realpath(APP_INCLUDE_ROOT.'/..');
         $config_path = $this->station->getRadioConfigDir() . '/liquidsoap.liq';
 
-        return 'liquidsoap ' . $config_path;
+        return $user_base.'/.opam/system/bin/liquidsoap ' . $config_path;
     }
 
     public function skip()

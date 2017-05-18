@@ -190,7 +190,7 @@ class LiquidSoap extends BackendAbstract
                     $bitrate = $mount_row->autodj_bitrate ?: 128;
 
                     if ($format == 'aac') {
-                        $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.(int)$bitrate.', afterburner=false, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=false)';
+                        $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.(int)$bitrate.', afterburner=true, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=true)';
                     } else {
                         $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
                     }

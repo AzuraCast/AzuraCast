@@ -40,6 +40,17 @@
      - { src: "{{ www_base }}/resources/status-json.xsl", dest: "/usr/local/share/icecast/web/status-json.xsl" }
      - { src: "{{ www_base }}/resources/xml2json.xslt", dest: "/usr/local/share/icecast/web/xml2json.xslt" }
 
+  - name: Add OPAM Repository
+    become: true
+    apt_repository: repo=ppa:asvm/ppa
+    register: installed_opam_ppa
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+
+  - name: Update apt again
+    become: true
+    apt:  update_cache=yes
+    when: installed_opam_ppa.changed
+
   - name: Install OPAM
     become: true
     apt: pkg="opam" install_recommends=yes state=latest

@@ -71,10 +71,9 @@
   - name: Build LiquidSoap
     become: true
     become_user: azuracast
-    shell: "opam init -y && opam install -y taglib mad faad fdkaac lame vorbis cry liquidsoap"
+    shell: "opam init -y && opam install -y taglib mad faad fdkaac lame vorbis cry liquidsoap.1.2.1"
     args:
       chdir: "{{ app_base }}"
-      creates: "{{ app_base }}/.opam/system/bin/liquidsoap"
 
   - name: Download ShoutCast 2 (x86)
     get_url:

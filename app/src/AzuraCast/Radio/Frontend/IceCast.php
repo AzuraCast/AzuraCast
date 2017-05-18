@@ -5,6 +5,7 @@ use App\Debug;
 use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use Entity\StationMount;
+use Entity;
 
 class IceCast extends FrontendAbstract
 {
@@ -35,53 +36,28 @@ class IceCast extends FrontendAbstract
         }
 
         $sources = $return['source'];
+        $mounts = (key($sources) === 0) ? $sources : [$sources];
 
-        if (key($sources) === 0) {
-            $mounts = $sources;
-        } else {
-            $mounts = [$sources];
-        }
 
-        $mounts = array_filter($mounts, function ($mount) {
-            return (!empty($mount['title']) || !empty($mount['artist']));
-        });
+        $em = $this->di['em'];
+        $mount_repo = $em->getRepository(Entity\StationMount::class);
+        $default_mount = $mount_repo->getDefaultMount($this->station);
 
-        // Sort in descending order of listeners.
-        usort($mounts, function ($a, $b) {
-            $a_list = (int)$a['listeners'];
-            $b_list = (int)$b['listeners'];
+        $current_listeners = 0;
+        $unique_listeners = [];
+        $clients = [];
 
-            if ($a_list == $b_list) {
-                return 0;
-            } else {
-                return ($a_list > $b_list) ? -1 : 1;
+        $np['listeners']['clients'] = [];
+
+        foreach($mounts as $mount) {
+            if ($mount['@mount'] === $default_mount->name) {
+                $song_data = $mount;
             }
-        });
 
-        $temp_array = $mounts[0];
+            $current_listeners += $mount['listeners'];
 
-        if (isset($temp_array['artist'])) {
-            $np['current_song'] = [
-                'artist' => $temp_array['artist'],
-                'title' => $temp_array['title'],
-                'text' => $temp_array['artist'] . ' - ' . $temp_array['title'],
-            ];
-        } else {
-            $np['current_song'] = $this->getSongFromString($temp_array['title'], ' - ');
-        }
-
-        $np['meta']['status'] = 'online';
-        $np['meta']['bitrate'] = $temp_array['bitrate'];
-        $np['meta']['format'] = $temp_array['server_type'];
-
-        $np['listeners']['current'] = (int)$temp_array['listeners'];
-
-        if (!empty($temp_array['@mount'])) {
             // Attempt to fetch detailed listener information for better unique statistics.
-            $selected_mount = $temp_array['@mount'];
-
-            $listeners_url = 'http://localhost:' . $radio_port . '/admin/listclients?mount='.urlencode($selected_mount);
-
+            $listeners_url = 'http://localhost:' . $radio_port . '/admin/listclients?mount='.urlencode($mount['@mount']);
             $return_raw = $this->getUrl($listeners_url, [
                 'basic_auth' => 'admin:'.$fe_config['admin_pw'],
             ]);
@@ -89,27 +65,49 @@ class IceCast extends FrontendAbstract
             if (!empty($return_raw)) {
                 $listeners_raw = $reader->fromString($return_raw);
 
-                $np['listeners']['clients'] = [];
-
                 if (!empty($listeners_raw['source']['listener']))
                 {
-                    if (key($listeners_raw['source']['listener']) === 0) {
-                        $listeners = $listeners_raw['source']['listener'];
-                    } else {
-                        $listeners = [$listeners_raw['source']['listener']];
-                    }
+                    $listeners = $listeners_raw['source']['listener'];
+                    $listeners = (key($listeners) === 0) ? $listeners : [$listeners];
 
                     foreach($listeners as $listener) {
-                        $np['listeners']['clients'][] = [
+                        $client = [
                             'uid' => $listener['ID'],
                             'ip' => $listener['IP'],
                             'user_agent' => $listener['UserAgent'],
                             'connected_seconds' => $listener['Connected'],
                         ];
+
+                        $client_hash = Entity\Listener::getListenerHash($client);
+                        $unique_listeners[$client_hash] = $client_hash;
+                        $clients[] = $client;
                     }
                 }
             }
         }
+
+        $unique_listeners = count($unique_listeners);
+
+        $np['listeners'] = [
+            'current' => $this->getListenerCount($unique_listeners, $current_listeners),
+            'unique' => $unique_listeners,
+            'total' => $current_listeners,
+            'clients' => $clients,
+        ];
+
+        if (isset($song_data['artist'])) {
+            $np['current_song'] = [
+                'artist' => $song_data['artist'],
+                'title' => $song_data['title'],
+                'text' => $song_data['artist'] . ' - ' . $song_data['title'],
+            ];
+        } else {
+            $np['current_song'] = $this->getSongFromString($song_data['title'], ' - ');
+        }
+
+        $np['meta']['status'] = 'online';
+        $np['meta']['bitrate'] = $song_data['bitrate'];
+        $np['meta']['format'] = $song_data['server_type'];
 
         return true;
     }

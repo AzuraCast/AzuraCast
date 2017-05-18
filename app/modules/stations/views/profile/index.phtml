@@ -1,5 +1,10 @@
 <?php $this->layout('main', ['title' => _('Station Profile'), 'manual' => true]) ?>
 
+<?php $this->start('custom_js') ?>
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/store-js/store.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('js/radio.js') ?>"></script>
+<?php $this->stop('custom_js') ?>
+
 <div class="row">
     <div class="col-sm-6">
         <div class="card">
@@ -150,13 +155,40 @@
                 </ul>
                 <?php endif; ?>
             </div>
+
+            <table class="table table-condensed table-striped">
+                <colgroup>
+                    <col width="10%">
+                    <col width="90%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th><?=_('Public URL') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach($stream_urls as $stream_url): ?>
+                <tr class="input">
+                    <td>
+                        <a class="btn-audio" href="#" data-url="<?=$stream_url ?>">
+                            <i class="zmdi zmdi-play"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="<?=$stream_url ?>"><?=$stream_url ?></a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+
             <div class="card-body card-padding">
                 <dl>
-                    <dt><?=_('Stream Public URL') ?>:</dt>
+                    <dt><?=_('Stream Playlists') ?>:</dt>
                     <dd>
-                    <?php foreach($stream_urls as $stream_url): ?>
-                        <div><a href="<?=$stream_url ?>"><?=$stream_url ?></a></div>
-                    <?php endforeach; ?>
+                        <a class="btn btn-xs btn-default" href="<?=$url->named('stations:util:playlist', ['station' => $station->id, 'format' => 'pls']) ?>">PLS</a>
+                        <a class="btn btn-xs btn-default" href="<?=$url->named('stations:util:playlist', ['station' => $station->id, 'format' => 'm3u']) ?>">M3U</a>
                     </dd>
                 </dl>
 

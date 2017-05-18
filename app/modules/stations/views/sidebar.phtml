@@ -63,10 +63,6 @@
             <?php if ($acl->isAllowed('manage station automation', $station->id) && $backend->supportsMedia()): ?>
                 <li><a href="<?=$url->named('stations:automation:index', ['station' => $station->id]) ?>"><?=_('Automated Assignment') ?></a></li>
             <?php endif; ?>
-
-            <li><a href="<?=$url->named('stations:util:playlist', ['station' => $station->id, 'format' => 'pls']) ?>"><?=_('Download Playlist File') ?> (PLS)</a></li>
-            <li><a href="<?=$url->named('stations:util:playlist', ['station' => $station->id, 'format' => 'm3u']) ?>"><?=_('Download Playlist File') ?> (M3U)</a></li>
-
             <?php if ($acl->isAllowed('manage station broadcasting', $station->id)): ?>
                 <li><a href="<?=$url->named('stations:util:restart', ['station' => $station->id]) ?>"><?=_('Restart Broadcasting') ?></a></li>
             <?php endif; ?>

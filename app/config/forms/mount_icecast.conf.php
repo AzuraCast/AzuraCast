@@ -72,6 +72,7 @@ return [
                     [
                         'label' => _('AutoDJ Bitrate (kbps)'),
                         'options' => [
+                            32 => '32',
                             64 => '64',
                             96 => '96',
                             128 => '128',

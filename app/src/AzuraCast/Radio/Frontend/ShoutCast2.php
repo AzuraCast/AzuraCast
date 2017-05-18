@@ -24,10 +24,24 @@ class ShoutCast2 extends FrontendAbstract
         }
 
         $current_data = json_decode($return_raw, true);
-
         Debug::print_r($current_data);
 
-        $song_data = $current_data['streams'][0];
+        $streams = count($current_data['streams']);
+        $u_list = 0;
+        $t_list = 0;
+
+        $em = $this->di['em'];
+        $mount_repo = $em->getRepository(Entity\StationMount::class);
+        $default_mount = $mount_repo->getDefaultMount($this->station);
+
+        foreach($current_data['streams'] as $stream) {
+            if ($stream['streampath'] === $default_mount->name) {
+                $song_data = $stream;
+            }
+
+            $u_list += (int)$stream['uniquelisteners'];
+            $t_list += (int)$stream['currentlisteners'];
+        }
 
         $np['meta']['status'] = 'online';
         $np['meta']['bitrate'] = $song_data['bitrate'];
@@ -35,8 +49,6 @@ class ShoutCast2 extends FrontendAbstract
 
         $np['current_song'] = $this->getSongFromString($song_data['songtitle'], '-');
 
-        $u_list = (int)$song_data['uniquelisteners'];
-        $t_list = (int)$song_data['currentlisteners'];
         $np['listeners'] = [
             'current' => $this->getListenerCount($u_list, $t_list),
             'unique' => $u_list,
@@ -44,24 +56,25 @@ class ShoutCast2 extends FrontendAbstract
         ];
 
         // Attempt to fetch detailed listener information for better unique statistics.
-        $listeners_url = 'http://localhost:' . $radio_port . '/admin.cgi?sid=1&mode=viewjson&page=3';
+        $np['listeners']['clients'] = [];
 
-        $return_raw = $this->getUrl($listeners_url, [
-            'basic_auth' => 'admin:'.$fe_config['admin_pw'],
-        ]);
+        for($i = 1; $i <= $streams; $i++) {
+            $listeners_url = 'http://localhost:' . $radio_port . '/admin.cgi?sid='.$i.'&mode=viewjson&page=3';
+            $return_raw = $this->getUrl($listeners_url, [
+                'basic_auth' => 'admin:'.$fe_config['admin_pw'],
+            ]);
 
-        if (!empty($return_raw)) {
-            $listeners = json_decode($return_raw, true);
+            if (!empty($return_raw)) {
+                $listeners = json_decode($return_raw, true);
 
-            $np['listeners']['clients'] = [];
-
-            foreach((array)$listeners as $listener) {
-                $np['listeners']['clients'][] = [
-                    'uid' => $listener['uid'],
-                    'ip' => $listener['xff'] ?: $listener['hostname'],
-                    'user_agent' => $listener['useragent'],
-                    'connected_seconds' => $listener['connecttime'],
-                ];
+                foreach((array)$listeners as $listener) {
+                    $np['listeners']['clients'][] = [
+                        'uid' => $listener['uid'],
+                        'ip' => $listener['xff'] ?: $listener['hostname'],
+                        'user_agent' => $listener['useragent'],
+                        'connected_seconds' => $listener['connecttime'],
+                    ];
+                }
             }
         }
 

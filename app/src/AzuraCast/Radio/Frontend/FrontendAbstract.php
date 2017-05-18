@@ -47,7 +47,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
         // Web proxy support.
         if (APP_APPLICATION_ENV == 'development' || $use_radio_proxy) {
-            return '/radio/' . $radio_port;
+            return (APP_IS_SECURE) ? 'https' : 'http' . '://' . $base_url . '/radio/' . $radio_port;
         } else {
             return 'http://' . $base_url . ':' . $radio_port;
         }

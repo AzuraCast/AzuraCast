@@ -285,25 +285,9 @@ class NextSong extends \App\Console\Command\CommandAbstract
 
     protected function _playMedia(OutputInterface $output, Entity\StationMedia $media)
     {
-        // Build annotations to send to LiquidSoap
-        $annotations = [
-            'type="song"',
-            'song_id="'.$media->song_id.'"',
-        ];
-
-        if ($media->fade_overlap !== null) {
-            $annotations[] = 'liq_start_next="'.$media->fade_overlap.'"';
-        }
-        if ($media->fade_in !== null) {
-            $annotations[] = 'liq_fade_in="'.$media->fade_in.'"';
-        }
-        if ($media->fade_out !== null) {
-            $annotations[] = 'liq_fade_out="'.$media->fade_out.'"';
-        }
-
         // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
         $song_path = $media->getFullPath();
-        return $this->_return($output, 'annotate:'.implode(',', $annotations).':'.$song_path);
+        return $this->_return($output, 'annotate:'.implode(',', $media->getAnnotations()).':'.$song_path);
     }
 
     protected function _playFallback(OutputInterface $output)

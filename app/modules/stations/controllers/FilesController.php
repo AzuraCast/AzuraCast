@@ -109,6 +109,7 @@ class FilesController extends BaseController
 
         if (!empty($_POST) && $form->isValid()) {
             $data = $form->getValues();
+            unset($data['length']);
 
             // Detect rename.
             if ($data['path'] !== $media->path) {

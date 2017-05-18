@@ -32,6 +32,14 @@ return [
             ]
         ],
 
+        'length' => [
+            'text',
+            [
+                'label' => _('Song Length (seconds)'),
+                'disabled' => true,
+            ]
+        ],
+
         'fade_overlap' => [
             'text',
             [
@@ -54,6 +62,22 @@ return [
             [
                 'label' => _('Custom Fading: Fade-Out Time (seconds)'),
                 'description' => _('The time period that the song should fade out. Leave blank to use the system default.'),
+            ]
+        ],
+
+        'cue_in' => [
+            'text',
+            [
+                'label' => _('Custom Cues: Cue-In Point (seconds)'),
+                'description' => _('Seconds from the start of the song that the AutoDJ should start playing.'),
+            ]
+        ],
+
+        'cue_out' => [
+            'text',
+            [
+                'label' => _('Custom Cues: Cue-Out Point (seconds)'),
+                'description' => _('Seconds from the start of the song that the AutoDJ should stop playing.'),
             ]
         ],
 

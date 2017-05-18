@@ -83,6 +83,41 @@ class StationMedia extends \App\Doctrine\Entity
     /** @Column(name="fade_out", type="decimal", precision=3, scale=1, nullable=true) */
     protected $fade_out;
 
+    /** @Column(name="cue_in", type="decimal", precision=3, scale=1, nullable=true) */
+    protected $cue_in;
+
+    /** @Column(name="cue_out", type="decimal", precision=3, scale=1, nullable=true) */
+    protected $cue_out;
+
+    /**
+     * Assemble a list of annotations for LiquidSoap.
+     *
+     * @return array
+     */
+    public function getAnnotations()
+    {
+        $annotations = [
+            'type="song"',
+            'song_id="'.$this->song_id.'"',
+        ];
+
+        $annotation_types = [
+            'fade_overlap' => 'liq_start_next',
+            'fade_in' => 'liq_fade_in',
+            'fade_out' => 'liq_fade_out',
+            'cue_in' => 'liq_cue_in',
+            'cue_out' => 'liq_cue_out',
+        ];
+
+        foreach($annotation_types as $annotation_property => $annotation_name) {
+            if ($this->$annotation_property !== null) {
+                $annotations[] = $annotation_name.'="'.$this->$annotation_property.'"';
+            }
+        }
+
+        return $annotations;
+    }
+
     /**
      * @ManyToOne(targetEntity="Station", inversedBy="media")
      * @JoinColumns({

@@ -31,6 +31,6 @@
      - "{{ app_base }}/servers/shoutcast2"
      - "{{ app_base }}/servers/icecast2"
 
-  - name: Make Test Directory Writeable
-    file: path="{{ www_base }}/tests/_output" state=directory owner=azuracast group=www-data mode=0777
+  - name: Make App Directory Writeable
+    file: path="{{ app_base }}" state=directory owner=azuracast group=www-data mode=0777 recurse=true
     when: testing_mode|bool == true

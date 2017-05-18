@@ -118,6 +118,7 @@ class LiquidSoap extends BackendAbstract
                 $playlist_vars) . ']);';
 
         $ls_config[] = 'dynamic = request.dynamic(id="azuracast_next_song", azuracast_next_song)';
+        $ls_config[] = 'dynamic = cue_cut(id="azuracast_next_song_cued", dynamic)';
         $ls_config[] = 'radio = fallback(track_sensitive = false, [dynamic, playlists, blank(duration=2.)])';
         $ls_config[] = '';
 

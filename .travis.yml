@@ -23,6 +23,7 @@ install:
 
 before_script:
   - phpenv config-add $TRAVIS_BUILD_DIR/util/travis_php.ini
+  - sudo usermod -a -G www-data $USER
 
 script:
   - cd /var/azuracast/www && ./vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast

@@ -19,7 +19,7 @@ install:
   - sudo mkdir -p /var/azuracast
   - sudo cp -R $TRAVIS_BUILD_DIR /var/azuracast/www
   - sudo chmod a+x /var/azuracast/www/testing.sh
-  - /var/azuracast/www/testing.sh
+  - cd /var/azuracast/www && ./testing.sh
 
 before_script:
   - phpenv config-add $TRAVIS_BUILD_DIR/util/travis_php.ini

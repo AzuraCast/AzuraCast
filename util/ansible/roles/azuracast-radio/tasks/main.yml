@@ -42,7 +42,7 @@
 
   - name: Add OPAM Repository
     become: true
-    apt_repository: repo=ppa:asvm/ppa
+    apt_repository: repo=ppa:avsm/ppa
     register: installed_opam_ppa
     when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 

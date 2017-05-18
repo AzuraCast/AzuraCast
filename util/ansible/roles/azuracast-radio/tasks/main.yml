@@ -65,13 +65,14 @@
      - libmp3lame-dev
      - libtag1-dev
      - libfaad-dev
+     - libflac-dev
      - pkg-config
      - m4
 
   - name: Build LiquidSoap
     become: true
     become_user: azuracast
-    shell: "opam init -y && opam install -y taglib mad faad fdkaac lame vorbis cry liquidsoap.1.2.1"
+    shell: "opam init -y && opam install -y taglib mad faad fdkaac lame vorbis cry flac liquidsoap.1.2.1"
     args:
       chdir: "{{ app_base }}"
 

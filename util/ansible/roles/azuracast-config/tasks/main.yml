@@ -30,4 +30,7 @@
      - "{{ app_base }}/servers"
      - "{{ app_base }}/servers/shoutcast2"
      - "{{ app_base }}/servers/icecast2"
-     - "{{ app_base }}/.opam"
+
+  - name: Make Test Directory Writeable
+    file: path="{{ www_base }}/tests/_output" state=directory owner=azuracast group=www-data mode=0777
+    when: testing_mode|bool == true

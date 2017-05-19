@@ -365,26 +365,30 @@ class Station extends \App\Doctrine\Entity
      */
     public static function getFrontendAdapters()
     {
-        $adapters = [
-            'icecast' => [
-                'name' => 'IceCast 2.4',
-                'class' => '\AzuraCast\Radio\Frontend\IceCast',
-            ],
-            'shoutcast2' => [
-                'name' => 'ShoutCast 2',
-                'class' => '\AzuraCast\Radio\Frontend\ShoutCast2',
-            ],
-            'remote' => [
-                'name' => _('External Radio Server (Statistics Only)'),
-                'class' => '\AzuraCast\Radio\Frontend\Remote',
-            ],
-        ];
+        static $adapters;
 
-        $adapters = array_filter($adapters, function($adapter_info) {
-            /** @var \AzuraCast\Radio\AdapterAbstract $adapter_class */
-            $adapter_class = $adapter_info['class'];
-            return $adapter_class::isInstalled();
-        });
+        if ($adapters === null) {
+            $adapters = [
+                'icecast' => [
+                    'name' => 'IceCast 2.4',
+                    'class' => '\AzuraCast\Radio\Frontend\IceCast',
+                ],
+                'shoutcast2' => [
+                    'name' => 'ShoutCast 2',
+                    'class' => '\AzuraCast\Radio\Frontend\ShoutCast2',
+                ],
+                'remote' => [
+                    'name' => _('External Radio Server (Statistics Only)'),
+                    'class' => '\AzuraCast\Radio\Frontend\Remote',
+                ],
+            ];
+
+            $adapters = array_filter($adapters, function($adapter_info) {
+                /** @var \AzuraCast\Radio\AdapterAbstract $adapter_class */
+                $adapter_class = $adapter_info['class'];
+                return $adapter_class::isInstalled();
+            });
+        }
 
         return [
             'default' => 'icecast',
@@ -397,22 +401,26 @@ class Station extends \App\Doctrine\Entity
      */
     public static function getBackendAdapters()
     {
-        $adapters = [
-            'liquidsoap' => [
-                'name' => 'LiquidSoap',
-                'class' => '\AzuraCast\Radio\Backend\LiquidSoap',
-            ],
-            'none' => [
-                'name' => _('Disabled'),
-                'class' => '\AzuraCast\Radio\Backend\None',
-            ],
-        ];
+        static $adapters;
 
-        $adapters = array_filter($adapters, function($adapter_info) {
-            /** @var \AzuraCast\Radio\AdapterAbstract $adapter_class */
-            $adapter_class = $adapter_info['class'];
-            return $adapter_class::isInstalled();
-        });
+        if ($adapters === null) {
+            $adapters = [
+                'liquidsoap' => [
+                    'name' => 'LiquidSoap',
+                    'class' => '\AzuraCast\Radio\Backend\LiquidSoap',
+                ],
+                'none' => [
+                    'name' => _('Disabled'),
+                    'class' => '\AzuraCast\Radio\Backend\None',
+                ],
+            ];
+
+            $adapters = array_filter($adapters, function ($adapter_info) {
+                /** @var \AzuraCast\Radio\AdapterAbstract $adapter_class */
+                $adapter_class = $adapter_info['class'];
+                return $adapter_class::isInstalled();
+            });
+        }
 
         return [
             'default' => 'liquidsoap',

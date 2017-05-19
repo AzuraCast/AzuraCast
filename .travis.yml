@@ -26,10 +26,10 @@ before_script:
   - sudo usermod -a -G www-data $USER
 
 script:
-  - cd /var/azuracast/www && ./vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast
+  - cd /var/azuracast/www && sudo -u azuracast /vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast
 
 after_failure:
   - cat /var/azuracast/www/tests/_output/*
 
 after_success:
-  - cd /var/azuracast/www && CODECLIMATE_REPO_TOKEN=edde4245d0d06902bb370736f67d02f38a3fa10207a01fe6c459b39137c4386a ./vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml
+  - cd /var/azuracast/www && sudo -u azuracast CODECLIMATE_REPO_TOKEN=edde4245d0d06902bb370736f67d02f38a3fa10207a01fe6c459b39137c4386a ./vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml

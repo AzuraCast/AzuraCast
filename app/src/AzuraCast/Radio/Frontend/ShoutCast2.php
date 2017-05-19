@@ -231,4 +231,14 @@ class ShoutCast2 extends FrontendAbstract
 
         return $defaults;
     }
+
+    /*
+     * Static Functions
+     */
+
+    public static function isInstalled()
+    {
+        $sc_binary = realpath(APP_INCLUDE_ROOT . '/..') . '/servers/shoutcast2/sc_serv';
+        return file_exists($sc_binary);
+    }
 }

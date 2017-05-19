@@ -340,4 +340,13 @@ class IceCast extends FrontendAbstract
 
         return $defaults;
     }
+
+    /*
+     * Static Functions
+     */
+
+    public static function isInstalled()
+    {
+        return file_exists('/usr/local/bin/icecast');
+    }
 }

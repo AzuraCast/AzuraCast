@@ -330,4 +330,14 @@ class LiquidSoap extends BackendAbstract
     {
         return (8500 + (($this->station->id - 1) * 10));
     }
+
+    /*
+     * Static Functions
+     */
+
+    public static function isInstalled()
+    {
+        $user_base = realpath(APP_INCLUDE_ROOT.'/..');
+        return file_exists($user_base.'/.opam/system/bin/liquidsoap');
+    }
 }

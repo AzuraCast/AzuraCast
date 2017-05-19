@@ -175,4 +175,14 @@ abstract class AdapterAbstract
             \App\Debug::log('[' . strtoupper($class) . '] ' . $message);
         }
     }
+
+    /**
+     * Indicate if the backend in question is installed on the server.
+     *
+     * @return bool
+     */
+    public static function isInstalled()
+    {
+        return true;
+    }
 }

@@ -415,7 +415,7 @@ class Station extends \App\Doctrine\Entity
         });
 
         return [
-            'default' => 'icecast',
+            'default' => 'liquidsoap',
             'adapters' => $adapters,
         ];
     }

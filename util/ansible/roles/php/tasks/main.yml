@@ -34,6 +34,13 @@
      - php7.1-mbstring    # Codeception Tests
      - php7.1-intl        # Localization
 
+  - name: Install xdebug for testing
+    become: true
+    apt: package="{{ item }}" state=latest
+    with_items:
+     - php7.1-xdebug
+    when: testing_mode|bool == true
+
   - name: Remove PHP 7.0
     become: true
     apt:  package="{{ item }}" state=absent

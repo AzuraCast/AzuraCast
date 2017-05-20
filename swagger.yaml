@@ -122,7 +122,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /stations/{id}:
+  /station/{id}:
     get:
       description: Station info for the specified numeric identifier.
       tags:
@@ -160,7 +160,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /requests/{station_id}/list:
+  /station/{station}/requests:
     get:
       description: Get all currently requestable songs from the specified station.
       tags:
@@ -169,7 +169,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: station_id
+      - name: station
         in: path
         required: true
         type: number
@@ -184,10 +184,7 @@ paths:
           description: >-
             Returned if an invalid station ID is specified.
 
-
             +Body
-
-
             {
                 status: "error",
                 error: "Station not found."
@@ -199,7 +196,7 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /requests/{station_id}/submit/{song_id}:
+  /station/{station}/request/{song_id}:
     post:
       description: Submit a request for a station to play a song with the specified ID.
       tags:
@@ -208,7 +205,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: station_id
+      - name: station
         in: path
         required: true
         type: number

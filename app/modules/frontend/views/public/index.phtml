@@ -97,7 +97,7 @@
 
 <script type="text/javascript">
 function nowPlaying() {
-    $.getJSON('<?=$url->route(['module' => 'api', 'controller' => 'nowplaying', 'id' => $station->id]) ?>', {}, function(data) {
+    $.getJSON('<?=$url->route(['module' => 'api', 'controller' => 'nowplaying', 'station' => $station->id]) ?>', {}, function(data) {
         var row = data.result;
         var station_row = $('#station_'+row.station.id);
 

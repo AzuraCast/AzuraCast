@@ -9,9 +9,9 @@ return function(\Slim\App $app) {
 
     $app->group('/api', function () {
 
-        $this->map(['GET', 'POST'], '', 'api:index:index')->setName('api:index:index');
-        $this->map(['GET', 'POST'], '/status', 'api:index:status')->setName('api:index:status');
-        $this->map(['GET', 'POST'], '/time', 'api:index:time')->setName('api:index:time');
+        $this->get('', 'api:index:index')->setName('api:index:index');
+        $this->get('/status', 'api:index:status')->setName('api:index:status');
+        $this->get('/time', 'api:index:time')->setName('api:index:time');
 
         $this->group('/internal', function () {
 
@@ -19,23 +19,17 @@ return function(\Slim\App $app) {
 
         });
 
-        $this->group('/nowplaying[/{id}]', function () {
+        $this->get('/nowplaying[/{station}]', 'api:nowplaying:index')->setName('api:nowplaying:index');
+        $this->get('/stations', 'api:stations:list')->setName('api:stations:list');
 
-            $this->map(['GET', 'POST'], '', 'api:nowplaying:index')->setName('api:nowplaying:index');
+        $this->group('/station/{station}', function () {
 
-        });
+            $this->get('', 'api:stations:index')->setName('api:stations:index');
+            $this->get('/nowplaying', 'api:nowplaying:index');
 
-        $this->group('/requests/{station}', function () {
-
-            $this->map(['GET', 'POST'], '/list', 'api:requests:list')->setName('api:requests:list');
-            $this->map(['GET', 'POST'], '/submit/{song_id}', 'api:requests:submit')->setName('api:requests:submit');
-
-        });
-
-        $this->group('/stations', function () {
-
-            $this->map(['GET', 'POST'], '', 'api:stations:list')->setName('api:stations:list');
-            $this->map(['GET', 'POST'], '/{id}', 'api:stations:index')->setName('api:stations:index');
+            // This would not normally be POST-able, but Bootgrid requires it
+            $this->map(['GET', 'POST'], '/requests', 'api:requests:list')->setName('api:requests:list');
+            $this->map(['GET', 'POST'], '/request/{song_id}', 'api:requests:submit')->setName('api:requests:submit');
 
         });
 

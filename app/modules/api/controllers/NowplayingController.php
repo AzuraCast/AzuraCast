@@ -23,17 +23,16 @@ class NowplayingController extends BaseController
             return $this->returnError('Now Playing data has not loaded into the cache. Wait for file reload.');
         }
 
-        if ($this->hasParam('id') || $this->hasParam('station')) {
-            if ($this->hasParam('id')) {
-                $id = (int)$this->getParam('id');
-                foreach ($np as $key => $np_row) {
-                    if ($np_row['station']['id'] == $id) {
-                        return $this->returnSuccess($np_row);
-                    }
-                }
+        if ($this->hasParam('station')) {
+            $id = $this->getParam('station');
 
-                return $this->returnError('Station not found.');
+            foreach ($np as $key => $np_row) {
+                if ($np_row['station']['id'] == (int)$id || $np_row['station']['shortcode'] === $id) {
+                    return $this->returnSuccess($np_row);
+                }
             }
+
+            return $this->returnError('Station not found.');
         } else {
             return $this->returnSuccess($np);
         }

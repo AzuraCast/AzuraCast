@@ -1,17 +1,17 @@
 <?php
 namespace Controller\Api;
 
-use Entity\Station;
-use Entity\StationRequest;
+use App\Utilities;
+use Entity;
 
 class RequestsController extends BaseController
 {
     public function listAction()
     {
-        $station = $this->_getStation();
-
-        if (!$station) {
-            return $this->returnError('Station not found!');
+        try {
+            $station = $this->getStation();
+        } catch(\Exception $e) {
+            return $this->returnError($e->getMessage());
         }
 
         $ba = $station->getBackendAdapter($this->di);
@@ -31,7 +31,7 @@ class RequestsController extends BaseController
 
         foreach ($requestable_media as $media_row) {
             $result_row = [
-                'song' => \Entity\Song::api($media_row['song']),
+                'song' => Entity\Song::api($media_row['song']),
                 'request_song_id' => $media_row['id'],
                 'request_url' => $this->url->routeFromHere(['action' => 'submit', 'song_id' => $media_row['id']]),
             ];
@@ -78,7 +78,7 @@ class RequestsController extends BaseController
                 $sort_by = ['song_artist', \SORT_ASC, 'song_title', \SORT_ASC];
             }
 
-            $result = \App\Utilities::array_order_by($result, $sort_by);
+            $result = Utilities::array_order_by($result, $sort_by);
 
             $num_results = count($result);
 
@@ -101,10 +101,10 @@ class RequestsController extends BaseController
 
     public function submitAction()
     {
-        $station = $this->_getStation();
-
-        if (!$station) {
-            return $this->returnError('Station not found!');
+        try {
+            $station = $this->getStation();
+        } catch(\Exception $e) {
+            return $this->returnError($e->getMessage());
         }
 
         $ba = $station->getBackendAdapter($this->di);
@@ -115,32 +115,11 @@ class RequestsController extends BaseController
         $song = $this->getParam('song_id');
 
         try {
-            $this->em->getRepository(StationRequest::class)->submit($station, $song, $this->authenticate());
+            $this->em->getRepository(Entity\StationRequest::class)->submit($station, $song, $this->authenticate());
 
             return $this->returnSuccess('Request submitted successfully.');
         } catch (\App\Exception $e) {
             return $this->returnError($e->getMessage());
         }
-    }
-
-    /**
-     * @return Station|null
-     */
-    protected function _getStation()
-    {
-        $station = $this->getParam('station');
-
-        if (is_numeric($station)) {
-            $id = (int)$station;
-            $record = $this->em->getRepository(Station::class)->find($id);
-        } else {
-            $record = $this->em->getRepository(Station::class)->findByShortCode($this->getParam('station'));
-        }
-
-        if (!($record instanceof Station) || $record->deleted_at) {
-            return null;
-        }
-
-        return $record;
     }
 }

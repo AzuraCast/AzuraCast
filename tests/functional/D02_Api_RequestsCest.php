@@ -39,14 +39,14 @@ class D02_Api_RequestsCest extends CestAbstract
 
         $station_id = $this->test_station->id;
 
-        $I->sendGET('/api/requests/'.$station_id.'/list');
+        $I->sendGET('/api/station/'.$station_id.'/requests');
 
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson([
             'status' => 'success',
         ]);
 
-        $I->sendGET('/api/requests/'.$station_id.'/submit/'.$media->id);
+        $I->sendGET('/api/station/'.$station_id.'/request/'.$media->id);
 
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson([

@@ -1,7 +1,7 @@
 <?php
 namespace Controller\Api;
 
-use Entity\ApiKey;
+use Entity;
 
 class BaseController extends \AzuraCast\Mvc\Controller
 {
@@ -31,41 +31,6 @@ class BaseController extends \AzuraCast\Mvc\Controller
         // Set all API calls to be public cache-controlled by default.
         $this->setCachePrivacy('public');
         $this->setCacheLifetime(30);
-    }
-
-    public function postDispatch()
-    {
-        parent::postDispatch();
-
-        $end_time = microtime(true);
-        $request_time = $end_time - $this->_time_start;
-
-        // Log request using a raw SQL query for higher performance.
-        if (isset($_SERVER['CF-Connecting-IP'])) {
-            $remote_ip = $_SERVER['CF-Connecting-IP'];
-        } else {
-            $remote_ip = $_SERVER['REMOTE_ADDR'];
-        }
-
-        $params = array_merge((array)$this->dispatcher->getParams(), (array)$this->request->getQuery());
-
-        /*
-        // Insert into Influx
-        $influx = $this->di->get('influx');
-        $influx->setDatabase('analytics');
-
-        $influx->insert('api_calls', [
-            'value'         => 1,
-            'ip'            => $remote_ip,
-            'client'        => $this->getParam('client', 'general'),
-            'useragent'     => $_SERVER['HTTP_USER_AGENT'],
-            'controller'    => $this->dispatcher->getControllerName().'/'.$this->dispatcher->getActionName(),
-            'parameters'    => json_encode($params),
-            'referrer'      => $_SERVER['HTTP_REFERER'],
-            'is_ajax'       => ($this->isAjax() ? '1' : '0'),
-            'requesttime'   => $request_time,
-        ]);
-        */
     }
 
     /**
@@ -103,19 +68,48 @@ class BaseController extends \AzuraCast\Mvc\Controller
             return false;
         }
 
-        $record = $this->em->getRepository(ApiKey::class)->find($key);
-        // $record = self::find($key);
+        $record = $this->em->getRepository(Entity\ApiKey::class)->find($key);
 
-        if ($record instanceof ApiKey) {
+        if ($record instanceof Entity\ApiKey) {
             $record->calls_made++;
 
             $this->em->persist($record);
             $this->em->flush();
-
             return true;
         }
 
         return false;
+    }
+
+    /*
+     * Common Functions
+     */
+
+    /**
+     * Retrieve a station from the specified parameters, if possible.
+     *
+     * @param bool $required
+     * @return Entity\Station|null
+     * @throws \Exception
+     */
+    protected function getStation($required = true)
+    {
+        $id = $this->getParam('station');
+
+        /** @var Entity\Repository\StationRepository $station_repo */
+        $station_repo = $this->em->getRepository(Entity\Station::class);
+
+        if (is_numeric($id)) {
+            $record = $station_repo->find($id);
+        } else {
+            $record = $station_repo->findByShortCode($id);
+        }
+
+        if ($required && !($record instanceof Entity\Station)) {
+            throw new \Exception('Station not found!');
+        }
+
+        return $record;
     }
 
     /**

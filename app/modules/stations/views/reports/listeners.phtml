@@ -79,8 +79,6 @@ $(function() {
         for (i = 0; i < points.length; i++) {
             var l = points[i];
 
-            console.log(l);
-
             if (l.location.status !== 'success')
                 continue;
 
@@ -100,8 +98,6 @@ $(function() {
                 animation: google.maps.Animation.DROP
             });
 
-            console.log(mark);
-
             mark.infowindow = new google.maps.InfoWindow({
                 content: content
             });
@@ -116,7 +112,7 @@ $(function() {
                 mark.setMap(null);
                 google.maps.event.clearListeners(mark);
 
-                mapmarkers = array.splice(i, 1);
+                mapmarkers.splice(i, 1);
             }
         }
     }

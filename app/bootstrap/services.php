@@ -186,6 +186,10 @@ return function (\Slim\Container $di, \App\Config $config) {
         $connector = new \Supervisor\Connector\XmlRpc($client);
         $supervisor = new \Supervisor\Supervisor($connector);
 
+        if (!$supervisor->isConnected()) {
+            throw new \App\Exception(sprintf(_('Could not connect to supervisord. Try running %s in a terminal to restart the service.'), '`sudo service supervisor restart`'));
+        }
+
         return $supervisor;
     };
 

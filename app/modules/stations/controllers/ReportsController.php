@@ -154,4 +154,9 @@ class ReportsController extends BaseController
 
         return $this->redirectFromHere(['action' => 'duplicates', 'media_id' => null]);
     }
+
+    public function listenersAction()
+    {
+
+    }
 }

@@ -1,0 +1,136 @@
+<?php $this->layout('main', ['title' => _('Live Listeners'), 'manual' => true]) ?>
+
+<?php $this->start('custom_js') ?>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAX8_-E6gDpi15c-vUBGtAwSxcn7XvHHi0&callback=initMap"></script>
+<?php $this->stop('custom_js') ?>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2><?=_('Live Listeners') ?></h2>
+            </div>
+            <div id="googlemap" style="height: 350px;">
+
+            </div>
+            <table class="data-table table table-responsive table-striped" id="app-datatable">
+                <thead>
+                    <tr>
+                        <th><?=_('IP') ?></th>
+                        <th><?=_('Time (sec)') ?></th>
+                        <th><?=_('User Agent') ?></th>
+                        <th><?=_('Location') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="listener in listeners">
+                        <td>{{ listener.ip }}</td>
+                        <td>{{ listener.connected }}</td>
+                        <td>{{ listener.user_agent }}</td>
+                        <td>
+                            <span v-if="listener.location.status == 'success'">
+                                {{ listener.location.region}}, {{ listener.location.country }}
+                            </span>
+                            <span v-else-if="listener.location.message">
+                                {{ listener.location.message }}
+                            </span>
+                            <span v-else>
+                                <?=_('Unknown') ?>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+
+    var app_datatable = new Vue({
+        el: '#app-datatable',
+        data: {
+            listeners: []
+        }
+    });
+
+    var load_timeout;
+    var updateListeners = function() {
+        clearTimeout(load_timeout);
+
+        $.getJSON('<?=$url->named('api:listeners:index', ['station' => $station->id]) ?>', {}, function (data) {
+            if (data.status === "success") {
+                app_datatable.listeners = data.result;
+                setMapPoints(data.result);
+            }
+            load_timeout = setTimeout(updateListeners, 15*1000);
+        });
+    };
+
+    var mapmarkers = {};
+
+    /*
+     * Live map updating based on parasprite-Radio by djazz:
+     * https://github.com/daniel-j
+     */
+    function setMapPoints(points) {
+        var idlist = [];
+        for (i = 0; i < points.length; i++) {
+            var l = points[i];
+
+            console.log(l);
+
+            if (l.location.status !== 'success')
+                continue;
+
+            l.id = l.location.lon + ',' + l.location.lat + ',' + l.ip;
+            idlist[i] = l.id;
+
+            var content = '<div style="color: black">IP: ' + l.ip + '<br>Country: ' + l.location.country + '<br>Region: ' + l.location.regionName + '<br>City: ' + l.location.city + '<br>Connected at ' + new Date(l.timestamp * 1000) + '<br>Time connected: ' + l.connected + '<br>User Agent: ' + l.user_agent + '</div>';
+
+            if (mapmarkers[l.id]) {
+                mapmarkers[l.id].infowindow.setContent(content);
+                continue;
+            }
+
+            var mark = new google.maps.Marker({
+                position: new google.maps.LatLng(l.location.lat, l.location.lon),
+                map: map,
+                animation: google.maps.Animation.DROP
+            });
+
+            console.log(mark);
+
+            mark.infowindow = new google.maps.InfoWindow({
+                content: content
+            });
+
+            mark.addListener('click', function() { this.infowindow.open(map, this); });
+            mapmarkers[l.id] = mark;
+        }
+
+        for (i in mapmarkers) {
+            if (idlist.indexOf(i) === -1) {
+                var mark = mapmarkers[i];
+                mark.setMap(null);
+                google.maps.event.clearListeners(mark);
+
+                mapmarkers = array.splice(i, 1);
+            }
+        }
+    }
+
+    var map;
+    function initMap () {
+        map = new google.maps.Map(document.getElementById('googlemap'), {
+            zoom: 2,
+            center: {lat: 25, lng: 12}
+        });
+
+        updateListeners();
+    }
+    window.initMap = initMap;
+
+});
+</script>

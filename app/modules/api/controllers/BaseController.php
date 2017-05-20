@@ -18,7 +18,10 @@ class BaseController extends \AzuraCast\Mvc\Controller
 
         // Disable session creation.
         $session = $this->di->get('session');
-        $session->disable();
+
+        if (!$session->exists()) {
+            $session->disable();
+        }
 
         // Disable rendering.
         $this->doNotRender();
@@ -110,6 +113,24 @@ class BaseController extends \AzuraCast\Mvc\Controller
         }
 
         return $record;
+    }
+
+    /**
+     * @param Entity\Station $station
+     * @param $permission_name
+     * @return bool
+     * @throws \App\Exception\PermissionDenied
+     */
+    public function checkStationPermission(Entity\Station $station, $permission_name) {
+        if ($this->authenticate()) {
+            return true;
+        }
+
+        if (!$this->acl->isAllowed($permission_name, $station->id)) {
+            throw new \App\Exception\PermissionDenied('Permission denied');
+        }
+
+        return true;
     }
 
     /**

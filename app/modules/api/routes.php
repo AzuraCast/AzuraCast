@@ -31,6 +31,8 @@ return function(\Slim\App $app) {
             $this->map(['GET', 'POST'], '/requests', 'api:requests:list')->setName('api:requests:list');
             $this->map(['GET', 'POST'], '/request/{song_id}', 'api:requests:submit')->setName('api:requests:submit');
 
+            $this->get('/listeners', 'api:listeners:index')->setName('api:listeners:index');
+
         });
 
     });

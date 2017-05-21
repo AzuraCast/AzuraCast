@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-20 20:57+0000\n"
+"POT-Creation-Date: 2017-05-21 00:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,11 +75,12 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/profile.conf.php:92
 #: /var/azuracast/www/app/config/forms/rename.conf.php:18
 #: /var/azuracast/www/app/config/forms/role.conf.php:74
-#: /var/azuracast/www/app/config/forms/settings.conf.php:54
+#: /var/azuracast/www/app/config/forms/settings.conf.php:71
 #: /var/azuracast/www/app/config/forms/song.conf.php:47
 #: /var/azuracast/www/app/config/forms/station.conf.php:239
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:50
 #: /var/azuracast/www/app/config/forms/user.conf.php:48
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:28
 #: /var/azuracast/www/app/templates/partials/form.phtml:27
 msgid "Save Changes"
 msgstr ""
@@ -563,6 +564,30 @@ msgid ""
 "you're using a service like CloudFlare or accessing your radio station by "
 "SSL, you should enable this feature, which routes all radio through the web "
 "ports (80 and 443)."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/settings.conf.php:48
+msgid "Advanced: Third-Party API Access"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/settings.conf.php:49
+msgid ""
+"For some features, AzuraCast must connect to third-party API services. These "
+"services are optional."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/settings.conf.php:56
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:23
+msgid "Google Maps API Key"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/settings.conf.php:57
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:19
+#, php-format
+msgid ""
+"To see a map of your listeners, provide a Google Maps API key. You can "
+"obtain one from the <a href=\"%s\" target=\"_blank\">Google Developer "
+"Console</a>. Make sure to enable the \"Google Maps JavaScript API\" as well."
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/song.conf.php:8
@@ -1726,28 +1751,32 @@ msgid "Title / File Path"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:1
-#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:11
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:13
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:47
 msgid "Live Listeners"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:19
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:18
+msgid "Enable Google Maps API"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:37
 msgid "IP"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:20
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:38
 msgid "Time (sec)"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:21
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:39
 msgid "User Agent"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:22
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:40
 msgid "Location"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:38
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:56
 msgid "Unknown"
 msgstr ""
 

@@ -1,7 +1,7 @@
 <?php
 namespace Controller\Stations;
 
-use Entity\StationMedia;
+use Entity;
 
 class ReportsController extends BaseController
 {
@@ -137,12 +137,12 @@ class ReportsController extends BaseController
     {
         $media_id = (int)$this->getParam('media_id');
 
-        $media = $this->em->getRepository(StationMedia::class)->findOneBy([
+        $media = $this->em->getRepository(Entity\StationMedia::class)->findOneBy([
             'id' => $media_id,
             'station_id' => $this->station->id
         ]);
 
-        if ($media instanceof StationMedia) {
+        if ($media instanceof Entity\StationMedia) {
             $path = $media->getFullPath();
             @unlink($path);
 
@@ -157,6 +157,20 @@ class ReportsController extends BaseController
 
     public function listenersAction()
     {
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
+        if (!empty($_POST['gmaps_api_key'])) {
+
+            $settings_repo->setSetting('gmaps_api_key', trim($_POST['gmaps_api_key']));
+
+            $this->alert('<b>Google Maps API key updated!</b>', 'green');
+            return $this->redirectHere();
+        }
+
+        $gmaps_api_key = $settings_repo->getSetting('gmaps_api_key', null);
+        $this->view->gmaps_api_key = $gmaps_api_key;
+
+        return null;
     }
 }

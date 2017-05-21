@@ -70,7 +70,7 @@ return function(\Slim\App $app) {
             $this->get('/performance[/format/{format}]', 'stations:reports:performance')->setName('stations:reports:performance');
             $this->get('/duplicates', 'stations:reports:duplicates')->setName('stations:reports:duplicates');
             $this->get('/duplicates/delete/{media_id}', 'stations:reports:deletedupe')->setName('stations:reports:deletedupe');
-            $this->get('/listeners', 'stations:reports:listeners')->setName('stations:reports:listeners');
+            $this->map(['GET', 'POST'], '/listeners', 'stations:reports:listeners')->setName('stations:reports:listeners');
 
         });
 

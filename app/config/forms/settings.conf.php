@@ -44,6 +44,23 @@ return [
                 ],
             ],
 
+            'api_keys' => [
+                'legend' => _('Advanced: Third-Party API Access'),
+                'description' => _('For some features, AzuraCast must connect to third-party API services. These services are optional.'),
+
+                'elements' => [
+
+                    'gmaps_api_key' => [
+                        'text',
+                        [
+                            'label' => _('Google Maps API Key'),
+                            'description' => sprintf(_('To see a map of your listeners, provide a Google Maps API key. You can obtain one from the <a href="%s" target="_blank">Google Developer Console</a>. Make sure to enable the "Google Maps JavaScript API" as well.'), 'https://console.developers.google.com'),
+                        ]
+                    ],
+
+                ],
+            ],
+
             'submit' => [
                 'legend' => '',
                 'elements' => [

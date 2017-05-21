@@ -1,8 +1,10 @@
 <?php $this->layout('main', ['title' => _('Live Listeners'), 'manual' => true]) ?>
 
-<?php $this->start('custom_js') ?>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAX8_-E6gDpi15c-vUBGtAwSxcn7XvHHi0&callback=initMap"></script>
-<?php $this->stop('custom_js') ?>
+<?php if ($gmaps_api_key): ?>
+    <?php $this->start('custom_js') ?>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?=$gmaps_api_key ?>&callback=initMap"></script>
+    <?php $this->stop('custom_js') ?>
+<?php endif; ?>
 
 <div class="row">
     <div class="col-sm-12">
@@ -11,6 +13,22 @@
                 <h2><?=_('Live Listeners') ?></h2>
             </div>
             <div id="googlemap" style="height: 350px;">
+
+                <div class="card-body card-padding">
+                    <h4><?=_('Enable Google Maps API') ?></h4>
+                    <p><?=sprintf(_('To see a map of your listeners, provide a Google Maps API key. You can obtain one from the <a href="%s" target="_blank">Google Developer Console</a>. Make sure to enable the "Google Maps JavaScript API" as well.'), 'https://console.developers.google.com') ?></p>
+
+                    <form action="" method="post">
+                        <div class="form-group" id="field_name">
+                            <label for="gmaps_api_key" class="control-label"><?=_('Google Maps API Key') ?>:</label>
+                            <div class="form-field">
+                                <input type="text" name="gmaps_api_key" class="form-control">
+                            </div>
+
+                            <input type="submit" value="<?=_('Save Changes') ?>" class="btn btn-lg btn-primary m-t-10">
+                        </div>
+                    </form>
+                </div>
 
             </div>
             <table class="data-table table table-responsive table-striped" id="app-datatable">
@@ -119,6 +137,8 @@ $(function() {
 
     var map;
     function initMap () {
+        $('#googlemap').empty();
+
         map = new google.maps.Map(document.getElementById('googlemap'), {
             zoom: 2,
             center: {lat: 25, lng: 12}

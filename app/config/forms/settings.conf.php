@@ -16,6 +16,14 @@ return [
                 'legend' => _('System Settings'),
                 'elements' => [
 
+                    'instance_name' => [
+                        'text',
+                        [
+                            'label' => _('AzuraCast Instance Name'),
+                            'description' => _('This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.'),
+                        ],
+                    ],
+
                     'base_url' => [
                         'text',
                         [

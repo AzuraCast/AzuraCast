@@ -1,15 +1,16 @@
 <?php
 namespace AzuraCast;
 
-use Entity\User;
+use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
+use Entity;
 
 class Customization
 {
     /** @var ContainerInterface */
     protected $di;
 
-    /** @var User|null */
+    /** @var Entity\User|null */
     protected $user;
 
     /** @var \App\Config */
@@ -96,5 +97,27 @@ class Customization
         }
 
         return $this->config->application->themes->default;
+    }
+
+    /**
+     * Get the instance name for this AzuraCast instance.
+     *
+     * @return string|null
+     */
+    public function getInstanceName()
+    {
+        static $instance_name;
+
+        if ($instance_name === null) {
+            /** @var EntityManager $em */
+            $em = $this->di['em'];
+
+            /** @var Entity\Repository\SettingsRepository $settings_repo */
+            $settings_repo = $em->getRepository(Entity\Settings::class);
+
+            $instance_name = $settings_repo->getSetting('instance_name', '');
+        }
+
+        return $instance_name;
     }
 }

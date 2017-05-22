@@ -24,7 +24,17 @@ class C01_Station_MediaCest extends CestAbstract
             'error'     => \UPLOAD_ERR_OK
         ];
 
-        $I->sendPOST('/station/'.$station_id.'/files/upload', ['file' => '', 'csrf' => $csrf->generate('files')], ['file_data' => $test_file]);
+        $I->sendPOST('/station/'.$station_id.'/files/upload', [
+            'file' => '',
+            'csrf' => $csrf->generate('files'),
+            'flowIdentifier' => 'uploadtest',
+            'flowChunkNumber' => 1,
+            'flowFilename' => 'error.mp3',
+            'flowTotalSize' => filesize($test_song),
+            'flowTotalChunks' => 1,
+        ], [
+            'file_data' => $test_file
+        ]);
 
         $I->seeResponseContainsJson([
             'success' => true,

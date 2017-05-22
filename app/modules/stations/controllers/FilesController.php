@@ -5,6 +5,7 @@ use App\Utilities;
 use Entity\StationMedia;
 use Entity\StationPlaylist;
 use Entity;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\UploadedFile;
 
 /**
@@ -512,33 +513,35 @@ class FilesController extends BaseController
         $this->doNotRender();
 
         try {
-            $files = $this->request->getUploadedFiles();
 
-            if (isset($files['file_data'])) {
-                /** @var UploadedFile $uploaded_file */
-                $uploaded_file = $files['file_data'];
+            $flow = new \App\Service\Flow($this->request, $this->response);
+            $flow_response = $flow->process();
 
-                $file = new \App\File(basename($uploaded_file->getClientFilename()), $this->file_path);
+            if ($flow_response instanceof ResponseInterface) {
+
+                return $flow_response;
+
+            } else if (is_array($flow_response)) {
+
+                $file = new \App\File(basename($flow_response['filename']), $this->file_path);
                 $file->sanitizeName();
-                $file->upload($uploaded_file);
 
-                $upload_file_path = $file->getPath();
+                $final_path = $file->getPath();
+                rename($flow_response['path'], $final_path);
+
+                /** @var Entity\Repository\StationMediaRepository $station_media_repo */
+                $station_media_repo = $this->em->getRepository(StationMedia::class);
+                $station_media = $station_media_repo->getOrCreate($this->station, $final_path);
+
+                $this->em->persist($station_media);
+                $this->em->flush();
+
+                return $this->renderJson(['success' => true]);
             }
+
         } catch (\Exception $e) {
             return $this->_err(500, $e->getMessage());
         }
-
-        try {
-            $station_media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station,
-                $upload_file_path);
-            $this->em->persist($station_media);
-        } catch (\Exception $e) {
-            return $this->_err(500, $e->getMessage());
-        }
-
-        $this->em->flush();
-
-        return $this->renderJson(['success' => true]);
     }
 
     public function downloadAction()

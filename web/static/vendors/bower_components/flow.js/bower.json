@@ -1,0 +1,17 @@
+{
+  "name": "flow.js",
+  "main": "./dist/flow.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "samples",
+    "CHANGELOG.md",
+    "karma.conf.js",
+    "package.json",
+    "src/*",
+    "Gruntfile.js"
+  ]
+}

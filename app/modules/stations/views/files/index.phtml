@@ -3,6 +3,8 @@
 <?php $this->start('custom_js') ?>
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/store-js/store.min.js') ?>"></script>
 <script type="text/javascript" src="<?=$url->content('js/radio.js') ?>"></script>
+
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/flow.js/dist/flow.min.js') ?>"></script>
 <?php $this->stop('custom_js') ?>
 
 <div class="row">
@@ -29,7 +31,7 @@
                 <div id="upload_progress"></div>
                 <div id="file_drop_target">
                     <?=_('Drag files here to upload to this folder or ') ?>
-                    <input type="file" multiple />
+                    <input id="file_browse_target" type="file" multiple />
                 </div>
 
                 <div class="row p-t-20" id="app-toolbar">
@@ -257,72 +259,61 @@ $(function() {
     });
 
     // File upload stuff
-    $('#file_drop_target').bind('dragover',function(){
-        $(this).addClass('drag_over');
-        return false;
-    }).bind('dragend',function(){
-        $(this).removeClass('drag_over');
-        return false;
-    }).bind('drop',function(e){
-        e.preventDefault();
-        var files = e.originalEvent.dataTransfer.files;
-        $.each(files,function(k,file) {
-            uploadFile(file);
-        });
-        $(this).removeClass('drag_over');
-    }).find('input[type=file]').on('change', function(e) {
-        e.preventDefault();
-
-        $.each(this.files,function(k,file) {
-            uploadFile(file);
-        });
+    var flow = new Flow({
+        target: '<?=$url->routeFromHere(['action' => 'upload']) ?>',
+        query: function() {
+            return {
+                xsrf: XSRF,
+                file: getUrlHash()
+            };
+        },
+        withCredentials: true,
+        fileParameterName: 'file_data'
     });
 
-    function uploadFile(file) {
-        var folder = getUrlHash();
+    flow.assignBrowse(document.getElementById('file_browse_target'));
+    flow.assignDrop(document.getElementById('file_drop_target'));
 
-        if(file.size > MAX_UPLOAD_SIZE) {
-            var $error_row = renderFileSizeErrorRow(file,folder);
-            $('#upload_progress').append($error_row);
-            window.setTimeout(function(){$error_row.fadeOut();},5000);
-            return false;
-        }
+    flow.on('fileAdded', function(file, event) {
+        console.log(file, event);
+        $('#upload_progress').append(renderFileUploadRow(file));
+        return true;
+    });
+    flow.on('filesSubmitted', function(array, event) {
+        flow.upload();
+    });
+    flow.on('fileProgress', function(file) {
+        var $row = $('#file_upload_'+file.uniqueIdentifier);
+        $row.find('.progress-bar').css('width',(file.progress() * 100)+'%' );
+    });
+    flow.on('fileSuccess', function(file, message){
+        var $row = $('#file_upload_'+file.uniqueIdentifier);
+        $row.fadeOut();
+        list();
+    });
+    flow.on('fileError', function(file, message){
+        var $row = $('#file_upload_'+file.uniqueIdentifier);
+        $row.remove();
 
-        var $row = renderFileUploadRow(file,folder);
+        var $error_row = renderFileSizeErrorRow(file, message);
+        $('#upload_progress').append($error_row);
+        window.setTimeout(function(){ $error_row.fadeOut(); },5000);
+    });
+    flow.on('error', function(message, file, chunk) {
+        console.log(message, file, chunk);
+    });
 
-        $('#upload_progress').append($row);
-
-        var fd = new FormData();
-        fd.append('file_data',file);
-        fd.append('file',folder);
-        fd.append('xsrf',XSRF);
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '<?=$url->routeFromHere(['action' => 'upload']) ?>');
-        xhr.onload = function() {
-            $row.remove();
-            list();
-        };
-        xhr.upload.onprogress = function(e){
-            if(e.lengthComputable) {
-                $row.find('.progress-bar').css('width',(e.loaded/e.total*100 | 0)+'%' );
-            }
-        };
-        xhr.send(fd);
+    function renderFileUploadRow(file) {
+        return $row = $('<div id="file_upload_'+file.uniqueIdentifier+'"/>')
+            .append( $('<span class="fileuploadname" />').text(file.name) )
+            .append( $('<div class="progress"><div class="progress-bar"></div></div>') )
+            .append( $('<span class="size" />').text(formatFileSize(file.size)) );
     }
 
-    function renderFileUploadRow(file,folder) {
-        return $row = $('<div/>')
-            .append( $('<span class="fileuploadname" />').text( (folder ? folder+'/':'')+file.name))
-            .append( $('<div class="progress"><div class="progress-bar"></div></div>')  )
-            .append( $('<span class="size" />').text(formatFileSize(file.size)) )
-    }
-
-    function renderFileSizeErrorRow(file,folder) {
-        return $row = $('<div class="error" />')
-            .append( $('<span class="fileuploadname" />').text( 'Error: ' + (folder ? folder+'/':'')+file.name))
-            .append( $('<span/>').html(' file size - <b>' + formatFileSize(file.size) + '</b>'
-                +' exceeds max upload size of <b>' + formatFileSize(MAX_UPLOAD_SIZE) + '</b>')  );
+    function renderFileSizeErrorRow(file, message) {
+        return $row = $('<div id="file_upload_error_'+file.uniqueIdentifier+'" class="error" />')
+            .append( $('<span class="fileuploadname" />').text('Error: ' + file.name))
+            .append( $('<span/>').text(message) );
     }
 
     function list() {

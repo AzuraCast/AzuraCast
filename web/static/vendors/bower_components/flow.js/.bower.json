@@ -1,0 +1,29 @@
+{
+  "name": "flow.js",
+  "main": "./dist/flow.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "samples",
+    "CHANGELOG.md",
+    "karma.conf.js",
+    "package.json",
+    "src/*",
+    "Gruntfile.js"
+  ],
+  "homepage": "https://github.com/resumable2/resumable.js",
+  "version": "2.11.2",
+  "_release": "2.11.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.11.2",
+    "commit": "bb839a6c09f46e74c606be8e6a7e183532e04570"
+  },
+  "_source": "https://github.com/resumable2/resumable.js.git",
+  "_target": "^2.11.2",
+  "_originalSource": "resumable.js",
+  "_direct": true
+}

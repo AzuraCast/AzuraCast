@@ -12,6 +12,7 @@ class StationMount extends \App\Doctrine\Entity
     {
         $this->name = '';
         $this->is_default = false;
+        $this->is_public = false;
         $this->enable_autodj = true;
 
         $this->autodj_format = 'mp3';
@@ -42,6 +43,9 @@ class StationMount extends \App\Doctrine\Entity
 
     /** @Column(name="is_default", type="boolean", nullable=false) */
     protected $is_default;
+
+    /** @Column(name="is_public", type="boolean", nullable=false) */
+    protected $is_public;
 
     /** @Column(name="fallback_mount", type="string", length=100, nullable=true) */
     protected $fallback_mount;

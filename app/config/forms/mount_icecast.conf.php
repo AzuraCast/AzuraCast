@@ -84,6 +84,16 @@ return [
                     ]
                 ],
 
+                'is_public' => [
+                    'radio',
+                    [
+                        'label' => _('Advertise to YP Directories (Public Station)'),
+                        'description' => _('Set to "yes" to advertise this stream on the YP public radio directories.'),
+                        'options' => [0 => _('No'), 1 => _('Yes')],
+                        'default' => 0,
+                    ]
+                ],
+
                 'frontend_config' => [
                     'textarea',
                     [

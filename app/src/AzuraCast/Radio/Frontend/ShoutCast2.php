@@ -221,7 +221,6 @@ class ShoutCast2 extends FrontendAbstract
             'adminpassword' => Utilities::generatePassword(),
             'logfile' => $config_path . '/sc_serv.log',
             'w3clog' => $config_path . '/sc_w3c.log',
-            'publicserver' => 'never',
             'banfile' => $config_path . '/sc_serv.ban',
             'ripfile' => $config_path . '/sc_serv.rip',
             'maxuser' => 500,

@@ -203,7 +203,7 @@ class LiquidSoap extends BackendAbstract
                         'password = "' . $broadcast_source_pw . ':#'.$i.'"',
                         'name = "' . $this->_cleanUpString($this->station->name) . '"',
                         'url = "' . $this->_cleanUpString($this->station->url ?: $base_url) . '"',
-                        'public = false',
+                        'public = '.(($mount_row->is_public) ? 'true' : 'false'),
                         'radio', // Required
                     ];
                     $ls_config[] = 'output.shoutcast(' . implode(', ', $output_params) . ')';
@@ -240,6 +240,7 @@ class LiquidSoap extends BackendAbstract
                             'description = "' . $this->_cleanUpString($this->station->description) . '"',
                             'url = "' . $this->_cleanUpString($this->station->url ?: $base_url) . '"',
                             'mount = "' . $mount_row->name . '"',
+                            'public = '.(($mount_row->is_public) ? 'true' : 'false'),
                             'radio', // Required
                         ];
                         $ls_config[] = 'output.icecast(' . implode(', ', $output_params) . ')';

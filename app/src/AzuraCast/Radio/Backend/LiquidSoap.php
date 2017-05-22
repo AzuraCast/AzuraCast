@@ -294,7 +294,7 @@ class LiquidSoap extends BackendAbstract
         $user_base = realpath(APP_INCLUDE_ROOT.'/..');
         $config_path = $this->station->getRadioConfigDir() . '/liquidsoap.liq';
 
-        return $user_base.'/.opam/system/bin/liquidsoap ' . $config_path;
+        return $user_base.'/.opam/system/bin/liquidsoap --errors-as-warnings ' . $config_path;
     }
 
     public function skip()

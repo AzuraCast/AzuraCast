@@ -109,6 +109,10 @@ class ShoutCast2 extends FrontendAbstract
             $config['adminpassword'] = $frontend_config['admin_pw'];
         }
 
+        if (!empty($frontend_config['max_listeners'])) {
+            $config['maxuser'] = $frontend_config['max_listeners'];
+        }
+
         if (!empty($frontend_config['custom_config'])) {
             $custom_conf = $this->_processCustomConfig($frontend_config['custom_config']);
             if (!empty($custom_conf)) {
@@ -209,6 +213,7 @@ class ShoutCast2 extends FrontendAbstract
             'port' => $config['portbase'],
             'source_pw' => $config['password'],
             'admin_pw' => $config['adminpassword'],
+            'max_listeners' => $config['maxuser'],
         ];
     }
 
@@ -223,7 +228,7 @@ class ShoutCast2 extends FrontendAbstract
             'w3clog' => $config_path . '/sc_w3c.log',
             'banfile' => $config_path . '/sc_serv.ban',
             'ripfile' => $config_path . '/sc_serv.rip',
-            'maxuser' => 500,
+            'maxuser' => 250,
             'portbase' => $this->_getRadioPort(),
             'requirestreamconfigs' => 1,
         ];

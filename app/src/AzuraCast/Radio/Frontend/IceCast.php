@@ -147,6 +147,10 @@ class IceCast extends FrontendAbstract
             }
         }
 
+        if (!empty($frontend_config['max_listeners'])) {
+            $config['limits']['clients'] = $frontend_config['max_listeners'];
+        }
+
         if (!empty($frontend_config['custom_config'])) {
             $custom_conf = $this->_processCustomConfig($frontend_config['custom_config']);
             if (!empty($custom_conf)) {
@@ -248,6 +252,7 @@ class IceCast extends FrontendAbstract
             'source_pw' => $config['authentication']['source-password'],
             'admin_pw' => $config['authentication']['admin-password'],
             'streamer_pw' => $config['mount'][0]['password'],
+            'max_listeners' => $config['limits']['clients'],
         ];
     }
 
@@ -260,7 +265,7 @@ class IceCast extends FrontendAbstract
             'admin' => 'icemaster@localhost',
             'hostname' => $this->di['em']->getRepository('Entity\Settings')->getSetting('base_url', 'localhost'),
             'limits' => [
-                'clients' => 100,
+                'clients' => 250,
                 'sources' => 3,
                 // 'threadpool' => 5,
                 'queue-size' => 524288,

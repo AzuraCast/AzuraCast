@@ -92,16 +92,6 @@ return [
 
             'elements' => [
 
-                'enable_streamers' => [
-                    'radio',
-                    [
-                        'label' => _('Allow Streamers / DJs'),
-                        'description' => _('If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.'),
-                        'default' => '0',
-                        'options' => [0 => 'No', 1 => 'Yes'],
-                    ]
-                ],
-
                 'port' => [
                     'text',
                     [
@@ -125,6 +115,15 @@ return [
                     [
                         'label' => _('Admin Password'),
                         'description' => _('Leave blank to automatically generate a new password.'),
+                        'belongsTo' => 'frontend_config',
+                    ]
+                ],
+
+                'max_listeners' => [
+                    'text',
+                    [
+                        'label' => _('Maximum Listeners'),
+                        'description' => _('Maximum number of total listeners across all streams. Leave blank for unlimited.'),
                         'belongsTo' => 'frontend_config',
                     ]
                 ],
@@ -176,6 +175,16 @@ return [
             'class' => 'backend_fieldset',
 
             'elements' => [
+
+                'enable_streamers' => [
+                    'radio',
+                    [
+                        'label' => _('Allow Streamers / DJs'),
+                        'description' => _('If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.'),
+                        'default' => '0',
+                        'options' => [0 => 'No', 1 => 'Yes'],
+                    ]
+                ],
 
                 'enable_requests' => [
                     'radio',

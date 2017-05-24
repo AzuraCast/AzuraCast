@@ -32,6 +32,14 @@ return [
             ]
         ],
 
+        'isrc' => [
+            'text',
+            [
+                'label' => _('ISRC'),
+                'description' => _('International Standard Recording Code, used for licensing reports.'),
+            ]
+        ],
+
         'length' => [
             'text',
             [
@@ -39,6 +47,7 @@ return [
                 'disabled' => true,
             ]
         ],
+
 
         'fade_overlap' => [
             'text',
@@ -86,7 +95,6 @@ return [
             [
                 'type' => 'submit',
                 'label' => _('Save Changes'),
-                'helper' => 'formButton',
                 'class' => 'ui-button btn-lg btn-primary',
             ]
         ],

@@ -24,7 +24,7 @@ $inner_form = $form->getForm();
             $element_id = $element_info[1]['belongsTo'].'_'.$element_id;
         ?>
         <?php if ($element_info[0] == 'submit'): ?>
-            <input type="submit" value="<?=_('Save Changes') ?>" class="btn btn-lg btn-primary" />
+            <input type="submit" value="<?=$element_info[1]['label'] ?>" class="btn btn-lg btn-primary" />
         <?php else: ?>
             <div class="form-group" id="field_<?=$element_id ?>">
                 <?=$inner_form->renderLabel($element_id) ?>

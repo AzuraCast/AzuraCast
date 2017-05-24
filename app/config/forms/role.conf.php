@@ -72,7 +72,6 @@ $form_config['groups']['grp_submit'] = [
             [
                 'type' => 'submit',
                 'label' => _('Save Changes'),
-                'helper' => 'formButton',
                 'class' => 'btn btn-lg btn-primary',
             ]
         ],

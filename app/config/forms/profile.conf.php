@@ -90,7 +90,6 @@ return [
                     [
                         'type' => 'submit',
                         'label' => _('Save Changes'),
-                        'helper' => 'formButton',
                         'class' => 'btn btn-lg btn-primary',
                     ]
                 ],

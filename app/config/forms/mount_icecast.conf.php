@@ -113,7 +113,6 @@ return [
                     [
                         'type' => 'submit',
                         'label' => _('Save Changes'),
-                        'helper' => 'formButton',
                         'class' => 'ui-button btn-lg btn-primary',
                     ]
                 ],

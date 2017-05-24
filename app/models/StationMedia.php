@@ -46,6 +46,12 @@ class StationMedia extends \App\Doctrine\Entity
     /** @Column(name="album", type="string", length=200, nullable=true) */
     protected $album;
 
+    /**
+     * The track ISRC (International Standard Recording Code), used for licensing purposes.
+     * @Column(name="isrc", type="string", length=15, nullable=true)
+     */
+    protected $isrc;
+
     /** @Column(name="length", type="smallint") */
     protected $length;
 

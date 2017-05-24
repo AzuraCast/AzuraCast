@@ -146,10 +146,6 @@ class Form
 
         foreach ($options['groups'] as &$group) {
             foreach ($group['elements'] as &$element) {
-                if (!empty($element[1]['label']) && substr($element[1]['label'], -1) !== ':') {
-                    $element[1]['label'] = $element[1]['label'] . ':';
-                }
-
                 $element[0] = strtolower($element[0]);
                 if (isset($field_type_lookup[$element[0]])) {
                     $element[0] = $field_type_lookup[$element[0]];

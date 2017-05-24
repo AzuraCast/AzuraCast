@@ -31,7 +31,6 @@ return [
             [
                 'type' => 'submit',
                 'label' => _('Log in'),
-                'helper' => 'formButton',
                 'class' => 'btn btn-lg btn-primary',
             ]
         ],

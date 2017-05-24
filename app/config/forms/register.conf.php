@@ -35,7 +35,6 @@ return [
                     [
                         'type' => 'submit',
                         'label' => _('Create Account'),
-                        'helper' => 'formButton',
                         'class' => 'btn btn-lg btn-primary',
                     ]
                 ],

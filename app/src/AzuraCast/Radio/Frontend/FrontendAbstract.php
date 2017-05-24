@@ -6,11 +6,20 @@ use App\Service\Curl;
 
 abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 {
+    /** @var bool Whether the station supports multiple mount points per station */
     protected $supports_mounts = true;
 
     public function supportsMounts()
     {
         return $this->supports_mounts;
+    }
+
+    /** @var bool Whether the station supports a full, unique listener count (including IP, user-agent, etc) */
+    protected $supports_listener_detail = true;
+
+    public function supportsListenerDetail()
+    {
+        return $this->supports_listener_detail;
     }
 
     public function getDefaultMounts()

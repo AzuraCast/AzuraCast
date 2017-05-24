@@ -1,34 +1,340 @@
-CREATE TABLE action (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(100) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE analytics (id INT AUTO_INCREMENT NOT NULL, station_id INT DEFAULT NULL, type VARCHAR(15) NOT NULL, timestamp INT NOT NULL, number_min INT NOT NULL, number_max INT NOT NULL, number_avg INT NOT NULL, INDEX IDX_EAC2E68821BDB235 (station_id), INDEX search_idx (type, timestamp), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE api_keys (id VARCHAR(50) NOT NULL, owner VARCHAR(150) DEFAULT NULL, calls_made INT NOT NULL, created INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE role (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE role_has_action (role_id INT NOT NULL, action_id INT NOT NULL, INDEX IDX_E4DAF125D60322AC (role_id), INDEX IDX_E4DAF1259D32F035 (action_id), PRIMARY KEY(role_id, action_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE settings (setting_key VARCHAR(64) NOT NULL, setting_value LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json)', PRIMARY KEY(setting_key)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE songs (id VARCHAR(50) NOT NULL, text VARCHAR(150) DEFAULT NULL, artist VARCHAR(150) DEFAULT NULL, title VARCHAR(150) DEFAULT NULL, created INT NOT NULL, play_count INT NOT NULL, last_played INT NOT NULL, INDEX search_idx (text, artist, title), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE song_history (id INT AUTO_INCREMENT NOT NULL, song_id VARCHAR(50) NOT NULL, station_id INT NOT NULL, timestamp_start INT NOT NULL, listeners_start INT DEFAULT NULL, timestamp_end INT NOT NULL, listeners_end SMALLINT DEFAULT NULL, delta_total SMALLINT NOT NULL, delta_positive SMALLINT NOT NULL, delta_negative SMALLINT NOT NULL, delta_points LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json)', INDEX IDX_2AD16164A0BDB2F3 (song_id), INDEX IDX_2AD1616421BDB235 (station_id), INDEX sort_idx (timestamp_start), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE station (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(100) DEFAULT NULL, frontend_type VARCHAR(100) DEFAULT NULL, frontend_config LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json)', backend_type VARCHAR(100) DEFAULT NULL, backend_config LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json)', description LONGTEXT DEFAULT NULL, radio_base_dir VARCHAR(255) DEFAULT NULL, nowplaying_data LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json)', automation_settings LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json)', automation_timestamp INT DEFAULT NULL, enable_requests TINYINT(1) NOT NULL, request_delay INT DEFAULT NULL, enable_streamers TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE station_media (id INT AUTO_INCREMENT NOT NULL, station_id INT NOT NULL, song_id VARCHAR(50) DEFAULT NULL, title VARCHAR(200) DEFAULT NULL, artist VARCHAR(200) DEFAULT NULL, album VARCHAR(200) DEFAULT NULL, length SMALLINT NOT NULL, length_text VARCHAR(10) DEFAULT NULL, path VARCHAR(255) DEFAULT NULL, mtime INT DEFAULT NULL, INDEX IDX_32AADE3A21BDB235 (station_id), INDEX IDX_32AADE3AA0BDB2F3 (song_id), INDEX search_idx (title, artist, album), UNIQUE INDEX path_unique_idx (path), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE station_playlist_has_media (media_id INT NOT NULL, playlists_id INT NOT NULL, INDEX IDX_668E6486EA9FDD75 (media_id), INDEX IDX_668E64869F70CF56 (playlists_id), PRIMARY KEY(media_id, playlists_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE station_playlists (id INT AUTO_INCREMENT NOT NULL, station_id INT NOT NULL, name VARCHAR(200) NOT NULL, type VARCHAR(50) NOT NULL, is_enabled TINYINT(1) NOT NULL, play_per_songs SMALLINT NOT NULL, play_per_minutes SMALLINT NOT NULL, schedule_start_time SMALLINT NOT NULL, schedule_end_time SMALLINT NOT NULL, play_once_time SMALLINT NOT NULL, weight SMALLINT NOT NULL, include_in_automation TINYINT(1) NOT NULL, INDEX IDX_DC827F7421BDB235 (station_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE station_requests (id INT AUTO_INCREMENT NOT NULL, station_id INT NOT NULL, track_id INT NOT NULL, timestamp INT NOT NULL, played_at INT NOT NULL, ip VARCHAR(40) NOT NULL, INDEX IDX_F71F0C0721BDB235 (station_id), INDEX IDX_F71F0C075ED23C43 (track_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE station_streamers (id INT AUTO_INCREMENT NOT NULL, station_id INT NOT NULL, streamer_username VARCHAR(50) NOT NULL, streamer_password VARCHAR(50) NOT NULL, comments LONGTEXT DEFAULT NULL, is_active TINYINT(1) NOT NULL, INDEX IDX_5170063E21BDB235 (station_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE users (uid INT AUTO_INCREMENT NOT NULL, email VARCHAR(100) DEFAULT NULL, auth_password VARCHAR(255) DEFAULT NULL, auth_last_login_time INT DEFAULT NULL, auth_recovery_code VARCHAR(50) DEFAULT NULL, name VARCHAR(100) DEFAULT NULL, gender VARCHAR(1) DEFAULT NULL, customization LONGTEXT DEFAULT NULL COMMENT '(DC2Type:json)', PRIMARY KEY(uid)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE user_has_role (user_id INT NOT NULL, role_id INT NOT NULL, INDEX IDX_EAB8B535A76ED395 (user_id), INDEX IDX_EAB8B535D60322AC (role_id), PRIMARY KEY(user_id, role_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-CREATE TABLE user_manages_station (user_id INT NOT NULL, station_id INT NOT NULL, INDEX IDX_2453B56BA76ED395 (user_id), INDEX IDX_2453B56B21BDB235 (station_id), PRIMARY KEY(user_id, station_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-ALTER TABLE analytics ADD CONSTRAINT FK_EAC2E68821BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE;
-ALTER TABLE role_has_action ADD CONSTRAINT FK_E4DAF125D60322AC FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE CASCADE;
-ALTER TABLE role_has_action ADD CONSTRAINT FK_E4DAF1259D32F035 FOREIGN KEY (action_id) REFERENCES action (id) ON DELETE CASCADE;
-ALTER TABLE song_history ADD CONSTRAINT FK_2AD16164A0BDB2F3 FOREIGN KEY (song_id) REFERENCES songs (id) ON DELETE CASCADE;
-ALTER TABLE song_history ADD CONSTRAINT FK_2AD1616421BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE;
-ALTER TABLE station_media ADD CONSTRAINT FK_32AADE3A21BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE;
-ALTER TABLE station_media ADD CONSTRAINT FK_32AADE3AA0BDB2F3 FOREIGN KEY (song_id) REFERENCES songs (id) ON DELETE SET NULL;
-ALTER TABLE station_playlist_has_media ADD CONSTRAINT FK_668E6486EA9FDD75 FOREIGN KEY (media_id) REFERENCES station_media (id) ON DELETE CASCADE;
-ALTER TABLE station_playlist_has_media ADD CONSTRAINT FK_668E64869F70CF56 FOREIGN KEY (playlists_id) REFERENCES station_playlists (id) ON DELETE CASCADE;
-ALTER TABLE station_playlists ADD CONSTRAINT FK_DC827F7421BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE;
-ALTER TABLE station_requests ADD CONSTRAINT FK_F71F0C0721BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE;
-ALTER TABLE station_requests ADD CONSTRAINT FK_F71F0C075ED23C43 FOREIGN KEY (track_id) REFERENCES station_media (id) ON DELETE CASCADE;
-ALTER TABLE station_streamers ADD CONSTRAINT FK_5170063E21BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE;
-ALTER TABLE user_has_role ADD CONSTRAINT FK_EAB8B535A76ED395 FOREIGN KEY (user_id) REFERENCES users (uid) ON DELETE CASCADE;
-ALTER TABLE user_has_role ADD CONSTRAINT FK_EAB8B535D60322AC FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE CASCADE;
-ALTER TABLE user_manages_station ADD CONSTRAINT FK_2453B56BA76ED395 FOREIGN KEY (user_id) REFERENCES users (uid) ON DELETE CASCADE;
-ALTER TABLE user_manages_station ADD CONSTRAINT FK_2453B56B21BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+CREATE TABLE IF NOT EXISTS `analytics` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `station_id` int(11) DEFAULT NULL,
+  `type` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  `number_min` int(11) NOT NULL,
+  `number_max` int(11) NOT NULL,
+  `number_avg` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_EAC2E68821BDB235` (`station_id`),
+  KEY `search_idx` (`type`,`timestamp`),
+  CONSTRAINT `FK_EAC2E68821BDB235` FOREIGN KEY (`station_id`) REFERENCES `station` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `analytics` DISABLE KEYS */;
+/*!40000 ALTER TABLE `analytics` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `api_keys` (
+  `id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `owner` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `calls_made` int(11) NOT NULL,
+  `created` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `api_keys` DISABLE KEYS */;
+/*!40000 ALTER TABLE `api_keys` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `app_migrations` (
+  `version` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `app_migrations` DISABLE KEYS */;
+INSERT INTO `app_migrations` (`version`) VALUES
+  ('20161003041904'),
+  ('20161006030903'),
+  ('20161007021719'),
+  ('20161007195027'),
+  ('20161117000718'),
+  ('20161117161959'),
+  ('20161120032434'),
+  ('20161122035237'),
+  ('20170412210654'),
+  ('20170414205418'),
+  ('20170423202805'),
+  ('20170424042111'),
+  ('20170502202418'),
+  ('20170510082607'),
+  ('20170510085226'),
+  ('20170510091820'),
+  ('20170512023527'),
+  ('20170512082741'),
+  ('20170512094523'),
+  ('20170516073708'),
+  ('20170516205418'),
+  ('20170516214120'),
+  ('20170516215536'),
+  ('20170518100549'),
+  ('20170522052114'),
+  ('20170524090814');
+/*!40000 ALTER TABLE `app_migrations` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `listener` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `station_id` int(11) NOT NULL,
+  `listener_uid` int(11) NOT NULL,
+  `listener_ip` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `listener_user_agent` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `timestamp_start` int(11) NOT NULL,
+  `timestamp_end` int(11) NOT NULL,
+  `listener_hash` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_959C342221BDB235` (`station_id`),
+  KEY `update_idx` (`listener_hash`),
+  KEY `search_idx` (`listener_uid`,`timestamp_end`),
+  CONSTRAINT `FK_959C342221BDB235` FOREIGN KEY (`station_id`) REFERENCES `station` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `listener` DISABLE KEYS */;
+/*!40000 ALTER TABLE `listener` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `role` DISABLE KEYS */;
+/*!40000 ALTER TABLE `role` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `role_permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL,
+  `station_id` int(11) DEFAULT NULL,
+  `action_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `role_permission_unique_idx` (`role_id`,`action_name`,`station_id`),
+  KEY `IDX_1FBA94E6D60322AC` (`role_id`),
+  KEY `IDX_1FBA94E621BDB235` (`station_id`),
+  CONSTRAINT `FK_1FBA94E621BDB235` FOREIGN KEY (`station_id`) REFERENCES `station` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_1FBA94E6D60322AC` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `role_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `role_permissions` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `settings` (
+  `setting_key` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `setting_value` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:json_array)',
+  PRIMARY KEY (`setting_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `settings` DISABLE KEYS */;
+/*!40000 ALTER TABLE `settings` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `songs` (
+  `id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `text` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `artist` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `title` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created` int(11) NOT NULL,
+  `play_count` int(11) NOT NULL,
+  `last_played` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `search_idx` (`text`,`artist`,`title`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `songs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `songs` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `song_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `song_id` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `station_id` int(11) NOT NULL,
+  `timestamp_start` int(11) NOT NULL,
+  `listeners_start` int(11) DEFAULT NULL,
+  `timestamp_end` int(11) NOT NULL,
+  `listeners_end` smallint(6) DEFAULT NULL,
+  `delta_total` smallint(6) NOT NULL,
+  `delta_positive` smallint(6) NOT NULL,
+  `delta_negative` smallint(6) NOT NULL,
+  `delta_points` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:json_array)',
+  `playlist_id` int(11) DEFAULT NULL,
+  `timestamp_cued` int(11) DEFAULT NULL,
+  `request_id` int(11) DEFAULT NULL,
+  `unique_listeners` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_2AD16164427EB8A5` (`request_id`),
+  KEY `IDX_2AD16164A0BDB2F3` (`song_id`),
+  KEY `IDX_2AD1616421BDB235` (`station_id`),
+  KEY `sort_idx` (`timestamp_start`),
+  KEY `IDX_2AD161646BBD148` (`playlist_id`),
+  CONSTRAINT `FK_2AD1616421BDB235` FOREIGN KEY (`station_id`) REFERENCES `station` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_2AD16164427EB8A5` FOREIGN KEY (`request_id`) REFERENCES `station_requests` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_2AD161646BBD148` FOREIGN KEY (`playlist_id`) REFERENCES `station_playlists` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_2AD16164A0BDB2F3` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `song_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `song_history` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `station` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `frontend_type` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `frontend_config` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:json_array)',
+  `backend_type` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `backend_config` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:json_array)',
+  `description` longtext COLLATE utf8_unicode_ci,
+  `nowplaying_data` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:json_array)',
+  `automation_settings` longtext COLLATE utf8_unicode_ci COMMENT '(DC2Type:json_array)',
+  `automation_timestamp` int(11) DEFAULT NULL,
+  `enable_requests` tinyint(1) NOT NULL,
+  `request_delay` int(11) DEFAULT NULL,
+  `enable_streamers` tinyint(1) NOT NULL,
+  `needs_restart` tinyint(1) NOT NULL,
+  `request_threshold` int(11) DEFAULT NULL,
+  `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `radio_media_dir` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `radio_base_dir` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `station` DISABLE KEYS */;
+/*!40000 ALTER TABLE `station` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `station_media` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `station_id` int(11) NOT NULL,
+  `song_id` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `title` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `artist` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `album` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `length` smallint(6) NOT NULL,
+  `length_text` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mtime` int(11) DEFAULT NULL,
+  `fade_overlap` decimal(3,1) DEFAULT NULL,
+  `fade_in` decimal(3,1) DEFAULT NULL,
+  `fade_out` decimal(3,1) DEFAULT NULL,
+  `cue_in` decimal(3,1) DEFAULT NULL,
+  `cue_out` decimal(3,1) DEFAULT NULL,
+  `isrc` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `path_unique_idx` (`path`,`station_id`),
+  KEY `IDX_32AADE3A21BDB235` (`station_id`),
+  KEY `IDX_32AADE3AA0BDB2F3` (`song_id`),
+  KEY `search_idx` (`title`,`artist`,`album`),
+  CONSTRAINT `FK_32AADE3A21BDB235` FOREIGN KEY (`station_id`) REFERENCES `station` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_32AADE3AA0BDB2F3` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `station_media` DISABLE KEYS */;
+/*!40000 ALTER TABLE `station_media` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `station_mounts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `station_id` int(11) NOT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `is_default` tinyint(1) NOT NULL,
+  `fallback_mount` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `enable_autodj` tinyint(1) NOT NULL,
+  `autodj_format` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `autodj_bitrate` smallint(6) DEFAULT NULL,
+  `frontend_config` longtext COLLATE utf8_unicode_ci,
+  `relay_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_public` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_4DDF64AD21BDB235` (`station_id`),
+  CONSTRAINT `FK_4DDF64AD21BDB235` FOREIGN KEY (`station_id`) REFERENCES `station` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `station_mounts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `station_mounts` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `station_playlists` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `station_id` int(11) NOT NULL,
+  `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `is_enabled` tinyint(1) NOT NULL,
+  `play_per_songs` smallint(6) NOT NULL,
+  `play_per_minutes` smallint(6) NOT NULL,
+  `schedule_start_time` smallint(6) NOT NULL,
+  `schedule_end_time` smallint(6) NOT NULL,
+  `play_once_time` smallint(6) NOT NULL,
+  `weight` smallint(6) NOT NULL,
+  `include_in_automation` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_DC827F7421BDB235` (`station_id`),
+  CONSTRAINT `FK_DC827F7421BDB235` FOREIGN KEY (`station_id`) REFERENCES `station` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `station_playlists` DISABLE KEYS */;
+/*!40000 ALTER TABLE `station_playlists` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `station_playlist_has_media` (
+  `media_id` int(11) NOT NULL,
+  `playlists_id` int(11) NOT NULL,
+  PRIMARY KEY (`media_id`,`playlists_id`),
+  KEY `IDX_668E6486EA9FDD75` (`media_id`),
+  KEY `IDX_668E64869F70CF56` (`playlists_id`),
+  CONSTRAINT `FK_668E64869F70CF56` FOREIGN KEY (`playlists_id`) REFERENCES `station_playlists` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_668E6486EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `station_media` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `station_playlist_has_media` DISABLE KEYS */;
+/*!40000 ALTER TABLE `station_playlist_has_media` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `station_requests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `station_id` int(11) NOT NULL,
+  `track_id` int(11) NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  `played_at` int(11) NOT NULL,
+  `ip` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_F71F0C0721BDB235` (`station_id`),
+  KEY `IDX_F71F0C075ED23C43` (`track_id`),
+  CONSTRAINT `FK_F71F0C0721BDB235` FOREIGN KEY (`station_id`) REFERENCES `station` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_F71F0C075ED23C43` FOREIGN KEY (`track_id`) REFERENCES `station_media` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `station_requests` DISABLE KEYS */;
+/*!40000 ALTER TABLE `station_requests` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `station_streamers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `station_id` int(11) NOT NULL,
+  `streamer_username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `streamer_password` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `comments` longtext COLLATE utf8_unicode_ci,
+  `is_active` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_5170063E21BDB235` (`station_id`),
+  CONSTRAINT `FK_5170063E21BDB235` FOREIGN KEY (`station_id`) REFERENCES `station` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `station_streamers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `station_streamers` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `uid` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `auth_password` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `timezone` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `locale` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` int(11) NOT NULL,
+  `updated_at` int(11) NOT NULL,
+  `theme` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+
+CREATE TABLE IF NOT EXISTS `user_has_role` (
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `IDX_EAB8B535A76ED395` (`user_id`),
+  KEY `IDX_EAB8B535D60322AC` (`role_id`),
+  CONSTRAINT `FK_EAB8B535A76ED395` FOREIGN KEY (`user_id`) REFERENCES `users` (`uid`) ON DELETE CASCADE,
+  CONSTRAINT `FK_EAB8B535D60322AC` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*!40000 ALTER TABLE `user_has_role` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_has_role` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

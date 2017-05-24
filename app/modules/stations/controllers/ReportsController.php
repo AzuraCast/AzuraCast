@@ -206,19 +206,44 @@ class ReportsController extends BaseController
                 'ALBUM_TITLE',
                 'MARKETING_LABEL',
                 'ACTUAL_TOTAL_PERFORMANCES',
+                'AGGREGATE_TUNING_HOURS',
+                'CHANNEL_OR_PROGRAM_NAME',
+                'PLAY_FREQUENCY',
             ]];
 
-            $all_media = $this->em->createQuery('SELECT sm
+            // Pull all station media for quick referencing.
+            $all_media = $this->em->createQuery('SELECT sm, sp
                 FROM Entity\StationMedia sm
+                LEFT JOIN sm.playlists sp
                 WHERE sm.station_id = :station_id')
                 ->setParameter('station_id', $this->station->id)
                 ->getArrayResult();
 
             $media_by_id = [];
             foreach($all_media as $media_row) {
+                if (!empty($media_row['playlists'])) {
+                    $media_row['playlist'] = $media_row['playlists'][0]['name'];
+                    unset($media_row['playlists']);
+                }
+
                 $media_by_id[$media_row['song_id']] = $media_row;
             }
 
+            // Pull Aggregate Tuning Hours (ATH) totals
+            $ath = (float)$this->em->createQuery('SELECT
+                AVG(sh.listeners_end) * ((MAX(sh.timestamp_end) - MIN(sh.timestamp_end)) / 3600)
+                FROM Entity\SongHistory sh
+                WHERE sh.station_id = :station_id
+                AND sh.timestamp_start <= :end
+                AND sh.timestamp_end >= :start')
+                ->setParameter('station_id', $this->station->id)
+                ->setParameter('start', $start_date)
+                ->setParameter('end', $end_date)
+                ->getSingleScalarResult();
+
+            $ath = round($ath, 2);
+
+            // Pull all relevant history grouped by song ID.
             $history_rows = $this->em->createQuery('SELECT
                 sh.song_id AS song_id, COUNT(sh.id) AS plays, SUM(sh.unique_listeners) AS unique_listeners
                 FROM Entity\SongHistory sh
@@ -290,26 +315,28 @@ class ReportsController extends BaseController
                         ],
                     ]);
 
-                    $search_result_raw = $search_response->getBody()->getContents();
-                    $search_result = @json_decode($search_result_raw, true);
+                    if ($search_response->getStatusCode() == 200) {
+                        $search_result_raw = $search_response->getBody()->getContents();
+                        $search_result = @json_decode($search_result_raw, true);
 
-                    if (!empty($search_result['tracks']['items'])) {
-                        $track = $search_result['tracks']['items'][0];
-                        $isrc = str_replace('-', '', $track['external_ids']['isrc']);
+                        if (!empty($search_result['tracks']['items'])) {
+                            $track = $search_result['tracks']['items'][0];
+                            $isrc = str_replace('-', '', $track['external_ids']['isrc']);
 
-                        if (!empty($isrc)) {
-                            $song_row['isrc'] = $isrc;
+                            if (!empty($isrc)) {
+                                $song_row['isrc'] = $isrc;
 
-                            $set_isrc_query->setParameter('isrc', $isrc)
+                                $set_isrc_query->setParameter('isrc', $isrc)
+                                    ->setParameter('song_id', $song_id)
+                                    ->execute();
+                            }
+                        } else {
+                            $song_row['isrc'] = '';
+
+                            $set_isrc_query->setParameter('isrc', '')
                                 ->setParameter('song_id', $song_id)
                                 ->execute();
                         }
-                    } else {
-                        $song_row['isrc'] = '';
-
-                        $set_isrc_query->setParameter('isrc', '')
-                            ->setParameter('song_id', $song_id)
-                            ->execute();
                     }
                 }
 
@@ -322,6 +349,9 @@ class ReportsController extends BaseController
                     $song_row['album'] ?? '',
                     '',
                     $history_row['unique_listeners'],
+                    $ath,
+                    $song_row['playlist'] ?? 'Live Broadcasting',
+                    $history_row['plays'],
                 ];
 
             }

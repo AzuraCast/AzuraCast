@@ -53,6 +53,8 @@ return [
 
         'advanced' => [
             'legend' => _('Advanced Configuration'),
+            'description' => _('This section and all sections below it are optional; you can continue without making any changes here and sensible defaults will be used.'),
+
             'elements' => [
 
                 'frontend_type' => [
@@ -123,7 +125,7 @@ return [
                     'text',
                     [
                         'label' => _('Maximum Listeners'),
-                        'description' => _('Maximum number of total listeners across all streams. Leave blank for unlimited.'),
+                        'description' => _('Maximum number of total listeners across all streams. Leave blank to use the default (250).'),
                         'belongsTo' => 'frontend_config',
                     ]
                 ],

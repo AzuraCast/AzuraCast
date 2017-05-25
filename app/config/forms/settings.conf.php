@@ -13,7 +13,6 @@ return [
         'groups' => [
 
             'system' => [
-                'legend' => _('System Settings'),
                 'elements' => [
 
                     'instance_name' => [

@@ -145,7 +145,7 @@ class SetupController extends BaseController
             return $this->redirectHome();
         }
 
-        return $this->renderForm($form, 'edit', _('Site Settings'));
+        $this->view->form = $form;
     }
 
     /**

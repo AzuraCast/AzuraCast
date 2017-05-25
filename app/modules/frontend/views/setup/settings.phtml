@@ -1,5 +1,15 @@
-<?php $this->layout('main', ['title' => _('Set Up')]); ?>
+<?php $this->layout('main', ['title' => _('AzuraCast Setup'), 'manual' => true]); ?>
 
-<p><?=_('Complete the setup process by providing some information about your broadcast environment.') ?></p>
+<div class="block-header">
+    <h2><?=_('AzuraCast Setup') ?></h2>
+</div>
 
-<?=$form->render() ?>
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2><?=_('Step 3: Customize AzuraCast Settings') ?></h2>
+        <div><?=_('Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.') ?></div>
+    </div>
+    <div class="card-body card-padding">
+        <?=$this->insert('partials/form') ?>
+    </div>
+</div>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-22 21:56+0000\n"
+"POT-Creation-Date: 2017-05-25 02:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,6 @@ msgid "System Maintenance"
 msgstr ""
 
 #: /var/azuracast/www/app/config/admin/dashboard.conf.php:10
-#: /var/azuracast/www/app/config/forms/settings.conf.php:16
 msgid "System Settings"
 msgstr ""
 
@@ -68,20 +67,19 @@ msgstr ""
 
 #: /var/azuracast/www/app/config/forms/api_key.conf.php:20
 #: /var/azuracast/www/app/config/forms/automation.conf.php:40
-#: /var/azuracast/www/app/config/forms/media.conf.php:88
+#: /var/azuracast/www/app/config/forms/media.conf.php:97
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:115
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:98
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:202
 #: /var/azuracast/www/app/config/forms/profile.conf.php:92
 #: /var/azuracast/www/app/config/forms/rename.conf.php:18
 #: /var/azuracast/www/app/config/forms/role.conf.php:74
-#: /var/azuracast/www/app/config/forms/settings.conf.php:79
+#: /var/azuracast/www/app/config/forms/settings.conf.php:78
 #: /var/azuracast/www/app/config/forms/song.conf.php:47
-#: /var/azuracast/www/app/config/forms/station.conf.php:239
+#: /var/azuracast/www/app/config/forms/station.conf.php:250
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:50
 #: /var/azuracast/www/app/config/forms/user.conf.php:48
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:28
-#: /var/azuracast/www/app/templates/partials/form.phtml:27
 msgid "Save Changes"
 msgstr ""
 
@@ -162,53 +160,61 @@ msgid "Song Album"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:38
-msgid "Song Length (seconds)"
+msgid "ISRC"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/media.conf.php:39
+msgid "International Standard Recording Code, used for licensing reports."
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:46
+msgid "Song Length (seconds)"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/media.conf.php:55
 msgid "Custom Fading: Overlap Time (seconds)"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/media.conf.php:47
+#: /var/azuracast/www/app/config/forms/media.conf.php:56
 msgid ""
 "The time that this song should overlap its surrounding songs when fading. "
 "Leave blank to use the system default."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/media.conf.php:55
+#: /var/azuracast/www/app/config/forms/media.conf.php:64
 msgid "Custom Fading: Fade-In Time (seconds)"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/media.conf.php:56
+#: /var/azuracast/www/app/config/forms/media.conf.php:65
 msgid ""
 "The time period that the song should fade in. Leave blank to use the system "
 "default."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/media.conf.php:63
+#: /var/azuracast/www/app/config/forms/media.conf.php:72
 msgid "Custom Fading: Fade-Out Time (seconds)"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/media.conf.php:64
+#: /var/azuracast/www/app/config/forms/media.conf.php:73
 msgid ""
 "The time period that the song should fade out. Leave blank to use the system "
 "default."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/media.conf.php:71
+#: /var/azuracast/www/app/config/forms/media.conf.php:80
 msgid "Custom Cues: Cue-In Point (seconds)"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/media.conf.php:72
+#: /var/azuracast/www/app/config/forms/media.conf.php:81
 msgid ""
 "Seconds from the start of the song that the AutoDJ should start playing."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/media.conf.php:79
+#: /var/azuracast/www/app/config/forms/media.conf.php:88
 msgid "Custom Cues: Cue-Out Point (seconds)"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/media.conf.php:80
+#: /var/azuracast/www/app/config/forms/media.conf.php:89
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
 msgstr ""
 
@@ -528,6 +534,22 @@ msgstr ""
 msgid "Create Account"
 msgstr ""
 
+#: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:10
+msgid "Important Notes"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:38
+msgid "Report Start Date"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:47
+msgid "Report End Date"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:56
+msgid "Generate Report"
+msgstr ""
+
 #: /var/azuracast/www/app/config/forms/role.conf.php:24
 #: /var/azuracast/www/app/modules/admin/views/permissions/index.phtml:23
 msgid "Role Name"
@@ -558,32 +580,32 @@ msgstr ""
 msgid "Per-Station"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/settings.conf.php:22
+#: /var/azuracast/www/app/config/forms/settings.conf.php:21
 msgid "AzuraCast Instance Name"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/settings.conf.php:23
+#: /var/azuracast/www/app/config/forms/settings.conf.php:22
 msgid ""
 "This name will appear as a sub-header next to the AzuraCast logo, to help "
 "identify this server."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/settings.conf.php:30
+#: /var/azuracast/www/app/config/forms/settings.conf.php:29
 msgid "Site Base URL"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/settings.conf.php:31
+#: /var/azuracast/www/app/config/forms/settings.conf.php:30
 msgid ""
 "The base URL where this service is located. Use either the external IP "
 "address or fully-qualified domain name (if one exists) pointing to this "
 "server."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/settings.conf.php:42
+#: /var/azuracast/www/app/config/forms/settings.conf.php:41
 msgid "Use Web Proxy for Radio"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/settings.conf.php:43
+#: /var/azuracast/www/app/config/forms/settings.conf.php:42
 msgid ""
 "By default, radio stations broadcast on their own ports (i.e. 8000). If "
 "you're using a service like CloudFlare or accessing your radio station by "
@@ -591,22 +613,22 @@ msgid ""
 "ports (80 and 443)."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/settings.conf.php:56
+#: /var/azuracast/www/app/config/forms/settings.conf.php:55
 msgid "Advanced: Third-Party API Access"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/settings.conf.php:57
+#: /var/azuracast/www/app/config/forms/settings.conf.php:56
 msgid ""
 "For some features, AzuraCast must connect to third-party API services. These "
 "services are optional."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/settings.conf.php:64
+#: /var/azuracast/www/app/config/forms/settings.conf.php:63
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:23
 msgid "Google Maps API Key"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/settings.conf.php:65
+#: /var/azuracast/www/app/config/forms/settings.conf.php:64
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:19
 #, php-format
 msgid ""
@@ -652,127 +674,143 @@ msgstr ""
 msgid "Advanced Configuration"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:61
+#: /var/azuracast/www/app/config/forms/station.conf.php:56
+msgid ""
+"This section and all sections below it are optional; you can continue "
+"without making any changes here and sensible defaults will be used."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/station.conf.php:63
 msgid "Station Frontend Type"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:62
+#: /var/azuracast/www/app/config/forms/station.conf.php:64
 msgid "The type of software you use to deliver your broadcast to the audience."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:71
+#: /var/azuracast/www/app/config/forms/station.conf.php:73
 msgid "Station Backend Type"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:72
+#: /var/azuracast/www/app/config/forms/station.conf.php:74
 msgid ""
 "The type of software you use to manage the station's playlists and media."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:81
+#: /var/azuracast/www/app/config/forms/station.conf.php:83
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:33
 msgid "Station Media Directory"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:82
+#: /var/azuracast/www/app/config/forms/station.conf.php:84
 msgid ""
 "The directory where media files are stored. Leave blank to use default "
 "directory."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:90
+#: /var/azuracast/www/app/config/forms/station.conf.php:92
 msgid "Configure Radio Broadcasting"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:98
-msgid "Allow Streamers / DJs"
-msgstr ""
-
-#: /var/azuracast/www/app/config/forms/station.conf.php:99
-msgid ""
-"If this setting is turned on, streamers (or DJs) will be able to connect "
-"directly to your stream and broadcast live music that interrupts the AutoDJ "
-"stream."
-msgstr ""
-
-#: /var/azuracast/www/app/config/forms/station.conf.php:108
+#: /var/azuracast/www/app/config/forms/station.conf.php:100
 msgid "Broadcasting Port"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:109
+#: /var/azuracast/www/app/config/forms/station.conf.php:101
 msgid ""
 "No other program can be using this port. Leave blank to automatically assign "
 "a port."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:117
+#: /var/azuracast/www/app/config/forms/station.conf.php:109
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:202
 msgid "Source Password"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:118
-#: /var/azuracast/www/app/config/forms/station.conf.php:127
+#: /var/azuracast/www/app/config/forms/station.conf.php:110
+#: /var/azuracast/www/app/config/forms/station.conf.php:119
 msgid "Leave blank to automatically generate a new password."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:126
+#: /var/azuracast/www/app/config/forms/station.conf.php:118
 msgid "Admin Password"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:135
+#: /var/azuracast/www/app/config/forms/station.conf.php:127
+msgid "Maximum Listeners"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/station.conf.php:128
+msgid ""
+"Maximum number of total listeners across all streams. Leave blank to use the "
+"default (250)."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/station.conf.php:136
 msgid "Custom Configuration"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:137
+#: /var/azuracast/www/app/config/forms/station.conf.php:138
 msgid ""
 "This code will be included in the frontend configuration. You can use either "
 "JSON {\"new_key\": \"new_value\"} format or XML &lt;new_key&gt;new_value&lt;/"
 "new_key&gt;."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:145
+#: /var/azuracast/www/app/config/forms/station.conf.php:146
 msgid "Configure External Radio Server"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:153
+#: /var/azuracast/www/app/config/forms/station.conf.php:154
 msgid "Radio Station Type"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:156
+#: /var/azuracast/www/app/config/forms/station.conf.php:157
 msgid "ShoutCast v1"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:157
+#: /var/azuracast/www/app/config/forms/station.conf.php:158
 msgid "ShoutCast v2"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:158
+#: /var/azuracast/www/app/config/forms/station.conf.php:159
 msgid "IceCast v2.4+"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:166
+#: /var/azuracast/www/app/config/forms/station.conf.php:167
 msgid "Radio Station Base URL"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:175
+#: /var/azuracast/www/app/config/forms/station.conf.php:176
 msgid "Configure LiquidSoap"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:183
+#: /var/azuracast/www/app/config/forms/station.conf.php:184
+msgid "Allow Streamers / DJs"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/station.conf.php:185
+msgid ""
+"If this setting is turned on, streamers (or DJs) will be able to connect "
+"directly to your stream and broadcast live music that interrupts the AutoDJ "
+"stream."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/station.conf.php:194
 msgid "Allow Song Requests"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:184
+#: /var/azuracast/www/app/config/forms/station.conf.php:195
 msgid ""
 "Setting this enables listeners to request a song for play on your station. "
 "Only songs that are already in your playlists are listed as requestable."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:193
+#: /var/azuracast/www/app/config/forms/station.conf.php:204
 msgid "Request Minimum Delay (Minutes)"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:194
+#: /var/azuracast/www/app/config/forms/station.conf.php:205
 msgid ""
 "If requests are enabled, this specifies the minimum delay (in minutes) "
 "between a request being submitted and being played. If set to zero, no delay "
@@ -781,31 +819,31 @@ msgid ""
 "your local regulations for more information."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:202
+#: /var/azuracast/www/app/config/forms/station.conf.php:213
 msgid "Request Last Played Threshold (Minutes)"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:203
+#: /var/azuracast/www/app/config/forms/station.conf.php:214
 msgid ""
 "If requests are enabled, this specifies the minimum time (in minutes) "
 "between a song playing on the radio and being available to request again. "
 "Set to 0 for no threshold."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:211
+#: /var/azuracast/www/app/config/forms/station.conf.php:222
 msgid "Crossfade Duration (Seconds)"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:213
+#: /var/azuracast/www/app/config/forms/station.conf.php:224
 msgid ""
 "Number of seconds to overlap songs. Set to 0 to disable crossfade completely."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:224
+#: /var/azuracast/www/app/config/forms/station.conf.php:235
 msgid "Advanced: Custom Configuration"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:226
+#: /var/azuracast/www/app/config/forms/station.conf.php:237
 msgid ""
 "This code will be inserted into your station's LiquidSoap configuration, "
 "below the playlist configuration and just before the IceCast output. Only "
@@ -951,7 +989,6 @@ msgid "Record updated."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/controllers/SettingsController.php:33
-#: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:148
 msgid "Site Settings"
 msgstr ""
 
@@ -1213,31 +1250,31 @@ msgid "Begin setup by creating a Super Administrator account."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/frontend/views/setup/settings.phtml:1
-msgid "Set Up"
+#: /var/azuracast/www/app/modules/frontend/views/setup/settings.phtml:4
+#: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:1
+#: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:4
+msgid "AzuraCast Setup"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/views/setup/settings.phtml:3
+#: /var/azuracast/www/app/modules/frontend/views/setup/settings.phtml:9
+msgid "Step 3: Customize AzuraCast Settings"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/frontend/views/setup/settings.phtml:10
 msgid ""
 "Complete the setup process by providing some information about your "
-"broadcast environment."
+"broadcast environment. These settings can be changed later from the "
+"administration panel."
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:1
-msgid "Create Station"
+#: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:9
+msgid "Step 2: Create a New Station"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:3
+#: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:10
 msgid ""
-"To continue the setup process, enter the basic details of your first station "
-"below. Some technical details will automatically be retrieved from the "
-"system after you complete this step."
-msgstr ""
-
-#: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:8
-msgid ""
-"Note: If you are not starting with an empty station directory, it may take a "
-"while to process any existing MP3 files or playlists that are in this "
-"station's directory."
+"Continue the setup process by creating your first radio station below. You "
+"can edit any of these details later."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/controllers/AutomationController.php:40
@@ -1297,6 +1334,11 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/controllers/ProfileController.php:86
 msgid "Song skipped."
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/controllers/ReportsController.php:379
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:57
+msgid "SoundExchange Report"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:31
@@ -1615,7 +1657,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:77
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:5
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:49
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:48
 msgid "Song Requests"
 msgstr ""
 
@@ -1777,7 +1819,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:13
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:47
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:56
 msgid "Live Listeners"
 msgstr ""
 
@@ -1807,7 +1849,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:5
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:53
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:52
 msgid "Song Listener Impact"
 msgstr ""
 
@@ -1895,23 +1937,23 @@ msgstr ""
 msgid "Reports"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:51
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:50
 msgid "Song Playback Timeline"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:54
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:53
 msgid "Duplicate Songs"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:61
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:64
 msgid "Utilities"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:65
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:68
 msgid "Automated Assignment"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:68
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:71
 #: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:3
 msgid "Restart Broadcasting"

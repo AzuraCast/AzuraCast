@@ -38,7 +38,6 @@ class IceCast extends FrontendAbstract
         $sources = $return['source'];
         $mounts = (key($sources) === 0) ? $sources : [$sources];
 
-
         $em = $this->di['em'];
         $mount_repo = $em->getRepository(Entity\StationMount::class);
         $default_mount = $mount_repo->getDefaultMount($this->station);
@@ -49,10 +48,10 @@ class IceCast extends FrontendAbstract
 
         $np['listeners']['clients'] = [];
 
+        $song_data_by_mount = [];
+
         foreach($mounts as $mount) {
-            if ($mount['@mount'] === $default_mount->name) {
-                $song_data = $mount;
-            }
+            $song_data_by_mount[$mount['@mount']] = $mount;
 
             $current_listeners += $mount['listeners'];
 
@@ -94,6 +93,15 @@ class IceCast extends FrontendAbstract
             'total' => $current_listeners,
             'clients' => $clients,
         ];
+
+        // Check the default mount, then its fallback if otherwise not available.
+        if (!empty($song_data_by_mount[$default_mount->name]['title'])) {
+            $song_data = $song_data_by_mount[$default_mount->name];
+        } elseif (!empty($song_data_by_mount[$default_mount->fallback_mount]['title'])) {
+            $song_data = $song_data_by_mount[$default_mount->fallback_mount];
+        } else {
+            return false;
+        }
 
         if (isset($song_data['artist'])) {
             $np['current_song'] = [

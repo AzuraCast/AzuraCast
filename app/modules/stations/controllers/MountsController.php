@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Stations;
 
+use Entity;
 use Entity\StationMount;
 
 class MountsController extends BaseController
@@ -30,7 +31,7 @@ class MountsController extends BaseController
         $form = new \App\Form($form_config);
 
         if ($this->hasParam('id')) {
-            $record = $this->em->getRepository(StationMount::class)->findOneBy([
+            $record = $this->em->getRepository(Entity\StationMount::class)->findOneBy([
                 'id' => $this->getParam('id'),
                 'station_id' => $this->station->id,
             ]);
@@ -40,8 +41,8 @@ class MountsController extends BaseController
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            if (!($record instanceof StationMount)) {
-                $record = new StationMount;
+            if (!($record instanceof Entity\StationMount)) {
+                $record = new Entity\StationMount;
                 $record->station = $this->station;
             }
 
@@ -57,6 +58,16 @@ class MountsController extends BaseController
             }
 
             $this->em->flush();
+
+            // Unset all other records as default if this one is set.
+            if ($record->is_default) {
+                $this->em->createQuery('UPDATE Entity\StationMount sm SET sm.is_default = 0
+                    WHERE sm.station_id = :station_id AND sm.id != :new_default_id')
+                    ->setParameter('station_id', $this->station->id)
+                    ->setParameter('new_default_id', $record->id)
+                    ->execute();
+            }
+
             $this->em->refresh($this->station);
 
             $this->alert('<b>' . _('Record updated.') . '</b>', 'green');
@@ -73,12 +84,12 @@ class MountsController extends BaseController
     {
         $id = (int)$this->getParam('id');
 
-        $record = $this->em->getRepository(StationMount::class)->findOneBy([
+        $record = $this->em->getRepository(Entity\StationMount::class)->findOneBy([
             'id' => $id,
             'station_id' => $this->station->id
         ]);
 
-        if ($record instanceof StationMount) {
+        if ($record instanceof Entity\StationMount) {
             $this->em->remove($record);
         }
 

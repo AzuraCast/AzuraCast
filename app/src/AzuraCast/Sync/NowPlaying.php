@@ -114,13 +114,18 @@ class NowPlaying extends SyncAbstract
         $np = array_merge($np, $np_new);
         $np['listeners'] = $np_new['listeners'];
 
-        // Pull from current NP data if song details haven't changed.
-        $current_song_hash = Entity\Song::getSongHash($np_new['current_song']);
-
         if (empty($np['current_song']['text'])) {
-            $np['current_song'] = [];
+            $song_obj = $this->song_repo->getOrCreate(['text' => 'Stream Offline'], true);
+
+            $current_song = Entity\Song::api($song_obj);
+            $current_song['sh_id'] = 0;
+            $np['current_song'] = $current_song;
+
             $np['song_history'] = $this->history_repo->getHistoryForStation($station);
         } else {
+            // Pull from current NP data if song details haven't changed.
+            $current_song_hash = Entity\Song::getSongHash($np_new['current_song']);
+
             if (strcmp($current_song_hash, $np_old['current_song']['id']) == 0) {
                 $np['song_history'] = $np_old['song_history'];
 
@@ -134,7 +139,6 @@ class NowPlaying extends SyncAbstract
             // Update detailed listener statistics, if they exist for the station
             if (isset($np['listeners']['clients'])) {
                 $this->listener_repo->update($station, $np['listeners']['clients']);
-                unset($np['listeners']['clients']);
             }
 
             // Register a new item in song history.
@@ -145,6 +149,8 @@ class NowPlaying extends SyncAbstract
 
             $np['current_song'] = $current_song;
         }
+
+        unset($np['listeners']['clients']);
 
         $station->nowplaying_data = $np;
 

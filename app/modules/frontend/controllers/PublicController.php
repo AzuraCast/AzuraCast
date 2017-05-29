@@ -1,7 +1,7 @@
 <?php
 namespace Controller\Frontend;
 
-use Entity\Station;
+use Entity;
 
 class PublicController extends BaseController
 {
@@ -10,36 +10,34 @@ class PublicController extends BaseController
         return true;
     }
 
-    public function indexAction()
+    public function preDispatch()
     {
-        // Inject all stations.
-        $stations = $this->em->getRepository(Station::class)->findAll();
-        $this->view->stations = $stations;
-
-        if (!$this->hasParam('station')) {
-            $station = reset($stations);
-            return $this->redirectFromHere(['station' => $station->id]);
-        }
-
         $this->view->station = $this->_getStation();
     }
+
+    public function indexAction()
+    {}
 
     public function embedAction()
-    {
-        $this->view->station = $this->_getStation();
-    }
+    {}
 
     public function embedrequestsAction()
-    {
-        $this->view->station = $this->_getStation();
-    }
+    {}
 
     protected function _getStation()
     {
-        $station_id = (int)$this->getParam('station');
-        $station = $this->em->getRepository(Station::class)->find($station_id);
+        $station_id = $this->getParam('station');
 
-        if (!($station instanceof Station)) {
+        /** @var Entity\Repository\StationRepository $station_repo */
+        $station_repo = $this->em->getRepository(Entity\Station::class);
+
+        if (is_numeric($station_id)) {
+            $station = $station_repo->find($station_id);
+        } else {
+            $station = $station_repo->findByShortCode($station_id);
+        }
+
+        if (!($station instanceof Entity\Station)) {
             throw new \App\Exception(_('Station not found!'));
         }
 

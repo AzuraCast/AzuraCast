@@ -46,9 +46,6 @@
             <div class="card-header ch-alt">
                 <h2><?=_('Station Overview') ?></h2>
 
-
-
-
                 <ul class="actions">
                     <li><a class="btn-refresh" href="#" title="<?=_('Refresh') ?>"><i class="zmdi zmdi-refresh"></i></a></li>
                 <?php if ($acl->isAllowed('administer stations')): ?>
@@ -83,7 +80,7 @@
                                 </a>
                             </td>
                             <td>
-                                <big><a href="<?=$url->route(['controller' => 'public', 'station' => $row->id]) ?>" target="_blank"><?=$this->e($row->name) ?></a></big>
+                                <big><a href="<?=$url->route(['controller' => 'public', 'station' => $row->getShortName()]) ?>" target="_blank"><?=$this->e($row->name) ?></a></big>
                             </td>
                             <td class="text-center">
                                 <span class="nowplaying-listeners">0</span>
@@ -93,9 +90,7 @@
                                 <span class="nowplaying-artist"><?=_('Song Artist') ?></span>
                             </td>
                             <td>
-                            <?php if ($acl->isAllowed('view station management', $row->id)): ?>
                                 <a class="btn btn-primary" href="<?=$url->route(['module' => 'stations', 'station' => $row->id]) ?>"><?=_('Manage') ?></a>
-                            <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -200,9 +195,11 @@ function nowPlaying() {
         $.each(data.result, function(i, row) {
             var station_row = $('#station_'+row.station.id);
 
-            station_row.find('.nowplaying-title').text(row.current_song.title);
-            station_row.find('.nowplaying-artist').text(row.current_song.artist);
-            station_row.find('.nowplaying-listeners').text(row.listeners.total)
+            if (station_row.length) {
+                station_row.find('.nowplaying-title').text(row.current_song.title);
+                station_row.find('.nowplaying-artist').text(row.current_song.artist);
+                station_row.find('.nowplaying-listeners').text(row.listeners.total)
+            }
         });
 
         $('.btn-refresh i').removeClass('zmdi-hc-spin');

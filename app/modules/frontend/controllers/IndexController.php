@@ -1,21 +1,41 @@
 <?php
 namespace Controller\Frontend;
 
-use Entity\Station;
+use Entity;
 
 class IndexController extends BaseController
 {
     public function indexAction()
     {
-        // Inject all stations.
-        $stations = $this->em->getRepository(Station::class)->findAll();
+        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
+
+        // Don't show stations the user can't manage.
+        $stations = array_filter($stations, function($station) {
+            return $this->acl->isAllowed('view station management', $station->id);
+        });
+
+        if (empty($stations)) {
+            throw new \App\Exception\PermissionDenied(_('You do not currently manage any stations. Please contact this server\'s administrator for assistance.'));
+        }
+
         $this->view->stations = $stations;
 
-        // Pull cached statistic charts if available.
+        /** @var \App\Cache $cache */
         $cache = $this->di->get('cache');
-        $metrics = $cache->get('admin_metrics');
 
-        if (!$metrics) {
+        /** @var \InfluxDB\Database $influx */
+        $influx = $this->di->get('influx');
+
+        // Generate unique cache ID for stations.
+        $stats_cache_stations = [];
+        foreach($stations as $station) {
+            $stats_cache_stations[$station->id] = $station->id;
+        }
+
+        $cache_name = 'homepage/metrics/'.md5(serialize($stats_cache_stations));
+
+        $metrics = $cache->getOrSet($cache_name, function() use ($stations, $influx) {
+
             // Statistics by day.
             $station_averages = [];
             $network_data = [
@@ -26,7 +46,6 @@ class IndexController extends BaseController
             ];
 
             // Query InfluxDB database.
-            $influx = $this->di->get('influx');
             $resultset = $influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 180d', [
                 'epoch' => 'ms',
             ]);
@@ -116,13 +135,12 @@ class IndexController extends BaseController
                 }
             }
 
-            $metrics = [
+            return [
                 'network' => json_encode($network_metrics),
                 'station' => json_encode($station_metrics),
             ];
 
-            $cache->save($metrics, 'admin_metrics', 600);
-        }
+        }, 600);
 
         $this->view->metrics = $metrics;
     }

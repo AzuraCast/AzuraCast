@@ -16,17 +16,6 @@
 
         <ul class="actions pull-right">
             <?=$this->fetch('partials/radio_controls') ?>
-
-            <li class="dropdown">
-                <a href="" data-toggle="dropdown" aria-expanded="false" title="<?=_('Select Station') ?>">
-                    <i class="zmdi zmdi-view-list-alt"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right">
-                <?php foreach($stations as $row): ?>
-                    <li><a href="<?=$url->routeFromHere(['station' => $row->id]) ?>"><?=$row->name ?></a></li>
-                <?php endforeach; ?>
-                </ul>
-            </li>
         </ul>
         <h3 class="text-left"><?=$this->e($station->name) ?></h3>
 

@@ -116,4 +116,13 @@ class SongHistory extends \App\Doctrine\Entity
      * })
      */
     protected $request;
+
+    public function api()
+    {
+        return [
+            'sh_id' => (int)$this->id,
+            'played_at' => (int)$this->timestamp_start,
+            'song' => $this->song->api(),
+        ];
+    }
 }

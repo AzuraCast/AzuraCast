@@ -11,7 +11,8 @@ class StationsController extends BaseController
 
         $stations = [];
         foreach ($stations_raw as $row) {
-            $stations[] = Entity\Station::api($row, $this->di);
+            /** @var Entity\Station $row */
+            $stations[] = $row->api($row->getFrontendAdapter($this->di));
         }
 
         return $this->returnSuccess($stations);
@@ -21,7 +22,7 @@ class StationsController extends BaseController
     {
         try {
             $station = $this->getStation();
-            return $this->returnSuccess(Entity\Station::api($station, $this->di));
+            return $this->returnSuccess($station->api($station->getFrontendAdapter($this->di)));
         } catch(\Exception $e) {
             return $this->returnError($e->getMessage());
         }

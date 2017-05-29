@@ -1,6 +1,8 @@
 <?php
 namespace Entity;
 
+use AzuraCast\Radio\Frontend\FrontendAbstract;
+
 /**
  * @Table(name="station_mounts")
  * @Entity(repositoryClass="Entity\Repository\StationMountRepository")
@@ -72,4 +74,26 @@ class StationMount extends \App\Doctrine\Entity
      * })
      */
     protected $station;
+
+    /**
+     * Retrieve the API version of the object/array.
+     *
+     * @param FrontendAbstract $fa
+     * @return array
+     */
+    public function api(FrontendAbstract $fa)
+    {
+        $api = [
+            'name' => (string)$this->name,
+            'is_default' => (bool)$this->is_default,
+            'url' => (string)$fa->getUrlForMount($this->name),
+        ];
+
+        if ($this->enable_autodj) {
+            $api['bitrate'] = (string)$this->autodj_bitrate;
+            $api['format'] = (string)$this->autodj_format;
+        }
+
+        return $api;
+    }
 }

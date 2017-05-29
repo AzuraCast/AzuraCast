@@ -106,7 +106,7 @@ class NowPlaying extends SyncAbstract
         $np_old = (array)$station->nowplaying_data;
 
         $np = [];
-        $np['station'] = Entity\Station::api($station, $this->di);
+        $np['station'] = $station->api($station->getFrontendAdapter($this->di));
 
         $frontend_adapter = $station->getFrontendAdapter($this->di);
         $np_new = $frontend_adapter->getNowPlaying();
@@ -117,7 +117,7 @@ class NowPlaying extends SyncAbstract
         if (empty($np['current_song']['text'])) {
             $song_obj = $this->song_repo->getOrCreate(['text' => 'Stream Offline'], true);
 
-            $current_song = Entity\Song::api($song_obj);
+            $current_song = $song_obj->api();
             $current_song['sh_id'] = 0;
             $np['current_song'] = $current_song;
 
@@ -144,7 +144,7 @@ class NowPlaying extends SyncAbstract
             // Register a new item in song history.
             $sh_obj = $this->history_repo->register($song_obj, $station, $np);
 
-            $current_song = Entity\Song::api($song_obj);
+            $current_song = $song_obj->api();
             $current_song['sh_id'] = $sh_obj->id;
 
             $np['current_song'] = $current_song;

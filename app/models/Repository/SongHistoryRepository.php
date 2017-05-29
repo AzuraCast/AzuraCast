@@ -14,16 +14,11 @@ class SongHistoryRepository extends \App\Doctrine\Repository
         $history = $this->_em->createQuery('SELECT sh, s FROM ' . $this->_entityName . ' sh JOIN sh.song s WHERE sh.station_id = :station_id ORDER BY sh.id DESC')
             ->setParameter('station_id', $station->id)
             ->setMaxResults($num_entries)
-            ->getArrayResult();
+            ->execute();
 
         $return = [];
         foreach ($history as $sh) {
-            $history = [
-                'sh_id' => $sh['id'],
-                'played_at' => $sh['timestamp_start'],
-                'song' => Entity\Song::api($sh['song']),
-            ];
-            $return[] = $history;
+            $return[] = $sh->api();
         }
 
         return $return;

@@ -1,6 +1,7 @@
 <?php
 namespace Entity;
 
+use AzuraCast\Radio\Frontend\FrontendAbstract;
 use Doctrine\Common\Collections\ArrayCollection;
 use Interop\Container\ContainerInterface;
 
@@ -431,33 +432,25 @@ class Station extends \App\Doctrine\Entity
     /**
      * Retrieve the API version of the object/array.
      *
-     * @param $row
+     * @param FrontendAbstract $fa
      * @return array
      */
-    public static function api(Station $row, ContainerInterface $di)
+    public function api(FrontendAbstract $fa)
     {
-        $fa = $row->getFrontendAdapter($di);
-
         $api = [
-            'id' => (int)$row->id,
-            'name' => (string)$row->name,
-            'shortcode' => (string)self::getStationShortName($row['name']),
-            'description' => (string)$row->description,
-            'frontend' => (string)$row->frontend_type,
-            'backend' => (string)$row->backend_type,
+            'id' => (int)$this->id,
+            'name' => (string)$this->name,
+            'shortcode' => (string)$this->getShortName(),
+            'description' => (string)$this->description,
+            'frontend' => (string)$this->frontend_type,
+            'backend' => (string)$this->backend_type,
             'listen_url' => (string)$fa->getStreamUrl(),
             'mounts' => [],
         ];
 
-        if ($row->mounts->count() > 0) {
-            if ($fa->supportsMounts()) {
-                foreach ($row->mounts as $mount_row) {
-                    $api['mounts'][] = [
-                        'name' => (string)$mount_row->name,
-                        'is_default' => (bool)$mount_row->is_default,
-                        'url' => (string)$fa->getUrlForMount($mount_row->name),
-                    ];
-                }
+        if ($fa->supportsMounts() && $this->mounts->count() > 0) {
+            foreach ($this->mounts as $mount) {
+                $api['mounts'][] = $mount->api($fa);
             }
         }
 

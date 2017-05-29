@@ -62,6 +62,21 @@ class Song extends \App\Doctrine\Entity
     protected $history;
 
     /**
+     * Retrieve the API version of the object/array.
+     *
+     * @return array
+     */
+    public function api()
+    {
+        return [
+            'id' => (string)$this->id,
+            'text' => (string)$this->text,
+            'artist' => (string)$this->artist,
+            'title' => (string)$this->title,
+        ];
+    }
+
+    /**
      * Static Functions
      */
 
@@ -98,25 +113,5 @@ class Song extends \App\Doctrine\Entity
         $hash_base = strtolower(preg_replace("/[^A-Za-z0-9]/", '', $song_text));
 
         return md5($hash_base);
-    }
-
-    /**
-     * Retrieve the API version of the object/array.
-     *
-     * @param $row
-     * @return array
-     */
-    public static function api($row)
-    {
-        return [
-            'id' => (string)$row['id'],
-            'text' => (string)$row['text'],
-            'artist' => (string)$row['artist'],
-            'title' => (string)$row['title'],
-
-            'created' => (int)$row['created'],
-            'play_count' => (int)$row['play_count'],
-            'last_played' => (int)$row['last_played'],
-        ];
     }
 }

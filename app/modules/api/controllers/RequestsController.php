@@ -31,9 +31,14 @@ class RequestsController extends BaseController
 
         foreach ($requestable_media as $media_row) {
             $result_row = [
-                'song' => Entity\Song::api($media_row['song']),
-                'request_song_id' => $media_row['id'],
-                'request_url' => $this->url->routeFromHere(['action' => 'submit', 'song_id' => $media_row['id']]),
+                'song' => [
+                    'id' => (string)$media_row['song']['id'],
+                    'text' => (string)$media_row['song']['text'],
+                    'artist' => (string)$media_row['song']['artist'],
+                    'title' => (string)$media_row['song']['title'],
+                ],
+                'request_song_id' => (int)$media_row['id'],
+                'request_url' => (string)$this->url->routeFromHere(['action' => 'submit', 'song_id' => $media_row['id']]),
             ];
             $result[] = $result_row;
         }

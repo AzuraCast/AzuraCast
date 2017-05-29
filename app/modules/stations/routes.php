@@ -85,8 +85,6 @@ return function(\Slim\App $app) {
 
         $this->group('/util', function () {
 
-            $this->get('/playlist[/{format}]', 'stations:util:playlist')->setName('stations:util:playlist');
-            $this->get('/write', 'stations:util:write')->setName('stations:util:write');
             $this->get('/restart', 'stations:util:restart')->setName('stations:util:restart');
 
         });

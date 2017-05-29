@@ -33,7 +33,7 @@
                         </button>
                         <ul class="dropdown-menu">
                         <?php foreach(['pls', 'm3u'] as $format): ?>
-                            <li><a href="<?=$url->routeFromHere(['action' => 'export', 'id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(_('Export as %s'), strtoupper($format)) ?></a></li>
+                            <li><a href="<?=$url->routeFromHere(['action' => 'export', 'id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(_('Download %s'), strtoupper($format)) ?></a></li>
                         <?php endforeach; ?>
                         </ul>
                     </div>

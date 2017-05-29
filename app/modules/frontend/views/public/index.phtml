@@ -34,10 +34,24 @@
         </div>
 
         <div class="buttons">
-            <a class="btn btn-default btn-icon-text" data-toggle="modal" data-target="#modal-history"><i class="zmdi zmdi-time-restore"></i> <?=_('Song History') ?></a>
+            <a class="btn btn-default btn-icon-text" data-toggle="modal" data-target="#modal-history">
+                <i class="zmdi zmdi-time-restore"></i> <?=_('Song History') ?>
+            </a>
         <?php if ($station->enable_requests): ?>
-            <a class="btn btn-default btn-icon-text" data-toggle="modal" data-target="#modal-request"><i class="zmdi zmdi-help-outline"></i> <?=_('Request a Song') ?></a>
+            <a class="btn btn-default btn-icon-text" data-toggle="modal" data-target="#modal-request">
+                <i class="zmdi zmdi-help-outline"></i> <?=_('Request Song') ?>
+            </a>
         <?php endif; ?>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-icon-text dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="zmdi zmdi-download"></i> <?=_('Playlist') ?> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <?php foreach(['pls', 'm3u'] as $format): ?>
+                        <li><a href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => $format]) ?>"><?=sprintf(_('Download %s'), strtoupper($format)) ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
 
     </div>

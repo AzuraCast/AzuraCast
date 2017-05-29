@@ -230,7 +230,7 @@ class FilesController extends BaseController
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
                     'edit_url' => $this->url->routeFromHere(['action' => 'edit', 'id' => $media_row['id']]),
                     'play_url' => $this->url->routeFromHere(['action' => 'download']) . '?file=' . urlencode($media_row['path']),
-                    'playlists' => implode('<br>', $playlists),
+                    'playlists' => $playlists,
                 ];
             }
 
@@ -249,11 +249,11 @@ class FilesController extends BaseController
                 $short = ltrim(str_replace($this->base_dir, '', $i), '/');
 
                 if (is_dir($i)) {
-                    $media = ['name' => _('Directory'), 'playlists' => '', 'is_playable' => false];
+                    $media = ['name' => _('Directory'), 'playlists' => [], 'is_playable' => false];
                 } elseif (isset($media_in_dir[$short])) {
                     $media = $media_in_dir[$short];
                 } else {
-                    $media = ['name' => _('File Not Processed'), 'playlists' => '', 'is_playable' => false];
+                    $media = ['name' => _('File Not Processed'), 'playlists' => [], 'is_playable' => false];
                 }
 
                 $stat = stat($i);
@@ -290,6 +290,11 @@ class FilesController extends BaseController
 
         if (!empty($search_phrase)) {
             $result = array_filter($result, function ($row) use ($search_phrase) {
+                if (substr($search_phrase, 0, 9) === 'playlist:') {
+                    $playlist_name = substr($search_phrase, 9);
+                    return in_array($playlist_name, $row['media_playlists']);
+                }
+
                 $search_fields = ['media_name', 'text'];
 
                 foreach ($search_fields as $field_name) {

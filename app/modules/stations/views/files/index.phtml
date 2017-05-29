@@ -75,7 +75,7 @@
                             <th data-column-id="media_length" data-formatter="file_length"><?=_('Length') ?></th>
                             <th data-column-id="size" data-formatter="file_size"><?=_('Size') ?></th>
                             <th data-column-id="mtime" data-formatter="file_mtime"><?=_('Modified') ?></th>
-                            <th data-column-id="media_playlists"><?=_('Playlists') ?></th>
+                            <th data-column-id="media_playlists" data-formatter="playlists"><?=_('Playlists') ?></th>
                             <th data-column-id="commands" data-formatter="commands" data-sortable="false"><?=_('Actions') ?></th>
                         </tr>
                     </thead>
@@ -189,15 +189,35 @@ $(function() {
             },
             "file_mtime": function(column, row) {
                 return formatTimestamp(row.mtime);
+            },
+            "playlists": function(column, row) {
+                if (row.media_playlists.length > 0) {
+                    var playlists = [];
+                    var playlist;
+
+                    for (var i = 0; i < row.media_playlists.length; i++) {
+                        playlist = row.media_playlists[i];
+                        playlists.push('<a class="btn-search" href="#" data-term="playlist:'+playlist+'">'+playlist+'</a>');
+                    }
+
+                    return playlists.join(', ');
+                } else {
+                    return '';
+                }
             }
         }
-    }).on("loaded.rs.jquery.bootgrid", function()
-    {
+    }).on("loaded.rs.jquery.bootgrid", function() {
         /* Executes after data is loaded and rendered */
-        grid.find(".btn-audio").on("click", function(e)
-        {
+        grid.find(".btn-audio").on("click", function(e) {
             e.preventDefault();
             handlePlayClick($(this).data('url'));
+            return false;
+        });
+
+        /* Handle playlist search function */
+        grid.find(".btn-search").on("click", function(e) {
+            e.preventDefault();
+            grid.bootgrid("clear").bootgrid("search", $(this).data('term'));
             return false;
         });
     });

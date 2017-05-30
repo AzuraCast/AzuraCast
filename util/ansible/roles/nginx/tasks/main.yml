@@ -43,5 +43,5 @@
   - name: Disable service initialization for nginx
     become: true
     service: name=nginx enabled=no state=stopped
-    when: systemd.stat.exists
+    ignore_errors: true
     notify: restart nginx

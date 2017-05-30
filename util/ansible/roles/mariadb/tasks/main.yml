@@ -39,7 +39,7 @@
  - name: Disable service initialization for mariadb
    become: true
    service: name=mysql enabled=no state=stopped
-   when: systemd.stat.exists
+   ignore_errors: true
 
  - name: Restart MySQL
    supervisorctl:

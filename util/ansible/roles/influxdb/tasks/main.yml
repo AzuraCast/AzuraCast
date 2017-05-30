@@ -25,7 +25,7 @@
 - name: Disable service initialization for influxdb
   become: true
   service: name=influxdb enabled=no state=stopped
-  when: systemd.stat.exists
+  ignore_errors: true
 
 - name: restart influxdb
   supervisorctl:

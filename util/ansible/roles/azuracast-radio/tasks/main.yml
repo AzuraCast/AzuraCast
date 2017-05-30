@@ -72,7 +72,7 @@
   - name: Build LiquidSoap
     become: true
     become_user: azuracast
-    shell: "opam init -y && opam install -y taglib mad faad fdkaac lame vorbis cry flac liquidsoap.1.2.1"
+    shell: "opam init -y && opam install -y taglib mad faad fdkaac lame vorbis.0.6.2 cry flac liquidsoap.1.2.1"
     args:
       chdir: "{{ app_base }}"
 

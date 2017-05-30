@@ -1,5 +1,5 @@
 ---
 - name: restart nginx
   supervisorctl:
-    name: nginx
+    name: 'core:nginx'
     state: restarted

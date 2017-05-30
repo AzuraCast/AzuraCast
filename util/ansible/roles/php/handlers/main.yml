@@ -1,5 +1,5 @@
 ---
 - name:    restart php-fpm
   supervisorctl:
-    name: php7-fpm
+    name: 'core:php7-fpm'
     state: restarted

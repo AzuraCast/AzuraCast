@@ -1,7 +1,7 @@
 ---
 - name: restart mysql
   supervisorctl:
-    name: mysql
+    name: 'core:mysql'
     state: restarted
 
 - name: send mysql notification

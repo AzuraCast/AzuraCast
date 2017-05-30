@@ -24,7 +24,7 @@
 
 - name: restart influxdb
   supervisorctl:
-    name: influxdb
+    name: 'core:influxdb'
     state: restarted
   when: influx_installed.changed
 

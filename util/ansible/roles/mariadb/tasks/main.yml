@@ -36,8 +36,15 @@
    template: src=my.cnf.j2 dest=/etc/mysql/conf.d/my.cnf owner=root group=root mode=0644
    notify: restart mysql
 
- - name: Start and enable service
-   service: name=mysql state=started enabled=yes
+ - name: Disable service initialization for mariadb
+   become: true
+   service: name=mysql enabled=no state=stopped
+   when: systemd.stat.exists
+
+ - name: Restart MySQL
+   supervisorctl:
+     name: 'core:mysql'
+     state: restarted
 
  - name: Add empty root .my.cnf (if none exists)
    become: true
@@ -107,9 +114,3 @@
  - name: Write DB configuration
    become: true
    template: src=db.conf.php.j2 dest="{{ www_base }}/app/config/db.conf.php" owner=azuracast group=www-data mode=0644 force=yes
-
- - name: Disable service initialization for mariadb
-   become: true
-   service: name=mysql enabled=no state=stopped
-   when: systemd.stat.exists
-   notify: restart mysql

@@ -1,5 +1,5 @@
 [group:core]
-programs=php7-fpm,mysqld,nginx,influxdb
+programs=php7-fpm,mysql,nginx,influxdb
 
 [program:php7-fpm]
 command=/usr/sbin/php-fpm7.1 -F -c /etc/php/7.1/fpm/
@@ -7,7 +7,7 @@ autostart=true
 autorestart=true
 priority=5
 
-[program:mysqld]
+[program:mysql]
 command=/usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --log-error=/var/log/mysql/error.log --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock --port=3306
 autostart=true
 autorestart=true

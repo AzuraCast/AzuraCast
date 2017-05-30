@@ -18,8 +18,8 @@
     - azuracast-user
     - azuracast-config
     - azuracast-radio
-    - influxdb
     - supervisord
+    - influxdb
     - nginx
     - php
     - mariadb

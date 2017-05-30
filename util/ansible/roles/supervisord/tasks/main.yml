@@ -1,9 +1,9 @@
 ---
-  - name: Remove supervisord system package
+  - name: Install supervisord from repo
     become: true
-    apt: pkg=supervisor state=absent
+    apt: pkg=supervisor state=latest
 
-  - name: Install supervisord from easy_install
+  - name: Update supervisord from easy_install
     become: true
     command: easy_install supervisor
     register: supervisord_install

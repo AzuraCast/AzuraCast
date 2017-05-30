@@ -16,7 +16,7 @@
     - { role: azuracast-radio, when: update_revision|int < 8 }
     - { role: nginx, when: update_revision|int < 9 }
     - { role: php, when: update_revision|int < 9 }
-    - { role: influxdb, when: update_revision|int < 9 }
     - { role: supervisord, when: update_revision|int < 9 }
+    - { role: influxdb, when: update_revision|int < 9 }
     - { role: azuracast-cron, when: update_revision|int < 2 }
     - azuracast-update

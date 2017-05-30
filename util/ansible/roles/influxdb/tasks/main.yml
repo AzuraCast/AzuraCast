@@ -22,6 +22,11 @@
   with_items:
    - influxdb
 
+- name: Disable service initialization for influxdb
+  become: true
+  service: name=influxdb enabled=no state=stopped
+  when: systemd.stat.exists
+
 - name: restart influxdb
   supervisorctl:
     name: 'core:influxdb'
@@ -67,10 +72,4 @@
     replace: 'bind-address = "localhost:80'
     backup: yes
   when: app_env == "production"
-  notify: restart influxdb
-
-- name: Disable service initialization for influxdb
-  become: true
-  service: name=influxdb enabled=no state=stopped
-  when: systemd.stat.exists
   notify: restart influxdb

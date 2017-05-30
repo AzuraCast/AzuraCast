@@ -27,6 +27,4 @@
   - name: Trigger manual restart of supervisord (if not already running)
     become: true
     service: name=supervisor enabled=yes state=restarted
-    when:
-     - systemd.stat.exists
-     - supervisord_install.changed or supervisord_conf.changed or supervisord_core.changed
+    when: supervisord_install.changed or supervisord_conf.changed or supervisord_core.changed

@@ -1,10 +1,10 @@
 FROM geerlingguy/docker-ubuntu1604-ansible:latest
 
-RUN ansible-playbook
+RUN ansible-playbook /var/azuracast/www/util/ansible/deploy.yml \
+    --extra-vars "update_revision=1"
 
-APP_ENV="${APP_ENV:-production}"
-
-echo "Installing AzuraCast (Environment: $APP_ENV)"
-ansible-playbook util/ansible/deploy.yml --inventory=util/ansible/hosts --extra-vars "app_env=$APP_ENV"
+EXPOSE 80
+EXPOSE 443
+EXPOSE 8000-8999
 
 CMD ["/usr/bin/supervisord"]

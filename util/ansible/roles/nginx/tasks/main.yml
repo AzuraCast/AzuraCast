@@ -39,3 +39,9 @@
       regexp: 'sendfile on;'
       replace: 'sendfile off;'
     when: app_env == "development"
+
+  - name: Disable service initialization for nginx
+    become: true
+    service: name=nginx enabled=no state=stopped
+    when: systemd.stat.exists
+    notify: restart nginx

@@ -7,6 +7,12 @@
   - name: Change supervisord configuration
     become: true
     template: src=supervisord.conf.j2 dest=/etc/supervisor/supervisord.conf force=yes
+    register: supervisord_conf
+
+  - name: Add core supervisord configuration
+    become: true
+    template: src=core.conf.j2 dest=/etc/supervisor/conf.d/core.conf force=yes
+    register: supervisord_core
 
   - name: Kill legacy radio processes (if upgrading from older version)
     become: true
@@ -17,4 +23,6 @@
   - name: Trigger manual restart of supervisord (if not already running)
     become: true
     service: name=supervisor enabled=yes state=restarted
-    when: supervisord_install.changed
+    when:
+     - systemd.stat.exists
+     - supervisord_install.changed or supervisord_conf.changed or supervisord_core.changed

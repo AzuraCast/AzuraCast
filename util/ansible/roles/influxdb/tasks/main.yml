@@ -23,12 +23,14 @@
    - influxdb
 
 - name: restart influxdb
-  service: name=influxdb enabled=yes state=restarted
+  supervisorctl:
+    name: 'core:influxdb'
+    state: restarted
   when: influx_installed.changed
 
-- name: Pause to allow InfluxDB to spin up
-  pause: seconds=15
-  when: influx_installed.changed
+#- name: Pause to allow InfluxDB to spin up
+#  pause: seconds=15
+#  when: influx_installed.changed
 
 - name: Create 'stations' database
   influxdb_database:
@@ -65,4 +67,10 @@
     replace: 'bind-address = "localhost:80'
     backup: yes
   when: app_env == "production"
+  notify: restart influxdb
+
+- name: Disable service initialization for influxdb
+  become: true
+  service: name=influxdb enabled=no state=stopped
+  when: systemd.stat.exists
   notify: restart influxdb

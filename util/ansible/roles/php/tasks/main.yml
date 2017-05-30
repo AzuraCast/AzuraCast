@@ -88,3 +88,9 @@
       value: "{{ item.value }}"
     with_items:
       - { option: 'short_open_tag',      value: "On" }
+
+  - name: Disable service initialization for php-fpm
+    become: true
+    service: name=php7.1-fpm enabled=no state=stopped
+    when: systemd.stat.exists
+    notify: restart php-fpm

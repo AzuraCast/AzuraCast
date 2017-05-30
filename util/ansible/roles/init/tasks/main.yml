@@ -29,3 +29,7 @@
     pip: name="{{ item }}" state=latest
     with_items:
      - pip
+
+  - name: Check if systemd is running
+    stat: path=/run/systemd/system
+    register: systemd

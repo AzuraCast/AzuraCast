@@ -1,3 +1,5 @@
 ---
 - name: restart influxdb
-  service: name=influxdb enabled=yes state=restarted
+  supervisorctl:
+    name: influxdb
+    state: restarted

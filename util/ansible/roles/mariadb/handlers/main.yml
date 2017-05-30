@@ -1,6 +1,8 @@
 ---
 - name: restart mysql
-  service: name=mysql enabled=yes state=restarted
+  supervisorctl:
+    name: mysql
+    state: restarted
 
 - name: send mysql notification
   debug:

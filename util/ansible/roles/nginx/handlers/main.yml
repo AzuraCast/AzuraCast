@@ -1,3 +1,5 @@
 ---
 - name: restart nginx
-  service: name=nginx enabled=yes state=restarted
+  supervisorctl:
+    name: nginx
+    state: restarted

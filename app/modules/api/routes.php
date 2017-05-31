@@ -15,7 +15,12 @@ return function(\Slim\App $app) {
 
         $this->group('/internal', function () {
 
-            $this->map(['GET', 'POST'], '/streamauth/{id}', 'api:internal:streamauth')->setName('api:internal:streamauth');
+            $this->group('/{station}', function() {
+
+                $this->get('/auth', 'api:internal:auth')->setName('api:internal:auth');
+                $this->get('/nextsong', 'api:internal:nextsong')->setName('api:internal:nextsong');
+
+            });
 
         });
 

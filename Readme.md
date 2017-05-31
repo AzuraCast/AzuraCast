@@ -83,6 +83,25 @@ sudo chmod a+x update.sh
 sudo ./update.sh
 ```
 
+### Installing via Docker
+
+You can now use [Docker Compose](https://docs.docker.com/compose/install/) to install AzuraCast in a series of Docker containers. This feature is experimental, so use at your own risk!
+ 
+On the host machine with Docker Compose installed, clone this repository to any local directory. From that directory, run the following commands:
+
+```bash
+docker-compose up -d
+docker-compose run web azuracast_install
+```
+
+#### Updating with Docker
+
+From inside the base directory where AzuraCast is copied, run the following commands:
+
+```bash
+docker-compose run web azuracast_update
+```
+
 ### Local Development with Vagrant
 
 To make local development and testing easier, AzuraCast also includes the necessary configuration to set up a Vagrant box on your computer.

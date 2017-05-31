@@ -16,7 +16,7 @@ class ShoutCast2 extends FrontendAbstract
         $fe_config = (array)$this->station->frontend_config;
         $radio_port = $fe_config['port'];
 
-        $np_url = 'http://localhost:' . $radio_port . '/statistics?json=1';
+        $np_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/statistics?json=1';
         $return_raw = $this->getUrl($np_url);
 
         if (empty($return_raw)) {
@@ -59,7 +59,7 @@ class ShoutCast2 extends FrontendAbstract
         $np['listeners']['clients'] = [];
 
         for($i = 1; $i <= $streams; $i++) {
-            $listeners_url = 'http://localhost:' . $radio_port . '/admin.cgi?sid='.$i.'&mode=viewjson&page=3';
+            $listeners_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin.cgi?sid='.$i.'&mode=viewjson&page=3';
             $return_raw = $this->getUrl($listeners_url, [
                 'basic_auth' => 'admin:'.$fe_config['admin_pw'],
             ]);
@@ -243,6 +243,6 @@ class ShoutCast2 extends FrontendAbstract
     public static function isInstalled()
     {
         $sc_binary = realpath(APP_INCLUDE_ROOT . '/..') . '/servers/shoutcast2/sc_serv';
-        return file_exists($sc_binary);
+        return (APP_INSIDE_DOCKER || file_exists($sc_binary));
     }
 }

@@ -2,27 +2,27 @@ version: '3'
 
 services:
   nginx:
-    image: 'bitnami/nginx:latest'
+    build: ./util/docker/nginx
     ports:
       - '80:80'
       - '443:443'
     networks:
       - app-tier
     depends_on:
-      - php-fpm
+      - web
     volumes:
-      - ${pwd}/util/docker/nginx_azuracast.conf:/bitnami/nginx/conf/vhosts/azuracast.conf
       - ${pwd}:/var/azuracast/www
 
   mariadb:
-    image: 'mariadb'
+    build: ./util/docker/mariadb
     networks:
       - app-tier
     volumes:
       - db_data:/var/lib/mysql
-      - ${pwd}/util/docker/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
-      - MYSQL_ROOT_PASSWORD=azur4c457
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_USER=azuracast
+      - MYSQL_PASSWORD=azur4c457
       - MYSQL_DATABASE=azuracast
 
   influxdb:
@@ -32,31 +32,44 @@ services:
     volumes:
       - influx_data:/var/lib/influxdb
 
-  php-fpm:
-    image: 'bitnami/php-fpm:latest'
+  web:
+    build: ./util/docker/web
     networks:
       - app-tier
+    depends_on:
+     - mariadb
+     - influxdb
+     - stations
+    volumes:
+      - ${pwd}:/var/azuracast/www
+      - cache_data:/var/azuracast/www_tmp
+      - station_data:/var/azuracast/stations
+
+  cron:
+    build: ./util/docker/web
+    networks:
+      - app-tier
+    depends_on:
+      - web
     volumes:
       - ${pwd}:/var/azuracast/www
       - station_data:/var/azuracast/stations
-    environment:
-      - AZURACAST_IN_DOCKER=true
+    command: 'cron && tail -f /var/log/cron.log'
 
   stations:
-    build: .
+    build: ./util/docker/stations
     ports:
-     - "8000-8999"
+     - '8000-8500:8000-8500'
     networks:
      - app-tier
     volumes:
-     - ${pwd}/util/docker/supervisord.conf:/etc/supervisor/supervisord.conf
      - station_data:/var/azuracast/stations
 
 networks:
   app-tier:
-    driver: bridge
 
 volumes:
  db_data:
  influx_data:
  station_data:
+ cache_data:

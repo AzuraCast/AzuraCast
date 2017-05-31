@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: true
+  vars:
+    util_base: "{{ playbook_dir | dirname }}"
+    www_base: "{{ util_base | dirname }}"
+    app_base: "{{ www_base | dirname }}"
+    tmp_base: "{{ app_base }}/www_tmp"
+    app_env: "development"
+    testing_mode: false
+
+    dev_azuracast_user_password: "azuracast"
+    dev_mysql_user_password: "azuracast"
+
+  roles:
+    - docker-install
+    - composer
+    - azuracast-db

@@ -10,14 +10,13 @@ class UtilController extends BaseController
     {
         $this->acl->checkPermission('manage station broadcasting', $this->station->id);
 
+        $this->station->writeConfiguration($this->di);
+
         $frontend = $this->station->getFrontendAdapter($this->di);
         $backend = $this->station->getBackendAdapter($this->di);
 
         $backend->stop();
         $frontend->stop();
-
-        $frontend->write();
-        $backend->write();
 
         $frontend->start();
         $backend->start();

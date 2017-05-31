@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+while test $# -gt 0; do
+    case "$1" in
+        --dev)
+            APP_ENV="development"
+            shift
+            ;;
+
+        *)
+            break
+            ;;
+    esac
+done
+
+APP_ENV="${APP_ENV:-production}"
+
+echo "Updating AzuraCast (Environment: $APP_ENV)"
+
+if [ $APP_ENV = "production" ]; then
+    git reset --hard && git pull
+fi
+
+ansible-playbook /var/azuracast/www/util/ansible/docker_update.yml --inventory=/var/azuracast/www/util/ansible/hosts --extra-vars "app_env=$APP_ENV update_revision=10"

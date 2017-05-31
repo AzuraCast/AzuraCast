@@ -16,7 +16,7 @@ class IceCast extends FrontendAbstract
         $reader = new \App\Xml\Reader();
 
         $radio_port = $fe_config['port'];
-        $np_url = 'http://localhost:' . $radio_port . '/admin/stats';
+        $np_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin/stats';
 
         Debug::log($np_url);
 
@@ -56,7 +56,7 @@ class IceCast extends FrontendAbstract
             $current_listeners += $mount['listeners'];
 
             // Attempt to fetch detailed listener information for better unique statistics.
-            $listeners_url = 'http://localhost:' . $radio_port . '/admin/listclients?mount='.urlencode($mount['@mount']);
+            $listeners_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin/listclients?mount='.urlencode($mount['@mount']);
             $return_raw = $this->getUrl($listeners_url, [
                 'basic_auth' => 'admin:'.$fe_config['admin_pw'],
             ]);
@@ -360,6 +360,6 @@ class IceCast extends FrontendAbstract
 
     public static function isInstalled()
     {
-        return file_exists('/usr/local/bin/icecast');
+        return (APP_INSIDE_DOCKER || file_exists('/usr/local/bin/icecast'));
     }
 }

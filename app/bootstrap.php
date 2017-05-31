@@ -18,6 +18,9 @@ define("APP_INCLUDE_ROOT", realpath(APP_INCLUDE_BASE . '/..'));
 define("APP_INCLUDE_WEB", APP_INCLUDE_ROOT . '/web');
 define("APP_INCLUDE_STATIC", APP_INCLUDE_WEB . '/static');
 
+// Detect Docker containerization
+define("APP_INSIDE_DOCKER", file_exists(APP_INCLUDE_ROOT.'/../.docker'));
+
 define("APP_INCLUDE_VENDOR", APP_INCLUDE_ROOT . '/vendor');
 
 define("APP_INCLUDE_TEMP", APP_INCLUDE_ROOT . '/../www_tmp');

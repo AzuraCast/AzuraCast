@@ -176,7 +176,7 @@ return function (\Slim\Container $di, \App\Config $config) {
     $di['supervisor'] = function ($di) {
         $guzzle_client = new \GuzzleHttp\Client();
         $client = new \fXmlRpc\Client(
-            'http://127.0.0.1:9001/RPC2',
+            'http://'.(APP_INSIDE_DOCKER ? 'stations' : '127.0.0.1').':9001/RPC2',
             new \fXmlRpc\Transport\HttpAdapterTransport(
                 new \Http\Message\MessageFactory\GuzzleMessageFactory(),
                 new \Http\Adapter\Guzzle6\Client($guzzle_client)

@@ -1,0 +1,42 @@
+---
+- name: InfluxDB - Create 'stations' database
+  influxdb_database:
+    hostname: "influxdb"
+    database_name: "{{ item }}"
+    state: present
+  with_items:
+    - 'stations'
+
+- name: InfluxDB - Create 'stations' retention policies
+  influxdb_retention_policy:
+    hostname: "influxdb"
+    database_name: "stations"
+    policy_name: "{{ item.name }}"
+    duration: "{{ item.duration }}"
+    default: "{{ item.default }}"
+    replication: 1
+  with_items:
+   - { name: '15s', duration: '5d', default: true }
+   - { name: '1h', duration: '2w', default: false }
+   - { name: '1d', duration: 'INF', default: false }
+
+- name: InfluxDB - Manage continuous queries on 'stations'
+  influxdb_downsample:
+    login_host: "influxdb"
+    database: "stations"
+    retentions: "1h:1h,1d:1d"
+    measurements: [{'measurement':':MEASUREMENT', 'fields': ['min(value) AS min','mean(value) AS value','max(value) AS max']}]
+    prune: true
+
+- name: Write InfluxDB configuration
+  become: true
+  template: src=influx.conf.php.j2 dest="{{ www_base }}/app/config/influx.conf.php" owner=azuracast group=azuracast mode=0644 force=yes
+
+- name: Write Memcached configuration
+  become: true
+  template: src=cache.conf.php.j2 dest="{{ www_base }}/app/config/cache.conf.php" owner=azuracast group=azuracast mode=0644 force=yes
+
+- name: Write DB configuration
+  become: true
+  template: src=db.conf.php.j2 dest="{{ www_base }}/app/config/db.conf.php" owner=azuracast group=azuracast mode=0644 force=yes
+  register: azuracast_db_created

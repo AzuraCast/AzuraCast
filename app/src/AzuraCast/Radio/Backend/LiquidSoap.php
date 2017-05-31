@@ -34,7 +34,7 @@ class LiquidSoap extends BackendAbstract
             '',
             '# AutoDJ Next Song Script',
             'def azuracast_next_song() =',
-            '  uri = get_process_lines("/usr/bin/php '.APP_INCLUDE_ROOT.'/util/cli.php azuracast:internal:next-song '.$this->station->id.'")',
+            '  uri = get_process_lines("wget -qO- '.$this->_getApiUrl('/api/internal/'.$this->station->id.'/nextsong').'")',
             '  uri = list.hd(uri)',
             '  log("AzuraCast Raw Response: #{uri}")',
             '  request.create(uri)',
@@ -43,7 +43,7 @@ class LiquidSoap extends BackendAbstract
             '# DJ Authentication',
             'def dj_auth(user,password) =',
             '  log("Authenticating DJ: #{user}")',
-            '  ret = get_process_lines("/usr/bin/php '.APP_INCLUDE_ROOT.'/util/cli.php azuracast:internal:streamer-auth '.$this->station->id.' #{user} #{password}")',
+            '  ret = get_process_lines("wget -qO- '.$this->_getApiUrl('/api/internal/'.$this->station->id.'/auth', ['dj_user' => '#{user}', 'dj_password' => '#{password}']).'")',
             '  ret = list.hd(ret)',
             '  bool_of_string(ret)',
             'end',
@@ -257,6 +257,16 @@ class LiquidSoap extends BackendAbstract
         return true;
     }
 
+    protected function _getApiUrl($endpoint, $params = [])
+    {
+        $params = (array)$params;
+        $params['api_auth'] = $this->_getApiPassword();
+
+        $base_url = (APP_INSIDE_DOCKER) ? 'http://nginx' : 'http://localhost';
+
+        return $base_url.$endpoint.'?'.http_build_query($params);
+    }
+
     protected function _cleanUpString($string)
     {
         return str_replace(['"', "\n", "\r"], ['\'', '', ''], $string);
@@ -289,6 +299,39 @@ class LiquidSoap extends BackendAbstract
         return $hours . 'h' . $mins . 'm';
     }
 
+    /**
+     * Generate a stream-unique API password.
+     *
+     * @return string
+     */
+    public function _getApiPassword()
+    {
+        $be_settings = (array)$this->station->backend_config;
+
+        if (empty($be_settings['api_password'])) {
+            $be_settings['api_password'] = bin2hex(random_bytes(50));
+
+            $em = $this->di['em'];
+
+            $this->station->backend_config = $be_settings;
+            $em->persist($this->station);
+            $em->flush();
+        }
+
+        return $be_settings['api_password'];
+    }
+
+    /**
+     * Validate the API password used for internal API authentication.
+     *
+     * @param $password
+     * @return bool
+     */
+    public function validateApiPassword($password)
+    {
+        return hash_equals($password, $this->_getApiPassword());
+    }
+
     public function getCommand()
     {
         $user_base = realpath(APP_INCLUDE_ROOT.'/..');
@@ -304,7 +347,7 @@ class LiquidSoap extends BackendAbstract
 
     public function command($command_str)
     {
-        $fp = stream_socket_client('tcp://localhost:' . $this->_getTelnetPort(), $errno, $errstr, 20);
+        $fp = stream_socket_client('tcp://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $this->_getTelnetPort(), $errno, $errstr, 20);
 
         if (!$fp) {
             throw new \App\Exception('Telnet failure: ' . $errstr . ' (' . $errno . ')');
@@ -339,6 +382,6 @@ class LiquidSoap extends BackendAbstract
     public static function isInstalled()
     {
         $user_base = realpath(APP_INCLUDE_ROOT.'/..');
-        return file_exists($user_base.'/.opam/system/bin/liquidsoap');
+        return (APP_INSIDE_DOCKER || file_exists($user_base.'/.opam/system/bin/liquidsoap'));
     }
 }

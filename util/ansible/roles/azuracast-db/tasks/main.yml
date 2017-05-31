@@ -6,7 +6,9 @@
     when: azuracast_db_created.changed and testing_mode|bool == false
 
   - name: Install Initial Database
-    mysql_db: state=import name="azuracast" target="{{ util_base }}/azuracast_db.sql"
+    become: true
+    become_user: azuracast
+    shell: php {{ util_base }}/cli.php dbal:import {{ util_base }}/azuracast_db.sql
     when: azuracast_db_created.changed
 
   - name: Apply All DB Migrations

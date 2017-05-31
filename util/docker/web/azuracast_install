@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+ansible-playbook /var/azuracast/www/util/ansible/docker_install.yml --inventory=/var/azuracast/www/util/ansible/hosts

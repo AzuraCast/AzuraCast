@@ -1,71 +1,72 @@
 <?php
 namespace Controller\Api;
 
-use Entity\Station;
-use Entity\StationStreamer;
+use Entity;
 
 class InternalController extends BaseController
 {
-    public function streamauthAction()
+    /** @var Entity\Station $station */
+    protected $station;
+
+    public function preDispatch()
     {
-        if (!$this->hasParam('id')) {
-            return $this->_authFail('No station specified!');
+        $station_id = (int)$this->getParam('station');
+        $station = $this->em->getRepository(Entity\Station::class)->find($station_id);
+
+        if (!($station instanceof Entity\Station)) {
+            throw new \App\Exception('Station not found.');
         }
 
-        $id = (int)$this->getParam('id');
-        $station = $this->em->getRepository(Station::class)->find($id);
+        $backend_adapter = $station->getBackendAdapter($this->di);
 
-        if (!($station instanceof Station)) {
-            return $this->_authFail('Invalid station specified');
+        if (!($backend_adapter instanceof \AzuraCast\Radio\Backend\LiquidSoap)) {
+            throw new \App\Exception('Not a LiquidSoap station.');
         }
 
-        // Log requests to a temp file for debugging.
-        $request_vars = "-------\n" . date('F j, Y g:i:s') . "\n" . print_r($_REQUEST,
-                true) . "\n" . print_r($this->params, true);
-        $log_path = APP_INCLUDE_TEMP . '/icecast_stream_auth.txt';
-        file_put_contents($log_path, $request_vars, \FILE_APPEND);
-
-        /* Passed via POST from IceCast
-         * [action] => stream_auth
-         * [mount] => /radio.mp3
-         * [ip] => 10.0.2.2
-         * [server] => localhost
-         * [port] => 8000
-         * [user] => testuser
-         * [pass] => testpass
-         */
-
-        if (!$station->enable_streamers) {
-            return $this->_authFail('Support for streamers/DJs on this station is disabled.');
+        $auth_key = $this->getParam('api_auth', '');
+        if (!$backend_adapter->validateApiPassword($auth_key)) {
+            throw new \App\Exception\PermissionDenied();
         }
 
-        if ($this->em->getRepository(StationStreamer::class)->authenticate($station, $_REQUEST['user'],
-            $_REQUEST['pass'])
-        ) {
-            return $this->_authSuccess();
+        $this->station = $station;
+    }
+
+    public function authAction()
+    {
+        $user = $this->getParam('dj_user');
+        $pass = $this->getParam('dj_pass');
+
+        if ($this->getParam('dj_user') == 'shoutcast') {
+            list($user, $pass) = explode(':', $pass);
+        }
+
+        if (!$this->station->enable_streamers) {
+            return $this->_return('false');
+        }
+
+        $fe_config = (array)$this->station->frontend_config;
+        if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
+            return $this->_return('true');
+        }
+
+        if ($this->di['em']->getRepository(Entity\StationStreamer::class)->authenticate($this->station, $user, $pass)) {
+            return $this->_return('true');
         } else {
-            return $this->_authFail('Could not authenticate streamer account.');
+            return $this->_return('false');
         }
     }
 
-    protected function _authFail($message)
+    public function nextsongAction()
     {
-        $this->response = $this->response
-            ->withHeader('icecast-auth-user', '0')
-            ->withHeader('Icecast-Auth-Message', $message);
+        /** @var Entity\Repository\StationMediaRepository $media_repo */
+        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
-        $this->response->getBody()->write('Authentication failure: ' . $message);
-
-        return $this->response;
+        return $this->_return($media_repo->getNextSong($this->station));
     }
 
-    protected function _authSuccess()
+    protected function _return($output)
     {
-        $this->response = $this->response
-            ->withHeader('icecast-auth-user', 1);
-
-        $this->response->getBody()->write('Success!');
-
+        $this->response->getBody()->write($output);
         return $this->response;
     }
 }

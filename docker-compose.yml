@@ -1,15 +1,62 @@
 version: '3'
 
 services:
-  azuracast:
+  nginx:
+    image: 'bitnami/nginx:latest'
+    ports:
+      - '80:80'
+      - '443:443'
+    networks:
+      - app-tier
+    depends_on:
+      - php-fpm
+    volumes:
+      - ${pwd}/util/docker/nginx_azuracast.conf:/bitnami/nginx/conf/vhosts/azuracast.conf
+      - ${pwd}:/var/azuracast/www
+
+  mariadb:
+    image: 'mariadb'
+    networks:
+      - app-tier
+    volumes:
+      - db_data:/var/lib/mysql
+      - ${pwd}/util/docker/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=azur4c457
+      - MYSQL_DATABASE=azuracast
+
+  influxdb:
+    image: 'influxdb:alpine'
+    networks:
+      - app-tier
+    volumes:
+      - influx_data:/var/lib/influxdb
+
+  php-fpm:
+    image: 'bitnami/php-fpm:latest'
+    networks:
+      - app-tier
+    volumes:
+      - ${pwd}:/var/azuracast/www
+      - station_data:/var/azuracast/stations
+    environment:
+      - AZURACAST_IN_DOCKER=true
+
+  stations:
     build: .
     ports:
-     - "80:80"
-     - "443:443"
+     - "8000-8999"
+    networks:
+     - app-tier
     volumes:
-     - .:/var/azuracast/www
-     - db_data:/var/lib/mysql
-    privileged: true
+     - ${pwd}/util/docker/supervisord.conf:/etc/supervisor/supervisord.conf
+     - station_data:/var/azuracast/stations
+
+networks:
+  app-tier:
+    driver: bridge
 
 volumes:
  db_data:
+ influx_data:
+ station_data:

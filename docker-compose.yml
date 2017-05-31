@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  azuracast:
+    build: .
+    ports:
+     - "80:80"
+     - "443:443"
+    volumes:
+     - .:/var/azuracast/www
+     - db_data:/var/lib/mysql
+    privileged: true
+
+volumes:
+ db_data:

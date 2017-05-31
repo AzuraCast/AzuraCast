@@ -25,10 +25,6 @@ $(function() {
 
     setVolume(volume/100);
 
-    var can_play_mp3 = !!(player.canPlayType && player.canPlayType('audio/mpeg;').replace(/no/, ''));
-    if (!can_play_mp3)
-        console.error('This browser cannot play MP3 files directly.');
-
     // Handle events.
     $player.on('play', function(e) {
 

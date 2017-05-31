@@ -59,11 +59,8 @@ ADD ./supervisord.conf /etc/supervisor/supervisord.conf
 ADD ./supervisord_core.conf /etc/supervisor/conf.d/core.conf
 
 # AzuraCast installer and update commands
-COPY ./azuracast_install /usr/bin/azuracast_install
-COPY ./azuracast_update /usr/bin/azuracast_update
-
-RUN chmod a+x /usr/bin/azuracast_install && \
-     chmod a+x /usr/bin/azuracast_update
+COPY scripts/ /usr/bin
+RUN chmod a+x /usr/bin/azuracast_*
 
 # Default functionality
 EXPOSE 9000

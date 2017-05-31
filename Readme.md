@@ -99,6 +99,8 @@ docker-compose run web azuracast_install
 From inside the base directory where AzuraCast is copied, run the following commands:
 
 ```bash
+docker-compose kill
+docker-compose up -d --build
 docker-compose run web azuracast_update
 ```
 

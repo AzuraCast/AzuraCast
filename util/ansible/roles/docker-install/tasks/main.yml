@@ -1,4 +1,14 @@
 ---
+- name: Use Default Configuration Files
+  copy: src="{{ www_base }}/app/config/{{ item }}.conf.sample.php" dest="{{ www_base }}/app/config/{{ item }}.conf.php" force=no
+  with_items:
+   - db
+   - influx
+   - cache
+
+- name: Write current environment to file.
+  copy: content="{{ app_env }}" dest="{{ www_base }}/app/.env"
+
 - name: InfluxDB - Create 'stations' database
   influxdb_database:
     hostname: "influxdb"
@@ -31,10 +41,6 @@
 - name: Write InfluxDB configuration
   become: true
   template: src=influx.conf.php.j2 dest="{{ www_base }}/app/config/influx.conf.php" owner=azuracast group=azuracast mode=0644 force=yes
-
-- name: Write Memcached configuration
-  become: true
-  template: src=cache.conf.php.j2 dest="{{ www_base }}/app/config/cache.conf.php" owner=azuracast group=azuracast mode=0644 force=yes
 
 - name: Write DB configuration
   become: true

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+sudo -u azuracast php /var/azuracast/www/util/cli.php "$@"

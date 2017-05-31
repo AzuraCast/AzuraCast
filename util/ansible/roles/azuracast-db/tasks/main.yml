@@ -10,6 +10,7 @@
     become_user: azuracast
     shell: php {{ util_base }}/cli.php dbal:import {{ util_base }}/azuracast_db.sql
     when: azuracast_db_created.changed
+    ignore_errors: true
 
   - name: Apply All DB Migrations
     become: true

@@ -1,6 +1,9 @@
 git:
   depth: 1
 
+env:
+  DOCKER_COMPOSE_VERSION: 1.13.0
+
 cache:
   directories:
     - vendor
@@ -12,11 +15,19 @@ dist: trusty
 services:
   - docker
 
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
+
 install:
   - docker-compose up -d
 
 script:
- - docker-compose run web azuracast_testing
+  - docker-compose run web azuracast_testing
 
 after_failure:
- - docker-compose run web cat /var/azuracast/www/tests/_output/*
+  - docker-compose run web cat /var/azuracast/www/tests/_output/*

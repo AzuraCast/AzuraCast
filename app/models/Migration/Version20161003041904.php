@@ -19,6 +19,13 @@ class Version20161003041904 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql',
             'Migration can only be executed safely on \'mysql\'.');
 
+        $db_dump_file = APP_INCLUDE_ROOT.'/util/azuracast_db.sql';
+        $db_dump = file_get_contents($db_dump_file);
+
+        foreach(explode("\n", $db_dump) as $db_dump_line) {
+            $this->addSql($db_dump_line);
+        }
+
         $this->addSql('CREATE TABLE role_has_actions (id INT AUTO_INCREMENT NOT NULL, station_id INT DEFAULT NULL, role_id INT NOT NULL, action_id INT NOT NULL, INDEX IDX_50EEC1BDD60322AC (role_id), INDEX IDX_50EEC1BD21BDB235 (station_id), UNIQUE INDEX role_action_unique_idx (role_id, action_id, station_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE role_has_actions ADD CONSTRAINT FK_50EEC1BD21BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE');
 

@@ -5,13 +5,6 @@
     shell: php {{ util_base }}/cli.php cache:clear
     when: azuracast_db_created.changed and testing_mode|bool == false
 
-  - name: Install Initial Database
-    become: true
-    become_user: azuracast
-    shell: php {{ util_base }}/cli.php dbal:import {{ util_base }}/azuracast_db.sql
-    when: azuracast_db_created.changed
-    ignore_errors: true
-
   - name: Apply All DB Migrations
     become: true
     become_user: azuracast

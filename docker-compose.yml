@@ -6,17 +6,14 @@ services:
     ports:
       - '80:80'
       - '443:443'
-    networks:
-      - app-tier
     depends_on:
       - web
+      - stations
     volumes:
       - ${pwd}:/var/azuracast/www
 
   mariadb:
     build: ./util/docker/mariadb
-    networks:
-      - app-tier
     volumes:
       - db_data:/var/lib/mysql
     environment:
@@ -27,15 +24,11 @@ services:
 
   influxdb:
     image: 'influxdb:alpine'
-    networks:
-      - app-tier
     volumes:
       - influx_data:/var/lib/influxdb
 
   web:
     build: ./util/docker/web
-    networks:
-      - app-tier
     depends_on:
      - mariadb
      - influxdb
@@ -47,8 +40,6 @@ services:
 
   cron:
     build: ./util/docker/web
-    networks:
-      - app-tier
     depends_on:
       - web
     volumes:
@@ -60,13 +51,8 @@ services:
     build: ./util/docker/stations
     ports:
      - '8000-8500:8000-8500'
-    networks:
-     - app-tier
     volumes:
      - station_data:/var/azuracast/stations
-
-networks:
-  app-tier:
 
 volumes:
  db_data:

@@ -19,6 +19,8 @@ app/models/Proxy/*.php
 
 # Local development files.
 app/.env
+/util/fixtures/*
+!/util/fixtures/.gitkeep
 
 # Composer-generated content
 /vendor/

@@ -34,7 +34,10 @@ return function (\Slim\Container $di, \App\Config $config) {
         try {
             $config = $di['config'];
             $options = $config->application->doctrine->toArray();
-            $options['conn'] = $config->db->toArray();
+
+            $options['conn'] = (APP_INSIDE_DOCKER) ?
+                $config->docker->db->toArray() :
+                $config->db->toArray();
 
             // Fetch and store entity manager.
             $config = new \Doctrine\ORM\Configuration;
@@ -96,7 +99,10 @@ return function (\Slim\Container $di, \App\Config $config) {
     // Caching
     $di['cache_driver'] = function ($di) {
         $config = $di['config'];
-        $cache_config = $config->cache->toArray();
+
+        $cache_config = (APP_INSIDE_DOCKER) ?
+            $config->docker->cache->toArray() :
+            $config->cache->toArray();
 
         switch ($cache_config['cache']) {
             case 'redis':
@@ -160,7 +166,10 @@ return function (\Slim\Container $di, \App\Config $config) {
     // InfluxDB
     $di['influx'] = function ($di) {
         $config = $di['config'];
-        $opts = $config->influx->toArray();
+
+        $opts = (APP_INSIDE_DOCKER) ?
+            $config->docker->influx->toArray() :
+            $config->influx->toArray();
 
         $influx = new \InfluxDB\Client($opts['host'], $opts['port']);
 

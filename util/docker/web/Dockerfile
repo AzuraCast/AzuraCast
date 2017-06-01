@@ -3,7 +3,7 @@ FROM ubuntu:xenial
 # Install essential packages
 RUN apt-get update && \
     apt-get install -q -y apt-transport-https curl wget tar python-software-properties \
-     software-properties-common pwgen whois lnav sudo
+     software-properties-common pwgen whois lnav sudo zip
 
 # Set directory permissions
 RUN mkdir -p /var/azuracast/www_tmp

@@ -26,7 +26,7 @@ class LiquidSoap extends BackendAbstract
             'set("init.daemon.pidfile.path","' . $config_path . '/liquidsoap.pid")',
             'set("log.file.path","' . $config_path . '/liquidsoap.log")',
             'set("server.telnet",true)',
-            'set("server.telnet.bind_addr","127.0.0.1")',
+            'set("server.telnet.bind_addr","'.(APP_INSIDE_DOCKER ? '0.0.0.0' : '127.0.0.1').'")',
             'set("server.telnet.port", ' . $this->_getTelnetPort() . ')',
             'set("server.telnet.reverse_dns",false)',
             'set("harbor.bind_addr","0.0.0.0")',
@@ -372,7 +372,7 @@ class LiquidSoap extends BackendAbstract
 
     protected function _getTelnetPort()
     {
-        return (8500 + (($this->station->id - 1) * 10));
+        return (8000 + (($this->station->id - 1) * 10) + 4);
     }
 
     /*

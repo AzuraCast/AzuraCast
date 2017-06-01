@@ -11,7 +11,7 @@ services:
       - web
       - stations
     volumes:
-      - ${pwd}:/var/azuracast/www
+      - .:/var/azuracast/www
 
   mariadb:
     build:
@@ -37,7 +37,7 @@ services:
       - influxdb
       - stations
     volumes:
-      - ${pwd}:/var/azuracast/www
+      - .:/var/azuracast/www
       - cache_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
 
@@ -45,10 +45,17 @@ services:
     build:
       context: ./util/docker/web
     depends_on:
-      - web
+      - mariadb
+      - influxdb
+      - stations
     volumes:
-      - ${pwd}:/var/azuracast/www
+      - .:/var/azuracast/www
+      - cache_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
+    depends_on:
+      - mariadb
+      - influxdb
+      - stations
     command: 'cron && tail -f /var/log/cron.log'
 
   stations:

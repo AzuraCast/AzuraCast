@@ -1,8 +1,9 @@
-version: '3'
+version: '2'
 
 services:
   nginx:
-    build: ./util/docker/nginx
+    build:
+      context: ./util/docker/nginx
     ports:
       - '80:80'
       - '443:443'
@@ -13,7 +14,8 @@ services:
       - ${pwd}:/var/azuracast/www
 
   mariadb:
-    build: ./util/docker/mariadb
+    build:
+      context: ./util/docker/mariadb
     volumes:
       - db_data:/var/lib/mysql
     environment:
@@ -28,18 +30,20 @@ services:
       - influx_data:/var/lib/influxdb
 
   web:
-    build: ./util/docker/web
+    build:
+      context: ./util/docker/web
     depends_on:
-     - mariadb
-     - influxdb
-     - stations
+      - mariadb
+      - influxdb
+      - stations
     volumes:
       - ${pwd}:/var/azuracast/www
       - cache_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
 
   cron:
-    build: ./util/docker/web
+    build:
+      context: ./util/docker/web
     depends_on:
       - web
     volumes:
@@ -48,14 +52,15 @@ services:
     command: 'cron && tail -f /var/log/cron.log'
 
   stations:
-    build: ./util/docker/stations
+    build:
+      context: ./util/docker/stations
     ports:
      - '8000-8500:8000-8500'
     volumes:
      - station_data:/var/azuracast/stations
 
 volumes:
- db_data:
- influx_data:
- station_data:
- cache_data:
+  db_data: {}
+  influx_data: {}
+  station_data: {}
+  cache_data: {}

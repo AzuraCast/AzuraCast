@@ -2,9 +2,7 @@ version: '2'
 
 services:
   nginx:
-    build:
-      context: ./util/docker/nginx
-    image: azuracast/azuracast_nginx
+    image: azuracast/azuracast_nginx:latest
     ports:
       - '80:80'
       - '443:443'
@@ -30,9 +28,7 @@ services:
       - influx_data:/var/lib/influxdb
 
   web:
-    build:
-      context: ./util/docker/web
-    image: azuracast/azuracast_web
+    image: azuracast/azuracast_web:latest
     depends_on:
       - mariadb
       - influxdb
@@ -43,9 +39,7 @@ services:
       - station_data:/var/azuracast/stations
 
   cron:
-    build:
-      context: ./util/docker/web
-    image: azuracast/azuracast_web
+    image: azuracast/azuracast_web:latest
     depends_on:
       - mariadb
       - influxdb
@@ -61,9 +55,7 @@ services:
     command: 'cron && tail -f /var/log/cron.log'
 
   stations:
-    build:
-      context: ./util/docker/stations
-    image: azuracast/azuracast_stations
+    image: azuracast/azuracast_stations:latest
     ports:
      - '8000-8500:8000-8500'
     volumes:

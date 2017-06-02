@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  nginx:
+    build:
+      context: ./util/docker/nginx
+
+  web:
+    build:
+      context: ./util/docker/web
+
+  cron:
+    build:
+      context: ./util/docker/web
+
+  stations:
+    build:
+      context: ./util/docker/stations

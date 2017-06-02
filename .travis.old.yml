@@ -1,0 +1,35 @@
+language: php
+
+php:
+  - 7.0
+
+git:
+  depth: 1
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
+sudo: required
+dist: trusty
+
+install:
+  - echo $TRAVIS_BUILD_DIR
+  - sudo mkdir -p /var/azuracast
+  - sudo cp -R $TRAVIS_BUILD_DIR /var/azuracast/www
+  - sudo chmod a+x /var/azuracast/www/testing.sh
+  - cd /var/azuracast/www && ./testing.sh
+
+before_script:
+  - phpenv config-add $TRAVIS_BUILD_DIR/util/travis_php.ini
+  - sudo usermod -a -G www-data $USER
+
+script:
+  - sudo -u azuracast -- sh -c 'cd /var/azuracast/www && ./vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast'
+
+after_failure:
+  - sudo -u azuracast -- sh -c 'cat /var/azuracast/www/tests/_output/*'
+
+after_success:
+  - sudo -u azuracast -- sh -c 'cd /var/azuracast/www && CODECLIMATE_REPO_TOKEN=edde4245d0d06902bb370736f67d02f38a3fa10207a01fe6c459b39137c4386a ./vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml'

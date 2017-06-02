@@ -4,6 +4,7 @@ services:
   nginx:
     build:
       context: ./util/docker/nginx
+    image: azuracast/azuracast_nginx
     ports:
       - '80:80'
       - '443:443'
@@ -14,8 +15,7 @@ services:
       - .:/var/azuracast/www
 
   mariadb:
-    build:
-      context: ./util/docker/mariadb
+    image: mariadb:latest
     volumes:
       - db_data:/var/lib/mysql
     environment:
@@ -25,13 +25,14 @@ services:
       - MYSQL_DATABASE=azuracast
 
   influxdb:
-    image: 'influxdb:alpine'
+    image: influxdb:alpine
     volumes:
       - influx_data:/var/lib/influxdb
 
   web:
     build:
       context: ./util/docker/web
+    image: azuracast/azuracast_web
     depends_on:
       - mariadb
       - influxdb
@@ -44,6 +45,7 @@ services:
   cron:
     build:
       context: ./util/docker/web
+    image: azuracast/azuracast_web
     depends_on:
       - mariadb
       - influxdb
@@ -61,6 +63,7 @@ services:
   stations:
     build:
       context: ./util/docker/stations
+    image: azuracast/azuracast_stations
     ports:
      - '8000-8500:8000-8500'
     volumes:

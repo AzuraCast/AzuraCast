@@ -1,10 +1,8 @@
-language: php
-
-php:
-  - 7.0
-
 git:
   depth: 1
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.13.0
 
 cache:
   directories:
@@ -14,22 +12,28 @@ cache:
 sudo: required
 dist: trusty
 
-install:
-  - echo $TRAVIS_BUILD_DIR
-  - sudo mkdir -p /var/azuracast
-  - sudo cp -R $TRAVIS_BUILD_DIR /var/azuracast/www
-  - sudo chmod a+x /var/azuracast/www/testing.sh
-  - cd /var/azuracast/www && ./testing.sh
+services:
+  - docker
 
-before_script:
-  - phpenv config-add $TRAVIS_BUILD_DIR/util/travis_php.ini
-  - sudo usermod -a -G www-data $USER
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH, COMMIT=$COMMIT"
+
+install:
+  - docker-compose build
 
 script:
-  - sudo -u azuracast -- sh -c 'cd /var/azuracast/www && ./vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast'
+  - docker-compose run web azuracast_testing $CODECLIMATE_REPO_TOKEN
 
 after_failure:
-  - sudo -u azuracast -- sh -c 'cat /var/azuracast/www/tests/_output/*'
+  - docker-compose run web cat /var/azuracast/www/tests/_output/*
 
 after_success:
-  - sudo -u azuracast -- sh -c 'cd /var/azuracast/www && CODECLIMATE_REPO_TOKEN=edde4245d0d06902bb370736f67d02f38a3fa10207a01fe6c459b39137c4386a ./vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml'
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - if [ "$BRANCH" == "master" ]; then docker-compose push; fi

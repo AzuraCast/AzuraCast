@@ -85,9 +85,11 @@ sudo ./update.sh
 
 ### Installing via Docker
 
-You can now use [Docker Compose](https://docs.docker.com/compose/install/) to install AzuraCast in a series of Docker containers. This feature is experimental, so use at your own risk!
+You can now use [Docker Compose](https://docs.docker.com/compose/install/) to install AzuraCast in a series of Docker containers. This feature is brand new, so help with testing is welcome!
+
+Because Docker holds all of the software functionality inside prebuilt containers, the AzuraCast docker image is supported on *any* host that can run Docker and Docker Compose. See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04) for instructions on setting up Docker Compose on Ubuntu 16.04.
  
-On the host machine with Docker Compose installed, clone this repository to any local directory. From that directory, run the following commands:
+On the host machine with Docker Compose and Git installed, clone this repository to any local directory. From that directory, run the following commands:
 
 ```bash
 docker-compose up -d

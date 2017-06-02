@@ -36,6 +36,9 @@ COPY ./php.ini /etc/php/7.1/fpm/conf.d/05-azuracast.ini
 COPY ./php.ini /etc/php/7.1/cli/conf.d/05-azuracast.ini
 COPY ./phpfpmpool.conf /etc/php/7.1/fpm/pool.d/www.conf
 
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+
 # Set up locales
 COPY ./locale.gen /etc/locale.gen
 RUN apt-get update && \

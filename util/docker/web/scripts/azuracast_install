@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cd /var/azuracast/www
+
 while test $# -gt 0; do
     case "$1" in
         --dev)
@@ -17,4 +19,4 @@ APP_ENV="${APP_ENV:-production}"
 
 echo "Updating AzuraCast (Environment: $APP_ENV)"
 
-ansible-playbook /var/azuracast/www/util/ansible/docker_install.yml --inventory=/var/azuracast/www/util/ansible/hosts --extra-vars "app_env=$APP_ENV"
+ansible-playbook util/ansible/docker_install.yml --inventory=util/ansible/hosts --extra-vars "app_env=$APP_ENV"

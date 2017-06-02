@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  static:
+    build:
+      context: ./util/docker/static
+    volumes:
+      - ./web/static:/var/azuracast/www/web/static
+
+  mariadb:
+    ports:
+      - "3306:3306"

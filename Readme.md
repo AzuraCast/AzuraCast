@@ -38,9 +38,16 @@ You can also use AzuraCast as a tool for relaying or collecting listener statist
 ### Supported Operating Systems
 
 AzuraCast supports these operating systems and architectures out of the box:
+
+##### Traditional Installation
+
 * Ubuntu 16.04 LTS (Xenial) x64 (Recommended)
 * Ubuntu 16.04 LTS (Xenial) ARM
 * Ubuntu 14.04 LTS (Trusty) x64
+
+##### Docker Installation
+
+* Any host running Docker Engine and Docker Compose 1.10.0 or higher
 
 We are always looking to expand our compatibility with host operating systems, and we welcome any assistance in building new deployment scripts for other environments.
 
@@ -85,7 +92,7 @@ sudo ./update.sh
 
 ### Installing via Docker
 
-You can now use [Docker Compose](https://docs.docker.com/compose/install/) to install AzuraCast in a series of Docker containers. This feature is brand new, so help with testing is welcome!
+You can now use [Docker Compose](https://docs.docker.com/compose/install/) (version 1.10.0 or higher) to install AzuraCast in a series of Docker containers. This feature is brand new, so help with testing is welcome!
 
 Because Docker holds all of the software functionality inside prebuilt containers, the AzuraCast docker image is supported on *any* host that can run Docker and Docker Compose. See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04) for instructions on setting up Docker Compose on Ubuntu 16.04.
  

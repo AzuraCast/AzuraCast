@@ -16,3 +16,14 @@ services:
   stations:
     build:
       context: ./util/docker/stations
+
+  # Static assets (grunt, bower, etc)
+  static:
+    build:
+      context: ./util/docker/static
+    volumes:
+      - ./web/static:/var/azuracast/www/web/static
+
+  mariadb:
+    ports:
+      - "3306:3306"

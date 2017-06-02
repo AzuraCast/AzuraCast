@@ -11,6 +11,7 @@ services:
       - stations
     volumes:
       - .:/var/azuracast/www
+    restart: always
 
   mariadb:
     image: mariadb:latest
@@ -21,11 +22,13 @@ services:
       - MYSQL_USER=azuracast
       - MYSQL_PASSWORD=azur4c457
       - MYSQL_DATABASE=azuracast
+    restart: always
 
   influxdb:
     image: influxdb:alpine
     volumes:
       - influx_data:/var/lib/influxdb
+    restart: always
 
   web:
     image: azuracast/azuracast_web:latest
@@ -37,6 +40,7 @@ services:
       - .:/var/azuracast/www
       - cache_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
+    restart: always
 
   cron:
     image: azuracast/azuracast_web:latest
@@ -53,6 +57,7 @@ services:
       - influxdb
       - stations
     command: 'cron && tail -f /var/log/cron.log'
+    restart: always
 
   stations:
     image: azuracast/azuracast_stations:latest
@@ -60,6 +65,7 @@ services:
      - '8000-8500:8000-8500'
     volumes:
      - station_data:/var/azuracast/stations
+    restart: always
 
 volumes:
   db_data: {}

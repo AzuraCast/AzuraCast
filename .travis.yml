@@ -35,5 +35,5 @@ after_failure:
   - docker-compose run web cat /var/azuracast/www/tests/_output/*
 
 after_success:
-  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - docker login -e '$DOCKER_EMAIL' -u '$DOCKER_USER' -p '$DOCKER_PASS'
   - if [ "$BRANCH" == "master" ]; then docker-compose push; fi

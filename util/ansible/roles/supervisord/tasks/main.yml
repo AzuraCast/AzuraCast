@@ -2,6 +2,7 @@
   - name: Install supervisord from repo
     become: true
     apt: pkg=supervisor state=latest
+    register: supervisord_install
 
   - name: Change supervisord configuration
     become: true

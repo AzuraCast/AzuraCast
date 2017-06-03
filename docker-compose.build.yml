@@ -9,10 +9,6 @@ services:
     build:
       context: ./util/docker/web
 
-  cron:
-    build:
-      context: ./util/docker/web
-
   stations:
     build:
       context: ./util/docker/stations

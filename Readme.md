@@ -100,7 +100,7 @@ On the host machine with Docker Compose and Git installed, clone this repository
 
 ```bash
 docker-compose up -d
-docker-compose run web azuracast_install
+docker-compose run cli azuracast_install
 ```
 
 #### Updating with Docker
@@ -110,7 +110,7 @@ From inside the base directory where AzuraCast is copied, run the following comm
 ```bash
 docker-compose kill
 docker-compose up -d --build
-docker-compose run web azuracast_update
+docker-compose run cli azuracast_update
 ```
 
 ### Local Development with Vagrant

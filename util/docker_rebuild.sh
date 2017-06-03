@@ -6,5 +6,5 @@ docker rm $(docker ps -a -q)
 docker volume prune -f
 
 ./docker-compose-dev.sh build
-./docker-compose-dev.sh run web azuracast_install --dev
+./docker-compose-dev.sh run cli azuracast_install --dev
 ./docker-compose-dev.sh up -d

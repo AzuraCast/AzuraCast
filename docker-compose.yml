@@ -31,6 +31,7 @@ services:
     restart: always
 
   web:
+    container_name: azuracast_web
     image: azuracast/azuracast_web:latest
     depends_on:
       - mariadb
@@ -43,15 +44,10 @@ services:
     restart: always
 
   cron:
+    container_name: azuracast_cron
     image: azuracast/azuracast_web:latest
-    depends_on:
-      - mariadb
-      - influxdb
-      - stations
-    volumes:
-      - .:/var/azuracast/www
-      - cache_data:/var/azuracast/www_tmp
-      - station_data:/var/azuracast/stations
+    volumes_from:
+      - web
     depends_on:
       - mariadb
       - influxdb
@@ -59,7 +55,18 @@ services:
     command: 'cron && tail -f /var/log/cron.log'
     restart: always
 
+  cli:
+    image: azuracast/azuracast_web:latest
+    volumes_from:
+      - web
+    depends_on:
+      - mariadb
+      - influxdb
+      - stations
+    command: 'bash'
+
   stations:
+    container_name: azuracast_stations
     image: azuracast/azuracast_stations:latest
     ports:
      - '8000-8500:8000-8500'

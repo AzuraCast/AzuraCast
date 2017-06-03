@@ -7,6 +7,12 @@ services:
     volumes:
       - ./web/static:/var/azuracast/www/web/static
 
+  stations_cli:
+    image: azuracast/azuracast_stations:latest
+    volumes:
+     - station_data:/var/azuracast/stations
+    command: 'bash'
+
   mariadb:
     ports:
       - "3306:3306"

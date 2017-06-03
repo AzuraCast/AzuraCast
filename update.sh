@@ -7,6 +7,11 @@ while test $# -gt 0; do
             shift
             ;;
 
+        --full)
+           UPDATE_REVISION=0
+           shift
+           ;;
+
         *)
             break
             ;;
@@ -25,6 +30,7 @@ if [ "" == "$PKG_OK" ]; then
 fi
 
 APP_ENV="${APP_ENV:-production}"
+UPDATE_REVISION="{$UPDATE_REVISION:-10"
 
 echo "Updating AzuraCast (Environment: $APP_ENV)"
 
@@ -32,4 +38,4 @@ if [ $APP_ENV = "production" ]; then
     git reset --hard && git pull
 fi
 
-ansible-playbook util/ansible/update.yml --inventory=util/ansible/hosts --extra-vars "app_env=$APP_ENV update_revision=10"
+ansible-playbook util/ansible/update.yml --inventory=util/ansible/hosts --extra-vars "app_env=$APP_ENV update_revision=$UPDATE_REVISION"

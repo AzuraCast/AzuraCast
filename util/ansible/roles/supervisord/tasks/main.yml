@@ -3,11 +3,6 @@
     become: true
     apt: pkg=supervisor state=latest
 
-  - name: Update supervisord from easy_install
-    become: true
-    command: easy_install supervisor
-    register: supervisord_install
-
   - name: Change supervisord configuration
     become: true
     template: src=supervisord.conf.j2 dest=/etc/supervisor/supervisord.conf force=yes

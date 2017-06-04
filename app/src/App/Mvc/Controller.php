@@ -209,7 +209,7 @@ class Controller
      */
     public function getParam($param_name, $default_value = null)
     {
-        $query_params = $this->request->getQueryParams();
+        $query_params = $this->request->getParams();
 
         if (isset($this->params[$param_name])) {
             return $this->params[$param_name];

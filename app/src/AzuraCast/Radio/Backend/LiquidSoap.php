@@ -25,6 +25,7 @@ class LiquidSoap extends BackendAbstract
             'set("init.daemon", false)',
             'set("init.daemon.pidfile.path","' . $config_path . '/liquidsoap.pid")',
             'set("log.file.path","' . $config_path . '/liquidsoap.log")',
+            (APP_INSIDE_DOCKER ? 'set("log.stdout", true)' : ''),
             'set("server.telnet",true)',
             'set("server.telnet.bind_addr","'.(APP_INSIDE_DOCKER ? '0.0.0.0' : '127.0.0.1').'")',
             'set("server.telnet.port", ' . $this->_getTelnetPort() . ')',
@@ -34,7 +35,7 @@ class LiquidSoap extends BackendAbstract
             '',
             '# AutoDJ Next Song Script',
             'def azuracast_next_song() =',
-            '  uri = get_process_lines("wget -qO- '.$this->_getApiUrl('/api/internal/'.$this->station->id.'/nextsong').'")',
+            '  uri = get_process_lines("'.$this->_getApiUrlCommand('/api/internal/'.$this->station->id.'/nextsong').'")',
             '  uri = list.hd(uri)',
             '  log("AzuraCast Raw Response: #{uri}")',
             '  request.create(uri)',
@@ -43,8 +44,9 @@ class LiquidSoap extends BackendAbstract
             '# DJ Authentication',
             'def dj_auth(user,password) =',
             '  log("Authenticating DJ: #{user}")',
-            '  ret = get_process_lines("wget -qO- '.$this->_getApiUrl('/api/internal/'.$this->station->id.'/auth', ['dj_user' => '#{user}', 'dj_password' => '#{password}']).'")',
+            '  ret = get_process_lines("'.$this->_getApiUrlCommand('/api/internal/'.$this->station->id.'/auth', ['dj_user' => '#{user}', 'dj_password' => '#{password}']).'")',
             '  ret = list.hd(ret)',
+            '  log("AzuraCast DJ Auth Response: #{ret}")',
             '  bool_of_string(ret)',
             'end',
             '',
@@ -257,14 +259,18 @@ class LiquidSoap extends BackendAbstract
         return true;
     }
 
-    protected function _getApiUrl($endpoint, $params = [])
+    protected function _getApiUrlCommand($endpoint, $params = [])
     {
         $params = (array)$params;
         $params['api_auth'] = $this->_getApiPassword();
 
         $base_url = (APP_INSIDE_DOCKER) ? 'http://nginx' : 'http://localhost';
 
-        return $base_url.$endpoint.'?'.http_build_query($params);
+        $curl_request = 'curl -s --request POST --url '.$base_url.$endpoint;
+        foreach($params as $param_key => $param_val) {
+            $curl_request .= ' --form '.$param_key.'='.$param_val;
+        }
+        return $curl_request;
     }
 
     protected function _cleanUpString($string)

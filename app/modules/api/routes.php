@@ -17,8 +17,8 @@ return function(\Slim\App $app) {
 
             $this->group('/{station}', function() {
 
-                $this->get('/auth', 'api:internal:auth')->setName('api:internal:auth');
-                $this->get('/nextsong', 'api:internal:nextsong')->setName('api:internal:nextsong');
+                $this->map(['GET', 'POST'], '/auth', 'api:internal:auth')->setName('api:internal:auth');
+                $this->map(['GET', 'POST'], '/nextsong', 'api:internal:nextsong')->setName('api:internal:nextsong');
 
             });
 

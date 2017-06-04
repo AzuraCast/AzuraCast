@@ -1,5 +1,8 @@
 FROM ubuntu:xenial
 
+RUN apt-get update && \
+    apt-get install -q -y curl
+
 # Install supervisord
 RUN mkdir -p /var/log/supervisor
 
@@ -9,12 +12,12 @@ RUN apt-get update && \
 ADD ./supervisord.conf /etc/supervisor/supervisord.conf
 
 # Set up broadcast sections
-RUN mkdir -p /var/azuracast/servers/shoutcast2
-RUN mkdir -p /var/azuracast/servers/icecast2
-RUN mkdir -p /var/azuracast/stations
+RUN mkdir -p /var/azuracast/servers/shoutcast2 && \
+    mkdir -p /var/azuracast/servers/icecast2 && \
+    mkdir -p /var/azuracast/stations
 
-RUN adduser --home /var/azuracast --disabled-password --gecos "" azuracast
-RUN chown -R azuracast:azuracast /var/azuracast
+RUN adduser --home /var/azuracast --disabled-password --gecos "" azuracast && \
+    chown -R azuracast:azuracast /var/azuracast
 
 # Download Shoutcast 2
 WORKDIR /var/azuracast/servers/shoutcast2

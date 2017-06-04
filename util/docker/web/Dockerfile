@@ -6,12 +6,12 @@ RUN apt-get update && \
      software-properties-common pwgen whois lnav sudo cron zip unzip
 
 # Set directory permissions
-RUN mkdir -p /var/azuracast/www_tmp
-RUN chmod -R 777 /var/azuracast/www_tmp
+RUN mkdir -p /var/azuracast/www_tmp && \
+    chmod -R 777 /var/azuracast/www_tmp
 
 # Create azuracast user.
-RUN adduser --home /var/azuracast --disabled-password --gecos "" azuracast
-RUN chown -R azuracast:azuracast /var/azuracast
+RUN adduser --home /var/azuracast --disabled-password --gecos "" azuracast && \
+    chown -R azuracast:azuracast /var/azuracast
 
 # Install Git
 RUN apt-get update && \

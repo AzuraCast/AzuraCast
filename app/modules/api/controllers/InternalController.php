@@ -34,7 +34,7 @@ class InternalController extends BaseController
     public function authAction()
     {
         $user = $this->getParam('dj_user');
-        $pass = $this->getParam('dj_pass');
+        $pass = $this->getParam('dj_password');
 
         if ($this->getParam('dj_user') == 'shoutcast') {
             list($user, $pass) = explode(':', $pass);

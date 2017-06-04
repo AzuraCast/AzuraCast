@@ -99,8 +99,9 @@ Because Docker holds all of the software functionality inside prebuilt container
 On the host machine with Docker Compose and Git installed, clone this repository to any local directory. From that directory, run the following commands:
 
 ```bash
+docker-compose pull
+docker-compose run --rm cli azuracast_install
 docker-compose up -d
-docker-compose run cli azuracast_install
 ```
 
 #### Updating with Docker
@@ -108,9 +109,10 @@ docker-compose run cli azuracast_install
 From inside the base directory where AzuraCast is copied, run the following commands:
 
 ```bash
-docker-compose kill
-docker-compose up -d --build
-docker-compose run cli azuracast_update
+docker-compose down
+docker-compose pull
+docker-compose run --rm cli azuracast_update
+docker-compose up -d
 ```
 
 ### Local Development with Vagrant

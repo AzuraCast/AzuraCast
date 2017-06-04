@@ -30,6 +30,10 @@ services:
       - influx_data:/var/lib/influxdb
     restart: always
 
+  redis:
+    image: redis:alpine
+    restart: always
+
   web:
     container_name: azuracast_web
     image: azuracast/azuracast_web:latest
@@ -37,9 +41,9 @@ services:
       - mariadb
       - influxdb
       - stations
+      - redis
     volumes:
       - .:/var/azuracast/www
-      - cache_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
     restart: always
 
@@ -52,6 +56,7 @@ services:
       - mariadb
       - influxdb
       - stations
+      - redis
     command: 'cron && tail -f /var/log/cron.log'
     restart: always
 
@@ -63,6 +68,7 @@ services:
       - mariadb
       - influxdb
       - stations
+      - redis
     command: 'bash'
 
   stations:
@@ -78,4 +84,3 @@ volumes:
   db_data: {}
   influx_data: {}
   station_data: {}
-  cache_data: {}

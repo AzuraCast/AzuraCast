@@ -31,10 +31,10 @@ install:
   - docker-compose-local build
 
 script:
-  - docker-compose-local run cli azuracast_testing $CODECLIMATE_REPO_TOKEN
+  - docker-compose-local run --rm cli azuracast_testing $CODECLIMATE_REPO_TOKEN
 
 after_failure:
-  - docker-compose-local run cli cat /var/azuracast/www/tests/_output/*
+  - docker-compose-local run --rm cli cat /var/azuracast/www/tests/_output/*
 
 after_success:
   - docker login --username $DOCKER_USER --password $DOCKER_PASS

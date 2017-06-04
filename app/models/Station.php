@@ -267,6 +267,14 @@ class Station extends \App\Doctrine\Entity
             $supervisor_config[] = 'command=' . $frontend->getCommand();
             $supervisor_config[] = 'user=azuracast';
             $supervisor_config[] = 'priority=90';
+
+            if (APP_INSIDE_DOCKER) {
+                $supervisor_config[] = 'stdout_logfile=/dev/stdout';
+                $supervisor_config[] = 'stdout_logfile_maxbytes=0';
+                $supervisor_config[] = 'stderr_logfile=/dev/stderr';
+                $supervisor_config[] = 'stderr_logfile_maxbytes=0';
+            }
+
             $supervisor_config[] = '';
         }
 
@@ -277,6 +285,14 @@ class Station extends \App\Doctrine\Entity
             $supervisor_config[] = 'command=' . $backend->getCommand();
             $supervisor_config[] = 'user=azuracast';
             $supervisor_config[] = 'priority=100';
+
+            if (APP_INSIDE_DOCKER) {
+                $supervisor_config[] = 'stdout_logfile=/dev/stdout';
+                $supervisor_config[] = 'stdout_logfile_maxbytes=0';
+                $supervisor_config[] = 'stderr_logfile=/dev/stderr';
+                $supervisor_config[] = 'stderr_logfile_maxbytes=0';
+            }
+
             $supervisor_config[] = '';
         }
 

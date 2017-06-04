@@ -4,7 +4,7 @@ FROM ubuntu:xenial
 RUN mkdir -p /var/log/supervisor
 
 RUN apt-get update && \
-    apt-get install -y supervisor
+    apt-get install -q -y supervisor
 
 ADD ./supervisord.conf /etc/supervisor/supervisord.conf
 
@@ -28,7 +28,8 @@ RUN apt-get update && \
 WORKDIR /var/azuracast/servers/icecast2
 
 RUN apt-get update && \
-    apt-get install -y libxml2 libxslt1-dev libvorbis-dev libssl-dev libcurl4-openssl-dev pkg-config && \
+    apt-get install -y --no-install-recommends libxml2 libxslt1-dev libvorbis-dev libssl-dev libcurl4-openssl-dev \
+     gcc pkg-config && \
     wget https://github.com/karlheyes/icecast-kh/archive/icecast-2.4.0-kh5.tar.gz && \
     tar --strip-components=1 -xzf icecast-2.4.0-kh5.tar.gz && \
     ./configure && \
@@ -45,8 +46,8 @@ ADD ./xml2json.xslt /usr/local/share/icecast/web/xml2json.xslt
 RUN sed -e 's#main#main contrib non-free#' -i /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get install -y opam libpcre3-dev libfdk-aac-dev libmad0-dev libmp3lame-dev libtag1-dev \
-    libfaad-dev libflac-dev pkg-config m4
+    apt-get install -y --no-install-recommends ocaml git rsync opam libpcre3-dev libfdk-aac-dev libmad0-dev \
+      libmp3lame-dev libtag1-dev libfaad-dev libflac-dev pkg-config m4
 
 USER azuracast
 

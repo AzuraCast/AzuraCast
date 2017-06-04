@@ -9,7 +9,7 @@ return [
     // memcached - Uses libmemcached and 'memcached' settings below.
     // redis - Uses phpredis and 'redis' settings below.
     // file - Uses flat-file storage and 'file' settings below.
-    'cache' => 'file',
+    'cache' => 'redis',
 
     // Flatfile configuration
     'file' => [
@@ -20,7 +20,7 @@ return [
     'redis' => [
         'servers' => [
             [
-                'server' => 'localhost',
+                'server' => 'redis',
                 'port' => 6379, // default: 6379
             ],
         ],

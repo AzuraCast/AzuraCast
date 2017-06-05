@@ -36,7 +36,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -
 # Set up locales
 COPY ./locale.gen /etc/locale.gen
 RUN apt-get update && \
-    apt-get install -q -y locales
+    apt-get install -q -y locales gettext
 
 # Set up crontab tasks
 ADD crontab /etc/cron.d/azuracast-cron

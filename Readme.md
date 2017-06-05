@@ -99,6 +99,12 @@ Because Docker holds all of the software functionality inside prebuilt container
 On the host machine with Docker Compose and Git installed, clone this repository to any local directory. From that directory, run the following commands:
 
 ```bash
+./docker_install.sh
+```
+
+or
+
+```bash
 docker-compose pull
 docker-compose run --rm cli azuracast_install
 docker-compose up -d
@@ -107,6 +113,12 @@ docker-compose up -d
 #### Updating with Docker
 
 From inside the base directory where AzuraCast is copied, run the following commands:
+
+```bash
+./docker_update.sh
+```
+
+or
 
 ```bash
 docker-compose down

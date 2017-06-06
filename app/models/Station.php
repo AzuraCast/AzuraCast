@@ -22,6 +22,7 @@ class Station extends \App\Doctrine\Entity
         $this->request_threshold = 15;
 
         $this->needs_restart = false;
+        $this->has_started = false;
 
         $this->history = new ArrayCollection;
         $this->managers = new ArrayCollection;
@@ -178,6 +179,9 @@ class Station extends \App\Doctrine\Entity
 
     /** @Column(name="needs_restart", type="boolean") */
     protected $needs_restart;
+
+    /** @Column(name="has_started", type="boolean") */
+    protected $has_started;
 
     /**
      * @OneToMany(targetEntity="SongHistory", mappedBy="station")

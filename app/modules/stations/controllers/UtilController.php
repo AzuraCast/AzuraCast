@@ -21,7 +21,9 @@ class UtilController extends BaseController
         $frontend->start();
         $backend->start();
 
+        $this->station->has_started = true;
         $this->station->needs_restart = false;
+
         $this->em->persist($this->station);
         $this->em->flush();
     }

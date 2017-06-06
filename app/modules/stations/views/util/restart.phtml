@@ -1,18 +1,24 @@
-<?php $this->layout('main', ['title' => _('Restart Broadcasting')]) ?>
+<?php $this->layout('main', ['title' => _('Restart Broadcasting'), 'manual' => true]) ?>
 
-<h3><?=_('Restart Broadcasting') ?></h3>
-<p><?=_('Status messages related to this process are listed below.') ?></p>
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2><?=_('Restart Broadcasting') ?></h2>
+    </div>
+    <div class="card-body card-padding">
+        <p><?=_('Your station\'s configuration has been rewritten and broadcasting has been restarted. Status messages related to this process are listed below.') ?></p>
 
-<?php if ($flash->hasMessages()): ?>
-    <?php foreach($flash->getMessages() as $message): ?>
-        <div class="alert alert-<?=$message['color'] ?>">
-            <?=nl2br($message['text']) ?>
-        </div>
-    <?php endforeach; ?>
-<?php endif; ?>
+        <?php if ($flash->hasMessages()): ?>
+            <?php foreach($flash->getMessages() as $message): ?>
+                <div class="alert alert-<?=$message['color'] ?>">
+                    <?=nl2br($message['text']) ?>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
-<script type="text/javascript">
-$(function() {
-    $('ul.main-menu > li.menu-alert').hide();
-});
-</script>
+        <script type="text/javascript">
+            $(function() {
+                $('ul.main-menu > li.menu-alert').hide();
+            });
+        </script>
+    </div>
+</div>

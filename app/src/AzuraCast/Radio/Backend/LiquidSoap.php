@@ -1,6 +1,8 @@
 <?php
 namespace AzuraCast\Radio\Backend;
 
+use Doctrine\ORM\EntityManager;
+
 class LiquidSoap extends BackendAbstract
 {
     public function read()
@@ -73,14 +75,43 @@ class LiquidSoap extends BackendAbstract
         // Set up playlists using older format as a fallback.
         $ls_config[] = '# Fallback Playlists';
 
-        $playlists_by_type = [];
-        $playlists = [];
+        $has_default_playlist = false;
+        $playlist_objects = [];
 
         foreach ($this->station->playlists as $playlist_raw) {
             /** @var \Entity\StationPlaylist $playlist_raw */
             if (!$playlist_raw->is_enabled) {
                 continue;
             }
+            if ($playlist_raw->type == 'default') {
+                $has_default_playlist = true;
+            }
+
+            $playlist_objects[] = $playlist_raw;
+        }
+
+        // Create a new default playlist if one doesn't exist.
+        if (!$has_default_playlist) {
+
+            $this->log(_('No default playlist existed for the station, so one was automatically created. You can add songs to it from the "Media" page.'),'error');
+
+            // Auto-create an empty default playlist.
+            $default_playlist = new \Entity\StationPlaylist();
+            $default_playlist->station = $this->station;
+            $default_playlist->name = 'default';
+
+            /** @var EntityManager $em */
+            $em = $this->di['em'];
+            $em->persist($default_playlist);
+            $em->flush();
+
+            $playlist_objects[] = $default_playlist;
+        }
+
+        $playlists_by_type = [];
+        $playlists = [];
+
+        foreach ($playlist_objects as $playlist_raw) {
 
             $playlist_file_contents = $playlist_raw->export('m3u', true);
 
@@ -95,15 +126,6 @@ class LiquidSoap extends BackendAbstract
             $playlist_type = $playlist['type'] ?: 'default';
             $playlists_by_type[$playlist_type][] = $playlist;
             $playlists[] = $playlist;
-        }
-
-        if (empty($playlists_by_type['default'])) {
-            if (count($playlists) > 0) {
-                $this->log('LiquidSoap will not start until at least one playlist is set as the "Default" type.',
-                    'error');
-            }
-
-            return false;
         }
 
         $ls_config[] = '';

@@ -94,7 +94,7 @@ abstract class AdapterAbstract
                 $this->log(_('Process stopped.'), 'green');
             } catch (FaultException $e) {
                 if (stristr($e->getMessage(), 'NOT_RUNNING') !== false) {
-                    $this->log(_('Process was not running!'), 'red');
+                    $this->log(_('Process was not running!'), 'blue');
                 } else {
                     $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
                     $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
@@ -121,7 +121,7 @@ abstract class AdapterAbstract
                 $this->log(_('Process started.'), 'green');
             } catch (FaultException $e) {
                 if (stristr($e->getMessage(), 'ALREADY_STARTED') !== false) {
-                    $this->log(_('Process is already running!'), 'red');
+                    $this->log(_('Process is already running!'), 'green');
                 } else {
                     $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
                     $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));

@@ -23,6 +23,7 @@
     - nginx
     - php
     - mariadb
+    - ufw
     - composer
     - azuracast-db
     - { role: azuracast-cron, when: testing_mode == false }

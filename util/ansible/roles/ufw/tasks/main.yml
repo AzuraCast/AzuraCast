@@ -1,0 +1,30 @@
+---
+- name: Install UFW Firewall
+  become: true
+  apt:  pkg="{{ item }}" state=latest
+  with_items:
+    - ufw
+
+- name: UFW - Disable all other incoming by default
+  ufw:
+    policy: deny
+
+- name: UFW - Enable AzuraCast TCP Ports
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+   - 80
+   - 443
+   - '8000:8999'
+
+- name: UFW - Enable SSH
+  ufw:
+    rule: allow
+    port: ssh
+    proto: tcp
+
+- name: UFW - Turn on Firewall
+  ufw:
+    state: enabled

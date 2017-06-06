@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-29 09:16+0000\n"
+"POT-Creation-Date: 2017-06-06 18:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: /var/azuracast/www/app/bootstrap/services.php:190
+#: /var/azuracast/www/app/bootstrap/services.php:199
 #, php-format
 msgid ""
 "Could not connect to supervisord. Try running %s in a terminal to restart "
@@ -945,11 +945,11 @@ msgstr ""
 msgid "Roles"
 msgstr ""
 
-#: /var/azuracast/www/app/models/Station.php:381
+#: /var/azuracast/www/app/models/Station.php:402
 msgid "External Radio Server (Statistics Only)"
 msgstr ""
 
-#: /var/azuracast/www/app/models/Station.php:413
+#: /var/azuracast/www/app/models/Station.php:434
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:40
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:51
 msgid "Disabled"
@@ -1353,7 +1353,7 @@ msgid "Song skipped."
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/controllers/ReportsController.php:379
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:57
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:63
 msgid "SoundExchange Report"
 msgstr ""
 
@@ -1461,7 +1461,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:5
 #: /var/azuracast/www/app/modules/stations/views/reports/duplicates.phtml:25
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:37
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:43
 msgid "Playlists"
 msgstr ""
 
@@ -1572,7 +1572,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:5
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:24
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:30
 msgid "Mount Points"
 msgstr ""
 
@@ -1664,7 +1664,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:77
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:5
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:48
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:54
 msgid "Song Requests"
 msgstr ""
 
@@ -1826,7 +1826,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:13
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:56
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:62
 msgid "Live Listeners"
 msgstr ""
 
@@ -1856,7 +1856,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:5
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:52
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:58
 msgid "Song Listener Impact"
 msgstr ""
 
@@ -1912,19 +1912,23 @@ msgstr ""
 msgid "Not Played"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:15
-msgid "<b>Apply Pending Changes</b><br>Click to Restart Station"
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:17
+msgid "<b>Ready to Broadcast?</b><br>Click to Start Station"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:19
+msgid "<b>Apply Pending Changes</b><br>Click to Restart Station"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:25
 msgid "Public Page"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:21
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:27
 msgid "Profile"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:28
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:34
 #: /var/azuracast/www/app/modules/stations/views/streamers/disabled.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/streamers/disabled.phtml:5
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:1
@@ -1932,37 +1936,37 @@ msgstr ""
 msgid "Streamer/DJ Accounts"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:33
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:39
 msgid "Media"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:36
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:42
 msgid "Music Files"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:44
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:50
 msgid "Reports"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:50
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:56
 msgid "Song Playback Timeline"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:53
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:59
 msgid "Duplicate Songs"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:64
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:70
 msgid "Utilities"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:68
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:74
 msgid "Automated Assignment"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:71
+#: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:77
 #: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:1
-#: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:3
+#: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:5
 msgid "Restart Broadcasting"
 msgstr ""
 
@@ -2021,8 +2025,10 @@ msgid ""
 "target=\"_blank\">on the AzuraCast Wiki</a>."
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:4
-msgid "Status messages related to this process are listed below."
+#: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:8
+msgid ""
+"Your station's configuration has been rewritten and broadcasting has been "
+"restarted. Status messages related to this process are listed below."
 msgstr ""
 
 #: /var/azuracast/www/app/src/App/Utilities.php:91
@@ -2076,7 +2082,13 @@ msgstr ""
 msgid "Process is already running!"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/LiquidSoap.php:174
+#: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/LiquidSoap.php:96
+msgid ""
+"No default playlist existed for the station, so one was automatically "
+"created. You can add songs to it from the \"Media\" page."
+msgstr ""
+
+#: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/LiquidSoap.php:198
 msgid ""
 "You cannot use an AutoDJ with a remote frontend. Please change the frontend "
 "type or update the backend to be \"Disabled\"."

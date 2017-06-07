@@ -10,3 +10,4 @@
    - "php7.1-fpm"
    - "nginx"
    - "supervisor"
+  ignore_errors: true

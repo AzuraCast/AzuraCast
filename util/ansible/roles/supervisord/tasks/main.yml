@@ -19,10 +19,11 @@
   - name: Kill legacy radio processes (if upgrading from older version)
     become: true
     command: killall -q -9 icecast2 sc_serv liquidsoap
-    ignore_errors: True
+    ignore_errors: true
     when: supervisord_install.changed
 
   - name: Trigger manual restart of supervisord (if not already running)
     become: true
     service: name=supervisor enabled=yes state=restarted
     when: supervisord_install.changed or supervisord_conf.changed or supervisord_core.changed
+    ignore_errors: true

@@ -66,7 +66,6 @@
 
   - name: Configure PHP FPM Pool
     template: src=fpmpool.j2 dest=/etc/php/7.1/fpm/pool.d/www.conf force=true
-    notify: restart php-fpm
 
   - name: Configure php-fpm php.ini
     ini_file:
@@ -78,7 +77,6 @@
       - { option: 'post_max_size',       value: "50M" }
       - { option: 'short_open_tag',      value: "On" }
       - { option: 'upload_max_filesize', value: "25M" }
-    notify: restart php-fpm
 
   - name: Configure php-cli php.ini
     ini_file:
@@ -88,8 +86,3 @@
       value: "{{ item.value }}"
     with_items:
       - { option: 'short_open_tag',      value: "On" }
-
-  - name: Disable service initialization for php-fpm
-    become: true
-    service: name=php7.1-fpm enabled=no state=stopped
-    ignore_errors: true

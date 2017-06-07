@@ -1,0 +1,12 @@
+---
+- name: Enable and restart all core services
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: restarted
+  with_items:
+   - "influxdb"
+   - "mysql"
+   - "php7.1-fpm"
+   - "nginx"
+   - "supervisor"

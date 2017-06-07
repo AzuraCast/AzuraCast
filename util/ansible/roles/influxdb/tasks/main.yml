@@ -22,20 +22,14 @@
   with_items:
    - influxdb
 
-- name: Disable service initialization for influxdb
+- name: Restart InfluxDB
   become: true
-  service: name=influxdb enabled=no state=stopped
+  service: name=influxdb enabled=yes state=restarted
   ignore_errors: true
 
-- name: restart influxdb
-  supervisorctl:
-    name: 'core:influxdb'
-    state: restarted
+- name: Pause to allow InfluxDB to spin up
+  pause: seconds=15
   when: influx_installed.changed
-
-#- name: Pause to allow InfluxDB to spin up
-#  pause: seconds=15
-#  when: influx_installed.changed
 
 - name: Create 'stations' database
   influxdb_database:

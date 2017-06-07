@@ -1,5 +1,0 @@
----
-- name: restart influxdb
-  supervisorctl:
-    name: 'core:influxdb'
-    state: restarted

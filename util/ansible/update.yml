@@ -14,12 +14,11 @@
     - init
     - azuracast-config
     - { role: azuracast-radio, when: update_revision|int < 8 }
-
+    - { role: supervisord, when: update_revision|int < 13 }
     - { role: nginx, when: update_revision|int < 10 }
     - { role: php, when: update_revision|int < 10 }
-    - { role: supervisord, when: update_revision|int < 11 }
     - { role: influxdb, when: update_revision|int < 10 }
     - { role: ufw, when: update_revision|int < 12 }
-
+    - { role: services, when: update_revision|int < 13 }
     - { role: azuracast-cron, when: update_revision|int < 2 }
     - azuracast-update

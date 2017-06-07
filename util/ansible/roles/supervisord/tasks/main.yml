@@ -9,14 +9,16 @@
     template: src=supervisord.conf.j2 dest=/etc/supervisor/supervisord.conf force=yes
     register: supervisord_conf
 
-  - name: Add core supervisord configuration
+  - name: Remove old core supervisord configuration
     become: true
-    template: src=core.conf.j2 dest=/etc/supervisor/conf.d/core.conf force=yes
+    file:
+      path: /etc/supervisor/conf.d/core.conf
+      state: absent
     register: supervisord_core
 
   - name: Kill legacy radio processes (if upgrading from older version)
     become: true
-    command: killall -9 icecast2 sc_serv liquidsoap
+    command: killall -q -9 icecast2 sc_serv liquidsoap
     ignore_errors: True
     when: supervisord_install.changed
 

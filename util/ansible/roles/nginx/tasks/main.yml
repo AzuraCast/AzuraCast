@@ -12,7 +12,6 @@
     command: openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=${ansible_fqdn}" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca
     args:
       creates: /etc/nginx/ssl/server.crt
-    notify: restart nginx
 
   - name: Remove default nginx site symlink
     become: true
@@ -23,7 +22,6 @@
   - name: Add app-specific nginx site
     become: true
     template: src=default.j2 dest=/etc/nginx/sites-available/00-azuracast
-    notify: restart nginx
 
   - name: Link app-specific nginx site
     become: true
@@ -39,9 +37,3 @@
       regexp: 'sendfile on;'
       replace: 'sendfile off;'
     when: app_env == "development"
-
-  - name: Disable service initialization for nginx
-    become: true
-    service: name=nginx enabled=no state=stopped
-    ignore_errors: true
-    notify: restart nginx

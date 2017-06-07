@@ -34,26 +34,13 @@
 
  - name: Add configuration
    template: src=my.cnf.j2 dest=/etc/mysql/conf.d/my.cnf owner=root group=root mode=0644
-   notify: restart mysql
 
- - name: Disable service initialization for mariadb
-   become: true
-   service: name=mysql enabled=no state=stopped
-   ignore_errors: true
-
- - name: Restart MySQL
-   supervisorctl:
-     name: 'core:mysql'
-     state: restarted
+ - name: Start and enable service
+   service: name=mysql state=started enabled=yes
 
  - name: Add empty root .my.cnf (if none exists)
    become: true
    template: src=root_empty_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600
-
-# - name: MySQL Root Account Fix (Ubuntu 16.04)
-#   become: true
-#   shell: "cat {{ util_base }}/xenial_mysql_fix.sql | mysql --defaults-extra-file=/root/.my.cnf -NB"
-#   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
 
  - name: Remove anonymous users
    command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
@@ -84,12 +71,6 @@
      priv: "azuracast.*:ALL,GRANT"
      state: present
    notify: send mysql notification
-
- #- name: Reload privilege tables
- #  command: 'mysql -ne "{{ item }}"'
- #  with_items:
- #    - "FLUSH PRIVILEGES"
- #  changed_when: False
 
  - name: Add .my.cnf
    become: true

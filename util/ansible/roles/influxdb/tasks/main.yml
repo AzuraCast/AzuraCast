@@ -23,7 +23,8 @@
    - influxdb
 
 - name: Fix permissions on InfluxDB data folder
-  file: path="/var/lib/influxdb/data" state=directory owner=influxdb group=influxdb recurse=true
+  become: true
+  file: path="/var/lib/influxdb" state=directory owner=influxdb group=influxdb recurse=true
 
 - name: Restart InfluxDB
   become: true

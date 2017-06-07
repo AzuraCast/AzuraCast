@@ -28,12 +28,13 @@
 
 - name: Restart InfluxDB
   become: true
-  service: name=influxdb enabled=yes state=restarted
+  service: name=influxdb enabled=yes state=started
+  register: influx_started
   ignore_errors: true
 
 - name: Pause to allow InfluxDB to spin up
   pause: seconds=15
-  when: influx_installed.changed
+  when: influx_started.changed
 
 - name: Create 'stations' database
   influxdb_database:

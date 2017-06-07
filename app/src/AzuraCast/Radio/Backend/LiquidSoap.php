@@ -93,7 +93,7 @@ class LiquidSoap extends BackendAbstract
         // Create a new default playlist if one doesn't exist.
         if (!$has_default_playlist) {
 
-            $this->log(_('No default playlist existed for the station, so one was automatically created. You can add songs to it from the "Media" page.'),'error');
+            $this->log(_('No default playlist existed for the station, so one was automatically created. You can add songs to it from the "Media" page.'),'info');
 
             // Auto-create an empty default playlist.
             $default_playlist = new \Entity\StationPlaylist();

@@ -21,7 +21,7 @@
 
 - name: UFW - Enable SSH
   ufw:
-    rule: allow
+    rule: limit
     port: ssh
     proto: tcp
 

@@ -11,15 +11,22 @@
     </li>
 
 <?php if ($acl->isAllowed('manage station broadcasting', $station->id)): ?>
-    <li class="menu-alert">
-        <a href="<?=$url->named('stations:util:restart', ['station' => $station->id]) ?>"><i class="zmdi zmdi-refresh-sync-alert"></i>
     <?php if (!$station->has_started): ?>
-        <?=_('<b>Ready to Broadcast?</b><br>Click to Start Station') ?>
-    <?php elseif ($station->needs_restart): ?>
-        <?=_('<b>Apply Pending Changes</b><br>Click to Restart Station') ?>
-    <?php endif; ?>
+    <li class="menu-info">
+        <a href="<?=$url->named('stations:util:restart', ['station' => $station->id]) ?>">
+            <i class="zmdi zmdi-refresh-sync"></i>
+            <?=_('<b>Ready to Broadcast?</b><br>Click to Start Station') ?>
         </a>
     </li>
+    <?php elseif ($station->needs_restart): ?>
+    <li class="menu-alert">
+        <a href="<?=$url->named('stations:util:restart', ['station' => $station->id]) ?>">
+            <i class="zmdi zmdi-refresh-sync-alert"></i>
+            <?=_('<b>Apply Pending Changes</b><br>Click to Restart Station') ?>
+        </a>
+    </li>
+    <?php endif; ?>
+
 <?php endif; ?>
 
     <li><a href="<?=$url->named('public:index', ['station' => $station->getShortName()]) ?>" target="_blank"><i class="zmdi zmdi-globe"></i> <?=_('Public Page') ?></a></li>

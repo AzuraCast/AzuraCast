@@ -22,6 +22,9 @@
   with_items:
    - influxdb
 
+- name: Fix permissions on InfluxDB data folder
+  file: path="/var/lib/influxdb/data" state=directory owner=influxdb group=influxdb recurse=true
+
 - name: Restart InfluxDB
   become: true
   service: name=influxdb enabled=yes state=restarted

@@ -8,3 +8,5 @@ RUN apk update && \
 
 RUN mkdir -p /etc/nginx/ssl/
 RUN openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=localhost" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca
+
+RUN sed -i "s/sendfile        on/sendfile off/" /etc/nginx/nginx.conf

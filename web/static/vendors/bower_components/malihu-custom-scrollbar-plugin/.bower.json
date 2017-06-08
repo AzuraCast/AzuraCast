@@ -41,15 +41,15 @@
     "/source-files",
     "/js"
   ],
-  "version": "3.1.0",
-  "_release": "3.1.0",
+  "version": "3.1.5",
+  "_release": "3.1.5",
   "_resolution": {
     "type": "version",
-    "tag": "3.1.0",
-    "commit": "0e8b39f5d4e39e575dcfa0c8dca68a159d9d5a24"
+    "tag": "3.1.5",
+    "commit": "eac2b0af71a7ca06cc19e28d15ba60f6db2dfd29"
   },
-  "_source": "git://github.com/malihu/malihu-custom-scrollbar-plugin.git",
-  "_target": "~3.1.0",
+  "_source": "https://github.com/malihu/malihu-custom-scrollbar-plugin.git",
+  "_target": "^3.1.5",
   "_originalSource": "malihu-custom-scrollbar-plugin",
   "_direct": true
 }

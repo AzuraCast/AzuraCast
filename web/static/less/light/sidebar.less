@@ -1,38 +1,12 @@
 .sidebar {
-  position: fixed;
   background: #fff;
   height: ~"calc(100% - 70px)";
-  top: @header-height;
-  .transition(all);
-  .transition-duration(300ms);
-  z-index: 10;
-  overflow-y: auto;
-  box-shadow: @card-shadow;
 }
 
 #sidebar {
-  width: @sidebar-left-width;
-
   @media (max-width: (@screen-md-max + 80)) {
     .translate3d(-(@sidebar-left-width + 20), 0, 0);
     box-shadow: 0 0 20px rgba(14, 18, 21, 0.38);
-
-
-    &.toggled {
-      .translate3d(0, 0, 0);
-
-    }
-  }
-}
-
-.sidebar-alt {
-  top: 0;
-  height: 100%;
-
-  .translate3d(-@sidebar-left-width, 0, 0);
-
-  &.toggled {
-    .translate3d(0, 0, 0);
   }
 }
 
@@ -92,14 +66,7 @@
 }
 
 .main-menu {
-  list-style: none;
-  padding-left: 0;
   margin: 20px 0 0 0;
-
-  a {
-    .transition(color);
-    .transition-duration(300ms);
-  }
 
   a:hover,
   .active > a,
@@ -109,21 +76,8 @@
 
   & > li {
     & > a {
-      padding: 14px 20px 14px 65px;
-      display: block;
       font-weight: 500;
-      position: relative;
       color: #4C4C4C;
-
-      & > i {
-        position: absolute;
-        left: 25px;
-        font-size: 20px;
-        top: 0;
-        width: 25px;
-        text-align: center;
-        padding: 13px 0;
-      }
     }
 
     & > a:hover,
@@ -134,101 +88,16 @@
 }
 
 .sub-menu {
-  & > a {
-    position: relative;
-
-    &:before, &:after {
-      position: absolute;
-      top: 50%;
-      margin-top: -11px;
-      font-family: @font-icon-md;
-      font-size: 17px;
-      right: 15px;
-      .transition(all);
-      .transition-duration(250ms);
-    }
-
-    &:before {
-      content: "\f278";
-      .scale(1);
-    }
-
-    &:after {
-      content: "\f273";
-      .scale(0);
-    }
-  }
-
-  &.toggled {
-    & > a {
-      &:before {
-        content: "\f278";
-        .scale(0);
-      }
-
-      &:after {
-        content: "\f273";
-        .scale(1);
-      }
-    }
-  }
-
   ul {
-    list-style: none;
-    display: none;
-    padding: 0;
-
     & > li {
       & > a {
-        padding: 8px 20px 8px 65px;
         font-weight: 500;
-        display: block;
         color: #989898;
       }
 
-      &:first-child > a {
-        padding-top: 14px;
-      }
-
-      &:last-child > a {
-        padding-bottom: 16px;
-      }
-
       ul {
-        font-size: 12px;
-        margin: 10px 0;
         background-color: @app-gray;
       }
     }
   }
-
-  &.active {
-    & > ul {
-      display: block;
-    }
-  }
-}
-
-/*-------------------------
-    For Stupid IE9
---------------------------*/
-.ie9 {
-  #sidebar {
-    @media (max-width: (@screen-md-max + 80)) {
-      display: none;
-
-      &.toggled {
-        display: block;
-      }
-    }
-  }
-
-  .sidebar-alt {
-    display: none;
-
-    &.toggled {
-      display: block;
-    }
-  }
-
 }

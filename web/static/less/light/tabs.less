@@ -1,76 +1,14 @@
 .tab-nav {
-  list-style: none;
-  padding: 0;
-  white-space: nowrap;
-  margin: 0;
-  overflow: auto;
   box-shadow: inset 0 -2px 0 0 #eee;
-  width: 100%;
 
   li {
-    display: inline-block;
-    vertical-align: top;
-
     & > a {
-      display: inline-block;
       color: #7a7a7a;
-      text-transform: uppercase;
-      position: relative;
-      width: 100%;
-      .transition(all);
-      .transition-duration(250ms);
-      font-weight: 500;
-
-      &:after {
-        content: "";
-        height: 2px;
-        position: absolute;
-        width: 100%;
-        left: 0;
-        bottom: 0;
-        .transition(all);
-        .transition-duration(250ms);
-        .scale(0);
-      }
-
-      @media (min-width: @screen-sm-min) {
-        padding: 15px;
-      }
-
-      @media (max-width: @screen-sm-min) {
-        padding: 15px 8px;
-      }
     }
 
     &.active {
       & > a {
         color: #000;
-
-        &:after {
-          .scale(1);
-        }
-      }
-    }
-  }
-
-  &.tab-nav-right {
-    text-align: right;
-  }
-
-  &.tn-justified {
-    & > li {
-      display: table-cell;
-      width: 1%;
-      text-align: center;
-    }
-  }
-
-  &.tn-icon {
-    & > li {
-      .zmdi {
-        font-size: 22px;
-        line-height: 100%;
-        min-height: 25px;
       }
     }
   }
@@ -116,8 +54,4 @@
       background: @m-cyan;
     }
   }
-}
-
-.tab-content {
-  padding: 20px 0;
 }

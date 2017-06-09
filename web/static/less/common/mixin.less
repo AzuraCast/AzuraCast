@@ -157,11 +157,19 @@
     content: "";
     height: ~"calc(100% - 2px)";
     width: 30px;
-    background-color: #FFF;
     background-position: right ~"calc(100% - 7px)";
     background-repeat: no-repeat;
     .img-retina('../img/select.png', '../img/select@2x.png', 12px, 12px);
     pointer-events: none;
     z-index: 5;
   }
+}
+
+/*-------------------------
+    Filter Grayscale
+--------------------------*/
+.gray-filter() {
+  filter: gray;
+  filter: grayscale(100%);
+  filter: url(../img/desaturate.svg#greyscale);
 }

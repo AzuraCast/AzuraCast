@@ -1,38 +1,16 @@
-.panel {
-  box-shadow: none;
-  border: 0;
-}
-
 .panel-heading {
   padding: 0;
 }
 
-.panel-title {
-  & > a {
-    padding: 10px 15px;
-    display: block;
-    font-size: 13px;
-  }
-}
-
 .panel-collapse {
   .panel-heading {
-    position: relative;
-
     .panel-title {
       & > a {
-        padding: 8px 5px 16px 30px;
         color: #000;
-        position: relative;
 
         &:after,
         &:before {
           position: absolute;
-          bottom: 0;
-          left: 0;
-          height: 2px;
-          width: 100%;
-          content: "";
           .transition(all);
           .transition-duration(300ms);
           .backface-visibility(hidden);
@@ -52,24 +30,9 @@
 
     &:before,
     &:after {
-      font-family: @font-icon-md;
       font-size: 17px;
-      position: absolute;
       left: 0;
-      .transition(all);
-      .transition-duration(300ms);
-      .backface-visibility(hidden);
       top: 4px;
-    }
-
-    &:before {
-      content: "\f278";
-      .scale(1);
-    }
-
-    &:after {
-      .scale(0);
-      content: "\f273";
     }
 
     &.active {
@@ -82,17 +45,7 @@
       &:before {
         .scale-rotate(0, -90deg);
       }
-
-      &:after {
-        .scale(1);
-      }
     }
-  }
-
-  .panel-body {
-    border-top: 0 !important;
-    padding-left: 5px;
-    padding-right: 5px;
   }
 }
 

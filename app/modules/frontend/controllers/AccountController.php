@@ -66,7 +66,7 @@ class AccountController extends BaseController
         $session = $this->di->get('session');
         $session->destroy();
 
-        return $this->redirectHome();
+        return $this->redirectToName('account:login');
     }
 
     public function endmasqueradeAction()

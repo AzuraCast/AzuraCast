@@ -242,6 +242,33 @@ $(document).ready(function () {
     });
 });
 
+$(function() {
+
+    $('a.btn-danger').on('click', function(e) {
+
+        e.preventDefault();
+
+        var linkUrl = $(this).attr('href');
+
+        swal({
+            title: 'Are you sure?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes',
+            showLoaderOnConfirm: true
+        }, function() {
+            window.location.href = linkUrl;
+        });
+
+        return false;
+
+    });
+
+});
+
+
 /*----------------------------------------------------------
  Detect Mobile Browser
  -----------------------------------------------------------*/
@@ -550,7 +577,7 @@ $(document).ready(function () {
 
 });
 
-function notify(message, type) {
+function notify(message, type, offset_for_header) {
     $.growl({
         message: message
     }, {
@@ -569,7 +596,7 @@ function notify(message, type) {
         },
         offset: {
             x: 20,
-            y: 85
+            y: (offset_for_header) ? 85 : 20
         }
     });
 }

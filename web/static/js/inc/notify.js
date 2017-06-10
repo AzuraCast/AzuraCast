@@ -1,7 +1,6 @@
-function notify(message, type, offset_for_header) {
-    $.growl({
-        message: message
-    }, {
+function notify(message, type, minimal_layout) {
+
+    var growlSettings = {
         type: type,
         allow_dismiss: true,
         label: 'Cancel',
@@ -17,7 +16,15 @@ function notify(message, type, offset_for_header) {
         },
         offset: {
             x: 20,
-            y: (offset_for_header) ? 85 : 20
+            y: 85
         }
-    });
+    };
+
+    if (minimal_layout) {
+        growlSettings.placement.from = 'top';
+        growlSettings.placement.align = 'center';
+        growlSettings.offset.y = 20;
+    }
+
+    $.growl({ message: message }, growlSettings);
 }

@@ -13,6 +13,7 @@ $(function() {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes',
+            closeOnConfirm: false,
             showLoaderOnConfirm: true
         }, function() {
             window.location.href = linkUrl;

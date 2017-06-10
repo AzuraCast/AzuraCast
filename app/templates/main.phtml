@@ -173,7 +173,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
     <script type="text/javascript">
         $(function() {
             <?php foreach($flash->getMessages() as $message): ?>
-            notify("<?=str_replace(array('"', "\n"), array('\'', '<br>'), $message['text']) ?>", '<?=$message['color'] ?>', true);
+            notify("<?=str_replace(array('"', "\n"), array('\'', '<br>'), $message['text']) ?>", '<?=$message['color'] ?>', false);
             <?php endforeach; ?>
         });
     </script>

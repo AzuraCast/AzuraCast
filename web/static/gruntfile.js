@@ -1,33 +1,31 @@
 module.exports = function(grunt) {
 
-    var static_dir = '/var/azuracast/www/web/static';
-
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         less: {
             development: {
                 options: {
-                    paths: [static_dir+"/css"],
+                    paths: ["css"],
                     compress: true,
                     sourceMap: true,
-                    sourceMapRootpath: '/',
+                    sourceMapRootpath: '/static',
                     sourceMapBasepath: function (f) {
                         this.sourceMapURL = this.sourceMapFilename.substr(this.sourceMapFilename.lastIndexOf('/') + 1);
                         return "wwwroot/";
                     }
                 },
                 files: {
-                    [static_dir+"/css/light.css"]: static_dir+"/less/light.less",
-                    [static_dir+"/css/dark.css"]: static_dir+"/less/dark.less"
+                    "css/light.css": "less/light.less",
+                    "css/dark.css": "less/dark.less"
                 },
                 cleancss: true
             }
         },
         concat: {
             dist: {
-                src: [static_dir+'/js/inc/**/*.js'],
-                dest: static_dir+'/js/app.js'
+                src: ['js/inc/**/*.js'],
+                dest: 'js/app.js'
             }
         },
         uglify: {
@@ -36,14 +34,14 @@ module.exports = function(grunt) {
             },
             my_target: {
                 files: {
-                    [static_dir+'/js/app.min.js']: [static_dir+'/js/app.js']
+                    'js/app.min.js': 'js/app.js'
                 }
             }
         },
         csssplit: {
             your_target: {
-                src: [static_dir+'/css/app.css'],
-                dest: static_dir+'/css/app.min.css',
+                src: ['css/app.css'],
+                dest: 'css/app.min.css',
                 options: {
                     maxSelectors: 4095,
                     suffix: '.'
@@ -52,7 +50,7 @@ module.exports = function(grunt) {
         },
         watch: {
             less: {
-                files: [static_dir+'/less/**/*.less'], // which files to watch
+                files: ['less/**/*.less'], // which files to watch
                 tasks: ['less'],
                 options: {
                     nospawn: true,
@@ -60,7 +58,7 @@ module.exports = function(grunt) {
                 } 
             },
             js: {
-                files: [static_dir+'/js/inc/**/*.js'], // which files to watch
+                files: ['js/inc/**/*.js'], // which files to watch
                 tasks: ['concat', 'uglify']
             }
         }

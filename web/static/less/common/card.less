@@ -5,7 +5,14 @@
 
   .card-header {
     position: relative;
-    padding: 25px 27px;
+
+    @media screen and (min-width: @screen-sm-min) {
+      padding: 25px 27px;
+    }
+
+    @media screen and (max-width: @screen-sm-max) {
+      padding: 18px;
+    }
 
     h2 {
       margin: 0;
@@ -15,6 +22,7 @@
 
       small {
         display: block;
+        margin-top: 8px;
         line-height: 160%;
       }
     }
@@ -45,6 +53,13 @@
 
   .card-body {
     &.card-padding {
+      @media screen and (min-width: @screen-sm-min) {
+        padding: 25px 27px;
+      }
+
+      @media screen and (max-width: @screen-sm-max) {
+        padding: 18px;
+      }
     }
 
     &.card-padding-sm {

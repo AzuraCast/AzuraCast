@@ -66,11 +66,11 @@ $(function() {
 
         $form.find('input[type=radio]').each(function() {
             $(this).closest('.form-field').addClass('radio-group');
-            $(this).next('label').andSelf().wrapAll('<div class="radio m-b-15" />');
+            $(this).next('label').addBack().wrapAll('<div class="radio m-b-15" />');
         });
         $form.find('input[type=checkbox]').each(function() {
             $(this).closest('.form-field').addClass('checkbox-group');
-            $(this).next('label').andSelf().wrapAll('<div class="checkbox m-b-15" />');
+            $(this).next('label').addBack().wrapAll('<div class="checkbox m-b-15" />');
         });
 
         $form.find('input[type=checkbox],input[type=radio]').after('<i class="input-helper"></i>');

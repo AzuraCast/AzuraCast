@@ -32,6 +32,7 @@
 .main-menu {
   list-style: none;
   padding-left: 0;
+  margin: 20px 0 0 0;
 
   a {
     .transition(color);
@@ -39,6 +40,31 @@
   }
 
   & > li {
+    &.menu-alert > a {
+      background: @alert-warning-bg;
+      color: @alert-warning-text;
+
+      &:hover {
+        background: darken(@alert-warning-bg, 5%);
+      }
+    }
+
+    &.menu-info > a {
+      background: @alert-info-bg;
+      color: @alert-info-text;
+
+      &:hover {
+        background: darken(@alert-info-bg, 5%);
+      }
+    }
+
+    &.menu-header > a {
+      padding: 14px 20px 14px 20px;
+      color: @headings-color;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
     & > a {
       padding: 14px 20px 14px 65px;
       display: block;
@@ -130,9 +156,6 @@
   }
 }
 
-/*-------------------------
-    For Stupid IE9
---------------------------*/
 .ie9 {
   #sidebar {
     @media (max-width: (@screen-md-max + 80)) {

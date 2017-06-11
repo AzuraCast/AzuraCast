@@ -1,11 +1,5 @@
 <?php $this->layout('main', ['title' => _('Live Listeners'), 'manual' => true]) ?>
 
-<?php if ($gmaps_api_key): ?>
-    <?php $this->start('custom_js') ?>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?=$gmaps_api_key ?>&callback=initMap"></script>
-    <?php $this->stop('custom_js') ?>
-<?php endif; ?>
-
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
@@ -64,7 +58,10 @@
 </div>
 
 <script type="text/javascript">
+
 $(function() {
+
+    var gmaps_api_key = "<?=$this->e($gmaps_api_key) ?>";
 
     var app_datatable = new Vue({
         el: '#app-datatable',
@@ -80,73 +77,89 @@ $(function() {
         $.getJSON('<?=$url->named('api:listeners:index', ['station' => $station->id]) ?>', {}, function (data) {
             if (data.status === "success") {
                 app_datatable.listeners = data.result;
-                setMapPoints(data.result);
+                if (gmaps_api_key !== '') {
+                    setMapPoints(data.result);
+                }
             }
             load_timeout = setTimeout(updateListeners, 15*1000);
         });
     };
 
-    var mapmarkers = {};
-
-    /*
-     * Live map updating based on parasprite-Radio by djazz:
-     * https://github.com/daniel-j
-     */
-    function setMapPoints(points) {
-        var idlist = [];
-        for (i = 0; i < points.length; i++) {
-            var l = points[i];
-
-            if (l.location.status !== 'success')
-                continue;
-
-            l.id = l.location.lon + ',' + l.location.lat + ',' + l.ip;
-            idlist[i] = l.id;
-
-            var content = '<div style="color: black">IP: ' + l.ip + '<br>Country: ' + l.location.country + '<br>Region: ' + l.location.regionName + '<br>City: ' + l.location.city + '<br>Connected at ' + new Date(l.timestamp * 1000) + '<br>Time connected: ' + l.connected + '<br>User Agent: ' + l.user_agent + '</div>';
-
-            if (mapmarkers[l.id]) {
-                mapmarkers[l.id].infowindow.setContent(content);
-                continue;
-            }
-
-            var mark = new google.maps.Marker({
-                position: new google.maps.LatLng(l.location.lat, l.location.lon),
-                map: map,
-                animation: google.maps.Animation.DROP
-            });
-
-            mark.infowindow = new google.maps.InfoWindow({
-                content: content
-            });
-
-            mark.addListener('click', function() { this.infowindow.open(map, this); });
-            mapmarkers[l.id] = mark;
-        }
-
-        for (i in mapmarkers) {
-            if (idlist.indexOf(i) === -1) {
-                var mark = mapmarkers[i];
-                mark.setMap(null);
-                google.maps.event.clearListeners(mark);
-
-                mapmarkers.splice(i, 1);
-            }
-        }
-    }
-
-    var map;
-    function initMap () {
-        $('#googlemap').empty();
-
-        map = new google.maps.Map(document.getElementById('googlemap'), {
-            zoom: 2,
-            center: {lat: 25, lng: 12}
-        });
+    if (gmaps_api_key === '') {
 
         updateListeners();
+
+    } else {
+
+        var map;
+
+        function initMap() {
+            $('#googlemap').empty();
+
+            map = new google.maps.Map(document.getElementById('googlemap'), {
+                zoom: 2,
+                center: {lat: 25, lng: 12}
+            });
+
+            updateListeners();
+        }
+
+        window.initMap = initMap;
+
+        $.getScript('https://maps.googleapis.com/maps/api/js?key=' + gmaps_api_key + '&callback=initMap');
+
+        var mapmarkers = {};
+
+        /*
+         * Live map updating based on parasprite-Radio by djazz:
+         * https://github.com/daniel-j
+         */
+        function setMapPoints(points) {
+            var idlist = [];
+            for (i = 0; i < points.length; i++) {
+                var l = points[i];
+
+                if (l.location.status !== 'success')
+                    continue;
+
+                l.id = l.location.lon + ',' + l.location.lat + ',' + l.ip;
+                idlist[i] = l.id;
+
+                var content = '<div style="color: black">IP: ' + l.ip + '<br>Country: ' + l.location.country + '<br>Region: ' + l.location.regionName + '<br>City: ' + l.location.city + '<br>Connected at ' + new Date(l.timestamp * 1000) + '<br>Time connected: ' + l.connected + '<br>User Agent: ' + l.user_agent + '</div>';
+
+                if (mapmarkers[l.id]) {
+                    mapmarkers[l.id].infowindow.setContent(content);
+                    continue;
+                }
+
+                var mark = new google.maps.Marker({
+                    position: new google.maps.LatLng(l.location.lat, l.location.lon),
+                    map: map,
+                    animation: google.maps.Animation.DROP
+                });
+
+                mark.infowindow = new google.maps.InfoWindow({
+                    content: content
+                });
+
+                mark.addListener('click', function () {
+                    this.infowindow.open(map, this);
+                });
+                mapmarkers[l.id] = mark;
+            }
+
+            for (i in mapmarkers) {
+                if (idlist.indexOf(i) === -1) {
+                    var mark = mapmarkers[i];
+                    mark.setMap(null);
+                    google.maps.event.clearListeners(mark);
+
+                    mapmarkers.splice(i, 1);
+                }
+            }
+        }
+
     }
-    window.initMap = initMap;
 
 });
 </script>

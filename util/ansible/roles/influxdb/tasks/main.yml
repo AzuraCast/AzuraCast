@@ -71,4 +71,3 @@
     replace: 'bind-address = "localhost:80'
     backup: yes
   when: app_env == "production"
-  notify: restart influxdb

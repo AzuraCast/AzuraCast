@@ -362,10 +362,12 @@ class LiquidSoap extends BackendAbstract
 
     public function getCommand()
     {
-        $user_base = realpath(APP_INCLUDE_ROOT.'/..');
-        $config_path = $this->station->getRadioConfigDir() . '/liquidsoap.liq';
-
-        return $user_base.'/.opam/system/bin/liquidsoap --errors-as-warnings ' . $config_path;
+        if ($binary = self::getBinary()) {
+            $config_path = $this->station->getRadioConfigDir() . '/liquidsoap.liq';
+            return $binary . ' --errors-as-warnings ' . $config_path;
+        } else {
+            return '/bin/false';
+        }
     }
 
     public function skip()
@@ -403,13 +405,19 @@ class LiquidSoap extends BackendAbstract
         return (8000 + (($this->station->id - 1) * 10) + 4);
     }
 
-    /*
-     * Static Functions
-     */
-
-    public static function isInstalled()
+    public static function getBinary()
     {
         $user_base = realpath(APP_INCLUDE_ROOT.'/..');
-        return (APP_INSIDE_DOCKER || file_exists($user_base.'/.opam/system/bin/liquidsoap'));
+        $new_path = $user_base . '/.opam/system/bin/liquidsoap';
+
+        $legacy_path = '/usr/bin/liquidsoap';
+
+        if (APP_INSIDE_DOCKER || file_exists($new_path)) {
+            return $new_path;
+        } elseif (file_exists($legacy_path)) {
+            return $legacy_path;
+        } else {
+            return false;
+        }
     }
 }

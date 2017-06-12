@@ -191,9 +191,12 @@ class IceCast extends FrontendAbstract
 
     public function getCommand()
     {
-        $config_path = $this->station->getRadioConfigDir() . '/icecast.xml';
-
-        return '/usr/local/bin/icecast -c ' . $config_path;
+        if ($binary = self::getBinary()) {
+            $config_path = $this->station->getRadioConfigDir() . '/icecast.xml';
+            return $binary . ' -c ' . $config_path;
+        } else {
+            return '/bin/false';
+        }
     }
 
     public function getStreamUrl()
@@ -354,12 +357,18 @@ class IceCast extends FrontendAbstract
         return $defaults;
     }
 
-    /*
-     * Static Functions
-     */
 
-    public static function isInstalled()
+    public static function getBinary()
     {
-        return (APP_INSIDE_DOCKER || file_exists('/usr/local/bin/icecast'));
+        $new_path = '/usr/local/bin/icecast';
+        $legacy_path = '/usr/bin/icecast2';
+
+        if (APP_INSIDE_DOCKER || file_exists($new_path)) {
+            return $new_path;
+        } elseif (file_exists($legacy_path)) {
+            return $legacy_path;
+        } else {
+            return false;
+        }
     }
 }

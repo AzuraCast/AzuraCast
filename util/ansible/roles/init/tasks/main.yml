@@ -6,15 +6,6 @@
       msg: "Running in Testing Mode."
     when: testing_mode|bool == true
 
-  - name: Add multiverse repository
-    apt_repository: repo="{{item}}"
-    when: ansible_distribution == 'Ubuntu'
-    with_items:
-      - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse"
-      - "deb-src http://archive.ubuntu.com/ubuntu/  {{ansible_distribution_release}} multiverse"
-      - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}}-updates multiverse"
-      - "deb-src http://archive.ubuntu.com/ubuntu/  {{ansible_distribution_release}}-updates multiverse"
-
   - name: Update apt
     become: true
     apt:  update_cache=yes

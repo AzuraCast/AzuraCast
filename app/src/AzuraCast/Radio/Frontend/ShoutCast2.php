@@ -155,11 +155,14 @@ class ShoutCast2 extends FrontendAbstract
 
     public function getCommand()
     {
-        $config_path = $this->station->getRadioConfigDir();
-        $sc_binary = realpath(APP_INCLUDE_ROOT . '/..') . '/servers/shoutcast2/sc_serv';
-        $sc_config = $config_path . '/sc_serv.conf';
+        if ($binary = self::getBinary()) {
+            $config_path = $this->station->getRadioConfigDir();
+            $sc_config = $config_path . '/sc_serv.conf';
 
-        return $sc_binary . ' ' . $sc_config;
+            return $binary . ' ' . $sc_config;
+        } else {
+            return '/bin/false';
+        }
     }
 
     public function getStreamUrl()
@@ -236,13 +239,14 @@ class ShoutCast2 extends FrontendAbstract
         return $defaults;
     }
 
-    /*
-     * Static Functions
-     */
-
-    public static function isInstalled()
+    public static function getBinary()
     {
-        $sc_binary = realpath(APP_INCLUDE_ROOT . '/..') . '/servers/shoutcast2/sc_serv';
-        return (APP_INSIDE_DOCKER || file_exists($sc_binary));
+        $new_path = realpath(APP_INCLUDE_ROOT . '/..') . '/servers/shoutcast2/sc_serv';
+
+        if (APP_INSIDE_DOCKER || file_exists($new_path)) {
+            return $new_path;
+        } else {
+            return false;
+        }
     }
 }

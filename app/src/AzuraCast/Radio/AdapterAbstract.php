@@ -177,11 +177,21 @@ abstract class AdapterAbstract
     }
 
     /**
-     * Indicate if the backend in question is installed on the server.
+     * Indicate if the adapter in question is installed on the server.
      *
      * @return bool
      */
     public static function isInstalled()
+    {
+        return (static::getBinary() !== false);
+    }
+
+    /**
+     * Return the binary executable location for this item.
+     *
+     * @return bool
+     */
+    public static function getBinary()
     {
         return true;
     }

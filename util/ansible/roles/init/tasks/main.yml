@@ -8,7 +8,6 @@
 
   - name: Add multiverse repository
     apt_repository: repo="{{item}}"
-    update_cache: false
     when: ansible_distribution == 'Ubuntu'
     with_items:
       - "deb http://archive.ubuntu.com/ubuntu {{ansible_distribution_release}} multiverse"

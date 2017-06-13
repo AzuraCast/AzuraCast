@@ -17,14 +17,23 @@
    - influxdb
 
 - name: Install InfluxDB
-  apt: pkg="{{ item }}" state=latest
+  apt: pkg="influxdb" state=latest
   register: influx_installed
-  with_items:
-   - influxdb
 
 - name: Fix permissions on InfluxDB data folder
   become: true
   file: path="/var/lib/influxdb" state=directory owner=influxdb group=influxdb recurse=true
+
+- name: Lock down InfluxDB to localhost requests
+  replace:
+    dest: /etc/influxdb/influxdb.conf
+    regexp: 'bind-address = ":80'
+    replace: 'bind-address = "localhost:80'
+    backup: yes
+  when: app_env == "production"
+
+- name: Start the InfluxDB service
+  service: name=influxdb state=restarted enabled=yes
 
 - name: Pause to allow InfluxDB to spin up
   wait_for: port=8086 delay=5
@@ -56,11 +65,3 @@
     retentions: "1h:1h,1d:1d"
     measurements: [{'measurement':':MEASUREMENT', 'fields': ['min(value) AS min','mean(value) AS value','max(value) AS max']}]
     prune: true
-
-- name: Lock down InfluxDB to localhost requests
-  replace:
-    dest: /etc/influxdb/influxdb.conf
-    regexp: 'bind-address = ":80'
-    replace: 'bind-address = "localhost:80'
-    backup: yes
-  when: app_env == "production"

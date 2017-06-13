@@ -28,7 +28,6 @@
 
 - name: Pause to allow InfluxDB to spin up
   wait_for: port=8086 delay=5
-  when: influx_started.changed
 
 - name: Create 'stations' database
   influxdb_database:

@@ -26,23 +26,6 @@
   become: true
   file: path="/var/lib/influxdb" state=directory owner=influxdb group=influxdb recurse=true
 
-- name: Set configuration for InfluxDB
-  become: true
-  ini_file:
-    dest: /etc/influxdb/influxdb.conf
-    section: http
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-  with_items:
-    - { option: 'enabled',             value: "true" }
-    - { option: 'bind-address',        value: '"127.0.0.1:8086"' }
-
-- name: Restart InfluxDB
-  become: true
-  service: name=influxdb enabled=yes state=started
-  register: influx_started
-  ignore_errors: true
-
 - name: Pause to allow InfluxDB to spin up
   wait_for: port=8086 delay=5
   when: influx_started.changed

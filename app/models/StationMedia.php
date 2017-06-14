@@ -102,12 +102,11 @@ class StationMedia extends \App\Doctrine\Entity
      */
     public function getAnnotations()
     {
-        $annotations = [
-            'type="song"',
-            'song_id="'.$this->song_id.'"',
-        ];
-
+        $annotations = [];
         $annotation_types = [
+            'song_id' => 'song_id',
+            'title' => 'title',
+            'artist' => 'artist',
             'fade_overlap' => 'liq_start_next',
             'fade_in' => 'liq_fade_in',
             'fade_out' => 'liq_fade_out',
@@ -117,7 +116,8 @@ class StationMedia extends \App\Doctrine\Entity
 
         foreach($annotation_types as $annotation_property => $annotation_name) {
             if ($this->$annotation_property !== null) {
-                $annotations[] = $annotation_name.'="'.$this->$annotation_property.'"';
+                $prop = str_replace(['"', "\n", "\t", "\r"], ["'", '', '', ''], $this->$annotation_property);
+                $annotations[] = $annotation_name . '="' . $prop . '"';
             }
         }
 

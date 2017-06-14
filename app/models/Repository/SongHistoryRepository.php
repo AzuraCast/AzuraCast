@@ -11,7 +11,10 @@ class SongHistoryRepository extends \App\Doctrine\Repository
      */
     public function getHistoryForStation(Entity\Station $station, $num_entries = 5)
     {
-        $history = $this->_em->createQuery('SELECT sh, s FROM ' . $this->_entityName . ' sh JOIN sh.song s WHERE sh.station_id = :station_id ORDER BY sh.id DESC')
+        $history = $this->_em->createQuery('SELECT sh, s FROM ' . $this->_entityName . ' sh JOIN sh.song s 
+            WHERE sh.station_id = :station_id 
+            AND sh.timestamp_end != 0
+            ORDER BY sh.id DESC')
             ->setParameter('station_id', $station->id)
             ->setMaxResults($num_entries)
             ->execute();

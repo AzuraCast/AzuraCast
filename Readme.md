@@ -53,7 +53,22 @@ We are always looking to expand our compatibility with host operating systems, a
 
 ## Installing AzuraCast
 
-### Installing on a Production Server
+### What's Included with AzuraCast
+
+Whether you're using the traditional installer or Docker containers, AzuraCast depends on the same stack of software to operate:
+
+* **[NGINX](https://www.nginx.com)** for serving web pages and the radio proxy
+* **[MariaDB](https://mariadb.org/)** as the primary database
+* **[PHP 7.1](https://secure.php.net/)** powering the web application
+* **[InfluxDB](https://www.influxdata.com/)** for time-series based statistics
+* **[Redis](https://redis.io/)** for caching (Docker only)
+* **[LiquidSoap](http://savonet.sourceforge.net/)** as the always-playing "AutoDJ"
+* **[IceCast 2](http://icecast.org/)** as a radio broadcasting frontend (Icecast-KH installed on supported platforms)
+* **[ShoutCast 2 DNAS](http://wiki.shoutcast.com/wiki/SHOUTcast_DNAS_Server_2)** as an alternative radio frontend (x86/x64 only)
+
+All of these components are automatically downloaded and installed using either of the installation methods below.
+
+### Installing on a Production Server (Traditional Method)
 
 AzuraCast is optimized for speed and performance, and can run on very inexpensive hardware, from the Raspberry Pi 3 to the lowest-level VPSes offered by most providers.
 

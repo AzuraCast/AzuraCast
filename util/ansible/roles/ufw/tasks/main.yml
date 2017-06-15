@@ -8,6 +8,12 @@
 - name: UFW - Disable all other incoming by default
   ufw:
     policy: deny
+    direction: incoming
+
+- name: UFW - Allow all other outgoing by default
+  ufw:
+    policy: allow
+    direction: outgoing
 
 - name: UFW - Enable AzuraCast TCP Ports
   ufw:

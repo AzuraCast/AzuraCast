@@ -24,12 +24,15 @@
 
 <script type="text/javascript">
 function nowPlaying() {
-    $.getJSON('<?=$url->route(['module' => 'api', 'controller' => 'nowplaying', 'station' => $station->id]) ?>', {}, function(data) {
-        var row = data.result;
+    $.getJSON('<?=$url->route([
+        'module' => 'api',
+        'controller' => 'nowplaying',
+        'station' => $station->id
+    ]) ?>', {}, function (row) {
         var station_row = $('#station_'+row.station.id);
 
-        station_row.find('.nowplaying-title').text(row.current_song.title);
-        station_row.find('.nowplaying-artist').text(row.current_song.artist);
+        station_row.find('.nowplaying-title').text(row.now_playing.song.title);
+        station_row.find('.nowplaying-artist').text(row.now_playing.song.artist);
         station_row.find('.nowplaying-listeners').text(row.listeners.total);
 
         setTimeout('nowPlaying()', 30*1000);

@@ -64,16 +64,17 @@ class Song extends \App\Doctrine\Entity
     /**
      * Retrieve the API version of the object/array.
      *
-     * @return array
+     * @return Api\Song
      */
     public function api()
     {
-        return [
-            'id' => (string)$this->id,
-            'text' => (string)$this->text,
-            'artist' => (string)$this->artist,
-            'title' => (string)$this->title,
-        ];
+        $response = new Api\Song;
+        $response->id = (string)$this->id;
+        $response->text = (string)$this->text;
+        $response->artist = (string)$this->artist;
+        $response->title = (string)$this->title;
+
+        return $response;
     }
 
     /**

@@ -192,12 +192,12 @@ function nowPlaying() {
     $('.btn-refresh i').addClass('zmdi-hc-spin');
 
     $.getJSON('<?=$url->route(['module' => 'api', 'controller' => 'nowplaying']) ?>', {}, function(data) {
-        $.each(data.result, function(i, row) {
+        $.each(data, function (i, row) {
             var station_row = $('#station_'+row.station.id);
 
             if (station_row.length) {
-                station_row.find('.nowplaying-title').text(row.current_song.title);
-                station_row.find('.nowplaying-artist').text(row.current_song.artist);
+                station_row.find('.nowplaying-title').text(row.now_playing.song.title);
+                station_row.find('.nowplaying-artist').text(row.now_playing.song.artist);
                 station_row.find('.nowplaying-listeners').text(row.listeners.total)
             }
         });

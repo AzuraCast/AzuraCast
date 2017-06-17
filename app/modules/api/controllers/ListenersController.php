@@ -6,6 +6,26 @@ use Entity;
 
 class ListenersController extends BaseController
 {
+    /**
+     * @SWG\Get(path="/station/{station_id}/listeners",
+     *   tags={"Authenticated Endpoints"},
+     *   description="Return detailed information about current listeners.",
+     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
+     *   @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @SWG\Schema(
+     *       type="array",
+     *       @SWG\Items(ref="#/definitions/Listener")
+     *     )
+     *   ),
+     *   @SWG\Response(response=404, description="Station not found"),
+     *   @SWG\Response(response=403, description="Access denied"),
+     *   security={
+     *     {"api_key": {"view station reports"}}
+     *   },
+     * )
+     */
     public function indexAction()
     {
         try {
@@ -34,14 +54,13 @@ class ListenersController extends BaseController
 
         $listeners = [];
         foreach($listeners_raw as $listener) {
-            $api = [
-                'ip' => $listener['listener_ip'],
-                'user_agent' => $listener['listener_user_agent'],
-                'timestamp' => $listener['timestamp_start'],
-                'connected' => time()-$listener['timestamp_start'],
-            ];
+            $api = new Entity\Api\Listener;
+            $api->ip = (string)$listener['listener_ip'];
+            $api->user_agent = (string)$listener['listener_user_agent'];
+            $api->connected_on = (int)$listener['timestamp_start'];
+            $api->connected_time = time() - $listener['timestamp_start'];
 
-            $api['location'] = $cache->getOrSet('/ip/'.$api['ip'], function() use ($api, $client, $http_requests) {
+            $api->location = $cache->getOrSet('/ip/' . $api['ip'], function () use ($api, $client, $http_requests) {
 
                 $http_requests++;
                 if ($http_requests > 75) {

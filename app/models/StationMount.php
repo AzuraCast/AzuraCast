@@ -79,21 +79,21 @@ class StationMount extends \App\Doctrine\Entity
      * Retrieve the API version of the object/array.
      *
      * @param FrontendAbstract $fa
-     * @return array
+     * @return Api\StationMount
      */
     public function api(FrontendAbstract $fa)
     {
-        $api = [
-            'name' => (string)$this->name,
-            'is_default' => (bool)$this->is_default,
-            'url' => (string)$fa->getUrlForMount($this->name),
-        ];
+        $response = new Api\StationMount;
+
+        $response->name = (string)$this->name;
+        $response->is_default = (bool)$this->is_default;
+        $response->url = (string)$fa->getUrlForMount($this->name);
 
         if ($this->enable_autodj) {
-            $api['bitrate'] = (string)$this->autodj_bitrate;
-            $api['format'] = (string)$this->autodj_format;
+            $response->bitrate = (int)$this->autodj_bitrate;
+            $response->format = (string)$this->autodj_format;
         }
 
-        return $api;
+        return $response;
     }
 }

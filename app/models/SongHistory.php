@@ -117,12 +117,16 @@ class SongHistory extends \App\Doctrine\Entity
      */
     protected $request;
 
+    /**
+     * @return Api\SongHistory
+     */
     public function api()
     {
-        return [
-            'sh_id' => (int)$this->id,
-            'played_at' => (int)$this->timestamp_start,
-            'song' => $this->song->api(),
-        ];
+        $response = new Api\SongHistory;
+        $response->sh_id = (int)$this->id;
+        $response->played_at = (int)$this->timestamp_start;
+        $response->is_request = (bool)(!empty($this->request_id));
+        $response->song = $this->song->api();
+        return $response;
     }
 }

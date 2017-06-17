@@ -6,6 +6,23 @@ use Entity;
 
 class RequestsController extends BaseController
 {
+    /**
+     * @SWG\Get(path="/station/{station_id}/requests",
+     *   tags={"Station Details"},
+     *   description="Return a list of requestable songs.",
+     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
+     *   @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @SWG\Schema(
+     *       type="array",
+     *       @SWG\Items(ref="#/definitions/StationRequest")
+     *     )
+     *   ),
+     *   @SWG\Response(response=404, description="Station not found"),
+     *   @SWG\Response(response=403, description="Station does not support requests")
+     * )
+     */
     public function listAction()
     {
         try {
@@ -16,7 +33,7 @@ class RequestsController extends BaseController
 
         $ba = $station->getBackendAdapter($this->di);
         if (!$ba->supportsRequests()) {
-            return $this->returnError('This station does not support requests.');
+            return $this->returnError('This station does not support requests.', 403);
         }
 
         $requestable_media = $this->em->createQuery('SELECT sm, s, sp 
@@ -30,21 +47,26 @@ class RequestsController extends BaseController
         $result = [];
 
         foreach ($requestable_media as $media_row) {
-            $result_row = [
-                'song' => [
-                    'id' => (string)$media_row['song']['id'],
-                    'text' => (string)$media_row['song']['text'],
-                    'artist' => (string)$media_row['song']['artist'],
-                    'title' => (string)$media_row['song']['title'],
-                ],
-                'request_song_id' => (int)$media_row['id'],
-                'request_url' => (string)$this->url->routeFromHere(['action' => 'submit', 'song_id' => $media_row['id']]),
-            ];
-            $result[] = $result_row;
+            $song = new Entity\Api\Song;
+            $song->id = (string)$media_row['song']['id'];
+            $song->text = (string)$media_row['song']['text'];
+            $song->artist = (string)$media_row['song']['artist'];
+            $song->title = (string)$media_row['song']['title'];
+
+            $request = new Entity\Api\StationRequest;
+            $request->song = $song;
+            $request->request_id = (int)$media_row['id'];
+            $request->request_url = (string)$this->url->routeFromHere([
+                'action' => 'submit',
+                'song_id' => $media_row['id']
+            ]);
+            $result[] = $request;
         }
 
         // Handle Bootgrid-style iteration through result
         if (!empty($_REQUEST['current'])) {
+            $result = json_decode(json_encode($result), true);
+
             // Flatten the results array for bootgrid.
             foreach ($result as &$row) {
                 foreach ($row['song'] as $song_key => $song_val) {
@@ -104,6 +126,24 @@ class RequestsController extends BaseController
         return $this->returnSuccess($result);
     }
 
+    /**
+     * @SWG\Post(path="/station/{station_id}/request/{request_id}",
+     *   tags={"Station Details"},
+     *   description="Submit a song request.",
+     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
+     *   @SWG\Parameter(
+     *     name="request_id",
+     *     description="The requestable song ID",
+     *     type="integer",
+     *     format="int64",
+     *     in="path",
+     *     required=true
+     *   ),
+     *   @SWG\Response(response=200, description="Success"),
+     *   @SWG\Response(response=404, description="Station not found"),
+     *   @SWG\Response(response=403, description="Station does not support requests")
+     * )
+     */
     public function submitAction()
     {
         try {
@@ -114,7 +154,7 @@ class RequestsController extends BaseController
 
         $ba = $station->getBackendAdapter($this->di);
         if (!$ba->supportsRequests()) {
-            return $this->returnError('This station does not support requests.');
+            return $this->returnError('This station does not support requests.', 403);
         }
 
         $song = $this->getParam('song_id');

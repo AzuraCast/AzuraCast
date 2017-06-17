@@ -51,9 +51,9 @@ $(function() {
                 dataType: "json",
                 url: $(this).data('url')
             }).done(function(data) {
-                notify(data.result, 'success');
+                notify(data, 'success');
             }).fail(function(jqXhr) {
-                notify('Error: '+jqXhr.responseJSON.error, 'danger');
+                notify('Error: ' + jqXhr.responseJSON, 'danger');
             });
 
             return false;

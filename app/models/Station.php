@@ -453,27 +453,27 @@ class Station extends \App\Doctrine\Entity
      * Retrieve the API version of the object/array.
      *
      * @param FrontendAbstract $fa
-     * @return array
+     * @return Api\Station
      */
     public function api(FrontendAbstract $fa)
     {
-        $api = [
-            'id' => (int)$this->id,
-            'name' => (string)$this->name,
-            'shortcode' => (string)$this->getShortName(),
-            'description' => (string)$this->description,
-            'frontend' => (string)$this->frontend_type,
-            'backend' => (string)$this->backend_type,
-            'listen_url' => (string)$fa->getStreamUrl(),
-            'mounts' => [],
-        ];
+        $response = new Api\Station;
+        $response->id = (int)$this->id;
+        $response->name = (string)$this->name;
+        $response->shortcode = (string)$this->getShortName();
+        $response->description = (string)$this->description;
+        $response->frontend = (string)$this->frontend_type;
+        $response->backend = (string)$this->backend_type;
+        $response->listen_url = (string)$fa->getStreamUrl();
 
+        $mounts = [];
         if ($fa->supportsMounts() && $this->mounts->count() > 0) {
             foreach ($this->mounts as $mount) {
-                $api['mounts'][] = $mount->api($fa);
+                $mounts[] = $mount->api($fa);
             }
         }
 
-        return $api;
+        $response->mounts = $mounts;
+        return $response;
     }
 }

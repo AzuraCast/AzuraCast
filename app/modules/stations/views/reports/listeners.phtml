@@ -77,11 +77,9 @@ $(function() {
         clearTimeout(load_timeout);
 
         $.getJSON('<?=$url->named('api:listeners:index', ['station' => $station->id]) ?>', {}, function (data) {
-            if (data.status === "success") {
-                app_datatable.listeners = data.result;
-                if (gmaps_api_key !== '') {
-                    setMapPoints(data.result);
-                }
+            app_datatable.listeners = data;
+            if (gmaps_api_key !== '') {
+                setMapPoints(data.result);
             }
             load_timeout = setTimeout(updateListeners, 15*1000);
         });

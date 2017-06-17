@@ -52,6 +52,7 @@ $cli->addCommands(array(
     new \AzuraCast\Console\Command\StreamerAuth($di),
     new \AzuraCast\Console\Command\NextSong($di),
     new \AzuraCast\Console\Command\ReprocessMedia($di),
+    new \AzuraCast\Console\Command\GenerateApiDocs($di),
 ));
 
 $cli->run();

@@ -28,7 +28,8 @@
     "require-dev": {
         "codeception/codeception": "^2.2",
         "codeclimate/php-test-reporter": "^0.4.4",
-        "flow/jsonpath": "^0.3.4"
+      "flow/jsonpath": "^0.3.4",
+      "zircote/swagger-php": "^2.0"
     },
     "authors": [
         {

@@ -83,7 +83,6 @@ class ShoutCast2 extends FrontendAbstract
 
     public function read()
     {
-
         $config = $this->_getConfig();
 
         $this->station->frontend_config = $this->_loadFromConfig($config);

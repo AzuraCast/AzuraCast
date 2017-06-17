@@ -139,40 +139,19 @@ class BaseController extends \AzuraCast\Mvc\Controller
 
     public function returnSuccess($data)
     {
-        return $this->returnToScreen([
-            'status' => 'success',
-            'result' => $data,
-        ]);
+        return $this->returnToScreen($data);
     }
 
     public function returnError($message, $error_code = 400)
     {
         $this->response = $this->response->withStatus($error_code);
-
-        return $this->returnToScreen([
-            'status' => 'error',
-            'error' => $message,
-        ]);
+        return $this->returnToScreen($message);
     }
 
-    public function returnToScreen($obj)
+    public function returnToScreen($body)
     {
-        $format = strtolower($this->getParam('format', 'json'));
-
-        if ($format == 'xml') {
-            return $this->returnRaw(\App\Export::array_to_xml($obj), 'xml');
-        } else {
-            return $this->returnRaw(json_encode($obj, \JSON_UNESCAPED_SLASHES), 'json');
-        }
-    }
-
-    public function returnRaw($message, $format = 'json')
-    {
-        $content_type = ($format == 'xml') ? 'text/xml' : 'application/json';
-        $this->response = $this->response->withHeader('Content-Type', $content_type);
-
-        $this->response->getBody()->write($message);
-
+        $this->response->withHeader('Content-Type', 'application/json');
+        $this->response->getBody()->write(json_encode($body, \JSON_UNESCAPED_SLASHES));
         return $this->response;
     }
 }

@@ -12,7 +12,7 @@ class StationMount
     /**
      * Mount point name/URL
      *
-     * @SWG\Property
+     * @SWG\Property(example="/radio.mp3")
      * @var string
      */
     public $name;
@@ -20,7 +20,7 @@ class StationMount
     /**
      * If the mount is the default mount for the parent station
      *
-     * @SWG\Property
+     * @SWG\Property(example=true)
      * @var bool
      */
     public $is_default;
@@ -28,7 +28,7 @@ class StationMount
     /**
      * Full listening URL specific to this mount
      *
-     * @SWG\Property
+     * @SWG\Property(example="http://localhost:8000/radio.mp3")
      * @var string
      */
     public $url;
@@ -36,7 +36,7 @@ class StationMount
     /**
      * Bitrate (kbps) of the broadcasted audio (if known)
      *
-     * @SWG\Property
+     * @SWG\Property(example=128)
      * @var int
      */
     public $bitrate;
@@ -44,7 +44,7 @@ class StationMount
     /**
      * Audio encoding format of broadcasted audio (if known)
      *
-     * @SWG\Property
+     * @SWG\Property(example="mp3")
      * @var string
      */
     public $format;

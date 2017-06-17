@@ -7,7 +7,7 @@ class StationsController extends BaseController
 {
     /**
      * @SWG\Get(path="/stations",
-     *   tags={"Station Details"},
+     *   tags={"Stations: General"},
      *   description="Returns a list of stations.",
      *   parameters={},
      *   @SWG\Response(
@@ -35,7 +35,7 @@ class StationsController extends BaseController
 
     /**
      * @SWG\Get(path="/station/{station_id}",
-     *   tags={"Station Details"},
+     *   tags={"Stations: General"},
      *   description="Return information about a single station.",
      *   @SWG\Parameter(ref="#/parameters/station_id_required"),
      *   @SWG\Response(

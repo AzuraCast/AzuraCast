@@ -8,7 +8,7 @@ class RequestsController extends BaseController
 {
     /**
      * @SWG\Get(path="/station/{station_id}/requests",
-     *   tags={"Station Details"},
+     *   tags={"Stations: Song Requests"},
      *   description="Return a list of requestable songs.",
      *   @SWG\Parameter(ref="#/parameters/station_id_required"),
      *   @SWG\Response(
@@ -128,7 +128,7 @@ class RequestsController extends BaseController
 
     /**
      * @SWG\Post(path="/station/{station_id}/request/{request_id}",
-     *   tags={"Station Details"},
+     *   tags={"Stations: Song Requests"},
      *   description="Submit a song request.",
      *   @SWG\Parameter(ref="#/parameters/station_id_required"),
      *   @SWG\Parameter(

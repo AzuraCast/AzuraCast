@@ -4,7 +4,6 @@
  *     schemes={"http","https"},
  *     consumes={"application/json"},
  *     produces={"application/json"},
- *     host="",
  *     basePath="/api",
  *     @SWG\Info(
  *         version=AZURACAST_VERSION,
@@ -36,6 +35,15 @@
  *   description="This API call has no documentated response (yet)",
  * )
  *
+ * @SWG\Tag(
+ *   name="Now Playing",
+ *   description="Endpoints that provide full summaries of the current state of stations.",
+ * )
+ * @SWG\Tag(name="Miscellaneous")
+ * @SWG\Tag(name="Stations: General")
+ * @SWG\Tag(name="Stations: Song Requests")
+ * @SWG\Tag(name="Stations: Listeners")
+ *
  * @SWG\SecurityScheme(
  *   securityDefinition="api_key",
  *   type="apiKey",
@@ -43,16 +51,7 @@
  *   name="X-API-Key"
  * )
  *
- * @SWG\Tag(
- *   name="Now Playing",
- *   description="Endpoints that provide full summaries of the current state of stations.",
- * )
- * @SWG\Tag(
- *   name="Station Details",
- *   description="Specific information on individual stations"
- * )
- * @SWG\Tag(
- *   name="Authenticated Endpoints",
- *   description="API calls with more detailed information, requiring specific credentialed access.",
- * )
+ *
+ *
+ *
  */

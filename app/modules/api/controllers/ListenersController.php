@@ -8,7 +8,7 @@ class ListenersController extends BaseController
 {
     /**
      * @SWG\Get(path="/station/{station_id}/listeners",
-     *   tags={"Authenticated Endpoints"},
+     *   tags={"Stations: Listeners"},
      *   description="Return detailed information about current listeners.",
      *   @SWG\Parameter(ref="#/parameters/station_id_required"),
      *   @SWG\Response(

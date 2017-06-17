@@ -9,7 +9,6 @@
     },
     "version": "0.6.0-2017.06"
   },
-  "host": "",
   "basePath": "/api",
   "schemes": [
     "http",
@@ -59,7 +58,7 @@
     "/station/{station_id}/listeners": {
       "get": {
         "tags": [
-          "Authenticated Endpoints"
+          "Stations: Listeners"
         ],
         "description": "Return detailed information about current listeners.",
         "parameters": [
@@ -140,7 +139,7 @@
     "/station/{station_id}/requests": {
       "get": {
         "tags": [
-          "Station Details"
+          "Stations: Song Requests"
         ],
         "description": "Return a list of requestable songs.",
         "parameters": [
@@ -170,7 +169,7 @@
     "/station/{station_id}/request/{request_id}": {
       "post": {
         "tags": [
-          "Station Details"
+          "Stations: Song Requests"
         ],
         "description": "Submit a song request.",
         "parameters": [
@@ -202,7 +201,7 @@
     "/stations": {
       "get": {
         "tags": [
-          "Station Details"
+          "Stations: General"
         ],
         "description": "Returns a list of stations.",
         "parameters": [],
@@ -222,7 +221,7 @@
     "/station/{station_id}": {
       "get": {
         "tags": [
-          "Station Details"
+          "Stations: General"
         ],
         "description": "Return information about a single station.",
         "parameters": [
@@ -260,7 +259,7 @@
         "connected_on": {
           "description": "",
           "type": "integer",
-          "example": 1497660417
+          "example": 1497656552
         },
         "connected_time": {
           "description": "",
@@ -280,7 +279,7 @@
           "description": "",
           "$ref": "#/definitions/Station"
         },
-        "current_song": {
+        "now_playing": {
           "description": "",
           "$ref": "#/definitions/SongHistory"
         },
@@ -301,7 +300,7 @@
           "enum": [
             "hit",
             "database",
-            "miss"
+            "station"
           ]
         }
       },
@@ -312,17 +311,17 @@
         "current": {
           "description": "",
           "type": "integer",
-          "example": "15"
+          "example": 15
         },
         "unique": {
           "description": "",
           "type": "integer",
-          "example": "15"
+          "example": 15
         },
         "total": {
           "description": "",
           "type": "integer",
-          "example": "20"
+          "example": 20
         }
       },
       "type": "object"
@@ -361,7 +360,7 @@
         "played_at": {
           "description": "",
           "type": "integer",
-          "example": 1497660417
+          "example": 1497656552
         },
         "is_request": {
           "description": "",
@@ -425,23 +424,28 @@
       "properties": {
         "name": {
           "description": "",
-          "type": "string"
+          "type": "string",
+          "example": "/radio.mp3"
         },
         "is_default": {
           "description": "",
-          "type": "boolean"
+          "type": "boolean",
+          "example": true
         },
         "url": {
           "description": "",
-          "type": "string"
+          "type": "string",
+          "example": "http://localhost:8000/radio.mp3"
         },
         "bitrate": {
           "description": "",
-          "type": "integer"
+          "type": "integer",
+          "example": 128
         },
         "format": {
           "description": "",
-          "type": "string"
+          "type": "string",
+          "example": "mp3"
         }
       },
       "type": "object"
@@ -475,7 +479,7 @@
         "timestamp": {
           "description": "",
           "type": "integer",
-          "example": 1497660417
+          "example": 1497656552
         }
       },
       "type": "object"
@@ -569,12 +573,16 @@
       "description": "Endpoints that provide full summaries of the current state of stations."
     },
     {
-      "name": "Station Details",
-      "description": "Specific information on individual stations"
+      "name": "Miscellaneous"
     },
     {
-      "name": "Authenticated Endpoints",
-      "description": "API calls with more detailed information, requiring specific credentialed access."
+      "name": "Stations: General"
+    },
+    {
+      "name": "Stations: Song Requests"
+    },
+    {
+      "name": "Stations: Listeners"
     }
   ],
   "externalDocs": {

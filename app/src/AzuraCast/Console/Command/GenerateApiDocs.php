@@ -25,7 +25,11 @@ class GenerateApiDocs extends \App\Console\Command\CommandAbstract
         define('AZURACAST_VERSION', \AzuraCast\Version::getVersion());
         define('SAMPLE_TIMESTAMP', rand(time() - 86400, time() + 86400));
 
-        $swagger = \Swagger\scan(APP_INCLUDE_BASE, [
+        $swagger = \Swagger\scan([
+            APP_INCLUDE_ROOT . '/swagger.php',
+            APP_INCLUDE_BASE . '/models/Api',
+            APP_INCLUDE_MODULES . '/api',
+        ], [
             'exclude' => [
                 'bootstrap',
                 'locale',

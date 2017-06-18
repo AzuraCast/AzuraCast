@@ -27,8 +27,15 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading nowplaying-title"><?=_('Song Title') ?></h4>
-                    <span class="nowplaying-artist"><?=_('Song Artist') ?></span>
+                    <h4 class="media-heading nowplaying-title">
+                        <?= _('Song Title') ?>
+                    </h4>
+                    <span class="nowplaying-artist">
+                        <?= _('Song Artist') ?>
+                    </span>
+                    <span class="nowplaying-progress" style="display: none;">
+
+                    </span>
                 </div>
             </div>
         </div>
@@ -107,9 +114,32 @@ function nowPlaying() {
     ]) ?>', {}, function (row) {
         var station_row = $('#station_'+row.station.id);
 
-        station_row.find('.nowplaying-title').text(row.now_playing.song.title);
+        var np_title = row.now_playing.song.title;
+        if (row.now_playing.is_request) {
+            np_title += '<span class="label label-default">Listener Request</span>';
+        }
+        station_row.find('.nowplaying-title').html(np_title);
         station_row.find('.nowplaying-artist').text(row.now_playing.song.artist);
         station_row.find('.nowplaying-listeners').text(row.listeners.total);
+
+        if (row.now_playing.duration) {
+            var time_played = Math.floor(Date.now() / 1000) - row.now_playing.played_at;
+            var time_total = row.now_playing.duration;
+
+            if (time_played > time_total) {
+                time_played = time_total;
+            }
+
+            var time_display = formatTime(time_played) + ' / ' + formatTime(time_total);
+
+            station_row.find('.nowplaying-progress')
+                .data('time-played', time_played)
+                .data('time-total', time_total)
+                .text(time_display)
+                .show();
+        } else {
+            station_row.find('.nowplaying-progress').hide();
+        }
 
         $('#song-history').empty();
         $.each(row.song_history, function(i, history_row) {
@@ -117,12 +147,49 @@ function nowPlaying() {
             $('#song-history').append(li);
         });
 
-        setTimeout('nowPlaying()', 30*1000);
+        setTimeout('nowPlaying()', 10 * 1000);
     });
+}
+
+function iterateTimer() {
+    $('.nowplaying-progress:visible').each(function () {
+        var time_played = $(this).data('time-played') + 1;
+        var time_total = $(this).data('time-total');
+
+        if (time_played > time_total) {
+            time_played = time_total;
+        }
+
+        var time_display = formatTime(time_played) + ' / ' + formatTime(time_total);
+
+        $(this).data('time-played', time_played)
+            .text(time_display)
+    });
+}
+
+function formatTime(time) {
+    var sec_num = parseInt(time, 10);
+
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) {
+        hours = "0" + hours;
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    return (hours !== "00" ? hours + ':' : "") + minutes + ':' + seconds;
 }
 
 $(function() {
     nowPlaying();
+
+    setInterval(iterateTimer, 1000);
 });
 
 var request_dialog = $('#modal-request');

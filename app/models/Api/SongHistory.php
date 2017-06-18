@@ -26,6 +26,14 @@ class SongHistory
     public $played_at;
 
     /**
+     * Duration of the song in seconds
+     *
+     * @SWG\Property(example=180)
+     * @var int
+     */
+    public $duration;
+
+    /**
      * Indicates whether the song is a listener request.
      *
      * @SWG\Property

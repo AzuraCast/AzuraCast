@@ -18,6 +18,14 @@ class NowPlaying
     public $station;
 
     /**
+     * Listener details
+     *
+     * @SWG\Property
+     * @var NowPlayingListeners
+     */
+    public $listeners;
+
+    /**
      * Current Song
      *
      * @SWG\Property
@@ -26,12 +34,12 @@ class NowPlaying
     public $now_playing;
 
     /**
-     * Listener details
+     * Next Playing Song
      *
      * @SWG\Property
-     * @var NowPlayingListeners
+     * @var SongHistory
      */
-    public $listeners;
+    public $playing_next;
 
     /**
      * @SWG\Property

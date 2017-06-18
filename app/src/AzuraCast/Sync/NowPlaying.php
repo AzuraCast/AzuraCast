@@ -124,19 +124,30 @@ class NowPlaying extends SyncAbstract
             $offline_sh->song = $song_obj->api();
             $np->now_playing = $offline_sh;
 
+            $np->playing_next = null;
             $np->song_history = $this->history_repo->getHistoryForStation($station);
         } else {
             // Pull from current NP data if song details haven't changed.
             $current_song_hash = Entity\Song::getSongHash($np_raw['current_song']);
 
             if (strcmp($current_song_hash, $np_old['now_playing']['song']['id']) == 0) {
-                $np->song_history = $np_old['song_history'];
-
                 $song_obj = $this->song_repo->find($current_song_hash);
+                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
+
+                $np->song_history = $np_old['song_history'];
+                $np->playing_next = $np_old['playing_next'];
             } else {
+                // SongHistory registration must ALWAYS come before the history/nextsong calls
+                // otherwise they will not have up-to-date database info!
+                $song_obj = $this->song_repo->getOrCreate($np_raw['current_song'], true);
+                $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
+
                 $np->song_history = $this->history_repo->getHistoryForStation($station);
 
-                $song_obj = $this->song_repo->getOrCreate($np_raw['current_song'], true);
+                $next_song = $this->history_repo->getNextSongForStation($station);
+                if ($next_song instanceof Entity\SongHistory) {
+                    $np->playing_next = $next_song->api();
+                }
             }
 
             // Update detailed listener statistics, if they exist for the station
@@ -145,7 +156,7 @@ class NowPlaying extends SyncAbstract
             }
 
             // Register a new item in song history.
-            $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
+
             $np->now_playing = $sh_obj->api();
         }
 

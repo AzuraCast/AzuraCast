@@ -39,10 +39,20 @@ class NextSong extends \App\Console\Command\CommandAbstract
             return false;
         }
 
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $em->getRepository(Entity\StationMedia::class);
+        /** @var Entity\Repository\SongHistoryRepository $history_repo */
+        $history_repo = $em->getRepository(Entity\SongHistory::class);
 
-        $result = $media_repo->getNextSong($station);
+        /** @var Entity\SongHistory|null $sh */
+        $sh = $history_repo->getNextSongForStation($station);
+
+        if ($sh instanceof Entity\SongHistory) {
+            // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
+            $song_path = $sh->media->getFullPath();
+            $result = 'annotate:' . implode(',', $sh->media->getAnnotations()) . ':' . $song_path;
+        } else {
+            $result = APP_INCLUDE_ROOT . '/resources/error.mp3';
+        }
+
         $output->write($result);
         return true;
     }

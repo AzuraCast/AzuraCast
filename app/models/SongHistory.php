@@ -42,6 +42,9 @@ class SongHistory extends \App\Doctrine\Entity
     /** @Column(name="playlist_id", type="integer", nullable=true) */
     protected $playlist_id;
 
+    /** @Column(name="media_id", type="integer", nullable=true) */
+    protected $media_id;
+
     /** @Column(name="request_id", type="integer", nullable=true) */
     protected $request_id;
 
@@ -55,6 +58,9 @@ class SongHistory extends \App\Doctrine\Entity
     {
         return $this->timestamp_start;
     }
+
+    /** @Column(name="duration", type="integer", nullable=true) */
+    protected $duration;
 
     /** @Column(name="listeners_start", type="integer", nullable=true) */
     protected $listeners_start;
@@ -118,6 +124,14 @@ class SongHistory extends \App\Doctrine\Entity
     protected $request;
 
     /**
+     * @ManyToOne(targetEntity="StationMedia")
+     * @JoinColumns({
+     *   @JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    protected $media;
+
+    /**
      * @return Api\SongHistory
      */
     public function api()
@@ -125,6 +139,7 @@ class SongHistory extends \App\Doctrine\Entity
         $response = new Api\SongHistory;
         $response->sh_id = (int)$this->id;
         $response->played_at = (int)$this->timestamp_start;
+        $response->duration = (int)$this->duration;
         $response->is_request = (bool)(!empty($this->request_id));
         $response->song = $this->song->api();
         return $response;

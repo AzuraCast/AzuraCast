@@ -259,7 +259,7 @@
         "connected_on": {
           "description": "",
           "type": "integer",
-          "example": 1497656552
+          "example": 1497737400
         },
         "connected_time": {
           "description": "",
@@ -280,6 +280,10 @@
           "$ref": "#/definitions/Station"
         },
         "now_playing": {
+          "description": "",
+          "$ref": "#/definitions/SongHistory"
+        },
+        "playing_next": {
           "description": "",
           "$ref": "#/definitions/SongHistory"
         },
@@ -360,7 +364,7 @@
         "played_at": {
           "description": "",
           "type": "integer",
-          "example": 1497656552
+          "example": 1497737400
         },
         "is_request": {
           "description": "",
@@ -479,7 +483,7 @@
         "timestamp": {
           "description": "",
           "type": "integer",
-          "example": 1497656552
+          "example": 1497737400
         }
       },
       "type": "object"

@@ -13,7 +13,7 @@ class RestartRadio extends \App\Console\Command\CommandAbstract
      */
     protected function configure()
     {
-        $this->setName('radio:restart')
+        $this->setName('azuracast:radio:restart')
             ->setDescription('Restart all radio stations.');
     }
 

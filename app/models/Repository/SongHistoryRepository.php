@@ -5,13 +5,40 @@ use Entity;
 
 class SongHistoryRepository extends \App\Doctrine\Repository
 {
+    public function getNextSongForStation(Entity\Station $station)
+    {
+        $threshold = 60 * 15;
+
+        $next_song = $this->_em->createQuery('SELECT sh, s, sm
+            FROM ' . $this->_entityName . ' sh JOIN sh.song s JOIN sh.media sm
+            WHERE sh.station_id = :station_id
+            AND sh.timestamp_cued >= :threshold
+            AND sh.timestamp_start = 0
+            AND sh.timestamp_end = 0
+            ORDER BY sh.id DESC')
+            ->setParameter('station_id', $station->id)
+            ->setParameter('threshold', time() - $threshold)
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        if (!($next_song instanceof Entity\SongHistory)) {
+            /** @var Entity\Repository\StationMediaRepository $media_repo */
+            $media_repo = $this->_em->getRepository(Entity\StationMedia::class);
+
+            $next_song = $media_repo->getNextSong($station);
+        }
+
+        return $next_song;
+    }
+
     /**
      * @param int $num_entries
      * @return array
      */
     public function getHistoryForStation(Entity\Station $station, $num_entries = 5)
     {
-        $history = $this->_em->createQuery('SELECT sh, s FROM ' . $this->_entityName . ' sh JOIN sh.song s 
+        $history = $this->_em->createQuery('SELECT sh, s 
+            FROM ' . $this->_entityName . ' sh JOIN sh.song s  
             WHERE sh.station_id = :station_id 
             AND sh.timestamp_end != 0
             ORDER BY sh.id DESC')

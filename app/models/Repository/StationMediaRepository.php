@@ -81,7 +81,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
      * Determine the next-playing song for this station based on its playlist rotation rules.
      *
      * @param Entity\Station $station
-     * @return string
+     * @return Entity\SongHistory|null
      */
     public function getNextSong(Entity\Station $station)
     {
@@ -236,6 +236,8 @@ class StationMediaRepository extends \App\Doctrine\Repository
                 }
             }
         }
+
+        return null;
     }
 
     protected function _playSongFromRequest(Entity\StationRequest $request)
@@ -245,7 +247,9 @@ class StationMediaRepository extends \App\Doctrine\Repository
         $sh->song = $request->track->song;
         $sh->station = $request->station;
         $sh->request = $request;
+        $sh->media = $request->track;
 
+        $sh->duration = $request->track->length;
         $sh->timestamp_cued = time();
         $this->_em->persist($sh);
 
@@ -254,7 +258,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
 
         $this->_em->flush();
 
-        return $this->_playMedia($request->track);
+        return $sh;
     }
 
     protected function _getTimeCode()
@@ -311,27 +315,17 @@ class StationMediaRepository extends \App\Doctrine\Repository
             $sh->song = $random_song->song;
             $sh->playlist = $playlist;
             $sh->station = $playlist->station;
+            $sh->media = $random_song;
+
+            $sh->duration = $random_song->length;
             $sh->timestamp_cued = time();
 
             $this->_em->persist($sh);
             $this->_em->flush();
 
-            return $this->_playMedia($random_song);
+            return $sh;
         }
 
-        return $this->_playFallback();
-    }
-
-    protected function _playMedia(Entity\StationMedia $media)
-    {
-        // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
-        $song_path = $media->getFullPath();
-        return 'annotate:'.implode(',', $media->getAnnotations()).':'.$song_path;
-    }
-
-    protected function _playFallback()
-    {
-        $fallback_song_path = APP_INCLUDE_ROOT.'/resources/error.mp3';
-        return $fallback_song_path;
+        return null;
     }
 }

@@ -29,5 +29,5 @@
   - name: Restart Radio Stations
     become: true
     become_user: azuracast
-    shell: php {{ util_base }}/cli.php radio:restart
+    shell: php {{ util_base }}/cli.php azuracast:radio:restart
 

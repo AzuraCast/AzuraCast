@@ -23,9 +23,13 @@ class InternalController extends BaseController
             throw new \App\Exception('Not a LiquidSoap station.');
         }
 
-        $auth_key = $this->getParam('api_auth', '');
-        if (!$backend_adapter->validateApiPassword($auth_key)) {
-            throw new \App\Exception\PermissionDenied();
+        try {
+            $this->checkStationPermission($station, 'view administration');
+        } catch (\App\Exception\PermissionDenied $e) {
+            $auth_key = $this->getParam('api_auth', '');
+            if (!$backend_adapter->validateApiPassword($auth_key)) {
+                throw new \App\Exception\PermissionDenied();
+            }
         }
 
         $this->station = $station;
@@ -58,10 +62,19 @@ class InternalController extends BaseController
 
     public function nextsongAction()
     {
-        /** @var Entity\Repository\StationMediaRepository $media_repo */
-        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+        /** @var Entity\Repository\SongHistoryRepository $history_repo */
+        $history_repo = $this->em->getRepository(Entity\SongHistory::class);
 
-        return $this->_return($media_repo->getNextSong($this->station));
+        /** @var Entity\SongHistory|null $sh */
+        $sh = $history_repo->getNextSongForStation($this->station);
+
+        if ($sh instanceof Entity\SongHistory) {
+            // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
+            $song_path = $sh->media->getFullPath();
+            return $this->_return('annotate:' . implode(',', $sh->media->getAnnotations()) . ':' . $song_path);
+        } else {
+            return $this->_return(APP_INCLUDE_ROOT . '/resources/error.mp3');
+        }
     }
 
     protected function _return($output)

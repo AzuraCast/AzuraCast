@@ -35,7 +35,6 @@ services:
     restart: always
 
   web:
-    container_name: azuracast_web
     image: azuracast/azuracast_web:latest
     depends_on:
       - mariadb

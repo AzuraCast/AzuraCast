@@ -30,3 +30,6 @@ app/.env
 /util/ansible/deploy.retry
 /util/ansible/update.retry
 tests/_output/*
+
+# Docker backup files
+/backup.tar.gz

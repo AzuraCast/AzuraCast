@@ -37,3 +37,9 @@
     retentions: "1h:1h,1d:1d"
     measurements: [{'measurement':':MEASUREMENT', 'fields': ['min(value) AS min','mean(value) AS value','max(value) AS max']}]
     prune: true
+
+- name: Wait for MySQL to spin up
+  wait_for:
+    host: "mariadb"
+    port: 3306
+    delay: 5

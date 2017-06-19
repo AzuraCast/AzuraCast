@@ -31,5 +31,5 @@
 - name: Clear AzuraCast Cache and Restart Stations
   become: true
   become_user: azuracast
-  shell: php {{ util_base }}/cli.php cache:clear && php {{ util_base }}/cli.php radio:restart
+  shell: php {{ util_base }}/cli.php cache:clear && php {{ util_base }}/cli.php azuracast:radio:restart
   when: fixture_zip_files.matched > 0 or fixture_sql_files.matched > 0

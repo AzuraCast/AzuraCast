@@ -55,6 +55,9 @@ class StationMount extends \App\Doctrine\Entity
     /** @Column(name="relay_url", type="string", length=255, nullable=true) */
     protected $relay_url;
 
+    /** @Column(name="authhash", type="string", length=255, nullable=true) */
+    protected $authhash;
+
     /** @Column(name="enable_autodj", type="boolean", nullable=false) */
     protected $enable_autodj;
 

@@ -85,6 +85,16 @@ return [
                     ]
                 ],
 
+                'authhash' => [
+                    'text',
+                    [
+                        'label' => _('YP Directory Authorization Hash'),
+                        'description' => sprintf(_('If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the ShoutCast web site</a>.'),
+                            'https://rmo.shoutcast.com'),
+                        'default' => '',
+                    ]
+                ],
+
             ],
         ],
 

@@ -128,6 +128,10 @@ class ShoutCast2 extends FrontendAbstract
             if ($mount_row->relay_url) {
                 $config['streamrelayurl_'.$i] = $mount_row->relay_url;
             }
+
+            if ($mount_row->authhash) {
+                $config['streamauthhash_' . $i] = $mount_row->authhash;
+            }
         }
 
         // Set any unset values back to the DB config.

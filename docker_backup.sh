@@ -2,7 +2,6 @@
 
 docker-compose down
 
-# Back up stations
 rm -f backup.tar.gz
 
 docker run --rm -v $(pwd):/backup \

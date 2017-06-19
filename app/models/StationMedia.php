@@ -64,6 +64,26 @@ class StationMedia extends \App\Doctrine\Entity
         $this->length_text = $length_min . ':' . str_pad($length_sec, 2, '0', STR_PAD_LEFT);
     }
 
+    /**
+     * Get the length with cue-in and cue-out points included.
+     *
+     * @return int
+     */
+    public function getCalculatedLength()
+    {
+        $length = (int)$this->length;
+
+        if ((int)$this->cue_out > 0) {
+            $length_removed = $length - (int)$this->cue_out;
+            $length -= $length_removed;
+        }
+        if ((int)$this->cue_in > 0) {
+            $length -= $this->cue_in;
+        }
+
+        return $length;
+    }
+
     /** @Column(name="length_text", type="string", length=10, nullable=true) */
     protected $length_text;
 
@@ -89,10 +109,10 @@ class StationMedia extends \App\Doctrine\Entity
     /** @Column(name="fade_out", type="decimal", precision=3, scale=1, nullable=true) */
     protected $fade_out;
 
-    /** @Column(name="cue_in", type="decimal", precision=3, scale=1, nullable=true) */
+    /** @Column(name="cue_in", type="decimal", precision=5, scale=1, nullable=true) */
     protected $cue_in;
 
-    /** @Column(name="cue_out", type="decimal", precision=3, scale=1, nullable=true) */
+    /** @Column(name="cue_out", type="decimal", precision=5, scale=1, nullable=true) */
     protected $cue_out;
 
     /**

@@ -249,7 +249,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
         $sh->request = $request;
         $sh->media = $request->track;
 
-        $sh->duration = $request->track->length;
+        $sh->duration = $request->track->getCalculatedLength();
         $sh->timestamp_cued = time();
         $this->_em->persist($sh);
 
@@ -317,7 +317,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
             $sh->station = $playlist->station;
             $sh->media = $random_song;
 
-            $sh->duration = $random_song->length;
+            $sh->duration = $random_song->getCalculatedLength();
             $sh->timestamp_cued = time();
 
             $this->_em->persist($sh);

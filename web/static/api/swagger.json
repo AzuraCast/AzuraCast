@@ -7,7 +7,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "version": "0.6.0-2017.06"
+    "version": "0.7.0-2017.06"
   },
   "basePath": "/api",
   "schemes": [
@@ -259,7 +259,7 @@
         "connected_on": {
           "description": "",
           "type": "integer",
-          "example": 1497737400
+          "example": 1497860606
         },
         "connected_time": {
           "description": "",
@@ -279,6 +279,10 @@
           "description": "",
           "$ref": "#/definitions/Station"
         },
+        "listeners": {
+          "description": "",
+          "$ref": "#/definitions/NowPlayingListeners"
+        },
         "now_playing": {
           "description": "",
           "$ref": "#/definitions/SongHistory"
@@ -286,10 +290,6 @@
         "playing_next": {
           "description": "",
           "$ref": "#/definitions/SongHistory"
-        },
-        "listeners": {
-          "description": "",
-          "$ref": "#/definitions/NowPlayingListeners"
         },
         "song_history": {
           "description": "",
@@ -364,7 +364,12 @@
         "played_at": {
           "description": "",
           "type": "integer",
-          "example": 1497737400
+          "example": 1497860606
+        },
+        "duration": {
+          "description": "",
+          "type": "integer",
+          "example": 180
         },
         "is_request": {
           "description": "",
@@ -483,7 +488,7 @@
         "timestamp": {
           "description": "",
           "type": "integer",
-          "example": 1497737400
+          "example": 1497860606
         }
       },
       "type": "object"

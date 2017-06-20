@@ -66,7 +66,7 @@ return function(\Slim\App $app) {
 
         $this->group('/reports', function () {
 
-            $this->get('/timeline[/format/{format}]', 'stations:index:timeline')->setName('stations:index:timeline');
+            $this->get('/timeline[/format/{format}]', 'stations:reports:timeline')->setName('stations:reports:timeline');
             $this->get('/performance[/format/{format}]', 'stations:reports:performance')->setName('stations:reports:performance');
             $this->get('/duplicates', 'stations:reports:duplicates')->setName('stations:reports:duplicates');
             $this->get('/duplicates/delete/{media_id}', 'stations:reports:deletedupe')->setName('stations:reports:deletedupe');

@@ -10,6 +10,81 @@ class ReportsController extends BaseController
         return $this->acl->isAllowed('view station reports', $this->station->id);
     }
 
+    public function timelineAction()
+    {
+        $songs_played_raw = $this->_getEligibleHistory();
+
+        $songs = [];
+        foreach ($songs_played_raw as $song_row) {
+            // Song has no recorded ending.
+            if ($song_row['timestamp_end'] == 0) {
+                continue;
+            }
+
+            $song_row['stat_start'] = $song_row['listeners_start'];
+            $song_row['stat_end'] = $song_row['listeners_end'];
+            $song_row['stat_delta'] = $song_row['delta_total'];
+
+            if (isset($station_media[$song_row['song']['id']])) {
+                $media = $station_media[$song_row['song']['id']];
+
+                $song_row['playlists'] = \Packaged\Helpers\Arrays::ipull($media['playlists'], 'name', 'id');
+            } else {
+                $song_row['playlists'] = [];
+            }
+
+            if (isset($station_requests[$song_row['id']])) {
+                $song_row['requested'] = $station_requests[$song_row['id']];
+            } else {
+                $song_row['requested'] = null;
+            }
+
+            $songs[] = $song_row;
+        }
+
+        $format = $this->getParam('format', 'html');
+        if ($format == 'csv') {
+            $this->doNotRender();
+
+            $export_all = [];
+            $export_all[] = [
+                'Date',
+                'Time',
+                'Listeners',
+                'Delta',
+                'Likes',
+                'Dislikes',
+                'Track',
+                'Artist',
+                'Playlist'
+            ];
+
+            foreach ($songs as $song_row) {
+                $export_row = [
+                    date('Y-m-d', $song_row['timestamp_start']),
+                    date('g:ia', $song_row['timestamp_start']),
+                    $song_row['stat_start'],
+                    $song_row['stat_delta'],
+                    $song_row['score_likes'],
+                    $song_row['score_dislikes'],
+                    $song_row['song']['title'] ?: $song_row['song']['text'],
+                    $song_row['song']['artist'],
+                    $song_row['playlist']['name'] ?? '',
+                ];
+
+                $export_all[] = $export_row;
+            }
+
+            $csv_file = \App\Export::csv($export_all);
+            $csv_filename = $this->station->getShortName() . '_timeline_' . date('Ymd') . '.csv';
+
+            return $this->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
+        } else {
+            $songs = array_reverse($songs);
+            $this->view->songs = $songs;
+        }
+    }
+
     public function performanceAction()
     {
         $automation_config = (array)$this->station->automation_settings;

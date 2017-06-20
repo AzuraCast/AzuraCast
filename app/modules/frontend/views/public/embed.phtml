@@ -8,7 +8,7 @@
 <ul class="actions pull-right">
     <?=$this->fetch('partials/radio_controls') ?>
 </ul>
-<div class="stations">
+<div class="stations nowplaying">
     <div class="media media-left" id="station_<?=$station->id ?>">
         <div class="pull-left">
             <a class="btn-audio" href="#" data-url="<?=$station->getFrontendAdapter($di)->getStreamUrl() ?>">
@@ -17,7 +17,7 @@
         </div>
         <div class="media-body">
             <h4 class="media-heading nowplaying-title"><?=_('Song Title') ?></h4>
-            <span class="nowplaying-artist"><?=_('Song Artist') ?></span>
+            <div class="nowplaying-artist"><?=_('Song Artist') ?></div>
         </div>
     </div>
 </div>

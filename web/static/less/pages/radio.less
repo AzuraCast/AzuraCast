@@ -21,17 +21,20 @@
   }
 }
 
-h4.nowplaying-title {
-  font-size: 14px;
-  margin-bottom: 0;
-}
+.nowplaying {
+  h4, h6 {
+    margin: 0;
+  }
+  h4 {
+    font-size: 14px;
+  }
+  h6 {
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
 
-span.nowplaying-artist,
-span.nowplaying-progress {
-  display: block;
-}
-
-span.nowplaying-progress {
-  font-size: 10px;
-  color: @list-group-disabled-text-color;
+  .nowplaying-progress {
+    font-size: 10px;
+    color: @list-group-disabled-text-color;
+  }
 }

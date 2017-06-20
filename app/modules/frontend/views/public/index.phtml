@@ -19,7 +19,7 @@
         </ul>
         <h3 class="text-left"><?=$this->e($station->name) ?></h3>
 
-        <div class="stations">
+        <div class="stations nowplaying">
             <div class="media media-left" id="station_<?=$station->id ?>">
                 <div class="pull-left">
                     <a class="btn-audio" href="#" data-url="<?=$station->getFrontendAdapter($di)->getStreamUrl() ?>">
@@ -30,12 +30,12 @@
                     <h4 class="media-heading nowplaying-title">
                         <?= _('Song Title') ?>
                     </h4>
-                    <span class="nowplaying-artist">
+                    <div class="nowplaying-artist">
                         <?= _('Song Artist') ?>
-                    </span>
-                    <span class="nowplaying-progress" style="display: none;">
+                    </div>
+                    <div class="nowplaying-progress" style="display: none;">
 
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>

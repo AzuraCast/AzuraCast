@@ -7,107 +7,133 @@
 
 <div class="row">
     <div class="col-sm-6">
+
         <div class="card">
             <div class="card-header ch-alt">
-                <h2><?=_('Basic Profile') ?></h2>
+                <h2><?=_('On the Air') ?></h2>
+            </div>
+            <div class="card-body card-padding nowplaying" id="station_<?=$station->id ?>">
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <div class="m-l-25" style="position: relative;">
+                            <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-collection-music"></i></div>
+
+                            <h6><?=_('Now Playing') ?>:</h6>
+
+                            <h4 class="media-heading nowplaying-title">
+                                <?= _('Song Title') ?>
+                            </h4>
+                            <div class="nowplaying-artist">
+                                <?= _('Song Artist') ?>
+                            </div>
+                            <div class="nowplaying-progress" style="display: none;"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="m-l-25" style="position: relative;">
+                            <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-headset"></i></div>
+
+                            <h6><?=_('Listeners') ?>:</h6>
+
+                            <h4><span class="nowplaying-listeners">0</span> <?=_('Total') ?></h4>
+                            <div>
+                                <span class="nowplaying-listeners-unique">0</span> <?=_('Unique') ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="m-l-25" style="position: relative;">
+                            <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-skip-next"></i></div>
+
+                            <h6><?=_('Playing Next') ?>:</h6>
+
+                            <h4 class="media-heading nowplaying-next-title">
+                                <?= _('Song Title') ?>
+                            </h4>
+                            <div class="nowplaying-next-artist">
+                                <?= _('Song Artist') ?>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2><?=_('Station Profile') ?></h2>
 
                 <?php if ($acl->isAllowed('manage station profile', $station->id)): ?>
                 <a class="btn bgm-blue btn-float" title="Edit Profile" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-edit"></i></a>
                 <?php endif; ?>
             </div>
-            <div class="card-body card-padding">
-                <dl>
-                    <dt><?=_('Station Name') ?>:</dt>
-                    <dd><?=$this->e($station->name) ?></dd>
+            <table class="table table-striped table-responsive">
+                <colgroup>
+                    <col width="30%">
+                    <col width="70%">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td><?=_('Name') ?></td>
+                        <td><?=$this->e($station->name) ?></td>
+                    </tr>
+                    <tr>
+                        <td><?=_('Description') ?></td>
+                        <td><?=$this->e($station->description) ?></td>
+                    </tr>
+                    <?php if ($backend->supportsRequests()): ?>
+                    <tr>
+                        <td><?=_('Song Requests') ?></td>
+                        <td>
+                        <?php if ($station->enable_requests): ?>
+                            <span class="text-success"><?=_('Enabled') ?></span>
 
-                    <dt><?=_('Station Description') ?>:</dt>
-                    <dd><?=$this->e($station->description) ?></dd>
-                </dl>
-
-                <h4><?=_('Technical Details') ?></h4>
-
-                <dl>
-                    <dt><?=_('Station Base Directory') ?></dt>
-                    <dd class="text-preformatted"><?=$station->getRadioBaseDir() ?></dd>
-
-                    <dt><?=_('Station Media Directory') ?></dt>
-                    <dd class="text-preformatted"><?=$station->getRadioMediaDir() ?></dd>
-
-                    <dt><?=_('Player Embed Code') ?>:</dt>
-                    <dd class="form-field">
-                        <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$url->named('public:embed', ['station' => $station->getShortName()], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
-                    </dd>
-                </dl>
-            </div>
+                            <div class="form-field">
+                                <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$url->named('public:embedrequests', ['station' => $station->getShortName()], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
+                            </div>
+                        <?php else: ?>
+                            <span class="text-danger"><?=_('Disabled') ?></span><br><small><?=_('Edit station profile to enable.') ?></small>
+                        <?php endif; ?>
+                        </td>
+                    </tr>
+                    <? endif; ?>
+                    <?php if ($backend->supportsStreamers()): ?>
+                    <tr>
+                        <td><?=_('Streamers/DJs') ?></td>
+                        <td>
+                        <?php if ($station->enable_streamers): ?>
+                            <span class="text-success"><?=_('Enabled') ?></span><br>
+                            <a href="<?=$url->routeFromHere(['controller' => 'streamers']) ?>"><?=_('Manage streamer accounts') ?></a>
+                        <?php else: ?>
+                            <span class="text-danger"><?=_('Disabled') ?></span><br><small><?=_('Edit station profile to enable.') ?></small>
+                        <?php endif; ?>
+                        </td>
+                    </tr>
+                    <? endif; ?>
+                    <tr>
+                        <td><?=_('Base Directory') ?></td>
+                        <td class="text-preformatted"><?=$station->getRadioBaseDir() ?></td>
+                    </tr>
+                    <tr>
+                        <td><?=_('Media Directory') ?></td>
+                        <td class="text-preformatted"><?=$station->getRadioMediaDir() ?></td>
+                    </tr>
+                    <tr>
+                        <td><?=_('Player Embed Code') ?></td>
+                        <td class="form-field">
+                            <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$url->named('public:embed', ['station' => $station->getShortName()], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-
-        <?php if ($backend->supportsRequests()): ?>
-        <div class="card">
-            <div class="card-header <?php if ($station->enable_requests): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?>">
-                <h2><?=_('Song Requests') ?></h2>
-            </div>
-            <div class="card-body card-padding">
-            <?php if ($station->enable_requests): ?>
-                <dl>
-                    <dd><?=_('Song requests are currently <b>enabled</b> for this station.') ?></dd>
-
-                    <dt><?=_('Request Delay') ?>:</dt>
-                <?php if ($station->request_delay == 0): ?>
-                    <dd><?=_('Requests are queued for playback immediately after the currently playing song.') ?></dd>
-                <?php else: ?>
-                    <dd><?=sprintf(_('Requests are queued for playback on the station within <b>%d to %d minutes</b> of being submitted.'), $station->request_delay, $station->request_delay*2) ?></dd>
-                <?php endif; ?>
-
-                    <dt><?=_('Request Embed Code') ?></dt>
-                    <dd class="form-field">
-                        <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$url->named('public:embedrequests', ['station' => $station->getShortName()], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
-                    </dd>
-                </dl>
-
-                <p></p>
-
-            <?php else: ?>
-                <p><?=_('Song requests are currently <b>disabled</b> for this station. Edit your profile above to enable them.') ?></p>
-            <?php endif; ?>
-            </div>
-        </div>
-        <?php else: ?>
-        <div class="card">
-            <div class="card-header bgm-bluegray">
-                <h2><?=_('Song Requests') ?></h2>
-            </div>
-            <div class="card-body card-padding">
-                <p><?=_('This feature is not currently supported on this station.') ?></p>
-            </div>
-        </div>
-        <?php endif; ?>
-
-        <?php if ($backend->supportsStreamers()): ?>
-        <div class="card">
-            <div class="card-header <?php if ($station->enable_streamers): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?>">
-                <h2><?=_('Streamers/DJs') ?></h2>
-            </div>
-            <div class="card-body card-padding">
-
-                <?php if ($station->enable_streamers): ?>
-                    <p><?=_('Support for live streamers / DJs is currently <b>enabled</b> for this station.') ?></p>
-                    <p><?=sprintf(_('Manage streamer accounts <a href="%s">on the Streamers / DJ Accounts page</a>.'), $url->routeFromHere(['controller' => 'streamers'])) ?></p>
-                <?php else: ?>
-                    <p><?=_('Support for live streamers / DJs is currently <b>disabled</b> for this station. Edit your profile above to enable it.') ?></p>
-                    <p><?=_('Only the AutoDJ (based on your uploaded media and playlists) will be able to play on the air.') ?></p>
-                <?php endif; ?>
-            </div>
-        </div>
-        <?php else: ?>
-        <div class="card">
-            <div class="card-header bgm-bluegray">
-                <h2><?=_('Streamers/DJs') ?></h2>
-            </div>
-            <div class="card-body card-padding">
-                <p><?=_('This feature is not currently supported on this station.') ?></p>
-            </div>
-        </div>
-        <?php endif; ?>
     </div>
     <div class="col-sm-6">
         <?php if ($frontend_type == 'remote'): ?>
@@ -187,8 +213,8 @@
                 <dl>
                     <dt><?=_('Stream Playlists') ?>:</dt>
                     <dd>
-                        <a class="btn btn-xs btn-default" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">PLS</a>
-                        <a class="btn btn-xs btn-default" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'm3u']) ?>">M3U</a>
+                        <a class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">PLS</a>
+                        <a class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'm3u']) ?>">M3U</a>
                     </dd>
                 </dl>
 
@@ -244,8 +270,112 @@
             </div>
             <div class="card-body card-padding">
                 <p><?=sprintf(_('LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.'), $num_songs, $num_playlists) ?></p>
+
+                <?php if ($acl->isAllowed('manage station media', $station->id)): ?>
+                    <div class="buttons">
+                        <a class="btn btn-primary" href="<?=$url->named('stations:files:index', ['station' => $station->id]) ?>"><?=_('Music Files') ?></a>
+                        <a class="btn btn-primary" href="<?=$url->named('stations:playlists:index', ['station' => $station->id]) ?>"><?=_('Playlists') ?></a>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
         <?php endif; ?>
     </div>
 </div>
+
+<script type="text/javascript">
+function nowPlaying() {
+    $.getJSON('<?=$url->route([
+        'module' => 'api',
+        'controller' => 'nowplaying',
+        'station' => $station->id
+    ]) ?>', {}, function (row) {
+        var station_row = $('#station_'+row.station.id);
+
+        var np_title = row.now_playing.song.title;
+        if (row.now_playing.is_request) {
+            np_title += '<span class="label label-default">Listener Request</span>';
+        }
+        station_row.find('.nowplaying-title').html(np_title);
+        station_row.find('.nowplaying-artist').text(row.now_playing.song.artist);
+
+        station_row.find('.nowplaying-listeners').text(row.listeners.total);
+        station_row.find('.nowplaying-listeners-unique').text(row.listeners.unique);
+
+        var np_next_title = row.playing_next.song.title;
+        if (row.playing_next.is_request) {
+            np_title += '<span class="label label-default">Listener Request</span>';
+        }
+        station_row.find('.nowplaying-next-title').html(np_next_title);
+        station_row.find('.nowplaying-next-artist').text(row.playing_next.song.artist);
+
+        if (row.now_playing.duration) {
+            var time_played = Math.floor(Date.now() / 1000) - row.now_playing.played_at;
+            var time_total = row.now_playing.duration;
+
+            if (time_played > time_total) {
+                time_played = time_total;
+            }
+
+            var time_display = formatTime(time_played) + ' / ' + formatTime(time_total);
+
+            station_row.find('.nowplaying-progress')
+                .data('time-played', time_played)
+                .data('time-total', time_total)
+                .text(time_display)
+                .show();
+        } else {
+            station_row.find('.nowplaying-progress').hide();
+        }
+
+        $('#song-history').empty();
+        $.each(row.song_history, function(i, history_row) {
+            var li = $('<li>').append('<b>'+history_row.song.title+'</b><br>'+history_row.song.artist);
+            $('#song-history').append(li);
+        });
+
+        setTimeout('nowPlaying()', 10 * 1000);
+    });
+}
+
+function iterateTimer() {
+    $('.nowplaying-progress:visible').each(function () {
+        var time_played = $(this).data('time-played') + 1;
+        var time_total = $(this).data('time-total');
+
+        if (time_played > time_total) {
+            time_played = time_total;
+        }
+
+        var time_display = formatTime(time_played) + ' / ' + formatTime(time_total);
+
+        $(this).data('time-played', time_played)
+            .text(time_display)
+    });
+}
+
+function formatTime(time) {
+    var sec_num = parseInt(time, 10);
+
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) {
+        hours = "0" + hours;
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    return (hours !== "00" ? hours + ':' : "") + minutes + ':' + seconds;
+}
+
+$(function() {
+    nowPlaying();
+
+    setInterval(iterateTimer, 1000);
+});
+</script>

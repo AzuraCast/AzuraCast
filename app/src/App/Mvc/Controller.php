@@ -5,8 +5,9 @@ use App\Acl;
 use App\Url;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+
+use Slim\Http\Response as Response;
+use Slim\Http\Request as Request;
 
 class Controller
 {
@@ -291,12 +292,9 @@ class Controller
     {
         $this->doNotRender();
 
-        $body = $this->response->getBody();
-        $body->write(json_encode($json_data));
-
         return $this->response
             ->withHeader('Content-type', 'application/json; charset=utf-8')
-            ->withBody($body);
+            ->write(json_encode($json_data));
     }
 
     /**
@@ -347,10 +345,7 @@ class Controller
             $this->response = $this->response->withHeader('Content-Disposition', 'attachment; filename=' . $file_name);
         }
 
-        $body = $this->response->getBody();
-        $body->write($file_data);
-
-        return $this->response->withBody($body);
+        return $this->response->write($file_data);
     }
 
     /* URL Redirection */
@@ -366,7 +361,9 @@ class Controller
     {
         $this->doNotRender();
 
-        return $this->response->withStatus($code)->withHeader('Location', $new_url);
+        return $this->response
+            ->withStatus($code)
+            ->withHeader('Location', $new_url);
     }
 
     /**

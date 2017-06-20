@@ -150,8 +150,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
 
     public function returnToScreen($body)
     {
-        $this->response->withHeader('Content-Type', 'application/json');
-        $this->response->getBody()->write(json_encode($body, \JSON_UNESCAPED_SLASHES));
-        return $this->response;
+        return $this->response->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($body, \JSON_UNESCAPED_SLASHES));
     }
 }

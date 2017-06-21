@@ -60,14 +60,14 @@ class ListenersController extends BaseController
             $api->connected_on = (int)$listener['timestamp_start'];
             $api->connected_time = time() - $listener['timestamp_start'];
 
-            $api->location = $cache->getOrSet('/ip/' . $api['ip'], function () use ($api, $client, $http_requests) {
+            $api->location = $cache->getOrSet('/ip/' . $api->ip, function () use ($api, $client, $http_requests) {
 
                 $http_requests++;
                 if ($http_requests > 75) {
                     return null;
                 }
 
-                $response = $client->get($api['ip']);
+                $response = $client->get($api->ip);
                 if ($response->getStatusCode() == 200) {
                     $location_body = $response->getBody()->getContents();
                     $location = json_decode($location_body, true);

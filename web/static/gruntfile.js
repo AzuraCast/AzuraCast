@@ -61,6 +61,17 @@ module.exports = function(grunt) {
                 files: ['js/inc/**/*.js'], // which files to watch
                 tasks: ['concat', 'uglify']
             }
+        },
+        cacheBust: {
+            core: {
+                options: {
+                    assets: ['js/*.js', 'css/*.css'],
+                    queryString: true,
+                    jsonOutput: true,
+                    jsonOutputFilename: 'assets.json'
+                },
+                src: ['index.html']
+            }
         }
     });
   
@@ -70,9 +81,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-cache-bust');
   
     // Default task(s).
-    grunt.registerTask('default', ['less', 'concat', 'uglify']);
+    grunt.registerTask('default', ['less', 'concat', 'uglify', 'cacheBust']);
     grunt.registerTask('js', ['concat', 'uglify']);
     
 };

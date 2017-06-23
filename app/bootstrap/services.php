@@ -229,6 +229,7 @@ return function (\Slim\Container $di, \App\Config $config) {
 
         $view->addData([
             'di' => $di,
+            'assets' => $di['assets'],
             'auth' => $di['auth'],
             'acl' => $di['acl'],
             'url' => $di['url'],
@@ -239,6 +240,34 @@ return function (\Slim\Container $di, \App\Config $config) {
 
         return $view;
     });
+
+    $di['assets'] = function ($di) {
+
+        return new class($di['url']) {
+            /** @var \App\Url */
+            protected $url;
+
+            /** @var array */
+            protected $assets;
+
+            public function __construct(\App\Url $url) {
+                $this->url = $url;
+
+                $assets = [];
+                $assets_file = APP_INCLUDE_STATIC.'/assets.json';
+                if (file_exists($assets_file)) {
+                    $assets = json_decode(file_get_contents($assets_file), true);
+                }
+
+                $this->assets = $assets;
+            }
+
+            public function getPath($asset) {
+                return $this->url->content($this->assets[$asset] ?? $asset);
+            }
+        };
+
+    };
 
     // Set up application and routing.
     $di['app'] = function ($di) {

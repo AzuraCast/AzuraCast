@@ -270,6 +270,45 @@ $(function() {
 });
 
 
+$(function() {
+
+    $('form.form').each(function() {
+        var $form = $(this);
+
+        $form.addClass('fa-form-engine fa-form');
+
+        $form.find('.form-group > label').addClass('control-label');
+
+        $form.find('input:not(input[type=button],input[type=submit],input[type=reset],input[type=radio],input[type=checkbox]),textarea,select').addClass('form-control');
+        $form.find('select').wrap('<div class="select" />');
+
+        autosize($form.find('textarea'));
+
+        $form.find('input[type=radio]').each(function() {
+            $(this).closest('.form-field').addClass('radio-group');
+            $(this).next('label').addBack().wrapAll('<div class="radio m-b-15" />');
+        });
+        $form.find('input[type=checkbox]').each(function() {
+            $(this).closest('.form-field').addClass('checkbox-group');
+            $(this).next('label').addBack().wrapAll('<div class="checkbox m-b-15" />');
+        });
+
+        $form.find('input[type=checkbox],input[type=radio]').after('<i class="input-helper"></i>');
+
+        $form.find('input[type=checkbox].inline').removeClass('inline').closest('div.checkbox').addClass('checkbox-inline');
+        $form.find('input[type=radio].inline').removeClass('inline').closest('div.radio').addClass('radio-inline');
+
+        $form.find('div.checkbox:not(.checkbox-inline)').addClass('m-b-15');
+        $form.find('div.radio:not(.radio-inline)').addClass('m-b-15');
+
+        $form.find('.help-block.form-error').parent().addClass('has-error');
+        $form.find('.help-block.form-success').parent().addClass('has-success');
+        $form.find('.help-block.form-warning').parent().addClass('has-warning');
+
+        $form.find('input[type=button],input[type=submit],input[type=reset]').addClass('btn m-t-10');
+    });
+
+});
 /*----------------------------------------------------------
  Detect Mobile Browser
  -----------------------------------------------------------*/
@@ -608,3 +647,62 @@ function notify(message, type, minimal_layout) {
 
     $.growl({ message: message }, growlSettings);
 }
+
+$(document).ready(function () {
+
+    // Show password strength meter.
+    if (typeof zxcvbn === 'function') {
+
+        $('input[type=password]').on('keyup', function(e) {
+
+            var result  = zxcvbn($(this).val()),
+                score   = result.score;
+
+            var group = $(this).closest('.form-group');
+            if (!group.length) {
+                group = $(this).closest('div');
+            }
+
+            var explanation = group.find('.help-block.password-explanation');
+
+            if (!explanation.length) {
+                explanation = $('<small class="help-block password-explanation" />');
+
+                var label = group.find('label');
+                if (label.length) {
+                    label.after(explanation);
+                } else {
+                    $(this).after(explanation);
+                }
+
+                explanation = group.find('.help-block.password-explanation');
+            }
+
+            if (result.feedback.warning) {
+                explanation.text(result.feedback.warning).show();
+            } else {
+                explanation.hide();
+            }
+
+            group.removeClass('has-success has-warning has-error');
+
+            switch (score) {
+                case 0:
+                case 1:
+                    group.addClass('has-error');
+                    break;
+
+                case 2:
+                case 3:
+                    group.addClass('has-warning');
+                    break;
+
+                case 4:
+                    group.addClass('has-success');
+                    break;
+            }
+        });
+
+    }
+
+});

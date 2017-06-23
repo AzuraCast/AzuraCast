@@ -43,18 +43,11 @@ class NowplayingController extends BaseController
         /** @var \App\Cache $cache */
         $cache = $this->di->get('cache');
 
-        $np_cached = $cache->get('api_nowplaying_data', function () {
-            return $this->di['em']->getRepository(Entity\Settings::class)->getSetting('nowplaying');
+        /** @var Entity\Api\NowPlaying[] $np */
+        $np = $cache->get('api_nowplaying_data', function () {
+            return $this->em->createQuery('SELECT s.nowplaying FROM Entity\Station s')
+                ->getArrayResult();
         });
-
-        // Convert back into a large array if it's serialized as the new API models
-        $np = [];
-        foreach ((array)$np_cached as $np_row) {
-            if ($np_row instanceof Entity\Api\NowPlaying) {
-                $np_row = json_decode(json_encode($np_row), true);
-            }
-            $np[] = $np_row;
-        }
 
         // Sanity check for now playing data.
         if (empty($np)) {
@@ -65,13 +58,18 @@ class NowplayingController extends BaseController
             $id = $this->getParam('station');
 
             foreach ($np as $key => $np_row) {
-                if ($np_row['station']['id'] == (int)$id || $np_row['station']['shortcode'] === $id) {
+                if ($np_row->station->id == (int)$id || $np_row->station->shortcode === $id) {
+                    $np_row->now_playing->recalculate();
                     return $this->returnSuccess($np_row);
                 }
             }
 
             return $this->returnError('Station not found.', 404);
         } else {
+            foreach ($np as $np_row) {
+                $np_row->now_playing->recalculate();
+            }
+
             return $this->returnSuccess($np);
         }
     }

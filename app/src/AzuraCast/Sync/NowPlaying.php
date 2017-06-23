@@ -106,7 +106,8 @@ class NowPlaying extends SyncAbstract
         /** @var EntityManager $em */
         $em = $this->di['em'];
 
-        $np_old = (array)$station->nowplaying_data;
+        /** @var Entity\Api\NowPlaying $np_old */
+        $np_old = $station->nowplaying;
 
         $np = new Entity\Api\NowPlaying;
         $np->station = $station->api($station->getFrontendAdapter($this->di));
@@ -130,12 +131,12 @@ class NowPlaying extends SyncAbstract
             // Pull from current NP data if song details haven't changed.
             $current_song_hash = Entity\Song::getSongHash($np_raw['current_song']);
 
-            if (strcmp($current_song_hash, $np_old['now_playing']['song']['id']) == 0) {
+            if (strcmp($current_song_hash, $np_old->now_playing->song->id) == 0) {
                 $song_obj = $this->song_repo->find($current_song_hash);
                 $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
 
-                $np->song_history = $np_old['song_history'];
-                $np->playing_next = $np_old['playing_next'];
+                $np->song_history = $np_old->song_history;
+                $np->playing_next = $np_old->playing_next;
             } else {
                 // SongHistory registration must ALWAYS come before the history/nextsong calls
                 // otherwise they will not have up-to-date database info!
@@ -156,13 +157,12 @@ class NowPlaying extends SyncAbstract
             }
 
             // Register a new item in song history.
-
-            $np->now_playing = $sh_obj->api();
+            $np->now_playing = $sh_obj->api(true);
         }
 
         $np->cache = 'station';
 
-        $station->nowplaying_data = $np;
+        $station->nowplaying = $np;
 
         $em->persist($station);
         $em->flush();

@@ -29,7 +29,7 @@ class NowPlaying
      * Current Song
      *
      * @SWG\Property
-     * @var SongHistory
+     * @var NowPlayingCurrentSong
      */
     public $now_playing;
 

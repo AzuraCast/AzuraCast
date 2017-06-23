@@ -123,7 +123,7 @@ function nowPlaying() {
         station_row.find('.nowplaying-listeners').text(row.listeners.total);
 
         if (row.now_playing.duration) {
-            var time_played = Math.floor(Date.now() / 1000) - row.now_playing.played_at;
+            var time_played = row.now_playing.elapsed;
             var time_total = row.now_playing.duration;
 
             if (time_played > time_total) {

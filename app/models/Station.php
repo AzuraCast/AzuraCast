@@ -156,8 +156,8 @@ class Station extends \App\Doctrine\Entity
         return $this->radio_base_dir.'/config';
     }
 
-    /** @Column(name="nowplaying_data", type="json_array", nullable=true) */
-    protected $nowplaying_data;
+    /** @Column(name="nowplaying", type="array", nullable=true) */
+    protected $nowplaying;
 
     /** @Column(name="automation_settings", type="json_array", nullable=true) */
     protected $automation_settings;

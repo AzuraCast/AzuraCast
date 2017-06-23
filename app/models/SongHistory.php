@@ -132,11 +132,11 @@ class SongHistory extends \App\Doctrine\Entity
     protected $media;
 
     /**
-     * @return Api\SongHistory
+     * @return Api\SongHistory|Api\NowPlayingCurrentSong
      */
-    public function api()
+    public function api($now_playing = false)
     {
-        $response = new Api\SongHistory;
+        $response = ($now_playing) ? new Api\NowPlayingCurrentSong : new Api\SongHistory;
         $response->sh_id = (int)$this->id;
         $response->played_at = (int)$this->timestamp_start;
         $response->duration = (int)$this->duration;

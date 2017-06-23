@@ -33,19 +33,6 @@
 
                     <div class="col-sm-4">
                         <div class="m-l-25" style="position: relative;">
-                            <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-headset"></i></div>
-
-                            <h6><?=_('Listeners') ?>:</h6>
-
-                            <h4><span class="nowplaying-listeners">0</span> <?=_('Total') ?></h4>
-                            <div>
-                                <span class="nowplaying-listeners-unique">0</span> <?=_('Unique') ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4">
-                        <div class="m-l-25" style="position: relative;">
                             <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-skip-next"></i></div>
 
                             <h6><?=_('Playing Next') ?>:</h6>
@@ -55,6 +42,19 @@
                             </h4>
                             <div class="nowplaying-next-artist">
                                 <?= _('Song Artist') ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="m-l-25" style="position: relative;">
+                            <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-headset"></i></div>
+
+                            <h6><?=_('Listeners') ?>:</h6>
+
+                            <h4><span class="nowplaying-listeners">0</span> <?=_('Total') ?></h4>
+                            <div>
+                                <span class="nowplaying-listeners-unique">0</span> <?=_('Unique') ?>
                             </div>
                         </div>
                     </div>
@@ -304,13 +304,13 @@ function nowPlaying() {
 
         var np_next_title = row.playing_next.song.title;
         if (row.playing_next.is_request) {
-            np_title += '<span class="label label-default">Listener Request</span>';
+            np_next_title += '<span class="label label-default">Listener Request</span>';
         }
         station_row.find('.nowplaying-next-title').html(np_next_title);
         station_row.find('.nowplaying-next-artist').text(row.playing_next.song.artist);
 
         if (row.now_playing.duration) {
-            var time_played = Math.floor(Date.now() / 1000) - row.now_playing.played_at;
+            var time_played = row.now_playing.elapsed;
             var time_total = row.now_playing.duration;
 
             if (time_played > time_total) {

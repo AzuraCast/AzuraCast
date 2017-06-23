@@ -259,7 +259,7 @@
                 "connected_on": {
                     "description": "",
                     "type": "integer",
-                    "example": 1498191212
+                    "example": 1498115645
                 },
                 "connected_time": {
                     "description": "",
@@ -315,7 +315,7 @@
                 "elapsed": {
                     "description": "",
                     "type": "integer",
-                    "example": 15
+                    "example": 25
                 },
                 "remaining": {
                     "description": "",
@@ -329,7 +329,7 @@
                 "played_at": {
                     "description": "",
                     "type": "integer",
-                    "example": 1498191212
+                    "example": 1498115645
                 },
                 "duration": {
                     "description": "",
@@ -401,7 +401,7 @@
                 "played_at": {
                     "description": "",
                     "type": "integer",
-                    "example": 1498191212
+                    "example": 1498115645
                 },
                 "duration": {
                     "description": "",
@@ -525,7 +525,7 @@
                 "timestamp": {
                     "description": "",
                     "type": "integer",
-                    "example": 1498191212
+                    "example": 1498115645
                 }
             },
             "type": "object"

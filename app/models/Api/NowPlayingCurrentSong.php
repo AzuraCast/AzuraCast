@@ -12,7 +12,7 @@ class NowPlayingCurrentSong extends SongHistory
     /**
      * Elapsed time of the song's playback since it started.
      *
-     * @SWG\Property(example=15)
+     * @SWG\Property(example=25)
      * @var int
      */
     public $elapsed;

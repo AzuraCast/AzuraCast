@@ -74,7 +74,7 @@ We strongly recommend installing and using AzuraCast via Docker. All of the nece
 
 You should have [Docker Compose](https://docs.docker.com/compose/install/) (version 1.10.0 or higher) and the latest version of Docker installed. See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04) for instructions on setting up Docker Compose on Ubuntu 16.04.
  
-On the host machine with Docker Compose and Git installed, clone this repository to any local directory. From that directory, run the following commands:
+On the host machine with Docker Compose and Git installed, clone this repository to any local directory (`git clone https://github.com/AzuraCast/AzuraCast.git .` in a directory of your choice). From that directory, run the following commands:
 
 ```bash
 ./docker_install.sh

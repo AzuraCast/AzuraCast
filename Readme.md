@@ -39,15 +39,15 @@ You can also use AzuraCast as a tool for relaying or collecting listener statist
 
 AzuraCast supports these operating systems and architectures out of the box:
 
+##### Docker Installation
+
+* Any host running Docker Engine and Docker Compose 1.10.0 or higher
+
 ##### Traditional Installation
 
 * Ubuntu 16.04 LTS (Xenial) x64 (Recommended)
 * Ubuntu 16.04 LTS (Xenial) ARM
 * Ubuntu 14.04 LTS (Trusty) x64
-
-##### Docker Installation
-
-* Any host running Docker Engine and Docker Compose 1.10.0 or higher
 
 We are always looking to expand our compatibility with host operating systems, and we welcome any assistance in building new deployment scripts for other environments.
 
@@ -68,7 +68,46 @@ Whether you're using the traditional installer or Docker containers, AzuraCast d
 
 All of these components are automatically downloaded and installed using either of the installation methods below.
 
-### Installing on a Production Server (Traditional Method)
+### Docker Installation (Recommended)
+
+We strongly recommend installing and using AzuraCast via Docker. All of the necessary software packages are built by our automated tools, so installation is as easy as just pulling down the pre-compiled images. There's no need to worry about compatibility with your host operating system, so any host (including Windows and MacOS) will work great out of the box.
+
+You should have [Docker Compose](https://docs.docker.com/compose/install/) (version 1.10.0 or higher) and the latest version of Docker installed. See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04) for instructions on setting up Docker Compose on Ubuntu 16.04.
+ 
+On the host machine with Docker Compose and Git installed, clone this repository to any local directory. From that directory, run the following commands:
+
+```bash
+./docker_install.sh
+```
+
+or
+
+```bash
+docker-compose pull
+docker-compose run --rm cli azuracast_install
+docker-compose up -d
+```
+
+#### Updating with Docker
+
+From inside the base directory where AzuraCast is copied, run the following commands:
+
+```bash
+./docker_update.sh
+```
+
+or
+
+```bash
+docker-compose down
+docker-compose pull
+docker-compose run --rm cli azuracast_update
+docker-compose up -d
+```
+
+### Traditional Installation (Ubuntu LTS Only)
+
+**Note:** Some web hosts offer custom versions of Ubuntu that include different software repositories. These may cause compatibility issues with AzuraCast. Many VPS providers are known to work out of the box with AzuraCast (OVH, DigitalOcean, Vultr, etc), and are thus highly recommended if you plan to use the traditional installer.
 
 AzuraCast is optimized for speed and performance, and can run on very inexpensive hardware, from the Raspberry Pi 3 to the lowest-level VPSes offered by most providers.
 
@@ -103,43 +142,6 @@ cd /var/azuracast/www
 
 sudo chmod a+x update.sh
 sudo ./update.sh
-```
-
-### Installing via Docker
-
-You can now use [Docker Compose](https://docs.docker.com/compose/install/) (version 1.10.0 or higher) to install AzuraCast in a series of Docker containers. This feature is brand new, so help with testing is welcome!
-
-Because Docker holds all of the software functionality inside prebuilt containers, the AzuraCast docker image is supported on *any* host that can run Docker and Docker Compose. See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-16-04) for instructions on setting up Docker Compose on Ubuntu 16.04.
- 
-On the host machine with Docker Compose and Git installed, clone this repository to any local directory. From that directory, run the following commands:
-
-```bash
-./docker_install.sh
-```
-
-or
-
-```bash
-docker-compose pull
-docker-compose run --rm cli azuracast_install
-docker-compose up -d
-```
-
-#### Updating with Docker
-
-From inside the base directory where AzuraCast is copied, run the following commands:
-
-```bash
-./docker_update.sh
-```
-
-or
-
-```bash
-docker-compose down
-docker-compose pull
-docker-compose run --rm cli azuracast_update
-docker-compose up -d
 ```
 
 ### Local Development with Vagrant

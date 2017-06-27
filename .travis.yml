@@ -28,6 +28,8 @@ before_install:
   - alias docker-compose-local='docker-compose -f docker-compose.yml -f docker-compose.build.yml '
 
 install:
+  - echo $TRAVIS_BUILD_DIR
+  - chmod 777 $TRAVIS_BUILD_DIR/tests/_output/
   - docker-compose-local build
 
 script:

@@ -39,7 +39,8 @@
     prune: true
 
 - name: Wait for MySQL to spin up
-  wait_for:
-    host: "mariadb"
-    port: 3306
-    delay: 5
+  shell: mysql -h"mariadb" -P"3306" -uazuracast -pazur4c457 || true
+  register: mysql_up_result
+  until: mysql_up_result.stderr.find("Can't connect to MySQL") == -1
+  retries: 10
+  delay: 3

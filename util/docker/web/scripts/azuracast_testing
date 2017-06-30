@@ -6,7 +6,5 @@ ansible-playbook /var/azuracast/www/util/ansible/docker_install.yml --inventory=
 apt-get install -y php7.1-xdebug
 
 cd /var/azuracast/www
-sudo -u azuracast ./vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast
-
-sudo -u azuracast CODECLIMATE_REPO_TOKEN=$1 \
-    ./vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml
+sudo -u azuracast ./vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast && \
+    sudo -u azuracast CODECLIMATE_REPO_TOKEN=$1 ./vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml

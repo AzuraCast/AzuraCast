@@ -8,11 +8,6 @@ class D00_Api_IndexCest extends CestAbstract
     {
         $I->wantTo('Check basic API functions.');
 
-        $I->sendGET('/api');
-        $I->seeResponseContainsJson([
-            'status' => 'success',
-        ]);
-
         $I->sendGET('/api/status');
         $I->seeResponseContainsJson([
             'online' => 'true',

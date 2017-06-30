@@ -53,6 +53,7 @@ $cli->addCommands(array(
     new \AzuraCast\Console\Command\NextSong($di),
     new \AzuraCast\Console\Command\ReprocessMedia($di),
     new \AzuraCast\Console\Command\GenerateApiDocs($di),
+    new \AzuraCast\Console\Command\UptimeWait($di),
 ));
 
 $cli->run();

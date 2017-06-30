@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
 echo "Installing AzuraCast (Functional Testing Mode)"
-ansible-playbook /var/azuracast/www/util/ansible/docker_install.yml --inventory=/var/azuracast/www/util/ansible/hosts --extra-vars "app_env=development testing_mode=true"
-
-apt-get install -y php7.1-xdebug
-
-cd /var/azuracast/www
-sudo -u azuracast ./vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast && \
+ansible-playbook /var/azuracast/www/util/ansible/docker_install.yml --inventory=/var/azuracast/www/util/ansible/hosts --extra-vars "app_env=development testing_mode=true" && \
+    apt-get install -y php7.1-xdebug && \
+    cd /var/azuracast/www && \
+    sudo -u azuracast ./vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast && \
     sudo -u azuracast CODECLIMATE_REPO_TOKEN=$1 ./vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml

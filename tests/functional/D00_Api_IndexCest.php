@@ -10,7 +10,7 @@ class D00_Api_IndexCest extends CestAbstract
 
         $I->sendGET('/api/status');
         $I->seeResponseContainsJson([
-            'online' => 'true',
+            'online' => true,
         ]);
 
         $I->sendGET('/api/time');

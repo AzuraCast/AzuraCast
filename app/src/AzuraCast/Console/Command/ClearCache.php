@@ -1,6 +1,7 @@
 <?php
 namespace AzuraCast\Console\Command;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,8 +30,11 @@ class ClearCache extends \App\Console\Command\CommandAbstract
         $output->writeln('Router cache file cleared.');
 
         // Flush Doctrine cache.
+
+        /** @var EntityManager $em */
         $em = $this->di->get('em');
 
+        // Delete metadata, query and result caches
         $cacheDriver = $em->getConfiguration()->getMetadataCacheImpl();
         $cacheDriver->deleteAll();
 
@@ -42,7 +46,7 @@ class ClearCache extends \App\Console\Command\CommandAbstract
 
         $output->writeln('Doctrine ORM cache flushed.');
 
-        // Flush local cache.
+        // Flush remainder of local cache object
         $cache = $this->di->get('cache');
         $cache->clean();
 

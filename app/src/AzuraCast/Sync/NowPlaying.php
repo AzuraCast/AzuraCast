@@ -120,7 +120,7 @@ class NowPlaying extends SyncAbstract
         if (empty($np_raw['current_song']['text'])) {
             $song_obj = $this->song_repo->getOrCreate(['text' => 'Stream Offline'], true);
 
-            $offline_sh = new Entity\Api\SongHistory;
+            $offline_sh = new Entity\Api\NowPlayingCurrentSong;
             $offline_sh->sh_id = 0;
             $offline_sh->song = $song_obj->api();
             $np->now_playing = $offline_sh;

@@ -13,7 +13,7 @@
     dev_mysql_user_password: "azuracast"
 
   roles:
-    - docker-install
     - composer
+    - docker-install
     - azuracast-db
     - { role: azuracast-fixtures, when: testing_mode == false and app_env == 'development' }

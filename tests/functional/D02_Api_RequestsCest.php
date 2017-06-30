@@ -42,15 +42,11 @@ class D02_Api_RequestsCest extends CestAbstract
         $I->sendGET('/api/station/'.$station_id.'/requests');
 
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson([
-            'status' => 'success',
-        ]);
+        $I->seeResponseCodeIs(200);
 
         $I->sendGET('/api/station/'.$station_id.'/request/'.$media->id);
 
         $I->seeResponseIsJson();
-        $I->seeResponseContainsJson([
-            'status' => 'success',
-        ]);
+        $I->seeResponseCodeIs(200);
     }
 }

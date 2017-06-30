@@ -50,12 +50,12 @@ RUN sed -e 's#main#main contrib non-free#' -i /etc/apt/sources.list
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ocaml git rsync opam libpcre3-dev libfdk-aac-dev libmad0-dev \
-      libmp3lame-dev libtag1-dev libfaad-dev libflac-dev pkg-config m4
+      libmp3lame-dev libtag1-dev libfaad-dev libflac-dev pkg-config m4 aspcud
 
 USER azuracast
 
 RUN opam init -y && \
-    opam install -y taglib mad faad fdkaac lame vorbis.0.6.2 cry.0.4.1 flac liquidsoap.1.2.1
+    opam install -y taglib.0.3.3 mad.0.4.5 faad.0.3.3 fdkaac.0.2.1 lame.0.3.3 vorbis.0.6.2 cry.0.4.1 flac.0.1.2 liquidsoap.1.2.1
 
 USER root
 

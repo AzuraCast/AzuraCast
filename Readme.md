@@ -72,18 +72,19 @@ All of these components are automatically downloaded and installed using either 
 
 We strongly recommend installing and using AzuraCast via Docker. All of the necessary software packages are built by our automated tools, so installation is as easy as just pulling down the pre-compiled images. There's no need to worry about compatibility with your host operating system, so any host (including Windows and MacOS) will work great out of the box.
 
-On the host machine with Docker Compose and Git installed, clone this repository to any local directory: 
+On the host machine with Git installed, clone this repository to any local directory: 
 ```bash
 git clone https://github.com/AzuraCast/AzuraCast.git .
 ```
 
-From that directory, run the following commands:
+From that directory, run the following commands to install the latest versions of Docker and Docker Compose and set up the AzuraCast instance:
 
 ```bash
+chmod +x ./docker_*
 ./docker_install.sh
 ```
 
-or
+If you already have the latest versions of Docker and Docker Compose, you can manually initialize the AzuraCast docker components by running:
 
 ```bash
 docker-compose pull
@@ -107,6 +108,26 @@ docker-compose pull
 docker-compose run --rm cli azuracast_update
 docker-compose up -d
 ```
+
+#### Docker Volume Backup and Restore
+
+Your station database, statistics and media are stored inside Docker volumes. AzuraCast includes dedicated helper scripts to compress this data into a single portable gzipped file, which can be backed up offsite or moved to a new server.
+ 
+The backup script is located in the drive root and can be accessed by running:
+
+```bash
+./docker_backup.sh
+```
+
+This will create a file, `backup.tar.gz` in the app root.
+
+To restore the application's state from this compressed file, run:
+
+```bash
+./docker_restore.sh
+```
+
+Note that the restoration process will wipe any existing AzuraCast database or media that exists inside the Docker volumes.
 
 ### Traditional Installation (Ubuntu LTS Only)
 

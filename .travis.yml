@@ -33,7 +33,7 @@ before_install:
 install:
   - echo $TRAVIS_BUILD_DIR
   - chmod 777 $TRAVIS_BUILD_DIR/tests/_output/
-  - docker-compose-local build --squash
+  - docker-compose-local build
 
 script:
   - docker-compose-local run --rm cli azuracast_testing $CODECLIMATE_REPO_TOKEN

@@ -37,7 +37,8 @@ RUN apt-get update && \
     tar --strip-components=1 -xzf icecast-2.4.0-kh5.tar.gz && \
     ./configure && \
     make && \
-    make install
+    make install && \
+    apt-get remove -y libxml2 libxslt1-dev libssl-dev libcurl4-openssl-dev gcc
 
 ADD ./error.mp3 /usr/local/share/icecast/web/error.mp3
 ADD ./status-json.xsl /usr/local/share/icecast/web/status-json.xsl
@@ -50,7 +51,7 @@ RUN sed -e 's#main#main contrib non-free#' -i /etc/apt/sources.list
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ocaml git rsync opam libpcre3-dev libfdk-aac-dev libmad0-dev \
-      libmp3lame-dev libtag1-dev libfaad-dev libflac-dev pkg-config m4 aspcud
+      libmp3lame-dev libtag1-dev libfaad-dev libflac-dev m4 aspcud
 
 USER azuracast
 
@@ -58,6 +59,10 @@ RUN opam init -y && \
     opam install -y taglib.0.3.3 mad.0.4.5 faad.0.3.3 fdkaac.0.2.1 lame.0.3.3 vorbis.0.6.2 cry.0.4.1 flac.0.1.2 liquidsoap.1.2.1
 
 USER root
+
+RUN apt-get remove -y libpcre3-dev libfdk-aac-dev libvorbis-dev libmad0-dev libmp3lame-dev libtag1-dev libfaad-dev \
+    libflac-dev pkg-config m4 aspcud && \
+    apt-get autoremove -y
 
 EXPOSE 9001
 EXPOSE 8000-8500

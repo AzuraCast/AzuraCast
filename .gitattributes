@@ -3,7 +3,12 @@
 
 # Force LF line ending on shell scripts
 vagrant_* text eol=lf
+Dockerfile text eol=lf
+*.cnf text eol=lf
 *.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
 
 # Denote all files that are truly binary and should not be modified.
 *.png binary

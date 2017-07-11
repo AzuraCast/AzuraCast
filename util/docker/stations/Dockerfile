@@ -60,10 +60,6 @@ RUN opam init -y && \
 
 USER root
 
-RUN apt-get remove -y libpcre3-dev libfdk-aac-dev libvorbis-dev libmad0-dev libmp3lame-dev libtag1-dev libfaad-dev \
-    libflac-dev pkg-config m4 aspcud && \
-    apt-get autoremove -y
-
 EXPOSE 9001
 EXPOSE 8000-8500
 

@@ -5,7 +5,7 @@ use Entity;
 
 class SongHistoryRepository extends \App\Doctrine\Repository
 {
-    public function getNextSongForStation(Entity\Station $station)
+    public function getNextSongForStation(Entity\Station $station, $force = false)
     {
         $threshold = 60 * 15;
 
@@ -21,7 +21,7 @@ class SongHistoryRepository extends \App\Doctrine\Repository
             ->setMaxResults(1)
             ->getOneOrNullResult();
 
-        if (!($next_song instanceof Entity\SongHistory)) {
+        if (!($next_song instanceof Entity\SongHistory) || $force) {
             /** @var Entity\Repository\StationMediaRepository $media_repo */
             $media_repo = $this->_em->getRepository(Entity\StationMedia::class);
 

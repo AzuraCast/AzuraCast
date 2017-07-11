@@ -146,6 +146,12 @@ class NowPlaying extends SyncAbstract
                 $np->song_history = $this->history_repo->getHistoryForStation($station);
 
                 $next_song = $this->history_repo->getNextSongForStation($station);
+
+                // Special check to prevent the same song looping infinitely.
+                if ($next_song->song_id === $song_obj->id) {
+                    $next_song = $this->history_repo->getNextSongForStation($station, true);
+                }
+
                 if ($next_song instanceof Entity\SongHistory) {
                     $np->playing_next = $next_song->api();
                 }

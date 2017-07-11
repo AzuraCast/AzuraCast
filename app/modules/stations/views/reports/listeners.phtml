@@ -39,7 +39,7 @@
                 <tbody>
                     <tr v-for="listener in listeners">
                         <td>{{ listener.ip }}</td>
-                        <td>{{ listener.connected }}</td>
+                        <td>{{ listener.connected_time }}</td>
                         <td>{{ listener.user_agent }}</td>
                         <td>
                             <span v-if="listener.location.status == 'success'">

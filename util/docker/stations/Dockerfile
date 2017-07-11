@@ -37,8 +37,7 @@ RUN apt-get update && \
     tar --strip-components=1 -xzf icecast-2.4.0-kh5.tar.gz && \
     ./configure && \
     make && \
-    make install && \
-    apt-get remove -y libxml2 libxslt1-dev libssl-dev libcurl4-openssl-dev gcc
+    make install
 
 ADD ./error.mp3 /usr/local/share/icecast/web/error.mp3
 ADD ./status-json.xsl /usr/local/share/icecast/web/status-json.xsl

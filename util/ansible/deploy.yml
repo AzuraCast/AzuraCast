@@ -21,6 +21,7 @@
     - influxdb
     - nginx
     - php
+    - redis
     - mariadb
     - ufw
     - composer

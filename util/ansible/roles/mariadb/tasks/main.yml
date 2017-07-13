@@ -92,6 +92,9 @@
      encoding: utf8mb4
    register: azuracast_db_created
 
- - name: Write DB configuration
-   become: true
-   template: src=db.conf.php.j2 dest="{{ www_base }}/app/config/db.conf.php" owner=azuracast group=www-data mode=0644 force=yes
+ - name: Set up environment file
+   ini_file:
+     dest: "{{ www_base }}/app/env.ini"
+     section: "configuration"
+     option: "db_password"
+     value: "{{ mysql_user_password }}"

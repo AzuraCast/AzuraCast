@@ -16,6 +16,11 @@
       chdir: "{{ www_base }}"
     when: app_env == "production"
 
+  - name: Update configuration from legacy
+    become: true
+    become_user: azuracast
+    shell: php {{ util_base }}/cli.php azuracast:config:migrate
+
   - name: Clear AzuraCast Cache
     become: true
     become_user: azuracast

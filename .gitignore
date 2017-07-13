@@ -18,6 +18,7 @@ app/models/Proxy/*.php
 /ubuntu-*-console.log
 
 # Local development files.
+app/env.ini
 app/.env
 /util/fixtures/*
 !/util/fixtures/.gitkeep

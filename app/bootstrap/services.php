@@ -32,12 +32,23 @@ return function (\Slim\Container $di, \App\Config $config) {
     // Database
     $di['em'] = function ($di) {
         try {
-            $config = $di['config'];
-            $options = $config->application->doctrine->toArray();
-
-            $options['conn'] = (APP_INSIDE_DOCKER) ?
-                $config->docker->db->toArray() :
-                $config->db->toArray();
+            $options = [
+                'autoGenerateProxies' => (APP_APPLICATION_ENV == "development"),
+                'proxyNamespace' => 'Proxy',
+                'proxyPath' => APP_INCLUDE_TEMP . '/proxies',
+                'modelPath' => APP_INCLUDE_BASE . '/models',
+                'conn' => [
+                    'driver' => 'pdo_mysql',
+                    'host' => (APP_INSIDE_DOCKER) ? 'mariadb' : 'localhost',
+                    'dbname' => 'azuracast',
+                    'user' => 'azuracast',
+                    'password' => (APP_INSIDE_DOCKER) ? 'azur4c457' : $_ENV['db_password'],
+                    'charset' => 'utf8',
+                    'driverOptions' => [
+                        1002 => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
+                    ],
+                ]
+            ];
 
             // Fetch and store entity manager.
             $config = new \Doctrine\ORM\Configuration;
@@ -98,42 +109,28 @@ return function (\Slim\Container $di, \App\Config $config) {
 
     // Caching
     $di['cache_driver'] = function ($di) {
-        $config = $di['config'];
 
-        $cache_config = (APP_INSIDE_DOCKER) ?
-            $config->docker->cache->toArray() :
-            $config->cache->toArray();
+        $cache_driver = new \Stash\Driver\Redis([
+            'servers' => [
+                [
+                    'server' => (APP_INSIDE_DOCKER) ? 'redis' : 'localhost',
+                    'port' => 6379, // default: 6379
+                ],
+            ],
 
-        switch ($cache_config['cache']) {
-            case 'redis':
-                $cache_driver = new \Stash\Driver\Redis($cache_config['redis']);
-                break;
-
-            case 'memcached':
-                $cache_driver = new \Stash\Driver\Memcache($cache_config['memcached']);
-                break;
-
-            case 'file':
-                $cache_driver = new \Stash\Driver\FileSystem($cache_config['file']);
-                break;
-
-            default:
-            case 'memory':
-            case 'ephemeral':
-                $cache_driver = new \Stash\Driver\Ephemeral;
-                break;
-        }
+            // 'password'      => '', // Must be commented out to have no authentication
+            'database' => 0,
+        ]);
 
         // Register Stash as session handler if necessary.
-        if (!($cache_driver instanceof \Stash\Driver\Ephemeral)) {
-            $pool = new \Stash\Pool($cache_driver);
-            $pool->setNamespace(\App\Cache::getSitePrefix('session'));
+        $pool = new \Stash\Pool($cache_driver);
+        $pool->setNamespace(\App\Cache::getSitePrefix('session'));
 
-            $session = new \Stash\Session($pool);
-            \Stash\Session::registerHandler($session);
-        }
+        $session = new \Stash\Session($pool);
+        \Stash\Session::registerHandler($session);
 
         return $cache_driver;
+
     };
 
     $di['cache'] = function ($di) {
@@ -165,11 +162,10 @@ return function (\Slim\Container $di, \App\Config $config) {
 
     // InfluxDB
     $di['influx'] = function ($di) {
-        $config = $di['config'];
-
-        $opts = (APP_INSIDE_DOCKER) ?
-            $config->docker->influx->toArray() :
-            $config->influx->toArray();
+        $opts = [
+            'host' => (APP_INSIDE_DOCKER) ? 'influxdb' : 'localhost',
+            'port' => 8086,
+        ];
 
         $influx = new \InfluxDB\Client($opts['host'], $opts['port']);
 

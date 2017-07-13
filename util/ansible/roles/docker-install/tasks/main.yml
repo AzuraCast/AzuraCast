@@ -1,13 +1,14 @@
 ---
-- name: Use Default Configuration Files
-  copy: src="{{ www_base }}/app/config/{{ item }}.conf.sample.php" dest="{{ www_base }}/app/config/{{ item }}.conf.php" force=no
-  with_items:
-   - db
-   - influx
-   - cache
+- name: Write environment configuration file
+  become: true
+  template: src=env.ini.j2 dest="{{ www_base }}/app/env.ini" owner=azuracast group=www-data mode=0644 force=no
 
-- name: Write current environment to file.
-  copy: content="{{ app_env }}" dest="{{ www_base }}/app/.env"
+- name: Set up environment file
+  ini_file:
+    dest: "{{ www_base }}/app/env.ini"
+    section: "configuration"
+    option: "application_env"
+    value: "{{ app_env }}"
 
 - name: InfluxDB - Create 'stations' database
   influxdb_database:

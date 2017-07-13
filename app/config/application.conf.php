@@ -64,12 +64,6 @@ $config = [
     ],
 
     /* RESOURCES: Doctrine ORM Layer */
-    'doctrine' => [
-        'autoGenerateProxies' => (APP_APPLICATION_ENV == "development"),
-        'proxyNamespace' => 'Proxy',
-        'proxyPath' => APP_INCLUDE_TEMP . '/proxies',
-        'modelPath' => APP_INCLUDE_BASE . '/models',
-    ],
 ];
 
 /**

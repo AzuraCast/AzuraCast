@@ -9,3 +9,4 @@
    - "mysql"
    - "php7.1-fpm"
    - "nginx"
+   - "redis"

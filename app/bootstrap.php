@@ -30,11 +30,13 @@ define("APP_INCLUDE_MODULES", APP_INCLUDE_BASE.'/modules');
 
 define("APP_UPLOAD_FOLDER", APP_INCLUDE_STATIC);
 
+// Set up application environment.
+if (file_exists(APP_INCLUDE_BASE.'/env.ini')) {
+    $_ENV = array_merge($_ENV, parse_ini_file(APP_INCLUDE_BASE.'/env.ini'));
+}
+
 // Application environment.
-define('APP_APPLICATION_ENV', $_SERVER['APP_APPLICATION_ENV']
-    ?? @file_get_contents(APP_INCLUDE_BASE . '/.env')
-    ?? $_SERVER['X-App-Dev-Environment']
-    ?? 'development');
+define('APP_APPLICATION_ENV', $_ENV['application_env'] ?? 'development');
 
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
     $_SERVER['HTTPS'] = (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https');

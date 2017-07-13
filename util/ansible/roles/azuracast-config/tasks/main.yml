@@ -1,30 +1,24 @@
 ---
-  - name: Use Default Configuration Files
-    copy: src="{{ www_base }}/app/config/{{ item }}.conf.sample.php" dest="{{ www_base }}/app/config/{{ item }}.conf.php" force=no
-    with_items:
-     - db
-     - influx
-     - cache
+  - name: Write environment configuration file
+    become: true
+    template: src=env.ini.j2 dest="{{ www_base }}/app/env.ini" owner=azuracast group=www-data mode=0644 force=no
 
-  - name: Write current environment to file.
-    copy: content="{{ app_env }}" dest="{{ www_base }}/app/.env"
+  - name: Set up environment file
+    ini_file:
+      dest: "{{ www_base }}/app/env.ini"
+      section: "configuration"
+      option: "application_env"
+      value: "{{ app_env }}"
 
   - name: Set Permissions on Base App Folder
     file: path="{{ item }}" state=directory owner=azuracast group=www-data
     with_items:
      - "{{ app_base }}"
 
-  - name: Touch base-level files
-    file: path="{{ item }}" state=touch
-    with_items:
-     - "{{ app_base }}/.deploy_run"
-
   - name: Create System Folders
     file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0774
     with_items:
      - "{{ tmp_base }}"
-     - "{{ tmp_base }}/cache"
-     - "{{ tmp_base }}/sessions"
      - "{{ tmp_base }}/proxies"
      - "{{ app_base }}/stations"
      - "{{ app_base }}/servers"

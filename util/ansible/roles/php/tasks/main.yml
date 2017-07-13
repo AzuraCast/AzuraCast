@@ -37,6 +37,7 @@
      - php7.1-mysqlnd     # MySQL Native Driver (Doctrine)
      - php7.1-mbstring    # Codeception Tests
      - php7.1-intl        # Localization
+     - php7.1-redis       # Cache
 
   - name: Install xdebug for testing
     become: true

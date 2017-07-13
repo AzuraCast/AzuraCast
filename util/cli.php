@@ -54,6 +54,7 @@ $cli->addCommands(array(
     new \AzuraCast\Console\Command\ReprocessMedia($di),
     new \AzuraCast\Console\Command\GenerateApiDocs($di),
     new \AzuraCast\Console\Command\UptimeWait($di),
+    new \AzuraCast\Console\Command\MigrateConfig($di),
 ));
 
 $cli->run();

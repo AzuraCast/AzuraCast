@@ -45,6 +45,10 @@ class MigrateConfig extends \App\Console\Command\CommandAbstract
             $db_conf = include(APP_INCLUDE_BASE.'/config/db.conf.php');
             $settings['db_password'] = $db_conf['password'];
 
+            if ($db_conf['user'] === 'root') {
+                $settings['db_username'] = 'root';
+            }
+
         }
 
         $ini_data = [

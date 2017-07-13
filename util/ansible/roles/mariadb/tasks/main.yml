@@ -96,5 +96,8 @@
    ini_file:
      dest: "{{ www_base }}/app/env.ini"
      section: "configuration"
-     option: "db_password"
-     value: "{{ mysql_user_password }}"
+     option: "{{ item.option }}"
+     value: "{{ item.value }}"
+   with_items:
+     - { option: 'db_username', value: 'azuracast' }
+     - { option: 'db_password', value: "{{ mysql_user_password }}" }

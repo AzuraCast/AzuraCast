@@ -41,7 +41,7 @@ return function (\Slim\Container $di, \App\Config $config) {
                     'driver' => 'pdo_mysql',
                     'host' => (APP_INSIDE_DOCKER) ? 'mariadb' : 'localhost',
                     'dbname' => 'azuracast',
-                    'user' => 'azuracast',
+                    'user' => $_ENV['db_username'] ?? 'azuracast',
                     'password' => (APP_INSIDE_DOCKER) ? 'azur4c457' : $_ENV['db_password'],
                     'charset' => 'utf8',
                     'driverOptions' => [

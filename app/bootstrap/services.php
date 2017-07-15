@@ -110,7 +110,7 @@ return function (\Slim\Container $di, \App\Config $config) {
     // Caching
     $di['cache_driver'] = function ($di) {
 
-        $cache_driver = new \Stash\Driver\Redis([
+        $redis_options = [
             'servers' => [
                 [
                     'server' => (APP_INSIDE_DOCKER) ? 'redis' : 'localhost',
@@ -120,17 +120,23 @@ return function (\Slim\Container $di, \App\Config $config) {
 
             // 'password'      => '', // Must be commented out to have no authentication
             'database' => 0,
-        ]);
+        ];
 
         // Register Stash as session handler if necessary.
-        $pool = new \Stash\Pool($cache_driver);
+        $composite_driver = new \Stash\Driver\Composite([
+            'drivers' => [
+                new \Stash\Driver\Ephemeral(),
+                new \Stash\Driver\Redis($redis_options),
+            ],
+        ]);
+
+        $pool = new \Stash\Pool($composite_driver);
         $pool->setNamespace(\App\Cache::getSitePrefix('session'));
 
         $session = new \Stash\Session($pool);
         \Stash\Session::registerHandler($session);
 
-        return $cache_driver;
-
+        return $composite_driver;
     };
 
     $di['cache'] = function ($di) {

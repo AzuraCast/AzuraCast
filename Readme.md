@@ -41,7 +41,7 @@ AzuraCast supports these operating systems and architectures out of the box:
 
 ##### Docker Installation
 
-* Any host running Docker Engine and Docker Compose 1.10.0 or higher
+* Any host capable of running the latest Docker Engine and Docker Compose (included in installer)
 
 ##### Traditional Installation
 
@@ -77,7 +77,7 @@ On the host machine with Git installed, clone this repository to any local direc
 git clone https://github.com/AzuraCast/AzuraCast.git .
 ```
 
-From that directory, run the following commands to install the latest versions of Docker and Docker Compose and set up the AzuraCast instance:
+From that directory, run the following commands as root or a sudo-capable user to install the latest versions of Docker and Docker Compose and set up the AzuraCast instance:
 
 ```bash
 chmod +x ./docker_*

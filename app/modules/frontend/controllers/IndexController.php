@@ -15,7 +15,7 @@ class IndexController extends BaseController
         });
 
         if (empty($stations)) {
-            throw new \App\Exception\PermissionDenied(_('You do not currently manage any stations. Please contact this server\'s administrator for assistance.'));
+            return $this->render('controller::noaccess');
         }
 
         $this->view->stations = $stations;

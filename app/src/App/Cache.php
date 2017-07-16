@@ -92,6 +92,7 @@ class Cache
         $item = $this->_cache->getItem($id);
 
         $item->lock();
+
         $item->set($data);
         $item->expiresAfter($specificLifetime);
 

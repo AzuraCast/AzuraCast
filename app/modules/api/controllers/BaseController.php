@@ -17,6 +17,8 @@ class BaseController extends \AzuraCast\Mvc\Controller
         parent::preDispatch();
 
         // Disable session creation.
+
+        /** @var \App\Session $session */
         $session = $this->di->get('session');
 
         if (!$session->exists()) {

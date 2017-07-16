@@ -429,7 +429,7 @@ class Controller
      */
     protected function forceSecure()
     {
-        if (APP_APPLICATION_ENV == 'production' && !APP_IS_SECURE) {
+        if (APP_IN_PRODUCTION && !APP_IS_SECURE) {
             $this->doNotRender();
 
             $url = 'https://' . $this->request->getHttpHost() . $this->request->getUri();

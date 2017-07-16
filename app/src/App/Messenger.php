@@ -63,7 +63,7 @@ class Messenger
         $mail_config = $config->application->mail->toArray();
 
         // Do not deliver mail on development environments.
-        if (APP_APPLICATION_ENV == "development" && !defined('APP_FORCE_EMAIL')) {
+        if (!APP_IN_PRODUCTION && !defined('APP_FORCE_EMAIL')) {
             $email_to = $mail_config['from_addr'];
             if (!empty($email_to)) {
                 $options['to'] = $email_to;

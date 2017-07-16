@@ -52,10 +52,12 @@ class Session
 
         if (!isset($this->_sessions[$session_name])) {
             if (self::isActive()) {
-                $this->_sessions[$session_name] = new \App\Session\Instance($this, $session_name);
+                $session_instance = new \App\Session\Instance($this, $session_name);
             } else {
-                $this->_sessions[$session_name] = new \App\Session\Temporary($this, $session_name);
+                $session_instance = new \App\Session\Temporary($this, $session_name);
             }
+
+            $this->_sessions[$session_name] = $session_instance;
         }
 
         return $this->_sessions[$session_name];

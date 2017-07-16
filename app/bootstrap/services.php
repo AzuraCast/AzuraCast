@@ -33,7 +33,7 @@ return function (\Slim\Container $di, \App\Config $config) {
     $di['em'] = function ($di) {
         try {
             $options = [
-                'autoGenerateProxies' => (APP_APPLICATION_ENV == "development"),
+                'autoGenerateProxies' => !APP_IN_PRODUCTION,
                 'proxyNamespace' => 'Proxy',
                 'proxyPath' => APP_INCLUDE_TEMP . '/proxies',
                 'modelPath' => APP_INCLUDE_BASE . '/models',

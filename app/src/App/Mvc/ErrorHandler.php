@@ -52,7 +52,7 @@ class ErrorHandler
                 }
             }
 
-            if (APP_APPLICATION_ENV != 'production') {
+            if (!APP_IN_PRODUCTION) {
                 $show_debug = true;
             }
 

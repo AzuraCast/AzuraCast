@@ -10,6 +10,8 @@ class InternalController extends BaseController
 
     public function preDispatch()
     {
+        parent::preDispatch();
+
         $station_id = (int)$this->getParam('station');
         $station = $this->em->getRepository(Entity\Station::class)->find($station_id);
 

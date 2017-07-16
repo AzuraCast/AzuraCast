@@ -23,7 +23,7 @@
     else
         $page_title = $config->application->name;
 
-    if (APP_APPLICATION_ENV != "production")
+    if (!APP_IN_PRODUCTION)
         $page_title = '('.ucfirst(APP_APPLICATION_ENV).') '.$page_title;
     ?>
     <title><?=$page_title ?></title>
@@ -40,7 +40,7 @@
     <script type="text/javascript" src="<?=$url->content('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
 
     <script type="text/javascript">
-        var APP_AppEnv = '<?=(defined('APP_APPLICATION_ENV') ? APP_APPLICATION_ENV : '') ?>';
+        var APP_AppEnv = '<?=APP_APPLICATION_ENV ?>';
         var APP_BaseUrl = '<?=$url->named('home') ?>';
         var APP_ContentPath = '<?=$url->content('') ?>';
     </script>

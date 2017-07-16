@@ -37,6 +37,7 @@ if (file_exists(APP_INCLUDE_BASE.'/env.ini')) {
 
 // Application environment.
 define('APP_APPLICATION_ENV', $_ENV['application_env'] ?? 'development');
+define('APP_IN_PRODUCTION', APP_APPLICATION_ENV === 'production');
 
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
     $_SERVER['HTTPS'] = (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https');
@@ -52,7 +53,7 @@ $app_settings = [
     'addContentLengthHeader' => false,
 ];
 
-if (APP_APPLICATION_ENV !== 'development') {
+if (APP_IN_PRODUCTION) {
     $app_settings['routerCacheFile'] = APP_INCLUDE_TEMP . '/app_routes.cache.php';
 }
 

@@ -36,7 +36,8 @@ class NowplayingController extends BaseController
      */
     public function indexAction()
     {
-        $this->setCacheLifetime(15);
+        $this->response = $this->response->withHeader('Cache-Control', 'public, max-age=15')
+            ->withHeader('X-Accel-Expires', 15); // CloudFlare caching
 
         // Pull from cache, or load from flatfile otherwise.
 

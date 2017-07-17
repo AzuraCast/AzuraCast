@@ -10,32 +10,12 @@ class BaseController extends \AzuraCast\Mvc\Controller
         return true;
     }
 
-    protected $_time_start;
-
     public function preDispatch()
     {
         parent::preDispatch();
 
-        // Disable session creation.
-
-        /** @var \App\Session $session */
-        $session = $this->di->get('session');
-
-        if (!$session->exists()) {
-            $session->disable();
-        }
-
         // Disable rendering.
         $this->doNotRender();
-
-        // Allow AJAX retrieval.
-        $this->response = $this->response->withHeader('Access-Control-Allow-Origin', '*');;
-
-        $this->_time_start = microtime(true);
-
-        // Set all API calls to be public cache-controlled by default.
-        $this->setCachePrivacy('public');
-        $this->setCacheLifetime(30);
     }
 
     /**

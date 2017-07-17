@@ -40,6 +40,39 @@ return function(\Slim\App $app) {
 
         });
 
+    })->add(function (\Slim\Http\Request $request, \Slim\Http\Response $response, callable $next) use ($app) {
+
+        $di = $app->getContainer();
+
+        /** @var \App\Session $session */
+        $session = $di->get('session');
+
+        if (!$session->exists()) {
+            $session->disable();
+        }
+
+        $response = $response->withHeader('Cache-Control', 'public, max-age=' . 30)
+            ->withHeader('X-Accel-Expires', 30) // CloudFlare caching
+            ->withHeader('Access-Control-Allow-Origin', '*');
+
+        // Custom error handling for API responses.
+        try {
+            return $next($request, $response);
+        } catch(\Exception $e) {
+
+            $return_data = [
+                'type' => get_class($e),
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+            ];
+
+            if (!APP_IN_PRODUCTION) {
+                $return_data['stack_trace'] = $e->getTrace();
+            }
+
+            return $response->withStatus(500)->write(json_encode($return_data));
+        }
+
     });
 
 };

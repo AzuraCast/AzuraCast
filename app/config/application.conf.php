@@ -27,8 +27,6 @@ $config = [
             'gc_probability' => 1,
             'gc_divisor' => 100,
             'cookie_lifetime' => $session_lifetime,
-            'hash_function' => 'sha512',
-            'hash_bits_per_character' => 4,
         ],
     ],
 

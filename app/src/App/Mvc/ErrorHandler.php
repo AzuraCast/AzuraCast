@@ -10,17 +10,7 @@ class ErrorHandler
 {
     public static function handle(ContainerInterface $di, Request $req, Response $res, Exception $e)
     {
-        if (APP_IS_COMMAND_LINE) {
-            $body = $res->getBody();
-            $body->write(json_encode([
-                'code' => $e->getCode(),
-                'message' => $e->getMessage(),
-                'stack_trace' => $e->getTraceAsString(),
-            ]));
-
-            return $res->withStatus(500)
-                ->withBody($body);
-        } elseif ($e instanceof \App\Exception\NotLoggedIn) {
+        if ($e instanceof \App\Exception\NotLoggedIn) {
             // Redirect to login page for not-logged-in users.
             $flash = $di['flash'];
             $flash->addMessage('<b>Error:</b> You must be logged in to access this page!', 'red');
@@ -43,6 +33,16 @@ class ErrorHandler
             $home_url = $di['url']->named('home');
 
             return $res->withStatus(302)->withHeader('Location', $home_url);
+        } elseif (APP_IS_COMMAND_LINE) {
+            $body = $res->getBody();
+            $body->write(json_encode([
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'stack_trace' => $e->getTraceAsString(),
+            ]));
+
+            return $res->withStatus(500)
+                ->withBody($body);
         } else {
             $show_debug = false;
             if ($di->has('acl')) {
@@ -52,7 +52,7 @@ class ErrorHandler
                 }
             }
 
-            if (!APP_IN_PRODUCTION) {
+            if (APP_APPLICATION_ENV != 'production') {
                 $show_debug = true;
             }
 

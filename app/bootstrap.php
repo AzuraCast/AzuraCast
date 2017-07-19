@@ -43,52 +43,26 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
     $_SERVER['HTTPS'] = (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https');
 }
 
+// Apply PHP settings.
+ini_set('display_startup_errors',       !APP_IN_PRODUCTION ? 1 : 0);
+ini_set('display_errors',               !APP_IN_PRODUCTION ? 1 : 0);
+ini_set('log_errors',                   1);
+ini_set('error_log',                    APP_INCLUDE_TEMP . '/php_errors.log');
+ini_set('error_reporting',              E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
+ini_set('session.use_only_cookies',     1);
+ini_set('session.cookie_lifetime',      86400);
+
 // Composer autoload.
 $autoloader = require(APP_INCLUDE_VENDOR . '/autoload.php');
+$autoloader->addPsr4('\\Proxy\\', APP_INCLUDE_TEMP . '/proxies');
 
 // Set up DI container.
-$app_settings = [
+$di = new \Slim\Container([
     'outputBuffering' => false,
     'displayErrorDetails' => true,
     'addContentLengthHeader' => false,
-];
-
-if (APP_IN_PRODUCTION) {
-    $app_settings['routerCacheFile'] = APP_INCLUDE_TEMP . '/app_routes.cache.php';
-}
-
-$di = new \Slim\Container(['settings' => $app_settings]);
-
-// Save configuration object.
-$config = new \App\Config(APP_INCLUDE_BASE . '/config', $di);
-
-// Add application autoloaders to Composer's autoloader handler.
-$autoload_classes = $config->application->autoload->toArray();
-foreach ($autoload_classes['psr0'] as $class_key => $class_dir) {
-    $autoloader->add($class_key, $class_dir);
-}
-
-foreach ($autoload_classes['psr4'] as $class_key => $class_dir) {
-    $autoloader->addPsr4($class_key, $class_dir);
-}
-
-// Set URL constants from configuration.
-$app_cfg = $config->application;
-if ($app_cfg->base_url) {
-    define('APP_BASE_URL', $app_cfg->base_url);
-}
-
-// Apply PHP settings.
-$php_settings = $config->application->phpSettings->toArray();
-foreach ($php_settings as $setting_key => $setting_value) {
-    if (is_array($setting_value)) {
-        foreach ($setting_value as $setting_subkey => $setting_subval) {
-            ini_set($setting_key . '.' . $setting_subkey, $setting_subval);
-        }
-    } else {
-        ini_set($setting_key, $setting_value);
-    }
-}
+    'routerCacheFile' => (APP_IN_PRODUCTION) ? APP_INCLUDE_TEMP . '/app_routes.cache.php' : null,
+]);
 
 // Iterate through modules.
 $modules = array_diff(scandir(APP_INCLUDE_MODULES), ['..', '.']);
@@ -103,12 +77,11 @@ foreach($modules as $module) {
 $di['modules'] = $modules;
 
 // Define services.
-call_user_func(include(__DIR__.'/bootstrap/services.php'), $di, $config);
-
-// Initialize cache.
-$cache = $di->get('cache');
+$settings = require(__DIR__.'/bootstrap/settings.php');
+call_user_func(include(__DIR__.'/bootstrap/services.php'), $di, $settings);
 
 if (!APP_IS_COMMAND_LINE || APP_TESTING_MODE) {
+
     /** @var \AzuraCast\Customization $customization */
     $customization = $di->get('customization');
 
@@ -124,6 +97,7 @@ if (!APP_IS_COMMAND_LINE || APP_TESTING_MODE) {
     bindtextdomain($locale_domain, APP_INCLUDE_BASE . '/locale');
     bind_textdomain_codeset($locale_domain, 'UTF-8');
     textdomain($locale_domain);
+
 }
 
 return $di;

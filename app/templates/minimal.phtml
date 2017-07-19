@@ -6,9 +6,10 @@
  * @var \App\Auth $auth
  * @var \AzuraCast\Acl\StationAcl $acl
  * @var \App\Url $url
- * @var \App\Config $config
  * @var \App\Flash $flash
  * @var \AzuraCast\Customization $customization
+ * @var array $app_settings
+ * @var object $assets
  */
 ?>
 <html>
@@ -19,9 +20,9 @@
 
 <?php
 if ($title)
-    $page_title = $title.' - '.$config->application->name;
+    $page_title = $title.' - '.$app_settings['name'];
 else
-    $page_title = $config->application->name;
+    $page_title = $app_settings['name'];
 
 if (!APP_IN_PRODUCTION)
     $page_title = '('.ucfirst(APP_APPLICATION_ENV).') '.$page_title;

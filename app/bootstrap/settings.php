@@ -3,9 +3,7 @@
  * Application Settings
  */
 
-$session_lifetime = 86400 * 1;
-
-$config = [
+return [
     // Application name
     'name' => 'AzuraCast',
 
@@ -14,28 +12,6 @@ $config = [
 
     // Base of the static URL.
     'static_uri' => '/static/',
-
-    'phpSettings' => [
-        'display_startup_errors' => !APP_IN_PRODUCTION ? 1 : 0,
-        'display_errors' => !APP_IN_PRODUCTION ? 1 : 0,
-        'log_errors' => 1,
-        'error_log' => APP_INCLUDE_TEMP . '/php_errors.log',
-        'error_reporting' => E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT,
-        'session' => [
-            'use_only_cookies' => 1,
-            'gc_maxlifetime' => $session_lifetime,
-            'gc_probability' => 1,
-            'gc_divisor' => 100,
-            'cookie_lifetime' => $session_lifetime,
-        ],
-    ],
-
-    'autoload' => [
-        'psr0' => [],
-        'psr4' => [
-            '\\Proxy\\' => APP_INCLUDE_TEMP . '/proxies',
-        ],
-    ],
 
     /* Localization Settings */
     'locale' => [
@@ -60,6 +36,28 @@ $config = [
             'dark' => 'Dark',
         ],
     ],
-];
 
-return $config;
+    'actions' => [
+        'global' => [
+            'administer all',
+            'view administration',
+            'administer settings',
+            'administer api keys',
+            'administer user accounts',
+            'administer permissions',
+            'administer stations',
+        ],
+        'station' => [
+            'administer all',
+            'view station management',
+            'view station reports',
+            'manage station profile',
+            'manage station broadcasting',
+            'manage station streamers',
+            'manage station mounts',
+            'manage station media',
+            'manage station automation',
+        ],
+    ],
+
+];

@@ -1,7 +1,7 @@
 <?php
-use Doctrine\DBAL\Types\Type;
+return function (\Slim\Container $di, $settings) {
 
-return function (\Slim\Container $di, \App\Config $config) {
+    $di['app_settings'] = $settings;
 
     // Override Slim handlers.
     $di['callableResolver'] = function ($di) {
@@ -27,7 +27,9 @@ return function (\Slim\Container $di, \App\Config $config) {
     };
 
     // Configs
-    $di['config'] = $config;
+    $di['config'] = function ($di) {
+        return new \App\Config(APP_INCLUDE_BASE . '/config', $di);
+    };
 
     // Database
     $di['em'] = function ($di) {
@@ -67,7 +69,12 @@ return function (\Slim\Container $di, \App\Config $config) {
             $metadata_driver = $config->newDefaultAnnotationDriver($options['modelPath']);
             $config->setMetadataDriverImpl($metadata_driver);
 
-            $cache = new \App\Doctrine\Cache($di['cache_driver']);
+            /** @var \Redis $redis */
+            $redis = $di['redis'];
+            $redis->select(2);
+
+            $cache = new \App\Doctrine\Cache\Redis;
+            $cache->setRedis($redis);
 
             $config->setMetadataCacheImpl($cache);
             $config->setQueryCacheImpl($cache);
@@ -95,12 +102,20 @@ return function (\Slim\Container $di, \App\Config $config) {
     };
 
     $di['db'] = function ($di) {
-        return $di['em']->getConnection();
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di['em'];
+        return $em->getConnection();
     };
 
     // Auth and ACL
     $di['auth'] = function ($di) {
-        return new \App\Auth($di['session'], $di['em']->getRepository('Entity\User'));
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di['em'];
+
+        /** @var Entity\Repository\UserRepository $user_repo */
+        $user_repo = $em->getRepository(Entity\User::class);
+
+        return new \App\Auth($di['session'], $user_repo);
     };
 
     $di['acl'] = function ($di) {
@@ -108,50 +123,44 @@ return function (\Slim\Container $di, \App\Config $config) {
     };
 
     // Caching
-    $di['cache_driver'] = function ($di) {
+    $di['redis'] = $di->factory(function ($di) {
+        $redis_host = (APP_INSIDE_DOCKER) ? 'redis' : 'localhost';
 
-        $redis_options = [
-            'servers' => [
-                [
-                    'server' => (APP_INSIDE_DOCKER) ? 'redis' : 'localhost',
-                    'port' => 6379, // default: 6379
-                ],
-            ],
-
-            // 'password'      => '', // Must be commented out to have no authentication
-            'database' => 0,
-        ];
-
-        // Register Stash as session handler if necessary.
-        $composite_driver = new \Stash\Driver\Composite([
-            'drivers' => [
-                new \Stash\Driver\Ephemeral(),
-                new \Stash\Driver\Redis($redis_options),
-            ],
-        ]);
-
-        $pool = new \Stash\Pool($composite_driver);
-        $pool->setNamespace(\App\Cache::getSitePrefix('session'));
-
-        $session = new \Stash\Session($pool);
-        \Stash\Session::registerHandler($session);
-
-        return $composite_driver;
-    };
+        $redis = new \Redis();
+        $redis->connect($redis_host, 6379, 0.1);
+        return $redis;
+    });
 
     $di['cache'] = function ($di) {
-        return new \App\Cache($di['cache_driver'], 'user');
+        /** @var \Redis $redis */
+        $redis = $di['redis'];
+        $redis->select(0);
+
+        return new \App\Cache($redis);
     };
 
     // Register URL handler.
     $di['url'] = function ($di) {
-        return new \App\Url($di);
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di['em'];
+
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $em->getRepository(\Entity\Settings::class);
+
+        $base_url = $settings_repo->getSetting('base_url', '');
+
+        return new \App\Url($di['router'], $base_url);
     };
 
     // Register session service.
     $di['session'] = function ($di) {
-        // Depends on cache driver.
-        $di->get('cache_driver');
+        ini_set('session.gc_maxlifetime', 86400);
+        ini_set('session.gc_probability', 1);
+        ini_set('session.gc_divisor', 100);
+
+        $redis_server = (APP_INSIDE_DOCKER) ? 'redis' : 'localhost';
+        ini_set('session.save_handler', 'redis');
+        ini_set('session.save_path', 'tcp://' . $redis_server . ':6379?database=1');
 
         return new \App\Session;
     };
@@ -178,16 +187,11 @@ return function (\Slim\Container $di, \App\Config $config) {
         return $influx->selectDB('stations');
     };
 
-    // E-mail Messenger
-    $di['messenger'] = function ($di) {
-        return new \App\Messenger($di);
-    };
-
     // Supervisord Interaction
     $di['supervisor'] = function ($di) {
         $guzzle_client = new \GuzzleHttp\Client();
         $client = new \fXmlRpc\Client(
-            'http://'.(APP_INSIDE_DOCKER ? 'stations' : '127.0.0.1').':9001/RPC2',
+            'http://' . (APP_INSIDE_DOCKER ? 'stations' : '127.0.0.1') . ':9001/RPC2',
             new \fXmlRpc\Transport\HttpAdapterTransport(
                 new \Http\Message\MessageFactory\GuzzleMessageFactory(),
                 new \Http\Adapter\Guzzle6\Client($guzzle_client)
@@ -198,7 +202,8 @@ return function (\Slim\Container $di, \App\Config $config) {
         $supervisor = new \Supervisor\Supervisor($connector);
 
         if (!$supervisor->isConnected()) {
-            throw new \App\Exception(sprintf(_('Could not connect to supervisord. Try running %s in a terminal to restart the service.'), '`sudo service supervisor restart`'));
+            throw new \App\Exception(sprintf(_('Could not connect to supervisord. Try running %s in a terminal to restart the service.'),
+                '`sudo service supervisor restart`'));
         }
 
         return $supervisor;
@@ -210,7 +215,7 @@ return function (\Slim\Container $di, \App\Config $config) {
     };
 
     // Currently logged in user
-    $di['user'] = $di->factory(function ($di) {
+    $di['user'] = function ($di) {
         $auth = $di['auth'];
 
         if ($auth->isLoggedIn()) {
@@ -218,11 +223,17 @@ return function (\Slim\Container $di, \App\Config $config) {
         } else {
             return null;
         }
-    });
+    };
 
-    $di['customization'] = $di->factory(function ($di) {
-        return new \AzuraCast\Customization($di);
-    });
+    $di['customization'] = function ($di) {
+
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di['em'];
+        $settings_repo = $em->getRepository(Entity\Settings::class);
+
+        return new \AzuraCast\Customization($di['app_settings'], $di['user'], $settings_repo);
+
+    };
 
     $di['view'] = $di->factory(function ($di) {
         $view = new \App\Mvc\View(APP_INCLUDE_BASE . '/templates');
@@ -235,7 +246,7 @@ return function (\Slim\Container $di, \App\Config $config) {
             'auth' => $di['auth'],
             'acl' => $di['acl'],
             'url' => $di['url'],
-            'config' => $di['config'],
+            'app_settings' => $di['app_settings'],
             'flash' => $di['flash'],
             'customization' => $di['customization'],
         ]);
@@ -245,18 +256,20 @@ return function (\Slim\Container $di, \App\Config $config) {
 
     $di['assets'] = function ($di) {
 
-        return new class($di['url']) {
+        return new class($di['url'])
+        {
             /** @var \App\Url */
             protected $url;
 
             /** @var array */
             protected $assets;
 
-            public function __construct(\App\Url $url) {
+            public function __construct(\App\Url $url)
+            {
                 $this->url = $url;
 
                 $assets = [];
-                $assets_file = APP_INCLUDE_STATIC.'/assets.json';
+                $assets_file = APP_INCLUDE_STATIC . '/assets.json';
                 if (file_exists($assets_file)) {
                     $assets = json_decode(file_get_contents($assets_file), true);
                 }
@@ -264,7 +277,8 @@ return function (\Slim\Container $di, \App\Config $config) {
                 $this->assets = $assets;
             }
 
-            public function getPath($asset) {
+            public function getPath($asset)
+            {
                 return $this->url->content($this->assets[$asset] ?? $asset);
             }
         };
@@ -296,8 +310,8 @@ return function (\Slim\Container $di, \App\Config $config) {
             return $next($request, $response);
         });
 
-        foreach($di['modules'] as $module) {
-            $module_routes = APP_INCLUDE_MODULES.'/'.$module.'/routes.php';
+        foreach ($di['modules'] as $module) {
+            $module_routes = APP_INCLUDE_MODULES . '/' . $module . '/routes.php';
             if (file_exists($module_routes)) {
                 call_user_func(include($module_routes), $app);
             }

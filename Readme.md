@@ -61,7 +61,7 @@ Whether you're using the traditional installer or Docker containers, AzuraCast d
 * **[MariaDB](https://mariadb.org/)** as the primary database
 * **[PHP 7.1](https://secure.php.net/)** powering the web application
 * **[InfluxDB](https://www.influxdata.com/)** for time-series based statistics
-* **[Redis](https://redis.io/)** for caching (Docker only)
+* **[Redis](https://redis.io/)** for sessions, database and general caching
 * **[LiquidSoap](http://savonet.sourceforge.net/)** as the always-playing "AutoDJ"
 * **[IceCast 2](http://icecast.org/)** as a radio broadcasting frontend (Icecast-KH installed on supported platforms)
 * **[ShoutCast 2 DNAS](http://wiki.shoutcast.com/wiki/SHOUTcast_DNAS_Server_2)** as an alternative radio frontend (x86/x64 only)

@@ -1,26 +1,24 @@
 <?php
 namespace AzuraCast;
 
-use Doctrine\ORM\EntityManager;
-use Interop\Container\ContainerInterface;
 use Entity;
 
 class Customization
 {
-    /** @var ContainerInterface */
-    protected $di;
+    /** @var array */
+    protected $app_settings;
 
     /** @var Entity\User|null */
     protected $user;
 
-    /** @var \App\Config */
-    protected $config;
+    /** @var Entity\Repository\SettingsRepository */
+    protected $settings_repo;
 
-    public function __construct(ContainerInterface $di)
+    public function __construct($app_settings, $user, $settings_repo)
     {
-        $this->di = $di;
-        $this->user = $di['user'];
-        $this->config = $di['config'];
+        $this->app_settings = $app_settings;
+        $this->user = $user;
+        $this->settings_repo = $settings_repo;
     }
 
     /**
@@ -37,14 +35,6 @@ class Customization
         }
     }
 
-    /*
-     * Locale Commands:
-     * find /var/azuracast/www -type f \( -name '*.php' -or -name '*.phtml' \) -print > list
-     * xgettext --files-from=list --language=PHP -o /var/azuracast/www/app/locale/default.pot
-     *
-     * find /var/azuracast/www/app/locale -name \*.po -execdir msgfmt default.po -o default.mo \;
-     */
-
     /**
      * Return the user-customized, browser-specified or system default locale.
      *
@@ -53,7 +43,7 @@ class Customization
     public function getLocale()
     {
         $locale = null;
-        $supported_locales = $this->config->application->locale->supported->toArray();
+        $supported_locales = $this->app_settings['locale']['supported'];
 
         // Prefer user-based profile locale.
         if ($this->user !== null && !empty($this->user->locale) && $this->user->locale !== 'default') {
@@ -76,7 +66,7 @@ class Customization
 
         // Default to system option.
         if (!$locale) {
-            $locale = $this->config->application->locale->default;
+            $locale = $this->app_settings['locale']['default'];
         }
 
         return $locale;
@@ -90,13 +80,13 @@ class Customization
     public function getTheme()
     {
         if ($this->user !== null && !empty($this->user->theme)) {
-            $available_themes = $this->config->application->themes->available->toArray();
+            $available_themes = $this->app_settings['themes']['available'];
             if (isset($available_themes[$this->user->theme])) {
                 return $this->user->theme;
             }
         }
 
-        return $this->config->application->themes->default;
+        return $this->app_settings['themes']['default'];
     }
 
     /**
@@ -109,13 +99,7 @@ class Customization
         static $instance_name;
 
         if ($instance_name === null) {
-            /** @var EntityManager $em */
-            $em = $this->di['em'];
-
-            /** @var Entity\Repository\SettingsRepository $settings_repo */
-            $settings_repo = $em->getRepository(Entity\Settings::class);
-
-            $instance_name = $settings_repo->getSetting('instance_name', '');
+            $instance_name = $this->settings_repo->getSetting('instance_name', '');
         }
 
         return $instance_name;

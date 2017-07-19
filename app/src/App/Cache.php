@@ -3,32 +3,36 @@ namespace App;
 
 class Cache
 {
-    /**
-     * @var \Stash\Pool
-     */
-    protected $_cache;
+    /** @var \Redis */
+    protected $redis;
 
-    /**
-     * @var int Default length of time to keep cached items.
-     */
-    protected $_cache_lifetime = 3600;
+    /** @var int Default length of time to keep cached items. */
+    protected $default_ttl = 3600;
 
-    public function __construct(\Stash\Interfaces\DriverInterface $cache_driver, $cache_level = 'user')
+    public function __construct(\Redis $redis, $default_ttl = null)
     {
-        $pool = new \Stash\Pool($cache_driver);
-        $pool->setNamespace(self::getSitePrefix($cache_level));
+        $this->redis = $redis;
 
-        $this->_cache = $pool;
+        if ($default_ttl !== null) {
+            $this->default_ttl = $default_ttl;
+        }
     }
 
     /**
-     * Return the raw cache itself for manipulation.
-     *
-     * @return \Stash\Pool
+     * Properly close the connection.
      */
-    public function getRawCache()
+    public function __destruct()
     {
-        return $this->_cache;
+        if ($this->redis instanceof \Redis) {
+            try {
+                $this->redis->close();
+            } catch (\RedisException $e) {
+                /*
+                 * \Redis::close will throw a \RedisException("Redis server went away") exception if
+                 * we haven't previously been able to connect to Redis or the connection has severed.
+                 */
+            }
+        }
     }
 
     /**
@@ -40,15 +44,13 @@ class Cache
      */
     public function load($id, $default = null)
     {
-        $item = $this->_cache->getItem($id);
+        $result = $this->redis->get($this->_filterId($id));
 
-        if ($item->isHit()) {
-            return $item->get();
-        } elseif (is_callable($default)) {
-            return $default();
-        } else {
-            return $default;
+        if ($result === false) {
+            return (is_callable($default)) ? $default() : $default;
         }
+
+        return unserialize($result);
     }
 
     /**
@@ -71,9 +73,8 @@ class Cache
      */
     public function test($id)
     {
-        $item = $this->_cache->getItem($id);
-
-        return $item->isHit();
+        $result = $this->redis->get($this->_filterId($id));
+        return ($result !== false);
     }
 
     /**
@@ -81,22 +82,19 @@ class Cache
      *
      * @param $data
      * @param $id
-     * @param bool|false $specificLifetime
+     * @param int|null $ttl
      */
-    public function save($data, $id, $specificLifetime = false)
+    public function save($data, $id, $ttl = null)
     {
-        if ($specificLifetime === false || !is_numeric($specificLifetime)) {
-            $specificLifetime = $this->_cache_lifetime;
+        if ($ttl === null || !is_numeric($ttl)) {
+            $ttl = $this->default_ttl;
         }
 
-        $item = $this->_cache->getItem($id);
+        if ($ttl < 0) {
+            $ttl = 0.1;
+        }
 
-        $item->lock();
-
-        $item->set($data);
-        $item->expiresAfter($specificLifetime);
-
-        $this->_cache->save($item);
+        $this->redis->setex($this->_filterId($id), $ttl, serialize($data));
     }
 
     /**
@@ -104,11 +102,11 @@ class Cache
      *
      * @param $data
      * @param $id
-     * @param bool|false $specificLifetime
+     * @param int|null $ttl
      */
-    public function set($data, $id, $specificLifetime = false)
+    public function set($data, $id, $ttl = null)
     {
-        $this->save($data, $id, $specificLifetime);
+        $this->save($data, $id, $ttl);
     }
 
     /**
@@ -117,44 +115,42 @@ class Cache
      *
      * @param $id
      * @param null $default
-     * @param bool|false $specificLifetime
+     * @param bool|false $ttl
      * @return mixed|null
      */
-    public function getOrSet($id, $default = null, $specificLifetime = false)
+    public function getOrSet($id, $default = null, $ttl = false)
     {
-        if ($specificLifetime === false || !is_numeric($specificLifetime)) {
-            $specificLifetime = $this->_cache_lifetime;
-        }
+        $result = $this->redis->get($this->_filterId($id));
 
-        $item = $this->_cache->getItem($id);
+        if ($result === false) {
 
-        if (!$item->isMiss()) {
-            return $item->get();
-        } else {
-            $item->lock();
-
-            $result = (is_callable($default)) ? $default() : $default;
-            if ($result !== null) {
-                $item->set($result);
-                $item->expiresAfter($specificLifetime);
-                $item->save();
+            if ($ttl === null || !is_numeric($ttl)) {
+                $ttl = $this->default_ttl;
             }
 
-            return $result;
+            if ($ttl < 0) {
+                $ttl = 0.1;
+            }
+
+            $data = (is_callable($default)) ? $default() : $default;
+            $this->redis->setex($this->_filterId($id), $ttl, serialize($data));
+
+            return $data;
+
         }
+
+        return unserialize($result);
     }
 
     /**
      * Delete an item from the cache.
      *
      * @param $id
-     * @return bool
+     * @return void
      */
     public function remove($id)
     {
-        $item = $this->_cache->getItem($id);
-
-        return $item->clear();
+        $this->redis->delete($this->_filterId($id));
     }
 
     /**
@@ -164,32 +160,11 @@ class Cache
      */
     public function clean()
     {
-        return $this->_cache->clear();
+        return true; // Not used with Redis
     }
 
-    /**
-     * @param string $cache_level
-     * @param string $cache_separator
-     * @return string Compiled site prefix for cache use.
-     */
-    public static function getSitePrefix($cache_level = 'user', $cache_separator = '')
+    protected function _filterId($id)
     {
-        static $cache_base;
-
-        if (!$cache_base) {
-            $dir_hash = md5(APP_INCLUDE_ROOT);
-            $cache_base = substr($dir_hash, 0, 3);
-        }
-
-        // Shortening of cache level names.
-        if ($cache_level == 'user') {
-            $cache_level = 'u';
-        } elseif ($cache_level == 'doctrine') {
-            $cache_level = 'db';
-        } elseif ($cache_level == 'session') {
-            $cache_level = 's';
-        }
-
-        return $cache_base . $cache_separator . $cache_level . $cache_separator;
+        return str_replace('/', ':', ltrim($id, '/'));
     }
 }

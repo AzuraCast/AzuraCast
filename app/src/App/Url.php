@@ -2,26 +2,23 @@
 namespace App;
 
 use Interop\Container\ContainerInterface;
+use Slim\Router;
 
 class Url
 {
-    /** @var ContainerInterface */
-    protected $di;
+    /** @var Router */
+    protected $router;
 
-    /** @var \App\Config */
-    protected $config;
+    /** @var string */
+    protected $base_url;
 
     /** @var bool Whether to include the domain in the URLs generated. */
     protected $include_domain = false;
 
-    public function __construct(ContainerInterface $di)
+    public function __construct(Router $router, $base_url)
     {
-        $this->di = $di;
-        $this->config = $di['config'];
-
-        /*
-        $this->setBaseUri($this->config->application->base_uri);
-        */
+        $this->router = $router;
+        $this->base_url = $base_url;
     }
 
     /**
@@ -68,8 +65,7 @@ class Url
      */
     public function baseUrl($include_host = false)
     {
-        $router = $this->di['router'];
-        $uri = $router->pathFor('home');
+        $uri = $this->router->pathFor('home');
 
         if ($include_host) {
             return $this->addSchemePrefix($uri);
@@ -86,7 +82,7 @@ class Url
      */
     public function content($file_name = null)
     {
-        return $this->config->application->static_uri . $file_name;
+        return '/static/' . $file_name;
     }
 
     /**
@@ -97,8 +93,6 @@ class Url
      */
     public function route($path_info = [], $absolute = null)
     {
-        $router = $this->di['router'];
-
         $default_module = 'frontend';
         $components = [
             'module' => $default_module,
@@ -134,7 +128,7 @@ class Url
             $components['action'] == 'index' &&
             empty($path_info)
         ) {
-            return $router->pathFor('home');
+            return $this->router->pathFor('home');
         }
 
         // Otherwise compile URL using a uniform format.
@@ -149,7 +143,7 @@ class Url
 
         $router_path = implode(':', $url_parts);
 
-        return $this->getUrl($router->pathFor($router_path, $path_info), $absolute);
+        return $this->getUrl($this->router->pathFor($router_path, $path_info), $absolute);
     }
 
     protected $current_route;
@@ -224,13 +218,7 @@ class Url
         // Retrieve domain from either MVC controller or config file.
         if ($this->include_domain || $absolute) {
 
-            $url_domain = $this->di['em']->getRepository('Entity\Settings')->getSetting('base_url', '');
-
-            if (empty($url_domain)) {
-                $url_domain = $this->config->application->base_url;
-            } else {
-                $url_domain = ((APP_IS_SECURE) ? 'https://' : 'http://') . $url_domain;
-            }
+            $url_domain = (empty($this->base_url)) ? '' : ((APP_IS_SECURE) ? 'https://' : 'http://') . $this->base_url;
 
             if (empty($url_domain)) {
                 $http_host = trim($_SERVER['HTTP_HOST'], ':');
@@ -256,8 +244,7 @@ class Url
      */
     public function named($route_name, $route_params = [], $absolute = false)
     {
-        $router = $this->di['router'];
-        return $this->getUrl($router->pathFor($route_name, $route_params), $absolute);
+        return $this->getUrl($this->router->pathFor($route_name, $route_params), $absolute);
     }
 
     /**

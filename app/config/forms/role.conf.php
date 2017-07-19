@@ -3,9 +3,8 @@
  * Edit Role Form
  */
 
-/** @var array */
-$config = $di['config'];
-$actions = $config->actions->toArray();
+$settings = $di['app_settings'];
+$actions = $settings['actions'];
 
 /** @var \Doctrine\ORM\EntityManager $em */
 $em = $di['em'];

@@ -3,10 +3,9 @@
  * Profile Form
  */
 
-/** @var \App\Config $config */
-$config = $di['config'];
+$settings = $di['app_settings'];
 
-$locale_select = $config->application->locale->supported->toArray();
+$locale_select = $settings['locale']['supported'];
 $locale_select = ['default' => _('Use Browser Default')] + $locale_select;
 
 return [
@@ -75,8 +74,8 @@ return [
                     'radio',
                     [
                         'label' => _('Site Theme'),
-                        'options' => $config->application->themes->available->toArray(),
-                        'default' => $config->application->themes->default,
+                        'options' => $settings['themes']['available'],
+                        'default' => $settings['themes']['default'],
                     ]
                 ],
 

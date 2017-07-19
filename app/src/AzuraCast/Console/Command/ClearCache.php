@@ -29,26 +29,36 @@ class ClearCache extends \App\Console\Command\CommandAbstract
 
         $output->writeln('Router cache file cleared.');
 
+        // Flush all Redis databases
+
+        /** @var \Redis $redis */
+        $redis = $this->di->get('redis');
+
+        for($i = 0; $i < 14; $i++) {
+            $redis->select($i);
+            $redis->flushAll();
+        }
+
         // Flush Doctrine cache.
 
-        /** @var EntityManager $em */
-        $em = $this->di->get('em');
+        // /** @var EntityManager $em */
+        // $em = $this->di->get('em');
 
         // Delete metadata, query and result caches
-        $cacheDriver = $em->getConfiguration()->getMetadataCacheImpl();
-        $cacheDriver->deleteAll();
-
-        $queryCacheDriver = $em->getConfiguration()->getQueryCacheImpl();
-        $queryCacheDriver->deleteAll();
-
-        $resultCacheDriver = $em->getConfiguration()->getResultCacheImpl();
-        $resultCacheDriver->deleteAll();
-
-        $output->writeln('Doctrine ORM cache flushed.');
+        // $cacheDriver = $em->getConfiguration()->getMetadataCacheImpl();
+        // $cacheDriver->deleteAll();
+        //
+        // $queryCacheDriver = $em->getConfiguration()->getQueryCacheImpl();
+        // $queryCacheDriver->deleteAll();
+        //
+        // $resultCacheDriver = $em->getConfiguration()->getResultCacheImpl();
+        // $resultCacheDriver->deleteAll();
+        //
+        // $output->writeln('Doctrine ORM cache flushed.');
 
         // Flush remainder of local cache object
-        $cache = $this->di->get('cache');
-        $cache->clean();
+        // $cache = $this->di->get('cache');
+        // $cache->clean();
 
         $output->writeln('Local cache flushed.');
     }

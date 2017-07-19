@@ -52,7 +52,7 @@ return function (\Slim\Container $di, $settings) {
                 ]
             ];
 
-            \Doctrine\Common\Proxy\Autoloader::register($options['proxyPath'], $options['proxyNamespace']);
+            // \Doctrine\Common\Proxy\Autoloader::register($options['proxyPath'], $options['proxyNamespace']);
 
             // Fetch and store entity manager.
             $config = new \Doctrine\ORM\Configuration;

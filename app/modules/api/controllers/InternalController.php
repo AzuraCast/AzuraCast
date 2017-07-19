@@ -68,14 +68,16 @@ class InternalController extends BaseController
         $history_repo = $this->em->getRepository(Entity\SongHistory::class);
 
         /** @var Entity\SongHistory|null $sh */
-        $sh = $history_repo->getNextSongForStation($this->station);
+        $sh = $history_repo->getNextSongForStation($this->station, $this->hasParam('api_auth'));
 
         if ($sh instanceof Entity\SongHistory) {
             // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
             $song_path = $sh->media->getFullPath();
+
             return $this->_return('annotate:' . implode(',', $sh->media->getAnnotations()) . ':' . $song_path);
         } else {
-            return $this->_return(APP_INCLUDE_ROOT . '/resources/error.mp3');
+            $error_mp3_path = (APP_INSIDE_DOCKER) ? '/usr/local/share/icecast/web/error.mp3' : APP_INCLUDE_ROOT . '/resources/error.mp3';
+            return $this->_return($error_mp3_path);
         }
     }
 

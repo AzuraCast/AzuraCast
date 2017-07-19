@@ -41,12 +41,7 @@ class Redis extends \Doctrine\Common\Cache\RedisCache
      */
     public function saveMultiple(array $keysAndValues, $lifetime = 0)
     {
-        $namespacedKeysAndValues = array();
-        foreach ($keysAndValues as $key => $value) {
-            $namespacedKeysAndValues[$key] = $value;
-        }
-
-        return $this->doSaveMultiple($namespacedKeysAndValues, $lifetime);
+        return $this->doSaveMultiple($keysAndValues, $lifetime);
     }
 
     /**

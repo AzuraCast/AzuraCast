@@ -7,6 +7,7 @@ $di = require dirname(__FILE__).'/../app/bootstrap.php';
 // Load app, to generate routes, etc.
 $di->get('app');
 
+/** @var \Doctrine\ORM\EntityManager $em */
 $em = $di['em'];
 $db = $em->getConnection();
 
@@ -16,9 +17,9 @@ $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(
     'dialog' => new \Symfony\Component\Console\Helper\QuestionHelper(),
 ));
 
-$config = $di['config'];
+$settings = $di['app_settings'];
 
-$cli = new \Symfony\Component\Console\Application($config->application->name.' Command Line Tools', \AzuraCast\Version::getVersion());
+$cli = new \Symfony\Component\Console\Application($settings['name'].' Command Line Tools', \AzuraCast\Version::getVersion());
 $cli->setCatchExceptions(true);
 $cli->setHelperSet($helperSet);
 
@@ -30,14 +31,14 @@ $migrate_config->setMigrationsTableName('app_migrations');
 $migrate_config->setMigrationsDirectory(__DIR__.'/../app/models/Migration');
 $migrate_config->setMigrationsNamespace('Migration');
 
-$migration_commands = array(
+$migration_commands = [
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand()
-);
+];
 
 foreach($migration_commands as $cmd)
     $cmd->setMigrationConfiguration($migrate_config);
@@ -45,7 +46,7 @@ foreach($migration_commands as $cmd)
 $cli->addCommands($migration_commands);
 
 // App-specific commands
-$cli->addCommands(array(
+$cli->addCommands([
     new \AzuraCast\Console\Command\ClearCache($di),
     new \AzuraCast\Console\Command\RestartRadio($di),
     new \AzuraCast\Console\Command\Sync($di),
@@ -55,6 +56,6 @@ $cli->addCommands(array(
     new \AzuraCast\Console\Command\GenerateApiDocs($di),
     new \AzuraCast\Console\Command\UptimeWait($di),
     new \AzuraCast\Console\Command\MigrateConfig($di),
-));
+]);
 
 $cli->run();

@@ -5,27 +5,33 @@ use Entity;
 
 class SongHistoryRepository extends \App\Doctrine\Repository
 {
-    public function getNextSongForStation(Entity\Station $station, $force = false)
+    public function getNextSongForStation(Entity\Station $station, $is_autodj = false)
     {
-        $threshold = 60 * 15;
-
         $next_song = $this->_em->createQuery('SELECT sh, s, sm
             FROM ' . $this->_entityName . ' sh JOIN sh.song s JOIN sh.media sm
             WHERE sh.station_id = :station_id
             AND sh.timestamp_cued >= :threshold
+            AND sh.sent_to_autodj = 0
             AND sh.timestamp_start = 0
             AND sh.timestamp_end = 0
             ORDER BY sh.id DESC')
             ->setParameter('station_id', $station->id)
-            ->setParameter('threshold', time() - $threshold)
+            ->setParameter('threshold', time() - 60 * 15)
             ->setMaxResults(1)
             ->getOneOrNullResult();
 
-        if (!($next_song instanceof Entity\SongHistory) || $force) {
+        if (!($next_song instanceof Entity\SongHistory)) {
             /** @var Entity\Repository\StationMediaRepository $media_repo */
             $media_repo = $this->_em->getRepository(Entity\StationMedia::class);
 
             $next_song = $media_repo->getNextSong($station);
+        }
+
+        if ($is_autodj) {
+            $next_song->sent_to_autodj = true;
+
+            $this->_em->persist($next_song);
+            $this->_em->flush();
         }
 
         return $next_song;

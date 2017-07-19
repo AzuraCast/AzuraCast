@@ -37,7 +37,7 @@ return function (\Slim\Container $di, $settings) {
             $options = [
                 'autoGenerateProxies' => !APP_IN_PRODUCTION,
                 'proxyNamespace' => 'Proxy',
-                'proxyPath' => APP_INCLUDE_TEMP . '/proxies',
+                'proxyPath' => APP_INCLUDE_BASE . '/models/Proxy',
                 'modelPath' => APP_INCLUDE_BASE . '/models',
                 'conn' => [
                     'driver' => 'pdo_mysql',
@@ -51,6 +51,8 @@ return function (\Slim\Container $di, $settings) {
                     ],
                 ]
             ];
+
+            \Doctrine\Common\Proxy\Autoloader::register($options['proxyPath'], $options['proxyNamespace']);
 
             // Fetch and store entity manager.
             $config = new \Doctrine\ORM\Configuration;
@@ -69,12 +71,16 @@ return function (\Slim\Container $di, $settings) {
             $metadata_driver = $config->newDefaultAnnotationDriver($options['modelPath']);
             $config->setMetadataDriverImpl($metadata_driver);
 
-            /** @var \Redis $redis */
-            $redis = $di['redis'];
-            $redis->select(2);
+            if (APP_IN_PRODUCTION) {
+                /** @var \Redis $redis */
+                $redis = $di['redis'];
+                $redis->select(2);
 
-            $cache = new \App\Doctrine\Cache\Redis;
-            $cache->setRedis($redis);
+                $cache = new \App\Doctrine\Cache\Redis;
+                $cache->setRedis($redis);
+            } else {
+                $cache = new \Doctrine\Common\Cache\ArrayCache;
+            }
 
             $config->setMetadataCacheImpl($cache);
             $config->setQueryCacheImpl($cache);

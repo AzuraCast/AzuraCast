@@ -11,6 +11,7 @@ class SongHistory extends \App\Doctrine\Entity
 {
     public function __construct()
     {
+        $this->sent_to_autodj = false;
         $this->timestamp_cued = 0;
 
         $this->timestamp_start = 0;
@@ -50,6 +51,9 @@ class SongHistory extends \App\Doctrine\Entity
 
     /** @Column(name="timestamp_cued", type="integer", nullable=true) */
     protected $timestamp_cued;
+
+    /** @Column(name="sent_to_autodj", type="boolean") */
+    protected $sent_to_autodj;
 
     /** @Column(name="timestamp_start", type="integer") */
     protected $timestamp_start;

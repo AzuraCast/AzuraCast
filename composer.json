@@ -6,14 +6,12 @@
         "slim/slim": "^3.0",
         "league/plates": "^3.1",
         "filp/whoops": "2.*",
-        "tedivm/stash": "0.14.*",
         "nibble/nibble-forms": "dev-master",
         "zendframework/zend-paginator": "^2.7",
         "zendframework/zend-config": "^3.1.0",
         "doctrine/orm": "~2.5",
         "doctrine/migrations": "^1.4",
         "jdorn/sql-formatter": "^1.2",
-        "nette/mail": "^2.4.2",
         "packaged/helpers": "^1.5",
         "guzzlehttp/guzzle": ">6.0",
         "electrolinux/phpquery": "0.9.6",
@@ -28,8 +26,8 @@
     "require-dev": {
         "codeception/codeception": "^2.2",
         "codeclimate/php-test-reporter": "^0.4.4",
-      "flow/jsonpath": "^0.3.4",
-      "zircote/swagger-php": "^2.0"
+        "flow/jsonpath": "^0.3.4",
+        "zircote/swagger-php": "^2.0"
     },
     "authors": [
         {

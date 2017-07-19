@@ -36,7 +36,7 @@ return function (\Slim\Container $di, $settings) {
         try {
             $options = [
                 'autoGenerateProxies' => !APP_IN_PRODUCTION,
-                'proxyNamespace' => 'Proxy',
+                'proxyNamespace' => 'AppProxy',
                 'proxyPath' => APP_INCLUDE_BASE . '/models/Proxy',
                 'modelPath' => APP_INCLUDE_BASE . '/models',
                 'conn' => [
@@ -52,7 +52,7 @@ return function (\Slim\Container $di, $settings) {
                 ]
             ];
 
-            // \Doctrine\Common\Proxy\Autoloader::register($options['proxyPath'], $options['proxyNamespace']);
+            \Doctrine\Common\Proxy\Autoloader::register($options['proxyPath'], $options['proxyNamespace']);
 
             // Fetch and store entity manager.
             $config = new \Doctrine\ORM\Configuration;

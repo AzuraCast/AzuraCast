@@ -37,7 +37,7 @@ return function (\Slim\Container $di, $settings) {
             $options = [
                 'autoGenerateProxies' => !APP_IN_PRODUCTION,
                 'proxyNamespace' => 'AppProxy',
-                'proxyPath' => APP_INCLUDE_BASE . '/models/Proxy',
+                'proxyPath' => APP_INCLUDE_TEMP . '/proxies',
                 'modelPath' => APP_INCLUDE_BASE . '/models',
                 'conn' => [
                     'driver' => 'pdo_mysql',

@@ -133,7 +133,7 @@ return function (\Slim\Container $di, $settings) {
         $redis_host = (APP_INSIDE_DOCKER) ? 'redis' : 'localhost';
 
         $redis = new \Redis();
-        $redis->connect($redis_host, 6379, 0.1);
+        $redis->connect($redis_host, 6379, 15);
         return $redis;
     });
 

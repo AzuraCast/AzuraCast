@@ -57,7 +57,7 @@ return [
                         'description' => _('All times displayed on the site will be based on this time zone.') . '<br>' . sprintf(_('Current server time is <b>%s</b>.'),
                                 date('g:ia')),
                         'options' => \App\Timezone::fetchSelect(),
-                        'default' => date_default_timezone_get(),
+                        'default' => 'UTC',
                     ]
                 ],
 

@@ -56,6 +56,7 @@ $cli->addCommands([
     new \AzuraCast\Console\Command\GenerateApiDocs($di),
     new \AzuraCast\Console\Command\UptimeWait($di),
     new \AzuraCast\Console\Command\MigrateConfig($di),
+    new \AzuraCast\Console\Command\ResetPassword($di),
 ]);
 
 $cli->run();

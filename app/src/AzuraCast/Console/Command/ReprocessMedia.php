@@ -13,7 +13,7 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
      */
     protected function configure()
     {
-        $this->setName('media:reprocess')
+        $this->setName('azuracast:media:reprocess')
             ->setDescription('Manually reload all media metadata from file.');
     }
 

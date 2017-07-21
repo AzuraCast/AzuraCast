@@ -247,27 +247,27 @@
         "Listener": {
             "properties": {
                 "ip": {
-                    "description": "",
+                    "description": "The listener's IP address",
                     "type": "string",
                     "example": "127.0.0.1"
                 },
                 "user_agent": {
-                    "description": "",
+                    "description": "The listener's HTTP User-Agent",
                     "type": "string",
                     "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36"
                 },
                 "connected_on": {
-                    "description": "",
+                    "description": "UNIX timestamp that the user first connected.",
                     "type": "integer",
-                    "example": 1498115645
+                    "example": 1500620470
                 },
                 "connected_time": {
-                    "description": "",
+                    "description": "Number of seconds that the user has been connected.",
                     "type": "integer",
                     "example": 30
                 },
                 "location": {
-                    "description": "",
+                    "description": "Location metadata, if available",
                     "type": "array"
                 }
             },
@@ -276,30 +276,29 @@
         "NowPlaying": {
             "properties": {
                 "station": {
-                    "description": "",
+                    "description": "Station",
                     "$ref": "#/definitions/Station"
                 },
                 "listeners": {
-                    "description": "",
+                    "description": "Listener details",
                     "$ref": "#/definitions/NowPlayingListeners"
                 },
                 "now_playing": {
-                    "description": "",
+                    "description": "Current Song",
                     "$ref": "#/definitions/NowPlayingCurrentSong"
                 },
                 "playing_next": {
-                    "description": "",
+                    "description": "Next Playing Song",
                     "$ref": "#/definitions/SongHistory"
                 },
                 "song_history": {
-                    "description": "",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/SongHistory"
                     }
                 },
                 "cache": {
-                    "description": "",
+                    "description": "Debugging information about where the now playing data comes from.",
                     "type": "string",
                     "enum": [
                         "hit",
@@ -313,35 +312,35 @@
         "NowPlayingCurrentSong": {
             "properties": {
                 "elapsed": {
-                    "description": "",
+                    "description": "Elapsed time of the song's playback since it started.",
                     "type": "integer",
                     "example": 25
                 },
                 "remaining": {
-                    "description": "",
+                    "description": "Remaining time in the song, in seconds.",
                     "type": "integer",
                     "example": 155
                 },
                 "sh_id": {
-                    "description": "",
+                    "description": "Song history unique identifier",
                     "type": "integer"
                 },
                 "played_at": {
-                    "description": "",
+                    "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1498115645
+                    "example": 1500620470
                 },
                 "duration": {
-                    "description": "",
+                    "description": "Duration of the song in seconds",
                     "type": "integer",
                     "example": 180
                 },
                 "is_request": {
-                    "description": "",
+                    "description": "Indicates whether the song is a listener request.",
                     "type": "boolean"
                 },
                 "song": {
-                    "description": "",
+                    "description": "Song",
                     "$ref": "#/definitions/Song"
                 }
             },
@@ -350,17 +349,17 @@
         "NowPlayingListeners": {
             "properties": {
                 "current": {
-                    "description": "",
+                    "description": "Current listeners, either unique (if supplied) or total (non-unique)",
                     "type": "integer",
                     "example": 15
                 },
                 "unique": {
-                    "description": "",
+                    "description": "Total unique current listeners",
                     "type": "integer",
                     "example": 15
                 },
                 "total": {
-                    "description": "",
+                    "description": "Total non-unique current listeners",
                     "type": "integer",
                     "example": 20
                 }
@@ -370,22 +369,22 @@
         "Song": {
             "properties": {
                 "id": {
-                    "description": "",
+                    "description": "The song's 32-character unique identifier hash",
                     "type": "string",
                     "example": "9f33bbc912c19603e51be8e0987d076b"
                 },
                 "text": {
-                    "description": "",
+                    "description": "The song title, usually \"Artist - Title\"",
                     "type": "string",
                     "example": "Chet Porter - Aluko River"
                 },
                 "artist": {
-                    "description": "",
+                    "description": "The song artist.",
                     "type": "string",
                     "example": "Chet Porter"
                 },
                 "title": {
-                    "description": "",
+                    "description": "The song title.",
                     "type": "string",
                     "example": "Aluko River"
                 }
@@ -395,25 +394,25 @@
         "SongHistory": {
             "properties": {
                 "sh_id": {
-                    "description": "",
+                    "description": "Song history unique identifier",
                     "type": "integer"
                 },
                 "played_at": {
-                    "description": "",
+                    "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1498115645
+                    "example": 1500620470
                 },
                 "duration": {
-                    "description": "",
+                    "description": "Duration of the song in seconds",
                     "type": "integer",
                     "example": 180
                 },
                 "is_request": {
-                    "description": "",
+                    "description": "Indicates whether the song is a listener request.",
                     "type": "boolean"
                 },
                 "song": {
-                    "description": "",
+                    "description": "Song",
                     "$ref": "#/definitions/Song"
                 }
             },
@@ -422,42 +421,41 @@
         "Station": {
             "properties": {
                 "id": {
-                    "description": "",
+                    "description": "Station ID",
                     "type": "integer",
                     "example": 1
                 },
                 "name": {
-                    "description": "",
+                    "description": "Station name",
                     "type": "string",
                     "example": "AzuraTest Radio"
                 },
                 "shortcode": {
-                    "description": "",
+                    "description": "Station \"short code\", used for URL and folder paths",
                     "type": "string",
                     "example": "azuratest_radio"
                 },
                 "description": {
-                    "description": "",
+                    "description": "Station description",
                     "type": "string",
                     "example": "An AzuraCast station!"
                 },
                 "frontend": {
-                    "description": "",
+                    "description": "Which broadcasting software (frontend) the station uses",
                     "type": "string",
                     "example": "shoutcast2"
                 },
                 "backend": {
-                    "description": "",
+                    "description": "Which AutoDJ software (backend) the station uses",
                     "type": "string",
                     "example": "liquidsoap"
                 },
                 "listen_url": {
-                    "description": "",
+                    "description": "The full URL to listen to the default mount of the station",
                     "type": "string",
                     "example": "http://localhost:8000/radio.mp3"
                 },
                 "mounts": {
-                    "description": "",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/StationMount"
@@ -469,27 +467,27 @@
         "StationMount": {
             "properties": {
                 "name": {
-                    "description": "",
+                    "description": "Mount point name/URL",
                     "type": "string",
                     "example": "/radio.mp3"
                 },
                 "is_default": {
-                    "description": "",
+                    "description": "If the mount is the default mount for the parent station",
                     "type": "boolean",
                     "example": true
                 },
                 "url": {
-                    "description": "",
+                    "description": "Full listening URL specific to this mount",
                     "type": "string",
                     "example": "http://localhost:8000/radio.mp3"
                 },
                 "bitrate": {
-                    "description": "",
+                    "description": "Bitrate (kbps) of the broadcasted audio (if known)",
                     "type": "integer",
                     "example": 128
                 },
                 "format": {
-                    "description": "",
+                    "description": "Audio encoding format of broadcasted audio (if known)",
                     "type": "string",
                     "example": "mp3"
                 }
@@ -499,17 +497,17 @@
         "StationRequest": {
             "properties": {
                 "request_id": {
-                    "description": "",
+                    "description": "Requestable ID unique identifier",
                     "type": "integer",
                     "example": 1
                 },
                 "request_url": {
-                    "description": "",
+                    "description": "URL to directly submit request",
                     "type": "integer",
                     "example": "/api/station/1/request/1"
                 },
                 "song": {
-                    "description": "",
+                    "description": "Song",
                     "$ref": "#/definitions/Song"
                 }
             },
@@ -518,14 +516,14 @@
         "Status": {
             "properties": {
                 "online": {
-                    "description": "",
+                    "description": "Whether the service is online or not (should always be true)",
                     "type": "boolean",
                     "example": true
                 },
                 "timestamp": {
-                    "description": "",
+                    "description": "The current UNIX timestamp",
                     "type": "integer",
-                    "example": 1498115645
+                    "example": 1500620470
                 }
             },
             "type": "object"
@@ -533,57 +531,47 @@
         "Time": {
             "properties": {
                 "timestamp": {
-                    "description": "",
+                    "description": "The current UNIX timestamp",
                     "type": "integer",
                     "example": 1497652397
                 },
                 "gmt_datetime": {
-                    "description": "",
                     "type": "string",
                     "example": "2017-06-16 10:33:17"
                 },
                 "gmt_date": {
-                    "description": "",
                     "type": "string",
                     "example": "June 16, 2017"
                 },
                 "gmt_time": {
-                    "description": "",
                     "type": "string",
                     "example": "10:33pm"
                 },
                 "gmt_timezone": {
-                    "description": "",
                     "type": "string",
                     "example": "GMT"
                 },
                 "gmt_timezone_abbr": {
-                    "description": "",
                     "type": "string",
                     "example": "GMT"
                 },
                 "local_datetime": {
-                    "description": "",
                     "type": "string",
                     "example": "2017-06-16 10:33:17"
                 },
                 "local_date": {
-                    "description": "",
                     "type": "string",
                     "example": "June 16, 2017"
                 },
                 "local_time": {
-                    "description": "",
                     "type": "string",
                     "example": "10:33pm"
                 },
                 "local_timezone": {
-                    "description": "",
                     "type": "string",
                     "example": "UTC"
                 },
                 "local_timezone_abbr": {
-                    "description": "",
                     "type": "string",
                     "example": "UTC"
                 }

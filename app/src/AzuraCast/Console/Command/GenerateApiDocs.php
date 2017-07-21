@@ -26,7 +26,7 @@ class GenerateApiDocs extends \App\Console\Command\CommandAbstract
         define('SAMPLE_TIMESTAMP', rand(time() - 86400, time() + 86400));
 
         $swagger = \Swagger\scan([
-            APP_INCLUDE_ROOT . '/swagger.php',
+            APP_INCLUDE_ROOT . '/util/swagger.php',
             APP_INCLUDE_BASE . '/models/Api',
             APP_INCLUDE_MODULES . '/api',
         ], [

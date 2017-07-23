@@ -5,5 +5,9 @@
     with_items:
      - redis-server
 
+  - name: Assign User Password
+    set_fact:
+      redis_service_name: "{{ 'redis-server' if ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty' else 'redis' }}"
+
   - name: Restart Redis service
-    service: name=redis state=restarted
+    service: name="{{ redis_service_name }}" state=restarted

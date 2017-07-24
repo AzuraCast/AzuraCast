@@ -41,8 +41,9 @@ return function (\Slim\Container $di, $settings) {
                 'modelPath' => APP_INCLUDE_BASE . '/models',
                 'conn' => [
                     'driver' => 'pdo_mysql',
-                    'host' => (APP_INSIDE_DOCKER) ? 'mariadb' : 'localhost',
-                    'dbname' => 'azuracast',
+                    'host' => $_ENV['db_host'] ?? ((APP_INSIDE_DOCKER) ? 'mariadb' : 'localhost'),
+                    'port' => $_ENV['db_port'] ?? '3306',
+                    'dbname' => $_ENV['db_name'] ?? 'azuracast',
                     'user' => $_ENV['db_username'] ?? 'azuracast',
                     'password' => (APP_INSIDE_DOCKER) ? 'azur4c457' : $_ENV['db_password'],
                     'charset' => 'utf8',

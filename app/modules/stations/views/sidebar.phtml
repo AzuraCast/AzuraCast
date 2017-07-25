@@ -57,6 +57,9 @@
             <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i> <?=_('Reports') ?></a>
 
             <ul>
+            <?php if ($frontend->supportsListenerDetail()): ?>
+                <li><a href="<?=$url->named('stations:reports:listeners', ['station' => $station->id]) ?>"><?=_('Listeners') ?></a></li>
+            <?php endif; ?>
             <?php if ($station->enable_requests): ?>
                 <li><a href="<?=$url->named('stations:requests:index', ['station' => $station->id]) ?>"><?=_('Song Requests') ?></a></li>
             <?php endif; ?>
@@ -64,10 +67,6 @@
             <?php if ($backend->supportsMedia()): ?>
                 <li><a href="<?=$url->named('stations:reports:performance', ['station' => $station->id]) ?>"><?=_('Song Listener Impact') ?></a></li>
                 <li><a href="<?=$url->named('stations:reports:duplicates', ['station' => $station->id]) ?>"><?=_('Duplicate Songs') ?></a></li>
-            <?php endif; ?>
-            <?php if ($frontend->supportsListenerDetail()): ?>
-                <li><a href="<?=$url->named('stations:reports:listeners', ['station' => $station->id]) ?>"><?=_('Live Listeners') ?></a></li>
-                <li><a href="<?=$url->named('stations:reports:soundexchange', ['station' => $station->id]) ?>"><?=_('SoundExchange Report') ?></a></li>
             <?php endif; ?>
             </ul>
         </li>

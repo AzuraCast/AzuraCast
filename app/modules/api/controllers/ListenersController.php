@@ -40,11 +40,38 @@ class ListenersController extends BaseController
             return $this->returnError($e->getMessage(), 403);
         }
 
-        $listeners_raw = $this->em->createQuery('SELECT l FROM Entity\Listener l
-            WHERE l.station_id = :station_id
-            AND l.timestamp_end = 0')
-            ->setParameter('station_id', $station->id)
-            ->getArrayResult();
+        if ($this->hasParam('start')) {
+
+            $start = strtotime($this->getParam('start').' 00:00:00');
+            $end = strtotime($this->getParam('end', $this->getParam('start')).' 23:59:59');
+
+            $listeners_unsorted = $this->em->createQuery('SELECT l FROM Entity\Listener l
+                WHERE l.station_id = :station_id
+                AND l.timestamp_start < :end
+                AND l.timestamp_end > :start')
+                ->setParameter('station_id', $station->id)
+                ->setParameter('start', $start)
+                ->setParameter('end', $end)
+                ->getArrayResult();
+
+            $listeners_raw = [];
+            foreach($listeners_unsorted as $listener) {
+
+                $hash = $listener['listener_hash'];
+                if (!isset($listeners_raw[$hash])) {
+                    $listener['connected_time'] = 0;
+                    $listeners_raw[$hash] = $listener;
+                }
+
+                $listeners_raw[$hash]['connected_time'] += ($listener['timestamp_end'] - $listener['timestamp_start']);
+            }
+        } else {
+            $listeners_raw = $this->em->createQuery('SELECT l FROM Entity\Listener l
+                WHERE l.station_id = :station_id
+                AND l.timestamp_end = 0')
+                ->setParameter('station_id', $station->id)
+                ->getArrayResult();
+        }
 
         /** @var \App\Cache $cache */
         $cache = $this->di['cache'];
@@ -58,7 +85,7 @@ class ListenersController extends BaseController
             $api->ip = (string)$listener['listener_ip'];
             $api->user_agent = (string)$listener['listener_user_agent'];
             $api->connected_on = (int)$listener['timestamp_start'];
-            $api->connected_time = time() - $listener['timestamp_start'];
+            $api->connected_time = $listener['connected_time'] ?? (time() - $listener['timestamp_start']);
 
             $api->location = $cache->getOrSet('/ip/' . $api->ip, function () use ($api, $client, $http_requests) {
 

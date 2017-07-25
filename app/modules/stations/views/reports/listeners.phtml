@@ -1,13 +1,31 @@
-<?php $this->layout('main', ['title' => _('Live Listeners'), 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => _('Listeners'), 'manual' => true]) ?>
+
+<?php $this->start('custom_js') ?>
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<?php $this->end() ?>
+
+<?php $this->start('custom_css') ?>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+<?php $this->end() ?>
 
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header ch-alt">
-                <h2><?=_('Live Listeners') ?></h2>
+                <div class="row">
+                    <div class="col-md-8">
+                        <h2><?=_('Listeners') ?></h2>
+                        <div><span id="listener-count">0</span> Unique</div>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <a class="btn btn-default" id="reportrange" href="#">
+                            <i class="zmdi zmdi-calendar"></i> <span>Live Report</span>
+                        </a>
+                    </div>
+                </div>
             </div>
             <div id="googlemap" style="height: 350px;">
-
                 <div class="card-body card-padding">
                     <?php if (empty($gmaps_api_key)): ?>
                         <h4><?=_('Enable Google Maps API') ?></h4>
@@ -25,7 +43,6 @@
                         </form>
                     <?php endif; ?>
                 </div>
-
             </div>
             <table class="data-table table table-responsive table-striped" id="app-datatable">
                 <thead>
@@ -60,8 +77,62 @@
 </div>
 
 <script type="text/javascript">
-
 $(function() {
+
+    var load_timeout;
+    var updateListeners = function(start, end) {
+        clearTimeout(load_timeout);
+
+        var params = {};
+        if (!is_live) {
+            params.start = start.format('YYYY-MM-DD');
+            params.end = end.format('YYYY-MM-DD');
+        }
+
+        $.getJSON('<?=$url->named('api:listeners:index', ['station' => $station->id]) ?>', params, function (data) {
+            app_datatable.listeners = data;
+
+            $('#listener-count').text(data.length);
+
+            if (gmaps_api_key !== '') {
+                setMapPoints(data);
+            }
+
+            if (is_live) {
+                load_timeout = setTimeout(updateListeners, 15 * 1000);
+            }
+        });
+    };
+
+    var live_time = moment(0);
+    var is_live = true;
+
+    function cb(start, end) {
+        is_live = live_time.isSame(start, 'day');
+
+        if (is_live) {
+            $('#reportrange span').html('Live Report');
+        } else {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+
+        updateListeners(start, end);
+    }
+
+    $('#reportrange').daterangepicker({
+        startDate: live_time,
+        endDate: live_time,
+        opens: "left",
+        ranges: {
+            'Live': [moment(0), moment(0)],
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
 
     var gmaps_api_key = "<?=$this->e($gmaps_api_key) ?>";
 
@@ -72,22 +143,9 @@ $(function() {
         }
     });
 
-    var load_timeout;
-    var updateListeners = function() {
-        clearTimeout(load_timeout);
-
-        $.getJSON('<?=$url->named('api:listeners:index', ['station' => $station->id]) ?>', {}, function (data) {
-            app_datatable.listeners = data;
-            if (gmaps_api_key !== '') {
-                setMapPoints(data);
-            }
-            load_timeout = setTimeout(updateListeners, 15*1000);
-        });
-    };
-
     if (gmaps_api_key === '') {
 
-        updateListeners();
+        cb(live_time, live_time);
 
     } else {
 
@@ -101,7 +159,7 @@ $(function() {
                 center: {lat: 25, lng: 12}
             });
 
-            updateListeners();
+            cb(live_time, live_time);
         }
 
         window.initMap = initMap;

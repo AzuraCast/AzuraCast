@@ -80,11 +80,16 @@ class ListenersController extends BaseController
 
         $ip_info = $this->_getIpInfo($ips);
 
+        $detect = new \Mobile_Detect;
+
         $listeners = [];
         foreach($listeners_raw as $listener) {
+            $detect->setUserAgent($listener['listener_user_agent']);
+
             $api = new Entity\Api\Listener;
             $api->ip = (string)$listener['listener_ip'];
             $api->user_agent = (string)$listener['listener_user_agent'];
+            $api->is_mobile = $detect->isMobile();
             $api->connected_on = (int)$listener['timestamp_start'];
             $api->connected_time = $listener['connected_time'] ?? (time() - $listener['timestamp_start']);
             $api->location = $ip_info[$listener['listener_ip']];

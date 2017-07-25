@@ -21,7 +21,8 @@
         "lstrojny/fxmlrpc": "^0.14.0",
         "php-http/socket-client": "^1.2",
         "php-http/message": "^1.4",
-        "php-http/guzzle6-adapter": "^1.1"
+        "php-http/guzzle6-adapter": "^1.1",
+        "mobiledetect/mobiledetectlib": "^2.8"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",

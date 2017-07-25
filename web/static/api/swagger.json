@@ -256,10 +256,15 @@
                     "type": "string",
                     "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36"
                 },
+                "is_mobile": {
+                    "description": "Whether the user-agent is likely a mobile browser.",
+                    "type": "boolean",
+                    "example": true
+                },
                 "connected_on": {
                     "description": "UNIX timestamp that the user first connected.",
                     "type": "integer",
-                    "example": 1500620470
+                    "example": 1501014030
                 },
                 "connected_time": {
                     "description": "Number of seconds that the user has been connected.",
@@ -328,7 +333,7 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1500620470
+                    "example": 1501014030
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
@@ -400,7 +405,7 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1500620470
+                    "example": 1501014030
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
@@ -523,7 +528,7 @@
                 "timestamp": {
                     "description": "The current UNIX timestamp",
                     "type": "integer",
-                    "example": 1500620470
+                    "example": 1501014030
                 }
             },
             "type": "object"

@@ -183,7 +183,7 @@ $(function() {
                 l.id = l.location.lon + ',' + l.location.lat + ',' + l.ip;
                 idlist[i] = l.id;
 
-                var content = '<div style="color: black">IP: ' + l.ip + '<br>Country: ' + l.location.country + '<br>Region: ' + l.location.regionName + '<br>City: ' + l.location.city + '<br>Connected at ' + new Date(l.timestamp * 1000) + '<br>Time connected: ' + l.connected + '<br>User Agent: ' + l.user_agent + '</div>';
+                var content = '<div style="color: black">IP: ' + l.ip + '<br>Country: ' + l.location.country + '<br>Region: ' + l.location.regionName + '<br>City: ' + l.location.city + '<br>Connected at ' + new Date(l.connected_on * 1000) + '<br>Time connected: ' + l.connected_time + '<br>User Agent: ' + l.user_agent + '</div>';
 
                 if (mapmarkers[l.id]) {
                     mapmarkers[l.id].infowindow.setContent(content);

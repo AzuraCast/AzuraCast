@@ -26,6 +26,14 @@ class Listener
     public $user_agent;
 
     /**
+     * Whether the user-agent is likely a mobile browser.
+     *
+     * @SWG\Property(example=true)
+     * @var bool
+     */
+    public $is_mobile;
+
+    /**
      * UNIX timestamp that the user first connected.
      *
      * @SWG\Property(example=SAMPLE_TIMESTAMP)

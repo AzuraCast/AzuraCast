@@ -20,7 +20,7 @@
                     </div>
                     <div class="col-md-4 text-right">
                         <a class="btn btn-default" id="reportrange" href="#">
-                            <i class="zmdi zmdi-calendar"></i> <span>Live Report</span>
+                            <i class="zmdi zmdi-calendar"></i> <span> <?=_('Live Listeners') ?></span>
                         </a>
                     </div>
                 </div>
@@ -57,7 +57,15 @@
                     <tr v-for="listener in listeners">
                         <td>{{ listener.ip }}</td>
                         <td>{{ listener.connected_time }}</td>
-                        <td>{{ listener.user_agent }}</td>
+                        <td>
+                            <span v-if="listener.is_mobile" title="<?=_('Mobile Device') ?>">
+                                <i class="zmdi zmdi-smartphone"></i>
+                            </span>
+                            <span v-else title="<?=_('Desktop Device') ?>">
+                                <i class="zmdi zmdi-desktop-windows"></i>
+                            </span>
+                            {{ listener.user_agent }}
+                        </td>
                         <td>
                             <span v-if="listener.location.status == 'success'">
                                 {{ listener.location.region}}, {{ listener.location.country }}
@@ -111,7 +119,7 @@ $(function() {
         is_live = live_time.isSame(start, 'day');
 
         if (is_live) {
-            $('#reportrange span').html('Live Report');
+            $('#reportrange span').html("<?=_('Live Listeners') ?>");
         } else {
             $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         }
@@ -124,13 +132,13 @@ $(function() {
         endDate: live_time,
         opens: "left",
         ranges: {
-            'Live': [moment(0), moment(0)],
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            "<?=_('Live Listeners') ?>": [moment(0), moment(0)],
+            "<?=_('Today') ?>": [moment(), moment()],
+            "<?=_('Yesterday') ?>": [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            "<?=_('Last 7 Days') ?>": [moment().subtract(6, 'days'), moment()],
+            "<?=_('Last 30 Days') ?>": [moment().subtract(29, 'days'), moment()],
+            "<?=_('This Month') ?>": [moment().startOf('month'), moment().endOf('month')],
+            "<?=_('Last Month') ?>": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
     }, cb);
 

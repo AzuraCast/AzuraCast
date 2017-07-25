@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-25 10:03+0000\n"
+"POT-Creation-Date: 2017-07-25 20:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1797,6 +1797,12 @@ msgstr ""
 msgid "Title / File Path"
 msgstr ""
 
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:23
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:122
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:135
+msgid "Live Listeners"
+msgstr ""
+
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:31
 msgid "Enable Google Maps API"
 msgstr ""
@@ -1817,8 +1823,40 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:69
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:61
+msgid "Mobile Device"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:64
+msgid "Desktop Device"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:77
 msgid "Unknown"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:136
+msgid "Today"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:137
+msgid "Yesterday"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:138
+msgid "Last 7 Days"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:139
+msgid "Last 30 Days"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:140
+msgid "This Month"
+msgstr ""
+
+#: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:141
+msgid "Last Month"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:1

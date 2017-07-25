@@ -73,11 +73,12 @@ class ListenersController extends BaseController
                 ->getArrayResult();
         }
 
-        /** @var \App\Cache $cache */
-        $cache = $this->di['cache'];
+        $ips = [];
+        foreach($listeners_raw as $listener) {
+            $ips[$listener['listener_ip']] = $listener['listener_ip'];
+        }
 
-        $client = new \GuzzleHttp\Client(['base_uri' => 'http://ip-api.com/json/']);
-        $http_requests = 0;
+        $ip_info = $this->_getIpInfo($ips);
 
         $listeners = [];
         foreach($listeners_raw as $listener) {
@@ -86,29 +87,67 @@ class ListenersController extends BaseController
             $api->user_agent = (string)$listener['listener_user_agent'];
             $api->connected_on = (int)$listener['timestamp_start'];
             $api->connected_time = $listener['connected_time'] ?? (time() - $listener['timestamp_start']);
-
-            $api->location = $cache->getOrSet('/ip/' . $api->ip, function () use ($api, $client, $http_requests) {
-
-                $http_requests++;
-                if ($http_requests > 75) {
-                    return null;
-                }
-
-                $response = $client->get($api->ip);
-                if ($response->getStatusCode() == 200) {
-                    $location_body = $response->getBody()->getContents();
-                    $location = json_decode($location_body, true);
-                    unset($location['query']);
-                    return $location;
-                }
-
-                return null;
-
-            }, 3600);
+            $api->location = $ip_info[$listener['listener_ip']];
 
             $listeners[] = $api;
         }
 
         return $this->returnSuccess($listeners);
+    }
+
+    protected function _getIpInfo($raw_ips)
+    {
+        /** @var \App\Cache $cache */
+        $cache = $this->di['cache'];
+
+        $return = [];
+        foreach($raw_ips as $ip) {
+            $ip_info = $cache->get('/ip/'.$ip, null);
+            if ($ip_info !== null) {
+                $return[$ip] = $ip_info;
+                unset($raw_ips[$ip]);
+            }
+        }
+
+        if (empty($raw_ips)) {
+            return $return;
+        }
+
+        // Set up IP API batch query process.
+        $client = new \GuzzleHttp\Client([
+            'base_uri' => 'http://ip-api.com/batch',
+            'timeout' => 10,
+        ]);
+
+        $ips_per_request = 90;
+
+        for($i = 0; $i <= count($raw_ips); $i += $ips_per_request) {
+
+            $ips = array_slice($raw_ips, $i, $ips_per_request);
+
+            $batch_json = [];
+            foreach($ips as $ip) {
+                $batch_json[] = ['query' => $ip];
+            }
+
+            $response = $client->post('', [
+                'json' => $batch_json,
+            ]);
+
+            if ($response->getStatusCode() == 200) {
+                $response_body = $response->getBody()->getContents();
+                $response = json_decode($response_body, true);
+
+                foreach($response as $location_row) {
+                    $ip = $location_row['query'];
+                    unset($location_row['query']);
+
+                    $cache->set($location_row, '/ip/'.$ip, 3600);
+                    $return[$ip] = $location_row;
+                }
+            }
+        }
+
+        return $return;
     }
 }

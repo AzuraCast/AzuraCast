@@ -149,6 +149,7 @@ class StationMedia extends \App\Doctrine\Entity
      * @JoinColumns({
      *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
      * })
+     * @var Station
      */
     protected $station;
 
@@ -157,6 +158,7 @@ class StationMedia extends \App\Doctrine\Entity
      * @JoinColumns({
      *   @JoinColumn(name="song_id", referencedColumnName="id", onDelete="SET NULL")
      * })
+     * @var Song|null
      */
     protected $song;
 
@@ -171,6 +173,12 @@ class StationMedia extends \App\Doctrine\Entity
 
     /**
      * Process metadata information from media file.
+     *
+     * @param bool $force
+     * @return array|bool
+     *   - Array containing song information, if one is detected and needs updating
+     *   - True if information was updated, but no song data was detected
+     *   - False if information was not updated
      */
     public function loadFromFile($force = false)
     {
@@ -181,10 +189,16 @@ class StationMedia extends \App\Doctrine\Entity
         $media_base_dir = $this->station->getRadioMediaDir();
         $media_path = $media_base_dir . '/' . $this->path;
 
+        $path_parts = pathinfo($media_path);
+
         // Only update metadata if the file has been updated.
         $media_mtime = filemtime($media_path);
-        if ($media_mtime > $this->mtime || !$this->song || $force) {
-            // Load metadata from MP3 file.
+
+        if ($media_mtime > $this->mtime || $force) {
+
+            $this->mtime = $media_mtime;
+
+            // Load metadata from supported files.
             $id3 = new \getID3();
 
             $id3->option_md5_data = true;
@@ -193,35 +207,43 @@ class StationMedia extends \App\Doctrine\Entity
 
             $file_info = $id3->analyze($media_path);
 
-            if (isset($file_info['error'])) {
-                throw new \App\Exception($file_info['error'][0]);
-            }
+            if (empty($file_info['error'])) {
+                $this->setLength($file_info['playtime_seconds']);
 
-            $this->setLength($file_info['playtime_seconds']);
-
-            $tags_to_set = ['title', 'artist', 'album'];
-
-            if (!empty($file_info['tags'])) {
-                foreach ($file_info['tags'] as $tag_type => $tag_data) {
-                    foreach ($tags_to_set as $tag) {
-                        if (!empty($tag_data[$tag][0])) {
-                            $this->{$tag} = $tag_data[$tag][0];
+                $tags_to_set = ['title', 'artist', 'album'];
+                if (!empty($file_info['tags'])) {
+                    foreach ($file_info['tags'] as $tag_type => $tag_data) {
+                        foreach ($tags_to_set as $tag) {
+                            if (!empty($tag_data[$tag][0])) {
+                                $this->{$tag} = $tag_data[$tag][0];
+                            }
                         }
                     }
                 }
+
+                if (!empty($this->title)) {
+                    return [
+                        'artist' => $this->artist,
+                        'title' => $this->title,
+                    ];
+                }
             }
 
-            if (empty($this->title)) {
-                $path_parts = pathinfo($media_path);
-                $this->title = $path_parts['filename'];
+            // Attempt to derive title and artist from filename.
+            $filename = str_replace('_', ' ', $path_parts['filename']);
+
+            $string_parts = explode('-', $filename);
+
+            // If not normally delimited, return "text" only.
+            if (count($string_parts) == 1) {
+                $this->title = trim($filename);
+                $this->artist = '';
+            } else {
+                $this->title = trim(array_pop($string_parts));
+                $this->artist = trim(implode('-', $string_parts));
             }
 
-            $this->mtime = $media_mtime;
-
-            return [
-                'artist' => $this->artist,
-                'title' => $this->title,
-            ];
+            return true;
         }
 
         return false;
@@ -256,34 +278,9 @@ class StationMedia extends \App\Doctrine\Entity
         // write tags
         if ($tagwriter->WriteTags()) {
             $this->mtime = time();
-
             return true;
         }
-    }
 
-    /**
-     * Move this media file to the "not-processed" directory.
-     */
-    public function moveToNotProcessed()
-    {
-        $old_path = $this->getFullPath();
-
-        $media_base_dir = $this->station->getRadioMediaDir();
-        $unprocessed_dir = $media_base_dir . '/not-processed';
-
-        @mkdir($unprocessed_dir);
-
-        $new_path = $unprocessed_dir . '/' . basename($this->path);
-        @rename($old_path, $new_path);
-    }
-
-    /**
-     * Return a list of supported formats.
-     *
-     * @return array
-     */
-    public static function getSupportedFormats()
-    {
-        return ['mp3', 'ogg', 'm4a', 'flac'];
+        return false;
     }
 }

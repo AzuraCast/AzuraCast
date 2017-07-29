@@ -222,7 +222,7 @@ class FilesController extends BaseController
                 }
 
                 $media_in_dir[$media_row['path']] = [
-                    'is_playable' => true,
+                    'is_playable' => !empty($media_row['song_id']),
                     'length' => $media_row['length'],
                     'length_text' => $media_row['length_text'],
                     'artist' => $media_row['artist'],
@@ -474,28 +474,22 @@ class FilesController extends BaseController
             return $music_files;
         }
 
-        $supported = StationMedia::getSupportedFormats();
-
         if (is_dir($path)) {
             $music_files = [];
 
             $files = array_diff(scandir($path), ['.', '..']);
             foreach ($files as $file) {
-                $file_ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-
                 $file_path = $path . '/' . $file;
                 if (is_dir($file_path)) {
                     $music_files = array_merge($music_files, $this->_getMusicFiles($file_path));
-                } elseif (in_array($file_ext, $supported)) {
+                } else {
                     $music_files[] = $file_path;
                 }
             }
 
             return $music_files;
         } else {
-            $file_ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-
-            return (in_array($file_ext, $supported)) ? [$path] : [];
+            return [$path];
         }
     }
 

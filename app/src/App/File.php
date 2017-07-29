@@ -56,7 +56,7 @@ class File
         $str = html_entity_decode( $str, ENT_QUOTES, "utf-8" );
         $str = htmlentities($str, ENT_QUOTES, "utf-8");
         $str = preg_replace("/(&)([a-z])([a-z]+;)/i", '$2', $str);
-        $str = str_replace(' ', '-', $str);
+        $str = str_replace(' ', '_', $str);
         $str = rawurlencode($str);
         $str = str_replace('%', '-', $str);
 

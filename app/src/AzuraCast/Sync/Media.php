@@ -2,10 +2,7 @@
 namespace AzuraCast\Sync;
 
 use Doctrine\ORM\EntityManager;
-use Entity\Song;
-use Entity\Station;
-use Entity\StationMedia;
-use Entity\StationPlaylist;
+use Entity;
 
 class Media extends SyncAbstract
 {
@@ -13,36 +10,35 @@ class Media extends SyncAbstract
     {
         /** @var EntityManager $em */
         $em = $this->di['em'];
-        $stations = $em->getRepository(Station::class)->findAll();
+        $stations = $em->getRepository(Entity\Station::class)->findAll();
 
         foreach ($stations as $station) {
             $this->importMusic($station);
         }
     }
 
-    public function importMusic(Station $station)
+    public function importMusic(Entity\Station $station)
     {
         $base_dir = $station->getRadioMediaDir();
         if (empty($base_dir)) {
             return;
         }
 
-        $glob_formats = implode(',', StationMedia::getSupportedFormats());
-        $music_files_raw = $this->globDirectory($base_dir . '/*.{' . $glob_formats . '}', \GLOB_BRACE);
+        $music_files_raw = $this->globDirectory($base_dir . '/*.*');
         $music_files = [];
 
         foreach ($music_files_raw as $music_file_path) {
             $path_short = str_replace($base_dir . '/', '', $music_file_path);
 
-            if (substr($path_short, 0, strlen('not-processed')) == 'not-processed') {
-                continue;
-            }
-
             $path_hash = md5($path_short);
             $music_files[$path_hash] = $path_short;
         }
 
+        /** @var EntityManager $em */
         $em = $this->di['em'];
+
+        /** @var Entity\Repository\SongRepository $song_repo */
+        $song_repo = $em->getRepository(Entity\Song::class);
 
         $existing_media = $station->media;
         foreach ($existing_media as $media_row) {
@@ -51,18 +47,13 @@ class Media extends SyncAbstract
 
             if (file_exists($full_path)) {
                 // Check for modifications.
-                try {
-                    $song_info = $media_row->loadFromFile();
-                    if (!empty($song_info)) {
-                        $media_row->song = $em->getRepository(Song::class)->getOrCreate($song_info);
-                    }
+                $song_info = $media_row->loadFromFile();
 
-                    $em->persist($media_row);
-                } catch (\App\Exception $e) {
-                    $media_row->moveToNotProcessed();
-
-                    $em->remove($media_row);
+                if (is_array($song_info)) {
+                    $media_row->song = $song_repo->getOrCreate($song_info);
                 }
+
+                $em->persist($media_row);
 
                 $path_hash = md5($media_row->path);
                 unset($music_files[$path_hash]);
@@ -74,26 +65,22 @@ class Media extends SyncAbstract
 
         // Create files that do not currently exist.
         foreach ($music_files as $new_file_path) {
-            $media_row = new StationMedia;
+            $media_row = new Entity\StationMedia;
             $media_row->station = $station;
             $media_row->path = $new_file_path;
 
-            try {
-                $song_info = $media_row->loadFromFile();
-                if (!empty($song_info)) {
-                    $media_row->song = $em->getRepository(Song::class)->getOrCreate($song_info);
-                }
-
-                $em->persist($media_row);
-            } catch (\Exception $e) {
-                $media_row->moveToNotProcessed();
+            $song_info = $media_row->loadFromFile();
+            if (is_array($song_info)) {
+                $media_row->song = $song_repo->getOrCreate($song_info);
             }
+
+            $em->persist($media_row);
         }
 
         $em->flush();
     }
 
-    public function importPlaylists(Station $station)
+    public function importPlaylists(Entity\Station $station)
     {
         $base_dir = $station->getRadioPlaylistsDir();
         if (empty($base_dir)) {
@@ -110,13 +97,14 @@ class Media extends SyncAbstract
         }
 
         // Iterate through playlists.
+        /** @var EntityManager $em */
         $em = $this->di['em'];
 
         $playlist_files_raw = $this->globDirectory($base_dir . '/*.{m3u,pls}', \GLOB_BRACE);
 
         foreach ($playlist_files_raw as $playlist_file_path) {
             // Create new StationPlaylist record.
-            $record = new StationPlaylist;
+            $record = new Entity\StationPlaylist;
             $record->station = $station;
 
             $path_parts = pathinfo($playlist_file_path);

@@ -348,7 +348,15 @@ $(function() {
 
     function getUrlHash()
     {
-        return decodeURIComponent(window.location.hash.substr(1));
+        var url_hash = decodeURIComponent(window.location.hash.substr(1).replace(/\+/g, "%20"));
+
+        if (url_hash.substr(0, 9) === 'playlist:') {
+            window.location.hash = '';
+            grid.bootgrid("clear").bootgrid("search", url_hash);
+            return '';
+        }
+
+        return url_hash;
     }
 
     function getSelectedFiles()

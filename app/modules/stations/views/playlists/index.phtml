@@ -41,7 +41,9 @@
                     <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])) ?>"><?=_('Delete') ?></a>
                 </td>
                 <td>
-                    <big><?=$row['name'] ?></big>
+                    <big>
+                        <a href="<?=$url->route(['module' => 'stations', 'controller' => 'files', 'action' => 'index', 'station' => $station->id]).'#playlist:'.urlencode($row['name']) ?>"><?=$row['name'] ?></a>
+                    </big>
                     <?php if ($row['include_in_automation']): ?>
                         <br><span class="label label-success"><?=_('Auto-Assigned') ?></span>
                     <?php endif; ?>

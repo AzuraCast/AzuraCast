@@ -10,6 +10,14 @@ use Entity;
 class NowPlayingCurrentSong extends SongHistory
 {
     /**
+     * Set to true if the AutoDJ did not determine the song, which generally means the song is live.
+     *
+     * @SWG\Property(example=false)
+     * @var bool
+     */
+    public $is_live;
+
+    /**
      * Elapsed time of the song's playback since it started.
      *
      * @SWG\Property(example=25)

@@ -146,6 +146,11 @@ class SongHistory extends \App\Doctrine\Entity
         $response->duration = (int)$this->duration;
         $response->is_request = (bool)(!empty($this->request_id));
         $response->song = $this->song->api();
+
+        if ($now_playing) {
+            $response->is_live = (bool)($this->timestamp_cued === 0);
+        }
+
         return $response;
     }
 }

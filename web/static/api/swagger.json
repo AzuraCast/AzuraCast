@@ -264,7 +264,7 @@
                 "connected_on": {
                     "description": "UNIX timestamp that the user first connected.",
                     "type": "integer",
-                    "example": 1501014030
+                    "example": 1501315458
                 },
                 "connected_time": {
                     "description": "Number of seconds that the user has been connected.",
@@ -316,6 +316,11 @@
         },
         "NowPlayingCurrentSong": {
             "properties": {
+                "is_live": {
+                    "description": "Set to true if the AutoDJ did not determine the song, which generally means the song is live.",
+                    "type": "boolean",
+                    "example": false
+                },
                 "elapsed": {
                     "description": "Elapsed time of the song's playback since it started.",
                     "type": "integer",
@@ -333,7 +338,7 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1501014030
+                    "example": 1501315458
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
@@ -405,7 +410,7 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1501014030
+                    "example": 1501315458
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
@@ -528,7 +533,7 @@
                 "timestamp": {
                     "description": "The current UNIX timestamp",
                     "type": "integer",
-                    "example": 1501014030
+                    "example": 1501315458
                 }
             },
             "type": "object"

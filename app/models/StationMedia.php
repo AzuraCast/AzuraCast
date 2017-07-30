@@ -60,7 +60,7 @@ class StationMedia extends \App\Doctrine\Entity
         $length_min = floor($length / 60);
         $length_sec = $length % 60;
 
-        $this->length = $length;
+        $this->length = round($length);
         $this->length_text = $length_min . ':' . str_pad($length_sec, 2, '0', STR_PAD_LEFT);
     }
 

@@ -281,7 +281,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
         $song_timestamps = [];
         $songs_by_id = [];
         foreach($random_songs as $media_row) {
-            if (empty($media_row->song_id)) {
+            if ($media_row->length == 0) {
                 $use_song_ids = false;
                 break;
             } else {

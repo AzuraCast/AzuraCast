@@ -177,7 +177,6 @@ class StationMedia extends \App\Doctrine\Entity
      * @param bool $force
      * @return array|bool
      *   - Array containing song information, if one is detected and needs updating
-     *   - True if information was updated, but no song data was detected
      *   - False if information was not updated
      */
     public function loadFromFile($force = false)
@@ -194,7 +193,7 @@ class StationMedia extends \App\Doctrine\Entity
         // Only update metadata if the file has been updated.
         $media_mtime = filemtime($media_path);
 
-        if ($media_mtime > $this->mtime || $force) {
+        if ($media_mtime > $this->mtime || !$this->song_id || $force) {
 
             $this->mtime = $media_mtime;
 
@@ -220,30 +219,28 @@ class StationMedia extends \App\Doctrine\Entity
                         }
                     }
                 }
-
-                if (!empty($this->title)) {
-                    return [
-                        'artist' => $this->artist,
-                        'title' => $this->title,
-                    ];
-                }
             }
 
             // Attempt to derive title and artist from filename.
-            $filename = str_replace('_', ' ', $path_parts['filename']);
+            if (empty($this->title)) {
+                $filename = str_replace('_', ' ', $path_parts['filename']);
 
-            $string_parts = explode('-', $filename);
+                $string_parts = explode('-', $filename);
 
-            // If not normally delimited, return "text" only.
-            if (count($string_parts) == 1) {
-                $this->title = trim($filename);
-                $this->artist = '';
-            } else {
-                $this->title = trim(array_pop($string_parts));
-                $this->artist = trim(implode('-', $string_parts));
+                // If not normally delimited, return "text" only.
+                if (count($string_parts) == 1) {
+                    $this->title = trim($filename);
+                    $this->artist = '';
+                } else {
+                    $this->title = trim(array_pop($string_parts));
+                    $this->artist = trim(implode('-', $string_parts));
+                }
             }
 
-            return true;
+            return [
+                'artist' => $this->artist,
+                'title' => $this->title,
+            ];
         }
 
         return false;

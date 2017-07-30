@@ -222,7 +222,7 @@ class FilesController extends BaseController
                 }
 
                 $media_in_dir[$media_row['path']] = [
-                    'is_playable' => !empty($media_row['song_id']),
+                    'is_playable' => ($media_row['length'] !== 0),
                     'length' => $media_row['length'],
                     'length_text' => $media_row['length_text'],
                     'artist' => $media_row['artist'],

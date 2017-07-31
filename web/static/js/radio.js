@@ -85,8 +85,7 @@ function setVolume(new_volume)
     var volume_percent = Math.round(volume * 100);
     $('.jp-volume-bar-value').css('width', volume_percent+'%');
 
-    var v = Math.pow(volume,3);
-    player.volume = v;
+    player.volume = Math.pow(volume,3);
 
     if (store.enabled)
         store.set('player_volume', volume*100);

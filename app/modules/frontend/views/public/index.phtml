@@ -114,6 +114,13 @@ function nowPlaying() {
     ]) ?>', {}, function (row) {
         var station_row = $('#station_'+row.station.id);
 
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: row.now_playing.song.title,
+                artist: row.now_playing.song.artist
+            });
+        }
+
         var np_title = row.now_playing.song.title;
         if (row.now_playing.is_request) {
             np_title += '<span class="label label-default">Listener Request</span>';

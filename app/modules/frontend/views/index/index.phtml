@@ -196,6 +196,14 @@ function nowPlaying() {
             var station_row = $('#station_'+row.station.id);
 
             if (station_row.length) {
+
+                if ('mediaSession' in navigator) {
+                    navigator.mediaSession.metadata = new MediaMetadata({
+                        title: row.now_playing.song.title,
+                        artist: row.now_playing.song.artist
+                    });
+                }
+
                 station_row.find('.nowplaying-title').text(row.now_playing.song.title);
                 station_row.find('.nowplaying-artist').text(row.now_playing.song.artist);
                 station_row.find('.nowplaying-listeners').text(row.listeners.total)

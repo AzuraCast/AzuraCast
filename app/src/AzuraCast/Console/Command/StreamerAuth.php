@@ -4,6 +4,7 @@ namespace AzuraCast\Console\Command;
 use App\Sync\Manager;
 use Entity\Station;
 use Entity\StationStreamer;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -18,19 +19,16 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
             ->setDescription('Authorize a streamer to connect as a source for the radio service.')
             ->addArgument(
                 'station_id',
-                null,
-                'The ID of the station.',
-                null
+                InputArgument::REQUIRED,
+                'The ID of the station.'
             )->addArgument(
                 'user',
-                null,
-                'The streamer username (or "shoutcast" for SC legacy auth).',
-                null
+                InputArgument::REQUIRED,
+                'The streamer username (or "shoutcast" for SC legacy auth).'
             )->addArgument(
                 'pass',
-                null,
-                'The streamer password (or "username:password" for SC legacy auth).',
-                null
+                InputArgument::REQUIRED,
+                'The streamer password (or "username:password" for SC legacy auth).'
             );
     }
 

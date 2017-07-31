@@ -292,11 +292,11 @@ class StationMediaRepository extends \App\Doctrine\Repository
 
         if ($use_song_ids) {
             // Get the last played timestamps of each song.
-            $last_played = $this->_em->createQuery('SELECT sh.song_id AS song_id, MAX(sh.timestamp_start) AS latest_played
+            $last_played = $this->_em->createQuery('SELECT sh.song_id AS song_id, MAX(sh.timestamp_cued) AS latest_played
                 FROM Entity\SongHistory sh
-                WHERE  sh.song_id IN (:ids) 
+                WHERE sh.song_id IN (:ids) 
                 AND sh.station_id = :station_id
-                AND sh.timestamp_start != 0
+                AND sh.timestamp_cued != 0
                 GROUP BY sh.song_id')
                 ->setParameter('ids', array_keys($song_timestamps))
                 ->setParameter('station_id', $playlist->station_id)

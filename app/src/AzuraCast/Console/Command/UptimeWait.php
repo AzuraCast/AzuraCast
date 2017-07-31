@@ -4,6 +4,7 @@ namespace AzuraCast\Console\Command;
 use AzuraCast;
 use Doctrine\ORM\EntityManager;
 
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -18,7 +19,7 @@ class UptimeWait extends \App\Console\Command\CommandAbstract
             ->setDescription('Wait until a service is online and accepting connections before continuing.')
             ->addArgument(
                 'service',
-                null,
+                InputArgument::OPTIONAL,
                 'The service to check (database, influxdb).',
                 'database'
             );

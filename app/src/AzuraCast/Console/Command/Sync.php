@@ -2,6 +2,7 @@
 namespace AzuraCast\Console\Command;
 
 use AzuraCast;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,7 +17,7 @@ class Sync extends \App\Console\Command\CommandAbstract
             ->setDescription('Run one or more scheduled synchronization tasks.')
             ->addArgument(
                 'task',
-                null,
+                InputArgument::OPTIONAL,
                 'The task to run (nowplaying,short,medium,long).',
                 'nowplaying'
             );

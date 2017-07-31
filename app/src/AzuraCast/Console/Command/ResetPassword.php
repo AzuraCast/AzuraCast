@@ -3,6 +3,7 @@ namespace AzuraCast\Console\Command;
 
 use Entity;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -17,9 +18,8 @@ class ResetPassword extends \App\Console\Command\CommandAbstract
             ->setDescription('Reset the password of the specified account.')
             ->addArgument(
                 'email',
-                null,
-                'The user\'s e-mail address.',
-                null
+                InputArgument::REQUIRED,
+                'The user\'s e-mail address.'
             );
     }
 

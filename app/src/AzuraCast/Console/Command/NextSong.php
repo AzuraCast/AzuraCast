@@ -3,6 +3,7 @@ namespace AzuraCast\Console\Command;
 
 use Entity;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -17,9 +18,13 @@ class NextSong extends \App\Console\Command\CommandAbstract
             ->setDescription('Return the next song to the AutoDJ.')
             ->addArgument(
                 'station_id',
-                null,
-                'The ID of the station.',
-                null
+                InputArgument::REQUIRED,
+                'The ID of the station.'
+            )->addArgument(
+                'simulate_autodj',
+                InputArgument::OPTIONAL,
+                'Force the AutoDJ to select a new song after executing this command.',
+                false
             );
     }
 
@@ -42,8 +47,10 @@ class NextSong extends \App\Console\Command\CommandAbstract
         /** @var Entity\Repository\SongHistoryRepository $history_repo */
         $history_repo = $em->getRepository(Entity\SongHistory::class);
 
+        $as_autodj = (bool)$input->getArgument('simulate_autodj');
+
         /** @var Entity\SongHistory|null $sh */
-        $sh = $history_repo->getNextSongForStation($station);
+        $sh = $history_repo->getNextSongForStation($station, $as_autodj);
 
         if ($sh instanceof Entity\SongHistory) {
             // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'

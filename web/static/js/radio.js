@@ -44,8 +44,13 @@ $(function() {
 
     });
 
-    // Handle button clicks.
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.setActionHandler('pause', function() {
+            stopAllPlayers();
+        });
+    }
 
+    // Handle button clicks.
     $('.jp-pause').on('click', function(e) {
         stopAllPlayers();
     });

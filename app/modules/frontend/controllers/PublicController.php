@@ -16,7 +16,11 @@ class PublicController extends BaseController
     public function preDispatch()
     {
         $this->station = $this->_getStation();
+
         $this->view->station = $this->station;
+
+        $frontend = $this->station->getFrontendAdapter($this->di);
+        $this->view->stream_url = $frontend->getStreamUrl();
     }
 
     public function indexAction()

@@ -18,7 +18,17 @@ class IndexController extends BaseController
             return $this->render('controller::noaccess');
         }
 
-        $this->view->stations = $stations;
+        $view_stations = [];
+        foreach($stations as $row) {
+            /** @var Entity\Station $row */
+            $view_stations[] = [
+                'station' => $row,
+                'short_name' => $row->getShortName(),
+                'stream_url' => $row->getFrontendAdapter($this->di)->getStreamUrl(),
+            ];
+        }
+
+        $this->view->stations = $view_stations;
 
         /** @var \App\Cache $cache */
         $cache = $this->di->get('cache');

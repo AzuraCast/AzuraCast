@@ -242,13 +242,40 @@ return function (\Slim\Container $di, $settings) {
 
     };
 
-    $di['view'] = $di->factory(function ($di) {
+    $di['view'] = $di->factory(function (\Slim\Container $di) {
         $view = new \App\Mvc\View(APP_INCLUDE_BASE . '/templates');
         $view->setFileExtension('phtml');
-        $view->addAppCommands($di);
+
+        $view->loadExtension(new \App\Mvc\View\Paginator($di['url']));
+
+        $view->registerFunction('service', function($service) use ($di) {
+            return $di->get($service);
+        });
+
+        $view->registerFunction('escapeJs', function($string) {
+            return json_encode($string);
+        });
+
+        $view->registerFunction('mailto', function ($address, $link_text = null) {
+            $address = substr(chunk_split(bin2hex(" $address"), 2, ";&#x"), 3, -3);
+            $link_text = (is_null($link_text)) ? $address : $link_text;
+
+            return '<a href="mailto:' . $address . '">' . $link_text . '</a>';
+        });
+
+        $view->registerFunction('pluralize', function ($word, $num = 0) {
+            if ((int)$num == 1) {
+                return $word;
+            } else {
+                return \Doctrine\Common\Inflector\Inflector::pluralize($word);
+            }
+        });
+
+        $view->registerFunction('truncate', function ($text, $length = 80) {
+            return \App\Utilities::truncate_text($text, $length);
+        });
 
         $view->addData([
-            'di' => $di,
             'assets' => $di['assets'],
             'auth' => $di['auth'],
             'acl' => $di['acl'],

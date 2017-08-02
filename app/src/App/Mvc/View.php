@@ -13,6 +13,10 @@ class View extends \League\Plates\Engine
     {
         $this->loadExtension(new View\Paginator($di['url']));
 
+        $this->registerFunction('escapeJs', function($string) {
+            return json_encode((string)$string);
+        });
+
         $this->registerFunction('mailto', function ($address, $link_text = null) {
             $address = substr(chunk_split(bin2hex(" $address"), 2, ";&#x"), 3, -3);
             $link_text = (is_null($link_text)) ? $address : $link_text;

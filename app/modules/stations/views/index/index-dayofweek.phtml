@@ -24,7 +24,7 @@ $(function () {
         
         series: [{
             type: 'pie',
-            name: '<?=_('Listeners') ?>',
+            name: <?=$this->escapeJs(_('Listeners')) ?>,
             data: <?=$day_of_week_stats ?>
         }]
     });

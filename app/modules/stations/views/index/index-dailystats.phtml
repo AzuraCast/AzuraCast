@@ -53,15 +53,15 @@ $(function () {
         ],
         
         series: [{
-            name: '<?=_('Daily Listener Range') ?>',
+            name: <?=$this->escapeJs(_('Daily Listener Range')) ?>,
             type: 'arearange',
             data: <?=$daily_ranges ?>
         }, {
-            name: '<?=_('Hourly Average Listeners') ?>',
+            name: <?=$this->escapeJs(_('Hourly Average Listeners')) ?>,
             type: 'spline',
             data: <?=$hourly_averages ?>
         }, {
-            name: '<?=_('Daily Average Listeners') ?>',
+            name: <?=$this->escapeJs(_('Daily Average Listeners')) ?>,
             type: 'spline',
             data: <?=$daily_averages ?>
         }]

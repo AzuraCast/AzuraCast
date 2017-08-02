@@ -21,7 +21,7 @@ $(function () {
         },
         
         series: [{
-            name: '<?=_('Average Listeners') ?>',
+            name: <?=$this->escapeJs(_('Average Listeners')) ?>,
             type: 'column',
             data: <?=$averages_by_hour ?>
         }]

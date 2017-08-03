@@ -2,6 +2,7 @@
 namespace AzuraCast\Sync;
 
 use Doctrine\ORM\EntityManager;
+use Entity;
 
 class Analytics extends SyncAbstract
 {
@@ -60,11 +61,16 @@ class Analytics extends SyncAbstract
             ->setParameter('earliest', $earliest_timestamp)
             ->execute();
 
-        foreach ($new_records as $new_record) {
-            $row = new \Entity\Analytics;
-            $row->fromArray($em, $new_record);
-
-            $em->persist($row);
+        foreach ($new_records as $row) {
+            $record = new Entity\Analytics(
+                $row['station_id'] ? $em->getReference(Entity\Station::class, $row['station_id']) : null,
+                $row['type'],
+                $row['timestamp'],
+                $row['number_min'],
+                $row['number_max'],
+                $row['number_avg']
+            );
+            $em->persist($record);
         }
 
         $em->flush();

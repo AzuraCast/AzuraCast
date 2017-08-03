@@ -46,9 +46,9 @@ return function (\Slim\Container $di, $settings) {
                     'dbname' => $_ENV['db_name'] ?? 'azuracast',
                     'user' => $_ENV['db_username'] ?? 'azuracast',
                     'password' => (APP_INSIDE_DOCKER) ? 'azur4c457' : $_ENV['db_password'],
-                    'charset' => 'utf8',
+                    'charset' => 'utf8mb4',
                     'driverOptions' => [
-                        1002 => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
+                        \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
                     ],
                 ]
             ];

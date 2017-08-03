@@ -31,6 +31,11 @@ $migrate_config->setMigrationsTableName('app_migrations');
 $migrate_config->setMigrationsDirectory(__DIR__.'/../app/models/Migration');
 $migrate_config->setMigrationsNamespace('Migration');
 
+$output = new \Symfony\Component\Console\Output\ConsoleOutput;
+$migrate_config->setOutputWriter(new \Doctrine\DBAL\Migrations\OutputWriter(function($message) use ($output) {
+    $output->writeln($message);
+}));
+
 $migration_commands = [
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand(),
     new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand(),

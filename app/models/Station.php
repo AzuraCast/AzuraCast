@@ -55,6 +55,15 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="frontend_config", type="json_array", nullable=true) */
     protected $frontend_config;
 
+    public function setFrontendConfig($frontend_config, $force_overwrite = false)
+    {
+        $config = ($force_overwrite) ? [] : (array)$this->frontend_config;
+        foreach((array)$frontend_config as $cfg_key => $cfg_val) {
+            $config[$cfg_key] = $cfg_val;
+        }
+        $this->frontend_config = $config;
+    }
+
     /**
      * @return \AzuraCast\Radio\Frontend\FrontendAbstract
      * @throws \Exception
@@ -77,6 +86,15 @@ class Station extends \App\Doctrine\Entity
 
     /** @Column(name="backend_config", type="json_array", nullable=true) */
     protected $backend_config;
+
+    public function setBackendConfig($backend_config, $force_overwrite = false)
+    {
+        $config = ($force_overwrite) ? [] : (array)$this->backend_config;
+        foreach((array)$backend_config as $cfg_key => $cfg_val) {
+            $config[$cfg_key] = $cfg_val;
+        }
+        $this->backend_config = $config;
+    }
 
     /**
      * @return \AzuraCast\Radio\Backend\BackendAbstract

@@ -136,7 +136,9 @@ class StationMedia extends \App\Doctrine\Entity
 
         foreach($annotation_types as $annotation_property => $annotation_name) {
             if ($this->$annotation_property !== null) {
-                $prop = str_replace(['"', "\n", "\t", "\r"], ["'", '', '', ''], $this->$annotation_property);
+                $prop = $this->$annotation_property;
+                $prop = preg_replace('/[^\00-\255]+/u', '', $prop);
+                $prop = str_replace(['"', "\n", "\t", "\r"], ["'", '', '', ''], $prop);
                 $annotations[] = $annotation_name . '="' . $prop . '"';
             }
         }
@@ -279,5 +281,21 @@ class StationMedia extends \App\Doctrine\Entity
         }
 
         return false;
+    }
+
+    /**
+     * Retrieve the API version of the object/array.
+     *
+     * @return Api\Song
+     */
+    public function api()
+    {
+        $response = new Api\Song;
+        $response->id = (string)$this->song_id;
+        $response->text = $this->artist.' - '.$this->title;
+        $response->artist = (string)$this->artist;
+        $response->title = (string)$this->title;
+
+        return $response;
     }
 }

@@ -44,7 +44,7 @@ class SongHistoryRepository extends \App\Doctrine\Repository
     public function getHistoryForStation(Entity\Station $station, $num_entries = 5)
     {
         $history = $this->_em->createQuery('SELECT sh, s 
-            FROM ' . $this->_entityName . ' sh JOIN sh.song s  
+            FROM ' . $this->_entityName . ' sh JOIN sh.song s LEFT JOIN sh.media sm  
             WHERE sh.station_id = :station_id 
             AND sh.timestamp_end != 0
             ORDER BY sh.id DESC')

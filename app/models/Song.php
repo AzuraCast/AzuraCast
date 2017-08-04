@@ -111,6 +111,7 @@ class Song extends \App\Doctrine\Entity
             }
         }
 
+        // Strip non-alphanumeric characters
         $hash_base = strtolower(preg_replace("/[^A-Za-z0-9]/", '', $song_text));
 
         return md5($hash_base);

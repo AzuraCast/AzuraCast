@@ -145,7 +145,8 @@ class SongHistory extends \App\Doctrine\Entity
         $response->played_at = (int)$this->timestamp_start;
         $response->duration = (int)$this->duration;
         $response->is_request = (bool)(!empty($this->request_id));
-        $response->song = $this->song->api();
+
+        $response->song = ($this->media) ? $this->media->api() : $this->song->api();
 
         if ($now_playing) {
             $response->is_live = (bool)($this->timestamp_cued === 0);

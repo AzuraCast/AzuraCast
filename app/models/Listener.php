@@ -39,7 +39,7 @@ class Listener extends \App\Doctrine\Entity
     /** @Column(name="listener_ip", type="string", length=45) */
     protected $listener_ip;
 
-    /** @Column(name="listener_user_agent", type="string", length=255) */
+    /** @Column(name="listener_user_agent", type="string", length=191) */
     protected $listener_user_agent;
 
     /** @Column(name="listener_hash", type="string", length=32) */

@@ -87,7 +87,7 @@ class StationMedia extends \App\Doctrine\Entity
     /** @Column(name="length_text", type="string", length=10, nullable=true) */
     protected $length_text;
 
-    /** @Column(name="path", type="string", length=255, nullable=true) */
+    /** @Column(name="path", type="string", length=191, nullable=true) */
     protected $path;
 
     public function getFullPath()

@@ -42,7 +42,7 @@ class User extends \App\Doctrine\Entity
         return \App\Service\Gravatar::get($this->email, $size, 'identicon');
     }
 
-    /** @Column(name="auth_password", type="string", length=255, nullable=true) */
+    /** @Column(name="auth_password", type="string", length=191, nullable=true) */
     protected $auth_password;
 
     public function verifyPassword($password)

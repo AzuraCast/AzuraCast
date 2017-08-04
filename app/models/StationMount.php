@@ -52,10 +52,10 @@ class StationMount extends \App\Doctrine\Entity
     /** @Column(name="fallback_mount", type="string", length=100, nullable=true) */
     protected $fallback_mount;
 
-    /** @Column(name="relay_url", type="string", length=255, nullable=true) */
+    /** @Column(name="relay_url", type="string", length=191, nullable=true) */
     protected $relay_url;
 
-    /** @Column(name="authhash", type="string", length=255, nullable=true) */
+    /** @Column(name="authhash", type="string", length=191, nullable=true) */
     protected $authhash;
 
     /** @Column(name="enable_autodj", type="boolean", nullable=false) */

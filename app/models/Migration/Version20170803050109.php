@@ -16,6 +16,15 @@ class Version20170803050109 extends AbstractMigration
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('ALTER TABLE listener CHANGE listener_user_agent listener_user_agent VARCHAR(191) NOT NULL');
+        $this->addSql('ALTER TABLE station CHANGE url url VARCHAR(191) DEFAULT NULL, CHANGE radio_media_dir radio_media_dir VARCHAR(191) DEFAULT NULL, CHANGE radio_base_dir radio_base_dir VARCHAR(191) DEFAULT NULL');
+        $this->addSql('ALTER TABLE station_media CHANGE path path VARCHAR(191) DEFAULT NULL');
+        $this->addSql('ALTER TABLE station_mounts CHANGE relay_url relay_url VARCHAR(191) DEFAULT NULL, CHANGE authhash authhash VARCHAR(191) DEFAULT NULL');
+        $this->addSql('ALTER TABLE users CHANGE auth_password auth_password VARCHAR(191) DEFAULT NULL');
+        $this->addSql('ALTER TABLE app_migrations CHANGE version version VARCHAR(191) NOT NULL');
+
         $this->changeCharset('utf8mb4', 'utf8mb4_unicode_ci');
     }
 
@@ -25,13 +34,20 @@ class Version20170803050109 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('ALTER TABLE listener CHANGE listener_user_agent listener_user_agent VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE station CHANGE url url VARCHAR(255) DEFAULT NULL, CHANGE radio_base_dir radio_base_dir VARCHAR(255) DEFAULT NULL, CHANGE radio_media_dir radio_media_dir VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE station_media CHANGE path path VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE station_mounts CHANGE relay_url relay_url VARCHAR(255) DEFAULT NULL, CHANGE authhash authhash VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE users CHANGE auth_password auth_password VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE app_migrations CHANGE version version VARCHAR(255) NOT NULL');
+
         $this->changeCharset('utf8', 'utf8_unicode_ci');
     }
 
     protected function changeCharset($charset, $collate)
     {
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
         $db_name = $this->connection->getDatabase();
 
         $this->addSql([

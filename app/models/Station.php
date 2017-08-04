@@ -98,10 +98,10 @@ class Station extends \App\Doctrine\Entity
     /** @Column(name="description", type="text", nullable=true) */
     protected $description;
 
-    /** @Column(name="url", type="string", length=255, nullable=true) */
+    /** @Column(name="url", type="string", length=191, nullable=true) */
     protected $url;
 
-    /** @Column(name="radio_base_dir", type="string", length=255, nullable=true) */
+    /** @Column(name="radio_base_dir", type="string", length=191, nullable=true) */
     protected $radio_base_dir;
 
     public function setRadioBaseDir($new_dir)
@@ -123,7 +123,7 @@ class Station extends \App\Doctrine\Entity
         }
     }
 
-    /** @Column(name="radio_media_dir", type="string", length=255, nullable=true) */
+    /** @Column(name="radio_media_dir", type="string", length=191, nullable=true) */
     protected $radio_media_dir;
 
     public function setRadioMediaDir($new_dir)

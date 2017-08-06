@@ -46,8 +46,14 @@ class NowplayingController extends BaseController
 
         /** @var Entity\Api\NowPlaying[] $np */
         $np = $cache->get('api_nowplaying_data', function () {
-            return $this->em->createQuery('SELECT s.nowplaying FROM Entity\Station s')
+            $nowplaying_db = $this->em->createQuery('SELECT s.nowplaying FROM Entity\Station s')
                 ->getArrayResult();
+
+            $np = [];
+            foreach($nowplaying_db as $np_row) {
+                $np[] = $np_row['nowplaying'];
+            }
+            return $np;
         });
 
         // Sanity check for now playing data.
@@ -58,7 +64,7 @@ class NowplayingController extends BaseController
         if ($this->hasParam('station')) {
             $id = $this->getParam('station');
 
-            foreach ($np as $key => $np_row) {
+            foreach ($np as $np_row) {
                 if ($np_row->station->id == (int)$id || $np_row->station->shortcode === $id) {
                     $np_row->now_playing->recalculate();
                     return $this->returnSuccess($np_row);

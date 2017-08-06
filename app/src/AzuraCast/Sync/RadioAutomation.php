@@ -281,7 +281,7 @@ class RadioAutomation extends SyncAbstract
 
                     $delta_total = $data_row['delta_positive'] - $data_row['delta_negative'];
 
-                    $ratio_points[] = ($delta_total / $data_row['listeners_start']) * 100;
+                    $ratio_points[] = ($data_row['listeners_start'] == 0) ? 0 : ($delta_total / $data_row['listeners_start']) * 100;
 
                     // $hour_dist = $hourly_distributions[$data_row['hour']];
                     // ((#REC#PLAY-DELTA*100)/#REC#PLAY-LISTENS)- #CALC#AVG-HOUR-DELTA<#REC#PLAY-TIME>

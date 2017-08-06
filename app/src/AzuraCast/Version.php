@@ -5,7 +5,7 @@
 
 namespace AzuraCast;
 
-define('APP_CORE_VERSION', '0.7.0-2017.06');
+define('APP_CORE_VERSION', '0.7.1-2017.08');
 define('APP_CORE_RELEASE', 'Alpha');
 
 class Version

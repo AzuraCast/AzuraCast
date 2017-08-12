@@ -45,7 +45,7 @@
                     </td>
                     <td>
                     <?php foreach($role['permissions_station'] as $station_name => $station_perms): ?>
-                        <div><b><?=$station_name ?></b>: <?=implode($station_perms, ', ') ?></div>
+                        <div><b><?=$this->e($station_name) ?></b>: <?=implode($station_perms, ', ') ?></div>
                     <?php endforeach; ?>
                     </td>
                 </tr>

@@ -119,11 +119,11 @@
                     <? endif; ?>
                     <tr>
                         <td><?=_('Base Directory') ?></td>
-                        <td class="text-preformatted"><?=$station->getRadioBaseDir() ?></td>
+                        <td class="text-preformatted"><?=$this->e($station->getRadioBaseDir()) ?></td>
                     </tr>
                     <tr>
                         <td><?=_('Media Directory') ?></td>
-                        <td class="text-preformatted"><?=$station->getRadioMediaDir() ?></td>
+                        <td class="text-preformatted"><?=$this->e($station->getRadioMediaDir()) ?></td>
                     </tr>
                     <tr>
                         <td><?=_('Player Embed Code') ?></td>
@@ -197,12 +197,12 @@
                 <?php foreach($stream_urls as $stream_url): ?>
                 <tr class="input">
                     <td>
-                        <a class="btn-audio" href="#" data-url="<?=$stream_url ?>">
+                        <a class="btn-audio" href="#" data-url="<?=$this->e($stream_url) ?>">
                             <i class="zmdi zmdi-play"></i>
                         </a>
                     </td>
                     <td>
-                        <a href="<?=$stream_url ?>"><?=$stream_url ?></a>
+                        <a href="<?=$this->e($stream_url) ?>"><?=$this->e($stream_url) ?></a>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -220,13 +220,13 @@
 
                 <dl>
                     <dt><?=_('Administration URL') ?>:</dt>
-                    <dd><a href="<?=$frontend->getAdminUrl() ?>"><?=$frontend->getAdminUrl() ?></a></dd>
+                    <dd><a href="<?=$this->e($frontend->getAdminUrl()) ?>"><?=$this->e($frontend->getAdminUrl()) ?></a></dd>
 
                     <dt><?=_('Administrator Password') ?>:</dt>
-                    <dd><?=$frontend_config['admin_pw'] ?></dd>
+                    <dd><?=$this->e($frontend_config['admin_pw']) ?></dd>
 
                     <dt><?=_('Source Password') ?>:</dt>
-                    <dd><?=$frontend_config['source_pw'] ?></dd>
+                    <dd><?=$this->e($frontend_config['source_pw']) ?></dd>
                 </dl>
             </div>
         </div>

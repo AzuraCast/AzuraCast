@@ -3,7 +3,10 @@
 <!-- Login -->
 <div class="lc-block toggled" id="l-login">
     <div class="lcb-form">
-        <h3 class="text-left"><?=sprintf(_('Welcome to %s!'), $app_settings['name']) ?></h3>
+        <h3 class="text-left">
+            <?=sprintf(_('Welcome to %s!'), $app_settings['name']) ?>
+            <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
+        </h3>
         <p class="text-left"><?=_('Please log in to continue.') ?></p>
 
         <form id="login-form" action="" method="post">

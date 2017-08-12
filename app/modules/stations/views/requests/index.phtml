@@ -35,13 +35,13 @@
                     </td>
                     <td>
                         <?php if ($request_row['track']['title']): ?>
-                            <b><?=$request_row['track']['title'] ?></b><br>
-                            <?=$request_row['track']['artist'] ?>
+                            <b><?=$this->e($request_row['track']['title']) ?></b><br>
+                            <?=$this->e($request_row['track']['artist']) ?>
                         <?php else: ?>
-                            <?=$request_row['track']['text'] ?>
+                            <?=$this->e($request_row['track']['text']) ?>
                         <?php endif; ?>
                     </td>
-                    <td><?=$request_row['ip'] ?></td>
+                    <td><?=$this->e($request_row['ip']) ?></td>
                     <td>
                     <?php if ($request_row['played_at'] == 0): ?>
                         <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(['action' => 'delete', 'request_id' => $request_row['id']]) ?>"><?=_('Delete') ?></a>

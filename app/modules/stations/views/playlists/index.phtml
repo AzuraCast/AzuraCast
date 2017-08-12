@@ -42,7 +42,7 @@
                 </td>
                 <td>
                     <big>
-                        <a href="<?=$url->route(['module' => 'stations', 'controller' => 'files', 'action' => 'index', 'station' => $station->id]).'#playlist:'.urlencode($row['name']) ?>"><?=$row['name'] ?></a>
+                        <a href="<?=$url->route(['module' => 'stations', 'controller' => 'files', 'action' => 'index', 'station' => $station->id]).'#playlist:'.urlencode($row['name']) ?>"><?=$this->e($row['name']) ?></a>
                     </big>
                     <?php if ($row['include_in_automation']): ?>
                         <br><span class="label label-success"><?=_('Auto-Assigned') ?></span>
@@ -53,7 +53,7 @@
                     <?=_('Disabled') ?>
                 <?php elseif ($row['type'] == 'default'): ?>
                     <?=_('Standard Playlist') ?><br>
-                    <?=_('Weight') ?>: <?=$row['weight'] ?> (<?=$row['probability'] ?>)
+                    <?=_('Weight') ?>: <?=(int)$row['weight'] ?> (<?=$row['probability'] ?>)
                 <?php elseif ($row['type'] == 'scheduled'): ?>
                     <?=_('Scheduled Playlist') ?><br>
                     <?=sprintf(_('Plays between %s and %s'), \Entity\StationPlaylist::formatTimeCode($row['schedule_start_time']), \Entity\StationPlaylist::formatTimeCode($row['schedule_end_time'])) ?>

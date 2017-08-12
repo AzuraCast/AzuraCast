@@ -48,7 +48,7 @@
                             if (count($user_row->roles) > 0)
                             {
                                 foreach($user_row->roles as $role)
-                                    echo '<div>'.$role->name.'</div>';
+                                    echo '<div>'.$this->e($role->name).'</div>';
                             }
                             ?>
                         </small>

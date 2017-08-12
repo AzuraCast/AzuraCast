@@ -65,7 +65,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 
         <li class="logo">
             <a href="<?=$url->named('home') ?>">
-                azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?><small><?=$customization->getInstanceName() ?></small><?php endif; ?>
+                azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
             </a>
         </li>
 

@@ -31,7 +31,7 @@ $options = $form->getOptions();
 
             <ul>
             <?php foreach($user->roles as $role): ?>
-                <li><?=$role->name ?></li>
+                <li><?=$this->e($role->name) ?></li>
             <?php endforeach; ?>
             </ul>
         </div>

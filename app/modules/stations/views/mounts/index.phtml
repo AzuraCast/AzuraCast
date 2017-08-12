@@ -28,14 +28,14 @@
                         <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])) ?>"><?=_('Delete') ?></a>
                     </td>
                     <td>
-                        <big><a href="<?=$frontend->getUrlForMount($row['name']) ?>" target="_blank"><?=$row['name'] ?></a></big>
+                        <big><a href="<?=$this->e($frontend->getUrlForMount($row['name'])) ?>" target="_blank"><?=$this->e($row['name']) ?></a></big>
                         <?php if ($row['is_default']): ?>
                             <br><span class="label label-success"><?=_('Default Mount') ?></span>
                         <?php endif; ?>
                     </td>
                     <td>
                     <?php if ($row['enable_autodj']): ?>
-                        <?=_('Enabled') ?> - <?=$row['autodj_bitrate'] ?>kbps <?=strtoupper($row['autodj_format']) ?>
+                        <?=_('Enabled') ?> - <?=(int)$row['autodj_bitrate'] ?>kbps <?=strtoupper($this->e($row['autodj_format'])) ?>
                     <?php else: ?>
                         <?=_('Disabled') ?>
                     <?php endif; ?>

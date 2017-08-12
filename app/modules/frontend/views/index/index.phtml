@@ -75,7 +75,7 @@
                     <?php foreach($stations as $row): ?>
                         <tr class="input" id="station_<?=$row['station']->id ?>">
                             <td class="text-center">
-                                <a class="btn-audio" href="#" data-url="<?=$row['stream_url'] ?>">
+                                <a class="btn-audio" href="#" data-url="<?=$this->e($row['stream_url']) ?>">
                                     <i class="zmdi zmdi-play"></i>
                                 </a>
                             </td>

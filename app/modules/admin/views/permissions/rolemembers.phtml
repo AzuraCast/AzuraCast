@@ -2,7 +2,7 @@
 
 <?php foreach($roles as $role): ?>
     <h2>
-        <?=$role['name'] ?><br>
+        <?=$this->e($role['name']) ?><br>
         <small>
             <?php
             $actions = array();

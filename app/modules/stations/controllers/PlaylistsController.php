@@ -111,7 +111,7 @@ class PlaylistsController extends BaseController
             $files = $this->request->getUploadedFiles();
 
             /** @var UploadedFile $import_file */
-            $import_file = $files['app_form']['import'];
+            $import_file = $files['import'];
             if ($import_file->getError() == UPLOAD_ERR_OK) {
                 $this->_importPlaylist($record, $import_file);
             }

@@ -22,10 +22,8 @@ class C00_Station_ProfileCest extends CestAbstract
         $I->click('.btn-float'); // Plus sign
 
         $I->submitForm('.form', [
-            'app_form' => [
-                'name' => 'Profile Update Test Radio',
-                'description' => 'Testing a profile update.',
-            ],
+            'name' => 'Profile Update Test Radio',
+            'description' => 'Testing a profile update.',
         ]);
 
         $I->seeCurrentUrlEquals('/station/'.$station_id.'/profile');

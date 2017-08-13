@@ -15,9 +15,7 @@ class B01_Admin_ApiKeysCest extends CestAbstract
         $I->click('.btn-float'); // Plus sign
 
         $I->submitForm('.form', [
-            'app_form' => [
-                'owner' => 'API Key Test',
-            ],
+            'owner' => 'API Key Test',
         ]);
 
         $I->seeCurrentUrlEquals('/admin/api');

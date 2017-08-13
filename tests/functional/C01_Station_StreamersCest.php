@@ -18,11 +18,9 @@ class C01_Station_StreamersCest extends CestAbstract
         $I->click('.btn-float'); // Plus sign
 
         $I->submitForm('.form', [
-            'app_form' => [
-                'streamer_username' => 'teststreamer',
-                'streamer_password' => 't3ststr34m3r',
-                'comments'          => 'Test Streamer',
-            ],
+            'streamer_username' => 'teststreamer',
+            'streamer_password' => 't3ststr34m3r',
+            'comments'          => 'Test Streamer',
         ]);
 
         $I->seeCurrentUrlEquals('/station/'.$station_id.'/streamers');

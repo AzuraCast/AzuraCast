@@ -29,9 +29,7 @@ class B02_Admin_RecordsCest extends CestAbstract
         $I->click('Edit');
 
         $I->submitForm('.form', [
-            'app_form' => [
-                'name' => 'Test Administrator',
-            ],
+            'name' => 'Test Administrator',
         ]);
 
         $I->seeCurrentUrlEquals('/admin/permissions');
@@ -45,9 +43,7 @@ class B02_Admin_RecordsCest extends CestAbstract
         $I->click('Edit');
 
         $I->submitForm('.form', [
-            'app_form' => [
-                'name' => 'Modification Test Radio',
-            ],
+            'name' => 'Modification Test Radio',
         ]);
 
         $I->seeCurrentUrlEquals('/admin/stations');

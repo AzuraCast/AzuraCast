@@ -41,10 +41,8 @@ class A00_Frontend_SetupCest extends CestAbstract
         $I->see('continue the setup process');
 
         $I->submitForm('.form', [
-            'app_form' => [
-                'name' => 'Functional Test Radio',
-                'description' => 'Test radio station.',
-            ],
+            'name' => 'Functional Test Radio',
+            'description' => 'Test radio station.',
         ]);
 
         $I->comment('Station created.');

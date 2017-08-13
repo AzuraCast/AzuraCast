@@ -43,9 +43,7 @@ class C05_Station_AutomationCest extends CestAbstract
         $I->amOnPage('/station/'.$station_id.'/automation');
 
         $I->submitForm('.form', [
-            'app_form' => [
-                'is_enabled' => '1',
-            ]
+            'is_enabled' => '1',
         ]);
 
         $I->seeCurrentUrlEquals('/station/'.$station_id.'/automation');

@@ -16,9 +16,7 @@ class C03_Station_PlaylistsCest extends CestAbstract
         $I->click('.btn-float'); // Plus sign
 
         $I->submitForm('.form', [
-            'app_form' => [
-                'name'          => 'Default Playlist',
-            ],
+            'name'          => 'Default Playlist',
         ]);
 
         $I->seeCurrentUrlEquals('/station/'.$station_id.'/playlists');

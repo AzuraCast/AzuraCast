@@ -19,10 +19,8 @@ class A01_Frontend_ProfileCest extends CestAbstract
         $I->click('Edit Profile');
 
         $I->submitForm('.form', [
-            'app_form' => [
-                'timezone' => 'US/Central',
-                'locale' => 'fr_FR.UTF-8',
-            ]
+            'timezone' => 'US/Central',
+            'locale' => 'fr_FR.UTF-8',
         ]);
 
         $I->seeCurrentUrlEquals('/profile');

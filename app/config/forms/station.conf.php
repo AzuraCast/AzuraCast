@@ -135,6 +135,7 @@ return [
                     [
                         'label' => _('Custom Configuration'),
                         'belongsTo' => 'frontend_config',
+                        'class' => 'text-preformatted',
                         'description' => _('This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.'),
                     ]
                 ],
@@ -234,6 +235,7 @@ return [
                     [
                         'label' => _('Advanced: Custom Configuration'),
                         'belongsTo' => 'backend_config',
+                        'class' => 'text-preformatted',
                         'description' => _('This code will be inserted into your station\'s LiquidSoap configuration, below the playlist configuration and just before the IceCast output. Only use valid LiquidSoap code for this section!'),
                     ]
                 ],

@@ -653,7 +653,7 @@ $(document).ready(function () {
     // Show password strength meter.
     if (typeof zxcvbn === 'function') {
 
-        $('input[type=password]').on('keyup', function(e) {
+        $('input[type=password].strength').on('keyup', function(e) {
 
             var result  = zxcvbn($(this).val()),
                 score   = result.score;

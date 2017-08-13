@@ -34,11 +34,42 @@ return [
                     ]
                 ],
 
-                'auth_password' => [
+            ],
+        ],
+
+        'reset_password' => [
+            'legend' => _('Reset Password'),
+            'description' => _('Leave these fields blank to continue using your current password.'),
+            'elements' => [
+
+                'password' => [
                     'password',
                     [
-                        'label' => _('Reset Password'),
-                        'description' => _('To change your password, enter the new password in the field below.'),
+                        'label' => _('Current Password'),
+                        'autocomplete' => 'off',
+                        'filter' => function($val) {
+                            return '';
+                        },
+                        'validator' => function($val, $element) {
+                            return false; // Safe default.
+                        },
+                    ]
+                ],
+
+                'new_password' => [
+                    'password',
+                    [
+                        'label' => _('New Password'),
+                        'autocomplete' => 'off',
+                        'class' => 'strength',
+                        'confirm' => 'new_password_confirm',
+                    ]
+                ],
+
+                'new_password_confirm' => [
+                    'password',
+                    [
+                        'label' => _('Confirm New Password'),
                         'autocomplete' => 'off',
                     ]
                 ],

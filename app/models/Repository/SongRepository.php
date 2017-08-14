@@ -6,27 +6,6 @@ use Entity;
 class SongRepository extends \App\Doctrine\Repository
 {
     /**
-     * Return a song by its ID, including resolving merged song IDs.
-     *
-     * @param $song_hash
-     * @return null|object
-     */
-    public function getById($song_hash)
-    {
-        $record = $this->find($song_hash);
-
-        if ($record instanceof Entity\Song) {
-            if (!empty($record->merge_song_id)) {
-                return $this->getById($record->merge_song_id);
-            } else {
-                return $record;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Get a list of all song IDs.
      *
      * @return array
@@ -39,51 +18,34 @@ class SongRepository extends \App\Doctrine\Repository
         return \Packaged\Helpers\Arrays::ipull($ids_raw, 'id');
     }
 
-    public function getOrCreate($song_info, $is_radio_play = false)
+    /**
+     * Retrieve an existing Song entity or create a new one.
+     *
+     * @param $song_info
+     * @param bool $is_radio_play
+     * @return Entity\Song
+     */
+    public function getOrCreate($song_info, $is_radio_play = false): Entity\Song
     {
         $song_hash = Entity\Song::getSongHash($song_info);
 
-        $obj = $this->getById($song_hash);
+        $obj = $this->find($song_hash);
 
-        if ($obj instanceof Entity\Song) {
-            if ($is_radio_play) {
-                $obj->last_played = time();
-                $obj->play_count += 1;
-            }
-
-            $this->_em->persist($obj);
-            $this->_em->flush();
-
-            return $obj;
-        } else {
+        if (!($obj instanceof Entity\Song)) {
             if (!is_array($song_info)) {
                 $song_info = ['text' => $song_info];
             }
 
-            $obj = new Entity\Song;
-            $obj->id = $song_hash;
-
-            if (empty($song_info['text'])) {
-                $song_info['text'] = $song_info['artist'] . ' - ' . $song_info['title'];
-            }
-
-            $obj->text = $song_info['text'];
-            $obj->title = $song_info['title'];
-            $obj->artist = $song_info['artist'];
-
-            if (isset($song_info['image_url'])) {
-                $obj->image_url = $song_info['image_url'];
-            }
-
-            if ($is_radio_play) {
-                $obj->last_played = time();
-                $obj->play_count = 1;
-            }
-
-            $this->_em->persist($obj);
-            $this->_em->flush();
-
-            return $obj;
+            $obj = new Entity\Song($song_info);
         }
+
+        if ($is_radio_play) {
+            $obj->played();
+        }
+
+        $this->_em->persist($obj);
+        $this->_em->flush();
+
+        return $obj;
     }
 }

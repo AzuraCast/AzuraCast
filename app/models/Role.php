@@ -2,32 +2,89 @@
 namespace Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @Table(name="role")
  * @Entity
  */
-class Role extends \App\Doctrine\Entity
+class Role
 {
-    public function __construct()
+    /**
+     * @Column(name="id", type="integer")
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
+     * @var int
+     */
+    protected $id;
+
+    /**
+     * @Column(name="name", type="string", length=100)
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * @ManyToMany(targetEntity="User", mappedBy="roles")
+     * @var Collection
+     */
+    protected $users;
+
+    /**
+     * @OneToMany(targetEntity="Entity\RolePermission", mappedBy="role")
+     * @var Collection
+     */
+    protected $permissions;
+
+    /**
+     * Role constructor.
+     * @param $name
+     */
+    public function __construct($name)
     {
+        $this->name = $name;
+
         $this->users = new ArrayCollection;
         $this->permissions = new ArrayCollection;
     }
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @return mixed
      */
-    protected $id;
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
-    /** @Column(name="name", type="string", length=100) */
-    protected $name;
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
-    /** @ManyToMany(targetEntity="User", mappedBy="roles") */
-    protected $users;
+    /**
+     * @param string $name
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
 
-    /** @OneToMany(targetEntity="Entity\RolePermission", mappedBy="role") */
-    protected $permissions;
+    /**
+     * @return Collection
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
 }

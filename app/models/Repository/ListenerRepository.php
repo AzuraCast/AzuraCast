@@ -41,7 +41,7 @@ class ListenerRepository extends \App\Doctrine\Repository
         foreach($clients as $client) {
             // Check for an existing record for this client.
             try {
-                $listener_hash = Entity\Listener::getListenerHash($client);
+                $listener_hash = Entity\Listener::calculateListenerHash($client);
 
                 $existing_id = $this->_em->createQuery('SELECT l.id FROM '.$this->_entityName.' l
                     WHERE l.station_id = :station_id
@@ -60,7 +60,7 @@ class ListenerRepository extends \App\Doctrine\Repository
                 $this->_em->persist($record);
                 $this->_em->flush();
 
-                $listener_ids[] = $record->id;
+                $listener_ids[] = $record->getId();
             }
         }
 

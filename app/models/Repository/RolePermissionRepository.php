@@ -23,7 +23,9 @@ class RolePermissionRepository extends \App\Doctrine\Repository
 
     public function getActionsForRole(Entity\Role $role)
     {
-        $role_has_action = $this->findBy(['role_id' => $role->id]);
+        $role_has_action = $this->_em->createQuery('SELECT e FROM '.$this->_entityName.' e WHERE e.role_id = :role_id')
+            ->setParameter('role_id', $role->getId())
+            ->getArrayResult();
 
         $result = [];
         foreach ($role_has_action as $row) {
@@ -51,18 +53,9 @@ class RolePermissionRepository extends \App\Doctrine\Repository
             }
 
             foreach ((array)$post_value as $action_name) {
-                $record_info = [
-                    'role_id' => $role->id,
-                    'action_name' => $action_name,
-                ];
+                $station = ($post_key_id !== 'global') ? $this->_em->getReference(Entity\Station::class, $post_key_id) : null;
 
-                if ($post_key_id !== 'global') {
-                    $record_info['station_id'] = $post_key_id;
-                }
-
-                $record = new Entity\RolePermission;
-                $record->fromArray($this->_em, $record_info);
-
+                $record = new Entity\RolePermission($role, $action_name, $station);
                 $this->_em->persist($record);
             }
 

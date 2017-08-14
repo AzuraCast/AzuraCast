@@ -27,11 +27,10 @@ class SettingsRepository extends \App\Doctrine\Repository
         $record = $this->findOneBy(['setting_key' => $key]);
 
         if (!($record instanceof Entity\Settings)) {
-            $record = new Entity\Settings;
-            $record->setting_key = $key;
+            $record = new Entity\Settings($key);
         }
 
-        $record->setting_value = $value;
+        $record->setSettingValue($value);
 
         $this->_em->persist($record);
         $this->_em->flush();

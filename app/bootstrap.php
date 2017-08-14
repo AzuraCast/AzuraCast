@@ -58,10 +58,12 @@ $autoloader->addPsr4('\\Proxy\\', APP_INCLUDE_TEMP . '/proxies');
 
 // Set up DI container.
 $di = new \Slim\Container([
-    'outputBuffering' => false,
-    'displayErrorDetails' => true,
-    'addContentLengthHeader' => false,
-    'routerCacheFile' => (APP_IN_PRODUCTION) ? APP_INCLUDE_TEMP . '/app_routes.cache.php' : null,
+    'settings' => [
+        'outputBuffering' => false,
+        'displayErrorDetails' => !APP_IN_PRODUCTION,
+        'addContentLengthHeader' => false,
+        'routerCacheFile' => (APP_IN_PRODUCTION) ? APP_INCLUDE_TEMP . '/app_routes.cache.php' : false,
+    ]
 ]);
 
 // Iterate through modules.

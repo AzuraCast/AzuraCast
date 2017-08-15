@@ -415,7 +415,7 @@ class FilesController extends BaseController
                     $this->em->flush();
 
                     $response_record = [
-                        'id' => $playlist->id,
+                        'id' => $playlist->getId(),
                         'name' => $playlist->name,
                     ];
                 } else {

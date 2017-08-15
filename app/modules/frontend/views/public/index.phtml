@@ -20,7 +20,7 @@
         <h3 class="text-left"><?=$this->e($station->name) ?></h3>
 
         <div class="stations nowplaying">
-            <div class="media media-left" id="station_<?=$station->id ?>">
+            <div class="media media-left" id="station_<?=$station->getId() ?>">
                 <div class="pull-left">
                     <a class="btn-audio" href="#" data-url="<?=$this->e($stream_url) ?>">
                         <i class="zmdi zmdi-play"></i>
@@ -110,7 +110,7 @@ function nowPlaying() {
     $.getJSON('<?=$url->route([
         'module' => 'api',
         'controller' => 'nowplaying',
-        'station' => $station->id
+        'station' => $station->getId()
     ]) ?>', {}, function (row) {
         var station_row = $('#station_'+row.station.id);
 
@@ -217,7 +217,7 @@ request_dialog.on('show.bs.modal', function (event) {
                 iconRefresh: 'zmdi-refresh',
                 iconUp: 'zmdi-sort-amount-asc'
             },
-            url: "<?=$url->route(['module' => 'api', 'controller' => 'requests', 'action' => 'list', 'station' => $station->id]) ?>",
+            url: "<?=$url->route(['module' => 'api', 'controller' => 'requests', 'action' => 'list', 'station' => $station->getId()]) ?>",
             formatters: {
                 "commands": function(column, row) {
                     return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=_('Request') ?></a>';

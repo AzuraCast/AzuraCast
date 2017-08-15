@@ -108,7 +108,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
             return true;
         }
 
-        if (!$this->acl->isAllowed($permission_name, $station->id)) {
+        if (!$this->acl->isAllowed($permission_name, $station->getId())) {
             throw new \App\Exception\PermissionDenied('Permission denied');
         }
 

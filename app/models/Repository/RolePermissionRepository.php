@@ -42,7 +42,7 @@ class RolePermissionRepository extends \App\Doctrine\Repository
     public function setActionsForRole(Entity\Role $role, $post_values)
     {
         $this->_em->createQuery('DELETE FROM ' . $this->_entityName . ' rp WHERE rp.role_id = :role_id')
-            ->setParameter('role_id', $role->id)
+            ->setParameter('role_id', $role->getId())
             ->execute();
 
         foreach ($post_values as $post_key => $post_value) {

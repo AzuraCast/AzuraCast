@@ -11,7 +11,7 @@ class IndexController extends BaseController
 
         // Don't show stations the user can't manage.
         $stations = array_filter($stations, function($station) {
-            return $this->acl->isAllowed('view station management', $station->id);
+            return $this->acl->isAllowed('view station management', $station->getId());
         });
 
         if (empty($stations)) {
@@ -39,7 +39,7 @@ class IndexController extends BaseController
         // Generate unique cache ID for stations.
         $stats_cache_stations = [];
         foreach($stations as $station) {
-            $stats_cache_stations[$station->id] = $station->id;
+            $stats_cache_stations[$station->getId()] = $station->getId();
         }
 
         $cache_name = 'homepage/metrics/'.md5(serialize($stats_cache_stations));

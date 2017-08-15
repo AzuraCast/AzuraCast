@@ -12,7 +12,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
     public function getRequestable(Entity\Station $station)
     {
         return $this->_em->createQuery('SELECT sm FROM ' . $this->_entityName . ' sm WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
-            ->setParameter('station_id', $station->id)
+            ->setParameter('station_id', $station->getId())
             ->getArrayResult();
     }
 
@@ -24,7 +24,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
     public function getByArtist(Entity\Station $station, $artist_name)
     {
         return $this->_em->createQuery('SELECT sm FROM ' . $this->_entityName . ' sm WHERE sm.station_id = :station_id AND sm.artist LIKE :artist ORDER BY sm.title ASC')
-            ->setParameter('station_id', $station->id)
+            ->setParameter('station_id', $station->getId())
             ->setParameter('artist', $artist_name)
             ->getArrayResult();
     }
@@ -40,7 +40,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
         $table_name = $this->_em->getClassMetadata(__CLASS__)->getTableName();
 
         $stmt = $db->executeQuery('SELECT sm.* FROM ' . $db->quoteIdentifier($table_name) . ' AS sm WHERE sm.station_id = ? AND CONCAT(sm.title, \' \', sm.artist, \' \', sm.album) LIKE ?',
-            [$station->id, '%' . addcslashes($query, "%_") . '%']);
+            [$station->getId(), '%' . addcslashes($query, "%_") . '%']);
         $results = $stmt->fetchAll();
 
         return $results;
@@ -56,17 +56,17 @@ class StationMediaRepository extends \App\Doctrine\Repository
     {
         $short_path = ltrim(str_replace($station->getRadioMediaDir(), '', $path), '/');
 
-        $record = $this->findOneBy(['station_id' => $station->id, 'path' => $short_path]);
+        $record = $this->findOneBy(['station_id' => $station->getId(), 'path' => $short_path]);
 
         if (!($record instanceof Entity\StationMedia)) {
-            $record = new Entity\StationMedia;
-            $record->station = $station;
-            $record->path = $short_path;
+            $record = new Entity\StationMedia($station, $path);
         }
 
         $song_info = $record->loadFromFile();
         if (is_array($song_info)) {
-            $record->song = $this->_em->getRepository(Entity\Song::class)->getOrCreate($song_info);
+            /** @var SongRepository $song_repo */
+            $song_repo = $this->_em->getRepository(Entity\Song::class);
+            $record->setSong($song_repo->getOrCreate($song_info));
         }
 
         return $record;
@@ -81,9 +81,9 @@ class StationMediaRepository extends \App\Doctrine\Repository
     public function getNextSong(Entity\Station $station)
     {
         // Process requests first (if applicable)
-        if ($station->enable_requests) {
+        if ($station->getEnableRequests()) {
 
-            $min_minutes = (int)$station->request_delay;
+            $min_minutes = (int)$station->getRequestDelay();
             $threshold_minutes = $min_minutes + mt_rand(0, $min_minutes);
 
             $threshold = time() - ($threshold_minutes * 60);
@@ -93,7 +93,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
                 FROM Entity\StationRequest sr JOIN sr.track sm
                 WHERE sr.played_at = 0 AND sr.station_id = :station_id AND sr.timestamp <= :threshold
                 ORDER BY sr.id ASC')
-                ->setParameter('station_id', $station->id)
+                ->setParameter('station_id', $station->getId())
                 ->setParameter('threshold', $threshold)
                 ->setMaxResults(1)
                 ->getOneOrNullResult();
@@ -106,10 +106,11 @@ class StationMediaRepository extends \App\Doctrine\Repository
 
         // Pull all active, non-empty playlists and sort by type.
         $playlists_by_type = [];
-        foreach($station->playlists as $playlist) {
+        foreach($station->getPlaylists() as $playlist) {
+            /** @var Entity\StationPlaylist $playlist */
             // Don't include empty playlists
-            if ($playlist->is_enabled && $playlist->media->count() > 0) {
-                $playlists_by_type[$playlist->type][$playlist->id] = $playlist;
+            if ($playlist->getIsEnabled() && $playlist->getMedia()->count() > 0) {
+                $playlists_by_type[$playlist->getType()][$playlist->getId()] = $playlist;
             }
         }
 
@@ -119,7 +120,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
             AND (sh.timestamp_cued != 0 AND sh.timestamp_cued IS NOT NULL)
             AND sh.timestamp_cued >= :threshold
             ORDER BY sh.timestamp_cued DESC')
-            ->setParameter('station_id', $station->id)
+            ->setParameter('station_id', $station->getId())
             ->setParameter('threshold', time()-86399)
             ->getArrayResult();
 
@@ -127,12 +128,14 @@ class StationMediaRepository extends \App\Doctrine\Repository
         if (!empty($playlists_by_type['scheduled'])) {
             $current_timecode = $this->_getTimeCode();
             foreach ($playlists_by_type['scheduled'] as $playlist) {
-                if ($playlist['schedule_end_time'] < $playlist['schedule_start_time']) {
+                /** @var Entity\StationPlaylist $playlist */
+
+                if ($playlist->getScheduleEndTime() < $playlist->getScheduleStartTime()) {
                     // Overnight playlist
-                    $should_be_playing = ($current_timecode >= $playlist['schedule_start_time'] || $current_timecode <= $playlist['schedule_end_time']);
+                    $should_be_playing = ($current_timecode >= $playlist->getScheduleStartTime() || $current_timecode <= $playlist->getScheduleEndTime());
                 } else {
                     // Normal playlist
-                    $should_be_playing = ($current_timecode >= $playlist['schedule_start_time'] && $current_timecode <= $playlist['schedule_end_time']);
+                    $should_be_playing = ($current_timecode >= $playlist->getScheduleStartTime() && $current_timecode <= $playlist->getScheduleEndTime());
                 }
 
                 if ($should_be_playing) {
@@ -146,7 +149,9 @@ class StationMediaRepository extends \App\Doctrine\Repository
             $current_timecode = $this->_getTimeCode();
 
             foreach ($playlists_by_type['once_per_day'] as $playlist) {
-                $playlist_play_time = $playlist['play_once_time'];
+                /** @var Entity\StationPlaylist $playlist */
+
+                $playlist_play_time = $playlist->getPlayOnceTime();
                 $playlist_diff = $current_timecode - $playlist_play_time;
 
                 if ($playlist_diff > 0 && $playlist_diff <= 15) {
@@ -155,7 +160,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
 
                     $was_played = false;
                     foreach($relevant_song_history as $sh_row) {
-                        if ($sh_row['playlist_id'] == $playlist->id) {
+                        if ($sh_row['playlist_id'] == $playlist->getId()) {
                             $was_played = true;
                             break;
                         }
@@ -173,12 +178,13 @@ class StationMediaRepository extends \App\Doctrine\Repository
         // Once per X songs playlists
         if (!empty($playlists_by_type['once_per_x_songs'])) {
             foreach($playlists_by_type['once_per_x_songs'] as $playlist) {
+                /** @var Entity\StationPlaylist $playlist */
 
-                $relevant_song_history = array_slice($cued_song_history, 0, $playlist['play_per_songs']);
+                $relevant_song_history = array_slice($cued_song_history, 0, $playlist->getPlayPerSongs());
 
                 $was_played = false;
                 foreach($relevant_song_history as $sh_row) {
-                    if ($sh_row['playlist_id'] == $playlist->id) {
+                    if ($sh_row['playlist_id'] == $playlist->getId()) {
                         $was_played = true;
                         break;
                     }
@@ -195,13 +201,15 @@ class StationMediaRepository extends \App\Doctrine\Repository
         // Once per X minutes playlists
         if (!empty($playlists_by_type['once_per_x_minutes'])) {
             foreach($playlists_by_type['once_per_x_minutes'] as $playlist) {
-                $threshold = time() - ($playlist['play_per_minutes'] * 60);
+                /** @var Entity\StationPlaylist $playlist */
+
+                $threshold = time() - ($playlist->getPlayPerMinutes() * 60);
 
                 $was_played = false;
                 foreach($cued_song_history as $sh_row) {
                     if ($sh_row['timestamp_cued'] < $threshold) {
                         break;
-                    } else if ($sh_row['playlist_id'] == $playlist->id) {
+                    } else if ($sh_row['playlist_id'] == $playlist->getId()) {
                         $was_played = true;
                         break;
                     }
@@ -219,7 +227,8 @@ class StationMediaRepository extends \App\Doctrine\Repository
         if (!empty($playlists_by_type['default'])) {
             $playlist_weights = [];
             foreach($playlists_by_type['default'] as $playlist_id => $playlist) {
-                $playlist_weights[$playlist_id] = $playlist->weight;
+                /** @var Entity\StationPlaylist $playlist */
+                $playlist_weights[$playlist_id] = $playlist->getWeight();
             }
 
             $rand = mt_rand(1, (int)array_sum($playlist_weights));
@@ -238,17 +247,15 @@ class StationMediaRepository extends \App\Doctrine\Repository
     protected function _playSongFromRequest(Entity\StationRequest $request)
     {
         // Log in history
-        $sh = new Entity\SongHistory;
-        $sh->song = $request->track->song;
-        $sh->station = $request->station;
-        $sh->request = $request;
-        $sh->media = $request->track;
+        $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
+        $sh->setRequest($request);
+        $sh->setMedia($request->getTrack());
 
-        $sh->duration = $request->track->getCalculatedLength();
-        $sh->timestamp_cued = time();
+        $sh->setDuration($request->getTrack()->getCalculatedLength());
+        $sh->setTimestampCued(time());
         $this->_em->persist($sh);
 
-        $request->played_at = time();
+        $request->setPlayedAt(time());
         $this->_em->persist($request);
 
         $this->_em->flush();
@@ -270,7 +277,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
             LEFT JOIN sm.playlists sp
             WHERE sp.id = :playlist_id
             GROUP BY sm.id ORDER BY RAND()')
-            ->setParameter('playlist_id', $playlist->id)
+            ->setParameter('playlist_id', $playlist->getId())
             ->setMaxResults(15)
             ->execute();
 
@@ -281,12 +288,14 @@ class StationMediaRepository extends \App\Doctrine\Repository
         $song_timestamps = [];
         $songs_by_id = [];
         foreach($random_songs as $media_row) {
-            if ($media_row->length == 0) {
+            /** @var Entity\StationMedia $media_row */
+
+            if ($media_row->getLength() == 0) {
                 $use_song_ids = false;
                 break;
             } else {
-                $song_timestamps[$media_row->song_id] = 0;
-                $songs_by_id[$media_row->song_id] = $media_row;
+                $song_timestamps[$media_row->getSong()->getId()] = 0;
+                $songs_by_id[$media_row->getSong()->getId()] = $media_row;
             }
         }
 
@@ -299,7 +308,7 @@ class StationMediaRepository extends \App\Doctrine\Repository
                 AND sh.timestamp_cued != 0
                 GROUP BY sh.song_id')
                 ->setParameter('ids', array_keys($song_timestamps))
-                ->setParameter('station_id', $playlist->station_id)
+                ->setParameter('station_id', $playlist->getStation()->getId())
                 ->getArrayResult();
 
             // Sort to always play the least recently played song out of the random selection.
@@ -319,14 +328,12 @@ class StationMediaRepository extends \App\Doctrine\Repository
 
         if ($random_song instanceof Entity\StationMedia) {
             // Log in history
-            $sh = new Entity\SongHistory;
-            $sh->song = $random_song->song;
-            $sh->playlist = $playlist;
-            $sh->station = $playlist->station;
-            $sh->media = $random_song;
+            $sh = new Entity\SongHistory($random_song->getSong(), $playlist->getStation());
+            $sh->setPlaylist($playlist);
+            $sh->setMedia($random_song);
 
-            $sh->duration = $random_song->getCalculatedLength();
-            $sh->timestamp_cued = time();
+            $sh->setDuration($random_song->getCalculatedLength());
+            $sh->setTimestampCued(time());
 
             $this->_em->persist($sh);
             $this->_em->flush();

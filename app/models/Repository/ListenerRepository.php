@@ -20,7 +20,7 @@ class ListenerRepository extends \App\Doctrine\Repository
             WHERE l.station_id = :station_id
             AND l.timestamp_start <= :end
             AND l.timestamp_end >= :start')
-            ->setParameter('station_id', $station->id)
+            ->setParameter('station_id', $station->getId())
             ->setParameter('end', $timestamp_end)
             ->setParameter('start', $timestamp_start)
             ->getSingleScalarResult();
@@ -48,7 +48,7 @@ class ListenerRepository extends \App\Doctrine\Repository
                     AND l.listener_uid = :uid
                     AND l.listener_hash = :hash
                     AND l.timestamp_end = 0')
-                        ->setParameter('station_id', $station->id)
+                        ->setParameter('station_id', $station->getId())
                         ->setParameter('uid', $client['uid'])
                         ->setParameter('hash', $listener_hash)
                         ->getSingleScalarResult();
@@ -71,7 +71,7 @@ class ListenerRepository extends \App\Doctrine\Repository
             AND l.timestamp_end = 0
             AND l.id NOT IN (:ids)')
             ->setParameter('time', time())
-            ->setParameter('station_id', $station->id)
+            ->setParameter('station_id', $station->getId())
             ->setParameter('ids', $listener_ids)
             ->execute();
     }

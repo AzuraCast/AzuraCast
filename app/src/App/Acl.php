@@ -76,7 +76,7 @@ class Acl
 
                     if (count($user->roles) > 0) {
                         foreach ($user->roles as $role) {
-                            $this->_roles[$user_id][] = $role->id;
+                            $this->_roles[$user_id][] = $role->getId();
                         }
                     }
                 }

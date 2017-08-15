@@ -41,7 +41,7 @@ class PlaylistsController extends BaseController
 
             $playlist_row['num_songs'] = count($playlist->media);
 
-            $playlists[$playlist->id] = $playlist_row;
+            $playlists[$playlist->getId()] = $playlist_row;
         }
 
         $this->view->playlists = $playlists;

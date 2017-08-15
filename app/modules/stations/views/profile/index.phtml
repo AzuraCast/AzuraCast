@@ -12,7 +12,7 @@
             <div class="card-header ch-alt">
                 <h2><?=_('On the Air') ?></h2>
             </div>
-            <div class="card-body card-padding nowplaying" id="station_<?=$station->id ?>">
+            <div class="card-body card-padding nowplaying" id="station_<?=$station->getId() ?>">
                 <div class="row">
 
                     <div class="col-sm-4">
@@ -70,7 +70,7 @@
             <div class="card-header ch-alt">
                 <h2><?=_('Station Profile') ?></h2>
 
-                <?php if ($acl->isAllowed('manage station profile', $station->id)): ?>
+                <?php if ($acl->isAllowed('manage station profile', $station->getId())): ?>
                 <a class="btn bgm-blue btn-float" title="Edit Profile" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-edit"></i></a>
                 <?php endif; ?>
             </div>
@@ -166,7 +166,7 @@
                     <br><small><?php if ($frontend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>
 
-                <?php if ($acl->isAllowed('manage station broadcasting', $station->id)): ?>
+                <?php if ($acl->isAllowed('manage station broadcasting', $station->getId())): ?>
                 <ul class="actions">
                     <li class="dropdown">
                         <a href="" data-toggle="dropdown" aria-expanded="false">
@@ -251,7 +251,7 @@
                     <small><?php if ($backend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>
 
-                <?php if ($acl->isAllowed('manage station broadcasting', $station->id)): ?>
+                <?php if ($acl->isAllowed('manage station broadcasting', $station->getId())): ?>
                 <ul class="actions">
                     <li class="dropdown">
                         <a href="" data-toggle="dropdown" aria-expanded="false">
@@ -271,10 +271,10 @@
             <div class="card-body card-padding">
                 <p><?=sprintf(_('LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.'), $num_songs, $num_playlists) ?></p>
 
-                <?php if ($acl->isAllowed('manage station media', $station->id)): ?>
+                <?php if ($acl->isAllowed('manage station media', $station->getId())): ?>
                     <div class="buttons">
-                        <a class="btn btn-primary" href="<?=$url->named('stations:files:index', ['station' => $station->id]) ?>"><?=_('Music Files') ?></a>
-                        <a class="btn btn-primary" href="<?=$url->named('stations:playlists:index', ['station' => $station->id]) ?>"><?=_('Playlists') ?></a>
+                        <a class="btn btn-primary" href="<?=$url->named('stations:files:index', ['station' => $station->getId()]) ?>"><?=_('Music Files') ?></a>
+                        <a class="btn btn-primary" href="<?=$url->named('stations:playlists:index', ['station' => $station->getId()]) ?>"><?=_('Playlists') ?></a>
                     </div>
                 <?php endif; ?>
             </div>
@@ -288,7 +288,7 @@ function nowPlaying() {
     $.getJSON('<?=$url->route([
         'module' => 'api',
         'controller' => 'nowplaying',
-        'station' => $station->id
+        'station' => $station->getId()
     ]) ?>', {}, function (row) {
         var station_row = $('#station_'+row.station.id);
 

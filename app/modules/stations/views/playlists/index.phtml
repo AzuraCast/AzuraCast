@@ -42,7 +42,7 @@
                 </td>
                 <td>
                     <big>
-                        <a href="<?=$url->route(['module' => 'stations', 'controller' => 'files', 'action' => 'index', 'station' => $station->id]).'#playlist:'.urlencode($row['name']) ?>"><?=$this->e($row['name']) ?></a>
+                        <a href="<?=$url->route(['module' => 'stations', 'controller' => 'files', 'action' => 'index', 'station' => $station->getId()]).'#playlist:'.urlencode($row['name']) ?>"><?=$this->e($row['name']) ?></a>
                     </big>
                     <?php if ($row['include_in_automation']): ?>
                         <br><span class="label label-success"><?=_('Auto-Assigned') ?></span>

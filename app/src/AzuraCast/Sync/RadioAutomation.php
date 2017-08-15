@@ -25,10 +25,10 @@ class RadioAutomation extends SyncAbstract
         foreach ($stations as $station) {
             try {
                 if ($this->runStation($station)) {
-                    $automation_log[$station->id] = $station->name . ': SUCCESS';
+                    $automation_log[$station->getId()] = $station->name . ': SUCCESS';
                 }
             } catch (Exception $e) {
-                $automation_log[$station->id] = $station->name . ': ERROR - ' . $e->getMessage();
+                $automation_log[$station->getId()] = $station->name . ': ERROR - ' . $e->getMessage();
             }
         }
 
@@ -189,7 +189,7 @@ class RadioAutomation extends SyncAbstract
 
         // Pull all SongHistory data points.
         $data_points_raw = $em->createQuery('SELECT sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start FROM Entity\SongHistory sh WHERE sh.station_id = :station_id AND sh.timestamp_end != 0 AND sh.timestamp_start >= :threshold')
-            ->setParameter('station_id', $station->id)
+            ->setParameter('station_id', $station->getId())
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
 
@@ -235,7 +235,7 @@ class RadioAutomation extends SyncAbstract
 
         // Pull all media and playlists.
         $media_raw = $em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
-            ->setParameter('station_id', $station->id)
+            ->setParameter('station_id', $station->getId())
             ->execute();
 
         $report = [];

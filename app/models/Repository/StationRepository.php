@@ -103,7 +103,7 @@ class StationRepository extends \App\Doctrine\Repository
     public function create($data, ContainerInterface $di)
     {
         $station = new Entity\Station;
-        $station->fromArray($this->_em, $data);
+        $this->fromArray($station, $data);
 
         // Create path for station.
         $station_base_dir = realpath(APP_INCLUDE_ROOT . '/..') . '/stations';
@@ -154,7 +154,7 @@ class StationRepository extends \App\Doctrine\Repository
      */
     public function resetMounts(Entity\Station $station, ContainerInterface $di)
     {
-        foreach($station->mounts as $mount) {
+        foreach($station->getMounts() as $mount) {
             $this->_em->remove($mount);
         }
 
@@ -166,9 +166,8 @@ class StationRepository extends \App\Doctrine\Repository
             $mount_points = $frontend_adapter->getDefaultMounts();
 
             foreach ($mount_points as $mount_point) {
-                $mount_point['station'] = $station;
-                $mount_record = new Entity\StationMount;
-                $mount_record->fromArray($this->_em, $mount_point);
+                $mount_record = new Entity\StationMount($station);
+                $this->fromArray($mount_record, $mount_point);
 
                 $this->_em->persist($mount_record);
             }
@@ -188,7 +187,7 @@ class StationRepository extends \App\Doctrine\Repository
         $backend = $station->getBackendAdapter($di);
 
         if ($frontend->hasCommand() || $backend->hasCommand()) {
-            /** @var \Supervisor\Supervisor */
+            /** @var \Supervisor\Supervisor $supervisor */
             $supervisor = $di['supervisor'];
 
             $frontend_name = $frontend->getProgramName();

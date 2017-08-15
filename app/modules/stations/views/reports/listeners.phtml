@@ -97,7 +97,7 @@ $(function() {
             params.end = end.format('YYYY-MM-DD');
         }
 
-        $.getJSON('<?=$url->named('api:listeners:index', ['station' => $station->id]) ?>', params, function (data) {
+        $.getJSON('<?=$url->named('api:listeners:index', ['station' => $station->getId()]) ?>', params, function (data) {
             app_datatable.listeners = data;
 
             $('#listener-count').text(data.length);

@@ -37,8 +37,8 @@ class UserRepository extends \App\Doctrine\Repository
 
         if (!($user instanceof Entity\User)) {
             $user = new Entity\User;
-            $user->email = $email;
-            $user->name = $email;
+            $user->setEmail($email);
+            $user->setName($email);
         }
 
         return $user;

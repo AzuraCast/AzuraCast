@@ -16,12 +16,12 @@ class StationStreamerRepository extends \App\Doctrine\Repository
     public function authenticate(Entity\Station $station, $username, $password)
     {
         // Extra safety check for the station's streamer status.
-        if (!$station->enable_streamers) {
+        if (!$station->getEnableStreamers()) {
             return false;
         }
 
         $streamer = $this->findOneBy([
-            'station_id' => $station->id,
+            'station_id' => $station->getId(),
             'streamer_username' => $username,
             'is_active' => 1
         ]);
@@ -30,6 +30,6 @@ class StationStreamerRepository extends \App\Doctrine\Repository
             return false;
         }
 
-        return (strcmp($streamer->streamer_password, $password) === 0);
+        return (strcmp($streamer->getStreamerPassword(), $password) === 0);
     }
 }

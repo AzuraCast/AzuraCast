@@ -34,12 +34,10 @@ class ApiKey
 
     /**
      * ApiKey constructor.
-     * @param $owner
      */
-    public function __construct(string $owner)
+    public function __construct()
     {
         $this->id = sha1(mt_rand(0, microtime(true)));
-        $this->owner = $owner;
 
         $this->calls_made = 0;
         $this->created = time();

@@ -56,13 +56,11 @@ class RolePermission
     /**
      * RolePermission constructor.
      * @param Role $role
-     * @param $name
      * @param Station|null $station
      */
-    public function __construct(Role $role, $name, Station $station = null)
+    public function __construct(Role $role, Station $station = null)
     {
         $this->role = $role;
-        $this->action_name = $name;
         $this->station = $station;
     }
 
@@ -83,11 +81,11 @@ class RolePermission
     }
 
     /**
-     * @param Role $role
+     * @return Station|null
      */
-    public function setRole(Role $role)
+    public function getStation()
     {
-        $this->role = $role;
+        return $this->station;
     }
 
     /**
@@ -105,22 +103,4 @@ class RolePermission
     {
         $this->action_name = $action_name;
     }
-
-    /**
-     * @return Station|null
-     */
-    public function getStation()
-    {
-        return $this->station;
-    }
-
-    /**
-     * @param Station|null $station
-     */
-    public function setStation(Station $station = null)
-    {
-        $this->station = $station;
-    }
-
-
 }

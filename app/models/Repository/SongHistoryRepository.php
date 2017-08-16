@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class SongHistoryRepository extends \App\Doctrine\Repository
+class SongHistoryRepository extends BaseRepository
 {
     public function getNextSongForStation(Entity\Station $station, $is_autodj = false)
     {

@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class StationRequestRepository extends \App\Doctrine\Repository
+class StationRequestRepository extends BaseRepository
 {
     /**
      * Submit a new request.

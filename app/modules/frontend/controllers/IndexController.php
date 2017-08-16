@@ -132,11 +132,12 @@ class IndexController extends BaseController
             $station_metrics = [];
 
             foreach ($stations as $station) {
-                $station_id = $station['id'];
+                /** @var Entity\Station $station */
+                $station_id = $station->getId();
 
                 if (isset($station_averages[$station_id])) {
                     $series_obj = new \stdClass;
-                    $series_obj->name = $station['name'];
+                    $series_obj->name = $station->getName();
                     $series_obj->type = 'spline';
 
                     ksort($station_averages[$station_id]);

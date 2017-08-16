@@ -3,6 +3,7 @@ namespace AzuraCast\Sync;
 
 use App\Exception;
 use Doctrine\ORM\EntityManager;
+use Entity;
 use Entity\Station;
 
 class RadioAutomation extends SyncAbstract
@@ -48,7 +49,7 @@ class RadioAutomation extends SyncAbstract
         /** @var EntityManager $em */
         $em = $this->di['em'];
 
-        $settings = (array)$station->automation_settings;
+        $settings = (array)$station->getAutomationSettings();
 
         if (empty($settings)) {
             throw new Exception('Automation has not been configured for this station yet.');
@@ -62,7 +63,7 @@ class RadioAutomation extends SyncAbstract
         $threshold_days = (int)$settings['threshold_days'];
         $threshold = time() - (86400 * $threshold_days);
 
-        if (!$force && $station->automation_timestamp >= $threshold) {
+        if (!$force && $station->getAutomationTimestamp() >= $threshold) {
             return false;
         } // No error, but no need to run assignment.
 
@@ -72,16 +73,18 @@ class RadioAutomation extends SyncAbstract
         // Related playlists are already automatically sorted by weight.
         $i = 0;
 
-        foreach ($station->playlists as $playlist) {
-            if ($playlist->is_enabled &&
-                $playlist->type == 'default' &&
-                $playlist->include_in_automation == true
+        foreach ($station->getPlaylists() as $playlist) {
+            /** @var Entity\StationPlaylist $playlist */
+
+            if ($playlist->getIsEnabled() &&
+                $playlist->getType() == 'default' &&
+                $playlist->getIncludeInAutomation() == true
             ) {
                 // Clear all related media.
-                foreach ($playlist->media as $media) {
-                    $original_playlists[$media->song_id][] = $i;
+                foreach ($playlist->getMedia() as $media) {
+                    $original_playlists[$media->getSong()->getId()][] = $i;
 
-                    $media->playlists->removeElement($playlist);
+                    $media->getPlaylists()->removeElement($playlist);
                     $em->persist($media);
                 }
 
@@ -119,7 +122,7 @@ class RadioAutomation extends SyncAbstract
                 $media_row = $media['record'];
 
                 foreach ($original_playlists[$song_id] as $playlist_key) {
-                    $media_row->playlists->add($playlists[$playlist_key]);
+                    $media_row->getPlaylists()->add($playlists[$playlist_key]);
                 }
 
                 $em->persist($media_row);
@@ -163,7 +166,7 @@ class RadioAutomation extends SyncAbstract
             $i += $playlist_num_songs;
         }
 
-        $station->automation_timestamp = time();
+        $station->setAutomationTimestamp(time());
         $em->persist($station);
         $em->flush();
 
@@ -188,7 +191,9 @@ class RadioAutomation extends SyncAbstract
         $threshold = strtotime('-' . (int)$threshold_days . ' days');
 
         // Pull all SongHistory data points.
-        $data_points_raw = $em->createQuery('SELECT sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start FROM Entity\SongHistory sh WHERE sh.station_id = :station_id AND sh.timestamp_end != 0 AND sh.timestamp_start >= :threshold')
+        $data_points_raw = $em->createQuery('SELECT sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start 
+            FROM Entity\SongHistory sh 
+            WHERE sh.station_id = :station_id AND sh.timestamp_end != 0 AND sh.timestamp_start >= :threshold')
             ->setParameter('station_id', $station->getId())
             ->setParameter('threshold', $threshold)
             ->getArrayResult();
@@ -234,16 +239,20 @@ class RadioAutomation extends SyncAbstract
         */
 
         // Pull all media and playlists.
+        $media_repo = $em->getRepository(Entity\StationMedia::class);
+
         $media_raw = $em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
             ->setParameter('station_id', $station->getId())
             ->execute();
 
         $report = [];
 
-        foreach ($media_raw as $row) {
+        foreach ($media_raw as $row_obj) {
+            $row = $media_repo->toArray($row_obj);
+
             $media = [
                 'song_id' => $row['song_id'],
-                'record' => $row,
+                'record' => $row_obj,
 
                 'title' => $row['title'],
                 'artist' => $row['artist'],
@@ -264,9 +273,9 @@ class RadioAutomation extends SyncAbstract
                 'ratio' => 0,
             ];
 
-            if (!empty($row['playlists'])) {
-                foreach ($row['playlists'] as $playlist) {
-                    $media['playlists'][] = $playlist['name'];
+            if ($row_obj->getPlaylists()->count() > 0) {
+                foreach ($row_obj->getPlaylists() as $playlist) {
+                    $media['playlists'][] = $playlist->getName();
                 }
             }
 

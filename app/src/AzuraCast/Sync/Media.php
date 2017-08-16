@@ -40,22 +40,24 @@ class Media extends SyncAbstract
         /** @var Entity\Repository\SongRepository $song_repo */
         $song_repo = $em->getRepository(Entity\Song::class);
 
-        $existing_media = $station->media;
+        $existing_media = $station->getMedia();
         foreach ($existing_media as $media_row) {
+            /** @var Entity\StationMedia $media_row */
+
             // Check if media file still exists.
-            $full_path = $base_dir . '/' . $media_row->path;
+            $full_path = $base_dir . '/' . $media_row->getPath();
 
             if (file_exists($full_path)) {
                 // Check for modifications.
                 $song_info = $media_row->loadFromFile();
 
                 if (is_array($song_info)) {
-                    $media_row->song = $song_repo->getOrCreate($song_info);
+                    $media_row->setSong($song_repo->getOrCreate($song_info));
                 }
 
                 $em->persist($media_row);
 
-                $path_hash = md5($media_row->path);
+                $path_hash = md5($media_row->getPath());
                 unset($music_files[$path_hash]);
             } else {
                 // Delete the now-nonexistent media item.
@@ -65,13 +67,11 @@ class Media extends SyncAbstract
 
         // Create files that do not currently exist.
         foreach ($music_files as $new_file_path) {
-            $media_row = new Entity\StationMedia;
-            $media_row->station = $station;
-            $media_row->path = $new_file_path;
+            $media_row = new Entity\StationMedia($station, $new_file_path);
 
             $song_info = $media_row->loadFromFile();
             if (is_array($song_info)) {
-                $media_row->song = $song_repo->getOrCreate($song_info);
+                $media_row->setSong($song_repo->getOrCreate($song_info));
             }
 
             $em->persist($media_row);
@@ -89,7 +89,8 @@ class Media extends SyncAbstract
 
         // Create a lookup cache of all valid imported media.
         $media_lookup = [];
-        foreach ($station->media as $media) {
+        foreach ($station->getMedia() as $media) {
+            /** @var Entity\StationMedia $media */
             $media_path = $media->getFullPath();
             $media_hash = md5($media_path);
 
@@ -104,12 +105,11 @@ class Media extends SyncAbstract
 
         foreach ($playlist_files_raw as $playlist_file_path) {
             // Create new StationPlaylist record.
-            $record = new Entity\StationPlaylist;
-            $record->station = $station;
+            $record = new Entity\StationPlaylist($station);
 
             $path_parts = pathinfo($playlist_file_path);
             $playlist_name = str_replace('playlist_', '', $path_parts['filename']);
-            $record->name = $playlist_name;
+            $record->setName($playlist_name);
 
             $playlist_file = file_get_contents($playlist_file_path);
             $playlist_lines = explode("\n", $playlist_file);
@@ -127,7 +127,7 @@ class Media extends SyncAbstract
                         $media_record = $media_lookup[$line_hash];
 
                         $media_record->playlists->add($record);
-                        $record->media->add($media_record);
+                        $record->getMedia()->add($media_record);
 
                         $em->persist($media_record);
                     }

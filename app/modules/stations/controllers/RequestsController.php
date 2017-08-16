@@ -7,7 +7,7 @@ class RequestsController extends BaseController
 {
     protected function permissions()
     {
-        return $this->acl->isAllowed('view station reports', $this->station->id);
+        return $this->acl->isAllowed('view station reports', $this->station->getId());
     }
 
     public function indexAction()
@@ -17,7 +17,7 @@ class RequestsController extends BaseController
             JOIN sm.song s
             WHERE sr.station_id = :station_id
             ORDER BY sr.timestamp DESC')
-            ->setParameter('station_id', $this->station->id)
+            ->setParameter('station_id', $this->station->getId())
             ->getArrayResult();
     }
 
@@ -27,7 +27,7 @@ class RequestsController extends BaseController
 
         $media = $this->em->getRepository(Entity\StationRequest::class)->findOneBy([
             'id' => $id,
-            'station_id' => $this->station->id,
+            'station_id' => $this->station->getId(),
             'played_at' => 0
         ]);
 

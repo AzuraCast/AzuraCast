@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class ListenerRepository extends \App\Doctrine\Repository
+class ListenerRepository extends BaseRepository
 {
     /**
      * Get the number of unique listeners for a station during a specified time period.

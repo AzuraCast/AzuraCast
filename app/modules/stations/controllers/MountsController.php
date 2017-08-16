@@ -17,54 +17,58 @@ class MountsController extends BaseController
 
     protected function permissions()
     {
-        return $this->acl->isAllowed('manage station mounts', $this->station->id);
+        return $this->acl->isAllowed('manage station mounts', $this->station->getId());
     }
 
     public function indexAction()
     {
-        $this->view->mounts = $this->station->mounts;
+        $this->view->mounts = $this->station->getMounts();
     }
 
     public function editAction()
     {
-        $form_config = $this->config->forms->{'mount_'.$this->station->frontend_type};
+        /** @var Entity\Repository\StationMountRepository $mount_repo */
+        $mount_repo = $this->em->getRepository(Entity\StationMount::class);
+
+        $form_config = $this->config->forms->{'mount_'.$this->station->getFrontendType()};
         $form = new \App\Form($form_config);
 
         if ($this->hasParam('id')) {
-            $record = $this->em->getRepository(Entity\StationMount::class)->findOneBy([
+            $record = $mount_repo->findOneBy([
                 'id' => $this->getParam('id'),
-                'station_id' => $this->station->id,
+                'station_id' => $this->station->getId(),
             ]);
-            $form->setDefaults($record->toArray($this->em));
+            $form->setDefaults($mount_repo->toArray($record));
+        } else {
+            $record = null;
         }
 
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
 
             if (!($record instanceof Entity\StationMount)) {
-                $record = new Entity\StationMount;
-                $record->station = $this->station;
+                $record = new Entity\StationMount($this->station);
             }
 
-            $record->fromArray($this->em, $data);
+            $mount_repo->fromArray($record, $data);
 
             $this->em->persist($record);
 
             $uow = $this->em->getUnitOfWork();
             $uow->computeChangeSets();
             if ($uow->isEntityScheduled($record)) {
-                $this->station->needs_restart = true;
+                $this->station->setNeedsRestart(true);
                 $this->em->persist($this->station);
             }
 
             $this->em->flush();
 
             // Unset all other records as default if this one is set.
-            if ($record->is_default) {
+            if ($record->getIsDefault()) {
                 $this->em->createQuery('UPDATE Entity\StationMount sm SET sm.is_default = 0
                     WHERE sm.station_id = :station_id AND sm.id != :new_default_id')
-                    ->setParameter('station_id', $this->station->id)
-                    ->setParameter('new_default_id', $record->id)
+                    ->setParameter('station_id', $this->station->getId())
+                    ->setParameter('new_default_id', $record->getId())
                     ->execute();
             }
 
@@ -86,14 +90,14 @@ class MountsController extends BaseController
 
         $record = $this->em->getRepository(Entity\StationMount::class)->findOneBy([
             'id' => $id,
-            'station_id' => $this->station->id
+            'station_id' => $this->station->getId()
         ]);
 
         if ($record instanceof Entity\StationMount) {
             $this->em->remove($record);
         }
 
-        $this->station->needs_restart = true;
+        $this->station->setNeedsRestart(true);
         $this->em->persist($this->station);
         $this->em->flush();
 

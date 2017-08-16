@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class SettingsRepository extends \App\Doctrine\Repository
+class SettingsRepository extends BaseRepository
 {
     /**
      * @param $settings

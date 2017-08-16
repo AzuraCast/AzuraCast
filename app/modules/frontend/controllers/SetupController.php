@@ -48,22 +48,21 @@ class SetupController extends BaseController
 
             // Create actions and roles supporting Super Admninistrator.
             $role = new Entity\Role;
-            $role->name = _('Super Administrator');
+            $role->setName(_('Super Administrator'));
+
             $this->em->persist($role);
             $this->em->flush();
 
-            $rha = new Entity\RolePermission;
-            $rha->fromArray($this->em, [
-                'role' => $role,
-                'action_name' => 'administer all',
-            ]);
+            $rha = new Entity\RolePermission($role);
+            $rha->setActionName('administer all');
+
             $this->em->persist($rha);
 
             // Create user account.
             $user = new Entity\User;
-            $user->email = $data['username'];
+            $user->setEmail($data['username']);
             $user->setAuthPassword($data['password']);
-            $user->roles->add($role);
+            $user->getRoles()->add($role);
             $this->em->persist($user);
 
             // Write to DB.

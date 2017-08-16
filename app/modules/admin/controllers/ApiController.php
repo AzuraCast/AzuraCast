@@ -1,12 +1,11 @@
 <?php
 namespace Controller\Admin;
 
-use App\Doctrine\Repository;
 use Entity;
 
 class ApiController extends BaseController
 {
-    /** @var Repository */
+    /** @var Entity\Repository\BaseRepository */
     protected $record_repo;
 
     public function preDispatch()

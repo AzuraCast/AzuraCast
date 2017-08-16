@@ -38,12 +38,9 @@ class Role
 
     /**
      * Role constructor.
-     * @param $name
      */
-    public function __construct($name)
+    public function __construct()
     {
-        $this->name = $name;
-
         $this->users = new ArrayCollection;
         $this->permissions = new ArrayCollection;
     }

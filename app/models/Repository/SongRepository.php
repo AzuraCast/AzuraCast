@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class SongRepository extends \App\Doctrine\Repository
+class SongRepository extends BaseRepository
 {
     /**
      * Get a list of all song IDs.

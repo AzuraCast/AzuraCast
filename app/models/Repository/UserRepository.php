@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class UserRepository extends \App\Doctrine\Repository
+class UserRepository extends BaseRepository
 {
     /**
      * @param $username

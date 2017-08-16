@@ -6,19 +6,19 @@
 <ul class="main-menu">
     <li class="menu-header">
         <a href="<?=$url->named('stations:index:index', ['station' => $station->getId()]) ?>">
-            <?=$this->e($station->name) ?>
+            <?=$this->e($station->getName()) ?>
         </a>
     </li>
 
 <?php if ($acl->isAllowed('manage station broadcasting', $station->getId())): ?>
-    <?php if (!$station->has_started): ?>
+    <?php if (!$station->getHasStarted()): ?>
     <li class="menu-info">
         <a href="<?=$url->named('stations:util:restart', ['station' => $station->getId()]) ?>">
             <i class="zmdi zmdi-refresh-sync"></i>
             <?=_('<b>Ready to Broadcast?</b><br>Click to Start Station') ?>
         </a>
     </li>
-    <?php elseif ($station->needs_restart): ?>
+    <?php elseif ($station->getNeedsRestart()): ?>
     <li class="menu-alert">
         <a href="<?=$url->named('stations:util:restart', ['station' => $station->getId()]) ?>">
             <i class="zmdi zmdi-refresh-sync-alert"></i>
@@ -60,7 +60,7 @@
             <?php if ($frontend->supportsListenerDetail()): ?>
                 <li><a href="<?=$url->named('stations:reports:listeners', ['station' => $station->getId()]) ?>"><?=_('Listeners') ?></a></li>
             <?php endif; ?>
-            <?php if ($station->enable_requests): ?>
+            <?php if ($station->getEnableRequests()): ?>
                 <li><a href="<?=$url->named('stations:requests:index', ['station' => $station->getId()]) ?>"><?=_('Song Requests') ?></a></li>
             <?php endif; ?>
                 <li><a href="<?=$url->named('stations:reports:timeline', ['station' => $station->getId()]) ?>"><?=_('Song Playback Timeline') ?></a></li>

@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class RolePermissionRepository extends \App\Doctrine\Repository
+class RolePermissionRepository extends BaseRepository
 {
     public function getActionsForAllRoles()
     {

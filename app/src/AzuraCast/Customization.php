@@ -28,8 +28,8 @@ class Customization
      */
     public function getTimeZone()
     {
-        if ($this->user !== null && !empty($this->user->timezone)) {
-            return $this->user->timezone;
+        if ($this->user !== null && !empty($this->user->getTimezone())) {
+            return $this->user->getTimezone();
         } else {
             return date_default_timezone_get();
         }
@@ -46,9 +46,9 @@ class Customization
         $supported_locales = $this->app_settings['locale']['supported'];
 
         // Prefer user-based profile locale.
-        if ($this->user !== null && !empty($this->user->locale) && $this->user->locale !== 'default') {
-            if (isset($supported_locales[$this->user->locale])) {
-                $locale = $this->user->locale;
+        if ($this->user !== null && !empty($this->user->getLocale()) && $this->user->getLocale() !== 'default') {
+            if (isset($supported_locales[$this->user->getLocale()])) {
+                $locale = $this->user->getLocale();
             }
         }
 
@@ -79,10 +79,10 @@ class Customization
      */
     public function getTheme()
     {
-        if ($this->user !== null && !empty($this->user->theme)) {
+        if ($this->user !== null && !empty($this->user->getTheme())) {
             $available_themes = $this->app_settings['themes']['available'];
-            if (isset($available_themes[$this->user->theme])) {
-                return $this->user->theme;
+            if (isset($available_themes[$this->user->getTheme()])) {
+                return $this->user->getTheme();
             }
         }
 

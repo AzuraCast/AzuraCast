@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class StationMediaRepository extends \App\Doctrine\Repository
+class StationMediaRepository extends BaseRepository
 {
     /**
      * @param Entity\Station $station

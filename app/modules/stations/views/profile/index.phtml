@@ -1,3 +1,7 @@
+<?php
+/** @var \Entity\Station $station */
+?>
+
 <?php $this->layout('main', ['title' => _('Station Profile'), 'manual' => true]) ?>
 
 <?php $this->start('custom_js') ?>
@@ -82,17 +86,17 @@
                 <tbody>
                     <tr>
                         <td><?=_('Name') ?></td>
-                        <td><?=$this->e($station->name) ?></td>
+                        <td><?=$this->e($station->getName()) ?></td>
                     </tr>
                     <tr>
                         <td><?=_('Description') ?></td>
-                        <td><?=$this->e($station->description) ?></td>
+                        <td><?=$this->e($station->getDescription()) ?></td>
                     </tr>
                     <?php if ($backend->supportsRequests()): ?>
                     <tr>
                         <td><?=_('Song Requests') ?></td>
                         <td>
-                        <?php if ($station->enable_requests): ?>
+                        <?php if ($station->getEnableRequests()): ?>
                             <span class="text-success"><?=_('Enabled') ?></span>
 
                             <div class="form-field">
@@ -108,7 +112,7 @@
                     <tr>
                         <td><?=_('Streamers/DJs') ?></td>
                         <td>
-                        <?php if ($station->enable_streamers): ?>
+                        <?php if ($station->getEnableStreamers()): ?>
                             <span class="text-success"><?=_('Enabled') ?></span><br>
                             <a href="<?=$url->routeFromHere(['controller' => 'streamers']) ?>"><?=_('Manage streamer accounts') ?></a>
                         <?php else: ?>

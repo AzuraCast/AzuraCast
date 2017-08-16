@@ -107,7 +107,7 @@ class NowPlaying extends SyncAbstract
         $em = $this->di['em'];
 
         /** @var Entity\Api\NowPlaying $np_old */
-        $np_old = $station->nowplaying;
+        $np_old = $station->getNowplaying();
 
         $np = new Entity\Api\NowPlaying;
         $np->station = $station->api($station->getFrontendAdapter($this->di));
@@ -163,7 +163,7 @@ class NowPlaying extends SyncAbstract
 
         $np->cache = 'station';
 
-        $station->nowplaying = $np;
+        $station->setNowplaying($np);
 
         $em->persist($station);
         $em->flush();

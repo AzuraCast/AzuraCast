@@ -5,12 +5,12 @@ class AutomationController extends BaseController
 {
     protected function permissions()
     {
-        return $this->acl->isAllowed('manage station automation', $this->station->id);
+        return $this->acl->isAllowed('manage station automation', $this->station->getId());
     }
 
     public function indexAction()
     {
-        $automation_settings = (array)$this->station->automation_settings;
+        $automation_settings = (array)$this->station->getAutomationTimestamp();
 
         $form = new \App\Form($this->config->forms->automation);
         $form->setDefaults($automation_settings);
@@ -18,7 +18,7 @@ class AutomationController extends BaseController
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            $this->station->automation_settings = $data;
+            $this->station->setAutomationSettings($data);
 
             $this->em->persist($this->station);
             $this->em->flush();

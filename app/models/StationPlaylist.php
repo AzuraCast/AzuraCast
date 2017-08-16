@@ -373,7 +373,7 @@ class StationPlaylist
             case 'm3u':
                 $playlist_file = [];
                 foreach ($this->media as $media_file) {
-                    $media_file_path = $media_path . $media_file->path;
+                    $media_file_path = $media_path . $media_file->getPath();
                     $playlist_file[] = $media_file_path;
                 }
 
@@ -392,10 +392,10 @@ class StationPlaylist
                 foreach($this->media as $media_file) {
                     $i++;
 
-                    $media_file_path = $media_path . $media_file->path;
+                    $media_file_path = $media_path . $media_file->getPath();
                     $playlist_file[] = 'File'.$i.'='.$media_file_path;
-                    $playlist_file[] = 'Title'.$i.'='.$media_file->artist.' - '.$media_file->title;
-                    $playlist_file[] = 'Length'.$i.'='.$media_file->length;
+                    $playlist_file[] = 'Title'.$i.'='.$media_file->getArtist().' - '.$media_file->getTitle();
+                    $playlist_file[] = 'Length'.$i.'='.$media_file->getLength();
                     $playlist_file[] = '';
                 }
 

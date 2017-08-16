@@ -4,7 +4,7 @@ namespace Entity\Repository;
 use Entity;
 use Interop\Container\ContainerInterface;
 
-class StationRepository extends \App\Doctrine\Repository
+class StationRepository extends BaseRepository
 {
     /**
      * @return mixed

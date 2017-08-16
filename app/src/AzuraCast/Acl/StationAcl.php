@@ -25,15 +25,15 @@ class StationAcl extends \App\Acl
         $memoize_text = serialize($action);
         $memoize = ($station_id !== null) ? md5($memoize_text . '_' . $station_id) : md5($memoize_text);
 
-        $user_id = ($user instanceof User) ? $user->id : 'anonymous';
+        $user_id = ($user instanceof User) ? $user->getId() : 'anonymous';
 
         if (!isset($this->_cache[$user_id][$memoize])) {
             if ($user instanceof User) {
                 if (!isset($this->_roles[$user_id])) {
                     $this->_roles[$user_id] = [];
 
-                    if (count($user->roles) > 0) {
-                        foreach ($user->roles as $role) {
+                    if ($user->getRoles()->count() > 0) {
+                        foreach ($user->getRoles() as $role) {
                             $this->_roles[$user_id][] = $role->getId();
                         }
                     }

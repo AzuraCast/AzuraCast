@@ -1,4 +1,6 @@
-<?php $this->layout('embed', ['title' => $this->e($station->name)]) ?>
+<?php /** @var \Entity\Station $station */ ?>
+
+<?php $this->layout('embed', ['title' => $this->e($station->getName())]) ?>
 
 <?php $this->start('custom_js') ?>
 <script type="text/javascript" src="<?=$url->content('vendors/bootgrid/jquery.bootgrid.updated.js') ?>"></script>

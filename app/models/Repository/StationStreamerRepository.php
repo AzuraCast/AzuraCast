@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class StationStreamerRepository extends \App\Doctrine\Repository
+class StationStreamerRepository extends BaseRepository
 {
     /**
      * Attempt to authenticate a streamer.

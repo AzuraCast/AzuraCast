@@ -90,7 +90,7 @@ return function (\Slim\Container $di, $settings) {
             $config->setProxyDir($options['proxyPath']);
             $config->setProxyNamespace($options['proxyNamespace']);
 
-            $config->setDefaultRepositoryClassName('\App\Doctrine\Repository');
+            $config->setDefaultRepositoryClassName(\Entity\Repository\BaseRepository::class);
 
             if (isset($options['conn']['debug']) && $options['conn']['debug']) {
                 $config->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger);

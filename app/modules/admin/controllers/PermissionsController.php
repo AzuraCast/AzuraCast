@@ -12,7 +12,9 @@ class PermissionsController extends BaseController
 
     public function indexAction()
     {
-        $all_roles = $this->em->createQuery('SELECT r, rp, s FROM Entity\Role r LEFT JOIN r.users u LEFT JOIN r.permissions rp LEFT JOIN rp.station s ORDER BY r.id ASC')
+        $all_roles = $this->em->createQuery('SELECT r, rp, s FROM Entity\Role r 
+            LEFT JOIN r.users u LEFT JOIN r.permissions rp LEFT JOIN rp.station s 
+            ORDER BY r.id ASC')
             ->getArrayResult();
 
         $roles = [];
@@ -45,7 +47,7 @@ class PermissionsController extends BaseController
 
     public function editAction()
     {
-        /** @var \App\Doctrine\Repository $role_repo */
+        /** @var Entity\Repository\BaseRepository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
 
         /** @var Entity\Repository\RolePermissionRepository $permission_repo */
@@ -60,6 +62,8 @@ class PermissionsController extends BaseController
             $actions = $permission_repo->getActionsForRole($record);
 
             $form->setDefaults(array_merge($record_info, $actions));
+        } else {
+            $record = null;
         }
 
         if (!empty($_POST) && $form->isValid($_POST)) {
@@ -86,7 +90,7 @@ class PermissionsController extends BaseController
 
     public function deleteAction()
     {
-        /** @var \App\Doctrine\Repository $role_repo */
+        /** @var Entity\Repository\BaseRepository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
 
         $record = $role_repo->find((int)$this->getParam('id'));

@@ -133,7 +133,7 @@ class StationMedia
     protected $cue_out;
 
     /**
-     * @ManyToMany(targetEntity="StationPlaylist", inversedBy="playlists")
+     * @ManyToMany(targetEntity="StationPlaylist", inversedBy="media")
      * @JoinTable(name="station_playlist_has_media",
      *   joinColumns={@JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")},
      *   inverseJoinColumns={@JoinColumn(name="playlists_id", referencedColumnName="id", onDelete="CASCADE")}

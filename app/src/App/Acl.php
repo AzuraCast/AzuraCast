@@ -67,15 +67,15 @@ class Acl
         asort($action);
 
         $memoize = md5(serialize($action));
-        $user_id = ($user instanceof User) ? $user->id : 'anonymous';
+        $user_id = ($user instanceof User) ? $user->getId() : 'anonymous';
 
         if (!isset($this->_cache[$user_id][$memoize])) {
             if ($user instanceof User) {
                 if (!isset($this->_roles[$user_id])) {
                     $this->_roles[$user_id] = [];
 
-                    if (count($user->roles) > 0) {
-                        foreach ($user->roles as $role) {
+                    if (count($user->getRoles()) > 0) {
+                        foreach ($user->getRoles() as $role) {
                             $this->_roles[$user_id][] = $role->getId();
                         }
                     }

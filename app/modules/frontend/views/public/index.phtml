@@ -1,4 +1,6 @@
-<?php $this->layout('minimal', ['title' => $this->e($station->name), 'page_class' => 'public-page-content']) ?>
+<?php /** @var \Entity\Station $station */ ?>
+
+<?php $this->layout('minimal', ['title' => $this->e($station->getName()), 'page_class' => 'public-page-content']) ?>
 
 <?php $this->start('custom_js') ?>
 <script type="text/javascript" src="<?=$url->content('vendors/bootgrid/jquery.bootgrid.updated.js') ?>"></script>
@@ -17,7 +19,7 @@
         <ul class="actions pull-right">
             <?=$this->fetch('partials/radio_controls') ?>
         </ul>
-        <h3 class="text-left"><?=$this->e($station->name) ?></h3>
+        <h3 class="text-left"><?=$this->e($station->getName()) ?></h3>
 
         <div class="stations nowplaying">
             <div class="media media-left" id="station_<?=$station->getId() ?>">
@@ -44,7 +46,7 @@
             <a class="btn btn-default btn-icon-text" data-toggle="modal" data-target="#modal-history">
                 <i class="zmdi zmdi-time-restore"></i> <?=_('Song History') ?>
             </a>
-        <?php if ($station->enable_requests): ?>
+        <?php if ($station->getEnableRequests()): ?>
             <a class="btn btn-default btn-icon-text" data-toggle="modal" data-target="#modal-request">
                 <i class="zmdi zmdi-help-outline"></i> <?=_('Request Song') ?>
             </a>

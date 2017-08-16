@@ -136,7 +136,7 @@ class Auth
         // Prevent any previous identity from being used.
         // @session_regenerate_id(true);
 
-        $this->_session->user_id = $user->id;
+        $this->_session->user_id = $user->getId();
 
         $this->_user = $user;
 
@@ -158,7 +158,7 @@ class Auth
             $user_info = $this->_user_repo->findOneBy($user_info);
         }
 
-        $this->_session->masquerade_user_id = $user_info->id;
+        $this->_session->masquerade_user_id = $user_info->getId();
         $this->_masqueraded_user = $user_info;
     }
 

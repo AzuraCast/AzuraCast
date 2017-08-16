@@ -1,11 +1,27 @@
 <?php
-namespace App\Doctrine;
+namespace Entity\Repository;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityRepository;
 
-class Repository extends EntityRepository
+class BaseRepository extends EntityRepository
 {
+    /**
+     * Combination of find() and toArray() helper functions.
+     *
+     * @param $id
+     * @param bool $deep
+     * @param bool $form_mode
+     * @return array|null
+     */
+    public function findAsArray($id, $deep = false, $form_mode = false)
+    {
+        $record = $this->_em->find($this->_entityName, $id);
+        return ($record === null)
+            ? null
+            : $this->toArray($record, $deep, $form_mode);
+    }
+
     /**
      * Generate an array result of all records.
      *

@@ -84,12 +84,14 @@ class NowPlaying extends SyncAbstract
         $nowplaying = [];
 
         foreach ($stations as $station) {
-            Debug::startTimer($station->name);
+            /** @var Entity\Station $station */
+
+            Debug::startTimer($station->getName());
 
             // $name = $station->short_name;
             $nowplaying[] = $this->_processStation($station);
 
-            Debug::endTimer($station->name);
+            Debug::endTimer($station->getName());
         }
 
         return $nowplaying;

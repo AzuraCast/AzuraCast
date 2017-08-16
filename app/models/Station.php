@@ -77,7 +77,7 @@ class Station
 
     /**
      * @Column(name="nowplaying", type="array", nullable=true)
-     * @var array|null
+     * @var mixed|null
      */
     protected $nowplaying;
 
@@ -397,17 +397,17 @@ class Station
     }
 
     /**
-     * @return array|null
+     * @return mixed|null
      */
-    public function getNowplaying(): ?array
+    public function getNowplaying()
     {
         return $this->nowplaying;
     }
 
     /**
-     * @param array|null $nowplaying
+     * @param mixed|null $nowplaying
      */
-    public function setNowplaying(array $nowplaying = null)
+    public function setNowplaying($nowplaying = null)
     {
         $this->nowplaying = $nowplaying;
     }

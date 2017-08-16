@@ -58,23 +58,21 @@ abstract class CestAbstract
 
         // Create administrator account.
         $role = new \Entity\Role;
-        $role->name = 'Super Administrator';
+        $role->setName('Super Administrator');
 
         $this->em->persist($role);
         $this->em->flush();
 
-        $rha = new \Entity\RolePermission;
-        $rha->fromArray($this->em, [
-            'role' => $role,
-            'action_name' => 'administer all',
-        ]);
+        $rha = new \Entity\RolePermission($role);
+        $rha->setActionName('administer all');
         $this->em->persist($rha);
 
         // Create user account.
         $user = new \Entity\User;
-        $user->email = $this->login_username;
+        $user->setEmail($this->login_username);
         $user->setAuthPassword($this->login_password);
-        $user->roles->add($role);
+
+        $user->getRoles()->add($role);
 
         $this->em->persist($user);
         $this->em->flush();

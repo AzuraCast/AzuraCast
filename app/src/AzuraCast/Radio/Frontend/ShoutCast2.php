@@ -32,10 +32,12 @@ class ShoutCast2 extends FrontendAbstract
 
         $em = $this->di['em'];
         $mount_repo = $em->getRepository(Entity\StationMount::class);
+
+        /** @var Entity\StationMount $default_mount */
         $default_mount = $mount_repo->getDefaultMount($this->station);
 
         foreach($current_data['streams'] as $stream) {
-            if ($stream['streampath'] === $default_mount->name) {
+            if ($stream['streampath'] === $default_mount->getName()) {
                 $song_data = $stream;
             }
 

@@ -2,6 +2,7 @@
 use Slim\App;
 use Interop\Container\ContainerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Entity;
 
 abstract class CestAbstract
 {
@@ -29,9 +30,9 @@ abstract class CestAbstract
         $auth = $this->di['auth'];
         $auth->logout();
 
-        if ($this->test_station instanceof \Entity\Station)
+        if ($this->test_station instanceof Entity\Station)
         {
-            $station_repo = $this->em->getRepository(\Entity\Station::class);
+            $station_repo = $this->em->getRepository(Entity\Station::class);
             $this->test_station = $station_repo->destroy($this->test_station, $this->di);
         }
     }
@@ -40,11 +41,12 @@ abstract class CestAbstract
     protected $login_password = 'AzuraCastFunctionalTests!';
     protected $login_cookie = null;
 
+    /** @var Entity\Station|null */
     protected $test_station = null;
 
     protected function setupIncomplete(FunctionalTester $I)
     {
-        $settings_repo = $this->em->getRepository(\Entity\Settings::class);
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
         $settings_repo->setSetting('setup_complete', 0);
 
         $this->_cleanTables();
@@ -57,18 +59,18 @@ abstract class CestAbstract
         /* Walk through the steps of completing setup automatically. */
 
         // Create administrator account.
-        $role = new \Entity\Role;
+        $role = new Entity\Role;
         $role->setName('Super Administrator');
 
         $this->em->persist($role);
         $this->em->flush();
 
-        $rha = new \Entity\RolePermission($role);
+        $rha = new Entity\RolePermission($role);
         $rha->setActionName('administer all');
         $this->em->persist($rha);
 
         // Create user account.
-        $user = new \Entity\User;
+        $user = new Entity\User;
         $user->setEmail($this->login_username);
         $user->setAuthPassword($this->login_password);
 
@@ -80,8 +82,8 @@ abstract class CestAbstract
         $this->di['acl']->reload();
 
         // Create station.
-        $frontends = \Entity\Station::getFrontendAdapters();
-        $backends = \Entity\Station::getBackendAdapters();
+        $frontends = Entity\Station::getFrontendAdapters();
+        $backends = Entity\Station::getBackendAdapters();
 
         $station_info = [
             'id'            => 25,

@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ErrorHandler
 {
-    public static function handle(ContainerInterface $di, Request $req, Response $res, Exception $e)
+    public static function handle(ContainerInterface $di, Request $req, Response $res, \Throwable $e)
     {
         if ($e instanceof \App\Exception\NotLoggedIn) {
             // Redirect to login page for not-logged-in users.
@@ -52,7 +52,7 @@ class ErrorHandler
                 }
             }
 
-            if (APP_APPLICATION_ENV != 'production') {
+            if (!APP_IN_PRODUCTION) {
                 $show_debug = true;
             }
 

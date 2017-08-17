@@ -26,10 +26,10 @@ class RadioAutomation extends SyncAbstract
         foreach ($stations as $station) {
             try {
                 if ($this->runStation($station)) {
-                    $automation_log[$station->getId()] = $station->name . ': SUCCESS';
+                    $automation_log[$station->getId()] = $station->getName() . ': SUCCESS';
                 }
             } catch (Exception $e) {
-                $automation_log[$station->getId()] = $station->name . ': ERROR - ' . $e->getMessage();
+                $automation_log[$station->getId()] = $station->getName() . ': ERROR - ' . $e->getMessage();
             }
         }
 

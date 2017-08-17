@@ -22,20 +22,21 @@
             </thead>
             <tbody>
             <?php foreach($mounts as $row): ?>
+                <?php /** @var \Entity\StationMount $row */ ?>
                 <tr class="vertical-align-middle">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $row['id'])) ?>"><?=_('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])) ?>"><?=_('Delete') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $row->getId())) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row->getId())) ?>"><?=_('Delete') ?></a>
                     </td>
                     <td>
-                        <big><a href="<?=$this->e($frontend->getUrlForMount($row['name'])) ?>" target="_blank"><?=$this->e($row['name']) ?></a></big>
-                        <?php if ($row['is_default']): ?>
+                        <big><a href="<?=$this->e($frontend->getUrlForMount($row->getName())) ?>" target="_blank"><?=$this->e($row->getName()) ?></a></big>
+                        <?php if ($row->getIsDefault()): ?>
                             <br><span class="label label-success"><?=_('Default Mount') ?></span>
                         <?php endif; ?>
                     </td>
                     <td>
-                    <?php if ($row['enable_autodj']): ?>
-                        <?=_('Enabled') ?> - <?=(int)$row['autodj_bitrate'] ?>kbps <?=strtoupper($this->e($row['autodj_format'])) ?>
+                    <?php if ($row->getEnableAutodj()): ?>
+                        <?=_('Enabled') ?> - <?=(int)$row->getAutodjBitrate() ?>kbps <?=strtoupper($this->e($row->getAutodjFormat())) ?>
                     <?php else: ?>
                         <?=_('Disabled') ?>
                     <?php endif; ?>

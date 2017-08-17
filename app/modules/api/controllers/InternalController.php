@@ -46,11 +46,11 @@ class InternalController extends BaseController
             list($user, $pass) = explode(':', $pass);
         }
 
-        if (!$this->station->enable_streamers) {
+        if (!$this->station->getEnableStreamers()) {
             return $this->_return('false');
         }
 
-        $fe_config = (array)$this->station->frontend_config;
+        $fe_config = (array)$this->station->getFrontendConfig();
         if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
             return $this->_return('true');
         }
@@ -72,9 +72,9 @@ class InternalController extends BaseController
 
         if ($sh instanceof Entity\SongHistory) {
             // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
-            $song_path = $sh->media->getFullPath();
+            $song_path = $sh->getMedia()->getFullPath();
 
-            return $this->_return('annotate:' . implode(',', $sh->media->getAnnotations()) . ':' . $song_path);
+            return $this->_return('annotate:' . implode(',', $sh->getMedia()->getAnnotations()) . ':' . $song_path);
         } else {
             $error_mp3_path = (APP_INSIDE_DOCKER) ? '/usr/local/share/icecast/web/error.mp3' : APP_INCLUDE_ROOT . '/resources/error.mp3';
             return $this->_return($error_mp3_path);

@@ -13,7 +13,7 @@ class ShoutCast2 extends FrontendAbstract
     /* Process a nowplaying record. */
     protected function _getNowPlaying(&$np)
     {
-        $fe_config = (array)$this->station->frontend_config;
+        $fe_config = (array)$this->station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
         $np_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/statistics?json=1';
@@ -32,10 +32,12 @@ class ShoutCast2 extends FrontendAbstract
 
         $em = $this->di['em'];
         $mount_repo = $em->getRepository(Entity\StationMount::class);
+
+        /** @var Entity\StationMount $default_mount */
         $default_mount = $mount_repo->getDefaultMount($this->station);
 
         foreach($current_data['streams'] as $stream) {
-            if ($stream['streampath'] === $default_mount->name) {
+            if ($stream['streampath'] === $default_mount->getName()) {
                 $song_data = $stream;
             }
 
@@ -85,7 +87,7 @@ class ShoutCast2 extends FrontendAbstract
     {
         $config = $this->_getConfig();
 
-        $this->station->frontend_config = $this->_loadFromConfig($config);
+        $this->station->setFrontendConfig($this->_loadFromConfig($config));
 
         return true;
     }
@@ -94,7 +96,7 @@ class ShoutCast2 extends FrontendAbstract
     {
         $config = $this->_getDefaults();
 
-        $frontend_config = (array)$this->station->frontend_config;
+        $frontend_config = (array)$this->station->getFrontendConfig();
 
         if (!empty($frontend_config['port'])) {
             $config['portbase'] = $frontend_config['port'];
@@ -120,22 +122,23 @@ class ShoutCast2 extends FrontendAbstract
         }
 
         $i = 0;
-        foreach ($this->station->mounts as $mount_row) {
+        foreach ($this->station->getMounts() as $mount_row) {
+            /** @var Entity\StationMount $mount_row */
             $i++;
             $config['streamid_'.$i] = $i;
-            $config['streampath_'.$i] = $mount_row->name;
+            $config['streampath_'.$i] = $mount_row->getName();
 
-            if ($mount_row->relay_url) {
-                $config['streamrelayurl_'.$i] = $mount_row->relay_url;
+            if ($mount_row->getRelayUrl()) {
+                $config['streamrelayurl_'.$i] = $mount_row->getRelayUrl();
             }
 
-            if ($mount_row->authhash) {
-                $config['streamauthhash_' . $i] = $mount_row->authhash;
+            if ($mount_row->getAuthhash()) {
+                $config['streamauthhash_' . $i] = $mount_row->getAuthhash();
             }
         }
 
         // Set any unset values back to the DB config.
-        $this->station->frontend_config = $this->_loadFromConfig($config);
+        $this->station->setFrontendConfig($this->_loadFromConfig($config));
 
         $em = $this->di['em'];
         $em->persist($this->station);
@@ -176,7 +179,7 @@ class ShoutCast2 extends FrontendAbstract
         $mount_repo = $em->getRepository(Entity\StationMount::class);
         $default_mount = $mount_repo->getDefaultMount($this->station);
 
-        $mount_name = ($default_mount instanceof Entity\StationMount) ? $default_mount->name : '/stream/1/';
+        $mount_name = ($default_mount instanceof Entity\StationMount) ? $default_mount->getName() : '/stream/1/';
 
         return $this->getUrlForMount($mount_name);
     }
@@ -184,8 +187,8 @@ class ShoutCast2 extends FrontendAbstract
     public function getStreamUrls()
     {
         $urls = [];
-        foreach ($this->station->mounts as $mount) {
-            $urls[] = $this->getUrlForMount($mount->name);
+        foreach ($this->station->getMounts() as $mount) {
+            $urls[] = $this->getUrlForMount($mount->getName());
         }
 
         return $urls;

@@ -39,7 +39,7 @@ class RestartRadio extends \App\Console\Command\CommandAbstract
         foreach ($stations as $station) {
             /** @var Station $station */
 
-            \App\Debug::log('Restarting station #' . $station->id . ': ' . $station->name);
+            \App\Debug::log('Restarting station #' . $station->getId() . ': ' . $station->getName());
 
             $station->writeConfiguration($this->di);
 

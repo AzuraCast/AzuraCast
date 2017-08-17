@@ -1,4 +1,6 @@
-<?php $this->layout('embed', ['title' => $this->e($station->name)]) ?>
+<?php /** @var \Entity\Station $station */ ?>
+
+<?php $this->layout('embed', ['title' => $this->e($station->getName())]) ?>
 
 <?php $this->start('custom_js') ?>
 <script type="text/javascript" src="<?=$url->content('vendors/bootgrid/jquery.bootgrid.updated.js') ?>"></script>
@@ -34,7 +36,7 @@ $(function() {
             iconRefresh: 'zmdi-refresh',
             iconUp: 'zmdi-sort-amount-asc'
         },
-        url: "<?=$url->route(['module' => 'api', 'controller' => 'requests', 'action' => 'list', 'station' => $station->id]) ?>",
+        url: "<?=$url->route(['module' => 'api', 'controller' => 'requests', 'action' => 'list', 'station' => $station->getId()]) ?>",
         formatters: {
             "commands": function(column, row) {
                 return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=_('Request') ?></a>';

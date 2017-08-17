@@ -43,6 +43,7 @@ services:
       - redis
     volumes:
       - .:/var/azuracast/www
+      - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
     restart: always
 
@@ -83,3 +84,4 @@ volumes:
   db_data: {}
   influx_data: {}
   station_data: {}
+  tmp_data: {}

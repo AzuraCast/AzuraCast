@@ -40,7 +40,7 @@ class Remote extends FrontendAbstract
 
     protected function _getMounts()
     {
-        $settings = (array)$this->station->frontend_config;
+        $settings = (array)$this->station->getFrontendConfig();
 
         Debug::print_r($settings);
 
@@ -195,7 +195,7 @@ class Remote extends FrontendAbstract
 
     public function getAdminUrl()
     {
-        $settings = (array)$this->station->frontend_config;
+        $settings = (array)$this->station->getFrontendConfig();
 
         switch ($settings['remote_type']) {
             case 'icecast':
@@ -213,7 +213,7 @@ class Remote extends FrontendAbstract
 
     public function getPublicUrl($custom_path = null)
     {
-        $settings = (array)$this->station->frontend_config;
+        $settings = (array)$this->station->getFrontendConfig();
         $remote_url = $settings['remote_url'];
 
         $parsed_url = parse_url($remote_url);

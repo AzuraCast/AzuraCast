@@ -14,6 +14,6 @@ class A01_Frontend_IndexCest extends CestAbstract
 
         $I->see('Listeners Across All Stations');
         $I->see('Listeners Per Station');
-        $I->see($this->test_station->name);
+        $I->see($this->test_station->getName());
     }
 }

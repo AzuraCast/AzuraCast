@@ -7,7 +7,7 @@ namespace Entity;
  * })
  * @Entity
  */
-class Analytics extends \App\Doctrine\Entity
+class Analytics
 {
     /**
      * @Column(name="id", type="integer")

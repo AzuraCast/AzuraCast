@@ -49,7 +49,7 @@ class ListenersController extends BaseController
                 WHERE l.station_id = :station_id
                 AND l.timestamp_start < :end
                 AND l.timestamp_end > :start')
-                ->setParameter('station_id', $station->id)
+                ->setParameter('station_id', $station->getId())
                 ->setParameter('start', $start)
                 ->setParameter('end', $end)
                 ->getArrayResult();
@@ -69,7 +69,7 @@ class ListenersController extends BaseController
             $listeners_raw = $this->em->createQuery('SELECT l FROM Entity\Listener l
                 WHERE l.station_id = :station_id
                 AND l.timestamp_end = 0')
-                ->setParameter('station_id', $station->id)
+                ->setParameter('station_id', $station->getId())
                 ->getArrayResult();
         }
 

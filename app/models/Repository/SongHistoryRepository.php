@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class SongHistoryRepository extends \App\Doctrine\Repository
+class SongHistoryRepository extends BaseRepository
 {
     public function getNextSongForStation(Entity\Station $station, $is_autodj = false)
     {
@@ -15,7 +15,7 @@ class SongHistoryRepository extends \App\Doctrine\Repository
             AND sh.timestamp_start = 0
             AND sh.timestamp_end = 0
             ORDER BY sh.id DESC')
-            ->setParameter('station_id', $station->id)
+            ->setParameter('station_id', $station->getId())
             ->setParameter('threshold', time() - 60 * 15)
             ->setMaxResults(1)
             ->getOneOrNullResult();
@@ -28,7 +28,7 @@ class SongHistoryRepository extends \App\Doctrine\Repository
         }
 
         if ($is_autodj) {
-            $next_song->sent_to_autodj = true;
+            $next_song->sentToAutodj();
 
             $this->_em->persist($next_song);
             $this->_em->flush();
@@ -48,12 +48,13 @@ class SongHistoryRepository extends \App\Doctrine\Repository
             WHERE sh.station_id = :station_id 
             AND sh.timestamp_end != 0
             ORDER BY sh.id DESC')
-            ->setParameter('station_id', $station->id)
+            ->setParameter('station_id', $station->getId())
             ->setMaxResults($num_entries)
             ->execute();
 
         $return = [];
         foreach ($history as $sh) {
+            /** @var Entity\SongHistory $sh */
             $return[] = $sh->api();
         }
 
@@ -72,18 +73,15 @@ class SongHistoryRepository extends \App\Doctrine\Repository
         $last_sh = $this->_em->createQuery('SELECT sh FROM Entity\SongHistory sh
             WHERE sh.station_id = :station_id
             ORDER BY sh.timestamp_start DESC')
-            ->setParameter('station_id', $station->id)
+            ->setParameter('station_id', $station->getId())
             ->setMaxResults(1)
             ->getOneOrNullResult();
 
         $listeners = (int)$np['listeners']['current'];
 
-        if ($last_sh instanceof Entity\SongHistory && $last_sh->song_id == $song->id) {
+        if ($last_sh instanceof Entity\SongHistory && $last_sh->getSong() === $song) {
             // Updating the existing SongHistory item with a new data point.
-            $delta_points = (array)$last_sh->delta_points;
-            $delta_points[] = $listeners;
-
-            $last_sh->delta_points = $delta_points;
+            $last_sh->addDeltaPoint($listeners);
 
             $this->_em->persist($last_sh);
             $this->_em->flush();
@@ -92,13 +90,13 @@ class SongHistoryRepository extends \App\Doctrine\Repository
         } else {
             // Wrapping up processing on the previous SongHistory item (if present).
             if ($last_sh instanceof Entity\SongHistory) {
-                $last_sh->timestamp_end = time();
-                $last_sh->listeners_end = $listeners;
+                $last_sh->setTimestampEnd(time());
+                $last_sh->setListenersEnd($listeners);
 
                 // Calculate "delta" data for previous item, based on all data points.
-                $delta_points = (array)$last_sh->delta_points;
-                $delta_points[] = $listeners;
-                $last_sh->delta_points = $delta_points;
+                $last_sh->addDeltaPoint($listeners);
+
+                $delta_points = (array)$last_sh->getDeltaPoints();
 
                 $delta_positive = 0;
                 $delta_negative = 0;
@@ -118,13 +116,13 @@ class SongHistoryRepository extends \App\Doctrine\Repository
                     }
                 }
 
-                $last_sh->delta_positive = $delta_positive;
-                $last_sh->delta_negative = $delta_negative;
-                $last_sh->delta_total = $delta_total;
+                $last_sh->setDeltaPositive($delta_positive);
+                $last_sh->setDeltaNegative($delta_negative);
+                $last_sh->setDeltaTotal($delta_total);
 
                 /** @var ListenerRepository $listener_repo */
                 $listener_repo = $this->_em->getRepository(Entity\Listener::class);
-                $last_sh->unique_listeners = $listener_repo->getUniqueListeners($station, $last_sh->timestamp_start, time());
+                $last_sh->setUniqueListeners($listener_repo->getUniqueListeners($station, $last_sh->getTimestampStart(), time()));
 
                 $this->_em->persist($last_sh);
             }
@@ -136,22 +134,20 @@ class SongHistoryRepository extends \App\Doctrine\Repository
                 AND sh.timestamp_cued != 0
                 AND sh.timestamp_start = 0
                 ORDER BY sh.timestamp_cued DESC')
-                ->setParameter('station_id', $station->id)
-                ->setParameter('song_id', $song->id)
+                ->setParameter('station_id', $station->getId())
+                ->setParameter('song_id', $song->getId())
                 ->setMaxResults(1)
                 ->getOneOrNullResult();
 
             // Processing a new SongHistory item.
             if (!($sh instanceof Entity\SongHistory))
             {
-                $sh = new Entity\SongHistory;
-                $sh->song = $song;
-                $sh->station = $station;
+                $sh = new Entity\SongHistory($song, $station);
             }
 
-            $sh->timestamp_start = time();
-            $sh->listeners_start = $listeners;
-            $sh->delta_points = [$listeners];
+            $sh->setTimestampStart(time());
+            $sh->setListenersStart($listeners);
+            $sh->addDeltaPoint($listeners);
 
             $this->_em->persist($sh);
             $this->_em->flush();

@@ -12,7 +12,7 @@ class IceCast extends FrontendAbstract
     /* Process a nowplaying record. */
     protected function _getNowPlaying(&$np)
     {
-        $fe_config = (array)$this->station->frontend_config;
+        $fe_config = (array)$this->station->getFrontendConfig();
         $reader = new \App\Xml\Reader();
 
         $radio_port = $fe_config['port'];
@@ -77,7 +77,7 @@ class IceCast extends FrontendAbstract
                             'connected_seconds' => $listener['Connected'],
                         ];
 
-                        $client_hash = Entity\Listener::getListenerHash($client);
+                        $client_hash = Entity\Listener::calculateListenerHash($client);
                         $unique_listeners[$client_hash] = $client_hash;
                         $clients[] = $client;
                     }
@@ -124,7 +124,7 @@ class IceCast extends FrontendAbstract
     {
         $config = $this->_getConfig();
 
-        $this->station->frontend_config = $this->_loadFromConfig($config);
+        $this->station->setFrontendConfig($this->_loadFromConfig($config));
 
         return true;
     }
@@ -133,7 +133,7 @@ class IceCast extends FrontendAbstract
     {
         $config = $this->_getDefaults();
 
-        $frontend_config = (array)$this->station->frontend_config;
+        $frontend_config = (array)$this->station->getFrontendConfig();
 
         if (!empty($frontend_config['port'])) {
             $config['listen-socket']['port'] = $frontend_config['port'];
@@ -167,7 +167,7 @@ class IceCast extends FrontendAbstract
         }
 
         // Set any unset values back to the DB config.
-        $this->station->frontend_config = $this->_loadFromConfig($config);
+        $this->station->setFrontendConfig($this->_loadFromConfig($config));
 
         $em = $this->di['em'];
         $em->persist($this->station);
@@ -207,7 +207,7 @@ class IceCast extends FrontendAbstract
         $mount_repo = $em->getRepository(StationMount::class);
         $default_mount = $mount_repo->getDefaultMount($this->station);
 
-        $mount_name = ($default_mount instanceof StationMount) ? $default_mount->name : '/radio.mp3';
+        $mount_name = ($default_mount instanceof StationMount) ? $default_mount->getName() : '/radio.mp3';
 
         return $this->getUrlForMount($mount_name);
     }
@@ -215,8 +215,8 @@ class IceCast extends FrontendAbstract
     public function getStreamUrls()
     {
         $urls = [];
-        foreach ($this->station->mounts as $mount) {
-            $urls[] = $this->getUrlForMount($mount->name);
+        foreach ($this->station->getMounts() as $mount) {
+            $urls[] = $this->getUrlForMount($mount->getName());
         }
 
         return $urls;
@@ -255,7 +255,7 @@ class IceCast extends FrontendAbstract
 
     protected function _loadFromConfig($config)
     {
-        $frontend_config = (array)$this->station->frontend_config;
+        $frontend_config = (array)$this->station->getFrontendConfig();
 
         return [
             'custom_config' => $frontend_config['custom_config'],
@@ -322,32 +322,34 @@ class IceCast extends FrontendAbstract
             ],
         ];
 
-        foreach ($this->station->mounts as $mount_row) {
+        foreach ($this->station->getMounts() as $mount_row) {
+            /** @var Entity\StationMount $mount_row */
+
             $mount = [
                 '@type' => 'normal',
-                'mount-name' => $mount_row->name,
+                'mount-name' => $mount_row->getName(),
             ];
 
-            if (!empty($mount_row->fallback_mount)) {
-                $mount['fallback-mount'] = $mount_row->fallback_mount;
+            if (!empty($mount_row->getFallbackMount())) {
+                $mount['fallback-mount'] = $mount_row->getFallbackMount();
                 $mount['fallback-override'] = 1;
             }
 
-            if ($mount_row->frontend_config) {
-                $mount_conf = $this->_processCustomConfig($mount_row->frontend_config);
+            if ($mount_row->getFrontendConfig()) {
+                $mount_conf = $this->_processCustomConfig($mount_row->getFrontendConfig());
                 if (!empty($mount_conf)) {
                     $mount = \App\Utilities::array_merge_recursive_distinct($mount, $mount_conf);
                 }
             }
 
-            if ($mount_row->relay_url) {
-                $relay_parts = parse_url($mount_row->relay_url);
+            if ($mount_row->getRelayUrl()) {
+                $relay_parts = parse_url($mount_row->getRelayUrl());
 
                 $defaults['relay'][] = [
                     'server' => $relay_parts['host'],
                     'port' => $relay_parts['port'],
                     'mount' => $relay_parts['path'],
-                    'local-mount' => $mount_row->name,
+                    'local-mount' => $mount_row->getName(),
                 ];
             }
 

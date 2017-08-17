@@ -9,7 +9,7 @@ class C01_Station_StreamersCest extends CestAbstract
     {
         $I->wantTo('Edit station streamers.');
 
-        $station_id = $this->test_station->id;
+        $station_id = $this->test_station->getId();
         $I->amOnPage('/station/'.$station_id.'/streamers');
 
         $I->see('Streamer/DJ Accounts');

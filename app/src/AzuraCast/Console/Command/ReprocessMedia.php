@@ -36,15 +36,15 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
 
-            \App\Debug::log('Processing media for station: ' . $station->name);
+            \App\Debug::log('Processing media for station: ' . $station->getName());
 
-            foreach($station->media as $media) {
+            foreach($station->getMedia() as $media) {
                 /** @var Entity\StationMedia $media */
 
                 try {
                     $song_info = $media->loadFromFile(true);
                     if (!empty($song_info)) {
-                        $media->song = $song_repo->getOrCreate($song_info);
+                        $media->setSong($song_repo->getOrCreate($song_info));
                     }
 
                     $em->persist($media);

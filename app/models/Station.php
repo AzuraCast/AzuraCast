@@ -3,6 +3,7 @@ namespace Entity;
 
 use AzuraCast\Radio\Frontend\FrontendAbstract;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Interop\Container\ContainerInterface;
 
 /**
@@ -10,8 +11,162 @@ use Interop\Container\ContainerInterface;
  * @Entity(repositoryClass="Entity\Repository\StationRepository")
  * @HasLifecycleCallbacks
  */
-class Station extends \App\Doctrine\Entity
+class Station
 {
+    /**
+     * @Column(name="id", type="integer")
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
+     * @var int
+     */
+    protected $id;
+
+    /**
+     * @Column(name="name", type="string", length=100, nullable=true)
+     * @var string|null
+     */
+    protected $name;
+
+    /**
+     * @Column(name="frontend_type", type="string", length=100, nullable=true)
+     * @var string|null
+     */
+    protected $frontend_type;
+
+    /**
+     * @Column(name="frontend_config", type="json_array", nullable=true)
+     * @var array|null
+     */
+    protected $frontend_config;
+
+    /**
+     * @Column(name="backend_type", type="string", length=100, nullable=true)
+     * @var string|null
+     */
+    protected $backend_type;
+
+    /**
+     * @Column(name="backend_config", type="json_array", nullable=true)
+     * @var array|null
+     */
+    protected $backend_config;
+
+    /**
+     * @Column(name="description", type="text", nullable=true)
+     * @var string|null
+     */
+    protected $description;
+
+    /**
+     * @Column(name="url", type="string", length=191, nullable=true)
+     * @var string|null
+     */
+    protected $url;
+
+    /**
+     * @Column(name="radio_base_dir", type="string", length=191, nullable=true)
+     * @var string|null
+     */
+    protected $radio_base_dir;
+
+    /**
+     * @Column(name="radio_media_dir", type="string", length=191, nullable=true)
+     * @var string|null
+     */
+    protected $radio_media_dir;
+
+    /**
+     * @Column(name="nowplaying", type="array", nullable=true)
+     * @var mixed|null
+     */
+    protected $nowplaying;
+
+    /**
+     * @Column(name="automation_settings", type="json_array", nullable=true)
+     * @var array|null
+     */
+    protected $automation_settings;
+
+    /**
+     * @Column(name="automation_timestamp", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $automation_timestamp;
+
+    /**
+     * @Column(name="enable_requests", type="boolean", nullable=false)
+     * @var bool
+     */
+    protected $enable_requests;
+
+    /**
+     * @Column(name="request_delay", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $request_delay;
+
+    /**
+     * @Column(name="request_threshold", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $request_threshold;
+
+    /**
+     * @Column(name="enable_streamers", type="boolean", nullable=false)
+     * @var bool
+     */
+    protected $enable_streamers;
+
+    /**
+     * @Column(name="needs_restart", type="boolean")
+     * @var bool
+     */
+    protected $needs_restart;
+
+    /**
+     * @Column(name="has_started", type="boolean")
+     * @var bool
+     */
+    protected $has_started;
+
+    /**
+     * @OneToMany(targetEntity="SongHistory", mappedBy="station")
+     * @OrderBy({"timestamp" = "DESC"})
+     * @var Collection
+     */
+    protected $history;
+
+    /**
+     * @OneToMany(targetEntity="StationMedia", mappedBy="station")
+     * @var Collection
+     */
+    protected $media;
+
+    /**
+     * @OneToMany(targetEntity="StationStreamer", mappedBy="station")
+     * @var Collection
+     */
+    protected $streamers;
+
+    /**
+     * @OneToMany(targetEntity="RolePermission", mappedBy="station")
+     * @var Collection
+     */
+    protected $permissions;
+
+    /**
+     * @OneToMany(targetEntity="StationPlaylist", mappedBy="station")
+     * @OrderBy({"type" = "ASC","weight" = "DESC"})
+     * @var Collection
+     */
+    protected $playlists;
+
+    /**
+     * @OneToMany(targetEntity="StationMount", mappedBy="station")
+     * @var Collection
+     */
+    protected $mounts;
+
     public function __construct()
     {
         $this->automation_timestamp = 0;
@@ -25,36 +180,72 @@ class Station extends \App\Doctrine\Entity
         $this->has_started = false;
 
         $this->history = new ArrayCollection;
-        $this->managers = new ArrayCollection;
-
         $this->media = new ArrayCollection;
         $this->playlists = new ArrayCollection;
         $this->mounts = new ArrayCollection;
-
         $this->streamers = new ArrayCollection;
     }
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @return int
      */
-    protected $id;
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
-    /** @Column(name="name", type="string", length=100, nullable=true) */
-    protected $name;
+    /**
+     * @return null|string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
-    public function getShortName()
+    /**
+     * @return string
+     */
+    public function getShortName(): string
     {
         return self::getStationShortName($this->name);
     }
 
-    /** @Column(name="frontend_type", type="string", length=100, nullable=true) */
-    protected $frontend_type;
+    /**
+     * @param null|string $name
+     */
+    public function setName(string $name = null)
+    {
+        $this->name = $name;
+    }
 
-    /** @Column(name="frontend_config", type="json_array", nullable=true) */
-    protected $frontend_config;
+    /**
+     * @return null|string
+     */
+    public function getFrontendType(): ?string
+    {
+        return $this->frontend_type;
+    }
 
+    /**
+     * @param null|string $frontend_type
+     */
+    public function setFrontendType(string $frontend_type = null)
+    {
+        $this->frontend_type = $frontend_type;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getFrontendConfig(): ?array
+    {
+        return $this->frontend_config;
+    }
+
+    /**
+     * @param $frontend_config
+     * @param bool $force_overwrite
+     */
     public function setFrontendConfig($frontend_config, $force_overwrite = false)
     {
         $config = ($force_overwrite) ? [] : (array)$this->frontend_config;
@@ -65,28 +256,33 @@ class Station extends \App\Doctrine\Entity
     }
 
     /**
-     * @return \AzuraCast\Radio\Frontend\FrontendAbstract
-     * @throws \Exception
+     * @return null|string
      */
-    public function getFrontendAdapter(ContainerInterface $di)
+    public function getBackendType(): ?string
     {
-        $adapters = self::getFrontendAdapters();
-
-        if (!isset($adapters['adapters'][$this->frontend_type])) {
-            throw new \Exception('Adapter not found: ' . $this->frontend_type);
-        }
-
-        $class_name = $adapters['adapters'][$this->frontend_type]['class'];
-
-        return new $class_name($di, $this);
+        return $this->backend_type;
     }
 
-    /** @Column(name="backend_type", type="string", length=100, nullable=true) */
-    protected $backend_type;
+    /**
+     * @param null|string $backend_type
+     */
+    public function setBackendType(string $backend_type = null)
+    {
+        $this->backend_type = $backend_type;
+    }
 
-    /** @Column(name="backend_config", type="json_array", nullable=true) */
-    protected $backend_config;
+    /**
+     * @return array|null
+     */
+    public function getBackendConfig(): ?array
+    {
+        return $this->backend_config;
+    }
 
+    /**
+     * @param $backend_config
+     * @param bool $force_overwrite
+     */
     public function setBackendConfig($backend_config, $force_overwrite = false)
     {
         $config = ($force_overwrite) ? [] : (array)$this->backend_config;
@@ -97,31 +293,48 @@ class Station extends \App\Doctrine\Entity
     }
 
     /**
-     * @return \AzuraCast\Radio\Backend\BackendAbstract
-     * @throws \Exception
+     * @return null|string
      */
-    public function getBackendAdapter(ContainerInterface $di)
+    public function getDescription(): ?string
     {
-        $adapters = self::getBackendAdapters();
-
-        if (!isset($adapters['adapters'][$this->backend_type])) {
-            throw new \Exception('Adapter not found: ' . $this->backend_type);
-        }
-
-        $class_name = $adapters['adapters'][$this->backend_type]['class'];
-
-        return new $class_name($di, $this);
+        return $this->description;
     }
 
-    /** @Column(name="description", type="text", nullable=true) */
-    protected $description;
+    /**
+     * @param null|string $description
+     */
+    public function setDescription(string $description = null)
+    {
+        $this->description = $description;
+    }
 
-    /** @Column(name="url", type="string", length=191, nullable=true) */
-    protected $url;
+    /**
+     * @return null|string
+     */
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
 
-    /** @Column(name="radio_base_dir", type="string", length=191, nullable=true) */
-    protected $radio_base_dir;
+    /**
+     * @param null|string $url
+     */
+    public function setUrl(string $url = null)
+    {
+        $this->url = $url;
+    }
 
+    /**
+     * @return null|string
+     */
+    public function getRadioBaseDir(): ?string
+    {
+        return $this->radio_base_dir;
+    }
+
+    /**
+     * @param $new_dir
+     */
     public function setRadioBaseDir($new_dir)
     {
         if (strcmp($this->radio_base_dir, $new_dir) !== 0) {
@@ -141,10 +354,36 @@ class Station extends \App\Doctrine\Entity
         }
     }
 
-    /** @Column(name="radio_media_dir", type="string", length=191, nullable=true) */
-    protected $radio_media_dir;
+    /**
+     * @return string
+     */
+    public function getRadioMediaDir(): string
+    {
+        return (!empty($this->radio_media_dir))
+            ? $this->radio_media_dir
+            : $this->radio_base_dir.'/media';
+    }
 
-    public function setRadioMediaDir($new_dir)
+    /**
+     * @return string
+     */
+    public function getRadioPlaylistsDir(): string
+    {
+        return $this->radio_base_dir.'/playlists';
+    }
+
+    /**
+     * @return string
+     */
+    public function getRadioConfigDir(): string
+    {
+        return $this->radio_base_dir.'/config';
+    }
+
+    /**
+     * @param $new_dir
+     */
+    public function setRadioMediaDir(string $new_dir)
     {
         if ($new_dir !== $this->radio_media_dir) {
             $new_dir = trim($new_dir);
@@ -157,81 +396,231 @@ class Station extends \App\Doctrine\Entity
         }
     }
 
-    public function getRadioMediaDir()
+    /**
+     * @return mixed|null
+     */
+    public function getNowplaying()
     {
-        return (!empty($this->radio_media_dir))
-            ? $this->radio_media_dir
-            : $this->radio_base_dir.'/media';
+        return $this->nowplaying;
     }
 
-    public function getRadioPlaylistsDir()
+    /**
+     * @param mixed|null $nowplaying
+     */
+    public function setNowplaying($nowplaying = null)
     {
-        return $this->radio_base_dir.'/playlists';
+        $this->nowplaying = $nowplaying;
     }
 
-    public function getRadioConfigDir()
+    /**
+     * @return array|null
+     */
+    public function getAutomationSettings(): ?array
     {
-        return $this->radio_base_dir.'/config';
+        return $this->automation_settings;
     }
 
-    /** @Column(name="nowplaying", type="array", nullable=true) */
-    protected $nowplaying;
-
-    /** @Column(name="automation_settings", type="json_array", nullable=true) */
-    protected $automation_settings;
-
-    /** @Column(name="automation_timestamp", type="integer", nullable=true) */
-    protected $automation_timestamp;
-
-    /** @Column(name="enable_requests", type="boolean", nullable=false) */
-    protected $enable_requests;
-
-    /** @Column(name="request_delay", type="integer", nullable=true) */
-    protected $request_delay;
-
-    /** @Column(name="request_threshold", type="integer", nullable=true) */
-    protected $request_threshold;
-
-    /** @Column(name="enable_streamers", type="boolean", nullable=false) */
-    protected $enable_streamers;
-
-    /** @Column(name="needs_restart", type="boolean") */
-    protected $needs_restart;
-
-    /** @Column(name="has_started", type="boolean") */
-    protected $has_started;
+    /**
+     * @param array|null $automation_settings
+     */
+    public function setAutomationSettings(array $automation_settings = null)
+    {
+        $this->automation_settings = $automation_settings;
+    }
 
     /**
-     * @OneToMany(targetEntity="SongHistory", mappedBy="station")
-     * @OrderBy({"timestamp" = "DESC"})
+     * @return int|null
      */
-    protected $history;
+    public function getAutomationTimestamp(): ?int
+    {
+        return $this->automation_timestamp;
+    }
 
     /**
-     * @OneToMany(targetEntity="StationMedia", mappedBy="station")
+     * @param int|null $automation_timestamp
      */
-    protected $media;
+    public function setAutomationTimestamp(int $automation_timestamp = null)
+    {
+        $this->automation_timestamp = $automation_timestamp;
+    }
 
     /**
-     * @OneToMany(targetEntity="StationStreamer", mappedBy="station")
+     * @return bool
      */
-    protected $streamers;
+    public function getEnableRequests(): bool
+    {
+        return $this->enable_requests;
+    }
 
     /**
-     * @OneToMany(targetEntity="RolePermission", mappedBy="station")
+     * @param bool $enable_requests
      */
-    protected $permissions;
+    public function setEnableRequests(bool $enable_requests)
+    {
+        $this->enable_requests = $enable_requests;
+    }
 
     /**
-     * @OneToMany(targetEntity="StationPlaylist", mappedBy="station")
-     * @OrderBy({"type" = "ASC","weight" = "DESC"})
+     * @return int|null
      */
-    protected $playlists;
+    public function getRequestDelay(): ?int
+    {
+        return $this->request_delay;
+    }
 
     /**
-     * @OneToMany(targetEntity="StationMount", mappedBy="station")
+     * @param int|null $request_delay
      */
-    protected $mounts;
+    public function setRequestDelay(int $request_delay = null)
+    {
+        $this->request_delay = $request_delay;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getRequestThreshold()
+    {
+        return $this->request_threshold;
+    }
+
+    /**
+     * @param int|null $request_threshold
+     */
+    public function setRequestThreshold(int $request_threshold = null)
+    {
+        $this->request_threshold = $request_threshold;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getEnableStreamers(): bool
+    {
+        return $this->enable_streamers;
+    }
+
+    /**
+     * @param bool $enable_streamers
+     */
+    public function setEnableStreamers(bool $enable_streamers)
+    {
+        $this->enable_streamers = $enable_streamers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getNeedsRestart(): bool
+    {
+        return $this->needs_restart;
+    }
+
+    /**
+     * @param bool $needs_restart
+     */
+    public function setNeedsRestart(bool $needs_restart)
+    {
+        $this->needs_restart = $needs_restart;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHasStarted(): bool
+    {
+        return $this->has_started;
+    }
+
+    /**
+     * @param bool $has_started
+     */
+    public function setHasStarted(bool $has_started)
+    {
+        $this->has_started = $has_started;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getHistory(): Collection
+    {
+        return $this->history;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getStreamers(): Collection
+    {
+        return $this->streamers;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPlaylists(): Collection
+    {
+        return $this->playlists;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMounts(): Collection
+    {
+        return $this->mounts;
+    }
+
+    /**
+     * @return \AzuraCast\Radio\Frontend\FrontendAbstract
+     * @throws \Exception
+     */
+    public function getFrontendAdapter(ContainerInterface $di)
+    {
+        $adapters = self::getFrontendAdapters();
+
+        if (!isset($adapters['adapters'][$this->frontend_type])) {
+            throw new \Exception('Adapter not found: ' . $this->frontend_type);
+        }
+
+        $class_name = $adapters['adapters'][$this->frontend_type]['class'];
+
+        return new $class_name($di, $this);
+    }
+
+    /**
+     * @return \AzuraCast\Radio\Backend\BackendAbstract
+     * @throws \Exception
+     */
+    public function getBackendAdapter(ContainerInterface $di)
+    {
+        $adapters = self::getBackendAdapters();
+
+        if (!isset($adapters['adapters'][$this->backend_type])) {
+            throw new \Exception('Adapter not found: ' . $this->backend_type);
+        }
+
+        $class_name = $adapters['adapters'][$this->backend_type]['class'];
+
+        return new $class_name($di, $this);
+    }
 
     /**
      * Write all configuration changes to the filesystem and reload supervisord.
@@ -371,26 +760,20 @@ class Station extends \App\Doctrine\Entity
         }
     }
 
-
-
-    /**
-     * Static Functions
-     */
-
     /**
      * @param $name
      * @return string
      */
-    public static function getStationShortName($name)
+    public static function getStationShortName($name): string
     {
         return strtolower(preg_replace("/[^A-Za-z0-9_]/", '', str_replace(' ', '_', trim($name))));
     }
 
     /**
      * @param $name
-     * @return mixed
+     * @return string
      */
-    public static function getStationClassName($name)
+    public static function getStationClassName($name): string
     {
         $name = preg_replace("/[^A-Za-z0-9_ ]/", '', $name);
         $name = str_replace('_', ' ', $name);
@@ -402,7 +785,7 @@ class Station extends \App\Doctrine\Entity
     /**
      * @return array
      */
-    public static function getFrontendAdapters()
+    public static function getFrontendAdapters(): array
     {
         static $adapters;
 
@@ -438,7 +821,7 @@ class Station extends \App\Doctrine\Entity
     /**
      * @return array
      */
-    public static function getBackendAdapters()
+    public static function getBackendAdapters(): array
     {
         static $adapters;
 
@@ -473,7 +856,7 @@ class Station extends \App\Doctrine\Entity
      * @param FrontendAbstract $fa
      * @return Api\Station
      */
-    public function api(FrontendAbstract $fa)
+    public function api(FrontendAbstract $fa): Api\Station
     {
         $response = new Api\Station;
         $response->id = (int)$this->id;

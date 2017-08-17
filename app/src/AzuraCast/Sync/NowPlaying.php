@@ -84,12 +84,14 @@ class NowPlaying extends SyncAbstract
         $nowplaying = [];
 
         foreach ($stations as $station) {
-            Debug::startTimer($station->name);
+            /** @var Entity\Station $station */
+
+            Debug::startTimer($station->getName());
 
             // $name = $station->short_name;
             $nowplaying[] = $this->_processStation($station);
 
-            Debug::endTimer($station->name);
+            Debug::endTimer($station->getName());
         }
 
         return $nowplaying;
@@ -107,7 +109,7 @@ class NowPlaying extends SyncAbstract
         $em = $this->di['em'];
 
         /** @var Entity\Api\NowPlaying $np_old */
-        $np_old = $station->nowplaying;
+        $np_old = $station->getNowplaying();
 
         $np = new Entity\Api\NowPlaying;
         $np->station = $station->api($station->getFrontendAdapter($this->di));
@@ -163,7 +165,7 @@ class NowPlaying extends SyncAbstract
 
         $np->cache = 'station';
 
-        $station->nowplaying = $np;
+        $station->setNowplaying($np);
 
         $em->persist($station);
         $em->flush();

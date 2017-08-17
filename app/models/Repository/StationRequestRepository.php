@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class StationRequestRepository extends \App\Doctrine\Repository
+class StationRequestRepository extends BaseRepository
 {
     /**
      * Submit a new request.
@@ -22,13 +22,13 @@ class StationRequestRepository extends \App\Doctrine\Repository
         }
 
         // Verify that the station supports requests.
-        if (!$station->enable_requests) {
+        if (!$station->getEnableRequests()) {
             throw new \App\Exception('This station does not accept requests currently.');
         }
 
         // Verify that Track ID exists with station.
         $media_repo = $this->_em->getRepository(Entity\StationMedia::class);
-        $media_item = $media_repo->findOneBy(['id' => $track_id, 'station_id' => $station->id]);
+        $media_item = $media_repo->findOneBy(['id' => $track_id, 'station_id' => $station->getId()]);
 
         if (!($media_item instanceof Entity\StationMedia)) {
             throw new \App\Exception('The song ID you specified could not be found in the station.');
@@ -59,14 +59,11 @@ class StationRequestRepository extends \App\Doctrine\Repository
         }
 
         // Save request locally.
-        $record = new Entity\StationRequest;
-        $record->track = $media_item;
-        $record->station = $station;
-
+        $record = new Entity\StationRequest($station, $media_item);
         $this->_em->persist($record);
         $this->_em->flush();
 
-        return $record->id;
+        return $record->getId();
     }
 
     /**
@@ -88,8 +85,8 @@ class StationRequestRepository extends \App\Doctrine\Repository
                 AND sr.station_id = :station_id 
                 AND (sr.timestamp >= :threshold OR sr.played_at = 0)
                 ORDER BY sr.timestamp DESC')
-                ->setParameter('track_id', $media->id)
-                ->setParameter('station_id', $station->id)
+                ->setParameter('track_id', $media->getId())
+                ->setParameter('station_id', $station->getId())
                 ->setParameter('threshold', $pending_request_threshold)
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
@@ -100,6 +97,8 @@ class StationRequestRepository extends \App\Doctrine\Repository
         if ($pending_request > 0) {
             throw new \App\Exception('Duplicate request: this song was already requested and will play soon.');
         }
+
+        return true;
     }
 
     /**
@@ -112,7 +111,7 @@ class StationRequestRepository extends \App\Doctrine\Repository
      */
     public function checkRecentPlay(Entity\StationMedia $media, Entity\Station $station)
     {
-        $last_play_threshold_mins = (int)($station->request_threshold ?? 15);
+        $last_play_threshold_mins = (int)($station->getRequestThreshold() ?? 15);
 
         if ($last_play_threshold_mins == 0) {
             return true;
@@ -123,12 +122,12 @@ class StationRequestRepository extends \App\Doctrine\Repository
         try {
             $last_play_time = $this->_em->createQuery('SELECT sh.timestamp_start 
                 FROM Entity\SongHistory sh 
-                WHERE sh.song_id = :song_id 
+                WHERE sh.media_id = :media_id 
                 AND sh.station_id = :station_id
                 AND sh.timestamp_start >= :threshold
                 ORDER BY sh.timestamp_start DESC')
-                ->setParameter('song_id', $media->song_id)
-                ->setParameter('station_id', $station->id)
+                ->setParameter('song_id', $media->getId())
+                ->setParameter('station_id', $station->getId())
                 ->setParameter('threshold', $last_play_threshold)
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
@@ -140,5 +139,7 @@ class StationRequestRepository extends \App\Doctrine\Repository
             $threshold_text = \App\Utilities::timeDifferenceText(time(), $last_play_time);
             throw new \App\Exception('This song was already played '.$threshold_text.' ago! Wait a while before requesting it again.');
         }
+
+        return true;
     }
 }

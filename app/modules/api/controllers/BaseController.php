@@ -56,7 +56,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
         $record = $this->em->getRepository(Entity\ApiKey::class)->find($key);
 
         if ($record instanceof Entity\ApiKey) {
-            $record->calls_made++;
+            $record->callMade();
 
             $this->em->persist($record);
             $this->em->flush();
@@ -108,7 +108,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
             return true;
         }
 
-        if (!$this->acl->isAllowed($permission_name, $station->id)) {
+        if (!$this->acl->isAllowed($permission_name, $station->getId())) {
             throw new \App\Exception\PermissionDenied('Permission denied');
         }
 

@@ -288,6 +288,7 @@ $(function() {
             };
         },
         withCredentials: true,
+        allowDuplicateUploads: true,
         fileParameterName: 'file_data'
     });
 
@@ -295,7 +296,6 @@ $(function() {
     flow.assignDrop(document.getElementById('file_drop_target'));
 
     flow.on('fileAdded', function(file, event) {
-        console.log(file, event);
         $('#upload_progress').append(renderFileUploadRow(file));
         return true;
     });

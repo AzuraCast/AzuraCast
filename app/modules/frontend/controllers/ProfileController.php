@@ -5,6 +5,16 @@ use Entity;
 
 class ProfileController extends BaseController
 {
+    /** @var Entity\Repository\UserRepository */
+    protected $user_repo;
+
+    protected function preDispatch()
+    {
+        parent::preDispatch();
+
+        $this->user_repo = $this->em->getRepository(Entity\User::class);
+    }
+
     public function indexAction()
     {
         $user = $this->auth->getLoggedInUser();
@@ -12,7 +22,7 @@ class ProfileController extends BaseController
 
         $form = new \App\Form($this->config->forms->profile);
 
-        $user_profile = $user->toArray($this->em);
+        $user_profile = $this->user_repo->toArray($user);
         unset($user_profile['auth_password']);
         $form->setDefaults($user_profile);
 
@@ -45,7 +55,7 @@ class ProfileController extends BaseController
 
         $form = new \App\Form($form_config);
 
-        $user_profile = $user->toArray($this->em);
+        $user_profile = $this->user_repo->toArray($user);
         unset($user_profile['auth_password']);
 
         $form->setDefaults($user_profile);
@@ -53,7 +63,7 @@ class ProfileController extends BaseController
         if ($_POST && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            $user->fromArray($this->em, $data);
+            $this->user_repo->fromArray($user, $data);
 
             if (!empty($data['new_password']))
             {

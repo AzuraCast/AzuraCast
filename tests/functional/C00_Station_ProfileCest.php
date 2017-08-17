@@ -9,7 +9,7 @@ class C00_Station_ProfileCest extends CestAbstract
     {
         $I->wantTo('Edit a station profile.');
 
-        $station_id = $this->test_station->id;
+        $station_id = $this->test_station->getId();
 
         $I->amOnPage('/station/'.$station_id);
 

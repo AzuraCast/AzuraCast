@@ -45,7 +45,7 @@ class AccountController extends BaseController
 
                 $user = $this->auth->getLoggedInUser();
 
-                $this->alert('<b>' . _('Logged in successfully.') . '</b><br>' . $user->email, 'green');
+                $this->alert('<b>' . _('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
                 $default_url = $this->url->named('home');
 

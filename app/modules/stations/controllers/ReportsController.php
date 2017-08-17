@@ -7,7 +7,7 @@ class ReportsController extends BaseController
 {
     protected function permissions()
     {
-        return $this->acl->isAllowed('view station reports', $this->station->id);
+        return $this->acl->isAllowed('view station reports', $this->station->getId());
     }
 
     public function timelineAction()
@@ -24,20 +24,6 @@ class ReportsController extends BaseController
             $song_row['stat_start'] = $song_row['listeners_start'];
             $song_row['stat_end'] = $song_row['listeners_end'];
             $song_row['stat_delta'] = $song_row['delta_total'];
-
-            if (isset($station_media[$song_row['song']['id']])) {
-                $media = $station_media[$song_row['song']['id']];
-
-                $song_row['playlists'] = \Packaged\Helpers\Arrays::ipull($media['playlists'], 'name', 'id');
-            } else {
-                $song_row['playlists'] = [];
-            }
-
-            if (isset($station_requests[$song_row['id']])) {
-                $song_row['requested'] = $station_requests[$song_row['id']];
-            } else {
-                $song_row['requested'] = null;
-            }
 
             $songs[] = $song_row;
         }
@@ -87,7 +73,7 @@ class ReportsController extends BaseController
 
     public function performanceAction()
     {
-        $automation_config = (array)$this->station->automation_settings;
+        $automation_config = (array)$this->station->getAutomationSettings();
 
         if (isset($automation_config['threshold_days'])) {
             $threshold_days = (int)$automation_config['threshold_days'];
@@ -169,7 +155,7 @@ class ReportsController extends BaseController
     public function duplicatesAction()
     {
         $media_raw = $this->em->createQuery('SELECT sm, s, sp FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id ORDER BY sm.mtime ASC')
-            ->setParameter('station_id', $this->station->id)
+            ->setParameter('station_id', $this->station->getId())
             ->getArrayResult();
 
         $dupes = [];
@@ -214,7 +200,7 @@ class ReportsController extends BaseController
 
         $media = $this->em->getRepository(Entity\StationMedia::class)->findOneBy([
             'id' => $media_id,
-            'station_id' => $this->station->id
+            'station_id' => $this->station->getId()
         ]);
 
         if ($media instanceof Entity\StationMedia) {

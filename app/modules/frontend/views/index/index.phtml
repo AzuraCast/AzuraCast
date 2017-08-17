@@ -73,14 +73,14 @@
                     </thead>
                     <tbody>
                     <?php foreach($stations as $row): ?>
-                        <tr class="input" id="station_<?=$row['station']->id ?>">
+                        <tr class="input" id="station_<?=$row['station']->getId() ?>">
                             <td class="text-center">
                                 <a class="btn-audio" href="#" data-url="<?=$this->e($row['stream_url']) ?>">
                                     <i class="zmdi zmdi-play"></i>
                                 </a>
                             </td>
                             <td>
-                                <big><a href="<?=$url->route(['controller' => 'public', 'station' => $row['short_name']]) ?>" target="_blank"><?=$this->e($row['station']->name) ?></a></big>
+                                <big><a href="<?=$url->route(['controller' => 'public', 'station' => $row['short_name']]) ?>" target="_blank"><?=$this->e($row['station']->getName()) ?></a></big>
                             </td>
                             <td class="text-center">
                                 <span class="nowplaying-listeners">0</span>
@@ -90,7 +90,7 @@
                                 <span class="nowplaying-artist"><?=_('Song Artist') ?></span>
                             </td>
                             <td>
-                                <a class="btn btn-primary" href="<?=$url->route(['module' => 'stations', 'station' => $row['station']->id]) ?>"><?=_('Manage') ?></a>
+                                <a class="btn btn-primary" href="<?=$url->route(['module' => 'stations', 'station' => $row['station']->getId()]) ?>"><?=_('Manage') ?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

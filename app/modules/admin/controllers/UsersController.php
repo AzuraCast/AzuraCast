@@ -1,10 +1,20 @@
 <?php
 namespace Controller\Admin;
 
-use Entity\User;
+use Entity;
 
 class UsersController extends BaseController
 {
+    /** @var Entity\Repository\UserRepository */
+    protected $record_repo;
+
+    public function preDispatch()
+    {
+        parent::preDispatch();
+
+        $this->record_repo = $this->em->getRepository(Entity\User::class);
+    }
+
     public function permissions()
     {
         return $this->acl->isAllowed('administer users');
@@ -35,23 +45,24 @@ class UsersController extends BaseController
         $form = new \App\Form($form_config);
 
         if ($this->hasParam('id')) {
-            $record = $this->em->getRepository(User::class)->find($this->getParam('id'));
-            $record_defaults = $record->toArray($this->em, true, true);
+            $record = $this->record_repo->find($this->getParam('id'));
+            $record_defaults = $this->record_repo->toArray($record, true, true);
 
             unset($record_defaults['auth_password']);
 
             $form->setDefaults($record_defaults);
+        } else {
+            $record = null;
         }
 
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            if (!($record instanceof User)) {
-                $record = new User;
+            if (!($record instanceof Entity\User)) {
+                $record = new Entity\User;
             }
 
-            $record->fromArray($this->em, $data);
-
+            $this->record_repo->fromArray($record, $data);
             $this->em->persist($record);
             $this->em->flush();
 
@@ -66,9 +77,9 @@ class UsersController extends BaseController
     public function deleteAction()
     {
         $id = (int)$this->getParam('id');
-        $user = $this->em->getRepository(User::class)->find($id);
+        $user = $this->record_repo->find($id);
 
-        if ($user instanceof User) {
+        if ($user instanceof Entity\User) {
             $this->em->remove($user);
         }
 
@@ -82,16 +93,16 @@ class UsersController extends BaseController
     public function impersonateAction()
     {
         $id = (int)$this->getParam('id');
-        $user = $this->em->getRepository(User::class)->find($id);
+        $user = $this->record_repo->find($id);
 
-        if (!($user instanceof User)) {
+        if (!($user instanceof Entity\User)) {
             throw new \App\Exception(_('Record not found!'));
         }
 
         // Set new identity in Zend_Auth
         $this->auth->masqueradeAsUser($user);
 
-        $this->alert('<b>' . _('Logged in successfully.') . '</b><br>' . $user->email, 'green');
+        $this->alert('<b>' . _('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
         return $this->redirectHome();
     }

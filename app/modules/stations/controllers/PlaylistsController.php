@@ -1,7 +1,7 @@
 <?php
 namespace Controller\Stations;
 
-use Entity\StationPlaylist;
+use Entity;
 use Slim\Http\UploadedFile;
 
 class PlaylistsController extends BaseController
@@ -17,31 +17,35 @@ class PlaylistsController extends BaseController
 
     protected function permissions()
     {
-        return $this->acl->isAllowed('manage station media', $this->station->id);
+        return $this->acl->isAllowed('manage station media', $this->station->getId());
     }
 
     public function indexAction()
     {
-        $all_playlists = $this->station->playlists;
+        /** @var Entity\StationPlaylist[] $all_playlists */
+        $all_playlists = $this->station->getPlaylists();
+
+        /** @var Entity\Repository\BaseRepository $playlist_repo */
+        $playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
 
         $total_weights = 0;
         foreach ($all_playlists as $playlist) {
-            if ($playlist->is_enabled && $playlist->type == 'default') {
-                $total_weights += $playlist->weight;
+            if ($playlist->getIsEnabled() && $playlist->getType() == 'default') {
+                $total_weights += $playlist->getWeight();
             }
         }
 
         $playlists = [];
         foreach ($all_playlists as $playlist) {
-            $playlist_row = $playlist->toArray($this->em);
+            $playlist_row = $playlist_repo->toArray($playlist);
 
-            if ($playlist->is_enabled && $playlist->type == 'default') {
-                $playlist_row['probability'] = round(($playlist->weight / $total_weights) * 100, 1) . '%';
+            if ($playlist->getIsEnabled() && $playlist->getType() == 'default') {
+                $playlist_row['probability'] = round(($playlist->getWeight() / $total_weights) * 100, 1) . '%';
             }
 
-            $playlist_row['num_songs'] = count($playlist->media);
+            $playlist_row['num_songs'] = $playlist->getMedia()->count();
 
-            $playlists[$playlist->id] = $playlist_row;
+            $playlists[$playlist->getId()] = $playlist_row;
         }
 
         $this->view->playlists = $playlists;
@@ -51,12 +55,12 @@ class PlaylistsController extends BaseController
     {
         $id = (int)$this->getParam('id');
 
-        $record = $this->em->getRepository(StationPlaylist::class)->findOneBy([
+        $record = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
             'id' => $id,
-            'station_id' => $this->station->id
+            'station_id' => $this->station->getId()
         ]);
 
-        if (!($record instanceof StationPlaylist)) {
+        if (!($record instanceof Entity\StationPlaylist)) {
             throw new \Exception('Playlist not found!');
         }
 
@@ -85,26 +89,30 @@ class PlaylistsController extends BaseController
 
     public function editAction()
     {
+        /** @var Entity\Repository\BaseRepository $playlist_repo */
+        $playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
+
         $form_config = $this->config->forms->playlist;
         $form = new \App\Form($form_config);
 
         if ($this->hasParam('id')) {
-            $record = $this->em->getRepository(StationPlaylist::class)->findOneBy([
+            $record = $playlist_repo->findOneBy([
                 'id' => $this->getParam('id'),
-                'station_id' => $this->station->id
+                'station_id' => $this->station->getId()
             ]);
-            $form->setDefaults($record->toArray($this->em));
+            $form->setDefaults($playlist_repo->toArray($record));
+        } else {
+            $record = null;
         }
 
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            if (!($record instanceof StationPlaylist)) {
-                $record = new StationPlaylist;
-                $record->station = $this->station;
+            if (!($record instanceof Entity\StationPlaylist)) {
+                $record = new Entity\StationPlaylist($this->station);
             }
 
-            $record->fromArray($this->em, $data);
+            $playlist_repo->fromArray($record, $data);
             $this->em->persist($record);
 
             // Handle importing a playlist file, if necessary.
@@ -129,7 +137,7 @@ class PlaylistsController extends BaseController
         $this->view->title = ($this->hasParam('id')) ? _('Edit Record') : _('Add Record');
     }
 
-    protected function _importPlaylist(StationPlaylist $playlist, UploadedFile $playlist_file)
+    protected function _importPlaylist(Entity\StationPlaylist $playlist, UploadedFile $playlist_file)
     {
         $playlist_raw = (string)$playlist_file->getStream();
         if (empty($playlist_raw)) {
@@ -166,7 +174,7 @@ class PlaylistsController extends BaseController
         $media_lookup = [];
 
         $media_info_raw = $this->em->createQuery('SELECT sm.id, sm.path FROM Entity\StationMedia sm WHERE sm.station_id = :station_id')
-            ->setParameter('station_id', $this->station->id)
+            ->setParameter('station_id', $this->station->getId())
             ->getArrayResult();
 
         foreach($media_info_raw as $row) {
@@ -198,14 +206,14 @@ class PlaylistsController extends BaseController
             $matched_media = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm
                 LEFT JOIN sm.playlists sp
                 WHERE sm.station_id = :station_id AND sm.id IN (:matched_ids)')
-                ->setParameter('station_id', $this->station->id)
+                ->setParameter('station_id', $this->station->getId())
                 ->setParameter('matched_ids', $matches)
                 ->execute();
 
             foreach($matched_media as $media) {
                 if (!$media->playlists->contains($playlist)) {
                     $media->playlists->add($playlist);
-                    $playlist->media->add($media);
+                    $playlist->getMedia()->add($media);
 
                     $this->em->persist($media);
                 }
@@ -224,7 +232,7 @@ class PlaylistsController extends BaseController
 
         $record = $this->em->getRepository(StationPlaylist::class)->findOneBy([
             'id' => $id,
-            'station_id' => $this->station->id
+            'station_id' => $this->station->getId()
         ]);
 
         if ($record instanceof StationPlaylist) {

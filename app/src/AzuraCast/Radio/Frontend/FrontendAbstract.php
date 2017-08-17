@@ -37,7 +37,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
     public function getProgramName()
     {
-        return 'station_' . $this->station->id . ':station_' . $this->station->id . '_frontend';
+        return 'station_' . $this->station->getId() . ':station_' . $this->station->getId() . '_frontend';
     }
 
     abstract public function getStreamUrl();
@@ -46,7 +46,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
     public function getPublicUrl()
     {
-        $fe_config = (array)$this->station->frontend_config;
+        $fe_config = (array)$this->station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
         $settings_repo = $this->di['em']->getRepository('Entity\Settings');
@@ -205,6 +205,6 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
     protected function _getRadioPort()
     {
-        return (8000 + (($this->station->id - 1) * 10));
+        return (8000 + (($this->station->getId() - 1) * 10));
     }
 }

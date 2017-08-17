@@ -5,10 +5,69 @@ namespace Entity;
  * @Table(name="station_requests")
  * @Entity(repositoryClass="Entity\Repository\StationRequestRepository")
  */
-class StationRequest extends \App\Doctrine\Entity
+class StationRequest
 {
-    public function __construct()
+    /**
+     * @Column(name="id", type="integer")
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
+     * @var int
+     */
+    protected $id;
+
+    /**
+     * @Column(name="station_id", type="integer")
+     * @var int
+     */
+    protected $station_id;
+
+    /**
+     * @ManyToOne(targetEntity="Station", inversedBy="media")
+     * @JoinColumns({
+     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     * @var Station
+     */
+    protected $station;
+
+    /**
+     * @Column(name="track_id", type="integer")
+     * @var int
+     */
+    protected $track_id;
+
+    /**
+     * @ManyToOne(targetEntity="StationMedia")
+     * @JoinColumns({
+     *   @JoinColumn(name="track_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     * @var StationMedia
+     */
+    protected $track;
+
+    /**
+     * @Column(name="timestamp", type="integer")
+     * @var int
+     */
+    protected $timestamp;
+
+    /**
+     * @Column(name="played_at", type="integer")
+     * @var int
+     */
+    protected $played_at;
+
+    /**
+     * @Column(name="ip", type="string", length=40)
+     * @var string
+     */
+    protected $ip;
+
+    public function __construct(Station $station, StationMedia $track)
     {
+        $this->station = $station;
+        $this->track = $track;
+
         $this->timestamp = time();
         $this->played_at = 0;
 
@@ -16,40 +75,58 @@ class StationRequest extends \App\Doctrine\Entity
     }
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @return int
      */
-    protected $id;
-
-    /** @Column(name="station_id", type="integer") */
-    protected $station_id;
-
-    /** @Column(name="track_id", type="integer") */
-    protected $track_id;
-
-    /** @Column(name="timestamp", type="integer") */
-    protected $timestamp;
-
-    /** @Column(name="played_at", type="integer") */
-    protected $played_at;
-
-    /** @Column(name="ip", type="string", length=40) */
-    protected $ip;
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     /**
-     * @ManyToOne(targetEntity="Station", inversedBy="media")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
+     * @return Station
      */
-    protected $station;
+    public function getStation(): Station
+    {
+        return $this->station;
+    }
 
     /**
-     * @ManyToOne(targetEntity="StationMedia")
-     * @JoinColumns({
-     *   @JoinColumn(name="track_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
+     * @return StationMedia
      */
-    protected $track;
+    public function getTrack(): StationMedia
+    {
+        return $this->track;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimestamp(): int
+    {
+        return $this->timestamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPlayedAt(): int
+    {
+        return $this->played_at;
+    }
+
+    /**
+     * @param int $played_at
+     */
+    public function setPlayedAt(int $played_at)
+    {
+        $this->played_at = $played_at;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp(): string
+    {
+        return $this->ip;
+    }
 }

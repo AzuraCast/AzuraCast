@@ -31,6 +31,11 @@
     become_user: azuracast
     shell: php {{ util_base }}/cli.php migrations:migrate --no-interaction --allow-no-migration
 
+  - name: Regenerate Doctrine Proxies
+    become: true
+    become_user: azuracast
+    shell: php {{ util_base }}/cli.php orm:generate-proxies
+
   - name: Restart Radio Stations
     become: true
     become_user: azuracast

@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class UserRepository extends \App\Doctrine\Repository
+class UserRepository extends BaseRepository
 {
     /**
      * @param $username
@@ -37,8 +37,8 @@ class UserRepository extends \App\Doctrine\Repository
 
         if (!($user instanceof Entity\User)) {
             $user = new Entity\User;
-            $user->email = $email;
-            $user->name = $email;
+            $user->setEmail($email);
+            $user->setName($email);
         }
 
         return $user;

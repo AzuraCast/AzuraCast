@@ -8,37 +8,37 @@ class ProfileController extends BaseController
     public function indexAction()
     {
         // Backend controller.
-        $this->view->backend_type = $this->station->backend_type;
-        $this->view->backend_config = (array)$this->station->backend_config;
+        $this->view->backend_type = $this->station->getBackendType();
+        $this->view->backend_config = (array)$this->station->getBackendConfig();
         $this->view->backend_is_running = $this->backend->isRunning();
 
         // Frontend controller.
-        $this->view->frontend_type = $this->station->frontend_type;
-        $this->view->frontend_config = $frontend_config = (array)$this->station->frontend_config;
+        $this->view->frontend_type = $this->station->getFrontendType();
+        $this->view->frontend_config = $frontend_config = (array)$this->station->getFrontendConfig();
         $this->view->frontend_is_running = $this->frontend->isRunning();
 
         $this->view->stream_urls = $this->frontend->getStreamUrls();
 
         // Statistics about backend playback.
         $this->view->num_songs = $this->em->createQuery('SELECT COUNT(sm.id) FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sp.id IS NOT NULL AND sm.station_id = :station_id')
-            ->setParameter('station_id', $this->station->id)
+            ->setParameter('station_id', $this->station->getId())
             ->getSingleScalarResult();
 
         $this->view->num_playlists = $this->em->createQuery('SELECT COUNT(sp.id) FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id')
-            ->setParameter('station_id', $this->station->id)
+            ->setParameter('station_id', $this->station->getId())
             ->getSingleScalarResult();
     }
 
     public function editAction()
     {
-        $this->acl->checkPermission('manage station profile', $this->station->id);
+        $this->acl->checkPermission('manage station profile', $this->station->getId());
 
         $base_form = $this->config->forms->station->toArray();
         unset($base_form['groups']['admin']);
 
         $form = new \App\Form($base_form);
 
-        $form->setDefaults($this->station->toArray($this->em));
+        $form->setDefaults($this->station_repo->toArray($this->station));
 
         if (!empty($_POST) && $form->isValid($_POST)) {
 
@@ -50,15 +50,14 @@ class ProfileController extends BaseController
                 $data[$file_field] = $file_paths[1];
             */
 
-            $oldAdapter = $this->station->frontend_type;
+            $oldAdapter = $this->station->getFrontendType();
 
-            $this->station->fromArray($this->em, $data);
+            $this->station_repo->fromArray($this->station, $data);
             $this->em->persist($this->station);
             $this->em->flush();
 
-            if ($oldAdapter !== $this->station->frontend_type) {
-                $station_repo = $this->em->getRepository(Station::class);
-                $station_repo->resetMounts($this->station, $this->di);
+            if ($oldAdapter !== $this->station->getFrontendType()) {
+                $this->station_repo->resetMounts($this->station, $this->di);
             }
 
             $this->station->writeConfiguration($this->di);
@@ -75,7 +74,7 @@ class ProfileController extends BaseController
 
     public function backendAction()
     {
-        $this->acl->checkPermission('manage station broadcasting', $this->station->id);
+        $this->acl->checkPermission('manage station broadcasting', $this->station->getId());
 
         switch ($this->getParam('do', 'restart')) {
             case "skip":
@@ -107,7 +106,7 @@ class ProfileController extends BaseController
 
     public function frontendAction()
     {
-        $this->acl->checkPermission('manage station broadcasting', $this->station->id);
+        $this->acl->checkPermission('manage station broadcasting', $this->station->getId());
 
         switch ($this->getParam('do', 'restart')) {
             case "stop":

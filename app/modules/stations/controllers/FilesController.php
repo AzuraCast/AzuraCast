@@ -23,9 +23,12 @@ class FilesController extends BaseController
 
     protected $file_path = null;
 
+    /** @var Entity\Repository\StationMediaRepository */
+    protected $media_repo;
+
     protected function permissions()
     {
-        return $this->acl->isAllowed('manage station media', $this->station->id);
+        return $this->acl->isAllowed('manage station media', $this->station->getId());
     }
 
     public function preDispatch()
@@ -52,6 +55,8 @@ class FilesController extends BaseController
             return $this->_err(403, "Forbidden");
         }
 
+        $this->media_repo = $this->em->getRepository(Entity\StationMedia::class);
+
         $csrf = $this->di->get('csrf');
         $this->view->CSRF = $csrf->generate('files');
 
@@ -76,7 +81,7 @@ class FilesController extends BaseController
     public function indexAction()
     {
         $this->view->playlists = $this->em->createQuery('SELECT sp.id, sp.name FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id ORDER BY sp.name ASC')
-            ->setParameter('station_id', $this->station->id)
+            ->setParameter('station_id', $this->station->getId())
             ->getArrayResult();
 
         // Show available file space in the station directory.
@@ -95,7 +100,7 @@ class FilesController extends BaseController
     {
         $media_id = (int)$this->getParam('id');
         $media = $this->em->getRepository(StationMedia::class)->findOneBy([
-            'station_id' => $this->station->id,
+            'station_id' => $this->station->getId(),
             'id' => $media_id
         ]);
 
@@ -106,24 +111,25 @@ class FilesController extends BaseController
         $form_config = $this->config->forms->media->toArray();
         $form = new \App\Form($form_config);
 
-        $form->populate($media->toArray($this->em));
+        $form->populate($this->media_repo->toArray($media));
 
         if (!empty($_POST) && $form->isValid()) {
             $data = $form->getValues();
             unset($data['length']);
 
             // Detect rename.
-            if ($data['path'] !== $media->path) {
+            if ($data['path'] !== $media->getPath()) {
                 list($data['path'], $path_full) = $this->_filterPath($data['path']);
                 rename($media->getFullPath(), $path_full);
             }
 
-            $media->fromArray($this->em, $data);
+            $this->media_repo->fromArray($media, $data);
+
             if ($media->writeToFile()) {
-                $media->song = $this->em->getRepository(Entity\Song::class)->getOrCreate([
-                    'title' => $media->title,
-                    'artist' => $media->artist,
-                ]);
+                $media->setSong($this->em->getRepository(Entity\Song::class)->getOrCreate([
+                    'title' => $media->getTitle(),
+                    'artist' => $media->getArtist(),
+                ]));
             }
 
             $this->em->persist($media);
@@ -131,7 +137,7 @@ class FilesController extends BaseController
 
             $this->alert('<b>' . _('Media metadata updated!') . '</b>', 'green');
 
-            $file_dir = (dirname($media->path) == '.') ? '' : dirname($media->path);
+            $file_dir = (dirname($media->getPath()) == '.') ? '' : dirname($media->getPath());
             return $this->redirect($this->url->routeFromHere(['action' => 'index']).'#'.$file_dir);
         }
 
@@ -160,12 +166,13 @@ class FilesController extends BaseController
                     // Update the paths of all media contained within the directory.
                     $media_in_dir = $this->em->createQuery('SELECT sm FROM Entity\StationMedia sm
                         WHERE sm.station_id = :station_id AND sm.path LIKE :path')
-                        ->setParameter('station_id', $this->station->id)
+                        ->setParameter('station_id', $this->station->getId())
                         ->setParameter('path', $path . '%')
                         ->execute();
 
                     foreach($media_in_dir as $media_row) {
-                        $media_row->path = substr_replace($media_row->path, $new_path,0, strlen($path));
+                        /** @var Entity\StationMedia $media_row */
+                        $media_row->setPath(substr_replace($media_row->getPath(), $new_path,0, strlen($path)));
                         $this->em->persist($media_row);
                     }
 
@@ -210,7 +217,7 @@ class FilesController extends BaseController
 
         if (is_dir($this->file_path)) {
             $media_in_dir_raw = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id AND sm.path LIKE :path')
-                ->setParameter('station_id', $this->station->id)
+                ->setParameter('station_id', $this->station->getId())
                 ->setParameter('path', $this->file . '%')
                 ->getArrayResult();
 
@@ -366,7 +373,7 @@ class FilesController extends BaseController
 
                 foreach ($music_files as $i => $file) {
                     try {
-                        $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
+                        $media = $this->media_repo->getOrCreate($this->station, $file);
                         $this->em->remove($media);
                     } catch (\Exception $e) {
                         @unlink($file);
@@ -390,8 +397,8 @@ class FilesController extends BaseController
 
                 foreach ($music_files as $file) {
                     try {
-                        $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
-                        $media->playlists->clear();
+                        $media = $this->media_repo->getOrCreate($this->station, $file);
+                        $media->getPlaylists()->clear();
                         $this->em->persist($media);
                     } catch (\Exception $e) { }
 
@@ -407,21 +414,20 @@ class FilesController extends BaseController
             // Add all selected files to a playlist.
             case 'playlist':
                 if ($action_id === 'new') {
-                    $playlist = new StationPlaylist;
-                    $playlist->station = $this->station;
-                    $playlist->name = $_POST['name'];
+                    $playlist = new StationPlaylist($this->station);
+                    $playlist->setName($_POST['name']);
 
                     $this->em->persist($playlist);
                     $this->em->flush();
 
                     $response_record = [
-                        'id' => $playlist->id,
-                        'name' => $playlist->name,
+                        'id' => $playlist->getId(),
+                        'name' => $playlist->getName(),
                     ];
                 } else {
                     $playlist_id = (int)$action_id;
                     $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy([
-                        'station_id' => $this->station->id,
+                        'station_id' => $this->station->getId(),
                         'id' => $playlist_id
                     ]);
 
@@ -435,10 +441,10 @@ class FilesController extends BaseController
 
                 foreach ($music_files as $file) {
                     try {
-                        $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
+                        $media = $this->media_repo->getOrCreate($this->station, $file);
 
-                        if (!$media->playlists->contains($playlist)) {
-                            $media->playlists->add($playlist);
+                        if (!$media->getPlaylists()->contains($playlist)) {
+                            $media->getPlaylists()->add($playlist);
                         }
 
                         $this->em->persist($media);

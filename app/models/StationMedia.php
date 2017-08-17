@@ -1,7 +1,9 @@
 <?php
+
 namespace Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @Table(name="station_media", indexes={
@@ -12,10 +14,139 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @Entity(repositoryClass="Entity\Repository\StationMediaRepository")
  * @HasLifecycleCallbacks
  */
-class StationMedia extends \App\Doctrine\Entity
+class StationMedia
 {
-    public function __construct()
+    /**
+     * @Column(name="id", type="integer")
+     * @Id
+     * @GeneratedValue(strategy="IDENTITY")
+     * @var int
+     */
+    protected $id;
+
+    /**
+     * @Column(name="station_id", type="integer")
+     * @var int
+     */
+    protected $station_id;
+
+    /**
+     * @ManyToOne(targetEntity="Station", inversedBy="media")
+     * @JoinColumns({
+     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     * @var Station
+     */
+    protected $station;
+
+    /**
+     * @Column(name="song_id", type="string", length=50, nullable=true)
+     * @var int|null
+     */
+    protected $song_id;
+
+    /**
+     * @ManyToOne(targetEntity="Song")
+     * @JoinColumns({
+     *   @JoinColumn(name="song_id", referencedColumnName="id", onDelete="SET NULL")
+     * })
+     * @var Song|null
+     */
+    protected $song;
+
+    /**
+     * @Column(name="title", type="string", length=200, nullable=true)
+     * @var string|null
+     */
+    protected $title;
+
+    /**
+     * @Column(name="artist", type="string", length=200, nullable=true)
+     * @var string|null
+     */
+    protected $artist;
+
+    /**
+     * @Column(name="album", type="string", length=200, nullable=true)
+     * @var string|null
+     */
+    protected $album;
+
+    /**
+     * @Column(name="isrc", type="string", length=15, nullable=true)
+     * @var string|null The track ISRC (International Standard Recording Code), used for licensing purposes.
+     */
+    protected $isrc;
+
+    /**
+     * @Column(name="length", type="smallint")
+     * @var int
+     */
+    protected $length;
+
+    /**
+     * @Column(name="length_text", type="string", length=10, nullable=true)
+     * @var string|null
+     */
+    protected $length_text;
+
+    /**
+     * @Column(name="path", type="string", length=191, nullable=true)
+     * @var string|null
+     */
+    protected $path;
+
+    /**
+     * @Column(name="mtime", type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $mtime;
+
+    /**
+     * @Column(name="fade_overlap", type="decimal", precision=3, scale=1, nullable=true)
+     * @var float|null
+     */
+    protected $fade_overlap;
+
+    /**
+     * @Column(name="fade_in", type="decimal", precision=3, scale=1, nullable=true)
+     * @var float|null
+     */
+    protected $fade_in;
+
+    /**
+     * @Column(name="fade_out", type="decimal", precision=3, scale=1, nullable=true)
+     * @var float|null
+     */
+    protected $fade_out;
+
+    /**
+     * @Column(name="cue_in", type="decimal", precision=5, scale=1, nullable=true)
+     * @var float|null
+     */
+    protected $cue_in;
+
+    /**
+     * @Column(name="cue_out", type="decimal", precision=5, scale=1, nullable=true)
+     * @var float|null
+     */
+    protected $cue_out;
+
+    /**
+     * @ManyToMany(targetEntity="StationPlaylist", inversedBy="media")
+     * @JoinTable(name="station_playlist_has_media",
+     *   joinColumns={@JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")},
+     *   inverseJoinColumns={@JoinColumn(name="playlists_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     * @var Collection
+     */
+    protected $playlists;
+
+    public function __construct(Station $station, string $path)
     {
+        $this->station = $station;
+        $this->path = $path;
+
         $this->length = 0;
         $this->length_text = '0:00';
 
@@ -25,36 +156,112 @@ class StationMedia extends \App\Doctrine\Entity
     }
 
     /**
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @return int
      */
-    protected $id;
-
-    /** @Column(name="station_id", type="integer") */
-    protected $station_id;
-
-    /** @Column(name="song_id", type="string", length=50, nullable=true) */
-    protected $song_id;
-
-    /** @Column(name="title", type="string", length=200, nullable=true) */
-    protected $title;
-
-    /** @Column(name="artist", type="string", length=200, nullable=true) */
-    protected $artist;
-
-    /** @Column(name="album", type="string", length=200, nullable=true) */
-    protected $album;
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     /**
-     * The track ISRC (International Standard Recording Code), used for licensing purposes.
-     * @Column(name="isrc", type="string", length=15, nullable=true)
+     * @return Station
      */
-    protected $isrc;
+    public function getStation(): Station
+    {
+        return $this->station;
+    }
 
-    /** @Column(name="length", type="smallint") */
-    protected $length;
+    /**
+     * @return Song|null
+     */
+    public function getSong(): ?Song
+    {
+        return $this->song;
+    }
 
+    /**
+     * @param Song|null $song
+     */
+    public function setSong(Song $song = null)
+    {
+        $this->song = $song;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param null|string $title
+     */
+    public function setTitle(string $title = null)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getArtist(): ?string
+    {
+        return $this->artist;
+    }
+
+    /**
+     * @param null|string $artist
+     */
+    public function setArtist(string $artist = null)
+    {
+        $this->artist = $artist;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getAlbum(): ?string
+    {
+        return $this->album;
+    }
+
+    /**
+     * @param null|string $album
+     */
+    public function setAlbum(string $album = null)
+    {
+        $this->album = $album;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getIsrc(): ?string
+    {
+        return $this->isrc;
+    }
+
+    /**
+     * @param null|string $isrc
+     */
+    public function setIsrc(string $isrc = null)
+    {
+        $this->isrc = $isrc;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLength(): int
+    {
+        return $this->length;
+    }
+
+    /**
+     * @param $length
+     */
     public function setLength($length)
     {
         $length_min = floor($length / 60);
@@ -62,6 +269,134 @@ class StationMedia extends \App\Doctrine\Entity
 
         $this->length = round($length);
         $this->length_text = $length_min . ':' . str_pad($length_sec, 2, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getLengthText(): ?string
+    {
+        return $this->length_text;
+    }
+
+    /**
+     * @param null|string $length_text
+     */
+    public function setLengthText(string $length_text = null)
+    {
+        $this->length_text = $length_text;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param null|string $path
+     */
+    public function setPath(string $path = null)
+    {
+        $this->path = $path;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMtime(): ?int
+    {
+        return $this->mtime;
+    }
+
+    /**
+     * @param int|null $mtime
+     */
+    public function setMtime(int $mtime = null)
+    {
+        $this->mtime = $mtime;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getFadeOverlap(): ?float
+    {
+        return $this->fade_overlap;
+    }
+
+    /**
+     * @param float|null $fade_overlap
+     */
+    public function setFadeOverlap(float $fade_overlap = null)
+    {
+        $this->fade_overlap = $fade_overlap;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getFadeIn(): ?float
+    {
+        return $this->fade_in;
+    }
+
+    /**
+     * @param float|null $fade_in
+     */
+    public function setFadeIn(float $fade_in = null)
+    {
+        $this->fade_in = $fade_in;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getFadeOut(): ?float
+    {
+        return $this->fade_out;
+    }
+
+    /**
+     * @param float|null $fade_out
+     */
+    public function setFadeOut(float $fade_out = null)
+    {
+        $this->fade_out = $fade_out;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getCueIn(): ?float
+    {
+        return $this->cue_in;
+    }
+
+    /**
+     * @param float|null $cue_in
+     */
+    public function setCueIn(float $cue_in = null)
+    {
+        $this->cue_in = $cue_in;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getCueOut(): ?float
+    {
+        return $this->cue_out;
+    }
+
+    /**
+     * @param float|null $cue_out
+     */
+    public function setCueOut(float $cue_out = null)
+    {
+        $this->cue_out = $cue_out;
     }
 
     /**
@@ -84,43 +419,20 @@ class StationMedia extends \App\Doctrine\Entity
         return $length;
     }
 
-    /** @Column(name="length_text", type="string", length=10, nullable=true) */
-    protected $length_text;
-
-    /** @Column(name="path", type="string", length=191, nullable=true) */
-    protected $path;
-
-    public function getFullPath()
+    /**
+     * @return Collection
+     */
+    public function getPlaylists(): Collection
     {
-        $media_base_dir = $this->station->getRadioMediaDir();
-
-        return $media_base_dir . '/' . $this->path;
+        return $this->playlists;
     }
-
-    /** @Column(name="mtime", type="integer", nullable=true) */
-    protected $mtime;
-
-    /** @Column(name="fade_overlap", type="decimal", precision=3, scale=1, nullable=true) */
-    protected $fade_overlap;
-
-    /** @Column(name="fade_in", type="decimal", precision=3, scale=1, nullable=true) */
-    protected $fade_in;
-
-    /** @Column(name="fade_out", type="decimal", precision=3, scale=1, nullable=true) */
-    protected $fade_out;
-
-    /** @Column(name="cue_in", type="decimal", precision=5, scale=1, nullable=true) */
-    protected $cue_in;
-
-    /** @Column(name="cue_out", type="decimal", precision=5, scale=1, nullable=true) */
-    protected $cue_out;
 
     /**
      * Assemble a list of annotations for LiquidSoap.
      *
      * @return array
      */
-    public function getAnnotations()
+    public function getAnnotations(): array
     {
         $annotations = [];
         $annotation_types = [
@@ -134,7 +446,7 @@ class StationMedia extends \App\Doctrine\Entity
             'cue_out' => 'liq_cue_out',
         ];
 
-        foreach($annotation_types as $annotation_property => $annotation_name) {
+        foreach ($annotation_types as $annotation_property => $annotation_name) {
             if ($this->$annotation_property !== null) {
                 $prop = $this->$annotation_property;
                 $prop = preg_replace('/[^\00-\255]+/u', '', $prop);
@@ -145,33 +457,6 @@ class StationMedia extends \App\Doctrine\Entity
 
         return $annotations;
     }
-
-    /**
-     * @ManyToOne(targetEntity="Station", inversedBy="media")
-     * @JoinColumns({
-     *   @JoinColumn(name="station_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     * @var Station
-     */
-    protected $station;
-
-    /**
-     * @ManyToOne(targetEntity="Song")
-     * @JoinColumns({
-     *   @JoinColumn(name="song_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
-     * @var Song|null
-     */
-    protected $song;
-
-    /**
-     * @ManyToMany(targetEntity="StationPlaylist", inversedBy="playlists")
-     * @JoinTable(name="station_playlist_has_media",
-     *   joinColumns={@JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")},
-     *   inverseJoinColumns={@JoinColumn(name="playlists_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     */
-    protected $playlists;
 
     /**
      * Process metadata information from media file.
@@ -283,16 +568,23 @@ class StationMedia extends \App\Doctrine\Entity
         return false;
     }
 
+    public function getFullPath()
+    {
+        $media_base_dir = $this->station->getRadioMediaDir();
+
+        return $media_base_dir . '/' . $this->path;
+    }
+
     /**
      * Retrieve the API version of the object/array.
      *
      * @return Api\Song
      */
-    public function api()
+    public function api(): Api\Song
     {
         $response = new Api\Song;
         $response->id = (string)$this->song_id;
-        $response->text = $this->artist.' - '.$this->title;
+        $response->text = $this->artist . ' - ' . $this->title;
         $response->artist = (string)$this->artist;
         $response->title = (string)$this->title;
 

@@ -16,7 +16,7 @@ class IndexController extends BaseController
         // Statistics by day.
         $influx = $this->di->get('influx');
 
-        $resultset = $influx->query('SELECT * FROM "1d"."station.' . $this->station->id . '.listeners" WHERE time > now() - 30d',
+        $resultset = $influx->query('SELECT * FROM "1d"."station.' . $this->station->getId() . '.listeners" WHERE time > now() - 30d',
             [
                 'epoch' => 'ms',
             ]);
@@ -50,7 +50,7 @@ class IndexController extends BaseController
 
         // Statistics by hour.
         $influx = $this->di->get('influx');
-        $resultset = $influx->query('SELECT * FROM "1h"."station.' . $this->station->id . '.listeners"', [
+        $resultset = $influx->query('SELECT * FROM "1h"."station.' . $this->station->getId() . '.listeners"', [
             'epoch' => 'ms',
         ]);
 
@@ -89,7 +89,7 @@ class IndexController extends BaseController
             WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp
             GROUP BY sh.song_id
             ORDER BY records DESC')
-            ->setParameter('station_id', $this->station->id)
+            ->setParameter('station_id', $this->station->getId())
             ->setParameter('timestamp', $threshold)
             ->setMaxResults(40)
             ->getArrayResult();
@@ -103,7 +103,7 @@ class IndexController extends BaseController
         $song_totals = [];
         foreach ($song_totals_raw as $total_type => $total_records) {
             foreach ($total_records as $total_record) {
-                $song = $this->em->getRepository(Song::class)->find($total_record['song_id']);
+                $song = $this->em->getRepository(Song::class)->findAsArray($total_record['song_id']);
                 $total_record['song'] = $song;
 
                 $song_totals[$total_type][] = $total_record;

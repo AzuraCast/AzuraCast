@@ -8,7 +8,7 @@ class UtilController extends BaseController
      */
     public function restartAction()
     {
-        $this->acl->checkPermission('manage station broadcasting', $this->station->id);
+        $this->acl->checkPermission('manage station broadcasting', $this->station->getId());
 
         $this->station->writeConfiguration($this->di);
 
@@ -21,8 +21,8 @@ class UtilController extends BaseController
         $frontend->start();
         $backend->start();
 
-        $this->station->has_started = true;
-        $this->station->needs_restart = false;
+        $this->station->setHasStarted(true);
+        $this->station->setNeedsRestart(false);
 
         $this->em->persist($this->station);
         $this->em->flush();

@@ -30,8 +30,8 @@ $options = $form->getOptions();
             <h2><?=_('Roles') ?></h2>
 
             <ul>
-            <?php foreach($user->roles as $role): ?>
-                <li><?=$this->e($role->name) ?></li>
+            <?php foreach($user->getRoles() as $role): ?>
+                <li><?=$this->e($role->getName()) ?></li>
             <?php endforeach; ?>
             </ul>
         </div>

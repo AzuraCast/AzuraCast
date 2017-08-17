@@ -1,143 +1,96 @@
 <?php
-namespace App\Doctrine;
+namespace Entity\Repository;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityRepository;
 
-class Entity implements \ArrayAccess
+class BaseRepository extends EntityRepository
 {
     /**
-     * Magic methods.
+     * Combination of find() and toArray() helper functions.
+     *
+     * @param $id
+     * @param bool $deep
+     * @param bool $form_mode
+     * @return array|null
      */
-
-    public function __get($key)
+    public function findAsArray($id, $deep = false, $form_mode = false)
     {
-        $method_name = $this->_getMethodName($key, 'get');
-
-        if (method_exists($this, $method_name)) {
-            return $this->$method_name();
-        } else {
-            return $this->_getVar($key);
-        }
-    }
-
-    public function __set($key, $value)
-    {
-        $method_name = $this->_getMethodName($key, 'set');
-
-        if (method_exists($this, $method_name)) {
-            return $this->$method_name($value);
-        } else {
-            return $this->_setVar($key, $value);
-        }
-    }
-
-    public function __isset($key)
-    {
-        $method_name = $this->_getMethodName($key, 'get');
-
-        if (method_exists($this, $method_name)) {
-            return $this->$method_name();
-        } else {
-            return property_exists($this, $key);
-        }
-    }
-
-    public function __call($method, $arguments)
-    {
-        if (substr($method, 0, 3) == "get") {
-            $var = $this->_getVarName(substr($method, 3));
-
-            return $this->_getVar($var);
-        } else {
-            if (substr($method, 0, 3) == "set") {
-                $var = $this->_getVarName(substr($method, 3));
-                $this->_setVar($var, $arguments[0]);
-
-                return $this;
-            }
-        }
-
-        return null;
-    }
-
-    protected function _getVar($var)
-    {
-        if (property_exists($this, $var)) {
-            return $this->$var;
-        } else {
-            return null;
-        }
-    }
-
-    protected function _setVar($var, $value)
-    {
-        if (property_exists($this, $var)) {
-            $this->$var = $value;
-        }
-
-        return $this;
-    }
-
-    // Converts "varNameBlah" to "var_name_blah".
-    protected function _getVarName($var)
-    {
-        return strtolower(preg_replace('~(?<=\\w)([A-Z])~', '_$1', $var));
-    }
-
-    // Converts "getvar_name_blah" to "getVarNameBlah".
-    protected function _getMethodName($var, $prefix = '')
-    {
-        return $prefix . str_replace(" ", "", ucwords(strtr($var, "_-", "  ")));
+        $record = $this->_em->find($this->_entityName, $id);
+        return ($record === null)
+            ? null
+            : $this->toArray($record, $deep, $form_mode);
     }
 
     /**
-     * ArrayAccess implementation
+     * Generate an array result of all records.
+     *
+     * @param bool $cached
+     * @param null $order_by
+     * @param string $order_dir
+     * @return array
      */
-
-    public function offsetExists($offset)
+    public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC')
     {
-        return property_exists($this, $offset);
+        $qb = $this->_em->createQueryBuilder()
+            ->select('e')
+            ->from($this->_entityName, 'e');
+
+        if ($order_by) {
+            $qb->orderBy('e.' . str_replace('e.', '', $order_by), $order_dir);
+        }
+
+        return $qb->getQuery()->getArrayResult();
     }
 
-    public function offsetSet($key, $value)
+    /**
+     * Generic dropdown builder function (can be overridden for specialized use cases).
+     *
+     * @param bool $add_blank
+     * @param \Closure|NULL $display
+     * @param string $pk
+     * @param string $order_by
+     * @return array
+     */
+    public function fetchSelect($add_blank = false, \Closure $display = null, $pk = 'id', $order_by = 'name')
     {
-        $method_name = $this->_getMethodName($key, 'set');
+        $select = [];
 
-        if (method_exists($this, $method_name)) {
-            return $this->$method_name($value);
+        // Specify custom text in the $add_blank parameter to override.
+        if ($add_blank !== false) {
+            $select[''] = ($add_blank === true) ? 'Select...' : $add_blank;
+        }
+
+        // Build query for records.
+        $qb = $this->_em->createQueryBuilder()->from($this->_entityName, 'e');
+
+        if ($display === null) {
+            $qb->select('e.' . $pk)->addSelect('e.name')->orderBy('e.' . $order_by, 'ASC');
         } else {
-            return $this->_setVar($key, $value);
+            $qb->select('e')->orderBy('e.' . $order_by, 'ASC');
         }
-    }
 
-    public function offsetGet($key)
-    {
-        $method_name = $this->_getMethodName($key, 'get');
-        if (method_exists($this, $method_name)) {
-            return $this->$method_name();
-        } else {
-            return $this->_getVar($key);
-        }
-    }
+        $results = $qb->getQuery()->getArrayResult();
 
-    public function offsetUnset($offset)
-    {
-        if (property_exists($this, $offset)) {
-            unset($this->$offset);
+        // Assemble select values and, if necessary, call $display callback.
+        foreach ((array)$results as $result) {
+            $key = $result[$pk];
+            $value = ($display === null) ? $result['name'] : $display($result);
+            $select[$key] = $value;
         }
+
+        return $select;
     }
 
     /**
      * FromArray (A Doctrine 1 Classic)
      *
-     * @param EntityManagerInterface $em
-     * @param $source
-     * @return $this
+     * @param object|Entity $entity
+     * @param array $source
      */
-    public function fromArray(EntityManager $em, $source)
+    public function fromArray($entity, array $source)
     {
-        $metadata = self::getMetadata($em);
+        $metadata = $this->_getMetadata($entity);
 
         $meta = $metadata['meta'];
         $mappings = $metadata['mappings'];
@@ -152,16 +105,16 @@ class Entity implements \ArrayAccess
                         $entity_id = $mapping['ids'][0];
 
                         if (empty($value)) {
-                            $this->$field = null;
-                            $this->$entity_field = null;
+                            $this->_set($entity, $field, null);
+                            $this->_set($entity, $entity_field, null);
                         } else {
-                            if ($value != $this->$field) {
+                            if ($value != $this->_get($entity, $field)) {
                                 $obj_class = $mapping['entity'];
-                                $obj = $em->getRepository($obj_class)->find($value);
+                                $obj = $this->_em->find($obj_class, $value);
 
                                 if ($obj instanceof $obj_class) {
-                                    $this->$field = $obj->$entity_id;
-                                    $this->$entity_field = $obj;
+                                    $this->_set($entity, $field, $this->_get($obj, $entity_id));
+                                    $this->_set($entity, $entity_field, $obj);
                                 }
                             }
                         }
@@ -172,12 +125,12 @@ class Entity implements \ArrayAccess
                         $id_field = $mapping['name'];
 
                         if (empty($value)) {
-                            $this->$field = null;
-                            $this->$id_field = null;
+                            $this->_set($entity, $field, null);
+                            $this->_set($entity, $id_field, null);
                         } else {
-                            if ($value->$entity_id != $this->$field) {
-                                $this->$field = $value;
-                                $this->$id_field = $value->$entity_id;
+                            if ($this->_get($value, $entity_id) != $this->_get($entity, $field)) {
+                                $this->_set($entity, $field, $value);
+                                $this->_set($entity, $id_field, $this->_get($value, $entity_id));
                             }
                         }
                         break;
@@ -186,35 +139,44 @@ class Entity implements \ArrayAccess
                         $obj_class = $mapping['entity'];
 
                         if ($mapping['is_owning_side']) {
-                            $this->$field->clear();
+                            /** @var Collection $collection */
+                            $collection = $this->_get($entity, $field);
+
+                            $collection->clear();
 
                             if ($value) {
                                 foreach ((array)$value as $field_id) {
-                                    if (($field_item = $em->getRepository($obj_class)->find((int)$field_id)) instanceof $obj_class) {
-                                        $this->$field->add($field_item);
+                                    if (($field_item = $this->_em->find($obj_class, (int)$field_id)) instanceof $obj_class) {
+                                        $collection->add($field_item);
                                     }
                                 }
                             }
                         } else {
                             $foreign_field = $mapping['mappedBy'];
 
-                            if (count($this->$field) > 0) {
-                                foreach ($this->$field as $record) {
-                                    $record->$foreign_field->removeElement($this);
-                                    $em->persist($record);
+                            if (count($this->_get($entity, $field)) > 0) {
+                                foreach ($this->_get($entity, $field) as $record) {
+                                    /** @var Collection $collection */
+                                    $collection = $this->_get($record, $foreign_field);
+                                    $collection->removeElement($entity);
+
+                                    $this->_em->persist($record);
                                 }
                             }
 
                             foreach ((array)$value as $field_id) {
-                                $record = $em->getRepository($obj_class)->find((int)$field_id);
+                                $record = $this->_em->find($obj_class, (int)$field_id);
 
                                 if ($record instanceof $obj_class) {
-                                    $record->$foreign_field->add($this);
-                                    $em->persist($record);
+                                    /** @var Collection $collection */
+                                    $collection = $this->_get($record, $foreign_field);
+                                    $collection->add($entity);
+
+                                    $this->_em->persist($record);
                                 }
                             }
 
-                            $em->flush();
+                            $this->_em->flush();
                         }
                         break;
                 }
@@ -274,35 +236,33 @@ class Entity implements \ArrayAccess
                         break;
                 }
 
-                $this->__set($field, $value);
+                $this->_set($entity, $field, $value);
             }
         }
-
-        return $this;
     }
 
     /**
      * ToArray (A Doctrine 1 Classic)
      *
-     * @param EntityManagerInterface $em
+     * @param object|Entity $entity
      * @param bool $deep Iterate through collections associated with this item.
      * @param bool $form_mode Return values in a format suitable for ZendForm setDefault function.
      * @return array
      */
-    public function toArray(EntityManager $em, $deep = false, $form_mode = false)
+    public function toArray($entity, $deep = false, $form_mode = false)
     {
         $return_arr = [];
 
-        $class_meta = $em->getClassMetadata(get_called_class());
+        $class_meta = $this->_em->getClassMetadata(get_class($entity));
 
-        $reflect = new \ReflectionClass($this);
+        $reflect = new \ReflectionClass($entity);
         $props = $reflect->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED);
 
         if ($props) {
             foreach ($props as $property) {
                 $property->setAccessible(true);
                 $prop_name = $property->getName();
-                $prop_val = $property->getValue($this);
+                $prop_val = $property->getValue($entity);
 
                 if (isset($class_meta->fieldMappings[$prop_name])) {
                     $prop_info = $class_meta->fieldMappings[$prop_name];
@@ -329,21 +289,21 @@ class Entity implements \ArrayAccess
                                     if (count($prop_val) > 0) {
                                         foreach ($prop_val as $val_obj) {
                                             if ($form_mode) {
-                                                $obj_meta = $em->getClassMetadata(get_class($val_obj));
+                                                $obj_meta = $this->_em->getClassMetadata(get_class($val_obj));
                                                 $id_field = $obj_meta->identifier;
 
                                                 if ($id_field && count($id_field) == 1) {
-                                                    $return_val[] = $val_obj->{$id_field[0]};
+                                                    $return_val[] = $this->_get($val_obj, $id_field[0]);
                                                 }
                                             } else {
-                                                $return_val[] = $val_obj->toArray($em, false);
+                                                $return_val[] = $this->toArray($val_obj, false);
                                             }
                                         }
                                     }
 
                                     $return_arr[$prop_name] = $return_val;
                                 } else {
-                                    $return_arr[$prop_name] = $prop_val->toArray($em, false);
+                                    $return_arr[$prop_name] = $this->toArray($prop_val, false);
                                 }
                             }
                         }
@@ -358,18 +318,16 @@ class Entity implements \ArrayAccess
     /**
      * Internal function for pulling metadata, used in toArray and fromArray
      *
-     * @param null $class
+     * @param object $source_entity
      * @return array
      */
-    public static function getMetadata(EntityManager $em, $class = null)
+    protected function _getMetadata($source_entity)
     {
-        if ($class === null) {
-            $class = get_called_class();
-        }
+        $class = get_class($source_entity);
 
         $meta_result = [];
-        $meta_result['em'] = $em;
-        $meta_result['factory'] = $em->getMetadataFactory();
+        $meta_result['em'] = $this->_em;
+        $meta_result['factory'] = $this->_em->getMetadataFactory();
         $meta_result['meta'] = $meta_result['factory']->getMetadataFor($class);
         $meta_result['mappings'] = [];
 
@@ -413,5 +371,29 @@ class Entity implements \ArrayAccess
         }
 
         return $meta_result;
+    }
+
+    protected function _get($entity, $key)
+    {
+        $method_name = $this->_getMethodName($key, 'get');
+
+        return (method_exists($entity, $method_name))
+            ? $entity->$method_name()
+            : null;
+    }
+
+    protected function _set($entity, $key, $value)
+    {
+        $method_name = $this->_getMethodName($key, 'set');
+
+        return (method_exists($entity, $method_name))
+            ? $entity->$method_name($value)
+            : null;
+    }
+
+    // Converts "getvar_name_blah" to "getVarNameBlah".
+    protected function _getMethodName($var, $prefix = '')
+    {
+        return $prefix . str_replace(" ", "", ucwords(strtr($var, "_-", "  ")));
     }
 }

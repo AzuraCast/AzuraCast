@@ -1,4 +1,6 @@
-<?php $this->layout('embed', ['title' => $this->e($station->name)]) ?>
+<?php /** @var \Entity\Station $station */ ?>
+
+<?php $this->layout('embed', ['title' => $this->e($station->getName())]) ?>
 
 <?php $this->start('custom_js') ?>
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/store-js/store.min.js') ?>"></script>
@@ -9,7 +11,7 @@
     <?=$this->fetch('partials/radio_controls') ?>
 </ul>
 <div class="stations nowplaying">
-    <div class="media media-left" id="station_<?=$station->id ?>">
+    <div class="media media-left" id="station_<?=$station->getId() ?>">
         <div class="pull-left">
             <a class="btn-audio" href="#" data-url="<?=$this->e($stream_url) ?>">
                 <i class="zmdi zmdi-play"></i>
@@ -27,7 +29,7 @@ function nowPlaying() {
     $.getJSON('<?=$url->route([
         'module' => 'api',
         'controller' => 'nowplaying',
-        'station' => $station->id
+        'station' => $station->getId()
     ]) ?>', {}, function (row) {
         var station_row = $('#station_'+row.station.id);
 

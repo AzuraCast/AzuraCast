@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class RolePermissionRepository extends \App\Doctrine\Repository
+class RolePermissionRepository extends BaseRepository
 {
     public function getActionsForAllRoles()
     {
@@ -23,7 +23,9 @@ class RolePermissionRepository extends \App\Doctrine\Repository
 
     public function getActionsForRole(Entity\Role $role)
     {
-        $role_has_action = $this->findBy(['role_id' => $role->id]);
+        $role_has_action = $this->_em->createQuery('SELECT e FROM '.$this->_entityName.' e WHERE e.role_id = :role_id')
+            ->setParameter('role_id', $role->getId())
+            ->getArrayResult();
 
         $result = [];
         foreach ($role_has_action as $row) {
@@ -40,7 +42,7 @@ class RolePermissionRepository extends \App\Doctrine\Repository
     public function setActionsForRole(Entity\Role $role, $post_values)
     {
         $this->_em->createQuery('DELETE FROM ' . $this->_entityName . ' rp WHERE rp.role_id = :role_id')
-            ->setParameter('role_id', $role->id)
+            ->setParameter('role_id', $role->getId())
             ->execute();
 
         foreach ($post_values as $post_key => $post_value) {
@@ -51,18 +53,10 @@ class RolePermissionRepository extends \App\Doctrine\Repository
             }
 
             foreach ((array)$post_value as $action_name) {
-                $record_info = [
-                    'role_id' => $role->id,
-                    'action_name' => $action_name,
-                ];
+                $station = ($post_key_id !== 'global') ? $this->_em->getReference(Entity\Station::class, $post_key_id) : null;
 
-                if ($post_key_id !== 'global') {
-                    $record_info['station_id'] = $post_key_id;
-                }
-
-                $record = new Entity\RolePermission;
-                $record->fromArray($this->_em, $record_info);
-
+                $record = new Entity\RolePermission($role, $station);
+                $record->setActionName($action_name);
                 $this->_em->persist($record);
             }
 

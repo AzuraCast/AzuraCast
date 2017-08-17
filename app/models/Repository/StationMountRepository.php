@@ -3,7 +3,7 @@ namespace Entity\Repository;
 
 use Entity;
 
-class StationMountRepository extends \App\Doctrine\Repository
+class StationMountRepository extends BaseRepository
 {
     /**
      * @param Entity\Station $station
@@ -11,6 +11,6 @@ class StationMountRepository extends \App\Doctrine\Repository
      */
     public function getDefaultMount(Entity\Station $station)
     {
-        return $this->findOneBy(['station_id' => $station->id, 'is_default' => true]);
+        return $this->findOneBy(['station_id' => $station->getId(), 'is_default' => true]);
     }
 }

@@ -3,14 +3,19 @@ namespace Controller\Stations;
 
 use AzuraCast\Radio\Backend\BackendAbstract;
 use AzuraCast\Radio\Frontend\FrontendAbstract;
-use Entity\Station;
+use Entity;
 
 class BaseController extends \AzuraCast\Mvc\Controller
 {
     /**
-     * @var Station The current active station.
+     * @var Entity\Station The current active station.
      */
     protected $station;
+
+    /**
+     * @var Entity\Repository\StationRepository
+     */
+    protected $station_repo;
 
     /**
      * @var FrontendAbstract
@@ -24,10 +29,12 @@ class BaseController extends \AzuraCast\Mvc\Controller
 
     public function init()
     {
-        $station_id = (int)$this->getParam('station');
-        $this->station = $this->view->station = $this->em->getRepository(Station::class)->find($station_id);
+        $this->station_repo = $this->em->getRepository(Entity\Station::class);
 
-        if (!($this->station instanceof Station)) {
+        $station_id = (int)$this->getParam('station');
+        $this->station = $this->view->station = $this->station_repo->find($station_id);
+
+        if (!($this->station instanceof Entity\Station)) {
             throw new \App\Exception\PermissionDenied;
         }
 
@@ -41,13 +48,13 @@ class BaseController extends \AzuraCast\Mvc\Controller
 
     protected function permissions()
     {
-        return $this->acl->isAllowed('view station management', $this->station->id);
+        return $this->acl->isAllowed('view station management', $this->station->getId());
     }
 
     protected function _getEligibleHistory()
     {
         $cache = $this->di->get('cache');
-        $cache_name = 'station_center_history_' . $this->station->id;
+        $cache_name = 'station_center_history_' . $this->station->getId();
 
         $songs_played_raw = $cache->get($cache_name);
 
@@ -56,7 +63,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
                 $first_song = $this->em->createQuery('SELECT sh.timestamp_start FROM Entity\SongHistory sh
                     WHERE sh.station_id = :station_id AND sh.listeners_start IS NOT NULL
                     ORDER BY sh.timestamp_start ASC')
-                    ->setParameter('station_id', $this->station->id)
+                    ->setParameter('station_id', $this->station->getId())
                     ->setMaxResults(1)
                     ->getSingleScalarResult();
             } catch (\Exception $e) {
@@ -74,7 +81,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
                 LEFT JOIN sh.song s
                 WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp AND sh.listeners_start IS NOT NULL
                 ORDER BY sh.timestamp_start ASC')
-                ->setParameter('station_id', $this->station->id)
+                ->setParameter('station_id', $this->station->getId())
                 ->setParameter('timestamp', $threshold)
                 ->getArrayResult();
 

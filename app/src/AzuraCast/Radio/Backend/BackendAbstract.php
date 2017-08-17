@@ -38,6 +38,6 @@ abstract class BackendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
     public function getProgramName()
     {
-        return 'station_' . $this->station->id . ':station_' . $this->station->id . '_backend';
+        return 'station_' . $this->station->getId() . ':station_' . $this->station->getId() . '_backend';
     }
 }

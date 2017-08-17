@@ -56,7 +56,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
         $record = $this->em->getRepository(Entity\ApiKey::class)->find($key);
 
         if ($record instanceof Entity\ApiKey) {
-            $record->calls_made++;
+            $record->callMade();
 
             $this->em->persist($record);
             $this->em->flush();

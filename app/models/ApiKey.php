@@ -75,12 +75,9 @@ class ApiKey
         return $this->calls_made;
     }
 
-    /**
-     * @param int $calls_made
-     */
-    public function setCallsMade(int $calls_made)
+    public function callMade()
     {
-        $this->calls_made = $calls_made;
+        $this->calls_made++;
     }
 
     /**

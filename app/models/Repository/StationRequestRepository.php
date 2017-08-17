@@ -122,11 +122,11 @@ class StationRequestRepository extends BaseRepository
         try {
             $last_play_time = $this->_em->createQuery('SELECT sh.timestamp_start 
                 FROM Entity\SongHistory sh 
-                WHERE sh.song_id = :song_id 
+                WHERE sh.media_id = :media_id 
                 AND sh.station_id = :station_id
                 AND sh.timestamp_start >= :threshold
                 ORDER BY sh.timestamp_start DESC')
-                ->setParameter('song_id', $media->getSong()->getId())
+                ->setParameter('song_id', $media->getId())
                 ->setParameter('station_id', $station->getId())
                 ->setParameter('threshold', $last_play_threshold)
                 ->setMaxResults(1)

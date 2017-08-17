@@ -82,7 +82,10 @@ class RadioAutomation extends SyncAbstract
             ) {
                 // Clear all related media.
                 foreach ($playlist->getMedia() as $media) {
-                    $original_playlists[$media->getSong()->getId()][] = $i;
+                    $song = $media->getSong();
+                    if ($song instanceof Entity\Song) {
+                        $original_playlists[$song->getId()][] = $i;
+                    }
 
                     $media->getPlaylists()->removeElement($playlist);
                     $em->persist($media);

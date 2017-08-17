@@ -171,7 +171,8 @@ class FilesController extends BaseController
                         ->execute();
 
                     foreach($media_in_dir as $media_row) {
-                        $media_row->path = substr_replace($media_row->path, $new_path,0, strlen($path));
+                        /** @var Entity\StationMedia $media_row */
+                        $media_row->setPath(substr_replace($media_row->getPath(), $new_path,0, strlen($path)));
                         $this->em->persist($media_row);
                     }
 
@@ -372,7 +373,7 @@ class FilesController extends BaseController
 
                 foreach ($music_files as $i => $file) {
                     try {
-                        $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
+                        $media = $this->media_repo->getOrCreate($this->station, $file);
                         $this->em->remove($media);
                     } catch (\Exception $e) {
                         @unlink($file);
@@ -396,8 +397,8 @@ class FilesController extends BaseController
 
                 foreach ($music_files as $file) {
                     try {
-                        $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
-                        $media->playlists->clear();
+                        $media = $this->media_repo->getOrCreate($this->station, $file);
+                        $media->getPlaylists()->clear();
                         $this->em->persist($media);
                     } catch (\Exception $e) { }
 
@@ -440,10 +441,10 @@ class FilesController extends BaseController
 
                 foreach ($music_files as $file) {
                     try {
-                        $media = $this->em->getRepository(StationMedia::class)->getOrCreate($this->station, $file);
+                        $media = $this->media_repo->getOrCreate($this->station, $file);
 
-                        if (!$media->playlists->contains($playlist)) {
-                            $media->playlists->add($playlist);
+                        if (!$media->getPlaylists()->contains($playlist)) {
+                            $media->getPlaylists()->add($playlist);
                         }
 
                         $this->em->persist($media);

@@ -55,7 +55,8 @@ class RolePermissionRepository extends BaseRepository
             foreach ((array)$post_value as $action_name) {
                 $station = ($post_key_id !== 'global') ? $this->_em->getReference(Entity\Station::class, $post_key_id) : null;
 
-                $record = new Entity\RolePermission($role, $action_name, $station);
+                $record = new Entity\RolePermission($role, $station);
+                $record->setActionName($action_name);
                 $this->_em->persist($record);
             }
 

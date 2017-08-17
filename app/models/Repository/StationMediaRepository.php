@@ -59,7 +59,7 @@ class StationMediaRepository extends BaseRepository
         $record = $this->findOneBy(['station_id' => $station->getId(), 'path' => $short_path]);
 
         if (!($record instanceof Entity\StationMedia)) {
-            $record = new Entity\StationMedia($station, $path);
+            $record = new Entity\StationMedia($station, $short_path);
         }
 
         $song_info = $record->loadFromFile();

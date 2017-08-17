@@ -51,11 +51,11 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
             $pass = $input->getArgument('pass');
         }
 
-        if (!$station->enable_streamers) {
+        if (!$station->getEnableStreamers()) {
             return $this->_return($output, 'false');
         }
 
-        $fe_config = (array)$station->frontend_config;
+        $fe_config = (array)$station->getFrontendConfig();
         if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
             return $this->_return($output, 'true');
         }

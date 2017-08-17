@@ -54,8 +54,8 @@ class NextSong extends \App\Console\Command\CommandAbstract
 
         if ($sh instanceof Entity\SongHistory) {
             // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
-            $song_path = $sh->media->getFullPath();
-            $result = 'annotate:' . implode(',', $sh->media->getAnnotations()) . ':' . $song_path;
+            $song_path = $sh->getMedia()->getFullPath();
+            $result = 'annotate:' . implode(',', $sh->getMedia()->getAnnotations()) . ':' . $song_path;
         } else {
             $result = APP_INCLUDE_ROOT . '/resources/error.mp3';
         }

@@ -10,7 +10,7 @@ class AutomationController extends BaseController
 
     public function indexAction()
     {
-        $automation_settings = (array)$this->station->getAutomationTimestamp();
+        $automation_settings = (array)$this->station->getAutomationSettings();
 
         $form = new \App\Form($this->config->forms->automation);
         $form->setDefaults($automation_settings);

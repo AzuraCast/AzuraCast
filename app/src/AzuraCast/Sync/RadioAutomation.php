@@ -158,7 +158,7 @@ class RadioAutomation extends SyncAbstract
             $media_in_playlist = array_slice($media_report, $i, $playlist_num_songs);
             foreach ($media_in_playlist as $media) {
                 $media_row = $media['record'];
-                $media_row->playlists->add($playlist);
+                $media_row->getPlaylists()->add($playlist);
 
                 $em->persist($media_row);
             }

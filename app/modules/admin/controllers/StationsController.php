@@ -45,7 +45,7 @@ class StationsController extends BaseController
                 $record = $this->record_repo->create($data, $this->di);
             } else {
                 $oldAdapter = $record->getFrontendType();
-                $record->fromArray($this->em, $data);
+                $this->record_repo->fromArray($record, $data);
                 $this->em->persist($record);
                 $this->em->flush();
 

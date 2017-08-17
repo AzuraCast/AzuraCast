@@ -9,7 +9,7 @@ class C01_Station_MediaCest extends CestAbstract
     {
         $I->wantTo('Upload a song to a station.');
 
-        $station_id = $this->test_station->id;
+        $station_id = $this->test_station->getId();
 
         $test_song_orig = APP_INCLUDE_ROOT.'/resources/error.mp3';
         $test_song = tempnam(sys_get_temp_dir(), 'azuracast');

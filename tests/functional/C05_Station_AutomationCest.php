@@ -14,21 +14,14 @@ class C05_Station_AutomationCest extends CestAbstract
         $song_dest = $this->test_station->getRadioMediaDir().'/test.mp3';
         copy($song_src, $song_dest);
 
-        $playlist = new \Entity\StationPlaylist();
-        $playlist->fromArray($this->em, [
-            'station'   => $this->test_station,
-            'name'      => 'Test Playlist',
-            'include_in_automation' => true,
-        ]);
+        $playlist = new \Entity\StationPlaylist($this->test_station);
+        $playlist->setName('Test Playlist');
+        $playlist->setIncludeInAutomation(true);
 
         $this->em->persist($playlist);
 
-        $media = new \Entity\StationMedia();
-        $media->fromArray($this->em, [
-            'station'   => $this->test_station,
-            'path'      => 'test.mp3',
-        ]);
-        $media->playlists->add($playlist);
+        $media = new \Entity\StationMedia($this->test_station, 'test.mp3');
+        $media->getPlaylists()->add($playlist);
         $media->loadFromFile();
 
         $this->em->persist($media);
@@ -38,7 +31,7 @@ class C05_Station_AutomationCest extends CestAbstract
         $this->em->refresh($playlist);
 
         // Attempt to enable and run automation.
-        $station_id = $this->test_station->id;
+        $station_id = $this->test_station->getId();
 
         $I->amOnPage('/station/'.$station_id.'/automation');
 

@@ -4,7 +4,7 @@
    register: mariadb_list
 
  - name: Add repo key
-   apt_key: id=1BB943DB url=http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xCBCB082A1BB943DB state=present
+   apt_key: url=http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF1656F24C74CD1D8 state=present
    register: mariadb_key
 
  - name: Update apt cache

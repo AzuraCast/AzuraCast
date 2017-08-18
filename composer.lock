@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc216153ced0dedd78af4000a947a531",
+    "content-hash": "949befd0d1ce615b433c4f742b79e6b6",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -618,20 +618,20 @@
         },
         {
             "name": "doctrine/migrations",
-            "version": "v1.5.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/doctrine/migrations.git",
-                "reference": "c81147c0f2938a6566594455367e095150547f72"
+                "url": "https://github.com/SlvrEagle23/migrations.git",
+                "reference": "f518ddad4bdd51ee9bd4b0c32db5905de5a466fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/c81147c0f2938a6566594455367e095150547f72",
-                "reference": "c81147c0f2938a6566594455367e095150547f72",
+                "url": "https://api.github.com/repos/SlvrEagle23/migrations/zipball/f518ddad4bdd51ee9bd4b0c32db5905de5a466fd",
+                "reference": "f518ddad4bdd51ee9bd4b0c32db5905de5a466fd",
                 "shasum": ""
             },
             "require": {
-                "doctrine/dbal": "~2.2",
+                "doctrine/dbal": "~2.5",
                 "ocramius/proxy-manager": "^1.0|^2.0",
                 "php": "^5.5|^7.0",
                 "symfony/console": "~2.3|~3.0",
@@ -664,7 +664,11 @@
                     "Doctrine\\DBAL\\Migrations\\": "lib/Doctrine/DBAL/Migrations"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Doctrine\\DBAL\\Migrations\\Tests\\": "tests/Doctrine/DBAL/Migrations/Tests"
+                }
+            },
             "license": [
                 "LGPL-2.1"
             ],
@@ -688,20 +692,23 @@
                 "database",
                 "migrations"
             ],
-            "time": "2016-12-25T22:54:00+00:00"
+            "support": {
+                "source": "https://github.com/SlvrEagle23/migrations/tree/master"
+            },
+            "time": "2017-08-17T18:49:29+00:00"
         },
         {
             "name": "doctrine/orm",
-            "version": "v2.5.7",
+            "version": "v2.5.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "22546a381144a957c00f17dc428ca33bc48ddecd"
+                "reference": "4f96fc62cef60093573acea955ed5e07643401d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/22546a381144a957c00f17dc428ca33bc48ddecd",
-                "reference": "22546a381144a957c00f17dc428ca33bc48ddecd",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/4f96fc62cef60093573acea955ed5e07643401d8",
+                "reference": "4f96fc62cef60093573acea955ed5e07643401d8",
                 "shasum": ""
             },
             "require": {
@@ -764,7 +771,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2017-08-11T21:28:20+00:00"
+            "time": "2017-08-16T13:30:32+00:00"
         },
         {
             "name": "electrolinux/phpquery",
@@ -2597,16 +2604,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937"
+                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/f29dca382a6485c3cbe6379f0c61230167681937",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
+                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
                 "shasum": ""
             },
             "require": {
@@ -2618,7 +2625,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.5-dev"
                 }
             },
             "autoload": {
@@ -2652,7 +2659,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-09T14:24:12+00:00"
+            "time": "2017-06-14T15:44:48+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -5419,16 +5426,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "2.0.10",
+            "version": "2.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "68e25262d95b9f70f145b488f49be0d6cc73302b"
+                "reference": "d010ab67536784f8b578cb4ba7d15c906f3e1a45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/68e25262d95b9f70f145b488f49be0d6cc73302b",
-                "reference": "68e25262d95b9f70f145b488f49be0d6cc73302b",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/d010ab67536784f8b578cb4ba7d15c906f3e1a45",
+                "reference": "d010ab67536784f8b578cb4ba7d15c906f3e1a45",
                 "shasum": ""
             },
             "require": {
@@ -5477,13 +5484,14 @@
                 "rest",
                 "service discovery"
             ],
-            "time": "2017-05-12T22:02:20+00:00"
+            "time": "2017-08-16T08:32:59+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "nibble/nibble-forms": 20
+        "nibble/nibble-forms": 20,
+        "doctrine/migrations": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

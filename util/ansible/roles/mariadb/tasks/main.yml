@@ -3,13 +3,17 @@
    template: src=mariadb_ubuntu.list.j2 dest=/etc/apt/sources.list.d/mariadb.list owner=root group=root mode=0644
    register: mariadb_list
 
- - name: Add repo key
+ - name: Add repo key (Xenial)
    apt_key: url=http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF1656F24C74CD1D8 state=present
-   register: mariadb_key
+   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
+
+ - name: Add repo key (Trusty)
+   apt_key: url=http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xCBCB082A1BB943DB state=present
+   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
  - name: Update apt cache
    apt: update_cache=yes
-   when: mariadb_list.changed == True or mariadb_key.changed == True
+   when: mariadb_list.changed == True
 
  - name: Unattended package installation
    shell: export DEBIAN_FRONTEND=noninteractive

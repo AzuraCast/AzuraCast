@@ -23,9 +23,9 @@ if [ "" == "$PKG_OK" ]; then
     sudo apt-get install -q -y software-properties-common
     sudo add-apt-repository -y ppa:ansible/ansible
 
-    if [ $DISTRIB_RELEASE = "14.04" ]; then
-        sudo add-apt-repository -y ppa:fkrull/deadsnakes-python2.7
-    fi
+# if [ $DISTRIB_RELEASE = "14.04" ]; then
+#         sudo add-apt-repository -y ppa:fkrull/deadsnakes-python2.7
+#    fi
 
     sudo apt-get update
     sudo apt-get install -q -y python2.7 python-pip python-mysqldb ansible

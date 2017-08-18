@@ -10,7 +10,7 @@
         "zendframework/zend-paginator": "^2.7",
         "zendframework/zend-config": "^3.1.0",
         "doctrine/orm": "~2.5",
-        "doctrine/migrations": "dev-master",
+        "doctrine/migrations": "^1.4",
         "jdorn/sql-formatter": "^1.2",
         "packaged/helpers": "^1.5",
         "guzzlehttp/guzzle": ">6.0",
@@ -51,10 +51,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/SlvrEagle23/Nibble-Forms"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/SlvrEagle23/migrations"
         }
     ],
     "prefer-stable": true,

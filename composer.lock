@@ -4,24 +4,27 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "949befd0d1ce615b433c4f742b79e6b6",
+    "content-hash": "cc216153ced0dedd78af4000a947a531",
     "packages": [
         {
             "name": "clue/stream-filter",
-            "version": "v1.3.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clue/php-stream-filter.git",
-                "reference": "e3bf9415da163d9ad6701dccb407ed501ae69785"
+                "reference": "d80fdee9b3a7e0d16fc330a22f41f3ad0eeb09d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clue/php-stream-filter/zipball/e3bf9415da163d9ad6701dccb407ed501ae69785",
-                "reference": "e3bf9415da163d9ad6701dccb407ed501ae69785",
+                "url": "https://api.github.com/repos/clue/php-stream-filter/zipball/d80fdee9b3a7e0d16fc330a22f41f3ad0eeb09d0",
+                "reference": "d80fdee9b3a7e0d16fc330a22f41f3ad0eeb09d0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0 || ^4.8"
             },
             "type": "library",
             "autoload": {
@@ -53,7 +56,7 @@
                 "stream_filter_append",
                 "stream_filter_register"
             ],
-            "time": "2015-11-08T23:41:30+00:00"
+            "time": "2017-08-18T09:54:01+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -618,20 +621,20 @@
         },
         {
             "name": "doctrine/migrations",
-            "version": "dev-master",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/SlvrEagle23/migrations.git",
-                "reference": "f518ddad4bdd51ee9bd4b0c32db5905de5a466fd"
+                "url": "https://github.com/doctrine/migrations.git",
+                "reference": "c81147c0f2938a6566594455367e095150547f72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SlvrEagle23/migrations/zipball/f518ddad4bdd51ee9bd4b0c32db5905de5a466fd",
-                "reference": "f518ddad4bdd51ee9bd4b0c32db5905de5a466fd",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/c81147c0f2938a6566594455367e095150547f72",
+                "reference": "c81147c0f2938a6566594455367e095150547f72",
                 "shasum": ""
             },
             "require": {
-                "doctrine/dbal": "~2.5",
+                "doctrine/dbal": "~2.2",
                 "ocramius/proxy-manager": "^1.0|^2.0",
                 "php": "^5.5|^7.0",
                 "symfony/console": "~2.3|~3.0",
@@ -664,11 +667,7 @@
                     "Doctrine\\DBAL\\Migrations\\": "lib/Doctrine/DBAL/Migrations"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Doctrine\\DBAL\\Migrations\\Tests\\": "tests/Doctrine/DBAL/Migrations/Tests"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL-2.1"
             ],
@@ -692,10 +691,7 @@
                 "database",
                 "migrations"
             ],
-            "support": {
-                "source": "https://github.com/SlvrEagle23/migrations/tree/master"
-            },
-            "time": "2017-08-17T18:49:29+00:00"
+            "time": "2016-12-25T22:54:00+00:00"
         },
         {
             "name": "doctrine/orm",
@@ -5490,8 +5486,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "nibble/nibble-forms": 20,
-        "doctrine/migrations": 20
+        "nibble/nibble-forms": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

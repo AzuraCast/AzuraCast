@@ -1,0 +1,76 @@
+---
+ - name: (Prod) Generate MySQL User Password
+   command: pwgen 8 -sn 1
+   register: prod_mysql_user_password
+   when: app_env == "production"
+
+ - name: Assign User Password
+   set_fact:
+     mysql_user_password: "{{ prod_mysql_user_password.stdout if app_env == 'production' else dev_mysql_user_password }}"
+
+ - name: Add configuration
+   template: src=my.cnf.j2 dest=/etc/mysql/conf.d/my.cnf owner=root group=root mode=0644
+
+ - name: Add empty root .my.cnf (if none exists)
+   become: true
+   template: src=root_empty_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600
+
+ - name: Remove anonymous users
+   command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
+   with_items:
+     - "DELETE FROM mysql.user WHERE User=''"
+   changed_when: False
+
+ - name: Disallow root login remotely
+   command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
+   with_items:
+     - "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
+   changed_when: False
+
+ - name: Remove test database and access to it
+   command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
+   with_items:
+     - "DROP DATABASE test"
+     - "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"
+   changed_when: False
+   ignore_errors: True
+
+ # MySQL Secure Installation
+ - name: Set up AzuraCast database user
+   mysql_user:
+     name: azuracast
+     host: "localhost"
+     password: "{{ mysql_user_password }}"
+     priv: "azuracast.*:ALL,GRANT"
+     state: present
+   notify: send mysql notification
+
+ - name: Add .my.cnf
+   become: true
+   template: src=user_my.cnf.j2 dest="{{ app_base }}/.my.cnf" owner=azuracast group=www-data mode=0644 force=yes
+
+ - name: Reload privilege tables
+   command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
+   with_items:
+     - "FLUSH PRIVILEGES"
+   changed_when: False
+
+ # Create Database
+ - name: Create MySQL Database
+   mysql_db:
+     config_file: "/root/.my.cnf"
+     name: azuracast
+     state: present
+     collation: utf8mb4_unicode_ci
+     encoding: utf8mb4
+   register: azuracast_db_created
+
+ - name: Set up environment file
+   ini_file:
+     dest: "{{ www_base }}/app/env.ini"
+     section: "configuration"
+     option: "{{ item.option }}"
+     value: "{{ item.value }}"
+   with_items:
+     - { option: 'db_username', value: 'azuracast' }
+     - { option: 'db_password', value: "{{ mysql_user_password }}" }

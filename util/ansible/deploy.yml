@@ -23,6 +23,7 @@
     - php
     - redis
     - mariadb
+    - azuracast-db-install
     - ufw
     - composer
     - services

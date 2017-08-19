@@ -230,12 +230,12 @@ class PlaylistsController extends BaseController
     {
         $id = (int)$this->getParam('id');
 
-        $record = $this->em->getRepository(StationPlaylist::class)->findOneBy([
+        $record = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
             'id' => $id,
             'station_id' => $this->station->getId()
         ]);
 
-        if ($record instanceof StationPlaylist) {
+        if ($record instanceof Entity\StationPlaylist) {
             $this->em->remove($record);
         }
 

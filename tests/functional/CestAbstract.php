@@ -71,6 +71,7 @@ abstract class CestAbstract
 
         // Create user account.
         $user = new Entity\User;
+        $user->setName('AzuraCast Test User');
         $user->setEmail($this->login_username);
         $user->setAuthPassword($this->login_password);
 

@@ -14,6 +14,14 @@ return [
         'method' => 'post',
         'elements' => [
 
+            'name' => [
+                'text',
+                [
+                    'label' => _('Name'),
+                    'class' => 'half-width',
+                ]
+            ],
+
             'email' => [
                 'email',
                 [

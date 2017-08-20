@@ -5,15 +5,15 @@ class B02_Admin_RecordsCest extends CestAbstract
      * @before setupComplete
      * @before login
      */
-    public function seeUserAndRole(FunctionalTester $I)
+    public function manageUsers(FunctionalTester $I)
     {
-        $I->wantTo('See administration records.');
+        $I->wantTo('Manage users.');
 
-        // Users
-
+        // User homepage
         $I->amOnPage('/admin/users');
         $I->see($this->login_username);
 
+        // Edit existing user
         $I->click('Edit');
 
         $I->submitForm('.form', []);
@@ -21,22 +21,63 @@ class B02_Admin_RecordsCest extends CestAbstract
         $I->seeCurrentUrlEquals('/admin/users');
         $I->see($this->login_username);
 
-        // Permissions
+        // Add a secondary user
+        $I->click('.btn-float');
 
+        $I->submitForm('.form', [
+            'name' => 'ZZZ Test Administrator',
+            'email' => 'test@azuracast.com',
+            'auth_password' => 'CorrectBatteryStapleHorse',
+        ]);
+
+        $I->seeCurrentUrlEquals('/admin/users');
+        $I->see('test@azuracast.com');
+
+        // Delete the secondary user
+        $I->click(\Codeception\Util\Locator::lastElement('.btn-danger'));
+
+        $I->seeCurrentUrlEquals('/admin/users');
+        $I->dontSee('test@azuracast.com');
+    }
+
+    /**
+     * @before setupComplete
+     * @before login
+     */
+    public function manageRoles(FunctionalTester $I)
+    {
+        $I->wantTo('Manage roles.');
+
+        // Permissions homepage
         $I->amOnPage('/admin/permissions');
         $I->see('Super Administrator');
 
-        $I->click('Edit');
+        // Add another role
+        $I->click('.btn-float');
 
         $I->submitForm('.form', [
-            'name' => 'Test Administrator',
+            'name' => 'ZZZ Test Administrator',
         ]);
 
         $I->seeCurrentUrlEquals('/admin/permissions');
-        $I->see('Test Administrator');
+        $I->see('ZZZ Test Administrator');
 
-        // Stations
+        // Delete the new role
+        $I->click(\Codeception\Util\Locator::lastElement('.btn-danger'));
 
+        $I->seeCurrentUrlEquals('/admin/permissions');
+        $I->dontSee('ZZZ Test Administrator');
+    }
+
+    /**
+     * @before setupComplete
+     * @before login
+     */
+    public function manageStations(FunctionalTester $I)
+    {
+        $I->wantTo('Manage stations.');
+
+        // Stations homepage
         $I->amOnPage('/admin/stations');
         $I->see('Functional Test Radio');
 
@@ -48,8 +89,15 @@ class B02_Admin_RecordsCest extends CestAbstract
 
         $I->seeCurrentUrlEquals('/admin/stations');
         $I->see('Modification Test Radio');
+    }
 
-        // Settings
+    /**
+     * @before setupComplete
+     * @before login
+     */
+    public function manageSettings(FunctionalTester $I)
+    {
+        $I->wantTo('Manage settings.');
 
         $I->amOnPage('/admin/settings');
         $I->submitForm('.form', []);

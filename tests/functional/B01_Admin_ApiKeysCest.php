@@ -12,7 +12,7 @@ class B01_Admin_ApiKeysCest extends CestAbstract
         $I->amOnPage('/admin/api');
         $I->see('API Keys');
 
-        $I->click('.btn-float'); // Plus sign
+        $I->click('.btn-float', '#content'); // Plus sign
 
         $I->submitForm('.form', [
             'owner' => 'API Key Test',
@@ -20,5 +20,10 @@ class B01_Admin_ApiKeysCest extends CestAbstract
 
         $I->seeCurrentUrlEquals('/admin/api');
         $I->see('API Key Test');
+
+        $I->click(\Codeception\Util\Locator::lastElement('.btn-danger'));
+
+        $I->seeCurrentUrlEquals('/admin/api');
+        $I->dontSee('API Key Test');
     }
 }

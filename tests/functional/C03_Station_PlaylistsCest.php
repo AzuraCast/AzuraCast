@@ -22,5 +22,11 @@ class C03_Station_PlaylistsCest extends CestAbstract
         $I->seeCurrentUrlEquals('/station/'.$station_id.'/playlists');
 
         $I->see('Default Playlist');
+
+        $I->click(\Codeception\Util\Locator::lastElement('.btn-danger'));
+
+        $I->seeCurrentUrlEquals('/station/'.$station_id.'/playlists');
+
+        $I->dontSee('Default Playlist');
     }
 }

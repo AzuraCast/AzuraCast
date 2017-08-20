@@ -38,8 +38,13 @@ class IceCast extends FrontendAbstract
         $sources = $return['source'];
         $mounts = (key($sources) === 0) ? $sources : [$sources];
 
+        /** @var EntityManager $em */
         $em = $this->di['em'];
+
+        /** @var Entity\Repository\StationMountRepository $mount_repo */
         $mount_repo = $em->getRepository(Entity\StationMount::class);
+
+        /** @var Entity\StationMount $default_mount */
         $default_mount = $mount_repo->getDefaultMount($this->station);
 
         $current_listeners = 0;
@@ -95,10 +100,10 @@ class IceCast extends FrontendAbstract
         ];
 
         // Check the default mount, then its fallback if otherwise not available.
-        if (!empty($song_data_by_mount[$default_mount->name]['title'])) {
-            $song_data = $song_data_by_mount[$default_mount->name];
-        } elseif (!empty($song_data_by_mount[$default_mount->fallback_mount]['title'])) {
-            $song_data = $song_data_by_mount[$default_mount->fallback_mount];
+        if (!empty($song_data_by_mount[$default_mount->getName()]['title'])) {
+            $song_data = $song_data_by_mount[$default_mount->getName()];
+        } elseif (!empty($song_data_by_mount[$default_mount->getFallbackMount()]['title'])) {
+            $song_data = $song_data_by_mount[$default_mount->getFallbackMount()];
         } else {
             return false;
         }
@@ -169,7 +174,9 @@ class IceCast extends FrontendAbstract
         // Set any unset values back to the DB config.
         $this->station->setFrontendConfig($this->_loadFromConfig($config));
 
+        /** @var EntityManager $em */
         $em = $this->di['em'];
+
         $em->persist($this->station);
         $em->flush();
 

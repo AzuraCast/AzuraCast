@@ -126,19 +126,9 @@ class StationMediaRepository extends BaseRepository
 
         // Time-block scheduled playlists
         if (!empty($playlists_by_type['scheduled'])) {
-            $current_timecode = $this->_getTimeCode();
             foreach ($playlists_by_type['scheduled'] as $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
-
-                if ($playlist->getScheduleEndTime() < $playlist->getScheduleStartTime()) {
-                    // Overnight playlist
-                    $should_be_playing = ($current_timecode >= $playlist->getScheduleStartTime() || $current_timecode <= $playlist->getScheduleEndTime());
-                } else {
-                    // Normal playlist
-                    $should_be_playing = ($current_timecode >= $playlist->getScheduleStartTime() && $current_timecode <= $playlist->getScheduleEndTime());
-                }
-
-                if ($should_be_playing) {
+                if ($playlist->canPlayScheduled()) {
                     return $this->_playSongFromPlaylist($playlist);
                 }
             }
@@ -146,15 +136,9 @@ class StationMediaRepository extends BaseRepository
 
         // Once per day playlists
         if (count($playlists_by_type['once_per_day']) > 0) {
-            $current_timecode = $this->_getTimeCode();
-
             foreach ($playlists_by_type['once_per_day'] as $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
-
-                $playlist_play_time = $playlist->getPlayOnceTime();
-                $playlist_diff = $current_timecode - $playlist_play_time;
-
-                if ($playlist_diff > 0 && $playlist_diff <= 15) {
+                if ($playlist->canPlayOnce()) {
                     // Check if already played
                     $relevant_song_history = array_slice($cued_song_history, 0, 15);
 
@@ -261,11 +245,6 @@ class StationMediaRepository extends BaseRepository
         $this->_em->flush();
 
         return $sh;
-    }
-
-    protected function _getTimeCode()
-    {
-        return (int)gmdate('Gi');
     }
 
     protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist)

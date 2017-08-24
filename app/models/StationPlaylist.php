@@ -77,10 +77,22 @@ class StationPlaylist
     protected $schedule_end_time;
 
     /**
+     * @Column(name="schedule_days", type="string", length=50, nullable=true)
+     * @var string
+     */
+    protected $schedule_days;
+
+    /**
      * @Column(name="play_once_time", type="smallint")
      * @var int
      */
     protected $play_once_time;
+
+    /**
+     * @Column(name="play_once_days", type="string", length=50, nullable=true)
+     * @var string
+     */
+    protected $play_once_days;
 
     /**
      * @Column(name="weight", type="smallint")
@@ -263,6 +275,45 @@ class StationPlaylist
     }
 
     /**
+     * @return array
+     */
+    public function getScheduleDays(): array
+    {
+        return explode(',', $this->schedule_days);
+    }
+
+    /**
+     * @param array $schedule_days
+     */
+    public function setScheduleDays($schedule_days)
+    {
+        $this->schedule_days = implode(',', (array)$schedule_days);
+    }
+
+    /**
+     * Returns whether the playlist is scheduled to play according to schedule rules.
+     * @return bool
+     */
+    public function canPlayScheduled(): bool
+    {
+        $play_once_days = $this->getScheduleDays();
+
+        if (!empty($play_once_days) && !in_array(gmdate('N'), $play_once_days)) {
+            return false;
+        }
+
+        $current_timecode = self::getCurrentTimeCode();
+
+        if ($this->getScheduleEndTime() < $this->getScheduleStartTime()) {
+            // Overnight playlist
+            return ($current_timecode >= $this->getScheduleStartTime() || $current_timecode <= $this->getScheduleEndTime());
+        } else {
+            // Normal playlist
+            return ($current_timecode >= $this->getScheduleStartTime() && $current_timecode <= $this->getScheduleEndTime());
+        }
+    }
+
+    /**
      * @return int
      */
     public function getPlayOnceTime(): int
@@ -276,6 +327,42 @@ class StationPlaylist
     public function setPlayOnceTime(int $play_once_time)
     {
         $this->play_once_time = $play_once_time;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPlayOnceDays(): array
+    {
+        return explode(',', $this->play_once_days);
+    }
+
+    /**
+     * @param array $play_once_days
+     */
+    public function setPlayOnceDays($play_once_days)
+    {
+        $this->play_once_days = implode(',', (array)$play_once_days);
+    }
+
+    /**
+     * Returns whether the playlist is scheduled to play once.
+     * @return bool
+     */
+    public function canPlayOnce(): bool
+    {
+        $play_once_days = $this->getPlayOnceDays();
+
+        if (!empty($play_once_days) && !in_array(gmdate('N'), $play_once_days)) {
+            return false;
+        }
+
+        $current_timecode = self::getCurrentTimeCode();
+
+        $playlist_play_time = $this->getPlayOnceTime();
+        $playlist_diff = $current_timecode - $playlist_play_time;
+
+        return ($playlist_diff > 0 && $playlist_diff <= 15);
     }
 
     /**
@@ -319,29 +406,6 @@ class StationPlaylist
     }
 
     /**
-     * Given a time code i.e. "2300", return a time i.e. "11:00 PM"
-     * @param $time_code
-     * @return string
-     */
-    public static function formatTimeCode($time_code): string
-    {
-        $hours = floor($time_code / 100);
-        $mins = $time_code % 100;
-
-        $ampm = ($hours < 12) ? 'AM' : 'PM';
-
-        if ($hours == 0) {
-            $hours_text = '12';
-        } elseif ($hours > 12) {
-            $hours_text = $hours - 12;
-        } else {
-            $hours_text = $hours;
-        }
-
-        return $hours_text . ':' . str_pad($mins, 2, '0', STR_PAD_LEFT) . ' ' . $ampm;
-    }
-
-    /**
      * @return string
      */
     public function getScheduleEndTimeText(): string
@@ -380,7 +444,7 @@ class StationPlaylist
                 shuffle($playlist_file);
 
                 return implode("\n", $playlist_file);
-            break;
+                break;
 
             case 'pls':
             default:
@@ -403,7 +467,43 @@ class StationPlaylist
                 $playlist_file[] = 'Version=2';
 
                 return implode("\n", $playlist_file);
-            break;
+                break;
         }
+    }
+
+    /**
+     * Given a time code i.e. "2300", return a time i.e. "11:00 PM"
+     * @param $time_code
+     * @return string
+     */
+    public static function formatTimeCode($time_code): string
+    {
+        if ($time_code < 0) {
+            $time_code = 2400 + $time_code;
+        }
+
+        $hours = floor($time_code / 100);
+        $mins = $time_code % 100;
+
+        $ampm = ($hours < 12) ? 'AM' : 'PM';
+
+        if ($hours == 0) {
+            $hours_text = '12';
+        } elseif ($hours > 12) {
+            $hours_text = $hours - 12;
+        } else {
+            $hours_text = $hours;
+        }
+
+        return $hours_text . ':' . str_pad($mins, 2, '0', STR_PAD_LEFT) . ' ' . $ampm;
+    }
+
+    /**
+     * Return the current UTC time in "time code" style.
+     * @return int
+     */
+    public static function getCurrentTimeCode(): int
+    {
+        return (int)gmdate('Gi');
     }
 }

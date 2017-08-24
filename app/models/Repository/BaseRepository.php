@@ -85,7 +85,7 @@ class BaseRepository extends EntityRepository
     /**
      * FromArray (A Doctrine 1 Classic)
      *
-     * @param object|Entity $entity
+     * @param object $entity
      * @param array $source
      */
     public function fromArray($entity, array $source)
@@ -205,7 +205,7 @@ class BaseRepository extends EntityRepository
                         break;
 
                     case "string":
-                        if ($field_info['length'] && strlen($value) > $field_info['length']) {
+                        if (is_string($value) && $field_info['length'] && strlen($value) > $field_info['length']) {
                             $value = substr($value, 0, $field_info['length']);
                         }
                         break;
@@ -244,7 +244,7 @@ class BaseRepository extends EntityRepository
     /**
      * ToArray (A Doctrine 1 Classic)
      *
-     * @param object|Entity $entity
+     * @param object $entity
      * @param bool $deep Iterate through collections associated with this item.
      * @param bool $form_mode Return values in a format suitable for ZendForm setDefault function.
      * @return array

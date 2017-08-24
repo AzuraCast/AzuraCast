@@ -1,11 +1,19 @@
 <?php
+$local_time_offset = \App\Timezone::getOffsetMinutes(null);
+$local_time_hours = floor($local_time_offset / 60);
+$local_time_mins = $local_time_offset % 60;
+
 $hour_select = [];
 for ($hr = 0; $hr <= 23; $hr++) {
     foreach ([0, 15, 30, 45] as $min) {
-        $time_num = $hr * 100 + $min;
-        $hour_select[$time_num] = \Entity\StationPlaylist::formatTimeCode($time_num);
+        $time_num = ($hr * 100) + $min;
+        $local_time = $time_num + ($local_time_hours * 100) + $local_time_mins;
+
+        $hour_select[$time_num] = \Entity\StationPlaylist::formatTimeCode($time_num).' ('.\Entity\StationPlaylist::formatTimeCode($local_time).' '._('Local').')';
     }
 }
+
+$server_time = sprintf(_('Current server time is <b>%s</b>, and local time is <b>%s</b>.'), gmdate('g:ia'), date('g:ia'));
 
 return [
     'method' => 'post',
@@ -124,7 +132,7 @@ return [
                     'select',
                     [
                         'label' => _('Start Time'),
-                        'description' => sprintf(_('Current server time is <b>%s</b>.'), date('g:ia')),
+                        'description' => $server_time,
                         'options' => $hour_select,
                     ]
                 ],
@@ -135,6 +143,23 @@ return [
                         'label' => _('End Time'),
                         'description' => _('If the end time is before the start time, the playlist will play overnight until this time on the next day.'),
                         'options' => $hour_select,
+                    ]
+                ],
+
+                'schedule_days' => [
+                    'checkbox',
+                    [
+                        'label' => _('Scheduled Play Days of Week'),
+                        'description' => _('Leave blank to play on every day of the week.'),
+                        'options' => [
+                            1 => _('Monday'),
+                            2 => _('Tuesday'),
+                            3 => _('Wednesday'),
+                            4 => _('Thursday'),
+                            5 => _('Friday'),
+                            6 => _('Saturday'),
+                            7 => _('Sunday'),
+                        ]
                     ]
                 ],
 
@@ -184,8 +209,25 @@ return [
                     'select',
                     [
                         'label' => _('Scheduled Play Time'),
-                        'description' => sprintf(_('Current server time is <b>%s</b>.'), date('g:ia')),
+                        'description' => $server_time,
                         'options' => $hour_select,
+                    ]
+                ],
+
+                'play_once_days' => [
+                    'checkbox',
+                    [
+                        'label' => _('Scheduled Play Days of Week'),
+                        'description' => _('Leave blank to play on every day of the week.'),
+                        'options' => [
+                            1 => _('Monday'),
+                            2 => _('Tuesday'),
+                            3 => _('Wednesday'),
+                            4 => _('Thursday'),
+                            5 => _('Friday'),
+                            6 => _('Saturday'),
+                            7 => _('Sunday'),
+                        ]
                     ]
                 ],
 

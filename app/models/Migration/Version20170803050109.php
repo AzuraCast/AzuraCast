@@ -18,6 +18,7 @@ class Version20170803050109 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+        $this->addSql('UPDATE listener SET listener_user_agent=SUBSTRING(listener_user_agent, 1, 190)');
         $this->addSql('ALTER TABLE listener CHANGE listener_user_agent listener_user_agent VARCHAR(191) NOT NULL');
         $this->addSql('ALTER TABLE station CHANGE url url VARCHAR(191) DEFAULT NULL, CHANGE radio_media_dir radio_media_dir VARCHAR(191) DEFAULT NULL, CHANGE radio_base_dir radio_base_dir VARCHAR(191) DEFAULT NULL');
         $this->addSql('ALTER TABLE station_media CHANGE path path VARCHAR(191) DEFAULT NULL');

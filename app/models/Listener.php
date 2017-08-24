@@ -23,7 +23,7 @@ class Listener
         $this->timestamp_end = 0;
 
         $this->listener_uid = $client['uid'];
-        $this->listener_user_agent = substr($client['user_agent'], 0, 190);
+        $this->listener_user_agent = $client['user_agent'];
         $this->listener_ip = $client['ip'];
         $this->listener_hash = self::calculateListenerHash($client);
     }

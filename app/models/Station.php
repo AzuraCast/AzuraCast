@@ -58,19 +58,19 @@ class Station
     protected $description;
 
     /**
-     * @Column(name="url", type="string", length=191, nullable=true)
+     * @Column(name="url", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $url;
 
     /**
-     * @Column(name="radio_base_dir", type="string", length=191, nullable=true)
+     * @Column(name="radio_base_dir", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $radio_base_dir;
 
     /**
-     * @Column(name="radio_media_dir", type="string", length=191, nullable=true)
+     * @Column(name="radio_media_dir", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $radio_media_dir;

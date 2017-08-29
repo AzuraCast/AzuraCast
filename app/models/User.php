@@ -27,7 +27,7 @@ class User
     protected $email;
 
     /**
-     * @Column(name="auth_password", type="string", length=191, nullable=true)
+     * @Column(name="auth_password", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $auth_password;

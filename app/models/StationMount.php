@@ -58,13 +58,13 @@ class StationMount
     protected $fallback_mount;
 
     /**
-     * @Column(name="relay_url", type="string", length=191, nullable=true)
+     * @Column(name="relay_url", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $relay_url;
 
     /**
-     * @Column(name="authhash", type="string", length=191, nullable=true)
+     * @Column(name="authhash", type="string", length=255, nullable=true)
      * @var string|null
      */
     protected $authhash;

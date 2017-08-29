@@ -64,7 +64,7 @@ class Listener
     protected $listener_ip;
 
     /**
-     * @Column(name="listener_user_agent", type="string", length=191)
+     * @Column(name="listener_user_agent", type="string", length=255)
      * @var string
      */
     protected $listener_user_agent;

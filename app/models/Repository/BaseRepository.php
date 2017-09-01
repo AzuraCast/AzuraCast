@@ -262,7 +262,7 @@ class BaseRepository extends EntityRepository
             foreach ($props as $property) {
                 $property->setAccessible(true);
                 $prop_name = $property->getName();
-                $prop_val = $property->getValue($entity);
+                $prop_val = $this->_get($entity, $prop_name) ?? $property->getValue($entity);
 
                 if (isset($class_meta->fieldMappings[$prop_name])) {
                     $prop_info = $class_meta->fieldMappings[$prop_name];

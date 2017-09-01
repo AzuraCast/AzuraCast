@@ -275,11 +275,11 @@ class StationPlaylist
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getScheduleDays(): array
+    public function getScheduleDays(): ?array
     {
-        return explode(',', $this->schedule_days);
+        return (!empty($this->schedule_days)) ? explode(',', $this->schedule_days) : null;
     }
 
     /**

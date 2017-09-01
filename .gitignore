@@ -32,4 +32,4 @@ app/.env
 tests/_output/*
 
 # Docker backup files
-/backup.tar.gz
+/*.tar.gz

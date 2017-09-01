@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-if [ -f backup.tar.gz ]; then
+BACKUP_FILENAME=${1:-"backup.tar.gz"}
+
+if [ -f $BACKUP_FILENAME ]; then
    docker-compose down
 
     docker volume rm azuracast_db_data azuracast_influx_data azuracast_station_data
@@ -12,9 +14,9 @@ if [ -f backup.tar.gz ]; then
         -v azuracast_db_data:/azuracast/db \
         -v azuracast_influx_data:/azuracast/influx \
         -v azuracast_station_data:/azuracast/stations \
-        busybox tar zxvf /backup/backup.tar.gz
+        busybox tar zxvf /backup/$BACKUP_FILENAME
 
     docker-compose up -d
 else
-    echo "File backup.tar.gz does not exist. Nothing to restore."
+    echo "File $BACKUP_FILENAME does not exist in this directory. Nothing to restore."
 fi

@@ -1,0 +1,6 @@
+version: '2'
+
+services:
+  stations:
+    ports:
+     - '8000-8500:8000-8500'

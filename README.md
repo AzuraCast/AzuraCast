@@ -174,7 +174,20 @@ To make local development and testing easier, AzuraCast also includes the necess
 
 See [the AzuraCast Wiki](https://github.com/AzuraCast/AzuraCast/wiki/Developing-Locally) for detailed instructions on the installation process.
 
-## Screenshots
+## See AzuraCast in Action
+
+### Demo Instance
+
+See the AzuraCast interface in action yourself by visiting our demo site at [demo.azuracast.com](https://demo.azuracast.com/).
+
+* Username: `demo@azuracast.com`
+* Password: `demo`
+
+The demo instance is automatically reset at the top of every hour, and always features the latest changes in the codebase.
+
+A special thank you to our friends at [DigitalOcean](https://m.do.co/c/21612b90440f) for supporting AzuraCast's development!
+
+### Screenshots
 
 Take a look at samples of the AzuraCast interface on the [Screenshots](https://github.com/AzuraCast/AzuraCast/wiki/Screenshots) page on the Wiki.
 

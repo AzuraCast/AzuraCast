@@ -7,6 +7,10 @@ services:
     volumes:
       - ./web/static:/var/azuracast/www/web/static
 
+  stations:
+    ports:
+     - '8000-8500:8000-8500'
+
   stations_cli:
     image: azuracast/azuracast_stations:latest
     volumes:

@@ -190,28 +190,25 @@ $(function () {
 });
 
 $(function() {
-    var sub = new NchanSubscriber('/api/live/nowplaying');
+    var sub = new NchanSubscriber('/api/live/nowplaying/<?=implode(',', $station_ids) ?>');
 
     sub.on("message", function(message, message_metadata) {
-        var data = JSON.parse(message);
+        var row = JSON.parse(message);
+        var station_row = $('#station_' + row.station.id);
 
-        $.each(data, function (i, row) {
-            var station_row = $('#station_' + row.station.id);
+        if (station_row.length) {
 
-            if (station_row.length) {
-
-                if (station_row.find('.btn-audio').hasClass('playing') && 'mediaSession' in navigator) {
-                    navigator.mediaSession.metadata = new MediaMetadata({
-                        title: row.now_playing.song.title,
-                        artist: row.now_playing.song.artist
-                    });
-                }
-
-                station_row.find('.nowplaying-title').text(row.now_playing.song.title);
-                station_row.find('.nowplaying-artist').text(row.now_playing.song.artist);
-                station_row.find('.nowplaying-listeners').text(row.listeners.total)
+            if (station_row.find('.btn-audio').hasClass('playing') && 'mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: row.now_playing.song.title,
+                    artist: row.now_playing.song.artist
+                });
             }
-        });
+
+            station_row.find('.nowplaying-title').text(row.now_playing.song.title);
+            station_row.find('.nowplaying-artist').text(row.now_playing.song.artist);
+            station_row.find('.nowplaying-listeners').text(row.listeners.total)
+        }
     });
 
     sub.start();

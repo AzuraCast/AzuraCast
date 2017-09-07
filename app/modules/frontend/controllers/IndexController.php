@@ -19,6 +19,8 @@ class IndexController extends BaseController
         }
 
         $view_stations = [];
+        $station_ids = [];
+
         foreach($stations as $row) {
             /** @var Entity\Station $row */
             $view_stations[] = [
@@ -26,9 +28,11 @@ class IndexController extends BaseController
                 'short_name' => $row->getShortName(),
                 'stream_url' => $row->getFrontendAdapter($this->di)->getStreamUrl(),
             ];
+            $station_ids[] = $row->getId();
         }
 
         $this->view->stations = $view_stations;
+        $this->view->station_ids = $station_ids;
 
         /** @var \App\Cache $cache */
         $cache = $this->di->get('cache');

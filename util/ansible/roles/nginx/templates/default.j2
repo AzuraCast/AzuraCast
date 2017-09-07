@@ -1,13 +1,12 @@
 client_max_body_size 50M;
-nchan_redis_url "redis://localhost:6379";
 
 server {
     listen 9010;
 
     location ~ /pub/(\w+)$ {
         nchan_publisher;
-        nchan_use_redis on;
 
+        nchan_channel_group "azuracast_nowplaying";
         nchan_channel_id $1;
 
         nchan_message_buffer_length 1;
@@ -73,16 +72,17 @@ server {
     # pub/sub endpoints
     location /api/live/nowplaying {
         nchan_subscriber;
-        nchan_use_redis on;
 
-        nchan_channel_id nowplaying_all;
+        nchan_channel_group "azuracast_nowplaying";
+        nchan_channel_id "all";
     }
 
-    location ~ /api/live/nowplaying/(\d+)$ {
+    location ~ /api/live/nowplaying/(\w+)$ {
         nchan_subscriber;
-        nchan_use_redis on;
 
-        nchan_channel_id "nowplaying_$1";
+        nchan_channel_group "azuracast_nowplaying";
+        nchan_channel_id "$1";
+        nchan_channel_id_split_delimiter ",";
     }
 
     # deny access to .htaccess files, if Apache's document root

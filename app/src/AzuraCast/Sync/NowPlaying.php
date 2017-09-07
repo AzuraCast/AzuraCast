@@ -37,7 +37,7 @@ class NowPlaying extends SyncAbstract
         $nowplaying = $this->_loadNowPlaying();
 
         // Trigger notification to the websocket listeners.
-        $this->_notify('nowplaying_all', $nowplaying);
+        $this->_notify('all', $nowplaying);
 
         // Post statistics to InfluxDB.
         $influx = $this->di->get('influx');
@@ -194,7 +194,7 @@ class NowPlaying extends SyncAbstract
         $this->em->persist($station);
         $this->em->flush();
 
-        $this->_notify('nowplaying_'.$station->getId(), $np);
+        $this->_notify($station->getId(), $np);
 
         return $np;
     }

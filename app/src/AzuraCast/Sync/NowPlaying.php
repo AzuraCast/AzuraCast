@@ -201,6 +201,10 @@ class NowPlaying extends SyncAbstract
 
     protected function _notify($channel, $body)
     {
+        if (APP_TESTING_MODE) {
+            return;
+        }
+
         $base_url = (APP_INSIDE_DOCKER) ? 'nginx' : 'localhost';
 
         $client = new \GuzzleHttp\Client();

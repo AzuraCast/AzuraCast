@@ -23,19 +23,19 @@ class Song
 
     /**
      * @Column(name="text", type="string", length=150, nullable=true)
-     * @var string
+     * @var string|null
      */
     protected $text;
 
     /**
      * @Column(name="artist", type="string", length=150, nullable=true)
-     * @var string
+     * @var string|null
      */
     protected $artist;
 
     /**
      * @Column(name="title", type="string", length=150, nullable=true)
-     * @var string
+     * @var string|null
      */
     protected $title;
 
@@ -95,25 +95,25 @@ class Song
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getArtist(): string
+    public function getArtist(): ?string
     {
         return $this->artist;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }

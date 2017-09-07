@@ -190,7 +190,7 @@ $(function () {
 });
 
 $(function() {
-    var sub = new NchanSubscriber('/api/live/nowplaying', {subscriber: ['eventsource', 'longpoll']});
+    var sub = new NchanSubscriber('/api/live/nowplaying');
 
     sub.on("message", function(message, message_metadata) {
         var data = JSON.parse(message);

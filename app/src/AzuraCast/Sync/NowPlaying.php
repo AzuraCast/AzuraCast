@@ -4,12 +4,40 @@ namespace AzuraCast\Sync;
 use App\Debug;
 use Doctrine\ORM\EntityManager;
 use Entity;
+use Interop\Container\ContainerInterface;
 
 class NowPlaying extends SyncAbstract
 {
+    public function __construct(ContainerInterface $di)
+    {
+        parent::__construct($di);
+
+        $this->em = $di['em'];
+
+        $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
+        $this->song_repo = $this->em->getRepository(Entity\Song::class);
+        $this->listener_repo = $this->em->getRepository(Entity\Listener::class);
+    }
+
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Entity\Repository\SongHistoryRepository */
+    protected $history_repo;
+
+    /** @var Entity\Repository\SongRepository */
+    protected $song_repo;
+
+    /** @var Entity\Repository\ListenerRepository */
+    protected $listener_repo;
+
+
     public function run()
     {
         $nowplaying = $this->_loadNowPlaying();
+
+        // Trigger notification to the websocket listeners.
+        $this->_notify('nowplaying_all', $nowplaying);
 
         // Post statistics to InfluxDB.
         $influx = $this->di->get('influx');
@@ -55,59 +83,54 @@ class NowPlaying extends SyncAbstract
             $nowplaying[$station]->cache = 'database';
         }
 
-        $this->di['em']->getRepository(Entity\Settings::class)
-            ->setSetting('nowplaying', $nowplaying);
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
+
+        $settings_repo->setSetting('nowplaying', $nowplaying);
     }
 
-    /** @var Entity\Repository\SongHistoryRepository */
-    protected $history_repo;
 
-    /** @var Entity\Repository\SongRepository */
-    protected $song_repo;
-
-    /** @var Entity\Repository\ListenerRepository */
-    protected $listener_repo;
 
     /**
      * @return Entity\Api\NowPlaying[]
      */
     protected function _loadNowPlaying()
     {
-        /** @var EntityManager $em */
-        $em = $this->di['em'];
-
-        $this->history_repo = $em->getRepository(Entity\SongHistory::class);
-        $this->song_repo = $em->getRepository(Entity\Song::class);
-        $this->listener_repo = $em->getRepository(Entity\Listener::class);
-
-        $stations = $em->getRepository(Entity\Station::class)->findAll();
+        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
         $nowplaying = [];
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
 
-            Debug::startTimer($station->getName());
+            $last_run = $station->getNowplayingTimestamp();
 
-            // $name = $station->short_name;
-            $nowplaying[] = $this->_processStation($station);
+            if ($last_run >= (time()-10)) {
+                $np = $station->getNowplaying();
+                $np->update();
 
-            Debug::endTimer($station->getName());
+                $nowplaying[] = $np;
+            } else {
+                Debug::startTimer($station->getName());
+
+                // $name = $station->short_name;
+                $nowplaying[] = $this->processStation($station);
+
+                Debug::endTimer($station->getName());
+            }
         }
 
         return $nowplaying;
     }
 
     /**
-     * Generate Structured NowPlaying Data
+     * Generate Structured NowPlaying Data for a given station.
      *
      * @param Entity\Station $station
+     * @param string|null $payload  The request body from the watcher notification service (if applicable).
      * @return Entity\Api\NowPlaying
      */
-    protected function _processStation(Entity\Station $station)
+    public function processStation(Entity\Station $station, $payload = null)
     {
-        /** @var EntityManager $em */
-        $em = $this->di['em'];
-
         /** @var Entity\Api\NowPlaying $np_old */
         $np_old = $station->getNowplaying();
 
@@ -115,7 +138,7 @@ class NowPlaying extends SyncAbstract
         $np->station = $station->api($station->getFrontendAdapter($this->di));
 
         $frontend_adapter = $station->getFrontendAdapter($this->di);
-        $np_raw = $frontend_adapter->getNowPlaying();
+        $np_raw = $frontend_adapter->getNowPlaying($payload);
 
         $np->listeners = new Entity\Api\NowPlayingListeners($np_raw['listeners']);
 
@@ -163,13 +186,29 @@ class NowPlaying extends SyncAbstract
             $np->now_playing = $sh_obj->api(true);
         }
 
+        $np->update();
         $np->cache = 'station';
 
         $station->setNowplaying($np);
 
-        $em->persist($station);
-        $em->flush();
+        $this->em->persist($station);
+        $this->em->flush();
+
+        $this->_notify('nowplaying_'.$station->getId(), $np);
 
         return $np;
+    }
+
+    protected function _notify($channel, $body)
+    {
+        $base_url = (APP_INSIDE_DOCKER) ? 'nginx' : 'localhost';
+
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request('POST', 'http://'.$base_url.':9010/pub/'.urlencode($channel), [
+            'headers' => [
+                'Accept' => 'text/json',
+            ],
+            'body' => json_encode($body),
+        ]);
     }
 }

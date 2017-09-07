@@ -9,26 +9,36 @@ use Entity;
 
 class IceCast extends FrontendAbstract
 {
+    public function getWatchCommand()
+    {
+        $fe_config = (array)$this->station->getFrontendConfig();
+
+        return $this->_getStationWatcherCommand(
+            'icecast',
+            'http://admin:'.$fe_config['admin_pw'].'@localhost:' . $fe_config['port'] . '/admin/stats'
+        );
+    }
+
     /* Process a nowplaying record. */
-    protected function _getNowPlaying(&$np)
+    protected function _getNowPlaying(&$np, $payload = null)
     {
         $fe_config = (array)$this->station->getFrontendConfig();
         $reader = new \App\Xml\Reader();
 
-        $radio_port = $fe_config['port'];
-        $np_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin/stats';
+        if (empty($payload)) {
+            $radio_port = $fe_config['port'];
+            $np_url = 'http://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $radio_port . '/admin/stats';
 
-        Debug::log($np_url);
+            $payload = $this->getUrl($np_url, [
+                'basic_auth' => 'admin:' . $fe_config['admin_pw'],
+            ]);
 
-        $return_raw = $this->getUrl($np_url, [
-            'basic_auth' => 'admin:'.$fe_config['admin_pw'],
-        ]);
-
-        if (!$return_raw) {
-            return false;
+            if (!$payload) {
+                return false;
+            }
         }
 
-        $return = $reader->fromString($return_raw);
+        $return = $reader->fromString($payload);
         Debug::print_r($return);
 
         if (!$return || empty($return['source'])) {

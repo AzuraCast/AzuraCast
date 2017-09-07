@@ -5,6 +5,7 @@
 <?php $this->start('custom_js') ?>
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/store-js/store.min.js') ?>"></script>
 <script type="text/javascript" src="<?=$assets->getPath('js/radio.js') ?>"></script>
+<script type="text/javascript" src="<?=$assets->getPath('js/nchan.js') ?>"></script>
 <?php $this->stop('custom_js') ?>
 
 <ul class="actions pull-right">
@@ -25,12 +26,12 @@
 </div>
 
 <script type="text/javascript">
-function nowPlaying() {
-    $.getJSON('<?=$url->route([
-        'module' => 'api',
-        'controller' => 'nowplaying',
-        'station' => $station->getId()
-    ]) ?>', {}, function (row) {
+$(function() {
+    var sub = new NchanSubscriber('/api/live/nowplaying/<?=$station->getId() ?>');
+
+    sub.on("message", function(message, message_metadata) {
+        var row = JSON.parse(message);
+
         var station_row = $('#station_'+row.station.id);
 
         if ('mediaSession' in navigator) {
@@ -43,12 +44,6 @@ function nowPlaying() {
         station_row.find('.nowplaying-title').text(row.now_playing.song.title);
         station_row.find('.nowplaying-artist').text(row.now_playing.song.artist);
         station_row.find('.nowplaying-listeners').text(row.listeners.total);
-
-        setTimeout('nowPlaying()', 30*1000);
     });
-}
-
-$(function() {
-    nowPlaying();
 });
 </script>

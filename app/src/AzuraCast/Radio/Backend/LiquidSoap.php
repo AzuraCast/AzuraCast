@@ -282,7 +282,7 @@ class LiquidSoap extends BackendAbstract
     protected function _getApiUrlCommand($endpoint, $params = [])
     {
         $params = (array)$params;
-        $params['api_auth'] = $this->_getApiPassword();
+        $params['api_auth'] = $this->station->getAdapterApiKey();
 
         $base_url = (APP_INSIDE_DOCKER) ? 'http://nginx' : 'http://localhost';
 
@@ -323,39 +323,6 @@ class LiquidSoap extends BackendAbstract
         }
 
         return $hours . 'h' . $mins . 'm';
-    }
-
-    /**
-     * Generate a stream-unique API password.
-     *
-     * @return string
-     */
-    public function _getApiPassword()
-    {
-        $be_settings = (array)$this->station->getBackendConfig();
-
-        if (empty($be_settings['api_password'])) {
-            $be_settings['api_password'] = bin2hex(random_bytes(50));
-
-            $em = $this->di['em'];
-
-            $this->station->setBackendConfig($be_settings);
-            $em->persist($this->station);
-            $em->flush();
-        }
-
-        return $be_settings['api_password'];
-    }
-
-    /**
-     * Validate the API password used for internal API authentication.
-     *
-     * @param $password
-     * @return bool
-     */
-    public function validateApiPassword($password)
-    {
-        return hash_equals($password, $this->_getApiPassword());
     }
 
     public function getCommand()

@@ -19,17 +19,11 @@ class InternalController extends BaseController
             throw new \App\Exception('Station not found.');
         }
 
-        $backend_adapter = $station->getBackendAdapter($this->di);
-
-        if (!($backend_adapter instanceof \AzuraCast\Radio\Backend\LiquidSoap)) {
-            throw new \App\Exception('Not a LiquidSoap station.');
-        }
-
         try {
             $this->checkStationPermission($station, 'view administration');
         } catch (\App\Exception\PermissionDenied $e) {
             $auth_key = $this->getParam('api_auth', '');
-            if (!$backend_adapter->validateApiPassword($auth_key)) {
+            if (!$station->validateAdapterApiKey($auth_key)) {
                 throw new \App\Exception\PermissionDenied();
             }
         }
@@ -64,6 +58,12 @@ class InternalController extends BaseController
 
     public function nextsongAction()
     {
+        $backend_adapter = $this->station->getBackendAdapter($this->di);
+
+        if (!($backend_adapter instanceof \AzuraCast\Radio\Backend\LiquidSoap)) {
+            throw new \App\Exception('Not a LiquidSoap station.');
+        }
+
         /** @var Entity\Repository\SongHistoryRepository $history_repo */
         $history_repo = $this->em->getRepository(Entity\SongHistory::class);
 
@@ -79,6 +79,21 @@ class InternalController extends BaseController
             $error_mp3_path = (APP_INSIDE_DOCKER) ? '/usr/local/share/icecast/web/error.mp3' : APP_INCLUDE_ROOT . '/resources/error.mp3';
             return $this->_return($error_mp3_path);
         }
+    }
+
+    public function notifyAction()
+    {
+        $payload = $this->request->getBody()->getContents();
+
+        if (!APP_IN_PRODUCTION) {
+            $log = date('Y-m-d g:i:s')."\n".$this->station->getName()."\n".$payload."\n\n";
+            file_put_contents(APP_INCLUDE_TEMP.'/notify.log', $log, \FILE_APPEND);
+        }
+
+        $np_sync = new \AzuraCast\Sync\NowPlaying($this->di);
+        $np_sync->processStation($this->station, $payload);
+
+        return $this->_return('received');
     }
 
     protected function _return($output)

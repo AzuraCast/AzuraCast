@@ -47,17 +47,26 @@ return function (\Slim\Container $di, $settings) {
                 'modelPath' => APP_INCLUDE_BASE . '/models',
                 'conn' => [
                     'driver' => 'pdo_mysql',
-                    'host' => $_ENV['db_host'] ?? ((APP_INSIDE_DOCKER) ? 'mariadb' : 'localhost'),
-                    'port' => $_ENV['db_port'] ?? '3306',
-                    'dbname' => $_ENV['db_name'] ?? 'azuracast',
-                    'user' => $_ENV['db_username'] ?? 'azuracast',
-                    'password' => (APP_INSIDE_DOCKER) ? 'azur4c457' : $_ENV['db_password'],
                     'charset' => 'utf8mb4',
                     'driverOptions' => [
                         \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
                     ],
                 ]
             ];
+
+            if (APP_INSIDE_DOCKER) {
+                $options['conn']['host'] = 'mariadb';
+                $options['conn']['port'] = 3306;
+                $options['conn']['dbname'] = 'azuracast';
+                $options['conn']['user'] = 'azuracast';
+                $options['conn']['password'] = 'azur4c457';
+            } else {
+                $options['conn']['host'] = $_ENV['db_host'] ?? 'localhost';
+                $options['conn']['port'] = $_ENV['db_port'] ?? '3306';
+                $options['conn']['dbname'] = $_ENV['db_name'] ?? 'azuracast';
+                $options['conn']['user'] = $_ENV['db_username'] ?? 'azuracast';
+                $options['conn']['password'] = $_ENV['db_password'];
+            }
 
             \Doctrine\Common\Proxy\Autoloader::register($options['proxyPath'], $options['proxyNamespace']);
 

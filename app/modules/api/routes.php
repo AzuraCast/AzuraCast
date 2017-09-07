@@ -19,6 +19,7 @@ return function(\Slim\App $app) {
 
                 $this->map(['GET', 'POST'], '/auth', 'api:internal:auth')->setName('api:internal:auth');
                 $this->map(['GET', 'POST'], '/nextsong', 'api:internal:nextsong')->setName('api:internal:nextsong');
+                $this->map(['GET', 'POST'], '/notify', 'api:internal:notify')->setName('api:internal:notify');
 
             });
 

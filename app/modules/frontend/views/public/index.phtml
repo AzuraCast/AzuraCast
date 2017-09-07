@@ -7,6 +7,7 @@
 
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/store-js/store.min.js') ?>"></script>
 <script type="text/javascript" src="<?=$assets->getPath('js/radio.js') ?>"></script>
+<script type="text/javascript" src="<?=$assets->getPath('js/nchan.js') ?>"></script>
 <?php $this->stop('custom_js') ?>
 
 <?php $this->start('custom_css') ?>
@@ -108,12 +109,47 @@
 </div>
 
 <script type="text/javascript">
-function nowPlaying() {
-    $.getJSON('<?=$url->route([
-        'module' => 'api',
-        'controller' => 'nowplaying',
-        'station' => $station->getId()
-    ]) ?>', {}, function (row) {
+function iterateTimer() {
+    $('.nowplaying-progress:visible').each(function () {
+        var time_played = $(this).data('time-played') + 1;
+        var time_total = $(this).data('time-total');
+
+        if (time_played > time_total) {
+            time_played = time_total;
+        }
+
+        var time_display = formatTime(time_played) + ' / ' + formatTime(time_total);
+
+        $(this).data('time-played', time_played)
+            .text(time_display)
+    });
+}
+
+function formatTime(time) {
+    var sec_num = parseInt(time, 10);
+
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) {
+        hours = "0" + hours;
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    return (hours !== "00" ? hours + ':' : "") + minutes + ':' + seconds;
+}
+
+$(function() {
+    var sub = new NchanSubscriber('/api/live/nowplaying/<?=$station->getId() ?>');
+
+    sub.on("message", function(message, message_metadata) {
+        var row = JSON.parse(message);
+
         var station_row = $('#station_'+row.station.id);
 
         if ('mediaSession' in navigator) {
@@ -155,48 +191,9 @@ function nowPlaying() {
             var li = $('<li>').append('<b>'+history_row.song.title+'</b><br>'+history_row.song.artist);
             $('#song-history').append(li);
         });
-
-        setTimeout('nowPlaying()', 10 * 1000);
     });
-}
 
-function iterateTimer() {
-    $('.nowplaying-progress:visible').each(function () {
-        var time_played = $(this).data('time-played') + 1;
-        var time_total = $(this).data('time-total');
-
-        if (time_played > time_total) {
-            time_played = time_total;
-        }
-
-        var time_display = formatTime(time_played) + ' / ' + formatTime(time_total);
-
-        $(this).data('time-played', time_played)
-            .text(time_display)
-    });
-}
-
-function formatTime(time) {
-    var sec_num = parseInt(time, 10);
-
-    var hours = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-    if (hours < 10) {
-        hours = "0" + hours;
-    }
-    if (minutes < 10) {
-        minutes = "0" + minutes;
-    }
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
-    return (hours !== "00" ? hours + ':' : "") + minutes + ':' + seconds;
-}
-
-$(function() {
-    nowPlaying();
+    sub.start();
 
     setInterval(iterateTimer, 1000);
 });

@@ -1,7 +1,17 @@
 ---
-  - name: Install nginx
+  - name: Remove packaged nginx
     become: true
-    apt:  pkg=nginx state=latest
+    apt:  package=nginx state=absent
+
+  - name: Install nginx/nchan
+    become: true
+    apt:
+      deb: "{{ item }}"
+      state: present
+      force: yes
+    with_items:
+      - "https://nchan.io/download/nginx-common.ubuntu.deb"
+      - "https://nchan.io/download/nginx-extras.ubuntu.deb"
 
   - name: Create nginx ssl directory
     file: path="{{ item }}" state=directory owner=root group=root mode=0744

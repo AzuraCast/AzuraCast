@@ -10,7 +10,8 @@
 <?php endif; ?>
 
 <script type="text/javascript" src="<?=$url->content('vendors/bower_components/store-js/store.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('js/radio.js') ?>"></script>
+<script type="text/javascript" src="<?=$assets->getPath('js/radio.js') ?>"></script>
+<script type="text/javascript" src="<?=$assets->getPath('js/nchan.js') ?>"></script>
 <?php $this->stop('custom_js') ?>
 
 <div class="block-header">
@@ -47,7 +48,6 @@
                 <h2><?=_('Station Overview') ?></h2>
 
                 <ul class="actions">
-                    <li><a class="btn-refresh" href="#" title="<?=_('Refresh') ?>"><i class="zmdi zmdi-refresh"></i></a></li>
                 <?php if ($acl->isAllowed('administer stations')): ?>
                     <li><a class="" title="<?=_('Add') ?>" href="<?=$url->route(['module' => 'admin', 'controller' => 'stations', 'action' => 'edit']) ?>"><i class="zmdi zmdi-plus"></i></a></li>
                 <?php endif; ?>
@@ -189,15 +189,14 @@ $(function () {
     });
 });
 
-var np_timeout;
+$(function() {
+    var sub = new NchanSubscriber('/api/live/nowplaying');
 
-function nowPlaying() {
-    clearTimeout(np_timeout);
-    $('.btn-refresh i').addClass('zmdi-hc-spin');
+    sub.on("message", function(message, message_metadata) {
+        var data = JSON.parse(message);
 
-    $.getJSON('<?=$url->route(['module' => 'api', 'controller' => 'nowplaying']) ?>', {}, function(data) {
         $.each(data, function (i, row) {
-            var station_row = $('#station_'+row.station.id);
+            var station_row = $('#station_' + row.station.id);
 
             if (station_row.length) {
 
@@ -213,19 +212,8 @@ function nowPlaying() {
                 station_row.find('.nowplaying-listeners').text(row.listeners.total)
             }
         });
-
-        $('.btn-refresh i').removeClass('zmdi-hc-spin');
-        np_timeout = setTimeout('nowPlaying()', 15*1000);
     });
-}
 
-$(function() {
-    nowPlaying();
-
-    $('.btn-refresh').on('click', function (e) {
-        e.preventDefault();
-        nowPlaying();
-        return false;
-    });
+    sub.start();
 });
 </script>

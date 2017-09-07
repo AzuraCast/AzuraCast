@@ -4,6 +4,7 @@ namespace Entity;
 use AzuraCast\Radio\Frontend\FrontendAbstract;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 
 /**
@@ -52,6 +53,12 @@ class Station
     protected $backend_config;
 
     /**
+     * @Column(name="adapter_api_key", type="string", length=150, nullable=true)
+     * @var string|null
+     */
+    protected $adapter_api_key;
+
+    /**
      * @Column(name="description", type="text", nullable=true)
      * @var string|null
      */
@@ -80,6 +87,12 @@ class Station
      * @var mixed|null
      */
     protected $nowplaying;
+
+    /**
+     * @Column(name="nowplaying_timestamp", type="integer", nullable=true)
+     * @var int
+     */
+    protected $nowplaying_timestamp;
 
     /**
      * @Column(name="automation_settings", type="json_array", nullable=true)
@@ -295,6 +308,33 @@ class Station
     /**
      * @return null|string
      */
+    public function getAdapterApiKey(): ?string
+    {
+        return $this->adapter_api_key;
+    }
+
+    /**
+     * Generate a random new adapter API key.
+     */
+    public function generateAdapterApiKey()
+    {
+        $this->adapter_api_key = bin2hex(random_bytes(50));
+    }
+
+    /**
+     * Authenticate the supplied adapter API key.
+     *
+     * @param $api_key
+     * @return bool
+     */
+    public function validateAdapterApiKey($api_key)
+    {
+        return hash_equals($api_key, $this->adapter_api_key);
+    }
+
+    /**
+     * @return null|string
+     */
     public function getDescription(): ?string
     {
         return $this->description;
@@ -410,6 +450,15 @@ class Station
     public function setNowplaying($nowplaying = null)
     {
         $this->nowplaying = $nowplaying;
+        $this->nowplaying_timestamp = time();
+    }
+
+    /**
+     * @return int
+     */
+    public function getNowplayingTimestamp(): int
+    {
+        return (int)$this->nowplaying_timestamp;
     }
 
     /**
@@ -633,6 +682,15 @@ class Station
             return;
         }
 
+        /** @var EntityManager $em */
+        $em = $di['em'];
+
+        // Always regenerate a new API auth key when rewriting service configuration.
+        $this->generateAdapterApiKey();
+        $em->persist($this);
+        $em->flush();
+
+        // Initialize adapters.
         $config_path = $this->getRadioConfigDir();
         $supervisor_config = [];
         $supervisor_config_path = $config_path . '/supervisord.conf';
@@ -656,7 +714,10 @@ class Station
         list($backend_group, $backend_program) = explode(':', $backend_name);
 
         $frontend_name = $frontend->getProgramName();
-        list($frontend_group, $frontend_program) = explode(':', $frontend_name);
+        list(,$frontend_program) = explode(':', $frontend_name);
+
+        $frontend_watch_name = $frontend->getWatchProgramName();
+        list(,$frontend_watch_program) = explode(':', $frontend_watch_name);
 
         // Write group section of config
         $programs = [];
@@ -665,6 +726,9 @@ class Station
         }
         if ($frontend->hasCommand()) {
             $programs[] = $frontend_program;
+        }
+        if ($frontend->hasWatchCommand()) {
+            $programs[] = $frontend_watch_program;
         }
 
         $supervisor_config[] = '[group:' . $backend_group . ']';
@@ -678,6 +742,24 @@ class Station
             $supervisor_config[] = 'command=' . $frontend->getCommand();
             $supervisor_config[] = 'user=azuracast';
             $supervisor_config[] = 'priority=90';
+
+            if (APP_INSIDE_DOCKER) {
+                $supervisor_config[] = 'stdout_logfile=/dev/stdout';
+                $supervisor_config[] = 'stdout_logfile_maxbytes=0';
+                $supervisor_config[] = 'stderr_logfile=/dev/stderr';
+                $supervisor_config[] = 'stderr_logfile_maxbytes=0';
+            }
+
+            $supervisor_config[] = '';
+        }
+
+        // Write frontend watcher program
+        if ($frontend->hasWatchCommand()) {
+            $supervisor_config[] = '[program:' . $frontend_watch_program . ']';
+            $supervisor_config[] = 'directory=' . $config_path;
+            $supervisor_config[] = 'command=' . $frontend->getWatchCommand();
+            $supervisor_config[] = 'user=azuracast';
+            $supervisor_config[] = 'priority=95';
 
             if (APP_INSIDE_DOCKER) {
                 $supervisor_config[] = 'stdout_logfile=/dev/stdout';

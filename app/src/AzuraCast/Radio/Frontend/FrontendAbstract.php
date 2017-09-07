@@ -22,6 +22,56 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         return $this->supports_listener_detail;
     }
 
+    /**
+     * @return null|string The command to pass the station-watcher app.
+     */
+    public function getWatchCommand()
+    {
+        return null;
+    }
+
+    /**
+     * @return bool Whether a station-watcher command exists for this adapter.
+     */
+    public function hasWatchCommand()
+    {
+        if (APP_TESTING_MODE || !APP_INSIDE_DOCKER) {
+            return false;
+        }
+
+        return ($this->getCommand() !== null);
+    }
+
+    /**
+     * Return the supervisord programmatic name for the station-watcher command.
+     *
+     * @return string
+     */
+    public function getWatchProgramName()
+    {
+        return 'station_' . $this->station->getId() . ':station_' . $this->station->getId() . '_watcher';
+    }
+
+    /**
+     * Get the AzuraCast station-watcher binary command for the specified adapter and watch URI.
+     *
+     * @param $adapter
+     * @param $watch_uri
+     * @return string
+     */
+    protected function _getStationWatcherCommand($adapter, $watch_uri)
+    {
+        $base_url = (APP_INSIDE_DOCKER) ? 'http://nginx' : 'http://localhost';
+        $notify_uri = $base_url.'/api/internal/'.$this->station->getId().'/notify?api_auth='.$this->station->getAdapterApiKey();
+
+        return '/var/azuracast/servers/station-watcher/cast-watcher '.$adapter.' 2000 '.$watch_uri.' '.$notify_uri;
+    }
+
+    /**
+     * Get the default mounts when resetting or initializing a station.
+     *
+     * @return array
+     */
     public function getDefaultMounts()
     {
         return [
@@ -80,7 +130,11 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         return Curl::request($c_opts);
     }
 
-    public function getNowPlaying()
+    /**
+     * @param string|null $payload The payload from the push notification service (if applicable)
+     * @return array
+     */
+    public function getNowPlaying($payload = null)
     {
         // Now Playing defaults.
         $np = [
@@ -102,7 +156,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         ];
 
         // Merge station-specific info into defaults.
-        $this->_getNowPlaying($np);
+        $this->_getNowPlaying($np, $payload);
 
         // Update status code for offline stations, clean up song info for online ones.
         if ($np['current_song']['text'] == 'Stream Offline') {
@@ -125,8 +179,14 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         return $np;
     }
 
-    /* Stub function for the process internal handler. */
-    abstract protected function _getNowPlaying(&$np);
+    /**
+     * Stub function for the process internal handler.
+     *
+     * @param $np
+     * @param string|null $payload
+     * @return mixed
+     */
+    abstract protected function _getNowPlaying(&$np, $payload = null);
 
     protected function _cleanUpString(&$value)
     {

@@ -1,7 +1,15 @@
 FROM ubuntu:xenial
 
+RUN mkdir -p /var/azuracast/servers/shoutcast2 && \
+    mkdir -p /var/azuracast/servers/icecast2 && \
+    mkdir -p /var/azuracast/servers/station-watcher && \
+    mkdir -p /var/azuracast/stations
+
+RUN adduser --home /var/azuracast --disabled-password --gecos "" azuracast && \
+    chown -R azuracast:azuracast /var/azuracast
+
 RUN apt-get update && \
-    apt-get install -q -y curl
+    apt-get install -q -y wget git gcc pkg-config curl libssl-dev libcurl4-openssl-dev
 
 # Install supervisord
 RUN mkdir -p /var/log/supervisor
@@ -11,28 +19,28 @@ RUN apt-get update && \
 
 ADD ./supervisord.conf /etc/supervisor/supervisord.conf
 
-# Set up broadcast sections
-RUN mkdir -p /var/azuracast/servers/shoutcast2 && \
-    mkdir -p /var/azuracast/servers/icecast2 && \
-    mkdir -p /var/azuracast/stations
+# Install Rust and the station-watcher app
+WORKDIR /var/azuracast/servers/station-watcher
 
-RUN adduser --home /var/azuracast --disabled-password --gecos "" azuracast && \
-    chown -R azuracast:azuracast /var/azuracast
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+    git clone https://github.com/AzuraCast/station-watcher ./src && \
+    cd src && \
+    ~/.cargo/bin/cargo build --release && \
+    cp target/release/cast-watcher /var/azuracast/servers/station-watcher/ && \
+    rm -rf /var/azuracast/servers/station-watcher/src && \
+    rm -rf ~/.cargo
 
 # Download Shoutcast 2
 WORKDIR /var/azuracast/servers/shoutcast2
 
-RUN apt-get update && \
-    apt-get install -y wget && \
-    wget http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz && \
+RUN wget http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz && \
     tar -xzf sc_serv2_linux_x64-latest.tar.gz
 
 # Download and build IceCast-KH
 WORKDIR /var/azuracast/servers/icecast2
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends libxml2 libxslt1-dev libvorbis-dev libssl-dev libcurl4-openssl-dev \
-     gcc pkg-config && \
+    apt-get install -q -y --no-install-recommends libxml2 libxslt1-dev libvorbis-dev && \
     wget https://github.com/karlheyes/icecast-kh/archive/icecast-2.4.0-kh5.tar.gz && \
     tar --strip-components=1 -xzf icecast-2.4.0-kh5.tar.gz && \
     ./configure && \
@@ -49,7 +57,7 @@ ADD ./xml2json.xslt /usr/local/share/icecast/web/xml2json.xslt
 RUN sed -e 's#main#main contrib non-free#' -i /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ocaml git rsync opam libpcre3-dev libfdk-aac-dev libmad0-dev \
+    apt-get install -y --no-install-recommends ocaml rsync opam libpcre3-dev libfdk-aac-dev libmad0-dev \
       libmp3lame-dev libtag1-dev libfaad-dev libflac-dev m4 aspcud
 
 USER azuracast

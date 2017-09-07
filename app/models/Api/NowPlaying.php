@@ -54,4 +54,12 @@ class NowPlaying
      * @var string
      */
     public $cache;
+
+    /**
+     * Update any variable items in the feed.
+     */
+    public function update()
+    {
+        $this->now_playing->recalculate();
+    }
 }

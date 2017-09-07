@@ -9,7 +9,7 @@ class Remote extends FrontendAbstract
     protected $supports_listener_detail = false;
 
     /* Process a nowplaying record. */
-    protected function _getNowPlaying(&$np)
+    protected function _getNowPlaying(&$np, $payload = null)
     {
         $mounts = $this->_getMounts();
 

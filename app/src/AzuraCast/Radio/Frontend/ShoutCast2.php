@@ -10,20 +10,33 @@ class ShoutCast2 extends FrontendAbstract
 {
     protected $supports_mounts = true;
 
+    public function getWatchCommand()
+    {
+        $fe_config = (array)$this->station->getFrontendConfig();
+
+        return $this->_getStationWatcherCommand(
+            'shoutcast',
+            'http://localhost:' . $fe_config['port'] . '/statistics?json=1'
+        );
+    }
+
     /* Process a nowplaying record. */
-    protected function _getNowPlaying(&$np)
+    protected function _getNowPlaying(&$np, $payload = null)
     {
         $fe_config = (array)$this->station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
-        $np_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/statistics?json=1';
-        $return_raw = $this->getUrl($np_url);
+        if (empty($payload)) {
+            $np_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/statistics?json=1';
+            $payload = $this->getUrl($np_url);
 
-        if (empty($return_raw)) {
-            return false;
+            if (empty($payload)) {
+                return false;
+            }
         }
 
-        $current_data = json_decode($return_raw, true);
+        $current_data = json_decode($payload, true);
+
         Debug::print_r($current_data);
 
         $streams = count($current_data['streams']);

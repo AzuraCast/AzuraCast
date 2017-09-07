@@ -1,9 +1,13 @@
 ---
   - name: Remove packaged nginx
     become: true
-    apt:  package=nginx state=absent
+    apt:  package="{{ item }}" state=absent
+    with_items:
+     - nginx
+     - nginx-common
+     - nginx-extras
 
-  - name: Install nginx/nchan
+  - name: Install nginx/nchan from deb packages
     become: true
     apt:
       deb: "{{ item }}"

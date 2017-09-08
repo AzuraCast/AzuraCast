@@ -94,7 +94,7 @@
       src: "{{ app_base }}/servers/shoutcast2/sc_serv.tar.gz"
       dest: "{{ app_base }}/servers/shoutcast2"
       remote_src: yes
-      creates: "{{ app_base }}/servers/shoutcast2/sc_serv"
       mode: "u=rwx,g=rx,o=rx"
       owner: "azuracast"
       group: "www-data"
+      # creates: "{{ app_base }}/servers/shoutcast2/sc_serv"

@@ -1,4 +1,14 @@
 ---
+  - name: Unhold nginx-related packages for updates
+    become: true
+    dpkg_selections:
+      name: "{{ item }}"
+      selection: install
+    with_items:
+      - "nginx"
+      - "nginx-common"
+      - "nginx-extras"
+
   - name: Remove packaged nginx
     become: true
     apt:  package="{{ item }}" state=absent purge=yes

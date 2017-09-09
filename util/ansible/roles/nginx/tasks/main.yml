@@ -7,25 +7,29 @@
      - nginx-common
      - nginx-extras
 
-  - name: Install nginx-common
+  - name: Install nginx/nchan from deb packages
     become: true
     apt:
-      deb: "https://nchan.io/download/nginx-common.ubuntu.deb"
+      deb: "{{ item }}"
       state: present
+      force: yes
+    with_items:
+      - "https://nchan.io/download/nginx-common.ubuntu.deb"
+      - "https://nchan.io/download/nginx-extras.ubuntu.deb"
 
   - name: Run apt-get install -f
     become: true
     shell: apt-get -f install
 
-  - name: Install nginx-extras
+  - name: Prevent unattended updates of nchan nginx
     become: true
-    apt:
-      deb: "https://nchan.io/download/nginx-extras.ubuntu.deb"
-      state: present
-
-  - name: Run apt-get install -f
-    become: true
-    shell: apt-get -f install
+    dpkg_selections:
+      name: "{{ item }}"
+      selection: hold
+    with_items:
+      - "nginx"
+      - "nginx-common"
+      - "nginx-extras"
 
   - name: Create nginx ssl directory
     file: path="{{ item }}" state=directory owner=root group=root mode=0744

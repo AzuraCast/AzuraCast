@@ -23,6 +23,8 @@ services:
       - MYSQL_PASSWORD=azur4c457
       - MYSQL_DATABASE=azuracast
     restart: always
+    ports:
+      - "127.0.0.1:3306:3306"
 
   influxdb:
     image: influxdb:alpine
@@ -33,6 +35,8 @@ services:
   redis:
     image: redis:alpine
     restart: always
+    ports:
+      - "127.0.0.1:6379:6379"
 
   web:
     image: azuracast/azuracast_web:latest

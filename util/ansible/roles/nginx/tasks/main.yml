@@ -15,8 +15,7 @@
 
   - name: Run apt-get install -f
     become: true
-    apt:
-      force: yes
+    shell: apt-get -f install
 
   - name: Install nginx-extras
     become: true
@@ -26,8 +25,7 @@
 
   - name: Run apt-get install -f
     become: true
-    apt:
-      force: yes
+    shell: apt-get -f install
 
   - name: Create nginx ssl directory
     file: path="{{ item }}" state=directory owner=root group=root mode=0744

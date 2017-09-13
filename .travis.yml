@@ -24,23 +24,14 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-# Set up local variables
-  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH, COMMIT=$COMMIT"
-  - shopt -s expand_aliases
-  - alias docker-compose-local='docker-compose -f docker-compose.yml -f docker-compose.build.yml '
 
 install:
   - echo $TRAVIS_BUILD_DIR
   - chmod 777 $TRAVIS_BUILD_DIR/tests/_output/
-  - docker-compose-local build
+  - docker-compose pull
 
 script:
-  - docker-compose-local run --rm cli azuracast_testing $CODECLIMATE_REPO_TOKEN
+  - docker-compose run --rm cli azuracast_testing $CODECLIMATE_REPO_TOKEN
 
 after_failure:
-  - docker-compose-local run --rm cli cat /var/azuracast/www/tests/_output/*
-
-after_success:
-  - docker login --username $DOCKER_USER --password $DOCKER_PASS
-  - if [ "$BRANCH" == "master" ]; then docker-compose-local push; fi
+  - docker-compose run --rm cli cat /var/azuracast/www/tests/_output/*

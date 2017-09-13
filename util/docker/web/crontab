@@ -1,7 +1,0 @@
-0 * * * * azuracast php /var/azuracast/www/util/cli.php sync:run long
-*/5 * * * * azuracast php /var/azuracast/www/util/cli.php sync:run medium
-* * * * * azuracast php /var/azuracast/www/util/cli.php sync:run short
-* * * * * azuracast php /var/azuracast/www/util/cli.php sync:run nowplaying
-* * * * * azuracast sleep 15; php /var/azuracast/www/util/cli.php sync:run nowplaying
-* * * * * azuracast sleep 30; php /var/azuracast/www/util/cli.php sync:run nowplaying
-* * * * * azuracast sleep 45; php /var/azuracast/www/util/cli.php sync:run nowplaying

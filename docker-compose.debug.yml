@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  mariadb:
+    ports:
+      - "127.0.0.1:3306:3306"
+
+  redis:
+    ports:
+      - "127.0.0.1:6379:6379"

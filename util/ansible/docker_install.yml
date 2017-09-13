@@ -16,4 +16,4 @@
     - composer
     - docker-install
     - azuracast-db
-    - { role: azuracast-fixtures, when: testing_mode == false and app_env == 'development' }
+    - { role: azuracast-fixtures, when: testing_mode == false }

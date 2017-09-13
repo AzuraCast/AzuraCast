@@ -12,3 +12,11 @@ services:
     volumes:
      - station_data:/var/azuracast/stations
     command: 'bash'
+
+  mariadb:
+    ports:
+      - "3306:3306"
+
+  redis:
+    ports:
+      - "6379:6379"

@@ -80,8 +80,8 @@ git clone https://github.com/AzuraCast/AzuraCast.git .
 From that directory, run the following commands as root or a sudo-capable user to install the latest versions of Docker and Docker Compose and set up the AzuraCast instance:
 
 ```bash
-chmod +x ./docker_*
-./docker_install.sh
+chmod +x ./docker-*
+./docker-install.sh
 ```
 
 If you already have the latest versions of Docker and Docker Compose, you can manually initialize the AzuraCast docker components by running:
@@ -97,7 +97,7 @@ docker-compose up -d
 From inside the base directory where AzuraCast is copied, run the following commands:
 
 ```bash
-./docker_update.sh
+./docker-update.sh
 ```
 
 or
@@ -116,7 +116,7 @@ Your station database, statistics and media are stored inside Docker volumes. Az
 The backup script is located in the drive root and can be accessed by running:
 
 ```bash
-./docker_backup.sh
+./docker-backup.sh
 ```
 
 This will create a file, `backup.tar.gz` in the app root.
@@ -124,7 +124,7 @@ This will create a file, `backup.tar.gz` in the app root.
 To restore the application's state from this compressed file, run:
 
 ```bash
-./docker_restore.sh
+./docker-restore.sh
 ```
 
 Note that the restoration process will wipe any existing AzuraCast database or media that exists inside the Docker volumes.

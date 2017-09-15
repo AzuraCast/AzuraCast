@@ -150,8 +150,14 @@ class NowPlaying extends SyncAbstract
             $offline_sh->song = $song_obj->api();
             $np->now_playing = $offline_sh;
 
-            $np->playing_next = null;
             $np->song_history = $this->history_repo->getHistoryForStation($station);
+
+            $next_song = $this->history_repo->getNextSongForStation($station);
+            if ($next_song instanceof Entity\SongHistory) {
+                $np->playing_next = $next_song->api();
+            } else {
+                $np->playing_next = null;
+            }
         } else {
             // Pull from current NP data if song details haven't changed.
             $current_song_hash = Entity\Song::getSongHash($np_raw['current_song']);

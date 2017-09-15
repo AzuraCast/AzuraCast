@@ -12,27 +12,45 @@
     <?=$this->fetch('partials/radio_controls') ?>
 </ul>
 <div class="stations nowplaying">
-    <div class="media media-left" id="station_<?=$station->getId() ?>">
+    <div class="media media-left" id="station-nowplaying">
         <div class="pull-left">
             <a class="btn-audio" href="#" data-url="<?=$this->e($stream_url) ?>">
                 <i class="zmdi zmdi-play"></i>
             </a>
         </div>
         <div class="media-body">
-            <h4 class="media-heading nowplaying-title"><?=_('Song Title') ?></h4>
-            <div class="nowplaying-artist"><?=_('Song Artist') ?></div>
+            <h4 class="media-heading">
+                {{ np.now_playing.song.title }}
+            </h4>
+            <div>
+                {{ np.now_playing.song.artist }}
+            </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
+var nowPlaying;
+
 $(function() {
+    nowPlaying = new Vue({
+        el: '#station-nowplaying',
+        data: {
+            np: {
+                now_playing: {
+                    song: {
+                        title: '<?= _('Song Title') ?>',
+                        artist: '<?= _('Song Artist') ?>'
+                    }
+                }
+            }
+        }
+    });
+
     var sub = new NchanSubscriber('/api/live/nowplaying/<?=$station->getId() ?>');
 
     sub.on("message", function(message, message_metadata) {
         var row = JSON.parse(message);
-
-        var station_row = $('#station_'+row.station.id);
 
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
@@ -41,9 +59,9 @@ $(function() {
             });
         }
 
-        station_row.find('.nowplaying-title').text(row.now_playing.song.title);
-        station_row.find('.nowplaying-artist').text(row.now_playing.song.artist);
-        station_row.find('.nowplaying-listeners').text(row.listeners.total);
+        nowPlaying.np = row;
     });
+
+    sub.start();
 });
 </script>

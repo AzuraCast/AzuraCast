@@ -23,21 +23,21 @@
         <h3 class="text-left"><?=$this->e($station->getName()) ?></h3>
 
         <div class="stations nowplaying">
-            <div class="media media-left" id="station_<?=$station->getId() ?>">
+            <div class="media media-left" id="station-nowplaying">
                 <div class="pull-left">
                     <a class="btn-audio" href="#" data-url="<?=$this->e($stream_url) ?>">
                         <i class="zmdi zmdi-play"></i>
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading nowplaying-title">
-                        <?= _('Song Title') ?>
+                    <h4 class="media-heading">
+                        {{ np.now_playing.song.title }}
                     </h4>
-                    <div class="nowplaying-artist">
-                        <?= _('Song Artist') ?>
+                    <div>
+                        {{ np.now_playing.song.artist }}
                     </div>
-                    <div class="nowplaying-progress" style="display: none;">
-
+                    <div class="nowplaying-progress" v-if="time_display">
+                        {{ time_display }}
                     </div>
                 </div>
             </div>
@@ -75,8 +75,11 @@
                 <h4 class="modal-title" id="modal-history-label"><?=_('Song History') ?></h4>
             </div>
             <div class="modal-body">
-                <ol type="1" id="song-history">
-
+                <ol type="1" id="station-history">
+                    <li v-for="row in history">
+                        <b>{{ row.song.title }}</b><br>
+                        {{ row.song.artist }}
+                    </li>
                 </ol>
             </div>
         </div>
@@ -109,20 +112,15 @@
 </div>
 
 <script type="text/javascript">
+var nowPlaying;
+
 function iterateTimer() {
-    $('.nowplaying-progress:visible').each(function () {
-        var time_played = $(this).data('time-played') + 1;
-        var time_total = $(this).data('time-total');
+    var np_elapsed = nowPlaying.np.now_playing.elapsed;
+    var np_total = nowPlaying.np.now_playing.duration;
 
-        if (time_played > time_total) {
-            time_played = time_total;
-        }
-
-        var time_display = formatTime(time_played) + ' / ' + formatTime(time_total);
-
-        $(this).data('time-played', time_played)
-            .text(time_display)
-    });
+    if (np_elapsed < np_total) {
+        nowPlaying.np.now_playing.elapsed = np_elapsed + 1;
+    }
 }
 
 function formatTime(time) {
@@ -145,12 +143,53 @@ function formatTime(time) {
 }
 
 $(function() {
+    nowPlaying = new Vue({
+        el: '#station-nowplaying',
+        data: {
+            np: {
+                now_playing: {
+                    song: {
+                        title: '<?= _('Song Title') ?>',
+                        artist: '<?= _('Song Artist') ?>'
+                    },
+                    is_request: false,
+                    elapsed: 0,
+                    duration: 0
+                }
+            }
+        },
+        computed: {
+            "time_display": function() {
+                var time_played = this.np.now_playing.elapsed;
+                var time_total = this.np.now_playing.duration;
+
+                if (time_played > time_total) {
+                    time_played = time_total;
+                }
+
+                return formatTime(time_played) + ' / ' + formatTime(time_total);
+            }
+        }
+    });
+
+    songHistory = new Vue({
+        el: '#station-history',
+        data: {
+            history: [
+                {
+                    song: {
+                        title: '<?= _('Song Title') ?>',
+                        artist: '<?= _('Song Artist') ?>'
+                    }
+                }
+            ]
+        }
+    });
+
     var sub = new NchanSubscriber('/api/live/nowplaying/<?=$station->getId() ?>');
 
     sub.on("message", function(message, message_metadata) {
         var row = JSON.parse(message);
-
-        var station_row = $('#station_'+row.station.id);
 
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
@@ -159,38 +198,8 @@ $(function() {
             });
         }
 
-        var np_title = row.now_playing.song.title;
-        if (row.now_playing.is_request) {
-            np_title += '<span class="label label-default">Listener Request</span>';
-        }
-        station_row.find('.nowplaying-title').html(np_title);
-        station_row.find('.nowplaying-artist').text(row.now_playing.song.artist);
-        station_row.find('.nowplaying-listeners').text(row.listeners.total);
-
-        if (row.now_playing.duration) {
-            var time_played = row.now_playing.elapsed;
-            var time_total = row.now_playing.duration;
-
-            if (time_played > time_total) {
-                time_played = time_total;
-            }
-
-            var time_display = formatTime(time_played) + ' / ' + formatTime(time_total);
-
-            station_row.find('.nowplaying-progress')
-                .data('time-played', time_played)
-                .data('time-total', time_total)
-                .text(time_display)
-                .show();
-        } else {
-            station_row.find('.nowplaying-progress').hide();
-        }
-
-        $('#song-history').empty();
-        $.each(row.song_history, function(i, history_row) {
-            var li = $('<li>').append('<b>'+history_row.song.title+'</b><br>'+history_row.song.artist);
-            $('#song-history').append(li);
-        });
+        nowPlaying.np = row;
+        songHistory.history = row.song_history;
     });
 
     sub.start();

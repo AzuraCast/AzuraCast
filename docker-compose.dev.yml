@@ -20,3 +20,9 @@ services:
   redis:
     ports:
       - "6379:6379"
+
+  chronograf:
+    image: chronograf:alpine
+    ports:
+     - "8888:8888"
+    command: "chronograf --influxdb-url=http://influxdb:8086"

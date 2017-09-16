@@ -38,10 +38,10 @@ else
         docker rm $(docker ps -a -q)
         docker volume prune -f
 
-        docker-compose -f docker-compose.yml -f docker-compose.build.yml -f docker-compose.dev.yml build
-        docker-compose -f docker-compose.yml -f docker-compose.build.yml -f docker-compose.dev.yml run --rm cli azuracast_install --dev
-        docker-compose -f docker-compose.yml -f docker-compose.build.yml -f docker-compose.dev.yml up -d
-        docker-compose -f docker-compose.yml -f docker-compose.build.yml -f docker-compose.dev.yml rm -f
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml build
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm cli azuracast_install --dev
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml rm -f
 
     fi
 

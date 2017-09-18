@@ -89,8 +89,6 @@ class NowPlaying extends SyncAbstract
         $settings_repo->setSetting('nowplaying', $nowplaying);
     }
 
-
-
     /**
      * @return Entity\Api\NowPlaying[]
      */

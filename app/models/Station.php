@@ -131,6 +131,12 @@ class Station
     protected $enable_streamers;
 
     /**
+     * @Column(name="enable_public_page", type="boolean", nullable=false)
+     * @var bool
+     */
+    protected $enable_public_page;
+
+    /**
      * @Column(name="needs_restart", type="boolean")
      * @var bool
      */
@@ -191,6 +197,7 @@ class Station
 
         $this->needs_restart = false;
         $this->has_started = false;
+        $this->enable_public_page = true;
 
         $this->history = new ArrayCollection;
         $this->media = new ArrayCollection;
@@ -560,6 +567,22 @@ class Station
     /**
      * @return bool
      */
+    public function isEnablePublicPage(): bool
+    {
+        return (bool)$this->enable_public_page;
+    }
+
+    /**
+     * @param bool $enable_public_page
+     */
+    public function setEnablePublicPage(bool $enable_public_page)
+    {
+        $this->enable_public_page = $enable_public_page;
+    }
+
+    /**
+     * @return bool
+     */
     public function getNeedsRestart(): bool
     {
         return $this->needs_restart;
@@ -675,8 +698,9 @@ class Station
      * Write all configuration changes to the filesystem and reload supervisord.
      *
      * @param ContainerInterface $di
+     * @param bool $regen_auth_key Regenerate the API authorization key (will trigger a full reset of processes).
      */
-    public function writeConfiguration(ContainerInterface $di)
+    public function writeConfiguration(ContainerInterface $di, $regen_auth_key = false)
     {
         if (APP_TESTING_MODE) {
             return;
@@ -685,10 +709,11 @@ class Station
         /** @var EntityManager $em */
         $em = $di['em'];
 
-        // Always regenerate a new API auth key when rewriting service configuration.
-        $this->generateAdapterApiKey();
-        $em->persist($this);
-        $em->flush();
+        if ($regen_auth_key || empty($this->getAdapterApiKey())) {
+            $this->generateAdapterApiKey();
+            $em->persist($this);
+            $em->flush();
+        }
 
         // Initialize adapters.
         $config_path = $this->getRadioConfigDir();

@@ -50,17 +50,22 @@ class ProfileController extends BaseController
                 $data[$file_field] = $file_paths[1];
             */
 
-            $oldAdapter = $this->station->getFrontendType();
+            $old_frontend = $this->station->getFrontendType();
+            $old_backend = $this->station->getBackendType();
 
             $this->station_repo->fromArray($this->station, $data);
             $this->em->persist($this->station);
             $this->em->flush();
 
-            if ($oldAdapter !== $this->station->getFrontendType()) {
+            $frontend_changed = ($old_frontend !== $this->station->getFrontendType());
+            $backend_changed = ($old_backend !== $this->station->getBackendType());
+            $adapter_changed = $frontend_changed || $backend_changed;
+
+            if ($frontend_changed) {
                 $this->station_repo->resetMounts($this->station, $this->di);
             }
 
-            $this->station->writeConfiguration($this->di);
+            $this->station->writeConfiguration($this->di, $adapter_changed);
 
             // Clear station cache.
             $cache = $this->di->get('cache');

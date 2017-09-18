@@ -88,7 +88,7 @@ class PublicController extends BaseController
             $station = $station_repo->findByShortCode($station_id);
         }
 
-        if (!($station instanceof Entity\Station)) {
+        if (!($station instanceof Entity\Station) || !$station->isEnablePublicPage()) {
             throw new \App\Exception(_('Station not found!'));
         }
 

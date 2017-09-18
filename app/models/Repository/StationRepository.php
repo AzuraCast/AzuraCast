@@ -137,7 +137,7 @@ class StationRepository extends BaseRepository
         $frontend_adapter->read();
 
         // Write the adapter configurations and update supervisord.
-        $station->writeConfiguration($di);
+        $station->writeConfiguration($di, true);
 
         // Save changes and continue to the last setup step.
         $this->_em->persist($station);

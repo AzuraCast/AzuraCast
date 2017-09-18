@@ -85,6 +85,16 @@ return [
                     ]
                 ],
 
+                'enable_public_page' => [
+                    'radio',
+                    [
+                        'label' => _('Enable Public Page'),
+                        'description' => _('If disabled, will remove this station\'s public page.'),
+                        'options' => [0 => _('No'), 1 => _('Yes')],
+                        'default' => '1',
+                    ]
+                ],
+
             ],
         ],
 
@@ -185,7 +195,7 @@ return [
                         'label' => _('Allow Streamers / DJs'),
                         'description' => _('If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.'),
                         'default' => '0',
-                        'options' => [0 => 'No', 1 => 'Yes'],
+                        'options' => [0 => _('No'), 1 => _('Yes')],
                     ]
                 ],
 
@@ -195,7 +205,7 @@ return [
                         'label' => _('Allow Song Requests'),
                         'description' => _('Setting this enables listeners to request a song for play on your station. Only songs that are already in your playlists are listed as requestable.'),
                         'default' => '0',
-                        'options' => [0 => 'No', 1 => 'Yes'],
+                        'options' => [0 => _('No'), 1 => _('Yes')],
                     ]
                 ],
 

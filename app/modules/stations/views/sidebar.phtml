@@ -29,7 +29,9 @@
 
 <?php endif; ?>
 
+<?php if ($station->isEnablePublicPage()): ?>
     <li><a href="<?=$url->named('public:index', ['station' => $station->getShortName()]) ?>" target="_blank"><i class="zmdi zmdi-globe"></i> <?=_('Public Page') ?></a></li>
+<?php endif; ?>
 
     <li><a href="<?=$url->named('stations:profile:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-image"></i> <?=_('Profile') ?></a></li>
 

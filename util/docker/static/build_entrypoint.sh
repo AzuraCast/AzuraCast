@@ -1,18 +1,14 @@
 #!/usr/bin/env bash
 
-rm -rf /data
-mkdir /data
-
 cd /data
 
-ln -s /var/azuracast/www/web/static/gruntfile.js    /data/gruntfile.js
-ln -s /var/azuracast/www/web/static/package.json    /data/package.json
-ln -s /var/azuracast/www/web/static/assets.json     /data/assets.json
-ln -s /var/azuracast/www/web/static/css             /data/css
-ln -s /var/azuracast/www/web/static/js              /data/js
-ln -s /var/azuracast/www/web/static/less            /data/less
-ln -s /var/azuracast/www/web/static/vendors         /data/vendors
-
-npm install --loglevel warn
+ln -s /src/gruntfile.js    /data/gruntfile.js
+ln -s /src/assets.json     /data/assets.json
+ln -s /src/css             /data/css
+ln -s /src/js              /data/js
+ln -s /src/less            /data/less
+ln -s /src/vendors         /data/vendors
+ln -s /src/bower_components /data/bower_components
+ln -s /src/bower.json      /data/bower.json
 
 bash

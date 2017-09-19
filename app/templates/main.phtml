@@ -30,19 +30,19 @@ if (!APP_IN_PRODUCTION)
 
 <?=$this->fetch('partials/icons') ?>
 
-<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/animate.css/animate.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bootgrid/jquery.bootgrid.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/animate.css/animate.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/bootstrap-sweetalert/lib/sweet-alert.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/jquery.bootgrid/dist/jquery.bootgrid.min.css') ?>">
 
 <?=$this->section('custom_css') ?>
 
 <link rel="stylesheet" type="text/css" href="<?=$assets->getPath('css/'.$customization->getTheme().'.css') ?>">
 
-<script type="text/javascript" src="<?=$url->content('vendors/bower_components/jquery/dist/jquery.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
-<script type="text/javascript" src="<?= $url->content('vendors/bower_components/vue/dist/' . (APP_IN_PRODUCTION ? 'vue.min.js' : 'vue.js')) ?>"></script>
+<script type="text/javascript" src="<?=$url->content('bower_components/jquery/dist/jquery.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
+<script type="text/javascript" src="<?= $url->content('bower_components/vue/dist/' . (APP_IN_PRODUCTION ? 'vue.min.js' : 'vue.js')) ?>"></script>
 
 <script type="text/javascript">
 var APP_AppEnv = '<?=APP_APPLICATION_ENV ?>';
@@ -161,12 +161,11 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 
 <?=$this->section('custom_js') ?>
 
-<script type="text/javascript" src="<?=$url->content('vendors/bower_components/zxcvbn/dist/zxcvbn.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') ?>"></script>
 <script type="text/javascript" src="<?=$url->content('vendors/bootstrap-growl/bootstrap-growl.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('vendors/bower_components/autosize/dist/autosize.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('vendors/bootgrid/jquery.bootgrid.updated.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('bower_components/autosize/dist/autosize.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('bower_components/jquery.bootgrid/dist/jquery.bootgrid.min.js') ?>"></script>
 
 <script type="text/javascript" src="<?=$assets->getPath('js/app.min.js') ?>"></script>
 

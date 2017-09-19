@@ -7,10 +7,11 @@
 <?php endif; ?>
 
 <?php $this->start('custom_js') ?>
-<script type="text/javascript" src="<?=$url->content('vendors/bower_components/chosen/chosen.jquery.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('bower_components/chosen/chosen.jquery.min.js') ?>"></script>
+<script type="text/javascript" src="<?=$url->content('vendors/bower_components/zxcvbn/dist/zxcvbn.js') ?>"></script>
 <?php $this->stop('custom_js') ?>
 <?php $this->start('custom_css') ?>
-<link rel="stylesheet" type="text/css" href="<?=$url->content('vendors/bower_components/chosen/chosen.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/chosen/chosen.min.css') ?>">
 <?php $this->stop('custom_css') ?>
 
 <script type="text/javascript">

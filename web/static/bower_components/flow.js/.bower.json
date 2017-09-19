@@ -15,15 +15,14 @@
     "Gruntfile.js"
   ],
   "homepage": "https://github.com/resumable2/resumable.js",
-  "version": "2.11.2",
-  "_release": "2.11.2",
+  "version": "2.13.0",
+  "_release": "2.13.0",
   "_resolution": {
     "type": "version",
-    "tag": "v2.11.2",
-    "commit": "bb839a6c09f46e74c606be8e6a7e183532e04570"
+    "tag": "v2.13.0",
+    "commit": "f6194e7b377e49eb09ee2af72bc3d822271f3392"
   },
   "_source": "https://github.com/resumable2/resumable.js.git",
   "_target": "^2.11.2",
-  "_originalSource": "resumable.js",
-  "_direct": true
+  "_originalSource": "resumable.js"
 }

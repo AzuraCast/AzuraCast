@@ -12,6 +12,8 @@ import {
   handleError
 } from '../util/index'
 
+import type { ISet } from '../util/index'
+
 let uid = 0
 
 /**
@@ -32,8 +34,8 @@ export default class Watcher {
   active: boolean;
   deps: Array<Dep>;
   newDeps: Array<Dep>;
-  depIds: Set;
-  newDepIds: Set;
+  depIds: ISet;
+  newDepIds: ISet;
   getter: Function;
   value: any;
 
@@ -92,22 +94,23 @@ export default class Watcher {
     pushTarget(this)
     let value
     const vm = this.vm
-    if (this.user) {
-      try {
-        value = this.getter.call(vm, vm)
-      } catch (e) {
-        handleError(e, vm, `getter for watcher "${this.expression}"`)
-      }
-    } else {
+    try {
       value = this.getter.call(vm, vm)
+    } catch (e) {
+      if (this.user) {
+        handleError(e, vm, `getter for watcher "${this.expression}"`)
+      } else {
+        throw e
+      }
+    } finally {
+      // "touch" every property so they are all tracked as
+      // dependencies for deep watching
+      if (this.deep) {
+        traverse(value)
+      }
+      popTarget()
+      this.cleanupDeps()
     }
-    // "touch" every property so they are all tracked as
-    // dependencies for deep watching
-    if (this.deep) {
-      traverse(value)
-    }
-    popTarget()
-    this.cleanupDeps()
     return value
   }
 
@@ -242,7 +245,7 @@ function traverse (val: any) {
   _traverse(val, seenObjects)
 }
 
-function _traverse (val: any, seen: Set) {
+function _traverse (val: any, seen: ISet) {
   let i, keys
   const isA = Array.isArray(val)
   if ((!isA && !isObject(val)) || !Object.isExtensible(val)) {

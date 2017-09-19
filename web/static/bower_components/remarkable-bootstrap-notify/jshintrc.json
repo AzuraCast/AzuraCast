@@ -1,0 +1,26 @@
+{
+	"bitwise": true,
+	"curly": true,
+	"eqeqeq": true,
+	"forin": true,
+	"freeze": true,
+	"immed": true,
+	"latedef": true,
+	"noarg": true,
+	"noempty": true,
+	"nonbsp": true,
+	"nonew": true,
+	"undef": true,
+	"unused": true,
+	"strict": false,
+	"trailing": true,
+	"maxparams": 5,
+	"sub": true,
+	"devel": true,
+	"browser": true,
+
+	"globals": {
+		"jQuery": false
+	}
+
+}

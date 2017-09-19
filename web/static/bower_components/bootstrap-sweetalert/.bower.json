@@ -28,8 +28,7 @@
     "tag": "0.4.5",
     "commit": "853bd5c8d047c68346a8aaf03969fd7296092157"
   },
-  "_source": "git://github.com/lipis/bootstrap-sweetalert.git",
+  "_source": "https://github.com/lipis/bootstrap-sweetalert.git",
   "_target": "~0.4.5",
-  "_originalSource": "bootstrap-sweetalert",
-  "_direct": true
+  "_originalSource": "bootstrap-sweetalert"
 }

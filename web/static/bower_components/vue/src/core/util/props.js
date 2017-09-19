@@ -1,8 +1,14 @@
 /* @flow */
 
-import { hasOwn, isObject, isPlainObject, capitalize, hyphenate } from 'shared/util'
-import { observe, observerState } from '../observer/index'
 import { warn } from './debug'
+import { observe, observerState } from '../observer/index'
+import {
+  hasOwn,
+  isObject,
+  hyphenate,
+  capitalize,
+  isPlainObject
+} from 'shared/util'
 
 type PropOptions = {
   type: Function | Array<Function> | null,
@@ -66,7 +72,8 @@ function getPropDefaultValue (vm: ?Component, prop: PropOptions, key: string): a
   // return previous default value to avoid unnecessary watcher trigger
   if (vm && vm.$options.propsData &&
     vm.$options.propsData[key] === undefined &&
-    vm._props[key] !== undefined) {
+    vm._props[key] !== undefined
+  ) {
     return vm._props[key]
   }
   // call factory function for non-Function types
@@ -129,23 +136,21 @@ function assertProp (
   }
 }
 
-/**
- * Assert the type of a value
- */
+const simpleCheckRE = /^(String|Number|Boolean|Function|Symbol)$/
+
 function assertType (value: any, type: Function): {
-  valid: boolean,
-  expectedType: ?string
+  valid: boolean;
+  expectedType: string;
 } {
   let valid
-  let expectedType = getType(type)
-  if (expectedType === 'String') {
-    valid = typeof value === (expectedType = 'string')
-  } else if (expectedType === 'Number') {
-    valid = typeof value === (expectedType = 'number')
-  } else if (expectedType === 'Boolean') {
-    valid = typeof value === (expectedType = 'boolean')
-  } else if (expectedType === 'Function') {
-    valid = typeof value === (expectedType = 'function')
+  const expectedType = getType(type)
+  if (simpleCheckRE.test(expectedType)) {
+    const t = typeof value
+    valid = t === expectedType.toLowerCase()
+    // for primitive wrapper objects
+    if (!valid && t === 'object') {
+      valid = value instanceof type
+    }
   } else if (expectedType === 'Object') {
     valid = isPlainObject(value)
   } else if (expectedType === 'Array') {
@@ -166,7 +171,7 @@ function assertType (value: any, type: Function): {
  */
 function getType (fn) {
   const match = fn && fn.toString().match(/^\s*function (\w+)/)
-  return match && match[1]
+  return match ? match[1] : ''
 }
 
 function isType (type, fn) {

@@ -1,0 +1,138 @@
+<div id="source-code" class="hide">
+            <div class="bg"></div>
+
+            <div class="box shadow">
+                <a title="Close" class="top-button"><i class="fa fa-times"></i></a>
+
+                <div id="code-button" class="hide code">
+                    <h2>Buttons</h2>
+                    <div class="wrapper">
+{{#code class="lang-markup"}}
+<style>
+    #colored-button .btn { color: #fff; }
+    #colored-button a, 
+    #colored-button a:hover { background: #01BCFF; }
+    #colored-button button,
+    #colored-button button:hover { background: #1bb556; }
+    #colored-button input,
+    #colored-button input:hover { background: #ff4f0f; }
+</style>
+
+<p class="text-center">
+    <a class="flat-buttons">Button A</a>
+    <button class="flat-buttons">Button B</button>
+    <input class="flat-buttons" type="submit" value="Button C">
+</p>
+
+<p id="colored-button" class="text-center">
+    <a class="btn float-buttons">Button A</a>
+    <button class="btn float-button-light">Button B</button>
+    <input class="btn float-buttons" type="submit" value="Button C">
+</p>
+
+<script type="text/javascript">
+    Waves.attach('.flat-buttons', ['waves-button']);
+    Waves.attach('.float-buttons', ['waves-button', 'waves-float']);
+    Waves.attach('.float-button-light', ['waves-button', 'waves-float', 'waves-light']);
+</script>
+{{/code}}
+                    </div>
+                </div>
+
+                <div id="code-icon" class="hide code">
+                    <h2>Icons</h2>
+                    <div class="wrapper">
+{{#code class="lang-markup"}}
+<style>
+    #colored-icon i { color: #fff; }
+    #colored-icon i:nth-child(1) { background: #ff6400; }
+    #colored-icon i:nth-child(2) { background: #d54f38; }
+    #colored-icon i:nth-child(3) { background: #eb4d7e; }
+    #colored-icon i:nth-child(4) { background: #d138c8; }
+    #colored-icon i:nth-child(5) { background: #bd73ff; }
+    #colored-icon i:nth-child(6) { background: #0074d6; }
+</style>
+
+<p class="text-center">
+    <i class="fa fa-bars flat-icon"></i>
+    <i class="fa fa-bookmark flat-icon"></i>
+    <i class="fa fa-calendar flat-icon"></i>
+    <i class="fa fa-envelope flat-icon"></i>
+    <i class="fa fa-exclamation flat-icon"></i>
+    <i class="fa fa-folder flat-icon"></i>
+</p>
+
+<p id="colored-icon" class="text-center">
+    <i class="fa fa-bars float-icon"></i>
+    <i class="fa fa-bookmark float-icon-light"></i>
+    <i class="fa fa-calendar float-icon"></i>
+    <i class="fa fa-envelope float-icon-light"></i>
+    <i class="fa fa-exclamation float-icon"></i>
+    <i class="fa fa-folder float-icon-light"></i>
+</p>
+
+<script type="text/javascript">
+    Waves.attach('.flat-icon', ['waves-circle']);
+    Waves.attach('.float-icon', ['waves-circle', 'waves-float']);
+    Waves.attach('.float-icon-light', ['waves-circle', 'waves-float', 'waves-light']);
+</script>
+{{/code}}
+                    </div>
+                </div>
+
+                <div id="code-other" class="hide code">
+                    <h2>DIVs &amp; Images</h2>
+                    <div class="wrapper">
+{{#code class="lang-markup"}}
+<div class="boxes flat-box">Flat Box</div>
+<div class="boxes float-box">Float Box</div>
+<div class="clear"></div>
+
+<p class="text-center">
+    <img class="waves-image" src="https://farm2.staticflickr.com/1297/1091511802_2fb2451ecc_n.jpg">
+</p>
+
+<script type="text/javascript">
+    Waves.attach('.flat-box', ['waves-block']);
+    Waves.attach('.float-box', ['waves-block', 'waves-float']);
+    Waves.attach('.waves-image');
+</script>
+{{/code}}
+                    </div>
+                </div>
+
+                <div id="code-action" class="hide code">
+                    <h2>Action/Event</h2>
+                    <div class="wrapper">
+{{#code class="lang-markup"}}
+<style>
+    #snarl-demo {
+        background:#04d654;
+        color: #fff;
+    }
+</style>
+                        
+<p class="text-center">
+    <button id="snarl-demo">Click Me!</button>
+</p>
+                        
+<script type="text/javascript">
+    Waves.attach('#snarl-demo', ['waves-button', 'waves-float']);
+
+    Snarl.setDefaultOptions({
+        timeout: 5000
+    });
+
+    $('#snarl-demo').click(function() {
+        Snarl.addNotification({
+            title: 'Snarl Notification',
+            text: 'You clicked the Waves button!'
+        });
+    });
+</script>
+{{/code}}
+                    </div>
+                </div>
+
+            </div>
+        </div>

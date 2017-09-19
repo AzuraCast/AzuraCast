@@ -1,33 +1,37 @@
 /* @flow */
 
-import { callHook } from 'core/instance/lifecycle'
+import { isRegExp } from 'shared/util'
 import { getFirstComponentChild } from 'core/vdom/helpers/index'
 
 type VNodeCache = { [key: string]: ?VNode };
 
-const patternTypes: Array<Function> = [String, RegExp]
+const patternTypes: Array<Function> = [String, RegExp, Array]
 
 function getComponentName (opts: ?VNodeComponentOptions): ?string {
   return opts && (opts.Ctor.options.name || opts.tag)
 }
 
-function matches (pattern: string | RegExp, name: string): boolean {
-  if (typeof pattern === 'string') {
+function matches (pattern: string | RegExp | Array<string>, name: string): boolean {
+  if (Array.isArray(pattern)) {
+    return pattern.indexOf(name) > -1
+  } else if (typeof pattern === 'string') {
     return pattern.split(',').indexOf(name) > -1
-  } else if (pattern instanceof RegExp) {
+  } else if (isRegExp(pattern)) {
     return pattern.test(name)
   }
   /* istanbul ignore next */
   return false
 }
 
-function pruneCache (cache: VNodeCache, filter: Function) {
+function pruneCache (cache: VNodeCache, current: VNode, filter: Function) {
   for (const key in cache) {
     const cachedNode: ?VNode = cache[key]
     if (cachedNode) {
       const name: ?string = getComponentName(cachedNode.componentOptions)
       if (name && !filter(name)) {
-        pruneCacheEntry(cachedNode)
+        if (cachedNode !== current) {
+          pruneCacheEntry(cachedNode)
+        }
         cache[key] = null
       }
     }
@@ -36,9 +40,6 @@ function pruneCache (cache: VNodeCache, filter: Function) {
 
 function pruneCacheEntry (vnode: ?VNode) {
   if (vnode) {
-    if (!vnode.componentInstance._inactive) {
-      callHook(vnode.componentInstance, 'deactivated')
-    }
     vnode.componentInstance.$destroy()
   }
 }
@@ -63,11 +64,11 @@ export default {
   },
 
   watch: {
-    include (val: string | RegExp) {
-      pruneCache(this.cache, name => matches(val, name))
+    include (val: string | RegExp | Array<string>) {
+      pruneCache(this.cache, this._vnode, name => matches(val, name))
     },
-    exclude (val: string | RegExp) {
-      pruneCache(this.cache, name => !matches(val, name))
+    exclude (val: string | RegExp | Array<string>) {
+      pruneCache(this.cache, this._vnode, name => !matches(val, name))
     }
   },
 

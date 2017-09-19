@@ -3,6 +3,7 @@
  * properties to Elements.
  */
 
+import { isTextInputType } from 'web/util/element'
 import { looseEqual, looseIndexOf } from 'shared/util'
 import { warn, isAndroid, isIE9, isIE, isEdge } from 'core/util/index'
 
@@ -20,17 +21,16 @@ if (isIE9) {
 export default {
   inserted (el, binding, vnode) {
     if (vnode.tag === 'select') {
-      const cb = () => {
-        setSelected(el, binding, vnode.context)
-      }
-      cb()
-      /* istanbul ignore if */
-      if (isIE || isEdge) {
-        setTimeout(cb, 0)
-      }
-    } else if (vnode.tag === 'textarea' || el.type === 'text' || el.type === 'password') {
+      setSelected(el, binding, vnode.context)
+      el._vOptions = [].map.call(el.options, getValue)
+    } else if (vnode.tag === 'textarea' || isTextInputType(el.type)) {
       el._vModifiers = binding.modifiers
       if (!binding.modifiers.lazy) {
+        // Safari < 10.2 & UIWebView doesn't fire compositionend when
+        // switching focus before confirming composition choice
+        // this also fixes the issue where some browsers e.g. iOS Chrome
+        // fires "change" instead of "input" on autocomplete.
+        el.addEventListener('change', onCompositionEnd)
         if (!isAndroid) {
           el.addEventListener('compositionstart', onCompositionStart)
           el.addEventListener('compositionend', onCompositionEnd)
@@ -49,17 +49,33 @@ export default {
       // it's possible that the value is out-of-sync with the rendered options.
       // detect such cases and filter out values that no longer has a matching
       // option in the DOM.
-      const needReset = el.multiple
-        ? binding.value.some(v => hasNoMatchingOption(v, el.options))
-        : binding.value !== binding.oldValue && hasNoMatchingOption(binding.value, el.options)
-      if (needReset) {
-        trigger(el, 'change')
+      const prevOptions = el._vOptions
+      const curOptions = el._vOptions = [].map.call(el.options, getValue)
+      if (curOptions.some((o, i) => !looseEqual(o, prevOptions[i]))) {
+        // trigger change event if
+        // no matching option found for at least one value
+        const needReset = el.multiple
+          ? binding.value.some(v => hasNoMatchingOption(v, curOptions))
+          : binding.value !== binding.oldValue && hasNoMatchingOption(binding.value, curOptions)
+        if (needReset) {
+          trigger(el, 'change')
+        }
       }
     }
   }
 }
 
 function setSelected (el, binding, vm) {
+  actuallySetSelected(el, binding, vm)
+  /* istanbul ignore if */
+  if (isIE || isEdge) {
+    setTimeout(() => {
+      actuallySetSelected(el, binding, vm)
+    }, 0)
+  }
+}
+
+function actuallySetSelected (el, binding, vm) {
   const value = binding.value
   const isMultiple = el.multiple
   if (isMultiple && !Array.isArray(value)) {
@@ -95,12 +111,7 @@ function setSelected (el, binding, vm) {
 }
 
 function hasNoMatchingOption (value, options) {
-  for (let i = 0, l = options.length; i < l; i++) {
-    if (looseEqual(getValue(options[i]), value)) {
-      return false
-    }
-  }
-  return true
+  return options.every(o => !looseEqual(o, value))
 }
 
 function getValue (option) {
@@ -114,6 +125,8 @@ function onCompositionStart (e) {
 }
 
 function onCompositionEnd (e) {
+  // prevent triggering an input event for no reason
+  if (!e.target.composing) return
   e.target.composing = false
   trigger(e.target, 'input')
 }

@@ -35,8 +35,7 @@
     "tag": "7.0.10",
     "commit": "7f50c48758cf06ec3bd4a3e134ac1ad914ede531"
   },
-  "_source": "git://github.com/leongersen/noUiSlider.git",
+  "_source": "https://github.com/leongersen/noUiSlider.git",
   "_target": "~7.0.10",
-  "_originalSource": "leongersen/noUiSlider",
-  "_direct": true
+  "_originalSource": "leongersen/noUiSlider"
 }

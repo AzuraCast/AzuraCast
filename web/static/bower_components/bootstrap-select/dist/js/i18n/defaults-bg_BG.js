@@ -1,5 +1,5 @@
 /*!
- * Bootstrap-select v1.7.2 (http://silviomoreto.github.io/bootstrap-select)
+ * Bootstrap-select v1.7.7 (http://silviomoreto.github.io/bootstrap-select)
  *
  * Copyright 2013-2015 bootstrap-select
  * Licensed under MIT (https://github.com/silviomoreto/bootstrap-select/blob/master/LICENSE)
@@ -19,7 +19,7 @@
   } else {
     factory(jQuery);
   }
-}(this, function () {
+}(this, function (jQuery) {
 
 (function ($) {
   $.fn.selectpicker.defaults = {

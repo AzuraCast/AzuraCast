@@ -24,4 +24,4 @@ Thanks for [BrowserStack](http://www.browserstack.com/) by providing a great tes
 ## License
 Waves created by [Alfiana Sibuea](http://fian.my.id), and released under [MIT license](https://github.com/fians/Waves/blob/master/LICENSE). 
 
-Copyright &copy; 2014-2015 Alfiana E. Sibuea. All rights reserved.
+Copyright &copy; 2014-2016 Alfiana E. Sibuea. All rights reserved.

@@ -5,7 +5,6 @@
     "dist/css/bootstrap-select.css",
     "dist/js/bootstrap-select.js"
   ],
-  "version": "1.7.2",
   "homepage": "http://silviomoreto.github.io/bootstrap-select",
   "authors": [
     "silviomoreto"
@@ -29,14 +28,14 @@
     "package.json",
     "test.html"
   ],
-  "_release": "1.7.2",
+  "version": "1.7.7",
+  "_release": "1.7.7",
   "_resolution": {
     "type": "version",
-    "tag": "v1.7.2",
-    "commit": "a8ed49ea56d277ef18310d597e69232ce97c7416"
+    "tag": "v1.7.7",
+    "commit": "8c961c506638b370a80faf0d237a42ef7c09904c"
   },
-  "_source": "git://github.com/silviomoreto/bootstrap-select.git",
+  "_source": "https://github.com/silviomoreto/bootstrap-select.git",
   "_target": "~1.7.2",
-  "_originalSource": "silviomoreto/bootstrap-select",
-  "_direct": true
+  "_originalSource": "silviomoreto/bootstrap-select"
 }

@@ -26,5 +26,6 @@ function notify(message, type, minimal_layout) {
         growlSettings.offset.y = 20;
     }
 
-    $.growl({ message: message }, growlSettings);
+    $.notify({ message: message }, growlSettings);
+
 }

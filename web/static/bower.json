@@ -33,6 +33,9 @@
     "Waves": "waves#~0.7.4",
     "jquery": "~2.1.4",
     "moment": "~2.10.6",
-    "chosen": "~1.4.2"
+    "chosen": "~1.4.2",
+    "codemirror": "^5.29.0",
+    "bootstrap-growl": "^1.1.0",
+    "remarkable-bootstrap-notify": "^3.1.3"
   }
 }

@@ -151,7 +151,7 @@ parameter must be adjusted together with `progressCallbacksInterval` parameter. 
   * `singleFile` To prevent multiple file uploads set this to true. Also look at config parameter `singleFile`.
   * `attributes` Pass object of keys and values to set custom attributes on input fields.
    For example, you can set `accept` attribute to `image/*`. This means that user will be able to select only images.
-   Full list of attributes: http://www.w3.org/TR/html-markup/input.file.html#input.file-attributes
+   Full list of attributes: https://www.w3.org/wiki/HTML/Elements/input/file
 
    Note: avoid using `a` and `button` tags as file upload buttons, use span instead.
 * `.assignDrop(domNodes)` Assign one or more DOM nodes as a drop target.
@@ -234,7 +234,7 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 
 * All features or bug fixes must be tested by one or more specs.
 
-* We follow the rules contained in [Google's JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml) with an exception we wrap all code at 100 characters.
+* We follow the rules contained in [Google's JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html) with an exception we wrap all code at 100 characters.
 
 
 ## Installation Dependencies

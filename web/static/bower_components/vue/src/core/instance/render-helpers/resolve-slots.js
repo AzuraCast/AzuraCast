@@ -12,13 +12,19 @@ export function resolveSlots (
     return slots
   }
   const defaultSlot = []
-  let name, child
   for (let i = 0, l = children.length; i < l; i++) {
-    child = children[i]
+    const child = children[i]
+    const data = child.data
+    // remove slot attribute if the node is resolved as a Vue slot node
+    if (data && data.attrs && data.attrs.slot) {
+      delete data.attrs.slot
+    }
     // named slots should only be respected if the vnode was rendered in the
     // same context.
     if ((child.context === context || child.functionalContext === context) &&
-        child.data && (name = child.data.slot)) {
+      data && data.slot != null
+    ) {
+      const name = child.data.slot
       const slot = (slots[name] || (slots[name] = []))
       if (child.tag === 'template') {
         slot.push.apply(slot, child.children)
@@ -41,11 +47,16 @@ function isWhitespace (node: VNode): boolean {
 }
 
 export function resolveScopedSlots (
-  fns: Array<[string, Function]>
+  fns: ScopedSlotsData, // see flow/vnode
+  res?: Object
 ): { [key: string]: Function } {
-  const res = {}
+  res = res || {}
   for (let i = 0; i < fns.length; i++) {
-    res[fns[i][0]] = fns[i][1]
+    if (Array.isArray(fns[i])) {
+      resolveScopedSlots(fns[i], res)
+    } else {
+      res[fns[i].key] = fns[i].fn
+    }
   }
   return res
 }

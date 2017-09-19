@@ -44,12 +44,14 @@ export let animationEndEvent = 'animationend'
 if (hasTransition) {
   /* istanbul ignore if */
   if (window.ontransitionend === undefined &&
-    window.onwebkittransitionend !== undefined) {
+    window.onwebkittransitionend !== undefined
+  ) {
     transitionProp = 'WebkitTransition'
     transitionEndEvent = 'webkitTransitionEnd'
   }
   if (window.onanimationend === undefined &&
-    window.onwebkitanimationend !== undefined) {
+    window.onwebkitanimationend !== undefined
+  ) {
     animationProp = 'WebkitAnimation'
     animationEndEvent = 'webkitAnimationEnd'
   }
@@ -67,8 +69,11 @@ export function nextFrame (fn: Function) {
 }
 
 export function addTransitionClass (el: any, cls: string) {
-  (el._transitionClasses || (el._transitionClasses = [])).push(cls)
-  addClass(el, cls)
+  const transitionClasses = el._transitionClasses || (el._transitionClasses = [])
+  if (transitionClasses.indexOf(cls) < 0) {
+    transitionClasses.push(cls)
+    addClass(el, cls)
+  }
 }
 
 export function removeTransitionClass (el: any, cls: string) {

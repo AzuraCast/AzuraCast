@@ -1,6 +1,5 @@
 {
   "name": "material-shadows",
-  "version": "2.0.1",
   "authors": [
     "@mrmlnc (Denis Malinochkin)"
   ],
@@ -23,14 +22,14 @@
     "example.html",
     "test"
   ],
-  "_release": "2.0.1",
+  "version": "2.0.2",
+  "_release": "2.0.2",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.1",
-    "commit": "7d8efdd88c77965a8d5b29870485fa2f513cb362"
+    "tag": "2.0.2",
+    "commit": "bdeefae7994594a3107f41f21262a9c428c5f493"
   },
-  "_source": "git://github.com/mrmlnc/material-shadows.git",
+  "_source": "https://github.com/mrmlnc/material-shadows.git",
   "_target": "~2.0.1",
-  "_originalSource": "material-shadows",
-  "_direct": true
+  "_originalSource": "material-shadows"
 }

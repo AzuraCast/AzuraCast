@@ -10,16 +10,12 @@ Full documentation and a demo can be found at [jacklmoore.com/autosize](http://j
 ```bash
 npm install autosize
 ```
-#### Install via Bower
-```bash
-bower install autosize
-```
 
 #### Browser compatibility
 
-Chrome | Firefox | IE | Safari | iOS Safari | Android | Opera Mini
------- | --------|----|--------|------------|---------|------------
-yes    | yes     | 9  | yes    | yes        | 4       | ?
+Chrome | Firefox | IE | Safari | iOS Safari | Android | Opera Mini | Windows Phone IE
+------ | --------|----|--------|------------|---------|------------|------------------
+yes    | yes     | 9  | yes    | yes        | 4       | ?          | 8.1
 
 #### Usage
 

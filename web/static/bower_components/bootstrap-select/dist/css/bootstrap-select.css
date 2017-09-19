@@ -1,5 +1,5 @@
 /*!
- * Bootstrap-select v1.7.2 (http://silviomoreto.github.io/bootstrap-select)
+ * Bootstrap-select v1.7.7 (http://silviomoreto.github.io/bootstrap-select)
  *
  * Copyright 2013-2015 bootstrap-select
  * Licensed under MIT (https://github.com/silviomoreto/bootstrap-select/blob/master/LICENSE)
@@ -70,6 +70,12 @@
 .bootstrap-select.btn-group > .disabled:focus {
   outline: none !important;
 }
+.bootstrap-select.btn-group.bs-container {
+  position: absolute;
+}
+.bootstrap-select.btn-group.bs-container .dropdown-menu {
+  z-index: 1060;
+}
 .bootstrap-select.btn-group .dropdown-toggle .filter-option {
   display: inline-block;
   overflow: hidden;
@@ -88,7 +94,6 @@
 }
 .bootstrap-select.btn-group .dropdown-menu {
   min-width: 100%;
-  z-index: 1035;
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;
@@ -114,6 +119,10 @@
 }
 .bootstrap-select.btn-group .dropdown-menu li a {
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .bootstrap-select.btn-group .dropdown-menu li a.opt {
   position: relative;
@@ -169,7 +178,7 @@
   margin-right: 34px;
 }
 .bootstrap-select.show-menu-arrow.open > .dropdown-toggle {
-  z-index: 1036;
+  z-index: 1061;
 }
 .bootstrap-select.show-menu-arrow .dropdown-toggle:before {
   content: '';
@@ -221,7 +230,6 @@
   padding: 4px 8px;
 }
 .bs-actionsbox {
-  float: left;
   width: 100%;
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -246,6 +254,7 @@
 .bs-searchbox .form-control {
   margin-bottom: 0;
   width: 100%;
+  float: none;
 }
 select.bs-select-hidden,
 select.selectpicker {

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <link rel="icon" href="http://fian.my.id/static/favicon.png" />
+        <meta name="msapplication-tap-highlight" content="no"/> 
+
+        <title>Waves</title>
+        <meta name="description" content="Waves - Click effect inspired by Google's Material Design" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="./static/prims.css">
+        <link rel="stylesheet" type="text/css" href="./static/snarl.min.css">
+        <link rel="stylesheet" type="text/css" href="./static/waves.min.css?v=0.7.5">
+
+        <link rel="stylesheet" type="text/css" href="./static/style.css">
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-36521756-2', 'auto');
+          ga('send', 'pageview');
+
+        </script>
+        
+        <script type="text/javascript" src="./static/prims.js"></script>
+        <script type="text/javascript" src="./static/snarl.min.js"></script>
+        <script type="text/javascript" src="./static/waves.min.js?v=0.7.5"></script>
+        <script type="text/javascript" src="./static/jquery.js"></script>
+
+    </head>
+    <body>
+        <div id="bg-pattern" class="bg-pattern waves-effect waves-block waves-light"></div>
+
+        <div id="navigation" class="shadow">
+            <a href="#examples">Examples</a>
+            <a href="#start">Docs</a>
+            <a href="#api">API</a>
+            <a href="#faq">FAQ</a>
+        </div>
+
+        
+        
+        @situs-include(./_pages/home.html);
+
+        @situs-include(./_pages/examples.html);
+        
+        @situs-include(./_pages/source.html);
+
+        @situs-include(./_pages/getting-started.html);
+        
+        @situs-include(./_pages/api.html);
+        
+        @situs-include(./_pages/faq.html);
+
+        
+        
+        
+        <script type="text/javascript">
+            
+            var currentRoute = false;
+
+
+            function enterTransition(name, callback) {
+
+                var element = $('#'+name);
+
+                element.removeClass('hide');
+
+                setTimeout(function() {
+                    element.addClass('show')
+                        .addClass('appear');
+
+                    setTimeout(function() {
+                        element.addClass('flow');
+                        return callback();
+                    }, 1000);
+                }, 100);
+
+            }
+
+            function leaveTransition(name, callback) {
+
+                var element = $('#'+name);
+
+                element.removeClass('flow')
+                    .removeClass('show');
+
+                setTimeout(function() {
+                    element.removeClass('appear');
+
+                    setTimeout(function() {
+                        element.addClass('hide');
+                        return callback();
+                    }, 500);
+                }, 300);
+            }
+
+            var routes = {
+
+                // Landing Page Animation
+                index: {
+                    enter: function(callback) {
+
+                        $('#landing').removeClass('hide');
+
+                        setTimeout(function() {
+                            $('#landing').addClass('show');
+                            return callback();
+                        }, 100);
+
+                    },
+                    leave: function(callback) {
+
+                        $('#landing').removeClass('show');
+
+                        setTimeout(function() {
+                            $('#landing').addClass('hide');
+                            return callback();
+                        }, 500);
+
+                    }
+                },
+
+                // Example Page Animation
+                examples: {
+                    enter: function(callback) {
+                        enterTransition('example', callback);
+                    },
+                    leave: function(callback) {
+                        leaveTransition('example', callback);
+                    }
+                },
+
+                // Getting Started Page Animation
+                start: {
+                    enter: function(callback) {
+                        enterTransition('getting-started', callback);
+                    },
+                    leave: function(callback) {
+                        leaveTransition('getting-started', callback);
+                    }
+                },
+
+                // API Page Animation
+                api: {
+                    enter: function(callback) {
+                        enterTransition('api', callback);
+                    },
+                    leave: function(callback) {
+                        leaveTransition('api', callback);
+                    }
+                },
+
+                // FAQ Page Animation
+                faq: {
+                    enter: function(callback) {
+                        enterTransition('faq', callback);
+                    },
+                    leave: function(callback) {
+                        leaveTransition('faq', callback);
+                    }
+                }
+
+            }
+
+            function routing() {
+
+                var hash = window.location.hash.replace('#', '');
+
+                if (!hash.length) {
+                    hash = 'index';
+                }
+
+                if (['index', 'examples', 'start', 'api', 'faq'].indexOf(hash) === -1) {
+                    return false;
+                }
+
+                if (currentRoute === false) {
+                    return routes[hash].enter(function() {
+                        currentRoute = hash;
+                    });
+                }
+
+                return routes[currentRoute].leave(function() {
+                    routes[hash].enter(function() {
+                        currentRoute = hash;
+                    });
+                });
+
+            }
+
+            function init() {
+                setTimeout(function() {
+                    $('#navigation').addClass('show');
+                    routing();
+                }, 500);
+            }
+
+            $(document).on('ready', function() {
+
+                // Init Waves
+                Waves.init();
+                Waves.attach('.drag-ripple', 'waves-block', true);
+                Waves.attach('#bg-pattern', null, true);
+                
+
+                init();
+
+                $(window).on('hashchange', routing);
+
+
+                /**
+                 * Example source code click
+                 */
+                $('#example .top-button').on('click', function() {
+
+                    var type = $(this).data('code');
+
+                    $('#source-code .box .code').addClass('hide');
+                    $('#source-code .box #code-'+type).removeClass('hide');
+                    $('#source-code').removeClass('hide');
+
+                    setTimeout(function() {
+                        $('#source-code').addClass('show');
+                    }, 50);
+
+                });
+
+                $('#source-code .top-button').on('click', function() {
+
+                    $('#source-code').removeClass('show');
+
+                    setTimeout(function() {
+                        $('#source-code .box .code').addClass('hide');
+                        $('#source-code').addClass('hide');
+                    }, 500);
+                });
+            });
+
+        </script>
+    </body>
+</html>

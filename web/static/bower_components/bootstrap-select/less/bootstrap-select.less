@@ -94,6 +94,14 @@
     }
   }
 
+  &.bs-container {
+    position: absolute;
+    
+    .dropdown-menu {
+      z-index: @zindex-select-dropdown;
+    }
+  }
+
   // The selectpicker button
   .dropdown-toggle {
     .filter-option {
@@ -119,7 +127,6 @@
   // The selectpicker dropdown
   .dropdown-menu {
     min-width: 100%;
-    z-index: @zindex-select-dropdown;
     box-sizing: border-box;
 
     &.inner {
@@ -145,6 +152,10 @@
 
       a {
         cursor: pointer;
+        -webkit-user-select: none;
+           -moz-user-select: none;
+            -ms-user-select: none;
+                user-select: none;
 
         &.opt {
           position: relative;
@@ -286,7 +297,6 @@
 }
 
 .bs-actionsbox {
-  float: left;
   width: 100%;
   box-sizing: border-box;
 
@@ -313,6 +323,7 @@
   & .form-control {
     margin-bottom: 0;
     width: 100%;
+    float: none;
   }
 }
 

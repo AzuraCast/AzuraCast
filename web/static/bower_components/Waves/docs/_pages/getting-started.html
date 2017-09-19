@@ -1,0 +1,140 @@
+<div id="getting-started" class="content section page hide">
+            <h1>Getting Started</h1>
+
+            <div class="box shadow">
+
+                <p>
+                    Download the latest version of Waves from <a href="https://github.com/publicis-indonesia/Waves/releases">Github repository</a>. You can also install it via Bower with <code class="language-css">bower install waves</code> or via npm with <code class="language-css">npm install node-waves</code>. Include waves.min.css and waves.min.js to your HTML file and Waves is ready to use!
+                </p>
+
+{{#code class="lang-markup"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Waves example</title>
+
+        <link rel="stylesheet" type="text/css" href="/path/to/waves.min.css" />
+
+    </head>
+    <body>
+        <a href="#" class="button">Click Here</a>
+
+        <script type="text/javascript" src="/path/to/waves.min.js"></script>
+    </body>
+</html>
+{{/code}}
+
+                <p>
+                    <strong>Advanced:</strong> <br>
+                    Waves also provide LESS, SCSS, and SASS source. So, feel free to used it :)
+                </p>
+                
+                <h2>Attach the effect</h2>
+                
+                <p>
+                    To attach Waves's effect (or we usually called it as "the ripple") to HTML element, you can use <code class="language-js">Waves.attach()</code>
+                </p>
+                
+{{#code class="lang-markup"}}
+<a href="#" class="button">Click Here</a>
+                
+<script type="text/javascript">
+    Waves.attach('.button');
+</script>         
+{{/code}}
+                
+                <p>
+                    <code class="language-js">Waves.attach()</code> comes with 2 parameters, the first is DOM element that you want to be attached (or string that represent it, like jQuery), and the second one is array of CSS classes that will be put on the element.
+                </p>
+                
+{{#code class="lang-markup"}}
+<a href="#" class="button">Click Here</a>
+                
+<script type="text/javascript">
+    Waves.attach('.button', ['waves-button', 'waves-float']);
+</script>         
+{{/code}}
+                
+                <h2>Initialize</h2>
+                
+                <p>
+                    After you attach Waves to your HTML element, you can initialize Waves with <code class="language-js">Waves.init()</code> to start the effect. You can also configure Waves by passing option parameter on <code class="language-js">Waves.init()</code>. Please see API page for further information.
+                </p>
+                
+{{#code class="lang-markup"}}
+<a href="#" class="button">Click Here</a>
+                
+<script type="text/javascript">
+    Waves.attach('.button', ['waves-button', 'waves-float']);
+    Waves.init();
+</script>         
+{{/code}}
+                <p>
+                    Waves is designed to be flexible. It means you still be able to attach the effect to another element after <code class="language-js">Waves.init()</code>. 
+                </p>
+
+{{#code class="lang-markup"}}
+<a href="#" class="button">Click Here</a>
+                
+<script type="text/javascript">
+    // This is ok.
+    Waves.init();
+    Waves.attach('.button', ['waves-button', 'waves-float']);
+</script>         
+{{/code}}
+                
+                <h2>Helper classes</h2>
+                
+                <p>
+                    In a couple examples above, you already see some Waves classes on <code class="language-js">Waves.attach()</code>. Waves provide several classes to help you styling your effect. Here we go.
+                </p>
+                
+                <ul>
+                    <li>
+                        <code class="language-css">.waves-button</code> for semi-rounded button style.
+                    </li>
+                    <li>
+                        <code class="language-css">.waves-float</code> for float effect when the element is clicked.
+                    </li>
+                    <li>
+                        <code class="language-css">.waves-circle</code> for circle (rounded) style.
+                    </li>
+                    <li>
+                        <code class="language-css">.waves-block</code> for adding <code class="language-css">display: block;</code> to element.
+                    </li>
+                </ul>
+
+                <h2>Quick Fix</h2>
+
+                <p>
+                    <strong>IE Tap highlight on Windows Phone</strong>
+                </p>
+
+                <p>
+                    By default if you access a web page using IE in Windows Phone, you will get tap highlight
+                    effect when you tapping a link or button and this highlight will shadowed Waves effect. To prevent this thing happen, you will need to add <code>msapplication-tap-highlight</code> meta tag on your header.
+                </p>
+
+{{#code class="lang-markup"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Remove Tap Highlight on Windows Phone IE -->
+        <meta name="msapplication-tap-highlight" content="no"/>
+
+        <title>Your Web Page</title>
+
+        <link rel="stylesheet" type="text/css" href="/path/to/waves.css" />
+    </head>
+    <body>
+
+        <script type="text/javascript" src="/path/to/waves.js">\</script\>
+        <script type="text/javascript">
+            Waves.init();
+        </script>
+    </body>
+</html>
+{{/code}}
+
+            </div>
+        </div>

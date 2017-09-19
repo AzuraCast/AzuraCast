@@ -25,8 +25,7 @@
     "tag": "v1.0.1",
     "commit": "dc438d74c9f8d315fc645f4fe29f0dba6f1e2e92"
   },
-  "_source": "git://github.com/t4t5/sweetalert.git",
+  "_source": "https://github.com/t4t5/sweetalert.git",
   "_target": "~1.0.1",
-  "_originalSource": "sweetalert",
-  "_direct": true
+  "_originalSource": "sweetalert"
 }

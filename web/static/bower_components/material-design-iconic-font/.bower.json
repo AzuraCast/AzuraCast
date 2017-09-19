@@ -15,7 +15,7 @@
     "MIT"
   ],
   "main": [
-    "./dist/css/*",
+    "./dist/css/*.min.css",
     "./dist/fonts/*"
   ],
   "ignore": [
@@ -31,15 +31,14 @@
   },
   "dependencies": {},
   "devDependencies": {},
-  "version": "2.1.1",
-  "_release": "2.1.1",
+  "version": "2.1.2",
+  "_release": "2.1.2",
   "_resolution": {
     "type": "version",
-    "tag": "2.1.1",
-    "commit": "bda91a4a8c62a3c5e1101d8af2ff7d1895e1f826"
+    "tag": "2.1.2",
+    "commit": "0a9c7d1d1f1f8bc4c46ce086b42271554fa9d05c"
   },
-  "_source": "git://github.com/zavoloklom/material-design-iconic-font.git",
+  "_source": "https://github.com/zavoloklom/material-design-iconic-font.git",
   "_target": "~2.1.1",
-  "_originalSource": "material-design-iconic-font",
-  "_direct": true
+  "_originalSource": "material-design-iconic-font"
 }

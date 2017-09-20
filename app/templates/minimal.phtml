@@ -32,9 +32,13 @@ if (!APP_IN_PRODUCTION)
 
 <link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/animate.css/animate.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('css/'.$customization->getTheme().'.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?=$url->content('css/'.$customization->getPublicTheme().'.css') ?>">
 
 <?=$this->section('custom_css') ?>
+
+<style type="text/css">
+<?=$customization->getCustomPublicCss() ?>
+</style>
 
 <script type="text/javascript" src="<?=$url->content('bower_components/jquery/dist/jquery.min.js') ?>"></script>
 <script type="text/javascript" src="<?=$url->content('bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>

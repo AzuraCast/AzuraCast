@@ -30,6 +30,7 @@ return function(\Slim\App $app) {
         });
 
         $this->map(['GET', 'POST'], '/settings', 'admin:settings:index')->setName('admin:settings:index');
+        $this->map(['GET', 'POST'], '/branding', 'admin:branding:index')->setName('admin:branding:index');
 
         $this->group('/stations', function () {
 

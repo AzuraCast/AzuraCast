@@ -38,6 +38,10 @@ if (!APP_IN_PRODUCTION)
 
 <?=$this->section('custom_css') ?>
 
+<style type="text/css">
+    <?=$customization->getCustomInternalCss() ?>
+</style>
+
 <link rel="stylesheet" type="text/css" href="<?=$assets->getPath('css/'.$customization->getTheme().'.css') ?>">
 
 <script type="text/javascript" src="<?=$url->content('bower_components/jquery/dist/jquery.min.js') ?>"></script>

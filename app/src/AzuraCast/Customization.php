@@ -104,4 +104,34 @@ class Customization
 
         return $instance_name;
     }
+
+    /**
+     * Get the theme name to be used in public (non-logged-in) pages.
+     *
+     * @return string
+     */
+    public function getPublicTheme()
+    {
+        return $this->settings_repo->getSetting('public_theme', $this->app_settings['themes']['default']);
+    }
+
+    /**
+     * Return the administrator-supplied custom CSS for public (minimal layout) pages, if specified.
+     *
+     * @return string
+     */
+    public function getCustomPublicCss()
+    {
+        return (string)$this->settings_repo->getSetting('custom_css_public', '');
+    }
+
+    /**
+     * Return the administrator-supplied custom CSS for internal (full layout) pages, if specified.
+     *
+     * @return string
+     */
+    public function getCustomInternalCss()
+    {
+        return (string)$this->settings_repo->getSetting('custom_css_internal', '');
+    }
 }

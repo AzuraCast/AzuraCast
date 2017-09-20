@@ -12,6 +12,11 @@ return [
                 'icon' => 'zmdi zmdi-settings',
                 'permission' => 'administer settings',
             ],
+            _('Custom Branding') => [
+                'url' => 'admin:branding:index',
+                'icon' => 'zmdi zmdi-brush',
+                'permission' => 'administer settings',
+            ],
             _('API Keys') => [
                 'url' => 'admin:api:index',
                 'icon' => 'zmdi zmdi-key',

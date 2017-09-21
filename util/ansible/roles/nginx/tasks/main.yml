@@ -1,4 +1,11 @@
 ---
+  - name: Uninstall web server packages that may conflict with nginx
+    become: true
+    apt:  package="{{ item }}" state=absent
+    with_items:
+     - apache2
+     - lighttpd
+
   - name: Unhold nginx-related packages for updates
     become: true
     dpkg_selections:

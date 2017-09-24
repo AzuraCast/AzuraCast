@@ -6,13 +6,13 @@
 [![Test Coverage](https://codeclimate.com/github/AzuraCast/AzuraCast/badges/coverage.svg)](https://codeclimate.com/github/AzuraCast/AzuraCast/coverage)
 [![Build Status](https://travis-ci.org/AzuraCast/AzuraCast.svg?branch=master)](https://travis-ci.org/AzuraCast/AzuraCast)
 
-**AzuraCast** is a standalone, turnkey web radio management kit. Using its easy installer, you can go from a fresh Linux installation to a fully working web radio station in about 5 minutes. 
+**AzuraCast** is a self-hosted, all-in-one web radio management kit. Using its easy installer tools and web interface, you can start up a fully working web radio station in a few quick minutes. 
 
-Today, AzuraCast can help you create and maintain radio stations of all types and sizes. If you look far enough back in the project's history, you'll find the project upon which AzuraCast was based, called [Ponyville Live](https://github.com/SlvrEagle23/Ponyville-Live). This project was built for one specific fan community, but its radio station management code was made standalone, in the process rebranding as AzuraCast. This project's name comes from "Azura Peavielle", the mascot of the former project's namesake media network. 
+AzuraCast works for web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. The project is named after Azura Peavielle, the mascot of [its predecessor project](https://github.com/SlvrEagle23/Ponyville-Live).
 
-**AzuraCast is currently in alpha.** Many web radio stations already run AzuraCast, and each individual release is stable, but keeping your server up-to-date with the latest code from the GitHub repository is strongly recommended for security, bug fixes and new feature releases. It's unlikely, but updates may result in unexpected issues or data loss, so always make sure to keep your station's media files backed up elsewhere, especially the files contained in `/var/azuracast/stations`.
+**AzuraCast is currently in beta.** Many web radio stations already run AzuraCast, but keeping your server up-to-date with the latest code from the GitHub repository is strongly recommended for security, bug fixes and new feature releases. It's unlikely, but updates may result in unexpected issues or data loss, so always make sure to keep your station's media files backed up in a second location.
 
-To install AzuraCast, you should have a basic understanding of the Linux shell terminal. Once installed, every aspect of your radio station can be managed via AzuraCast's web interface.
+To install AzuraCast, you should have a basic understanding of the Linux shell terminal. Once installed, every aspect of your radio station can be managed via AzuraCast's simple to use web interface.
 
 ## Features
 
@@ -37,21 +37,19 @@ You can also use AzuraCast as a tool for relaying or collecting listener statist
 
 ### Supported Operating Systems
 
-AzuraCast supports these operating systems and architectures out of the box:
+There are two ways to install AzuraCast:
 
-##### Docker Installation
-
-* Any host capable of running the latest Docker Engine and Docker Compose (included in installer)
-
-##### Traditional Installation
-
-* Ubuntu 16.04 LTS (Xenial) x64 (Recommended)
-* Ubuntu 16.04 LTS (Xenial) ARM
-* Ubuntu 14.04 LTS (Trusty) x64
+* **Using Docker and Docker Compose (Recommended)**: This method contains all of the AzuraCast dependencies in prebuilt
+    container images. Updating and installing is faster, and there are far fewer issues with software compatibility. This method
+    works on any computer that supports the latest version of the Docker Engine and Docker Compose; both can be installed as
+    part of the AzuraCast installer script.
+    
+* **Traditional Installation (Ubuntu 16.04 LTS Only)**: From a clean image of Ubuntu, you can install AzuraCast directly onto
+    your server using the included installer scripts, which use Ansible to manage dependencies. Installation and updating are
+    slower using this method, but you have more control over the software once installed. If you have other software installed
+    on your server, it may conflict with AzuraCast, so always start from a clean installation using this method.
 
 We are always looking to expand our compatibility with host operating systems, and we welcome any assistance in building new deployment scripts for other environments.
-
-## Installing AzuraCast
 
 ### What's Included with AzuraCast
 
@@ -67,6 +65,8 @@ Whether you're using the traditional installer or Docker containers, AzuraCast d
 * **[ShoutCast 2 DNAS](http://wiki.shoutcast.com/wiki/SHOUTcast_DNAS_Server_2)** as an alternative radio frontend (x86/x64 only)
 
 All of these components are automatically downloaded and installed using either of the installation methods below.
+
+## Installing AzuraCast
 
 ### Docker Installation (Recommended)
 
@@ -129,7 +129,7 @@ To restore the application's state from this compressed file, run:
 
 Note that the restoration process will wipe any existing AzuraCast database or media that exists inside the Docker volumes.
 
-### Traditional Installation (Ubuntu LTS Only)
+### Traditional Installation (Ubuntu 16.04 LTS Only)
 
 **Note:** Some web hosts offer custom versions of Ubuntu that include different software repositories. These may cause compatibility issues with AzuraCast. Many VPS providers are known to work out of the box with AzuraCast (OVH, DigitalOcean, Vultr, etc), and are thus highly recommended if you plan to use the traditional installer.
 

@@ -1,18 +1,12 @@
 <?php $this->layout('main', ['title' => _('Dashboard'), 'manual' => true]); ?>
 
-<?php $this->start('custom_js') ?>
-<script type="text/javascript" src="//code.highcharts.com/highcharts.js"></script>
-<script type="text/javascript" src="//code.highcharts.com/highcharts-more.js"></script>
-<script type="text/javascript" src="//code.highcharts.com/modules/exporting.js"></script>
-
-<?php if ($customization->getTheme() == 'dark'): ?>
-<script type="text/javascript" src="<?=$url->content('js/highcharts/dark-blue.js') ?>"></script>
-<?php endif; ?>
-
-<script type="text/javascript" src="<?=$url->content('bower_components/store-js/store.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$assets->getPath('js/radio.js') ?>"></script>
-<script type="text/javascript" src="<?=$assets->getPath('js/nchan.js') ?>"></script>
-<?php $this->stop('custom_js') ?>
+<?php
+/** @var \AzuraCast\Assets $assets */
+$assets
+    ->load('radio')
+    ->load('highcharts')
+    ->load('highcharts_theme_'.$customization->getTheme());
+?>
 
 <div class="block-header">
     <h2><?=_('Dashboard') ?></h2>

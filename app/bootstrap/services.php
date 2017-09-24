@@ -306,32 +306,15 @@ return function (\Slim\Container $di, $settings) {
 
     $di['assets'] = function ($di) {
 
-        return new class($di['url'])
-        {
-            /** @var \App\Url */
-            protected $url;
+        $libraries = require('assets.php');
 
-            /** @var array */
-            protected $assets;
+        $versioned_files = [];
+        $assets_file = APP_INCLUDE_STATIC . '/assets.json';
+        if (file_exists($assets_file)) {
+            $versioned_files = json_decode(file_get_contents($assets_file), true);
+        }
 
-            public function __construct(\App\Url $url)
-            {
-                $this->url = $url;
-
-                $assets = [];
-                $assets_file = APP_INCLUDE_STATIC . '/assets.json';
-                if (file_exists($assets_file)) {
-                    $assets = json_decode(file_get_contents($assets_file), true);
-                }
-
-                $this->assets = $assets;
-            }
-
-            public function getPath($asset)
-            {
-                return $this->url->content($this->assets[$asset] ?? $asset);
-            }
-        };
+        return new \AzuraCast\Assets($libraries, $versioned_files, $di['url']);
 
     };
 

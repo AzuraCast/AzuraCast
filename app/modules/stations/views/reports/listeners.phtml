@@ -1,13 +1,11 @@
 <?php $this->layout('main', ['title' => _('Listeners'), 'manual' => true]) ?>
 
-<?php $this->start('custom_js') ?>
-<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-<?php $this->end() ?>
-
-<?php $this->start('custom_css') ?>
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-<?php $this->end() ?>
+<?php
+/** @var \AzuraCast\Assets $assets */
+$assets
+    ->load('vue')
+    ->load('daterangepicker');
+?>
 
 <div class="row">
     <div class="col-sm-12">

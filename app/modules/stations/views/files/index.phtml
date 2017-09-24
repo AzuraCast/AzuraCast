@@ -1,11 +1,13 @@
 <?php $this->layout('main', ['title' => _('Media Manager'), 'manual' => true, 'page_class' => 'page-file-manager']) ?>
 
-<?php $this->start('custom_js') ?>
-<script type="text/javascript" src="<?=$url->content('bower_components/store-js/store.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('js/radio.js') ?>"></script>
-
-<script type="text/javascript" src="<?=$url->content('bower_components/flow.js/dist/flow.min.js') ?>"></script>
-<?php $this->stop('custom_js') ?>
+<?php
+/** @var \AzuraCast\Assets $assets */
+$assets
+    ->load('vue')
+    ->load('radio')
+    ->load('bootgrid')
+    ->addJs('bower_components/flow.js/dist/flow.min.js', 'header');
+?>
 
 <div class="row">
     <div class="col-sm-12">

@@ -4,11 +4,12 @@
 
 <?php $this->layout('main', ['title' => _('Station Profile'), 'manual' => true]) ?>
 
-<?php $this->start('custom_js') ?>
-<script type="text/javascript" src="<?=$url->content('bower_components/store-js/store.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$assets->getPath('js/radio.js') ?>"></script>
-<script type="text/javascript" src="<?=$assets->getPath('js/nchan.js') ?>"></script>
-<?php $this->stop('custom_js') ?>
+<?php
+/** @var \AzuraCast\Assets $assets */
+$assets
+    ->load('vue')
+    ->load('radio');
+?>
 
 <div class="row">
     <div class="col-sm-6">

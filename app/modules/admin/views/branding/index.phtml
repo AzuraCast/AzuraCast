@@ -1,31 +1,22 @@
 <?php $this->layout('main', ['title' => _('Custom Branding')]); ?>
 
-<?=$this->fetch('partials/form') ?>
-
-<?php $this->start('custom_js') ?>
-<script type="text/javascript" src="<?=$url->content('bower_components/codemirror/lib/codemirror.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('bower_components/codemirror/mode/css/css.js') ?>"></script>
+<?php
+/** @var \AzuraCast\Assets $assets */
+$assets
+    ->load('codemirror_css');
+?>
 
 <script type="text/javascript">
+    $(function() {
 
-$(function() {
-
-    $('textarea.css-editor').each(function() {
-        CodeMirror.fromTextArea($(this)[0], {
-            lineNumbers: true,
-            theme: 'default material'
+        $('textarea.css-editor').each(function() {
+            CodeMirror.fromTextArea($(this)[0], {
+                lineNumbers: true,
+                theme: '<?=(($customization->getTheme() === 'light') ? 'default' : 'material') ?>'
+            });
         });
-    });
 
-});
+    });
 </script>
 
-<?php $this->stop('custom_js') ?>
-<?php $this->start('custom_css') ?>
-<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/codemirror/lib/codemirror.css') ?>">
-
-<?php if ($customization->getTheme() !== 'light'): ?>
-<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/codemirror/theme/material.css') ?>">
-<?php endif; ?>
-
-<?php $this->stop('custom_css') ?>
+<?=$this->fetch('partials/form') ?>

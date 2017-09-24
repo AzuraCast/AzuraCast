@@ -7,8 +7,8 @@
  * @var \App\Url $url
  * @var \App\Flash $flash
  * @var \AzuraCast\Customization $customization
+ * @var \AzuraCast\Assets $assets
  * @var array $app_settings
- * @var object $assets
  */
 ?>
 <html>
@@ -30,20 +30,20 @@ if (!APP_IN_PRODUCTION)
 
 <?=$this->fetch('partials/icons') ?>
 
-<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/animate.css/animate.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('css/'.$customization->getPublicTheme().'.css') ?>">
+<?php
+$assets
+    ->load('minimal_header')
+    ->load('minimal_body')
+    ->load('theme_'.$customization->getPublicTheme());
+?>
 
-<?=$this->section('custom_css') ?>
+<?=$assets->css('header') ?>
+<?=$assets->css('body') ?>
+<?=$assets->js('header') ?>
 
 <style type="text/css">
 <?=$customization->getCustomPublicCss() ?>
 </style>
-
-<script type="text/javascript" src="<?=$url->content('bower_components/jquery/dist/jquery.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
-<script type="text/javascript" src="<?= $url->content('bower_components/vue/dist/' . (APP_IN_PRODUCTION ? 'vue.min.js' : 'vue.js')) ?>"></script>
-
 <script type="text/javascript">
     var APP_AppEnv = '<?=APP_APPLICATION_ENV ?>';
     var APP_BaseUrl = '<?=$url->named('home') ?>';
@@ -54,11 +54,7 @@ if (!APP_IN_PRODUCTION)
 <body class="<?=$page_class ?>">
 <?=$this->section('content') ?>
 
-<?=$this->section('custom_js') ?>
-
-<script type="text/javascript" src="<?=$url->content('bower_components/Waves/dist/waves.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('js/app.min.js') ?>"></script>
+<?=$assets->js('body') ?>
 
 <?php if ($flash->hasMessages()): ?>
     <script type="text/javascript">

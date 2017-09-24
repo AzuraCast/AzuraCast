@@ -1,14 +1,11 @@
 <?php /** @var \Entity\Station $station */ ?>
 
-<?php $this->layout('embed', ['title' => $this->e($station->getName())]) ?>
+<?php $this->layout('minimal', ['page_class' => 'embed', 'title' => $this->e($station->getName())]) ?>
 
-<?php $this->start('custom_js') ?>
-<script type="text/javascript" src="<?=$url->content('bower_components/jquery.bootgrid/dist/jquery.bootgrid.min.js') ?>"></script>
-<?php $this->stop('custom_js') ?>
-
-<?php $this->start('custom_css') ?>
-<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/jquery.bootgrid/dist/jquery.bootgrid.min.css') ?>">
-<?php $this->stop('custom_css') ?>
+<?php
+/** @var \AzuraCast\Assets $assets */
+$assets->load('bootgrid');
+?>
 
 <table class="data-table table table-striped" id="requests-table">
     <thead>

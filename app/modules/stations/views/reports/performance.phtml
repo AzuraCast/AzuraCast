@@ -1,5 +1,11 @@
 <?php $this->layout('main', ['title' => _('Song Listener Impact'), 'manual' => true]) ?>
 
+<?php
+/** @var \AzuraCast\Assets $assets */
+$assets
+    ->load('bootgrid');
+?>
+
 <div class="card">
     <div class="card-header ch-alt">
         <h2><?=_('Song Listener Impact') ?></h2>

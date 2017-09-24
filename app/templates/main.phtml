@@ -7,8 +7,8 @@
  * @var \App\Url $url
  * @var \App\Flash $flash
  * @var \AzuraCast\Customization $customization
+ * @var \AzuraCast\Assets $assets
  * @var array $app_settings
- * @var object $assets
  */
 ?>
 <html>
@@ -30,24 +30,20 @@ if (!APP_IN_PRODUCTION)
 
 <?=$this->fetch('partials/icons') ?>
 
-<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/animate.css/animate.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/bootstrap-sweetalert/lib/sweet-alert.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') ?>">
-<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/jquery.bootgrid/dist/jquery.bootgrid.min.css') ?>">
+<?php
+$assets
+    ->load('main_header')
+    ->load('main_body')
+    ->load('theme_'.$customization->getTheme());
+?>
 
-<?=$this->section('custom_css') ?>
+<?=$assets->css('header') ?>
+<?=$assets->css('body') ?>
+<?=$assets->js('header') ?>
 
 <style type="text/css">
-    <?=$customization->getCustomInternalCss() ?>
+<?=$customization->getCustomInternalCss() ?>
 </style>
-
-<link rel="stylesheet" type="text/css" href="<?=$assets->getPath('css/'.$customization->getTheme().'.css') ?>">
-
-<script type="text/javascript" src="<?=$url->content('bower_components/jquery/dist/jquery.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('bower_components/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
-<script type="text/javascript" src="<?= $url->content('bower_components/vue/dist/' . (APP_IN_PRODUCTION ? 'vue.min.js' : 'vue.js')) ?>"></script>
-
 <script type="text/javascript">
 var APP_AppEnv = '<?=APP_APPLICATION_ENV ?>';
 var APP_BaseUrl = '<?=$url->named('home') ?>';
@@ -75,12 +71,6 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 
         <li class="pull-right">
             <ul class="hi-menu">
-                <!--
-                <li id="top-search">
-                    <a href=""><i class="tm-icon zmdi zmdi-search"></i></a>
-                </li>
-                -->
-
                 <?=$this->fetch('partials/radio_controls') ?>
 
                 <li class="dropdown">
@@ -92,11 +82,6 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                         <?php endif; ?>
                         <li><a href="<?=$url->named('profile:index') ?>"><i class="zmdi zmdi-account"></i> <?=_('My Account') ?></a></li>
                         <li class="divider">&nbsp;</li>
-                        <!--
-                        <li class="hidden-xs">
-                            <a data-action="fullscreen" href=""><i class="zmdi zmdi-fullscreen"></i> <?=_('Toggle Fullscreen') ?></a>
-                        </li>
-                        -->
                     <?php if ($auth->isMasqueraded()): ?>
                         <li><a href="<?=$url->named('account:endmasquerade') ?>"><i class="zmdi zmdi-power"></i> <?=_('End Session') ?></a></li>
                     <?php else: ?>
@@ -107,14 +92,6 @@ var APP_ContentPath = '<?=$url->content('') ?>';
             </ul>
         </li>
     </ul>
-
-    <!-- Top Search Content
-    <div id="top-search-wrap">
-        <div class="tsw-inner">
-            <i id="top-search-close" class="zmdi zmdi-arrow-left"></i>
-            <input type="text">
-        </div>
-    </div> -->
 </header>
 
 <section id="main">
@@ -148,30 +125,9 @@ var APP_ContentPath = '<?=$url->content('') ?>';
     PHP <?=\PHP_VERSION ?>, SlimPHP 3
 </footer>
 
-<?php /*
-<!-- Page Loader -->
-<div class="page-loader">
-    <div class="preloader pls-blue">
-        <svg class="pl-circular" viewBox="25 25 50 50">
-            <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-        </svg>
-
-        <p>Please wait...</p>
-    </div>
-</div>
- */ ?>
-
 <div id="radio-player"></div>
 
-<?=$this->section('custom_js') ?>
-
-<script type="text/javascript" src="<?=$url->content('bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('bower_components/autosize/dist/autosize.js') ?>"></script>
-<script type="text/javascript" src="<?=$url->content('bower_components/jquery.bootgrid/dist/jquery.bootgrid.min.js') ?>"></script>
-
-<script type="text/javascript" src="<?=$assets->getPath('js/app.min.js') ?>"></script>
+<?=$assets->js('body') ?>
 
 <?php if ($flash->hasMessages()): ?>
     <script type="text/javascript">

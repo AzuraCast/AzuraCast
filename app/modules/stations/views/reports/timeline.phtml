@@ -1,5 +1,11 @@
 <?php $this->layout('main', ['title' => 'Recent Playback Timeline', 'manual' => true]) ?>
 
+<?php
+/** @var \AzuraCast\Assets $assets */
+$assets
+    ->load('bootgrid');
+?>
+
 <div class="card">
     <div class="card-header ch-alt">
         <h2><?=_('Station Playback Timeline') ?></h2>

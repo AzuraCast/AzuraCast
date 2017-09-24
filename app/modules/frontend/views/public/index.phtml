@@ -2,17 +2,13 @@
 
 <?php $this->layout('minimal', ['title' => $this->e($station->getName()), 'page_class' => 'public-page-content']) ?>
 
-<?php $this->start('custom_js') ?>
-<script type="text/javascript" src="<?=$url->content('bower_components/jquery.bootgrid/dist/jquery.bootgrid.min.js') ?>"></script>
-
-<script type="text/javascript" src="<?=$url->content('bower_components/store-js/store.min.js') ?>"></script>
-<script type="text/javascript" src="<?=$assets->getPath('js/radio.js') ?>"></script>
-<script type="text/javascript" src="<?=$assets->getPath('js/nchan.js') ?>"></script>
-<?php $this->stop('custom_js') ?>
-
-<?php $this->start('custom_css') ?>
-<link rel="stylesheet" type="text/css" href="<?=$url->content('bower_components/jquery.bootgrid/dist/jquery.bootgrid.min.css') ?>">
-<?php $this->stop('custom_css') ?>
+<?php
+/** @var \AzuraCast\Assets $assets */
+$assets
+    ->load('vue')
+    ->load('radio')
+    ->load('bootgrid');
+?>
 
 <div class="public-page">
     <div class="public-block">

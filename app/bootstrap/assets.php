@@ -49,7 +49,7 @@ return [
     ],
     [
         'name' => 'minimal_body',
-        'order' => 2,
+        'order' => 50,
         'group' => 'body',
         'files' => [
             'js' => [
@@ -73,7 +73,7 @@ return [
     ],
     [
         'name' => 'main_body',
-        'order' => 3,
+        'order' => 49,
         'files' => [
             'js' => [
                 'bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js',
@@ -165,13 +165,22 @@ return [
         // empty
     ],
     [
-        'name' => 'forms',
-        'order' => 9,
+        'name' => 'zxcvbn',
+        'order' => 10,
+        'group' => 'body',
+        'files' => [
+            'js' => [
+                'bower_components/zxcvbn/dist/zxcvbn.js',
+            ],
+        ],
+    ],
+    [
+        'name' => 'chosen',
+        'order' => 10,
         'group' => 'body',
         'files' => [
             'js' => [
                 'bower_components/chosen/chosen.jquery.min.js',
-                'bower_components/zxcvbn/dist/zxcvbn.js',
             ],
             'css' => [
                 'bower_components/chosen/chosen.min.css',

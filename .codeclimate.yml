@@ -31,6 +31,6 @@ ratings:
   - "**.phtml"
 exclude_paths:
   - tests/_support/_generated/
-  - web/static/vendors
+  - web/static/bower_components
   - web/static/js/app.js
   - web/static/js/app.min.js

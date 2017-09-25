@@ -14,7 +14,7 @@ return [
         'group' => 'header',
         'files' => [
             'js' => [
-                'bower_components/jquery/dist/jquery.min.js',
+                '//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js',
             ],
         ],
     ],
@@ -24,7 +24,7 @@ return [
         'group' => 'header',
         'files' => [
             'js' => [
-                'bower_components/vue/dist/' . (APP_IN_PRODUCTION ? 'vue.min.js' : 'vue.js'),
+                '//cdnjs.cloudflare.com/ajax/libs/vue/2.4.4/' . (APP_IN_PRODUCTION ? 'vue.min.js' : 'vue.js'),
             ],
         ],
     ],
@@ -38,8 +38,8 @@ return [
         'group' => 'header',
         'files' => [
             'css' => [
-                'bower_components/animate.css/animate.min.css',
-                'bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css',
+                '//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css',
+                '//cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css',
             ],
             'js' => [
                 'bower_components/bootstrap/dist/js/bootstrap.min.js',
@@ -53,8 +53,8 @@ return [
         'group' => 'body',
         'files' => [
             'js' => [
-                'bower_components/Waves/dist/waves.min.js',
-                'bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js',
+                '//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.5/waves.min.js',
+                '//cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js',
                 'js/app.min.js',
             ],
         ],
@@ -64,8 +64,8 @@ return [
         'order' => 3,
         'files' => [
             'css' => [
-                'bower_components/bootstrap-sweetalert/lib/sweet-alert.css',
-                'bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css',
+                '//cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css',
+                '//cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css',
             ],
         ],
         'require' => ['minimal_header'],
@@ -76,9 +76,9 @@ return [
         'order' => 49,
         'files' => [
             'js' => [
-                'bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js',
-                'bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js',
-                'bower_components/autosize/dist/autosize.js',
+                '//cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js',
+                '//cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.js',
+                '//cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.0/autosize.min.js',
             ],
         ],
         'require' => ['minimal_body'],
@@ -117,10 +117,10 @@ return [
         'group' => 'body',
         'files' => [
             'css' => [
-                'bower_components/jquery.bootgrid/dist/jquery.bootgrid.min.css',
+                '//cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.3.1/jquery.bootgrid.min.css',
             ],
             'js' => [
-                'bower_components/jquery.bootgrid/dist/jquery.bootgrid.min.js',
+                '//cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.3.1/jquery.bootgrid.min.js',
             ],
         ],
         'require' => ['jquery'],
@@ -131,7 +131,7 @@ return [
         'group' => 'body',
         'files' => [
             'js' => [
-                'bower_components/store-js/store.min.js',
+                '//cdnjs.cloudflare.com/ajax/libs/store.js/1.3.20/store.min.js',
                 'js/radio.js',
                 'js/nchan.js',
             ],
@@ -170,7 +170,7 @@ return [
         'group' => 'body',
         'files' => [
             'js' => [
-                'bower_components/zxcvbn/dist/zxcvbn.js',
+                '//cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js',
             ],
         ],
     ],
@@ -180,10 +180,10 @@ return [
         'group' => 'body',
         'files' => [
             'js' => [
-                'bower_components/chosen/chosen.jquery.min.js',
+                '//cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.jquery.min.js',
             ],
             'css' => [
-                'bower_components/chosen/chosen.min.css',
+                '//cdnjs.cloudflare.com/ajax/libs/chosen/1.8.2/chosen.min.css',
             ]
         ],
     ],
@@ -207,12 +207,12 @@ return [
         'group' => 'body',
         'files' => [
             'js' => [
-                'bower_components/codemirror/lib/codemirror.js',
-                'bower_components/codemirror/mode/css/css.js',
+                '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/codemirror.min.js',
+                '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/mode/css/css.min.js',
             ],
             'css' => [
-                'bower_components/codemirror/lib/codemirror.css',
-                'bower_components/codemirror/theme/material.css',
+                '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/codemirror.min.css',
+                '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/theme/material.min.css',
             ],
         ],
     ]

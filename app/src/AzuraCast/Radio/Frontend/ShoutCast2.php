@@ -15,7 +15,7 @@ class ShoutCast2 extends FrontendAbstract
         $fe_config = (array)$this->station->getFrontendConfig();
 
         return $this->_getStationWatcherCommand(
-            'shoutcast',
+            'shoutcast2',
             'http://localhost:' . $fe_config['port'] . '/statistics?json=1'
         );
     }

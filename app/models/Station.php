@@ -781,7 +781,8 @@ class Station
         // Write frontend watcher program
         if ($frontend->hasWatchCommand()) {
             $supervisor_config[] = '[program:' . $frontend_watch_program . ']';
-            $supervisor_config[] = 'directory=' . $config_path;
+            $supervisor_config[] = 'directory=/var/azuracast/servers/station-watcher';
+            $supervisor_config[] = 'environment=HOME="/var/azuracast",USER="azuracast"';
             $supervisor_config[] = 'command=' . $frontend->getWatchCommand();
             $supervisor_config[] = 'user=azuracast';
             $supervisor_config[] = 'priority=95';

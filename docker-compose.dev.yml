@@ -1,6 +1,20 @@
 version: '2'
 
 services:
+  stations:
+    build:
+      context: ../docker-azuracast-stations
+    volumes:
+     - ./../station-watcher-python:/var/azuracast/servers/station-watcher
+
+  web:
+    build:
+      context: ../docker-azuracast-web
+
+  nginx:
+    build:
+      context: ../docker-azuracast-nginx
+
   static:
     build:
       context: ./util/docker/static

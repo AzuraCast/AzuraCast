@@ -141,7 +141,7 @@
             -ms-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
             transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
             color: inherit;
-            text-decoration: underline;
+            text-decoration: none;
         }
 
         s {
@@ -165,12 +165,12 @@
             -webkit-transform: scale(1);
             -ms-transform: scale(1);
             transform: scale(1);
-            background-image: linear-gradient(to top, rgba(0, 0, 0, 0.431), rgba(0, 0, 0, 0.431)), url('assets/bg.png');
-            background-position: 0% 0%, center;
-            background-repeat: repeat, no-repeat;
-            background-size: auto, cover;
+            background-image: url('assets/bg.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
             background-attachment: scroll;
-            background-color: #3D3D3D;
+            background-color: #FFF;
         }
 
         html {
@@ -235,10 +235,12 @@
         #main>.inner {
             position: relative;
             z-index: 1;
-            border-radius: inherit;
             padding: 1.25rem 1rem;
             max-width: 100%;
             width: 26rem;
+
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
         }
 
         #main>.inner>* {
@@ -660,8 +662,8 @@
     <div id="wrapper">
         <div id="main">
             <div class="inner">
-                <div class="image" id="image01"><img src="assets/logo.png" alt="" /></div>
-                <h1 id="title">azura<strong>cast</strong></h1>
+                <div class="image" id="image01"><a href="https://github.com/AzuraCast/AzuraCast"><img src="assets/logo.png" alt="" /></a></div>
+                <h1 id="title"><a href="https://github.com/AzuraCast/AzuraCast">azura<strong>cast</strong></a></h1>
                 <p id="text01"><span>a turnkey, self-hosted, <strong>free and open source</strong></span><br /> <span>web radio management suite</span></p>
                 <hr
                     id="divider01" />

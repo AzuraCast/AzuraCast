@@ -61,16 +61,24 @@ class Analytics extends SyncAbstract
             ->setParameter('earliest', $earliest_timestamp)
             ->execute();
 
+        $all_stations = $em->getRepository(Entity\Station::class)->findAll();
+        $stations_by_id = [];
+        foreach($all_stations as $station) {
+            $stations_by_id[$station->getId()] = $station;
+        }
+
         foreach ($new_records as $row) {
-            $record = new Entity\Analytics(
-                $row['station_id'] ? $em->getReference(Entity\Station::class, $row['station_id']) : null,
-                $row['type'],
-                $row['timestamp'],
-                $row['number_min'],
-                $row['number_max'],
-                $row['number_avg']
-            );
-            $em->persist($record);
+            if (empty($row['station_id']) || isset($stations_by_id[$row['station_id']])) {
+                $record = new Entity\Analytics(
+                    $row['station_id'] ? $stations_by_id[$row['station_id']] : null,
+                    $row['type'],
+                    $row['timestamp'],
+                    $row['number_min'],
+                    $row['number_max'],
+                    $row['number_avg']
+                );
+                $em->persist($record);
+            }
         }
 
         $em->flush();

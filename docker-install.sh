@@ -33,7 +33,7 @@ else
 
     if [[ $REPLY =~ ^[Yy]$ ]]; then
 
-        docker-compose -f docker-compose.yml -f docker-compose.build.yml -f docker-compose.dev.yml down -v
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml down -v
         docker stop $(docker ps -a -q)
         docker rm $(docker ps -a -q)
         docker volume prune -f

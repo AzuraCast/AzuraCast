@@ -126,12 +126,12 @@ class StationRequestRepository extends BaseRepository
                 AND sh.station_id = :station_id
                 AND sh.timestamp_start >= :threshold
                 ORDER BY sh.timestamp_start DESC')
-                ->setParameter('song_id', $media->getId())
+                ->setParameter('media_id', $media->getId())
                 ->setParameter('station_id', $station->getId())
                 ->setParameter('threshold', $last_play_threshold)
                 ->setMaxResults(1)
                 ->getSingleScalarResult();
-        } catch (\Exception $e) {
+        } catch(\Doctrine\ORM\NoResultException $e) {
             return true;
         }
 

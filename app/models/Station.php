@@ -974,6 +974,7 @@ class Station
         $response->frontend = (string)$this->frontend_type;
         $response->backend = (string)$this->backend_type;
         $response->listen_url = (string)$fa->getStreamUrl();
+        $response->is_public = (bool)$this->enable_public_page;
 
         $mounts = [];
         if ($fa->supportsMounts() && $this->mounts->count() > 0) {

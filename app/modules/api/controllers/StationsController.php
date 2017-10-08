@@ -27,7 +27,11 @@ class StationsController extends BaseController
         $stations = [];
         foreach ($stations_raw as $row) {
             /** @var Entity\Station $row */
-            $stations[] = $row->api($row->getFrontendAdapter($this->di));
+
+            $api_row = $row->api($row->getFrontendAdapter($this->di));
+            if ($api_row->is_public) {
+                $stations[] = $api_row;
+            }
         }
 
         return $this->returnSuccess($stations);

@@ -73,6 +73,10 @@ class NowplayingController extends BaseController
 
             return $this->returnError('Station not found.', 404);
         } else {
+            $np = array_filter($np, function($np_row) {
+                return $np_row->station->is_public;
+            });
+
             foreach ($np as $np_row) {
                 $np_row->now_playing->recalculate();
             }

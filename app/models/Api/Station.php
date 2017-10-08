@@ -59,6 +59,13 @@ class Station
     public $listen_url;
 
     /**
+     * If the station is public (i.e. should be shown in listings of all stations)
+     * @SWG\Property(example=true)
+     * @var bool
+     */
+    public $is_public;
+
+    /**
      * @SWG\Property(type="array", @SWG\Items(ref="#/definitions/StationMount"))
      * @var array
      */

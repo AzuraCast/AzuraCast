@@ -27,7 +27,7 @@ class SongHistoryRepository extends BaseRepository
             $next_song = $media_repo->getNextSong($station);
         }
 
-        if ($is_autodj) {
+        if ($next_song instanceof Entity\SongHistory && $is_autodj) {
             $next_song->sentToAutodj();
 
             $this->_em->persist($next_song);

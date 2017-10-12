@@ -41,17 +41,24 @@ docker-compose run --rm cli azuracast_cli cache:clear
 php /var/azuracast/www/util/cli.php cache:clear
 ```
 
-### Force a Full Update (Traditional Installations)
+### Change Port Mappings (Docker Installations)
 
-Normally, the traditional installer's update script only updates the portion of the system that have been modified since
-your last update. If an update was interrupted or otherwise is causing trouble, you can force the update script to process
-all components, which can often fix any issues:
+If you're using AzuraCast alongside existing services that use the same ports, you may notice errors when attempting to start up Docker containers.
 
-##### Traditional
+Since the entire Docker configuration is controlled by a single file, `docker-compose.yml` in the project root, you can easily make your own copy of this file, modify any necessary ports, and use your copy of the file to run AzuraCast instead:
 
-```bash
-./update.sh --full
-```
+ - Copy `docker-compose.yml` from the AzuraCast project root to a location outside the project root. This ensures you won't lose your changes when updating AzuraCast itself.
+ - Make any needed customizations to the file. AzuraCast expects certain ports to be used, but you can forward these ports to different ones on the host by changing the first part of each `ports` item. For example, you can change `80:80` to `8080:80` to use port 8080 on the host without affecting the AzuraCast container itself. _(Note: In this case you should also remove port 8080 from the `stations` container's ports)._
+ - Update any items in the `volumes` section that refer to the relative path `.`, from their original setting:
+   ```
+   .:/var/azuracast/www
+   ```
+   To their new path relative to your custom `docker-compose.yml` file:
+   ```
+   /path/to/azuracast/on/host:/var/azuracast/www
+   ```
+
+**Important note:** If an AzuraCast update changes the services used in the `docker-compose.yml` file, you will need to also update your custom version of the file with the changes. These changes are infrequent compared to other sections of the code, however.
 
 ### Access Files via SFTP (Docker Installations)
 
@@ -68,4 +75,16 @@ docker run --rm \
     -v azuracast_station_data:/home/azuracast/stations \
     -p 2222:22 atmoz/sftp:alpine \
     azuracast:azuracast:::stations
+```
+
+### Force a Full Update (Traditional Installations)
+
+Normally, the traditional installer's update script only updates the portion of the system that have been modified since
+your last update. If an update was interrupted or otherwise is causing trouble, you can force the update script to process
+all components, which can often fix any issues:
+
+##### Traditional
+
+```bash
+./update.sh --full
 ```

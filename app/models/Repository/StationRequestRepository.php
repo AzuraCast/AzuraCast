@@ -45,7 +45,8 @@ class StationRequestRepository extends BaseRepository
             $user_ip = $_SERVER['REMOTE_ADDR'];
 
             // Check for any request (on any station) within the last $threshold_seconds.
-            $threshold_seconds = 300;
+            $threshold_mins = (int)($station->getRequestThreshold() ?? 5);
+            $threshold_seconds = $threshold_mins * 60;
 
             $recent_requests = $this->_em->createQuery('SELECT sr FROM ' . $this->_entityName . ' sr WHERE sr.ip = :user_ip AND sr.timestamp >= :threshold')
                 ->setParameter('user_ip', $user_ip)

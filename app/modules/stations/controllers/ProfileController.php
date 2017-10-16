@@ -87,7 +87,14 @@ class ProfileController extends BaseController
                     $this->backend->skip();
                 }
 
-                $this->alert('<b>' . _('Song skipped.') . '</b>', 'green');
+                if ($this->request->isXhr()) {
+                    return $this->renderJson([
+                        'message' => _('Song skipped.'),
+                        'type' => 'success',
+                    ]);
+                } else {
+                    $this->alert('<b>' . _('Song skipped.') . '</b>', 'success');
+                }
                 break;
 
             case "stop":

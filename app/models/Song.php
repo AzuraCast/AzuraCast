@@ -206,7 +206,7 @@ class Song
         }
 
         // Strip non-alphanumeric characters
-        $hash_base = strtolower(preg_replace("/[^A-Za-z0-9]/", '', $song_text));
+        $hash_base = mb_strtolower(str_replace(' ', '', $song_text), 'UTF-8');
 
         return md5($hash_base);
     }

@@ -2,6 +2,7 @@
 namespace AzuraCast\Sync;
 
 use Doctrine\ORM\EntityManager;
+use App\Debug;
 use Entity;
 
 class Media extends SyncAbstract
@@ -52,6 +53,8 @@ class Media extends SyncAbstract
                 $song_info = $media_row->loadFromFile();
 
                 if (is_array($song_info)) {
+                    Debug::log('Reprocessing media: '.$song_info['artist'].' - '.$song_info['title']);
+
                     $media_row->setSong($song_repo->getOrCreate($song_info));
                 }
 
@@ -71,6 +74,8 @@ class Media extends SyncAbstract
 
             $song_info = $media_row->loadFromFile();
             if (is_array($song_info)) {
+                Debug::log('Adding media: '.$song_info['artist'].' - '.$song_info['title']);
+
                 $media_row->setSong($song_repo->getOrCreate($song_info));
             }
 

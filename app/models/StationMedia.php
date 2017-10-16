@@ -480,7 +480,16 @@ class StationMedia
         // Only update metadata if the file has been updated.
         $media_mtime = filemtime($media_path);
 
-        if ($media_mtime > $this->mtime || !$this->song_id || $force) {
+        // Check for a hash mismatch.
+        $expected_song_hash = Song::getSongHash([
+            'artist' => $this->artist,
+            'title' => $this->title,
+        ]);
+
+        if ($media_mtime > $this->mtime
+            || empty($this->song_id)
+            || $this->song_id != $expected_song_hash
+            || $force) {
 
             $this->mtime = $media_mtime;
 
@@ -501,7 +510,7 @@ class StationMedia
                     foreach ($file_info['tags'] as $tag_type => $tag_data) {
                         foreach ($tags_to_set as $tag) {
                             if (!empty($tag_data[$tag][0])) {
-                                $this->{$tag} = $tag_data[$tag][0];
+                                $this->{$tag} = mb_convert_encoding($tag_data[$tag][0], "UTF-8");
                             }
                         }
                     }

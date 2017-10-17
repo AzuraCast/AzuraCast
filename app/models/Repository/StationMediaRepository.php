@@ -124,16 +124,6 @@ class StationMediaRepository extends BaseRepository
             ->setParameter('threshold', time()-86399)
             ->getArrayResult();
 
-        // Time-block scheduled playlists
-        if (!empty($playlists_by_type['scheduled'])) {
-            foreach ($playlists_by_type['scheduled'] as $playlist) {
-                /** @var Entity\StationPlaylist $playlist */
-                if ($playlist->canPlayScheduled()) {
-                    return $this->_playSongFromPlaylist($playlist);
-                }
-            }
-        }
-
         // Once per day playlists
         if (count($playlists_by_type['once_per_day']) > 0) {
             foreach ($playlists_by_type['once_per_day'] as $playlist) {
@@ -204,6 +194,16 @@ class StationMediaRepository extends BaseRepository
                 }
 
                 reset($cued_song_history);
+            }
+        }
+
+        // Time-block scheduled playlists
+        if (!empty($playlists_by_type['scheduled'])) {
+            foreach ($playlists_by_type['scheduled'] as $playlist) {
+                /** @var Entity\StationPlaylist $playlist */
+                if ($playlist->canPlayScheduled()) {
+                    return $this->_playSongFromPlaylist($playlist);
+                }
             }
         }
 

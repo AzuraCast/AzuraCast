@@ -212,7 +212,7 @@ class NowPlaying extends SyncAbstract
         $base_url = (APP_INSIDE_DOCKER) ? 'nginx' : 'localhost';
         $channel_url = 'http://'.$base_url.':9010/pub/'.urlencode($channel);
 
-        $shell_cmd = 'sleep 15; curl --request POST --data '.escapeshellarg(json_encode($body)).' '.$channel_url;
+        $shell_cmd = 'sleep 10; curl --request POST --data '.escapeshellarg(json_encode($body)).' '.$channel_url;
         shell_exec(sprintf('(%s) > /dev/null 2>&1 &', $shell_cmd));
 
     }

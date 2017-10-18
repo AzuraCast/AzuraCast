@@ -117,10 +117,10 @@ return [
         'group' => 'body',
         'files' => [
             'css' => [
-                '//cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.3.1/jquery.bootgrid.min.css',
+                'js/bootgrid/jquery.bootgrid.min.css',
             ],
             'js' => [
-                '//cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.3.1/jquery.bootgrid.min.js',
+                'js/bootgrid/jquery.bootgrid.updated.min.js',
             ],
         ],
         'require' => ['jquery'],

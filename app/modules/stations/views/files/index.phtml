@@ -344,8 +344,7 @@ $(function() {
 
         console.log('Relisting for directory: #'+hashval);
 
-        $current_dir = hashval;
-        $('#file-table').bootgrid("clear").bootgrid("reload");
+        var gridtable = $('#file-table').bootgrid("reload");
     }
 
     function getUrlHash()

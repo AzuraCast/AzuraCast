@@ -151,6 +151,8 @@ class LiquidSoap extends BackendAbstract
             'icy=true',
             'max=30.',
             'buffer=5.',
+            'icy_metadata_charset="UTF-8"',
+            'metadata_charset="UTF-8"',
             'on_connect=live_connected',
             'on_disconnect=live_disconnected',
         ];
@@ -225,9 +227,11 @@ class LiquidSoap extends BackendAbstract
                         'name = "' . $this->_cleanUpString($this->station->getName()) . '"',
                         'url = "' . $this->_cleanUpString($this->station->getUrl() ?: $base_url) . '"',
                         'public = '.(($mount_row->getIsPublic()) ? 'true' : 'false'),
+                        'protocol="icy"',
+                        'encoding = "UTF-8"',
                         'radio', // Required
                     ];
-                    $ls_config[] = 'output.shoutcast(' . implode(', ', $output_params) . ')';
+                    $ls_config[] = 'output.icecast(' . implode(', ', $output_params) . ')';
                 }
                 break;
 

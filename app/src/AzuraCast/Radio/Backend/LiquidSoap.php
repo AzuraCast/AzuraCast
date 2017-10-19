@@ -39,7 +39,7 @@ class LiquidSoap extends BackendAbstract
             '# AutoDJ Next Song Script',
             'def azuracast_next_song() =',
             '  uri = get_process_lines("'.$this->_getApiUrlCommand('/api/internal/'.$this->station->getId().'/nextsong').'")',
-            '  uri = list.hd(uri)',
+            '  uri = list.hd(uri, default="")',
             '  log("AzuraCast Raw Response: #{uri}")',
             '  request.create(uri)',
             'end',
@@ -48,7 +48,7 @@ class LiquidSoap extends BackendAbstract
             'def dj_auth(user,password) =',
             '  log("Authenticating DJ: #{user}")',
             '  ret = get_process_lines("'.$this->_getApiUrlCommand('/api/internal/'.$this->station->getId().'/auth', ['dj_user' => '#{user}', 'dj_password' => '#{password}']).'")',
-            '  ret = list.hd(ret)',
+            '  ret = list.hd(ret, default="")',
             '  log("AzuraCast DJ Auth Response: #{ret}")',
             '  bool_of_string(ret)',
             'end',
@@ -219,7 +219,7 @@ class LiquidSoap extends BackendAbstract
                     $output_params = [
                         $output_format, // Required output format (%mp3 etc)
                         'id="radio_out_' . $i . '"',
-                        'host = "localhost"',
+                        'host = "127.0.0.1"',
                         'port = ' . ($broadcast_port),
                         'password = "' . $broadcast_source_pw . ':#'.$i.'"',
                         'name = "' . $this->_cleanUpString($this->station->getName()) . '"',
@@ -255,7 +255,7 @@ class LiquidSoap extends BackendAbstract
                         $output_params = [
                             $output_format, // Required output format (%mp3 or %ogg)
                             'id="radio_out_' . $i . '"',
-                            'host = "localhost"',
+                            'host = "127.0.0.1"',
                             'port = ' . $broadcast_port,
                             'password = "' . $broadcast_source_pw . '"',
                             'name = "' . $this->_cleanUpString($this->station->getName()) . '"',
@@ -263,6 +263,7 @@ class LiquidSoap extends BackendAbstract
                             'url = "' . $this->_cleanUpString($this->station->getUrl() ?: $base_url) . '"',
                             'mount = "' . $mount_row->getName() . '"',
                             'public = '.(($mount_row->getIsPublic()) ? 'true' : 'false'),
+                            'encoding = "UTF-8"',
                             'radio', // Required
                         ];
                         $ls_config[] = 'output.icecast(' . implode(', ', $output_params) . ')';
@@ -329,7 +330,7 @@ class LiquidSoap extends BackendAbstract
     {
         if ($binary = self::getBinary()) {
             $config_path = $this->station->getRadioConfigDir() . '/liquidsoap.liq';
-            return $binary . ' --errors-as-warnings ' . $config_path;
+            return $binary . ' ' . $config_path;
         } else {
             return '/bin/false';
         }

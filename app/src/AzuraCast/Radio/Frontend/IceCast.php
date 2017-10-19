@@ -345,6 +345,7 @@ class IceCast extends FrontendAbstract
             $mount = [
                 '@type' => 'normal',
                 'mount-name' => $mount_row->getName(),
+                'charset' => 'UTF8',
             ];
 
             if (!empty($mount_row->getFallbackMount())) {

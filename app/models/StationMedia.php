@@ -451,9 +451,9 @@ class StationMedia
                 $prop = mb_convert_encoding($prop, "UTF-8");
                 $prop = str_replace(['"', "\n", "\t", "\r"], ["'", '', '', ''], $prop);
 
-                if ($annotation_property == 'title') {
-                    $prop .= ' #'.$this->song_id.'#';
-                }
+                // if ($annotation_property == 'title') {
+                //     $prop .= ' #'.$this->song_id.'#';
+                // }
 
                 $annotations[$annotation_property] = $annotation_name . '="' . $prop . '"';
             }

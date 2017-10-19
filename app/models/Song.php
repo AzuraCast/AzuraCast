@@ -71,7 +71,11 @@ class Song
     public function __construct(array $song_info)
     {
         if (empty($song_info['text'])) {
-            $song_info['text'] = $song_info['artist'] . ' - ' . $song_info['title'];
+            if (!empty($song_info['artist'])) {
+                $song_info['text'] = $song_info['artist'] . ' - ' . $song_info['title'];
+            } else {
+                $song_info['text'] = $song_info['title'];
+            }
         }
 
         $this->text = $this->_filterSongHash($song_info['text']);
@@ -205,12 +209,6 @@ class Song
             ];
         }
 
-        preg_match('/#(.*)#$/', $song_info['text'], $matches);
-
-        if (!empty($matches)) {
-            return $matches[1];
-        }
-
         // Generate hash.
         if (!empty($song_info['text'])) {
             $song_text = $song_info['text'];
@@ -222,8 +220,13 @@ class Song
             }
         }
 
+        preg_match('/#(.*)#$/', $song_text, $matches);
+        if (!empty($matches)) {
+            return $matches[1];
+        }
+
         // Strip non-alphanumeric characters
-        $hash_base = mb_strtolower(str_replace(' ', '', $song_text), 'UTF-8');
+        $hash_base = mb_strtolower(str_replace([' ', '-'], ['', ''], $song_text), 'UTF-8');
 
         return md5($hash_base);
     }

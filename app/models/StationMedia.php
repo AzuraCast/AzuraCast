@@ -436,7 +436,6 @@ class StationMedia
     {
         $annotations = [];
         $annotation_types = [
-            'song_id' => 'song_id',
             'title' => 'title',
             'artist' => 'artist',
             'fade_overlap' => 'liq_start_next',
@@ -449,9 +448,14 @@ class StationMedia
         foreach ($annotation_types as $annotation_property => $annotation_name) {
             if ($this->$annotation_property !== null) {
                 $prop = $this->$annotation_property;
-                $prop = preg_replace('/[^\00-\255]+/u', '', $prop);
+                $prop = mb_convert_encoding($prop, "UTF-8");
                 $prop = str_replace(['"', "\n", "\t", "\r"], ["'", '', '', ''], $prop);
-                $annotations[] = $annotation_name . '="' . $prop . '"';
+
+                if ($annotation_property == 'title') {
+                    $prop .= ' #'.$this->song_id.'#';
+                }
+
+                $annotations[$annotation_property] = $annotation_name . '="' . $prop . '"';
             }
         }
 

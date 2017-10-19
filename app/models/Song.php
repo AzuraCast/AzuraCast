@@ -74,9 +74,10 @@ class Song
             $song_info['text'] = $song_info['artist'] . ' - ' . $song_info['title'];
         }
 
-        $this->text = $song_info['text'];
-        $this->title = $song_info['title'];
+        $this->text = $this->_filterSongHash($song_info['text']);
+        $this->title = $this->_filterSongHash($song_info['title']);
         $this->artist = $song_info['artist'];
+
         $this->id = self::getSongHash($song_info);
 
         $this->created = time();
@@ -84,6 +85,16 @@ class Song
         $this->last_played = 0;
 
         $this->history = new ArrayCollection;
+    }
+
+    protected function _filterSongHash($text)
+    {
+        preg_match('/#(.*)#$/', $text, $matches);
+        if (!empty($matches)) {
+            $text = str_replace($matches[0], '', $text);
+        }
+
+        return $text;
     }
 
     /**
@@ -192,6 +203,12 @@ class Song
             $song_info = [
                 'text' => $song_info,
             ];
+        }
+
+        preg_match('/#(.*)#$/', $song_info['text'], $matches);
+
+        if (!empty($matches)) {
+            return $matches[1];
         }
 
         // Generate hash.

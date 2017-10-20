@@ -109,9 +109,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
             return ((APP_IS_SECURE) ? 'https' : 'http') . '://' . $base_url . '/radio/' . $radio_port;
         } else {
             // Remove port number and other decorations.
-            $base_url_parts = parse_url($base_url);
-
-            return 'http://' . ($base_url_parts['host'] ?? $base_url) . ':' . $radio_port;
+            return 'http://' . (parse_url($base_url, \PHP_URL_HOST) ?? $base_url) . ':' . $radio_port;
         }
     }
 

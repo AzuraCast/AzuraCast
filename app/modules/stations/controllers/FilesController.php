@@ -336,6 +336,11 @@ class FilesController extends BaseController
         $row_count = @$_REQUEST['rowCount'] ?: 15;
 
         $offset_start = ($page - 1) * $row_count;
+        if ($offset_start >= $num_results) {
+            $page = floor($num_results / $row_count);
+            $offset_start = ($page - 1) * $row_count;
+        }
+
         $return_result = array_slice($result, $offset_start, $row_count);
 
         return $this->renderJson([

@@ -212,10 +212,15 @@ class LiquidSoap extends BackendAbstract
                     $format = strtolower($mount_row->getAutodjFormat() ?: 'mp3');
                     $bitrate = $mount_row->getAutodjBitrate() ?: 128;
 
-                    if ($format == 'aac') {
-                        $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.(int)$bitrate.', afterburner=true, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=true)';
-                    } else {
-                        $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
+                    switch($format) {
+                        case 'aac':
+                            $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.(int)$bitrate.', afterburner=true, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=true)';
+                            break;
+
+                        case 'mp3':
+                        default:
+                            $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
+                            break;
                     }
 
                     $output_params = [
@@ -249,10 +254,19 @@ class LiquidSoap extends BackendAbstract
                     $format = strtolower($mount_row->getAutodjFormat() ?: 'mp3');
                     $bitrate = $mount_row->getAutodjBitrate() ?: 128;
 
-                    if ($format == 'ogg') {
-                        $output_format = '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . (int)$bitrate . ')';
-                    } else {
-                        $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
+                    switch($format) {
+                        case 'aac':
+                            $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.(int)$bitrate.', afterburner=true, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=true)';
+                            break;
+
+                        case 'ogg':
+                            $output_format = '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . (int)$bitrate . ')';
+                            break;
+
+                        case 'mp3':
+                        default:
+                            $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
+                            break;
                     }
 
                     if (!empty($output_format)) {

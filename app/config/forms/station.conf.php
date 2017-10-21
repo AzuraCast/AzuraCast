@@ -19,10 +19,8 @@ return [
 
     'groups' => [
 
-        'profile' => [
-            'legend' => _('Station Details'),
+        'essentials' => [
             'elements' => [
-
                 'name' => [
                     'text',
                     [
@@ -31,7 +29,12 @@ return [
                         'required' => true,
                     ]
                 ],
+            ]
+        ],
 
+        'profile' => [
+            'legend' => _('Station Profile'),
+            'elements' => [
                 'description' => [
                     'textarea',
                     [
@@ -48,58 +51,44 @@ return [
                     ]
                 ],
 
-            ],
-        ],
-
-        'advanced' => [
-            'legend' => _('Advanced Configuration'),
-            'description' => _('This section and all sections below it are optional; you can continue without making any changes here and sensible defaults will be used.'),
-
-            'elements' => [
-
-                'frontend_type' => [
+                'enable_public_page' => [
                     'radio',
                     [
-                        'label' => _('Station Frontend Type'),
-                        'description' => _('The type of software you use to deliver your broadcast to the audience.'),
-                        'options' => $frontend_types,
-                        'default' => $frontend_default,
-                    ]
-                ],
-
-                'backend_type' => [
-                    'radio',
-                    [
-                        'label' => _('Station Backend Type'),
-                        'description' => _('The type of software you use to manage the station\'s playlists and media.'),
-                        'options' => $backend_types,
-                        'default' => $backend_default,
+                        'label' => _('Enable Public Page'),
+                        'description' => _('Whether to show or hide the station from public pages and general API results.'),
+                        'options' => [0 => _('No'), 1 => _('Yes')],
+                        'default' => '1',
                     ]
                 ],
 
                 'radio_media_dir' => [
                     'text',
                     [
-                        'label' => _('Station Media Directory'),
+                        'label' => _('Advanced: Custom Media Directory'),
                         'description' => _('The directory where media files are stored. Leave blank to use default directory.'),
                     ]
                 ],
+            ],
+        ],
 
-                'enable_public_page' => [
+        'select_frontend_type' => [
+            'legend' => _('Select Broadcasting Service'),
+
+            'elements' => [
+                'frontend_type' => [
                     'radio',
                     [
-                        'label' => _('Enable Public Page'),
-                        'description' => _('If disabled, will remove this station\'s public page.'),
-                        'options' => [0 => _('No'), 1 => _('Yes')],
-                        'default' => '1',
+                        'label' => _('Broadcasting Service'),
+                        'description' => _('This software delivers your broadcast to the listening audience.'),
+                        'options' => $frontend_types,
+                        'default' => $frontend_default,
                     ]
                 ],
-
             ],
         ],
 
         'frontend_local' => [
-            'legend' => _('Configure Radio Broadcasting'),
+            'legend' => _('Configure Broadcasting Service'),
             'class' => 'frontend_fieldset',
 
             'elements' => [
@@ -107,7 +96,7 @@ return [
                 'port' => [
                     'text',
                     [
-                        'label' => _('Broadcasting Port'),
+                        'label' => _('Advanced: Customize Broadcasting Port'),
                         'description' => _('No other program can be using this port. Leave blank to automatically assign a port.'),
                         'belongsTo' => 'frontend_config',
                     ]
@@ -116,7 +105,7 @@ return [
                 'source_pw' => [
                     'text',
                     [
-                        'label' => _('Source Password'),
+                        'label' => _('Advanced: Customize Source Password'),
                         'description' => _('Leave blank to automatically generate a new password.'),
                         'belongsTo' => 'frontend_config',
                     ]
@@ -125,7 +114,7 @@ return [
                 'admin_pw' => [
                     'text',
                     [
-                        'label' => _('Admin Password'),
+                        'label' => _('Advanced: Customize Administrator Password'),
                         'description' => _('Leave blank to automatically generate a new password.'),
                         'belongsTo' => 'frontend_config',
                     ]
@@ -134,7 +123,7 @@ return [
                 'max_listeners' => [
                     'text',
                     [
-                        'label' => _('Maximum Listeners'),
+                        'label' => _('Advanced: Maximum Listeners'),
                         'description' => _('Maximum number of total listeners across all streams. Leave blank to use the default (250).'),
                         'belongsTo' => 'frontend_config',
                     ]
@@ -143,7 +132,7 @@ return [
                 'custom_config' => [
                     'textarea',
                     [
-                        'label' => _('Custom Configuration'),
+                        'label' => _('Advanced: Custom Configuration'),
                         'belongsTo' => 'frontend_config',
                         'class' => 'text-preformatted',
                         'description' => _('This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.'),
@@ -154,7 +143,7 @@ return [
         ],
 
         'frontend_remote' => [
-            'legend' => _('Configure External Radio Server'),
+            'legend' => _('Configure Remote Radio Server'),
             'class' => 'frontend_fieldset',
 
             'elements' => [
@@ -162,12 +151,12 @@ return [
                 'remote_type' => [
                     'radio',
                     [
-                        'label' => _('Radio Station Type'),
+                        'label' => _('Remote Station Type'),
                         'belongsTo' => 'frontend_config',
                         'options' => [
-                            'shoutcast1' => _('ShoutCast v1'),
-                            'shoutcast2' => _('ShoutCast v2'),
-                            'icecast' => _('IceCast v2.4+'),
+                            'shoutcast1' => 'ShoutCast v1',
+                            'shoutcast2' => 'ShoutCast v2',
+                            'icecast' => 'IceCast v2.4+',
                         ],
                     ]
                 ],
@@ -175,12 +164,55 @@ return [
                 'remote_url' => [
                     'text',
                     [
-                        'label' => _('Radio Station Base URL'),
+                        'label' => _('Remote Station Base URL'),
+                        'description' => _('Example: if the remote radio URL is http://station.example.com:8000/stream.mp3, enter <code>http://station.example.com:8000</code>.'),
                         'belongsTo' => 'frontend_config',
                     ]
                 ],
 
+                'remote_mount' => [
+                    'text',
+                    [
+                        'label' => _('Remote Station Mountpoint/SID'),
+                        'description' => _('Specify a mountpoint (i.e. <code>/radio.mp3</code>) or a Shoutcast SID (i.e. <code>2</code>) to specify a specific stream to use.'),
+                        'belongsTo' => 'frontend_config',
+                    ]
+                ],
+
+                'remote_broadcast_username' => [
+                    'text',
+                    [
+                        'label' => _('Remote Broadcast Username'),
+                        'description' => _('If you are broadcasting to the remote server from this one, enter a source username; otherwise, leave this field blank.'),
+                        'belongsTo' => 'frontend_config',
+                    ]
+                ],
+
+                'remote_broadcast_password' => [
+                    'text',
+                    [
+                        'label' => _('Remote Broadcast Password'),
+                        'description' => _('If you are broadcasting to the remote server from this one, enter a source password; otherwise, leave this field blank.'),
+                        'belongsTo' => 'frontend_config',
+                    ]
+                ],
             ]
+        ],
+
+        'select_backend_type' => [
+            'legend' => _('Select AutoDJ Service'),
+
+            'elements' => [
+                'backend_type' => [
+                    'radio',
+                    [
+                        'label' => _('AutoDJ Service'),
+                        'description' => _('This software shuffles from playlists of music constantly and plays when no other radio source is available.'),
+                        'options' => $backend_types,
+                        'default' => $backend_default,
+                    ]
+                ],
+            ],
         ],
 
         'backend_liquidsoap' => [

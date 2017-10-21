@@ -39,7 +39,7 @@ $assets
                         </div>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4" v-if="np.playing_next">
                         <div class="m-l-25" style="position: relative;">
                             <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-skip-next"></i></div>
 
@@ -356,6 +356,10 @@ $(function() {
             "time_display": function() {
                 var time_played = this.np.now_playing.elapsed;
                 var time_total = this.np.now_playing.duration;
+
+                if (time_total === 0) {
+                    return null;
+                }
 
                 if (time_played > time_total) {
                     time_played = time_total;

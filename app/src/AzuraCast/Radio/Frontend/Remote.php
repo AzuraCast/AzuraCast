@@ -46,7 +46,9 @@ class Remote extends FrontendAbstract
 
         switch ($settings['remote_type']) {
             case 'icecast':
-                $remote_stats_url = $this->getPublicUrl('/status-json.xsl');
+                $mount = (!empty($settings['remote_mount'])) ? '?mount='.$settings['remote_mount'] : '';
+
+                $remote_stats_url = $this->getPublicUrl('/status-json.xsl'.$mount);
                 $return_raw = $this->getUrl($remote_stats_url);
 
                 if (!$return_raw) {
@@ -77,21 +79,23 @@ class Remote extends FrontendAbstract
                     return false;
                 }
 
-                $mounts = array_filter($mounts, function ($mount) {
-                    return (!empty($mount['title']) || !empty($mount['artist']));
-                });
+                if (count($mounts) > 1) {
+                    $mounts = array_filter($mounts, function ($mount) {
+                        return (!empty($mount['title']) || !empty($mount['artist']));
+                    });
 
-                // Sort in descending order of listeners.
-                usort($mounts, function ($a, $b) {
-                    $a_list = (int)$a['listeners'];
-                    $b_list = (int)$b['listeners'];
+                    // Sort in descending order of listeners.
+                    usort($mounts, function ($a, $b) {
+                        $a_list = (int)$a['listeners'];
+                        $b_list = (int)$b['listeners'];
 
-                    if ($a_list == $b_list) {
-                        return 0;
-                    } else {
-                        return ($a_list > $b_list) ? -1 : 1;
-                    }
-                });
+                        if ($a_list == $b_list) {
+                            return 0;
+                        } else {
+                            return ($a_list > $b_list) ? -1 : 1;
+                        }
+                    });
+                }
 
                 return $mounts;
                 break;
@@ -121,7 +125,9 @@ class Remote extends FrontendAbstract
                 break;
 
             case 'shoutcast2':
-                $remote_stats_url = $this->getPublicUrl('/stats');
+                $sid = intval($settings['remote_mount'] ?: 1);
+
+                $remote_stats_url = $this->getPublicUrl('/stats?sid='.$sid);
                 $return_raw = $this->getUrl($remote_stats_url);
 
                 if (empty($return_raw)) {
@@ -222,8 +228,6 @@ class Remote extends FrontendAbstract
         $host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
         $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
         $path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
-        $query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
-        $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
 
         $filter_from_original = ['/status-json.xsl','/7.html','/stats'];
         $path = str_replace($filter_from_original, array_fill(0, count($filter_from_original), ''), $path);
@@ -231,6 +235,6 @@ class Remote extends FrontendAbstract
         if ($custom_path !== null)
             $path .= $custom_path;
 
-        return "$scheme$host$port$path$query$fragment";
+        return "$scheme$host$port$path";
     }
 }

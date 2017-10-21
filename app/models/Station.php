@@ -900,15 +900,15 @@ class Station
         if ($adapters === null) {
             $adapters = [
                 'icecast' => [
-                    'name' => 'IceCast 2.4',
+                    'name' => sprintf(_('Use <b>%s</b> on this server'), 'Icecast 2.4'),
                     'class' => '\AzuraCast\Radio\Frontend\IceCast',
                 ],
                 'shoutcast2' => [
-                    'name' => 'ShoutCast 2',
+                    'name' => sprintf(_('Use <b>%s</b> on this server'), 'Shoutcast 2'),
                     'class' => '\AzuraCast\Radio\Frontend\ShoutCast2',
                 ],
                 'remote' => [
-                    'name' => _('External Radio Server (Statistics Only)'),
+                    'name' => _('Connect to a <b>remote radio server</b>'),
                     'class' => '\AzuraCast\Radio\Frontend\Remote',
                 ],
             ];
@@ -936,11 +936,11 @@ class Station
         if ($adapters === null) {
             $adapters = [
                 'liquidsoap' => [
-                    'name' => 'LiquidSoap',
+                    'name' => sprintf(_('Use <b>%s</b> on this server'), 'LiquidSoap'),
                     'class' => '\AzuraCast\Radio\Backend\LiquidSoap',
                 ],
                 'none' => [
-                    'name' => _('Disabled'),
+                    'name' => _('<b>Do not use</b> an AutoDJ service'),
                     'class' => '\AzuraCast\Radio\Backend\None',
                 ],
             ];

@@ -159,6 +159,10 @@ $(function() {
                 var time_played = this.np.now_playing.elapsed;
                 var time_total = this.np.now_playing.duration;
 
+                if (time_total === 0) {
+                    return null;
+                }
+
                 if (time_played > time_total) {
                     time_played = time_total;
                 }

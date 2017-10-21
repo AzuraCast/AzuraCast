@@ -15,19 +15,29 @@ $(function() {
 
 });
 
+var active_frontend;
+
 function showFrontend(selected)
 {
-    $('form fieldset.frontend_fieldset').hide();
+    selected = (selected === "remote") ? 'remote' : 'local';
 
-    if (selected == 'remote')
-        $('form fieldset#frontend_remote').show();
-    else
-        $('form fieldset#frontend_local').show();
+    if (selected !== active_frontend) {
+        active_frontend = selected;
+
+        $('form fieldset.frontend_fieldset').slideUp('fast');
+        $('form fieldset#frontend_'+active_frontend).slideDown('fast');
+    }
 }
+
+var active_backend;
 
 function showBackend(selected)
 {
-    $('form fieldset.backend_fieldset').hide();
-    $('form fieldset#backend_'+selected).show();
+    if (selected !== active_backend) {
+        active_backend = selected;
+
+        $('form fieldset.backend_fieldset').slideUp('fast');
+        $('form fieldset#backend_'+selected).slideDown('fast');
+    }
 }
 </script>

@@ -1,9 +1,19 @@
 ---
-  - name: Make update script executable again
-    file: path="{{ www_base }}/update.sh" state=touch mode="a+x"
+  - name: Ensure update script continues to be executable
+    file: path="{{ item }}" state=touch mode="a+x"
+    with_items:
+     - "{{ www_base }}/update.sh"
+     - "{{ www_base }}/docker-update.sh"
+
+  - name: Update Composer directory permissions
+    become: true
+    file: path="{{ item }}" state=directory owner=azuracast group=www-data recurse=true
+    with_items:
+     - "{{ www_base }}/vendor"
 
   - name: Install Composer Dependencies (Development)
     become: true
+    become_user: azuracast
     shell: composer install
     args:
       chdir: "{{ www_base }}"
@@ -11,6 +21,7 @@
 
   - name: Install Composer Dependencies (Production)
     become: true
+    become_user: azuracast
     shell: composer install --no-dev
     args:
       chdir: "{{ www_base }}"

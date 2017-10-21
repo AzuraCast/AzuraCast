@@ -8,6 +8,7 @@
 
 - name: Install Composer Dependencies (Development)
   become: true
+  become_user: azuracast
   shell: composer install
   args:
     chdir: "{{ www_base }}"
@@ -15,6 +16,7 @@
 
 - name: Install Composer Dependencies (Production)
   become: true
+  become_user: azuracast
   shell: composer install --no-dev
   args:
     chdir: "{{ www_base }}"

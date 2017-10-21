@@ -108,9 +108,6 @@ class LiquidSoap extends BackendAbstract
             $playlist_objects[] = $default_playlist;
         }
 
-        $playlists_by_type = [];
-        $playlists = [];
-
         $playlist_weights = [];
         $playlist_vars = [];
 

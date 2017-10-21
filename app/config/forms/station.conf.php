@@ -178,24 +178,6 @@ return [
                         'belongsTo' => 'frontend_config',
                     ]
                 ],
-
-                'remote_broadcast_username' => [
-                    'text',
-                    [
-                        'label' => _('Remote Broadcast Username'),
-                        'description' => _('If you are broadcasting to the remote server from this one, enter a source username; otherwise, leave this field blank.'),
-                        'belongsTo' => 'frontend_config',
-                    ]
-                ],
-
-                'remote_broadcast_password' => [
-                    'text',
-                    [
-                        'label' => _('Remote Broadcast Password'),
-                        'description' => _('If you are broadcasting to the remote server from this one, enter a source password; otherwise, leave this field blank.'),
-                        'belongsTo' => 'frontend_config',
-                    ]
-                ],
             ]
         ],
 

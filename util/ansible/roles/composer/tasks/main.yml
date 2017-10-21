@@ -6,6 +6,11 @@
     creates: /usr/bin/composer
     warn: no
 
+- name: Ensure vendor folder exists
+  file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0644
+  with_items:
+   - "{{ www_base }}/vendors"
+
 - name: Install Composer Dependencies (Development)
   become: true
   become_user: azuracast

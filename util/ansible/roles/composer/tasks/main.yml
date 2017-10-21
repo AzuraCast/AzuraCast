@@ -9,7 +9,7 @@
 - name: Ensure vendor folder exists
   file: path="{{ item }}" state=directory owner=azuracast group=www-data mode=0644
   with_items:
-   - "{{ www_base }}/vendors"
+   - "{{ www_base }}/vendor"
 
 - name: Install Composer Dependencies (Development)
   become: true

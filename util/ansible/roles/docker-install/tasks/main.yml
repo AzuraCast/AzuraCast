@@ -1,4 +1,7 @@
 ---
+- name: Make mounted volume writable
+  file: path="{{ www_base }}" state=directory owner=azuracast group=www-data recurse=true
+
 - name: Write environment configuration file
   become: true
   template: src=env.ini.j2 dest="{{ www_base }}/app/env.ini" owner=azuracast group=www-data mode=0644 force=no

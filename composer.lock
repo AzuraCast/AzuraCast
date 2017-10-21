@@ -1391,12 +1391,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SlvrEagle23/Nibble-Forms.git",
-                "reference": "398fc3dfcd2ca5628423b191c6c090da5c010836"
+                "reference": "80fc8d0aeae5d6901d562105d067acd8381e4ddd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SlvrEagle23/Nibble-Forms/zipball/398fc3dfcd2ca5628423b191c6c090da5c010836",
-                "reference": "398fc3dfcd2ca5628423b191c6c090da5c010836",
+                "url": "https://api.github.com/repos/SlvrEagle23/Nibble-Forms/zipball/80fc8d0aeae5d6901d562105d067acd8381e4ddd",
+                "reference": "80fc8d0aeae5d6901d562105d067acd8381e4ddd",
                 "shasum": ""
             },
             "require": {
@@ -1424,7 +1424,7 @@
             "support": {
                 "source": "https://github.com/SlvrEagle23/Nibble-Forms/tree/master"
             },
-            "time": "2017-10-21T02:32:33+00:00"
+            "time": "2017-10-21T08:57:13+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -3528,7 +3528,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 }

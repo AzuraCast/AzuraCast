@@ -1391,12 +1391,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SlvrEagle23/Nibble-Forms.git",
-                "reference": "80fc8d0aeae5d6901d562105d067acd8381e4ddd"
+                "reference": "4619c4ae437185f8ecd320d1a4f41acb2949d1d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SlvrEagle23/Nibble-Forms/zipball/80fc8d0aeae5d6901d562105d067acd8381e4ddd",
-                "reference": "80fc8d0aeae5d6901d562105d067acd8381e4ddd",
+                "url": "https://api.github.com/repos/SlvrEagle23/Nibble-Forms/zipball/4619c4ae437185f8ecd320d1a4f41acb2949d1d8",
+                "reference": "4619c4ae437185f8ecd320d1a4f41acb2949d1d8",
                 "shasum": ""
             },
             "require": {
@@ -1424,7 +1424,7 @@
             "support": {
                 "source": "https://github.com/SlvrEagle23/Nibble-Forms/tree/master"
             },
-            "time": "2017-10-21T08:57:13+00:00"
+            "time": "2017-10-21T23:00:04+00:00"
         },
         {
             "name": "nikic/fast-route",

@@ -5,50 +5,136 @@ use App\Debug;
 
 class Remote extends FrontendAbstract
 {
-    protected $supports_mounts = false;
+    protected $supports_mounts = true;
     protected $supports_listener_detail = false;
 
     /* Process a nowplaying record. */
     protected function _getNowPlaying(&$np, $payload = null)
     {
-        $mounts = $this->_getMounts();
+        $default_mount = $this->_getDefaultMount();
+        $default_mount_np = $this->_getMountNowPlayingData($default_mount);
 
-        if (empty($mounts)) {
-            return false;
-        }
-
-        $default_mount = $mounts[0];
-
-        if (isset($default_mount['artist'])) {
+        if (!empty($default_mount_np['artist'])) {
             $np['current_song'] = [
-                'artist' => $default_mount['artist'],
-                'title' => $default_mount['title'],
-                'text' => $default_mount['artist'] . ' - ' . $default_mount['title'],
+                'artist' => $default_mount_np['artist'],
+                'title' => $default_mount_np['title'],
+                'text' => $default_mount_np['artist'] . ' - ' . $default_mount_np['title'],
             ];
         } else {
-            $np['current_song'] = $this->getSongFromString($default_mount['title'], ' - ');
+            $np['current_song'] = $this->getSongFromString($default_mount_np['title'], ' - ');
         }
 
         $np['meta']['status'] = 'online';
-        $np['meta']['bitrate'] = $default_mount['bitrate'];
-        $np['meta']['format'] = $default_mount['server_type'];
+        $np['meta']['bitrate'] = $default_mount_np['bitrate'];
+        $np['meta']['format'] = $default_mount_np['server_type'];
 
-        $np['listeners']['current'] = (int)$default_mount['listeners'];
+        $np['listeners']['current'] = (int)$default_mount_np['listeners'];
 
         return false;
     }
 
+    public function read() {}
+
+    public function write() {}
+
+    public function isRunning()
+    {
+        return true;
+    }
+
+    public function getStreamUrl()
+    {
+        $default_mount = $this->_getDefaultMount();
+        return $this->getUrlForMount($default_mount);
+    }
+
+    public function getStreamUrls()
+    {
+        $mounts = $this->_getMounts();
+
+        $stream_urls = [];
+        foreach($mounts as $mount) {
+            $stream_urls[] = $this->getUrlForMount($mount);
+        }
+
+        return $stream_urls;
+    }
+
+    public function getPublicUrl()
+    {
+        return $this->_getMountPublicUrl($this->_getDefaultMount());
+    }
+
+    public function getUrlForMount($mount)
+    {
+        $np = $this->_getMountNowPlayingData($mount);
+        return $np['listenurl'] ?? '';
+    }
+
+    public function getAdminUrl()
+    {
+        $mount = $this->_getDefaultMount();
+        $remote_type = ($mount instanceof \Entity\StationMount) ? $mount->getRemoteType() : $mount['remote_type'];
+
+        switch ($remote_type) {
+            case 'icecast':
+                return $this->_getMountPublicUrl($mount, '/admin/');
+                break;
+
+            case 'shoutcast1':
+            case 'shoutcast2':
+                return $this->_getMountPublicUrl($mount, '/admin.cgi');
+                break;
+        }
+
+        return false;
+    }
+
+    protected function _getDefaultMount()
+    {
+        $mounts = $this->station->getMounts();
+
+        if ($mounts->count() > 0) {
+            foreach($mounts as $mount) {
+                /** @var \Entity\StationMount $mount */
+                if ($mount->getIsDefault()) {
+                    return $mount;
+                }
+            }
+        }
+
+        return (array)$this->station->getFrontendConfig();
+    }
+
     protected function _getMounts()
     {
-        $settings = (array)$this->station->getFrontendConfig();
+        $mounts = $this->station->getMounts();
 
-        Debug::print_r($settings);
+        if ($mounts->count() == 0) {
+            return [ (array)$this->station->getFrontendConfig() ];
+        } else {
+            return $mounts;
+        }
+    }
 
-        switch ($settings['remote_type']) {
+    protected function _getMountNowPlayingData($mount)
+    {
+        if ($mount instanceof \Entity\StationMount) {
+            $settings = [
+                'remote_type'   => $mount->getRemoteType(),
+                'remote_url'    => $mount->getRemoteUrl(),
+                'remote_mount'  => $mount->getRemoteMount(),
+            ];
+        } else {
+            $settings = (array)$mount;
+        }
+
+        switch ($settings['remote_type'])
+        {
             case 'icecast':
-                $mount = (!empty($settings['remote_mount'])) ? '?mount='.$settings['remote_mount'] : '';
+                $mount_url = (!empty($settings['remote_mount'])) ? '?mount='.$settings['remote_mount'] : '';
 
-                $remote_stats_url = $this->getPublicUrl('/status-json.xsl'.$mount);
+                $remote_stats_url = $this->_getMountPublicUrl($mount, '/status-json.xsl'.$mount_url);
                 $return_raw = $this->getUrl($remote_stats_url);
 
                 if (!$return_raw) {
@@ -80,8 +166,8 @@ class Remote extends FrontendAbstract
                 }
 
                 if (count($mounts) > 1) {
-                    $mounts = array_filter($mounts, function ($mount) {
-                        return (!empty($mount['title']) || !empty($mount['artist']));
+                    $mounts = array_filter($mounts, function ($mount_row) {
+                        return (!empty($mount_row['title']) || !empty($mount_row['artist']));
                     });
 
                     // Sort in descending order of listeners.
@@ -97,11 +183,11 @@ class Remote extends FrontendAbstract
                     });
                 }
 
-                return $mounts;
+                return reset($mounts);
                 break;
 
             case 'shoutcast1':
-                $remote_stats_url = $this->getPublicUrl('/7.html');
+                $remote_stats_url = $this->_getMountPublicUrl($mount, '/7.html');
                 $return_raw = $this->getUrl($remote_stats_url);
 
                 if (empty($return_raw)) {
@@ -114,20 +200,18 @@ class Remote extends FrontendAbstract
                 Debug::print_r($parts);
 
                 return [
-                    [
-                        'title' => $parts[6],
-                        'bitrate' => $parts[5],
-                        'listenurl' => $this->getPublicUrl('/;stream.nsv'),
-                        'server_type' => 'audio/mpeg',
-                        'listeners' => $this->getListenerCount((int)$parts[4], (int)$parts[0]),
-                    ]
+                    'title' => $parts[6],
+                    'bitrate' => $parts[5],
+                    'listenurl' => $this->_getMountPublicUrl($mount, '/;stream.nsv'),
+                    'server_type' => 'audio/mpeg',
+                    'listeners' => $this->getListenerCount((int)$parts[4], (int)$parts[0]),
                 ];
                 break;
 
             case 'shoutcast2':
                 $sid = intval($settings['remote_mount'] ?: 1);
 
-                $remote_stats_url = $this->getPublicUrl('/stats?sid='.$sid);
+                $remote_stats_url = $this->_getMountPublicUrl($mount, '/stats?sid='.$sid);
                 $return_raw = $this->getUrl($remote_stats_url);
 
                 if (empty($return_raw)) {
@@ -140,14 +224,12 @@ class Remote extends FrontendAbstract
                 Debug::print_r($song_data);
 
                 return [
-                    [
-                        'title' => $song_data['SONGTITLE'],
-                        'bitrate' => $song_data['BITRATE'],
-                        'listenurl' => $this->getPublicUrl($song_data['STREAMPATH']),
-                        'server_type' => $song_data['CONTENT'],
-                        'listeners' => $this->getListenerCount((int)$song_data['UNIQUELISTENERS'],
-                            (int)$song_data['CURRENTLISTENERS']),
-                    ]
+                    'title' => $song_data['SONGTITLE'],
+                    'bitrate' => $song_data['BITRATE'],
+                    'listenurl' => $this->_getMountPublicUrl($mount, $song_data['STREAMPATH']),
+                    'server_type' => $song_data['CONTENT'],
+                    'listeners' => $this->getListenerCount((int)$song_data['UNIQUELISTENERS'],
+                        (int)$song_data['CURRENTLISTENERS']),
                 ];
                 break;
         }
@@ -155,73 +237,9 @@ class Remote extends FrontendAbstract
         return false;
     }
 
-    public function read()
+    protected function _getMountPublicUrl($mount, $custom_path = null)
     {
-    }
-
-    public function write()
-    {
-    }
-
-    /*
-     * Process Management
-     */
-
-    public function isRunning()
-    {
-        return true;
-    }
-
-    public function getStreamUrl()
-    {
-        $mounts = $this->_getMounts();
-        if (empty($mounts)) {
-            return false;
-        }
-
-        $default_mount = $mounts[0];
-
-        return $default_mount['listenurl'];
-    }
-
-    public function getStreamUrls()
-    {
-        $mounts = $this->_getMounts();
-        if (empty($mounts)) {
-            return false;
-        }
-
-        return \Packaged\Helpers\Arrays::ipull($mounts, 'listenurl');
-    }
-
-    public function getUrlForMount($mount_name)
-    {
-        return $this->getPublicUrl() . $mount_name;
-    }
-
-    public function getAdminUrl()
-    {
-        $settings = (array)$this->station->getFrontendConfig();
-
-        switch ($settings['remote_type']) {
-            case 'icecast':
-                return $this->getPublicUrl('/admin/');
-                break;
-
-            case 'shoutcast1':
-            case 'shoutcast2':
-                return $this->getPublicUrl('/admin.cgi');
-                break;
-        }
-
-        return false;
-    }
-
-    public function getPublicUrl($custom_path = null)
-    {
-        $settings = (array)$this->station->getFrontendConfig();
-        $remote_url = $settings['remote_url'];
-
+        $remote_url = ($mount instanceof \Entity\StationMount) ? $mount->getRemoteUrl() : $mount['remote_url'];
         $parsed_url = parse_url($remote_url);
 
         $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
@@ -233,7 +251,7 @@ class Remote extends FrontendAbstract
         $path = str_replace($filter_from_original, array_fill(0, count($filter_from_original), ''), $path);
 
         if ($custom_path !== null)
-            $path .= $custom_path;
+            $path = $custom_path;
 
         return "$scheme$host$port$path";
     }

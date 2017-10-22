@@ -159,7 +159,7 @@ $(function() {
                 var time_played = this.np.now_playing.elapsed;
                 var time_total = this.np.now_playing.duration;
 
-                if (time_total === 0) {
+                if (!time_total) {
                     return null;
                 }
 

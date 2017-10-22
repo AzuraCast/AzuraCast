@@ -78,8 +78,6 @@ $assets
             </div>
         </div>
 
-
-
         <div class="card">
             <div class="card-header ch-alt">
                 <h2><?=_('Station Profile') ?></h2>
@@ -152,21 +150,37 @@ $assets
     <div class="col-sm-6">
         <?php if ($frontend_type == 'remote'): ?>
         <div class="card">
-            <div class="card-header bgm-bluegray ch-alt">
+            <div class="card-header bgm-blue ch-alt">
                 <h2>
                     <?=_('External Radio Server') ?>
                 </h2>
             </div>
-            <div class="card-body card-padding">
-                <dl>
-                    <dt><?=_('Stream Public URL') ?>:</dt>
-                    <dd>
-                        <?php foreach($stream_urls as $stream_url): ?>
-                            <div><a href="<?=$stream_url ?>"><?=$stream_url ?></a></div>
-                        <?php endforeach; ?>
-                    </dd>
-                </dl>
-            </div>
+            <table class="table table-condensed table-striped">
+                <colgroup>
+                    <col width="10%">
+                    <col width="90%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th><?=_('Public URL') ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($stream_urls as $stream_url): ?>
+                    <tr class="input">
+                        <td>
+                            <a class="btn-audio" href="#" data-url="<?=$this->e($stream_url) ?>">
+                                <i class="zmdi zmdi-play"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="<?=$this->e($stream_url) ?>"><?=$this->e($stream_url) ?></a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
         <?php else: ?>
         <div class="card">
@@ -357,7 +371,7 @@ $(function() {
                 var time_played = this.np.now_playing.elapsed;
                 var time_total = this.np.now_playing.duration;
 
-                if (time_total === 0) {
+                if (!time_total) {
                     return null;
                 }
 

@@ -216,34 +216,6 @@ class IceCast extends FrontendAbstract
         }
     }
 
-    public function getStreamUrl()
-    {
-        /** @var EntityManager */
-        $em = $this->di->get('em');
-
-        $mount_repo = $em->getRepository(StationMount::class);
-        $default_mount = $mount_repo->getDefaultMount($this->station);
-
-        $mount_name = ($default_mount instanceof StationMount) ? $default_mount->getName() : '/radio.mp3';
-
-        return $this->getUrlForMount($mount_name);
-    }
-
-    public function getStreamUrls()
-    {
-        $urls = [];
-        foreach ($this->station->getMounts() as $mount) {
-            $urls[] = $this->getUrlForMount($mount->getName());
-        }
-
-        return $urls;
-    }
-
-    public function getUrlForMount($mount_name)
-    {
-        return $this->getPublicUrl() . $mount_name . '?' . time();
-    }
-
     public function getAdminUrl()
     {
         return $this->getPublicUrl() . '/admin/';

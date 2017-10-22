@@ -6,6 +6,15 @@
 
         <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
+<?php if ($frontend_type == 'remote' && count($mounts) == 0): ?>
+    <div class="card-body card-padding">
+        <p><?=_('Ready to get started using mount points on your remote station? Click the button below to automatically create your first mount based on your existing settings.') ?></p>
+
+        <div class="buttons">
+            <a href="<?=$url->routeFromHere(['action' => 'migrate']) ?>" class="btn btn-primary"><?=_('Migrate Settings') ?></a>
+        </div>
+    </div>
+<?php endif; ?>
     <div class="table-responsive">
         <table class="table table-striped">
             <colgroup>
@@ -29,10 +38,14 @@
                         <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row->getId())) ?>"><?=_('Delete') ?></a>
                     </td>
                     <td>
+                    <?php if ($frontend_type == 'remote'): ?>
+                        <big><a href="<?=$this->e($row->getRemoteUrl()) ?>" target="_blank"><?=$this->e($row->getRemoteUrl()) ?></a> # <?=$row->getRemoteMount() ?></big>
+                    <?php else: ?>
                         <big><a href="<?=$this->e($frontend->getUrlForMount($row->getName())) ?>" target="_blank"><?=$this->e($row->getName()) ?></a></big>
-                        <?php if ($row->getIsDefault()): ?>
-                            <br><span class="label label-success"><?=_('Default Mount') ?></span>
-                        <?php endif; ?>
+                    <?php endif; ?>
+                    <?php if ($row->getIsDefault()): ?>
+                        <br><span class="label label-success"><?=_('Default Mount') ?></span>
+                    <?php endif; ?>
                     </td>
                     <td>
                     <?php if ($row->getEnableAutodj()): ?>

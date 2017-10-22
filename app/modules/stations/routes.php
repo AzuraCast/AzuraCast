@@ -43,6 +43,7 @@ return function(\Slim\App $app) {
         $this->group('/mounts', function () {
 
             $this->get('', 'stations:mounts:index')->setName('stations:mounts:index');
+            $this->get('/migrate', 'stations:mounts:migrate')->setName('stations:mounts:migrate');
             $this->map(['GET', 'POST'], '/edit[/{id}]', 'stations:mounts:edit')->setName('stations:mounts:edit');
             $this->get('/delete/{id}', 'stations:mounts:delete')->setName('stations:mounts:delete');
 

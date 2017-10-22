@@ -178,6 +178,22 @@ return [
                         'belongsTo' => 'frontend_config',
                     ]
                 ],
+
+                'remote_more_markup' => [
+                    'markup',
+                    [
+                        'label' => _('Do More with Remote Servers using the Mount Points feature'),
+                        'markup' => _('
+                            <div class="well well-sm">
+                                Want to connect to more than one stream on the same station, or broadcast to a remote stream from this server?<br>
+                                Use the Mount Points feature in your station profile.<br><br>
+                                
+                                <b>Note:</b> Any mount points you add will override the details specified on this page.
+                            </div>
+                        '),
+                    ]
+                ],
+
             ]
         ],
 
@@ -217,7 +233,7 @@ return [
                     'radio',
                     [
                         'label' => _('Allow Song Requests'),
-                        'description' => _('Setting this enables listeners to request a song for play on your station. Only songs that are already in your playlists are listed as requestable.'),
+                        'description' => _('This enables listeners to request a song for play on your station. Only songs that are already in your playlists are listed as requestable.'),
                         'default' => '0',
                         'options' => [0 => _('No'), 1 => _('Yes')],
                     ]

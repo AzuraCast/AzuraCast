@@ -182,18 +182,53 @@ class LiquidSoap extends BackendAbstract
         // Configure the outbound broadcast.
         $fe_settings = (array)$this->station->getFrontendConfig();
 
-        $broadcast_port = $fe_settings['port'];
-        $broadcast_source_pw = $fe_settings['source_pw'];
-
-        $settings_repo = $this->di['em']->getRepository('Entity\Settings');
-        $base_url = $settings_repo->getSetting('base_url', 'localhost');
-
         switch ($this->station->getFrontendType()) {
             case 'remote':
-                $this->log(_('You cannot use an AutoDJ with a remote frontend. Please change the frontend type or update the backend to be "Disabled".'),
-                    'error');
+                $mounts = $this->station->getMounts();
 
-                return false;
+                if ($mounts->count() > 0) {
+                    foreach ($this->station->getMounts() as $mount_row) {
+                        /** @var Entity\StationMount $mount_row */
+                        if (!$mount_row->getEnableAutodj()) {
+                            continue;
+                        }
+
+                        $stream_mount = NULL;
+                        $stream_username = $mount_row->getRemoteSourceUsername();
+                        $stream_password = $mount_row->getRemoteSourcePassword();
+
+                        switch($mount_row->getRemoteType())
+                        {
+                            case 'shoutcast2':
+                                $stream_password .= ':#'.$mount_row->getRemoteMount();
+                                break;
+
+                            case 'icecast':
+                                $stream_mount = $mount_row->getRemoteMount();
+                                break;
+                        }
+
+                        $remote_url_parts = parse_url($mount_row->getRemoteUrl());
+
+                        $ls_config[] = $this->_getOutputString(
+                            $remote_url_parts['host'],
+                            $remote_url_parts['port'],
+                            $stream_mount,
+                            $stream_username,
+                            $stream_password,
+                            strtolower($mount_row->getAutodjFormat() ?: 'mp3'),
+                            $mount_row->getAutodjBitrate() ?: 128,
+                            false,
+                            $mount_row->getRemoteType() !== 'icecast'
+                        );
+                    }
+
+
+                } else {
+                    $this->log(_('You must use the Mount Points feature to configure remote broadcasting first.'),
+                        'error');
+                    return false;
+                }
                 break;
 
             case 'shoutcast2':
@@ -206,83 +241,39 @@ class LiquidSoap extends BackendAbstract
                         continue;
                     }
 
-                    $format = strtolower($mount_row->getAutodjFormat() ?: 'mp3');
-                    $bitrate = $mount_row->getAutodjBitrate() ?: 128;
-
-                    switch($format) {
-                        case 'aac':
-                            $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.(int)$bitrate.', afterburner=true, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=true)';
-                            break;
-
-                        case 'mp3':
-                        default:
-                            $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
-                            break;
-                    }
-
-                    $output_params = [
-                        $output_format, // Required output format (%mp3 etc)
-                        'id="radio_out_' . $i . '"',
-                        'host = "127.0.0.1"',
-                        'port = ' . ($broadcast_port),
-                        'password = "' . $broadcast_source_pw . ':#'.$i.'"',
-                        'name = "' . $this->_cleanUpString($this->station->getName()) . '"',
-                        'url = "' . $this->_cleanUpString($this->station->getUrl() ?: $base_url) . '"',
-                        'public = '.(($mount_row->getIsPublic()) ? 'true' : 'false'),
-                        'protocol="icy"',
-                        'encoding = "UTF-8"',
-                        'radio', // Required
-                    ];
-                    $ls_config[] = 'output.icecast(' . implode(', ', $output_params) . ')';
+                    $ls_config[] = $this->_getOutputString(
+                        '127.0.0.1',
+                        $fe_settings['port'],
+                        null,
+                        '',
+                        $fe_settings['source_pw'].':#'.$i,
+                        strtolower($mount_row->getAutodjFormat() ?: 'mp3'),
+                        $mount_row->getAutodjBitrate() ?: 128,
+                        $mount_row->getIsPublic(),
+                        true
+                    );
                 }
                 break;
 
             case 'icecast':
             default:
-                $i = 0;
                 foreach ($this->station->getMounts() as $mount_row) {
                     /** @var Entity\StationMount $mount_row */
-                    $i++;
-
                     if (!$mount_row->getEnableAutodj()) {
                         continue;
                     }
 
-                    $format = strtolower($mount_row->getAutodjFormat() ?: 'mp3');
-                    $bitrate = $mount_row->getAutodjBitrate() ?: 128;
-
-                    switch($format) {
-                        case 'aac':
-                            $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.(int)$bitrate.', afterburner=true, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=true)';
-                            break;
-
-                        case 'ogg':
-                            $output_format = '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . (int)$bitrate . ')';
-                            break;
-
-                        case 'mp3':
-                        default:
-                            $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
-                            break;
-                    }
-
-                    if (!empty($output_format)) {
-                        $output_params = [
-                            $output_format, // Required output format (%mp3 or %ogg)
-                            'id="radio_out_' . $i . '"',
-                            'host = "127.0.0.1"',
-                            'port = ' . $broadcast_port,
-                            'password = "' . $broadcast_source_pw . '"',
-                            'name = "' . $this->_cleanUpString($this->station->getName()) . '"',
-                            'description = "' . $this->_cleanUpString($this->station->getDescription()) . '"',
-                            'url = "' . $this->_cleanUpString($this->station->getUrl() ?: $base_url) . '"',
-                            'mount = "' . $mount_row->getName() . '"',
-                            'public = '.(($mount_row->getIsPublic()) ? 'true' : 'false'),
-                            'encoding = "UTF-8"',
-                            'radio', // Required
-                        ];
-                        $ls_config[] = 'output.icecast(' . implode(', ', $output_params) . ')';
-                    }
+                    $ls_config[] = $this->_getOutputString(
+                        '127.0.0.1',
+                        $fe_settings['port'],
+                        $mount_row->getName(),
+                        '',
+                        $fe_settings['source_pw'],
+                        strtolower($mount_row->getAutodjFormat() ?: 'mp3'),
+                        $mount_row->getAutodjBitrate() ?: 128,
+                        $mount_row->getIsPublic(),
+                        false
+                    );
                 }
                 break;
         }
@@ -312,6 +303,59 @@ class LiquidSoap extends BackendAbstract
     protected function _cleanUpString($string)
     {
         return str_replace(['"', "\n", "\r"], ['\'', '', ''], $string);
+    }
+
+    protected $output_stream_number = 0;
+    protected function _getOutputString($host, $port, $mount, $username = '', $password, $format, $bitrate, $is_public = false, $shoutcast_mode = false)
+    {
+        $this->output_stream_number++;
+
+        switch($format) {
+            case 'aac':
+                $output_format = '%fdkaac(channels=2, samplerate=44100, bitrate='.(int)$bitrate.', afterburner=true, aot="mpeg4_he_aac_v2", transmux="adts", sbr_mode=true)';
+                break;
+
+            case 'ogg':
+                $output_format = '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . (int)$bitrate . ')';
+                break;
+
+            case 'mp3':
+            default:
+                $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';
+                break;
+        }
+
+        $settings_repo = $this->di['em']->getRepository('Entity\Settings');
+        $base_url = $settings_repo->getSetting('base_url', 'localhost');
+
+        $output_params = [];
+        $output_params[] = $output_format;
+        $output_params[] = 'id="radio_out_' . $this->output_stream_number . '"';
+
+        $output_params[] = 'host = "'.str_replace('"', '', $host).'"';
+        $output_params[] = 'port = ' . (int)$port;
+        if (!empty($username)) {
+            $output_params[] = 'username = "'.str_replace('"', '', $username).'"';
+        }
+        $output_params[] = 'password = "'.str_replace('"', '', $password).'"';
+        if (!empty($mount)) {
+            $output_params[] = 'mount = "'.$mount.'"';
+        }
+
+        $output_params[] = 'name = "' . $this->_cleanUpString($this->station->getName()) . '"';
+        $output_params[] = 'description = "' . $this->_cleanUpString($this->station->getDescription()) . '"';
+        $output_params[] = 'url = "' . $this->_cleanUpString($this->station->getUrl() ?: $base_url) . '"';
+
+        $output_params[] = 'public = '.($is_public ? 'true' : 'false');
+        $output_params[] = 'encoding = "UTF-8"';
+
+        if ($shoutcast_mode) {
+            $output_params[] = 'protocol="icy"';
+        }
+
+        $output_params[] = 'radio';
+
+        return 'output.icecast(' . implode(', ', $output_params) . ')';
     }
 
     protected function _getTime($time_code)

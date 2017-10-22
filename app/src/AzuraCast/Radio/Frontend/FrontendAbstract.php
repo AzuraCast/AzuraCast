@@ -3,6 +3,7 @@ namespace AzuraCast\Radio\Frontend;
 
 use App\Debug;
 use App\Service\Curl;
+use Doctrine\ORM\EntityManager;
 
 abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 {
@@ -90,7 +91,33 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         return 'station_' . $this->station->getId() . ':station_' . $this->station->getId() . '_frontend';
     }
 
-    abstract public function getStreamUrl();
+    public function getStreamUrl()
+    {
+        /** @var EntityManager */
+        $em = $this->di->get('em');
+
+        $mount_repo = $em->getRepository(\Entity\StationMount::class);
+        $default_mount = $mount_repo->getDefaultMount($this->station);
+
+        return $this->getUrlForMount($default_mount);
+    }
+
+    public function getStreamUrls()
+    {
+        $urls = [];
+        foreach ($this->station->getMounts() as $mount) {
+            $urls[] = $this->getUrlForMount($mount);
+        }
+
+        return $urls;
+    }
+
+    public function getUrlForMount($mount)
+    {
+        return ($mount instanceof \Entity\StationMount)
+            ? $this->getPublicUrl() . $mount->getName() . '?' . time()
+            : null;
+    }
 
     abstract public function getAdminUrl();
 

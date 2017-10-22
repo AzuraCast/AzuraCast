@@ -22,7 +22,28 @@ class MountsController extends BaseController
 
     public function indexAction()
     {
+        $this->view->frontend_type = $this->station->getFrontendType();
         $this->view->mounts = $this->station->getMounts();
+    }
+
+    public function migrateAction()
+    {
+        if ($this->station->getFrontendType() == 'remote') {
+
+            $settings = (array)$this->station->getFrontendConfig();
+
+            $mount = new \Entity\StationMount($this->station);
+            $mount->setRemoteType($settings['remote_type']);
+            $mount->setRemoteUrl($settings['remote_url']);
+            $mount->setRemoteMount($settings['remote_mount']);
+            $mount->setEnableAutodj(false);
+            $mount->setIsDefault(true);
+
+            $this->em->persist($mount);
+            $this->em->flush();
+        }
+
+        return $this->redirectToName('stations:mounts:index', ['station' => $this->station->getId()]);
     }
 
     public function editAction()

@@ -69,6 +69,8 @@ services:
       - influxdb
       - stations
       - redis
+    user: 'azuracast'
+    working_dir: '/var/azuracast/www'
     command: 'bash'
 
   stations:

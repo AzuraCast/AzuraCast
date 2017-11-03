@@ -58,6 +58,8 @@ class Flow
         $chunkBaseDir = sys_get_temp_dir() . '/uploads/' . $flowIdentifier;
         $chunkPath = $chunkBaseDir . '/' . $flowIdentifier . '.part' . $flowChunkNumber;
 
+        $currentChunkSize = (int)$this->request->getParam('flowCurrentChunkSize', 0);
+
         $targetSize = $this->request->getParam('flowTotalSize', 0);
         $targetChunks = (int)$this->request->getParam('flowTotalChunks', 0);
 
@@ -65,7 +67,9 @@ class Flow
         if ($this->request->isGet()) {
 
             // Force a reupload of the last chunk if all chunks are uploaded, to trigger processing below.
-            if ($flowChunkNumber !== $targetChunks && file_exists($chunkPath)) {
+            if ($flowChunkNumber !== $targetChunks
+                && file_exists($chunkPath)
+                && filesize($chunkPath) == $currentChunkSize) {
                 return $this->response->withStatus(200, 'OK');
             } else {
                 return $this->response->withStatus(204, 'No Content');
@@ -84,6 +88,10 @@ class Flow
                 // the file is stored in a temporary directory
                 if (!is_dir($chunkBaseDir)) {
                     @mkdir($chunkBaseDir, 0777, true);
+                }
+
+                if ($file->getSize() !== $currentChunkSize) {
+                    throw new \App\Exception('File size of '.$file->getSize().' does not match expected size of '.$currentChunkSize);
                 }
 
                 $file->moveTo($chunkPath);

@@ -51,54 +51,51 @@ class Flow
     public function process()
     {
         $flowIdentifier = $this->request->getParam('flowIdentifier', '');
-        $flowChunkNumber = $this->request->getParam('flowChunkNumber', '');
+        $flowChunkNumber = (int)$this->request->getParam('flowChunkNumber', '');
         $flowFilename = $this->request->getParam('flowFilename', $flowIdentifier ?: 'upload-'.date('Ymd'));
 
         // init the destination file (format <filename.ext>.part<#chunk>
         $chunkBaseDir = sys_get_temp_dir() . '/uploads/' . $flowIdentifier;
         $chunkPath = $chunkBaseDir . '/' . $flowIdentifier . '.part' . $flowChunkNumber;
 
+        $targetSize = $this->request->getParam('flowTotalSize', 0);
+        $targetChunks = (int)$this->request->getParam('flowTotalChunks', 0);
+
         // Check if request is GET and the requested chunk exists or not. This makes testChunks work
         if ($this->request->isGet()) {
 
-            if (file_exists($chunkPath)) {
+            // Force a reupload of the last chunk if all chunks are uploaded, to trigger processing below.
+            if ($flowChunkNumber !== $targetChunks && file_exists($chunkPath)) {
                 return $this->response->withStatus(200, 'OK');
             } else {
                 return $this->response->withStatus(204, 'No Content');
             }
 
-        } else {
-            if (!empty($this->request->getUploadedFiles())) {
+        } else if (!empty($this->request->getUploadedFiles())) {
 
-                $files = $this->request->getUploadedFiles();
+            $files = $this->request->getUploadedFiles();
 
-                foreach ($files as $file) {
-
-                    /** @var UploadedFileInterface $file */
-                    if ($file->getError() !== UPLOAD_ERR_OK) {
-                        throw new \App\Exception('Error ' . $file->getError() . ' in file ' . $flowFilename);
-                    }
-
-                    // the file is stored in a temporary directory
-                    if (!is_dir($chunkBaseDir)) {
-                        @mkdir($chunkBaseDir, 0777, true);
-                    }
-
-                    $file->moveTo($chunkPath);
-
+            foreach ($files as $file) {
+                /** @var UploadedFileInterface $file */
+                if ($file->getError() !== UPLOAD_ERR_OK) {
+                    throw new \App\Exception('Error ' . $file->getError() . ' in file ' . $flowFilename);
                 }
 
-                $targetSize = $this->request->getParam('flowTotalSize', 0);
-                $targetChunks = $this->request->getParam('flowTotalChunks', 0);
-
-                if ($this->_allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
-                    return $this->_createFileFromChunks($chunkBaseDir, $flowIdentifier, $flowFilename, $targetChunks);
-                } else {
-                    // Return an OK status to indicate that the chunk upload itself succeeded.
-                    return $this->response->withStatus(200, 'OK');
+                // the file is stored in a temporary directory
+                if (!is_dir($chunkBaseDir)) {
+                    @mkdir($chunkBaseDir, 0777, true);
                 }
 
+                $file->moveTo($chunkPath);
             }
+
+            if ($this->_allPartsExist($chunkBaseDir, $targetSize, $targetChunks)) {
+                return $this->_createFileFromChunks($chunkBaseDir, $flowIdentifier, $flowFilename, $targetChunks);
+            } else {
+                // Return an OK status to indicate that the chunk upload itself succeeded.
+                return $this->response->withStatus(200, 'OK');
+            }
+
         }
 
         return null;

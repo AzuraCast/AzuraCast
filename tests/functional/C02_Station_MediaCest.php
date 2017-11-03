@@ -29,6 +29,7 @@ class C01_Station_MediaCest extends CestAbstract
             'csrf' => $csrf->generate('files'),
             'flowIdentifier' => 'uploadtest',
             'flowChunkNumber' => 1,
+            'flowCurrentChunkSize' => filesize($test_song),
             'flowFilename' => 'error.mp3',
             'flowTotalSize' => filesize($test_song),
             'flowTotalChunks' => 1,

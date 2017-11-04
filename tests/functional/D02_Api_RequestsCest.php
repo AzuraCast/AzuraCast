@@ -37,7 +37,7 @@ class D02_Api_RequestsCest extends CestAbstract
         $I->seeResponseIsJson();
         $I->seeResponseCodeIs(200);
 
-        $I->sendGET('/api/station/'.$station_id.'/request/'.$media->getId());
+        $I->sendGET('/api/station/'.$station_id.'/request/'.$media->getUniqueId());
 
         $I->seeResponseIsJson();
         $I->seeResponseCodeIs(200);

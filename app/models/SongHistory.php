@@ -461,7 +461,7 @@ class SongHistory
     /**
      * @return Api\SongHistory|Api\NowPlayingCurrentSong
      */
-    public function api($now_playing = false)
+    public function api(\App\Url $url, $now_playing = false)
     {
         $response = ($now_playing) ? new Api\NowPlayingCurrentSong : new Api\SongHistory;
         $response->sh_id = (int)$this->id;
@@ -469,7 +469,9 @@ class SongHistory
         $response->duration = (int)$this->duration;
         $response->is_request = (bool)(!empty($this->request_id));
 
-        $response->song = ($this->media) ? $this->media->api() : $this->song->api();
+        $response->song = ($this->media)
+            ? $this->media->api($url)
+            : $this->song->api();
 
         if ($now_playing) {
             $response->is_live = (bool)($this->timestamp_cued === 0);

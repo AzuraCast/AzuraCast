@@ -42,23 +42,22 @@ class RequestsController extends BaseController
             AND sp.is_enabled = 1 AND sp.type = :playlist_type')
             ->setParameter('station_id', $station->getId())
             ->setParameter('playlist_type', 'default')
-            ->getArrayResult();
+            ->useResultCache(true, 60)
+            ->execute();
 
         $result = [];
 
         foreach ($requestable_media as $media_row) {
-            $song = new Entity\Api\Song;
-            $song->id = (string)$media_row['song']['id'];
-            $song->text = (string)$media_row['song']['text'];
-            $song->artist = (string)$media_row['song']['artist'];
-            $song->title = (string)$media_row['song']['title'];
+
+            /** @var Entity\StationMedia $media_row */
+            $song = $media_row->api($this->url);
 
             $request = new Entity\Api\StationRequest;
             $request->song = $song;
-            $request->request_id = (int)$media_row['id'];
+            $request->request_id = (int)$media_row->getId();
             $request->request_url = (string)$this->url->routeFromHere([
                 'action' => 'submit',
-                'song_id' => $media_row['id']
+                'media_id' => $media_row->getUniqueId()
             ]);
             $result[] = $request;
         }
@@ -157,7 +156,7 @@ class RequestsController extends BaseController
             return $this->returnError('This station does not support requests.', 403);
         }
 
-        $song = $this->getParam('song_id');
+        $song = $this->getParam('media_id');
 
         try {
             $this->em->getRepository(Entity\StationRequest::class)->submit($station, $song, $this->authenticate());

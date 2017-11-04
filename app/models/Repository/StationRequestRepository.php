@@ -28,7 +28,7 @@ class StationRequestRepository extends BaseRepository
 
         // Verify that Track ID exists with station.
         $media_repo = $this->_em->getRepository(Entity\StationMedia::class);
-        $media_item = $media_repo->findOneBy(['id' => $track_id, 'station_id' => $station->getId()]);
+        $media_item = $media_repo->findOneBy(['unique_id' => $track_id, 'station_id' => $station->getId()]);
 
         if (!($media_item instanceof Entity\StationMedia)) {
             throw new \App\Exception('The song ID you specified could not be found in the station.');

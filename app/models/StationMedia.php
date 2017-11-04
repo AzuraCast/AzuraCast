@@ -16,6 +16,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class StationMedia
 {
+    use Traits\UniqueId;
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -71,6 +73,18 @@ class StationMedia
      * @var string|null
      */
     protected $album;
+
+    /**
+     * @Column(name="lyrics", type="text", nullable=true)
+     * @var string|null
+     */
+    protected $lyrics;
+
+    /**
+     * @Column(name="art", type="blob", nullable=true)
+     * @var resource|null
+     */
+    protected $art;
 
     /**
      * @Column(name="isrc", type="string", length=15, nullable=true)
@@ -233,6 +247,91 @@ class StationMedia
     public function setAlbum(string $album = null)
     {
         $this->album = $album;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getLyrics()
+    {
+        return $this->lyrics;
+    }
+
+    /**
+     * @param null|string $lyrics
+     */
+    public function setLyrics($lyrics)
+    {
+        $this->lyrics = $lyrics;
+    }
+
+    /**
+     * @return null|resource
+     */
+    public function getArt()
+    {
+        return $this->art;
+    }
+
+    /**
+     * @param $source_image_path
+     * @return bool
+     */
+    public function setArt($source_image_path)
+    {
+        if ($source_image_path === null || !file_exists($source_image_path)) {
+            return false;
+        }
+
+        $dest_max_width = 1200;
+        $dest_max_height = 1200;
+
+        // Image resizing code from http://salman-w.blogspot.com/2008/10/resize-images-using-phpgd-library.html
+        list($source_image_width, $source_image_height, $source_image_type) = getimagesize($source_image_path);
+        $source_gd_image = false;
+
+        switch ($source_image_type) {
+            case \IMAGETYPE_GIF:
+                $source_gd_image = imagecreatefromgif($source_image_path);
+            break;
+            case \IMAGETYPE_JPEG:
+                $source_gd_image = imagecreatefromjpeg($source_image_path);
+            break;
+            case \IMAGETYPE_PNG:
+                $source_gd_image = imagecreatefrompng($source_image_path);
+            break;
+        }
+
+        if ($source_gd_image === false) {
+            return false;
+        }
+
+        $source_aspect_ratio = $source_image_width / $source_image_height;
+        $thumbnail_aspect_ratio = $dest_max_width / $dest_max_height;
+
+        if ($source_image_width <= $dest_max_width && $source_image_height <= $dest_max_height) {
+            $thumbnail_image_width = $source_image_width;
+            $thumbnail_image_height = $source_image_height;
+        } elseif ($thumbnail_aspect_ratio > $source_aspect_ratio) {
+            $thumbnail_image_width = (int) ($dest_max_height * $source_aspect_ratio);
+            $thumbnail_image_height = $dest_max_height;
+        } else {
+            $thumbnail_image_width = $dest_max_width;
+            $thumbnail_image_height = (int) ($dest_max_width / $source_aspect_ratio);
+        }
+
+        $thumbnail_gd_image = imagecreatetruecolor($thumbnail_image_width, $thumbnail_image_height);
+        imagecopyresampled($thumbnail_gd_image, $source_gd_image, 0, 0, 0, 0, $thumbnail_image_width, $thumbnail_image_height, $source_image_width, $source_image_height);
+
+        ob_start();
+        imagejpeg($thumbnail_gd_image, NULL, 90);
+        $this->art = ob_get_contents();
+        ob_end_clean();
+
+        imagedestroy($source_gd_image);
+        imagedestroy($thumbnail_gd_image);
+        @unlink($source_image_path);
+        return true;
     }
 
     /**
@@ -517,8 +616,29 @@ class StationMedia
                                 $this->{$tag} = mb_convert_encoding($tag_data[$tag][0], "UTF-8");
                             }
                         }
+
+                        if (!empty($tag_data['unsynchronized_lyric'][0])) {
+                            $this->lyrics = $tag_data['unsynchronized_lyric'][0];
+                        }
                     }
                 }
+
+                if (!empty($file_info['comments']['picture'][0])) {
+                    $picture = $file_info['comments']['picture'][0];
+
+                    $mime_exts = [
+                        'image/jpeg' => 'jpg',
+                        'image/gif' => 'gif',
+                        'image/png' => 'png',
+                    ];
+                    $picture_ext = $mime_exts[$picture['image_mime']] ?? 'jpg';
+
+                    $picture_path = sys_get_temp_dir().'/albumart_'.md5($media_path).'.'.$picture_ext;
+                    file_put_contents($picture_path, $picture['data']);
+
+                    $this->setArt($picture_path);
+                }
+
             }
 
             // Attempt to derive title and artist from filename.
@@ -593,13 +713,20 @@ class StationMedia
      *
      * @return Api\Song
      */
-    public function api(): Api\Song
+    public function api(\App\Url $url): Api\Song
     {
         $response = new Api\Song;
         $response->id = (string)$this->song_id;
         $response->text = $this->artist . ' - ' . $this->title;
         $response->artist = (string)$this->artist;
         $response->title = (string)$this->title;
+
+        $response->album = (string)$this->album;
+        $response->lyrics = (string)$this->lyrics;
+
+        if (!empty($this->art)) {
+            $response->art = $url->named('api:media:art', ['station' => $this->station_id, 'media_id' => $this->unique_id], true);
+        }
 
         return $response;
     }

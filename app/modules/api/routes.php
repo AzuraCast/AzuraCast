@@ -35,9 +35,11 @@ return function(\Slim\App $app) {
 
             // This would not normally be POST-able, but Bootgrid requires it
             $this->map(['GET', 'POST'], '/requests', 'api:requests:list')->setName('api:requests:list');
-            $this->map(['GET', 'POST'], '/request/{song_id}', 'api:requests:submit')->setName('api:requests:submit');
+            $this->map(['GET', 'POST'], '/request/{media_id}', 'api:requests:submit')->setName('api:requests:submit');
 
             $this->get('/listeners', 'api:listeners:index')->setName('api:listeners:index');
+
+            $this->get('/art/{media_id}', 'api:media:art')->setName('api:media:art');
 
         });
 

@@ -40,4 +40,28 @@ class Song
      * @var string
      */
     public $title;
+
+    /**
+     * The song album.
+     *
+     * @SWG\Property(example="Moving Castle")
+     * @var string
+     */
+    public $album = "";
+
+    /**
+     * Lyrics to the song.
+     *
+     * @SWG\Property(example="")
+     * @var string
+     */
+    public $lyrics = "";
+
+    /**
+     * URL to the album artwork (if available).
+     *
+     * @SWG\Property(example="https://picsum.photos/1200/1200")
+     * @var string
+     */
+    public $art = "";
 }

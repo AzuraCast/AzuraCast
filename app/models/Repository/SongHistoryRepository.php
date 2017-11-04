@@ -41,7 +41,7 @@ class SongHistoryRepository extends BaseRepository
      * @param int $num_entries
      * @return array
      */
-    public function getHistoryForStation(Entity\Station $station, $num_entries = 5)
+    public function getHistoryForStation(Entity\Station $station, \App\Url $url, $num_entries = 5)
     {
         $history = $this->_em->createQuery('SELECT sh, s 
             FROM ' . $this->_entityName . ' sh JOIN sh.song s LEFT JOIN sh.media sm  
@@ -55,7 +55,7 @@ class SongHistoryRepository extends BaseRepository
         $return = [];
         foreach ($history as $sh) {
             /** @var Entity\SongHistory $sh */
-            $return[] = $sh->api();
+            $return[] = $sh->api($url);
         }
 
         return $return;

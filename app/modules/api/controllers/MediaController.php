@@ -41,15 +41,13 @@ class MediaController extends BaseController
                 return $this->response
                     ->withStatus(200)
                     ->withHeader('Content-Type', 'image/jpeg')
+                    ->withHeader('Cache-Control', 'public, max-age=31536000')
                     ->withBody(new \Slim\Http\Stream($art));
             }
         }
 
         $missing_image_url = APP_INCLUDE_ROOT.'/resources/generic_song.jpg';
 
-        return $this->response
-            ->withStatus(404)
-            ->withHeader('Content-Type', 'image/jpeg')
-            ->withBody(new \Slim\Http\Stream(fopen($missing_image_url, 'r')));
+        return $this->response->withRedirect($this->url->content('img/generic_song.jpg'), 302);
     }
 }

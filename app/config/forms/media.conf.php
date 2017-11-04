@@ -32,6 +32,21 @@ return [
             ]
         ],
 
+        'lyrics' => [
+            'textarea',
+            [
+                'label' => _('Song Lyrics'),
+            ]
+        ],
+
+        'art' => [
+            'file',
+            [
+                'label' => _('Replace Album Cover Art'),
+                'type' => 'image',
+            ]
+        ],
+
         'isrc' => [
             'text',
             [
@@ -47,7 +62,6 @@ return [
                 'disabled' => true,
             ]
         ],
-
 
         'fade_overlap' => [
             'text',

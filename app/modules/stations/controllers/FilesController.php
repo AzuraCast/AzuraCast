@@ -6,6 +6,7 @@ use Entity\StationMedia;
 use Entity\StationPlaylist;
 use Entity;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Slim\Http\UploadedFile;
 
 /**
@@ -125,6 +126,20 @@ class FilesController extends BaseController
 
             $this->media_repo->fromArray($media, $data);
 
+            // Handle uploaded artwork files.
+            $files = $this->request->getUploadedFiles();
+            if (!empty($files['art'])) {
+                $file = $files['art'];
+
+                /** @var UploadedFileInterface $file */
+                if ($file->getError() !== UPLOAD_ERR_OK) {
+                    throw new \App\Exception('Error ' . $file->getError() . ' in uploaded file!');
+                }
+
+                $art_resource = imagecreatefromstring($file->getStream()->getContents());
+                $media->setArt($art_resource);
+            }
+
             if ($media->writeToFile()) {
                 $media->setSong($this->em->getRepository(Entity\Song::class)->getOrCreate([
                     'title' => $media->getTitle(),
@@ -235,6 +250,9 @@ class FilesController extends BaseController
                     'artist' => $media_row['artist'],
                     'title' => $media_row['title'],
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
+                    'art' => (is_resource($media_row['art']))
+                        ? 'data:image/jpeg;base64,'.base64_encode(stream_get_contents($media_row['art']))
+                        : null,
                     'edit_url' => $this->url->routeFromHere(['action' => 'edit', 'id' => $media_row['id']]),
                     'play_url' => $this->url->routeFromHere(['action' => 'download']) . '?file=' . urlencode($media_row['path']),
                     'playlists' => $playlists,

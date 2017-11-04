@@ -274,37 +274,20 @@ class StationMedia
     }
 
     /**
-     * @param $source_image_path
+     * @param resource $source_image_path A GD image manipulation resource.
      * @return bool
      */
-    public function setArt($source_image_path)
+    public function setArt($source_gd_image = null)
     {
-        if ($source_image_path === null || !file_exists($source_image_path)) {
+        if (!is_resource($source_gd_image)) {
             return false;
         }
 
         $dest_max_width = 1200;
         $dest_max_height = 1200;
 
-        // Image resizing code from http://salman-w.blogspot.com/2008/10/resize-images-using-phpgd-library.html
-        list($source_image_width, $source_image_height, $source_image_type) = getimagesize($source_image_path);
-        $source_gd_image = false;
-
-        switch ($source_image_type) {
-            case \IMAGETYPE_GIF:
-                $source_gd_image = imagecreatefromgif($source_image_path);
-            break;
-            case \IMAGETYPE_JPEG:
-                $source_gd_image = imagecreatefromjpeg($source_image_path);
-            break;
-            case \IMAGETYPE_PNG:
-                $source_gd_image = imagecreatefrompng($source_image_path);
-            break;
-        }
-
-        if ($source_gd_image === false) {
-            return false;
-        }
+        $source_image_width = imagesx($source_gd_image);
+        $source_image_height = imagesy($source_gd_image);
 
         $source_aspect_ratio = $source_image_width / $source_image_height;
         $thumbnail_aspect_ratio = $dest_max_width / $dest_max_height;
@@ -330,7 +313,6 @@ class StationMedia
 
         imagedestroy($source_gd_image);
         imagedestroy($thumbnail_gd_image);
-        @unlink($source_image_path);
         return true;
     }
 
@@ -625,18 +607,7 @@ class StationMedia
 
                 if (!empty($file_info['comments']['picture'][0])) {
                     $picture = $file_info['comments']['picture'][0];
-
-                    $mime_exts = [
-                        'image/jpeg' => 'jpg',
-                        'image/gif' => 'gif',
-                        'image/png' => 'png',
-                    ];
-                    $picture_ext = $mime_exts[$picture['image_mime']] ?? 'jpg';
-
-                    $picture_path = sys_get_temp_dir().'/albumart_'.md5($media_path).'.'.$picture_ext;
-                    file_put_contents($picture_path, $picture['data']);
-
-                    $this->setArt($picture_path);
+                    $this->setArt(imagecreatefromstring($picture['data']));
                 }
 
             }
@@ -689,6 +660,15 @@ class StationMedia
             'artist' => [$this->artist],
             'album' => [$this->album],
         ];
+
+        if (is_resource($this->art)) {
+            $tag_data['attached_picture'][0] = [
+                'data' => stream_get_contents($this->art),
+                'picturetypeid' => 'image/jpeg',
+                'mime' => 'image/jpeg',
+            ];
+            $tag_data['comments']['picture'][0] = $tag_data['attached_picture'][0];
+        }
 
         $tagwriter->tag_data = $tag_data;
 

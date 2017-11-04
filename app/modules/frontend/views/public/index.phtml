@@ -13,17 +13,26 @@ $assets
 <div class="public-page">
     <div class="public-block">
 
-        <ul class="actions pull-right">
-            <?=$this->fetch('partials/radio_controls') ?>
+        <ul class="actions pull-right" id="radio-player-controls">
+            <li><a href="javascript:;" class="jp-mute" title="<?=_('Mute') ?>"><i class="zmdi zmdi-volume-up"></i></a></li>
+            <li><a href="javascript:;" class="jp-unmute" title="<?=_('Unmute') ?>"><i class="zmdi zmdi-volume-off"></i></a></li>
+            <li>
+                <div class="progress jp-volume-bar" style="width: 100px; height: 15px;">
+                    <div class="jp-volume-bar-value progress-bar" role="progressbar"></div>
+                </div>
+            </li>
         </ul>
         <h3 class="text-left"><?=$this->e($station->getName()) ?></h3>
 
         <div class="stations nowplaying">
             <div class="media media-left" id="station-nowplaying">
-                <div class="pull-left">
+                <div class="pull-left p-r-10 p-t-5">
                     <a class="btn-audio" href="#" data-url="<?=$this->e($stream_url) ?>">
                         <i class="zmdi zmdi-play"></i>
                     </a>
+                </div>
+                <div class="pull-left p-r-10" v-if="np.now_playing.song.art">
+                    <a v-bind:href="np.now_playing.song.art" target="_blank"><img v-bind:src="np.now_playing.song.art" style="width: 50px; height: auto; border-radius: 5px;"></a>
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading">
@@ -146,7 +155,8 @@ $(function() {
                 now_playing: {
                     song: {
                         title: '<?= _('Song Title') ?>',
-                        artist: '<?= _('Song Artist') ?>'
+                        artist: '<?= _('Song Artist') ?>',
+                        art: '<?= $url->content('img/generic_song.jpg') ?>'
                     },
                     is_request: false,
                     elapsed: 0,

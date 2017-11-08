@@ -132,12 +132,12 @@ class FilesController extends BaseController
                 $file = $files['art'];
 
                 /** @var UploadedFileInterface $file */
-                if ($file->getError() !== UPLOAD_ERR_OK) {
+                if ($file->getError() === UPLOAD_ERR_OK) {
+                    $art_resource = imagecreatefromstring($file->getStream()->getContents());
+                    $media->setArt($art_resource);
+                } else if ($file->getError() !== UPLOAD_ERR_NO_FILE) {
                     throw new \App\Exception('Error ' . $file->getError() . ' in uploaded file!');
                 }
-
-                $art_resource = imagecreatefromstring($file->getStream()->getContents());
-                $media->setArt($art_resource);
             }
 
             if ($media->writeToFile()) {

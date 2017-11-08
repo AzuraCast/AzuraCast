@@ -14,30 +14,30 @@ $assets
 
 <div class="row">
     <div class="col-sm-6">
-        <div class="card">
+        <section class="card" role="region">
             <div class="card-header ch-alt">
                 <h2><?=_('Listeners Across All Stations') ?></h2>
             </div>
             <div class="card-body card-padding-sm">
                 <div id="network_chart" style="height: 250px;"></div>
             </div>
-        </div>
+        </section>
     </div>
     <div class="col-sm-6">
-        <div class="card">
+        <section class="card" role="region">
             <div class="card-header ch-alt">
                 <h2><?=_('Listeners Per Station') ?></h2>
             </div>
             <div class="card-body card-padding-sm">
                 <div id="station_chart" style="height: 250px;"></div>
             </div>
-        </div>
+        </section>
     </div>
 </div>
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="card">
+        <section class="card" role="region">
             <div class="card-header ch-alt">
                 <h2><?=_('Station Overview') ?></h2>
 
@@ -84,14 +84,14 @@ $assets
                                 <span class="nowplaying-artist"><?=_('Song Artist') ?></span>
                             </td>
                             <td>
-                                <a class="btn btn-primary" href="<?=$url->route(['module' => 'stations', 'station' => $row['station']->getId()]) ?>"><?=_('Manage') ?></a>
+                                <a class="btn btn-primary" role="button" href="<?=$url->route(['module' => 'stations', 'station' => $row['station']->getId()]) ?>"><?=_('Manage') ?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
-        </div>
+        </section>
     </div>
 </div>
 

@@ -7,7 +7,7 @@
 <div class="row">
     <?php foreach($admin_panels as $category_name => $category_info): ?>
     <div class="col-sm-4">
-        <div class="card">
+        <section class="card" role="region">
             <div class="card-header ch-alt">
                 <h2><i class="<?=$category_info['icon'] ?>"></i> <?=$category_name ?></h2>
             </div>
@@ -22,7 +22,7 @@
                     <?php endforeach; ?>
                 </ul>
             </div>
-        </div>
+        </section>
     </div>
     <?php endforeach; ?>
 </div>
@@ -34,18 +34,18 @@
 <div class="row">
     <?php foreach($sync_times as $sync_key => $sync_info): ?>
     <div class="col-sm-3">
-        <div class="card">
+        <section class="card" role="region">
             <div class="card-header bgm-bluegray">
                 <h2>
                     <?=$sync_info['name'] ?>
                     <small><?=implode(', ', $sync_info['contents']) ?></small>
                 </h2>
-                <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'sync', 'type' => $sync_key)) ?>" title="Run Manually"><i class="zmdi zmdi-mail-send"></i></a>
+                <a class="btn bgm-blue btn-float" role="button" href="<?=$url->routeFromHere(array('action' => 'sync', 'type' => $sync_key)) ?>" title="Run Manually"><i class="zmdi zmdi-mail-send"></i></a>
             </div>
             <div class="card-body card-padding">
                 <p><?=strftime('%b %e, %Y %l:%M%P %Z', $sync_info['latest']) ?><br><small><?=sprintf(_('%s ago'), $sync_info['diff_text']) ?></small></p>
             </div>
-        </div>
+        </section>
     </div>
     <?php endforeach; ?>
 </div>

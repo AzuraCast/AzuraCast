@@ -14,7 +14,7 @@ $assets
 <div class="row">
     <div class="col-sm-6">
 
-        <div class="card">
+        <section class="card" role="region">
             <div class="card-header ch-alt">
                 <h2><?=_('On the Air') ?></h2>
             </div>
@@ -76,9 +76,9 @@ $assets
                 <div class="clearfix"></div>
             <?php endif; ?>
             </div>
-        </div>
+        </section>
 
-        <div class="card">
+        <section class="card" role="region">
             <div class="card-header ch-alt">
                 <h2><?=_('Station Profile') ?></h2>
 
@@ -145,11 +145,11 @@ $assets
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </section>
     </div>
     <div class="col-sm-6">
         <?php if ($frontend_type == 'remote'): ?>
-        <div class="card">
+        <section class="card" role="region">
             <div class="card-header bgm-blue ch-alt">
                 <h2>
                     <?=_('External Radio Server') ?>
@@ -181,9 +181,9 @@ $assets
                 <?php endforeach; ?>
                 </tbody>
             </table>
-        </div>
+        </section>
         <?php else: ?>
-        <div class="card">
+        <section class="card" role="region">
             <div class="card-header <?php if ($frontend_is_running): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?> ch-alt">
                 <h2>
                     <?php if ($frontend_type == 'icecast'): ?>
@@ -257,20 +257,20 @@ $assets
                     <dd><?=$this->e($frontend_config['source_pw']) ?></dd>
                 </dl>
             </div>
-        </div>
+        </section>
         <?php endif; ?>
 
         <?php if ($backend_type == 'none'): ?>
-        <div class="card">
+        <section class="card" role="region">
             <div class="card-header bgm-bluegray ch-alt">
                 <h2><?=_('AutoDJ Disabled') ?></h2>
             </div>
             <div class="card-body card-padding">
                 <p><?=_('AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.') ?></p>
             </div>
-        </div>
+        </section>
         <?php else: ?>
-        <div class="card">
+        <section class="card" role="region">
             <div class="card-header <?php if ($backend_is_running): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?> ch-alt">
                 <h2>
                 <?php if ($backend_type == 'liquidsoap'): ?>
@@ -304,7 +304,7 @@ $assets
                     </div>
                 <?php endif; ?>
             </div>
-        </div>
+        </section>
         <?php endif; ?>
     </div>
 </div>

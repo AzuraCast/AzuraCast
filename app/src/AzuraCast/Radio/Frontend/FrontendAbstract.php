@@ -65,7 +65,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         $base_url = (APP_INSIDE_DOCKER) ? 'http://nginx' : 'http://localhost';
         $notify_uri = $base_url.'/api/internal/'.$this->station->getId().'/notify?api_auth='.$this->station->getAdapterApiKey();
 
-        return 'pipenv run python watch.py '.$adapter.' '.$watch_uri.' '.$notify_uri.' '.$this->station->getShortName();
+        return 'pipenv run python3 watch.py '.$adapter.' '.$watch_uri.' '.$notify_uri.' '.$this->station->getShortName();
     }
 
     /**

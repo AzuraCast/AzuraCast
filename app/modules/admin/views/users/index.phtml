@@ -12,7 +12,7 @@
             <h2><?=_('All Users') ?></h2>
         <?php endif; ?>
 
-        <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div id="data-table-basic-header" class="bootgrid-header container-fluid">
         <?=$this->paginate($pager) ?>

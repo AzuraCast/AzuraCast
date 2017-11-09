@@ -8,7 +8,7 @@ $options = $form->getOptions();
     <h2><?=_('My Profile') ?></h2>
 </div>
 <div class="card" id="profile-main">
-    <div class="pm-overview c-overflow">
+    <aside class="pm-overview c-overflow" role="region">
 
         <div class="pmo-pic">
             <div class="p-relative">
@@ -23,7 +23,7 @@ $options = $form->getOptions();
         </div>
 
         <div class="pmo-block">
-            <a class="btn btn-block btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><?=_('Edit Profile') ?></a>
+            <a class="btn btn-block btn-primary" role="button" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><?=_('Edit Profile') ?></a>
         </div>
 
         <div class="pmo-block pmo-contact hidden-xs">
@@ -35,10 +35,10 @@ $options = $form->getOptions();
             <?php endforeach; ?>
             </ul>
         </div>
-    </div>
+    </aside>
 
     <div class="pm-body clearfix">
-        <div class="pmb-block">
+        <section class="pmb-block" role="region">
             <div class="pmbb-header">
                 <h2><i class="zmdi zmdi-account m-r-10"></i> <?=_('Account Information') ?></h2>
             </div>
@@ -49,9 +49,9 @@ $options = $form->getOptions();
                     </dl>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="pmb-block">
+        <section class="pmb-block" role="region">
             <div class="pmbb-header">
                 <h2><i class="zmdi zmdi-settings m-r-10"></i> <?=_('Customization') ?></h2>
             </div>
@@ -62,6 +62,6 @@ $options = $form->getOptions();
                     </dl>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 </div>

@@ -4,7 +4,7 @@
     <div class="card-header ch-alt">
         <h2><?=_('Mount Points') ?></h2>
 
-        <a class="btn bgm-blue btn-float" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
 <?php if ($frontend_type == 'remote' && count($mounts) == 0): ?>
     <div class="card-body card-padding">

@@ -291,7 +291,15 @@ class LiquidSoap extends BackendAbstract
         $params = (array)$params;
         $params['api_auth'] = $this->station->getAdapterApiKey();
 
-        $base_url = (APP_INSIDE_DOCKER) ? 'http://nginx' : 'http://localhost';
+        if (APP_INSIDE_DOCKER) {
+            $base_url = 'http://nginx';
+        } else {
+            $settings_repo = $this->di['em']->getRepository('Entity\Settings');
+            $system_base_url = $settings_repo->getSetting('base_url', 'localhost');
+
+            $system_url_port = parse_url($system_base_url, PHP_URL_PORT);
+            $base_url = 'http://localhost:'.($system_url_port ?? 80);
+        }
 
         $curl_request = 'curl -s --request POST --url '.$base_url.$endpoint;
         foreach($params as $param_key => $param_val) {
@@ -329,9 +337,6 @@ class LiquidSoap extends BackendAbstract
                 break;
         }
 
-        $settings_repo = $this->di['em']->getRepository('Entity\Settings');
-        $base_url = $settings_repo->getSetting('base_url', 'localhost');
-
         $output_params = [];
         $output_params[] = $output_format;
         $output_params[] = 'id="radio_out_' . $this->output_stream_number . '"';
@@ -348,7 +353,10 @@ class LiquidSoap extends BackendAbstract
 
         $output_params[] = 'name = "' . $this->_cleanUpString($this->station->getName()) . '"';
         $output_params[] = 'description = "' . $this->_cleanUpString($this->station->getDescription()) . '"';
-        $output_params[] = 'url = "' . $this->_cleanUpString($this->station->getUrl() ?: $base_url) . '"';
+
+        if (!empty($this->station->getUrl())) {
+            $output_params[] = 'url = "' . $this->_cleanUpString($this->station->getUrl()) . '"';
+        }
 
         $output_params[] = 'public = '.($is_public ? 'true' : 'false');
         $output_params[] = 'encoding = "UTF-8"';

@@ -62,6 +62,7 @@ return [
                         'options' => [
                             'mp3' => 'MP3',
                             'ogg' => 'OGG Vorbis',
+                            'opus' => 'OGG Opus',
                             'aac' => 'AAC+ (MPEG4 HE-AAC v2)',
                         ],
                         'default' => 'mp3',

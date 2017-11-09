@@ -319,6 +319,10 @@ class LiquidSoap extends BackendAbstract
                 $output_format = '%vorbis.cbr(samplerate=44100, channels=2, bitrate=' . (int)$bitrate . ')';
                 break;
 
+            case 'opus':
+                $output_format = '%opus(bitrate='.(int)$bitrate.', vbr="none", application="audio", channels=2, signal="music")';
+                break;
+
             case 'mp3':
             default:
                 $output_format = '%mp3.cbr(samplerate=44100,stereo=true,bitrate=' . (int)$bitrate . ')';

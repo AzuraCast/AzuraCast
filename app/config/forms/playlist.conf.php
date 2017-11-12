@@ -13,7 +13,7 @@ for ($hr = 0; $hr <= 23; $hr++) {
     }
 }
 
-$server_time = sprintf(_('Current server time is <b>%s</b>, and local time is <b>%s</b>.'), gmdate('g:ia'), date('g:ia'));
+$server_time = sprintf(_('Your current local time is <b>%s</b>.'), date('g:ia'));
 
 return [
     'method' => 'post',
@@ -129,20 +129,20 @@ return [
             'elements' => [
 
                 'schedule_start_time' => [
-                    'select',
+                    'time',
                     [
                         'label' => _('Start Time'),
                         'description' => $server_time,
-                        'options' => $hour_select,
+                        'step' => 900,
                     ]
                 ],
 
                 'schedule_end_time' => [
-                    'select',
+                    'time',
                     [
                         'label' => _('End Time'),
                         'description' => _('If the end time is before the start time, the playlist will play overnight until this time on the next day.'),
-                        'options' => $hour_select,
+                        'step' => 900,
                     ]
                 ],
 
@@ -206,11 +206,11 @@ return [
             'elements' => [
 
                 'play_once_time' => [
-                    'select',
+                    'time',
                     [
                         'label' => _('Scheduled Play Time'),
                         'description' => $server_time,
-                        'options' => $hour_select,
+                        'step' => 900,
                     ]
                 ],
 

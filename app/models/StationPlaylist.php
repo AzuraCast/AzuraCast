@@ -247,7 +247,7 @@ class StationPlaylist
      */
     public function getScheduleStartTimeText(): string
     {
-        return self::formatTimeCode($this->schedule_start_time);
+        return self::formatTimeCodeForInput($this->schedule_start_time);
     }
 
     /**
@@ -264,6 +264,14 @@ class StationPlaylist
     public function getScheduleEndTime(): int
     {
         return $this->schedule_end_time;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScheduleEndTimeText(): string
+    {
+        return self::formatTimeCodeForInput($this->schedule_end_time);
     }
 
     /**
@@ -319,6 +327,14 @@ class StationPlaylist
     public function getPlayOnceTime(): int
     {
         return $this->play_once_time;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlayOnceTimeText(): string
+    {
+        return self::formatTimeCodeForInput($this->play_once_time);
     }
 
     /**
@@ -406,22 +422,6 @@ class StationPlaylist
     }
 
     /**
-     * @return string
-     */
-    public function getScheduleEndTimeText(): string
-    {
-        return self::formatTimeCode($this->schedule_end_time);
-    }
-
-    /**
-     * @return string
-     */
-    public function getPlayOnceTimeText(): string
-    {
-        return self::formatTimeCode($this->play_once_time);
-    }
-
-    /**
      * Export the playlist into a reusable format.
      *
      * @param string $file_format
@@ -473,29 +473,31 @@ class StationPlaylist
 
     /**
      * Given a time code i.e. "2300", return a time i.e. "11:00 PM"
+     *
      * @param $time_code
      * @return string
      */
     public static function formatTimeCode($time_code): string
     {
-        if ($time_code < 0) {
-            $time_code = 2400 + $time_code;
-        }
+        $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
+        $dt = \DateTime::createFromFormat('Hi|', $time_code, new \DateTimeZone('UTC'));
 
-        $hours = floor($time_code / 100);
-        $mins = $time_code % 100;
+        return ($dt instanceof \DateTime) ? strftime('%l:%M %p', $dt->getTimestamp()) : '';
+    }
 
-        $ampm = ($hours < 12) ? 'AM' : 'PM';
+    /**
+     * Given a time code i.e. "2300", return a time suitable for HTML5 inputs, i.e. "23:00".
+     *
+     * @param $time_code
+     * @return string
+     */
+    public static function formatTimeCodeForInput($time_code): string
+    {
+        $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
+        $dt = \DateTime::createFromFormat('Hi|', $time_code, new \DateTimeZone('UTC'));
+        $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
 
-        if ($hours == 0) {
-            $hours_text = '12';
-        } elseif ($hours > 12) {
-            $hours_text = $hours - 12;
-        } else {
-            $hours_text = $hours;
-        }
-
-        return $hours_text . ':' . str_pad($mins, 2, '0', STR_PAD_LEFT) . ' ' . $ampm;
+        return ($dt instanceof \DateTime) ? $dt->format('H:i') : '';
     }
 
     /**
@@ -504,6 +506,6 @@ class StationPlaylist
      */
     public static function getCurrentTimeCode(): int
     {
-        return (int)gmdate('Gi');
+        return (int)gmdate('Hi');
     }
 }

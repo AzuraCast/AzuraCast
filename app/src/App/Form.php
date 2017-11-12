@@ -205,4 +205,30 @@ class Form
 
         $this->form->addField($element_name, $field_type, $field_options);
     }
+
+    /**
+     * Return a UTC-localized time code given a HTML5 time input's return value.
+     *
+     * @param $input_time
+     * @return int
+     */
+    public static function getTimeCode($input_time): int
+    {
+        $dt = \DateTime::createFromFormat('!G:i', $input_time);
+        $dt->setTimezone(new \DateTimeZone('UTC'));
+
+        return (int)$dt->format('Gi');
+    }
+
+    /**
+     * Get a Unix timestamp from a given date from an HTML5 date input.
+     *
+     * @param $input_date
+     * @return int
+     */
+    public static function getTimestampFromDate($input_date): int
+    {
+        $dt = \DateTime::createFromFormat('!Y-m-d', $input_date, new \DateTimeZone('UTC'));
+        return (int)$dt->getTimestamp();
+    }
 }

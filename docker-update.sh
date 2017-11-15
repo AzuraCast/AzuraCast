@@ -15,9 +15,9 @@ docker-compose down
 docker-compose pull
 
 if [ $APP_ENV = "production" ]; then
-    docker-compose run --rm cli azuracast_update
+    docker-compose run --rm cli sudo azuracast_update
 else
-    docker-compose run --rm cli azuracast_update --dev
+    docker-compose run --rm cli sudo azuracast_update --dev
 fi
 
 docker-compose up -d

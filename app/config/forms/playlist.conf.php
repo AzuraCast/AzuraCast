@@ -3,17 +3,34 @@ $local_time_offset = \App\Timezone::getOffsetMinutes(null);
 $local_time_hours = floor($local_time_offset / 60);
 $local_time_mins = $local_time_offset % 60;
 
-$hour_select = [];
+$hour_select_utc = [];
+$local_to_utc = [];
+
 for ($hr = 0; $hr <= 23; $hr++) {
     foreach ([0, 15, 30, 45] as $min) {
         $time_num = ($hr * 100) + $min;
         $local_time = $time_num + ($local_time_hours * 100) + $local_time_mins;
 
-        $hour_select[$time_num] = \Entity\StationPlaylist::formatTimeCode($time_num).' ('.\Entity\StationPlaylist::formatTimeCode($local_time).' '._('Local').')';
+        if ($local_time > 2400) {
+            $local_time = 2400-$local_time;
+        } else if ($local_time < 0) {
+            $local_time = 2400 + $local_time;
+        }
+
+        $local_to_utc[$local_time] = $time_num;
+        $hour_select_utc[$time_num] = \Entity\StationPlaylist::formatTimeCode($time_num, true).' ('.\Entity\StationPlaylist::formatTimeCode($time_num, false).' UTC)';
     }
 }
 
-$server_time = sprintf(_('Your current local time is <b>%s</b>.'), date('g:ia'));
+// Sort select so 12:00AM appears at the top.
+ksort($local_to_utc, \SORT_NUMERIC);
+
+$hour_select = [];
+foreach($local_to_utc as $local_time => $utc_time) {
+    $hour_select[$utc_time] = $hour_select_utc[$utc_time];
+}
+
+$server_time = sprintf(_('Your current local time is <b>%s</b>. You can customize your time zone from the "My Account" page.'), date('g:ia'));
 
 return [
     'method' => 'post',
@@ -129,20 +146,20 @@ return [
             'elements' => [
 
                 'schedule_start_time' => [
-                    'time',
+                    'select',
                     [
                         'label' => _('Start Time'),
                         'description' => $server_time,
-                        'step' => 900,
+                        'options' => $hour_select,
                     ]
                 ],
 
                 'schedule_end_time' => [
-                    'time',
+                    'select',
                     [
                         'label' => _('End Time'),
                         'description' => _('If the end time is before the start time, the playlist will play overnight until this time on the next day.'),
-                        'step' => 900,
+                        'options' => $hour_select,
                     ]
                 ],
 
@@ -206,11 +223,11 @@ return [
             'elements' => [
 
                 'play_once_time' => [
-                    'time',
+                    'select',
                     [
                         'label' => _('Scheduled Play Time'),
                         'description' => $server_time,
-                        'step' => 900,
+                        'options' => $hour_select,
                     ]
                 ],
 

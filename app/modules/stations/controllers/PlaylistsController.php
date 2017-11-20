@@ -103,12 +103,6 @@ class PlaylistsController extends BaseController
 
             if ($record instanceof Entity\StationPlaylist) {
                 $data = $playlist_repo->toArray($record);
-
-                // Special handling for HTML5 time inputs.
-                $data['schedule_start_time'] = $record->getScheduleStartTimeText();
-                $data['schedule_end_time'] = $record->getScheduleEndTimeText();
-                $data['play_once_time'] = $record->getPlayOnceTimeText();
-
                 $form->setDefaults($data);
             }
         } else {
@@ -120,14 +114,6 @@ class PlaylistsController extends BaseController
 
             if (!($record instanceof Entity\StationPlaylist)) {
                 $record = new Entity\StationPlaylist($this->station);
-            }
-
-            // Process special timestamps.
-            $date_fields = ['schedule_start_time', 'schedule_end_time', 'play_once_time'];
-            foreach($date_fields as $date_field) {
-                if (!empty($data[$date_field])) {
-                    $data[$date_field] = \App\Form::getTimeCode($data[$date_field]);
-                }
             }
 
             $playlist_repo->fromArray($record, $data);

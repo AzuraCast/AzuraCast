@@ -477,12 +477,16 @@ class StationPlaylist
      * @param $time_code
      * @return string
      */
-    public static function formatTimeCode($time_code): string
+    public static function formatTimeCode($time_code, $use_local_time = true): string
     {
         $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
         $dt = \DateTime::createFromFormat('Hi|', $time_code, new \DateTimeZone('UTC'));
 
-        return ($dt instanceof \DateTime) ? strftime('%l:%M %p', $dt->getTimestamp()) : '';
+        if ($dt instanceof \DateTime) {
+            $timestamp = $dt->getTimestamp();
+            return ($use_local_time) ? strftime('%l:%M %p', $timestamp) : gmstrftime('%l:%M %p', $timestamp);
+        }
+        return '';
     }
 
     /**

@@ -73,9 +73,10 @@ class Media extends SyncAbstract
                 $this->em->flush();
                 $this->em->clear(Entity\StationMedia::class);
                 $this->em->clear(Entity\Song::class);
+
+                $this->_logMemoryUsage();
             }
 
-            // $this->_logMemoryUsage();
             ++$i;
         }
 
@@ -83,7 +84,7 @@ class Media extends SyncAbstract
         $this->em->clear(Entity\StationMedia::class);
         $this->em->clear(Entity\Song::class);
 
-        // $this->_logMemoryUsage();
+        $this->_logMemoryUsage();
 
         // Create files that do not currently exist.
         $i = 0;
@@ -104,9 +105,10 @@ class Media extends SyncAbstract
                 $this->em->flush();
                 $this->em->clear(Entity\StationMedia::class);
                 $this->em->clear(Entity\Song::class);
+
+                $this->_logMemoryUsage();
             }
 
-            // $this->_logMemoryUsage();
             ++$i;
         }
 
@@ -114,7 +116,7 @@ class Media extends SyncAbstract
         $this->em->clear(Entity\StationMedia::class);
         $this->em->clear(Entity\Song::class);
 
-        // $this->_logMemoryUsage();
+        $this->_logMemoryUsage();
     }
 
     public function importPlaylists(Entity\Station $station)

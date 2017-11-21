@@ -26,11 +26,13 @@ abstract class SyncAbstract
 
     protected function _logMemoryUsage()
     {
-        $memory_bytes = memory_get_usage();
+        if (APP_IS_COMMAND_LINE && !APP_TESTING_MODE) {
+            $memory_bytes = memory_get_usage();
 
-        $unit=array('b','kb','mb','gb','tb','pb');
-        $memory = @round($memory_bytes/pow(1024,($i=floor(log($memory_bytes,1024)))),2).' '.$unit[$i];
+            $unit=array('b','kb','mb','gb','tb','pb');
+            $memory = @round($memory_bytes/pow(1024,($i=floor(log($memory_bytes,1024)))),2).' '.$unit[$i];
 
-        \App\Debug::print_r('Used memory: '.$memory);
+            \App\Debug::print_r('Used memory: '.$memory);
+        }
     }
 }

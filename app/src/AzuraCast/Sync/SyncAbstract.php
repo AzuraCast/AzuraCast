@@ -31,6 +31,6 @@ abstract class SyncAbstract
         $unit=array('b','kb','mb','gb','tb','pb');
         $memory = @round($memory_bytes/pow(1024,($i=floor(log($memory_bytes,1024)))),2).' '.$unit[$i];
 
-        \App\Debug::print_r('Free memory: '.$memory);
+        \App\Debug::print_r('Used memory: '.$memory);
     }
 }

@@ -232,7 +232,7 @@ class FilesController extends BaseController
 
         if (is_dir($this->file_path)) {
             $media_in_dir_raw = $this->em->createQuery('SELECT 
-              sm.id, sm.unique_id, sm.path, sm.length, sm.length_text, sm.artist, sm.title, sp.name 
+              partial sm.{id, unique_id, path, length, length_text, artist, title}, partial sp.{id, name}
               FROM Entity\StationMedia sm 
               LEFT JOIN sm.playlists sp 
               WHERE sm.station_id = :station_id 

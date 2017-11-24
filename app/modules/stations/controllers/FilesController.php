@@ -231,7 +231,12 @@ class FilesController extends BaseController
         $result = [];
 
         if (is_dir($this->file_path)) {
-            $media_in_dir_raw = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id AND sm.path LIKE :path')
+            $media_in_dir_raw = $this->em->createQuery('SELECT 
+              sm.id, sm.unique_id, sm.path, sm.length, sm.length_text, sm.artist, sm.title, sp.name 
+              FROM Entity\StationMedia sm 
+              LEFT JOIN sm.playlists sp 
+              WHERE sm.station_id = :station_id 
+              AND sm.path LIKE :path')
                 ->setParameter('station_id', $this->station->getId())
                 ->setParameter('path', $this->file . '%')
                 ->getArrayResult();
@@ -250,9 +255,7 @@ class FilesController extends BaseController
                     'artist' => $media_row['artist'],
                     'title' => $media_row['title'],
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
-                    'art' => (is_resource($media_row['art']))
-                        ? 'data:image/jpeg;base64,'.base64_encode(stream_get_contents($media_row['art']))
-                        : null,
+                    'art' => $this->url->named('api:media:art', ['station' => $this->station->getId(), 'media_id' => $media_row['unique_id']]),
                     'edit_url' => $this->url->routeFromHere(['action' => 'edit', 'id' => $media_row['id']]),
                     'play_url' => $this->url->routeFromHere(['action' => 'download']) . '?file=' . urlencode($media_row['path']),
                     'playlists' => $playlists,

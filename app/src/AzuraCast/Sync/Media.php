@@ -50,8 +50,15 @@ class Media extends SyncAbstract
             $full_path = $base_dir . '/' . $media_row->getPath();
 
             if (file_exists($full_path)) {
+
+                $force_reprocess = false;
+                if (empty($media_row->getUniqueId())) {
+                    $media_row->generateUniqueId();
+                    $force_reprocess = true;
+                }
+
                 // Check for modifications.
-                $song_info = $media_row->loadFromFile();
+                $song_info = $media_row->loadFromFile($force_reprocess);
 
                 if (is_array($song_info)) {
                     Debug::log('Reprocessing media: '.$song_info['artist'].' - '.$song_info['title']);

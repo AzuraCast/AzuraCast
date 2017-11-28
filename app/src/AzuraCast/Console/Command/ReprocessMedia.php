@@ -42,6 +42,10 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
                 /** @var Entity\StationMedia $media */
 
                 try {
+                    if (empty($media->getUniqueId())) {
+                        $media->generateUniqueId();
+                    }
+
                     $song_info = $media->loadFromFile(true);
                     if (!empty($song_info)) {
                         $media->setSong($song_repo->getOrCreate($song_info));
@@ -51,7 +55,7 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
 
                     \App\Debug::log('Processed: '.$media->getFullPath());
                 } catch (\Exception $e) {
-                    \App\Debug::log('Could not read source file for: '.$media->getFullPath());
+                    \App\Debug::log('Could not read source file for: '.$media->getFullPath().' - '.$e->getMessage());
                     continue;
                 }
             }

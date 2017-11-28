@@ -12,8 +12,15 @@ use Doctrine\Common\Collections\Collection;
 class StationMediaArt
 {
     /**
-     * @Column(name="media_id", type="integer")
+     * @Column(name="id", type="integer")
      * @Id
+     * @GeneratedValue(strategy="IDENTITY")
+     * @var int
+     */
+    protected $id;
+
+    /**
+     * @Column(name="media_id", type="integer")
      * @var int
      */
     protected $media_id;

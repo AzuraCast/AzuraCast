@@ -81,7 +81,7 @@ class StationMedia
     protected $lyrics;
 
     /**
-     * @OneToOne(targetEntity="StationMediaArt", mappedBy="media")
+     * @OneToOne(targetEntity="StationMediaArt", mappedBy="media", cascade={"persist"})
      * @var StationMediaArt
      */
     protected $art;

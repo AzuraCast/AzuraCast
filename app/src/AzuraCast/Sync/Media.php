@@ -72,6 +72,7 @@ class Media extends SyncAbstract
             if ($i % 20 === 0) {
                 $this->em->flush();
                 $this->em->clear(Entity\StationMedia::class);
+                $this->em->clear(Entity\StationMediaArt::class);
                 $this->em->clear(Entity\Song::class);
 
                 $this->_logMemoryUsage();
@@ -82,6 +83,7 @@ class Media extends SyncAbstract
 
         $this->em->flush();
         $this->em->clear(Entity\StationMedia::class);
+        $this->em->clear(Entity\StationMediaArt::class);
         $this->em->clear(Entity\Song::class);
 
         $this->_logMemoryUsage();
@@ -104,6 +106,7 @@ class Media extends SyncAbstract
             if ($i % 20 === 0) {
                 $this->em->flush();
                 $this->em->clear(Entity\StationMedia::class);
+                $this->em->clear(Entity\StationMediaArt::class);
                 $this->em->clear(Entity\Song::class);
 
                 $this->_logMemoryUsage();
@@ -114,6 +117,7 @@ class Media extends SyncAbstract
 
         $this->em->flush();
         $this->em->clear(Entity\StationMedia::class);
+        $this->em->clear(Entity\StationMediaArt::class);
         $this->em->clear(Entity\Song::class);
 
         $this->_logMemoryUsage();

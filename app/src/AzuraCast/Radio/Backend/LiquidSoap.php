@@ -147,7 +147,7 @@ class LiquidSoap extends BackendAbstract
             'auth=dj_auth',
             'icy=true',
             'max=30.',
-            'buffer=5.',
+            'buffer=10.',
             'icy_metadata_charset="UTF-8"',
             'metadata_charset="UTF-8"',
             'on_connect=live_connected',

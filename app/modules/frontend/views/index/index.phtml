@@ -184,8 +184,7 @@ $(function () {
 });
 
 $(function() {
-    var nchan_opts = { subscriber: 'longpoll' };
-    var sub = new NchanSubscriber('/api/live/nowplaying/<?=implode(',', $station_ids) ?>,', nchan_opts);
+    var sub = new NchanSubscriber('/api/live/nowplaying/<?=implode(',', $station_ids) ?>,');
 
     sub.on("message", function(message, message_metadata) {
         var rows = JSON.parse(message);

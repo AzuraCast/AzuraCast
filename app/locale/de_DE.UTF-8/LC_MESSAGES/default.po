@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-05-29 09:16+0000\n"
-"PO-Revision-Date: 2017-06-29 21:16-0400\n"
+"PO-Revision-Date: 2017-12-01 16:38-0500\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -19,7 +19,7 @@ msgstr ""
 #: /var/azuracast/www/app/bootstrap/services.php:190
 #, php-format
 msgid "Could not connect to supervisord. Try running %s in a terminal to restart the service."
-msgstr ""
+msgstr "Konnte sich nicht mit dem supervisord verbinde. Versuche %s im Terminal auszuführen, um den Service neu zu starten."
 
 #: /var/azuracast/www/app/config/admin/dashboard.conf.php:7
 msgid "System Maintenance"
@@ -81,19 +81,19 @@ msgstr "Änderungen speichern"
 
 #: /var/azuracast/www/app/config/forms/automation.conf.php:10
 msgid "Enable Automated Assignment"
-msgstr ""
+msgstr "Aktiviere automatische Zuordnung"
 
 #: /var/azuracast/www/app/config/forms/automation.conf.php:11
 msgid "Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to \"Enabled\" and at least one playlist is set to \"Include in Automated Assignment\"."
-msgstr ""
+msgstr "Erlaube dem System regelmäßig Lieder automatisch zu Playlisten basierend auf deren Performance hinzuzufügen. Dieser Prozess wird im Hintergrund ausgeführt werden und wird nur ausgeführt, wenn diese Option aktiviert ist und mindestens eine Playlist auf \"Automatisches Zuordnen erlauben\" gestellt ist."
 
 #: /var/azuracast/www/app/config/forms/automation.conf.php:23
 msgid "Days Between Automated Assignments"
-msgstr ""
+msgstr "Tage zwischen der automatischen Zuordnung"
 
 #: /var/azuracast/www/app/config/forms/automation.conf.php:24
 msgid "Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days."
-msgstr ""
+msgstr "Basierend auf dieser Einstellung wird das System Lieder alle (soviel) Tage automatisch unter der Nutzung der (soviel) letzten Tage neu zuordnen."
 
 #: /var/azuracast/www/app/config/forms/login.conf.php:13
 #: /var/azuracast/www/app/config/forms/profile.conf.php:31
@@ -112,21 +112,21 @@ msgstr "E-Mail Adresse"
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:23
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:70
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: /var/azuracast/www/app/config/forms/login.conf.php:33
 msgid "Log in"
-msgstr ""
+msgstr "Anmelden"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:9
 #: /var/azuracast/www/app/config/forms/rename.conf.php:9
 msgid "File Name"
-msgstr ""
+msgstr "Dateiname"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:10
 #: /var/azuracast/www/app/config/forms/rename.conf.php:10
 msgid "The relative path of the file in the station's media directory."
-msgstr ""
+msgstr "Der relative Dateipfad zu der Datei im Sender Medien Ordner."
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:17
 #: /var/azuracast/www/app/config/forms/song.conf.php:33
@@ -143,47 +143,47 @@ msgstr "Song-Titel"
 #: /var/azuracast/www/app/modules/frontend/views/public/embed.phtml:20
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:31
 msgid "Song Artist"
-msgstr ""
+msgstr "Künstler des Liedes"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:31
 msgid "Song Album"
-msgstr ""
+msgstr "Album des Liedes"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:38
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:39
 msgid "International Standard Recording Code, used for licensing reports."
-msgstr ""
+msgstr "International standardisierte Aufnahme-Kodierung, welche für Lizenz Berichte genutzt wird."
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:46
 msgid "Song Length (seconds)"
-msgstr ""
+msgstr "Länge des Liedes (Sekunden)"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:55
 msgid "Custom Fading: Overlap Time (seconds)"
-msgstr ""
+msgstr "Benutzerdefinierter Übergang: Überschneidungszeit (Sekunden)"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:56
 msgid "The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default."
-msgstr ""
+msgstr "Die Zeit, die dieses Lied sich mit den vorherigen und folgendem Lied beim Übergang überlappen soll. Frei lassen um den System Standardwert zu nutzen."
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:64
 msgid "Custom Fading: Fade-In Time (seconds)"
-msgstr ""
+msgstr "Benutzerdefinierter Übergang: Einblendezeit (Sekunden)"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:65
 msgid "The time period that the song should fade in. Leave blank to use the system default."
-msgstr ""
+msgstr "Der Zeitabschnitt im dem der Song einblenden soll. Frei lassen um den System Standardwert zu nutzen."
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:72
 msgid "Custom Fading: Fade-Out Time (seconds)"
-msgstr ""
+msgstr "Benutzerdefinierter Übergang: Ausblendezeit (Sekunden)"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:73
 msgid "The time period that the song should fade out. Leave blank to use the system default."
-msgstr ""
+msgstr "Der Zeitabschnitt im dem der Song ausblenden soll. Frei lassen um den System Standardwert zu nutzen."
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:80
 msgid "Custom Cues: Cue-In Point (seconds)"
@@ -425,34 +425,34 @@ msgstr ""
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:162
 msgid "Once per x Minutes Playlist"
-msgstr ""
+msgstr "Einmal pro x Minuten der Playlist"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:169
 msgid "Number of Minutes Between Plays"
-msgstr ""
+msgstr "Minutenanzahl zwischen Wiedergaben"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:170
 msgid "This playlist will play every $x minutes, where $x is specified below."
-msgstr ""
+msgstr "Diese Playlist wird alle $x Minuten spielen, wie $x unten angegeben ist."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:186
 msgid "Scheduled Play Time"
-msgstr ""
+msgstr "Geplante Wiedergabe Zeit"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:10
 msgid "Use Browser Default"
-msgstr ""
+msgstr "Nutze Browser Standard"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:17
 #: /var/azuracast/www/app/config/forms/register.conf.php:7
 #: /var/azuracast/www/app/modules/frontend/views/profile/index.phtml:43
 msgid "Account Information"
-msgstr ""
+msgstr "Benutzerinformationen"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:23
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:72
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:41
 #: /var/azuracast/www/app/config/forms/user.conf.php:29
@@ -461,48 +461,48 @@ msgstr "Passwort zurücksetzen"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:42
 msgid "To change your password, enter the new password in the field below."
-msgstr ""
+msgstr "Um dein Passwort zu ändern, gebe das neue Passwort unten ein."
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:51
 #: /var/azuracast/www/app/modules/frontend/views/profile/index.phtml:56
 msgid "Customization"
-msgstr ""
+msgstr "Personalisierung"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:57
 msgid "Time Zone"
-msgstr ""
+msgstr "Zeitzone"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:58
 msgid "All times displayed on the site will be based on this time zone."
-msgstr ""
+msgstr "Alle auf der Seite angegebenen Zeiten werden in dieser Zeitzone sein."
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:68
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:77
 msgid "Site Theme"
-msgstr ""
+msgstr "Thema der Seite"
 
 #: /var/azuracast/www/app/config/forms/register.conf.php:37
 msgid "Create Account"
-msgstr ""
+msgstr "Benutzer erstellen"
 
 #: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:10
 msgid "Important Notes"
-msgstr ""
+msgstr "Wichtige Notizen"
 
 #: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:38
 msgid "Report Start Date"
-msgstr ""
+msgstr "Melde Startzeit"
 
 #: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:47
 msgid "Report End Date"
-msgstr ""
+msgstr "Melde Endzeit"
 
 #: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:56
 msgid "Generate Report"
-msgstr ""
+msgstr "Generiere Bericht"
 
 #: /var/azuracast/www/app/config/forms/role.conf.php:24
 #: /var/azuracast/www/app/modules/admin/views/permissions/index.phtml:23
@@ -536,7 +536,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/config/forms/settings.conf.php:21
 msgid "AzuraCast Instance Name"
-msgstr ""
+msgstr "AzuraCast Instanz Name"
 
 #: /var/azuracast/www/app/config/forms/settings.conf.php:22
 msgid "This name will appear as a sub-header next to the AzuraCast logo, to help identify this server."
@@ -548,11 +548,11 @@ msgstr "System-URL"
 
 #: /var/azuracast/www/app/config/forms/settings.conf.php:30
 msgid "The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server."
-msgstr ""
+msgstr "Die Basis URL ist wo der Service erreichbar ist. Benutze entweder die IP oder eine Domäne (wenn eine existiert) die auf den Server zeigt."
 
 #: /var/azuracast/www/app/config/forms/settings.conf.php:41
 msgid "Use Web Proxy for Radio"
-msgstr ""
+msgstr "Nutze Webproxy für das Radio"
 
 #: /var/azuracast/www/app/config/forms/settings.conf.php:42
 msgid "By default, radio stations broadcast on their own ports (i.e. 8000). If you're using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443)."

@@ -5,10 +5,13 @@
 # ./docker-restore.sh [/custom/backup/dir/custombackupname.tar.gz]
 #
 
-BACKUP_PATH=${1:-"./backup.tar.gz"}
+APP_BASE_DIR=$(pwd)
 
-BACKUP_DIR=`dirname "$BACKUP_PATH"`
+BACKUP_PATH=${1:-"./backup.tar.gz"}
+BACKUP_DIR=$(cd `dirname "$BACKUP_PATH"` && pwd)
 BACKUP_FILENAME=`basename "$BACKUP_PATH"`
+
+cd $APP_BASE_DIR
 
 if [ -f $BACKUP_PATH ]; then
    docker-compose down

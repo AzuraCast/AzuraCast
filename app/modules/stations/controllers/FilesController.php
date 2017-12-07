@@ -232,7 +232,7 @@ class FilesController extends BaseController
 
         if (is_dir($this->file_path)) {
             $media_in_dir_raw = $this->em->createQuery('SELECT 
-              partial sm.{id, unique_id, path, length, length_text, artist, title}, partial sp.{id, name}
+              partial sm.{id, unique_id, path, length, length_text, artist, title, album}, partial sp.{id, name}
               FROM Entity\StationMedia sm 
               LEFT JOIN sm.playlists sp 
               WHERE sm.station_id = :station_id 
@@ -254,6 +254,7 @@ class FilesController extends BaseController
                     'length_text' => $media_row['length_text'],
                     'artist' => $media_row['artist'],
                     'title' => $media_row['title'],
+                    'album' => $media_row['album'],
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
                     'art' => $this->url->named('api:media:art', ['station' => $this->station->getId(), 'media_id' => $media_row['unique_id']]),
                     'edit_url' => $this->url->routeFromHere(['action' => 'edit', 'id' => $media_row['id']]),

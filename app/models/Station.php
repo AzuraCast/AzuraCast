@@ -24,9 +24,15 @@ class Station
 
     /**
      * @Column(name="name", type="string", length=100, nullable=true)
-     * @var string|null
+     * @var string|null The full display name of the station.
      */
     protected $name;
+
+    /**
+     * @Column(name="short_name", type="string", length=100, nullable=true)
+     * @var string|null The URL-friendly name for the station, typically auto-generated from the full station name.
+     */
+    protected $short_name;
 
     /**
      * @Column(name="frontend_type", type="string", length=100, nullable=true)
@@ -223,19 +229,31 @@ class Station
     }
 
     /**
-     * @return string
-     */
-    public function getShortName(): string
-    {
-        return self::getStationShortName($this->name);
-    }
-
-    /**
      * @param null|string $name
      */
     public function setName(string $name = null)
     {
         $this->name = $name;
+
+        if (empty($this->short_name) && !empty($name)) {
+            $this->short_name = self::getStationShortName($name);
+        }
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getShortName(): ?string
+    {
+        return $this->short_name ?? self::getStationShortName($this->name);
+    }
+
+    /**
+     * @param null|string $short_name
+     */
+    public function setShortName(?string $short_name): void
+    {
+        $this->short_name = $short_name;
     }
 
     /**

@@ -16,22 +16,6 @@ class StationRepository extends BaseRepository
     }
 
     /**
-     * @param bool $cached
-     * @param null $order_by
-     * @param string $order_dir
-     * @return array
-     */
-    public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC')
-    {
-        $stations = parent::fetchArray($cached, $order_by, $order_dir);
-        foreach ($stations as &$station) {
-            $station['short_name'] = Entity\Station::getStationShortName($station['name']);
-        }
-
-        return $stations;
-    }
-
-    /**
      * @param bool $add_blank
      * @param \Closure|NULL $display
      * @param string $pk
@@ -61,36 +45,12 @@ class StationRepository extends BaseRepository
     }
 
     /**
-     * @param bool $cached
-     * @return array
-     */
-    public function getShortNameLookup($cached = true)
-    {
-        $stations = $this->fetchArray($cached);
-
-        $lookup = [];
-        foreach ($stations as $station) {
-            $lookup[$station['short_name']] = $station;
-        }
-
-        return $lookup;
-    }
-
-    /**
      * @param $short_code
      * @return null|object
      */
     public function findByShortCode($short_code)
     {
-        $short_names = $this->getShortNameLookup();
-
-        if (isset($short_names[$short_code])) {
-            $id = $short_names[$short_code]['id'];
-
-            return $this->find($id);
-        }
-
-        return null;
+        return $this->findOneBy(['short_name' => $short_code]);
     }
 
     /**
@@ -99,6 +59,8 @@ class StationRepository extends BaseRepository
      * @param $data
      * @param ContainerInterface $di
      * @return Entity\Station
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Exception
      */
     public function create($data, ContainerInterface $di)
     {
@@ -151,6 +113,8 @@ class StationRepository extends BaseRepository
      *
      * @param Entity\Station $station
      * @param ContainerInterface $di
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Exception
      */
     public function resetMounts(Entity\Station $station, ContainerInterface $di)
     {
@@ -180,6 +144,8 @@ class StationRepository extends BaseRepository
     /**
      * @param Entity\Station $station
      * @param ContainerInterface $di
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Exception
      */
     public function destroy(Entity\Station $station, ContainerInterface $di)
     {

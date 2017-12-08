@@ -46,8 +46,9 @@ return [
                 'url' => [
                     'text',
                     [
-                        'label' => _('Station Web Site URL'),
+                        'label' => _('Station Web Site'),
                         'class' => 'full-width full-height',
+                        'description' => _('Note: This should be the public-facing homepage of the radio station, not the AzuraCast URL. It will be included in broadcast details.'),
                     ]
                 ],
 
@@ -58,6 +59,14 @@ return [
                         'description' => _('Whether to show or hide the station from public pages and general API results.'),
                         'options' => [0 => _('No'), 1 => _('Yes')],
                         'default' => '1',
+                    ]
+                ],
+
+                'short_name' => [
+                    'text',
+                    [
+                        'label' => _('Advanced: Station URL Stub'),
+                        'description' => _('Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.'),
                     ]
                 ],
 

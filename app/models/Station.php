@@ -245,7 +245,9 @@ class Station
      */
     public function getShortName(): ?string
     {
-        return $this->short_name ?? self::getStationShortName($this->name);
+        return (!empty($this->short_name))
+            ? $this->short_name
+            : self::getStationShortName($this->name);
     }
 
     /**
@@ -253,7 +255,10 @@ class Station
      */
     public function setShortName(?string $short_name): void
     {
-        $this->short_name = $short_name;
+        $short_name = trim($short_name);
+        if (!empty($short_name)) {
+            $this->short_name = $short_name;
+        }
     }
 
     /**

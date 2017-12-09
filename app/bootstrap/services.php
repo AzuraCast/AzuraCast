@@ -292,7 +292,7 @@ return function (\Slim\Container $di, $settings) {
         });
 
         $view->addData([
-            'assets' => $di['assets'],
+            'assets' => $di[\AzuraCast\Assets::class],
             'auth' => $di['auth'],
             'acl' => $di['acl'],
             'url' => $di['url'],
@@ -304,7 +304,8 @@ return function (\Slim\Container $di, $settings) {
         return $view;
     });
 
-    $di['assets'] = function ($di) {
+    // Asset management
+    $di[\AzuraCast\Assets::class] = function ($di) {
 
         $libraries = require('assets.php');
 
@@ -316,6 +317,15 @@ return function (\Slim\Container $di, $settings) {
 
         return new \AzuraCast\Assets($libraries, $versioned_files, $di['url']);
 
+    };
+
+    // Rate limit checking
+    $di[\AzuraCast\RateLimit::class] = function($di) {
+        /** @var \Redis $redis */
+        $redis = $di['redis'];
+        $redis->select(3);
+
+        return new \AzuraCast\RateLimit($redis);
     };
 
     // Set up application and routing.

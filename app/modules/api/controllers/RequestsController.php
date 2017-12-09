@@ -6,6 +6,21 @@ use Entity;
 
 class RequestsController extends BaseController
 {
+    public function preDispatch()
+    {
+        parent::preDispatch();
+
+        $rate_limit_timeout = 5;
+
+        try {
+            /** @var \AzuraCast\RateLimit $rate_limit */
+            $rate_limit = $this->di[\AzuraCast\RateLimit::class];
+            $rate_limit->checkRateLimit('api', $rate_limit_timeout, 2);
+        } catch(\AzuraCast\Exception\RateLimitExceeded $e) {
+            return $this->returnError('You have temporarily exceeded the rate limit for this application. Please wait '.$rate_limit_timeout.' seconds before attempting new requests.', 429);
+        }
+    }
+
     /**
      * @SWG\Get(path="/station/{station_id}/requests",
      *   tags={"Stations: Song Requests"},

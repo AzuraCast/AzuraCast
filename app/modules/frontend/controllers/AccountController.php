@@ -38,6 +38,17 @@ class AccountController extends BaseController
         }
 
         if (!empty($_POST['username']) && !empty($_POST['password'])) {
+            try {
+                /** @var \AzuraCast\RateLimit $rate_limit */
+                $rate_limit = $this->di[\AzuraCast\RateLimit::class];
+                $rate_limit->checkRateLimit('login', 30, 5);
+            } catch(\AzuraCast\Exception\RateLimitExceeded $e) {
+                $this->alert('<b>' . _('Too many login attempts') . '</b><br>' . _('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
+                    'red');
+
+                return $this->redirectHere();
+            }
+
             $login_success = $this->auth->authenticate($_POST['username'], $_POST['password']);
 
             if ($login_success) {

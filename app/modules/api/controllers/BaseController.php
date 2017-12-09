@@ -12,8 +12,6 @@ class BaseController extends \AzuraCast\Mvc\Controller
 
     public function preDispatch()
     {
-        parent::preDispatch();
-
         // Disable rendering.
         $this->doNotRender();
     }

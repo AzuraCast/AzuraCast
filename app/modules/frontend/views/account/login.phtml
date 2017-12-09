@@ -7,7 +7,7 @@
             <?=sprintf(_('Welcome to %s!'), $app_settings['name']) ?>
             <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
         </h3>
-        <p class="text-left"><?=_('Please log in to continue.') ?></p>
+        <p class="text-left"><?=_('Please log in to continue.') ?> <?=sprintf(_('<a href="%s" target="_blank">Forgot your password?</a>'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#reset-an-account-password') ?></p>
 
         <form id="login-form" action="" method="post">
             <div class="input-group m-b-20">

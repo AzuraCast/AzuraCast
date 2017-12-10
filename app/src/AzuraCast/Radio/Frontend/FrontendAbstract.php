@@ -128,15 +128,15 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
         $settings_repo = $this->di['em']->getRepository('Entity\Settings');
 
-        $base_url = $settings_repo->getSetting('base_url', 'localhost');
+        $base_url = $this->di['url']->getBaseUrl();
         $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
 
         if ((!APP_IN_PRODUCTION && !APP_INSIDE_DOCKER) || $use_radio_proxy) {
             // Web proxy support.
-            return ((APP_IS_SECURE) ? 'https' : 'http') . '://' . $base_url . '/radio/' . $radio_port;
+            return $base_url . '/radio/' . $radio_port;
         } else {
             // Remove port number and other decorations.
-            return 'http://' . (parse_url($base_url, \PHP_URL_HOST) ?? $base_url) . ':' . $radio_port;
+            return parse_url($base_url, \PHP_URL_SCHEME).'://'.parse_url($base_url, \PHP_URL_HOST) . ':' . $radio_port;
         }
     }
 

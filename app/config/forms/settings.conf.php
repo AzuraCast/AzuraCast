@@ -35,6 +35,32 @@ return [
                         ]
                     ],
 
+                    'prefer_browser_url' => [
+                        'radio',
+                        [
+                            'label' => _('Prefer Browser URL (If Available)'),
+                            'description' => _('If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.'),
+                            'options' => [
+                                0 => 'No',
+                                1 => 'Yes',
+                            ],
+                            'default' => 0,
+                        ]
+                    ],
+
+                    'always_use_ssl' => [
+                        'radio',
+                        [
+                            'label' => _('Always Use HTTPS'),
+                            'description' => _('Set to "Yes" to always use "https://" secure URLs.'),
+                            'options' => [
+                                0 => 'No',
+                                1 => 'Yes',
+                            ],
+                            'default' => 0,
+                        ]
+                    ],
+
                     'use_radio_proxy' => [
                         'radio',
                         [

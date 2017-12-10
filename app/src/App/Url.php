@@ -22,6 +22,16 @@ class Url
     }
 
     /**
+     * Returns the raw Base URL component.
+     *
+     * @return string
+     */
+    public function getBaseUrl()
+    {
+        return $this->base_url;
+    }
+
+    /**
      * Get the URI for the current page.
      *
      * @return mixed
@@ -217,18 +227,7 @@ class Url
 
         // Retrieve domain from either MVC controller or config file.
         if ($this->include_domain || $absolute) {
-
-            $url_domain = (empty($this->base_url)) ? '' : ((APP_IS_SECURE) ? 'https://' : 'http://') . $this->base_url;
-
-            if (empty($url_domain)) {
-                $http_host = trim($_SERVER['HTTP_HOST'], ':');
-
-                if (!empty($http_host)) {
-                    $url_domain = ((APP_IS_SECURE) ? 'https://' : 'http://') . $http_host;
-                }
-            }
-
-            $url_raw = $url_domain . $url_raw;
+            $url_raw = $this->base_url . $url_raw;
         }
 
         return $url_raw;

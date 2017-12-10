@@ -171,6 +171,18 @@ return function (\Slim\Container $di, $settings) {
         $settings_repo = $em->getRepository(\Entity\Settings::class);
 
         $base_url = $settings_repo->getSetting('base_url', '');
+        $prefer_browser_url = (bool)$settings_repo->getSetting('prefer_browser_url', 0);
+
+        if (!empty($_SERVER['HTTP_HOST']) && ($prefer_browser_url || empty($base_url))) {
+            $base_url = $_SERVER['HTTP_HOST'];
+        }
+
+        if (!empty($base_url)) {
+            $always_use_ssl = (bool)$settings_repo->getSetting('always_use_ssl', 0);
+            $base_url_schema = (APP_IS_SECURE || $always_use_ssl) ? 'https://' : 'http://';
+
+            $base_url = $base_url_schema.$base_url;
+        }
 
         return new \App\Url($di['router'], $base_url);
     };

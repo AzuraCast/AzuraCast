@@ -30,6 +30,11 @@ $assets
             </div>
 
             <div class="card-body card-padding-sm">
+
+                <?php if (APP_INSIDE_DOCKER): ?>
+                    <p><i class="zmdi zmdi-info"></i> <?=sprintf(_('You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. The newly updated files will automatically be processed within a few minutes.'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#access-files-via-sftp-docker-installations') ?></p>
+                <?php endif; ?>
+
                 <div id="upload_progress"></div>
                 <div id="file_drop_target">
                     <?=_('Drag files here to upload to this folder or ') ?>
@@ -37,9 +42,8 @@ $assets
                 </div>
 
                 <div class="row p-t-20" id="app-toolbar">
-                    <div class="col-sm-6">
-                        <?=_('With selected:') ?>
-
+                    <div class="col-sm-8">
+                        <?=_('With selected:') ?>&nbsp;
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 <i class="zmdi zmdi-playlist-plus"></i> <?=_('Add to Playlist') ?>
@@ -49,21 +53,14 @@ $assets
                                 <li v-for="playlist in playlists">
                                     <a href="#" class="btn-batch" v-on:click="doBatch" v-bind:data-action="'playlist_' + playlist.id">{{ playlist.name }}</a>
                                 </li>
-                                <li><a href="#" class="btn-new-playlist" data-toggle="modal" data-target="#mdl-new-playlist"><?=_('Create new...') ?></a></li>
+                                <li><a href="#" class="btn-new-playlist" data-toggle="modal" data-target="#mdl-create-playlist"><?=_('Create new...') ?></a></li>
                             </ul>
                         </div>
                         <button type="button" class="btn btn-warning" v-on:click="doBatch" data-action="clear"><i class="zmdi zmdi-playlist-audio"></i> <?=_('Clear Playlists') ?></button>
                         <button type="button" class="btn btn-danger" v-on:click="doBatch" data-action="delete"><i class="zmdi zmdi-delete"></i> <?=_('Delete') ?></button>
                     </div>
-                    <div class="col-sm-6">
-                        <form method="post" id="mkdir">
-                        <div class="input-group">
-                            <input name="name" type="text" class="form-control" placeholder="<?=_('New Folder Name') ?>" aria-label="...">
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="zmdi zmdi-folder"></i> <?=_('Create Folder') ?></button>
-                            </div>
-                        </div>
-                        </form>
+                    <div class="col-sm-4 text-right">
+                        <a class="btn btn-default" href="#" data-toggle="modal" data-target="#mdl-create-directory"><i class="zmdi zmdi-folder"></i> <?=_('New Folder') ?></a>
                     </div>
                 </div>
             </div>
@@ -89,7 +86,7 @@ $assets
     </div>
 </div>
 
-<div class="modal fade" id="mdl-new-playlist" tabindex="-1" role="dialog">
+<div class="modal fade" id="mdl-create-playlist" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <form id="frm-create-playlist">
             <div class="modal-content">
@@ -106,6 +103,29 @@ $assets
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" id="btn-create-new-playlist" class="btn btn-primary"><?=_('Create Playlist') ?></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="mdl-create-directory" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form id="frm-create-directory">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel"><?=_('New Directory') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name" class="control-label"><?=_('Directory Name') ?>:</label>
+                        <input type="text" class="form-control" id="fld-directory-name" name="name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btn-create-new-playlist" class="btn btn-primary"><?=_('Create Directory') ?></button>
                 </div>
             </div>
         </form>
@@ -279,8 +299,26 @@ $(function() {
         },'json');
 
         $('#fld-playlist-name').val('');
-        $('#mdl-new-playlist').modal('hide');
+        $('#mdl-create-playlist').modal('hide');
 
+        return false;
+    });
+
+    $('#frm-create-directory').submit(function(e) {
+        e.preventDefault();
+
+        var $dir = $('#fld-directory-name');
+
+        $dir.val().length && $.post('<?=$url->routeFromHere(['action' => 'mkdir']) ?>',{
+            name: $dir.val(),
+            xsrf: XSRF,
+            file: getUrlHash()
+        },function(data){
+            list();
+        },'json');
+
+        $dir.val('');
+        $('#mdl-create-directory').modal('hide');
         return false;
     });
 

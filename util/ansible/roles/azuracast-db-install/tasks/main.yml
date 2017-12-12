@@ -13,7 +13,7 @@
 
  - name: Add empty root .my.cnf (if none exists)
    become: true
-   template: src=root_empty_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600
+   template: src=root_empty_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600 force=no
 
  - name: Remove anonymous users
    command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'

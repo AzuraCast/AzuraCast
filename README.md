@@ -72,24 +72,40 @@ All of these components are automatically downloaded and installed using either 
 
 We strongly recommend installing and using AzuraCast via Docker. All of the necessary software packages are built by our automated tools, so installation is as easy as just pulling down the pre-compiled images. There's no need to worry about compatibility with your host operating system, so any host (including Windows and MacOS) will work great out of the box.
 
-On the host machine with Git installed, clone this repository to any local directory: 
+#### Step 1: Install Docker
+
+Your computer or server should be running the newest version of Docker and Docker Compose. You can use the easy scripts below to install both if you're starting from scratch:
+
+```bash
+wget -qO- https://get.docker.com/ | sh
+
+COMPOSE_VERSION=`git ls-remote https://github.com/docker/compose | grep refs/tags | grep -oP "[0-9]+\.[0-9][0-9]+\.[0-9]+$" | tail -n 1`
+sudo sh -c "curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
+sudo chmod +x /usr/local/bin/docker-compose
+sudo sh -c "curl -L https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose"
+```
+
+If you're not installing as root, you may be given instructions to add your current user to the Docker group (i.e. `usermod -aG docker $user`). You should log out or reboot after doing this before continuing below.
+
+#### Step 2: Clone the AzuraCast Repository
+
+Make sure Git is installed and updated on your host computer or server.
+
+Make a new directory where you'd like AzuraCast's local files to live on your computer. This directory will be mapped into Docker.
+
+Inside that directory, run this command to clone the repository:
+
 ```bash
 git clone https://github.com/AzuraCast/AzuraCast.git .
 ```
 
-From that directory, run the following commands as root or a sudo-capable user to install the latest versions of Docker and Docker Compose and set up the AzuraCast instance:
+#### Step 3: Run the AzuraCast Docker Installer
+
+In that new directory, you'll find a script called `docker-install.sh`. Using the commands below, make the script executable and run it:
 
 ```bash
 chmod +x ./docker-*
 ./docker-install.sh
-```
-
-If you already have the latest versions of Docker and Docker Compose, you can manually initialize the AzuraCast docker components by running:
-
-```bash
-docker-compose pull
-docker-compose run --rm cli azuracast_install
-docker-compose up -d
 ```
 
 #### Updating with Docker

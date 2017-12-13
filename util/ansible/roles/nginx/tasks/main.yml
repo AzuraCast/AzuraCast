@@ -34,9 +34,9 @@
       - "https://nchan.io/download/nginx-common.ubuntu.deb"
       - "https://nchan.io/download/nginx-extras.ubuntu.deb"
 
-  - name: Run apt-get install -f
+  - name: Run apt-get install -fy
     become: true
-    shell: apt-get -f install
+    shell: apt-get -fy install
 
   - name: Prevent unattended updates of nchan nginx
     become: true

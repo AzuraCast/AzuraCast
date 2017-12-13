@@ -132,7 +132,8 @@ class User
     public function setAuthPassword(string $password)
     {
         if (trim($password)) {
-            $this->auth_password = password_hash($password, \PASSWORD_DEFAULT);
+            [$algo, $algo_opts] = $this->_getPasswordAlgorithm();
+            $this->auth_password = password_hash($password, $algo, $algo_opts);
         }
     }
 
@@ -142,12 +143,38 @@ class User
      */
     public function verifyPassword($password)
     {
-        return password_verify($password, $this->auth_password);
+        if (password_verify($password, $this->auth_password)) {
+            [$algo, $algo_opts] = $this->_getPasswordAlgorithm();
+
+            if (password_needs_rehash($this->auth_password, $algo, $algo_opts)) {
+                $this->setAuthPassword($password);
+            }
+            return true;
+        }
+
+        return false;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function generateRandomPassword()
     {
         $this->setAuthPassword(bin2hex(random_bytes(20)));
+    }
+
+    /**
+     * Get the most secure available password hashing algorithm.
+     *
+     * @return array [algorithm constant, algorithm options array]
+     */
+    protected function _getPasswordAlgorithm()
+    {
+        if (defined('PASSWORD_ARGON2I')) {
+            return [\PASSWORD_ARGON2I, []];
+        } else {
+            return [\PASSWORD_BCRYPT, []];
+        }
     }
 
     /**

@@ -55,6 +55,8 @@ class AccountController extends BaseController
                 $this->acl->reload();
 
                 $user = $this->auth->getLoggedInUser();
+                $this->em->persist($user);
+                $this->em->flush();
 
                 $this->alert('<b>' . _('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 

@@ -39,7 +39,7 @@ $assets
             <tbody>
             <?php foreach($songs as $song_row): ?>
                 <tr class="input" id="song_<?=$song_row['timestamp'] ?>">
-                    <td class="text-center"><?=date('D g:ia', $song_row['timestamp_start']) ?></td>
+                    <td class="text-center"><?=strftime('%a', $song_row['timestamp_start']).' '.$customization->formatTime($song_row['timestamp_start']) ?></td>
                     <td class="text-center"><big><?=$song_row['stat_start'] ?></big></td>
                     <td class="text-center">
                         <big>

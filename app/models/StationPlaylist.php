@@ -472,6 +472,19 @@ class StationPlaylist
     }
 
     /**
+     * Given a time code i.e. "2300", return a UNIX timestamp that can be used to format the time for display.
+     *
+     * @param $time_code
+     * @return int
+     */
+    public static function getTimestamp($time_code): int
+    {
+        $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
+        $dt = \DateTime::createFromFormat('Hi|', $time_code, new \DateTimeZone('UTC'));
+        return ($dt instanceof \DateTime) ? $dt->getTimestamp() : 0;
+    }
+
+    /**
      * Given a time code i.e. "2300", return a time i.e. "11:00 PM"
      *
      * @param $time_code
@@ -484,7 +497,8 @@ class StationPlaylist
 
         if ($dt instanceof \DateTime) {
             $timestamp = $dt->getTimestamp();
-            return ($use_local_time) ? strftime('%l:%M %p', $timestamp) : gmstrftime('%l:%M %p', $timestamp);
+            $time_text = ($use_local_time) ? strftime('%X', $timestamp) : gmstrftime('%X', $timestamp);
+            return $time_text;
         }
         return '';
     }

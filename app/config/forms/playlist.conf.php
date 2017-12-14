@@ -1,4 +1,9 @@
 <?php
+use \Entity\StationPlaylist;
+
+/** @var \AzuraCast\Customization $customization */
+$customization = $di['customization'];
+
 $local_time_offset = \App\Timezone::getOffsetMinutes(null);
 $local_time_hours = floor($local_time_offset / 60);
 $local_time_mins = $local_time_offset % 60;
@@ -18,7 +23,9 @@ for ($hr = 0; $hr <= 23; $hr++) {
         }
 
         $local_to_utc[$local_time] = $time_num;
-        $hour_select_utc[$time_num] = \Entity\StationPlaylist::formatTimeCode($time_num, true).' ('.\Entity\StationPlaylist::formatTimeCode($time_num, false).' UTC)';
+
+        $hour_timestamp = StationPlaylist::getTimestamp($time_num);
+        $hour_select_utc[$time_num] = $customization->formatTime($hour_timestamp, false, true).' ('.$customization->formatTime($hour_timestamp, true, true).')';
     }
 }
 
@@ -30,7 +37,7 @@ foreach($local_to_utc as $local_time => $utc_time) {
     $hour_select[$utc_time] = $hour_select_utc[$utc_time];
 }
 
-$server_time = sprintf(_('Your current local time is <b>%s</b>. You can customize your time zone from the "My Account" page.'), date('g:ia'));
+$server_time = sprintf(_('Your current local time is <b>%s</b>. You can customize your time zone from the "My Account" page.'), $customization->formatTime());
 
 return [
     'method' => 'post',

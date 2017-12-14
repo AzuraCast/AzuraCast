@@ -36,37 +36,64 @@ class Customization
     }
 
     /**
+     * Format the given UNIX timestamp into a locale-friendly time.
+     *
+     * @param $timestamp
+     * @param bool $use_gmt
+     * @param bool $show_timezone_abbr
+     * @return string Formatted time for presentation.
+     */
+    public function formatTime($timestamp = null, $use_gmt = false, $show_timezone_abbr = false)
+    {
+        $timestamp = $timestamp ?? time();
+
+        $time_formats = $this->app_settings['time_formats'];
+        $locale = $this->getLocale();
+
+        $time_format = $time_formats[$locale] ?? $time_formats['default'];
+
+        if ($show_timezone_abbr) {
+            $time_format .= ($use_gmt) ? ' UTC' : ' %Z';
+        }
+
+        return ($use_gmt) ? gmstrftime($time_format, $timestamp) : strftime($time_format, $timestamp);
+    }
+
+    /**
      * Return the user-customized, browser-specified or system default locale.
      *
      * @return string
      */
     public function getLocale()
     {
-        $locale = null;
-        $supported_locales = $this->app_settings['locale']['supported'];
+        static $locale = null;
 
-        // Prefer user-based profile locale.
-        if ($this->user !== null && !empty($this->user->getLocale()) && $this->user->getLocale() !== 'default') {
-            if (isset($supported_locales[$this->user->getLocale()])) {
-                $locale = $this->user->getLocale();
-            }
-        }
+        if ($locale === null) {
+            $supported_locales = $this->app_settings['locale']['supported'];
 
-        // Attempt to load from browser headers.
-        if (!$locale) {
-            $browser_locale = \Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-
-            foreach ($supported_locales as $lang_code => $lang_name) {
-                if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0) {
-                    $locale = $lang_code;
-                    break;
+            // Prefer user-based profile locale.
+            if ($this->user !== null && !empty($this->user->getLocale()) && $this->user->getLocale() !== 'default') {
+                if (isset($supported_locales[$this->user->getLocale()])) {
+                    $locale = $this->user->getLocale();
                 }
             }
-        }
 
-        // Default to system option.
-        if (!$locale) {
-            $locale = $this->app_settings['locale']['default'];
+            // Attempt to load from browser headers.
+            if (!$locale) {
+                $browser_locale = \Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+
+                foreach ($supported_locales as $lang_code => $lang_name) {
+                    if (strcmp(substr($browser_locale, 0, 2), substr($lang_code, 0, 2)) == 0) {
+                        $locale = $lang_code;
+                        break;
+                    }
+                }
+            }
+
+            // Default to system option.
+            if (!$locale) {
+                $locale = $this->app_settings['locale']['default'];
+            }
         }
 
         return $locale;

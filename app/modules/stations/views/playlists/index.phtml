@@ -56,14 +56,14 @@
                     <?=_('Weight') ?>: <?=(int)$row['weight'] ?> (<?=$row['probability'] ?>)
                 <?php elseif ($row['type'] == 'scheduled'): ?>
                     <?=_('Scheduled Playlist') ?><br>
-                    <?=sprintf(_('Plays between %s and %s'), \Entity\StationPlaylist::formatTimeCode($row['schedule_start_time']), \Entity\StationPlaylist::formatTimeCode($row['schedule_end_time'])) ?>
+                    <?=sprintf(_('Plays between %s and %s'), $customization->formatTime(\Entity\StationPlaylist::getTimestamp($row['schedule_start_time'])), $customization->formatTime(\Entity\StationPlaylist::getTimestamp($row['schedule_end_time']))) ?>
                 <?php elseif ($row['type'] == 'once_per_x_songs'): ?>
                     <?=sprintf(_('Once per %d Songs'), $row['play_per_songs']) ?>
                 <?php elseif ($row['type'] == 'once_per_x_minutes'): ?>
                     <?=sprintf(_('Once per %d Minutes'), $row['play_per_minutes']) ?>
                 <?php elseif ($row['type'] == 'once_per_day'): ?>
                     <?=_('Once per Day') ?><br>
-                    <?=sprintf(_('Plays at %s'), \Entity\StationPlaylist::formatTimeCode($row['play_once_time'])) ?>
+                    <?=sprintf(_('Plays at %s'), $customization->formatTime(\Entity\StationPlaylist::formatTimeCode($row['play_once_time']))) ?>
                 <?php elseif ($row['type'] == 'custom'): ?>
                     <?=_('Custom') ?>
                 <?php endif; ?>

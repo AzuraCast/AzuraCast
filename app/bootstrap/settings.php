@@ -29,6 +29,12 @@ return [
         ],
     ],
 
+    // strftime formats for locales available above.
+    'time_formats' => [
+        'default' => '%H:%M',
+        'en_US.UTF-8' => '%l:%M %p',
+    ],
+
     'themes' => [
         'default' => 'light',
         'available' => [

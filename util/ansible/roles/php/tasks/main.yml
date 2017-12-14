@@ -17,33 +17,43 @@
      - php7.0-cli
      - php7.0-gd
      - php7.0-curl
-     - php7.0-xml         # IceCast XML config
-     - php7.0-zip         # Composer installs
-     - php7.0-mysqlnd     # MySQL Native Driver (Doctrine)
-     - php7.0-mbstring    # Codeception Tests
-     - php7.0-intl        # Localization
+     - php7.0-xml
+     - php7.0-zip
+     - php7.0-mysqlnd
+     - php7.0-mbstring
+     - php7.0-intl
      - php7.0-phalcon
-
-  - name: Install PHP 7.1
-    become: true
-    apt:  package="{{ item }}" state=latest
-    with_items:
      - php7.1-fpm
      - php7.1-cli
      - php7.1-gd
      - php7.1-curl
-     - php7.1-xml         # IceCast XML config
-     - php7.1-zip         # Composer installs
-     - php7.1-mysqlnd     # MySQL Native Driver (Doctrine)
-     - php7.1-mbstring    # Codeception Tests
-     - php7.1-intl        # Localization
-     - php7.1-redis       # Cache
+     - php7.1-xml
+     - php7.1-zip
+     - php7.1-mysqlnd
+     - php7.1-mbstring
+     - php7.1-intl
+     - php7.1-redis
+
+  - name: Install PHP 7.2
+    become: true
+    apt:  package="{{ item }}" state=latest
+    with_items:
+     - php7.2-fpm
+     - php7.2-cli
+     - php7.2-gd
+     - php7.2-curl
+     - php7.2-xml         # IceCast XML config
+     - php7.2-zip         # Composer installs
+     - php7.2-mysqlnd     # MySQL Native Driver (Doctrine)
+     - php7.2-mbstring    # Codeception Tests
+     - php7.2-intl        # Localization
+     - php7.2-redis       # Cache
 
   - name: Install xdebug for testing
     become: true
     apt: package="{{ item }}" state=latest
     with_items:
-     - php7.1-xdebug
+     - php7.2-xdebug
     when: testing_mode|bool == true
 
   - name: List locales
@@ -56,11 +66,11 @@
     with_items: "{{ (locale_list|default([])).stdout_lines | default([]) }}"
 
   - name: Configure PHP FPM Pool
-    template: src=fpmpool.j2 dest=/etc/php/7.1/fpm/pool.d/www.conf force=true
+    template: src=fpmpool.j2 dest=/etc/php/7.2/fpm/pool.d/www.conf force=true
 
   - name: Configure php-fpm php.ini
     ini_file:
-      dest: /etc/php/7.1/fpm/php.ini
+      dest: /etc/php/7.2/fpm/php.ini
       section: PHP
       option: "{{ item.option }}"
       value: "{{ item.value }}"
@@ -71,7 +81,7 @@
 
   - name: Configure php-cli php.ini
     ini_file:
-      dest: /etc/php/7.1/cli/php.ini
+      dest: /etc/php/7.2/cli/php.ini
       section: PHP
       option: "{{ item.option }}"
       value: "{{ item.value }}"

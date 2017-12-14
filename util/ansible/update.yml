@@ -18,7 +18,7 @@
     - { role: mariadb, when: update_revision|int < 15 }
     - { role: nginx, when: update_revision|int < 17 }
     - { role: redis, when: update_revision|int < 14 }
-    - { role: php, when: update_revision|int < 14 }
+    - { role: php, when: update_revision|int < 20 }
     - { role: influxdb, when: update_revision|int < 10 }
     - { role: ufw, when: update_revision|int < 12 }
     - { role: services, when: update_revision|int < 13 }

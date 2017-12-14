@@ -30,7 +30,7 @@ if [ "" == "$PKG_OK" ]; then
 fi
 
 APP_ENV="${APP_ENV:-production}"
-UPDATE_REVISION="{$UPDATE_REVISION:-19}"
+UPDATE_REVISION="{$UPDATE_REVISION:-20}"
 
 echo "Updating AzuraCast (Environment: $APP_ENV)"
 

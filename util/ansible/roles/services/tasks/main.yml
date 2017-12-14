@@ -11,6 +11,6 @@
   with_items:
    - "influxdb"
    - "mysql"
-   - "php7.1-fpm"
+   - "php7.2-fpm"
    - "nginx"
    - "{{ redis_service_name }}"

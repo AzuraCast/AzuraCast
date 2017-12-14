@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Table(name="users")
+ * @Table(name="users", uniqueConstraints={@UniqueConstraint(name="email_idx", columns={"email"})})
  * @Entity(repositoryClass="Entity\Repository\UserRepository")
  * @HasLifecycleCallbacks
  */

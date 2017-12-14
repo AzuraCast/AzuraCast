@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Admin;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Entity;
 
 class UsersController extends BaseController
@@ -63,12 +64,16 @@ class UsersController extends BaseController
             }
 
             $this->record_repo->fromArray($record, $data);
-            $this->em->persist($record);
-            $this->em->flush();
 
-            $this->alert(_('Record updated.'), 'green');
+            try {
+                $this->em->persist($record);
+                $this->em->flush();
 
-            return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+                $this->alert(_('Record updated.'), 'green');
+                return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+            } catch(UniqueConstraintViolationException $e) {
+                $this->alert(_('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
+            }
         }
 
         return $this->renderForm($form, 'edit', _('Edit Record'));

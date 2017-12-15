@@ -53,7 +53,7 @@ Whether you're using the traditional installer or Docker containers, AzuraCast d
 
 * **[NGINX](https://www.nginx.com)** for serving web pages and the radio proxy
 * **[MariaDB](https://mariadb.org/)** as the primary database
-* **[PHP 7.1](https://secure.php.net/)** powering the web application
+* **[PHP 7.2](https://secure.php.net/)** powering the web application
 * **[InfluxDB](https://www.influxdata.com/)** for time-series based statistics
 * **[Redis](https://redis.io/)** for sessions, database and general caching
 * **[LiquidSoap](http://savonet.sourceforge.net/)** as the always-playing "AutoDJ"

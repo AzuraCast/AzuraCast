@@ -2,10 +2,6 @@
 
 # AzuraCast: A Self-Hosted Web Radio Manager
 
-[![Code Climate](https://codeclimate.com/github/AzuraCast/AzuraCast/badges/gpa.svg)](https://codeclimate.com/github/AzuraCast/AzuraCast)
-[![Test Coverage](https://codeclimate.com/github/AzuraCast/AzuraCast/badges/coverage.svg)](https://codeclimate.com/github/AzuraCast/AzuraCast/coverage)
-[![Build Status](https://travis-ci.org/AzuraCast/AzuraCast.svg?branch=master)](https://travis-ci.org/AzuraCast/AzuraCast)
-
 **AzuraCast** is a self-hosted, all-in-one web radio management kit. Using its easy installer tools and web interface, you can start up a fully working web radio station in a few quick minutes. 
 
 AzuraCast works for web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. The project is named after Azura Peavielle, the mascot of [its predecessor project](https://github.com/SlvrEagle23/Ponyville-Live).
@@ -222,6 +218,8 @@ AzuraCast is licensed under the [Apache license, version 2.0](https://github.com
 AzuraCast is a volunteer project, and we depend on your support and feedback to keep growing.
 
 Issues for this codebase are tracked in this repository's Issues section on GitHub. Anyone can create a new issue for the project, and you are encouraged to do so.
+
+**Please do not e-mail the developer of this project directly with questions or concerns. Thank you!**
 
 ## Support AzuraCast Development
 

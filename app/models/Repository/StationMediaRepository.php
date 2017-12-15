@@ -125,7 +125,7 @@ class StationMediaRepository extends BaseRepository
             ->getArrayResult();
 
         // Once per day playlists
-        if (count($playlists_by_type['once_per_day']) > 0) {
+        if (!empty($playlists_by_type['once_per_day'])) {
             foreach ($playlists_by_type['once_per_day'] as $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
                 if ($playlist->canPlayOnce()) {

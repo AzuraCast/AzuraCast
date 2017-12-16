@@ -104,6 +104,34 @@ chmod +x ./docker-*
 ./docker-install.sh
 ```
 
+#### Setting up HTTPS with LetsEncrypt
+
+AzuraCast now supports full encryption with LetsEncrypt. LetsEncrypt offers free SSL certificates with easy validation and renewal.
+
+First, make sure your AzuraCast instance is set up and serving from the domain you want to use. Then, run the following command to generate a new LetsEncrypt certificate:
+
+```bash
+docker-compose run --rm letsencrypt certonly --webroot -w /var/www/letsencrypt
+```
+
+You will be prompted to specify your e-mail address and domain name. Validation will happen automatically. Once complete, run this command to tell nginx to use your new LetsEncrypt certificate:
+
+```bash
+docker-compose run --rm nginx letsencrypt_connect YOURDOMAIN.example.com
+``` 
+
+Reload nginx using the command below:
+
+```bash
+ocker-compose kill -s SIGHUP nginx
+```
+
+Your LetsEncrypt certificate is valid for 3 months. To renew the certificates, run this command:
+
+```
+docker-compose run --rm letsencrypt renew --webroot -w /var/www/letsencrypt
+```
+
 #### Updating with Docker
 
 From inside the base directory where AzuraCast is copied, run the following commands:

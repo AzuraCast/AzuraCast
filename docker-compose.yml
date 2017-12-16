@@ -16,10 +16,7 @@ services:
     restart: always
 
   # docker-compose run --rm letsencrypt \
-  #   certonly --webroot \
-  #   --fullchain-path /etc/letsencrypt/ssl.crt \
-  #   --key-path /etc/letsencrypt/ssl.key \
-  #   -w /var/www/letsencrypt
+  #   certonly --webroot -w /var/www/letsencrypt
   letsencrypt:
     image: certbot/certbot
     command: /bin/true

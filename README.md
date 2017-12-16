@@ -123,7 +123,7 @@ docker-compose run --rm nginx letsencrypt_connect YOURDOMAIN.example.com
 Reload nginx using the command below:
 
 ```bash
-ocker-compose kill -s SIGHUP nginx
+docker-compose kill -s SIGHUP nginx
 ```
 
 Your LetsEncrypt certificate is valid for 3 months. To renew the certificates, run this command:

@@ -26,6 +26,10 @@ server {
 
     server_name localhost;
 
+    add_header X-XSS-Protection 1;
+    add_header X-Content-Type-Options nosniff;
+    add_header Referrer-Policy no-referrer-when-downgrade;
+
     access_log {{ app_base }}/www_tmp/access.log;
     error_log {{ app_base }}/www_tmp/error.log;
 

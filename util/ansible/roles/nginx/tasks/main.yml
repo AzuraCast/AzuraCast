@@ -79,6 +79,13 @@
     become: true
     replace:
       dest: /etc/nginx/nginx.conf
+      regexp: '# server_tokens off;'
+      replace: 'server_tokens off;`'
+
+  - name: Turn sendfile off on nginx for local development
+    become: true
+    replace:
+      dest: /etc/nginx/nginx.conf
       regexp: 'sendfile on;'
       replace: 'sendfile off;'
     when: app_env == "development"

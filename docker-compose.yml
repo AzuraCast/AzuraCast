@@ -13,7 +13,6 @@ services:
       - .:/var/azuracast/www
       - nginx_letsencrypt_certs:/etc/nginx/ssl
       - nginx_letsencrypt_www:/var/www/letsencrypt
-      - nginx_conf:/etc/nginx/conf.d
     restart: always
 
   # docker-compose run --rm letsencrypt \
@@ -27,7 +26,6 @@ services:
     volumes:
       - nginx_letsencrypt_certs:/etc/letsencrypt
       - nginx_letsencrypt_www:/var/www/letsencrypt
-      - nginx_conf:/etc/nginx/conf.d
 
   mariadb:
     image: mariadb:latest
@@ -130,7 +128,6 @@ services:
 volumes:
   nginx_letsencrypt_certs: {}
   nginx_letsencrypt_www: {}
-  nginx_conf: {}
   db_data: {}
   influx_data: {}
   station_data: {}

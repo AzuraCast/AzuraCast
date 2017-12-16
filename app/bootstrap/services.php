@@ -347,8 +347,8 @@ return function (\Slim\Container $di, $settings) {
 
         // Remove trailing slash from all URLs when routing.
         $app->add(function (
-            \Psr\Http\Message\RequestInterface $request,
-            \Psr\Http\Message\ResponseInterface $response,
+            \Slim\Http\Request $request,
+            \Slim\Http\Response $response,
             callable $next
         ) {
             $uri = $request->getUri();
@@ -360,6 +360,41 @@ return function (\Slim\Container $di, $settings) {
                 $uri = $uri->withPath(substr($path, 0, -1));
 
                 return $response->withRedirect((string)$uri, 301);
+            }
+
+            return $next($request, $response);
+        });
+
+        // Check HTTPS setting and enforce accordingly.
+        $app->add(function (
+            \Slim\Http\Request $request,
+            \Slim\Http\Response $response,
+            callable $next
+        ) {
+            /** @var \Doctrine\ORM\EntityManager $em */
+            $em = $this->get('em');
+
+            /** @var \Entity\Repository\SettingsRepository $settings_repo */
+            $settings_repo = $em->getRepository(\Entity\Settings::class);
+
+            $always_use_ssl = (bool)$settings_repo->getSetting('always_use_ssl', 0);
+
+            if ($always_use_ssl) {
+                // Enforce secure cookies.
+                ini_set('session.cookie_secure', 1);
+
+                // Redirect if URL is not currently secure.
+                $uri = $request->getUri();
+
+                if ($uri->getScheme() !== 'https') {
+                    if (!$uri->getPort()) {
+                        $uri = $uri->withPort(443);
+                    }
+                    return $response->withRedirect((string)$uri->withScheme('https'), 302);
+                }
+
+                // Set HSTS header.
+                $response = $response->withHeader(' Strict-Transport-Security', 'max-age=3600');
             }
 
             return $next($request, $response);

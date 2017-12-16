@@ -136,7 +136,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
             return $base_url . '/radio/' . $radio_port;
         } else {
             // Remove port number and other decorations.
-            return parse_url($base_url, \PHP_URL_SCHEME).'://'.parse_url($base_url, \PHP_URL_HOST) . ':' . $radio_port;
+            return 'http://'.parse_url($base_url, \PHP_URL_HOST) . ':' . $radio_port;
         }
     }
 

@@ -50,6 +50,7 @@ ini_set('log_errors',                   1);
 ini_set('error_log',                    APP_INCLUDE_TEMP . '/php_errors.log');
 ini_set('error_reporting',              E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
 ini_set('session.use_only_cookies',     1);
+ini_set('session.cookie_httponly',      1);
 ini_set('session.cookie_lifetime',      86400);
 ini_set('session.use_strict_mode',      1);
 

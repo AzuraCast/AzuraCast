@@ -394,7 +394,7 @@ return function (\Slim\Container $di, $settings) {
                 }
 
                 // Set HSTS header.
-                $response = $response->withHeader(' Strict-Transport-Security', 'max-age=3600');
+                $response = $response->withHeader('Strict-Transport-Security', 'max-age=3600');
             }
 
             return $next($request, $response);

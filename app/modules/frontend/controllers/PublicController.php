@@ -13,7 +13,7 @@ class PublicController extends BaseController
     /** @var Entity\Station */
     protected $station;
 
-    public function preDispatch()
+    protected function preDispatch()
     {
         $this->station = $this->_getStation();
 

@@ -6,7 +6,7 @@ use Entity;
 
 class RequestsController extends BaseController
 {
-    public function preDispatch()
+    protected function preDispatch()
     {
         parent::preDispatch();
 

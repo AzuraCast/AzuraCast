@@ -8,7 +8,7 @@ class InternalController extends BaseController
     /** @var Entity\Station $station */
     protected $station;
 
-    public function preDispatch()
+    protected function preDispatch()
     {
         parent::preDispatch();
 

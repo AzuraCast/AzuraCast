@@ -5,7 +5,7 @@ use Entity;
 
 class StationsController extends BaseController
 {
-    public function preDispatch()
+    protected function preDispatch()
     {
         parent::preDispatch();
 

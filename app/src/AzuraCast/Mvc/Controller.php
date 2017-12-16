@@ -25,4 +25,10 @@ class Controller extends \App\Mvc\Controller
     {
         return $this->auth->isLoggedIn();
     }
+
+    protected function preDispatch()
+    {
+        // Default to forbidding iframes
+        $this->response = $this->response->withHeader('X-Frame-Options', 'DENY');
+    }
 }

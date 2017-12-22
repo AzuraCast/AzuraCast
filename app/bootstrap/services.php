@@ -378,8 +378,9 @@ return function (\Slim\Container $di, $settings) {
             $settings_repo = $em->getRepository(\Entity\Settings::class);
 
             $always_use_ssl = (bool)$settings_repo->getSetting('always_use_ssl', 0);
+            $internal_api_url = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
 
-            if ($always_use_ssl) {
+            if ($always_use_ssl && !$internal_api_url) {
                 // Enforce secure cookies.
                 ini_set('session.cookie_secure', 1);
 

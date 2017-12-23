@@ -380,14 +380,22 @@ return function (\Slim\Container $di, $settings) {
             $always_use_ssl = (bool)$settings_repo->getSetting('always_use_ssl', 0);
             $internal_api_url = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
 
-            if ($always_use_ssl && !$internal_api_url) {
+            $uri = $request->getUri();
+            $uri_is_https = ($uri->getScheme() === 'https');
+
+            if ($uri_is_https) {
+
+                // Upgrade all insecure requests to avoid CSP alerts.
+                $response = $response
+                    ->withHeader('Content-Security-Policy', 'upgrade-insecure-requests');
+
+            } elseif ($always_use_ssl && !$internal_api_url) {
+
                 // Enforce secure cookies.
                 ini_set('session.cookie_secure', 1);
 
                 // Redirect if URL is not currently secure.
-                $uri = $request->getUri();
-
-                if ($uri->getScheme() !== 'https') {
+                if (!$uri_is_https) {
                     if (!$uri->getPort()) {
                         $uri = $uri->withPort(443);
                     }
@@ -395,7 +403,10 @@ return function (\Slim\Container $di, $settings) {
                 }
 
                 // Set HSTS header.
-                $response = $response->withHeader('Strict-Transport-Security', 'max-age=3600');
+                $response = $response
+                    ->withHeader('Strict-Transport-Security', 'max-age=3600')
+                    ->withHeader('Content-Security-Policy', 'upgrade-insecure-requests');
+
             }
 
             return $next($request, $response);

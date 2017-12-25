@@ -49,12 +49,12 @@ class StationsController extends BaseController
                 $this->em->persist($record);
                 $this->em->flush();
 
+                $record->writeConfiguration($this->di);
+
                 if ($oldAdapter !== $record->getFrontendType()) {
                     $this->record_repo->resetMounts($record, $this->di);
                 }
             }
-
-            $record->writeConfiguration($this->di);
 
             // Clear station cache.
             $cache = $this->di->get('cache');

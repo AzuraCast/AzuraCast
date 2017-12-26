@@ -173,8 +173,11 @@ return function (\Slim\Container $di, $settings) {
         $base_url = $settings_repo->getSetting('base_url', '');
         $prefer_browser_url = (bool)$settings_repo->getSetting('prefer_browser_url', 0);
 
-        if (!empty($_SERVER['HTTP_HOST']) && ($prefer_browser_url || empty($base_url))) {
-            $base_url = $_SERVER['HTTP_HOST'];
+        $http_host = $_SERVER['HTTP_HOST'] ?? '';
+        $ignore_hosts = ['localhost', 'nginx'];
+
+        if (!empty($http_host) && !in_array($http_host, $ignore_hosts) && ($prefer_browser_url || empty($base_url))) {
+            $base_url = $http_host;
         }
 
         if (!empty($base_url)) {

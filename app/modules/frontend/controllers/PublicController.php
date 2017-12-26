@@ -48,8 +48,10 @@ class PublicController extends BaseController
                 $this->response->getBody()->write($m3u_file);
 
                 return $this->response
-                    ->withHeader('Content-Type', 'audio/x-mpegurl')
-                    ->withHeader('Content-Disposition', 'attachment; filename="' . $this->station->getShortName() . '.m3u"');
+                    ->withHeader('Content-Type', 'audio/x-mpegurl');
+
+                // Disable for mobile devices
+                // ->withHeader('Content-Disposition', 'attachment; filename="' . $this->station->getShortName() . '.m3u"');
                 break;
 
             // PLS Playlist Format
@@ -73,8 +75,10 @@ class PublicController extends BaseController
                 $this->response->getBody()->write(implode("\n", $output));
 
                 return $this->response
-                    ->withHeader('Content-Type', 'audio/x-scpls')
-                    ->withHeader('Content-Disposition', 'attachment; filename="' . $this->station->getShortName() . '.pls"');
+                    ->withHeader('Content-Type', 'audio/x-scpls');
+
+                // Disable for mobile devices
+                // ->withHeader('Content-Disposition', 'attachment; filename="' . $this->station->getShortName() . '.pls"');
                 break;
         }
     }

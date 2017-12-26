@@ -45,9 +45,11 @@ class PublicController extends BaseController
             case "m3u":
                 $m3u_file = implode("\n", $stream_urls);
 
-                header('Content-Type: audio/x-mpegurl');
-                header('Content-Disposition: attachment; filename="' . $this->station->getShortName() . '.m3u"');
-                echo $m3u_file;
+                $this->response->getBody()->write($m3u_file);
+
+                return $this->response
+                    ->withHeader('Content-Type', 'audio/x-mpegurl')
+                    ->withHeader('Content-Disposition', 'attachment; filename="' . $this->station->getShortName() . '.m3u"');
                 break;
 
             // PLS Playlist Format
@@ -68,9 +70,11 @@ class PublicController extends BaseController
                 $output[] = 'NumberOfEntries=' . count($stream_urls);
                 $output[] = 'Version=2';
 
-                header('Content-Type: audio/x-scpls');
-                header('Content-Disposition: attachment; filename="' . $this->station->getShortName() . '.pls"');
-                echo implode("\n", $output);
+                $this->response->getBody()->write(implode("\n", $output));
+
+                return $this->response
+                    ->withHeader('Content-Type', 'audio/x-scpls')
+                    ->withHeader('Content-Disposition', 'attachment; filename="' . $this->station->getShortName() . '.pls"');
                 break;
         }
     }

@@ -120,6 +120,7 @@ services:
      - '8096:8096'
     volumes:
      - station_data:/var/azuracast/stations
+     - nginx_letsencrypt_certs:/etc/nginx/ssl:ro
     restart: always
 
 volumes:

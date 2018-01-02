@@ -9,6 +9,7 @@ use Entity;
 class ShoutCast2 extends FrontendAbstract
 {
     protected $supports_mounts = true;
+    protected $force_proxy_on_secure_pages = true;
 
     public function getWatchCommand()
     {

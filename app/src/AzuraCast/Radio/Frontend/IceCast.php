@@ -299,6 +299,9 @@ class IceCast extends FrontendAbstract
                     '@source' => '/',
                     '@dest' => '/status.xsl',
                 ],
+                'ssl-private-key' => '/etc/nginx/ssl/ssl.key',
+                'ssl-certificate' => '/etc/nginx/ssl/ssl.crt',
+                'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
             ],
             'logging' => [
                 'accesslog' => 'icecast_access.log',

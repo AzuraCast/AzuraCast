@@ -10,13 +10,16 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
     /** @var bool Whether the station supports multiple mount points per station */
     protected $supports_mounts = true;
 
+    /** @var bool Whether the station supports a full, unique listener count (including IP, user-agent, etc) */
+    protected $supports_listener_detail = true;
+
+    /** @var bool If set to true, all URLs for this adapter type will be proxied if the user is viewing on a secure page. */
+    protected $force_proxy_on_secure_pages = false;
+
     public function supportsMounts()
     {
         return $this->supports_mounts;
     }
-
-    /** @var bool Whether the station supports a full, unique listener count (including IP, user-agent, etc) */
-    protected $supports_listener_detail = true;
 
     public function supportsListenerDetail()
     {
@@ -131,12 +134,14 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         $base_url = $this->di['url']->getBaseUrl();
         $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
 
-        if ((!APP_IN_PRODUCTION && !APP_INSIDE_DOCKER) || $use_radio_proxy || APP_IS_SECURE) {
+        if ( $use_radio_proxy
+            || (!APP_IN_PRODUCTION && !APP_INSIDE_DOCKER)
+            || ($this->force_proxy_on_secure_pages && APP_IS_SECURE)) {
             // Web proxy support.
             return $base_url . '/radio/' . $radio_port;
         } else {
             // Remove port number and other decorations.
-            return 'http://'.parse_url($base_url, \PHP_URL_HOST) . ':' . $radio_port;
+            return parse_url($base_url, \PHP_URL_SCHEME).'://'.parse_url($base_url, \PHP_URL_HOST) . ':' . $radio_port;
         }
     }
 

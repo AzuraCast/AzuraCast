@@ -208,12 +208,6 @@ sudo chmod a+x update.sh
 sudo ./update.sh
 ```
 
-### Local Development with Vagrant
-
-To make local development and testing easier, AzuraCast also includes the necessary configuration to set up a Vagrant box on your computer.
-
-See [the AzuraCast Wiki](https://github.com/AzuraCast/AzuraCast/wiki/Developing-Locally) for detailed instructions on the installation process.
-
 ## See AzuraCast in Action
 
 ### Demo Instance
@@ -224,8 +218,6 @@ See the AzuraCast interface in action yourself by visiting our demo site at [dem
 * Password: `demo`
 
 The demo instance is automatically reset at the top of every hour, and always features the latest changes in the codebase.
-
-A special thank you to our friends at [DigitalOcean](https://m.do.co/c/21612b90440f) for supporting AzuraCast's development!
 
 ### Screenshots
 
@@ -243,11 +235,16 @@ AzuraCast is licensed under the [Apache license, version 2.0](https://github.com
 
 ## Questions? Comments? Feedback?
 
-AzuraCast is a volunteer project, and we depend on your support and feedback to keep growing.
+AzuraCast is a volunteer project, and we depend on your support and feedback to keep growing. Issues for this codebase are tracked in this repository's Issues section on GitHub. Anyone can create a new issue for the project, and you are encouraged to do so.
 
-Issues for this codebase are tracked in this repository's Issues section on GitHub. Anyone can create a new issue for the project, and you are encouraged to do so.
+## Friends of AzuraCast
 
-**Please do not e-mail the developer of this project directly with questions or concerns. Thank you!**
+We would like to thank the following organizations for their support of AzuraCast's ongoing development:
+
+- [DigitalOcean](https://m.do.co/c/21612b90440f) for generously providing the server resources we use for our demonstration instance, our staging and testing environments, and more
+- [JetBrains](https://www.jetbrains.com/) for making our development faster, easier and more productive with tools like PhpStorm
+- [CrowdIn](https://crowdin.com/) for giving us a simple and powerful tool to help translate our application for users around the world
+- The creators and maintainers of the many free and open-source tools that AzuraCast is built on, who have done so much to help move FOSS forward
 
 ## Support AzuraCast Development
 

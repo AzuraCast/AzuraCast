@@ -50,6 +50,8 @@ return function (\Slim\Container $di, $settings) {
                     'charset' => 'utf8mb4',
                     'driverOptions' => [
                         \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
+                        \PDO::ATTR_EMULATE_PREPARES => false,
+                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                     ],
                 ]
             ];
@@ -111,6 +113,8 @@ return function (\Slim\Container $di, $settings) {
             if (isset($options['conn']['debug']) && $options['conn']['debug']) {
                 $config->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger);
             }
+
+            \Doctrine\DBAL\Types\Type::overrideType('boolean', \Doctrine\DBAL\Types\IntegerType::class);
 
             $config->addCustomNumericFunction('RAND', '\App\Doctrine\Functions\Rand');
             $config->addCustomStringFunction('FIELD', 'DoctrineExtensions\Query\Mysql\Field');

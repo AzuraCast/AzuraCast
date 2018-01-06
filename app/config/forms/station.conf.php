@@ -279,6 +279,24 @@ return [
                     ]
                 ],
 
+                'dj_port' => [
+                    'text',
+                    [
+                        'label' => _('Advanced: Customize DJ/Streamer Port'),
+                        'description' => _('No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections.'),
+                        'belongsTo' => 'backend_config',
+                    ]
+                ],
+
+                'telnet_port' => [
+                    'text',
+                    [
+                        'label' => _('Advanced: Customize Internal Request Processing Port'),
+                        'description' => _('This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.'),
+                        'belongsTo' => 'backend_config',
+                    ]
+                ],
+
                 'custom_config' => [
                     'textarea',
                     [

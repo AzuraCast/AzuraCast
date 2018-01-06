@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-13 14:03+0000\n"
+"POT-Creation-Date: 2018-01-06 20:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,7 +48,7 @@ msgid "Clone Station: %s"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/admin/controllers/StationsController.php:170
-#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:88
+#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:93
 #: /var/azuracast/www/app/modules/admin/controllers/ApiController.php:70
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:103
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:250
@@ -57,14 +57,20 @@ msgstr ""
 msgid "Record deleted."
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:69
+#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:72
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:83
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:135
 #: /var/azuracast/www/app/modules/stations/controllers/MountsController.php:98
 msgid "Record updated."
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:74
+#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:75
+msgid ""
+"Another user already exists with this e-mail address. Please update the e-"
+"mail address."
+msgstr ""
+
+#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:79
 #: /var/azuracast/www/app/modules/admin/controllers/ApiController.php:57
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:88
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:141
@@ -72,11 +78,11 @@ msgstr ""
 msgid "Edit Record"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:99
+#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:104
 msgid "Record not found!"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:105
+#: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:110
 #: /var/azuracast/www/app/modules/frontend/controllers/AccountController.php:61
 msgid "Logged in successfully."
 msgstr ""
@@ -257,7 +263,7 @@ msgstr ""
 msgid "Role Members"
 msgstr ""
 
-#: /var/azuracast/www/app/modules/frontend/controllers/PublicController.php:92
+#: /var/azuracast/www/app/modules/frontend/controllers/PublicController.php:100
 msgid "Station not found!"
 msgstr ""
 
@@ -769,9 +775,9 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:39
 #: /var/azuracast/www/app/config/forms/mount_remote.conf.php:117
-#: /var/azuracast/www/app/config/forms/station.conf.php:301
+#: /var/azuracast/www/app/config/forms/station.conf.php:319
 #: /var/azuracast/www/app/config/forms/song.conf.php:47
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:261
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:268
 #: /var/azuracast/www/app/config/forms/media.conf.php:111
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:50
 #: /var/azuracast/www/app/config/forms/automation.conf.php:40
@@ -1099,8 +1105,8 @@ msgid "Auto-Assigned"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:55
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:106
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:122
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:113
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:129
 msgid "Standard Playlist"
 msgstr ""
 
@@ -1109,8 +1115,8 @@ msgid "Weight"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:58
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:107
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:144
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:114
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:151
 msgid "Scheduled Playlist"
 msgstr ""
 
@@ -1202,7 +1208,7 @@ msgid "Create Playlist"
 msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:99
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:47
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:54
 msgid "Playlist Name"
 msgstr ""
 
@@ -1369,7 +1375,7 @@ msgstr ""
 msgid "Average Listeners"
 msgstr ""
 
-#: /var/azuracast/www/app/bootstrap/services.php:240
+#: /var/azuracast/www/app/bootstrap/services.php:243
 #, php-format
 msgid ""
 "Could not connect to supervisord. Try running %s in a terminal to restart "
@@ -1663,7 +1669,7 @@ msgid ""
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:144
-#: /var/azuracast/www/app/config/forms/station.conf.php:285
+#: /var/azuracast/www/app/config/forms/station.conf.php:303
 msgid "Advanced: Custom Configuration"
 msgstr ""
 
@@ -1769,7 +1775,28 @@ msgid ""
 "Number of seconds to overlap songs. Set to 0 to disable crossfade completely."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/station.conf.php:288
+#: /var/azuracast/www/app/config/forms/station.conf.php:285
+msgid "Advanced: Customize DJ/Streamer Port"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/station.conf.php:286
+msgid ""
+"No other program can be using this port. Leave blank to automatically assign "
+"a port.<br><b>Note:</b> The port after this one (n+1) will automatically be "
+"used for legacy connections."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/station.conf.php:294
+msgid "Advanced: Customize Internal Request Processing Port"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/station.conf.php:295
+msgid ""
+"This port is not used by any external process. Only modify this port if the "
+"assigned port is in use. Leave blank to automatically assign a port."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/station.conf.php:306
 msgid ""
 "This code will be inserted into your station's LiquidSoap configuration, "
 "below the playlist configuration and just before the IceCast output. Only "
@@ -1788,184 +1815,184 @@ msgstr ""
 msgid "Artist Name"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:33
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:40
 #, php-format
 msgid ""
 "Your current local time is <b>%s</b>. You can customize your time zone from "
 "the \"My Account\" page."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:55
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:62
 msgid "Enable Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:57
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:64
 msgid ""
 "If set to \"No\", the playlist will not be included in radio playback, but "
 "can still be managed."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:69
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:76
 msgid "Import Existing Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:70
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:77
 msgid ""
 "Select an existing playlist file to add its contents to this playlist. PLS "
 "and M3U are supported."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:87
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:94
 msgid "Playlist Weight"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:88
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:95
 msgid ""
 "Higher weight playlists are played more frequently compared to other lower-"
 "weight playlists."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:104
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:111
 msgid "Playlist Type"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:106
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:113
 msgid "Plays all day, shuffles with other standard playlists based on weight."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:107
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:114
 msgid ""
 "Play during a scheduled time range. Useful for mood-based time playlists."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:108
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:187
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:115
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:194
 msgid "Once per x Songs Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:108
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:115
 msgid "Play exactly once every <i>x</i> songs. Useful for station ID/jingles."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:109
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:116
 msgid "Once Per x Minutes Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:109
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:116
 msgid ""
 "Play exactly once every <i>x</i> minutes. Useful for station ID/jingles."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:110
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:221
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:117
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:228
 msgid "Daily Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:110
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:117
 msgid "Play once per day at the specified time. Useful for timely reminders."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:111
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:118
 msgid "Custom Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:111
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:118
 msgid ""
 "Manually define how this playlist is used in LiquidSoap configuration. For "
 "advanced users only!"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:129
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:136
 msgid "Include in Automated Assignment"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:130
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:137
 msgid ""
 "If auto-assignment is enabled, use this playlist as one of the targets for "
 "songs to be redistributed into. This will overwrite the existing contents of "
 "this playlist."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:151
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:158
 msgid "Start Time"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:160
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:167
 msgid "End Time"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:161
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:168
 msgid ""
 "If the end time is before the start time, the playlist will play overnight "
 "until this time on the next day."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:169
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:237
-msgid "Scheduled Play Days of Week"
-msgstr ""
-
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:170
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:238
-msgid "Leave blank to play on every day of the week."
-msgstr ""
-
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:172
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:240
-msgid "Monday"
-msgstr ""
-
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:173
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:241
-msgid "Tuesday"
-msgstr ""
-
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:174
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:242
-msgid "Wednesday"
-msgstr ""
-
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:175
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:243
-msgid "Thursday"
-msgstr ""
-
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:176
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:244
-msgid "Friday"
+msgid "Scheduled Play Days of Week"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:177
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:245
+msgid "Leave blank to play on every day of the week."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:179
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:247
+msgid "Monday"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:180
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:248
+msgid "Tuesday"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:181
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:249
+msgid "Wednesday"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:182
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:250
+msgid "Thursday"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:183
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:251
+msgid "Friday"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:184
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:252
 msgid "Saturday"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:178
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:246
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:185
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:253
 msgid "Sunday"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:194
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:201
 msgid "Number of Songs Between Plays"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:195
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:202
 msgid "This playlist will play every $x songs, where $x is specified below."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:204
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:211
 msgid "Once per x Minutes Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:211
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:218
 msgid "Number of Minutes Between Plays"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:212
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:219
 msgid "This playlist will play every $x minutes, where $x is specified below."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:228
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:235
 msgid "Scheduled Play Time"
 msgstr ""
 
@@ -2388,13 +2415,13 @@ msgstr ""
 msgid "Process is already running!"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/LiquidSoap.php:97
+#: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/LiquidSoap.php:98
 msgid ""
 "No default playlist existed for the station, so one was automatically "
 "created. You can add songs to it from the \"Media\" page."
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/LiquidSoap.php:228
+#: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/LiquidSoap.php:229
 msgid ""
 "You must use the Mount Points feature to configure remote broadcasting first."
 msgstr ""

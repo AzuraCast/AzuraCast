@@ -6,13 +6,19 @@ use Entity;
 
 class LiquidSoap extends BackendAbstract
 {
+    /**
+     * @inheritdoc
+     */
     public function read()
     {
+        // This function not implemented for LiquidSoap.
     }
 
     /**
      * Write configuration from Station object to the external service.
+     *
      * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function write()
     {
@@ -182,6 +188,9 @@ class LiquidSoap extends BackendAbstract
         // Configure the outbound broadcast.
         $fe_settings = (array)$this->station->getFrontendConfig();
 
+        // Reset the incrementing counter for stream IDs.
+        $this->output_stream_number = 0;
+
         switch ($this->station->getFrontendType()) {
             case 'remote':
                 $mounts = $this->station->getMounts();
@@ -286,6 +295,13 @@ class LiquidSoap extends BackendAbstract
         return true;
     }
 
+    /**
+     * Returns the URL that LiquidSoap should call when attempting to execute AzuraCast API commands.
+     *
+     * @param $endpoint
+     * @param array $params
+     * @return string
+     */
     protected function _getApiUrlCommand($endpoint, $params = [])
     {
         $params = (array)$params;
@@ -308,12 +324,36 @@ class LiquidSoap extends BackendAbstract
         return $curl_request;
     }
 
+    /**
+     * Filter a user-supplied string to be a valid LiquidSoap config entry.
+     *
+     * @param $string
+     * @return mixed
+     */
     protected function _cleanUpString($string)
     {
         return str_replace(['"', "\n", "\r"], ['\'', '', ''], $string);
     }
 
+    /**
+     * @var int An incrementing counter used for stream IDs
+     */
     protected $output_stream_number = 0;
+
+    /**
+     * Given outbound broadcast information, produce a suitable LiquidSoap configuration line for the stream.
+     *
+     * @param $host
+     * @param $port
+     * @param $mount
+     * @param string $username
+     * @param $password
+     * @param $format
+     * @param $bitrate
+     * @param bool $is_public
+     * @param bool $shoutcast_mode
+     * @return string
+     */
     protected function _getOutputString($host, $port, $mount, $username = '', $password, $format, $bitrate, $is_public = false, $shoutcast_mode = false)
     {
         $this->output_stream_number++;
@@ -370,33 +410,9 @@ class LiquidSoap extends BackendAbstract
         return 'output.icecast(' . implode(', ', $output_params) . ')';
     }
 
-    protected function _getTime($time_code)
-    {
-        $hours = floor($time_code / 100);
-        $mins = $time_code % 100;
-
-        $system_time_zone = \App\Utilities::get_system_time_zone();
-        $system_tz = new \DateTimeZone($system_time_zone);
-        $system_dt = new \DateTime('now', $system_tz);
-        $system_offset = $system_tz->getOffset($system_dt);
-
-        $app_tz = new \DateTimeZone(date_default_timezone_get());
-        $app_dt = new \DateTime('now', $app_tz);
-        $app_offset = $app_tz->getOffset($app_dt);
-
-        $offset = $system_offset - $app_offset;
-        $offset_hours = floor($offset / 3600);
-
-        $hours += $offset_hours;
-
-        $hours = $hours % 24;
-        if ($hours < 0) {
-            $hours += 24;
-        }
-
-        return $hours . 'h' . $mins . 'm';
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function getCommand()
     {
         if ($binary = self::getBinary()) {
@@ -407,11 +423,24 @@ class LiquidSoap extends BackendAbstract
         }
     }
 
+    /**
+     * Tell LiquidSoap to skip the currently playing song.
+     *
+     * @return array
+     * @throws \App\Exception
+     */
     public function skip()
     {
         return $this->command('radio_out_1.skip');
     }
 
+    /**
+     * Execute the specified remote command on LiquidSoap via the telnet API.
+     *
+     * @param $command_str
+     * @return array
+     * @throws \App\Exception
+     */
     public function command($command_str)
     {
         $fp = stream_socket_client('tcp://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $this->_getTelnetPort(), $errno, $errstr, 20);
@@ -432,16 +461,67 @@ class LiquidSoap extends BackendAbstract
         return $response;
     }
 
-    public function getStreamPort()
+    /**
+     * Returns the port used for DJs/Streamers to connect to LiquidSoap for broadcasting.
+     *
+     * @return int The port number to use for this station.
+     */
+    public function getStreamPort(): int
     {
-        return (8000 + (($this->station->getId() - 1) * 10) + 5);
+        $settings = (array)$this->station->getBackendConfig();
+
+        if (!empty($settings['dj_port'])) {
+            return (int)$settings['dj_port'];
+        } else {
+            $dj_port = (8000 + (($this->station->getId() - 1) * 10) + 5);
+
+            try {
+                $this->station->setBackendConfig(['dj_port' => $dj_port]);
+
+                /** @var EntityManager $em */
+                $em = $this->di['em'];
+                $em->persist($this->station);
+                $em->flush();
+            } catch(\Doctrine\ORM\OptimisticLockException $e) {
+                // Ignore and continue.
+            }
+
+            return (int)$dj_port;
+        }
     }
 
-    protected function _getTelnetPort()
+    /**
+     * Returns the internal port used to relay requests and other changes from AzuraCast to LiquidSoap.
+     *
+     * @return int The port number to use for this station.
+     */
+    protected function _getTelnetPort(): int
     {
-        return (8000 + (($this->station->getId() - 1) * 10) + 4);
+        $settings = (array)$this->station->getBackendConfig();
+
+        if (!empty($settings['telnet_port'])) {
+            return (int)$settings['telnet_port'];
+        } else {
+            $telnet_port = (8000 + (($this->station->getId() - 1) * 10) + 4);
+
+            try {
+                $this->station->setBackendConfig(['telnet_port' => $telnet_port]);
+
+                /** @var EntityManager $em */
+                $em = $this->di['em'];
+                $em->persist($this->station);
+                $em->flush();
+            } catch(\Doctrine\ORM\OptimisticLockException $e) {
+                // Ignore and continue.
+            }
+
+            return (int)$telnet_port;
+        }
     }
 
+    /**
+     * @inheritdoc
+     */
     public static function getBinary()
     {
         $user_base = realpath(APP_INCLUDE_ROOT.'/..');

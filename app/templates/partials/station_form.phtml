@@ -1,6 +1,6 @@
 <?=$this->fetch('partials/form') ?>
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function() {
 
     showFrontend($('form #field_frontend_type input:checked').val());

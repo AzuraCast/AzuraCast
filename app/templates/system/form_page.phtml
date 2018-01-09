@@ -13,7 +13,7 @@ $assets
     ->load('zxcvbn');
 ?>
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function() {
     $('select').chosen({
         placeholder_text_single: '<?=_('Select...') ?>',

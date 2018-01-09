@@ -44,7 +44,7 @@ $assets
 <style type="text/css">
 <?=$customization->getCustomPublicCss() ?>
 </style>
-<script type="text/javascript">
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
     var APP_AppEnv = '<?=APP_APPLICATION_ENV ?>';
     var APP_BaseUrl = '<?=$url->named('home') ?>';
     var APP_ContentPath = '<?=$url->content('') ?>';

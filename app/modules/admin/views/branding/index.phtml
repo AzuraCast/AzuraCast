@@ -6,7 +6,7 @@ $assets
     ->load('codemirror_css');
 ?>
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
     $(function() {
 
         $('textarea.css-editor').each(function() {

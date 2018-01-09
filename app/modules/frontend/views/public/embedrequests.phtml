@@ -19,7 +19,7 @@ $assets->load('bootgrid');
     <tbody></tbody>
 </table>
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function() {
     var grid = $("#requests-table").bootgrid({
         ajax: true,

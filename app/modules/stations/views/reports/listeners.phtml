@@ -82,48 +82,110 @@ $assets
     </div>
 </div>
 
-<script type="text/javascript">
-$(function() {
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
+var map, live_time, load_timeout, app_datatable, gmaps_api_key, mapmarkers = {};
 
-    var load_timeout;
-    var updateListeners = function(start, end) {
-        clearTimeout(load_timeout);
+function cb(start, end) {
+    is_live = live_time.isSame(start, 'day');
 
-        var params = {};
-        if (!is_live) {
-            params.start = start.format('YYYY-MM-DD');
-            params.end = end.format('YYYY-MM-DD');
+    if (is_live) {
+        $('#reportrange span').html("<?=_('Live Listeners') ?>");
+    } else {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    }
+
+    updateListeners(start, end);
+}
+
+function initMap() {
+    $(function() {
+        $('#googlemap').empty();
+
+        map = new google.maps.Map(document.getElementById('googlemap'), {
+            zoom: 2,
+            center: {lat: 25, lng: 12}
+        });
+
+        cb(live_time, live_time);
+    });
+}
+
+/*
+ * Live map updating based on parasprite-Radio by djazz:
+ * https://github.com/daniel-j
+ */
+function setMapPoints(points) {
+    var idlist = [];
+    for (i = 0; i < points.length; i++) {
+        var l = points[i];
+
+        if (l.location.status !== 'success')
+            continue;
+
+        l.id = l.location.lon + ',' + l.location.lat + ',' + l.ip;
+        idlist[i] = l.id;
+
+        var content = '<div style="color: black">IP: ' + l.ip + '<br>Country: ' + l.location.country + '<br>Region: ' + l.location.regionName + '<br>City: ' + l.location.city + '<br>Connected at ' + new Date(l.connected_on * 1000) + '<br>Time connected: ' + l.connected_time + '<br>User Agent: ' + l.user_agent + '</div>';
+
+        if (mapmarkers[l.id]) {
+            mapmarkers[l.id].infowindow.setContent(content);
+            continue;
         }
 
-        $.getJSON('<?=$url->named('api:listeners:index', ['station' => $station->getId()]) ?>', params, function (data) {
-            app_datatable.listeners = data;
-
-            $('#listener-count').text(data.length);
-
-            if (gmaps_api_key !== '') {
-                setMapPoints(data);
-            }
-
-            if (is_live) {
-                load_timeout = setTimeout(updateListeners, 15 * 1000);
-            }
+        var mark = new google.maps.Marker({
+            position: new google.maps.LatLng(l.location.lat, l.location.lon),
+            map: map,
+            animation: google.maps.Animation.DROP
         });
-    };
 
-    var live_time = moment(0);
-    var is_live = true;
+        mark.infowindow = new google.maps.InfoWindow({
+            content: content
+        });
 
-    function cb(start, end) {
-        is_live = live_time.isSame(start, 'day');
+        mark.addListener('click', function () {
+            this.infowindow.open(map, this);
+        });
+        mapmarkers[l.id] = mark;
+    }
+
+    for (i in mapmarkers) {
+        if (idlist.indexOf(i) === -1) {
+            var mark = mapmarkers[i];
+            mark.setMap(null);
+            google.maps.event.clearListeners(mark);
+
+            mapmarkers.splice(i, 1);
+        }
+    }
+}
+
+var updateListeners = function(start, end) {
+    clearTimeout(load_timeout);
+
+    var params = {};
+    if (!is_live) {
+        params.start = start.format('YYYY-MM-DD');
+        params.end = end.format('YYYY-MM-DD');
+    }
+
+    $.getJSON('<?=$url->named('api:listeners:index', ['station' => $station->getId()]) ?>', params, function (data) {
+        app_datatable.listeners = data;
+
+        $('#listener-count').text(data.length);
+
+        if (gmaps_api_key !== '') {
+            setMapPoints(data);
+        }
 
         if (is_live) {
-            $('#reportrange span').html("<?=_('Live Listeners') ?>");
-        } else {
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            load_timeout = setTimeout(updateListeners, 15 * 1000);
         }
+    });
+};
 
-        updateListeners(start, end);
-    }
+$(function() {
+
+    live_time = moment(0);
 
     $('#reportrange').daterangepicker({
         startDate: live_time,
@@ -140,90 +202,20 @@ $(function() {
         }
     }, cb);
 
-    var gmaps_api_key = "<?=$this->e($gmaps_api_key) ?>";
-
-    var app_datatable = new Vue({
+    app_datatable = new Vue({
         el: '#app-datatable',
         data: {
             listeners: []
         }
     });
 
+    gmaps_api_key = "<?=$this->e($gmaps_api_key) ?>";
     if (gmaps_api_key === '') {
-
         cb(live_time, live_time);
-
-    } else {
-
-        var map;
-
-        function initMap() {
-            $('#googlemap').empty();
-
-            map = new google.maps.Map(document.getElementById('googlemap'), {
-                zoom: 2,
-                center: {lat: 25, lng: 12}
-            });
-
-            cb(live_time, live_time);
-        }
-
-        window.initMap = initMap;
-
-        $.getScript('https://maps.googleapis.com/maps/api/js?key=' + gmaps_api_key + '&callback=initMap');
-
-        var mapmarkers = {};
-
-        /*
-         * Live map updating based on parasprite-Radio by djazz:
-         * https://github.com/daniel-j
-         */
-        function setMapPoints(points) {
-            var idlist = [];
-            for (i = 0; i < points.length; i++) {
-                var l = points[i];
-
-                if (l.location.status !== 'success')
-                    continue;
-
-                l.id = l.location.lon + ',' + l.location.lat + ',' + l.ip;
-                idlist[i] = l.id;
-
-                var content = '<div style="color: black">IP: ' + l.ip + '<br>Country: ' + l.location.country + '<br>Region: ' + l.location.regionName + '<br>City: ' + l.location.city + '<br>Connected at ' + new Date(l.connected_on * 1000) + '<br>Time connected: ' + l.connected_time + '<br>User Agent: ' + l.user_agent + '</div>';
-
-                if (mapmarkers[l.id]) {
-                    mapmarkers[l.id].infowindow.setContent(content);
-                    continue;
-                }
-
-                var mark = new google.maps.Marker({
-                    position: new google.maps.LatLng(l.location.lat, l.location.lon),
-                    map: map,
-                    animation: google.maps.Animation.DROP
-                });
-
-                mark.infowindow = new google.maps.InfoWindow({
-                    content: content
-                });
-
-                mark.addListener('click', function () {
-                    this.infowindow.open(map, this);
-                });
-                mapmarkers[l.id] = mark;
-            }
-
-            for (i in mapmarkers) {
-                if (idlist.indexOf(i) === -1) {
-                    var mark = mapmarkers[i];
-                    mark.setMap(null);
-                    google.maps.event.clearListeners(mark);
-
-                    mapmarkers.splice(i, 1);
-                }
-            }
-        }
-
     }
-
 });
 </script>
+
+<?php if (!empty($gmaps_api_key)): ?>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?=$this->e($gmaps_api_key) ?>&callback=initMap"></script>
+<?php endif; ?>

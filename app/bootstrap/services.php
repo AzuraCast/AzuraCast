@@ -368,7 +368,7 @@ return function (\Slim\Container $di, $settings) {
             return $next($request, $response);
         });
 
-        // Check HTTPS setting and enforce accordingly.
+        // Check HTTPS setting and enforce Content Security Policy accordingly.
         $app->add(function (
             \Slim\Http\Request $request,
             \Slim\Http\Response $response,
@@ -386,11 +386,19 @@ return function (\Slim\Container $di, $settings) {
             $uri = $request->getUri();
             $uri_is_https = ($uri->getScheme() === 'https');
 
+            // Assemble Content Security Policy (CSP)
+            $csp = [];
+
+            /** @var \AzuraCast\Assets $assets */
+            $assets = $this->get(\AzuraCast\Assets::class);
+
+            // CSP JavaScript policy
+            // Note: unsafe-eval included for Vue template compiling
+            $csp[] = "script-src https://maps.googleapis.com https://cdnjs.cloudflare.com 'self' 'unsafe-eval' 'nonce-".$assets->getCspNonce()."'";
+
             if ($uri_is_https) {
 
-                // Upgrade all insecure requests to avoid CSP alerts.
-                $response = $response
-                    ->withHeader('Content-Security-Policy', 'upgrade-insecure-requests');
+                $csp[] = 'upgrade-insecure-requests';
 
             } elseif ($always_use_ssl && !$internal_api_url) {
 
@@ -406,11 +414,12 @@ return function (\Slim\Container $di, $settings) {
                 }
 
                 // Set HSTS header.
-                $response = $response
-                    ->withHeader('Strict-Transport-Security', 'max-age=3600')
-                    ->withHeader('Content-Security-Policy', 'upgrade-insecure-requests');
+                $response = $response->withHeader('Strict-Transport-Security', 'max-age=3600');
 
+                $csp[] = 'upgrade-insecure-requests';
             }
+
+            $response = $response->withHeader('Content-Security-Policy', implode('; ', $csp));
 
             return $next($request, $response);
         });

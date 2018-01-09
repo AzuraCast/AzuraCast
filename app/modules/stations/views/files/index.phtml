@@ -6,7 +6,10 @@ $assets
     ->load('vue')
     ->load('radio')
     ->load('bootgrid')
-    ->addJs('//cdnjs.cloudflare.com/ajax/libs/flow.js/2.13.0/flow.min.js', 'header');
+    ->addJs([
+        'src' => '//cdnjs.cloudflare.com/ajax/libs/flow.js/2.13.0/flow.min.js',
+        'sri' => 'sha256-F82/auvnDa23QdME+MJ76ucrjnWyUDxKwEvCuhT1m2Y=',
+    ], 'header');
 ?>
 
 <div class="row">
@@ -132,7 +135,7 @@ $assets
     </div>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function() {
     var XSRF = '<?=$CSRF ?>';
     var MAX_UPLOAD_SIZE = <?=$MAX_UPLOAD_SIZE ?>;

@@ -8,6 +8,8 @@
 
 namespace AzuraCast;
 
+use \ParagonIE\ConstantTime\Base64;
+
 class Assets
 {
     /** @var array Known libraries loaded in initialization. */
@@ -28,12 +30,16 @@ class Assets
     /** @var bool Whether the current loaded libraries have been sorted by order. */
     protected $is_sorted = true;
 
+    /** @var string A randomly generated number-used-once (nonce) for inline CSP. */
+    protected $csp_nonce;
+
     /**
      * Assets constructor.
      *
      * @param array $libraries
      * @param array $versioned_files
      * @param \App\Url $url URL Resolver object
+     * @throws \Exception
      */
     public function __construct(array $libraries = [], array $versioned_files = [], \App\Url $url)
     {
@@ -43,6 +49,17 @@ class Assets
 
         $this->versioned_files = $versioned_files;
         $this->url = $url;
+        $this->csp_nonce = Base64::encode(\random_bytes(18));
+    }
+
+    /**
+     * Returns the randomly generated nonce for inline CSP for this request.
+     *
+     * @return string
+     */
+    public function getCspNonce()
+    {
+        return $this->csp_nonce;
     }
 
     /**
@@ -51,7 +68,7 @@ class Assets
      * @param array $data Array with asset data.
      * @return $this
      */
-    public function addLibrary(array $data)
+    public function addLibrary(array $data): self
     {
         $library_name = $data['name'] ?? uniqid();
 
@@ -73,7 +90,7 @@ class Assets
      * @param mixed $data Name or array definition of library/asset.
      * @return self
      */
-    public function load($data)
+    public function load($data): self
     {
         if (is_array($data)) {
             $item = [
@@ -107,19 +124,21 @@ class Assets
     }
 
     /**
-     * Add a single (or array of) javascript file[s].
+     * Add a single javascript file.
      *
      * @param $js_script
      * @param null $group
      * @return $this
      */
-    public function addJs($js_script, $group = null)
+    public function addJs($js_script, $group = null): self
     {
         $this->load([
             'group' => $group,
             'order' => 100,
             'files' => [
-                'js' => (is_array($js_script)) ? $js_script : array($js_script),
+                'js' => [
+                    (is_array($js_script)) ? $js_script : ['src' => $js_script]
+                ],
             ],
         ]);
 
@@ -127,19 +146,19 @@ class Assets
     }
 
     /**
-     * Add a single (or array of) javascript inline scripts.
+     * Add a single javascript inline script.
      *
      * @param $js_script
      * @param null $group
      * @return $this
      */
-    public function addInlineJs($js_script, $group = null)
+    public function addInlineJs($js_script, $group = null): self
     {
         $this->load([
             'group' => $group,
             'order' => 100,
             'inline' => [
-                'js' => (is_array($js_script)) ? $js_script : array($js_script),
+                'js' => $js_script,
             ],
         ]);
 
@@ -147,19 +166,21 @@ class Assets
     }
 
     /**
-     * Add a single (or array of) CSS file[s].
+     * Add a single CSS file.
      *
      * @param $css_script
      * @param null $group
      * @return $this
      */
-    public function addCss($css_script, $group = null)
+    public function addCss($css_script, $group = null): self
     {
         $this->load([
             'group' => $group,
             'order' => 100,
             'files' => [
-                'css' => (is_array($css_script)) ? $css_script : array($css_script),
+                'css' => [
+                    (is_array($css_script)) ? $css_script : ['src' => $css_script]
+                ],
             ],
         ]);
 
@@ -167,7 +188,7 @@ class Assets
     }
 
     /**
-     * Add a single (or array of) inline CSS file[s].
+     * Add a single inline CSS file[s].
      *
      * @param $css_script
      * @param null $group
@@ -207,13 +228,14 @@ class Assets
 
             if (!empty($item['files']['css'])) {
                 foreach($item['files']['css'] as $file) {
-                    $result[] = '<link rel="stylesheet" type="text/css" href="'.$this->_getUrl($file).'" />';
+                    $sri = (!empty($file['sri'])) ? 'integrity="'.$file['sri'].'" crossorigin="anonymous"' : '';
+                    $result[] = '<link rel="stylesheet" type="text/css" '.$sri.' href="'.$this->_getUrl($file['src']).'" />';
                 }
             }
 
             if (!empty($item['inline']['css'])) {
                 foreach($item['inline']['css'] as $inline) {
-                    $result[] = '<style type="text/css">'.$inline.'</style>';
+                    $result[] = '<style type="text/css" nonce="'.$this->csp_nonce.'">'.$inline.'</style>';
                 }
             }
         }
@@ -242,13 +264,14 @@ class Assets
 
             if (!empty($item['files']['js'])) {
                 foreach($item['files']['js'] as $file) {
-                    $result[] = '<script type="text/javascript" src="'.$this->_getUrl($file).'"></script>';
+                    $sri = (!empty($file['sri'])) ? 'integrity="'.$file['sri'].'" crossorigin="anonymous"' : '';
+                    $result[] = '<script type="text/javascript" '.$sri.' src="'.$this->_getUrl($file['src']).'"></script>';
                 }
             }
 
             if (!empty($item['inline']['js'])) {
                 foreach($item['inline']['js'] as $inline) {
-                    $result[] = '<script type="text/javascript">'.$inline.'</script>';
+                    $result[] = '<script type="text/javascript" nonce="'.$this->csp_nonce.'">'.$inline.'</script>';
                 }
             }
         }

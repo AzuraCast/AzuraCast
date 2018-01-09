@@ -8,8 +8,6 @@
 
 namespace AzuraCast;
 
-use \ParagonIE\ConstantTime\Base64;
-
 class Assets
 {
     /** @var array Known libraries loaded in initialization. */
@@ -49,7 +47,7 @@ class Assets
 
         $this->versioned_files = $versioned_files;
         $this->url = $url;
-        $this->csp_nonce = Base64::encode(\random_bytes(18));
+        $this->csp_nonce = base64_encode(\random_bytes(18));
     }
 
     /**

@@ -207,10 +207,10 @@ return [
                     'sri' => 'sha256-QnoLQZe7BYRVTl3AY8Lsw6mn60HfHZNpcZBEndybfBk=',
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.4/js/modules/exporting.js',
-                    'sri' => 'sha256-lUeVX+hzn6tYnZ3uT+J5hmfN0K2LAbsvFar6eiKgKMc=',
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.4/modules/exporting.js',
+                    'sri' => 'sha256-t0WPpPvL2cZgET8RU2pdgP8SdZue1Ni+IhYh7AkDIo4=',
                 ],
-            ],
+            ]
         ]
     ],
     [

@@ -15,7 +15,7 @@ return function(\Slim\App $app) {
     $app->get('/profile', 'frontend:profile:index')->setName('profile:index');
     $app->map(['GET', 'POST'], '/profile/edit', 'frontend:profile:edit')->setName('profile:edit');
     $app->map(['GET', 'POST'], '/profile/timezone', 'frontend:profile:timezone')->setName('profile:timezone');
-    $app->get('/test', 'frontend:util:test')->setName('util:test');
+    $app->any('/test', 'frontend:util:test')->setName('util:test');
 
     $app->group('/setup', function () {
 

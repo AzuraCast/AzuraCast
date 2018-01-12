@@ -4,8 +4,6 @@ services:
   stations:
     build:
       context: ../docker-azuracast-stations
-    volumes:
-     - ./../station-watcher-python:/var/azuracast/servers/station-watcher
 
   web:
     build:

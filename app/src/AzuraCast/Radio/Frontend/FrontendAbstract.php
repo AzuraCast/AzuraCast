@@ -3,6 +3,7 @@ namespace AzuraCast\Radio\Frontend;
 
 use App\Debug;
 use App\Service\Curl;
+use fXmlRpc\Exception\FaultException;
 use Doctrine\ORM\EntityManager;
 
 abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
@@ -68,7 +69,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         $base_url = (APP_INSIDE_DOCKER) ? 'http://nginx' : 'http://localhost';
         $notify_uri = $base_url.'/api/internal/'.$this->station->getId().'/notify?api_auth='.$this->station->getAdapterApiKey();
 
-        return 'pipenv run python watch.py '.$adapter.' '.$watch_uri.' '.$notify_uri.' '.$this->station->getShortName();
+        return '/var/azuracast/servers/station-watcher/station-watcher '.$adapter.' '.$watch_uri.' '.$notify_uri.' '.$this->station->getShortName();
     }
 
     /**
@@ -279,6 +280,72 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
     {
         if (!empty(trim($message))) {
             parent::log(str_pad('Radio Frontend: ', 20, ' ', STR_PAD_RIGHT) . $message, $class);
+        }
+    }
+
+    /**
+     * Stop a station frontend and also the associated watcher command if available.
+     * @throws \App\Exception
+     */
+    public function stop()
+    {
+        parent::stop();
+
+        if ($this->hasWatchCommand()) {
+            $program_name = $this->getWatchProgramName();
+
+            try {
+                $this->supervisor->stopProcess($program_name);
+                $this->log(_('Watcher process stopped.'), 'green');
+            } catch (FaultException $e) {
+                if (stristr($e->getMessage(), 'NOT_RUNNING') !== false) {
+                    $this->log(_('Watcher process was not running!'), 'blue');
+                } else {
+                    $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
+
+                    try {
+                        $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
+                        $app_e->addExtraData('Supervisord Log', explode("\n", $this->supervisor->readProcessLog($program_name, 0, 0)));
+
+                        $this->supervisor->clearProcessLogs($program_name);
+                    } catch(FaultException $e) {}
+
+                    throw $app_e;
+                }
+            }
+        }
+    }
+
+    /**
+     * Start a station frontend and also the associated watcher command if available.
+     * @throws \App\Exception
+     */
+    public function start()
+    {
+        parent::start();
+
+        if ($this->hasWatchCommand()) {
+            $program_name = $this->getWatchProgramName();
+
+            try {
+                $this->supervisor->startProcess($program_name);
+                $this->log(_('Watcher process started.'), 'green');
+            } catch (FaultException $e) {
+                if (stristr($e->getMessage(), 'ALREADY_STARTED') !== false) {
+                    $this->log(_('Watcher process is already running!'), 'green');
+                } else {
+                    $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
+
+                    try {
+                        $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
+                        $app_e->addExtraData('Supervisord Log', explode("\n", $this->supervisor->readProcessLog($program_name, 0, 0)));
+
+                        $this->supervisor->clearProcessLog($program_name);
+                    } catch(FaultException $e) {}
+
+                    throw $app_e;
+                }
+            }
         }
     }
 

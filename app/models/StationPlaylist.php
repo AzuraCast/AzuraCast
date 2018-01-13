@@ -3,6 +3,7 @@ namespace Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use DateTime;
 
 /**
  * @Table(name="station_playlists")
@@ -472,19 +473,6 @@ class StationPlaylist
     }
 
     /**
-     * Given a time code i.e. "2300", return a UNIX timestamp that can be used to format the time for display.
-     *
-     * @param $time_code
-     * @return int
-     */
-    public static function getTimestamp($time_code): int
-    {
-        $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
-        $dt = \DateTime::createFromFormat('Hi|', $time_code, new \DateTimeZone('UTC'));
-        return ($dt instanceof \DateTime) ? $dt->getTimestamp() : 0;
-    }
-
-    /**
      * Given a time code i.e. "2300", return a time i.e. "11:00 PM"
      *
      * @param $time_code
@@ -492,15 +480,24 @@ class StationPlaylist
      */
     public static function formatTimeCode($time_code, $use_local_time = true): string
     {
-        $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
-        $dt = \DateTime::createFromFormat('Hi|', $time_code, new \DateTimeZone('UTC'));
+        $timestamp = self::getTimestamp($time_code);
 
-        if ($dt instanceof \DateTime) {
-            $timestamp = $dt->getTimestamp();
-            $time_text = ($use_local_time) ? strftime('%X', $timestamp) : gmstrftime('%X', $timestamp);
-            return $time_text;
+        if ($timestamp) {
+            return ($use_local_time) ? strftime('%X', $timestamp) : gmstrftime('%X', $timestamp);
         }
         return '';
+    }
+
+    /**
+     * Given a time code i.e. "2300", return a UNIX timestamp that can be used to format the time for display.
+     *
+     * @param $time_code
+     * @return int
+     */
+    public static function getTimestamp($time_code): int
+    {
+        $dt = self::getDateTime($time_code);
+        return ($dt) ? $dt->getTimestamp() : 0;
     }
 
     /**
@@ -511,11 +508,25 @@ class StationPlaylist
      */
     public static function formatTimeCodeForInput($time_code): string
     {
+        $dt = self::getDateTime($time_code);
+        if ($dt) {
+            $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            return $dt->format('H:i');
+        }
+        return '';
+    }
+
+    /**
+     * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
+     *
+     * @param $time_code
+     * @return DateTime|null
+     */
+    public static function getDateTime($time_code): ?DateTime
+    {
         $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
         $dt = \DateTime::createFromFormat('Hi|', $time_code, new \DateTimeZone('UTC'));
-        $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-
-        return ($dt instanceof \DateTime) ? $dt->format('H:i') : '';
+        return ($dt instanceof DateTime) ? $dt : null;
     }
 
     /**

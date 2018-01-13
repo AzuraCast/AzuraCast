@@ -36,6 +36,18 @@ class PlaylistsController extends BaseController
         }
 
         $playlists = [];
+
+        $schedule_days = [
+            1 => _('Monday'),
+            2 => _('Tuesday'),
+            3 => _('Wednesday'),
+            4 => _('Thursday'),
+            5 => _('Friday'),
+            6 => _('Saturday'),
+            7 => _('Sunday'),
+        ];
+        $schedule = [];
+
         foreach ($all_playlists as $playlist) {
             $playlist_row = $playlist_repo->toArray($playlist);
 
@@ -45,10 +57,62 @@ class PlaylistsController extends BaseController
 
             $playlist_row['num_songs'] = $playlist->getMedia()->count();
 
+            // Append to schedule display if the playlist is scheduled.
+            if ($playlist->getType() == 'scheduled') {
+                foreach($schedule_days as $day_key => $day_name) {
+                    if (empty($playlist->getScheduleDays()) || in_array($day_key, $playlist->getScheduleDays())) {
+
+                        $schedule_options = [
+                            'id' => $playlist->getId(),
+                            'url' => $this->url->routeFromHere(['action' => 'edit', 'id' => $playlist->getId()])
+                        ];
+
+                        $start = Entity\StationPlaylist::getTimestamp($playlist->getScheduleStartTime());
+                        $end = Entity\StationPlaylist::getTimestamp($playlist->getScheduleEndTime());
+
+                        if (date('Gi', $end) < date('Gi', $start)) {
+                            // Overnight playlist - Create two "events"
+                            $schedule[] = [
+                                'name' => $playlist->getName(),
+                                'day' => $day_name,
+                                'start_hour' => 0,
+                                'start_min' => 0,
+                                'end_hour' => (int)date('G', $end),
+                                'end_min' => (int)date('i', $end),
+                                'options' => $schedule_options,
+                            ];
+                            $schedule[] = [
+                                'name' => $playlist->getName(),
+                                'day' => $day_name,
+                                'start_hour' => (int)date('G', $start),
+                                'start_min' => (int)date('i', $start),
+                                'end_hour' => 23,
+                                'end_min' => 59,
+                                'options' => $schedule_options,
+                            ];
+                        } else {
+                            // Normal playlist
+                            $schedule[] = [
+                                'name' => $playlist->getName(),
+                                'day' => $day_name,
+                                'start_hour' => (int)date('G', $start),
+                                'start_min' => (int)date('i', $start),
+                                'end_hour' => (int)date('G', $end),
+                                'end_min' => (int)date('i', $end),
+                                'options' => $schedule_options,
+                            ];
+                        }
+                    }
+                }
+            }
+
             $playlists[$playlist->getId()] = $playlist_row;
         }
 
         $this->view->playlists = $playlists;
+
+        $this->view->schedule_days = $schedule_days;
+        $this->view->schedule = $schedule;
     }
 
     public function exportAction()

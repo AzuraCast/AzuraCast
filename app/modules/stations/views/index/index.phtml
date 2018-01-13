@@ -24,21 +24,21 @@ $(function () {
             <div class="card-header ch-alt">
                 <h2><?=_('Station Statistics') ?></h2>
             </div>
-            <div class="card-body card-padding" role="tabpanel">
+            <div role="tabpanel">
                 <ul class="tab-nav" role="tablist">
-                    <li class="active"><a role="tab" data-toggle="tab" aria-expanded="true" aria-controls="listeners-by-day" href="#listeners-by-day"><?=_('Listeners by Day') ?></a></li>
+                    <li class="p-l-10 active"><a role="tab" data-toggle="tab" aria-expanded="true" aria-controls="listeners-by-day" href="#listeners-by-day"><?=_('Listeners by Day') ?></a></li>
                     <li><a role="tab" data-toggle="tab" aria-controls="listeners-by-hour" href="#listeners-by-hour"><?=_('Listeners by Hour') ?></a></li>
                     <li><a role="tab" data-toggle="tab" aria-controls="listeners-by-day-of-week" href="#listeners-by-day-of-week"><?=_('Listeners by Day of Week') ?></a></li>
                 </ul>
 
                 <div class="tab-content">
-                    <div class="tab-pane active" id="listeners-by-day" role="tabpanel">
+                    <div class="tab-pane card-body card-padding active" id="listeners-by-day" role="tabpanel">
                         <?=$this->fetch('controller::index-dailystats') ?>
                     </div>
-                    <div class="tab-pane" id="listeners-by-hour" role="tabpanel">
+                    <div class="tab-pane card-padding" id="listeners-by-hour" role="tabpanel">
                         <?=$this->fetch('controller::index-hourlystats') ?>
                     </div>
-                    <div class="tab-pane" id="listeners-by-day-of-week" role="tabpanel">
+                    <div class="tab-pane card-padding" id="listeners-by-day-of-week" role="tabpanel">
                         <?=$this->fetch('controller::index-dayofweek') ?>
                     </div>
                 </div>

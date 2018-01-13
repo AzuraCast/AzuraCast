@@ -104,7 +104,7 @@ $assets->addJs(['src' => 'js/timetable/timetable.min.js'], 'header');
     timetable.addLocations(<?=$this->escapeJs(array_values($schedule_days)) ?>);
 
 <?php foreach($schedule as $event): ?>
-    timetable.addEvent(<?=$this->escapeJs($event['name']) ?>, <?=$this->escapeJs($event['day']) ?>, new Date(<?=date('Y,n,j') ?>,<?=$event['start_hour'] ?>,<?=$event['start_min'] ?>), new Date(<?=date('Y,n,j') ?>,<?=$event['end_hour'] ?>,<?=$event['end_min'] ?>), <?=$this->escapeJs($event['options']) ?>);
+    timetable.addEvent(<?=$this->escapeJs($event['name']) ?>, <?=$this->escapeJs($event['day']) ?>, new Date(2018,0,1,<?=$event['start_hour'] ?>,<?=$event['start_min'] ?>), new Date(2018,0,1,<?=$event['end_hour'] ?>,<?=$event['end_min'] ?>), <?=$this->escapeJs($event['options']) ?>);
 <?php endforeach; ?>
 
     var renderer = new Timetable.Renderer(timetable);

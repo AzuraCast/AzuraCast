@@ -4,7 +4,6 @@ namespace AzuraCast\Radio\Frontend;
 use App\Debug;
 use App\Utilities;
 use Doctrine\ORM\EntityManager;
-use Entity\StationMount;
 use Entity;
 
 class IceCast extends FrontendAbstract
@@ -329,7 +328,9 @@ class IceCast extends FrontendAbstract
             }
 
             if ($mount_row->getFrontendConfig()) {
+
                 $mount_conf = $this->_processCustomConfig($mount_row->getFrontendConfig());
+
                 if (!empty($mount_conf)) {
                     $mount = \App\Utilities::array_merge_recursive_distinct($mount, $mount_conf);
                 }

@@ -48,6 +48,9 @@ class Writer extends \Zend\Config\Writer\Xml
         $writer->startDocument('1.0', 'UTF-8');
         $writer->startElement($base_element);
 
+        // Make sure attributes come first
+        uksort($config, [$this, '_attributesFirst']);
+
         foreach ($config as $sectionName => $data) {
             if (!is_array($data)) {
                 if (substr($sectionName, 0, 1) == '@') {
@@ -78,6 +81,9 @@ class Writer extends \Zend\Config\Writer\Xml
     protected function addBranch($branchName, array $config, XMLWriter $writer)
     {
         $branchType = null;
+
+        // Ensure attributes come first.
+        uksort($config, [$this, '_attributesFirst']);
 
         foreach ($config as $key => $value) {
             if ($branchType === null) {
@@ -112,6 +118,16 @@ class Writer extends \Zend\Config\Writer\Xml
 
         if ($branchType === 'string') {
             $writer->endElement();
+        }
+    }
+
+    protected function _attributesFirst($a, $b) {
+        if (substr($a, 0, 1) == '@') {
+            return -1;
+        } else if (substr($b, 0, 1) == '@') {
+            return 1;
+        } else {
+            return 0;
         }
     }
 }

@@ -4,11 +4,6 @@ git:
 env:
   DOCKER_COMPOSE_VERSION: 1.13.0
 
-cache:
-  directories:
-    - vendor
-    - $HOME/.composer/cache
-
 sudo: required
 dist: trusty
 

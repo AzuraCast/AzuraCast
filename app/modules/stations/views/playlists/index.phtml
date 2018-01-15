@@ -2,7 +2,7 @@
 $this->layout('main', ['title' => _('Playlists'), 'manual' => true]);
 
 /** @var \AzuraCast\Assets $assets */
-$assets->addJs(['src' => 'js/timetable/timetable.min.js'], 'header');
+$assets->addJs(['src' => 'js/timetable/timetable.js'], 'header');
 ?>
 
 <div class="card">
@@ -99,7 +99,7 @@ $assets->addJs(['src' => 'js/timetable/timetable.min.js'], 'header');
 
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
     var timetable = new Timetable();
-    timetable.setScope(0, 23);
+    timetable.setScope(0, 0);
 
     timetable.addLocations(<?=$this->escapeJs(array_values($schedule_days)) ?>);
 

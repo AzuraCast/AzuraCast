@@ -71,6 +71,7 @@
      - pkg-config
      - m4
      - aspcud
+     - camlp4
 
   - name: Build LiquidSoap
     become: true

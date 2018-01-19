@@ -26,7 +26,7 @@ install:
   - docker-compose pull
 
 script:
-  - docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm cli azuracast_testing $CODECLIMATE_REPO_TOKEN
+  - docker-compose -f docker-compose.yml -f docker-compose.testing.yml run --rm cli azuracast_testing $CODECLIMATE_REPO_TOKEN
 
 after_failure:
   - cat tests/_output/*

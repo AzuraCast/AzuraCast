@@ -68,7 +68,7 @@ All of these components are automatically downloaded and installed using either 
 
 We strongly recommend installing and using AzuraCast via Docker. All of the necessary software packages are built by our automated tools, so installation is as easy as just pulling down the pre-compiled images. There's no need to worry about compatibility with your host operating system, so any host (including Windows and MacOS) will work great out of the box.
 
-#### Step 1: Install Docker
+#### Step 1: Install Docker and Docker Compose
 
 Your computer or server should be running the newest version of Docker and Docker Compose. You can use the easy scripts below to install both if you're starting from scratch:
 
@@ -83,25 +83,24 @@ sudo sh -c "curl -L https://raw.githubusercontent.com/docker/compose/${COMPOSE_V
 
 If you're not installing as root, you may be given instructions to add your current user to the Docker group (i.e. `usermod -aG docker $user`). You should log out or reboot after doing this before continuing below.
 
-#### Step 2: Clone the AzuraCast Repository
+#### Step 2: Pull the AzuraCast Docker Compose File
 
-Make sure Git is installed and updated on your host computer or server.
+Choose where on the host computer you would like AzuraCast's configuration file to exist on your server.
 
-Make a new directory where you'd like AzuraCast's local files to live on your computer. This directory will be mapped into Docker.
-
-Inside that directory, run this command to clone the repository:
+Inside that directory, run this command to pull the Docker Compose configuration file.
 
 ```bash
-git clone https://github.com/AzuraCast/AzuraCast.git .
+curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.yml > docker-compose.yml
 ```
 
 #### Step 3: Run the AzuraCast Docker Installer
 
-In that new directory, you'll find a script called `docker-install.sh`. Using the commands below, make the script executable and run it:
+From the directory that contains your YML configuration file, run these commands:
 
 ```bash
-chmod +x ./docker-*
-./docker-install.sh
+docker-compose pull
+docker-compose run --rm cli azuracast_install
+docker-compose up -d
 ```
 
 #### Setting up HTTPS with LetsEncrypt
@@ -137,12 +136,6 @@ docker-compose run --rm letsencrypt renew --webroot -w /var/www/letsencrypt
 From inside the base directory where AzuraCast is copied, run the following commands:
 
 ```bash
-./docker-update.sh
-```
-
-or
-
-```bash
 docker-compose down
 docker-compose pull
 docker-compose run --rm cli azuracast_update
@@ -151,23 +144,13 @@ docker-compose up -d
 
 #### Docker Volume Backup and Restore
 
-Your station database, statistics and media are stored inside Docker volumes. AzuraCast includes dedicated helper scripts to compress this data into a single portable gzipped file, which can be backed up offsite or moved to a new server.
- 
-The backup script is located in the drive root and can be accessed by running:
+AzuraCast has utility scripts to allow for easy backup and restoration of Docker volumes.
 
-```bash
-./docker-backup.sh
-```
+You can use [docker-backup.sh](https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-backup.sh) to back up existing volumes. You can specify a custom path as the script's argument. By default, the script will create a file, `backup.tar.gz` in the app root.
 
-This will create a file, `backup.tar.gz` in the app root.
+To restore the application's state from this compressed file use [docker-restore.sh](https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-restore.sh) and provide it with the path of the existing backup file.
 
-To restore the application's state from this compressed file, run:
-
-```bash
-./docker-restore.sh
-```
-
-Note that the restoration process will wipe any existing AzuraCast database or media that exists inside the Docker volumes.
+Note that the restoration process will replace any existing AzuraCast database or media that exists inside the Docker volumes.
 
 ### Traditional Installation (Ubuntu 16.04 LTS Only)
 

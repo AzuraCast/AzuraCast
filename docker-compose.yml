@@ -10,7 +10,7 @@ services:
       - web
       - stations
     volumes:
-      - .:/var/azuracast/www
+      - www_data:/var/azuracast/www
       - nginx_letsencrypt_certs:/etc/nginx/ssl
       - nginx_letsencrypt_www:/var/www/letsencrypt
     restart: always
@@ -53,7 +53,7 @@ services:
       - stations
       - redis
     volumes:
-      - .:/var/azuracast/www
+      - www_data:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
     restart: always
@@ -129,4 +129,5 @@ volumes:
   db_data: {}
   influx_data: {}
   station_data: {}
+  www_data: {}
   tmp_data: {}

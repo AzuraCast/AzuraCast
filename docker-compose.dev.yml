@@ -8,10 +8,14 @@ services:
   web:
     build:
       context: ../docker-azuracast-web
+    volumes:
+      - .:/var/azuracast/www
 
   nginx:
     build:
       context: ../docker-azuracast-nginx
+    volumes:
+      - .:/var/azuracast/www
 
   static:
     build:

@@ -8,6 +8,8 @@ use Entity;
 
 class IceCast extends FrontendAbstract
 {
+    protected $force_proxy_on_secure_pages = true;
+
     public function getWatchCommand()
     {
         $fe_config = (array)$this->station->getFrontendConfig();

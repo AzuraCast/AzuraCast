@@ -87,7 +87,7 @@ call_user_func(include(__DIR__.'/bootstrap/services.php'), $di, $settings);
 if (!APP_IS_COMMAND_LINE || APP_TESTING_MODE) {
 
     /** @var \AzuraCast\Customization $customization */
-    $customization = $di->get('customization');
+    $customization = $di[\AzuraCast\Customization::class];
 
     // Set time zone.
     date_default_timezone_set($customization->getTimeZone());

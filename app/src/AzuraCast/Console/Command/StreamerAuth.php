@@ -2,6 +2,7 @@
 namespace AzuraCast\Console\Command;
 
 use App\Sync\Manager;
+use Doctrine\ORM\EntityManager;
 use Entity\Station;
 use Entity\StationStreamer;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,7 +39,11 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $station_id = (int)$input->getArgument('station_id');
-        $station = $this->di['em']->getRepository(Station::class)->find($station_id);
+
+        /** @var EntityManager $em */
+        $em = $this->di[EntityManager::class];
+
+        $station = $em->getRepository(Station::class)->find($station_id);
 
         if (!($station instanceof Station)) {
             return $this->_return($output, 'false');
@@ -60,7 +65,7 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
             return $this->_return($output, 'true');
         }
 
-        if ($this->di['em']->getRepository(StationStreamer::class)->authenticate($station, $user, $pass)) {
+        if ($em->getRepository(StationStreamer::class)->authenticate($station, $user, $pass)) {
             return $this->_return($output, 'true');
         } else {
             return $this->_return($output, 'false');

@@ -28,7 +28,7 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
         \App\Debug::divider();
 
         /** @var EntityManager $em */
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
 
         $stations = $em->getRepository(Entity\Station::class)->findAll();
         $song_repo = $em->getRepository(Entity\Song::class);

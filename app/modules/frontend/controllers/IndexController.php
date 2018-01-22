@@ -35,10 +35,10 @@ class IndexController extends BaseController
         $this->view->station_ids = $station_ids;
 
         /** @var \App\Cache $cache */
-        $cache = $this->di->get('cache');
+        $cache = $this->di[\App\Cache::class];
 
         /** @var \InfluxDB\Database $influx */
-        $influx = $this->di->get('influx');
+        $influx = $this->di[\InfluxDB\Database::class];
 
         // Generate unique cache ID for stations.
         $stats_cache_stations = [];

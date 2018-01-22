@@ -7,7 +7,7 @@ $settings = $di['app_settings'];
 $actions = $settings['actions'];
 
 /** @var \Doctrine\ORM\EntityManager $em */
-$em = $di['em'];
+$em = $di[\Doctrine\ORM\EntityManager::class];
 $all_stations = $em->getRepository(\Entity\Station::class)->fetchArray();
 
 $form_config = [

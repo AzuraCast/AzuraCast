@@ -69,7 +69,11 @@ class SetupController extends BaseController
             $this->em->flush();
 
             // Log in the newly created user.
-            $this->auth->authenticate($data['username'], $data['password']);
+
+            /** @var \App\Auth $auth */
+            $auth = $this->di[\App\Auth::class];
+            $auth->authenticate($data['username'], $data['password']);
+
             $this->acl->reload();
 
             return $this->redirectFromHere(['action' => 'index']);
@@ -166,7 +170,10 @@ class SetupController extends BaseController
         }
 
         // If past "register" step, require login.
-        if (!$this->auth->isLoggedIn()) {
+
+        /** @var \App\Auth $auth */
+        $auth = $this->di[\App\Auth::class];
+        if (!$auth->isLoggedIn()) {
             throw new \App\Exception\NotLoggedIn;
         }
 

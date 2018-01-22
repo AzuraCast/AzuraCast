@@ -2,6 +2,7 @@
 namespace AzuraCast;
 
 use App\Debug;
+use Doctrine\ORM\EntityManager;
 use Entity\Settings;
 use Entity\Repository\SettingsRepository;
 use Interop\Container\ContainerInterface;
@@ -27,7 +28,10 @@ class Sync
     public function __construct(ContainerInterface $di)
     {
         $this->di = $di;
-        $this->settings = $di['em']->getRepository(Settings::class);
+
+        /** @var EntityManager $em */
+        $em = $di[EntityManager::class];
+        $this->settings = $em->getRepository(Settings::class);
     }
 
     protected function _initSync($script_timeout = 60)

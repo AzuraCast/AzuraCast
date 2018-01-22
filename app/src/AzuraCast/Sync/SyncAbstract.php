@@ -19,7 +19,7 @@ abstract class SyncAbstract
     public function __construct(ContainerInterface $di)
     {
         $this->di = $di;
-        $this->em = $di['em'];
+        $this->em = $di[EntityManager::class];
     }
 
     abstract public function run();

@@ -27,7 +27,8 @@ abstract class CestAbstract
 
     public function _after(FunctionalTester $I)
     {
-        $auth = $this->di['auth'];
+        /** @var \App\Auth $auth */
+        $auth = $this->di[\App\Auth::class];
         $auth->logout();
 
         if ($this->test_station instanceof Entity\Station)
@@ -80,7 +81,7 @@ abstract class CestAbstract
         $this->em->persist($user);
         $this->em->flush();
 
-        $this->di['acl']->reload();
+        $this->di[\AzuraCast\Acl\StationAcl::class]->reload();
 
         // Create station.
         $frontends = Entity\Station::getFrontendAdapters();
@@ -109,7 +110,8 @@ abstract class CestAbstract
         foreach($clean_tables as $clean_table)
             $this->em->createQuery('DELETE FROM '.$clean_table.' t')->execute();
 
-        $auth = $this->di['auth'];
+        /** @var \App\Auth $auth */
+        $auth = $this->di[\App\Auth::class];
         $auth->logout();
     }
 

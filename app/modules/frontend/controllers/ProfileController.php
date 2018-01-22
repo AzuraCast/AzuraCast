@@ -17,7 +17,8 @@ class ProfileController extends BaseController
 
     public function indexAction()
     {
-        $user = $this->auth->getLoggedInUser();
+        /** @var Entity\User $user */
+        $user = $this->di['user'];
         $this->view->user = $user;
 
         $form = new \App\Form($this->config->forms->profile);
@@ -34,7 +35,7 @@ class ProfileController extends BaseController
         $this->acl->checkPermission('is logged in');
 
         /** @var Entity\User $user */
-        $user = $this->auth->getLoggedInUser();
+        $user = $this->di['user'];
 
         $form_config = $this->config->forms->profile->toArray();
         $form_config['groups']['reset_password']['elements']['password'][1]['validator'] = function($val, \Nibble\NibbleForms\Field $field) use ($user) {

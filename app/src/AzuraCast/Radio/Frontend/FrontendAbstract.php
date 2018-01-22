@@ -98,7 +98,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
     public function getStreamUrl()
     {
         /** @var EntityManager */
-        $em = $this->di->get('em');
+        $em = $this->di[EntityManager::class];
 
         $mount_repo = $em->getRepository(\Entity\StationMount::class);
         $default_mount = $mount_repo->getDefaultMount($this->station);
@@ -130,9 +130,9 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         $fe_config = (array)$this->station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
-        $settings_repo = $this->di['em']->getRepository('Entity\Settings');
+        $settings_repo = $this->di[EntityManager::class]->getRepository('Entity\Settings');
 
-        $base_url = $this->di['url']->getBaseUrl();
+        $base_url = $this->di[\App\Url::class]->getBaseUrl();
         $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
 
         if ( $use_radio_proxy

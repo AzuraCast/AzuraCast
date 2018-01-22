@@ -8,7 +8,7 @@ $di = require dirname(__FILE__).'/../app/bootstrap.php';
 $di->get('app');
 
 /** @var \Doctrine\ORM\EntityManager $em */
-$em = $di['em'];
+$em = $di[\Doctrine\ORM\EntityManager::class];
 $db = $em->getConnection();
 
 $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(

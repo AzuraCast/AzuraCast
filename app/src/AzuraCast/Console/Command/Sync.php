@@ -29,7 +29,7 @@ class Sync extends \App\Console\Command\CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var AzuraCast\Sync $sync */
-        $sync = $this->di['sync'];
+        $sync = $this->di[AzuraCast\Sync::class];
 
         switch ($input->getArgument('task')) {
             case 'long':

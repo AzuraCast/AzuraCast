@@ -8,7 +8,7 @@ class HistoryCleanup extends SyncAbstract
     public function run()
     {
         /** @var EntityManager $em */
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
 
         $threshold = strtotime('-1 month');
 

@@ -33,12 +33,12 @@ return function (\Slim\Container $di, $settings) {
     };
 
     // Configs
-    $di['config'] = function ($di) {
+    $di[\App\Config::class] = function ($di) {
         return new \App\Config(APP_INCLUDE_BASE . '/config', $di);
     };
 
     // Database
-    $di['em'] = function ($di) {
+    $di[\Doctrine\ORM\EntityManager::class] = function ($di) {
         try {
             $options = [
                 'autoGenerateProxies' => !APP_IN_PRODUCTION,
@@ -89,7 +89,7 @@ return function (\Slim\Container $di, $settings) {
 
             if (APP_IN_PRODUCTION) {
                 /** @var \Redis $redis */
-                $redis = $di['redis'];
+                $redis = $di[\Redis::class];
                 $redis->select(2);
 
                 $cache = new \App\Doctrine\Cache\Redis;
@@ -101,7 +101,6 @@ return function (\Slim\Container $di, $settings) {
             $config->setMetadataCacheImpl($cache);
             $config->setQueryCacheImpl($cache);
             $config->setResultCacheImpl($cache);
-
 
             $config->setProxyDir($options['proxyPath']);
             $config->setProxyNamespace($options['proxyNamespace']);
@@ -124,29 +123,34 @@ return function (\Slim\Container $di, $settings) {
         }
     };
 
-    $di['db'] = function ($di) {
+    $di[\Doctrine\DBAL\Connection::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di['em'];
         return $em->getConnection();
     };
 
     // Auth and ACL
-    $di['auth'] = function ($di) {
+    $di[\App\Auth::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di['em'];
+        $em = $di[\Doctrine\ORM\EntityManager::class];
 
         /** @var Entity\Repository\UserRepository $user_repo */
         $user_repo = $em->getRepository(Entity\User::class);
 
-        return new \App\Auth($di['session'], $user_repo);
+        return new \App\Auth($di[\App\Session::class], $user_repo);
     };
 
-    $di['acl'] = function ($di) {
-        return new \AzuraCast\Acl\StationAcl($di['em'], $di['auth']);
+    // Access control list (ACL)
+    $di[\AzuraCast\Acl\StationAcl::class] = function ($di) {
+        return new \AzuraCast\Acl\StationAcl($di[\Doctrine\ORM\EntityManager::class], $di[\App\Auth::class]);
+    };
+
+    $di[\App\Acl::class] = function($di) {
+        return $di[\AzuraCast\Acl\StationAcl::class];
     };
 
     // Caching
-    $di['redis'] = $di->factory(function ($di) {
+    $di[\Redis::class] = $di->factory(function ($di) {
         $redis_host = (APP_INSIDE_DOCKER) ? 'redis' : 'localhost';
 
         $redis = new \Redis();
@@ -154,18 +158,18 @@ return function (\Slim\Container $di, $settings) {
         return $redis;
     });
 
-    $di['cache'] = function ($di) {
+    $di[\App\Cache::class] = function ($di) {
         /** @var \Redis $redis */
-        $redis = $di['redis'];
+        $redis = $di[\Redis::class];
         $redis->select(0);
 
         return new \App\Cache($redis);
     };
 
     // Register URL handler.
-    $di['url'] = function ($di) {
+    $di[\App\Url::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di['em'];
+        $em = $di[\Doctrine\ORM\EntityManager::class];
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $em->getRepository(\Entity\Settings::class);
@@ -191,7 +195,7 @@ return function (\Slim\Container $di, $settings) {
     };
 
     // Register session service.
-    $di['session'] = function ($di) {
+    $di[\App\Session::class] = function ($di) {
         ini_set('session.gc_maxlifetime', 86400);
         ini_set('session.gc_probability', 1);
         ini_set('session.gc_divisor', 100);
@@ -204,17 +208,17 @@ return function (\Slim\Container $di, $settings) {
     };
 
     // Register CSRF prevention security token service.
-    $di['csrf'] = function ($di) {
-        return new \App\Csrf($di['session']);
+    $di[\App\Csrf::class] = function ($di) {
+        return new \App\Csrf($di[\App\Session::class]);
     };
 
     // Register Flash notification service.
-    $di['flash'] = function ($di) {
-        return new \App\Flash($di['session']);
+    $di[\App\Flash::class] = function ($di) {
+        return new \App\Flash($di[\App\Session::class]);
     };
 
     // InfluxDB
-    $di['influx'] = function ($di) {
+    $di[\InfluxDB\Database::class] = function ($di) {
         $opts = [
             'host' => (APP_INSIDE_DOCKER) ? 'influxdb' : 'localhost',
             'port' => 8086,
@@ -226,7 +230,7 @@ return function (\Slim\Container $di, $settings) {
     };
 
     // Supervisord Interaction
-    $di['supervisor'] = function ($di) {
+    $di[\Supervisor\Supervisor::class] = function ($di) {
         $guzzle_client = new \GuzzleHttp\Client();
         $client = new \fXmlRpc\Client(
             'http://' . (APP_INSIDE_DOCKER ? 'stations' : '127.0.0.1') . ':9001/RPC2',
@@ -248,36 +252,26 @@ return function (\Slim\Container $di, $settings) {
     };
 
     // Scheduled synchronization manager
-    $di['sync'] = function ($di) {
+    $di[\AzuraCast\Sync::class] = function ($di) {
         return new \AzuraCast\Sync($di);
     };
 
-    // Currently logged in user
-    $di['user'] = function ($di) {
-        $auth = $di['auth'];
-
-        if ($auth->isLoggedIn()) {
-            return $auth->getLoggedInUser();
-        } else {
-            return null;
-        }
-    };
-
-    $di['customization'] = function ($di) {
+    // Site-wide user-based customization.
+    $di[\AzuraCast\Customization::class] = function ($di) {
 
         /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di['em'];
+        $em = $di[\Doctrine\ORM\EntityManager::class];
         $settings_repo = $em->getRepository(Entity\Settings::class);
 
         return new \AzuraCast\Customization($di['app_settings'], $di['user'], $settings_repo);
-
     };
 
-    $di['view'] = $di->factory(function (\Slim\Container $di) {
+    // Main view/template renderer.
+    $di[\App\Mvc\View::class] = $di->factory(function (\Slim\Container $di) {
         $view = new \App\Mvc\View(APP_INCLUDE_BASE . '/templates');
         $view->setFileExtension('phtml');
 
-        $view->loadExtension(new \App\Mvc\View\Paginator($di['url']));
+        $view->loadExtension(new \App\Mvc\View\Paginator($di[\App\Url::class]));
 
         $view->registerFunction('service', function($service) use ($di) {
             return $di->get($service);
@@ -308,12 +302,12 @@ return function (\Slim\Container $di, $settings) {
 
         $view->addData([
             'assets' => $di[\AzuraCast\Assets::class],
-            'auth' => $di['auth'],
-            'acl' => $di['acl'],
-            'url' => $di['url'],
+            'auth' => $di[\App\Auth::class],
+            'acl' => $di[\AzuraCast\Acl\StationAcl::class],
+            'url' => $di[\App\Url::class],
+            'flash' => $di[\App\Flash::class],
+            'customization' => $di[\AzuraCast\Customization::class],
             'app_settings' => $di['app_settings'],
-            'flash' => $di['flash'],
-            'customization' => $di['customization'],
         ]);
 
         return $view;
@@ -321,7 +315,6 @@ return function (\Slim\Container $di, $settings) {
 
     // Asset management
     $di[\AzuraCast\Assets::class] = function ($di) {
-
         $libraries = require('assets.php');
 
         $versioned_files = [];
@@ -330,17 +323,28 @@ return function (\Slim\Container $di, $settings) {
             $versioned_files = json_decode(file_get_contents($assets_file), true);
         }
 
-        return new \AzuraCast\Assets($libraries, $versioned_files, $di['url']);
-
+        return new \AzuraCast\Assets($libraries, $versioned_files, $di[\App\Url::class]);
     };
 
     // Rate limit checking
     $di[\AzuraCast\RateLimit::class] = function($di) {
         /** @var \Redis $redis */
-        $redis = $di['redis'];
+        $redis = $di[\Redis::class];
         $redis->select(3);
 
         return new \AzuraCast\RateLimit($redis);
+    };
+
+    // Currently logged in user
+    $di['user'] = function ($di) {
+        /** @var \App\Auth $auth */
+        $auth = $di[\App\Auth::class];
+
+        if ($auth->isLoggedIn()) {
+            return $auth->getLoggedInUser();
+        } else {
+            return null;
+        }
     };
 
     // Set up application and routing.
@@ -375,7 +379,7 @@ return function (\Slim\Container $di, $settings) {
             callable $next
         ) {
             /** @var \Doctrine\ORM\EntityManager $em */
-            $em = $this->get('em');
+            $em = $this->get(\Doctrine\ORM\EntityManager::class);
 
             /** @var \Entity\Repository\SettingsRepository $settings_repo */
             $settings_repo = $em->getRepository(\Entity\Settings::class);

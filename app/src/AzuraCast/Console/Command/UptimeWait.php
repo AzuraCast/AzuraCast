@@ -48,7 +48,7 @@ class UptimeWait extends \App\Console\Command\CommandAbstract
             default:
 
                 /** @var EntityManager $em */
-                $em = $this->di['em'];
+                $em = $this->di[EntityManager::class];
 
                 $conn = $em->getConnection();
 

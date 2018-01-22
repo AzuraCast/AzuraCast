@@ -68,7 +68,9 @@ class ProfileController extends BaseController
             $this->station->writeConfiguration($this->di, $adapter_changed);
 
             // Clear station cache.
-            $cache = $this->di->get('cache');
+
+            /** @var \App\Cache $cache */
+            $cache = $this->di[\App\Cache::class];
             $cache->remove('stations');
 
             return $this->redirectFromHere(['action' => 'index']);

@@ -1,7 +1,7 @@
 <?php
 namespace App\Session;
 
-class Instance implements \ArrayAccess
+class Instance implements NamespaceInterface
 {
     /**
      * @var \App\Session

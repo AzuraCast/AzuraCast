@@ -1,7 +1,7 @@
 <?php
 namespace App\Session;
 
-class Temporary implements \ArrayAccess
+class Temporary implements NamespaceInterface
 {
     protected $_session;
 

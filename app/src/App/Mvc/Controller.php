@@ -2,6 +2,7 @@
 namespace App\Mvc;
 
 use App\Acl;
+use App\Config;
 use App\Url;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
@@ -13,6 +14,9 @@ class Controller
 {
     /** @var ContainerInterface */
     protected $di;
+
+    /** @var Config */
+    protected $config;
 
     /** @var View */
     protected $view;
@@ -26,11 +30,29 @@ class Controller
     /** @var Acl */
     protected $acl;
 
+    /** @var Request */
+    protected $request;
+
+    /** @var Response */
+    protected $response;
+
+    /** @var string */
     protected $module;
 
+    /** @var string */
     protected $controller;
 
+    /** @var string */
     protected $action;
+
+    /** @var array */
+    protected $params;
+
+    /** @var string|null */
+    protected $_cache_privacy = null;
+
+    /** @var int */
+    protected $_cache_lifetime = 0;
 
     public function __construct(ContainerInterface $di, $module, $controller, $action)
     {
@@ -40,10 +62,11 @@ class Controller
         $this->controller = $controller;
         $this->action = $action;
 
-        $this->view = $di['view'];
-        $this->url = $di['url'];
-        $this->em = $di['em'];
-        $this->acl = $di['acl'];
+        $this->config = $di[Config::class];
+        $this->view = $di[View::class];
+        $this->url = $di[Url::class];
+        $this->em = $di[EntityManager::class];
+        $this->acl = $di[Acl::class];
 
         $common_views_dir = APP_INCLUDE_MODULES.'/'.$module.'/views';
         if (is_dir($common_views_dir)) {
@@ -56,15 +79,6 @@ class Controller
         }
     }
 
-    /** @var Request */
-    protected $request;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var array */
-    protected $params;
-
     /**
      * Handle the MVC-style dispatching of a controller action.
      *
@@ -72,6 +86,8 @@ class Controller
      * @param Response $response
      * @param $args
      * @return Response
+     * @throws \App\Exception\NotLoggedIn
+     * @throws \App\Exception\PermissionDenied
      */
     public function dispatch(Request $request, Response $response, $args)
     {
@@ -109,20 +125,21 @@ class Controller
         return $this->response;
     }
 
-    public function __get($key)
-    {
-        if ($this->di->has($key)) {
-            return $this->di->get($key);
-        } else {
-            return null;
-        }
-    }
-
+    /**
+     * Default initialization function.
+     *
+     * @return null
+     * @throws \App\Exception\NotLoggedIn
+     * @throws \App\Exception\PermissionDenied
+     */
     public function init()
     {
         $isAllowed = $this->permissions();
         if (!$isAllowed) {
-            if (!$this->auth->isLoggedIn()) {
+            /** @var \App\Auth $auth */
+            $auth = $this->di[\App\Auth::class];
+
+            if (!$auth->isLoggedIn()) {
                 throw new \App\Exception\NotLoggedIn;
             } else {
                 throw new \App\Exception\PermissionDenied;
@@ -132,6 +149,12 @@ class Controller
         return null;
     }
 
+    /**
+     * Overridable function that runs after permission checks, but before the page is "dispatched".
+     * Commonly used to store variables shared across multiple actions.
+     *
+     * @return bool
+     */
     protected function preDispatch()
     {
         return true;
@@ -145,12 +168,6 @@ class Controller
     {
         return true;
     }
-
-    /* HTTP Cache Handling */
-
-    protected $_cache_privacy = null;
-
-    protected $_cache_lifetime = 0;
 
     /**
      * Set new HTTP cache "privacy" level, used by intermediate caches.
@@ -179,7 +196,8 @@ class Controller
     {
         // Set default caching parameters for pages that do not customize it.
         if ($this->_cache_privacy === null) {
-            $auth = $this->di->get('auth');
+            /** @var \App\Auth $auth */
+            $auth = $this->di[\App\Auth::class];
 
             if ($auth->isLoggedIn()) {
                 $this->_cache_privacy = 'private';
@@ -198,8 +216,6 @@ class Controller
             $this->response = $this->response->withHeader('X-Accel-Expires', $this->_cache_lifetime);
         }
     }
-
-    /* URL Parameter Handling */
 
     /**
      * Retrieve parameter from request.
@@ -375,7 +391,7 @@ class Controller
      */
     public function redirectToRoute($route, $code = 302)
     {
-        return $this->redirect($this->di['url']->route($route), $code);
+        return $this->redirect($this->url->route($route), $code);
     }
 
     /**
@@ -387,7 +403,7 @@ class Controller
      */
     public function redirectFromHere($route, $code = 302)
     {
-        return $this->redirect($this->di['url']->routeFromHere($route), $code);
+        return $this->redirect($this->url->routeFromHere($route), $code);
     }
 
     /**
@@ -409,65 +425,72 @@ class Controller
      */
     public function redirectHome($code = 302)
     {
-        return $this->redirect($this->di['url']->named('home'), $code);
+        return $this->redirect($this->url->named('home'), $code);
     }
 
     /**
      * Redirect with parameters to named route.
      *
-     * @param string $route
+     * @param string $name
      * @param int $code
      * @return Response
      */
     public function redirectToName($name, $route_params = [], $code = 302)
     {
-        return $this->redirect($this->di['url']->named($name, $route_params), $code);
+        return $this->redirect($this->url->named($name, $route_params), $code);
     }
 
     /**
-     * Force redirection to a HTTPS secure URL.
+     * Store the current referring page in a session variable.
+     *
+     * @param string $namespace
+     * @param bool $loose
      */
-    protected function forceSecure()
-    {
-        if (APP_IN_PRODUCTION && !APP_IS_SECURE) {
-            $this->doNotRender();
-
-            $url = 'https://' . $this->request->getHttpHost() . $this->request->getUri();
-
-            return $this->redirect($url, 301);
-        }
-    }
-
-    /* Referrer storage */
     protected function storeReferrer($namespace = 'default', $loose = true)
     {
-        $session = $this->di['session']->get('referrer_' . $namespace);
+        $session = $this->_getReferrerStorage($namespace);
 
-        if (!isset($session->url) || ($loose && isset($session->url) && $this->di['url']->current() != $this->di['url']->referrer())) {
-            $session->url = $this->di['url']->referrer();
+        if (!isset($session->url) || ($loose && isset($session->url) && $this->url->current() != $this->url->referrer())) {
+            $session->url = $this->url->referrer();
         }
     }
 
+    /**
+     * Retrieve the referring page stored in a session variable (if it exists).
+     *
+     * @param string $namespace
+     * @return mixed
+     */
     protected function getStoredReferrer($namespace = 'default')
     {
-        $session = $this->di['session']->get('referrer_' . $namespace);
-
+        $session = $this->_getReferrerStorage($namespace);
         return $session->url;
     }
 
+    /**
+     * Clear any session variable storing referrer data.
+     *
+     * @param string $namespace
+     */
     protected function clearStoredReferrer($namespace = 'default')
     {
-        $session = $this->di['session']->get('referrer_' . $namespace);
+        $session = $this->_getReferrerStorage($namespace);
         unset($session->url);
     }
 
+    /**
+     * Redirect to a session-stored referrer URI, or a specified URI if none exists.
+     *
+     * @param string $namespace
+     * @param bool $default_url
+     * @return Response
+     */
     protected function redirectToStoredReferrer($namespace = 'default', $default_url = false)
     {
         $referrer = $this->getStoredReferrer($namespace);
         $this->clearStoredReferrer($namespace);
 
-        $home_url = $this->di['url']->named('home');
-
+        $home_url = $this->url->named('home');
         if (strcmp($referrer, $this->request->getUri()->getPath()) == 0) {
             $referrer = $home_url;
         }
@@ -479,24 +502,27 @@ class Controller
         return $this->redirect($referrer);
     }
 
-    protected function redirectToReferrer($default = false)
+    /**
+     * @param string $namespace
+     * @return \App\Session\NamespaceInterface
+     */
+    protected function _getReferrerStorage($namespace = 'default'): \App\Session\NamespaceInterface
     {
-        if (!$default) {
-            $default = $this->di['url']->baseUrl();
-        }
-
-        return $this->redirect($this->di['url']->referrer($default));
+        /** @var \App\Session $session_manager */
+        $session_manager = $this->di[\App\Session::class];
+        return $session_manager->get('referrer_' . $namespace);
     }
 
-    /* Notifications */
-
-    public function flash($message, $level = \App\Flash::INFO)
-    {
-        $this->alert($message, $level);
-    }
-
+    /**
+     * Store a message for display as a "flash" style success/error/warning message.
+     *
+     * @param $message
+     * @param string $level
+     */
     public function alert($message, $level = \App\Flash::INFO)
     {
-        $this->di['flash']->addMessage($message, $level, true);
+        /** @var \App\Flash $flash */
+        $flash = $this->di[\App\Flash::class];
+        $flash->addMessage($message, $level, true);
     }
 }

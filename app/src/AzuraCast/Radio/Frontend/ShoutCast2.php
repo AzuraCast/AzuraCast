@@ -43,7 +43,7 @@ class ShoutCast2 extends FrontendAbstract
         $u_list = 0;
         $t_list = 0;
 
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
         $mount_repo = $em->getRepository(Entity\StationMount::class);
 
         /** @var Entity\StationMount $default_mount */
@@ -153,7 +153,8 @@ class ShoutCast2 extends FrontendAbstract
         // Set any unset values back to the DB config.
         $this->station->setFrontendConfig($this->_loadFromConfig($config));
 
-        $em = $this->di['em'];
+        /** @var EntityManager $em */
+        $em = $this->di[EntityManager::class];
         $em->persist($this->station);
         $em->flush();
 

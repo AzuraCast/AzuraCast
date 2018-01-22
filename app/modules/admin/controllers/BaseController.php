@@ -14,7 +14,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
             foreach ($sidebar_info['items'] as $item_name => $item_params) {
                 $permission = $item_params['permission'];
                 if (!is_bool($permission)) {
-                    $permission = $this->di['acl']->isAllowed($permission);
+                    $permission = $this->acl->isAllowed($permission);
                 }
 
                 if (!$permission) {

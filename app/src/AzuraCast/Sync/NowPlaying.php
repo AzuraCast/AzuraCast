@@ -13,8 +13,8 @@ class NowPlaying extends SyncAbstract
     {
         parent::__construct($di);
 
-        $this->em = $di['em'];
-        $this->url = $di['url'];
+        $this->em = $di[EntityManager::class];
+        $this->url = $di[Url::class];
 
         $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
         $this->song_repo = $this->em->getRepository(Entity\Song::class);
@@ -44,7 +44,9 @@ class NowPlaying extends SyncAbstract
         $this->_notify('all', $nowplaying);
 
         // Post statistics to InfluxDB.
-        $influx = $this->di->get('influx');
+
+        /** @var \InfluxDB\Database $influx */
+        $influx = $this->di[\InfluxDB\Database::class];
         $influx_points = [];
 
         $total_overall = 0;
@@ -80,7 +82,7 @@ class NowPlaying extends SyncAbstract
         }
 
         /** @var \App\Cache $cache */
-        $cache = $this->di->get('cache');
+        $cache = $this->di->get(\App\Cache::class);
         $cache->save($nowplaying, 'api_nowplaying_data', 120);
 
         foreach ($nowplaying as $station => $np_info) {

@@ -47,9 +47,9 @@ class Session
      * Alias for self::getNamespace()
      *
      * @param string $namespace
-     * @return mixed
+     * @return Session\NamespaceInterface
      */
-    public function get($namespace = 'default')
+    public function get($namespace = 'default'): Session\NamespaceInterface
     {
         return $this->getNamespace($namespace);
     }
@@ -58,11 +58,11 @@ class Session
      * Get a session management namespace.
      *
      * @param string $namespace
-     * @return mixed
+     * @return Session\NamespaceInterface
      */
-    public function getNamespace($namespace = 'default')
+    public function getNamespace($namespace = 'default'): Session\NamespaceInterface
     {
-        $session_name = self::getNamespaceName($namespace);
+        $session_name = $this->getNamespaceName($namespace);
 
         if (!isset($this->_sessions[$session_name])) {
             if (self::isActive()) {

@@ -8,14 +8,18 @@
 return function(\Slim\App $app) {
 
     $app->get('/', 'frontend:index:index')->setName('home');
-    $app->get('/account', 'frontend:account:index')->setName('account:index');
+
     $app->map(['GET', 'POST'], '/login', 'frontend:account:login')->setName('account:login');
     $app->get('/logout', 'frontend:account:logout')->setName('account:logout');
     $app->get('/endsession', 'frontend:account:endmasquerade')->setName('account:endmasquerade');
+
     $app->get('/profile', 'frontend:profile:index')->setName('profile:index');
     $app->map(['GET', 'POST'], '/profile/edit', 'frontend:profile:edit')->setName('profile:edit');
-    $app->map(['GET', 'POST'], '/profile/timezone', 'frontend:profile:timezone')->setName('profile:timezone');
-    $app->any('/test', 'frontend:util:test')->setName('util:test');
+
+    // Used for internal development
+    if (!APP_IN_PRODUCTION) {
+        $app->any('/test', 'frontend:util:test')->setName('util:test');
+    }
 
     $app->group('/setup', function () {
 

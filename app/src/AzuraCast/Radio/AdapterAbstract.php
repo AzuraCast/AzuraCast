@@ -23,7 +23,7 @@ abstract class AdapterAbstract
     public function __construct(ContainerInterface $di, Station $station)
     {
         $this->di = $di;
-        $this->supervisor = $di['supervisor'];
+        $this->supervisor = $di[\Supervisor\Supervisor::class];
 
         $this->station = $station;
     }
@@ -171,7 +171,8 @@ abstract class AdapterAbstract
         }
 
         if (!APP_IS_COMMAND_LINE) {
-            $flash = $this->di['flash'];
+            /** @var \App\Flash $flash */
+            $flash = $this->di[\App\Flash::class];
             $flash->addMessage($message, $class, true);
         }
 

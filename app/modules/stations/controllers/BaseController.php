@@ -53,7 +53,9 @@ class BaseController extends \AzuraCast\Mvc\Controller
 
     protected function _getEligibleHistory()
     {
-        $cache = $this->di->get('cache');
+        /** @var \App\Cache $cache */
+        $cache = $this->di[\App\Cache::class];
+
         $cache_name = 'station_center_history_' . $this->station->getId();
 
         $songs_played_raw = $cache->get($cache_name);
@@ -100,7 +102,9 @@ class BaseController extends \AzuraCast\Mvc\Controller
 
     protected function _getIgnoredSongs()
     {
-        $cache = $this->di->get('cache');
+        /** @var \App\Cache $cache */
+        $cache = $this->di[\App\Cache::class];
+
         $song_hashes = $cache->get('station_center_ignored_songs');
 
         if (!$song_hashes) {

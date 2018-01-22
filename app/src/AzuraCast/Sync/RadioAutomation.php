@@ -16,12 +16,12 @@ class RadioAutomation extends SyncAbstract
     public function run()
     {
         /** @var EntityManager $em */
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
 
         // Check all stations for automation settings.
         $stations = $em->getRepository(Station::class)->findAll();
 
-        $automation_log = $this->di['em']->getRepository('Entity\Settings')->getSetting('automation_log', []);
+        $automation_log = $em->getRepository('Entity\Settings')->getSetting('automation_log', []);
 
         foreach ($stations as $station) {
             try {
@@ -33,7 +33,7 @@ class RadioAutomation extends SyncAbstract
             }
         }
 
-        $this->di['em']->getRepository('Entity\Settings')->setSetting('automation_log', $automation_log);
+        $em->getRepository('Entity\Settings')->setSetting('automation_log', $automation_log);
     }
 
     /**
@@ -47,7 +47,7 @@ class RadioAutomation extends SyncAbstract
     public function runStation(Station $station, $force = false)
     {
         /** @var EntityManager $em */
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
 
         $settings = (array)$station->getAutomationSettings();
 
@@ -189,7 +189,7 @@ class RadioAutomation extends SyncAbstract
     public function generateReport(Station $station, $threshold_days = self::DEFAULT_THRESHOLD_DAYS)
     {
         /** @var EntityManager $em */
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
 
         $threshold = strtotime('-' . (int)$threshold_days . ' days');
 

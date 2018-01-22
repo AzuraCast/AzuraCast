@@ -32,7 +32,7 @@ class ClearCache extends \App\Console\Command\CommandAbstract
         // Flush all Redis databases
 
         /** @var \Redis $redis */
-        $redis = $this->di->get('redis');
+        $redis = $this->di[\Redis::class];
 
         for($i = 0; $i < 14; $i++) {
             $redis->select($i);

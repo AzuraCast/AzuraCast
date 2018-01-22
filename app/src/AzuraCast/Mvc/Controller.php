@@ -2,6 +2,7 @@
 namespace AzuraCast\Mvc;
 
 use AzuraCast\Acl\StationAcl;
+use Interop\Container\ContainerInterface;
 
 class Controller extends \App\Mvc\Controller
 {
@@ -23,7 +24,10 @@ class Controller extends \App\Mvc\Controller
      */
     protected function permissions()
     {
-        return $this->auth->isLoggedIn();
+        /** @var \App\Auth $auth */
+        $auth = $this->di[\App\Auth::class];
+
+        return $auth->isLoggedIn();
     }
 
     protected function preDispatch()

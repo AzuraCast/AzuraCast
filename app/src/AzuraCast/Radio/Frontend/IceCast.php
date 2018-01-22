@@ -50,7 +50,7 @@ class IceCast extends FrontendAbstract
         $mounts = (key($sources) === 0) ? $sources : [$sources];
 
         /** @var EntityManager $em */
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
 
         /** @var Entity\Repository\StationMountRepository $mount_repo */
         $mount_repo = $em->getRepository(Entity\StationMount::class);
@@ -186,7 +186,7 @@ class IceCast extends FrontendAbstract
         $this->station->setFrontendConfig($this->_loadFromConfig($config));
 
         /** @var EntityManager $em */
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
 
         $em->persist($this->station);
         $em->flush();
@@ -264,7 +264,7 @@ class IceCast extends FrontendAbstract
         $defaults = [
             'location' => 'AzuraCast',
             'admin' => 'icemaster@localhost',
-            'hostname' => $this->di['em']->getRepository('Entity\Settings')->getSetting('base_url', 'localhost'),
+            'hostname' => $this->di[EntityManager::class]->getRepository('Entity\Settings')->getSetting('base_url', 'localhost'),
             'limits' => [
                 'clients' => 250,
                 'sources' => 3,

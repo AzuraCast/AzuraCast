@@ -1,8 +1,4 @@
 <?php
-/**
- * Login Form
- */
-
 return [
     'method' => 'post',
     'elements' => [

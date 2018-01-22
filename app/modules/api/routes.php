@@ -48,7 +48,7 @@ return function(\Slim\App $app) {
         $di = $app->getContainer();
 
         /** @var \App\Session $session */
-        $session = $di->get('session');
+        $session = $di->get(\App\Session::class);
 
         if (!$session->exists()) {
             $session->disable();

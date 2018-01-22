@@ -11,7 +11,7 @@ class IndexController extends BaseController
         // Synchronization statuses
         if ($this->acl->isAllowed('administer all')) {
             /** @var \AzuraCast\Sync $sync */
-            $sync = $this->di['sync'];
+            $sync = $this->di[\AzuraCast\Sync::class];
             $this->view->sync_times = $sync->getSyncTimes();
         }
     }
@@ -30,7 +30,7 @@ class IndexController extends BaseController
         $type = $this->getParam('type', 'nowplaying');
 
         /** @var \AzuraCast\Sync $sync */
-        $sync = $this->di['sync'];
+        $sync = $this->di[\AzuraCast\Sync::class];
 
         switch ($type) {
             case "long":

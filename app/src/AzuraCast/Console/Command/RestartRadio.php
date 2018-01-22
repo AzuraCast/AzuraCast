@@ -28,10 +28,10 @@ class RestartRadio extends \App\Console\Command\CommandAbstract
         \App\Debug::divider();
 
         /** @var \Supervisor\Supervisor */
-        $supervisor = $this->di['supervisor'];
+        $supervisor = $this->di[\Supervisor\Supervisor::class];
 
         /** @var EntityManager $em */
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
         $stations = $em->getRepository(Station::class)->findAll();
 
         $supervisor->stopAllProcesses();

@@ -10,6 +10,7 @@ use Codeception\Configuration;
 use Codeception\Lib\Framework;
 use Codeception\Lib\Interfaces\DoctrineProvider;
 use Codeception\TestInterface;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Interop\Container\ContainerInterface;
 use Slim\App;
@@ -45,7 +46,7 @@ class Module extends Framework implements DoctrineProvider
         chdir($cwd);
 
         $this->app = $this->container->get('app');
-        $this->em = $this->container->get('em');
+        $this->em = $this->container[EntityManager::class];
 
         parent::_initialize();
     }

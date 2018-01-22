@@ -14,7 +14,9 @@ class IndexController extends BaseController
         $threshold = strtotime('-1 month');
 
         // Statistics by day.
-        $influx = $this->di->get('influx');
+
+        /** @var \InfluxDB\Database $influx */
+        $influx = $this->di[\InfluxDB\Database::class];
 
         $resultset = $influx->query('SELECT * FROM "1d"."station.' . $this->station->getId() . '.listeners" WHERE time > now() - 30d',
             [
@@ -49,7 +51,6 @@ class IndexController extends BaseController
         $this->view->daily_averages = json_encode($daily_averages);
 
         // Statistics by hour.
-        $influx = $this->di->get('influx');
         $resultset = $influx->query('SELECT * FROM "1h"."station.' . $this->station->getId() . '.listeners"', [
             'epoch' => 'ms',
         ]);

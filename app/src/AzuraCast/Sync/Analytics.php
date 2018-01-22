@@ -3,13 +3,14 @@ namespace AzuraCast\Sync;
 
 use Doctrine\ORM\EntityManager;
 use Entity;
+use InfluxDB\Database;
 
 class Analytics extends SyncAbstract
 {
     public function run()
     {
         /** @var EntityManager $em */
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
 
         // Clear out any non-daily statistics.
         $em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type != :type')
@@ -17,7 +18,9 @@ class Analytics extends SyncAbstract
             ->execute();
 
         // Pull statistics in from influx.
-        $influx = $this->di['influx'];
+
+        /** @var Database $influx */
+        $influx = $this->di[Database::class];
 
         $resultset = $influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 14d', [
             'epoch' => 's',

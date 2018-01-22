@@ -730,7 +730,7 @@ class Station
         }
 
         /** @var EntityManager $em */
-        $em = $di['em'];
+        $em = $di[EntityManager::class];
 
         if ($regen_auth_key || empty($this->getAdapterApiKey())) {
             $this->generateAdapterApiKey();
@@ -749,7 +749,7 @@ class Station
         // If no processes need to be managed, remove any existing config.
         if (!$frontend->hasCommand() && !$backend->hasCommand()) {
             @unlink($supervisor_config_path);
-            $this->_reloadSupervisor($di['supervisor']);
+            $this->_reloadSupervisor($di[\Supervisor\Supervisor::class]);
             return;
         }
 
@@ -841,7 +841,7 @@ class Station
         $supervisor_config_data = implode("\n", $supervisor_config);
         file_put_contents($supervisor_config_path, $supervisor_config_data);
 
-        $this->_reloadSupervisor($di['supervisor']);
+        $this->_reloadSupervisor($di[\Supervisor\Supervisor::class]);
     }
 
     /**

@@ -29,7 +29,7 @@ class ResetPassword extends \App\Console\Command\CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var EntityManager $em */
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
 
         $user_email = $input->getArgument('email');
 

@@ -58,7 +58,8 @@ class FilesController extends BaseController
 
         $this->media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
-        $csrf = $this->di->get('csrf');
+        /** @var \App\Csrf $csrf */
+        $csrf = $this->di[\App\Csrf::class];
         $this->view->CSRF = $csrf->generate('files');
 
         if (!empty($_POST)) {
@@ -582,14 +583,15 @@ class FilesController extends BaseController
         set_time_limit(600);
 
         $filename = basename($this->file_path);
-        header('Content-Type: ' . mime_content_type($this->file_path));
-        header('Content-Length: ' . filesize($this->file_path));
 
-        header(sprintf('Content-Disposition: attachment; filename=%s',
-            strpos('MSIE', $_SERVER['HTTP_REFERER']) ? rawurlencode($filename) : "\"$filename\""));
+        $fh = fopen($this->file_path, 'rb');
 
-        ob_flush();
-        readfile($this->file_path);
+        return $this->response
+            ->withHeader('Content-Type', mime_content_type($this->file_path))
+            ->withHeader('Content-Length', filesize($this->file_path))
+            ->withHeader('Content-Disposition', sprintf('attachment; filename=%s',
+                strpos('MSIE', $_SERVER['HTTP_REFERER']) ? rawurlencode($filename) : "\"$filename\""))
+            ->withBody(new \Slim\Http\Stream($fh));
     }
 
     protected function _is_recursively_deleteable($d)

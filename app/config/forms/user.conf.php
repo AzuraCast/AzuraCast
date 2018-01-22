@@ -4,7 +4,7 @@
  */
 
 /** @var \Doctrine\ORM\EntityManager $em */
-$em = $di['em'];
+$em = $di[\Doctrine\ORM\EntityManager::class];
 
 return [
     /**

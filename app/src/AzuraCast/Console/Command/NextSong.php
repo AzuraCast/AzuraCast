@@ -34,7 +34,7 @@ class NextSong extends \App\Console\Command\CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var EntityManager $em */
-        $em = $this->di['em'];
+        $em = $this->di[EntityManager::class];
 
         $station_id = (int)$input->getArgument('station_id');
         $station = $em->getRepository(Entity\Station::class)->find($station_id);

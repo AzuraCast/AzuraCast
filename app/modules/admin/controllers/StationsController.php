@@ -57,7 +57,9 @@ class StationsController extends BaseController
             }
 
             // Clear station cache.
-            $cache = $this->di->get('cache');
+            /** @var \App\Cache $cache */
+            $cache = $this->di[\App\Cache::class];
+            
             $cache->remove('stations');
 
             $this->alert(_('Changes saved.'), 'green');

@@ -15,7 +15,7 @@ class C01_Station_MediaCest extends CestAbstract
         $test_song = tempnam(sys_get_temp_dir(), 'azuracast');
         copy($test_song_orig, $test_song);
 
-        $csrf = $this->di->get('csrf');
+        $csrf = $this->di[\App\Csrf::class];
         $test_file = [
             'tmp_name'  => $test_song,
             'name'      => basename($test_song),

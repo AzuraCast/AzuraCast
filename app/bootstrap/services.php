@@ -22,7 +22,7 @@ return function (\Slim\Container $di, $settings) {
 
     $di['notFoundHandler'] = function ($di) {
         return function ($request, $response) use ($di) {
-            $view = $di['view'];
+            $view = $di[\App\Mvc\View::class];
             $template = $view->render('system/error_pagenotfound');
 
             $body = $response->getBody();

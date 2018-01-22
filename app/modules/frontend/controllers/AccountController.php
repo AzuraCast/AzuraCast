@@ -52,8 +52,16 @@ class AccountController extends BaseController
             $login_success = $this->auth->authenticate($_POST['username'], $_POST['password']);
 
             if ($login_success) {
+
+                // Regenerate session ID
+                /** @var \App\Session $session */
+                $session = $this->di['session'];
+                $session->regenerate();
+
+                // Reload ACL permissions.
                 $this->acl->reload();
 
+                // Persist user as database entity.
                 $user = $this->auth->getLoggedInUser();
                 $this->em->persist($user);
                 $this->em->flush();

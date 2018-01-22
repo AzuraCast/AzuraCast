@@ -26,6 +26,20 @@ class Session
 
         $this->_is_started = @session_start();
 
+        // Session regeneration detection code
+        // from http://php.net/manual/en/function.session-regenerate-id.php
+        if (isset($_SESSION['destroyed'])) {
+            if (isset($_SESSION['new_session_id'])) {
+                // Try again to set proper session ID cookie.
+                session_write_close();
+                session_id($_SESSION['new_session_id']);
+                session_start();
+            }
+            if ($_SESSION['destroyed'] < time()-300) {
+                $this->destroy();
+            }
+        }
+
         return $this->_is_started;
     }
 
@@ -137,9 +151,39 @@ class Session
     }
 
     /**
-     * Destroy a session.
+     * Regenerate a new session ID, while allowing smooth transition from older session ID for unstable connections.
+     * Code pulled from http://php.net/manual/en/function.session-regenerate-id.php
      */
+    public function regenerate()
+    {
+        // Handle lazy-loading of sessions
+        if ($this->exists()) {
+            $this->start();
 
+            $new_session_id = session_create_id();
+
+            // Set transition variables on old session.
+            $existing_session = $_SESSION;
+            $_SESSION['new_session_id'] = $new_session_id;
+            $_SESSION['destroyed'] = time();
+
+            // Write and close current session;
+            session_write_close();
+
+            // Start session with new session ID
+            session_id($new_session_id);
+
+            session_start();
+
+            if (!empty($existing_session)) {
+                $_SESSION = $existing_session;
+            }
+        }
+    }
+
+    /**
+     * Destroy the current session.
+     */
     public function destroy()
     {
         $this->start();

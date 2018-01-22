@@ -336,7 +336,7 @@ return function (\Slim\Container $di, $settings) {
     };
 
     // Currently logged in user
-    $di['user'] = function ($di) {
+    $di['user'] = $di->factory(function ($di) {
         /** @var \App\Auth $auth */
         $auth = $di[\App\Auth::class];
 
@@ -345,7 +345,7 @@ return function (\Slim\Container $di, $settings) {
         } else {
             return null;
         }
-    };
+    });
 
     // Set up application and routing.
     $di['app'] = function ($di) {

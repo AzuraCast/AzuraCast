@@ -42,7 +42,7 @@ class NowplayingController extends BaseController
         // Pull from cache, or load from flatfile otherwise.
 
         /** @var \App\Cache $cache */
-        $cache = $this->di->get('cache');
+        $cache = $this->di[\App\Cache::class];
 
         /** @var Entity\Api\NowPlaying[] $np */
         $np = $cache->get('api_nowplaying_data', function () {

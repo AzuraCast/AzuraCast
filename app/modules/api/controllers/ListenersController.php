@@ -103,7 +103,7 @@ class ListenersController extends BaseController
     protected function _getIpInfo($raw_ips)
     {
         /** @var \App\Cache $cache */
-        $cache = $this->di['cache'];
+        $cache = $this->di[\App\Cache::class];
 
         $return = [];
         foreach($raw_ips as $ip) {

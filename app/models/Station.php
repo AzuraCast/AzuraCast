@@ -859,7 +859,7 @@ class Station
 
         @unlink($supervisor_config_path);
 
-        $this->_reloadSupervisor($di['supervisor']);
+        $this->_reloadSupervisor($di[\Supervisor\Supervisor::class]);
     }
 
     /**

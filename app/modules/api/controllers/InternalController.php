@@ -49,7 +49,7 @@ class InternalController extends BaseController
             return $this->_return('true');
         }
 
-        if ($this->di['em']->getRepository(Entity\StationStreamer::class)->authenticate($this->station, $user, $pass)) {
+        if ($this->em->getRepository(Entity\StationStreamer::class)->authenticate($this->station, $user, $pass)) {
             return $this->_return('true');
         } else {
             return $this->_return('false');

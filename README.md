@@ -212,6 +212,36 @@ Once installed and running, AzuraCast exposes an API that allows you to monitor 
 
 Documentation about this API and its endpoints are available on the [AzuraCast API Documentation](http://azuracast.com/api/).
 
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="graphs/contributors"><img src="https://opencollective.com/AzuraCast/contributors.svg?width=890" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/AzuraCast#backer)]
+
+<a href="https://opencollective.com/AzuraCast#backers" target="_blank"><img src="https://opencollective.com/AzuraCast/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/AzuraCast#sponsor)]
+
+<a href="https://opencollective.com/AzuraCast/sponsor/0/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/1/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/2/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/3/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/4/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/5/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/6/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/7/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/8/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/9/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/9/avatar.svg"></a>
+
+
+
 ## License
 
 AzuraCast is licensed under the [Apache license, version 2.0](https://github.com/AzuraCast/AzuraCast/blob/master/License.txt). This project is free and open-source software, and pull requests are always welcome.

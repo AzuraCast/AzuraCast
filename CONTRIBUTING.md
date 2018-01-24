@@ -45,3 +45,40 @@ While we appreciate everyone who is eager to contribute to this project and help
  - Please **do not create "this doesn't work" issues** that are just one sentence long and don't provide any insight into the scope of the issue, what changes might have triggered it, or what platform you're running on. At the very minimum, please always include what host OS you're using (i.e. Ubuntu 16.04), whether you're using the Docker or "traditional" installation, and whether the problem first occurred after a recent update. For visual issues, screenshots are also greatly appreciated.
  
  - Please **refer to existing Github issues** if you are curious about the status of outstanding bug reports or new enhancement requests. Always remember that this is a volunteer project primarily built and maintained by a single developer, and manage your expectations accordingly.
+
+## Financial contributions
+
+We also welcome financial contributions in full transparency on our [open collective](https://opencollective.com/AzuraCast).
+Anyone can file an expense. If the expense makes sense for the development of the community, it will be "merged" in the ledger of our open collective by the core contributors and the person who filed the expense will be reimbursed.
+
+
+## Credits
+
+
+### Contributors
+
+Thank you to all the people who have already contributed to AzuraCast!
+<a href="graphs/contributors"><img src="https://opencollective.com/AzuraCast/contributors.svg?width=890" /></a>
+
+
+### Backers
+
+Thank you to all our backers! [[Become a backer](https://opencollective.com/AzuraCast#backer)]
+
+<a href="https://opencollective.com/AzuraCast#backers" target="_blank"><img src="https://opencollective.com/AzuraCast/backers.svg?width=890"></a>
+
+
+### Sponsors
+
+Thank you to all our sponsors! (please ask your company to also support this open source project by [becoming a sponsor](https://opencollective.com/AzuraCast#sponsor))
+
+<a href="https://opencollective.com/AzuraCast/sponsor/0/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/1/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/2/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/3/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/4/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/5/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/6/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/7/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/8/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/AzuraCast/sponsor/9/website" target="_blank"><img src="https://opencollective.com/AzuraCast/sponsor/9/avatar.svg"></a>

@@ -1,7 +1,10 @@
 ![](https://github.com/AzuraCast/AzuraCast/raw/master/resources/azuracast.png)
-[![Backers on Open Collective](https://opencollective.com/azuracast/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/azuracast/sponsors/badge.svg)](#sponsors)
 
 # AzuraCast: A Self-Hosted Web Radio Manager
+
+[![Build Status](https://travis-ci.org/AzuraCast/AzuraCast.svg?branch=master)](https://travis-ci.org/AzuraCast/AzuraCast)
+[![Backers on Open Collective](https://opencollective.com/azuracast/backers/badge.svg)](#backers) 
+[![Sponsors on Open Collective](https://opencollective.com/azuracast/sponsors/badge.svg)](#sponsors)
 
 **AzuraCast** is a self-hosted, all-in-one web radio management kit. Using its easy installer tools and web interface, you can start up a fully working web radio station in a few quick minutes. 
 

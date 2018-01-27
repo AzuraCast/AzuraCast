@@ -80,7 +80,7 @@ return function (\Slim\Container $di, $settings) {
             }
 
             // Special handling for the utf8mb4 type.
-            if ($options['conn']['driver'] == 'pdo_mysql' && $options['conn']['charset'] == 'utf8mb4') {
+            if ($options['conn']['driver'] === 'pdo_mysql' && $options['conn']['charset'] === 'utf8mb4') {
                 $options['conn']['platform'] = new \App\Doctrine\Platform\MysqlUnicode;
             }
 
@@ -261,9 +261,11 @@ return function (\Slim\Container $di, $settings) {
 
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        /** @var \Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $em->getRepository(Entity\Settings::class);
 
-        return new \AzuraCast\Customization($di['app_settings'], $di['user'], $settings_repo);
+        return new \AzuraCast\Customization($di['app_settings'], $settings_repo);
     };
 
     // Main view/template renderer.
@@ -335,17 +337,32 @@ return function (\Slim\Container $di, $settings) {
         return new \AzuraCast\RateLimit($redis);
     };
 
-    // Currently logged in user
-    $di['user'] = $di->factory(function ($di) {
-        /** @var \App\Auth $auth */
-        $auth = $di[\App\Auth::class];
+    // Middleware
+    $di[\AzuraCast\Middleware\EnforceSecurity::class] = function($di) {
+        return new \AzuraCast\Middleware\EnforceSecurity(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Assets::class]
+        );
+    };
 
-        if ($auth->isLoggedIn()) {
-            return $auth->getLoggedInUser();
-        } else {
-            return null;
-        }
-    });
+    $di[\AzuraCast\Middleware\GetCurrentUser::class] = function($di) {
+        return new \AzuraCast\Middleware\GetCurrentUser(
+            $di[\App\Auth::class],
+            $di[\AzuraCast\Customization::class]
+        );
+    };
+
+    $di[\AzuraCast\Middleware\Permissions::class] = function($di) {
+
+    };
+
+    $di[\AzuraCast\Middleware\RemoveSlashes::class] = function($di) {
+        return new \AzuraCast\Middleware\RemoveSlashes();
+    };
+
+    $di[\AzuraCast\Middleware\RequireLogin::class] = function($di) {
+
+    };
 
     // Set up application and routing.
     $di['app'] = function ($di) {
@@ -353,80 +370,13 @@ return function (\Slim\Container $di, $settings) {
         $app = new \Slim\App($di);
 
         // Remove trailing slash from all URLs when routing.
-        $app->add(function (
-            \Slim\Http\Request $request,
-            \Slim\Http\Response $response,
-            callable $next
-        ) {
-            $uri = $request->getUri();
-            $path = $uri->getPath();
-
-            if ($path != '/' && substr($path, -1) == '/') {
-                // permanently redirect paths with a trailing slash
-                // to their non-trailing counterpart
-                $uri = $uri->withPath(substr($path, 0, -1));
-
-                return $response->withRedirect((string)$uri, 301);
-            }
-
-            return $next($request, $response);
-        });
+        $app->add(\AzuraCast\Middleware\RemoveSlashes::class);
 
         // Check HTTPS setting and enforce Content Security Policy accordingly.
-        $app->add(function (
-            \Slim\Http\Request $request,
-            \Slim\Http\Response $response,
-            callable $next
-        ) {
-            /** @var \Doctrine\ORM\EntityManager $em */
-            $em = $this->get(\Doctrine\ORM\EntityManager::class);
+        $app->add(\AzuraCast\Middleware\EnforceSecurity::class);
 
-            /** @var \Entity\Repository\SettingsRepository $settings_repo */
-            $settings_repo = $em->getRepository(\Entity\Settings::class);
-
-            $always_use_ssl = (bool)$settings_repo->getSetting('always_use_ssl', 0);
-            $internal_api_url = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
-
-            $uri = $request->getUri();
-            $uri_is_https = ($uri->getScheme() === 'https');
-
-            // Assemble Content Security Policy (CSP)
-            $csp = [];
-
-            /** @var \AzuraCast\Assets $assets */
-            $assets = $this->get(\AzuraCast\Assets::class);
-
-            // CSP JavaScript policy
-            // Note: unsafe-eval included for Vue template compiling
-            $csp[] = "script-src https://maps.googleapis.com https://cdnjs.cloudflare.com 'self' 'unsafe-eval' 'nonce-".$assets->getCspNonce()."'";
-
-            if ($uri_is_https) {
-
-                $csp[] = 'upgrade-insecure-requests';
-
-            } elseif ($always_use_ssl && !$internal_api_url) {
-
-                // Enforce secure cookies.
-                ini_set('session.cookie_secure', 1);
-
-                // Redirect if URL is not currently secure.
-                if (!$uri_is_https) {
-                    if (!$uri->getPort()) {
-                        $uri = $uri->withPort(443);
-                    }
-                    return $response->withRedirect((string)$uri->withScheme('https'), 302);
-                }
-
-                // Set HSTS header.
-                $response = $response->withHeader('Strict-Transport-Security', 'max-age=3600');
-
-                $csp[] = 'upgrade-insecure-requests';
-            }
-
-            $response = $response->withHeader('Content-Security-Policy', implode('; ', $csp));
-
-            return $next($request, $response);
-        });
+        // Get the current user entity object and assign it into the request if it exists.
+        $app->add(\AzuraCast\Middleware\GetCurrentUser::class);
 
         foreach ($di['modules'] as $module) {
             $module_routes = APP_INCLUDE_MODULES . '/' . $module . '/routes.php';

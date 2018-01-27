@@ -21,6 +21,7 @@ coverage:
   exclude:
    # Loaded before tests
    - app/bootstrap.php
+   - app/bootstrap/**.php
    - app/src/App/Tests/Module.php
    - app/src/App/Doctrine/EntityManagerFactory.php
   

@@ -1,6 +1,7 @@
 <?php
 namespace AzuraCast;
 
+use App\Auth;
 use Entity;
 
 class Customization
@@ -8,17 +9,47 @@ class Customization
     /** @var array */
     protected $app_settings;
 
-    /** @var Entity\User|null */
-    protected $user;
+    /** @var Entity\User */
+    protected $user = null;
 
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
-    public function __construct($app_settings, $user, $settings_repo)
+    public function __construct($app_settings, Entity\Repository\SettingsRepository $settings_repo)
     {
         $this->app_settings = $app_settings;
-        $this->user = $user;
         $this->settings_repo = $settings_repo;
+    }
+
+    /**
+     * Initialize timezone and locale settings for the current user.
+     */
+    public function init()
+    {
+        if (!APP_IS_COMMAND_LINE || APP_TESTING_MODE) {
+            // Set time zone.
+            date_default_timezone_set($this->getTimeZone());
+
+            // Localization
+            $locale = $this->getLocale();
+            putenv("LANG=" . $locale);
+            setlocale(LC_ALL, $locale);
+
+            $locale_domain = 'default';
+            bindtextdomain($locale_domain, APP_INCLUDE_BASE . '/locale');
+            bind_textdomain_codeset($locale_domain, 'UTF-8');
+            textdomain($locale_domain);
+        }
+    }
+
+    /**
+     * Set the currently active/logged in user.
+     *
+     * @param Entity\User $user
+     */
+    public function setUser(\Entity\User $user)
+    {
+        $this->user = $user;
     }
 
     /**
@@ -30,9 +61,9 @@ class Customization
     {
         if ($this->user !== null && !empty($this->user->getTimezone())) {
             return $this->user->getTimezone();
-        } else {
-            return date_default_timezone_get();
         }
+
+        return date_default_timezone_get();
     }
 
     /**

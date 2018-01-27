@@ -43,7 +43,7 @@ $assets
 
                 <ul class="actions">
                 <?php if ($acl->isAllowed('administer stations')): ?>
-                    <li><a class="" title="<?=_('Add') ?>" href="<?=$url->route(['module' => 'admin', 'controller' => 'stations', 'action' => 'edit']) ?>"><i class="zmdi zmdi-plus"></i></a></li>
+                    <li><a class="" title="<?=_('Add') ?>" href="<?=$url->named('admin:stations:edit') ?>"><i class="zmdi zmdi-plus"></i></a></li>
                 <?php endif; ?>
                 </ul>
             </div>
@@ -74,7 +74,7 @@ $assets
                                 </a>
                             </td>
                             <td>
-                                <big><a href="<?=$url->route(['controller' => 'public', 'station' => $row['short_name']]) ?>" target="_blank"><?=$this->e($row['station']->getName()) ?></a></big>
+                                <big><a href="<?=$url->named('public:index', ['station' => $row['short_name']]) ?>" target="_blank"><?=$this->e($row['station']->getName()) ?></a></big>
                             </td>
                             <td class="text-center">
                                 <span class="nowplaying-listeners">0</span>
@@ -84,7 +84,7 @@ $assets
                                 <span class="nowplaying-artist"><?=_('Song Artist') ?></span>
                             </td>
                             <td>
-                                <a class="btn btn-primary" role="button" href="<?=$url->route(['module' => 'stations', 'station' => $row['station']->getId()]) ?>"><?=_('Manage') ?></a>
+                                <a class="btn btn-primary" role="button" href="<?=$url->named('stations:index:index', ['station' => $row['station']->getId()]) ?>"><?=_('Manage') ?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

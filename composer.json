@@ -40,8 +40,9 @@
         "psr-4": {
             "App\\": "app/src/App",
             "AzuraCast\\": "app/src/AzuraCast",
-            "Entity\\": "app/models",
-            "Migration\\": "app/models/Migration"
+            "Entity\\": "app/src/Entity",
+            "Migration\\": "app/src/Migration",
+            "Controller\\": "app/src/Controller"
         }
     },
     "config": {

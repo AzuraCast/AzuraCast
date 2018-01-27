@@ -373,6 +373,17 @@ class BaseRepository extends EntityRepository
         return $meta_result;
     }
 
+    /**
+     * Shortcut to persist an object and flush the entity manager.
+     *
+     * @param object $entity
+     */
+    public function save($entity)
+    {
+        $this->_em->persist($entity);
+        $this->_em->flush();
+    }
+
     protected function _get($entity, $key)
     {
         $method_name = $this->_getMethodName($key, 'get');

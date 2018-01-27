@@ -63,7 +63,7 @@ class Resolver implements CallableResolverInterface
             }
 
             // Resolve in MVC controller format
-            // "foo:bar:baz" -> \Controller\Foo\BarController::bazAction (via dispatch())
+            // "foo:bar:baz" -> \Controller\Foo\BarController::bazAction
             if (strpos($toResolve, ':') !== false) {
                 list($module, $controller, $action) = explode(':', $toResolve);
 
@@ -72,12 +72,8 @@ class Resolver implements CallableResolverInterface
                     throw new RuntimeException(sprintf('Controller %s does not exist', $class));
                 }
 
-                return function ($request, $response, $args) use ($class, $module, $controller, $action) {
-
-
-                    $controller = new $class($this->di, $module, $controller, $action);
-                    return $controller->dispatch($request, $response, $args);
-                };
+                $controller = new $class($this->di);
+                return [$controller, $action.'Action'];
             }
         }
 

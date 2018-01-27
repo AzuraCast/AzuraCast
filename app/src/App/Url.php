@@ -1,7 +1,6 @@
 <?php
 namespace App;
 
-use Interop\Container\ContainerInterface;
 use Slim\Router;
 
 class Url
@@ -46,14 +45,6 @@ class Url
     }
 
     /**
-     * Generate a callback-friendly URL.
-     */
-    public function callback()
-    {
-        return $this->getUrl($this->routeFromHere([]), true);
-    }
-
-    /**
      * Get the HTTP_REFERER value for the current page.
      *
      * @param null $default_url
@@ -65,7 +56,7 @@ class Url
             return $this->getUrl($_SERVER['HTTP_REFERER']);
         }
 
-        return null;
+        return $default_url;
     }
 
     /**
@@ -95,114 +86,6 @@ class Url
         return '/static/' . $file_name;
     }
 
-    /**
-     * Generate a route using the ZendFramework 1 MVC route standard.
-     *
-     * @param $path_info
-     * @return string The routed URL.
-     */
-    public function route($path_info = [], $absolute = null)
-    {
-        $default_module = 'frontend';
-        $components = [
-            'module' => $default_module,
-            'controller' => 'index',
-            'action' => 'index',
-        ];
-
-        if (isset($path_info['module'])) {
-            $components['module'] = $path_info['module'];
-            unset($path_info['module']);
-        }
-        if (isset($path_info['controller'])) {
-            $components['controller'] = $path_info['controller'];
-            unset($path_info['controller']);
-        }
-        if (isset($path_info['action'])) {
-            $components['action'] = $path_info['action'];
-            unset($path_info['action']);
-        }
-        if (isset($path_info['params'])) {
-            $path_info = array_merge($path_info, $path_info['params']);
-            unset($path_info['params']);
-        }
-
-        // Handle the legacy "default" module being so-named.
-        if ($components['module'] == 'default') {
-            $components['module'] = $default_module;
-        }
-
-        // Special exception for homepage.
-        if ($components['module'] == $default_module &&
-            $components['controller'] == 'index' &&
-            $components['action'] == 'index' &&
-            empty($path_info)
-        ) {
-            return $this->router->pathFor('home');
-        }
-
-        // Otherwise compile URL using a uniform format.
-        $url_parts = [];
-
-        if ($components['module'] != $default_module) {
-            $url_parts[] = $components['module'];
-        }
-
-        $url_parts[] = $components['controller'];
-        $url_parts[] = $components['action'];
-
-        $router_path = implode(':', $url_parts);
-
-        return $this->getUrl($this->router->pathFor($router_path, $path_info), $absolute);
-    }
-
-    protected $current_route;
-
-    public function setCurrentRoute($route_info)
-    {
-        $this->current_route = $route_info;
-    }
-
-    /**
-     * Generate a route based on the current URL.
-     *
-     * @param $path_info
-     * @return string The routed URL.
-     */
-    public function routeFromHere($path_info)
-    {
-        $new_path = (array)$this->current_route;
-
-        if (isset($path_info['module'])) {
-            $new_path['module'] = $path_info['module'];
-            unset($path_info['module']);
-        }
-        if (isset($path_info['controller'])) {
-            $new_path['controller'] = $path_info['controller'];
-            unset($path_info['controller']);
-        }
-        if (isset($path_info['action'])) {
-            $new_path['action'] = $path_info['action'];
-            unset($path_info['action']);
-        }
-
-        if (count($path_info) > 0) {
-            foreach ((array)$path_info as $param_key => $param_value) {
-                $new_path['params'][$param_key] = $param_value;
-            }
-        }
-
-        if (isset($new_path['params']['name'])) {
-            // Allow support for named routes.
-            $route_name = $new_path['params']['name'];
-            unset($new_path['params']['name']);
-
-            return $this->named($route_name, $new_path['params']);
-        } else {
-            return $this->route($new_path);
-        }
-    }
-
     public function getSchemePrefixSetting()
     {
         return $this->include_domain;
@@ -221,7 +104,7 @@ class Url
     public function getUrl($url_raw, $absolute = false)
     {
         // Ignore preformed URLs.
-        if (stristr($url_raw, '://')) {
+        if (false !== strpos($url_raw, '://')) {
             return $url_raw;
         }
 

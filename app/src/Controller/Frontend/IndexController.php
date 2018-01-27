@@ -2,10 +2,12 @@
 namespace Controller\Frontend;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class IndexController extends BaseController
 {
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
@@ -15,7 +17,7 @@ class IndexController extends BaseController
         });
 
         if (empty($stations)) {
-            return $this->render('controller::noaccess');
+            return $this->render($response,'frontend/index/noaccess');
         }
 
         $view_stations = [];
@@ -158,5 +160,7 @@ class IndexController extends BaseController
         }, 600);
 
         $this->view->metrics = $metrics;
+
+        return $this->render($response, 'frontend/index/index');
     }
 }

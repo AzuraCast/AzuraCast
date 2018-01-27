@@ -338,6 +338,12 @@ return function (\Slim\Container $di, $settings) {
     };
 
     // Middleware
+    $di[\AzuraCast\Middleware\ApiCall::class] = function($di) {
+        return new \AzuraCast\Middleware\ApiCall(
+            $di[\App\Session::class]
+        );
+    };
+
     $di[\AzuraCast\Middleware\EnforceSecurity::class] = function($di) {
         return new \AzuraCast\Middleware\EnforceSecurity(
             $di[\Doctrine\ORM\EntityManager::class],
@@ -353,15 +359,13 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\AzuraCast\Middleware\Permissions::class] = function($di) {
-
+        return new \AzuraCast\Middleware\Permissions(
+            $di[\AzuraCast\Acl\StationAcl::class]
+        );
     };
 
     $di[\AzuraCast\Middleware\RemoveSlashes::class] = function($di) {
         return new \AzuraCast\Middleware\RemoveSlashes();
-    };
-
-    $di[\AzuraCast\Middleware\RequireLogin::class] = function($di) {
-
     };
 
     // Set up application and routing.
@@ -378,12 +382,8 @@ return function (\Slim\Container $di, $settings) {
         // Get the current user entity object and assign it into the request if it exists.
         $app->add(\AzuraCast\Middleware\GetCurrentUser::class);
 
-        foreach ($di['modules'] as $module) {
-            $module_routes = APP_INCLUDE_MODULES . '/' . $module . '/routes.php';
-            if (file_exists($module_routes)) {
-                call_user_func(include($module_routes), $app);
-            }
-        }
+        // Load routes
+        call_user_func(include(__DIR__.'/routes.php'), $app);
 
         return $app;
     };

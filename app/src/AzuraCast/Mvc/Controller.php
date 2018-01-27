@@ -1,35 +1,30 @@
 <?php
 namespace AzuraCast\Mvc;
 
+use App\Config;
+use App\Mvc\View;
+use App\Url;
 use AzuraCast\Acl\StationAcl;
-use Interop\Container\ContainerInterface;
 
-class Controller extends \App\Mvc\Controller
+use Doctrine\ORM\EntityManager;
+use Slim\Container;
+
+abstract class Controller extends \App\Mvc\Controller
 {
     /** @var StationAcl */
     protected $acl;
 
-    public function init()
+    public function __construct(Container $di)
     {
-        if ($this->em->getRepository('Entity\Settings')->getSetting('setup_complete', 0) == 0) {
-            return $this->redirectToRoute(['module' => 'frontend', 'controller' => 'setup']);
-        }
-
-        return parent::init();
+        $this->di = $di;
+        $this->config = $di[Config::class];
+        $this->view = $di[View::class];
+        $this->url = $di[Url::class];
+        $this->em = $di[EntityManager::class];
+        $this->acl = $di[StationAcl::class];
     }
 
-    /**
-     * Overridable permissions check. Return false to generate "access denied" message.
-     * @return bool
-     */
-    protected function permissions()
-    {
-        /** @var \App\Auth $auth */
-        $auth = $this->di[\App\Auth::class];
-
-        return $auth->isLoggedIn();
-    }
-
+    // TODO: Reimplement as middleware
     protected function preDispatch()
     {
         // Default to forbidding iframes

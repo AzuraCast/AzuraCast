@@ -1,11 +1,6 @@
 <?php
 namespace AzuraCast\Middleware;
 
-use App\Auth;
-use AzuraCast\Assets;
-use AzuraCast\Customization;
-use Doctrine\ORM\EntityManager;
-use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -29,21 +24,19 @@ class Permissions
      * @param Response $response
      * @param callable $next
      * @return Response
-     * @throws \App\Exception
+     * @throws \App\Exception\PermissionDenied
      */
-    public function __invoke(Request $request, Response $response, $next, $permissions): Response
+    public function __invoke(Request $request, Response $response, $next, $action, $station_param = null): Response
     {
+        if (!empty($station_param)) {
+            $station_id = $request->getParam($station_param);
+        } else {
+            $station_id = null;
+        }
 
-
-        $user = ($this->auth->isLoggedIn()) ? $this->auth->getLoggedInUser() : null;
-
-        // Initialize customization (timezones, locales, etc) based on the current logged in user.
-        $this->customization->setUser($user);
-        $this->customization->init();
-
-        $request = $request
-            ->withAttribute('user', $user)
-            ->withAttribute('is_logged_in', ($user instanceof \Entity\User));
+        if (!$this->acl->isAllowed($action, $station_id)) {
+            throw new \App\Exception\PermissionDenied;
+        }
 
         return $next($request, $response);
     }

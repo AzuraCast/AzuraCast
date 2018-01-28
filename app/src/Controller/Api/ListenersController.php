@@ -3,6 +3,8 @@ namespace Controller\Api;
 
 use App\Utilities;
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class ListenersController extends BaseController
 {
@@ -26,7 +28,7 @@ class ListenersController extends BaseController
      *   },
      * )
      */
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         try {
             $station = $this->getStation();

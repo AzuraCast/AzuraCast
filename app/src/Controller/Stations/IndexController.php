@@ -2,10 +2,12 @@
 namespace Controller\Stations;
 
 use Entity\Song;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class IndexController extends BaseController
 {
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         /**
          * Statistics

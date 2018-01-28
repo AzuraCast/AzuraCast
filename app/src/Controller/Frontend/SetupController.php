@@ -2,6 +2,8 @@
 namespace Controller\Frontend;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class SetupController extends BaseController
 {
@@ -13,7 +15,7 @@ class SetupController extends BaseController
     /**
      * Setup Routing Controls
      */
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         $current_step = $this->_getSetupStep();
 
@@ -23,7 +25,7 @@ class SetupController extends BaseController
     /**
      * Placeholder function for "setup complete" redirection.
      */
-    public function completeAction()
+    public function completeAction(Request $request, Response $response): Response
     {
         $this->alert('<b>' . _('Setup has already been completed!') . '</b>', 'red');
 
@@ -34,7 +36,7 @@ class SetupController extends BaseController
      * Setup Step 1:
      * Create Super Administrator Account
      */
-    public function registerAction()
+    public function registerAction(Request $request, Response $response): Response
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
@@ -84,7 +86,7 @@ class SetupController extends BaseController
      * Setup Step 2:
      * Create Station and Parse Metadata
      */
-    public function stationAction()
+    public function stationAction(Request $request, Response $response): Response
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
@@ -116,7 +118,7 @@ class SetupController extends BaseController
      * Setup Step 3:
      * Set site settings.
      */
-    public function settingsAction()
+    public function settingsAction(Request $request, Response $response): Response
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();

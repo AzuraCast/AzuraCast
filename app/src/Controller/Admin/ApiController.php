@@ -2,6 +2,8 @@
 namespace Controller\Admin;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class ApiController extends BaseController
 {
@@ -20,12 +22,12 @@ class ApiController extends BaseController
         return $this->acl->isAllowed('administer api keys');
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         $this->view->records = $this->record_repo->fetchArray();
     }
 
-    public function editAction()
+    public function editAction(Request $request, Response $response): Response
     {
         $form = new \App\Form($this->config->forms->api_key);
 
@@ -57,7 +59,7 @@ class ApiController extends BaseController
         return $this->renderForm($form, 'edit', _('Edit Record'));
     }
 
-    public function deleteAction()
+    public function deleteAction(Request $request, Response $response): Response
     {
         $record = $this->record_repo->find($this->getParam('id'));
 

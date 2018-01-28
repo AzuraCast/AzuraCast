@@ -3,6 +3,8 @@ namespace Controller\Admin;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class UsersController extends BaseController
 {
@@ -21,7 +23,7 @@ class UsersController extends BaseController
         return $this->acl->isAllowed('administer users');
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         if ($_GET) {
             $this->redirectFromHere($_GET);
@@ -43,7 +45,7 @@ class UsersController extends BaseController
         $this->view->pager = new \App\Paginator\Doctrine($query, $this->getParam('page', 1), 50);
     }
 
-    public function editAction()
+    public function editAction(Request $request, Response $response): Response
     {
         $form_config = $this->config->forms->user->form->toArray();
         $form = new \App\Form($form_config);
@@ -82,7 +84,7 @@ class UsersController extends BaseController
         return $this->renderForm($form, 'edit', _('Edit Record'));
     }
 
-    public function deleteAction()
+    public function deleteAction(Request $request, Response $response): Response
     {
         $id = (int)$this->getParam('id');
         $user = $this->record_repo->find($id);
@@ -98,7 +100,7 @@ class UsersController extends BaseController
         return $this->redirectFromHere(['action' => 'index', 'id' => null]);
     }
 
-    public function impersonateAction()
+    public function impersonateAction(Request $request, Response $response): Response
     {
         $id = (int)$this->getParam('id');
         $user = $this->record_repo->find($id);

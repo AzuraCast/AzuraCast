@@ -6,11 +6,12 @@ return function(\Slim\App $app) {
 
     $app->group('/admin', function () {
 
-        $this->get('', Controller\Admin\IndexController::class.':index')
+        $this->get('', Controller\Admin\IndexController::class.':indexAction')
             ->setName('admin:index:index');
 
-        $this->get('/sync/{type}', Controller\Admin\IndexController::class.':sync')
-            ->setName('admin:index:sync');
+        $this->get('/sync/{type}', Controller\Admin\IndexController::class.':syncAction')
+            ->setName('admin:index:sync')
+            ->add([Middleware\Permissions::class, 'administer all']);
 
         $this->group('/api', function () {
 
@@ -79,7 +80,11 @@ return function(\Slim\App $app) {
 
         });
 
-    });
+        // END /admin GROUP
+
+    })->add(Middleware\RequireLogin::class)
+        ->add([Middleware\Permissions::class, 'view administration'])
+        ->add(Middleware\Module\Admin::class);
 
     $app->group('/api', function () {
 
@@ -137,9 +142,12 @@ return function(\Slim\App $app) {
 
         });
 
-    })->add(Middleware\ApiCall::class);
+        // END /api GROUP
+
+    })->add(Middleware\Module\Api::class);
 
     $app->group('', function() {
+
         $this->get('/', Controller\Frontend\IndexController::class.':indexAction')
             ->setName('home');
 
@@ -160,6 +168,7 @@ return function(\Slim\App $app) {
             $this->any('/test', 'frontend:util:test')
                 ->setName('util:test');
         }
+
     })->add(Middleware\RequireLogin::class);
 
     $app->map(['GET', 'POST'], '/login', 'frontend:account:login')
@@ -338,6 +347,8 @@ return function(\Slim\App $app) {
                 ->setName('stations:util:restart');
 
         });
+
+        // END /stations GROUP
 
     })->add(Middleware\RequireLogin::class);
 

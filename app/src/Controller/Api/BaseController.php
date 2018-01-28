@@ -2,6 +2,8 @@
 namespace Controller\Api;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class BaseController extends \AzuraCast\Mvc\Controller
 {

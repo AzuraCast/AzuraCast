@@ -2,6 +2,8 @@
 namespace Controller\Admin;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class StationsController extends BaseController
 {
@@ -20,13 +22,13 @@ class StationsController extends BaseController
         return $this->acl->isAllowed('administer stations');
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         $this->view->stations = $this->em->createQuery('SELECT s FROM Entity\Station s ORDER BY s.name ASC')
             ->getArrayResult();
     }
 
-    public function editAction()
+    public function editAction(Request $request, Response $response): Response
     {
         $form = new \App\Form($this->config->forms->station);
 
@@ -70,7 +72,7 @@ class StationsController extends BaseController
         $this->view->form = $form;
     }
 
-    public function cloneAction()
+    public function cloneAction(Request $request, Response $response): Response
     {
         $id = (int)$this->getParam('id');
         $record = $this->record_repo->find($id);
@@ -161,7 +163,7 @@ class StationsController extends BaseController
         return $this->renderForm($form, 'edit', sprintf(_('Clone Station: %s'), $record->getName()));
     }
 
-    public function deleteAction()
+    public function deleteAction(Request $request, Response $response): Response
     {
         $record = $this->record_repo->find($this->getParam('id'));
 

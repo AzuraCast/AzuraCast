@@ -145,10 +145,6 @@ return function (\Slim\Container $di, $settings) {
         return new \AzuraCast\Acl\StationAcl($di[\Doctrine\ORM\EntityManager::class], $di[\App\Auth::class]);
     };
 
-    $di[\App\Acl::class] = function($di) {
-        return $di[\AzuraCast\Acl\StationAcl::class];
-    };
-
     // Caching
     $di[\Redis::class] = $di->factory(function ($di) {
         $redis_host = (APP_INSIDE_DOCKER) ? 'redis' : 'localhost';
@@ -269,7 +265,7 @@ return function (\Slim\Container $di, $settings) {
     };
 
     // Main view/template renderer.
-    $di[\App\Mvc\View::class] = $di->factory(function (\Slim\Container $di) {
+    $di[\App\Mvc\View::class] = function (\Slim\Container $di) {
         $view = new \App\Mvc\View(APP_INCLUDE_BASE . '/templates');
         $view->setFileExtension('phtml');
 
@@ -313,7 +309,7 @@ return function (\Slim\Container $di, $settings) {
         ]);
 
         return $view;
-    });
+    };
 
     // Asset management
     $di[\AzuraCast\Assets::class] = function ($di) {
@@ -338,12 +334,6 @@ return function (\Slim\Container $di, $settings) {
     };
 
     // Middleware
-    $di[\AzuraCast\Middleware\ApiCall::class] = function($di) {
-        return new \AzuraCast\Middleware\ApiCall(
-            $di[\App\Session::class]
-        );
-    };
-
     $di[\AzuraCast\Middleware\EnforceSecurity::class] = function($di) {
         return new \AzuraCast\Middleware\EnforceSecurity(
             $di[\Doctrine\ORM\EntityManager::class],
@@ -367,6 +357,27 @@ return function (\Slim\Container $di, $settings) {
     $di[\AzuraCast\Middleware\RemoveSlashes::class] = function($di) {
         return new \AzuraCast\Middleware\RemoveSlashes();
     };
+
+    // Module-specific middleware
+    $di[\AzuraCast\Middleware\Module\Admin::class] = function($di) {
+        $config = $di[\App\Config::class];
+        $dashboard_config = $config->admin->dashboard->toArray();
+
+        return new \AzuraCast\Middleware\Module\Admin(
+            $di[\App\Mvc\View::class],
+            $di[\AzuraCast\Acl\StationAcl::class],
+            $dashboard_config
+        );
+    };
+
+    $di[\AzuraCast\Middleware\Module\Api::class] = function($di) {
+        return new \AzuraCast\Middleware\Module\Api(
+            $di[\App\Session::class]
+        );
+    };
+
+
+
 
     // Set up application and routing.
     $di['app'] = function ($di) {

@@ -2,6 +2,8 @@
 namespace Controller\Stations;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class RequestsController extends BaseController
 {
@@ -10,7 +12,7 @@ class RequestsController extends BaseController
         return $this->acl->isAllowed('view station reports', $this->station->getId());
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         $this->view->requests = $this->em->createQuery('SELECT sr, sm, s FROM Entity\StationRequest sr
             JOIN sr.track sm
@@ -21,7 +23,7 @@ class RequestsController extends BaseController
             ->getArrayResult();
     }
 
-    public function deleteAction()
+    public function deleteAction(Request $request, Response $response): Response
     {
         $id = (int)$this->getParam('request_id');
 

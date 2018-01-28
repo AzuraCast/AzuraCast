@@ -80,7 +80,7 @@ class FilesController extends BaseController
         return intval($ini_v) * ($s[strtolower(substr($ini_v, -1))] ?: 1);
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         $this->view->playlists = $this->em->createQuery('SELECT sp.id, sp.name FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id ORDER BY sp.name ASC')
             ->setParameter('station_id', $this->station->getId())
@@ -98,7 +98,7 @@ class FilesController extends BaseController
         $this->view->space_percent = round(($space_used / $space_total) * 100);
     }
 
-    public function editAction()
+    public function editAction(Request $request, Response $response): Response
     {
         $media_id = (int)$this->getParam('id');
         $media = $this->em->getRepository(StationMedia::class)->findOneBy([
@@ -160,7 +160,7 @@ class FilesController extends BaseController
         return $this->renderForm($form, 'edit', _('Edit Media Metadata'));
     }
 
-    public function renameAction()
+    public function renameAction(Request $request, Response $response): Response
     {
         $path = base64_decode($this->getParam('path'));
         list($path, $path_full) = $this->_filterPath($path);
@@ -227,7 +227,7 @@ class FilesController extends BaseController
         return [$path, $full_path];
     }
 
-    public function listAction()
+    public function listAction(Request $request, Response $response): Response
     {
         $result = [];
 
@@ -378,7 +378,7 @@ class FilesController extends BaseController
         ]);
     }
 
-    public function batchAction()
+    public function batchAction(Request $request, Response $response): Response
     {
         $files_raw = explode('|', $_POST['files']);
         $files = [];
@@ -531,7 +531,7 @@ class FilesController extends BaseController
         }
     }
 
-    public function mkdirAction()
+    public function mkdirAction(Request $request, Response $response): Response
     {
         // don't allow actions outside root. we also filter out slashes to catch args like './../outside'
         $dir = $_POST['name'];
@@ -545,7 +545,7 @@ class FilesController extends BaseController
         return $this->renderJson(['success' => true]);
     }
 
-    public function uploadAction()
+    public function uploadAction(Request $request, Response $response): Response
     {
         $this->doNotRender();
 
@@ -581,7 +581,7 @@ class FilesController extends BaseController
         }
     }
 
-    public function downloadAction()
+    public function downloadAction(Request $request, Response $response): Response
     {
         $this->doNotRender();
         set_time_limit(600);

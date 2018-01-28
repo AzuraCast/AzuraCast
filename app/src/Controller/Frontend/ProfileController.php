@@ -2,6 +2,8 @@
 namespace Controller\Frontend;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class ProfileController extends BaseController
 {
@@ -15,7 +17,7 @@ class ProfileController extends BaseController
         $this->user_repo = $this->em->getRepository(Entity\User::class);
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         /** @var Entity\User $user */
         $user = $this->di['user'];
@@ -30,7 +32,7 @@ class ProfileController extends BaseController
         $this->view->form = $form;
     }
 
-    public function editAction()
+    public function editAction(Request $request, Response $response): Response
     {
         $this->acl->checkPermission('is logged in');
 

@@ -3,6 +3,8 @@ namespace Controller\Admin;
 
 use Entity\Repository;
 use Entity\Settings;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class BrandingController extends BaseController
 {
@@ -11,7 +13,7 @@ class BrandingController extends BaseController
         return $this->acl->isAllowed('administer settings');
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         /** @var Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Settings::class);

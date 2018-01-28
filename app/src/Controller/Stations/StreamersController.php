@@ -2,6 +2,8 @@
 namespace Controller\Stations;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class StreamersController extends BaseController
 {
@@ -24,7 +26,7 @@ class StreamersController extends BaseController
         return $this->acl->isAllowed('manage station streamers', $this->station->getId());
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         if (!$this->station->getEnableStreamers()) {
             if ($this->hasParam('enable')) {
@@ -47,7 +49,7 @@ class StreamersController extends BaseController
         $this->view->streamers = $this->station->getStreamers();
     }
 
-    public function editAction()
+    public function editAction(Request $request, Response $response): Response
     {
         $form_config = $this->config->forms->streamer;
         $form = new \App\Form($form_config);
@@ -86,7 +88,7 @@ class StreamersController extends BaseController
         return $this->renderForm($form, 'edit', $title);
     }
 
-    public function deleteAction()
+    public function deleteAction(Request $request, Response $response): Response
     {
         $id = (int)$this->getParam('id');
 

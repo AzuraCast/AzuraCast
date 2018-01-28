@@ -3,6 +3,8 @@ namespace Controller\Stations;
 
 use Entity;
 use Entity\StationMount;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class MountsController extends BaseController
 {
@@ -20,13 +22,13 @@ class MountsController extends BaseController
         return $this->acl->isAllowed('manage station mounts', $this->station->getId());
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         $this->view->frontend_type = $this->station->getFrontendType();
         $this->view->mounts = $this->station->getMounts();
     }
 
-    public function migrateAction()
+    public function migrateAction(Request $request, Response $response): Response
     {
         if ($this->station->getFrontendType() == 'remote') {
 
@@ -46,7 +48,7 @@ class MountsController extends BaseController
         return $this->redirectToName('stations:mounts:index', ['station' => $this->station->getId()]);
     }
 
-    public function editAction()
+    public function editAction(Request $request, Response $response): Response
     {
         /** @var Entity\Repository\StationMountRepository $mount_repo */
         $mount_repo = $this->em->getRepository(Entity\StationMount::class);
@@ -105,7 +107,7 @@ class MountsController extends BaseController
         return $this->renderForm($form, 'edit', $title);
     }
 
-    public function deleteAction()
+    public function deleteAction(Request $request, Response $response): Response
     {
         $id = (int)$this->getParam('id');
 

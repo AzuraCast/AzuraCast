@@ -2,6 +2,8 @@
 namespace Controller\Api;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class StationsController extends BaseController
 {
@@ -35,7 +37,7 @@ class StationsController extends BaseController
      *   )
      * )
      */
-    public function listAction()
+    public function listAction(Request $request, Response $response): Response
     {
         $stations_raw = $this->em->getRepository(Entity\Station::class)->findAll();
 
@@ -67,7 +69,7 @@ class StationsController extends BaseController
      *   @SWG\Response(response=404, description="Station not found")
      * )
      */
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         try {
             $station = $this->getStation();

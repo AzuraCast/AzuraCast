@@ -2,6 +2,8 @@
 namespace Controller\Api;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class InternalController extends BaseController
 {
@@ -31,7 +33,7 @@ class InternalController extends BaseController
         $this->station = $station;
     }
 
-    public function authAction()
+    public function authAction(Request $request, Response $response): Response
     {
         $user = $this->getParam('dj_user');
         $pass = $this->getParam('dj_password');
@@ -56,7 +58,7 @@ class InternalController extends BaseController
         }
     }
 
-    public function nextsongAction()
+    public function nextsongAction(Request $request, Response $response): Response
     {
         $backend_adapter = $this->station->getBackendAdapter($this->di);
 
@@ -81,7 +83,7 @@ class InternalController extends BaseController
         }
     }
 
-    public function notifyAction()
+    public function notifyAction(Request $request, Response $response): Response
     {
         $payload = $this->request->getBody()->getContents();
 

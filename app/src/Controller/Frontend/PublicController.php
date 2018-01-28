@@ -2,6 +2,8 @@
 namespace Controller\Frontend;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class PublicController extends BaseController
 {
@@ -23,16 +25,16 @@ class PublicController extends BaseController
         $this->view->stream_url = $frontend->getStreamUrl();
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {}
 
-    public function embedAction()
+    public function embedAction(Request $request, Response $response): Response
     {}
 
-    public function embedrequestsAction()
+    public function embedrequestsAction(Request $request, Response $response): Response
     {}
 
-    public function playlistAction()
+    public function playlistAction(Request $request, Response $response): Response
     {
         $this->doNotRender();
 

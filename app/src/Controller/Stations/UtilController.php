@@ -1,12 +1,14 @@
 <?php
 namespace Controller\Stations;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class UtilController extends BaseController
 {
     /**
      * Restart all services associated with the radio.
      */
-    public function restartAction()
+    public function restartAction(Request $request, Response $response): Response
     {
         $this->acl->checkPermission('manage station broadcasting', $this->station->getId());
 

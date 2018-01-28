@@ -1,33 +1,39 @@
 <?php
 namespace Controller\Admin;
 
+use Slim\Http\Request;
+use Slim\Http\Response;
+
 class IndexController extends BaseController
 {
     /**
      * Main display.
      */
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
+        // Remove the sidebar on the homepage.
+        $this->view->sidebar = null;
+
         // Synchronization statuses
         if ($this->acl->isAllowed('administer all')) {
             /** @var \AzuraCast\Sync $sync */
             $sync = $this->di[\AzuraCast\Sync::class];
             $this->view->sync_times = $sync->getSyncTimes();
         }
+
+        return $this->render($response, 'admin/index/index');
     }
 
-    public function syncAction()
+    public function syncAction(Request $request, Response $response, $args): Response
     {
         $this->acl->checkPermission('administer all');
-
-        $this->doNotRender();
 
         ob_start();
 
         \App\Debug::setEchoMode(true);
         \App\Debug::startTimer('sync_task');
 
-        $type = $this->getParam('type', 'nowplaying');
+        $type = $args['type'];
 
         /** @var \AzuraCast\Sync $sync */
         $sync = $this->di[\AzuraCast\Sync::class];
@@ -47,7 +53,7 @@ class IndexController extends BaseController
 
             case "nowplaying":
             default:
-                $segment = $this->getParam('segment', 1);
+                $segment = $request->getParam('segment', 1);
                 define('NOWPLAYING_SEGMENT', $segment);
 
                 $sync->syncNowplaying(true);
@@ -59,9 +65,6 @@ class IndexController extends BaseController
 
         $result = ob_get_clean();
 
-        $body = $this->response->getBody();
-        $body->write($result);
-
-        return $this->response->withBody($body);
+        return $response->write($result);
     }
 }

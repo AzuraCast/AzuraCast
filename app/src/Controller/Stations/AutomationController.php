@@ -1,5 +1,7 @@
 <?php
 namespace Controller\Stations;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class AutomationController extends BaseController
 {
@@ -8,7 +10,7 @@ class AutomationController extends BaseController
         return $this->acl->isAllowed('manage station automation', $this->station->getId());
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         $automation_settings = (array)$this->station->getAutomationSettings();
 
@@ -31,7 +33,7 @@ class AutomationController extends BaseController
         $this->view->form = $form;
     }
 
-    public function runAction()
+    public function runAction(Request $request, Response $response): Response
     {
         try {
             $automation = new \AzuraCast\Sync\RadioAutomation($this->di);

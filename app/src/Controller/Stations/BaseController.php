@@ -4,6 +4,8 @@ namespace Controller\Stations;
 use AzuraCast\Radio\Backend\BackendAbstract;
 use AzuraCast\Radio\Frontend\FrontendAbstract;
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class BaseController extends \AzuraCast\Mvc\Controller
 {

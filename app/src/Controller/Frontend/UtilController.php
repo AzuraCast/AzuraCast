@@ -2,6 +2,8 @@
 namespace Controller\Frontend;
 
 use Doctrine\ORM\EntityManager;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class UtilController extends BaseController
 {
@@ -10,7 +12,7 @@ class UtilController extends BaseController
         return true;
     }
 
-    public function testAction()
+    public function testAction(Request $request, Response $response): Response
     {
         $this->doNotRender();
 

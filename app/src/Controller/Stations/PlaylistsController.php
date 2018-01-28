@@ -3,6 +3,8 @@ namespace Controller\Stations;
 
 use Entity;
 use Slim\Http\UploadedFile;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class PlaylistsController extends BaseController
 {
@@ -20,7 +22,7 @@ class PlaylistsController extends BaseController
         return $this->acl->isAllowed('manage station media', $this->station->getId());
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         /** @var Entity\StationPlaylist[] $all_playlists */
         $all_playlists = $this->station->getPlaylists();
@@ -115,7 +117,7 @@ class PlaylistsController extends BaseController
         $this->view->schedule = $schedule;
     }
 
-    public function exportAction()
+    public function exportAction(Request $request, Response $response): Response
     {
         $id = (int)$this->getParam('id');
 
@@ -151,7 +153,7 @@ class PlaylistsController extends BaseController
             ->withBody($body);
     }
 
-    public function editAction()
+    public function editAction(Request $request, Response $response): Response
     {
         /** @var Entity\Repository\BaseRepository $playlist_repo */
         $playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
@@ -294,7 +296,7 @@ class PlaylistsController extends BaseController
         return true;
     }
 
-    public function deleteAction()
+    public function deleteAction(Request $request, Response $response): Response
     {
         $id = (int)$this->getParam('id');
 

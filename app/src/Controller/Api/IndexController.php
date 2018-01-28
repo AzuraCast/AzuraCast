@@ -2,13 +2,15 @@
 namespace Controller\Api;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class IndexController extends BaseController
 {
     /**
      * Public index for API.
      */
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         return $this->redirect($this->url->content('api/index.html'));
     }
@@ -25,7 +27,7 @@ class IndexController extends BaseController
      *   )
      * )
      */
-    public function statusAction()
+    public function statusAction(Request $request, Response $response): Response
     {
         return $this->returnSuccess(new Entity\Api\Status);
     }
@@ -42,7 +44,7 @@ class IndexController extends BaseController
      *   )
      * )
      */
-    public function timeAction()
+    public function timeAction(Request $request, Response $response): Response
     {
         $this->setCacheLifetime(0);
 

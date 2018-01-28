@@ -2,10 +2,12 @@
 namespace Controller\Stations;
 
 use Entity\Station;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class ProfileController extends BaseController
 {
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         // Backend controller.
         $this->view->backend_type = $this->station->getBackendType();
@@ -29,7 +31,7 @@ class ProfileController extends BaseController
             ->getSingleScalarResult();
     }
 
-    public function editAction()
+    public function editAction(Request $request, Response $response): Response
     {
         $this->acl->checkPermission('manage station profile', $this->station->getId());
 
@@ -79,7 +81,7 @@ class ProfileController extends BaseController
         $this->view->form = $form;
     }
 
-    public function backendAction()
+    public function backendAction(Request $request, Response $response): Response
     {
         $this->acl->checkPermission('manage station broadcasting', $this->station->getId());
 
@@ -118,7 +120,7 @@ class ProfileController extends BaseController
         return $this->redirectFromHere(['action' => 'index']);
     }
 
-    public function frontendAction()
+    public function frontendAction(Request $request, Response $response): Response
     {
         $this->acl->checkPermission('manage station broadcasting', $this->station->getId());
 

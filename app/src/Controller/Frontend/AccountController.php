@@ -2,6 +2,8 @@
 namespace Controller\Frontend;
 
 use Entity\Settings;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class AccountController extends BaseController
 {
@@ -26,7 +28,7 @@ class AccountController extends BaseController
         $this->auth = $this->di[\App\Auth::class];
     }
 
-    public function loginAction()
+    public function loginAction(Request $request, Response $response): Response
     {
         if ($this->auth->isLoggedIn()) {
             return $this->redirectHome();
@@ -79,7 +81,7 @@ class AccountController extends BaseController
         }
     }
 
-    public function logoutAction()
+    public function logoutAction(Request $request, Response $response): Response
     {
         $this->auth->logout();
 
@@ -90,7 +92,7 @@ class AccountController extends BaseController
         return $this->redirectToName('account:login');
     }
 
-    public function endmasqueradeAction()
+    public function endmasqueradeAction(Request $request, Response $response): Response
     {
         $this->doNotRender();
 

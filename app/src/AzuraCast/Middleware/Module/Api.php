@@ -1,5 +1,5 @@
 <?php
-namespace AzuraCast\Middleware;
+namespace AzuraCast\Middleware\Module;
 
 use App\Session;
 use Slim\Http\Request;
@@ -8,7 +8,7 @@ use Slim\Http\Response;
 /**
  * Handle API calls and wrap exceptions in JSON formatting.
  */
-class ApiCall
+class Api
 {
     /** @var Session */
     protected $session;

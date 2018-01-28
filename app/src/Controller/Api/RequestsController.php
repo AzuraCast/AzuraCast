@@ -3,6 +3,8 @@ namespace Controller\Api;
 
 use App\Utilities;
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class RequestsController extends BaseController
 {
@@ -38,7 +40,7 @@ class RequestsController extends BaseController
      *   @SWG\Response(response=403, description="Station does not support requests")
      * )
      */
-    public function listAction()
+    public function listAction(Request $request, Response $response): Response
     {
         try {
             $station = $this->getStation();
@@ -158,7 +160,7 @@ class RequestsController extends BaseController
      *   @SWG\Response(response=403, description="Station does not support requests")
      * )
      */
-    public function submitAction()
+    public function submitAction(Request $request, Response $response): Response
     {
         try {
             $station = $this->getStation();

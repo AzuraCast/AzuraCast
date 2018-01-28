@@ -2,6 +2,8 @@
 namespace Controller\Admin;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class PermissionsController extends BaseController
 {
@@ -10,7 +12,7 @@ class PermissionsController extends BaseController
         return $this->acl->isAllowed('administer permissions');
     }
 
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         $all_roles = $this->em->createQuery('SELECT r, rp, s FROM Entity\Role r 
             LEFT JOIN r.users u LEFT JOIN r.permissions rp LEFT JOIN rp.station s 
@@ -37,7 +39,7 @@ class PermissionsController extends BaseController
         $this->view->roles = $roles;
     }
 
-    public function membersAction()
+    public function membersAction(Request $request, Response $response): Response
     {
         $roles = $this->em->createQuery('SELECT r, a, u FROM Entity\Role r LEFT JOIN r.actions a LEFT JOIN r.users u')
             ->getArrayResult();
@@ -45,7 +47,7 @@ class PermissionsController extends BaseController
         $this->view->roles = $roles;
     }
 
-    public function editAction()
+    public function editAction(Request $request, Response $response): Response
     {
         /** @var Entity\Repository\BaseRepository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
@@ -88,7 +90,7 @@ class PermissionsController extends BaseController
         return $this->renderForm($form, 'edit', _('Edit Record'));
     }
 
-    public function deleteAction()
+    public function deleteAction(Request $request, Response $response): Response
     {
         /** @var Entity\Repository\BaseRepository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);

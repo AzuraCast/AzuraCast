@@ -2,6 +2,8 @@
 namespace Controller\Stations;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class ReportsController extends BaseController
 {
@@ -10,7 +12,7 @@ class ReportsController extends BaseController
         return $this->acl->isAllowed('view station reports', $this->station->getId());
     }
 
-    public function timelineAction()
+    public function timelineAction(Request $request, Response $response): Response
     {
         $songs_played_raw = $this->_getEligibleHistory();
 
@@ -71,7 +73,7 @@ class ReportsController extends BaseController
         }
     }
 
-    public function performanceAction()
+    public function performanceAction(Request $request, Response $response): Response
     {
         $automation_config = (array)$this->station->getAutomationSettings();
 
@@ -152,7 +154,7 @@ class ReportsController extends BaseController
         return true;
     }
 
-    public function duplicatesAction()
+    public function duplicatesAction(Request $request, Response $response): Response
     {
         $media_raw = $this->em->createQuery('SELECT sm, s, sp FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id ORDER BY sm.mtime ASC')
             ->setParameter('station_id', $this->station->getId())
@@ -194,7 +196,7 @@ class ReportsController extends BaseController
         $this->view->dupes = $dupes;
     }
 
-    public function deletedupeAction()
+    public function deletedupeAction(Request $request, Response $response): Response
     {
         $media_id = (int)$this->getParam('media_id');
 
@@ -216,7 +218,7 @@ class ReportsController extends BaseController
         return $this->redirectFromHere(['action' => 'duplicates', 'media_id' => null]);
     }
 
-    public function listenersAction()
+    public function listenersAction(Request $request, Response $response): Response
     {
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);

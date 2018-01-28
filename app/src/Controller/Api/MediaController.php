@@ -2,6 +2,8 @@
 namespace Controller\Api;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class MediaController extends BaseController
 {
@@ -20,7 +22,7 @@ class MediaController extends BaseController
      *   )
      * )
      */
-    public function artAction()
+    public function artAction(Request $request, Response $response): Response
     {
         try {
             $station = $this->getStation();

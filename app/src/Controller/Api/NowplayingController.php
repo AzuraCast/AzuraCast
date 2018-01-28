@@ -2,6 +2,8 @@
 namespace Controller\Api;
 
 use Entity;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class NowplayingController extends BaseController
 {
@@ -34,7 +36,7 @@ class NowplayingController extends BaseController
      *   @SWG\Response(response=404, description="Station not found")
      * )
      */
-    public function indexAction()
+    public function indexAction(Request $request, Response $response): Response
     {
         $this->response = $this->response->withHeader('Cache-Control', 'public, max-age=15')
             ->withHeader('X-Accel-Expires', 15); // CloudFlare caching

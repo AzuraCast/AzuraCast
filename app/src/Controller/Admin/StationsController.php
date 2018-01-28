@@ -2,6 +2,7 @@
 namespace Controller\Admin;
 
 use Entity;
+use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -10,30 +11,27 @@ class StationsController extends BaseController
     /** @var Entity\Repository\StationRepository */
     protected $record_repo;
 
-    public function preDispatch()
+    public function __construct(Container $di)
     {
-        parent::preDispatch();
+        parent::__construct($di);
 
         $this->record_repo = $this->em->getRepository(Entity\Station::class);
-    }
-
-    public function permissions()
-    {
-        return $this->acl->isAllowed('administer stations');
     }
 
     public function indexAction(Request $request, Response $response): Response
     {
         $this->view->stations = $this->em->createQuery('SELECT s FROM Entity\Station s ORDER BY s.name ASC')
             ->getArrayResult();
+
+        return $this->render($response, 'admin/stations/index');
     }
 
-    public function editAction(Request $request, Response $response): Response
+    public function editAction(Request $request, Response $response, $args): Response
     {
         $form = new \App\Form($this->config->forms->station);
 
-        if ($this->hasParam('id')) {
-            $id = (int)$this->getParam('id');
+        if (!empty($args['id'])) {
+            $id = (int)$args['id'];
             $record = $this->record_repo->find($id);
             $form->setDefaults($this->record_repo->toArray($record, false, true));
         } else {
@@ -66,15 +64,16 @@ class StationsController extends BaseController
 
             $this->alert(_('Changes saved.'), 'green');
 
-            return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+            return $this->redirectToName($response, 'admin:stations:index');
         }
 
         $this->view->form = $form;
+        return $this->render($response, 'admin/stations/edit');
     }
 
-    public function cloneAction(Request $request, Response $response): Response
+    public function cloneAction(Request $request, Response $response, $args): Response
     {
-        $id = (int)$this->getParam('id');
+        $id = (int)$args['id'];
         $record = $this->record_repo->find($id);
 
         if (!($record instanceof Entity\Station)) {
@@ -157,15 +156,15 @@ class StationsController extends BaseController
 
             $this->alert(_('Changes saved.'), 'green');
 
-            return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+            return $this->redirectToName($response, 'admin:stations:index');
         }
 
-        return $this->renderForm($form, 'edit', sprintf(_('Clone Station: %s'), $record->getName()));
+        return $this->renderForm($response, $form, 'edit', sprintf(_('Clone Station: %s'), $record->getName()));
     }
 
-    public function deleteAction(Request $request, Response $response): Response
+    public function deleteAction(Request $request, Response $response, $args): Response
     {
-        $record = $this->record_repo->find($this->getParam('id'));
+        $record = $this->record_repo->find($args['id']);
 
         if ($record instanceof Entity\Station) {
             $record->removeConfiguration($this->di);
@@ -176,6 +175,6 @@ class StationsController extends BaseController
 
         $this->alert(_('Record deleted.'), 'green');
 
-        return $this->redirectFromHere(['action' => 'index', 'id' => null, 'csrf' => null]);
+        return $this->redirectToName($response, 'admin:stations:index');
     }
 }

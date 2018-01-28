@@ -2,6 +2,7 @@
 namespace Controller\Admin;
 
 use Entity;
+use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -10,29 +11,26 @@ class ApiController extends BaseController
     /** @var Entity\Repository\BaseRepository */
     protected $record_repo;
 
-    public function preDispatch()
+    public function __construct(Container $di)
     {
-        parent::preDispatch();
+        parent::__construct($di);
 
         $this->record_repo = $this->em->getRepository(Entity\ApiKey::class);
-    }
-
-    public function permissions()
-    {
-        return $this->acl->isAllowed('administer api keys');
     }
 
     public function indexAction(Request $request, Response $response): Response
     {
         $this->view->records = $this->record_repo->fetchArray();
+
+        return $this->render($response, 'admin/api/index');
     }
 
-    public function editAction(Request $request, Response $response): Response
+    public function editAction(Request $request, Response $response, $args): Response
     {
         $form = new \App\Form($this->config->forms->api_key);
 
-        if ($this->hasParam('id')) {
-            $id = $this->getParam('id');
+        if (!empty($args['id'])) {
+            $id = $args['id'];
             $record = $this->record_repo->find($id);
             $form->setDefaults($this->record_repo->toArray($record, true, true));
         } else {
@@ -53,15 +51,15 @@ class ApiController extends BaseController
 
             $this->alert(_('Changes saved.'), 'green');
 
-            return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+            return $this->redirectToName($response, 'admin:api:index');
         }
 
-        return $this->renderForm($form, 'edit', _('Edit Record'));
+        return $this->renderForm($response, $form, 'edit', _('Edit Record'));
     }
 
-    public function deleteAction(Request $request, Response $response): Response
+    public function deleteAction(Request $request, Response $response, $args): Response
     {
-        $record = $this->record_repo->find($this->getParam('id'));
+        $record = $this->record_repo->find($args['id']);
 
         if ($record instanceof Entity\ApiKey) {
             $this->em->remove($record);
@@ -71,6 +69,6 @@ class ApiController extends BaseController
 
         $this->alert(_('Record deleted.'), 'green');
 
-        return $this->redirectFromHere(['action' => 'index', 'id' => null, 'csrf' => null]);
+        return $this->redirectToName($response, 'admin:api:index');
     }
 }

@@ -7,11 +7,6 @@ use Slim\Http\Response;
 
 class PermissionsController extends BaseController
 {
-    public function permissions()
-    {
-        return $this->acl->isAllowed('administer permissions');
-    }
-
     public function indexAction(Request $request, Response $response): Response
     {
         $all_roles = $this->em->createQuery('SELECT r, rp, s FROM Entity\Role r 
@@ -37,17 +32,10 @@ class PermissionsController extends BaseController
         }
 
         $this->view->roles = $roles;
+        return $this->render($response, 'admin/permissions/index');
     }
 
-    public function membersAction(Request $request, Response $response): Response
-    {
-        $roles = $this->em->createQuery('SELECT r, a, u FROM Entity\Role r LEFT JOIN r.actions a LEFT JOIN r.users u')
-            ->getArrayResult();
-
-        $this->view->roles = $roles;
-    }
-
-    public function editAction(Request $request, Response $response): Response
+    public function editAction(Request $request, Response $response, $args): Response
     {
         /** @var Entity\Repository\BaseRepository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
@@ -57,8 +45,8 @@ class PermissionsController extends BaseController
 
         $form = new \App\Form($this->config->forms->role->toArray());
 
-        if ($this->hasParam('id')) {
-            $record = $role_repo->find($this->getParam('id'));
+        if (!empty($args['id'])) {
+            $record = $role_repo->find($args['id']);
             $record_info = $role_repo->toArray($record, true, true);
 
             $actions = $permission_repo->getActionsForRole($record);
@@ -84,18 +72,18 @@ class PermissionsController extends BaseController
 
             $this->alert('<b>' . _('Record updated.') . '</b>', 'green');
 
-            return $this->redirectFromHere(['action' => 'index', 'id' => null, 'csrf' => null]);
+            return $this->redirectToName($response, 'admin:permissions:index');
         }
 
-        return $this->renderForm($form, 'edit', _('Edit Record'));
+        return $this->renderForm($response, $form, 'edit', _('Edit Record'));
     }
 
-    public function deleteAction(Request $request, Response $response): Response
+    public function deleteAction(Request $request, Response $response, $args): Response
     {
         /** @var Entity\Repository\BaseRepository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
 
-        $record = $role_repo->find((int)$this->getParam('id'));
+        $record = $role_repo->find((int)$args['id']);
         if ($record instanceof Entity\Role) {
             $this->em->remove($record);
         }
@@ -103,7 +91,6 @@ class PermissionsController extends BaseController
         $this->em->flush();
 
         $this->alert('<b>' . _('Record deleted.') . '</b>', 'green');
-
-        return $this->redirectFromHere(['action' => 'index', 'id' => null, 'csrf' => null]);
+        return $this->redirectToName($response, 'admin:permissions:index');
     }
 }

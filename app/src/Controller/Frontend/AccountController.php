@@ -2,6 +2,7 @@
 namespace Controller\Frontend;
 
 use Entity\Settings;
+use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -10,28 +11,26 @@ class AccountController extends BaseController
     /** @var \App\Auth */
     protected $auth;
 
-    public function init()
+    public function __construct(Container $di)
     {
-        if ($this->em->getRepository(Settings::class)->getSetting('setup_complete', 0) == 0) {
-            $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
+        parent::__construct($di);
 
-            if ($num_users == 0) {
-                return $this->redirectToRoute(['module' => 'frontend', 'controller' => 'setup']);
-            }
-        }
-
-        return null;
-    }
-
-    protected function preDispatch()
-    {
         $this->auth = $this->di[\App\Auth::class];
     }
 
     public function loginAction(Request $request, Response $response): Response
     {
+        // Check installation completion progress.
+        if ($this->em->getRepository(Settings::class)->getSetting('setup_complete', 0) == 0) {
+            $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
+
+            if ($num_users == 0) {
+                return $this->redirectToName($response, 'frontend:setup:index');
+            }
+        }
+
         if ($this->auth->isLoggedIn()) {
-            return $this->redirectHome();
+            return $this->redirectHome($response);
         }
 
         if (!$_POST) {
@@ -47,7 +46,7 @@ class AccountController extends BaseController
                 $this->alert('<b>' . _('Too many login attempts') . '</b><br>' . _('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
                     'red');
 
-                return $this->redirectHere();
+                return $this->redirectHere($response);
             }
 
             $login_success = $this->auth->authenticate($_POST['username'], $_POST['password']);
@@ -71,14 +70,16 @@ class AccountController extends BaseController
 
                 $default_url = $this->url->named('home');
 
-                return $this->redirectToStoredReferrer('login', $default_url);
-            } else {
-                $this->alert('<b>' . _('Login unsuccessful') . '</b><br>' . _('Your credentials could not be verified.'),
-                    'red');
-
-                return $this->redirectHere();
+                return $this->redirectToStoredReferrer($response, 'login', $default_url);
             }
+
+            $this->alert('<b>' . _('Login unsuccessful') . '</b><br>' . _('Your credentials could not be verified.'),
+                'red');
+
+            return $this->redirectHere($response);
         }
+
+        return $this->render($response, 'frontend/account/login');
     }
 
     public function logoutAction(Request $request, Response $response): Response
@@ -89,15 +90,13 @@ class AccountController extends BaseController
         $session = $this->di[\App\Session::class];
         $session->destroy();
 
-        return $this->redirectToName('account:login');
+        return $this->redirectToName($response, 'account:login');
     }
 
     public function endmasqueradeAction(Request $request, Response $response): Response
     {
-        $this->doNotRender();
-
         $this->auth->endMasquerade();
 
-        return $this->redirectToRoute(['module' => 'admin', 'controller' => 'users']);
+        return $this->redirectToName($response, 'admin:users:index');
     }
 }

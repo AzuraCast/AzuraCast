@@ -169,6 +169,18 @@ abstract class Controller
     }
 
     /**
+     * Redirect to the current page (i.e. after a form is submitted).
+     *
+     * @param Response $response
+     * @param int $code
+     * @return Response
+     */
+    protected function redirectHere(Response $response, $code = 302): Response
+    {
+        return $this->redirect($response, $this->url->current(), $code);
+    }
+
+    /**
      * Redirect with parameters to named route.
      *
      * @param Response $response
@@ -234,10 +246,6 @@ abstract class Controller
         $this->clearStoredReferrer($namespace);
 
         $home_url = $this->url->named('home');
-        if (strcmp($referrer, $this->request->getUri()->getPath()) == 0) {
-            $referrer = $home_url;
-        }
-
         if (trim($referrer) == '') {
             $referrer = ($default_url) ? $default_url : $home_url;
         }

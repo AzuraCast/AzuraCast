@@ -3,6 +3,7 @@ namespace Controller\Admin;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Entity;
+use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -11,47 +12,31 @@ class UsersController extends BaseController
     /** @var Entity\Repository\UserRepository */
     protected $record_repo;
 
-    public function preDispatch()
+    public function __construct(Container $di)
     {
-        parent::preDispatch();
+        parent::__construct($di);
 
         $this->record_repo = $this->em->getRepository(Entity\User::class);
     }
 
-    public function permissions()
-    {
-        return $this->acl->isAllowed('administer users');
-    }
-
     public function indexAction(Request $request, Response $response): Response
     {
-        if ($_GET) {
-            $this->redirectFromHere($_GET);
-        }
+        $users = $this->em->createQuery('SELECT u, r FROM Entity\User u LEFT JOIN u.roles r ORDER BY u.name ASC')
+            ->execute();
 
-        if ($this->hasParam('q')) {
-            $this->view->q = $q = trim($this->getParam('q'));
-
-            $query = $this->em->createQuery('SELECT u, r FROM Entity\User u LEFT JOIN u.roles r WHERE (u.name LIKE :query OR u.email LIKE :query) ORDER BY u.name ASC')
-                ->setParameter('query', '%' . $q . '%');
-        } else {
-            $query = $this->em->createQuery('SELECT u, r FROM Entity\User u LEFT JOIN u.roles r ORDER BY u.name ASC');
-        }
-
-        /** @var \App\Auth $auth */
-        $auth = $this->di[\App\Auth::class];
-        $this->view->user = $auth->getLoggedInUser();
-
-        $this->view->pager = new \App\Paginator\Doctrine($query, $this->getParam('page', 1), 50);
+        return $this->render($response, 'admin/users/index', [
+            'user' => $request->getAttribute('user'),
+            'users' => $users,
+        ]);
     }
 
-    public function editAction(Request $request, Response $response): Response
+    public function editAction(Request $request, Response $response, $args): Response
     {
         $form_config = $this->config->forms->user->form->toArray();
         $form = new \App\Form($form_config);
 
-        if ($this->hasParam('id')) {
-            $record = $this->record_repo->find($this->getParam('id'));
+        if (!empty($args['id'])) {
+            $record = $this->record_repo->find($args['id']);
             $record_defaults = $this->record_repo->toArray($record, true, true);
 
             unset($record_defaults['auth_password']);
@@ -75,19 +60,19 @@ class UsersController extends BaseController
                 $this->em->flush();
 
                 $this->alert(_('Record updated.'), 'green');
-                return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+
+                return $this->redirectToName($response, 'admin:users:index');
             } catch(UniqueConstraintViolationException $e) {
                 $this->alert(_('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
             }
         }
 
-        return $this->renderForm($form, 'edit', _('Edit Record'));
+        return $this->renderForm($response, $form, 'edit', _('Edit Record'));
     }
 
-    public function deleteAction(Request $request, Response $response): Response
+    public function deleteAction(Request $request, Response $response, $args): Response
     {
-        $id = (int)$this->getParam('id');
-        $user = $this->record_repo->find($id);
+        $user = $this->record_repo->find((int)$args['id']);
 
         if ($user instanceof Entity\User) {
             $this->em->remove($user);
@@ -97,23 +82,23 @@ class UsersController extends BaseController
 
         $this->alert('<b>' . _('Record deleted.') . '</b>', 'green');
 
-        return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+        return $this->redirectToName($response, 'admin:users:index');
     }
 
-    public function impersonateAction(Request $request, Response $response): Response
+    public function impersonateAction(Request $request, Response $response, $args): Response
     {
-        $id = (int)$this->getParam('id');
-        $user = $this->record_repo->find($id);
+        $user = $this->record_repo->find((int)$args['id']);
 
         if (!($user instanceof Entity\User)) {
             throw new \App\Exception(_('Record not found!'));
         }
 
-        // Set new identity in Zend_Auth
-        $this->auth->masqueradeAsUser($user);
+        /** @var \App\Auth $auth */
+        $auth = $this->di[\App\Auth::class];
+        $auth->masqueradeAsUser($user);
 
         $this->alert('<b>' . _('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
-        return $this->redirectHome();
+        return $this->redirectHome($response);
     }
 }

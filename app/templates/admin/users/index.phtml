@@ -6,16 +6,9 @@
 
 <div class="card">
     <div class="card-header ch-alt">
-        <?php if ($q): ?>
-            <h2><?=sprintf(_('Search Results for "%s"'), $this->e($q)) ?></h2>
-        <?php else: ?>
-            <h2><?=_('All Users') ?></h2>
-        <?php endif; ?>
+        <h2><?=_('Manage Users') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
-    </div>
-    <div id="data-table-basic-header" class="bootgrid-header container-fluid">
-        <?=$this->paginate($pager) ?>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('admin:users:edit') ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -32,14 +25,14 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach($pager as $user_row): ?>
+            <?php foreach($users as $user_row): ?>
                 <tr class="input">
                     <td>
                     <?php if ($user_row->getId() !== $user->getId()): ?>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'impersonate', 'id' => $user_row->getId())) ?>"><?=_('Log In') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->named('admin:users:impersonate', ['id' => $user_row->getId()]) ?>"><?=_('Log In') ?></a>
                     <?php endif; ?>
-                        <a class="btn btn-sm btn-default" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $user_row->getId())) ?>"><?=_('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $user_row->getId())) ?>"><?=_('Delete') ?></a>
+                        <a class="btn btn-sm btn-default" href="<?=$url->named('admin:users:edit', ['id' => $user_row->getId()]) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:users:delete', ['id' => $user_row->getId()]) ?>"><?=_('Delete') ?></a>
                     </td>
                     <td><?=$this->mailto($user_row->getEmail()) ?> <?php if ($user_row->getId() === $user->getId()): ?>(You)<?php endif; ?></td>
                     <td>

@@ -15,70 +15,69 @@ return function(\Slim\App $app) {
 
         $this->group('/api', function () {
 
-            $this->get('', 'admin:api:index')
+            $this->get('', Controller\Admin\ApiController::class.':indexAction')
                 ->setName('admin:api:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', 'admin:api:edit')
+            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Admin\ApiController::class.':editAction')
                 ->setName('admin:api:edit');
 
-            $this->get('/delete/{id}', 'admin:api:delete')
+            $this->get('/delete/{id}', Controller\Admin\ApiController::class.':deleteAction')
                 ->setName('admin:api:delete');
 
-        });
+        })->add([Middleware\Permissions::class, 'administer api keys']);
+
+        $this->map(['GET', 'POST'], '/branding', Controller\Admin\BrandingController::class.':indexAction')
+            ->setName('admin:branding:index')
+            ->add([Middleware\Permissions::class, 'administer settings']);
 
         $this->group('/permissions', function () {
 
-            $this->get('', 'admin:permissions:index')
+            $this->get('', Controller\Admin\PermissionsController::class.':indexAction')
                 ->setName('admin:permissions:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', 'admin:permissions:edit')
+            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Admin\PermissionsController::class.':editAction')
                 ->setName('admin:permissions:edit');
 
-            $this->get('/delete/{id}', 'admin:permissions:delete')
+            $this->get('/delete/{id}', Controller\Admin\PermissionsController::class.':deleteAction')
                 ->setName('admin:permissions:delete');
 
-            $this->get('/members/{id}', 'admin:permissions:members')
-                ->setName('admin:permissions:members');
+        })->add([Middleware\Permissions::class, 'administer permissions']);
 
-        });
-
-        $this->map(['GET', 'POST'], '/settings', 'admin:settings:index')
-            ->setName('admin:settings:index');
-
-        $this->map(['GET', 'POST'], '/branding', 'admin:branding:index')
-            ->setName('admin:branding:index');
+        $this->map(['GET', 'POST'], '/settings', Controller\Admin\SettingsController::class.':indexAction')
+            ->setName('admin:settings:index')
+            ->add([Middleware\Permissions::class, 'administer settings']);
 
         $this->group('/stations', function () {
 
-            $this->get('', 'admin:stations:index')
+            $this->get('', Controller\Admin\StationsController::class.':indexAction')
                 ->setName('admin:stations:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', 'admin:stations:edit')
+            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Admin\StationsController::class.':editAction')
                 ->setName('admin:stations:edit');
 
-            $this->map(['GET', 'POST'], '/clone/{id}', 'admin:stations:clone')
+            $this->map(['GET', 'POST'], '/clone/{id}', Controller\Admin\StationsController::class.':cloneAction')
                 ->setName('admin:stations:clone');
 
-            $this->get('/delete/{id}', 'admin:stations:delete')
+            $this->get('/delete/{id}', Controller\Admin\StationsController::class.':deleteAction')
                 ->setName('admin:stations:delete');
 
-        });
+        })->add([Middleware\Permissions::class, 'administer stations']);
 
         $this->group('/users', function () {
 
-            $this->get('', 'admin:users:index')
+            $this->get('', Controller\Admin\UsersController::class.':indexAction')
                 ->setName('admin:users:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', 'admin:users:edit')
+            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Admin\UsersController::class.':editAction')
                 ->setName('admin:users:edit');
 
-            $this->get('/delete/{id}', 'admin:users:delete')
+            $this->get('/delete/{id}', Controller\Admin\UsersController::class.':deleteAction')
                 ->setName('admin:users:delete');
 
-            $this->get('/login-as/{id}', 'admin:users:impersonate')
+            $this->get('/login-as/{id}', Controller\Admin\UsersController::class.':impersonateAction')
                 ->setName('admin:users:impersonate');
 
-        });
+        })->add([Middleware\Permissions::class, 'administer users']);
 
         // END /admin GROUP
 

@@ -8,11 +8,6 @@ use Slim\Http\Response;
 
 class SettingsController extends BaseController
 {
-    public function permissions()
-    {
-        return $this->acl->isAllowed('administer settings');
-    }
-
     public function indexAction(Request $request, Response $response): Response
     {
         /** @var Repository\SettingsRepository $settings_repo */
@@ -31,9 +26,9 @@ class SettingsController extends BaseController
 
             $this->alert(_('Changes saved.'), 'green');
 
-            return $this->redirectHere();
+            return $this->redirectHere($response);
         }
 
-        return $this->renderForm($form, 'edit', _('Site Settings'));
+        return $this->renderForm($response, $form, 'edit', _('Site Settings'));
     }
 }

@@ -8,11 +8,6 @@ use Slim\Http\Response;
 
 class BrandingController extends BaseController
 {
-    public function permissions()
-    {
-        return $this->acl->isAllowed('administer settings');
-    }
-
     public function indexAction(Request $request, Response $response): Response
     {
         /** @var Repository\SettingsRepository $settings_repo */
@@ -42,10 +37,10 @@ class BrandingController extends BaseController
 
             $this->alert(_('Changes saved.'), 'green');
 
-            return $this->redirectHere();
+            return $this->redirectHere($response);
         }
 
         $this->view->form = $form;
-        return true;
+        return $this->render($response, 'admin/branding/index');
     }
 }

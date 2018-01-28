@@ -269,8 +269,6 @@ return function (\Slim\Container $di, $settings) {
         $view = new \App\Mvc\View(APP_INCLUDE_BASE . '/templates');
         $view->setFileExtension('phtml');
 
-        $view->loadExtension(new \App\Mvc\View\Paginator($di[\App\Url::class]));
-
         $view->registerFunction('service', function($service) use ($di) {
             return $di->get($service);
         });
@@ -281,7 +279,7 @@ return function (\Slim\Container $di, $settings) {
 
         $view->registerFunction('mailto', function ($address, $link_text = null) {
             $address = substr(chunk_split(bin2hex(" $address"), 2, ";&#x"), 3, -3);
-            $link_text = (is_null($link_text)) ? $address : $link_text;
+            $link_text = $link_text ?? $address;
 
             return '<a href="mailto:' . $address . '">' . $link_text . '</a>';
         });

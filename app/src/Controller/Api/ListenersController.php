@@ -30,22 +30,13 @@ class ListenersController extends BaseController
      */
     public function indexAction(Request $request, Response $response): Response
     {
-        try {
-            $station = $this->getStation();
-        } catch(\Exception $e) {
-            return $this->returnError($e->getMessage());
-        }
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-        try {
-            $this->checkStationPermission($station, 'view station reports');
-        } catch(\App\Exception\PermissionDenied $e) {
-            return $this->returnError($e->getMessage(), 403);
-        }
+        if ($request->getParam('start') !== null) {
 
-        if ($this->hasParam('start')) {
-
-            $start = strtotime($this->getParam('start').' 00:00:00');
-            $end = strtotime($this->getParam('end', $this->getParam('start')).' 23:59:59');
+            $start = strtotime($request->getParam('start').' 00:00:00');
+            $end = strtotime($request->getParam('end', $this->getParam('start')).' 23:59:59');
 
             $listeners_unsorted = $this->em->createQuery('SELECT l FROM Entity\Listener l
                 WHERE l.station_id = :station_id
@@ -99,7 +90,7 @@ class ListenersController extends BaseController
             $listeners[] = $api;
         }
 
-        return $this->returnSuccess($listeners);
+        return $this->returnSuccess($response, $listeners);
     }
 
     protected function _getIpInfo($raw_ips)

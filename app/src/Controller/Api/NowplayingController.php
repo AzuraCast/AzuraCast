@@ -36,9 +36,10 @@ class NowplayingController extends BaseController
      *   @SWG\Response(response=404, description="Station not found")
      * )
      */
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response, $id = null): Response
     {
-        $this->response = $this->response->withHeader('Cache-Control', 'public, max-age=15')
+        $response = $response
+            ->withHeader('Cache-Control', 'public, max-age=15')
             ->withHeader('X-Accel-Expires', 15); // CloudFlare caching
 
         // Pull from cache, or load from flatfile otherwise.
@@ -60,30 +61,28 @@ class NowplayingController extends BaseController
 
         // Sanity check for now playing data.
         if (empty($np)) {
-            return $this->returnError('Now Playing data has not loaded into the cache. Wait for file reload.', 500);
+            return $this->returnError($response,'Now Playing data has not loaded into the cache. Wait for file reload.', 500);
         }
 
-        if ($this->hasParam('station')) {
-            $id = $this->getParam('station');
-
+        if (!empty($id)) {
             foreach ($np as $np_row) {
                 if ($np_row->station->id == (int)$id || $np_row->station->shortcode === $id) {
                     $np_row->now_playing->recalculate();
-                    return $this->returnSuccess($np_row);
+                    return $this->returnSuccess($response, $np_row);
                 }
             }
 
-            return $this->returnError('Station not found.', 404);
-        } else {
-            $np = array_filter($np, function($np_row) {
-                return $np_row->station->is_public;
-            });
-
-            foreach ($np as $np_row) {
-                $np_row->now_playing->recalculate();
-            }
-
-            return $this->returnSuccess($np);
+            return $this->returnError($response, 'Station not found.', 404);
         }
+
+        $np = array_filter($np, function($np_row) {
+            return $np_row->station->is_public;
+        });
+
+        foreach ($np as $np_row) {
+            $np_row->now_playing->recalculate();
+        }
+
+        return $this->returnSuccess($response, $np);
     }
 }

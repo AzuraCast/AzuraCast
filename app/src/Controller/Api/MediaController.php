@@ -22,17 +22,14 @@ class MediaController extends BaseController
      *   )
      * )
      */
-    public function artAction(Request $request, Response $response): Response
+    public function artAction(Request $request, Response $response, $station_id, $media_id): Response
     {
-        try {
-            $station = $this->getStation();
-        } catch(\Exception $e) {
-            return $this->returnError($e->getMessage());
-        }
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
         $media = $this->em->createQuery('SELECT sm, sa FROM Entity\StationMedia sm JOIN sm.art sa WHERE sm.station_id = :station_id AND sm.unique_id = :media_id')
             ->setParameter('station_id', $station->getId())
-            ->setParameter('media_id', $this->getParam('media_id'))
+            ->setParameter('media_id', $media_id)
             ->getOneOrNullResult();
 
         if ($media instanceof Entity\StationMedia) {
@@ -40,7 +37,7 @@ class MediaController extends BaseController
             $art = $media->getArt();
 
             if (is_resource($art)) {
-                return $this->response
+                return $response
                     ->withStatus(200)
                     ->withHeader('Content-Type', 'image/jpeg')
                     ->withHeader('Cache-Control', 'public, max-age=31536000')
@@ -48,8 +45,6 @@ class MediaController extends BaseController
             }
         }
 
-        $missing_image_url = APP_INCLUDE_ROOT.'/resources/generic_song.jpg';
-
-        return $this->response->withRedirect($this->url->content('img/generic_song.jpg'), 302);
+        return $response->withRedirect($this->url->content('img/generic_song.jpg'), 302);
     }
 }

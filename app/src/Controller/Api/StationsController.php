@@ -7,21 +7,6 @@ use Slim\Http\Response;
 
 class StationsController extends BaseController
 {
-    protected function preDispatch()
-    {
-        parent::preDispatch();
-
-        $rate_limit_timeout = 5;
-
-        try {
-            /** @var \AzuraCast\RateLimit $rate_limit */
-            $rate_limit = $this->di[\AzuraCast\RateLimit::class];
-            $rate_limit->checkRateLimit('api', $rate_limit_timeout, 2);
-        } catch(\AzuraCast\Exception\RateLimitExceeded $e) {
-            return $this->returnError('You have temporarily exceeded the rate limit for this application. Please wait '.$rate_limit_timeout.' seconds before attempting new requests.', 429);
-        }
-    }
-
     /**
      * @SWG\Get(path="/stations",
      *   tags={"Stations: General"},
@@ -51,7 +36,7 @@ class StationsController extends BaseController
             }
         }
 
-        return $this->returnSuccess($stations);
+        return $this->returnSuccess($response, $stations);
     }
 
     /**
@@ -71,11 +56,9 @@ class StationsController extends BaseController
      */
     public function indexAction(Request $request, Response $response): Response
     {
-        try {
-            $station = $this->getStation();
-            return $this->returnSuccess($station->api($station->getFrontendAdapter($this->di)));
-        } catch(\Exception $e) {
-            return $this->returnError($e->getMessage());
-        }
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
+        return $this->returnSuccess($response, $station->api($station->getFrontendAdapter($this->di)));
     }
 }

@@ -47,7 +47,7 @@ class Customization
      *
      * @param Entity\User $user
      */
-    public function setUser(\Entity\User $user)
+    public function setUser(\Entity\User $user = null)
     {
         $this->user = $user;
     }

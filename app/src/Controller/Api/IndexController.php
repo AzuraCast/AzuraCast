@@ -12,7 +12,7 @@ class IndexController extends BaseController
      */
     public function indexAction(Request $request, Response $response): Response
     {
-        return $this->redirect($this->url->content('api/index.html'));
+        return $this->redirect($response, $this->url->content('api/index.html'));
     }
 
     /**
@@ -29,7 +29,7 @@ class IndexController extends BaseController
      */
     public function statusAction(Request $request, Response $response): Response
     {
-        return $this->returnSuccess(new Entity\Api\Status);
+        return $this->returnSuccess($response, new Entity\Api\Status);
     }
 
     /**
@@ -46,9 +46,7 @@ class IndexController extends BaseController
      */
     public function timeAction(Request $request, Response $response): Response
     {
-        $this->setCacheLifetime(0);
-
         $tz_info = \App\Timezone::getInfo();
-        return $this->returnSuccess(new Entity\Api\Time($tz_info));
+        return $this->returnSuccess($response, new Entity\Api\Time($tz_info));
     }
 }

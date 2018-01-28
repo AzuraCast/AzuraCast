@@ -32,6 +32,10 @@ return function (\Slim\Container $di, $settings) {
         };
     };
 
+    $di['foundHandler'] = function() {
+        return new \Slim\Handlers\Strategies\RequestResponseArgs();
+    };
+
     // Configs
     $di[\App\Config::class] = function ($di) {
         return new \App\Config(APP_INCLUDE_BASE . '/config', $di);
@@ -346,9 +350,27 @@ return function (\Slim\Container $di, $settings) {
         );
     };
 
+    $di[\AzuraCast\Middleware\GetStation::class] = function($di) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        /** @var Entity\Repository\StationRepository $station_repo */
+        $station_repo = $em->getRepository(Entity\Station::class);
+
+        return new \AzuraCast\Middleware\GetStation(
+            $station_repo
+        );
+    };
+
     $di[\AzuraCast\Middleware\Permissions::class] = function($di) {
         return new \AzuraCast\Middleware\Permissions(
             $di[\AzuraCast\Acl\StationAcl::class]
+        );
+    };
+
+    $di[\AzuraCast\Middleware\RateLimit::class] = function($di) {
+        return new \AzuraCast\Middleware\RateLimit(
+            $di[\AzuraCast\RateLimit::class]
         );
     };
 
@@ -373,7 +395,6 @@ return function (\Slim\Container $di, $settings) {
             $di[\App\Session::class]
         );
     };
-
 
 
 

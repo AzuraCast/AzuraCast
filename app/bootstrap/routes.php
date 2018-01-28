@@ -87,59 +87,64 @@ return function(\Slim\App $app) {
 
     $app->group('/api', function () {
 
-        $this->get('', 'api:index:index')
+        $this->get('', Controller\Api\IndexController::class.':indexAction')
             ->setName('api:index:index');
 
-        $this->get('/status', 'api:index:status')
+        $this->get('/status', Controller\Api\IndexController::class.':statusAction')
             ->setName('api:index:status');
 
-        $this->get('/time', 'api:index:time')
+        $this->get('/time', Controller\Api\IndexController::class.':timeAction')
             ->setName('api:index:time');
 
         $this->group('/internal', function () {
 
             $this->group('/{station}', function() {
 
-                $this->map(['GET', 'POST'], '/auth', 'api:internal:auth')
+                $this->map(['GET', 'POST'], '/auth', Controller\Api\InternalController::class.':authAction')
                     ->setName('api:internal:auth');
 
-                $this->map(['GET', 'POST'], '/nextsong', 'api:internal:nextsong')
+                $this->map(['GET', 'POST'], '/nextsong', Controller\Api\InternalController::class.':nextsongAction')
                     ->setName('api:internal:nextsong');
 
-                $this->map(['GET', 'POST'], '/notify', 'api:internal:notify')
+                $this->map(['GET', 'POST'], '/notify', Controller\Api\InternalController::class.':notifyAction')
                     ->setName('api:internal:notify');
 
-            });
+            })->add(Middleware\GetStation::class);
 
         });
 
-        $this->get('/nowplaying[/{station}]', 'api:nowplaying:index')
+        $this->get('/nowplaying[/{station}]', Controller\Api\NowplayingController::class.':indexAction')
             ->setName('api:nowplaying:index');
 
-        $this->get('/stations', 'api:stations:list')
-            ->setName('api:stations:list');
+        $this->get('/stations', Controller\Api\StationsController::class.':listAction')
+            ->setName('api:stations:list')
+            ->add([Middleware\RateLimit::class, 'api', 5, 2]);
 
         $this->group('/station/{station}', function () {
 
-            $this->get('', 'api:stations:index')
-                ->setName('api:stations:index');
+            $this->get('', Controller\Api\StationsController::class.':indexAction')
+                ->setName('api:stations:index')
+                ->add([Middleware\RateLimit::class, 'api', 5, 2]);
 
-            $this->get('/nowplaying', 'api:nowplaying:index');
+            $this->get('/nowplaying', Controller\Api\NowplayingController::class.':indexAction');
 
             // This would not normally be POST-able, but Bootgrid requires it
-            $this->map(['GET', 'POST'], '/requests', 'api:requests:list')
-                ->setName('api:requests:list');
+            $this->map(['GET', 'POST'], '/requests', Controller\Api\RequestsController::class.':listAction')
+                ->setName('api:requests:list')
+                ->add([Middleware\RateLimit::class, 'api', 5, 2]);
 
-            $this->map(['GET', 'POST'], '/request/{media_id}', 'api:requests:submit')
-                ->setName('api:requests:submit');
+            $this->map(['GET', 'POST'], '/request/{media_id}', Controller\Api\RequestsController::class.':submitAction')
+                ->setName('api:requests:submit')
+                ->add([Middleware\RateLimit::class, 'api', 5, 2]);
 
-            $this->get('/listeners', 'api:listeners:index')
-                ->setName('api:listeners:index');
+            $this->get('/listeners', Controller\Api\ListenersController::class.':indexAction')
+                ->setName('api:listeners:index')
+                ->add([Middleware\Permissions::class, 'view station reports', true]);
 
-            $this->get('/art/{media_id}', 'api:media:art')
+            $this->get('/art/{media_id}', Controller\Api\MediaController::class.':artAction')
                 ->setName('api:media:art');
 
-        });
+        })->add(Middleware\GetStation::class);
 
         // END /api GROUP
 

@@ -7,35 +7,6 @@ use Slim\Http\Response;
 
 class BaseController extends \AzuraCast\Mvc\Controller
 {
-    public function permissions()
-    {
-        return true;
-    }
-
-    protected function preDispatch()
-    {
-        parent::preDispatch();
-
-        // Disable rendering.
-        $this->doNotRender();
-    }
-
-    /**
-     * Authentication
-     */
-
-    /**
-     * Require that an API key be supplied by the requesting user.
-     *
-     * @throws \App\Exception\PermissionDenied
-     */
-    public function requireKey()
-    {
-        if (!$this->authenticate()) {
-            throw new \App\Exception\PermissionDenied('No valid API key specified.');
-        }
-    }
-
     /**
      * Check that the API key supplied by the requesting user is valid.
      *
@@ -68,73 +39,24 @@ class BaseController extends \AzuraCast\Mvc\Controller
         return false;
     }
 
-    /*
-     * Common Functions
-     */
-
-    /**
-     * Retrieve a station from the specified parameters, if possible.
-     *
-     * @param bool $required
-     * @return Entity\Station|null
-     * @throws \Exception
-     */
-    protected function getStation($required = true)
-    {
-        $id = $this->getParam('station');
-
-        /** @var Entity\Repository\StationRepository $station_repo */
-        $station_repo = $this->em->getRepository(Entity\Station::class);
-
-        if (is_numeric($id)) {
-            $record = $station_repo->find($id);
-        } else {
-            $record = $station_repo->findByShortCode($id);
-        }
-
-        if ($required && !($record instanceof Entity\Station)) {
-            throw new \Exception('Station not found!');
-        }
-
-        return $record;
-    }
-
-    /**
-     * @param Entity\Station $station
-     * @param $permission_name
-     * @return bool
-     * @throws \App\Exception\PermissionDenied
-     */
-    public function checkStationPermission(Entity\Station $station, $permission_name) {
-        if ($this->authenticate()) {
-            return true;
-        }
-
-        if (!$this->acl->isAllowed($permission_name, $station->getId())) {
-            throw new \App\Exception\PermissionDenied('Permission denied');
-        }
-
-        return true;
-    }
-
     /**
      * Result Printout
      */
 
-    public function returnSuccess($data)
+    public function returnSuccess(Response $response, $data): Response
     {
-        return $this->returnToScreen($data);
+        return $this->returnToScreen($response, $data);
     }
 
-    public function returnError($message, $error_code = 400)
+    public function returnError(Response $response, $message, $error_code = 400): Response
     {
-        $this->response = $this->response->withStatus($error_code);
-        return $this->returnToScreen($message);
+        $response = $response->withStatus($error_code);
+        return $this->returnToScreen($response, $message);
     }
 
-    public function returnToScreen($body)
+    public function returnToScreen(Response $response, $body): Response
     {
-        return $this->response->withHeader('Content-Type', 'application/json')
+        return $response->withHeader('Content-Type', 'application/json')
             ->write(json_encode($body, \JSON_UNESCAPED_SLASHES));
     }
 }

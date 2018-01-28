@@ -7,60 +7,43 @@ use Slim\Http\Response;
 
 class InternalController extends BaseController
 {
-    /** @var Entity\Station $station */
-    protected $station;
-
-    protected function preDispatch()
-    {
-        parent::preDispatch();
-
-        $station_id = (int)$this->getParam('station');
-        $station = $this->em->getRepository(Entity\Station::class)->find($station_id);
-
-        if (!($station instanceof Entity\Station)) {
-            throw new \App\Exception('Station not found.');
-        }
-
-        try {
-            $this->checkStationPermission($station, 'view administration');
-        } catch (\App\Exception\PermissionDenied $e) {
-            $auth_key = $this->getParam('api_auth', '');
-            if (!$station->validateAdapterApiKey($auth_key)) {
-                throw new \App\Exception\PermissionDenied();
-            }
-        }
-
-        $this->station = $station;
-    }
-
     public function authAction(Request $request, Response $response): Response
     {
-        $user = $this->getParam('dj_user');
-        $pass = $this->getParam('dj_password');
+        $station = $request->getAttribute('station');
+        $this->_checkStationAuth($station, $request->getParam('api_auth'));
 
-        if ($this->getParam('dj_user') == 'shoutcast') {
+        $user = $request->getParam('dj_user');
+        $pass = $request->getParam('dj_password');
+
+        if ($user === 'shoutcast') {
             list($user, $pass) = explode(':', $pass);
         }
 
-        if (!$this->station->getEnableStreamers()) {
-            return $this->_return('false');
+        if (!$station->getEnableStreamers()) {
+            return $response->write('false');
         }
 
-        $fe_config = (array)$this->station->getFrontendConfig();
+        $fe_config = (array)$station->getFrontendConfig();
         if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
-            return $this->_return('true');
+            return $response->write('true');
         }
 
-        if ($this->em->getRepository(Entity\StationStreamer::class)->authenticate($this->station, $user, $pass)) {
-            return $this->_return('true');
-        } else {
-            return $this->_return('false');
+        /** @var Entity\Repository\StationStreamerRepository $streamer_repo */
+        $streamer_repo = $this->em->getRepository(Entity\StationStreamer::class);
+
+        if ($streamer_repo->authenticate($station, $user, $pass)) {
+            return $response->write('true');
         }
+
+        return $response->write('false');
     }
 
     public function nextsongAction(Request $request, Response $response): Response
     {
-        $backend_adapter = $this->station->getBackendAdapter($this->di);
+        $station = $request->getAttribute('station');
+        $this->_checkStationAuth($station, $request->getParam('api_auth'));
+
+        $backend_adapter = $station->getBackendAdapter($this->di);
 
         if (!($backend_adapter instanceof \AzuraCast\Radio\Backend\LiquidSoap)) {
             throw new \App\Exception('Not a LiquidSoap station.');
@@ -70,37 +53,51 @@ class InternalController extends BaseController
         $history_repo = $this->em->getRepository(Entity\SongHistory::class);
 
         /** @var Entity\SongHistory|null $sh */
-        $sh = $history_repo->getNextSongForStation($this->station, $this->hasParam('api_auth'));
+        $sh = $history_repo->getNextSongForStation($station, (!empty($request->getParam('api_auth'))));
 
         if ($sh instanceof Entity\SongHistory) {
             // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
             $song_path = $sh->getMedia()->getFullPath();
 
-            return $this->_return('annotate:' . implode(',', $sh->getMedia()->getAnnotations()) . ':' . $song_path);
-        } else {
-            $error_mp3_path = (APP_INSIDE_DOCKER) ? '/usr/local/share/icecast/web/error.mp3' : APP_INCLUDE_ROOT . '/resources/error.mp3';
-            return $this->_return($error_mp3_path);
+            return $response->write('annotate:' . implode(',', $sh->getMedia()->getAnnotations()) . ':' . $song_path);
         }
+
+        $error_mp3_path = (APP_INSIDE_DOCKER) ? '/usr/local/share/icecast/web/error.mp3' : APP_INCLUDE_ROOT . '/resources/error.mp3';
+        return $response->write($error_mp3_path);
     }
 
     public function notifyAction(Request $request, Response $response): Response
     {
-        $payload = $this->request->getBody()->getContents();
+        $station = $request->getAttribute('station');
+        $this->_checkStationAuth($station, $request->getParam('api_auth'));
+
+        $payload = $request->getBody()->getContents();
 
         if (!APP_IN_PRODUCTION) {
-            $log = date('Y-m-d g:i:s')."\n".$this->station->getName()."\n".$payload."\n\n";
+            $log = date('Y-m-d g:i:s')."\n".$station->getName()."\n".$payload."\n\n";
             file_put_contents(APP_INCLUDE_TEMP.'/notify.log', $log, \FILE_APPEND);
         }
 
         $np_sync = new \AzuraCast\Sync\NowPlaying($this->di);
-        $np_sync->processStation($this->station, $payload);
+        $np_sync->processStation($station, $payload);
 
-        return $this->_return('received');
+        return $response->write('received');
     }
 
-    protected function _return($output)
+    /**
+     * @param Entity\Station $station
+     * @param $auth_key
+     * @return bool
+     * @throws \App\Exception\PermissionDenied
+     */
+    protected function _checkStationAuth(Entity\Station $station, $auth_key)
     {
-        $this->response->getBody()->write($output);
-        return $this->response;
+        if ($this->acl->isAllowed('view administration', $station->getId())) {
+            return true;
+        }
+
+        if (!$station->validateAdapterApiKey($auth_key)) {
+            throw new \App\Exception\PermissionDenied();
+        }
     }
 }

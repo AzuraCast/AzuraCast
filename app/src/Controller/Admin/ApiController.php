@@ -25,12 +25,11 @@ class ApiController extends BaseController
         return $this->render($response, 'admin/api/index');
     }
 
-    public function editAction(Request $request, Response $response, $args): Response
+    public function editAction(Request $request, Response $response, $id = null): Response
     {
         $form = new \App\Form($this->config->forms->api_key);
 
-        if (!empty($args['id'])) {
-            $id = $args['id'];
+        if (!empty($id)) {
             $record = $this->record_repo->find($id);
             $form->setDefaults($this->record_repo->toArray($record, true, true));
         } else {
@@ -57,9 +56,9 @@ class ApiController extends BaseController
         return $this->renderForm($response, $form, 'edit', _('Edit Record'));
     }
 
-    public function deleteAction(Request $request, Response $response, $args): Response
+    public function deleteAction(Request $request, Response $response, $id): Response
     {
-        $record = $this->record_repo->find($args['id']);
+        $record = $this->record_repo->find($id);
 
         if ($record instanceof Entity\ApiKey) {
             $this->em->remove($record);

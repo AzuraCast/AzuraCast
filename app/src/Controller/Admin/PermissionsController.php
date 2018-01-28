@@ -35,7 +35,7 @@ class PermissionsController extends BaseController
         return $this->render($response, 'admin/permissions/index');
     }
 
-    public function editAction(Request $request, Response $response, $args): Response
+    public function editAction(Request $request, Response $response, $id = null): Response
     {
         /** @var Entity\Repository\BaseRepository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
@@ -45,8 +45,8 @@ class PermissionsController extends BaseController
 
         $form = new \App\Form($this->config->forms->role->toArray());
 
-        if (!empty($args['id'])) {
-            $record = $role_repo->find($args['id']);
+        if (!empty($id)) {
+            $record = $role_repo->find($id);
             $record_info = $role_repo->toArray($record, true, true);
 
             $actions = $permission_repo->getActionsForRole($record);
@@ -78,12 +78,12 @@ class PermissionsController extends BaseController
         return $this->renderForm($response, $form, 'edit', _('Edit Record'));
     }
 
-    public function deleteAction(Request $request, Response $response, $args): Response
+    public function deleteAction(Request $request, Response $response, $id): Response
     {
         /** @var Entity\Repository\BaseRepository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
 
-        $record = $role_repo->find((int)$args['id']);
+        $record = $role_repo->find((int)$id);
         if ($record instanceof Entity\Role) {
             $this->em->remove($record);
         }

@@ -26,13 +26,12 @@ class StationsController extends BaseController
         return $this->render($response, 'admin/stations/index');
     }
 
-    public function editAction(Request $request, Response $response, $args): Response
+    public function editAction(Request $request, Response $response, $id = null): Response
     {
         $form = new \App\Form($this->config->forms->station);
 
-        if (!empty($args['id'])) {
-            $id = (int)$args['id'];
-            $record = $this->record_repo->find($id);
+        if (!empty($id)) {
+            $record = $this->record_repo->find((int)$id);
             $form->setDefaults($this->record_repo->toArray($record, false, true));
         } else {
             $record = null;
@@ -71,10 +70,9 @@ class StationsController extends BaseController
         return $this->render($response, 'admin/stations/edit');
     }
 
-    public function cloneAction(Request $request, Response $response, $args): Response
+    public function cloneAction(Request $request, Response $response, $id): Response
     {
-        $id = (int)$args['id'];
-        $record = $this->record_repo->find($id);
+        $record = $this->record_repo->find((int)$id);
 
         if (!($record instanceof Entity\Station)) {
             throw new \Exception('Source station not found!');
@@ -162,9 +160,9 @@ class StationsController extends BaseController
         return $this->renderForm($response, $form, 'edit', sprintf(_('Clone Station: %s'), $record->getName()));
     }
 
-    public function deleteAction(Request $request, Response $response, $args): Response
+    public function deleteAction(Request $request, Response $response, $id): Response
     {
-        $record = $this->record_repo->find($args['id']);
+        $record = $this->record_repo->find((int)$id);
 
         if ($record instanceof Entity\Station) {
             $record->removeConfiguration($this->di);

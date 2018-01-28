@@ -30,13 +30,13 @@ class UsersController extends BaseController
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $args): Response
+    public function editAction(Request $request, Response $response, $id = null): Response
     {
         $form_config = $this->config->forms->user->form->toArray();
         $form = new \App\Form($form_config);
 
-        if (!empty($args['id'])) {
-            $record = $this->record_repo->find($args['id']);
+        if (!empty($id)) {
+            $record = $this->record_repo->find((int)$id);
             $record_defaults = $this->record_repo->toArray($record, true, true);
 
             unset($record_defaults['auth_password']);
@@ -85,9 +85,9 @@ class UsersController extends BaseController
         return $this->redirectToName($response, 'admin:users:index');
     }
 
-    public function impersonateAction(Request $request, Response $response, $args): Response
+    public function impersonateAction(Request $request, Response $response, $id): Response
     {
-        $user = $this->record_repo->find((int)$args['id']);
+        $user = $this->record_repo->find((int)$id);
 
         if (!($user instanceof Entity\User)) {
             throw new \App\Exception(_('Record not found!'));

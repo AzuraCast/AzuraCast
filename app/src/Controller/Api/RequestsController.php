@@ -8,21 +8,6 @@ use Slim\Http\Response;
 
 class RequestsController extends BaseController
 {
-    protected function preDispatch()
-    {
-        parent::preDispatch();
-
-        $rate_limit_timeout = 5;
-
-        try {
-            /** @var \AzuraCast\RateLimit $rate_limit */
-            $rate_limit = $this->di[\AzuraCast\RateLimit::class];
-            $rate_limit->checkRateLimit('api', $rate_limit_timeout, 2);
-        } catch(\AzuraCast\Exception\RateLimitExceeded $e) {
-            return $this->returnError('You have temporarily exceeded the rate limit for this application. Please wait '.$rate_limit_timeout.' seconds before attempting new requests.', 429);
-        }
-    }
-
     /**
      * @SWG\Get(path="/station/{station_id}/requests",
      *   tags={"Stations: Song Requests"},
@@ -42,15 +27,12 @@ class RequestsController extends BaseController
      */
     public function listAction(Request $request, Response $response): Response
     {
-        try {
-            $station = $this->getStation();
-        } catch(\Exception $e) {
-            return $this->returnError($e->getMessage());
-        }
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
         $ba = $station->getBackendAdapter($this->di);
         if (!$ba->supportsRequests()) {
-            return $this->returnError('This station does not support requests.', 403);
+            return $this->returnError($response, 'This station does not support requests.', 403);
         }
 
         $requestable_media = $this->em->createQuery('SELECT sm, s, sp 
@@ -113,7 +95,7 @@ class RequestsController extends BaseController
             if (!empty($_REQUEST['sort'])) {
                 $sort_by = [];
                 foreach ($_REQUEST['sort'] as $sort_key => $sort_direction) {
-                    $sort_dir = (strtolower($sort_direction) == 'desc') ? \SORT_DESC : \SORT_ASC;
+                    $sort_dir = (strtolower($sort_direction) === 'desc') ? \SORT_DESC : \SORT_ASC;
                     $sort_by[] = $sort_key;
                     $sort_by[] = $sort_dir;
                 }
@@ -131,7 +113,7 @@ class RequestsController extends BaseController
             $offset_start = ($page - 1) * $row_count;
             $return_result = array_slice($result, $offset_start, $row_count);
 
-            return $this->renderJson([
+            return $this->renderJson($response, [
                 'current' => $page,
                 'rowCount' => $row_count,
                 'total' => $num_results,
@@ -139,7 +121,7 @@ class RequestsController extends BaseController
             ]);
         }
 
-        return $this->returnSuccess($result);
+        return $this->returnSuccess($response, $result);
     }
 
     /**
@@ -160,27 +142,24 @@ class RequestsController extends BaseController
      *   @SWG\Response(response=403, description="Station does not support requests")
      * )
      */
-    public function submitAction(Request $request, Response $response): Response
+    public function submitAction(Request $request, Response $response, $station_id, $media_id): Response
     {
-        try {
-            $station = $this->getStation();
-        } catch(\Exception $e) {
-            return $this->returnError($e->getMessage());
-        }
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
         $ba = $station->getBackendAdapter($this->di);
         if (!$ba->supportsRequests()) {
-            return $this->returnError('This station does not support requests.', 403);
+            return $this->returnError($response, 'This station does not support requests.', 403);
         }
 
-        $song = $this->getParam('media_id');
-
         try {
-            $this->em->getRepository(Entity\StationRequest::class)->submit($station, $song, $this->authenticate());
+            /** @var Entity\Repository\StationRequestRepository $request_repo */
+            $request_repo = $this->em->getRepository(Entity\StationRequest::class);
+            $request_repo->submit($station, $media_id, $this->authenticate());
 
-            return $this->returnSuccess('Request submitted successfully.');
+            return $this->returnSuccess($response, 'Request submitted successfully.');
         } catch (\App\Exception $e) {
-            return $this->returnError($e->getMessage());
+            return $this->returnError($response, $e->getMessage());
         }
     }
 }

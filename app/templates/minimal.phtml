@@ -57,7 +57,7 @@ $assets
 <?=$assets->js('body') ?>
 
 <?php if ($flash->hasMessages()): ?>
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
         $(function() {
             <?php foreach($flash->getMessages() as $message): ?>
             notify("<?=str_replace(array('"', "\n"), array('\'', '<br>'), $message['text']) ?>", '<?=$message['color'] ?>', true);

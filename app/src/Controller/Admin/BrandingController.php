@@ -6,7 +6,7 @@ use Entity\Settings;
 use App\Http\Request;
 use App\Http\Response;
 
-class BrandingController extends BaseController
+class BrandingController extends \AzuraCast\Legacy\Controller
 {
     public function indexAction(Request $request, Response $response): Response
     {

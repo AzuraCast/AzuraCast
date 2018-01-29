@@ -19,10 +19,14 @@ class ApiController
     /** @var Entity\Repository\BaseRepository */
     protected $record_repo;
 
-    public function __construct(EntityManager $em, Flash $flash)
+    /** @var array */
+    protected $form_config;
+
+    public function __construct(EntityManager $em, Flash $flash, array $form_config)
     {
         $this->em = $em;
         $this->flash = $flash;
+        $this->form_config = $form_config;
 
         $this->record_repo = $this->em->getRepository(Entity\ApiKey::class);
     }
@@ -39,7 +43,7 @@ class ApiController
 
     public function editAction(Request $request, Response $response, $id = null): Response
     {
-        $form = new \App\Form($this->config->forms->api_key);
+        $form = new \App\Form($this->form_config);
 
         if (!empty($id)) {
             $record = $this->record_repo->find($id);

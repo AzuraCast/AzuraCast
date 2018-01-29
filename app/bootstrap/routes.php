@@ -81,9 +81,11 @@ return function(\Slim\App $app) {
 
         // END /admin GROUP
 
-    })->add(Middleware\RequireLogin::class)
+    })
+        ->add(Middleware\Module\Admin::class)
+        ->add(Middleware\EnableView::class)
         ->add([Middleware\Permissions::class, 'view administration'])
-        ->add(Middleware\Module\Admin::class);
+        ->add(Middleware\RequireLogin::class);
 
     $app->group('/api', function () {
 
@@ -148,7 +150,8 @@ return function(\Slim\App $app) {
 
         // END /api GROUP
 
-    })->add(Middleware\Module\Api::class);
+    })
+        ->add(Middleware\Module\Api::class);
 
     $app->group('', function() {
 
@@ -173,187 +176,194 @@ return function(\Slim\App $app) {
                 ->setName('util:test');
         }
 
-    })->add(Middleware\RequireLogin::class);
+    })
+        ->add(Middleware\EnableView::class)
+        ->add(Middleware\RequireLogin::class);
 
-    $app->map(['GET', 'POST'], '/login', 'frontend:account:login')
-        ->setName('account:login');
+    $app->map(['GET', 'POST'], '/login', Controller\Frontend\AccountController::class.':loginAction')
+        ->setName('account:login')
+        ->add(Middleware\EnableView::class);
 
     $app->group('/setup', function () {
 
-        $this->map(['GET', 'POST'], '', 'frontend:setup:index')
+        $this->map(['GET', 'POST'], '', Controller\Frontend\SetupController::class.':indexAction')
             ->setName('setup:index');
 
-        $this->map(['GET', 'POST'], '/complete', 'frontend:setup:complete')
+        $this->map(['GET', 'POST'], '/complete', Controller\Frontend\SetupController::class.':completeAction')
             ->setName('setup:complete');
 
-        $this->map(['GET', 'POST'], '/register', 'frontend:setup:register')
+        $this->map(['GET', 'POST'], '/register', Controller\Frontend\SetupController::class.':registerAction')
             ->setName('setup:register');
 
-        $this->map(['GET', 'POST'], '/station', 'frontend:setup:station')
+        $this->map(['GET', 'POST'], '/station', Controller\Frontend\SetupController::class.':stationAction')
             ->setName('setup:station');
 
-        $this->map(['GET', 'POST'], '/settings', 'frontend:setup:settings')
+        $this->map(['GET', 'POST'], '/settings', Controller\Frontend\SetupController::class.':settingsAction')
             ->setName('setup:settings');
 
-    });
+    })
+        ->add(Middleware\EnableView::class);
 
     $app->group('/public/{station}', function () {
 
-        $this->get('', 'frontend:public:index')
+        $this->get('', Controller\Frontend\PublicController::class.':indexAction')
             ->setName('public:index');
 
-        $this->get('/embed', 'frontend:public:embed')
+        $this->get('/embed', Controller\Frontend\PublicController::class.':embedAction')
             ->setName('public:embed');
 
-        $this->get('/embed-requests', 'frontend:public:embedrequests')
+        $this->get('/embed-requests', Controller\Frontend\PublicController::class.':embedrequestsAction')
             ->setName('public:embedrequests');
 
-        $this->get('/playlist[/{format}]', 'frontend:public:playlist')
+        $this->get('/playlist[/{format}]', Controller\Frontend\PublicController::class.':playlistAction')
             ->setName('public:playlist');
 
-    });
+    })
+        ->add(Middleware\EnableView::class);
 
     $app->group('/station/{station}', function () {
 
-        $this->get('', 'stations:index:index')
+        $this->get('', Controller\Stations\IndexController::class.':indexAction')
             ->setName('stations:index:index');
 
         $this->group('/automation', function () {
 
-            $this->map(['GET', 'POST'], '', 'stations:automation:index')
+            $this->map(['GET', 'POST'], '', Controller\Stations\AutomationController::class.':indexAction')
                 ->setName('stations:automation:index');
 
-            $this->get('/run', 'stations:automation:run')
+            $this->get('/run', Controller\Stations\AutomationController::class.':runAction')
                 ->setName('stations:automation:run');
 
         });
 
         $this->group('/files', function () {
 
-            $this->get('', 'stations:files:index')
+            $this->get('', Controller\Stations\FilesController::class.':indexAction')
                 ->setName('stations:files:index');
 
-            $this->map(['GET', 'POST'], '/edit/{id}', 'stations:files:edit')
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\FilesController::class.':editAction')
                 ->setName('stations:files:edit');
 
-            $this->map(['GET', 'POST'], '/rename/{path}', 'stations:files:rename')
+            $this->map(['GET', 'POST'], '/rename/{path}', Controller\Stations\FilesController::class.':renameAction')
                 ->setName('stations:files:rename');
 
-            $this->map(['GET', 'POST'], '/list', 'stations:files:list')
+            $this->map(['GET', 'POST'], '/list', Controller\Stations\FilesController::class.':listAction')
                 ->setName('stations:files:list');
 
-            $this->map(['GET', 'POST'], '/batch', 'stations:files:batch')
+            $this->map(['GET', 'POST'], '/batch', Controller\Stations\FilesController::class.':batchAction')
                 ->setName('stations:files:batch');
 
-            $this->map(['GET', 'POST'], '/mkdir', 'stations:files:mkdir')
+            $this->map(['GET', 'POST'], '/mkdir', Controller\Stations\FilesController::class.':mkdirAction')
                 ->setName('stations:files:mkdir');
 
-            $this->map(['GET', 'POST'], '/upload', 'stations:files:upload')
+            $this->map(['GET', 'POST'], '/upload', Controller\Stations\FilesController::class.':uploadAction')
                 ->setName('stations:files:upload');
 
-            $this->map(['GET', 'POST'], '/download', 'stations:files:download')
+            $this->map(['GET', 'POST'], '/download', Controller\Stations\FilesController::class.':downloadAction')
                 ->setName('stations:files:download');
 
         });
 
         $this->group('/playlists', function () {
 
-            $this->get('', 'stations:playlists:index')
+            $this->get('', Controller\Stations\PlaylistsController::class.':indexAction')
                 ->setName('stations:playlists:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', 'stations:playlists:edit')
+            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Stations\PlaylistsController::class.':editAction')
                 ->setName('stations:playlists:edit');
 
-            $this->get('/delete/{id}', 'stations:playlists:delete')
+            $this->get('/delete/{id}', Controller\Stations\PlaylistsController::class.':deleteAction')
                 ->setName('stations:playlists:delete');
 
-            $this->get('/export/{id}[/{format}]', 'stations:playlists:export')
+            $this->get('/export/{id}[/{format}]', Controller\Stations\PlaylistsController::class.':exportAction')
                 ->setName('stations:playlists:export');
 
         });
 
         $this->group('/mounts', function () {
 
-            $this->get('', 'stations:mounts:index')
+            $this->get('', Controller\Stations\MountsController::class.':indexAction')
                 ->setName('stations:mounts:index');
 
-            $this->get('/migrate', 'stations:mounts:migrate')
+            $this->get('/migrate', Controller\Stations\MountsController::class.':migrateAction')
                 ->setName('stations:mounts:migrate');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', 'stations:mounts:edit')
+            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Stations\MountsController::class.':editAction')
                 ->setName('stations:mounts:edit');
 
-            $this->get('/delete/{id}', 'stations:mounts:delete')
+            $this->get('/delete/{id}', Controller\Stations\MountsController::class.':deleteAction')
                 ->setName('stations:mounts:delete');
 
         });
 
         $this->group('/profile', function () {
 
-            $this->get('', 'stations:profile:index')
+            $this->get('', Controller\Stations\ProfileController::class.':indexAction')
                 ->setName('stations:profile:index');
 
-            $this->map(['GET', 'POST'], '/edit', 'stations:profile:edit')
+            $this->map(['GET', 'POST'], '/edit', Controller\Stations\ProfileController::class.':editAction')
                 ->setName('stations:profile:edit');
 
-            $this->map(['GET', 'POST'], '/backend[/{do}]', 'stations:profile:backend')
+            $this->map(['GET', 'POST'], '/backend[/{do}]', Controller\Stations\ProfileController::class.':backendAction')
                 ->setName('stations:profile:backend');
 
-            $this->map(['GET', 'POST'], '/frontend[/{do}]', 'stations:profile:frontend')
+            $this->map(['GET', 'POST'], '/frontend[/{do}]', Controller\Stations\ProfileController::class.':frontendAction')
                 ->setName('stations:profile:frontend');
 
         });
 
         $this->group('/requests', function () {
 
-            $this->get('', 'stations:requests:index')
+            $this->get('', Controller\Stations\RequestsController::class.':indexAction')
                 ->setName('stations:requests:index');
 
-            $this->get('/delete/{request_id}', 'stations:requests:delete')
+            $this->get('/delete/{request_id}', Controller\Stations\RequestsController::class.':deleteAction')
                 ->setName('stations:requests:delete');
 
         });
 
         $this->group('/reports', function () {
 
-            $this->get('/timeline[/format/{format}]', 'stations:reports:timeline')
+            $this->get('/timeline[/format/{format}]', Controller\Stations\ReportsController::class.':timelineAction')
                 ->setName('stations:reports:timeline');
 
-            $this->get('/performance[/format/{format}]', 'stations:reports:performance')
+            $this->get('/performance[/format/{format}]', Controller\Stations\ReportsController::class.':performanceAction')
                 ->setName('stations:reports:performance');
 
-            $this->get('/duplicates', 'stations:reports:duplicates')
+            $this->get('/duplicates', Controller\Stations\ReportsController::class.':duplicatesAction')
                 ->setName('stations:reports:duplicates');
 
-            $this->get('/duplicates/delete/{media_id}', 'stations:reports:deletedupe')
+            $this->get('/duplicates/delete/{media_id}', Controller\Stations\ReportsController::class.':deletedupeAction')
                 ->setName('stations:reports:deletedupe');
 
-            $this->map(['GET', 'POST'], '/listeners', 'stations:reports:listeners')
+            $this->map(['GET', 'POST'], '/listeners', Controller\Stations\ReportsController::class.':listenersAction')
                 ->setName('stations:reports:listeners');
 
         });
 
         $this->group('/streamers', function () {
 
-            $this->get('', 'stations:streamers:index')
+            $this->get('', Controller\Stations\StreamersController::class.':indexAction')
                 ->setName('stations:streamers:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', 'stations:streamers:edit')
+            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Stations\StreamersController::class.':editAction')
                 ->setName('stations:streamers:edit');
-            $this->get('/delete/{id}', 'stations:streamers:delete')
+            $this->get('/delete/{id}', Controller\Stations\StreamersController::class.':deleteAction')
                 ->setName('stations:streamers:delete');
 
         });
 
         $this->group('/util', function () {
 
-            $this->get('/restart', 'stations:util:restart')
+            $this->get('/restart', Controller\Stations\UtilController::class.':restartAction')
                 ->setName('stations:util:restart');
 
         });
 
         // END /stations GROUP
 
-    })->add(Middleware\RequireLogin::class);
+    })
+        ->add(Middleware\EnableView::class)
+        ->add(Middleware\RequireLogin::class);
 
 };

@@ -5,7 +5,7 @@ use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class SetupController extends BaseController
+class SetupController extends \AzuraCast\Legacy\Controller
 {
     public function init()
     {

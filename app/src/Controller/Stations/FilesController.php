@@ -17,7 +17,7 @@ use Slim\Http\UploadedFile;
  * Simple PHP File Manager - Copyright John Campbell (jcampbell1)
  * License: MIT
  */
-class FilesController extends BaseController
+class FilesController extends \AzuraCast\Legacy\Controller
 {
     protected $base_dir = null;
 

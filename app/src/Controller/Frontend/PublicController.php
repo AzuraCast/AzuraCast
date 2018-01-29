@@ -5,7 +5,7 @@ use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class PublicController extends BaseController
+class PublicController extends \AzuraCast\Legacy\Controller
 {
     public function permissions()
     {

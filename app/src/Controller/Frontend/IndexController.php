@@ -1,14 +1,54 @@
 <?php
 namespace Controller\Frontend;
 
+use App\Cache;
+use AzuraCast\Acl\StationAcl;
+use AzuraCast\Radio\Adapters;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
+use InfluxDB\Database;
 
-class IndexController extends BaseController
+class IndexController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var StationAcl */
+    protected $acl;
+
+    /** @var Cache */
+    protected $cache;
+
+    /** @var Database */
+    protected $influx;
+
+    /** @var Adapters */
+    protected $adapter_manager;
+
+    /**
+     * IndexController constructor.
+     * @param EntityManager $em
+     * @param StationAcl $acl
+     * @param Cache $cache
+     * @param Database $influx
+     * @param Adapters $adapter_manager
+     */
+    public function __construct(EntityManager $em, StationAcl $acl, Cache $cache, Database $influx, Adapters $adapter_manager)
+    {
+        $this->em = $em;
+        $this->acl = $acl;
+        $this->cache = $cache;
+        $this->influx = $influx;
+        $this->adapter_manager = $adapter_manager;
+    }
+
     public function indexAction(Request $request, Response $response): Response
     {
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
         // Don't show stations the user can't manage.
@@ -17,7 +57,7 @@ class IndexController extends BaseController
         });
 
         if (empty($stations)) {
-            return $this->render($response,'frontend/index/noaccess');
+            return $view->renderToResponse($response, 'frontend/index/noaccess');
         }
 
         $view_stations = [];
@@ -25,22 +65,15 @@ class IndexController extends BaseController
 
         foreach($stations as $row) {
             /** @var Entity\Station $row */
+            $frontend_adapter = $this->adapter_manager->getFrontendAdapter($row);
+
             $view_stations[] = [
                 'station' => $row,
                 'short_name' => $row->getShortName(),
-                'stream_url' => $row->getFrontendAdapter($this->di)->getStreamUrl(),
+                'stream_url' => $frontend_adapter->getStreamUrl(),
             ];
             $station_ids[] = $row->getId();
         }
-
-        $this->view->stations = $view_stations;
-        $this->view->station_ids = $station_ids;
-
-        /** @var \App\Cache $cache */
-        $cache = $this->di[\App\Cache::class];
-
-        /** @var \InfluxDB\Database $influx */
-        $influx = $this->di[\InfluxDB\Database::class];
 
         // Generate unique cache ID for stations.
         $stats_cache_stations = [];
@@ -50,7 +83,7 @@ class IndexController extends BaseController
 
         $cache_name = 'homepage/metrics/'.md5(serialize($stats_cache_stations));
 
-        $metrics = $cache->getOrSet($cache_name, function() use ($stations, $influx) {
+        $metrics = $this->cache->getOrSet($cache_name, function() use ($stations) {
 
             // Statistics by day.
             $station_averages = [];
@@ -62,7 +95,7 @@ class IndexController extends BaseController
             ];
 
             // Query InfluxDB database.
-            $resultset = $influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 180d', [
+            $resultset = $this->influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 180d', [
                 'epoch' => 'ms',
             ]);
 
@@ -80,7 +113,7 @@ class IndexController extends BaseController
             foreach ($results as $stat_series => $stat_rows) {
                 $series_split = explode('.', $stat_series);
 
-                if ($series_split[1] == 'all') {
+                if ($series_split[1] === 'all') {
                     $network_name = 'All Stations';
                     foreach ($stat_rows as $stat_row) {
                         // Add 12 hours to statistics so they always land inside the day they represent.
@@ -159,8 +192,10 @@ class IndexController extends BaseController
 
         }, 600);
 
-        $this->view->metrics = $metrics;
-
-        return $this->render($response, 'frontend/index/index');
+        return $view->renderToResponse($response, 'frontend/index/index', [
+            'stations' => $view_stations,
+            'station_ids' => $station_ids,
+            'metrics' => $metrics,
+        ]);
     }
 }

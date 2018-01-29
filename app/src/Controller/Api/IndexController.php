@@ -5,7 +5,7 @@ use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class IndexController extends BaseController
+class IndexController extends \AzuraCast\Legacy\Controller
 {
     /**
      * Public index for API.

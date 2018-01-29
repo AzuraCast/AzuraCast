@@ -5,7 +5,7 @@ use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class ReportsController extends BaseController
+class ReportsController extends \AzuraCast\Legacy\Controller
 {
     protected function permissions()
     {

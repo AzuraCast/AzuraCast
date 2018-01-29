@@ -6,7 +6,7 @@ use Slim\Http\UploadedFile;
 use App\Http\Request;
 use App\Http\Response;
 
-class PlaylistsController extends BaseController
+class PlaylistsController extends \AzuraCast\Legacy\Controller
 {
     protected function preDispatch()
     {

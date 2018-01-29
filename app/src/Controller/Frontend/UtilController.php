@@ -5,7 +5,7 @@ use Doctrine\ORM\EntityManager;
 use App\Http\Request;
 use App\Http\Response;
 
-class UtilController extends BaseController
+class UtilController extends \AzuraCast\Legacy\Controller
 {
     protected function permissions()
     {

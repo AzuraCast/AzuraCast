@@ -47,12 +47,10 @@ return function (\Slim\Container $di, $settings) {
         return new \Slim\Handlers\Strategies\RequestResponseArgs();
     };
 
-    // Configs
     $di[\App\Config::class] = function ($di) {
         return new \App\Config(APP_INCLUDE_BASE . '/config', $di);
     };
 
-    // Database
     $di[\Doctrine\ORM\EntityManager::class] = function ($di) {
         try {
             $options = [
@@ -144,7 +142,6 @@ return function (\Slim\Container $di, $settings) {
         return $em->getConnection();
     };
 
-    // Auth and ACL
     $di[\App\Auth::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];
@@ -155,12 +152,10 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Auth($di[\App\Session::class], $user_repo);
     };
 
-    // Access control list (ACL)
     $di[\AzuraCast\Acl\StationAcl::class] = function ($di) {
         return new \AzuraCast\Acl\StationAcl($di[\Doctrine\ORM\EntityManager::class], $di[\App\Auth::class]);
     };
 
-    // Caching
     $di[\Redis::class] = $di->factory(function ($di) {
         $redis_host = (APP_INSIDE_DOCKER) ? 'redis' : 'localhost';
 
@@ -177,7 +172,6 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Cache($redis);
     };
 
-    // Register URL handler.
     $di[\App\Url::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];
@@ -205,7 +199,6 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Url($di['router'], $base_url);
     };
 
-    // Register session service.
     $di[\App\Session::class] = function ($di) {
         ini_set('session.gc_maxlifetime', 86400);
         ini_set('session.gc_probability', 1);
@@ -218,17 +211,14 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Session;
     };
 
-    // Register CSRF prevention security token service.
     $di[\App\Csrf::class] = function ($di) {
         return new \App\Csrf($di[\App\Session::class]);
     };
 
-    // Register Flash notification service.
     $di[\App\Flash::class] = function ($di) {
         return new \App\Flash($di[\App\Session::class]);
     };
 
-    // InfluxDB
     $di[\InfluxDB\Database::class] = function ($di) {
         $opts = [
             'host' => (APP_INSIDE_DOCKER) ? 'influxdb' : 'localhost',
@@ -240,7 +230,6 @@ return function (\Slim\Container $di, $settings) {
         return $influx->selectDB('stations');
     };
 
-    // Supervisord Interaction
     $di[\Supervisor\Supervisor::class] = function ($di) {
         $guzzle_client = new \GuzzleHttp\Client();
         $client = new \fXmlRpc\Client(
@@ -262,24 +251,6 @@ return function (\Slim\Container $di, $settings) {
         return $supervisor;
     };
 
-    // Scheduled synchronization manager
-    $di[\AzuraCast\Sync::class] = function ($di) {
-        return new \AzuraCast\Sync($di);
-    };
-
-    // Site-wide user-based customization.
-    $di[\AzuraCast\Customization::class] = function ($di) {
-
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
-        /** @var \Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(Entity\Settings::class);
-
-        return new \AzuraCast\Customization($di['app_settings'], $settings_repo);
-    };
-
-    // Main view/template renderer.
     $di[\App\Mvc\View::class] = function (\Slim\Container $di) {
         $view = new \App\Mvc\View(APP_INCLUDE_BASE . '/templates');
         $view->setFileExtension('phtml');
@@ -314,7 +285,24 @@ return function (\Slim\Container $di, $settings) {
         return $view;
     };
 
-    // Asset management
+    //
+    // AzuraCast-specific dependencies
+    //
+
+    $di[\AzuraCast\Sync::class] = function ($di) {
+        return new \AzuraCast\Sync($di);
+    };
+
+    $di[\AzuraCast\Customization::class] = function ($di) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        /** @var \Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $em->getRepository(Entity\Settings::class);
+
+        return new \AzuraCast\Customization($di['app_settings'], $settings_repo);
+    };
+
     $di[\AzuraCast\Assets::class] = function ($di) {
         $libraries = require('assets.php');
 
@@ -327,7 +315,6 @@ return function (\Slim\Container $di, $settings) {
         return new \AzuraCast\Assets($libraries, $versioned_files, $di[\App\Url::class]);
     };
 
-    // Rate limit checking
     $di[\AzuraCast\RateLimit::class] = function($di) {
         /** @var \Redis $redis */
         $redis = $di[\Redis::class];
@@ -336,7 +323,34 @@ return function (\Slim\Container $di, $settings) {
         return new \AzuraCast\RateLimit($redis);
     };
 
+    $di[AzuraCast\Radio\Adapters::class] = function($di) {
+        return new AzuraCast\Radio\Adapters($di);
+    };
+
+    $di[Azuracast\Radio\Backend\LiquidSoap::class] = function($di) {
+        return new \AzuraCast\Radio\Backend\LiquidSoap($di);
+    };
+
+    $di[AzuraCast\Radio\Backend\None::class] = function($di) {
+        return new \AzuraCast\Radio\Backend\None($di);
+    };
+
+    $di[\AzuraCast\Radio\Frontend\IceCast::class] = function($di) {
+        return new \AzuraCast\Radio\Frontend\IceCast($di);
+    };
+
+    $di[\AzuraCast\Radio\Frontend\Remote::class] = function($di) {
+        return new \AzuraCast\Radio\Frontend\Remote($di);
+    };
+
+    $di[\AzuraCast\Radio\Frontend\ShoutCast2::class] = function($di) {
+        return new \AzuraCast\Radio\Frontend\ShoutCast2($di);
+    };
+
+    //
     // Middleware
+    //
+
     $di[\AzuraCast\Middleware\EnableView::class] = function($di) {
         $view_args = [
             'assets' => $di[\AzuraCast\Assets::class],
@@ -369,11 +383,12 @@ return function (\Slim\Container $di, $settings) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];
 
-        /** @var Entity\Repository\StationRepository $station_repo */
+        /** @var \Entity\Repository\StationRepository $station_repo */
         $station_repo = $em->getRepository(Entity\Station::class);
 
         return new \AzuraCast\Middleware\GetStation(
-            $station_repo
+            $station_repo,
+            $di[\AzuraCast\Radio\Adapters::class]
         );
     };
 
@@ -393,13 +408,15 @@ return function (\Slim\Container $di, $settings) {
         return new \AzuraCast\Middleware\RemoveSlashes();
     };
 
+    //
     // Module-specific middleware
+    //
+
     $di[\AzuraCast\Middleware\Module\Admin::class] = function($di) {
         $config = $di[\App\Config::class];
         $dashboard_config = $config->admin->dashboard->toArray();
 
         return new \AzuraCast\Middleware\Module\Admin(
-            $di[\App\Mvc\View::class],
             $di[\AzuraCast\Acl\StationAcl::class],
             $dashboard_config
         );
@@ -411,7 +428,10 @@ return function (\Slim\Container $di, $settings) {
         );
     };
 
-    // Set up application and routing.
+    //
+    // Main Slim Application
+    //
+
     $di['app'] = function ($di) {
 
         $app = new \Slim\App($di);

@@ -40,7 +40,6 @@ class Resolver implements CallableResolverInterface
         // Check for array formatting of [callable, arg1, arg2, arg3]
         // Call the callable function at position 0 with optional arguments 1, 2... merged in.
         if (\is_array($toResolve)) {
-
             $callable_name = array_shift($toResolve);
             $callable = $this->resolve($callable_name);
 
@@ -49,31 +48,15 @@ class Resolver implements CallableResolverInterface
             return function() use ($callable, $toResolve) {
                 return \call_user_func_array($callable, array_merge(func_get_args(), $toResolve));
             };
-
         }
 
         if (\is_string($toResolve)) {
-
             // Check for Slim notation pattern of "class:method"
             if (preg_match(CallableResolver::CALLABLE_PATTERN, $toResolve, $matches)) {
                 $resolved = $this->resolveCallable($matches[1], $matches[2]);
                 $this->assertCallable($resolved);
 
                 return $resolved;
-            }
-
-            // Resolve in MVC controller format
-            // "foo:bar:baz" -> \Controller\Foo\BarController::bazAction
-            if (strpos($toResolve, ':') !== false) {
-                list($module, $controller, $action) = explode(':', $toResolve);
-
-                $class = '\\Controller\\' . ucfirst($module) . '\\' . ucfirst($controller) . 'Controller';
-                if (!class_exists($class)) {
-                    throw new RuntimeException(sprintf('Controller %s does not exist', $class));
-                }
-
-                $controller = new $class($this->di);
-                return [$controller, $action.'Action'];
             }
         }
 

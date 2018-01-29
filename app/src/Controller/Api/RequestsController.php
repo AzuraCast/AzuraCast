@@ -6,7 +6,7 @@ use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class RequestsController extends BaseController
+class RequestsController extends \AzuraCast\Legacy\Controller
 {
     /**
      * @SWG\Get(path="/station/{station_id}/requests",

@@ -24,7 +24,7 @@ class EnableView
     public function __construct(View $view, array $view_defaults = [])
     {
         $this->view = $view;
-        $this->view_defaults = [];
+        $this->view_defaults = $view_defaults;
     }
 
     /**

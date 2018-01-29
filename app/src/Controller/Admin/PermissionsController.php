@@ -5,7 +5,7 @@ use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class PermissionsController extends BaseController
+class PermissionsController extends \AzuraCast\Legacy\Controller
 {
     public function indexAction(Request $request, Response $response): Response
     {

@@ -12,18 +12,14 @@ use Slim\Http\Response;
  */
 class Admin
 {
-    /** @var View */
-    protected $view;
-
     /** @var StationAcl */
     protected $acl;
 
     /** @var array */
     protected $dashboard_config;
 
-    public function __construct(View $view, StationAcl $acl, $dashboard_config)
+    public function __construct(StationAcl $acl, $dashboard_config)
     {
-        $this->view = $view;
         $this->acl = $acl;
         $this->dashboard_config = $dashboard_config;
     }
@@ -58,8 +54,11 @@ class Admin
 
         unset($sidebar_info);
 
-        $this->view->admin_panels = $panels;
-        $this->view->sidebar = $this->view->fetch('admin/sidebar');
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        $view->admin_panels = $panels;
+        $view->sidebar = $view->render('admin/sidebar');
 
         return $next($request, $response);
     }

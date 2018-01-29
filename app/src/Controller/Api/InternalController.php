@@ -5,7 +5,7 @@ use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class InternalController extends BaseController
+class InternalController extends \AzuraCast\Legacy\Controller
 {
     public function authAction(Request $request, Response $response): Response
     {

@@ -1,27 +1,47 @@
 <?php
 namespace Controller\Admin;
 
+use App\Acl;
 use App\Http\Request;
 use App\Http\Response;
+use AzuraCast\Sync;
 
-class IndexController extends BaseController
+class IndexController
 {
+    /** @var Acl */
+    protected $acl;
+
+    /** @var Sync */
+    protected $sync;
+
+    /**
+     * IndexController constructor.
+     * @param Acl $acl
+     * @param Sync $sync
+     */
+    public function __construct(Acl $acl, Sync $sync)
+    {
+        $this->acl = $acl;
+        $this->sync = $sync;
+    }
+
     /**
      * Main display.
      */
     public function indexAction(Request $request, Response $response): Response
     {
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
         // Remove the sidebar on the homepage.
-        $this->view->sidebar = null;
+        $view->sidebar = null;
 
         // Synchronization statuses
         if ($this->acl->isAllowed('administer all')) {
-            /** @var \AzuraCast\Sync $sync */
-            $sync = $this->di[\AzuraCast\Sync::class];
-            $this->view->sync_times = $sync->getSyncTimes();
+            $view->sync_times = $this->sync->getSyncTimes();
         }
 
-        return $this->render($response, 'admin/index/index');
+        return $view->renderToResponse($response, 'admin/index/index');
     }
 
     public function syncAction(Request $request, Response $response, $args): Response
@@ -35,20 +55,17 @@ class IndexController extends BaseController
 
         $type = $args['type'];
 
-        /** @var \AzuraCast\Sync $sync */
-        $sync = $this->di[\AzuraCast\Sync::class];
-
         switch ($type) {
             case "long":
-                $sync->syncLong();
+                $this->sync->syncLong();
                 break;
 
             case "medium":
-                $sync->syncMedium();
+                $this->sync->syncMedium();
                 break;
 
             case "short":
-                $sync->syncShort();
+                $this->sync->syncShort();
                 break;
 
             case "nowplaying":
@@ -56,7 +73,7 @@ class IndexController extends BaseController
                 $segment = $request->getParam('segment', 1);
                 define('NOWPLAYING_SEGMENT', $segment);
 
-                $sync->syncNowplaying(true);
+                $this->sync->syncNowplaying(true);
                 break;
         }
 

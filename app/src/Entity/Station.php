@@ -683,39 +683,7 @@ class Station
         return $this->mounts;
     }
 
-    /**
-     * @return \AzuraCast\Radio\Frontend\FrontendAbstract
-     * @throws \Exception
-     */
-    public function getFrontendAdapter(ContainerInterface $di)
-    {
-        $adapters = self::getFrontendAdapters();
 
-        if (!isset($adapters['adapters'][$this->frontend_type])) {
-            throw new \Exception('Adapter not found: ' . $this->frontend_type);
-        }
-
-        $class_name = $adapters['adapters'][$this->frontend_type]['class'];
-
-        return new $class_name($di, $this);
-    }
-
-    /**
-     * @return \AzuraCast\Radio\Backend\BackendAbstract
-     * @throws \Exception
-     */
-    public function getBackendAdapter(ContainerInterface $di)
-    {
-        $adapters = self::getBackendAdapters();
-
-        if (!isset($adapters['adapters'][$this->backend_type])) {
-            throw new \Exception('Adapter not found: ' . $this->backend_type);
-        }
-
-        $class_name = $adapters['adapters'][$this->backend_type]['class'];
-
-        return new $class_name($di, $this);
-    }
 
     /**
      * Write all configuration changes to the filesystem and reload supervisord.
@@ -910,74 +878,6 @@ class Station
         $name = str_replace(' ', '', $name);
 
         return $name;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getFrontendAdapters(): array
-    {
-        static $adapters;
-
-        if ($adapters === null) {
-            $adapters = [
-                'icecast' => [
-                    'name' => sprintf(_('Use <b>%s</b> on this server'), 'Icecast 2.4'),
-                    'class' => '\AzuraCast\Radio\Frontend\IceCast',
-                ],
-                'shoutcast2' => [
-                    'name' => sprintf(_('Use <b>%s</b> on this server'), 'Shoutcast 2'),
-                    'class' => '\AzuraCast\Radio\Frontend\ShoutCast2',
-                ],
-                'remote' => [
-                    'name' => _('Connect to a <b>remote radio server</b>'),
-                    'class' => '\AzuraCast\Radio\Frontend\Remote',
-                ],
-            ];
-
-            $adapters = array_filter($adapters, function($adapter_info) {
-                /** @var \AzuraCast\Radio\AdapterAbstract $adapter_class */
-                $adapter_class = $adapter_info['class'];
-                return $adapter_class::isInstalled();
-            });
-        }
-
-        return [
-            'default' => 'icecast',
-            'adapters' => $adapters,
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public static function getBackendAdapters(): array
-    {
-        static $adapters;
-
-        if ($adapters === null) {
-            $adapters = [
-                'liquidsoap' => [
-                    'name' => sprintf(_('Use <b>%s</b> on this server'), 'LiquidSoap'),
-                    'class' => '\AzuraCast\Radio\Backend\LiquidSoap',
-                ],
-                'none' => [
-                    'name' => _('<b>Do not use</b> an AutoDJ service'),
-                    'class' => '\AzuraCast\Radio\Backend\None',
-                ],
-            ];
-
-            $adapters = array_filter($adapters, function ($adapter_info) {
-                /** @var \AzuraCast\Radio\AdapterAbstract $adapter_class */
-                $adapter_class = $adapter_info['class'];
-                return $adapter_class::isInstalled();
-            });
-        }
-
-        return [
-            'default' => 'liquidsoap',
-            'adapters' => $adapters,
-        ];
     }
 
     /**

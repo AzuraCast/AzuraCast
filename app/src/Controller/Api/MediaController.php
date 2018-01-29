@@ -5,7 +5,7 @@ use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class MediaController extends BaseController
+class MediaController extends \AzuraCast\Legacy\Controller
 {
     /**
      * @SWG\Get(path="/station/{station_id}/art/{media_id}",

@@ -7,7 +7,7 @@ use Slim\Container;
 use App\Http\Request;
 use App\Http\Response;
 
-class UsersController extends BaseController
+class UsersController extends \AzuraCast\Legacy\Controller
 {
     /** @var Entity\Repository\UserRepository */
     protected $record_repo;

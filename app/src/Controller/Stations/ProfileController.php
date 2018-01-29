@@ -5,7 +5,7 @@ use Entity\Station;
 use App\Http\Request;
 use App\Http\Response;
 
-class ProfileController extends BaseController
+class ProfileController extends \AzuraCast\Legacy\Controller
 {
     public function indexAction(Request $request, Response $response): Response
     {

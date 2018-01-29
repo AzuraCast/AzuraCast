@@ -5,7 +5,7 @@ use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class StationsController extends BaseController
+class StationsController extends \AzuraCast\Legacy\Controller
 {
     /**
      * @SWG\Get(path="/stations",

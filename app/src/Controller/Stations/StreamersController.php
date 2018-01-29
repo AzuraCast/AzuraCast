@@ -5,7 +5,7 @@ use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class StreamersController extends BaseController
+class StreamersController extends \AzuraCast\Legacy\Controller
 {
     /** @var Entity\Repository\StationStreamerRepository */
     protected $streamers_repo;

@@ -6,7 +6,7 @@ use Slim\Container;
 use App\Http\Request;
 use App\Http\Response;
 
-class ProfileController extends BaseController
+class ProfileController extends \AzuraCast\Legacy\Controller
 {
     /** @var Entity\Repository\UserRepository */
     protected $user_repo;

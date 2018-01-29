@@ -6,7 +6,7 @@ use Entity\StationMount;
 use App\Http\Request;
 use App\Http\Response;
 
-class MountsController extends BaseController
+class MountsController extends \AzuraCast\Legacy\Controller
 {
     protected function preDispatch()
     {

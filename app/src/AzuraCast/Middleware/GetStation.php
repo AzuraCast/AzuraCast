@@ -1,6 +1,7 @@
 <?php
 namespace AzuraCast\Middleware;
 
+use AzuraCast\Radio\Adapters;
 use Entity;
 use Entity\Repository\StationRepository;
 use Slim\Http\Request;
@@ -14,9 +15,13 @@ class GetStation
     /** @var StationRepository */
     protected $station_repo;
 
-    public function __construct(StationRepository $station_repo)
+    /** @var Adapters */
+    protected $adapters;
+
+    public function __construct(StationRepository $station_repo, Adapters $adapters)
     {
         $this->station_repo = $station_repo;
+        $this->adapters = $adapters;
     }
 
     /**
@@ -44,7 +49,10 @@ class GetStation
         }
 
         if ($record instanceof Entity\Station) {
-            $request = $request->withAttribute('station', $record);
+            $request = $request
+                ->withAttribute('station', $record)
+                ->withAttribute('station_frontend', $this->adapters->getFrontendAdapter($record))
+                ->withAttribute('station_backend', $this->adapters->getBackendAdapter($record));
         } else if ($station_required) {
             throw new \RuntimeException('Station not found!');
         }

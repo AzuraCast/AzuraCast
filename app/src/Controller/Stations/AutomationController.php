@@ -3,7 +3,7 @@ namespace Controller\Stations;
 use App\Http\Request;
 use App\Http\Response;
 
-class AutomationController extends BaseController
+class AutomationController extends \AzuraCast\Legacy\Controller
 {
     protected function permissions()
     {

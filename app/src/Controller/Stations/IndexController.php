@@ -5,7 +5,7 @@ use Entity\Song;
 use App\Http\Request;
 use App\Http\Response;
 
-class IndexController extends BaseController
+class IndexController extends \AzuraCast\Legacy\Controller
 {
     public function indexAction(Request $request, Response $response): Response
     {

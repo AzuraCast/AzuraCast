@@ -4,25 +4,31 @@ namespace AzuraCast\Sync;
 use Doctrine\ORM\EntityManager;
 use Entity;
 use InfluxDB\Database;
+use Slim\Container;
 
 class Analytics extends SyncAbstract
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Database  */
+    protected $influx;
+
+    public function __construct(EntityManager $em, Database $influx)
+    {
+        $this->em = $em;
+        $this->influx = $influx;
+    }
+
     public function run()
     {
-        /** @var EntityManager $em */
-        $em = $this->di[EntityManager::class];
-
         // Clear out any non-daily statistics.
-        $em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type != :type')
+        $this->em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type != :type')
             ->setParameter('type', 'day')
             ->execute();
 
         // Pull statistics in from influx.
-
-        /** @var Database $influx */
-        $influx = $this->di[Database::class];
-
-        $resultset = $influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 14d', [
+        $resultset = $this->influx->query('SELECT * FROM "1d"./.*/ WHERE time > now() - 14d', [
             'epoch' => 's',
         ]);
 
@@ -42,7 +48,7 @@ class Analytics extends SyncAbstract
 
         foreach ($results as $stat_series => $stat_rows) {
             $series_split = explode('.', $stat_series);
-            $station_id = ($series_split[1] == 'all') ? null : $series_split[1];
+            $station_id = ($series_split[1] === 'all') ? null : $series_split[1];
 
             foreach ($stat_rows as $stat_row) {
                 if ($stat_row['time'] < $earliest_timestamp) {
@@ -60,11 +66,11 @@ class Analytics extends SyncAbstract
             }
         }
 
-        $em->createQuery('DELETE FROM Entity\Analytics a WHERE a.timestamp >= :earliest')
+        $this->em->createQuery('DELETE FROM Entity\Analytics a WHERE a.timestamp >= :earliest')
             ->setParameter('earliest', $earliest_timestamp)
             ->execute();
 
-        $all_stations = $em->getRepository(Entity\Station::class)->findAll();
+        $all_stations = $this->em->getRepository(Entity\Station::class)->findAll();
         $stations_by_id = [];
         foreach($all_stations as $station) {
             $stations_by_id[$station->getId()] = $station;
@@ -80,10 +86,10 @@ class Analytics extends SyncAbstract
                     $row['number_max'],
                     $row['number_avg']
                 );
-                $em->persist($record);
+                $this->em->persist($record);
             }
         }
 
-        $em->flush();
+        $this->em->flush();
     }
 }

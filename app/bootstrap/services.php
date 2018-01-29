@@ -289,10 +289,6 @@ return function (\Slim\Container $di, $settings) {
     // AzuraCast-specific dependencies
     //
 
-    $di[\AzuraCast\Sync::class] = function ($di) {
-        return new \AzuraCast\Sync($di);
-    };
-
     $di[\AzuraCast\Customization::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];
@@ -327,6 +323,14 @@ return function (\Slim\Container $di, $settings) {
         return new AzuraCast\Radio\Adapters($di);
     };
 
+    $di[\AzuraCast\Radio\Configuration::class] = function($di) {
+        return new \AzuraCast\Radio\Configuration(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Radio\Adapters::class],
+            $di[\Supervisor\Supervisor::class]
+        );
+    };
+
     $di[Azuracast\Radio\Backend\LiquidSoap::class] = function($di) {
         return new \AzuraCast\Radio\Backend\LiquidSoap($di);
     };
@@ -345,6 +349,46 @@ return function (\Slim\Container $di, $settings) {
 
     $di[\AzuraCast\Radio\Frontend\ShoutCast2::class] = function($di) {
         return new \AzuraCast\Radio\Frontend\ShoutCast2($di);
+    };
+
+    $di[\AzuraCast\Sync::class] = function ($di) {
+        return new \AzuraCast\Sync($di);
+    };
+
+    $di[\AzuraCast\Sync\Analytics::class] = function($di) {
+        return new \AzuraCast\Sync\Analytics(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\InfluxDB\Database::class]
+        );
+    };
+
+    $di[\AzuraCast\Sync\HistoryCleanup::class] = function($di) {
+        return new \AzuraCast\Sync\HistoryCleanup(
+            $di[\Doctrine\ORM\EntityManager::class]
+        );
+    };
+
+    $di[\AzuraCast\Sync\Media::class] = function($di) {
+        return new \AzuraCast\Sync\Media(
+            $di[\Doctrine\ORM\EntityManager::class]
+        );
+    };
+
+    $di[\AzuraCast\Sync\NowPlaying::class] = function($di) {
+        return new \AzuraCast\Sync\NowPlaying(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Url::class],
+            $di[\InfluxDB\Database::class],
+            $di[\App\Cache::class],
+            $di[\AzuraCast\Radio\Adapters::class]
+        );
+    };
+
+    $di[\AzuraCast\Sync\RadioAutomation::class] = function($di) {
+        return new \AzuraCast\Sync\RadioAutomation(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Radio\Adapters::class]
+        );
     };
 
     //

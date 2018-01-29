@@ -1,31 +1,30 @@
 <?php
 namespace AzuraCast\Sync;
 
+use App\Cache;
 use App\Debug;
 use App\Url;
+use AzuraCast\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use Entity;
-use Interop\Container\ContainerInterface;
+use InfluxDB\Database;
 
 class NowPlaying extends SyncAbstract
 {
-    public function __construct(ContainerInterface $di)
-    {
-        parent::__construct($di);
-
-        $this->em = $di[EntityManager::class];
-        $this->url = $di[Url::class];
-
-        $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
-        $this->song_repo = $this->em->getRepository(Entity\Song::class);
-        $this->listener_repo = $this->em->getRepository(Entity\Listener::class);
-    }
-
     /** @var EntityManager */
     protected $em;
 
     /** @var Url */
     protected $url;
+
+    /** @var Database */
+    protected $influx;
+
+    /** @var Cache */
+    protected $cache;
+
+    /** @var Adapters */
+    protected $adapters;
 
     /** @var Entity\Repository\SongHistoryRepository */
     protected $history_repo;
@@ -36,6 +35,19 @@ class NowPlaying extends SyncAbstract
     /** @var Entity\Repository\ListenerRepository */
     protected $listener_repo;
 
+    public function __construct(EntityManager $em, Url $url, Database $influx, Cache $cache, Adapters $adapters)
+    {
+        $this->em = $em;
+        $this->url = $url;
+        $this->influx = $influx;
+        $this->cache = $cache;
+        $this->adapters = $adapters;
+
+        $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
+        $this->song_repo = $this->em->getRepository(Entity\Song::class);
+        $this->listener_repo = $this->em->getRepository(Entity\Listener::class);
+    }
+
     public function run()
     {
         $nowplaying = $this->_loadNowPlaying();
@@ -44,9 +56,6 @@ class NowPlaying extends SyncAbstract
         $this->_notify('all', $nowplaying);
 
         // Post statistics to InfluxDB.
-
-        /** @var \InfluxDB\Database $influx */
-        $influx = $this->di[\InfluxDB\Database::class];
         $influx_points = [];
 
         $total_overall = 0;
@@ -74,16 +83,14 @@ class NowPlaying extends SyncAbstract
             time()
         );
 
-        $influx->writePoints($influx_points, \InfluxDB\Database::PRECISION_SECONDS);
+        $this->influx->writePoints($influx_points, \InfluxDB\Database::PRECISION_SECONDS);
 
         // Generate API cache.
         foreach ($nowplaying as $station => $np_info) {
             $nowplaying[$station]->cache = 'hit';
         }
 
-        /** @var \App\Cache $cache */
-        $cache = $this->di->get(\App\Cache::class);
-        $cache->save($nowplaying, 'api_nowplaying_data', 120);
+        $this->cache->save($nowplaying, 'api_nowplaying_data', 120);
 
         foreach ($nowplaying as $station => $np_info) {
             $nowplaying[$station]->cache = 'database';
@@ -139,9 +146,10 @@ class NowPlaying extends SyncAbstract
         $np_old = $station->getNowplaying();
 
         $np = new Entity\Api\NowPlaying;
-        $np->station = $station->api($station->getFrontendAdapter($this->di));
 
-        $frontend_adapter = $station->getFrontendAdapter($this->di);
+        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
+
+        $np->station = $station->api($frontend_adapter);
         $np_raw = $frontend_adapter->getNowPlaying($payload);
 
         $np->listeners = new Entity\Api\NowPlayingListeners($np_raw['listeners']);

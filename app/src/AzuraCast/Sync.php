@@ -72,8 +72,10 @@ class Sync
 
         $this->settings->setSetting('nowplaying_last_started', time());
 
-        $task = new Sync\NowPlaying($this->di);
-        Debug::runTimer('Run NowPlaying update', function () use ($task) {
+        Debug::runTimer('Run NowPlaying update', function () {
+            /** @var Sync\NowPlaying $task */
+            $task = $this->di[Sync\NowPlaying::class];
+
             $task->run();
         });
 
@@ -105,17 +107,10 @@ class Sync
 
         // Sync uploaded media.
         Debug::runTimer('Run radio station track sync', function () {
-            $task = new Sync\Media($this->di);
+            /** @var Sync\Media $task */
+            $task = $this->di[Sync\Media::class];
             $task->run();
         });
-
-        /*
-        // Check station uptime.
-        Debug::runTimer('Check radio station stream uptime', function() {
-            $task = new Sync\RadioUptime($this->di);
-            $task->run();
-        });
-        */
 
         $this->settings->setSetting('sync_last_run', time());
     }
@@ -132,19 +127,22 @@ class Sync
 
         // Sync analytical and statistical data (long running).
         Debug::runTimer('Run analytics manager', function () {
-            $task = new Sync\Analytics($this->di);
+            /** @var Sync\Analytics $task */
+            $task = $this->di[Sync\Analytics::class];
             $task->run();
         });
 
         // Run automated playlist assignment.
         Debug::runTimer('Run automated playlist assignment', function () {
-            $task = new Sync\RadioAutomation($this->di);
+            /** @var Sync\RadioAutomation $task */
+            $task = $this->di[Sync\RadioAutomation::class];
             $task->run();
         });
 
         // Clean up old song history entries.
         Debug::runTimer('Run song history cleanup', function () {
-            $task = new Sync\HistoryCleanup($this->di);
+            /** @var Sync\HistoryCleanup $task */
+            $task = $this->di[Sync\HistoryCleanup::class];
             $task->run();
         });
 

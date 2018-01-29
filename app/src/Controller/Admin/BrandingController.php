@@ -3,8 +3,8 @@ namespace Controller\Admin;
 
 use Entity\Repository;
 use Entity\Settings;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class BrandingController extends BaseController
 {
@@ -37,7 +37,7 @@ class BrandingController extends BaseController
 
             $this->alert(_('Changes saved.'), 'green');
 
-            return $this->redirectHere($response);
+            return $response->redirectHere();
         }
 
         $this->view->form = $form;

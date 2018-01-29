@@ -26,10 +26,6 @@ define("APP_INCLUDE_VENDOR", APP_INCLUDE_ROOT . '/vendor');
 define("APP_INCLUDE_TEMP", APP_INCLUDE_ROOT . '/../www_tmp');
 define("APP_INCLUDE_CACHE", APP_INCLUDE_TEMP . '/cache');
 
-define("APP_INCLUDE_MODULES", APP_INCLUDE_BASE.'/modules');
-
-define("APP_UPLOAD_FOLDER", APP_INCLUDE_STATIC);
-
 // Set up application environment.
 if (file_exists(APP_INCLUDE_BASE.'/env.ini')) {
     $_ENV = array_merge($_ENV, parse_ini_file(APP_INCLUDE_BASE.'/env.ini'));
@@ -65,6 +61,7 @@ $di = new \Slim\Container([
         'displayErrorDetails' => !APP_IN_PRODUCTION,
         'addContentLengthHeader' => false,
         'routerCacheFile' => (APP_IN_PRODUCTION) ? APP_INCLUDE_TEMP . '/app_routes.cache.php' : false,
+        // 'determineRouteBeforeAppMiddleware' => true,
     ]
 ]);
 

@@ -2,8 +2,8 @@
 namespace Controller\Frontend;
 
 use Doctrine\ORM\EntityManager;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class UtilController extends BaseController
 {

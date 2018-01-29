@@ -1,28 +1,40 @@
 <?php
 namespace Controller\Admin;
 
+use App\Flash;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use Slim\Container;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
-class ApiController extends BaseController
+class ApiController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Flash */
+    protected $flash;
+
     /** @var Entity\Repository\BaseRepository */
     protected $record_repo;
 
-    public function __construct(Container $di)
+    public function __construct(EntityManager $em, Flash $flash)
     {
-        parent::__construct($di);
+        $this->em = $em;
+        $this->flash = $flash;
 
         $this->record_repo = $this->em->getRepository(Entity\ApiKey::class);
     }
 
     public function indexAction(Request $request, Response $response): Response
     {
-        $this->view->records = $this->record_repo->fetchArray();
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
 
-        return $this->render($response, 'admin/api/index');
+        return $view->renderToResponse($response, 'admin/api/index', [
+            'records' => $this->record_repo->fetchArray(),
+        ]);
     }
 
     public function editAction(Request $request, Response $response, $id = null): Response

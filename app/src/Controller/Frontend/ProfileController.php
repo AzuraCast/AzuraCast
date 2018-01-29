@@ -2,17 +2,18 @@
 namespace Controller\Frontend;
 
 use Entity;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Container;
+use App\Http\Request;
+use App\Http\Response;
 
 class ProfileController extends BaseController
 {
     /** @var Entity\Repository\UserRepository */
     protected $user_repo;
 
-    protected function preDispatch()
+    public function __construct(Container $di)
     {
-        parent::preDispatch();
+        parent::__construct($di);
 
         $this->user_repo = $this->em->getRepository(Entity\User::class);
     }
@@ -20,8 +21,7 @@ class ProfileController extends BaseController
     public function indexAction(Request $request, Response $response): Response
     {
         /** @var Entity\User $user */
-        $user = $this->di['user'];
-        $this->view->user = $user;
+        $user = $request->getAttribute('user');
 
         $form = new \App\Form($this->config->forms->profile);
 
@@ -29,15 +29,16 @@ class ProfileController extends BaseController
         unset($user_profile['auth_password']);
         $form->setDefaults($user_profile);
 
-        $this->view->form = $form;
+        return $this->render($response, 'frontend/profile/index', [
+            'form' => $form,
+            'user' => $user,
+        ]);
     }
 
     public function editAction(Request $request, Response $response): Response
     {
-        $this->acl->checkPermission('is logged in');
-
         /** @var Entity\User $user */
-        $user = $this->di['user'];
+        $user = $request->getAttribute('user');
 
         $form_config = $this->config->forms->profile->toArray();
         $form_config['groups']['reset_password']['elements']['password'][1]['validator'] = function($val, \Nibble\NibbleForms\Field $field) use ($user) {
@@ -78,9 +79,9 @@ class ProfileController extends BaseController
 
             $this->alert(_('Profile saved!'), 'green');
 
-            return $this->redirectFromHere(['action' => 'index']);
+            return $this->redirectToName($response, 'profile:index');
         }
 
-        return $this->renderForm($form, 'edit', _('Edit Profile'));
+        return $this->renderForm($response, $form, 'edit', _('Edit Profile'));
     }
 }

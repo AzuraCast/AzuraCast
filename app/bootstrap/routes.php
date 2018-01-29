@@ -155,21 +155,21 @@ return function(\Slim\App $app) {
         $this->get('/', Controller\Frontend\IndexController::class.':indexAction')
             ->setName('home');
 
-        $this->get('/logout', 'frontend:account:logout')
+        $this->get('/logout', Controller\Frontend\AccountController::class.':logoutAction')
             ->setName('account:logout');
 
-        $this->get('/endsession', 'frontend:account:endmasquerade')
+        $this->get('/endsession', Controller\Frontend\AccountController::class.':endmasqueradeAction')
             ->setName('account:endmasquerade');
 
-        $this->get('/profile', 'frontend:profile:index')
+        $this->get('/profile', Controller\Frontend\ProfileController::class.':indexAction')
             ->setName('profile:index');
 
-        $this->map(['GET', 'POST'], '/profile/edit', 'frontend:profile:edit')
+        $this->map(['GET', 'POST'], '/profile/edit', Controller\Frontend\ProfileController::class.':editAction')
             ->setName('profile:edit');
 
         // Used for internal development
         if (!APP_IN_PRODUCTION) {
-            $this->any('/test', 'frontend:util:test')
+            $this->any('/test', Controller\Frontend\UtilController::class.':testAction')
                 ->setName('util:test');
         }
 

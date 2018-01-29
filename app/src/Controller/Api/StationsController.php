@@ -2,8 +2,8 @@
 namespace Controller\Api;
 
 use Entity;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class StationsController extends BaseController
 {
@@ -36,7 +36,7 @@ class StationsController extends BaseController
             }
         }
 
-        return $this->returnSuccess($response, $stations);
+        return $response->withJson($stations);
     }
 
     /**
@@ -59,6 +59,7 @@ class StationsController extends BaseController
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        return $this->returnSuccess($response, $station->api($station->getFrontendAdapter($this->di)));
+        $api_response = $station->api($station->getFrontendAdapter($this->di));
+        return $response->withJson($api_response);
     }
 }

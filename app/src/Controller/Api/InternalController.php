@@ -2,8 +2,8 @@
 namespace Controller\Api;
 
 use Entity;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class InternalController extends BaseController
 {

@@ -2,8 +2,8 @@
 namespace Controller\Admin;
 
 use Entity;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class PermissionsController extends BaseController
 {

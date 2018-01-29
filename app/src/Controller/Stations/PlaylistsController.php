@@ -3,8 +3,8 @@ namespace Controller\Stations;
 
 use Entity;
 use Slim\Http\UploadedFile;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class PlaylistsController extends BaseController
 {

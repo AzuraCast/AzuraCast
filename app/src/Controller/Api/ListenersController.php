@@ -3,8 +3,8 @@ namespace Controller\Api;
 
 use App\Utilities;
 use Entity;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class ListenersController extends BaseController
 {
@@ -90,7 +90,7 @@ class ListenersController extends BaseController
             $listeners[] = $api;
         }
 
-        return $this->returnSuccess($response, $listeners);
+        return $response->withJson($listeners);
     }
 
     protected function _getIpInfo($raw_ips)

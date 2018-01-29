@@ -2,8 +2,8 @@
 namespace Controller\Api;
 
 use Entity;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class NowplayingController extends BaseController
 {
@@ -61,18 +61,18 @@ class NowplayingController extends BaseController
 
         // Sanity check for now playing data.
         if (empty($np)) {
-            return $this->returnError($response,'Now Playing data has not loaded into the cache. Wait for file reload.', 500);
+            return $response->withJson('Now Playing data has not loaded into the cache. Wait for file reload.', 500);
         }
 
         if (!empty($id)) {
             foreach ($np as $np_row) {
                 if ($np_row->station->id == (int)$id || $np_row->station->shortcode === $id) {
                     $np_row->now_playing->recalculate();
-                    return $this->returnSuccess($response, $np_row);
+                    return $response->withJson($np_row);
                 }
             }
 
-            return $this->returnError($response, 'Station not found.', 404);
+            return $response->withJson('Station not found.', 404);
         }
 
         $np = array_filter($np, function($np_row) {
@@ -83,6 +83,6 @@ class NowplayingController extends BaseController
             $np_row->now_playing->recalculate();
         }
 
-        return $this->returnSuccess($response, $np);
+        return $response->withJson($np);
     }
 }

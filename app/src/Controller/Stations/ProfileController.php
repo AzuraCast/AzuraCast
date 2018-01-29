@@ -2,8 +2,8 @@
 namespace Controller\Stations;
 
 use Entity\Station;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class ProfileController extends BaseController
 {
@@ -91,8 +91,8 @@ class ProfileController extends BaseController
                     $this->backend->skip();
                 }
 
-                if ($this->request->isXhr()) {
-                    return $this->renderJson([
+                if ($request->isXhr()) {
+                    return $response->withJson([
                         'message' => _('Song skipped.'),
                         'type' => 'success',
                     ]);

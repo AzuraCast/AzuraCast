@@ -3,8 +3,8 @@ namespace Controller\Admin;
 
 use Entity;
 use Slim\Container;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class StationsController extends BaseController
 {

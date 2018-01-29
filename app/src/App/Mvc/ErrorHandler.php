@@ -55,8 +55,6 @@ class ErrorHandler
             $view = $di[\App\Mvc\View::class];
 
             if (self::showDetailedDebugInfo($di)) {
-                $view->disable();
-
                 // Register error-handler.
                 $handler = new \Whoops\Handler\PrettyPageHandler;
                 $handler->setPageTitle('An error occurred!');

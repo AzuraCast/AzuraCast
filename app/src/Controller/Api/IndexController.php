@@ -2,8 +2,8 @@
 namespace Controller\Api;
 
 use Entity;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class IndexController extends BaseController
 {
@@ -12,7 +12,7 @@ class IndexController extends BaseController
      */
     public function indexAction(Request $request, Response $response): Response
     {
-        return $this->redirect($response, $this->url->content('api/index.html'));
+        return $response->withRedirect($this->url->content('api/index.html'));
     }
 
     /**
@@ -29,7 +29,7 @@ class IndexController extends BaseController
      */
     public function statusAction(Request $request, Response $response): Response
     {
-        return $this->returnSuccess($response, new Entity\Api\Status);
+        return $response->withJson(new Entity\Api\Status);
     }
 
     /**
@@ -47,6 +47,6 @@ class IndexController extends BaseController
     public function timeAction(Request $request, Response $response): Response
     {
         $tz_info = \App\Timezone::getInfo();
-        return $this->returnSuccess($response, new Entity\Api\Time($tz_info));
+        return $response->withJson(new Entity\Api\Time($tz_info));
     }
 }

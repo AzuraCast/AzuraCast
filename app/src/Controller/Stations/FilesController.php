@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Stations;
 
+use App\Http\Response;
 use App\Utilities;
 use Entity\StationMedia;
 use Entity\StationPlaylist;
@@ -154,7 +155,7 @@ class FilesController extends BaseController
             $this->alert('<b>' . _('Media metadata updated!') . '</b>', 'green');
 
             $file_dir = (dirname($media->getPath()) == '.') ? '' : dirname($media->getPath());
-            return $this->redirect($this->url->routeFromHere(['action' => 'index']).'#'.$file_dir);
+            return $response->withRedirect($this->url->routeFromHere(['action' => 'index']).'#'.$file_dir);
         }
 
         return $this->renderForm($form, 'edit', _('Edit Media Metadata'));
@@ -201,7 +202,7 @@ class FilesController extends BaseController
             $this->alert('<b>' . _('File renamed!') . '</b>', 'green');
 
             $file_dir = (dirname($path) == '.') ? '' : dirname($path);
-            return $this->redirect($this->url->routeFromHere(['action' => 'index']).'#'.$file_dir);
+            return $response->withRedirect($this->url->routeFromHere(['action' => 'index']).'#'.$file_dir);
         }
 
         return $this->renderForm($form, 'edit', _('Rename File/Directory'));
@@ -370,7 +371,7 @@ class FilesController extends BaseController
 
         $return_result = array_slice($result, $offset_start, $row_count);
 
-        return $this->renderJson([
+        return $response->withJson([
             'current' => $page,
             'rowCount' => $row_count,
             'total' => $num_results,
@@ -493,7 +494,7 @@ class FilesController extends BaseController
                 break;
         }
 
-        return $this->renderJson([
+        return $response->withJson([
             'success' => true,
             'files_found' => $files_found,
             'files_affected' => $files_affected,
@@ -542,7 +543,7 @@ class FilesController extends BaseController
 
         @mkdir($this->file_path . '/' . $dir);
 
-        return $this->renderJson(['success' => true]);
+        return $response->withJson(['success' => true]);
     }
 
     public function uploadAction(Request $request, Response $response): Response
@@ -573,7 +574,7 @@ class FilesController extends BaseController
                 $this->em->persist($station_media);
                 $this->em->flush();
 
-                return $this->renderJson(['success' => true]);
+                return $response->withJson(['success' => true]);
             }
 
         } catch (\Exception $e) {
@@ -616,8 +617,8 @@ class FilesController extends BaseController
         return true;
     }
 
-    protected function _err($code, $msg)
+    protected function _err(Response $response, $code, $msg)
     {
-        return $this->renderJson(['error' => ['code' => intval($code), 'msg' => $msg]]);
+        return $response->withJson(['error' => ['code' => (int)$code, 'msg' => $msg]]);
     }
 }

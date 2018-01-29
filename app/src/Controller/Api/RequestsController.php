@@ -3,8 +3,8 @@ namespace Controller\Api;
 
 use App\Utilities;
 use Entity;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class RequestsController extends BaseController
 {
@@ -32,7 +32,7 @@ class RequestsController extends BaseController
 
         $ba = $station->getBackendAdapter($this->di);
         if (!$ba->supportsRequests()) {
-            return $this->returnError($response, 'This station does not support requests.', 403);
+            return $response->withJson('This station does not support requests.', 403);
         }
 
         $requestable_media = $this->em->createQuery('SELECT sm, s, sp 
@@ -113,7 +113,7 @@ class RequestsController extends BaseController
             $offset_start = ($page - 1) * $row_count;
             $return_result = array_slice($result, $offset_start, $row_count);
 
-            return $this->renderJson($response, [
+            return $response->withJson([
                 'current' => $page,
                 'rowCount' => $row_count,
                 'total' => $num_results,
@@ -121,7 +121,7 @@ class RequestsController extends BaseController
             ]);
         }
 
-        return $this->returnSuccess($response, $result);
+         return $response->withJson($result);
     }
 
     /**
@@ -149,7 +149,7 @@ class RequestsController extends BaseController
 
         $ba = $station->getBackendAdapter($this->di);
         if (!$ba->supportsRequests()) {
-            return $this->returnError($response, 'This station does not support requests.', 403);
+            return $response->withJson('This station does not support requests.', 403);
         }
 
         try {
@@ -157,9 +157,9 @@ class RequestsController extends BaseController
             $request_repo = $this->em->getRepository(Entity\StationRequest::class);
             $request_repo->submit($station, $media_id, $this->authenticate());
 
-            return $this->returnSuccess($response, 'Request submitted successfully.');
+            return $response->withJson('Request submitted successfully.');
         } catch (\App\Exception $e) {
-            return $this->returnError($response, $e->getMessage());
+            return $response->withJson($e->getMessage(), 400);
         }
     }
 }

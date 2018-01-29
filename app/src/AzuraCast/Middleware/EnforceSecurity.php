@@ -72,7 +72,9 @@ class EnforceSecurity
             $csp[] = 'upgrade-insecure-requests';
         }
 
-        $response = $response->withHeader('Content-Security-Policy', implode('; ', $csp));
+        $response = $response
+            ->withHeader('Content-Security-Policy', implode('; ', $csp))
+            ->withHeader('X-Frame-Options', 'DENY');
 
         return $next($request, $response);
     }

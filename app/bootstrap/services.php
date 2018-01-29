@@ -4,6 +4,17 @@ return function (\Slim\Container $di, $settings) {
     $di['app_settings'] = $settings;
 
     // Override Slim handlers.
+    $di['request'] = function ($di) {
+        return \App\Http\Request::createFromEnvironment($di->get('environment'));
+    };
+
+    $di['response'] = function ($di) {
+        $headers = new \Slim\Http\Headers(['Content-Type' => 'text/html; charset=UTF-8']);
+        $response = new \App\Http\Response(200, $headers, null, $di[\App\Url::class]);
+
+        return $response->withProtocolVersion($di->get('settings')['httpVersion']);
+    };
+
     $di['callableResolver'] = function ($di) {
         return new \App\Mvc\Resolver($di);
     };
@@ -300,16 +311,6 @@ return function (\Slim\Container $di, $settings) {
             return \App\Utilities::truncate_text($text, $length);
         });
 
-        $view->addData([
-            'assets' => $di[\AzuraCast\Assets::class],
-            'auth' => $di[\App\Auth::class],
-            'acl' => $di[\AzuraCast\Acl\StationAcl::class],
-            'url' => $di[\App\Url::class],
-            'flash' => $di[\App\Flash::class],
-            'customization' => $di[\AzuraCast\Customization::class],
-            'app_settings' => $di['app_settings'],
-        ]);
-
         return $view;
     };
 
@@ -336,6 +337,20 @@ return function (\Slim\Container $di, $settings) {
     };
 
     // Middleware
+    $di[\AzuraCast\Middleware\EnableView::class] = function($di) {
+        $view_args = [
+            'assets' => $di[\AzuraCast\Assets::class],
+            'auth' => $di[\App\Auth::class],
+            'acl' => $di[\AzuraCast\Acl\StationAcl::class],
+            'url' => $di[\App\Url::class],
+            'flash' => $di[\App\Flash::class],
+            'customization' => $di[\AzuraCast\Customization::class],
+            'app_settings' => $di['app_settings'],
+        ];
+
+        return new \AzuraCast\Middleware\EnableView($di[\App\Mvc\View::class], $view_args);
+    };
+
     $di[\AzuraCast\Middleware\EnforceSecurity::class] = function($di) {
         return new \AzuraCast\Middleware\EnforceSecurity(
             $di[\Doctrine\ORM\EntityManager::class],
@@ -396,8 +411,6 @@ return function (\Slim\Container $di, $settings) {
         );
     };
 
-
-
     // Set up application and routing.
     $di['app'] = function ($di) {
 
@@ -417,5 +430,7 @@ return function (\Slim\Container $di, $settings) {
 
         return $app;
     };
+
+    return $di;
 
 };

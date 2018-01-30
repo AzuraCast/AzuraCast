@@ -1,12 +1,25 @@
 <?php
 namespace Controller\Api;
 
+use App\Url;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class IndexController extends \AzuraCast\Legacy\Controller
+class IndexController
 {
+    /** @var Url */
+    protected $url;
+
+    /**
+     * IndexController constructor.
+     * @param Url $url
+     */
+    public function __construct(Url $url)
+    {
+        $this->url = $url;
+    }
+
     /**
      * Public index for API.
      */

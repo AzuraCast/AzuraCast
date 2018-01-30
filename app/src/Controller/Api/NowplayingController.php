@@ -1,12 +1,31 @@
 <?php
 namespace Controller\Api;
 
+use App\Cache;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class NowplayingController extends \AzuraCast\Legacy\Controller
+class NowplayingController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Cache */
+    protected $cache;
+
+    /**
+     * NowplayingController constructor.
+     * @param EntityManager $em
+     * @param Cache $cache
+     */
+    public function __construct(EntityManager $em, Cache $cache)
+    {
+        $this->em = $em;
+        $this->cache = $cache;
+    }
+
     /**
      * @SWG\Get(path="/nowplaying",
      *   tags={"Now Playing"},
@@ -43,12 +62,8 @@ class NowplayingController extends \AzuraCast\Legacy\Controller
             ->withHeader('X-Accel-Expires', 15); // CloudFlare caching
 
         // Pull from cache, or load from flatfile otherwise.
-
-        /** @var \App\Cache $cache */
-        $cache = $this->di[\App\Cache::class];
-
         /** @var Entity\Api\NowPlaying[] $np */
-        $np = $cache->get('api_nowplaying_data', function () {
+        $np = $this->cache->get('api_nowplaying_data', function () {
             $nowplaying_db = $this->em->createQuery('SELECT s.nowplaying FROM Entity\Station s')
                 ->getArrayResult();
 

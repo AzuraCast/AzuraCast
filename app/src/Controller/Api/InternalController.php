@@ -1,14 +1,40 @@
 <?php
 namespace Controller\Api;
 
+use AzuraCast\Acl\StationAcl;
+use AzuraCast\Sync\NowPlaying;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class InternalController extends \AzuraCast\Legacy\Controller
+class InternalController
 {
+    /** @var StationAcl */
+    protected $acl;
+
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var NowPlaying */
+    protected $sync_nowplaying;
+
+    /**
+     * InternalController constructor.
+     * @param StationAcl $acl
+     * @param EntityManager $em
+     * @param NowPlaying $sync_nowplaying
+     */
+    public function __construct(StationAcl $acl, EntityManager $em, NowPlaying $sync_nowplaying)
+    {
+        $this->acl = $acl;
+        $this->em = $em;
+        $this->sync_nowplaying = $sync_nowplaying;
+    }
+
     public function authAction(Request $request, Response $response): Response
     {
+        /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
         $this->_checkStationAuth($station, $request->getParam('api_auth'));
 
@@ -40,12 +66,11 @@ class InternalController extends \AzuraCast\Legacy\Controller
 
     public function nextsongAction(Request $request, Response $response): Response
     {
+        /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
         $this->_checkStationAuth($station, $request->getParam('api_auth'));
 
-        $backend_adapter = $station->getBackendAdapter($this->di);
-
-        if (!($backend_adapter instanceof \AzuraCast\Radio\Backend\LiquidSoap)) {
+        if ($station->getBackendType() !== 'liquidsoap') {
             throw new \App\Exception('Not a LiquidSoap station.');
         }
 
@@ -53,7 +78,7 @@ class InternalController extends \AzuraCast\Legacy\Controller
         $history_repo = $this->em->getRepository(Entity\SongHistory::class);
 
         /** @var Entity\SongHistory|null $sh */
-        $sh = $history_repo->getNextSongForStation($station, (!empty($request->getParam('api_auth'))));
+        $sh = $history_repo->getNextSongForStation($station, $request->hasParam('api_auth'));
 
         if ($sh instanceof Entity\SongHistory) {
             // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
@@ -68,6 +93,7 @@ class InternalController extends \AzuraCast\Legacy\Controller
 
     public function notifyAction(Request $request, Response $response): Response
     {
+        /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
         $this->_checkStationAuth($station, $request->getParam('api_auth'));
 
@@ -78,8 +104,7 @@ class InternalController extends \AzuraCast\Legacy\Controller
             file_put_contents(APP_INCLUDE_TEMP.'/notify.log', $log, \FILE_APPEND);
         }
 
-        $np_sync = new \AzuraCast\Sync\NowPlaying($this->di);
-        $np_sync->processStation($station, $payload);
+        $this->sync_nowplaying->processStation($station, $payload);
 
         return $response->write('received');
     }

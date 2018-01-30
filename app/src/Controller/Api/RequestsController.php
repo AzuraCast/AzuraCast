@@ -2,12 +2,31 @@
 namespace Controller\Api;
 
 use App\Utilities;
+use AzuraCast\Radio\Adapters;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class RequestsController extends \AzuraCast\Legacy\Controller
+class RequestsController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Adapters */
+    protected $adapters;
+
+    /**
+     * RequestsController constructor.
+     * @param EntityManager $em
+     * @param Adapters $adapters
+     */
+    public function __construct(EntityManager $em, Adapters $adapters)
+    {
+        $this->em = $em;
+        $this->adapters = $adapters;
+    }
+
     /**
      * @SWG\Get(path="/station/{station_id}/requests",
      *   tags={"Stations: Song Requests"},
@@ -30,7 +49,7 @@ class RequestsController extends \AzuraCast\Legacy\Controller
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        $ba = $station->getBackendAdapter($this->di);
+        $ba = $this->adapters->getBackendAdapter($station);
         if (!$ba->supportsRequests()) {
             return $response->withJson('This station does not support requests.', 403);
         }
@@ -121,7 +140,7 @@ class RequestsController extends \AzuraCast\Legacy\Controller
             ]);
         }
 
-         return $response->withJson($result);
+        return $response->withJson($result);
     }
 
     /**
@@ -147,7 +166,7 @@ class RequestsController extends \AzuraCast\Legacy\Controller
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        $ba = $station->getBackendAdapter($this->di);
+        $ba = $this->adapters->getBackendAdapter($station);
         if (!$ba->supportsRequests()) {
             return $response->withJson('This station does not support requests.', 403);
         }
@@ -155,7 +174,7 @@ class RequestsController extends \AzuraCast\Legacy\Controller
         try {
             /** @var Entity\Repository\StationRequestRepository $request_repo */
             $request_repo = $this->em->getRepository(Entity\StationRequest::class);
-            $request_repo->submit($station, $media_id, $this->authenticate());
+            $request_repo->submit($station, $media_id);
 
             return $response->withJson('Request submitted successfully.');
         } catch (\App\Exception $e) {

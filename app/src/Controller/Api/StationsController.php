@@ -1,12 +1,31 @@
 <?php
 namespace Controller\Api;
 
+use AzuraCast\Radio\Adapters;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class StationsController extends \AzuraCast\Legacy\Controller
+class StationsController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Adapters */
+    protected $adapters;
+
+    /**
+     * StationsController constructor.
+     * @param EntityManager $em
+     * @param Adapters $adapters
+     */
+    public function __construct(EntityManager $em, Adapters $adapters)
+    {
+        $this->em = $em;
+        $this->adapters = $adapters;
+    }
+
     /**
      * @SWG\Get(path="/stations",
      *   tags={"Stations: General"},
@@ -30,7 +49,8 @@ class StationsController extends \AzuraCast\Legacy\Controller
         foreach ($stations_raw as $row) {
             /** @var Entity\Station $row */
 
-            $api_row = $row->api($row->getFrontendAdapter($this->di));
+            $frontend_adapter = $this->adapters->getFrontendAdapter($row);
+            $api_row = $row->api($frontend_adapter);
             if ($api_row->is_public) {
                 $stations[] = $api_row;
             }
@@ -59,7 +79,7 @@ class StationsController extends \AzuraCast\Legacy\Controller
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        $api_response = $station->api($station->getFrontendAdapter($this->di));
+        $api_response = $station->api($request->getAttribute('station_frontend'));
         return $response->withJson($api_response);
     }
 }

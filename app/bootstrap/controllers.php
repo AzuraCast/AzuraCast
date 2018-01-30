@@ -95,43 +95,50 @@ return function (\Slim\Container $di) {
 
     $di[\Controller\Api\IndexController::class] = function($di) {
         return new \Controller\Api\IndexController(
-            $di
+            $di[\App\Url::class]
         );
     };
 
     $di[\Controller\Api\InternalController::class] = function($di) {
         return new \Controller\Api\InternalController(
-            $di
+            $di[\AzuraCast\Acl\StationAcl::class],
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Sync\NowPlaying::class]
         );
     };
 
     $di[\Controller\Api\ListenersController::class] = function($di) {
         return new \Controller\Api\ListenersController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Cache::class]
         );
     };
 
     $di[\Controller\Api\MediaController::class] = function($di) {
         return new \Controller\Api\MediaController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Url::class]
         );
     };
 
     $di[\Controller\Api\NowplayingController::class] = function($di) {
         return new \Controller\Api\NowplayingController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Cache::class]
         );
     };
 
     $di[\Controller\Api\RequestsController::class] = function($di) {
         return new \Controller\Api\RequestsController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Radio\Adapters::class]
         );
     };
 
     $di[\Controller\Api\StationsController::class] = function($di) {
         return new \Controller\Api\StationsController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Radio\Adapters::class]
         );
     };
 

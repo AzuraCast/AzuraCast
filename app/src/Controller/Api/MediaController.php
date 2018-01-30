@@ -1,12 +1,31 @@
 <?php
 namespace Controller\Api;
 
+use App\Url;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class MediaController extends \AzuraCast\Legacy\Controller
+class MediaController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Url */
+    protected $url;
+
+    /**
+     * MediaController constructor.
+     * @param EntityManager $em
+     * @param Url $url
+     */
+    public function __construct(EntityManager $em, Url $url)
+    {
+        $this->em = $em;
+        $this->url = $url;
+    }
+
     /**
      * @SWG\Get(path="/station/{station_id}/art/{media_id}",
      *   tags={"Stations: Media"},

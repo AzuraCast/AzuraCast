@@ -41,9 +41,8 @@ class StationMediaRepository extends BaseRepository
 
         $stmt = $db->executeQuery('SELECT sm.* FROM ' . $db->quoteIdentifier($table_name) . ' AS sm WHERE sm.station_id = ? AND CONCAT(sm.title, \' \', sm.artist, \' \', sm.album) LIKE ?',
             [$station->getId(), '%' . addcslashes($query, "%_") . '%']);
-        $results = $stmt->fetchAll();
 
-        return $results;
+        return $stmt->fetchAll();
     }
 
     /**
@@ -215,7 +214,7 @@ class StationMediaRepository extends BaseRepository
                 $playlist_weights[$playlist_id] = $playlist->getWeight();
             }
 
-            $rand = mt_rand(1, (int)array_sum($playlist_weights));
+            $rand = random_int(1, (int)array_sum($playlist_weights));
             foreach ($playlist_weights as $playlist_id => $weight) {
                 $rand -= $weight;
                 if ($rand <= 0) {

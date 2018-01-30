@@ -1,13 +1,31 @@
 <?php
 namespace Controller\Api;
 
-use App\Utilities;
+use App\Cache;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class ListenersController extends \AzuraCast\Legacy\Controller
+class ListenersController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Cache */
+    protected $cache;
+
+    /**
+     * ListenersController constructor.
+     * @param EntityManager $em
+     * @param Cache $cache
+     */
+    public function __construct(EntityManager $em, Cache $cache)
+    {
+        $this->em = $em;
+        $this->cache = $cache;
+    }
+
     /**
      * @SWG\Get(path="/station/{station_id}/listeners",
      *   tags={"Stations: Listeners"},
@@ -36,7 +54,7 @@ class ListenersController extends \AzuraCast\Legacy\Controller
         if ($request->getParam('start') !== null) {
 
             $start = strtotime($request->getParam('start').' 00:00:00');
-            $end = strtotime($request->getParam('end', $this->getParam('start')).' 23:59:59');
+            $end = strtotime($request->getParam('end', $request->getParam('start')).' 23:59:59');
 
             $listeners_unsorted = $this->em->createQuery('SELECT l FROM Entity\Listener l
                 WHERE l.station_id = :station_id
@@ -95,12 +113,9 @@ class ListenersController extends \AzuraCast\Legacy\Controller
 
     protected function _getIpInfo($raw_ips)
     {
-        /** @var \App\Cache $cache */
-        $cache = $this->di[\App\Cache::class];
-
         $return = [];
         foreach($raw_ips as $ip) {
-            $ip_info = $cache->get('/ip/'.$ip, null);
+            $ip_info = $this->cache->get('/ip/'.$ip, null);
             if ($ip_info !== null) {
                 $return[$ip] = $ip_info;
                 unset($raw_ips[$ip]);
@@ -140,7 +155,7 @@ class ListenersController extends \AzuraCast\Legacy\Controller
                     $ip = $location_row['query'];
                     unset($location_row['query']);
 
-                    $cache->set($location_row, '/ip/'.$ip, 3600);
+                    $this->cache->set($location_row, '/ip/'.$ip, 3600);
                     $return[$ip] = $location_row;
                 }
             }

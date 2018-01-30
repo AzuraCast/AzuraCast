@@ -1,8 +1,10 @@
 <?php
 namespace Entity\Repository;
 
+use AzuraCast\Radio\Adapters;
+use AzuraCast\Radio\Configuration;
+use AzuraCast\Radio\Frontend\FrontendAbstract;
 use Entity;
-use Interop\Container\ContainerInterface;
 
 class StationRepository extends BaseRepository
 {
@@ -56,13 +58,13 @@ class StationRepository extends BaseRepository
     /**
      * Create a station based on the specified data.
      *
-     * @param $data
-     * @param ContainerInterface $di
+     * @param array $data Array of data to populate the station with.
+     * @param Adapters $adapters
+     * @param Configuration $configuration
      * @return Entity\Station
-     * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Exception
      */
-    public function create($data, ContainerInterface $di)
+    public function create($data, Adapters $adapters, Configuration $configuration)
     {
         $station = new Entity\Station;
         $this->fromArray($station, $data);
@@ -79,7 +81,7 @@ class StationRepository extends BaseRepository
         $this->_em->flush();
 
         // Scan directory for any existing files.
-        $media_sync = new \AzuraCast\Sync\Media($di);
+        $media_sync = new \AzuraCast\Sync\Media($this->_em);
 
         set_time_limit(600);
         $media_sync->importMusic($station);
@@ -89,17 +91,17 @@ class StationRepository extends BaseRepository
         $this->_em->refresh($station);
 
         // Load adapters.
-        $frontend_adapter = $station->getFrontendAdapter($di);
-        $backend_adapter = $station->getBackendAdapter($di);
+        $frontend_adapter = $adapters->getFrontendAdapter($station);
+        $backend_adapter = $adapters->getBackendAdapter($station);
 
         // Create default mountpoints if station supports them.
-        $this->resetMounts($station, $di);
+        $this->resetMounts($station, $frontend_adapter);
 
         // Load configuration from adapter to pull source and admin PWs.
         $frontend_adapter->read();
 
         // Write the adapter configurations and update supervisord.
-        $station->writeConfiguration($di, true);
+        $configuration->writeConfiguration($station, true);
 
         // Save changes and continue to the last setup step.
         $this->_em->persist($station);
@@ -112,17 +114,13 @@ class StationRepository extends BaseRepository
      * Reset mount points to their adapter defaults (in the event of an adapter change).
      *
      * @param Entity\Station $station
-     * @param ContainerInterface $di
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Exception
+     * @param FrontendAbstract $frontend_adapter
      */
-    public function resetMounts(Entity\Station $station, ContainerInterface $di)
+    public function resetMounts(Entity\Station $station, FrontendAbstract $frontend_adapter)
     {
         foreach($station->getMounts() as $mount) {
             $this->_em->remove($mount);
         }
-
-        $frontend_adapter = $station->getFrontendAdapter($di);
 
         // Create default mountpoints if station supports them.
         if ($frontend_adapter->supportsMounts()) {
@@ -143,24 +141,13 @@ class StationRepository extends BaseRepository
 
     /**
      * @param Entity\Station $station
-     * @param ContainerInterface $di
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @param Adapters $adapters
+     * @param Configuration $configuration
      * @throws \Exception
      */
-    public function destroy(Entity\Station $station, ContainerInterface $di)
+    public function destroy(Entity\Station $station, Adapters $adapters, Configuration $configuration)
     {
-        $frontend = $station->getFrontendAdapter($di);
-        $backend = $station->getBackendAdapter($di);
-
-        if ($frontend->hasCommand() || $backend->hasCommand()) {
-            /** @var \Supervisor\Supervisor $supervisor */
-            $supervisor = $di['supervisor'];
-
-            $frontend_name = $frontend->getProgramName();
-            list($frontend_group, $frontend_program) = explode(':', $frontend_name);
-
-            $supervisor->stopProcessGroup($frontend_group);
-        }
+        $configuration->removeConfiguration($station);
 
         // Remove media folders.
         $radio_dir = $station->getRadioBaseDir();

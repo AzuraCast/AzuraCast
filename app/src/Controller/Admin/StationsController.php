@@ -1,34 +1,79 @@
 <?php
 namespace Controller\Admin;
 
+use App\Cache;
+use App\Flash;
+use AzuraCast\Radio\Adapters;
+use AzuraCast\Radio\Configuration;
+use Doctrine\ORM\EntityManager;
 use Entity;
-use Slim\Container;
 use App\Http\Request;
 use App\Http\Response;
 
-class StationsController extends \AzuraCast\Legacy\Controller
+class StationsController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Flash */
+    protected $flash;
+
+    /** @var Cache */
+    protected $cache;
+
+    /** @var Adapters */
+    protected $adapters;
+
+    /** @var Configuration */
+    protected $configuration;
+
+    /** @var array */
+    protected $edit_form_config;
+
+    /** @var array */
+    protected $clone_form_config;
+
     /** @var Entity\Repository\StationRepository */
     protected $record_repo;
 
-    public function __construct(Container $di)
+    /**
+     * StationsController constructor.
+     * @param EntityManager $em
+     * @param Flash $flash
+     * @param array $edit_form_config
+     * @param array $clone_form_config
+     */
+    public function __construct(EntityManager $em, Flash $flash, Cache $cache, Adapters $adapters, Configuration $configuration, array $edit_form_config, array $clone_form_config)
     {
-        parent::__construct($di);
+        $this->em = $em;
+        $this->flash = $flash;
+        $this->cache = $cache;
+        $this->adapters = $adapters;
+        $this->configuration = $configuration;
+
+        $this->edit_form_config = $edit_form_config;
+        $this->clone_form_config = $clone_form_config;
 
         $this->record_repo = $this->em->getRepository(Entity\Station::class);
     }
 
+
     public function indexAction(Request $request, Response $response): Response
     {
-        $this->view->stations = $this->em->createQuery('SELECT s FROM Entity\Station s ORDER BY s.name ASC')
+        $stations = $this->em->createQuery('SELECT s FROM Entity\Station s ORDER BY s.name ASC')
             ->getArrayResult();
 
-        return $this->render($response, 'admin/stations/index');
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'admin/stations/index', [
+            'stations' => $stations,
+        ]);
     }
 
     public function editAction(Request $request, Response $response, $id = null): Response
     {
-        $form = new \App\Form($this->config->forms->station);
+        $form = new \App\Form($this->edit_form_config);
 
         if (!empty($id)) {
             $record = $this->record_repo->find((int)$id);
@@ -41,33 +86,34 @@ class StationsController extends \AzuraCast\Legacy\Controller
             $data = $form->getValues();
 
             if (!($record instanceof Entity\Station)) {
-                $record = $this->record_repo->create($data, $this->di);
+                $record = $this->record_repo->create($data, $this->adapters, $this->configuration);
             } else {
                 $oldAdapter = $record->getFrontendType();
                 $this->record_repo->fromArray($record, $data);
                 $this->em->persist($record);
                 $this->em->flush();
 
-                $record->writeConfiguration($this->di);
+                $this->configuration->writeConfiguration($record);
 
                 if ($oldAdapter !== $record->getFrontendType()) {
-                    $this->record_repo->resetMounts($record, $this->di);
+                    $this->record_repo->resetMounts($record, $this->adapters->getFrontendAdapter($record));
                 }
             }
 
             // Clear station cache.
-            /** @var \App\Cache $cache */
-            $cache = $this->di[\App\Cache::class];
+            $this->cache->remove('stations');
 
-            $cache->remove('stations');
+            $this->flash->alert(_('Changes saved.'), 'green');
 
-            $this->alert(_('Changes saved.'), 'green');
-
-            return $this->redirectToName($response, 'admin:stations:index');
+            return $response->redirectToRoute('admin:stations:index');
         }
 
-        $this->view->form = $form;
-        return $this->render($response, 'admin/stations/edit');
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'admin/stations/edit', [
+            'form' => $form,
+        ]);
     }
 
     public function cloneAction(Request $request, Response $response, $id): Response
@@ -78,7 +124,7 @@ class StationsController extends \AzuraCast\Legacy\Controller
             throw new \Exception('Source station not found!');
         }
 
-        $form = new \App\Form($this->config->forms->station_clone);
+        $form = new \App\Form($this->clone_form_config);
 
         $form->setDefaults([
             'name' => $record->getName().' - Copy',
@@ -102,8 +148,9 @@ class StationsController extends \AzuraCast\Legacy\Controller
             }
 
             // Trigger normal creation process of station.
-            $new_record = $this->record_repo->create($new_record_data, $this->di);
-            $new_record->writeConfiguration($this->di);
+            $new_record = $this->record_repo->create($new_record_data, $this->adapters, $this->configuration);
+
+            $this->configuration->writeConfiguration($new_record);
 
             // Copy associated records if applicable.
             if ($data['clone_media'] === 'copy') {
@@ -146,18 +193,21 @@ class StationsController extends \AzuraCast\Legacy\Controller
             $this->em->flush();
 
             // Clear station cache.
+            $this->cache->remove('stations');
 
-            /** @var \App\Cache $cache */
-            $cache = $this->di[\App\Cache::class];
+            $this->flash->alert(_('Changes saved.'), 'green');
 
-            $cache->remove('stations');
-
-            $this->alert(_('Changes saved.'), 'green');
-
-            return $this->redirectToName($response, 'admin:stations:index');
+            return $response->redirectToRoute('admin:stations:index');
         }
 
-        return $this->renderForm($response, $form, 'edit', sprintf(_('Clone Station: %s'), $record->getName()));
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'system/form_page', [
+            'form' => $form,
+            'render_mode' => 'edit',
+            'title' => sprintf(_('Clone Station: %s'), $record->getName())
+        ]);
     }
 
     public function deleteAction(Request $request, Response $response, $id): Response
@@ -165,14 +215,11 @@ class StationsController extends \AzuraCast\Legacy\Controller
         $record = $this->record_repo->find((int)$id);
 
         if ($record instanceof Entity\Station) {
-            $record->removeConfiguration($this->di);
-
-            $this->em->remove($record);
-            $this->em->flush();
+            $this->record_repo->destroy($record, $this->adapters, $this->configuration);
         }
 
-        $this->alert(_('Record deleted.'), 'green');
+        $this->flash->alert(_('Record deleted.'), 'green');
 
-        return $this->redirectToName($response, 'admin:stations:index');
+        return $response->redirectToRoute('admin:stations:index');
     }
 }

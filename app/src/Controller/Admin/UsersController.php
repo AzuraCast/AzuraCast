@@ -1,20 +1,45 @@
 <?php
 namespace Controller\Admin;
 
+use App\Auth;
+use App\Flash;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use Slim\Container;
 use App\Http\Request;
 use App\Http\Response;
 
-class UsersController extends \AzuraCast\Legacy\Controller
+class UsersController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Flash */
+    protected $flash;
+
+    /** @var Auth */
+    protected $auth;
+
+    /** @var array */
+    protected $form_config;
+
     /** @var Entity\Repository\UserRepository */
     protected $record_repo;
 
-    public function __construct(Container $di)
+    /**
+     * UsersController constructor.
+     * @param EntityManager $em
+     * @param Flash $flash
+     * @param Auth $auth
+     * @param array $form_config
+     */
+    public function __construct(EntityManager $em, Flash $flash, Auth $auth, array $form_config)
     {
-        parent::__construct($di);
+        $this->em = $em;
+        $this->flash = $flash;
+        $this->auth = $auth;
+        $this->form_config = $form_config;
 
         $this->record_repo = $this->em->getRepository(Entity\User::class);
     }
@@ -24,7 +49,10 @@ class UsersController extends \AzuraCast\Legacy\Controller
         $users = $this->em->createQuery('SELECT u, r FROM Entity\User u LEFT JOIN u.roles r ORDER BY u.name ASC')
             ->execute();
 
-        return $this->render($response, 'admin/users/index', [
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'admin/users/index', [
             'user' => $request->getAttribute('user'),
             'users' => $users,
         ]);
@@ -32,8 +60,7 @@ class UsersController extends \AzuraCast\Legacy\Controller
 
     public function editAction(Request $request, Response $response, $id = null): Response
     {
-        $form_config = $this->config->forms->user->form->toArray();
-        $form = new \App\Form($form_config);
+        $form = new \App\Form($this->form_config);
 
         if (!empty($id)) {
             $record = $this->record_repo->find((int)$id);
@@ -59,20 +86,27 @@ class UsersController extends \AzuraCast\Legacy\Controller
                 $this->em->persist($record);
                 $this->em->flush();
 
-                $this->alert(_('Record updated.'), 'green');
+                $this->flash->alert(_('Record updated.'), 'green');
 
-                return $this->redirectToName($response, 'admin:users:index');
+                return $response->redirectToRoute('admin:users:index');
             } catch(UniqueConstraintViolationException $e) {
-                $this->alert(_('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
+                $this->flash->alert(_('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
             }
         }
 
-        return $this->renderForm($response, $form, 'edit', _('Edit Record'));
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'system/form_page', [
+            'form' => $form,
+            'render_mode' => 'edit',
+            'title' => _('Edit Record')
+        ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $args): Response
+    public function deleteAction(Request $request, Response $response, $id): Response
     {
-        $user = $this->record_repo->find((int)$args['id']);
+        $user = $this->record_repo->find((int)$id);
 
         if ($user instanceof Entity\User) {
             $this->em->remove($user);
@@ -80,9 +114,9 @@ class UsersController extends \AzuraCast\Legacy\Controller
 
         $this->em->flush();
 
-        $this->alert('<b>' . _('Record deleted.') . '</b>', 'green');
+        $this->flash->alert('<b>' . _('Record deleted.') . '</b>', 'green');
 
-        return $this->redirectToName($response, 'admin:users:index');
+        return $response->redirectToRoute('admin:users:index');
     }
 
     public function impersonateAction(Request $request, Response $response, $id): Response
@@ -93,12 +127,10 @@ class UsersController extends \AzuraCast\Legacy\Controller
             throw new \App\Exception(_('Record not found!'));
         }
 
-        /** @var \App\Auth $auth */
-        $auth = $this->di[\App\Auth::class];
-        $auth->masqueradeAsUser($user);
+        $this->auth->masqueradeAsUser($user);
 
-        $this->alert('<b>' . _('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+        $this->flash->alert('<b>' . _('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
-        return $this->redirectHome($response);
+        return $response->redirectHome();
     }
 }

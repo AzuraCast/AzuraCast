@@ -44,7 +44,7 @@ class Configuration
 
         if ($regen_auth_key || empty($station->getAdapterApiKey())) {
             $station->generateAdapterApiKey();
-            $this->em->persist($this);
+            $this->em->persist($station);
             $this->em->flush();
         }
 

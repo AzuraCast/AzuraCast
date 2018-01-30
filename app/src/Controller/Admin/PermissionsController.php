@@ -1,12 +1,35 @@
 <?php
 namespace Controller\Admin;
 
+use App\Flash;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class PermissionsController extends \AzuraCast\Legacy\Controller
+class PermissionsController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Flash */
+    protected $flash;
+
+    /** @var array */
+    protected $form_config;
+
+    /**
+     * @param EntityManager $em
+     * @param Flash $flash
+     * @param array $form_config
+     */
+    public function __construct(EntityManager $em, Flash $flash, array $form_config)
+    {
+        $this->em = $em;
+        $this->flash = $flash;
+        $this->form_config = $form_config;
+    }
+
     public function indexAction(Request $request, Response $response): Response
     {
         $all_roles = $this->em->createQuery('SELECT r, rp, s FROM Entity\Role r 
@@ -31,8 +54,12 @@ class PermissionsController extends \AzuraCast\Legacy\Controller
             $roles[] = $role;
         }
 
-        $this->view->roles = $roles;
-        return $this->render($response, 'admin/permissions/index');
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'admin/permissions/index', [
+            'roles' => $roles,
+        ]);
     }
 
     public function editAction(Request $request, Response $response, $id = null): Response
@@ -43,7 +70,7 @@ class PermissionsController extends \AzuraCast\Legacy\Controller
         /** @var Entity\Repository\RolePermissionRepository $permission_repo */
         $permission_repo = $this->em->getRepository(Entity\RolePermission::class);
 
-        $form = new \App\Form($this->config->forms->role->toArray());
+        $form = new \App\Form($this->form_config);
 
         if (!empty($id)) {
             $record = $role_repo->find($id);
@@ -70,12 +97,19 @@ class PermissionsController extends \AzuraCast\Legacy\Controller
 
             $permission_repo->setActionsForRole($record, $data);
 
-            $this->alert('<b>' . _('Record updated.') . '</b>', 'green');
+            $this->flash->alert('<b>' . _('Record updated.') . '</b>', 'green');
 
-            return $this->redirectToName($response, 'admin:permissions:index');
+            return $response->redirectToRoute('admin:permissions:index');
         }
 
-        return $this->renderForm($response, $form, 'edit', _('Edit Record'));
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'system/form_page', [
+            'form' => $form,
+            'render_mode' => 'edit',
+            'title' => _('Edit Record')
+        ]);
     }
 
     public function deleteAction(Request $request, Response $response, $id): Response
@@ -90,7 +124,7 @@ class PermissionsController extends \AzuraCast\Legacy\Controller
 
         $this->em->flush();
 
-        $this->alert('<b>' . _('Record deleted.') . '</b>', 'green');
-        return $this->redirectToName($response, 'admin:permissions:index');
+        $this->flash->alert('<b>' . _('Record deleted.') . '</b>', 'green');
+        return $response->redirectToRoute('admin:permissions:index');
     }
 }

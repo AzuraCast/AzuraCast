@@ -8,6 +8,9 @@ use AzuraCast\Acl\StationAcl;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 
+/**
+ * @deprecated
+ */
 abstract class Controller
 {
     /** @var ContainerInterface */

@@ -1,7 +1,9 @@
 <?php
 return function (\Slim\Container $di) {
 
+    //
     // Administration Controllers
+    //
 
     $di[Controller\Admin\ApiController::class] = function($di) {
         $config = $di[\App\Config::class];
@@ -14,8 +16,18 @@ return function (\Slim\Container $di) {
     };
 
     $di[Controller\Admin\BrandingController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        /** @var \Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $em->getRepository(\Entity\Settings::class);
+
         return new Controller\Admin\BrandingController(
-            $di
+            $settings_repo,
+            $di[\App\Flash::class],
+            $config->forms->branding->toArray()
         );
     };
 
@@ -27,30 +39,59 @@ return function (\Slim\Container $di) {
     };
 
     $di[Controller\Admin\PermissionsController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
         return new Controller\Admin\PermissionsController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $config->forms->role->toArray()
         );
     };
 
     $di[Controller\Admin\SettingsController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        /** @var \Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $em->getRepository(\Entity\Settings::class);
+
         return new Controller\Admin\SettingsController(
-            $di
+            $settings_repo,
+            $di[\App\Flash::class],
+            $config->forms->settings->toArray()
         );
     };
 
     $di[Controller\Admin\StationsController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
         return new Controller\Admin\StationsController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $di[\App\Cache::class],
+            $di[\AzuraCast\Radio\Adapters::class],
+            $di[\AzuraCast\Radio\Configuration::class],
+            $config->forms->station->toArray(),
+            $config->forms->station_clone->toArray()
         );
     };
 
     $di[Controller\Admin\UsersController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
         return new Controller\Admin\UsersController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $di[\App\Auth::class],
+            $config->forms->user->toArray()
         );
     };
 
+    //
     // API Controllers
+    //
 
     $di[\Controller\Api\IndexController::class] = function($di) {
         return new \Controller\Api\IndexController(
@@ -94,7 +135,9 @@ return function (\Slim\Container $di) {
         );
     };
 
+    //
     // Frontend (default) Controllers
+    //
 
     $di[\Controller\Frontend\AccountController::class] = function($di) {
         return new \Controller\Frontend\AccountController(
@@ -144,7 +187,9 @@ return function (\Slim\Container $di) {
         };
     }
 
+    //
     // Stations Controllers
+    //
 
     $di[\Controller\Stations\AutomationController::class] = function($di) {
         return new \Controller\Stations\AutomationController(

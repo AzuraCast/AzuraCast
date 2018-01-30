@@ -1,12 +1,12 @@
 <?php
-$frontends = \Entity\Station::getFrontendAdapters();
+$frontends = \AzuraCast\Radio\Adapters::getFrontendAdapters();
 $frontend_types = [];
 foreach ($frontends['adapters'] as $adapter_nickname => $adapter_info) {
     $frontend_types[$adapter_nickname] = $adapter_info['name'];
 }
 $frontend_default = $frontends['default'];
 
-$backends = \Entity\Station::getBackendAdapters();
+$backends = \AzuraCast\Radio\Adapters::getBackendAdapters();
 $backend_types = [];
 foreach ($backends['adapters'] as $adapter_nickname => $adapter_info) {
     $backend_types[$adapter_nickname] = $adapter_info['name'];

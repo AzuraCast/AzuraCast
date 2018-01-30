@@ -219,6 +219,7 @@ return function(\Slim\App $app) {
             ->setName('public:playlist');
 
     })
+        ->add(Middleware\GetStation::class)
         ->add(Middleware\EnableView::class);
 
     $app->group('/station/{station}', function () {

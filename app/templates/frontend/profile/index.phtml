@@ -45,7 +45,7 @@ $options = $form->getOptions();
             <div class="pmbb-body p-l-30">
                 <div class="pmbb-view">
                     <dl class="dl-horizontal">
-                        <?=$this->fetch('partials/form_view_fields', ['fieldset' => $options['groups']['account_info']]) ?>
+                        <?=$this->fetch('partials/form_view_fields', ['form' => $form, 'fieldset' => $options['groups']['account_info']]) ?>
                     </dl>
                 </div>
             </div>
@@ -58,7 +58,7 @@ $options = $form->getOptions();
             <div class="pmbb-body p-l-30">
                 <div class="pmbb-view">
                     <dl class="dl-horizontal">
-                        <?=$this->fetch('partials/form_view_fields', ['fieldset' => $options['groups']['customization']]) ?>
+                        <?=$this->fetch('partials/form_view_fields', ['form' => $form, 'fieldset' => $options['groups']['customization']]) ?>
                     </dl>
                 </div>
             </div>

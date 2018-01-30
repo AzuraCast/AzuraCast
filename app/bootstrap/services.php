@@ -20,26 +20,19 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di['errorHandler'] = function ($di) {
-        return function ($request, $response, $exception) use ($di) {
-            return \App\Mvc\ErrorHandler::handle($di, $request, $response, $exception);
-        };
+        return $di[\App\Mvc\ErrorHandler::class];
     };
 
     $di['phpErrorHandler'] = function($di) {
-        return function ($request, $response, $exception) use ($di) {
-            return \App\Mvc\ErrorHandler::handle($di, $request, $response, $exception);
-        };
+        return $di[\App\Mvc\ErrorHandler::class];
     };
 
     $di['notFoundHandler'] = function ($di) {
         return function ($request, $response) use ($di) {
+            /** @var \App\Mvc\View $view */
             $view = $di[\App\Mvc\View::class];
-            $template = $view->render('system/error_pagenotfound');
 
-            $body = $response->getBody();
-            $body->write($template);
-
-            return $response->withStatus(404)->withBody($body);
+            return $view->renderToResponse($response->withStatus(404), 'system/error_pagenotfound');
         };
     };
 
@@ -251,7 +244,7 @@ return function (\Slim\Container $di, $settings) {
         return $supervisor;
     };
 
-    $di[\App\Mvc\View::class] = function (\Slim\Container $di) {
+    $di[\App\Mvc\View::class] = $di->factory(function(\Slim\Container $di) {
         $view = new \App\Mvc\View(APP_INCLUDE_BASE . '/templates');
         $view->setFileExtension('phtml');
 
@@ -282,7 +275,27 @@ return function (\Slim\Container $di, $settings) {
             return \App\Utilities::truncate_text($text, $length);
         });
 
+        $view->addData([
+            'assets' => $di[\AzuraCast\Assets::class],
+            'auth' => $di[\App\Auth::class],
+            'acl' => $di[\AzuraCast\Acl\StationAcl::class],
+            'url' => $di[\App\Url::class],
+            'flash' => $di[\App\Flash::class],
+            'customization' => $di[\AzuraCast\Customization::class],
+            'app_settings' => $di['app_settings'],
+        ]);
+
         return $view;
+    });
+
+    $di[\App\Mvc\ErrorHandler::class] = function($di) {
+        return new \App\Mvc\ErrorHandler(
+            $di[\App\Url::class],
+            $di[\App\Session::class],
+            $di[\App\Flash::class],
+            $di[\App\Mvc\View::class],
+            $di[\AzuraCast\Acl\StationAcl::class]
+        );
     };
 
     //
@@ -396,17 +409,7 @@ return function (\Slim\Container $di, $settings) {
     //
 
     $di[\AzuraCast\Middleware\EnableView::class] = function($di) {
-        $view_args = [
-            'assets' => $di[\AzuraCast\Assets::class],
-            'auth' => $di[\App\Auth::class],
-            'acl' => $di[\AzuraCast\Acl\StationAcl::class],
-            'url' => $di[\App\Url::class],
-            'flash' => $di[\App\Flash::class],
-            'customization' => $di[\AzuraCast\Customization::class],
-            'app_settings' => $di['app_settings'],
-        ];
-
-        return new \AzuraCast\Middleware\EnableView($di[\App\Mvc\View::class], $view_args);
+        return new \AzuraCast\Middleware\EnableView($di[\App\Mvc\View::class]);
     };
 
     $di[\AzuraCast\Middleware\EnforceSecurity::class] = function($di) {

@@ -1,104 +1,99 @@
 <?php
 namespace App\Mvc;
 
+use App\Acl;
+use App\Flash;
+use App\Session;
+use App\Url;
 use Exception;
-use Interop\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Http\Request;
+use App\Http\Response;
 
 class ErrorHandler
 {
-    public static function handle(ContainerInterface $di, Request $req, Response $res, \Throwable $e)
+    /** @var Url */
+    protected $url;
+
+    /** @var Session */
+    protected $session;
+
+    /** @var Flash */
+    protected $flash;
+
+    /** @var View */
+    protected $view;
+
+    /** @var Acl */
+    protected $acl;
+
+    /**
+     * ErrorHandler constructor.
+     * @param Url $url
+     * @param Session $session
+     * @param Flash $flash
+     * @param View $view
+     * @param Acl $acl
+     */
+    public function __construct(Url $url, Session $session, Flash $flash, View $view, Acl $acl)
+    {
+        $this->url = $url;
+        $this->session = $session;
+        $this->flash = $flash;
+        $this->view = $view;
+        $this->acl = $acl;
+    }
+
+    public function __invoke(Request $req, Response $res, \Throwable $e)
     {
         if ($e instanceof \App\Exception\NotLoggedIn) {
             // Redirect to login page for not-logged-in users.
-
-            /** @var \App\Flash $flash */
-            $flash = $di[\App\Flash::class];
-            $flash->addMessage('<b>Error:</b> You must be logged in to access this page!', 'red');
+            $this->flash->addMessage('<b>Error:</b> You must be logged in to access this page!', 'red');
 
             // Set referrer for login redirection.
+            $session = $this->session->get('referrer_login');
+            $session->url = $this->url->current();
 
-            /** @var \App\Session $session */
-            $session = $di[\App\Session::class];
-            $session = $session->get('referrer_login');
+            return $res->withStatus(302)->withHeader('Location', $this->url->named('account:login'));
+        }
 
-            /** @var \App\Url $url */
-            $url = $di[\App\Url::class];
-            $session->url = $url->current();
-
-            return $res->withStatus(302)->withHeader('Location', $url->named('account:login'));
-        } elseif ($e instanceof \App\Exception\PermissionDenied) {
+        if ($e instanceof \App\Exception\PermissionDenied) {
             // Bounce back to homepage for permission-denied users.
-            /** @var \App\Flash $flash */
-            $flash = $di[\App\Flash::class];
-
-            $flash->addMessage('You do not have permission to access this portion of the site.',
+            $this->flash->addMessage('You do not have permission to access this portion of the site.',
                 \App\Flash::ERROR);
 
-            /** @var \App\Url $url */
-            $url = $di[\App\Url::class];
+            return $res
+                ->withStatus(302)
+                ->withHeader('Location', $this->url->named('home'));
+        }
 
-            return $res->withStatus(302)->withHeader('Location', $url->named('home'));
-        } elseif (APP_IS_COMMAND_LINE) {
-            $body = $res->getBody();
-            $body->write(json_encode([
+        if (APP_IS_COMMAND_LINE) {
+            return $res->withStatus(500)->withJson([
                 'code' => $e->getCode(),
                 'message' => $e->getMessage(),
                 'stack_trace' => $e->getTraceAsString(),
-            ]));
+            ]);
+        }
 
-            return $res->withStatus(500)
-                ->withBody($body);
-        } else {
-            /** @var \App\Mvc\View $view */
-            $view = $di[\App\Mvc\View::class];
+        if ($this->acl->isAllowed('administer all') || !APP_IN_PRODUCTION) {
+            // Register error-handler.
+            $handler = new \Whoops\Handler\PrettyPageHandler;
+            $handler->setPageTitle('An error occurred!');
 
-            if (self::showDetailedDebugInfo($di)) {
-                // Register error-handler.
-                $handler = new \Whoops\Handler\PrettyPageHandler;
-                $handler->setPageTitle('An error occurred!');
-
-                if ($e instanceof \App\Exception) {
-                    $extra_tables = $e->getExtraData();
-                    foreach($extra_tables as $legend => $data) {
-                        $handler->addDataTable($legend, $data);
-                    }
+            if ($e instanceof \App\Exception) {
+                $extra_tables = $e->getExtraData();
+                foreach($extra_tables as $legend => $data) {
+                    $handler->addDataTable($legend, $data);
                 }
-
-                $run = new \Whoops\Run;
-                $run->pushHandler($handler);
-
-                $body = $res->getBody();
-                $body->write($run->handleException($e));
-
-                return $res->withStatus(500)
-                    ->withBody($body);
-            } else {
-                $view->exception = $e;
-
-                $template = $view->render('system/error_general');
-
-                $body = $res->getBody();
-                $body->write($template);
-
-                return $res->withStatus(500)
-                    ->withBody($body);
             }
-        }
-    }
 
-    protected static function showDetailedDebugInfo(ContainerInterface $di): bool
-    {
-        if ($di->has(\App\Acl::class)) {
-            /** @var \App\Acl $acl */
-            $acl = $di[\App\Acl::class];
+            $run = new \Whoops\Run;
+            $run->pushHandler($handler);
 
-            if ($acl->isAllowed('administer all')) {
-                return true;
-            }
+            return $res->withStatus(500)->write($run->handleException($e));
         }
 
-        return !APP_IN_PRODUCTION;
+        return $this->view->renderToResponse($res->withStatus(500), 'system/error_general', [
+            'exception' => $e,
+        ]);
     }
 }

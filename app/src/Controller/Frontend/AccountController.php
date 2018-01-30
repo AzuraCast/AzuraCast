@@ -53,7 +53,7 @@ class AccountController
             $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
 
             if ($num_users == 0) {
-                return $response->redirectToRoute('frontend:setup:index');
+                return $response->redirectToRoute('setup:index');
             }
         }
 

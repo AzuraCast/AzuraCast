@@ -18,13 +18,9 @@ class EnableView
     /** @var View */
     protected $view;
 
-    /** @var array Default view values. */
-    protected $view_defaults;
-
-    public function __construct(View $view, array $view_defaults = [])
+    public function __construct(View $view)
     {
         $this->view = $view;
-        $this->view_defaults = $view_defaults;
     }
 
     /**
@@ -35,8 +31,6 @@ class EnableView
      */
     public function __invoke(Request $request, Response $response, $next): Response
     {
-        $this->view->addData($this->view_defaults);
-
         $request = $request->withAttribute('view', $this->view);
 
         $response = $next($request, $response);

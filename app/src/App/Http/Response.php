@@ -108,19 +108,4 @@ class Response extends \Slim\Http\Response
     {
         return $this->withRedirect($this->url->named($name, $route_params), $code);
     }
-
-    /**
-     * Alias for redirectToRoute
-     *
-     * @param $name
-     * @param array $route_params
-     * @param int $code
-     * @return self
-     */
-    public function redirectToName($name, $route_params = [], $code = 302): self
-    {
-        return $this->redirectToRoute($name, $route_params, $code);
-    }
-
-
 }

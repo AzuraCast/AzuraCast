@@ -235,7 +235,7 @@ request_dialog.on('show.bs.modal', function (event) {
                 iconRefresh: 'zmdi-refresh',
                 iconUp: 'zmdi-sort-amount-asc'
             },
-            url: "<?=$url->route(['module' => 'api', 'controller' => 'requests', 'action' => 'list', 'station' => $station->getId()]) ?>",
+            url: "<?=$url->named('api:requests:list', ['station' => $station->getId()]) ?>",
             formatters: {
                 "commands": function(column, row) {
                     return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=_('Request') ?></a>';

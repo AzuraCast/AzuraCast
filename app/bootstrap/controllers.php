@@ -169,28 +169,37 @@ return function (\Slim\Container $di) {
     };
 
     $di[\Controller\Frontend\ProfileController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
         return new \Controller\Frontend\ProfileController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $config->forms->profile->toArray()
         );
     };
 
     $di[\Controller\Frontend\PublicController::class] = function($di) {
-        return new \Controller\Frontend\PublicController(
-            $di
-        );
+        return new \Controller\Frontend\PublicController();
     };
 
     $di[\Controller\Frontend\SetupController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
         return new \Controller\Frontend\SetupController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $di[\App\Auth::class],
+            $di[\AzuraCast\Acl\StationAcl::class],
+            $di[\AzuraCast\Radio\Adapters::class],
+            $di[\AzuraCast\Radio\Configuration::class],
+            $config->forms->station->toArray(),
+            $config->forms->settings->toArray()
         );
     };
 
     if (!APP_IN_PRODUCTION) {
         $di[\Controller\Frontend\UtilController::class] = function ($di) {
-            return new \Controller\Frontend\UtilController(
-                $di
-            );
+            return new \Controller\Frontend\UtilController($di);
         };
     }
 

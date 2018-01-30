@@ -590,7 +590,7 @@ class Station
     /**
      * @return bool
      */
-    public function isEnablePublicPage(): bool
+    public function getEnablePublicPage(): bool
     {
         return (bool)$this->enable_public_page;
     }

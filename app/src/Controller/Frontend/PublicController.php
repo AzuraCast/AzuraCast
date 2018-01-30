@@ -1,59 +1,66 @@
 <?php
 namespace Controller\Frontend;
 
+use App\Mvc\View;
+use AzuraCast\Radio\Frontend\FrontendAbstract;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class PublicController extends \AzuraCast\Legacy\Controller
+class PublicController
 {
-    public function permissions()
-    {
-        return true;
-    }
-
-    /** @var Entity\Station */
-    protected $station;
-
-    protected function preDispatch()
-    {
-        $this->station = $this->_getStation();
-
-        $this->view->station = $this->station;
-
-        $frontend = $this->station->getFrontendAdapter($this->di);
-        $this->view->stream_url = $frontend->getStreamUrl();
-    }
-
     public function indexAction(Request $request, Response $response): Response
-    {}
+    {
+        return $this->_getPublicPage($request, $response, 'frontend/public/index');
+    }
 
     public function embedAction(Request $request, Response $response): Response
-    {}
+    {
+        return $this->_getPublicPage($request, $response, 'frontend/public/embed');
+    }
 
     public function embedrequestsAction(Request $request, Response $response): Response
-    {}
+    {
+        return $this->_getPublicPage($request, $response, 'frontend/public/embedrequests');
+    }
+
+    protected function _getPublicPage(Request $request, Response $response, $template_name)
+    {
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
+        if (!$station->getEnablePublicPage()) {
+            throw new \App\Exception(_('Station not found!'));
+        }
+
+        /** @var FrontendAbstract $frontend_adapter */
+        $frontend_adapter = $request->getAttribute('station_frontend');
+
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, $template_name, [
+            'station' => $station,
+            'stream_url' => $frontend_adapter->getStreamUrl(),
+        ]);
+    }
 
     public function playlistAction(Request $request, Response $response): Response
     {
-        $this->doNotRender();
+        /** @var FrontendAbstract $frontend_adapter */
+        $fa = $request->getAttribute('station_frontend');
 
-        $fa = $this->station->getFrontendAdapter($this->di);
         $stream_urls = $fa->getStreamUrls();
 
-        $format = strtolower($this->getParam('format', 'pls'));
+        $format = strtolower($request->getParam('format', 'pls'));
         switch ($format) {
             // M3U Playlist Format
             case "m3u":
                 $m3u_file = implode("\n", $stream_urls);
 
-                $this->response->getBody()->write($m3u_file);
-
-                return $this->response
-                    ->withHeader('Content-Type', 'audio/x-mpegurl');
-
-                // Disable for mobile devices
-                // ->withHeader('Content-Disposition', 'attachment; filename="' . $this->station->getShortName() . '.m3u"');
+                return $response
+                    ->withHeader('Content-Type', 'audio/x-mpegurl')
+                    ->write($m3u_file);
                 break;
 
             // PLS Playlist Format
@@ -74,34 +81,10 @@ class PublicController extends \AzuraCast\Legacy\Controller
                 $output[] = 'NumberOfEntries=' . count($stream_urls);
                 $output[] = 'Version=2';
 
-                $this->response->getBody()->write(implode("\n", $output));
-
-                return $this->response
-                    ->withHeader('Content-Type', 'audio/x-scpls');
-
-                // Disable for mobile devices
-                // ->withHeader('Content-Disposition', 'attachment; filename="' . $this->station->getShortName() . '.pls"');
+                return $response
+                    ->withHeader('Content-Type', 'audio/x-scpls')
+                    ->write(implode("\n", $output));
                 break;
         }
-    }
-
-    protected function _getStation()
-    {
-        $station_id = $this->getParam('station');
-
-        /** @var Entity\Repository\StationRepository $station_repo */
-        $station_repo = $this->em->getRepository(Entity\Station::class);
-
-        if (is_numeric($station_id)) {
-            $station = $station_repo->find($station_id);
-        } else {
-            $station = $station_repo->findByShortCode($station_id);
-        }
-
-        if (!($station instanceof Entity\Station) || !$station->isEnablePublicPage()) {
-            throw new \App\Exception(_('Station not found!'));
-        }
-
-        return $station;
     }
 }

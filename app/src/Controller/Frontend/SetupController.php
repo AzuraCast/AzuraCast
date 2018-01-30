@@ -1,15 +1,63 @@
 <?php
 namespace Controller\Frontend;
 
+use App\Acl;
+use App\Auth;
+use App\Flash;
+use AzuraCast\Radio\Adapters;
+use AzuraCast\Radio\Configuration;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class SetupController extends \AzuraCast\Legacy\Controller
+class SetupController
 {
-    public function init()
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Flash */
+    protected $flash;
+
+    /** @var Auth */
+    protected $auth;
+
+    /** @var Acl */
+    protected $acl;
+
+    /** @var Adapters */
+    protected $adapters;
+
+    /** @var Configuration */
+    protected $configuration;
+
+    /** @var array */
+    protected $station_form_config;
+
+    /** @var array */
+    protected $settings_form_config;
+
+    /**
+     * SetupController constructor.
+     * @param EntityManager $em
+     * @param Flash $flash
+     * @param Auth $auth
+     * @param Acl $acl
+     * @param Adapters $adapters
+     * @param Configuration $configuration
+     * @param array $station_form_config
+     * @param array $settings_form_config
+     */
+    public function __construct(EntityManager $em, Flash $flash, Auth $auth, Acl $acl, Adapters $adapters, Configuration $configuration, array $station_form_config, array $settings_form_config)
     {
-        return null;
+        $this->em = $em;
+        $this->flash = $flash;
+        $this->auth = $auth;
+        $this->acl = $acl;
+        $this->adapters = $adapters;
+        $this->configuration = $configuration;
+        $this->station_form_config = $station_form_config;
+        $this->settings_form_config = $settings_form_config;
     }
 
     /**
@@ -18,8 +66,7 @@ class SetupController extends \AzuraCast\Legacy\Controller
     public function indexAction(Request $request, Response $response): Response
     {
         $current_step = $this->_getSetupStep();
-
-        return $this->redirectFromHere(['action' => $current_step]);
+        return $response->redirectToRoute('setup:'.$current_step);
     }
 
     /**
@@ -27,9 +74,9 @@ class SetupController extends \AzuraCast\Legacy\Controller
      */
     public function completeAction(Request $request, Response $response): Response
     {
-        $this->alert('<b>' . _('Setup has already been completed!') . '</b>', 'red');
+        $this->flash->alert('<b>' . _('Setup has already been completed!') . '</b>', 'red');
 
-        return $this->redirectHome();
+        return $response->redirectHome();
     }
 
     /**
@@ -40,8 +87,8 @@ class SetupController extends \AzuraCast\Legacy\Controller
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
-        if ($current_step != 'register') {
-            return $this->redirectFromHere(['action' => $current_step]);
+        if ($current_step !== 'register') {
+            return $response->redirectToRoute('setup:'.$current_step);
         }
 
         // Create first account form.
@@ -71,15 +118,16 @@ class SetupController extends \AzuraCast\Legacy\Controller
             $this->em->flush();
 
             // Log in the newly created user.
-
-            /** @var \App\Auth $auth */
-            $auth = $this->di[\App\Auth::class];
-            $auth->authenticate($data['username'], $data['password']);
-
+            $this->auth->authenticate($data['username'], $data['password']);
             $this->acl->reload();
 
-            return $this->redirectFromHere(['action' => 'index']);
+            return $response->redirectToRoute('setup:index');
         }
+
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'frontend/setup/register');
     }
 
     /**
@@ -90,12 +138,12 @@ class SetupController extends \AzuraCast\Legacy\Controller
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
-        if ($current_step != 'station') {
-            return $this->redirectFromHere(['action' => $current_step]);
+        if ($current_step !== 'station') {
+            return $response->redirectToRoute('setup:'.$current_step);
         }
 
         // Set up station form.
-        $form_config = $this->config->forms->station->toArray();
+        $form_config = $this->station_form_config;
         unset($form_config['groups']['admin']);
         unset($form_config['groups']['profile']['legend']);
 
@@ -106,12 +154,17 @@ class SetupController extends \AzuraCast\Legacy\Controller
 
             /** @var Entity\Repository\StationRepository $station_repo */
             $station_repo = $this->em->getRepository(Entity\Station::class);
-            $station_repo->create($data, $this->di);
+            $station_repo->create($data, $this->adapters, $this->configuration);
 
-            return $this->redirectFromHere(['action' => 'settings']);
+            return $response->redirectToRoute('setup:settings');
         }
 
-        $this->view->form = $form;
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'frontend/setup/station', [
+            'form' => $form,
+        ]);
     }
 
     /**
@@ -122,12 +175,11 @@ class SetupController extends \AzuraCast\Legacy\Controller
     {
         // Verify current step.
         $current_step = $this->_getSetupStep();
-
-        if ($current_step != 'settings') {
-            return $this->redirectFromHere(['action' => $current_step]);
+        if ($current_step !== 'settings') {
+            return $response->redirectToRoute('setup:'.$current_step);
         }
 
-        $form = new \App\Form($this->config->forms->settings->form);
+        $form = new \App\Form($this->settings_form_config);
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
@@ -135,7 +187,7 @@ class SetupController extends \AzuraCast\Legacy\Controller
         $existing_settings = $settings_repo->fetchArray(false);
         $form->setDefaults($existing_settings);
 
-        if ($this->request->getMethod() == 'POST' && $form->isValid($_POST)) {
+        if ($request->getMethod() === 'POST' && $form->isValid($_POST)) {
             $data = $form->getValues();
 
             // Mark setup as complete along with other settings changes.
@@ -144,13 +196,18 @@ class SetupController extends \AzuraCast\Legacy\Controller
             $settings_repo->setSettings($data);
 
             // Notify the user and redirect to homepage.
-            $this->alert('<b>' . _('Setup is now complete!') . '</b><br>' . _('Continue setting up your station in the main AzuraCast app.'),
+            $this->flash->alert('<b>' . _('Setup is now complete!') . '</b><br>' . _('Continue setting up your station in the main AzuraCast app.'),
                 'green');
 
-            return $this->redirectHome();
+            return $response->redirectHome();
         }
 
-        $this->view->form = $form;
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'frontend/setup/settings', [
+            'form' => $form,
+        ]);
     }
 
     /**
@@ -172,10 +229,7 @@ class SetupController extends \AzuraCast\Legacy\Controller
         }
 
         // If past "register" step, require login.
-
-        /** @var \App\Auth $auth */
-        $auth = $this->di[\App\Auth::class];
-        if (!$auth->isLoggedIn()) {
+        if (!$this->auth->isLoggedIn()) {
             throw new \App\Exception\NotLoggedIn;
         }
 

@@ -1,22 +1,28 @@
 <?php
 namespace Controller\Frontend;
 
-use Doctrine\ORM\EntityManager;
 use App\Http\Request;
 use App\Http\Response;
+use Slim\Container;
 
-class UtilController extends \AzuraCast\Legacy\Controller
+class UtilController
 {
-    protected function permissions()
+    /** @var Container */
+    protected $di;
+
+    /**
+     * @param Container $di
+     */
+    public function __construct(Container $di)
     {
-        return true;
+        $this->di = $di;
     }
 
     public function testAction(Request $request, Response $response): Response
     {
-        $this->doNotRender();
-
-        $body_contents = $this->request->getBody()->getContents();
+        $body_contents = $request->getBody()->getContents();
         file_put_contents(__DIR__.'/test.txt', $body_contents);
+
+        return $response->withJson('Test successful!');
     }
 }

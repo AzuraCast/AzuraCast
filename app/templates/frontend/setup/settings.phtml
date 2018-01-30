@@ -10,6 +10,6 @@
         <div><?=_('Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.') ?></div>
     </div>
     <div class="card-body card-padding">
-        <?=$this->insert('partials/form') ?>
+        <?=$this->insert('partials/form', ['form' => $form]) ?>
     </div>
 </div>

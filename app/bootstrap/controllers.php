@@ -220,8 +220,14 @@ return function (\Slim\Container $di) {
     };
 
     $di[\Controller\Stations\FilesController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
         return new \Controller\Stations\FilesController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $di[\App\Url::class],
+            $config->forms->media->toArray(),
+            $config->forms->rename->toArray()
         );
     };
 

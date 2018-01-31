@@ -263,7 +263,9 @@ return function(\Slim\App $app) {
             $this->map(['GET', 'POST'], '/download', Controller\Stations\FilesController::class.':downloadAction')
                 ->setName('stations:files:download');
 
-        })->add([Middleware\Permissions::class, 'manage station media', true]);
+        })
+            ->add(Middleware\Module\StationFiles::class)
+            ->add([Middleware\Permissions::class, 'manage station media', true]);
 
         $this->group('/playlists', function () {
 

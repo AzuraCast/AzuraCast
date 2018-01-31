@@ -8,7 +8,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 /**
- * Module middleware for the /admin pages.
+ * Module middleware for the /station pages.
  */
 class Stations
 {

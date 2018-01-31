@@ -91,9 +91,9 @@ class Response extends \Slim\Http\Response
      * @param int $code
      * @return self
      */
-    public function redirectHere($code = 302): self
+    public function redirectHere($code = 302, $suffix = ''): self
     {
-        return $this->withRedirect($this->url->current(), $code);
+        return $this->withRedirect($this->url->current().$suffix, $code);
     }
 
     /**
@@ -102,10 +102,11 @@ class Response extends \Slim\Http\Response
      * @param $name
      * @param array $route_params
      * @param int $code
+     * @param string $suffix
      * @return self
      */
-    public function redirectToRoute($name, $route_params = [], $code = 302): self
+    public function redirectToRoute($name, $route_params = [], $code = 302, $suffix = ''): self
     {
-        return $this->withRedirect($this->url->named($name, $route_params), $code);
+        return $this->withRedirect($this->url->named($name, $route_params).$suffix, $code);
     }
 }

@@ -152,7 +152,7 @@ $(function() {
                 e.preventDefault();
 
                 var $files = getSelectedFiles();
-                $files.length && $.post('<?=$url->routeFromHere(['action' => 'batch']) ?>',{
+                $files.length && $.post('<?=$url->named('stations:files:batch', ['station' => $station->getId()]) ?>',{
                     'do': $(e.target).data('action'),
                     'files': $files.join('|'),
                     'xsrf': XSRF,
@@ -180,7 +180,7 @@ $(function() {
             iconRefresh: 'zmdi-refresh',
             iconUp: 'zmdi-sort-amount-asc'
         },
-        url: "<?=$url->routeFromHere(['action' => 'list']) ?>",
+        url: "<?=$url->named('stations:files:list', ['station' => $station->getId()])  ?>",
         post: function() {
             return { 'file': $current_dir };
         },
@@ -268,7 +268,7 @@ $(function() {
         var hashval = getUrlHash();
         var $dir = $(this).find('[name=name]');
 
-        $dir.val().length && $.post('<?=$url->routeFromHere(['action' => 'mkdir']) ?>',{
+        $dir.val().length && $.post('<?=$url->named('stations:files:mkdir', ['station' => $station->getId()]) ?>',{
             name: $dir.val(),
             xsrf: XSRF,
             file: hashval
@@ -288,7 +288,7 @@ $(function() {
         e.preventDefault();
 
         var $files = getSelectedFiles();
-        $files.length && $.post('<?=$url->routeFromHere(['action' => 'batch']) ?>',{
+        $files.length && $.post('<?=$url->named('stations:files:batch', ['station' => $station->getId()]) ?>',{
             'do': 'playlist_new',
             'name': $('#fld-playlist-name').val(),
             'files': $files.join('|'),
@@ -312,7 +312,7 @@ $(function() {
 
         var $dir = $('#fld-directory-name');
 
-        $dir.val().length && $.post('<?=$url->routeFromHere(['action' => 'mkdir']) ?>',{
+        $dir.val().length && $.post('<?=$url->named('stations:files:mkdir', ['station' => $station->getId()]) ?>',{
             name: $dir.val(),
             xsrf: XSRF,
             file: getUrlHash()
@@ -327,7 +327,7 @@ $(function() {
 
     // File upload stuff
     var flow = new Flow({
-        target: '<?=$url->routeFromHere(['action' => 'upload']) ?>',
+        target: '<?=$url->named('stations:files:upload', ['station' => $station->getId()]) ?>',
         query: function() {
             return {
                 xsrf: XSRF,

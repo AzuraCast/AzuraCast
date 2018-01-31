@@ -475,6 +475,16 @@ return function (\Slim\Container $di, $settings) {
         );
     };
 
+    $di[\AzuraCast\Middleware\Module\Stations::class] = function($di) {
+        return new \AzuraCast\Middleware\Module\Stations;
+    };
+
+    $di[\AzuraCast\Middleware\Module\StationFiles::class] = function($di) {
+        return new \AzuraCast\Middleware\Module\StationFiles(
+            $di[\App\Csrf::class]
+        );
+    };
+
     //
     // Main Slim Application
     //

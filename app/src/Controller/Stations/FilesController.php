@@ -1,14 +1,16 @@
 <?php
 namespace Controller\Stations;
 
-use App\Http\Response;
-use App\Utilities;
-use Entity\StationMedia;
-use Entity\StationPlaylist;
 use Entity;
-use Psr\Http\Message\ResponseInterface;
+use App\Flash;
+use App\Http\Request;
+use App\Http\Response;
+use App\Mvc\View;
+use App\Url;
+use App\Utilities;
+use AzuraCast\Radio\Backend\BackendAbstract;
+use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\UploadedFileInterface;
-use Slim\Http\UploadedFile;
 
 /**
  * Class FilesController
@@ -17,98 +19,84 @@ use Slim\Http\UploadedFile;
  * Simple PHP File Manager - Copyright John Campbell (jcampbell1)
  * License: MIT
  */
-class FilesController extends \AzuraCast\Legacy\Controller
+class FilesController
 {
-    protected $base_dir = null;
+    /** @var EntityManager */
+    protected $em;
 
-    protected $file = '';
+    /** @var Flash */
+    protected $flash;
 
-    protected $file_path = null;
+    /** @var Url */
+    protected $url;
+
+    /** @var array */
+    protected $edit_form_config;
+
+    /** @var array */
+    protected $rename_form_config;
 
     /** @var Entity\Repository\StationMediaRepository */
     protected $media_repo;
 
-    public function preDispatch()
+    /**
+     * FilesController constructor.
+     * @param EntityManager $em
+     * @param Flash $flash
+     * @param Url $url
+     * @param array $edit_form_config
+     * @param array $rename_form_config
+     */
+    public function __construct(EntityManager $em, Flash $flash, Url $url, array $edit_form_config, array $rename_form_config)
     {
-        parent::preDispatch();
-
-        if (!$this->backend->supportsMedia()) {
-            throw new \App\Exception(_('This feature is not currently supported on this station.'));
-        }
-
-        $this->base_dir = $this->station->getRadioMediaDir();
-        $this->view->base_dir = $this->base_dir;
-
-        if (!empty($_REQUEST['file'])) {
-            $this->file = $_REQUEST['file'];
-        }
-
-        $this->file_path = realpath($this->base_dir . '/' . $this->file);
-
-        if ($this->file_path === false) {
-            return $this->_err(404, 'File or Directory Not Found');
-        }
-        if (substr($this->file_path, 0, strlen($this->base_dir)) !== $this->base_dir) {
-            return $this->_err(403, "Forbidden");
-        }
+        $this->em = $em;
+        $this->flash = $flash;
+        $this->url = $url;
+        $this->edit_form_config = $edit_form_config;
+        $this->rename_form_config = $rename_form_config;
 
         $this->media_repo = $this->em->getRepository(Entity\StationMedia::class);
-
-        /** @var \App\Csrf $csrf */
-        $csrf = $this->di[\App\Csrf::class];
-        $this->view->CSRF = $csrf->generate('files');
-
-        if (!empty($_POST)) {
-            if (!$csrf->verify($_POST['xsrf'], 'files')) {
-                return $this->_err(403, 'XSRF Failure');
-            }
-        }
-
-        $this->view->MAX_UPLOAD_SIZE = min($this->_asBytes(ini_get('post_max_size')),
-            $this->_asBytes(ini_get('upload_max_filesize')));
     }
 
-    protected function _asBytes($ini_v)
+    public function indexAction(Request $request, Response $response, $station_id): Response
     {
-        $ini_v = trim($ini_v);
-        $s = ['g' => 1 << 30, 'm' => 1 << 20, 'k' => 1 << 10];
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-        return intval($ini_v) * ($s[strtolower(substr($ini_v, -1))] ?: 1);
-    }
-
-    public function indexAction(Request $request, Response $response): Response
-    {
-        $this->view->playlists = $this->em->createQuery('SELECT sp.id, sp.name FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id ORDER BY sp.name ASC')
-            ->setParameter('station_id', $this->station->getId())
+        $playlists = $this->em->createQuery('SELECT sp.id, sp.name FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id ORDER BY sp.name ASC')
+            ->setParameter('station_id', $station_id)
             ->getArrayResult();
 
         // Show available file space in the station directory.
-        $media_dir = $this->station->getRadioMediaDir();
+        $media_dir = $station->getRadioMediaDir();
         $space_free = disk_free_space($media_dir);
         $space_total = disk_total_space($media_dir);
         $space_used = $space_total - $space_free;
 
-        $this->view->space_free = Utilities::bytes_to_text($space_free);
-        $this->view->space_used = Utilities::bytes_to_text($space_used);
-        $this->view->space_total = Utilities::bytes_to_text($space_total);
-        $this->view->space_percent = round(($space_used / $space_total) * 100);
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'stations/files/index', [
+            'playlists' => $playlists,
+            'space_free' => Utilities::bytes_to_text($space_free),
+            'space_used' => Utilities::bytes_to_text($space_used),
+            'space_total' => Utilities::bytes_to_text($space_total),
+            'space_percent' => round(($space_used / $space_total) * 100),
+        ]);
     }
 
-    public function editAction(Request $request, Response $response): Response
+    public function editAction(Request $request, Response $response, $station_id, $media_id): Response
     {
-        $media_id = (int)$this->getParam('id');
-        $media = $this->em->getRepository(StationMedia::class)->findOneBy([
-            'station_id' => $this->station->getId(),
+        $media = $this->em->getRepository(Entity\StationMedia::class)->findOneBy([
+            'station_id' => $station_id,
             'id' => $media_id
         ]);
 
-        if (!($media instanceof StationMedia)) {
+        if (!($media instanceof Entity\StationMedia)) {
             throw new \Exception('Media not found.');
         }
 
-        $form_config = $this->config->forms->media->toArray();
-        $form = new \App\Form($form_config);
-
+        $form = new \App\Form($this->edit_form_config);
         $form->populate($this->media_repo->toArray($media));
 
         if (!empty($_POST) && $form->isValid()) {
@@ -124,7 +112,7 @@ class FilesController extends \AzuraCast\Legacy\Controller
             $this->media_repo->fromArray($media, $data);
 
             // Handle uploaded artwork files.
-            $files = $this->request->getUploadedFiles();
+            $files = $request->getUploadedFiles();
             if (!empty($files['art'])) {
                 $file = $files['art'];
 
@@ -147,22 +135,28 @@ class FilesController extends \AzuraCast\Legacy\Controller
             $this->em->persist($media);
             $this->em->flush();
 
-            $this->alert('<b>' . _('Media metadata updated!') . '</b>', 'green');
+            $this->flash->alert('<b>' . _('Media metadata updated!') . '</b>', 'green');
 
-            $file_dir = (dirname($media->getPath()) == '.') ? '' : dirname($media->getPath());
-            return $response->withRedirect($this->url->routeFromHere(['action' => 'index']).'#'.$file_dir);
+            $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
+            return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
         }
 
-        return $this->renderForm($form, 'edit', _('Edit Media Metadata'));
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'system/form_page', [
+            'form' => $form,
+            'render_mode' => 'edit',
+            'title' => _('Edit Media Metadata')
+        ]);
     }
 
-    public function renameAction(Request $request, Response $response): Response
+    public function renameAction(Request $request, Response $response, $station_id, $path): Response
     {
-        $path = base64_decode($this->getParam('path'));
+        $path = base64_decode($path);
         list($path, $path_full) = $this->_filterPath($path);
 
-        $form_config = $this->config->forms->rename->toArray();
-        $form = new \App\Form($form_config);
+        $form = new \App\Form($this->rename_form_config);
 
         $form->populate(['path' => $path]);
 
@@ -194,48 +188,41 @@ class FilesController extends \AzuraCast\Legacy\Controller
                 $path = $new_path;
             }
 
-            $this->alert('<b>' . _('File renamed!') . '</b>', 'green');
+            $this->flash->alert('<b>' . _('File renamed!') . '</b>', 'green');
 
-            $file_dir = (dirname($path) == '.') ? '' : dirname($path);
-            return $response->withRedirect($this->url->routeFromHere(['action' => 'index']).'#'.$file_dir);
+            $file_dir = (dirname($path) === '.') ? '' : dirname($path);
+            return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
         }
 
-        return $this->renderForm($form, 'edit', _('Rename File/Directory'));
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'system/form_page', [
+            'form' => $form,
+            'render_mode' => 'edit',
+            'title' => _('Rename File/Directory')
+        ]);
     }
 
-    protected function _filterPath($path)
+    public function listAction(Request $request, Response $response, $station_id): Response
     {
-        $path = str_replace(['../', './'], ['', ''], $path);
-        $path = trim($path, '/');
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-        $base_path = $this->station->getRadioMediaDir();
-        $dir_path = $base_path.DIRECTORY_SEPARATOR.dirname($path);
-        $full_path = $base_path.DIRECTORY_SEPARATOR.$path;
-
-        if ($real_path = realpath($dir_path)) {
-            if (substr($full_path, 0, strlen($base_path)) !== $base_path) {
-                throw new \Exception('New location not inside station media directory.');
-            }
-        } else {
-            throw new \Exception('Parent directory could not be resolved.');
-        }
-
-        return [$path, $full_path];
-    }
-
-    public function listAction(Request $request, Response $response): Response
-    {
         $result = [];
 
-        if (is_dir($this->file_path)) {
+        $file = $request->getAttribute('file');
+        $file_path = $request->getAttribute('file_path');
+
+        if (is_dir($file_path)) {
             $media_in_dir_raw = $this->em->createQuery('SELECT 
               partial sm.{id, unique_id, path, length, length_text, artist, title, album}, partial sp.{id, name}
               FROM Entity\StationMedia sm 
               LEFT JOIN sm.playlists sp 
               WHERE sm.station_id = :station_id 
               AND sm.path LIKE :path')
-                ->setParameter('station_id', $this->station->getId())
-                ->setParameter('path', $this->file . '%')
+                ->setParameter('station_id', $station_id)
+                ->setParameter('path', $file . '%')
                 ->getArrayResult();
 
             $media_in_dir = [];
@@ -253,26 +240,26 @@ class FilesController extends \AzuraCast\Legacy\Controller
                     'title' => $media_row['title'],
                     'album' => $media_row['album'],
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
-                    'art' => $this->url->named('api:media:art', ['station' => $this->station->getId(), 'media_id' => $media_row['unique_id']]),
-                    'edit_url' => $this->url->routeFromHere(['action' => 'edit', 'id' => $media_row['id']]),
-                    'play_url' => $this->url->routeFromHere(['action' => 'download']) . '?file=' . urlencode($media_row['path']),
+                    'art' => $this->url->named('api:media:art', ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
+                    'edit_url' => $this->url->named('stations:files:edit', ['station' => $station_id, 'id' => $media_row['id']]),
+                    'play_url' => $this->url->named('stations:files:download', ['station' => $station_id]) . '?file=' . urlencode($media_row['path']),
                     'playlists' => $playlists,
                 ];
             }
 
-            $directory = $this->file_path;
-
             // Search all recursive files
             if (!empty($_REQUEST['searchPhrase'])) {
-                $files = $this->_getMusicFiles($directory);
+                $files = $this->_getMusicFiles($file_path);
             } else {
-                $files = array_diff(scandir($directory), ['.', '..']);
+                $files = array_diff(scandir($file_path), ['.', '..']);
                 foreach($files as &$file)
-                    $file = $directory.'/'.$file;
+                    $file = $file_path.'/'.$file;
+
+                unset($file);
             }
 
             foreach ($files as $i) {
-                $short = ltrim(str_replace($this->base_dir, '', $i), '/');
+                $short = ltrim(str_replace($station->getRadioMediaDir(), '', $i), '/');
 
                 if (is_dir($i)) {
                     $media = ['name' => _('Directory'), 'playlists' => [], 'is_playable' => false];
@@ -297,7 +284,7 @@ class FilesController extends \AzuraCast\Legacy\Controller
                     'path' => $short,
                     'text' => $shortname,
                     'is_dir' => is_dir($i),
-                    'rename_url' => $this->url->routeFromHere(['action' => 'rename', 'path' => base64_encode($short)]),
+                    'rename_url' => $this->url->named('stations:files:rename', ['station' => $station_id, 'path' => base64_encode($short)]),
                 ];
 
                 foreach ($media as $media_key => $media_val) {
@@ -337,7 +324,7 @@ class FilesController extends \AzuraCast\Legacy\Controller
 
         if (!empty($_REQUEST['sort'])) {
             foreach ($_REQUEST['sort'] as $sort_key => $sort_direction) {
-                $sort_dir = (strtolower($sort_direction) == 'desc') ? \SORT_DESC : \SORT_ASC;
+                $sort_dir = (strtolower($sort_direction) === 'desc') ? \SORT_DESC : \SORT_ASC;
 
                 $sort_by[] = $sort_key;
                 $sort_by[] = $sort_dir;
@@ -376,11 +363,16 @@ class FilesController extends \AzuraCast\Legacy\Controller
 
     public function batchAction(Request $request, Response $response): Response
     {
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
+        $base_dir = $station->getRadioMediaDir();
+
         $files_raw = explode('|', $_POST['files']);
         $files = [];
 
         foreach ($files_raw as $file) {
-            $file_path = $this->base_dir . '/' . $file;
+            $file_path = $base_dir . '/' . $file;
             if (file_exists($file_path)) {
                 $files[] = $file_path;
             }
@@ -401,7 +393,7 @@ class FilesController extends \AzuraCast\Legacy\Controller
 
                 foreach ($music_files as $i => $file) {
                     try {
-                        $media = $this->media_repo->getOrCreate($this->station, $file);
+                        $media = $this->media_repo->getOrCreate($station, $file);
                         $this->em->remove($media);
                     } catch (\Exception $e) {
                         @unlink($file);
@@ -419,13 +411,16 @@ class FilesController extends \AzuraCast\Legacy\Controller
                 break;
 
             case 'clear':
+                /** @var BackendAbstract $backend */
+                $backend = $request->getAttribute('station_backend');
+
                 // Clear all assigned playlists from the selected files.
                 $music_files = $this->_getMusicFiles($files);
                 $files_found = count($music_files);
 
                 foreach ($music_files as $file) {
                     try {
-                        $media = $this->media_repo->getOrCreate($this->station, $file);
+                        $media = $this->media_repo->getOrCreate($station, $file);
                         $media->getPlaylists()->clear();
                         $this->em->persist($media);
                     } catch (\Exception $e) { }
@@ -436,13 +431,16 @@ class FilesController extends \AzuraCast\Legacy\Controller
                 $this->em->flush();
 
                 // Write new PLS playlist configuration.
-                $this->backend->write();
+                $backend->write();
                 break;
 
             // Add all selected files to a playlist.
             case 'playlist':
+                /** @var BackendAbstract $backend */
+                $backend = $request->getAttribute('station_backend');
+
                 if ($action_id === 'new') {
-                    $playlist = new StationPlaylist($this->station);
+                    $playlist = new Entity\StationPlaylist($station);
                     $playlist->setName($_POST['name']);
 
                     $this->em->persist($playlist);
@@ -454,13 +452,13 @@ class FilesController extends \AzuraCast\Legacy\Controller
                     ];
                 } else {
                     $playlist_id = (int)$action_id;
-                    $playlist = $this->em->getRepository(StationPlaylist::class)->findOneBy([
-                        'station_id' => $this->station->getId(),
+                    $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
+                        'station_id' => $station->getId(),
                         'id' => $playlist_id
                     ]);
 
-                    if (!($playlist instanceof StationPlaylist)) {
-                        return $this->_err(500, 'Playlist Not Found');
+                    if (!($playlist instanceof Entity\StationPlaylist)) {
+                        return $this->_err($response, 500, 'Playlist Not Found');
                     }
                 }
 
@@ -469,7 +467,7 @@ class FilesController extends \AzuraCast\Legacy\Controller
 
                 foreach ($music_files as $file) {
                     try {
-                        $media = $this->media_repo->getOrCreate($this->station, $file);
+                        $media = $this->media_repo->getOrCreate($station, $file);
 
                         if (!$media->getPlaylists()->contains($playlist)) {
                             $media->getPlaylists()->add($playlist);
@@ -485,7 +483,7 @@ class FilesController extends \AzuraCast\Legacy\Controller
                 $this->em->flush();
 
                 // Write new PLS playlist configuration.
-                $this->backend->write();
+                $backend->write();
                 break;
         }
 
@@ -495,6 +493,73 @@ class FilesController extends \AzuraCast\Legacy\Controller
             'files_affected' => $files_affected,
             'record' => $response_record,
         ]);
+    }
+
+    public function mkdirAction(Request $request, Response $response): Response
+    {
+        $file_path = $request->getAttribute('file_path');
+
+        // don't allow actions outside root. we also filter out slashes to catch args like './../outside'
+        $dir = $_POST['name'];
+        $dir = str_replace('/', '', $dir);
+        if (substr($dir, 0, 2) === '..') {
+            return $this->_err($response, 403, 'Cannot create directory: ..');
+        }
+
+        @mkdir($file_path . '/' . $dir);
+
+        return $response->withJson(['success' => true]);
+    }
+
+    public function uploadAction(Request $request, Response $response): Response
+    {
+        try {
+            $flow = new \App\Service\Flow($request, $response);
+            $flow_response = $flow->process();
+
+            if ($flow_response instanceof Response) {
+                return $flow_response;
+            }
+
+            if (is_array($flow_response)) {
+                /** @var Entity\Station $station */
+                $station = $request->getAttribute('station');
+
+                $file_path = $request->getAttribute('file_path');
+
+                $file = new \App\File(basename($flow_response['filename']), $file_path);
+                $file->sanitizeName();
+
+                $final_path = $file->getPath();
+                rename($flow_response['path'], $final_path);
+
+                $station_media = $this->media_repo->getOrCreate($station, $final_path);
+
+                $this->em->persist($station_media);
+                $this->em->flush();
+
+                return $response->withJson(['success' => true]);
+            }
+        } catch (\Exception $e) {
+            return $this->_err($response, 500, $e->getMessage());
+        }
+    }
+
+    public function downloadAction(Request $request, Response $response): Response
+    {
+        set_time_limit(600);
+
+        $file_path = $request->getAttribute('file_path');
+
+        $filename = basename($file_path);
+        $fh = fopen($file_path, 'rb');
+
+        return $response
+            ->withHeader('Content-Type', mime_content_type($file_path))
+            ->withHeader('Content-Length', filesize($file_path))
+            ->withHeader('Content-Disposition', sprintf('attachment; filename=%s',
+                strpos('MSIE', $_SERVER['HTTP_REFERER']) ? rawurlencode($filename) : "\"$filename\""))
+            ->withBody(new \Slim\Http\Stream($fh));
     }
 
     protected function _getMusicFiles($path)
@@ -527,71 +592,24 @@ class FilesController extends \AzuraCast\Legacy\Controller
         }
     }
 
-    public function mkdirAction(Request $request, Response $response): Response
+    protected function _filterPath($path)
     {
-        // don't allow actions outside root. we also filter out slashes to catch args like './../outside'
-        $dir = $_POST['name'];
-        $dir = str_replace('/', '', $dir);
-        if (substr($dir, 0, 2) === '..') {
-            return $this->_err(403, 'Cannot create directory: ..');
-        }
+        $path = str_replace(['../', './'], ['', ''], $path);
+        $path = trim($path, '/');
 
-        @mkdir($this->file_path . '/' . $dir);
+        $base_path = $this->station->getRadioMediaDir();
+        $dir_path = $base_path.DIRECTORY_SEPARATOR.dirname($path);
+        $full_path = $base_path.DIRECTORY_SEPARATOR.$path;
 
-        return $response->withJson(['success' => true]);
-    }
-
-    public function uploadAction(Request $request, Response $response): Response
-    {
-        $this->doNotRender();
-
-        try {
-
-            $flow = new \App\Service\Flow($this->request, $this->response);
-            $flow_response = $flow->process();
-
-            if ($flow_response instanceof ResponseInterface) {
-
-                return $flow_response;
-
-            } else if (is_array($flow_response)) {
-
-                $file = new \App\File(basename($flow_response['filename']), $this->file_path);
-                $file->sanitizeName();
-
-                $final_path = $file->getPath();
-                rename($flow_response['path'], $final_path);
-
-                /** @var Entity\Repository\StationMediaRepository $station_media_repo */
-                $station_media_repo = $this->em->getRepository(StationMedia::class);
-                $station_media = $station_media_repo->getOrCreate($this->station, $final_path);
-
-                $this->em->persist($station_media);
-                $this->em->flush();
-
-                return $response->withJson(['success' => true]);
+        if ($real_path = realpath($dir_path)) {
+            if (substr($full_path, 0, strlen($base_path)) !== $base_path) {
+                throw new \Exception('New location not inside station media directory.');
             }
-
-        } catch (\Exception $e) {
-            return $this->_err(500, $e->getMessage());
+        } else {
+            throw new \Exception('Parent directory could not be resolved.');
         }
-    }
 
-    public function downloadAction(Request $request, Response $response): Response
-    {
-        $this->doNotRender();
-        set_time_limit(600);
-
-        $filename = basename($this->file_path);
-
-        $fh = fopen($this->file_path, 'rb');
-
-        return $this->response
-            ->withHeader('Content-Type', mime_content_type($this->file_path))
-            ->withHeader('Content-Length', filesize($this->file_path))
-            ->withHeader('Content-Disposition', sprintf('attachment; filename=%s',
-                strpos('MSIE', $_SERVER['HTTP_REFERER']) ? rawurlencode($filename) : "\"$filename\""))
-            ->withBody(new \Slim\Http\Stream($fh));
+        return [$path, $full_path];
     }
 
     protected function _is_recursively_deleteable($d)
@@ -614,6 +632,8 @@ class FilesController extends \AzuraCast\Legacy\Controller
 
     protected function _err(Response $response, $code, $msg)
     {
-        return $response->withJson(['error' => ['code' => (int)$code, 'msg' => $msg]]);
+        return $response
+            ->withStatus($code)
+            ->withJson(['error' => ['code' => (int)$code, 'msg' => $msg]]);
     }
 }

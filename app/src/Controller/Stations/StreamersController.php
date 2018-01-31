@@ -21,11 +21,6 @@ class StreamersController extends \AzuraCast\Legacy\Controller
         $this->streamers_repo = $this->em->getRepository(Entity\StationStreamer::class);
     }
 
-    protected function permissions()
-    {
-        return $this->acl->isAllowed('manage station streamers', $this->station->getId());
-    }
-
     public function indexAction(Request $request, Response $response): Response
     {
         if (!$this->station->getEnableStreamers()) {

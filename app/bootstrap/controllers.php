@@ -131,7 +131,8 @@ return function (\Slim\Container $di) {
     $di[\Controller\Api\RequestsController::class] = function($di) {
         return new \Controller\Api\RequestsController(
             $di[\Doctrine\ORM\EntityManager::class],
-            $di[\AzuraCast\Radio\Adapters::class]
+            $di[\AzuraCast\Radio\Adapters::class],
+            $di[\App\Url::class]
         );
     };
 
@@ -208,8 +209,13 @@ return function (\Slim\Container $di) {
     //
 
     $di[\Controller\Stations\AutomationController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
         return new \Controller\Stations\AutomationController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $di[\AzuraCast\Sync\RadioAutomation::class],
+            $config->forms->automation->toArray()
         );
     };
 
@@ -228,14 +234,27 @@ return function (\Slim\Container $di) {
     };
 
     $di[\Controller\Stations\MountsController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
         return new \Controller\Stations\MountsController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            [
+                'icecast' => $config->forms->mount_icecast->toArray(),
+                'remote' => $config->forms->mount_remote->toArray(),
+                'shoutcast2' => $config->forms->mount_shoutcast2->toArray(),
+            ]
         );
     };
 
     $di[\Controller\Stations\PlaylistsController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
         return new \Controller\Stations\PlaylistsController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Url::class],
+            $di[\App\Flash::class],
+            $config->forms->playlist->toArray()
         );
     };
 
@@ -253,13 +272,17 @@ return function (\Slim\Container $di) {
 
     $di[\Controller\Stations\ReportsController::class] = function($di) {
         return new \Controller\Stations\ReportsController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Cache::class],
+            $di[\App\Flash::class],
+            $di[\AzuraCast\Sync\RadioAutomation::class]
         );
     };
 
     $di[\Controller\Stations\RequestsController::class] = function($di) {
         return new \Controller\Stations\RequestsController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class]
         );
     };
 
@@ -271,7 +294,8 @@ return function (\Slim\Container $di) {
 
     $di[\Controller\Stations\UtilController::class] = function($di) {
         return new \Controller\Stations\UtilController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Radio\Configuration::class]
         );
     };
 

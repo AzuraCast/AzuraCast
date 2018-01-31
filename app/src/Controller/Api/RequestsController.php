@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Api;
 
+use App\Url;
 use App\Utilities;
 use AzuraCast\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
@@ -13,6 +14,9 @@ class RequestsController
     /** @var EntityManager */
     protected $em;
 
+    /** @var Url */
+    protected $url;
+
     /** @var Adapters */
     protected $adapters;
 
@@ -20,11 +24,13 @@ class RequestsController
      * RequestsController constructor.
      * @param EntityManager $em
      * @param Adapters $adapters
+     * @param Url $url
      */
-    public function __construct(EntityManager $em, Adapters $adapters)
+    public function __construct(EntityManager $em, Adapters $adapters, Url $url)
     {
         $this->em = $em;
         $this->adapters = $adapters;
+        $this->url = $url;
     }
 
     /**
@@ -44,7 +50,7 @@ class RequestsController
      *   @SWG\Response(response=403, description="Station does not support requests")
      * )
      */
-    public function listAction(Request $request, Response $response): Response
+    public function listAction(Request $request, Response $response, $station_id): Response
     {
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
@@ -73,8 +79,8 @@ class RequestsController
             $request = new Entity\Api\StationRequest;
             $request->song = $song;
             $request->request_id = (int)$media_row->getId();
-            $request->request_url = (string)$this->url->routeFromHere([
-                'action' => 'submit',
+            $request->request_url = (string)$this->url->named('api:requests:submit', [
+                'station' => $station_id,
                 'media_id' => $media_row->getUniqueId()
             ]);
             $result[] = $request;

@@ -28,11 +28,6 @@ class FilesController extends \AzuraCast\Legacy\Controller
     /** @var Entity\Repository\StationMediaRepository */
     protected $media_repo;
 
-    protected function permissions()
-    {
-        return $this->acl->isAllowed('manage station media', $this->station->getId());
-    }
-
     public function preDispatch()
     {
         parent::preDispatch();

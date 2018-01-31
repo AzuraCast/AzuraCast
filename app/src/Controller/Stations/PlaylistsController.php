@@ -1,38 +1,66 @@
 <?php
 namespace Controller\Stations;
 
+use App\Flash;
+use App\Mvc\View;
+use App\Url;
+use AzuraCast\Radio\Backend\BackendAbstract;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use Slim\Http\UploadedFile;
 use App\Http\Request;
 use App\Http\Response;
 
-class PlaylistsController extends \AzuraCast\Legacy\Controller
+class PlaylistsController
 {
-    protected function preDispatch()
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Url */
+    protected $url;
+
+    /** @var Flash */
+    protected $flash;
+
+    /** @var array */
+    protected $form_config;
+
+    /**
+     * PlaylistsController constructor.
+     * @param EntityManager $em
+     * @param Url $url
+     * @param Flash $flash
+     * @param array $form_config
+     */
+    public function __construct(EntityManager $em, Url $url, Flash $flash, array $form_config)
     {
-        if (!$this->backend->supportsMedia()) {
+        $this->em = $em;
+        $this->url = $url;
+        $this->flash = $flash;
+        $this->form_config = $form_config;
+    }
+
+    public function indexAction(Request $request, Response $response, $station_id): Response
+    {
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
+        /** @var BackendAbstract $backend */
+        $backend = $request->getAttribute('station_backend');
+
+        if (!$backend->supportsMedia()) {
             throw new \App\Exception(_('This feature is not currently supported on this station.'));
         }
 
-        return parent::preDispatch();
-    }
-
-    protected function permissions()
-    {
-        return $this->acl->isAllowed('manage station media', $this->station->getId());
-    }
-
-    public function indexAction(Request $request, Response $response): Response
-    {
         /** @var Entity\StationPlaylist[] $all_playlists */
-        $all_playlists = $this->station->getPlaylists();
+        $all_playlists = $station->getPlaylists();
 
         /** @var Entity\Repository\BaseRepository $playlist_repo */
         $playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
 
         $total_weights = 0;
         foreach ($all_playlists as $playlist) {
-            if ($playlist->getIsEnabled() && $playlist->getType() == 'default') {
+            if ($playlist->getIsEnabled() && $playlist->getType() === 'default') {
                 $total_weights += $playlist->getWeight();
             }
         }
@@ -53,20 +81,20 @@ class PlaylistsController extends \AzuraCast\Legacy\Controller
         foreach ($all_playlists as $playlist) {
             $playlist_row = $playlist_repo->toArray($playlist);
 
-            if ($playlist->getIsEnabled() && $playlist->getType() == 'default') {
+            if ($playlist->getIsEnabled() && $playlist->getType() === 'default') {
                 $playlist_row['probability'] = round(($playlist->getWeight() / $total_weights) * 100, 1) . '%';
             }
 
             $playlist_row['num_songs'] = $playlist->getMedia()->count();
 
             // Append to schedule display if the playlist is scheduled.
-            if ($playlist->getType() == 'scheduled') {
+            if ($playlist->getType() === 'scheduled') {
                 foreach($schedule_days as $day_key => $day_name) {
                     if (empty($playlist->getScheduleDays()) || in_array($day_key, $playlist->getScheduleDays())) {
 
                         $schedule_options = [
                             'id' => $playlist->getId(),
-                            'url' => $this->url->routeFromHere(['action' => 'edit', 'id' => $playlist->getId()])
+                            'url' => $this->url->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()])
                         ];
 
                         $start = Entity\StationPlaylist::getTimestamp($playlist->getScheduleStartTime());
@@ -111,26 +139,27 @@ class PlaylistsController extends \AzuraCast\Legacy\Controller
             $playlists[$playlist->getId()] = $playlist_row;
         }
 
-        $this->view->playlists = $playlists;
+        /** @var View $view */
+        $view = $request->getAttribute('view');
 
-        $this->view->schedule_days = $schedule_days;
-        $this->view->schedule = $schedule;
+        return $view->renderToResponse($response, 'stations/playlists/index', [
+            'playlists' => $playlists,
+            'schedule' => $schedule,
+            'schedule_days' => $schedule_days,
+        ]);
     }
 
-    public function exportAction(Request $request, Response $response): Response
+    public function exportAction(Request $request, Response $response, $station_id, $id, $format = 'pls'): Response
     {
-        $id = (int)$this->getParam('id');
-
         $record = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
             'id' => $id,
-            'station_id' => $this->station->getId()
+            'station_id' => $station_id
         ]);
 
         if (!($record instanceof Entity\StationPlaylist)) {
             throw new \Exception('Playlist not found!');
         }
 
-        $format = $this->getParam('format', 'pls');
         $formats = [
             'pls' => 'audio/x-scpls',
             'm3u' => 'application/x-mpegURL',
@@ -142,29 +171,26 @@ class PlaylistsController extends \AzuraCast\Legacy\Controller
 
         $file_name = 'playlist_' . $record->getShortName().'.'.$format;
 
-        $this->doNotRender();
-
-        $body = $this->response->getBody();
-        $body->write($record->export($format));
-
-        return $this->response
+        return $response
             ->withHeader('Content-Type', $formats[$format])
             ->withHeader('Content-Disposition', 'attachment; filename=' . $file_name)
-            ->withBody($body);
+            ->write($record->export($format));
     }
 
-    public function editAction(Request $request, Response $response): Response
+    public function editAction(Request $request, Response $response, $station_id, $id = null): Response
     {
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
         /** @var Entity\Repository\BaseRepository $playlist_repo */
         $playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
 
-        $form_config = $this->config->forms->playlist;
-        $form = new \App\Form($form_config);
+        $form = new \App\Form($this->form_config);
 
-        if ($this->hasParam('id')) {
+        if (!empty($id)) {
             $record = $playlist_repo->findOneBy([
-                'id' => $this->getParam('id'),
-                'station_id' => $this->station->getId()
+                'id' => $id,
+                'station_id' => $station_id
             ]);
 
             if ($record instanceof Entity\StationPlaylist) {
@@ -179,35 +205,39 @@ class PlaylistsController extends \AzuraCast\Legacy\Controller
             $data = $form->getValues();
 
             if (!($record instanceof Entity\StationPlaylist)) {
-                $record = new Entity\StationPlaylist($this->station);
+                $record = new Entity\StationPlaylist($station);
             }
 
             $playlist_repo->fromArray($record, $data);
             $this->em->persist($record);
 
             // Handle importing a playlist file, if necessary.
-            $files = $this->request->getUploadedFiles();
+            $files = $request->getUploadedFiles();
 
             /** @var UploadedFile $import_file */
             $import_file = $files['import'];
             if ($import_file->getError() == UPLOAD_ERR_OK) {
-                $this->_importPlaylist($record, $import_file);
+                $this->_importPlaylist($record, $import_file, $station_id);
             }
 
             $this->em->flush();
+            $this->em->refresh($station);
 
-            $this->em->refresh($this->station);
+            $this->flash->alert('<b>' . _('Record updated.') . '</b>', 'green');
 
-            $this->alert('<b>' . _('Record updated.') . '</b>', 'green');
-
-            return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+            return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
         }
 
-        $this->view->form = $form;
-        $this->view->title = ($this->hasParam('id')) ? _('Edit Record') : _('Add Record');
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'stations/playlists/edit', [
+            'form' => $form,
+            'title' => ($id) ? _('Edit Record') : _('Add Record')
+        ]);
     }
 
-    protected function _importPlaylist(Entity\StationPlaylist $playlist, UploadedFile $playlist_file)
+    protected function _importPlaylist(Entity\StationPlaylist $playlist, UploadedFile $playlist_file, $station_id)
     {
         $playlist_raw = (string)$playlist_file->getStream();
         if (empty($playlist_raw)) {
@@ -220,9 +250,9 @@ class PlaylistsController extends \AzuraCast\Legacy\Controller
             $parsed_playlist = (array)parse_ini_string($playlist_raw, true, INI_SCANNER_RAW);
 
             $paths = [];
-            foreach($parsed_playlist['playlist'] as $playlist_key => $playlist_file) {
+            foreach($parsed_playlist['playlist'] as $playlist_key => $playlist_line) {
                 if (substr(strtolower($playlist_key), 0, 4) === 'file') {
-                    $paths[] = $playlist_file;
+                    $paths[] = $playlist_line;
                 }
             }
 
@@ -231,7 +261,7 @@ class PlaylistsController extends \AzuraCast\Legacy\Controller
             // Process as a simple list of files or M3U-style playlist.
             $lines = explode("\n", $playlist_raw);
             $paths = array_filter(array_map('trim', $lines), function($line) {
-                return !empty($line) && substr($line, 0, 1) !== '#';
+                return !empty($line) && $line[0] !== '#';
             });
 
         }
@@ -244,7 +274,7 @@ class PlaylistsController extends \AzuraCast\Legacy\Controller
         $media_lookup = [];
 
         $media_info_raw = $this->em->createQuery('SELECT sm.id, sm.path FROM Entity\StationMedia sm WHERE sm.station_id = :station_id')
-            ->setParameter('station_id', $this->station->getId())
+            ->setParameter('station_id', $station_id)
             ->getArrayResult();
 
         foreach($media_info_raw as $row) {
@@ -276,7 +306,7 @@ class PlaylistsController extends \AzuraCast\Legacy\Controller
             $matched_media = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm
                 LEFT JOIN sm.playlists sp
                 WHERE sm.station_id = :station_id AND sm.id IN (:matched_ids)')
-                ->setParameter('station_id', $this->station->getId())
+                ->setParameter('station_id', $station_id)
                 ->setParameter('matched_ids', $matches)
                 ->execute();
 
@@ -292,17 +322,18 @@ class PlaylistsController extends \AzuraCast\Legacy\Controller
             $this->em->persist($playlist);
         }
 
-        $this->alert('<b>' . _('Existing playlist imported.') . '</b><br>' . sprintf(_('%d song(s) were imported into the playlist.'), count($matches)), 'blue');
+        $this->flash->alert('<b>' . _('Existing playlist imported.') . '</b><br>' . sprintf(_('%d song(s) were imported into the playlist.'), count($matches)), 'blue');
         return true;
     }
 
-    public function deleteAction(Request $request, Response $response): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $id): Response
     {
-        $id = (int)$this->getParam('id');
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
         $record = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
             'id' => $id,
-            'station_id' => $this->station->getId()
+            'station_id' => $station_id
         ]);
 
         if ($record instanceof Entity\StationPlaylist) {
@@ -310,11 +341,10 @@ class PlaylistsController extends \AzuraCast\Legacy\Controller
         }
 
         $this->em->flush();
+        $this->em->refresh($station);
 
-        $this->em->refresh($this->station);
+        $this->flash->alert('<b>' . _('Record deleted.') . '</b>', 'green');
 
-        $this->alert('<b>' . _('Record deleted.') . '</b>', 'green');
-
-        return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+        return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
     }
 }

@@ -12,7 +12,7 @@ $assets
 
         <ul class="actions">
             <li>
-                <a href="<?=$url->routeFromHere(['format' => 'csv']) ?>" title="<?=_('Download CSV') ?>">
+                <a href="<?=$url->named('stations:reports:performance', ['station' => $station->getId(), 'format' => 'csv']) ?>" title="<?=_('Download CSV') ?>">
                     <i class="zmdi zmdi-download"></i>
                 </a>
             </li>
@@ -64,7 +64,7 @@ $assets
     </div>
 </div>
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function() {
     $.expr[':'].textEquals = $.expr.createPseudo(function(arg) {
         return function( elem ) {

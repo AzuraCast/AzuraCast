@@ -1,40 +1,69 @@
 <?php
 namespace Controller\Stations;
 
+use App\Flash;
+use App\Mvc\View;
+use AzuraCast\Radio\Frontend\FrontendAbstract;
+use Doctrine\ORM\EntityManager;
 use Entity;
-use Entity\StationMount;
 use App\Http\Request;
 use App\Http\Response;
 
-class MountsController extends \AzuraCast\Legacy\Controller
+class MountsController
 {
-    protected function preDispatch()
-    {
-        if (!$this->frontend->supportsMounts()) {
-            throw new \App\Exception(_('This feature is not currently supported on this station.'));
-        }
+    /** @var EntityManager */
+    protected $em;
 
-        return parent::preDispatch();
-    }
+    /** @var Flash */
+    protected $flash;
 
-    protected function permissions()
+    /** @var array */
+    protected $mount_form_configs;
+
+    /**
+     * MountsController constructor.
+     * @param EntityManager $em
+     * @param Flash $flash
+     * @param array $mount_form_configs
+     */
+    public function __construct(EntityManager $em, Flash $flash, array $mount_form_configs)
     {
-        return $this->acl->isAllowed('manage station mounts', $this->station->getId());
+        $this->em = $em;
+        $this->flash = $flash;
+        $this->mount_form_configs = $mount_form_configs;
     }
 
     public function indexAction(Request $request, Response $response): Response
     {
-        $this->view->frontend_type = $this->station->getFrontendType();
-        $this->view->mounts = $this->station->getMounts();
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
+        /** @var FrontendAbstract $frontend */
+        $frontend = $request->getAttribute('station_frontend');
+
+        if (!$frontend->supportsMounts()) {
+            throw new \App\Exception(_('This feature is not currently supported on this station.'));
+        }
+
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'stations/mounts/index', [
+            'frontend_type' => $station->getFrontendType(),
+            'mounts' => $station->getMounts(),
+        ]);
     }
 
-    public function migrateAction(Request $request, Response $response): Response
+    public function migrateAction(Request $request, Response $response, $station_id): Response
     {
-        if ($this->station->getFrontendType() == 'remote') {
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-            $settings = (array)$this->station->getFrontendConfig();
+        if ($station->getFrontendType() === 'remote') {
 
-            $mount = new \Entity\StationMount($this->station);
+            $settings = (array)$station->getFrontendConfig();
+
+            $mount = new \Entity\StationMount($station);
             $mount->setRemoteType($settings['remote_type']);
             $mount->setRemoteUrl($settings['remote_url']);
             $mount->setRemoteMount($settings['remote_mount']);
@@ -45,21 +74,24 @@ class MountsController extends \AzuraCast\Legacy\Controller
             $this->em->flush();
         }
 
-        return $this->redirectToName('stations:mounts:index', ['station' => $this->station->getId()]);
+        return $response->redirectToRoute('stations:mounts:index', ['station' => $station_id]);
     }
 
-    public function editAction(Request $request, Response $response): Response
+    public function editAction(Request $request, Response $response, $station_id, $id = null): Response
     {
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
         /** @var Entity\Repository\StationMountRepository $mount_repo */
         $mount_repo = $this->em->getRepository(Entity\StationMount::class);
 
-        $form_config = $this->config->forms->{'mount_'.$this->station->getFrontendType()};
+        $form_config = $this->mount_form_configs[$station->getFrontendType()];
         $form = new \App\Form($form_config);
 
-        if ($this->hasParam('id')) {
+        if (!empty($id)) {
             $record = $mount_repo->findOneBy([
-                'id' => $this->getParam('id'),
-                'station_id' => $this->station->getId(),
+                'id' => $id,
+                'station_id' => $station_id,
             ]);
             $form->setDefaults($mount_repo->toArray($record));
         } else {
@@ -70,7 +102,7 @@ class MountsController extends \AzuraCast\Legacy\Controller
             $data = $form->getValues();
 
             if (!($record instanceof Entity\StationMount)) {
-                $record = new Entity\StationMount($this->station);
+                $record = new Entity\StationMount($station);
             }
 
             $mount_repo->fromArray($record, $data);
@@ -80,8 +112,8 @@ class MountsController extends \AzuraCast\Legacy\Controller
             $uow = $this->em->getUnitOfWork();
             $uow->computeChangeSets();
             if ($uow->isEntityScheduled($record)) {
-                $this->station->setNeedsRestart(true);
-                $this->em->persist($this->station);
+                $station->setNeedsRestart(true);
+                $this->em->persist($station);
             }
 
             $this->em->flush();
@@ -95,39 +127,45 @@ class MountsController extends \AzuraCast\Legacy\Controller
                     ->execute();
             }
 
-            $this->em->refresh($this->station);
+            $this->em->refresh($station);
 
-            $this->alert('<b>' . _('Record updated.') . '</b>', 'green');
+            $this->flash->alert('<b>' . _('Record updated.') . '</b>', 'green');
 
-            return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+            return $response->redirectToRoute('stations:mounts:index', ['station' => $station_id]);
         }
 
-        $title = ($this->hasParam('id')) ? _('Edit Record') : _('Add Record');
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
 
-        return $this->renderForm($form, 'edit', $title);
+        return $view->renderToResponse($response, 'system/form_page', [
+            'form' => $form,
+            'render_mode' => 'edit',
+            'title' => ($id) ? _('Edit Record') : _('Add Record')
+        ]);
     }
 
-    public function deleteAction(Request $request, Response $response): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $id): Response
     {
-        $id = (int)$this->getParam('id');
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
         $record = $this->em->getRepository(Entity\StationMount::class)->findOneBy([
             'id' => $id,
-            'station_id' => $this->station->getId()
+            'station_id' => $station_id
         ]);
 
         if ($record instanceof Entity\StationMount) {
             $this->em->remove($record);
         }
 
-        $this->station->setNeedsRestart(true);
-        $this->em->persist($this->station);
+        $station->setNeedsRestart(true);
+        $this->em->persist($station);
         $this->em->flush();
 
-        $this->em->refresh($this->station);
+        $this->em->refresh($station);
 
-        $this->alert('<b>' . _('Record deleted.') . '</b>', 'green');
+        $this->flash->alert('<b>' . _('Record deleted.') . '</b>', 'green');
 
-        return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+        return $response->redirectToRoute('stations:mounts:index', ['station' => $station_id]);
     }
 }

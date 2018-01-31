@@ -87,7 +87,7 @@ class ProfileController
         ]);
     }
 
-    public function editAction(Request $request, Response $response): Response
+    public function editAction(Request $request, Response $response, $station_id): Response
     {
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
@@ -126,7 +126,7 @@ class ProfileController
             // Clear station cache.
             $this->cache->remove('stations');
 
-            return $response->redirectToRoute('stations:profile:index', ['station' => $station->getId()]);
+            return $response->redirectToRoute('stations:profile:index', ['station' => $station_id]);
         }
 
         /** @var View $view */
@@ -177,7 +177,7 @@ class ProfileController
                 break;
         }
 
-        return $response->redirectToRoute('stations:profile:index', ['station' => $station->getId()]);
+        return $response->redirectToRoute('stations:profile:index', ['station' => $station_id]);
     }
 
     public function frontendAction(Request $request, Response $response, $station_id, $do = 'restart'): Response
@@ -205,6 +205,6 @@ class ProfileController
                 break;
         }
 
-        return $response->redirectToRoute('stations:profile:index', ['station' => $station->getId()]);
+        return $response->redirectToRoute('stations:profile:index', ['station' => $station_id]);
     }
 }

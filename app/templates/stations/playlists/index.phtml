@@ -9,7 +9,7 @@ $assets->addJs(['src' => 'js/timetable/timetable.js'], 'header');
     <div class="card-header ch-alt">
         <h2><?=_('Playlists') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('stations:playlists:edit', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
 
     <div role="tabpanel">
@@ -40,7 +40,7 @@ $assets->addJs(['src' => 'js/timetable/timetable.js'], 'header');
                     <?php foreach($playlists as $row): ?>
                         <tr class="vertical-align-middle">
                             <td>
-                                <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $row['id'])) ?>"><?=_('Edit') ?></a>
+                                <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:playlists:edit', ['station' => $station->getId(), 'id' => $row['id']]) ?>"><?=_('Edit') ?></a>
 
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -48,16 +48,15 @@ $assets->addJs(['src' => 'js/timetable/timetable.js'], 'header');
                                     </button>
                                     <ul class="dropdown-menu">
                                         <?php foreach(['pls', 'm3u'] as $format): ?>
-                                            <li><a href="<?=$url->routeFromHere(['action' => 'export', 'id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(_('Download %s'), strtoupper($format)) ?></a></li>
-                                        <?php endforeach; ?>
+                                            <li><a href="<?=$url->named('stations:playlists:export', ['station' => $station->getId(), 'id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(_('Download %s'), strtoupper($format)) ?></a></li>                                        <?php endforeach; ?>
                                     </ul>
                                 </div>
 
-                                <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row['id'])) ?>"><?=_('Delete') ?></a>
+                                <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:playlists:delete', ['station' => $station->getId(), 'id' => $row['id']]) ?>"><?=_('Delete') ?></a>
                             </td>
                             <td>
                                 <big>
-                                    <a href="<?=$url->route(['module' => 'stations', 'controller' => 'files', 'action' => 'index', 'station' => $station->getId()]).'#playlist:'.urlencode($row['name']) ?>"><?=$this->e($row['name']) ?></a>
+                                    <a href="<?=$url->named('stations:files:index', ['station' => $station->getId()]).'#playlist:'.urlencode($row['name']) ?>"><?=$this->e($row['name']) ?></a>
                                 </big>
                                 <?php if ($row['include_in_automation']): ?>
                                     <br><span class="label label-success"><?=_('Auto-Assigned') ?></span>
@@ -66,20 +65,20 @@ $assets->addJs(['src' => 'js/timetable/timetable.js'], 'header');
                             <td>
                                 <?php if (!$row['is_enabled']): ?>
                                     <?=_('Disabled') ?>
-                                <?php elseif ($row['type'] == 'default'): ?>
+                                <?php elseif ($row['type'] === 'default'): ?>
                                     <?=_('Standard Playlist') ?><br>
                                     <?=_('Weight') ?>: <?=(int)$row['weight'] ?> (<?=$row['probability'] ?>)
-                                <?php elseif ($row['type'] == 'scheduled'): ?>
+                                <?php elseif ($row['type'] === 'scheduled'): ?>
                                     <?=_('Scheduled Playlist') ?><br>
                                     <?=sprintf(_('Plays between %s and %s'), $customization->formatTime(\Entity\StationPlaylist::getTimestamp($row['schedule_start_time'])), $customization->formatTime(\Entity\StationPlaylist::getTimestamp($row['schedule_end_time']))) ?>
-                                <?php elseif ($row['type'] == 'once_per_x_songs'): ?>
+                                <?php elseif ($row['type'] === 'once_per_x_songs'): ?>
                                     <?=sprintf(_('Once per %d Songs'), $row['play_per_songs']) ?>
-                                <?php elseif ($row['type'] == 'once_per_x_minutes'): ?>
+                                <?php elseif ($row['type'] === 'once_per_x_minutes'): ?>
                                     <?=sprintf(_('Once per %d Minutes'), $row['play_per_minutes']) ?>
-                                <?php elseif ($row['type'] == 'once_per_day'): ?>
+                                <?php elseif ($row['type'] === 'once_per_day'): ?>
                                     <?=_('Once per Day') ?><br>
                                     <?=sprintf(_('Plays at %s'), $customization->formatTime(\Entity\StationPlaylist::formatTimeCode($row['play_once_time']))) ?>
-                                <?php elseif ($row['type'] == 'custom'): ?>
+                                <?php elseif ($row['type'] === 'custom'): ?>
                                     <?=_('Custom') ?>
                                 <?php endif; ?>
                             </td>

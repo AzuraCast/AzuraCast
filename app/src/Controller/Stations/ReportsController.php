@@ -1,20 +1,44 @@
 <?php
 namespace Controller\Stations;
 
+use App\Cache;
+use App\Flash;
+use App\Mvc\View;
+use AzuraCast\Sync\RadioAutomation;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class ReportsController extends \AzuraCast\Legacy\Controller
+class ReportsController
 {
-    protected function permissions()
+    use Traits\SongHistoryFilters;
+
+    /** @var Flash */
+    protected $flash;
+
+    /** @var RadioAutomation */
+    protected $sync_automation;
+
+    /**
+     * ReportsController constructor.
+     * @param Flash $flash
+     * @param RadioAutomation $sync_automation
+     */
+    public function __construct(EntityManager $em, Cache $cache, Flash $flash, RadioAutomation $sync_automation)
     {
-        return $this->acl->isAllowed('view station reports', $this->station->getId());
+        $this->em = $em;
+        $this->cache = $cache;
+        $this->flash = $flash;
+        $this->sync_automation = $sync_automation;
     }
 
-    public function timelineAction(Request $request, Response $response): Response
+    public function timelineAction(Request $request, Response $response, $station_id, $format = 'html'): Response
     {
-        $songs_played_raw = $this->_getEligibleHistory();
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
+        $songs_played_raw = $this->_getEligibleHistory($station_id);
 
         $songs = [];
         foreach ($songs_played_raw as $song_row) {
@@ -30,10 +54,7 @@ class ReportsController extends \AzuraCast\Legacy\Controller
             $songs[] = $song_row;
         }
 
-        $format = $this->getParam('format', 'html');
-        if ($format == 'csv') {
-            $this->doNotRender();
-
+        if ($format === 'csv') {
             $export_all = [];
             $export_all[] = [
                 'Date',
@@ -64,27 +85,35 @@ class ReportsController extends \AzuraCast\Legacy\Controller
             }
 
             $csv_file = \App\Export::csv($export_all);
-            $csv_filename = $this->station->getShortName() . '_timeline_' . date('Ymd') . '.csv';
+            $csv_filename = $station->getShortName() . '_timeline_' . date('Ymd') . '.csv';
 
-            return $this->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
-        } else {
-            $songs = array_reverse($songs);
-            $this->view->songs = $songs;
+            return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
         }
+
+        $songs = array_reverse($songs);
+
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'stations/reports/timeline', [
+            'songs' => $songs,
+        ]);
     }
 
-    public function performanceAction(Request $request, Response $response): Response
+    public function performanceAction(Request $request, Response $response, $station_id, $format = 'html'): Response
     {
-        $automation_config = (array)$this->station->getAutomationSettings();
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
+        $automation_config = (array)$station->getAutomationSettings();
 
         if (isset($automation_config['threshold_days'])) {
             $threshold_days = (int)$automation_config['threshold_days'];
         } else {
-            $threshold_days = \AzuraCast\Sync\RadioAutomation::DEFAULT_THRESHOLD_DAYS;
+            $threshold_days = RadioAutomation::DEFAULT_THRESHOLD_DAYS;
         }
 
-        $automation = new \AzuraCast\Sync\RadioAutomation($this->di);
-        $report_data = $automation->generateReport($this->station, $threshold_days);
+        $report_data = $this->sync_automation->generateReport($station, $threshold_days);
 
         // Do not show songs that are not in playlists.
         $report_data = array_filter($report_data, function ($media) {
@@ -95,69 +124,63 @@ class ReportsController extends \AzuraCast\Legacy\Controller
             return true;
         });
 
-        switch (strtolower($this->getParam('format'))) {
-            case 'csv':
-                $this->doNotRender();
+        if ($format === 'csv') {
+            $export_csv = [
+                [
+                    'Song Title',
+                    'Song Artist',
+                    'Filename',
+                    'Length',
+                    'Current Playlist',
+                    'Delta Joins',
+                    'Delta Losses',
+                    'Delta Total',
+                    'Play Count',
+                    'Play Percentage',
+                    'Weighted Ratio',
+                ]
+            ];
 
-                $export_csv = [
-                    [
-                        'Song Title',
-                        'Song Artist',
-                        'Filename',
-                        'Length',
-                        'Current Playlist',
-                        'Delta Joins',
-                        'Delta Losses',
-                        'Delta Total',
-                        'Play Count',
-                        'Play Percentage',
-                        'Weighted Ratio',
-                    ]
+            foreach ($report_data as $row) {
+                $export_csv[] = [
+                    $row['title'],
+                    $row['artist'],
+                    $row['path'],
+                    $row['length'],
+
+                    implode('/', $row['playlists']),
+                    $row['delta_positive'],
+                    $row['delta_negative'],
+                    $row['delta_total'],
+
+                    $row['num_plays'],
+                    $row['percent_plays'] . '%',
+                    $row['ratio'],
                 ];
+            }
 
-                foreach ($report_data as $row) {
-                    $export_csv[] = [
-                        $row['title'],
-                        $row['artist'],
-                        $row['path'],
-                        $row['length'],
+            $csv_file = \App\Export::csv($export_csv);
+            $csv_filename = $station->getShortName() . '_media_' . date('Ymd') . '.csv';
 
-                        implode('/', $row['playlists']),
-                        $row['delta_positive'],
-                        $row['delta_negative'],
-                        $row['delta_total'],
-
-                        $row['num_plays'],
-                        $row['percent_plays'] . '%',
-                        $row['ratio'],
-                    ];
-                }
-
-                $csv_file = \App\Export::csv($export_csv);
-                $csv_filename = $this->station->getShortName() . '_media_' . date('Ymd') . '.csv';
-
-                return $this->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
-                break;
-
-            case 'json':
-                $this->response->getBody()->write(json_encode($report_data));
-
-                return $this->response;
-                break;
-
-            case 'html':
-            default:
-                $this->view->report_data = $report_data;
-                break;
+            return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
         }
 
-        return true;
+        if ($format === 'json') {
+            return $response->withJson($report_data);
+        }
+
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'stations/reports/performance', [
+            'report_data' => $report_data,
+        ]);
     }
 
-    public function duplicatesAction(Request $request, Response $response): Response
+    public function duplicatesAction(Request $request, Response $response, $station_id): Response
     {
         $media_raw = $this->em->createQuery('SELECT sm, s, sp FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id ORDER BY sm.mtime ASC')
-            ->setParameter('station_id', $this->station->getId())
+            ->setParameter('station_id', $station_id)
             ->getArrayResult();
 
         $dupes = [];
@@ -193,16 +216,19 @@ class ReportsController extends \AzuraCast\Legacy\Controller
             }
         }
 
-        $this->view->dupes = $dupes;
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'stations/reports/duplicates', [
+            'dupes' => $dupes,
+        ]);
     }
 
-    public function deletedupeAction(Request $request, Response $response): Response
+    public function deletedupeAction(Request $request, Response $response, $station_id, $media_id): Response
     {
-        $media_id = (int)$this->getParam('media_id');
-
         $media = $this->em->getRepository(Entity\StationMedia::class)->findOneBy([
             'id' => $media_id,
-            'station_id' => $this->station->getId()
+            'station_id' => $station_id
         ]);
 
         if ($media instanceof Entity\StationMedia) {
@@ -212,10 +238,10 @@ class ReportsController extends \AzuraCast\Legacy\Controller
             $this->em->remove($media);
             $this->em->flush();
 
-            $this->alert('<b>Duplicate file deleted!</b>', 'green');
+            $this->flash->alert('<b>Duplicate file deleted!</b>', 'green');
         }
 
-        return $this->redirectFromHere(['action' => 'duplicates', 'media_id' => null]);
+        return $response->redirectToRoute('stations:reports:duplicates', ['station' => $station_id]);
     }
 
     public function listenersAction(Request $request, Response $response): Response
@@ -223,17 +249,19 @@ class ReportsController extends \AzuraCast\Legacy\Controller
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
-        if (!empty($_POST['gmaps_api_key'])) {
+        if (!empty($request->getParam('gmaps_api_key'))) {
 
-            $settings_repo->setSetting('gmaps_api_key', trim($_POST['gmaps_api_key']));
+            $settings_repo->setSetting('gmaps_api_key', trim($request->getParam('gmaps_api_key')));
 
-            $this->alert('<b>Google Maps API key updated!</b>', 'green');
-            return $this->redirectHere();
+            $this->flash->alert('<b>Google Maps API key updated!</b>', 'green');
+            return $response->redirectHere();
         }
 
-        $gmaps_api_key = $settings_repo->getSetting('gmaps_api_key', null);
-        $this->view->gmaps_api_key = $gmaps_api_key;
+        /** @var View $view */
+        $view = $request->getAttribute('view');
 
-        return null;
+        return $view->renderToResponse($response, 'stations/reports/listeners', [
+            'gmaps_api_key' => $settings_repo->getSetting('gmaps_api_key', null),
+        ]);
     }
 }

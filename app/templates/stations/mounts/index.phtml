@@ -4,14 +4,14 @@
     <div class="card-header ch-alt">
         <h2><?=_('Mount Points') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('stations:mounts:edit', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
-<?php if ($frontend_type == 'remote' && count($mounts) == 0): ?>
+<?php if ($frontend_type === 'remote' && count($mounts) == 0): ?>
     <div class="card-body card-padding">
         <p><?=_('Ready to get started using mount points on your remote station? Click the button below to automatically create your first mount based on your existing settings.') ?></p>
 
         <div class="buttons">
-            <a href="<?=$url->routeFromHere(['action' => 'migrate']) ?>" class="btn btn-primary"><?=_('Migrate Settings') ?></a>
+            <a href="<?=$url->named('stations:mounts:migrate', ['station' => $station->getId()]) ?>" class="btn btn-primary"><?=_('Migrate Settings') ?></a>
         </div>
     </div>
 <?php endif; ?>
@@ -34,11 +34,11 @@
                 <?php /** @var \Entity\StationMount $row */ ?>
                 <tr class="vertical-align-middle">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $row->getId())) ?>"><?=_('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row->getId())) ?>"><?=_('Delete') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:mounts:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:mounts:delete', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=_('Delete') ?></a>
                     </td>
                     <td>
-                    <?php if ($frontend_type == 'remote'): ?>
+                    <?php if ($frontend_type === 'remote'): ?>
                         <big><a href="<?=$this->e($row->getRemoteUrl()) ?>" target="_blank"><?=$this->e($row->getRemoteUrl()) ?></a> # <?=$row->getRemoteMount() ?></big>
                     <?php else: ?>
                         <big><a href="<?=$this->e($frontend->getUrlForMount($row->getName())) ?>" target="_blank"><?=$this->e($row->getName()) ?></a></big>

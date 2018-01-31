@@ -50,7 +50,7 @@ $assets
                     <td><?=$this->e($request_row['ip']) ?></td>
                     <td>
                     <?php if ($request_row['played_at'] == 0): ?>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(['action' => 'delete', 'request_id' => $request_row['id']]) ?>"><?=_('Delete') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:requests:delete', ['station' => $station->getId(), 'request_id' => $request_row['id']]) ?>"><?=_('Delete') ?></a>
                     <?php else: ?>
 
                     <?php endif; ?>

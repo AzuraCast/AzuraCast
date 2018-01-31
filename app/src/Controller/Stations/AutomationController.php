@@ -1,50 +1,87 @@
 <?php
 namespace Controller\Stations;
+
+use App\Mvc\View;
+use AzuraCast\Sync\RadioAutomation;
+use Doctrine\ORM\EntityManager;
+use Entity;
+use App\Flash;
 use App\Http\Request;
 use App\Http\Response;
 
-class AutomationController extends \AzuraCast\Legacy\Controller
+class AutomationController
 {
-    protected function permissions()
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Flash */
+    protected $flash;
+
+    /** @var RadioAutomation */
+    protected $sync_task;
+
+    /** @var array */
+    protected $form_config;
+
+    /**
+     * AutomationController constructor.
+     * @param EntityManager $em
+     * @param Flash $flash
+     * @param array $form_config
+     * @param RadioAutomation $sync_task
+     */
+    public function __construct(EntityManager $em, Flash $flash, RadioAutomation $sync_task, array $form_config)
     {
-        return $this->acl->isAllowed('manage station automation', $this->station->getId());
+        $this->em = $em;
+        $this->flash = $flash;
+        $this->sync_task = $sync_task;
+        $this->form_config = $form_config;
     }
 
     public function indexAction(Request $request, Response $response): Response
     {
-        $automation_settings = (array)$this->station->getAutomationSettings();
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-        $form = new \App\Form($this->config->forms->automation);
+        $automation_settings = (array)$station->getAutomationSettings();
+
+        $form = new \App\Form($this->form_config);
         $form->setDefaults($automation_settings);
 
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
 
-            $this->station->setAutomationSettings($data);
+            $station->setAutomationSettings($data);
 
-            $this->em->persist($this->station);
+            $this->em->persist($station);
             $this->em->flush();
 
-            $this->alert(_('Changes saved.'), 'green');
+            $this->flash->alert(_('Changes saved.'), 'green');
 
-            return $this->redirectHere();
+            return $response->redirectHere();
         }
 
-        $this->view->form = $form;
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'stations/automation/index', [
+            'form' => $form,
+        ]);
     }
 
-    public function runAction(Request $request, Response $response): Response
+    public function runAction(Request $request, Response $response, $station_id): Response
     {
-        try {
-            $automation = new \AzuraCast\Sync\RadioAutomation($this->di);
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-            if ($automation->runStation($this->station, true)) {
-                $this->alert('<b>' . _('Automated assignment complete!') . '</b>', 'green');
+        try {
+            if ($this->sync_task->runStation($station, true)) {
+                $this->flash->alert('<b>' . _('Automated assignment complete!') . '</b>', 'green');
             }
         } catch (\Exception $e) {
-            $this->alert('<b>' . _('Automated assignment error') . ':</b><br>' . $e->getMessage(), 'red');
+            $this->flash->alert('<b>' . _('Automated assignment error') . ':</b><br>' . $e->getMessage(), 'red');
         }
 
-        return $this->redirectFromHere(['action' => 'index']);
+        return $response->redirectToRoute('stations:automation:index', ['station' => $station_id]);
     }
 }

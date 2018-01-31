@@ -1,35 +1,55 @@
 <?php
 namespace Controller\Stations;
 
+use App\Flash;
+use App\Mvc\View;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class RequestsController extends \AzuraCast\Legacy\Controller
+class RequestsController
 {
-    protected function permissions()
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Flash */
+    protected $flash;
+
+    /**
+     * RequestsController constructor.
+     * @param EntityManager $em
+     * @param Flash $flash
+     */
+    public function __construct(EntityManager $em, Flash $flash)
     {
-        return $this->acl->isAllowed('view station reports', $this->station->getId());
+        $this->em = $em;
+        $this->flash = $flash;
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response, $station_id): Response
     {
-        $this->view->requests = $this->em->createQuery('SELECT sr, sm, s FROM Entity\StationRequest sr
+        $requests = $this->em->createQuery('SELECT sr, sm, s FROM Entity\StationRequest sr
             JOIN sr.track sm
             JOIN sm.song s
             WHERE sr.station_id = :station_id
             ORDER BY sr.timestamp DESC')
-            ->setParameter('station_id', $this->station->getId())
+            ->setParameter('station_id', $station_id)
             ->getArrayResult();
+
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'stations/requests/index', [
+            'requests' => $requests,
+        ]);
     }
 
-    public function deleteAction(Request $request, Response $response): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $request_id): Response
     {
-        $id = (int)$this->getParam('request_id');
-
         $media = $this->em->getRepository(Entity\StationRequest::class)->findOneBy([
-            'id' => $id,
-            'station_id' => $this->station->getId(),
+            'id' => $request_id,
+            'station_id' => $station_id,
             'played_at' => 0
         ]);
 
@@ -37,9 +57,9 @@ class RequestsController extends \AzuraCast\Legacy\Controller
             $this->em->remove($media);
             $this->em->flush();
 
-            $this->alert('<b>Request deleted!</b>', 'green');
+            $this->flash->alert('<b>Request deleted!</b>', 'green');
         }
 
-        return $this->redirectFromHere(['action' => 'index', 'media_id' => null]);
+        return $response->redirectToRoute('stations:requests:index', ['station' => $station_id]);
     }
 }

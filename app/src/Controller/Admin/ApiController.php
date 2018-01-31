@@ -64,12 +64,19 @@ class ApiController
             $this->em->persist($record);
             $this->em->flush();
 
-            $this->alert(_('Changes saved.'), 'green');
+            $this->flash->alert(_('Changes saved.'), 'green');
 
-            return $this->redirectToName($response, 'admin:api:index');
+            return $response->redirectToRoute('admin:api:index');
         }
 
-        return $this->renderForm($response, $form, 'edit', _('Edit Record'));
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'system/form_page', [
+            'form' => $form,
+            'render_mode' => 'edit',
+            'title' => _('Edit Record')
+        ]);
     }
 
     public function deleteAction(Request $request, Response $response, $id): Response
@@ -82,8 +89,8 @@ class ApiController
 
         $this->em->flush();
 
-        $this->alert(_('Record deleted.'), 'green');
+        $this->flash->alert(_('Record deleted.'), 'green');
 
-        return $this->redirectToName($response, 'admin:api:index');
+        return $response->redirectToRoute('admin:api:index');
     }
 }

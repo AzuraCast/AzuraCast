@@ -235,7 +235,7 @@ return function(\Slim\App $app) {
             $this->get('/run', Controller\Stations\AutomationController::class.':runAction')
                 ->setName('stations:automation:run');
 
-        });
+        })->add([Middleware\Permissions::class, 'manage station automation', true]);
 
         $this->group('/files', function () {
 
@@ -263,7 +263,7 @@ return function(\Slim\App $app) {
             $this->map(['GET', 'POST'], '/download', Controller\Stations\FilesController::class.':downloadAction')
                 ->setName('stations:files:download');
 
-        });
+        })->add([Middleware\Permissions::class, 'manage station media', true]);
 
         $this->group('/playlists', function () {
 
@@ -279,7 +279,7 @@ return function(\Slim\App $app) {
             $this->get('/export/{id}[/{format}]', Controller\Stations\PlaylistsController::class.':exportAction')
                 ->setName('stations:playlists:export');
 
-        });
+        })->add([Middleware\Permissions::class, 'manage station media', true]);
 
         $this->group('/mounts', function () {
 
@@ -295,7 +295,7 @@ return function(\Slim\App $app) {
             $this->get('/delete/{id}', Controller\Stations\MountsController::class.':deleteAction')
                 ->setName('stations:mounts:delete');
 
-        });
+        })->add([Middleware\Permissions::class, 'manage station mounts', true]);
 
         $this->group('/profile', function () {
 
@@ -324,7 +324,7 @@ return function(\Slim\App $app) {
             $this->get('/delete/{request_id}', Controller\Stations\RequestsController::class.':deleteAction')
                 ->setName('stations:requests:delete');
 
-        });
+        })->add([Middleware\Permissions::class, 'view station reports', true]);
 
         $this->group('/reports', function () {
 
@@ -343,7 +343,7 @@ return function(\Slim\App $app) {
             $this->map(['GET', 'POST'], '/listeners', Controller\Stations\ReportsController::class.':listenersAction')
                 ->setName('stations:reports:listeners');
 
-        });
+        })->add([Middleware\Permissions::class, 'view station reports', true]);
 
         $this->group('/streamers', function () {
 
@@ -355,14 +355,14 @@ return function(\Slim\App $app) {
             $this->get('/delete/{id}', Controller\Stations\StreamersController::class.':deleteAction')
                 ->setName('stations:streamers:delete');
 
-        });
+        })->add([Middleware\Permissions::class, 'manage station streamers', true]);
 
         $this->group('/util', function () {
 
             $this->get('/restart', Controller\Stations\UtilController::class.':restartAction')
                 ->setName('stations:util:restart');
 
-        });
+        })->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
 
         // END /stations GROUP
 

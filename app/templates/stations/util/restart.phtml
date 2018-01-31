@@ -15,7 +15,7 @@
             <?php endforeach; ?>
         <?php endif; ?>
 
-        <script type="text/javascript">
+        <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
             $(function() {
                 $('ul.main-menu').find('li.menu-alert,li.menu-info').hide();
             });

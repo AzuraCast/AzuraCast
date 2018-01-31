@@ -1,94 +1,154 @@
 <?php
 namespace Controller\Stations;
 
-use Entity\Station;
+use App\Cache;
+use App\Flash;
+use App\Mvc\View;
+use AzuraCast\Radio\Backend\BackendAbstract;
+use AzuraCast\Radio\Configuration;
+use AzuraCast\Radio\Frontend\FrontendAbstract;
+use Doctrine\ORM\EntityManager;
+use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class ProfileController extends \AzuraCast\Legacy\Controller
+class ProfileController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Flash */
+    protected $flash;
+
+    /** @var Cache */
+    protected $cache;
+
+    /** @var Configuration */
+    protected $configuration;
+
+    /** @var Entity\Repository\StationRepository */
+    protected $station_repo;
+
+    /** @var array */
+    protected $form_config;
+
+    /**
+     * ProfileController constructor.
+     * @param EntityManager $em
+     * @param Flash $flash
+     * @param Cache $cache
+     * @param Configuration $configuration
+     * @param array $form_config
+     */
+    public function __construct(EntityManager $em, Flash $flash, Cache $cache, Configuration $configuration, array $form_config)
+    {
+        $this->em = $em;
+        $this->flash = $flash;
+        $this->cache = $cache;
+        $this->configuration = $configuration;
+        $this->form_config = $form_config;
+
+        $this->station_repo = $em->getRepository(Entity\Station::class);
+    }
+
     public function indexAction(Request $request, Response $response): Response
     {
-        // Backend controller.
-        $this->view->backend_type = $this->station->getBackendType();
-        $this->view->backend_config = (array)$this->station->getBackendConfig();
-        $this->view->backend_is_running = $this->backend->isRunning();
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-        // Frontend controller.
-        $this->view->frontend_type = $this->station->getFrontendType();
-        $this->view->frontend_config = $frontend_config = (array)$this->station->getFrontendConfig();
-        $this->view->frontend_is_running = $this->frontend->isRunning();
+        /** @var BackendAbstract $backend */
+        $backend = $request->getAttribute('station_backend');
 
-        $this->view->stream_urls = $this->frontend->getStreamUrls();
+        /** @var FrontendAbstract $frontend */
+        $frontend = $request->getAttribute('station_frontend');
 
         // Statistics about backend playback.
-        $this->view->num_songs = $this->em->createQuery('SELECT COUNT(sm.id) FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sp.id IS NOT NULL AND sm.station_id = :station_id')
-            ->setParameter('station_id', $this->station->getId())
+        $num_songs = $this->em->createQuery('SELECT COUNT(sm.id) FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sp.id IS NOT NULL AND sm.station_id = :station_id')
+            ->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
 
-        $this->view->num_playlists = $this->em->createQuery('SELECT COUNT(sp.id) FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id')
-            ->setParameter('station_id', $this->station->getId())
+        $num_playlists = $this->em->createQuery('SELECT COUNT(sp.id) FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id')
+            ->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
+
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'stations/profile/index', [
+            'num_songs' => $num_songs,
+            'num_playlists' => $num_playlists,
+            'backend_type' => $station->getBackendType(),
+            'backend_config' => (array)$station->getBackendConfig(),
+            'backend_is_running' => $backend->isRunning(),
+            'frontend_type' => $station->getFrontendType(),
+            'frontend_config' => (array)$station->getFrontendConfig(),
+            'frontend_is_running' => $frontend->isRunning(),
+            'stream_urls' => $frontend->getStreamUrls(),
+        ]);
     }
 
     public function editAction(Request $request, Response $response): Response
     {
-        $this->acl->checkPermission('manage station profile', $this->station->getId());
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-        $base_form = $this->config->forms->station->toArray();
+        /** @var FrontendAbstract $frontend */
+        $frontend = $request->getAttribute('station_frontend');
+
+        $base_form = $this->form_config;
         unset($base_form['groups']['admin']);
 
         $form = new \App\Form($base_form);
 
-        $form->setDefaults($this->station_repo->toArray($this->station));
+        $form->setDefaults($this->station_repo->toArray($station));
 
         if (!empty($_POST) && $form->isValid($_POST)) {
 
             $data = $form->getValues();
 
-            /*
-            $files = $form->processFiles('stations');
-            foreach($files as $file_field => $file_paths)
-                $data[$file_field] = $file_paths[1];
-            */
+            $old_frontend = $station->getFrontendType();
+            $old_backend = $station->getBackendType();
 
-            $old_frontend = $this->station->getFrontendType();
-            $old_backend = $this->station->getBackendType();
-
-            $this->station_repo->fromArray($this->station, $data);
-            $this->em->persist($this->station);
+            $this->station_repo->fromArray($station, $data);
+            $this->em->persist($station);
             $this->em->flush();
 
-            $frontend_changed = ($old_frontend !== $this->station->getFrontendType());
-            $backend_changed = ($old_backend !== $this->station->getBackendType());
+            $frontend_changed = ($old_frontend !== $station->getFrontendType());
+            $backend_changed = ($old_backend !== $station->getBackendType());
             $adapter_changed = $frontend_changed || $backend_changed;
 
             if ($frontend_changed) {
-                $this->station_repo->resetMounts($this->station, $this->di);
+                $this->station_repo->resetMounts($station, $frontend);
             }
 
-            $this->station->writeConfiguration($this->di, $adapter_changed);
+            $this->configuration->writeConfiguration($station, $adapter_changed);
 
             // Clear station cache.
+            $this->cache->remove('stations');
 
-            /** @var \App\Cache $cache */
-            $cache = $this->di[\App\Cache::class];
-            $cache->remove('stations');
-
-            return $this->redirectFromHere(['action' => 'index']);
+            return $response->redirectToRoute('stations:profile:index', ['station' => $station->getId()]);
         }
 
-        $this->view->form = $form;
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'stations/profile/edit', [
+            'form' => $form,
+        ]);
     }
 
-    public function backendAction(Request $request, Response $response): Response
+    public function backendAction(Request $request, Response $response, $station_id, $do = 'restart'): Response
     {
-        $this->acl->checkPermission('manage station broadcasting', $this->station->getId());
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-        switch ($this->getParam('do', 'restart')) {
+        /** @var BackendAbstract $backend */
+        $backend = $request->getAttribute('station_backend');
+
+        switch ($do) {
             case "skip":
-                if (method_exists($this->backend, 'skip')) {
-                    $this->backend->skip();
+                if (method_exists($backend, 'skip')) {
+                    $backend->skip();
                 }
 
                 if ($request->isXhr()) {
@@ -97,50 +157,54 @@ class ProfileController extends \AzuraCast\Legacy\Controller
                         'type' => 'success',
                     ]);
                 } else {
-                    $this->alert('<b>' . _('Song skipped.') . '</b>', 'success');
+                    $this->flash->alert('<b>' . _('Song skipped.') . '</b>', 'success');
                 }
                 break;
 
             case "stop":
-                $this->backend->stop();
+                $backend->stop();
                 break;
 
             case "start":
-                $this->backend->start();
+                $backend->start();
                 break;
 
             case "restart":
             default:
-                $this->backend->stop();
-                $this->backend->write();
-                $this->backend->start();
+                $backend->stop();
+                $backend->write();
+                $backend->start();
                 break;
         }
 
-        return $this->redirectFromHere(['action' => 'index']);
+        return $response->redirectToRoute('stations:profile:index', ['station' => $station->getId()]);
     }
 
-    public function frontendAction(Request $request, Response $response): Response
+    public function frontendAction(Request $request, Response $response, $station_id, $do = 'restart'): Response
     {
-        $this->acl->checkPermission('manage station broadcasting', $this->station->getId());
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-        switch ($this->getParam('do', 'restart')) {
+        /** @var FrontendAbstract $frontend */
+        $frontend = $request->getAttribute('station_frontend');
+
+        switch ($do) {
             case "stop":
-                $this->frontend->stop();
+                $frontend->stop();
                 break;
 
             case "start":
-                $this->frontend->start();
+                $frontend->start();
                 break;
 
             case "restart":
             default:
-                $this->frontend->stop();
-                $this->frontend->write();
-                $this->frontend->start();
+                $frontend->stop();
+                $frontend->write();
+                $frontend->start();
                 break;
         }
 
-        return $this->redirectFromHere(['action' => 'index']);
+        return $response->redirectToRoute('stations:profile:index', ['station' => $station->getId()]);
     }
 }

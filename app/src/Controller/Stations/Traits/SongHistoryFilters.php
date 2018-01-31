@@ -1,73 +1,29 @@
 <?php
-namespace Controller\Stations;
+namespace Controller\Stations\Traits;
 
-use AzuraCast\Radio\Backend\BackendAbstract;
-use AzuraCast\Radio\Frontend\FrontendAbstract;
-use Entity;
-use App\Http\Request;
-use App\Http\Response;
+use App\Cache;
+use Doctrine\ORM\EntityManager;
 
-class BaseController extends \AzuraCast\Mvc\Controller
+trait SongHistoryFilters
 {
-    /**
-     * @var Entity\Station The current active station.
-     */
-    protected $station;
+    /** @var Cache */
+    protected $cache;
 
-    /**
-     * @var Entity\Repository\StationRepository
-     */
-    protected $station_repo;
+    /** @var EntityManager */
+    protected $em;
 
-    /**
-     * @var FrontendAbstract
-     */
-    protected $frontend;
-
-    /**
-     * @var BackendAbstract
-     */
-    protected $backend;
-
-    public function init()
+    protected function _getEligibleHistory($station_id)
     {
-        $this->station_repo = $this->em->getRepository(Entity\Station::class);
+        $cache_name = 'station_center_history_' . $station_id;
 
-        $station_id = (int)$this->getParam('station');
-        $this->station = $this->view->station = $this->station_repo->find($station_id);
-
-        if (!($this->station instanceof Entity\Station)) {
-            throw new \App\Exception\PermissionDenied;
-        }
-
-        $this->frontend = $this->view->frontend = $this->station->getFrontendAdapter($this->di);
-        $this->backend = $this->view->backend = $this->station->getBackendAdapter($this->di);
-
-        $this->view->sidebar = $this->view->fetch('common::sidebar');
-
-        parent::init();
-    }
-
-    protected function permissions()
-    {
-        return $this->acl->isAllowed('view station management', $this->station->getId());
-    }
-
-    protected function _getEligibleHistory()
-    {
-        /** @var \App\Cache $cache */
-        $cache = $this->di[\App\Cache::class];
-
-        $cache_name = 'station_center_history_' . $this->station->getId();
-
-        $songs_played_raw = $cache->get($cache_name);
+        $songs_played_raw = $this->cache->get($cache_name);
 
         if (!$songs_played_raw) {
             try {
                 $first_song = $this->em->createQuery('SELECT sh.timestamp_start FROM Entity\SongHistory sh
                     WHERE sh.station_id = :station_id AND sh.listeners_start IS NOT NULL
                     ORDER BY sh.timestamp_start ASC')
-                    ->setParameter('station_id', $this->station->getId())
+                    ->setParameter('station_id', $station_id)
                     ->setMaxResults(1)
                     ->getSingleScalarResult();
             } catch (\Exception $e) {
@@ -85,7 +41,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
                 LEFT JOIN sh.song s
                 WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp AND sh.listeners_start IS NOT NULL
                 ORDER BY sh.timestamp_start ASC')
-                ->setParameter('station_id', $this->station->getId())
+                ->setParameter('station_id', $station_id)
                 ->setParameter('timestamp', $threshold)
                 ->getArrayResult();
 
@@ -96,7 +52,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
 
             $songs_played_raw = array_values($songs_played_raw);
 
-            $cache->save($songs_played_raw, $cache_name, 60 * 5);
+            $this->cache->save($songs_played_raw, $cache_name, 60 * 5);
         }
 
         return $songs_played_raw;
@@ -104,10 +60,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
 
     protected function _getIgnoredSongs()
     {
-        /** @var \App\Cache $cache */
-        $cache = $this->di[\App\Cache::class];
-
-        $song_hashes = $cache->get('station_center_ignored_songs');
+        $song_hashes = $this->cache->get('station_center_ignored_songs');
 
         if (!$song_hashes) {
             $ignored_phrases = ['Offline', 'Sweeper', 'Bumper', 'Unknown'];
@@ -127,7 +80,7 @@ class BaseController extends \AzuraCast\Mvc\Controller
                 $song_hashes[$row['id']] = $row['id'];
             }
 
-            $cache->save($song_hashes, 'station_center_ignored_songs', 86400);
+            $this->cache->save($song_hashes, 'station_center_ignored_songs', 86400);
         }
 
         return $song_hashes;

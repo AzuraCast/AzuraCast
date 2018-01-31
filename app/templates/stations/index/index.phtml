@@ -33,13 +33,21 @@ $(function () {
 
                 <div class="tab-content">
                     <div class="tab-pane card-body card-padding active" id="listeners-by-day" role="tabpanel">
-                        <?=$this->fetch('controller::index-dailystats') ?>
+                        <?=$this->fetch('stations/index/index-dailystats', [
+                            'daily_ranges' => $daily_ranges,
+                            'hourly_averages' => $hourly_averages,
+                            'daily_averages' => $daily_averages
+                        ]) ?>
                     </div>
                     <div class="tab-pane card-padding" id="listeners-by-hour" role="tabpanel">
-                        <?=$this->fetch('controller::index-hourlystats') ?>
+                        <?=$this->fetch('stations/index/index-hourlystats', [
+                            'averages_by_hour' => $averages_by_hour,
+                        ]) ?>
                     </div>
                     <div class="tab-pane card-padding" id="listeners-by-day-of-week" role="tabpanel">
-                        <?=$this->fetch('controller::index-dayofweek') ?>
+                        <?=$this->fetch('stations/index/index-dayofweek', [
+                            'day_of_week_stats' => $day_of_week_stats,
+                        ]) ?>
                     </div>
                 </div>
             </div>

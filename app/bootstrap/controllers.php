@@ -221,7 +221,9 @@ return function (\Slim\Container $di) {
 
     $di[\Controller\Stations\IndexController::class] = function($di) {
         return new \Controller\Stations\IndexController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Cache::class],
+            $di[\InfluxDB\Database::class]
         );
     };
 
@@ -238,8 +240,14 @@ return function (\Slim\Container $di) {
     };
 
     $di[\Controller\Stations\ProfileController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
         return new \Controller\Stations\ProfileController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $di[\App\Cache::class],
+            $di[\AzuraCast\Radio\Configuration::class],
+            $config->forms->station->toArray()
         );
     };
 

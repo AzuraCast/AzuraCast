@@ -1,6 +1,7 @@
 <?php
 namespace AzuraCast\Middleware;
 
+use App\Mvc\View;
 use AzuraCast\Radio\Adapters;
 use Entity;
 use Entity\Repository\StationRepository;
@@ -49,10 +50,13 @@ class GetStation
         }
 
         if ($record instanceof Entity\Station) {
+            $frontend = $this->adapters->getFrontendAdapter($record);
+            $backend = $this->adapters->getBackendAdapter($record);
+
             $request = $request
                 ->withAttribute('station', $record)
-                ->withAttribute('station_frontend', $this->adapters->getFrontendAdapter($record))
-                ->withAttribute('station_backend', $this->adapters->getBackendAdapter($record));
+                ->withAttribute('station_frontend', $frontend)
+                ->withAttribute('station_backend', $backend);
         } else if ($station_required) {
             throw new \RuntimeException('Station not found!');
         }

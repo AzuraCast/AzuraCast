@@ -303,13 +303,16 @@ return function(\Slim\App $app) {
                 ->setName('stations:profile:index');
 
             $this->map(['GET', 'POST'], '/edit', Controller\Stations\ProfileController::class.':editAction')
-                ->setName('stations:profile:edit');
+                ->setName('stations:profile:edit')
+                ->add([Middleware\Permissions::class, 'manage station profile', true]);
 
             $this->map(['GET', 'POST'], '/backend[/{do}]', Controller\Stations\ProfileController::class.':backendAction')
-                ->setName('stations:profile:backend');
+                ->setName('stations:profile:backend')
+                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
 
             $this->map(['GET', 'POST'], '/frontend[/{do}]', Controller\Stations\ProfileController::class.':frontendAction')
-                ->setName('stations:profile:frontend');
+                ->setName('stations:profile:frontend')
+                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
 
         });
 
@@ -364,6 +367,9 @@ return function(\Slim\App $app) {
         // END /stations GROUP
 
     })
+        ->add(Middleware\Module\Stations::class)
+        ->add([Middleware\Permissions::class, 'view station administration', true])
+        ->add(Middleware\GetStation::class)
         ->add(Middleware\EnableView::class)
         ->add(Middleware\RequireLogin::class);
 

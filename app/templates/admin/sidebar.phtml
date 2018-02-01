@@ -1,0 +1,20 @@
+<ul class="main-menu">
+    <li class="menu-header">
+        <a href="<?=$url->named('admin:index:index') ?>">
+            <?=_('Administration') ?>
+        </a>
+    </li>
+
+    <?php foreach($admin_panels as $category_name => $category_info): ?>
+        <li class="sub-menu">
+            <a href="" data-ma-action="submenu-toggle"><i class="<?=$category_info['icon'] ?>"></i> <?=$category_name ?></a>
+            <ul>
+                <?php foreach($category_info['items'] as $item_name => $item_params): ?>
+                    <li>
+                        <a href="<?=(is_array($item_params['url']) ? $url->route($item_params['url']) : $url->named($item_params['url'])) ?>" title="<?=$item_params['title'] ?>"><?=$item_name ?></a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </li>
+    <?php endforeach; ?>
+</ul>

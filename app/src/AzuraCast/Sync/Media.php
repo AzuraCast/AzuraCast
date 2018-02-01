@@ -2,10 +2,22 @@
 namespace AzuraCast\Sync;
 
 use App\Debug;
+use Doctrine\ORM\EntityManager;
 use Entity;
 
 class Media extends SyncAbstract
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /**
+     * @param EntityManager $em
+     */
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
     public function run()
     {
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
@@ -164,16 +176,17 @@ class Media extends SyncAbstract
 
             foreach ($playlist_lines as $line_raw) {
                 $line = trim($line_raw);
-                if (substr($line, 0, 1) == '#' || empty($line)) {
+                if (empty($line) || $line[0] === '#') {
                     continue;
                 }
 
                 if (file_exists($line)) {
                     $line_hash = md5($line);
                     if (isset($media_lookup[$line_hash])) {
+                        /** @var Entity\StationMedia $media_record */
                         $media_record = $media_lookup[$line_hash];
 
-                        $media_record->playlists->add($record);
+                        $media_record->getPlaylists()->add($record);
                         $record->getMedia()->add($media_record);
 
                         $this->em->persist($media_record);

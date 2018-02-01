@@ -1,0 +1,111 @@
+<?php
+$this->layout('main', ['title' => _('Playlists'), 'manual' => true]);
+
+/** @var \AzuraCast\Assets $assets */
+$assets->addJs(['src' => 'js/timetable/timetable.js'], 'header');
+?>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2><?=_('Playlists') ?></h2>
+
+        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('stations:playlists:edit', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
+    </div>
+
+    <div role="tabpanel">
+        <ul class="tab-nav" role="tablist">
+            <li class="p-l-10 active"><a role="tab" data-toggle="tab" aria-expanded="true" aria-controls="all-playlists" href="#all-playlists"><?=_('All Playlists') ?></a></li>
+            <li><a role="tab" data-toggle="tab" aria-controls="schedule-view" href="#schedule-view"><?=_('Schedule View') ?></a></li>
+        </ul>
+
+        <div class="tab-content p-t-0 p-b-0">
+            <div class="tab-pane active" id="all-playlists" role="tabpanel">
+
+                <table class="table table-striped">
+                    <colgroup>
+                        <col width="25%">
+                        <col width="30%">
+                        <col width="30%">
+                        <col width="15%">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th><?=_('Actions') ?></th>
+                        <th><?=_('Playlist') ?></th>
+                        <th><?=_('Type') ?></th>
+                        <th><?=_('# Songs') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($playlists as $row): ?>
+                        <tr class="vertical-align-middle">
+                            <td>
+                                <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:playlists:edit', ['station' => $station->getId(), 'id' => $row['id']]) ?>"><?=_('Edit') ?></a>
+
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <?=_('Export') ?> <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <?php foreach(['pls', 'm3u'] as $format): ?>
+                                            <li><a href="<?=$url->named('stations:playlists:export', ['station' => $station->getId(), 'id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(_('Download %s'), strtoupper($format)) ?></a></li>                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+
+                                <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:playlists:delete', ['station' => $station->getId(), 'id' => $row['id']]) ?>"><?=_('Delete') ?></a>
+                            </td>
+                            <td>
+                                <big>
+                                    <a href="<?=$url->named('stations:files:index', ['station' => $station->getId()]).'#playlist:'.urlencode($row['name']) ?>"><?=$this->e($row['name']) ?></a>
+                                </big>
+                                <?php if ($row['include_in_automation']): ?>
+                                    <br><span class="label label-success"><?=_('Auto-Assigned') ?></span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if (!$row['is_enabled']): ?>
+                                    <?=_('Disabled') ?>
+                                <?php elseif ($row['type'] === 'default'): ?>
+                                    <?=_('Standard Playlist') ?><br>
+                                    <?=_('Weight') ?>: <?=(int)$row['weight'] ?> (<?=$row['probability'] ?>)
+                                <?php elseif ($row['type'] === 'scheduled'): ?>
+                                    <?=_('Scheduled Playlist') ?><br>
+                                    <?=sprintf(_('Plays between %s and %s'), $customization->formatTime(\Entity\StationPlaylist::getTimestamp($row['schedule_start_time'])), $customization->formatTime(\Entity\StationPlaylist::getTimestamp($row['schedule_end_time']))) ?>
+                                <?php elseif ($row['type'] === 'once_per_x_songs'): ?>
+                                    <?=sprintf(_('Once per %d Songs'), $row['play_per_songs']) ?>
+                                <?php elseif ($row['type'] === 'once_per_x_minutes'): ?>
+                                    <?=sprintf(_('Once per %d Minutes'), $row['play_per_minutes']) ?>
+                                <?php elseif ($row['type'] === 'once_per_day'): ?>
+                                    <?=_('Once per Day') ?><br>
+                                    <?=sprintf(_('Plays at %s'), $customization->formatTime(\Entity\StationPlaylist::formatTimeCode($row['play_once_time']))) ?>
+                                <?php elseif ($row['type'] === 'custom'): ?>
+                                    <?=_('Custom') ?>
+                                <?php endif; ?>
+                            </td>
+                            <td><?=$row['num_songs'] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="tab-pane card-padding" id="schedule-view" role="tabpanel">
+                <div class="timetable"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
+    var timetable = new Timetable();
+    timetable.setScope(0, 0);
+
+    timetable.addLocations(<?=$this->escapeJs(array_values($schedule_days)) ?>);
+
+<?php foreach($schedule as $event): ?>
+    timetable.addEvent(<?=$this->escapeJs($event['name']) ?>, <?=$this->escapeJs($event['day']) ?>, new Date(2018,0,1,<?=$event['start_hour'] ?>,<?=$event['start_min'] ?>), new Date(2018,0,1,<?=$event['end_hour'] ?>,<?=$event['end_min'] ?>), <?=$this->escapeJs($event['options']) ?>);
+<?php endforeach; ?>
+
+    var renderer = new Timetable.Renderer(timetable);
+    renderer.draw('.timetable');
+</script>

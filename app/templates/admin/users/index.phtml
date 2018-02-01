@@ -1,0 +1,54 @@
+<?php $this->layout('main', ['title' => 'Users', 'manual' => true]); ?>
+
+<div class="block-header">
+    <h2><?=_('Administration') ?></h2>
+</div>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2><?=_('Manage Users') ?></h2>
+
+        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('admin:users:edit') ?>"><i class="zmdi zmdi-plus"></i></a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="30%">
+                <col width="40%">
+                <col width="30%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th><?=_('Actions') ?></th>
+                <th><?=_('E-mail Address') ?></th>
+                <th><?=_('Roles') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($users as $user_row): ?>
+                <tr class="input">
+                    <td>
+                    <?php if ($user_row->getId() !== $user->getId()): ?>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->named('admin:users:impersonate', ['id' => $user_row->getId()]) ?>"><?=_('Log In') ?></a>
+                    <?php endif; ?>
+                        <a class="btn btn-sm btn-default" href="<?=$url->named('admin:users:edit', ['id' => $user_row->getId()]) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:users:delete', ['id' => $user_row->getId()]) ?>"><?=_('Delete') ?></a>
+                    </td>
+                    <td><?=$this->mailto($user_row->getEmail()) ?> <?php if ($user_row->getId() === $user->getId()): ?>(You)<?php endif; ?></td>
+                    <td>
+                        <small>
+                            <?php
+                            if (count($user_row->getRoles()) > 0)
+                            {
+                                foreach($user_row->getRoles() as $role)
+                                    echo '<div>'.$this->e($role->getName()).'</div>';
+                            }
+                            ?>
+                        </small>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

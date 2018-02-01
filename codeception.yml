@@ -21,6 +21,7 @@ coverage:
   exclude:
    # Loaded before tests
    - app/bootstrap.php
+   - app/bootstrap/**.php
    - app/src/App/Tests/Module.php
    - app/src/App/Doctrine/EntityManagerFactory.php
   
@@ -39,7 +40,7 @@ coverage:
    - app/src/App/Doctrine/Logger/EchoSQL.php
    - app/src/App/Session/Temporary.php
    - app/src/App/Console/Command/*.php
-   - app/models/Migration/*
+   - app/src/Migration/*
    - app/locale/**/*
    - app/locale/*
    - app/templates/system/error_general.phtml

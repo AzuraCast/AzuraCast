@@ -193,7 +193,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         $this->_getNowPlaying($np, $payload);
 
         // Update status code for offline stations, clean up song info for online ones.
-        if ($np['current_song']['text'] == 'Stream Offline') {
+        if ($np['current_song']['text'] === 'Stream Offline') {
             $np['meta']['status'] = 'offline';
         } else {
             array_walk($np['current_song'], [$this, '_cleanUpString']);
@@ -244,9 +244,6 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
     /* Return the artist and title from a string in the format "Artist - Title" */
     protected function getSongFromString($song_string, $delimiter = '-')
     {
-        // Filter for CR AutoDJ
-        $song_string = str_replace('AutoDJ - ', '', $song_string);
-
         // Fix ShoutCast 2 bug where 3 spaces = " - "
         $song_string = str_replace('   ', ' - ', $song_string);
 

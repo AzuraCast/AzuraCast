@@ -1,0 +1,83 @@
+<?php $this->layout('main', ['title' => _('Streamer/DJ Accounts'), 'manual' => true]) ?>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2><?=_('Streamer/DJ Accounts') ?></h2>
+
+                <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('stations:streamers:edit', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <colgroup>
+                        <col width="25%">
+                        <col width="15%">
+                        <col width="15%">
+                        <col width="45%">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th><?=_('Actions') ?></th>
+                        <th><?=_('Username') ?></th>
+                        <th><?=_('Password') ?></th>
+                        <th><?=_('Notes') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($streamers as $row): ?>
+                        <?php /** @var \Entity\StationStreamer $row */ ?>
+                        <tr class="vertical-align-middle <?php if (!$row->getIsActive()): ?>text-muted<?php endif; ?>">
+                            <td>
+                                <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:streamers:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>">Edit</a>
+                                <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:streamers:delete', ['station' => $station->getId(), 'id' => $row->getId()]) ?>">Delete</a>
+                            </td>
+                            <td><code><?=$this->e($row->getStreamerUsername()) ?></code></td>
+                            <td><code><?=$this->e($row->getStreamerPassword()) ?></code></td>
+                            <td><?=nl2br($this->e($row->getComments())) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <h2><?=_('Connection Information') ?></h2>
+            </div>
+            <div class="card-body card-padding">
+                <h4><?=_('IceCast Clients') ?></h4>
+                <dl>
+                    <dt><?=_('Server') ?>:</dt>
+                    <dd><?=$this->e($server_url) ?></dd>
+
+                    <dt><?=_('Port') ?>:</dt>
+                    <dd><?=(int)$stream_port ?></dd>
+
+                    <dt><?=_('Mount Name') ?>:</dt>
+                    <dd>/</dd>
+                </dl>
+
+                <h4><?=_('ShoutCast v1 Clients') ?></h4>
+                <dl>
+                    <dt><?=_('Server') ?>:</dt>
+                    <dd><?=$this->e($server_url) ?></dd>
+
+                    <dt><?=_('Port') ?>:</dt>
+                    <dd><?=((int)$stream_port + 1) ?></dd>
+
+                    <dt><?=_('Password') ?>:</dt>
+                    <dd>
+                        dj_username:dj_password<br>
+                        <small><?=_('(DJ username and password separated by a colon)') ?></small>
+                    </dd>
+                </dl>
+
+                <p><?=sprintf(_('Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.'), 'https://github.com/AzuraCast/AzuraCast/wiki/Streaming-Software') ?></p>
+            </div>
+        </div>
+    </div>
+</div>
+

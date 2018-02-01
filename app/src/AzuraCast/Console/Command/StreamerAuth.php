@@ -49,7 +49,7 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
             return $this->_return($output, 'false');
         }
 
-        if ($input->getArgument('user') == 'shoutcast') {
+        if ($input->getArgument('user') === 'shoutcast') {
             list($user, $pass) = explode(':', $input->getArgument('pass'));
         } else {
             $user = $input->getArgument('user');

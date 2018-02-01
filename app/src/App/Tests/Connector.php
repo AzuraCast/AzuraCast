@@ -55,7 +55,7 @@ class Connector extends Client
         $uri = str_replace('http://localhost', '', $request->getUri());
 
         $_REQUEST = $this->remapRequestParameters($request->getParameters());
-        if (strtoupper($request->getMethod()) == 'GET') {
+        if (strtoupper($request->getMethod()) === 'GET') {
             $_GET = $_REQUEST;
             $_POST = [];
         } else {

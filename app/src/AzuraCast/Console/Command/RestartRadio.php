@@ -1,6 +1,7 @@
 <?php
 namespace AzuraCast\Console\Command;
 
+use AzuraCast\Radio\Configuration;
 use Doctrine\ORM\EntityManager;
 use Entity\Station;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,21 +28,24 @@ class RestartRadio extends \App\Console\Command\CommandAbstract
         \App\Debug::log('Restarting all radio stations...');
         \App\Debug::divider();
 
-        /** @var \Supervisor\Supervisor */
+        /** @var \Supervisor\Supervisor $supervisor */
         $supervisor = $this->di[\Supervisor\Supervisor::class];
 
         /** @var EntityManager $em */
         $em = $this->di[EntityManager::class];
+
+        /** @var Configuration $configuration */
+        $configuration = $this->di[Configuration::class];
+
+        /** @var Station[] $stations */
         $stations = $em->getRepository(Station::class)->findAll();
 
         $supervisor->stopAllProcesses();
 
         foreach ($stations as $station) {
-            /** @var Station $station */
-
             \App\Debug::log('Restarting station #' . $station->getId() . ': ' . $station->getName());
 
-            $station->writeConfiguration($this->di);
+            $configuration->writeConfiguration($station);
 
             \App\Debug::divider();
         }

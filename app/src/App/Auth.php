@@ -83,6 +83,7 @@ class Auth
      *
      * @param bool $real_user_only
      * @return bool|User|null|object
+     * @throws Exception
      */
     public function getLoggedInUser($real_user_only = false)
     {
@@ -96,7 +97,7 @@ class Auth
     /**
      * Get the authenticated user entity.
      *
-     * @return bool|User|null|object
+     * @return bool|User|null
      * @throws Exception
      */
     public function getUser()

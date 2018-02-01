@@ -33,8 +33,14 @@ abstract class CestAbstract
 
         if ($this->test_station instanceof Entity\Station)
         {
+            /** @var Entity\Repository\StationRepository $station_repo */
             $station_repo = $this->em->getRepository(Entity\Station::class);
-            $this->test_station = $station_repo->destroy($this->test_station, $this->di);
+
+            $this->test_station = $station_repo->destroy(
+                $this->test_station,
+                $this->di[\AzuraCast\Radio\Adapters::class],
+                $this->di[\AzuraCast\Radio\Configuration::class]
+            );
         }
     }
 
@@ -84,8 +90,8 @@ abstract class CestAbstract
         $this->di[\AzuraCast\Acl\StationAcl::class]->reload();
 
         // Create station.
-        $frontends = Entity\Station::getFrontendAdapters();
-        $backends = Entity\Station::getBackendAdapters();
+        $frontends = \AzuraCast\Radio\Adapters::getFrontendAdapters();
+        $backends = \AzuraCast\Radio\Adapters::getBackendAdapters();
 
         $station_info = [
             'id'            => 25,
@@ -95,8 +101,14 @@ abstract class CestAbstract
             'backend_type'  => $backends['default'],
         ];
 
+        /** @var Entity\Repository\StationRepository $station_repo */
         $station_repo = $this->em->getRepository(\Entity\Station::class);
-        $this->test_station = $station_repo->create($station_info, $this->di);
+
+        $this->test_station = $station_repo->create(
+            $station_info,
+            $this->di[\AzuraCast\Radio\Adapters::class],
+            $this->di[\AzuraCast\Radio\Configuration::class]
+        );
 
         // Set settings.
         $settings_repo = $this->em->getRepository(\Entity\Settings::class);

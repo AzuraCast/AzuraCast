@@ -4,40 +4,46 @@ return function (\Slim\Container $di, $settings) {
     $di['app_settings'] = $settings;
 
     // Override Slim handlers.
+    $di['request'] = function ($di) {
+        return \App\Http\Request::createFromEnvironment($di->get('environment'));
+    };
+
+    $di['response'] = function ($di) {
+        $headers = new \Slim\Http\Headers(['Content-Type' => 'text/html; charset=UTF-8']);
+        $response = new \App\Http\Response(200, $headers, null, $di[\App\Url::class]);
+
+        return $response->withProtocolVersion($di->get('settings')['httpVersion']);
+    };
+
     $di['callableResolver'] = function ($di) {
         return new \App\Mvc\Resolver($di);
     };
 
     $di['errorHandler'] = function ($di) {
-        return function ($request, $response, $exception) use ($di) {
-            return \App\Mvc\ErrorHandler::handle($di, $request, $response, $exception);
-        };
+        return $di[\App\Mvc\ErrorHandler::class];
     };
 
     $di['phpErrorHandler'] = function($di) {
-        return function ($request, $response, $exception) use ($di) {
-            return \App\Mvc\ErrorHandler::handle($di, $request, $response, $exception);
-        };
+        return $di[\App\Mvc\ErrorHandler::class];
     };
 
     $di['notFoundHandler'] = function ($di) {
         return function ($request, $response) use ($di) {
+            /** @var \App\Mvc\View $view */
             $view = $di[\App\Mvc\View::class];
-            $template = $view->render('system/error_pagenotfound');
 
-            $body = $response->getBody();
-            $body->write($template);
-
-            return $response->withStatus(404)->withBody($body);
+            return $view->renderToResponse($response->withStatus(404), 'system/error_pagenotfound');
         };
     };
 
-    // Configs
+    $di['foundHandler'] = function() {
+        return new \Slim\Handlers\Strategies\RequestResponseArgs();
+    };
+
     $di[\App\Config::class] = function ($di) {
         return new \App\Config(APP_INCLUDE_BASE . '/config', $di);
     };
 
-    // Database
     $di[\Doctrine\ORM\EntityManager::class] = function ($di) {
         try {
             $options = [
@@ -80,7 +86,7 @@ return function (\Slim\Container $di, $settings) {
             }
 
             // Special handling for the utf8mb4 type.
-            if ($options['conn']['driver'] == 'pdo_mysql' && $options['conn']['charset'] == 'utf8mb4') {
+            if ($options['conn']['driver'] === 'pdo_mysql' && $options['conn']['charset'] === 'utf8mb4') {
                 $options['conn']['platform'] = new \App\Doctrine\Platform\MysqlUnicode;
             }
 
@@ -101,6 +107,11 @@ return function (\Slim\Container $di, $settings) {
             $config->setMetadataCacheImpl($cache);
             $config->setQueryCacheImpl($cache);
             $config->setResultCacheImpl($cache);
+
+            // Disable second-level cache for unit testing purposes, as it causes data to be out of date on pages.
+            if (APP_TESTING_MODE) {
+                $config->setSecondLevelCacheEnabled(false);
+            }
 
             $config->setProxyDir($options['proxyPath']);
             $config->setProxyNamespace($options['proxyNamespace']);
@@ -129,7 +140,6 @@ return function (\Slim\Container $di, $settings) {
         return $em->getConnection();
     };
 
-    // Auth and ACL
     $di[\App\Auth::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];
@@ -140,16 +150,10 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Auth($di[\App\Session::class], $user_repo);
     };
 
-    // Access control list (ACL)
     $di[\AzuraCast\Acl\StationAcl::class] = function ($di) {
         return new \AzuraCast\Acl\StationAcl($di[\Doctrine\ORM\EntityManager::class], $di[\App\Auth::class]);
     };
 
-    $di[\App\Acl::class] = function($di) {
-        return $di[\AzuraCast\Acl\StationAcl::class];
-    };
-
-    // Caching
     $di[\Redis::class] = $di->factory(function ($di) {
         $redis_host = (APP_INSIDE_DOCKER) ? 'redis' : 'localhost';
 
@@ -166,7 +170,6 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Cache($redis);
     };
 
-    // Register URL handler.
     $di[\App\Url::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];
@@ -194,7 +197,6 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Url($di['router'], $base_url);
     };
 
-    // Register session service.
     $di[\App\Session::class] = function ($di) {
         ini_set('session.gc_maxlifetime', 86400);
         ini_set('session.gc_probability', 1);
@@ -207,17 +209,14 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Session;
     };
 
-    // Register CSRF prevention security token service.
     $di[\App\Csrf::class] = function ($di) {
         return new \App\Csrf($di[\App\Session::class]);
     };
 
-    // Register Flash notification service.
     $di[\App\Flash::class] = function ($di) {
         return new \App\Flash($di[\App\Session::class]);
     };
 
-    // InfluxDB
     $di[\InfluxDB\Database::class] = function ($di) {
         $opts = [
             'host' => (APP_INSIDE_DOCKER) ? 'influxdb' : 'localhost',
@@ -229,7 +228,6 @@ return function (\Slim\Container $di, $settings) {
         return $influx->selectDB('stations');
     };
 
-    // Supervisord Interaction
     $di[\Supervisor\Supervisor::class] = function ($di) {
         $guzzle_client = new \GuzzleHttp\Client();
         $client = new \fXmlRpc\Client(
@@ -251,27 +249,9 @@ return function (\Slim\Container $di, $settings) {
         return $supervisor;
     };
 
-    // Scheduled synchronization manager
-    $di[\AzuraCast\Sync::class] = function ($di) {
-        return new \AzuraCast\Sync($di);
-    };
-
-    // Site-wide user-based customization.
-    $di[\AzuraCast\Customization::class] = function ($di) {
-
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-        $settings_repo = $em->getRepository(Entity\Settings::class);
-
-        return new \AzuraCast\Customization($di['app_settings'], $di['user'], $settings_repo);
-    };
-
-    // Main view/template renderer.
-    $di[\App\Mvc\View::class] = $di->factory(function (\Slim\Container $di) {
+    $di[\App\Mvc\View::class] = $di->factory(function(\Slim\Container $di) {
         $view = new \App\Mvc\View(APP_INCLUDE_BASE . '/templates');
         $view->setFileExtension('phtml');
-
-        $view->loadExtension(new \App\Mvc\View\Paginator($di[\App\Url::class]));
 
         $view->registerFunction('service', function($service) use ($di) {
             return $di->get($service);
@@ -283,7 +263,7 @@ return function (\Slim\Container $di, $settings) {
 
         $view->registerFunction('mailto', function ($address, $link_text = null) {
             $address = substr(chunk_split(bin2hex(" $address"), 2, ";&#x"), 3, -3);
-            $link_text = (is_null($link_text)) ? $address : $link_text;
+            $link_text = $link_text ?? $address;
 
             return '<a href="mailto:' . $address . '">' . $link_text . '</a>';
         });
@@ -313,7 +293,30 @@ return function (\Slim\Container $di, $settings) {
         return $view;
     });
 
-    // Asset management
+    $di[\App\Mvc\ErrorHandler::class] = function($di) {
+        return new \App\Mvc\ErrorHandler(
+            $di[\App\Url::class],
+            $di[\App\Session::class],
+            $di[\App\Flash::class],
+            $di[\App\Mvc\View::class],
+            $di[\AzuraCast\Acl\StationAcl::class]
+        );
+    };
+
+    //
+    // AzuraCast-specific dependencies
+    //
+
+    $di[\AzuraCast\Customization::class] = function ($di) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        /** @var \Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $em->getRepository(Entity\Settings::class);
+
+        return new \AzuraCast\Customization($di['app_settings'], $settings_repo);
+    };
+
     $di[\AzuraCast\Assets::class] = function ($di) {
         $libraries = require('assets.php');
 
@@ -326,7 +329,6 @@ return function (\Slim\Container $di, $settings) {
         return new \AzuraCast\Assets($libraries, $versioned_files, $di[\App\Url::class]);
     };
 
-    // Rate limit checking
     $di[\AzuraCast\RateLimit::class] = function($di) {
         /** @var \Redis $redis */
         $redis = $di[\Redis::class];
@@ -335,107 +337,182 @@ return function (\Slim\Container $di, $settings) {
         return new \AzuraCast\RateLimit($redis);
     };
 
-    // Currently logged in user
-    $di['user'] = $di->factory(function ($di) {
-        /** @var \App\Auth $auth */
-        $auth = $di[\App\Auth::class];
+    $di[AzuraCast\Radio\Adapters::class] = function($di) {
+        return new AzuraCast\Radio\Adapters($di);
+    };
 
-        if ($auth->isLoggedIn()) {
-            return $auth->getLoggedInUser();
-        } else {
-            return null;
-        }
-    });
+    $di[\AzuraCast\Radio\Configuration::class] = function($di) {
+        return new \AzuraCast\Radio\Configuration(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Radio\Adapters::class],
+            $di[\Supervisor\Supervisor::class]
+        );
+    };
 
-    // Set up application and routing.
+    $di[Azuracast\Radio\Backend\LiquidSoap::class] = function($di) {
+        return new \AzuraCast\Radio\Backend\LiquidSoap($di);
+    };
+
+    $di[AzuraCast\Radio\Backend\None::class] = function($di) {
+        return new \AzuraCast\Radio\Backend\None($di);
+    };
+
+    $di[\AzuraCast\Radio\Frontend\IceCast::class] = function($di) {
+        return new \AzuraCast\Radio\Frontend\IceCast($di);
+    };
+
+    $di[\AzuraCast\Radio\Frontend\Remote::class] = function($di) {
+        return new \AzuraCast\Radio\Frontend\Remote($di);
+    };
+
+    $di[\AzuraCast\Radio\Frontend\ShoutCast2::class] = function($di) {
+        return new \AzuraCast\Radio\Frontend\ShoutCast2($di);
+    };
+
+    $di[\AzuraCast\Sync::class] = function ($di) {
+        return new \AzuraCast\Sync($di);
+    };
+
+    $di[\AzuraCast\Sync\Analytics::class] = function($di) {
+        return new \AzuraCast\Sync\Analytics(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\InfluxDB\Database::class]
+        );
+    };
+
+    $di[\AzuraCast\Sync\HistoryCleanup::class] = function($di) {
+        return new \AzuraCast\Sync\HistoryCleanup(
+            $di[\Doctrine\ORM\EntityManager::class]
+        );
+    };
+
+    $di[\AzuraCast\Sync\Media::class] = function($di) {
+        return new \AzuraCast\Sync\Media(
+            $di[\Doctrine\ORM\EntityManager::class]
+        );
+    };
+
+    $di[\AzuraCast\Sync\NowPlaying::class] = function($di) {
+        return new \AzuraCast\Sync\NowPlaying(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Url::class],
+            $di[\InfluxDB\Database::class],
+            $di[\App\Cache::class],
+            $di[\AzuraCast\Radio\Adapters::class]
+        );
+    };
+
+    $di[\AzuraCast\Sync\RadioAutomation::class] = function($di) {
+        return new \AzuraCast\Sync\RadioAutomation(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Radio\Adapters::class]
+        );
+    };
+
+    //
+    // Middleware
+    //
+
+    $di[\AzuraCast\Middleware\EnableView::class] = function($di) {
+        return new \AzuraCast\Middleware\EnableView($di[\App\Mvc\View::class]);
+    };
+
+    $di[\AzuraCast\Middleware\EnforceSecurity::class] = function($di) {
+        return new \AzuraCast\Middleware\EnforceSecurity(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Assets::class]
+        );
+    };
+
+    $di[\AzuraCast\Middleware\GetCurrentUser::class] = function($di) {
+        return new \AzuraCast\Middleware\GetCurrentUser(
+            $di[\App\Auth::class],
+            $di[\AzuraCast\Customization::class]
+        );
+    };
+
+    $di[\AzuraCast\Middleware\GetStation::class] = function($di) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        /** @var \Entity\Repository\StationRepository $station_repo */
+        $station_repo = $em->getRepository(Entity\Station::class);
+
+        return new \AzuraCast\Middleware\GetStation(
+            $station_repo,
+            $di[\AzuraCast\Radio\Adapters::class]
+        );
+    };
+
+    $di[\AzuraCast\Middleware\Permissions::class] = function($di) {
+        return new \AzuraCast\Middleware\Permissions(
+            $di[\AzuraCast\Acl\StationAcl::class]
+        );
+    };
+
+    $di[\AzuraCast\Middleware\RateLimit::class] = function($di) {
+        return new \AzuraCast\Middleware\RateLimit(
+            $di[\AzuraCast\RateLimit::class]
+        );
+    };
+
+    $di[\AzuraCast\Middleware\RemoveSlashes::class] = function($di) {
+        return new \AzuraCast\Middleware\RemoveSlashes();
+    };
+
+    //
+    // Module-specific middleware
+    //
+
+    $di[\AzuraCast\Middleware\Module\Admin::class] = function($di) {
+        $config = $di[\App\Config::class];
+        $dashboard_config = $config->admin->dashboard->toArray();
+
+        return new \AzuraCast\Middleware\Module\Admin(
+            $di[\AzuraCast\Acl\StationAcl::class],
+            $dashboard_config
+        );
+    };
+
+    $di[\AzuraCast\Middleware\Module\Api::class] = function($di) {
+        return new \AzuraCast\Middleware\Module\Api(
+            $di[\App\Session::class]
+        );
+    };
+
+    $di[\AzuraCast\Middleware\Module\Stations::class] = function($di) {
+        return new \AzuraCast\Middleware\Module\Stations;
+    };
+
+    $di[\AzuraCast\Middleware\Module\StationFiles::class] = function($di) {
+        return new \AzuraCast\Middleware\Module\StationFiles(
+            $di[\App\Csrf::class]
+        );
+    };
+
+    //
+    // Main Slim Application
+    //
+
     $di['app'] = function ($di) {
 
         $app = new \Slim\App($di);
 
         // Remove trailing slash from all URLs when routing.
-        $app->add(function (
-            \Slim\Http\Request $request,
-            \Slim\Http\Response $response,
-            callable $next
-        ) {
-            $uri = $request->getUri();
-            $path = $uri->getPath();
-
-            if ($path != '/' && substr($path, -1) == '/') {
-                // permanently redirect paths with a trailing slash
-                // to their non-trailing counterpart
-                $uri = $uri->withPath(substr($path, 0, -1));
-
-                return $response->withRedirect((string)$uri, 301);
-            }
-
-            return $next($request, $response);
-        });
+        $app->add(\AzuraCast\Middleware\RemoveSlashes::class);
 
         // Check HTTPS setting and enforce Content Security Policy accordingly.
-        $app->add(function (
-            \Slim\Http\Request $request,
-            \Slim\Http\Response $response,
-            callable $next
-        ) {
-            /** @var \Doctrine\ORM\EntityManager $em */
-            $em = $this->get(\Doctrine\ORM\EntityManager::class);
+        $app->add(\AzuraCast\Middleware\EnforceSecurity::class);
 
-            /** @var \Entity\Repository\SettingsRepository $settings_repo */
-            $settings_repo = $em->getRepository(\Entity\Settings::class);
+        // Get the current user entity object and assign it into the request if it exists.
+        $app->add(\AzuraCast\Middleware\GetCurrentUser::class);
 
-            $always_use_ssl = (bool)$settings_repo->getSetting('always_use_ssl', 0);
-            $internal_api_url = mb_stripos($request->getUri()->getPath(), '/api/internal') === 0;
-
-            $uri = $request->getUri();
-            $uri_is_https = ($uri->getScheme() === 'https');
-
-            // Assemble Content Security Policy (CSP)
-            $csp = [];
-
-            /** @var \AzuraCast\Assets $assets */
-            $assets = $this->get(\AzuraCast\Assets::class);
-
-            // CSP JavaScript policy
-            // Note: unsafe-eval included for Vue template compiling
-            $csp[] = "script-src https://maps.googleapis.com https://cdnjs.cloudflare.com 'self' 'unsafe-eval' 'nonce-".$assets->getCspNonce()."'";
-
-            if ($uri_is_https) {
-
-                $csp[] = 'upgrade-insecure-requests';
-
-            } elseif ($always_use_ssl && !$internal_api_url) {
-
-                // Enforce secure cookies.
-                ini_set('session.cookie_secure', 1);
-
-                // Redirect if URL is not currently secure.
-                if (!$uri_is_https) {
-                    if (!$uri->getPort()) {
-                        $uri = $uri->withPort(443);
-                    }
-                    return $response->withRedirect((string)$uri->withScheme('https'), 302);
-                }
-
-                // Set HSTS header.
-                $response = $response->withHeader('Strict-Transport-Security', 'max-age=3600');
-
-                $csp[] = 'upgrade-insecure-requests';
-            }
-
-            $response = $response->withHeader('Content-Security-Policy', implode('; ', $csp));
-
-            return $next($request, $response);
-        });
-
-        foreach ($di['modules'] as $module) {
-            $module_routes = APP_INCLUDE_MODULES . '/' . $module . '/routes.php';
-            if (file_exists($module_routes)) {
-                call_user_func(include($module_routes), $app);
-            }
-        }
+        // Load routes
+        call_user_func(include(__DIR__.'/routes.php'), $app);
 
         return $app;
     };
+
+    return $di;
 
 };

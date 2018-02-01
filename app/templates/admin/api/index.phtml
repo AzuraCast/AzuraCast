@@ -1,0 +1,43 @@
+<?php $this->layout('main', ['title' => _('API Keys'), 'manual' => true]); ?>
+
+<div class="block-header">
+    <h2><?=_('Administration') ?></h2>
+</div>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2><?=_('API Keys') ?></h2>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('admin:api:edit') ?>"><i class="zmdi zmdi-plus"></i></a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="20%">
+                <col width="35%">
+                <col width="10%">
+                <col width="35%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th><?=_('API Key') ?></th>
+                <th><?=_('Calls') ?></th>
+                <th><?=_('Owner') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($records as $record): ?>
+                <tr class="input">
+                    <td class="center">
+                        <a class="btn btn-sm btn-primary" href="<?=$url->named('admin:api:edit', ['id' => $record['id']]) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:api:delete', ['id' => $record['id']]) ?>"><?=_('Revoke') ?></a>
+                    </td>
+                    <td><code><?=$record['id'] ?></code></td>
+                    <td><?=$record['calls_made'] ?></td>
+                    <td><?=$this->e($record['owner']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

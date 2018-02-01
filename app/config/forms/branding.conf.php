@@ -23,6 +23,7 @@ return [
                 'label' => _('Custom CSS for Public Pages'),
                 'description' => _('This CSS will be applied to the station public pages and login page.'),
                 'class' => 'css-editor',
+                'filter' => function($val) { return strip_tags($val); }
             ]
         ],
 
@@ -32,6 +33,7 @@ return [
                 'label' => _('Custom CSS for Internal Pages'),
                 'description' => _('This CSS will be applied to the main management pages, like this one.'),
                 'class' => 'css-editor',
+                'filter' => function($val) { return strip_tags($val); }
             ],
         ],
 

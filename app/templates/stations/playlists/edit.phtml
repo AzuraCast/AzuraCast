@@ -1,0 +1,28 @@
+<?php $this->layout('main', ['manual' => true]) ?>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2><?=$title ?></h2>
+    </div>
+    <div class="card-body card-padding">
+        <?=$this->insert('partials/form', ['form' => $form]) ?>
+    </div>
+</div>
+
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
+$(function() {
+
+    showFieldset($('form #field_type input:checked').val());
+
+    $('form #field_type input').on('change', function() {
+        showFieldset($(this).val());
+    });
+
+});
+
+function showFieldset(fieldset_id)
+{
+    $('form fieldset.type_fieldset').hide();
+    $('form fieldset#type_'+fieldset_id).show();
+}
+</script>

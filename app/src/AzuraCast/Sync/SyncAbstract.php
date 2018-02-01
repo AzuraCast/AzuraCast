@@ -6,22 +6,6 @@ use Interop\Container\ContainerInterface;
 
 abstract class SyncAbstract
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $di;
-
-    /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    public function __construct(ContainerInterface $di)
-    {
-        $this->di = $di;
-        $this->em = $di[EntityManager::class];
-    }
-
     abstract public function run();
 
     protected function _logMemoryUsage()

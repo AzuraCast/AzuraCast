@@ -2,7 +2,7 @@
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 ini_set('display_errors', 1);
 
-$di = require dirname(__FILE__).'/../app/bootstrap.php';
+$di = require dirname(__DIR__).'/app/bootstrap.php';
 
 // Load app, to generate routes, etc.
 $di->get('app');
@@ -28,7 +28,7 @@ $cli->setHelperSet($helperSet);
 // Migrations commands
 $migrate_config = new \Doctrine\DBAL\Migrations\Configuration\Configuration($db);
 $migrate_config->setMigrationsTableName('app_migrations');
-$migrate_config->setMigrationsDirectory(__DIR__.'/../app/models/Migration');
+$migrate_config->setMigrationsDirectory(__DIR__.'/../app/src/Migration');
 $migrate_config->setMigrationsNamespace('Migration');
 
 $output = new \Symfony\Component\Console\Output\ConsoleOutput;

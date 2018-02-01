@@ -1,0 +1,54 @@
+<?php $this->layout('main', ['title' => _('Song Duplicates'), 'manual' => true]) ?>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2><?=_('Song Duplicates') ?></h2>
+    </div>
+<?php if (empty($dupes)): ?>
+    <div class="card-body card-padding">
+        <?=_('No duplicates were found. Nice work!') ?>
+    </div>
+<?php else: ?>
+    <?php foreach($dupes as $dupe_row): ?>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <colgroup>
+                    <col width="15%">
+                    <col width="55%">
+                    <col width="15%">
+                    <col width="15%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th><?=_('Actions') ?></th>
+                        <th><?=_('Title / File Path') ?></th>
+                        <th class="text-right"><?=_('Playlists') ?></th>
+                        <th class="text-right"><?=_('Length') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach($dupe_row as $media_row): ?>
+                    <tr class="input">
+                        <td>
+                            <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:reports:deletedupe', ['station' => $station->getId(), 'media_id' => $media_row['id']]) ?>"><?=_('Delete') ?></a>
+                        </td>
+                        <td>
+                            <big><?=$media_row['song']['artist'] ?> - <?=$media_row['song']['title'] ?></big><br>
+                            <?=$media_row['path'] ?>
+                        </td>
+                        <td class="text-right">
+                        <?php if (count($media_row['playlists']) == 0): ?>
+                            0
+                        <?php else: ?>
+                            <abbr title="<?=implode(', ', \Packaged\Helpers\Arrays::ipull($media_row['playlists'], 'name')) ?>"><?=count($media_row['playlists']) ?></abbr>
+                        <?php endif; ?>
+                        </td>
+                        <td class="text-right"><?=$media_row['length_text'] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>
+</div>

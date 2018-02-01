@@ -22,7 +22,7 @@ class File
     public function __construct($file_name, $base_dir = null)
     {
         $this->name = $file_name;
-        $this->base_dir = $base_dir ?: APP_UPLOAD_FOLDER;
+        $this->base_dir = $base_dir ?: APP_INCLUDE_TEMP;
     }
 
     /**

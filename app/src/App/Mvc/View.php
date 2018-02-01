@@ -1,35 +1,15 @@
 <?php
 namespace App\Mvc;
 
+use App\Http\Response;
 use Interop\Container\ContainerInterface;
 use League\Plates\Template\Data;
 
 class View extends \League\Plates\Engine
 {
-    protected $rendered = false;
-
-    protected $disabled = false;
-
     public function reset()
     {
-        $this->rendered = false;
-        $this->disabled = false;
         $this->data = new Data();
-    }
-
-    public function disable()
-    {
-        $this->disabled = true;
-    }
-
-    public function isDisabled()
-    {
-        return $this->disabled;
-    }
-
-    public function isRendered()
-    {
-        return $this->rendered;
     }
 
     public function __set($key, $value)
@@ -37,20 +17,14 @@ class View extends \League\Plates\Engine
         $this->addData([$key => $value]);
     }
 
+    public function __isset($key)
+    {
+        return ($this->getData($key) === null);
+    }
+
     public function __get($key)
     {
         return $this->getData($key);
-    }
-
-    public function render($name, array $data = [])
-    {
-        if (!$this->isDisabled()) {
-            $this->rendered = true;
-
-            return parent::render($name, $data);
-        }
-
-        return null;
     }
 
     public function fetch($name, array $data = [])
@@ -67,5 +41,22 @@ class View extends \League\Plates\Engine
         $this->folders->add($name, $directory, $fallback);
 
         return $this;
+    }
+
+    /**
+     * Trigger rendering of template and write it directly to the PSR-7 compatible Response object.
+     *
+     * @param Response $response
+     * @param null $template_name
+     * @param array $template_args
+     * @return Response
+     */
+    public function renderToResponse(Response $response, $template_name, array $template_args = []): Response
+    {
+        $template = $this->render($template_name, $template_args);
+
+        return $response
+            ->withHeader('Content-type', 'text/html; charset=utf-8')
+            ->write($template);
     }
 }

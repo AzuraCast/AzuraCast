@@ -4,7 +4,7 @@
         <h2>500</h2>
         <small>
             <?=$exception->getMessage() ?><br>
-            <?=$exception->getFile() ?> : <?=$exception->getLine() ?>
+            <?=basename($exception->getFile()) ?> : <?=$exception->getLine() ?>
         </small>
 
         <div class="fzb-links">

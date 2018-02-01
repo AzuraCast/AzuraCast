@@ -4,11 +4,12 @@ namespace AzuraCast\Radio;
 use Entity\Station;
 use fXmlRpc\Exception\FaultException;
 use Interop\Container\ContainerInterface;
+use Slim\Container;
 use Supervisor\Process;
 
 abstract class AdapterAbstract
 {
-    /** @var ContainerInterface */
+    /** @var Container */
     protected $di;
 
     /** @var Station */
@@ -18,13 +19,20 @@ abstract class AdapterAbstract
     protected $supervisor;
 
     /**
-     * @param Station $station
+     * AdapterAbstract constructor.
+     * @param Container $di
      */
-    public function __construct(ContainerInterface $di, Station $station)
+    public function __construct(Container $di)
     {
         $this->di = $di;
         $this->supervisor = $di[\Supervisor\Supervisor::class];
+    }
 
+    /**
+     * @param Station $station
+     */
+    public function setStation(Station $station)
+    {
         $this->station = $station;
     }
 
@@ -94,7 +102,7 @@ abstract class AdapterAbstract
                 $this->supervisor->stopProcess($program_name);
                 $this->log(_('Process stopped.'), 'green');
             } catch (FaultException $e) {
-                if (stristr($e->getMessage(), 'NOT_RUNNING') !== false) {
+                if (false !== stripos($e->getMessage(), 'NOT_RUNNING')) {
                     $this->log(_('Process was not running!'), 'blue');
                 } else {
                     $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
@@ -126,7 +134,7 @@ abstract class AdapterAbstract
                 $this->supervisor->startProcess($program_name);
                 $this->log(_('Process started.'), 'green');
             } catch (FaultException $e) {
-                if (stristr($e->getMessage(), 'ALREADY_STARTED') !== false) {
+                if (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
                     $this->log(_('Process is already running!'), 'green');
                 } else {
                     $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);

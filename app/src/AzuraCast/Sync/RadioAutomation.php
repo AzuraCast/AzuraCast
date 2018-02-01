@@ -2,6 +2,7 @@
 namespace AzuraCast\Sync;
 
 use App\Exception;
+use AzuraCast\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use Entity;
 use Entity\Station;
@@ -10,18 +11,30 @@ class RadioAutomation extends SyncAbstract
 {
     const DEFAULT_THRESHOLD_DAYS = 14;
 
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Adapters */
+    protected $adapters;
+
+    /**
+     * @param EntityManager $em
+     */
+    public function __construct(EntityManager $em, Adapters $adapters)
+    {
+        $this->em = $em;
+        $this->adapters = $adapters;
+    }
+
     /**
      * Iterate through all stations and attempt to run automated assignment.
      */
     public function run()
     {
-        /** @var EntityManager $em */
-        $em = $this->di[EntityManager::class];
-
         // Check all stations for automation settings.
-        $stations = $em->getRepository(Station::class)->findAll();
+        $stations = $this->em->getRepository(Station::class)->findAll();
 
-        $automation_log = $em->getRepository('Entity\Settings')->getSetting('automation_log', []);
+        $automation_log = $this->em->getRepository('Entity\Settings')->getSetting('automation_log', []);
 
         foreach ($stations as $station) {
             try {
@@ -33,7 +46,7 @@ class RadioAutomation extends SyncAbstract
             }
         }
 
-        $em->getRepository('Entity\Settings')->setSetting('automation_log', $automation_log);
+        $this->em->getRepository('Entity\Settings')->setSetting('automation_log', $automation_log);
     }
 
     /**
@@ -46,9 +59,6 @@ class RadioAutomation extends SyncAbstract
      */
     public function runStation(Station $station, $force = false)
     {
-        /** @var EntityManager $em */
-        $em = $this->di[EntityManager::class];
-
         $settings = (array)$station->getAutomationSettings();
 
         if (empty($settings)) {
@@ -88,7 +98,7 @@ class RadioAutomation extends SyncAbstract
                     }
 
                     $media->getPlaylists()->removeElement($playlist);
-                    $em->persist($media);
+                    $this->em->persist($media);
                 }
 
                 $playlists[$i] = $playlist;
@@ -101,7 +111,7 @@ class RadioAutomation extends SyncAbstract
             throw new Exception('No playlists have automation enabled.');
         }
 
-        $em->flush();
+        $this->em->flush();
 
         $media_report = $this->generateReport($station, $threshold_days);
 
@@ -128,13 +138,13 @@ class RadioAutomation extends SyncAbstract
                     $media_row->getPlaylists()->add($playlists[$playlist_key]);
                 }
 
-                $em->persist($media_row);
+                $this->em->persist($media_row);
 
                 unset($media_report[$song_id]);
             }
         }
 
-        $em->flush();
+        $this->em->flush();
 
         // Sort songs by ratio descending.
         uasort($media_report, function ($a_media, $b_media) {
@@ -163,18 +173,19 @@ class RadioAutomation extends SyncAbstract
                 $media_row = $media['record'];
                 $media_row->getPlaylists()->add($playlist);
 
-                $em->persist($media_row);
+                $this->em->persist($media_row);
             }
 
             $i += $playlist_num_songs;
         }
 
         $station->setAutomationTimestamp(time());
-        $em->persist($station);
-        $em->flush();
+        $this->em->persist($station);
+        $this->em->flush();
 
         // Write new PLS playlist configuration.
-        $station->getBackendAdapter($this->di)->write();
+        $backend_adapter = $this->adapters->getBackendAdapter($station);
+        $backend_adapter->write();
 
         return true;
     }
@@ -188,13 +199,10 @@ class RadioAutomation extends SyncAbstract
      */
     public function generateReport(Station $station, $threshold_days = self::DEFAULT_THRESHOLD_DAYS)
     {
-        /** @var EntityManager $em */
-        $em = $this->di[EntityManager::class];
-
         $threshold = strtotime('-' . (int)$threshold_days . ' days');
 
         // Pull all SongHistory data points.
-        $data_points_raw = $em->createQuery('SELECT sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start 
+        $data_points_raw = $this->em->createQuery('SELECT sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start 
             FROM Entity\SongHistory sh 
             WHERE sh.station_id = :station_id AND sh.timestamp_end != 0 AND sh.timestamp_start >= :threshold')
             ->setParameter('station_id', $station->getId())
@@ -242,9 +250,9 @@ class RadioAutomation extends SyncAbstract
         */
 
         // Pull all media and playlists.
-        $media_repo = $em->getRepository(Entity\StationMedia::class);
+        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
-        $media_raw = $em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
+        $media_raw = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
             ->setParameter('station_id', $station->getId())
             ->execute();
 

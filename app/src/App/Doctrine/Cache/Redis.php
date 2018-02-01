@@ -1,6 +1,15 @@
 <?php
 namespace App\Doctrine\Cache;
 
+/**
+ * Overrider of the Doctrine Redis Cache functionality
+ *
+ * Dev Note: This entire class basically only exists because \Doctrine\Common\Cache\CacheProvider::getNamespacedId
+ * is a private function that can't be overridden. Thus, instead, to remove Doctrine's flavor of namespacing
+ * from Redis caching, one must reimplement *everything* that calls that.
+ *
+ * @package App\Doctrine\Cache
+ */
 class Redis extends \Doctrine\Common\Cache\RedisCache
 {
     /**

@@ -13,6 +13,6 @@ class Request extends \Slim\Http\Request
      */
     public function hasParam($key): bool
     {
-        return ($this->getParam($key, null) === null);
+        return ($this->getParam($key, null) !== null);
     }
 }

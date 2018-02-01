@@ -44,7 +44,7 @@ class IndexController
         return $view->renderToResponse($response, 'admin/index/index');
     }
 
-    public function syncAction(Request $request, Response $response, $args): Response
+    public function syncAction(Request $request, Response $response, $type): Response
     {
         $this->acl->checkPermission('administer all');
 
@@ -52,8 +52,6 @@ class IndexController
 
         \App\Debug::setEchoMode(true);
         \App\Debug::startTimer('sync_task');
-
-        $type = $args['type'];
 
         switch ($type) {
             case "long":

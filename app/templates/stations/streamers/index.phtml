@@ -6,7 +6,7 @@
             <div class="card-header ch-alt">
                 <h2><?=_('Streamer/DJ Accounts') ?></h2>
 
-                <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->routeFromHere(array('action' => 'edit')) ?>"><i class="zmdi zmdi-plus"></i></a>
+                <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('stations:streamers:edit', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -29,8 +29,8 @@
                         <?php /** @var \Entity\StationStreamer $row */ ?>
                         <tr class="vertical-align-middle <?php if (!$row->getIsActive()): ?>text-muted<?php endif; ?>">
                             <td>
-                                <a class="btn btn-sm btn-primary" href="<?=$url->routeFromHere(array('action' => 'edit', 'id' => $row->getId())) ?>">Edit</a>
-                                <a class="btn btn-sm btn-danger" href="<?=$url->routeFromHere(array('action' => 'delete', 'id' => $row->getId())) ?>">Delete</a>
+                                <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:streamers:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>">Edit</a>
+                                <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:streamers:delete', ['station' => $station->getId(), 'id' => $row->getId()]) ?>">Delete</a>
                             </td>
                             <td><code><?=$this->e($row->getStreamerUsername()) ?></code></td>
                             <td><code><?=$this->e($row->getStreamerPassword()) ?></code></td>

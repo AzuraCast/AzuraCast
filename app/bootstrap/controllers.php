@@ -293,8 +293,12 @@ return function (\Slim\Container $di) {
     };
 
     $di[\Controller\Stations\StreamersController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
         return new \Controller\Stations\StreamersController(
-            $di
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $config->forms->streamer->toArray()
         );
     };
 

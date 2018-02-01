@@ -1,58 +1,93 @@
 <?php
 namespace Controller\Stations;
 
+use App\Flash;
+use AzuraCast\Radio\Backend\BackendAbstract;
+use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class StreamersController extends \AzuraCast\Legacy\Controller
+class StreamersController
 {
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Flash */
+    protected $flash;
+
+    /** @var array */
+    protected $form_config;
+
     /** @var Entity\Repository\StationStreamerRepository */
     protected $streamers_repo;
 
-    protected function preDispatch()
+    /**
+     * StreamersController constructor.
+     * @param EntityManager $em
+     * @param Flash $flash
+     * @param array $form_config
+     */
+    public function __construct(EntityManager $em, Flash $flash, array $form_config)
     {
-        if (!$this->backend->supportsStreamers()) {
-            throw new \App\Exception(_('This feature is not currently supported on this station.'));
-        }
-
-        parent::preDispatch();
+        $this->em = $em;
+        $this->flash = $flash;
+        $this->form_config = $form_config;
 
         $this->streamers_repo = $this->em->getRepository(Entity\StationStreamer::class);
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response, $station_id): Response
     {
-        if (!$this->station->getEnableStreamers()) {
-            if ($this->hasParam('enable')) {
-                $this->station->setEnableStreamers(true);
-                $this->em->persist($this->station);
-                $this->em->flush();
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-                $this->alert('<b>' . _('Streamers enabled!') . '</b><br>' . _('You can now set up streamer (DJ) accounts.'),
-                    'green');
+        /** @var BackendAbstract $backend */
+        $backend = $request->getAttribute('station_backend');
 
-                return $this->redirectFromHere(['enable' => null]);
-            } else {
-                return $this->render('controller::disabled');
-            }
+        if (!$backend->supportsStreamers()) {
+            throw new \App\Exception(_('This feature is not currently supported on this station.'));
         }
 
-        $this->view->server_url = $this->em->getRepository('Entity\Settings')->getSetting('base_url', '');
-        $this->view->stream_port = $this->backend->getStreamPort();
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
 
-        $this->view->streamers = $this->station->getStreamers();
+        if (!$station->getEnableStreamers()) {
+            if ($request->hasParam('enable')) {
+                $station->setEnableStreamers(true);
+                $this->em->persist($station);
+                $this->em->flush();
+
+                $this->flash->alert('<b>' . _('Streamers enabled!') . '</b><br>' . _('You can now set up streamer (DJ) accounts.'),
+                    'green');
+
+                return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
+            }
+
+            return $view->renderToResponse($response, 'stations/streamers/disabled');
+        }
+
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository('Entity\Settings');
+
+        return $view->renderToResponse($response, 'stations/streamers/index', [
+            'server_url' => $settings_repo->getSetting('base_url', ''),
+            'stream_port' => $backend->getStreamPort(),
+            'streamers' => $station->getStreamers(),
+        ]);
     }
 
-    public function editAction(Request $request, Response $response): Response
+    public function editAction(Request $request, Response $response, $station_id, $id = null): Response
     {
-        $form_config = $this->config->forms->streamer;
-        $form = new \App\Form($form_config);
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-        if ($this->hasParam('id')) {
+        $form = new \App\Form($this->form_config);
+
+        if (!empty($id)) {
             $record = $this->streamers_repo->findOneBy([
-                'id' => $this->getParam('id'),
-                'station_id' => $this->station->getId()
+                'id' => $id,
+                'station_id' => $station_id
             ]);
             $form->setDefaults($this->streamers_repo->toArray($record));
         } else {
@@ -63,7 +98,7 @@ class StreamersController extends \AzuraCast\Legacy\Controller
             $data = $form->getValues();
 
             if (!($record instanceof Entity\StationStreamer)) {
-                $record = new Entity\StationStreamer($this->station);
+                $record = new Entity\StationStreamer($station);
             }
 
             $this->streamers_repo->fromArray($record, $data);
@@ -71,25 +106,31 @@ class StreamersController extends \AzuraCast\Legacy\Controller
             $this->em->persist($record);
             $this->em->flush();
 
-            $this->em->refresh($this->station);
+            $this->em->refresh($station);
 
-            $this->alert('<b>' . _('Streamer account updated!') . '</b>', 'green');
+            $this->flash->alert('<b>' . _('Streamer account updated!') . '</b>', 'green');
 
-            return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+            return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
         }
 
-        $title = (($this->hasParam('id')) ? _('Edit Streamer') : _('Add Streamer'));
+        /** @var \App\Mvc\View $view */
+        $view = $request->getAttribute('view');
 
-        return $this->renderForm($form, 'edit', $title);
+        return $view->renderToResponse($response, 'system/form_page', [
+            'form' => $form,
+            'render_mode' => 'edit',
+            'title' => ($id) ? _('Edit Streamer') : _('Add Streamer')
+        ]);
     }
 
-    public function deleteAction(Request $request, Response $response): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $id): Response
     {
-        $id = (int)$this->getParam('id');
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
         $record = $this->em->getRepository(Entity\StationStreamer::class)->findOneBy([
             'id' => $id,
-            'station_id' => $this->station->getId()
+            'station_id' => $station_id
         ]);
 
         if ($record instanceof Entity\StationStreamer) {
@@ -98,10 +139,10 @@ class StreamersController extends \AzuraCast\Legacy\Controller
 
         $this->em->flush();
 
-        $this->em->refresh($this->station);
+        $this->em->refresh($station);
 
-        $this->alert('<b>' . _('Record deleted.') . '</b>', 'green');
+        $this->flash->alert('<b>' . _('Record deleted.') . '</b>', 'green');
 
-        return $this->redirectFromHere(['action' => 'index', 'id' => null]);
+        return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
     }
 }

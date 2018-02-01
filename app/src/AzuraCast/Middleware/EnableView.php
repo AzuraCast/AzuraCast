@@ -35,8 +35,6 @@ class EnableView
 
         $response = $next($request, $response);
 
-        $this->view->reset();
-
         return $response;
     }
 }

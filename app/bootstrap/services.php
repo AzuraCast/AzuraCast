@@ -108,6 +108,11 @@ return function (\Slim\Container $di, $settings) {
             $config->setQueryCacheImpl($cache);
             $config->setResultCacheImpl($cache);
 
+            // Disable second-level cache for unit testing purposes, as it causes data to be out of date on pages.
+            if (APP_TESTING_MODE) {
+                $config->setSecondLevelCacheEnabled(false);
+            }
+
             $config->setProxyDir($options['proxyPath']);
             $config->setProxyNamespace($options['proxyNamespace']);
             $config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS);

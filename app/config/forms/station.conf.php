@@ -248,6 +248,20 @@ return [
                     ]
                 ],
 
+                'charset' => [
+                    'radio',
+                    [
+                        'label' => _('Character Set Encoding'),
+                        'description' => _('For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from ShoutCast 1 DJs or using other legacy software.'),
+                        'belongsTo' => 'backend_config',
+                        'default' => 'UTF-8',
+                        'options' => [
+                            'UTF-8' => 'UTF-8',
+                            'ISO-8859-1' => 'ISO-8859-1',
+                        ],
+                    ],
+                ],
+
                 'request_delay' => [
                     'text',
                     [

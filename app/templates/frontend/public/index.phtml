@@ -103,9 +103,10 @@ $assets
                 <table class="data-table table table-striped" id="requests-table">
                     <thead>
                     <tr>
-                        <th data-column-id="song_id" data-identifier="true" data-visible="false">ID</th>
+                        <th data-column-id="song_id" data-identifier="true" data-visible="false" data-visible-in-selection="false">ID</th>
                         <th data-column-id="song_title"><?=_('Title') ?></th>
                         <th data-column-id="song_artist"><?=_('Artist') ?></th>
+                        <th data-column-id="song_album" data-visible="false"><?=_('Album') ?></th>
                         <th data-column-id="commands" data-formatter="commands" data-sortable="false"><?=_('Actions') ?></th>
                     </tr>
                     </thead>
@@ -227,7 +228,6 @@ request_dialog.on('show.bs.modal', function (event) {
             ajax: true,
             rowSelect: false,
             caseSensitive: false,
-            columnSelection: false,
             css: {
                 icon: 'zmdi icon',
                 iconColumns: 'zmdi-view-module',

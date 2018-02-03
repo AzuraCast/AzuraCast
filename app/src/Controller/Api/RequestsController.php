@@ -76,18 +76,18 @@ class RequestsController
             /** @var Entity\StationMedia $media_row */
             $song = $media_row->api($this->url);
 
-            $request = new Entity\Api\StationRequest;
-            $request->song = $song;
-            $request->request_id = (int)$media_row->getId();
-            $request->request_url = (string)$this->url->named('api:requests:submit', [
+            $row = new Entity\Api\StationRequest;
+            $row->song = $song;
+            $row->request_id = (int)$media_row->getId();
+            $row->request_url = (string)$this->url->named('api:requests:submit', [
                 'station' => $station_id,
                 'media_id' => $media_row->getUniqueId()
             ]);
-            $result[] = $request;
+            $result[] = $row;
         }
 
         // Handle Bootgrid-style iteration through result
-        if (!empty($_REQUEST['current'])) {
+        if ($request->hasParam('current')) {
             $result = json_decode(json_encode($result), true);
 
             // Flatten the results array for bootgrid.
@@ -96,12 +96,13 @@ class RequestsController
                     $row['song_' . $song_key] = $song_val;
                 }
             }
+            unset($row);
 
             // Example from bootgrid docs:
             // current=1&rowCount=10&sort[sender]=asc&searchPhrase=&id=b0df282a-0d67-40e5-8558-c9e93b7befed
 
             // Apply sorting, limiting and searching.
-            $search_phrase = trim($_REQUEST['searchPhrase']);
+            $search_phrase = trim($request->getParam('searchPhrase'));
 
             if (!empty($search_phrase)) {
                 $result = array_filter($result, function ($row) use ($search_phrase) {
@@ -117,9 +118,9 @@ class RequestsController
                 });
             }
 
-            if (!empty($_REQUEST['sort'])) {
+            if ($request->hasParam('sort')) {
                 $sort_by = [];
-                foreach ($_REQUEST['sort'] as $sort_key => $sort_direction) {
+                foreach ($request->getParam('sort') as $sort_key => $sort_direction) {
                     $sort_dir = (strtolower($sort_direction) === 'desc') ? \SORT_DESC : \SORT_ASC;
                     $sort_by[] = $sort_key;
                     $sort_by[] = $sort_dir;
@@ -132,8 +133,8 @@ class RequestsController
 
             $num_results = count($result);
 
-            $page = @$_REQUEST['current'] ?: 1;
-            $row_count = @$_REQUEST['rowCount'] ?: 15;
+            $page = $request->getParam('current', 1);
+            $row_count = $request->getParam('rowCount', 15);
 
             $offset_start = ($page - 1) * $row_count;
             $return_result = array_slice($result, $offset_start, $row_count);

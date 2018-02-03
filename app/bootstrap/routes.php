@@ -132,8 +132,7 @@ return function(\Slim\App $app) {
 
             // This would not normally be POST-able, but Bootgrid requires it
             $this->map(['GET', 'POST'], '/requests', Controller\Api\RequestsController::class.':listAction')
-                ->setName('api:requests:list')
-                ->add([Middleware\RateLimit::class, 'api', 5, 2]);
+                ->setName('api:requests:list');
 
             $this->map(['GET', 'POST'], '/request/{media_id}', Controller\Api\RequestsController::class.':submitAction')
                 ->setName('api:requests:submit')

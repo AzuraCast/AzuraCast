@@ -34,7 +34,8 @@ module.exports = function(grunt) {
             },
             my_target: {
                 files: {
-                    'js/app.min.js': 'js/app.js'
+                    'js/app.min.js': 'js/app.js',
+                    'js/bootgrid/jquery.bootgrid.updated.min.js': 'js/bootgrid/jquery.bootgrid.updated.js'
                 }
             }
         },

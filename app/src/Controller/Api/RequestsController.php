@@ -106,7 +106,7 @@ class RequestsController
 
             if (!empty($search_phrase)) {
                 $result = array_filter($result, function ($row) use ($search_phrase) {
-                    $search_fields = ['song_title', 'song_artist', ['song_album']];
+                    $search_fields = ['song_title', 'song_artist', 'song_album'];
 
                     foreach ($search_fields as $field_name) {
                         if (stripos($row[$field_name], $search_phrase) !== false) {

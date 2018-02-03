@@ -217,6 +217,7 @@ class Station
     {
         $this->automation_timestamp = 0;
         $this->enable_streamers = false;
+        $this->is_streamer_live = false;
         $this->enable_requests = false;
 
         $this->request_delay = 5;

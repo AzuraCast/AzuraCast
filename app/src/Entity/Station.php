@@ -137,6 +137,12 @@ class Station
     protected $enable_streamers;
 
     /**
+     * @Column(name="is_streamer_live", type="boolean", nullable=false)
+     * @var bool
+     */
+    protected $is_streamer_live;
+
+    /**
      * @Column(name="enable_public_page", type="boolean", nullable=false)
      * @var bool
      */
@@ -172,6 +178,21 @@ class Station
      * @var Collection
      */
     protected $streamers;
+
+    /**
+     * @Column(name="current_streamer_id", type="integer", nullable=true)
+     * @var int
+     */
+    protected $current_streamer_id;
+
+    /**
+     * @ManyToOne(targetEntity="StationStreamer")
+     * @JoinColumns({
+     *   @JoinColumn(name="current_streamer_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     * @var StationStreamer|null
+     */
+    protected $current_streamer;
 
     /**
      * @OneToMany(targetEntity="RolePermission", mappedBy="station")
@@ -590,6 +611,22 @@ class Station
     /**
      * @return bool
      */
+    public function getIsStreamerLive(): bool
+    {
+        return $this->is_streamer_live;
+    }
+
+    /**
+     * @param bool $is_streamer_live
+     */
+    public function setIsStreamerLive(bool $is_streamer_live): void
+    {
+        $this->is_streamer_live = $is_streamer_live;
+    }
+
+    /**
+     * @return bool
+     */
     public function getEnablePublicPage(): bool
     {
         return (bool)$this->enable_public_page;
@@ -657,6 +694,22 @@ class Station
     public function getStreamers(): Collection
     {
         return $this->streamers;
+    }
+
+    /**
+     * @return StationStreamer|null
+     */
+    public function getCurrentStreamer(): ?StationStreamer
+    {
+        return $this->current_streamer;
+    }
+
+    /**
+     * @param StationStreamer|null $current_streamer
+     */
+    public function setCurrentStreamer(?StationStreamer $current_streamer = null): void
+    {
+        $this->current_streamer = $current_streamer;
     }
 
     /**

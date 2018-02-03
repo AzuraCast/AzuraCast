@@ -34,7 +34,10 @@
                             </td>
                             <td><code><?=$this->e($row->getStreamerUsername()) ?></code></td>
                             <td><code><?=$this->e($row->getStreamerPassword()) ?></code></td>
-                            <td><?=nl2br($this->e($row->getComments())) ?></td>
+                            <td>
+                                <?=sprintf(_('Displays as "%s"'), $row->getDisplayName()) ?><br>
+                                <?=nl2br($this->e($row->getComments())) ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>

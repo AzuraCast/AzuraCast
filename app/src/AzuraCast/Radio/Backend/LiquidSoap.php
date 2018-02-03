@@ -21,6 +21,7 @@ class LiquidSoap extends BackendAbstract
      *
      * @return bool
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMException
      */
     public function write()
     {
@@ -69,13 +70,15 @@ class LiquidSoap extends BackendAbstract
             'live_enabled = ref false',
             '',
             'def live_connected(header) =',
-            '    log("DJ Source connected!")',
-            '    live_enabled := true',
+            '  log("DJ Source connected! #{header}")',
+            '  live_enabled := true',
+            '  ret = get_process_lines("'.$this->_getApiUrlCommand('/api/internal/'.$this->station->getId().'/djon').'")',
             'end',
             '',
             'def live_disconnected() =',
-            '   log("DJ Source disconnected!")',
-            '   live_enabled := false',
+            '  log("DJ Source disconnected!")',
+            '  live_enabled := false',
+            '  ret = get_process_lines("'.$this->_getApiUrlCommand('/api/internal/'.$this->station->getId().'/djoff').'")',
             'end',
             '',
         ];
@@ -97,7 +100,7 @@ class LiquidSoap extends BackendAbstract
             if (!$playlist_raw->getIsEnabled()) {
                 continue;
             }
-            if ($playlist_raw->getType() == 'default') {
+            if ($playlist_raw->getType() === 'default') {
                 $has_default_playlist = true;
             }
 
@@ -135,7 +138,7 @@ class LiquidSoap extends BackendAbstract
 
             $ls_config[] = $playlist_var_name . ' = playlist(reload_mode="watch","' . $playlist_file_path . '")';
 
-            if ($playlist->getType() == 'default') {
+            if ($playlist->getType() === 'default') {
                 $playlist_weights[] = $playlist->getWeight();
                 $playlist_vars[] = $playlist_var_name;
             }
@@ -431,9 +434,9 @@ class LiquidSoap extends BackendAbstract
         if ($binary = self::getBinary()) {
             $config_path = $this->station->getRadioConfigDir() . '/liquidsoap.liq';
             return $binary . ' ' . $config_path;
-        } else {
-            return '/bin/false';
         }
+
+        return '/bin/false';
     }
 
     /**

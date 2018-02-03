@@ -111,6 +111,12 @@ return function(\Slim\App $app) {
                 $this->map(['GET', 'POST'], '/notify', Controller\Api\InternalController::class.':notifyAction')
                     ->setName('api:internal:notify');
 
+                $this->map(['GET', 'POST'], '/djon', Controller\Api\InternalController::class.':djonAction')
+                    ->setName('api:internal:djon');
+
+                $this->map(['GET', 'POST'], '/djoff', Controller\Api\InternalController::class.':djoffAction')
+                    ->setName('api:internal:djoff');
+
             })->add(Middleware\GetStation::class);
 
         });

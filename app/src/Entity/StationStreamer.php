@@ -46,6 +46,12 @@ class StationStreamer
     protected $streamer_password;
 
     /**
+     * @Column(name="display_name", type="string", length=255, nullable=true)
+     * @var string|null
+     */
+    protected $display_name;
+
+    /**
      * @Column(name="comments", type="text", nullable=true)
      * @var string|null
      */
@@ -110,6 +116,24 @@ class StationStreamer
     public function setStreamerPassword(string $streamer_password)
     {
         $this->streamer_password = $streamer_password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayName(): string
+    {
+        return (!empty($this->display_name))
+            ? $this->display_name
+            :$this->streamer_username;
+    }
+
+    /**
+     * @param null|string $display_name
+     */
+    public function setDisplayName(?string $display_name): void
+    {
+        $this->display_name = $display_name;
     }
 
     /**

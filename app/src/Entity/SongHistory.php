@@ -473,10 +473,6 @@ class SongHistory
             ? $this->media->api($url)
             : $this->song->api();
 
-        if ($now_playing) {
-            $response->is_live = (bool)($this->timestamp_cued === 0);
-        }
-
         return $response;
     }
 }

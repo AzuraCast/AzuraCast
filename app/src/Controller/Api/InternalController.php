@@ -57,7 +57,14 @@ class InternalController
         /** @var Entity\Repository\StationStreamerRepository $streamer_repo */
         $streamer_repo = $this->em->getRepository(Entity\StationStreamer::class);
 
-        if ($streamer_repo->authenticate($station, $user, $pass)) {
+        $streamer = $streamer_repo->authenticate($station, $user, $pass);
+
+        if ($streamer instanceof Entity\StationStreamer) {
+            // Successful authentication: update current streamer on station.
+            $station->setCurrentStreamer($streamer);
+            $this->em->persist($station);
+            $this->em->flush();
+
             return $response->write('true');
         }
 
@@ -105,6 +112,34 @@ class InternalController
         }
 
         $this->sync_nowplaying->processStation($station, $payload);
+
+        return $response->write('received');
+    }
+
+    public function djonAction(Request $request, Response $response): Response
+    {
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+        $this->_checkStationAuth($station, $request->getParam('api_auth'));
+
+        $station->setIsStreamerLive(true);
+
+        $this->em->persist($station);
+        $this->em->flush();
+
+        return $response->write('received');
+    }
+
+    public function djoffAction(Request $request, Response $response): Response
+    {
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+        $this->_checkStationAuth($station, $request->getParam('api_auth'));
+
+        $station->setIsStreamerLive(false);
+
+        $this->em->persist($station);
+        $this->em->flush();
 
         return $response->write('received');
     }

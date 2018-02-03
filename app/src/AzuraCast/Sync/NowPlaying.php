@@ -170,12 +170,16 @@ class NowPlaying extends SyncAbstract
             } else {
                 $np->playing_next = null;
             }
+
+            $np->live = new Entity\Api\NowPlayingLive(false);
         } else {
             // Pull from current NP data if song details haven't changed.
             $current_song_hash = Entity\Song::getSongHash($np_raw['current_song']);
 
-            if (strcmp($current_song_hash, $np_old->now_playing->song->id) == 0) {
+            if (strcmp($current_song_hash, $np_old->now_playing->song->id) === 0) {
+                /** @var Entity\Song $song_obj */
                 $song_obj = $this->song_repo->find($current_song_hash);
+
                 $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
 
                 $np->song_history = $np_old->song_history;
@@ -198,6 +202,18 @@ class NowPlaying extends SyncAbstract
             // Update detailed listener statistics, if they exist for the station
             if (isset($np_raw['listeners']['clients'])) {
                 $this->listener_repo->update($station, $np_raw['listeners']['clients']);
+            }
+
+            // Detect and report live DJ status
+            if ($station->getIsStreamerLive()) {
+                $current_streamer = $station->getCurrentStreamer();
+                $streamer_name = ($current_streamer instanceof Entity\StationStreamer)
+                    ? $current_streamer->getDisplayName()
+                    : 'Live DJ';
+
+                $np->live = new Entity\Api\NowPlayingLive(true, $streamer_name);
+            } else {
+                $np->live = new Entity\Api\NowPlayingLive(false, '');
             }
 
             // Register a new item in song history.

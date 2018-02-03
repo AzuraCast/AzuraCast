@@ -26,6 +26,14 @@ class NowPlaying
     public $listeners;
 
     /**
+     * Live broadcast details
+     *
+     * @SWG\Property
+     * @var NowPlayingLive
+     */
+    public $live;
+
+    /**
      * Current Song
      *
      * @SWG\Property

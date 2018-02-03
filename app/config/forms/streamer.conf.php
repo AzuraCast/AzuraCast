@@ -21,6 +21,14 @@ return [
             ]
         ],
 
+        'display_name' => [
+            'text',
+            [
+                'label' => _('Streamer Display Name'),
+                'description' => _('This is the informal display name that will be shown in API responses if the streamer/DJ is live.'),
+            ]
+        ],
+
         'comments' => [
             'textarea',
             [

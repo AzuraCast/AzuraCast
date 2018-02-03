@@ -11,7 +11,7 @@ class StationStreamerRepository extends BaseRepository
      * @param Entity\Station $station
      * @param $username
      * @param $password
-     * @return bool
+     * @return Entity\StationStreamer|bool
      */
     public function authenticate(Entity\Station $station, $username, $password)
     {
@@ -30,6 +30,8 @@ class StationStreamerRepository extends BaseRepository
             return false;
         }
 
-        return (strcmp($streamer->getStreamerPassword(), $password) === 0);
+        return (strcmp($streamer->getStreamerPassword(), $password) === 0)
+            ? $streamer
+            : false;
     }
 }

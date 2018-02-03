@@ -128,7 +128,24 @@ class IndexController
          * Song "Deltas" (Changes in Listener Count)
          */
 
-        $songs_played_raw = $this->_getEligibleHistory($station->getId());
+        $threshold = strtotime('-2 weeks');
+
+        // Get all songs played in timeline.
+        $songs_played_raw = $this->em->createQuery('SELECT sh, s
+                FROM Entity\SongHistory sh
+                LEFT JOIN sh.song s
+                WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp AND sh.listeners_start IS NOT NULL
+                ORDER BY sh.timestamp_start ASC')
+            ->setParameter('station_id', $station->getId())
+            ->setParameter('timestamp', $threshold)
+            ->getArrayResult();
+
+        $ignored_songs = $this->_getIgnoredSongs();
+        $songs_played_raw = array_filter($songs_played_raw, function ($value) use ($ignored_songs) {
+            return !(isset($ignored_songs[$value['song_id']]));
+        });
+
+        $songs_played_raw = array_values($songs_played_raw);
         $songs = [];
 
         foreach ($songs_played_raw as $i => $song_row) {

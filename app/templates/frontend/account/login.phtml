@@ -4,7 +4,11 @@
 <div class="lc-block toggled" id="l-login">
     <div class="lcb-form">
         <h3 class="text-left">
-            <?=sprintf(_('Welcome to %s!'), $app_settings['name']) ?>
+            <?php if ($customization->hideProductName()): ?>
+                <?=_('Welcome!') ?>
+            <?php else: ?>
+                <?=sprintf(_('Welcome to %s!'), $app_settings['name']) ?>
+            <?php endif; ?>
             <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
         </h3>
         <p class="text-left"><?=_('Please log in to continue.') ?> <?=sprintf(_('<a href="%s" target="_blank">Forgot your password?</a>'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#reset-an-account-password') ?></p>

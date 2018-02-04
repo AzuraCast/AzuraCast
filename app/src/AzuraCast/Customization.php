@@ -192,4 +192,14 @@ class Customization
     {
         return (string)$this->settings_repo->getSetting('custom_css_internal', '');
     }
+
+    /**
+     * Return whether to show or hide the AzuraCast name from public-facing pages.
+     *
+     * @return bool
+     */
+    public function hideProductName(): bool
+    {
+        return (bool)$this->settings_repo->getSetting('hide_product_name', false);
+    }
 }

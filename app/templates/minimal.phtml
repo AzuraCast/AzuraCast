@@ -18,10 +18,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <?php
-if ($title)
-    $page_title = $title.' - '.$app_settings['name'];
-else
-    $page_title = $app_settings['name'];
+if ($title) {
+    $page_title = ($customization->hideProductName()) ? $title : $title.' - '.$app_settings['name'];
+} else {
+    $page_title = ($customization->hideProductName()) ? '' : $app_settings['name'];
+}
 
 if (!APP_IN_PRODUCTION)
     $page_title = '('.ucfirst(APP_APPLICATION_ENV).') '.$page_title;

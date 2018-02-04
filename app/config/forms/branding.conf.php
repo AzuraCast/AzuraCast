@@ -17,6 +17,19 @@ return [
             ]
         ],
 
+        'hide_product_name' => [
+            'radio',
+            [
+                'label' => _('Hide AzuraCast Branding on Public Pages'),
+                'description' => _('If selected, this will remove the AzuraCast branding from public-facing pages.'),
+                'default' => 0,
+                'options' => [
+                    0 => _('No'),
+                    1 => _('Yes'),
+                ],
+            ]
+        ],
+
         'custom_css_public' => [
             'textarea',
             [

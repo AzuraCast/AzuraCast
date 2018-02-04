@@ -467,7 +467,14 @@ class SongHistory
         $response->sh_id = (int)$this->id;
         $response->played_at = (int)$this->timestamp_start;
         $response->duration = (int)$this->duration;
-        $response->is_request = (bool)(!empty($this->request_id));
+        $response->is_request = $this->request_id !== null;
+
+        if ($this->playlist_id !== null) {
+            $playlist = $this->getPlaylist();
+            $response->playlist = $playlist->getName();
+        } else {
+            $response->playlist = '';
+        }
 
         $response->song = ($this->media)
             ? $this->media->api($url)

@@ -34,6 +34,14 @@ class SongHistory
     public $duration;
 
     /**
+     * Indicates the playlist that the song was played from, if available, or empty string if not.
+     *
+     * @SWG\Property(example="Top 100")
+     * @var string
+     */
+    public $playlist;
+
+    /**
      * Indicates whether the song is a listener request.
      *
      * @SWG\Property

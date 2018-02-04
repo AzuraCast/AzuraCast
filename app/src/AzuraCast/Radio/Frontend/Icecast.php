@@ -6,7 +6,7 @@ use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use Entity;
 
-class IceCast extends FrontendAbstract
+class Icecast extends FrontendAbstract
 {
     protected $force_proxy_on_secure_pages = true;
 

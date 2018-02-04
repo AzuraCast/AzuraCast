@@ -32,9 +32,9 @@ With AzuraCast, you can:
 
 ### Supported Web Radio Software
 
-AzuraCast uses [LiquidSoap](http://liquidsoap.fm/) as an "AutoDJ" to shuffle songs and playlists and provide an always-online radio stream. You can connect to LiquidSoap and broadcast your own live events as a DJ as well.
+AzuraCast uses [Liquidsoap](http://liquidsoap.fm/) as an "AutoDJ" to shuffle songs and playlists and provide an always-online radio stream. You can connect to Liquidsoap and broadcast your own live events as a DJ as well.
 
-To broadcast your radio station to the public, AzuraCast supports both of the gold standards in web radio, [IceCast](http://icecast.org/) (v2.4) and [ShoutCast](http://wiki.shoutcast.com/wiki/SHOUTcast_Broadcaster) (v2). You can switch which of these your station uses anytime you want.
+To broadcast your radio station to the public, AzuraCast supports both of the gold standards in web radio, [Icecast](http://icecast.org/) (v2.4) and [SHOUTcast](http://wiki.shoutcast.com/wiki/SHOUTcast_Broadcaster) (v2). You can switch which of these your station uses anytime you want.
 
 You can also use AzuraCast as a tool for relaying or collecting listener statistics and other data about stations that AzuraCast doesn't manage.
 
@@ -63,9 +63,9 @@ Whether you're using the traditional installer or Docker containers, AzuraCast d
 * **[PHP 7.2](https://secure.php.net/)** powering the web application
 * **[InfluxDB](https://www.influxdata.com/)** for time-series based statistics
 * **[Redis](https://redis.io/)** for sessions, database and general caching
-* **[LiquidSoap](http://savonet.sourceforge.net/)** as the always-playing "AutoDJ"
-* **[IceCast 2](http://icecast.org/)** as a radio broadcasting frontend (Icecast-KH installed on supported platforms)
-* **[ShoutCast 2 DNAS](http://wiki.shoutcast.com/wiki/SHOUTcast_DNAS_Server_2)** as an alternative radio frontend (x86/x64 only)
+* **[Liquidsoap](http://savonet.sourceforge.net/)** as the always-playing "AutoDJ"
+* **[Icecast 2.4](http://icecast.org/)** as a radio broadcasting frontend (Icecast-KH installed on supported platforms)
+* **[SHOUTcast 2 DNAS](http://wiki.shoutcast.com/wiki/SHOUTcast_DNAS_Server_2)** as an alternative radio frontend (x86/x64 only)
 
 All of these components are automatically downloaded and installed using either of the installation methods below.
 

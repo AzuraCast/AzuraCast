@@ -163,9 +163,9 @@ return [
                         'label' => _('Remote Station Type'),
                         'belongsTo' => 'frontend_config',
                         'options' => [
-                            'shoutcast1' => 'ShoutCast v1',
-                            'shoutcast2' => 'ShoutCast v2',
-                            'icecast' => 'IceCast v2.4+',
+                            'shoutcast1' => 'SHOUTcast v1',
+                            'shoutcast2' => 'SHOUTcast v2',
+                            'icecast' => 'Icecast v2.4+',
                         ],
                     ]
                 ],
@@ -223,7 +223,7 @@ return [
         ],
 
         'backend_liquidsoap' => [
-            'legend' => _('Configure LiquidSoap'),
+            'legend' => _('Configure Liquidsoap'),
             'class' => 'backend_fieldset',
 
             'elements' => [
@@ -252,7 +252,7 @@ return [
                     'radio',
                     [
                         'label' => _('Character Set Encoding'),
-                        'description' => _('For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from ShoutCast 1 DJs or using other legacy software.'),
+                        'description' => _('For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software.'),
                         'belongsTo' => 'backend_config',
                         'default' => 'UTF-8',
                         'options' => [
@@ -317,7 +317,7 @@ return [
                         'label' => _('Advanced: Custom Configuration'),
                         'belongsTo' => 'backend_config',
                         'class' => 'text-preformatted',
-                        'description' => _('This code will be inserted into your station\'s LiquidSoap configuration, below the playlist configuration and just before the IceCast output. Only use valid LiquidSoap code for this section!'),
+                        'description' => _('This code will be inserted into your station\'s Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!'),
                     ]
                 ],
 

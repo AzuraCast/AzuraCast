@@ -115,7 +115,7 @@ return [
                             'once_per_x_songs' => '<b>' . _('Once per x Songs Playlist') . ':</b> ' . _('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
                             'once_per_x_minutes' => '<b>' . _('Once Per x Minutes Playlist') . ':</b> ' . _('Play exactly once every <i>x</i> minutes. Useful for station ID/jingles.'),
                             'once_per_day' => '<b>' . _('Daily Playlist') . '</b>: ' . _('Play once per day at the specified time. Useful for timely reminders.'),
-                            'custom' => '<b>' . _('Custom Playlist') .'</b>: ' . _('Manually define how this playlist is used in LiquidSoap configuration. For advanced users only!'),
+                            'custom' => '<b>' . _('Custom Playlist') .'</b>: ' . _('Manually define how this playlist is used in Liquidsoap configuration. For advanced users only!'),
                         ],
                         'default' => 'default',
                         'required' => true,

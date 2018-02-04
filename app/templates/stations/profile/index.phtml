@@ -186,10 +186,10 @@ $assets
         <section class="card" role="region">
             <div class="card-header <?php if ($frontend_is_running): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?> ch-alt">
                 <h2>
-                    <?php if ($frontend_type == 'icecast'): ?>
-                        <?=_('IceCast (Broadcasting Service)') ?>
-                    <?php elseif ($frontend_type == 'shoutcast2'): ?>
-                        <?=_('ShoutCast (Broadcasting Service)') ?>
+                    <?php if ($frontend_type === 'icecast'): ?>
+                        <?=_('Icecast (Broadcasting Service)') ?>
+                    <?php elseif ($frontend_type === 'shoutcast2'): ?>
+                        <?=_('SHOUTcast DNAS 2 (Broadcasting Service)') ?>
                     <?php endif; ?>
                     <br><small><?php if ($frontend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>
@@ -274,7 +274,7 @@ $assets
             <div class="card-header <?php if ($backend_is_running): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?> ch-alt">
                 <h2>
                 <?php if ($backend_type == 'liquidsoap'): ?>
-                    <?=_('LiquidSoap (AutoDJ Service)') ?><br>
+                    <?=_('Liquidsoap (AutoDJ Service)') ?><br>
                 <?php endif; ?>
                     <small><?php if ($backend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>

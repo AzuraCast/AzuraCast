@@ -4,7 +4,7 @@ namespace AzuraCast\Radio\Backend;
 use Doctrine\ORM\EntityManager;
 use Entity;
 
-class LiquidSoap extends BackendAbstract
+class Liquidsoap extends BackendAbstract
 {
     /**
      * @inheritdoc
@@ -17,7 +17,7 @@ class LiquidSoap extends BackendAbstract
     /**
      * Write configuration from Station object to the external service.
      *
-     * Special thanks to the team of PonyvilleFM for assisting with LiquidSoap configuration and debugging.
+     * Special thanks to the team of PonyvilleFM for assisting with Liquidsoap configuration and debugging.
      *
      * @return bool
      * @throws \Doctrine\ORM\OptimisticLockException

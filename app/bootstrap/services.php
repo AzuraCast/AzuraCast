@@ -349,24 +349,24 @@ return function (\Slim\Container $di, $settings) {
         );
     };
 
-    $di[Azuracast\Radio\Backend\LiquidSoap::class] = function($di) {
-        return new \AzuraCast\Radio\Backend\LiquidSoap($di);
+    $di[Azuracast\Radio\Backend\Liquidsoap::class] = function($di) {
+        return new \AzuraCast\Radio\Backend\Liquidsoap($di);
     };
 
     $di[AzuraCast\Radio\Backend\None::class] = function($di) {
         return new \AzuraCast\Radio\Backend\None($di);
     };
 
-    $di[\AzuraCast\Radio\Frontend\IceCast::class] = function($di) {
-        return new \AzuraCast\Radio\Frontend\IceCast($di);
+    $di[\AzuraCast\Radio\Frontend\Icecast::class] = function($di) {
+        return new \AzuraCast\Radio\Frontend\Icecast($di);
     };
 
     $di[\AzuraCast\Radio\Frontend\Remote::class] = function($di) {
         return new \AzuraCast\Radio\Frontend\Remote($di);
     };
 
-    $di[\AzuraCast\Radio\Frontend\ShoutCast2::class] = function($di) {
-        return new \AzuraCast\Radio\Frontend\ShoutCast2($di);
+    $di[\AzuraCast\Radio\Frontend\SHOUTcast::class] = function($di) {
+        return new \AzuraCast\Radio\Frontend\SHOUTcast($di);
     };
 
     $di[\AzuraCast\Sync::class] = function ($di) {

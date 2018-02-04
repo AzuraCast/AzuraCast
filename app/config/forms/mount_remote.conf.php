@@ -14,9 +14,9 @@ return [
                         'label' => _('Remote Station Type'),
                         'required' => true,
                         'options' => [
-                            'shoutcast1' => 'ShoutCast v1',
-                            'shoutcast2' => 'ShoutCast v2',
-                            'icecast' => 'IceCast v2.4+',
+                            'shoutcast1' => 'SHOUTcast v1',
+                            'shoutcast2' => 'SHOUTcast v2',
+                            'icecast' => 'Icecast v2.4+',
                         ],
                     ]
                 ],

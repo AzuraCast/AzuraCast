@@ -6,7 +6,7 @@ use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use Entity;
 
-class ShoutCast2 extends FrontendAbstract
+class SHOUTcast extends FrontendAbstract
 {
     protected $force_proxy_on_secure_pages = true;
 
@@ -180,9 +180,9 @@ class ShoutCast2 extends FrontendAbstract
             $sc_config = $config_path . '/sc_serv.conf';
 
             return $binary . ' ' . $sc_config;
-        } else {
-            return '/bin/false';
         }
+
+        return '/bin/false';
     }
 
     public function getAdminUrl()
@@ -197,9 +197,7 @@ class ShoutCast2 extends FrontendAbstract
     protected function _getConfig()
     {
         $config_dir = $this->station->getRadioConfigDir();
-        $config = @parse_ini_file($config_dir . '/sc_serv.conf', false, INI_SCANNER_RAW);
-
-        return $config;
+        return @parse_ini_file($config_dir . '/sc_serv.conf', false, INI_SCANNER_RAW);
     }
 
     protected function _loadFromConfig($config)
@@ -233,12 +231,12 @@ class ShoutCast2 extends FrontendAbstract
 
     public static function getBinary()
     {
-        $new_path = realpath(APP_INCLUDE_ROOT . '/..') . '/servers/shoutcast2/sc_serv';
+        $new_path = dirname(APP_INCLUDE_ROOT) . '/servers/shoutcast2/sc_serv';
 
         if (APP_INSIDE_DOCKER || file_exists($new_path)) {
             return $new_path;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

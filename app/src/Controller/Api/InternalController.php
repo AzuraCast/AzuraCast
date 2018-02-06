@@ -34,9 +34,10 @@ class InternalController
 
     public function authAction(Request $request, Response $response): Response
     {
+        $this->_checkStationAuth($request);
+
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
-        $this->_checkStationAuth($station, $request->getParam('api_auth'));
 
         $user = $request->getParam('dj_user');
         $pass = $request->getParam('dj_password');
@@ -73,9 +74,10 @@ class InternalController
 
     public function nextsongAction(Request $request, Response $response): Response
     {
+        $this->_checkStationAuth($request);
+
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
-        $this->_checkStationAuth($station, $request->getParam('api_auth'));
 
         if ($station->getBackendType() !== 'liquidsoap') {
             throw new \App\Exception('Not a LiquidSoap station.');
@@ -100,9 +102,10 @@ class InternalController
 
     public function notifyAction(Request $request, Response $response): Response
     {
+        $this->_checkStationAuth($request);
+
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
-        $this->_checkStationAuth($station, $request->getParam('api_auth'));
 
         $payload = $request->getBody()->getContents();
 
@@ -118,9 +121,10 @@ class InternalController
 
     public function djonAction(Request $request, Response $response): Response
     {
+        $this->_checkStationAuth($request);
+
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
-        $this->_checkStationAuth($station, $request->getParam('api_auth'));
 
         $station->setIsStreamerLive(true);
 
@@ -132,9 +136,10 @@ class InternalController
 
     public function djoffAction(Request $request, Response $response): Response
     {
+        $this->_checkStationAuth($request);
+
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
-        $this->_checkStationAuth($station, $request->getParam('api_auth'));
 
         $station->setIsStreamerLive(false);
 
@@ -145,17 +150,23 @@ class InternalController
     }
 
     /**
-     * @param Entity\Station $station
-     * @param $auth_key
+     * @param Request $request
      * @return bool
      * @throws \App\Exception\PermissionDenied
      */
-    protected function _checkStationAuth(Entity\Station $station, $auth_key)
+    protected function _checkStationAuth(Request $request)
     {
-        if ($this->acl->isAllowed('view administration', $station->getId())) {
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
+        /** @var Entity\User $user */
+        $user = $request->getAttribute('user');
+
+        if ($this->acl->userAllowed($user, 'view administration', $station->getId())) {
             return true;
         }
 
+        $auth_key = $request->geTParam('api_auth');
         if (!$station->validateAdapterApiKey($auth_key)) {
             throw new \App\Exception\PermissionDenied();
         }

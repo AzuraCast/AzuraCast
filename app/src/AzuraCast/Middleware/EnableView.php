@@ -31,6 +31,10 @@ class EnableView
      */
     public function __invoke(Request $request, Response $response, $next): Response
     {
+        $this->view->addData([
+            'user' => $request->getAttribute('user'),
+        ]);
+
         $request = $request->withAttribute('view', $this->view);
 
         $response = $next($request, $response);

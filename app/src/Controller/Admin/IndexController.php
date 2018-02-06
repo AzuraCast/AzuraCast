@@ -5,6 +5,7 @@ use App\Acl;
 use App\Http\Request;
 use App\Http\Response;
 use AzuraCast\Sync;
+use Entity;
 
 class IndexController
 {
@@ -33,11 +34,14 @@ class IndexController
         /** @var \App\Mvc\View $view */
         $view = $request->getAttribute('view');
 
+        /** @var Entity\User $user */
+        $user = $request->getAttribute('user');
+
         // Remove the sidebar on the homepage.
         $view->sidebar = null;
 
         // Synchronization statuses
-        if ($this->acl->isAllowed('administer all')) {
+        if ($this->acl->userAllowed($user, 'administer all')) {
             $view->sync_times = $this->sync->getSyncTimes();
         }
 
@@ -46,8 +50,6 @@ class IndexController
 
     public function syncAction(Request $request, Response $response, $type): Response
     {
-        $this->acl->checkPermission('administer all');
-
         ob_start();
 
         \App\Debug::setEchoMode(true);

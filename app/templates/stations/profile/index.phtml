@@ -69,7 +69,7 @@ $assets
 
                 </div>
 
-            <?php if ($backend_type == 'liquidsoap' && $acl->isAllowed('manage station broadcasting', $station->getId())): ?>
+            <?php if ($backend_type == 'liquidsoap' && $acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <div class="buttons pull-right p-t-15">
                     <a id="btn_skip_song" class="btn btn-sm btn-primary" role="button" href="<?=$url->named('stations:profile:backend', ['station' => $station->getId(), 'do' => 'skip']) ?>"><i class="zmdi zmdi-skip-next"></i> <?=_('Skip Song') ?></a>
                 </div>
@@ -82,7 +82,7 @@ $assets
             <div class="card-header ch-alt">
                 <h2><?=_('Station Profile') ?></h2>
 
-                <?php if ($acl->isAllowed('manage station profile', $station->getId())): ?>
+                <?php if ($acl->userAllowed($user, 'manage station profile', $station->getId())): ?>
                 <a class="btn bgm-blue btn-float" role="button" title="<?=_('Edit Profile') ?>" href="<?=$url->named('stations:profile:edit', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-edit"></i></a>
                 <?php endif; ?>
             </div>
@@ -194,7 +194,7 @@ $assets
                     <br><small><?php if ($frontend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>
 
-                <?php if ($acl->isAllowed('manage station broadcasting', $station->getId())): ?>
+                <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <ul class="actions">
                     <li class="dropdown">
                         <a href="" data-toggle="dropdown" aria-expanded="false">
@@ -279,7 +279,7 @@ $assets
                     <small><?php if ($backend_is_running): ?><?=_('Running') ?><?php else: ?><?=_('Not Running') ?><?php endif; ?></small>
                 </h2>
 
-                <?php if ($acl->isAllowed('manage station broadcasting', $station->getId())): ?>
+                <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <ul class="actions">
                     <li class="dropdown">
                         <a href="" data-toggle="dropdown" aria-expanded="false">
@@ -297,7 +297,7 @@ $assets
             <div class="card-body card-padding">
                 <p><?=sprintf(_('LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.'), $num_songs, $num_playlists) ?></p>
 
-                <?php if ($acl->isAllowed('manage station media', $station->getId())): ?>
+                <?php if ($acl->userAllowed($user, 'manage station media', $station->getId())): ?>
                     <div class="buttons">
                         <a class="btn btn-primary" href="<?=$url->named('stations:files:index', ['station' => $station->getId()]) ?>"><?=_('Music Files') ?></a>
                         <a class="btn btn-primary" href="<?=$url->named('stations:playlists:index', ['station' => $station->getId()]) ?>"><?=_('Playlists') ?></a>

@@ -69,7 +69,7 @@ class User
     protected $updated_at;
 
     /**
-     * @ManyToMany(targetEntity="Role", inversedBy="users")
+     * @ManyToMany(targetEntity="Role", inversedBy="users", fetch="EAGER")
      * @JoinTable(name="user_has_role",
      *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")},
      *      inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")}

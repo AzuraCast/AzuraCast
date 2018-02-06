@@ -53,7 +53,6 @@ class ProfileController
 
         return $view->renderToResponse($response, 'frontend/profile/index', [
             'form' => $form,
-            'user' => $user,
         ]);
     }
 

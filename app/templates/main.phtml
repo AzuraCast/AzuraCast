@@ -77,7 +77,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                     <a data-toggle="dropdown" href=""><i class="him-icon zmdi zmdi-more-vert"></i></a>
                     <ul class="dropdown-menu dm-icon pull-right">
                         <li><a href="<?=$url->named('home') ?>"><i class="zmdi zmdi-home"></i> <?=_('Dashboard') ?></a></li>
-                        <?php if ($acl->isAllowed('view administration')): ?>
+                        <?php if ($acl->userAllowed($user, 'view administration')): ?>
                             <li><a href="<?=$url->named('admin:index:index') ?>"><i class="zmdi zmdi-settings"></i> <?=_('System Administration') ?></a></li>
                         <?php endif; ?>
                         <li><a href="<?=$url->named('profile:index') ?>"><i class="zmdi zmdi-account"></i> <?=_('My Account') ?></a></li>

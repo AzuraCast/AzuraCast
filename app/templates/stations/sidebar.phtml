@@ -10,7 +10,7 @@
         </a>
     </li>
 
-<?php if ($acl->isAllowed('manage station broadcasting', $station->getId())): ?>
+<?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
     <?php if (!$station->getHasStarted()): ?>
     <li class="menu-info">
         <a href="<?=$url->named('stations:util:restart', ['station' => $station->getId()]) ?>">
@@ -35,15 +35,15 @@
 
     <li><a href="<?=$url->named('stations:profile:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-image"></i> <?=_('Profile') ?></a></li>
 
-    <?php if ($acl->isAllowed('manage station mounts', $station->getId()) && $frontend->supportsMounts()): ?>
+    <?php if ($acl->userAllowed($user, 'manage station mounts', $station->getId()) && $frontend->supportsMounts()): ?>
         <li><a href="<?=$url->named('stations:mounts:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=_('Mount Points') ?></a></li>
     <?php endif; ?>
 
-    <?php if ($acl->isAllowed('manage station streamers', $station->getId()) && $backend->supportsStreamers()): ?>
+    <?php if ($acl->userAllowed($user, 'manage station streamers', $station->getId()) && $backend->supportsStreamers()): ?>
         <li><a href="<?=$url->named('stations:streamers:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-account"></i> <?=_('Streamer/DJ Accounts') ?></a></li>
     <?php endif; ?>
 
-    <?php if ($acl->isAllowed('manage station media', $station->getId()) && $backend->supportsMedia()): ?>
+    <?php if ($acl->userAllowed($user, 'manage station media', $station->getId()) && $backend->supportsMedia()): ?>
         <li class="sub-menu">
             <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-music"></i> <?=_('Media') ?></a>
 
@@ -54,7 +54,7 @@
         </li>
     <?php endif; ?>
 
-    <?php if ($acl->isAllowed('view station reports', $station->getId())): ?>
+    <?php if ($acl->userAllowed($user, 'view station reports', $station->getId())): ?>
         <li class="sub-menu">
             <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i> <?=_('Reports') ?></a>
 
@@ -78,10 +78,10 @@
         <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-settings"></i> <?=_('Utilities') ?></a>
 
         <ul>
-            <?php if ($acl->isAllowed('manage station automation', $station->getId()) && $backend->supportsMedia()): ?>
+            <?php if ($acl->userAllowed($user, 'manage station automation', $station->getId()) && $backend->supportsMedia()): ?>
                 <li><a href="<?=$url->named('stations:automation:index', ['station' => $station->getId()]) ?>"><?=_('Automated Assignment') ?></a></li>
             <?php endif; ?>
-            <?php if ($acl->isAllowed('manage station broadcasting', $station->getId())): ?>
+            <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <li><a href="<?=$url->named('stations:util:restart', ['station' => $station->getId()]) ?>"><?=_('Restart Broadcasting') ?></a></li>
             <?php endif; ?>
         </ul>

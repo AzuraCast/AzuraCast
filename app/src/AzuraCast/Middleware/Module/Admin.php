@@ -1,8 +1,7 @@
 <?php
 namespace AzuraCast\Middleware\Module;
 
-use App\Mvc\View;
-use App\Session;
+use Entity;
 use AzuraCast\Acl\StationAcl;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -32,6 +31,9 @@ class Admin
      */
     public function __invoke(Request $request, Response $response, $next): Response
     {
+        /** @var Entity\User $user */
+        $user = $request->getAttribute('user');
+
         // Load dashboard.
         $panels = $this->dashboard_config;
 
@@ -39,7 +41,7 @@ class Admin
             foreach ($sidebar_info['items'] as $item_name => $item_params) {
                 $permission = $item_params['permission'];
                 if (!is_bool($permission)) {
-                    $permission = $this->acl->isAllowed($permission);
+                    $permission = $this->acl->userAllowed($user, $permission);
                 }
 
                 if (!$permission) {

@@ -37,7 +37,8 @@ class Api
         }
 
         // Attempt API key auth if a key exists.
-        $api_key = $request->getHeader('X-API-Key') ?? $request->getParam('key') ?? null;
+        $api_key_header = $request->getHeader('X-API-Key');
+        $api_key = $api_key_header[0] ?? $request->getParam('key') ?? null;
 
         if (!empty($api_key)) {
             $user = $this->api_repo->authenticate($api_key);

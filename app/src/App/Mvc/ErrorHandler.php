@@ -5,6 +5,7 @@ use App\Acl;
 use App\Flash;
 use App\Session;
 use App\Url;
+use Entity;
 use Exception;
 use App\Http\Request;
 use App\Http\Response;
@@ -74,7 +75,10 @@ class ErrorHandler
             ]);
         }
 
-        if ($this->acl->isAllowed('administer all') || !APP_IN_PRODUCTION) {
+        /** @var Entity\User|null $user */
+        $user = $req->getAttribute('user');
+
+        if ($this->acl->userAllowed($user, 'administer all') || !APP_IN_PRODUCTION) {
             // Register error-handler.
             $handler = new \Whoops\Handler\PrettyPageHandler;
             $handler->setPageTitle('An error occurred!');

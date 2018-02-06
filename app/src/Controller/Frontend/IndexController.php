@@ -51,9 +51,12 @@ class IndexController
 
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
+        /** @var Entity\User $user */
+        $user = $request->getAttribute('user');
+
         // Don't show stations the user can't manage.
-        $stations = array_filter($stations, function($station) {
-            return $this->acl->isAllowed('view station management', $station->getId());
+        $stations = array_filter($stations, function($station) use ($user) {
+            return $this->acl->userAllowed($user, 'view station management', $station->getId());
         });
 
         if (empty($stations)) {

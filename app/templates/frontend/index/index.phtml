@@ -42,7 +42,7 @@ $assets
                 <h2><?=_('Station Overview') ?></h2>
 
                 <ul class="actions">
-                <?php if ($acl->isAllowed('administer stations')): ?>
+                <?php if ($acl->userAllowed($user, 'administer stations')): ?>
                     <li><a class="" title="<?=_('Add') ?>" href="<?=$url->named('admin:stations:edit') ?>"><i class="zmdi zmdi-plus"></i></a></li>
                 <?php endif; ?>
                 </ul>

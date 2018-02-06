@@ -151,7 +151,13 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\AzuraCast\Acl\StationAcl::class] = function ($di) {
-        return new \AzuraCast\Acl\StationAcl($di[\Doctrine\ORM\EntityManager::class], $di[\App\Auth::class]);
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        /** @var Entity\Repository\RolePermissionRepository $permissions_repo */
+        $permissions_repo = $em->getRepository(Entity\RolePermission::class);
+
+        return new \AzuraCast\Acl\StationAcl($permissions_repo);
     };
 
     $di[\Redis::class] = $di->factory(function ($di) {

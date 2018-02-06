@@ -1,7 +1,7 @@
 <?php
 namespace AzuraCast\Middleware;
 
-use Entity\Station;
+use Entity;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -30,14 +30,17 @@ class Permissions
     public function __invoke(Request $request, Response $response, $next, $action, $use_station = false): Response
     {
         if ($use_station) {
-            /** @var Station $station */
+            /** @var Entity\Station $station */
             $station = $request->getAttribute('station');
             $station_id = $station->getId();
         } else {
             $station_id = null;
         }
 
-        if (!$this->acl->isAllowed($action, $station_id)) {
+        /** @var Entity\User $user */
+        $user = $request->getAttribute('user');
+
+        if (!$this->acl->userAllowed($user, $action, $station_id)) {
             throw new \App\Exception\PermissionDenied;
         }
 

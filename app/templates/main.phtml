@@ -81,6 +81,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                             <li><a href="<?=$url->named('admin:index:index') ?>"><i class="zmdi zmdi-settings"></i> <?=_('System Administration') ?></a></li>
                         <?php endif; ?>
                         <li><a href="<?=$url->named('profile:index') ?>"><i class="zmdi zmdi-account"></i> <?=_('My Account') ?></a></li>
+                        <li><a href="<?=$url->named('api_keys:index') ?>"><i class="zmdi zmdi-key"></i> <?=_('My API Keys') ?></a></li>
                         <li class="divider">&nbsp;</li>
                     <?php if ($auth->isMasqueraded()): ?>
                         <li><a href="<?=$url->named('account:endmasquerade') ?>"><i class="zmdi zmdi-power"></i> <?=_('End Session') ?></a></li>

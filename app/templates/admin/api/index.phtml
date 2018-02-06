@@ -7,21 +7,20 @@
 <div class="card">
     <div class="card-header ch-alt">
         <h2><?=_('API Keys') ?></h2>
-        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('admin:api:edit') ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">
             <colgroup>
                 <col width="20%">
-                <col width="35%">
-                <col width="10%">
-                <col width="35%">
+                <col width="25%">
+                <col width="30%">
+                <col width="25%">
             </colgroup>
             <thead>
             <tr>
                 <th>&nbsp;</th>
                 <th><?=_('API Key') ?></th>
-                <th><?=_('Calls') ?></th>
+                <th><?=_('Comments') ?></th>
                 <th><?=_('Owner') ?></th>
             </tr>
             </thead>
@@ -33,8 +32,8 @@
                         <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:api:delete', ['id' => $record['id']]) ?>"><?=_('Revoke') ?></a>
                     </td>
                     <td><code><?=$record['id'] ?></code></td>
-                    <td><?=$record['calls_made'] ?></td>
-                    <td><?=$this->e($record['owner']) ?></td>
+                    <td><?=$this->e($record['comment']) ?></td>
+                    <td><?=$this->e($record['user']['email']) ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

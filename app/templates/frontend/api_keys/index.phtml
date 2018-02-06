@@ -1,0 +1,46 @@
+<?php $this->layout('main', ['title' => _('API Keys'), 'manual' => true]); ?>
+
+<div class="block-header">
+    <h2><?=_('My Profile') ?></h2>
+</div>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2><?=_('My API Keys') ?></h2>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('api_keys:edit') ?>"><i class="zmdi zmdi-plus"></i></a>
+    </div>
+    <div class="card-body card-padding p-b-0">
+        <p>
+        <?=sprintf(_('API keys can be used to access some system functionality without needing to log in. All of the keys 
+            you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.'), $url->content('api/index.html')) ?>
+        </p>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="20%">
+                <col width="40%">
+                <col width="40%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th><?=_('Key Identifier') ?></th>
+                <th><?=_('Comments') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($records as $record): ?>
+                <tr class="input">
+                    <td class="center">
+                        <a class="btn btn-sm btn-primary" href="<?=$url->named('api_keys:edit', ['id' => $record->getId()]) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('api_keys:delete', ['id' => $record->getId()]) ?>"><?=_('Revoke') ?></a>
+                    </td>
+                    <td><code><?=$record->getId() ?></code></td>
+                    <td><?=$this->e($record->getComment()) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

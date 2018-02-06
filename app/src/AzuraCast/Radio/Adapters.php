@@ -1,5 +1,6 @@
 <?php
 namespace AzuraCast\Radio;
+use App\Exception\NotFound;
 use Entity\Station;
 use Slim\Container;
 
@@ -26,7 +27,7 @@ class Adapters
         $frontend_type = $station->getFrontendType();
 
         if (!isset($adapters['adapters'][$frontend_type])) {
-            throw new \NoSuchElementException('Adapter not found: ' . $frontend_type);
+            throw new NotFound('Adapter not found: ' . $frontend_type);
         }
 
         $class_name = $adapters['adapters'][$frontend_type]['class'];
@@ -53,7 +54,7 @@ class Adapters
         $backend_type = $station->getBackendType();
 
         if (!isset($adapters['adapters'][$backend_type])) {
-            throw new \NoSuchElementException('Adapter not found: ' . $backend_type);
+            throw new NotFound('Adapter not found: ' . $backend_type);
         }
 
         $class_name = $adapters['adapters'][$backend_type]['class'];

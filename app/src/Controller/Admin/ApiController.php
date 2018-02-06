@@ -36,28 +36,28 @@ class ApiController
         /** @var \App\Mvc\View $view */
         $view = $request->getAttribute('view');
 
+        $records = $this->em->createQuery('SELECT a, u FROM Entity\ApiKey a JOIN a.user u')
+            ->getArrayResult();
+
         return $view->renderToResponse($response, 'admin/api/index', [
-            'records' => $this->record_repo->fetchArray(),
+            'records' => $records,
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $id = null): Response
+    public function editAction(Request $request, Response $response, $id): Response
     {
         $form = new \App\Form($this->form_config);
 
-        if (!empty($id)) {
-            $record = $this->record_repo->find($id);
-            $form->setDefaults($this->record_repo->toArray($record, true, true));
-        } else {
-            $record = null;
+        $record = $this->record_repo->find($id);
+
+        if (!($record instanceof Entity\ApiKey)) {
+            throw new \App\Exception\NotFound('API key not found');
         }
+
+        $form->setDefaults($this->record_repo->toArray($record, true, true));
 
         if ($_POST && $form->isValid($_POST)) {
             $data = $form->getValues();
-
-            if (!($record instanceof Entity\ApiKey)) {
-                $record = new Entity\ApiKey;
-            }
 
             $this->record_repo->fromArray($record, $data);
 

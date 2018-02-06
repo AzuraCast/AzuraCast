@@ -7,23 +7,44 @@ class B01_Admin_ApiKeysCest extends CestAbstract
      */
     public function manageApiKeys(FunctionalTester $I)
     {
-        $I->wantTo('Administer API keys.');
+        $I->wantTo('Create and administer API keys.');
 
-        $I->amOnPage('/admin/api');
-        $I->see('API Keys');
+        // Create one API key and test its revocation within the user side.
+        $I->amOnPage('/api_keys');
+        $I->see('My API Keys');
 
         $I->click('.btn-float', '#content'); // Plus sign
 
         $I->submitForm('.form', [
-            'owner' => 'API Key Test',
+            'comment' => 'API Key Test',
         ]);
 
-        $I->seeCurrentUrlEquals('/admin/api');
+        $I->seeCurrentUrlEquals('/api_keys/edit');
+        $I->see('New Key Generated');
+
+        $I->click('.btn-primary'); // Continue
+
+        $I->amOnPage('/api_keys');
         $I->see('API Key Test');
+
+        $I->click(\Codeception\Util\Locator::lastElement('.btn-danger')); // Revoke
+
+        $I->seeCurrentUrlEquals('/api_keys');
+        $I->dontSee('API Key Test');
+
+        // Create another API key and test its revocation from the admin side.
+        $I->click('.btn-float', '#content'); // Plus sign
+
+        $I->submitForm('.form', [
+            'comment' => 'API Key Admin Test',
+        ]);
+
+        $I->amOnPage('/admin/api');
+        $I->see('API Key Admin Test');
 
         $I->click(\Codeception\Util\Locator::lastElement('.btn-danger'));
 
         $I->seeCurrentUrlEquals('/admin/api');
-        $I->dontSee('API Key Test');
+        $I->dontSee('API Key Admin Test');
     }
 }

@@ -475,8 +475,15 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\AzuraCast\Middleware\Module\Api::class] = function($di) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        /** @var Entity\Repository\ApiKeyRepository $api_repo */
+        $api_repo = $em->getRepository(Entity\ApiKey::class);
+
         return new \AzuraCast\Middleware\Module\Api(
-            $di[\App\Session::class]
+            $di[\App\Session::class],
+            $api_repo
         );
     };
 

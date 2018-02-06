@@ -179,6 +179,16 @@ return function (\Slim\Container $di) {
         );
     };
 
+    $di[Controller\Frontend\ApiKeysController::class] = function($di) {
+        $config = $di[\App\Config::class];
+
+        return new Controller\Frontend\ApiKeysController(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $config->forms->api_key->toArray()
+        );
+    };
+
     $di[\Controller\Frontend\PublicController::class] = function($di) {
         return new \Controller\Frontend\PublicController();
     };

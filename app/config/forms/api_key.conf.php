@@ -4,12 +4,12 @@ return [
     'method' => 'post',
     'elements' => [
 
-        'owner' => [
+        'comment' => [
             'text',
             [
-                'label' => _('API Key Owner'),
+                'label' => _('Comments'),
+                'description' => _('Describe the use-case for this API key for future reference.'),
                 'class' => 'half-width',
-                'required' => true,
             ]
         ],
 

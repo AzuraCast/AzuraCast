@@ -78,12 +78,19 @@ class User
      */
     protected $roles;
 
+    /**
+     * @OneToMany(targetEntity="ApiKey", mappedBy="user")
+     * @var Collection
+     */
+    protected $api_keys;
+
     public function __construct()
     {
         $this->created_at = time();
         $this->updated_at = time();
 
         $this->roles = new ArrayCollection;
+        $this->api_keys = new ArrayCollection;
     }
 
     /**
@@ -263,6 +270,14 @@ class User
     public function getRoles(): Collection
     {
         return $this->roles;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getApiKeys(): Collection
+    {
+        return $this->api_keys;
     }
 
     public function getAvatar($size = 50)

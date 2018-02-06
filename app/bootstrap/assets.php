@@ -310,5 +310,23 @@ return [
                 ],
             ],
         ],
-    ]
+    ],
+    [
+        'name' => 'clipboard',
+        'order' => 10,
+        'group' => 'body',
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js',
+                    'sri' => 'sha256-Daf8GuI2eLKHJlOWLRR/zRy9Clqcj4TUSumbxYH9kGI=',
+                ],
+            ],
+        ],
+        'inline' => [
+            'js' => [
+                "new Clipboard('.btn-copy');",
+            ],
+        ],
+    ],
 ];

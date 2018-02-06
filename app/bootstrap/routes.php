@@ -18,7 +18,7 @@ return function(\Slim\App $app) {
             $this->get('', Controller\Admin\ApiController::class.':indexAction')
                 ->setName('admin:api:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Admin\ApiController::class.':editAction')
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Admin\ApiController::class.':editAction')
                 ->setName('admin:api:edit');
 
             $this->get('/delete/{id}', Controller\Admin\ApiController::class.':deleteAction')
@@ -174,6 +174,15 @@ return function(\Slim\App $app) {
 
         $this->map(['GET', 'POST'], '/profile/edit', Controller\Frontend\ProfileController::class.':editAction')
             ->setName('profile:edit');
+
+        $this->get('/api_keys', Controller\Frontend\ApiKeysController::class.':indexAction')
+            ->setName('api_keys:index');
+
+        $this->map(['GET', 'POST'], '/api_keys/edit[/{id}]', Controller\Frontend\ApiKeysController::class.':editAction')
+            ->setName('api_keys:edit');
+
+        $this->get('/api_keys/delete/{id}', Controller\Frontend\ApiKeysController::class.':deleteAction')
+            ->setName('api_keys:delete');
 
         // Used for internal development
         if (!APP_IN_PRODUCTION) {

@@ -192,7 +192,7 @@ class Form
         ];
         $field_options = array_merge($defaults, $field_options);
 
-        if ($field_type == 'submit') {
+        if ($field_type === 'submit') {
             return null;
         }
 

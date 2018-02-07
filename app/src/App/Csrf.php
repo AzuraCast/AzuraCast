@@ -70,58 +70,37 @@ class Csrf
      *
      * @param $key
      * @param string $namespace
-     * @return array
+     * @throws Exception\CsrfValidation
      */
-    public function verify($key, $namespace = null)
+    public function verify($key, $namespace = null): void
     {
         if ($namespace === null) {
             $namespace = $this->_csrf_default_namespace;
         }
 
         if (empty($key)) {
-            return ['is_valid' => false, 'message' => 'A CSRF token is required for this request.'];
+            throw new Exception\CsrfValidation('A CSRF token is required for this request.');
         }
 
         if (strlen($key) !== $this->_csrf_code_length) {
-            return ['is_valid' => false, 'message' => 'Malformed CSRF token supplied.'];
+            throw new Exception\CsrfValidation('Malformed CSRF token supplied.');
         }
 
         if (!isset($this->_session[$namespace])) {
-            return ['is_valid' => false, 'message' => 'No CSRF token supplied for this namespace.'];
+            throw new Exception\CsrfValidation('No CSRF token supplied for this namespace.');
         }
 
         $namespace_info = $this->_session[$namespace];
 
         if (strcmp($key, $namespace_info['key']) !== 0) {
-            return ['is_valid' => false, 'message' => 'Invalid CSRF token supplied.'];
+            throw new Exception\CsrfValidation('Invalid CSRF token supplied.');
         }
 
         // Compare against time threshold (CSRF keys last 60 minutes).
         $threshold = $namespace_info['timestamp'] + $this->_csrf_lifetime;
 
         if (time() >= $threshold) {
-            return ['is_valid' => false, 'message' => 'This CSRF token has expired!'];
-        }
-
-        return ['is_valid' => true];
-    }
-
-    /**
-     * Wrapper to the verify() function that triggers an exception for invalid tokens.
-     *
-     * @param $key
-     * @param null $namespace
-     * @return bool
-     * @throws Exception
-     */
-    public function requireValid($key, $namespace = null)
-    {
-        $verify_result = $this->verify($key, $namespace);
-
-        if ($verify_result['is_valid']) {
-            return true;
-        } else {
-            throw new Exception('Cannot validate CSRF token: ' . $verify_result['message']);
+            throw new Exception\CsrfValidation('This CSRF token has expired.');
         }
     }
 
@@ -138,7 +117,7 @@ class Csrf
 
         $string = '';
         for ($i = 0; $i < $length; ++$i) {
-            $string .= $seed{intval(mt_rand(0.0, $max))};
+            $string .= $seed{random_int(0, $max)};
         }
 
         return $string;

@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Admin;
 
+use App\Csrf;
 use App\Flash;
 use Doctrine\ORM\EntityManager;
 use Entity;
@@ -18,15 +19,22 @@ class PermissionsController
     /** @var array */
     protected $form_config;
 
+    /** @var Csrf */
+    protected $csrf;
+
+    /** @var string */
+    protected $csrf_namespace = 'admin_permissions';
+
     /**
      * @param EntityManager $em
      * @param Flash $flash
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Flash $flash, array $form_config)
+    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $form_config)
     {
         $this->em = $em;
         $this->flash = $flash;
+        $this->csrf = $csrf;
         $this->form_config = $form_config;
     }
 
@@ -59,6 +67,7 @@ class PermissionsController
 
         return $view->renderToResponse($response, 'admin/permissions/index', [
             'roles' => $roles,
+            'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
     }
 
@@ -112,8 +121,10 @@ class PermissionsController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id): Response
+    public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
     {
+        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+
         /** @var Entity\Repository\BaseRepository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
 

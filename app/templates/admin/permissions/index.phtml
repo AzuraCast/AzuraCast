@@ -32,7 +32,7 @@
                         <a class="btn btn-sm btn-primary" href="<?=$url->named('admin:permissions:edit', ['id' => $role['id']]) ?>"><?=_('Edit') ?></a>
 
                         <?php if( $role['id'] != 1 ): ?>
-                            <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:permissions:delete', ['id' => $role['id']]) ?>"><?=_('Delete') ?></a>
+                            <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:permissions:delete', ['id' => $role['id'], 'csrf' => $csrf]) ?>"><?=_('Delete') ?></a>
                         <?php else: ?>
                             <a class="btn btn-sm btn-danger disabled" href="#" onclick="alert('<?=_('This role cannot be deleted.') ?>'); return false;"><?=_('Delete') ?></a>
                         <?php endif; ?>

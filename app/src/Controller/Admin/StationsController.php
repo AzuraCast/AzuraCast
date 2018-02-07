@@ -2,6 +2,7 @@
 namespace Controller\Admin;
 
 use App\Cache;
+use App\Csrf;
 use App\Flash;
 use AzuraCast\Radio\Adapters;
 use AzuraCast\Radio\Configuration;
@@ -27,6 +28,12 @@ class StationsController
     /** @var Configuration */
     protected $configuration;
 
+    /** @var Csrf */
+    protected $csrf;
+
+    /** @var string */
+    protected $csrf_namespace = 'admin_stations';
+
     /** @var array */
     protected $edit_form_config;
 
@@ -36,27 +43,20 @@ class StationsController
     /** @var Entity\Repository\StationRepository */
     protected $record_repo;
 
-    /**
-     * StationsController constructor.
-     * @param EntityManager $em
-     * @param Flash $flash
-     * @param array $edit_form_config
-     * @param array $clone_form_config
-     */
-    public function __construct(EntityManager $em, Flash $flash, Cache $cache, Adapters $adapters, Configuration $configuration, array $edit_form_config, array $clone_form_config)
+    public function __construct(EntityManager $em, Flash $flash, Cache $cache, Adapters $adapters, Configuration $configuration, Csrf $csrf, array $edit_form_config, array $clone_form_config)
     {
         $this->em = $em;
         $this->flash = $flash;
         $this->cache = $cache;
         $this->adapters = $adapters;
         $this->configuration = $configuration;
+        $this->csrf = $csrf;
 
         $this->edit_form_config = $edit_form_config;
         $this->clone_form_config = $clone_form_config;
 
         $this->record_repo = $this->em->getRepository(Entity\Station::class);
     }
-
 
     public function indexAction(Request $request, Response $response): Response
     {
@@ -68,6 +68,7 @@ class StationsController
 
         return $view->renderToResponse($response, 'admin/stations/index', [
             'stations' => $stations,
+            'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
     }
 
@@ -210,8 +211,10 @@ class StationsController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id): Response
+    public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
     {
+        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+
         $record = $this->record_repo->find((int)$id);
 
         if ($record instanceof Entity\Station) {

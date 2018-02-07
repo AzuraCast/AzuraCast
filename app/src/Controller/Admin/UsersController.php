@@ -2,6 +2,7 @@
 namespace Controller\Admin;
 
 use App\Auth;
+use App\Csrf;
 use App\Flash;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManager;
@@ -27,6 +28,12 @@ class UsersController
     /** @var Entity\Repository\UserRepository */
     protected $record_repo;
 
+    /** @var Csrf */
+    protected $csrf;
+
+    /** @var string */
+    protected $csrf_namespace = 'admin_users';
+
     /**
      * UsersController constructor.
      * @param EntityManager $em
@@ -34,11 +41,12 @@ class UsersController
      * @param Auth $auth
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Flash $flash, Auth $auth, array $form_config)
+    public function __construct(EntityManager $em, Flash $flash, Auth $auth, Csrf $csrf, array $form_config)
     {
         $this->em = $em;
         $this->flash = $flash;
         $this->auth = $auth;
+        $this->csrf = $csrf;
         $this->form_config = $form_config;
 
         $this->record_repo = $this->em->getRepository(Entity\User::class);
@@ -55,6 +63,7 @@ class UsersController
         return $view->renderToResponse($response, 'admin/users/index', [
             'user' => $request->getAttribute('user'),
             'users' => $users,
+            'csrf' => $this->csrf->generate($this->csrf_namespace)
         ]);
     }
 
@@ -104,8 +113,10 @@ class UsersController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id): Response
+    public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
     {
+        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+
         $user = $this->record_repo->find((int)$id);
 
         if ($user instanceof Entity\User) {
@@ -119,8 +130,10 @@ class UsersController
         return $response->redirectToRoute('admin:users:index');
     }
 
-    public function impersonateAction(Request $request, Response $response, $id): Response
+    public function impersonateAction(Request $request, Response $response, $id, $csrf_token): Response
     {
+        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+
         $user = $this->record_repo->find((int)$id);
 
         if (!($user instanceof Entity\User)) {

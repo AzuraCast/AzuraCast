@@ -53,13 +53,13 @@ class StationFiles
 
         if ($file_path === false) {
             return $response->withStatus(404)
-                ->withJson(['error' => ['code' => (int)404, 'msg' => 'File or Directory Not Found']]);
+                ->withJson(['error' => ['code' => 404, 'msg' => 'File or Directory Not Found']]);
         }
 
         // Sanity check that the final file path is still within the base directory
         if (substr($file_path, 0, strlen($base_dir)) !== $base_dir) {
             return $response->withStatus(403)
-                ->withJson(['error' => ['code' => (int)403, 'msg' => 'Forbidden']]);
+                ->withJson(['error' => ['code' => 403, 'msg' => 'Forbidden']]);
         }
 
         $request = $request->withAttribute('file', $file)
@@ -67,17 +67,19 @@ class StationFiles
             ->withAttribute('base_dir', $base_dir);
 
         // Generate and store CSRF token
-        $view->CSRF = $this->csrf->generate('files');
+        $view->csrf = $this->csrf->generate('files');
 
         if ($request->isPost()) {
-            if (!$this->csrf->verify($request->getParam('xsrf'), 'files')) {
+            try {
+                $this->csrf->verify($request->getParam('xsrf'), 'files');
+            } catch(\App\Exception\CsrfValidation $e) {
                 return $response->withStatus(403)
-                    ->withJson(['error' => ['code' => (int)403, 'msg' => 'XSRF Failure']]);
+                    ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
             }
         }
 
         // Set MAX_UPLOAD_SIZE based on PHP values
-        $view->MAX_UPLOAD_SIZE = min(
+        $view->max_upload_size = min(
             $this->_asBytes(ini_get('post_max_size')),
             $this->_asBytes(ini_get('upload_max_filesize'))
         );

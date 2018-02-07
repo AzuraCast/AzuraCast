@@ -29,10 +29,10 @@
                 <tr class="input">
                     <td>
                     <?php if ($user_row->getId() !== $user->getId()): ?>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->named('admin:users:impersonate', ['id' => $user_row->getId()]) ?>"><?=_('Log In') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->named('admin:users:impersonate', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=_('Log In') ?></a>
                     <?php endif; ?>
                         <a class="btn btn-sm btn-default" href="<?=$url->named('admin:users:edit', ['id' => $user_row->getId()]) ?>"><?=_('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:users:delete', ['id' => $user_row->getId()]) ?>"><?=_('Delete') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:users:delete', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=_('Delete') ?></a>
                     </td>
                     <td><?=$this->mailto($user_row->getEmail()) ?> <?php if ($user_row->getId() === $user->getId()): ?>(You)<?php endif; ?></td>
                     <td>

@@ -11,6 +11,7 @@ return function (\Slim\Container $di) {
         return new Controller\Admin\ApiController(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Flash::class],
+            $di[\App\Csrf::class],
             $config->forms->api_key->toArray()
         );
     };
@@ -44,6 +45,7 @@ return function (\Slim\Container $di) {
         return new Controller\Admin\PermissionsController(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Flash::class],
+            $di[\App\Csrf::class],
             $config->forms->role->toArray()
         );
     };
@@ -73,6 +75,7 @@ return function (\Slim\Container $di) {
             $di[\App\Cache::class],
             $di[\AzuraCast\Radio\Adapters::class],
             $di[\AzuraCast\Radio\Configuration::class],
+            $di[\App\Csrf::class],
             $config->forms->station->toArray(),
             $config->forms->station_clone->toArray()
         );
@@ -85,6 +88,7 @@ return function (\Slim\Container $di) {
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Flash::class],
             $di[\App\Auth::class],
+            $di[\App\Csrf::class],
             $config->forms->user->toArray()
         );
     };

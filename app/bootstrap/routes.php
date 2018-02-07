@@ -21,7 +21,7 @@ return function(\Slim\App $app) {
             $this->map(['GET', 'POST'], '/edit/{id}', Controller\Admin\ApiController::class.':editAction')
                 ->setName('admin:api:edit');
 
-            $this->get('/delete/{id}', Controller\Admin\ApiController::class.':deleteAction')
+            $this->get('/delete/{id}/{csrf}', Controller\Admin\ApiController::class.':deleteAction')
                 ->setName('admin:api:delete');
 
         })->add([Middleware\Permissions::class, 'administer api keys']);
@@ -38,7 +38,7 @@ return function(\Slim\App $app) {
             $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Admin\PermissionsController::class.':editAction')
                 ->setName('admin:permissions:edit');
 
-            $this->get('/delete/{id}', Controller\Admin\PermissionsController::class.':deleteAction')
+            $this->get('/delete/{id}/{csrf}', Controller\Admin\PermissionsController::class.':deleteAction')
                 ->setName('admin:permissions:delete');
 
         })->add([Middleware\Permissions::class, 'administer permissions']);
@@ -58,7 +58,7 @@ return function(\Slim\App $app) {
             $this->map(['GET', 'POST'], '/clone/{id}', Controller\Admin\StationsController::class.':cloneAction')
                 ->setName('admin:stations:clone');
 
-            $this->get('/delete/{id}', Controller\Admin\StationsController::class.':deleteAction')
+            $this->get('/delete/{id}/{csrf}', Controller\Admin\StationsController::class.':deleteAction')
                 ->setName('admin:stations:delete');
 
         })->add([Middleware\Permissions::class, 'administer stations']);
@@ -71,10 +71,10 @@ return function(\Slim\App $app) {
             $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Admin\UsersController::class.':editAction')
                 ->setName('admin:users:edit');
 
-            $this->get('/delete/{id}', Controller\Admin\UsersController::class.':deleteAction')
+            $this->get('/delete/{id}/{csrf}', Controller\Admin\UsersController::class.':deleteAction')
                 ->setName('admin:users:delete');
 
-            $this->get('/login-as/{id}', Controller\Admin\UsersController::class.':impersonateAction')
+            $this->get('/login-as/{id}/{csrf}', Controller\Admin\UsersController::class.':impersonateAction')
                 ->setName('admin:users:impersonate');
 
         })->add([Middleware\Permissions::class, 'administer users']);

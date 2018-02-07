@@ -29,7 +29,7 @@
                 <tr class="input">
                     <td class="center">
                         <a class="btn btn-sm btn-primary" href="<?=$url->named('admin:api:edit', ['id' => $record['id']]) ?>"><?=_('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:api:delete', ['id' => $record['id']]) ?>"><?=_('Revoke') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:api:delete', ['id' => $record['id'], 'csrf' => $csrf]) ?>"><?=_('Revoke') ?></a>
                     </td>
                     <td><code><?=$record['id'] ?></code></td>
                     <td><?=$this->e($record['comment']) ?></td>

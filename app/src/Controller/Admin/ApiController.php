@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Admin;
 
+use App\Csrf;
 use App\Flash;
 use Doctrine\ORM\EntityManager;
 use Entity;
@@ -22,10 +23,17 @@ class ApiController
     /** @var array */
     protected $form_config;
 
-    public function __construct(EntityManager $em, Flash $flash, array $form_config)
+    /** @var Csrf */
+    protected $csrf;
+
+    /** @var string */
+    protected $csrf_namespace = 'admin_api';
+
+    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $form_config)
     {
         $this->em = $em;
         $this->flash = $flash;
+        $this->csrf = $csrf;
         $this->form_config = $form_config;
 
         $this->record_repo = $this->em->getRepository(Entity\ApiKey::class);
@@ -41,6 +49,7 @@ class ApiController
 
         return $view->renderToResponse($response, 'admin/api/index', [
             'records' => $records,
+            'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
     }
 
@@ -79,8 +88,10 @@ class ApiController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id): Response
+    public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
     {
+        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+
         $record = $this->record_repo->find($id);
 
         if ($record instanceof Entity\ApiKey) {

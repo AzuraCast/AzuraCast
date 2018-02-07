@@ -137,8 +137,8 @@ $assets
 
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function() {
-    var XSRF = '<?=$CSRF ?>';
-    var MAX_UPLOAD_SIZE = <?=$MAX_UPLOAD_SIZE ?>;
+    var XSRF = '<?=$csrf ?>';
+    var MAX_UPLOAD_SIZE = <?=$max_upload_size ?>;
 
     var $current_dir = '';
 
@@ -182,7 +182,10 @@ $(function() {
         },
         url: "<?=$url->named('stations:files:list', ['station' => $station->getId()])  ?>",
         post: function() {
-            return { 'file': $current_dir };
+            return {
+                'file': $current_dir,
+                'xsrf': XSRF
+            };
         },
         formatters: {
             "playable": function(column, row) {

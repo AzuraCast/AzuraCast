@@ -71,7 +71,7 @@ class StationFiles
 
         if ($request->isPost()) {
             try {
-                $this->csrf->verify($request->getParam('xsrf'), 'files');
+                $this->csrf->verify($request->getParam('csrf'), 'files');
             } catch(\App\Exception\CsrfValidation $e) {
                 return $response->withStatus(403)
                     ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);

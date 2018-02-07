@@ -137,7 +137,7 @@ $assets
 
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function() {
-    var XSRF = '<?=$csrf ?>';
+    var CSRF = '<?=$csrf ?>';
     var MAX_UPLOAD_SIZE = <?=$max_upload_size ?>;
 
     var $current_dir = '';
@@ -155,7 +155,7 @@ $(function() {
                 $files.length && $.post('<?=$url->named('stations:files:batch', ['station' => $station->getId()]) ?>',{
                     'do': $(e.target).data('action'),
                     'files': $files.join('|'),
-                    'xsrf': XSRF,
+                    'csrf': CSRF,
                     'file': getUrlHash()
                 },function(data){
                     list();
@@ -184,7 +184,7 @@ $(function() {
         post: function() {
             return {
                 'file': $current_dir,
-                'xsrf': XSRF
+                'csrf': CSRF
             };
         },
         formatters: {
@@ -273,7 +273,7 @@ $(function() {
 
         $dir.val().length && $.post('<?=$url->named('stations:files:mkdir', ['station' => $station->getId()]) ?>',{
             name: $dir.val(),
-            xsrf: XSRF,
+            csrf: CSRF,
             file: hashval
         },function(data){
             list();
@@ -295,7 +295,7 @@ $(function() {
             'do': 'playlist_new',
             'name': $('#fld-playlist-name').val(),
             'files': $files.join('|'),
-            'xsrf': XSRF,
+            'csrf': CSRF,
             'file': getUrlHash()
         },function(data){
             if (data.success) {
@@ -317,7 +317,7 @@ $(function() {
 
         $dir.val().length && $.post('<?=$url->named('stations:files:mkdir', ['station' => $station->getId()]) ?>',{
             name: $dir.val(),
-            xsrf: XSRF,
+            csrf: CSRF,
             file: getUrlHash()
         },function(data){
             list();
@@ -333,7 +333,7 @@ $(function() {
         target: '<?=$url->named('stations:files:upload', ['station' => $station->getId()]) ?>',
         query: function() {
             return {
-                xsrf: XSRF,
+                csrf: CSRF,
                 file: getUrlHash()
             };
         },

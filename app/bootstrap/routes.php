@@ -181,7 +181,7 @@ return function(\Slim\App $app) {
         $this->map(['GET', 'POST'], '/api_keys/edit[/{id}]', Controller\Frontend\ApiKeysController::class.':editAction')
             ->setName('api_keys:edit');
 
-        $this->get('/api_keys/delete/{id}', Controller\Frontend\ApiKeysController::class.':deleteAction')
+        $this->get('/api_keys/delete/{id}/{csrf}', Controller\Frontend\ApiKeysController::class.':deleteAction')
             ->setName('api_keys:delete');
 
         // Used for internal development
@@ -289,7 +289,7 @@ return function(\Slim\App $app) {
             $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Stations\PlaylistsController::class.':editAction')
                 ->setName('stations:playlists:edit');
 
-            $this->get('/delete/{id}', Controller\Stations\PlaylistsController::class.':deleteAction')
+            $this->get('/delete/{id}/{csrf}', Controller\Stations\PlaylistsController::class.':deleteAction')
                 ->setName('stations:playlists:delete');
 
             $this->get('/export/{id}[/{format}]', Controller\Stations\PlaylistsController::class.':exportAction')
@@ -308,7 +308,7 @@ return function(\Slim\App $app) {
             $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Stations\MountsController::class.':editAction')
                 ->setName('stations:mounts:edit');
 
-            $this->get('/delete/{id}', Controller\Stations\MountsController::class.':deleteAction')
+            $this->get('/delete/{id}/{csrf}', Controller\Stations\MountsController::class.':deleteAction')
                 ->setName('stations:mounts:delete');
 
         })->add([Middleware\Permissions::class, 'manage station mounts', true]);
@@ -337,7 +337,7 @@ return function(\Slim\App $app) {
             $this->get('', Controller\Stations\RequestsController::class.':indexAction')
                 ->setName('stations:requests:index');
 
-            $this->get('/delete/{request_id}', Controller\Stations\RequestsController::class.':deleteAction')
+            $this->get('/delete/{request_id}/{csrf}', Controller\Stations\RequestsController::class.':deleteAction')
                 ->setName('stations:requests:delete');
 
         })->add([Middleware\Permissions::class, 'view station reports', true]);
@@ -368,7 +368,8 @@ return function(\Slim\App $app) {
 
             $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Stations\StreamersController::class.':editAction')
                 ->setName('stations:streamers:edit');
-            $this->get('/delete/{id}', Controller\Stations\StreamersController::class.':deleteAction')
+
+            $this->get('/delete/{id}/{csrf}', Controller\Stations\StreamersController::class.':deleteAction')
                 ->setName('stations:streamers:delete');
 
         })->add([Middleware\Permissions::class, 'manage station streamers', true]);

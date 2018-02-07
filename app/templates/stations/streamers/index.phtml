@@ -30,7 +30,7 @@
                         <tr class="vertical-align-middle <?php if (!$row->getIsActive()): ?>text-muted<?php endif; ?>">
                             <td>
                                 <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:streamers:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>">Edit</a>
-                                <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:streamers:delete', ['station' => $station->getId(), 'id' => $row->getId()]) ?>">Delete</a>
+                                <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:streamers:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>">Delete</a>
                             </td>
                             <td><code><?=$this->e($row->getStreamerUsername()) ?></code></td>
                             <td><code><?=$this->e($row->getStreamerPassword()) ?></code></td>

@@ -52,7 +52,7 @@ $assets->addJs(['src' => 'js/timetable/timetable.js'], 'header');
                                     </ul>
                                 </div>
 
-                                <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:playlists:delete', ['station' => $station->getId(), 'id' => $row['id']]) ?>"><?=_('Delete') ?></a>
+                                <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:playlists:delete', ['station' => $station->getId(), 'id' => $row['id'], 'csrf' => $csrf]) ?>"><?=_('Delete') ?></a>
                             </td>
                             <td>
                                 <big>

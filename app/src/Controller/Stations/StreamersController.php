@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Stations;
 
+use App\Csrf;
 use App\Flash;
 use AzuraCast\Radio\Backend\BackendAbstract;
 use Doctrine\ORM\EntityManager;
@@ -16,23 +17,24 @@ class StreamersController
     /** @var Flash */
     protected $flash;
 
+    /** @var Csrf */
+    protected $csrf;
+
+    /** @var string */
+    protected $csrf_namespace = 'stations_streamers';
+
     /** @var array */
     protected $form_config;
 
     /** @var Entity\Repository\StationStreamerRepository */
     protected $streamers_repo;
 
-    /**
-     * StreamersController constructor.
-     * @param EntityManager $em
-     * @param Flash $flash
-     * @param array $form_config
-     */
-    public function __construct(EntityManager $em, Flash $flash, array $form_config)
+    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $form_config)
     {
         $this->em = $em;
         $this->flash = $flash;
         $this->form_config = $form_config;
+        $this->csrf = $csrf;
 
         $this->streamers_repo = $this->em->getRepository(Entity\StationStreamer::class);
     }
@@ -74,6 +76,7 @@ class StreamersController
             'server_url' => $settings_repo->getSetting('base_url', ''),
             'stream_port' => $backend->getStreamPort(),
             'streamers' => $station->getStreamers(),
+            'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
     }
 
@@ -123,8 +126,10 @@ class StreamersController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $id): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
     {
+        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 

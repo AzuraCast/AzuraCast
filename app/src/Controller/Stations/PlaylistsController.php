@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Stations;
 
+use App\Csrf;
 use App\Flash;
 use App\Mvc\View;
 use App\Url;
@@ -22,6 +23,12 @@ class PlaylistsController
     /** @var Flash */
     protected $flash;
 
+    /** @var Csrf */
+    protected $csrf;
+
+    /** @var string */
+    protected $csrf_namespace = 'stations_playlists';
+
     /** @var array */
     protected $form_config;
 
@@ -32,11 +39,12 @@ class PlaylistsController
      * @param Flash $flash
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Url $url, Flash $flash, array $form_config)
+    public function __construct(EntityManager $em, Url $url, Flash $flash, Csrf $csrf, array $form_config)
     {
         $this->em = $em;
         $this->url = $url;
         $this->flash = $flash;
+        $this->csrf = $csrf;
         $this->form_config = $form_config;
     }
 
@@ -146,6 +154,7 @@ class PlaylistsController
             'playlists' => $playlists,
             'schedule' => $schedule,
             'schedule_days' => $schedule_days,
+            'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
     }
 
@@ -326,8 +335,10 @@ class PlaylistsController
         return true;
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $id): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
     {
+        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 

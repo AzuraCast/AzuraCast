@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Stations;
 
+use App\Csrf;
 use App\Flash;
 use App\Mvc\View;
 use Doctrine\ORM\EntityManager;
@@ -16,15 +17,17 @@ class RequestsController
     /** @var Flash */
     protected $flash;
 
-    /**
-     * RequestsController constructor.
-     * @param EntityManager $em
-     * @param Flash $flash
-     */
-    public function __construct(EntityManager $em, Flash $flash)
+    /** @var Csrf */
+    protected $csrf;
+
+    /** @var string */
+    protected $csrf_namespace = 'stations_requests';
+
+    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf)
     {
         $this->em = $em;
         $this->flash = $flash;
+        $this->csrf = $csrf;
     }
 
     public function indexAction(Request $request, Response $response, $station_id): Response
@@ -42,11 +45,14 @@ class RequestsController
 
         return $view->renderToResponse($response, 'stations/requests/index', [
             'requests' => $requests,
+            'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $request_id): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $request_id, $csrf_token): Response
     {
+        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+
         $media = $this->em->getRepository(Entity\StationRequest::class)->findOneBy([
             'id' => $request_id,
             'station_id' => $station_id,

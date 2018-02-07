@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Stations;
 
+use App\Csrf;
 use App\Flash;
 use App\Mvc\View;
 use AzuraCast\Radio\Frontend\FrontendAbstract;
@@ -17,6 +18,12 @@ class MountsController
     /** @var Flash */
     protected $flash;
 
+    /** @var Csrf */
+    protected $csrf;
+
+    /** @var string */
+    protected $csrf_namespace = 'stations_mounts';
+
     /** @var array */
     protected $mount_form_configs;
 
@@ -26,10 +33,11 @@ class MountsController
      * @param Flash $flash
      * @param array $mount_form_configs
      */
-    public function __construct(EntityManager $em, Flash $flash, array $mount_form_configs)
+    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $mount_form_configs)
     {
         $this->em = $em;
         $this->flash = $flash;
+        $this->csrf = $csrf;
         $this->mount_form_configs = $mount_form_configs;
     }
 
@@ -51,6 +59,7 @@ class MountsController
         return $view->renderToResponse($response, 'stations/mounts/index', [
             'frontend_type' => $station->getFrontendType(),
             'mounts' => $station->getMounts(),
+            'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
     }
 
@@ -144,8 +153,10 @@ class MountsController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $station_id, $id): Response
+    public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
     {
+        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 

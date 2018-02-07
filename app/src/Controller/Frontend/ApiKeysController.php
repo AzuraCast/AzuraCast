@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Frontend;
 
+use App\Csrf;
 use App\Exception\NotFound;
 use App\Flash;
 use Doctrine\ORM\EntityManager;
@@ -17,16 +18,23 @@ class ApiKeysController
     /** @var Flash */
     protected $flash;
 
+    /** @var Csrf */
+    protected $csrf;
+
+    /** @var string */
+    protected $csrf_namespace = 'frontend_api_keys';
+
     /** @var Entity\Repository\ApiKeyRepository */
     protected $record_repo;
 
     /** @var array */
     protected $form_config;
 
-    public function __construct(EntityManager $em, Flash $flash, array $form_config)
+    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $form_config)
     {
         $this->em = $em;
         $this->flash = $flash;
+        $this->csrf = $csrf;
         $this->form_config = $form_config;
 
         $this->record_repo = $this->em->getRepository(Entity\ApiKey::class);
@@ -41,7 +49,8 @@ class ApiKeysController
         $view = $request->getAttribute('view');
 
         return $view->renderToResponse($response, 'frontend/api_keys/index', [
-            'records' => $user->getApiKeys()
+            'records' => $user->getApiKeys(),
+            'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
     }
 
@@ -102,8 +111,10 @@ class ApiKeysController
         ]);
     }
 
-    public function deleteAction(Request $request, Response $response, $id): Response
+    public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
     {
+        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');
 

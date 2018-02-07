@@ -189,6 +189,7 @@ return function (\Slim\Container $di) {
         return new Controller\Frontend\ApiKeysController(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Flash::class],
+            $di[\App\Csrf::class],
             $config->forms->api_key->toArray()
         );
     };
@@ -259,6 +260,7 @@ return function (\Slim\Container $di) {
         return new \Controller\Stations\MountsController(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Flash::class],
+            $di[\App\Csrf::class],
             [
                 'icecast' => $config->forms->mount_icecast->toArray(),
                 'remote' => $config->forms->mount_remote->toArray(),
@@ -274,6 +276,7 @@ return function (\Slim\Container $di) {
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Url::class],
             $di[\App\Flash::class],
+            $di[\App\Csrf::class],
             $config->forms->playlist->toArray()
         );
     };
@@ -302,7 +305,8 @@ return function (\Slim\Container $di) {
     $di[\Controller\Stations\RequestsController::class] = function($di) {
         return new \Controller\Stations\RequestsController(
             $di[\Doctrine\ORM\EntityManager::class],
-            $di[\App\Flash::class]
+            $di[\App\Flash::class],
+            $di[\App\Csrf::class]
         );
     };
 
@@ -312,6 +316,7 @@ return function (\Slim\Container $di) {
         return new \Controller\Stations\StreamersController(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Flash::class],
+            $di[\App\Csrf::class],
             $config->forms->streamer->toArray()
         );
     };

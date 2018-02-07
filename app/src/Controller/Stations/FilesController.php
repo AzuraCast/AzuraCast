@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Stations;
 
+use App\Csrf;
 use Entity;
 use App\Flash;
 use App\Http\Request;
@@ -30,6 +31,12 @@ class FilesController
     /** @var Url */
     protected $url;
 
+    /** @var Csrf */
+    protected $csrf;
+
+    /** @var string */
+    protected $csrf_namespace = 'stations_files';
+
     /** @var array */
     protected $edit_form_config;
 
@@ -47,11 +54,12 @@ class FilesController
      * @param array $edit_form_config
      * @param array $rename_form_config
      */
-    public function __construct(EntityManager $em, Flash $flash, Url $url, array $edit_form_config, array $rename_form_config)
+    public function __construct(EntityManager $em, Flash $flash, Url $url, Csrf $csrf, array $edit_form_config, array $rename_form_config)
     {
         $this->em = $em;
         $this->flash = $flash;
         $this->url = $url;
+        $this->csrf = $csrf;
         $this->edit_form_config = $edit_form_config;
         $this->rename_form_config = $rename_form_config;
 
@@ -82,11 +90,19 @@ class FilesController
             'space_used' => Utilities::bytes_to_text($space_used),
             'space_total' => Utilities::bytes_to_text($space_total),
             'space_percent' => round(($space_used / $space_total) * 100),
+            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'max_upload_size' => min(
+                $this->_asBytes(ini_get('post_max_size')),
+                $this->_asBytes(ini_get('upload_max_filesize'))
+            ),
         ]);
     }
 
     public function editAction(Request $request, Response $response, $station_id, $media_id): Response
     {
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
         $media = $this->em->getRepository(Entity\StationMedia::class)->findOneBy([
             'station_id' => $station_id,
             'id' => $media_id
@@ -105,7 +121,7 @@ class FilesController
 
             // Detect rename.
             if ($data['path'] !== $media->getPath()) {
-                list($data['path'], $path_full) = $this->_filterPath($data['path']);
+                list($data['path'], $path_full) = $this->_filterPath($station->getRadioMediaDir(), $data['path']);
                 rename($media->getFullPath(), $path_full);
             }
 
@@ -153,8 +169,11 @@ class FilesController
 
     public function renameAction(Request $request, Response $response, $station_id, $path): Response
     {
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
         $path = base64_decode($path);
-        list($path, $path_full) = $this->_filterPath($path);
+        list($path, $path_full) = $this->_filterPath($station->getRadioMediaDir(), $path);
 
         $form = new \App\Form($this->rename_form_config);
 
@@ -165,14 +184,14 @@ class FilesController
 
             // Detect rename.
             if ($data['path'] !== $path) {
-                list($new_path, $new_path_full) = $this->_filterPath($data['path']);
+                list($new_path, $new_path_full) = $this->_filterPath($station->getRadioMediaDir(), $data['path']);
                 rename($path_full, $new_path_full);
 
                 if (is_dir($new_path_full)) {
                     // Update the paths of all media contained within the directory.
                     $media_in_dir = $this->em->createQuery('SELECT sm FROM Entity\StationMedia sm
                         WHERE sm.station_id = :station_id AND sm.path LIKE :path')
-                        ->setParameter('station_id', $this->station->getId())
+                        ->setParameter('station_id', $station->getId())
                         ->setParameter('path', $path . '%')
                         ->execute();
 
@@ -363,6 +382,13 @@ class FilesController
 
     public function batchAction(Request $request, Response $response): Response
     {
+        try {
+            $this->csrf->verify($request->getParam('csrf'), $this->csrf_namespace);
+        } catch(\App\Exception\CsrfValidation $e) {
+            return $response->withStatus(403)
+                ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
+        }
+
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
@@ -497,6 +523,13 @@ class FilesController
 
     public function mkdirAction(Request $request, Response $response): Response
     {
+        try {
+            $this->csrf->verify($request->getParam('csrf'), $this->csrf_namespace);
+        } catch(\App\Exception\CsrfValidation $e) {
+            return $response->withStatus(403)
+                ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
+        }
+
         $file_path = $request->getAttribute('file_path');
 
         // don't allow actions outside root. we also filter out slashes to catch args like './../outside'
@@ -513,6 +546,13 @@ class FilesController
 
     public function uploadAction(Request $request, Response $response): Response
     {
+        try {
+            $this->csrf->verify($request->getParam('csrf'), $this->csrf_namespace);
+        } catch(\App\Exception\CsrfValidation $e) {
+            return $response->withStatus(403)
+                ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
+        }
+
         try {
             $flow = new \App\Service\Flow($request, $response);
             $flow_response = $flow->process();
@@ -592,12 +632,11 @@ class FilesController
         }
     }
 
-    protected function _filterPath($path)
+    protected function _filterPath($base_path, $path)
     {
         $path = str_replace(['../', './'], ['', ''], $path);
         $path = trim($path, '/');
 
-        $base_path = $this->station->getRadioMediaDir();
         $dir_path = $base_path.DIRECTORY_SEPARATOR.dirname($path);
         $full_path = $base_path.DIRECTORY_SEPARATOR.$path;
 
@@ -628,6 +667,14 @@ class FilesController
         }
 
         return true;
+    }
+
+    protected function _asBytes($ini_v)
+    {
+        $ini_v = trim($ini_v);
+        $s = ['g' => 1 << 30, 'm' => 1 << 20, 'k' => 1 << 10];
+
+        return (int)$ini_v * ($s[strtolower(substr($ini_v, -1))] ?: 1);
     }
 
     protected function _err(Response $response, $code, $msg)

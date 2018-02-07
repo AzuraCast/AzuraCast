@@ -241,6 +241,7 @@ return function (\Slim\Container $di) {
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Flash::class],
             $di[\App\Url::class],
+            $di[\App\Csrf::class],
             $config->forms->media->toArray(),
             $config->forms->rename->toArray()
         );

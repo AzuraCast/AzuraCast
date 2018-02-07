@@ -63,8 +63,8 @@ return [
                         'required' => true,
                         'description' => _('If set to "No", the playlist will not be included in radio playback, but can still be managed.'),
                         'options' => [
-                            1 => 'Yes',
-                            0 => 'No',
+                            1 => _('Yes'),
+                            0 => _('No'),
                         ],
                         'default' => 1,
                     ]
@@ -96,11 +96,11 @@ return [
                         'default' => 3,
                         'required' => true,
                         'options' => [
-                            1 => '1 - Low',
+                            1 => '1 - '._('Low'),
                             2 => '2',
-                            3 => '3 - Default',
+                            3 => '3 - '._('Default'),
                             4 => '4',
-                            5 => '5 - High',
+                            5 => '5 - '._('High'),
                         ] + \App\Utilities::pairs(range(6, 25)),
                     ]
                 ],
@@ -138,8 +138,8 @@ return [
                         'required' => true,
                         'default' => '0',
                         'options' => [
-                            0 => 'No',
-                            1 => 'Yes',
+                            0 => _('No'),
+                            1 => _('Yes'),
                         ],
                     ]
                 ],

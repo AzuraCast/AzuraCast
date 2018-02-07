@@ -26,7 +26,7 @@ class C02_Station_MediaCest extends CestAbstract
 
         $I->sendPOST('/station/'.$station_id.'/files/upload', [
             'file' => '',
-            'csrf' => $csrf->generate('files'),
+            'csrf' => $csrf->generate('stations_files'),
             'flowIdentifier' => 'uploadtest',
             'flowChunkNumber' => 1,
             'flowCurrentChunkSize' => filesize($test_song),

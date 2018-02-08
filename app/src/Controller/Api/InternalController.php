@@ -39,20 +39,22 @@ class InternalController
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        $user = $request->getParam('dj_user');
-        $pass = $request->getParam('dj_password');
-
-        if ($user === 'shoutcast') {
-            list($user, $pass) = explode(':', $pass);
-        }
-
         if (!$station->getEnableStreamers()) {
             return $response->write('false');
         }
 
+        $user = $request->getParam('dj_user');
+        $pass = $request->getParam('dj_password');
+
+        // Allow connections using the exact broadcast source password.
         $fe_config = (array)$station->getFrontendConfig();
         if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
             return $response->write('true');
+        }
+
+        // Handle login conditions where the username and password are joined in the password field.
+        if (strpos($pass, ':') !== false) {
+            list($user, $pass) = explode(':', $pass);
         }
 
         /** @var Entity\Repository\StationStreamerRepository $streamer_repo */

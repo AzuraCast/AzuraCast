@@ -16,8 +16,11 @@ return [
             'text',
             [
                 'label' => _('Streamer Password'),
-                'description' => _('The streamer will use this password to connect to the radio server.'),
+                'description' => _('The streamer will use this password to connect to the radio server. Do not use the colon (:) character.'),
                 'required' => true,
+                'filter' => function($text) {
+                    return str_replace(':', '', trim($text));
+                },
             ]
         ],
 

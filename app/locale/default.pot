@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-07 12:42+0000\n"
+"POT-Creation-Date: 2018-02-08 17:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,80 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /var/azuracast/www/app/bootstrap/settings.php:41
+msgid "Light"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:41
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:101
+msgid "Default"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:42
+msgid "Dark"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:48
+#: /var/azuracast/www/app/bootstrap/settings.php:57
+msgid "All Permissions"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:49
+msgid "View Administration Page"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:50
+msgid "Administer Settings"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:51
+msgid "Administer API Keys"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:52
+msgid "Administer User Accounts"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:53
+msgid "Administer Permissions"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:54
+msgid "Administer Stations"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:58
+msgid "View Station Page"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:59
+msgid "View Station Reports"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:60
+msgid "Manage Station Profile"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:61
+msgid "Manage Station Broadcasting"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:62
+msgid "Manage Station Streamers"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:63
+msgid "Manage Station Mount Points"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:64
+msgid "Manage Station Media"
+msgstr ""
+
+#: /var/azuracast/www/app/bootstrap/settings.php:65
+msgid "Manage Station Automation"
+msgstr ""
 
 #: /var/azuracast/www/app/bootstrap/services.php:251
 #, php-format
@@ -200,7 +274,7 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/song.conf.php:47
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:268
 #: /var/azuracast/www/app/config/forms/media.conf.php:111
-#: /var/azuracast/www/app/config/forms/streamer.conf.php:58
+#: /var/azuracast/www/app/config/forms/streamer.conf.php:61
 #: /var/azuracast/www/app/config/forms/automation.conf.php:40
 #: /var/azuracast/www/app/config/forms/branding.conf.php:59
 #: /var/azuracast/www/app/config/forms/settings.conf.php:94
@@ -589,10 +663,6 @@ msgstr ""
 msgid "Low"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:101
-msgid "Default"
-msgstr ""
-
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:103
 msgid "High"
 msgstr ""
@@ -864,37 +934,39 @@ msgid "Streamer Password"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:19
-msgid "The streamer will use this password to connect to the radio server."
+msgid ""
+"The streamer will use this password to connect to the radio server. Do not "
+"use the colon (:) character."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/streamer.conf.php:27
+#: /var/azuracast/www/app/config/forms/streamer.conf.php:30
 msgid "Streamer Display Name"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/streamer.conf.php:28
+#: /var/azuracast/www/app/config/forms/streamer.conf.php:31
 msgid ""
 "This is the informal display name that will be shown in API responses if the "
 "streamer/DJ is live."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/streamer.conf.php:35
+#: /var/azuracast/www/app/config/forms/streamer.conf.php:38
 #: /var/azuracast/www/app/config/forms/api_key.conf.php:10
 #: /var/azuracast/www/app/templates/admin/api/index.phtml:23
 #: /var/azuracast/www/app/templates/frontend/api_keys/index.phtml:29
 msgid "Comments"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/streamer.conf.php:36
+#: /var/azuracast/www/app/config/forms/streamer.conf.php:39
 msgid ""
 "Internal notes or comments about the user, visible only on this control "
 "panel."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/streamer.conf.php:43
+#: /var/azuracast/www/app/config/forms/streamer.conf.php:46
 msgid "Account is Active"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/streamer.conf.php:44
+#: /var/azuracast/www/app/config/forms/streamer.conf.php:47
 msgid "Set to \"Yes\" to allow this account to log in and stream."
 msgstr ""
 
@@ -2377,7 +2449,7 @@ msgstr ""
 msgid "AutoDJ is currently disabled. Enable it from the station profile."
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Middleware/Module/StationFiles.php:45
+#: /var/azuracast/www/app/src/AzuraCast/Middleware/Module/StationFiles.php:29
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:60
 #: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:53
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:51
@@ -2455,7 +2527,7 @@ msgstr[1] ""
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:235
 #: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:141
 #: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:98
-#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:109
+#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:108
 msgid "Record updated."
 msgstr ""
 
@@ -2464,7 +2536,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:110
 #: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:112
 #: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:87
-#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:120
+#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:119
 msgid "Edit Record"
 msgstr ""
 
@@ -2489,31 +2561,31 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:224
 #: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:128
 #: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:103
-#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:138
+#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:137
 msgid "Record deleted."
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:138
+#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:154
 msgid "Media metadata updated!"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:150
+#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:166
 msgid "Edit Media Metadata"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:191
+#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:210
 msgid "File renamed!"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:203
+#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:222
 msgid "Rename File/Directory"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:265
+#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:284
 msgid "Directory"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:269
+#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:288
 msgid "File Not Processed"
 msgstr ""
 
@@ -2560,7 +2632,7 @@ msgstr ""
 msgid "Add Streamer"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Frontend/PublicController.php:33
+#: /var/azuracast/www/app/src/Controller/Frontend/PublicController.php:36
 msgid "Station not found!"
 msgstr ""
 

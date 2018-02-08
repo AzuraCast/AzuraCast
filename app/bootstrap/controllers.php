@@ -1,5 +1,5 @@
 <?php
-return function (\Slim\Container $di) {
+return function (\Slim\Container $di, array $app_settings) {
 
     //
     // Administration Controllers
@@ -39,13 +39,14 @@ return function (\Slim\Container $di) {
         );
     };
 
-    $di[Controller\Admin\PermissionsController::class] = function($di) {
+    $di[Controller\Admin\PermissionsController::class] = function($di) use ($app_settings) {
         $config = $di[\App\Config::class];
 
         return new Controller\Admin\PermissionsController(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Flash::class],
             $di[\App\Csrf::class],
+            $app_settings['actions'],
             $config->forms->role->toArray()
         );
     };

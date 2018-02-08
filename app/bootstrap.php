@@ -4,27 +4,26 @@
  */
 
 // Security settings
-define("APP_IS_COMMAND_LINE", (PHP_SAPI === "cli"));
-define("APP_IS_SECURE",
-    (!APP_IS_COMMAND_LINE && (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === "on")) ? true : false);
+define('APP_IS_COMMAND_LINE', PHP_SAPI === 'cli');
+define('APP_IS_SECURE', !APP_IS_COMMAND_LINE && (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === "on"));
 
 if (!defined('APP_TESTING_MODE')) {
     define('APP_TESTING_MODE', false);
 }
 
 // General includes
-define("APP_INCLUDE_BASE", __DIR__);
-define("APP_INCLUDE_ROOT", dirname(APP_INCLUDE_BASE));
-define("APP_INCLUDE_WEB", APP_INCLUDE_ROOT . '/web');
-define("APP_INCLUDE_STATIC", APP_INCLUDE_WEB . '/static');
+define('APP_INCLUDE_BASE', __DIR__);
+define('APP_INCLUDE_ROOT', dirname(APP_INCLUDE_BASE));
+define('APP_INCLUDE_WEB', APP_INCLUDE_ROOT . '/web');
+define('APP_INCLUDE_STATIC', APP_INCLUDE_WEB . '/static');
 
 // Detect Docker containerization
-define("APP_INSIDE_DOCKER", file_exists(APP_INCLUDE_ROOT.'/../.docker'));
+define('APP_INSIDE_DOCKER', file_exists(APP_INCLUDE_ROOT.'/../.docker'));
 
-define("APP_INCLUDE_VENDOR", APP_INCLUDE_ROOT . '/vendor');
+define('APP_INCLUDE_VENDOR', APP_INCLUDE_ROOT . '/vendor');
 
-define("APP_INCLUDE_TEMP", APP_INCLUDE_ROOT . '/../www_tmp');
-define("APP_INCLUDE_CACHE", APP_INCLUDE_TEMP . '/cache');
+define('APP_INCLUDE_TEMP', APP_INCLUDE_ROOT . '/../www_tmp');
+define('APP_INCLUDE_CACHE', APP_INCLUDE_TEMP . '/cache');
 
 // Set up application environment.
 if (file_exists(APP_INCLUDE_BASE.'/env.ini')) {

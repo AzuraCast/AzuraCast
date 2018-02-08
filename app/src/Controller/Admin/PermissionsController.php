@@ -17,6 +17,9 @@ class PermissionsController
     protected $flash;
 
     /** @var array */
+    protected $actions;
+
+    /** @var array */
     protected $form_config;
 
     /** @var Csrf */
@@ -25,16 +28,12 @@ class PermissionsController
     /** @var string */
     protected $csrf_namespace = 'admin_permissions';
 
-    /**
-     * @param EntityManager $em
-     * @param Flash $flash
-     * @param array $form_config
-     */
-    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $form_config)
+    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $actions, array $form_config)
     {
         $this->em = $em;
         $this->flash = $flash;
         $this->csrf = $csrf;
+        $this->actions = $actions;
         $this->form_config = $form_config;
     }
 
@@ -53,9 +52,9 @@ class PermissionsController
 
             foreach ($role['permissions'] as $permission) {
                 if ($permission['station']) {
-                    $role['permissions_station'][$permission['station']['name']][] = $permission['action_name'];
+                    $role['permissions_station'][$permission['station']['name']][] = $this->actions['station'][$permission['action_name']];
                 } else {
-                    $role['permissions_global'][] = $permission['action_name'];
+                    $role['permissions_global'][] = $this->actions['global'][$permission['action_name']];
                 }
             }
 

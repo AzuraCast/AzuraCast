@@ -26,6 +26,9 @@ class PublicController
 
     protected function _getPublicPage(Request $request, Response $response, $template_name)
     {
+        // Override system-wide iframe refusal
+        $response = $response->withoutHeader('X-Frame-Options');
+
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 

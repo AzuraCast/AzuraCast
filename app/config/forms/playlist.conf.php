@@ -2,7 +2,6 @@
 use \Entity\StationPlaylist;
 
 /** @var \AzuraCast\Customization $customization */
-$customization = $di[\AzuraCast\Customization::class];
 
 $local_time_offset = \App\Timezone::getOffsetMinutes(null);
 $local_time_hours = floor($local_time_offset / 60);

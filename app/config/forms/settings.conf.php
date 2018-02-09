@@ -31,8 +31,8 @@ return [
                         'label' => _('Prefer Browser URL (If Available)'),
                         'description' => _('If this setting is set to "Yes", the browser URL will be used instead of the base URL when it\'s available. Set to "No" to always use the base URL.'),
                         'options' => [
-                            0 => 'No',
-                            1 => 'Yes',
+                            0 => _('No'),
+                            1 => _('Yes'),
                         ],
                         'default' => 0,
                     ]
@@ -44,8 +44,8 @@ return [
                         'label' => _('Always Use HTTPS'),
                         'description' => _('Set to "Yes" to always use "https://" secure URLs.'),
                         'options' => [
-                            0 => 'No',
-                            1 => 'Yes',
+                            0 => _('No'),
+                            1 => _('Yes'),
                         ],
                         'default' => 0,
                     ]
@@ -57,8 +57,8 @@ return [
                         'label' => _('Use Web Proxy for Radio'),
                         'description' => _('By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).'),
                         'options' => [
-                            0 => 'No',
-                            1 => 'Yes',
+                            0 => _('No'),
+                            1 => _('Yes'),
                         ],
                         'default' => 0,
                     ]

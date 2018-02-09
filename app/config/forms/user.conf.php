@@ -1,6 +1,5 @@
 <?php
-/** @var \Doctrine\ORM\EntityManager $em */
-$em = $di[\Doctrine\ORM\EntityManager::class];
+/** @var array $roles */
 
 return [
     'elements' => [
@@ -36,7 +35,7 @@ return [
             'multiCheckbox',
             [
                 'label' => _('Roles'),
-                'options' => $em->getRepository(\Entity\Role::class)->fetchSelect(),
+                'options' => $roles,
             ]
         ],
 

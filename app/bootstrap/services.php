@@ -4,11 +4,11 @@ return function (\Slim\Container $di, $settings) {
     $di['app_settings'] = $settings;
 
     // Override Slim handlers.
-    $di['request'] = function ($di) {
+    $di['request'] = function (\Slim\Container $di) {
         return \App\Http\Request::createFromEnvironment($di->get('environment'));
     };
 
-    $di['response'] = function ($di) {
+    $di['response'] = function (\Slim\Container $di) {
         $headers = new \Slim\Http\Headers(['Content-Type' => 'text/html; charset=UTF-8']);
         $response = new \App\Http\Response(200, $headers, null, $di[\App\Url::class]);
 
@@ -28,7 +28,7 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di['notFoundHandler'] = function ($di) {
-        return function ($request, $response) use ($di) {
+        return function (\App\Http\Request $request, \App\Http\Response $response) use ($di) {
             /** @var \App\Mvc\View $view */
             $view = $di[\App\Mvc\View::class];
 
@@ -40,8 +40,8 @@ return function (\Slim\Container $di, $settings) {
         return new \Slim\Handlers\Strategies\RequestResponseArgs();
     };
 
-    $di[\App\Config::class] = function ($di) {
-        return new \App\Config(APP_INCLUDE_BASE . '/config', $di);
+    $di[\App\Config::class] = function () {
+        return new \App\Config(APP_INCLUDE_BASE . '/config');
     };
 
     $di[\Doctrine\ORM\EntityManager::class] = function ($di) {
@@ -275,7 +275,7 @@ return function (\Slim\Container $di, $settings) {
         });
 
         $view->registerFunction('pluralize', function ($word, $num = 0) {
-            if ((int)$num == 1) {
+            if ((int)$num === 1) {
                 return $word;
             } else {
                 return \Doctrine\Common\Inflector\Inflector::pluralize($word);
@@ -471,12 +471,12 @@ return function (\Slim\Container $di, $settings) {
     //
 
     $di[\AzuraCast\Middleware\Module\Admin::class] = function($di) {
+        /** @var \App\Config $config */
         $config = $di[\App\Config::class];
-        $dashboard_config = $config->admin->dashboard->toArray();
 
         return new \AzuraCast\Middleware\Module\Admin(
             $di[\AzuraCast\Acl\StationAcl::class],
-            $dashboard_config
+            $config->get('admin/dashboard')
         );
     };
 
@@ -498,9 +498,7 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\AzuraCast\Middleware\Module\StationFiles::class] = function($di) {
-        return new \AzuraCast\Middleware\Module\StationFiles(
-            $di[\App\Csrf::class]
-        );
+        return new \AzuraCast\Middleware\Module\StationFiles();
     };
 
     //
@@ -511,14 +509,14 @@ return function (\Slim\Container $di, $settings) {
 
         $app = new \Slim\App($di);
 
-        // Remove trailing slash from all URLs when routing.
-        $app->add(\AzuraCast\Middleware\RemoveSlashes::class);
+        // Get the current user entity object and assign it into the request if it exists.
+        $app->add(\AzuraCast\Middleware\GetCurrentUser::class);
 
         // Check HTTPS setting and enforce Content Security Policy accordingly.
         $app->add(\AzuraCast\Middleware\EnforceSecurity::class);
 
-        // Get the current user entity object and assign it into the request if it exists.
-        $app->add(\AzuraCast\Middleware\GetCurrentUser::class);
+        // Remove trailing slash from all URLs when routing.
+        $app->add(\AzuraCast\Middleware\RemoveSlashes::class);
 
         // Load routes
         call_user_func(include(__DIR__.'/routes.php'), $app);

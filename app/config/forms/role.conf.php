@@ -1,14 +1,6 @@
 <?php
-/**
- * Edit Role Form
- */
-
-$settings = $di['app_settings'];
-$actions = $settings['actions'];
-
-/** @var \Doctrine\ORM\EntityManager $em */
-$em = $di[\Doctrine\ORM\EntityManager::class];
-$all_stations = $em->getRepository(\Entity\Station::class)->fetchArray();
+/** @var array $actions */
+/** @var array $all_stations */
 
 $form_config = [
     'method' => 'post',

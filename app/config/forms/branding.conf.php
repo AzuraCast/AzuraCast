@@ -1,7 +1,4 @@
 <?php
-
-$settings = $di['app_settings'];
-
 return [
     'method' => 'post',
 

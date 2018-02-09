@@ -1,10 +1,4 @@
 <?php
-/**
- * Profile Form
- */
-
-$settings = $di['app_settings'];
-
 $locale_select = $settings['locale']['supported'];
 $locale_select = ['default' => _('Use Browser Default')] + $locale_select;
 

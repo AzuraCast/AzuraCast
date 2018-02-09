@@ -1,73 +1,36 @@
 <?php
 namespace App;
 
-use Interop\Container\ContainerInterface;
-
 class Config
 {
-    protected $_baseFolder;
+    protected $_base_folder;
 
-    protected $_loaded_configs;
-
-    /** @var ContainerInterface */
-    protected $di;
-
-    public function __construct($baseFolder, ContainerInterface $di)
+    public function __construct($base_folder)
     {
-        $this->di = $di;
-        $this->_loaded_configs = [];
-
-        if (is_dir($baseFolder)) {
-            $this->_baseFolder = $baseFolder;
-        } else {
-            throw new \Exception("Invalid base folder for configurations.");
-        }
-    }
-
-    public function preload($configs)
-    {
-        $config_array = (is_array($configs)) ? $configs : [$configs];
-        foreach ($config_array as $config_item) {
-            $this->__get($config_item);
-        }
-    }
-
-    public function __set($name, $value)
-    {
-        throw new \Exception("Configuration is read-only.");
-    }
-
-    public function __get($name)
-    {
-        if (!isset($this->_loaded_configs[$name])) {
-            $config_name = str_replace(['.', '..'], ['', ''], $name);
-            $config_base = $this->_baseFolder . DIRECTORY_SEPARATOR . $config_name;
-
-            if (is_dir($config_base)) {
-                return new self($config_base, $this->di);
-            } // Return entire directories.
-            else {
-                $this_config = $this->getFile($config_base);
-            } // Return single files.
-
-            $this->_loaded_configs[$name] = $this_config;
+        if (!is_dir($base_folder)) {
+            throw new Exception("Invalid base folder for configurations.");
         }
 
-        return $this->_loaded_configs[$name];
+        $this->_base_folder = $base_folder;
     }
 
-    public function getFile($config_base)
+    /**
+     * @param string $name
+     * @param array $inject_vars Variables to pass into the scope of the configuration.
+     * @return array
+     */
+    public function get($name, $inject_vars = []): array
     {
-        $di = $this->di;
+        $path = $this->_base_folder.DIRECTORY_SEPARATOR.str_replace(['.', '..'], ['', ''], $name).'.conf.php';
 
-        if (file_exists($config_base)) {
-            $config = require $config_base;
-        } elseif (file_exists($config_base . '.conf.php')) {
-            $config = require $config_base . '.conf.php';
-        } else {
-            $config = [];
+        if (file_exists($path)) {
+            unset($name);
+            extract($inject_vars, \EXTR_OVERWRITE);
+            unset($inject_vars);
+
+            return require $path;
         }
 
-        return new \Zend\Config\Config($config);
+        return [];
     }
 }

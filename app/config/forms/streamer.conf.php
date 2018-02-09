@@ -48,8 +48,8 @@ return [
                 'required' => true,
                 'default' => '1',
                 'options' => [
-                    0 => 'No',
-                    1 => 'Yes',
+                    0 => _('No'),
+                    1 => _('Yes'),
                 ],
             ]
         ],

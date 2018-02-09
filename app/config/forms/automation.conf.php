@@ -11,8 +11,8 @@ return [
                 'description' => _('Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".'),
                 'default' => '0',
                 'options' => [
-                    0 => 'Disabled',
-                    1 => 'Enabled',
+                    0 => _('Disabled'),
+                    1 => _('Enabled'),
                 ],
             ]
         ],
@@ -25,10 +25,10 @@ return [
                 'class' => 'inline',
                 'default' => \AzuraCast\Sync\RadioAutomation::DEFAULT_THRESHOLD_DAYS,
                 'options' => [
-                    7 => '7 days',
-                    14 => '14 days',
-                    30 => '30 days',
-                    60 => '60 days',
+                    7 => sprintf(_('%d days'), 7),
+                    14 => sprintf(_('%d days'), 14),
+                    30 => sprintf(_('%d days'), 30),
+                    60 => sprintf(_('%d days'), 60),
                 ],
             ]
         ],

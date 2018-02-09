@@ -545,7 +545,7 @@ class StationMedia
         ]);
 
         if ($media_mtime > $this->mtime
-            || empty($this->song_id)
+            || null === $this->song_id
             || $this->song_id != $expected_song_hash
             || $force) {
 

@@ -31,7 +31,7 @@ if (file_exists(APP_INCLUDE_BASE.'/env.ini')) {
 }
 
 // Application environment.
-define('APP_APPLICATION_ENV', $_ENV['application_env'] ?? 'development');
+define('APP_APPLICATION_ENV', $_ENV['application_env'] ?? 'production');
 define('APP_IN_PRODUCTION', APP_APPLICATION_ENV === 'production');
 
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {

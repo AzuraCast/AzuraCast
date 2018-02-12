@@ -1,4 +1,4 @@
-<?php $this->layout('main', ['title' => 'Recent Playback Timeline', 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => _('Song Playback Timeline'), 'manual' => true]) ?>
 
 <?php
 /** @var \AzuraCast\Assets $assets */
@@ -8,11 +8,11 @@ $assets
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=_('Station Playback Timeline') ?></h2>
+        <h2><?=_('Song Playback Timeline') ?></h2>
 
         <ul class="actions">
             <li>
-                <a href="<?=$url->named('stations:reports:timeline', ['station' => $station->getId(), 'format' => 'csv']) ?>" title="Download Excel CSV">
+                <a href="<?=$url->named('stations:reports:timeline', ['station' => $station->getId(), 'format' => 'csv']) ?>" title="<?=_('Download CSV') ?>">
                     <i class="zmdi zmdi-download"></i>
                 </a>
             </li>

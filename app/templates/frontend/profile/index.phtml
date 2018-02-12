@@ -1,11 +1,11 @@
-<?php $this->layout('main', ['title' => _('My Profile'), 'manual' => true]); ?>
+<?php $this->layout('main', ['title' => _('My Account'), 'manual' => true]); ?>
 
 <?php
 $options = $form->getOptions();
 ?>
 
 <div class="block-header">
-    <h2><?=_('My Profile') ?></h2>
+    <h2><?=_('My Account') ?></h2>
 </div>
 <div class="card" id="profile-main">
     <aside class="pm-overview c-overflow" role="region">
@@ -23,7 +23,7 @@ $options = $form->getOptions();
         </div>
 
         <div class="pmo-block">
-            <a class="btn btn-block btn-primary" role="button" href="<?=$url->named('profile:edit') ?>"><?=_('Edit Profile') ?></a>
+            <a class="btn btn-block btn-primary" role="button" href="<?=$url->named('profile:edit') ?>"><?=_('Edit') ?></a>
         </div>
 
         <div class="pmo-block pmo-contact hidden-xs">

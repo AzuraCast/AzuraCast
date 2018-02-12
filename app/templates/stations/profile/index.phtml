@@ -2,7 +2,7 @@
 /** @var \Entity\Station $station */
 ?>
 
-<?php $this->layout('main', ['title' => _('Station Profile'), 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => _('Profile'), 'manual' => true]) ?>
 
 <?php
 /** @var \AzuraCast\Assets $assets */
@@ -80,10 +80,10 @@ $assets
 
         <section class="card" role="region">
             <div class="card-header ch-alt">
-                <h2><?=_('Station Profile') ?></h2>
+                <h2><?=_('Profile') ?></h2>
 
                 <?php if ($acl->userAllowed($user, 'manage station profile', $station->getId())): ?>
-                <a class="btn bgm-blue btn-float" role="button" title="<?=_('Edit Profile') ?>" href="<?=$url->named('stations:profile:edit', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-edit"></i></a>
+                <a class="btn bgm-blue btn-float" role="button" title="<?=_('Edit') ?>" href="<?=$url->named('stations:profile:edit', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-edit"></i></a>
                 <?php endif; ?>
             </div>
             <table class="table table-striped table-responsive">

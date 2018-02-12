@@ -35,23 +35,17 @@
 
     <li><a href="<?=$url->named('stations:profile:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-image"></i> <?=_('Profile') ?></a></li>
 
-    <?php if ($acl->userAllowed($user, 'manage station mounts', $station->getId()) && $frontend->supportsMounts()): ?>
-        <li><a href="<?=$url->named('stations:mounts:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=_('Mount Points') ?></a></li>
+    <?php if ($acl->userAllowed($user, 'manage station media', $station->getId()) && $backend->supportsMedia()): ?>
+        <li><a href="<?=$url->named('stations:files:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-collection-music"></i> <?=_('Music Files') ?></a></li>
+        <li><a href="<?=$url->named('stations:playlists:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-format-list-bulleted"></i> <?=_('Playlists') ?></a></li>
     <?php endif; ?>
 
     <?php if ($acl->userAllowed($user, 'manage station streamers', $station->getId()) && $backend->supportsStreamers()): ?>
         <li><a href="<?=$url->named('stations:streamers:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-account"></i> <?=_('Streamer/DJ Accounts') ?></a></li>
     <?php endif; ?>
 
-    <?php if ($acl->userAllowed($user, 'manage station media', $station->getId()) && $backend->supportsMedia()): ?>
-        <li class="sub-menu">
-            <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-collection-music"></i> <?=_('Media') ?></a>
-
-            <ul>
-                <li><a href="<?=$url->named('stations:files:index', ['station' => $station->getId()]) ?>"><?=_('Music Files') ?></a></li>
-                <li><a href="<?=$url->named('stations:playlists:index', ['station' => $station->getId()]) ?>"><?=_('Playlists') ?></a></li>
-            </ul>
-        </li>
+    <?php if ($acl->userAllowed($user, 'manage station mounts', $station->getId()) && $frontend->supportsMounts()): ?>
+        <li><a href="<?=$url->named('stations:mounts:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=_('Mount Points') ?></a></li>
     <?php endif; ?>
 
     <?php if ($acl->userAllowed($user, 'view station reports', $station->getId())): ?>

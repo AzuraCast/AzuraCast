@@ -5,6 +5,7 @@ use App\Cache;
 use App\Debug;
 use App\Url;
 use AzuraCast\Radio\Adapters;
+use AzuraCast\Webhook\Dispatcher;
 use Doctrine\ORM\EntityManager;
 use Entity;
 use InfluxDB\Database;
@@ -26,6 +27,9 @@ class NowPlaying extends SyncAbstract
     /** @var Adapters */
     protected $adapters;
 
+    /** @var Dispatcher */
+    protected $webhook_dispatcher;
+
     /** @var Entity\Repository\SongHistoryRepository */
     protected $history_repo;
 
@@ -35,13 +39,14 @@ class NowPlaying extends SyncAbstract
     /** @var Entity\Repository\ListenerRepository */
     protected $listener_repo;
 
-    public function __construct(EntityManager $em, Url $url, Database $influx, Cache $cache, Adapters $adapters)
+    public function __construct(EntityManager $em, Url $url, Database $influx, Cache $cache, Adapters $adapters, Dispatcher $webhook_dispatcher)
     {
         $this->em = $em;
         $this->url = $url;
         $this->influx = $influx;
         $this->cache = $cache;
         $this->adapters = $adapters;
+        $this->webhook_dispatcher = $webhook_dispatcher;
 
         $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
         $this->song_repo = $this->em->getRepository(Entity\Song::class);
@@ -51,9 +56,6 @@ class NowPlaying extends SyncAbstract
     public function run()
     {
         $nowplaying = $this->_loadNowPlaying();
-
-        // Trigger notification to the websocket listeners.
-        $this->_notify('all', $nowplaying);
 
         // Post statistics to InfluxDB.
         $influx_points = [];
@@ -137,12 +139,15 @@ class NowPlaying extends SyncAbstract
      * Generate Structured NowPlaying Data for a given station.
      *
      * @param Entity\Station $station
-     * @param string|null $payload  The request body from the watcher notification service (if applicable).
+     * @param string|null $payload The request body from the watcher notification service (if applicable).
      * @return Entity\Api\NowPlaying
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Exception
      */
     public function processStation(Entity\Station $station, $payload = null)
     {
-        /** @var Entity\Api\NowPlaying $np_old */
+        /** @var Entity\Api\NowPlaying|null $np_old */
         $np_old = $station->getNowplaying();
 
         $np = new Entity\Api\NowPlaying;
@@ -176,7 +181,7 @@ class NowPlaying extends SyncAbstract
             // Pull from current NP data if song details haven't changed.
             $current_song_hash = Entity\Song::getSongHash($np_raw['current_song']);
 
-            if (strcmp($current_song_hash, $np_old->now_playing->song->id) === 0) {
+            if ($np_old instanceof Entity\Api\NowPlaying && strcmp($current_song_hash, $np_old->now_playing->song->id) === 0) {
                 /** @var Entity\Song $song_obj */
                 $song_obj = $this->song_repo->find($current_song_hash);
 
@@ -228,22 +233,9 @@ class NowPlaying extends SyncAbstract
         $this->em->persist($station);
         $this->em->flush();
 
-        $this->_notify($station->getId(), $np);
+        $np_old = ($np_old instanceof Entity\Api\NowPlaying) ? $np_old : $np;
+        $this->webhook_dispatcher->dispatch($station, $np_old, $np);
 
         return $np;
-    }
-
-    protected function _notify($channel, $body)
-    {
-        if (APP_TESTING_MODE) {
-            return;
-        }
-
-        $base_url = (APP_INSIDE_DOCKER) ? 'nginx' : 'localhost';
-        $channel_url = 'http://'.$base_url.':9010/pub/'.urlencode($channel);
-
-        $shell_cmd = 'sleep 10; curl --request POST --data '.escapeshellarg(json_encode($body)).' '.$channel_url;
-        shell_exec(sprintf('(%s) > /dev/null 2>&1 &', $shell_cmd));
-
     }
 }

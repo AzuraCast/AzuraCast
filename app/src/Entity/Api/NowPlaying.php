@@ -70,4 +70,14 @@ class NowPlaying
     {
         $this->now_playing->recalculate();
     }
+
+    /**
+     * Return an array representation of this object.
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return json_decode(json_encode($this), true);
+    }
 }

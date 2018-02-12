@@ -213,6 +213,12 @@ class Station
      */
     protected $mounts;
 
+    /**
+     * @OneToMany(targetEntity="StationWebhook", mappedBy="station", fetch="EXTRA_LAZY")
+     * @var Collection
+     */
+    protected $webhooks;
+
     public function __construct()
     {
         $this->automation_timestamp = 0;
@@ -231,6 +237,7 @@ class Station
         $this->media = new ArrayCollection;
         $this->playlists = new ArrayCollection;
         $this->mounts = new ArrayCollection;
+        $this->webhooks = new ArrayCollection;
         $this->streamers = new ArrayCollection;
     }
 
@@ -489,20 +496,26 @@ class Station
     }
 
     /**
-     * @return mixed|null
+     * @return Api\NowPlaying|null
      */
-    public function getNowplaying()
+    public function getNowplaying(): ?Api\NowPlaying
     {
-        return $this->nowplaying;
+        if ($this->nowplaying instanceof Api\NowPlaying) {
+            return $this->nowplaying;
+        }
+        return null;
     }
 
     /**
-     * @param mixed|null $nowplaying
+     * @param Api\NowPlaying|null $nowplaying
      */
-    public function setNowplaying($nowplaying = null)
+    public function setNowplaying(Api\NowPlaying $nowplaying = null)
     {
         $this->nowplaying = $nowplaying;
-        $this->nowplaying_timestamp = time();
+
+        if ($nowplaying instanceof Api\NowPlaying) {
+            $this->nowplaying_timestamp = time();
+        }
     }
 
     /**
@@ -735,6 +748,14 @@ class Station
     public function getMounts(): Collection
     {
         return $this->mounts;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getWebhooks(): Collection
+    {
+        return $this->webhooks;
     }
 
     /**

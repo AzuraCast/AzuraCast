@@ -404,7 +404,8 @@ return function (\Slim\Container $di, $settings) {
             $di[\App\Url::class],
             $di[\InfluxDB\Database::class],
             $di[\App\Cache::class],
-            $di[\AzuraCast\Radio\Adapters::class]
+            $di[\AzuraCast\Radio\Adapters::class],
+            $di[\AzuraCast\Webhook\Dispatcher::class]
         );
     };
 
@@ -413,6 +414,12 @@ return function (\Slim\Container $di, $settings) {
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\AzuraCast\Radio\Adapters::class]
         );
+    };
+
+    $di[AzuraCast\Webhook\Dispatcher::class] = function($di) {
+        return new \AzuraCast\Webhook\Dispatcher([
+            'local' => new \AzuraCast\Webhook\Connector\Local(),
+        ]);
     };
 
     //

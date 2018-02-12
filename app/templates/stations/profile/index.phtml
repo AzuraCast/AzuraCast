@@ -343,29 +343,7 @@ function formatTime(time) {
 $(function() {
     nowPlaying = new Vue({
         el: '#profile-nowplaying',
-        data: {
-            np: {
-                now_playing: {
-                    song: {
-                        title: '<?=$this->escapeJs(_('Song Title')) ?>',
-                        artist: '<?=$this->escapeJs(_('Song Artist')) ?>'
-                    },
-                    is_request: false,
-                    elapsed: 0,
-                    duration: 0
-                },
-                listeners: {
-                    unique: 0,
-                    total: 0
-                },
-                playing_next: {
-                    song: {
-                        title: '<?=$this->escapeJs(_('Song Title')) ?>',
-                        artist: '<?=$this->escapeJs(_('Song Artist')) ?>'
-                    }
-                }
-            }
-        },
+        data: <?=json_encode(['np' => $nowplaying]) ?>,
         computed: {
             "time_display": function() {
                 var time_played = this.np.now_playing.elapsed;
@@ -384,22 +362,22 @@ $(function() {
         }
     });
 
-    var sub = new NchanSubscriber('/api/live/nowplaying/<?=$station->getId() ?>');
+    setTimeout(loadNowPlaying, 15000);
 
-    sub.on("message", function(message, message_metadata) {
-        var row = JSON.parse(message);
+    function loadNowPlaying() {
+        $.getJSON('<?=$url->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
+            nowPlaying.np = row;
 
-        if ('mediaSession' in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: row.now_playing.song.title,
-                artist: row.now_playing.song.artist
-            });
-        }
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: row.now_playing.song.title,
+                    artist: row.now_playing.song.artist
+                });
+            }
 
-        nowPlaying.np = row;
-    });
-
-    sub.start();
+            setTimeout(loadNowPlaying, 15000);
+        });
+    }
 
     $('#btn_skip_song').on('click', function(e) {
         e.stopPropagation();

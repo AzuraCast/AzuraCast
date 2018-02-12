@@ -1,8 +1,10 @@
 <?php $this->layout('main', ['title' => _('Dashboard'), 'manual' => true]); ?>
 
 <?php
+/** @var \AzuraCast\Customization $customization */
 /** @var \AzuraCast\Assets $assets */
 $assets
+    ->load('vue')
     ->load('radio')
     ->load('highcharts')
     ->load('highcharts_theme_'.$customization->getTheme());
@@ -48,7 +50,7 @@ $assets
                 </ul>
             </div>
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" id="station_dashboard">
                     <colgroup>
                         <col width="5%">
                         <col width="30%">
@@ -66,28 +68,26 @@ $assets
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach($stations as $row): ?>
-                        <tr class="input" id="station_<?=$row['station']->getId() ?>">
+                        <tr class="input" v-bind:id="'station_' + row.station.id" v-for="row in stations" >
                             <td class="text-center">
-                                <a class="btn-audio" href="#" data-url="<?=$this->e($row['stream_url']) ?>">
+                                <a class="btn-audio" href="#" v-bind:data-url="row.stream_url">
                                     <i class="zmdi zmdi-play"></i>
                                 </a>
                             </td>
                             <td>
-                                <big><a href="<?=$url->named('public:index', ['station' => $row['short_name']]) ?>" target="_blank"><?=$this->e($row['station']->getName()) ?></a></big>
+                                <big><a v-bind:href="row.public_url" target="_blank">{{ row.station.name }}</a></big>
                             </td>
                             <td class="text-center">
-                                <span class="nowplaying-listeners">0</span>
+                                <span class="nowplaying-listeners">{{ row.np.listeners.current }}</span>
                             </td>
                             <td>
-                                <strong><span class="nowplaying-title"><?=_('Song Title') ?></span></strong><br>
-                                <span class="nowplaying-artist"><?=_('Song Artist') ?></span>
+                                <strong><span class="nowplaying-title">{{ row.np.now_playing.song.title }}</span></strong><br>
+                                <span class="nowplaying-artist">{{ row.np.now_playing.song.artist }}</span>
                             </td>
                             <td>
-                                <a class="btn btn-primary" role="button" href="<?=$url->named('stations:index:index', ['station' => $row['station']->getId()]) ?>"><?=_('Manage') ?></a>
+                                <a class="btn btn-primary" role="button" v-bind:href="row.manage_url"><?=_('Manage') ?></a>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -183,31 +183,25 @@ $(function () {
     });
 });
 
+var station_dashboard;
+
 $(function() {
-    var sub = new NchanSubscriber('/api/live/nowplaying/<?=implode(',', $station_ids) ?>,');
-
-    sub.on("message", function(message, message_metadata) {
-        var rows = JSON.parse(message);
-
-        $.each(rows, function(k, row) {
-            var station_row = $('#station_' + row.station.id);
-
-            if (station_row.length) {
-
-                if (station_row.find('.btn-audio').hasClass('playing') && 'mediaSession' in navigator) {
-                    navigator.mediaSession.metadata = new MediaMetadata({
-                        title: row.now_playing.song.title,
-                        artist: row.now_playing.song.artist
-                    });
-                }
-
-                station_row.find('.nowplaying-title').text(row.now_playing.song.title);
-                station_row.find('.nowplaying-artist').text(row.now_playing.song.artist);
-                station_row.find('.nowplaying-listeners').text(row.listeners.total)
-            }
-        });
+    station_dashboard = new Vue({
+        el: '#station_dashboard',
+        data: <?=json_encode($stations) ?>
     });
 
-    sub.start();
+    setTimeout(loadNowPlaying, 15000);
 });
+
+function loadNowPlaying() {
+    $.getJSON('<?=$url->named('api:nowplaying:index') ?>', function(data) {
+        $.each(data, function(k, row) {
+            var station_id = row.station.id;
+            station_dashboard['stations'][station_id]['np'] = row;
+        });
+
+        setTimeout(loadNowPlaying, 15000);
+    });
+}
 </script>

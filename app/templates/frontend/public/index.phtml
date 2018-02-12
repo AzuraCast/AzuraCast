@@ -197,23 +197,23 @@ $(function() {
         }
     });
 
-    var sub = new NchanSubscriber('/api/live/nowplaying/<?=$station->getId() ?>');
+    function loadNowPlaying() {
+        $.getJSON('<?=$url->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
+            nowPlaying.np = row;
+            songHistory.history = row.song_history;
 
-    sub.on("message", function(message, message_metadata) {
-        var row = JSON.parse(message);
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: row.now_playing.song.title,
+                    artist: row.now_playing.song.artist
+                });
+            }
 
-        if ('mediaSession' in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: row.now_playing.song.title,
-                artist: row.now_playing.song.artist
-            });
-        }
+            setTimeout(loadNowPlaying, 15000);
+        });
+    }
 
-        nowPlaying.np = row;
-        songHistory.history = row.song_history;
-    });
-
-    sub.start();
+    loadNowPlaying();
 
     setInterval(iterateTimer, 1000);
 });

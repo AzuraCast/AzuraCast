@@ -2,6 +2,7 @@
 namespace Controller\Frontend;
 
 use App\Cache;
+use App\Url;
 use AzuraCast\Acl\StationAcl;
 use AzuraCast\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
@@ -24,6 +25,9 @@ class IndexController
     /** @var Database */
     protected $influx;
 
+    /** @var Url */
+    protected $url;
+
     /** @var Adapters */
     protected $adapter_manager;
 
@@ -35,13 +39,14 @@ class IndexController
      * @param Database $influx
      * @param Adapters $adapter_manager
      */
-    public function __construct(EntityManager $em, StationAcl $acl, Cache $cache, Database $influx, Adapters $adapter_manager)
+    public function __construct(EntityManager $em, StationAcl $acl, Cache $cache, Database $influx, Adapters $adapter_manager, Url $url)
     {
         $this->em = $em;
         $this->acl = $acl;
         $this->cache = $cache;
         $this->influx = $influx;
         $this->adapter_manager = $adapter_manager;
+        $this->url = $url;
     }
 
     public function indexAction(Request $request, Response $response): Response
@@ -49,6 +54,7 @@ class IndexController
         /** @var \App\Mvc\View $view */
         $view = $request->getAttribute('view');
 
+        /** @var Entity\Station[] $stations */
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
         /** @var Entity\User $user */
@@ -66,14 +72,39 @@ class IndexController
         $view_stations = [];
         $station_ids = [];
 
+        // Generate initial data for station dashboard view.
         foreach($stations as $row) {
-            /** @var Entity\Station $row */
             $frontend_adapter = $this->adapter_manager->getFrontendAdapter($row);
 
-            $view_stations[] = [
-                'station' => $row,
-                'short_name' => $row->getShortName(),
+            $np = [
+                'now_playing' => [
+                    'song' => [
+                        'title' => '',
+                        'artist' => '',
+                    ],
+                ],
+                'listeners' => [
+                    'current' => 0,
+                ]
+            ];
+
+            $station_np = $row->getNowplaying();
+            if ($station_np instanceof Entity\Api\NowPlaying) {
+                $np['now_playing']['song']['title'] = $station_np->now_playing->song->title;
+                $np['now_playing']['song']['artist'] = $station_np->now_playing->song->artist;
+                $np['listeners']['current'] = $station_np->listeners->current;
+            }
+
+            $view_stations[$row->getId()] = [
+                'station' => [
+                    'id' => $row->getId(),
+                    'name' => $row->getName(),
+                    'short_name' => $row->getShortName(),
+                ],
+                'public_url' => $this->url->named('public:index', ['station' => $row->getShortName()]),
+                'manage_url' => $this->url->named('stations:index:index', ['station' => $row->getId()]),
                 'stream_url' => $frontend_adapter->getStreamUrl(),
+                'np' => $np,
             ];
             $station_ids[] = $row->getId();
         }
@@ -84,7 +115,7 @@ class IndexController
             $stats_cache_stations[$station->getId()] = $station->getId();
         }
 
-        $cache_name = 'homepage/metrics/'.md5(serialize($stats_cache_stations));
+        $cache_name = 'homepage/metrics/'.implode(',', $stats_cache_stations);
 
         $metrics = $this->cache->getOrSet($cache_name, function() use ($stations) {
 
@@ -196,7 +227,7 @@ class IndexController
         }, 600);
 
         return $view->renderToResponse($response, 'frontend/index/index', [
-            'stations' => $view_stations,
+            'stations' => ['stations' => $view_stations],
             'station_ids' => $station_ids,
             'metrics' => $metrics,
         ]);

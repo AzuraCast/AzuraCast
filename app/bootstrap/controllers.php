@@ -193,7 +193,8 @@ return function (\Slim\Container $di, array $app_settings) {
             $di[\AzuraCast\Acl\StationAcl::class],
             $di[\App\Cache::class],
             $di[\InfluxDB\Database::class],
-            $di[\AzuraCast\Radio\Adapters::class]
+            $di[\AzuraCast\Radio\Adapters::class],
+            $di[\App\Url::class]
         );
     };
 

@@ -74,6 +74,42 @@ class ProfileController
         /** @var View $view */
         $view = $request->getAttribute('view');
 
+        // Populate initial nowplaying data.
+        $np = [
+            'now_playing' => [
+                'song' => [
+                    'title' => _('Song Title'),
+                    'artist' => _('Song Artist'),
+                ],
+                'is_request' => false,
+                'elapsed' => 0,
+                'duration' => 0,
+            ],
+            'listeners' => [
+                'unique' => 0,
+                'total' => 0,
+            ],
+            'playing_next' => [
+                'song' => [
+                    'title' => _('Song Title'),
+                    'artist' => _('Song Artist'),
+                ],
+            ],
+        ];
+
+        $station_np = $station->getNowplaying();
+        if ($station_np instanceof Entity\Api\NowPlaying) {
+            $np['now_playing']['song']['title'] = $station_np->now_playing->song->title;
+            $np['now_playing']['song']['artist'] = $station_np->now_playing->song->artist;
+            $np['now_playing']['is_request'] = $station_np->now_playing->is_request;
+            $np['now_playing']['elapsed'] = $station_np->now_playing->elapsed;
+            $np['now_playing']['duration'] = $station_np->now_playing->duration;
+            $np['listeners']['unique'] = $station_np->listeners->unique;
+            $np['listeners']['total'] = $station_np->listeners->total;
+            $np['playing_next']['song']['title'] = $station_np->playing_next->song->title;
+            $np['playing_next']['song']['artist'] = $station_np->playing_next->song->artist;
+        }
+
         return $view->renderToResponse($response, 'stations/profile/index', [
             'num_songs' => $num_songs,
             'num_playlists' => $num_playlists,
@@ -84,6 +120,7 @@ class ProfileController
             'frontend_config' => (array)$station->getFrontendConfig(),
             'frontend_is_running' => $frontend->isRunning(),
             'stream_urls' => $frontend->getStreamUrls(),
+            'nowplaying' => $np,
         ]);
     }
 

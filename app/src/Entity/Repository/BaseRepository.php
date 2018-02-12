@@ -386,11 +386,16 @@ class BaseRepository extends EntityRepository
 
     protected function _get($entity, $key)
     {
-        $method_name = $this->_getMethodName($key, 'get');
+        $method_name = $this->_getMethodName($key, '');
 
-        return (method_exists($entity, $method_name))
-            ? $entity->$method_name()
-            : null;
+        // Default to "getStatus", "getConfig", etc...but also allow "isEnabled" instead of "getIsEnabled"
+        if (method_exists($entity, 'get'.$method_name)) {
+            return $entity->{'get'.$method_name}();
+        }
+        if (method_exists($entity, $method_name)) {
+            return $entity->{$method_name}();
+        }
+        return null;
     }
 
     protected function _set($entity, $key, $value)

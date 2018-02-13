@@ -22,8 +22,9 @@ class Dispatcher
      * @param Entity\Station $station
      * @param Entity\Api\NowPlaying $np_old
      * @param Entity\Api\NowPlaying $np_new
+     * @param boolean $is_standalone
      */
-    public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np_old, Entity\Api\NowPlaying $np_new): void
+    public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np_old, Entity\Api\NowPlaying $np_new, $is_standalone = true): void
     {
         if (APP_TESTING_MODE) {
             \App\Debug::log('In testing mode; no webhooks dispatched.');
@@ -32,11 +33,14 @@ class Dispatcher
 
         // Compile list of connectors for the station. Always dispatch to the local websocket receiver.
         $connectors = [];
-        $connectors[] = [
-            'type' => 'local',
-            'triggers' => ['all'],
-            'config' => [],
-        ];
+
+        if ($is_standalone) {
+            $connectors[] = [
+                'type' => 'local',
+                'triggers' => ['all'],
+                'config' => [],
+            ];
+        }
 
         // Assemble list of webhooks for the station
         $station_webhooks = $station->getWebhooks();

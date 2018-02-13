@@ -21,14 +21,8 @@ return function (\Slim\Container $di, array $app_settings) {
         /** @var \App\Config $config */
         $config = $di[\App\Config::class];
 
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
-        /** @var \Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(\Entity\Settings::class);
-
         return new Controller\Admin\BrandingController(
-            $settings_repo,
+            $di[\Entity\Repository\SettingsRepository::class],
             $di[\App\Flash::class],
             $config->get('forms/branding', ['settings' => $app_settings])
         );
@@ -67,14 +61,8 @@ return function (\Slim\Container $di, array $app_settings) {
         /** @var \App\Config $config */
         $config = $di[\App\Config::class];
 
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
-        /** @var \Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(\Entity\Settings::class);
-
         return new Controller\Admin\SettingsController(
-            $settings_repo,
+            $di[\Entity\Repository\SettingsRepository::class],
             $di[\App\Flash::class],
             $config->get('forms/settings')
         );

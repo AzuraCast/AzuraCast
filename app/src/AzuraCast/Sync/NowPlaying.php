@@ -234,7 +234,7 @@ class NowPlaying extends SyncAbstract
         $this->em->flush();
 
         $np_old = ($np_old instanceof Entity\Api\NowPlaying) ? $np_old : $np;
-        $this->webhook_dispatcher->dispatch($station, $np_old, $np);
+        $this->webhook_dispatcher->dispatch($station, $np_old, $np, ($payload !== null));
 
         return $np;
     }

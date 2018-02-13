@@ -3,7 +3,9 @@ namespace Controller\Frontend;
 
 use App\Http\Request;
 use App\Http\Response;
+use Doctrine\ORM\EntityManager;
 use Slim\Container;
+use Entity;
 
 class UtilController
 {
@@ -20,9 +22,22 @@ class UtilController
 
     public function testAction(Request $request, Response $response): Response
     {
-        $body_contents = $request->getBody()->getContents();
-        file_put_contents(__DIR__.'/test.txt', $body_contents);
+        \App\Debug::setEchoMode(true);
 
-        return $response->withJson('Test successful!');
+        /** @var EntityManager $em */
+        $em = $this->di[EntityManager::class];
+
+        $station_repo = $em->getRepository(Entity\Station::class);
+
+        /** @var Entity\Station $station */
+        $station = $station_repo->find(1);
+
+        $payload = file_get_contents('http://stations:8000/statistics?json=1');
+
+        /** @var \AzuraCast\Sync\NowPlaying $sync_nowplaying */
+        $sync_nowplaying = $this->di[\AzuraCast\Sync\NowPlaying::class];
+        $sync_nowplaying->processStation($station, $payload);
+
+        exit;
     }
 }

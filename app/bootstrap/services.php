@@ -140,6 +140,13 @@ return function (\Slim\Container $di, $settings) {
         return $em->getConnection();
     };
 
+    $di[\Entity\Repository\SettingsRepository::class] = function($di) {
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $di[\Doctrine\ORM\EntityManager::class];
+
+        return $em->getRepository(Entity\Settings::class);
+    };
+
     $di[\App\Auth::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];
@@ -177,11 +184,8 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\App\Url::class] = function ($di) {
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
         /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(\Entity\Settings::class);
+        $settings_repo = $di[\Entity\Repository\SettingsRepository::class];
 
         $base_url = $settings_repo->getSetting('base_url', '');
         $prefer_browser_url = (bool)$settings_repo->getSetting('prefer_browser_url', 0);
@@ -314,13 +318,7 @@ return function (\Slim\Container $di, $settings) {
     //
 
     $di[\AzuraCast\Customization::class] = function ($di) {
-        /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di[\Doctrine\ORM\EntityManager::class];
-
-        /** @var \Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $em->getRepository(Entity\Settings::class);
-
-        return new \AzuraCast\Customization($di['app_settings'], $settings_repo);
+        return new \AzuraCast\Customization($di['app_settings'], $di[\Entity\Repository\SettingsRepository::class]);
     };
 
     $di[\AzuraCast\Assets::class] = function ($di) {
@@ -418,8 +416,16 @@ return function (\Slim\Container $di, $settings) {
 
     $di[AzuraCast\Webhook\Dispatcher::class] = function($di) {
         return new \AzuraCast\Webhook\Dispatcher([
-            'local' => new \AzuraCast\Webhook\Connector\Local(),
+            'local' => $di[\AzuraCast\Webhook\Connector\Local::class],
         ]);
+    };
+
+    $di[\AzuraCast\Webhook\Connector\Local::class] = function($di) {
+        return new \AzuraCast\Webhook\Connector\Local(
+            $di[\InfluxDB\Database::class],
+            $di[\App\Cache::class],
+            $di[\Entity\Repository\SettingsRepository::class]
+        );
     };
 
     //

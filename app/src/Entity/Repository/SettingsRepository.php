@@ -5,24 +5,24 @@ use Entity;
 
 class SettingsRepository extends BaseRepository
 {
+    /** @var array */
+    protected static $settings;
+
     /**
-     * @param $settings
+     * @param array $settings
      */
-    public function setSettings($settings)
+    public function setSettings(array $settings): void
     {
         foreach ($settings as $setting_key => $setting_value) {
-            $this->setSetting($setting_key, $setting_value, false);
+            $this->setSetting($setting_key, $setting_value);
         }
-
-        $this->clearCache();
     }
 
     /**
      * @param $key
      * @param $value
-     * @param bool $flush_cache
      */
-    public function setSetting($key, $value, $flush_cache = true)
+    public function setSetting($key, $value): void
     {
         $record = $this->findOneBy(['setting_key' => $key]);
 
@@ -35,9 +35,8 @@ class SettingsRepository extends BaseRepository
         $this->_em->persist($record);
         $this->_em->flush();
 
-        if ($flush_cache) {
-            $this->clearCache();
-        }
+        // Update cached value
+        self::$settings[$key] = $value;
     }
 
     /**
@@ -49,12 +48,7 @@ class SettingsRepository extends BaseRepository
     public function getSetting($key, $default_value = null, $cached = true)
     {
         $settings = $this->fetchArray($cached);
-
-        if (isset($settings[$key])) {
-            return $settings[$key];
-        } else {
-            return $default_value;
-        }
+        return $settings[$key] ?? $default_value;
     }
 
     /**
@@ -80,19 +74,17 @@ class SettingsRepository extends BaseRepository
      */
     public function fetchArray($cached = true, $order_by = null, $order_dir = 'ASC')
     {
-        static $settings;
-
-        if (!$settings || !$cached) {
+        if (!self::$settings || !$cached) {
             $settings_raw = $this->_em->createQuery('SELECT s FROM ' . $this->_entityName . ' s ORDER BY s.setting_key ASC')
                 ->getArrayResult();
 
-            $settings = [];
-            foreach ((array)$settings_raw as $setting) {
-                $settings[$setting['setting_key']] = $setting['setting_value'];
+            self::$settings = [];
+            foreach ($settings_raw as $setting) {
+                self::$settings[$setting['setting_key']] = $setting['setting_value'];
             }
         }
 
-        return $settings;
+        return self::$settings;
     }
 
     /**

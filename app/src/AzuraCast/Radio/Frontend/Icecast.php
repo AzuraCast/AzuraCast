@@ -212,9 +212,8 @@ class Icecast extends FrontendAbstract
         if ($binary = self::getBinary()) {
             $config_path = $this->station->getRadioConfigDir() . '/icecast.xml';
             return $binary . ' -c ' . $config_path;
-        } else {
-            return '/bin/false';
         }
+        return '/bin/false';
     }
 
     public function getAdminUrl()

@@ -42,6 +42,9 @@ class Configuration
             return;
         }
 
+        // Ensure port configuration exists
+        $this->assignRadioPorts($station, false);
+
         if ($regen_auth_key || empty($station->getAdapterApiKey())) {
             $station->generateAdapterApiKey();
             $this->em->persist($station);
@@ -198,5 +201,90 @@ class Configuration
         foreach ($reload_added as $group) {
             $this->supervisor->addProcessGroup($group);
         }
+    }
+
+    /**
+     * Assign the first available port range to this station, or ensure it already is configured properly.
+     *
+     * @param Station $station
+     * @param bool $force
+     */
+    public function assignRadioPorts(Station $station, $force = false)
+    {
+        if ($station->getFrontendType() !== 'remote' && $station->getBackendType() !== 'none') {
+            $frontend_config = (array)$station->getFrontendConfig();
+
+            if (empty($frontend_config['port']) || $force) {
+                $base_port = $this->getFirstAvailableRadioPort($station);
+
+                $station->setFrontendConfig([
+                    'port' => $base_port,
+                ]);
+
+                $station->setBackendConfig([
+                    'dj_port' => $base_port + 5,
+                    'telnet_port' => $base_port + 4,
+                ]);
+
+                $this->em->persist($station);
+                $this->em->flush();
+            }
+        }
+    }
+
+    /**
+     * Determine the first available 10-port block that has no stations occupying it.
+     *
+     * @param Station|null $station A station to exclude, or null to include all stations.
+     * @return int The first available radio port to use.
+     */
+    public function getFirstAvailableRadioPort(Station $station = null): int
+    {
+        $used_ports = [];
+
+        // Get all station used ports.
+        $station_configs = $this->em->createQuery('SELECT s.id, s.frontend_type, s.frontend_config, s.backend_type, s.backend_config FROM Entity\Station s')
+            ->getArrayResult();
+
+        foreach($station_configs as $row) {
+            // Skip the specified station, if it's specified
+            if ($station !== null && $row['id'] === $station->getId()) {
+                continue;
+            }
+
+            if ($row['frontend_type'] !== 'remote' && $row['backend_type'] !== 'none') {
+                $frontend_config = (array)$row['frontend_config'];
+
+                if (!empty($frontend_config['port'])) {
+                    $used_ports[$frontend_config['port']] = $frontend_config['port'];
+                }
+
+                $backend_config = (array)$row['backend_config'];
+
+                if (!empty($backend_config['dj_port'])) {
+                    $used_ports[$backend_config['dj_port']] = $backend_config['dj_port'];
+                }
+                if (!empty($backend_config['telnet_port'])) {
+                    $used_ports[$backend_config['telnet_port']] = $backend_config['telnet_port'];
+                }
+            }
+        }
+
+        // Iterate from port 8000 to 9000, in increments of 10
+        for($port = 8000; $port < 9000; $port += 10) {
+            $range_in_use = false;
+            for($i = $port; $i < $port+10; $i++) {
+                if (isset($used_ports[$i])) {
+                    $range_in_use = true;
+                    break;
+                }
+            }
+
+            if (!$range_in_use) {
+                return $port;
+            }
+        }
+
+        throw new \App\Exception('This installation has no available ports for new radio stations.');
     }
 }

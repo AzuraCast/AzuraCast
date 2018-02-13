@@ -488,22 +488,13 @@ class Liquidsoap extends BackendAbstract
 
         if (!empty($settings['dj_port'])) {
             return (int)$settings['dj_port'];
-        } else {
-            $dj_port = (8000 + (($this->station->getId() - 1) * 10) + 5);
-
-            try {
-                $this->station->setBackendConfig(['dj_port' => $dj_port]);
-
-                /** @var EntityManager $em */
-                $em = $this->di[EntityManager::class];
-                $em->persist($this->station);
-                $em->flush();
-            } catch(\Doctrine\ORM\OptimisticLockException $e) {
-                // Ignore and continue.
-            }
-
-            return (int)$dj_port;
         }
+
+        // Default to frontend port + 5
+        $frontend_config = (array)$this->station->getFrontendConfig();
+        $frontend_port = $frontend_config['port'] ?? (8000 + (($this->station->getId() - 1) * 10));
+
+        return $frontend_port + 5;
     }
 
     /**
@@ -514,25 +505,7 @@ class Liquidsoap extends BackendAbstract
     protected function _getTelnetPort(): int
     {
         $settings = (array)$this->station->getBackendConfig();
-
-        if (!empty($settings['telnet_port'])) {
-            return (int)$settings['telnet_port'];
-        } else {
-            $telnet_port = (8000 + (($this->station->getId() - 1) * 10) + 4);
-
-            try {
-                $this->station->setBackendConfig(['telnet_port' => $telnet_port]);
-
-                /** @var EntityManager $em */
-                $em = $this->di[EntityManager::class];
-                $em->persist($this->station);
-                $em->flush();
-            } catch(\Doctrine\ORM\OptimisticLockException $e) {
-                // Ignore and continue.
-            }
-
-            return (int)$telnet_port;
-        }
+        return (int)($settings['telnet_port'] ?? ($this->getStreamPort() - 1));
     }
 
     /**
@@ -540,17 +513,17 @@ class Liquidsoap extends BackendAbstract
      */
     public static function getBinary()
     {
-        $user_base = realpath(APP_INCLUDE_ROOT.'/..');
+        $user_base = dirname(APP_INCLUDE_ROOT);
         $new_path = $user_base . '/.opam/system/bin/liquidsoap';
 
         $legacy_path = '/usr/bin/liquidsoap';
 
         if (APP_INSIDE_DOCKER || file_exists($new_path)) {
             return $new_path;
-        } elseif (file_exists($legacy_path)) {
-            return $legacy_path;
-        } else {
-            return false;
         }
+        if (file_exists($legacy_path)) {
+            return $legacy_path;
+        }
+        return false;
     }
 }

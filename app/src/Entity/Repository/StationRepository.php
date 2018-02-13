@@ -70,7 +70,7 @@ class StationRepository extends BaseRepository
         $this->fromArray($station, $data);
 
         // Create path for station.
-        $station_base_dir = realpath(APP_INCLUDE_ROOT . '/..') . '/stations';
+        $station_base_dir = dirname(APP_INCLUDE_ROOT) . '/stations';
 
         $station_dir = $station_base_dir . '/' . $station->getShortName();
         $station->setRadioBaseDir($station_dir);

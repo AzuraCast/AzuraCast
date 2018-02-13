@@ -140,7 +140,7 @@ class StationsController
             $new_record_data['name'] = $data['name'];
             $new_record_data['description'] = $data['description'];
 
-            unset($new_record_data['radio_base_dir']);
+            unset($new_record_data['short_name'], $new_record_data['radio_base_dir']);
 
             if ($data['clone_media'] === 'share') {
                 $new_record_data['radio_media_dir'] = $record->getRadioMediaDir();
@@ -150,6 +150,9 @@ class StationsController
 
             // Trigger normal creation process of station.
             $new_record = $this->record_repo->create($new_record_data, $this->adapters, $this->configuration);
+
+            // Force port reassignment
+            $this->configuration->assignRadioPorts($new_record, true);
 
             $this->configuration->writeConfiguration($new_record);
 

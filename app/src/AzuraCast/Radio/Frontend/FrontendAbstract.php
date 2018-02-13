@@ -295,7 +295,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
                 $this->supervisor->stopProcess($program_name);
                 $this->log(_('Watcher process stopped.'), 'green');
             } catch (FaultException $e) {
-                if (stristr($e->getMessage(), 'NOT_RUNNING') !== false) {
+                if (stripos($e->getMessage(), 'NOT_RUNNING') !== false) {
                     $this->log(_('Watcher process was not running!'), 'blue');
                 } else {
                     $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
@@ -328,7 +328,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
                 $this->supervisor->startProcess($program_name);
                 $this->log(_('Watcher process started.'), 'green');
             } catch (FaultException $e) {
-                if (stristr($e->getMessage(), 'ALREADY_STARTED') !== false) {
+                if (stripos($e->getMessage(), 'ALREADY_STARTED') !== false) {
                     $this->log(_('Watcher process is already running!'), 'green');
                 } else {
                     $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);

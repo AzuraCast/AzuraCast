@@ -131,7 +131,7 @@ class MountsController
             if ($record->getIsDefault()) {
                 $this->em->createQuery('UPDATE Entity\StationMount sm SET sm.is_default = 0
                     WHERE sm.station_id = :station_id AND sm.id != :new_default_id')
-                    ->setParameter('station_id', $this->station->getId())
+                    ->setParameter('station_id', $station->getId())
                     ->setParameter('new_default_id', $record->getId())
                     ->execute();
             }

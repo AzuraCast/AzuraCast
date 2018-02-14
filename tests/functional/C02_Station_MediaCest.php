@@ -49,6 +49,6 @@ class C02_Station_MediaCest extends CestAbstract
 
         $I->amOnPage('/station/'.$station_id.'/files');
 
-        $I->see('Media Manager');
+        $I->see('Music Files');
     }
 }

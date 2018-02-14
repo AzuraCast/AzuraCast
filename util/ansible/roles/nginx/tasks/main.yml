@@ -40,6 +40,10 @@
       path: "/etc/nginx/sites-enabled/default"
       state: absent
 
+  - name: Add nginx global config
+    become: true
+    template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+
   - name: Add app-specific nginx site
     become: true
     template: src=default.j2 dest=/etc/nginx/sites-available/00-azuracast
@@ -50,13 +54,6 @@
       path: "/etc/nginx/sites-enabled/00-azuracast"
       state: link
       src: "/etc/nginx/sites-available/00-azuracast"
-
-  - name: Turn sendfile off on nginx for local development
-    become: true
-    replace:
-      dest: /etc/nginx/nginx.conf
-      regexp: '# server_tokens off;'
-      replace: 'server_tokens off;'
 
   - name: Turn sendfile off on nginx for local development
     become: true

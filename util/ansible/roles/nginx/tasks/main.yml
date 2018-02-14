@@ -16,6 +16,14 @@
       - "nginx-common"
       - "nginx-extras"
 
+  - name: Remove any older nginx
+    become: true
+    apt:  package="{{ item }}" state=absent purge=yes
+    with_items:
+     - nginx
+     - nginx-common
+     - nginx-extras
+
   - name: Install nginx
     become: true
     apt:  package="{{ item }}" state=latest
@@ -42,11 +50,11 @@
 
   - name: Add nginx global config
     become: true
-    template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf backup=yes
+    template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf force=yes backup=yes
 
   - name: Add app-specific nginx site
     become: true
-    template: src=default.j2 dest=/etc/nginx/sites-available/00-azuracast
+    template: src=default.j2 dest=/etc/nginx/sites-available/00-azuracast force=yes
 
   - name: Link app-specific nginx site
     become: true

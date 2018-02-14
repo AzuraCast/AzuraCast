@@ -16,7 +16,7 @@ class A01_Frontend_ProfileCest extends CestAbstract
         $I->see('Profile');
         $I->see('Super Administrator');
 
-        $I->click('Edit Profile');
+        $I->click('Edit');
 
         $I->submitForm('.form', [
             'timezone' => 'US/Central',

@@ -14,7 +14,7 @@ class C04_Station_ReportsCest extends CestAbstract
         $I->amOnPage('/station/'.$station_id.'/reports/timeline');
 
         $I->seeResponseCodeIs(200);
-        $I->see('Station Playback Timeline');
+        $I->see('Song Playback Timeline');
 
         $I->amOnPage('/station/'.$station_id.'/reports/performance');
 

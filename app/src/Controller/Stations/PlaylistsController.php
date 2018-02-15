@@ -320,8 +320,9 @@ class PlaylistsController
                 ->execute();
 
             foreach($matched_media as $media) {
-                if (!$media->playlists->contains($playlist)) {
-                    $media->playlists->add($playlist);
+                /** @var Entity\StationMedia $media */
+                if (!$media->getPlaylists()->contains($playlist)) {
+                    $media->getPlaylists()->add($playlist);
                     $playlist->getMedia()->add($media);
 
                     $this->em->persist($media);

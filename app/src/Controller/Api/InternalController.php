@@ -53,6 +53,9 @@ class InternalController
         }
 
         // Handle login conditions where the username and password are joined in the password field.
+        if (strpos($pass, ',') !== false) {
+            list($user, $pass) = explode(',', $pass);
+        }
         if (strpos($pass, ':') !== false) {
             list($user, $pass) = explode(':', $pass);
         }

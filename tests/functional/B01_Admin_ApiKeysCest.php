@@ -19,7 +19,7 @@ class B01_Admin_ApiKeysCest extends CestAbstract
             'comment' => 'API Key Test',
         ]);
 
-        $I->seeCurrentUrlEquals('/api_keys/edit');
+        $I->seeCurrentUrlEquals('/api_keys/add');
         $I->see('New Key Generated');
 
         $I->click('.btn-primary'); // Continue

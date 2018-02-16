@@ -105,7 +105,7 @@ class PermissionsController
 
             $permission_repo->setActionsForRole($record, $data);
 
-            $this->flash->alert('<b>' . _('Record updated.') . '</b>', 'green');
+            $this->flash->alert('<b>' . sprintf(($id) ? _('%s updated.') : _('%s added.'), _('Permission')) . '</b>', 'green');
 
             return $response->redirectToRoute('admin:permissions:index');
         }
@@ -116,7 +116,7 @@ class PermissionsController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => _('Edit Record')
+            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('Permission')),
         ]);
     }
 
@@ -134,7 +134,7 @@ class PermissionsController
 
         $this->em->flush();
 
-        $this->flash->alert('<b>' . _('Record deleted.') . '</b>', 'green');
+        $this->flash->alert('<b>' . sprintf(_('%s deleted.'), _('Permission')) . '</b>', 'green');
         return $response->redirectToRoute('admin:permissions:index');
     }
 }

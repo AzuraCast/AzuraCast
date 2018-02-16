@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-12 16:11+0000\n"
+"POT-Creation-Date: 2018-02-16 01:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,59 +70,132 @@ msgstr ""
 msgid "Edit Profile"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Frontend/IndexController.php:153
+#: /var/azuracast/www/app/src/Controller/Frontend/IndexController.php:184
 #, php-format
 msgid "%s Listener Range"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Frontend/IndexController.php:164
+#: /var/azuracast/www/app/src/Controller/Frontend/IndexController.php:195
 #, php-format
 msgid "%s Daily Average"
 msgstr ""
 
+#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:72
+#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:140
+#: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:63
+#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:126
+#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:112
+#, php-format
+msgid "%s not found."
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:72
 #: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:103
-#: /var/azuracast/www/app/src/Controller/Admin/SettingsController.php:45
+#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:111
+#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:131
+#: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:63
 #: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:76
+#: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:87
+#: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:103
+#: /var/azuracast/www/app/templates/frontend/api_keys/index.phtml:10
+#: /var/azuracast/www/app/templates/admin/api/index.phtml:18
+msgid "API Key"
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:103
+#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:98
+#: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:76
+#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:108
 #: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:107
-#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:199
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:235
+#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:154
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:141
+#: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:114
+#, php-format
+msgid "%s updated."
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:110
+#: /var/azuracast/www/app/templates/frontend/api_keys/index.phtml:4
+#: /var/azuracast/www/app/templates/frontend/api_keys/new_key.phtml:8
+#: /var/azuracast/www/app/templates/frontend/profile/index.phtml:1
+#: /var/azuracast/www/app/templates/frontend/profile/index.phtml:8
+#: /var/azuracast/www/app/templates/main.phtml:83
+msgid "My Account"
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:111
+#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:112
+#: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:87
+#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:119
+#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:117
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:245
+#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:166
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:152
+#: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:125
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:111
+#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:112
+#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:119
+#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:117
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:245
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:152
+#: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:125
+#: /var/azuracast/www/app/templates/frontend/api_keys/index.phtml:10
+#: /var/azuracast/www/app/templates/frontend/index/index.phtml:48
+#: /var/azuracast/www/app/templates/admin/users/index.phtml:7
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:6
+#: /var/azuracast/www/app/templates/admin/stations/index.phtml:7
+#: /var/azuracast/www/app/templates/stations/mounts/index.phtml:7
+#: /var/azuracast/www/app/templates/stations/streamers/index.phtml:9
+#: /var/azuracast/www/app/templates/stations/playlists/index.phtml:12
+#, php-format
+msgid "Add %s"
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:131
+#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:128
+#: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:103
+#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:137
+#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:228
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:358
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:178
+#: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:149
+#, php-format
+msgid "%s deleted."
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Admin/SettingsController.php:45
+#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:203
 #: /var/azuracast/www/app/src/Controller/Admin/BrandingController.php:45
 #: /var/azuracast/www/app/src/Controller/Stations/AutomationController.php:59
 msgid "Changes saved."
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:110
-msgid "Generate New API Key"
-msgstr ""
-
-#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:110
-#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:112
-#: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:87
-#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:119
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:245
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:152
-msgid "Edit Record"
-msgstr ""
-
-#: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:130
-#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:128
-#: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:103
-#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:137
-#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:224
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:357
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:178
-#: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:149
-msgid "Record deleted."
-msgstr ""
-
 #: /var/azuracast/www/app/src/Controller/Admin/SettingsController.php:56
-msgid "Site Settings"
+#: /var/azuracast/www/app/config/admin/dashboard.conf.php:10
+msgid "System Settings"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:98
 #: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:108
+#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:107
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:235
 #: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:141
-msgid "Record updated."
+#: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:114
+#, php-format
+msgid "%s added."
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:98
+#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:112
+#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:128
+#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:140
+#: /var/azuracast/www/app/templates/admin/users/index.phtml:7
+msgid "User"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:102
@@ -131,11 +204,24 @@ msgid ""
 "mail address."
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:140
-msgid "Record not found!"
+#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:108
+#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:119
+#: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:137
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:6
+msgid "Permission"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:210
+#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:107
+#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:117
+#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:126
+#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:228
+#: /var/azuracast/www/app/templates/frontend/index/index.phtml:48
+#: /var/azuracast/www/app/templates/admin/stations/index.phtml:7
+#: /var/azuracast/www/app/templates/admin/stations/index.phtml:18
+msgid "Station"
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:214
 #, php-format
 msgid "Clone Station: %s"
 msgstr ""
@@ -189,16 +275,20 @@ msgstr ""
 msgid "Sunday"
 msgstr ""
 
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:235
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:245
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:152
-msgid "Add Record"
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:358
+#: /var/azuracast/www/app/templates/frontend/public/index.phtml:62
+#: /var/azuracast/www/app/templates/stations/playlists/index.phtml:12
+#: /var/azuracast/www/app/templates/stations/playlists/index.phtml:34
+msgid "Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:334
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:335
 msgid "Existing playlist imported."
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:334
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:335
 #, php-format
 msgid "%d song(s) were imported into the playlist."
 msgstr ""
@@ -211,12 +301,10 @@ msgstr ""
 msgid "Automated assignment error"
 msgstr ""
 
+#: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:112
 #: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:154
-msgid "Media metadata updated!"
-msgstr ""
-
 #: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:166
-msgid "Edit Media Metadata"
+msgid "Media"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:210
@@ -235,9 +323,38 @@ msgstr ""
 msgid "File Not Processed"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:156
-#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:160
+#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:81
+#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:94
+#: /var/azuracast/www/app/config/forms/media.conf.php:17
+#: /var/azuracast/www/app/config/forms/song.conf.php:33
+#: /var/azuracast/www/app/templates/frontend/public/index.phtml:158
+#: /var/azuracast/www/app/templates/frontend/public/index.phtml:192
+#: /var/azuracast/www/app/templates/frontend/public/embed.phtml:43
+#: /var/azuracast/www/app/templates/stations/requests/index.phtml:26
+#: /var/azuracast/www/app/templates/stations/reports/timeline.phtml:35
+msgid "Song Title"
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:82
+#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:95
+#: /var/azuracast/www/app/config/forms/media.conf.php:24
+#: /var/azuracast/www/app/templates/frontend/public/index.phtml:159
+#: /var/azuracast/www/app/templates/frontend/public/index.phtml:193
+#: /var/azuracast/www/app/templates/frontend/public/embed.phtml:44
+msgid "Song Artist"
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:193
+#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:197
 msgid "Song skipped."
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:141
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:152
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:178
+#: /var/azuracast/www/app/templates/stations/mounts/index.phtml:7
+#: /var/azuracast/www/app/templates/stations/mounts/index.phtml:30
+msgid "Mount Point"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:63
@@ -249,15 +366,10 @@ msgid "You can now set up streamer (DJ) accounts."
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:114
-msgid "Streamer account updated!"
-msgstr ""
-
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:125
-msgid "Edit Streamer"
-msgstr ""
-
-#: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:125
-msgid "Add Streamer"
+#: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:149
+#: /var/azuracast/www/app/templates/stations/streamers/index.phtml:9
+msgid "Streamer"
 msgstr ""
 
 #: /var/azuracast/www/app/src/App/Utilities.php:91
@@ -295,23 +407,23 @@ msgid_plural "%d months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:99
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:103
 msgid "Any time the currently playing song changes"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:100
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:104
 msgid "Any time the listener count increases"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:101
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:105
 msgid "Any time the listener count decreases"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:102
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:106
 msgid "Any time a live streamer/DJ connects to the stream"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:103
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:107
 msgid "Any time a live streamer/DJ disconnects from the stream"
 msgstr ""
 
@@ -411,12 +523,12 @@ msgid "Process is already running!"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/role.conf.php:15
-#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:23
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:19
 msgid "Role Name"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/role.conf.php:25
-#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:24
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:20
 msgid "System-Wide Permissions"
 msgstr ""
 
@@ -424,9 +536,9 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/role.conf.php:50
 #: /var/azuracast/www/app/templates/frontend/public/index.phtml:110
 #: /var/azuracast/www/app/templates/frontend/public/embedrequests.phtml:17
-#: /var/azuracast/www/app/templates/admin/users/index.phtml:22
-#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:22
-#: /var/azuracast/www/app/templates/admin/stations/index.phtml:21
+#: /var/azuracast/www/app/templates/admin/users/index.phtml:18
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:18
+#: /var/azuracast/www/app/templates/admin/stations/index.phtml:17
 #: /var/azuracast/www/app/templates/stations/requests/index.phtml:28
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:29
 #: /var/azuracast/www/app/templates/stations/streamers/index.phtml:21
@@ -591,29 +703,6 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/media.conf.php:10
 #: /var/azuracast/www/app/config/forms/rename.conf.php:10
 msgid "The relative path of the file in the station's media directory."
-msgstr ""
-
-#: /var/azuracast/www/app/config/forms/media.conf.php:17
-#: /var/azuracast/www/app/config/forms/song.conf.php:33
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:83
-#: /var/azuracast/www/app/templates/frontend/public/index.phtml:158
-#: /var/azuracast/www/app/templates/frontend/public/index.phtml:192
-#: /var/azuracast/www/app/templates/frontend/public/embed.phtml:43
-#: /var/azuracast/www/app/templates/stations/requests/index.phtml:26
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:350
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:363
-#: /var/azuracast/www/app/templates/stations/reports/timeline.phtml:35
-msgid "Song Title"
-msgstr ""
-
-#: /var/azuracast/www/app/config/forms/media.conf.php:24
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:84
-#: /var/azuracast/www/app/templates/frontend/public/index.phtml:159
-#: /var/azuracast/www/app/templates/frontend/public/index.phtml:193
-#: /var/azuracast/www/app/templates/frontend/public/embed.phtml:44
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:351
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:364
-msgid "Song Artist"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:31
@@ -825,7 +914,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:15
 #: /var/azuracast/www/app/config/forms/station.conf.php:27
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:62
+#: /var/azuracast/www/app/templates/frontend/index/index.phtml:64
 msgid "Station Name"
 msgstr ""
 
@@ -893,7 +982,7 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/login.conf.php:9
 #: /var/azuracast/www/app/templates/frontend/account/login.phtml:20
 #: /var/azuracast/www/app/templates/frontend/setup/register.phtml:19
-#: /var/azuracast/www/app/templates/admin/users/index.phtml:23
+#: /var/azuracast/www/app/templates/admin/users/index.phtml:19
 msgid "E-mail Address"
 msgstr ""
 
@@ -908,8 +997,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/config/forms/user.conf.php:37
 #: /var/azuracast/www/app/templates/frontend/profile/index.phtml:30
-#: /var/azuracast/www/app/templates/admin/users/index.phtml:24
-#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:9
+#: /var/azuracast/www/app/templates/admin/users/index.phtml:20
 msgid "Roles"
 msgstr ""
 
@@ -1384,7 +1472,7 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/api_key.conf.php:10
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:38
 #: /var/azuracast/www/app/templates/frontend/api_keys/index.phtml:29
-#: /var/azuracast/www/app/templates/admin/api/index.phtml:23
+#: /var/azuracast/www/app/templates/admin/api/index.phtml:19
 msgid "Comments"
 msgstr ""
 
@@ -1587,10 +1675,6 @@ msgstr ""
 msgid "System Maintenance"
 msgstr ""
 
-#: /var/azuracast/www/app/config/admin/dashboard.conf.php:10
-msgid "System Settings"
-msgstr ""
-
 #: /var/azuracast/www/app/config/admin/dashboard.conf.php:15
 #: /var/azuracast/www/app/templates/admin/branding/index.phtml:1
 msgid "Custom Branding"
@@ -1598,7 +1682,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/config/admin/dashboard.conf.php:20
 #: /var/azuracast/www/app/templates/admin/api/index.phtml:1
-#: /var/azuracast/www/app/templates/admin/api/index.phtml:9
+#: /var/azuracast/www/app/templates/admin/api/index.phtml:5
 msgid "API Keys"
 msgstr ""
 
@@ -1607,10 +1691,14 @@ msgid "Users"
 msgstr ""
 
 #: /var/azuracast/www/app/config/admin/dashboard.conf.php:30
+#: /var/azuracast/www/app/templates/admin/users/index.phtml:1
+#: /var/azuracast/www/app/templates/admin/users/index.phtml:5
 msgid "User Accounts"
 msgstr ""
 
 #: /var/azuracast/www/app/config/admin/dashboard.conf.php:35
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:1
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:5
 msgid "Permissions"
 msgstr ""
 
@@ -1620,7 +1708,7 @@ msgid "Stations"
 msgstr ""
 
 #: /var/azuracast/www/app/config/admin/dashboard.conf.php:45
-#: /var/azuracast/www/app/templates/admin/stations/index.phtml:9
+#: /var/azuracast/www/app/templates/admin/stations/index.phtml:5
 msgid "Manage Stations"
 msgstr ""
 
@@ -1630,24 +1718,6 @@ msgstr ""
 #: /var/azuracast/www/app/templates/frontend/api_keys/new_key.phtml:13
 #: /var/azuracast/www/app/templates/main.phtml:84
 msgid "My API Keys"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/frontend/api_keys/index.phtml:4
-#: /var/azuracast/www/app/templates/frontend/api_keys/new_key.phtml:8
-#: /var/azuracast/www/app/templates/frontend/profile/index.phtml:1
-#: /var/azuracast/www/app/templates/frontend/profile/index.phtml:8
-#: /var/azuracast/www/app/templates/main.phtml:83
-msgid "My Account"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/frontend/api_keys/index.phtml:10
-#: /var/azuracast/www/app/templates/admin/users/index.phtml:11
-#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:10
-#: /var/azuracast/www/app/templates/admin/stations/index.phtml:11
-#: /var/azuracast/www/app/templates/stations/mounts/index.phtml:7
-#: /var/azuracast/www/app/templates/stations/streamers/index.phtml:9
-#: /var/azuracast/www/app/templates/stations/playlists/index.phtml:12
-msgid "Add new item"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/frontend/api_keys/index.phtml:14
@@ -1665,10 +1735,10 @@ msgstr ""
 
 #: /var/azuracast/www/app/templates/frontend/api_keys/index.phtml:36
 #: /var/azuracast/www/app/templates/frontend/profile/index.phtml:26
-#: /var/azuracast/www/app/templates/admin/users/index.phtml:34
-#: /var/azuracast/www/app/templates/admin/api/index.phtml:31
-#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:32
-#: /var/azuracast/www/app/templates/admin/stations/index.phtml:30
+#: /var/azuracast/www/app/templates/admin/users/index.phtml:30
+#: /var/azuracast/www/app/templates/admin/api/index.phtml:27
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:28
+#: /var/azuracast/www/app/templates/admin/stations/index.phtml:26
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:39
 #: /var/azuracast/www/app/templates/stations/profile/index.phtml:86
 #: /var/azuracast/www/app/templates/stations/streamers/index.phtml:32
@@ -1678,7 +1748,7 @@ msgid "Edit"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/frontend/api_keys/index.phtml:37
-#: /var/azuracast/www/app/templates/admin/api/index.phtml:32
+#: /var/azuracast/www/app/templates/admin/api/index.phtml:28
 msgid "Revoke"
 msgstr ""
 
@@ -1735,33 +1805,29 @@ msgid "<a href=\"%s\" target=\"_blank\">Forgot your password?</a>"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/frontend/account/login.phtml:33
-#: /var/azuracast/www/app/templates/admin/users/index.phtml:32
+#: /var/azuracast/www/app/templates/admin/users/index.phtml:28
 msgid "Log In"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/frontend/index/index.phtml:1
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:12
+#: /var/azuracast/www/app/templates/frontend/index/index.phtml:14
 #: /var/azuracast/www/app/templates/main.phtml:79
 msgid "Dashboard"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:19
+#: /var/azuracast/www/app/templates/frontend/index/index.phtml:21
 msgid "Listeners Across All Stations"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:29
+#: /var/azuracast/www/app/templates/frontend/index/index.phtml:31
 msgid "Listeners Per Station"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:42
+#: /var/azuracast/www/app/templates/frontend/index/index.phtml:44
 msgid "Station Overview"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:46
-msgid "Add"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:63
+#: /var/azuracast/www/app/templates/frontend/index/index.phtml:65
 #: /var/azuracast/www/app/templates/frontend/index/index.phtml:135
 #: /var/azuracast/www/app/templates/frontend/index/index.phtml:173
 #: /var/azuracast/www/app/templates/stations/sidebar.phtml:57
@@ -1775,17 +1841,17 @@ msgstr ""
 msgid "Listeners"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:64
+#: /var/azuracast/www/app/templates/frontend/index/index.phtml:66
 #: /var/azuracast/www/app/templates/stations/profile/index.phtml:28
 msgid "Now Playing"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:65
+#: /var/azuracast/www/app/templates/frontend/index/index.phtml:67
 msgid "Options"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/frontend/index/index.phtml:87
-#: /var/azuracast/www/app/templates/admin/stations/index.phtml:29
+#: /var/azuracast/www/app/templates/frontend/index/index.phtml:88
+#: /var/azuracast/www/app/templates/admin/stations/index.phtml:25
 msgid "Manage"
 msgstr ""
 
@@ -1850,11 +1916,6 @@ msgstr ""
 msgid "Request Song"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/frontend/public/index.phtml:62
-#: /var/azuracast/www/app/templates/stations/playlists/index.phtml:34
-msgid "Playlist"
-msgstr ""
-
 #: /var/azuracast/www/app/templates/frontend/public/index.phtml:66
 #: /var/azuracast/www/app/templates/stations/playlists/index.phtml:51
 #, php-format
@@ -1903,22 +1964,10 @@ msgstr ""
 msgid "Pause"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/admin/users/index.phtml:4
-#: /var/azuracast/www/app/templates/admin/sidebar.phtml:4
-#: /var/azuracast/www/app/templates/admin/api/index.phtml:4
-#: /var/azuracast/www/app/templates/admin/index/index.phtml:4
-#: /var/azuracast/www/app/templates/admin/stations/index.phtml:4
-msgid "Administration"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/admin/users/index.phtml:9
-msgid "Manage Users"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/admin/users/index.phtml:35
-#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:35
-#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:37
-#: /var/azuracast/www/app/templates/admin/stations/index.phtml:32
+#: /var/azuracast/www/app/templates/admin/users/index.phtml:31
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:31
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:33
+#: /var/azuracast/www/app/templates/admin/stations/index.phtml:28
 #: /var/azuracast/www/app/templates/stations/requests/index.phtml:53
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:40
 #: /var/azuracast/www/app/templates/stations/streamers/index.phtml:33
@@ -1928,11 +1977,16 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/admin/api/index.phtml:22
-msgid "API Key"
+#: /var/azuracast/www/app/templates/admin/users/index.phtml:33
+msgid "(You)"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/admin/api/index.phtml:24
+#: /var/azuracast/www/app/templates/admin/sidebar.phtml:4
+#: /var/azuracast/www/app/templates/admin/index/index.phtml:4
+msgid "Administration"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/admin/api/index.phtml:20
 msgid "Owner"
 msgstr ""
 
@@ -1941,28 +1995,16 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:4
-msgid "Manage Permissions"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:25
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:21
 msgid "Per-Station Permissions"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:37
+#: /var/azuracast/www/app/templates/admin/permissions/index.phtml:33
 msgid "This role cannot be deleted."
 msgstr ""
 
-#: /var/azuracast/www/app/templates/admin/stations/index.phtml:22
-msgid "Station"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/admin/stations/index.phtml:31
+#: /var/azuracast/www/app/templates/admin/stations/index.phtml:27
 msgid "Clone"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/admin/stations/edit.phtml:1
-msgid "Edit Station Profile"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/requests/index.phtml:1
@@ -2087,10 +2129,6 @@ msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:16
 msgid "Migrate Settings"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/stations/mounts/index.phtml:30
-msgid "Mount Point"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:31
@@ -2668,7 +2706,7 @@ msgstr ""
 msgid "Sign Out"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/main.phtml:125
+#: /var/azuracast/www/app/templates/main.phtml:129
 #, php-format
 msgid "Powered by %s Version %s."
 msgstr ""
@@ -2742,7 +2780,7 @@ msgstr ""
 msgid "Manage Station Automation"
 msgstr ""
 
-#: /var/azuracast/www/app/bootstrap/services.php:251
+#: /var/azuracast/www/app/bootstrap/services.php:255
 #, php-format
 msgid ""
 "Could not connect to supervisord. Try running %s in a terminal to restart "

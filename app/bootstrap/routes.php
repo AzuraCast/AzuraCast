@@ -35,8 +35,11 @@ return function(\Slim\App $app) {
             $this->get('', Controller\Admin\PermissionsController::class.':indexAction')
                 ->setName('admin:permissions:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Admin\PermissionsController::class.':editAction')
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Admin\PermissionsController::class.':editAction')
                 ->setName('admin:permissions:edit');
+
+            $this->map(['GET', 'POST'], '/add', Controller\Admin\PermissionsController::class.':editAction')
+                ->setName('admin:permissions:add');
 
             $this->get('/delete/{id}/{csrf}', Controller\Admin\PermissionsController::class.':deleteAction')
                 ->setName('admin:permissions:delete');
@@ -52,8 +55,11 @@ return function(\Slim\App $app) {
             $this->get('', Controller\Admin\StationsController::class.':indexAction')
                 ->setName('admin:stations:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Admin\StationsController::class.':editAction')
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Admin\StationsController::class.':editAction')
                 ->setName('admin:stations:edit');
+
+            $this->map(['GET', 'POST'], '/add', Controller\Admin\StationsController::class.':editAction')
+                ->setName('admin:stations:add');
 
             $this->map(['GET', 'POST'], '/clone/{id}', Controller\Admin\StationsController::class.':cloneAction')
                 ->setName('admin:stations:clone');
@@ -68,8 +74,11 @@ return function(\Slim\App $app) {
             $this->get('', Controller\Admin\UsersController::class.':indexAction')
                 ->setName('admin:users:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Admin\UsersController::class.':editAction')
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Admin\UsersController::class.':editAction')
                 ->setName('admin:users:edit');
+
+            $this->map(['GET', 'POST'], '/add', Controller\Admin\UsersController::class.':editAction')
+                ->setName('admin:users:add');
 
             $this->get('/delete/{id}/{csrf}', Controller\Admin\UsersController::class.':deleteAction')
                 ->setName('admin:users:delete');
@@ -178,8 +187,11 @@ return function(\Slim\App $app) {
         $this->get('/api_keys', Controller\Frontend\ApiKeysController::class.':indexAction')
             ->setName('api_keys:index');
 
-        $this->map(['GET', 'POST'], '/api_keys/edit[/{id}]', Controller\Frontend\ApiKeysController::class.':editAction')
+        $this->map(['GET', 'POST'], '/api_keys/edit/{id}', Controller\Frontend\ApiKeysController::class.':editAction')
             ->setName('api_keys:edit');
+
+        $this->map(['GET', 'POST'], '/api_keys/add', Controller\Frontend\ApiKeysController::class.':editAction')
+            ->setName('api_keys:add');
 
         $this->get('/api_keys/delete/{id}/{csrf}', Controller\Frontend\ApiKeysController::class.':deleteAction')
             ->setName('api_keys:delete');
@@ -286,8 +298,11 @@ return function(\Slim\App $app) {
             $this->get('', Controller\Stations\PlaylistsController::class.':indexAction')
                 ->setName('stations:playlists:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Stations\PlaylistsController::class.':editAction')
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\PlaylistsController::class.':editAction')
                 ->setName('stations:playlists:edit');
+
+            $this->map(['GET', 'POST'], '/add', Controller\Stations\PlaylistsController::class.':editAction')
+                ->setName('stations:playlists:add');
 
             $this->get('/delete/{id}/{csrf}', Controller\Stations\PlaylistsController::class.':deleteAction')
                 ->setName('stations:playlists:delete');
@@ -305,8 +320,11 @@ return function(\Slim\App $app) {
             $this->get('/migrate', Controller\Stations\MountsController::class.':migrateAction')
                 ->setName('stations:mounts:migrate');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Stations\MountsController::class.':editAction')
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\MountsController::class.':editAction')
                 ->setName('stations:mounts:edit');
+
+            $this->map(['GET', 'POST'], '/add', Controller\Stations\MountsController::class.':editAction')
+                ->setName('stations:mounts:add');
 
             $this->get('/delete/{id}/{csrf}', Controller\Stations\MountsController::class.':deleteAction')
                 ->setName('stations:mounts:delete');
@@ -366,8 +384,11 @@ return function(\Slim\App $app) {
             $this->get('', Controller\Stations\StreamersController::class.':indexAction')
                 ->setName('stations:streamers:index');
 
-            $this->map(['GET', 'POST'], '/edit[/{id}]', Controller\Stations\StreamersController::class.':editAction')
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\StreamersController::class.':editAction')
                 ->setName('stations:streamers:edit');
+
+            $this->map(['GET', 'POST'], '/add', Controller\Stations\StreamersController::class.':editAction')
+                ->setName('stations:streamers:add');
 
             $this->get('/delete/{id}/{csrf}', Controller\Stations\StreamersController::class.':deleteAction')
                 ->setName('stations:streamers:delete');

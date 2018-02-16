@@ -109,7 +109,7 @@ class FilesController
         ]);
 
         if (!($media instanceof Entity\StationMedia)) {
-            throw new \Exception('Media not found.');
+            throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('Media')));
         }
 
         $form = new \App\Form($this->edit_form_config);
@@ -151,7 +151,7 @@ class FilesController
             $this->em->persist($media);
             $this->em->flush();
 
-            $this->flash->alert('<b>' . _('Media metadata updated!') . '</b>', 'green');
+            $this->flash->alert('<b>' . sprintf(_('%s updated.'), _('Media')) . '</b>', 'green');
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
             return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
@@ -163,7 +163,7 @@ class FilesController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => _('Edit Media Metadata')
+            'title' =>sprintf(_('Edit %s'), _('Media'))
         ]);
     }
 

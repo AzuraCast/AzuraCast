@@ -53,7 +53,7 @@ class SettingsController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => _('Site Settings')
+            'title' => _('System Settings')
         ]);
     }
 }

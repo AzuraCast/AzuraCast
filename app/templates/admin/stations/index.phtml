@@ -1,14 +1,10 @@
 <?php $this->layout('main', ['title' => _('Stations'), 'manual' => true]); ?>
 
-<div class="block-header">
-    <h2><?=_('Administration') ?></h2>
-</div>
-
 <div class="card">
     <div class="card-header ch-alt">
         <h2><?=_('Manage Stations') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('admin:stations:edit') ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(_('Add %s'), _('Station')) ?>" href="<?=$url->named('admin:stations:add') ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">

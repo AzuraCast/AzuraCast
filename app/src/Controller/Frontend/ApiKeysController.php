@@ -69,7 +69,7 @@ class ApiKeysController
             $record = $this->record_repo->findOneBy(['id' => $id, 'user_id' => $user->getId()]);
 
             if (!($record instanceof Entity\ApiKey)) {
-                throw new NotFound('API key not found.');
+                throw new NotFound(sprintf(_('%s not found.'), _('API Key')));
             }
 
             $form->setDefaults($this->record_repo->toArray($record, true, true));
@@ -100,14 +100,15 @@ class ApiKeysController
                 ]);
             }
 
-            $this->flash->alert(_('Changes saved.'), 'green');
+            $this->flash->alert(sprintf(_('%s updated.'), _('API Key')), 'green');
             return $response->redirectToRoute('api_keys:index');
         }
 
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => ($new_record) ? _('Generate New API Key') : _('Edit Record')
+            'header' => _('My Account'),
+            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('API Key'))
         ]);
     }
 
@@ -127,7 +128,7 @@ class ApiKeysController
         $this->em->flush();
         $this->em->refresh($user);
 
-        $this->flash->alert(_('Record deleted.'), 'green');
+        $this->flash->alert(sprintf(_('%s deleted.'), _('API Key')), 'green');
 
         return $response->redirectToRoute('api_keys:index');
     }

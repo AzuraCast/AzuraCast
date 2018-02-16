@@ -1,13 +1,9 @@
-<?php $this->layout('main', ['title' => 'Permissions', 'manual' => true]); ?>
-
-<div class="block-header">
-    <h2><?=_('Manage Permissions') ?></h2>
-</div>
+<?php $this->layout('main', ['title' => _('Permissions'), 'manual' => true]); ?>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=_('Roles') ?></h2>
-        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('admin:permissions:edit') ?>"><i class="zmdi zmdi-plus"></i></a>
+        <h2><?=_('Permissions') ?></h2>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(_('Add %s'), _('Permission')) ?>" href="<?=$url->named('admin:permissions:add') ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">

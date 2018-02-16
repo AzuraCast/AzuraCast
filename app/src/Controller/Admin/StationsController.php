@@ -104,7 +104,7 @@ class StationsController
             // Clear station cache.
             $this->cache->remove('stations');
 
-            $this->flash->alert(_('Changes saved.'), 'green');
+            $this->flash->alert(sprintf(($id) ? _('%s updated.') : _('%s added.'), _('Station')), 'green');
 
             return $response->redirectToRoute('admin:stations:index');
         }
@@ -114,6 +114,7 @@ class StationsController
 
         return $view->renderToResponse($response, 'admin/stations/edit', [
             'form' => $form,
+            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('Station')),
         ]);
     }
 
@@ -122,7 +123,7 @@ class StationsController
         $record = $this->record_repo->find((int)$id);
 
         if (!($record instanceof Entity\Station)) {
-            throw new \Exception('Source station not found!');
+            throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('Station')));
         }
 
         $form = new \App\Form($this->clone_form_config);
@@ -224,7 +225,7 @@ class StationsController
             $this->record_repo->destroy($record, $this->adapters, $this->configuration);
         }
 
-        $this->flash->alert(_('Record deleted.'), 'green');
+        $this->flash->alert(sprintf(_('%s deleted.'), _('Station')), 'green');
 
         return $response->redirectToRoute('admin:stations:index');
     }

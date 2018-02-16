@@ -60,7 +60,7 @@ class ApiController
         $record = $this->record_repo->find($id);
 
         if (!($record instanceof Entity\ApiKey)) {
-            throw new \App\Exception\NotFound('API key not found');
+            throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('API Key')));
         }
 
         $form->setDefaults($this->record_repo->toArray($record, true, true));
@@ -73,7 +73,7 @@ class ApiController
             $this->em->persist($record);
             $this->em->flush();
 
-            $this->flash->alert(_('Changes saved.'), 'green');
+            $this->flash->alert(sprintf(_('%s updated.'), _('API Key')), 'green');
 
             return $response->redirectToRoute('admin:api:index');
         }
@@ -84,7 +84,7 @@ class ApiController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => _('Edit Record')
+            'title' => sprintf(_('Edit %s'), _('API Key'))
         ]);
     }
 
@@ -100,7 +100,7 @@ class ApiController
 
         $this->em->flush();
 
-        $this->flash->alert(_('Record deleted.'), 'green');
+        $this->flash->alert(sprintf(_('%s deleted.'), _('API Key')), 'green');
 
         return $response->redirectToRoute('admin:api:index');
     }

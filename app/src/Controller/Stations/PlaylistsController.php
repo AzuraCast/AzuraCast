@@ -232,7 +232,7 @@ class PlaylistsController
             $this->em->flush();
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . _('Record updated.') . '</b>', 'green');
+            $this->flash->alert('<b>' . sprintf(($id) ? _('%s updated.') : _('%s added.'), _('Playlist')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
         }
@@ -242,7 +242,7 @@ class PlaylistsController
 
         return $view->renderToResponse($response, 'stations/playlists/edit', [
             'form' => $form,
-            'title' => ($id) ? _('Edit Record') : _('Add Record')
+            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('Playlist'))
         ]);
     }
 
@@ -355,7 +355,7 @@ class PlaylistsController
         $this->em->flush();
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . _('Record deleted.') . '</b>', 'green');
+        $this->flash->alert('<b>' . sprintf(_('%s deleted.'), _('Playlist')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
     }

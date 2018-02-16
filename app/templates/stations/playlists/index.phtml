@@ -9,7 +9,7 @@ $assets->addJs(['src' => 'js/timetable/timetable.js'], 'header');
     <div class="card-header ch-alt">
         <h2><?=_('Playlists') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('stations:playlists:edit', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(_('Add %s'), _('Playlist')) ?>" href="<?=$url->named('stations:playlists:add', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
 
     <div role="tabpanel">

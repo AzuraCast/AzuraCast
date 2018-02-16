@@ -1,4 +1,4 @@
-<?php $this->layout('main', ['title' => $title]); ?>
+<?php $this->layout('main', ['title' => $title, 'header' => $header]); ?>
 
 <?php if ($render_mode == 'edit'): ?>
     <?=$this->fetch('partials/form', ['form' => $form]) ?>

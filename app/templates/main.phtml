@@ -107,11 +107,15 @@ var APP_ContentPath = '<?=$url->content('') ?>';
         <?php if ($manual): ?>
             <?=$this->section('content') ?>
         <?php else: ?>
-            <div class="block-header">
-                <h2><?=$title ?></h2>
-            </div>
-
+            <?php if ($header): ?>
+                <div class="block-header">
+                    <h2><?=$header ?></h2>
+                </div>
+            <?php endif; ?>
             <div class="card">
+                <div class="card-header ch-alt">
+                    <h2><?=$title ?></h2>
+                </div>
                 <div class="card-body card-padding">
                     <?=$this->section('content') ?>
                 </div>

@@ -138,7 +138,7 @@ class MountsController
 
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . _('Record updated.') . '</b>', 'green');
+            $this->flash->alert('<b>' . sprintf(($id) ? _('%s updated.') : _('%s added.'), _('Mount Point')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:mounts:index', ['station' => $station_id]);
         }
@@ -149,7 +149,7 @@ class MountsController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => ($id) ? _('Edit Record') : _('Add Record')
+            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('Mount Point'))
         ]);
     }
 
@@ -175,7 +175,7 @@ class MountsController
 
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . _('Record deleted.') . '</b>', 'green');
+        $this->flash->alert('<b>' . sprintf(_('%s deleted.'), _('Mount Point')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:mounts:index', ['station' => $station_id]);
     }

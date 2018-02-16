@@ -1,13 +1,6 @@
-<?php $this->layout('main', ['manual' => true]) ?>
+<?php $this->layout('main', ['title' => $title]) ?>
 
-<div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=$title ?></h2>
-    </div>
-    <div class="card-body card-padding">
-        <?=$this->insert('partials/form', ['form' => $form]) ?>
-    </div>
-</div>
+<?=$this->insert('partials/form', ['form' => $form]) ?>
 
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function() {

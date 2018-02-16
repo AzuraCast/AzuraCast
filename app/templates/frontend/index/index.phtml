@@ -45,7 +45,7 @@ $assets
 
                 <ul class="actions">
                 <?php if ($acl->userAllowed($user, 'administer stations')): ?>
-                    <li><a class="" title="<?=_('Add') ?>" href="<?=$url->named('admin:stations:edit') ?>"><i class="zmdi zmdi-plus"></i></a></li>
+                    <li><a class="" title="<?=sprintf(_('Add %s'), _('Station')) ?>" href="<?=$url->named('admin:stations:add') ?>"><i class="zmdi zmdi-plus"></i></a></li>
                 <?php endif; ?>
                 </ul>
             </div>

@@ -7,7 +7,7 @@
 <div class="card">
     <div class="card-header ch-alt">
         <h2><?=_('My API Keys') ?></h2>
-        <a class="btn bgm-blue btn-float" role="button" title="<?=_('Add new item') ?>" href="<?=$url->named('api_keys:edit') ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(_('Add %s'), _('API Key')) ?>" href="<?=$url->named('api_keys:add') ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div class="card-body card-padding p-b-0">
         <p>

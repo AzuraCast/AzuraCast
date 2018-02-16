@@ -95,7 +95,7 @@ class UsersController
                 $this->em->persist($record);
                 $this->em->flush();
 
-                $this->flash->alert(_('Record updated.'), 'green');
+                $this->flash->alert(sprintf(($id) ? _('%s updated.') : _('%s added.'), _('User')), 'green');
 
                 return $response->redirectToRoute('admin:users:index');
             } catch(UniqueConstraintViolationException $e) {
@@ -109,7 +109,7 @@ class UsersController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => _('Edit Record')
+            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('User'))
         ]);
     }
 
@@ -125,7 +125,7 @@ class UsersController
 
         $this->em->flush();
 
-        $this->flash->alert('<b>' . _('Record deleted.') . '</b>', 'green');
+        $this->flash->alert('<b>' . sprintf(_('%s deleted.'), _('User')) . '</b>', 'green');
 
         return $response->redirectToRoute('admin:users:index');
     }
@@ -137,7 +137,7 @@ class UsersController
         $user = $this->record_repo->find((int)$id);
 
         if (!($user instanceof Entity\User)) {
-            throw new \App\Exception(_('Record not found!'));
+            throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('User')));
         }
 
         $this->auth->masqueradeAsUser($user);

@@ -111,7 +111,7 @@ class StreamersController
 
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . _('Streamer account updated!') . '</b>', 'green');
+            $this->flash->alert('<b>' . sprintf(($id) ? _('%s updated.') : _('%s added.'), _('Streamer')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
         }
@@ -122,7 +122,7 @@ class StreamersController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => ($id) ? _('Edit Streamer') : _('Add Streamer')
+            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('Streamer'))
         ]);
     }
 
@@ -146,7 +146,7 @@ class StreamersController
 
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . _('Record deleted.') . '</b>', 'green');
+        $this->flash->alert('<b>' . sprintf(_('%s deleted.'), _('Streamer')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
     }

@@ -1,5 +1,3 @@
-client_max_body_size 50M;
-
 server {
     listen 80;
     listen 443 default_server ssl;
@@ -18,6 +16,8 @@ server {
 
     access_log {{ app_base }}/www_tmp/access.log;
     error_log {{ app_base }}/www_tmp/error.log;
+    
+    client_max_body_size 50M;
 
     location / {
         try_files $uri @clean_url;

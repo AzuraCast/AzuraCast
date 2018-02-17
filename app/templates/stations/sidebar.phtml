@@ -13,14 +13,14 @@
 <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
     <?php if (!$station->getHasStarted()): ?>
     <li class="menu-info">
-        <a href="<?=$url->named('stations:util:restart', ['station' => $station->getId()]) ?>">
+        <a class="api-call" href="<?=$url->named('api:stations:restart', ['station' => $station->getId()]) ?>">
             <i class="zmdi zmdi-refresh-sync"></i>
             <?=_('<b>Ready to Broadcast?</b><br>Click to Start Station') ?>
         </a>
     </li>
     <?php elseif ($station->getNeedsRestart()): ?>
     <li class="menu-alert">
-        <a href="<?=$url->named('stations:util:restart', ['station' => $station->getId()]) ?>">
+        <a class="api-call" href="<?=$url->named('api:stations:restart', ['station' => $station->getId()]) ?>">
             <i class="zmdi zmdi-refresh-sync-alert"></i>
             <?=_('<b>Apply Pending Changes</b><br>Click to Restart Station') ?>
         </a>

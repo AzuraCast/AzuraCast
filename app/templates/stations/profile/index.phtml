@@ -71,7 +71,7 @@ $assets
 
             <?php if ($backend_type == 'liquidsoap' && $acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <div class="buttons pull-right p-t-15">
-                    <a id="btn_skip_song" class="btn btn-sm btn-primary" role="button" href="<?=$url->named('stations:profile:backend', ['station' => $station->getId(), 'do' => 'skip']) ?>"><i class="zmdi zmdi-skip-next"></i> <?=_('Skip Song') ?></a>
+                    <a id="btn_skip_song" class="btn btn-sm btn-primary" role="button" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'skip']) ?>"><i class="zmdi zmdi-skip-next"></i> <?=_('Skip Song') ?></a>
                 </div>
                 <div class="clearfix"></div>
             <?php endif; ?>
@@ -201,9 +201,9 @@ $assets
                             <i class="zmdi zmdi-more-vert"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="<?=$url->named('stations:profile:frontend', ['station' => $station->getId(), 'do' => 'restart']) ?>"><?=_('Restart Service') ?></a></li>
-                            <li><a href="<?=$url->named('stations:profile:frontend', ['station' => $station->getId(), 'do' => 'start']) ?>"><?=_('Start Service') ?></a></li>
-                            <li><a href="<?=$url->named('stations:profile:frontend', ['station' => $station->getId(), 'do' => 'stop']) ?>"><?=_('Stop Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$url->named('api:stations:frontend', ['station' => $station->getId(), 'do' => 'restart']) ?>"><?=_('Restart Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$url->named('api:stations:frontend', ['station' => $station->getId(), 'do' => 'start']) ?>"><?=_('Start Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$url->named('api:stations:frontend', ['station' => $station->getId(), 'do' => 'stop']) ?>"><?=_('Stop Service') ?></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -241,8 +241,8 @@ $assets
                 <dl>
                     <dt><?=_('Stream Playlists') ?>:</dt>
                     <dd>
-                        <a class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">PLS</a>
-                        <a class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'm3u']) ?>">M3U</a>
+                        <a class="api-call" class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">PLS</a>
+                        <a class="api-call" class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'm3u']) ?>">M3U</a>
                     </dd>
                 </dl>
 
@@ -286,9 +286,9 @@ $assets
                             <i class="zmdi zmdi-more-vert"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="<?=$url->named('stations:profile:backend', ['station' => $station->getId(), 'do' => 'restart']) ?>"><?=_('Restart Service') ?></a></li>
-                            <li><a href="<?=$url->named('stations:profile:backend', ['station' => $station->getId(), 'do' => 'start']) ?>"><?=_('Start Service') ?></a></li>
-                            <li><a href="<?=$url->named('stations:profile:backend', ['station' => $station->getId(), 'do' => 'stop']) ?>"><?=_('Stop Service') ?></a></li>
+                            <li><a href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'restart']) ?>"><?=_('Restart Service') ?></a></li>
+                            <li><a href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'start']) ?>"><?=_('Start Service') ?></a></li>
+                            <li><a href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'stop']) ?>"><?=_('Stop Service') ?></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -362,7 +362,7 @@ $(function() {
         }
     });
 
-    setTimeout(loadNowPlaying, 15000);
+    setInterval(iterateTimer, 1000);
 
     function loadNowPlaying() {
         $.getJSON('<?=$url->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
@@ -379,21 +379,28 @@ $(function() {
         });
     }
 
+    setTimeout(loadNowPlaying, 15000);
+
     $('#btn_skip_song').on('click', function(e) {
         e.stopPropagation();
         var btn = $(this);
 
         btn.addClass('disabled');
 
-        $.getJSON(btn.attr('href'), {}, function(data) {
-            notify(data.message, data.type);
+        $.ajax({
+            type: "POST",
+            url: btn.attr('href'),
+            success: function(data) {
+                var notify_type = (data.success) ? 'success' : 'warning';
+                notify(data.message, notify_type);
 
-            btn.removeClass('disabled');
+                btn.removeClass('disabled');
+            },
+            dataType: "json"
         });
 
         return false;
     });
 
-    setInterval(iterateTimer, 1000);
 });
 </script>

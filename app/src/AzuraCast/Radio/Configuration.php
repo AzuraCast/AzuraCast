@@ -213,6 +213,7 @@ class Configuration
     {
         if ($station->getFrontendType() !== 'remote' && $station->getBackendType() !== 'none') {
             $frontend_config = (array)$station->getFrontendConfig();
+            $backend_config = (array)$station->getBackendConfig();
 
             if (empty($frontend_config['port']) || $force) {
                 $base_port = $this->getFirstAvailableRadioPort($station);
@@ -220,15 +221,24 @@ class Configuration
                 $station->setFrontendConfig([
                     'port' => $base_port,
                 ]);
+            } else {
+                $base_port = (int)$frontend_config['port'];
+            }
 
+            if (empty($backend_config['dj_port'])) {
                 $station->setBackendConfig([
                     'dj_port' => $base_port + 5,
+                ]);
+            }
+
+            if (empty($backend_config['telnet_port'])) {
+                $station->setBackendConfig([
                     'telnet_port' => $base_port + 4,
                 ]);
-
-                $this->em->persist($station);
-                $this->em->flush();
             }
+
+            $this->em->persist($station);
+            $this->em->flush();
         }
     }
 

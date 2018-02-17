@@ -76,8 +76,41 @@
                 <li><a href="<?=$url->named('stations:automation:index', ['station' => $station->getId()]) ?>"><?=_('Automated Assignment') ?></a></li>
             <?php endif; ?>
             <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
-                <li><a href="<?=$url->named('stations:util:restart', ['station' => $station->getId()]) ?>"><?=_('Restart Broadcasting') ?></a></li>
+                <li><a class="api-call" data-restart="false" href="<?=$url->named('api:stations:restart', ['station' => $station->getId()]) ?>"><?=_('Restart Broadcasting') ?></a></li>
             <?php endif; ?>
         </ul>
     </li>
 </ul>
+
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
+$(function() {
+    $('.api-call').on('click', function(e) {
+        e.stopPropagation();
+        var btn = $(this);
+
+        var btn_original_text = btn.text();
+        var trigger_restart = (btn.data('restart') != false);
+
+        btn.text(<?=$this->escapeJs(_('Please wait...')) ?>);
+        btn.addClass('disabled');
+
+        $.ajax({
+            type: "POST",
+            url: btn.attr('href'),
+            success: function(data) {
+                if (trigger_restart) {
+                    setTimeout('location.reload()', 2000);
+                } else {
+                    btn.text(btn_original_text);
+                }
+
+                var notify_type = (data.success) ? 'success' : 'warning';
+                notify(data.message, notify_type);
+            },
+            dataType: "json"
+        });
+
+        return false;
+    });
+});
+</script>

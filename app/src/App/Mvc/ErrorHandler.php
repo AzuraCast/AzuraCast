@@ -46,6 +46,19 @@ class ErrorHandler
 
     public function __invoke(Request $req, Response $res, \Throwable $e)
     {
+        /** @var Entity\User|null $user */
+        $user = $req->getAttribute('user');
+        $show_detailed = $this->acl->userAllowed($user, 'administer all') || !APP_IN_PRODUCTION;
+
+        if (APP_IS_COMMAND_LINE || $req->isXhr()) {
+            return $res->withStatus(500)->withJson([
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'stack_trace' => ($show_detailed) ? $e->getTrace() : [],
+                'success' => false,
+            ]);
+        }
+
         if ($e instanceof \App\Exception\NotLoggedIn) {
             // Redirect to login page for not-logged-in users.
             $this->flash->addMessage('<b>Error:</b> You must be logged in to access this page!', 'red');
@@ -67,18 +80,7 @@ class ErrorHandler
                 ->withHeader('Location', $this->url->named('home'));
         }
 
-        if (APP_IS_COMMAND_LINE) {
-            return $res->withStatus(500)->withJson([
-                'code' => $e->getCode(),
-                'message' => $e->getMessage(),
-                'stack_trace' => $e->getTraceAsString(),
-            ]);
-        }
-
-        /** @var Entity\User|null $user */
-        $user = $req->getAttribute('user');
-
-        if ($this->acl->userAllowed($user, 'administer all') || !APP_IN_PRODUCTION) {
+        if ($show_detailed) {
             // Register error-handler.
             $handler = new \Whoops\Handler\PrettyPageHandler;
             $handler->setPageTitle('An error occurred!');

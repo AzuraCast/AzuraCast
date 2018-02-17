@@ -1,5 +1,5 @@
 <?php
-namespace Controller\Api;
+namespace Controller\Api\Stations;
 
 use App\Url;
 use Doctrine\ORM\EntityManager;

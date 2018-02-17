@@ -36,13 +36,13 @@ class IndexController
      *   @SWG\Response(
      *     response=200,
      *     description="Success",
-     *     @SWG\Schema(ref="#/definitions/Status")
+     *     @SWG\Schema(ref="#/definitions/SystemStatus")
      *   )
      * )
      */
     public function statusAction(Request $request, Response $response): Response
     {
-        return $response->withJson(new Entity\Api\Status);
+        return $response->withJson(new Entity\Api\SystemStatus);
     }
 
     /**

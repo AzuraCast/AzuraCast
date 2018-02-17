@@ -178,12 +178,6 @@ abstract class AdapterAbstract
             return;
         }
 
-        if (!APP_IS_COMMAND_LINE) {
-            /** @var \App\Flash $flash */
-            $flash = $this->di[\App\Flash::class];
-            $flash->addMessage($message, $class, true);
-        }
-
         $log_file = APP_INCLUDE_TEMP . '/radio_adapter_log.txt';
         $log_message = str_pad(date('Y-m-d g:ia'), 20, ' ', STR_PAD_RIGHT) . $message . "\n";
 

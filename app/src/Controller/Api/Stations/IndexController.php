@@ -1,5 +1,5 @@
 <?php
-namespace Controller\Api;
+namespace Controller\Api\Stations;
 
 use AzuraCast\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
@@ -7,7 +7,7 @@ use Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class StationsController
+class IndexController
 {
     /** @var EntityManager */
     protected $em;

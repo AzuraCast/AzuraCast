@@ -133,13 +133,13 @@ return function(\Slim\App $app) {
         $this->get('/nowplaying[/{station}]', Controller\Api\NowplayingController::class.':indexAction')
             ->setName('api:nowplaying:index');
 
-        $this->get('/stations', Controller\Api\StationsController::class.':listAction')
+        $this->get('/stations', Controller\Api\Stations\IndexController::class.':listAction')
             ->setName('api:stations:list')
             ->add([Middleware\RateLimit::class, 'api', 5, 2]);
 
         $this->group('/station/{station}', function () {
 
-            $this->get('', Controller\Api\StationsController::class.':indexAction')
+            $this->get('', Controller\Api\Stations\IndexController::class.':indexAction')
                 ->setName('api:stations:index')
                 ->add([Middleware\RateLimit::class, 'api', 5, 2]);
 
@@ -157,8 +157,20 @@ return function(\Slim\App $app) {
                 ->setName('api:listeners:index')
                 ->add([Middleware\Permissions::class, 'view station reports', true]);
 
-            $this->get('/art/{media_id}', Controller\Api\MediaController::class.':artAction')
-                ->setName('api:media:art');
+            $this->get('/art/{media_id}', Controller\Api\Stations\MediaController::class.':artAction')
+                ->setName('api:stations:media:art');
+
+            $this->post('/backend/{do}', Controller\Api\Stations\ServicesController::class.':backendAction')
+                ->setName('api:stations:backend')
+                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
+
+            $this->post('/frontend/{do}', Controller\Api\Stations\ServicesController::class.':frontendAction')
+                ->setName('api:stations:frontend')
+                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
+
+            $this->post('/restart', Controller\Api\Stations\ServicesController::class.':restartAction')
+                ->setName('api:stations:restart')
+                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
 
         })->add(Middleware\GetStation::class);
 
@@ -340,14 +352,6 @@ return function(\Slim\App $app) {
                 ->setName('stations:profile:edit')
                 ->add([Middleware\Permissions::class, 'manage station profile', true]);
 
-            $this->map(['GET', 'POST'], '/backend[/{do}]', Controller\Stations\ProfileController::class.':backendAction')
-                ->setName('stations:profile:backend')
-                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
-
-            $this->map(['GET', 'POST'], '/frontend[/{do}]', Controller\Stations\ProfileController::class.':frontendAction')
-                ->setName('stations:profile:frontend')
-                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
-
         });
 
         $this->group('/requests', function () {
@@ -394,13 +398,6 @@ return function(\Slim\App $app) {
                 ->setName('stations:streamers:delete');
 
         })->add([Middleware\Permissions::class, 'manage station streamers', true]);
-
-        $this->group('/util', function () {
-
-            $this->get('/restart', Controller\Stations\UtilController::class.':restartAction')
-                ->setName('stations:util:restart');
-
-        })->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
 
         // END /stations GROUP
 

@@ -259,7 +259,7 @@ class FilesController
                     'title' => $media_row['title'],
                     'album' => $media_row['album'],
                     'name' => $media_row['artist'] . ' - ' . $media_row['title'],
-                    'art' => $this->url->named('api:media:art', ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
+                    'art' => $this->url->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
                     'edit_url' => $this->url->named('stations:files:edit', ['station' => $station_id, 'id' => $media_row['id']]),
                     'play_url' => $this->url->named('stations:files:download', ['station' => $station_id]) . '?file=' . urlencode($media_row['path']),
                     'playlists' => $playlists,

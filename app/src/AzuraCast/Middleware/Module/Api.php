@@ -40,18 +40,22 @@ class Api
         $api_key_header = $request->getHeader('X-API-Key');
         $api_key = $api_key_header[0] ?? $request->getParam('key') ?? null;
 
-        if (!empty($api_key)) {
-            $user = $this->api_repo->authenticate($api_key);
+        $api_user = (!empty($api_key)) ? $this->api_repo->authenticate($api_key) : null;
 
-            if ($user instanceof Entity\User) {
-                $request = $request->withAttribute('user', $user);
-            }
+        // Override the request's "user" variable if API authentication is supplied and valid.
+        if ($api_user instanceof Entity\User) {
+            $request = $request->withAttribute('user', $api_user);
+        }
+
+        // Only set global CORS for GET requests and API-authenticated requests;
+        // Session-authenticated, non-GET requests should only be made in a same-host situation.
+        if ($api_user instanceof Entity\User || $request->isGet()) {
+            $response = $response->withHeader('Access-Control-Allow-Origin', '*');
         }
 
         // Set default cache control for API pages.
         $response = $response->withHeader('Cache-Control', 'public, max-age=' . 30)
-            ->withHeader('X-Accel-Expires', 30) // CloudFlare caching
-            ->withHeader('Access-Control-Allow-Origin', '*');
+            ->withHeader('X-Accel-Expires', 30); // CloudFlare caching
 
         // Custom error handling for API responses.
         try {

@@ -9,25 +9,21 @@ use Entity;
  */
 class Status
 {
-    public function __construct()
+    public function __construct($success = true, $message = 'Changes saved successfully.')
     {
-        $this->online = true;
-        $this->timestamp = time();
+        $this->success = (bool)$success;
+        $this->message = (string)$message;
     }
 
     /**
-     * Whether the service is online or not (should always be true)
-     *
      * @SWG\Property(example=true)
-     * @var boolean
+     * @var bool
      */
-    public $online;
+    public $success;
 
     /**
-     * The current UNIX timestamp
-     *
-     * @SWG\Property(example=SAMPLE_TIMESTAMP)
-     * @var int
+     * @SWG\Property(example="Changes saved successfully.")
+     * @var string
      */
-    public $timestamp;
+    public $message;
 }

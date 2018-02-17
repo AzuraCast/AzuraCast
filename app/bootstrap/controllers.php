@@ -130,8 +130,8 @@ return function (\Slim\Container $di, array $app_settings) {
         );
     };
 
-    $di[\Controller\Api\MediaController::class] = function($di) {
-        return new \Controller\Api\MediaController(
+    $di[\Controller\Api\Stations\MediaController::class] = function($di) {
+        return new \Controller\Api\Stations\MediaController(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Url::class]
         );
@@ -152,10 +152,17 @@ return function (\Slim\Container $di, array $app_settings) {
         );
     };
 
-    $di[\Controller\Api\StationsController::class] = function($di) {
-        return new \Controller\Api\StationsController(
+    $di[\Controller\Api\Stations\IndexController::class] = function($di) {
+        return new \Controller\Api\Stations\IndexController(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\AzuraCast\Radio\Adapters::class]
+        );
+    };
+
+    $di[\Controller\Api\Stations\ServicesController::class] = function($di) {
+        return new \Controller\Api\Stations\ServicesController(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Radio\Configuration::class]
         );
     };
 
@@ -345,13 +352,6 @@ return function (\Slim\Container $di, array $app_settings) {
             $di[\App\Flash::class],
             $di[\App\Csrf::class],
             $config->get('forms/streamer')
-        );
-    };
-
-    $di[\Controller\Stations\UtilController::class] = function($di) {
-        return new \Controller\Stations\UtilController(
-            $di[\Doctrine\ORM\EntityManager::class],
-            $di[\AzuraCast\Radio\Configuration::class]
         );
     };
 

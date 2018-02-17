@@ -51,17 +51,17 @@ class ErrorHandler
         $show_detailed = $this->acl->userAllowed($user, 'administer all') || !APP_IN_PRODUCTION;
 
         if ($req->isXhr() || (APP_IS_COMMAND_LINE && !APP_TESTING_MODE)) {
-            return $res->withStatus(500)->withJson([
-                'code' => $e->getCode(),
-                'message' => $e->getMessage(),
-                'stack_trace' => ($show_detailed) ? $e->getTrace() : [],
-                'success' => false,
-            ]);
+            $api_response = new Entity\Api\Error(
+                $e->getCode(),
+                $e->getMessage(),
+                ($show_detailed) ? $e->getTrace() : []
+            );
+            return $res->withStatus(500)->withJson($api_response);
         }
 
         if ($e instanceof \App\Exception\NotLoggedIn) {
             // Redirect to login page for not-logged-in users.
-            $this->flash->addMessage('<b>Error:</b> You must be logged in to access this page!', 'red');
+            $this->flash->addMessage(_('You must be logged in to access this page.'), 'red');
 
             // Set referrer for login redirection.
             $session = $this->session->get('referrer_login');
@@ -72,7 +72,7 @@ class ErrorHandler
 
         if ($e instanceof \App\Exception\PermissionDenied) {
             // Bounce back to homepage for permission-denied users.
-            $this->flash->addMessage('You do not have permission to access this portion of the site.',
+            $this->flash->addMessage(_('You do not have permission to access this portion of the site.'),
                 \App\Flash::ERROR);
 
             return $res

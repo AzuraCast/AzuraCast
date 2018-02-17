@@ -288,6 +288,12 @@
                         "schema": {
                             "$ref": "#/definitions/Status"
                         }
+                    },
+                    "403": {
+                        "description": "Access Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
                     }
                 },
                 "security": [
@@ -375,6 +381,31 @@
         }
     },
     "definitions": {
+        "Error": {
+            "properties": {
+                "code": {
+                    "description": "The numeric code of the error.",
+                    "type": "integer",
+                    "example": 500
+                },
+                "message": {
+                    "description": "The text description of the error.",
+                    "type": "string",
+                    "example": "Access forbidden."
+                },
+                "stack_trace": {
+                    "description": "A stack trace outlining the error, if permissions allow this to be shown.",
+                    "type": "array",
+                    "items": {}
+                },
+                "success": {
+                    "description": "Used for API calls that expect an \\Entity\\Api\\Status type response.",
+                    "type": "boolean",
+                    "example": false
+                }
+            },
+            "type": "object"
+        },
         "Listener": {
             "properties": {
                 "ip": {
@@ -395,7 +426,7 @@
                 "connected_on": {
                     "description": "UNIX timestamp that the user first connected.",
                     "type": "integer",
-                    "example": 1518889826
+                    "example": 1518866824
                 },
                 "connected_time": {
                     "description": "Number of seconds that the user has been connected.",
@@ -469,7 +500,7 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1518889826
+                    "example": 1518866824
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
@@ -576,7 +607,7 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1518889826
+                    "example": 1518866824
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
@@ -722,7 +753,7 @@
                 "timestamp": {
                     "description": "The current UNIX timestamp",
                     "type": "integer",
-                    "example": 1518889826
+                    "example": 1518866824
                 }
             },
             "type": "object"

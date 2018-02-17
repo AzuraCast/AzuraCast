@@ -61,27 +61,19 @@ class Api
         try {
             return $next($request, $response);
         } catch(\App\Exception\PermissionDenied $e) {
-            return $response->withStatus(403)->withJson([
-                'code' => 403,
-                'message' => 'Permission denied',
-            ]);
+            $api_response = new Entity\Api\Error(403, _('You do not have permission to access this portion of the site.'));
+            return $response->withStatus(403)->withJson($api_response);
         } catch (\App\Exception\NotLoggedIn $e) {
-            return $response->withStatus(403)->withJson([
-                'code' => 403,
-                'message' => 'Login required',
-            ]);
+            $api_response = new Entity\Api\Error(403, _('You must be logged in to access this page.'));
+            return $response->withStatus(403)->withJson($api_response);
         } catch(\Exception $e) {
-            $return_data = [
-                'type' => get_class($e),
-                'code' => $e->getCode(),
-                'message' => $e->getMessage(),
-            ];
+            $api_response = new Entity\Api\Error(
+                $e->getCode(),
+                $e->getMessage(),
+                (!APP_IN_PRODUCTION) ? $e->getTrace() : []
+            );
 
-            if (!APP_IN_PRODUCTION) {
-                $return_data['stack_trace'] = $e->getTrace();
-            }
-
-            return $response->withStatus(500)->withJson($return_data);
+            return $response->withStatus(500)->withJson($api_response);
         }
     }
 }

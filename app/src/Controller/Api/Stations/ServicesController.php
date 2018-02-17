@@ -27,13 +27,8 @@ class ServicesController
      *   tags={"Stations: Service Control"},
      *   description="Restart all services associated with the radio broadcast.",
      *   @SWG\Parameter(ref="#/parameters/station_id_required"),
-     *   @SWG\Response(
-     *     response=200,
-     *     description="Success",
-     *     @SWG\Schema(
-     *       ref="#/definitions/Status"
-     *     )
-     *   ),
+     *   @SWG\Response(response=200, description="Success", @SWG\Schema(ref="#/definitions/Status")),
+     *   @SWG\Response(response=403, description="Access Forbidden", @SWG\Schema(ref="#/definitions/Error")),
      *   security={
      *     {"api_key": {"manage station broadcasting"}}
      *   }
@@ -81,13 +76,8 @@ class ServicesController
      *     default="restart",
      *     required=false
      *   ),
-     *   @SWG\Response(
-     *     response=200,
-     *     description="Success",
-     *     @SWG\Schema(
-     *       ref="#/definitions/Status"
-     *     )
-     *   ),
+     *   @SWG\Response(response=200, description="Success", @SWG\Schema(ref="#/definitions/Status")),
+     *   @SWG\Response(response=403, description="Access Forbidden", @SWG\Schema(ref="#/definitions/Error")),
      *   security={
      *     {"api_key": {"manage station broadcasting"}}
      *   }
@@ -136,13 +126,8 @@ class ServicesController
      *     default="restart",
      *     required=false
      *   ),
-     *   @SWG\Response(
-     *     response=200,
-     *     description="Success",
-     *     @SWG\Schema(
-     *       ref="#/definitions/Status"
-     *     )
-     *   ),
+     *   @SWG\Response(response=200, description="Success", @SWG\Schema(ref="#/definitions/Status")),
+     *   @SWG\Response(response=403, description="Access Forbidden", @SWG\Schema(ref="#/definitions/Error")),
      *   security={
      *     {"api_key": {"manage station broadcasting"}}
      *   }

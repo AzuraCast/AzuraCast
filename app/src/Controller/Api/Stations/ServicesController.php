@@ -16,11 +16,6 @@ class ServicesController
     /** @var Configuration */
     protected $configuration;
 
-    /**
-     * UtilController constructor.
-     * @param EntityManager $em
-     * @param Configuration $configuration
-     */
     public function __construct(EntityManager $em, Configuration $configuration)
     {
         $this->em = $em;
@@ -28,7 +23,21 @@ class ServicesController
     }
 
     /**
-     * Restart all services associated with the radio.
+     * @SWG\Post(path="/station/{station_id}/restart",
+     *   tags={"Stations: Service Control"},
+     *   description="Restart all services associated with the radio broadcast.",
+     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
+     *   @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @SWG\Schema(
+     *       ref="#/definitions/Status"
+     *     )
+     *   ),
+     *   security={
+     *     {"api_key": {"manage station broadcasting"}}
+     *   }
+     * )
      */
     public function restartAction(Request $request, Response $response): Response
     {
@@ -58,6 +67,32 @@ class ServicesController
         return $response->withJson(new Entity\Api\Status(true, sprintf(_('%s restarted.'), _('Station'))));
     }
 
+    /**
+     * @SWG\Post(path="/station/{station_id}/frontend/{action}",
+     *   tags={"Stations: Service Control"},
+     *   description="Perform service control actions on the radio frontend (Icecast, SHOUTcast, etc.)",
+     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
+     *   @SWG\Parameter(
+     *     name="action",
+     *     description="The action to perform (start, stop, restart)",
+     *     type="string",
+     *     format="string",
+     *     in="path",
+     *     default="restart",
+     *     required=false
+     *   ),
+     *   @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @SWG\Schema(
+     *       ref="#/definitions/Status"
+     *     )
+     *   ),
+     *   security={
+     *     {"api_key": {"manage station broadcasting"}}
+     *   }
+     * )
+     */
     public function frontendAction(Request $request, Response $response, $station_id, $do = 'restart'): Response
     {
         /** @var Radio\Frontend\FrontendAbstract $frontend */
@@ -87,6 +122,32 @@ class ServicesController
         }
     }
 
+    /**
+     * @SWG\Post(path="/station/{station_id}/backend/{action}",
+     *   tags={"Stations: Service Control"},
+     *   description="Perform service control actions on the radio backend (Liquidsoap)",
+     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
+     *   @SWG\Parameter(
+     *     name="action",
+     *     description="The action to perform (start, stop, restart)",
+     *     type="string",
+     *     format="string",
+     *     in="path",
+     *     default="restart",
+     *     required=false
+     *   ),
+     *   @SWG\Response(
+     *     response=200,
+     *     description="Success",
+     *     @SWG\Schema(
+     *       ref="#/definitions/Status"
+     *     )
+     *   ),
+     *   security={
+     *     {"api_key": {"manage station broadcasting"}}
+     *   }
+     * )
+     */
     public function backendAction(Request $request, Response $response, $station_id, $do = 'restart'): Response
     {
         /** @var Radio\Backend\BackendAbstract $backend */

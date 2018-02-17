@@ -52,7 +52,7 @@ class Listener
     /**
      * Location metadata, if available
      *
-     * @SWG\Property()
+     * @SWG\Property(@SWG\Items)
      * @var array
      */
     public $location;

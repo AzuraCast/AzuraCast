@@ -30,7 +30,15 @@ class MediaController
      * @SWG\Get(path="/station/{station_id}/art/{media_id}",
      *   tags={"Stations: Media"},
      *   description="Returns the album art for a song, or a generic image.",
-     *   parameters={},
+     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
+     *   @SWG\Parameter(
+     *     name="media_id",
+     *     description="The station media ID",
+     *     type="integer",
+     *     format="int64",
+     *     in="path",
+     *     required=true
+     *   ),
      *   @SWG\Response(
      *     response=200,
      *     description="The requested album artwork"

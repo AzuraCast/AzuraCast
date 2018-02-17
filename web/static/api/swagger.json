@@ -7,7 +7,7 @@
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "version": "0.7.0-2017.06"
+        "version": "0.8.0-2017.12"
     },
     "basePath": "/api",
     "schemes": [
@@ -32,7 +32,7 @@
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/Status"
+                            "$ref": "#/definitions/SystemStatus"
                         }
                     }
                 }
@@ -241,6 +241,137 @@
                     }
                 }
             }
+        },
+        "/station/{station_id}/art/{media_id}": {
+            "get": {
+                "tags": [
+                    "Stations: Media"
+                ],
+                "description": "Returns the album art for a song, or a generic image.",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/station_id_required"
+                    },
+                    {
+                        "name": "media_id",
+                        "in": "path",
+                        "description": "The station media ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The requested album artwork"
+                    },
+                    "404": {
+                        "description": "Image not found; generic filler image."
+                    }
+                }
+            }
+        },
+        "/station/{station_id}/restart": {
+            "post": {
+                "tags": [
+                    "Stations: Service Control"
+                ],
+                "description": "Restart all services associated with the radio broadcast.",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/station_id_required"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Status"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": [
+                            "manage station broadcasting"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/station/{station_id}/frontend/{action}": {
+            "post": {
+                "tags": [
+                    "Stations: Service Control"
+                ],
+                "description": "Perform service control actions on the radio frontend (Icecast, SHOUTcast, etc.)",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/station_id_required"
+                    },
+                    {
+                        "name": "action",
+                        "in": "path",
+                        "description": "The action to perform (start, stop, restart)",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "restart"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Status"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": [
+                            "manage station broadcasting"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/station/{station_id}/backend/{action}": {
+            "post": {
+                "tags": [
+                    "Stations: Service Control"
+                ],
+                "description": "Perform service control actions on the radio backend (Liquidsoap)",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/station_id_required"
+                    },
+                    {
+                        "name": "action",
+                        "in": "path",
+                        "description": "The action to perform (start, stop, restart)",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "restart"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Status"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": [
+                            "manage station broadcasting"
+                        ]
+                    }
+                ]
+            }
         }
     },
     "definitions": {
@@ -264,7 +395,7 @@
                 "connected_on": {
                     "description": "UNIX timestamp that the user first connected.",
                     "type": "integer",
-                    "example": 1501315458
+                    "example": 1518889826
                 },
                 "connected_time": {
                     "description": "Number of seconds that the user has been connected.",
@@ -273,7 +404,8 @@
                 },
                 "location": {
                     "description": "Location metadata, if available",
-                    "type": "array"
+                    "type": "array",
+                    "items": {}
                 }
             },
             "type": "object"
@@ -287,6 +419,10 @@
                 "listeners": {
                     "description": "Listener details",
                     "$ref": "#/definitions/NowPlayingListeners"
+                },
+                "live": {
+                    "description": "Live broadcast details",
+                    "$ref": "#/definitions/NowPlayingLive"
                 },
                 "now_playing": {
                     "description": "Current Song",
@@ -316,11 +452,6 @@
         },
         "NowPlayingCurrentSong": {
             "properties": {
-                "is_live": {
-                    "description": "Set to true if the AutoDJ did not determine the song, which generally means the song is live.",
-                    "type": "boolean",
-                    "example": false
-                },
                 "elapsed": {
                     "description": "Elapsed time of the song's playback since it started.",
                     "type": "integer",
@@ -338,12 +469,17 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1501315458
+                    "example": 1518889826
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
                     "type": "integer",
                     "example": 180
+                },
+                "playlist": {
+                    "description": "Indicates the playlist that the song was played from, if available, or empty string if not.",
+                    "type": "string",
+                    "example": "Top 100"
                 },
                 "is_request": {
                     "description": "Indicates whether the song is a listener request.",
@@ -376,6 +512,21 @@
             },
             "type": "object"
         },
+        "NowPlayingLive": {
+            "properties": {
+                "is_live": {
+                    "description": "Whether the stream is known to currently have a live DJ.",
+                    "type": "boolean",
+                    "example": false
+                },
+                "streamer_name": {
+                    "description": "The current active streamer/DJ, if one is available.",
+                    "type": "string",
+                    "example": "DJ Jazzy Jeff"
+                }
+            },
+            "type": "object"
+        },
         "Song": {
             "properties": {
                 "id": {
@@ -397,6 +548,21 @@
                     "description": "The song title.",
                     "type": "string",
                     "example": "Aluko River"
+                },
+                "album": {
+                    "description": "The song album.",
+                    "type": "string",
+                    "example": "Moving Castle"
+                },
+                "lyrics": {
+                    "description": "Lyrics to the song.",
+                    "type": "string",
+                    "example": ""
+                },
+                "art": {
+                    "description": "URL to the album artwork (if available).",
+                    "type": "string",
+                    "example": "https://picsum.photos/1200/1200"
                 }
             },
             "type": "object"
@@ -410,12 +576,17 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1501315458
+                    "example": 1518889826
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
                     "type": "integer",
                     "example": 180
+                },
+                "playlist": {
+                    "description": "Indicates the playlist that the song was played from, if available, or empty string if not.",
+                    "type": "string",
+                    "example": "Top 100"
                 },
                 "is_request": {
                     "description": "Indicates whether the song is a listener request.",
@@ -464,6 +635,11 @@
                     "description": "The full URL to listen to the default mount of the station",
                     "type": "string",
                     "example": "http://localhost:8000/radio.mp3"
+                },
+                "is_public": {
+                    "description": "If the station is public (i.e. should be shown in listings of all stations)",
+                    "type": "boolean",
+                    "example": true
                 },
                 "mounts": {
                     "type": "array",
@@ -525,6 +701,19 @@
         },
         "Status": {
             "properties": {
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "message": {
+                    "type": "string",
+                    "example": "Changes saved successfully."
+                }
+            },
+            "type": "object"
+        },
+        "SystemStatus": {
+            "properties": {
                 "online": {
                     "description": "Whether the service is online or not (should always be true)",
                     "type": "boolean",
@@ -533,7 +722,7 @@
                 "timestamp": {
                     "description": "The current UNIX timestamp",
                     "type": "integer",
-                    "example": 1501315458
+                    "example": 1518889826
                 }
             },
             "type": "object"

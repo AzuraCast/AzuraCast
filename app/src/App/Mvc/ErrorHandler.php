@@ -50,7 +50,7 @@ class ErrorHandler
         $user = $req->getAttribute('user');
         $show_detailed = $this->acl->userAllowed($user, 'administer all') || !APP_IN_PRODUCTION;
 
-        if (APP_IS_COMMAND_LINE || $req->isXhr()) {
+        if ($req->isXhr() || (APP_IS_COMMAND_LINE && !APP_TESTING_MODE)) {
             return $res->withStatus(500)->withJson([
                 'code' => $e->getCode(),
                 'message' => $e->getMessage(),

@@ -15,6 +15,10 @@
      - supervisor
     ignore_errors: True
 
+  - name: Wait for all services to spin down...
+    pause:
+      seconds: 15
+
   - name: Update apt
     become: true
     apt:

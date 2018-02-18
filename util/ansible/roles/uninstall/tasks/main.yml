@@ -17,7 +17,7 @@
 
   - name: Wait for all services to spin down...
     pause:
-      seconds: 15
+      seconds: 30
 
   - name: Update apt
     become: true

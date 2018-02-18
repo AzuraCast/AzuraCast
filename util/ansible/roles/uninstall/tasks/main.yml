@@ -24,7 +24,6 @@
     user:
       name: azuracast
       state: absent
-      remove: yes
 
   - name: Remove AzuraCast folders
     file: path="{{ item }}" state=absent

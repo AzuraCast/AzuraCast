@@ -27,6 +27,9 @@ if [ "" == "$PKG_OK" ]; then
     sudo apt-add-repository ppa:ansible/ansible
     sudo apt-get update
     sudo apt-get install -q -y ansible python-mysqldb
+else
+    sudo apt-get update
+    sudo apt-get install -q -y ansible python-mysqldb
 fi
 
 APP_ENV="${APP_ENV:-production}"

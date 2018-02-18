@@ -1,8 +1,6 @@
 ---
-  - include: x86.yml
-    dynamic: no
+  - include_tasks: x86.yml
     when: ansible_architecture == 'x86_64' or ansible_architecture == 'i386'
 
-  - include: armhf.yml
-    dynamic: no
+  - include_tasks: armhf.yml
     when: ansible_architecture != 'x86_64' and ansible_architecture != 'i386'

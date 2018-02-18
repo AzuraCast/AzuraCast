@@ -39,7 +39,7 @@
 
   - name: Remove radio software
     become: true
-    apt: pkg="{{ item }}" state=absent purge=yes
+    apt: pkg="{{ item }}" state=absent force=yes purge=yes
     with_items:
       - icecast2
       - liquidsoap-plugin-all
@@ -73,19 +73,19 @@
 
   - name: Remove supervisord
     become: true
-    apt: pkg="{{ item }}" state=absent purge=yes
+    apt: pkg="{{ item }}" state=absent force=yes purge=yes
     with_items:
       - supervisor
 
   - name: Remove influxdb
     become: true
-    apt: pkg="{{ item }}" state=absent purge=yes
+    apt: pkg="{{ item }}" state=absent force=yes purge=yes
     with_items:
       - influxdb
 
   - name: Remove nginx
     become: true
-    apt: pkg="{{ item }}" state=absent purge=yes
+    apt: pkg="{{ item }}" state=absent force=yes purge=yes
     with_items:
       - nginx
       - nginx-common
@@ -93,7 +93,7 @@
 
   - name: Remove PHP 7.2
     become: true
-    apt: pkg="{{ item }}" state=absent purge=yes
+    apt: pkg="{{ item }}" state=absent force=yes purge=yes
     with_items:
       - php7.2-fpm
       - php7.2-cli
@@ -108,7 +108,7 @@
 
   - name: Remove Redis
     become: true
-    apt: pkg="{{ item }}" state=absent purge=yes
+    apt: pkg="{{ item }}" state=absent force=yes purge=yes
     with_items:
       - redis-server
 
@@ -118,13 +118,13 @@
 
   - name: Remove UFW
     become: true
-    apt: pkg="{{ item }}" state=absent purge=yes
+    apt: pkg="{{ item }}" state=absent force=yes purge=yes
     with_items:
       - ufw
 
   - name: Remove Ansible
     become: true
-    apt: pkg="{{ item }}" state=absent purge=yes
+    apt: pkg="{{ item }}" state=absent force=yes purge=yes
     with_items:
       - python2.7
       - python-pip
@@ -133,7 +133,7 @@
 
   - name: Uninstall system packages
     become: true
-    apt:  pkg="{{ item }}" state=absent purge=yes
+    apt:  pkg="{{ item }}" state=absent force=yes purge=yes
     with_items:
       - apt-transport-https
       - curl

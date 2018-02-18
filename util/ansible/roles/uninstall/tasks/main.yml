@@ -92,20 +92,10 @@
       - nginx-extras
 
       # PHP 7.2
-      - php7.2-fpm
-      - php7.2-cli
-      - php7.2-gd
-      - php7.2-curl
-      - php7.2-xml         # IceCast XML config
-      - php7.2-zip         # Composer installs
-      - php7.2-mysqlnd     # MySQL Native Driver (Doctrine)
-      - php7.2-mbstring    # Codeception Tests
-      - php7.2-intl        # Localization
-      - php7.2-redis       # Cache
+      - php7.2-*
 
       # MariaDB
-      - mariadb-server
-      - mariadb-client
+      - mariadb-*
 
       # Redis
       - redis-server

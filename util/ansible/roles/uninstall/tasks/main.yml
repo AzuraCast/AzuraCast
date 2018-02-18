@@ -33,7 +33,7 @@
 
   - name: Remove radio PPAs
     become: true
-    apt_repository: repo="{{ item }}" state=absent purge=yes
+    apt_repository: repo="{{ item }}" state=absent
     with_items:
       - ppa:avsm/ppa
 

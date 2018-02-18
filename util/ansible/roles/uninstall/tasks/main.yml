@@ -45,6 +45,7 @@
   - name: UFW - Turn off Firewall
     ufw:
       state: disabled
+    ignore_errors: True
 
   - name: Remove software
     become: true

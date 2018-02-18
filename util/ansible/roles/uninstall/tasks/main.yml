@@ -12,7 +12,7 @@
      - "php7.2-fpm"
      - "nginx"
      - "redis-server"
-     - "supervisord"
+     - "supervisor"
 
   - name: Update apt
     become: true

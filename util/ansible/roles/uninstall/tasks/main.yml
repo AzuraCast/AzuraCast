@@ -113,11 +113,3 @@
       # System packages
       - pwgen
       - lnav
-
-  - name: Autoremove packages
-    become: true
-    apt:
-      autoremove: yes
-
-  - debug:
-      msg: "Uninstallation complete."

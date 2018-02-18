@@ -13,6 +13,7 @@
      - nginx
      - redis-server
      - supervisor
+    ignore_errors: True
 
   - name: Update apt
     become: true
@@ -124,3 +125,6 @@
     become: true
     apt:
       autoremove: yes
+
+  - debug:
+      msg: "Uninstallation complete."

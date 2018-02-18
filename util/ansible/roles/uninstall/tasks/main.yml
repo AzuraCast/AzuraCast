@@ -7,20 +7,6 @@
     apt:
       update_cache: yes
 
-  - name: Uninstall system packages
-    become: true
-    apt:  pkg="{{ item }}" state=absent purge=yes
-    with_items:
-      - apt-transport-https
-      - curl
-      - wget
-      - tar
-      - build-essential
-      - python-software-properties
-      - pwgen
-      - whois
-      - lnav
-
   - name: Remove AzuraCast User
     become: true
     user:
@@ -125,11 +111,6 @@
     with_items:
       - ufw
 
-  - name: Autoremove packages
-    become: true
-    apt:
-      autoremove: yes
-
   - name: Remove Ansible
     become: true
     apt: pkg="{{ item }}" state=absent purge=yes
@@ -138,3 +119,22 @@
       - python-pip
       - python-mysqldb
       - ansible
+
+  - name: Uninstall system packages
+    become: true
+    apt:  pkg="{{ item }}" state=absent purge=yes
+    with_items:
+      - apt-transport-https
+      - curl
+      - wget
+      - tar
+      - build-essential
+      - python-software-properties
+      - pwgen
+      - whois
+      - lnav
+
+  - name: Autoremove packages
+    become: true
+    apt:
+      autoremove: yes

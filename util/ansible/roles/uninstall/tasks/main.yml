@@ -54,14 +54,8 @@
     with_items:
       # Radio software
       - icecast2
-      - liquidsoap-plugin-all
-      - liquidsoap-plugin-opus
       - liquidsoap
-      - liquidsoap-plugin-ogg
-      - liquidsoap-plugin-vorbis
-      - liquidsoap-plugin-lame
-      - liquidsoap-plugin-flac
-      - liquidsoap-plugin-icecast
+      - liquidsoap-plugin-*
       - libxml2
       - libxslt1-dev
       - libvorbis-dev
@@ -89,8 +83,7 @@
 
       # Nginx
       - nginx
-      - nginx-common
-      - nginx-extras
+      - nginx-*
 
       # PHP 7.2
       - php7.2-*

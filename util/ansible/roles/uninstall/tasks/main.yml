@@ -7,12 +7,12 @@
       name: "{{ item }}"
       state: stopped
     with_items:
-     - "influxdb"
-     - "mysql"
-     - "php7.2-fpm"
-     - "nginx"
-     - "redis-server"
-     - "supervisor"
+     - influxdb
+     - mysql
+     - php7.2-fpm
+     - nginx
+     - redis-server
+     - supervisor
 
   - name: Update apt
     become: true
@@ -31,16 +31,21 @@
      - "{{ tmp_base }}"
      - "{{ app_base }}/servers"
 
-  - name: Remove radio PPAs
+  - name: Remove PPAs
     become: true
     apt_repository: repo="{{ item }}" state=absent
     with_items:
       - ppa:avsm/ppa
 
-  - name: Remove radio software
+  - name: UFW - Turn off Firewall
+    ufw:
+      state: disabled
+
+  - name: Remove software
     become: true
     apt: pkg="{{ item }}" state=absent force=yes purge=yes
     with_items:
+      # Radio software
       - icecast2
       - liquidsoap-plugin-all
       - liquidsoap-plugin-opus
@@ -69,30 +74,18 @@
       - aspcud
       - camlp4
 
-  - name: Remove supervisord
-    become: true
-    apt: pkg="{{ item }}" state=absent force=yes purge=yes
-    with_items:
+      # Supervisord
       - supervisor
 
-  - name: Remove influxdb
-    become: true
-    apt: pkg="{{ item }}" state=absent force=yes purge=yes
-    with_items:
+      # InfluxDB
       - influxdb
 
-  - name: Remove nginx
-    become: true
-    apt: pkg="{{ item }}" state=absent force=yes purge=yes
-    with_items:
+      # Nginx
       - nginx
       - nginx-common
       - nginx-extras
 
-  - name: Remove PHP 7.2
-    become: true
-    apt: pkg="{{ item }}" state=absent force=yes purge=yes
-    with_items:
+      # PHP 7.2
       - php7.2-fpm
       - php7.2-cli
       - php7.2-gd
@@ -104,35 +97,19 @@
       - php7.2-intl        # Localization
       - php7.2-redis       # Cache
 
-  - name: Remove Redis
-    become: true
-    apt: pkg="{{ item }}" state=absent force=yes purge=yes
-    with_items:
+      # Redis
       - redis-server
 
-  - name: UFW - Turn on Firewall
-    ufw:
-      state: disabled
-
-  - name: Remove UFW
-    become: true
-    apt: pkg="{{ item }}" state=absent force=yes purge=yes
-    with_items:
+      # UFW Firewall
       - ufw
 
-  - name: Remove Ansible
-    become: true
-    apt: pkg="{{ item }}" state=absent force=yes purge=yes
-    with_items:
+      # Ansible itself
       - python2.7
       - python-pip
       - python-mysqldb
       - ansible
 
-  - name: Uninstall system packages
-    become: true
-    apt:  pkg="{{ item }}" state=absent force=yes purge=yes
-    with_items:
+      # System packages
       - apt-transport-https
       - curl
       - wget
@@ -142,7 +119,6 @@
       - pwgen
       - whois
       - lnav
-      - pkg-config
 
   - name: Autoremove packages
     become: true

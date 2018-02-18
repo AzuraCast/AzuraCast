@@ -6,7 +6,7 @@
     www_base: "{{ util_base | dirname }}"
     app_base: "{{ www_base | dirname }}"
     tmp_base: "{{ app_base }}/www_tmp"
-    app_env: "development"
+    app_env: "production"
     testing_mode: false
 
     dev_azuracast_user_password: "azuracast"
@@ -29,4 +29,3 @@
     - services
     - azuracast-db
     - { role: azuracast-cron, when: testing_mode == false }
-    - { role: azuracast-build, when: testing_mode == false and app_env == 'development' }

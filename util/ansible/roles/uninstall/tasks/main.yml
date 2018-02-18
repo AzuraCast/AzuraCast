@@ -1,0 +1,140 @@
+---
+  - debug:
+      msg: "Running Ansible on {{ inventory_hostname }} with OS {{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }} {{ ansible_architecture }} ({{ app_env }})"
+
+  - name: Update apt
+    become: true
+    apt:
+      update_cache: yes
+
+  - name: Uninstall system packages
+    become: true
+    apt:  pkg="{{ item }}" state=absent purge=yes
+    with_items:
+      - apt-transport-https
+      - curl
+      - wget
+      - tar
+      - build-essential
+      - python-software-properties
+      - pwgen
+      - whois
+      - lnav
+
+  - name: Remove AzuraCast User
+    become: true
+    user:
+      name: azuracast
+      state: absent
+      remove: yes
+
+  - name: Remove AzuraCast folders
+    file: path="{{ item }}" state=absent
+    with_items:
+     - "{{ tmp_base }}"
+     - "{{ app_base }}/servers"
+
+  - name: Remove radio PPAs
+    become: true
+    apt_repository: repo="{{ item }}" state=absent purge=yes
+    with_items:
+      - ppa:avsm/ppa
+
+  - name: Remove radio software
+    become: true
+    apt: pkg="{{ item }}" state=absent purge=yes
+    with_items:
+      - icecast2
+      - liquidsoap-plugin-all
+      - liquidsoap-plugin-opus
+      - liquidsoap
+      - liquidsoap-plugin-ogg
+      - liquidsoap-plugin-vorbis
+      - liquidsoap-plugin-lame
+      - liquidsoap-plugin-flac
+      - liquidsoap-plugin-icecast
+      - libxml2
+      - libxslt1-dev
+      - libvorbis-dev
+      - libssl-dev
+      - libcurl4-openssl-dev
+      - opam
+      - pkg-config
+      - libpcre3-dev
+      - libfdk-aac-dev
+      - libmad0-dev
+      - libmp3lame-dev
+      - libtag1-dev
+      - libfaad-dev
+      - libflac-dev
+      - libogg-dev
+      - libopus-dev
+      - pkg-config
+      - m4
+      - aspcud
+      - camlp4
+
+  - name: Remove supervisord
+    become: true
+    apt: pkg="{{ item }}" state=absent purge=yes
+    with_items:
+      - supervisor
+
+  - name: Remove influxdb
+    become: true
+    apt: pkg="{{ item }}" state=absent purge=yes
+    with_items:
+      - influxdb
+
+  - name: Remove nginx
+    become: true
+    apt: pkg="{{ item }}" state=absent purge=yes
+    with_items:
+      - nginx
+      - nginx-common
+      - nginx-extras
+
+  - name: Remove PHP 7.2
+    become: true
+    apt: pkg="{{ item }}" state=absent purge=yes
+    with_items:
+      - php7.2-fpm
+      - php7.2-cli
+      - php7.2-gd
+      - php7.2-curl
+      - php7.2-xml         # IceCast XML config
+      - php7.2-zip         # Composer installs
+      - php7.2-mysqlnd     # MySQL Native Driver (Doctrine)
+      - php7.2-mbstring    # Codeception Tests
+      - php7.2-intl        # Localization
+      - php7.2-redis       # Cache
+
+  - name: Remove Redis
+    become: true
+    apt: pkg="{{ item }}" state=absent purge=yes
+    with_items:
+      - redis-server
+
+  - name: UFW - Turn on Firewall
+    ufw:
+      state: disabled
+
+  - name: Remove UFW
+    become: true
+    apt: pkg="{{ item }}" state=absent purge=yes
+    with_items:
+      - ufw
+
+  - name: Autoremove packages
+    become: true
+    apt:
+      autoremove: yes
+
+  - name: Remove Ansible
+    become: true
+    apt: pkg="{{ item }}" state=absent purge=yes
+    with_items:
+      - python2.7
+      - python-pip
+      - python-mysqldb
+      - ansible

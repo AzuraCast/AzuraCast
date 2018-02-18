@@ -49,13 +49,6 @@
      - php7.2-intl        # Localization
      - php7.2-redis       # Cache
 
-  - name: Install xdebug for testing
-    become: true
-    apt: package="{{ item }}" state=latest
-    with_items:
-     - php7.2-xdebug
-    when: testing_mode|bool == true
-
   - name: List locales
     shell: "cd {{ www_base }}/app/locale/; for i in $(ls -d */); do echo ${i%%/}; done"
     register: locale_list

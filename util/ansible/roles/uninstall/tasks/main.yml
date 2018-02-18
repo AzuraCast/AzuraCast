@@ -15,9 +15,10 @@
      - supervisor
     ignore_errors: True
 
-  - name: Wait for all services to spin down...
-    pause:
-      seconds: 30
+  - name: Kill all processes owned by AzuraCast user
+    become: true
+    command: pkill -9 -u azuracast
+    ignore_errors: true
 
   - name: Update apt
     become: true

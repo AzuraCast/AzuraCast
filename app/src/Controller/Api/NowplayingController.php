@@ -90,9 +90,12 @@ class NowplayingController
             return $response->withJson('Station not found.', 404);
         }
 
-        $np = array_filter($np, function($np_row) {
-            return $np_row->station->is_public;
-        });
+        // If unauthenticated, hide non-public stations from full view.
+        if ($request->getAttribute('user') === null) {
+            $np = array_filter($np, function($np_row) {
+                return $np_row->station->is_public;
+            });
+        }
 
         foreach ($np as $np_row) {
             $np_row->now_playing->recalculate();

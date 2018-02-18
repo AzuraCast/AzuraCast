@@ -98,6 +98,10 @@
       - php7.2-intl        # Localization
       - php7.2-redis       # Cache
 
+      # MariaDB
+      - mariadb-server
+      - mariadb-client
+
       # Redis
       - redis-server
 

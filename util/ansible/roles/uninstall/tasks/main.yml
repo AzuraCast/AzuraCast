@@ -111,14 +111,7 @@
       - ansible
 
       # System packages
-      - apt-transport-https
-      - curl
-      - wget
-      - tar
-      - build-essential
-      - python-software-properties
       - pwgen
-      - whois
       - lnav
 
   - name: Autoremove packages

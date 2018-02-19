@@ -15,7 +15,7 @@ MYSQL_PASSWORD=`awk -F "=" '/db_password/ {print $2}' app/env.ini | tr -d ' '`
 
 mysqldump --add-drop-table -u$MYSQL_USERNAME -p$MYSQL_PASSWORD azuracast > util/fixtures/01_docker_migration.sql
 
-read -n 1 -s -r -p "MySQL exported. Press any key to continue..."
+read -n 1 -s -r -p "MySQL exported. Press any key to continue (Export InfluxDB)..."
 
 # Dump InfluxDB data
 mkdir -p /var/azuracast/migration
@@ -23,7 +23,7 @@ mkdir -p /var/azuracast/migration
 influxd backup /var/azuracast/migration
 influxd backup -database stations /var/azuracast/migration
 
-read -n 1 -s -r -p "InfluxDB exported. Press any key to continue..."
+read -n 1 -s -r -p "InfluxDB exported. Press any key to continue (Install Docker)..."
 
 # Install Docker
 wget -qO- https://get.docker.com/ | sh
@@ -37,17 +37,17 @@ sudo sh -c "curl -L https://raw.githubusercontent.com/docker/compose/${COMPOSE_V
 docker-compose pull
 
 docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm migrate_influx
-docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm migrate_stations
 
-read -n 1 -s -r -p "Stations and InfluxDB data migrated to Docker. Press any key to continue with uninstallation..."
+read -n 1 -s -r -p "InfluxDB data migrated to Docker. Press any key to continue (Uninstall Traditional AzuraCast)..."
 
 # Run traditional uninstaller
 chmod a+x uninstall.sh
 ./uninstall.sh
 
-read -n 1 -s -r -p "Uninstall complete. Press any key to continue with DB installation..."
+read -n 1 -s -r -p "Uninstall complete. Press any key to continue (Install AzuraCast in Docker)..."
 
 # Run Docker AzuraCast-specific installer
+docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm migrate_stations
 docker-compose -f docker-compose.yml -f docker-compose.migrate.yml run --rm cli azuracast_install
 
 # Spin up Docker

@@ -1,8 +1,7 @@
 ---
-  - name: (Prod) Generate AzuraCast Password
+  - name: Generate AzuraCast Password
     command: pwgen 8 -sn 1
     register: prod_azuracast_user_password
-    when: app_env == "production"
 
   - name: Create Groups
     become: true
@@ -10,10 +9,6 @@
     with_items:
      - www-data
      - admin
-
-  - name: Assign User Password
-    set_fact:
-      azuracast_user_password: "{{ prod_azuracast_user_password.stdout if app_env == 'production' else dev_azuracast_user_password }}"
 
   - name: Create AzuraCast User
     become: true
@@ -23,24 +18,9 @@
       comment: "AzuraCast"
       shell: /bin/bash
       groups: 'sudo,admin,www-data'
-      password: "{{ azuracast_user_password|password_hash('sha512') }}"
+      password: "{{ prod_azuracast_user_password.stdout|password_hash('sha512') }}"
     notify: send user notification
 
   - name: Modify www-data User
     become: true
     user: name=www-data groups="azuracast" append=yes
-
-  - name: (Dev) Modify vagrant User
-    become: true
-    user: name=vagrant groups="www-data" append=yes
-    when: app_env == "development"
-
-  - name: (Dev) Modify www-data User
-    become: true
-    user: name=www-data groups="vagrant" append=yes
-    when: app_env == "development"
-
-  - name: (Dev) Add azuracast User to vagrant Group
-    become: true
-    user: name=azuracast groups="vagrant" append=yes
-    when: app_env == "development"

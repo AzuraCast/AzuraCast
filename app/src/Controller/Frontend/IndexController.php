@@ -51,6 +51,15 @@ class IndexController
 
     public function indexAction(Request $request, Response $response): Response
     {
+        // Check setup status; redirect if incomplete
+
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
+
+        if ($settings_repo->getSetting('setup_complete', 0) === 0) {
+            return $response->redirectToRoute('setup:index');
+        }
+
         /** @var \App\Mvc\View $view */
         $view = $request->getAttribute('view');
 

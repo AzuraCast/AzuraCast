@@ -7,7 +7,7 @@
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "version": "0.8.0-2017.12"
+        "version": "0.8.1-2018.02"
     },
     "basePath": "/api",
     "schemes": [
@@ -331,6 +331,12 @@
                         "schema": {
                             "$ref": "#/definitions/Status"
                         }
+                    },
+                    "403": {
+                        "description": "Access Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
                     }
                 },
                 "security": [
@@ -368,6 +374,12 @@
                         "schema": {
                             "$ref": "#/definitions/Status"
                         }
+                    },
+                    "403": {
+                        "description": "Access Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
                     }
                 },
                 "security": [
@@ -391,7 +403,7 @@
                 "message": {
                     "description": "The text description of the error.",
                     "type": "string",
-                    "example": "Access forbidden."
+                    "example": "Error description."
                 },
                 "stack_trace": {
                     "description": "A stack trace outlining the error, if permissions allow this to be shown.",
@@ -426,7 +438,7 @@
                 "connected_on": {
                     "description": "UNIX timestamp that the user first connected.",
                     "type": "integer",
-                    "example": 1518866824
+                    "example": 1519097690
                 },
                 "connected_time": {
                     "description": "Number of seconds that the user has been connected.",
@@ -500,7 +512,7 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1518866824
+                    "example": 1519097690
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
@@ -607,7 +619,7 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1518866824
+                    "example": 1519097690
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
@@ -753,7 +765,7 @@
                 "timestamp": {
                     "description": "The current UNIX timestamp",
                     "type": "integer",
-                    "example": 1518866824
+                    "example": 1519097690
                 }
             },
             "type": "object"

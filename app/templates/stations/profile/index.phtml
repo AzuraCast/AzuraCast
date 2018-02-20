@@ -241,8 +241,8 @@ $assets
                 <dl>
                     <dt><?=_('Stream Playlists') ?>:</dt>
                     <dd>
-                        <a class="api-call" class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">PLS</a>
-                        <a class="api-call" class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'm3u']) ?>">M3U</a>
+                        <a class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">PLS</a>
+                        <a class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'm3u']) ?>">M3U</a>
                     </dd>
                 </dl>
 

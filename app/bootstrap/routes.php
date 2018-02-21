@@ -399,6 +399,22 @@ return function(\Slim\App $app) {
 
         })->add([Middleware\Permissions::class, 'manage station streamers', true]);
 
+        $this->group('/webhooks', function () {
+
+            $this->get('', Controller\Stations\WebhooksController::class.':indexAction')
+                ->setName('stations:webhooks:index');
+
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\WebhooksController::class.':editAction')
+                ->setName('stations:webhooks:edit');
+
+            $this->map(['GET', 'POST'], '/add[/{type}]', Controller\Stations\WebhooksController::class.':addAction')
+                ->setName('stations:webhooks:add');
+
+            $this->get('/delete/{id}/{csrf}', Controller\Stations\WebhooksController::class.':deleteAction')
+                ->setName('stations:webhooks:delete');
+
+        })->add([Middleware\Permissions::class, 'manage station web hooks', true]);
+
         // END /stations GROUP
 
     })

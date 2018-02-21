@@ -291,9 +291,9 @@ return function (\Slim\Container $di, array $app_settings) {
             $di[\App\Flash::class],
             $di[\App\Csrf::class],
             [
-                'icecast' => $config->get('forms/mount_icecast'),
-                'remote' => $config->get('forms/mount_remote'),
-                'shoutcast2' => $config->get('forms/mount_shoutcast2'),
+                'icecast' => $config->get('forms/mount/icecast'),
+                'remote' => $config->get('forms/mount/remote'),
+                'shoutcast2' => $config->get('forms/mount/shoutcast2'),
             ]
         );
     };
@@ -352,6 +352,20 @@ return function (\Slim\Container $di, array $app_settings) {
             $di[\App\Flash::class],
             $di[\App\Csrf::class],
             $config->get('forms/streamer')
+        );
+    };
+
+    $di[\Controller\Stations\WebhooksController::class] = function($di) {
+        /** @var \App\Config $config */
+        $config = $di[\App\Config::class];
+
+        return new \Controller\Stations\WebhooksController(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $di[\App\Csrf::class],
+            [
+                'tunein' => $config->get('forms/webhook/tunein'),
+            ]
         );
     };
 

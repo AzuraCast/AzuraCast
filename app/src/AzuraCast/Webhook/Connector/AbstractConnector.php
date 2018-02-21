@@ -5,6 +5,21 @@ use Entity;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
+    public function shouldDispatch(array $current_events, array $triggers): bool
+    {
+        if (empty($triggers)) {
+            return true;
+        }
+
+        foreach($triggers as $trigger) {
+            if (in_array($trigger, $current_events)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Flatten an array from format:
      * [

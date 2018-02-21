@@ -37,7 +37,7 @@ class Dispatcher
         if ($is_standalone) {
             $connectors[] = [
                 'type' => 'local',
-                'triggers' => ['all'],
+                'triggers' => [],
                 'config' => [],
             ];
         }
@@ -51,8 +51,8 @@ class Dispatcher
                 if ($webhook->isEnabled()) {
                     $connectors[] = [
                         'type' => $webhook->getType(),
-                        'triggers' => $webhook->getTriggers() ?: ['all'],
-                        'config' => $webhook->getConfig(),
+                        'triggers' => $webhook->getTriggers() ?: [],
+                        'config' => $webhook->getConfig() ?: [],
                     ];
                 }
             }
@@ -86,15 +86,25 @@ class Dispatcher
                 continue;
             }
 
-            if (!empty(array_intersect($to_trigger, $connector['triggers']))) {
+            /** @var Connector\ConnectorInterface $connector_obj */
+            $connector_obj = $this->connectors[$connector['type']];
+
+            if ($connector_obj->shouldDispatch($to_trigger, (array)$connector['triggers'])) {
                 \App\Debug::log(sprintf('Dispatching connector "%s".', $connector['type']));
 
-                /** @var Connector\ConnectorInterface $connector_obj */
-                $connector_obj = $this->connectors[$connector['type']];
-
-                $connector_obj->dispatch($station, $np_new);
+                $connector_obj->dispatch($station, $np_new, (array)$connector['config']);
             }
         }
+    }
+
+    public static function getConnectors()
+    {
+        return [
+            'tunein' => [
+                'name' => _('TuneIn AIR'),
+                'description' => _('Send song metadata changes to TuneIn.'),
+            ],
+        ];
     }
 
     public static function getTriggers()

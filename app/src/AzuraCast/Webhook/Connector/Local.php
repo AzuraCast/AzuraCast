@@ -23,7 +23,24 @@ class Local extends AbstractConnector
         $this->settings_repo = $settings_repo;
     }
 
-    public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np)
+    /**
+     * @param array $current_events
+     * @param array|null $triggers
+     * @return bool
+     */
+    public function shouldDispatch(array $current_events, array $triggers): bool
+    {
+        return true;
+    }
+
+    /**
+     * @param Entity\Station $station
+     * @param Entity\Api\NowPlaying $np
+     * @param array $config
+     * @throws Database\Exception
+     * @throws \InfluxDB\Exception
+     */
+    public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
     {
         \App\Debug::log('Writing entry to InfluxDB...');
 

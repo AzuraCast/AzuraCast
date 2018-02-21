@@ -54,9 +54,11 @@ class StationWebhook
      */
     protected $config;
 
-    public function __construct(Station $station)
+    public function __construct(Station $station, $type)
     {
         $this->station = $station;
+        $this->type = $type;
+
         $this->is_enabled = true;
     }
 
@@ -85,11 +87,21 @@ class StationWebhook
     }
 
     /**
-     * @param string $type
+     * @return string The localized name of the connector type.
      */
-    public function setType(string $type): void
+    public function getTypeName(): string
     {
-        $this->type = $type;
+        $connectors = \AzuraCast\Webhook\Dispatcher::getConnectors();
+        return $connectors[$this->type]['name'] ?? '';
+    }
+
+    /**
+     * @return string The localized description of the connector type.
+     */
+    public function getTypeDescription(): string
+    {
+        $connectors = \AzuraCast\Webhook\Dispatcher::getConnectors();
+        return $connectors[$this->type]['description'] ?? '';
     }
 
     /**
@@ -114,6 +126,27 @@ class StationWebhook
     public function getTriggers(): array
     {
         return (array)$this->triggers;
+    }
+
+    /**
+     * Return an array of localized names of the triggers for this hook.
+     *
+     * @return array
+     */
+    public function getTriggerNames(): array
+    {
+        if (empty($this->triggers)) {
+            return [_('Default')];
+        }
+
+        $trigger_names = [];
+        $triggers = \AzuraCast\Webhook\Dispatcher::getTriggers();
+
+        foreach($this->triggers as $trigger) {
+            $trigger_names[] = $triggers[$trigger];
+        }
+
+        return $trigger_names;
     }
 
     /**

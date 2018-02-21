@@ -1,0 +1,10 @@
+<?php $this->layout('main', ['title' => sprintf(_('Add %s'), _('Web Hook'))]) ?>
+
+<p><?=_('Select the type of web hook to create.') ?></p>
+
+<dl>
+<?php foreach($connectors as $type => $info): ?>
+    <dt><a href="<?=$url->named('stations:webhooks:add', ['station' => $station->getId(), 'type' => $type]) ?>"><?=$info['name'] ?></a></dt>
+    <dd><?=$info['description'] ?></dd>
+<?php endforeach; ?>
+</dl>

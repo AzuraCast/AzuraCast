@@ -417,6 +417,7 @@ return function (\Slim\Container $di, $settings) {
     $di[AzuraCast\Webhook\Dispatcher::class] = function($di) {
         return new \AzuraCast\Webhook\Dispatcher([
             'local' => $di[\AzuraCast\Webhook\Connector\Local::class],
+            'tunein' => $di[\AzuraCast\Webhook\Connector\TuneIn::class],
         ]);
     };
 
@@ -426,6 +427,10 @@ return function (\Slim\Container $di, $settings) {
             $di[\App\Cache::class],
             $di[\Entity\Repository\SettingsRepository::class]
         );
+    };
+
+    $di[\AzuraCast\Webhook\Connector\TuneIn::class] = function($di) {
+        return new \AzuraCast\Webhook\Connector\TuneIn();
     };
 
     //

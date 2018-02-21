@@ -48,6 +48,10 @@
         <li><a href="<?=$url->named('stations:mounts:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=_('Mount Points') ?></a></li>
     <?php endif; ?>
 
+    <?php if ($acl->userAllowed($user, 'manage station web hooks', $station->getId())): ?>
+        <li><a href="<?=$url->named('stations:webhooks:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-code-setting"></i> <?=_('Web Hooks') ?></a></li>
+    <?php endif; ?>
+
     <?php if ($acl->userAllowed($user, 'view station reports', $station->getId())): ?>
         <li class="sub-menu">
             <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i> <?=_('Reports') ?></a>

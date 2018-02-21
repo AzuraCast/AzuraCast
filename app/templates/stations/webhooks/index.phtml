@@ -1,0 +1,45 @@
+<?php $this->layout('main', ['title' => _('Web Hooks'), 'manual' => true]) ?>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2><?=_('Web Hooks') ?></h2>
+
+        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(_('Add %s'), _('Web Hook')) ?>" href="<?=$url->named('stations:webhooks:add', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
+    </div>
+    <div class="card-body card-padding p-b-0">
+        <p><?=_('Web hooks let you connect to external web services and broadcast changes to your station to them.') ?></p>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="25%">
+                <col width="25%">
+                <col width="50%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th><?=_('Actions') ?></th>
+                <th><?=_('Type') ?></th>
+                <th><?=_('Triggers') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($webhooks as $row): ?>
+                <?php /** @var \Entity\StationWebhook $row */ ?>
+                <tr class="vertical-align-middle">
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:webhooks:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:webhooks:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=_('Delete') ?></a>
+                    </td>
+                    <td>
+                        <?=$row->getTypeName() ?>
+                    </td>
+                    <td>
+                        <?=implode(', ', $row->getTriggerNames()) ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

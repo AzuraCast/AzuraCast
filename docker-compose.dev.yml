@@ -8,8 +8,18 @@ services:
   web:
     build:
       context: ../docker-azuracast-web
+    environment:
+      APPLICATION_ENV: "development"
     volumes:
       - .:/var/azuracast/www
+
+  cli:
+    environment:
+      APPLICATION_ENV: "development"
+
+  cron:
+    environment:
+       APPLICATION_ENV: "development"
 
   nginx:
     build:

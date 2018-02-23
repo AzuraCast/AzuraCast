@@ -1,5 +1,16 @@
 version: '2'
 
+# Modify variables that are passed into the Docker containers here.
+x-azuracast-env:
+  &default-environment
+    APPLICATION_ENV: "production" # "production" or "development"
+    MYSQL_HOST: "mariadb"         # You can change this if you plan to connect to an external DB host.
+    MYSQL_PORT: 3306              # ^
+    MYSQL_USER: "azuracast"       # Once the database has been installed, don't change this.
+    MYSQL_PASSWORD: "azur4c457"   # ^
+    MYSQL_DATABASE: "azuracast"   # ^
+    MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+
 services:
   nginx:
     image: azuracast/azuracast_nginx:latest
@@ -29,10 +40,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=yes
-      - MYSQL_USER=azuracast
-      - MYSQL_PASSWORD=azur4c457
-      - MYSQL_DATABASE=azuracast
+      << : *default-environment
     restart: always
 
   influxdb:
@@ -52,6 +60,8 @@ services:
       - influxdb
       - stations
       - redis
+    environment:
+      << : *default-environment
     volumes:
       - www_data:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
@@ -68,6 +78,8 @@ services:
       - influxdb
       - stations
       - redis
+    environment:
+      << : *default-environment
     command: 'cron && tail -f /var/log/cron.log'
     restart: always
 
@@ -80,6 +92,8 @@ services:
       - influxdb
       - stations
       - redis
+    environment:
+      << : *default-environment
     user: 'azuracast'
     working_dir: '/var/azuracast/www'
     command: 'bash'

@@ -26,12 +26,14 @@ define('APP_INCLUDE_TEMP', APP_INCLUDE_ROOT . '/../www_tmp');
 define('APP_INCLUDE_CACHE', APP_INCLUDE_TEMP . '/cache');
 
 // Set up application environment.
-if (file_exists(APP_INCLUDE_BASE.'/env.ini')) {
+if (APP_INSIDE_DOCKER) {
+    $_ENV = getenv();
+} else if (file_exists(APP_INCLUDE_BASE.'/env.ini')) {
     $_ENV = array_merge($_ENV, parse_ini_file(APP_INCLUDE_BASE.'/env.ini'));
 }
 
 // Application environment.
-define('APP_APPLICATION_ENV', $_ENV['application_env'] ?? 'production');
+define('APP_APPLICATION_ENV', $_ENV['application_env'] ?? $_ENV['APPLICATION_ENV'] ?? 'production');
 define('APP_IN_PRODUCTION', APP_APPLICATION_ENV === 'production');
 
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {

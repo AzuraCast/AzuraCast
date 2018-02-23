@@ -61,11 +61,11 @@ return function (\Slim\Container $di, $settings) {
             ];
 
             if (APP_INSIDE_DOCKER) {
-                $options['conn']['host'] = 'mariadb';
-                $options['conn']['port'] = 3306;
-                $options['conn']['dbname'] = 'azuracast';
-                $options['conn']['user'] = 'azuracast';
-                $options['conn']['password'] = 'azur4c457';
+                $options['conn']['host'] = $_ENV['MYSQL_HOST'] ?? 'mariadb';
+                $options['conn']['port'] = $_ENV['MYSQL_PORT'] ?? 3306;
+                $options['conn']['dbname'] = $_ENV['MYSQL_DATABASE'] ?? 'azuracast';
+                $options['conn']['user'] = $_ENV['MYSQL_USER'] ?? 'azuracast';
+                $options['conn']['password'] = $_ENV['MYSQL_PASSWORD'] ?? 'azur4c457';
             } else {
                 $options['conn']['host'] = $_ENV['db_host'] ?? 'localhost';
                 $options['conn']['port'] = $_ENV['db_port'] ?? '3306';

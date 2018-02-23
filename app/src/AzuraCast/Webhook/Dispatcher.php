@@ -104,6 +104,10 @@ class Dispatcher
                 'name' => _('TuneIn AIR'),
                 'description' => _('Send song metadata changes to TuneIn.'),
             ],
+            'discord' => [
+                'name' => _('Discord Webhook'),
+                'description' => _('Automatically send a customized message to your Discord server.'),
+            ],
         ];
     }
 

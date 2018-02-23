@@ -2,7 +2,7 @@
 namespace AzuraCast\Webhook\Connector;
 
 use Entity;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\TransferException;
 
 class TuneIn extends AbstractConnector
 {
@@ -32,6 +32,7 @@ class TuneIn extends AbstractConnector
 
         $client = new \GuzzleHttp\Client([
             'base_uri' => 'http://air.radiotime.com',
+            'http_errors' => false,
             'timeout' => 2.0,
         ]);
 
@@ -47,8 +48,8 @@ class TuneIn extends AbstractConnector
                 ],
             ]);
 
-            \App\Debug::print_r($response);
-        } catch(ClientException $e) {
+            \App\Debug::log(sprintf('TuneIn returned code %d', $response->getStatusCode()));
+        } catch(TransferException $e) {
             \App\Debug::log(sprintf('Error from TuneIn (%d): %s', $e->getCode(), $e->getMessage()));
         }
 

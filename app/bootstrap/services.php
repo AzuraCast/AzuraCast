@@ -418,6 +418,7 @@ return function (\Slim\Container $di, $settings) {
         return new \AzuraCast\Webhook\Dispatcher([
             'local' => $di[\AzuraCast\Webhook\Connector\Local::class],
             'tunein' => $di[\AzuraCast\Webhook\Connector\TuneIn::class],
+            'discord' => $di[\AzuraCast\Webhook\Connector\Discord::class],
         ]);
     };
 
@@ -431,6 +432,10 @@ return function (\Slim\Container $di, $settings) {
 
     $di[\AzuraCast\Webhook\Connector\TuneIn::class] = function($di) {
         return new \AzuraCast\Webhook\Connector\TuneIn();
+    };
+
+    $di[\AzuraCast\Webhook\Connector\Discord::class] = function($di) {
+        return new \AzuraCast\Webhook\Connector\Discord();
     };
 
     //

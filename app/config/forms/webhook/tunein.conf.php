@@ -1,7 +1,6 @@
 <?php
 return [
     'method' => 'post',
-    'enctype' => 'multipart/form-data',
 
     'elements' => [
 

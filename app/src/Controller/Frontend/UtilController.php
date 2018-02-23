@@ -3,6 +3,7 @@ namespace Controller\Frontend;
 
 use App\Http\Request;
 use App\Http\Response;
+use AzuraCast\Webhook\Dispatcher;
 use Doctrine\ORM\EntityManager;
 use Slim\Container;
 use Entity;
@@ -32,11 +33,14 @@ class UtilController
         /** @var Entity\Station $station */
         $station = $station_repo->find(1);
 
-        $payload = file_get_contents('http://stations:8000/statistics?json=1');
+        $np = $station->getNowplaying();
 
-        /** @var \AzuraCast\Sync\NowPlaying $sync_nowplaying */
-        $sync_nowplaying = $this->di[\AzuraCast\Sync\NowPlaying::class];
-        $sync_nowplaying->processStation($station, $payload);
+        $adapter = new \AzuraCast\Webhook\Connector\Discord();
+
+        /** @var Dispatcher $dispatcher */
+        $dispatcher = $this->di[Dispatcher::class];
+
+        $dispatcher->dispatch($station, new Entity\Api\NowPlaying(), $np);
 
         exit;
     }

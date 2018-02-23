@@ -47,10 +47,10 @@ abstract class AbstractConnector implements ConnectorInterface
         $return = [];
 
         foreach($array as $key => $value) {
+            $return_key = $prefix ? $prefix.$separator.$key : $key;
             if (\is_array($value)) {
-                $return = array_merge($return, $this->_flattenArray($value, $separator, $key));
+                $return = array_merge($return, $this->_flattenArray($value, $separator, $return_key));
             } else {
-                $return_key = $prefix ? $prefix.$separator.$key : $key;
                 $return[$return_key] = $value;
             }
         }

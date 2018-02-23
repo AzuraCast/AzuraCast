@@ -355,7 +355,7 @@ return function (\Slim\Container $di, array $app_settings) {
         );
     };
 
-    $di[\Controller\Stations\WebhooksController::class] = function($di) {
+    $di[\Controller\Stations\WebhooksController::class] = function($di) use ($app_settings) {
         /** @var \App\Config $config */
         $config = $di[\App\Config::class];
 
@@ -365,6 +365,7 @@ return function (\Slim\Container $di, array $app_settings) {
             $di[\App\Csrf::class],
             [
                 'tunein' => $config->get('forms/webhook/tunein'),
+                'discord' => $config->get('forms/webhook/discord', ['url' => $di[\App\Url::class], 'app_settings' => $app_settings]),
             ]
         );
     };

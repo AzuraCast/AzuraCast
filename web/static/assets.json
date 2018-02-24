@@ -1,1 +1,5 @@
-{"js/radio.js":"js/radio.js?2c18564955716845","js/nchan.js":"js/nchan.js?c512cda73ce7b123","js/app.min.js":"js/app.min.js?0272cff3887c5a7c","js/app.js":"js/app.js?04699c2d5e572265","css/light.css":"css/light.css?5e71099ff8041fd4","css/dark.css":"css/dark.css?657447d00ba144f4"}
+{
+  "dist/app.min.js": "dist/app-a77786a67b.min.js",
+  "dist/dark.css": "dist/dark-35a680566c.css",
+  "dist/light.css": "dist/light-c26f7d47d1.css"
+}

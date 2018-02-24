@@ -7,37 +7,37 @@ const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
 const less = require('gulp-less');
-const path = require('path');
+const clean_css = require('gulp-clean-css');
+var revdel = require('gulp-rev-delete-original');
 
 gulp.task('clean', function() {
-    return gulp.src('./dist/**/*', { read: false })
+    return gulp.src(['./dist/**/*', './assets.json'], { read: false })
         .pipe(clean());
 });
 
-gulp.task('cachebust', ['clean'], function() {
-    return gulp.src(['./css/*.css', './js/app.js'])
-        .pipe(rev())
-        .pipe(gulp.dest('dist'))
-        .pipe(rev.manifest())
-        .pipe(gulp.dest(''));
-});
-
-gulp.task('build-js', function() {
+gulp.task('build-js', ['clean'], function() {
     return gulp.src('./js/inc/*.js')
         .pipe(sourcemaps.init())
-            .pipe(concat('app.js'))
+            .pipe(concat('app.min.js'))
             .pipe(uglify())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./js/'));
+        .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('build-css', function() {
+gulp.task('build-css', ['clean'], function() {
     return gulp.src(['./less/light.less', './less/dark.less'])
         .pipe(sourcemaps.init())
             .pipe(less())
-            .pipe(uglify())
+            .pipe(clean_css())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./css/'));
+        .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('default', ['build-css', 'build-js', 'cachebust']);
+gulp.task('default', ['build-js', 'build-css'], function() {
+    return gulp.src(['./dist/*'], { base: '.' })
+        .pipe(rev())
+        .pipe(revdel())
+        .pipe(gulp.dest('.'))
+        .pipe(rev.manifest('assets.json'))
+        .pipe(gulp.dest('./'));
+});

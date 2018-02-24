@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-21 05:25+0000\n"
+"POT-Creation-Date: 2018-02-24 21:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -477,30 +477,46 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:104
-msgid "TuneIn AIR"
+msgid "Generic Web Hook"
 msgstr ""
 
 #: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:105
+msgid "Automatically send a message to any URL when your station data changes."
+msgstr ""
+
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:108
+msgid "TuneIn AIR"
+msgstr ""
+
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:109
 msgid "Send song metadata changes to TuneIn."
 msgstr ""
 
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:112
+msgid "Discord Webhook"
+msgstr ""
+
 #: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:113
+msgid "Automatically send a customized message to your Discord server."
+msgstr ""
+
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:121
 msgid "Any time the currently playing song changes"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:114
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:122
 msgid "Any time the listener count increases"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:115
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:123
 msgid "Any time the listener count decreases"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:116
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:124
 msgid "Any time a live streamer/DJ connects to the stream"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:117
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:125
 msgid "Any time a live streamer/DJ disconnects from the stream"
 msgstr ""
 
@@ -646,7 +662,9 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/song.conf.php:47
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:61
 #: /var/azuracast/www/app/config/forms/branding.conf.php:56
-#: /var/azuracast/www/app/config/forms/webhook/tunein.conf.php:40
+#: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:49
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:115
+#: /var/azuracast/www/app/config/forms/webhook/tunein.conf.php:39
 #: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:39
 msgid "Save Changes"
 msgstr ""
@@ -1745,19 +1763,113 @@ msgstr ""
 msgid "This CSS will be applied to the main management pages, like this one."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/webhook/tunein.conf.php:11
+#: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:10
+msgid "Web Hook Details"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:11
+#, php-format
+msgid ""
+"Web hooks automatically send a HTTP POST request to the URL you specify to \n"
+"                notify it any time one of the triggers you specify occurs on "
+"your station. The body of the POST message\n"
+"                is the exact same as the <a href=\"%s\" target=\"_blank"
+"\">Now Playing API response</a> for your station. \n"
+"                In order to process quickly, web hooks have a short timeout, "
+"so the responding service should be\n"
+"                optimized to handle the request in under 2 seconds."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:23
+msgid "Web Hook URL"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:24
+msgid ""
+"The URL that will receive the POST messages any time an event is triggered."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:33
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:27
+msgid "Web Hook Triggers"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:11
+msgid "Discord API Details"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:17
+msgid "Discord Web Hook URL"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:18
+msgid "This URL is provided within the Discord application."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:37
+msgid "Customize Discord Message"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:38
+#, php-format
+msgid ""
+"Variables are in the form of <code>{{ var.name }}</code>. All values in the "
+"<a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable "
+"for use. Any empty fields are ignored."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:45
+msgid "Main Message Content"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:54
+#: /var/azuracast/www/app/templates/frontend/public/index.phtml:107
+#: /var/azuracast/www/app/templates/frontend/public/embedrequests.phtml:14
+#: /var/azuracast/www/app/templates/stations/reports/performance.phtml:31
+#: /var/azuracast/www/app/templates/stations/files/index.phtml:75
+msgid "Title"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:63
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:100
+msgid "Description"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:72
+msgid "URL"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:81
+msgid "Author Name"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:90
+msgid "Thumbnail Image URL"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:99
+msgid "Footer Text"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:101
+#: /var/azuracast/www/app/templates/main.phtml:129
+#, php-format
+msgid "Powered by %s"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/tunein.conf.php:10
 msgid "TuneIn Partner ID"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/webhook/tunein.conf.php:20
+#: /var/azuracast/www/app/config/forms/webhook/tunein.conf.php:19
 msgid "TuneIn Partner Key"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/webhook/tunein.conf.php:29
+#: /var/azuracast/www/app/config/forms/webhook/tunein.conf.php:28
 msgid "TuneIn Station ID"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/webhook/tunein.conf.php:30
+#: /var/azuracast/www/app/config/forms/webhook/tunein.conf.php:29
 msgid "The station ID will be a numeric string that starts with the letter S."
 msgstr ""
 
@@ -2021,13 +2133,6 @@ msgstr ""
 msgid "Request a Song"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/frontend/public/index.phtml:107
-#: /var/azuracast/www/app/templates/frontend/public/embedrequests.phtml:14
-#: /var/azuracast/www/app/templates/stations/reports/performance.phtml:31
-#: /var/azuracast/www/app/templates/stations/files/index.phtml:75
-msgid "Title"
-msgstr ""
-
 #: /var/azuracast/www/app/templates/frontend/public/index.phtml:108
 #: /var/azuracast/www/app/templates/frontend/public/embedrequests.phtml:15
 #: /var/azuracast/www/app/templates/stations/reports/performance.phtml:32
@@ -2286,10 +2391,6 @@ msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/profile/index.phtml:74
 msgid "Skip Song"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:100
-msgid "Description"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/profile/index.phtml:114
@@ -2828,11 +2929,6 @@ msgstr ""
 
 #: /var/azuracast/www/app/templates/main.phtml:89
 msgid "Sign Out"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/main.phtml:129
-#, php-format
-msgid "Powered by %s Version %s."
 msgstr ""
 
 #: /var/azuracast/www/app/bootstrap/settings.php:41

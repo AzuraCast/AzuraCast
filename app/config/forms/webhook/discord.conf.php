@@ -14,7 +14,7 @@ return [
                 'webhook_url' => [
                     'text',
                     [
-                        'label' => _('Discord Webhook URL'),
+                        'label' => _('Discord Web Hook URL'),
                         'description' => _('This URL is provided within the Discord application.'),
                         'belongsTo' => 'config',
                         'required' => true,
@@ -24,8 +24,8 @@ return [
                 'triggers' => [
                     'multiCheckbox',
                     [
-                        'label' => _('Webhook Triggers'),
-                        'options' => \AzuraCast\Webhook\Dispatcher::getTriggers(),
+                        'label' => _('Web Hook Triggers'),
+                        'options' => array_diff_key(\AzuraCast\Webhook\Dispatcher::getTriggers(), ['listener_lost' => 1, 'listener_gained' => 1]),
                         'required' => true,
                     ]
                 ],
@@ -35,7 +35,7 @@ return [
 
         'message' => [
             'legend' => _('Customize Discord Message'),
-            'description' => sprintf(_('Variables are in the form of {{ var.name }}. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'), $url->named('api:nowplaying:index')),
+            'description' => sprintf(_('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'), $url->named('api:nowplaying:index')),
 
             'elements' => [
 

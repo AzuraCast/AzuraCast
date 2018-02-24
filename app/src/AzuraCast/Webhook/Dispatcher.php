@@ -100,6 +100,10 @@ class Dispatcher
     public static function getConnectors()
     {
         return [
+            'generic' => [
+                'name' => _('Generic Web Hook'),
+                'description' => _('Automatically send a message to any URL when your station data changes.'),
+            ],
             'tunein' => [
                 'name' => _('TuneIn AIR'),
                 'description' => _('Send song metadata changes to TuneIn.'),

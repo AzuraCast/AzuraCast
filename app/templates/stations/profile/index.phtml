@@ -286,9 +286,9 @@ $assets
                             <i class="zmdi zmdi-more-vert"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'restart']) ?>"><?=_('Restart Service') ?></a></li>
-                            <li><a href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'start']) ?>"><?=_('Start Service') ?></a></li>
-                            <li><a href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'stop']) ?>"><?=_('Stop Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'restart']) ?>"><?=_('Restart Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'start']) ?>"><?=_('Start Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'stop']) ?>"><?=_('Stop Service') ?></a></li>
                         </ul>
                     </li>
                 </ul>

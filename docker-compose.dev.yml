@@ -31,7 +31,7 @@ services:
     build:
       context: ./util/docker/static
     volumes:
-      - ./web/static:/src
+      - ./web/static:/data
 
   stations_cli:
     image: azuracast/azuracast_stations:latest

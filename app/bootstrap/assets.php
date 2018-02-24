@@ -78,7 +78,7 @@ return [
                     'sri' => 'sha256-LlN0a0J3hMkDLO1mhcMwy+GIMbIRV7kvKHx4oCxNoxI=',
                 ],
                 [
-                    'src' => 'js/app.min.js',
+                    'src' => 'dist/app.min.js',
                 ],
             ],
         ],
@@ -133,7 +133,7 @@ return [
         'files' => [
             'css' => [
                 [
-                    'src' => 'css/dark.css',
+                    'src' => 'dist/dark.css',
                 ],
             ],
         ]
@@ -145,7 +145,7 @@ return [
         'files' => [
             'css' => [
                 [
-                    'src' => 'css/light.css',
+                    'src' => 'dist/light.css',
                 ],
             ],
         ]
@@ -166,7 +166,7 @@ return [
             ],
             'js' => [
                 [
-                    'src' => 'js/bootgrid/jquery.bootgrid.updated.min.js',
+                    'src' => 'js/bootgrid/jquery.bootgrid.updated.js',
                 ],
             ],
         ],

@@ -1,18 +1,21 @@
-FROM library/node
+FROM library/node:8-alpine
 
-# Install Bower & Grunt
-RUN npm install -g bower grunt grunt-cli && \
-    echo '{ "allow_root": true }' > /root/.bowerrc
+RUN apk update \
+    && apk add bash
+
+RUN mkdir -p /data \
+    && chown -R node:node /data
+
+RUN yarn global add gulp
+
+COPY build_entrypoint.sh /
+RUN chmod a+x /build_entrypoint.sh
 
 # Define working directory.
 WORKDIR /data
 
-COPY build_entrypoint.sh /data
-COPY package.json /data
-
-RUN npm install --loglevel warn
-
-RUN chmod a+x build_entrypoint.sh
+# Define working user.
+USER node
 
 # Define default command.
-CMD ["/data/build_entrypoint.sh"]
+CMD ["/build_entrypoint.sh"]

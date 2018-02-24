@@ -1,11 +1,5 @@
-# Environment-specific files.
-app/config/db.conf.php
-app/config/apis.conf.php
-app/config/influx.conf.php
-app/config/cache.conf.php
-
-# Local development files.
-app/modules/frontend/controllers/UtilController.php
+# Node Modules
+node_modules
 
 # Junk/cache files.
 *Thumbs.db

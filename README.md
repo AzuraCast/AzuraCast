@@ -9,7 +9,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/azuracast/azuracast_web.svg)](https://hub.docker.com/r/azuracast/azuracast_web/)
 [![Twitter Follow](https://img.shields.io/twitter/follow/azuracast.svg?style=social&label=Follow)](https://twitter.com/azuracast)
 
-**AzuraCast** is a self-hosted, all-in-one web radio management kit. Using its easy installer tools and web interface, you can start up a fully working web radio station in a few quick minutes. 
+**AzuraCast** is a self-hosted, all-in-one web radio management kit. Using its easy installer and powerful but intuitive web interface, you can start up a fully working web radio station in a few quick minutes. 
 
 AzuraCast works for web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. The project is named after Azura Peavielle, the mascot of [its predecessor project](https://github.com/SlvrEagle23/Ponyville-Live).
 
@@ -25,49 +25,36 @@ With AzuraCast, you can:
 * **Create Playlists:** Set up standard playlists that play all the time, scheduled playlists for time periods, or special playlists that play once per x songs, or once per x minutes.
 * **Set Up Live DJs:** Enable or disable live broadcasting from streamers/DJs, and create individual accounts for each streamer to use.
 * **Take Listener Requests:** Let your listeners request specific songs from your playlists, both via an API and a simple public-facing listener page.
-* **Analytics and Reports:** Keep track of every aspect of your station's listeners over time. View reports of each song's performance and
-* **Station Autopilot:** AzuraCast can automatically assign songs to a playlist based on the song's impact on listener numbers. 
+* **Track Analytics and Reports:** Keep track of every aspect of your station's listeners over time. View reports of each song's impact on your listener count.
+* **Let Station Autopilot Do the Work:** AzuraCast can automatically assign songs to a playlist based on the song's impact on listener numbers. 
 * **Delegate Management:** Create and remove separate administrator accounts for each station manager.
+* **Build Your Own Radio Player:** AzuraCast's powerful, well-documented API lets you control your station from software built in any programming language.
+* **Integrate with TuneIn, Discord and More:** The new web hook system lets you broadcast changes in your station to third party services.
 * ...and more.
 
-### Supported Web Radio Software
+### What's Included
 
-AzuraCast uses [Liquidsoap](http://liquidsoap.fm/) as an "AutoDJ" to shuffle songs and playlists and provide an always-online radio stream. You can connect to Liquidsoap and broadcast your own live events as a DJ as well.
+Whether you're using the traditional installer or Docker containers, AzuraCast will automatically retrieve and install these components for you:
 
-To broadcast your radio station to the public, AzuraCast supports both of the gold standards in web radio, [Icecast](http://icecast.org/) (v2.4) and [SHOUTcast](http://wiki.shoutcast.com/wiki/SHOUTcast_Broadcaster) (v2). You can switch which of these your station uses anytime you want.
+#### Radio Software
 
-You can also use AzuraCast as a tool for relaying or collecting listener statistics and other data about stations that AzuraCast doesn't manage.
+* **[Liquidsoap](http://savonet.sourceforge.net/)** as the always-playing "AutoDJ"
+* **[Icecast 2.4](http://icecast.org/)** as a radio broadcasting frontend (Icecast-KH installed on supported platforms)
+* **[SHOUTcast 2 DNAS](http://wiki.shoutcast.com/wiki/SHOUTcast_DNAS_Server_2)** as an alternative radio frontend (x86/x64 only)
 
-### Supported Operating Systems
-
-There are two ways to install AzuraCast:
-
-* **Using Docker and Docker Compose (Recommended)**: This method contains all of the AzuraCast dependencies in prebuilt
-    container images. Updating and installing is faster, and there are far fewer issues with software compatibility. This method
-    works on any computer that supports the latest version of the Docker Engine and Docker Compose; both can be installed as
-    part of the AzuraCast installer script.
-    
-* **Traditional Installation (Ubuntu 16.04 LTS Only)**: From a clean image of Ubuntu, you can install AzuraCast directly onto
-    your server using the included installer scripts, which use Ansible to manage dependencies. Installation and updating are
-    slower using this method, but you have more control over the software once installed. If you have other software installed
-    on your server, it may conflict with AzuraCast, so always start from a clean installation using this method.
-
-We are always looking to expand our compatibility with host operating systems, and we welcome any assistance in building new deployment scripts for other environments.
-
-### What's Included with AzuraCast
-
-Whether you're using the traditional installer or Docker containers, AzuraCast depends on the same stack of software to operate:
+#### Supporting Software
 
 * **[NGINX](https://www.nginx.com)** for serving web pages and the radio proxy
 * **[MariaDB](https://mariadb.org/)** as the primary database
 * **[PHP 7.2](https://secure.php.net/)** powering the web application
 * **[InfluxDB](https://www.influxdata.com/)** for time-series based statistics
 * **[Redis](https://redis.io/)** for sessions, database and general caching
-* **[Liquidsoap](http://savonet.sourceforge.net/)** as the always-playing "AutoDJ"
-* **[Icecast 2.4](http://icecast.org/)** as a radio broadcasting frontend (Icecast-KH installed on supported platforms)
-* **[SHOUTcast 2 DNAS](http://wiki.shoutcast.com/wiki/SHOUTcast_DNAS_Server_2)** as an alternative radio frontend (x86/x64 only)
 
-All of these components are automatically downloaded and installed using either of the installation methods below.
+### AzuraCast Runs Everywhere
+
+Thanks to the power and portability of Docker, you can run a full installation of AzuraCast on virtually any modern server operating system, or even your home Windows or MacOS computer. Using docker, we preassemble "containers" that have all of the necessary software installed and set up already, so with a single file you're up and running. Updates are extremely easy, fast and reliable, too. We _highly recommend_ using the Docker installation whenever possible.
+
+If you want a more "bare-metal" experience and greater customization, you can also use our "Traditional" installer, which requires Ubuntu 16.04 LTS. This installer loads and configures the necessary software directly onto your server; this may interfere with other software, so you should always start with a clean server when possible.   
 
 ## Installing AzuraCast
 

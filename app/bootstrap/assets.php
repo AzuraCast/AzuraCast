@@ -166,7 +166,7 @@ return [
             ],
             'js' => [
                 [
-                    'src' => 'js/bootgrid/jquery.bootgrid.updated.min.js',
+                    'src' => 'js/bootgrid/jquery.bootgrid.updated.js',
                 ],
             ],
         ],

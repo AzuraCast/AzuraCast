@@ -31,10 +31,10 @@ class SettingsController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        $form = new \App\Form($this->form_config);
+        $form = new \AzuraForms\Form($this->form_config);
 
         $existing_settings = $this->settings_repo->fetchArray(false);
-        $form->setDefaults($existing_settings);
+        $form->populate($existing_settings);
 
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();

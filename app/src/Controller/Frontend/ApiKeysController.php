@@ -62,7 +62,7 @@ class ApiKeysController
         /** @var \App\Mvc\View $view */
         $view = $request->getAttribute('view');
 
-        $form = new \App\Form($this->form_config);
+        $form = new \AzuraForms\Form($this->form_config);
 
         if (!empty($id)) {
             $new_record = false;
@@ -72,7 +72,7 @@ class ApiKeysController
                 throw new NotFound(sprintf(_('%s not found.'), _('API Key')));
             }
 
-            $form->setDefaults($this->record_repo->toArray($record, true, true));
+            $form->populate($this->record_repo->toArray($record, true, true));
         } else {
             $new_record = true;
             $record = null;

@@ -55,7 +55,7 @@ class ApiController
 
     public function editAction(Request $request, Response $response, $id): Response
     {
-        $form = new \App\Form($this->form_config);
+        $form = new \AzuraForms\Form($this->form_config);
 
         $record = $this->record_repo->find($id);
 
@@ -63,7 +63,7 @@ class ApiController
             throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('API Key')));
         }
 
-        $form->setDefaults($this->record_repo->toArray($record, true, true));
+        $form->populate($this->record_repo->toArray($record, true, true));
 
         if ($_POST && $form->isValid($_POST)) {
             $data = $form->getValues();

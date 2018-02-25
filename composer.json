@@ -3,10 +3,11 @@
     "description": "The AzuraCast standalone radio station management tool.",
     "license": "Apache-2.0",
     "require": {
+        "roave/security-advisories": "dev-master",
         "slim/slim": "^3.0",
         "league/plates": "^3.1",
         "filp/whoops": "2.*",
-        "nibble/nibble-forms": "dev-master",
+        "azuracast/azuraforms": "dev-master",
         "zendframework/zend-paginator": "^2.7",
         "zendframework/zend-config": "^3.1.0",
         "doctrine/orm": "~2.5",
@@ -22,11 +23,11 @@
         "php-http/socket-client": "^1.2",
         "php-http/message": "^1.4",
         "php-http/guzzle6-adapter": "^1.1",
-        "mobiledetect/mobiledetectlib": "^2.8"
+        "mobiledetect/mobiledetectlib": "^2.8",
+        "guzzlehttp/oauth-subscriber": "^0.3.0"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",
-        "codeclimate/php-test-reporter": "^0.4.4",
         "flow/jsonpath": "^0.3.4",
         "zircote/swagger-php": "^2.0"
     },
@@ -48,12 +49,6 @@
     "config": {
         "preferred-install": "dist"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/SlvrEagle23/Nibble-Forms"
-        }
-    ],
     "prefer-stable": true,
     "minimum-stability": "dev"
 }

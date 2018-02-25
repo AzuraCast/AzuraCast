@@ -85,14 +85,14 @@ class StreamersController
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        $form = new \App\Form($this->form_config);
+        $form = new \AzuraForms\Form($this->form_config);
 
         if (!empty($id)) {
             $record = $this->streamers_repo->findOneBy([
                 'id' => $id,
                 'station_id' => $station_id
             ]);
-            $form->setDefaults($this->streamers_repo->toArray($record));
+            $form->populate($this->streamers_repo->toArray($record));
         } else {
             $record = null;
         }

@@ -69,7 +69,7 @@ class UsersController
 
     public function editAction(Request $request, Response $response, $id = null): Response
     {
-        $form = new \App\Form($this->form_config);
+        $form = new \AzuraForms\Form($this->form_config);
 
         if (!empty($id)) {
             $record = $this->record_repo->find((int)$id);
@@ -77,7 +77,7 @@ class UsersController
 
             unset($record_defaults['auth_password']);
 
-            $form->setDefaults($record_defaults);
+            $form->populate($record_defaults);
         } else {
             $record = null;
         }

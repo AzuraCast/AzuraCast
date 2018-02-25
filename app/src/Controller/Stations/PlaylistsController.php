@@ -194,7 +194,7 @@ class PlaylistsController
         /** @var Entity\Repository\BaseRepository $playlist_repo */
         $playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
 
-        $form = new \App\Form($this->form_config);
+        $form = new \AzuraForms\Form($this->form_config);
 
         if (!empty($id)) {
             $record = $playlist_repo->findOneBy([
@@ -204,7 +204,7 @@ class PlaylistsController
 
             if ($record instanceof Entity\StationPlaylist) {
                 $data = $playlist_repo->toArray($record);
-                $form->setDefaults($data);
+                $form->populate($data);
             }
         } else {
             $record = null;

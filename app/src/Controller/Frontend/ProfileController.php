@@ -42,11 +42,11 @@ class ProfileController
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');
 
-        $form = new \App\Form($this->form_config);
+        $form = new \AzuraForms\Form($this->form_config);
 
         $user_profile = $this->user_repo->toArray($user);
         unset($user_profile['auth_password']);
-        $form->setDefaults($user_profile);
+        $form->populate($user_profile);
 
         /** @var View $view */
         $view = $request->getAttribute('view');
@@ -62,28 +62,28 @@ class ProfileController
         $user = $request->getAttribute('user');
 
         $form_config = $this->form_config;
-        $form_config['groups']['reset_password']['elements']['password'][1]['validator'] = function($val, \Nibble\NibbleForms\Field $field) use ($user) {
+        $form_config['groups']['reset_password']['elements']['password'][1]['validator'] = function($val, \AzuraForms\Field\AbstractField $field) use ($user) {
             $form = $field->getForm();
 
             $new_password = $form->getData('new_password');
             if (!empty($new_password)) {
                 if ($user->verifyPassword($val)) {
                     return true;
-                } else {
-                    $field->error[] = 'Current password could not be verified.';
-                    return false;
                 }
+
+                $field->error[] = 'Current password could not be verified.';
+                return false;
             }
 
             return true;
         };
 
-        $form = new \App\Form($form_config);
+        $form = new \AzuraForms\Form($form_config);
 
         $user_profile = $this->user_repo->toArray($user);
         unset($user_profile['auth_password']);
 
-        $form->setDefaults($user_profile);
+        $form->populate($user_profile);
 
         if ($_POST && $form->isValid($_POST)) {
             $data = $form->getValues();

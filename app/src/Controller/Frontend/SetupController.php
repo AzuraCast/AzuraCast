@@ -147,7 +147,7 @@ class SetupController
         unset($form_config['groups']['admin']);
         unset($form_config['groups']['profile']['legend']);
 
-        $form = new \App\Form($form_config);
+        $form = new \AzuraForms\Form($form_config);
 
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
@@ -179,13 +179,13 @@ class SetupController
             return $response->redirectToRoute('setup:'.$current_step);
         }
 
-        $form = new \App\Form($this->settings_form_config);
+        $form = new \AzuraForms\Form($this->settings_form_config);
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
         $existing_settings = $settings_repo->fetchArray(false);
-        $form->setDefaults($existing_settings);
+        $form->populate($existing_settings);
 
         if ($request->getMethod() === 'POST' && $form->isValid($_POST)) {
             $data = $form->getValues();

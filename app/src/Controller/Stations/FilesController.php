@@ -112,7 +112,7 @@ class FilesController
             throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('Media')));
         }
 
-        $form = new \App\Form($this->edit_form_config);
+        $form = new \AzuraForms\Form($this->edit_form_config);
         $form->populate($this->media_repo->toArray($media));
 
         if (!empty($_POST) && $form->isValid()) {
@@ -175,7 +175,7 @@ class FilesController
         $path = base64_decode($path);
         list($path, $path_full) = $this->_filterPath($station->getRadioMediaDir(), $path);
 
-        $form = new \App\Form($this->rename_form_config);
+        $form = new \AzuraForms\Form($this->rename_form_config);
 
         $form->populate(['path' => $path]);
 

@@ -135,9 +135,9 @@ class ProfileController
         $base_form = $this->form_config;
         unset($base_form['groups']['admin']);
 
-        $form = new \App\Form($base_form);
+        $form = new \AzuraForms\Form($base_form);
 
-        $form->setDefaults($this->station_repo->toArray($station));
+        $form->populate($this->station_repo->toArray($station));
 
         if (!empty($_POST) && $form->isValid($_POST)) {
 

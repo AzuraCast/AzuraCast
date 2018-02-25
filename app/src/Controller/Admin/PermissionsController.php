@@ -78,7 +78,7 @@ class PermissionsController
         /** @var Entity\Repository\RolePermissionRepository $permission_repo */
         $permission_repo = $this->em->getRepository(Entity\RolePermission::class);
 
-        $form = new \App\Form($this->form_config);
+        $form = new \AzuraForms\Form($this->form_config);
 
         if (!empty($id)) {
             $record = $role_repo->find($id);
@@ -86,7 +86,7 @@ class PermissionsController
 
             $actions = $permission_repo->getActionsForRole($record);
 
-            $form->setDefaults(array_merge($record_info, $actions));
+            $form->populate(array_merge($record_info, $actions));
         } else {
             $record = null;
         }

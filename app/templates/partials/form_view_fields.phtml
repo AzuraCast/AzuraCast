@@ -1,20 +1,24 @@
+<?php
+/** @var \AzuraForms\Form $form */
+?>
+
 <?php foreach($fieldset['elements'] as $element_id => $element_info): ?>
-    <?php if (!empty($form->getValue($element_id))): ?>
-        <?php if ($element_info[0] == 'submit' || $element_info[0] == 'hidden' || $element_info[0] == 'markup'): ?>
+    <?php if (!empty($form->getData($element_id))): ?>
+        <?php if ($element_info[0] === 'submit' || $element_info[0] === 'hidden' || $element_info[0] === 'markup'): ?>
             <!-- Hidden Field -->
-        <?php elseif ($element_info[0] == 'select' || $element_info[0] == 'radio' || $element_info[0] == 'checkbox'): ?>
+        <?php elseif ($element_info[0] === 'select' || $element_info[0] === 'radio' || $element_info[0] === 'checkbox'): ?>
             <?php
             $values_list = $element_info[1]['choices'];
-            $selected = (array)$form->getValue($element_id);
+            $selected = (array)$form->getData($element_id);
             $values = [];
             foreach($selected as $selected_value)
                 $values[] = $values_list[$selected_value];
             ?>
             <dt><?=$element_info[1]['label'] ?></dt>
             <dd><?=implode('<br>', $values) ?></dd>
-        <?php elseif (!empty($form->getValue($element_id))): ?>
+        <?php else: ?>
             <dt><?=$element_info[1]['label'] ?></dt>
-            <dd><?=$this->e($form->getValue($element_id)) ?></dd>
+            <dd><?=$this->e($form->getData($element_id)) ?></dd>
         <?php endif; ?>
     <?php endif; ?>
 <?php endforeach; ?>

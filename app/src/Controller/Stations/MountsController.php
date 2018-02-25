@@ -95,14 +95,14 @@ class MountsController
         $mount_repo = $this->em->getRepository(Entity\StationMount::class);
 
         $form_config = $this->mount_form_configs[$station->getFrontendType()];
-        $form = new \App\Form($form_config);
+        $form = new \AzuraForms\Form($form_config);
 
         if (!empty($id)) {
             $record = $mount_repo->findOneBy([
                 'id' => $id,
                 'station_id' => $station_id,
             ]);
-            $form->setDefaults($mount_repo->toArray($record));
+            $form->populate($mount_repo->toArray($record));
         } else {
             $record = null;
         }

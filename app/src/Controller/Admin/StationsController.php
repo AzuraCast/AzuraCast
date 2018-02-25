@@ -74,11 +74,11 @@ class StationsController
 
     public function editAction(Request $request, Response $response, $id = null): Response
     {
-        $form = new \App\Form($this->edit_form_config);
+        $form = new \AzuraForms\Form($this->edit_form_config);
 
         if (!empty($id)) {
             $record = $this->record_repo->find((int)$id);
-            $form->setDefaults($this->record_repo->toArray($record, false, true));
+            $form->populate($this->record_repo->toArray($record, false, true));
         } else {
             $record = null;
         }
@@ -126,9 +126,9 @@ class StationsController
             throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('Station')));
         }
 
-        $form = new \App\Form($this->clone_form_config);
+        $form = new \AzuraForms\Form($this->clone_form_config);
 
-        $form->setDefaults([
+        $form->populate([
             'name' => $record->getName().' - Copy',
             'description' => $record->getDescription(),
         ]);

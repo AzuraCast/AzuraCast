@@ -45,8 +45,8 @@ class AutomationController
 
         $automation_settings = (array)$station->getAutomationSettings();
 
-        $form = new \App\Form($this->form_config);
-        $form->setDefaults($automation_settings);
+        $form = new \AzuraForms\Form($this->form_config);
+        $form->populate($automation_settings);
 
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();

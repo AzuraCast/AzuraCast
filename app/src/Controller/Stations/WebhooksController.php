@@ -73,7 +73,7 @@ class WebhooksController
         }
 
         $form_config = $this->form_configs[$type];
-        $form = new \App\Form($form_config);
+        $form = new \AzuraForms\Form($form_config);
 
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();
@@ -121,8 +121,8 @@ class WebhooksController
         $webhook_type = $record->getType();
         $form_config = $this->form_configs[$webhook_type];
 
-        $form = new \App\Form($form_config);
-        $form->setDefaults($record_repo->toArray($record));
+        $form = new \AzuraForms\Form($form_config);
+        $form->populate($record_repo->toArray($record));
 
         if (!empty($_POST) && $form->isValid($_POST)) {
             $data = $form->getValues();

@@ -1,10 +1,10 @@
 <?php
+/** @var \AzuraForms\Form $form */
 $options = $form->getOptions();
-$inner_form = $form->getForm();
 ?>
 
-<?=$inner_form->openForm() ?>
-<?=$inner_form->renderHidden() ?>
+<?=$form->openForm() ?>
+<?=$form->renderHidden() ?>
 
 <?php foreach($options['groups'] as $fieldset_id => $fieldset): ?>
 
@@ -23,19 +23,19 @@ $inner_form = $form->getForm();
         if (!empty($element_info[1]['belongsTo']))
             $element_id = $element_info[1]['belongsTo'].'_'.$element_id;
         ?>
-        <?php if ($element_info[0] == 'submit'): ?>
+        <?php if ($element_info[0] === 'submit'): ?>
             <input type="submit" value="<?=$element_info[1]['label'] ?>" class="btn btn-lg btn-primary" />
         <?php else: ?>
             <div class="form-group" id="field_<?=$element_id ?>">
-                <?=$inner_form->renderLabel($element_id) ?>
+                <?=$form->renderLabel($element_id) ?>
             <?php if (!empty($element_info[1]['description'])): ?>
                 <small class="help-block"><?=$element_info[1]['description'] ?></small>
             <?php endif; ?>
-            <?php if ($inner_form->hasError($element_id)): ?>
-                <small class="help-block form-error"><?=$inner_form->renderError($element_id) ?></small>
+            <?php if ($form->hasError($element_id)): ?>
+                <small class="help-block form-error"><?=$form->renderError($element_id) ?></small>
             <?php endif; ?>
                 <div class="form-field">
-                    <?=$inner_form->renderField($element_id) ?>
+                    <?=$form->renderField($element_id) ?>
                 </div>
             </div>
         <?php endif; ?>
@@ -47,4 +47,4 @@ $inner_form = $form->getForm();
 
 <?php endforeach; ?>
 
-<?=$inner_form->closeForm() ?>
+<?=$form->closeForm() ?>

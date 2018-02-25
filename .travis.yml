@@ -2,7 +2,7 @@ git:
   depth: 1
 
 env:
-  DOCKER_COMPOSE_VERSION: 1.13.0
+  DOCKER_COMPOSE_VERSION: 1.19.0
 
 sudo: required
 dist: trusty
@@ -26,7 +26,7 @@ install:
   - docker-compose pull
 
 script:
-  - docker-compose -f docker-compose.yml -f docker-compose.testing.yml run --rm cli azuracast_testing $CODECLIMATE_REPO_TOKEN
+  - docker-compose -f docker-compose.yml -f docker-compose.testing.yml run --rm cli azuracast_testing
 
 after_failure:
   - cat tests/_output/*

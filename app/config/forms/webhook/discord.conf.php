@@ -44,7 +44,7 @@ return [
                     [
                         'label' => _('Main Message Content'),
                         'belongsTo' => 'config',
-                        'default' => 'Now playing on {{ station.name }}:',
+                        'default' => sprintf(_('Now playing on %s:'), '{{ station.name }}'),
                     ]
                 ],
 

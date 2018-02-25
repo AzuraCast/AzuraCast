@@ -420,6 +420,7 @@ return function (\Slim\Container $di, $settings) {
             'generic' => $di[\AzuraCast\Webhook\Connector\Generic::class],
             'tunein' => $di[\AzuraCast\Webhook\Connector\TuneIn::class],
             'discord' => $di[\AzuraCast\Webhook\Connector\Discord::class],
+            'twitter' => $di[\AzuraCast\Webhook\Connector\Twitter::class],
         ]);
     };
 
@@ -441,6 +442,10 @@ return function (\Slim\Container $di, $settings) {
 
     $di[\AzuraCast\Webhook\Connector\Discord::class] = function($di) {
         return new \AzuraCast\Webhook\Connector\Discord();
+    };
+
+    $di[\AzuraCast\Webhook\Connector\Twitter::class] = function($di) {
+        return new \AzuraCast\Webhook\Connector\Twitter();
     };
 
     //

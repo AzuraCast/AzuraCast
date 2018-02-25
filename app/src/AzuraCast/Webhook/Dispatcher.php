@@ -112,6 +112,10 @@ class Dispatcher
                 'name' => _('Discord Webhook'),
                 'description' => _('Automatically send a customized message to your Discord server.'),
             ],
+            'twitter' => [
+                'name' => _('Twitter Post'),
+                'description' => _('Automatically send a tweet.'),
+            ],
         ];
     }
 

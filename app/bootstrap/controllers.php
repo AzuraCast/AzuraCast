@@ -367,6 +367,7 @@ return function (\Slim\Container $di, array $app_settings) {
                 'tunein' => $config->get('forms/webhook/tunein'),
                 'discord' => $config->get('forms/webhook/discord', ['url' => $di[\App\Url::class], 'app_settings' => $app_settings]),
                 'generic' => $config->get('forms/webhook/generic', ['url' => $di[\App\Url::class]]),
+                'twitter' => $config->get('forms/webhook/twitter', ['url' => $di[\App\Url::class]]),
             ]
         );
     };

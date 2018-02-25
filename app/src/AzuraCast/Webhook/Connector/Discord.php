@@ -139,20 +139,4 @@ class Discord extends AbstractConnector
             \App\Debug::log(sprintf('Error from Discord (%d): %s', $e->getCode(), $e->getMessage()));
         }
     }
-
-    public function _replaceVariables(array $raw_vars, Entity\Api\NowPlaying $np): array
-    {
-        $values = $this->_flattenArray(json_decode(json_encode($np), true));
-        $vars = [];
-
-        foreach($raw_vars as $var_key => $var_value) {
-            // Replaces {{ var.name }} with the flattened $values['var.name']
-            $vars[$var_key] = preg_replace_callback("/\{\{(\s*)([a-zA-Z0-9\-_\.]+)(\s*)\}\}/", function($matches) use ($values) {
-                $inner_value = strtolower(trim($matches[2]));
-                return $values[$inner_value] ?? '';
-            }, $var_value);
-        }
-
-        return $vars;
-    }
 }

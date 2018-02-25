@@ -35,8 +35,6 @@ class UtilController
 
         $np = $station->getNowplaying();
 
-        $adapter = new \AzuraCast\Webhook\Connector\Discord();
-
         /** @var Dispatcher $dispatcher */
         $dispatcher = $this->di[Dispatcher::class];
 

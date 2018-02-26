@@ -18,7 +18,7 @@ return [
             'elements' => [
 
                 'webhook_url' => [
-                    'text',
+                    'url',
                     [
                         'label' => _('Web Hook URL'),
                         'description' => _('The URL that will receive the POST messages any time an event is triggered.'),

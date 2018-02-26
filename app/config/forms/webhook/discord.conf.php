@@ -12,7 +12,7 @@ return [
             'elements' => [
 
                 'webhook_url' => [
-                    'text',
+                    'url',
                     [
                         'label' => _('Discord Web Hook URL'),
                         'description' => _('This URL is provided within the Discord application.'),

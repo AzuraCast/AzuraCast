@@ -1,0 +1,105 @@
+<div class="media media-left" id="station-nowplaying">
+    <div class="pull-left p-r-10 p-t-5">
+        <a class="btn-audio" role="button" title="<?=_('Play/Pause') ?>" href="#" data-url="<?=$this->e($stream_url) ?>">
+            <i class="zmdi zmdi-play"></i>
+        </a>
+    </div>
+    <div class="pull-left p-r-10" v-if="np.now_playing.song.art">
+        <a v-bind:href="np.now_playing.song.art" target="_blank"><img v-bind:src="np.now_playing.song.art" alt="<?=_('Album Cover') ?>" style="width: 50px; height: auto; border-radius: 5px;"></a>
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading">
+            {{ np.now_playing.song.title }}
+        </h4>
+        <div>
+            {{ np.now_playing.song.artist }}
+        </div>
+        <div class="nowplaying-progress" v-if="time_display">
+            {{ time_display }}
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
+var nowPlaying;
+
+function iterateTimer() {
+    var np_elapsed = nowPlaying.np.now_playing.elapsed;
+    var np_total = nowPlaying.np.now_playing.duration;
+
+    if (np_elapsed < np_total) {
+        nowPlaying.np.now_playing.elapsed = np_elapsed + 1;
+    }
+}
+
+function formatTime(time) {
+    var sec_num = parseInt(time, 10);
+
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) {
+        hours = "0" + hours;
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    return (hours !== "00" ? hours + ':' : "") + minutes + ':' + seconds;
+}
+
+$(function() {
+    nowPlaying = new Vue({
+        el: '#station-nowplaying',
+        data: {
+            np: {
+                now_playing: {
+                    song: {
+                        title: '<?=_('Song Title') ?>',
+                        artist: '<?=_('Song Artist') ?>',
+                        art: '<?=$url->content('img/generic_song.jpg') ?>'
+                    },
+                    is_request: false,
+                    elapsed: 0,
+                    duration: 0
+                }
+            }
+        },
+        computed: {
+            "time_display": function() {
+                var time_played = this.np.now_playing.elapsed;
+                var time_total = this.np.now_playing.duration;
+
+                if (!time_total) {
+                    return null;
+                }
+
+                if (time_played > time_total) {
+                    time_played = time_total;
+                }
+
+                return formatTime(time_played) + ' / ' + formatTime(time_total);
+            }
+        }
+    });
+
+    songHistory = new Vue({
+        el: '#station-history',
+        data: {
+            history: [
+                {
+                    song: {
+                        title: '<?= _('Song Title') ?>',
+                        artist: '<?= _('Song Artist') ?>'
+                    }
+                }
+            ]
+        }
+    });
+
+    setInterval(iterateTimer, 1000);
+});
+</script>

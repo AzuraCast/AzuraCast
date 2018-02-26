@@ -13,41 +13,11 @@ $assets
     <?=$this->fetch('partials/radio_controls') ?>
 </ul>
 <div class="stations nowplaying">
-    <div class="media media-left" id="station-nowplaying">
-        <div class="pull-left">
-            <a class="btn-audio" href="#" data-url="<?=$this->e($stream_url) ?>">
-                <i class="zmdi zmdi-play"></i>
-            </a>
-        </div>
-        <div class="media-body">
-            <h4 class="media-heading">
-                {{ np.now_playing.song.title }}
-            </h4>
-            <div>
-                {{ np.now_playing.song.artist }}
-            </div>
-        </div>
-    </div>
+    <?=$this->fetch('frontend/public/player_component') ?>
 </div>
 
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-var nowPlaying;
-
 $(function() {
-    nowPlaying = new Vue({
-        el: '#station-nowplaying',
-        data: {
-            np: {
-                now_playing: {
-                    song: {
-                        title: '<?= _('Song Title') ?>',
-                        artist: '<?= _('Song Artist') ?>'
-                    }
-                }
-            }
-        }
-    });
-
     function loadNowPlaying() {
         $.getJSON('<?=$url->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
             nowPlaying.np = row;

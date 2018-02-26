@@ -70,7 +70,7 @@ $assets
                     <tbody>
                         <tr class="input" v-bind:id="'station_' + row.station.id" v-for="row in stations" >
                             <td class="text-center">
-                                <a class="btn-audio" href="#" v-bind:data-url="row.stream_url">
+                                <a class="btn-audio" role="button" title="<?=_('Play/Pause') ?>" href="#" v-bind:data-url="row.stream_url">
                                     <i class="zmdi zmdi-play"></i>
                                 </a>
                             </td>

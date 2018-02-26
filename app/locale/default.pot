@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-24 21:34+0000\n"
+"POT-Creation-Date: 2018-02-26 03:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -133,6 +133,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:112
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:72
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:118
+#: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:164
 #, php-format
 msgid "%s not found."
 msgstr ""
@@ -216,7 +217,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:228
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:358
 #: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:178
-#: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:169
+#: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:193
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:149
 #, php-format
 msgid "%s deleted."
@@ -404,10 +405,22 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:118
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:136
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:147
-#: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:169
+#: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:164
+#: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:171
+#: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:193
 #: /var/azuracast/www/app/templates/stations/webhooks/index.phtml:7
 #: /var/azuracast/www/app/templates/stations/webhooks/add.phtml:1
 msgid "Web Hook"
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:171
+#, php-format
+msgid "%s enabled."
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:171
+#, php-format
+msgid "%s disabled."
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:63
@@ -425,7 +438,7 @@ msgstr ""
 msgid "Streamer"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Entity/StationWebhook.php:139
+#: /var/azuracast/www/app/src/Entity/StationWebhook.php:148
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:100
 #: /var/azuracast/www/app/bootstrap/settings.php:41
 msgid "Default"
@@ -500,23 +513,31 @@ msgstr ""
 msgid "Automatically send a customized message to your Discord server."
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:121
-msgid "Any time the currently playing song changes"
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:116
+msgid "Twitter Post"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:122
-msgid "Any time the listener count increases"
-msgstr ""
-
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:123
-msgid "Any time the listener count decreases"
-msgstr ""
-
-#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:124
-msgid "Any time a live streamer/DJ connects to the stream"
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:117
+msgid "Automatically send a tweet."
 msgstr ""
 
 #: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:125
+msgid "Any time the currently playing song changes"
+msgstr ""
+
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:126
+msgid "Any time the listener count increases"
+msgstr ""
+
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:127
+msgid "Any time the listener count decreases"
+msgstr ""
+
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:128
+msgid "Any time a live streamer/DJ connects to the stream"
+msgstr ""
+
+#: /var/azuracast/www/app/src/AzuraCast/Webhook/Dispatcher.php:129
 msgid "Any time a live streamer/DJ disconnects from the stream"
 msgstr ""
 
@@ -663,6 +684,7 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:61
 #: /var/azuracast/www/app/config/forms/branding.conf.php:56
 #: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:49
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:95
 #: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:115
 #: /var/azuracast/www/app/config/forms/webhook/tunein.conf.php:39
 #: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:39
@@ -1041,6 +1063,7 @@ msgid ""
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/automation.conf.php:14
+#: /var/azuracast/www/app/templates/stations/webhooks/index.phtml:36
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:56
 #: /var/azuracast/www/app/templates/stations/profile/index.phtml:114
 #: /var/azuracast/www/app/templates/stations/profile/index.phtml:127
@@ -1764,6 +1787,7 @@ msgid "This CSS will be applied to the main management pages, like this one."
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:10
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:61
 msgid "Web Hook Details"
 msgstr ""
 
@@ -1790,8 +1814,65 @@ msgid ""
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:33
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:69
 #: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:27
 msgid "Web Hook Triggers"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:8
+msgid "Twitter Account Details"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:9
+#, php-format
+msgid ""
+"Steps for configuring a Twitter application:<br>\n"
+"                <ol type=\"1\">\n"
+"                    <li>Create a new app on the <a href=\"%s\" target="
+"\"_blank\">Twitter Applications site</a>. \n"
+"                    Use this installation's base URL as the application URL."
+"</li>\n"
+"                    <li>In the newly created application, click the \"Keys "
+"and Access Tokens\" tab.</li>\n"
+"                    <li>At the bottom of the page, click \"Create my access "
+"token\".</li>\n"
+"                </ol>\n"
+"                Once these steps are completed, enter the information from "
+"the \"Keys and Access Tokens\" page into the fields below."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:24
+msgid "Consumer Key (API Key)"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:33
+msgid "Consumer Secret (API Secret)"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:42
+msgid "Access Token"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:51
+msgid "Access Token Secret"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:62
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:38
+#, php-format
+msgid ""
+"Variables are in the form of <code>{{ var.name }}</code>. All values in the "
+"<a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable "
+"for use. Any empty fields are ignored."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:78
+msgid "Message Body"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:81
+#, php-format
+msgid "Now playing on %s: %s by %s! Tune in now."
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:11
@@ -1810,16 +1891,13 @@ msgstr ""
 msgid "Customize Discord Message"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:38
-#, php-format
-msgid ""
-"Variables are in the form of <code>{{ var.name }}</code>. All values in the "
-"<a href=\"%s\" target=\"_blank\">Now Playing API response</a> are avaliable "
-"for use. Any empty fields are ignored."
-msgstr ""
-
 #: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:45
 msgid "Main Message Content"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:47
+#, php-format
+msgid "Now playing on %s:"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:54
@@ -2169,7 +2247,7 @@ msgstr ""
 #: /var/azuracast/www/app/templates/admin/permissions/index.phtml:33
 #: /var/azuracast/www/app/templates/admin/stations/index.phtml:28
 #: /var/azuracast/www/app/templates/stations/requests/index.phtml:53
-#: /var/azuracast/www/app/templates/stations/webhooks/index.phtml:32
+#: /var/azuracast/www/app/templates/stations/webhooks/index.phtml:33
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:40
 #: /var/azuracast/www/app/templates/stations/streamers/index.phtml:33
 #: /var/azuracast/www/app/templates/stations/reports/duplicates.phtml:33
@@ -2339,6 +2417,14 @@ msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/webhooks/index.phtml:23
 msgid "Triggers"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/webhooks/index.phtml:32
+msgid "Disable"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/webhooks/index.phtml:32
+msgid "Enable"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/webhooks/add.phtml:3

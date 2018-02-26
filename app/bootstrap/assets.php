@@ -329,4 +329,23 @@ return [
             ],
         ],
     ],
+    [
+        'name' => 'fancybox',
+        'order' => 10,
+        'group' => 'body',
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js',
+                    'sri' => 'sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=',
+                ],
+            ],
+            'css' => [
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css',
+                    'sri' => 'sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=',
+                ]
+            ],
+        ],
+    ],
 ];

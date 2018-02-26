@@ -1,3 +1,19 @@
+<?php
+$vue_data_model = [
+    'np' => [
+        'now_playing' => [
+            'song' => [
+                'title' => _('Song Title'),
+                'artist' => _('Song Artist'),
+                'art' => $url->content('img/generic_song.jpg'),
+            ],
+            'is_request' => false,
+            'elapsed' => 0,
+            'duration' => 0,
+        ]
+    ]
+];
+?>
 <div class="media media-left" id="station-nowplaying">
     <div class="pull-left p-r-10 p-t-5">
         <a class="btn-audio" role="button" title="<?=_('Play/Pause') ?>" href="#" data-url="<?=$this->e($stream_url) ?>">
@@ -5,7 +21,7 @@
         </a>
     </div>
     <div class="pull-left p-r-10" v-if="np.now_playing.song.art">
-        <a v-bind:href="np.now_playing.song.art" target="_blank"><img v-bind:src="np.now_playing.song.art" alt="<?=_('Album Cover') ?>" style="width: 50px; height: auto; border-radius: 5px;"></a>
+        <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank"><img v-bind:src="np.now_playing.song.art" alt="<?=_('Album Cover') ?>" style="width: 50px; height: auto; border-radius: 5px;"></a>
     </div>
     <div class="media-body">
         <h4 class="media-heading">
@@ -54,20 +70,7 @@ function formatTime(time) {
 $(function() {
     nowPlaying = new Vue({
         el: '#station-nowplaying',
-        data: {
-            np: {
-                now_playing: {
-                    song: {
-                        title: '<?=_('Song Title') ?>',
-                        artist: '<?=_('Song Artist') ?>',
-                        art: '<?=$url->content('img/generic_song.jpg') ?>'
-                    },
-                    is_request: false,
-                    elapsed: 0,
-                    duration: 0
-                }
-            }
-        },
+        data: <?=$this->escapeJs($vue_data_model) ?>,
         computed: {
             "time_display": function() {
                 var time_played = this.np.now_playing.elapsed;

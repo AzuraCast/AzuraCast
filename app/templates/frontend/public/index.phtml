@@ -7,7 +7,8 @@
 $assets
     ->load('vue')
     ->load('radio')
-    ->load('bootgrid');
+    ->load('bootgrid')
+    ->load('fancybox');
 ?>
 
 <div class="public-page">
@@ -129,6 +130,10 @@ $(function() {
         });
     }
     loadNowPlaying();
+
+    $('[data-fancybox]').fancybox({
+        buttons: ['close']
+    });
 });
 
 var request_dialog = $('#modal-request');

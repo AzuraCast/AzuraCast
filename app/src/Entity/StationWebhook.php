@@ -113,6 +113,15 @@ class StationWebhook
     }
 
     /**
+     * @return bool
+     */
+    public function toggleEnabled(): bool
+    {
+        $this->is_enabled = !$this->is_enabled;
+        return $this->is_enabled;
+    }
+
+    /**
      * @param bool $is_enabled
      */
     public function setIsEnabled(bool $is_enabled): void

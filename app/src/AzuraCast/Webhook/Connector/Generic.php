@@ -13,7 +13,9 @@ class Generic extends AbstractConnector
      */
     public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
     {
-        if (empty($config['webhook_url'])) {
+        $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
+
+        if (empty($webhook_url)) {
             \App\Debug::log('Webhook is missing necessary configuration. Skipping...');
             return;
         }
@@ -24,7 +26,7 @@ class Generic extends AbstractConnector
         ]);
 
         try {
-            $response = $client->request('POST', $config['webhook_url'], [
+            $response = $client->request('POST', $webhook_url, [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],

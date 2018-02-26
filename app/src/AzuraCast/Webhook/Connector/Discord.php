@@ -66,7 +66,9 @@ class Discord extends AbstractConnector
      */
     public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
     {
-        if (empty($config['webhook_url'])) {
+        $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
+
+        if (empty($webhook_url)) {
             \App\Debug::log('Webhook is missing necessary configuration. Skipping...');
             return;
         }
@@ -87,8 +89,7 @@ class Discord extends AbstractConnector
         $embed = [
             'title' => $vars['title'] ?? '',
             'description' => $vars['description'] ?? '',
-            'timestamp' =>  date("Y-m-d") . 'T' . date("H:i:s"),
-            'url' => $vars['url'] ?? '',
+            'url' => $this->_getValidUrl($vars['url']) ?? '',
             'color' => 2201331, // #2196f3
         ];
         $embed = array_filter($embed);
@@ -98,9 +99,9 @@ class Discord extends AbstractConnector
                 'name' => $vars['author'],
             ];
         }
-        if (!empty($vars['thumbnail'])) {
+        if (!empty($vars['thumbnail']) && $this->_getValidUrl($vars['thumbnail'])) {
             $embed['thumbnail'] = [
-                'url' => $vars['thumbnail'],
+                'url' => $this->_getValidUrl($vars['thumbnail']),
             ];
         }
         if (!empty($vars['footer'])) {
@@ -125,7 +126,7 @@ class Discord extends AbstractConnector
         ]);
 
         try {
-            $response = $client->request('POST', $config['webhook_url'], [
+            $response = $client->request('POST', $webhook_url, [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],

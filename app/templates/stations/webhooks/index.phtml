@@ -29,10 +29,11 @@
                 <tr class="vertical-align-middle">
                     <td>
                         <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:webhooks:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=_('Edit') ?></a>
+                        <a class="btn btn-sm <?=($row->isEnabled() ? 'btn-warning' : 'btn-success') ?>" href="<?=$url->named('stations:webhooks:toggle', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=($row->isEnabled() ? _('Disable') : _('Enable')) ?></a>
                         <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:webhooks:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=_('Delete') ?></a>
                     </td>
                     <td>
-                        <?=$row->getTypeName() ?>
+                        <?=$row->getTypeName() ?><?php if (!$row->isEnabled()): ?> <span class="label label-danger"><?=_('Disabled') ?></span><?php endif; ?>
                     </td>
                     <td>
                         <?=implode(', ', $row->getTriggerNames()) ?>

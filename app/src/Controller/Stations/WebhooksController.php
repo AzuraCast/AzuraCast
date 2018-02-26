@@ -148,6 +148,30 @@ class WebhooksController
         ]);
     }
 
+    public function toggleAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
+    {
+        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
+        $record = $this->em->getRepository(Entity\StationWebhook::class)->findOneBy([
+            'id' => $id,
+            'station_id' => $station_id
+        ]);
+
+        if (!($record instanceof Entity\StationWebhook)) {
+            throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('Web Hook')));
+        }
+
+        $new_status = $record->toggleEnabled();
+        $this->em->flush();
+        $this->em->refresh($station);
+
+        $this->flash->alert('<b>' . sprintf(($new_status) ? _('%s enabled.') : _('%s disabled.'), _('Web Hook')) . '</b>', 'green');
+        return $response->redirectToRoute('stations:webhooks:index', ['station' => $station_id]);
+    }
+
     public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
     {
         $this->csrf->verify($csrf_token, $this->csrf_namespace);

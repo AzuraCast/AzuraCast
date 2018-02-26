@@ -86,20 +86,6 @@ $(function() {
         }
     });
 
-    songHistory = new Vue({
-        el: '#station-history',
-        data: {
-            history: [
-                {
-                    song: {
-                        title: '<?= _('Song Title') ?>',
-                        artist: '<?= _('Song Artist') ?>'
-                    }
-                }
-            ]
-        }
-    });
-
     setInterval(iterateTimer, 1000);
 });
 </script>

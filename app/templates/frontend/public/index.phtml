@@ -25,7 +25,7 @@ $assets
         <h3 class="text-left"><?=$this->e($station->getName()) ?></h3>
 
         <div class="stations nowplaying">
-            <?=$this->fetch('frontend/public/player_component') ?>
+            <?=$this->fetch('frontend/public/player_component', ['stream_url' => $stream_url]) ?>
         </div>
 
         <div class="buttons">
@@ -99,6 +99,20 @@ $assets
 
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function() {
+    songHistory = new Vue({
+        el: '#station-history',
+        data: {
+            history: [
+                {
+                    song: {
+                        title: '<?= _('Song Title') ?>',
+                        artist: '<?= _('Song Artist') ?>'
+                    }
+                }
+            ]
+        }
+    });
+
     function loadNowPlaying() {
         $.getJSON('<?=$url->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
             nowPlaying.np = row;

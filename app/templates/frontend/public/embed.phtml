@@ -13,7 +13,7 @@ $assets
     <?=$this->fetch('partials/radio_controls') ?>
 </ul>
 <div class="stations nowplaying">
-    <?=$this->fetch('frontend/public/player_component') ?>
+    <?=$this->fetch('frontend/public/player_component', ['stream_url' => $stream_url]) ?>
 </div>
 
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">

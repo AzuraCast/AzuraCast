@@ -50,8 +50,6 @@ class IndexController
 
     public function syncAction(Request $request, Response $response, $type): Response
     {
-        ob_start();
-
         switch ($type) {
             case "long":
                 $this->sync->syncLong();
@@ -74,8 +72,6 @@ class IndexController
                 break;
         }
 
-        $result = ob_get_clean();
-
-        return $response->write($result);
+        return $response->write('Sync task complete. See log above.');
     }
 }

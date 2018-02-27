@@ -200,7 +200,7 @@ $(function() {
                 var $link = '<a class="name" href="'+$url+'" title="'+row.name+'">'+(row.is_dir ? row.text : row.media_name)+'</a>';
 
                 var art_src = (row.media_art) ? row.media_art : '<?=$url->content('img/generic_song.jpg') ?>';
-                var $art = (row.is_dir) ? '' : '<a href="'+art_src+'" target="_blank" class="pull-right p-l-10"><img style="width: 40px; height: auto; border-radius: 5px;" src="'+art_src+'"></a>';
+                var $art = (row.is_dir) ? '' : '<a href="'+art_src+'" target="_blank" class="pull-right p-l-10"><img style="width: 40px; height: auto; border-radius: 5px;" alt="<?=_('Album Artwork') ?>" src="'+art_src+'"></a>';
 
                 return '<div class="'+(row.is_dir ? 'is_dir' : 'is_file')+'">'+$art+$icon + $link + '<br><small>'+(row.is_dir ? 'Directory' : row.text)+'</small></div>';
             },

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Entity\Settings;
 use Entity\Repository\SettingsRepository;
 use Interop\Container\ContainerInterface;
+use Monolog\Logger;
 
 /**
  * The runner of scheduled synchronization tasks.
@@ -21,6 +22,11 @@ class Sync
     protected $di;
 
     /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
      * @var SettingsRepository
      */
     protected $settings;
@@ -28,6 +34,7 @@ class Sync
     public function __construct(ContainerInterface $di)
     {
         $this->di = $di;
+        $this->logger = $di[Logger::class];
 
         /** @var EntityManager $em */
         $em = $di[EntityManager::class];
@@ -72,7 +79,7 @@ class Sync
 
         $this->settings->setSetting('nowplaying_last_started', time());
 
-        Debug::runTimer('Run NowPlaying update', function () {
+        $this->_runTimer('Run NowPlaying update', function () {
             /** @var Sync\NowPlaying $task */
             $task = $this->di[Sync\NowPlaying::class];
 
@@ -106,7 +113,7 @@ class Sync
         $this->_initSync(300);
 
         // Sync uploaded media.
-        Debug::runTimer('Run radio station track sync', function () {
+        $this->_runTimer('Run radio station track sync', function () {
             /** @var Sync\Media $task */
             $task = $this->di[Sync\Media::class];
             $task->run();
@@ -126,21 +133,21 @@ class Sync
         $this->_initSync(1800);
 
         // Sync analytical and statistical data (long running).
-        Debug::runTimer('Run analytics manager', function () {
+        $this->_runTimer('Run analytics manager', function () {
             /** @var Sync\Analytics $task */
             $task = $this->di[Sync\Analytics::class];
             $task->run();
         });
 
         // Run automated playlist assignment.
-        Debug::runTimer('Run automated playlist assignment', function () {
+        $this->_runTimer('Run automated playlist assignment', function () {
             /** @var Sync\RadioAutomation $task */
             $task = $this->di[Sync\RadioAutomation::class];
             $task->run();
         });
 
         // Clean up old song history entries.
-        Debug::runTimer('Run song history cleanup', function () {
+        $this->_runTimer('Run song history cleanup', function () {
             /** @var Sync\HistoryCleanup $task */
             $task = $this->di[Sync\HistoryCleanup::class];
             $task->run();
@@ -195,4 +202,15 @@ class Sync
         return $syncs;
     }
 
+    protected function _runTimer($timer_description, callable $timed_function)
+    {
+        $start_time = microtime(true);
+
+        $timed_function();
+
+        $end_time = microtime(true);
+        $time_diff = $end_time - $start_time;
+
+        $this->logger->debug('Timer "' . $timer_description . '" completed in ' . round($time_diff, 3) . ' second(s).');
+    }
 }

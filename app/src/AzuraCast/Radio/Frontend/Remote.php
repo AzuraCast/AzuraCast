@@ -143,7 +143,7 @@ class Remote extends FrontendAbstract
 
                 $return = @json_decode($return_raw, true);
 
-                Debug::print_r($return);
+                $this->logger->debug('Remote IceCast response.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName(), 'response' => $return]);
 
                 if (!$return || !isset($return['icestats']['source'])) {
                     return false;
@@ -197,7 +197,7 @@ class Remote extends FrontendAbstract
                 preg_match("/<body.*>(.*)<\/body>/smU", $return_raw, $return);
                 $parts = explode(",", $return[1], 7);
 
-                Debug::print_r($parts);
+                $this->logger->debug('Remote ShoutCast 1 response.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName(), 'response' => $parts]);
 
                 return [
                     'title' => $parts[6],
@@ -209,7 +209,7 @@ class Remote extends FrontendAbstract
                 break;
 
             case 'shoutcast2':
-                $sid = intval($settings['remote_mount'] ?: 1);
+                $sid = (int)$settings['remote_mount'] ?: 1;
 
                 $remote_stats_url = $this->_getMountPublicUrl($mount, '/stats?sid='.$sid);
                 $return_raw = $this->getUrl($remote_stats_url);
@@ -221,7 +221,7 @@ class Remote extends FrontendAbstract
                 $current_data = \App\Export::xml_to_array($return_raw);
                 $song_data = $current_data['SHOUTCASTSERVER'];
 
-                Debug::print_r($song_data);
+                $this->logger->debug('Remote ShoutCast 2 response.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName(), 'response' => $song_data]);
 
                 return [
                     'title' => $song_data['SONGTITLE'],

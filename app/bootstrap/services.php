@@ -313,6 +313,31 @@ return function (\Slim\Container $di, $settings) {
         );
     };
 
+    $di[\Monolog\Logger::class] = function($di) use ($settings) {
+        $logger = new Monolog\Logger($settings['name']);
+
+        /** @var \Redis $redis */
+        $redis = $di[\Redis::class];
+        $redis->select(3);
+
+        // Log all errors to Redis for quick reviewing later.
+        $redis_handler = new \Monolog\Handler\RedisHandler($redis, 'logs', \Monolog\Logger::INFO, true, 100);
+        $logger->pushHandler($redis_handler);
+
+        // Determine general handler.
+        if (APP_INSIDE_DOCKER) {
+            $handler = (APP_IN_PRODUCTION)
+                ? new \Monolog\Handler\StreamHandler('php://stderr', \Monolog\Logger::WARNING)
+                : new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Logger::DEBUG);
+        } else {
+            $handler = new \Monolog\Handler\RotatingFileHandler(APP_INCLUDE_TEMP.'/azuracast.log', \Monolog\Logger::WARNING);
+        }
+
+        $logger->pushHandler($handler);
+
+        return $logger;
+    };
+
     //
     // AzuraCast-specific dependencies
     //
@@ -392,7 +417,8 @@ return function (\Slim\Container $di, $settings) {
 
     $di[\AzuraCast\Sync\Media::class] = function($di) {
         return new \AzuraCast\Sync\Media(
-            $di[\Doctrine\ORM\EntityManager::class]
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\Monolog\Logger::class]
         );
     };
 
@@ -415,17 +441,21 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[AzuraCast\Webhook\Dispatcher::class] = function($di) {
-        return new \AzuraCast\Webhook\Dispatcher([
-            'local' => $di[\AzuraCast\Webhook\Connector\Local::class],
-            'generic' => $di[\AzuraCast\Webhook\Connector\Generic::class],
-            'tunein' => $di[\AzuraCast\Webhook\Connector\TuneIn::class],
-            'discord' => $di[\AzuraCast\Webhook\Connector\Discord::class],
-            'twitter' => $di[\AzuraCast\Webhook\Connector\Twitter::class],
-        ]);
+        return new \AzuraCast\Webhook\Dispatcher(
+            $di[\Monolog\Logger::class],
+            [
+                'local' => $di[\AzuraCast\Webhook\Connector\Local::class],
+                'generic' => $di[\AzuraCast\Webhook\Connector\Generic::class],
+                'tunein' => $di[\AzuraCast\Webhook\Connector\TuneIn::class],
+                'discord' => $di[\AzuraCast\Webhook\Connector\Discord::class],
+                'twitter' => $di[\AzuraCast\Webhook\Connector\Twitter::class],
+            ]
+        );
     };
 
     $di[\AzuraCast\Webhook\Connector\Local::class] = function($di) {
         return new \AzuraCast\Webhook\Connector\Local(
+            $di[\Monolog\Logger::class],
             $di[\InfluxDB\Database::class],
             $di[\App\Cache::class],
             $di[\Entity\Repository\SettingsRepository::class]
@@ -433,24 +463,36 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\AzuraCast\Webhook\Connector\Generic::class] = function($di) {
-        return new \AzuraCast\Webhook\Connector\Generic();
+        return new \AzuraCast\Webhook\Connector\Generic(
+            $di[\Monolog\Logger::class]
+        );
     };
 
     $di[\AzuraCast\Webhook\Connector\TuneIn::class] = function($di) {
-        return new \AzuraCast\Webhook\Connector\TuneIn();
+        return new \AzuraCast\Webhook\Connector\TuneIn(
+            $di[\Monolog\Logger::class]
+        );
     };
 
     $di[\AzuraCast\Webhook\Connector\Discord::class] = function($di) {
-        return new \AzuraCast\Webhook\Connector\Discord();
+        return new \AzuraCast\Webhook\Connector\Discord(
+            $di[\Monolog\Logger::class]
+        );
     };
 
     $di[\AzuraCast\Webhook\Connector\Twitter::class] = function($di) {
-        return new \AzuraCast\Webhook\Connector\Twitter();
+        return new \AzuraCast\Webhook\Connector\Twitter(
+            $di[\Monolog\Logger::class]
+        );
     };
 
     //
     // Middleware
     //
+
+    $di[\App\Middleware\DebugEcho::class] = function($di) {
+        return new \App\Middleware\DebugEcho($di[\Monolog\Logger::class]);
+    };
 
     $di[\AzuraCast\Middleware\EnableView::class] = function($di) {
         return new \AzuraCast\Middleware\EnableView($di[\App\Mvc\View::class]);

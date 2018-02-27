@@ -4,6 +4,7 @@ namespace AzuraCast\Radio;
 use Entity\Station;
 use fXmlRpc\Exception\FaultException;
 use Interop\Container\ContainerInterface;
+use Monolog\Logger;
 use Slim\Container;
 use Supervisor\Process;
 
@@ -18,6 +19,9 @@ abstract class AdapterAbstract
     /** @var \Supervisor\Supervisor */
     protected $supervisor;
 
+    /** @var Logger */
+    protected $logger;
+
     /**
      * AdapterAbstract constructor.
      * @param Container $di
@@ -26,6 +30,7 @@ abstract class AdapterAbstract
     {
         $this->di = $di;
         $this->supervisor = $di[\Supervisor\Supervisor::class];
+        $this->logger = $di[Logger::class];
     }
 
     /**
@@ -100,10 +105,10 @@ abstract class AdapterAbstract
 
             try {
                 $this->supervisor->stopProcess($program_name);
-                $this->log(_('Process stopped.'), 'green');
+                $this->logger->info('Adapter "'.get_called_class().'" stopped.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
             } catch (FaultException $e) {
                 if (false !== stripos($e->getMessage(), 'NOT_RUNNING')) {
-                    $this->log(_('Process was not running!'), 'blue');
+                    $this->logger->info('Adapter "'.get_called_class().'" cannot stop; process was not running.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
                 } else {
                     $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
 
@@ -132,17 +137,16 @@ abstract class AdapterAbstract
 
             try {
                 $this->supervisor->startProcess($program_name);
-                $this->log(_('Process started.'), 'green');
+                $this->logger->info('Adapter "'.get_called_class().'" started.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
             } catch (FaultException $e) {
                 if (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
-                    $this->log(_('Process is already running!'), 'green');
+                    $this->logger->info('Adapter "'.get_called_class().'" cannot start; was already running.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
                 } else {
                     $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
 
                     try {
                         $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
                         $app_e->addExtraData('Supervisord Log', explode("\n", $this->supervisor->readProcessLog($program_name, 0, 0)));
-
                         $this->supervisor->clearProcessLog($program_name);
                     } catch(FaultException $e) {}
 
@@ -166,27 +170,6 @@ abstract class AdapterAbstract
      * @return bool
      */
     abstract public function getProgramName();
-
-    /**
-     * Log a message to console or to flash (if interactive session).
-     *
-     * @param $message
-     */
-    public function log($message, $class = 'info')
-    {
-        if (empty($message)) {
-            return;
-        }
-
-        $log_file = APP_INCLUDE_TEMP . '/radio_adapter_log.txt';
-        $log_message = str_pad(date('Y-m-d g:ia'), 20, ' ', STR_PAD_RIGHT) . $message . "\n";
-
-        file_put_contents($log_file, $log_message, FILE_APPEND);
-
-        if (!APP_TESTING_MODE) {
-            \App\Debug::log('[' . strtoupper($class) . '] ' . $message);
-        }
-    }
 
     /**
      * Indicate if the adapter in question is installed on the server.

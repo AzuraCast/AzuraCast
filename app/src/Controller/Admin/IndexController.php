@@ -52,9 +52,6 @@ class IndexController
     {
         ob_start();
 
-        \App\Debug::setEchoMode(true);
-        \App\Debug::startTimer('sync_task');
-
         switch ($type) {
             case "long":
                 $this->sync->syncLong();
@@ -76,9 +73,6 @@ class IndexController
                 $this->sync->syncNowplaying(true);
                 break;
         }
-
-        \App\Debug::endTimer('sync_task');
-        \App\Debug::log('Sync task complete. See log above.');
 
         $result = ob_get_clean();
 

@@ -208,7 +208,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
             $np['listeners']['total'] = $np['listeners']['current'];
         }
 
-        Debug::print_r($np);
+        $this->logger->debug('Now Playing result', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName(), 'np' => $np]);
 
         return $np;
     }
@@ -234,11 +234,9 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         $unique_listeners = (int)$unique_listeners;
         $current_listeners = (int)$current_listeners;
 
-        if ($unique_listeners == 0 || $current_listeners == 0) {
-            return max($unique_listeners, $current_listeners);
-        } else {
-            return min($unique_listeners, $current_listeners);
-        }
+        return ($unique_listeners == 0 || $current_listeners == 0)
+            ? max($unique_listeners, $current_listeners)
+            : min($unique_listeners, $current_listeners);
     }
 
     /* Return the artist and title from a string in the format "Artist - Title" */
@@ -269,18 +267,6 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
     }
 
     /**
-     * Log a message to console or to flash (if interactive session).
-     *
-     * @param $message
-     */
-    public function log($message, $class = 'info')
-    {
-        if (!empty(trim($message))) {
-            parent::log(str_pad('Radio Frontend: ', 20, ' ', STR_PAD_RIGHT) . $message, $class);
-        }
-    }
-
-    /**
      * Stop a station frontend and also the associated watcher command if available.
      * @throws \App\Exception
      */
@@ -293,10 +279,11 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
             try {
                 $this->supervisor->stopProcess($program_name);
-                $this->log(_('Watcher process stopped.'), 'green');
+
+                $this->logger->info('Frontend watcher stopped.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
             } catch (FaultException $e) {
                 if (stripos($e->getMessage(), 'NOT_RUNNING') !== false) {
-                    $this->log(_('Watcher process was not running!'), 'blue');
+                    $this->logger->info('Frontend watcher could not stop; was not running.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
                 } else {
                     $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
 
@@ -326,10 +313,10 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
             try {
                 $this->supervisor->startProcess($program_name);
-                $this->log(_('Watcher process started.'), 'green');
+                $this->logger->info('Frontend watcher started.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
             } catch (FaultException $e) {
                 if (stripos($e->getMessage(), 'ALREADY_STARTED') !== false) {
-                    $this->log(_('Watcher process is already running!'), 'green');
+                    $this->logger->info('Frontend watcher could not start; is already running.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
                 } else {
                     $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
 

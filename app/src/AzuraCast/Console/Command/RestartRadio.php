@@ -23,10 +23,7 @@ class RestartRadio extends \App\Console\Command\CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        \App\Debug::setEchoMode(true);
-
-        \App\Debug::log('Restarting all radio stations...');
-        \App\Debug::divider();
+        $output->writeLn('Restarting all radio stations...');
 
         /** @var \Supervisor\Supervisor $supervisor */
         $supervisor = $this->di[\Supervisor\Supervisor::class];
@@ -43,11 +40,8 @@ class RestartRadio extends \App\Console\Command\CommandAbstract
         $supervisor->stopAllProcesses();
 
         foreach ($stations as $station) {
-            \App\Debug::log('Restarting station #' . $station->getId() . ': ' . $station->getName());
-
+            $output->writeLn('Restarting station #' . $station->getId() . ': ' . $station->getName());
             $configuration->writeConfiguration($station);
-
-            \App\Debug::divider();
         }
 
         $supervisor->startAllProcesses();

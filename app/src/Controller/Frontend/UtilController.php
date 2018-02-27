@@ -23,8 +23,6 @@ class UtilController
 
     public function testAction(Request $request, Response $response): Response
     {
-        \App\Debug::setEchoMode(true);
-
         /** @var EntityManager $em */
         $em = $this->di[EntityManager::class];
 
@@ -40,6 +38,6 @@ class UtilController
 
         $dispatcher->dispatch($station, new Entity\Api\NowPlaying(), $np);
 
-        exit;
+        return $response;
     }
 }

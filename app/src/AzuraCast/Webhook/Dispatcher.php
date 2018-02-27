@@ -2,17 +2,22 @@
 namespace AzuraCast\Webhook;
 
 use Entity;
+use Monolog\Logger;
 
 class Dispatcher
 {
+    /** @var Logger */
+    protected $logger;
+
     /** @var Connector\ConnectorInterface[] */
     protected $connectors;
 
     /**
      * @param Connector\ConnectorInterface[] $connectors
      */
-    public function __construct(array $connectors)
+    public function __construct(Logger $logger, array $connectors)
     {
+        $this->logger = $logger;
         $this->connectors = $connectors;
     }
 
@@ -26,8 +31,17 @@ class Dispatcher
      */
     public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np_old, Entity\Api\NowPlaying $np_new, $is_standalone = true): void
     {
+        $this->logger->pushProcessor(function($record) use ($station) {
+            $record['extra']['station'] = [
+                'id' => $station->getId(),
+                'name' => $station->getName(),
+            ];
+            return $record;
+        });
+
         if (APP_TESTING_MODE) {
-            \App\Debug::log('In testing mode; no webhooks dispatched.');
+            $this->logger->info('In testing mode; no webhooks dispatched.');
+            $this->logger->popProcessor();
             return;
         }
 
@@ -77,12 +91,12 @@ class Dispatcher
             $to_trigger[] = 'live_disconnect';
         }
 
-        \App\Debug::log('Triggering events: '.implode(', ', $to_trigger));
+        $this->logger->debug('Triggering events: '.implode(', ', $to_trigger));
 
         // Trigger all appropriate webhooks.
         foreach($connectors as $connector) {
             if (!isset($this->connectors[$connector['type']])) {
-                \App\Debug::log(sprintf('Webhook connector "%s" does not exist; skipping.', $connector['type']));
+                $this->logger->error(sprintf('Webhook connector "%s" does not exist; skipping.', $connector['type']));
                 continue;
             }
 
@@ -90,11 +104,13 @@ class Dispatcher
             $connector_obj = $this->connectors[$connector['type']];
 
             if ($connector_obj->shouldDispatch($to_trigger, (array)$connector['triggers'])) {
-                \App\Debug::log(sprintf('Dispatching connector "%s".', $connector['type']));
+                $this->logger->debug(sprintf('Dispatching connector "%s".', $connector['type']));
 
                 $connector_obj->dispatch($station, $np_new, (array)$connector['config']);
             }
         }
+
+        $this->logger->popProcessor();
     }
 
     public static function getConnectors()

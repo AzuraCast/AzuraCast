@@ -3,6 +3,7 @@ namespace AzuraCast\Webhook\Connector;
 
 use Entity;
 use GuzzleHttp\Exception\TransferException;
+use Monolog\Logger;
 
 class Generic extends AbstractConnector
 {
@@ -16,7 +17,7 @@ class Generic extends AbstractConnector
         $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
-            \App\Debug::log('Webhook is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook '.get_called_class().' is missing necessary configuration. Skipping...');
             return;
         }
 
@@ -33,9 +34,12 @@ class Generic extends AbstractConnector
                 'json' => $np,
             ]);
 
-            \App\Debug::log(sprintf('Generic webhook returned code %d', $response->getStatusCode()));
+            $this->logger->debug(
+                sprintf('Generic webhook code %d', $response->getStatusCode()),
+                ['response_body' => $response->getBody()->getContents()]
+            );
         } catch(TransferException $e) {
-            \App\Debug::log(sprintf('Error from generic webhook (%d): %s', $e->getCode(), $e->getMessage()));
+            $this->logger->error(sprintf('Error from generic webhook (%d): %s', $e->getCode(), $e->getMessage()));
         }
     }
 }

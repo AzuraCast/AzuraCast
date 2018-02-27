@@ -24,6 +24,6 @@ class None extends BackendAbstract
 
     public function start()
     {
-        $this->log(_('AutoDJ is currently disabled. Enable it from the station profile.'));
+        $this->logger->error('Cannot start process; AutoDJ is currently disabled.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
     }
 }

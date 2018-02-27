@@ -22,10 +22,7 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        \App\Debug::setEchoMode(true);
-
-        \App\Debug::log('Reloading all metadata for all media...');
-        \App\Debug::divider();
+        $output->writeLn('Reloading all metadata for all media...');
 
         /** @var EntityManager $em */
         $em = $this->di[EntityManager::class];
@@ -36,7 +33,7 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
 
-            \App\Debug::log('Processing media for station: ' . $station->getName());
+            $output->writeLn('Processing media for station: ' . $station->getName());
 
             foreach($station->getMedia() as $media) {
                 /** @var Entity\StationMedia $media */
@@ -53,17 +50,16 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
 
                     $em->persist($media);
 
-                    \App\Debug::log('Processed: '.$media->getFullPath());
+                    $output->writeLn('Processed: '.$media->getFullPath());
                 } catch (\Exception $e) {
-                    \App\Debug::log('Could not read source file for: '.$media->getFullPath().' - '.$e->getMessage());
+                    $output->writeLn('Could not read source file for: '.$media->getFullPath().' - '.$e->getMessage());
                     continue;
                 }
             }
 
             $em->flush();
 
-            \App\Debug::log('Station media reprocessed.');
-            \App\Debug::divider();
+            $output->writeLn('Station media reprocessed.');
         }
     }
 }

@@ -37,7 +37,7 @@ class SHOUTcast extends FrontendAbstract
 
         $current_data = json_decode($payload, true);
 
-        Debug::print_r($current_data);
+        $this->logger->debug('SHOUTcast 2 raw response.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName(), 'response' => $current_data]);
 
         $streams = count($current_data['streams']);
         $u_list = 0;

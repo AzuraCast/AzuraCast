@@ -1,7 +1,4 @@
 <?php
-use \Controller;
-use \AzuraCast\Middleware;
-
 return function(\Slim\App $app) {
 
     $app->group('/admin', function () {
@@ -11,7 +8,8 @@ return function(\Slim\App $app) {
 
         $this->get('/sync/{type}', Controller\Admin\IndexController::class.':syncAction')
             ->setName('admin:index:sync')
-            ->add([Middleware\Permissions::class, 'administer all']);
+            ->add([AzuraCast\Middleware\Permissions::class, 'administer all'])
+            ->add(App\Middleware\DebugEcho::class);
 
         $this->group('/api', function () {
 
@@ -24,11 +22,11 @@ return function(\Slim\App $app) {
             $this->get('/delete/{id}/{csrf}', Controller\Admin\ApiController::class.':deleteAction')
                 ->setName('admin:api:delete');
 
-        })->add([Middleware\Permissions::class, 'administer api keys']);
+        })->add([AzuraCast\Middleware\Permissions::class, 'administer api keys']);
 
         $this->map(['GET', 'POST'], '/branding', Controller\Admin\BrandingController::class.':indexAction')
             ->setName('admin:branding:index')
-            ->add([Middleware\Permissions::class, 'administer settings']);
+            ->add([AzuraCast\Middleware\Permissions::class, 'administer settings']);
 
         $this->group('/permissions', function () {
 
@@ -44,11 +42,11 @@ return function(\Slim\App $app) {
             $this->get('/delete/{id}/{csrf}', Controller\Admin\PermissionsController::class.':deleteAction')
                 ->setName('admin:permissions:delete');
 
-        })->add([Middleware\Permissions::class, 'administer permissions']);
+        })->add([AzuraCast\Middleware\Permissions::class, 'administer permissions']);
 
         $this->map(['GET', 'POST'], '/settings', Controller\Admin\SettingsController::class.':indexAction')
             ->setName('admin:settings:index')
-            ->add([Middleware\Permissions::class, 'administer settings']);
+            ->add([AzuraCast\Middleware\Permissions::class, 'administer settings']);
 
         $this->group('/stations', function () {
 
@@ -67,7 +65,7 @@ return function(\Slim\App $app) {
             $this->get('/delete/{id}/{csrf}', Controller\Admin\StationsController::class.':deleteAction')
                 ->setName('admin:stations:delete');
 
-        })->add([Middleware\Permissions::class, 'administer stations']);
+        })->add([AzuraCast\Middleware\Permissions::class, 'administer stations']);
 
         $this->group('/users', function () {
 
@@ -86,15 +84,15 @@ return function(\Slim\App $app) {
             $this->get('/login-as/{id}/{csrf}', Controller\Admin\UsersController::class.':impersonateAction')
                 ->setName('admin:users:impersonate');
 
-        })->add([Middleware\Permissions::class, 'administer users']);
+        })->add([AzuraCast\Middleware\Permissions::class, 'administer users']);
 
         // END /admin GROUP
 
     })
-        ->add(Middleware\Module\Admin::class)
-        ->add(Middleware\EnableView::class)
-        ->add([Middleware\Permissions::class, 'view administration'])
-        ->add(Middleware\RequireLogin::class);
+        ->add(AzuraCast\Middleware\Module\Admin::class)
+        ->add(AzuraCast\Middleware\EnableView::class)
+        ->add([AzuraCast\Middleware\Permissions::class, 'view administration'])
+        ->add(AzuraCast\Middleware\RequireLogin::class);
 
     $app->group('/api', function () {
 
@@ -126,7 +124,7 @@ return function(\Slim\App $app) {
                 $this->map(['GET', 'POST'], '/djoff', Controller\Api\InternalController::class.':djoffAction')
                     ->setName('api:internal:djoff');
 
-            })->add(Middleware\GetStation::class);
+            })->add(AzuraCast\Middleware\GetStation::class);
 
         });
 
@@ -135,13 +133,13 @@ return function(\Slim\App $app) {
 
         $this->get('/stations', Controller\Api\Stations\IndexController::class.':listAction')
             ->setName('api:stations:list')
-            ->add([Middleware\RateLimit::class, 'api', 5, 2]);
+            ->add([AzuraCast\Middleware\RateLimit::class, 'api', 5, 2]);
 
         $this->group('/station/{station}', function () {
 
             $this->get('', Controller\Api\Stations\IndexController::class.':indexAction')
                 ->setName('api:stations:index')
-                ->add([Middleware\RateLimit::class, 'api', 5, 2]);
+                ->add([AzuraCast\Middleware\RateLimit::class, 'api', 5, 2]);
 
             $this->get('/nowplaying', Controller\Api\NowplayingController::class.':indexAction');
 
@@ -151,33 +149,33 @@ return function(\Slim\App $app) {
 
             $this->map(['GET', 'POST'], '/request/{media_id}', Controller\Api\RequestsController::class.':submitAction')
                 ->setName('api:requests:submit')
-                ->add([Middleware\RateLimit::class, 'api', 5, 2]);
+                ->add([AzuraCast\Middleware\RateLimit::class, 'api', 5, 2]);
 
             $this->get('/listeners', Controller\Api\ListenersController::class.':indexAction')
                 ->setName('api:listeners:index')
-                ->add([Middleware\Permissions::class, 'view station reports', true]);
+                ->add([AzuraCast\Middleware\Permissions::class, 'view station reports', true]);
 
             $this->get('/art/{media_id}', Controller\Api\Stations\MediaController::class.':artAction')
                 ->setName('api:stations:media:art');
 
             $this->post('/backend/{do}', Controller\Api\Stations\ServicesController::class.':backendAction')
                 ->setName('api:stations:backend')
-                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
+                ->add([AzuraCast\Middleware\Permissions::class, 'manage station broadcasting', true]);
 
             $this->post('/frontend/{do}', Controller\Api\Stations\ServicesController::class.':frontendAction')
                 ->setName('api:stations:frontend')
-                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
+                ->add([AzuraCast\Middleware\Permissions::class, 'manage station broadcasting', true]);
 
             $this->post('/restart', Controller\Api\Stations\ServicesController::class.':restartAction')
                 ->setName('api:stations:restart')
-                ->add([Middleware\Permissions::class, 'manage station broadcasting', true]);
+                ->add([AzuraCast\Middleware\Permissions::class, 'manage station broadcasting', true]);
 
-        })->add(Middleware\GetStation::class);
+        })->add(AzuraCast\Middleware\GetStation::class);
 
         // END /api GROUP
 
     })
-        ->add(Middleware\Module\Api::class);
+        ->add(AzuraCast\Middleware\Module\Api::class);
 
     $app->group('', function() {
 
@@ -211,16 +209,17 @@ return function(\Slim\App $app) {
         // Used for internal development
         if (!APP_IN_PRODUCTION) {
             $this->any('/test', Controller\Frontend\UtilController::class.':testAction')
-                ->setName('util:test');
+                ->setName('util:test')
+                ->add(App\Middleware\DebugEcho::class);
         }
 
     })
-        ->add(Middleware\EnableView::class)
-        ->add(Middleware\RequireLogin::class);
+        ->add(AzuraCast\Middleware\EnableView::class)
+        ->add(AzuraCast\Middleware\RequireLogin::class);
 
     $app->map(['GET', 'POST'], '/login', Controller\Frontend\AccountController::class.':loginAction')
         ->setName('account:login')
-        ->add(Middleware\EnableView::class);
+        ->add(AzuraCast\Middleware\EnableView::class);
 
     $app->group('/setup', function () {
 
@@ -240,7 +239,7 @@ return function(\Slim\App $app) {
             ->setName('setup:settings');
 
     })
-        ->add(Middleware\EnableView::class);
+        ->add(AzuraCast\Middleware\EnableView::class);
 
     $app->group('/public/{station}', function () {
 
@@ -257,8 +256,8 @@ return function(\Slim\App $app) {
             ->setName('public:playlist');
 
     })
-        ->add(Middleware\GetStation::class)
-        ->add(Middleware\EnableView::class);
+        ->add(AzuraCast\Middleware\GetStation::class)
+        ->add(AzuraCast\Middleware\EnableView::class);
 
     $app->group('/station/{station}', function () {
 
@@ -273,7 +272,7 @@ return function(\Slim\App $app) {
             $this->get('/run', Controller\Stations\AutomationController::class.':runAction')
                 ->setName('stations:automation:run');
 
-        })->add([Middleware\Permissions::class, 'manage station automation', true]);
+        })->add([AzuraCast\Middleware\Permissions::class, 'manage station automation', true]);
 
         $this->group('/files', function () {
 
@@ -302,8 +301,8 @@ return function(\Slim\App $app) {
                 ->setName('stations:files:download');
 
         })
-            ->add(Middleware\Module\StationFiles::class)
-            ->add([Middleware\Permissions::class, 'manage station media', true]);
+            ->add(AzuraCast\Middleware\Module\StationFiles::class)
+            ->add([AzuraCast\Middleware\Permissions::class, 'manage station media', true]);
 
         $this->group('/playlists', function () {
 
@@ -322,7 +321,7 @@ return function(\Slim\App $app) {
             $this->get('/export/{id}[/{format}]', Controller\Stations\PlaylistsController::class.':exportAction')
                 ->setName('stations:playlists:export');
 
-        })->add([Middleware\Permissions::class, 'manage station media', true]);
+        })->add([AzuraCast\Middleware\Permissions::class, 'manage station media', true]);
 
         $this->group('/mounts', function () {
 
@@ -341,7 +340,7 @@ return function(\Slim\App $app) {
             $this->get('/delete/{id}/{csrf}', Controller\Stations\MountsController::class.':deleteAction')
                 ->setName('stations:mounts:delete');
 
-        })->add([Middleware\Permissions::class, 'manage station mounts', true]);
+        })->add([AzuraCast\Middleware\Permissions::class, 'manage station mounts', true]);
 
         $this->group('/profile', function () {
 
@@ -350,7 +349,7 @@ return function(\Slim\App $app) {
 
             $this->map(['GET', 'POST'], '/edit', Controller\Stations\ProfileController::class.':editAction')
                 ->setName('stations:profile:edit')
-                ->add([Middleware\Permissions::class, 'manage station profile', true]);
+                ->add([AzuraCast\Middleware\Permissions::class, 'manage station profile', true]);
 
         });
 
@@ -362,7 +361,7 @@ return function(\Slim\App $app) {
             $this->get('/delete/{request_id}/{csrf}', Controller\Stations\RequestsController::class.':deleteAction')
                 ->setName('stations:requests:delete');
 
-        })->add([Middleware\Permissions::class, 'view station reports', true]);
+        })->add([AzuraCast\Middleware\Permissions::class, 'view station reports', true]);
 
         $this->group('/reports', function () {
 
@@ -381,7 +380,7 @@ return function(\Slim\App $app) {
             $this->map(['GET', 'POST'], '/listeners', Controller\Stations\ReportsController::class.':listenersAction')
                 ->setName('stations:reports:listeners');
 
-        })->add([Middleware\Permissions::class, 'view station reports', true]);
+        })->add([AzuraCast\Middleware\Permissions::class, 'view station reports', true]);
 
         $this->group('/streamers', function () {
 
@@ -397,7 +396,7 @@ return function(\Slim\App $app) {
             $this->get('/delete/{id}/{csrf}', Controller\Stations\StreamersController::class.':deleteAction')
                 ->setName('stations:streamers:delete');
 
-        })->add([Middleware\Permissions::class, 'manage station streamers', true]);
+        })->add([AzuraCast\Middleware\Permissions::class, 'manage station streamers', true]);
 
         $this->group('/webhooks', function () {
 
@@ -416,15 +415,15 @@ return function(\Slim\App $app) {
             $this->get('/delete/{id}/{csrf}', Controller\Stations\WebhooksController::class.':deleteAction')
                 ->setName('stations:webhooks:delete');
 
-        })->add([Middleware\Permissions::class, 'manage station web hooks', true]);
+        })->add([AzuraCast\Middleware\Permissions::class, 'manage station web hooks', true]);
 
         // END /stations GROUP
 
     })
-        ->add(Middleware\Module\Stations::class)
-        ->add([Middleware\Permissions::class, 'view station administration', true])
-        ->add(Middleware\GetStation::class)
-        ->add(Middleware\EnableView::class)
-        ->add(Middleware\RequireLogin::class);
+        ->add(AzuraCast\Middleware\Module\Stations::class)
+        ->add([AzuraCast\Middleware\Permissions::class, 'view station administration', true])
+        ->add(AzuraCast\Middleware\GetStation::class)
+        ->add(AzuraCast\Middleware\EnableView::class)
+        ->add(AzuraCast\Middleware\RequireLogin::class);
 
 };

@@ -110,7 +110,7 @@ class Liquidsoap extends BackendAbstract
         // Create a new default playlist if one doesn't exist.
         if (!$has_default_playlist) {
 
-            $this->log(_('No default playlist existed for the station, so one was automatically created. You can add songs to it from the "Media" page.'),'info');
+            $this->logger->info('No default playlist existed for this station; new one was automatically created.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
 
             // Auto-create an empty default playlist.
             $default_playlist = new \Entity\StationPlaylist($this->station);
@@ -247,8 +247,7 @@ class Liquidsoap extends BackendAbstract
 
 
                 } else {
-                    $this->log(_('You must use the Mount Points feature to configure remote broadcasting first.'),
-                        'error');
+                    $this->logger->error('Mount Points feature was not used to configure remote broadcasting; cannot continue.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
                     return false;
                 }
                 break;

@@ -3,6 +3,7 @@ namespace AzuraCast\Webhook\Connector;
 
 use Entity;
 use GuzzleHttp\Exception\TransferException;
+use Monolog\Logger;
 
 class TuneIn extends AbstractConnector
 {
@@ -24,11 +25,11 @@ class TuneIn extends AbstractConnector
     public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
     {
         if (empty($config['partner_id']) || empty($config['partner_key']) || empty($config['station_id'])) {
-            \App\Debug::log('Webhook is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook '.get_called_class().' is missing necessary configuration. Skipping...');
             return;
         }
 
-        \App\Debug::log('Dispatching now-playing change to TuneIn...');
+        $this->logger->debug('Dispatching TuneIn AIR API call...');
 
         $client = new \GuzzleHttp\Client([
             'base_uri' => 'http://air.radiotime.com',
@@ -48,9 +49,12 @@ class TuneIn extends AbstractConnector
                 ],
             ]);
 
-            \App\Debug::log(sprintf('TuneIn returned code %d', $response->getStatusCode()));
+            $this->logger->debug(
+                sprintf('TuneIn returned code %d', $response->getStatusCode()),
+                ['response_body' => $response->getBody()->getContents()]
+            );
         } catch(TransferException $e) {
-            \App\Debug::log(sprintf('Error from TuneIn (%d): %s', $e->getCode(), $e->getMessage()));
+            $this->logger->error(sprintf('Error from TuneIn (%d): %s', $e->getCode(), $e->getMessage()));
         }
 
     }

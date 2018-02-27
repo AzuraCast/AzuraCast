@@ -40,7 +40,8 @@ class Icecast extends FrontendAbstract
         }
 
         $return = $reader->fromString($payload);
-        Debug::print_r($return);
+
+        $this->logger->debug('Processed IceCast response.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName(), 'response' => $return]);
 
         if (!$return || empty($return['source'])) {
             return false;

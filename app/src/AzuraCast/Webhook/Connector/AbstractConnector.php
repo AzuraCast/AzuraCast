@@ -2,9 +2,18 @@
 namespace AzuraCast\Webhook\Connector;
 
 use Entity;
+use Monolog\Logger;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
+    /** @var Logger */
+    protected $logger;
+
+    public function __construct(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
+
     public function shouldDispatch(array $current_events, array $triggers): bool
     {
         if (empty($triggers)) {

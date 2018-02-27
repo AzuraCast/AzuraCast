@@ -114,7 +114,6 @@ class NowPlaying extends SyncAbstract
 
         foreach ($stations as $station) {
             /** @var Entity\Station $station */
-
             $last_run = $station->getNowplayingTimestamp();
 
             if ($last_run >= (time()-10)) {
@@ -123,12 +122,7 @@ class NowPlaying extends SyncAbstract
 
                 $nowplaying[] = $np;
             } else {
-                Debug::startTimer($station->getName());
-
-                // $name = $station->short_name;
                 $nowplaying[] = $this->processStation($station);
-
-                Debug::endTimer($station->getName());
             }
         }
 

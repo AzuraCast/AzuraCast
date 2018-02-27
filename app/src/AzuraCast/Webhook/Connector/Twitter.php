@@ -3,6 +3,7 @@ namespace AzuraCast\Webhook\Connector;
 
 use Entity;
 use GuzzleHttp\Exception\TransferException;
+use Monolog\Logger;
 
 class Twitter extends AbstractConnector
 {
@@ -17,7 +18,7 @@ class Twitter extends AbstractConnector
             || empty($config['consumer_secret'])
             || empty($config['token'])
             || empty($config['token_secret'])) {
-            \App\Debug::log('Webhook is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook '.get_called_class().' is missing necessary configuration. Skipping...');
             return;
         }
 
@@ -38,7 +39,7 @@ class Twitter extends AbstractConnector
         $vars = $this->_replaceVariables($raw_vars, $np);
 
         // Dispatch webhook
-        \App\Debug::log('Posting to Twitter...');
+        $this->logger->debug('Posting to Twitter...');
 
         $client = new \GuzzleHttp\Client([
             'http_errors' => false,
@@ -54,10 +55,12 @@ class Twitter extends AbstractConnector
                 ],
             ]);
 
-            \App\Debug::log(sprintf('Twitter returned code %d', $response->getStatusCode()));
-            \App\Debug::print_r($response->getBody()->getContents());
+            $this->logger->debug(
+                sprintf('Twitter returned code %d', $response->getStatusCode()),
+                ['response_body' => $response->getBody()->getContents()]
+            );
         } catch(TransferException $e) {
-            \App\Debug::log(sprintf('Error from Twitter (%d): %s', $e->getCode(), $e->getMessage()));
+            $this->logger->error(sprintf('Error from Twitter (%d): %s', $e->getCode(), $e->getMessage()));
         }
     }
 }

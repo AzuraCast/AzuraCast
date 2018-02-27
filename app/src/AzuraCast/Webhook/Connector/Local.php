@@ -4,6 +4,7 @@ namespace AzuraCast\Webhook\Connector;
 use App\Cache;
 use Entity;
 use InfluxDB\Database;
+use Monolog\Logger;
 
 class Local extends AbstractConnector
 {
@@ -16,8 +17,10 @@ class Local extends AbstractConnector
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
-    public function __construct(Database $influx, Cache $cache, Entity\Repository\SettingsRepository $settings_repo)
+    public function __construct(Logger $logger, Database $influx, Cache $cache, Entity\Repository\SettingsRepository $settings_repo)
     {
+        parent::__construct($logger);
+
         $this->influx = $influx;
         $this->cache = $cache;
         $this->settings_repo = $settings_repo;
@@ -42,7 +45,7 @@ class Local extends AbstractConnector
      */
     public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
     {
-        \App\Debug::log('Writing entry to InfluxDB...');
+        $this->logger->debug('Writing entry to InfluxDB...');
 
         // Post statistics to InfluxDB.
         $influx_point = new \InfluxDB\Point(
@@ -56,7 +59,7 @@ class Local extends AbstractConnector
         $this->influx->writePoints([$influx_point], \InfluxDB\Database::PRECISION_SECONDS);
 
         // Replace the relevant station information in the cache and database.
-        \App\Debug::log('Updating NowPlaying cache...');
+        $this->logger->debug('Updating NowPlaying cache...');
 
         $np_full = $this->cache->get('api_nowplaying_data');
 
@@ -80,8 +83,6 @@ class Local extends AbstractConnector
             unset($np_row);
 
             $this->settings_repo->setSetting('nowplaying', $np_full);
-
-            \App\Debug::print_r($np_full);
         }
     }
 }

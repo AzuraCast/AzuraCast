@@ -4,18 +4,23 @@ namespace AzuraCast\Sync;
 use App\Debug;
 use Doctrine\ORM\EntityManager;
 use Entity;
+use Monolog\Logger;
 
 class Media extends SyncAbstract
 {
     /** @var EntityManager */
     protected $em;
 
+    /** @var Logger */
+    protected $logger;
+
     /**
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, Logger $logger)
     {
         $this->em = $em;
+        $this->logger = $logger;
     }
 
     public function run()
@@ -23,7 +28,7 @@ class Media extends SyncAbstract
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
         foreach ($stations as $station) {
-            Debug::log('Processing station: '.$station->getName());
+            $this->logger->info('Reprocessing media for station: '.$station->getName());
             $this->importMusic($station);
         }
     }
@@ -73,7 +78,7 @@ class Media extends SyncAbstract
                 $song_info = $media_row->loadFromFile($force_reprocess);
 
                 if (is_array($song_info)) {
-                    Debug::log('Reprocessing media: '.$song_info['artist'].' - '.$song_info['title']);
+                    $this->logger->debug('Reprocessing media: '.$song_info['artist'].' - '.$song_info['title']);
 
                     $media_row->setSong($song_repo->getOrCreate($song_info));
                 }
@@ -93,8 +98,6 @@ class Media extends SyncAbstract
                 $this->em->clear(Entity\StationMedia::class);
                 $this->em->clear(Entity\StationMediaArt::class);
                 $this->em->clear(Entity\Song::class);
-
-                $this->_logMemoryUsage();
             }
 
             ++$i;
@@ -105,8 +108,6 @@ class Media extends SyncAbstract
         $this->em->clear(Entity\StationMediaArt::class);
         $this->em->clear(Entity\Song::class);
 
-        $this->_logMemoryUsage();
-
         // Create files that do not currently exist.
         $i = 0;
 
@@ -115,7 +116,7 @@ class Media extends SyncAbstract
 
             $song_info = $media_row->loadFromFile();
             if (is_array($song_info)) {
-                Debug::log('Adding media: '.$song_info['artist'].' - '.$song_info['title']);
+                $this->logger->debug('Adding media: '.$song_info['artist'].' - '.$song_info['title']);
 
                 $media_row->setSong($song_repo->getOrCreate($song_info));
             }
@@ -127,8 +128,6 @@ class Media extends SyncAbstract
                 $this->em->clear(Entity\StationMedia::class);
                 $this->em->clear(Entity\StationMediaArt::class);
                 $this->em->clear(Entity\Song::class);
-
-                $this->_logMemoryUsage();
             }
 
             ++$i;
@@ -138,8 +137,6 @@ class Media extends SyncAbstract
         $this->em->clear(Entity\StationMedia::class);
         $this->em->clear(Entity\StationMediaArt::class);
         $this->em->clear(Entity\Song::class);
-
-        $this->_logMemoryUsage();
     }
 
     public function importPlaylists(Entity\Station $station)

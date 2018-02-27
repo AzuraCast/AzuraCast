@@ -28,9 +28,6 @@ class Curl
         ];
         $c_opts = array_merge($c_defaults, $c_opts);
 
-        Debug::log('cURL Outgoing Request: ' . $c_opts['url']);
-        Debug::startTimer('Make cURL Request');
-
         $postfields = false;
         if (!empty($c_opts['params'])) {
             if (strtoupper($c_opts['method']) == 'POST') {
@@ -80,8 +77,6 @@ class Curl
         $return_raw = self::curl_exec_utf8($curl);
         // End cURL request.
 
-        Debug::endTimer('Make cURL Request');
-
         // Log more detailed information to screen about resolution times.
         $conn_info = curl_getinfo($curl);
 
@@ -101,12 +96,7 @@ class Curl
             $debug_conn_info[$conn_param] = $conn_info[$conn_param];
         }
 
-        Debug::print_r($debug_conn_info);
-
         $error = curl_error($curl);
-        if ($error) {
-            Debug::log("Curl error: " . $error);
-        }
 
         return trim($return_raw);
     }

@@ -3,6 +3,7 @@ namespace AzuraCast\Webhook\Connector;
 
 use Entity;
 use GuzzleHttp\Exception\TransferException;
+use Monolog\Logger;
 
 /*
  * https://discordapp.com/developers/docs/resources/webhook#execute-webhook
@@ -69,7 +70,7 @@ class Discord extends AbstractConnector
         $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
 
         if (empty($webhook_url)) {
-            \App\Debug::log('Webhook is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook '.get_called_class().' is missing necessary configuration. Skipping...');
             return;
         }
 
@@ -118,7 +119,7 @@ class Discord extends AbstractConnector
         ];
 
         // Dispatch webhook
-        \App\Debug::log('Dispatching Discord webhook...');
+        $this->logger->debug('Dispatching Discord webhook...');
 
         $client = new \GuzzleHttp\Client([
             'http_errors' => false,
@@ -133,11 +134,13 @@ class Discord extends AbstractConnector
                 'json' => $webhook_body,
             ]);
 
-            \App\Debug::log(sprintf('Discord returned code %d', $response->getStatusCode()));
-            \App\Debug::print_r(json_encode($webhook_body));
-            \App\Debug::print_r($response->getBody()->getContents());
+            $this->logger->addRecord(
+                ($response->getStatusCode() !== 204 ? Logger::ERROR : Logger::DEBUG),
+                sprintf('Discord returned code %d', $response->getStatusCode()),
+                ['message_sent' => $webhook_body, 'response_body' => $response->getBody()->getContents()]
+            );
         } catch(TransferException $e) {
-            \App\Debug::log(sprintf('Error from Discord (%d): %s', $e->getCode(), $e->getMessage()));
+            $this->logger->error(sprintf('Error from Discord (%d): %s', $e->getCode(), $e->getMessage()));
         }
     }
 }

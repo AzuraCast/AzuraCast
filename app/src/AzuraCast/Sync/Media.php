@@ -11,16 +11,12 @@ class Media extends SyncAbstract
     /** @var EntityManager */
     protected $em;
 
-    /** @var Logger */
-    protected $logger;
-
     /**
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em, Logger $logger)
+    public function __construct(EntityManager $em)
     {
         $this->em = $em;
-        $this->logger = $logger;
     }
 
     public function run()
@@ -28,7 +24,6 @@ class Media extends SyncAbstract
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
         foreach ($stations as $station) {
-            $this->logger->info('Reprocessing media for station: '.$station->getName());
             $this->importMusic($station);
         }
     }
@@ -78,8 +73,6 @@ class Media extends SyncAbstract
                 $song_info = $media_row->loadFromFile($force_reprocess);
 
                 if (is_array($song_info)) {
-                    $this->logger->debug('Reprocessing media: '.$song_info['artist'].' - '.$song_info['title']);
-
                     $media_row->setSong($song_repo->getOrCreate($song_info));
                 }
 
@@ -116,8 +109,6 @@ class Media extends SyncAbstract
 
             $song_info = $media_row->loadFromFile();
             if (is_array($song_info)) {
-                $this->logger->debug('Adding media: '.$song_info['artist'].' - '.$song_info['title']);
-
                 $media_row->setSong($song_repo->getOrCreate($song_info));
             }
 

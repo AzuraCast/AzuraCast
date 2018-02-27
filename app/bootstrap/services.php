@@ -417,8 +417,7 @@ return function (\Slim\Container $di, $settings) {
 
     $di[\AzuraCast\Sync\Media::class] = function($di) {
         return new \AzuraCast\Sync\Media(
-            $di[\Doctrine\ORM\EntityManager::class],
-            $di[\Monolog\Logger::class]
+            $di[\Doctrine\ORM\EntityManager::class]
         );
     };
 

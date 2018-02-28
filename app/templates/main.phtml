@@ -74,7 +74,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                 <?=$this->fetch('partials/radio_controls') ?>
 
                 <li class="dropdown">
-                    <a data-toggle="dropdown" href=""><i class="him-icon zmdi zmdi-more-vert"></i></a>
+                    <a data-toggle="dropdown" href="" aria-label="menu" title="<?=_('Menu') ?>"><i class="him-icon zmdi zmdi-more-vert"></i></a>
                     <ul class="dropdown-menu dm-icon pull-right">
                         <li><a href="<?=$url->named('home') ?>"><i class="zmdi zmdi-home"></i> <?=_('Dashboard') ?></a></li>
                         <?php if ($acl->userAllowed($user, 'view administration')): ?>

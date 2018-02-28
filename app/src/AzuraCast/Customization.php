@@ -184,7 +184,7 @@ class Customization
     }
 
     /**
-     * Return the administrator-supplied custom CSS for public (minimal layout) pages, if specified.
+     * Return the administrator-supplied custom JS for public (minimal layout) pages, if specified.
      *
      * @return string
      */

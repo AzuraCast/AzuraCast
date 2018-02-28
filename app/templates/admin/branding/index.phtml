@@ -16,6 +16,12 @@ $assets
             });
         });
 
+        $('textarea.js-editor').each(function() {
+            CodeMirror.fromTextArea($(this)[0], {
+                lineNumbers: true,
+                theme: '<?=(($customization->getTheme() === 'light') ? 'default' : 'material') ?>'
+            });
+        });
     });
 </script>
 

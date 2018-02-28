@@ -682,7 +682,7 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/rename.conf.php:18
 #: /var/azuracast/www/app/config/forms/song.conf.php:47
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:61
-#: /var/azuracast/www/app/config/forms/branding.conf.php:56
+#: /var/azuracast/www/app/config/forms/branding.conf.php:66
 #: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:49
 #: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:95
 #: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:115
@@ -1779,10 +1779,18 @@ msgid "This CSS will be applied to the station public pages and login page."
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/branding.conf.php:43
-msgid "Custom CSS for Internal Pages"
+msgid "Custom CSS for Public Pages"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/branding.conf.php:44
+msgid "This CSS will be applied to the station public pages and login page."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/branding.conf.php:53
+msgid "Custom CSS for Internal Pages"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/branding.conf.php:54
 msgid "This CSS will be applied to the main management pages, like this one."
 msgstr ""
 

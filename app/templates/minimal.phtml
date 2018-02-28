@@ -66,5 +66,8 @@ $assets
         });
     </script>
 <?php endif; ?>
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
+<?=$customization->getCustomPublicJs() ?>
+</script>
 </body>
 </html>

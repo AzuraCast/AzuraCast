@@ -37,6 +37,16 @@ return [
             ]
         ],
 
+        'custom_js_public' => [
+            'textarea',
+            [
+                'label' => _('Custom JS for Public Pages'),
+                'description' => _('This javascript code will be applied to the station public pages and login page.'),
+                'class' => 'js-editor',
+                'filter' => function($val) { return strip_tags($val); }
+            ]
+        ],
+
         'custom_css_internal' => [
             'textarea',
             [

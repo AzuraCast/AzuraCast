@@ -184,6 +184,16 @@ class Customization
     }
 
     /**
+     * Return the administrator-supplied custom CSS for public (minimal layout) pages, if specified.
+     *
+     * @return string
+     */
+    public function getCustomPublicJs()
+    {
+        return (string)$this->settings_repo->getSetting('custom_js_public', '');
+    }
+
+    /**
      * Return the administrator-supplied custom CSS for internal (full layout) pages, if specified.
      *
      * @return string

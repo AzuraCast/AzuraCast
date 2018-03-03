@@ -57,7 +57,7 @@ return [
             ],
             'js' => [
                 [
-                    'src' => 'bower_components/bootstrap/dist/js/bootstrap.min.js',
+                    'src' => 'vendor/bootstrap/dist/js/bootstrap.min.js',
                 ],
             ]
         ],

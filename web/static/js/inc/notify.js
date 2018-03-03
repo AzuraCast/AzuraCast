@@ -10,6 +10,7 @@ function notify(message, type, minimal_layout) {
             align: 'right'
         },
         delay: 10000,
+        z_index: 8,
         animate: {
             enter: 'animated fadeIn',
             exit: 'animated fadeOut'

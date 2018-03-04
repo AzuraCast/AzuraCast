@@ -142,6 +142,9 @@ class Liquidsoap extends BackendAbstract
                 $playlist_weights[] = $playlist->getWeight();
                 $playlist_vars[] = $playlist_var_name;
             }
+            if ($playlist->getType() === 'custom') {
+                $ls_config[] = 'ignore('.$playlist_var_name.')';
+            }
         }
 
         $ls_config[] = '';

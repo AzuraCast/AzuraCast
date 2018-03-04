@@ -31,7 +31,7 @@ $(function() {
         is_playing = true;
 
         $('.jp-unmute').hide();
-        $('#radio-player-controls').addClass('jp-state-playing');
+        $('#radio-player-controls,#radio-embedded-controls').addClass('jp-state-playing');
 
         var volume_percent = Math.round($player.volume * 100);
         $('.jp-volume-bar-value').css('width', volume_percent+'%');
@@ -40,7 +40,7 @@ $(function() {
 
     $player.on('ended', function(e) {
 
-        $('#radio-player-controls').removeClass('jp-state-playing');
+        $('#radio-player-controls,#radio-embedded-controls').removeClass('jp-state-playing');
 
     });
 
@@ -78,6 +78,9 @@ $(function() {
 
         setVolume(x/w);
     });
+
+    // Handle autoplay.
+    $('.btn-audio[data-autoplay="true"]:first').click();
 
 });
 

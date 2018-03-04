@@ -212,4 +212,14 @@ class Customization
     {
         return (bool)$this->settings_repo->getSetting('hide_product_name', false);
     }
+
+    /**
+     * Return whether to show or hide album art on public pages.
+     *
+     * @return bool
+     */
+    public function hideAlbumArt(): bool
+    {
+        return (bool)$this->settings_repo->getSetting('hide_album_art', false);
+    }
 }

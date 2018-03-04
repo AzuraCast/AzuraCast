@@ -14,6 +14,19 @@ return [
             ]
         ],
 
+        'hide_album_art' => [
+            'radio',
+            [
+                'label' => _('Hide Album Art on Public Pages'),
+                'description' => _('If selected, album art will not display on public-facing radio pages.'),
+                'default' => 0,
+                'options' => [
+                    0 => _('No'),
+                    1 => _('Yes'),
+                ],
+            ]
+        ],
+
         'hide_product_name' => [
             'radio',
             [

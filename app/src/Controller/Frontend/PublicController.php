@@ -9,14 +9,16 @@ use App\Http\Response;
 
 class PublicController
 {
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response, $station_id = null, $autoplay = false): Response
     {
-        return $this->_getPublicPage($request, $response, 'frontend/public/index');
+        $template_vars = ['autoplay' => ($autoplay === 'autoplay')];
+        return $this->_getPublicPage($request, $response, 'frontend/public/index', $template_vars);
     }
 
-    public function embedAction(Request $request, Response $response): Response
+    public function embedAction(Request $request, Response $response, $station_id = null, $autoplay = false): Response
     {
-        return $this->_getPublicPage($request, $response, 'frontend/public/embed');
+        $template_vars = ['autoplay' => ($autoplay === 'autoplay')];
+        return $this->_getPublicPage($request, $response, 'frontend/public/embed', $template_vars);
     }
 
     public function embedrequestsAction(Request $request, Response $response): Response
@@ -24,7 +26,7 @@ class PublicController
         return $this->_getPublicPage($request, $response, 'frontend/public/embedrequests');
     }
 
-    protected function _getPublicPage(Request $request, Response $response, $template_name)
+    protected function _getPublicPage(Request $request, Response $response, $template_name, $template_vars = [])
     {
         // Override system-wide iframe refusal
         $response = $response->withoutHeader('X-Frame-Options');
@@ -42,7 +44,7 @@ class PublicController
         /** @var View $view */
         $view = $request->getAttribute('view');
 
-        return $view->renderToResponse($response, $template_name, [
+        return $view->renderToResponse($response, $template_name, $template_vars + [
             'station' => $station,
             'stream_url' => $frontend_adapter->getStreamUrl(),
         ]);

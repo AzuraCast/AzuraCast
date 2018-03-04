@@ -243,10 +243,10 @@ return function(\Slim\App $app) {
 
     $app->group('/public/{station}', function () {
 
-        $this->get('', Controller\Frontend\PublicController::class.':indexAction')
+        $this->get('[/{autoplay}]', Controller\Frontend\PublicController::class.':indexAction')
             ->setName('public:index');
 
-        $this->get('/embed', Controller\Frontend\PublicController::class.':embedAction')
+        $this->get('/embed[/{autoplay}]', Controller\Frontend\PublicController::class.':embedAction')
             ->setName('public:embed');
 
         $this->get('/embed-requests', Controller\Frontend\PublicController::class.':embedrequestsAction')

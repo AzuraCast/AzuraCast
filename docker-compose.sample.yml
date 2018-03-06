@@ -3,6 +3,9 @@ version: '2'
 services:
   web:
     image: azuracast/azuracast_web:latest
+    # Uncomment the lines below to build this image locally (Developer option)
+    # build:
+    #   context: ../docker-azuracast-web
     depends_on:
       - mariadb
       - influxdb
@@ -18,12 +21,17 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     volumes:
       - www_data:/var/azuracast/www
+      # For development, comment the line above and uncomment the line below.
+      # - - .:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
     restart: always
 
   nginx:
     image: azuracast/azuracast_nginx:latest
+    # Uncomment the lines below to build this image locally (Developer option)
+    # build:
+    #   context: ../docker-azuracast-nginx
     ports:
       - '80:80'
       - '443:443'
@@ -47,6 +55,9 @@ services:
 
   mariadb:
     image: mariadb:latest
+    # Uncomment to expose MariaDB to the host computer (for testing only!)
+    # ports:
+    #  - "127.0.0.1:3306:3306"
     volumes:
       - db_data:/var/lib/mysql
     environment:
@@ -61,6 +72,9 @@ services:
 
   redis:
     image: redis:alpine
+    # Uncomment to expose Redis to the host computer (for testing only!)
+    # ports:
+    #  - "127.0.0.1:6379:6379"
     restart: always
 
   cron:
@@ -96,7 +110,13 @@ services:
   stations:
     container_name: azuracast_stations
     image: azuracast/azuracast_stations:latest
+    # Enable the lines below to build the image locally (Developer option)
+    # build:
+    #   context: ../docker-azuracast-stations
     ports:
+    # Uncomment the line below to expose the full range of available station ports.
+    # Note: This is not recommended currently due to performance and memory usage problems with Docker.
+    # - '8000-8500:8000-8500'
      - '8000:8000'
      - '8005:8005'
      - '8006:8006'
@@ -131,6 +151,19 @@ services:
      - station_data:/var/azuracast/stations
      - nginx_letsencrypt_certs:/etc/nginx/ssl:ro
     restart: always
+
+  # Developer Mode services
+  # static:
+  #    build:
+  #      context: ./util/docker/static
+  #    volumes:
+  #      - ./web/static:/data
+  #
+  # chronograf:
+  #  image: chronograf:alpine
+  #  ports:
+  #   - "8888:8888"
+  #  command: "chronograf --influxdb-url=http://influxdb:8086"
 
 volumes:
   nginx_letsencrypt_certs: {}

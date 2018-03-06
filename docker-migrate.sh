@@ -9,6 +9,10 @@ fi
 chmod a+x update.sh
 ./update.sh
 
+if [ ! -f ./docker-compose.yml ]; then
+    cp ./docker-compose.sample.yml ./docker-compose.yml
+fi
+
 # Dump MySQL data into fixtures folder
 MYSQL_USERNAME=`awk -F "=" '/db_username/ {print $2}' app/env.ini | tr -d ' '`
 MYSQL_PASSWORD=`awk -F "=" '/db_password/ {print $2}' app/env.ini | tr -d ' '`

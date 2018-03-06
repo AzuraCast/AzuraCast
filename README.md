@@ -84,7 +84,7 @@ Choose where on the host computer you would like AzuraCast's configuration file 
 Inside that directory, run this command to pull the Docker Compose configuration file.
 
 ```bash
-curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.yml > docker-compose.yml
+curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml > docker-compose.yml
 ```
 
 #### Step 3: Run the AzuraCast Docker Installer

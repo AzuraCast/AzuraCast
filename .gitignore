@@ -25,5 +25,6 @@ app/.env
 /util/ansible/update.retry
 tests/_output/*
 
-# Docker backup files
+# Docker files
+/docker-compose.yml
 /*.tar.gz

@@ -84,7 +84,7 @@ class Liquidsoap extends BackendAbstract
         ];
 
         // Clear out existing playlists directory.
-        $current_playlists = array_diff(scandir($playlist_path), ['..', '.']);
+        $current_playlists = array_diff(scandir($playlist_path, SCANDIR_SORT_NONE), ['..', '.']);
         foreach ($current_playlists as $list) {
             @unlink($playlist_path . '/' . $list);
         }

@@ -1,7 +1,6 @@
 <?php
 namespace AzuraCast\Radio\Frontend;
 
-use App\Debug;
 use App\Service\Curl;
 use fXmlRpc\Exception\FaultException;
 use Doctrine\ORM\EntityManager;

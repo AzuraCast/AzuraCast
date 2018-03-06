@@ -378,25 +378,25 @@ return function (\Slim\Container $di, $settings) {
         );
     };
 
-    $di[Azuracast\Radio\Backend\Liquidsoap::class] = function($di) {
+    $di[Azuracast\Radio\Backend\Liquidsoap::class] = $di->factory(function($di) {
         return new \AzuraCast\Radio\Backend\Liquidsoap($di);
-    };
+    });
 
-    $di[AzuraCast\Radio\Backend\None::class] = function($di) {
+    $di[AzuraCast\Radio\Backend\None::class] = $di->factory(function($di) {
         return new \AzuraCast\Radio\Backend\None($di);
-    };
+    });
 
-    $di[\AzuraCast\Radio\Frontend\Icecast::class] = function($di) {
+    $di[\AzuraCast\Radio\Frontend\Icecast::class] = $di->factory(function($di) {
         return new \AzuraCast\Radio\Frontend\Icecast($di);
-    };
+    });
 
-    $di[\AzuraCast\Radio\Frontend\Remote::class] = function($di) {
+    $di[\AzuraCast\Radio\Frontend\Remote::class] = $di->factory(function($di) {
         return new \AzuraCast\Radio\Frontend\Remote($di);
-    };
+    });
 
-    $di[\AzuraCast\Radio\Frontend\SHOUTcast::class] = function($di) {
+    $di[\AzuraCast\Radio\Frontend\SHOUTcast::class] = $di->factory(function($di) {
         return new \AzuraCast\Radio\Frontend\SHOUTcast($di);
-    };
+    });
 
     $di[\AzuraCast\Sync::class] = function ($di) {
         return new \AzuraCast\Sync($di);

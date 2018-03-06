@@ -1,8 +1,6 @@
 <?php
 namespace AzuraCast\Radio\Frontend;
 
-use App\Debug;
-
 class Remote extends FrontendAbstract
 {
     protected $supports_mounts = true;

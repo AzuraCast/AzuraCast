@@ -1,7 +1,6 @@
 <?php
 namespace AzuraCast\Radio\Frontend;
 
-use App\Debug;
 use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use Entity;

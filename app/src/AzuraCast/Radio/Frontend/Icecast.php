@@ -59,6 +59,11 @@ class Icecast extends FrontendAbstract
         /** @var Entity\StationMount $default_mount */
         $default_mount = $mount_repo->getDefaultMount($this->station);
 
+        if (!($default_mount instanceof Entity\StationMount)) {
+            $this->logger->error('Station does not have a default mount configured.', ['station' => ['id' => $this->station->getId(), 'name' => $this->station->getName()]]);
+            return false;
+        }
+
         $current_listeners = 0;
         $unique_listeners = [];
         $clients = [];

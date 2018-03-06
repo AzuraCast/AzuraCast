@@ -49,6 +49,11 @@ class SHOUTcast extends FrontendAbstract
         /** @var Entity\StationMount $default_mount */
         $default_mount = $mount_repo->getDefaultMount($this->station);
 
+        if (!($default_mount instanceof Entity\StationMount)) {
+            $this->logger->error('Station does not have a default mount configured.', ['station' => ['id' => $this->station->getId(), 'name' => $this->station->getName()]]);
+            return false;
+        }
+
         foreach($current_data['streams'] as $stream) {
             if ($stream['streampath'] === $default_mount->getName()) {
                 $song_data = $stream;

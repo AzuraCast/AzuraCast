@@ -2,11 +2,24 @@
 namespace AzuraCast\Radio\Frontend;
 
 use App\Service\Curl;
-use fXmlRpc\Exception\FaultException;
+use App\Url;
 use Doctrine\ORM\EntityManager;
+use fXmlRpc\Exception\FaultException;
+use Monolog\Logger;
+use Supervisor\Supervisor;
 
 abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 {
+    /** @var Url */
+    protected $url;
+
+    public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger, Url $url)
+    {
+        parent::__construct($em, $supervisor, $logger);
+
+        $this->url = $url;
+    }
+
     /** @var bool Whether the station supports multiple mount points per station */
     protected $supports_mounts = true;
 
@@ -96,10 +109,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
     public function getStreamUrl()
     {
-        /** @var EntityManager */
-        $em = $this->di[EntityManager::class];
-
-        $mount_repo = $em->getRepository(\Entity\StationMount::class);
+        $mount_repo = $this->em->getRepository(\Entity\StationMount::class);
         $default_mount = $mount_repo->getDefaultMount($this->station);
 
         return $this->getUrlForMount($default_mount);
@@ -129,9 +139,9 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         $fe_config = (array)$this->station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
-        $settings_repo = $this->di[EntityManager::class]->getRepository('Entity\Settings');
+        $settings_repo = $this->em->getRepository('Entity\Settings');
 
-        $base_url = $this->di[\App\Url::class]->getBaseUrl();
+        $base_url = $this->url->getBaseUrl();
         $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
 
         if ( $use_radio_proxy

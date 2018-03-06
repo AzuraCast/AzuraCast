@@ -42,8 +42,7 @@ class SHOUTcast extends FrontendAbstract
         $u_list = 0;
         $t_list = 0;
 
-        $em = $this->di[EntityManager::class];
-        $mount_repo = $em->getRepository(Entity\StationMount::class);
+        $mount_repo = $this->em->getRepository(Entity\StationMount::class);
 
         /** @var Entity\StationMount $default_mount */
         $default_mount = $mount_repo->getDefaultMount($this->station);
@@ -157,10 +156,8 @@ class SHOUTcast extends FrontendAbstract
         // Set any unset values back to the DB config.
         $this->station->setFrontendConfig($this->_loadFromConfig($config));
 
-        /** @var EntityManager $em */
-        $em = $this->di[EntityManager::class];
-        $em->persist($this->station);
-        $em->flush();
+        $this->em->persist($this->station);
+        $this->em->flush();
 
         $config_path = $this->station->getRadioConfigDir();
         $sc_path = $config_path . '/sc_serv.conf';

@@ -379,23 +379,46 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[Azuracast\Radio\Backend\Liquidsoap::class] = $di->factory(function($di) {
-        return new \AzuraCast\Radio\Backend\Liquidsoap($di);
+        return new \AzuraCast\Radio\Backend\Liquidsoap(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\Supervisor\Supervisor::class],
+            $di[\Monolog\Logger::class]
+        );
     });
 
     $di[AzuraCast\Radio\Backend\None::class] = $di->factory(function($di) {
-        return new \AzuraCast\Radio\Backend\None($di);
+        return new \AzuraCast\Radio\Backend\None(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\Supervisor\Supervisor::class],
+            $di[\Monolog\Logger::class]
+        );
     });
 
     $di[\AzuraCast\Radio\Frontend\Icecast::class] = $di->factory(function($di) {
-        return new \AzuraCast\Radio\Frontend\Icecast($di);
+        return new \AzuraCast\Radio\Frontend\Icecast(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\Supervisor\Supervisor::class],
+            $di[\Monolog\Logger::class],
+            $di[\App\Url::class]
+        );
     });
 
     $di[\AzuraCast\Radio\Frontend\Remote::class] = $di->factory(function($di) {
-        return new \AzuraCast\Radio\Frontend\Remote($di);
+        return new \AzuraCast\Radio\Frontend\Remote(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\Supervisor\Supervisor::class],
+            $di[\Monolog\Logger::class],
+            $di[\App\Url::class]
+        );
     });
 
     $di[\AzuraCast\Radio\Frontend\SHOUTcast::class] = $di->factory(function($di) {
-        return new \AzuraCast\Radio\Frontend\SHOUTcast($di);
+        return new \AzuraCast\Radio\Frontend\SHOUTcast(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\Supervisor\Supervisor::class],
+            $di[\Monolog\Logger::class],
+            $di[\App\Url::class]
+        );
     });
 
     $di[\AzuraCast\Sync::class] = function ($di) {

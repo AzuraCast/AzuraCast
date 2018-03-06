@@ -1,36 +1,38 @@
 <?php
 namespace AzuraCast\Radio;
 
+use Doctrine\ORM\EntityManager;
 use Entity\Station;
 use fXmlRpc\Exception\FaultException;
-use Interop\Container\ContainerInterface;
 use Monolog\Logger;
-use Slim\Container;
 use Supervisor\Process;
+use Supervisor\Supervisor;
 
 abstract class AdapterAbstract
 {
-    /** @var Container */
-    protected $di;
+    /** @var EntityManager */
+    protected $em;
 
-    /** @var Station */
-    protected $station;
-
-    /** @var \Supervisor\Supervisor */
+    /** @var Supervisor */
     protected $supervisor;
 
     /** @var Logger */
     protected $logger;
 
+    /** @var Station */
+    protected $station;
+
     /**
      * AdapterAbstract constructor.
-     * @param Container $di
+     * @param EntityManager $em
+     * @param Supervisor $supervisor
+     * @param Logger $logger
      */
-    public function __construct(Container $di)
+    public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger)
     {
-        $this->di = $di;
-        $this->supervisor = $di[\Supervisor\Supervisor::class];
-        $this->logger = $di[Logger::class];
+        $this->em = $em;
+        $this->supervisor = $supervisor;
+        $this->logger = $logger;
     }
 
     /**

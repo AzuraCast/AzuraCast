@@ -117,9 +117,8 @@ class Liquidsoap extends BackendAbstract
             $default_playlist->setName('default');
 
             /** @var EntityManager $em */
-            $em = $this->di[EntityManager::class];
-            $em->persist($default_playlist);
-            $em->flush();
+            $this->em->persist($default_playlist);
+            $this->em->flush();
 
             $playlist_objects[] = $default_playlist;
         }
@@ -327,7 +326,7 @@ class Liquidsoap extends BackendAbstract
         if (APP_INSIDE_DOCKER) {
             $base_url = 'http://nginx';
         } else {
-            $settings_repo = $this->di[EntityManager::class]->getRepository('Entity\Settings');
+            $settings_repo = $this->em->getRepository('Entity\Settings');
             $system_base_url = $settings_repo->getSetting('base_url', 'localhost');
 
             $system_url_port = parse_url($system_base_url, PHP_URL_PORT);

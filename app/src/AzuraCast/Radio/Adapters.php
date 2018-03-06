@@ -33,12 +33,7 @@ class Adapters
         $class_name = $adapters['adapters'][$frontend_type]['class'];
 
         /** @var Frontend\FrontendAbstract $adapter */
-        if ($this->di->has($class_name)) {
-            $adapter = $this->di[$class_name];
-        } else {
-            $adapter = new $class_name($this->di);
-        }
-
+        $adapter = $this->di[$class_name];
         $adapter->setStation($station);
         return $adapter;
     }
@@ -60,12 +55,7 @@ class Adapters
         $class_name = $adapters['adapters'][$backend_type]['class'];
 
         /** @var Backend\BackendAbstract $adapter */
-        if ($this->di->has($class_name)) {
-            $adapter = $this->di[$class_name];
-        } else {
-            $adapter = new $class_name($this->di);
-        }
-
+        $adapter = $this->di[$class_name];
         $adapter->setStation($station);
         return $adapter;
     }

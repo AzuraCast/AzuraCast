@@ -22,7 +22,7 @@ services:
     volumes:
       - www_data:/var/azuracast/www
       # For development, comment the line above and uncomment the line below.
-      # - - .:/var/azuracast/www
+      # - .:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
     restart: always
@@ -40,6 +40,8 @@ services:
       - stations
     volumes:
       - www_data:/var/azuracast/www
+      # For development, comment the line above and uncomment the line below.
+      # - .:/var/azuracast/www
       - nginx_letsencrypt_certs:/etc/nginx/ssl
       - nginx_letsencrypt_www:/var/www/letsencrypt
     restart: always
@@ -89,7 +91,7 @@ services:
       - redis
     environment:
       << : *default-environment
-    command: 'cron && tail -f /var/log/cron.log'
+    command: 'cron'
     restart: always
 
   cli:

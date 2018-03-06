@@ -366,7 +366,7 @@ return function (\Slim\Container $di, $settings) {
         return new \AzuraCast\RateLimit($redis);
     };
 
-    $di[AzuraCast\Radio\Adapters::class] = function($di) {
+    $di[\AzuraCast\Radio\Adapters::class] = function($di) {
         return new AzuraCast\Radio\Adapters($di);
     };
 
@@ -378,7 +378,7 @@ return function (\Slim\Container $di, $settings) {
         );
     };
 
-    $di[Azuracast\Radio\Backend\Liquidsoap::class] = $di->factory(function($di) {
+    $di[\AzuraCast\Radio\Backend\Liquidsoap::class] = $di->factory(function($di) {
         return new \AzuraCast\Radio\Backend\Liquidsoap(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\Supervisor\Supervisor::class],
@@ -386,7 +386,7 @@ return function (\Slim\Container $di, $settings) {
         );
     });
 
-    $di[AzuraCast\Radio\Backend\None::class] = $di->factory(function($di) {
+    $di[\AzuraCast\Radio\Backend\None::class] = $di->factory(function($di) {
         return new \AzuraCast\Radio\Backend\None(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\Supervisor\Supervisor::class],

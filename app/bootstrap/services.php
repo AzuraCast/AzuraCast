@@ -462,7 +462,7 @@ return function (\Slim\Container $di, $settings) {
         );
     };
 
-    $di[AzuraCast\Webhook\Dispatcher::class] = function($di) {
+    $di[\AzuraCast\Webhook\Dispatcher::class] = function($di) {
         return new \AzuraCast\Webhook\Dispatcher(
             $di[\Monolog\Logger::class],
             [

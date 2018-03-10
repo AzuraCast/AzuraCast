@@ -102,9 +102,7 @@ class SHOUTcast extends FrontendAbstract
     public function read()
     {
         $config = $this->_getConfig();
-
-        $this->station->setFrontendConfig($this->_loadFromConfig($config));
-
+        $this->station->setFrontendConfigDefaults($this->_loadFromConfig($config));
         return true;
     }
 

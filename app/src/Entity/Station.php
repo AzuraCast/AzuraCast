@@ -328,6 +328,24 @@ class Station
     }
 
     /**
+     * Set frontend configuration but do not overwrite existing values.
+     *
+     * @param $default_config
+     */
+    public function setFrontendConfigDefaults($default_config)
+    {
+        $frontend_config = (array)$this->frontend_config;
+
+        foreach($default_config as $config_key => $config_value) {
+            if (empty($frontend_config[$config_key])) {
+                $frontend_config[$config_key] = $config_value;
+            }
+        }
+
+        $this->frontend_config = $frontend_config;
+    }
+
+    /**
      * @return null|string
      */
     public function getBackendType(): ?string

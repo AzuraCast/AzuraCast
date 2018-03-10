@@ -111,12 +111,13 @@ class Discord extends AbstractConnector
             ];
         }
 
-        $webhook_body = [
-            'content' => $vars['content'] ?? '',
-            'embeds' => [
-                $embed
-            ]
-        ];
+        $webhook_body = [];
+        $webhook_body['content'] = $vars['content'] ?? '';
+
+        // Don't include an embed if all relevant fields are empty.
+        if (count($embed) > 1) {
+            $webhook_body['embeds'] = [$embed];
+        }
 
         // Dispatch webhook
         $this->logger->debug('Dispatching Discord webhook...');

@@ -56,7 +56,7 @@ services:
       - nginx_letsencrypt_www:/var/www/letsencrypt
 
   mariadb:
-    image: mariadb:latest
+    image: mariadb:10.2
     # Uncomment to expose MariaDB to the host computer (for testing only!)
     # ports:
     #  - "127.0.0.1:3306:3306"
@@ -67,13 +67,13 @@ services:
     restart: always
 
   influxdb:
-    image: influxdb:alpine
+    image: influxdb:1.4-alpine
     volumes:
       - influx_data:/var/lib/influxdb
     restart: always
 
   redis:
-    image: redis:alpine
+    image: redis:4.0-alpine
     # Uncomment to expose Redis to the host computer (for testing only!)
     # ports:
     #  - "127.0.0.1:6379:6379"

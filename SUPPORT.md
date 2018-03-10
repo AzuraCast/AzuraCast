@@ -88,3 +88,54 @@ all components, which can often fix any issues:
 ```bash
 ./update.sh --full
 ```
+
+### Use Non-standard Ports
+
+You may want to serve the AzuraCast web application itself on a different port, or host your radio station on a port that 
+isn't within the default range AzuraCast serves (8000-8999).
+
+#### Docker
+
+The way ports map from Docker containers to your outside server is controlled entirely by the `docker-compose.yml` file.
+
+In the Docker Compose style, ports are listed as `outside-ip:outside-port:inside-port`. If the outside IP address isn't 
+specified, it listens on all IPs, and if only one port is specified, it maps the same port both inside and outside the
+container.
+
+To edit the ports the AzuraCast web application uses, open your local `docker-compose.yml` and find the `nginx` service.
+You'll see the following two lines in the `ports` section:
+
+```yaml
+    ports:
+      - '80:80'
+      - '443:443'
+```
+
+To change the port, only modify the first number in the pair. For example, to route HTTP traffic to port 7000, this line 
+should read ` - '7000:80'`. To change where HTTPS traffic routes, update the line for port 443.
+
+When using non-standard radio station ports, you have a number of options available to you:
+
+- If you're only broadcasting and not accepting streamers or DJs, you can rely on the web proxy feature built in to
+AzuraCast, which will route your radio traffic through the main web site's port. This feature can be enabled from the
+`Site Settings` page.
+
+- You can add just the ports you want to use to the `docker-compose.yml` file. In this file, under the `stations` service,
+you will find a `ports` subsection with a large number of pre-forwarded ports. You can add to this list or replace it with
+your own.
+
+- You can forward the entire range of ports you intend to use using `docker-compose.yml`. Under the `stations` service 
+inside the `ports` subsection, you can replace this entire section with your own custom port range, i.e. ` - '9000-9500:9000-9500'`.
+Note that due to the way Docker is configured, forwarding a port range this large will likely consume a high amount of memory,
+so only use this option if necessary.
+
+#### Traditional
+
+To modify the port your web application runs on, modify the configuration file in `/etc/nginx/sites-available/00-azuracast`.
+Note that some updates may overwrite this file.
+
+You can specify any port in any range for your station to use, provided the port isn't already in use.
+
+By default, AzuraCast installs and enables the ufw (uncomplicated firewall) and sets it to lock down traffic to only SSH 
+and the ports used by AzuraCast. If you're using a nonstandard port, you will likely also want to enable incoming traffic
+on that port using the command `ufw allow PORTNUM`, where `PORTNUM` is the new port number.

@@ -183,7 +183,7 @@ class Icecast extends FrontendAbstract
         }
 
         // Set any unset values back to the DB config.
-        $this->station->setFrontendConfig($this->_loadFromConfig($config));
+        $this->station->setFrontendConfigDefaults($this->_loadFromConfig($config));
 
         $this->em->persist($this->station);
         $this->em->flush();
@@ -245,7 +245,6 @@ class Icecast extends FrontendAbstract
 
         return [
             'custom_config' => $frontend_config['custom_config'],
-            'port' => $config['listen-socket']['port'],
             'source_pw' => $config['authentication']['source-password'],
             'admin_pw' => $config['authentication']['admin-password'],
             'streamer_pw' => $config['mount'][0]['password'],

@@ -11,7 +11,7 @@
 
 **AzuraCast** is a self-hosted, all-in-one web radio management kit. Using its easy installer and powerful but intuitive web interface, you can start up a fully working web radio station in a few quick minutes. 
 
-AzuraCast works for web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. The project is named after Azura Peavielle, the mascot of [its predecessor project](https://github.com/SlvrEagle23/Ponyville-Live).
+AzuraCast works for web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. The project is named after Azura Peavielle, the mascot of [its predecessor project](https://github.com/SlvrEagle23/Ponyville-Live). AzuraCast also has its own project mascot, [Azura Ruisselante](https://github.com/AzuraCast/AzuraCast/wiki/Meet-Azura-Ruisselante) created by the talented artist [Tyson Tan](https://tysontan.deviantart.com/).
 
 **AzuraCast is currently in beta.** Many web radio stations already run AzuraCast, but keeping your server up-to-date with the latest code from the GitHub repository is strongly recommended for security, bug fixes and new feature releases. It's unlikely, but updates may result in unexpected issues or data loss, so always make sure to keep your station's media files backed up in a second location.
 

@@ -74,8 +74,17 @@ will stay running inside the terminal window, so you can easily hit `Ctrl+C` to 
 docker run --rm \
     -v azuracast_station_data:/home/azuracast/stations \
     -p 2222:22 atmoz/sftp:alpine \
-    azuracast:azuracast:::stations
+    azuracast:4zur4c457:::stations
 ```
+
+As long as you leave this script running, it will create a connection that you can access with these credentials:
+
+* **Host:** Your server's host name
+* **Port:** `2222` (Set in the third line)
+* **Username:** `azuracast` (The first part of the last line)
+* **Password:** `4zur4c457` (The second part of the last line) 
+
+If you intend to leave this script running for long term periods, you must change the password to something more secure.
 
 ### Force a Full Update (Traditional Installations)
 

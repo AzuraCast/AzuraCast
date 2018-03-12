@@ -2,6 +2,8 @@
 namespace Controller\Api;
 
 use AzuraCast\Acl\StationAcl;
+use AzuraCast\Radio\Adapters;
+use AzuraCast\Radio\Backend\Liquidsoap;
 use AzuraCast\Sync\NowPlaying;
 use Doctrine\ORM\EntityManager;
 use Entity;
@@ -13,8 +15,8 @@ class InternalController
     /** @var StationAcl */
     protected $acl;
 
-    /** @var EntityManager */
-    protected $em;
+    /** @var Adapters */
+    protected $adapters;
 
     /** @var NowPlaying */
     protected $sync_nowplaying;
@@ -22,13 +24,13 @@ class InternalController
     /**
      * InternalController constructor.
      * @param StationAcl $acl
-     * @param EntityManager $em
+     * @param Adapters $adapters
      * @param NowPlaying $sync_nowplaying
      */
-    public function __construct(StationAcl $acl, EntityManager $em, NowPlaying $sync_nowplaying)
+    public function __construct(StationAcl $acl, Adapters $adapters, NowPlaying $sync_nowplaying)
     {
         $this->acl = $acl;
-        $this->em = $em;
+        $this->adapters = $adapters;
         $this->sync_nowplaying = $sync_nowplaying;
     }
 
@@ -46,34 +48,11 @@ class InternalController
         $user = $request->getParam('dj_user');
         $pass = $request->getParam('dj_password');
 
-        // Allow connections using the exact broadcast source password.
-        $fe_config = (array)$station->getFrontendConfig();
-        if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
-            return $response->write('true');
+        $adapter = $this->adapters->getBackendAdapter($station);
+
+        if ($adapter instanceof Liquidsoap) {
+            return $response->write($adapter->authenticateStreamer($user, $pass));
         }
-
-        // Handle login conditions where the username and password are joined in the password field.
-        if (strpos($pass, ',') !== false) {
-            list($user, $pass) = explode(',', $pass);
-        }
-        if (strpos($pass, ':') !== false) {
-            list($user, $pass) = explode(':', $pass);
-        }
-
-        /** @var Entity\Repository\StationStreamerRepository $streamer_repo */
-        $streamer_repo = $this->em->getRepository(Entity\StationStreamer::class);
-
-        $streamer = $streamer_repo->authenticate($station, $user, $pass);
-
-        if ($streamer instanceof Entity\StationStreamer) {
-            // Successful authentication: update current streamer on station.
-            $station->setCurrentStreamer($streamer);
-            $this->em->persist($station);
-            $this->em->flush();
-
-            return $response->write('true');
-        }
-
         return $response->write('false');
     }
 
@@ -84,25 +63,47 @@ class InternalController
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        if ($station->getBackendType() !== 'liquidsoap') {
-            throw new \App\Exception('Not a LiquidSoap station.');
+        $as_autodj = $request->hasParam('api_auth');
+
+        $adapter = $this->adapters->getBackendAdapter($station);
+
+        if ($adapter instanceof Liquidsoap) {
+            return $response->write($adapter->getNextSong($as_autodj));
         }
 
-        /** @var Entity\Repository\SongHistoryRepository $history_repo */
-        $history_repo = $this->em->getRepository(Entity\SongHistory::class);
+        return $response->write('');
+    }
 
-        /** @var Entity\SongHistory|null $sh */
-        $sh = $history_repo->getNextSongForStation($station, $request->hasParam('api_auth'));
+    public function djonAction(Request $request, Response $response): Response
+    {
+        $this->_checkStationAuth($request);
 
-        if ($sh instanceof Entity\SongHistory) {
-            // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
-            $song_path = $sh->getMedia()->getFullPath();
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
 
-            return $response->write('annotate:' . implode(',', $sh->getMedia()->getAnnotations()) . ':' . $song_path);
+        $adapter = $this->adapters->getBackendAdapter($station);
+
+        if ($adapter instanceof Liquidsoap) {
+            $adapter->toggleLiveStatus(true);
         }
 
-        $error_mp3_path = (APP_INSIDE_DOCKER) ? '/usr/local/share/icecast/web/error.mp3' : APP_INCLUDE_ROOT . '/resources/error.mp3';
-        return $response->write($error_mp3_path);
+        return $response->write('received');
+    }
+
+    public function djoffAction(Request $request, Response $response): Response
+    {
+        $this->_checkStationAuth($request);
+
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
+        $adapter = $this->adapters->getBackendAdapter($station);
+
+        if ($adapter instanceof Liquidsoap) {
+            $adapter->toggleLiveStatus(true);
+        }
+
+        return $response->write('received');
     }
 
     public function notifyAction(Request $request, Response $response): Response
@@ -124,36 +125,6 @@ class InternalController
         return $response->write('received');
     }
 
-    public function djonAction(Request $request, Response $response): Response
-    {
-        $this->_checkStationAuth($request);
-
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        $station->setIsStreamerLive(true);
-
-        $this->em->persist($station);
-        $this->em->flush();
-
-        return $response->write('received');
-    }
-
-    public function djoffAction(Request $request, Response $response): Response
-    {
-        $this->_checkStationAuth($request);
-
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        $station->setIsStreamerLive(false);
-
-        $this->em->persist($station);
-        $this->em->flush();
-
-        return $response->write('received');
-    }
-
     /**
      * @param Request $request
      * @return bool
@@ -171,7 +142,7 @@ class InternalController
             return true;
         }
 
-        $auth_key = $request->geTParam('api_auth');
+        $auth_key = $request->getParam('api_auth');
         if (!$station->validateAdapterApiKey($auth_key)) {
             throw new \App\Exception\PermissionDenied();
         }

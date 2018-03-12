@@ -52,7 +52,7 @@ class Liquidsoap extends BackendAbstract
             '',
             '# AutoDJ Next Song Script',
             'def azuracast_next_song() =',
-            '  uri = get_process_lines("'.$this->_getApiUrlCommand('/api/internal/'.$this->station->getId().'/nextsong').'")',
+            '  uri = get_process_lines("'.$this->_getApiUrlCommand('nextsong').'")',
             '  uri = list.hd(uri, default="")',
             '  log("AzuraCast Raw Response: #{uri}")',
             '  request.create(uri)',
@@ -61,7 +61,7 @@ class Liquidsoap extends BackendAbstract
             '# DJ Authentication',
             'def dj_auth(user,password) =',
             '  log("Authenticating DJ: #{user}")',
-            '  ret = get_process_lines("'.$this->_getApiUrlCommand('/api/internal/'.$this->station->getId().'/auth', ['dj_user' => '#{user}', 'dj_password' => '#{password}']).'")',
+            '  ret = get_process_lines("'.$this->_getApiUrlCommand('auth', ['dj_user' => '#{user}', 'dj_password' => '#{password}']).'")',
             '  ret = list.hd(ret, default="")',
             '  log("AzuraCast DJ Auth Response: #{ret}")',
             '  bool_of_string(ret)',
@@ -72,13 +72,13 @@ class Liquidsoap extends BackendAbstract
             'def live_connected(header) =',
             '  log("DJ Source connected! #{header}")',
             '  live_enabled := true',
-            '  ret = get_process_lines("'.$this->_getApiUrlCommand('/api/internal/'.$this->station->getId().'/djon').'")',
+            '  ret = get_process_lines("'.$this->_getApiUrlCommand('djon').'")',
             'end',
             '',
             'def live_disconnected() =',
             '  log("DJ Source disconnected!")',
             '  live_enabled := false',
-            '  ret = get_process_lines("'.$this->_getApiUrlCommand('/api/internal/'.$this->station->getId().'/djoff').'")',
+            '  ret = get_process_lines("'.$this->_getApiUrlCommand('djoff').'")',
             'end',
             '',
         ];
@@ -320,24 +320,32 @@ class Liquidsoap extends BackendAbstract
      */
     protected function _getApiUrlCommand($endpoint, $params = [])
     {
-        $params = (array)$params;
-        $params['api_auth'] = $this->station->getAdapterApiKey();
+        // Docker cURL-based API URL call with API authentication.
+        if (APP_INSIDE_DOCKER && false) {
+            $params = (array)$params;
+            $params['api_auth'] = $this->station->getAdapterApiKey();
 
-        if (APP_INSIDE_DOCKER) {
-            $base_url = 'http://nginx';
-        } else {
-            $settings_repo = $this->em->getRepository('Entity\Settings');
-            $system_base_url = $settings_repo->getSetting('base_url', 'localhost');
+            $api_url = 'http://nginx/api/internal/'.$this->station->getId().'/'.$endpoint;
+            $curl_request = 'curl -s --request POST --url '.$api_url;
+            foreach($params as $param_key => $param_val) {
+                $curl_request .= ' --form '.$param_key.'='.$param_val;
+            }
 
-            $system_url_port = parse_url($system_base_url, PHP_URL_PORT);
-            $base_url = 'http://localhost:'.($system_url_port ?? 80);
+            return $curl_request;
         }
 
-        $curl_request = 'curl -s --request POST --url '.$base_url.$endpoint;
-        foreach($params as $param_key => $param_val) {
-            $curl_request .= ' --form '.$param_key.'='.$param_val;
+        // Traditional shell-script call.
+        $shell_path = '/usr/bin/php '.APP_INCLUDE_ROOT.'/util/cli.php';
+
+        $shell_args = [];
+        $shell_args[] = 'azuracast:internal:'.$endpoint;
+        $shell_args[] = $this->station->getId();
+
+        foreach((array)$params as $param_key => $param_val) {
+            $shell_args [] = '--'.$param_key.'=\''.$param_val.'\'';
         }
-        return $curl_request;
+
+        return $shell_path.' '.implode(' ', $shell_args);
     }
 
     /**
@@ -526,5 +534,73 @@ class Liquidsoap extends BackendAbstract
             return $legacy_path;
         }
         return false;
+    }
+
+    /*
+     * INTERNAL LIQUIDSOAP COMMANDS
+     */
+
+    public function authenticateStreamer($user, $pass)
+    {
+        // Allow connections using the exact broadcast source password.
+        $fe_config = (array)$this->station->getFrontendConfig();
+        if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
+            return 'true';
+        }
+
+        // Handle login conditions where the username and password are joined in the password field.
+        if (strpos($pass, ',') !== false) {
+            list($user, $pass) = explode(',', $pass);
+        }
+        if (strpos($pass, ':') !== false) {
+            list($user, $pass) = explode(':', $pass);
+        }
+
+        /** @var Entity\Repository\StationStreamerRepository $streamer_repo */
+        $streamer_repo = $this->em->getRepository(Entity\StationStreamer::class);
+
+        $streamer = $streamer_repo->authenticate($this->station, $user, $pass);
+
+        if ($streamer instanceof Entity\StationStreamer) {
+            // Successful authentication: update current streamer on station.
+            $this->station->setCurrentStreamer($streamer);
+            $this->em->persist($this->station);
+            $this->em->flush();
+
+            return 'true';
+        }
+
+        return 'false';
+    }
+
+    public function getNextSong($as_autodj = false)
+    {
+        /** @var Entity\Repository\SongHistoryRepository $history_repo */
+        $history_repo = $this->em->getRepository(Entity\SongHistory::class);
+
+        /** @var Entity\SongHistory|null $sh */
+        $sh = $history_repo->getNextSongForStation($this->station, $as_autodj);
+
+        if ($sh instanceof Entity\SongHistory) {
+            // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
+            $media = $sh->getMedia();
+
+            if ($media instanceof Entity\StationMedia) {
+                $song_path = $media->getFullPath();
+                return 'annotate:' . implode(',', $media->getAnnotations()) . ':' . $song_path;
+            }
+        }
+
+        return (APP_INSIDE_DOCKER)
+            ? '/usr/local/share/icecast/web/error.mp3' :
+            APP_INCLUDE_ROOT . '/resources/error.mp3';
+    }
+
+    public function toggleLiveStatus($is_streamer_live = true)
+    {
+        $this->station->setIsStreamerLive($is_streamer_live);
+
+        $this->em->persist($this->station);
+        $this->em->flush();
     }
 }

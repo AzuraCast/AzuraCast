@@ -1,12 +1,13 @@
 <?php
 namespace AzuraCast\Console\Command;
 
-use App\Sync\Manager;
+use AzuraCast\Radio\Adapters;
+use AzuraCast\Radio\Backend\Liquidsoap;
 use Doctrine\ORM\EntityManager;
-use Entity\Station;
-use Entity\StationStreamer;
+use Entity;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class StreamerAuth extends \App\Console\Command\CommandAbstract
@@ -16,19 +17,21 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
      */
     protected function configure()
     {
-        $this->setName('azuracast:internal:streamer-auth')
+        $this->setName('azuracast:internal:auth')
             ->setDescription('Authorize a streamer to connect as a source for the radio service.')
             ->addArgument(
                 'station_id',
                 InputArgument::REQUIRED,
                 'The ID of the station.'
-            )->addArgument(
-                'user',
-                InputArgument::REQUIRED,
+            )->addOption(
+                'dj_user',
+                null,
+                InputOption::VALUE_REQUIRED,
                 'The streamer username (or "shoutcast" for SC legacy auth).'
-            )->addArgument(
-                'pass',
-                InputArgument::REQUIRED,
+            )->addOption(
+                'dj_pass',
+                null,
+                InputOption::VALUE_REQUIRED,
                 'The streamer password (or "username:password" for SC legacy auth).'
             );
     }
@@ -43,39 +46,28 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
         /** @var EntityManager $em */
         $em = $this->di[EntityManager::class];
 
-        $station = $em->getRepository(Station::class)->find($station_id);
+        $station = $em->getRepository(Entity\Station::class)->find($station_id);
 
-        if (!($station instanceof Station)) {
-            return $this->_return($output, 'false');
+        if (!($station instanceof Entity\Station) || !$station->getEnableStreamers()) {
+            $output->write('false');
+            return false;
         }
 
-        if ($input->getArgument('user') === 'shoutcast') {
-            list($user, $pass) = explode(':', $input->getArgument('pass'));
-        } else {
-            $user = $input->getArgument('user');
-            $pass = $input->getArgument('pass');
+        $user = $input->getOption('dj_user');
+        $pass = $input->getOption('dj_pass');
+
+        /** @var Adapters $adapters */
+        $adapters = $this->di[Adapters::class];
+
+        $adapter = $adapters->getBackendAdapter($station);
+
+        if ($adapter instanceof Liquidsoap) {
+            $response = $adapter->authenticateStreamer($user, $pass);
+            $output->write($response);
+            return ($response === 'true');
         }
 
-        if (!$station->getEnableStreamers()) {
-            return $this->_return($output, 'false');
-        }
-
-        $fe_config = (array)$station->getFrontendConfig();
-        if (!empty($fe_config['source_pw']) && strcmp($fe_config['source_pw'], $pass) === 0) {
-            return $this->_return($output, 'true');
-        }
-
-        if ($em->getRepository(StationStreamer::class)->authenticate($station, $user, $pass)) {
-            return $this->_return($output, 'true');
-        } else {
-            return $this->_return($output, 'false');
-        }
-    }
-
-    protected function _return(OutputInterface $output, $result)
-    {
-        $output->write($result);
-
-        return ($result == 'true');
+        $output->write('false');
+        return false;
     }
 }

@@ -109,20 +109,22 @@ return function(\Slim\App $app) {
 
             $this->group('/{station}', function() {
 
+                // Liquidsoap internal authentication functions
                 $this->map(['GET', 'POST'], '/auth', Controller\Api\InternalController::class.':authAction')
                     ->setName('api:internal:auth');
 
                 $this->map(['GET', 'POST'], '/nextsong', Controller\Api\InternalController::class.':nextsongAction')
                     ->setName('api:internal:nextsong');
 
-                $this->map(['GET', 'POST'], '/notify', Controller\Api\InternalController::class.':notifyAction')
-                    ->setName('api:internal:notify');
-
                 $this->map(['GET', 'POST'], '/djon', Controller\Api\InternalController::class.':djonAction')
                     ->setName('api:internal:djon');
 
                 $this->map(['GET', 'POST'], '/djoff', Controller\Api\InternalController::class.':djoffAction')
                     ->setName('api:internal:djoff');
+
+                // Station-watcher connection endpoint
+                $this->map(['GET', 'POST'], '/notify', Controller\Api\InternalController::class.':notifyAction')
+                    ->setName('api:internal:notify');
 
             })->add(AzuraCast\Middleware\GetStation::class);
 

@@ -50,13 +50,19 @@ foreach($migration_commands as $cmd)
 
 $cli->addCommands($migration_commands);
 
-// App-specific commands
+// Liquidsoap internal commands
+$cli->addCommands([
+    new \AzuraCast\Console\Command\StreamerAuth($di),
+    new \AzuraCast\Console\Command\NextSong($di),
+    new \AzuraCast\Console\Command\DjOn($di),
+    new \AzuraCast\Console\Command\DjOff($di),
+]);
+
+// Other app-specific commands
 $cli->addCommands([
     new \AzuraCast\Console\Command\ClearCache($di),
     new \AzuraCast\Console\Command\RestartRadio($di),
     new \AzuraCast\Console\Command\Sync($di),
-    new \AzuraCast\Console\Command\StreamerAuth($di),
-    new \AzuraCast\Console\Command\NextSong($di),
     new \AzuraCast\Console\Command\ReprocessMedia($di),
     new \AzuraCast\Console\Command\GenerateApiDocs($di),
     new \AzuraCast\Console\Command\UptimeWait($di),

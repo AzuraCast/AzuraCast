@@ -17,6 +17,12 @@ AzuraCast works for web radio stations of all types and sizes, and is built to r
 
 To install AzuraCast, you should have a basic understanding of the Linux shell terminal. Once installed, every aspect of your radio station can be managed via AzuraCast's simple to use web interface.
 
+Want to see AzuraCast for yourself? Check out [screenshots](https://github.com/AzuraCast/AzuraCast/wiki/Screenshots) or visit
+our demo site at [demo.azuracast.com](https://demo.azuracast.com/):
+
+* Username: `demo@azuracast.com`
+* Password: `demo`
+
 ## Features
 
 With AzuraCast, you can:
@@ -185,28 +191,11 @@ sudo chmod a+x update.sh
 sudo ./update.sh
 ```
 
-## See AzuraCast in Action
-
-### Demo Instance
-
-See the AzuraCast interface in action yourself by visiting our demo site at [demo.azuracast.com](https://demo.azuracast.com/).
-
-* Username: `demo@azuracast.com`
-* Password: `demo`
-
-The demo instance is automatically reset at the top of every hour, and always features the latest changes in the codebase.
-
-### Screenshots
-
-Take a look at samples of the AzuraCast interface on the [Screenshots](https://github.com/AzuraCast/AzuraCast/wiki/Screenshots) page on the Wiki.
-
 ## AzuraCast API
 
 Once installed and running, AzuraCast exposes an API that allows you to monitor and interact with your stations.
 
 Documentation about this API and its endpoints are available on the [AzuraCast API Documentation](http://azuracast.com/api/).
-
-
 
 ## License
 

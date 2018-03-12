@@ -29,7 +29,7 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
                 InputOption::VALUE_REQUIRED,
                 'The streamer username (or "shoutcast" for SC legacy auth).'
             )->addOption(
-                'dj_pass',
+                'dj_password',
                 null,
                 InputOption::VALUE_REQUIRED,
                 'The streamer password (or "username:password" for SC legacy auth).'
@@ -54,7 +54,7 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
         }
 
         $user = $input->getOption('dj_user');
-        $pass = $input->getOption('dj_pass');
+        $pass = $input->getOption('dj_password');
 
         /** @var Adapters $adapters */
         $adapters = $this->di[Adapters::class];

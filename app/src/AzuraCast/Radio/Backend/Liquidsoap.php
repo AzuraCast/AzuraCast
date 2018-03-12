@@ -321,7 +321,7 @@ class Liquidsoap extends BackendAbstract
     protected function _getApiUrlCommand($endpoint, $params = [])
     {
         // Docker cURL-based API URL call with API authentication.
-        if (APP_INSIDE_DOCKER && false) {
+        if (APP_INSIDE_DOCKER) {
             $params = (array)$params;
             $params['api_auth'] = $this->station->getAdapterApiKey();
 

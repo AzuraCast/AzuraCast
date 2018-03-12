@@ -118,7 +118,7 @@ return function (\Slim\Container $di, array $app_settings) {
     $di[\Controller\Api\InternalController::class] = function($di) {
         return new \Controller\Api\InternalController(
             $di[\AzuraCast\Acl\StationAcl::class],
-            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Radio\Adapters::class],
             $di[\AzuraCast\Sync\NowPlaying::class]
         );
     };

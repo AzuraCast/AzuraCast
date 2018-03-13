@@ -367,7 +367,13 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\AzuraCast\Radio\Adapters::class] = function($di) {
-        return new AzuraCast\Radio\Adapters($di);
+        return new AzuraCast\Radio\Adapters(new \Pimple\Psr11\ServiceLocator($di, [
+            \AzuraCast\Radio\Backend\Liquidsoap::class,
+            \AzuraCast\Radio\Backend\None::class,
+            \AzuraCast\Radio\Frontend\Icecast::class,
+            \AzuraCast\Radio\Frontend\Remote::class,
+            \AzuraCast\Radio\Frontend\SHOUTcast::class,
+        ]));
     };
 
     $di[\AzuraCast\Radio\Configuration::class] = function($di) {
@@ -422,7 +428,22 @@ return function (\Slim\Container $di, $settings) {
     });
 
     $di[\AzuraCast\Sync::class] = function ($di) {
-        return new \AzuraCast\Sync($di);
+        return new \AzuraCast\Sync(
+            $di[\Entity\Repository\SettingsRepository::class],
+            $di[\Monolog\Logger::class],
+            new \Pimple\ServiceIterator($di, [
+                \AzuraCast\Sync\NowPlaying::class,
+            ]),
+            new \Pimple\ServiceIterator($di, []),
+            new \Pimple\ServiceIterator($di, [
+                \AzuraCast\Sync\Media::class
+            ]),
+            new \Pimple\ServiceIterator($di, [
+                \AzuraCast\Sync\Analytics::class,
+                \AzuraCast\Sync\RadioAutomation::class,
+                \AzuraCast\Sync\HistoryCleanup::class,
+            ])
+        );
     };
 
     $di[\AzuraCast\Sync\Analytics::class] = function($di) {

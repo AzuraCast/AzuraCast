@@ -29,7 +29,7 @@ class RadioAutomation extends SyncAbstract
     /**
      * Iterate through all stations and attempt to run automated assignment.
      */
-    public function run()
+    public function run($force = false)
     {
         // Check all stations for automation settings.
         $stations = $this->em->getRepository(Station::class)->findAll();

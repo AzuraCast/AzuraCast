@@ -2,6 +2,7 @@
 namespace AzuraCast\Radio;
 use App\Exception\NotFound;
 use Entity\Station;
+use Pimple\Psr11\ServiceLocator;
 use Slim\Container;
 
 /**
@@ -9,11 +10,12 @@ use Slim\Container;
  */
 class Adapters
 {
-    protected $di;
+    /** @var ServiceLocator */
+    protected $adapters;
 
-    public function __construct(Container $di)
+    public function __construct(ServiceLocator $adapters)
     {
-        $this->di = $di;
+        $this->adapters = $adapters;
     }
 
     /**
@@ -32,10 +34,14 @@ class Adapters
 
         $class_name = $adapters['adapters'][$frontend_type]['class'];
 
-        /** @var Frontend\FrontendAbstract $adapter */
-        $adapter = $this->di[$class_name];
-        $adapter->setStation($station);
-        return $adapter;
+        if ($this->adapters->has($class_name)) {
+            /** @var Frontend\FrontendAbstract $adapter */
+            $adapter = $this->adapters->get($class_name);
+            $adapter->setStation($station);
+            return $adapter;
+        }
+
+        throw new NotFound('Adapter not found: ' . $class_name);
     }
 
     /**
@@ -54,10 +60,14 @@ class Adapters
 
         $class_name = $adapters['adapters'][$backend_type]['class'];
 
-        /** @var Backend\BackendAbstract $adapter */
-        $adapter = $this->di[$class_name];
-        $adapter->setStation($station);
-        return $adapter;
+        if ($this->adapters->has($class_name)) {
+            /** @var Backend\BackendAbstract $adapter */
+            $adapter = $this->adapters->get($class_name);
+            $adapter->setStation($station);
+            return $adapter;
+        }
+
+        throw new NotFound('Adapter not found: ' . $class_name);
     }
 
     /**

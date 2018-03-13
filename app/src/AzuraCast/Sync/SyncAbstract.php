@@ -6,5 +6,5 @@ use Interop\Container\ContainerInterface;
 
 abstract class SyncAbstract
 {
-    abstract public function run();
+    abstract public function run($force = false);
 }

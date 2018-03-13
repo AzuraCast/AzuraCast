@@ -53,9 +53,9 @@ class NowPlaying extends SyncAbstract
         $this->listener_repo = $this->em->getRepository(Entity\Listener::class);
     }
 
-    public function run()
+    public function run($force = false)
     {
-        $nowplaying = $this->_loadNowPlaying();
+        $nowplaying = $this->_loadNowPlaying($force);
 
         // Post statistics to InfluxDB.
         $influx_points = [];
@@ -107,7 +107,7 @@ class NowPlaying extends SyncAbstract
     /**
      * @return Entity\Api\NowPlaying[]
      */
-    protected function _loadNowPlaying()
+    protected function _loadNowPlaying($force = false)
     {
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
         $nowplaying = [];
@@ -116,7 +116,7 @@ class NowPlaying extends SyncAbstract
             /** @var Entity\Station $station */
             $last_run = $station->getNowplayingTimestamp();
 
-            if ($last_run >= (time()-10)) {
+            if ($last_run >= (time()-10) && !$force) {
                 $np = $station->getNowplaying();
                 $np->update();
 

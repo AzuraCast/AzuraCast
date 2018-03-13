@@ -19,7 +19,7 @@ class Media extends SyncAbstract
         $this->em = $em;
     }
 
-    public function run()
+    public function run($force = false)
     {
         $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 

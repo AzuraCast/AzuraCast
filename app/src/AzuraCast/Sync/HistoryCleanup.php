@@ -17,7 +17,7 @@ class HistoryCleanup extends SyncAbstract
         $this->em = $em;
     }
 
-    public function run()
+    public function run($force = false)
     {
         $threshold = strtotime('-1 month');
 

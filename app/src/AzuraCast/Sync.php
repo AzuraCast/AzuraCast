@@ -7,6 +7,7 @@ use Entity\Settings;
 use Entity\Repository\SettingsRepository;
 use Interop\Container\ContainerInterface;
 use Monolog\Logger;
+use Pimple\ServiceIterator;
 
 /**
  * The runner of scheduled synchronization tasks.
@@ -16,29 +17,34 @@ use Monolog\Logger;
  */
 class Sync
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $di;
-
-    /**
-     * @var Logger
-     */
+    /** @var Logger */
     protected $logger;
 
-    /**
-     * @var SettingsRepository
-     */
+    /** @var SettingsRepository */
     protected $settings;
 
-    public function __construct(ContainerInterface $di)
-    {
-        $this->di = $di;
-        $this->logger = $di[Logger::class];
+    /** @var ServiceIterator */
+    protected $tasks_nowplaying;
 
-        /** @var EntityManager $em */
-        $em = $di[EntityManager::class];
-        $this->settings = $em->getRepository(Settings::class);
+    /** @var ServiceIterator */
+    protected $tasks_short;
+
+    /** @var ServiceIterator */
+    protected $tasks_medium;
+
+    /** @var ServiceIterator */
+    protected $tasks_long;
+
+    public function __construct(SettingsRepository $settings, Logger $logger, ServiceIterator $tasks_nowplaying,
+                                ServiceIterator $tasks_short, ServiceIterator $tasks_medium, ServiceIterator $tasks_long)
+    {
+        $this->settings = $settings;
+        $this->logger = $logger;
+
+        $this->tasks_nowplaying = $tasks_nowplaying;
+        $this->tasks_short = $tasks_short;
+        $this->tasks_medium = $tasks_medium;
+        $this->tasks_long = $tasks_long;
     }
 
     protected function _initSync($script_timeout = 60)
@@ -79,12 +85,12 @@ class Sync
 
         $this->settings->setSetting('nowplaying_last_started', time());
 
-        $this->_runTimer('Run NowPlaying update', function () {
-            /** @var Sync\NowPlaying $task */
-            $task = $this->di[Sync\NowPlaying::class];
-
-            $task->run();
-        });
+        foreach($this->tasks_nowplaying as $task) {
+            $this->_runTimer(get_class($task), function() use ($task, $force) {
+                /** @var Sync\SyncAbstract $task */
+                $task->run($force);
+            });
+        }
 
         $this->settings->setSetting('nowplaying_last_run', time());
     }
@@ -99,6 +105,13 @@ class Sync
     {
         $this->_initSync(60);
 
+        foreach($this->tasks_short as $task) {
+            $this->_runTimer(get_class($task), function() use ($task, $force) {
+                /** @var Sync\SyncAbstract $task */
+                $task->run($force);
+            });
+        }
+
         $this->settings->setSetting('sync_fast_last_run', time());
     }
 
@@ -112,12 +125,12 @@ class Sync
     {
         $this->_initSync(300);
 
-        // Sync uploaded media.
-        $this->_runTimer('Run radio station track sync', function () {
-            /** @var Sync\Media $task */
-            $task = $this->di[Sync\Media::class];
-            $task->run();
-        });
+        foreach($this->tasks_medium as $task) {
+            $this->_runTimer(get_class($task), function() use ($task, $force) {
+                /** @var Sync\SyncAbstract $task */
+                $task->run($force);
+            });
+        }
 
         $this->settings->setSetting('sync_last_run', time());
     }
@@ -132,26 +145,12 @@ class Sync
     {
         $this->_initSync(1800);
 
-        // Sync analytical and statistical data (long running).
-        $this->_runTimer('Run analytics manager', function () {
-            /** @var Sync\Analytics $task */
-            $task = $this->di[Sync\Analytics::class];
-            $task->run();
-        });
-
-        // Run automated playlist assignment.
-        $this->_runTimer('Run automated playlist assignment', function () {
-            /** @var Sync\RadioAutomation $task */
-            $task = $this->di[Sync\RadioAutomation::class];
-            $task->run();
-        });
-
-        // Clean up old song history entries.
-        $this->_runTimer('Run song history cleanup', function () {
-            /** @var Sync\HistoryCleanup $task */
-            $task = $this->di[Sync\HistoryCleanup::class];
-            $task->run();
-        });
+        foreach($this->tasks_long as $task) {
+            $this->_runTimer(get_class($task), function() use ($task, $force) {
+                /** @var Sync\SyncAbstract $task */
+                $task->run($force);
+            });
+        }
 
         $this->settings->setSetting('sync_slow_last_run', time());
     }

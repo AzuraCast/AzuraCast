@@ -52,22 +52,19 @@ class IndexController
     {
         switch ($type) {
             case "long":
-                $this->sync->syncLong();
+                $this->sync->syncLong(true);
                 break;
 
             case "medium":
-                $this->sync->syncMedium();
+                $this->sync->syncMedium(true);
                 break;
 
             case "short":
-                $this->sync->syncShort();
+                $this->sync->syncShort(true);
                 break;
 
             case "nowplaying":
             default:
-                $segment = $request->getParam('segment', 1);
-                define('NOWPLAYING_SEGMENT', $segment);
-
                 $this->sync->syncNowplaying(true);
                 break;
         }

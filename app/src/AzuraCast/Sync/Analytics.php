@@ -20,7 +20,7 @@ class Analytics extends SyncAbstract
         $this->influx = $influx;
     }
 
-    public function run()
+    public function run($force = false)
     {
         // Clear out any non-daily statistics.
         $this->em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type != :type')

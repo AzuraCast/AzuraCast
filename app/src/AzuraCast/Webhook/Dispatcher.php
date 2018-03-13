@@ -3,19 +3,17 @@ namespace AzuraCast\Webhook;
 
 use Entity;
 use Monolog\Logger;
+use Pimple\Psr11\ServiceLocator;
 
 class Dispatcher
 {
     /** @var Logger */
     protected $logger;
 
-    /** @var Connector\ConnectorInterface[] */
+    /** @var ServiceLocator */
     protected $connectors;
 
-    /**
-     * @param Connector\ConnectorInterface[] $connectors
-     */
-    public function __construct(Logger $logger, array $connectors)
+    public function __construct(Logger $logger, ServiceLocator $connectors)
     {
         $this->logger = $logger;
         $this->connectors = $connectors;
@@ -95,13 +93,13 @@ class Dispatcher
 
         // Trigger all appropriate webhooks.
         foreach($connectors as $connector) {
-            if (!isset($this->connectors[$connector['type']])) {
+            if (!$this->connectors->has($connector['type'])) {
                 $this->logger->error(sprintf('Webhook connector "%s" does not exist; skipping.', $connector['type']));
                 continue;
             }
 
             /** @var Connector\ConnectorInterface $connector_obj */
-            $connector_obj = $this->connectors[$connector['type']];
+            $connector_obj = $this->connectors->get($connector['type']);
 
             if ($connector_obj->shouldDispatch($to_trigger, (array)$connector['triggers'])) {
                 $this->logger->debug(sprintf('Dispatching connector "%s".', $connector['type']));

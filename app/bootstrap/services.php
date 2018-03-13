@@ -486,13 +486,13 @@ return function (\Slim\Container $di, $settings) {
     $di[\AzuraCast\Webhook\Dispatcher::class] = function($di) {
         return new \AzuraCast\Webhook\Dispatcher(
             $di[\Monolog\Logger::class],
-            [
-                'local' => $di[\AzuraCast\Webhook\Connector\Local::class],
-                'generic' => $di[\AzuraCast\Webhook\Connector\Generic::class],
-                'tunein' => $di[\AzuraCast\Webhook\Connector\TuneIn::class],
-                'discord' => $di[\AzuraCast\Webhook\Connector\Discord::class],
-                'twitter' => $di[\AzuraCast\Webhook\Connector\Twitter::class],
-            ]
+            new \Pimple\Psr11\ServiceLocator($di, [
+                'local'     => \AzuraCast\Webhook\Connector\Local::class,
+                'generic'   => \AzuraCast\Webhook\Connector\Generic::class,
+                'tunein'    => \AzuraCast\Webhook\Connector\TuneIn::class,
+                'discord'   => \AzuraCast\Webhook\Connector\Discord::class,
+                'twitter'   => \AzuraCast\Webhook\Connector\Twitter::class,
+            ])
         );
     };
 

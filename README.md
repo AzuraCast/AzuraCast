@@ -3,9 +3,7 @@
 # AzuraCast: A Self-Hosted Web Radio Manager
 
 [![Build Status](https://travis-ci.org/AzuraCast/AzuraCast.svg?branch=master)](https://travis-ci.org/AzuraCast/AzuraCast)
-[![Backers on Open Collective](https://opencollective.com/azuracast/backers/badge.svg)](#backers) 
-[![Sponsors on Open Collective](https://opencollective.com/azuracast/sponsors/badge.svg)](#sponsors)
-[![license](https://img.shields.io/github/license/azuracast/azuracast.svg)]()
+[![Apache 2.0 License](https://img.shields.io/github/license/azuracast/azuracast.svg)]()
 [![Docker Pulls](https://img.shields.io/docker/pulls/azuracast/azuracast_web.svg)](https://hub.docker.com/r/azuracast/azuracast_web/)
 [![Twitter Follow](https://img.shields.io/twitter/follow/azuracast.svg?style=social&label=Follow)](https://twitter.com/azuracast)
 
@@ -216,35 +214,8 @@ We would like to thank the following organizations for their support of AzuraCas
 
 ## Support AzuraCast Development
 
-AzuraCast will always be available free of charge, but if you find the software useful and would like to support the project's lead developer, click the link below to buy him a coffee. Your support is greatly appreciated.
+AzuraCast will always be available free of charge, but if you find the software useful and would like to support the project's lead developer, visit either of the links below. Your support is greatly appreciated.
 
-<a href='https://ko-fi.com/A736ATQ' target='_blank'><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=b' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+<a href="https://ko-fi.com/A736ATQ" target="_blank" title="Buy me a coffee!"><img height='32' style='border:0px;height:32px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=b' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
-#### Contributors
-
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="graphs/contributors"><img src="https://opencollective.com/azuracast/contributors.svg?width=890" /></a>
-
-
-#### Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/azuracast#backer)]
-
-<a href="https://opencollective.com/azuracast#backers" target="_blank"><img src="https://opencollective.com/azuracast/backers.svg?width=890"></a>
-
-
-#### Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/azuracast#sponsor)]
-
-<a href="https://opencollective.com/azuracast/sponsor/0/website" target="_blank"><img src="https://opencollective.com/azuracast/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/azuracast/sponsor/1/website" target="_blank"><img src="https://opencollective.com/azuracast/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/azuracast/sponsor/2/website" target="_blank"><img src="https://opencollective.com/azuracast/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/azuracast/sponsor/3/website" target="_blank"><img src="https://opencollective.com/azuracast/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/azuracast/sponsor/4/website" target="_blank"><img src="https://opencollective.com/azuracast/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/azuracast/sponsor/5/website" target="_blank"><img src="https://opencollective.com/azuracast/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/azuracast/sponsor/6/website" target="_blank"><img src="https://opencollective.com/azuracast/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/azuracast/sponsor/7/website" target="_blank"><img src="https://opencollective.com/azuracast/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/azuracast/sponsor/8/website" target="_blank"><img src="https://opencollective.com/azuracast/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/azuracast/sponsor/9/website" target="_blank"><img src="https://opencollective.com/azuracast/sponsor/9/avatar.svg"></a>
-
+<a href="https://www.patreon.com/bePatron?u=232463" target="_blank" title="Become a Patron"><img src="https://c5.patreon.com/external/logo/become_a_patron_button.png"></a>

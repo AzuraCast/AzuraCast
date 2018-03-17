@@ -133,7 +133,7 @@ return function (\Slim\Container $di, array $app_settings) {
     $di[\Controller\Api\Stations\MediaController::class] = function($di) {
         return new \Controller\Api\Stations\MediaController(
             $di[\Doctrine\ORM\EntityManager::class],
-            $di[\App\Url::class]
+            $di[\AzuraCast\Customization::class]
         );
     };
 

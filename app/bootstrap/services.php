@@ -343,7 +343,11 @@ return function (\Slim\Container $di, $settings) {
     //
 
     $di[\AzuraCast\Customization::class] = function ($di) {
-        return new \AzuraCast\Customization($di['app_settings'], $di[\Entity\Repository\SettingsRepository::class]);
+        return new \AzuraCast\Customization(
+            $di['app_settings'],
+            $di[\Entity\Repository\SettingsRepository::class],
+            $di[\App\Url::class]
+        );
     };
 
     $di[\AzuraCast\Assets::class] = function ($di) {

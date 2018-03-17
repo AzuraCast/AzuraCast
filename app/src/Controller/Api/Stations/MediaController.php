@@ -2,6 +2,7 @@
 namespace Controller\Api\Stations;
 
 use App\Url;
+use AzuraCast\Customization;
 use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
@@ -12,18 +13,18 @@ class MediaController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Url */
-    protected $url;
+    /** @var Customization */
+    protected $customization;
 
     /**
      * MediaController constructor.
      * @param EntityManager $em
      * @param Url $url
      */
-    public function __construct(EntityManager $em, Url $url)
+    public function __construct(EntityManager $em, Customization $customization)
     {
         $this->em = $em;
-        $this->url = $url;
+        $this->customization = $customization;
     }
 
     /**
@@ -72,6 +73,6 @@ class MediaController
             }
         }
 
-        return $response->withRedirect($this->url->content('img/generic_song.jpg'), 302);
+        return $response->withRedirect($this->customization->getDefaultAlbumArtUrl(), 302);
     }
 }

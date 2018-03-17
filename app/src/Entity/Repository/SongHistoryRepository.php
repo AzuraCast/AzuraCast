@@ -67,7 +67,7 @@ class SongHistoryRepository extends BaseRepository
      * @param $np
      * @return Entity\SongHistory
      */
-    public function register(Entity\Song $song, Entity\Station $station, $np)
+    public function register(Entity\Song $song, Entity\Station $station, $np): Entity\SongHistory
     {
         // Pull the most recent history item for this station.
         $last_sh = $this->_em->createQuery('SELECT sh FROM Entity\SongHistory sh

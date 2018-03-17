@@ -27,6 +27,15 @@ return [
             ]
         ],
 
+        'default_album_art_url' => [
+            'text',
+            [
+                'label' => _('Default Album Art URL'),
+                'description' => _('If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art.'),
+                'default' => '',
+            ],
+        ],
+
         'hide_product_name' => [
             'radio',
             [

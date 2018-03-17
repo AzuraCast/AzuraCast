@@ -15,10 +15,14 @@ class Customization
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
-    public function __construct($app_settings, Entity\Repository\SettingsRepository $settings_repo)
+    /** @var \App\Url */
+    protected $url;
+
+    public function __construct($app_settings, Entity\Repository\SettingsRepository $settings_repo, \App\Url $url)
     {
         $this->app_settings = $app_settings;
         $this->settings_repo = $settings_repo;
+        $this->url = $url;
     }
 
     /**
@@ -221,5 +225,21 @@ class Customization
     public function hideAlbumArt(): bool
     {
         return (bool)$this->settings_repo->getSetting('hide_album_art', false);
+    }
+
+    /**
+     * Return the URL to use for songs with no specified album artwork, when artwork is displayed.
+     *
+     * @return string
+     */
+    public function getDefaultAlbumArtUrl(): string
+    {
+        $custom_url = trim($this->settings_repo->getSetting('default_album_art_url'));
+
+        if (!empty($custom_url)) {
+            return $custom_url;
+        }
+
+        return $this->url->content('img/generic_song.jpg');
     }
 }

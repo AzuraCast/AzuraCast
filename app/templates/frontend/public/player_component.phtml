@@ -1,11 +1,13 @@
 <?php
+/** @var \AzuraCast\Customization $customization */
+
 $vue_data_model = [
     'np' => [
         'now_playing' => [
             'song' => [
                 'title' => _('Song Title'),
                 'artist' => _('Song Artist'),
-                'art' => $url->content('img/generic_song.jpg'),
+                'art' => $customization->getDefaultAlbumArtUrl(),
             ],
             'is_request' => false,
             'elapsed' => 0,

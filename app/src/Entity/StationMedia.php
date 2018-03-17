@@ -677,9 +677,7 @@ class StationMedia
         $response->album = (string)$this->album;
         $response->lyrics = (string)$this->lyrics;
 
-        if (!empty($this->art)) {
-            $response->art = $url->named('api:stations:media:art', ['station' => $this->station_id, 'media_id' => $this->unique_id], true);
-        }
+        $response->art = $url->named('api:stations:media:art', ['station' => $this->station_id, 'media_id' => $this->unique_id], true);
 
         return $response;
     }

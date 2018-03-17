@@ -302,6 +302,16 @@ return [
                     ]
                 ],
 
+                'dj_buffer' => [
+                    'text',
+                    [
+                        'label' => _('Advanced: DJ/Streamer Buffer Time (Seconds)'),
+                        'description' => _('The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.'),
+                        'default' => 5,
+                        'belongsTo' => 'backend_config',
+                    ]
+                ],
+
                 'telnet_port' => [
                     'text',
                     [

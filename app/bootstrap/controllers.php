@@ -45,13 +45,15 @@ return function (\Slim\Container $di, array $app_settings) {
         /** @var \Entity\Repository\StationRepository $stations_repo */
         $stations_repo = $em->getRepository(\Entity\Station::class);
 
+        $actions = $config->get('admin/actions');
+
         return new Controller\Admin\PermissionsController(
             $em,
             $di[\App\Flash::class],
             $di[\App\Csrf::class],
-            $app_settings['actions'],
+            $actions,
             $config->get('forms/role', [
-                'actions' => $app_settings['actions'],
+                'actions' => $actions,
                 'all_stations' => $stations_repo->fetchArray(),
             ])
         );

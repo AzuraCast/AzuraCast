@@ -99,7 +99,10 @@ return [
                     'radio',
                     [
                         'label' => __('Site Theme'),
-                        'options' => $settings['themes']['available'],
+                        'options' => [
+                            'light' => __('Light').' ('.__('Default').')',
+                            'dark' => __('Dark'),
+                        ],
                         'default' => $settings['themes']['default'],
                     ]
                 ],

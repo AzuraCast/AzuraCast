@@ -473,22 +473,6 @@ class StationPlaylist
     }
 
     /**
-     * Given a time code i.e. "2300", return a time i.e. "11:00 PM"
-     *
-     * @param $time_code
-     * @return string
-     */
-    public static function formatTimeCode($time_code, $use_local_time = true): string
-    {
-        $timestamp = self::getTimestamp($time_code);
-
-        if ($timestamp) {
-            return ($use_local_time) ? strftime('%X', $timestamp) : gmstrftime('%X', $timestamp);
-        }
-        return '';
-    }
-
-    /**
      * Given a time code i.e. "2300", return a UNIX timestamp that can be used to format the time for display.
      *
      * @param $time_code

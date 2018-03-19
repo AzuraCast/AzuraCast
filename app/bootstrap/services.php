@@ -252,7 +252,7 @@ return function (\Slim\Container $di, $settings) {
         $supervisor = new \Supervisor\Supervisor($connector);
 
         if (!$supervisor->isConnected()) {
-            throw new \App\Exception(sprintf(_('Could not connect to supervisord. Try running %s in a terminal to restart the service.'),
+            throw new \App\Exception(sprintf('Could not connect to supervisord. Try running %s in a terminal to restart the service.',
                 '`sudo service supervisor restart`'));
         }
 

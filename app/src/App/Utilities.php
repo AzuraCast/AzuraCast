@@ -88,30 +88,26 @@ class Utilities
         if ($time_diff < 60) {
             $time_num = intval($time_diff);
 
-            return sprintf(ngettext("%d second", "%d seconds", $time_num), $time_num);
-        } else {
-            if ($time_diff >= 60 && $time_diff < 3600) {
-                $time_num = round($time_diff / 60, $precision);
-
-                return sprintf(ngettext("%d minute", "%d minutes", $time_num), $time_num);
-            } else {
-                if ($time_diff >= 3600 && $time_diff < 216000) {
-                    $time_num = round($time_diff / 3600, $precision);
-
-                    return sprintf(ngettext("%d hour", "%d hours", $time_num), $time_num);
-                } else {
-                    if ($time_diff >= 216000 && $time_diff < 10368000) {
-                        $time_num = round($time_diff / 86400);
-
-                        return sprintf(ngettext("%d day", "%d days", $time_num), $time_num);
-                    } else {
-                        $time_num = round($time_diff / 2592000);
-
-                        return sprintf(ngettext("%d month", "%d months", $time_num), $time_num);
-                    }
-                }
-            }
+            return sprintf(n__("%d second", "%d seconds", $time_num), $time_num);
         }
+        if ($time_diff >= 60 && $time_diff < 3600) {
+            $time_num = round($time_diff / 60, $precision);
+
+            return sprintf(n__("%d minute", "%d minutes", $time_num), $time_num);
+        }
+        if ($time_diff >= 3600 && $time_diff < 216000) {
+            $time_num = round($time_diff / 3600, $precision);
+
+            return sprintf(n__("%d hour", "%d hours", $time_num), $time_num);
+        }
+        if ($time_diff >= 216000 && $time_diff < 10368000) {
+            $time_num = round($time_diff / 86400);
+
+            return sprintf(n__("%d day", "%d days", $time_num), $time_num);
+        }
+
+        $time_num = round($time_diff / 2592000);
+        return sprintf(n__("%d month", "%d months", $time_num), $time_num);
     }
 
     /**

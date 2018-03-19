@@ -100,10 +100,10 @@ class Customization
         $time_format = $time_formats[$locale] ?? $time_formats['default'];
 
         if ($show_timezone_abbr) {
-            $time_format .= ($use_gmt) ? ' UTC' : ' %Z';
+            $time_format .= ($use_gmt) ? ' \U\T\C' : ' T';
         }
 
-        return ($use_gmt) ? gmstrftime($time_format, $timestamp) : strftime($time_format, $timestamp);
+        return ($use_gmt) ? gmdate($time_format, $timestamp) : date($time_format, $timestamp);
     }
 
     /**
@@ -155,7 +155,7 @@ class Customization
     {
         if ($this->user !== null && !empty($this->user->getTheme())) {
             $available_themes = $this->app_settings['themes']['available'];
-            if (isset($available_themes[$this->user->getTheme()])) {
+            if (in_array($this->user->getTheme(), $available_themes)) {
                 return $this->user->getTheme();
             }
         }

@@ -77,7 +77,7 @@ $assets->addJs(['src' => 'js/timetable/timetable.js'], 'header');
                                     <?=sprintf(__('Once per %d Minutes'), $row['play_per_minutes']) ?>
                                 <?php elseif ($row['type'] === 'once_per_day'): ?>
                                     <?=__('Once per Day') ?><br>
-                                    <?=sprintf(__('Plays at %s'), $customization->formatTime(\Entity\StationPlaylist::formatTimeCode($row['play_once_time']))) ?>
+                                    <?=sprintf(__('Plays at %s'), $customization->formatTime(\Entity\StationPlaylist::getTimestamp($row['play_once_time']))) ?>
                                 <?php elseif ($row['type'] === 'custom'): ?>
                                     <?=__('Custom') ?>
                                 <?php endif; ?>

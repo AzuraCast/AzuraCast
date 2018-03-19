@@ -30,42 +30,15 @@ return [
         ],
     ],
 
-    // strftime formats for locales available above.
+    // PHP date() formats for locales available above.
     'time_formats' => [
-        'default' => '%H:%M',
-        'en_US.UTF-8' => '%l:%M %p',
+        'default' => 'G:i',
+        'en_US.UTF-8' => 'g:i A',
     ],
 
     'themes' => [
         'default' => 'light',
-        'available' => [
-            'light' => _('Light').' ('._('Default').')',
-            'dark' => _('Dark'),
-        ],
-    ],
-
-    'actions' => [
-        'global' => [
-            'administer all' => _('All Permissions'),
-            'view administration' => _('View Administration Page'),
-            'administer settings' => sprintf(_('Administer %s'), _('Settings')),
-            'administer api keys' => sprintf(_('Administer %s'), _('API Keys')),
-            'administer user accounts' => sprintf(_('Administer %s'), _('Users')),
-            'administer permissions' => sprintf(_('Administer %s'), _('Permissions')),
-            'administer stations' => sprintf(_('Administer %s'), _('Stations')),
-        ],
-        'station' => [
-            'administer all' => _('All Permissions'),
-            'view station management' => _('View Station Page'),
-            'view station reports' => _('View Station Reports'),
-            'manage station profile' => sprintf(_('Manage Station %s'), _('Profile')),
-            'manage station broadcasting' => sprintf(_('Manage Station %s'), _('Broadcasting')),
-            'manage station streamers' => sprintf(_('Manage Station %s'), _('Streamers')),
-            'manage station mounts' => sprintf(_('Manage Station %s'), _('Mount Points')),
-            'manage station media' => sprintf(_('Manage Station %s'), _('Media')),
-            'manage station automation' => sprintf(_('Manage Station %s'), _('Automation')),
-            'manage station web hooks' => sprintf(_('Manage Station %s'), _('Web Hooks')),
-        ],
+        'available' => ['light', 'dark'],
     ],
 
 ];

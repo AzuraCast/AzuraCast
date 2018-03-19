@@ -35,7 +35,7 @@ class Media extends SyncAbstract
             return;
         }
 
-        $music_files_raw = $this->globDirectory($base_dir . '/*.*');
+        $music_files_raw = $this->globDirectory($base_dir);
         $music_files = [];
 
         foreach ($music_files_raw as $music_file_path) {
@@ -148,7 +148,7 @@ class Media extends SyncAbstract
         }
 
         // Iterate through playlists.
-        $playlist_files_raw = $this->globDirectory($base_dir . '/*.{m3u,pls}', \GLOB_BRACE);
+        $playlist_files_raw = $this->globDirectory($base_dir, '/^.+\.(m3u|pls)$/i');
 
         foreach ($playlist_files_raw as $playlist_file_path) {
             // Create new StationPlaylist record.
@@ -188,11 +188,25 @@ class Media extends SyncAbstract
         $this->em->flush();
     }
 
-    public function globDirectory($pattern, $flags = 0)
+    public function globDirectory($base_dir, $regex_pattern = null)
     {
-        $files = (array)glob($pattern, $flags);
-        foreach (glob(dirname($pattern) . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $dir) {
-            $files = array_merge($files, $this->globDirectory($dir . '/' . basename($pattern), $flags));
+        $directory = new \RecursiveDirectoryIterator($base_dir);
+        $iterator = new \RecursiveIteratorIterator($directory);
+
+        $files = [];
+
+        if ($regex_pattern !== null) {
+            $regex = new \RegexIterator($iterator, $regex_pattern, \RecursiveRegexIterator::GET_MATCH);
+            foreach($regex as $path_match) {
+                $files[] = $path_match[0];
+            }
+        } else {
+            foreach ($iterator as $file) {
+                if ($file->isDir()){
+                    continue;
+                }
+                $files[] = $file->getPathname();
+            }
         }
 
         return $files;

@@ -16,7 +16,7 @@
         "packaged/helpers": "^1.5",
         "guzzlehttp/guzzle": ">6.0",
         "electrolinux/phpquery": "0.9.6",
-        "james-heinrich/getid3": "~1.9",
+        "james-heinrich/getid3": "dev-master",
         "influxdb/influxdb-php": "^1.14.3",
         "supervisorphp/supervisor": "^3.0",
         "lstrojny/fxmlrpc": "^0.14.0",

@@ -158,6 +158,10 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
     /* Fetch a remote URL. */
     protected function getUrl($url, $c_opts = null)
     {
+        if (APP_TESTING_MODE) {
+            return '';
+        }
+
         $defaults = [
             'timeout' => 4,
             'headers' => [

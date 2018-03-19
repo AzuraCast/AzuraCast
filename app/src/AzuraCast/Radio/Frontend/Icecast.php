@@ -30,7 +30,7 @@ class Icecast extends FrontendAbstract
             $np_url = 'http://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $radio_port . '/admin/stats';
 
             $payload = $this->getUrl($np_url, [
-                'basic_auth' => 'admin:' . $fe_config['admin_pw'],
+                'auth' => ['admin', $fe_config['admin_pw']],
             ]);
 
             if (!$payload) {
@@ -76,7 +76,7 @@ class Icecast extends FrontendAbstract
             // Attempt to fetch detailed listener information for better unique statistics.
             $listeners_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin/listclients?mount='.urlencode($mount['@mount']);
             $return_raw = $this->getUrl($listeners_url, [
-                'basic_auth' => 'admin:'.$fe_config['admin_pw'],
+                'auth' => ['admin', $fe_config['admin_pw']],
             ]);
 
             if (!empty($return_raw)) {

@@ -79,7 +79,7 @@ class SHOUTcast extends FrontendAbstract
         for($i = 1; $i <= $streams; $i++) {
             $listeners_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin.cgi?sid='.$i.'&mode=viewjson&page=3';
             $return_raw = $this->getUrl($listeners_url, [
-                'basic_auth' => 'admin:'.$fe_config['admin_pw'],
+                'auth' => ['admin', $fe_config['admin_pw']],
             ]);
 
             if (!empty($return_raw)) {

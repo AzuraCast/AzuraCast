@@ -158,19 +158,26 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
     /* Fetch a remote URL. */
     protected function getUrl($url, $c_opts = null)
     {
-        if ($c_opts === null) {
-            $c_opts = [];
+        $defaults = [
+            'timeout' => 4,
+            'headers' => [
+                'User-Agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2',
+            ],
+        ];
+
+        if (is_array($c_opts)) {
+            $defaults = array_merge($defaults, $c_opts);
         }
 
-        if (!isset($c_opts['url'])) {
-            $c_opts['url'] = $url;
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $response = $client->get($url, $defaults);
+        } catch(\GuzzleHttp\Exception\ClientException $e) {
+            $this->logger->error('Radio Adapter Exception', $e);
         }
 
-        if (!isset($c_opts['timeout'])) {
-            $c_opts['timeout'] = 4;
-        }
-
-        return Curl::request($c_opts);
+        return $response->getBody()->getContents();
     }
 
     /**

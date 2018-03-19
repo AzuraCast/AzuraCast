@@ -1,4 +1,4 @@
-<?php $this->layout('main', ['title' => _('Song Listener Impact'), 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => __('Song Listener Impact'), 'manual' => true]) ?>
 
 <?php
 /** @var \AzuraCast\Assets $assets */
@@ -8,11 +8,11 @@ $assets
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=_('Song Listener Impact') ?></h2>
+        <h2><?=__('Song Listener Impact') ?></h2>
 
         <ul class="actions">
             <li>
-                <a href="<?=$url->named('stations:reports:performance', ['station' => $station->getId(), 'format' => 'csv']) ?>" title="<?=_('Download CSV') ?>">
+                <a href="<?=$url->named('stations:reports:performance', ['station' => $station->getId(), 'format' => 'csv']) ?>" title="<?=__('Download CSV') ?>">
                     <i class="zmdi zmdi-download"></i>
                 </a>
             </li>
@@ -28,18 +28,18 @@ $assets
         <table id="tbl-report" class="data-table table table-striped">
             <thead>
                 <tr>
-                    <th data-column-id="title"><?=_('Title') ?></th>
-                    <th data-column-id="artist"><?=_('Artist') ?></th>
-                    <th data-column-id="path"><?=_('Filename') ?></th>
-                    <th data-column-id="length_raw" data-formatter="length" data-type="numeric"><?=_('Length') ?></th>
-                    <th data-column-id="length" data-visible="false" data-visible-in-selection="false"><?=_('Length Text') ?></th>
-                    <th data-column-id="playlists"><?=_('Playlist(s)') ?></th>
-                    <th data-column-id="delta_positive" data-type="numeric">&delta; <?=_('Joins') ?></th>
-                    <th data-column-id="delta_negative" data-type="numeric">&delta; <?=_('Losses') ?></th>
-                    <th data-column-id="delta_total" data-type="numeric">&delta; <?=_('Total') ?></th>
-                    <th data-column-id="num_plays" data-type="numeric"><?=_('Plays') ?></th>
-                    <th data-column-id="percent_plays"><?=_('Play %') ?></th>
-                    <th data-column-id="ratio" data-type="numeric"><?=_('Ratio') ?></th>
+                    <th data-column-id="title"><?=__('Title') ?></th>
+                    <th data-column-id="artist"><?=__('Artist') ?></th>
+                    <th data-column-id="path"><?=__('Filename') ?></th>
+                    <th data-column-id="length_raw" data-formatter="length" data-type="numeric"><?=__('Length') ?></th>
+                    <th data-column-id="length" data-visible="false" data-visible-in-selection="false"><?=__('Length Text') ?></th>
+                    <th data-column-id="playlists"><?=__('Playlist(s)') ?></th>
+                    <th data-column-id="delta_positive" data-type="numeric">&delta; <?=__('Joins') ?></th>
+                    <th data-column-id="delta_negative" data-type="numeric">&delta; <?=__('Losses') ?></th>
+                    <th data-column-id="delta_total" data-type="numeric">&delta; <?=__('Total') ?></th>
+                    <th data-column-id="num_plays" data-type="numeric"><?=__('Plays') ?></th>
+                    <th data-column-id="percent_plays"><?=__('Play %') ?></th>
+                    <th data-column-id="ratio" data-type="numeric"><?=__('Ratio') ?></th>
                 </tr>
             </thead>
             <tbody>

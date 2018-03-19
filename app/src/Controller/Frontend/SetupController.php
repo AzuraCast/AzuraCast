@@ -74,7 +74,7 @@ class SetupController
      */
     public function completeAction(Request $request, Response $response): Response
     {
-        $this->flash->alert('<b>' . _('Setup has already been completed!') . '</b>', 'red');
+        $this->flash->alert('<b>' . __('Setup has already been completed!') . '</b>', 'red');
 
         return $response->redirectHome();
     }
@@ -97,7 +97,7 @@ class SetupController
 
             // Create actions and roles supporting Super Admninistrator.
             $role = new Entity\Role;
-            $role->setName(_('Super Administrator'));
+            $role->setName(__('Super Administrator'));
 
             $this->em->persist($role);
             $this->em->flush();
@@ -196,7 +196,7 @@ class SetupController
             $settings_repo->setSettings($data);
 
             // Notify the user and redirect to homepage.
-            $this->flash->alert('<b>' . _('Setup is now complete!') . '</b><br>' . _('Continue setting up your station in the main AzuraCast app.'),
+            $this->flash->alert('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
                 'green');
 
             return $response->redirectHome();

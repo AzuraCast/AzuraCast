@@ -7,7 +7,7 @@ return [
         'partner_id' => [
             'text',
             [
-                'label' => _('TuneIn Partner ID'),
+                'label' => __('TuneIn Partner ID'),
                 'belongsTo' => 'config',
                 'required' => true,
             ]
@@ -16,7 +16,7 @@ return [
         'partner_key' => [
             'text',
             [
-                'label' => _('TuneIn Partner Key'),
+                'label' => __('TuneIn Partner Key'),
                 'belongsTo' => 'config',
                 'required' => true,
             ]
@@ -25,8 +25,8 @@ return [
         'station_id' => [
             'text',
             [
-                'label' => _('TuneIn Station ID'),
-                'description' => _('The station ID will be a numeric string that starts with the letter S.'),
+                'label' => __('TuneIn Station ID'),
+                'description' => __('The station ID will be a numeric string that starts with the letter S.'),
                 'belongsTo' => 'config',
                 'required' => true,
             ]
@@ -36,7 +36,7 @@ return [
             'submit',
             [
                 'type' => 'submit',
-                'label' => _('Save Changes'),
+                'label' => __('Save Changes'),
                 'class' => 'ui-button btn-lg btn-primary',
             ]
         ],

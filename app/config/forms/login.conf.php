@@ -6,7 +6,7 @@ return [
         'username' => [
             'text',
             [
-                'label' => _('E-mail Address'),
+                'label' => __('E-mail Address'),
                 'class' => 'half-width',
                 'spellcheck' => 'false',
                 'required' => true,
@@ -16,7 +16,7 @@ return [
         'password' => [
             'password',
             [
-                'label' => _('Password'),
+                'label' => __('Password'),
                 'class' => 'half-width',
                 'required' => true,
             ]
@@ -26,7 +26,7 @@ return [
             'submit',
             [
                 'type' => 'submit',
-                'label' => _('Log in'),
+                'label' => __('Log in'),
                 'class' => 'btn btn-lg btn-primary',
             ]
         ],

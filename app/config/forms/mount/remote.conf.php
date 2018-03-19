@@ -11,7 +11,7 @@ return [
                 'remote_type' => [
                     'radio',
                     [
-                        'label' => _('Remote Station Type'),
+                        'label' => __('Remote Station Type'),
                         'required' => true,
                         'options' => [
                             'shoutcast1' => 'SHOUTcast v1',
@@ -24,8 +24,8 @@ return [
                 'remote_url' => [
                     'text',
                     [
-                        'label' => _('Remote Station Base URL'),
-                        'description' => _('Example: if the remote radio URL is http://station.example.com:8000/stream.mp3, enter <code>http://station.example.com:8000</code>.'),
+                        'label' => __('Remote Station Base URL'),
+                        'description' => __('Example: if the remote radio URL is http://station.example.com:8000/stream.mp3, enter <code>http://station.example.com:8000</code>.'),
                         'required' => true,
                     ]
                 ],
@@ -33,17 +33,17 @@ return [
                 'remote_mount' => [
                     'text',
                     [
-                        'label' => _('Remote Station Mountpoint/SID'),
-                        'description' => _('Specify a mountpoint (i.e. <code>/radio.mp3</code>) or a Shoutcast SID (i.e. <code>2</code>) to specify a specific stream to use.'),
+                        'label' => __('Remote Station Mountpoint/SID'),
+                        'description' => __('Specify a mountpoint (i.e. <code>/radio.mp3</code>) or a Shoutcast SID (i.e. <code>2</code>) to specify a specific stream to use.'),
                     ]
                 ],
 
                 'is_default' => [
                     'radio',
                     [
-                        'label' => _('Is Default Mount'),
-                        'description' => _('If this mount is the default, it will be played on the radio preview and the public radio page in this system.'),
-                        'options' => [0 => _('No'), 1 => _('Yes')],
+                        'label' => __('Is Default Mount'),
+                        'description' => __('If this mount is the default, it will be played on the radio preview and the public radio page in this system.'),
+                        'options' => [0 => __('No'), 1 => __('Yes')],
                         'default' => 0,
                     ]
                 ],
@@ -51,9 +51,9 @@ return [
                 'enable_autodj' => [
                     'radio',
                     [
-                        'label' => _('Enable AutoDJ'),
-                        'description' => _('If set to "Yes", the AutoDJ will automatically play music to this mount point.'),
-                        'options' => [0 => _('No'), 1 => _('Yes')],
+                        'label' => __('Enable AutoDJ'),
+                        'description' => __('If set to "Yes", the AutoDJ will automatically play music to this mount point.'),
+                        'options' => [0 => __('No'), 1 => __('Yes')],
                         'default' => 0,
                     ]
                 ],
@@ -61,7 +61,7 @@ return [
                 'autodj_format' => [
                     'radio',
                     [
-                        'label' => _('AutoDJ Format'),
+                        'label' => __('AutoDJ Format'),
                         'options' => [
                             'mp3' => 'MP3',
                             'ogg' => 'OGG Vorbis',
@@ -74,7 +74,7 @@ return [
                 'autodj_bitrate' => [
                     'radio',
                     [
-                        'label' => _('AutoDJ Bitrate (kbps)'),
+                        'label' => __('AutoDJ Bitrate (kbps)'),
                         'options' => [
                             32 => '32',
                             48 => '48',
@@ -92,16 +92,16 @@ return [
                 'remote_source_username' => [
                     'text',
                     [
-                        'label' => _('Remote Station Source Username'),
-                        'description' => _('If you are broadcasting using AutoDJ, enter the source username here. This may be blank.'),
+                        'label' => __('Remote Station Source Username'),
+                        'description' => __('If you are broadcasting using AutoDJ, enter the source username here. This may be blank.'),
                     ]
                 ],
 
                 'remote_source_password' => [
                     'text',
                     [
-                        'label' => _('Remote Station Source Password'),
-                        'description' => _('If you are broadcasting using AutoDJ, enter the source password here.'),
+                        'label' => __('Remote Station Source Password'),
+                        'description' => __('If you are broadcasting using AutoDJ, enter the source password here.'),
                     ]
                 ],
 
@@ -115,7 +115,7 @@ return [
                     'submit',
                     [
                         'type' => 'submit',
-                        'label' => _('Save Changes'),
+                        'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
                     ]
                 ],

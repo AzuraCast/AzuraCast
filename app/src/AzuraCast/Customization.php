@@ -3,6 +3,8 @@ namespace AzuraCast;
 
 use App\Auth;
 use Entity;
+use Gettext\Translations;
+use Gettext\Translator;
 
 class Customization
 {
@@ -36,14 +38,24 @@ class Customization
 
             // Localization
             $locale = $this->getLocale();
-            putenv("LANG=" . $locale);
-            setlocale(LC_ALL, $locale);
-
-            $locale_domain = 'default';
-            bindtextdomain($locale_domain, APP_INCLUDE_BASE . '/locale');
-            bind_textdomain_codeset($locale_domain, 'UTF-8');
-            textdomain($locale_domain);
+        } else {
+            $locale = $this->app_settings['locale']['default'];
         }
+
+        $translator = new Translator();
+
+        $locale_base = APP_INCLUDE_BASE.'/locale/compiled';
+        $locale_path = $locale_base.'/'.$locale.'.php';
+
+        if (file_exists($locale_path)) {
+            $translator->loadTranslations($locale_path);
+        }
+
+        // Register translation superglobal functions
+        $translator->register();
+
+        putenv("LANG=" . $locale);
+        setlocale(LC_ALL, $locale);
     }
 
     /**

@@ -1,10 +1,10 @@
-<?php $this->layout('main', ['title' => _('User Accounts'), 'manual' => true]); ?>
+<?php $this->layout('main', ['title' => __('User Accounts'), 'manual' => true]); ?>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=_('User Accounts') ?></h2>
+        <h2><?=__('User Accounts') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(_('Add %s'), _('User')) ?>" href="<?=$url->named('admin:users:add') ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('User')) ?>" href="<?=$url->named('admin:users:add') ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -15,9 +15,9 @@
             </colgroup>
             <thead>
             <tr>
-                <th><?=_('Actions') ?></th>
-                <th><?=_('E-mail Address') ?></th>
-                <th><?=_('Roles') ?></th>
+                <th><?=__('Actions') ?></th>
+                <th><?=__('E-mail Address') ?></th>
+                <th><?=__('Roles') ?></th>
             </tr>
             </thead>
             <tbody>
@@ -25,12 +25,12 @@
                 <tr class="input">
                     <td>
                     <?php if ($user_row->getId() !== $user->getId()): ?>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->named('admin:users:impersonate', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=_('Log In') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->named('admin:users:impersonate', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Log In') ?></a>
                     <?php endif; ?>
-                        <a class="btn btn-sm btn-default" href="<?=$url->named('admin:users:edit', ['id' => $user_row->getId()]) ?>"><?=_('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:users:delete', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=_('Delete') ?></a>
+                        <a class="btn btn-sm btn-default" href="<?=$url->named('admin:users:edit', ['id' => $user_row->getId()]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:users:delete', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </td>
-                    <td><?=$this->mailto($user_row->getEmail()) ?> <?php if ($user_row->getId() === $user->getId()): ?><?=_('(You)') ?><?php endif; ?></td>
+                    <td><?=$this->mailto($user_row->getEmail()) ?> <?php if ($user_row->getId() === $user->getId()): ?><?=__('(You)') ?><?php endif; ?></td>
                     <td>
                         <small>
                             <?php

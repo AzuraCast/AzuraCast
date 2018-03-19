@@ -1,11 +1,11 @@
-<?php $this->layout('main', ['title' => _('Restart Broadcasting'), 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => __('Restart Broadcasting'), 'manual' => true]) ?>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=_('Restart Broadcasting') ?></h2>
+        <h2><?=__('Restart Broadcasting') ?></h2>
     </div>
     <div class="card-body card-padding">
-        <p><?=_('Your station\'s configuration has been rewritten and broadcasting has been restarted. Status messages related to this process are listed below.') ?></p>
+        <p><?=__('Your station\'s configuration has been rewritten and broadcasting has been restarted. Status messages related to this process are listed below.') ?></p>
 
         <?php if ($flash->hasMessages()): ?>
             <?php foreach($flash->getMessages() as $message): ?>

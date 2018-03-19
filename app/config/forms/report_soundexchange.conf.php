@@ -7,7 +7,7 @@ return [
         'report_details' => [
             'markup',
             [
-                'label' => _('Important Notes'),
+                'label' => __('Important Notes'),
                 'markup' => '
                     <p>This report is intended for licensing in the United States only, for webcasters paying royalties via
                     SoundExchange. Learn more about the requirements for reporting and classification on the
@@ -35,7 +35,7 @@ return [
             'text',
             [
                 'type' => 'date',
-                'label' => _('Report Start Date'),
+                'label' => __('Report Start Date'),
                 'required' => true,
             ]
         ],
@@ -44,7 +44,7 @@ return [
             'text',
             [
                 'type' => 'date',
-                'label' => _('Report End Date'),
+                'label' => __('Report End Date'),
                 'required' => true,
             ]
         ],
@@ -53,7 +53,7 @@ return [
             'submit',
             [
                 'type' => 'submit',
-                'label' => _('Generate Report'),
+                'label' => __('Generate Report'),
                 'class' => 'btn btn-lg btn-primary',
             ]
         ],

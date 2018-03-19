@@ -42,7 +42,7 @@ class BrandingController
 
             $this->settings_repo->setSettings($data);
 
-            $this->flash->alert(_('Changes saved.'), 'green');
+            $this->flash->alert(__('Changes saved.'), 'green');
 
             return $response->redirectHere();
         }

@@ -11,7 +11,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: '<?=_('Listeners') ?>'
+                text: '<?=__('Listeners') ?>'
             },
             min: 0
         },
@@ -21,7 +21,7 @@ $(function () {
         },
         
         series: [{
-            name: <?=$this->escapeJs(_('Average Listeners')) ?>,
+            name: <?=$this->escapeJs(__('Average Listeners')) ?>,
             type: 'column',
             data: <?=$averages_by_hour ?>
         }]

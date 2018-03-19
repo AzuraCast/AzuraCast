@@ -7,7 +7,7 @@ return [
         'name' => [
             'text',
             [
-                'label' => _('Name'),
+                'label' => __('Name'),
                 'class' => 'half-width',
             ]
         ],
@@ -15,7 +15,7 @@ return [
         'email' => [
             'email',
             [
-                'label' => _('E-mail Address'),
+                'label' => __('E-mail Address'),
                 'required' => true,
                 'autocomplete' => 'off',
             ]
@@ -24,8 +24,8 @@ return [
         'auth_password' => [
             'password',
             [
-                'label' => _('Reset Password'),
-                'description' => _('Leave blank to use the current password.'),
+                'label' => __('Reset Password'),
+                'description' => __('Leave blank to use the current password.'),
                 'autocomplete' => 'off',
                 'required' => false,
             ]
@@ -34,7 +34,7 @@ return [
         'roles' => [
             'multiCheckbox',
             [
-                'label' => _('Roles'),
+                'label' => __('Roles'),
                 'options' => $roles,
             ]
         ],
@@ -43,7 +43,7 @@ return [
             'submit',
             [
                 'type' => 'submit',
-                'label' => _('Save Changes'),
+                'label' => __('Save Changes'),
 
                 'class' => 'btn btn-lg btn-primary',
             ]

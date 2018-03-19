@@ -1,35 +1,35 @@
-<?php $this->layout('main', ['title' => _('My API Keys'), 'manual' => true]); ?>
+<?php $this->layout('main', ['title' => __('My API Keys'), 'manual' => true]); ?>
 
 <?php
 $assets->load('clipboard');
 ?>
 
 <div class="block-header">
-    <h2><?=_('My Account') ?></h2>
+    <h2><?=__('My Account') ?></h2>
 </div>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=_('My API Keys') ?></h2>
+        <h2><?=__('My API Keys') ?></h2>
     </div>
     <div class="card-body card-padding">
-        <h3><?=_('New Key Generated') ?></h3>
+        <h3><?=__('New Key Generated') ?></h3>
 
-        <p><?=_('<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.') ?></p>
+        <p><?=__('<b>Important: copy the key below before continuing!</b> You will not be able to retrieve it again.') ?></p>
 
-        <p><?=_('Your full API key is below:') ?></p>
+        <p><?=__('Your full API key is below:') ?></p>
 
         <div class="well">
             <code id="api_key"><?=$key_identifier ?>:<?=$key_verifier ?></code>
             <div class="buttons">
-                <button class="btn btn-copy btn-default btn-sm" data-clipboard-target="#api_key"><?=_('Copy to Clipboard') ?></button>
+                <button class="btn btn-copy btn-default btn-sm" data-clipboard-target="#api_key"><?=__('Copy to Clipboard') ?></button>
             </div>
         </div>
 
-        <p><?=_('When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.') ?></p>
+        <p><?=__('When making API calls, you can pass this value in the "X-API-Key" header to authenticate as yourself. You can only perform the actions your user account is allowed to perform.') ?></p>
 
         <div class="buttons">
-            <a class="btn btn-lg btn-primary" href="<?=$url->named('api_keys:index') ?>"><?=_('Continue') ?></a>
+            <a class="btn btn-lg btn-primary" href="<?=$url->named('api_keys:index') ?>"><?=__('Continue') ?></a>
         </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 <?php $this->layout('main', ['title' => 'Administration', 'manual' => true]); ?>
 
 <div class="block-header">
-    <h2><?=_('Administration') ?></h2>
+    <h2><?=__('Administration') ?></h2>
 </div>
 
 <div class="row">
@@ -43,7 +43,7 @@
                 <a class="btn bgm-blue btn-float" role="button" href="<?=$url->named('admin:index:sync', ['type' => $sync_key]) ?>" title="Run Manually"><i class="zmdi zmdi-mail-send"></i></a>
             </div>
             <div class="card-body card-padding">
-                <p><?=strftime('%b %e, %Y %l:%M%P %Z', $sync_info['latest']) ?><br><small><?=sprintf(_('%s ago'), $sync_info['diff_text']) ?></small></p>
+                <p><?=strftime('%b %e, %Y %l:%M%P %Z', $sync_info['latest']) ?><br><small><?=sprintf(__('%s ago'), $sync_info['diff_text']) ?></small></p>
             </div>
         </section>
     </div>

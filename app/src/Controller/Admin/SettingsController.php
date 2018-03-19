@@ -42,7 +42,7 @@ class SettingsController
 
             $this->settings_repo->setSettings($data);
 
-            $this->flash->alert(_('Changes saved.'), 'green');
+            $this->flash->alert(__('Changes saved.'), 'green');
 
             return $response->redirectHere();
         }
@@ -53,7 +53,7 @@ class SettingsController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => _('System Settings')
+            'title' => __('System Settings')
         ]);
     }
 }

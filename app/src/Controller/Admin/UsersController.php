@@ -95,11 +95,11 @@ class UsersController
                 $this->em->persist($record);
                 $this->em->flush();
 
-                $this->flash->alert(sprintf(($id) ? _('%s updated.') : _('%s added.'), _('User')), 'green');
+                $this->flash->alert(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')), 'green');
 
                 return $response->redirectToRoute('admin:users:index');
             } catch(UniqueConstraintViolationException $e) {
-                $this->flash->alert(_('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
+                $this->flash->alert(__('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
             }
         }
 
@@ -109,7 +109,7 @@ class UsersController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('User'))
+            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('User'))
         ]);
     }
 
@@ -125,7 +125,7 @@ class UsersController
 
         $this->em->flush();
 
-        $this->flash->alert('<b>' . sprintf(_('%s deleted.'), _('User')) . '</b>', 'green');
+        $this->flash->alert('<b>' . sprintf(__('%s deleted.'), __('User')) . '</b>', 'green');
 
         return $response->redirectToRoute('admin:users:index');
     }
@@ -137,12 +137,12 @@ class UsersController
         $user = $this->record_repo->find((int)$id);
 
         if (!($user instanceof Entity\User)) {
-            throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('User')));
+            throw new \App\Exception\NotFound(sprintf(__('%s not found.'), __('User')));
         }
 
         $this->auth->masqueradeAsUser($user);
 
-        $this->flash->alert('<b>' . _('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+        $this->flash->alert('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
         return $response->redirectHome();
     }

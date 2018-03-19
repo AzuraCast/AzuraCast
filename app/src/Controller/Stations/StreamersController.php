@@ -48,7 +48,7 @@ class StreamersController
         $backend = $request->getAttribute('station_backend');
 
         if (!$backend->supportsStreamers()) {
-            throw new \App\Exception(_('This feature is not currently supported on this station.'));
+            throw new \App\Exception(__('This feature is not currently supported on this station.'));
         }
 
         /** @var \App\Mvc\View $view */
@@ -60,7 +60,7 @@ class StreamersController
                 $this->em->persist($station);
                 $this->em->flush();
 
-                $this->flash->alert('<b>' . _('Streamers enabled!') . '</b><br>' . _('You can now set up streamer (DJ) accounts.'),
+                $this->flash->alert('<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
                     'green');
 
                 return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
@@ -111,7 +111,7 @@ class StreamersController
 
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . sprintf(($id) ? _('%s updated.') : _('%s added.'), _('Streamer')) . '</b>', 'green');
+            $this->flash->alert('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Streamer')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
         }
@@ -122,7 +122,7 @@ class StreamersController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('Streamer'))
+            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Streamer'))
         ]);
     }
 
@@ -146,7 +146,7 @@ class StreamersController
 
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . sprintf(_('%s deleted.'), _('Streamer')) . '</b>', 'green');
+        $this->flash->alert('<b>' . sprintf(__('%s deleted.'), __('Streamer')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
     }

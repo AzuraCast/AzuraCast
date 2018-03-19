@@ -11,8 +11,8 @@ return [
                 'name' => [
                     'text',
                     [
-                        'label' => _('Mount Point Name/URL'),
-                        'description' => _('This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3'),
+                        'label' => __('Mount Point Name/URL'),
+                        'description' => __('This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3'),
                         'required' => true,
                     ]
                 ],
@@ -20,9 +20,9 @@ return [
                 'is_default' => [
                     'radio',
                     [
-                        'label' => _('Is Default Mount'),
-                        'description' => _('If this mount is the default, it will be played on the radio preview and the public radio page in this system.'),
-                        'options' => [0 => _('No'), 1 => _('Yes')],
+                        'label' => __('Is Default Mount'),
+                        'description' => __('If this mount is the default, it will be played on the radio preview and the public radio page in this system.'),
+                        'options' => [0 => __('No'), 1 => __('Yes')],
                         'default' => 0,
                     ]
                 ],
@@ -30,9 +30,9 @@ return [
                 'enable_autodj' => [
                     'radio',
                     [
-                        'label' => _('Enable AutoDJ'),
-                        'description' => _('If set to "Yes", the AutoDJ will automatically play music to this mount point.'),
-                        'options' => [0 => _('No'), 1 => _('Yes')],
+                        'label' => __('Enable AutoDJ'),
+                        'description' => __('If set to "Yes", the AutoDJ will automatically play music to this mount point.'),
+                        'options' => [0 => __('No'), 1 => __('Yes')],
                         'default' => 1,
                     ]
                 ],
@@ -40,7 +40,7 @@ return [
                 'autodj_format' => [
                     'radio',
                     [
-                        'label' => _('AutoDJ Format'),
+                        'label' => __('AutoDJ Format'),
                         'options' => [
                             'mp3' => 'MP3',
                             'aac' => 'AAC+ (MPEG4 HE-AAC v2)',
@@ -52,7 +52,7 @@ return [
                 'autodj_bitrate' => [
                     'radio',
                     [
-                        'label' => _('AutoDJ Bitrate (kbps)'),
+                        'label' => __('AutoDJ Bitrate (kbps)'),
                         'options' => [
                             32 => '32',
                             48 => '48',
@@ -70,8 +70,8 @@ return [
                 'relay_url' => [
                     'text',
                     [
-                        'label' => _('Relay Stream URL'),
-                        'description' => _('Enter the full URL of another stream to relay its broadcast through this mount point.'),
+                        'label' => __('Relay Stream URL'),
+                        'description' => __('Enter the full URL of another stream to relay its broadcast through this mount point.'),
                         'default' => '',
                     ]
                 ],
@@ -79,9 +79,9 @@ return [
                 'is_public' => [
                     'radio',
                     [
-                        'label' => _('Advertise to YP Directories (Public Station)'),
-                        'description' => _('Set to "yes" to advertise this stream on the YP public radio directories.'),
-                        'options' => [0 => _('No'), 1 => _('Yes')],
+                        'label' => __('Advertise to YP Directories (Public Station)'),
+                        'description' => __('Set to "yes" to advertise this stream on the YP public radio directories.'),
+                        'options' => [0 => __('No'), 1 => __('Yes')],
                         'default' => 0,
                     ]
                 ],
@@ -89,8 +89,8 @@ return [
                 'authhash' => [
                     'text',
                     [
-                        'label' => _('YP Directory Authorization Hash'),
-                        'description' => sprintf(_('If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.'),
+                        'label' => __('YP Directory Authorization Hash'),
+                        'description' => sprintf(__('If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href="%s" target="_blank">on the SHOUTcast web site</a>.'),
                             'https://rmo.shoutcast.com'),
                         'default' => '',
                     ]
@@ -106,7 +106,7 @@ return [
                     'submit',
                     [
                         'type' => 'submit',
-                        'label' => _('Save Changes'),
+                        'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
                     ]
                 ],

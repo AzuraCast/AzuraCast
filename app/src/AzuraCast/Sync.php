@@ -161,32 +161,32 @@ class Sync
 
         $syncs = [
             'nowplaying' => [
-                'name' => _('Now Playing Data'),
+                'name' => __('Now Playing Data'),
                 'latest' => $this->settings->getSetting('nowplaying_last_run', 0),
                 'contents' => [
-                    _('Now Playing Data'),
+                    __('Now Playing Data'),
                 ],
             ],
             'short' => [
-                'name' => _('1-Minute Sync'),
+                'name' => __('1-Minute Sync'),
                 'latest' => $this->settings->getSetting('sync_fast_last_run', 0),
                 'contents' => [
-                    _('Song Requests Queue'),
+                    __('Song Requests Queue'),
                 ],
             ],
             'medium' => [
-                'name' => _('5-Minute Sync'),
+                'name' => __('5-Minute Sync'),
                 'latest' => $this->settings->getSetting('sync_last_run', 0),
                 'contents' => [
-                    _('Check Media Folders'),
+                    __('Check Media Folders'),
                 ],
             ],
             'long' => [
-                'name' => _('1-Hour Sync'),
+                'name' => __('1-Hour Sync'),
                 'latest' => $this->settings->getSetting('sync_slow_last_run', 0),
                 'contents' => [
-                    _('Analytics/Statistics'),
-                    _('Cleanup'),
+                    __('Analytics/Statistics'),
+                    __('Cleanup'),
                 ],
             ],
         ];

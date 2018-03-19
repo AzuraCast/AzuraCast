@@ -7,8 +7,8 @@ return [
     'groups' => [
 
         'api_info' => [
-            'legend' => _('Web Hook Details'),
-            'description' => sprintf(_('Web hooks automatically send a HTTP POST request to the URL you specify to 
+            'legend' => __('Web Hook Details'),
+            'description' => sprintf(__('Web hooks automatically send a HTTP POST request to the URL you specify to 
                 notify it any time one of the triggers you specify occurs on your station. The body of the POST message
                 is the exact same as the <a href="%s" target="_blank">Now Playing API response</a> for your station. 
                 In order to process quickly, web hooks have a short timeout, so the responding service should be
@@ -20,8 +20,8 @@ return [
                 'webhook_url' => [
                     'url',
                     [
-                        'label' => _('Web Hook URL'),
-                        'description' => _('The URL that will receive the POST messages any time an event is triggered.'),
+                        'label' => __('Web Hook URL'),
+                        'description' => __('The URL that will receive the POST messages any time an event is triggered.'),
                         'belongsTo' => 'config',
                         'required' => true,
                     ]
@@ -30,7 +30,7 @@ return [
                 'triggers' => [
                     'multiCheckbox',
                     [
-                        'label' => _('Web Hook Triggers'),
+                        'label' => __('Web Hook Triggers'),
                         'options' => \AzuraCast\Webhook\Dispatcher::getTriggers(),
                         'required' => true,
                     ]
@@ -46,7 +46,7 @@ return [
                     'submit',
                     [
                         'type' => 'submit',
-                        'label' => _('Save Changes'),
+                        'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
                     ]
                 ],

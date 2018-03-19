@@ -1,13 +1,13 @@
-<?php $this->layout('main', ['title' => _('Web Hooks'), 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => __('Web Hooks'), 'manual' => true]) ?>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=_('Web Hooks') ?></h2>
+        <h2><?=__('Web Hooks') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(_('Add %s'), _('Web Hook')) ?>" href="<?=$url->named('stations:webhooks:add', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('Web Hook')) ?>" href="<?=$url->named('stations:webhooks:add', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div class="card-body card-padding p-b-0">
-        <p><?=_('Web hooks let you connect to external web services and broadcast changes to your station to them.') ?></p>
+        <p><?=__('Web hooks let you connect to external web services and broadcast changes to your station to them.') ?></p>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -18,9 +18,9 @@
             </colgroup>
             <thead>
             <tr>
-                <th><?=_('Actions') ?></th>
-                <th><?=_('Type') ?></th>
-                <th><?=_('Triggers') ?></th>
+                <th><?=__('Actions') ?></th>
+                <th><?=__('Type') ?></th>
+                <th><?=__('Triggers') ?></th>
             </tr>
             </thead>
             <tbody>
@@ -28,12 +28,12 @@
                 <?php /** @var \Entity\StationWebhook $row */ ?>
                 <tr class="vertical-align-middle">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:webhooks:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=_('Edit') ?></a>
-                        <a class="btn btn-sm <?=($row->isEnabled() ? 'btn-warning' : 'btn-success') ?>" href="<?=$url->named('stations:webhooks:toggle', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=($row->isEnabled() ? _('Disable') : _('Enable')) ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:webhooks:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=_('Delete') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:webhooks:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm <?=($row->isEnabled() ? 'btn-warning' : 'btn-success') ?>" href="<?=$url->named('stations:webhooks:toggle', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=($row->isEnabled() ? __('Disable') : __('Enable')) ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:webhooks:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </td>
                     <td>
-                        <?=$row->getTypeName() ?><?php if (!$row->isEnabled()): ?> <span class="label label-danger"><?=_('Disabled') ?></span><?php endif; ?>
+                        <?=$row->getTypeName() ?><?php if (!$row->isEnabled()): ?> <span class="label label-danger"><?=__('Disabled') ?></span><?php endif; ?>
                     </td>
                     <td>
                         <?=implode(', ', $row->getTriggerNames()) ?>

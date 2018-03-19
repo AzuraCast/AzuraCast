@@ -1,4 +1,4 @@
-<?php $this->layout('main', ['title' => _('Song Requests'), 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => __('Song Requests'), 'manual' => true]) ?>
 
 <?php
 /** @var \AzuraCast\Assets $assets */
@@ -8,7 +8,7 @@ $assets
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=_('Song Requests') ?></h2>
+        <h2><?=__('Song Requests') ?></h2>
     </div>
     <div class="table-responsive">
         <table class="data-table table table-striped">
@@ -21,11 +21,11 @@ $assets
             </colgroup>
             <thead>
             <tr>
-                <th data-column-id="timestamp"><?=_('Date Requested') ?></th>
-                <th data-column-id="played_at"><?=_('Date Played') ?></th>
-                <th data-column-id="song"><?=_('Song Title') ?></th>
-                <th data-column-id="ip"><?=_('Requester IP') ?></th>
-                <th data-column-id="actions"><?=_('Actions') ?></th>
+                <th data-column-id="timestamp"><?=__('Date Requested') ?></th>
+                <th data-column-id="played_at"><?=__('Date Played') ?></th>
+                <th data-column-id="song"><?=__('Song Title') ?></th>
+                <th data-column-id="ip"><?=__('Requester IP') ?></th>
+                <th data-column-id="actions"><?=__('Actions') ?></th>
             </tr>
             </thead>
             <tbody>
@@ -36,7 +36,7 @@ $assets
                     <?php if ($request_row['played_at'] > 0): ?>
                         <?=date('F j, Y g:ia', $request_row['played_at']) ?>
                     <?php else: ?>
-                        <?=_('Not Played') ?>
+                        <?=__('Not Played') ?>
                     <?php endif; ?>
                     </td>
                     <td>
@@ -50,7 +50,7 @@ $assets
                     <td><?=$this->e($request_row['ip']) ?></td>
                     <td>
                     <?php if ($request_row['played_at'] == 0): ?>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:requests:delete', ['station' => $station->getId(), 'request_id' => $request_row['id'], 'csrf' => $csrf]) ?>"><?=_('Delete') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:requests:delete', ['station' => $station->getId(), 'request_id' => $request_row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     <?php else: ?>
 
                     <?php endif; ?>

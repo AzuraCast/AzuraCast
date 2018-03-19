@@ -5,8 +5,8 @@ $vue_data_model = [
     'np' => [
         'now_playing' => [
             'song' => [
-                'title' => _('Song Title'),
-                'artist' => _('Song Artist'),
+                'title' => __('Song Title'),
+                'artist' => __('Song Artist'),
                 'art' => $customization->getDefaultAlbumArtUrl(),
             ],
             'is_request' => false,
@@ -18,13 +18,13 @@ $vue_data_model = [
 ?>
 <div class="media media-left" id="station-nowplaying">
     <div class="pull-left p-r-10 p-t-5">
-        <a class="btn-audio" role="button" title="<?=_('Play/Pause') ?>" href="#" data-url="<?=$this->e($stream_url) ?>" <?php if ($autoplay): ?>data-autoplay="true"<?php endif; ?>>
+        <a class="btn-audio" role="button" title="<?=__('Play/Pause') ?>" href="#" data-url="<?=$this->e($stream_url) ?>" <?php if ($autoplay): ?>data-autoplay="true"<?php endif; ?>>
             <i class="zmdi zmdi-play"></i>
         </a>
     </div>
 <?php if (!$customization->hideAlbumArt()): ?>
     <div class="pull-left p-r-10" v-if="np.now_playing.song.art">
-        <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank"><img v-bind:src="np.now_playing.song.art" alt="<?=_('Album Cover') ?>" style="width: 50px; height: auto; border-radius: 5px;"></a>
+        <a v-bind:href="np.now_playing.song.art" data-fancybox target="_blank"><img v-bind:src="np.now_playing.song.art" alt="<?=__('Album Cover') ?>" style="width: 50px; height: auto; border-radius: 5px;"></a>
     </div>
 <?php endif; ?>
     <div class="media-body">

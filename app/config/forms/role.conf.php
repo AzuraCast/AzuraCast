@@ -12,7 +12,7 @@ $form_config = [
                 'name' => [
                     'text',
                     [
-                        'label' => _('Role Name'),
+                        'label' => __('Role Name'),
                         'class' => 'half-width',
                         'required' => true,
                     ]
@@ -22,13 +22,13 @@ $form_config = [
         ],
 
         'grp_global' => [
-            'legend' => _('System-Wide Permissions'),
+            'legend' => __('System-Wide Permissions'),
             'elements' => [
 
                 'actions_global' => [
                     'multiSelect',
                     [
-                        'label' => _('Actions'),
+                        'label' => __('Actions'),
                         'multiOptions' => $actions['global'],
                     ]
                 ],
@@ -41,13 +41,13 @@ $form_config = [
 
 foreach ($all_stations as $station) {
     $form_config['groups']['grp_station_' . $station['id']] = [
-        'legend' => _('Per-Station').': '.$station['name'],
+        'legend' => __('Per-Station').': '.$station['name'],
         'elements' => [
 
             'actions_' . $station['id'] => [
                 'multiSelect',
                 [
-                    'label' => _('Actions'),
+                    'label' => __('Actions'),
                     'multiOptions' => $actions['station'],
                 ]
             ],
@@ -62,7 +62,7 @@ $form_config['groups']['grp_submit'] = [
             'submit',
             [
                 'type' => 'submit',
-                'label' => _('Save Changes'),
+                'label' => __('Save Changes'),
                 'class' => 'btn btn-lg btn-primary',
             ]
         ],

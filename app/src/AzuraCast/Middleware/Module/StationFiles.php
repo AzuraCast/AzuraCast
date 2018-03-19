@@ -26,7 +26,7 @@ class StationFiles
         $backend = $request->getAttribute('station_backend');
 
         if (!$backend->supportsMedia()) {
-            throw new \App\Exception(_('This feature is not currently supported on this station.'));
+            throw new \App\Exception(__('This feature is not currently supported on this station.'));
         }
 
         $base_dir = $station->getRadioMediaDir();

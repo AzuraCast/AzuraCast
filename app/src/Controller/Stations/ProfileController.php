@@ -78,8 +78,8 @@ class ProfileController
         $np = [
             'now_playing' => [
                 'song' => [
-                    'title' => _('Song Title'),
-                    'artist' => _('Song Artist'),
+                    'title' => __('Song Title'),
+                    'artist' => __('Song Artist'),
                 ],
                 'is_request' => false,
                 'elapsed' => 0,
@@ -91,8 +91,8 @@ class ProfileController
             ],
             'playing_next' => [
                 'song' => [
-                    'title' => _('Song Title'),
-                    'artist' => _('Song Artist'),
+                    'title' => __('Song Title'),
+                    'artist' => __('Song Artist'),
                 ],
             ],
         ];

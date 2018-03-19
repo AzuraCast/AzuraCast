@@ -6,8 +6,8 @@ return [
         'path' => [
             'text',
             [
-                'label' => _('File Name'),
-                'description' => _('The relative path of the file in the station\'s media directory.'),
+                'label' => __('File Name'),
+                'description' => __('The relative path of the file in the station\'s media directory.'),
             ],
         ],
 
@@ -15,7 +15,7 @@ return [
             'submit',
             [
                 'type' => 'submit',
-                'label' => _('Save Changes'),
+                'label' => __('Save Changes'),
                 'class' => 'ui-button btn-lg btn-primary',
             ]
         ],

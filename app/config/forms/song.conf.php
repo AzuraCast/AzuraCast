@@ -5,13 +5,13 @@ return [
 
     'groups' => [
         'profile' => [
-            'legend' => _('Metadata'),
+            'legend' => __('Metadata'),
             'elements' => [
 
                 'text' => [
                     'text',
                     [
-                        'label' => _('Full Text'),
+                        'label' => __('Full Text'),
                         'description' => 'Typically in the form of "Artist - Title". Should not be edited.',
                         'class' => 'half-width',
                         'disabled' => 'disabled',
@@ -21,7 +21,7 @@ return [
                 'artist' => [
                     'text',
                     [
-                        'label' => _('Artist Name'),
+                        'label' => __('Artist Name'),
                         'class' => 'half-width',
                         'description' => 'For multiple artists, format should be "Artist 1, Artist 2"',
                     ]
@@ -30,7 +30,7 @@ return [
                 'title' => [
                     'text',
                     [
-                        'label' => _('Song Title'),
+                        'label' => __('Song Title'),
                         'class' => 'half-width',
                     ]
                 ],
@@ -44,7 +44,7 @@ return [
                     'submit',
                     [
                         'type' => 'submit',
-                        'label' => _('Save Changes'),
+                        'label' => __('Save Changes'),
                         'class' => 'btn btn-lg btn-primary',
                     ]
                 ],

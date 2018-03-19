@@ -1,4 +1,4 @@
-<?php $this->layout('main', ['title' => _('Listeners'), 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => __('Listeners'), 'manual' => true]) ?>
 
 <?php
 /** @var \AzuraCast\Assets $assets */
@@ -13,12 +13,12 @@ $assets
             <div class="card-header ch-alt">
                 <div class="row">
                     <div class="col-md-8">
-                        <h2><?=_('Listeners') ?></h2>
+                        <h2><?=__('Listeners') ?></h2>
                         <div><span id="listener-count">0</span> Unique</div>
                     </div>
                     <div class="col-md-4 text-right">
                         <a class="btn btn-default" id="reportrange" href="#">
-                            <i class="zmdi zmdi-calendar"></i> <span><?=_('Live Listeners') ?></span> <i class="caret"></i>
+                            <i class="zmdi zmdi-calendar"></i> <span><?=__('Live Listeners') ?></span> <i class="caret"></i>
                         </a>
                     </div>
                 </div>
@@ -26,17 +26,17 @@ $assets
             <div id="googlemap" style="height: 350px;">
                 <div class="card-body card-padding">
                     <?php if (empty($gmaps_api_key)): ?>
-                        <h4><?=_('Enable Google Maps API') ?></h4>
-                        <p><?=sprintf(_('To see a map of your listeners, provide a Google Maps API key. You can obtain one from the <a href="%s" target="_blank">Google Developer Console</a>. Make sure to enable the "Google Maps JavaScript API" as well.'), 'https://console.developers.google.com') ?></p>
+                        <h4><?=__('Enable Google Maps API') ?></h4>
+                        <p><?=sprintf(__('To see a map of your listeners, provide a Google Maps API key. You can obtain one from the <a href="%s" target="_blank">Google Developer Console</a>. Make sure to enable the "Google Maps JavaScript API" as well.'), 'https://console.developers.google.com') ?></p>
 
                         <form action="" method="post">
                             <div class="form-group" id="field_name">
-                                <label for="gmaps_api_key" class="control-label"><?=_('Google Maps API Key') ?>:</label>
+                                <label for="gmaps_api_key" class="control-label"><?=__('Google Maps API Key') ?>:</label>
                                 <div class="form-field">
                                     <input type="text" name="gmaps_api_key" class="form-control">
                                 </div>
 
-                                <input type="submit" value="<?=_('Save Changes') ?>" class="btn btn-lg btn-primary m-t-10">
+                                <input type="submit" value="<?=__('Save Changes') ?>" class="btn btn-lg btn-primary m-t-10">
                             </div>
                         </form>
                     <?php endif; ?>
@@ -45,10 +45,10 @@ $assets
             <table class="data-table table table-responsive table-striped" id="app-datatable">
                 <thead>
                     <tr>
-                        <th><?=_('IP') ?></th>
-                        <th><?=_('Time (sec)') ?></th>
-                        <th><?=_('User Agent') ?></th>
-                        <th><?=_('Location') ?></th>
+                        <th><?=__('IP') ?></th>
+                        <th><?=__('Time (sec)') ?></th>
+                        <th><?=__('User Agent') ?></th>
+                        <th><?=__('Location') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,10 +56,10 @@ $assets
                         <td>{{ listener.ip }}</td>
                         <td>{{ listener.connected_time }}</td>
                         <td>
-                            <span v-if="listener.is_mobile" title="<?=_('Mobile Device') ?>">
+                            <span v-if="listener.is_mobile" title="<?=__('Mobile Device') ?>">
                                 <i class="zmdi zmdi-smartphone"></i>
                             </span>
-                            <span v-else title="<?=_('Desktop Device') ?>">
+                            <span v-else title="<?=__('Desktop Device') ?>">
                                 <i class="zmdi zmdi-desktop-windows"></i>
                             </span>
                             {{ listener.user_agent }}
@@ -72,7 +72,7 @@ $assets
                                 {{ listener.location.message }}
                             </span>
                             <span v-else>
-                                <?=_('Unknown') ?>
+                                <?=__('Unknown') ?>
                             </span>
                         </td>
                     </tr>
@@ -89,7 +89,7 @@ function cb(start, end) {
     is_live = live_time.isSame(start, 'day');
 
     if (is_live) {
-        $('#reportrange span').html("<?=_('Live Listeners') ?>");
+        $('#reportrange span').html("<?=__('Live Listeners') ?>");
     } else {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     }
@@ -192,13 +192,13 @@ $(function() {
         endDate: live_time,
         opens: "left",
         ranges: {
-            "<?=_('Live Listeners') ?>": [moment(0), moment(0)],
-            "<?=_('Today') ?>": [moment(), moment()],
-            "<?=_('Yesterday') ?>": [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            "<?=_('Last 7 Days') ?>": [moment().subtract(6, 'days'), moment()],
-            "<?=_('Last 30 Days') ?>": [moment().subtract(29, 'days'), moment()],
-            "<?=_('This Month') ?>": [moment().startOf('month'), moment().endOf('month')],
-            "<?=_('Last Month') ?>": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            "<?=__('Live Listeners') ?>": [moment(0), moment(0)],
+            "<?=__('Today') ?>": [moment(), moment()],
+            "<?=__('Yesterday') ?>": [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            "<?=__('Last 7 Days') ?>": [moment().subtract(6, 'days'), moment()],
+            "<?=__('Last 30 Days') ?>": [moment().subtract(29, 'days'), moment()],
+            "<?=__('This Month') ?>": [moment().startOf('month'), moment().endOf('month')],
+            "<?=__('Last Month') ?>": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
     }, cb);
 

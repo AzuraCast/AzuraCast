@@ -57,7 +57,7 @@ class PlaylistsController
         $backend = $request->getAttribute('station_backend');
 
         if (!$backend->supportsMedia()) {
-            throw new \App\Exception(_('This feature is not currently supported on this station.'));
+            throw new \App\Exception(__('This feature is not currently supported on this station.'));
         }
 
         /** @var Entity\StationPlaylist[] $all_playlists */
@@ -76,13 +76,13 @@ class PlaylistsController
         $playlists = [];
 
         $schedule_days = [
-            1 => _('Monday'),
-            2 => _('Tuesday'),
-            3 => _('Wednesday'),
-            4 => _('Thursday'),
-            5 => _('Friday'),
-            6 => _('Saturday'),
-            7 => _('Sunday'),
+            1 => __('Monday'),
+            2 => __('Tuesday'),
+            3 => __('Wednesday'),
+            4 => __('Thursday'),
+            5 => __('Friday'),
+            6 => __('Saturday'),
+            7 => __('Sunday'),
         ];
         $schedule = [];
 
@@ -232,7 +232,7 @@ class PlaylistsController
             $this->em->flush();
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . sprintf(($id) ? _('%s updated.') : _('%s added.'), _('Playlist')) . '</b>', 'green');
+            $this->flash->alert('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Playlist')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
         }
@@ -242,7 +242,7 @@ class PlaylistsController
 
         return $view->renderToResponse($response, 'stations/playlists/edit', [
             'form' => $form,
-            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('Playlist'))
+            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Playlist'))
         ]);
     }
 
@@ -332,7 +332,7 @@ class PlaylistsController
             $this->em->persist($playlist);
         }
 
-        $this->flash->alert('<b>' . _('Existing playlist imported.') . '</b><br>' . sprintf(_('%d song(s) were imported into the playlist.'), count($matches)), 'blue');
+        $this->flash->alert('<b>' . __('Existing playlist imported.') . '</b><br>' . sprintf(__('%d song(s) were imported into the playlist.'), count($matches)), 'blue');
         return true;
     }
 
@@ -355,7 +355,7 @@ class PlaylistsController
         $this->em->flush();
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . sprintf(_('%s deleted.'), _('Playlist')) . '</b>', 'green');
+        $this->flash->alert('<b>' . sprintf(__('%s deleted.'), __('Playlist')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
     }

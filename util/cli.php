@@ -7,6 +7,10 @@ $di = require dirname(__DIR__).'/app/bootstrap.php';
 // Load app, to generate routes, etc.
 $di->get('app');
 
+// Placeholder locale functions
+$translator = new \Gettext\Translator();
+$translator->register();
+
 /** @var \Doctrine\ORM\EntityManager $em */
 $em = $di[\Doctrine\ORM\EntityManager::class];
 $db = $em->getConnection();
@@ -60,6 +64,8 @@ $cli->addCommands([
 
 // Other app-specific commands
 $cli->addCommands([
+    new \App\Console\Command\LocaleGenerate($di),
+    new \App\Console\Command\LocaleImport($di),
     new \AzuraCast\Console\Command\ClearCache($di),
     new \AzuraCast\Console\Command\RestartRadio($di),
     new \AzuraCast\Console\Command\Sync($di),

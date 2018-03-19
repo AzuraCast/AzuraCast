@@ -98,7 +98,7 @@ class ProfileController
             $this->em->persist($user);
             $this->em->flush();
 
-            $this->flash->alert(_('Profile saved!'), 'green');
+            $this->flash->alert(__('Profile saved!'), 'green');
 
             return $response->redirectToRoute('profile:index');
         }
@@ -109,7 +109,7 @@ class ProfileController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => _('Edit Profile')
+            'title' => __('Edit Profile')
         ]);
     }
 }

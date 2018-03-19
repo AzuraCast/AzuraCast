@@ -1,4 +1,4 @@
-<?php $this->layout('main', ['title' => _('Song Playback Timeline'), 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => __('Song Playback Timeline'), 'manual' => true]) ?>
 
 <?php
 /** @var \AzuraCast\Assets $assets */
@@ -8,11 +8,11 @@ $assets
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=_('Song Playback Timeline') ?></h2>
+        <h2><?=__('Song Playback Timeline') ?></h2>
 
         <ul class="actions">
             <li>
-                <a href="<?=$url->named('stations:reports:timeline', ['station' => $station->getId(), 'format' => 'csv']) ?>" title="<?=_('Download CSV') ?>">
+                <a href="<?=$url->named('stations:reports:timeline', ['station' => $station->getId(), 'format' => 'csv']) ?>" title="<?=__('Download CSV') ?>">
                     <i class="zmdi zmdi-download"></i>
                 </a>
             </li>
@@ -29,11 +29,11 @@ $assets
             </colgroup>
             <thead>
                 <tr>
-                    <th data-column-id="date_time"><?=_('Date/Time') ?></th>
-                    <th data-column-id="listeners"><?=_('Listeners') ?></th>
-                    <th data-column-id="delta"><?=_('Change') ?></th>
-                    <th data-column-id="song"><?=_('Song Title') ?></th>
-                    <th data-column-id="playlists"><?=_('Source') ?></th>
+                    <th data-column-id="date_time"><?=__('Date/Time') ?></th>
+                    <th data-column-id="listeners"><?=__('Listeners') ?></th>
+                    <th data-column-id="delta"><?=__('Change') ?></th>
+                    <th data-column-id="song"><?=__('Song Title') ?></th>
+                    <th data-column-id="playlists"><?=__('Source') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -62,11 +62,11 @@ $assets
                     </td>
                     <td>
                     <?php if (isset($song_row['request'])): ?>
-                        <?=sprintf(_('Request: %s'), date('D g:ia', $song_row['request']['timestamp'])) ?>
+                        <?=sprintf(__('Request: %s'), date('D g:ia', $song_row['request']['timestamp'])) ?>
                     <?php elseif (isset($song_row['playlist'])): ?>
-                        <?=sprintf(_('Playlist: %s'), $song_row['playlist']['name']) ?>
+                        <?=sprintf(__('Playlist: %s'), $song_row['playlist']['name']) ?>
                     <?php else: ?>
-                        <?=_('Live Broadcast') ?>
+                        <?=__('Live Broadcast') ?>
                     <?php endif; ?>
                     </td>
                 </tr>

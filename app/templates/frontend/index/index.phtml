@@ -1,4 +1,4 @@
-<?php $this->layout('main', ['title' => _('Dashboard'), 'manual' => true]); ?>
+<?php $this->layout('main', ['title' => __('Dashboard'), 'manual' => true]); ?>
 
 <?php
 /** @var \AzuraCast\Customization $customization */
@@ -11,14 +11,14 @@ $assets
 ?>
 
 <div class="block-header">
-    <h2><?=_('Dashboard') ?></h2>
+    <h2><?=__('Dashboard') ?></h2>
 </div>
 
 <div class="row">
     <div class="col-sm-6">
         <section class="card" role="region">
             <div class="card-header ch-alt">
-                <h2><?=_('Listeners Across All Stations') ?></h2>
+                <h2><?=__('Listeners Across All Stations') ?></h2>
             </div>
             <div class="card-body card-padding-sm">
                 <div id="network_chart" style="height: 250px;"></div>
@@ -28,7 +28,7 @@ $assets
     <div class="col-sm-6">
         <section class="card" role="region">
             <div class="card-header ch-alt">
-                <h2><?=_('Listeners Per Station') ?></h2>
+                <h2><?=__('Listeners Per Station') ?></h2>
             </div>
             <div class="card-body card-padding-sm">
                 <div id="station_chart" style="height: 250px;"></div>
@@ -41,11 +41,11 @@ $assets
     <div class="col-sm-12">
         <section class="card" role="region">
             <div class="card-header ch-alt">
-                <h2><?=_('Station Overview') ?></h2>
+                <h2><?=__('Station Overview') ?></h2>
 
                 <ul class="actions">
                 <?php if ($acl->userAllowed($user, 'administer stations')): ?>
-                    <li><a class="" title="<?=sprintf(_('Add %s'), _('Station')) ?>" href="<?=$url->named('admin:stations:add') ?>"><i class="zmdi zmdi-plus"></i></a></li>
+                    <li><a class="" title="<?=sprintf(__('Add %s'), __('Station')) ?>" href="<?=$url->named('admin:stations:add') ?>"><i class="zmdi zmdi-plus"></i></a></li>
                 <?php endif; ?>
                 </ul>
             </div>
@@ -61,16 +61,16 @@ $assets
                     <thead>
                         <tr>
                             <th>&nbsp;</th>
-                            <th><?=_('Station Name') ?></th>
-                            <th class="text-center"><?=_('Listeners') ?></th>
-                            <th><?=_('Now Playing') ?></th>
-                            <th><?=_('Options') ?></th>
+                            <th><?=__('Station Name') ?></th>
+                            <th class="text-center"><?=__('Listeners') ?></th>
+                            <th><?=__('Now Playing') ?></th>
+                            <th><?=__('Options') ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="input" v-bind:id="'station_' + row.station.id" v-for="row in stations" >
                             <td class="text-center">
-                                <a class="btn-audio" role="button" title="<?=_('Play/Pause') ?>" href="#" v-bind:data-url="row.stream_url">
+                                <a class="btn-audio" role="button" title="<?=__('Play/Pause') ?>" href="#" v-bind:data-url="row.stream_url">
                                     <i class="zmdi zmdi-play"></i>
                                 </a>
                             </td>
@@ -85,7 +85,7 @@ $assets
                                 <span class="nowplaying-artist">{{ row.np.now_playing.song.artist }}</span>
                             </td>
                             <td>
-                                <a class="btn btn-primary" role="button" v-bind:href="row.manage_url"><?=_('Manage') ?></a>
+                                <a class="btn btn-primary" role="button" v-bind:href="row.manage_url"><?=__('Manage') ?></a>
                             </td>
                         </tr>
                     </tbody>
@@ -132,7 +132,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: <?=$this->escapeJs(_('Listeners')) ?>
+                text: <?=$this->escapeJs(__('Listeners')) ?>
             },
             min: 0
         },
@@ -170,7 +170,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: <?=$this->escapeJs(_('Listeners')) ?>
+                text: <?=$this->escapeJs(__('Listeners')) ?>
             },
             min: 0
         },

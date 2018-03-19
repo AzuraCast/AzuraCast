@@ -56,7 +56,7 @@ class AutomationController
             $this->em->persist($station);
             $this->em->flush();
 
-            $this->flash->alert(_('Changes saved.'), 'green');
+            $this->flash->alert(__('Changes saved.'), 'green');
 
             return $response->redirectHere();
         }
@@ -76,10 +76,10 @@ class AutomationController
 
         try {
             if ($this->sync_task->runStation($station, true)) {
-                $this->flash->alert('<b>' . _('Automated assignment complete!') . '</b>', 'green');
+                $this->flash->alert('<b>' . __('Automated assignment complete!') . '</b>', 'green');
             }
         } catch (\Exception $e) {
-            $this->flash->alert('<b>' . _('Automated assignment error') . ':</b><br>' . $e->getMessage(), 'red');
+            $this->flash->alert('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(), 'red');
         }
 
         return $response->redirectToRoute('stations:automation:index', ['station' => $station_id]);

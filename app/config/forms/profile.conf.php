@@ -1,19 +1,19 @@
 <?php
 $locale_select = $settings['locale']['supported'];
-$locale_select = ['default' => _('Use Browser Default')] + $locale_select;
+$locale_select = ['default' => __('Use Browser Default')] + $locale_select;
 
 return [
     'method' => 'post',
     'groups' => [
 
         'account_info' => [
-            'legend' => _('Account Information'),
+            'legend' => __('Account Information'),
             'elements' => [
 
                 'name' => [
                     'text',
                     [
-                        'label' => _('Name'),
+                        'label' => __('Name'),
                         'class' => 'half-width',
                     ]
                 ],
@@ -21,7 +21,7 @@ return [
                 'email' => [
                     'text',
                     [
-                        'label' => _('E-mail Address'),
+                        'label' => __('E-mail Address'),
                         'class' => 'half-width',
                         'required' => true,
                         'autocomplete' => 'off',
@@ -32,14 +32,14 @@ return [
         ],
 
         'reset_password' => [
-            'legend' => _('Reset Password'),
-            'description' => _('Leave these fields blank to continue using your current password.'),
+            'legend' => __('Reset Password'),
+            'description' => __('Leave these fields blank to continue using your current password.'),
             'elements' => [
 
                 'password' => [
                     'password',
                     [
-                        'label' => _('Current Password'),
+                        'label' => __('Current Password'),
                         'autocomplete' => 'off',
                         'filter' => function($val) {
                             return '';
@@ -53,7 +53,7 @@ return [
                 'new_password' => [
                     'password',
                     [
-                        'label' => _('New Password'),
+                        'label' => __('New Password'),
                         'autocomplete' => 'off',
                         'class' => 'strength',
                         'confirm' => 'new_password_confirm',
@@ -63,7 +63,7 @@ return [
                 'new_password_confirm' => [
                     'password',
                     [
-                        'label' => _('Confirm New Password'),
+                        'label' => __('Confirm New Password'),
                         'autocomplete' => 'off',
                     ]
                 ],
@@ -72,14 +72,14 @@ return [
         ],
 
         'customization' => [
-            'legend' => _('Customization'),
+            'legend' => __('Customization'),
             'elements' => [
 
                 'timezone' => [
                     'select',
                     [
-                        'label' => _('Time Zone'),
-                        'description' => _('All times displayed on the site will be based on this time zone.') . '<br>' . sprintf(_('Current server time is <b>%s</b>.'),
+                        'label' => __('Time Zone'),
+                        'description' => __('All times displayed on the site will be based on this time zone.') . '<br>' . sprintf(__('Current server time is <b>%s</b>.'),
                                 date('g:ia')),
                         'options' => \App\Timezone::fetchSelect(),
                         'default' => 'UTC',
@@ -89,7 +89,7 @@ return [
                 'locale' => [
                     'radio',
                     [
-                        'label' => _('Language'),
+                        'label' => __('Language'),
                         'options' => $locale_select,
                         'default' => 'default',
                     ]
@@ -98,7 +98,7 @@ return [
                 'theme' => [
                     'radio',
                     [
-                        'label' => _('Site Theme'),
+                        'label' => __('Site Theme'),
                         'options' => $settings['themes']['available'],
                         'default' => $settings['themes']['default'],
                     ]
@@ -113,7 +113,7 @@ return [
                     'submit',
                     [
                         'type' => 'submit',
-                        'label' => _('Save Changes'),
+                        'label' => __('Save Changes'),
                         'class' => 'btn btn-lg btn-primary',
                     ]
                 ],

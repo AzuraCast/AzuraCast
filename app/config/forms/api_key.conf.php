@@ -7,8 +7,8 @@ return [
         'comment' => [
             'text',
             [
-                'label' => _('Comments'),
-                'description' => _('Describe the use-case for this API key for future reference.'),
+                'label' => __('Comments'),
+                'description' => __('Describe the use-case for this API key for future reference.'),
                 'class' => 'half-width',
             ]
         ],
@@ -17,7 +17,7 @@ return [
             'submit',
             [
                 'type' => 'submit',
-                'label' => _('Save Changes'),
+                'label' => __('Save Changes'),
                 'class' => 'btn btn-lg btn-primary',
             ]
         ],

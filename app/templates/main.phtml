@@ -74,19 +74,19 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                 <?=$this->fetch('partials/radio_controls') ?>
 
                 <li class="dropdown">
-                    <a data-toggle="dropdown" href="" aria-label="menu" title="<?=_('Open or Close Dropdown Menu') ?>"><i class="him-icon zmdi zmdi-more-vert"></i></a>
+                    <a data-toggle="dropdown" href="" aria-label="menu" title="<?=__('Open or Close Dropdown Menu') ?>"><i class="him-icon zmdi zmdi-more-vert"></i></a>
                     <ul class="dropdown-menu dm-icon pull-right">
-                        <li><a href="<?=$url->named('home') ?>"><i class="zmdi zmdi-home"></i> <?=_('Dashboard') ?></a></li>
+                        <li><a href="<?=$url->named('home') ?>"><i class="zmdi zmdi-home"></i> <?=__('Dashboard') ?></a></li>
                         <?php if ($acl->userAllowed($user, 'view administration')): ?>
-                            <li><a href="<?=$url->named('admin:index:index') ?>"><i class="zmdi zmdi-settings"></i> <?=_('System Administration') ?></a></li>
+                            <li><a href="<?=$url->named('admin:index:index') ?>"><i class="zmdi zmdi-settings"></i> <?=__('System Administration') ?></a></li>
                         <?php endif; ?>
-                        <li><a href="<?=$url->named('profile:index') ?>"><i class="zmdi zmdi-account"></i> <?=_('My Account') ?></a></li>
-                        <li><a href="<?=$url->named('api_keys:index') ?>"><i class="zmdi zmdi-key"></i> <?=_('My API Keys') ?></a></li>
+                        <li><a href="<?=$url->named('profile:index') ?>"><i class="zmdi zmdi-account"></i> <?=__('My Account') ?></a></li>
+                        <li><a href="<?=$url->named('api_keys:index') ?>"><i class="zmdi zmdi-key"></i> <?=__('My API Keys') ?></a></li>
                         <li class="divider">&nbsp;</li>
                     <?php if ($auth->isMasqueraded()): ?>
-                        <li><a href="<?=$url->named('account:endmasquerade') ?>"><i class="zmdi zmdi-power"></i> <?=_('End Session') ?></a></li>
+                        <li><a href="<?=$url->named('account:endmasquerade') ?>"><i class="zmdi zmdi-power"></i> <?=__('End Session') ?></a></li>
                     <?php else: ?>
-                        <li><a href="<?=$url->named('account:logout') ?>"><i class="zmdi zmdi-power"></i> <?=_('Sign Out') ?></a></li>
+                        <li><a href="<?=$url->named('account:logout') ?>"><i class="zmdi zmdi-power"></i> <?=__('Sign Out') ?></a></li>
                     <?php endif; ?>
                     </ul>
                 </li>
@@ -126,7 +126,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 </section>
 
 <footer id="footer" <?php if (empty($sidebar)): ?>class="footer-alt"<?php endif; ?> role="contentinfo">
-    <?=sprintf(_('Powered by %s'), '<a href="https://github.com/AzuraCast/AzuraCast" target="_blank">'.$app_settings['name'].'</a>'.' '.\AzuraCast\Version::getVersionText().' '.(APP_INSIDE_DOCKER ? '(Docker)' : '(Traditional)')) ?><br>
+    <?=sprintf(__('Powered by %s'), '<a href="https://github.com/AzuraCast/AzuraCast" target="_blank">'.$app_settings['name'].'</a>'.' '.\AzuraCast\Version::getVersionText().' '.(APP_INSIDE_DOCKER ? '(Docker)' : '(Traditional)')) ?><br>
     PHP <?=\PHP_VERSION ?>, SlimPHP 3
 </footer>
 

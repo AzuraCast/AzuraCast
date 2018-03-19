@@ -145,7 +145,7 @@ class StationWebhook
     public function getTriggerNames(): array
     {
         if (empty($this->triggers)) {
-            return [_('Default')];
+            return [__('Default')];
         }
 
         $trigger_names = [];

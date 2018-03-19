@@ -1,19 +1,19 @@
-<?php $this->layout('main', ['title' => _('Mount Points'), 'manual' => true]) ?>
+<?php $this->layout('main', ['title' => __('Mount Points'), 'manual' => true]) ?>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=_('Mount Points') ?></h2>
+        <h2><?=__('Mount Points') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(_('Add %s'), _('Mount Point')) ?>" href="<?=$url->named('stations:mounts:add', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('Mount Point')) ?>" href="<?=$url->named('stations:mounts:add', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div class="card-body card-padding p-b-0">
-        <p><?=_('Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.') ?></p>
+        <p><?=__('Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.') ?></p>
 
         <?php if ($frontend_type === 'remote' && count($mounts) == 0): ?>
-        <p><?=_('Ready to get started using mount points on your remote station? Click the button below to automatically create your first mount based on your existing settings.') ?></p>
+        <p><?=__('Ready to get started using mount points on your remote station? Click the button below to automatically create your first mount based on your existing settings.') ?></p>
 
         <div class="buttons">
-            <a href="<?=$url->named('stations:mounts:migrate', ['station' => $station->getId()]) ?>" class="btn btn-primary"><?=_('Migrate Settings') ?></a>
+            <a href="<?=$url->named('stations:mounts:migrate', ['station' => $station->getId()]) ?>" class="btn btn-primary"><?=__('Migrate Settings') ?></a>
         </div>
         <?php endif; ?>
     </div>
@@ -26,9 +26,9 @@
             </colgroup>
             <thead>
             <tr>
-                <th><?=_('Actions') ?></th>
-                <th><?=_('Mount Point') ?></th>
-                <th><?=_('AutoDJ') ?></th>
+                <th><?=__('Actions') ?></th>
+                <th><?=__('Mount Point') ?></th>
+                <th><?=__('AutoDJ') ?></th>
             </tr>
             </thead>
             <tbody>
@@ -36,8 +36,8 @@
                 <?php /** @var \Entity\StationMount $row */ ?>
                 <tr class="vertical-align-middle">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:mounts:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=_('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:mounts:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=_('Delete') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:mounts:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:mounts:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </td>
                     <td>
                     <?php if ($frontend_type === 'remote'): ?>
@@ -46,14 +46,14 @@
                         <big><a href="<?=$this->e($frontend->getUrlForMount($row->getName())) ?>" target="_blank"><?=$this->e($row->getName()) ?></a></big>
                     <?php endif; ?>
                     <?php if ($row->getIsDefault()): ?>
-                        <br><span class="label label-success"><?=_('Default Mount') ?></span>
+                        <br><span class="label label-success"><?=__('Default Mount') ?></span>
                     <?php endif; ?>
                     </td>
                     <td>
                     <?php if ($row->getEnableAutodj()): ?>
-                        <?=_('Enabled') ?> - <?=(int)$row->getAutodjBitrate() ?>kbps <?=strtoupper($this->e($row->getAutodjFormat())) ?>
+                        <?=__('Enabled') ?> - <?=(int)$row->getAutodjBitrate() ?>kbps <?=strtoupper($this->e($row->getAutodjFormat())) ?>
                     <?php else: ?>
-                        <?=_('Disabled') ?>
+                        <?=__('Disabled') ?>
                     <?php endif; ?>
                     </td>
                 </tr>

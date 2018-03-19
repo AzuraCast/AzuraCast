@@ -69,7 +69,7 @@ class WebhooksController
         }
 
         if (!isset($this->form_configs[$type])) {
-            throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('Web Hook')));
+            throw new \App\Exception\NotFound(sprintf(__('%s not found.'), __('Web Hook')));
         }
 
         $form_config = $this->form_configs[$type];
@@ -89,7 +89,7 @@ class WebhooksController
 
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . sprintf(_('%s added.'), _('Web Hook')) . '</b>', 'green');
+            $this->flash->alert('<b>' . sprintf(__('%s added.'), __('Web Hook')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:webhooks:index', ['station' => $station_id]);
         }
@@ -97,7 +97,7 @@ class WebhooksController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => sprintf(_('Add %s'), _('Web Hook'))
+            'title' => sprintf(__('Add %s'), __('Web Hook'))
         ]);
     }
 
@@ -115,7 +115,7 @@ class WebhooksController
         ]);
 
         if (!($record instanceof Entity\StationWebhook)) {
-            throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('Web Hook')));
+            throw new \App\Exception\NotFound(sprintf(__('%s not found.'), __('Web Hook')));
         }
 
         $webhook_type = $record->getType();
@@ -133,7 +133,7 @@ class WebhooksController
 
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . sprintf(_('%s updated.'), _('Web Hook')) . '</b>', 'green');
+            $this->flash->alert('<b>' . sprintf(__('%s updated.'), __('Web Hook')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:webhooks:index', ['station' => $station_id]);
         }
@@ -144,7 +144,7 @@ class WebhooksController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => sprintf(_('Edit %s'), _('Web Hook'))
+            'title' => sprintf(__('Edit %s'), __('Web Hook'))
         ]);
     }
 
@@ -161,14 +161,14 @@ class WebhooksController
         ]);
 
         if (!($record instanceof Entity\StationWebhook)) {
-            throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('Web Hook')));
+            throw new \App\Exception\NotFound(sprintf(__('%s not found.'), __('Web Hook')));
         }
 
         $new_status = $record->toggleEnabled();
         $this->em->flush();
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . sprintf(($new_status) ? _('%s enabled.') : _('%s disabled.'), _('Web Hook')) . '</b>', 'green');
+        $this->flash->alert('<b>' . sprintf(($new_status) ? __('%s enabled.') : __('%s disabled.'), __('Web Hook')) . '</b>', 'green');
         return $response->redirectToRoute('stations:webhooks:index', ['station' => $station_id]);
     }
 
@@ -190,7 +190,7 @@ class WebhooksController
             $this->em->refresh($station);
         }
 
-        $this->flash->alert('<b>' . sprintf(_('%s deleted.'), _('Web Hook')) . '</b>', 'green');
+        $this->flash->alert('<b>' . sprintf(__('%s deleted.'), __('Web Hook')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:webhooks:index', ['station' => $station_id]);
     }

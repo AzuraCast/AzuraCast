@@ -25,7 +25,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: <?=$this->escapeJs(_('Listeners')) ?>
+                text: <?=$this->escapeJs(__('Listeners')) ?>
             },
             min: 0
         },
@@ -53,15 +53,15 @@ $(function () {
         ],
         
         series: [{
-            name: <?=$this->escapeJs(_('Daily Listener Range')) ?>,
+            name: <?=$this->escapeJs(__('Daily Listener Range')) ?>,
             type: 'arearange',
             data: <?=$daily_ranges ?>
         }, {
-            name: <?=$this->escapeJs(_('Hourly Average Listeners')) ?>,
+            name: <?=$this->escapeJs(__('Hourly Average Listeners')) ?>,
             type: 'spline',
             data: <?=$hourly_averages ?>
         }, {
-            name: <?=$this->escapeJs(_('Daily Average Listeners')) ?>,
+            name: <?=$this->escapeJs(__('Daily Average Listeners')) ?>,
             type: 'spline',
             data: <?=$daily_averages ?>
         }]

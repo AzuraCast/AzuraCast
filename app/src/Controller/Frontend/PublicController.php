@@ -35,7 +35,7 @@ class PublicController
         $station = $request->getAttribute('station');
 
         if (!$station->getEnablePublicPage()) {
-            throw new \App\Exception(_('Station not found!'));
+            throw new \App\Exception(__('Station not found!'));
         }
 
         /** @var FrontendAbstract $frontend_adapter */

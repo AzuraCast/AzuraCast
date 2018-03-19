@@ -61,7 +61,7 @@ class ErrorHandler
 
         if ($e instanceof \App\Exception\NotLoggedIn) {
             // Redirect to login page for not-logged-in users.
-            $this->flash->addMessage(_('You must be logged in to access this page.'), 'red');
+            $this->flash->addMessage(__('You must be logged in to access this page.'), 'red');
 
             // Set referrer for login redirection.
             $session = $this->session->get('referrer_login');
@@ -72,7 +72,7 @@ class ErrorHandler
 
         if ($e instanceof \App\Exception\PermissionDenied) {
             // Bounce back to homepage for permission-denied users.
-            $this->flash->addMessage(_('You do not have permission to access this portion of the site.'),
+            $this->flash->addMessage(__('You do not have permission to access this portion of the site.'),
                 \App\Flash::ERROR);
 
             return $res

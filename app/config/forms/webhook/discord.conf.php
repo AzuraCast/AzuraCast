@@ -8,14 +8,14 @@ return [
     'groups' => [
 
         'api_info' => [
-            'legend' => _('Discord API Details'),
+            'legend' => __('Discord API Details'),
             'elements' => [
 
                 'webhook_url' => [
                     'url',
                     [
-                        'label' => _('Discord Web Hook URL'),
-                        'description' => _('This URL is provided within the Discord application.'),
+                        'label' => __('Discord Web Hook URL'),
+                        'description' => __('This URL is provided within the Discord application.'),
                         'belongsTo' => 'config',
                         'required' => true,
                     ]
@@ -24,7 +24,7 @@ return [
                 'triggers' => [
                     'multiCheckbox',
                     [
-                        'label' => _('Web Hook Triggers'),
+                        'label' => __('Web Hook Triggers'),
                         'options' => array_diff_key(\AzuraCast\Webhook\Dispatcher::getTriggers(), ['listener_lost' => 1, 'listener_gained' => 1]),
                         'required' => true,
                     ]
@@ -34,24 +34,24 @@ return [
         ],
 
         'message' => [
-            'legend' => _('Customize Discord Message'),
-            'description' => sprintf(_('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'), $url->named('api:nowplaying:index')),
+            'legend' => __('Customize Discord Message'),
+            'description' => sprintf(__('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'), $url->named('api:nowplaying:index')),
 
             'elements' => [
 
                 'content' => [
                     'text',
                     [
-                        'label' => _('Main Message Content'),
+                        'label' => __('Main Message Content'),
                         'belongsTo' => 'config',
-                        'default' => sprintf(_('Now playing on %s:'), '{{ station.name }}'),
+                        'default' => sprintf(__('Now playing on %s:'), '{{ station.name }}'),
                     ]
                 ],
 
                 'title' => [
                     'text',
                     [
-                        'label' => _('Title'),
+                        'label' => __('Title'),
                         'belongsTo' => 'config',
                         'default' => '{{ now_playing.song.title }}',
                     ]
@@ -60,7 +60,7 @@ return [
                 'description' => [
                     'text',
                     [
-                        'label' => _('Description'),
+                        'label' => __('Description'),
                         'belongsTo' => 'config',
                         'default' => '{{ now_playing.song.artist }}',
                     ]
@@ -69,7 +69,7 @@ return [
                 'url' => [
                     'text',
                     [
-                        'label' => _('URL'),
+                        'label' => __('URL'),
                         'belongsTo' => 'config',
                         'default' => '{{ station.listen_url }}',
                     ]
@@ -78,7 +78,7 @@ return [
                 'author' => [
                     'text',
                     [
-                        'label' => _('Author Name'),
+                        'label' => __('Author Name'),
                         'belongsTo' => 'config',
                         'default' => '{{ live.streamer_name }}',
                     ]
@@ -87,7 +87,7 @@ return [
                 'thumbnail' => [
                     'text',
                     [
-                        'label' => _('Thumbnail Image URL'),
+                        'label' => __('Thumbnail Image URL'),
                         'belongsTo' => 'config',
                         'default' => '{{ now_playing.song.art }}',
                     ]
@@ -96,9 +96,9 @@ return [
                 'footer' => [
                     'text',
                     [
-                        'label' => _('Footer Text'),
+                        'label' => __('Footer Text'),
                         'belongsTo' => 'config',
-                        'default' => sprintf(_('Powered by %s'), $app_settings['name']),
+                        'default' => sprintf(__('Powered by %s'), $app_settings['name']),
                     ]
                 ],
 
@@ -112,7 +112,7 @@ return [
                     'submit',
                     [
                         'type' => 'submit',
-                        'label' => _('Save Changes'),
+                        'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
                     ]
                 ],

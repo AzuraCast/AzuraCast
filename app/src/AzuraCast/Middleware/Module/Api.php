@@ -61,10 +61,10 @@ class Api
         try {
             return $next($request, $response);
         } catch(\App\Exception\PermissionDenied $e) {
-            $api_response = new Entity\Api\Error(403, _('You do not have permission to access this portion of the site.'));
+            $api_response = new Entity\Api\Error(403, __('You do not have permission to access this portion of the site.'));
             return $response->withStatus(403)->withJson($api_response);
         } catch (\App\Exception\NotLoggedIn $e) {
-            $api_response = new Entity\Api\Error(403, _('You must be logged in to access this page.'));
+            $api_response = new Entity\Api\Error(403, __('You must be logged in to access this page.'));
             return $response->withStatus(403)->withJson($api_response);
         } catch(\Exception $e) {
             $api_response = new Entity\Api\Error(

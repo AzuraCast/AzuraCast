@@ -109,7 +109,7 @@ class FilesController
         ]);
 
         if (!($media instanceof Entity\StationMedia)) {
-            throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('Media')));
+            throw new \App\Exception\NotFound(sprintf(__('%s not found.'), __('Media')));
         }
 
         $form = new \AzuraForms\Form($this->edit_form_config);
@@ -151,7 +151,7 @@ class FilesController
             $this->em->persist($media);
             $this->em->flush();
 
-            $this->flash->alert('<b>' . sprintf(_('%s updated.'), _('Media')) . '</b>', 'green');
+            $this->flash->alert('<b>' . sprintf(__('%s updated.'), __('Media')) . '</b>', 'green');
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
             return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
@@ -163,7 +163,7 @@ class FilesController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' =>sprintf(_('Edit %s'), _('Media'))
+            'title' =>sprintf(__('Edit %s'), __('Media'))
         ]);
     }
 
@@ -207,7 +207,7 @@ class FilesController
                 $path = $new_path;
             }
 
-            $this->flash->alert('<b>' . _('File renamed!') . '</b>', 'green');
+            $this->flash->alert('<b>' . __('File renamed!') . '</b>', 'green');
 
             $file_dir = (dirname($path) === '.') ? '' : dirname($path);
             return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
@@ -219,7 +219,7 @@ class FilesController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => _('Rename File/Directory')
+            'title' => __('Rename File/Directory')
         ]);
     }
 
@@ -281,11 +281,11 @@ class FilesController
                 $short = ltrim(str_replace($station->getRadioMediaDir(), '', $i), '/');
 
                 if (is_dir($i)) {
-                    $media = ['name' => _('Directory'), 'playlists' => [], 'is_playable' => false];
+                    $media = ['name' => __('Directory'), 'playlists' => [], 'is_playable' => false];
                 } elseif (isset($media_in_dir[$short])) {
                     $media = $media_in_dir[$short];
                 } else {
-                    $media = ['name' => _('File Not Processed'), 'playlists' => [], 'is_playable' => false];
+                    $media = ['name' => __('File Not Processed'), 'playlists' => [], 'is_playable' => false];
                 }
 
                 $stat = stat($i);

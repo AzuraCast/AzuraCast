@@ -69,7 +69,7 @@ class ApiKeysController
             $record = $this->record_repo->findOneBy(['id' => $id, 'user_id' => $user->getId()]);
 
             if (!($record instanceof Entity\ApiKey)) {
-                throw new NotFound(sprintf(_('%s not found.'), _('API Key')));
+                throw new NotFound(sprintf(__('%s not found.'), __('API Key')));
             }
 
             $form->populate($this->record_repo->toArray($record, true, true));
@@ -100,15 +100,15 @@ class ApiKeysController
                 ]);
             }
 
-            $this->flash->alert(sprintf(_('%s updated.'), _('API Key')), 'green');
+            $this->flash->alert(sprintf(__('%s updated.'), __('API Key')), 'green');
             return $response->redirectToRoute('api_keys:index');
         }
 
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'header' => _('My Account'),
-            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('API Key'))
+            'header' => __('My Account'),
+            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('API Key'))
         ]);
     }
 
@@ -128,7 +128,7 @@ class ApiKeysController
         $this->em->flush();
         $this->em->refresh($user);
 
-        $this->flash->alert(sprintf(_('%s deleted.'), _('API Key')), 'green');
+        $this->flash->alert(sprintf(__('%s deleted.'), __('API Key')), 'green');
 
         return $response->redirectToRoute('api_keys:index');
     }

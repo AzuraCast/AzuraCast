@@ -6,13 +6,13 @@ return [
     'groups' => [
 
         'profile' => [
-            'legend' => _('New Station Details'),
+            'legend' => __('New Station Details'),
             'elements' => [
 
                 'name' => [
                     'text',
                     [
-                        'label' => _('Station Name'),
+                        'label' => __('Station Name'),
                         'class' => 'half-width',
                         'required' => true,
                     ]
@@ -21,7 +21,7 @@ return [
                 'description' => [
                     'textarea',
                     [
-                        'label' => _('Station Description'),
+                        'label' => __('Station Description'),
                         'class' => 'full-width full-height',
                     ]
                 ],
@@ -30,18 +30,18 @@ return [
         ],
 
         'cloning' => [
-            'legend' => _('Customize Station Cloning'),
+            'legend' => __('Customize Station Cloning'),
             'elements' => [
 
                 'clone_media' => [
                     'radio',
                     [
-                        'label' => _('Copy Media?'),
-                        'description' => _('Choose how media should be duplicated from the old station.'),
+                        'label' => __('Copy Media?'),
+                        'description' => __('Choose how media should be duplicated from the old station.'),
                         'options' => [
-                            'none' => _('Do not share or copy media between the stations'),
-                            'share' => _('Share the same folder on disk between the stations'),
-                            'copy' => _('Copy the existing station\'s media to the new station'),
+                            'none' => __('Do not share or copy media between the stations'),
+                            'share' => __('Share the same folder on disk between the stations'),
+                            'copy' => __('Copy the existing station\'s media to the new station'),
                         ],
                         'default' => 'none',
                     ]
@@ -50,10 +50,10 @@ return [
                 'clone_playlists' => [
                     'radio',
                     [
-                        'label' => _('Copy Playlists?'),
+                        'label' => __('Copy Playlists?'),
                         'options' => [
-                            0 => _('No'),
-                            1 => _('Yes'),
+                            0 => __('No'),
+                            1 => __('Yes'),
                         ],
                         'default' => 0,
                     ]
@@ -62,10 +62,10 @@ return [
                 'clone_streamers' => [
                     'radio',
                     [
-                        'label' => _('Copy Streamer/DJ Accounts?'),
+                        'label' => __('Copy Streamer/DJ Accounts?'),
                         'options' => [
-                            0 => _('No'),
-                            1 => _('Yes'),
+                            0 => __('No'),
+                            1 => __('Yes'),
                         ],
                         'default' => 0,
                     ]
@@ -74,11 +74,11 @@ return [
                 'clone_permissions' => [
                     'radio',
                     [
-                        'label' => _('Copy Permissions?'),
-                        'description' => _('Selecting "Yes" will assign any users with permissions to the current station to have permissions to the new one.'),
+                        'label' => __('Copy Permissions?'),
+                        'description' => __('Selecting "Yes" will assign any users with permissions to the current station to have permissions to the new one.'),
                         'options' => [
-                            0 => _('No'),
-                            1 => _('Yes'),
+                            0 => __('No'),
+                            1 => __('Yes'),
                         ],
                         'default' => 0,
                     ]
@@ -93,7 +93,7 @@ return [
                     'submit',
                     [
                         'type' => 'submit',
-                        'label' => _('Create New Station'),
+                        'label' => __('Create New Station'),
                         'class' => 'btn btn-lg btn-primary',
                     ]
                 ],

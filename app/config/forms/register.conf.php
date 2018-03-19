@@ -4,13 +4,13 @@ return [
     'groups' => [
 
         'account' => [
-            'legend' => _('Account Information'),
+            'legend' => __('Account Information'),
             'elements' => [
 
                 'username' => [
                     'text',
                     [
-                        'label' => _('E-mail Address'),
+                        'label' => __('E-mail Address'),
                         'class' => 'half-width',
                         'required' => true,
                         'validators' => ['EmailAddress'],
@@ -20,7 +20,7 @@ return [
                 'password' => [
                     'password',
                     [
-                        'label' => _('Password'),
+                        'label' => __('Password'),
                         'required' => true,
                     ]
                 ],
@@ -34,7 +34,7 @@ return [
                     'submit',
                     [
                         'type' => 'submit',
-                        'label' => _('Create Account'),
+                        'label' => __('Create Account'),
                         'class' => 'btn btn-lg btn-primary',
                     ]
                 ],

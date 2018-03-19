@@ -15,14 +15,14 @@
     <li class="menu-info">
         <a class="api-call" href="<?=$url->named('api:stations:restart', ['station' => $station->getId()]) ?>">
             <i class="zmdi zmdi-refresh-sync"></i>
-            <?=_('<b>Ready to Broadcast?</b><br>Click to Start Station') ?>
+            <?=__('<b>Ready to Broadcast?</b><br>Click to Start Station') ?>
         </a>
     </li>
     <?php elseif ($station->getNeedsRestart()): ?>
     <li class="menu-alert">
         <a class="api-call" href="<?=$url->named('api:stations:restart', ['station' => $station->getId()]) ?>">
             <i class="zmdi zmdi-refresh-sync-alert"></i>
-            <?=_('<b>Apply Pending Changes</b><br>Click to Restart Station') ?>
+            <?=__('<b>Apply Pending Changes</b><br>Click to Restart Station') ?>
         </a>
     </li>
     <?php endif; ?>
@@ -30,57 +30,57 @@
 <?php endif; ?>
 
 <?php if ($station->getEnablePublicPage()): ?>
-    <li><a href="<?=$url->named('public:index', ['station' => $station->getShortName()]) ?>" target="_blank"><i class="zmdi zmdi-globe"></i> <?=_('Public Page') ?></a></li>
+    <li><a href="<?=$url->named('public:index', ['station' => $station->getShortName()]) ?>" target="_blank"><i class="zmdi zmdi-globe"></i> <?=__('Public Page') ?></a></li>
 <?php endif; ?>
 
-    <li><a href="<?=$url->named('stations:profile:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-image"></i> <?=_('Profile') ?></a></li>
+    <li><a href="<?=$url->named('stations:profile:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-image"></i> <?=__('Profile') ?></a></li>
 
     <?php if ($acl->userAllowed($user, 'manage station media', $station->getId()) && $backend->supportsMedia()): ?>
-        <li><a href="<?=$url->named('stations:files:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-collection-music"></i> <?=_('Music Files') ?></a></li>
-        <li><a href="<?=$url->named('stations:playlists:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-format-list-bulleted"></i> <?=_('Playlists') ?></a></li>
+        <li><a href="<?=$url->named('stations:files:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-collection-music"></i> <?=__('Music Files') ?></a></li>
+        <li><a href="<?=$url->named('stations:playlists:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-format-list-bulleted"></i> <?=__('Playlists') ?></a></li>
     <?php endif; ?>
 
     <?php if ($acl->userAllowed($user, 'manage station streamers', $station->getId()) && $backend->supportsStreamers()): ?>
-        <li><a href="<?=$url->named('stations:streamers:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-account"></i> <?=_('Streamer/DJ Accounts') ?></a></li>
+        <li><a href="<?=$url->named('stations:streamers:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-account"></i> <?=__('Streamer/DJ Accounts') ?></a></li>
     <?php endif; ?>
 
     <?php if ($acl->userAllowed($user, 'manage station mounts', $station->getId()) && $frontend->supportsMounts()): ?>
-        <li><a href="<?=$url->named('stations:mounts:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=_('Mount Points') ?></a></li>
+        <li><a href="<?=$url->named('stations:mounts:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=__('Mount Points') ?></a></li>
     <?php endif; ?>
 
     <?php if ($acl->userAllowed($user, 'manage station web hooks', $station->getId())): ?>
-        <li><a href="<?=$url->named('stations:webhooks:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-code-setting"></i> <?=_('Web Hooks') ?></a></li>
+        <li><a href="<?=$url->named('stations:webhooks:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-code-setting"></i> <?=__('Web Hooks') ?></a></li>
     <?php endif; ?>
 
     <?php if ($acl->userAllowed($user, 'view station reports', $station->getId())): ?>
         <li class="sub-menu">
-            <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i> <?=_('Reports') ?></a>
+            <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i> <?=__('Reports') ?></a>
 
             <ul>
             <?php if ($frontend->supportsListenerDetail()): ?>
-                <li><a href="<?=$url->named('stations:reports:listeners', ['station' => $station->getId()]) ?>"><?=_('Listeners') ?></a></li>
+                <li><a href="<?=$url->named('stations:reports:listeners', ['station' => $station->getId()]) ?>"><?=__('Listeners') ?></a></li>
             <?php endif; ?>
             <?php if ($station->getEnableRequests()): ?>
-                <li><a href="<?=$url->named('stations:requests:index', ['station' => $station->getId()]) ?>"><?=_('Song Requests') ?></a></li>
+                <li><a href="<?=$url->named('stations:requests:index', ['station' => $station->getId()]) ?>"><?=__('Song Requests') ?></a></li>
             <?php endif; ?>
-                <li><a href="<?=$url->named('stations:reports:timeline', ['station' => $station->getId()]) ?>"><?=_('Song Playback Timeline') ?></a></li>
+                <li><a href="<?=$url->named('stations:reports:timeline', ['station' => $station->getId()]) ?>"><?=__('Song Playback Timeline') ?></a></li>
             <?php if ($backend->supportsMedia()): ?>
-                <li><a href="<?=$url->named('stations:reports:performance', ['station' => $station->getId()]) ?>"><?=_('Song Listener Impact') ?></a></li>
-                <li><a href="<?=$url->named('stations:reports:duplicates', ['station' => $station->getId()]) ?>"><?=_('Duplicate Songs') ?></a></li>
+                <li><a href="<?=$url->named('stations:reports:performance', ['station' => $station->getId()]) ?>"><?=__('Song Listener Impact') ?></a></li>
+                <li><a href="<?=$url->named('stations:reports:duplicates', ['station' => $station->getId()]) ?>"><?=__('Duplicate Songs') ?></a></li>
             <?php endif; ?>
             </ul>
         </li>
     <?php endif; ?>
 
     <li class="sub-menu">
-        <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-settings"></i> <?=_('Utilities') ?></a>
+        <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-settings"></i> <?=__('Utilities') ?></a>
 
         <ul>
             <?php if ($acl->userAllowed($user, 'manage station automation', $station->getId()) && $backend->supportsMedia()): ?>
-                <li><a href="<?=$url->named('stations:automation:index', ['station' => $station->getId()]) ?>"><?=_('Automated Assignment') ?></a></li>
+                <li><a href="<?=$url->named('stations:automation:index', ['station' => $station->getId()]) ?>"><?=__('Automated Assignment') ?></a></li>
             <?php endif; ?>
             <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
-                <li><a class="api-call" data-restart="false" href="<?=$url->named('api:stations:restart', ['station' => $station->getId()]) ?>"><?=_('Restart Broadcasting') ?></a></li>
+                <li><a class="api-call" data-restart="false" href="<?=$url->named('api:stations:restart', ['station' => $station->getId()]) ?>"><?=__('Restart Broadcasting') ?></a></li>
             <?php endif; ?>
         </ul>
     </li>
@@ -95,7 +95,7 @@ $(function() {
         var btn_original_text = btn.text();
         var trigger_restart = (btn.data('restart') != false);
 
-        btn.text(<?=$this->escapeJs(_('Please wait...')) ?>);
+        btn.text(<?=$this->escapeJs(__('Please wait...')) ?>);
         btn.addClass('disabled');
 
         $.ajax({

@@ -50,7 +50,7 @@ class MountsController
         $frontend = $request->getAttribute('station_frontend');
 
         if (!$frontend->supportsMounts()) {
-            throw new \App\Exception(_('This feature is not currently supported on this station.'));
+            throw new \App\Exception(__('This feature is not currently supported on this station.'));
         }
 
         /** @var View $view */
@@ -138,7 +138,7 @@ class MountsController
 
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . sprintf(($id) ? _('%s updated.') : _('%s added.'), _('Mount Point')) . '</b>', 'green');
+            $this->flash->alert('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Mount Point')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:mounts:index', ['station' => $station_id]);
         }
@@ -149,7 +149,7 @@ class MountsController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('Mount Point'))
+            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Mount Point'))
         ]);
     }
 
@@ -175,7 +175,7 @@ class MountsController
 
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . sprintf(_('%s deleted.'), _('Mount Point')) . '</b>', 'green');
+        $this->flash->alert('<b>' . sprintf(__('%s deleted.'), __('Mount Point')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:mounts:index', ['station' => $station_id]);
     }

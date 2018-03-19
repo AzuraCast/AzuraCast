@@ -5,32 +5,32 @@
     <div class="lcb-form">
         <h3 class="text-left">
             <?php if ($customization->hideProductName()): ?>
-                <?=_('Welcome!') ?>
+                <?=__('Welcome!') ?>
             <?php else: ?>
-                <?=sprintf(_('Welcome to %s!'), $app_settings['name']) ?>
+                <?=sprintf(__('Welcome to %s!'), $app_settings['name']) ?>
             <?php endif; ?>
             <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
         </h3>
-        <p class="text-left"><?=_('Please log in to continue.') ?> <?=sprintf(_('<a href="%s" target="_blank">Forgot your password?</a>'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#reset-an-account-password') ?></p>
+        <p class="text-left"><?=__('Please log in to continue.') ?> <?=sprintf(__('<a href="%s" target="_blank">Forgot your password?</a>'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#reset-an-account-password') ?></p>
 
         <form id="login-form" action="" method="post">
             <div class="input-group m-b-20">
                 <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
                 <div class="fg-line">
-                    <input type="email" name="username" class="form-control" placeholder="<?=_('E-mail Address') ?>">
+                    <input type="email" name="username" class="form-control" placeholder="<?=__('E-mail Address') ?>">
                 </div>
             </div>
 
             <div class="input-group m-b-20">
                 <span class="input-group-addon"><i class="zmdi zmdi-lock"></i></span>
                 <div class="fg-line">
-                    <input type="password" name="password" class="form-control" placeholder="<?=_('Password') ?>">
+                    <input type="password" name="password" class="form-control" placeholder="<?=__('Password') ?>">
                 </div>
             </div>
 
             <div class="clearfix"></div>
 
-            <button type="submit" role="button" title="<?=_('Log In') ?>" class="btn btn-login btn-primary btn-float"><i class="zmdi zmdi-arrow-forward"></i></button>
+            <button type="submit" role="button" title="<?=__('Log In') ?>" class="btn btn-login btn-primary btn-float"><i class="zmdi zmdi-arrow-forward"></i></button>
         </form>
     </div>
 

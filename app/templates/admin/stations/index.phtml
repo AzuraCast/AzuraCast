@@ -1,10 +1,10 @@
-<?php $this->layout('main', ['title' => _('Stations'), 'manual' => true]); ?>
+<?php $this->layout('main', ['title' => __('Stations'), 'manual' => true]); ?>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=_('Manage Stations') ?></h2>
+        <h2><?=__('Manage Stations') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(_('Add %s'), _('Station')) ?>" href="<?=$url->named('admin:stations:add') ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('Station')) ?>" href="<?=$url->named('admin:stations:add') ?>"><i class="zmdi zmdi-plus"></i></a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -14,18 +14,18 @@
             </colgroup>
             <thead>
             <tr>
-                <th><?=_('Actions') ?></th>
-                <th><?=_('Station') ?></th>
+                <th><?=__('Actions') ?></th>
+                <th><?=__('Station') ?></th>
             </tr>
             </thead>
             <tbody>
             <?php foreach((array)$stations as $record): ?>
                 <tr class="input">
                     <td class="center">
-                        <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:index:index', ['station' => $record['id']]) ?>" target="_blank"><?=_('Manage') ?></a>
-                        <a class="btn btn-sm btn-default" href="<?=$url->named('admin:stations:edit', ['id' => $record['id']]) ?>"><?=_('Edit') ?></a>
-                        <a class="btn btn-sm btn-default" href="<?=$url->named('admin:stations:clone', ['id' => $record['id']]) ?>"><?=_('Clone') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:stations:delete', ['id' => $record['id'], 'csrf' => $csrf]) ?>"><?=_('Delete') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:index:index', ['station' => $record['id']]) ?>" target="_blank"><?=__('Manage') ?></a>
+                        <a class="btn btn-sm btn-default" href="<?=$url->named('admin:stations:edit', ['id' => $record['id']]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-default" href="<?=$url->named('admin:stations:clone', ['id' => $record['id']]) ?>"><?=__('Clone') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:stations:delete', ['id' => $record['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </td>
                     <td>
                         <big><?=$this->e($record['name']) ?></big>

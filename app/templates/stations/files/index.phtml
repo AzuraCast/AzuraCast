@@ -1,4 +1,4 @@
-<?php $this->layout('main', ['title' => _('Music Files'), 'manual' => true, 'page_class' => 'page-file-manager']) ?>
+<?php $this->layout('main', ['title' => __('Music Files'), 'manual' => true, 'page_class' => 'page-file-manager']) ?>
 
 <?php
 /** @var \AzuraCast\Assets $assets */
@@ -18,7 +18,7 @@ $assets
             <div class="card-header ch-alt">
                 <div class="row">
                     <div class="col-md-8">
-                        <h2><?=_('Music Files') ?></h2>
+                        <h2><?=__('Music Files') ?></h2>
                         <div id="breadcrumb" class="">&nbsp;</div>
                     </div>
                     <div class="col-md-4 text-right">
@@ -27,7 +27,7 @@ $assets
                                 <span class="sr-only"><?=$space_percent ?>%</span>
                             </div>
                         </div>
-                        <?=sprintf(_('%s of %s Used (%s Free)'), $space_used, $space_total, $space_free) ?>
+                        <?=sprintf(__('%s of %s Used (%s Free)'), $space_used, $space_total, $space_free) ?>
                     </div>
                 </div>
             </div>
@@ -35,35 +35,35 @@ $assets
             <div class="card-body card-padding-sm">
 
                 <?php if (APP_INSIDE_DOCKER): ?>
-                    <p><i class="zmdi zmdi-info"></i> <?=sprintf(_('You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#access-files-via-sftp-docker-installations') ?></p>
+                    <p><i class="zmdi zmdi-info"></i> <?=sprintf(__('You can also upload files in bulk via SFTP by <a href="%s" target="_blank">following these instructions</a>. Newly uploaded files will automatically be processed within a few minutes.'), 'https://github.com/AzuraCast/AzuraCast/blob/master/SUPPORT.md#access-files-via-sftp-docker-installations') ?></p>
                 <?php endif; ?>
 
                 <div id="upload_progress"></div>
                 <div id="file_drop_target">
-                    <?=_('Drag files here to upload to this folder or ') ?>
+                    <?=__('Drag files here to upload to this folder or ') ?>
                     <input id="file_browse_target" type="file" accept=".mp3,.ogg,.wav,.aac,.mp4,.m4a,audio/*" multiple />
                 </div>
 
                 <div class="row p-t-20" id="app-toolbar">
                     <div class="col-sm-8">
-                        <?=_('With selected:') ?>&nbsp;
+                        <?=__('With selected:') ?>&nbsp;
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="zmdi zmdi-playlist-plus"></i> <?=_('Add to Playlist') ?>
+                                <i class="zmdi zmdi-playlist-plus"></i> <?=__('Add to Playlist') ?>
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li v-for="playlist in playlists">
                                     <a href="#" class="btn-batch" v-on:click="doBatch" v-bind:data-action="'playlist_' + playlist.id">{{ playlist.name }}</a>
                                 </li>
-                                <li><a href="#" class="btn-new-playlist" data-toggle="modal" data-target="#mdl-create-playlist"><?=_('Create new...') ?></a></li>
+                                <li><a href="#" class="btn-new-playlist" data-toggle="modal" data-target="#mdl-create-playlist"><?=__('Create new...') ?></a></li>
                             </ul>
                         </div>
-                        <button type="button" class="btn btn-warning" v-on:click="doBatch" data-action="clear"><i class="zmdi zmdi-playlist-audio"></i> <?=_('Clear Playlists') ?></button>
-                        <button type="button" class="btn btn-danger" v-on:click="doBatch" data-action="delete"><i class="zmdi zmdi-delete"></i> <?=_('Delete') ?></button>
+                        <button type="button" class="btn btn-warning" v-on:click="doBatch" data-action="clear"><i class="zmdi zmdi-playlist-audio"></i> <?=__('Clear Playlists') ?></button>
+                        <button type="button" class="btn btn-danger" v-on:click="doBatch" data-action="delete"><i class="zmdi zmdi-delete"></i> <?=__('Delete') ?></button>
                     </div>
                     <div class="col-sm-4 text-right">
-                        <a class="btn btn-default" href="#" data-toggle="modal" data-target="#mdl-create-directory"><i class="zmdi zmdi-folder"></i> <?=_('New Folder') ?></a>
+                        <a class="btn btn-default" href="#" data-toggle="modal" data-target="#mdl-create-directory"><i class="zmdi zmdi-folder"></i> <?=__('New Folder') ?></a>
                     </div>
                 </div>
             </div>
@@ -71,15 +71,15 @@ $assets
                 <table class="data-table table table-striped" id="file-table">
                     <thead>
                         <tr>
-                            <th data-column-id="name" data-formatter="playable" data-identifier="true"><?=_('Name') ?></th>
-                            <th data-column-id="media_title" data-visible="false"><?=_('Title') ?></th>
-                            <th data-column-id="media_artist" data-visible="false"><?=_('Artist') ?></th>
-                            <th data-column-id="media_album" data-visible="false"><?=_('Album') ?></th>
-                            <th data-column-id="media_length" data-formatter="file_length"><?=_('Length') ?></th>
-                            <th data-column-id="size" data-formatter="file_size"><?=_('Size') ?></th>
-                            <th data-column-id="mtime" data-formatter="file_mtime"><?=_('Modified') ?></th>
-                            <th data-column-id="media_playlists" data-formatter="playlists"><?=_('Playlists') ?></th>
-                            <th data-column-id="commands" data-formatter="commands" data-sortable="false"><?=_('Actions') ?></th>
+                            <th data-column-id="name" data-formatter="playable" data-identifier="true"><?=__('Name') ?></th>
+                            <th data-column-id="media_title" data-visible="false"><?=__('Title') ?></th>
+                            <th data-column-id="media_artist" data-visible="false"><?=__('Artist') ?></th>
+                            <th data-column-id="media_album" data-visible="false"><?=__('Album') ?></th>
+                            <th data-column-id="media_length" data-formatter="file_length"><?=__('Length') ?></th>
+                            <th data-column-id="size" data-formatter="file_size"><?=__('Size') ?></th>
+                            <th data-column-id="mtime" data-formatter="file_mtime"><?=__('Modified') ?></th>
+                            <th data-column-id="media_playlists" data-formatter="playlists"><?=__('Playlists') ?></th>
+                            <th data-column-id="commands" data-formatter="commands" data-sortable="false"><?=__('Actions') ?></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -95,17 +95,17 @@ $assets
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel"><?=_('Create Playlist') ?></h4>
+                    <h4 class="modal-title" id="exampleModalLabel"><?=__('Create Playlist') ?></h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name" class="control-label"><?=_('Playlist Name') ?>:</label>
+                        <label for="name" class="control-label"><?=__('Playlist Name') ?>:</label>
                         <input type="text" class="form-control" id="fld-playlist-name" name="name">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" id="btn-create-new-playlist" class="btn btn-primary"><?=_('Create Playlist') ?></button>
+                    <button type="submit" id="btn-create-new-playlist" class="btn btn-primary"><?=__('Create Playlist') ?></button>
                 </div>
             </div>
         </form>
@@ -118,17 +118,17 @@ $assets
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel"><?=_('New Directory') ?></h4>
+                    <h4 class="modal-title" id="exampleModalLabel"><?=__('New Directory') ?></h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name" class="control-label"><?=_('Directory Name') ?>:</label>
+                        <label for="name" class="control-label"><?=__('Directory Name') ?>:</label>
                         <input type="text" class="form-control" id="fld-directory-name" name="name">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" id="btn-create-new-playlist" class="btn btn-primary"><?=_('Create Directory') ?></button>
+                    <button type="submit" id="btn-create-new-playlist" class="btn btn-primary"><?=__('Create Directory') ?></button>
                 </div>
             </div>
         </form>
@@ -200,15 +200,15 @@ $(function() {
                 var $link = '<a class="name" href="'+$url+'" title="'+row.name+'">'+(row.is_dir ? row.text : row.media_name)+'</a>';
 
                 var art_src = (row.media_art) ? row.media_art : '<?=$url->content('img/generic_song.jpg') ?>';
-                var $art = (row.is_dir) ? '' : '<a href="'+art_src+'" target="_blank" class="pull-right p-l-10"><img style="width: 40px; height: auto; border-radius: 5px;" alt="<?=_('Album Artwork') ?>" src="'+art_src+'"></a>';
+                var $art = (row.is_dir) ? '' : '<a href="'+art_src+'" target="_blank" class="pull-right p-l-10"><img style="width: 40px; height: auto; border-radius: 5px;" alt="<?=__('Album Artwork') ?>" src="'+art_src+'"></a>';
 
                 return '<div class="'+(row.is_dir ? 'is_dir' : 'is_file')+'">'+$art+$icon + $link + '<br><small>'+(row.is_dir ? 'Directory' : row.text)+'</small></div>';
             },
             "commands": function(column, row) {
                 if (row.media_edit_url)
-                    return '<a class="btn btn-sm btn-primary" href="'+row.media_edit_url+'"><?=_('Edit') ?></a>';
+                    return '<a class="btn btn-sm btn-primary" href="'+row.media_edit_url+'"><?=__('Edit') ?></a>';
                 else
-                    return '<a class="btn btn-sm btn-primary" href="'+row.rename_url+'"><?=_('Rename') ?></a>';
+                    return '<a class="btn btn-sm btn-primary" href="'+row.rename_url+'"><?=__('Rename') ?></a>';
             },
             "file_length": function(column, row) {
                 if (row.media_length_text)

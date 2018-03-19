@@ -36,7 +36,7 @@ foreach($local_to_utc as $local_time => $utc_time) {
     $hour_select[$utc_time] = $hour_select_utc[$utc_time];
 }
 
-$server_time = sprintf(_('Your current local time is <b>%s</b>. You can customize your time zone from the "My Account" page.'), $customization->formatTime());
+$server_time = sprintf(__('Your current local time is <b>%s</b>. You can customize your time zone from the "My Account" page.'), $customization->formatTime());
 
 return [
     'method' => 'post',
@@ -50,7 +50,7 @@ return [
                 'name' => [
                     'text',
                     [
-                        'label' => _('Playlist Name'),
+                        'label' => __('Playlist Name'),
                         'required' => true,
                     ]
                 ],
@@ -58,12 +58,12 @@ return [
                 'is_enabled' => [
                     'radio',
                     [
-                        'label' => _('Enable Playlist'),
+                        'label' => __('Enable Playlist'),
                         'required' => true,
-                        'description' => _('If set to "No", the playlist will not be included in radio playback, but can still be managed.'),
+                        'description' => __('If set to "No", the playlist will not be included in radio playback, but can still be managed.'),
                         'options' => [
-                            1 => _('Yes'),
-                            0 => _('No'),
+                            1 => __('Yes'),
+                            0 => __('No'),
                         ],
                         'default' => 1,
                     ]
@@ -72,8 +72,8 @@ return [
                 'import' => [
                     'file',
                     [
-                        'label' => _('Import Existing Playlist'),
-                        'description' => _('Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.'),
+                        'label' => __('Import Existing Playlist'),
+                        'description' => __('Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.'),
                         'required' => false,
                         'type' => [
                             'audio/x-scpls',
@@ -90,16 +90,16 @@ return [
                 'weight' => [
                     'select',
                     [
-                        'label' => _('Playlist Weight'),
-                        'description' => _('Higher weight playlists are played more frequently compared to other lower-weight playlists.'),
+                        'label' => __('Playlist Weight'),
+                        'description' => __('Higher weight playlists are played more frequently compared to other lower-weight playlists.'),
                         'default' => 3,
                         'required' => true,
                         'options' => [
-                            1 => '1 - '._('Low'),
+                            1 => '1 - '.__('Low'),
                             2 => '2',
-                            3 => '3 - '._('Default'),
+                            3 => '3 - '.__('Default'),
                             4 => '4',
-                            5 => '5 - '._('High'),
+                            5 => '5 - '.__('High'),
                         ] + \App\Utilities::pairs(range(6, 25)),
                     ]
                 ],
@@ -107,14 +107,14 @@ return [
                 'type' => [
                     'radio',
                     [
-                        'label' => _('Playlist Type'),
+                        'label' => __('Playlist Type'),
                         'options' => [
-                            'default' => '<b>' . _('Standard Playlist') . ':</b> ' . _('Plays all day, shuffles with other standard playlists based on weight.'),
-                            'scheduled' => '<b>' . _('Scheduled Playlist') . ':</b> ' . _('Play during a scheduled time range. Useful for mood-based time playlists.'),
-                            'once_per_x_songs' => '<b>' . _('Once per x Songs Playlist') . ':</b> ' . _('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
-                            'once_per_x_minutes' => '<b>' . _('Once Per x Minutes Playlist') . ':</b> ' . _('Play exactly once every <i>x</i> minutes. Useful for station ID/jingles.'),
-                            'once_per_day' => '<b>' . _('Daily Playlist') . '</b>: ' . _('Play once per day at the specified time. Useful for timely reminders.'),
-                            'custom' => '<b>' . _('Custom Playlist') .'</b>: ' . _('Manually define how this playlist is used in Liquidsoap configuration. For advanced users only!'),
+                            'default' => '<b>' . __('Standard Playlist') . ':</b> ' . __('Plays all day, shuffles with other standard playlists based on weight.'),
+                            'scheduled' => '<b>' . __('Scheduled Playlist') . ':</b> ' . __('Play during a scheduled time range. Useful for mood-based time playlists.'),
+                            'once_per_x_songs' => '<b>' . __('Once per x Songs Playlist') . ':</b> ' . __('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
+                            'once_per_x_minutes' => '<b>' . __('Once Per x Minutes Playlist') . ':</b> ' . __('Play exactly once every <i>x</i> minutes. Useful for station ID/jingles.'),
+                            'once_per_day' => '<b>' . __('Daily Playlist') . '</b>: ' . __('Play once per day at the specified time. Useful for timely reminders.'),
+                            'custom' => '<b>' . __('Custom Playlist') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. For advanced users only!'),
                         ],
                         'default' => 'default',
                         'required' => true,
@@ -125,20 +125,20 @@ return [
         ],
 
         'type_default' => [
-            'legend' => _('Standard Playlist'),
+            'legend' => __('Standard Playlist'),
             'class' => 'type_fieldset',
             'elements' => [
 
                 'include_in_automation' => [
                     'radio',
                     [
-                        'label' => _('Include in Automated Assignment'),
-                        'description' => _('If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.'),
+                        'label' => __('Include in Automated Assignment'),
+                        'description' => __('If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.'),
                         'required' => true,
                         'default' => '0',
                         'options' => [
-                            0 => _('No'),
-                            1 => _('Yes'),
+                            0 => __('No'),
+                            1 => __('Yes'),
                         ],
                     ]
                 ],
@@ -147,14 +147,14 @@ return [
         ],
 
         'type_scheduled' => [
-            'legend' => _('Scheduled Playlist'),
+            'legend' => __('Scheduled Playlist'),
             'class' => 'type_fieldset',
             'elements' => [
 
                 'schedule_start_time' => [
                     'select',
                     [
-                        'label' => _('Start Time'),
+                        'label' => __('Start Time'),
                         'description' => $server_time,
                         'options' => $hour_select,
                     ]
@@ -163,8 +163,8 @@ return [
                 'schedule_end_time' => [
                     'select',
                     [
-                        'label' => _('End Time'),
-                        'description' => _('If the end time is before the start time, the playlist will play overnight until this time on the next day.'),
+                        'label' => __('End Time'),
+                        'description' => __('If the end time is before the start time, the playlist will play overnight until this time on the next day.'),
                         'options' => $hour_select,
                     ]
                 ],
@@ -172,16 +172,16 @@ return [
                 'schedule_days' => [
                     'checkbox',
                     [
-                        'label' => _('Scheduled Play Days of Week'),
-                        'description' => _('Leave blank to play on every day of the week.'),
+                        'label' => __('Scheduled Play Days of Week'),
+                        'description' => __('Leave blank to play on every day of the week.'),
                         'options' => [
-                            1 => _('Monday'),
-                            2 => _('Tuesday'),
-                            3 => _('Wednesday'),
-                            4 => _('Thursday'),
-                            5 => _('Friday'),
-                            6 => _('Saturday'),
-                            7 => _('Sunday'),
+                            1 => __('Monday'),
+                            2 => __('Tuesday'),
+                            3 => __('Wednesday'),
+                            4 => __('Thursday'),
+                            5 => __('Friday'),
+                            6 => __('Saturday'),
+                            7 => __('Sunday'),
                         ]
                     ]
                 ],
@@ -190,15 +190,15 @@ return [
         ],
 
         'type_once_per_x_songs' => [
-            'legend' => _('Once per x Songs Playlist'),
+            'legend' => __('Once per x Songs Playlist'),
             'class' => 'type_fieldset',
             'elements' => [
 
                 'play_per_songs' => [
                     'select',
                     [
-                        'label' => _('Number of Songs Between Plays'),
-                        'description' => _('This playlist will play every $x songs, where $x is specified below.'),
+                        'label' => __('Number of Songs Between Plays'),
+                        'description' => __('This playlist will play every $x songs, where $x is specified below.'),
                         'options' => \App\Utilities::pairs(range(1, 100)),
                     ]
                 ],
@@ -207,15 +207,15 @@ return [
         ],
 
         'type_once_per_x_minutes' => [
-            'legend' => _('Once per x Minutes Playlist'),
+            'legend' => __('Once per x Minutes Playlist'),
             'class' => 'type_fieldset',
             'elements' => [
 
                 'play_per_minutes' => [
                     'select',
                     [
-                        'label' => _('Number of Minutes Between Plays'),
-                        'description' => _('This playlist will play every $x minutes, where $x is specified below.'),
+                        'label' => __('Number of Minutes Between Plays'),
+                        'description' => __('This playlist will play every $x minutes, where $x is specified below.'),
                         'options' => \App\Utilities::pairs(range(1, 240)),
                     ]
                 ],
@@ -224,14 +224,14 @@ return [
         ],
 
         'type_once_per_day' => [
-            'legend' => _('Daily Playlist'),
+            'legend' => __('Daily Playlist'),
             'class' => 'type_fieldset',
             'elements' => [
 
                 'play_once_time' => [
                     'select',
                     [
-                        'label' => _('Scheduled Play Time'),
+                        'label' => __('Scheduled Play Time'),
                         'description' => $server_time,
                         'options' => $hour_select,
                     ]
@@ -240,16 +240,16 @@ return [
                 'play_once_days' => [
                     'checkbox',
                     [
-                        'label' => _('Scheduled Play Days of Week'),
-                        'description' => _('Leave blank to play on every day of the week.'),
+                        'label' => __('Scheduled Play Days of Week'),
+                        'description' => __('Leave blank to play on every day of the week.'),
                         'options' => [
-                            1 => _('Monday'),
-                            2 => _('Tuesday'),
-                            3 => _('Wednesday'),
-                            4 => _('Thursday'),
-                            5 => _('Friday'),
-                            6 => _('Saturday'),
-                            7 => _('Sunday'),
+                            1 => __('Monday'),
+                            2 => __('Tuesday'),
+                            3 => __('Wednesday'),
+                            4 => __('Thursday'),
+                            5 => __('Friday'),
+                            6 => __('Saturday'),
+                            7 => __('Sunday'),
                         ]
                     ]
                 ],
@@ -264,7 +264,7 @@ return [
                     'submit',
                     [
                         'type' => 'submit',
-                        'label' => _('Save Changes'),
+                        'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
                     ]
                 ],

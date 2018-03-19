@@ -5,8 +5,8 @@ return [
     'groups' => [
 
         'api_info' => [
-            'legend' => _('Twitter Account Details'),
-            'description' => sprintf(_('Steps for configuring a Twitter application:<br>
+            'legend' => __('Twitter Account Details'),
+            'description' => sprintf(__('Steps for configuring a Twitter application:<br>
                 <ol type="1">
                     <li>Create a new app on the <a href="%s" target="_blank">Twitter Applications site</a>. 
                     Use this installation\'s base URL as the application URL.</li>
@@ -21,7 +21,7 @@ return [
                 'consumer_key' => [
                     'text',
                     [
-                        'label' => _('Consumer Key (API Key)'),
+                        'label' => __('Consumer Key (API Key)'),
                         'belongsTo' => 'config',
                         'required' => true,
                     ]
@@ -30,7 +30,7 @@ return [
                 'consumer_secret' => [
                     'text',
                     [
-                        'label' => _('Consumer Secret (API Secret)'),
+                        'label' => __('Consumer Secret (API Secret)'),
                         'belongsTo' => 'config',
                         'required' => true,
                     ]
@@ -39,7 +39,7 @@ return [
                 'token' => [
                     'text',
                     [
-                        'label' => _('Access Token'),
+                        'label' => __('Access Token'),
                         'belongsTo' => 'config',
                         'required' => true,
                     ]
@@ -48,7 +48,7 @@ return [
                 'token_secret' => [
                     'text',
                     [
-                        'label' => _('Access Token Secret'),
+                        'label' => __('Access Token Secret'),
                         'belongsTo' => 'config',
                         'required' => true,
                     ]
@@ -58,15 +58,15 @@ return [
         ],
 
         'message_grp' => [
-            'legend' => _('Web Hook Details'),
-            'description' => sprintf(_('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'), $url->named('api:nowplaying:index')),
+            'legend' => __('Web Hook Details'),
+            'description' => sprintf(__('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'), $url->named('api:nowplaying:index')),
 
             'elements' => [
 
                 'triggers' => [
                     'multiCheckbox',
                     [
-                        'label' => _('Web Hook Triggers'),
+                        'label' => __('Web Hook Triggers'),
                         'options' => \AzuraCast\Webhook\Dispatcher::getTriggers(),
                         'required' => true,
                     ]
@@ -75,10 +75,10 @@ return [
                 'message' => [
                     'textarea',
                     [
-                        'label' => _('Message Body'),
+                        'label' => __('Message Body'),
                         'belongsTo' => 'config',
                         'required' => true,
-                        'default' => sprintf(_('Now playing on %s: %s by %s! Tune in now.'), '{{ station.name }}', '{{ now_playing.song.title }}', '{{ now_playing.song.artist }}'),
+                        'default' => sprintf(__('Now playing on %s: %s by %s! Tune in now.'), '{{ station.name }}', '{{ now_playing.song.title }}', '{{ now_playing.song.artist }}'),
                     ]
                 ]
 
@@ -92,7 +92,7 @@ return [
                     'submit',
                     [
                         'type' => 'submit',
-                        'label' => _('Save Changes'),
+                        'label' => __('Save Changes'),
                         'class' => 'ui-button btn-lg btn-primary',
                     ]
                 ],

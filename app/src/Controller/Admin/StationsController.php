@@ -104,7 +104,7 @@ class StationsController
             // Clear station cache.
             $this->cache->remove('stations');
 
-            $this->flash->alert(sprintf(($id) ? _('%s updated.') : _('%s added.'), _('Station')), 'green');
+            $this->flash->alert(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Station')), 'green');
 
             return $response->redirectToRoute('admin:stations:index');
         }
@@ -114,7 +114,7 @@ class StationsController
 
         return $view->renderToResponse($response, 'admin/stations/edit', [
             'form' => $form,
-            'title' => sprintf(($id) ? _('Edit %s') : _('Add %s'), _('Station')),
+            'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Station')),
         ]);
     }
 
@@ -123,7 +123,7 @@ class StationsController
         $record = $this->record_repo->find((int)$id);
 
         if (!($record instanceof Entity\Station)) {
-            throw new \App\Exception\NotFound(sprintf(_('%s not found.'), _('Station')));
+            throw new \App\Exception\NotFound(sprintf(__('%s not found.'), __('Station')));
         }
 
         $form = new \AzuraForms\Form($this->clone_form_config);
@@ -200,7 +200,7 @@ class StationsController
             // Clear station cache.
             $this->cache->remove('stations');
 
-            $this->flash->alert(_('Changes saved.'), 'green');
+            $this->flash->alert(__('Changes saved.'), 'green');
 
             return $response->redirectToRoute('admin:stations:index');
         }
@@ -211,7 +211,7 @@ class StationsController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => sprintf(_('Clone Station: %s'), $record->getName())
+            'title' => sprintf(__('Clone Station: %s'), $record->getName())
         ]);
     }
 
@@ -225,7 +225,7 @@ class StationsController
             $this->record_repo->destroy($record, $this->adapters, $this->configuration);
         }
 
-        $this->flash->alert(sprintf(_('%s deleted.'), _('Station')), 'green');
+        $this->flash->alert(sprintf(__('%s deleted.'), __('Station')), 'green');
 
         return $response->redirectToRoute('admin:stations:index');
     }

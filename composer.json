@@ -25,7 +25,8 @@
         "php-http/guzzle6-adapter": "^1.1",
         "mobiledetect/mobiledetectlib": "^2.8",
         "guzzlehttp/oauth-subscriber": "^0.3.0",
-        "monolog/monolog": "^1.23"
+        "monolog/monolog": "^1.23",
+        "gettext/gettext": "^4.4"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",

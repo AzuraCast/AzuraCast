@@ -115,20 +115,20 @@ class Dispatcher
     {
         return [
             'generic' => [
-                'name' => _('Generic Web Hook'),
-                'description' => _('Automatically send a message to any URL when your station data changes.'),
+                'name' => __('Generic Web Hook'),
+                'description' => __('Automatically send a message to any URL when your station data changes.'),
             ],
             'tunein' => [
-                'name' => _('TuneIn AIR'),
-                'description' => _('Send song metadata changes to TuneIn.'),
+                'name' => __('TuneIn AIR'),
+                'description' => __('Send song metadata changes to TuneIn.'),
             ],
             'discord' => [
-                'name' => _('Discord Webhook'),
-                'description' => _('Automatically send a customized message to your Discord server.'),
+                'name' => __('Discord Webhook'),
+                'description' => __('Automatically send a customized message to your Discord server.'),
             ],
             'twitter' => [
-                'name' => _('Twitter Post'),
-                'description' => _('Automatically send a tweet.'),
+                'name' => __('Twitter Post'),
+                'description' => __('Automatically send a tweet.'),
             ],
         ];
     }
@@ -136,11 +136,11 @@ class Dispatcher
     public static function getTriggers()
     {
         return [
-            'song_changed' => _('Any time the currently playing song changes'),
-            'listener_gained' => _('Any time the listener count increases'),
-            'listener_lost' => _('Any time the listener count decreases'),
-            'live_connect' => _('Any time a live streamer/DJ connects to the stream'),
-            'live_disconnect' => _('Any time a live streamer/DJ disconnects from the stream'),
+            'song_changed' => __('Any time the currently playing song changes'),
+            'listener_gained' => __('Any time the listener count increases'),
+            'listener_lost' => __('Any time the listener count decreases'),
+            'live_connect' => __('Any time a live streamer/DJ connects to the stream'),
+            'live_disconnect' => __('Any time a live streamer/DJ disconnects from the stream'),
         ];
     }
 

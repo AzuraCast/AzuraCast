@@ -69,7 +69,7 @@ class AccountController
             try {
                 $this->rate_limit->checkRateLimit('login', 30, 5);
             } catch(\AzuraCast\Exception\RateLimitExceeded $e) {
-                $this->flash->alert('<b>' . _('Too many login attempts') . '</b><br>' . _('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
+                $this->flash->alert('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
                     'red');
 
                 return $response->redirectHere();
@@ -91,7 +91,7 @@ class AccountController
                 $this->em->persist($user);
                 $this->em->flush();
 
-                $this->flash->alert('<b>' . _('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+                $this->flash->alert('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
                 $referrer = $this->getStoredReferrer();
                 if ($referrer) {
@@ -101,7 +101,7 @@ class AccountController
                 return $response->redirectHome();
             }
 
-            $this->flash->alert('<b>' . _('Login unsuccessful') . '</b><br>' . _('Your credentials could not be verified.'),
+            $this->flash->alert('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
                 'red');
 
             return $response->redirectHere();

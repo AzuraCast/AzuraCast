@@ -15,8 +15,8 @@ $assets
     <div class="public-block">
 
         <ul class="actions pull-right" id="radio-player-controls">
-            <li><a href="javascript:;" class="jp-mute" title="<?=_('Mute') ?>"><i class="zmdi zmdi-volume-up"></i></a></li>
-            <li><a href="javascript:;" class="jp-unmute" title="<?=_('Unmute') ?>"><i class="zmdi zmdi-volume-off"></i></a></li>
+            <li><a href="javascript:;" class="jp-mute" title="<?=__('Mute') ?>"><i class="zmdi zmdi-volume-up"></i></a></li>
+            <li><a href="javascript:;" class="jp-unmute" title="<?=__('Unmute') ?>"><i class="zmdi zmdi-volume-off"></i></a></li>
             <li>
                 <div class="progress jp-volume-bar" style="width: 100px; height: 15px;">
                     <div class="jp-volume-bar-value progress-bar" role="progressbar"></div>
@@ -31,20 +31,20 @@ $assets
 
         <div class="buttons">
             <a class="btn btn-default btn-icon-text" data-toggle="modal" data-target="#modal-history">
-                <i class="zmdi zmdi-time-restore"></i> <?=_('Song History') ?>
+                <i class="zmdi zmdi-time-restore"></i> <?=__('Song History') ?>
             </a>
         <?php if ($station->getEnableRequests()): ?>
             <a class="btn btn-default btn-icon-text" data-toggle="modal" data-target="#modal-request">
-                <i class="zmdi zmdi-help-outline"></i> <?=_('Request Song') ?>
+                <i class="zmdi zmdi-help-outline"></i> <?=__('Request Song') ?>
             </a>
         <?php endif; ?>
             <div class="btn-group">
                 <button type="button" class="btn btn-default btn-icon-text dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="zmdi zmdi-download"></i> <?=_('Playlist') ?> <span class="caret"></span>
+                    <i class="zmdi zmdi-download"></i> <?=__('Playlist') ?> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
                     <?php foreach(['pls', 'm3u'] as $format): ?>
-                        <li><a href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => $format]) ?>"><?=sprintf(_('Download %s'), strtoupper($format)) ?></a></li>
+                        <li><a href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => $format]) ?>"><?=sprintf(__('Download %s'), strtoupper($format)) ?></a></li>
                     <?php endforeach; ?>
                 </ul>
             </div>
@@ -58,7 +58,7 @@ $assets
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modal-history-label"><?=_('Song History') ?></h4>
+                <h4 class="modal-title" id="modal-history-label"><?=__('Song History') ?></h4>
             </div>
             <div class="modal-body">
                 <ol type="1" id="station-history">
@@ -77,7 +77,7 @@ $assets
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modal-request-label"><?=_('Request a Song') ?></h4>
+                <h4 class="modal-title" id="modal-request-label"><?=__('Request a Song') ?></h4>
             </div>
             <div class="modal-body">
 
@@ -85,10 +85,10 @@ $assets
                     <thead>
                     <tr>
                         <th data-column-id="song_id" data-identifier="true" data-visible="false" data-visible-in-selection="false">ID</th>
-                        <th data-column-id="song_title"><?=_('Title') ?></th>
-                        <th data-column-id="song_artist"><?=_('Artist') ?></th>
-                        <th data-column-id="song_album" data-visible="false"><?=_('Album') ?></th>
-                        <th data-column-id="commands" data-formatter="commands" data-sortable="false"><?=_('Actions') ?></th>
+                        <th data-column-id="song_title"><?=__('Title') ?></th>
+                        <th data-column-id="song_artist"><?=__('Artist') ?></th>
+                        <th data-column-id="song_album" data-visible="false"><?=__('Album') ?></th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false"><?=__('Actions') ?></th>
                     </tr>
                     </thead>
                     <tbody></tbody>
@@ -106,8 +106,8 @@ $(function() {
             history: [
                 {
                     song: {
-                        title: '<?= _('Song Title') ?>',
-                        artist: '<?= _('Song Artist') ?>'
+                        title: '<?= __('Song Title') ?>',
+                        artist: '<?= __('Song Artist') ?>'
                     }
                 }
             ]
@@ -156,7 +156,7 @@ request_dialog.on('show.bs.modal', function (event) {
             url: "<?=$url->named('api:requests:list', ['station' => $station->getId()]) ?>",
             formatters: {
                 "commands": function(column, row) {
-                    return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=_('Request') ?></a>';
+                    return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=__('Request') ?></a>';
                 }
             }
         }).on("loaded.rs.jquery.bootgrid", function()

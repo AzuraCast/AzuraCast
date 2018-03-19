@@ -4,45 +4,45 @@
  */
 
 return [
-    _('System Maintenance') => [
+    __('System Maintenance') => [
         'icon' => 'zmdi zmdi-router',
         'items' => [
-            _('System Settings') => [
+            __('System Settings') => [
                 'url' => 'admin:settings:index',
                 'icon' => 'zmdi zmdi-settings',
                 'permission' => 'administer settings',
             ],
-            _('Custom Branding') => [
+            __('Custom Branding') => [
                 'url' => 'admin:branding:index',
                 'icon' => 'zmdi zmdi-brush',
                 'permission' => 'administer settings',
             ],
-            _('API Keys') => [
+            __('API Keys') => [
                 'url' => 'admin:api:index',
                 'icon' => 'zmdi zmdi-key',
                 'permission' => 'administer api keys',
             ],
         ],
     ],
-    _('Users') => [
+    __('Users') => [
         'icon' => 'zmdi zmdi-accounts',
         'items' => [
-            _('User Accounts') => [
+            __('User Accounts') => [
                 'url' => 'admin:users:index',
                 'icon' => 'zmdi zmdi-account',
                 'permission' => 'administer user accounts',
             ],
-            _('Permissions') => [
+            __('Permissions') => [
                 'url' => 'admin:permissions:index',
                 'icon' => 'zmdi zmdi-lock',
                 'permission' => 'administer permissions',
             ],
         ],
     ],
-    _('Stations') => [
+    __('Stations') => [
         'icon' => 'zmdi zmdi-volume-up',
         'items' => [
-            _('Manage Stations') => [
+            __('Manage Stations') => [
                 'url' => 'admin:stations:index',
                 'icon' => 'zmdi zmdi-surround-sound',
                 'permission' => 'administer stations',

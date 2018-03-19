@@ -1,4 +1,4 @@
-version: '2'
+version: '2.2'
 
 services:
   web:
@@ -25,6 +25,7 @@ services:
       # - .:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
+    init: true
     restart: always
 
   nginx:
@@ -92,6 +93,7 @@ services:
     environment:
       << : *default-environment
     command: 'cron'
+    init: true
     restart: always
 
   cli:
@@ -108,6 +110,7 @@ services:
     user: 'azuracast'
     working_dir: '/var/azuracast/www'
     command: 'bash'
+    init: true
 
   stations:
     container_name: azuracast_stations
@@ -152,6 +155,7 @@ services:
     volumes:
      - station_data:/var/azuracast/stations
      - nginx_letsencrypt_certs:/etc/nginx/ssl:ro
+    init: true
     restart: always
 
   # Developer Mode services

@@ -64,16 +64,26 @@ $cli->addCommands([
 
 // Other app-specific commands
 $cli->addCommands([
+    // Locales
     new \App\Console\Command\LocaleGenerate($di),
     new \App\Console\Command\LocaleImport($di),
+
+    // Setup
+    new \AzuraCast\Console\Command\MigrateConfig($di),
+    new \AzuraCast\Console\Command\SetupInflux($di),
+
+    // Maintenance
     new \AzuraCast\Console\Command\ClearCache($di),
     new \AzuraCast\Console\Command\RestartRadio($di),
     new \AzuraCast\Console\Command\Sync($di),
     new \AzuraCast\Console\Command\ReprocessMedia($di),
+
     new \AzuraCast\Console\Command\GenerateApiDocs($di),
     new \AzuraCast\Console\Command\UptimeWait($di),
-    new \AzuraCast\Console\Command\MigrateConfig($di),
+
+    // User-side tools
     new \AzuraCast\Console\Command\ResetPassword($di),
+
 ]);
 
 $cli->run();

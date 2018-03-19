@@ -43,30 +43,7 @@
 - name: Pause to allow InfluxDB to spin up
   wait_for: port=8086 delay=5
 
-- name: Create 'stations' database
-  influxdb_database:
-    hostname: "localhost"
-    database_name: "{{ item }}"
-    state: present
-  with_items:
-    - 'stations'
-
-- name: Create 'stations' retention policies
-  influxdb_retention_policy:
-    hostname: "localhost"
-    database_name: "stations"
-    policy_name: "{{ item.name }}"
-    duration: "{{ item.duration }}"
-    default: "{{ item.default }}"
-    replication: 1
-  with_items:
-   - { name: '15s', duration: '5d', default: true }
-   - { name: '1h', duration: '2w', default: false }
-   - { name: '1d', duration: 'INF', default: false }
-
-- name: Manage continuous queries on 'stations'
-  influxdb_downsample:
-    database: "stations"
-    retentions: "1h:1h,1d:1d"
-    measurements: [{'measurement':':MEASUREMENT', 'fields': ['min(value) AS min','mean(value) AS value','max(value) AS max']}]
-    prune: true
+- name: Set Up InfluxDB
+  become: true
+  become_user: azuracast
+  shell: php {{ util_base }}/cli.php azuracast:setup:influx

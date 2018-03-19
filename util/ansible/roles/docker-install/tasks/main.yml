@@ -1,32 +1,8 @@
 ---
-- name: InfluxDB - Create 'stations' database
-  influxdb_database:
-    hostname: "influxdb"
-    database_name: "{{ item }}"
-    state: present
-  with_items:
-    - 'stations'
-
-- name: InfluxDB - Create 'stations' retention policies
-  influxdb_retention_policy:
-    hostname: "influxdb"
-    database_name: "stations"
-    policy_name: "{{ item.name }}"
-    duration: "{{ item.duration }}"
-    default: "{{ item.default }}"
-    replication: 1
-  with_items:
-   - { name: '15s', duration: '5d', default: true }
-   - { name: '1h', duration: '2w', default: false }
-   - { name: '1d', duration: 'INF', default: false }
-
-- name: InfluxDB - Manage continuous queries on 'stations'
-  influxdb_downsample:
-    login_host: "influxdb"
-    database: "stations"
-    retentions: "1h:1h,1d:1d"
-    measurements: [{'measurement':':MEASUREMENT', 'fields': ['min(value) AS min','mean(value) AS value','max(value) AS max']}]
-    prune: true
+- name: Set Up InfluxDB
+  become: true
+  become_user: azuracast
+  shell: php {{ util_base }}/cli.php azuracast:setup:influx
 
 - name: Wait for MySQL to spin up
   shell: azuracast_cli azuracast:internal:uptime-wait mariadb

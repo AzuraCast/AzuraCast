@@ -54,9 +54,14 @@ return function (\Slim\Container $di, $settings) {
                 'conn' => [
                     'driver' => 'pdo_mysql',
                     'charset' => 'utf8mb4',
+                    'defaultTableOptions' => [
+                        'charset' => 'utf8mb4',
+                        'collate' => 'utf8mb4_unicode_ci',
+                    ],
                     'driverOptions' => [
                         \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
                     ],
+                    'platform' => new \Doctrine\DBAL\Platforms\MariaDb1027Platform(),
                 ]
             ];
 
@@ -78,17 +83,6 @@ return function (\Slim\Container $di, $settings) {
 
             // Fetch and store entity manager.
             $config = new \Doctrine\ORM\Configuration;
-
-            // Handling for class names specified as platform types.
-            if (!empty($options['conn']['platform'])) {
-                $class_obj = new \ReflectionClass($options['conn']['platform']);
-                $options['conn']['platform'] = $class_obj->newInstance();
-            }
-
-            // Special handling for the utf8mb4 type.
-            if ($options['conn']['driver'] === 'pdo_mysql' && $options['conn']['charset'] === 'utf8mb4') {
-                $options['conn']['platform'] = new \App\Doctrine\Platform\MysqlUnicode;
-            }
 
             $metadata_driver = $config->newDefaultAnnotationDriver($options['modelPath']);
             $config->setMetadataDriverImpl($metadata_driver);

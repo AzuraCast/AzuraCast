@@ -110,6 +110,7 @@ services:
     user: 'azuracast'
     working_dir: '/var/azuracast/www'
     command: 'bash'
+    tty: true # Pretty colors
     init: true
 
   stations:

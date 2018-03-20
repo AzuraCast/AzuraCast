@@ -3,7 +3,7 @@ namespace Entity;
 
 /**
  * @Entity
- * @Table(name="station_webhooks")
+ * @Table(name="station_webhooks", options={"charset"="utf8mb4", "collate"="utf8mb4_unicode_ci"})
  */
 class StationWebhook
 {
@@ -31,7 +31,13 @@ class StationWebhook
     protected $station;
 
     /**
-     * @Column(name="name", type="string", length=100)
+     * @Column(name="name", type="string", length=100, nullable=true)
+     * @var string|null The nickname of the webhook connector.
+     */
+    protected $name;
+
+    /**
+     * @Column(name="type", type="string", length=100)
      * @var string The type of webhook connector to use.
      */
     protected $type;
@@ -76,6 +82,22 @@ class StationWebhook
     public function getStation(): Station
     {
         return $this->station;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param null|string $name
+     */
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
     }
 
     /**

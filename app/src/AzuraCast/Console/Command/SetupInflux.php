@@ -24,6 +24,8 @@ class SetupInflux extends \App\Console\Command\CommandAbstract
         /** @var Database $influxdb */
         $influxdb = $this->di->get(Database::class);
 
+        $db_name = $influxdb->getName();
+
         // Create the database (if it doesn't exist)
         $influxdb->create();
 
@@ -36,18 +38,38 @@ class SetupInflux extends \App\Console\Command\CommandAbstract
            ['name' => '1d', 'duration' => 'INF', 'default' => false],
         ];
 
-        foreach($retention_policies as $rp) {
-            $rp_obj = new Database\RetentionPolicy($rp['name'], $rp['duration'], 1, $rp['default']);
-            $influxdb->createRetentionPolicy($rp_obj);
+        $all_rps_raw = $influxdb->listRetentionPolicies();
+        $existing_rps = [];
+
+        foreach($all_rps_raw as $rp) {
+            $existing_rps[$rp['name']] = $rp;
         }
 
-        $output->writeln('Retention policies created.');
+        foreach($retention_policies as $rp) {
+            $rp_obj = new Database\RetentionPolicy($rp['name'], $rp['duration'], 1, $rp['default']);
+
+            if (isset($existing_rps[$rp['name']])) {
+                $influxdb->alterRetentionPolicy($rp_obj);
+                unset($existing_rps[$rp['name']]);
+            } else {
+                $influxdb->createRetentionPolicy($rp_obj);
+            }
+        }
+
+        // Remove any remaining retention policies that aren't defined here
+        if (!empty($existing_rps)) {
+            foreach($existing_rps as $rp_name => $rp_info) {
+                $influxdb->query(sprintf('DROP RETENTION POLICY %s ON %s', $rp_name, $db_name));
+            }
+        }
+
+        $output->writeln('Retention policies updated.');
 
         // Drop existing continuous queries.
         $cqs = $influxdb->query('SHOW CONTINUOUS QUERIES');
 
         foreach((array)$cqs->getPoints() as $existing_cq) {
-            $influxdb->query(sprintf('DROP CONTINUOUS QUERY %s ON stations', $existing_cq['name']));
+            $influxdb->query(sprintf('DROP CONTINUOUS QUERY %s ON %s', $existing_cq['name'], $db_name));
         }
 
         // Create continuous queries
@@ -57,13 +79,13 @@ class SetupInflux extends \App\Console\Command\CommandAbstract
             $cq_name = 'cq_'.$dr;
             $cq_fields = 'min(value) AS min, mean(value) AS value, max(value) AS max';
 
-            $influxdb->query(sprintf('CREATE CONTINUOUS QUERY %s ON stations BEGIN SELECT %s INTO "%s".:MEASUREMENT FROM /.*/ GROUP BY time(%s) END', $cq_name, $cq_fields, $dr, $dr));
+            $influxdb->query(sprintf('CREATE CONTINUOUS QUERY %s ON %s BEGIN SELECT %s INTO "%s".:MEASUREMENT FROM /.*/ GROUP BY time(%s) END', $cq_name, $db_name, $cq_fields, $dr, $dr));
         }
 
         $output->writeln('Continuous queries created.');
 
         // Print debug information
-        if (true || !APP_IN_PRODUCTION) {
+        if (!APP_IN_PRODUCTION) {
             $rps_raw = $influxdb->query('SHOW RETENTION POLICIES');
             $rps = (array)$rps_raw->getPoints();
 

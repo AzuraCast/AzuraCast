@@ -27,7 +27,7 @@ class StationMediaArt
 
     /**
      * @OneToOne(targetEntity="StationMedia", inversedBy="art")
-     * @JoinColumn(name="media_id", referencedColumnName="id")
+     * @JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      * @var StationMedia
      */
     protected $media;

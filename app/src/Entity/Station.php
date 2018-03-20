@@ -188,7 +188,7 @@ class Station
     /**
      * @ManyToOne(targetEntity="StationStreamer")
      * @JoinColumns({
-     *   @JoinColumn(name="current_streamer_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @JoinColumn(name="current_streamer_id", referencedColumnName="id", onDelete="SET NULL")
      * })
      * @var StationStreamer|null
      */

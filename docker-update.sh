@@ -12,6 +12,7 @@ done
 APP_ENV="${APP_ENV:-production}"
 
 docker-compose down
+docker-compose rm -f
 docker-compose pull
 
 if [ $APP_ENV = "production" ]; then
@@ -21,3 +22,5 @@ else
 fi
 
 docker-compose up -d
+
+docker rmi $(docker images | grep "none" | awk '/ / { print $3 }')

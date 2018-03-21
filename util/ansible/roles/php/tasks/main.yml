@@ -49,15 +49,6 @@
      - php7.2-intl        # Localization
      - php7.2-redis       # Cache
 
-  - name: List locales
-    shell: "cd {{ www_base }}/app/locale/; for i in $(ls -d */); do echo ${i%%/}; done"
-    register: locale_list
-
-  - name: Create Locales
-    become: true
-    locale_gen: name="{{ item }}" state=present
-    with_items: "{{ (locale_list|default([])).stdout_lines | default([]) }}"
-
   - name: Configure PHP FPM Pool
     template: src=fpmpool.j2 dest=/etc/php/7.2/fpm/pool.d/www.conf force=true
 

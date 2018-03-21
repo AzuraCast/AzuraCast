@@ -25,7 +25,7 @@
     - azuracast-db-install
     - ufw
     - composer
-    - services
     - influxdb
+    - services
     - azuracast-db
     - { role: azuracast-cron, when: testing_mode == false }

@@ -18,7 +18,6 @@
     - azuracast-config
     - azuracast-radio
     - supervisord
-    - influxdb
     - nginx
     - php
     - redis
@@ -27,5 +26,6 @@
     - ufw
     - composer
     - services
+    - influxdb
     - azuracast-db
     - { role: azuracast-cron, when: testing_mode == false }

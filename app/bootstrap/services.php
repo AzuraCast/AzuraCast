@@ -107,6 +107,13 @@ return function (\Slim\Container $di, $settings) {
                 $config->setSecondLevelCacheEnabled(false);
             }
 
+            // Create proxy directory if it doesn't exist.
+            if (!is_dir($options['proxyPath'])) {
+                if (!mkdir($options['proxyPath'], 0744) && !is_dir($options['proxyPath'])) {
+                    throw new \RuntimeException(sprintf('Could not create proxy directory %s', $options['proxyPath']));
+                }
+            }
+
             $config->setProxyDir($options['proxyPath']);
             $config->setProxyNamespace($options['proxyNamespace']);
             $config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS);

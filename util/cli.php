@@ -23,7 +23,7 @@ $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(
 
 $settings = $di['app_settings'];
 
-$cli = new \Symfony\Component\Console\Application($settings['name'].' Command Line Tools', \AzuraCast\Version::getVersion());
+$cli = new \Symfony\Component\Console\Application($settings['name'].' Command Line Tools ('.APP_APPLICATION_ENV.')', \AzuraCast\Version::getVersion());
 $cli->setCatchExceptions(true);
 $cli->setHelperSet($helperSet);
 

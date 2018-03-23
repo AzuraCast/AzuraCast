@@ -22,7 +22,7 @@ define('APP_INSIDE_DOCKER', file_exists(APP_INCLUDE_ROOT.'/../.docker'));
 
 define('APP_INCLUDE_VENDOR', APP_INCLUDE_ROOT . '/vendor');
 
-define('APP_INCLUDE_TEMP', APP_INCLUDE_ROOT . '/../www_tmp');
+define('APP_INCLUDE_TEMP', dirname(APP_INCLUDE_ROOT) . '/www_tmp');
 define('APP_INCLUDE_CACHE', APP_INCLUDE_TEMP . '/cache');
 
 // Set up application environment.

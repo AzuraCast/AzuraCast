@@ -186,7 +186,13 @@ class Customization
      */
     public function getPublicTheme()
     {
-        return $this->settings_repo->getSetting('public_theme', $this->app_settings['themes']['default']);
+        $public_theme = $this->settings_repo->getSetting('public_theme', null);
+
+        if ($public_theme && in_array($public_theme, $this->app_settings['themes']['available'])) {
+            return $public_theme;
+        }
+
+        return $this->app_settings['themes']['default'];
     }
 
     /**

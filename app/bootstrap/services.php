@@ -130,7 +130,7 @@ return function (\Slim\Container $di, $settings) {
 
     $di[\Doctrine\DBAL\Connection::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
-        $em = $di['em'];
+        $em = $di[\Doctrine\ORM\EntityManager::class];
         return $em->getConnection();
     };
 

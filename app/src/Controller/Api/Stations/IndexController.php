@@ -43,7 +43,7 @@ class IndexController
      */
     public function listAction(Request $request, Response $response): Response
     {
-        $stations_raw = $this->em->getRepository(Entity\Station::class)->findAll();
+        $stations_raw = $this->em->getRepository(Entity\Station::class)->findBy(['is_enabled' => 1]);
 
         $stations = [];
         foreach ($stations_raw as $row) {

@@ -109,7 +109,8 @@ class NowPlaying extends SyncAbstract
      */
     protected function _loadNowPlaying($force = false)
     {
-        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
+        $stations = $this->em->getRepository(Entity\Station::class)
+            ->findBy(['is_enabled' => 1]);
         $nowplaying = [];
 
         foreach ($stations as $station) {

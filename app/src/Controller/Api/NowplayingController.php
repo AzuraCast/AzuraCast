@@ -64,7 +64,7 @@ class NowplayingController
         // Pull from cache, or load from flatfile otherwise.
         /** @var Entity\Api\NowPlaying[] $np */
         $np = $this->cache->get('api_nowplaying_data', function () {
-            $nowplaying_db = $this->em->createQuery('SELECT s.nowplaying FROM Entity\Station s')
+            $nowplaying_db = $this->em->createQuery('SELECT s.nowplaying FROM Entity\Station s WHERE s.is_enabled = 1')
                 ->getArrayResult();
 
             $np = [];

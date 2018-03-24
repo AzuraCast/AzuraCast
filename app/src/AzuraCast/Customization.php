@@ -188,7 +188,7 @@ class Customization
     {
         $public_theme = $this->settings_repo->getSetting('public_theme', null);
 
-        if ($public_theme && in_array($public_theme, $this->app_settings['themes']['available'])) {
+        if ($public_theme && in_array($public_theme, $this->app_settings['themes']['available'], true)) {
             return $public_theme;
         }
 

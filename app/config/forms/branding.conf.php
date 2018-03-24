@@ -9,7 +9,10 @@ return [
             [
                 'label' => __('Base Theme for Public Pages'),
                 'description' => __('Select a theme to use as a base for station public pages and the login page.'),
-                'options' => $settings['themes']['available'],
+                'options' => [
+                    'light' => __('Light').' ('.__('Default').')',
+                    'dark' => __('Dark'),
+                ],
                 'default' => $settings['themes']['default'],
             ]
         ],

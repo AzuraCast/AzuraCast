@@ -62,6 +62,13 @@ class ProfileController
         /** @var FrontendAbstract $frontend */
         $frontend = $request->getAttribute('station_frontend');
 
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        if (!$station->isEnabled()) {
+            return $view->renderToResponse($response, 'stations/profile/disabled');
+        }
+
         // Statistics about backend playback.
         $num_songs = $this->em->createQuery('SELECT COUNT(sm.id) FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sp.id IS NOT NULL AND sm.station_id = :station_id')
             ->setParameter('station_id', $station->getId())
@@ -70,9 +77,6 @@ class ProfileController
         $num_playlists = $this->em->createQuery('SELECT COUNT(sp.id) FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id')
             ->setParameter('station_id', $station->getId())
             ->getSingleScalarResult();
-
-        /** @var View $view */
-        $view = $request->getAttribute('view');
 
         // Populate initial nowplaying data.
         $np = [

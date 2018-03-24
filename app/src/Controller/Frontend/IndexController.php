@@ -71,7 +71,9 @@ class IndexController
 
         // Don't show stations the user can't manage.
         $stations = array_filter($stations, function($station) use ($user) {
-            return $this->acl->userAllowed($user, 'view station management', $station->getId());
+            /** @var Entity\Station $station */
+            return $station->isEnabled() &&
+                $this->acl->userAllowed($user, 'view station management', $station->getId());
         });
 
         if (empty($stations)) {

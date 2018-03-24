@@ -42,6 +42,17 @@ class Configuration
             return;
         }
 
+        // Initialize adapters.
+        $config_path = $station->getRadioConfigDir();
+        $supervisor_config = [];
+        $supervisor_config_path = $config_path . '/supervisord.conf';
+
+        if (!$station->isEnabled()) {
+            @unlink($supervisor_config_path);
+            $this->_reloadSupervisor();
+            return;
+        }
+
         // Ensure port configuration exists
         $this->assignRadioPorts($station, false);
 
@@ -50,11 +61,6 @@ class Configuration
             $this->em->persist($station);
             $this->em->flush();
         }
-
-        // Initialize adapters.
-        $config_path = $station->getRadioConfigDir();
-        $supervisor_config = [];
-        $supervisor_config_path = $config_path . '/supervisord.conf';
 
         $frontend = $this->adapters->getFrontendAdapter($station);
         $backend = $this->adapters->getBackendAdapter($station);

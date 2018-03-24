@@ -52,13 +52,29 @@ return [
                     ]
                 ],
 
+                'is_enabled' => [
+                    'radio',
+                    [
+                        'label' => __('Enable Station Broadcasting'),
+                        'description' => __('If disabled, the station will not broadcast or shuffle its AutoDJ.'),
+                        'options' => [
+                            0 => __('Disabled'),
+                            1 => __('Enabled'),
+                        ],
+                        'default' => 1,
+                    ]
+                ],
+
                 'enable_public_page' => [
                     'radio',
                     [
                         'label' => __('Enable Public Page'),
                         'description' => __('Whether to show or hide the station from public pages and general API results.'),
-                        'options' => [0 => __('No'), 1 => __('Yes')],
-                        'default' => '1',
+                        'options' => [
+                            0 => __('Disabled'),
+                            1 => __('Enabled')
+                        ],
+                        'default' => 1,
                     ]
                 ],
 

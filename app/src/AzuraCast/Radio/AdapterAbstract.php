@@ -70,7 +70,7 @@ abstract class AdapterAbstract
      */
     public function hasCommand()
     {
-        if (APP_TESTING_MODE) {
+        if (APP_TESTING_MODE || !$this->station->isEnabled()) {
             return false;
         }
 

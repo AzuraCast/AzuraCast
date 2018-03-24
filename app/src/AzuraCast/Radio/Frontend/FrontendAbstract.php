@@ -52,7 +52,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
      */
     public function hasWatchCommand()
     {
-        if (APP_TESTING_MODE || !APP_INSIDE_DOCKER) {
+        if (APP_TESTING_MODE || !APP_INSIDE_DOCKER || !$this->station->isEnabled()) {
             return false;
         }
 

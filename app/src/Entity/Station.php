@@ -35,6 +35,12 @@ class Station
     protected $short_name;
 
     /**
+     * @Column(name="is_enabled", type="boolean", nullable=false)
+     * @var bool
+     */
+    protected $is_enabled;
+
+    /**
      * @Column(name="frontend_type", type="string", length=100, nullable=true)
      * @var string|null
      */
@@ -221,6 +227,8 @@ class Station
 
     public function __construct()
     {
+        $this->is_enabled = true;
+
         $this->automation_timestamp = 0;
         $this->enable_streamers = false;
         $this->is_streamer_live = false;
@@ -288,6 +296,22 @@ class Station
         if (!empty($short_name)) {
             $this->short_name = $short_name;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->is_enabled;
+    }
+
+    /**
+     * @param bool $is_enabled
+     */
+    public function setIsEnabled(bool $is_enabled): void
+    {
+        $this->is_enabled = $is_enabled;
     }
 
     /**
@@ -661,7 +685,7 @@ class Station
      */
     public function getEnablePublicPage(): bool
     {
-        return (bool)$this->enable_public_page;
+        return (bool)$this->enable_public_page && $this->isEnabled();
     }
 
     /**

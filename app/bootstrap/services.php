@@ -309,30 +309,22 @@ return function (\Slim\Container $di, $settings) {
             $di[\App\Session::class],
             $di[\App\Flash::class],
             $di[\App\Mvc\View::class],
-            $di[\AzuraCast\Acl\StationAcl::class]
+            $di[\AzuraCast\Acl\StationAcl::class],
+            $di[\Monolog\Logger::class]
         );
     };
 
     $di[\Monolog\Logger::class] = function($di) use ($settings) {
         $logger = new Monolog\Logger($settings['name']);
 
-        /** @var \Redis $redis */
-        $redis = $di[\Redis::class];
-        $redis->select(3);
-
-        // Log all errors to Redis for quick reviewing later.
-        $redis_handler = new \Monolog\Handler\RedisHandler($redis, 'logs', \Monolog\Logger::INFO, true, 100);
-        $logger->pushHandler($redis_handler);
-
-        // Determine general handler.
         if (APP_INSIDE_DOCKER) {
-            $handler = (APP_IN_PRODUCTION)
-                ? new \Monolog\Handler\StreamHandler('php://stderr', \Monolog\Logger::WARNING)
-                : new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Logger::DEBUG);
-        } else {
-            $handler = new \Monolog\Handler\RotatingFileHandler(APP_INCLUDE_TEMP.'/azuracast.log', \Monolog\Logger::WARNING);
+            $logging_level = (APP_IN_PRODUCTION) ? \Monolog\Logger::WARNING : \Monolog\Logger::DEBUG;
+
+            $handler = new \Monolog\Handler\StreamHandler('php://stderr', $logging_level, true);
+            $logger->pushHandler($handler);
         }
 
+        $handler = new \Monolog\Handler\StreamHandler(APP_INCLUDE_TEMP.'/azuracast.log', \Monolog\Logger::WARNING, true);
         $logger->pushHandler($handler);
 
         return $logger;

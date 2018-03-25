@@ -9,6 +9,7 @@ use Entity;
 use Exception;
 use App\Http\Request;
 use App\Http\Response;
+use Monolog\Logger;
 
 class ErrorHandler
 {
@@ -27,6 +28,9 @@ class ErrorHandler
     /** @var Acl */
     protected $acl;
 
+    /** @var Logger */
+    protected $logger;
+
     /**
      * ErrorHandler constructor.
      * @param Url $url
@@ -35,17 +39,24 @@ class ErrorHandler
      * @param View $view
      * @param Acl $acl
      */
-    public function __construct(Url $url, Session $session, Flash $flash, View $view, Acl $acl)
+    public function __construct(Url $url, Session $session, Flash $flash, View $view, Acl $acl, Logger $logger)
     {
         $this->url = $url;
         $this->session = $session;
         $this->flash = $flash;
         $this->view = $view;
         $this->acl = $acl;
+        $this->logger = $logger;
     }
 
     public function __invoke(Request $req, Response $res, \Throwable $e)
     {
+        $this->logger->error($e->getMessage(), [
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'code' => $e->getCode(),
+        ]);
+
         /** @var Entity\User|null $user */
         $user = $req->getAttribute('user');
         $show_detailed = $this->acl->userAllowed($user, 'administer all') || !APP_IN_PRODUCTION;

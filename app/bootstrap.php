@@ -44,7 +44,7 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
 ini_set('display_startup_errors',       !APP_IN_PRODUCTION ? 1 : 0);
 ini_set('display_errors',               !APP_IN_PRODUCTION ? 1 : 0);
 ini_set('log_errors',                   1);
-ini_set('error_log',                    APP_INCLUDE_TEMP . '/php_errors.log');
+ini_set('error_log',                    (APP_INSIDE_DOCKER) ? '/dev/stderr' : APP_INCLUDE_TEMP.'/php_errors.log');
 ini_set('error_reporting',              E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
 ini_set('session.use_only_cookies',     1);
 ini_set('session.cookie_httponly',      1);

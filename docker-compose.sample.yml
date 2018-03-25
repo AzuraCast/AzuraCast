@@ -19,6 +19,7 @@ services:
       MYSQL_PASSWORD: "azur4c457"   # ^
       MYSQL_DATABASE: "azuracast"   # ^
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      AZURACAST_DC_REVISION: 2      # Only modified when this Docker Compose file has changed.
     volumes:
       - www_data:/var/azuracast/www
       # For development, comment the line above and uncomment the line below.
@@ -47,8 +48,8 @@ services:
       - nginx_letsencrypt_www:/var/www/letsencrypt
     restart: always
 
-  # docker-compose run --rm letsencrypt \
-  #   certonly --webroot -w /var/www/letsencrypt
+  # To use the LetsEncrypt support:
+  # docker-compose run --rm letsencrypt certonly --webroot -w /var/www/letsencrypt
   letsencrypt:
     image: certbot/certbot
     command: /bin/true
@@ -57,7 +58,10 @@ services:
       - nginx_letsencrypt_www:/var/www/letsencrypt
 
   mariadb:
-    image: mariadb:10.2
+    image: azuracast/azuracast_db:latest
+    # Uncomment the lines below to build this image locally (Developer option)
+    # build:
+    #   context: ../docker-azuracast-db
     # Uncomment to expose MariaDB to the host computer (for testing only!)
     # ports:
     #  - "127.0.0.1:3306:3306"
@@ -68,13 +72,19 @@ services:
     restart: always
 
   influxdb:
-    image: influxdb:1.4-alpine
+    image: azuracast/azuracast_influxdb:latest
+    # Uncomment the lines below to build this image locally (Developer option)
+    # build:
+    #   context: ../docker-azuracast-influxdb
     volumes:
       - influx_data:/var/lib/influxdb
     restart: always
 
   redis:
-    image: redis:4.0-alpine
+    image: azuracast/azuracast_redis:latest
+    # Uncomment the lines below to build this image locally (Developer option)
+    # build:
+    #   context: ../docker-azuracast-redis
     # Uncomment to expose Redis to the host computer (for testing only!)
     # ports:
     #  - "127.0.0.1:6379:6379"

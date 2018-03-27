@@ -37,9 +37,7 @@ class Api
         }
 
         // Attempt API key auth if a key exists.
-        $api_key_header = $request->getHeader('X-API-Key');
-        $api_key = $api_key_header[0] ?? $request->getParam('key') ?? null;
-
+        $api_key = $this->getApiKey($request);
         $api_user = (!empty($api_key)) ? $this->api_repo->authenticate($api_key) : null;
 
         // Override the request's "user" variable if API authentication is supplied and valid.
@@ -75,5 +73,30 @@ class Api
 
             return $response->withStatus(500)->withJson($api_response);
         }
+    }
+
+    protected function getApiKey(Request $request): ?string
+    {
+        // Check authorization header
+        $auth_headers = $request->getHeader('Authorization');
+        $auth_header = $auth_headers[0] ?? "";
+
+        if (preg_match("/Bearer\s+(.*)$/i", $auth_header, $matches)) {
+            return $matches[1];
+        }
+
+        // Check API key header
+        $api_key_headers = $request->getHeader('X-API-Key');
+        if ($api_key_headers[0]) {
+            return $api_key_headers[0];
+        }
+
+        // Check cookies
+        $cookieParams = $request->getCookieParams();
+        if (isset($cookieParams['token'])) {
+            return $cookieParams['token'];
+        };
+
+        return null;
     }
 }

@@ -86,11 +86,11 @@ class Customization
      * Format the given UNIX timestamp into a locale-friendly time.
      *
      * @param $timestamp
-     * @param bool $use_gmt
+     * @param bool $use_utc
      * @param bool $show_timezone_abbr
      * @return string Formatted time for presentation.
      */
-    public function formatTime($timestamp = null, $use_gmt = false, $show_timezone_abbr = false)
+    public function formatTime($timestamp = null, $use_utc = false, $show_timezone_abbr = false)
     {
         $timestamp = $timestamp ?? time();
 
@@ -100,10 +100,40 @@ class Customization
         $time_format = $time_formats[$locale] ?? $time_formats['default'];
 
         if ($show_timezone_abbr) {
-            $time_format .= ($use_gmt) ? ' \U\T\C' : ' T';
+            $time_format .= ($use_utc) ? ' \U\T\C' : ' T';
         }
 
-        return ($use_gmt) ? gmdate($time_format, $timestamp) : date($time_format, $timestamp);
+        return ($use_utc) ? gmdate($time_format, $timestamp) : date($time_format, $timestamp);
+    }
+
+    /**
+     * Format a date/time using PHP's IntlDateFormatter constants.
+     *
+     * @param $timestamp
+     * @param bool $use_utc
+     * @param int|null $date_display One of:
+     *     IntlDateFormatter::NONE - Do not include
+     *     IntlDateFormatter::FULL - (Tuesday, April 12, 1952 AD or 3:30:42pm PST)
+     *     IntlDateFormatter::LONG (default) - (January 12, 1952 or 3:30:32pm)
+     *     IntlDateFormatter::MEDIUM - (Jan 12, 1952)
+     *     IntlDateFormatter::SHORT - (12/13/52 or 3:30pm)
+     * @param int|null $time_display One of the above.
+     * @return string
+     */
+    public function formatDateTime($timestamp, $use_utc = false, $date_display = \IntlDateFormatter::LONG, $time_display = \IntlDateFormatter::LONG)
+    {
+        $timezone = ($use_utc) ? 'UTC' : date_default_timezone_get();
+        $locale = str_replace('.UTF-8', '', $this->getLocale());
+
+        $fmt = new \IntlDateFormatter(
+            $locale,
+            $date_display,
+            $time_display,
+            $timezone,
+            \IntlDateFormatter::GREGORIAN
+        );
+
+        return $fmt->format($timestamp);
     }
 
     /**

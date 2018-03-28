@@ -1,6 +1,7 @@
 <?php
 namespace Entity;
 
+use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use DateTime;
@@ -480,8 +481,8 @@ class StationPlaylist
      */
     public static function getTimestamp($time_code): int
     {
-        $dt = self::getDateTime($time_code);
-        return ($dt) ? $dt->getTimestamp() : 0;
+        return self::getDateTime($time_code)
+            ->getTimestamp();
     }
 
     /**
@@ -504,13 +505,14 @@ class StationPlaylist
      * Return a \DateTime object (or null) for a given time code, by default in the UTC time zone.
      *
      * @param $time_code
-     * @return DateTime|null
+     * @return Chronos
      */
-    public static function getDateTime($time_code): ?DateTime
+    public static function getDateTime($time_code): Chronos
     {
         $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
-        $dt = \DateTime::createFromFormat('Hi|', $time_code, new \DateTimeZone('UTC'));
-        return ($dt instanceof DateTime) ? $dt : null;
+
+        return Chronos::now(new \DateTimeZone('UTC'))
+            ->setTime(substr($time_code, 0, 2), substr($time_code, 2));
     }
 
     /**

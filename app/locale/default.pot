@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-03-24T07:09:24+00:00\n"
-"PO-Revision-Date: 2018-03-24T07:09:24+00:00\n"
+"POT-Creation-Date: 2018-03-28T06:07:28+00:00\n"
+"PO-Revision-Date: 2018-03-28T06:07:28+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:62
@@ -104,11 +104,11 @@ msgstr ""
 msgid "Edit Profile"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Frontend/IndexController.php:193
+#: /var/azuracast/www/app/src/Controller/Frontend/IndexController.php:195
 msgid "%s Listener Range"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Frontend/IndexController.php:204
+#: /var/azuracast/www/app/src/Controller/Frontend/IndexController.php:206
 msgid "%s Daily Average"
 msgstr ""
 
@@ -257,44 +257,44 @@ msgid "This feature is not currently supported on this station."
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:79
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:178
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:246
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:185
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:253
 msgid "Monday"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:80
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:179
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:247
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:186
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:254
 msgid "Tuesday"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:81
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:180
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:248
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:187
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:255
 msgid "Wednesday"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:82
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:181
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:249
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:188
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:256
 msgid "Thursday"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:83
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:182
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:250
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:189
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:257
 msgid "Friday"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:84
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:183
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:251
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:190
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:258
 msgid "Saturday"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:85
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:184
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:252
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:191
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:259
 msgid "Sunday"
 msgstr ""
 
@@ -346,8 +346,8 @@ msgstr ""
 msgid "File Not Processed"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:81
-#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:94
+#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:85
+#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:98
 #: /var/azuracast/www/app/config/forms/media.conf.php:17
 #: /var/azuracast/www/app/config/forms/song.conf.php:33
 #: /var/azuracast/www/app/templates/frontend/public/index.phtml:109
@@ -357,8 +357,8 @@ msgstr ""
 msgid "Song Title"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:82
-#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:95
+#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:86
+#: /var/azuracast/www/app/src/Controller/Stations/ProfileController.php:99
 #: /var/azuracast/www/app/config/forms/media.conf.php:24
 #: /var/azuracast/www/app/templates/frontend/public/index.phtml:110
 #: /var/azuracast/www/app/templates/frontend/public/player_component.phtml:9
@@ -412,17 +412,18 @@ msgstr ""
 
 #: /var/azuracast/www/app/src/Entity/StationWebhook.php:170
 #: /var/azuracast/www/app/config/forms/profile.conf.php:103
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:100
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:107
+#: /var/azuracast/www/app/config/forms/branding.conf.php:13
 msgid "Default"
 msgstr ""
 
-#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:64
-#: /var/azuracast/www/app/src/AzuraCast/Middleware/Module/Api.php:67
+#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:75
+#: /var/azuracast/www/app/src/AzuraCast/Middleware/Module/Api.php:65
 msgid "You must be logged in to access this page."
 msgstr ""
 
-#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:75
-#: /var/azuracast/www/app/src/AzuraCast/Middleware/Module/Api.php:64
+#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:86
+#: /var/azuracast/www/app/src/AzuraCast/Middleware/Module/Api.php:62
 msgid "You do not have permission to access this portion of the site."
 msgstr ""
 
@@ -591,12 +592,12 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/user.conf.php:46
 #: /var/azuracast/www/app/config/forms/profile.conf.php:119
 #: /var/azuracast/www/app/config/forms/station.conf.php:359
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:267
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:274
 #: /var/azuracast/www/app/config/forms/api_key.conf.php:20
 #: /var/azuracast/www/app/config/forms/rename.conf.php:18
 #: /var/azuracast/www/app/config/forms/song.conf.php:47
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:61
-#: /var/azuracast/www/app/config/forms/branding.conf.php:88
+#: /var/azuracast/www/app/config/forms/branding.conf.php:91
 #: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:49
 #: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:95
 #: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:115
@@ -645,11 +646,11 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:80
 #: /var/azuracast/www/app/config/forms/station.conf.php:253
 #: /var/azuracast/www/app/config/forms/station.conf.php:263
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:66
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:140
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:73
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:147
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:51
-#: /var/azuracast/www/app/config/forms/branding.conf.php:24
-#: /var/azuracast/www/app/config/forms/branding.conf.php:46
+#: /var/azuracast/www/app/config/forms/branding.conf.php:27
+#: /var/azuracast/www/app/config/forms/branding.conf.php:49
 msgid "No"
 msgstr ""
 
@@ -669,11 +670,11 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:81
 #: /var/azuracast/www/app/config/forms/station.conf.php:253
 #: /var/azuracast/www/app/config/forms/station.conf.php:263
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:65
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:141
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:72
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:148
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:52
-#: /var/azuracast/www/app/config/forms/branding.conf.php:25
-#: /var/azuracast/www/app/config/forms/branding.conf.php:47
+#: /var/azuracast/www/app/config/forms/branding.conf.php:28
+#: /var/azuracast/www/app/config/forms/branding.conf.php:50
 msgid "Yes"
 msgstr ""
 
@@ -929,8 +930,8 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/station.conf.php:74
 #: /var/azuracast/www/app/templates/stations/webhooks/index.phtml:36
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:56
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:114
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:127
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:34
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:47
 #: /var/azuracast/www/app/templates/stations/playlists/index.phtml:67
 msgid "Disabled"
 msgstr ""
@@ -939,8 +940,8 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/station.conf.php:62
 #: /var/azuracast/www/app/config/forms/station.conf.php:75
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:54
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:108
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:124
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:28
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:44
 msgid "Enabled"
 msgstr ""
 
@@ -1020,7 +1021,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/config/forms/user.conf.php:10
 #: /var/azuracast/www/app/config/forms/profile.conf.php:16
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:96
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:16
 #: /var/azuracast/www/app/templates/stations/files/index.phtml:74
 msgid "Name"
 msgstr ""
@@ -1102,10 +1103,12 @@ msgid "Site Theme"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:103
+#: /var/azuracast/www/app/config/forms/branding.conf.php:13
 msgid "Light"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:104
+#: /var/azuracast/www/app/config/forms/branding.conf.php:14
 msgid "Dark"
 msgstr ""
 
@@ -1319,156 +1322,156 @@ msgstr ""
 msgid "This code will be inserted into your station's Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:39
-msgid "Your current local time is <b>%s</b>. You can customize your time zone from the \"My Account\" page."
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:43
+msgid "Your current local time is <b>%s</b> (%s UTC). You can customize your time zone from the \"My Account\" page."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:53
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:60
 #: /var/azuracast/www/app/templates/stations/files/index.phtml:102
 msgid "Playlist Name"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:61
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:68
 msgid "Enable Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:63
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:70
 msgid "If set to \"No\", the playlist will not be included in radio playback, but can still be managed."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:75
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:82
 msgid "Import Existing Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:76
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:83
 msgid "Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:93
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:100
 msgid "Playlist Weight"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:94
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:101
 msgid "Higher weight playlists are played more frequently compared to other lower-weight playlists."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:98
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:105
 msgid "Low"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:102
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:109
 msgid "High"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:110
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:117
 msgid "Playlist Type"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:112
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:128
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:119
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:135
 #: /var/azuracast/www/app/templates/stations/playlists/index.phtml:69
 msgid "Standard Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:112
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:119
 msgid "Plays all day, shuffles with other standard playlists based on weight."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:113
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:150
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:120
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:157
 #: /var/azuracast/www/app/templates/stations/playlists/index.phtml:72
 msgid "Scheduled Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:113
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:120
 msgid "Play during a scheduled time range. Useful for mood-based time playlists."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:114
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:193
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:121
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:200
 msgid "Once per x Songs Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:114
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:121
 msgid "Play exactly once every <i>x</i> songs. Useful for station ID/jingles."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:115
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:122
 msgid "Once Per x Minutes Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:115
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:122
 msgid "Play exactly once every <i>x</i> minutes. Useful for station ID/jingles."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:116
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:227
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:123
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:234
 msgid "Daily Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:116
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:123
 msgid "Play once per day at the specified time. Useful for timely reminders."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:117
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:124
 msgid "Custom Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:117
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:124
 msgid "Manually define how this playlist is used in Liquidsoap configuration. For advanced users only!"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:135
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:142
 msgid "Include in Automated Assignment"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:136
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:143
 msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:157
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:164
 msgid "Start Time"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:166
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:173
 msgid "End Time"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:167
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:174
 msgid "If the end time is before the start time, the playlist will play overnight until this time on the next day."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:175
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:243
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:182
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:250
 msgid "Scheduled Play Days of Week"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:176
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:244
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:183
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:251
 msgid "Leave blank to play on every day of the week."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:200
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:207
 msgid "Number of Songs Between Plays"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:201
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:208
 msgid "This playlist will play every $x songs, where $x is specified below."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:210
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:217
 msgid "Once per x Minutes Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:217
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:224
 msgid "Number of Minutes Between Plays"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:218
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:225
 msgid "This playlist will play every $x minutes, where $x is specified below."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/playlist.conf.php:234
+#: /var/azuracast/www/app/config/forms/playlist.conf.php:241
 msgid "Scheduled Play Time"
 msgstr ""
 
@@ -1573,51 +1576,51 @@ msgstr ""
 msgid "Select a theme to use as a base for station public pages and the login page."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:20
+#: /var/azuracast/www/app/config/forms/branding.conf.php:23
 msgid "Hide Album Art on Public Pages"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:21
+#: /var/azuracast/www/app/config/forms/branding.conf.php:24
 msgid "If selected, album art will not display on public-facing radio pages."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:33
+#: /var/azuracast/www/app/config/forms/branding.conf.php:36
 msgid "Default Album Art URL"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:34
+#: /var/azuracast/www/app/config/forms/branding.conf.php:37
 msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:42
+#: /var/azuracast/www/app/config/forms/branding.conf.php:45
 msgid "Hide AzuraCast Branding on Public Pages"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:43
+#: /var/azuracast/www/app/config/forms/branding.conf.php:46
 msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:55
+#: /var/azuracast/www/app/config/forms/branding.conf.php:58
 msgid "Custom CSS for Public Pages"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:56
+#: /var/azuracast/www/app/config/forms/branding.conf.php:59
 msgid "This CSS will be applied to the station public pages and login page."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:65
+#: /var/azuracast/www/app/config/forms/branding.conf.php:68
 msgid "Custom JS for Public Pages"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:66
+#: /var/azuracast/www/app/config/forms/branding.conf.php:69
 msgid "This javascript code will be applied to the station public pages and login page."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:75
+#: /var/azuracast/www/app/config/forms/branding.conf.php:78
 msgid "Custom CSS for Internal Pages"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:76
+#: /var/azuracast/www/app/config/forms/branding.conf.php:79
 msgid "This CSS will be applied to the main management pages, like this one."
 msgstr ""
 
@@ -1727,7 +1730,7 @@ msgid "Title"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:63
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:100
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:20
 msgid "Description"
 msgstr ""
 
@@ -1856,7 +1859,8 @@ msgstr ""
 #: /var/azuracast/www/app/config/admin/actions.conf.php:16
 #: /var/azuracast/www/app/templates/stations/sidebar.phtml:36
 #: /var/azuracast/www/app/templates/stations/profile/index.phtml:5
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:83
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:3
+#: /var/azuracast/www/app/templates/stations/profile/disabled.phtml:5
 msgid "Profile"
 msgstr ""
 
@@ -1912,7 +1916,7 @@ msgstr ""
 #: /var/azuracast/www/app/templates/admin/stations/index.phtml:26
 #: /var/azuracast/www/app/templates/stations/webhooks/index.phtml:31
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:39
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:86
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:6
 #: /var/azuracast/www/app/templates/stations/streamers/index.phtml:32
 #: /var/azuracast/www/app/templates/stations/playlists/index.phtml:43
 #: /var/azuracast/www/app/templates/stations/files/index.phtml:209
@@ -2177,7 +2181,7 @@ msgstr ""
 #: /var/azuracast/www/app/templates/stations/requests/index.phtml:1
 #: /var/azuracast/www/app/templates/stations/requests/index.phtml:11
 #: /var/azuracast/www/app/templates/stations/sidebar.phtml:64
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:105
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:25
 msgid "Song Requests"
 msgstr ""
 
@@ -2210,14 +2214,14 @@ msgid "Public Page"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/sidebar.phtml:39
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:302
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:235
 #: /var/azuracast/www/app/templates/stations/files/index.phtml:1
 #: /var/azuracast/www/app/templates/stations/files/index.phtml:21
 msgid "Music Files"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/sidebar.phtml:40
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:303
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:236
 #: /var/azuracast/www/app/templates/stations/reports/duplicates.phtml:25
 #: /var/azuracast/www/app/templates/stations/playlists/index.phtml:2
 #: /var/azuracast/www/app/templates/stations/playlists/index.phtml:10
@@ -2337,103 +2341,111 @@ msgstr ""
 msgid "Skip Song"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:114
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:127
-msgid "Edit station profile to enable."
-msgstr ""
-
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:121
-msgid "Streamers/DJs"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:125
-msgid "Manage streamer accounts"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:133
-msgid "Base Directory"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:137
-msgid "Media Directory"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:141
-msgid "Player Embed Code"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:155
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:88
 msgid "External Radio Server"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:166
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:221
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:99
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:154
 msgid "Public URL"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:190
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:123
 msgid "Icecast (Broadcasting Service)"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:192
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:125
 msgid "SHOUTcast DNAS 2 (Broadcasting Service)"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:194
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:279
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:127
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:212
 msgid "Running"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:194
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:279
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:127
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:212
 msgid "Not Running"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:204
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:289
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:137
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:222
 msgid "Restart Service"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:205
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:290
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:138
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:223
 msgid "Start Service"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:206
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:291
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:139
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:224
 msgid "Stop Service"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:242
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:175
 msgid "Stream Playlists"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:250
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:183
 msgid "Administration URL"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:253
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:186
 msgid "Administrator Password"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:256
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:189
 msgid "Source Password"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:266
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:199
 msgid "AutoDJ Disabled"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:269
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:202
 msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:277
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:210
 msgid "Liquidsoap (AutoDJ Service)"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:298
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:231
 msgid "LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>."
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:34
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:47
+msgid "Edit station profile to enable."
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:41
+msgid "Streamers/DJs"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:45
+msgid "Manage streamer accounts"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:53
+msgid "Base Directory"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:57
+msgid "Media Directory"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/profile/profile_view.phtml:61
+msgid "Player Embed Code"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/profile/disabled.phtml:15
+msgid "Station Broadcasting Disabled"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/profile/disabled.phtml:19
+msgid "Your station is currently not enabled for broadcasting. You can still manage media, playlists, and other station settings. To re-enable broadcasting, edit your station profile."
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/index/index.phtml:1

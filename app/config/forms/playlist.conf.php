@@ -24,7 +24,11 @@ for ($hr = 0; $hr <= 23; $hr++) {
         $local_to_utc[$local_time] = $time_num;
 
         $hour_timestamp = StationPlaylist::getTimestamp($time_num);
-        $hour_select_utc[$time_num] = $customization->formatTime($hour_timestamp, false, true).' ('.$customization->formatTime($hour_timestamp, true, true).')';
+
+        $hour_select_utc[$time_num] = sprintf('%s (%s)',
+            $customization->formatTime($hour_timestamp, false, true),
+            $customization->formatTime($hour_timestamp, true, true)
+        );
     }
 }
 
@@ -36,7 +40,10 @@ foreach($local_to_utc as $local_time => $utc_time) {
     $hour_select[$utc_time] = $hour_select_utc[$utc_time];
 }
 
-$server_time = sprintf(__('Your current local time is <b>%s</b>. You can customize your time zone from the "My Account" page.'), $customization->formatTime());
+$server_time = __('Your current local time is <b>%s</b> (%s UTC). You can customize your time zone from the "My Account" page.',
+    $customization->formatTime(),
+    $customization->formatTime(null, true)
+);
 
 return [
     'method' => 'post',

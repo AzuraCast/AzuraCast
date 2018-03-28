@@ -43,7 +43,7 @@
                 <a class="btn bgm-blue btn-float" role="button" href="<?=$url->named('admin:index:sync', ['type' => $sync_key]) ?>" title="Run Manually"><i class="zmdi zmdi-mail-send"></i></a>
             </div>
             <div class="card-body card-padding">
-                <p><?=date('Y-m-d G:i', $sync_info['latest']) ?><br><small><?=sprintf(__('%s ago'), $sync_info['diff_text']) ?></small></p>
+                <p><?=$customization->formatDateTime($sync_info['latest']) ?><br><small><?=sprintf(__('%s ago'), $sync_info['diff_text']) ?></small></p>
             </div>
         </section>
     </div>

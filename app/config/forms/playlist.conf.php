@@ -121,7 +121,7 @@ return [
                             'once_per_x_songs' => '<b>' . __('Once per x Songs Playlist') . ':</b> ' . __('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
                             'once_per_x_minutes' => '<b>' . __('Once Per x Minutes Playlist') . ':</b> ' . __('Play exactly once every <i>x</i> minutes. Useful for station ID/jingles.'),
                             'once_per_day' => '<b>' . __('Daily Playlist') . '</b>: ' . __('Play once per day at the specified time. Useful for timely reminders.'),
-                            'custom' => '<b>' . __('Custom Playlist') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. For advanced users only!'),
+                            'custom' => '<b>' . __('Advanced Playlist') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://github.com/AzuraCast/AzuraCast/wiki/Using-Advanced-Playlists'),
                         ],
                         'default' => 'default',
                         'required' => true,

@@ -1,26 +1,23 @@
 #!/usr/bin/env bash
 
-while test $# -gt 0; do
-    case "$1" in
-        --dev)
-            APP_ENV="development"
-            shift
-            ;;
-    esac
-done
-
-APP_ENV="${APP_ENV:-production}"
-
 docker-compose down
 docker-compose rm -f
-docker-compose pull
 
-if [ $APP_ENV = "production" ]; then
-    docker-compose run --rm cli azuracast_update
-else
-    docker-compose run --rm cli azuracast_update --dev
+read -p "Update docker-compose.yml file? This will overwrite any customizations you made to this file. [y/N] " -n 1 -r
+echo
+
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+
+    cp docker-compose.yml docker-compose.backup.yml
+    echo "Your existing docker-compose.yml file has been backed up to docker-compose.backup.yml."
+
+    curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml > docker-compose.yml
+    echo "New docker-compose.yml file loaded."
+
 fi
 
+docker-compose pull
+docker-compose run --rm cli azuracast_update
 docker-compose up -d
 
 docker rmi $(docker images | grep "none" | awk '/ / { print $3 }')

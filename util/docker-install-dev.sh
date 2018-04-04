@@ -5,14 +5,14 @@ echo
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
 
-    docker-compose -f docker-compose.yml -f docker-compose.dev.yml down -v
+    docker-compose down -v
     docker stop $(docker ps -a -q)
     docker rm $(docker ps -a -q)
     docker volume prune -f
 
-    docker-compose -f docker-compose.yml -f docker-compose.dev.yml build
-    docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm cli azuracast_install --dev
-    docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
-    docker-compose -f docker-compose.yml -f docker-compose.dev.yml rm -f
+    docker-compose build
+    docker-compose run --rm cli azuracast_install --dev
+    docker-compose up -d
+    docker-compose rm -f
 
 fi

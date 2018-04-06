@@ -7,6 +7,8 @@ namespace Entity;
  */
 class StationWebhook
 {
+    use Traits\TruncateStrings;
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -97,7 +99,7 @@ class StationWebhook
      */
     public function setName(?string $name): void
     {
-        $this->name = $name;
+        $this->name = $this->_truncateString($name, 100);
     }
 
     /**

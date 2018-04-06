@@ -10,6 +10,8 @@ namespace Entity;
  */
 class StationStreamer
 {
+    use Traits\TruncateStrings;
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -99,7 +101,7 @@ class StationStreamer
      */
     public function setStreamerUsername(string $streamer_username)
     {
-        $this->streamer_username = $streamer_username;
+        $this->streamer_username = $this->_truncateString($streamer_username, 50);
     }
 
     /**
@@ -115,7 +117,7 @@ class StationStreamer
      */
     public function setStreamerPassword(string $streamer_password)
     {
-        $this->streamer_password = $streamer_password;
+        $this->streamer_password = $this->_truncateString($streamer_password, 50);
     }
 
     /**
@@ -133,7 +135,7 @@ class StationStreamer
      */
     public function setDisplayName(?string $display_name): void
     {
-        $this->display_name = $display_name;
+        $this->display_name = $this->_truncateString($display_name);
     }
 
     /**

@@ -14,6 +14,8 @@ use Interop\Container\ContainerInterface;
  */
 class Station
 {
+    use Traits\TruncateStrings;
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -268,12 +270,12 @@ class Station
     /**
      * @param null|string $name
      */
-    public function setName(string $name = null)
+    public function setName(?string $name = null)
     {
-        $this->name = $name;
+        $this->name = $this->_truncateString($name, 100);
 
         if (empty($this->short_name) && !empty($name)) {
-            $this->short_name = self::getStationShortName($name);
+            $this->setShortName(self::getStationShortName($name));
         }
     }
 
@@ -294,7 +296,7 @@ class Station
     {
         $short_name = trim($short_name);
         if (!empty($short_name)) {
-            $this->short_name = $short_name;
+            $this->short_name = $this->_truncateString($short_name, 100);
         }
     }
 
@@ -462,7 +464,7 @@ class Station
      */
     public function setUrl(string $url = null)
     {
-        $this->url = $url;
+        $this->url = $this->_truncateString($url);
     }
 
     /**
@@ -478,6 +480,8 @@ class Station
      */
     public function setRadioBaseDir($new_dir)
     {
+        $new_dir = $this->_truncateString(trim($new_dir));
+
         if (strcmp($this->radio_base_dir, $new_dir) !== 0) {
             $this->radio_base_dir = $new_dir;
 
@@ -489,7 +493,9 @@ class Station
             ];
             foreach ($radio_dirs as $radio_dir) {
                 if (!file_exists($radio_dir)) {
-                    mkdir($radio_dir, 0777);
+                    if (!mkdir($radio_dir, 0777) && !is_dir($radio_dir)) {
+                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $radio_dir));
+                    }
                 }
             }
         }
@@ -524,13 +530,15 @@ class Station
     /**
      * @param $new_dir
      */
-    public function setRadioMediaDir(string $new_dir)
+    public function setRadioMediaDir(?string $new_dir)
     {
-        if ($new_dir !== $this->radio_media_dir) {
-            $new_dir = trim($new_dir);
+        $new_dir = $this->_truncateString(trim($new_dir));
 
+        if ($new_dir && $new_dir !== $this->radio_media_dir) {
             if (!empty($new_dir) && !file_exists($new_dir)) {
-                mkdir($new_dir, 0777, true);
+                if (!mkdir($new_dir, 0777, true) && !is_dir($new_dir)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $new_dir));
+                }
             }
 
             $this->radio_media_dir = $new_dir;

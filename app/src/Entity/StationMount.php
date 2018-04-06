@@ -10,6 +10,8 @@ use AzuraCast\Radio\Frontend\FrontendAbstract;
  */
 class StationMount
 {
+    use Traits\TruncateStrings;
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -166,7 +168,7 @@ class StationMount
      */
     public function setName(string $new_name)
     {
-        $this->name = '/' . ltrim($new_name, '/');
+        $this->name = $this->_truncateString('/' . ltrim($new_name, '/'), 100);
     }
 
     /**
@@ -342,7 +344,7 @@ class StationMount
      */
     public function setRemoteUrl($remote_url)
     {
-        $this->remote_url = $remote_url;
+        $this->remote_url = $this->_truncateString($remote_url);
     }
 
     /**
@@ -358,7 +360,7 @@ class StationMount
      */
     public function setRemoteMount($remote_mount)
     {
-        $this->remote_mount = $remote_mount;
+        $this->remote_mount = $this->_truncateString($remote_mount, 150);
     }
 
     /**
@@ -374,7 +376,7 @@ class StationMount
      */
     public function setRemoteSourceUsername($remote_source_username)
     {
-        $this->remote_source_username = $remote_source_username;
+        $this->remote_source_username = $this->_truncateString($remote_source_username, 100);
     }
 
     /**
@@ -390,7 +392,7 @@ class StationMount
      */
     public function setRemoteSourcePassword($remote_source_password)
     {
-        $this->remote_source_password = $remote_source_password;
+        $this->remote_source_password = $this->_truncateString($remote_source_password, 100);
     }
 
     /**

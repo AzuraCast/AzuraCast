@@ -7,6 +7,8 @@ namespace Entity;
  */
 class ApiKey
 {
+    use Traits\TruncateStrings;
+
     /**
      * @Column(name="id", type="string", length=16)
      * @Id
@@ -105,6 +107,6 @@ class ApiKey
      */
     public function setComment(?string $comment): void
     {
-        $this->comment = $comment;
+        $this->comment = $this->_truncateString($comment);
     }
 }

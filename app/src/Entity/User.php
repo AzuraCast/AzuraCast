@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User
 {
+    use Traits\TruncateStrings;
+
     /**
      * @Column(name="uid", type="integer")
      * @Id
@@ -122,7 +124,7 @@ class User
      */
     public function setEmail($email)
     {
-        $this->email = $email;
+        $this->email = $this->_truncateString($email, 100);
     }
 
     /**
@@ -197,7 +199,7 @@ class User
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->name = $this->_truncateString($name, 100);
     }
 
     /**

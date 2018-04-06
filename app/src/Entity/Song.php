@@ -12,6 +12,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class Song
 {
+    use Traits\TruncateStrings;
+
     const SYNC_THRESHOLD = 604800; // 604800 = 1 week
 
     /**
@@ -78,9 +80,9 @@ class Song
             }
         }
 
-        $this->text = $this->_filterSongHash($song_info['text']);
-        $this->title = $this->_filterSongHash($song_info['title']);
-        $this->artist = $song_info['artist'];
+        $this->text = $this->_truncateString($song_info['text'], 150);
+        $this->title = $this->_truncateString($song_info['title'], 150);
+        $this->artist = $this->_truncateString($song_info['artist'], 150);
 
         $this->id = self::getSongHash($song_info);
 
@@ -89,16 +91,6 @@ class Song
         $this->last_played = 0;
 
         $this->history = new ArrayCollection;
-    }
-
-    protected function _filterSongHash($text)
-    {
-        preg_match('/#(.*)#$/', $text, $matches);
-        if (!empty($matches)) {
-            $text = str_replace($matches[0], '', $text);
-        }
-
-        return $text;
     }
 
     /**
@@ -220,12 +212,8 @@ class Song
             }
         }
 
-        preg_match('/#(.*)#$/', $song_text, $matches);
-        if (!empty($matches)) {
-            return $matches[1];
-        }
-
         // Strip non-alphanumeric characters
+        $song_text = mb_substr($song_text, 0, 150, 'UTF-8');
         $hash_base = mb_strtolower(str_replace([' ', '-'], ['', ''], $song_text), 'UTF-8');
 
         return md5($hash_base);

@@ -10,6 +10,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class Role
 {
+    use Traits\TruncateStrings;
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -66,7 +68,7 @@ class Role
      */
     public function setName(string $name)
     {
-        $this->name = $name;
+        $this->name = $this->_truncateString($name, 100);
     }
 
     /**

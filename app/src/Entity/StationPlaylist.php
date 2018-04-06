@@ -13,6 +13,8 @@ use DateTime;
  */
 class StationPlaylist
 {
+    use Traits\TruncateStrings;
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -169,7 +171,7 @@ class StationPlaylist
      */
     public function setName(string $name)
     {
-        $this->name = $name;
+        $this->name = $this->_truncateString($name, 200);
     }
 
     /**

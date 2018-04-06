@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\Collection;
  */
 class StationMedia
 {
-    use Traits\UniqueId;
+    use Traits\UniqueId, Traits\TruncateStrings;
 
     /**
      * @Column(name="id", type="integer")
@@ -214,7 +214,7 @@ class StationMedia
      */
     public function setTitle(string $title = null)
     {
-        $this->title = $title;
+        $this->title = $this->_truncateString($title, 200);
     }
 
     /**
@@ -230,7 +230,7 @@ class StationMedia
      */
     public function setArtist(string $artist = null)
     {
-        $this->artist = $artist;
+        $this->artist = $this->_truncateString($artist, 200);
     }
 
     /**
@@ -246,7 +246,7 @@ class StationMedia
      */
     public function setAlbum(string $album = null)
     {
-        $this->album = $album;
+        $this->album = $this->_truncateString($album, 200);
     }
 
     /**

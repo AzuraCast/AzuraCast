@@ -19,6 +19,7 @@
     - { role: nginx, when: update_revision|int < 23 }
     - { role: redis, when: update_revision|int < 14 }
     - { role: php, when: update_revision|int < 20 }
+    - composer
     - { role: influxdb, when: update_revision|int < 10 }
     - { role: ufw, when: update_revision|int < 12 }
     - { role: services, when: update_revision|int < 13 }

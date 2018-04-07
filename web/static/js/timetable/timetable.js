@@ -209,16 +209,14 @@ Timetable.Renderer = function(tt) {
 				var start = event.startDate;
 				var end = event.endDate;
 				var durationHours = computeDurationInHours(start, end);
-				return durationHours / scopeDurationHours * 100 + '%';
+				return ((durationHours / scopeDurationHours) * 100) + '%';
 			}
 			function computeDurationInHours(start, end) {
 				return (end.getTime() - start.getTime()) / 1000 / 60 / 60;
 			}
 			function computeEventBlockOffset(event) {
-				var scopeStartHours = timetable.scope.hourStart;
 				var eventStartHours = event.startDate.getHours() + (event.startDate.getMinutes() / 60);
-				var hoursBeforeEvent =  getDurationHours(scopeStartHours, eventStartHours);
-				return hoursBeforeEvent / scopeDurationHours * 100 + '%';
+                return (eventStartHours / scopeDurationHours) * 100 + '%';
 			}
 
 			var timetable = this.timetable;

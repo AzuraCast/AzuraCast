@@ -308,21 +308,26 @@ class StationPlaylist
      */
     public function canPlayScheduled(): bool
     {
+        $is_overnight = ($this->getScheduleEndTime() < $this->getScheduleStartTime());
+
         $play_once_days = $this->getScheduleDays();
 
-        if (!empty($play_once_days) && !in_array(gmdate('N'), $play_once_days)) {
+        $day_to_check = gmdate('N');
+        if ($is_overnight) {
+            $day_to_check = ($day_to_check == 1) ? 7 : $day_to_check - 1;
+        }
+
+        if (!empty($play_once_days) && !in_array($day_to_check, $play_once_days)) {
             return false;
         }
 
         $current_timecode = self::getCurrentTimeCode();
 
-        if ($this->getScheduleEndTime() < $this->getScheduleStartTime()) {
-            // Overnight playlist
+        if ($is_overnight) {
             return ($current_timecode >= $this->getScheduleStartTime() || $current_timecode <= $this->getScheduleEndTime());
-        } else {
-            // Normal playlist
-            return ($current_timecode >= $this->getScheduleStartTime() && $current_timecode <= $this->getScheduleEndTime());
         }
+
+        return ($current_timecode >= $this->getScheduleStartTime() && $current_timecode <= $this->getScheduleEndTime());
     }
 
     /**

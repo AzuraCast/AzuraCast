@@ -113,19 +113,22 @@ class PlaylistsController
                             $schedule[] = [
                                 'name' => $playlist->getName(),
                                 'day' => $day_name,
-                                'start_hour' => 0,
-                                'start_min' => 0,
-                                'end_hour' => (int)date('G', $end),
-                                'end_min' => (int)date('i', $end),
-                                'options' => $schedule_options,
-                            ];
-                            $schedule[] = [
-                                'name' => $playlist->getName(),
-                                'day' => $day_name,
                                 'start_hour' => (int)date('G', $start),
                                 'start_min' => (int)date('i', $start),
                                 'end_hour' => 23,
                                 'end_min' => 59,
+                                'options' => $schedule_options,
+                            ];
+
+                            $next_day = ($day_key == 7) ? $schedule_days[1] : $schedule_days[$day_key+1];
+
+                            $schedule[] = [
+                                'name' => $playlist->getName(),
+                                'day' => $next_day,
+                                'start_hour' => 0,
+                                'start_min' => 0,
+                                'end_hour' => (int)date('G', $end),
+                                'end_min' => (int)date('i', $end),
                                 'options' => $schedule_options,
                             ];
                         } else {

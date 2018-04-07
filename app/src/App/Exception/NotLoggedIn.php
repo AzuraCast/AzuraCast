@@ -1,6 +1,6 @@
 <?php
 namespace App\Exception;
 
-class NotLoggedIn extends \Exception
+class NotLoggedIn extends \App\Exception
 {
 }

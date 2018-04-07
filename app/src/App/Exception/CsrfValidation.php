@@ -1,6 +1,6 @@
 <?php
 namespace App\Exception;
 
-class CsrfValidation extends \Exception
+class CsrfValidation extends \App\Exception
 {
 }

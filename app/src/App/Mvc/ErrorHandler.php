@@ -51,11 +51,14 @@ class ErrorHandler
 
     public function __invoke(Request $req, Response $res, \Throwable $e)
     {
-        $this->logger->error($e->getMessage(), [
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-            'code' => $e->getCode(),
-        ]);
+        // Don't log errors that are internal to the application.
+        if (!($e instanceof \App\Exception)) {
+            $this->logger->error($e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'code' => $e->getCode(),
+            ]);
+        }
 
         /** @var Entity\User|null $user */
         $user = $req->getAttribute('user');

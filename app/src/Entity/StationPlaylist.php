@@ -311,20 +311,27 @@ class StationPlaylist
         $is_overnight = ($this->getScheduleEndTime() < $this->getScheduleStartTime());
 
         $play_once_days = $this->getScheduleDays();
-
         $day_to_check = gmdate('N');
-        if ($is_overnight) {
-            $day_to_check = ($day_to_check == 1) ? 7 : $day_to_check - 1;
-        }
-
-        if (!empty($play_once_days) && !in_array($day_to_check, $play_once_days)) {
-            return false;
-        }
-
         $current_timecode = self::getCurrentTimeCode();
 
+        // Handle overnight playlists that stretch into the next day.
         if ($is_overnight) {
-            return ($current_timecode >= $this->getScheduleStartTime() || $current_timecode <= $this->getScheduleEndTime());
+            $play_by_time = false;
+
+            if ($current_timecode >= $this->getScheduleStartTime()) {
+                $play_by_time = true;
+            } else if ($current_timecode <= $this->getScheduleEndTime()) {
+                // Check next day, since it's before the end time.
+                $day_to_check = ($day_to_check == 1) ? 7 : $day_to_check - 1;
+                $play_by_time = true;
+            }
+
+            return ($play_by_time && (empty($play_once_days) || in_array($day_to_check, $play_once_days)));
+        }
+
+        // Non-overnight playlist check
+        if (!empty($play_once_days) && !in_array($day_to_check, $play_once_days)) {
+            return false;
         }
 
         return ($current_timecode >= $this->getScheduleStartTime() && $current_timecode <= $this->getScheduleEndTime());

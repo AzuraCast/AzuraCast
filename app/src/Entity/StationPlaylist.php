@@ -308,25 +308,21 @@ class StationPlaylist
      */
     public function canPlayScheduled(): bool
     {
-        $is_overnight = ($this->getScheduleEndTime() < $this->getScheduleStartTime());
-
         $play_once_days = $this->getScheduleDays();
         $day_to_check = gmdate('N');
         $current_timecode = self::getCurrentTimeCode();
 
         // Handle overnight playlists that stretch into the next day.
-        if ($is_overnight) {
-            $play_by_time = false;
-
-            if ($current_timecode >= $this->getScheduleStartTime()) {
-                $play_by_time = true;
-            } else if ($current_timecode <= $this->getScheduleEndTime()) {
+        if ($this->getScheduleEndTime() < $this->getScheduleStartTime()) {
+            if ($current_timecode <= $this->getScheduleEndTime()) {
                 // Check next day, since it's before the end time.
                 $day_to_check = ($day_to_check == 1) ? 7 : $day_to_check - 1;
-                $play_by_time = true;
+            } else if ($current_timecode < $this->getScheduleStartTime()) {
+                // The playlist shouldn't be playing before the start time on the current date.
+                return false;
             }
 
-            return ($play_by_time && (empty($play_once_days) || in_array($day_to_check, $play_once_days)));
+            return (empty($play_once_days) || in_array($day_to_check, $play_once_days));
         }
 
         // Non-overnight playlist check

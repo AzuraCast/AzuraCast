@@ -64,7 +64,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
         <?php endif; ?>
 
         <li class="logo">
-            <a href="<?=$url->named('home') ?>">
+            <a href="<?=$url->named('dashboard') ?>">
                 azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
             </a>
         </li>
@@ -76,7 +76,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
                 <li class="dropdown">
                     <a data-toggle="dropdown" href="" aria-label="menu" title="<?=__('Open or Close Dropdown Menu') ?>"><i class="him-icon zmdi zmdi-more-vert"></i></a>
                     <ul class="dropdown-menu dm-icon pull-right">
-                        <li><a href="<?=$url->named('home') ?>"><i class="zmdi zmdi-home"></i> <?=__('Dashboard') ?></a></li>
+                        <li><a href="<?=$url->named('dashboard') ?>"><i class="zmdi zmdi-home"></i> <?=__('Dashboard') ?></a></li>
                         <?php if ($acl->userAllowed($user, 'view administration')): ?>
                             <li><a href="<?=$url->named('admin:index:index') ?>"><i class="zmdi zmdi-settings"></i> <?=__('System Administration') ?></a></li>
                         <?php endif; ?>

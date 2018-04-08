@@ -144,6 +144,6 @@ class UsersController
 
         $this->flash->alert('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
-        return $response->redirectHome();
+        return $response->redirectToRoute('dashboard');
     }
 }

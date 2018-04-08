@@ -58,7 +58,7 @@ class AccountController
         }
 
         if ($this->auth->isLoggedIn()) {
-            return $response->redirectHome();
+            return $response->redirectToRoute('dashboard');
         }
 
         if (!$_POST) {
@@ -98,7 +98,7 @@ class AccountController
                     return $response->withRedirect($referrer);
                 }
 
-                return $response->redirectHome();
+                return $response->redirectToRoute('dashboard');
             }
 
             $this->flash->alert('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),

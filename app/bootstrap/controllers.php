@@ -184,14 +184,20 @@ return function (\Slim\Container $di, array $app_settings) {
         );
     };
 
-    $di[\Controller\Frontend\IndexController::class] = function($di) {
-        return new \Controller\Frontend\IndexController(
+    $di[\Controller\Frontend\DashboardController::class] = function($di) {
+        return new \Controller\Frontend\DashboardController(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\AzuraCast\Acl\StationAcl::class],
             $di[\App\Cache::class],
             $di[\InfluxDB\Database::class],
             $di[\AzuraCast\Radio\Adapters::class],
             $di[\App\Url::class]
+        );
+    };
+
+    $di[\Controller\Frontend\IndexController::class] = function($di) {
+        return new \Controller\Frontend\IndexController(
+            $di[\Entity\Repository\SettingsRepository::class]
         );
     };
 

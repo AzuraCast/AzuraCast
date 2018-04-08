@@ -179,10 +179,13 @@ return function(\Slim\App $app) {
     })
         ->add(AzuraCast\Middleware\Module\Api::class);
 
+    $app->get('/', Controller\Frontend\IndexController::class.':indexAction')
+        ->setName('home');
+
     $app->group('', function() {
 
-        $this->get('/', Controller\Frontend\IndexController::class.':indexAction')
-            ->setName('home');
+        $this->get('/dashboard', Controller\Frontend\DashboardController::class.':indexAction')
+            ->setName('dashboard');
 
         $this->get('/logout', Controller\Frontend\AccountController::class.':logoutAction')
             ->setName('account:logout');

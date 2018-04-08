@@ -75,17 +75,6 @@ class Response extends \Slim\Http\Response
     }
 
     /**
-     * Redirect to the homepage.
-     *
-     * @param int $code
-     * @return Response
-     */
-    public function redirectHome($code = 302): self
-    {
-        return $this->withRedirect($this->url->named('home'), $code);
-    }
-
-    /**
      * Redirect to the current page (i.e. after a form is submitted).
      *
      * @param int $code

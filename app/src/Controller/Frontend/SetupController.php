@@ -76,7 +76,7 @@ class SetupController
     {
         $this->flash->alert('<b>' . __('Setup has already been completed!') . '</b>', 'red');
 
-        return $response->redirectHome();
+        return $response->redirectToRoute('dashboard');
     }
 
     /**
@@ -199,7 +199,7 @@ class SetupController
             $this->flash->alert('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
                 'green');
 
-            return $response->redirectHome();
+            return $response->redirectToRoute('dashboard');
         }
 
         /** @var \App\Mvc\View $view */

@@ -30,6 +30,15 @@ return [
             ]
         ],
 
+        'homepage_redirect_url' => [
+            'text',
+            [
+                'label' => __('Homepage Redirect URL'),
+                'description' => __('If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default.'),
+                'default' => '',
+            ]
+        ],
+
         'default_album_art_url' => [
             'text',
             [

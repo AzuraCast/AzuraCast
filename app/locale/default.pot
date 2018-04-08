@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-03-31T20:24:41+00:00\n"
-"PO-Revision-Date: 2018-03-31T20:24:41+00:00\n"
+"POT-Creation-Date: 2018-04-08T02:03:47+00:00\n"
+"PO-Revision-Date: 2018-04-08T02:03:47+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:62
@@ -104,11 +104,11 @@ msgstr ""
 msgid "Edit Profile"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Frontend/IndexController.php:195
+#: /var/azuracast/www/app/src/Controller/Frontend/DashboardController.php:186
 msgid "%s Listener Range"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Frontend/IndexController.php:206
+#: /var/azuracast/www/app/src/Controller/Frontend/DashboardController.php:197
 msgid "%s Daily Average"
 msgstr ""
 
@@ -141,7 +141,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:76
 #: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:108
 #: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:107
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:235
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:238
 #: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:154
 #: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:141
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:136
@@ -163,7 +163,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:87
 #: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:119
 #: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:117
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:245
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:248
 #: /var/azuracast/www/app/src/Controller/Stations/FilesController.php:166
 #: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:152
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:147
@@ -175,7 +175,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:112
 #: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:119
 #: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:117
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:245
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:248
 #: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:152
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:100
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:125
@@ -197,7 +197,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Admin/ApiController.php:103
 #: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:137
 #: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:228
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:358
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:361
 #: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:178
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:193
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:149
@@ -219,7 +219,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Admin/UsersController.php:98
 #: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:108
 #: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:107
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:235
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:238
 #: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:141
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:92
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:114
@@ -298,20 +298,20 @@ msgstr ""
 msgid "Sunday"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:235
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:245
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:358
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:238
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:248
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:361
 #: /var/azuracast/www/app/templates/frontend/public/index.phtml:43
 #: /var/azuracast/www/app/templates/stations/playlists/index.phtml:12
 #: /var/azuracast/www/app/templates/stations/playlists/index.phtml:34
 msgid "Playlist"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:335
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:338
 msgid "Existing playlist imported."
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:335
+#: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:338
 msgid "%d song(s) were imported into the playlist."
 msgstr ""
 
@@ -410,19 +410,19 @@ msgstr ""
 msgid "Streamer"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Entity/StationWebhook.php:170
+#: /var/azuracast/www/app/src/Entity/StationWebhook.php:172
 #: /var/azuracast/www/app/config/forms/profile.conf.php:103
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:107
 #: /var/azuracast/www/app/config/forms/branding.conf.php:13
 msgid "Default"
 msgstr ""
 
-#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:75
+#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:78
 #: /var/azuracast/www/app/src/AzuraCast/Middleware/Module/Api.php:65
 msgid "You must be logged in to access this page."
 msgstr ""
 
-#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:86
+#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:89
 #: /var/azuracast/www/app/src/AzuraCast/Middleware/Module/Api.php:62
 msgid "You do not have permission to access this portion of the site."
 msgstr ""
@@ -597,7 +597,7 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/rename.conf.php:18
 #: /var/azuracast/www/app/config/forms/song.conf.php:47
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:61
-#: /var/azuracast/www/app/config/forms/branding.conf.php:91
+#: /var/azuracast/www/app/config/forms/branding.conf.php:100
 #: /var/azuracast/www/app/config/forms/webhook/generic.conf.php:49
 #: /var/azuracast/www/app/config/forms/webhook/twitter.conf.php:95
 #: /var/azuracast/www/app/config/forms/webhook/discord.conf.php:115
@@ -650,7 +650,7 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:147
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:51
 #: /var/azuracast/www/app/config/forms/branding.conf.php:27
-#: /var/azuracast/www/app/config/forms/branding.conf.php:49
+#: /var/azuracast/www/app/config/forms/branding.conf.php:58
 msgid "No"
 msgstr ""
 
@@ -674,7 +674,7 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:148
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:52
 #: /var/azuracast/www/app/config/forms/branding.conf.php:28
-#: /var/azuracast/www/app/config/forms/branding.conf.php:50
+#: /var/azuracast/www/app/config/forms/branding.conf.php:59
 msgid "Yes"
 msgstr ""
 
@@ -1585,42 +1585,50 @@ msgid "If selected, album art will not display on public-facing radio pages."
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/branding.conf.php:36
-msgid "Default Album Art URL"
+msgid "Homepage Redirect URL"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/branding.conf.php:37
-msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
+msgid "If a visitor is not signed in and visits the AzuraCast homepage, you can automatically redirect them to the URL specified here. Leave blank to redirect them to the login screen by default."
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/branding.conf.php:45
-msgid "Hide AzuraCast Branding on Public Pages"
+msgid "Default Album Art URL"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/branding.conf.php:46
+msgid "If a song has no album art, this URL will be listed instead. Leave blank to use the standard placeholder art."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/branding.conf.php:54
+msgid "Hide AzuraCast Branding on Public Pages"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/branding.conf.php:55
 msgid "If selected, this will remove the AzuraCast branding from public-facing pages."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:58
+#: /var/azuracast/www/app/config/forms/branding.conf.php:67
 msgid "Custom CSS for Public Pages"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:59
+#: /var/azuracast/www/app/config/forms/branding.conf.php:68
 msgid "This CSS will be applied to the station public pages and login page."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:68
+#: /var/azuracast/www/app/config/forms/branding.conf.php:77
 msgid "Custom JS for Public Pages"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:69
+#: /var/azuracast/www/app/config/forms/branding.conf.php:78
 msgid "This javascript code will be applied to the station public pages and login page."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:78
+#: /var/azuracast/www/app/config/forms/branding.conf.php:87
 msgid "Custom CSS for Internal Pages"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/branding.conf.php:79
+#: /var/azuracast/www/app/config/forms/branding.conf.php:88
 msgid "This CSS will be applied to the main management pages, like this one."
 msgstr ""
 

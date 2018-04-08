@@ -7,7 +7,7 @@
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "version": "0.8.1-2018.02"
+        "version": "0.8.2-2018.04"
     },
     "basePath": "/api",
     "schemes": [
@@ -438,7 +438,7 @@
                 "connected_on": {
                     "description": "UNIX timestamp that the user first connected.",
                     "type": "integer",
-                    "example": 1519097690
+                    "example": 1523164613
                 },
                 "connected_time": {
                     "description": "Number of seconds that the user has been connected.",
@@ -512,7 +512,7 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1519097690
+                    "example": 1523164613
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
@@ -619,7 +619,7 @@
                 "played_at": {
                     "description": "UNIX timestamp when playback started.",
                     "type": "integer",
-                    "example": 1519097690
+                    "example": 1523164613
                 },
                 "duration": {
                     "description": "Duration of the song in seconds",
@@ -765,7 +765,7 @@
                 "timestamp": {
                     "description": "The current UNIX timestamp",
                     "type": "integer",
-                    "example": 1519097690
+                    "example": 1523164613
                 }
             },
             "type": "object"

@@ -306,11 +306,15 @@ class StationPlaylist
      * Returns whether the playlist is scheduled to play according to schedule rules.
      * @return bool
      */
-    public function canPlayScheduled(): bool
+    public function canPlayScheduled(Chronos $now = null): bool
     {
+        if ($now === null) {
+            $now = Chronos::now(new \DateTimeZone('UTC'));
+        }
+
         $play_once_days = $this->getScheduleDays();
-        $day_to_check = gmdate('N');
-        $current_timecode = self::getCurrentTimeCode();
+        $day_to_check = $now->format('N');
+        $current_timecode = self::getCurrentTimeCode($now);
 
         // Handle overnight playlists that stretch into the next day.
         if ($this->getScheduleEndTime() < $this->getScheduleStartTime()) {
@@ -503,12 +507,8 @@ class StationPlaylist
      */
     public static function formatTimeCodeForInput($time_code): string
     {
-        $dt = self::getDateTime($time_code);
-        if ($dt) {
-            $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-            return $dt->format('H:i');
-        }
-        return '';
+        return self::getDateTime($time_code, date_default_timezone_get())
+            ->format('H:i');
     }
 
     /**
@@ -517,20 +517,26 @@ class StationPlaylist
      * @param $time_code
      * @return Chronos
      */
-    public static function getDateTime($time_code): Chronos
+    public static function getDateTime($time_code, $time_zone = 'UTC'): Chronos
     {
         $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
 
-        return Chronos::now(new \DateTimeZone('UTC'))
+        return Chronos::now(new \DateTimeZone($time_zone))
             ->setTime(substr($time_code, 0, 2), substr($time_code, 2));
     }
 
     /**
      * Return the current UTC time in "time code" style.
+     *
+     * @param Chronos|null $now
      * @return int
      */
-    public static function getCurrentTimeCode(): int
+    public static function getCurrentTimeCode(Chronos $now = null): int
     {
-        return (int)gmdate('Hi');
+        if ($now === null) {
+            $now = Chronos::now(new \DateTimeZone('UTC'));
+        }
+
+        return $now->format('Hi');
     }
 }

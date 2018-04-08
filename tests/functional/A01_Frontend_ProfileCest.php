@@ -9,7 +9,7 @@ class A01_Frontend_ProfileCest extends CestAbstract
     {
         $I->wantTo('Set a user profile.');
 
-        $I->amOnPage('/');
+        $I->amOnPage('/dashboard');
         $I->see('Dashboard');
 
         $I->amOnPage('/profile');

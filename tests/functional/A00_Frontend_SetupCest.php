@@ -55,7 +55,7 @@ class A00_Frontend_SetupCest extends CestAbstract
         $I->submitForm('.form', []);
 
         $I->seeResponseCodeIs(200);
-        $I->seeCurrentUrlEquals('/');
+        $I->seeCurrentUrlEquals('/dashboard');
         $I->seeInSource('Setup is now complete!');
     }
 }

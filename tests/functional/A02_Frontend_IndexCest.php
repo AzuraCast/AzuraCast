@@ -9,7 +9,7 @@ class A02_Frontend_IndexCest extends CestAbstract
     {
         $I->wantTo('See the proper data on the homepage.');
 
-        $I->amOnPage('/');
+        $I->amOnPage('/dashboard');
         $I->see('Dashboard');
 
         $I->see('Listeners Across All Stations');

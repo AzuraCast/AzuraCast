@@ -4,6 +4,15 @@ return [
 
     'elements' => [
 
+        'name' => [
+            'text',
+            [
+                'label' => __('%s Name', __('Web Hook')),
+                'description' => __('Choose a name for this webhook that will help you distinguish it from others. This will only be shown on the administration page.'),
+                'required' => true,
+            ]
+        ],
+
         'partner_id' => [
             'text',
             [

@@ -2,7 +2,10 @@
 namespace AzuraCast\Sync;
 
 use App\Debug;
+use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Entity;
 use Monolog\Logger;
 
@@ -87,19 +90,13 @@ class Media extends SyncAbstract
 
             // Batch processing
             if ($i % 20 === 0) {
-                $this->em->flush();
-                $this->em->clear(Entity\StationMedia::class);
-                $this->em->clear(Entity\StationMediaArt::class);
-                $this->em->clear(Entity\Song::class);
+                $this->_flushAndClearRecords();
             }
 
             ++$i;
         }
 
-        $this->em->flush();
-        $this->em->clear(Entity\StationMedia::class);
-        $this->em->clear(Entity\StationMediaArt::class);
-        $this->em->clear(Entity\Song::class);
+        $this->_flushAndClearRecords();
 
         // Create files that do not currently exist.
         $i = 0;
@@ -115,19 +112,27 @@ class Media extends SyncAbstract
             $this->em->persist($media_row);
 
             if ($i % 20 === 0) {
-                $this->em->flush();
-                $this->em->clear(Entity\StationMedia::class);
-                $this->em->clear(Entity\StationMediaArt::class);
-                $this->em->clear(Entity\Song::class);
+                $this->_flushAndClearRecords();
             }
 
             ++$i;
         }
 
+        $this->_flushAndClearRecords();
+    }
+
+    /**
+     * Flush the Doctrine Entity Manager and clear associated records to save memory space.
+     */
+    protected function _flushAndClearRecords()
+    {
         $this->em->flush();
-        $this->em->clear(Entity\StationMedia::class);
-        $this->em->clear(Entity\StationMediaArt::class);
-        $this->em->clear(Entity\Song::class);
+
+        try {
+            $this->em->clear(Entity\StationMedia::class);
+            $this->em->clear(Entity\StationMediaArt::class);
+            $this->em->clear(Entity\Song::class);
+        } catch (MappingException $e) {}
     }
 
     public function importPlaylists(Entity\Station $station)

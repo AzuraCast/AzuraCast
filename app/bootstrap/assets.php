@@ -369,8 +369,8 @@ return [
                     'sri' => 'sha256-QvhPq+evNjd8JyxSOU5KL3jPYTD7+gWVev1OH763SL0=',
                 ],
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/locale/af.js',
-                    'sri' => 'sha256-xjk2rHpC35yBdHQc+keaju2I7U5RXQtrf8jO7nLuy9E=',
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/locale-all.js',
+                    'sri' => 'sha256-EmG1dya2dF5fANGOBHzCYtmTXO++8RJQ96jzEx/SfgY=',
                 ],
             ],
             'css' => [

@@ -140,7 +140,10 @@ class StationMediaRepository extends BaseRepository
                     }
 
                     if (!$was_played) {
-                        return $this->_playSongFromPlaylist($playlist);
+                        $sh = $this->_playSongFromPlaylist($playlist);
+                        if ($sh) {
+                            return $sh;
+                        }
                     }
 
                     reset($cued_song_history);
@@ -164,7 +167,10 @@ class StationMediaRepository extends BaseRepository
                 }
 
                 if (!$was_played) {
-                    return $this->_playSongFromPlaylist($playlist);
+                    $sh = $this->_playSongFromPlaylist($playlist);
+                    if ($sh) {
+                        return $sh;
+                    }
                 }
 
                 reset($cued_song_history);
@@ -189,7 +195,10 @@ class StationMediaRepository extends BaseRepository
                 }
 
                 if (!$was_played) {
-                    return $this->_playSongFromPlaylist($playlist);
+                    $sh = $this->_playSongFromPlaylist($playlist);
+                    if ($sh) {
+                        return $sh;
+                    }
                 }
 
                 reset($cued_song_history);
@@ -201,7 +210,10 @@ class StationMediaRepository extends BaseRepository
             foreach ($playlists_by_type['scheduled'] as $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
                 if ($playlist->canPlayScheduled()) {
-                    return $this->_playSongFromPlaylist($playlist);
+                    $sh = $this->_playSongFromPlaylist($playlist);
+                    if ($sh) {
+                        return $sh;
+                    }
                 }
             }
         }
@@ -219,7 +231,11 @@ class StationMediaRepository extends BaseRepository
                 $rand -= $weight;
                 if ($rand <= 0) {
                     $playlist = $playlists_by_type['default'][$playlist_id];
-                    return $this->_playSongFromPlaylist($playlist);
+
+                    $sh = $this->_playSongFromPlaylist($playlist);
+                    if ($sh) {
+                        return $sh;
+                    }
                 }
             }
         }

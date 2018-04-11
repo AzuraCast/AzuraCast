@@ -316,12 +316,15 @@ class StationPlaylist
         $day_to_check = $now->format('N');
         $current_timecode = self::getCurrentTimeCode($now);
 
+        $schedule_start_time = $this->getScheduleStartTime();
+        $schedule_end_time = $this->getScheduleEndTime();
+
         // Handle overnight playlists that stretch into the next day.
-        if ($this->getScheduleEndTime() < $this->getScheduleStartTime()) {
-            if ($current_timecode <= $this->getScheduleEndTime()) {
+        if ($schedule_end_time < $schedule_start_time) {
+            if ($current_timecode <= $schedule_end_time) {
                 // Check next day, since it's before the end time.
                 $day_to_check = ($day_to_check == 1) ? 7 : $day_to_check - 1;
-            } else if ($current_timecode < $this->getScheduleStartTime()) {
+            } else if ($current_timecode < $schedule_start_time) {
                 // The playlist shouldn't be playing before the start time on the current date.
                 return false;
             }
@@ -334,7 +337,8 @@ class StationPlaylist
             return false;
         }
 
-        return ($current_timecode >= $this->getScheduleStartTime() && $current_timecode <= $this->getScheduleEndTime());
+        return ($schedule_start_time === $schedule_end_time) ||
+            ($current_timecode >= $schedule_start_time && $current_timecode <= $schedule_end_time);
     }
 
     /**
@@ -507,7 +511,8 @@ class StationPlaylist
      */
     public static function formatTimeCodeForInput($time_code): string
     {
-        return self::getDateTime($time_code, date_default_timezone_get())
+        $now = Chronos::now(new \DateTimeZone(date_default_timezone_get()));
+        return self::getDateTime($time_code, $now)
             ->format('H:i');
     }
 
@@ -517,12 +522,14 @@ class StationPlaylist
      * @param $time_code
      * @return Chronos
      */
-    public static function getDateTime($time_code, $time_zone = 'UTC'): Chronos
+    public static function getDateTime($time_code, Chronos $now = null): Chronos
     {
-        $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
+        if ($now === null) {
+            $now = Chronos::now(new \DateTimeZone('UTC'));
+        }
 
-        return Chronos::now(new \DateTimeZone($time_zone))
-            ->setTime(substr($time_code, 0, 2), substr($time_code, 2));
+        $time_code = str_pad($time_code, 4, '0', STR_PAD_LEFT);
+        return $now->setTime(substr($time_code, 0, 2), substr($time_code, 2));
     }
 
     /**

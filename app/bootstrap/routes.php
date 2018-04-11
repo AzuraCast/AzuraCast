@@ -314,6 +314,9 @@ return function(\Slim\App $app) {
             $this->get('', Controller\Stations\PlaylistsController::class.':indexAction')
                 ->setName('stations:playlists:index');
 
+            $this->get('/schedule', Controller\Stations\PlaylistsController::class.':scheduleAction')
+                ->setName('stations:playlists:schedule');
+
             $this->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\PlaylistsController::class.':editAction')
                 ->setName('stations:playlists:edit');
 

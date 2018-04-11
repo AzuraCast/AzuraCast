@@ -6,6 +6,7 @@ use App\Flash;
 use App\Mvc\View;
 use App\Url;
 use AzuraCast\Radio\Backend\BackendAbstract;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use Entity;
 use Slim\Http\UploadedFile;
@@ -75,17 +76,6 @@ class PlaylistsController
 
         $playlists = [];
 
-        $schedule_days = [
-            1 => __('Monday'),
-            2 => __('Tuesday'),
-            3 => __('Wednesday'),
-            4 => __('Thursday'),
-            5 => __('Friday'),
-            6 => __('Saturday'),
-            7 => __('Sunday'),
-        ];
-        $schedule = [];
-
         foreach ($all_playlists as $playlist) {
             $playlist_row = $playlist_repo->toArray($playlist);
 
@@ -94,59 +84,6 @@ class PlaylistsController
             }
 
             $playlist_row['num_songs'] = $playlist->getMedia()->count();
-
-            // Append to schedule display if the playlist is scheduled.
-            if ($playlist->getType() === 'scheduled') {
-                foreach($schedule_days as $day_key => $day_name) {
-                    if (empty($playlist->getScheduleDays()) || in_array($day_key, $playlist->getScheduleDays())) {
-
-                        $schedule_options = [
-                            'id' => $playlist->getId(),
-                            'url' => $this->url->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()])
-                        ];
-
-                        $start = Entity\StationPlaylist::getTimestamp($playlist->getScheduleStartTime());
-                        $end = Entity\StationPlaylist::getTimestamp($playlist->getScheduleEndTime());
-
-                        if (date('Gi', $end) < date('Gi', $start)) {
-                            // Overnight playlist - Create two "events"
-                            $schedule[] = [
-                                'name' => $playlist->getName(),
-                                'day' => $day_name,
-                                'start_hour' => (int)date('G', $start),
-                                'start_min' => (int)date('i', $start),
-                                'end_hour' => 23,
-                                'end_min' => 59,
-                                'options' => $schedule_options,
-                            ];
-
-                            $next_day = ($day_key == 7) ? $schedule_days[1] : $schedule_days[$day_key+1];
-
-                            $schedule[] = [
-                                'name' => $playlist->getName(),
-                                'day' => $next_day,
-                                'start_hour' => 0,
-                                'start_min' => 0,
-                                'end_hour' => (int)date('G', $end),
-                                'end_min' => (int)date('i', $end),
-                                'options' => $schedule_options,
-                            ];
-                        } else {
-                            // Normal playlist
-                            $schedule[] = [
-                                'name' => $playlist->getName(),
-                                'day' => $day_name,
-                                'start_hour' => (int)date('G', $start),
-                                'start_min' => (int)date('i', $start),
-                                'end_hour' => (int)date('G', $end),
-                                'end_min' => (int)date('i', $end),
-                                'options' => $schedule_options,
-                            ];
-                        }
-                    }
-                }
-            }
-
             $playlists[$playlist->getId()] = $playlist_row;
         }
 
@@ -155,10 +92,70 @@ class PlaylistsController
 
         return $view->renderToResponse($response, 'stations/playlists/index', [
             'playlists' => $playlists,
-            'schedule' => $schedule,
-            'schedule_days' => $schedule_days,
             'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'schedule_url' => $this->url->named('stations:playlists:schedule', ['station' => $station_id]),
         ]);
+    }
+
+    public function scheduleAction(Request $request, Response $response, $station_id): Response
+    {
+        $utc = new \DateTimeZone('UTC');
+        $user_tz = new \DateTimeZone(date_default_timezone_get());
+
+        $start_date_str = substr($request->getParam('start'), 0, 10);
+        $start_date = Chronos::createFromFormat('Y-m-d', $start_date_str, $utc)
+            ->subDay();
+
+        $end_date_str = substr($request->getParam('end'), 0, 10);
+        $end_date = Chronos::createFromFormat('Y-m-d', $end_date_str, $utc);
+
+        /** @var Entity\Station $station */
+        $station = $request->getAttribute('station');
+
+        /** @var Entity\StationPlaylist[] $all_playlists */
+        $playlists = $station->getPlaylists()->filter(function($record) {
+            /** @var Entity\StationPlaylist $record */
+            return ($record->getType() === 'scheduled');
+        });
+
+        $events = [];
+        $i = $start_date;
+
+        while($i <= $end_date) {
+
+            $day_of_week = $i->format('N');
+
+            foreach ($playlists as $playlist) {
+                /** @var Entity\StationPlaylist $playlist */
+                if (!empty($playlist->getScheduleDays()) && !in_array($day_of_week, $playlist->getScheduleDays())) {
+                    continue;
+                }
+
+                $playlist_start = Entity\StationPlaylist::getDateTime($playlist->getScheduleStartTime(), $i);
+                $playlist_end = Entity\StationPlaylist::getDateTime($playlist->getScheduleEndTime(), $i);
+
+                // Handle overnight playlists
+                if ($playlist_end < $playlist_start) {
+                    $playlist_end = $playlist_end->addDay();
+                }
+
+                $playlist_start = $playlist_start->setTimezone($user_tz);
+                $playlist_end = $playlist_end->setTimezone($user_tz);
+
+                $events[] = [
+                    'id' => $playlist->getId(),
+                    'title' => $playlist->getName(),
+                    'allDay' => $playlist_start->eq($playlist_end),
+                    'start' => $playlist_start->toIso8601String(),
+                    'end' => $playlist_end->toIso8601String(),
+                    'url' => $this->url->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()]),
+                ];
+            }
+
+            $i = $i->addDay();
+        }
+
+        return $response->withJson($events);
     }
 
     public function exportAction(Request $request, Response $response, $station_id, $id, $format = 'pls'): Response

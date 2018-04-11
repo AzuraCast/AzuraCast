@@ -262,8 +262,8 @@ return [
         ],
     ],
     [
-        'name' => 'daterangepicker',
-        'order' => 9,
+        'name' => 'moment',
+        'order' => 8,
         'group' => 'body',
         'files' => [
             'js' => [
@@ -271,6 +271,15 @@ return [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js',
                     'sri' => 'sha256-ABVkpwb9K9PxubvRrHMkk6wmWcIHUE9eBxNZLXYQ84k=',
                 ],
+            ]
+        ],
+    ],
+    [
+        'name' => 'daterangepicker',
+        'order' => 9,
+        'group' => 'body',
+        'files' => [
+            'js' => [
                 [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.27/daterangepicker.min.js',
                     'sri' => 'sha256-fuPJ7xvV6OPcIGSJd2Xj7s/+2aWsVGapv+Uj/cuVOzk=',
@@ -282,7 +291,8 @@ return [
                     'sri' => 'sha256-m4uCSkjNdbrhPh2GPVsyB8nuDl5uiF/DpAhSGdqujrc=',
                 ],
             ],
-        ]
+        ],
+        'require' => ['moment'],
     ],
     [
         'name' => 'codemirror_css',
@@ -348,4 +358,28 @@ return [
             ],
         ],
     ],
+    [
+        'name' => 'fullcalendar',
+        'order' => 10,
+        'group' => 'body',
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js',
+                    'sri' => 'sha256-QvhPq+evNjd8JyxSOU5KL3jPYTD7+gWVev1OH763SL0=',
+                ],
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/locale/af.js',
+                    'sri' => 'sha256-xjk2rHpC35yBdHQc+keaju2I7U5RXQtrf8jO7nLuy9E=',
+                ],
+            ],
+            'css' => [
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css',
+                    'sri' => 'sha256-Tu3DN+5kwrhzlzhNUMuGht2h7cR6ARgKcYemB9u5SzA=',
+                ]
+            ]
+        ],
+        'require' => ['moment'],
+    ]
 ];

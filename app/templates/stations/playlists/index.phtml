@@ -2,7 +2,7 @@
 $this->layout('main', ['title' => __('Playlists'), 'manual' => true]);
 
 /** @var \AzuraCast\Assets $assets */
-$assets->addJs(['src' => 'js/timetable/timetable.js'], 'header');
+$assets->load('fullcalendar');
 ?>
 
 <div class="card">
@@ -90,27 +90,34 @@ $assets->addJs(['src' => 'js/timetable/timetable.js'], 'header');
 
             </div>
             <div class="tab-pane card-padding" id="schedule-view" role="tabpanel">
-                <div class="timetable"></div>
+                <div id="playlist-calendar"></div>
             </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-    var timetable = new Timetable();
-    timetable.setScope(0, 0);
+$(function() {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = $(e.target).attr("href");
 
-    timetable.addLocations(<?=$this->escapeJs(array_values($schedule_days)) ?>);
+        if (target == '#schedule-view') {
 
-<?php foreach($schedule as $event): ?>
-    timetable.addEvent(
-        <?=$this->escapeJs($event['name']) ?>, <?=$this->escapeJs($event['day']) ?>,
-        new Date(<?=date('Y') ?>,<?=date('n')-1 ?>,<?=date('j') ?>,<?=$event['start_hour'] ?>,<?=$event['start_min'] ?>),
-        new Date(<?=date('Y') ?>,<?=date('n')-1 ?>,<?=date('j') ?>,<?=$event['end_hour'] ?>,<?=$event['end_min'] ?>),
-        <?=$this->escapeJs($event['options']) ?>
-    );
-<?php endforeach; ?>
+            $('#playlist-calendar').fullCalendar({
+                themeSystem: 'bootstrap3',
+                nowIndicator: true,
+                defaultView: 'agendaWeek',
+                locale: '<?=substr(strtolower($customization->getLocale()), 0, 2) ?>',
+                header: false,
+                footer: false,
+                events: '<?=$schedule_url ?>'
+            });
 
-    var renderer = new Timetable.Renderer(timetable);
-    renderer.draw('.timetable');
+        } else {
+
+            $('#playlist-calendar').fullCalendar('destroy').removeClass().empty();
+
+        }
+    });
+});
 </script>

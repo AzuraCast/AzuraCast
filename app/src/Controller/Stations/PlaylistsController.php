@@ -93,6 +93,7 @@ class PlaylistsController
         return $view->renderToResponse($response, 'stations/playlists/index', [
             'playlists' => $playlists,
             'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'schedule_now' => Chronos::now()->toIso8601String(),
             'schedule_url' => $this->url->named('stations:playlists:schedule', ['station' => $station_id]),
         ]);
     }

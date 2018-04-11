@@ -3,10 +3,19 @@ namespace App\Session;
 
 class Temporary implements NamespaceInterface
 {
+    /**
+     * @var \App\Session
+     */
     protected $_session;
 
+    /**
+     * @var string The current namespace name.
+     */
     protected $_namespace;
 
+    /**
+     * @var array
+     */
     protected $_data;
 
     public function __construct(\App\Session $session, $namespace = 'default')
@@ -24,7 +33,7 @@ class Temporary implements NamespaceInterface
      */
     public function __set($name, $value)
     {
-        $this->_data[$name] = $value;
+        $this->offsetSet($name, $value);
     }
 
     /**
@@ -46,18 +55,14 @@ class Temporary implements NamespaceInterface
      */
     public function __get($name)
     {
-        if (isset($this->_data[$name])) {
-            return $this->_data[$name];
-        }
-
-        return null;
+        return $this->offsetGet($name);
     }
 
     /**
      * ArrayAccess form of __get
      *
      * @param mixed $name
-     * @return mixed|void
+     * @return mixed|null
      */
     public function offsetGet($name)
     {
@@ -76,7 +81,7 @@ class Temporary implements NamespaceInterface
      */
     public function __isset($name)
     {
-        return isset($this->_data[$name]);
+        return $this->offsetExists($name);
     }
 
     /**
@@ -97,7 +102,7 @@ class Temporary implements NamespaceInterface
      */
     public function __unset($name)
     {
-        unset($this->_data[$name]);
+        $this->offsetUnset($name);
     }
 
     /**

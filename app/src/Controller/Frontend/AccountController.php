@@ -61,10 +61,6 @@ class AccountController
             return $response->redirectToRoute('dashboard');
         }
 
-        if (!$_POST) {
-            $this->storeReferrer('login', false);
-        }
-
         if (!empty($_POST['username']) && !empty($_POST['password'])) {
             try {
                 $this->rate_limit->checkRateLimit('login', 30, 5);
@@ -93,9 +89,9 @@ class AccountController
 
                 $this->flash->alert('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
-                $referrer = $this->getStoredReferrer();
-                if ($referrer) {
-                    return $response->withRedirect($referrer);
+                $referrer = $this->session->get('login_referrer');
+                if (!empty($referrer->url)) {
+                    return $response->withRedirect($referrer->url);
                 }
 
                 return $response->redirectToRoute('dashboard');
@@ -126,52 +122,5 @@ class AccountController
         $this->auth->endMasquerade();
 
         return $response->redirectToRoute('admin:users:index');
-    }
-
-    /**
-     * Store the current referring page in a session variable.
-     *
-     * @param string $namespace
-     * @param bool $loose
-     */
-    protected function storeReferrer($namespace = 'default', $loose = true)
-    {
-        $session = $this->_getReferrerStorage($namespace);
-
-        if (!isset($session->url) || ($loose && isset($session->url) && $this->url->current() != $this->url->referrer())) {
-            $session->url = $this->url->referrer();
-        }
-    }
-
-    /**
-     * Retrieve the referring page stored in a session variable (if it exists).
-     *
-     * @param string $namespace
-     * @return mixed
-     */
-    protected function getStoredReferrer($namespace = 'default')
-    {
-        $session = $this->_getReferrerStorage($namespace);
-        return $session->url;
-    }
-
-    /**
-     * Clear any session variable storing referrer data.
-     *
-     * @param string $namespace
-     */
-    protected function clearStoredReferrer($namespace = 'default')
-    {
-        $session = $this->_getReferrerStorage($namespace);
-        unset($session->url);
-    }
-
-    /**
-     * @param string $namespace
-     * @return \App\Session\NamespaceInterface
-     */
-    protected function _getReferrerStorage($namespace = 'default'): \App\Session\NamespaceInterface
-    {
-        return $this->session->get('referrer_' . $namespace);
     }
 }

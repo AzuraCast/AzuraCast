@@ -78,7 +78,7 @@ class ErrorHandler
             $this->flash->addMessage(__('You must be logged in to access this page.'), 'red');
 
             // Set referrer for login redirection.
-            $session = $this->session->get('referrer_login');
+            $session = $this->session->get('login_referrer');
             $session->url = $this->url->current();
 
             return $res->withStatus(302)->withHeader('Location', $this->url->named('account:login'));

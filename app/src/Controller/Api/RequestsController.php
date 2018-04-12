@@ -55,33 +55,31 @@ class RequestsController
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
+        // Verify that the station supports requests.
         $ba = $this->adapters->getBackendAdapter($station);
-        if (!$ba->supportsRequests()) {
-            return $response->withJson('This station does not support requests.', 403);
+        if (!$ba->supportsRequests() || !$station->getEnableRequests()) {
+            return $response->withJson('This station does not accept requests currently.', 403);
         }
 
-        $requestable_media = $this->em->createQuery('SELECT sm, s, sp 
-            FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlists sp
-            WHERE sm.station_id = :station_id AND sp.id IS NOT NULL
-            AND sp.is_enabled = 1 AND sp.type = :playlist_type')
-            ->setParameter('station_id', $station->getId())
-            ->setParameter('playlist_type', 'default')
-            ->useResultCache(true, 60)
-            ->execute();
+        /** @var Entity\Repository\StationRequestRepository $request_repo */
+        $request_repo = $this->em->getRepository(Entity\StationRequest::class);
+        $requestable_media = $request_repo->getRequestableMedia($station);
 
         $result = [];
 
         foreach ($requestable_media as $media_row) {
-
-            /** @var Entity\StationMedia $media_row */
-            $song = $media_row->api($this->url);
+            $song = new Entity\Api\Song;
+            $song->id = $media_row['song_id'];
+            $song->text = $media_row['artist'].' - '.$media_row['title'];
+            $song->artist = $media_row['artist'];
+            $song->title = $media_row['title'];
 
             $row = new Entity\Api\StationRequest;
             $row->song = $song;
-            $row->request_id = (int)$media_row->getId();
+            $row->request_id = (int)$media_row['id'];
             $row->request_url = (string)$this->url->named('api:requests:submit', [
                 'station' => $station_id,
-                'media_id' => $media_row->getUniqueId()
+                'media_id' => $media_row['unique_id']
             ]);
             $result[] = $row;
         }
@@ -173,9 +171,10 @@ class RequestsController
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
+        // Verify that the station supports requests.
         $ba = $this->adapters->getBackendAdapter($station);
-        if (!$ba->supportsRequests()) {
-            return $response->withJson('This station does not support requests.', 403);
+        if (!$ba->supportsRequests() || !$station->getEnableRequests()) {
+            return $response->withJson('This station does not accept requests currently.', 403);
         }
 
         try {

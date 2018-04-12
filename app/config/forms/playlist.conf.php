@@ -76,6 +76,20 @@ return [
                     ]
                 ],
 
+                'include_in_requests' => [
+                    'radio',
+                    [
+                        'label' => __('Allow Requests from This Playlist'),
+                        'required' => true,
+                        'description' => __('If requests are enabled for your station, users will be able to request media that is on this playlist.'),
+                        'options' => [
+                            1 => __('Yes'),
+                            0 => __('No'),
+                        ],
+                        'default' => 1,
+                    ]
+                ],
+
                 'import' => [
                     'file',
                     [
@@ -116,12 +130,12 @@ return [
                     [
                         'label' => __('Playlist Type'),
                         'options' => [
-                            'default' => '<b>' . __('Standard Playlist') . ':</b> ' . __('Plays all day, shuffles with other standard playlists based on weight.'),
-                            'scheduled' => '<b>' . __('Scheduled Playlist') . ':</b> ' . __('Play during a scheduled time range. Useful for mood-based time playlists.'),
-                            'once_per_x_songs' => '<b>' . __('Once per x Songs Playlist') . ':</b> ' . __('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
-                            'once_per_x_minutes' => '<b>' . __('Once Per x Minutes Playlist') . ':</b> ' . __('Play exactly once every <i>x</i> minutes. Useful for station ID/jingles.'),
-                            'once_per_day' => '<b>' . __('Daily Playlist') . '</b>: ' . __('Play once per day at the specified time. Useful for timely reminders.'),
-                            'custom' => '<b>' . __('Advanced Playlist') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://github.com/AzuraCast/AzuraCast/wiki/Using-Advanced-Playlists'),
+                            StationPlaylist::TYPE_DEFAULT => '<b>' . __('Standard Playlist') . ':</b> ' . __('Plays all day, shuffles with other standard playlists based on weight.'),
+                            StationPlaylist::TYPE_SCHEDULED => '<b>' . __('Scheduled Playlist') . ':</b> ' . __('Play during a scheduled time range. Useful for mood-based time playlists.'),
+                            StationPlaylist::TYPE_ONCE_PER_X_SONGS => '<b>' . __('Once per x Songs Playlist') . ':</b> ' . __('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
+                            StationPlaylist::TYPE_ONCE_PER_X_MINUTES => '<b>' . __('Once Per x Minutes Playlist') . ':</b> ' . __('Play exactly once every <i>x</i> minutes. Useful for station ID/jingles.'),
+                            StationPlaylist::TYPE_ONCE_PER_DAY => '<b>' . __('Daily Playlist') . '</b>: ' . __('Play once per day at the specified time. Useful for timely reminders.'),
+                            StationPlaylist::TYPE_ADVANCED => '<b>' . __('Advanced Playlist') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://github.com/AzuraCast/AzuraCast/wiki/Using-Advanced-Playlists'),
                         ],
                         'default' => 'default',
                         'required' => true,

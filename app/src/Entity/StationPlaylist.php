@@ -15,6 +15,17 @@ class StationPlaylist
 {
     use Traits\TruncateStrings;
 
+    public const TYPE_DEFAULT = 'default';
+    public const TYPE_SCHEDULED = 'scheduled';
+    public const TYPE_ONCE_PER_X_SONGS = 'once_per_x_songs';
+    public const TYPE_ONCE_PER_X_MINUTES = 'once_per_x_minutes';
+    public const TYPE_ONCE_PER_DAY = 'once_per_day';
+    public const TYPE_ADVANCED = 'custom';
+
+    public const SOURCE_RANDOM = 'random_songs';
+    public const SOURCE_SEQUENTIAL = 'sequential_songs';
+    public const SOURCE_REMOTE_URL = 'remote_url';
+
     /**
      * @Column(name="id", type="integer")
      * @Id
@@ -49,6 +60,12 @@ class StationPlaylist
      * @var string
      */
     protected $type;
+
+    /**
+     * @Column(name="source", type="string", length=50)
+     * @var string
+     */
+    protected $source;
 
     /**
      * @Column(name="is_enabled", type="boolean")
@@ -105,6 +122,12 @@ class StationPlaylist
     protected $weight;
 
     /**
+     * @Column(name="include_in_requests", type="boolean")
+     * @var bool
+     */
+    protected $include_in_requests;
+
+    /**
      * @Column(name="include_in_automation", type="boolean")
      * @var bool
      */
@@ -120,10 +143,12 @@ class StationPlaylist
     {
         $this->station = $station;
 
-        $this->type = 'default';
+        $this->type = self::TYPE_DEFAULT;
+        $this->source = self::SOURCE_RANDOM;
         $this->is_enabled = 1;
 
         $this->weight = 3;
+        $this->include_in_requests = true;
         $this->include_in_automation = false;
         $this->play_once_time = 0;
         $this->play_per_minutes = 0;
@@ -188,6 +213,22 @@ class StationPlaylist
     public function setType(string $type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSource(): string
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param string $source
+     */
+    public function setSource(string $source): void
+    {
+        $this->source = $source;
     }
 
     /**
@@ -415,6 +456,32 @@ class StationPlaylist
     public function setWeight(int $weight)
     {
         $this->weight = $weight;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIncludeInRequests(): bool
+    {
+        return $this->include_in_requests;
+    }
+
+    /**
+     * Indicates whether this playlist can be used as a valid source of requestable media.
+     *
+     * @return bool
+     */
+    public function isRequestable(): bool
+    {
+        return ($this->is_enabled && $this->include_in_requests);
+    }
+
+    /**
+     * @param bool $include_in_requests
+     */
+    public function setIncludeInRequests(bool $include_in_requests): void
+    {
+        $this->include_in_requests = $include_in_requests;
     }
 
     /**

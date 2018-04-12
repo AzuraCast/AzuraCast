@@ -662,6 +662,25 @@ class StationMedia
     }
 
     /**
+     * Indicates whether this media is a part of any "requestable" playlists.
+     *
+     * @return bool
+     */
+    public function isRequestable(): bool
+    {
+        $playlists = $this->getPlaylists();
+
+        foreach($playlists as $playlist) {
+            /** @var StationPlaylist $playlist */
+            if ($playlist->isRequestable()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Retrieve the API version of the object/array.
      *
      * @return Api\Song

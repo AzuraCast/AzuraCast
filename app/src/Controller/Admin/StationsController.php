@@ -123,7 +123,7 @@ class StationsController
         $record = $this->record_repo->find((int)$id);
 
         if (!($record instanceof Entity\Station)) {
-            throw new \App\Exception\NotFound(sprintf(__('%s not found.'), __('Station')));
+            throw new \App\Exception\NotFound(__('%s not found.', __('Station')));
         }
 
         $form = new \AzuraForms\Form($this->clone_form_config);
@@ -211,7 +211,7 @@ class StationsController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => sprintf(__('Clone Station: %s'), $record->getName())
+            'title' => __('Clone Station: %s', $record->getName())
         ]);
     }
 
@@ -225,7 +225,7 @@ class StationsController
             $this->record_repo->destroy($record, $this->adapters, $this->configuration);
         }
 
-        $this->flash->alert(sprintf(__('%s deleted.'), __('Station')), 'green');
+        $this->flash->alert(__('%s deleted.', __('Station')), 'green');
 
         return $response->redirectToRoute('admin:stations:index');
     }

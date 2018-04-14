@@ -59,7 +59,7 @@ class ServicesController
         $this->em->persist($station);
         $this->em->flush();
 
-        return $response->withJson(new Entity\Api\Status(true, sprintf(__('%s restarted.'), __('Station'))));
+        return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Station'))));
     }
 
     /**
@@ -92,13 +92,13 @@ class ServicesController
             case "stop":
                 $frontend->stop();
 
-                return $response->withJson(new Entity\Api\Status(true, sprintf(__('%s stopped.'), __('Frontend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s stopped.', __('Frontend'))));
             break;
 
             case "start":
                 $frontend->start();
 
-                return $response->withJson(new Entity\Api\Status(true, sprintf(__('%s started.'), __('Frontend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s started.', __('Frontend'))));
             break;
 
             case "restart":
@@ -107,7 +107,7 @@ class ServicesController
                 $frontend->write();
                 $frontend->start();
 
-                return $response->withJson(new Entity\Api\Status(true, sprintf(__('%s restarted.'), __('Frontend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Frontend'))));
             break;
         }
     }
@@ -150,13 +150,13 @@ class ServicesController
             case "stop":
                 $backend->stop();
 
-                return $response->withJson(new Entity\Api\Status(true, sprintf(__('%s stopped.'), __('Backend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s stopped.', __('Backend'))));
                 break;
 
             case "start":
                 $backend->start();
 
-                return $response->withJson(new Entity\Api\Status(true, sprintf(__('%s started.'), __('Backend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s started.', __('Backend'))));
                 break;
 
             case "restart":
@@ -165,7 +165,7 @@ class ServicesController
                 $backend->write();
                 $backend->start();
 
-                return $response->withJson(new Entity\Api\Status(true, sprintf(__('%s restarted.'), __('Backend'))));
+                return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Backend'))));
                 break;
         }
     }

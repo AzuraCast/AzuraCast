@@ -146,7 +146,7 @@ class StreamersController
 
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . sprintf(__('%s deleted.'), __('Streamer')) . '</b>', 'green');
+        $this->flash->alert('<b>' . __('%s deleted.', __('Streamer')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
     }

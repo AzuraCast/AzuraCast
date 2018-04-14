@@ -109,7 +109,7 @@ class FilesController
         ]);
 
         if (!($media instanceof Entity\StationMedia)) {
-            throw new \App\Exception\NotFound(sprintf(__('%s not found.'), __('Media')));
+            throw new \App\Exception\NotFound(__('%s not found.', __('Media')));
         }
 
         $form = new \AzuraForms\Form($this->edit_form_config);
@@ -151,7 +151,7 @@ class FilesController
             $this->em->persist($media);
             $this->em->flush();
 
-            $this->flash->alert('<b>' . sprintf(__('%s updated.'), __('Media')) . '</b>', 'green');
+            $this->flash->alert('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
             return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
@@ -163,7 +163,7 @@ class FilesController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' =>sprintf(__('Edit %s'), __('Media'))
+            'title' =>__('Edit %s', __('Media'))
         ]);
     }
 

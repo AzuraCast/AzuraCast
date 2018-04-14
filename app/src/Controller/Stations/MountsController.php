@@ -175,7 +175,7 @@ class MountsController
 
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . sprintf(__('%s deleted.'), __('Mount Point')) . '</b>', 'green');
+        $this->flash->alert('<b>' . __('%s deleted.', __('Mount Point')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:mounts:index', ['station' => $station_id]);
     }

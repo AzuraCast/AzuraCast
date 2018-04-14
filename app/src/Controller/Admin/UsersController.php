@@ -125,7 +125,7 @@ class UsersController
 
         $this->em->flush();
 
-        $this->flash->alert('<b>' . sprintf(__('%s deleted.'), __('User')) . '</b>', 'green');
+        $this->flash->alert('<b>' . __('%s deleted.', __('User')) . '</b>', 'green');
 
         return $response->redirectToRoute('admin:users:index');
     }
@@ -137,7 +137,7 @@ class UsersController
         $user = $this->record_repo->find((int)$id);
 
         if (!($user instanceof Entity\User)) {
-            throw new \App\Exception\NotFound(sprintf(__('%s not found.'), __('User')));
+            throw new \App\Exception\NotFound(__('%s not found.', __('User')));
         }
 
         $this->auth->masqueradeAsUser($user);

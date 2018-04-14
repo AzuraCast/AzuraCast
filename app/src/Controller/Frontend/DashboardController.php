@@ -183,7 +183,7 @@ class DashboardController
             foreach ($network_data as $network_name => $data_charts) {
                 if (isset($data_charts['ranges'])) {
                     $metric_row = new \stdClass;
-                    $metric_row->name = sprintf(__('%s Listener Range'), $network_name);
+                    $metric_row->name = __('%s Listener Range', $network_name);
                     $metric_row->type = 'arearange';
 
                     ksort($data_charts['ranges']);
@@ -194,7 +194,7 @@ class DashboardController
 
                 if (isset($data_charts['averages'])) {
                     $metric_row = new \stdClass;
-                    $metric_row->name = sprintf(__('%s Daily Average'), $network_name);
+                    $metric_row->name = __('%s Daily Average', $network_name);
                     $metric_row->type = 'spline';
 
                     ksort($data_charts['averages']);

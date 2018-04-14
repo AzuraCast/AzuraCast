@@ -333,7 +333,7 @@ class PlaylistsController
             $this->em->persist($playlist);
         }
 
-        $this->flash->alert('<b>' . __('Existing playlist imported.') . '</b><br>' . sprintf(__('%d song(s) were imported into the playlist.'), count($matches)), 'blue');
+        $this->flash->alert('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.', count($matches)), 'blue');
         return true;
     }
 
@@ -356,7 +356,7 @@ class PlaylistsController
         $this->em->flush();
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . sprintf(__('%s deleted.'), __('Playlist')) . '</b>', 'green');
+        $this->flash->alert('<b>' . __('%s deleted.', __('Playlist')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
     }

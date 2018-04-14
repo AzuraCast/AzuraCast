@@ -80,11 +80,11 @@ class Adapters
         if ($adapters === null) {
             $adapters = [
                 'icecast' => [
-                    'name' => sprintf(__('Use <b>%s</b> on this server'), 'Icecast 2.4'),
+                    'name' => __('Use <b>%s</b> on this server', 'Icecast 2.4'),
                     'class' => Frontend\Icecast::class,
                 ],
                 'shoutcast2' => [
-                    'name' => sprintf(__('Use <b>%s</b> on this server'), 'SHOUTcast DNAS 2'),
+                    'name' => __('Use <b>%s</b> on this server', 'SHOUTcast DNAS 2'),
                     'class' => Frontend\SHOUTcast::class,
                 ],
                 'remote' => [
@@ -116,7 +116,7 @@ class Adapters
         if ($adapters === null) {
             $adapters = [
                 'liquidsoap' => [
-                    'name' => sprintf(__('Use <b>%s</b> on this server'), 'Liquidsoap'),
+                    'name' => __('Use <b>%s</b> on this server', 'Liquidsoap'),
                     'class' => Backend\Liquidsoap::class,
                 ],
                 'none' => [

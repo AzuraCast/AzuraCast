@@ -134,7 +134,7 @@ class PermissionsController
 
         $this->em->flush();
 
-        $this->flash->alert('<b>' . sprintf(__('%s deleted.'), __('Permission')) . '</b>', 'green');
+        $this->flash->alert('<b>' . __('%s deleted.', __('Permission')) . '</b>', 'green');
         return $response->redirectToRoute('admin:permissions:index');
     }
 }

@@ -27,6 +27,8 @@
   shell: "php {{ util_base }}/cli.php dbal:import {{ item.path }}"
   with_items: "{{ fixture_sql_files.files }}"
   when: fixture_sql_files.matched > 0
+  register: fixture_sql_command_result
+  failed_when: "'exception' in command_result.stdout"
 
 - name: Clear AzuraCast Cache and Restart Stations
   become: true

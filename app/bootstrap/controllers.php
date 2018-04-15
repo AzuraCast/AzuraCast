@@ -28,6 +28,18 @@ return function (\Slim\Container $di, array $app_settings) {
         );
     };
 
+    $di[Controller\Admin\CustomFieldsController::class] = function($di) use ($app_settings) {
+        /** @var \App\Config $config */
+        $config = $di[\App\Config::class];
+
+        return new Controller\Admin\CustomFieldsController(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $di[\App\Csrf::class],
+            $config->get('forms/custom_field')
+        );
+    };
+
     $di[Controller\Admin\IndexController::class] = function($di) {
         return new Controller\Admin\IndexController(
             $di[\AzuraCast\Acl\StationAcl::class],

@@ -8,6 +8,7 @@ return [
         'administer user accounts' => sprintf(__('Administer %s'), __('Users')),
         'administer permissions' => sprintf(__('Administer %s'), __('Permissions')),
         'administer stations' => sprintf(__('Administer %s'), __('Stations')),
+        'administer custom fields' => sprintf(__('Administer %s'), __('Custom Fields')),
     ],
     'station' => [
         'administer all' => __('All Permissions'),

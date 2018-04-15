@@ -42,10 +42,15 @@ return [
     __('Stations') => [
         'icon' => 'zmdi zmdi-volume-up',
         'items' => [
-            __('Manage Stations') => [
+            __('Manage %s', __('Stations')) => [
                 'url' => 'admin:stations:index',
                 'icon' => 'zmdi zmdi-surround-sound',
                 'permission' => 'administer stations',
+            ],
+            __('Manage %s', __('Custom Fields')) => [
+                'url' => 'admin:custom_fields:index',
+                'icon' => 'zmdi zmdi-format-list-bulleted',
+                'permission' => 'administer custom fields',
             ],
         ],
     ],

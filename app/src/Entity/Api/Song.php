@@ -64,4 +64,10 @@ class Song
      * @var string
      */
     public $art = "";
+
+    /**
+     * @SWG\Property
+     * @var SongCustomField[]
+     */
+    public $custom_fields = [];
 }

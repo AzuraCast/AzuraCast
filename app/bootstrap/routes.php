@@ -28,6 +28,22 @@ return function(\Slim\App $app) {
             ->setName('admin:branding:index')
             ->add([AzuraCast\Middleware\Permissions::class, 'administer settings']);
 
+        $this->group('/custom_fields', function() {
+
+            $this->get('', Controller\Admin\CustomFieldsController::class.':indexAction')
+                ->setName('admin:custom_fields:index');
+
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Admin\CustomFieldsController::class.':editAction')
+                ->setName('admin:custom_fields:edit');
+
+            $this->map(['GET', 'POST'], '/add', Controller\Admin\CustomFieldsController::class.':editAction')
+                ->setName('admin:custom_fields:add');
+
+            $this->get('/delete/{id}/{csrf}', Controller\Admin\CustomFieldsController::class.':deleteAction')
+                ->setName('admin:custom_fields:delete');
+
+        })->add([AzuraCast\Middleware\Permissions::class, 'administer custom fields']);
+
         $this->group('/permissions', function () {
 
             $this->get('', Controller\Admin\PermissionsController::class.':indexAction')

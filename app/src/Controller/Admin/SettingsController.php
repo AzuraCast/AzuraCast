@@ -31,6 +31,11 @@ class SettingsController
 
     public function indexAction(Request $request, Response $response): Response
     {
+        return $this->renderSettingsForm($request, $response, 'system/form_page');
+    }
+
+    protected function renderSettingsForm(Request $request, Response $response, $form_template): Response
+    {
         $form = new \AzuraForms\Form($this->form_config);
 
         $existing_settings = $this->settings_repo->fetchArray(false);
@@ -50,10 +55,10 @@ class SettingsController
         /** @var \App\Mvc\View $view */
         $view = $request->getAttribute('view');
 
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $view->renderToResponse($response, $form_template, [
             'form' => $form,
             'render_mode' => 'edit',
-            'title' => __('System Settings')
+            'title' => __('System Settings'),
         ]);
     }
 }

@@ -337,4 +337,48 @@ class StationMediaRepository extends BaseRepository
 
         return null;
     }
+
+    /**
+     * Retrieve a key-value representation of all custom metadata for the specified media.
+     *
+     * @param Entity\StationMedia $media
+     * @return array
+     */
+    public function getMetadata(Entity\StationMedia $media)
+    {
+        $metadata_raw = $this->_em->createQuery('SELECT e FROM  e WHERE e.media_id = :media_id')
+            ->setParameter('media_id', $media->getId())
+            ->getArrayResult();
+
+        $result = [];
+        foreach($metadata_raw as $row) {
+            $result[$row['field_id']] = $row['value'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Set the custom metadata for a specified station based on a provided key-value array.
+     *
+     * @param Entity\StationMedia $media
+     * @param array $custom_metadata
+     */
+    public function setMetadata(Entity\StationMedia $media, array $custom_metadata)
+    {
+        $this->_em->createQuery('DELETE FROM Entity\StationMediaMetadata e WHERE e.media_id = :media_id')
+            ->setParameter('media_id', $media->getId())
+            ->execute();
+
+        foreach ($custom_metadata as $field_id => $field_value) {
+            /** @var Entity\CustomField $field */
+            $field = $this->_em->getReference(Entity\CustomField::class, $field_id);
+
+            $record = new Entity\StationMediaCustomField($media, $field);
+            $record->setValue($field_value);
+            $this->_em->persist($record);
+        }
+
+        $this->_em->flush();
+    }
 }

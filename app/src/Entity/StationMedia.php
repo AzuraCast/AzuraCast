@@ -156,6 +156,12 @@ class StationMedia
      */
     protected $playlists;
 
+    /**
+     * @OneToMany(targetEntity="StationMediaCustomField", mappedBy="media", fetch="EAGER")
+     * @var Collection
+     */
+    protected $custom_metadata;
+
     public function __construct(Station $station, string $path)
     {
         $this->station = $station;
@@ -166,7 +172,8 @@ class StationMedia
 
         $this->mtime = 0;
 
-        $this->playlists = new ArrayCollection();
+        $this->playlists = new ArrayCollection;
+        $this->custom_metadata = new ArrayCollection;
     }
 
     /**
@@ -482,6 +489,22 @@ class StationMedia
     }
 
     /**
+     * @return Collection
+     */
+    public function getCustomMetadata(): Collection
+    {
+        return $this->custom_metadata;
+    }
+
+    /**
+     * @param Collection $custom_metadata
+     */
+    public function setCustomMetadata(Collection $custom_metadata): void
+    {
+        $this->custom_metadata = $custom_metadata;
+    }
+
+    /**
      * Assemble a list of annotations for LiquidSoap.
      *
      * @return array
@@ -697,6 +720,13 @@ class StationMedia
         $response->lyrics = (string)$this->lyrics;
 
         $response->art = $url->named('api:stations:media:art', ['station' => $this->station_id, 'media_id' => $this->unique_id], true);
+
+        $custom_fields = [];
+        foreach($this->getCustomMetadata() as $custom_field) {
+            /** @var StationMediaCustomField $custom_field */
+            $custom_fields[] = $custom_field->api();
+        }
+        $response->custom_fields = $custom_fields;
 
         return $response;
     }

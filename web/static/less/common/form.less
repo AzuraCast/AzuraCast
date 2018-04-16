@@ -40,6 +40,12 @@ input:focus {
   }
 }
 
+&.form-control[disabled], .form-control[readonly],
+fieldset[disabled] .form-control {
+  background: none;
+  color: fade(@text-color, 30%)
+}
+
 .form-group {
   margin-bottom: 25px;
 }

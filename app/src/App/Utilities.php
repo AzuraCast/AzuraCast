@@ -86,7 +86,7 @@ class Utilities
         $time_diff = abs($timestamp1 - $timestamp2);
 
         if ($time_diff < 60) {
-            $time_num = intval($time_diff);
+            $time_num = (int)$time_diff;
 
             return sprintf(n__("%d second", "%d seconds", $time_num), $time_num);
         }
@@ -143,18 +143,18 @@ class Utilities
 
         if (mb_strlen($text) <= $limit) {
             return $text;
-        } else {
-            $wrapped_text = self::mb_wordwrap($text, $limit, "{N}", true);
-            $shortened_text = mb_substr($wrapped_text, 0, strpos($wrapped_text, "{N}"));
-
-            // Prevent the padding string from bumping up against punctuation.
-            $punctuation = ['.', ',', ';', '?', '!'];
-            if (in_array(mb_substr($shortened_text, -1), $punctuation)) {
-                $shortened_text = mb_substr($shortened_text, 0, -1);
-            }
-
-            return $shortened_text . $pad;
         }
+
+        $wrapped_text = self::mb_wordwrap($text, $limit, "{N}", true);
+        $shortened_text = mb_substr($wrapped_text, 0, strpos($wrapped_text, "{N}"));
+
+        // Prevent the padding string from bumping up against punctuation.
+        $punctuation = ['.', ',', ';', '?', '!'];
+        if (in_array(mb_substr($shortened_text, -1), $punctuation)) {
+            $shortened_text = mb_substr($shortened_text, 0, -1);
+        }
+
+        return $shortened_text . $pad;
     }
 
     /**
@@ -363,7 +363,7 @@ class Utilities
         }
 
         $args[] = &$data;
-        call_user_func_array('array_multisort', $args);
+        array_multisort(...$args);
 
         return array_pop($args);
     }
@@ -539,26 +539,6 @@ class Utilities
         }
 
         return 'UTC';
-    }
-
-    /**
-     * Execute a command using the proc_open function and pipe stderr and stdout back to the caller.
-     *
-     * @param $command
-     * @param string $base_dir
-     * @return array
-     */
-    public static function run_command($command)
-    {
-        ob_start();
-        exec($command, $stdout, $return_code);
-        $stderr = ob_get_clean();
-
-        return [
-            'output' => trim(implode("\n", $stdout)),
-            'error' => (string)$stderr,
-            'code' => $return_code,
-        ];
     }
 
     /**

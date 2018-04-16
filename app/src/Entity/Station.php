@@ -818,19 +818,6 @@ class Station
     }
 
     /**
-     * @param $name
-     * @return string
-     */
-    public static function getStationClassName($name): string
-    {
-        $name = preg_replace("/[^A-Za-z0-9_ ]/", '', $name);
-        $name = str_replace('_', ' ', $name);
-        $name = str_replace(' ', '', $name);
-
-        return $name;
-    }
-
-    /**
      * Retrieve the API version of the object/array.
      *
      * @param FrontendAbstract $fa

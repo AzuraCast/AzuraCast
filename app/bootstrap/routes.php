@@ -297,28 +297,28 @@ return function(\Slim\App $app) {
 
         $this->group('/files', function () {
 
-            $this->get('', Controller\Stations\FilesController::class.':indexAction')
+            $this->get('', Controller\Stations\Files\FilesController::class.':indexAction')
                 ->setName('stations:files:index');
 
-            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\FilesController::class.':editAction')
+            $this->map(['GET', 'POST'], '/edit/{id}', Controller\Stations\Files\EditController::class.':editAction')
                 ->setName('stations:files:edit');
 
-            $this->map(['GET', 'POST'], '/rename/{path}', Controller\Stations\FilesController::class.':renameAction')
+            $this->map(['GET', 'POST'], '/rename/{path}', Controller\Stations\Files\FilesController::class.':renameAction')
                 ->setName('stations:files:rename');
 
-            $this->map(['GET', 'POST'], '/list', Controller\Stations\FilesController::class.':listAction')
+            $this->map(['GET', 'POST'], '/list', Controller\Stations\Files\FilesController::class.':listAction')
                 ->setName('stations:files:list');
 
-            $this->map(['GET', 'POST'], '/batch', Controller\Stations\FilesController::class.':batchAction')
+            $this->map(['GET', 'POST'], '/batch', Controller\Stations\Files\FilesController::class.':batchAction')
                 ->setName('stations:files:batch');
 
-            $this->map(['GET', 'POST'], '/mkdir', Controller\Stations\FilesController::class.':mkdirAction')
+            $this->map(['GET', 'POST'], '/mkdir', Controller\Stations\Files\FilesController::class.':mkdirAction')
                 ->setName('stations:files:mkdir');
 
-            $this->map(['GET', 'POST'], '/upload', Controller\Stations\FilesController::class.':uploadAction')
+            $this->map(['GET', 'POST'], '/upload', Controller\Stations\Files\FilesController::class.':uploadAction')
                 ->setName('stations:files:upload');
 
-            $this->map(['GET', 'POST'], '/download', Controller\Stations\FilesController::class.':downloadAction')
+            $this->map(['GET', 'POST'], '/download', Controller\Stations\Files\FilesController::class.':downloadAction')
                 ->setName('stations:files:download');
 
         })

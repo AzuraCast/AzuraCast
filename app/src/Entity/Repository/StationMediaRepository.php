@@ -344,9 +344,9 @@ class StationMediaRepository extends BaseRepository
      * @param Entity\StationMedia $media
      * @return array
      */
-    public function getMetadata(Entity\StationMedia $media)
+    public function getCustomFields(Entity\StationMedia $media)
     {
-        $metadata_raw = $this->_em->createQuery('SELECT e FROM  e WHERE e.media_id = :media_id')
+        $metadata_raw = $this->_em->createQuery('SELECT e FROM Entity\StationMediaCustomField e WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->getArrayResult();
 
@@ -362,15 +362,15 @@ class StationMediaRepository extends BaseRepository
      * Set the custom metadata for a specified station based on a provided key-value array.
      *
      * @param Entity\StationMedia $media
-     * @param array $custom_metadata
+     * @param array $custom_fields
      */
-    public function setMetadata(Entity\StationMedia $media, array $custom_metadata)
+    public function setCustomFields(Entity\StationMedia $media, array $custom_fields)
     {
-        $this->_em->createQuery('DELETE FROM Entity\StationMediaMetadata e WHERE e.media_id = :media_id')
+        $this->_em->createQuery('DELETE FROM Entity\StationMediaCustomField e WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->execute();
 
-        foreach ($custom_metadata as $field_id => $field_value) {
+        foreach ($custom_fields as $field_id => $field_value) {
             /** @var Entity\CustomField $field */
             $field = $this->_em->getReference(Entity\CustomField::class, $field_id);
 

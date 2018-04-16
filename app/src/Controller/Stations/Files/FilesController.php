@@ -1,17 +1,12 @@
 <?php
-namespace Controller\Stations;
+namespace Controller\Stations\Files;
 
-use App\Csrf;
 use Entity;
-use App\Flash;
 use App\Http\Request;
 use App\Http\Response;
 use App\Mvc\View;
-use App\Url;
 use App\Utilities;
 use AzuraCast\Radio\Backend\BackendAbstract;
-use Doctrine\ORM\EntityManager;
-use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * Class FilesController
@@ -20,52 +15,8 @@ use Psr\Http\Message\UploadedFileInterface;
  * Simple PHP File Manager - Copyright John Campbell (jcampbell1)
  * License: MIT
  */
-class FilesController
+class FilesController extends FilesControllerAbstract
 {
-    /** @var EntityManager */
-    protected $em;
-
-    /** @var Flash */
-    protected $flash;
-
-    /** @var Url */
-    protected $url;
-
-    /** @var Csrf */
-    protected $csrf;
-
-    /** @var string */
-    protected $csrf_namespace = 'stations_files';
-
-    /** @var array */
-    protected $edit_form_config;
-
-    /** @var array */
-    protected $rename_form_config;
-
-    /** @var Entity\Repository\StationMediaRepository */
-    protected $media_repo;
-
-    /**
-     * FilesController constructor.
-     * @param EntityManager $em
-     * @param Flash $flash
-     * @param Url $url
-     * @param array $edit_form_config
-     * @param array $rename_form_config
-     */
-    public function __construct(EntityManager $em, Flash $flash, Url $url, Csrf $csrf, array $edit_form_config, array $rename_form_config)
-    {
-        $this->em = $em;
-        $this->flash = $flash;
-        $this->url = $url;
-        $this->csrf = $csrf;
-        $this->edit_form_config = $edit_form_config;
-        $this->rename_form_config = $rename_form_config;
-
-        $this->media_repo = $this->em->getRepository(Entity\StationMedia::class);
-    }
-
     public function indexAction(Request $request, Response $response, $station_id): Response
     {
         /** @var Entity\Station $station */
@@ -98,75 +49,6 @@ class FilesController
         ]);
     }
 
-    public function editAction(Request $request, Response $response, $station_id, $media_id): Response
-    {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        $media = $this->em->getRepository(Entity\StationMedia::class)->findOneBy([
-            'station_id' => $station_id,
-            'id' => $media_id
-        ]);
-
-        if (!($media instanceof Entity\StationMedia)) {
-            throw new \App\Exception\NotFound(__('%s not found.', __('Media')));
-        }
-
-        $form = new \AzuraForms\Form($this->edit_form_config);
-        $form->populate($this->media_repo->toArray($media));
-
-        if (!empty($_POST) && $form->isValid()) {
-            $data = $form->getValues();
-            unset($data['length']);
-
-            // Detect rename.
-            if ($data['path'] !== $media->getPath()) {
-                list($data['path'], $path_full) = $this->_filterPath($station->getRadioMediaDir(), $data['path']);
-                rename($media->getFullPath(), $path_full);
-            }
-
-            $this->media_repo->fromArray($media, $data);
-
-            // Handle uploaded artwork files.
-            $files = $request->getUploadedFiles();
-            if (!empty($files['art'])) {
-                $file = $files['art'];
-
-                /** @var UploadedFileInterface $file */
-                if ($file->getError() === UPLOAD_ERR_OK) {
-                    $art_resource = imagecreatefromstring($file->getStream()->getContents());
-                    $media->setArt($art_resource);
-                } else if ($file->getError() !== UPLOAD_ERR_NO_FILE) {
-                    throw new \App\Exception('Error ' . $file->getError() . ' in uploaded file!');
-                }
-            }
-
-            if ($media->writeToFile()) {
-                $media->setSong($this->em->getRepository(Entity\Song::class)->getOrCreate([
-                    'title' => $media->getTitle(),
-                    'artist' => $media->getArtist(),
-                ]));
-            }
-
-            $this->em->persist($media);
-            $this->em->flush();
-
-            $this->flash->alert('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
-
-            $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
-            return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
-        }
-
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
-            'form' => $form,
-            'render_mode' => 'edit',
-            'title' =>__('Edit %s', __('Media'))
-        ]);
-    }
-
     public function renameAction(Request $request, Response $response, $station_id, $path): Response
     {
         /** @var Entity\Station $station */
@@ -175,7 +57,7 @@ class FilesController
         $path = base64_decode($path);
         list($path, $path_full) = $this->_filterPath($station->getRadioMediaDir(), $path);
 
-        $form = new \AzuraForms\Form($this->rename_form_config);
+        $form = new \AzuraForms\Form($this->form_config);
 
         $form->populate(['path' => $path]);
 
@@ -539,7 +421,9 @@ class FilesController
             return $this->_err($response, 403, 'Cannot create directory: ..');
         }
 
-        @mkdir($file_path . '/' . $dir);
+        if (!mkdir($file_path . '/' . $dir) && !is_dir($file_path . '/' . $dir)) {
+            return $this->_err($response, 403, sprintf('Directory "%s" was not created', $file_path . '/' . $dir));
+        }
 
         return $response->withJson(['success' => true]);
     }
@@ -583,6 +467,8 @@ class FilesController
         } catch (\Exception $e) {
             return $this->_err($response, 500, $e->getMessage());
         }
+
+        return $response->withJson(['success' => false]);
     }
 
     public function downloadAction(Request $request, Response $response): Response
@@ -627,28 +513,9 @@ class FilesController
             }
 
             return $music_files;
-        } else {
-            return [$path];
-        }
-    }
-
-    protected function _filterPath($base_path, $path)
-    {
-        $path = str_replace(['../', './'], ['', ''], $path);
-        $path = trim($path, '/');
-
-        $dir_path = $base_path.DIRECTORY_SEPARATOR.dirname($path);
-        $full_path = $base_path.DIRECTORY_SEPARATOR.$path;
-
-        if ($real_path = realpath($dir_path)) {
-            if (substr($full_path, 0, strlen($base_path)) !== $base_path) {
-                throw new \Exception('New location not inside station media directory.');
-            }
-        } else {
-            throw new \Exception('Parent directory could not be resolved.');
         }
 
-        return [$path, $full_path];
+        return [$path];
     }
 
     protected function _is_recursively_deleteable($d)
@@ -658,7 +525,7 @@ class FilesController
             if (!is_readable($dir) || !is_writable($dir)) {
                 return false;
             }
-            $files = array_diff(scandir($dir), ['.', '..']);
+            $files = array_diff(scandir($dir, \SCANDIR_SORT_NONE), ['.', '..']);
             foreach ($files as $file) {
                 if (is_dir($file)) {
                     $stack[] = "$dir/$file";

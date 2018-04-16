@@ -160,7 +160,7 @@ class StationMedia
      * @OneToMany(targetEntity="StationMediaCustomField", mappedBy="media", fetch="EAGER")
      * @var Collection
      */
-    protected $custom_metadata;
+    protected $custom_fields;
 
     public function __construct(Station $station, string $path)
     {
@@ -491,17 +491,17 @@ class StationMedia
     /**
      * @return Collection
      */
-    public function getCustomMetadata(): Collection
+    public function getCustomFields(): Collection
     {
-        return $this->custom_metadata;
+        return $this->custom_fields;
     }
 
     /**
-     * @param Collection $custom_metadata
+     * @param Collection $custom_fields
      */
-    public function setCustomMetadata(Collection $custom_metadata): void
+    public function setCustomFields(Collection $custom_fields): void
     {
-        $this->custom_metadata = $custom_metadata;
+        $this->custom_fields = $custom_fields;
     }
 
     /**
@@ -722,7 +722,7 @@ class StationMedia
         $response->art = $url->named('api:stations:media:art', ['station' => $this->station_id, 'media_id' => $this->unique_id], true);
 
         $custom_fields = [];
-        foreach($this->getCustomMetadata() as $custom_field) {
+        foreach($this->getCustomFields() as $custom_field) {
             /** @var StationMediaCustomField $custom_field */
             $custom_fields[] = $custom_field->api();
         }

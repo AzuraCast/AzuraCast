@@ -280,17 +280,33 @@ return function (\Slim\Container $di, array $app_settings) {
         );
     };
 
-    $di[\Controller\Stations\FilesController::class] = function($di) {
+    $di[\Controller\Stations\Files\FilesController::class] = function($di) {
         /** @var \App\Config $config */
         $config = $di[\App\Config::class];
 
-        return new \Controller\Stations\FilesController(
+        return new \Controller\Stations\Files\FilesController(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Flash::class],
             $di[\App\Url::class],
             $di[\App\Csrf::class],
-            $config->get('forms/media'),
             $config->get('forms/rename')
+        );
+    };
+
+    $di[\Controller\Stations\Files\EditController::class] = function($di) {
+        /** @var \App\Config $config */
+        $config = $di[\App\Config::class];
+
+        $url = $di[\App\Url::class];
+
+        return new \Controller\Stations\Files\EditController(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\App\Flash::class],
+            $url,
+            $di[\App\Csrf::class],
+            $config->get('forms/media', [
+                'url' => $url
+            ])
         );
     };
 

@@ -72,25 +72,6 @@ class StationRequestRepository extends BaseRepository
     }
 
     /**
-     * Returns an array of all media that can be requested for this station.
-     *
-     * @param Entity\Station $station
-     * @return array
-     */
-    public function getRequestableMedia(Entity\Station $station)
-    {
-        return $this->_em->createQuery('SELECT sm, s, sp 
-            FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlists sp
-            WHERE sm.station_id = :station_id 
-            AND sp.id IS NOT NULL
-            AND sp.is_enabled = 1 
-            AND sp.include_in_requests = 1')
-            ->setParameter('station_id', $station->getId())
-            ->useResultCache(true, 60)
-            ->getArrayResult();
-    }
-
-    /**
      * Check if the song is already enqueued as a request.
      *
      * @param Entity\StationMedia $media

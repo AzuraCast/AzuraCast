@@ -3,6 +3,7 @@ namespace Controller\Api;
 
 use App\Url;
 use App\Utilities;
+use AzuraCast\ApiUtilities;
 use AzuraCast\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use Entity;
@@ -14,11 +15,14 @@ class RequestsController
     /** @var EntityManager */
     protected $em;
 
+    /** @var Adapters */
+    protected $adapters;
+
     /** @var Url */
     protected $url;
 
-    /** @var Adapters */
-    protected $adapters;
+    /** @var ApiUtilities */
+    protected $api_utils;
 
     /**
      * RequestsController constructor.
@@ -26,11 +30,12 @@ class RequestsController
      * @param Adapters $adapters
      * @param Url $url
      */
-    public function __construct(EntityManager $em, Adapters $adapters, Url $url)
+    public function __construct(EntityManager $em, Adapters $adapters, Url $url, ApiUtilities $api_utils)
     {
         $this->em = $em;
         $this->adapters = $adapters;
         $this->url = $url;
+        $this->api_utils = $api_utils;
     }
 
     /**
@@ -61,25 +66,26 @@ class RequestsController
             return $response->withJson('This station does not accept requests currently.', 403);
         }
 
-        /** @var Entity\Repository\StationRequestRepository $request_repo */
-        $request_repo = $this->em->getRepository(Entity\StationRequest::class);
-        $requestable_media = $request_repo->getRequestableMedia($station);
+        $requestable_media = $this->em->createQuery('SELECT sm, s, sp 
+            FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlists sp
+            WHERE sm.station_id = :station_id 
+            AND sp.id IS NOT NULL
+            AND sp.is_enabled = 1 
+            AND sp.include_in_requests = 1')
+            ->setParameter('station_id', $station_id)
+            ->useResultCache(true, 60)
+            ->execute();
 
         $result = [];
 
         foreach ($requestable_media as $media_row) {
-            $song = new Entity\Api\Song;
-            $song->id = $media_row['song_id'];
-            $song->text = $media_row['artist'].' - '.$media_row['title'];
-            $song->artist = $media_row['artist'];
-            $song->title = $media_row['title'];
-
+            /** @var Entity\StationMedia $media_row */
             $row = new Entity\Api\StationRequest;
-            $row->song = $song;
-            $row->request_id = (int)$media_row['id'];
+            $row->song = $media_row->api($this->api_utils);
+            $row->request_id = (int)$media_row->getId();
             $row->request_url = (string)$this->url->named('api:requests:submit', [
                 'station' => $station_id,
-                'media_id' => $media_row['unique_id']
+                'media_id' => $media_row->getUniqueId(),
             ]);
             $result[] = $row;
         }

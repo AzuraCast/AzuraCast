@@ -162,7 +162,8 @@ return function (\Slim\Container $di, array $app_settings) {
         return new \Controller\Api\RequestsController(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\AzuraCast\Radio\Adapters::class],
-            $di[\App\Url::class]
+            $di[\App\Url::class],
+            $di[\AzuraCast\ApiUtilities::class]
         );
     };
 

@@ -173,7 +173,7 @@ class StationMedia
         $this->mtime = 0;
 
         $this->playlists = new ArrayCollection;
-        $this->custom_metadata = new ArrayCollection;
+        $this->custom_fields = new ArrayCollection;
     }
 
     /**

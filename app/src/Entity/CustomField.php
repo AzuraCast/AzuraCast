@@ -54,7 +54,7 @@ class CustomField
      */
     public function setName(string $name): void
     {
-        $this->name = $this->_truncateString($name, 100);
+        $this->name = $this->_truncateString($name);
 
         if (empty($this->short_name) && !empty($name)) {
             $this->setShortName(Station::getStationShortName($name));

@@ -32,11 +32,21 @@ class FilesController extends FilesControllerAbstract
         $space_total = disk_total_space($media_dir);
         $space_used = $space_total - $space_free;
 
+        // Get list of custom fields.
+        $custom_fields_raw = $this->em->createQuery('SELECT cf.id, cf.name FROM Entity\CustomField cf ORDER BY cf.name ASC')
+            ->getArrayResult();
+
+        $custom_fields = [];
+        foreach($custom_fields_raw as $row) {
+            $custom_fields['media_custom_'.$row['id']] = $row['name'];
+        }
+
         /** @var View $view */
         $view = $request->getAttribute('view');
 
         return $view->renderToResponse($response, 'stations/files/index', [
             'playlists' => $playlists,
+            'custom_fields' => $custom_fields,
             'space_free' => Utilities::bytes_to_text($space_free),
             'space_used' => Utilities::bytes_to_text($space_used),
             'space_total' => Utilities::bytes_to_text($space_total),
@@ -117,9 +127,10 @@ class FilesController extends FilesControllerAbstract
 
         if (is_dir($file_path)) {
             $media_in_dir_raw = $this->em->createQuery('SELECT 
-              partial sm.{id, unique_id, path, length, length_text, artist, title, album}, partial sp.{id, name}
+              partial sm.{id, unique_id, path, length, length_text, artist, title, album}, partial sp.{id, name}, partial smcf.{id, field_id, value}
               FROM Entity\StationMedia sm 
               LEFT JOIN sm.playlists sp 
+              LEFT JOIN sm.custom_fields smcf  
               WHERE sm.station_id = :station_id 
               AND sm.path LIKE :path')
                 ->setParameter('station_id', $station_id)
@@ -131,6 +142,11 @@ class FilesController extends FilesControllerAbstract
                 $playlists = [];
                 foreach ($media_row['playlists'] as $playlist_row) {
                     $playlists[] = $playlist_row['name'];
+                }
+
+                $custom_fields = [];
+                foreach($media_row['custom_fields'] as $custom_field) {
+                    $custom_fields['custom_'.$custom_field['field_id']] = $custom_field['value'];
                 }
 
                 $media_in_dir[$media_row['path']] = [
@@ -145,7 +161,7 @@ class FilesController extends FilesControllerAbstract
                     'edit_url' => $this->url->named('stations:files:edit', ['station' => $station_id, 'id' => $media_row['id']]),
                     'play_url' => $this->url->named('stations:files:download', ['station' => $station_id]) . '?file=' . urlencode($media_row['path']),
                     'playlists' => $playlists,
-                ];
+                ] + $custom_fields;
             }
 
             // Search all recursive files

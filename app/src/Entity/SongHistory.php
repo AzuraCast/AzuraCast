@@ -461,7 +461,7 @@ class SongHistory
     /**
      * @return Api\SongHistory|Api\NowPlayingCurrentSong
      */
-    public function api(\App\Url $url, $now_playing = false)
+    public function api(\AzuraCast\ApiUtilities $api, $now_playing = false)
     {
         $response = ($now_playing) ? new Api\NowPlayingCurrentSong : new Api\SongHistory;
         $response->sh_id = (int)$this->id;
@@ -477,8 +477,8 @@ class SongHistory
         }
 
         $response->song = ($this->media)
-            ? $this->media->api($url)
-            : $this->song->api();
+            ? $this->media->api($api)
+            : $this->song->api($api);
 
         return $response;
     }

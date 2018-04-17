@@ -334,10 +334,9 @@ return function (\Slim\Container $di, $settings) {
     // AzuraCast-specific dependencies
     //
 
-    $di[\AzuraCast\Customization::class] = function ($di) {
-        return new \AzuraCast\Customization(
-            $di['app_settings'],
-            $di[\Entity\Repository\SettingsRepository::class],
+    $di[\AzuraCast\ApiUtilities::class] = function($di) {
+        return new \AzuraCast\ApiUtilities(
+            $di[\Doctrine\ORM\EntityManager::class],
             $di[\App\Url::class]
         );
     };
@@ -352,6 +351,14 @@ return function (\Slim\Container $di, $settings) {
         }
 
         return new \AzuraCast\Assets($libraries, $versioned_files, $di[\App\Url::class]);
+    };
+
+    $di[\AzuraCast\Customization::class] = function ($di) {
+        return new \AzuraCast\Customization(
+            $di['app_settings'],
+            $di[\Entity\Repository\SettingsRepository::class],
+            $di[\App\Url::class]
+        );
     };
 
     $di[\AzuraCast\RateLimit::class] = function($di) {
@@ -468,7 +475,8 @@ return function (\Slim\Container $di, $settings) {
             $di[\InfluxDB\Database::class],
             $di[\App\Cache::class],
             $di[\AzuraCast\Radio\Adapters::class],
-            $di[\AzuraCast\Webhook\Dispatcher::class]
+            $di[\AzuraCast\Webhook\Dispatcher::class],
+            $di[\AzuraCast\ApiUtilities::class]
         );
     };
 

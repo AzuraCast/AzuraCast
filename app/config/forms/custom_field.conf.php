@@ -12,6 +12,14 @@ return [
             ]
         ],
 
+        'short_name' => [
+            'text',
+            [
+                'label' => __('Programmatic Name'),
+                'description' => __('Optionally specify an API-friendly name, such as <code>field_name</code>. Leave this field blank to automatically create one based on the name.'),
+            ]
+        ],
+
         'submit' => [
             'submit',
             [

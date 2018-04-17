@@ -157,7 +157,7 @@ class StationMedia
     protected $playlists;
 
     /**
-     * @OneToMany(targetEntity="StationMediaCustomField", mappedBy="media", fetch="EAGER")
+     * @OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
      * @var Collection
      */
     protected $custom_fields;
@@ -708,7 +708,7 @@ class StationMedia
      *
      * @return Api\Song
      */
-    public function api(\App\Url $url): Api\Song
+    public function api(\AzuraCast\ApiUtilities $api_utils): Api\Song
     {
         $response = new Api\Song;
         $response->id = (string)$this->song_id;
@@ -719,14 +719,8 @@ class StationMedia
         $response->album = (string)$this->album;
         $response->lyrics = (string)$this->lyrics;
 
-        $response->art = $url->named('api:stations:media:art', ['station' => $this->station_id, 'media_id' => $this->unique_id], true);
-
-        $custom_fields = [];
-        foreach($this->getCustomFields() as $custom_field) {
-            /** @var StationMediaCustomField $custom_field */
-            $custom_fields[] = $custom_field->api();
-        }
-        $response->custom_fields = $custom_fields;
+        $response->art = $api_utils->getAlbumArtUrl($this->station_id, $this->unique_id);
+        $response->custom_fields = $api_utils->getCustomFields($this->id);
 
         return $response;
     }

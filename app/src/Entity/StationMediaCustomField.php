@@ -28,7 +28,7 @@ class StationMediaCustomField
     protected $media_id;
 
     /**
-     * @ManyToOne(targetEntity="StationMedia", inversedBy="metadata", fetch="EAGER")
+     * @ManyToOne(targetEntity="StationMedia", inversedBy="metadata")
      * @JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      * @var StationMedia
      */
@@ -41,7 +41,7 @@ class StationMediaCustomField
     protected $field_id;
 
     /**
-     * @ManyToOne(targetEntity="CustomField", fetch="EAGER")
+     * @ManyToOne(targetEntity="CustomField", inversedBy="media_fields")
      * @JoinColumn(name="field_id", referencedColumnName="id", onDelete="CASCADE")
      * @var CustomField
      */
@@ -89,17 +89,5 @@ class StationMediaCustomField
     public function setValue($value): void
     {
         $this->value = $this->_truncateString($value);
-    }
-
-    /**
-     * Generate an API-friendly response for this custom metadata field.
-     * @return Api\SongCustomField
-     */
-    public function api(): Api\SongCustomField
-    {
-        $row = new Api\SongCustomField;
-        $row->name = $this->getField()->getName();
-        $row->value = $this->getValue();
-        return $row;
     }
 }

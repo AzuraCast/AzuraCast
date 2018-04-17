@@ -67,7 +67,7 @@ class Song
 
     /**
      * @SWG\Property
-     * @var SongCustomField[]
+     * @var array
      */
     public $custom_fields = [];
 }

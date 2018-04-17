@@ -171,13 +171,15 @@ class Song
      *
      * @return Api\Song
      */
-    public function api(): Api\Song
+    public function api(\AzuraCast\ApiUtilities $api_utils): Api\Song
     {
         $response = new Api\Song;
         $response->id = (string)$this->id;
         $response->text = (string)$this->text;
         $response->artist = (string)$this->artist;
         $response->title = (string)$this->title;
+
+        $response->custom_fields = $api_utils->getCustomFields();
 
         return $response;
     }

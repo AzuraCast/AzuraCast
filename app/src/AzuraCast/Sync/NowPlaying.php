@@ -4,6 +4,7 @@ namespace AzuraCast\Sync;
 use App\Cache;
 use App\Debug;
 use App\Url;
+use AzuraCast\ApiUtilities;
 use AzuraCast\Radio\Adapters;
 use AzuraCast\Webhook\Dispatcher;
 use Doctrine\ORM\EntityManager;
@@ -30,6 +31,9 @@ class NowPlaying extends SyncAbstract
     /** @var Dispatcher */
     protected $webhook_dispatcher;
 
+    /** @var ApiUtilities */
+    protected $api_utils;
+
     /** @var Entity\Repository\SongHistoryRepository */
     protected $history_repo;
 
@@ -39,7 +43,8 @@ class NowPlaying extends SyncAbstract
     /** @var Entity\Repository\ListenerRepository */
     protected $listener_repo;
 
-    public function __construct(EntityManager $em, Url $url, Database $influx, Cache $cache, Adapters $adapters, Dispatcher $webhook_dispatcher)
+    public function __construct(EntityManager $em, Url $url, Database $influx, Cache $cache, Adapters $adapters,
+                                Dispatcher $webhook_dispatcher, ApiUtilities $api_utils)
     {
         $this->em = $em;
         $this->url = $url;
@@ -47,6 +52,7 @@ class NowPlaying extends SyncAbstract
         $this->cache = $cache;
         $this->adapters = $adapters;
         $this->webhook_dispatcher = $webhook_dispatcher;
+        $this->api_utils = $api_utils;
 
         $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
         $this->song_repo = $this->em->getRepository(Entity\Song::class);
@@ -166,7 +172,7 @@ class NowPlaying extends SyncAbstract
 
             $next_song = $this->history_repo->getNextSongForStation($station);
             if ($next_song instanceof Entity\SongHistory) {
-                $np->playing_next = $next_song->api($this->url);
+                $np->playing_next = $next_song->api($this->api_utils);
             } else {
                 $np->playing_next = null;
             }
@@ -190,12 +196,12 @@ class NowPlaying extends SyncAbstract
                 $song_obj = $this->song_repo->getOrCreate($np_raw['current_song'], true);
                 $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
 
-                $np->song_history = $this->history_repo->getHistoryForStation($station, $this->url);
+                $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils);
 
                 $next_song = $this->history_repo->getNextSongForStation($station);
 
                 if ($next_song instanceof Entity\SongHistory) {
-                    $np->playing_next = $next_song->api($this->url);
+                    $np->playing_next = $next_song->api($this->api_utils);
                 }
             }
 
@@ -217,7 +223,7 @@ class NowPlaying extends SyncAbstract
             }
 
             // Register a new item in song history.
-            $np->now_playing = $sh_obj->api($this->url, true);
+            $np->now_playing = $sh_obj->api($this->api_utils, true);
         }
 
         $np->update();

@@ -10,12 +10,14 @@
         <table class="table table-striped">
             <colgroup>
                 <col width="30%">
-                <col width="70%">
+                <col width="40%">
+                <col width="30%">
             </colgroup>
             <thead>
             <tr>
                 <th><?=__('Actions') ?></th>
                 <th><?=__('Name') ?></th>
+                <th><?=__('Programmatic Name') ?></th>
             </tr>
             </thead>
             <tbody>
@@ -27,6 +29,9 @@
                     </td>
                     <td>
                         <?=$this->e($row['name']) ?>
+                    </td>
+                    <td>
+                        <?=$this->e($row['short_name']) ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

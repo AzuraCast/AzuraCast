@@ -165,7 +165,7 @@ class NowPlaying extends SyncAbstract
 
             $offline_sh = new Entity\Api\NowPlayingCurrentSong;
             $offline_sh->sh_id = 0;
-            $offline_sh->song = $song_obj->api();
+            $offline_sh->song = $song_obj->api($this->api_utils);
             $np->now_playing = $offline_sh;
 
             $np->song_history = $this->history_repo->getHistoryForStation($station, $this->url);

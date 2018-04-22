@@ -4,7 +4,10 @@
     <div class="card-header ch-alt">
         <h2><?=__('Web Hooks') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Web Hook')) ?>" href="<?=$url->named('stations:webhooks:add', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Web Hook')) ?>" href="<?=$url->named('stations:webhooks:add', ['station' => $station->getId()]) ?>">
+            <span class="sr-only"><?=__('Add %s', __('Web Hook')) ?></span>
+            <i class="zmdi zmdi-plus"></i>
+        </a>
     </div>
     <div class="card-body card-padding p-b-0">
         <p><?=__('Web hooks let you connect to external web services and broadcast changes to your station to them.') ?></p>

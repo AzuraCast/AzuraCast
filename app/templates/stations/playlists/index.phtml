@@ -9,7 +9,10 @@ $assets->load('fullcalendar');
     <div class="card-header ch-alt">
         <h2><?=__('Playlists') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('Playlist')) ?>" href="<?=$url->named('stations:playlists:add', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Playlist')) ?>" href="<?=$url->named('stations:playlists:add', ['station' => $station->getId()]) ?>">
+            <span class="sr-only"><?=__('Add %s', __('Playlist')) ?></span>
+            <i class="zmdi zmdi-plus"></i>
+        </a>
     </div>
 
     <div role="tabpanel">

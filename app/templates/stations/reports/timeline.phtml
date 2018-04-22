@@ -13,6 +13,7 @@ $assets
         <ul class="actions">
             <li>
                 <a href="<?=$url->named('stations:reports:timeline', ['station' => $station->getId(), 'format' => 'csv']) ?>" title="<?=__('Download CSV') ?>">
+                    <span class="sr-only"><?=__('Download CSV') ?></span>
                     <i class="zmdi zmdi-download"></i>
                 </a>
             </li>

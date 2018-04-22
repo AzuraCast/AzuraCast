@@ -4,7 +4,10 @@
     <div class="card-header ch-alt">
         <h2><?=__('Custom Fields') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('Custom Field')) ?>" href="<?=$url->named('admin:custom_fields:add') ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('Custom Field')) ?>" href="<?=$url->named('admin:custom_fields:add') ?>">
+            <span class="sr-only"><?=__('Add %s', __('Custom Field')) ?></span>
+            <i class="zmdi zmdi-plus"></i>
+        </a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">

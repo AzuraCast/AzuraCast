@@ -6,7 +6,9 @@
             <div class="card-header ch-alt">
                 <h2><?=__('Streamer/DJ Accounts') ?></h2>
 
-                <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('Streamer')) ?>" href="<?=$url->named('stations:streamers:add', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-plus"></i></a>
+                <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Streamer')) ?>" href="<?=$url->named('stations:streamers:add', ['station' => $station->getId()]) ?>">
+                    <span class="sr-only"><?=__('Add %s', __('Streamer')) ?></span><i class="zmdi zmdi-plus"></i>
+                </a>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped">

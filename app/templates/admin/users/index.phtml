@@ -4,7 +4,10 @@
     <div class="card-header ch-alt">
         <h2><?=__('User Accounts') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('User')) ?>" href="<?=$url->named('admin:users:add') ?>"><i class="zmdi zmdi-plus"></i></a>
+        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('User')) ?>" href="<?=$url->named('admin:users:add') ?>">
+            <span class="sr-only"><?=__('Add %s', __('User')) ?></span>
+            <i class="zmdi zmdi-plus"></i>
+        </a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">

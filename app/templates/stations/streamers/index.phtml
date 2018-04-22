@@ -15,14 +15,14 @@
                     <colgroup>
                         <col width="25%">
                         <col width="15%">
-                        <col width="15%">
-                        <col width="45%">
+                        <col width="20%">
+                        <col width="40%">
                     </colgroup>
                     <thead>
                     <tr>
                         <th><?=__('Actions') ?></th>
                         <th><?=__('Username') ?></th>
-                        <th><?=__('Password') ?></th>
+                        <th><?=__('Display Name') ?></th>
                         <th><?=__('Notes') ?></th>
                     </tr>
                     </thead>
@@ -35,11 +35,8 @@
                                 <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:streamers:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                             </td>
                             <td><code><?=$this->e($row->getStreamerUsername()) ?></code></td>
-                            <td><code><?=$this->e($row->getStreamerPassword()) ?></code></td>
-                            <td>
-                                <?=sprintf(__('Displays as "%s"'), $row->getDisplayName()) ?><br>
-                                <?=nl2br($this->e($row->getComments())) ?>
-                            </td>
+                            <td><?=$this->e($row->getDisplayName()) ?></td>
+                            <td><?=nl2br($this->e($row->getComments())) ?></td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>

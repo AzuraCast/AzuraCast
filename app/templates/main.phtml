@@ -51,6 +51,8 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 </script>
 </head>
 <body class="<?=$page_class ?>">
+<a class="sr-only" href="#content"><?=__('Skip to main content') ?></a>
+
 <header id="header" class="clearfix" data-ma-theme="blue" style="background-image: url('<?=$url->content('img/header_bg.png') ?>');" data-rjs="3">
     <ul class="h-inner">
         <?php if (!empty($sidebar)): ?>

@@ -26,7 +26,6 @@ class C01_Station_StreamersCest extends CestAbstract
         $I->seeCurrentUrlEquals('/station/'.$station_id.'/streamers');
 
         $I->seeInSource('teststreamer');
-        $I->seeInSource('t3ststr34m3r');
         $I->seeInSource('Test Streamer');
     }
 }

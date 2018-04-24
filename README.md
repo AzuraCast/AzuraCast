@@ -66,39 +66,12 @@ If you want a more "bare-metal" experience and greater customization, you can al
 
 We strongly recommend installing and using AzuraCast via Docker. All of the necessary software packages are built by our automated tools, so installation is as easy as just pulling down the pre-compiled images. There's no need to worry about compatibility with your host operating system, so any host (including Windows and MacOS) will work great out of the box.
 
-#### Step 1: Install Docker and Docker Compose
-
-Your computer or server should be running the newest version of Docker and Docker Compose. You can use the easy scripts below to install both if you're starting from scratch:
+You can use the AzuraCast Docker installer to check for (and install, if necessary) the latest version of Docker and Docker Compose, then pull the necessary files and get your instance running.
 
 ```bash
-wget -qO- https://get.docker.com/ | sh
-
-COMPOSE_VERSION=`git ls-remote https://github.com/docker/compose | grep refs/tags | grep -oP "[0-9]+\.[0-9][0-9]+\.[0-9]+$" | tail -n 1`
-sudo sh -c "curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
-sudo chmod +x /usr/local/bin/docker-compose
-sudo sh -c "curl -L https://raw.githubusercontent.com/docker/compose/${COMPOSE_VERSION}/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose"
-```
-
-If you're not installing as root, you may be given instructions to add your current user to the Docker group (i.e. `usermod -aG docker $user`). You should log out or reboot after doing this before continuing below.
-
-#### Step 2: Pull the AzuraCast Docker Compose File
-
-Choose where on the host computer you would like AzuraCast's configuration file to exist on your server.
-
-Inside that directory, run this command to pull the Docker Compose configuration file.
-
-```bash
-curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-compose.sample.yml > docker-compose.yml
-```
-
-#### Step 3: Run the AzuraCast Docker Installer
-
-From the directory that contains your YML configuration file, run these commands:
-
-```bash
-docker-compose pull
-docker-compose run --rm cli azuracast_install
-docker-compose up -d
+curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker.sh > docker.sh
+chmod a+x docker.sh
+./docker.sh install
 ```
 
 #### Setting up HTTPS with LetsEncrypt
@@ -131,7 +104,9 @@ docker-compose run --rm letsencrypt renew --webroot -w /var/www/letsencrypt
 
 #### Updating with Docker
 
-From inside the base directory where AzuraCast is copied, run the following commands:
+If you have the `docker.sh` script from the installation steps above, you can run `./docker.sh update` to automatically update your installation.
+
+To manually update, from inside the base directory where AzuraCast is copied, run the following commands:
 
 ```bash
 docker-compose down

@@ -105,7 +105,7 @@ class StationMedia
     protected $length_text;
 
     /**
-     * @Column(name="path", type="string", length=255, nullable=true)
+     * @Column(name="path", type="string", length=500, nullable=true)
      * @var string|null
      */
     protected $path;

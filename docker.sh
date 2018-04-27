@@ -209,6 +209,12 @@ uninstall() {
         docker-compose rm -f
         docker volume prune -f
 
+        echo "All AzuraCast Docker containers and volumes were removed."
+        echo "To remove *all* Docker containers and volumes, run:"
+        echo "  docker stop \$(docker ps -a -q)"
+        echo "  docker rm \$(docker ps -a -q)"
+        echo "  docker volume prune -f"
+        echo ""
     fi
 }
 

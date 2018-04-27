@@ -41,6 +41,7 @@ ask() {
 }
 
 #
+# Run the initial installer of Docker and AzuraCast.
 # Usage: ./docker.sh install
 #
 install() {
@@ -89,6 +90,7 @@ install() {
 }
 
 #
+# Update the Docker images and codebase.
 # Usage: ./docker.sh update
 #
 update() {
@@ -113,6 +115,26 @@ update() {
 }
 
 #
+# Update this Docker utility script.
+# Usage: ./docker.sh update-self
+#
+update-self() {
+    curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker.sh > docker.sh
+    chmod a+x docker.sh
+
+    echo "New Docker utility script downloaded."
+}
+
+#
+# Run a CLI command inside the Docker container.
+# Usage: ./docker.sh cli [command]
+#
+cli() {
+    docker-compose run --rm cli azuracast_cli $*
+}
+
+#
+# Back up the Docker volumes to a .tar.gz file.
 # Usage:
 # ./docker.sh backup [/custom/backup/dir/custombackupname.tar.gz]
 #
@@ -124,6 +146,11 @@ backup() {
     BACKUP_FILENAME=`basename "$BACKUP_PATH"`
 
     cd $APP_BASE_DIR
+
+    if [ ! -f .env ]; then
+        echo "Writing default .env file..."
+        curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/.env > .env
+    fi
 
     docker-compose down
 
@@ -137,6 +164,7 @@ backup() {
 }
 
 #
+# Restore the Docker volumes from a .tar.gz file.
 # Usage:
 # ./docker.sh restore [/custom/backup/dir/custombackupname.tar.gz]
 #
@@ -150,7 +178,7 @@ restore() {
     cd $APP_BASE_DIR
 
     if [ -f $BACKUP_PATH ]; then
-       docker-compose down
+        docker-compose down
 
         docker volume rm azuracast_db_data azuracast_influx_data azuracast_station_data
         docker volume create azuracast_db_data
@@ -171,14 +199,14 @@ restore() {
 }
 
 #
+# Stop all Docker containers and remove related volumes.
 # Usage: ./docker.sh uninstall
 #
 uninstall() {
     if ask "This operation is destructive and will wipe your existing Docker containers. Continue? [y/N] " N; then
 
         docker-compose down -v
-        docker stop $(docker ps -a -q)
-        docker rm $(docker ps -a -q)
+        docker-compose rm -f
         docker volume prune -f
 
     fi

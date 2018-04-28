@@ -134,10 +134,10 @@ class StationPlaylist
     protected $include_in_automation;
 
     /**
-     * @ManyToMany(targetEntity="StationMedia", mappedBy="playlists", fetch="EXTRA_LAZY")
+     * @OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")
      * @var Collection
      */
-    protected $media;
+    protected $media_items;
 
     public function __construct(Station $station)
     {
@@ -156,7 +156,7 @@ class StationPlaylist
         $this->schedule_start_time = 0;
         $this->schedule_end_time = 0;
 
-        $this->media = new ArrayCollection;
+        $this->media_items = new ArrayCollection;
     }
 
     /**
@@ -503,9 +503,9 @@ class StationPlaylist
     /**
      * @return Collection
      */
-    public function getMedia(): Collection
+    public function getMediaItems(): Collection
     {
-        return $this->media;
+        return $this->media_items;
     }
 
     /**
@@ -523,7 +523,8 @@ class StationPlaylist
         {
             case 'm3u':
                 $playlist_file = [];
-                foreach ($this->media as $media_file) {
+                foreach ($this->media_items as $media_item) {
+                    $media_file = $media_item->getMedia();
                     $media_file_path = $media_path . $media_file->getPath();
                     $playlist_file[] = $media_file_path;
                 }
@@ -540,9 +541,10 @@ class StationPlaylist
                 ];
 
                 $i = 0;
-                foreach($this->media as $media_file) {
+                foreach($this->media_items as $media_item) {
                     $i++;
 
+                    $media_file = $media_item->getMedia();
                     $media_file_path = $media_path . $media_file->getPath();
                     $playlist_file[] = 'File'.$i.'='.$media_file_path;
                     $playlist_file[] = 'Title'.$i.'='.$media_file->getArtist().' - '.$media_file->getTitle();

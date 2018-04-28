@@ -147,14 +147,10 @@ class StationMedia
     protected $cue_out;
 
     /**
-     * @ManyToMany(targetEntity="StationPlaylist", inversedBy="media")
-     * @JoinTable(name="station_playlist_has_media",
-     *   joinColumns={@JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")},
-     *   inverseJoinColumns={@JoinColumn(name="playlists_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
+     * @OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
      * @var Collection
      */
-    protected $playlists;
+    protected $playlist_items;
 
     /**
      * @OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
@@ -172,7 +168,7 @@ class StationMedia
 
         $this->mtime = 0;
 
-        $this->playlists = new ArrayCollection;
+        $this->playlist_items = new ArrayCollection;
         $this->custom_fields = new ArrayCollection;
     }
 
@@ -483,9 +479,9 @@ class StationMedia
     /**
      * @return Collection
      */
-    public function getPlaylists(): Collection
+    public function getPlaylistItems(): Collection
     {
-        return $this->playlists;
+        return $this->playlist_items;
     }
 
     /**

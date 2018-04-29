@@ -19,7 +19,7 @@ class Version20180428062526 extends AbstractMigration
         $this->addSql('ALTER TABLE station_playlist_media ADD CONSTRAINT FK_EA70D7796BBD148 FOREIGN KEY (playlist_id) REFERENCES station_playlists (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE station_playlist_media ADD CONSTRAINT FK_EA70D779EA9FDD75 FOREIGN KEY (media_id) REFERENCES station_media (id) ON DELETE CASCADE');
 
-        $this->addSql('INSERT INTO station_playlist_media (playlist_id, media_id, weight) SELECT playlists_id, media_id, \'0\' FROM station_playlist_has_media');
+        $this->addSql('INSERT INTO station_playlist_media (playlist_id, media_id, weight, last_played) SELECT playlists_id, media_id, \'0\', \'0\' FROM station_playlist_has_media');
 
         $this->addSql('DROP TABLE station_playlist_has_media');
     }

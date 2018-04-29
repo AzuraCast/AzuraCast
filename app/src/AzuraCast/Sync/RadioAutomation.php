@@ -5,7 +5,6 @@ use App\Exception;
 use AzuraCast\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use Entity;
-use Entity\Station;
 
 class RadioAutomation extends SyncAbstract
 {
@@ -18,7 +17,9 @@ class RadioAutomation extends SyncAbstract
     protected $adapters;
 
     /**
+     * RadioAutomation constructor.
      * @param EntityManager $em
+     * @param Adapters $adapters
      */
     public function __construct(EntityManager $em, Adapters $adapters)
     {
@@ -28,15 +29,20 @@ class RadioAutomation extends SyncAbstract
 
     /**
      * Iterate through all stations and attempt to run automated assignment.
+     * @param bool $force
      */
     public function run($force = false)
     {
         // Check all stations for automation settings.
-        $stations = $this->em->getRepository(Station::class)->findAll();
+        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
 
-        $automation_log = $this->em->getRepository('Entity\Settings')->getSetting('automation_log', []);
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
+
+        $automation_log = $settings_repo->getSetting('automation_log', []);
 
         foreach ($stations as $station) {
+            /** @var Entity\Station $station */
             try {
                 if ($this->runStation($station)) {
                     $automation_log[$station->getId()] = $station->getName() . ': SUCCESS';
@@ -46,18 +52,18 @@ class RadioAutomation extends SyncAbstract
             }
         }
 
-        $this->em->getRepository('Entity\Settings')->setSetting('automation_log', $automation_log);
+        $settings_repo->setSetting('automation_log', $automation_log);
     }
 
     /**
      * Run automated assignment (if enabled) for a given $station.
      *
-     * @param Station $station
+     * @param Entity\Station $station
      * @param bool $force
      * @return bool
      * @throws Exception
      */
-    public function runStation(Station $station, $force = false)
+    public function runStation(Entity\Station $station, $force = false)
     {
         $settings = (array)$station->getAutomationSettings();
 
@@ -192,11 +198,11 @@ class RadioAutomation extends SyncAbstract
     /**
      * Generate a Performance Report for station $station's songs over the last $threshold_days days.
      *
-     * @param Station $station
+     * @param Entity\Station $station
      * @param int $threshold_days
      * @return array
      */
-    public function generateReport(Station $station, $threshold_days = self::DEFAULT_THRESHOLD_DAYS)
+    public function generateReport(Entity\Station $station, $threshold_days = self::DEFAULT_THRESHOLD_DAYS)
     {
         $threshold = strtotime('-' . (int)$threshold_days . ' days');
 
@@ -249,6 +255,8 @@ class RadioAutomation extends SyncAbstract
         */
 
         // Pull all media and playlists.
+
+        /** @var Entity\Repository\StationMediaRepository $media_repo */
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
         $media_raw = $this->em->createQuery('SELECT sm, spm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlist_items spm LEFT JOIN spm.playlist sp WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
@@ -258,6 +266,7 @@ class RadioAutomation extends SyncAbstract
         $report = [];
 
         foreach ($media_raw as $row_obj) {
+            /** @var Entity\StationMedia $row_obj */
             $row = $media_repo->toArray($row_obj);
 
             $media = [
@@ -285,6 +294,7 @@ class RadioAutomation extends SyncAbstract
 
             if ($row_obj->getPlaylistItems()->count() > 0) {
                 foreach ($row_obj->getPlaylistItems() as $playlist_item) {
+                    /** @var Entity\StationPlaylistMedia $playlist_item */
                     $playlist = $playlist_item->getPlaylist();
                     $media['playlists'][] = $playlist->getName();
                 }

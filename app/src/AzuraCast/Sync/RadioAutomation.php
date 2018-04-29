@@ -171,9 +171,9 @@ class RadioAutomation extends SyncAbstract
             $media_in_playlist = array_slice($media_report, $i, $playlist_num_songs);
             foreach ($media_in_playlist as $media) {
                 $media_row = $media['record'];
-                $media_row->getPlaylists()->add($playlist);
 
-                $this->em->persist($media_row);
+                $spm = new Entity\StationPlaylistMedia($playlist, $media_row);
+                $this->em->persist($spm);
             }
 
             $i += $playlist_num_songs;

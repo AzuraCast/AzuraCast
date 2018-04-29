@@ -13,8 +13,9 @@ class StationPlaylistMediaRepository extends BaseRepository
      *
      * @param Entity\StationMedia $media
      * @param Entity\StationPlaylist $playlist
+     * @return int The weight assigned to the newly added record.
      */
-    public function addMediaToPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist, $weight = 0)
+    public function addMediaToPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist, $weight = 0): int
     {
         $record = $this->findOneBy([
             'media_id' => $media->getId(),
@@ -43,6 +44,8 @@ class StationPlaylistMediaRepository extends BaseRepository
             $record->setWeight($weight);
             $this->_em->persist($record);
         }
+
+        return $weight;
     }
 
     /**

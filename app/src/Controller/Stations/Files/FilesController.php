@@ -393,10 +393,12 @@ class FilesController extends FilesControllerAbstract
                 $music_files = $this->_getMusicFiles($files);
                 $files_found = count($music_files);
 
+                $weight = 0;
                 foreach ($music_files as $file) {
                     try {
                         $media = $this->media_repo->getOrCreate($station, $file);
-                        $this->playlists_media_repo->addMediaToPlaylist($media, $playlist);
+                        $weight = $this->playlists_media_repo->addMediaToPlaylist($media, $playlist, $weight);
+                        $weight++;
                     } catch (\Exception $e) {
                         $errors[] = $file.': '.$e->getMessage();
                     }

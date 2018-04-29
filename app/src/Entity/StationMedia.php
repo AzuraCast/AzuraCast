@@ -484,6 +484,16 @@ class StationMedia
         return $this->playlist_items;
     }
 
+    public function getItemForPlaylist(StationPlaylist $playlist): ?StationPlaylistMedia
+    {
+        $item = $this->playlist_items->filter(function($spm) use ($playlist) {
+            /** @var StationPlaylistMedia $spm */
+            return ($spm->getPlaylist()->getId() == $playlist->getId());
+        });
+
+        return $item->first() ?? null;
+    }
+
     /**
      * @return Collection
      */

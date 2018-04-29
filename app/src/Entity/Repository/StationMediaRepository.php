@@ -276,8 +276,7 @@ class StationMediaRepository extends BaseRepository
             }
 
             if ($media_to_play instanceof Entity\StationMedia) {
-                /** @var Entity\StationPlaylistMedia $spm */
-                $spm = $media_to_play->getPlaylistItems()->first();
+                $spm = $media_to_play->getItemForPlaylist($playlist);
                 $spm->played();
                 $this->_em->persist($spm);
 
@@ -328,8 +327,7 @@ class StationMediaRepository extends BaseRepository
                 $use_song_ids = false;
                 break;
             } else {
-                /** @var Entity\StationPlaylistMedia $playlist_item */
-                $playlist_item = $media_row->getPlaylistItems()->first();
+                $playlist_item = $media_row->getItemForPlaylist($playlist);
 
                 $song_timestamps[$media_row->getSong()->getId()] = $playlist_item->getLastPlayed();
                 $songs_by_id[$media_row->getSong()->getId()] = $media_row;

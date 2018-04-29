@@ -3,6 +3,7 @@
     "description": "The AzuraCast standalone radio station management tool.",
     "license": "Apache-2.0",
     "require": {
+        "php": ">=7.2",
         "roave/security-advisories": "dev-master",
         "slim/slim": "^3.0",
         "league/plates": "^3.1",

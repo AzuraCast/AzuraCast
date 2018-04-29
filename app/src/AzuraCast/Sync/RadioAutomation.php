@@ -252,7 +252,7 @@ class RadioAutomation extends SyncAbstract
         // Pull all media and playlists.
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
-        $media_raw = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
+        $media_raw = $this->em->createQuery('SELECT sm, spm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlist_items spm LEFT JOIN spm.playlist sp WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
             ->setParameter('station_id', $station->getId())
             ->execute();
 
@@ -284,8 +284,9 @@ class RadioAutomation extends SyncAbstract
                 'ratio' => 0,
             ];
 
-            if ($row_obj->getPlaylists()->count() > 0) {
-                foreach ($row_obj->getPlaylists() as $playlist) {
+            if ($row_obj->getPlaylistItems()->count() > 0) {
+                foreach ($row_obj->getPlaylistItems() as $playlist_item) {
+                    $playlist = $playlist_item->getPlaylist();
                     $media['playlists'][] = $playlist->getName();
                 }
             }

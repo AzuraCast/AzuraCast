@@ -179,7 +179,7 @@ class ReportsController
 
     public function duplicatesAction(Request $request, Response $response, $station_id): Response
     {
-        $media_raw = $this->em->createQuery('SELECT sm, s, sp FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlists sp WHERE sm.station_id = :station_id ORDER BY sm.mtime ASC')
+        $media_raw = $this->em->createQuery('SELECT sm, s, spm, sp FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlist_items spm LEFT JOIN spm.playlist sp WHERE sm.station_id = :station_id ORDER BY sm.mtime ASC')
             ->setParameter('station_id', $station_id)
             ->getArrayResult();
 
@@ -188,6 +188,10 @@ class ReportsController
 
         // Find exact duplicates and sort other songs into a searchable array.
         foreach ($media_raw as $media_row) {
+            foreach($media_row['playlist_items'] as $playlist_item) {
+                $media_row['playlists'][] = $playlist_item['playlist'];
+            }
+
             if (isset($songs_to_compare[$media_row['song_id']])) {
                 $dupes[] = [$songs_to_compare[$media_row['song_id']], $media_row];
             } else {

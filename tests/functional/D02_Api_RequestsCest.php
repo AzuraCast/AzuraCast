@@ -24,10 +24,12 @@ class D02_Api_RequestsCest extends CestAbstract
         $this->em->persist($playlist);
 
         $media = new \Entity\StationMedia($this->test_station, 'test.mp3');
-        $media->getPlaylists()->add($playlist);
         $media->loadFromFile();
-
         $this->em->persist($media);
+
+        $spm = new \Entity\StationPlaylistMedia($playlist, $media);
+        $this->em->persist($spm);
+
         $this->em->flush();
 
         $station_id = $this->test_station->getId();

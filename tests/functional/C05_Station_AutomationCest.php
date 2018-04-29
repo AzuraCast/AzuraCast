@@ -22,7 +22,6 @@ class C05_Station_AutomationCest extends CestAbstract
 
         $media = new \Entity\StationMedia($this->test_station, 'test.mp3');
         $media->loadFromFile();
-
         $this->em->persist($media);
 
         $spm = new \Entity\StationPlaylistMedia($playlist, $media);

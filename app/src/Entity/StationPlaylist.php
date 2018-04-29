@@ -22,9 +22,14 @@ class StationPlaylist
     public const TYPE_ONCE_PER_DAY = 'once_per_day';
     public const TYPE_ADVANCED = 'custom';
 
-    public const SOURCE_RANDOM = 'random_songs';
-    public const SOURCE_SEQUENTIAL = 'sequential_songs';
-    public const SOURCE_REMOTE_URL = 'remote_url';
+    public const SOURCE_SONGS = 'songs';
+    public const SOURCE_REMOTE_URL ='remote_url';
+
+    public const ORDER_RANDOM = 'random';
+    public const ORDER_SEQUENTIAL = 'sequential';
+
+    // public const SOURCE_RANDOM = 'random_songs';
+    // public const SOURCE_SEQUENTIAL = 'sequential_songs';
 
     /**
      * @Column(name="id", type="integer")
@@ -66,6 +71,18 @@ class StationPlaylist
      * @var string
      */
     protected $source;
+
+    /**
+     * @Column(name="playback_order", type="string", length=50)
+     * @var string
+     */
+    protected $order;
+
+    /**
+     * @Column(name="remote_url", type="string", length=255, nullable=true)
+     * @var string|null
+     */
+    protected $remote_url;
 
     /**
      * @Column(name="is_enabled", type="boolean")
@@ -144,7 +161,8 @@ class StationPlaylist
         $this->station = $station;
 
         $this->type = self::TYPE_DEFAULT;
-        $this->source = self::SOURCE_RANDOM;
+        $this->source = self::SOURCE_SONGS;
+        $this->order = self::ORDER_RANDOM;
         $this->is_enabled = 1;
 
         $this->weight = 3;
@@ -229,6 +247,38 @@ class StationPlaylist
     public function setSource(string $source): void
     {
         $this->source = $source;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrder(): string
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param string $order
+     */
+    public function setOrder(string $order): void
+    {
+        $this->order = $order;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getRemoteUrl(): ?string
+    {
+        return $this->remote_url;
+    }
+
+    /**
+     * @param null|string $remote_url
+     */
+    public function setRemoteUrl(?string $remote_url): void
+    {
+        $this->remote_url = $remote_url;
     }
 
     /**

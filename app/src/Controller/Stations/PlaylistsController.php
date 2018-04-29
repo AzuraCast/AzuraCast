@@ -83,7 +83,7 @@ class PlaylistsController
                 $playlist_row['probability'] = round(($playlist->getWeight() / $total_weights) * 100, 1) . '%';
             }
 
-            $playlist_row['num_songs'] = $playlist->getMedia()->count();
+            $playlist_row['num_songs'] = $playlist->getMediaItems()->count();
             $playlists[$playlist->getId()] = $playlist_row;
         }
 

@@ -64,7 +64,7 @@ class ErrorHandler
         $user = $req->getAttribute('user');
         $show_detailed = $this->acl->userAllowed($user, 'administer all') || !APP_IN_PRODUCTION;
 
-        if ($req->isXhr() || (APP_IS_COMMAND_LINE && !APP_TESTING_MODE)) {
+        if ($req->isXhr() || APP_IS_COMMAND_LINE || APP_TESTING_MODE) {
             $api_response = new Entity\Api\Error(
                 $e->getCode(),
                 $e->getMessage(),

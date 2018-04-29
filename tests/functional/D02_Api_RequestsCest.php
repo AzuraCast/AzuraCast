@@ -32,6 +32,9 @@ class D02_Api_RequestsCest extends CestAbstract
 
         $this->em->flush();
 
+        $this->em->refresh($media);
+        $this->em->refresh($playlist);
+
         $station_id = $this->test_station->getId();
 
         $I->sendGET('/api/station/'.$station_id.'/requests');

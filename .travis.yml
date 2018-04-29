@@ -29,4 +29,4 @@ script:
   - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --rm cli azuracast_testing
 
 after_failure:
-  - cat tests/_output/*
+  - cat tests/_output/*.html

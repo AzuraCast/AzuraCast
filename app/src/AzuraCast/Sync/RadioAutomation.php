@@ -87,7 +87,7 @@ class RadioAutomation extends SyncAbstract
             /** @var Entity\StationPlaylist $playlist */
 
             if ($playlist->getIsEnabled() &&
-                $playlist->getType() == 'default' &&
+                $playlist->getType() == Entity\StationPlaylist::TYPE_DEFAULT &&
                 $playlist->getIncludeInAutomation() == true
             ) {
                 // Clear all related media.
@@ -135,10 +135,9 @@ class RadioAutomation extends SyncAbstract
                 $media_row = $media['record'];
 
                 foreach ($original_playlists[$song_id] as $playlist_key) {
-                    $media_row->getPlaylists()->add($playlists[$playlist_key]);
+                    $spm = new Entity\StationPlaylistMedia($playlists[$playlist_key], $media_row);
+                    $this->em->persist($spm);
                 }
-
-                $this->em->persist($media_row);
 
                 unset($media_report[$song_id]);
             }

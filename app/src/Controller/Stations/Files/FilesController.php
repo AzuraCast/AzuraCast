@@ -22,8 +22,12 @@ class FilesController extends FilesControllerAbstract
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        $playlists = $this->em->createQuery('SELECT sp.id, sp.name FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id ORDER BY sp.name ASC')
+        $playlists = $this->em->createQuery('SELECT sp.id, sp.name 
+            FROM Entity\StationPlaylist sp 
+            WHERE sp.station_id = :station_id AND sp.source = :source 
+            ORDER BY sp.name ASC')
             ->setParameter('station_id', $station_id)
+            ->setParameter('source', Entity\StationPlaylist::SOURCE_SONGS)
             ->getArrayResult();
 
         // Show available file space in the station directory.
@@ -127,10 +131,11 @@ class FilesController extends FilesControllerAbstract
 
         if (is_dir($file_path)) {
             $media_in_dir_raw = $this->em->createQuery('SELECT 
-              partial sm.{id, unique_id, path, length, length_text, artist, title, album}, partial sp.{id, name}, partial smcf.{id, field_id, value}
+              partial sm.{id, unique_id, path, length, length_text, artist, title, album}, partial spm.{id}, partial sp.{id, name}, partial smcf.{id, field_id, value}
               FROM Entity\StationMedia sm 
-              LEFT JOIN sm.playlists sp 
-              LEFT JOIN sm.custom_fields smcf  
+              LEFT JOIN sm.custom_fields smcf 
+              LEFT JOIN sm.playlist_items spm
+              LEFT JOIN spm.playlist sp 
               WHERE sm.station_id = :station_id 
               AND sm.path LIKE :path')
                 ->setParameter('station_id', $station_id)
@@ -140,8 +145,8 @@ class FilesController extends FilesControllerAbstract
             $media_in_dir = [];
             foreach ($media_in_dir_raw as $media_row) {
                 $playlists = [];
-                foreach ($media_row['playlists'] as $playlist_row) {
-                    $playlists[] = $playlist_row['name'];
+                foreach ($media_row['playlist_items'] as $playlist_row) {
+                    $playlists[] = $playlist_row['playlist']['name'];
                 }
 
                 $custom_fields = [];
@@ -306,6 +311,7 @@ class FilesController extends FilesControllerAbstract
         $files_affected = 0;
 
         $response_record = null;
+        $errors = [];
 
         list($action, $action_id) = explode('_', $_POST['do']);
 
@@ -320,6 +326,7 @@ class FilesController extends FilesControllerAbstract
                         $media = $this->media_repo->getOrCreate($station, $file);
                         $this->em->remove($media);
                     } catch (\Exception $e) {
+                        $errors[] = $file.': '.$e->getMessage();
                         @unlink($file);
                     }
 
@@ -345,9 +352,10 @@ class FilesController extends FilesControllerAbstract
                 foreach ($music_files as $file) {
                     try {
                         $media = $this->media_repo->getOrCreate($station, $file);
-                        $media->getPlaylists()->clear();
-                        $this->em->persist($media);
-                    } catch (\Exception $e) { }
+                        $this->playlists_media_repo->clearPlaylistsFromMedia($media);
+                    } catch (\Exception $e) {
+                        $errors[] = $file.': '.$e->getMessage();
+                    }
 
                     $files_affected++;
                 }
@@ -389,16 +397,14 @@ class FilesController extends FilesControllerAbstract
                 $music_files = $this->_getMusicFiles($files);
                 $files_found = count($music_files);
 
+                $weight = 0;
                 foreach ($music_files as $file) {
                     try {
                         $media = $this->media_repo->getOrCreate($station, $file);
-
-                        if (!$media->getPlaylists()->contains($playlist)) {
-                            $media->getPlaylists()->add($playlist);
-                        }
-
-                        $this->em->persist($media);
+                        $weight = $this->playlists_media_repo->addMediaToPlaylist($media, $playlist, $weight);
+                        $weight++;
                     } catch (\Exception $e) {
+                        $errors[] = $file.': '.$e->getMessage();
                     }
 
                     $files_affected++;
@@ -411,10 +417,15 @@ class FilesController extends FilesControllerAbstract
                 break;
         }
 
+        $this->em->clear(Entity\StationMedia::class);
+        $this->em->clear(Entity\StationPlaylist::class);
+        $this->em->clear(Entity\StationPlaylistMedia::class);
+
         return $response->withJson([
             'success' => true,
             'files_found' => $files_found,
             'files_affected' => $files_affected,
+            'errors' => $errors,
             'record' => $response_record,
         ]);
     }

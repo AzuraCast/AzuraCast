@@ -342,6 +342,9 @@ return function(\Slim\App $app) {
             $this->get('/delete/{id}/{csrf}', Controller\Stations\PlaylistsController::class.':deleteAction')
                 ->setName('stations:playlists:delete');
 
+            $this->map(['GET', 'POST'], '/reorder/{id}', Controller\Stations\PlaylistsController::class.':reorderAction')
+                ->setName('stations:playlists:reorder');
+
             $this->get('/export/{id}[/{format}]', Controller\Stations\PlaylistsController::class.':exportAction')
                 ->setName('stations:playlists:export');
 

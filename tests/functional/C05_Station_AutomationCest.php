@@ -21,10 +21,12 @@ class C05_Station_AutomationCest extends CestAbstract
         $this->em->persist($playlist);
 
         $media = new \Entity\StationMedia($this->test_station, 'test.mp3');
-        $media->getPlaylists()->add($playlist);
         $media->loadFromFile();
-
         $this->em->persist($media);
+
+        $spm = new \Entity\StationPlaylistMedia($playlist, $media);
+        $this->em->persist($spm);
+
         $this->em->flush();
 
         $this->em->refresh($this->test_station);

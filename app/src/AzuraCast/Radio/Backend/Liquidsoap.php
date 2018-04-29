@@ -128,6 +128,8 @@ class Liquidsoap extends BackendAbstract
 
         foreach ($playlist_objects as $playlist) {
 
+            /** @var Entity\StationPlaylist $playlist */
+
             $playlist_file_contents = $playlist->export('m3u', true);
 
             $playlist_var_name = 'playlist_' . $playlist->getShortName();

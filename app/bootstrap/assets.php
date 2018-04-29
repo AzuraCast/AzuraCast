@@ -381,5 +381,19 @@ return [
             ]
         ],
         'require' => ['moment'],
-    ]
+    ],
+    [
+        'name' => 'jquery-sortable',
+        'order' => 10,
+        'group' => 'body',
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-sortable/0.9.13/jquery-sortable-min.js',
+                    'sri' => 'sha256-wWIfHlrIpCbyDbt+VSBUsc54ApQZWKqBmF38yUKLGeY=',
+                ],
+            ],
+        ],
+        'require' => ['jquery'],
+    ],
 ];

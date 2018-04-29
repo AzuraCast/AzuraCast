@@ -147,14 +147,10 @@ class StationMedia
     protected $cue_out;
 
     /**
-     * @ManyToMany(targetEntity="StationPlaylist", inversedBy="media")
-     * @JoinTable(name="station_playlist_has_media",
-     *   joinColumns={@JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")},
-     *   inverseJoinColumns={@JoinColumn(name="playlists_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
+     * @OneToMany(targetEntity="StationPlaylistMedia", mappedBy="media")
      * @var Collection
      */
-    protected $playlists;
+    protected $playlist_items;
 
     /**
      * @OneToMany(targetEntity="StationMediaCustomField", mappedBy="media")
@@ -172,7 +168,7 @@ class StationMedia
 
         $this->mtime = 0;
 
-        $this->playlists = new ArrayCollection;
+        $this->playlist_items = new ArrayCollection;
         $this->custom_fields = new ArrayCollection;
     }
 
@@ -483,9 +479,19 @@ class StationMedia
     /**
      * @return Collection
      */
-    public function getPlaylists(): Collection
+    public function getPlaylistItems(): Collection
     {
-        return $this->playlists;
+        return $this->playlist_items;
+    }
+
+    public function getItemForPlaylist(StationPlaylist $playlist): ?StationPlaylistMedia
+    {
+        $item = $this->playlist_items->filter(function($spm) use ($playlist) {
+            /** @var StationPlaylistMedia $spm */
+            return ($spm->getPlaylist()->getId() == $playlist->getId());
+        });
+
+        return $item->first() ?? null;
     }
 
     /**
@@ -691,9 +697,9 @@ class StationMedia
      */
     public function isRequestable(): bool
     {
-        $playlists = $this->getPlaylists();
-
-        foreach($playlists as $playlist) {
+        $playlists = $this->getPlaylistItems();
+        foreach($playlists as $playlist_item) {
+            $playlist = $playlist_item->getPlaylist();
             /** @var StationPlaylist $playlist */
             if ($playlist->isRequestable()) {
                 return true;

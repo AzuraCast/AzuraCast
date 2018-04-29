@@ -76,6 +76,74 @@ return [
                     ]
                 ],
 
+                'weight' => [
+                    'select',
+                    [
+                        'label' => __('Playlist Weight'),
+                        'description' => __('Higher weight playlists are played more frequently compared to other lower-weight playlists.'),
+                        'default' => 3,
+                        'required' => true,
+                        'options' => [
+                            1 => '1 - '.__('Low'),
+                            2 => '2',
+                            3 => '3 - '.__('Default'),
+                            4 => '4',
+                            5 => '5 - '.__('High'),
+                        ] + \App\Utilities::pairs(range(6, 25)),
+                    ]
+                ],
+
+                'source' => [
+                    'radio',
+                    [
+                        'label' => __('Source'),
+                        'options' => [
+                            StationPlaylist::SOURCE_SONGS => '<b>' . __('Song-Based Playlist') .':</b> ' . __('A playlist containing media files hosted on this server.'),
+                            StationPlaylist::SOURCE_REMOTE_URL => '<b>'.__('Remote URL Playlist').':</b> ' . __('A playlist that instructs the station to play from a remote URL.'),
+                        ],
+                        'default' => StationPlaylist::SOURCE_SONGS,
+                        'required' => true,
+                    ]
+                ],
+
+                'type' => [
+                    'radio',
+                    [
+                        'label' => __('Scheduling'),
+                        'options' => [
+                            StationPlaylist::TYPE_DEFAULT => '<b>' . __('General Rotation') . ':</b> ' . __('Plays all day, shuffles with other standard playlists based on weight.'),
+                            StationPlaylist::TYPE_SCHEDULED => '<b>' . __('Scheduled') . ':</b> ' . __('Play during a scheduled time range. Useful for mood-based time playlists.'),
+                            StationPlaylist::TYPE_ONCE_PER_X_SONGS => '<b>' . __('Once per x Songs') . ':</b> ' . __('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
+                            StationPlaylist::TYPE_ONCE_PER_X_MINUTES => '<b>' . __('Once Per x Minutes') . ':</b> ' . __('Play exactly once every <i>x</i> minutes. Useful for station ID/jingles.'),
+                            StationPlaylist::TYPE_ONCE_PER_DAY => '<b>' . __('Daily') . '</b>: ' . __('Play once per day at the specified time. Useful for timely reminders.'),
+                            StationPlaylist::TYPE_ADVANCED => '<b>' . __('Advanced') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://github.com/AzuraCast/AzuraCast/wiki/Using-Advanced-Playlists'),
+                        ],
+                        'default' => StationPlaylist::TYPE_DEFAULT,
+                        'required' => true,
+                    ]
+                ],
+
+            ],
+        ],
+
+        'source_'.StationPlaylist::SOURCE_SONGS => [
+            'legend' => __('Song-Based Playlist'),
+            'class' => 'source_fieldset',
+            'elements' => [
+
+                'order' => [
+                    'radio',
+                    [
+                        'label' => __('Song Playback Order'),
+                        'required' => true,
+                        'options' => [
+                            StationPlaylist::ORDER_RANDOM => __('Random (Shuffled)'),
+                            StationPlaylist::ORDER_SEQUENTIAL => __('Sequential'),
+                        ],
+                        'default' => StationPlaylist::ORDER_RANDOM,
+                    ],
+                ],
+
                 'include_in_requests' => [
                     'radio',
                     [
@@ -108,45 +176,26 @@ return [
                     ]
                 ],
 
-                'weight' => [
-                    'select',
-                    [
-                        'label' => __('Playlist Weight'),
-                        'description' => __('Higher weight playlists are played more frequently compared to other lower-weight playlists.'),
-                        'default' => 3,
-                        'required' => true,
-                        'options' => [
-                            1 => '1 - '.__('Low'),
-                            2 => '2',
-                            3 => '3 - '.__('Default'),
-                            4 => '4',
-                            5 => '5 - '.__('High'),
-                        ] + \App\Utilities::pairs(range(6, 25)),
-                    ]
-                ],
-
-                'type' => [
-                    'radio',
-                    [
-                        'label' => __('Playlist Type'),
-                        'options' => [
-                            StationPlaylist::TYPE_DEFAULT => '<b>' . __('Standard Playlist') . ':</b> ' . __('Plays all day, shuffles with other standard playlists based on weight.'),
-                            StationPlaylist::TYPE_SCHEDULED => '<b>' . __('Scheduled Playlist') . ':</b> ' . __('Play during a scheduled time range. Useful for mood-based time playlists.'),
-                            StationPlaylist::TYPE_ONCE_PER_X_SONGS => '<b>' . __('Once per x Songs Playlist') . ':</b> ' . __('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
-                            StationPlaylist::TYPE_ONCE_PER_X_MINUTES => '<b>' . __('Once Per x Minutes Playlist') . ':</b> ' . __('Play exactly once every <i>x</i> minutes. Useful for station ID/jingles.'),
-                            StationPlaylist::TYPE_ONCE_PER_DAY => '<b>' . __('Daily Playlist') . '</b>: ' . __('Play once per day at the specified time. Useful for timely reminders.'),
-                            StationPlaylist::TYPE_ADVANCED => '<b>' . __('Advanced Playlist') .'</b>: ' . __('Manually define how this playlist is used in Liquidsoap configuration. <a href="%s" target="_blank">Learn about Advanced Playlists</a>', 'https://github.com/AzuraCast/AzuraCast/wiki/Using-Advanced-Playlists'),
-                        ],
-                        'default' => 'default',
-                        'required' => true,
-                    ]
-                ],
-
             ],
         ],
 
+        'source_'.StationPlaylist::SOURCE_REMOTE_URL => [
+            'legend' => __('Remote URL Playlist'),
+            'class' => 'source_fieldset',
+            'elements' => [
+
+                'remote_url' => [
+                    'text',
+                    [
+                        'label' => __('Remote URL'),
+                    ]
+                ],
+
+            ]
+        ],
+
         'type_default' => [
-            'legend' => __('Standard Playlist'),
+            'legend' => __('General Rotation'),
             'class' => 'type_fieldset',
             'elements' => [
 
@@ -167,8 +216,8 @@ return [
             ],
         ],
 
-        'type_scheduled' => [
-            'legend' => __('Scheduled Playlist'),
+        'type_'.StationPlaylist::TYPE_SCHEDULED => [
+            'legend' => __('Customize Schedule'),
             'class' => 'type_fieldset',
             'elements' => [
 
@@ -210,8 +259,8 @@ return [
             ],
         ],
 
-        'type_once_per_x_songs' => [
-            'legend' => __('Once per x Songs Playlist'),
+        'type_'.StationPlaylist::TYPE_ONCE_PER_X_SONGS => [
+            'legend' => __('Once per x Songs'),
             'class' => 'type_fieldset',
             'elements' => [
 
@@ -227,8 +276,8 @@ return [
             ],
         ],
 
-        'type_once_per_x_minutes' => [
-            'legend' => __('Once per x Minutes Playlist'),
+        'type_'.StationPlaylist::TYPE_ONCE_PER_X_MINUTES => [
+            'legend' => __('Once per x Minutes'),
             'class' => 'type_fieldset',
             'elements' => [
 
@@ -244,8 +293,8 @@ return [
             ],
         ],
 
-        'type_once_per_day' => [
-            'legend' => __('Daily Playlist'),
+        'type_'.StationPlaylist::TYPE_ONCE_PER_DAY => [
+            'legend' => __('Daily'),
             'class' => 'type_fieldset',
             'elements' => [
 

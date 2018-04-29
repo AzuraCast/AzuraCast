@@ -30,6 +30,9 @@ abstract class FilesControllerAbstract
     /** @var Entity\Repository\StationMediaRepository */
     protected $media_repo;
 
+    /** @var Entity\Repository\StationPlaylistMediaRepository */
+    protected $playlists_media_repo;
+
     /**
      * FilesController constructor.
      * @param EntityManager $em
@@ -46,6 +49,7 @@ abstract class FilesControllerAbstract
         $this->form_config = $form_config;
 
         $this->media_repo = $this->em->getRepository(Entity\StationMedia::class);
+        $this->playlists_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
     }
 
     protected function _filterPath($base_path, $path)

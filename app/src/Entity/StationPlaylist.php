@@ -22,9 +22,14 @@ class StationPlaylist
     public const TYPE_ONCE_PER_DAY = 'once_per_day';
     public const TYPE_ADVANCED = 'custom';
 
-    public const SOURCE_RANDOM = 'random_songs';
-    public const SOURCE_SEQUENTIAL = 'sequential_songs';
-    public const SOURCE_REMOTE_URL = 'remote_url';
+    public const SOURCE_SONGS = 'songs';
+    public const SOURCE_REMOTE_URL ='remote_url';
+
+    public const ORDER_RANDOM = 'random';
+    public const ORDER_SEQUENTIAL = 'sequential';
+
+    // public const SOURCE_RANDOM = 'random_songs';
+    // public const SOURCE_SEQUENTIAL = 'sequential_songs';
 
     /**
      * @Column(name="id", type="integer")
@@ -66,6 +71,18 @@ class StationPlaylist
      * @var string
      */
     protected $source;
+
+    /**
+     * @Column(name="playback_order", type="string", length=50)
+     * @var string
+     */
+    protected $order;
+
+    /**
+     * @Column(name="remote_url", type="string", length=255, nullable=true)
+     * @var string|null
+     */
+    protected $remote_url;
 
     /**
      * @Column(name="is_enabled", type="boolean")
@@ -134,17 +151,18 @@ class StationPlaylist
     protected $include_in_automation;
 
     /**
-     * @ManyToMany(targetEntity="StationMedia", mappedBy="playlists", fetch="EXTRA_LAZY")
+     * @OneToMany(targetEntity="StationPlaylistMedia", mappedBy="playlist", fetch="EXTRA_LAZY")
      * @var Collection
      */
-    protected $media;
+    protected $media_items;
 
     public function __construct(Station $station)
     {
         $this->station = $station;
 
         $this->type = self::TYPE_DEFAULT;
-        $this->source = self::SOURCE_RANDOM;
+        $this->source = self::SOURCE_SONGS;
+        $this->order = self::ORDER_RANDOM;
         $this->is_enabled = 1;
 
         $this->weight = 3;
@@ -156,7 +174,7 @@ class StationPlaylist
         $this->schedule_start_time = 0;
         $this->schedule_end_time = 0;
 
-        $this->media = new ArrayCollection;
+        $this->media_items = new ArrayCollection;
     }
 
     /**
@@ -229,6 +247,38 @@ class StationPlaylist
     public function setSource(string $source): void
     {
         $this->source = $source;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrder(): string
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param string $order
+     */
+    public function setOrder(string $order): void
+    {
+        $this->order = $order;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getRemoteUrl(): ?string
+    {
+        return $this->remote_url;
+    }
+
+    /**
+     * @param null|string $remote_url
+     */
+    public function setRemoteUrl(?string $remote_url): void
+    {
+        $this->remote_url = $remote_url;
     }
 
     /**
@@ -503,9 +553,27 @@ class StationPlaylist
     /**
      * @return Collection
      */
-    public function getMedia(): Collection
+    public function getMediaItems(): Collection
     {
-        return $this->media;
+        return $this->media_items;
+    }
+
+    /**
+     * Returns whether a playlist is sufficiently populated to be "cued" as a next song for a station.
+     *
+     * @return bool
+     */
+    public function canBeCued(): bool
+    {
+        if (!$this->is_enabled) {
+            return false;
+        }
+
+        if ($this->source === self::SOURCE_REMOTE_URL) {
+            return !empty($this->remote_url);
+        }
+
+        return $this->media_items->count() > 0;
     }
 
     /**
@@ -523,7 +591,8 @@ class StationPlaylist
         {
             case 'm3u':
                 $playlist_file = [];
-                foreach ($this->media as $media_file) {
+                foreach ($this->media_items as $media_item) {
+                    $media_file = $media_item->getMedia();
                     $media_file_path = $media_path . $media_file->getPath();
                     $playlist_file[] = $media_file_path;
                 }
@@ -540,9 +609,10 @@ class StationPlaylist
                 ];
 
                 $i = 0;
-                foreach($this->media as $media_file) {
+                foreach($this->media_items as $media_item) {
                     $i++;
 
+                    $media_file = $media_item->getMedia();
                     $media_file_path = $media_path . $media_file->getPath();
                     $playlist_file[] = 'File'.$i.'='.$media_file_path;
                     $playlist_file[] = 'Title'.$i.'='.$media_file->getArtist().' - '.$media_file->getTitle();

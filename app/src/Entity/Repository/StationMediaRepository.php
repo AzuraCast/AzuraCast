@@ -1,6 +1,7 @@
 <?php
 namespace Entity\Repository;
 
+use Doctrine\ORM\NoResultException;
 use Entity;
 
 class StationMediaRepository extends BaseRepository
@@ -108,7 +109,7 @@ class StationMediaRepository extends BaseRepository
         foreach($station->getPlaylists() as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
             // Don't include empty playlists
-            if ($playlist->getIsEnabled() && $playlist->getMedia()->count() > 0) {
+            if ($playlist->canBeCued()) {
                 $playlists_by_type[$playlist->getType()][$playlist->getId()] = $playlist;
             }
         }
@@ -264,12 +265,47 @@ class StationMediaRepository extends BaseRepository
 
     protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist)
     {
+        if ($playlist->getSource() === Entity\StationPlaylist::SOURCE_SONGS) {
+            if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_SEQUENTIAL) {
+                $media_to_play = $this->_playSequentialSongFromPlaylist($playlist);
+            } else {
+                $media_to_play = $this->_playRandomSongFromPlaylist($playlist);
+            }
+
+            if ($media_to_play instanceof Entity\StationMedia) {
+                $spm = $media_to_play->getItemForPlaylist($playlist);
+                $spm->played();
+                $this->_em->persist($spm);
+
+                // Log in history
+                $sh = new Entity\SongHistory($media_to_play->getSong(), $playlist->getStation());
+                $sh->setPlaylist($playlist);
+                $sh->setMedia($media_to_play);
+
+                $sh->setDuration($media_to_play->getCalculatedLength());
+                $sh->setTimestampCued(time());
+
+                $this->_em->persist($sh);
+                $this->_em->flush();
+
+                return $sh;
+            }
+        } else {
+            return $playlist->getRemoteUrl();
+        }
+
+        return null;
+    }
+
+    protected function _playRandomSongFromPlaylist(Entity\StationPlaylist $playlist)
+    {
         // Get some random songs from playlist.
-        $random_songs = $this->_em->createQuery('SELECT sm, s, st FROM Entity\StationMedia sm
+        $random_songs = $this->_em->createQuery('SELECT sm, spm, s, st FROM Entity\StationMedia sm
             JOIN sm.song s 
             JOIN sm.station st 
-            LEFT JOIN sm.playlists sp
-            WHERE sp.id = :playlist_id
+            JOIN sm.playlist_items spm
+            JOIN spm.playlist sp
+            WHERE spm.playlist_id = :playlist_id
             GROUP BY sm.id ORDER BY RAND()')
             ->setParameter('playlist_id', $playlist->getId())
             ->setMaxResults(15)
@@ -288,28 +324,14 @@ class StationMediaRepository extends BaseRepository
                 $use_song_ids = false;
                 break;
             } else {
-                $song_timestamps[$media_row->getSong()->getId()] = 0;
+                $playlist_item = $media_row->getItemForPlaylist($playlist);
+
+                $song_timestamps[$media_row->getSong()->getId()] = $playlist_item->getLastPlayed();
                 $songs_by_id[$media_row->getSong()->getId()] = $media_row;
             }
         }
 
         if ($use_song_ids) {
-            // Get the last played timestamps of each song.
-            $last_played = $this->_em->createQuery('SELECT sh.song_id AS song_id, MAX(sh.timestamp_cued) AS latest_played
-                FROM Entity\SongHistory sh
-                WHERE sh.song_id IN (:ids) 
-                AND sh.station_id = :station_id
-                AND sh.timestamp_cued != 0
-                GROUP BY sh.song_id')
-                ->setParameter('ids', array_keys($song_timestamps))
-                ->setParameter('station_id', $playlist->getStation()->getId())
-                ->getArrayResult();
-
-            // Sort to always play the least recently played song out of the random selection.
-            foreach ($last_played as $last_played_row) {
-                $song_timestamps[$last_played_row['song_id']] = $last_played_row['latest_played'];
-            }
-
             asort($song_timestamps);
             reset($song_timestamps);
             $id_to_play = key($song_timestamps);
@@ -320,22 +342,47 @@ class StationMediaRepository extends BaseRepository
             $random_song = array_pop($random_songs);
         }
 
-        if ($random_song instanceof Entity\StationMedia) {
-            // Log in history
-            $sh = new Entity\SongHistory($random_song->getSong(), $playlist->getStation());
-            $sh->setPlaylist($playlist);
-            $sh->setMedia($random_song);
+        return $random_song;
+    }
 
-            $sh->setDuration($random_song->getCalculatedLength());
-            $sh->setTimestampCued(time());
-
-            $this->_em->persist($sh);
-            $this->_em->flush();
-
-            return $sh;
+    protected function _playSequentialSongFromPlaylist(Entity\StationPlaylist $playlist)
+    {
+        // Fetch the most recently played song
+        try {
+            /** @var Entity\StationPlaylistMedia $last_played_media */
+            $last_played_media = $this->_em->createQuery('SELECT spm FROM Entity\StationPlaylistMedia spm
+            WHERE spm.playlist_id = :playlist_id
+            ORDER BY spm.last_played DESC')
+                ->setParameter('playlist_id', $playlist->getId())
+                ->setMaxResults(1)
+                ->getSingleResult();
+        } catch(NoResultException $e) {
+            return null;
         }
 
-        return null;
+        $last_weight = (int)$last_played_media->getWeight();
+
+        // Try to find a song of greater weight. If none exists, start back with zero.
+        $next_song_query = $this->_em->createQuery('SELECT spm, sm, s, st FROM Entity\StationPlaylistMedia spm
+            JOIN spm.media sm
+            JOIN sm.song s 
+            JOIN sm.station st
+            WHERE spm.weight >= :weight
+            ORDER BY spm.weight ASC')
+            ->setMaxResults(1);
+
+        try {
+            $next_song = $next_song_query
+                ->setParameter('weight', $last_weight+1)
+                ->getSingleResult();
+        } catch(NoResultException $e) {
+            $next_song = $next_song_query
+                ->setParameter('weight', 0)
+                ->getSingleResult();
+        }
+
+        /** @var Entity\StationPlaylistMedia $next_song */
+        return $next_song->getMedia();
     }
 
     /**

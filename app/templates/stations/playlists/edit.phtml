@@ -5,17 +5,21 @@
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function() {
 
-    showFieldset($('form #field_type input:checked').val());
+    showFieldset('type', $('form #field_type input:checked').val());
+    showFieldset('source', $('form #field_source input:checked').val());
 
     $('form #field_type input').on('change', function() {
-        showFieldset($(this).val());
+        showFieldset('type', $(this).val());
     });
 
+    $('form #field_source input').on('change', function() {
+        showFieldset('source', $(this).val());
+    });
 });
 
-function showFieldset(fieldset_id)
+function showFieldset(fieldset_prefix, fieldset_id)
 {
-    $('form fieldset.type_fieldset').hide();
-    $('form fieldset#type_'+fieldset_id).show();
+    $('form fieldset.'+fieldset_prefix+'_fieldset').hide();
+    $('form fieldset#'+fieldset_prefix+'_'+fieldset_id).show();
 }
 </script>

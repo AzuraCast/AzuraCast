@@ -66,8 +66,10 @@ class RequestsController
             return $response->withJson('This station does not accept requests currently.', 403);
         }
 
-        $requestable_media = $this->em->createQuery('SELECT sm, s, sp 
-            FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlists sp
+        $requestable_media = $this->em->createQuery('SELECT sm, s, spm, sp 
+            FROM Entity\StationMedia sm JOIN sm.song s
+             LEFT JOIN sm.playlist_items spm
+             LEFT JOIN spm.playlist sp
             WHERE sm.station_id = :station_id 
             AND sp.id IS NOT NULL
             AND sp.is_enabled = 1 

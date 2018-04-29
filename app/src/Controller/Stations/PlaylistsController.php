@@ -33,6 +33,12 @@ class PlaylistsController
     /** @var array */
     protected $form_config;
 
+    /** @var Entity\Repository\BaseRepository */
+    protected $playlist_repo;
+
+    /** @var Entity\Repository\StationPlaylistMediaRepository */
+    protected $playlist_media_repo;
+
     /**
      * PlaylistsController constructor.
      * @param EntityManager $em
@@ -47,6 +53,9 @@ class PlaylistsController
         $this->flash = $flash;
         $this->csrf = $csrf;
         $this->form_config = $form_config;
+
+        $this->playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
+        $this->playlist_media_repo = $this->em->getRepository(Entity\StationPlaylistMedia::class);
     }
 
     public function indexAction(Request $request, Response $response, $station_id): Response
@@ -64,9 +73,6 @@ class PlaylistsController
         /** @var Entity\StationPlaylist[] $all_playlists */
         $all_playlists = $station->getPlaylists();
 
-        /** @var Entity\Repository\BaseRepository $playlist_repo */
-        $playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
-
         $total_weights = 0;
         foreach ($all_playlists as $playlist) {
             if ($playlist->getIsEnabled() && $playlist->getType() === 'default') {
@@ -77,7 +83,7 @@ class PlaylistsController
         $playlists = [];
 
         foreach ($all_playlists as $playlist) {
-            $playlist_row = $playlist_repo->toArray($playlist);
+            $playlist_row = $this->playlist_repo->toArray($playlist);
 
             if ($playlist->getIsEnabled() && $playlist->getType() === 'default') {
                 $playlist_row['probability'] = round(($playlist->getWeight() / $total_weights) * 100, 1) . '%';
@@ -98,6 +104,14 @@ class PlaylistsController
         ]);
     }
 
+    /**
+     * Controller used to respond to AJAX requests from the playlist "Schedule View".
+     *
+     * @param Request $request
+     * @param Response $response
+     * @param $station_id
+     * @return Response
+     */
     public function scheduleAction(Request $request, Response $response, $station_id): Response
     {
         $utc = new \DateTimeZone('UTC');
@@ -159,15 +173,69 @@ class PlaylistsController
         return $response->withJson($events);
     }
 
-    public function exportAction(Request $request, Response $response, $station_id, $id, $format = 'pls'): Response
+    public function reorderAction(Request $request, Response $response, $station_id, $id): Response
     {
-        $record = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
+        $record = $this->playlist_repo->findOneBy([
             'id' => $id,
             'station_id' => $station_id
         ]);
 
         if (!($record instanceof Entity\StationPlaylist)) {
-            throw new \Exception('Playlist not found!');
+            throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
+        }
+
+        if ($record->getSource() !== Entity\StationPlaylist::SOURCE_SONGS
+            || $record->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {
+            throw new \App\Exception(__('This playlist is not a sequential playlist.'));
+        }
+
+        if ($request->isPost()) {
+            try {
+                $this->csrf->verify($request->getParam('csrf'), $this->csrf_namespace);
+            } catch(\App\Exception\CsrfValidation $e) {
+                return $response->withStatus(403)
+                    ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
+            }
+
+            $order_raw = $request->getParam('order');
+            $order = json_decode($order_raw, true);
+
+            $mapping = [];
+            foreach($order as $weight => $row) {
+                $mapping[$row['id']] = $weight+1;
+            }
+
+            $this->playlist_media_repo->setMediaOrder($record, $mapping);
+
+            return $response->withJson($mapping);
+        }
+
+        $media_items = $this->em->createQuery('SELECT spm, sm FROM Entity\StationPlaylistMedia spm
+            JOIN spm.media sm
+            WHERE spm.playlist_id = :playlist_id
+            ORDER BY spm.weight ASC')
+            ->setParameter('playlist_id', $id)
+            ->getArrayResult();
+
+        /** @var View $view */
+        $view = $request->getAttribute('view');
+
+        return $view->renderToResponse($response, 'stations/playlists/reorder', [
+            'playlist' => $record,
+            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'media_items' => $media_items,
+        ]);
+    }
+
+    public function exportAction(Request $request, Response $response, $station_id, $id, $format = 'pls'): Response
+    {
+        $record = $this->playlist_repo->findOneBy([
+            'id' => $id,
+            'station_id' => $station_id
+        ]);
+
+        if (!($record instanceof Entity\StationPlaylist)) {
+            throw new \App\Exception\NotFound(__('%s not found.', __('Playlist')));
         }
 
         $formats = [
@@ -176,7 +244,7 @@ class PlaylistsController
         ];
 
         if (!isset($formats[$format])) {
-            throw new \Exception('Format not found!');
+            throw new \App\Exception\NotFound(__('%s not found.', __('Format')));
         }
 
         $file_name = 'playlist_' . $record->getShortName().'.'.$format;
@@ -192,19 +260,16 @@ class PlaylistsController
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        /** @var Entity\Repository\BaseRepository $playlist_repo */
-        $playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
-
         $form = new \AzuraForms\Form($this->form_config);
 
         if (!empty($id)) {
-            $record = $playlist_repo->findOneBy([
+            $record = $this->playlist_repo->findOneBy([
                 'id' => $id,
                 'station_id' => $station_id
             ]);
 
             if ($record instanceof Entity\StationPlaylist) {
-                $data = $playlist_repo->toArray($record);
+                $data = $this->playlist_repo->toArray($record);
                 $form->populate($data);
             }
         } else {
@@ -218,7 +283,7 @@ class PlaylistsController
                 $record = new Entity\StationPlaylist($station);
             }
 
-            $playlist_repo->fromArray($record, $data);
+            $this->playlist_repo->fromArray($record, $data);
             $this->em->persist($record);
 
             // Handle importing a playlist file, if necessary.
@@ -322,12 +387,7 @@ class PlaylistsController
 
             foreach($matched_media as $media) {
                 /** @var Entity\StationMedia $media */
-                if (!$media->getPlaylists()->contains($playlist)) {
-                    $media->getPlaylists()->add($playlist);
-                    $playlist->getMedia()->add($media);
-
-                    $this->em->persist($media);
-                }
+                $this->playlist_media_repo->addMediaToPlaylist($media, $playlist);
             }
 
             $this->em->persist($playlist);
@@ -344,7 +404,7 @@ class PlaylistsController
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        $record = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
+        $record = $this->playlist_repo->findOneBy([
             'id' => $id,
             'station_id' => $station_id
         ]);

@@ -59,4 +59,28 @@ class StationPlaylistMediaRepository extends BaseRepository
             ->setParameter('media_id', $media->getId())
             ->execute();
     }
+
+    /**
+     * Set the order of the media, specified as
+     * [
+     *    media_id => new_weight,
+     *    ...
+     * ]
+     *
+     * @param Entity\StationPlaylist $playlist
+     * @param $mapping
+     */
+    public function setMediaOrder(Entity\StationPlaylist $playlist, $mapping)
+    {
+        $update_query = $this->_em->createQuery('UPDATE '.$this->_entityName.' e 
+            SET e.weight = :weight
+            WHERE e.playlist_id = :playlist_id AND e.media_id = :media_id')
+            ->setParameter('playlist_id', $playlist->getId());
+
+        foreach($mapping as $media_id => $weight) {
+            $update_query->setParameter('media_id', $media_id)
+                ->setParameter('weight', $weight)
+                ->execute();
+        }
+    }
 }

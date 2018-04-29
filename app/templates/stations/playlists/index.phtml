@@ -1,4 +1,6 @@
 <?php
+use Entity\StationPlaylist;
+
 $this->layout('main', ['title' => __('Playlists'), 'manual' => true]);
 
 /** @var \AzuraCast\Assets $assets */
@@ -26,16 +28,16 @@ $assets->load('fullcalendar');
 
                 <table class="table table-striped">
                     <colgroup>
-                        <col width="25%">
                         <col width="30%">
                         <col width="30%">
-                        <col width="15%">
+                        <col width="28%">
+                        <col width="12%">
                     </colgroup>
                     <thead>
                     <tr>
                         <th><?=__('Actions') ?></th>
                         <th><?=__('Playlist') ?></th>
-                        <th><?=__('Type') ?></th>
+                        <th><?=__('Scheduling') ?></th>
                         <th><?=__('# Songs') ?></th>
                     </tr>
                     </thead>
@@ -44,6 +46,10 @@ $assets->load('fullcalendar');
                         <tr class="vertical-align-middle">
                             <td>
                                 <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:playlists:edit', ['station' => $station->getId(), 'id' => $row['id']]) ?>"><?=__('Edit') ?></a>
+
+                            <?php if ($row['source'] === StationPlaylist::SOURCE_SONGS && $row['order'] === StationPlaylist::ORDER_SEQUENTIAL): ?>
+                                <a class="btn btn-sm btn-default" href="<?=$url->named('stations:playlists:reorder', ['station' => $station->getId(), 'id' => $row['id']]) ?>"><?=__('Reorder') ?></a>
+                            <?php endif; ?>
 
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -61,27 +67,32 @@ $assets->load('fullcalendar');
                                 <big>
                                     <a href="<?=$url->named('stations:files:index', ['station' => $station->getId()]).'#playlist:'.urlencode($row['name']) ?>"><?=$this->e($row['name']) ?></a>
                                 </big>
+                                <br>
+                                <span class="label label-default"><?=(($row['source'] === StationPlaylist::SOURCE_SONGS) ? __('Song-based') : __('Remote URL')) ?></span>
+                                <?php if ($row['source'] === StationPlaylist::SOURCE_SONGS && $row['order'] === StationPlaylist::ORDER_SEQUENTIAL): ?>
+                                    <span class="label label-info"><?=__('Sequential') ?></span>
+                                <?php endif; ?>
                                 <?php if ($row['include_in_automation']): ?>
-                                    <br><span class="label label-success"><?=__('Auto-Assigned') ?></span>
+                                    <span class="label label-success"><?=__('Auto-Assigned') ?></span>
                                 <?php endif; ?>
                             </td>
                             <td>
                                 <?php if (!$row['is_enabled']): ?>
                                     <?=__('Disabled') ?>
-                                <?php elseif ($row['type'] === 'default'): ?>
-                                    <?=__('Standard Playlist') ?><br>
+                                <?php elseif ($row['type'] === StationPlaylist::TYPE_DEFAULT): ?>
+                                    <?=__('General Rotation') ?><br>
                                     <?=__('Weight') ?>: <?=(int)$row['weight'] ?> (<?=$row['probability'] ?>)
-                                <?php elseif ($row['type'] === 'scheduled'): ?>
-                                    <?=__('Scheduled Playlist') ?><br>
+                                <?php elseif ($row['type'] === StationPlaylist::TYPE_SCHEDULED): ?>
+                                    <?=__('Scheduled') ?><br>
                                     <?=sprintf(__('Plays between %s and %s'), $customization->formatTime(\Entity\StationPlaylist::getTimestamp($row['schedule_start_time'])), $customization->formatTime(\Entity\StationPlaylist::getTimestamp($row['schedule_end_time']))) ?>
-                                <?php elseif ($row['type'] === 'once_per_x_songs'): ?>
+                                <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_X_SONGS): ?>
                                     <?=sprintf(__('Once per %d Songs'), $row['play_per_songs']) ?>
-                                <?php elseif ($row['type'] === 'once_per_x_minutes'): ?>
+                                <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_X_MINUTES): ?>
                                     <?=sprintf(__('Once per %d Minutes'), $row['play_per_minutes']) ?>
-                                <?php elseif ($row['type'] === 'once_per_day'): ?>
+                                <?php elseif ($row['type'] === StationPlaylist::TYPE_ONCE_PER_DAY): ?>
                                     <?=__('Once per Day') ?><br>
                                     <?=sprintf(__('Plays at %s'), $customization->formatTime(\Entity\StationPlaylist::getTimestamp($row['play_once_time']))) ?>
-                                <?php elseif ($row['type'] === 'custom'): ?>
+                                <?php elseif ($row['type'] === StationPlaylist::TYPE_ADVANCED): ?>
                                     <?=__('Custom') ?>
                                 <?php endif; ?>
                             </td>

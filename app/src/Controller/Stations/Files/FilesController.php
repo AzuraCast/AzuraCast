@@ -22,8 +22,12 @@ class FilesController extends FilesControllerAbstract
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        $playlists = $this->em->createQuery('SELECT sp.id, sp.name FROM Entity\StationPlaylist sp WHERE sp.station_id = :station_id ORDER BY sp.name ASC')
+        $playlists = $this->em->createQuery('SELECT sp.id, sp.name 
+            FROM Entity\StationPlaylist sp 
+            WHERE sp.station_id = :station_id AND sp.source = :source 
+            ORDER BY sp.name ASC')
             ->setParameter('station_id', $station_id)
+            ->setParameter('source', Entity\StationPlaylist::SOURCE_SONGS)
             ->getArrayResult();
 
         // Show available file space in the station directory.

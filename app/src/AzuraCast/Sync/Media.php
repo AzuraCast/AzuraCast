@@ -179,10 +179,8 @@ class Media extends SyncAbstract
                         /** @var Entity\StationMedia $media_record */
                         $media_record = $media_lookup[$line_hash];
 
-                        $media_record->getPlaylists()->add($record);
-                        $record->getMedia()->add($media_record);
-
-                        $this->em->persist($media_record);
+                        $spm = new Entity\StationPlaylistMedia($record, $media_record);
+                        $this->em->persist($spm);
                     }
                 }
             }

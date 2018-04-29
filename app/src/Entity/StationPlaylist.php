@@ -559,6 +559,24 @@ class StationPlaylist
     }
 
     /**
+     * Returns whether a playlist is sufficiently populated to be "cued" as a next song for a station.
+     *
+     * @return bool
+     */
+    public function canBeCued(): bool
+    {
+        if (!$this->is_enabled) {
+            return false;
+        }
+
+        if ($this->source === self::SOURCE_REMOTE_URL) {
+            return !empty($this->remote_url);
+        }
+
+        return $this->media_items->count() > 0;
+    }
+
+    /**
      * Export the playlist into a reusable format.
      *
      * @param string $file_format

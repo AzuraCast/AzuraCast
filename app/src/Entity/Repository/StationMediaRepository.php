@@ -109,11 +109,8 @@ class StationMediaRepository extends BaseRepository
         foreach($station->getPlaylists() as $playlist) {
             /** @var Entity\StationPlaylist $playlist */
             // Don't include empty playlists
-            if ($playlist->getIsEnabled()) {
-                if ($playlist->getSource() !== Entity\StationPlaylist::SOURCE_REMOTE_URL
-                    || $playlist->getMediaItems()->count() > 0) {
-                    $playlists_by_type[$playlist->getType()][$playlist->getId()] = $playlist;
-                }
+            if ($playlist->canBeCued()) {
+                $playlists_by_type[$playlist->getType()][$playlist->getId()] = $playlist;
             }
         }
 

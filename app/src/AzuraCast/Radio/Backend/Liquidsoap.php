@@ -100,7 +100,7 @@ class Liquidsoap extends BackendAbstract
             if (!$playlist_raw->getIsEnabled()) {
                 continue;
             }
-            if ($playlist_raw->getType() === 'default') {
+            if ($playlist_raw->getType() === Entity\StationPlaylist::TYPE_DEFAULT) {
                 $has_default_playlist = true;
             }
 
@@ -126,37 +126,109 @@ class Liquidsoap extends BackendAbstract
         $playlist_weights = [];
         $playlist_vars = [];
 
+        $special_playlists = [
+            'once_per_x_songs' => [
+                '# Once per x Songs Playlists',
+            ],
+            'once_per_x_minutes' => [
+                '# Once per x Minutes Playlists',
+            ],
+        ];
+        $schedule_switches = [];
+
         foreach ($playlist_objects as $playlist) {
 
             /** @var Entity\StationPlaylist $playlist */
 
-            $playlist_file_contents = $playlist->export('m3u', true);
-
             $playlist_var_name = 'playlist_' . $playlist->getShortName();
-            $playlist_file_path =  $playlist_path . '/' . $playlist_var_name . '.m3u';
 
-            file_put_contents($playlist_file_path, $playlist_file_contents);
+            if ($playlist->getSource() === Entity\StationPlaylist::SOURCE_SONGS) {
+                $playlist_file_contents = $playlist->export('m3u', true);
+                $playlist_file_path =  $playlist_path . '/' . $playlist_var_name . '.m3u';
 
-            $ls_config[] = $playlist_var_name . ' = playlist(reload_mode="watch","' . $playlist_file_path . '")';
+                file_put_contents($playlist_file_path, $playlist_file_contents);
 
-            if ($playlist->getType() === 'default') {
-                $playlist_weights[] = $playlist->getWeight();
-                $playlist_vars[] = $playlist_var_name;
+                $playlist_mode = $playlist->getOrder() === Entity\StationPlaylist::ORDER_SEQUENTIAL
+                    ? 'normal'
+                    : 'randomize';
+
+                $playlist_params = [
+                    'reload_mode="watch"',
+                    'mode="'.$playlist_mode.'"',
+                    '"'.$playlist_file_path.'"',
+                ];
+
+                $ls_config[] = $playlist_var_name . ' = playlist('.implode(',', $playlist_params).')';
+            } else {
+                $ls_config[] = $playlist_var_name . ' = mksafe(input.http("'.$playlist->getRemoteUrl().'"))';
             }
-            if ($playlist->getType() === 'custom') {
+
+            if ($playlist->getType() === Entity\StationPlaylist::TYPE_ADVANCED) {
                 $ls_config[] = 'ignore('.$playlist_var_name.')';
+            }
+
+            switch($playlist->getType())
+            {
+                case Entity\StationPlaylist::TYPE_DEFAULT:
+                    $playlist_weights[] = $playlist->getWeight();
+                    $playlist_vars[] = $playlist_var_name;
+                    break;
+
+                case Entity\StationPlaylist::TYPE_ONCE_PER_X_SONGS:
+                    $special_playlists['once_per_x_songs'][] = 'radio = rotate(weights=[1,' . $playlist->getPlayPerSongs() . '], [' . $playlist_var_name . ', radio])';
+                    break;
+
+                case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
+                    $delay_seconds = $playlist->getPlayPerMinutes() * 60;
+                    $special_playlists['once_per_x_minutes'][] = 'delay_' . $playlist_var_name . ' = delay(' . $delay_seconds . '., ' . $playlist['var_name'] . ')';
+                    $special_playlists['once_per_x_minutes'][] = 'radio = fallback([delay_' . $playlist_var_name . ', radio])';
+                    break;
+
+                case Entity\StationPlaylist::TYPE_SCHEDULED:
+                    $play_time = $this->_getTime($playlist->getScheduleStartTime()) . '-' . $this->_getTime($playlist->getScheduleEndTime());
+                    $schedule_switches[] = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
+                    break;
+
+                case Entity\StationPlaylist::TYPE_ONCE_PER_DAY:
+                    $play_time = $this->_getTime($playlist->getPlayOnceTime());
+                    $schedule_switches[] = '({ ' . $play_time . ' }, ' . $playlist_var_name . ')';
+                    break;
             }
         }
 
         $ls_config[] = '';
 
-        // Create fallback playlist based on all default playlists.
-        $ls_config[] = 'playlists = random(weights=[' . implode(', ', $playlist_weights) . '], [' . implode(', ',
+        // Build "default" type playlists.
+        $ls_config[] = '# Standard Playlists';
+        $ls_config[] = 'radio = random(weights=[' . implode(', ', $playlist_weights) . '], [' . implode(', ',
                 $playlist_vars) . ']);';
+        $ls_config[] = '';
 
-        $ls_config[] = 'dynamic = request.dynamic(id="azuracast_next_song", azuracast_next_song)';
-        $ls_config[] = 'dynamic = cue_cut(id="azuracast_next_song_cued", dynamic)';
-        $ls_config[] = 'radio = fallback(track_sensitive = false, [dynamic, playlists, blank(duration=2.)])';
+        // Add in special playlists if necessary.
+        foreach($special_playlists as $playlist_type => $playlist_config_lines) {
+            if (count($playlist_config_lines) > 1) {
+                $ls_config = array_merge($ls_config, $playlist_config_lines);
+                $ls_config[] = '';
+            }
+        }
+
+        $schedule_switches[] = '({ true }, radio)';
+        $ls_config[] = '# Assemble final playback order';
+        $fallbacks = [];
+
+        if ($this->station->useManualAutoDJ()) {
+            $ls_config[] = 'requests = request.queue(id="requests")';
+            $fallbacks[] = 'requests';
+        } else {
+            $ls_config[] = 'dynamic = request.dynamic(id="azuracast_next_song", azuracast_next_song)';
+            $ls_config[] = 'dynamic = cue_cut(id="azuracast_next_song_cued", dynamic)';
+            $fallbacks[] = 'dynamic';
+        }
+
+        $fallbacks[] = 'switch([ ' . implode(', ', $schedule_switches) . ' ])';
+        $fallbacks[] = 'blank(duration=2.)';
+
+        $ls_config[] = 'radio = fallback(track_sensitive = false, ['.implode(', ', $fallbacks).'])';
         $ls_config[] = '';
 
         // Add harbor (live DJ input) source.
@@ -192,7 +264,6 @@ class Liquidsoap extends BackendAbstract
         }
 
         // Custom configuration
-
         if (!empty($settings['custom_config'])) {
             $ls_config[] = '# Custom Configuration (Specified in Station Profile)';
             $ls_config[] = $settings['custom_config'];
@@ -351,6 +422,39 @@ class Liquidsoap extends BackendAbstract
     }
 
     /**
+     * Configure the time offset
+     *
+     * @param $time_code
+     * @return string
+     */
+    protected function _getTime($time_code)
+    {
+        $hours = floor($time_code / 100);
+        $mins = $time_code % 100;
+
+        $system_time_zone = \App\Utilities::get_system_time_zone();
+        $system_tz = new \DateTimeZone($system_time_zone);
+        $system_dt = new \DateTime('now', $system_tz);
+        $system_offset = $system_tz->getOffset($system_dt);
+
+        $app_tz = new \DateTimeZone(date_default_timezone_get());
+        $app_dt = new \DateTime('now', $app_tz);
+        $app_offset = $app_tz->getOffset($app_dt);
+
+        $offset = $system_offset - $app_offset;
+        $offset_hours = floor($offset / 3600);
+
+        $hours += $offset_hours;
+
+        $hours = $hours % 24;
+        if ($hours < 0) {
+            $hours += 24;
+        }
+
+        return $hours . 'h' . $mins . 'm';
+    }
+
+    /**
      * Filter a user-supplied string to be a valid LiquidSoap config entry.
      *
      * @param $string
@@ -448,6 +552,24 @@ class Liquidsoap extends BackendAbstract
         }
 
         return '/bin/false';
+    }
+
+    /**
+     * If a station uses Manual AutoDJ mode, enqueue a request directly with Liquidsoap.
+     *
+     * @param $music_file
+     * @return array
+     * @throws \App\Exception
+     */
+    public function request($music_file)
+    {
+        $queue = $this->command('requests.queue');
+
+        if (!empty($queue[0])) {
+            throw new \Exception('Song(s) still pending in request queue.');
+        }
+
+        return $this->command('requests.push ' . $music_file);
     }
 
     /**
@@ -584,9 +706,7 @@ class Liquidsoap extends BackendAbstract
         $sh = $history_repo->getNextSongForStation($this->station, $as_autodj);
 
         if ($sh instanceof Entity\SongHistory) {
-            // 'annotate:type=\"song\",album=\"$ALBUM\",display_desc=\"$FULLSHOWNAME\",liq_start_next=\"2.5\",liq_fade_in=\"3.5\",liq_fade_out=\"3.5\":$SONGPATH'
             $media = $sh->getMedia();
-
             if ($media instanceof Entity\StationMedia) {
                 $song_path = $media->getFullPath();
                 return 'annotate:' . implode(',', $media->getAnnotations()) . ':' . $song_path;

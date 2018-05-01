@@ -513,6 +513,10 @@ class StationMedia
     /**
      * Assemble a list of annotations for LiquidSoap.
      *
+     * Liquidsoap expects a string similar to:
+     *     annotate:type="song",album="$ALBUM",display_desc="$FULLSHOWNAME",
+     *     liq_start_next="2.5",liq_fade_in="3.5",liq_fade_out="3.5":$SONGPATH
+     *
      * @return array
      */
     public function getAnnotations(): array

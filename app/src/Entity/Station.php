@@ -409,6 +409,17 @@ class Station
     }
 
     /**
+     * Whether the station uses AzuraCast to directly manage the AutoDJ or lets the backend handle it.
+     *
+     * @return bool
+     */
+    public function useManualAutoDJ(): bool
+    {
+        $settings = (array)$this->getBackendConfig();
+        return (bool)$settings['use_manual_autodj'] ?? false;
+    }
+
+    /**
      * @return null|string
      */
     public function getAdapterApiKey(): ?string

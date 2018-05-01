@@ -309,6 +309,17 @@ return [
                     ]
                 ],
 
+                'use_manual_autodj' => [
+                    'radio',
+                    [
+                        'label' => __('Advanced: Manual AutoDJ Mode'),
+                        'description' => __('This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.'),
+                        'default' => '0',
+                        'options' => [0 => __('No'), 1 => __('Yes')],
+                        'belongsTo' => 'backend_config',
+                    ]
+                ],
+
                 'dj_port' => [
                     'text',
                     [

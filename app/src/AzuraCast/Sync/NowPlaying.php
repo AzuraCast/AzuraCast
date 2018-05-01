@@ -2,7 +2,6 @@
 namespace AzuraCast\Sync;
 
 use App\Cache;
-use App\Debug;
 use App\Url;
 use AzuraCast\ApiUtilities;
 use AzuraCast\Radio\Adapters;
@@ -168,7 +167,7 @@ class NowPlaying extends SyncAbstract
             $offline_sh->song = $song_obj->api($this->api_utils);
             $np->now_playing = $offline_sh;
 
-            $np->song_history = $this->history_repo->getHistoryForStation($station, $this->url);
+            $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils);
 
             $next_song = $this->history_repo->getNextSongForStation($station);
             if ($next_song instanceof Entity\SongHistory) {

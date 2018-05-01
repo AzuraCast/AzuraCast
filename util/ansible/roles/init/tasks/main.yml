@@ -33,11 +33,24 @@
       - wget
       - tar
       - build-essential
-      - python-software-properties
       - pwgen
       - whois
       - python-pip
       - lnav
+
+  - name: Install software-properties (18.04 only)
+    become: true
+    apt:  pkg="{{ item }}" state=latest
+    with_items:
+      - software-properties
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+
+  - name: Install python-software-properties (16.04 only)
+    become: true
+    apt:  pkg="{{ item }}" state=latest
+    with_items:
+      - python-software-properties
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release != 'bionic'
 
   - name: Update pip components
     pip: name="{{ item }}" state=latest

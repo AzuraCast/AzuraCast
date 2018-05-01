@@ -437,7 +437,9 @@ return function (\Slim\Container $di, $settings) {
             new \Pimple\ServiceIterator($di, [
                 \AzuraCast\Sync\NowPlaying::class,
             ]),
-            new \Pimple\ServiceIterator($di, []),
+            new \Pimple\ServiceIterator($di, [
+                \AzuraCast\Sync\RadioRequests::class,
+            ]),
             new \Pimple\ServiceIterator($di, [
                 \AzuraCast\Sync\Media::class
             ]),
@@ -482,6 +484,13 @@ return function (\Slim\Container $di, $settings) {
 
     $di[\AzuraCast\Sync\RadioAutomation::class] = function($di) {
         return new \AzuraCast\Sync\RadioAutomation(
+            $di[\Doctrine\ORM\EntityManager::class],
+            $di[\AzuraCast\Radio\Adapters::class]
+        );
+    };
+
+    $di[\AzuraCast\Sync\RadioRequests::class] = function($di) {
+        return new \AzuraCast\Sync\RadioRequests(
             $di[\Doctrine\ORM\EntityManager::class],
             $di[\AzuraCast\Radio\Adapters::class]
         );

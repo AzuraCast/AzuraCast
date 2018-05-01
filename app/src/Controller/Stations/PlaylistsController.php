@@ -295,6 +295,16 @@ class PlaylistsController
                 $this->_importPlaylist($record, $import_file, $station_id);
             }
 
+            // If using Manual AutoDJ mode, check for changes and flag as needing-restart.
+            if ($station->useManualAutoDJ()) {
+                $uow = $this->em->getUnitOfWork();
+                $uow->computeChangeSets();
+                if ($uow->isEntityScheduled($record)) {
+                    $station->setNeedsRestart(true);
+                    $this->em->persist($station);
+                }
+            }
+
             $this->em->flush();
             $this->em->refresh($station);
 

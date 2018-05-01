@@ -228,7 +228,7 @@ class Liquidsoap extends BackendAbstract
         $fallbacks[] = 'switch([ ' . implode(', ', $schedule_switches) . ' ])';
         $fallbacks[] = 'blank(duration=2.)';
 
-        $ls_config[] = 'radio = fallback(track_sensitive = false, ['.implode(', ', $fallbacks).'])';
+        $ls_config[] = 'radio = fallback(track_sensitive = '.($this->station->useManualAutoDJ() ? 'true' : 'false').', ['.implode(', ', $fallbacks).'])';
         $ls_config[] = '';
 
         // Add harbor (live DJ input) source.

@@ -42,7 +42,7 @@
     become: true
     apt:  pkg="{{ item }}" state=latest
     with_items:
-      - software-properties
+      - software-properties-common
     when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
 
   - name: Install python-software-properties (16.04 only)

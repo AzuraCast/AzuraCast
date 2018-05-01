@@ -350,6 +350,11 @@ class Station
         foreach((array)$frontend_config as $cfg_key => $cfg_val) {
             $config[$cfg_key] = $cfg_val;
         }
+
+        if ($this->frontend_config !== $config) {
+            $this->setNeedsRestart(true);
+        }
+
         $this->frontend_config = $config;
     }
 
@@ -405,6 +410,11 @@ class Station
         foreach((array)$backend_config as $cfg_key => $cfg_val) {
             $config[$cfg_key] = $cfg_val;
         }
+
+        if ($this->backend_config !== $config) {
+            $this->setNeedsRestart(true);
+        }
+
         $this->backend_config = $config;
     }
 

@@ -404,12 +404,21 @@ class StationPlaylist
             $now = Chronos::now(new \DateTimeZone('UTC'));
         }
 
-        $play_once_days = $this->getScheduleDays();
         $day_to_check = $now->format('N');
         $current_timecode = self::getCurrentTimeCode($now);
 
         $schedule_start_time = $this->getScheduleStartTime();
         $schedule_end_time = $this->getScheduleEndTime();
+
+        // Handle all-day playlists.
+        if ($schedule_start_time === $schedule_end_time) {
+            return $this->canPlayScheduledOnDay($day_to_check);
+        }
+
+        // Special handling for playlists ending at midnight (hour code "000").
+        if ($schedule_end_time == 0) {
+            $schedule_end_time = 2400;
+        }
 
         // Handle overnight playlists that stretch into the next day.
         if ($schedule_end_time < $schedule_start_time) {
@@ -421,16 +430,25 @@ class StationPlaylist
                 return false;
             }
 
-            return (empty($play_once_days) || in_array($day_to_check, $play_once_days));
+            return $this->canPlayScheduledOnDay($day_to_check);
         }
 
         // Non-overnight playlist check
-        if (!empty($play_once_days) && !in_array($day_to_check, $play_once_days)) {
-            return false;
-        }
-
-        return ($schedule_start_time === $schedule_end_time) ||
+        return $this->canPlayScheduledOnDay($day_to_check) &&
             ($current_timecode >= $schedule_start_time && $current_timecode <= $schedule_end_time);
+    }
+
+    /**
+     * Given a day code (1-7) a-la date('N'), return if the playlist can be played on that day.
+     *
+     * @param $day_to_check
+     * @return bool
+     */
+    public function canPlayScheduledOnDay($day_to_check): bool
+    {
+        $play_once_days = $this->getScheduleDays();
+        return empty($play_once_days)
+            || in_array($day_to_check, $play_once_days);
     }
 
     /**

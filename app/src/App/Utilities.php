@@ -516,6 +516,10 @@ class Utilities
      */
     public static function get_system_time_zone()
     {
+        if (APP_INSIDE_DOCKER) {
+            return 'UTC';
+        }
+
         if (file_exists('/etc/timezone')) {
             // Ubuntu / Debian.
             $data = file_get_contents('/etc/timezone');

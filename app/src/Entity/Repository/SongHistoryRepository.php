@@ -454,8 +454,10 @@ class SongHistoryRepository extends BaseRepository
             JOIN spm.media sm
             JOIN sm.song s 
             JOIN sm.station st
-            WHERE spm.weight >= :weight
+            WHERE spm.playlist_id = :playlist_id 
+            AND spm.weight >= :weight
             ORDER BY spm.weight ASC')
+            ->setParameter('playlist_id', $playlist->getId())
             ->setMaxResults(1);
 
         try {

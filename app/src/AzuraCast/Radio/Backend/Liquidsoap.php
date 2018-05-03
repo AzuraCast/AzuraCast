@@ -433,14 +433,14 @@ class Liquidsoap extends BackendAbstract
         $mins = $time_code % 100;
 
         $system_time_zone = \App\Utilities::get_system_time_zone();
-        $app_tz = new \DateTimeZone('UTC');
+        $app_time_zone = 'UTC';
 
-        if ($system_time_zone !== $app_tz) {
+        if ($system_time_zone !== $app_time_zone) {
             $system_tz = new \DateTimeZone($system_time_zone);
             $system_dt = new \DateTime('now', $system_tz);
             $system_offset = $system_tz->getOffset($system_dt);
 
-
+            $app_tz = new \DateTimeZone($app_time_zone);
             $app_dt = new \DateTime('now', $app_tz);
             $app_offset = $app_tz->getOffset($app_dt);
 

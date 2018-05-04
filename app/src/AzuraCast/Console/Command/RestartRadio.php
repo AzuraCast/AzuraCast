@@ -42,8 +42,14 @@ class RestartRadio extends \App\Console\Command\CommandAbstract
         foreach ($stations as $station) {
             $output->writeLn('Restarting station #' . $station->getId() . ': ' . $station->getName());
             $configuration->writeConfiguration($station);
+
+            $station->setHasStarted(true);
+            $station->setNeedsRestart(false);
+
+            $em->persist($station);
         }
 
         $supervisor->startAllProcesses();
+        $em->flush();
     }
 }

@@ -14,7 +14,9 @@ tmp/cache/*---*
 app/env.ini
 app/.env
 /util/fixtures/*
+/util/fixtures/**/*
 !/util/fixtures/.gitkeep
+web/static/yarn-error\.log
 
 # Composer-generated content
 /vendor/

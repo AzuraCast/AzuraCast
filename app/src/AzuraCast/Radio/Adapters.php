@@ -10,6 +10,13 @@ use Slim\Container;
  */
 class Adapters
 {
+    public const FRONTEND_ICECAST = 'icecast';
+    public const FRONTEND_SHOUTCAST = 'shoutcast2';
+    public const FRONTEND_REMOTE = 'remote';
+
+    public const BACKEND_LIQUIDSOAP = 'liquidsoap';
+    public const BACKEND_NONE = 'none';
+
     /** @var ServiceLocator */
     protected $adapters;
 
@@ -79,15 +86,15 @@ class Adapters
 
         if ($adapters === null) {
             $adapters = [
-                'icecast' => [
+                self::FRONTEND_ICECAST => [
                     'name' => __('Use <b>%s</b> on this server', 'Icecast 2.4'),
                     'class' => Frontend\Icecast::class,
                 ],
-                'shoutcast2' => [
+                self::FRONTEND_SHOUTCAST => [
                     'name' => __('Use <b>%s</b> on this server', 'SHOUTcast DNAS 2'),
                     'class' => Frontend\SHOUTcast::class,
                 ],
-                'remote' => [
+                self::FRONTEND_REMOTE => [
                     'name' => __('Connect to a <b>remote radio server</b>'),
                     'class' => Frontend\Remote::class,
                 ],
@@ -101,7 +108,7 @@ class Adapters
         }
 
         return [
-            'default' => 'icecast',
+            'default' => self::FRONTEND_ICECAST,
             'adapters' => $adapters,
         ];
     }
@@ -115,11 +122,11 @@ class Adapters
 
         if ($adapters === null) {
             $adapters = [
-                'liquidsoap' => [
+                self::BACKEND_LIQUIDSOAP => [
                     'name' => __('Use <b>%s</b> on this server', 'Liquidsoap'),
                     'class' => Backend\Liquidsoap::class,
                 ],
-                'none' => [
+                self::BACKEND_NONE => [
                     'name' => __('<b>Do not use</b> an AutoDJ service'),
                     'class' => Backend\None::class,
                 ],
@@ -133,7 +140,7 @@ class Adapters
         }
 
         return [
-            'default' => 'liquidsoap',
+            'default' => self::BACKEND_LIQUIDSOAP,
             'adapters' => $adapters,
         ];
     }

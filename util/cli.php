@@ -32,8 +32,8 @@ $cli->setHelperSet($helperSet);
 // Migrations commands
 $migrate_config = new \Doctrine\DBAL\Migrations\Configuration\Configuration($db);
 $migrate_config->setMigrationsTableName('app_migrations');
-$migrate_config->setMigrationsDirectory(__DIR__.'/../app/src/Migration');
-$migrate_config->setMigrationsNamespace('Migration');
+$migrate_config->setMigrationsDirectory(__DIR__.'/../app/src/Entity/Migration');
+$migrate_config->setMigrationsNamespace('Entity\Migration');
 
 $output = new \Symfony\Component\Console\Output\ConsoleOutput;
 $migrate_config->setOutputWriter(new \Doctrine\DBAL\Migrations\OutputWriter(function($message) use ($output) {
@@ -71,6 +71,7 @@ $cli->addCommands([
     // Setup
     new \AzuraCast\Console\Command\MigrateConfig($di),
     new \AzuraCast\Console\Command\SetupInflux($di),
+    new \AzuraCast\Console\Command\SetupFixtures($di),
 
     // Maintenance
     new \AzuraCast\Console\Command\ClearCache($di),

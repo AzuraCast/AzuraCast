@@ -40,7 +40,8 @@ coverage:
    - app/src/App/Doctrine/Logger/EchoSQL.php
    - app/src/App/Session/Temporary.php
    - app/src/App/Console/Command/*.php
-   - app/src/Migration/*
+   - app/src/Entity/Fixture/*
+   - app/src/Entity/Migration/*
    - app/locale/**/*
    - app/locale/*
    - app/templates/system/error_general.phtml

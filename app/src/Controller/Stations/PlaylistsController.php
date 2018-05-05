@@ -388,8 +388,7 @@ class PlaylistsController
 
         // Assign all matched media to the playlist.
         if (!empty($matches)) {
-            $matched_media = $this->em->createQuery('SELECT sm, sp FROM Entity\StationMedia sm
-                LEFT JOIN sm.playlists sp
+            $matched_media = $this->em->createQuery('SELECT sm FROM Entity\StationMedia sm
                 WHERE sm.station_id = :station_id AND sm.id IN (:matched_ids)')
                 ->setParameter('station_id', $station_id)
                 ->setParameter('matched_ids', $matches)

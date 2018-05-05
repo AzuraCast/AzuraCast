@@ -29,19 +29,21 @@ class StationMedia extends AbstractFixture implements DependentFixtureInterface
             $iterator = new \RecursiveIteratorIterator($directory);
 
             $i = 1;
-
+            
             foreach ($iterator as $file) {
                 if ($file->isDir()) {
                     continue;
                 }
 
-                $file_base_name = basename($file->getPathname());
+                $file_path = $file->getPathname();
+                $file_base_name = basename($file_path);
 
                 // Copy the file to the station media directory.
-                copy($file->getPathname(), $station_media_dir . '/' . $file_base_name);
+                copy($file_path, $station_media_dir . '/' . $file_base_name);
 
                 $media_row = new Entity\StationMedia($station, $file_base_name);
-                $song_info = $media_row->loadFromFile();
+                $media_row->generateUniqueId();
+                $song_info = $media_row->loadFromFile(true);
                 if (is_array($song_info)) {
                     $media_row->setSong($song_repo->getOrCreate($song_info));
                 }

@@ -5,6 +5,10 @@ services:
     volumes:
       - .:/var/azuracast/www
 
+  cli:
+    environment:
+      APPLICATION_ENV: "testing"
+
   nginx:
     volumes:
       - .:/var/azuracast/www

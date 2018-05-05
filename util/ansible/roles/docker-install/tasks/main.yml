@@ -1,8 +1,0 @@
----
-- name: Set Up InfluxDB
-  become: true
-  become_user: azuracast
-  shell: php {{ util_base }}/cli.php azuracast:setup:influx
-
-- name: Wait for MySQL to spin up
-  shell: azuracast_cli azuracast:internal:uptime-wait mariadb

@@ -21,7 +21,7 @@ class HistoryCleanup extends SyncAbstract
     {
         $threshold = strtotime('-1 month');
 
-        $this->em->createQuery('DELETE FROM \Entity\SongHistory sh WHERE sh.timestamp_start <= :threshold')
+        $this->em->createQuery('DELETE FROM Entity\SongHistory sh WHERE sh.timestamp_start <= :threshold')
             ->setParameter('threshold', $threshold)
             ->execute();
     }

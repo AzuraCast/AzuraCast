@@ -2,9 +2,7 @@
 namespace Entity;
 
 /**
- * @Table(name="station_playlist_media", uniqueConstraints={
- *   @UniqueConstraint(name="idx_playlist_media", columns={"playlist_id", "media_id"})
- * })
+ * @Table(name="station_playlist_media")
  * @Entity(repositoryClass="Entity\Repository\StationPlaylistMediaRepository")
  */
 class StationPlaylistMedia

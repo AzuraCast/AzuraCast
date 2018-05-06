@@ -17,10 +17,17 @@ class StationPlaylistMediaRepository extends BaseRepository
      */
     public function addMediaToPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist, $weight = 0): int
     {
-        $record = $this->findOneBy([
-            'media_id' => $media->getId(),
-            'playlist_id' => $playlist->getId(),
-        ]);
+        if ($playlist->getSource() !== Entity\StationPlaylist::SOURCE_SONGS) {
+            return false;
+        }
+
+        // Only update existing record for random-order playlists.
+        if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_RANDOM) {
+            $record = $this->findOneBy([
+                'media_id' => $media->getId(),
+                'playlist_id' => $playlist->getId(),
+            ]);
+        }
 
         if (($record instanceof Entity\StationPlaylistMedia)) {
             if ($weight != 0) {

@@ -218,6 +218,10 @@ uninstall() {
     fi
 }
 
+#
+# Create and link a LetsEncrypt SSL certificate.
+# Usage: ./docker.sh letsencrypt-create
+#
 letsencrypt-create() {
     docker-compose run --rm letsencrypt certonly --webroot -w /var/www/letsencrypt $*
 
@@ -232,6 +236,10 @@ letsencrypt-create() {
     echo "Nginx reloaded; letsencrypt certificate has been set up."
 }
 
+#
+# Renew an existing LetsEncrypt SSL certificate
+# Usage: ./docker.sh letsencrypt-renew
+#
 letsencrypt-renew() {
     docker-compose run --rm letsencrypt renew --webroot -w /var/www/letsencrypt $*
 }

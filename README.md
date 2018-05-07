@@ -74,35 +74,29 @@ chmod a+x docker.sh
 ./docker.sh install
 ```
 
-#### Setting up HTTPS with LetsEncrypt
+#### Setting up HTTPS with LetsEncrypt: `./docker.sh letsencrypt-create`
 
 AzuraCast now supports full encryption with LetsEncrypt. LetsEncrypt offers free SSL certificates with easy validation and renewal.
 
-First, make sure your AzuraCast instance is set up and serving from the domain you want to use. Then, run the following command to generate a new LetsEncrypt certificate:
+First, make sure your AzuraCast instance is set up and serving from the domain you want to use. 
+
+If you have the Docker utility script from the steps above, you can simply run `./docker.sh letsencrypt-create` to set up your LetsEncrypt SSL certificate.
+
+Otherwise, you can use the following manual commands:
 
 ```bash
 docker-compose run --rm letsencrypt certonly --webroot -w /var/www/letsencrypt
-```
-
-You will be prompted to specify your e-mail address and domain name. Validation will happen automatically. Once complete, run this command to tell nginx to use your new LetsEncrypt certificate:
-
-```bash
 docker-compose run --rm nginx letsencrypt_connect YOURDOMAIN.example.com
+docker-compose kill -s SIGHUP nginx
 ``` 
 
-Reload nginx using the command below:
-
-```bash
-docker-compose kill -s SIGHUP nginx
-```
-
-Your LetsEncrypt certificate is valid for 3 months. To renew the certificates, run this command:
+Your LetsEncrypt certificate is valid for 3 months. To renew the certificates, run `./docker.sh letsencrypt-renew` or manually run this command:
 
 ```
 docker-compose run --rm letsencrypt renew --webroot -w /var/www/letsencrypt
 ```
 
-#### Updating with Docker
+#### Updating: `./docker.sh update`
 
 If you have the `docker.sh` script from the installation steps above, you can run `./docker.sh update` to automatically update your installation.
 
@@ -115,7 +109,7 @@ docker-compose run --rm cli azuracast_update
 docker-compose up -d
 ```
 
-#### Docker Volume Backup and Restore
+#### Backup and Restore: `./docker.sh backup` and `./docker.sh restore`
 
 AzuraCast has utility scripts to allow for easy backup and restoration of Docker volumes.
 

@@ -218,4 +218,22 @@ uninstall() {
     fi
 }
 
+letsencrypt-create() {
+    docker-compose run --rm letsencrypt certonly --webroot -w /var/www/letsencrypt $*
+
+    echo "Enter full domain name, i.e.: demo.example.com "
+    read reply </dev/tty
+
+    docker-compose run --rm nginx letsencrypt_connect
+
+    echo "Reloading nginx..."
+    docker-compose kill -s SIGHUP nginx
+
+    echo "Nginx reloaded; letsencrypt certificate has been set up."
+}
+
+letsencrypt-renew() {
+    docker-compose run --rm letsencrypt renew --webroot -w /var/www/letsencrypt $*
+}
+
 $*

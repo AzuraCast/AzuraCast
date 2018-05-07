@@ -224,7 +224,7 @@ letsencrypt-create() {
     echo "Enter full domain name, i.e.: demo.example.com "
     read reply </dev/tty
 
-    docker-compose run --rm nginx letsencrypt_connect
+    docker-compose run --rm nginx letsencrypt_connect $reply
 
     echo "Reloading nginx..."
     docker-compose kill -s SIGHUP nginx

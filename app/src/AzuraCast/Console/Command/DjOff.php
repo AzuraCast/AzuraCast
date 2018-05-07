@@ -33,16 +33,16 @@ class DjOff extends \App\Console\Command\CommandAbstract
         $station_id = (int)$input->getArgument('station_id');
 
         /** @var EntityManager $em */
-        $em = $this->di[EntityManager::class];
+        $em = $this->get(EntityManager::class);
 
         $station = $em->getRepository(Entity\Station::class)->find($station_id);
 
         if (!($station instanceof Entity\Station) || !$station->getEnableStreamers()) {
-            return false;
+            return 1;
         }
 
         /** @var Adapters $adapters */
-        $adapters = $this->di[Adapters::class];
+        $adapters = $this->get(Adapters::class);
 
         $adapter = $adapters->getBackendAdapter($station);
 
@@ -51,6 +51,6 @@ class DjOff extends \App\Console\Command\CommandAbstract
         }
 
         $output->write('received');
-        return true;
+        return 0;
     }
 }

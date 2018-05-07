@@ -20,7 +20,7 @@ class LocaleImport extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $app_settings = $this->di->get('app_settings');
+        $app_settings = $this->get('app_settings');
         $locales = $app_settings['locale']['supported'];
 
         $locale_base = APP_INCLUDE_BASE.'/locale';
@@ -41,5 +41,6 @@ class LocaleImport extends CommandAbstract
         }
 
         $output->writeln('Locales imported.');
+        return 0;
     }
 }

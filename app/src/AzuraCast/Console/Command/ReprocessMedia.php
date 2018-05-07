@@ -25,7 +25,7 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
         $output->writeLn('Reloading all metadata for all media...');
 
         /** @var EntityManager $em */
-        $em = $this->di[EntityManager::class];
+        $em = $this->get(EntityManager::class);
 
         $stations = $em->getRepository(Entity\Station::class)->findAll();
         $song_repo = $em->getRepository(Entity\Song::class);
@@ -61,5 +61,7 @@ class ReprocessMedia extends \App\Console\Command\CommandAbstract
 
             $output->writeLn('Station media reprocessed.');
         }
+
+        return 0;
     }
 }

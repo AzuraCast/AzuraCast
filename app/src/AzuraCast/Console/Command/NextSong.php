@@ -36,7 +36,7 @@ class NextSong extends \App\Console\Command\CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var EntityManager $em */
-        $em = $this->di[EntityManager::class];
+        $em = $this->get(EntityManager::class);
 
         $station_id = (int)$input->getArgument('station_id');
         $station = $em->getRepository(Entity\Station::class)->find($station_id);
@@ -49,14 +49,16 @@ class NextSong extends \App\Console\Command\CommandAbstract
         $as_autodj = ($input->getArgument('as_autodj') !== 'false');
 
         /** @var Adapters $adapters */
-        $adapters = $this->di[Adapters::class];
+        $adapters = $this->get(Adapters::class);
 
         $adapter = $adapters->getBackendAdapter($station);
 
         if ($adapter instanceof Liquidsoap) {
-            return $output->write($adapter->getNextSong($as_autodj));
+            $output->write($adapter->getNextSong($as_autodj));
+            return 0;
         }
 
-        return $output->write('');
+        $output->write('');
+        return 1;
     }
 }

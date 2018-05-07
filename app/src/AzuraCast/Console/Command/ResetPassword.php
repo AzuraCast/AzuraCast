@@ -29,7 +29,7 @@ class ResetPassword extends \App\Console\Command\CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var EntityManager $em */
-        $em = $this->di[EntityManager::class];
+        $em = $this->get(EntityManager::class);
 
         $user_email = $input->getArgument('email');
 
@@ -51,10 +51,10 @@ class ResetPassword extends \App\Console\Command\CommandAbstract
                 ' ',
                 'Set a new password using the web interface.',
             ]);
-            return true;
+            return 0;
         } else {
             $output->writeln('Account not found.');
-            return false;
+            return 1;
         }
     }
 }

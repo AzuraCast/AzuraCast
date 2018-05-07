@@ -26,13 +26,13 @@ class RestartRadio extends \App\Console\Command\CommandAbstract
         $output->writeLn('Restarting all radio stations...');
 
         /** @var \Supervisor\Supervisor $supervisor */
-        $supervisor = $this->di[\Supervisor\Supervisor::class];
+        $supervisor = $this->get(\Supervisor\Supervisor::class);
 
         /** @var EntityManager $em */
-        $em = $this->di[EntityManager::class];
+        $em = $this->get(EntityManager::class);
 
         /** @var Configuration $configuration */
-        $configuration = $this->di[Configuration::class];
+        $configuration = $this->get(Configuration::class);
 
         /** @var Station[] $stations */
         $stations = $em->getRepository(Station::class)->findAll();
@@ -51,5 +51,7 @@ class RestartRadio extends \App\Console\Command\CommandAbstract
 
         $supervisor->startAllProcesses();
         $em->flush();
+
+        return 0;
     }
 }

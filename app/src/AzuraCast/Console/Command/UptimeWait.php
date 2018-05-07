@@ -48,7 +48,7 @@ class UptimeWait extends \App\Console\Command\CommandAbstract
             default:
 
                 /** @var EntityManager $em */
-                $em = $this->di[EntityManager::class];
+                $em = $this->get(EntityManager::class);
 
                 $conn = $em->getConnection();
 
@@ -58,7 +58,7 @@ class UptimeWait extends \App\Console\Command\CommandAbstract
                     try {
                         $conn->connect();
                         $output->writeln('Successfully connected');
-                        exit(0);
+                        return 0;
                     } catch(\Exception $e) {
                         $output->writeln($e->getMessage());
                         sleep($sleep_time);
@@ -66,7 +66,7 @@ class UptimeWait extends \App\Console\Command\CommandAbstract
                     }
                 }
 
-                exit(1);
+                return 1;
 
                 break;
         }

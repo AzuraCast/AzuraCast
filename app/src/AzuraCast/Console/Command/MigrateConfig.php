@@ -67,6 +67,6 @@ class MigrateConfig extends \App\Console\Command\CommandAbstract
         file_put_contents($env_path, implode("\n", $ini_data));
 
         $output->writeln('Configuration successfully written.');
-        return true;
+        return 0;
     }
 }

@@ -330,6 +330,10 @@ return function (\Slim\Container $di, $settings) {
         return $logger;
     };
 
+    $di[\AzuraCast\Console\Application::class] = function($di) use ($settings) {
+        return \AzuraCast\Console\Application::create($di, $settings);
+    };
+
     //
     // AzuraCast-specific dependencies
     //

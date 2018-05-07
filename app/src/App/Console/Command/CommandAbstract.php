@@ -1,19 +1,24 @@
 <?php
 namespace App\Console\Command;
 
-use Interop\Container\ContainerInterface;
+use App\Console\Application;
 use Symfony\Component\Console\Command\Command;
 
 abstract class CommandAbstract extends Command
 {
     /**
-     * @var ContainerInterface
+     * Return a Dependency Injection service.
+     *
+     * @param $service_name
+     * @return mixed
+     * @throws \App\Exception
+     * @throws \Interop\Container\Exception\ContainerException
      */
-    protected $di;
-
-    public function __construct(ContainerInterface $di, $name = null)
+    public function get($service_name)
     {
-        $this->di = $di;
-        parent::__construct($name);
+        /** @var Application $application */
+        $application = self::getApplication();
+
+        return $application->getService($service_name);
     }
 }

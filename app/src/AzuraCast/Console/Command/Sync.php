@@ -29,7 +29,7 @@ class Sync extends \App\Console\Command\CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var AzuraCast\Sync $sync */
-        $sync = $this->di[AzuraCast\Sync::class];
+        $sync = $this->get(AzuraCast\Sync::class);
 
         switch ($input->getArgument('task')) {
             case 'long':
@@ -58,5 +58,7 @@ class Sync extends \App\Console\Command\CommandAbstract
                 $sync->syncNowplaying();
                 break;
         }
+
+        return 0;
     }
 }

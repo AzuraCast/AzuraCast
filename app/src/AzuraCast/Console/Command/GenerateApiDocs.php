@@ -39,7 +39,8 @@ class GenerateApiDocs extends \App\Console\Command\CommandAbstract
 
         file_put_contents(APP_INCLUDE_STATIC . '/api/swagger.json', $swagger);
 
-        return $output->writeln('API documentation updated!');
+        $output->writeln('API documentation updated!');
+        return 0;
     }
 }
 

@@ -1,11 +1,10 @@
 <?php
 namespace App\Console\Command;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class LocaleGenerate extends \App\Console\Command\CommandAbstract
+class LocaleGenerate extends CommandAbstract
 {
     /**
      * {@inheritdoc}
@@ -37,5 +36,6 @@ class LocaleGenerate extends \App\Console\Command\CommandAbstract
         $translations->toPoFile($dest_file);
 
         $output->writeln('Locales generated.');
+        return 0;
     }
 }

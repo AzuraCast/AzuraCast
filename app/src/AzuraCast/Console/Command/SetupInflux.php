@@ -22,7 +22,7 @@ class SetupInflux extends \App\Console\Command\CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var Database $influxdb */
-        $influxdb = $this->di->get(Database::class);
+        $influxdb = $this->get(Database::class);
 
         $db_name = $influxdb->getName();
 
@@ -102,5 +102,6 @@ class SetupInflux extends \App\Console\Command\CommandAbstract
         }
 
         $output->writeln('InfluxDB databases created.');
+        return 0;
     }
 }

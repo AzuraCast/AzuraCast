@@ -44,7 +44,7 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
         $station_id = (int)$input->getArgument('station_id');
 
         /** @var EntityManager $em */
-        $em = $this->di[EntityManager::class];
+        $em = $this->get(EntityManager::class);
 
         $station = $em->getRepository(Entity\Station::class)->find($station_id);
 

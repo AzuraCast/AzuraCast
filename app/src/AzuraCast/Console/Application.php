@@ -33,7 +33,7 @@ class Application extends \App\Console\Application
         // Doctrine Migrations
         $migrate_config = new \Doctrine\DBAL\Migrations\Configuration\Configuration($em->getConnection());
         $migrate_config->setMigrationsTableName('app_migrations');
-        $migrate_config->setMigrationsDirectory(__DIR__.'/../app/src/Entity/Migration');
+        $migrate_config->setMigrationsDirectory(APP_INCLUDE_BASE.'/src/Entity/Migration');
         $migrate_config->setMigrationsNamespace('Entity\Migration');
 
         $output = new \Symfony\Component\Console\Output\ConsoleOutput;

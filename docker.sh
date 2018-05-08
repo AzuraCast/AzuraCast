@@ -225,7 +225,8 @@ uninstall() {
 letsencrypt-create() {
     docker-compose run --rm letsencrypt certonly --webroot -w /var/www/letsencrypt $*
 
-    echo "Enter full domain name, i.e.: demo.example.com "
+    echo "-------------------------------------------------------------------------------"
+    echo "Re-enter the domain name that was entered in the previous step: "
     read reply </dev/tty
 
     docker-compose run --rm nginx letsencrypt_connect $reply

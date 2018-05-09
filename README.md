@@ -62,107 +62,13 @@ If you want a more "bare-metal" experience and greater customization, you can al
 
 ## Installing AzuraCast
 
-### Docker Installation (Recommended)
+- **[Docker Installation (Recommended)](https://github.com/AzuraCast/AzuraCast/wiki/Docker-Installation)**: Docker offers an easy-to-use experience with prebuilt images. Updates are simple and AzuraCast won't interfere with other software on your server. You should use this method whenever possible.
 
-We strongly recommend installing and using AzuraCast via Docker. All of the necessary software packages are built by our automated tools, so installation is as easy as just pulling down the pre-compiled images. There's no need to worry about compatibility with your host operating system, so any host (including Windows and MacOS) will work great out of the box.
-
-You can use the AzuraCast Docker installer to check for (and install, if necessary) the latest version of Docker and Docker Compose, then pull the necessary files and get your instance running.
-
-```bash
-curl -L https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker.sh > docker.sh
-chmod a+x docker.sh
-./docker.sh install
-```
-
-#### Setting up HTTPS with LetsEncrypt: `./docker.sh letsencrypt-create`
-
-AzuraCast now supports full encryption with LetsEncrypt. LetsEncrypt offers free SSL certificates with easy validation and renewal.
-
-First, make sure your AzuraCast instance is set up and serving from the domain you want to use. 
-
-If you have the Docker utility script from the steps above, you can simply run `./docker.sh letsencrypt-create` to set up your LetsEncrypt SSL certificate.
-
-Otherwise, you can use the following manual commands:
-
-```bash
-docker-compose run --rm letsencrypt certonly --webroot -w /var/www/letsencrypt
-docker-compose run --rm nginx letsencrypt_connect YOURDOMAIN.example.com
-docker-compose kill -s SIGHUP nginx
-``` 
-
-Your LetsEncrypt certificate is valid for 3 months. To renew the certificates, run `./docker.sh letsencrypt-renew` or manually run this command:
-
-```
-docker-compose run --rm letsencrypt renew --webroot -w /var/www/letsencrypt
-```
-
-#### Updating: `./docker.sh update`
-
-If you have the `docker.sh` script from the installation steps above, you can run `./docker.sh update` to automatically update your installation.
-
-To manually update, from inside the base directory where AzuraCast is copied, run the following commands:
-
-```bash
-docker-compose down
-docker-compose pull
-docker-compose run --rm cli azuracast_update
-docker-compose up -d
-```
-
-#### Backup and Restore: `./docker.sh backup` and `./docker.sh restore`
-
-AzuraCast has utility scripts to allow for easy backup and restoration of Docker volumes.
-
-You can use [docker-backup.sh](https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-backup.sh) to back up existing volumes. You can specify a custom path as the script's argument. By default, the script will create a file, `backup.tar.gz` in the app root.
-
-To restore the application's state from this compressed file use [docker-restore.sh](https://raw.githubusercontent.com/AzuraCast/AzuraCast/master/docker-restore.sh) and provide it with the path of the existing backup file.
-
-Note that the restoration process will replace any existing AzuraCast database or media that exists inside the Docker volumes.
-
-### Traditional Installation (Ubuntu 16.04 LTS Only)
-
-**Note:** Some web hosts offer custom versions of Ubuntu that include different software repositories. These may cause compatibility issues with AzuraCast. Many VPS providers are known to work out of the box with AzuraCast (OVH, DigitalOcean, Vultr, etc), and are thus highly recommended if you plan to use the traditional installer.
-
-AzuraCast is optimized for speed and performance, and can run on very inexpensive hardware, from the Raspberry Pi 3 to the lowest-level VPSes offered by most providers.
-
-Since AzuraCast installs its own radio tools, databases and web servers, you should always install AzuraCast on a "clean" server instance with no other web or radio software installed previously.
-
-Execute these commands **as the root user** to set up your AzuraCast server:
-
-```bash
-apt-get update
-apt-get install -q -y git
-
-mkdir -p /var/azuracast/www
-cd /var/azuracast/www
-git clone https://github.com/AzuraCast/AzuraCast.git .
-
-chmod a+x install.sh
-./install.sh
-```
-
-If you cannot directly log in as the root account on your server, try running `sudo su` before running the commands above.
-
-The installation process will take between 5 and 15 minutes, depending on your Internet connection. If you encounter an error, let us know in the [Issues section](https://github.com/AzuraCast/AzuraCast/issues).
-
-Once the terminal-based installation is complete, you can visit your server's public IP address (`http://ip.of.your.server/`) to finish the web-based setup.
-
-#### Updating
-
-AzuraCast also includes a handy updater script that pulls down the latest copy of the codebase from Git, flushes the site caches and makes any necessary database updates. Run these commands as any user with `sudo` permissions:
-
-```bash
-cd /var/azuracast/www
-
-sudo chmod a+x update.sh
-sudo ./update.sh
-```
+- **[Traditional Installation](https://github.com/AzuraCast/AzuraCast/wiki/Traditional-Installation)**: For advanced users, if you want more customizability or need to run a leaner installation, you can use the Traditional installation method to install AzuraCast on Ubuntu servers.
 
 ## AzuraCast API
 
-Once installed and running, AzuraCast exposes an API that allows you to monitor and interact with your stations.
-
-Documentation about this API and its endpoints are available on the [AzuraCast API Documentation](http://azuracast.com/api/).
+Once installed and running, AzuraCast exposes an API that allows you to monitor and interact with your stations. Documentation about this API and its endpoints are available on the [AzuraCast API Documentation](http://azuracast.com/api/).
 
 ## License
 

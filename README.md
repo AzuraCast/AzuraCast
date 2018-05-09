@@ -15,11 +15,19 @@ AzuraCast works for web radio stations of all types and sizes, and is built to r
 
 To install AzuraCast, you should have a basic understanding of the Linux shell terminal. Once installed, every aspect of your radio station can be managed via AzuraCast's simple to use web interface.
 
+## Live Demo
+
 Want to see AzuraCast for yourself? Check out [screenshots](https://github.com/AzuraCast/AzuraCast/wiki/Screenshots) or visit
 our demo site at [demo.azuracast.com](https://demo.azuracast.com/):
 
 * Username: `demo@azuracast.com`
 * Password: `demo`
+
+## Install AzuraCast
+
+- **[Docker Installation (Recommended)](https://github.com/AzuraCast/AzuraCast/wiki/Docker-Installation)**: Docker offers an easy-to-use experience with prebuilt images. Updates are simple and AzuraCast won't interfere with other software on your server. You should use this method whenever possible.
+
+- **[Traditional Installation](https://github.com/AzuraCast/AzuraCast/wiki/Traditional-Installation)**: For advanced users, if you want more customizability or need to run a leaner installation, you can use the Traditional installation method to install AzuraCast on Ubuntu servers.
 
 ## Features
 
@@ -52,19 +60,7 @@ Whether you're using the traditional installer or Docker containers, AzuraCast w
 * **[MariaDB](https://mariadb.org/)** as the primary database
 * **[PHP 7.2](https://secure.php.net/)** powering the web application
 * **[InfluxDB](https://www.influxdata.com/)** for time-series based statistics
-* **[Redis](https://redis.io/)** for sessions, database and general caching
-
-### AzuraCast Runs Everywhere
-
-Thanks to the power and portability of Docker, you can run a full installation of AzuraCast on virtually any modern server operating system, or even your home Windows or MacOS computer. Using docker, we preassemble "containers" that have all of the necessary software installed and set up already, so with a single file you're up and running. Updates are extremely easy, fast and reliable, too. We _highly recommend_ using the Docker installation whenever possible.
-
-If you want a more "bare-metal" experience and greater customization, you can also use our "Traditional" installer, which requires Ubuntu 16.04 LTS. This installer loads and configures the necessary software directly onto your server; this may interfere with other software, so you should always start with a clean server when possible.   
-
-## Installing AzuraCast
-
-- **[Docker Installation (Recommended)](https://github.com/AzuraCast/AzuraCast/wiki/Docker-Installation)**: Docker offers an easy-to-use experience with prebuilt images. Updates are simple and AzuraCast won't interfere with other software on your server. You should use this method whenever possible.
-
-- **[Traditional Installation](https://github.com/AzuraCast/AzuraCast/wiki/Traditional-Installation)**: For advanced users, if you want more customizability or need to run a leaner installation, you can use the Traditional installation method to install AzuraCast on Ubuntu servers.
+* **[Redis](https://redis.io/)** for sessions, database and general caching 
 
 ## AzuraCast API
 

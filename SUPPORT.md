@@ -5,6 +5,33 @@ Having trouble with your AzuraCast installation? These pointers may be able to h
 If you still don't find what you're looking for, check the GitHub Issues section for an existing issue relating to the 
 one you're experiencing. If one does not exist, create a new one.
 
+## Troubleshooting by Viewing Logs
+
+Before submitting any GitHub issues, you should take a look at the terminal logs that AzuraCast outputs. They can often provide additional information about the error, or include very useful information that should be included in any GitHub issue you create.
+
+#### Docker
+
+To view logs in Docker, from the directory where your `docker-compose.yml` file is located, you can run:
+
+```bash
+docker-compose logs -f
+```
+
+This command will show you a running log of all containers. You can also get detailed logs by running `docker-compose logs -f service`, where "service" is one of `web`, `stations`, `nginx`, etc.
+
+#### Traditional
+
+Since the Traditional installation interacts directly with your host server, its logs are in various locations across the system.
+
+- AzuraCast: `/var/azuracast/www_tmp/azuracast.log`
+- Nginx Access: `/var/azuracast/www_tmp/access.log`
+- Nginx Errors: `/var/azuracast/www_tmp/error.log`
+- PHP: `/var/azuracast/www_tmp/php_errors.log`
+- Supervisord: `/var/azuracast/www_tmp/supervisord.log`
+- Redis: `/var/log/redis/redis-server.log`
+- MariaDB: `/var/log/mysql`
+- InfluxDB: `/var/log/influxdb`
+
 ## Common Solutions
 
 ### Reset an Account Password

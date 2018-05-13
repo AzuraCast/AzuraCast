@@ -42,12 +42,12 @@ class Application extends \App\Console\Application
         }));
 
         $migration_commands = [
-            new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand(),
-            new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand(),
-            new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand(),
-            new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand(),
-            new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand(),
-            new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand()
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand,
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand,
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand,
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand,
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand,
+            new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand
         ];
 
         foreach($migration_commands as $cmd) {
@@ -57,8 +57,8 @@ class Application extends \App\Console\Application
 
         // Liquidsoap Internal CLI Commands
         $cli->addCommands([
-            new Command\StreamerAuth,
             new Command\NextSong,
+            new Command\DjAuth,
             new Command\DjOn,
             new Command\DjOff,
         ]);

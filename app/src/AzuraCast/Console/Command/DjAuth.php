@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class StreamerAuth extends \App\Console\Command\CommandAbstract
+class DjAuth extends \App\Console\Command\CommandAbstract
 {
     /**
      * {@inheritdoc}
@@ -57,7 +57,7 @@ class StreamerAuth extends \App\Console\Command\CommandAbstract
         $pass = $input->getOption('dj_password');
 
         /** @var Adapters $adapters */
-        $adapters = $this->di[Adapters::class];
+        $adapters = $this->get(Adapters::class);
 
         $adapter = $adapters->getBackendAdapter($station);
 

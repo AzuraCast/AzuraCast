@@ -50,6 +50,10 @@ Replace `YOUREMAILADDRESS` with the e-mail address whose password you intend to 
 ##### Docker
 
 ```bash
+# With the Docker Utility Script
+./docker.sh cli azuracast:account:reset-password YOUREMAILADDRESS
+
+# Manually using Docker Compose
 docker-compose run --rm cli azuracast_cli azuracast:account:reset-password YOUREMAILADDRESS
 ``` 
 
@@ -65,6 +69,10 @@ Many parts of the AzuraCast system depend on caches to speed up site performance
 date, and they may cause errors. You can always flush all site-wide caches using one command-line script:
 
 ```bash
+# With the Docker Utility Script
+./docker.sh cli cache:clear
+
+# Manually using Docker Compose
 docker-compose run --rm cli azuracast_cli cache:clear
 ``` 
 

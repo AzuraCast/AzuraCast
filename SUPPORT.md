@@ -32,6 +32,12 @@ Since the Traditional installation interacts directly with your host server, its
 - MariaDB: `/var/log/mysql`
 - InfluxDB: `/var/log/influxdb`
 
+For each station, logs for radio software will be inside `/var/azuracast/stations/{station_short_name}/config`, with the following filenames:
+
+- Liquidsoap: `liquidsoap.log`
+- Icecast: `icecast.log`
+- SHOUTcast: `sc_serv.log`
+
 ## Common Solutions
 
 ### Reset an Account Password

@@ -1,9 +1,5 @@
 <?php $this->layout('main', ['title' => __('My Account'), 'manual' => true]); ?>
 
-<?php
-$options = $form->getOptions();
-?>
-
 <div class="block-header">
     <h2><?=__('My Account') ?></h2>
 </div>
@@ -45,7 +41,7 @@ $options = $form->getOptions();
             <div class="pmbb-body p-l-30">
                 <div class="pmbb-view">
                     <dl class="dl-horizontal">
-                        <?=$this->fetch('partials/form_view_fields', ['form' => $form, 'fieldset' => $options['groups']['account_info']]) ?>
+                        <?=$account_info_form->renderView() ?>
                     </dl>
                 </div>
             </div>
@@ -58,7 +54,7 @@ $options = $form->getOptions();
             <div class="pmbb-body p-l-30">
                 <div class="pmbb-view">
                     <dl class="dl-horizontal">
-                        <?=$this->fetch('partials/form_view_fields', ['form' => $form, 'fieldset' => $options['groups']['customization']]) ?>
+                        <?=$customization_form->renderView() ?>
                     </dl>
                 </div>
             </div>

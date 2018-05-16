@@ -41,18 +41,18 @@ class ProfileController
     {
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');
-
-        $form = new \AzuraForms\Form($this->form_config);
-
         $user_profile = $this->user_repo->toArray($user);
         unset($user_profile['auth_password']);
-        $form->populate($user_profile);
+
+        $account_info_form = new \AzuraForms\Form($this->form_config['groups']['account_info'], $user_profile);
+        $customization_form = new \AzuraForms\Form($this->form_config['groups']['customization'], $user_profile);
 
         /** @var View $view */
         $view = $request->getAttribute('view');
 
         return $view->renderToResponse($response, 'frontend/profile/index', [
-            'form' => $form,
+            'account_info_form' => $account_info_form,
+            'customization_form' => $customization_form,
         ]);
     }
 
@@ -65,14 +65,13 @@ class ProfileController
         $form_config['groups']['reset_password']['elements']['password'][1]['validator'] = function($val, \AzuraForms\Field\AbstractField $field) use ($user) {
             $form = $field->getForm();
 
-            $new_password = $form->getData('new_password');
+            $new_password = $form->getField('new_password')->getValue();
             if (!empty($new_password)) {
                 if ($user->verifyPassword($val)) {
                     return true;
                 }
 
-                $field->error[] = 'Current password could not be verified.';
-                return false;
+                return 'Current password could not be verified.';
             }
 
             return true;

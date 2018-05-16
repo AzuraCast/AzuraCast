@@ -1,9 +1,9 @@
 <?php $this->layout('main', ['title' => $title, 'header' => $header]); ?>
 
 <?php if ($render_mode == 'edit'): ?>
-    <?=$this->fetch('partials/form', ['form' => $form]) ?>
+    <?=$form->render() ?>
 <?php else: ?>
-    <?=$this->fetch('partials/form_view', ['form' => $form]) ?>
+    <?=$form->renderView() ?>
 <?php endif; ?>
 
 <?php

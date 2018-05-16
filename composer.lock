@@ -12,16 +12,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "acc1178d3da40273eaf8dd3f8c162ffde39eeff6"
+                "reference": "5b0fcdf2901d4ea6a3a3d4403268252e201f1eb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/acc1178d3da40273eaf8dd3f8c162ffde39eeff6",
-                "reference": "acc1178d3da40273eaf8dd3f8c162ffde39eeff6",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/5b0fcdf2901d4ea6a3a3d4403268252e201f1eb9",
+                "reference": "5b0fcdf2901d4ea6a3a3d4403268252e201f1eb9",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0"
+                "php": ">=7.2"
             },
             "type": "library",
             "autoload": {
@@ -49,7 +49,7 @@
             ],
             "description": "A modern, namespaced, configuration-driven forms engine for PHP.",
             "homepage": "https://github.com/AzuraCast/azuraforms",
-            "time": "2018-02-25T17:34:04+00:00"
+            "time": "2018-05-16T09:38:00+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -785,35 +785,36 @@
         },
         {
             "name": "doctrine/migrations",
-            "version": "v1.6.2",
+            "version": "v1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "e3faf7c96b8a6084045dedcaf51f74c7834644d4"
+                "reference": "3e7656c5adfd9b7d0d8757aa1e9e8daf43a6f200"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/e3faf7c96b8a6084045dedcaf51f74c7834644d4",
-                "reference": "e3faf7c96b8a6084045dedcaf51f74c7834644d4",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/3e7656c5adfd9b7d0d8757aa1e9e8daf43a6f200",
+                "reference": "3e7656c5adfd9b7d0d8757aa1e9e8daf43a6f200",
                 "shasum": ""
             },
             "require": {
                 "doctrine/dbal": "~2.6",
                 "ocramius/proxy-manager": "^1.0|^2.0",
                 "php": "^7.1",
-                "symfony/console": "~3.3|^4.0",
-                "symfony/yaml": "~3.3|^4.0"
+                "symfony/console": "~3.3|^4.0"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^1.0",
                 "doctrine/orm": "~2.5",
                 "jdorn/sql-formatter": "~1.1",
                 "mikey179/vfsstream": "^1.6",
-                "phpunit/phpunit": "~6.2",
-                "squizlabs/php_codesniffer": "^3.0"
+                "phpunit/phpunit": "~7.0",
+                "squizlabs/php_codesniffer": "^3.0",
+                "symfony/yaml": "~3.3|^4.0"
             },
             "suggest": {
-                "jdorn/sql-formatter": "Allows to generate formatted SQL with the diff command."
+                "jdorn/sql-formatter": "Allows to generate formatted SQL with the diff command.",
+                "symfony/yaml": "Allows the use of yaml for migration configuration files."
             },
             "bin": [
                 "bin/doctrine-migrations"
@@ -821,7 +822,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "v1.6.x-dev"
+                    "dev-master": "v1.7.x-dev"
                 }
             },
             "autoload": {
@@ -853,7 +854,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2017-11-24T14:13:17+00:00"
+            "time": "2018-05-09T21:04:56+00:00"
         },
         {
             "name": "doctrine/orm",
@@ -2625,12 +2626,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "d3268ea60c79284f9a8db7b78eb48cc99cc5d471"
+                "reference": "6fe712594835e5b70de30aec5fc244a7bd8464cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/d3268ea60c79284f9a8db7b78eb48cc99cc5d471",
-                "reference": "d3268ea60c79284f9a8db7b78eb48cc99cc5d471",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/6fe712594835e5b70de30aec5fc244a7bd8464cd",
+                "reference": "6fe712594835e5b70de30aec5fc244a7bd8464cd",
                 "shasum": ""
             },
             "conflict": {
@@ -2661,13 +2662,14 @@
                 "doctrine/mongodb-odm-bundle": ">=2,<3.0.1",
                 "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1",
                 "dompdf/dompdf": ">=0.6,<0.6.2",
-                "drupal/core": ">=7,<7.58|>=8,<8.4.6|>=8.5,<8.5.1",
-                "drupal/drupal": ">=7,<7.58|>=8,<8.4.6|>=8.5,<8.5.1",
+                "drupal/core": ">=7,<7.59|>=8,<8.4.8|>=8.5,<8.5.3",
+                "drupal/drupal": ">=7,<7.59|>=8,<8.4.8|>=8.5,<8.5.3",
                 "erusev/parsedown": "<1.7",
                 "ezsystems/ezpublish-legacy": ">=5.3,<5.3.12.3|>=5.4,<5.4.11.3|>=2017.8,<2017.8.1.1|>=2017.12,<2017.12.2.1",
                 "firebase/php-jwt": "<2",
                 "friendsofsymfony/rest-bundle": ">=1.2,<1.2.2",
                 "friendsofsymfony/user-bundle": ">=1.2,<1.3.5",
+                "fuel/core": "<1.8.1",
                 "gree/jose": "<=2.2",
                 "gregwar/rst": "<1.0.3",
                 "guzzlehttp/guzzle": ">=6,<6.2.1|>=4.0.0-rc2,<4.2.4|>=5,<5.3.1",
@@ -2728,7 +2730,7 @@
                 "symfony/web-profiler-bundle": ">=2,<2.3.19|>=2.4,<2.4.9|>=2.5,<2.5.4",
                 "symfony/yaml": ">=2,<2.0.22|>=2.1,<2.1.7",
                 "thelia/backoffice-default-template": ">=2.1,<2.1.2",
-                "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
+                "thelia/thelia": ">=2.1,<2.1.2|>=2.1.0-beta1,<2.1.3",
                 "titon/framework": ">=0,<9.9.99",
                 "twig/twig": "<1.20",
                 "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.22|>=8,<8.7.5",
@@ -2780,7 +2782,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-04-30T07:23:33+00:00"
+            "time": "2018-05-11T06:55:15+00:00"
         },
         {
             "name": "slim/slim",
@@ -3156,64 +3158,6 @@
                 "shim"
             ],
             "time": "2018-04-26T10:06:28+00:00"
-        },
-        {
-            "name": "symfony/yaml",
-            "version": "v4.0.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/yaml.git",
-                "reference": "275ad099e4cbe612a2acbca14a16dd1c5311324d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/275ad099e4cbe612a2acbca14a16dd1c5311324d",
-                "reference": "275ad099e4cbe612a2acbca14a16dd1c5311324d",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1.3"
-            },
-            "conflict": {
-                "symfony/console": "<3.4"
-            },
-            "require-dev": {
-                "symfony/console": "~3.4|~4.0"
-            },
-            "suggest": {
-                "symfony/console": "For validating YAML files using the lint command"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Yaml\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Yaml Component",
-            "homepage": "https://symfony.com",
-            "time": "2018-04-08T08:49:08+00:00"
         },
         {
             "name": "zendframework/zend-code",
@@ -3867,16 +3811,16 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "1.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "1bac8c362b12f522fdd1f1fa3556284c91affa38"
+                "reference": "99e29d3596b16dabe4982548527d5ddf90232e99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/1bac8c362b12f522fdd1f1fa3556284c91affa38",
-                "reference": "1bac8c362b12f522fdd1f1fa3556284c91affa38",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/99e29d3596b16dabe4982548527d5ddf90232e99",
+                "reference": "99e29d3596b16dabe4982548527d5ddf90232e99",
                 "shasum": ""
             },
             "require": {
@@ -3885,7 +3829,8 @@
                 "php": ">=5.6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~5.7|~6.1"
+                "phpdocumentor/phpdocumentor": "^2.9",
+                "phpunit/phpunit": "~5.7.10|~6.5"
             },
             "type": "library",
             "extra": {
@@ -3904,7 +3849,7 @@
             ],
             "authors": [
                 {
-                    "name": "Padraic Brady",
+                    "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 },
@@ -3914,8 +3859,8 @@
                     "homepage": "http://davedevelopment.co.uk"
                 }
             ],
-            "description": "Mockery is a simple yet flexible PHP mock object framework for use in unit testing with PHPUnit, PHPSpec or any other testing framework. Its core goal is to offer a test double framework with a succinct API capable of clearly defining all possible object operations and interactions using a human readable Domain Specific Language (DSL). Designed as a drop in alternative to PHPUnit's phpunit-mock-objects library, Mockery is easy to integrate with PHPUnit and can operate alongside phpunit-mock-objects without the World ending.",
-            "homepage": "http://github.com/mockery/mockery",
+            "description": "Mockery is a simple yet flexible PHP mock object framework",
+            "homepage": "https://github.com/mockery/mockery",
             "keywords": [
                 "BDD",
                 "TDD",
@@ -3928,7 +3873,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2017-10-06T16:20:43+00:00"
+            "time": "2018-05-08T08:54:48+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -5503,6 +5448,64 @@
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
             "time": "2018-04-03T05:24:00+00:00"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "v4.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "275ad099e4cbe612a2acbca14a16dd1c5311324d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/275ad099e4cbe612a2acbca14a16dd1c5311324d",
+                "reference": "275ad099e4cbe612a2acbca14a16dd1c5311324d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3"
+            },
+            "conflict": {
+                "symfony/console": "<3.4"
+            },
+            "require-dev": {
+                "symfony/console": "~3.4|~4.0"
+            },
+            "suggest": {
+                "symfony/console": "For validating YAML files using the lint command"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Yaml\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Yaml Component",
+            "homepage": "https://symfony.com",
+            "time": "2018-04-08T08:49:08+00:00"
         },
         {
             "name": "theseer/tokenizer",

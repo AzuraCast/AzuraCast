@@ -36,14 +36,11 @@ class SettingsController
 
     protected function renderSettingsForm(Request $request, Response $response, $form_template): Response
     {
-        $form = new \AzuraForms\Form($this->form_config);
-
         $existing_settings = $this->settings_repo->fetchArray(false);
-        $form->populate($existing_settings);
+        $form = new \AzuraForms\Form($this->form_config, $existing_settings);
 
-        if (!empty($_POST) && $form->isValid($_POST)) {
+        if ($request->isPost() && $form->isValid($_POST)) {
             $data = $form->getValues();
-            unset($data['submit']);
 
             $this->settings_repo->setSettings($data);
 

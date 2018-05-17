@@ -601,12 +601,12 @@ class StationMedia
                     foreach ($file_info['tags'] as $tag_type => $tag_data) {
                         foreach ($tags_to_set as $tag) {
                             if (!empty($tag_data[$tag][0])) {
-                                $this->{$tag} = mb_convert_encoding($tag_data[$tag][0], "UTF-8");
+                                $this->{'set'.ucfirst($tag)}(mb_convert_encoding($tag_data[$tag][0], "UTF-8"));
                             }
                         }
 
                         if (!empty($tag_data['unsynchronized_lyric'][0])) {
-                            $this->lyrics = $tag_data['unsynchronized_lyric'][0];
+                            $this->setLyrics($tag_data['unsynchronized_lyric'][0]);
                         }
                     }
                 }
@@ -615,7 +615,6 @@ class StationMedia
                     $picture = $file_info['comments']['picture'][0];
                     $this->setArt(imagecreatefromstring($picture['data']));
                 }
-
             }
 
             // Attempt to derive title and artist from filename.
@@ -626,11 +625,11 @@ class StationMedia
 
                 // If not normally delimited, return "text" only.
                 if (count($string_parts) == 1) {
-                    $this->title = trim($filename);
-                    $this->artist = '';
+                    $this->setTitle(trim($filename));
+                    $this->setArtist('');
                 } else {
-                    $this->title = trim(array_pop($string_parts));
-                    $this->artist = trim(implode('-', $string_parts));
+                    $this->setTitle(trim(array_pop($string_parts)));
+                    $this->setArtist(trim(implode('-', $string_parts)));
                 }
             }
 

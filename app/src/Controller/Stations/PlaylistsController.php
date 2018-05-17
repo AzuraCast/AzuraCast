@@ -285,6 +285,7 @@ class PlaylistsController
 
             $this->playlist_repo->fromArray($record, $data);
             $this->em->persist($record);
+            $this->em->flush();
 
             // Handle importing a playlist file, if necessary.
             $files = $request->getUploadedFiles();

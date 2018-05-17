@@ -73,6 +73,7 @@ class Application extends \App\Console\Application
             new Command\MigrateConfig,
             new Command\SetupInflux,
             new Command\SetupFixtures,
+            new Command\Setup,
 
             // Maintenance
             new Command\ClearCache,

@@ -13,7 +13,7 @@ return [
                     [
                         'label' => __('Remote Station Type'),
                         'required' => true,
-                        'options' => [
+                        'choices' => [
                             'shoutcast1' => 'SHOUTcast v1',
                             'shoutcast2' => 'SHOUTcast v2',
                             'icecast' => 'Icecast v2.4+',
@@ -43,7 +43,7 @@ return [
                     [
                         'label' => __('Is Default Mount'),
                         'description' => __('If this mount is the default, it will be played on the radio preview and the public radio page in this system.'),
-                        'options' => [0 => __('No'), 1 => __('Yes')],
+                        'choices' => [0 => __('No'), 1 => __('Yes')],
                         'default' => 0,
                     ]
                 ],
@@ -53,7 +53,7 @@ return [
                     [
                         'label' => __('Enable AutoDJ'),
                         'description' => __('If set to "Yes", the AutoDJ will automatically play music to this mount point.'),
-                        'options' => [0 => __('No'), 1 => __('Yes')],
+                        'choices' => [0 => __('No'), 1 => __('Yes')],
                         'default' => 0,
                     ]
                 ],
@@ -62,7 +62,7 @@ return [
                     'radio',
                     [
                         'label' => __('AutoDJ Format'),
-                        'options' => [
+                        'choices' => [
                             'mp3' => 'MP3',
                             'ogg' => 'OGG Vorbis',
                             'aac' => 'AAC+ (MPEG4 HE-AAC v2)',
@@ -75,7 +75,7 @@ return [
                     'radio',
                     [
                         'label' => __('AutoDJ Bitrate (kbps)'),
-                        'options' => [
+                        'choices' => [
                             32 => '32',
                             48 => '48',
                             64 => '64',

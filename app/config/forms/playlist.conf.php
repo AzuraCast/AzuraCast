@@ -68,7 +68,7 @@ return [
                         'label' => __('Enable Playlist'),
                         'required' => true,
                         'description' => __('If set to "No", the playlist will not be included in radio playback, but can still be managed.'),
-                        'options' => [
+                        'choices' => [
                             1 => __('Yes'),
                             0 => __('No'),
                         ],
@@ -83,7 +83,7 @@ return [
                         'description' => __('Higher weight playlists are played more frequently compared to other lower-weight playlists.'),
                         'default' => 3,
                         'required' => true,
-                        'options' => [
+                        'choices' => [
                             1 => '1 - '.__('Low'),
                             2 => '2',
                             3 => '3 - '.__('Default'),
@@ -97,7 +97,7 @@ return [
                     'radio',
                     [
                         'label' => __('Source'),
-                        'options' => [
+                        'choices' => [
                             StationPlaylist::SOURCE_SONGS => '<b>' . __('Song-Based Playlist') .':</b> ' . __('A playlist containing media files hosted on this server.'),
                             StationPlaylist::SOURCE_REMOTE_URL => '<b>'.__('Remote URL Playlist').':</b> ' . __('A playlist that instructs the station to play from a remote URL.'),
                         ],
@@ -110,7 +110,7 @@ return [
                     'radio',
                     [
                         'label' => __('Scheduling'),
-                        'options' => [
+                        'choices' => [
                             StationPlaylist::TYPE_DEFAULT => '<b>' . __('General Rotation') . ':</b> ' . __('Plays all day, shuffles with other standard playlists based on weight.'),
                             StationPlaylist::TYPE_SCHEDULED => '<b>' . __('Scheduled') . ':</b> ' . __('Play during a scheduled time range. Useful for mood-based time playlists.'),
                             StationPlaylist::TYPE_ONCE_PER_X_SONGS => '<b>' . __('Once per x Songs') . ':</b> ' . __('Play exactly once every <i>x</i> songs. Useful for station ID/jingles.'),
@@ -136,7 +136,7 @@ return [
                     [
                         'label' => __('Song Playback Order'),
                         'required' => true,
-                        'options' => [
+                        'choices' => [
                             StationPlaylist::ORDER_RANDOM => __('Random (Shuffled)'),
                             StationPlaylist::ORDER_SEQUENTIAL => __('Sequential'),
                         ],
@@ -150,7 +150,7 @@ return [
                         'label' => __('Allow Requests from This Playlist'),
                         'required' => true,
                         'description' => __('If requests are enabled for your station, users will be able to request media that is on this playlist.'),
-                        'options' => [
+                        'choices' => [
                             1 => __('Yes'),
                             0 => __('No'),
                         ],
@@ -206,7 +206,7 @@ return [
                         'description' => __('If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.'),
                         'required' => true,
                         'default' => '0',
-                        'options' => [
+                        'choices' => [
                             0 => __('No'),
                             1 => __('Yes'),
                         ],
@@ -244,7 +244,7 @@ return [
                     [
                         'label' => __('Scheduled Play Days of Week'),
                         'description' => __('Leave blank to play on every day of the week.'),
-                        'options' => [
+                        'choices' => [
                             1 => __('Monday'),
                             2 => __('Tuesday'),
                             3 => __('Wednesday'),
@@ -312,7 +312,7 @@ return [
                     [
                         'label' => __('Scheduled Play Days of Week'),
                         'description' => __('Leave blank to play on every day of the week.'),
-                        'options' => [
+                        'choices' => [
                             1 => __('Monday'),
                             2 => __('Tuesday'),
                             3 => __('Wednesday'),

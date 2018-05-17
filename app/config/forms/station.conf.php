@@ -57,7 +57,7 @@ return [
                     [
                         'label' => __('Enable Station Broadcasting'),
                         'description' => __('If disabled, the station will not broadcast or shuffle its AutoDJ.'),
-                        'options' => [
+                        'choices' => [
                             0 => __('Disabled'),
                             1 => __('Enabled'),
                         ],
@@ -70,7 +70,7 @@ return [
                     [
                         'label' => __('Enable Public Page'),
                         'description' => __('Whether to show or hide the station from public pages and general API results.'),
-                        'options' => [
+                        'choices' => [
                             0 => __('Disabled'),
                             1 => __('Enabled')
                         ],
@@ -178,7 +178,7 @@ return [
                     [
                         'label' => __('Remote Station Type'),
                         'belongsTo' => 'frontend_config',
-                        'options' => [
+                        'choices' => [
                             'shoutcast1' => 'SHOUTcast v1',
                             'shoutcast2' => 'SHOUTcast v2',
                             'icecast' => 'Icecast v2.4+',
@@ -250,7 +250,7 @@ return [
                         'label' => __('Allow Streamers / DJs'),
                         'description' => __('If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.'),
                         'default' => '0',
-                        'options' => [0 => __('No'), 1 => __('Yes')],
+                        'choices' => [0 => __('No'), 1 => __('Yes')],
                     ]
                 ],
 
@@ -260,7 +260,7 @@ return [
                         'label' => __('Allow Song Requests'),
                         'description' => __('This enables listeners to request a song for play on your station. Only songs that are already in your playlists are listed as requestable.'),
                         'default' => '0',
-                        'options' => [0 => __('No'), 1 => __('Yes')],
+                        'choices' => [0 => __('No'), 1 => __('Yes')],
                     ]
                 ],
 
@@ -271,7 +271,7 @@ return [
                         'description' => __('For most cases, use the default UTF-8 encoding. The older ISO-8859-1 encoding can be used if accepting connections from SHOUTcast 1 DJs or using other legacy software.'),
                         'belongsTo' => 'backend_config',
                         'default' => 'UTF-8',
-                        'options' => [
+                        'choices' => [
                             'UTF-8' => 'UTF-8',
                             'ISO-8859-1' => 'ISO-8859-1',
                         ],
@@ -315,7 +315,7 @@ return [
                         'label' => __('Advanced: Manual AutoDJ Mode'),
                         'description' => __('This mode disables AzuraCast\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.'),
                         'default' => '0',
-                        'options' => [0 => __('No'), 1 => __('Yes')],
+                        'choices' => [0 => __('No'), 1 => __('Yes')],
                         'belongsTo' => 'backend_config',
                     ]
                 ],

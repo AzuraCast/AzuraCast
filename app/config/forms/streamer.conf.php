@@ -47,7 +47,7 @@ return [
                 'description' => __('Set to "Yes" to allow this account to log in and stream.'),
                 'required' => true,
                 'default' => '1',
-                'options' => [
+                'choices' => [
                     0 => __('No'),
                     1 => __('Yes'),
                 ],

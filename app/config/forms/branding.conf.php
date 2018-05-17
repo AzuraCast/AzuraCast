@@ -9,7 +9,7 @@ return [
             [
                 'label' => __('Base Theme for Public Pages'),
                 'description' => __('Select a theme to use as a base for station public pages and the login page.'),
-                'options' => [
+                'choices' => [
                     'light' => __('Light').' ('.__('Default').')',
                     'dark' => __('Dark'),
                 ],
@@ -23,7 +23,7 @@ return [
                 'label' => __('Hide Album Art on Public Pages'),
                 'description' => __('If selected, album art will not display on public-facing radio pages.'),
                 'default' => 0,
-                'options' => [
+                'choices' => [
                     0 => __('No'),
                     1 => __('Yes'),
                 ],
@@ -54,7 +54,7 @@ return [
                 'label' => __('Hide AzuraCast Branding on Public Pages'),
                 'description' => __('If selected, this will remove the AzuraCast branding from public-facing pages.'),
                 'default' => 0,
-                'options' => [
+                'choices' => [
                     0 => __('No'),
                     1 => __('Yes'),
                 ],

@@ -99,7 +99,7 @@ return [
                     'radio',
                     [
                         'label' => __('Site Theme'),
-                        'options' => [
+                        'choices' => [
                             'light' => __('Light').' ('.__('Default').')',
                             'dark' => __('Dark'),
                         ],

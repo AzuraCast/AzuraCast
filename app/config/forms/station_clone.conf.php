@@ -38,7 +38,7 @@ return [
                     [
                         'label' => __('Copy Media?'),
                         'description' => __('Choose how media should be duplicated from the old station.'),
-                        'options' => [
+                        'choices' => [
                             'none' => __('Do not share or copy media between the stations'),
                             'share' => __('Share the same folder on disk between the stations'),
                             'copy' => __('Copy the existing station\'s media to the new station'),
@@ -51,7 +51,7 @@ return [
                     'radio',
                     [
                         'label' => __('Copy Playlists?'),
-                        'options' => [
+                        'choices' => [
                             0 => __('No'),
                             1 => __('Yes'),
                         ],
@@ -63,7 +63,7 @@ return [
                     'radio',
                     [
                         'label' => __('Copy Streamer/DJ Accounts?'),
-                        'options' => [
+                        'choices' => [
                             0 => __('No'),
                             1 => __('Yes'),
                         ],
@@ -76,7 +76,7 @@ return [
                     [
                         'label' => __('Copy Permissions?'),
                         'description' => __('Selecting "Yes" will assign any users with permissions to the current station to have permissions to the new one.'),
-                        'options' => [
+                        'choices' => [
                             0 => __('No'),
                             1 => __('Yes'),
                         ],

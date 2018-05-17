@@ -29,7 +29,7 @@ $form_config = [
                     'multiSelect',
                     [
                         'label' => __('Actions'),
-                        'multiOptions' => $actions['global'],
+                        'choices' => $actions['global'],
                     ]
                 ],
 
@@ -48,7 +48,7 @@ foreach ($all_stations as $station) {
                 'multiSelect',
                 [
                     'label' => __('Actions'),
-                    'multiOptions' => $actions['station'],
+                    'choices' => $actions['station'],
                 ]
             ],
 

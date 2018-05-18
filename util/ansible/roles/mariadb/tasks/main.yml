@@ -10,12 +10,12 @@
      state: present
    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
 
- - name: Add repo key (Trusty)
+ - name: Add repo key (Bionic)
    apt_key:
      keyserver: keyserver.ubuntu.com
-     id: "0xCBCB082A1BB943DB"
+     id: "0xF1656F24C74CD1D8"
      state: present
-   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
 
  - name: Update apt cache
    apt: update_cache=yes

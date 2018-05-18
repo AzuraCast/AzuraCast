@@ -1,8 +1,4 @@
 ---
-- name: Set Redis service name
-  set_fact:
-    redis_service_name: "{{ 'redis-server' if ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty' else 'redis' }}"
-
 - name: Enable and restart all core services
   service:
     name: "{{ item }}"
@@ -13,4 +9,4 @@
    - "mysql"
    - "php7.2-fpm"
    - "nginx"
-   - "{{ redis_service_name }}"
+   - "redis"

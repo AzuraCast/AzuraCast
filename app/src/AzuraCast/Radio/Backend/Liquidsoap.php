@@ -180,7 +180,7 @@ class Liquidsoap extends BackendAbstract
 
                 case Entity\StationPlaylist::TYPE_ONCE_PER_X_MINUTES:
                     $delay_seconds = $playlist->getPlayPerMinutes() * 60;
-                    $special_playlists['once_per_x_minutes'][] = 'delay_' . $playlist_var_name . ' = delay(' . $delay_seconds . '., ' . $playlist['var_name'] . ')';
+                    $special_playlists['once_per_x_minutes'][] = 'delay_' . $playlist_var_name . ' = delay(' . $delay_seconds . '., ' . $playlist_var_name . ')';
                     $special_playlists['once_per_x_minutes'][] = 'radio = fallback([delay_' . $playlist_var_name . ', radio])';
                     break;
 

@@ -186,9 +186,10 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
     /**
      * @param string|null $payload The payload from the push notification service (if applicable)
+     * @param bool $include_clients Whether to try to retrieve detailed listener client info
      * @return array
      */
-    public function getNowPlaying($payload = null)
+    public function getNowPlaying($payload = null, $include_clients = true)
     {
         // Now Playing defaults.
         $np = [
@@ -210,7 +211,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         ];
 
         // Merge station-specific info into defaults.
-        $this->_getNowPlaying($np, $payload);
+        $this->_getNowPlaying($np, $payload, $include_clients);
 
         // Update status code for offline stations, clean up song info for online ones.
         if ($np['current_song']['text'] === 'Stream Offline') {
@@ -237,10 +238,11 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
      * Stub function for the process internal handler.
      *
      * @param $np
-     * @param string|null $payload
+     * @param string|null $payload A prepopulated payload (to avoid duplicate web requests)
+     * @param bool $include_clients Whether to try to retrieve detailed listener client info
      * @return mixed
      */
-    abstract protected function _getNowPlaying(&$np, $payload = null);
+    abstract protected function _getNowPlaying(&$np, $payload = null, $include_clients = true);
 
     protected function _cleanUpString(&$value)
     {

@@ -6,8 +6,10 @@ class Remote extends FrontendAbstract
     protected $supports_mounts = true;
     protected $supports_listener_detail = false;
 
-    /* Process a nowplaying record. */
-    protected function _getNowPlaying(&$np, $payload = null)
+    /**
+     * @inheritdoc
+     */
+    protected function _getNowPlaying(&$np, $payload = null, $include_clients = true)
     {
         $default_mount = $this->_getDefaultMount();
         $default_mount_np = $this->_getMountNowPlayingData($default_mount);

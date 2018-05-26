@@ -42,6 +42,12 @@ class NowPlaying extends SyncAbstract
     /** @var Entity\Repository\ListenerRepository */
     protected $listener_repo;
 
+    /** @var Entity\Repository\SettingsRepository */
+    protected $settings_repo;
+
+    /** @var string */
+    protected $analytics_level;
+
     public function __construct(EntityManager $em, Url $url, Database $influx, Cache $cache, Adapters $adapters,
                                 Dispatcher $webhook_dispatcher, ApiUtilities $api_utils)
     {
@@ -56,6 +62,9 @@ class NowPlaying extends SyncAbstract
         $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
         $this->song_repo = $this->em->getRepository(Entity\Song::class);
         $this->listener_repo = $this->em->getRepository(Entity\Listener::class);
+
+        $this->settings_repo = $this->em->getRepository(Entity\Settings::class);
+        $this->analytics_level = $this->settings_repo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
     }
 
     public function run($force = false)
@@ -63,34 +72,36 @@ class NowPlaying extends SyncAbstract
         $nowplaying = $this->_loadNowPlaying($force);
 
         // Post statistics to InfluxDB.
-        $influx_points = [];
+        if ($this->analytics_level !== Entity\Analytics::LEVEL_NONE) {
+            $influx_points = [];
 
-        $total_overall = 0;
+            $total_overall = 0;
 
-        foreach ($nowplaying as $info) {
-            $listeners = (int)$info->listeners->current;
-            $total_overall += $listeners;
+            foreach ($nowplaying as $info) {
+                $listeners = (int)$info->listeners->current;
+                $total_overall += $listeners;
 
-            $station_id = $info->station->id;
+                $station_id = $info->station->id;
+
+                $influx_points[] = new \InfluxDB\Point(
+                    'station.' . $station_id . '.listeners',
+                    $listeners,
+                    [],
+                    ['station' => $station_id],
+                    time()
+                );
+            }
 
             $influx_points[] = new \InfluxDB\Point(
-                'station.' . $station_id . '.listeners',
-                $listeners,
+                'station.all.listeners',
+                $total_overall,
                 [],
-                ['station' => $station_id],
+                ['station' => 0],
                 time()
             );
+
+            $this->influx->writePoints($influx_points, \InfluxDB\Database::PRECISION_SECONDS);
         }
-
-        $influx_points[] = new \InfluxDB\Point(
-            'station.all.listeners',
-            $total_overall,
-            [],
-            ['station' => 0],
-            time()
-        );
-
-        $this->influx->writePoints($influx_points, \InfluxDB\Database::PRECISION_SECONDS);
 
         // Generate API cache.
         foreach ($nowplaying as $station => $np_info) {
@@ -147,6 +158,8 @@ class NowPlaying extends SyncAbstract
      */
     public function processStation(Entity\Station $station, $payload = null)
     {
+        $include_clients = ($this->analytics_level === Entity\Analytics::LEVEL_ALL);
+
         /** @var Entity\Api\NowPlaying|null $np_old */
         $np_old = $station->getNowplaying();
 
@@ -155,7 +168,7 @@ class NowPlaying extends SyncAbstract
         $frontend_adapter = $this->adapters->getFrontendAdapter($station);
 
         $np->station = $station->api($frontend_adapter);
-        $np_raw = $frontend_adapter->getNowPlaying($payload);
+        $np_raw = $frontend_adapter->getNowPlaying($payload, $include_clients);
 
         $np->listeners = new Entity\Api\NowPlayingListeners($np_raw['listeners']);
 
@@ -205,7 +218,7 @@ class NowPlaying extends SyncAbstract
             }
 
             // Update detailed listener statistics, if they exist for the station
-            if (isset($np_raw['listeners']['clients'])) {
+            if ($include_clients && isset($np_raw['listeners']['clients'])) {
                 $this->listener_repo->update($station, $np_raw['listeners']['clients']);
             }
 

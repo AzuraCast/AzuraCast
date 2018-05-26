@@ -5,15 +5,18 @@
 /** @var \AzuraCast\Assets $assets */
 $assets
     ->load('vue')
-    ->load('radio')
-    ->load('highcharts')
-    ->load('highcharts_theme_'.$customization->getTheme());
+    ->load('radio');
+
+if ($metrics) {
+    $assets->load('highcharts')->load('highcharts_theme_'.$customization->getTheme());
+}
 ?>
 
 <div class="block-header">
     <h2><?=__('Dashboard') ?></h2>
 </div>
 
+<?php if ($metrics): ?>
 <div class="row">
     <div class="col-sm-6">
         <section class="card" role="region">
@@ -36,6 +39,7 @@ $assets
         </section>
     </div>
 </div>
+<?php endif; ?>
 
 <div class="row">
     <div class="col-sm-12">
@@ -95,6 +99,7 @@ $assets
     </div>
 </div>
 
+<?php if ($metrics): ?>
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function () {
     Highcharts.setOptions({
@@ -182,7 +187,10 @@ $(function () {
         series: <?=$metrics['station'] ?>
     });
 });
+</script>
+<?php endif; ?>
 
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 var station_dashboard;
 
 $(function() {

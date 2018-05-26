@@ -27,22 +27,31 @@ class IndexController
         $this->influx = $influx;
     }
 
-    public function indexAction(Request $request, Response $response): Response
+    public function indexAction(Request $request, Response $response, $station_id): Response
     {
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        /**
-         * Statistics
-         */
+        // Get current analytics level.
 
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
+
+        $analytics_level = $settings_repo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+
+        if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
+            // The entirety of the dashboard can't be shown, so redirect user to the profile page.
+            return $response->redirectToRoute('stations:profile:index', ['station' => $station_id]);
+        }
+
+        /* Statistics */
         $threshold = strtotime('-1 month');
 
         // Statistics by day.
         $resultset = $this->influx->query('SELECT * FROM "1d"."station.' . $station->getId() . '.listeners" WHERE time > now() - 30d',
-        [
-            'epoch' => 'ms',
-        ]);
+            [
+                'epoch' => 'ms',
+            ]);
 
         $daily_stats = $resultset->getPoints();
 
@@ -91,9 +100,7 @@ class IndexController
             $averages_by_hour[] = [$i . ':00', round(array_sum($totals) / count($totals), 2)];
         }
 
-        /**
-         * Play Count Statistics
-         */
+        /* Play Count Statistics */
 
         $song_totals_raw = [];
         $song_totals_raw['played'] = $this->em->createQuery('SELECT sh.song_id, COUNT(sh.id) AS records
@@ -124,9 +131,7 @@ class IndexController
             $song_totals[$total_type] = array_slice((array)$song_totals[$total_type], 0, 10, true);
         }
 
-        /**
-         * Song "Deltas" (Changes in Listener Count)
-         */
+        /* Song "Deltas" (Changes in Listener Count) */
 
         $threshold = strtotime('-2 weeks');
 

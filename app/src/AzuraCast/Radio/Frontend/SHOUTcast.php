@@ -19,8 +19,10 @@ class SHOUTcast extends FrontendAbstract
         );
     }
 
-    /* Process a nowplaying record. */
-    protected function _getNowPlaying(&$np, $payload = null)
+    /**
+     * @inheritdoc
+     */
+    protected function _getNowPlaying(&$np, $payload = null, $include_clients = true)
     {
         $fe_config = (array)$this->station->getFrontendConfig();
         $radio_port = $fe_config['port'];
@@ -73,25 +75,27 @@ class SHOUTcast extends FrontendAbstract
             'total' => $t_list,
         ];
 
-        // Attempt to fetch detailed listener information for better unique statistics.
-        $np['listeners']['clients'] = [];
+        if ($include_clients) {
+            // Attempt to fetch detailed listener information for better unique statistics.
+            $np['listeners']['clients'] = [];
 
-        for($i = 1; $i <= $streams; $i++) {
-            $listeners_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin.cgi?sid='.$i.'&mode=viewjson&page=3';
-            $return_raw = $this->getUrl($listeners_url, [
-                'auth' => ['admin', $fe_config['admin_pw']],
-            ]);
+            for($i = 1; $i <= $streams; $i++) {
+                $listeners_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin.cgi?sid='.$i.'&mode=viewjson&page=3';
+                $return_raw = $this->getUrl($listeners_url, [
+                    'auth' => ['admin', $fe_config['admin_pw']],
+                ]);
 
-            if (!empty($return_raw)) {
-                $listeners = json_decode($return_raw, true);
+                if (!empty($return_raw)) {
+                    $listeners = json_decode($return_raw, true);
 
-                foreach((array)$listeners as $listener) {
-                    $np['listeners']['clients'][] = [
-                        'uid' => $listener['uid'],
-                        'ip' => $listener['xff'] ?: $listener['hostname'],
-                        'user_agent' => $listener['useragent'],
-                        'connected_seconds' => $listener['connecttime'],
-                    ];
+                    foreach((array)$listeners as $listener) {
+                        $np['listeners']['clients'][] = [
+                            'uid' => $listener['uid'],
+                            'ip' => $listener['xff'] ?: $listener['hostname'],
+                            'user_agent' => $listener['useragent'],
+                            'connected_seconds' => $listener['connecttime'],
+                        ];
+                    }
                 }
             }
         }
@@ -99,6 +103,9 @@ class SHOUTcast extends FrontendAbstract
         return true;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function read()
     {
         $config = $this->_getConfig();

@@ -19,8 +19,10 @@ class Icecast extends FrontendAbstract
         );
     }
 
-    /* Process a nowplaying record. */
-    protected function _getNowPlaying(&$np, $payload = null)
+    /**
+     * @inheritdoc
+     */
+    protected function _getNowPlaying(&$np, $payload = null, $include_clients = true)
     {
         $fe_config = (array)$this->station->getFrontendConfig();
         $reader = new \App\Xml\Reader();
@@ -60,57 +62,64 @@ class Icecast extends FrontendAbstract
             return false;
         }
 
-        $current_listeners = 0;
-        $unique_listeners = [];
-        $clients = [];
-
-        $np['listeners']['clients'] = [];
-
         $song_data_by_mount = [];
+        $current_listeners = 0;
+
+        if ($include_clients) {
+            $unique_listeners = [];
+            $clients = [];
+        }
 
         foreach($mounts as $mount) {
             $song_data_by_mount[$mount['@mount']] = $mount;
 
             $current_listeners += $mount['listeners'];
 
-            // Attempt to fetch detailed listener information for better unique statistics.
-            $listeners_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin/listclients?mount='.urlencode($mount['@mount']);
-            $return_raw = $this->getUrl($listeners_url, [
-                'auth' => ['admin', $fe_config['admin_pw']],
-            ]);
+            if ($include_clients) {
+                // Attempt to fetch detailed listener information for better unique statistics.
+                $listeners_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin/listclients?mount='.urlencode($mount['@mount']);
+                $return_raw = $this->getUrl($listeners_url, [
+                    'auth' => ['admin', $fe_config['admin_pw']],
+                ]);
 
-            if (!empty($return_raw)) {
-                $listeners_raw = $reader->fromString($return_raw);
+                if (!empty($return_raw)) {
+                    $listeners_raw = $reader->fromString($return_raw);
 
-                if (!empty($listeners_raw['source']['listener']))
-                {
-                    $listeners = $listeners_raw['source']['listener'];
-                    $listeners = (key($listeners) === 0) ? $listeners : [$listeners];
+                    if (!empty($listeners_raw['source']['listener']))
+                    {
+                        $listeners = $listeners_raw['source']['listener'];
+                        $listeners = (key($listeners) === 0) ? $listeners : [$listeners];
 
-                    foreach($listeners as $listener) {
-                        $client = [
-                            'uid' => $listener['ID'],
-                            'ip' => $listener['IP'],
-                            'user_agent' => $listener['UserAgent'],
-                            'connected_seconds' => $listener['Connected'],
-                        ];
+                        foreach($listeners as $listener) {
+                            $client = [
+                                'uid' => $listener['ID'],
+                                'ip' => $listener['IP'],
+                                'user_agent' => $listener['UserAgent'],
+                                'connected_seconds' => $listener['Connected'],
+                            ];
 
-                        $client_hash = Entity\Listener::calculateListenerHash($client);
-                        $unique_listeners[$client_hash] = $client_hash;
-                        $clients[] = $client;
+                            $client_hash = Entity\Listener::calculateListenerHash($client);
+                            $unique_listeners[$client_hash] = $client_hash;
+                            $clients[] = $client;
+                        }
                     }
                 }
             }
         }
 
-        $unique_listeners = count($unique_listeners);
-
-        $np['listeners'] = [
-            'current' => $this->getListenerCount($unique_listeners, $current_listeners),
-            'unique' => $unique_listeners,
-            'total' => $current_listeners,
-            'clients' => $clients,
-        ];
+        if ($include_clients) {
+            $np['listeners'] = [
+                'current' => $this->getListenerCount($unique_listeners, $current_listeners),
+                'unique' => $unique_listeners,
+                'total' => $current_listeners,
+                'clients' => $clients,
+            ];
+        } else {
+            $np['listeners'] = [
+                'current' => $current_listeners,
+                'total' => $current_listeners,
+            ];
+        }
 
         // Check the default mount, then its fallback if otherwise not available.
         if (!empty($song_data_by_mount[$default_mount->getName()]['title'])) {

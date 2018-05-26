@@ -67,6 +67,30 @@ return [
             ],
         ],
 
+        'privacy' => [
+            'legend' => __('Privacy Controls'),
+            'description' => __('AzuraCast does not send your data to any external server. You can control how much data AzuraCast logs about your listeners here.'),
+
+            'elements' => [
+
+                'analytics' => [
+                    'radio',
+                    [
+                        'label' => __('Analytics Collection'),
+                        'description' => __('Aggregate listener statistics are used to show station reports across the system. IP-based listener statistics are used to view live listener tracking and may be required for royalty reports.'),
+
+                        'choices' => [
+                            \Entity\Analytics::LEVEL_ALL => __('<b>Full:</b> Collect aggregate listener statistics and IP-based listener statistics'),
+                            \Entity\Analytics::LEVEL_NO_IP => __('<b>Limited:</b> Only collect aggregate listener statistics'),
+                            \Entity\Analytics::LEVEL_NONE => __('<b>None:</b> Do not collect any listener analytics'),
+                        ],
+                        'default' => \Entity\Analytics::LEVEL_ALL,
+                    ]
+                ]
+
+            ],
+        ],
+
         'api_keys' => [
             'legend' => __('Advanced: Third-Party API Access'),
             'description' => __('For some features, AzuraCast must connect to third-party API services. These services are optional.'),

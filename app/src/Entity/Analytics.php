@@ -9,6 +9,15 @@ namespace Entity;
  */
 class Analytics
 {
+    /** @var string Log all analytics data across the system. */
+    public const LEVEL_ALL = 'all';
+
+    /** @var string Suppress any IP-based logging and use aggregate logging only. */
+    public const LEVEL_NO_IP = 'no_ip';
+
+    /** @var string No analytics data collected of any sort. */
+    public const LEVEL_NONE = 'none';
+
     /**
      * @Column(name="id", type="integer")
      * @Id

@@ -114,6 +114,8 @@ class Analytics extends SyncAbstract
     {
         $this->em->createQuery('DELETE FROM Entity\Analytics a')
             ->execute();
+
+        $this->influx->query('DROP SERIES FROM /.*/');
     }
 
     protected function _purgeListeners()

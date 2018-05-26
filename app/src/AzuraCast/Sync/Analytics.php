@@ -29,18 +29,12 @@ class Analytics extends SyncAbstract
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             $this->_purgeAnalytics();
+            $this->_purgeListeners();
+        } else if ($analytics_level === Entity\Analytics::LEVEL_NO_IP) {
+            $this->_purgeListeners();
         } else {
             $this->_clearOldAnalytics();
         }
-    }
-
-    protected function _purgeAnalytics()
-    {
-        $this->em->createQuery('DELETE FROM Entity\Analytics a')
-            ->execute();
-
-        $this->em->createQuery('DELETE FROM Entity\Listener l')
-            ->execute();
     }
 
     protected function _clearOldAnalytics()
@@ -114,5 +108,17 @@ class Analytics extends SyncAbstract
         }
 
         $this->em->flush();
+    }
+
+    protected function _purgeAnalytics()
+    {
+        $this->em->createQuery('DELETE FROM Entity\Analytics a')
+            ->execute();
+    }
+
+    protected function _purgeListeners()
+    {
+        $this->em->createQuery('DELETE FROM Entity\Listener l')
+            ->execute();
     }
 }

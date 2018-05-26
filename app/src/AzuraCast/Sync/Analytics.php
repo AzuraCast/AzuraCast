@@ -22,6 +22,29 @@ class Analytics extends SyncAbstract
 
     public function run($force = false)
     {
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
+
+        $analytics_level = $settings_repo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+
+        if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
+            $this->_purgeAnalytics();
+        } else {
+            $this->_clearOldAnalytics();
+        }
+    }
+
+    protected function _purgeAnalytics()
+    {
+        $this->em->createQuery('DELETE FROM Entity\Analytics a')
+            ->execute();
+
+        $this->em->createQuery('DELETE FROM Entity\Listener l')
+            ->execute();
+    }
+
+    protected function _clearOldAnalytics()
+    {
         // Clear out any non-daily statistics.
         $this->em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type != :type')
             ->setParameter('type', 'day')

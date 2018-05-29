@@ -7,7 +7,7 @@
     app_base: "{{ www_base | dirname }}"
     tmp_base: "{{ app_base }}/www_tmp"
     app_env: "production"
-    testing_mode: false
+    update_mode: false
 
     dev_azuracast_user_password: "azuracast"
     dev_mysql_user_password: "azuracast"
@@ -27,5 +27,5 @@
     - composer
     - influxdb
     - services
-    - azuracast-db
-    - { role: azuracast-cron, when: testing_mode == false }
+    - azuracast-setup
+    - azuracast-cron

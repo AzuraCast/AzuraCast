@@ -7,7 +7,7 @@
     app_base: "{{ www_base | dirname }}"
     tmp_base: "{{ app_base }}/www_tmp"
     app_env: "production"
-    testing_mode: false
+    update_mode: true
     update_revision: 1
 
   roles:
@@ -24,4 +24,4 @@
     - { role: ufw, when: update_revision|int < 12 }
     - { role: services, when: update_revision|int < 13 }
     - { role: azuracast-cron, when: update_revision|int < 2 }
-    - azuracast-update
+    - azuracast-setup

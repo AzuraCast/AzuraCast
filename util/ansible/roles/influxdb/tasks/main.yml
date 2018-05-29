@@ -42,8 +42,3 @@
 
 - name: Pause to allow InfluxDB to spin up
   wait_for: port=8086 delay=5
-
-- name: Set Up InfluxDB
-  become: true
-  become_user: azuracast
-  shell: php {{ util_base }}/cli.php azuracast:setup:influx

@@ -41,11 +41,17 @@ class Setup extends \App\Console\Command\CommandAbstract
 
         if ($update_only) {
             $io->note('Running in update mode.');
+
+            if (!APP_INSIDE_DOCKER) {
+                $io->section('Migrating Legacy Configuration');
+                $this->runCommand($output, 'azuracast:config:migrate');
+                $io->newLine();
+            }
         }
 
         $io->section('Setting Up InfluxDB');
-        $this->runCommand($output, 'azuracast:setup:influx');
 
+        $this->runCommand($output, 'azuracast:setup:influx');
         $this->runCommand($output, 'cache:clear');
 
         $io->newLine();

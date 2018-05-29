@@ -1,0 +1,17 @@
+---
+  - name: Ensure update script continues to be executable
+    file: path="{{ item }}" state=touch mode="a+x"
+    with_items:
+     - "{{ www_base }}/update.sh"
+
+  - name: Run AzuraCast Setup (Install Mode)
+    become: true
+    become_user: azuracast
+    shell: php {{ util_base }}/cli.php azuracast:setup
+    when: update_mode|bool == false
+
+  - name: Run AzuraCast Setup (Update Mode)
+    become: true
+    become_user: azuracast
+    shell: php {{ util_base }}/cli.php azuracast:setup --update
+    when: update_mode|bool == true

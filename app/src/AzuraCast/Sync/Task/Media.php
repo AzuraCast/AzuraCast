@@ -1,15 +1,11 @@
 <?php
-namespace AzuraCast\Sync;
+namespace AzuraCast\Sync\Task;
 
-use App\Debug;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Entity;
-use Monolog\Logger;
 
-class Media extends SyncAbstract
+class Media extends TaskAbstract
 {
     /** @var EntityManager */
     protected $em;

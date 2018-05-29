@@ -2,7 +2,7 @@
 namespace Controller\Stations;
 
 use App\Mvc\View;
-use AzuraCast\Sync\RadioAutomation;
+use AzuraCast\Sync\Task\RadioAutomation;
 use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Flash;

@@ -1,12 +1,11 @@
 <?php
-namespace AzuraCast\Sync;
+namespace AzuraCast\Sync\Task;
 
 use Doctrine\ORM\EntityManager;
-use Entity;
 use InfluxDB\Database;
-use Slim\Container;
+use Entity;
 
-class Analytics extends SyncAbstract
+class Analytics extends TaskAbstract
 {
     /** @var EntityManager */
     protected $em;

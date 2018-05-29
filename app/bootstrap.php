@@ -70,7 +70,4 @@ $di = new \Slim\Container([
 $settings = require(__DIR__.'/bootstrap/settings.php');
 call_user_func(include(__DIR__.'/bootstrap/services.php'), $di, $settings);
 
-// Define controllers.
-call_user_func(include(__DIR__.'/bootstrap/controllers.php'), $di, $settings);
-
 return $di;

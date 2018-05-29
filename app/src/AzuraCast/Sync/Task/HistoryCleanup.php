@@ -1,9 +1,9 @@
 <?php
-namespace AzuraCast\Sync;
+namespace AzuraCast\Sync\Task;
 
 use Doctrine\ORM\EntityManager;
 
-class HistoryCleanup extends SyncAbstract
+class HistoryCleanup extends TaskAbstract
 {
     /** @var EntityManager */
     protected $em;

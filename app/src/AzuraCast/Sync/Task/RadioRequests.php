@@ -1,11 +1,11 @@
 <?php
-namespace AzuraCast\Sync;
+namespace AzuraCast\Sync\Task;
 
 use AzuraCast\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use Entity;
 
-class RadioRequests extends SyncAbstract
+class RadioRequests extends TaskAbstract
 {
     /** @var EntityManager */
     protected $em;

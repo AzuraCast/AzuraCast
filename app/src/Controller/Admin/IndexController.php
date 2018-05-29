@@ -4,7 +4,7 @@ namespace Controller\Admin;
 use App\Acl;
 use App\Http\Request;
 use App\Http\Response;
-use AzuraCast\Sync;
+use AzuraCast\Sync\Runner;
 use Entity;
 
 class IndexController
@@ -12,15 +12,15 @@ class IndexController
     /** @var Acl */
     protected $acl;
 
-    /** @var Sync */
+    /** @var Runner */
     protected $sync;
 
     /**
      * IndexController constructor.
      * @param Acl $acl
-     * @param Sync $sync
+     * @param Runner $sync
      */
-    public function __construct(Acl $acl, Sync $sync)
+    public function __construct(Acl $acl, Runner $sync)
     {
         $this->acl = $acl;
         $this->sync = $sync;

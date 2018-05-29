@@ -1,5 +1,5 @@
 <?php
-namespace AzuraCast\Sync;
+namespace AzuraCast\Sync\Task;
 
 use App\Cache;
 use App\Url;
@@ -7,10 +7,10 @@ use AzuraCast\ApiUtilities;
 use AzuraCast\Radio\Adapters;
 use AzuraCast\Webhook\Dispatcher;
 use Doctrine\ORM\EntityManager;
-use Entity;
 use InfluxDB\Database;
+use Entity;
 
-class NowPlaying extends SyncAbstract
+class NowPlaying extends TaskAbstract
 {
     /** @var EntityManager */
     protected $em;

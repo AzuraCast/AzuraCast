@@ -1,12 +1,12 @@
 <?php
-namespace AzuraCast\Sync;
+namespace AzuraCast\Sync\Task;
 
 use App\Exception;
 use AzuraCast\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use Entity;
 
-class RadioAutomation extends SyncAbstract
+class RadioAutomation extends TaskAbstract
 {
     const DEFAULT_THRESHOLD_DAYS = 14;
 

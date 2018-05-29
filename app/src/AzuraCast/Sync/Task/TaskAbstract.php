@@ -1,10 +1,10 @@
 <?php
-namespace AzuraCast\Sync;
+namespace AzuraCast\Sync\Task;
 
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 
-abstract class SyncAbstract
+abstract class TaskAbstract
 {
     abstract public function run($force = false);
 }

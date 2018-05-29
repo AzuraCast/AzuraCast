@@ -1,21 +1,14 @@
 <?php
-namespace AzuraCast;
+namespace AzuraCast\Sync;
 
-use App\Debug;
-use Doctrine\ORM\EntityManager;
-use Entity\Settings;
 use Entity\Repository\SettingsRepository;
-use Interop\Container\ContainerInterface;
 use Monolog\Logger;
 use Pimple\ServiceIterator;
 
 /**
  * The runner of scheduled synchronization tasks.
- *
- * Class Sync
- * @package App
  */
-class Sync
+class Runner
 {
     /** @var Logger */
     protected $logger;
@@ -87,7 +80,7 @@ class Sync
 
         foreach($this->tasks_nowplaying as $task) {
             $this->_runTimer(get_class($task), function() use ($task, $force) {
-                /** @var Sync\SyncAbstract $task */
+                /** @var Task\TaskAbstract $task */
                 $task->run($force);
             });
         }
@@ -107,7 +100,7 @@ class Sync
 
         foreach($this->tasks_short as $task) {
             $this->_runTimer(get_class($task), function() use ($task, $force) {
-                /** @var Sync\SyncAbstract $task */
+                /** @var Task\TaskAbstract $task */
                 $task->run($force);
             });
         }
@@ -127,7 +120,7 @@ class Sync
 
         foreach($this->tasks_medium as $task) {
             $this->_runTimer(get_class($task), function() use ($task, $force) {
-                /** @var Sync\SyncAbstract $task */
+                /** @var Task\TaskAbstract $task */
                 $task->run($force);
             });
         }
@@ -147,7 +140,7 @@ class Sync
 
         foreach($this->tasks_long as $task) {
             $this->_runTimer(get_class($task), function() use ($task, $force) {
-                /** @var Sync\SyncAbstract $task */
+                /** @var Task\TaskAbstract $task */
                 $task->run($force);
             });
         }

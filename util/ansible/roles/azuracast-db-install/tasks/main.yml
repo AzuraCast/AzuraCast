@@ -1,5 +1,5 @@
 ---
- - name: (Prod) Generate MySQL User Password
+ - name: (Prod) Generate MariaDB User Password
    command: pwgen 8 -sn 1
    register: prod_mysql_user_password
    when: app_env == "production"
@@ -9,27 +9,18 @@
      mysql_user_password: "{{ prod_mysql_user_password.stdout if app_env == 'production' else dev_mysql_user_password }}"
 
  - name: Add configuration
+   become: true
    template: src=my.cnf.j2 dest=/etc/mysql/conf.d/my.cnf owner=root group=root mode=0644
 
  - name: Add empty root .my.cnf (if none exists)
    become: true
    template: src=root_empty_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600 force=no
 
- - name: Remove anonymous users
+ - name: MariaDB Cleanup
    command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
    with_items:
      - "DELETE FROM mysql.user WHERE User=''"
-   changed_when: False
-
- - name: Disallow root login remotely
-   command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
-   with_items:
      - "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
-   changed_when: False
-
- - name: Remove test database and access to it
-   command: 'mysql --defaults-extra-file=/root/.my.cnf -ne "{{ item }}"'
-   with_items:
      - "DROP DATABASE test"
      - "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"
    changed_when: False

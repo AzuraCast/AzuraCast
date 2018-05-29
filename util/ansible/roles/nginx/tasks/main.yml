@@ -33,11 +33,13 @@
      - nginx-extras
 
   - name: Create nginx ssl directory
+    become: true
     file: path="{{ item }}" state=directory owner=root group=root mode=0744
     with_items:
      - "/etc/nginx/ssl"
 
   - name: Create self-signed SSL cert
+    become: true
     command: openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=${ansible_fqdn}" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca
     args:
       creates: /etc/nginx/ssl/server.crt

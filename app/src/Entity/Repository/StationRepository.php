@@ -81,7 +81,7 @@ class StationRepository extends BaseRepository
         $this->_em->flush();
 
         // Scan directory for any existing files.
-        $media_sync = new \AzuraCast\Sync\Media($this->_em);
+        $media_sync = new \AzuraCast\Sync\Task\Media($this->_em);
 
         set_time_limit(600);
         $media_sync->importMusic($station);

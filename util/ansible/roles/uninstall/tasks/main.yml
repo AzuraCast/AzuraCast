@@ -16,17 +16,14 @@
     ignore_errors: True
 
   - name: Kill all processes owned by AzuraCast user
-    become: true
     command: pkill -9 -u azuracast
     ignore_errors: true
 
   - name: Update apt
-    become: true
     apt:
       update_cache: yes
 
   - name: Remove AzuraCast User
-    become: true
     user:
       name: azuracast
       state: absent
@@ -38,7 +35,6 @@
      - "{{ app_base }}/servers"
 
   - name: Remove PPAs
-    become: true
     apt_repository: repo="{{ item }}" state=absent
     with_items:
       - ppa:avsm/ppa
@@ -49,7 +45,6 @@
     ignore_errors: True
 
   - name: Remove software
-    become: true
     apt: pkg="{{ item }}" state=absent force=yes purge=yes
     with_items:
       # Radio software

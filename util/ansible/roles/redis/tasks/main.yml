@@ -1,6 +1,5 @@
 ---
   - name: Install Redis
-    become: true
     apt: package="{{ item }}" state=latest
     with_items:
      - redis-server

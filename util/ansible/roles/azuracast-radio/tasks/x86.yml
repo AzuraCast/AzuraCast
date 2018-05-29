@@ -1,6 +1,5 @@
 ---
   - name: Install IceCast-KH Dependencies
-    become: true
     apt: pkg="{{ item }}" install_recommends=no state=latest
     with_items:
      - libxml2
@@ -27,7 +26,6 @@
       extra_opts: "--strip-components=1"
 
   - name: Build IceCast-KH
-    become: true
     shell: "cd {{ app_base }}/servers/icecast2 && ./configure && make && make install"
     args:
       chdir: "{{ app_base }}/servers/icecast2"
@@ -41,11 +39,9 @@
      - { src: "{{ www_base }}/resources/xml2json.xslt", dest: "/usr/local/share/icecast/web/xml2json.xslt" }
 
   - name: Install OPAM
-    become: true
     apt: pkg="opam" install_recommends=yes state=latest
 
   - name: Install LiquidSoap Dependencies
-    become: true
     apt: pkg="{{ item }}" install_recommends=no state=latest
     with_items:
      - libpcre3-dev
@@ -63,7 +59,6 @@
      - camlp4
 
   - name: Build LiquidSoap
-    become: true
     become_user: azuracast
     shell: "opam init -y && opam update && opam install -y taglib.0.3.3 mad.0.4.5 faad.0.3.3 fdkaac.0.2.1 lame.0.3.3 vorbis.0.7.0 cry.0.6.0 flac.0.1.2 opus.0.1.2 liquidsoap.1.3.3"
     args:

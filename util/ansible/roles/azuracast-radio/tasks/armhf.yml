@@ -1,20 +1,17 @@
 ---
   - name: Install IceCast2
-    become: true
     apt: pkg=icecast2 state=latest
 
   - name: Link Fallback Error MP3
     file: src="{{ www_base }}/resources/error.mp3" dest="/usr/share/icecast2/web/error.mp3" state=link
 
   - name: Remove problematic LiquidSoap plugins
-    become: true
     apt: pkg="{{ item }}" state=absent
     with_items:
      - liquidsoap-plugin-all
      - liquidsoap-plugin-opus
 
   - name: Install LiquidSoap
-    become: true
     apt: pkg="{{ item }}" install_recommends=yes state=latest
     with_items:
      - liquidsoap

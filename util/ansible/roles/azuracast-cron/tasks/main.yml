@@ -3,7 +3,6 @@
   template: src=azuracast_cron.j2 dest="{{ tmp_base }}/azuracast_cron" force=true
 
 - name: Install Cron file
-  become: true
   shell: "crontab -u azuracast {{ tmp_base }}/azuracast_cron"
   notify: restart cron
 

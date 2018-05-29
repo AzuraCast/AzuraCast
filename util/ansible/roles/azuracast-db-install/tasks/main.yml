@@ -9,11 +9,9 @@
      mysql_user_password: "{{ prod_mysql_user_password.stdout if app_env == 'production' else dev_mysql_user_password }}"
 
  - name: Add configuration
-   become: true
    template: src=my.cnf.j2 dest=/etc/mysql/conf.d/my.cnf owner=root group=root mode=0644
 
  - name: Add empty root .my.cnf (if none exists)
-   become: true
    template: src=root_empty_my.cnf.j2 dest=/root/.my.cnf owner=root group=root mode=0600 force=no
 
  - name: MariaDB Cleanup
@@ -37,7 +35,6 @@
    notify: send mysql notification
 
  - name: Add .my.cnf
-   become: true
    template: src=user_my.cnf.j2 dest="{{ app_base }}/.my.cnf" owner=azuracast group=www-data mode=0644 force=yes
 
  - name: Reload privilege tables

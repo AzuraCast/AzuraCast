@@ -1,13 +1,11 @@
 ---
   - name: Uninstall web server packages that may conflict with nginx
-    become: true
     apt:  package="{{ item }}" state=absent
     with_items:
      - apache2
      - lighttpd
 
   - name: Unhold nginx-related packages for updates
-    become: true
     dpkg_selections:
       name: "{{ item }}"
       selection: install
@@ -17,7 +15,6 @@
       - "nginx-extras"
 
   - name: Remove any older nginx
-    become: true
     apt:  package="{{ item }}" state=absent purge=yes
     with_items:
      - nginx
@@ -25,7 +22,6 @@
      - nginx-extras
 
   - name: Install nginx
-    become: true
     apt:  package="{{ item }}" state=latest
     with_items:
      - nginx
@@ -33,40 +29,33 @@
      - nginx-extras
 
   - name: Create nginx ssl directory
-    become: true
     file: path="{{ item }}" state=directory owner=root group=root mode=0744
     with_items:
      - "/etc/nginx/ssl"
 
   - name: Create self-signed SSL cert
-    become: true
     command: openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Austin/O=IT/CN=${ansible_fqdn}" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca
     args:
       creates: /etc/nginx/ssl/server.crt
 
   - name: Remove default nginx site symlink
-    become: true
     file:
       path: "/etc/nginx/sites-enabled/default"
       state: absent
 
   - name: Add nginx global config
-    become: true
     template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf force=yes backup=yes
 
   - name: Add app-specific nginx site
-    become: true
     template: src=default.j2 dest=/etc/nginx/sites-available/00-azuracast force=yes
 
   - name: Link app-specific nginx site
-    become: true
     file:
       path: "/etc/nginx/sites-enabled/00-azuracast"
       state: link
       src: "/etc/nginx/sites-available/00-azuracast"
 
   - name: Turn sendfile off on nginx for local development
-    become: true
     replace:
       dest: /etc/nginx/nginx.conf
       regexp: 'sendfile on;'

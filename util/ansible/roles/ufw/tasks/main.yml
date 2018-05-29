@@ -1,6 +1,5 @@
 ---
 - name: Install UFW Firewall
-  become: true
   apt:  pkg="{{ item }}" state=latest
   with_items:
     - ufw

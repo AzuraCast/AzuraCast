@@ -1,12 +1,10 @@
 ---
   - name: Add PHP PPA repository
-    become: true
     apt_repository:
       repo: "ppa:ondrej/php"
       update_cache: yes
 
   - name: Remove Old PHP Libraries
-    become: true
     apt:  package="{{ item }}" state=absent
     with_items:
      - php5-common
@@ -35,7 +33,6 @@
      - php7.1-redis
 
   - name: Install PHP 7.2
-    become: true
     apt:  package="{{ item }}" state=latest
     with_items:
      - php7.2-fpm

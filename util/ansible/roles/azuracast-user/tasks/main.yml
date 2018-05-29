@@ -4,14 +4,12 @@
     register: prod_azuracast_user_password
 
   - name: Create Groups
-    become: true
     group: name="{{ item }}" state=present
     with_items:
      - www-data
      - admin
 
   - name: Create AzuraCast User
-    become: true
     user:
       name: azuracast
       home: "{{ app_base }}"
@@ -22,5 +20,4 @@
     notify: send user notification
 
   - name: Modify www-data User
-    become: true
     user: name=www-data groups="azuracast" append=yes

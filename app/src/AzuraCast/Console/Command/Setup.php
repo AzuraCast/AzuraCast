@@ -20,7 +20,8 @@ class Setup extends \App\Console\Command\CommandAbstract
     {
         $this->setName('azuracast:setup')
             ->setDescription('Run all general AzuraCast setup steps.')
-            ->addOption('update', null, InputOption::VALUE_NONE, 'Only update the existing installation.');
+            ->addOption('update', null, InputOption::VALUE_NONE, 'Only update the existing installation.')
+            ->addOption('load-fixtures', null, InputOption::VALUE_NONE, 'Load predefined fixtures (for development purposes).');
     }
 
     /**
@@ -29,6 +30,7 @@ class Setup extends \App\Console\Command\CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $update_only = (bool)$input->getOption('update');
+        $load_fixtures = (bool)$input->getOption('load-fixtures');
 
         $io = new SymfonyStyle($input, $output);
         $io->title('AzuraCast Setup');
@@ -66,7 +68,7 @@ class Setup extends \App\Console\Command\CommandAbstract
 
         $this->runCommand($output, 'orm:generate-proxies');
 
-        if (!APP_IN_PRODUCTION && !$update_only) {
+        if ($load_fixtures || (!APP_IN_PRODUCTION && !$update_only)) {
             $io->newLine();
             $io->section('Installing Data Fixtures');
 

@@ -37,13 +37,6 @@ class SetupFixtures extends \App\Console\Command\CommandAbstract
 
         $output->writeln('Fixtures loaded.');
 
-        // Restart radio stations
-        $command = $this->getApplication()->find('azuracast:radio:restart');
-        $command_args = new ArrayInput([
-            'command' => 'azuracast:radio:restart',
-        ]);
-        $command->run($command_args, $output);
-
         return 0;
     }
 }

@@ -15,7 +15,8 @@ class Version20170803050109 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-
+        // Empty migration accidentally committed.
+        $this->addSql('SELECT 1');
     }
 
     /**
@@ -23,6 +24,7 @@ class Version20170803050109 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-
+        // Empty migration accidentally committed.
+        $this->addSql('SELECT 1');
     }
 }

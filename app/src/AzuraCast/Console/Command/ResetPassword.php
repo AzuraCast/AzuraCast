@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ResetPassword extends \App\Console\Command\CommandAbstract
 {
@@ -28,6 +29,9 @@ class ResetPassword extends \App\Console\Command\CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
+        $io->title('Reset Account Password');
+
         /** @var EntityManager $em */
         $em = $this->get(EntityManager::class);
 
@@ -44,16 +48,17 @@ class ResetPassword extends \App\Console\Command\CommandAbstract
             $em->persist($user);
             $em->flush();
 
-            $output->writeLn([
+            $io->text([
                 'The account password has been reset. The new temporary password is:',
-                ' ',
-                $temp_pw,
-                ' ',
-                'Set a new password using the web interface.',
+                '',
+                '    '.$temp_pw,
+                '',
+                'Log in using this temporary password and set a new password using the web interface.',
+                '',
             ]);
             return 0;
         } else {
-            $output->writeln('Account not found.');
+            $io->error('Account not found.');
             return 1;
         }
     }

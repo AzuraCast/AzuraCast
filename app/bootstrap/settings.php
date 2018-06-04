@@ -23,9 +23,11 @@ return [
             'fr_FR.UTF-8' => 'Français',            // French
             'it_IT.UTF-8' => 'Italiano',            // Italian
             'hu_HU.UTF-8' => 'magyar',              // Hungarian
+            'nl_NL.UTF-8' => 'Nederlands',          // Dutch
             'pl_PL.UTF-8' => 'Polski',              // Polish
+            'pt_PT.UTF-8' => 'Português',           // Portuguese
+            'pt_BR.UTF-8' => 'Português do Brasil', // Brazilian Portuguese
             'ru_RU.UTF-8' => 'Русский язык',        // Russian
-            // 'pt_PT.UTF-8' => 'Português',        // Portuguese
             // 'sv_SE.UTF-8' => 'Svenska',          // Swedish
         ],
     ],

@@ -128,7 +128,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 </section>
 
 <footer id="footer" <?php if (empty($sidebar)): ?>class="footer-alt"<?php endif; ?> role="contentinfo">
-    <?=sprintf(__('Powered by %s'), '<a href="https://github.com/AzuraCast/AzuraCast" target="_blank">'.$app_settings['name'].'</a>'.' '.\AzuraCast\Version::getVersionText().' '.(APP_INSIDE_DOCKER ? '(Docker)' : '(Traditional)')) ?><br>
+    <?=sprintf(__('Powered by %s'), '<a href="https://azuracast.com/" target="_blank">'.$app_settings['name'].'</a>'.' '.\AzuraCast\Version::getVersionText().' '.(APP_INSIDE_DOCKER ? '(Docker)' : '(Traditional)')) ?><br>
     PHP <?=\PHP_VERSION ?>, SlimPHP 3
 </footer>
 

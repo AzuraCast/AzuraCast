@@ -9,7 +9,7 @@
 
 **AzuraCast** is a self-hosted, all-in-one web radio management kit. Using its easy installer and powerful but intuitive web interface, you can start up a fully working web radio station in a few quick minutes. 
 
-AzuraCast works for web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. The project is named after Azura Peavielle, the mascot of [its predecessor project](https://github.com/SlvrEagle23/Ponyville-Live). AzuraCast also has its own project mascot, [Azura Ruisselante](https://github.com/AzuraCast/AzuraCast/wiki/Meet-Azura-Ruisselante) created by the talented artist [Tyson Tan](https://tysontan.deviantart.com/).
+AzuraCast works for web radio stations of all types and sizes, and is built to run on even the most affordable VPS web hosts. The project is named after Azura Peavielle, the mascot of [its predecessor project](https://github.com/SlvrEagle23/Ponyville-Live). AzuraCast also has its own project mascot, [Azura Ruisselante](https://azuracast.com/mascot.html) created by the talented artist [Tyson Tan](https://tysontan.deviantart.com/).
 
 **AzuraCast is currently in beta.** Many web radio stations already run AzuraCast, but keeping your server up-to-date with the latest code from the GitHub repository is strongly recommended for security, bug fixes and new feature releases. It's unlikely, but updates may result in unexpected issues or data loss, so always make sure to keep your station's media files backed up in a second location.
 
@@ -17,7 +17,7 @@ To install AzuraCast, you should have a basic understanding of the Linux shell t
 
 ## Live Demo
 
-Want to see AzuraCast for yourself? Check out [screenshots](https://github.com/AzuraCast/AzuraCast/wiki/Screenshots) or visit
+Want to see AzuraCast for yourself? Check out [screenshots](https://azuracast.com/screenshots.html) or visit
 our demo site at [demo.azuracast.com](https://demo.azuracast.com/):
 
 * Username: `demo@azuracast.com`
@@ -25,9 +25,9 @@ our demo site at [demo.azuracast.com](https://demo.azuracast.com/):
 
 ## Install AzuraCast
 
-- **[Docker Installation (Recommended)](https://github.com/AzuraCast/AzuraCast/wiki/Docker-Installation)**: Docker offers an easy-to-use experience with prebuilt images. Updates are simple and AzuraCast won't interfere with other software on your server. You should use this method whenever possible.
+- **[Docker Installation (Recommended)](https://azuracast.com/install.html#using-docker-recommended)**: Docker offers an easy-to-use experience with prebuilt images. Updates are simple and AzuraCast won't interfere with other software on your server. You should use this method whenever possible.
 
-- **[Traditional Installation](https://github.com/AzuraCast/AzuraCast/wiki/Traditional-Installation)**: For advanced users, if you want more customizability or need to run a leaner installation, you can use the Traditional installation method to install AzuraCast on Ubuntu servers.
+- **[Traditional Installation](https://azuracast.com/install.html#traditional-installation)**: For advanced users, if you want more customizability or need to run a leaner installation, you can use the Traditional installation method to install AzuraCast on Ubuntu servers.
 
 ## Features
 
@@ -64,7 +64,7 @@ Whether you're using the traditional installer or Docker containers, AzuraCast w
 
 ## AzuraCast API
 
-Once installed and running, AzuraCast exposes an API that allows you to monitor and interact with your stations. Documentation about this API and its endpoints are available on the [AzuraCast API Documentation](http://azuracast.com/api/).
+Once installed and running, AzuraCast exposes an API that allows you to monitor and interact with your stations. Documentation about this API and its endpoints are available on the [AzuraCast API Documentation](https://azuracast.com/api/).
 
 ## License
 

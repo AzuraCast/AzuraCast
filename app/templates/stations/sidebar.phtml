@@ -92,7 +92,7 @@ $(function() {
         e.stopPropagation();
         var btn = $(this);
 
-        var btn_original_text = btn.text();
+        var btn_original_text = btn.html();
         var trigger_restart = (btn.data('restart') != false);
 
         btn.text(<?=$this->escapeJs(__('Please wait...')) ?>);
@@ -105,11 +105,17 @@ $(function() {
                 if (trigger_restart) {
                     setTimeout('location.reload()', 2000);
                 } else {
-                    btn.text(btn_original_text);
+                    btn.html(btn_original_text);
                 }
 
                 var notify_type = (data.success) ? 'success' : 'warning';
                 notify(data.message, notify_type);
+            },
+            error: function(response) {
+                data = jQuery.parseJSON(response.responseText);
+                notify(data.message, 'danger');
+
+                btn.html(btn_original_text);
             },
             dataType: "json"
         });

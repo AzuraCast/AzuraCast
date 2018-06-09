@@ -104,56 +104,29 @@ class Configuration
 
         // Write frontend
         if ($frontend->hasCommand()) {
-            $supervisor_config[] = '[program:' . $frontend_program . ']';
-            $supervisor_config[] = 'directory=' . $config_path;
-            $supervisor_config[] = 'command=' . $frontend->getCommand();
-            $supervisor_config[] = 'user=azuracast';
-            $supervisor_config[] = 'priority=90';
-
-            if (APP_INSIDE_DOCKER) {
-                $supervisor_config[] = 'stdout_logfile=/dev/stdout';
-                $supervisor_config[] = 'stdout_logfile_maxbytes=0';
-                $supervisor_config[] = 'stderr_logfile=/dev/stderr';
-                $supervisor_config[] = 'stderr_logfile_maxbytes=0';
-            }
-
-            $supervisor_config[] = '';
+            $this->_writeConfigurationSection($supervisor_config, $frontend_program, [
+                'directory' => $config_path,
+                'command' => $frontend->getCommand(),
+                'priority' => 90,
+            ]);
         }
 
         // Write frontend watcher program
         if ($frontend->hasWatchCommand()) {
-            $supervisor_config[] = '[program:' . $frontend_watch_program . ']';
-            $supervisor_config[] = 'directory=/var/azuracast/servers/station-watcher';
-            $supervisor_config[] = 'command=' . $frontend->getWatchCommand();
-            $supervisor_config[] = 'user=azuracast';
-            $supervisor_config[] = 'priority=95';
-
-            if (APP_INSIDE_DOCKER) {
-                $supervisor_config[] = 'stdout_logfile=/dev/stdout';
-                $supervisor_config[] = 'stdout_logfile_maxbytes=0';
-                $supervisor_config[] = 'stderr_logfile=/dev/stderr';
-                $supervisor_config[] = 'stderr_logfile_maxbytes=0';
-            }
-
-            $supervisor_config[] = '';
+            $this->_writeConfigurationSection($supervisor_config, $frontend_watch_program, [
+                'directory' => '/var/azuracast/servers/station-watcher',
+                'command' => $frontend->getWatchCommand(),
+                'priority' => 95,
+            ]);
         }
 
         // Write backend
         if ($backend->hasCommand()) {
-            $supervisor_config[] = '[program:' . $backend_program . ']';
-            $supervisor_config[] = 'directory=' . $config_path;
-            $supervisor_config[] = 'command=' . $backend->getCommand();
-            $supervisor_config[] = 'user=azuracast';
-            $supervisor_config[] = 'priority=100';
-
-            if (APP_INSIDE_DOCKER) {
-                $supervisor_config[] = 'stdout_logfile=/dev/stdout';
-                $supervisor_config[] = 'stdout_logfile_maxbytes=0';
-                $supervisor_config[] = 'stderr_logfile=/dev/stderr';
-                $supervisor_config[] = 'stderr_logfile_maxbytes=0';
-            }
-
-            $supervisor_config[] = '';
+            $this->_writeConfigurationSection($supervisor_config, $backend_program, [
+                'directory' => $config_path,
+                'command' => $backend->getCommand(),
+                'priority' => 100,
+            ]);
         }
 
         // Write config contents
@@ -161,6 +134,30 @@ class Configuration
         file_put_contents($supervisor_config_path, $supervisor_config_data);
 
         $this->_reloadSupervisor();
+    }
+
+    protected function _writeConfigurationSection(&$supervisor_config, $program_name, $config_lines)
+    {
+        $defaults = [
+            'user' => 'azuracast',
+            'priority' => 100,
+        ];
+
+        if (APP_INSIDE_DOCKER) {
+            $defaults['stdout_logfile'] = '/dev/stdout';
+            $defaults['stdout_logfile_maxbytes'] = 0;
+            $defaults['stderr_logfile'] = '/dev/stderr';
+            $defaults['stderr_logfile_maxbytes'] = 0;
+        }
+
+        $supervisor_config[] = '[program:' . $program_name . ']';
+        $config_lines = array_merge($defaults, $config_lines);
+
+        foreach($config_lines as $config_key => $config_value) {
+            $supervisor_config[] = $config_key . '=' . $config_value;
+        }
+
+        $supervisor_config[] = '';
     }
 
     /**

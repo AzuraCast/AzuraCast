@@ -52,13 +52,15 @@ class ErrorHandler
     public function __invoke(Request $req, Response $res, \Throwable $e)
     {
         // Don't log errors that are internal to the application.
-        if (!($e instanceof \App\Exception)) {
-            $this->logger->error($e->getMessage(), [
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'code' => $e->getCode(),
-            ]);
-        }
+        $e_level = ($e instanceof \App\Exception)
+            ? $e->getLoggerLevel()
+            : Logger::ERROR;
+
+        $this->logger->addRecord($e_level, $e->getMessage(), [
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'code' => $e->getCode(),
+        ]);
 
         /** @var Entity\User|null $user */
         $user = $req->getAttribute('user');

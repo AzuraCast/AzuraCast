@@ -301,23 +301,9 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
             try {
                 $this->supervisor->stopProcess($program_name);
-
                 $this->logger->info('Frontend watcher stopped.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
             } catch (FaultException $e) {
-                if (stripos($e->getMessage(), 'NOT_RUNNING') !== false) {
-                    $this->logger->info('Frontend watcher could not stop; was not running.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
-                } else {
-                    $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
-
-                    try {
-                        $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
-                        $app_e->addExtraData('Supervisord Log', explode("\n", $this->supervisor->readProcessLog($program_name, 0, 0)));
-
-                        $this->supervisor->clearProcessLogs($program_name);
-                    } catch(FaultException $e) {}
-
-                    throw $app_e;
-                }
+                $this->_handleSupervisorException($e, $program_name);
             }
         }
     }
@@ -337,20 +323,7 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
                 $this->supervisor->startProcess($program_name);
                 $this->logger->info('Frontend watcher started.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
             } catch (FaultException $e) {
-                if (stripos($e->getMessage(), 'ALREADY_STARTED') !== false) {
-                    $this->logger->info('Frontend watcher could not start; is already running.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
-                } else {
-                    $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
-
-                    try {
-                        $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
-                        $app_e->addExtraData('Supervisord Log', explode("\n", $this->supervisor->readProcessLog($program_name, 0, 0)));
-
-                        $this->supervisor->clearProcessLog($program_name);
-                    } catch(FaultException $e) {}
-
-                    throw $app_e;
-                }
+                $this->_handleSupervisorException($e, $program_name);
             }
         }
     }

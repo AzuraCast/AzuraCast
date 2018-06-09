@@ -109,20 +109,7 @@ abstract class AdapterAbstract
                 $this->supervisor->stopProcess($program_name);
                 $this->logger->info('Adapter "'.get_called_class().'" stopped.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
             } catch (FaultException $e) {
-                if (false !== stripos($e->getMessage(), 'NOT_RUNNING')) {
-                    $this->logger->info('Adapter "'.get_called_class().'" cannot stop; process was not running.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
-                } else {
-                    $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
-
-                    try {
-                        $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
-                        $app_e->addExtraData('Supervisord Log', explode("\n", $this->supervisor->readProcessLog($program_name, 0, 0)));
-
-                        $this->supervisor->clearProcessLogs($program_name);
-                    } catch(FaultException $e) {}
-
-                    throw $app_e;
-                }
+                $this->_handleSupervisorException($e, $program_name);
             }
         }
     }
@@ -141,19 +128,7 @@ abstract class AdapterAbstract
                 $this->supervisor->startProcess($program_name);
                 $this->logger->info('Adapter "'.get_called_class().'" started.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
             } catch (FaultException $e) {
-                if (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
-                    $this->logger->info('Adapter "'.get_called_class().'" cannot start; was already running.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
-                } else {
-                    $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
-
-                    try {
-                        $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
-                        $app_e->addExtraData('Supervisord Log', explode("\n", $this->supervisor->readProcessLog($program_name, 0, 0)));
-                        $this->supervisor->clearProcessLog($program_name);
-                    } catch(FaultException $e) {}
-
-                    throw $app_e;
-                }
+                $this->_handleSupervisorException($e, $program_name);
             }
         }
     }
@@ -191,5 +166,53 @@ abstract class AdapterAbstract
     public static function getBinary()
     {
         return true;
+    }
+
+    /**
+     * Internal handling of any Supervisor-related exception, to add richer data to it.
+     *
+     * @param FaultException $e
+     * @param $program_name
+     * @throws \AzuraCast\Exception\Supervisor
+     * @throws \AzuraCast\Exception\Supervisor\AlreadyRunning
+     * @throws \AzuraCast\Exception\Supervisor\NotRunning
+     */
+    protected function _handleSupervisorException(FaultException $e, $program_name)
+    {
+        if (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
+            $app_e = new \AzuraCast\Exception\Supervisor\AlreadyRunning(
+                sprintf('Adapter "%s" cannot start; was already running.', get_called_class()),
+                $e->getCode(),
+                $e
+            );
+        } else if (false !== stripos($e->getMessage(), 'NOT_RUNNING')) {
+            $app_e = new \AzuraCast\Exception\Supervisor\NotRunning(
+                sprintf('Adapter "%s" cannot start; was already running.', get_called_class()),
+                $e->getCode(),
+                $e
+            );
+        } else {
+            $app_e = new \AzuraCast\Exception\Supervisor($e->getMessage(), $e->getCode(), $e);
+        }
+
+        $app_e->addLoggingContext('station_id', $this->station->getId());
+        $app_e->addLoggingContext('station_name', $this->station->getName());
+
+        // Get more detailed information for more significant errors.
+        if ($app_e->getLoggerLevel() !== Logger::INFO) {
+            try {
+                $process_log = $this->supervisor->tailProcessLog($program_name, 0, 0);
+                $process_log = array_filter(explode("\n", $process_log[0]));
+
+                $app_e->addExtraData('Supervisord Log', $process_log);
+                $this->supervisor->clearProcessLogs($program_name);
+
+                $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
+            } catch(FaultException $e) {
+                throw $e;
+            }
+        }
+
+        throw $app_e;
     }
 }

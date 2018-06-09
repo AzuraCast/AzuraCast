@@ -47,8 +47,15 @@ class ServicesController
 
         $this->configuration->writeConfiguration($station);
 
-        $backend->stop();
-        $frontend->stop();
+        try
+        {
+            $backend->stop();
+        } catch(\AzuraCast\Exception\Supervisor\NotRunning $e) {}
+
+        try
+        {
+            $frontend->stop();
+        } catch(\AzuraCast\Exception\Supervisor\NotRunning $e) {}
 
         $frontend->start();
         $backend->start();
@@ -103,7 +110,11 @@ class ServicesController
 
             case "restart":
             default:
-                $frontend->stop();
+                try
+                {
+                    $frontend->stop();
+                } catch(\AzuraCast\Exception\Supervisor\NotRunning $e) {}
+
                 $frontend->write();
                 $frontend->start();
 
@@ -161,7 +172,11 @@ class ServicesController
 
             case "restart":
             default:
-                $backend->stop();
+                try
+                {
+                    $backend->stop();
+                } catch(\AzuraCast\Exception\Supervisor\NotRunning $e) {}
+
                 $backend->write();
                 $backend->start();
 

@@ -401,6 +401,11 @@ class FilesController extends FilesControllerAbstract
                 foreach ($music_files as $file) {
                     try {
                         $media = $this->media_repo->getOrCreate($station, $file);
+
+                        // Trigger media ID creation if it isn't already created.
+                        $this->em->persist($media);
+                        $this->em->flush($media);
+
                         $weight = $this->playlists_media_repo->addMediaToPlaylist($media, $playlist, $weight);
                         $weight++;
                     } catch (\Exception $e) {

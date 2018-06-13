@@ -448,7 +448,7 @@ return function(\Slim\App $app) {
 
     })
         ->add(AzuraCast\Middleware\Module\Stations::class)
-        ->add([AzuraCast\Middleware\Permissions::class, 'view station administration', true])
+        ->add([AzuraCast\Middleware\Permissions::class, 'view station management', true])
         ->add(AzuraCast\Middleware\GetStation::class)
         ->add(AzuraCast\Middleware\EnableView::class)
         ->add(AzuraCast\Middleware\RequireLogin::class);

@@ -158,7 +158,7 @@ class Liquidsoap extends BackendAbstract
                     '"'.$playlist_file_path.'"',
                 ];
 
-                $ls_config[] = $playlist_var_name . ' = playlist('.implode(',', $playlist_params).')';
+                $ls_config[] = $playlist_var_name . ' = mksafe(playlist('.implode(',', $playlist_params).'))';
             } else {
                 $ls_config[] = $playlist_var_name . ' = mksafe(input.http("'.$playlist->getRemoteUrl().'"))';
             }

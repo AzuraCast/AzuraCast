@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2017-05-29 09:16+0000
-PO-Revision-Date: 2018-06-03 22:57-0400
+PO-Revision-Date: 2018-06-19T06:51:43+0000
 Language: pt_BR
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -26,263 +26,263 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Could not connect to supervisord. Try running %s in a terminal to restart the service.' => 
       array (
-        0 => '',
+        0 => 'Não foi possível conectar ao supervisord. Tente executar %s em um terminal para reiniciar o serviço.',
       ),
       'System Maintenance' => 
       array (
-        0 => '',
+        0 => 'Manutenção do sistema',
       ),
       'System Settings' => 
       array (
-        0 => '',
+        0 => 'Configurações do sistema',
       ),
       'API Keys' => 
       array (
-        0 => '',
+        0 => 'Chaves API',
       ),
       'Users' => 
       array (
-        0 => '',
+        0 => 'Usuários',
       ),
       'User Accounts' => 
       array (
-        0 => '',
+        0 => 'Contas de usuário',
       ),
       'Permissions' => 
       array (
-        0 => '',
+        0 => 'Permissões',
       ),
       'Stations' => 
       array (
-        0 => '',
+        0 => 'Estações',
       ),
       'Manage Stations' => 
       array (
-        0 => '',
+        0 => 'Gerenciar estações',
       ),
       'API Key Owner' => 
       array (
-        0 => '',
+        0 => 'Proprietário da chave API',
       ),
       'Save Changes' => 
       array (
-        0 => '',
+        0 => 'Salvar alterações',
       ),
       'Enable Automated Assignment' => 
       array (
-        0 => '',
+        0 => 'Habilitar atribuição automatizada',
       ),
       'Allow the system to periodically automatically assign songs to playlists based on their performance. This process will run in the background, and will only run if this option is set to "Enabled" and at least one playlist is set to "Include in Automated Assignment".' => 
       array (
-        0 => '',
+        0 => 'Permitir o sistema automaticamente e periodicamente atribuir músicas à playlists baseado em sua performance. Esse processo irá executar em segundo plano e somente será executado se esta opção estiver configurada como "Habilitado" e ao menos uma playlist estiver configurada para "Incluir em atribuição automatizada".',
       ),
       'Days Between Automated Assignments' => 
       array (
-        0 => '',
+        0 => 'Dias entre as atribuições automatizadas',
       ),
       'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
       array (
-        0 => '',
+        0 => 'Baseado nessa configuração, o sistema irá reatribuir automaticamente as músicas usando a periodicidade escolhida abaixo, usando dados históricos da mesma periodicidade.',
       ),
       'E-mail Address' => 
       array (
-        0 => '',
+        0 => 'Endereço de e-mail',
       ),
       'Password' => 
       array (
-        0 => '',
+        0 => 'Senha',
       ),
       'Log in' => 
       array (
-        0 => '',
+        0 => 'Log in',
       ),
       'File Name' => 
       array (
-        0 => '',
+        0 => 'Nome do arquivo',
       ),
       'The relative path of the file in the station\'s media directory.' => 
       array (
-        0 => '',
+        0 => 'O caminho relativo do arquivo no diretório de mídia da estação.',
       ),
       'Song Title' => 
       array (
-        0 => '',
+        0 => 'Título da música',
       ),
       'Song Artist' => 
       array (
-        0 => '',
+        0 => 'Artista',
       ),
       'Song Album' => 
       array (
-        0 => '',
+        0 => 'Álbum',
       ),
       'ISRC' => 
       array (
-        0 => '',
+        0 => 'ISRC',
       ),
       'International Standard Recording Code, used for licensing reports.' => 
       array (
-        0 => '',
+        0 => 'International Standard Recording Code, usado para relatórios de licenciamento.',
       ),
       'Song Length (seconds)' => 
       array (
-        0 => '',
+        0 => 'Duração da música (segundos)',
       ),
       'Custom Fading: Overlap Time (seconds)' => 
       array (
-        0 => '',
+        0 => 'Fading personalizado: tempo de sobreposição (segundos)',
       ),
       'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'O tempo que essa música deve sobrepor a anterior e a próxima quando ocorrer o fading. Deixe em branco para usar o padrão do sistema.',
       ),
       'Custom Fading: Fade-In Time (seconds)' => 
       array (
-        0 => '',
+        0 => 'Fading personalizado: tempo de fade-in (segundos)',
       ),
       'The time period that the song should fade in. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'O período de tempo para o fade-in nessa música. Deixe em branco para usar o padrão do sistema.',
       ),
       'Custom Fading: Fade-Out Time (seconds)' => 
       array (
-        0 => '',
+        0 => 'Fading personalizado: tempo de fade-out (segundos)',
       ),
       'The time period that the song should fade out. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'O período de tempo para o fade-out nessa música. Deixe em branco para usar o padrão do sistema.',
       ),
       'Custom Cues: Cue-In Point (seconds)' => 
       array (
-        0 => '',
+        0 => 'Cues personalizados: ponto de cue-in (segundos)',
       ),
       'Seconds from the start of the song that the AutoDJ should start playing.' => 
       array (
-        0 => '',
+        0 => 'Segundos a partir do início da música que o AutoDJ deve começar a tocar.',
       ),
       'Custom Cues: Cue-Out Point (seconds)' => 
       array (
-        0 => '',
+        0 => 'Cues personalizados: ponto de cue-out (segundos)',
       ),
       'Seconds from the start of the song that the AutoDJ should stop playing.' => 
       array (
-        0 => '',
+        0 => 'Segundos a partir do início da música que o AutoDJ deve parar de tocar.',
       ),
       'Mount Point Name/URL' => 
       array (
-        0 => '',
+        0 => 'Nome do ponto de montagem/URL',
       ),
       'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
       array (
-        0 => '',
+        0 => 'Este nome deve sempre começar com uma barra (/) e deve ser uma URL válida, como exemplo /autodj.mp3',
       ),
       'Is Default Mount' => 
       array (
-        0 => '',
+        0 => 'É a montagem padrão',
       ),
       'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
       array (
-        0 => '',
+        0 => 'Se essa montagem for a padrão, ela será tocada na pré-visualização e na página pública da rádio neste sistema.',
       ),
       'No' => 
       array (
-        0 => '',
+        0 => 'Não',
       ),
       'Yes' => 
       array (
-        0 => '',
+        0 => 'Sim',
       ),
       'Fallback Mount' => 
       array (
-        0 => '',
+        0 => 'Montagem de contingência',
       ),
       'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
       array (
-        0 => '',
+        0 => 'Se esse ponto de montagem não estiver tocando áudio, os ouvintes serão automaticamente redirecionados para este ponto de montagem. O padrão é /error.mp3, uma mensagem de erro em repetição.',
       ),
       'Relay Stream URL' => 
       array (
-        0 => '',
+        0 => 'URL de retransmissão de stream',
       ),
       'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
       array (
-        0 => '',
+        0 => 'Digite a URL completa de outro stream para retransmitir sua transmissão através deste ponto de montagem.',
       ),
       'Enable AutoDJ' => 
       array (
-        0 => '',
+        0 => 'Habilitar AutoDJ',
       ),
       'If set to "Yes", the AutoDJ will automatically play music to this mount point.' => 
       array (
-        0 => '',
+        0 => 'Se definito como "Sim", o AutoDJ irá tocar músicas automaticamente neste ponto de montagem.',
       ),
       'AutoDJ Format' => 
       array (
-        0 => '',
+        0 => 'Formato do AutoDJ',
       ),
       'AutoDJ Bitrate (kbps)' => 
       array (
-        0 => '',
+        0 => 'Bitrate do AutoDJ (kbps)',
       ),
       'Advertise to YP Directories (Public Station)' => 
       array (
-        0 => '',
+        0 => 'Anunciar nos diretórios YP (estação pública)',
       ),
       'Set to "yes" to advertise this stream on the YP public radio directories.' => 
       array (
-        0 => '',
+        0 => 'Defina como "sim" para anunciar este fluxo no diretório YP de rádios públicas.',
       ),
       'Advanced Frontend Configuration' => 
       array (
-        0 => '',
+        0 => 'Configuração avançada do frontend',
       ),
       'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
       array (
-        0 => '',
+        0 => 'Você pode incluir qualquer configuração special do ponto de montagem aqui, tanto no formato JSON { key: \'value\' } quanto no formato XML &lt;key&gt;value&lt;/key&gt;',
       ),
       'Playlist Name' => 
       array (
-        0 => '',
+        0 => 'Nome da playlist',
       ),
       'Enable Playlist' => 
       array (
-        0 => '',
+        0 => 'Habilitar playlist',
       ),
       'If set to "No", the playlist will not be included in radio playback, but can still be managed.' => 
       array (
-        0 => '',
+        0 => 'Se definido como "Não", a playlist não será incluída na reprodução da rádio, mas ainda poderá ser gerenciada.',
       ),
       'Import Existing Playlist' => 
       array (
-        0 => '',
+        0 => 'Importar playlist existente',
       ),
       'Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.' => 
       array (
-        0 => '',
+        0 => 'Selecione um arquivo de playlist existente para adicionar seu conteúdo a esta playlist. PLS e M3U são suportados.',
       ),
       'Playlist Weight' => 
       array (
-        0 => '',
+        0 => 'Peso da playlist',
       ),
       'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
       array (
-        0 => '',
+        0 => 'Playlists de maior peso são tocadas com mais frequência se comparadas com outras playlists de menor peso.',
       ),
       'Playlist Type' => 
       array (
-        0 => '',
+        0 => 'Tipo da playlist',
       ),
       'Standard Playlist' => 
       array (
-        0 => '',
+        0 => 'Playlist padrão',
       ),
       'Plays all day, shuffles with other standard playlists based on weight.' => 
       array (
-        0 => '',
+        0 => 'Toca o dia todo, embaralha com outras playlists padrão com base no peso.',
       ),
       'Scheduled Playlist' => 
       array (
-        0 => '',
+        0 => 'Playlist programada',
       ),
       'Play during a scheduled time range. Useful for mood-based time playlists.' => 
       array (
@@ -426,203 +426,203 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Generate Report' => 
       array (
-        0 => '',
+        0 => 'Gerar relatório',
       ),
       'Role Name' => 
       array (
-        0 => '',
+        0 => 'Nome da função',
       ),
       'System-Wide Permissions' => 
       array (
-        0 => '',
+        0 => 'Permissões do sistema',
       ),
       'Actions' => 
       array (
-        0 => '',
+        0 => 'Ações',
       ),
       'Per-Station' => 
       array (
-        0 => '',
+        0 => 'Por estação',
       ),
       'AzuraCast Instance Name' => 
       array (
-        0 => '',
+        0 => 'Nome da instância do AzuraCast',
       ),
       'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
       array (
-        0 => '',
+        0 => 'Este nome irá aparecer como um sub cabeçalho próximo ao logo do AzuraCast, para ajudar a identificar este servidor.',
       ),
       'Site Base URL' => 
       array (
-        0 => '',
+        0 => 'URL base do site',
       ),
       'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
       array (
-        0 => '',
+        0 => 'A URL base onde este serviço está localizado. Use o endereço IP externo ou um nome de domínio totalmente qualificado (se houver) apontando para este servidor.',
       ),
       'Use Web Proxy for Radio' => 
       array (
-        0 => '',
+        0 => 'Usar web proxy para estações',
       ),
       'By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).' => 
       array (
-        0 => '',
+        0 => 'Por padrão, estações de rádio transmitem em suas próprias portas (ex: 8000). Se você estiver usando um serviço como o CloudFlare ou acessar sua estação de rádio por SSL, você deve habilitar esse recurso que irá servir todas as estações de rádio através das portas web (80 e 443).',
       ),
       'Advanced: Third-Party API Access' => 
       array (
-        0 => '',
+        0 => 'Avançado: Acesso à API de terceiros',
       ),
       'For some features, AzuraCast must connect to third-party API services. These services are optional.' => 
       array (
-        0 => '',
+        0 => 'Para algumas funcionalidades, o AzuraCast deve se conectar a serviços API de terceiros. Estes serviços são opcionais.',
       ),
       'Google Maps API Key' => 
       array (
-        0 => '',
+        0 => 'Chave API do Google Maps',
       ),
       'To see a map of your listeners, provide a Google Maps API key. You can obtain one from the <a href="%s" target="_blank">Google Developer Console</a>. Make sure to enable the "Google Maps JavaScript API" as well.' => 
       array (
-        0 => '',
+        0 => 'Para ver um mapa de seus ouvintes, forneça uma chave API do Google Maps. Você pode obter uma chave em <a href="%s" target="_blank">Google Developer Console</a>. Certifique-se de habilitar o "Google Maps JavaScript API" também.',
       ),
       'Metadata' => 
       array (
-        0 => '',
+        0 => 'Metadados',
       ),
       'Full Text' => 
       array (
-        0 => '',
+        0 => 'Texto completo',
       ),
       'Artist Name' => 
       array (
-        0 => '',
+        0 => 'Nome do artista',
       ),
       'Station Details' => 
       array (
-        0 => '',
+        0 => 'Detalhes da estação',
       ),
       'Station Name' => 
       array (
-        0 => '',
+        0 => 'Nome da estação',
       ),
       'Station Description' => 
       array (
-        0 => '',
+        0 => 'Descrição da estação',
       ),
       'Station Web Site URL' => 
       array (
-        0 => '',
+        0 => 'URL do website da estação',
       ),
       'Advanced Configuration' => 
       array (
-        0 => '',
+        0 => 'Configuração avançada',
       ),
       'This section and all sections below it are optional; you can continue without making any changes here and sensible defaults will be used.' => 
       array (
-        0 => '',
+        0 => 'Esta seção e todas as seções abaixo são opcionais; você pode continuar sem fazer quaisquer alterações aqui e padrões sensíveis serão usados.',
       ),
       'Station Frontend Type' => 
       array (
-        0 => '',
+        0 => 'Tipo de frontend da estação',
       ),
       'The type of software you use to deliver your broadcast to the audience.' => 
       array (
-        0 => '',
+        0 => 'O tipo de software que você usa para distribuir sua transmissão ao público.',
       ),
       'Station Backend Type' => 
       array (
-        0 => '',
+        0 => 'Tipo de backend da estação',
       ),
       'The type of software you use to manage the station\'s playlists and media.' => 
       array (
-        0 => '',
+        0 => 'O tipo de software que você usa para gerenciar as playlists e mídias da estação.',
       ),
       'Station Media Directory' => 
       array (
-        0 => '',
+        0 => 'Diretório de mídia da estação',
       ),
       'The directory where media files are stored. Leave blank to use default directory.' => 
       array (
-        0 => '',
+        0 => 'O diretório onde as mídias são armazenadas. Deixe em branco para usar o diretório padrão.',
       ),
       'Configure Radio Broadcasting' => 
       array (
-        0 => '',
+        0 => 'Configurar a transmissão da rádio',
       ),
       'Broadcasting Port' => 
       array (
-        0 => '',
+        0 => 'Porta de transmissão',
       ),
       'No other program can be using this port. Leave blank to automatically assign a port.' => 
       array (
-        0 => '',
+        0 => 'Nenhum outro programa pode utilizar essa porta. Deixe em branco para atribuir uma porta automaticamente.',
       ),
       'Source Password' => 
       array (
-        0 => '',
+        0 => 'Senha da fonte',
       ),
       'Leave blank to automatically generate a new password.' => 
       array (
-        0 => '',
+        0 => 'Deixe em branco para gerar automaticamente uma nova senha.',
       ),
       'Admin Password' => 
       array (
-        0 => '',
+        0 => 'Senha de admin',
       ),
       'Maximum Listeners' => 
       array (
-        0 => '',
+        0 => 'Máximo de ouvintes',
       ),
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
       array (
-        0 => '',
+        0 => 'Número máximo de ouvintes em através de todos os fluxos. Deixe em branco para usar o padrão (250).',
       ),
       'Custom Configuration' => 
       array (
-        0 => '',
+        0 => 'Configuração personalizada',
       ),
       'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.' => 
       array (
-        0 => '',
+        0 => 'Este código será incluído na configuração do frontend. Você pode usar tanto formato JSON {"nova_chave": "novo_valor"} como XML &lt;nova_chave&gt;novo_valor&lt;/nova_chave&gt;.',
       ),
       'Configure External Radio Server' => 
       array (
-        0 => '',
+        0 => 'Configurar servidor de rádio externo',
       ),
       'Radio Station Type' => 
       array (
-        0 => '',
+        0 => 'Tipo de estação de rádio',
       ),
       'ShoutCast v1' => 
       array (
-        0 => '',
+        0 => 'ShoutCast v1',
       ),
       'ShoutCast v2' => 
       array (
-        0 => '',
+        0 => 'ShoutCast v2',
       ),
       'IceCast v2.4+' => 
       array (
-        0 => '',
+        0 => 'IceCast v2.4+',
       ),
       'Radio Station Base URL' => 
       array (
-        0 => '',
+        0 => 'URL da estação de rádio',
       ),
       'Configure LiquidSoap' => 
       array (
-        0 => '',
+        0 => 'Configurar LiquidSoap',
       ),
       'Allow Streamers / DJs' => 
       array (
-        0 => '',
+        0 => 'Permitir transmissores / DJs',
       ),
       'If this setting is turned on, streamers (or DJs) will be able to connect directly to your stream and broadcast live music that interrupts the AutoDJ stream.' => 
       array (
-        0 => '',
+        0 => 'Se essa configuração estiver ativada, transmissores (ou DJs) serão capazes de se conectar à sua estação e transmitir música ao vivo, que interromperá o AutoDJ.',
       ),
       'Allow Song Requests' => 
       array (
-        0 => '',
+        0 => 'Permitir pedidos de música',
       ),
       'Setting this enables listeners to request a song for play on your station. Only songs that are already in your playlists are listed as requestable.' => 
       array (
@@ -826,7 +826,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Delete' => 
       array (
-        0 => '',
+        0 => 'Excluir',
       ),
       'This role cannot be deleted.' => 
       array (

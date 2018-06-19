@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2017-05-29 09:16+0000
-PO-Revision-Date: 2018-06-03 22:57-0400
+PO-Revision-Date: 2018-06-19T06:51:42+0000
 Language: nl_NL
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -122,7 +122,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'International Standard Recording Code, used for licensing reports.' => 
       array (
-        0 => '',
+        0 => 'International Standard Recording Code, wordt gebruikt voor licentierapporten.',
       ),
       'Song Length (seconds)' => 
       array (
@@ -142,7 +142,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'The time period that the song should fade in. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'De periode waarin het liedje moet infaden. Leeg laten om de systeemstandaard te gebruiken.',
       ),
       'Custom Fading: Fade-Out Time (seconds)' => 
       array (
@@ -150,7 +150,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'The time period that the song should fade out. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'De periode waarin het liedje moet uitfaden. Leeg laten om de systeemstandaard te gebruiken.',
       ),
       'Custom Cues: Cue-In Point (seconds)' => 
       array (
@@ -162,7 +162,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Custom Cues: Cue-Out Point (seconds)' => 
       array (
-        0 => '',
+        0 => 'Aangepaste Cues: Cue-In punt (seconden)',
       ),
       'Seconds from the start of the song that the AutoDJ should stop playing.' => 
       array (
@@ -206,7 +206,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
       array (
-        0 => '',
+        0 => 'Voer de volledige URL in van een andere stream om deze opnieuw uit te zenden via dit mount punt.',
       ),
       'Enable AutoDJ' => 
       array (
@@ -342,15 +342,15 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'If the end time is before the start time, the playlist will play overnight until this time on the next day.' => 
       array (
-        0 => '',
+        0 => 'Als de eindtijd vóór de starttijd ligt, wordt de afspeellijst \'s nachts afgespeeld tot deze tijd op de volgende dag.',
       ),
       'Number of Songs Between Plays' => 
       array (
-        0 => '',
+        0 => 'Aantal nummers tussen spelen',
       ),
       'This playlist will play every $x songs, where $x is specified below.' => 
       array (
-        0 => '',
+        0 => 'Deze afspeellijst zal om $x nummers worden afgespeeld, waar $x hieronder is opgegeven.',
       ),
       'Once per x Minutes Playlist' => 
       array (
@@ -518,7 +518,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'This section and all sections below it are optional; you can continue without making any changes here and sensible defaults will be used.' => 
       array (
-        0 => '',
+        0 => 'Deze sectie en alle secties eronder zijn optioneel; u kunt verder gaan zonder wijzigingen toe te passen, de standaardinstellingen zullen dan worden gebruikt.',
       ),
       'Station Frontend Type' => 
       array (
@@ -730,7 +730,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Internal notes or comments about the user, visible only on this control panel.' => 
       array (
-        0 => '',
+        0 => 'Interne notities of commentaar over de gebruiker, alleen zichtbaar vanuit dit controle paneel.',
       ),
       'Account is Active' => 
       array (
@@ -738,7 +738,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Set to "Yes" to allow this account to log in and stream.' => 
       array (
-        0 => '',
+        0 => 'Stel in op “Ja” om dit account toegang te geven om in te loggen en te streamen.',
       ),
       'Leave blank to use the current password.' => 
       array (
@@ -1018,7 +1018,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
       array (
-        0 => '',
+        0 => 'Ga verder met de installatie door je eerste radiostation aan te maken. Je kunt alle instellingen later nogmaals aanpassen.',
       ),
       'Automated assignment complete!' => 
       array (
@@ -1362,7 +1362,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Requests are queued for playback immediately after the currently playing song.' => 
       array (
-        0 => '',
+        0 => 'Verzoeknummers worden direct afgespeeld na het momenteel spelende nummer.',
       ),
       'Requests are queued for playback on the station within <b>%d to %d minutes</b> of being submitted.' => 
       array (
@@ -1386,7 +1386,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Manage streamer accounts <a href="%s">on the Streamers / DJ Accounts page</a>.' => 
       array (
-        0 => '',
+        0 => 'Beheer streamen accounts <a href="%s">op de streamers / DJ accounts pagina</a>.',
       ),
       'Support for live streamers / DJs is currently <b>disabled</b> for this station. Edit your profile above to enable it.' => 
       array (
@@ -1614,7 +1614,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
       array (
-        0 => '',
+        0 => 'Streamer accounts zijn momenteel uitgeschakeld voor dit station. Om streamer account in te schakelen klik je op de onderstaande knop.',
       ),
       'Enable Streaming' => 
       array (
@@ -1662,7 +1662,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Status messages related to this process are listed below.' => 
       array (
-        0 => '',
+        0 => 'Status berichten gerelateerd aan dit proces zijn hieronder weergegeven.',
       ),
       '%d second' => 
       array (

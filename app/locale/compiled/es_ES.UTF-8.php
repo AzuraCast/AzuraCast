@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2017-05-29 09:16+0000
-PO-Revision-Date: 2018-03-02 14:49-0500
+PO-Revision-Date: 2018-06-19T06:51:44+0000
 Language: es_ES
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -26,7 +26,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Could not connect to supervisord. Try running %s in a terminal to restart the service.' => 
       array (
-        0 => '',
+        0 => 'No se pudo conectar con supervisord. Intenta ejecutar %s en una terminal para reiniciar el servicio.',
       ),
       'System Maintenance' => 
       array (
@@ -98,11 +98,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'File Name' => 
       array (
-        0 => '',
+        0 => 'Nombre del archivo',
       ),
       'The relative path of the file in the station\'s media directory.' => 
       array (
-        0 => '',
+        0 => 'La ruta de acceso relativa del archivo en el directorio de medio de la estación.',
       ),
       'Song Title' => 
       array (
@@ -118,127 +118,127 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'ISRC' => 
       array (
-        0 => '',
+        0 => 'ISRC',
       ),
       'International Standard Recording Code, used for licensing reports.' => 
       array (
-        0 => '',
+        0 => 'Código internacional estándar de grabación, usado para informes de licencias.',
       ),
       'Song Length (seconds)' => 
       array (
-        0 => '',
+        0 => 'Duración de la canción (segundos)',
       ),
       'Custom Fading: Overlap Time (seconds)' => 
       array (
-        0 => '',
+        0 => 'Desvanecimiento medido: Tiempo de superposición (segundos)',
       ),
       'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'El tiempo que esta canción debe superponerse sobre sus canciones circundantes. Deje en blanco para usar la opción predeterminada del sistema.',
       ),
       'Custom Fading: Fade-In Time (seconds)' => 
       array (
-        0 => '',
+        0 => 'Desvanecimiento medido: Tiempo de fundido de entrada (segundos)',
       ),
       'The time period that the song should fade in. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'El período de tiempo en que la canción debería aparecer. Deje en blanco para usar la configuración predeterminada del sistema.',
       ),
       'Custom Fading: Fade-Out Time (seconds)' => 
       array (
-        0 => '',
+        0 => 'Desvanecimiento medido: Tiempo de fundido de salida (segundos)',
       ),
       'The time period that the song should fade out. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'El período de tiempo que la canción debe desaparecer. Deje en blanco para usar la predeterminada del sistema.',
       ),
       'Custom Cues: Cue-In Point (seconds)' => 
       array (
-        0 => '',
+        0 => 'Cortes personalizados: Punto de entrada (segundos)',
       ),
       'Seconds from the start of the song that the AutoDJ should start playing.' => 
       array (
-        0 => '',
+        0 => 'Segundos desde el inicio de la canción que el AutoDJ debe empezar a reproducir.',
       ),
       'Custom Cues: Cue-Out Point (seconds)' => 
       array (
-        0 => '',
+        0 => 'Cortes personalizados: Punto de salida (segundos)',
       ),
       'Seconds from the start of the song that the AutoDJ should stop playing.' => 
       array (
-        0 => '',
+        0 => 'Segundos desde el inicio de la canción que el AutoDJ debe dejar de reproducir.',
       ),
       'Mount Point Name/URL' => 
       array (
-        0 => '',
+        0 => 'Nombre/URL del punto de montaje',
       ),
       'This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3' => 
       array (
-        0 => '',
+        0 => 'Este nombre debe comenzar siempre con una barra diagonal (/) y debe ser una dirección URL válida, como /autodj.mp3',
       ),
       'Is Default Mount' => 
       array (
-        0 => '',
+        0 => 'Es el punto de montaje por defecto',
       ),
       'If this mount is the default, it will be played on the radio preview and the public radio page in this system.' => 
       array (
-        0 => '',
+        0 => 'Si este punto de montaje es el predeterminado, se reproducirá en la vista previa de la radio y la página de la radio pública en este sistema.',
       ),
       'No' => 
       array (
-        0 => '',
+        0 => 'No',
       ),
       'Yes' => 
       array (
-        0 => '',
+        0 => 'Si',
       ),
       'Fallback Mount' => 
       array (
-        0 => '',
+        0 => 'Punto de montaje de reserva',
       ),
       'If this mount point is not playing audio, listeners will automatically be redirected to this mount point. The default is /error.mp3, a repeating error message.' => 
       array (
-        0 => '',
+        0 => 'Si este punto de montaje no está reproduciendo audio, los oyentes serán redirigidos automáticamente a este punto de montaje. El valor predeterminado es /error.mp3, un mensaje de repetición de error.',
       ),
       'Relay Stream URL' => 
       array (
-        0 => '',
+        0 => 'Url de retransmisión',
       ),
       'Enter the full URL of another stream to relay its broadcast through this mount point.' => 
       array (
-        0 => '',
+        0 => 'Introduzca el URL completo de otra secuencia para transmitir su emisión a través de este punto de montaje.',
       ),
       'Enable AutoDJ' => 
       array (
-        0 => '',
+        0 => 'Permitir AutoDJ',
       ),
       'If set to "Yes", the AutoDJ will automatically play music to this mount point.' => 
       array (
-        0 => '',
+        0 => 'Si establece en "Sí", el AutoDJ reproducirá música a este punto de montaje.',
       ),
       'AutoDJ Format' => 
       array (
-        0 => '',
+        0 => 'Formato de AutoDJ',
       ),
       'AutoDJ Bitrate (kbps)' => 
       array (
-        0 => '',
+        0 => 'AutoDJ Bitrate (kbps)',
       ),
       'Advertise to YP Directories (Public Station)' => 
       array (
-        0 => '',
+        0 => 'Anunciarse en directorios YP (estación pública)',
       ),
       'Set to "yes" to advertise this stream on the YP public radio directories.' => 
       array (
-        0 => '',
+        0 => 'Establecido en "Si" para anunciar esta corriente en los directorios de radio pública de YP.',
       ),
       'Advanced Frontend Configuration' => 
       array (
-        0 => '',
+        0 => 'Configuración de interfaz avanzada',
       ),
       'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
       array (
-        0 => '',
+        0 => 'Puede incluir cualquier configuración de punto de montaje especial aquí, en formato de JSON { key: \'value\' } o XML &lt;key&gt;valor&lt;/key&gt;',
       ),
       'Playlist Name' => 
       array (
@@ -254,11 +254,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Import Existing Playlist' => 
       array (
-        0 => '',
+        0 => 'Importar lista de reproducción existente',
       ),
       'Select an existing playlist file to add its contents to this playlist. PLS and M3U are supported.' => 
       array (
-        0 => '',
+        0 => 'Seleccione un archivo de lista de reproducción existente para agregar el contenido a esta lista de reproducción. Se admiten PLS y M3U.',
       ),
       'Playlist Weight' => 
       array (
@@ -266,7 +266,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Higher weight playlists are played more frequently compared to other lower-weight playlists.' => 
       array (
-        0 => '',
+        0 => 'Las listas de mayor peso se reproducen con mayor frecuencia en comparación con otras listas de reproducción de menor peso.',
       ),
       'Playlist Type' => 
       array (
@@ -310,23 +310,23 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Play once per day at the specified time. Useful for timely reminders.' => 
       array (
-        0 => 'Jugar una vez cada día en el tiempo específico. Es útil para recordatorios oportunos.',
+        0 => 'Reproducir una vez cada día en el tiempo específico. Es útil para recordatorios oportunos.',
       ),
       'Custom Playlist' => 
       array (
-        0 => '',
+        0 => 'Lista de reproducción personalizada',
       ),
       'Manually define how this playlist is used in LiquidSoap configuration. For advanced users only!' => 
       array (
-        0 => '',
+        0 => 'Definir manualmente cómo se utiliza esta lista de reproducción en la configuración de LiquidSoap. ¡Para usuarios avanzados!',
       ),
       'Include in Automated Assignment' => 
       array (
-        0 => 'Incluir en el Asigno Automática',
+        0 => 'Incluir en la asignación Automática',
       ),
       'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
       array (
-        0 => 'Si está activado el auto-asignación, utilice esta lista de reproducción como uno de los objetivos de canciones para ser redistribuido en. Esta acción sobrescribirá el contenido existente de esta lista de reproducción.',
+        0 => 'Si está activado la asignación automática, utilice esta lista de reproducción como uno de los objetivos para redistribuir canciones. Esta acción sobrescribirá el contenido existente de esta lista de reproducción.',
       ),
       'Start Time' => 
       array (
@@ -334,7 +334,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Current server time is <b>%s</b>.' => 
       array (
-        0 => 'Hora actual del servidor es <b>%s</b>.',
+        0 => 'La hora actual del servidor es <b>%s</b>.',
       ),
       'End Time' => 
       array (
@@ -342,15 +342,15 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'If the end time is before the start time, the playlist will play overnight until this time on the next day.' => 
       array (
-        0 => 'Si el tiempo final es antes de la hora de salida, la lista de reproducción se jugará durante la noche hasta la hora de incio en el día siguiente.',
+        0 => 'Si el tiempo final es antes de la hora de salida, la lista de reproducción se reproducirá durante la noche hasta la hora de inicio en el día siguiente.',
       ),
       'Number of Songs Between Plays' => 
       array (
-        0 => 'El número de canciones entre juegos',
+        0 => 'El número de canciones entre reproducciones',
       ),
       'This playlist will play every $x songs, where $x is specified below.' => 
       array (
-        0 => 'Esta lista de reproducción reproducirá cada canciones $x, donde $x se especifica abajo.',
+        0 => 'Esta lista de reproducción reproducirá cada $x canciones, donde $x se especifica abajo.',
       ),
       'Once per x Minutes Playlist' => 
       array (
@@ -358,15 +358,15 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Number of Minutes Between Plays' => 
       array (
-        0 => 'El número de minutos entre juegos',
+        0 => 'El número de minutos entre reproducciones',
       ),
       'This playlist will play every $x minutes, where $x is specified below.' => 
       array (
-        0 => 'Esta lista de reproducción reproducirá cada canciones $x, donde $x se especifica abajo.',
+        0 => 'Esta lista de reproducción reproducirá cada $x minutos, donde $x se especifica abajo.',
       ),
       'Scheduled Play Time' => 
       array (
-        0 => 'La Hora cuando la juega',
+        0 => 'Hora programada',
       ),
       'Use Browser Default' => 
       array (
@@ -414,19 +414,19 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Important Notes' => 
       array (
-        0 => '',
+        0 => 'Notas importantes',
       ),
       'Report Start Date' => 
       array (
-        0 => '',
+        0 => 'Fecha de inicio del informe',
       ),
       'Report End Date' => 
       array (
-        0 => '',
+        0 => 'Fecha de fin del informe',
       ),
       'Generate Report' => 
       array (
-        0 => '',
+        0 => 'Generar informe',
       ),
       'Role Name' => 
       array (
@@ -446,11 +446,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'AzuraCast Instance Name' => 
       array (
-        0 => '',
+        0 => 'Nombre de instancia de AzuraCast',
       ),
       'This name will appear as a sub-header next to the AzuraCast logo, to help identify this server.' => 
       array (
-        0 => '',
+        0 => 'Este nombre aparecerá como un sub encabezado junto al logotipo de AzuraCast, para ayudar a identificar este servidor.',
       ),
       'Site Base URL' => 
       array (
@@ -458,31 +458,31 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
       array (
-        0 => '',
+        0 => 'La URL principal a través de la cual el servicio está disponible. Use la dirección IP o el nombre de host del servidor (si está disponible).',
       ),
       'Use Web Proxy for Radio' => 
       array (
-        0 => '',
+        0 => 'Use Web Proxy para Radio',
       ),
       'By default, radio stations broadcast on their own ports (i.e. 8000). If you\'re using a service like CloudFlare or accessing your radio station by SSL, you should enable this feature, which routes all radio through the web ports (80 and 443).' => 
       array (
-        0 => '',
+        0 => 'Por defecto, las estaciones de radio transmiten en sus propios puertos (es decir, 8000). Si está utilizando un servicio como CloudFlare o tiene acceso a su estación de radio mediante SSL, debe habilitar esta función, que enruta todo la transmisión a través de los puertos web (80 y 443).',
       ),
       'Advanced: Third-Party API Access' => 
       array (
-        0 => '',
+        0 => 'Avanzado: Acceso a API de terceros',
       ),
       'For some features, AzuraCast must connect to third-party API services. These services are optional.' => 
       array (
-        0 => '',
+        0 => 'Para algunas funciones, AzuraCast debe conectarse a servicios de API de terceros. Estos servicios son opcionales.',
       ),
       'Google Maps API Key' => 
       array (
-        0 => '',
+        0 => 'Clave API de Google Maps',
       ),
       'To see a map of your listeners, provide a Google Maps API key. You can obtain one from the <a href="%s" target="_blank">Google Developer Console</a>. Make sure to enable the "Google Maps JavaScript API" as well.' => 
       array (
-        0 => '',
+        0 => 'Para ver un mapa de sus oyentes, proporcione una clave API de Google Maps. Usted puede obtener una clave en <a href="%s" target="_blank"> Google Developer Console</a>. Asegúrese de habilitar la "Google Maps JavaScript API" también.',
       ),
       'Metadata' => 
       array (
@@ -510,15 +510,15 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Station Web Site URL' => 
       array (
-        0 => '',
+        0 => 'Url de sitio web de la estación',
       ),
       'Advanced Configuration' => 
       array (
-        0 => '',
+        0 => 'Configuración avanzada',
       ),
       'This section and all sections below it are optional; you can continue without making any changes here and sensible defaults will be used.' => 
       array (
-        0 => '',
+        0 => 'Esta sección y todas las secciones siguientes son opcionales; puede continuar sin realizar ningún cambio aquí y se utilizarán patrones sensibles.',
       ),
       'Station Frontend Type' => 
       array (
@@ -534,27 +534,27 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'The type of software you use to manage the station\'s playlists and media.' => 
       array (
-        0 => 'El tipo de software que utiliza para dirigir las listas y la Media de la estación.',
+        0 => 'El tipo de software que utiliza para dirigir las listas y los medios de la estación.',
       ),
       'Station Media Directory' => 
       array (
-        0 => '',
+        0 => 'Directorio de medios de la estación',
       ),
       'The directory where media files are stored. Leave blank to use default directory.' => 
       array (
-        0 => '',
+        0 => 'El directorio donde se almacenan los archivos. Deja en blanco para utilizar el directorio predeterminado.',
       ),
       'Configure Radio Broadcasting' => 
       array (
-        0 => '',
+        0 => 'Configurar la transmisión de radio',
       ),
       'Broadcasting Port' => 
       array (
-        0 => '',
+        0 => 'Punto de transmisión',
       ),
       'No other program can be using this port. Leave blank to automatically assign a port.' => 
       array (
-        0 => '',
+        0 => 'Ningún otro programa puede utilizar este puerto. Deje en blanco para asignar un puerto automáticamente.',
       ),
       'Source Password' => 
       array (
@@ -562,55 +562,55 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Leave blank to automatically generate a new password.' => 
       array (
-        0 => '',
+        0 => 'Deje en blanco para generar automáticamente una nueva contraseña.',
       ),
       'Admin Password' => 
       array (
-        0 => '',
+        0 => 'Contraseña de Administrador',
       ),
       'Maximum Listeners' => 
       array (
-        0 => '',
+        0 => 'Oyentes máximos',
       ),
       'Maximum number of total listeners across all streams. Leave blank to use the default (250).' => 
       array (
-        0 => '',
+        0 => 'Número máximo del total de oyentes a través de todos los streams. Deje en blanco el usar el predeterminado (250).',
       ),
       'Custom Configuration' => 
       array (
-        0 => '',
+        0 => 'Configuración personalizada',
       ),
       'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.' => 
       array (
-        0 => '',
+        0 => 'Este código se incluirá en la configuración del frontend. Puede utilizar tanto formato JSON {"new_key": "new_value"} como XML &lt;new_key&gt;new_value&lt;/new_key&gt;.',
       ),
       'Configure External Radio Server' => 
       array (
-        0 => '',
+        0 => 'Configuración del servidor de radio externo',
       ),
       'Radio Station Type' => 
       array (
-        0 => '',
+        0 => 'Tipo de estación de rádio',
       ),
       'ShoutCast v1' => 
       array (
-        0 => '',
+        0 => 'ShoutCast v1',
       ),
       'ShoutCast v2' => 
       array (
-        0 => '',
+        0 => 'ShoutCast v2',
       ),
       'IceCast v2.4+' => 
       array (
-        0 => '',
+        0 => 'IceCast v2.4 +',
       ),
       'Radio Station Base URL' => 
       array (
-        0 => '',
+        0 => 'Url base de la estación de radio',
       ),
       'Configure LiquidSoap' => 
       array (
-        0 => '',
+        0 => 'Configurar LiquidSoap',
       ),
       'Allow Streamers / DJs' => 
       array (
@@ -630,7 +630,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Request Minimum Delay (Minutes)' => 
       array (
-        0 => 'Pide el retraso mínimo (minutos)',
+        0 => 'Retraso mínimo de pedido (minutos)',
       ),
       'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.' => 
       array (
@@ -638,75 +638,75 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
-        0 => '',
+        0 => 'Tiempo de espera antes de pedir un nuevo título (minutos)',
       ),
       'If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.' => 
       array (
-        0 => '',
+        0 => 'Si los pedidos están habilitados, esto le permite especificar el tiempo mínimo (en minutos) entre el momento en que se reproduce el título en la radio y cuándo se puede volver a solicitar. Especifique 0 para no esperar.',
       ),
       'Crossfade Duration (Seconds)' => 
       array (
-        0 => '',
+        0 => 'Duración de crossfade (segundos)',
       ),
       'Number of seconds to overlap songs. Set to 0 to disable crossfade completely.' => 
       array (
-        0 => '',
+        0 => 'Número de segundos para la transición suave. Especifique 0 para deshabilitar el crossfade.',
       ),
       'Advanced: Custom Configuration' => 
       array (
-        0 => '',
+        0 => 'Avanzado: Configuración personalizada',
       ),
       'This code will be inserted into your station\'s LiquidSoap configuration, below the playlist configuration and just before the IceCast output. Only use valid LiquidSoap code for this section!' => 
       array (
-        0 => '',
+        0 => 'Este código se insertará en la configuración de LiquidSoap de la estación, debajo de la configuración de las listas de reproducción y justo antes de la salida de IceCast. ¡Utilice solo código LiquidSoap válido en esta sección!',
       ),
       'New Station Details' => 
       array (
-        0 => '',
+        0 => 'Detalles de la nueva estación',
       ),
       'Customize Station Cloning' => 
       array (
-        0 => '',
+        0 => 'Personalizar la clonación de la estación',
       ),
       'Copy Media?' => 
       array (
-        0 => '',
+        0 => 'Copiar los medios?',
       ),
       'Choose how media should be duplicated from the old station.' => 
       array (
-        0 => '',
+        0 => 'Elija cómo se deben duplicar los medios de la estación anterior.',
       ),
       'Do not share or copy media between the stations' => 
       array (
-        0 => '',
+        0 => 'No comparta ni copie medios entre estaciones',
       ),
       'Share the same folder on disk between the stations' => 
       array (
-        0 => '',
+        0 => 'Comparte la misma carpeta en el disco entre las estaciones',
       ),
       'Copy the existing station\'s media to the new station' => 
       array (
-        0 => '',
+        0 => 'Copiar medios desde la estación existente a la nueva estación',
       ),
       'Copy Playlists?' => 
       array (
-        0 => '',
+        0 => 'Copiar las listas de reproducción?',
       ),
       'Copy Streamer/DJ Accounts?' => 
       array (
-        0 => '',
+        0 => 'Copiar las cuentas de streamer/DJ?',
       ),
       'Copy Permissions?' => 
       array (
-        0 => '',
+        0 => 'Copiar los permisos?',
       ),
       'Selecting "Yes" will assign any users with permissions to the current station to have permissions to the new one.' => 
       array (
-        0 => '',
+        0 => 'Seleccionar "Sí" asignará a todos los usuarios que tienen acceso a esta estación los mismos permisos a la nueva estación.',
       ),
       'Create New Station' => 
       array (
-        0 => '',
+        0 => 'Crear nueva estación',
       ),
       'Streamer Username' => 
       array (
@@ -730,7 +730,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Internal notes or comments about the user, visible only on this control panel.' => 
       array (
-        0 => 'Notas internas o comentos sobre el usuario, visible solamente en este panel de control.',
+        0 => 'Notas internas o comentarios sobre el usuario, visible solamente en este panel de control.',
       ),
       'Account is Active' => 
       array (
@@ -738,7 +738,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Set to "Yes" to allow this account to log in and stream.' => 
       array (
-        0 => 'Establece a "Sí" para permitir que esta cuenta puede iniciar la sesión y stream.',
+        0 => 'Establece a "Sí" para permitir que esta cuenta puede iniciar la sesión y streamear.',
       ),
       'Leave blank to use the current password.' => 
       array (
@@ -746,15 +746,15 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Roles' => 
       array (
-        0 => 'Posiciones',
+        0 => 'Funciones',
       ),
       'External Radio Server (Statistics Only)' => 
       array (
-        0 => '',
+        0 => 'Servidor de radio externo (Estadísticas solamente)',
       ),
       'Disabled' => 
       array (
-        0 => 'Con discapacidad',
+        0 => 'Desactivado',
       ),
       'Changes saved.' => 
       array (
@@ -778,7 +778,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Clone Station: %s' => 
       array (
-        0 => '',
+        0 => 'Clonar estación: %s',
       ),
       'Record not found!' => 
       array (
@@ -830,11 +830,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'This role cannot be deleted.' => 
       array (
-        0 => 'Esta posición no se puede eliminar.',
+        0 => 'Esta función no se puede eliminar.',
       ),
       'Role Members' => 
       array (
-        0 => 'Miembros de la Posición',
+        0 => 'Rolde miembros',
       ),
       'Edit Station Profile' => 
       array (
@@ -846,11 +846,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Manage' => 
       array (
-        0 => 'Dirigir',
+        0 => 'Gestionar',
       ),
       'Clone' => 
       array (
-        0 => '',
+        0 => 'Clonar',
       ),
       'Search Results for "%s"' => 
       array (
@@ -874,7 +874,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'You do not currently manage any stations. Please contact this server\'s administrator for assistance.' => 
       array (
-        0 => '',
+        0 => 'Actualmente no administras ninguna estación. Por favor, póngase en contacto con el administrador de este servidor para obtener ayuda.',
       ),
       '%s Listener Range' => 
       array (
@@ -894,7 +894,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Station not found!' => 
       array (
-        0 => '',
+        0 => 'Estación no encontrada!',
       ),
       'Setup has already been completed!' => 
       array (
@@ -906,11 +906,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Setup is now complete!' => 
       array (
-        0 => '¡La configuración esta completa!',
+        0 => '¡La configuración está completa!',
       ),
       'Continue setting up your station in the main AzuraCast app.' => 
       array (
-        0 => 'Continua ajustando tu estación en la aplicación principal de AzuraCast.',
+        0 => 'Continúa ajustando tu estación en la aplicación principal de AzuraCast.',
       ),
       'Welcome to %s!' => 
       array (
@@ -938,11 +938,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Refresh' => 
       array (
-        0 => '',
+        0 => 'Refrescar',
       ),
       'Add' => 
       array (
-        0 => '',
+        0 => 'Añadir',
       ),
       'Listeners' => 
       array (
@@ -974,27 +974,27 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Request' => 
       array (
-        0 => '',
+        0 => 'Pedir',
       ),
       'Song History' => 
       array (
-        0 => '',
+        0 => 'Historial de canciones',
       ),
       'Request Song' => 
       array (
-        0 => '',
+        0 => 'Pedir canción',
       ),
       'Playlist' => 
       array (
-        0 => 'Lista',
+        0 => 'Lista de reproducción',
       ),
       'Download %s' => 
       array (
-        0 => '',
+        0 => 'Descargar %s',
       ),
       'Request a Song' => 
       array (
-        0 => '',
+        0 => 'Pedir una canción',
       ),
       'Begin setup by creating a Super Administrator account.' => 
       array (
@@ -1002,51 +1002,51 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'AzuraCast Setup' => 
       array (
-        0 => '',
+        0 => 'Instalación de AzuraCast',
       ),
       'Step 3: Customize AzuraCast Settings' => 
       array (
-        0 => '',
+        0 => 'Paso 3: Personalizar la configuración de AzuraCast',
       ),
       'Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel.' => 
       array (
-        0 => '',
+        0 => 'Complete el proceso de instalación brindándole información sobre su entorno de transmisión. Estas configuraciones se pueden cambiar más adelante desde el panel de administración.',
       ),
       'Step 2: Create a New Station' => 
       array (
-        0 => '',
+        0 => 'Paso 2: Crear una nueva estación',
       ),
       'Continue the setup process by creating your first radio station below. You can edit any of these details later.' => 
       array (
-        0 => '',
+        0 => 'Continúa el proceso de configuración creando tu primera estación de radio a continuación. Puede cambiar estos detalles más tarde.',
       ),
       'Automated assignment complete!' => 
       array (
-        0 => '¡Asigna Automática Completa!',
+        0 => '¡Asignación automática completa!',
       ),
       'Automated assignment error' => 
       array (
-        0 => 'Error con la Asigna Automática',
+        0 => 'Error con la asignación automática',
       ),
       'This feature is not currently supported on this station.' => 
       array (
-        0 => '',
+        0 => 'Esta característica no es soportada actualmente por esta estación.',
       ),
       'Media metadata updated!' => 
       array (
-        0 => '¡La información de la media ya está actualizada!',
+        0 => '¡La información de los medios ya está actualizada!',
       ),
       'Edit Media Metadata' => 
       array (
-        0 => 'Cambiar la información de la Media',
+        0 => 'Cambiar la información de los medios',
       ),
       'File renamed!' => 
       array (
-        0 => '',
+        0 => 'Archivo renombrado!',
       ),
       'Rename File/Directory' => 
       array (
-        0 => '',
+        0 => 'Renombrar Archivo/Directorio',
       ),
       'Directory' => 
       array (
@@ -1062,23 +1062,23 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Existing playlist imported.' => 
       array (
-        0 => '',
+        0 => 'Lista de reproducción existente importada.',
       ),
       '%d song(s) were imported into the playlist.' => 
       array (
-        0 => '',
+        0 => '%d canción(es) han sido importadas a la lista de reproducción.',
       ),
       'Song skipped.' => 
       array (
-        0 => 'Canción estuve Saltada.',
+        0 => 'Saltar canción.',
       ),
       'SoundExchange Report' => 
       array (
-        0 => '',
+        0 => 'Informe de SoundExchange',
       ),
       'Streamers enabled!' => 
       array (
-        0 => '¡Ya lo habilitizado los Streamers!',
+        0 => '¡Streamers habilitados!',
       ),
       'You can now set up streamer (DJ) accounts.' => 
       array (
@@ -1086,43 +1086,43 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Streamer account updated!' => 
       array (
-        0 => '¡La Cuenta del Streamer ya ha actualizado!',
+        0 => '¡Cuenta del Streamer actualizada!',
       ),
       'Edit Streamer' => 
       array (
-        0 => 'Editar el Streamer',
+        0 => 'Editar streamer',
       ),
       'Add Streamer' => 
       array (
-        0 => 'Añadir el Streamer',
+        0 => 'Añadir streamer',
       ),
       'Automated Playlist Assignment' => 
       array (
-        0 => 'La Asigna de la Lista Automática',
+        0 => 'Asignación automatizada de lista de reproducción',
       ),
       'Based on the previous performance of your station\'s songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.' => 
       array (
-        0 => 'Basado en el redimiento anterior de canciones de la estación, %s pueden distribuir automáticamente canciones entre sus listas, poner las canciones de juegos más alto en las listas con la más alta pesada.',
+        0 => 'Basado en el rendimiento anterior de canciones de la estación, %s puede distribuir automáticamente canciones entre sus listas, poner las canciones de reproducciones más alto en las listas mas pesadas.',
       ),
       'Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.' => 
       array (
-        0 => 'Cuando ha configurado la asigna automática, haga clic el botón de abajo para ejecutar el proceso. Este proceso no funcionará si no ha seleccionado "Habilitar" más abajo.',
+        0 => 'Cuando ha configurado la asignación automática, haga clic el botón de abajo para ejecutar el proceso. Este proceso no funcionará si no ha seleccionado "Habilitar" más abajo.',
       ),
       'Run Automated Assignment' => 
       array (
-        0 => 'Habilitar la asigna automática',
+        0 => 'Habilitar la asignación automática',
       ),
       'Configure Automated Assignment' => 
       array (
-        0 => 'Configurar la asigna automática',
+        0 => 'Configurar la asignación automática',
       ),
       'Media Manager' => 
       array (
-        0 => 'Dirigir la Media',
+        0 => 'Gestión de medios',
       ),
       '%s of %s Used (%s Free)' => 
       array (
-        0 => '',
+        0 => '%s de %s Usado (%s libre)',
       ),
       'Drag files here to upload to this folder or ' => 
       array (
@@ -1138,7 +1138,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Create new...' => 
       array (
-        0 => '',
+        0 => 'Crear nuevo...',
       ),
       'Clear Playlists' => 
       array (
@@ -1146,11 +1146,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'New Folder Name' => 
       array (
-        0 => 'Nombre del folder nuevo',
+        0 => 'Nombre de la nueva carpeta',
       ),
       'Create Folder' => 
       array (
-        0 => 'Crear folder',
+        0 => 'Crear carpeta',
       ),
       'Length' => 
       array (
@@ -1166,19 +1166,19 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Playlists' => 
       array (
-        0 => 'Listas',
+        0 => 'Listas de reproducción',
       ),
       'Create Playlist' => 
       array (
-        0 => '',
+        0 => 'Crear lista de reproducción',
       ),
       'Rename' => 
       array (
-        0 => '',
+        0 => 'Renombrar',
       ),
       'Daily Listener Range' => 
       array (
-        0 => 'El Rango de Oyentes cada Día',
+        0 => 'Rango diario de oyentes',
       ),
       'Hourly Average Listeners' => 
       array (
@@ -1194,7 +1194,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Station Center' => 
       array (
-        0 => 'Centro de la estación',
+        0 => 'Estación de control',
       ),
       'Listeners By Day' => 
       array (
@@ -1210,7 +1210,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Best Performing Songs' => 
       array (
-        0 => 'Mejores canciones de realizar',
+        0 => 'Mejores canciones',
       ),
       'in the last 48 hours' => 
       array (
@@ -1218,7 +1218,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Change' => 
       array (
-        0 => 'Cambio',
+        0 => 'Cambiar',
       ),
       'Song' => 
       array (
@@ -1230,7 +1230,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Most Played Songs' => 
       array (
-        0 => 'Las canciones más jugadas',
+        0 => 'Las canciones más reproducidas',
       ),
       'in the last month' => 
       array (
@@ -1238,7 +1238,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Plays' => 
       array (
-        0 => 'Juegos',
+        0 => 'Reproducciones',
       ),
       'Station Playback Timeline' => 
       array (
@@ -1250,39 +1250,39 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Source' => 
       array (
-        0 => '',
+        0 => 'Fuente',
       ),
       'Request: %s' => 
       array (
-        0 => '',
+        0 => 'Pedidos: %s',
       ),
       'Playlist: %s' => 
       array (
-        0 => '',
+        0 => 'Listas de reproducción: %s',
       ),
       'Live Broadcast' => 
       array (
-        0 => '',
+        0 => 'Transmisión en vivo',
       ),
       'Mount Points' => 
       array (
-        0 => '',
+        0 => 'Puntos de montaje',
       ),
       'Mount Point' => 
       array (
-        0 => '',
+        0 => 'Punto de montaje',
       ),
       'AutoDJ' => 
       array (
-        0 => '',
+        0 => 'AutoDJ',
       ),
       'Default Mount' => 
       array (
-        0 => '',
+        0 => 'Montaje predeterminado',
       ),
       'Enabled' => 
       array (
-        0 => '',
+        0 => 'Habilitado',
       ),
       'Type' => 
       array (
@@ -1294,11 +1294,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Export' => 
       array (
-        0 => '',
+        0 => 'Exportar',
       ),
       'Auto-Assigned' => 
       array (
-        0 => 'Asignado por el auto',
+        0 => 'Auto-Asignado',
       ),
       'Weight' => 
       array (
@@ -1306,7 +1306,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Plays between %s and %s' => 
       array (
-        0 => 'Juegos entre %s y %s',
+        0 => 'Reproducciones entre %s y %s',
       ),
       'Once per %d Songs' => 
       array (
@@ -1322,15 +1322,15 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Plays at %s' => 
       array (
-        0 => 'Juega en %s',
+        0 => 'Reproducir en %s',
       ),
       'Custom' => 
       array (
-        0 => '',
+        0 => 'Personalizado',
       ),
       'Station Profile' => 
       array (
-        0 => '',
+        0 => 'Perfil de la estación',
       ),
       'Basic Profile' => 
       array (
@@ -1338,43 +1338,43 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Technical Details' => 
       array (
-        0 => '',
+        0 => 'Datos técnicos',
       ),
       'Station Base Directory' => 
       array (
-        0 => '',
+        0 => 'Directorio de la estación',
       ),
       'Player Embed Code' => 
       array (
-        0 => '',
+        0 => 'Código incrustado del reproductor',
       ),
       'Song Requests' => 
       array (
-        0 => 'Pedidos de Canciónes',
+        0 => 'Pedidos de Canciones',
       ),
       'Song requests are currently <b>enabled</b> for this station.' => 
       array (
-        0 => 'Los pedidos para canciones son actualmente <b>habilitado</b> para esta estación.',
+        0 => 'Los pedidos para canciones están actualmente <b>habilitados</b> para esta estación.',
       ),
       'Request Delay' => 
       array (
-        0 => '',
+        0 => 'Retraso de solicitud',
       ),
       'Requests are queued for playback immediately after the currently playing song.' => 
       array (
-        0 => 'Los pedidos están en cola para la reproducción inmediatamente después de la canción está jugando actualmente.',
+        0 => 'Los pedidos están en cola para la reproducción inmediatamente después de la canción que está reproduciendo actualmente.',
       ),
       'Requests are queued for playback on the station within <b>%d to %d minutes</b> of being submitted.' => 
       array (
-        0 => 'Los pedidos están en cola para jugar en la estación entre <b>%d a %d minutos</b> de ser enviado.',
+        0 => 'Los pedidos están en cola para reproducir en la estación entre <b>%d a %d minutos</b> luego de ser enviado.',
       ),
       'Request Embed Code' => 
       array (
-        0 => '',
+        0 => 'Código incrustado de pedidos',
       ),
       'Song requests are currently <b>disabled</b> for this station. Edit your profile above to enable them.' => 
       array (
-        0 => 'Pedidos para canciones son actualmente <b>deshabilitados</b> para esta estacion. Por favor, edita su perfil para habitarlas.',
+        0 => 'Pedidos para canciones están actualmente <b>deshabilitados</b> para esta estación. Por favor, edita su perfil para habitarlas.',
       ),
       'Streamers/DJs' => 
       array (
@@ -1382,39 +1382,39 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Support for live streamers / DJs is currently <b>enabled</b> for this station.' => 
       array (
-        0 => '',
+        0 => 'Soporta para Stremers / DJs está <b>habilitado</b> para esta estación.',
       ),
       'Manage streamer accounts <a href="%s">on the Streamers / DJ Accounts page</a>.' => 
       array (
-        0 => 'Dirigir cuentas de los streamers <a href="%s"> en la página para las cuentas de los Streamers / DJ</a>.',
+        0 => 'Gestionar cuentas de los streamers <a href="%s"> en la página para las cuentas de los Streamers / DJ</a>.',
       ),
       'Support for live streamers / DJs is currently <b>disabled</b> for this station. Edit your profile above to enable it.' => 
       array (
-        0 => '',
+        0 => 'Soporte para Streamers / DJs está <b>deshabilitado</b> para esta estación. Edita tu perfil para habilitarlo.',
       ),
       'Only the AutoDJ (based on your uploaded media and playlists) will be able to play on the air.' => 
       array (
-        0 => 'Sólo el AutoDJ (basado en su media subido y su listas) podrá jugar en el aire.',
+        0 => 'Sólo el AutoDJ (basado en sus medios subidos y sus listas) podrá reproducir en el aire.',
       ),
       'External Radio Server' => 
       array (
-        0 => '',
+        0 => 'Servidor de radio externo',
       ),
       'Stream Public URL' => 
       array (
-        0 => 'El Transmición URL Pública',
+        0 => 'La URL Pública de la transmisión',
       ),
       'IceCast (Broadcasting Service)' => 
       array (
-        0 => 'IceCast (servicio de transmición)',
+        0 => 'IceCast (servicio de transmisión)',
       ),
       'ShoutCast (Broadcasting Service)' => 
       array (
-        0 => '',
+        0 => 'ShoutCast (servicio de transmición)',
       ),
       'Running' => 
       array (
-        0 => 'Funcionamiento',
+        0 => 'Funcionando',
       ),
       'Not Running' => 
       array (
@@ -1434,15 +1434,15 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Public URL' => 
       array (
-        0 => '',
+        0 => 'URL Pública',
       ),
       'Stream Playlists' => 
       array (
-        0 => '',
+        0 => 'Reproducir listas de reproducción',
       ),
       'Administration URL' => 
       array (
-        0 => 'El URL de la Administración',
+        0 => 'URL de la Administración',
       ),
       'Administrator Password' => 
       array (
@@ -1450,11 +1450,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'AutoDJ Disabled' => 
       array (
-        0 => '',
+        0 => 'AutoDJ deshabilitado',
       ),
       'AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.' => 
       array (
-        0 => '',
+        0 => 'AutoDJ ha sido desactivado para esta estación. No se reproducirá música automáticamente cuando una fuente no esté en vivo.',
       ),
       'LiquidSoap (AutoDJ Service)' => 
       array (
@@ -1462,11 +1462,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Skip Song' => 
       array (
-        0 => 'Salta la Canción',
+        0 => 'Saltar Canción',
       ),
       'LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.' => 
       array (
-        0 => 'LiquidSoap está actualmente barajando de <b>%d subido canciones</b> en <b>listas %d</b>.',
+        0 => 'LiquidSoap está actualmente mezclando de <b>%d canciones subidas</b> en <b>%d listas</b>.',
       ),
       'Song Duplicates' => 
       array (
@@ -1478,39 +1478,39 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Title / File Path' => 
       array (
-        0 => 'Título / Archivo Ruta de Acceso',
+        0 => 'Ruta de Título / Archivo',
       ),
       'Live Listeners' => 
       array (
-        0 => '',
+        0 => 'Oyentes en vivo',
       ),
       'Enable Google Maps API' => 
       array (
-        0 => '',
+        0 => 'Activar Google Maps API',
       ),
       'IP' => 
       array (
-        0 => '',
+        0 => 'IP',
       ),
       'Time (sec)' => 
       array (
-        0 => '',
+        0 => 'Tiempo (seg)',
       ),
       'User Agent' => 
       array (
-        0 => '',
+        0 => 'Navegador',
       ),
       'Location' => 
       array (
-        0 => '',
+        0 => 'Ubicación',
       ),
       'Unknown' => 
       array (
-        0 => '',
+        0 => 'Desconocido',
       ),
       'Song Listener Impact' => 
       array (
-        0 => 'El impacto del oyente enla canción',
+        0 => 'El impacto del oyente en la canción',
       ),
       'Download CSV' => 
       array (
@@ -1522,7 +1522,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Length Text' => 
       array (
-        0 => 'Duración',
+        0 => 'Longitud de texto',
       ),
       'Playlist(s)' => 
       array (
@@ -1538,11 +1538,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Total' => 
       array (
-        0 => 'Conjunto',
+        0 => 'Total',
       ),
       'Play %' => 
       array (
-        0 => 'Porcentage de jugar',
+        0 => '% reproducciones',
       ),
       'Ratio' => 
       array (
@@ -1550,27 +1550,27 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Date Requested' => 
       array (
-        0 => '',
+        0 => 'Fecha de pedido',
       ),
       'Date Played' => 
       array (
-        0 => '',
+        0 => 'Fecha de reproducción',
       ),
       'Requester IP' => 
       array (
-        0 => '',
+        0 => 'IP del solicitante',
       ),
       'Not Played' => 
       array (
-        0 => '',
+        0 => 'Sin reproducir',
       ),
       '<b>Apply Pending Changes</b><br>Click to Restart Station' => 
       array (
-        0 => '',
+        0 => '<b>Aplicar cambios</b><br>Hacer clic para reiniciar la estación',
       ),
       'Public Page' => 
       array (
-        0 => '',
+        0 => 'Página pública',
       ),
       'Profile' => 
       array (
@@ -1582,7 +1582,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Media' => 
       array (
-        0 => 'Media',
+        0 => 'Medios',
       ),
       'Music Files' => 
       array (
@@ -1594,7 +1594,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Song Playback Timeline' => 
       array (
-        0 => 'Tiempo de reproducción de la canción',
+        0 => 'Historial de reproducción de canciones',
       ),
       'Duplicate Songs' => 
       array (
@@ -1606,11 +1606,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Automated Assignment' => 
       array (
-        0 => 'Asigna Automática',
+        0 => 'Asignación automática',
       ),
       'Restart Broadcasting' => 
       array (
-        0 => 'Reiniciar la transmición',
+        0 => 'Reiniciar la transmisión',
       ),
       'Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.' => 
       array (
@@ -1646,23 +1646,23 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Mount Name' => 
       array (
-        0 => 'Nombre de Monte',
+        0 => 'Nombre de montaje',
       ),
       'ShoutCast v1 Clients' => 
       array (
-        0 => '',
+        0 => 'Clientes ShoutCast v1',
       ),
       '(DJ username and password separated by a colon)' => 
       array (
-        0 => '',
+        0 => '(nombre de usuario y contraseña de DJ separados por dos puntos)',
       ),
       'Setup instructions for broadcasting software are available <a href="%s" target="_blank">on the AzuraCast Wiki</a>.' => 
       array (
-        0 => '',
+        0 => 'Las instrucciones para configurar el software de transmisión están disponibles <a href="%s" target="_blank">en AzuraCast Wiki</a>.',
       ),
       'Status messages related to this process are listed below.' => 
       array (
-        0 => '',
+        0 => 'Los mensajes de estado relacionados con este proceso se muestran a continuación.',
       ),
       '%d second' => 
       array (
@@ -1691,27 +1691,27 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Process stopped.' => 
       array (
-        0 => '',
+        0 => 'Proceso detenido.',
       ),
       'Process was not running!' => 
       array (
-        0 => '',
+        0 => '¡El proceso no se está ejecutando!',
       ),
       'Process started.' => 
       array (
-        0 => '',
+        0 => 'Proceso iniciado.',
       ),
       'Process is already running!' => 
       array (
-        0 => '',
+        0 => '¡El proceso ya está en marcha!',
       ),
       'You cannot use an AutoDJ with a remote frontend. Please change the frontend type or update the backend to be "Disabled".' => 
       array (
-        0 => '',
+        0 => 'No puede usar el AutoDJ con una interfaz remota. Cambie el tipo de frontend del conmutador configurando el backend a "desactivado".',
       ),
       'AutoDJ is currently disabled. Enable it from the station profile.' => 
       array (
-        0 => '',
+        0 => 'AutoDJ está deshabilitado. Activar desde el perfil de la estación.',
       ),
       'Now Playing Data' => 
       array (
@@ -1731,7 +1731,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Check Media Folders' => 
       array (
-        0 => 'Administra carpetas de Medios',
+        0 => 'Administrar carpetas de medios',
       ),
       '1-Hour Sync' => 
       array (
@@ -1759,7 +1759,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'End Session' => 
       array (
-        0 => 'Cerrar sesión',
+        0 => 'Terminar sesión',
       ),
       'Sign Out' => 
       array (
@@ -1767,7 +1767,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Powered by %s Version %s.' => 
       array (
-        0 => 'Usando %s Versión %s.',
+        0 => 'Impulsado por %s Versión %s.',
       ),
       'Pause' => 
       array (
@@ -1775,11 +1775,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Mute' => 
       array (
-        0 => 'Muta',
+        0 => 'Silencio',
       ),
       'Unmute' => 
       array (
-        0 => 'Quitar la Muta',
+        0 => 'Activar el sonido',
       ),
       'Select...' => 
       array (

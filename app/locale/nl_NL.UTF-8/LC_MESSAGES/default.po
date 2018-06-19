@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-05-29 09:16+0000\n"
-"PO-Revision-Date: 2018-06-03 22:57-0400\n"
+"PO-Revision-Date: 2018-06-19T06:51:42+0000\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
@@ -155,7 +155,7 @@ msgstr "ISRC"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:39
 msgid "International Standard Recording Code, used for licensing reports."
-msgstr ""
+msgstr "International Standard Recording Code, wordt gebruikt voor licentierapporten."
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:46
 msgid "Song Length (seconds)"
@@ -175,7 +175,7 @@ msgstr "Aangepaste overgang: fade-in tijd (seconden)"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:65
 msgid "The time period that the song should fade in. Leave blank to use the system default."
-msgstr ""
+msgstr "De periode waarin het liedje moet infaden. Leeg laten om de systeemstandaard te gebruiken."
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:72
 msgid "Custom Fading: Fade-Out Time (seconds)"
@@ -183,7 +183,7 @@ msgstr "Aangepaste overgang: fade-out tijd (seconden)"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:73
 msgid "The time period that the song should fade out. Leave blank to use the system default."
-msgstr ""
+msgstr "De periode waarin het liedje moet uitfaden. Leeg laten om de systeemstandaard te gebruiken."
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:80
 msgid "Custom Cues: Cue-In Point (seconds)"
@@ -195,7 +195,7 @@ msgstr "Aantal seconden vanaf de start van het nummer waarop de AutoDJ moet begi
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:88
 msgid "Custom Cues: Cue-Out Point (seconds)"
-msgstr ""
+msgstr "Aangepaste Cues: Cue-In punt (seconden)"
 
 #: /var/azuracast/www/app/config/forms/media.conf.php:89
 msgid "Seconds from the start of the song that the AutoDJ should stop playing."
@@ -261,7 +261,7 @@ msgstr "Doorstuur Stream URL"
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:43
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:73
 msgid "Enter the full URL of another stream to relay its broadcast through this mount point."
-msgstr ""
+msgstr "Voer de volledige URL in van een andere stream om deze opnieuw uit te zenden via dit mount punt."
 
 #: /var/azuracast/www/app/config/forms/mount_icecast.conf.php:51
 #: /var/azuracast/www/app/config/forms/mount_shoutcast2.conf.php:33
@@ -413,15 +413,15 @@ msgstr "Eindtijd"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:136
 msgid "If the end time is before the start time, the playlist will play overnight until this time on the next day."
-msgstr ""
+msgstr "Als de eindtijd vóór de starttijd ligt, wordt de afspeellijst 's nachts afgespeeld tot deze tijd op de volgende dag."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:152
 msgid "Number of Songs Between Plays"
-msgstr ""
+msgstr "Aantal nummers tussen spelen"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:153
 msgid "This playlist will play every $x songs, where $x is specified below."
-msgstr ""
+msgstr "Deze afspeellijst zal om $x nummers worden afgespeeld, waar $x hieronder is opgegeven."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:162
 msgid "Once per x Minutes Playlist"
@@ -616,7 +616,7 @@ msgstr "Geavanceerde configuratie"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:56
 msgid "This section and all sections below it are optional; you can continue without making any changes here and sensible defaults will be used."
-msgstr ""
+msgstr "Deze sectie en alle secties eronder zijn optioneel; u kunt verder gaan zonder wijzigingen toe te passen, de standaardinstellingen zullen dan worden gebruikt."
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:63
 msgid "Station Frontend Type"
@@ -831,7 +831,7 @@ msgstr "Reacties"
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:28
 msgid "Internal notes or comments about the user, visible only on this control panel."
-msgstr ""
+msgstr "Interne notities of commentaar over de gebruiker, alleen zichtbaar vanuit dit controle paneel."
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:35
 msgid "Account is Active"
@@ -839,7 +839,7 @@ msgstr "Account is actief"
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:36
 msgid "Set to \"Yes\" to allow this account to log in and stream."
-msgstr ""
+msgstr "Stel in op “Ja” om dit account toegang te geven om in te loggen en te streamen."
 
 #: /var/azuracast/www/app/config/forms/user.conf.php:30
 msgid "Leave blank to use the current password."
@@ -1191,7 +1191,7 @@ msgstr "Stap 2: Creëer een nieuw station"
 
 #: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:10
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
-msgstr ""
+msgstr "Ga verder met de installatie door je eerste radiostation aan te maken. Je kunt alle instellingen later nogmaals aanpassen."
 
 #: /var/azuracast/www/app/modules/stations/controllers/AutomationController.php:40
 msgid "Automated assignment complete!"
@@ -1572,7 +1572,7 @@ msgstr "Vertraging van verzoeknummers"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:56
 msgid "Requests are queued for playback immediately after the currently playing song."
-msgstr ""
+msgstr "Verzoeknummers worden direct afgespeeld na het momenteel spelende nummer."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:58
 #, php-format
@@ -1599,7 +1599,7 @@ msgstr "Ondersteuning voor live streamers / DJ's is momenteel <b>ingeschakeld</b
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:94
 #, php-format
 msgid "Manage streamer accounts <a href=\"%s\">on the Streamers / DJ Accounts page</a>."
-msgstr ""
+msgstr "Beheer streamen accounts <a href=\"%s\">op de streamers / DJ accounts pagina</a>."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:96
 msgid "Support for live streamers / DJs is currently <b>disabled</b> for this station. Edit your profile above to enable it."
@@ -1844,7 +1844,7 @@ msgstr "Herstart uitzending"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/disabled.phtml:8
 msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."
-msgstr ""
+msgstr "Streamer accounts zijn momenteel uitgeschakeld voor dit station. Om streamer account in te schakelen klik je op de onderstaande knop."
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/disabled.phtml:10
 msgid "Enable Streaming"
@@ -1895,7 +1895,7 @@ msgstr "Installatie instructies voor uitzendsoftware zijn beschikbaar <a href=\"
 
 #: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:4
 msgid "Status messages related to this process are listed below."
-msgstr ""
+msgstr "Status berichten gerelateerd aan dit proces zijn hieronder weergegeven."
 
 #: /var/azuracast/www/app/src/App/Utilities.php:91
 #, php-format

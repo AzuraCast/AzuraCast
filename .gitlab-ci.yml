@@ -2,7 +2,9 @@ stages:
  - test
 
 run_testing:
-  image: docker/compose:1.19.0
+  image: 
+    name: docker/compose:1.19.0
+    entrypoint: [""]
   stage: test
   script:
     - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml pull

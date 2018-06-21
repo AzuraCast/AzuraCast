@@ -1,6 +1,5 @@
 stages:
  - test
- - on_failure
 
 run_testing:
   image: docker/compose:1.19.0
@@ -9,13 +8,8 @@ run_testing:
     - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml pull
     - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --rm cli azuracast_install
     - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --rm cli azuracast_testing
+    - cat tests/_output/*.html
   only:
     - master
   tags:
     - docker
-
-echo_testing_logs:
-  stage: on_failure
-  script:
-    - cat tests/_output/*.html
-  when: on_failure

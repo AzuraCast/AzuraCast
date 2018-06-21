@@ -1,17 +1,20 @@
+image: docker
+
+services:
+  - docker:dind
+
 stages:
  - test
 
 run_testing:
-  image: 
-    name: docker/compose:1.19.0
-    entrypoint: [""]
   stage: test
   script:
+    - apk add --no-cache py-pip
+    - pip install docker-compose
+    - docker-compose up -d
     - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml pull
     - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --rm cli azuracast_install
     - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --rm cli azuracast_testing
     - cat tests/_output/*.html
   only:
     - master
-  tags:
-    - docker

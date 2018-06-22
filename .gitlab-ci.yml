@@ -1,7 +1,7 @@
 image: docker
 
 services:
-  - docker:dind
+  - gitlab/dind
 
 stages:
  - test

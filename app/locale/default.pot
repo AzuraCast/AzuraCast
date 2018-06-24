@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-05-26T21:25:29+00:00\n"
-"PO-Revision-Date: 2018-05-26T21:25:29+00:00\n"
+"POT-Creation-Date: 2018-06-24T20:19:16+00:00\n"
+"PO-Revision-Date: 2018-06-24T20:19:16+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/app/config/admin/actions.conf.php:4
@@ -1600,12 +1600,12 @@ msgstr ""
 msgid "Now playing on %s: %s by %s! Tune in now."
 msgstr ""
 
-#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:78
+#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:80
 #: /var/azuracast/www/app/src/AzuraCast/Middleware/Module/Api.php:65
 msgid "You must be logged in to access this page."
 msgstr ""
 
-#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:89
+#: /var/azuracast/www/app/src/App/Mvc/ErrorHandler.php:91
 #: /var/azuracast/www/app/src/AzuraCast/Middleware/Module/Api.php:62
 msgid "You do not have permission to access this portion of the site."
 msgstr ""
@@ -1656,36 +1656,36 @@ msgstr ""
 msgid "<b>Do not use</b> an AutoDJ service"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Sync.php:164
-#: /var/azuracast/www/app/src/AzuraCast/Sync.php:167
+#: /var/azuracast/www/app/src/AzuraCast/Sync/Runner.php:157
+#: /var/azuracast/www/app/src/AzuraCast/Sync/Runner.php:160
 msgid "Now Playing Data"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Sync.php:171
+#: /var/azuracast/www/app/src/AzuraCast/Sync/Runner.php:164
 msgid "1-Minute Sync"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Sync.php:174
+#: /var/azuracast/www/app/src/AzuraCast/Sync/Runner.php:167
 msgid "Song Requests Queue"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Sync.php:178
+#: /var/azuracast/www/app/src/AzuraCast/Sync/Runner.php:171
 msgid "5-Minute Sync"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Sync.php:181
+#: /var/azuracast/www/app/src/AzuraCast/Sync/Runner.php:174
 msgid "Check Media Folders"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Sync.php:185
+#: /var/azuracast/www/app/src/AzuraCast/Sync/Runner.php:178
 msgid "1-Hour Sync"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Sync.php:188
+#: /var/azuracast/www/app/src/AzuraCast/Sync/Runner.php:181
 msgid "Analytics/Statistics"
 msgstr ""
 
-#: /var/azuracast/www/app/src/AzuraCast/Sync.php:189
+#: /var/azuracast/www/app/src/AzuraCast/Sync/Runner.php:182
 msgid "Cleanup"
 msgstr ""
 
@@ -1877,7 +1877,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:117
 #: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:126
 #: /var/azuracast/www/app/src/Controller/Admin/StationsController.php:228
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:62
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:69
 #: /var/azuracast/www/app/templates/admin/stations/index.phtml:7
 #: /var/azuracast/www/app/templates/admin/stations/index.phtml:8
 #: /var/azuracast/www/app/templates/admin/stations/index.phtml:21
@@ -1907,35 +1907,35 @@ msgstr ""
 msgid "Logged in successfully."
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:62
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:110
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:168
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:69
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:121
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:183
 msgid "%s restarted."
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:95
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:101
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:110
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:102
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:108
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:121
 msgid "Frontend"
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:95
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:153
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:102
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:164
 msgid "%s stopped."
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:101
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:159
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:108
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:170
 msgid "%s started."
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:147
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:158
 msgid "Song skipped."
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:153
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:159
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:168
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:164
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:170
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:183
 msgid "Backend"
 msgstr ""
 

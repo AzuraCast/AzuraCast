@@ -90,10 +90,10 @@ class StationMount
     protected $autodj_bitrate;
 
     /**
-     * @Column(name="custom_listenurl", type="string", length=255, nullable=true)
+     * @Column(name="custom_listen_url", type="string", length=255, nullable=true)
      * @var string|null
      */
-    protected $custom_listenurl;
+    protected $custom_listen_url;
 
     /**
      * @Column(name="frontend_config", type="text", nullable=true)
@@ -308,17 +308,17 @@ class StationMount
     /**
      * @return string|null
      */
-    public function getCustomListenurl(): ?string
+    public function getCustomListenUrl(): ?string
     {
-        return $this->custom_listenurl;
+        return $this->custom_listen_url;
     }
 
     /**
-     * @param null|string $frontend_config
+     * @param null|string $custom_listen_url
      */
-    public function setCustomListenurl(string $custom_listenurl = null)
+    public function setCustomListenUrl(string $custom_listen_url = null)
     {
-        $this->custom_listenurl = $custom_listenurl;
+        $this->custom_listen_url = $custom_listen_url;
     }
 
     /**

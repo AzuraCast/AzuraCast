@@ -97,11 +97,11 @@ return [
                     ]
                 ],
 
-                'custom_listenurl' => [
+                'custom_listen_url' => [
                     'text',
                     [
-                        'label' => __('Advanced: Custom stream URL'),
-                        'description' => __('You can set custom stream url to match your setup. Leave empty to use default.')
+                        'label' => __('Advanced: Custom Stream URL'),
+                        'description' => __('You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.')
                     ]
                 ],
 

@@ -14,13 +14,13 @@ class Version20180608130900 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-	$this->addSql('ALTER TABLE station_mounts ADD custom_listenurl VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE station_mounts ADD custom_listen_url VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema)
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-	$this->addSql('ALTER TABLE station_mounts DROP ustom_listenurl');
+        $this->addSql('ALTER TABLE station_mounts DROP custom_listen_url');
     }
 }

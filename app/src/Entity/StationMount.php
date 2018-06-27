@@ -90,6 +90,12 @@ class StationMount
     protected $autodj_bitrate;
 
     /**
+     * @Column(name="custom_listen_url", type="string", length=255, nullable=true)
+     * @var string|null
+     */
+    protected $custom_listen_url;
+
+    /**
      * @Column(name="frontend_config", type="text", nullable=true)
      * @var string|null
      */
@@ -297,6 +303,22 @@ class StationMount
     public function setAutodjBitrate(int $autodj_bitrate = null)
     {
         $this->autodj_bitrate = $autodj_bitrate;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCustomListenUrl(): ?string
+    {
+        return $this->custom_listen_url;
+    }
+
+    /**
+     * @param null|string $custom_listen_url
+     */
+    public function setCustomListenUrl(string $custom_listen_url = null)
+    {
+        $this->custom_listen_url = $custom_listen_url;
     }
 
     /**

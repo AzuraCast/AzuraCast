@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-06-24T20:19:16+00:00\n"
-"PO-Revision-Date: 2018-06-24T20:19:16+00:00\n"
+"POT-Creation-Date: 2018-06-27T21:31:24+00:00\n"
+"PO-Revision-Date: 2018-06-27T21:31:24+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/app/config/admin/actions.conf.php:4
@@ -167,9 +167,9 @@ msgstr ""
 #: /var/azuracast/www/app/config/forms/branding.conf.php:100
 #: /var/azuracast/www/app/config/forms/custom_field.conf.php:27
 #: /var/azuracast/www/app/config/forms/media.conf.php:135
-#: /var/azuracast/www/app/config/forms/mount/icecast.conf.php:118
+#: /var/azuracast/www/app/config/forms/mount/icecast.conf.php:126
 #: /var/azuracast/www/app/config/forms/mount/remote.conf.php:118
-#: /var/azuracast/www/app/config/forms/mount/shoutcast2.conf.php:109
+#: /var/azuracast/www/app/config/forms/mount/shoutcast2.conf.php:117
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:337
 #: /var/azuracast/www/app/config/forms/profile.conf.php:119
 #: /var/azuracast/www/app/config/forms/rename.conf.php:18
@@ -582,10 +582,20 @@ msgid "Set to \"yes\" to advertise this stream on the YP public radio directorie
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/mount/icecast.conf.php:103
-msgid "Advanced Frontend Configuration"
+#: /var/azuracast/www/app/config/forms/mount/shoutcast2.conf.php:92
+msgid "Advanced: Custom Stream URL"
 msgstr ""
 
 #: /var/azuracast/www/app/config/forms/mount/icecast.conf.php:104
+#: /var/azuracast/www/app/config/forms/mount/shoutcast2.conf.php:93
+msgid "You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value."
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/mount/icecast.conf.php:111
+msgid "Advanced Frontend Configuration"
+msgstr ""
+
+#: /var/azuracast/www/app/config/forms/mount/icecast.conf.php:112
 msgid "You can include any special mount point settings here, in either JSON { key: 'value' } format or XML &lt;key&gt;value&lt;/key&gt;"
 msgstr ""
 
@@ -630,11 +640,11 @@ msgstr ""
 msgid "If you are broadcasting using AutoDJ, enter the source password here."
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/mount/shoutcast2.conf.php:92
+#: /var/azuracast/www/app/config/forms/mount/shoutcast2.conf.php:100
 msgid "YP Directory Authorization Hash"
 msgstr ""
 
-#: /var/azuracast/www/app/config/forms/mount/shoutcast2.conf.php:93
+#: /var/azuracast/www/app/config/forms/mount/shoutcast2.conf.php:101
 msgid "If your stream is set to advertise to YP directories above, you must specify an authorization hash. You can manage authhashes <a href=\"%s\" target=\"_blank\">on the SHOUTcast web site</a>."
 msgstr ""
 

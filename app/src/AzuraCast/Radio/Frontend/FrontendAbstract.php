@@ -127,9 +127,11 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
 
     public function getUrlForMount($mount)
     {
-        return ($mount instanceof \Entity\StationMount)
-            ? $this->getPublicUrl() . $mount->getName() . '?' . time()
-            : null;
+        if(!$mount instanceof \Entity\StationMount) return null;
+        return (!empty($mount->getCustomListenUrl())
+            ? $mount->getCustomListenUrl()
+            : $this->getPublicUrl() . $mount->getName()
+        ) . '?' . time();
     }
 
     abstract public function getAdminUrl();

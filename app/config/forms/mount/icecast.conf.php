@@ -97,6 +97,14 @@ return [
                     ]
                 ],
 
+                'custom_listenurl' => [
+                    'text',
+                    [
+                        'label' => __('Advanced: Custom stream URL'),
+                        'description' => __('You can set custom stream url to match your setup. Leave empty to use default.')
+                    ]
+                ],
+
                 'frontend_config' => [
                     'textarea',
                     [

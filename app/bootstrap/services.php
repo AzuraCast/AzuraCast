@@ -327,6 +327,11 @@ return function (\Slim\Container $di, $settings) {
         return \AzuraCast\Console\Application::create($di, $settings);
     };
 
+    $di[MaxMind\Db\Reader::class] = function($di) {
+        $mmdb_path = dirname(APP_INCLUDE_ROOT).'/geoip/GeoLite2-City.mmdb';
+        return new MaxMind\Db\Reader($mmdb_path);
+    };
+
     //
     // AzuraCast-specific dependencies
     //

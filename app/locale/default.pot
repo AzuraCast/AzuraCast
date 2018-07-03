@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-06-27T21:31:24+00:00\n"
-"PO-Revision-Date: 2018-06-27T21:31:24+00:00\n"
+"POT-Creation-Date: 2018-07-03T22:50:16+00:00\n"
+"PO-Revision-Date: 2018-07-03T22:50:16+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/app/config/admin/actions.conf.php:4
@@ -2819,8 +2819,8 @@ msgid "Title / File Path"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:21
-#: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:92
-#: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:195
+#: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:95
+#: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:198
 msgid "Live Listeners"
 msgstr ""
 
@@ -2856,27 +2856,31 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:196
-msgid "Today"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:197
-msgid "Yesterday"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:198
-msgid "Last 7 Days"
+#: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:82
+msgid "This product includes GeoLite2 data created by MaxMind, available from %s."
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:199
-msgid "Last 30 Days"
+msgid "Today"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:200
-msgid "This Month"
+msgid "Yesterday"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:201
+msgid "Last 7 Days"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:202
+msgid "Last 30 Days"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:203
+msgid "This Month"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/reports/listeners.phtml:204
 msgid "Last Month"
 msgstr ""
 

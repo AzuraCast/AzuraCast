@@ -2,12 +2,9 @@
 namespace AzuraCast\Middleware;
 
 use App\Auth;
-use AzuraCast\Assets;
 use AzuraCast\Customization;
-use Doctrine\ORM\EntityManager;
-use Slim\Container;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 /**
  * Get the current user entity object and assign it into the request if it exists.
@@ -39,7 +36,7 @@ class GetCurrentUser
 
         // Initialize customization (timezones, locales, etc) based on the current logged in user.
         $this->customization->setUser($user);
-        $this->customization->init();
+        $request = $this->customization->init($request);
 
         $request = $request
             ->withAttribute('user', $user)

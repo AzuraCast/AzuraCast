@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Entity;
 use App\Http\Request;
 use App\Http\Response;
+use MaxMind\Db\Reader;
 
 class ListenersController
 {
@@ -15,15 +16,20 @@ class ListenersController
     /** @var Cache */
     protected $cache;
 
+    /** @var Reader */
+    protected $geoip;
+
     /**
      * ListenersController constructor.
      * @param EntityManager $em
      * @param Cache $cache
+     * @param Reader $geoip
      */
-    public function __construct(EntityManager $em, Cache $cache)
+    public function __construct(EntityManager $em, Cache $cache, Reader $geoip)
     {
         $this->em = $em;
         $this->cache = $cache;
+        $this->geoip = $geoip;
     }
 
     /**
@@ -84,14 +90,8 @@ class ListenersController
                 ->getArrayResult();
         }
 
-        $ips = [];
-        foreach($listeners_raw as $listener) {
-            $ips[$listener['listener_ip']] = $listener['listener_ip'];
-        }
-
-        $ip_info = $this->_getIpInfo($ips);
-
         $detect = new \Mobile_Detect;
+        $locale = $request->getAttribute('locale');
 
         $listeners = [];
         foreach($listeners_raw as $listener) {
@@ -103,7 +103,7 @@ class ListenersController
             $api->is_mobile = $detect->isMobile();
             $api->connected_on = (int)$listener['timestamp_start'];
             $api->connected_time = $listener['connected_time'] ?? (time() - $listener['timestamp_start']);
-            $api->location = $ip_info[$listener['listener_ip']];
+            $api->location = $this->_getLocationInfo($listener['listener_ip'], $locale);
 
             $listeners[] = $api;
         }
@@ -111,56 +111,43 @@ class ListenersController
         return $response->withJson($listeners);
     }
 
-    protected function _getIpInfo($raw_ips)
+    protected function _getLocationInfo($ip, $locale): array
     {
-        $return = [];
-        foreach($raw_ips as $ip) {
-            $ip_info = $this->cache->get('/ip/'.$ip, null);
-            if ($ip_info !== null) {
-                $return[$ip] = $ip_info;
-                unset($raw_ips[$ip]);
-            }
+        $ip_info = $this->geoip->get($ip);
+
+        if (empty($ip_info)) {
+            return [
+                'message' => 'Internal/Reserved IP',
+            ];
         }
 
-        if (empty($raw_ips)) {
-            return $return;
+        return [
+            'region' => $this->_getLocalizedString($ip_info['subdivisions'][0]['names'] ?? null, $locale),
+            'country' => $this->_getLocalizedString($ip_info['country']['names'] ?? null, $locale),
+            'message' => 'This product includes GeoLite2 data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>.',
+        ];
+    }
+
+    protected function _getLocalizedString($names, $locale): string
+    {
+        if (empty($names)) {
+            return '';
         }
 
-        // Set up IP API batch query process.
-        $client = new \GuzzleHttp\Client([
-            'base_uri' => 'http://ip-api.com/batch',
-            'timeout' => 10,
-        ]);
+        // Convert "en_US" to "en-US", the format MaxMind uses.
+        $locale = str_replace('_', '-', $locale);
 
-        $ips_per_request = 90;
-
-        for($i = 0; $i <= count($raw_ips); $i += $ips_per_request) {
-
-            $ips = array_slice($raw_ips, $i, $ips_per_request);
-
-            $batch_json = [];
-            foreach($ips as $ip) {
-                $batch_json[] = ['query' => $ip];
-            }
-
-            $response = $client->post('', [
-                'json' => $batch_json,
-            ]);
-
-            if ($response->getStatusCode() == 200) {
-                $response_body = $response->getBody()->getContents();
-                $response = json_decode($response_body, true);
-
-                foreach($response as $location_row) {
-                    $ip = $location_row['query'];
-                    unset($location_row['query']);
-
-                    $this->cache->set($location_row, '/ip/'.$ip, 3600);
-                    $return[$ip] = $location_row;
-                }
-            }
+        // Check for an exact match.
+        if (isset($names[$locale])) {
+            return $names[$locale];
         }
 
-        return $return;
+        // Check for a match of the first portion, i.e. "en"
+        $locale = strtolower(substr($locale, 0, 2));
+        if (isset($names[$locale])) {
+            return $names[$locale];
+        }
+
+        return $names['en'];
     }
 }

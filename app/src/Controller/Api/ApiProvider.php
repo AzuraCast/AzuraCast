@@ -26,7 +26,8 @@ class ApiProvider implements ServiceProviderInterface
         $di[ListenersController::class] = function($di) {
             return new ListenersController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class]
+                $di[\App\Cache::class],
+                $di[\MaxMind\Db\Reader::class]
             );
         };
 

@@ -2,6 +2,7 @@
 namespace AzuraCast;
 
 use App\Auth;
+use App\Http\Request;
 use Entity;
 use Gettext\Translations;
 use Gettext\Translator;
@@ -28,13 +29,18 @@ class Customization
     }
 
     /**
-     * Initialize timezone and locale settings for the current user.
+     * Initialize timezone and locale settings for the current user, and write them as attributes to the request.
+     *
+     * @param Request $request
+     * @return Request
      */
-    public function init()
+    public function init(Request $request): Request
     {
+        $timezone = $this->getTimeZone();
+
         if (!APP_IS_COMMAND_LINE || APP_TESTING_MODE) {
             // Set time zone.
-            date_default_timezone_set($this->getTimeZone());
+            date_default_timezone_set($timezone);
 
             // Localization
             $locale = $this->getLocale();
@@ -56,6 +62,11 @@ class Customization
 
         putenv("LANG=" . $locale);
         setlocale(LC_ALL, $locale);
+
+        return $request->withAttributes([
+            'locale' => $locale,
+            'timezone' => $timezone,
+        ]);
     }
 
     /**

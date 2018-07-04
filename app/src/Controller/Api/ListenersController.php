@@ -117,15 +117,19 @@ class ListenersController
 
         if (empty($ip_info)) {
             return [
-                'status' => 'failure',
+                'status' => 'error',
                 'message' => 'Internal/Reserved IP',
             ];
         }
 
         return [
             'status' => 'success',
+            'lat' => $ip_info['location']['latitude'] ?? 0.0,
+            'lon' => $ip_info['location']['longitude'] ?? 0.0,
+            'timezone' => $ip_info['location']['time_zone'] ?? '',
             'region' => $this->_getLocalizedString($ip_info['subdivisions'][0]['names'] ?? null, $locale),
             'country' => $this->_getLocalizedString($ip_info['country']['names'] ?? null, $locale),
+            'city' => $this->_getLocalizedString($ip_info['city']['names'] ?? null, $locale),
             'message' => 'This product includes GeoLite2 data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>.',
         ];
     }

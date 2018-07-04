@@ -28,10 +28,10 @@ $vue_data_model = [
     </div>
 <?php endif; ?>
     <div class="media-body">
-        <h4 class="media-heading">
+        <h4 class="media-heading might-overflow nowplaying-title">
             {{ np.now_playing.song.title }}
         </h4>
-        <div>
+        <div class="nowplaying-artist might-overflow">
             {{ np.now_playing.song.artist }}
         </div>
         <div class="nowplaying-progress" v-if="time_display">

@@ -47,3 +47,18 @@
     margin: 20px 0;
   }
 }
+
+// Pulled from:
+// https://stackoverflow.com/questions/5474871/html-how-can-i-show-tooltip-only-when-ellipsis-is-activated
+
+.might-overflow {
+  text-overflow: ellipsis;
+  overflow : hidden;
+  white-space: nowrap;
+
+  &:hover {
+    text-overflow: clip;
+    white-space: normal;
+    word-break: break-all;
+  }
+}

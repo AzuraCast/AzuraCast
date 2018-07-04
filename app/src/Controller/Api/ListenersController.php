@@ -117,13 +117,13 @@ class ListenersController
 
         if (empty($ip_info)) {
             return [
-                'success' => false,
+                'status' => 'failure',
                 'message' => 'Internal/Reserved IP',
             ];
         }
 
         return [
-            'success' => true,
+            'status' => 'success',
             'region' => $this->_getLocalizedString($ip_info['subdivisions'][0]['names'] ?? null, $locale),
             'country' => $this->_getLocalizedString($ip_info['country']['names'] ?? null, $locale),
             'message' => 'This product includes GeoLite2 data created by MaxMind, available from <a href="http://www.maxmind.com">http://www.maxmind.com</a>.',

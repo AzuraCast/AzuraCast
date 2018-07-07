@@ -130,121 +130,125 @@ class FilesController extends FilesControllerAbstract
         $file = $request->getAttribute('file');
         $file_path = $request->getAttribute('file_path');
 
-        if (is_dir($file_path)) {
-            $media_in_dir_raw = $this->em->createQuery('SELECT 
-                  partial sm.{id, unique_id, path, length, length_text, artist, title, album}, partial spm.{id}, partial sp.{id, name}, partial smcf.{id, field_id, value}
-                  FROM Entity\StationMedia sm 
-                  LEFT JOIN sm.custom_fields smcf 
-                  LEFT JOIN sm.playlist_items spm
-                  LEFT JOIN spm.playlist sp 
-                  WHERE sm.station_id = :station_id 
-                  AND sm.path LIKE :path')
-                ->setParameter('station_id', $station_id)
-                ->setParameter('path', $file . '%')
-                ->getArrayResult();
+        $search_phrase = trim($request->getParam('searchPhrase') ?? '');
 
-            $media_in_dir = [];
-            foreach ($media_in_dir_raw as $media_row) {
-                $playlists = [];
-                foreach ($media_row['playlist_items'] as $playlist_row) {
-                    $playlists[] = $playlist_row['playlist']['name'];
-                }
+        if (!is_dir($file_path)) {
+            throw new \App\Exception(__('Path "%s" is not a folder.', $file));
+        }
 
-                $custom_fields = [];
-                foreach($media_row['custom_fields'] as $custom_field) {
-                    $custom_fields['custom_'.$custom_field['field_id']] = $custom_field['value'];
-                }
+        $media_query = $this->em->createQueryBuilder()
+            ->select('partial sm.{id, unique_id, path, length, length_text, artist, title, album}')
+            ->addSelect('partial spm.{id}, partial sp.{id, name}')
+            ->addSelect('partial smcf.{id, field_id, value}')
+            ->from(Entity\StationMedia::class, 'sm')
+            ->leftJoin('sm.custom_fields', 'smcf')
+            ->leftJoin('sm.playlist_items', 'spm')
+            ->leftJoin('spm.playlist', 'sp')
+            ->where('sm.station_id = :station_id')
+            ->andWhere('sm.path LIKE :path')
+            ->setParameter('station_id', $station_id)
+            ->setParameter('path', $file . '%');
 
-                $media_in_dir[$media_row['path']] = [
-                    'is_playable' => ($media_row['length'] !== 0),
-                    'length' => $media_row['length'],
-                    'length_text' => $media_row['length_text'],
-                    'artist' => $media_row['artist'],
-                    'title' => $media_row['title'],
-                    'album' => $media_row['album'],
-                    'name' => $media_row['artist'] . ' - ' . $media_row['title'],
-                    'art' => $this->url->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
-                    'edit_url' => $this->url->named('stations:files:edit', ['station' => $station_id, 'id' => $media_row['id']]),
-                    'play_url' => $this->url->named('stations:files:download', ['station' => $station_id]) . '?file=' . urlencode($media_row['path']),
-                    'playlists' => $playlists,
-                ] + $custom_fields;
-            }
-
-            // Search all recursive files
-            if (!empty($_REQUEST['searchPhrase'])) {
-                $files = $this->_getMusicFiles($file_path);
+        // Apply searching
+        if (!empty($search_phrase)) {
+            if (substr($search_phrase, 0, 9) === 'playlist:') {
+                $playlist_name = substr($search_phrase, 9);
+                $media_query->andWhere('sp.name = :playlist_name')
+                    ->setParameter('playlist_name', $playlist_name);
             } else {
-                $finder = new Finder();
-                $finder->in($file_path)->depth('== 0');
+                $media_query->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query)')
+                    ->setParameter('query', '%'.$search_phrase.'%');
+            }
+        }
 
-                $files = [];
-                foreach($finder as $finder_file) {
-                    $files[] = $finder_file->getPathname();
-                }
+        $media_in_dir_raw = $media_query->getQuery()
+            ->getArrayResult();
+
+        // Process all database results.
+        $media_in_dir = [];
+        foreach ($media_in_dir_raw as $media_row) {
+            $playlists = [];
+            foreach ($media_row['playlist_items'] as $playlist_row) {
+                $playlists[] = $playlist_row['playlist']['name'];
             }
 
-            foreach ($files as $i) {
-                $short = ltrim(str_replace($station->getRadioMediaDir(), '', $i), '/');
-
-                if (is_dir($i)) {
-                    $media = ['name' => __('Directory'), 'playlists' => [], 'is_playable' => false];
-                } elseif (isset($media_in_dir[$short])) {
-                    $media = $media_in_dir[$short];
-                } else {
-                    $media = ['name' => __('File Not Processed'), 'playlists' => [], 'is_playable' => false];
-                }
-
-                $stat = stat($i);
-
-                $max_length = 60;
-                $shortname = basename($i);
-                if (mb_strlen($shortname) > $max_length) {
-                    $shortname = mb_substr($shortname, 0, $max_length - 15) . '...' . mb_substr($shortname, -12);
-                }
-
-                $result_row = [
-                    'mtime' => $stat['mtime'],
-                    'size' => $stat['size'],
-                    'name' => $short,
-                    'path' => $short,
-                    'text' => $shortname,
-                    'is_dir' => is_dir($i),
-                    'rename_url' => $this->url->named('stations:files:rename', ['station' => $station_id, 'path' => base64_encode($short)]),
-                ];
-
-                foreach ($media as $media_key => $media_val) {
-                    $result_row['media_' . $media_key] = $media_val;
-                }
-
-                $result[] = $result_row;
+            $custom_fields = [];
+            foreach($media_row['custom_fields'] as $custom_field) {
+                $custom_fields['custom_'.$custom_field['field_id']] = $custom_field['value'];
             }
+
+            $media_in_dir[$media_row['path']] = [
+                'is_playable' => ($media_row['length'] !== 0),
+                'length' => $media_row['length'],
+                'length_text' => $media_row['length_text'],
+                'artist' => $media_row['artist'],
+                'title' => $media_row['title'],
+                'album' => $media_row['album'],
+                'name' => $media_row['artist'] . ' - ' . $media_row['title'],
+                'art' => $this->url->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
+                'edit_url' => $this->url->named('stations:files:edit', ['station' => $station_id, 'id' => $media_row['id']]),
+                'play_url' => $this->url->named('stations:files:download', ['station' => $station_id]) . '?file=' . urlencode($media_row['path']),
+                'playlists' => $playlists,
+            ] + $custom_fields;
+        }
+
+        if (!empty($search_phrase)) {
+            $files = [];
+            $radio_media_dir = $station->getRadioMediaDir();
+
+            foreach($media_in_dir as $short_path => $media_row) {
+                $files[] = $radio_media_dir.'/'.$short_path;
+            }
+        } else {
+            $finder = new Finder();
+            $finder->in($file_path)->depth('== 0');
+
+            $files = [];
+            foreach($finder as $finder_file) {
+                $files[] = $finder_file->getPathname();
+            }
+        }
+
+        foreach ($files as $i) {
+            $short = ltrim(str_replace($station->getRadioMediaDir(), '', $i), '/');
+
+            if (is_dir($i)) {
+                $media = ['name' => __('Directory'), 'playlists' => [], 'is_playable' => false];
+            } elseif (isset($media_in_dir[$short])) {
+                $media = $media_in_dir[$short];
+            } else {
+                $media = ['name' => __('File Not Processed'), 'playlists' => [], 'is_playable' => false];
+            }
+
+            $stat = stat($i);
+
+            $max_length = 60;
+            $shortname = basename($i);
+            if (mb_strlen($shortname) > $max_length) {
+                $shortname = mb_substr($shortname, 0, $max_length - 15) . '...' . mb_substr($shortname, -12);
+            }
+
+            $result_row = [
+                'mtime' => $stat['mtime'],
+                'size' => $stat['size'],
+                'name' => $short,
+                'path' => $short,
+                'text' => $shortname,
+                'is_dir' => is_dir($i),
+                'rename_url' => $this->url->named('stations:files:rename', ['station' => $station_id, 'path' => base64_encode($short)]),
+            ];
+
+            foreach ($media as $media_key => $media_val) {
+                $result_row['media_' . $media_key] = $media_val;
+            }
+
+            $result[] = $result_row;
         }
 
         // Example from bootgrid docs:
         // current=1&rowCount=10&sort[sender]=asc&searchPhrase=&id=b0df282a-0d67-40e5-8558-c9e93b7befed
 
-        // Apply sorting, limiting and searching.
-        $search_phrase = trim($_REQUEST['searchPhrase']);
-
-        if (!empty($search_phrase)) {
-            $result = array_filter($result, function ($row) use ($search_phrase) {
-                if (substr($search_phrase, 0, 9) === 'playlist:') {
-                    $playlist_name = substr($search_phrase, 9);
-                    return in_array($playlist_name, $row['media_playlists']);
-                }
-
-                $search_fields = ['media_name', 'text'];
-
-                foreach ($search_fields as $field_name) {
-                    if (stripos($row[$field_name], $search_phrase) !== false) {
-                        return true;
-                    }
-                }
-
-                return false;
-            });
-        }
-
+        // Apply sorting and limiting.
         $sort_by = ['is_dir', \SORT_DESC];
 
         if (!empty($_REQUEST['sort'])) {

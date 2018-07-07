@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Stations\Files;
 
+use App\Cache;
 use App\Csrf;
 use App\Flash;
 use App\Url;
@@ -24,6 +25,9 @@ abstract class FilesControllerAbstract
     /** @var string */
     protected $csrf_namespace = 'stations_files';
 
+    /** @var Cache */
+    protected $cache;
+
     /** @var array */
     protected $form_config;
 
@@ -40,12 +44,13 @@ abstract class FilesControllerAbstract
      * @param Url $url
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Flash $flash, Url $url, Csrf $csrf, array $form_config)
+    public function __construct(EntityManager $em, Flash $flash, Url $url, Csrf $csrf, Cache $cache, array $form_config)
     {
         $this->em = $em;
         $this->flash = $flash;
         $this->url = $url;
         $this->csrf = $csrf;
+        $this->cache = $cache;
         $this->form_config = $form_config;
 
         $this->media_repo = $this->em->getRepository(Entity\StationMedia::class);

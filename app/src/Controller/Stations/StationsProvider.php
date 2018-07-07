@@ -29,6 +29,7 @@ class StationsProvider implements ServiceProviderInterface
                 $di[\App\Flash::class],
                 $di[\App\Url::class],
                 $di[\App\Csrf::class],
+                $di[\App\Cache::class],
                 $config->get('forms/rename')
             );
         };
@@ -44,6 +45,7 @@ class StationsProvider implements ServiceProviderInterface
                 $di[\App\Flash::class],
                 $url,
                 $di[\App\Csrf::class],
+                $di[\App\Cache::class],
                 $config->get('forms/media', [
                     'url' => $url
                 ])

@@ -7,6 +7,7 @@ use App\Http\Response;
 use App\Mvc\View;
 use App\Utilities;
 use AzuraCast\Radio\Backend\BackendAbstract;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Class FilesController
@@ -131,13 +132,13 @@ class FilesController extends FilesControllerAbstract
 
         if (is_dir($file_path)) {
             $media_in_dir_raw = $this->em->createQuery('SELECT 
-              partial sm.{id, unique_id, path, length, length_text, artist, title, album}, partial spm.{id}, partial sp.{id, name}, partial smcf.{id, field_id, value}
-              FROM Entity\StationMedia sm 
-              LEFT JOIN sm.custom_fields smcf 
-              LEFT JOIN sm.playlist_items spm
-              LEFT JOIN spm.playlist sp 
-              WHERE sm.station_id = :station_id 
-              AND sm.path LIKE :path')
+                  partial sm.{id, unique_id, path, length, length_text, artist, title, album}, partial spm.{id}, partial sp.{id, name}, partial smcf.{id, field_id, value}
+                  FROM Entity\StationMedia sm 
+                  LEFT JOIN sm.custom_fields smcf 
+                  LEFT JOIN sm.playlist_items spm
+                  LEFT JOIN spm.playlist sp 
+                  WHERE sm.station_id = :station_id 
+                  AND sm.path LIKE :path')
                 ->setParameter('station_id', $station_id)
                 ->setParameter('path', $file . '%')
                 ->getArrayResult();
@@ -173,11 +174,13 @@ class FilesController extends FilesControllerAbstract
             if (!empty($_REQUEST['searchPhrase'])) {
                 $files = $this->_getMusicFiles($file_path);
             } else {
-                $files = array_diff(scandir($file_path), ['.', '..']);
-                foreach($files as &$file)
-                    $file = $file_path.'/'.$file;
+                $finder = new Finder();
+                $finder->in($file_path)->depth('== 0');
 
-                unset($file);
+                $files = [];
+                foreach($finder as $finder_file) {
+                    $files[] = $finder_file->getPathname();
+                }
             }
 
             foreach ($files as $i) {
@@ -321,7 +324,7 @@ class FilesController extends FilesControllerAbstract
                 $music_files = $this->_getMusicFiles($files);
                 $files_found = count($music_files);
 
-                foreach ($music_files as $i => $file) {
+                foreach ($music_files as $file) {
                     try {
                         $media = $this->media_repo->getOrCreate($station, $file);
                         $this->em->remove($media);
@@ -520,34 +523,33 @@ class FilesController extends FilesControllerAbstract
             ->withBody(new \Slim\Http\Stream($fh));
     }
 
-    protected function _getMusicFiles($path)
+    protected function _getMusicFiles($path, $recursive = true)
     {
         if (is_array($path)) {
             $music_files = [];
             foreach ($path as $dir_file) {
-                $music_files = array_merge($music_files, $this->_getMusicFiles($dir_file));
+                $music_files = array_merge($music_files, $this->_getMusicFiles($dir_file, $recursive));
             }
 
             return $music_files;
         }
 
-        if (is_dir($path)) {
-            $music_files = [];
-
-            $files = array_diff(scandir($path), ['.', '..']);
-            foreach ($files as $file) {
-                $file_path = $path . '/' . $file;
-                if (is_dir($file_path)) {
-                    $music_files = array_merge($music_files, $this->_getMusicFiles($file_path));
-                } else {
-                    $music_files[] = $file_path;
-                }
-            }
-
-            return $music_files;
+        if (!is_dir($path)) {
+            return [$path];
         }
 
-        return [$path];
+        $finder = new Finder();
+        $finder = $finder->files()->in($path);
+
+        if (!$recursive) {
+            $finder = $finder->depth('== 0');
+        }
+
+        $music_files = [];
+        foreach($finder as $file) {
+            $music_files[] = $file->getRelativePathname();
+        }
+        return $music_files;
     }
 
     protected function _is_recursively_deleteable($d)

@@ -31,7 +31,8 @@
         "gettext/gettext": "^4.4",
         "cakephp/chronos": "^1.1",
         "doctrine/data-fixtures": "^1.3",
-        "maxmind-db/reader": "~1.0"
+        "maxmind-db/reader": "~1.0",
+        "symfony/finder": "^4.1"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",

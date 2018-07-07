@@ -14,7 +14,7 @@ trait SongHistoryFilters
 
     protected function _getEligibleHistory($station_id)
     {
-        $cache_name = 'station_center_history_' . $station_id;
+        $cache_name = 'stations/'.$station_id.'/history';
 
         $songs_played_raw = $this->cache->get($cache_name);
 
@@ -60,7 +60,7 @@ trait SongHistoryFilters
 
     protected function _getIgnoredSongs()
     {
-        $song_hashes = $this->cache->get('station_center_ignored_songs');
+        $song_hashes = $this->cache->get('stations/all/ignored_songs');
 
         if (!$song_hashes) {
             $ignored_phrases = ['Offline', 'Sweeper', 'Bumper', 'Unknown'];
@@ -80,7 +80,7 @@ trait SongHistoryFilters
                 $song_hashes[$row['id']] = $row['id'];
             }
 
-            $this->cache->save($song_hashes, 'station_center_ignored_songs', 86400);
+            $this->cache->save($song_hashes, 'stations/all/ignored_songs', 86400);
         }
 
         return $song_hashes;

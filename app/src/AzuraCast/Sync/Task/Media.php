@@ -4,6 +4,7 @@ namespace AzuraCast\Sync\Task;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
 use Entity;
+use Symfony\Component\Finder\Finder;
 
 class Media extends TaskAbstract
 {
@@ -20,7 +21,8 @@ class Media extends TaskAbstract
 
     public function run($force = false)
     {
-        $stations = $this->em->getRepository(Entity\Station::class)->findAll();
+        $station_repo = $this->em->getRepository(Entity\Station::class);
+        $stations = $station_repo->findAll();
 
         foreach ($stations as $station) {
             $this->importMusic($station);
@@ -51,6 +53,7 @@ class Media extends TaskAbstract
             ->setParameter('station_id', $station->getId());
         $existing_media = $existing_media_q->iterate();
 
+        $records_per_batch = 10;
         $i = 0;
 
         foreach ($existing_media as $media_row_iteration) {
@@ -85,7 +88,7 @@ class Media extends TaskAbstract
             }
 
             // Batch processing
-            if ($i % 20 === 0) {
+            if ($i % $records_per_batch === 0) {
                 $this->_flushAndClearRecords();
             }
 
@@ -107,7 +110,7 @@ class Media extends TaskAbstract
 
             $this->em->persist($media_row);
 
-            if ($i % 20 === 0) {
+            if ($i % $records_per_batch === 0) {
                 $this->_flushAndClearRecords();
             }
 
@@ -189,25 +192,18 @@ class Media extends TaskAbstract
 
     public function globDirectory($base_dir, $regex_pattern = null)
     {
-        $directory = new \RecursiveDirectoryIterator($base_dir);
-        $iterator = new \RecursiveIteratorIterator($directory);
-
-        $files = [];
+        /** @var Finder $finder */
+        $finder = new Finder();
+        $finder = $finder->files()->in($base_dir);
 
         if ($regex_pattern !== null) {
-            $regex = new \RegexIterator($iterator, $regex_pattern, \RecursiveRegexIterator::GET_MATCH);
-            foreach($regex as $path_match) {
-                $files[] = $path_match[0];
-            }
-        } else {
-            foreach ($iterator as $file) {
-                if ($file->isDir()){
-                    continue;
-                }
-                $files[] = $file->getPathname();
-            }
+            $finder = $finder->name($regex_pattern);
         }
 
+        $files = [];
+        foreach($finder as $file) {
+            $files[] = $file->getPathname();
+        }
         return $files;
     }
 }

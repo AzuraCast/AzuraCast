@@ -194,10 +194,8 @@ class FilesController extends FilesControllerAbstract
 
         if (!empty($search_phrase)) {
             $files = [];
-            $radio_media_dir = $station->getRadioMediaDir();
-
             foreach($media_in_dir as $short_path => $media_row) {
-                $files[] = $radio_media_dir.'/'.$short_path;
+                $files[] = $station->getRadioMediaDir().'/'.$short_path;
             }
         } else {
             $finder = new Finder();
@@ -551,7 +549,7 @@ class FilesController extends FilesControllerAbstract
 
         $music_files = [];
         foreach($finder as $file) {
-            $music_files[] = $file->getRelativePathname();
+            $music_files[] = $file->getPathname();
         }
         return $music_files;
     }

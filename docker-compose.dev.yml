@@ -3,13 +3,15 @@ version: '2.2'
 services:
   web:
     image: azuracast/azuracast_web:latest
+    build:
+      context: ../docker-azuracast-web
     depends_on:
       - mariadb
       - influxdb
       - stations
       - redis
     environment: &default-environment
-      APPLICATION_ENV: "production" # "production" or "development"
+      APPLICATION_ENV: "development" # "production" or "development"
       MYSQL_HOST: "mariadb"         # You can change this if you plan to connect to an external DB host.
       MYSQL_PORT: 3306              # ^
       MYSQL_USER: "azuracast"       # Once the database has been installed, don't change this.
@@ -18,7 +20,7 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       AZURACAST_DC_REVISION: 2      # Only modified when this Docker Compose file has changed.
     volumes:
-      - www_data:/var/azuracast/www
+      - .:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
     init: true
@@ -26,6 +28,8 @@ services:
 
   nginx:
     image: azuracast/azuracast_nginx:latest
+    build:
+      context: ../docker-azuracast-nginx
     ports:
       - '80:80'
       - '443:443'
@@ -33,7 +37,7 @@ services:
       - web
       - stations
     volumes:
-      - www_data:/var/azuracast/www
+      - .:/var/azuracast/www
       - nginx_letsencrypt_certs:/etc/nginx/ssl
       - nginx_letsencrypt_www:/var/www/letsencrypt
     restart: always
@@ -49,6 +53,10 @@ services:
 
   mariadb:
     image: azuracast/azuracast_db:latest
+    build:
+      context: ../docker-azuracast-db
+    ports:
+     - "127.0.0.1:3306:3306"
     volumes:
       - db_data:/var/lib/mysql
     environment:
@@ -57,12 +65,18 @@ services:
 
   influxdb:
     image: azuracast/azuracast_influxdb:latest
+    build:
+      context: ../docker-azuracast-influxdb
     volumes:
       - influx_data:/var/lib/influxdb
     restart: always
 
   redis:
     image: azuracast/azuracast_redis:latest
+    build:
+      context: ../docker-azuracast-redis
+    ports:
+     - "127.0.0.1:6379:6379"
     restart: always
 
   cron:
@@ -92,6 +106,12 @@ services:
       - redis
     environment:
       << : *default-environment
+      INIT_BASE_URL: "docker.local"
+      INIT_GMAPS_API_KEY: "" # Populate this!
+      INIT_INSTANCE_NAME: "local development"
+      INIT_ADMIN_USERNAME: "" # Populate this!
+      INIT_ADMIN_PASSWORD: "" # Populate this!
+      INIT_MUSIC_PATH: "/var/azuracast/www/util/fixtures/init_music"
     user: 'azuracast'
     working_dir: '/var/azuracast/www'
     command: 'bash'
@@ -101,10 +121,9 @@ services:
   stations:
     container_name: azuracast_stations
     image: azuracast/azuracast_stations:latest
+    build:
+      context: ../docker-azuracast-stations
     ports:
-    # Uncomment the line below to expose the full range of available station ports.
-    # Note: This is not recommended currently due to performance and memory usage problems with Docker.
-    # - '8000-8500:8000-8500'
      - '8000:8000'
      - '8005:8005'
      - '8006:8006'
@@ -120,26 +139,24 @@ services:
      - '8040:8040'
      - '8045:8045'
      - '8046:8046'
-     - '8050:8050'
-     - '8055:8055'
-     - '8056:8056'
-     - '8060:8060'
-     - '8065:8065'
-     - '8066:8066'
-     - '8070:8070'
-     - '8075:8075'
-     - '8076:8076'
-     - '8080:8080'
-     - '8085:8085'
-     - '8086:8086'
-     - '8090:8090'
-     - '8095:8095'
-     - '8096:8096'
     volumes:
      - station_data:/var/azuracast/stations
      - nginx_letsencrypt_certs:/etc/nginx/ssl:ro
     init: true
     restart: always
+
+  # Developer Mode services
+  static:
+    build:
+      context: ./util/docker/static
+    volumes:
+      - ./web/static:/data
+
+  chronograf:
+    image: chronograf:alpine
+    ports:
+     - "8888:8888"
+    command: "chronograf --influxdb-url=http://influxdb:8086"
 
 volumes:
   nginx_letsencrypt_certs: {}
@@ -147,5 +164,4 @@ volumes:
   db_data: {}
   influx_data: {}
   station_data: {}
-  www_data: {}
   tmp_data: {}

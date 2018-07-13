@@ -202,13 +202,15 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\App\Session::class] = function ($di) {
-        ini_set('session.gc_maxlifetime', 86400);
-        ini_set('session.gc_probability', 1);
-        ini_set('session.gc_divisor', 100);
+        if (!APP_TESTING_MODE) {
+            ini_set('session.gc_maxlifetime', 86400);
+            ini_set('session.gc_probability', 1);
+            ini_set('session.gc_divisor', 100);
 
-        $redis_server = (APP_INSIDE_DOCKER) ? 'redis' : 'localhost';
-        ini_set('session.save_handler', 'redis');
-        ini_set('session.save_path', 'tcp://' . $redis_server . ':6379?database=1');
+            $redis_server = (APP_INSIDE_DOCKER) ? 'redis' : 'localhost';
+            ini_set('session.save_handler', 'redis');
+            ini_set('session.save_path', 'tcp://' . $redis_server . ':6379?database=1');
+        }
 
         return new \App\Session;
     };

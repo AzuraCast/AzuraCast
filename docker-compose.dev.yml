@@ -96,7 +96,8 @@ services:
     restart: always
 
   cli:
-    image: azuracast/azuracast_web:latest
+    build:
+      context: ./util/docker/testing
     volumes_from:
       - web
     depends_on:

@@ -27,7 +27,7 @@ install:
   - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --rm cli azuracast_install
 
 script:
-  - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --rm cli azuracast_testing
+  - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --rm cli vendor/bin/codecept run --no-interaction --coverage --coverage-xml --fail-fast
 
 after_failure:
   - cat tests/_output/*.html

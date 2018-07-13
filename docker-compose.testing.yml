@@ -6,6 +6,9 @@ services:
       - .:/var/azuracast/www
 
   cli:
+    image: azuracast_cli:latest
+    build:
+      context: ./util/docker/testing
     environment:
       APPLICATION_ENV: "testing"
 

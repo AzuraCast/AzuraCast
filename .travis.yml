@@ -24,6 +24,7 @@ install:
   - echo $TRAVIS_BUILD_DIR
   - chmod 777 $TRAVIS_BUILD_DIR/tests/_output/
   - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml pull
+  - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml build cli
   - docker-compose -f docker-compose.sample.yml -f docker-compose.testing.yml run --rm cli azuracast_install
 
 script:

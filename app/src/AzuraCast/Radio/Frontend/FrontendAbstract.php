@@ -180,7 +180,11 @@ abstract class FrontendAbstract extends \AzuraCast\Radio\AdapterAbstract
         try {
             $response = $client->get($url, $defaults);
         } catch(\GuzzleHttp\Exception\ClientException $e) {
-            $this->logger->error('Radio Adapter Exception', $e);
+            $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
+            $app_e->addLoggingContext('url', $url);
+            $app_e->addLoggingContext('station_id', $this->station->getId());
+            $app_e->addLoggingContext('station_name', $this->station->getName());
+            throw $app_e;
         }
 
         return $response->getBody()->getContents();

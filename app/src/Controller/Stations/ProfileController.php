@@ -93,6 +93,10 @@ class ProfileController
                 'unique' => 0,
                 'total' => 0,
             ],
+            'live' => [
+                'is_live' => false,
+                'streamer_name' => '',
+            ],
             'playing_next' => [
                 'song' => [
                     'title' => __('Song Title'),
@@ -103,15 +107,7 @@ class ProfileController
 
         $station_np = $station->getNowplaying();
         if ($station_np instanceof Entity\Api\NowPlaying) {
-            $np['now_playing']['song']['title'] = $station_np->now_playing->song->title;
-            $np['now_playing']['song']['artist'] = $station_np->now_playing->song->artist;
-            $np['now_playing']['is_request'] = $station_np->now_playing->is_request;
-            $np['now_playing']['elapsed'] = $station_np->now_playing->elapsed;
-            $np['now_playing']['duration'] = $station_np->now_playing->duration;
-            $np['listeners']['unique'] = $station_np->listeners->unique;
-            $np['listeners']['total'] = $station_np->listeners->total;
-            $np['playing_next']['song']['title'] = $station_np->playing_next->song->title;
-            $np['playing_next']['song']['artist'] = $station_np->playing_next->song->artist;
+            $np = array_intersect_key($station_np->toArray(), $np) + $np;
         }
 
         return $view->renderToResponse($response, 'stations/profile/index', [

@@ -39,7 +39,7 @@ $assets
                         </div>
                     </div>
 
-                    <div class="col-sm-4" v-if="np.playing_next">
+                    <div class="col-sm-4" v-if="!np.live.is_live && np.playing_next">
                         <div class="m-l-25" style="position: relative;">
                             <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-skip-next"></i></div>
 
@@ -51,6 +51,17 @@ $assets
                             <div>
                                 {{ np.playing_next.song.artist }}
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4" v-if="np.live.is_live">
+                        <div class="m-l-25" style="position: relative;">
+                            <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-account"></i></div>
+
+                            <h6><?=__('Now Streaming') ?>:</h6>
+
+                            <h4 class="media-heading">
+                                {{ np.live.streamer_name }}
+                            </h4>
                         </div>
                     </div>
 

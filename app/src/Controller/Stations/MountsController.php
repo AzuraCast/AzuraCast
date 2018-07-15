@@ -31,6 +31,7 @@ class MountsController
      * MountsController constructor.
      * @param EntityManager $em
      * @param Flash $flash
+     * @param Csrf $csrf
      * @param array $mount_form_configs
      */
     public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $mount_form_configs)

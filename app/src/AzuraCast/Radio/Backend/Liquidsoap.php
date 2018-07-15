@@ -234,6 +234,7 @@ class Liquidsoap extends BackendAbstract
         // Add harbor (live DJ input) source.
         $harbor_params = [
             '"/"',
+            'id="input_streamer"',
             'port='.$this->getStreamPort(),
             'user="shoutcast"',
             'auth=dj_auth',
@@ -585,6 +586,17 @@ class Liquidsoap extends BackendAbstract
     public function skip()
     {
         return $this->command('radio_out_1.skip');
+    }
+
+    /**
+     * Tell LiquidSoap to disconnect the current live streamer.
+     *
+     * @return array
+     * @throws \App\Exception
+     */
+    public function disconnectStreamer()
+    {
+        return $this->command('input_streamer.stop');
     }
 
     /**

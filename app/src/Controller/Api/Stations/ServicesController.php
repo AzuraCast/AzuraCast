@@ -158,6 +158,14 @@ class ServicesController
                 return $response->withJson(new Entity\Api\Status(true, __('Song skipped.')));
             break;
 
+            case "disconnect":
+                if (method_exists($backend, 'disconnectStreamer')) {
+                    $backend->disconnectStreamer();
+                }
+
+                return $response->withJson(new Entity\Api\Status(true, __('Streamer disconnected.')));
+            break;
+
             case "stop":
                 $backend->stop();
 

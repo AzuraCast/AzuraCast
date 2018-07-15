@@ -3,6 +3,8 @@ namespace Controller\Frontend;
 
 use App\Http\Request;
 use App\Http\Response;
+use AzuraCast\Radio\Adapters;
+use AzuraCast\Radio\Backend\Liquidsoap;
 use AzuraCast\Webhook\Dispatcher;
 use Doctrine\ORM\EntityManager;
 use Slim\Container;
@@ -31,12 +33,14 @@ class UtilController
         /** @var Entity\Station $station */
         $station = $station_repo->find(1);
 
-        $np = $station->getNowplaying();
+        /** @var Adapters $adapters */
+        $adapters = $this->di[Adapters::class];
 
-        /** @var Dispatcher $dispatcher */
-        $dispatcher = $this->di[Dispatcher::class];
+        /** @var Liquidsoap $ls */
+        $ls = $adapters->getBackendAdapter($station);
 
-        $dispatcher->dispatch($station, new Entity\Api\NowPlaying(), $np);
+        print_r($ls->command('help'));
+        exit;
 
         return $response;
     }

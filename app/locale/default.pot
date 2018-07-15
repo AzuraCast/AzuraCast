@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-07-15T16:59:14+00:00\n"
-"PO-Revision-Date: 2018-07-15T16:59:14+00:00\n"
+"POT-Creation-Date: 2018-07-15T22:26:50+00:00\n"
+"PO-Revision-Date: 2018-07-15T22:26:50+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/app/templates/minimal.phtml:60
@@ -75,7 +75,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:111
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:322
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:100
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:152
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:153
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:125
 #: /var/azuracast/www/app/src/Controller/Admin/CustomFieldsController.php:96
 #: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:119
@@ -439,7 +439,7 @@ msgstr ""
 #: /var/azuracast/www/app/templates/stations/playlists/index.phtml:4
 #: /var/azuracast/www/app/templates/stations/playlists/index.phtml:12
 #: /var/azuracast/www/app/templates/stations/reports/duplicates.phtml:25
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:247
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:248
 #: /var/azuracast/www/app/templates/stations/sidebar.phtml:40
 #: /var/azuracast/www/app/templates/stations/files/index.phtml:84
 msgid "Playlists"
@@ -821,81 +821,85 @@ msgstr ""
 msgid "Skip Song"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:99
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:86
+msgid "Disconnect Streamer"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:100
 msgid "External Radio Server"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:110
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:165
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:111
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:166
 msgid "Public URL"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:134
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:135
 msgid "Icecast (Broadcasting Service)"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:136
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:137
 msgid "SHOUTcast DNAS 2 (Broadcasting Service)"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:138
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:223
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:139
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:224
 msgid "Running"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:138
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:223
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:139
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:224
 msgid "Not Running"
-msgstr ""
-
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:148
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:233
-msgid "Restart Service"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/profile/index.phtml:149
 #: /var/azuracast/www/app/templates/stations/profile/index.phtml:234
-msgid "Start Service"
+msgid "Restart Service"
 msgstr ""
 
 #: /var/azuracast/www/app/templates/stations/profile/index.phtml:150
 #: /var/azuracast/www/app/templates/stations/profile/index.phtml:235
+msgid "Start Service"
+msgstr ""
+
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:151
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:236
 msgid "Stop Service"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:186
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:187
 msgid "Stream Playlists"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:194
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:195
 msgid "Administration URL"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:197
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:198
 msgid "Administrator Password"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:200
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:201
 msgid "Source Password"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:210
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:211
 msgid "AutoDJ Disabled"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:213
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:214
 msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:221
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:222
 msgid "Liquidsoap (AutoDJ Service)"
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:242
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:243
 msgid "LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>."
 msgstr ""
 
-#: /var/azuracast/www/app/templates/stations/profile/index.phtml:246
+#: /var/azuracast/www/app/templates/stations/profile/index.phtml:247
 #: /var/azuracast/www/app/templates/stations/sidebar.phtml:39
 #: /var/azuracast/www/app/templates/stations/files/index.phtml:1
 #: /var/azuracast/www/app/templates/stations/files/index.phtml:21
@@ -971,9 +975,9 @@ msgstr ""
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:7
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:8
 #: /var/azuracast/www/app/templates/stations/mounts/index.phtml:33
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:141
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:152
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:178
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:142
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:153
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:179
 msgid "Mount Point"
 msgstr ""
 
@@ -2821,7 +2825,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:312
 #: /var/azuracast/www/app/src/Controller/Stations/Files/EditController.php:100
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:136
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:141
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:142
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:114
 #: /var/azuracast/www/app/src/Controller/Admin/CustomFieldsController.php:85
 #: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:108
@@ -2835,7 +2839,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:322
 #: /var/azuracast/www/app/src/Controller/Stations/Files/EditController.php:112
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:147
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:152
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:153
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:125
 #: /var/azuracast/www/app/src/Controller/Admin/CustomFieldsController.php:96
 #: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:119
@@ -2848,7 +2852,7 @@ msgstr ""
 #: /var/azuracast/www/app/src/Controller/Frontend/ApiKeysController.php:131
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:429
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:193
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:178
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:179
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:149
 #: /var/azuracast/www/app/src/Controller/Admin/CustomFieldsController.php:112
 #: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:137
@@ -2860,7 +2864,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:69
 #: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:121
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:183
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:191
 msgid "%s restarted."
 msgstr ""
 
@@ -2871,12 +2875,12 @@ msgid "Frontend"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:102
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:164
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:172
 msgid "%s stopped."
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:108
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:170
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:178
 msgid "%s started."
 msgstr ""
 
@@ -2884,9 +2888,13 @@ msgstr ""
 msgid "Song skipped."
 msgstr ""
 
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:164
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:170
-#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:183
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:166
+msgid "Streamer disconnected."
+msgstr ""
+
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:172
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:178
+#: /var/azuracast/www/app/src/Controller/Api/Stations/ServicesController.php:191
 msgid "Backend"
 msgstr ""
 
@@ -2905,7 +2913,7 @@ msgid "Automated assignment error"
 msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:70
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:53
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:54
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:51
 #: /var/azuracast/www/app/src/AzuraCast/Middleware/Module/StationFiles.php:29
 msgid "This feature is not currently supported on this station."
@@ -2921,7 +2929,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/src/Controller/Stations/PlaylistsController.php:312
 #: /var/azuracast/www/app/src/Controller/Stations/WebhooksController.php:92
-#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:141
+#: /var/azuracast/www/app/src/Controller/Stations/MountsController.php:142
 #: /var/azuracast/www/app/src/Controller/Stations/StreamersController.php:114
 #: /var/azuracast/www/app/src/Controller/Admin/CustomFieldsController.php:85
 #: /var/azuracast/www/app/src/Controller/Admin/PermissionsController.php:108

@@ -82,7 +82,8 @@ $assets
 
             <?php if ($backend_type == 'liquidsoap' && $acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <div class="buttons pull-right p-t-15">
-                    <a id="btn_skip_song" class="btn btn-sm btn-primary" role="button" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'skip']) ?>"><i class="zmdi zmdi-skip-next"></i> <?=__('Skip Song') ?></a>
+                    <a id="btn_skip_song" class="btn btn-sm btn-primary" role="button" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'skip']) ?>" v-if="!np.live.is_live"><i class="zmdi zmdi-skip-next"></i> <?=__('Skip Song') ?></a>
+                    <a id="btn_disconnect_streamer" class="btn btn-sm btn-primary" role="button" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'disconnect']) ?>" v-if="np.live.is_live"><i class="zmdi zmdi-volume-off"></i> <?=__('Disconnect Streamer') ?></a>
                 </div>
                 <div class="clearfix"></div>
             <?php endif; ?>
@@ -325,7 +326,7 @@ $(function() {
 
     setTimeout(loadNowPlaying, 15000);
 
-    $('#btn_skip_song').on('click', function(e) {
+    $('#btn_skip_song,#btn_disconnect_streamer').on('click', function(e) {
         e.stopPropagation();
         var btn = $(this);
 

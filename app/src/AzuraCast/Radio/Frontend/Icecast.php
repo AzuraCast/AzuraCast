@@ -7,6 +7,11 @@ use Entity;
 
 class Icecast extends FrontendAbstract
 {
+    const LOGLEVEL_DEBUG = 4;
+    const LOGLEVEL_INFO = 3;
+    const LOGLEVEL_WARN = 2;
+    const LOGLEVEL_ERROR = 1;
+
     protected $force_proxy_on_secure_pages = true;
 
     public function getWatchCommand()
@@ -311,7 +316,7 @@ class Icecast extends FrontendAbstract
             'logging' => [
                 'accesslog' => 'icecast_access.log',
                 'errorlog' => 'icecast_error.log',
-                'loglevel' => 3,
+                'loglevel' => (APP_IN_PRODUCTION) ? self::LOGLEVEL_WARN : self::LOGLEVEL_INFO,
                 'logsize' => 10000,
             ],
             'security' => [

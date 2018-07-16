@@ -247,12 +247,12 @@ class Liquidsoap extends BackendAbstract
             'on_disconnect=live_disconnected',
         ];
 
-        $ls_config[] = 'live = audio_to_stereo(input.harbor('.implode(', ', $harbor_params).'))';
+        $ls_config[] = 'live = input.harbor('.implode(', ', $harbor_params).')';
         $ls_config[] = 'ignore(output.dummy(live, fallible=true))';
         $ls_config[] = 'live = fallback(track_sensitive=false, [live, blank(duration=2.)])';
 
         $ls_config[] = '';
-        $ls_config[] = 'radio = switch(id="live_switch", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)])';
+        $ls_config[] = 'radio = audio_to_stereo(switch(id="live_switch", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)]))';
         $ls_config[] = '';
 
         // Crossfading

@@ -50,7 +50,7 @@ Whether you're using the traditional installer or Docker containers, AzuraCast w
 
 #### Radio Software
 
-* **[Liquidsoap](http://savonet.sourceforge.net/)** as the always-playing "AutoDJ"
+* **[Liquidsoap](http://www.liquidsoap.info)** as the always-playing "AutoDJ"
 * **[Icecast 2.4](http://icecast.org/)** as a radio broadcasting frontend (Icecast-KH installed on supported platforms)
 * **[SHOUTcast 2 DNAS](http://wiki.shoutcast.com/wiki/SHOUTcast_DNAS_Server_2)** as an alternative radio frontend (x86/x64 only)
 

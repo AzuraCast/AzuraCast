@@ -93,7 +93,7 @@ class StationMedia
     protected $isrc;
 
     /**
-     * @Column(name="length", type="smallint")
+     * @Column(name="length", type="integer")
      * @var int
      */
     protected $length;

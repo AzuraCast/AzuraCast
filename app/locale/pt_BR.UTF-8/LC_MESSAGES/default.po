@@ -1628,31 +1628,31 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:140
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:225
 msgid "Running"
-msgstr ""
+msgstr "Iniciado"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:140
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:225
 msgid "Not Running"
-msgstr ""
+msgstr "Parado"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:150
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:237
 msgid "Restart Service"
-msgstr ""
+msgstr "Restart Serviço"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:151
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:238
 msgid "Start Service"
-msgstr ""
+msgstr "Iniciar Serviço"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:152
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:239
 msgid "Stop Service"
-msgstr ""
+msgstr "Parar Serviço"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:167
 msgid "Public URL"
-msgstr ""
+msgstr "URL Pública"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:188
 msgid "Stream Playlists"
@@ -1660,15 +1660,15 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:196
 msgid "Administration URL"
-msgstr ""
+msgstr "URL de Administração"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:199
 msgid "Administrator Password"
-msgstr ""
+msgstr "Senha de Administração"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:212
 msgid "AutoDJ Disabled"
-msgstr ""
+msgstr "Desabilitar AutoDJ"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:215
 msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
@@ -1680,7 +1680,7 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:235
 msgid "Skip Song"
-msgstr ""
+msgstr "Pular Música"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:246
 #, php-format
@@ -1690,7 +1690,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/reports/duplicates.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/reports/duplicates.phtml:5
 msgid "Song Duplicates"
-msgstr ""
+msgstr "Músicas Duplicadas"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/duplicates.phtml:9
 msgid "No duplicates were found. Nice work!"
@@ -1790,15 +1790,15 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:15
 msgid "<b>Apply Pending Changes</b><br>Click to Restart Station"
-msgstr ""
+msgstr "<b>Aplicar mudanças pendentes</b><br>Clique para reiniciar a estação"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:19
 msgid "Public Page"
-msgstr ""
+msgstr "Pagina Pública"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:21
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:28
 #: /var/azuracast/www/app/modules/stations/views/streamers/disabled.phtml:1
@@ -1810,15 +1810,15 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:33
 msgid "Media"
-msgstr ""
+msgstr "Midia"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:36
 msgid "Music Files"
-msgstr ""
+msgstr "Arquivos de Música"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:44
 msgid "Reports"
-msgstr ""
+msgstr "Reportar"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:50
 msgid "Song Playback Timeline"
@@ -1826,11 +1826,11 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:53
 msgid "Duplicate Songs"
-msgstr ""
+msgstr "Músicas Duplicadas"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:64
 msgid "Utilities"
-msgstr ""
+msgstr "Utilitários"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:68
 msgid "Automated Assignment"
@@ -1848,15 +1848,15 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/disabled.phtml:10
 msgid "Enable Streaming"
-msgstr ""
+msgstr "Streaming Ativado"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:22
 msgid "Username"
-msgstr ""
+msgstr "Usúario"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:24
 msgid "Notes"
-msgstr ""
+msgstr "Notas"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:47
 msgid "Connection Information"
@@ -1864,25 +1864,25 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:50
 msgid "IceCast Clients"
-msgstr ""
+msgstr "Clientes IceCast"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:52
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:64
 msgid "Server"
-msgstr ""
+msgstr "Servidor"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:55
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:67
 msgid "Port"
-msgstr ""
+msgstr "Porta"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:58
 msgid "Mount Name"
-msgstr ""
+msgstr "Ponto de montagem"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:62
 msgid "ShoutCast v1 Clients"
-msgstr ""
+msgstr "Clientes ShoutCast V1"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:73
 msgid "(DJ username and password separated by a colon)"
@@ -1895,58 +1895,58 @@ msgstr ""
 
 #: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:4
 msgid "Status messages related to this process are listed below."
-msgstr ""
+msgstr "Mensagens de status relacionadas a este processo estão listadas abaixo."
 
 #: /var/azuracast/www/app/src/App/Utilities.php:91
 #, php-format
 msgid "%d second"
 msgid_plural "%d seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d segundo"
+msgstr[1] "%d segundos"
 
 #: /var/azuracast/www/app/src/App/Utilities.php:96
 #, php-format
 msgid "%d minute"
 msgid_plural "%d minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d minuto"
+msgstr[1] "%d minutos"
 
 #: /var/azuracast/www/app/src/App/Utilities.php:101
 #, php-format
 msgid "%d hour"
 msgid_plural "%d hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d hora"
+msgstr[1] "%d horas"
 
 #: /var/azuracast/www/app/src/App/Utilities.php:106
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d dia"
+msgstr[1] "%d dias"
 
 #: /var/azuracast/www/app/src/App/Utilities.php:110
 #, php-format
 msgid "%d month"
 msgid_plural "%d months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d mês"
+msgstr[1] "%d mêses"
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:94
 msgid "Process stopped."
-msgstr ""
+msgstr "Processo parado."
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:97
 msgid "Process was not running!"
-msgstr ""
+msgstr "O processo não estava funcionando!"
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:121
 msgid "Process started."
-msgstr ""
+msgstr "Processo iniciado."
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:124
 msgid "Process is already running!"
-msgstr ""
+msgstr "O processo já está em andamento!"
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/LiquidSoap.php:174
 msgid "You cannot use an AutoDJ with a remote frontend. Please change the frontend type or update the backend to be \"Disabled\"."
@@ -1954,60 +1954,60 @@ msgstr ""
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/None.php:27
 msgid "AutoDJ is currently disabled. Enable it from the station profile."
-msgstr ""
+msgstr "O AutoDJ está atualmente desativado. Ativá-lo a partir do perfil da estação."
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:156
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:159
 msgid "Now Playing Data"
-msgstr ""
+msgstr "Tocando Agora"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:163
 msgid "1-Minute Sync"
-msgstr ""
+msgstr "Sync 1-Minuto"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:166
 msgid "Song Requests Queue"
-msgstr ""
+msgstr "Fila de solicitações de músicas"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:170
 msgid "5-Minute Sync"
-msgstr ""
+msgstr "Sync 5-Minuto"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:173
 msgid "Check Media Folders"
-msgstr ""
+msgstr "Verifique as pastas de mídia"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:177
 msgid "1-Hour Sync"
-msgstr ""
+msgstr "Sync 1-Hora"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:180
 msgid "Analytics/Statistics"
-msgstr ""
+msgstr "Analizar / Estatísticas"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:181
 msgid "Cleanup"
-msgstr ""
+msgstr "Limpar"
 
 #: /var/azuracast/www/app/templates/main.phtml:87
 msgid "System Administration"
-msgstr ""
+msgstr "Administração do Sistema"
 
 #: /var/azuracast/www/app/templates/main.phtml:89
 msgid "My Account"
-msgstr ""
+msgstr "Minha Conta"
 
 #: /var/azuracast/www/app/templates/main.phtml:93
 msgid "Toggle Fullscreen"
-msgstr ""
+msgstr "Alternar para o modo tela cheia"
 
 #: /var/azuracast/www/app/templates/main.phtml:97
 msgid "End Session"
-msgstr ""
+msgstr "Terminar Sessão"
 
 #: /var/azuracast/www/app/templates/main.phtml:99
 msgid "Sign Out"
-msgstr ""
+msgstr "Sair"
 
 #: /var/azuracast/www/app/templates/main.phtml:143
 #, php-format
@@ -2016,22 +2016,22 @@ msgstr ""
 
 #: /var/azuracast/www/app/templates/partials/radio_controls.phtml:5
 msgid "Pause"
-msgstr ""
+msgstr "Pausa"
 
 #: /var/azuracast/www/app/templates/partials/radio_controls.phtml:8
 msgid "Mute"
-msgstr ""
+msgstr "Mudo"
 
 #: /var/azuracast/www/app/templates/partials/radio_controls.phtml:11
 msgid "Unmute"
-msgstr ""
+msgstr "Sem Mudo"
 
 #: /var/azuracast/www/app/templates/system/form_page.phtml:19
 #: /var/azuracast/www/app/templates/system/form_page.phtml:20
 msgid "Select..."
-msgstr ""
+msgstr "Selecione"
 
 #: /var/azuracast/www/app/templates/system/form_page.phtml:21
 msgid "No results found!"
-msgstr ""
+msgstr "Nenhum resultado encontrado!"
 

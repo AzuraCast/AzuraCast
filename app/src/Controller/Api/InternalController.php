@@ -99,7 +99,7 @@ class InternalController
         $adapter = $this->adapters->getBackendAdapter($station);
 
         if ($adapter instanceof Liquidsoap) {
-            $adapter->toggleLiveStatus(true);
+            $adapter->toggleLiveStatus(false);
         }
 
         return $response->write('received');

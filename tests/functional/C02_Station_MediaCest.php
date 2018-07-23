@@ -44,7 +44,7 @@ class C02_Station_MediaCest extends CestAbstract
         $I->sendGET('/station/'.$station_id.'/files/list');
 
         $I->seeResponseContainsJson([
-            'media_name' => 'AzuraCast - AzuraCast Is Live!',
+            'media_name' => 'AzuraCast.com - AzuraCast is Live!',
         ]);
 
         $I->amOnPage('/station/'.$station_id.'/files');

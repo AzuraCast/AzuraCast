@@ -12,7 +12,7 @@
         "zendframework/zend-paginator": "^2.7",
         "zendframework/zend-config": "^3.1.0",
         "doctrine/orm": "~2.6",
-        "doctrine/dbal": "dev-master#298c9140ac5ba8e1fadd09dd4e91e4145d357cb9",
+        "doctrine/dbal": "^2.8",
         "doctrine/migrations": "^1.5",
         "jdorn/sql-formatter": "^1.2",
         "packaged/helpers": "^1.5",

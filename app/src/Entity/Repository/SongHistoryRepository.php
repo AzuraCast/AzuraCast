@@ -31,8 +31,12 @@ class SongHistoryRepository extends BaseRepository
 
         if ($next_song instanceof Entity\SongHistory && $is_autodj) {
             $next_song->sentToAutodj();
-
             $this->_em->persist($next_song);
+
+            // The "get next song" function is only called when a streamer is not live
+            $station->setIsStreamerLive(false);
+            $this->_em->persist($station);
+
             $this->_em->flush();
         }
 

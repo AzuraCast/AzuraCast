@@ -2,13 +2,13 @@
 
 namespace Entity\Migration;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
  * Add request threshold to Station entity.
  */
-class Version20170414205418 extends AbstractMigration
+final class Version20170414205418 extends AbstractMigration
 {
     /**
      * @param Schema $schema

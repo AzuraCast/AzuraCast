@@ -2,13 +2,13 @@
 
 namespace Entity\Migration;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20180204210633 extends AbstractMigration
+final class Version20180204210633 extends AbstractMigration
 {
     public function up(Schema $schema)
     {

@@ -2,13 +2,13 @@
 
 namespace Entity\Migration;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
  * Add relay URL to mountpoint table, update Shoutcast 2 stations to have one default mount point.
  */
-class Version20170412210654 extends AbstractMigration
+final class Version20170412210654 extends AbstractMigration
 {
     /**
      * @param Schema $schema

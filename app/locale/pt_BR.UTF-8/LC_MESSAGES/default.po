@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: azuracast\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-05-29 09:16+0000\n"
-"PO-Revision-Date: 2018-06-19T06:51:43+0000\n"
+"PO-Revision-Date: 2018-07-29 01:36\n"
 "Last-Translator: SlvrEagle23 <loobalightdark@gmail.com>\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt_BR\n"
@@ -352,153 +352,153 @@ msgstr "Playlist programada"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:82
 msgid "Play during a scheduled time range. Useful for mood-based time playlists."
-msgstr ""
+msgstr "Toca durante um intervalo de tempo programado. Útil para listas de reprodução baseadas em período de tempo (manhã, tarde, noite)."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:83
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:145
 msgid "Once per x Songs Playlist"
-msgstr ""
+msgstr "Uma vez a cada X músicas"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:83
 msgid "Play exactly once every <i>x</i> songs. Useful for station ID/jingles."
-msgstr ""
+msgstr "Reproduz exatamente uma vez a cada <i>X</i> músicas. Útil para vinhetas/jingles da estação."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:84
 msgid "Once Per x Minutes Playlist"
-msgstr ""
+msgstr "Uma vez a cada X minutos"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:84
 msgid "Play exactly once every <i>x</i> minutes. Useful for station ID/jingles."
-msgstr ""
+msgstr "Reproduz exatamente a cada <i>X</i> minutos. Útil para vinhetas/jingles da estação."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:85
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:179
 msgid "Daily Playlist"
-msgstr ""
+msgstr "Lista de reprodução diária"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:85
 msgid "Play once per day at the specified time. Useful for timely reminders."
-msgstr ""
+msgstr "Reproduz uma vez por dia no horário especificado. Útil para lembretes oportunos."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:86
 msgid "Custom Playlist"
-msgstr ""
+msgstr "Playlist personalizada"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:86
 msgid "Manually define how this playlist is used in LiquidSoap configuration. For advanced users only!"
-msgstr ""
+msgstr "Defina manualmente como esta playlist é utilizada na configuração do LiquidSoap. Somente para usuários avançados!"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:104
 msgid "Include in Automated Assignment"
-msgstr ""
+msgstr "Incluir na atribuição automatizada"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:105
 msgid "If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist."
-msgstr ""
+msgstr "Se a autoatribuição estiver habilitada, use essa playlist como um fonte para que as músicas sejam redistribuídas nela. Isso irá substituir o conteúdo existente desta playlist."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:126
 msgid "Start Time"
-msgstr ""
+msgstr "Hora de início"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:127
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:187
 #: /var/azuracast/www/app/config/forms/profile.conf.php:58
 #, php-format
 msgid "Current server time is <b>%s</b>."
-msgstr ""
+msgstr "Hora atual do servidor é <b>%s</b>."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:135
 msgid "End Time"
-msgstr ""
+msgstr "Hora de término"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:136
 msgid "If the end time is before the start time, the playlist will play overnight until this time on the next day."
-msgstr ""
+msgstr "Se a hora de término for menor que a hora de início, a playlist irá reproduzir durante à noite até este horário no dia seguinte."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:152
 msgid "Number of Songs Between Plays"
-msgstr ""
+msgstr "Número de músicas entre as reproduções"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:153
 msgid "This playlist will play every $x songs, where $x is specified below."
-msgstr ""
+msgstr "Essa playlist irá tocar a cada $x músicas, onde $x está especificado abaixo."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:162
 msgid "Once per x Minutes Playlist"
-msgstr ""
+msgstr "Uma vez a cada X minutos"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:169
 msgid "Number of Minutes Between Plays"
-msgstr ""
+msgstr "Minutos entre as reproduções"
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:170
 msgid "This playlist will play every $x minutes, where $x is specified below."
-msgstr ""
+msgstr "Essa playlist irá tocar a cada $x minutos, onde $x está especificado abaixo."
 
 #: /var/azuracast/www/app/config/forms/playlist.conf.php:186
 msgid "Scheduled Play Time"
-msgstr ""
+msgstr "Hora de reprodução agendada"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:10
 msgid "Use Browser Default"
-msgstr ""
+msgstr "Usar padrão do navegador"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:17
 #: /var/azuracast/www/app/config/forms/register.conf.php:7
 #: /var/azuracast/www/app/modules/frontend/views/profile/index.phtml:43
 msgid "Account Information"
-msgstr ""
+msgstr "Informação da conta"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:23
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:72
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:41
 #: /var/azuracast/www/app/config/forms/user.conf.php:29
 msgid "Reset Password"
-msgstr ""
+msgstr "Redefinir senha"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:42
 msgid "To change your password, enter the new password in the field below."
-msgstr ""
+msgstr "Para alterar sua senha, insira a nova senha no campo abaixo."
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:51
 #: /var/azuracast/www/app/modules/frontend/views/profile/index.phtml:56
 msgid "Customization"
-msgstr ""
+msgstr "Personalização"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:57
 msgid "Time Zone"
-msgstr ""
+msgstr "Fuso horário"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:58
 msgid "All times displayed on the site will be based on this time zone."
-msgstr ""
+msgstr "Todos os tempos que aparecem no site serão baseados nesse fuso horário."
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:68
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #: /var/azuracast/www/app/config/forms/profile.conf.php:77
 msgid "Site Theme"
-msgstr ""
+msgstr "Tema do site"
 
 #: /var/azuracast/www/app/config/forms/register.conf.php:37
 msgid "Create Account"
-msgstr ""
+msgstr "Criar conta"
 
 #: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:10
 msgid "Important Notes"
-msgstr ""
+msgstr "Notas importantes"
 
 #: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:38
 msgid "Report Start Date"
-msgstr ""
+msgstr "Data de início do relatório"
 
 #: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:47
 msgid "Report End Date"
-msgstr ""
+msgstr "Data final do relatório"
 
 #: /var/azuracast/www/app/config/forms/report_soundexchange.conf.php:56
 msgid "Generate Report"
@@ -727,140 +727,140 @@ msgstr "Permitir pedidos de música"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:195
 msgid "Setting this enables listeners to request a song for play on your station. Only songs that are already in your playlists are listed as requestable."
-msgstr ""
+msgstr "Ativar isso permite aos ouvintes pedirem uma música para ser reproduzida na sua estação. Somente músicas que já estão nas suas playlists podem ser pedidas."
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:204
 msgid "Request Minimum Delay (Minutes)"
-msgstr ""
+msgstr "Atraso mínimo do pedido (minutos)"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:205
 msgid "If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information."
-msgstr ""
+msgstr "Se os pedidos estão habilitados, isso especifica o atraso mínimo (em minutos) entre um pedido ser enviado e então tocado. Se ajustado em zero, nenhum atraso é aplicado.<br><b>Importante:</b> Algumas regras de licenças para streams requerem um atraso mínimo para pedidos (nos Estados Unidos, esse atraso atualmente é de 60 minutos). Verifique as regras locais para mais informações."
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:213
 msgid "Request Last Played Threshold (Minutes)"
-msgstr ""
+msgstr "Tempo de espera antes de pedir uma nova música (minutos)"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:214
 msgid "If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold."
-msgstr ""
+msgstr "Se os pedidos estão habilitados, isso especifica o tempo mínimo (em minutos) entre o momento em que se reproduz uma música na rádio e quando pode solicitá-la novamente. Ajuste para 0 para desativar a espera."
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:222
 msgid "Crossfade Duration (Seconds)"
-msgstr ""
+msgstr "Duração do crossfade (segundos)"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:224
 msgid "Number of seconds to overlap songs. Set to 0 to disable crossfade completely."
-msgstr ""
+msgstr "Número de segundos para fazer a transição entre as músicas. Especifique 0 para desabilitar o crossfade completamente."
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:235
 msgid "Advanced: Custom Configuration"
-msgstr ""
+msgstr "Avançado: configuração personalizada"
 
 #: /var/azuracast/www/app/config/forms/station.conf.php:237
 msgid "This code will be inserted into your station's LiquidSoap configuration, below the playlist configuration and just before the IceCast output. Only use valid LiquidSoap code for this section!"
-msgstr ""
+msgstr "Esse código será inserido na configuração do LiquidSoap da sua estação, abaixo da configuração das playlists e antes da saída do IceCast. Utilize somente código LiquidSoap válido nesta seção!"
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:9
 msgid "New Station Details"
-msgstr ""
+msgstr "Detalhes da nova estação"
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:33
 msgid "Customize Station Cloning"
-msgstr ""
+msgstr "Personalizar a clonagem da estação"
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:39
 msgid "Copy Media?"
-msgstr ""
+msgstr "Copiar mídias?"
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:40
 msgid "Choose how media should be duplicated from the old station."
-msgstr ""
+msgstr "Escolha como as mídias devem ser duplicadas da estação antiga."
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:42
 msgid "Do not share or copy media between the stations"
-msgstr ""
+msgstr "Não compartilhe ou copie as mídias entre as estações"
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:43
 msgid "Share the same folder on disk between the stations"
-msgstr ""
+msgstr "Compartilhe o mesmo diretório no disco entre as estações"
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:44
 msgid "Copy the existing station's media to the new station"
-msgstr ""
+msgstr "Copiar a mídia da estação existente para a nova estação"
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:53
 msgid "Copy Playlists?"
-msgstr ""
+msgstr "Copiar listas de reprodução?"
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:65
 msgid "Copy Streamer/DJ Accounts?"
-msgstr ""
+msgstr "Copiar contas de streamer/DJs?"
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:77
 msgid "Copy Permissions?"
-msgstr ""
+msgstr "Copiar permissões?"
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:78
 msgid "Selecting \"Yes\" will assign any users with permissions to the current station to have permissions to the new one."
-msgstr ""
+msgstr "Selecionar \"Sim\" irá atribuir a todos os usuários com permissões na estação atual as mesmas permissões na nova estação."
 
 #: /var/azuracast/www/app/config/forms/station_clone.conf.php:96
 msgid "Create New Station"
-msgstr ""
+msgstr "Criar nova estação"
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:9
 msgid "Streamer Username"
-msgstr ""
+msgstr "Nome de usuário do streamer"
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:10
 msgid "The streamer will use this username to connect to the radio server."
-msgstr ""
+msgstr "O streamer utilizará esse nome de usuário para conectar ao servidor da rádio."
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:18
 msgid "Streamer Password"
-msgstr ""
+msgstr "Senha do streamer"
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:19
 msgid "The streamer will use this password to connect to the radio server."
-msgstr ""
+msgstr "O streamer irá utilizar essa senha para se conectar ao servidor da rádio."
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:27
 msgid "Comments"
-msgstr ""
+msgstr "Comentários"
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:28
 msgid "Internal notes or comments about the user, visible only on this control panel."
-msgstr ""
+msgstr "Notas internas ou comentários sobre o usuário, visível somente neste painel de controle."
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:35
 msgid "Account is Active"
-msgstr ""
+msgstr "A conta está ativa"
 
 #: /var/azuracast/www/app/config/forms/streamer.conf.php:36
 msgid "Set to \"Yes\" to allow this account to log in and stream."
-msgstr ""
+msgstr "Ajustar para \"Sim\" para permitir essa conta a fazer login e transmitir."
 
 #: /var/azuracast/www/app/config/forms/user.conf.php:30
 msgid "Leave blank to use the current password."
-msgstr ""
+msgstr "Deixe em branco para utilizar a senha atual."
 
 #: /var/azuracast/www/app/config/forms/user.conf.php:39
 #: /var/azuracast/www/app/modules/admin/views/permissions/index.phtml:9
 #: /var/azuracast/www/app/modules/admin/views/users/index.phtml:31
 #: /var/azuracast/www/app/modules/frontend/views/profile/index.phtml:30
 msgid "Roles"
-msgstr ""
+msgstr "Funções"
 
 #: /var/azuracast/www/app/models/Station.php:381
 msgid "External Radio Server (Statistics Only)"
-msgstr ""
+msgstr "Servidor de rádio externo (estatísticas somente)"
 
 #: /var/azuracast/www/app/models/Station.php:413
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:40
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:51
 msgid "Disabled"
-msgstr ""
+msgstr "Desabilitado"
 
 #: /var/azuracast/www/app/modules/admin/controllers/ApiController.php:40
 #: /var/azuracast/www/app/modules/admin/controllers/SettingsController.php:28
@@ -868,7 +868,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/controllers/StationsController.php:146
 #: /var/azuracast/www/app/modules/stations/controllers/AutomationController.php:26
 msgid "Changes saved."
-msgstr ""
+msgstr "Alterações guardadas."
 
 #: /var/azuracast/www/app/modules/admin/controllers/ApiController.php:45
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:79
@@ -876,7 +876,7 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/controllers/MountsController.php:78
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:129
 msgid "Edit Record"
-msgstr ""
+msgstr "Editar registro"
 
 #: /var/azuracast/www/app/modules/admin/controllers/ApiController.php:58
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:91
@@ -886,32 +886,32 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:238
 #: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:100
 msgid "Record deleted."
-msgstr ""
+msgstr "Registro removido."
 
 #: /var/azuracast/www/app/modules/admin/controllers/PermissionsController.php:74
 #: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:58
 #: /var/azuracast/www/app/modules/stations/controllers/MountsController.php:73
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:123
 msgid "Record updated."
-msgstr ""
+msgstr "Registro atualizado."
 
 #: /var/azuracast/www/app/modules/admin/controllers/SettingsController.php:33
 msgid "Site Settings"
-msgstr ""
+msgstr "Ajustes do site"
 
 #: /var/azuracast/www/app/modules/admin/controllers/StationsController.php:151
 #, php-format
 msgid "Clone Station: %s"
-msgstr ""
+msgstr "Clonar estação: %s"
 
 #: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:88
 msgid "Record not found!"
-msgstr ""
+msgstr "Registro não encontrado!"
 
 #: /var/azuracast/www/app/modules/admin/controllers/UsersController.php:94
 #: /var/azuracast/www/app/modules/frontend/controllers/AccountController.php:48
 msgid "Logged in successfully."
-msgstr ""
+msgstr "Identificado com sucesso."
 
 #: /var/azuracast/www/app/modules/admin/views/api/index.phtml:4
 #: /var/azuracast/www/app/modules/admin/views/index/index.phtml:4
@@ -919,19 +919,19 @@ msgstr ""
 #: /var/azuracast/www/app/modules/admin/views/stations/index.phtml:4
 #: /var/azuracast/www/app/modules/admin/views/users/index.phtml:4
 msgid "Administration"
-msgstr ""
+msgstr "Administração"
 
 #: /var/azuracast/www/app/modules/admin/views/api/index.phtml:23
 msgid "API Key"
-msgstr ""
+msgstr "Chave API"
 
 #: /var/azuracast/www/app/modules/admin/views/api/index.phtml:24
 msgid "Calls"
-msgstr ""
+msgstr "Chamadas"
 
 #: /var/azuracast/www/app/modules/admin/views/api/index.phtml:25
 msgid "Owner"
-msgstr ""
+msgstr "Proprietário"
 
 #: /var/azuracast/www/app/modules/admin/views/api/index.phtml:32
 #: /var/azuracast/www/app/modules/admin/views/permissions/index.phtml:32
@@ -941,24 +941,24 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:27
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:28
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: /var/azuracast/www/app/modules/admin/views/api/index.phtml:33
 msgid "Revoke"
-msgstr ""
+msgstr "Revogar"
 
 #: /var/azuracast/www/app/modules/admin/views/index/index.phtml:46
 #, php-format
 msgid "%s ago"
-msgstr ""
+msgstr "%s atrás"
 
 #: /var/azuracast/www/app/modules/admin/views/permissions/index.phtml:4
 msgid "Manage Permissions"
-msgstr ""
+msgstr "Gerenciar permissões"
 
 #: /var/azuracast/www/app/modules/admin/views/permissions/index.phtml:25
 msgid "Per-Station Permissions"
-msgstr ""
+msgstr "Permissões por estação"
 
 #: /var/azuracast/www/app/modules/admin/views/permissions/index.phtml:35
 #: /var/azuracast/www/app/modules/admin/views/permissions/index.phtml:37
@@ -974,129 +974,129 @@ msgstr "Excluir"
 
 #: /var/azuracast/www/app/modules/admin/views/permissions/index.phtml:37
 msgid "This role cannot be deleted."
-msgstr ""
+msgstr "Essa função não pode ser removida."
 
 #: /var/azuracast/www/app/modules/admin/views/permissions/rolemembers.phtml:1
 msgid "Role Members"
-msgstr ""
+msgstr "Membros da função"
 
 #: /var/azuracast/www/app/modules/admin/views/stations/edit.phtml:1
 msgid "Edit Station Profile"
-msgstr ""
+msgstr "Editar perfil da estação"
 
 #: /var/azuracast/www/app/modules/admin/views/stations/index.phtml:22
 msgid "Station"
-msgstr ""
+msgstr "Estação"
 
 #: /var/azuracast/www/app/modules/admin/views/stations/index.phtml:29
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:93
 msgid "Manage"
-msgstr ""
+msgstr "Gerenciar"
 
 #: /var/azuracast/www/app/modules/admin/views/stations/index.phtml:31
 msgid "Clone"
-msgstr ""
+msgstr "Clonar"
 
 #: /var/azuracast/www/app/modules/admin/views/users/index.phtml:10
 #, php-format
 msgid "Search Results for \"%s\""
-msgstr ""
+msgstr "Resultados da busca para \"%s\""
 
 #: /var/azuracast/www/app/modules/admin/views/users/index.phtml:12
 msgid "All Users"
-msgstr ""
+msgstr "Todos os usuários"
 
 #: /var/azuracast/www/app/modules/admin/views/users/index.phtml:39
 msgid "Log In"
-msgstr ""
+msgstr "Iniciar sessão"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/AccountController.php:54
 msgid "Login unsuccessful"
-msgstr ""
+msgstr "Início de sessão falhou"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/AccountController.php:54
 msgid "Your credentials could not be verified."
-msgstr ""
+msgstr "Suas credenciais não puderam ser verificadas."
 
 #: /var/azuracast/www/app/modules/frontend/controllers/IndexController.php:18
 msgid "You do not currently manage any stations. Please contact this server's administrator for assistance."
-msgstr ""
+msgstr "Atualmente você não gerencia nenhuma estação. Por favor, contate o administrador desse servidor para obter ajuda."
 
 #: /var/azuracast/www/app/modules/frontend/controllers/IndexController.php:101
 #, php-format
 msgid "%s Listener Range"
-msgstr ""
+msgstr "%s faixa de ouvintes"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/IndexController.php:112
 #, php-format
 msgid "%s Daily Average"
-msgstr ""
+msgstr "Média diária de %s"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/ProfileController.php:39
 msgid "Profile saved!"
-msgstr ""
+msgstr "Perfil salvo!"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/ProfileController.php:44
 #: /var/azuracast/www/app/modules/frontend/views/profile/index.phtml:26
 #: /var/azuracast/www/app/modules/stations/views/profile/edit.phtml:1
 msgid "Edit Profile"
-msgstr ""
+msgstr "Editar perfil"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/PublicController.php:88
 msgid "Station not found!"
-msgstr ""
+msgstr "Estação não encontrada!"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:28
 msgid "Setup has already been completed!"
-msgstr ""
+msgstr "Configuração já foi concluída!"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:51
 msgid "Super Administrator"
-msgstr ""
+msgstr "Super administrador"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:142
 msgid "Setup is now complete!"
-msgstr ""
+msgstr "A configuração está concluída!"
 
 #: /var/azuracast/www/app/modules/frontend/controllers/SetupController.php:142
 msgid "Continue setting up your station in the main AzuraCast app."
-msgstr ""
+msgstr "Continue a configuração da sua estação no app principal do AzuraCast."
 
 #: /var/azuracast/www/app/modules/frontend/views/account/login.phtml:6
 #: /var/azuracast/www/app/modules/frontend/views/setup/register.phtml:6
 #, php-format
 msgid "Welcome to %s!"
-msgstr ""
+msgstr "Bem vindo ao %s!"
 
 #: /var/azuracast/www/app/modules/frontend/views/account/login.phtml:7
 msgid "Please log in to continue."
-msgstr ""
+msgstr "Por favor, identifique-se para continuar."
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:1
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:17
 #: /var/azuracast/www/app/templates/main.phtml:85
 msgid "Dashboard"
-msgstr ""
+msgstr "Dashboard"
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:24
 msgid "Listeners Across All Stations"
-msgstr ""
+msgstr "Ouvintes em todas as estações"
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:34
 msgid "Listeners Per Station"
-msgstr ""
+msgstr "Ouvintes por estação"
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:47
 msgid "Station Overview"
-msgstr ""
+msgstr "Resumo da estação"
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:50
 msgid "Refresh"
-msgstr ""
+msgstr "Atualizar"
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:52
 msgid "Add"
-msgstr ""
+msgstr "Adicionar"
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:69
 #: /var/azuracast/www/app/modules/stations/views/index/index-dailystats.phtml:28
@@ -1104,102 +1104,102 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/index/index-hourlystats.phtml:14
 #: /var/azuracast/www/app/modules/stations/views/index/timeline.phtml:27
 msgid "Listeners"
-msgstr ""
+msgstr "Ouvintes"
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:70
 msgid "Now Playing"
-msgstr ""
+msgstr "Reproduzindo agora"
 
 #: /var/azuracast/www/app/modules/frontend/views/index/index.phtml:71
 msgid "Options"
-msgstr ""
+msgstr "Opções"
 
 #: /var/azuracast/www/app/modules/frontend/views/profile/index.phtml:1
 #: /var/azuracast/www/app/modules/frontend/views/profile/index.phtml:8
 msgid "My Profile"
-msgstr ""
+msgstr "Meu perfil"
 
 #: /var/azuracast/www/app/modules/frontend/views/profile/index.phtml:20
 msgid "Update Profile Picture"
-msgstr ""
+msgstr "Atualizar foto de perfil"
 
 #: /var/azuracast/www/app/modules/frontend/views/public/embedrequests.phtml:15
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:89
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:73
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:25
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: /var/azuracast/www/app/modules/frontend/views/public/embedrequests.phtml:16
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:90
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:74
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:26
 msgid "Artist"
-msgstr ""
+msgstr "Artista"
 
 #: /var/azuracast/www/app/modules/frontend/views/public/embedrequests.phtml:40
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:146
 msgid "Request"
-msgstr ""
+msgstr "Pedir"
 
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:38
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:65
 msgid "Song History"
-msgstr ""
+msgstr "Histórico de músicas"
 
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:42
 msgid "Request Song"
-msgstr ""
+msgstr "Pedir música"
 
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:47
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:19
 msgid "Playlist"
-msgstr ""
+msgstr "Lista de reprodução"
 
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:51
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:36
 #, php-format
 msgid "Download %s"
-msgstr ""
+msgstr "Download %s"
 
 #: /var/azuracast/www/app/modules/frontend/views/public/index.phtml:81
 msgid "Request a Song"
-msgstr ""
+msgstr "Pedir uma música"
 
 #: /var/azuracast/www/app/modules/frontend/views/setup/register.phtml:7
 msgid "Begin setup by creating a Super Administrator account."
-msgstr ""
+msgstr "Comece a configuração criando uma conta de super administrador."
 
 #: /var/azuracast/www/app/modules/frontend/views/setup/settings.phtml:1
 #: /var/azuracast/www/app/modules/frontend/views/setup/settings.phtml:4
 #: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:1
 #: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:4
 msgid "AzuraCast Setup"
-msgstr ""
+msgstr "Instalação do AzuraCast"
 
 #: /var/azuracast/www/app/modules/frontend/views/setup/settings.phtml:9
 msgid "Step 3: Customize AzuraCast Settings"
-msgstr ""
+msgstr "Passo 3: Personalize as configurações do AzuraCast"
 
 #: /var/azuracast/www/app/modules/frontend/views/setup/settings.phtml:10
 msgid "Complete the setup process by providing some information about your broadcast environment. These settings can be changed later from the administration panel."
-msgstr ""
+msgstr "Complete o processo de instalação fornecendo algumas informações sobre seu ambiente de transmissão. Estas configurações podem ser alteradas posteriormente no painel de administração."
 
 #: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:9
 msgid "Step 2: Create a New Station"
-msgstr ""
+msgstr "Passo 2: Criar uma nova estação"
 
 #: /var/azuracast/www/app/modules/frontend/views/setup/station.phtml:10
 msgid "Continue the setup process by creating your first radio station below. You can edit any of these details later."
-msgstr ""
+msgstr "Continue o processo de configuração criando a sua primeira estação de rádio abaixo. Você pode alterar esses dados posteriormente."
 
 #: /var/azuracast/www/app/modules/stations/controllers/AutomationController.php:40
 msgid "Automated assignment complete!"
-msgstr ""
+msgstr "Atribuição automatizada completa!"
 
 #: /var/azuracast/www/app/modules/stations/controllers/AutomationController.php:43
 msgid "Automated assignment error"
-msgstr ""
+msgstr "Erro na atribuição automatizada"
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:36
 #: /var/azuracast/www/app/modules/stations/controllers/MountsController.php:12
@@ -1208,148 +1208,148 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:80
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:107
 msgid "This feature is not currently supported on this station."
-msgstr ""
+msgstr "Este recurso não é suportada atualmente nessa estação."
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:132
 msgid "Media metadata updated!"
-msgstr ""
+msgstr "Metadata das mídias atualizada!"
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:138
 msgid "Edit Media Metadata"
-msgstr ""
+msgstr "Editar metadata das mídias"
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:178
 msgid "File renamed!"
-msgstr ""
+msgstr "Arquivo renomeado!"
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:184
 msgid "Rename File/Directory"
-msgstr ""
+msgstr "Renomear arquivo/diretório"
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:252
 msgid "Directory"
-msgstr ""
+msgstr "Diretório"
 
 #: /var/azuracast/www/app/modules/stations/controllers/FilesController.php:256
 msgid "File Not Processed"
-msgstr ""
+msgstr "Arquivo não processado"
 
 #: /var/azuracast/www/app/modules/stations/controllers/MountsController.php:78
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:129
 msgid "Add Record"
-msgstr ""
+msgstr "Adicionar registro"
 
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:217
 msgid "Existing playlist imported."
-msgstr ""
+msgstr "Lista de reprodução existente importada."
 
 #: /var/azuracast/www/app/modules/stations/controllers/PlaylistsController.php:217
 #, php-format
 msgid "%d song(s) were imported into the playlist."
-msgstr ""
+msgstr "%d música(s) foram importadas na lista de reprodução."
 
 #: /var/azuracast/www/app/modules/stations/controllers/ProfileController.php:86
 msgid "Song skipped."
-msgstr ""
+msgstr "Música ignorada."
 
 #: /var/azuracast/www/app/modules/stations/controllers/ReportsController.php:379
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:57
 msgid "SoundExchange Report"
-msgstr ""
+msgstr "Relatório SoundExchange"
 
 #: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:31
 msgid "Streamers enabled!"
-msgstr ""
+msgstr "Streamers habilitados!"
 
 #: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:31
 msgid "You can now set up streamer (DJ) accounts."
-msgstr ""
+msgstr "Você pode agora configurar as contas para os streamers (DJ)."
 
 #: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:73
 msgid "Streamer account updated!"
-msgstr ""
+msgstr "Conta de streamer atualizada!"
 
 #: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:78
 msgid "Edit Streamer"
-msgstr ""
+msgstr "Editar streamer"
 
 #: /var/azuracast/www/app/modules/stations/controllers/StreamersController.php:78
 msgid "Add Streamer"
-msgstr ""
+msgstr "Adicionar streamer"
 
 #: /var/azuracast/www/app/modules/stations/views/automation/index.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/automation/index.phtml:4
 msgid "Automated Playlist Assignment"
-msgstr ""
+msgstr "Atribuição automatizada de lista de reprodução"
 
 #: /var/azuracast/www/app/modules/stations/views/automation/index.phtml:7
 #, php-format
 msgid "Based on the previous performance of your station's songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists."
-msgstr ""
+msgstr "Baseado no rendimento anterior das músicas da estação, %s pode distribuir automaticamente músicas entre suas listas de reprodução, colocando músicas com alta performance em listas de reprodução com peso mais alto."
 
 #: /var/azuracast/www/app/modules/stations/views/automation/index.phtml:9
 msgid "Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected \"Enable\" below."
-msgstr ""
+msgstr "Quando você tiver configurado a atribuição automatizada, clique no botão abaixo para executar o processo de atribuição automatizada. Esse processo não funcionará até que você selecione \"Habilitar\" abaixo."
 
 #: /var/azuracast/www/app/modules/stations/views/automation/index.phtml:11
 msgid "Run Automated Assignment"
-msgstr ""
+msgstr "Executar atribuição automatizada"
 
 #: /var/azuracast/www/app/modules/stations/views/automation/index.phtml:17
 msgid "Configure Automated Assignment"
-msgstr ""
+msgstr "Configurar atribuição automatizada"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:16
 msgid "Media Manager"
-msgstr ""
+msgstr "Gerenciador de mídias"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:25
 #, php-format
 msgid "%s of %s Used (%s Free)"
-msgstr ""
+msgstr "%s de %s utilizado (%s disponível)"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:33
 msgid "Drag files here to upload to this folder or "
-msgstr ""
+msgstr "Arraste arquivos aqui para enviar músicas para esse diretório ou "
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:39
 msgid "With selected:"
-msgstr ""
+msgstr "Com selecionados:"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:43
 msgid "Add to Playlist"
-msgstr ""
+msgstr "Adicionar na lista de reprodução"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:50
 msgid "Create new..."
-msgstr ""
+msgstr "Criar nova..."
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:53
 msgid "Clear Playlists"
-msgstr ""
+msgstr "Limpar listas de reprodução"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:59
 msgid "New Folder Name"
-msgstr ""
+msgstr "Nome do novo diretório"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:61
 msgid "Create Folder"
-msgstr ""
+msgstr "Criar diretório"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:75
 #: /var/azuracast/www/app/modules/stations/views/reports/duplicates.phtml:26
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:28
 msgid "Length"
-msgstr ""
+msgstr "Duração"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:76
 msgid "Size"
-msgstr ""
+msgstr "Tamanho"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:77
 msgid "Modified"
-msgstr ""
+msgstr "Modificado"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:78
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:1
@@ -1357,202 +1357,202 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/reports/duplicates.phtml:25
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:37
 msgid "Playlists"
-msgstr ""
+msgstr "Listas de reprodução"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:95
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:105
 msgid "Create Playlist"
-msgstr ""
+msgstr "Criar lista de reprodução"
 
 #: /var/azuracast/www/app/modules/stations/views/files/index.phtml:179
 msgid "Rename"
-msgstr ""
+msgstr "Renomear"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index-dailystats.phtml:56
 msgid "Daily Listener Range"
-msgstr ""
+msgstr "Variação de ouvintes diários"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index-dailystats.phtml:60
 msgid "Hourly Average Listeners"
-msgstr ""
+msgstr "Média de ouvintes por hora"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index-dailystats.phtml:64
 msgid "Daily Average Listeners"
-msgstr ""
+msgstr "Média de ouvintes diários"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index-hourlystats.phtml:24
 msgid "Average Listeners"
-msgstr ""
+msgstr "Média de ouvintes"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:1
 msgid "Station Center"
-msgstr ""
+msgstr "Controle da estação"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:28
 msgid "Listeners By Day"
-msgstr ""
+msgstr "Ouvintes por dia"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:41
 msgid "Listeners by Hour of Day"
-msgstr ""
+msgstr "Ouvintes por hora do dia"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:51
 msgid "Listeners by Day of Week"
-msgstr ""
+msgstr "Ouvintes por dia da semana"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:64
 msgid "Best Performing Songs"
-msgstr ""
+msgstr "Melhores músicas"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:64
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:104
 msgid "in the last 48 hours"
-msgstr ""
+msgstr "nas últimas 48 horas"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:74
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:114
 #: /var/azuracast/www/app/modules/stations/views/index/timeline.phtml:28
 msgid "Change"
-msgstr ""
+msgstr "Alterar"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:75
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:115
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:158
 msgid "Song"
-msgstr ""
+msgstr "Música"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:104
 msgid "Worst Performing Songs"
-msgstr ""
+msgstr "Piores músicas"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:147
 msgid "Most Played Songs"
-msgstr ""
+msgstr "Músicas mais reproduzidas"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:147
 msgid "in the last month"
-msgstr ""
+msgstr "no último mês"
 
 #: /var/azuracast/www/app/modules/stations/views/index/index.phtml:157
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:34
 msgid "Plays"
-msgstr ""
+msgstr "Reproduções"
 
 #: /var/azuracast/www/app/modules/stations/views/index/timeline.phtml:5
 msgid "Station Playback Timeline"
-msgstr ""
+msgstr "Linha do tempo de reprodução da estação"
 
 #: /var/azuracast/www/app/modules/stations/views/index/timeline.phtml:26
 msgid "Date/Time"
-msgstr ""
+msgstr "Data/Hora"
 
 #: /var/azuracast/www/app/modules/stations/views/index/timeline.phtml:30
 msgid "Source"
-msgstr ""
+msgstr "Fonte"
 
 #: /var/azuracast/www/app/modules/stations/views/index/timeline.phtml:59
 #, php-format
 msgid "Request: %s"
-msgstr ""
+msgstr "Pedidos: %s"
 
 #: /var/azuracast/www/app/modules/stations/views/index/timeline.phtml:61
 #, php-format
 msgid "Playlist: %s"
-msgstr ""
+msgstr "Lista de reprodução: %s"
 
 #: /var/azuracast/www/app/modules/stations/views/index/timeline.phtml:63
 msgid "Live Broadcast"
-msgstr ""
+msgstr "Transmissão ao vivo"
 
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:5
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:24
 msgid "Mount Points"
-msgstr ""
+msgstr "Pontos de montagem"
 
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:19
 msgid "Mount Point"
-msgstr ""
+msgstr "Ponto de montagem"
 
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:20
 msgid "AutoDJ"
-msgstr ""
+msgstr "AutoDJ"
 
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:33
 msgid "Default Mount"
-msgstr ""
+msgstr "Montagem padrão"
 
 #: /var/azuracast/www/app/modules/stations/views/mounts/index.phtml:38
 msgid "Enabled"
-msgstr ""
+msgstr "Habilitado"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:20
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:21
 msgid "# Songs"
-msgstr ""
+msgstr "# Músicas"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:32
 msgid "Export"
-msgstr ""
+msgstr "Exportar"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:46
 msgid "Auto-Assigned"
-msgstr ""
+msgstr "Autoatribuída"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:54
 msgid "Weight"
-msgstr ""
+msgstr "Peso"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:57
 #, php-format
 msgid "Plays between %s and %s"
-msgstr ""
+msgstr "Reproduções entre %s e %s"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:59
 #, php-format
 msgid "Once per %d Songs"
-msgstr ""
+msgstr "Uma vez a cada %d músicas"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:61
 #, php-format
 msgid "Once per %d Minutes"
-msgstr ""
+msgstr "Uma vez a cada %d minutos"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:63
 msgid "Once per Day"
-msgstr ""
+msgstr "Uma vez ao dia"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:64
 #, php-format
 msgid "Plays at %s"
-msgstr ""
+msgstr "Reproduzir em %s"
 
 #: /var/azuracast/www/app/modules/stations/views/playlists/index.phtml:66
 msgid "Custom"
-msgstr ""
+msgstr "Personalizado"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:1
 msgid "Station Profile"
-msgstr ""
+msgstr "Perfil da estação"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:12
 msgid "Basic Profile"
-msgstr ""
+msgstr "Perfil básico"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:27
 msgid "Technical Details"
-msgstr ""
+msgstr "Detalhes técnicos"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:30
 msgid "Station Base Directory"
-msgstr ""
+msgstr "Diretório base da estação"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:36
 msgid "Player Embed Code"
-msgstr ""
+msgstr "Código de incorporação do player"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:47
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:77
@@ -1560,245 +1560,245 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:5
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:48
 msgid "Song Requests"
-msgstr ""
+msgstr "Pedidos de músicas"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:52
 msgid "Song requests are currently <b>enabled</b> for this station."
-msgstr ""
+msgstr "Pedidos de músicas estão atualmente <b>habilitados</b> para essa estação."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:54
 msgid "Request Delay"
-msgstr ""
+msgstr "Atraso do pedido"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:56
 msgid "Requests are queued for playback immediately after the currently playing song."
-msgstr ""
+msgstr "Pedidos são enfileirados para reprodução imediatamente após a música que está reproduzindo atualmente."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:58
 #, php-format
 msgid "Requests are queued for playback on the station within <b>%d to %d minutes</b> of being submitted."
-msgstr ""
+msgstr "Pedidos são enfileirados para reprodução na estação entre <b>%d a %d minutos</b> após serem enviados."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:61
 msgid "Request Embed Code"
-msgstr ""
+msgstr "Código de incorporação de pedidos"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:70
 msgid "Song requests are currently <b>disabled</b> for this station. Edit your profile above to enable them."
-msgstr ""
+msgstr "Pedidos de músicas estão atualmente <b>desabilitados</b> para essa estação. Edite seu perfil abaixo para habilitar."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:88
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:104
 msgid "Streamers/DJs"
-msgstr ""
+msgstr "Streamers/DJs"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:93
 msgid "Support for live streamers / DJs is currently <b>enabled</b> for this station."
-msgstr ""
+msgstr "Suporte para streamers/DJs está <b>habilitado</b> para essa estação."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:94
 #, php-format
 msgid "Manage streamer accounts <a href=\"%s\">on the Streamers / DJ Accounts page</a>."
-msgstr ""
+msgstr "Gerenciar contas de streamers <a href=\"%s\">na página de contas de Streamers/DJ</a>."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:96
 msgid "Support for live streamers / DJs is currently <b>disabled</b> for this station. Edit your profile above to enable it."
-msgstr ""
+msgstr "Suporte para streamers/DJs estão atualmente <b>desabilitados</b> para essa estação. Edite seu perfil abaixo para habilitar."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:97
 msgid "Only the AutoDJ (based on your uploaded media and playlists) will be able to play on the air."
-msgstr ""
+msgstr "Somente o AutoDJ (baseado nas suas mídias e playlists enviadas) poderá reproduzir ao vivo."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:117
 msgid "External Radio Server"
-msgstr ""
+msgstr "Servidor de radio externo"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:122
 msgid "Stream Public URL"
-msgstr ""
+msgstr "URL pública de stream"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:136
 msgid "IceCast (Broadcasting Service)"
-msgstr ""
+msgstr "IceCast (serviço de transmissão)"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:138
 msgid "ShoutCast (Broadcasting Service)"
-msgstr ""
+msgstr "ShoutCast (serviço de transmissão)"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:140
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:225
 msgid "Running"
-msgstr ""
+msgstr "Executando"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:140
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:225
 msgid "Not Running"
-msgstr ""
+msgstr "Parado"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:150
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:237
 msgid "Restart Service"
-msgstr ""
+msgstr "Reiniciar serviço"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:151
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:238
 msgid "Start Service"
-msgstr ""
+msgstr "Iniciar serviço"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:152
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:239
 msgid "Stop Service"
-msgstr ""
+msgstr "Parar serviço"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:167
 msgid "Public URL"
-msgstr ""
+msgstr "URL pública"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:188
 msgid "Stream Playlists"
-msgstr ""
+msgstr "Reproduzir listas de reprodução"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:196
 msgid "Administration URL"
-msgstr ""
+msgstr "URL de administração"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:199
 msgid "Administrator Password"
-msgstr ""
+msgstr "Senha de administrador"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:212
 msgid "AutoDJ Disabled"
-msgstr ""
+msgstr "AutoDJ desabilitado"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:215
 msgid "AutoDJ has been disabled for this station. No music will automatically be played when a source is not live."
-msgstr ""
+msgstr "AutoDJ foi desabilitado para essa estação. Nenhuma música será reproduzida automaticamente quando uma fonte não estiver ao vivo."
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:223
 msgid "LiquidSoap (AutoDJ Service)"
-msgstr ""
+msgstr "LiquidSoap (serviço de AutoDJ)"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:235
 msgid "Skip Song"
-msgstr ""
+msgstr "Pular música"
 
 #: /var/azuracast/www/app/modules/stations/views/profile/index.phtml:246
 #, php-format
 msgid "LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>."
-msgstr ""
+msgstr "LiquidSoap atualmente está embaralhando <b>%d músicas enviadas</b> em <b>%d listas de reprodução</b>."
 
 #: /var/azuracast/www/app/modules/stations/views/reports/duplicates.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/reports/duplicates.phtml:5
 msgid "Song Duplicates"
-msgstr ""
+msgstr "Músicas duplicadas"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/duplicates.phtml:9
 msgid "No duplicates were found. Nice work!"
-msgstr ""
+msgstr "Nenhuma duplicação foi encontrada. Ótimo trabalho!"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/duplicates.phtml:24
 msgid "Title / File Path"
-msgstr ""
+msgstr "Título / Caminho do arquivo"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:13
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:56
 msgid "Live Listeners"
-msgstr ""
+msgstr "Ouvintes ao vivo"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:18
 msgid "Enable Google Maps API"
-msgstr ""
+msgstr "Habilitar Google Maps API"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:37
 msgid "IP"
-msgstr ""
+msgstr "IP"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:38
 msgid "Time (sec)"
-msgstr ""
+msgstr "Tempo (seg)"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:39
 msgid "User Agent"
-msgstr ""
+msgstr "Navegador"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:40
 msgid "Location"
-msgstr ""
+msgstr "Localização"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/listeners.phtml:56
 msgid "Unknown"
-msgstr ""
+msgstr "Desconhecido"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:5
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:52
 msgid "Song Listener Impact"
-msgstr ""
+msgstr "Impacto do ouvinte na canção"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:9
 msgid "Download CSV"
-msgstr ""
+msgstr "Download CSV"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:27
 msgid "Filename"
-msgstr ""
+msgstr "Nome do arquivo"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:29
 msgid "Length Text"
-msgstr ""
+msgstr "Comprimento do texto"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:30
 msgid "Playlist(s)"
-msgstr ""
+msgstr "Lista(s) de reprodução"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:31
 msgid "Joins"
-msgstr ""
+msgstr "Conectados"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:32
 msgid "Losses"
-msgstr ""
+msgstr "Desconectados"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:33
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:35
 msgid "Play %"
-msgstr ""
+msgstr "% reproduções"
 
 #: /var/azuracast/www/app/modules/stations/views/reports/performance.phtml:36
 msgid "Ratio"
-msgstr ""
+msgstr "Proporção"
 
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:18
 msgid "Date Requested"
-msgstr ""
+msgstr "Data do pedido"
 
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:19
 msgid "Date Played"
-msgstr ""
+msgstr "Data da reprodução"
 
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:21
 msgid "Requester IP"
-msgstr ""
+msgstr "IP do solicitante"
 
 #: /var/azuracast/www/app/modules/stations/views/requests/index.phtml:33
 msgid "Not Played"
-msgstr ""
+msgstr "Não reproduzida"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:15
 msgid "<b>Apply Pending Changes</b><br>Click to Restart Station"
-msgstr ""
+msgstr "<b>Aplicar alterações pendentes</b><br>Clique para reiniciar a estação"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:19
 msgid "Public Page"
-msgstr ""
+msgstr "Página pública"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:21
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:28
 #: /var/azuracast/www/app/modules/stations/views/streamers/disabled.phtml:1
@@ -1806,232 +1806,232 @@ msgstr ""
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:7
 msgid "Streamer/DJ Accounts"
-msgstr ""
+msgstr "Contas de streamer/DJ"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:33
 msgid "Media"
-msgstr ""
+msgstr "Mídias"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:36
 msgid "Music Files"
-msgstr ""
+msgstr "Arquivos de música"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:44
 msgid "Reports"
-msgstr ""
+msgstr "Relatórios"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:50
 msgid "Song Playback Timeline"
-msgstr ""
+msgstr "Linha do tempo de reprodução de músicas"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:53
 msgid "Duplicate Songs"
-msgstr ""
+msgstr "Duplicar músicas"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:64
 msgid "Utilities"
-msgstr ""
+msgstr "Utilitários"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:68
 msgid "Automated Assignment"
-msgstr ""
+msgstr "Atribuição automatizada"
 
 #: /var/azuracast/www/app/modules/stations/views/sidebar.phtml:71
 #: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:1
 #: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:3
 msgid "Restart Broadcasting"
-msgstr ""
+msgstr "Reiniciar transmissão"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/disabled.phtml:8
 msgid "Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below."
-msgstr ""
+msgstr "Contas de streamer estão desabilitadas atualmente para essa estação. Para habilitar contas de streamer, clique no botão abaixo."
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/disabled.phtml:10
 msgid "Enable Streaming"
-msgstr ""
+msgstr "Habilitar streaming"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:22
 msgid "Username"
-msgstr ""
+msgstr "Usuário"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:24
 msgid "Notes"
-msgstr ""
+msgstr "Notas"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:47
 msgid "Connection Information"
-msgstr ""
+msgstr "Informações de conexão"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:50
 msgid "IceCast Clients"
-msgstr ""
+msgstr "Clientes IceCast"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:52
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:64
 msgid "Server"
-msgstr ""
+msgstr "Servidor"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:55
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:67
 msgid "Port"
-msgstr ""
+msgstr "Porta"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:58
 msgid "Mount Name"
-msgstr ""
+msgstr "Nome do ponto de montagem"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:62
 msgid "ShoutCast v1 Clients"
-msgstr ""
+msgstr "Clientes ShoutCast v1"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:73
 msgid "(DJ username and password separated by a colon)"
-msgstr ""
+msgstr "(Usuário e senha de DJ separado por dois pontos)"
 
 #: /var/azuracast/www/app/modules/stations/views/streamers/index.phtml:77
 #, php-format
 msgid "Setup instructions for broadcasting software are available <a href=\"%s\" target=\"_blank\">on the AzuraCast Wiki</a>."
-msgstr ""
+msgstr "Instruções para configurar softwares de transmissão estão disponíveis <a href=\"%s\" target=\"_blank\">no Wiki do AzuraCast</a>."
 
 #: /var/azuracast/www/app/modules/stations/views/util/restart.phtml:4
 msgid "Status messages related to this process are listed below."
-msgstr ""
+msgstr "Mensagens de status relacionadas a esse processo estão listadas abaixo."
 
 #: /var/azuracast/www/app/src/App/Utilities.php:91
 #, php-format
 msgid "%d second"
 msgid_plural "%d seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d segundo"
+msgstr[1] "%d segundos"
 
 #: /var/azuracast/www/app/src/App/Utilities.php:96
 #, php-format
 msgid "%d minute"
 msgid_plural "%d minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d minuto"
+msgstr[1] "%d minutos"
 
 #: /var/azuracast/www/app/src/App/Utilities.php:101
 #, php-format
 msgid "%d hour"
 msgid_plural "%d hours"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d hora"
+msgstr[1] "%d horas"
 
 #: /var/azuracast/www/app/src/App/Utilities.php:106
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d dia"
+msgstr[1] "%d dias"
 
 #: /var/azuracast/www/app/src/App/Utilities.php:110
 #, php-format
 msgid "%d month"
 msgid_plural "%d months"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d mês"
+msgstr[1] "%d meses"
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:94
 msgid "Process stopped."
-msgstr ""
+msgstr "Processo parado."
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:97
 msgid "Process was not running!"
-msgstr ""
+msgstr "O processo não está executando!"
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:121
 msgid "Process started."
-msgstr ""
+msgstr "Processo iniciado."
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/AdapterAbstract.php:124
 msgid "Process is already running!"
-msgstr ""
+msgstr "O processo já está executando!"
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/LiquidSoap.php:174
 msgid "You cannot use an AutoDJ with a remote frontend. Please change the frontend type or update the backend to be \"Disabled\"."
-msgstr ""
+msgstr "Você não pode utilizar o AutoDJ com um frontend remoto. Por favor, altere o tipo do frontend ou atualize o backend para \"Desativado\"."
 
 #: /var/azuracast/www/app/src/AzuraCast/Radio/Backend/None.php:27
 msgid "AutoDJ is currently disabled. Enable it from the station profile."
-msgstr ""
+msgstr "AutoDJ está desabilitado. Ative-o no perfil da estação."
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:156
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:159
 msgid "Now Playing Data"
-msgstr ""
+msgstr "Dados de reprodução atual"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:163
 msgid "1-Minute Sync"
-msgstr ""
+msgstr "Sincronização de 1 minuto"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:166
 msgid "Song Requests Queue"
-msgstr ""
+msgstr "File de pedidos de música"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:170
 msgid "5-Minute Sync"
-msgstr ""
+msgstr "Sincronização de 5 minutos"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:173
 msgid "Check Media Folders"
-msgstr ""
+msgstr "Verificar diretórios de mídia"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:177
 msgid "1-Hour Sync"
-msgstr ""
+msgstr "Sincronização de 1 hora"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:180
 msgid "Analytics/Statistics"
-msgstr ""
+msgstr "Análises e estatísticas"
 
 #: /var/azuracast/www/app/src/AzuraCast/Sync.php:181
 msgid "Cleanup"
-msgstr ""
+msgstr "Limpeza"
 
 #: /var/azuracast/www/app/templates/main.phtml:87
 msgid "System Administration"
-msgstr ""
+msgstr "Administração do sistema"
 
 #: /var/azuracast/www/app/templates/main.phtml:89
 msgid "My Account"
-msgstr ""
+msgstr "Minha conta"
 
 #: /var/azuracast/www/app/templates/main.phtml:93
 msgid "Toggle Fullscreen"
-msgstr ""
+msgstr "Alternar tela cheia"
 
 #: /var/azuracast/www/app/templates/main.phtml:97
 msgid "End Session"
-msgstr ""
+msgstr "Terminar sessão"
 
 #: /var/azuracast/www/app/templates/main.phtml:99
 msgid "Sign Out"
-msgstr ""
+msgstr "Sair"
 
 #: /var/azuracast/www/app/templates/main.phtml:143
 #, php-format
 msgid "Powered by %s Version %s."
-msgstr ""
+msgstr "Distribuído por %s versão %s."
 
 #: /var/azuracast/www/app/templates/partials/radio_controls.phtml:5
 msgid "Pause"
-msgstr ""
+msgstr "Pausar"
 
 #: /var/azuracast/www/app/templates/partials/radio_controls.phtml:8
 msgid "Mute"
-msgstr ""
+msgstr "Silenciar"
 
 #: /var/azuracast/www/app/templates/partials/radio_controls.phtml:11
 msgid "Unmute"
-msgstr ""
+msgstr "Reativar som"
 
 #: /var/azuracast/www/app/templates/system/form_page.phtml:19
 #: /var/azuracast/www/app/templates/system/form_page.phtml:20
 msgid "Select..."
-msgstr ""
+msgstr "Selecionar..."
 
 #: /var/azuracast/www/app/templates/system/form_page.phtml:21
 msgid "No results found!"
-msgstr ""
+msgstr "Nenhum resultado encontrado!"
 

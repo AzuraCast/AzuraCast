@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 POT-Creation-Date: 2017-05-29 09:16+0000
-PO-Revision-Date: 2018-06-19T06:51:42+0000
+PO-Revision-Date: 2018-07-29 23:13
 Language: nl_NL
 Plural-Forms: nplurals=2; plural=(n != 1);
 X-Generator: crowdin.com
@@ -82,7 +82,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Based on this setting, the system will automatically reassign songs every (this) days using data from the previous (this) days.' => 
       array (
-        0 => '',
+        0 => 'Op basis van deze instelling zal het systeem elke (dit) dag(en) nummers automatisch opnieuw toewijzen van de vorige (dit) aantal dagen.',
       ),
       'E-mail Address' => 
       array (
@@ -102,7 +102,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'The relative path of the file in the station\'s media directory.' => 
       array (
-        0 => '',
+        0 => 'Het relatieve pad naar het bestand in de media map van het station.',
       ),
       'Song Title' => 
       array (
@@ -134,7 +134,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'The time that this song should overlap its surrounding songs when fading. Leave blank to use the system default.' => 
       array (
-        0 => '',
+        0 => 'De tijd dat dit nummer dient te overlappen met de nummers rondom bij het faden. Laat leeg om de standaard-waarde te gebruiken.',
       ),
       'Custom Fading: Fade-In Time (seconds)' => 
       array (
@@ -238,7 +238,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'You can include any special mount point settings here, in either JSON { key: \'value\' } format or XML &lt;key&gt;value&lt;/key&gt;' => 
       array (
-        0 => '',
+        0 => 'Je kan hier alle speciale mount point instelling instellen, in JSON-formaat { key: \'value\' } of XML &lt;key&gt;value&lt;/key&gt;',
       ),
       'Playlist Name' => 
       array (
@@ -326,7 +326,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'If auto-assignment is enabled, use this playlist as one of the targets for songs to be redistributed into. This will overwrite the existing contents of this playlist.' => 
       array (
-        0 => '',
+        0 => 'Wanneer automatische toewijzig is ingeschakeld, gebruik dan deze afspeellijst als een bron van herverdeelbare nummers. Hiermee wordt de bestaande inhoud van deze afspeellijst overschreven.',
       ),
       'Start Time' => 
       array (
@@ -458,7 +458,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.' => 
       array (
-        0 => '',
+        0 => 'De basis URL waar deze service beschikbaar is gesteld. Gebruik het externe IP-adres of een domeinnaam (als deze bestaat) dat zich richt naar deze server.',
       ),
       'Use Web Proxy for Radio' => 
       array (
@@ -582,7 +582,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.' => 
       array (
-        0 => '',
+        0 => 'Deze code zal toegepast worden op de front-end configuratie. Dit kan in JSON-formaat {"new_key": "new_value"} of XML &lt;new_key&gt;new_value&lt;/new_key&gt;.',
       ),
       'Configure External Radio Server' => 
       array (
@@ -634,15 +634,15 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.' => 
       array (
-        0 => '',
+        0 => 'Wanneer verzoeken zijn ingeschakeld, dan specifieerd dit de minimum tijd (in minuten) tussen een aangevraagd verzoek en het afspelen ervan. Wanneer ingesteld als 0, zal er geen uitstel toegepast worden.<br><b>Belangrijk:</b> Sommige regels op stream licenties verplichten een minimum uitgestelde tijd tussen verzoeken. Kijk dit na in jouw lokale regulering voor meer informatie.',
       ),
       'Request Last Played Threshold (Minutes)' => 
       array (
-        0 => '',
+        0 => 'Tijdsverschil ter verzoeken met afgespeelde nummers (in minuten)',
       ),
       'If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.' => 
       array (
-        0 => '',
+        0 => 'Als verzoeken ingeschakeld zijn, dan specifieerd deze waarde de minimale tijd (in minuten) tussen het afspelen van een nummer op de radio en het terug verzoekbaar maken van een nummer. Stel in als 0 voor geen tijdsverschil.',
       ),
       'Crossfade Duration (Seconds)' => 
       array (
@@ -702,7 +702,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Selecting "Yes" will assign any users with permissions to the current station to have permissions to the new one.' => 
       array (
-        0 => '',
+        0 => '"Ja" selecteren zal alle machtigingen van gebruikers voor het huidige station overnemen naar het nieuwe.',
       ),
       'Create New Station' => 
       array (
@@ -834,7 +834,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Role Members' => 
       array (
-        0 => '',
+        0 => 'Rollen van gebruikers',
       ),
       'Edit Station Profile' => 
       array (
@@ -1102,11 +1102,11 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Based on the previous performance of your station\'s songs, %s can automatically distribute songs evenly among your playlists, placing the highest performing songs in the highest-weighted playlists.' => 
       array (
-        0 => '',
+        0 => 'Op basis van eerdere prestaties van de muziek in jouw station kan %s automatisch nummers gelijkmatig spreiden over je afspeellijsten door het plaatsen van goed presterende nummers in de afspeellijsten met een zwaarder gewicht.',
       ),
       'Once you have configured automated assignment, click the button below to run the automated assignment process. This process will not run at all unless you have selected "Enable" below.' => 
       array (
-        0 => '',
+        0 => 'Wanneer je automatische toewijzing hebt ingesteld, klik dan op de knop hieronder om het proces te laten lopen. Dit proces zal niet werken zonder dat je "Ingeschakeld" hebt geselecteerd.',
       ),
       'Run Automated Assignment' => 
       array (
@@ -1194,7 +1194,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Station Center' => 
       array (
-        0 => '',
+        0 => 'Station Controle',
       ),
       'Listeners By Day' => 
       array (
@@ -1242,7 +1242,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Station Playback Timeline' => 
       array (
-        0 => '',
+        0 => 'Station Afspeeltijdlijn',
       ),
       'Date/Time' => 
       array (
@@ -1594,7 +1594,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'Song Playback Timeline' => 
       array (
-        0 => '',
+        0 => 'Nummer Afspeeltijdlijn',
       ),
       'Duplicate Songs' => 
       array (
@@ -1707,7 +1707,7 @@ X-Crowdin-File: /master/app/locale/default.pot
       ),
       'You cannot use an AutoDJ with a remote frontend. Please change the frontend type or update the backend to be "Disabled".' => 
       array (
-        0 => '',
+        0 => 'Je kan geen AutoDJ gebruiken met een externe frontend. Verander het front-end type of update de backend naar "Uitgeschakeld".',
       ),
       'AutoDJ is currently disabled. Enable it from the station profile.' => 
       array (

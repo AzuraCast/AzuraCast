@@ -81,8 +81,13 @@ class Setup extends \App\Console\Command\CommandAbstract
         $this->runCommand($output, 'cache:clear');
         $this->runCommand($output, 'azuracast:radio:restart');
 
+        $local_ip = getHostByName(getHostName()) ?? 'localhost';
+
         $io->newLine();
-        $io->success('AzuraCast setup complete!');
+        $io->success([
+            'AzuraCast installation complete!',
+            'Visit http://'.$local_ip.' to complete setup.',
+        ]);
         return 0;
     }
 

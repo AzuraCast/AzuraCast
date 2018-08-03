@@ -93,10 +93,7 @@ class PlaylistsController
             $playlists[$playlist->getId()] = $playlist_row;
         }
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/playlists/index', [
+        return $request->getView()->renderToResponse($response, 'stations/playlists/index', [
             'playlists' => $playlists,
             'csrf' => $this->csrf->generate($this->csrf_namespace),
             'schedule_now' => Chronos::now()->toIso8601String(),
@@ -217,10 +214,7 @@ class PlaylistsController
             ->setParameter('playlist_id', $id)
             ->getArrayResult();
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/playlists/reorder', [
+        return $request->getView()->renderToResponse($response, 'stations/playlists/reorder', [
             'playlist' => $record,
             'csrf' => $this->csrf->generate($this->csrf_namespace),
             'media_items' => $media_items,
@@ -314,10 +308,7 @@ class PlaylistsController
             return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/playlists/edit', [
+        return $request->getView()->renderToResponse($response, 'stations/playlists/edit', [
             'form' => $form,
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Playlist'))
         ]);

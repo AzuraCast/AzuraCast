@@ -48,7 +48,7 @@ class Customization
 
         $translator = new Translator();
 
-        $locale_base = APP_INCLUDE_BASE.'/locale/compiled';
+        $locale_base = APP_INCLUDE_ROOT.'/resources/locale/compiled';
         $locale_path = $locale_base.'/'.$locale.'.php';
 
         if (file_exists($locale_path)) {

@@ -51,17 +51,14 @@ class DashboardController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
+        $view = $request->getView();
+        $user = $request->getUser();
 
         /** @var Entity\Repository\StationRepository $station_repo */
         $station_repo = $this->em->getRepository(Entity\Station::class);
 
         /** @var Entity\Station[] $stations */
         $stations = $station_repo->findAll();
-
-        /** @var Entity\User $user */
-        $user = $request->getAttribute('user');
 
         // Don't show stations the user can't manage.
         $stations = array_filter($stations, function($station) use ($user) {

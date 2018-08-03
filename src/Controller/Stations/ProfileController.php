@@ -62,8 +62,7 @@ class ProfileController
         /** @var FrontendAbstract $frontend */
         $frontend = $request->getAttribute('station_frontend');
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
+        $view = $request->getView();
 
         if (!$station->isEnabled()) {
             return $view->renderToResponse($response, 'stations/profile/disabled');
@@ -166,10 +165,7 @@ class ProfileController
             return $response->redirectToRoute('stations:profile:index', ['station' => $station_id]);
         }
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/profile/edit', [
+        return $request->getView()->renderToResponse($response, 'stations/profile/edit', [
             'form' => $form,
         ]);
     }

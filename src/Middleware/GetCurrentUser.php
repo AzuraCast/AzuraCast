@@ -5,6 +5,7 @@ use App\Auth;
 use App\Customization;
 use App\Http\Request;
 use App\Http\Response;
+use App\Entity;
 
 /**
  * Get the current user entity object and assign it into the request if it exists.
@@ -39,8 +40,8 @@ class GetCurrentUser
         $request = $this->customization->init($request);
 
         $request = $request
-            ->withAttribute('user', $user)
-            ->withAttribute('is_logged_in', ($user instanceof \Entity\User));
+            ->withAttribute(Request::ATTRIBUTE_USER, $user)
+            ->withAttribute('is_logged_in', ($user instanceof Entity\User));
 
         return $next($request, $response);
     }

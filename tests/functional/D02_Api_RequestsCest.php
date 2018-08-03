@@ -1,4 +1,6 @@
 <?php
+use App\Entity;
+
 class D02_Api_RequestsCest extends CestAbstract
 {
     /**
@@ -18,16 +20,16 @@ class D02_Api_RequestsCest extends CestAbstract
         $song_dest = $this->test_station->getRadioMediaDir().'/test.mp3';
         copy($song_src, $song_dest);
 
-        $playlist = new \Entity\StationPlaylist($this->test_station);
+        $playlist = new Entity\StationPlaylist($this->test_station);
         $playlist->setName('Test Playlist');
 
         $this->em->persist($playlist);
 
-        $media = new \Entity\StationMedia($this->test_station, 'test.mp3');
+        $media = new Entity\StationMedia($this->test_station, 'test.mp3');
         $media->loadFromFile();
         $this->em->persist($media);
 
-        $spm = new \Entity\StationPlaylistMedia($playlist, $media);
+        $spm = new Entity\StationPlaylistMedia($playlist, $media);
         $this->em->persist($spm);
 
         $this->em->flush();

@@ -51,8 +51,7 @@ class StreamersController
             throw new \App\Exception(__('This feature is not currently supported on this station.'));
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
+        $view = $request->getView();
 
         if (!$station->getEnableStreamers()) {
             if ($request->hasParam('enable')) {
@@ -70,7 +69,7 @@ class StreamersController
         }
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $this->em->getRepository('Entity\Settings');
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
         return $view->renderToResponse($response, 'stations/streamers/index', [
             'server_url' => $settings_repo->getSetting('base_url', ''),
@@ -116,10 +115,7 @@ class StreamersController
             return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Streamer'))

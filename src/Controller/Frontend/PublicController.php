@@ -41,10 +41,7 @@ class PublicController
         /** @var FrontendAbstract $frontend_adapter */
         $frontend_adapter = $request->getAttribute('station_frontend');
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, $template_name, $template_vars + [
+        return $request->getView()->renderToResponse($response, $template_name, $template_vars + [
             'station' => $station,
             'stream_url' => $frontend_adapter->getStreamUrl(),
         ]);

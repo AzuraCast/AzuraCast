@@ -2,7 +2,7 @@
 use Slim\App;
 use Interop\Container\ContainerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Entity;
+use App\Entity;
 
 abstract class CestAbstract
 {
@@ -38,8 +38,8 @@ abstract class CestAbstract
 
             $this->test_station = $station_repo->destroy(
                 $this->test_station,
-                $this->di[\AzuraCast\Radio\Adapters::class],
-                $this->di[\AzuraCast\Radio\Configuration::class]
+                $this->di[\App\Radio\Adapters::class],
+                $this->di[\App\Radio\Configuration::class]
             );
         }
     }
@@ -53,6 +53,7 @@ abstract class CestAbstract
 
     protected function setupIncomplete(FunctionalTester $I)
     {
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
         $settings_repo->setSetting('setup_complete', 0);
 
@@ -87,11 +88,11 @@ abstract class CestAbstract
         $this->em->persist($user);
         $this->em->flush();
 
-        $this->di[\AzuraCast\Acl\StationAcl::class]->reload();
+        $this->di[\App\Acl\StationAcl::class]->reload();
 
         // Create station.
-        $frontends = \AzuraCast\Radio\Adapters::getFrontendAdapters();
-        $backends = \AzuraCast\Radio\Adapters::getBackendAdapters();
+        $frontends = \App\Radio\Adapters::getFrontendAdapters();
+        $backends = \App\Radio\Adapters::getBackendAdapters();
 
         $station_info = [
             'id'            => 25,
@@ -102,23 +103,29 @@ abstract class CestAbstract
         ];
 
         /** @var Entity\Repository\StationRepository $station_repo */
-        $station_repo = $this->em->getRepository(\Entity\Station::class);
+        $station_repo = $this->em->getRepository(Entity\Station::class);
 
         $this->test_station = $station_repo->create(
             $station_info,
-            $this->di[\AzuraCast\Radio\Adapters::class],
-            $this->di[\AzuraCast\Radio\Configuration::class]
+            $this->di[\App\Radio\Adapters::class],
+            $this->di[\App\Radio\Configuration::class]
         );
 
         // Set settings.
-        $settings_repo = $this->em->getRepository(\Entity\Settings::class);
+
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
         $settings_repo->setSetting('setup_complete', time());
         $settings_repo->setSetting('base_url', 'localhost');
     }
 
     protected function _cleanTables()
     {
-        $clean_tables = ['Entity\User', 'Entity\Role', 'Entity\Station'];
+        $clean_tables = [
+            Entity\User::class,
+            Entity\Role::class,
+            Entity\Station::class,
+        ];
         foreach($clean_tables as $clean_table)
             $this->em->createQuery('DELETE FROM '.$clean_table.' t')->execute();
 

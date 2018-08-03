@@ -49,10 +49,7 @@ class SettingsController
             return $response->redirectHere();
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, $form_template, [
+        return $request->getView()->renderToResponse($response, $form_template, [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('System Settings'),

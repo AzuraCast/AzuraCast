@@ -45,10 +45,7 @@ class WebhooksController
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/webhooks/index', [
+        return $request->getView()->renderToResponse($response, 'stations/webhooks/index', [
             'webhooks' => $station->getWebhooks(),
             'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
@@ -59,8 +56,7 @@ class WebhooksController
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
+        $view = $request->getView();
 
         if ($type === null) {
             return $view->renderToResponse($response, 'stations/webhooks/add', [
@@ -138,10 +134,7 @@ class WebhooksController
             return $response->redirectToRoute('stations:webhooks:index', ['station' => $station_id]);
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('Edit %s', __('Web Hook'))

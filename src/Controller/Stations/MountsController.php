@@ -54,10 +54,7 @@ class MountsController
             throw new \App\Exception(__('This feature is not currently supported on this station.'));
         }
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/mounts/index', [
+        return $request->getView()->renderToResponse($response, 'stations/mounts/index', [
             'frontend_type' => $station->getFrontendType(),
             'mounts' => $station->getMounts(),
             'csrf' => $this->csrf->generate($this->csrf_namespace),
@@ -73,7 +70,7 @@ class MountsController
 
             $settings = (array)$station->getFrontendConfig();
 
-            $mount = new \Entity\StationMount($station);
+            $mount = new Entity\StationMount($station);
             $mount->setRemoteType($settings['remote_type']);
             $mount->setRemoteUrl($settings['remote_url']);
             $mount->setRemoteMount($settings['remote_mount']);
@@ -130,7 +127,7 @@ class MountsController
 
             // Unset all other records as default if this one is set.
             if ($record->getIsDefault()) {
-                $this->em->createQuery('UPDATE Entity\StationMount sm SET sm.is_default = 0
+                $this->em->createQuery('UPDATE '.Entity\StationMount::class.' sm SET sm.is_default = 0
                     WHERE sm.station_id = :station_id AND sm.id != :new_default_id')
                     ->setParameter('station_id', $station->getId())
                     ->setParameter('new_default_id', $record->getId())
@@ -144,10 +141,7 @@ class MountsController
             return $response->redirectToRoute('stations:mounts:index', ['station' => $station_id]);
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Mount Point'))

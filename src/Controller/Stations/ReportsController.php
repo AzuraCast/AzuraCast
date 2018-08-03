@@ -92,10 +92,7 @@ class ReportsController
 
         $songs = array_reverse($songs);
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/reports/timeline', [
+        return $request->getView()->renderToResponse($response, 'stations/reports/timeline', [
             'songs' => $songs,
         ]);
     }
@@ -169,10 +166,7 @@ class ReportsController
             return $response->withJson($report_data);
         }
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/reports/performance', [
+        return $request->getView()->renderToResponse($response, 'stations/reports/performance', [
             'report_data' => $report_data,
         ]);
     }
@@ -220,10 +214,7 @@ class ReportsController
             }
         }
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/reports/duplicates', [
+        return $request->getView()->renderToResponse($response, 'stations/reports/duplicates', [
             'dupes' => $dupes,
         ]);
     }
@@ -250,8 +241,7 @@ class ReportsController
 
     public function listenersAction(Request $request, Response $response): Response
     {
-        /** @var View $view */
-        $view = $request->getAttribute('view');
+        $view = $request->getView();
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);

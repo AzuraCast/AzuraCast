@@ -61,10 +61,7 @@ class AutomationController
             return $response->redirectHere();
         }
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/automation/index', [
+        return $request->getView()->renderToResponse($response, 'stations/automation/index', [
             'form' => $form,
         ]);
     }

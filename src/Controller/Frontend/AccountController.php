@@ -104,10 +104,7 @@ class AccountController
             return $response->redirectHere();
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'frontend/account/login');
+        return $request->getView()->renderToResponse($response, 'frontend/account/login');
     }
 
     public function logoutAction(Request $request, Response $response): Response

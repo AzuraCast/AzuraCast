@@ -177,10 +177,7 @@ class IndexController
             return ($a > $b) ? 1 : -1;
         });
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/index/index', [
+        return $request->getView()->renderToResponse($response, 'stations/index/index', [
             'day_of_week_stats' => json_encode((array)$day_of_week_stats),
             'daily_ranges' => json_encode((array)$daily_ranges),
             'daily_averages' => json_encode((array)$daily_averages),

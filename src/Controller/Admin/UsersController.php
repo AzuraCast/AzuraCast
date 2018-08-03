@@ -57,10 +57,7 @@ class UsersController
         $users = $this->em->createQuery('SELECT u, r FROM '.Entity\User::class.' u LEFT JOIN u.roles r ORDER BY u.name ASC')
             ->execute();
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'admin/users/index', [
+        return $request->getView()->renderToResponse($response, 'admin/users/index', [
             'user' => $request->getAttribute('user'),
             'users' => $users,
             'csrf' => $this->csrf->generate($this->csrf_namespace)
@@ -103,10 +100,7 @@ class UsersController
             }
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('User'))

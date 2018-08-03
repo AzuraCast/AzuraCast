@@ -61,10 +61,7 @@ class PermissionsController
             $roles[] = $role;
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'admin/permissions/index', [
+        return $request->getView()->renderToResponse($response, 'admin/permissions/index', [
             'roles' => $roles,
             'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
@@ -110,10 +107,7 @@ class PermissionsController
             return $response->redirectToRoute('admin:permissions:index');
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Permission')),

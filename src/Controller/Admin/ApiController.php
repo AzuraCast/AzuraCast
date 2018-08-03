@@ -5,7 +5,6 @@ use App\Csrf;
 use App\Flash;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
-use Slim\Container;
 use App\Http\Request;
 use App\Http\Response;
 
@@ -41,13 +40,10 @@ class ApiController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
         $records = $this->em->createQuery('SELECT a, u FROM '.Entity\ApiKey::class.' a JOIN a.user u')
             ->getArrayResult();
 
-        return $view->renderToResponse($response, 'admin/api/index', [
+        return $request->getView()->renderToResponse($response, 'admin/api/index', [
             'records' => $records,
             'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
@@ -78,10 +74,7 @@ class ApiController
             return $response->redirectToRoute('admin:api:index');
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('Edit %s', __('API Key'))

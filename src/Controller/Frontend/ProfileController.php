@@ -39,18 +39,14 @@ class ProfileController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        /** @var Entity\User $user */
-        $user = $request->getAttribute('user');
+        $user = $request->getUser();
         $user_profile = $this->user_repo->toArray($user);
         unset($user_profile['auth_password']);
 
         $account_info_form = new \AzuraForms\Form($this->form_config['groups']['account_info'], $user_profile);
         $customization_form = new \AzuraForms\Form($this->form_config['groups']['customization'], $user_profile);
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'frontend/profile/index', [
+        return $request->getView()->renderToResponse($response, 'frontend/profile/index', [
             'account_info_form' => $account_info_form,
             'customization_form' => $customization_form,
         ]);
@@ -102,10 +98,7 @@ class ProfileController
             return $response->redirectToRoute('profile:index');
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('Edit Profile')

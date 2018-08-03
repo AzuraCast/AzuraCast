@@ -46,10 +46,7 @@ class FilesController extends FilesControllerAbstract
             $custom_fields['media_custom_'.$row['id']] = $row['name'];
         }
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/files/index', [
+        return $request->getView()->renderToResponse($response, 'stations/files/index', [
             'playlists' => $playlists,
             'custom_fields' => $custom_fields,
             'space_free' => Utilities::bytes_to_text($space_free),
@@ -110,10 +107,7 @@ class FilesController extends FilesControllerAbstract
             return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('Rename File/Directory')

@@ -40,10 +40,7 @@ class RequestsController
             ->setParameter('station_id', $station_id)
             ->getArrayResult();
 
-        /** @var View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'stations/requests/index', [
+        return $request->getView()->renderToResponse($response, 'stations/requests/index', [
             'requests' => $requests,
             'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);

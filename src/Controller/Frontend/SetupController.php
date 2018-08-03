@@ -124,10 +124,8 @@ class SetupController
             return $response->redirectToRoute('setup:index');
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'frontend/setup/register');
+        return $request->getView()
+            ->renderToResponse($response, 'frontend/setup/register');
     }
 
     /**
@@ -159,10 +157,7 @@ class SetupController
             return $response->redirectToRoute('setup:settings');
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'frontend/setup/station', [
+        return $request->getView()->renderToResponse($response, 'frontend/setup/station', [
             'form' => $form,
         ]);
     }
@@ -202,10 +197,7 @@ class SetupController
             return $response->redirectToRoute('dashboard');
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'frontend/setup/settings', [
+        return $request->getView()->renderToResponse($response, 'frontend/setup/settings', [
             'form' => $form,
         ]);
     }

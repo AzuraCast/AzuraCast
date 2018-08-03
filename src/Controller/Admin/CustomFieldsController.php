@@ -49,10 +49,7 @@ class CustomFieldsController
     {
         $records = $this->record_repo->fetchArray(true, 'name');
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'admin/custom_fields/index', [
+        return $request->getView()->renderToResponse($response, 'admin/custom_fields/index', [
             'records' => $records,
             'csrf' => $this->csrf->generate($this->csrf_namespace)
         ]);
@@ -87,10 +84,7 @@ class CustomFieldsController
             return $response->redirectToRoute('admin:custom_fields:index');
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Custom Field'))

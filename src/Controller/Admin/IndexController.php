@@ -5,7 +5,6 @@ use App\Acl;
 use App\Http\Request;
 use App\Http\Response;
 use App\Sync\Runner;
-use App\Entity;
 
 class IndexController
 {
@@ -31,11 +30,8 @@ class IndexController
      */
     public function indexAction(Request $request, Response $response): Response
     {
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        /** @var Entity\User $user */
-        $user = $request->getAttribute('user');
+        $view = $request->getView();
+        $user = $request->getUser();
 
         // Remove the sidebar on the homepage.
         $view->sidebar = null;

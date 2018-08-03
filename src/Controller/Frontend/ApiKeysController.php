@@ -42,13 +42,9 @@ class ApiKeysController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        /** @var Entity\User $user */
-        $user = $request->getAttribute('user');
+        $user = $request->getUser();
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'frontend/api_keys/index', [
+        return $request->getView()->renderToResponse($response, 'frontend/api_keys/index', [
             'records' => $user->getApiKeys(),
             'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
@@ -56,11 +52,8 @@ class ApiKeysController
 
     public function editAction(Request $request, Response $response, $id = null): Response
     {
-        /** @var Entity\User $user */
-        $user = $request->getAttribute('user');
-
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
+        $user = $request->getUser();
+        $view = $request->getView();
 
         $form = new \AzuraForms\Form($this->form_config);
 

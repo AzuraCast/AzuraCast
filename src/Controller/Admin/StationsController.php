@@ -63,10 +63,7 @@ class StationsController
         $stations = $this->em->createQuery('SELECT s FROM '.Entity\Station::class.' s ORDER BY s.name ASC')
             ->getArrayResult();
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'admin/stations/index', [
+        return $request->getView()->renderToResponse($response, 'admin/stations/index', [
             'stations' => $stations,
             'csrf' => $this->csrf->generate($this->csrf_namespace),
         ]);
@@ -109,10 +106,7 @@ class StationsController
             return $response->redirectToRoute('admin:stations:index');
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'admin/stations/edit', [
+        return $request->getView()->renderToResponse($response, 'admin/stations/edit', [
             'form' => $form,
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Station')),
         ]);
@@ -205,10 +199,7 @@ class StationsController
             return $response->redirectToRoute('admin:stations:index');
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => __('Clone Station: %s', $record->getName())

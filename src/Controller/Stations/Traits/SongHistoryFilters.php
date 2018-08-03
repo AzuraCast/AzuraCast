@@ -2,6 +2,7 @@
 namespace App\Controller\Stations\Traits;
 
 use App\Cache;
+use App\Entity\Song;
 use App\Entity\SongHistory;
 use Doctrine\ORM\EntityManager;
 
@@ -67,7 +68,7 @@ trait SongHistoryFilters
             $ignored_phrases = ['Offline', 'Sweeper', 'Bumper', 'Unknown'];
 
             $qb = $this->em->createQueryBuilder();
-            $qb->select('s.id')->from('Entity\Song', 's');
+            $qb->select('s.id')->from(Song::class, 's');
 
             foreach ($ignored_phrases as $i => $phrase) {
                 $qb->orWhere('s.text LIKE ?' . ($i + 1));

@@ -41,7 +41,7 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\App\Config::class] = function () {
-        return new \App\Config(__DIR__ . '/config');
+        return new \App\Config(__DIR__);
     };
 
     $di[\Doctrine\ORM\EntityManager::class] = function ($di) {

@@ -1,4 +1,6 @@
 <?php
+use App\Entity;
+
 class C05_Station_AutomationCest extends CestAbstract
 {
     /**
@@ -14,17 +16,17 @@ class C05_Station_AutomationCest extends CestAbstract
         $song_dest = $this->test_station->getRadioMediaDir().'/test.mp3';
         copy($song_src, $song_dest);
 
-        $playlist = new \Entity\StationPlaylist($this->test_station);
+        $playlist = new Entity\StationPlaylist($this->test_station);
         $playlist->setName('Test Playlist');
         $playlist->setIncludeInAutomation(true);
 
         $this->em->persist($playlist);
 
-        $media = new \Entity\StationMedia($this->test_station, 'test.mp3');
+        $media = new Entity\StationMedia($this->test_station, 'test.mp3');
         $media->loadFromFile();
         $this->em->persist($media);
 
-        $spm = new \Entity\StationPlaylistMedia($playlist, $media);
+        $spm = new Entity\StationPlaylistMedia($playlist, $media);
         $this->em->persist($spm);
 
         $this->em->flush();

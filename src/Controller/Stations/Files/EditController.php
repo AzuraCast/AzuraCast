@@ -103,10 +103,7 @@ class EditController extends FilesControllerAbstract
             return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
         }
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
-
-        return $view->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' =>__('Edit %s', __('Media'))

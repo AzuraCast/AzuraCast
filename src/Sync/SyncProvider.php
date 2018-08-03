@@ -10,7 +10,7 @@ class SyncProvider implements ServiceProviderInterface
     {
         $di[Runner::class] = function ($di) {
             return new Runner(
-                $di[\Entity\Repository\SettingsRepository::class],
+                $di[\App\Entity\Repository\SettingsRepository::class],
                 $di[\Monolog\Logger::class],
                 new \Pimple\ServiceIterator($di, [
                     Task\NowPlaying::class,

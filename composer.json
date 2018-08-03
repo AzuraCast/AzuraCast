@@ -46,13 +46,11 @@
             "name": "Buster Neece",
             "email": "buster@busterneece.com"
         }
+        }
     ],
     "autoload": {
         "psr-4": {
-            "App\\": "app/src/App",
-            "AzuraCast\\": "app/src/AzuraCast",
-            "Entity\\": "app/src/Entity",
-            "Controller\\": "app/src/Controller"
+            "App\\": "app/src/App"
         }
     },
     "config": {

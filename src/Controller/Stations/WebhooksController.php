@@ -64,7 +64,7 @@ class WebhooksController
 
         if ($type === null) {
             return $view->renderToResponse($response, 'stations/webhooks/add', [
-                'connectors' => \AzuraCast\Webhook\Dispatcher::getConnectors(),
+                'connectors' => \App\Webhook\Dispatcher::getConnectors(),
             ]);
         }
 

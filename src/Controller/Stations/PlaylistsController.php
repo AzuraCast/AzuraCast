@@ -210,7 +210,7 @@ class PlaylistsController
             return $response->withJson($mapping);
         }
 
-        $media_items = $this->em->createQuery('SELECT spm, sm FROM Entity\StationPlaylistMedia spm
+        $media_items = $this->em->createQuery('SELECT spm, sm FROM '.Entity\StationPlaylistMedia::class.' spm
             JOIN spm.media sm
             WHERE spm.playlist_id = :playlist_id
             ORDER BY spm.weight ASC')
@@ -359,7 +359,7 @@ class PlaylistsController
         // Assemble list of station media to match against.
         $media_lookup = [];
 
-        $media_info_raw = $this->em->createQuery('SELECT sm.id, sm.path FROM Entity\StationMedia sm WHERE sm.station_id = :station_id')
+        $media_info_raw = $this->em->createQuery('SELECT sm.id, sm.path FROM '.Entity\StationMedia::class.' sm WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station_id)
             ->getArrayResult();
 
@@ -389,7 +389,7 @@ class PlaylistsController
 
         // Assign all matched media to the playlist.
         if (!empty($matches)) {
-            $matched_media = $this->em->createQuery('SELECT sm FROM Entity\StationMedia sm
+            $matched_media = $this->em->createQuery('SELECT sm FROM '.Entity\StationMedia::class.' sm
                 WHERE sm.station_id = :station_id AND sm.id IN (:matched_ids)')
                 ->setParameter('station_id', $station_id)
                 ->setParameter('matched_ids', $matches)

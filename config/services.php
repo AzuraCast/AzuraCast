@@ -255,7 +255,7 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\App\Mvc\View::class] = $di->factory(function(\Slim\Container $di) {
-        $view = new \App\Mvc\View(APP_INCLUDE_BASE . '/templates');
+        $view = new \App\Mvc\View(dirname(__DIR__) . '/resources/templates');
         $view->setFileExtension('phtml');
 
         $view->registerFunction('service', function($service) use ($di) {
@@ -323,10 +323,6 @@ return function (\Slim\Container $di, $settings) {
         $logger->pushHandler($handler);
 
         return $logger;
-    };
-
-    $di[\App\Console\Application::class] = function($di) use ($settings) {
-        return \App\Console\Application::create($di, $settings);
     };
 
     $di[MaxMind\Db\Reader::class] = function($di) {

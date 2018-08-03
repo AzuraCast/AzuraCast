@@ -50,12 +50,12 @@ class ServicesController
         try
         {
             $backend->stop();
-        } catch(\AzuraCast\Exception\Supervisor\NotRunning $e) {}
+        } catch(\App\Exception\Supervisor\NotRunning $e) {}
 
         try
         {
             $frontend->stop();
-        } catch(\AzuraCast\Exception\Supervisor\NotRunning $e) {}
+        } catch(\App\Exception\Supervisor\NotRunning $e) {}
 
         $frontend->start();
         $backend->start();
@@ -113,7 +113,7 @@ class ServicesController
                 try
                 {
                     $frontend->stop();
-                } catch(\AzuraCast\Exception\Supervisor\NotRunning $e) {}
+                } catch(\App\Exception\Supervisor\NotRunning $e) {}
 
                 $frontend->write();
                 $frontend->start();
@@ -183,7 +183,7 @@ class ServicesController
                 try
                 {
                     $backend->stop();
-                } catch(\AzuraCast\Exception\Supervisor\NotRunning $e) {}
+                } catch(\App\Exception\Supervisor\NotRunning $e) {}
 
                 $backend->write();
                 $backend->start();

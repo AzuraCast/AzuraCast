@@ -1,7 +1,7 @@
 <?php
 namespace App\Radio\Backend;
 
-abstract class BackendAbstract extends \AzuraCast\Radio\AdapterAbstract
+abstract class BackendAbstract extends \App\Radio\AdapterAbstract
 {
     protected $supports_media = true;
 

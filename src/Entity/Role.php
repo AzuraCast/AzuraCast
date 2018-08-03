@@ -33,7 +33,7 @@ class Role
     protected $users;
 
     /**
-     * @OneToMany(targetEntity="Entity\RolePermission", mappedBy="role")
+     * @OneToMany(targetEntity="RolePermission", mappedBy="role")
      * @var Collection
      */
     protected $permissions;

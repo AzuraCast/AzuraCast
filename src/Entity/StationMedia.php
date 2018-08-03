@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\Collection;
  * }, uniqueConstraints={
  *   @UniqueConstraint(name="path_unique_idx", columns={"path", "station_id"})
  * })
- * @Entity(repositoryClass="Entity\Repository\StationMediaRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\StationMediaRepository")
  * @HasLifecycleCallbacks
  */
 class StationMedia
@@ -717,7 +717,7 @@ class StationMedia
      *
      * @return Api\Song
      */
-    public function api(\AzuraCast\ApiUtilities $api_utils): Api\Song
+    public function api(\App\ApiUtilities $api_utils): Api\Song
     {
         $response = new Api\Song;
         $response->id = (string)$this->song_id;

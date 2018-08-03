@@ -26,7 +26,7 @@ class AdminProvider implements ServiceProviderInterface
             $config = $di[\App\Config::class];
 
             return new BrandingController(
-                $di[\Entity\Repository\SettingsRepository::class],
+                $di[Entity\Repository\SettingsRepository::class],
                 $di[\App\Flash::class],
                 $config->get('forms/branding', ['settings' => $di['app_settings']])
             );
@@ -46,8 +46,8 @@ class AdminProvider implements ServiceProviderInterface
 
         $di[IndexController::class] = function($di) {
             return new IndexController(
-                $di[\AzuraCast\Acl\StationAcl::class],
-                $di[\AzuraCast\Sync\Runner::class]
+                $di[\App\Acl\StationAcl::class],
+                $di[\App\Sync\Runner::class]
             );
         };
 
@@ -58,8 +58,8 @@ class AdminProvider implements ServiceProviderInterface
             /** @var \Doctrine\ORM\EntityManager $em */
             $em = $di[\Doctrine\ORM\EntityManager::class];
 
-            /** @var \Entity\Repository\StationRepository $stations_repo */
-            $stations_repo = $em->getRepository(\Entity\Station::class);
+            /** @var Entity\Repository\StationRepository $stations_repo */
+            $stations_repo = $em->getRepository(Entity\Station::class);
 
             $actions = $config->get('admin/actions');
 
@@ -80,7 +80,7 @@ class AdminProvider implements ServiceProviderInterface
             $config = $di[\App\Config::class];
 
             return new SettingsController(
-                $di[\Entity\Repository\SettingsRepository::class],
+                $di[Entity\Repository\SettingsRepository::class],
                 $di[\App\Flash::class],
                 $config->get('forms/settings')
             );
@@ -94,8 +94,8 @@ class AdminProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Flash::class],
                 $di[\App\Cache::class],
-                $di[\AzuraCast\Radio\Adapters::class],
-                $di[\AzuraCast\Radio\Configuration::class],
+                $di[\App\Radio\Adapters::class],
+                $di[\App\Radio\Configuration::class],
                 $di[\App\Csrf::class],
                 $config->get('forms/station'),
                 $config->get('forms/station_clone')
@@ -110,7 +110,7 @@ class AdminProvider implements ServiceProviderInterface
             $em = $di[\Doctrine\ORM\EntityManager::class];
 
             /** @var Entity\Repository\BaseRepository $role_repo */
-            $role_repo = $em->getRepository(\Entity\Role::class);
+            $role_repo = $em->getRepository(Entity\Role::class);
 
             return new UsersController(
                 $di[\Doctrine\ORM\EntityManager::class],

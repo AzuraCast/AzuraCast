@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Table(name="users", uniqueConstraints={@UniqueConstraint(name="email_idx", columns={"email"})})
- * @Entity(repositoryClass="Entity\Repository\UserRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\UserRepository")
  * @HasLifecycleCallbacks
  */
 class User

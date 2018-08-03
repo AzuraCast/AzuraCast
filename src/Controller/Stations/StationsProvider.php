@@ -15,7 +15,7 @@ class StationsProvider implements ServiceProviderInterface
             return new AutomationController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Flash::class],
-                $di[\AzuraCast\Sync\Task\RadioAutomation::class],
+                $di[\App\Sync\Task\RadioAutomation::class],
                 $config->get('forms/automation')
             );
         };
@@ -86,7 +86,7 @@ class StationsProvider implements ServiceProviderInterface
                 $di[\App\Flash::class],
                 $di[\App\Csrf::class],
                 $config->get('forms/playlist', [
-                    'customization' => $di[\AzuraCast\Customization::class]
+                    'customization' => $di[\App\Customization::class]
                 ])
             );
         };
@@ -99,7 +99,7 @@ class StationsProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Flash::class],
                 $di[\App\Cache::class],
-                $di[\AzuraCast\Radio\Configuration::class],
+                $di[\App\Radio\Configuration::class],
                 $config->get('forms/station')
             );
         };
@@ -109,7 +109,7 @@ class StationsProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Cache::class],
                 $di[\App\Flash::class],
-                $di[\AzuraCast\Sync\Task\RadioAutomation::class]
+                $di[\App\Sync\Task\RadioAutomation::class]
             );
         };
 

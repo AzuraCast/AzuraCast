@@ -49,7 +49,7 @@ class Media extends TaskAbstract
         /** @var Entity\Repository\SongRepository $song_repo */
         $song_repo = $this->em->getRepository(Entity\Song::class);
 
-        $existing_media_q = $this->em->createQuery('SELECT sm FROM Entity\StationMedia sm WHERE sm.station_id = :station_id')
+        $existing_media_q = $this->em->createQuery('SELECT sm FROM '.Entity\StationMedia::class.' sm WHERE sm.station_id = :station_id')
             ->setParameter('station_id', $station->getId());
         $existing_media = $existing_media_q->iterate();
 

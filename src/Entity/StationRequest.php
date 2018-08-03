@@ -3,7 +3,7 @@ namespace App\Entity;
 
 /**
  * @Table(name="station_requests")
- * @Entity(repositoryClass="Entity\Repository\StationRequestRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\StationRequestRepository")
  */
 class StationRequest
 {

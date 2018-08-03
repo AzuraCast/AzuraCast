@@ -79,7 +79,7 @@ class StationMediaRepository extends BaseRepository
      */
     public function getCustomFields(Entity\StationMedia $media)
     {
-        $metadata_raw = $this->_em->createQuery('SELECT e FROM Entity\StationMediaCustomField e WHERE e.media_id = :media_id')
+        $metadata_raw = $this->_em->createQuery('SELECT e FROM '.Entity\StationMediaCustomField::class.' e WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->getArrayResult();
 
@@ -99,7 +99,7 @@ class StationMediaRepository extends BaseRepository
      */
     public function setCustomFields(Entity\StationMedia $media, array $custom_fields)
     {
-        $this->_em->createQuery('DELETE FROM Entity\StationMediaCustomField e WHERE e.media_id = :media_id')
+        $this->_em->createQuery('DELETE FROM '.Entity\StationMediaCustomField::class.' e WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->execute();
 

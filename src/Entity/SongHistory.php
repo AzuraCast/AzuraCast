@@ -5,7 +5,7 @@ namespace App\Entity;
  * @Table(name="song_history", indexes={
  *   @index(name="sort_idx", columns={"timestamp_start"}),
  * })
- * @Entity(repositoryClass="Entity\Repository\SongHistoryRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\SongHistoryRepository")
  */
 class SongHistory
 {
@@ -461,7 +461,7 @@ class SongHistory
     /**
      * @return Api\SongHistory|Api\NowPlayingCurrentSong
      */
-    public function api(\AzuraCast\ApiUtilities $api, $now_playing = false)
+    public function api(\App\ApiUtilities $api, $now_playing = false)
     {
         $response = ($now_playing) ? new Api\NowPlayingCurrentSong : new Api\SongHistory;
         $response->sh_id = (int)$this->id;

@@ -44,7 +44,7 @@ class ApiController
         /** @var \App\Mvc\View $view */
         $view = $request->getAttribute('view');
 
-        $records = $this->em->createQuery('SELECT a, u FROM Entity\ApiKey a JOIN a.user u')
+        $records = $this->em->createQuery('SELECT a, u FROM '.Entity\ApiKey::class.' a JOIN a.user u')
             ->getArrayResult();
 
         return $view->renderToResponse($response, 'admin/api/index', [

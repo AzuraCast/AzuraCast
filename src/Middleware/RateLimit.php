@@ -9,10 +9,10 @@ use Slim\Http\Response;
  */
 class RateLimit
 {
-    /** @var \AzuraCast\RateLimit */
+    /** @var \App\RateLimit */
     protected $rate_limit;
 
-    public function __construct(\AzuraCast\RateLimit $rate_limit)
+    public function __construct(\App\RateLimit $rate_limit)
     {
         $this->rate_limit = $rate_limit;
     }
@@ -25,7 +25,7 @@ class RateLimit
      * @param int $rl_timeout
      * @param int $rl_interval
      * @return Response
-     * @throws \AzuraCast\Exception\RateLimitExceeded
+     * @throws \App\Exception\RateLimitExceeded
      */
     public function __invoke(Request $request, Response $response, $next, $rl_group = 'default', $rl_timeout = 5, $rl_interval = 2): Response
     {

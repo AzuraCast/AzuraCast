@@ -2,6 +2,7 @@
 namespace App\Middleware;
 
 use App\Assets;
+use App\Entity;
 use Doctrine\ORM\EntityManager;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -14,7 +15,7 @@ class EnforceSecurity
     /** @var EntityManager */
     protected $em;
 
-    /** @var \Entity\Repository\SettingsRepository */
+    /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
     /** @var Assets */
@@ -23,7 +24,7 @@ class EnforceSecurity
     public function __construct(EntityManager $em, Assets $assets)
     {
         $this->em = $em;
-        $this->settings_repo = $this->em->getRepository(\Entity\Settings::class);
+        $this->settings_repo = $this->em->getRepository(Entity\Settings::class);
 
         $this->assets = $assets;
     }

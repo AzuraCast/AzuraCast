@@ -206,7 +206,7 @@ class RadioAutomation extends TaskAbstract
 
         // Pull all SongHistory data points.
         $data_points_raw = $this->em->createQuery('SELECT sh.song_id, sh.timestamp_start, sh.delta_positive, sh.delta_negative, sh.listeners_start 
-            FROM Entity\SongHistory sh 
+            FROM '.Entity\SongHistory::class.' sh 
             WHERE sh.station_id = :station_id AND sh.timestamp_end != 0 AND sh.timestamp_start >= :threshold')
             ->setParameter('station_id', $station->getId())
             ->setParameter('threshold', $threshold)
@@ -257,7 +257,7 @@ class RadioAutomation extends TaskAbstract
         /** @var Entity\Repository\StationMediaRepository $media_repo */
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
-        $media_raw = $this->em->createQuery('SELECT sm, spm, sp FROM Entity\StationMedia sm LEFT JOIN sm.playlist_items spm LEFT JOIN spm.playlist sp WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
+        $media_raw = $this->em->createQuery('SELECT sm, spm, sp FROM '.Entity\StationMedia::class.' sm LEFT JOIN sm.playlist_items spm LEFT JOIN spm.playlist sp WHERE sm.station_id = :station_id ORDER BY sm.artist ASC, sm.title ASC')
             ->setParameter('station_id', $station->getId())
             ->execute();
 

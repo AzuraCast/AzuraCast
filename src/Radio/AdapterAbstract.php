@@ -173,26 +173,26 @@ abstract class AdapterAbstract
      *
      * @param FaultException $e
      * @param $program_name
-     * @throws \AzuraCast\Exception\Supervisor
-     * @throws \AzuraCast\Exception\Supervisor\AlreadyRunning
-     * @throws \AzuraCast\Exception\Supervisor\NotRunning
+     * @throws \App\Exception\Supervisor
+     * @throws \App\Exception\Supervisor\AlreadyRunning
+     * @throws \App\Exception\Supervisor\NotRunning
      */
     protected function _handleSupervisorException(FaultException $e, $program_name)
     {
         if (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
-            $app_e = new \AzuraCast\Exception\Supervisor\AlreadyRunning(
+            $app_e = new \App\Exception\Supervisor\AlreadyRunning(
                 sprintf('Adapter "%s" cannot start; was already running.', get_called_class()),
                 $e->getCode(),
                 $e
             );
         } else if (false !== stripos($e->getMessage(), 'NOT_RUNNING')) {
-            $app_e = new \AzuraCast\Exception\Supervisor\NotRunning(
+            $app_e = new \App\Exception\Supervisor\NotRunning(
                 sprintf('Adapter "%s" cannot start; was already running.', get_called_class()),
                 $e->getCode(),
                 $e
             );
         } else {
-            $app_e = new \AzuraCast\Exception\Supervisor($e->getMessage(), $e->getCode(), $e);
+            $app_e = new \App\Exception\Supervisor($e->getMessage(), $e->getCode(), $e);
         }
 
         $app_e->addLoggingContext('station_id', $this->station->getId());

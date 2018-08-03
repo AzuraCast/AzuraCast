@@ -3,6 +3,7 @@ namespace App\Controller\Frontend;
 
 use App\Acl;
 use App\Auth;
+use App\Entity\User;
 use App\Flash;
 use App\Session;
 use App\Url;
@@ -50,7 +51,7 @@ class AccountController
     {
         // Check installation completion progress.
         if ($this->em->getRepository(Settings::class)->getSetting('setup_complete', 0) == 0) {
-            $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
+            $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM '.User::class.' u')->getSingleScalarResult();
 
             if ($num_users == 0) {
                 return $response->redirectToRoute('setup:index');
@@ -64,7 +65,7 @@ class AccountController
         if (!empty($_POST['username']) && !empty($_POST['password'])) {
             try {
                 $this->rate_limit->checkRateLimit('login', 30, 5);
-            } catch(\AzuraCast\Exception\RateLimitExceeded $e) {
+            } catch(\App\Exception\RateLimitExceeded $e) {
                 $this->flash->alert('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
                     'red');
 

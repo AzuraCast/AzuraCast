@@ -3,7 +3,7 @@ namespace App\Entity;
 
 /**
  * @Table(name="settings")
- * @Entity(repositoryClass="Entity\Repository\SettingsRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\SettingsRepository")
  */
 class Settings
 {

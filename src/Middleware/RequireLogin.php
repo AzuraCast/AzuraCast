@@ -3,6 +3,7 @@ namespace App\Middleware;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use App\Entity;
 
 /**
  * Require that the user be logged in to view this page.
@@ -20,7 +21,7 @@ class RequireLogin
     {
         $user = $request->getAttribute('user');
 
-        if (!($user instanceof \Entity\User)) {
+        if (!($user instanceof Entity\User)) {
             throw new \App\Exception\NotLoggedIn;
         }
 

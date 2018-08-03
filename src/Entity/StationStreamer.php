@@ -5,7 +5,7 @@ namespace App\Entity;
  * Station streamers (DJ accounts) allowed to broadcast to a station.
  *
  * @Table(name="station_streamers")
- * @Entity(repositoryClass="Entity\Repository\StationStreamerRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\StationStreamerRepository")
  * @HasLifecycleCallbacks
  */
 class StationStreamer

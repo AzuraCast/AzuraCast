@@ -1,9 +1,7 @@
 <?php
 namespace App;
 
-use App\Url;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
 
 /**
  * Class ApiSupport
@@ -55,7 +53,7 @@ class ApiUtilities
 
         if (!isset($fields)) {
             $fields = [];
-            $fields_raw = $this->em->createQuery('SELECT cf.id, cf.name, cf.short_name FROM Entity\CustomField cf ORDER BY cf.name ASC')
+            $fields_raw = $this->em->createQuery('SELECT cf.id, cf.name, cf.short_name FROM '.Entity\CustomField::class.' cf ORDER BY cf.name ASC')
                 ->getArrayResult();
 
             foreach($fields_raw as $row) {
@@ -65,7 +63,7 @@ class ApiUtilities
 
         $media_fields = [];
         if ($media_id !== null) {
-            $media_fields_raw = $this->em->createQuery('SELECT smcf.field_id, smcf.value FROM Entity\StationMediaCustomField smcf WHERE smcf.media_id = :media_id')
+            $media_fields_raw = $this->em->createQuery('SELECT smcf.field_id, smcf.value FROM '.Entity\StationMediaCustomField::class.' smcf WHERE smcf.media_id = :media_id')
                 ->setParameter('media_id', $media_id)
                 ->getArrayResult();
 

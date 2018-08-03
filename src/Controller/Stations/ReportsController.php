@@ -179,7 +179,7 @@ class ReportsController
 
     public function duplicatesAction(Request $request, Response $response, $station_id): Response
     {
-        $media_raw = $this->em->createQuery('SELECT sm, s, spm, sp FROM Entity\StationMedia sm JOIN sm.song s LEFT JOIN sm.playlist_items spm LEFT JOIN spm.playlist sp WHERE sm.station_id = :station_id ORDER BY sm.mtime ASC')
+        $media_raw = $this->em->createQuery('SELECT sm, s, spm, sp FROM '.Entity\StationMedia::class.' sm JOIN sm.song s LEFT JOIN sm.playlist_items spm LEFT JOIN spm.playlist sp WHERE sm.station_id = :station_id ORDER BY sm.mtime ASC')
             ->setParameter('station_id', $station_id)
             ->getArrayResult();
 

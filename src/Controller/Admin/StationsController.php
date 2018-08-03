@@ -60,7 +60,7 @@ class StationsController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        $stations = $this->em->createQuery('SELECT s FROM Entity\Station s ORDER BY s.name ASC')
+        $stations = $this->em->createQuery('SELECT s FROM '.Entity\Station::class.' s ORDER BY s.name ASC')
             ->getArrayResult();
 
         /** @var \App\Mvc\View $view */

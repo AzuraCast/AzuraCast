@@ -104,7 +104,7 @@ class IndexController
 
         $song_totals_raw = [];
         $song_totals_raw['played'] = $this->em->createQuery('SELECT sh.song_id, COUNT(sh.id) AS records
-            FROM Entity\SongHistory sh
+            FROM '.Entity\SongHistory::class.' sh
             WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp
             GROUP BY sh.song_id
             ORDER BY records DESC')
@@ -137,7 +137,7 @@ class IndexController
 
         // Get all songs played in timeline.
         $songs_played_raw = $this->em->createQuery('SELECT sh, s
-                FROM Entity\SongHistory sh
+                FROM '.Entity\SongHistory::class.' sh
                 LEFT JOIN sh.song s
                 WHERE sh.station_id = :station_id AND sh.timestamp_start >= :timestamp AND sh.listeners_start IS NOT NULL
                 ORDER BY sh.timestamp_start ASC')

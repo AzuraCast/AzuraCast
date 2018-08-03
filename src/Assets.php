@@ -1,13 +1,12 @@
 <?php
+namespace App;
+
 /**
  * Asset management class for AzuraCast.
  * Inspired by Asseter by Adam Banaszkiewicz: https://github.com/requtize
  *
  * @link      https://github.com/requtize/assetter
  */
-
-namespace App;
-
 class Assets
 {
     /** @var array Known libraries loaded in initialization. */

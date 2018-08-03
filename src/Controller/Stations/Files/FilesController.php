@@ -24,7 +24,7 @@ class FilesController extends FilesControllerAbstract
         $station = $request->getAttribute('station');
 
         $playlists = $this->em->createQuery('SELECT sp.id, sp.name 
-            FROM Entity\StationPlaylist sp 
+            FROM '.Entity\StationPlaylist::class.' sp 
             WHERE sp.station_id = :station_id AND sp.source = :source 
             ORDER BY sp.name ASC')
             ->setParameter('station_id', $station_id)
@@ -38,7 +38,7 @@ class FilesController extends FilesControllerAbstract
         $space_used = $space_total - $space_free;
 
         // Get list of custom fields.
-        $custom_fields_raw = $this->em->createQuery('SELECT cf.id, cf.name FROM Entity\CustomField cf ORDER BY cf.name ASC')
+        $custom_fields_raw = $this->em->createQuery('SELECT cf.id, cf.name FROM '.Entity\CustomField::class.' cf ORDER BY cf.name ASC')
             ->getArrayResult();
 
         $custom_fields = [];
@@ -86,7 +86,7 @@ class FilesController extends FilesControllerAbstract
 
                 if (is_dir($new_path_full)) {
                     // Update the paths of all media contained within the directory.
-                    $media_in_dir = $this->em->createQuery('SELECT sm FROM Entity\StationMedia sm
+                    $media_in_dir = $this->em->createQuery('SELECT sm FROM '.Entity\StationMedia::class.' sm
                         WHERE sm.station_id = :station_id AND sm.path LIKE :path')
                         ->setParameter('station_id', $station->getId())
                         ->setParameter('path', $path . '%')

@@ -5,7 +5,7 @@ use App\Radio\Frontend\FrontendAbstract;
 
 /**
  * @Table(name="station_mounts")
- * @Entity(repositoryClass="Entity\Repository\StationMountRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\StationMountRepository")
  * @HasLifecycleCallbacks
  */
 class StationMount

@@ -22,7 +22,7 @@ class GenerateApiDocs extends \App\Console\Command\CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        define('AZURACAST_VERSION', \AzuraCast\Version::getVersion());
+        define('AZURACAST_VERSION', \App\Version::getVersion());
         define('SAMPLE_TIMESTAMP', rand(time() - 86400, time() + 86400));
 
         $swagger = \Swagger\scan([

@@ -54,23 +54,23 @@ class SyncProvider implements ServiceProviderInterface
                 $di[\App\Url::class],
                 $di[\InfluxDB\Database::class],
                 $di[\App\Cache::class],
-                $di[\AzuraCast\Radio\Adapters::class],
-                $di[\AzuraCast\Webhook\Dispatcher::class],
-                $di[\AzuraCast\ApiUtilities::class]
+                $di[\App\Radio\Adapters::class],
+                $di[\App\Webhook\Dispatcher::class],
+                $di[\App\ApiUtilities::class]
             );
         };
 
         $di[Task\RadioAutomation::class] = function($di) {
             return new Task\RadioAutomation(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\AzuraCast\Radio\Adapters::class]
+                $di[\App\Radio\Adapters::class]
             );
         };
 
         $di[Task\RadioRequests::class] = function($di) {
             return new Task\RadioRequests(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\AzuraCast\Radio\Adapters::class]
+                $di[\App\Radio\Adapters::class]
             );
         };
     }

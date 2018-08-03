@@ -1,13 +1,12 @@
 <?php
-/**
- * App Core Framework Version
- **/
-
 namespace App;
 
 define('APP_CORE_VERSION', '0.8.2-2018.04');
 define('APP_CORE_RELEASE', 'Beta');
 
+/**
+ * App Core Framework Version
+ */
 class Version
 {
     public static function getVersion()

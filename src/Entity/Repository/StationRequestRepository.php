@@ -126,7 +126,7 @@ class StationRequestRepository extends BaseRepository
 
         try {
             $last_play_time = $this->_em->createQuery('SELECT sh.timestamp_start 
-                FROM Entity\SongHistory sh 
+                FROM '.Entity\SongHistory::class.' sh 
                 WHERE sh.media_id = :media_id 
                 AND sh.station_id = :station_id
                 AND sh.timestamp_start >= :threshold

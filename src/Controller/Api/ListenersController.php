@@ -62,7 +62,7 @@ class ListenersController
             $start = strtotime($request->getParam('start').' 00:00:00');
             $end = strtotime($request->getParam('end', $request->getParam('start')).' 23:59:59');
 
-            $listeners_unsorted = $this->em->createQuery('SELECT l FROM Entity\Listener l
+            $listeners_unsorted = $this->em->createQuery('SELECT l FROM '.Entity\Listener::class.' l
                 WHERE l.station_id = :station_id
                 AND l.timestamp_start < :end
                 AND l.timestamp_end > :start')
@@ -83,7 +83,7 @@ class ListenersController
                 $listeners_raw[$hash]['connected_time'] += ($listener['timestamp_end'] - $listener['timestamp_start']);
             }
         } else {
-            $listeners_raw = $this->em->createQuery('SELECT l FROM Entity\Listener l
+            $listeners_raw = $this->em->createQuery('SELECT l FROM '.Entity\Listener::class.' l
                 WHERE l.station_id = :station_id
                 AND l.timestamp_end = 0')
                 ->setParameter('station_id', $station->getId())

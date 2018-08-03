@@ -32,7 +32,7 @@ class RequestsController
 
     public function indexAction(Request $request, Response $response, $station_id): Response
     {
-        $requests = $this->em->createQuery('SELECT sr, sm, s FROM Entity\StationRequest sr
+        $requests = $this->em->createQuery('SELECT sr, sm, s FROM '.Entity\StationRequest::class.' sr
             JOIN sr.track sm
             JOIN sm.song s
             WHERE sr.station_id = :station_id

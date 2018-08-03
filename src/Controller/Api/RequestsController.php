@@ -67,7 +67,7 @@ class RequestsController
         }
 
         $requestable_media = $this->em->createQuery('SELECT sm, s, spm, sp 
-            FROM Entity\StationMedia sm JOIN sm.song s
+            FROM '.Entity\StationMedia::class.' sm JOIN sm.song s
              LEFT JOIN sm.playlist_items spm
              LEFT JOIN spm.playlist sp
             WHERE sm.station_id = :station_id 

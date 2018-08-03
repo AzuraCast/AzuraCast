@@ -218,12 +218,15 @@ class SetupController
      */
     protected function _getSetupStep()
     {
-        if ($this->em->getRepository('Entity\Settings')->getSetting('setup_complete', 0) != 0) {
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
+
+        if ($settings_repo->getSetting('setup_complete', 0) != 0) {
             return 'complete';
         }
 
         // Step 1: Register
-        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM Entity\User u')->getSingleScalarResult();
+        $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM '.Entity\User::class.' u')->getSingleScalarResult();
         if ($num_users == 0) {
             return 'register';
         }
@@ -234,7 +237,7 @@ class SetupController
         }
 
         // Step 2: Set up Station
-        $num_stations = $this->em->createQuery('SELECT COUNT(s.id) FROM Entity\Station s')->getSingleScalarResult();
+        $num_stations = $this->em->createQuery('SELECT COUNT(s.id) FROM '.Entity\Station::class.' s')->getSingleScalarResult();
         if ($num_stations == 0) {
             return 'station';
         }

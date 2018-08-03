@@ -3,7 +3,7 @@ namespace App\Entity;
 
 /**
  * @Table(name="api_keys")
- * @Entity(repositoryClass="Entity\Repository\ApiKeyRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\ApiKeyRepository")
  */
 class ApiKey
 {

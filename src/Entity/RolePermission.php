@@ -5,7 +5,7 @@ namespace App\Entity;
  * @Table(name="role_permissions", uniqueConstraints={
  *   @UniqueConstraint(name="role_permission_unique_idx", columns={"role_id","action_name","station_id"})
  * })
- * @Entity(repositoryClass="Entity\Repository\RolePermissionRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\RolePermissionRepository")
  */
 class RolePermission
 {

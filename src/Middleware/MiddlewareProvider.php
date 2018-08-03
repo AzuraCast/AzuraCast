@@ -3,6 +3,7 @@ namespace App\Middleware;
 
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
+use App;
 use App\Entity;
 
 class MiddlewareProvider implements ServiceProviderInterface
@@ -13,25 +14,21 @@ class MiddlewareProvider implements ServiceProviderInterface
             return new DebugEcho($di[\Monolog\Logger::class]);
         };
 
-        $di[\App\Middleware\DebugEcho::class] = function($di) {
-            return new \App\Middleware\DebugEcho($di[\Monolog\Logger::class]);
-        };
-
         $di[EnableView::class] = function($di) {
-            return new EnableView($di[\App\Mvc\View::class]);
+            return new EnableView($di[App\Mvc\View::class]);
         };
 
         $di[EnforceSecurity::class] = function($di) {
             return new EnforceSecurity(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\AzuraCast\Assets::class]
+                $di[App\Assets::class]
             );
         };
 
         $di[GetCurrentUser::class] = function($di) {
             return new GetCurrentUser(
-                $di[\App\Auth::class],
-                $di[\AzuraCast\Customization::class]
+                $di[App\Auth::class],
+                $di[App\Customization::class]
             );
         };
 
@@ -39,24 +36,24 @@ class MiddlewareProvider implements ServiceProviderInterface
             /** @var \Doctrine\ORM\EntityManager $em */
             $em = $di[\Doctrine\ORM\EntityManager::class];
 
-            /** @var \Entity\Repository\StationRepository $station_repo */
+            /** @var Entity\Repository\StationRepository $station_repo */
             $station_repo = $em->getRepository(Entity\Station::class);
 
             return new GetStation(
                 $station_repo,
-                $di[\AzuraCast\Radio\Adapters::class]
+                $di[App\Radio\Adapters::class]
             );
         };
 
         $di[Permissions::class] = function($di) {
             return new Permissions(
-                $di[\AzuraCast\Acl\StationAcl::class]
+                $di[App\Acl\StationAcl::class]
             );
         };
 
         $di[RateLimit::class] = function($di) {
             return new RateLimit(
-                $di[\AzuraCast\RateLimit::class]
+                $di[App\RateLimit::class]
             );
         };
 
@@ -70,10 +67,10 @@ class MiddlewareProvider implements ServiceProviderInterface
 
         $di[Module\Admin::class] = function($di) {
             /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
+            $config = $di[App\Config::class];
 
             return new Module\Admin(
-                $di[\AzuraCast\Acl\StationAcl::class],
+                $di[App\Acl\StationAcl::class],
                 $config->get('admin/dashboard')
             );
         };
@@ -86,7 +83,7 @@ class MiddlewareProvider implements ServiceProviderInterface
             $api_repo = $em->getRepository(Entity\ApiKey::class);
 
             return new Module\Api(
-                $di[\App\Session::class],
+                $di[App\Session::class],
                 $api_repo
             );
         };

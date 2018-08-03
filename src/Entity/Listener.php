@@ -6,7 +6,7 @@ namespace App\Entity;
  *   @index(name="update_idx", columns={"listener_hash"}),
  *   @index(name="search_idx", columns={"listener_uid", "timestamp_end"})
  * })
- * @Entity(repositoryClass="Entity\Repository\ListenerRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\ListenerRepository")
  */
 class Listener
 {

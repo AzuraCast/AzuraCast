@@ -1,9 +1,7 @@
 <?php
 namespace App;
 
-use App\Auth;
 use App\Http\Request;
-use App\Entity;
 use Gettext\Translations;
 use Gettext\Translator;
 
@@ -74,7 +72,7 @@ class Customization
      *
      * @param Entity\User $user
      */
-    public function setUser(\Entity\User $user = null)
+    public function setUser(Entity\User $user = null)
     {
         $this->user = $user;
     }

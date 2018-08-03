@@ -46,11 +46,10 @@
             "name": "Buster Neece",
             "email": "buster@busterneece.com"
         }
-        }
     ],
     "autoload": {
         "psr-4": {
-            "App\\": "app/src/App"
+            "App\\": "src"
         }
     },
     "config": {

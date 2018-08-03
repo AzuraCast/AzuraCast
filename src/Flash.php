@@ -1,10 +1,9 @@
 <?php
+namespace App;
+
 /**
  * Quick message queue service.
  */
-
-namespace App;
-
 class Flash
 {
     const SUCCESS = 'success';

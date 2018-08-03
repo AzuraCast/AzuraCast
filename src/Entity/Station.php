@@ -9,7 +9,7 @@ use Interop\Container\ContainerInterface;
 
 /**
  * @Table(name="station")
- * @Entity(repositoryClass="Entity\Repository\StationRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\StationRepository")
  * @HasLifecycleCallbacks
  */
 class Station

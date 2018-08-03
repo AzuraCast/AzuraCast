@@ -39,7 +39,7 @@ class PermissionsController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        $all_roles = $this->em->createQuery('SELECT r, rp, s FROM Entity\Role r 
+        $all_roles = $this->em->createQuery('SELECT r, rp, s FROM '.Entity\Role::class.' r 
             LEFT JOIN r.users u LEFT JOIN r.permissions rp LEFT JOIN rp.station s 
             ORDER BY r.id ASC')
             ->getArrayResult();

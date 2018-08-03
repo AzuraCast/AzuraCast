@@ -29,7 +29,7 @@ define('APP_INCLUDE_CACHE', APP_INCLUDE_TEMP . '/cache');
 if (APP_INSIDE_DOCKER) {
     $_ENV = getenv();
 } else if (file_exists(APP_INCLUDE_BASE.'/env.ini')) {
-    $_ENV = array_merge($_ENV, parse_ini_file(APP_INCLUDE_BASE.'/env.ini'));
+    $_ENV = array_merge($_ENV, parse_ini_file(APP_INCLUDE_ROOT.'/app/env.ini'));
 }
 
 // Application environment.

@@ -3,7 +3,7 @@ namespace App\Entity;
 
 /**
  * @Table(name="station_playlist_media")
- * @Entity(repositoryClass="Entity\Repository\StationPlaylistMediaRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\StationPlaylistMediaRepository")
  */
 class StationPlaylistMedia
 {

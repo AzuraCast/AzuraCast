@@ -101,7 +101,7 @@ class Adapters
             ];
 
             $adapters = array_filter($adapters, function($adapter_info) {
-                /** @var \AzuraCast\Radio\AdapterAbstract $adapter_class */
+                /** @var \App\Radio\AdapterAbstract $adapter_class */
                 $adapter_class = $adapter_info['class'];
                 return $adapter_class::isInstalled();
             });
@@ -133,7 +133,7 @@ class Adapters
             ];
 
             $adapters = array_filter($adapters, function ($adapter_info) {
-                /** @var \AzuraCast\Radio\AdapterAbstract $adapter_class */
+                /** @var \App\Radio\AdapterAbstract $adapter_class */
                 $adapter_class = $adapter_info['class'];
                 return $adapter_class::isInstalled();
             });

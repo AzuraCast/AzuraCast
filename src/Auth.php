@@ -46,12 +46,6 @@ class Auth
         }
     }
 
-    /**
-     * Log out of the currently active session.
-     *
-     * @param null $destination
-     * @param bool $unset_session
-     */
     public function logout()
     {
         unset($this->_session->user_id);

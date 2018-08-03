@@ -39,7 +39,7 @@ class Analytics extends TaskAbstract
     protected function _clearOldAnalytics()
     {
         // Clear out any non-daily statistics.
-        $this->em->createQuery('DELETE FROM Entity\Analytics a WHERE a.type != :type')
+        $this->em->createQuery('DELETE FROM '.Entity\Analytics::class.' a WHERE a.type != :type')
             ->setParameter('type', 'day')
             ->execute();
 
@@ -82,7 +82,7 @@ class Analytics extends TaskAbstract
             }
         }
 
-        $this->em->createQuery('DELETE FROM Entity\Analytics a WHERE a.timestamp >= :earliest')
+        $this->em->createQuery('DELETE FROM '.Entity\Analytics::class.' a WHERE a.timestamp >= :earliest')
             ->setParameter('earliest', $earliest_timestamp)
             ->execute();
 
@@ -111,7 +111,7 @@ class Analytics extends TaskAbstract
 
     protected function _purgeAnalytics()
     {
-        $this->em->createQuery('DELETE FROM Entity\Analytics a')
+        $this->em->createQuery('DELETE FROM '.Entity\Analytics::class.' a')
             ->execute();
 
         $this->influx->query('DROP SERIES FROM /.*/');
@@ -119,7 +119,7 @@ class Analytics extends TaskAbstract
 
     protected function _purgeListeners()
     {
-        $this->em->createQuery('DELETE FROM Entity\Listener l')
+        $this->em->createQuery('DELETE FROM '.Entity\Listener::class.' l')
             ->execute();
     }
 }

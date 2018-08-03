@@ -2,6 +2,7 @@
 namespace App\Controller\Stations\Traits;
 
 use App\Cache;
+use App\Entity\SongHistory;
 use Doctrine\ORM\EntityManager;
 
 trait SongHistoryFilters
@@ -20,7 +21,7 @@ trait SongHistoryFilters
 
         if (!$songs_played_raw) {
             try {
-                $first_song = $this->em->createQuery('SELECT sh.timestamp_start FROM Entity\SongHistory sh
+                $first_song = $this->em->createQuery('SELECT sh.timestamp_start FROM '.SongHistory::class.' sh
                     WHERE sh.station_id = :station_id AND sh.listeners_start IS NOT NULL
                     ORDER BY sh.timestamp_start ASC')
                     ->setParameter('station_id', $station_id)
@@ -35,7 +36,7 @@ trait SongHistoryFilters
 
             // Get all songs played in timeline.
             $songs_played_raw = $this->em->createQuery('SELECT sh, sr, sp, s
-                FROM Entity\SongHistory sh
+                FROM '.SongHistory::class.' sh
                 LEFT JOIN sh.request sr
                 LEFT JOIN sh.playlist sp 
                 LEFT JOIN sh.song s

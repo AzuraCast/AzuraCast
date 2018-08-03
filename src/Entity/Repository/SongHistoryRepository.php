@@ -45,11 +45,11 @@ class SongHistoryRepository extends BaseRepository
 
     /**
      * @param Entity\Station $station
-     * @param \AzuraCast\ApiUtilities $api_utils
+     * @param \App\ApiUtilities $api_utils
      * @param int $num_entries
      * @return array
      */
-    public function getHistoryForStation(Entity\Station $station, \AzuraCast\ApiUtilities $api_utils, $num_entries = 5)
+    public function getHistoryForStation(Entity\Station $station, \App\ApiUtilities $api_utils, $num_entries = 5)
     {
         $history = $this->_em->createQuery('SELECT sh, s 
             FROM ' . $this->_entityName . ' sh JOIN sh.song s LEFT JOIN sh.media sm  
@@ -78,7 +78,7 @@ class SongHistoryRepository extends BaseRepository
     public function register(Entity\Song $song, Entity\Station $station, $np): Entity\SongHistory
     {
         // Pull the most recent history item for this station.
-        $last_sh = $this->_em->createQuery('SELECT sh FROM Entity\SongHistory sh
+        $last_sh = $this->_em->createQuery('SELECT sh FROM '.Entity\SongHistory::class.' sh
             WHERE sh.station_id = :station_id
             ORDER BY sh.timestamp_start DESC')
             ->setParameter('station_id', $station->getId())
@@ -136,7 +136,7 @@ class SongHistoryRepository extends BaseRepository
             }
 
             // Look for an already cued but unplayed song.
-            $sh = $this->_em->createQuery('SELECT sh FROM Entity\SongHistory sh
+            $sh = $this->_em->createQuery('SELECT sh FROM '.Entity\SongHistory::class.' sh
                 WHERE sh.station_id = :station_id
                 AND sh.song_id = :song_id
                 AND sh.timestamp_cued != 0
@@ -182,7 +182,7 @@ class SongHistoryRepository extends BaseRepository
 
             // Look up all requests that have at least waited as long as the threshold.
             $request = $this->_em->createQuery('SELECT sr, sm 
-                FROM Entity\StationRequest sr JOIN sr.track sm
+                FROM '.Entity\StationRequest::class.' sr JOIN sr.track sm
                 WHERE sr.played_at = 0 AND sr.station_id = :station_id AND sr.timestamp <= :threshold
                 ORDER BY sr.id ASC')
                 ->setParameter('station_id', $station->getId())
@@ -391,7 +391,7 @@ class SongHistoryRepository extends BaseRepository
     protected function _playRandomSongFromPlaylist(Entity\StationPlaylist $playlist)
     {
         // Get some random songs from playlist.
-        $random_songs = $this->_em->createQuery('SELECT sm, spm, s, st FROM Entity\StationMedia sm
+        $random_songs = $this->_em->createQuery('SELECT sm, spm, s, st FROM '.Entity\StationMedia::class.' sm
             JOIN sm.song s 
             JOIN sm.station st 
             JOIN sm.playlist_items spm
@@ -441,7 +441,7 @@ class SongHistoryRepository extends BaseRepository
         // Fetch the most recently played song
         try {
             /** @var Entity\StationPlaylistMedia $last_played_media */
-            $last_played_media = $this->_em->createQuery('SELECT spm FROM Entity\StationPlaylistMedia spm
+            $last_played_media = $this->_em->createQuery('SELECT spm FROM '.Entity\StationPlaylistMedia::class.' spm
             WHERE spm.playlist_id = :playlist_id
             ORDER BY spm.last_played DESC')
                 ->setParameter('playlist_id', $playlist->getId())
@@ -454,7 +454,7 @@ class SongHistoryRepository extends BaseRepository
         $last_weight = (int)$last_played_media->getWeight();
 
         // Try to find a song of greater weight. If none exists, start back with zero.
-        $next_song_query = $this->_em->createQuery('SELECT spm, sm, s, st FROM Entity\StationPlaylistMedia spm
+        $next_song_query = $this->_em->createQuery('SELECT spm, sm, s, st FROM '.Entity\StationPlaylistMedia::class.' spm
             JOIN spm.media sm
             JOIN sm.song s 
             JOIN sm.station st

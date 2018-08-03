@@ -3,7 +3,7 @@ namespace App\Exception\Supervisor;
 
 use Monolog\Logger;
 
-class NotRunning extends \AzuraCast\Exception\Supervisor
+class NotRunning extends \App\Exception\Supervisor
 {
     protected $logger_level = Logger::INFO;
 }

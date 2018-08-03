@@ -115,7 +115,7 @@ class StationWebhook
      */
     public function getTypeName(): string
     {
-        $connectors = \AzuraCast\Webhook\Dispatcher::getConnectors();
+        $connectors = \App\Webhook\Dispatcher::getConnectors();
         return $connectors[$this->type]['name'] ?? '';
     }
 
@@ -124,7 +124,7 @@ class StationWebhook
      */
     public function getTypeDescription(): string
     {
-        $connectors = \AzuraCast\Webhook\Dispatcher::getConnectors();
+        $connectors = \App\Webhook\Dispatcher::getConnectors();
         return $connectors[$this->type]['description'] ?? '';
     }
 
@@ -173,7 +173,7 @@ class StationWebhook
         }
 
         $trigger_names = [];
-        $triggers = \AzuraCast\Webhook\Dispatcher::getTriggers();
+        $triggers = \App\Webhook\Dispatcher::getTriggers();
 
         foreach($this->triggers as $trigger) {
             $trigger_names[] = $triggers[$trigger];

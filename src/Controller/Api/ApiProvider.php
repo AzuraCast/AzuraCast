@@ -17,9 +17,9 @@ class ApiProvider implements ServiceProviderInterface
 
         $di[InternalController::class] = function($di) {
             return new InternalController(
-                $di[\AzuraCast\Acl\StationAcl::class],
-                $di[\AzuraCast\Radio\Adapters::class],
-                $di[\AzuraCast\Sync\Task\NowPlaying::class]
+                $di[\App\Acl\StationAcl::class],
+                $di[\App\Radio\Adapters::class],
+                $di[\App\Sync\Task\NowPlaying::class]
             );
         };
 
@@ -34,7 +34,7 @@ class ApiProvider implements ServiceProviderInterface
         $di[Stations\MediaController::class] = function($di) {
             return new Stations\MediaController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\AzuraCast\Customization::class]
+                $di[\App\Customization::class]
             );
         };
 
@@ -48,23 +48,23 @@ class ApiProvider implements ServiceProviderInterface
         $di[RequestsController::class] = function($di) {
             return new RequestsController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\AzuraCast\Radio\Adapters::class],
+                $di[\App\Radio\Adapters::class],
                 $di[\App\Url::class],
-                $di[\AzuraCast\ApiUtilities::class]
+                $di[\App\ApiUtilities::class]
             );
         };
 
         $di[Stations\IndexController::class] = function($di) {
             return new Stations\IndexController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\AzuraCast\Radio\Adapters::class]
+                $di[\App\Radio\Adapters::class]
             );
         };
 
         $di[Stations\ServicesController::class] = function($di) {
             return new Stations\ServicesController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\AzuraCast\Radio\Configuration::class]
+                $di[\App\Radio\Configuration::class]
             );
         };
     }

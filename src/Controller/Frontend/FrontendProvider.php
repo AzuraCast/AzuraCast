@@ -15,25 +15,25 @@ class FrontendProvider implements ServiceProviderInterface
                 $di[\App\Auth::class],
                 $di[\App\Session::class],
                 $di[\App\Url::class],
-                $di[\AzuraCast\RateLimit::class],
-                $di[\AzuraCast\Acl\StationAcl::class]
+                $di[\App\RateLimit::class],
+                $di[\App\Acl\StationAcl::class]
             );
         };
 
         $di[DashboardController::class] = function($di) {
             return new DashboardController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\AzuraCast\Acl\StationAcl::class],
+                $di[\App\Acl\StationAcl::class],
                 $di[\App\Cache::class],
                 $di[\InfluxDB\Database::class],
-                $di[\AzuraCast\Radio\Adapters::class],
+                $di[\App\Radio\Adapters::class],
                 $di[\App\Url::class]
             );
         };
 
         $di[IndexController::class] = function($di) {
             return new IndexController(
-                $di[\Entity\Repository\SettingsRepository::class]
+                $di[\App\Entity\Repository\SettingsRepository::class]
             );
         };
 
@@ -74,9 +74,9 @@ class FrontendProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Flash::class],
                 $di[\App\Auth::class],
-                $di[\AzuraCast\Acl\StationAcl::class],
-                $di[\AzuraCast\Radio\Adapters::class],
-                $di[\AzuraCast\Radio\Configuration::class],
+                $di[\App\Acl\StationAcl::class],
+                $di[\App\Radio\Adapters::class],
+                $di[\App\Radio\Configuration::class],
                 $config->get('forms/station'),
                 $config->get('forms/settings')
             );

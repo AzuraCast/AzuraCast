@@ -55,7 +55,7 @@ class MediaController
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
 
-        $media = $this->em->createQuery('SELECT sm, sa FROM Entity\StationMedia sm JOIN sm.art sa WHERE sm.station_id = :station_id AND sm.unique_id = :media_id')
+        $media = $this->em->createQuery('SELECT sm, sa FROM '.Entity\StationMedia::class.' sm JOIN sm.art sa WHERE sm.station_id = :station_id AND sm.unique_id = :media_id')
             ->setParameter('station_id', $station->getId())
             ->setParameter('media_id', $media_id)
             ->getOneOrNullResult();

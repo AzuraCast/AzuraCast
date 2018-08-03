@@ -54,7 +54,7 @@ class UsersController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        $users = $this->em->createQuery('SELECT u, r FROM Entity\User u LEFT JOIN u.roles r ORDER BY u.name ASC')
+        $users = $this->em->createQuery('SELECT u, r FROM '.Entity\User::class.' u LEFT JOIN u.roles r ORDER BY u.name ASC')
             ->execute();
 
         /** @var \App\Mvc\View $view */

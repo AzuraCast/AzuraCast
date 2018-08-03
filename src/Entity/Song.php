@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
  * @Table(name="songs", indexes={
  *   @index(name="search_idx", columns={"text", "artist", "title"})
  * })
- * @Entity(repositoryClass="Entity\Repository\SongRepository")
+ * @Entity(repositoryClass="App\Entity\Repository\SongRepository")
  */
 class Song
 {
@@ -171,7 +171,7 @@ class Song
      *
      * @return Api\Song
      */
-    public function api(\AzuraCast\ApiUtilities $api_utils): Api\Song
+    public function api(\App\ApiUtilities $api_utils): Api\Song
     {
         $response = new Api\Song;
         $response->id = (string)$this->id;

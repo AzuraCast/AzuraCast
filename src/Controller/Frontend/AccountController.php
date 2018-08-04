@@ -4,7 +4,6 @@ namespace App\Controller\Frontend;
 use App\Acl;
 use App\Auth;
 use App\Entity\User;
-use App\Flash;
 use App\Session;
 use App\Url;
 use App\RateLimit;
@@ -17,9 +16,6 @@ class AccountController
 {
     /** @var EntityManager */
     protected $em;
-
-    /** @var Flash */
-    protected $flash;
 
     /** @var Auth */
     protected $auth;
@@ -36,10 +32,16 @@ class AccountController
     /** @var Acl */
     protected $acl;
 
-    public function __construct(EntityManager $em, Flash $flash, Auth $auth, Session $session, Url $url, RateLimit $rate_limit, Acl $acl)
+    public function __construct(
+        EntityManager $em,
+        Auth $auth,
+        Session $session,
+        Url $url,
+        RateLimit $rate_limit,
+        Acl $acl
+    )
     {
         $this->em = $em;
-        $this->flash = $flash;
         $this->auth = $auth;
         $this->session = $session;
         $this->url = $url;
@@ -66,7 +68,7 @@ class AccountController
             try {
                 $this->rate_limit->checkRateLimit('login', 30, 5);
             } catch(\App\Exception\RateLimitExceeded $e) {
-                $this->flash->alert('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
+                $request->getSession()->flash('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
                     'red');
 
                 return $response->redirectHere();
@@ -88,7 +90,7 @@ class AccountController
                 $this->em->persist($user);
                 $this->em->flush();
 
-                $this->flash->alert('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+                $request->getSession()->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
                 $referrer = $this->session->get('login_referrer');
                 if (!empty($referrer->url)) {
@@ -98,7 +100,7 @@ class AccountController
                 return $response->redirectToRoute('dashboard');
             }
 
-            $this->flash->alert('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
+            $request->getSession()->flash('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
                 'red');
 
             return $response->redirectHere();

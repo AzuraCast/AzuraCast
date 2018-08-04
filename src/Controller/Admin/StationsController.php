@@ -2,8 +2,6 @@
 namespace App\Controller\Admin;
 
 use App\Cache;
-use App\Csrf;
-use App\Flash;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManager;
@@ -16,9 +14,6 @@ class StationsController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Flash */
-    protected $flash;
-
     /** @var Cache */
     protected $cache;
 
@@ -27,9 +22,6 @@ class StationsController
 
     /** @var Configuration */
     protected $configuration;
-
-    /** @var Csrf */
-    protected $csrf;
 
     /** @var string */
     protected $csrf_namespace = 'admin_stations';
@@ -43,14 +35,19 @@ class StationsController
     /** @var Entity\Repository\StationRepository */
     protected $record_repo;
 
-    public function __construct(EntityManager $em, Flash $flash, Cache $cache, Adapters $adapters, Configuration $configuration, Csrf $csrf, array $edit_form_config, array $clone_form_config)
+    public function __construct(
+        EntityManager $em,
+        Cache $cache,
+        Adapters $adapters,
+        Configuration $configuration,
+        array $edit_form_config,
+        array $clone_form_config
+    )
     {
         $this->em = $em;
-        $this->flash = $flash;
         $this->cache = $cache;
         $this->adapters = $adapters;
         $this->configuration = $configuration;
-        $this->csrf = $csrf;
 
         $this->edit_form_config = $edit_form_config;
         $this->clone_form_config = $clone_form_config;
@@ -65,7 +62,7 @@ class StationsController
 
         return $request->getView()->renderToResponse($response, 'admin/stations/index', [
             'stations' => $stations,
-            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -101,7 +98,7 @@ class StationsController
             // Clear station cache.
             $this->cache->remove('stations');
 
-            $this->flash->alert(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Station')), 'green');
+            $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Station')), 'green');
 
             return $response->redirectToRoute('admin:stations:index');
         }
@@ -194,7 +191,7 @@ class StationsController
             // Clear station cache.
             $this->cache->remove('stations');
 
-            $this->flash->alert(__('Changes saved.'), 'green');
+            $request->getSession()->flash(__('Changes saved.'), 'green');
 
             return $response->redirectToRoute('admin:stations:index');
         }
@@ -208,7 +205,7 @@ class StationsController
 
     public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $record = $this->record_repo->find((int)$id);
 
@@ -216,7 +213,7 @@ class StationsController
             $this->record_repo->destroy($record, $this->adapters, $this->configuration);
         }
 
-        $this->flash->alert(__('%s deleted.', __('Station')), 'green');
+        $request->getSession()->flash(__('%s deleted.', __('Station')), 'green');
 
         return $response->redirectToRoute('admin:stations:index');
     }

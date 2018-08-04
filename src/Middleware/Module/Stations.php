@@ -1,11 +1,8 @@
 <?php
 namespace App\Middleware\Module;
 
-use App\Mvc\View;
-use App\Session;
-use App\Acl\StationAcl;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 /**
  * Module middleware for the /station pages.
@@ -20,13 +17,12 @@ class Stations
      */
     public function __invoke(Request $request, Response $response, $next): Response
     {
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
+        $view = $request->getView();
 
         $view->addData([
-            'station' => $request->getAttribute('station'),
-            'frontend' => $request->getAttribute('station_frontend'),
-            'backend' => $request->getAttribute('station_backend'),
+            'station'   => $request->getStation(),
+            'frontend'  => $request->getStationFrontend(),
+            'backend'   => $request->getStationBackend(),
         ]);
 
         $view->sidebar = $view->render('stations/sidebar');

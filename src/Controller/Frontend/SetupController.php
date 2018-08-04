@@ -3,7 +3,6 @@ namespace App\Controller\Frontend;
 
 use App\Acl;
 use App\Auth;
-use App\Flash;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
 use Doctrine\ORM\EntityManager;
@@ -15,9 +14,6 @@ class SetupController
 {
     /** @var EntityManager */
     protected $em;
-
-    /** @var Flash */
-    protected $flash;
 
     /** @var Auth */
     protected $auth;
@@ -40,7 +36,6 @@ class SetupController
     /**
      * SetupController constructor.
      * @param EntityManager $em
-     * @param Flash $flash
      * @param Auth $auth
      * @param Acl $acl
      * @param Adapters $adapters
@@ -48,10 +43,17 @@ class SetupController
      * @param array $station_form_config
      * @param array $settings_form_config
      */
-    public function __construct(EntityManager $em, Flash $flash, Auth $auth, Acl $acl, Adapters $adapters, Configuration $configuration, array $station_form_config, array $settings_form_config)
+    public function __construct(
+        EntityManager $em,
+        Auth $auth,
+        Acl $acl,
+        Adapters $adapters,
+        Configuration $configuration,
+        array $station_form_config,
+        array $settings_form_config
+    )
     {
         $this->em = $em;
-        $this->flash = $flash;
         $this->auth = $auth;
         $this->acl = $acl;
         $this->adapters = $adapters;
@@ -74,7 +76,7 @@ class SetupController
      */
     public function completeAction(Request $request, Response $response): Response
     {
-        $this->flash->alert('<b>' . __('Setup has already been completed!') . '</b>', 'red');
+        $request->getSession()->flash('<b>' . __('Setup has already been completed!') . '</b>', 'red');
 
         return $response->redirectToRoute('dashboard');
     }
@@ -191,7 +193,7 @@ class SetupController
             $settings_repo->setSettings($data);
 
             // Notify the user and redirect to homepage.
-            $this->flash->alert('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
+            $request->getSession()->flash('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
                 'green');
 
             return $response->redirectToRoute('dashboard');

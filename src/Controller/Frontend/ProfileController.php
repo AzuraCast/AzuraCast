@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Frontend;
 
-use App\Flash;
-use App\Mvc\View;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -13,9 +11,6 @@ class ProfileController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Flash */
-    protected $flash;
-
     /** @var array */
     protected $form_config;
 
@@ -25,13 +20,11 @@ class ProfileController
     /**
      * ProfileController constructor.
      * @param EntityManager $em
-     * @param Flash $flash
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Flash $flash, array $form_config)
+    public function __construct(EntityManager $em, array $form_config)
     {
         $this->em = $em;
-        $this->flash = $flash;
         $this->form_config = $form_config;
 
         $this->user_repo = $this->em->getRepository(Entity\User::class);
@@ -93,7 +86,7 @@ class ProfileController
             $this->em->persist($user);
             $this->em->flush();
 
-            $this->flash->alert(__('Profile saved!'), 'green');
+            $request->getSession()->flash(__('Profile saved!'), 'green');
 
             return $response->redirectToRoute('profile:index');
         }

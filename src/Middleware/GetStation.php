@@ -1,12 +1,11 @@
 <?php
 namespace App\Middleware;
 
-use App\Mvc\View;
 use App\Radio\Adapters;
 use App\Entity;
 use App\Entity\Repository\StationRepository;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 /**
  * Retrieve the station specified in the request parameters, and throw an error if none exists but one is required.
@@ -53,10 +52,11 @@ class GetStation
             $frontend = $this->adapters->getFrontendAdapter($record);
             $backend = $this->adapters->getBackendAdapter($record);
 
-            $request = $request
-                ->withAttribute('station', $record)
-                ->withAttribute('station_frontend', $frontend)
-                ->withAttribute('station_backend', $backend);
+            $request = $request->withAttributes([
+                Request::ATTRIBUTE_STATION  => $record,
+                Request::ATTRIBUTE_STATION_FRONTEND => $frontend,
+                Request::ATTRIBUTE_STATION_FRONTEND => $backend,
+            ]);
         } else if ($station_required) {
             throw new \RuntimeException('Station not found!');
         }

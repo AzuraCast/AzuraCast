@@ -1,5 +1,8 @@
 <?php
-namespace App;
+namespace App\Session;
+
+use App\Session;
+use App\Exception;
 
 class Csrf
 {

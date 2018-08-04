@@ -11,7 +11,6 @@ class FrontendProvider implements ServiceProviderInterface
         $di[AccountController::class] = function($di) {
             return new AccountController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
                 $di[\App\Auth::class],
                 $di[\App\Session::class],
                 $di[\App\Url::class],
@@ -43,7 +42,6 @@ class FrontendProvider implements ServiceProviderInterface
 
             return new ProfileController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
                 $config->get('forms/profile', [
                     'settings' => $di['app_settings'],
                 ])
@@ -56,8 +54,6 @@ class FrontendProvider implements ServiceProviderInterface
 
             return new ApiKeysController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
-                $di[\App\Csrf::class],
                 $config->get('forms/api_key')
             );
         };
@@ -72,7 +68,6 @@ class FrontendProvider implements ServiceProviderInterface
 
             return new SetupController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
                 $di[\App\Auth::class],
                 $di[\App\Acl\StationAcl::class],
                 $di[\App\Radio\Adapters::class],

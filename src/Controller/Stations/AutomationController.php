@@ -1,11 +1,9 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Mvc\View;
 use App\Sync\Task\RadioAutomation;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
-use App\Flash;
 use App\Http\Request;
 use App\Http\Response;
 
@@ -13,9 +11,6 @@ class AutomationController
 {
     /** @var EntityManager */
     protected $em;
-
-    /** @var Flash */
-    protected $flash;
 
     /** @var RadioAutomation */
     protected $sync_task;
@@ -26,14 +21,12 @@ class AutomationController
     /**
      * AutomationController constructor.
      * @param EntityManager $em
-     * @param Flash $flash
      * @param array $form_config
      * @param RadioAutomation $sync_task
      */
-    public function __construct(EntityManager $em, Flash $flash, RadioAutomation $sync_task, array $form_config)
+    public function __construct(EntityManager $em, RadioAutomation $sync_task, array $form_config)
     {
         $this->em = $em;
-        $this->flash = $flash;
         $this->sync_task = $sync_task;
         $this->form_config = $form_config;
     }
@@ -56,7 +49,7 @@ class AutomationController
             $this->em->persist($station);
             $this->em->flush();
 
-            $this->flash->alert(__('Changes saved.'), 'green');
+            $request->getSession()->flash(__('Changes saved.'), 'green');
 
             return $response->redirectHere();
         }
@@ -73,10 +66,10 @@ class AutomationController
 
         try {
             if ($this->sync_task->runStation($station, true)) {
-                $this->flash->alert('<b>' . __('Automated assignment complete!') . '</b>', 'green');
+                $request->getSession()->flash('<b>' . __('Automated assignment complete!') . '</b>', 'green');
             }
         } catch (\Exception $e) {
-            $this->flash->alert('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(), 'red');
+            $request->getSession()->flash('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(), 'red');
         }
 
         return $response->redirectToRoute('stations:automation:index', ['station' => $station_id]);

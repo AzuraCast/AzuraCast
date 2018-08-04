@@ -14,6 +14,10 @@ class MiddlewareProvider implements ServiceProviderInterface
             return new DebugEcho($di[\Monolog\Logger::class]);
         };
 
+        $di[EnableSession::class] = function($di) {
+            return new EnableSession($di[App\Session::class]);
+        };
+
         $di[EnableView::class] = function($di) {
             return new EnableView($di[App\Mvc\View::class]);
         };

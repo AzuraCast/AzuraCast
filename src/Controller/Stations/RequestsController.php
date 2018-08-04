@@ -1,9 +1,6 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Csrf;
-use App\Flash;
-use App\Mvc\View;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -14,20 +11,12 @@ class RequestsController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Flash */
-    protected $flash;
-
-    /** @var Csrf */
-    protected $csrf;
-
     /** @var string */
     protected $csrf_namespace = 'stations_requests';
 
-    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf)
+    public function __construct(EntityManager $em)
     {
         $this->em = $em;
-        $this->flash = $flash;
-        $this->csrf = $csrf;
     }
 
     public function indexAction(Request $request, Response $response, $station_id): Response
@@ -42,13 +31,13 @@ class RequestsController
 
         return $request->getView()->renderToResponse($response, 'stations/requests/index', [
             'requests' => $requests,
-            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
     public function deleteAction(Request $request, Response $response, $station_id, $request_id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $media = $this->em->getRepository(Entity\StationRequest::class)->findOneBy([
             'id' => $request_id,
@@ -60,7 +49,7 @@ class RequestsController
             $this->em->remove($media);
             $this->em->flush();
 
-            $this->flash->alert('<b>Request deleted!</b>', 'green');
+            $request->getSession()->flash('<b>Request deleted!</b>', 'green');
         }
 
         return $response->redirectToRoute('stations:requests:index', ['station' => $station_id]);

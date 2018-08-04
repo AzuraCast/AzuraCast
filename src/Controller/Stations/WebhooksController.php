@@ -1,9 +1,6 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Csrf;
-use App\Flash;
-use App\Mvc\View;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -14,12 +11,6 @@ class WebhooksController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Flash */
-    protected $flash;
-
-    /** @var Csrf */
-    protected $csrf;
-
     /** @var string */
     protected $csrf_namespace = 'stations_webhooks';
 
@@ -29,14 +20,11 @@ class WebhooksController
     /**
      * MountsController constructor.
      * @param EntityManager $em
-     * @param Flash $flash
      * @param array $mount_form_configs
      */
-    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $form_configs)
+    public function __construct(EntityManager $em, array $form_configs)
     {
         $this->em = $em;
-        $this->flash = $flash;
-        $this->csrf = $csrf;
         $this->form_configs = $form_configs;
     }
 
@@ -47,7 +35,7 @@ class WebhooksController
 
         return $request->getView()->renderToResponse($response, 'stations/webhooks/index', [
             'webhooks' => $station->getWebhooks(),
-            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -85,7 +73,7 @@ class WebhooksController
 
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . __('%s added.', __('Web Hook')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('%s added.', __('Web Hook')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:webhooks:index', ['station' => $station_id]);
         }
@@ -129,7 +117,7 @@ class WebhooksController
 
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . __('%s updated.', __('Web Hook')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('%s updated.', __('Web Hook')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:webhooks:index', ['station' => $station_id]);
         }
@@ -143,7 +131,7 @@ class WebhooksController
 
     public function toggleAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
@@ -161,13 +149,13 @@ class WebhooksController
         $this->em->flush();
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . sprintf(($new_status) ? __('%s enabled.') : __('%s disabled.'), __('Web Hook')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . sprintf(($new_status) ? __('%s enabled.') : __('%s disabled.'), __('Web Hook')) . '</b>', 'green');
         return $response->redirectToRoute('stations:webhooks:index', ['station' => $station_id]);
     }
 
     public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
@@ -183,7 +171,7 @@ class WebhooksController
             $this->em->refresh($station);
         }
 
-        $this->flash->alert('<b>' . __('%s deleted.', __('Web Hook')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('%s deleted.', __('Web Hook')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:webhooks:index', ['station' => $station_id]);
     }

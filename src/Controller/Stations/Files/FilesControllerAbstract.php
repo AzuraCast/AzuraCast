@@ -2,8 +2,6 @@
 namespace App\Controller\Stations\Files;
 
 use App\Cache;
-use App\Csrf;
-use App\Flash;
 use App\Url;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -13,14 +11,8 @@ abstract class FilesControllerAbstract
     /** @var EntityManager */
     protected $em;
 
-    /** @var Flash */
-    protected $flash;
-
     /** @var Url */
     protected $url;
-
-    /** @var Csrf */
-    protected $csrf;
 
     /** @var string */
     protected $csrf_namespace = 'stations_files';
@@ -40,16 +32,14 @@ abstract class FilesControllerAbstract
     /**
      * FilesController constructor.
      * @param EntityManager $em
-     * @param Flash $flash
      * @param Url $url
+     * @param Cache $cache
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Flash $flash, Url $url, Csrf $csrf, Cache $cache, array $form_config)
+    public function __construct(EntityManager $em, Url $url, Cache $cache, array $form_config)
     {
         $this->em = $em;
-        $this->flash = $flash;
         $this->url = $url;
-        $this->csrf = $csrf;
         $this->cache = $cache;
         $this->form_config = $form_config;
 

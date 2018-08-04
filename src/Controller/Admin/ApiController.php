@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Csrf;
-use App\Flash;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -13,26 +11,18 @@ class ApiController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Flash */
-    protected $flash;
-
     /** @var Entity\Repository\BaseRepository */
     protected $record_repo;
 
     /** @var array */
     protected $form_config;
 
-    /** @var Csrf */
-    protected $csrf;
-
     /** @var string */
     protected $csrf_namespace = 'admin_api';
 
-    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $form_config)
+    public function __construct(EntityManager $em, array $form_config)
     {
         $this->em = $em;
-        $this->flash = $flash;
-        $this->csrf = $csrf;
         $this->form_config = $form_config;
 
         $this->record_repo = $this->em->getRepository(Entity\ApiKey::class);
@@ -45,7 +35,7 @@ class ApiController
 
         return $request->getView()->renderToResponse($response, 'admin/api/index', [
             'records' => $records,
-            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -69,7 +59,7 @@ class ApiController
             $this->em->persist($record);
             $this->em->flush();
 
-            $this->flash->alert(__('%s updated.', __('API Key')), 'green');
+            $request->getSession()->flash(__('%s updated.', __('API Key')), 'green');
 
             return $response->redirectToRoute('admin:api:index');
         }
@@ -83,7 +73,7 @@ class ApiController
 
     public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $record = $this->record_repo->find($id);
 
@@ -93,7 +83,7 @@ class ApiController
 
         $this->em->flush();
 
-        $this->flash->alert(__('%s deleted.', __('API Key')), 'green');
+        $request->getSession()->flash(__('%s deleted.', __('API Key')), 'green');
 
         return $response->redirectToRoute('admin:api:index');
     }

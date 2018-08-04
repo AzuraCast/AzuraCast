@@ -1,5 +1,7 @@
 <?php
-namespace App;
+namespace App\Session;
+
+use App\Session;
 
 /**
  * Quick message queue service.

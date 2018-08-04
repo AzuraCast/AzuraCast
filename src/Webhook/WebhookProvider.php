@@ -26,7 +26,7 @@ class WebhookProvider implements ServiceProviderInterface
                 $di[\Monolog\Logger::class],
                 $di[\InfluxDB\Database::class],
                 $di[\App\Cache::class],
-                $di[\Entity\Repository\SettingsRepository::class]
+                $di[\App\Entity\Repository\SettingsRepository::class]
             );
         };
 

@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Csrf;
-use App\Flash;
 use App\Radio\Backend\BackendAbstract;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -14,12 +12,6 @@ class StreamersController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Flash */
-    protected $flash;
-
-    /** @var Csrf */
-    protected $csrf;
-
     /** @var string */
     protected $csrf_namespace = 'stations_streamers';
 
@@ -29,12 +21,10 @@ class StreamersController
     /** @var Entity\Repository\StationStreamerRepository */
     protected $streamers_repo;
 
-    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $form_config)
+    public function __construct(EntityManager $em, array $form_config)
     {
         $this->em = $em;
-        $this->flash = $flash;
         $this->form_config = $form_config;
-        $this->csrf = $csrf;
 
         $this->streamers_repo = $this->em->getRepository(Entity\StationStreamer::class);
     }
@@ -59,7 +49,7 @@ class StreamersController
                 $this->em->persist($station);
                 $this->em->flush();
 
-                $this->flash->alert('<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
+                $request->getSession()->flash('<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
                     'green');
 
                 return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
@@ -75,7 +65,7 @@ class StreamersController
             'server_url' => $settings_repo->getSetting('base_url', ''),
             'stream_port' => $backend->getStreamPort(),
             'streamers' => $station->getStreamers(),
-            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -110,7 +100,7 @@ class StreamersController
 
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Streamer')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Streamer')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
         }
@@ -124,7 +114,7 @@ class StreamersController
 
     public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
@@ -142,7 +132,7 @@ class StreamersController
 
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . __('%s deleted.', __('Streamer')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('%s deleted.', __('Streamer')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:streamers:index', ['station' => $station_id]);
     }

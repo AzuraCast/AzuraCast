@@ -4,7 +4,6 @@ namespace App\Controller\Stations\Files;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
-use App\Mvc\View;
 use App\Utilities;
 use App\Radio\Backend\BackendAbstract;
 use Symfony\Component\Finder\Finder;
@@ -53,7 +52,7 @@ class FilesController extends FilesControllerAbstract
             'space_used' => Utilities::bytes_to_text($space_used),
             'space_total' => Utilities::bytes_to_text($space_total),
             'space_percent' => round(($space_used / $space_total) * 100),
-            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
             'max_upload_size' => min(
                 $this->_asBytes(ini_get('post_max_size')),
                 $this->_asBytes(ini_get('upload_max_filesize'))
@@ -101,7 +100,7 @@ class FilesController extends FilesControllerAbstract
                 $path = $new_path;
             }
 
-            $this->flash->alert('<b>' . __('File renamed!') . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('File renamed!') . '</b>', 'green');
 
             $file_dir = (dirname($path) === '.') ? '' : dirname($path);
             return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
@@ -285,7 +284,7 @@ class FilesController extends FilesControllerAbstract
     public function batchAction(Request $request, Response $response): Response
     {
         try {
-            $this->csrf->verify($request->getParam('csrf'), $this->csrf_namespace);
+            $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
         } catch(\App\Exception\CsrfValidation $e) {
             return $response->withStatus(403)
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
@@ -437,7 +436,7 @@ class FilesController extends FilesControllerAbstract
     public function mkdirAction(Request $request, Response $response): Response
     {
         try {
-            $this->csrf->verify($request->getParam('csrf'), $this->csrf_namespace);
+            $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
         } catch(\App\Exception\CsrfValidation $e) {
             return $response->withStatus(403)
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
@@ -462,7 +461,7 @@ class FilesController extends FilesControllerAbstract
     public function uploadAction(Request $request, Response $response): Response
     {
         try {
-            $this->csrf->verify($request->getParam('csrf'), $this->csrf_namespace);
+            $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
         } catch(\App\Exception\CsrfValidation $e) {
             return $response->withStatus(403)
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);

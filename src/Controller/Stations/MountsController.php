@@ -1,9 +1,6 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Csrf;
-use App\Flash;
-use App\Mvc\View;
 use App\Radio\Frontend\FrontendAbstract;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -15,12 +12,6 @@ class MountsController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Flash */
-    protected $flash;
-
-    /** @var Csrf */
-    protected $csrf;
-
     /** @var string */
     protected $csrf_namespace = 'stations_mounts';
 
@@ -30,15 +21,11 @@ class MountsController
     /**
      * MountsController constructor.
      * @param EntityManager $em
-     * @param Flash $flash
-     * @param Csrf $csrf
      * @param array $mount_form_configs
      */
-    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $mount_form_configs)
+    public function __construct(EntityManager $em, array $mount_form_configs)
     {
         $this->em = $em;
-        $this->flash = $flash;
-        $this->csrf = $csrf;
         $this->mount_form_configs = $mount_form_configs;
     }
 
@@ -57,7 +44,7 @@ class MountsController
         return $request->getView()->renderToResponse($response, 'stations/mounts/index', [
             'frontend_type' => $station->getFrontendType(),
             'mounts' => $station->getMounts(),
-            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -136,7 +123,7 @@ class MountsController
 
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Mount Point')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Mount Point')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:mounts:index', ['station' => $station_id]);
         }
@@ -150,7 +137,7 @@ class MountsController
 
     public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
@@ -170,7 +157,7 @@ class MountsController
 
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . __('%s deleted.', __('Mount Point')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('%s deleted.', __('Mount Point')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:mounts:index', ['station' => $station_id]);
     }

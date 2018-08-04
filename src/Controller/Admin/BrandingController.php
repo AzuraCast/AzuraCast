@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Flash;
-use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 

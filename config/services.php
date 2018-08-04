@@ -215,14 +215,6 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Session;
     };
 
-    $di[\App\Csrf::class] = function ($di) {
-        return new \App\Csrf($di[\App\Session::class]);
-    };
-
-    $di[\App\Flash::class] = function ($di) {
-        return new \App\Flash($di[\App\Session::class]);
-    };
-
     $di[\InfluxDB\Database::class] = function ($di) {
         $opts = [
             'host' => (APP_INSIDE_DOCKER) ? 'influxdb' : 'localhost',
@@ -285,12 +277,15 @@ return function (\Slim\Container $di, $settings) {
             return \App\Utilities::truncate_text($text, $length);
         });
 
+        /** @var \App\Session $session */
+        $session = $di[\App\Session::class];
+
         $view->addData([
             'assets' => $di[\App\Assets::class],
             'auth' => $di[\App\Auth::class],
             'acl' => $di[\App\Acl\StationAcl::class],
             'url' => $di[\App\Url::class],
-            'flash' => $di[\App\Flash::class],
+            'flash' => $session->getFlash(),
             'customization' => $di[\App\Customization::class],
             'app_settings' => $di['app_settings'],
         ]);
@@ -301,9 +296,6 @@ return function (\Slim\Container $di, $settings) {
     $di[\App\Mvc\ErrorHandler::class] = function($di) {
         return new \App\Mvc\ErrorHandler(
             $di[\App\Url::class],
-            $di[\App\Session::class],
-            $di[\App\Flash::class],
-            $di[\App\Mvc\View::class],
             $di[\App\Acl\StationAcl::class],
             $di[\Monolog\Logger::class]
         );
@@ -394,6 +386,9 @@ return function (\Slim\Container $di, $settings) {
 
         // Get the current user entity object and assign it into the request if it exists.
         $app->add(\App\Middleware\GetCurrentUser::class);
+
+        // Inject the session manager into the request object.
+        $app->add(\App\Middleware\EnableSession::class);
 
         // Check HTTPS setting and enforce Content Security Policy accordingly.
         $app->add(\App\Middleware\EnforceSecurity::class);

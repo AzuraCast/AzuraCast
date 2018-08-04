@@ -9,6 +9,50 @@ class Session
 
     protected $_sessions = [];
 
+    /** @var Session\Flash */
+    protected $flash;
+
+    /** @var Session\Csrf */
+    protected $csrf;
+
+    public function __construct()
+    {
+        $this->flash = new Session\Flash($this);
+        $this->csrf = new Session\Csrf($this);
+    }
+
+    /**
+     * Get the "Flash" alert helper.
+     *
+     * @return Session\Flash
+     */
+    public function getFlash(): Session\Flash
+    {
+        return $this->flash;
+    }
+
+    /**
+     * Shortcut for $this->getFlash()->addMessage()
+     *
+     * @param $message
+     * @param string $level
+     * @param bool $save_in_session
+     */
+    public function flash($message, $level = Session\Flash::INFO, $save_in_session = true)
+    {
+        $this->flash->addMessage($message, $level, $save_in_session);
+    }
+
+    /**
+     * Get the "CSRF" session helper.
+     *
+     * @return Session\Csrf
+     */
+    public function getCsrf(): Session\Csrf
+    {
+        return $this->csrf;
+    }
+
     /**
      * Start the session handler if allowed and not already started.
      *

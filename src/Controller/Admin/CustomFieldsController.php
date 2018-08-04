@@ -1,9 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Auth;
-use App\Csrf;
-use App\Flash;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -14,17 +11,11 @@ class CustomFieldsController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Flash */
-    protected $flash;
-
     /** @var array */
     protected $form_config;
 
     /** @var Entity\Repository\BaseRepository */
     protected $record_repo;
-
-    /** @var Csrf */
-    protected $csrf;
 
     /** @var string */
     protected $csrf_namespace = 'admin_custom_fields';
@@ -32,14 +23,11 @@ class CustomFieldsController
     /**
      * UsersController constructor.
      * @param EntityManager $em
-     * @param Flash $flash
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $form_config)
+    public function __construct(EntityManager $em, array $form_config)
     {
         $this->em = $em;
-        $this->flash = $flash;
-        $this->csrf = $csrf;
         $this->form_config = $form_config;
 
         $this->record_repo = $this->em->getRepository(Entity\CustomField::class);
@@ -51,7 +39,7 @@ class CustomFieldsController
 
         return $request->getView()->renderToResponse($response, 'admin/custom_fields/index', [
             'records' => $records,
-            'csrf' => $this->csrf->generate($this->csrf_namespace)
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace)
         ]);
     }
 
@@ -79,7 +67,7 @@ class CustomFieldsController
             $this->em->persist($record);
             $this->em->flush();
 
-            $this->flash->alert(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Custom Field')), 'green');
+            $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Custom Field')), 'green');
 
             return $response->redirectToRoute('admin:custom_fields:index');
         }
@@ -93,7 +81,7 @@ class CustomFieldsController
 
     public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
 
@@ -103,7 +91,7 @@ class CustomFieldsController
 
         $this->em->flush();
 
-        $this->flash->alert('<b>' . __('%s deleted.', __('Custom Field')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('%s deleted.', __('Custom Field')) . '</b>', 'green');
 
         return $response->redirectToRoute('admin:custom_fields:index');
     }

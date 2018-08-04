@@ -27,7 +27,7 @@ class IndexController
         }
 
         // Redirect to login screen if the user isn't logged in.
-        $user = $request->getAttribute('user');
+        $user = $request->getAttribute(Request::ATTRIBUTE_USER);
 
         if (!($user instanceof Entity\User)) {
             // Redirect to a custom homepage URL if specified in settings.

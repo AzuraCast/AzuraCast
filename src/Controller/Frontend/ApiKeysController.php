@@ -1,12 +1,9 @@
 <?php
 namespace App\Controller\Frontend;
 
-use App\Csrf;
 use App\Exception\NotFound;
-use App\Flash;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
-use Slim\Container;
 use App\Http\Request;
 use App\Http\Response;
 
@@ -14,12 +11,6 @@ class ApiKeysController
 {
     /** @var EntityManager */
     protected $em;
-
-    /** @var Flash */
-    protected $flash;
-
-    /** @var Csrf */
-    protected $csrf;
 
     /** @var string */
     protected $csrf_namespace = 'frontend_api_keys';
@@ -30,11 +21,9 @@ class ApiKeysController
     /** @var array */
     protected $form_config;
 
-    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $form_config)
+    public function __construct(EntityManager $em, array $form_config)
     {
         $this->em = $em;
-        $this->flash = $flash;
-        $this->csrf = $csrf;
         $this->form_config = $form_config;
 
         $this->record_repo = $this->em->getRepository(Entity\ApiKey::class);
@@ -46,7 +35,7 @@ class ApiKeysController
 
         return $request->getView()->renderToResponse($response, 'frontend/api_keys/index', [
             'records' => $user->getApiKeys(),
-            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -93,7 +82,7 @@ class ApiKeysController
                 ]);
             }
 
-            $this->flash->alert(__('%s updated.', __('API Key')), 'green');
+            $request->getSession()->flash(__('%s updated.', __('API Key')), 'green');
             return $response->redirectToRoute('api_keys:index');
         }
 
@@ -107,7 +96,7 @@ class ApiKeysController
 
     public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         /** @var Entity\User $user */
         $user = $request->getAttribute('user');
@@ -121,7 +110,7 @@ class ApiKeysController
         $this->em->flush();
         $this->em->refresh($user);
 
-        $this->flash->alert(__('%s deleted.', __('API Key')), 'green');
+        $request->getSession()->flash(__('%s deleted.', __('API Key')), 'green');
 
         return $response->redirectToRoute('api_keys:index');
     }

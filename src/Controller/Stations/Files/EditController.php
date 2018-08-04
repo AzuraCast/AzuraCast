@@ -97,7 +97,7 @@ class EditController extends FilesControllerAbstract
             $this->em->persist($media);
             $this->em->flush();
 
-            $this->flash->alert('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
             return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);

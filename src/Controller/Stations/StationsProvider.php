@@ -14,7 +14,6 @@ class StationsProvider implements ServiceProviderInterface
 
             return new AutomationController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
                 $di[\App\Sync\Task\RadioAutomation::class],
                 $config->get('forms/automation')
             );
@@ -26,9 +25,7 @@ class StationsProvider implements ServiceProviderInterface
 
             return new Files\FilesController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
                 $di[\App\Url::class],
-                $di[\App\Csrf::class],
                 $di[\App\Cache::class],
                 $config->get('forms/rename')
             );
@@ -42,9 +39,7 @@ class StationsProvider implements ServiceProviderInterface
 
             return new Files\EditController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
                 $url,
-                $di[\App\Csrf::class],
                 $di[\App\Cache::class],
                 $config->get('forms/media', [
                     'url' => $url
@@ -66,8 +61,6 @@ class StationsProvider implements ServiceProviderInterface
 
             return new MountsController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
-                $di[\App\Csrf::class],
                 [
                     'icecast' => $config->get('forms/mount/icecast'),
                     'remote' => $config->get('forms/mount/remote'),
@@ -83,8 +76,6 @@ class StationsProvider implements ServiceProviderInterface
             return new PlaylistsController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Url::class],
-                $di[\App\Flash::class],
-                $di[\App\Csrf::class],
                 $config->get('forms/playlist', [
                     'customization' => $di[\App\Customization::class]
                 ])
@@ -97,7 +88,6 @@ class StationsProvider implements ServiceProviderInterface
 
             return new ProfileController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
                 $di[\App\Cache::class],
                 $di[\App\Radio\Configuration::class],
                 $config->get('forms/station')
@@ -108,16 +98,13 @@ class StationsProvider implements ServiceProviderInterface
             return new ReportsController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Cache::class],
-                $di[\App\Flash::class],
                 $di[\App\Sync\Task\RadioAutomation::class]
             );
         };
 
         $di[RequestsController::class] = function($di) {
             return new RequestsController(
-                $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
-                $di[\App\Csrf::class]
+                $di[\Doctrine\ORM\EntityManager::class]
             );
         };
 
@@ -127,8 +114,6 @@ class StationsProvider implements ServiceProviderInterface
 
             return new StreamersController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
-                $di[\App\Csrf::class],
                 $config->get('forms/streamer')
             );
         };
@@ -139,8 +124,6 @@ class StationsProvider implements ServiceProviderInterface
 
             return new WebhooksController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
-                $di[\App\Csrf::class],
                 [
                     'tunein' => $config->get('forms/webhook/tunein'),
                     'discord' => $config->get('forms/webhook/discord', ['url' => $di[\App\Url::class], 'app_settings' => $di['app_settings']]),

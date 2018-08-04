@@ -15,8 +15,6 @@ class AdminProvider implements ServiceProviderInterface
 
             return new ApiController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
-                $di[\App\Csrf::class],
                 $config->get('forms/api_key')
             );
         };
@@ -27,7 +25,6 @@ class AdminProvider implements ServiceProviderInterface
 
             return new BrandingController(
                 $di[Entity\Repository\SettingsRepository::class],
-                $di[\App\Flash::class],
                 $config->get('forms/branding', ['settings' => $di['app_settings']])
             );
         };
@@ -38,8 +35,6 @@ class AdminProvider implements ServiceProviderInterface
 
             return new CustomFieldsController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
-                $di[\App\Csrf::class],
                 $config->get('forms/custom_field')
             );
         };
@@ -65,8 +60,6 @@ class AdminProvider implements ServiceProviderInterface
 
             return new PermissionsController(
                 $em,
-                $di[\App\Flash::class],
-                $di[\App\Csrf::class],
                 $actions,
                 $config->get('forms/role', [
                     'actions' => $actions,
@@ -81,7 +74,6 @@ class AdminProvider implements ServiceProviderInterface
 
             return new SettingsController(
                 $di[Entity\Repository\SettingsRepository::class],
-                $di[\App\Flash::class],
                 $config->get('forms/settings')
             );
         };
@@ -92,11 +84,9 @@ class AdminProvider implements ServiceProviderInterface
 
             return new StationsController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
                 $di[\App\Cache::class],
                 $di[\App\Radio\Adapters::class],
                 $di[\App\Radio\Configuration::class],
-                $di[\App\Csrf::class],
                 $config->get('forms/station'),
                 $config->get('forms/station_clone')
             );
@@ -114,9 +104,7 @@ class AdminProvider implements ServiceProviderInterface
 
             return new UsersController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Flash::class],
                 $di[\App\Auth::class],
-                $di[\App\Csrf::class],
                 $config->get('forms/user', [
                     'roles' => $role_repo->fetchSelect()
                 ])

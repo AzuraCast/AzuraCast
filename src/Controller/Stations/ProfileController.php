@@ -2,8 +2,6 @@
 namespace App\Controller\Stations;
 
 use App\Cache;
-use App\Flash;
-use App\Mvc\View;
 use App\Radio\Backend\BackendAbstract;
 use App\Radio\Configuration;
 use App\Radio\Frontend\FrontendAbstract;
@@ -16,9 +14,6 @@ class ProfileController
 {
     /** @var EntityManager */
     protected $em;
-
-    /** @var Flash */
-    protected $flash;
 
     /** @var Cache */
     protected $cache;
@@ -35,15 +30,18 @@ class ProfileController
     /**
      * ProfileController constructor.
      * @param EntityManager $em
-     * @param Flash $flash
      * @param Cache $cache
      * @param Configuration $configuration
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Flash $flash, Cache $cache, Configuration $configuration, array $form_config)
+    public function __construct(
+        EntityManager $em,
+        Cache $cache,
+        Configuration $configuration,
+        array $form_config
+    )
     {
         $this->em = $em;
-        $this->flash = $flash;
         $this->cache = $cache;
         $this->configuration = $configuration;
         $this->form_config = $form_config;

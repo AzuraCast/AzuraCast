@@ -2,12 +2,9 @@
 namespace App\Controller\Admin;
 
 use App\Auth;
-use App\Csrf;
-use App\Flash;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
-use Slim\Container;
 use App\Http\Request;
 use App\Http\Response;
 
@@ -15,9 +12,6 @@ class UsersController
 {
     /** @var EntityManager */
     protected $em;
-
-    /** @var Flash */
-    protected $flash;
 
     /** @var Auth */
     protected $auth;
@@ -28,25 +22,19 @@ class UsersController
     /** @var Entity\Repository\UserRepository */
     protected $record_repo;
 
-    /** @var Csrf */
-    protected $csrf;
-
     /** @var string */
     protected $csrf_namespace = 'admin_users';
 
     /**
      * UsersController constructor.
      * @param EntityManager $em
-     * @param Flash $flash
      * @param Auth $auth
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Flash $flash, Auth $auth, Csrf $csrf, array $form_config)
+    public function __construct(EntityManager $em, Auth $auth, array $form_config)
     {
         $this->em = $em;
-        $this->flash = $flash;
         $this->auth = $auth;
-        $this->csrf = $csrf;
         $this->form_config = $form_config;
 
         $this->record_repo = $this->em->getRepository(Entity\User::class);
@@ -60,7 +48,7 @@ class UsersController
         return $request->getView()->renderToResponse($response, 'admin/users/index', [
             'user' => $request->getAttribute('user'),
             'users' => $users,
-            'csrf' => $this->csrf->generate($this->csrf_namespace)
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace)
         ]);
     }
 
@@ -92,11 +80,11 @@ class UsersController
                 $this->em->persist($record);
                 $this->em->flush();
 
-                $this->flash->alert(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')), 'green');
+                $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')), 'green');
 
                 return $response->redirectToRoute('admin:users:index');
             } catch(UniqueConstraintViolationException $e) {
-                $this->flash->alert(__('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
+                $request->getSession()->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
             }
         }
 
@@ -109,7 +97,7 @@ class UsersController
 
     public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
 
@@ -119,14 +107,14 @@ class UsersController
 
         $this->em->flush();
 
-        $this->flash->alert('<b>' . __('%s deleted.', __('User')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('%s deleted.', __('User')) . '</b>', 'green');
 
         return $response->redirectToRoute('admin:users:index');
     }
 
     public function impersonateAction(Request $request, Response $response, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         $user = $this->record_repo->find((int)$id);
 
@@ -136,7 +124,7 @@ class UsersController
 
         $this->auth->masqueradeAsUser($user);
 
-        $this->flash->alert('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+        $request->getSession()->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
         return $response->redirectToRoute('dashboard');
     }

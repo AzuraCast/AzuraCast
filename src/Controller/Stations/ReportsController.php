@@ -2,8 +2,6 @@
 namespace App\Controller\Stations;
 
 use App\Cache;
-use App\Flash;
-use App\Mvc\View;
 use App\Sync\Task\RadioAutomation;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -14,22 +12,19 @@ class ReportsController
 {
     use Traits\SongHistoryFilters;
 
-    /** @var Flash */
-    protected $flash;
-
     /** @var RadioAutomation */
     protected $sync_automation;
 
     /**
      * ReportsController constructor.
-     * @param Flash $flash
+     * @param EntityManager $em
+     * @param Cache $cache
      * @param RadioAutomation $sync_automation
      */
-    public function __construct(EntityManager $em, Cache $cache, Flash $flash, RadioAutomation $sync_automation)
+    public function __construct(EntityManager $em, Cache $cache, RadioAutomation $sync_automation)
     {
         $this->em = $em;
         $this->cache = $cache;
-        $this->flash = $flash;
         $this->sync_automation = $sync_automation;
     }
 
@@ -233,7 +228,7 @@ class ReportsController
             $this->em->remove($media);
             $this->em->flush();
 
-            $this->flash->alert('<b>Duplicate file deleted!</b>', 'green');
+            $request->getSession()->flash('<b>Duplicate file deleted!</b>', 'green');
         }
 
         return $response->redirectToRoute('stations:reports:duplicates', ['station' => $station_id]);
@@ -256,7 +251,7 @@ class ReportsController
 
             $settings_repo->setSetting('gmaps_api_key', trim($request->getParam('gmaps_api_key')));
 
-            $this->flash->alert('<b>Google Maps API key updated!</b>', 'green');
+            $request->getSession()->flash('<b>Google Maps API key updated!</b>', 'green');
             return $response->redirectHere();
         }
 

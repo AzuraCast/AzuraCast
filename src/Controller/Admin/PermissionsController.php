@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Csrf;
-use App\Flash;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -13,26 +11,18 @@ class PermissionsController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Flash */
-    protected $flash;
-
     /** @var array */
     protected $actions;
 
     /** @var array */
     protected $form_config;
 
-    /** @var Csrf */
-    protected $csrf;
-
     /** @var string */
     protected $csrf_namespace = 'admin_permissions';
 
-    public function __construct(EntityManager $em, Flash $flash, Csrf $csrf, array $actions, array $form_config)
+    public function __construct(EntityManager $em, array $actions, array $form_config)
     {
         $this->em = $em;
-        $this->flash = $flash;
-        $this->csrf = $csrf;
         $this->actions = $actions;
         $this->form_config = $form_config;
     }
@@ -63,7 +53,7 @@ class PermissionsController
 
         return $request->getView()->renderToResponse($response, 'admin/permissions/index', [
             'roles' => $roles,
-            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);
     }
 
@@ -102,7 +92,7 @@ class PermissionsController
 
             $permission_repo->setActionsForRole($record, $data);
 
-            $this->flash->alert('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Permission')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Permission')) . '</b>', 'green');
 
             return $response->redirectToRoute('admin:permissions:index');
         }
@@ -116,7 +106,7 @@ class PermissionsController
 
     public function deleteAction(Request $request, Response $response, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         /** @var Entity\Repository\BaseRepository $role_repo */
         $role_repo = $this->em->getRepository(Entity\Role::class);
@@ -128,7 +118,7 @@ class PermissionsController
 
         $this->em->flush();
 
-        $this->flash->alert('<b>' . __('%s deleted.', __('Permission')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('%s deleted.', __('Permission')) . '</b>', 'green');
         return $response->redirectToRoute('admin:permissions:index');
     }
 }

@@ -1,9 +1,6 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Csrf;
-use App\Flash;
-use App\Mvc\View;
 use App\Url;
 use App\Radio\Backend\BackendAbstract;
 use Cake\Chronos\Chronos;
@@ -21,12 +18,6 @@ class PlaylistsController
     /** @var Url */
     protected $url;
 
-    /** @var Flash */
-    protected $flash;
-
-    /** @var Csrf */
-    protected $csrf;
-
     /** @var string */
     protected $csrf_namespace = 'stations_playlists';
 
@@ -43,15 +34,12 @@ class PlaylistsController
      * PlaylistsController constructor.
      * @param EntityManager $em
      * @param Url $url
-     * @param Flash $flash
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Url $url, Flash $flash, Csrf $csrf, array $form_config)
+    public function __construct(EntityManager $em, Url $url, array $form_config)
     {
         $this->em = $em;
         $this->url = $url;
-        $this->flash = $flash;
-        $this->csrf = $csrf;
         $this->form_config = $form_config;
 
         $this->playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
@@ -95,7 +83,7 @@ class PlaylistsController
 
         return $request->getView()->renderToResponse($response, 'stations/playlists/index', [
             'playlists' => $playlists,
-            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
             'schedule_now' => Chronos::now()->toIso8601String(),
             'schedule_url' => $this->url->named('stations:playlists:schedule', ['station' => $station_id]),
         ]);
@@ -188,7 +176,7 @@ class PlaylistsController
 
         if ($request->isPost()) {
             try {
-                $this->csrf->verify($request->getParam('csrf'), $this->csrf_namespace);
+                $request->getSession()->getCsrf()->verify($request->getParam('csrf'), $this->csrf_namespace);
             } catch(\App\Exception\CsrfValidation $e) {
                 return $response->withStatus(403)
                     ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
@@ -216,7 +204,7 @@ class PlaylistsController
 
         return $request->getView()->renderToResponse($response, 'stations/playlists/reorder', [
             'playlist' => $record,
-            'csrf' => $this->csrf->generate($this->csrf_namespace),
+            'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
             'media_items' => $media_items,
         ]);
     }
@@ -287,7 +275,11 @@ class PlaylistsController
             /** @var UploadedFile $import_file */
             $import_file = $files['import'];
             if ($import_file->getError() == UPLOAD_ERR_OK) {
-                $this->_importPlaylist($record, $import_file, $station_id);
+                $matches = $this->_importPlaylist($record, $import_file, $station_id);
+
+                if (is_int($matches)) {
+                    $request->getSession()->flash('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.', $matches), 'blue');
+                }
             }
 
             // If using Manual AutoDJ mode, check for changes and flag as needing-restart.
@@ -303,7 +295,7 @@ class PlaylistsController
             $this->em->flush();
             $this->em->refresh($station);
 
-            $this->flash->alert('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Playlist')) . '</b>', 'green');
+            $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Playlist')) . '</b>', 'green');
 
             return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
         }
@@ -314,7 +306,11 @@ class PlaylistsController
         ]);
     }
 
-    protected function _importPlaylist(Entity\StationPlaylist $playlist, UploadedFile $playlist_file, $station_id)
+    protected function _importPlaylist(
+        Entity\StationPlaylist $playlist,
+        UploadedFile $playlist_file,
+        $station_id
+    )
     {
         $playlist_raw = (string)$playlist_file->getStream();
         if (empty($playlist_raw)) {
@@ -394,13 +390,12 @@ class PlaylistsController
             $this->em->persist($playlist);
         }
 
-        $this->flash->alert('<b>' . __('Existing playlist imported.') . '</b><br>' . __('%d song(s) were imported into the playlist.', count($matches)), 'blue');
-        return true;
+        return count($matches);
     }
 
     public function deleteAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
     {
-        $this->csrf->verify($csrf_token, $this->csrf_namespace);
+        $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
         /** @var Entity\Station $station */
         $station = $request->getAttribute('station');
@@ -417,7 +412,7 @@ class PlaylistsController
         $this->em->flush();
         $this->em->refresh($station);
 
-        $this->flash->alert('<b>' . __('%s deleted.', __('Playlist')) . '</b>', 'green');
+        $request->getSession()->flash('<b>' . __('%s deleted.', __('Playlist')) . '</b>', 'green');
 
         return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
     }

@@ -29,7 +29,7 @@ $cli->setHelperSet($helperSet);
 $migrate_config = new \Doctrine\DBAL\Migrations\Configuration\Configuration($em->getConnection());
 $migrate_config->setMigrationsTableName('app_migrations');
 $migrate_config->setMigrationsDirectory(dirname(__DIR__).'/src/Entity/Migration');
-$migrate_config->setMigrationsNamespace('Entity\Migration');
+$migrate_config->setMigrationsNamespace('App\Entity\Migration');
 
 $output = new \Symfony\Component\Console\Output\ConsoleOutput;
 $migrate_config->setOutputWriter(new \Doctrine\DBAL\Migrations\OutputWriter(function($message) use ($output) {

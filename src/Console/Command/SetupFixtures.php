@@ -26,7 +26,7 @@ class SetupFixtures extends \App\Console\Command\CommandAbstract
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $loader = new Loader();
-        $loader->loadFromDirectory(APP_INCLUDE_BASE.'/src/Entity/Fixture');
+        $loader->loadFromDirectory(APP_INCLUDE_ROOT.'/src/Entity/Fixture');
 
         /** @var EntityManager $em */
         $em = $this->get(EntityManager::class);

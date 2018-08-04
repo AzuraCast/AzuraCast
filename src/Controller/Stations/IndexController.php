@@ -28,7 +28,7 @@ class IndexController
 
     public function indexAction(Request $request, Response $response, $station_id): Response
     {
-        $station = $request->getSession();
+        $station = $request->getStation();
 
         // Get current analytics level.
 

@@ -1,10 +1,8 @@
 <?php
 namespace App\Middleware;
 
-use App\Entity;
-use Slim\Http\Request;
-use Slim\Http\Response;
-
+use App\Http\Request;
+use App\Http\Response;
 use App\Acl\StationAcl;
 
 /**
@@ -30,15 +28,13 @@ class Permissions
     public function __invoke(Request $request, Response $response, $next, $action, $use_station = false): Response
     {
         if ($use_station) {
-            /** @var Entity\Station $station */
-            $station = $request->getAttribute('station');
+            $station = $request->getStation();
             $station_id = $station->getId();
         } else {
             $station_id = null;
         }
 
-        /** @var Entity\User $user */
-        $user = $request->getAttribute('user');
+        $user = $request->getUser();
 
         if (!$this->acl->userAllowed($user, $action, $station_id)) {
             throw new \App\Exception\PermissionDenied;

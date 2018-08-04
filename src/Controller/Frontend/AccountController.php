@@ -4,7 +4,6 @@ namespace App\Controller\Frontend;
 use App\Acl;
 use App\Auth;
 use App\Entity\User;
-use App\Session;
 use App\Url;
 use App\RateLimit;
 use Doctrine\ORM\EntityManager;
@@ -20,9 +19,6 @@ class AccountController
     /** @var Auth */
     protected $auth;
 
-    /** @var Session */
-    protected $session;
-
     /** @var Url */
     protected $url;
 
@@ -35,7 +31,6 @@ class AccountController
     public function __construct(
         EntityManager $em,
         Auth $auth,
-        Session $session,
         Url $url,
         RateLimit $rate_limit,
         Acl $acl
@@ -43,7 +38,6 @@ class AccountController
     {
         $this->em = $em;
         $this->auth = $auth;
-        $this->session = $session;
         $this->url = $url;
         $this->rate_limit = $rate_limit;
         $this->acl = $acl;
@@ -64,11 +58,13 @@ class AccountController
             return $response->redirectToRoute('dashboard');
         }
 
+        $session = $request->getSession();
+
         if (!empty($_POST['username']) && !empty($_POST['password'])) {
             try {
                 $this->rate_limit->checkRateLimit('login', 30, 5);
             } catch(\App\Exception\RateLimitExceeded $e) {
-                $request->getSession()->flash('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
+                $session->flash('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
                     'red');
 
                 return $response->redirectHere();
@@ -79,7 +75,7 @@ class AccountController
             if ($login_success) {
 
                 // Regenerate session ID
-                $this->session->regenerate();
+                $session->regenerate();
 
                 // Reload ACL permissions.
                 $this->acl->reload();
@@ -90,9 +86,9 @@ class AccountController
                 $this->em->persist($user);
                 $this->em->flush();
 
-                $request->getSession()->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
+                $session->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
-                $referrer = $this->session->get('login_referrer');
+                $referrer = $session->get('login_referrer');
                 if (!empty($referrer->url)) {
                     return $response->withRedirect($referrer->url);
                 }
@@ -100,7 +96,7 @@ class AccountController
                 return $response->redirectToRoute('dashboard');
             }
 
-            $request->getSession()->flash('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
+            $session->flash('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
                 'red');
 
             return $response->redirectHere();
@@ -112,7 +108,7 @@ class AccountController
     public function logoutAction(Request $request, Response $response): Response
     {
         $this->auth->logout();
-        $this->session->destroy();
+        $request->getSession()->destroy();
 
         return $response->redirectToRoute('account:login');
     }

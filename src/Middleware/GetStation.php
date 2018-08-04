@@ -52,11 +52,10 @@ class GetStation
             $frontend = $this->adapters->getFrontendAdapter($record);
             $backend = $this->adapters->getBackendAdapter($record);
 
-            $request = $request->withAttributes([
-                Request::ATTRIBUTE_STATION  => $record,
-                Request::ATTRIBUTE_STATION_FRONTEND => $frontend,
-                Request::ATTRIBUTE_STATION_FRONTEND => $backend,
-            ]);
+            $request = $request
+                ->withAttribute(Request::ATTRIBUTE_STATION, $record)
+                ->withAttribute(Request::ATTRIBUTE_STATION_FRONTEND, $frontend)
+                ->withAttribute(Request::ATTRIBUTE_STATION_BACKEND, $backend);
         } else if ($station_required) {
             throw new \RuntimeException('Station not found!');
         }

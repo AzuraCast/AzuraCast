@@ -3,8 +3,8 @@ namespace App\Middleware\Module;
 
 use App\Entity;
 use App\Acl\StationAcl;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 /**
  * Module middleware for the /admin pages.
@@ -56,8 +56,7 @@ class Admin
 
         unset($sidebar_info);
 
-        /** @var \App\Mvc\View $view */
-        $view = $request->getAttribute('view');
+        $view = $request->getView();
 
         $view->admin_panels = $panels;
         $view->sidebar = $view->render('admin/sidebar');

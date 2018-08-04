@@ -12,7 +12,6 @@ class FrontendProvider implements ServiceProviderInterface
             return new AccountController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Auth::class],
-                $di[\App\Session::class],
                 $di[\App\Url::class],
                 $di[\App\RateLimit::class],
                 $di[\App\Acl\StationAcl::class]

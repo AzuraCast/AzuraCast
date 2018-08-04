@@ -3,8 +3,8 @@ namespace App\Middleware\Module;
 
 use App\Radio\Backend\BackendAbstract;
 use App\Entity;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 /**
  * Module middleware for the file management pages.
@@ -19,11 +19,8 @@ class StationFiles
      */
     public function __invoke(Request $request, Response $response, $next): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        /** @var BackendAbstract $backend */
-        $backend = $request->getAttribute('station_backend');
+        $station = $request->getStation();
+        $backend = $request->getStationBackend();
 
         if (!$backend->supportsMedia()) {
             throw new \App\Exception(__('This feature is not currently supported on this station.'));

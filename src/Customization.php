@@ -61,10 +61,9 @@ class Customization
         putenv("LANG=" . $locale);
         setlocale(LC_ALL, $locale);
 
-        return $request->withAttributes([
-            'locale' => $locale,
-            'timezone' => $timezone,
-        ]);
+        return $request
+            ->withAttribute('locale', $locale)
+            ->withAttribute('timezone', $timezone);
     }
 
     /**

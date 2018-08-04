@@ -1,8 +1,8 @@
 <?php
 namespace App\Middleware;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 use App\Entity;
 
 /**
@@ -19,9 +19,12 @@ class RequireLogin
      */
     public function __invoke(Request $request, Response $response, $next): Response
     {
-        $user = $request->getAttribute('user');
-
-        if (!($user instanceof Entity\User)) {
+        try
+        {
+            $request->getUser();
+        }
+        catch(\Exception $e)
+        {
             throw new \App\Exception\NotLoggedIn;
         }
 

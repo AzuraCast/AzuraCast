@@ -3,17 +3,17 @@ namespace App\Middleware;
 
 use App\Http\Request;
 use App\Http\Response;
-use App\Acl\StationAcl;
+use App\Acl;
 
 /**
  * Get the current user entity object and assign it into the request if it exists.
  */
 class Permissions
 {
-    /** @var StationAcl */
+    /** @var Acl */
     protected $acl;
 
-    public function __construct(StationAcl $acl)
+    public function __construct(Acl $acl)
     {
         $this->acl = $acl;
     }

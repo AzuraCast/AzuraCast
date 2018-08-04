@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Acl\StationAcl;
+use App\Acl;
 use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Sync\Task\NowPlaying;
@@ -11,7 +11,7 @@ use App\Http\Response;
 
 class InternalController
 {
-    /** @var StationAcl */
+    /** @var Acl */
     protected $acl;
 
     /** @var Adapters */
@@ -22,11 +22,11 @@ class InternalController
 
     /**
      * InternalController constructor.
-     * @param StationAcl $acl
+     * @param Acl $acl
      * @param Adapters $adapters
      * @param NowPlaying $sync_nowplaying
      */
-    public function __construct(StationAcl $acl, Adapters $adapters, NowPlaying $sync_nowplaying)
+    public function __construct(Acl $acl, Adapters $adapters, NowPlaying $sync_nowplaying)
     {
         $this->acl = $acl;
         $this->adapters = $adapters;

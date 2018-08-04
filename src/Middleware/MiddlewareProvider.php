@@ -51,7 +51,7 @@ class MiddlewareProvider implements ServiceProviderInterface
 
         $di[Permissions::class] = function($di) {
             return new Permissions(
-                $di[App\Acl\StationAcl::class]
+                $di[App\Acl::class]
             );
         };
 
@@ -74,7 +74,7 @@ class MiddlewareProvider implements ServiceProviderInterface
             $config = $di[App\Config::class];
 
             return new Module\Admin(
-                $di[App\Acl\StationAcl::class],
+                $di[App\Acl::class],
                 $config->get('admin/dashboard')
             );
         };

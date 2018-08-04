@@ -1,9 +1,9 @@
 <?php
 namespace App\Controller\Frontend;
 
+use App\Acl;
 use App\Cache;
 use App\Url;
-use App\Acl\StationAcl;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -16,7 +16,7 @@ class DashboardController
     /** @var EntityManager */
     protected $em;
 
-    /** @var StationAcl */
+    /** @var Acl */
     protected $acl;
 
     /** @var Cache */
@@ -34,12 +34,12 @@ class DashboardController
     /**
      * IndexController constructor.
      * @param EntityManager $em
-     * @param StationAcl $acl
+     * @param Acl $acl
      * @param Cache $cache
      * @param Database $influx
      * @param Adapters $adapter_manager
      */
-    public function __construct(EntityManager $em, StationAcl $acl, Cache $cache, Database $influx, Adapters $adapter_manager, Url $url)
+    public function __construct(EntityManager $em, Acl $acl, Cache $cache, Database $influx, Adapters $adapter_manager, Url $url)
     {
         $this->em = $em;
         $this->acl = $acl;

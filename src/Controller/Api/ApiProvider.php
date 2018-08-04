@@ -17,7 +17,7 @@ class ApiProvider implements ServiceProviderInterface
 
         $di[InternalController::class] = function($di) {
             return new InternalController(
-                $di[\App\Acl\StationAcl::class],
+                $di[\App\Acl::class],
                 $di[\App\Radio\Adapters::class],
                 $di[\App\Sync\Task\NowPlaying::class]
             );

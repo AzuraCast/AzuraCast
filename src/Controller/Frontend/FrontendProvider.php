@@ -14,14 +14,14 @@ class FrontendProvider implements ServiceProviderInterface
                 $di[\App\Auth::class],
                 $di[\App\Url::class],
                 $di[\App\RateLimit::class],
-                $di[\App\Acl\StationAcl::class]
+                $di[\App\Acl::class]
             );
         };
 
         $di[DashboardController::class] = function($di) {
             return new DashboardController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Acl\StationAcl::class],
+                $di[\App\Acl::class],
                 $di[\App\Cache::class],
                 $di[\InfluxDB\Database::class],
                 $di[\App\Radio\Adapters::class],
@@ -68,7 +68,7 @@ class FrontendProvider implements ServiceProviderInterface
             return new SetupController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Auth::class],
-                $di[\App\Acl\StationAcl::class],
+                $di[\App\Acl::class],
                 $di[\App\Radio\Adapters::class],
                 $di[\App\Radio\Configuration::class],
                 $config->get('forms/station'),

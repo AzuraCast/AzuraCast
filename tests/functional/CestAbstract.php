@@ -88,7 +88,7 @@ abstract class CestAbstract
         $this->em->persist($user);
         $this->em->flush();
 
-        $this->di[\App\Acl\StationAcl::class]->reload();
+        $this->di[\App\Acl::class]->reload();
 
         // Create station.
         $frontends = \App\Radio\Adapters::getFrontendAdapters();

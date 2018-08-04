@@ -151,14 +151,14 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Auth($di[\App\Session::class], $user_repo);
     };
 
-    $di[\App\Acl\StationAcl::class] = function ($di) {
+    $di[\App\Acl::class] = function ($di) {
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $di[\Doctrine\ORM\EntityManager::class];
 
         /** @var App\Entity\Repository\RolePermissionRepository $permissions_repo */
         $permissions_repo = $em->getRepository(App\Entity\RolePermission::class);
 
-        return new \App\Acl\StationAcl($permissions_repo);
+        return new \App\Acl($permissions_repo);
     };
 
     $di[\Redis::class] = $di->factory(function ($di) {
@@ -283,7 +283,7 @@ return function (\Slim\Container $di, $settings) {
         $view->addData([
             'assets' => $di[\App\Assets::class],
             'auth' => $di[\App\Auth::class],
-            'acl' => $di[\App\Acl\StationAcl::class],
+            'acl' => $di[\App\Acl::class],
             'url' => $di[\App\Url::class],
             'flash' => $session->getFlash(),
             'customization' => $di[\App\Customization::class],
@@ -296,7 +296,7 @@ return function (\Slim\Container $di, $settings) {
     $di[\App\Mvc\ErrorHandler::class] = function($di) {
         return new \App\Mvc\ErrorHandler(
             $di[\App\Url::class],
-            $di[\App\Acl\StationAcl::class],
+            $di[\App\Acl::class],
             $di[\Monolog\Logger::class]
         );
     };

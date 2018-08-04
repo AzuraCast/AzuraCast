@@ -2,7 +2,7 @@
 namespace App\Middleware\Module;
 
 use App\Entity;
-use App\Acl\StationAcl;
+use App\Acl;
 use App\Http\Request;
 use App\Http\Response;
 
@@ -11,13 +11,13 @@ use App\Http\Response;
  */
 class Admin
 {
-    /** @var StationAcl */
+    /** @var Acl */
     protected $acl;
 
     /** @var array */
     protected $dashboard_config;
 
-    public function __construct(StationAcl $acl, $dashboard_config)
+    public function __construct(Acl $acl, $dashboard_config)
     {
         $this->acl = $acl;
         $this->dashboard_config = $dashboard_config;

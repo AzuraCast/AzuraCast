@@ -3,7 +3,6 @@ namespace App\Controller\Stations;
 
 use App\Sync\Task\RadioAutomation;
 use Doctrine\ORM\EntityManager;
-use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 
@@ -33,8 +32,7 @@ class AutomationController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $automation_settings = (array)$station->getAutomationSettings();
 
@@ -61,8 +59,7 @@ class AutomationController
 
     public function runAction(Request $request, Response $response, $station_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         try {
             if ($this->sync_task->runStation($station, true)) {

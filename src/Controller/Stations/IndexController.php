@@ -2,7 +2,6 @@
 namespace App\Controller\Stations;
 
 use App\Cache;
-use App\Mvc\View;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -29,8 +28,7 @@ class IndexController
 
     public function indexAction(Request $request, Response $response, $station_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getSession();
 
         // Get current analytics level.
 

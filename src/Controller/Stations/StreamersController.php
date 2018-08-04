@@ -31,11 +31,8 @@ class StreamersController
 
     public function indexAction(Request $request, Response $response, $station_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        /** @var BackendAbstract $backend */
-        $backend = $request->getAttribute('station_backend');
+        $station = $request->getStation();
+        $backend = $request->getStationBackend();
 
         if (!$backend->supportsStreamers()) {
             throw new \App\Exception(__('This feature is not currently supported on this station.'));
@@ -71,8 +68,7 @@ class StreamersController
 
     public function editAction(Request $request, Response $response, $station_id, $id = null): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $form = new \AzuraForms\Form($this->form_config);
 
@@ -116,8 +112,7 @@ class StreamersController
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $record = $this->em->getRepository(Entity\StationStreamer::class)->findOneBy([
             'id' => $id,

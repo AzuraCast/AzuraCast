@@ -14,8 +14,7 @@ class EditController extends FilesControllerAbstract
 {
     public function editAction(Request $request, Response $response, $station_id, $media_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $media = $this->media_repo->findOneBy([
             'station_id' => $station_id,

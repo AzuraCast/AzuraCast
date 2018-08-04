@@ -51,14 +51,9 @@ class ProfileController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        /** @var BackendAbstract $backend */
-        $backend = $request->getAttribute('station_backend');
-
-        /** @var FrontendAbstract $frontend */
-        $frontend = $request->getAttribute('station_frontend');
+        $station = $request->getStation();
+        $backend = $request->getStationBackend();
+        $frontend = $request->getStationFrontend();
 
         $view = $request->getView();
 
@@ -123,11 +118,8 @@ class ProfileController
 
     public function editAction(Request $request, Response $response, $station_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        /** @var FrontendAbstract $frontend */
-        $frontend = $request->getAttribute('station_frontend');
+        $station = $request->getStation();
+        $frontend = $request->getStationFrontend();
 
         $base_form = $this->form_config;
         unset($base_form['groups']['admin']);

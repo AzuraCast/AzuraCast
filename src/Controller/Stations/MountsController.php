@@ -31,11 +31,8 @@ class MountsController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        /** @var FrontendAbstract $frontend */
-        $frontend = $request->getAttribute('station_frontend');
+        $station = $request->getStation();
+        $frontend = $request->getStationFrontend();
 
         if (!$frontend->supportsMounts()) {
             throw new \App\Exception(__('This feature is not currently supported on this station.'));
@@ -50,8 +47,7 @@ class MountsController
 
     public function migrateAction(Request $request, Response $response, $station_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         if ($station->getFrontendType() === 'remote') {
 
@@ -73,8 +69,7 @@ class MountsController
 
     public function editAction(Request $request, Response $response, $station_id, $id = null): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         /** @var Entity\Repository\StationMountRepository $mount_repo */
         $mount_repo = $this->em->getRepository(Entity\StationMount::class);
@@ -139,8 +134,7 @@ class MountsController
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $record = $this->em->getRepository(Entity\StationMount::class)->findOneBy([
             'id' => $id,

@@ -19,8 +19,7 @@ class FilesController extends FilesControllerAbstract
 {
     public function indexAction(Request $request, Response $response, $station_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $playlists = $this->em->createQuery('SELECT sp.id, sp.name 
             FROM '.Entity\StationPlaylist::class.' sp 
@@ -62,8 +61,7 @@ class FilesController extends FilesControllerAbstract
 
     public function renameAction(Request $request, Response $response, $station_id, $path): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $path = base64_decode($path);
         list($path, $path_full) = $this->_filterPath($station->getRadioMediaDir(), $path);
@@ -115,8 +113,7 @@ class FilesController extends FilesControllerAbstract
 
     public function listAction(Request $request, Response $response, $station_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $result = [];
 
@@ -290,8 +287,7 @@ class FilesController extends FilesControllerAbstract
                 ->withJson(['error' => ['code' => 403, 'msg' => 'CSRF Failure: '.$e->getMessage()]]);
         }
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $base_dir = $station->getRadioMediaDir();
 

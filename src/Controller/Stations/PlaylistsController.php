@@ -48,11 +48,9 @@ class PlaylistsController
 
     public function indexAction(Request $request, Response $response, $station_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
-        /** @var BackendAbstract $backend */
-        $backend = $request->getAttribute('station_backend');
+        $backend = $request->getStationBackend();
 
         if (!$backend->supportsMedia()) {
             throw new \App\Exception(__('This feature is not currently supported on this station.'));
@@ -109,8 +107,7 @@ class PlaylistsController
         $end_date_str = substr($request->getParam('end'), 0, 10);
         $end_date = Chronos::createFromFormat('Y-m-d', $end_date_str, $utc);
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         /** @var Entity\StationPlaylist[] $all_playlists */
         $playlists = $station->getPlaylists()->filter(function($record) {
@@ -239,8 +236,7 @@ class PlaylistsController
 
     public function editAction(Request $request, Response $response, $station_id, $id = null): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $form = new \AzuraForms\Form($this->form_config);
 
@@ -397,8 +393,7 @@ class PlaylistsController
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $record = $this->playlist_repo->findOneBy([
             'id' => $id,

@@ -30,8 +30,7 @@ class WebhooksController
 
     public function indexAction(Request $request, Response $response): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         return $request->getView()->renderToResponse($response, 'stations/webhooks/index', [
             'webhooks' => $station->getWebhooks(),
@@ -41,8 +40,7 @@ class WebhooksController
 
     public function addAction(Request $request, Response $response, $station_id, $type = null): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $view = $request->getView();
 
@@ -87,8 +85,7 @@ class WebhooksController
 
     public function editAction(Request $request, Response $response, $station_id, $id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         /** @var Entity\Repository\BaseRepository $record_repo */
         $record_repo = $this->em->getRepository(Entity\StationWebhook::class);
@@ -133,8 +130,7 @@ class WebhooksController
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $record = $this->em->getRepository(Entity\StationWebhook::class)->findOneBy([
             'id' => $id,
@@ -157,8 +153,7 @@ class WebhooksController
     {
         $request->getSession()->getCsrf()->verify($csrf_token, $this->csrf_namespace);
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $record = $this->em->getRepository(Entity\StationWebhook::class)->findOneBy([
             'id' => $id,

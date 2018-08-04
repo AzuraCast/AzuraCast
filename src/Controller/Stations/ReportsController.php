@@ -30,8 +30,7 @@ class ReportsController
 
     public function timelineAction(Request $request, Response $response, $station_id, $format = 'html'): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $songs_played_raw = $this->_getEligibleHistory($station_id);
 
@@ -94,8 +93,7 @@ class ReportsController
 
     public function performanceAction(Request $request, Response $response, $station_id, $format = 'html'): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $automation_config = (array)$station->getAutomationSettings();
 

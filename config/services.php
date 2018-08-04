@@ -50,7 +50,7 @@ return function (\Slim\Container $di, $settings) {
                 'autoGenerateProxies' => !APP_IN_PRODUCTION,
                 'proxyNamespace' => 'AppProxy',
                 'proxyPath' => APP_INCLUDE_TEMP . '/proxies',
-                'modelPath' => APP_INCLUDE_BASE . '/src/Entity',
+                'modelPath' => APP_INCLUDE_ROOT . '/src/Entity',
                 'conn' => [
                     'driver' => 'pdo_mysql',
                     'charset' => 'utf8mb4',

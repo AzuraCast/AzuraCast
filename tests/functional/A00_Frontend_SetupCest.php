@@ -27,7 +27,7 @@ class A00_Frontend_SetupCest extends CestAbstract
         ]);
 
         $I->seeInSource('continue the setup process');
-        $I->seeInRepository('Entity\User', ['email' => $this->login_username]);
+        $I->seeInRepository(\App\Entity\User::class, ['email' => $this->login_username]);
 
         $I->comment('User account created.');
 

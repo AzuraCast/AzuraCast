@@ -17,41 +17,26 @@ modules:
 coverage:
   enabled: true
   include:
-   - app/*
+   - src/*
   exclude:
    # Loaded before tests
-   - app/bootstrap.php
-   - app/bootstrap/**.php
-   - app/src/App/Tests/Module.php
-   - app/src/App/Doctrine/EntityManagerFactory.php
+   - src/Tests/Module.php
+   - src/Doctrine/EntityManagerFactory.php
   
    # Not used in entire application
-   - app/**/*.conf.sample.php
-   - app/src/App/Crypto.php
-   - app/src/App/Messenger.php
-   - app/src/App/Forms/Element/Recaptcha.php
-   - app/src/App/Paginator/Doctrine.php
-   - app/src/App/Doctrine/Platform/*.php
-   - app/src/App/Doctrine/Paginate/*.php
+   - src/Doctrine/Platform/*.php
+   - src/Doctrine/Paginate/*.php
 
    # Used in application, but not used in tests
-   - app/src/AzuraCast/Radio/Frontend/ShoutCast2.php
-   - app/src/AzuraCast/Console/Command/*.php
-   - app/src/App/Doctrine/Logger/EchoSQL.php
-   - app/src/App/Session/Temporary.php
-   - app/src/App/Console/Command/*.php
-   - app/src/Entity/Fixture/*
-   - app/src/Entity/Migration/*
-   - app/locale/**/*
-   - app/locale/*
-   - app/templates/system/error_general.phtml
+   - src/Radio/Frontend/ShoutCast2.php
+   - src/Console/Command/*.php
+   - src/Doctrine/Logger/EchoSQL.php
+   - src/Session/Temporary.php
+   - src/Console/Command/*.php
+   - src/Entity/Fixture/*
+   - src/Entity/Migration/*
   
    # Exceptions
-   - app/src/App/Exception.php
-   - app/src/App/Exception/*.php
-   - app/src/App/Mvc/ErrorHandler.php
-
-   # Used in application, but not detected properly by the coverage tool :(
-   - app/config/*.conf.php
-   - app/config/**/*.conf.php
-   - app/**/routes.php
+   - src/Exception.php
+   - src/Exception/*.php
+   - src/Mvc/ErrorHandler.php

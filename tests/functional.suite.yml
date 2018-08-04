@@ -8,7 +8,7 @@ class_name: FunctionalTester
 modules:
   enabled:
    - \App\Tests\Module:
-      container: app/bootstrap.php
+      container: bootstrap/app.php
    - Doctrine2:
       depends: \App\Tests\Module
    - REST:

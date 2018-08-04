@@ -1,4 +1,6 @@
 <?php
+use App\Entity;
+
 class StationPlaylistTest extends \Codeception\Test\Unit
 {
     /**

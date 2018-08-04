@@ -1,0 +1,224 @@
+<?php $this->layout('main', ['title' => __('Listeners'), 'manual' => true]) ?>
+
+<?php
+/** @var \App\Assets $assets */
+$assets
+    ->load('vue')
+    ->load('daterangepicker');
+?>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header ch-alt">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h2><?=__('Listeners') ?></h2>
+                        <div><span id="listener-count">0</span> Unique</div>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <a class="btn btn-default" id="reportrange" href="#">
+                            <i class="zmdi zmdi-calendar"></i> <span><?=__('Live Listeners') ?></span> <i class="caret"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="googlemap" style="height: 350px;">
+                <div class="card-body card-padding">
+                    <?php if (empty($gmaps_api_key)): ?>
+                        <h4><?=__('Enable Google Maps API') ?></h4>
+                        <p><?=sprintf(__('To see a map of your listeners, provide a Google Maps API key. You can obtain one from the <a href="%s" target="_blank">Google Developer Console</a>. Make sure to enable the "Google Maps JavaScript API" as well.'), 'https://console.developers.google.com') ?></p>
+
+                        <form action="" method="post">
+                            <div class="form-group" id="field_name">
+                                <label for="gmaps_api_key" class="control-label"><?=__('Google Maps API Key') ?>:</label>
+                                <div class="form-field">
+                                    <input type="text" name="gmaps_api_key" class="form-control">
+                                </div>
+
+                                <input type="submit" value="<?=__('Save Changes') ?>" class="btn btn-lg btn-primary m-t-10">
+                            </div>
+                        </form>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <table class="data-table table table-responsive table-striped" id="app-datatable">
+                <thead>
+                    <tr>
+                        <th><?=__('IP') ?></th>
+                        <th><?=__('Time (sec)') ?></th>
+                        <th><?=__('User Agent') ?></th>
+                        <th><?=__('Location') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="listener in listeners">
+                        <td>{{ listener.ip }}</td>
+                        <td>{{ listener.connected_time }}</td>
+                        <td>
+                            <span v-if="listener.is_mobile" title="<?=__('Mobile Device') ?>">
+                                <i class="zmdi zmdi-smartphone"></i>
+                            </span>
+                            <span v-else title="<?=__('Desktop Device') ?>">
+                                <i class="zmdi zmdi-desktop-windows"></i>
+                            </span>
+                            {{ listener.user_agent }}
+                        </td>
+                        <td>
+                            <span v-if="listener.location.status == 'success'">
+                                {{ listener.location.region }}, {{ listener.location.country }}
+                            </span>
+                            <span v-else-if="listener.location.message">
+                                {{ listener.location.message }}
+                            </span>
+                            <span v-else>
+                                <?=__('Unknown') ?>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="card-body card-padding-sm text-muted">
+                <?=__('This product includes GeoLite2 data created by MaxMind, available from %s.', '<a href="http://www.maxmind.com">http://www.maxmind.com</a>') ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
+var map, live_time, load_timeout, app_datatable, gmaps_api_key, mapmarkers = {};
+
+function cb(start, end) {
+    is_live = live_time.isSame(start, 'day');
+
+    if (is_live) {
+        $('#reportrange span').html("<?=__('Live Listeners') ?>");
+    } else {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    }
+
+    updateListeners(start, end);
+}
+
+function initMap() {
+    $(function() {
+        $('#googlemap').empty();
+
+        map = new google.maps.Map(document.getElementById('googlemap'), {
+            zoom: 2,
+            center: {lat: 25, lng: 12}
+        });
+
+        cb(live_time, live_time);
+    });
+}
+
+/*
+ * Live map updating based on parasprite-Radio by djazz:
+ * https://github.com/daniel-j
+ */
+function setMapPoints(points) {
+    var idlist = [];
+    for (i = 0; i < points.length; i++) {
+        var l = points[i];
+
+        if (l.location.status !== 'success')
+            continue;
+
+        l.id = l.location.lon + ',' + l.location.lat + ',' + l.ip;
+        idlist[i] = l.id;
+
+        var content = '<div style="color: black">IP: ' + l.ip + '<br>Country: ' + l.location.country + '<br>Region: ' + l.location.region + '<br>City: ' + l.location.city + '<br>Connected at ' + new Date(l.connected_on * 1000) + '<br>Time connected: ' + l.connected_time + '<br>User Agent: ' + l.user_agent + '</div>';
+
+        if (mapmarkers[l.id]) {
+            mapmarkers[l.id].infowindow.setContent(content);
+            continue;
+        }
+
+        var mark = new google.maps.Marker({
+            position: new google.maps.LatLng(l.location.lat, l.location.lon),
+            map: map,
+            animation: google.maps.Animation.DROP
+        });
+
+        mark.infowindow = new google.maps.InfoWindow({
+            content: content
+        });
+
+        mark.addListener('click', function () {
+            this.infowindow.open(map, this);
+        });
+        mapmarkers[l.id] = mark;
+    }
+
+    for (i in mapmarkers) {
+        if (idlist.indexOf(i) === -1) {
+            var mark = mapmarkers[i];
+            mark.setMap(null);
+            google.maps.event.clearListeners(mark);
+
+            mapmarkers.splice(i, 1);
+        }
+    }
+}
+
+var updateListeners = function(start, end) {
+    clearTimeout(load_timeout);
+
+    var params = {};
+    if (!is_live) {
+        params.start = start.format('YYYY-MM-DD');
+        params.end = end.format('YYYY-MM-DD');
+    }
+
+    $.getJSON('<?=$url->named('api:listeners:index', ['station' => $station->getId()]) ?>', params, function (data) {
+        app_datatable.listeners = data;
+
+        $('#listener-count').text(data.length);
+
+        if (gmaps_api_key !== '') {
+            setMapPoints(data);
+        }
+
+        if (is_live) {
+            load_timeout = setTimeout(updateListeners, 15 * 1000);
+        }
+    });
+};
+
+$(function() {
+
+    live_time = moment(0);
+
+    $('#reportrange').daterangepicker({
+        startDate: live_time,
+        endDate: live_time,
+        opens: "left",
+        ranges: {
+            "<?=__('Live Listeners') ?>": [moment(0), moment(0)],
+            "<?=__('Today') ?>": [moment(), moment()],
+            "<?=__('Yesterday') ?>": [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            "<?=__('Last 7 Days') ?>": [moment().subtract(6, 'days'), moment()],
+            "<?=__('Last 30 Days') ?>": [moment().subtract(29, 'days'), moment()],
+            "<?=__('This Month') ?>": [moment().startOf('month'), moment().endOf('month')],
+            "<?=__('Last Month') ?>": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+
+    app_datatable = new Vue({
+        el: '#app-datatable',
+        data: {
+            listeners: []
+        }
+    });
+
+    gmaps_api_key = "<?=$this->e($gmaps_api_key) ?>";
+    if (gmaps_api_key === '') {
+        cb(live_time, live_time);
+    }
+});
+</script>
+
+<?php if (!empty($gmaps_api_key)): ?>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?=$this->e($gmaps_api_key) ?>&callback=initMap"></script>
+<?php endif; ?>

@@ -28,7 +28,10 @@ define('APP_INCLUDE_CACHE', APP_INCLUDE_TEMP . '/cache');
 // Set up application environment.
 if (APP_INSIDE_DOCKER) {
     $_ENV = getenv();
-} else if (file_exists(APP_INCLUDE_BASE.'/env.ini')) {
+} else if (file_exists(APP_INCLUDE_ROOT.'/env.ini')) {
+    $_ENV = array_merge($_ENV, parse_ini_file(APP_INCLUDE_ROOT.'/env.ini'));
+} else if (file_exists(APP_INCLUDE_ROOT.'/app/env.ini')) {
+    // Legacy file location.
     $_ENV = array_merge($_ENV, parse_ini_file(APP_INCLUDE_ROOT.'/app/env.ini'));
 }
 

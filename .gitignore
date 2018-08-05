@@ -11,8 +11,9 @@ tmp/cache/*---*
 /ubuntu-*-console.log
 
 # Local development files.
-app/env.ini
-app/.env
+/app/env.ini
+/app/.env
+/env.ini
 /util/fixtures/*
 /util/fixtures/**/*
 !/util/fixtures/.gitkeep

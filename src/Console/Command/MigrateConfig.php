@@ -22,33 +22,37 @@ class MigrateConfig extends \App\Console\Command\CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $env_path = APP_INCLUDE_BASE.'/env.ini';
+        $env_path = APP_INCLUDE_ROOT.'/env.ini';
         $settings = [];
 
         if (file_exists($env_path)) {
-
             $settings = parse_ini_file($env_path);
 
             if (!empty($settings['db_password'])) {
                 $output->writeln('Configuration already set up.');
                 return false;
             }
-
         }
 
-        if (empty($settings['application_env']) && file_exists(APP_INCLUDE_BASE . '/.env')) {
-            $settings['application_env'] = @file_get_contents(APP_INCLUDE_BASE . '/.env');
+        if (empty($settings['application_env']) && file_exists(APP_INCLUDE_ROOT . '/app/.env')) {
+            $settings['application_env'] = @file_get_contents(APP_INCLUDE_ROOT . '/app/.env');
         }
 
-        if (file_exists(APP_INCLUDE_BASE.'/config/db.conf.php')) {
-
-            $db_conf = include(APP_INCLUDE_BASE.'/config/db.conf.php');
-            $settings['db_password'] = $db_conf['password'];
-
-            if ($db_conf['user'] === 'root') {
-                $settings['db_username'] = 'root';
+        if (empty($settings['db_password'])) {
+            $legacy_path = APP_INCLUDE_ROOT.'/app/env.ini';
+            if (file_exists($legacy_path)) {
+                $old_settings = parse_ini_file($legacy_path);
+                $settings = array_merge($settings, $old_settings);
             }
 
+            if (file_exists(APP_INCLUDE_ROOT.'/app/config/db.conf.php')) {
+                $db_conf = include(APP_INCLUDE_ROOT.'/app/config/db.conf.php');
+                $settings['db_password'] = $db_conf['password'];
+
+                if ($db_conf['user'] === 'root') {
+                    $settings['db_username'] = 'root';
+                }
+            }
         }
 
         $ini_data = [

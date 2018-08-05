@@ -55,7 +55,7 @@
 
  - name: Set up environment file
    ini_file:
-     dest: "{{ www_base }}/app/env.ini"
+     dest: "{{ www_base }}/env.ini"
      section: "configuration"
      option: "{{ item.option }}"
      value: "{{ item.value }}"

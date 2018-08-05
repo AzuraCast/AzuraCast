@@ -96,7 +96,7 @@ class Liquidsoap extends BackendAbstract
         $playlist_objects = [];
 
         foreach ($this->station->getPlaylists() as $playlist_raw) {
-            /** @var \Entity\StationPlaylist $playlist_raw */
+            /** @var Entity\StationPlaylist $playlist_raw */
             if (!$playlist_raw->getIsEnabled()) {
                 continue;
             }
@@ -113,7 +113,7 @@ class Liquidsoap extends BackendAbstract
             $this->logger->info('No default playlist existed for this station; new one was automatically created.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
 
             // Auto-create an empty default playlist.
-            $default_playlist = new \Entity\StationPlaylist($this->station);
+            $default_playlist = new Entity\StationPlaylist($this->station);
             $default_playlist->setName('default');
 
             /** @var EntityManager $em */

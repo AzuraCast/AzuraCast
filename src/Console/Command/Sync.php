@@ -2,6 +2,7 @@
 namespace App\Console\Command;
 
 use App;
+use App\Sync\Runner;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,8 +29,8 @@ class Sync extends \App\Console\Command\CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var AzuraCast\Sync\Runner $sync */
-        $sync = $this->get(AzuraCast\Sync\Runner::class);
+        /** @var Runner $sync */
+        $sync = $this->get(Runner::class);
 
         switch ($input->getArgument('task')) {
             case 'long':

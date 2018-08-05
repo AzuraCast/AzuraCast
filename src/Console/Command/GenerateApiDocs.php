@@ -27,8 +27,8 @@ class GenerateApiDocs extends \App\Console\Command\CommandAbstract
 
         $swagger = \Swagger\scan([
             APP_INCLUDE_ROOT . '/util/swagger.php',
-            APP_INCLUDE_BASE . '/src/Entity/Api',
-            APP_INCLUDE_BASE . '/src/Controller/Api',
+            APP_INCLUDE_ROOT . '/Entity/Api',
+            APP_INCLUDE_ROOT . '/Controller/Api',
         ], [
             'exclude' => [
                 'bootstrap',

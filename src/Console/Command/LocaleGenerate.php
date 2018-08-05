@@ -20,11 +20,11 @@ class LocaleGenerate extends CommandAbstract
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dest_file = APP_INCLUDE_BASE.'/locale/default.pot';
+        $dest_file = APP_INCLUDE_ROOT.'/resources/locale/default.pot';
         $translations = new \Gettext\Translations;
 
         // Find all PHP/PHTML files in the application's code.
-        $directory = new \RecursiveDirectoryIterator(APP_INCLUDE_BASE);
+        $directory = new \RecursiveDirectoryIterator(APP_INCLUDE_ROOT.'/src');
         $iterator = new \RecursiveIteratorIterator($directory);
         $regex = new \RegexIterator($iterator, '/^.+\.(phtml|php)$/i', \RecursiveRegexIterator::GET_MATCH);
 

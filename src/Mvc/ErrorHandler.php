@@ -2,7 +2,7 @@
 namespace App\Mvc;
 
 use App\Acl;
-use App\Session\Flash;
+use App\Session;
 use App\Url;
 use App\Entity;
 use App\Http\Request;
@@ -11,25 +11,45 @@ use Monolog\Logger;
 
 class ErrorHandler
 {
-    /** @var Url */
-    protected $url;
-
     /** @var Acl */
     protected $acl;
 
     /** @var Logger */
     protected $logger;
 
+    /** @var Session */
+    protected $session;
+
+    /** @var Url */
+    protected $url;
+
+    /** @var View */
+    protected $view;
+
     /**
      * ErrorHandler constructor.
-     * @param Url $url
+     * NOTE: Session and View need to be injected directly, as the request attributes don't get
+     *       passed when handling middleware exceptions.
+     *
      * @param Acl $acl
+     * @param Logger $logger
+     * @param Session $session
+     * @param Url $url
+     * @param View $view
      */
-    public function __construct(Url $url, Acl $acl, Logger $logger)
+    public function __construct(
+        Acl $acl,
+        Logger $logger,
+        Session $session,
+        Url $url,
+        View $view
+    )
     {
-        $this->url = $url;
         $this->acl = $acl;
         $this->logger = $logger;
+        $this->session = $session;
+        $this->url = $url;
+        $this->view = $view;
     }
 
     public function __invoke(Request $req, Response $res, \Throwable $e)
@@ -45,9 +65,7 @@ class ErrorHandler
             'code' => $e->getCode(),
         ]);
 
-        /** @var Entity\User|null $user */
-        $user = $req->getAttribute(Request::ATTRIBUTE_USER);
-        $show_detailed = $this->acl->userAllowed($user, 'administer all') || !APP_IN_PRODUCTION;
+        $show_detailed = !APP_IN_PRODUCTION;
 
         if ($req->isXhr() || APP_IS_COMMAND_LINE || APP_TESTING_MODE) {
             $api_response = new Entity\Api\Error(
@@ -60,19 +78,21 @@ class ErrorHandler
 
         if ($e instanceof \App\Exception\NotLoggedIn) {
             // Redirect to login page for not-logged-in users.
-            $req->getSession()->flash(__('You must be logged in to access this page.'), 'red');
+            $this->session->flash(__('You must be logged in to access this page.'), 'red');
 
             // Set referrer for login redirection.
-            $session = $req->getSession()->get('login_referrer');
-            $session->url = $this->url->current();
+            $referrer_login = $this->session->get('login_referrer');
+            $referrer_login->url = $this->url->current();
 
-            return $res->withStatus(302)->withHeader('Location', $this->url->named('account:login'));
+            return $res
+                ->withStatus(302)
+                ->withHeader('Location', $this->url->named('account:login'));
         }
 
         if ($e instanceof \App\Exception\PermissionDenied) {
             // Bounce back to homepage for permission-denied users.
-            $req->getSession()->flash(__('You do not have permission to access this portion of the site.'),
-                Flash::ERROR);
+            $this->session->flash(__('You do not have permission to access this portion of the site.'),
+                Session\Flash::ERROR);
 
             return $res
                 ->withStatus(302)
@@ -97,7 +117,7 @@ class ErrorHandler
             return $res->withStatus(500)->write($run->handleException($e));
         }
 
-        return $req->getView()->renderToResponse($res->withStatus(500), 'system/error_general', [
+        return $this->view->renderToResponse($res->withStatus(500), 'system/error_general', [
             'exception' => $e,
         ]);
     }

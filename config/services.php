@@ -295,9 +295,11 @@ return function (\Slim\Container $di, $settings) {
 
     $di[\App\Mvc\ErrorHandler::class] = function($di) {
         return new \App\Mvc\ErrorHandler(
-            $di[\App\Url::class],
             $di[\App\Acl::class],
-            $di[\Monolog\Logger::class]
+            $di[\Monolog\Logger::class],
+            $di[\App\Session::class],
+            $di[\App\Url::class],
+            $di[\App\Mvc\View::class]
         );
     };
 

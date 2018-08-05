@@ -1,10 +1,9 @@
 <?php
+namespace App;
+
 /**
  * Class with static methods for exporting data into various formats.
  */
-
-namespace App;
-
 class Export
 {
     /**

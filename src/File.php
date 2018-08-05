@@ -1,12 +1,11 @@
 <?php
-/**
- * Static class that facilitates the uploading, reading and deletion of files in a controlled directory.
- */
-
 namespace App;
 
 use Psr\Http\Message\UploadedFileInterface;
 
+/**
+ * Static class that facilitates the uploading, reading and deletion of files in a controlled directory.
+ */
 class File
 {
     /**

@@ -1,5 +1,5 @@
 <?php
-namespace App\Mvc;
+namespace App;
 
 use Interop\Container\ContainerInterface;
 use RuntimeException;

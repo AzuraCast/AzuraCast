@@ -3,7 +3,7 @@ namespace App\Http;
 
 use App\Entity;
 use App\Exception;
-use App\Mvc\View;
+use App\View;
 use App\Radio;
 use App\Session;
 

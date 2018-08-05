@@ -1,5 +1,5 @@
 <?php
-namespace App\Mvc;
+namespace App;
 
 use App\Http\Response;
 use Interop\Container\ContainerInterface;

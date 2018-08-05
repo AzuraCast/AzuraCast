@@ -25,7 +25,7 @@ web/static/yarn-error\.log
 /ansible/
 /util/ansible/deploy.retry
 /util/ansible/update.retry
-tests/_output/*
+/tests/_output/*
 
 # Docker files
 /docker-compose.yml

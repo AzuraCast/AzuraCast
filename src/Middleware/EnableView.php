@@ -1,7 +1,7 @@
 <?php
 namespace App\Middleware;
 
-use App\Mvc\View;
+use App\View;
 use App\Http\Request;
 use App\Http\Response;
 

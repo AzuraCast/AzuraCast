@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Frontend;
 
-use App\Mvc\View;
+use App\View;
 use App\Radio\Frontend\FrontendAbstract;
 use App\Entity;
 use App\Http\Request;

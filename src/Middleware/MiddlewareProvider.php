@@ -19,7 +19,7 @@ class MiddlewareProvider implements ServiceProviderInterface
         };
 
         $di[EnableView::class] = function($di) {
-            return new EnableView($di[App\Mvc\View::class]);
+            return new EnableView($di[App\View::class]);
         };
 
         $di[EnforceSecurity::class] = function($di) {

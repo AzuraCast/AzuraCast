@@ -1,7 +1,8 @@
 <?php
-namespace App\Mvc;
+namespace App\Handler;
 
 use App\Acl;
+use App\View;
 use App\Session;
 use App\Url;
 use App\Entity;
@@ -35,7 +36,7 @@ class ErrorHandler
      * @param Logger $logger
      * @param Session $session
      * @param Url $url
-     * @param View $view
+     * @param \App\View $view
      */
     public function __construct(
         Acl $acl,

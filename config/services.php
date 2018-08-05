@@ -16,21 +16,21 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di['callableResolver'] = function ($di) {
-        return new \App\Mvc\Resolver($di);
+        return new App\Resolver($di);
     };
 
     $di['errorHandler'] = function ($di) {
-        return $di[\App\Mvc\ErrorHandler::class];
+        return $di[\App\Handler\ErrorHandler::class];
     };
 
     $di['phpErrorHandler'] = function($di) {
-        return $di[\App\Mvc\ErrorHandler::class];
+        return $di[\App\Handler\ErrorHandler::class];
     };
 
     $di['notFoundHandler'] = function ($di) {
         return function (\App\Http\Request $request, \App\Http\Response $response) use ($di) {
-            /** @var \App\Mvc\View $view */
-            $view = $di[\App\Mvc\View::class];
+            /** @var \App\View $view */
+            $view = $di[App\View::class];
 
             return $view->renderToResponse($response->withStatus(404), 'system/error_pagenotfound');
         };
@@ -246,8 +246,8 @@ return function (\Slim\Container $di, $settings) {
         return $supervisor;
     };
 
-    $di[\App\Mvc\View::class] = $di->factory(function(\Slim\Container $di) {
-        $view = new \App\Mvc\View(dirname(__DIR__) . '/resources/templates');
+    $di[App\View::class] = $di->factory(function(\Slim\Container $di) {
+        $view = new App\View(dirname(__DIR__) . '/resources/templates');
         $view->setFileExtension('phtml');
 
         $view->registerFunction('service', function($service) use ($di) {
@@ -293,13 +293,13 @@ return function (\Slim\Container $di, $settings) {
         return $view;
     });
 
-    $di[\App\Mvc\ErrorHandler::class] = function($di) {
-        return new \App\Mvc\ErrorHandler(
+    $di[\App\Handler\ErrorHandler::class] = function($di) {
+        return new \App\Handler\ErrorHandler(
             $di[\App\Acl::class],
             $di[\Monolog\Logger::class],
             $di[\App\Session::class],
             $di[\App\Url::class],
-            $di[\App\Mvc\View::class]
+            $di[App\View::class]
         );
     };
 

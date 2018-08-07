@@ -32,7 +32,7 @@
  *
  * @SWG\Response(
  *   response="todo",
- *   description="This API call has no documentated response (yet)",
+ *   description="This API call has no documented response (yet)",
  * )
  *
  * @SWG\Tag(

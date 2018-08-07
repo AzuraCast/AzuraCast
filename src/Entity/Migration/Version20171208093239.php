@@ -24,7 +24,7 @@ final class Version20171208093239 extends AbstractMigration
 
         foreach ($all_records as $record) {
             $this->connection->update('station', [
-                'short_name' => \Entity\Station::getStationShortName($record['name']),
+                'short_name' => \App\Entity\Station::getStationShortName($record['name']),
             ], [
                 'id' => $record['id'],
             ]);

@@ -26,7 +26,10 @@ $(function() {
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: row.now_playing.song.title,
-                    artist: row.now_playing.song.artist
+                    artist: row.now_playing.song.artist,
+                    artwork: [
+                        { src: row.now_playing.song.art }
+                    ]
                 });
             }
 

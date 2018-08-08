@@ -8,8 +8,8 @@ Highcharts.theme = {
 		backgroundColor: '#242731',
 		className: 'dark-container',
 		plotBackgroundColor: '#242731',
-		plotBorderColor: '#888888',
-		plotBorderWidth: 1
+		plotBorderColor: '#555',
+		plotBorderWidth: 0
 	},
 	title: {
 		style: {
@@ -78,6 +78,9 @@ Highcharts.theme = {
 				lineColor: '#333'
 			}
 		},
+        boxplot: {
+            fillColor: '#505053'
+        },
 		spline: {
 			marker: {
 				lineColor: '#333'
@@ -223,8 +226,10 @@ Highcharts.theme = {
 	// special colors for some of the
 	legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
 	legendBackgroundColorSolid: 'rgb(35, 35, 70)',
+    background2: '#505053',
 	dataLabelsColor: '#444',
 	textColor: '#C0C0C0',
+    contrastTextColor: '#F0F0F3',
 	maskColor: 'rgba(255,255,255,0.3)'
 };
 

@@ -344,7 +344,7 @@ return function (\Slim\Container $di, $settings) {
             $versioned_files = json_decode(file_get_contents($assets_file), true);
         }
 
-        return new \App\Assets($libraries, $versioned_files, $di[\App\Url::class]);
+        return new \App\Assets($di[\App\Url::class], $libraries, $versioned_files);
     };
 
     $di[\App\Customization::class] = function ($di) {

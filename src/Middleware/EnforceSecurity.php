@@ -46,10 +46,6 @@ class EnforceSecurity
         // Assemble Content Security Policy (CSP)
         $csp = [];
 
-        // CSP JavaScript policy
-        // Note: unsafe-eval included for Vue template compiling
-        $csp[] = "script-src https://maps.googleapis.com https://cdnjs.cloudflare.com 'self' 'unsafe-eval' 'nonce-".$this->assets->getCspNonce()."'";
-
         if ($uri_is_https) {
 
             $csp[] = 'upgrade-insecure-requests';
@@ -73,10 +69,19 @@ class EnforceSecurity
             $csp[] = 'upgrade-insecure-requests';
         }
 
-        $response = $response
+        $response = $next($request, $response);
+
+        // CSP JavaScript policy
+        // Note: unsafe-eval included for Vue template compiling
+        $csp_script_src = (array)$this->assets->getCspDomains();
+        $csp_script_src[] = "'self'";
+        $csp_script_src[] = "'unsafe-eval'";
+        $csp_script_src[] = "'nonce-".$this->assets->getCspNonce()."'";
+
+        $csp[] = "script-src ".implode(' ', $csp_script_src);
+
+        return $response
             ->withHeader('Content-Security-Policy', implode('; ', $csp))
             ->withHeader('X-Frame-Options', 'DENY');
-
-        return $next($request, $response);
     }
 }

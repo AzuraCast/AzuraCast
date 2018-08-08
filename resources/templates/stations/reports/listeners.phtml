@@ -4,7 +4,9 @@
 /** @var \App\Assets $assets */
 $assets
     ->load('vue')
-    ->load('daterangepicker');
+    ->load('daterangepicker')
+    ->load('highmaps')
+    ->load('highcharts_theme_'.$customization->getTheme());
 ?>
 
 <div class="row">
@@ -23,24 +25,7 @@ $assets
                     </div>
                 </div>
             </div>
-            <div id="googlemap" style="height: 350px;">
-                <div class="card-body card-padding">
-                    <?php if (empty($gmaps_api_key)): ?>
-                        <h4><?=__('Enable Google Maps API') ?></h4>
-                        <p><?=sprintf(__('To see a map of your listeners, provide a Google Maps API key. You can obtain one from the <a href="%s" target="_blank">Google Developer Console</a>. Make sure to enable the "Google Maps JavaScript API" as well.'), 'https://console.developers.google.com') ?></p>
-
-                        <form action="" method="post">
-                            <div class="form-group" id="field_name">
-                                <label for="gmaps_api_key" class="control-label"><?=__('Google Maps API Key') ?>:</label>
-                                <div class="form-field">
-                                    <input type="text" name="gmaps_api_key" class="form-control">
-                                </div>
-
-                                <input type="submit" value="<?=__('Save Changes') ?>" class="btn btn-lg btn-primary m-t-10">
-                            </div>
-                        </form>
-                    <?php endif; ?>
-                </div>
+            <div id="map" style="height: 350px;">
             </div>
             <table class="data-table table table-responsive table-striped" id="app-datatable">
                 <thead>
@@ -86,13 +71,13 @@ $assets
 </div>
 
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-var map, live_time, load_timeout, app_datatable, gmaps_api_key, mapmarkers = {};
+var live_time, load_timeout, app_datatable, chart;
 
 function cb(start, end) {
     is_live = live_time.isSame(start, 'day');
 
     if (is_live) {
-        $('#reportrange span').html("<?=__('Live Listeners') ?>");
+        $('#reportrange span').html(<?=$this->escapeJs(__('Live Listeners')) ?>);
     } else {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     }
@@ -101,15 +86,40 @@ function cb(start, end) {
 }
 
 function initMap() {
-    $(function() {
-        $('#googlemap').empty();
-
-        map = new google.maps.Map(document.getElementById('googlemap'), {
-            zoom: 2,
-            center: {lat: 25, lng: 12}
-        });
-
-        cb(live_time, live_time);
+    chart = Highcharts.mapChart('map', {
+        chart: {
+            map: 'custom/world'
+        },
+        title: {
+            text: null
+        },
+        tooltip: {
+            pointFormat: 'IP: {point.ip}<br>' +
+                'Country: {point.location.country}<br>' +
+                'Region: {point.location.region}<br>' +
+                'City: {point.location.city}<br>' +
+                'Time connected: {point.connected_time}<br>' +
+                'User Agent: {point.user_agent}'
+        },
+        mapNavigation: {
+            enabled: true,
+            buttonOptions: {
+                verticalAlign: 'bottom'
+            }
+        },
+        series: [
+            {
+                name: 'Basemap',
+                borderColor: '#A0A0A0',
+                nullColor: 'rgba(200, 200, 200, 0.7)',
+                showInLegend: false
+            },
+            {
+                type: 'mappoint',
+                data: [],
+                name: <?=$this->escapeJs(__('Listener')) ?>
+            }
+        ]
     });
 }
 
@@ -118,48 +128,21 @@ function initMap() {
  * https://github.com/daniel-j
  */
 function setMapPoints(points) {
-    var idlist = [];
-    for (i = 0; i < points.length; i++) {
-        var l = points[i];
+    $.each(chart.series[1].data, function(i, existing_point) {
+        chart.series[1].removePoint(i, false);
+    });
 
+    $.each(points, function(i, l) {
         if (l.location.status !== 'success')
-            continue;
+            return null;
 
-        l.id = l.location.lon + ',' + l.location.lat + ',' + l.ip;
-        idlist[i] = l.id;
+        l.lat = l.location.lat;
+        l.lon = l.location.lon;
 
-        var content = '<div style="color: black">IP: ' + l.ip + '<br>Country: ' + l.location.country + '<br>Region: ' + l.location.region + '<br>City: ' + l.location.city + '<br>Connected at ' + new Date(l.connected_on * 1000) + '<br>Time connected: ' + l.connected_time + '<br>User Agent: ' + l.user_agent + '</div>';
+        chart.series[1].addPoint(l, false);
+    });
 
-        if (mapmarkers[l.id]) {
-            mapmarkers[l.id].infowindow.setContent(content);
-            continue;
-        }
-
-        var mark = new google.maps.Marker({
-            position: new google.maps.LatLng(l.location.lat, l.location.lon),
-            map: map,
-            animation: google.maps.Animation.DROP
-        });
-
-        mark.infowindow = new google.maps.InfoWindow({
-            content: content
-        });
-
-        mark.addListener('click', function () {
-            this.infowindow.open(map, this);
-        });
-        mapmarkers[l.id] = mark;
-    }
-
-    for (i in mapmarkers) {
-        if (idlist.indexOf(i) === -1) {
-            var mark = mapmarkers[i];
-            mark.setMap(null);
-            google.maps.event.clearListeners(mark);
-
-            mapmarkers.splice(i, 1);
-        }
-    }
+    chart.redraw();
 }
 
 var updateListeners = function(start, end) {
@@ -176,9 +159,7 @@ var updateListeners = function(start, end) {
 
         $('#listener-count').text(data.length);
 
-        if (gmaps_api_key !== '') {
-            setMapPoints(data);
-        }
+        setMapPoints(data);
 
         if (is_live) {
             load_timeout = setTimeout(updateListeners, 15 * 1000);
@@ -212,13 +193,8 @@ $(function() {
         }
     });
 
-    gmaps_api_key = "<?=$this->e($gmaps_api_key) ?>";
-    if (gmaps_api_key === '') {
-        cb(live_time, live_time);
-    }
+    initMap();
+
+    cb(live_time, live_time);
 });
 </script>
-
-<?php if (!empty($gmaps_api_key)): ?>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?=$this->e($gmaps_api_key) ?>&callback=initMap"></script>
-<?php endif; ?>

@@ -37,18 +37,12 @@ $assets
     ->load('theme_'.$customization->getTheme());
 ?>
 
-<?=$assets->css('header') ?>
-<?=$assets->css('body') ?>
-<?=$assets->js('header') ?>
+<?=$assets->css() ?>
+<?=$assets->js() ?>
 
 <style type="text/css">
 <?=$customization->getCustomInternalCss() ?>
 </style>
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-var APP_AppEnv = '<?=APP_APPLICATION_ENV ?>';
-var APP_BaseUrl = '<?=$url->named('home') ?>';
-var APP_ContentPath = '<?=$url->content('') ?>';
-</script>
 </head>
 <body class="<?=$page_class ?>">
 <a class="sr-only" href="#content"><?=__('Skip to main content') ?></a>
@@ -134,7 +128,7 @@ var APP_ContentPath = '<?=$url->content('') ?>';
 
 <div id="radio-player"></div>
 
-<?=$assets->js('body') ?>
+<?=$assets->inlineJs() ?>
 
 <?php if ($flash->hasMessages()): ?>
     <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">

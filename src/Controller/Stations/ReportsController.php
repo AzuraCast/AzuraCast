@@ -245,16 +245,6 @@ class ReportsController
             return $view->renderToResponse($response, 'stations/reports/restricted');
         }
 
-        if (!empty($request->getParam('gmaps_api_key'))) {
-
-            $settings_repo->setSetting('gmaps_api_key', trim($request->getParam('gmaps_api_key')));
-
-            $request->getSession()->flash('<b>Google Maps API key updated!</b>', 'green');
-            return $response->redirectHere();
-        }
-
-        return $view->renderToResponse($response, 'stations/reports/listeners', [
-            'gmaps_api_key' => $settings_repo->getSetting('gmaps_api_key', null),
-        ]);
+        return $view->renderToResponse($response, 'stations/reports/listeners');
     }
 }

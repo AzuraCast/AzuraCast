@@ -18,9 +18,6 @@ class Assets
     /** @var array Loaded libraries. */
     protected $loaded = [];
 
-    /** @var string Default library group, if not specified. */
-    protected $default_group = 'body';
-
     /** @var \App\Url URL Resolver object */
     protected $url;
 
@@ -30,15 +27,18 @@ class Assets
     /** @var string A randomly generated number-used-once (nonce) for inline CSP. */
     protected $csp_nonce;
 
+    /** @var array The loaded domains that should be included in the CSP header. */
+    protected $csp_domains;
+
     /**
      * Assets constructor.
      *
+     * @param \App\Url $url URL Resolver object
      * @param array $libraries
      * @param array $versioned_files
-     * @param \App\Url $url URL Resolver object
      * @throws \Exception
      */
-    public function __construct(array $libraries = [], array $versioned_files = [], \App\Url $url)
+    public function __construct(Url $url, array $libraries = [], array $versioned_files = [])
     {
         foreach($libraries as $library) {
             $this->addLibrary($library);
@@ -47,6 +47,7 @@ class Assets
         $this->versioned_files = $versioned_files;
         $this->url = $url;
         $this->csp_nonce = base64_encode(\random_bytes(18));
+        $this->csp_domains = [];
     }
 
     /**
@@ -57,6 +58,16 @@ class Assets
     public function getCspNonce()
     {
         return $this->csp_nonce;
+    }
+
+    /**
+     * Returns the list of approved domains for CSP header inclusion.
+     *
+     * @return array
+     */
+    public function getCspDomains(): array
+    {
+        return $this->csp_domains;
     }
 
     /**
@@ -74,7 +85,6 @@ class Assets
             'order'    => $data['order'] ?? 0,
             'files'    => $data['files'] ?? [],
             'inline'   => $data['inline'] ?? [],
-            'group'    => $data['group'] ?? $this->default_group,
             'require'  => $data['require'] ?? [],
         ];
 
@@ -95,7 +105,6 @@ class Assets
                 'order'    => $data['order'] ?? 0,
                 'files'    => $data['files'] ?? [],
                 'inline'   => $data['inline'] ?? [],
-                'group'    => isset($data['group']) ? $data['group'] : $this->default_group,
                 'require'  => isset($data['require']) ? $data['require'] : []
             ];
         } elseif (isset($this->libraries[$data])) {
@@ -124,13 +133,11 @@ class Assets
      * Add a single javascript file.
      *
      * @param $js_script
-     * @param null $group
      * @return $this
      */
-    public function addJs($js_script, $group = null): self
+    public function addJs($js_script): self
     {
         $this->load([
-            'group' => $group,
             'order' => 100,
             'files' => [
                 'js' => [
@@ -146,13 +153,11 @@ class Assets
      * Add a single javascript inline script.
      *
      * @param $js_script
-     * @param null $group
      * @return $this
      */
-    public function addInlineJs($js_script, $group = null): self
+    public function addInlineJs($js_script): self
     {
         $this->load([
-            'group' => $group,
             'order' => 100,
             'inline' => [
                 'js' => $js_script,
@@ -166,13 +171,11 @@ class Assets
      * Add a single CSS file.
      *
      * @param $css_script
-     * @param null $group
      * @return $this
      */
-    public function addCss($css_script, $group = null): self
+    public function addCss($css_script): self
     {
         $this->load([
-            'group' => $group,
             'order' => 100,
             'files' => [
                 'css' => [
@@ -188,13 +191,11 @@ class Assets
      * Add a single inline CSS file[s].
      *
      * @param $css_script
-     * @param null $group
      * @return $this
      */
-    public function addInlineCss($css_script, $group = null)
+    public function addInlineCss($css_script)
     {
         $this->load([
-            'group' => $group,
             'order' => 100,
             'inline' => [
                 'css' => (is_array($css_script)) ? $css_script : array($css_script),
@@ -205,28 +206,25 @@ class Assets
     }
 
     /**
-     * Returns CSS includes and inline tags from given group.
+     * Returns all CSS includes and inline styles.
      *
-     * @param  string $group Group name, or default if not specified.
      * @return string HTML tags as string.
      */
-    public function css($group = null)
+    public function css()
     {
         $this->_sort();
 
-        $group = $group ?? $this->default_group;
         $result = [];
-
         foreach($this->loaded as $item)
         {
-            if($item['group'] != $group) {
-                continue;
-            }
-
             if (!empty($item['files']['css'])) {
                 foreach($item['files']['css'] as $file) {
-                    $sri = (!empty($file['sri'])) ? 'integrity="'.$file['sri'].'" crossorigin="anonymous"' : '';
-                    $result[] = '<link rel="stylesheet" type="text/css" '.$sri.' href="'.$this->_getUrl($file['src']).'" />';
+                    $compiled_attributes = $this->_compileAttributes($file, [
+                        'rel' => 'stylesheet',
+                        'type' => 'text/css',
+                    ]);
+
+                    $result[] = '<link '.implode(' ', $compiled_attributes).' />';
                 }
             }
 
@@ -241,31 +239,41 @@ class Assets
     }
 
     /**
-     * Returns JS tags from given group name.
-     * If group name is asterisk (*), will return from all loaded groups.
-     * @param  string $group Group name.
+     * Returns all script include tags.
+     *
      * @return string HTML tags as string.
      */
-    public function js($group = null)
+    public function js()
     {
         $this->_sort();
 
-        $group = $group ?? $this->default_group;
         $result = [];
-
         foreach($this->loaded as $item)
         {
-            if($item['group'] != $group) {
-                continue;
-            }
-
             if (!empty($item['files']['js'])) {
                 foreach($item['files']['js'] as $file) {
-                    $sri = (!empty($file['sri'])) ? 'integrity="'.$file['sri'].'" crossorigin="anonymous"' : '';
-                    $result[] = '<script type="text/javascript" '.$sri.' src="'.$this->_getUrl($file['src']).'"></script>';
+                    $compiled_attributes = $this->_compileAttributes($file, [
+                        'type' => 'text/javascript',
+                    ]);
+
+                    $result[] = '<script '.implode(' ', $compiled_attributes).'></script>';
                 }
             }
+        }
 
+        return implode("\n", $result)."\n";
+    }
+
+    /**
+     * Return any inline JavaScript.
+     */
+    public function inlineJs()
+    {
+        $this->_sort();
+
+        $result = [];
+        foreach($this->loaded as $item)
+        {
             if (!empty($item['inline']['js'])) {
                 foreach($item['inline']['js'] as $inline) {
                     $result[] = '<script type="text/javascript" nonce="'.$this->csp_nonce.'">'.$inline.'</script>';
@@ -274,6 +282,44 @@ class Assets
         }
 
         return implode("\n", $result)."\n";
+    }
+
+    /**
+     * Build the proper include tag for a JS/CSS include.
+     *
+     * @param array $file
+     * @param array $defaults
+     * @return array
+     */
+    protected function _compileAttributes(array $file, array $defaults = [])
+    {
+        if (isset($file['src'])) {
+            $defaults['src'] = $this->_getUrl($file['src']);
+            unset($file['src']);
+        }
+
+        if (isset($file['href'])) {
+            $defaults['href'] = $this->_getUrl($file['href']);
+            unset($file['href']);
+        }
+
+        if (isset($file['integrity'])) {
+            $defaults['crossorigin'] = 'anonymous';
+        }
+
+        $attributes = array_merge($defaults, $file);
+
+        $compiled_attributes = [];
+        foreach($attributes as $attr_key => $attr_val) {
+            // Check for attributes like "defer"
+            if ($attr_val === true) {
+                $compiled_attributes[] = $attr_key;
+            } else {
+                $compiled_attributes[] = $attr_key.'="'.$attr_val.'"';
+            }
+        }
+
+        return $compiled_attributes;
     }
 
     /**
@@ -289,9 +335,26 @@ class Assets
         }
 
         if (preg_match('/^(https?:)?\/\//', $resource_uri)) {
+            $this->_addDomainToCsp($resource_uri);
             return $resource_uri;
         } else {
             return $this->url->content($resource_uri);
+        }
+    }
+
+    /**
+     * Add the loaded domain to the full list of CSP-approved domains.
+     *
+     * @param $files
+     */
+    protected function _addDomainToCsp($src)
+    {
+        $src_parts = parse_url($src);
+
+        $domain = $src_parts['scheme'].'://'.$src_parts['host'];
+
+        if (!isset($this->csp_domains[$domain])) {
+            $this->csp_domains[$domain] = $domain;
         }
     }
 

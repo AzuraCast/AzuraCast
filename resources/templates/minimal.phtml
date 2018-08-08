@@ -38,18 +38,12 @@ $assets
     ->load('theme_'.$customization->getPublicTheme());
 ?>
 
-<?=$assets->css('header') ?>
-<?=$assets->css('body') ?>
-<?=$assets->js('header') ?>
+<?=$assets->css() ?>
+<?=$assets->js() ?>
 
 <style type="text/css">
 <?=$customization->getCustomPublicCss() ?>
 </style>
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-    var APP_AppEnv = '<?=APP_APPLICATION_ENV ?>';
-    var APP_BaseUrl = '<?=$url->named('home') ?>';
-    var APP_ContentPath = '<?=$url->content('') ?>';
-</script>
 </head>
 
 <body class="<?=$page_class ?>">
@@ -62,7 +56,7 @@ $assets
     </footer>
 <?php endif; ?>
 
-<?=$assets->js('body') ?>
+<?=$assets->inlineJs() ?>
 
 <?php if ($flash->hasMessages()): ?>
     <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">

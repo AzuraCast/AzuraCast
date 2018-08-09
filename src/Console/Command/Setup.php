@@ -1,6 +1,7 @@
 <?php
 namespace App\Console\Command;
 
+use App\Utilities;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -81,13 +82,21 @@ class Setup extends \App\Console\Command\CommandAbstract
         $this->runCommand($output, 'cache:clear');
         $this->runCommand($output, 'azuracast:radio:restart');
 
-        $local_ip = getHostByName(getHostName()) ?? 'localhost';
-
         $io->newLine();
-        $io->success([
-            'AzuraCast installation complete!',
-            'Visit http://'.$local_ip.' to complete setup.',
-        ]);
+
+        if ($update_only) {
+            $io->success([
+                'AzuraCast is now updated to the latest version!',
+            ]);
+        } else {
+            $public_ip = Utilities::get_public_ip();
+
+            $io->success([
+                'AzuraCast installation complete!',
+                'Visit http://'.$public_ip.' to complete setup.',
+            ]);
+        }
+
         return 0;
     }
 

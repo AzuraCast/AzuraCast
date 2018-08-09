@@ -578,4 +578,23 @@ class Utilities
 
         return sprintf('%1.2f', $bytes / pow($base, $class)) . ' ' . $si_prefix[$class];
     }
+
+    /**
+     * Attempt to fetch the most likely "external" IP for this instance.
+     */
+    public static function get_public_ip()
+    {
+        if (APP_INSIDE_DOCKER) {
+            if (APP_IN_PRODUCTION) {
+                $public_ip = @file_get_contents("http://ipecho.net/plain");
+                if (!empty($public_ip)) {
+                    return $public_ip;
+                }
+            }
+
+            return 'localhost';
+        }
+
+        return getHostByName(getHostName()) ?? 'localhost';
+    }
 }

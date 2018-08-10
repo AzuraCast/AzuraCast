@@ -70,7 +70,7 @@ class EnforceSecurity
         }
 
         // Set frame-deny header before next middleware, so it can be overwritten.
-        $response = $response->withHeader('X-Frame-Options', 'DENY')
+        $response = $response->withHeader('X-Frame-Options', 'DENY');
 
         /** @var Response $response */
         $response = $next($request, $response);

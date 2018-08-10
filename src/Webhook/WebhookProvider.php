@@ -12,12 +12,25 @@ class WebhookProvider implements ServiceProviderInterface
             return new Dispatcher(
                 $di[\Monolog\Logger::class],
                 new \Pimple\Psr11\ServiceLocator($di, [
-                    'local'     => Connector\Local::class,
-                    'generic'   => Connector\Generic::class,
-                    'tunein'    => Connector\TuneIn::class,
                     'discord'   => Connector\Discord::class,
+                    'generic'   => Connector\Generic::class,
+                    'local'     => Connector\Local::class,
+                    'telegram'  => Connector\Telegram::class,
+                    'tunein'    => Connector\TuneIn::class,
                     'twitter'   => Connector\Twitter::class,
                 ])
+            );
+        };
+
+        $di[Connector\Discord::class] = function($di) {
+            return new Connector\Discord(
+                $di[\Monolog\Logger::class]
+            );
+        };
+
+        $di[Connector\Generic::class] = function($di) {
+            return new Connector\Generic(
+                $di[\Monolog\Logger::class]
             );
         };
 
@@ -30,20 +43,14 @@ class WebhookProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Connector\Generic::class] = function($di) {
-            return new Connector\Generic(
-                $di[\Monolog\Logger::class]
-            );
-        };
-
         $di[Connector\TuneIn::class] = function($di) {
             return new Connector\TuneIn(
                 $di[\Monolog\Logger::class]
             );
         };
 
-        $di[Connector\Discord::class] = function($di) {
-            return new Connector\Discord(
+        $di[Connector\Telegram::class] = function($di) {
+            return new Connector\Telegram(
                 $di[\Monolog\Logger::class]
             );
         };

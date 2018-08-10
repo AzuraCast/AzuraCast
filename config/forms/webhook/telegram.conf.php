@@ -8,7 +8,7 @@ return [
     'groups' => [
 
         'api_info' => [
-            'legend' => __('Discord API Details'),
+            'legend' => __('Telegram API Details'),
             'elements' => [
 
                 'name' => [
@@ -20,11 +20,21 @@ return [
                     ]
                 ],
 
-                'webhook_url' => [
-                    'url',
+                'bot_token' => [
+                    'text',
                     [
-                        'label' => __('Discord Web Hook URL'),
-                        'description' => __('This URL is provided within the Discord application.'),
+                        'label' => __('Bot Token'),
+                        'description' => __('See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.', 'https://core.telegram.org/bots#botfather'),
+                        'belongsTo' => 'config',
+                        'required' => true,
+                    ]
+                ],
+
+                'chat_id' => [
+                    'text',
+                    [
+                        'label' => __('Chat ID'),
+                        'description' => __('Unique identifier for the target chat or username of the target channel (in the format @channelusername).'),
                         'belongsTo' => 'config',
                         'required' => true,
                     ]
@@ -48,66 +58,26 @@ return [
 
             'elements' => [
 
-                'content' => [
-                    'text',
+                'text' => [
+                    'textarea',
                     [
                         'label' => __('Main Message Content'),
                         'belongsTo' => 'config',
-                        'default' => sprintf(__('Now playing on %s:'), '{{ station.name }}'),
+                        'default' => sprintf(__('Now playing on %s: %s by %s! Tune in now.'), '{{ station.name }}', '{{ now_playing.song.title }}', '{{ now_playing.song.artist }}'),
+                        'required' => true,
                     ]
                 ],
 
-                'title' => [
-                    'text',
+                'parse_mode' => [
+                    'radio',
                     [
-                        'label' => __('Title'),
-                        'belongsTo' => 'config',
-                        'default' => '{{ now_playing.song.title }}',
-                    ]
-                ],
-
-                'description' => [
-                    'text',
-                    [
-                        'label' => __('Description'),
-                        'belongsTo' => 'config',
-                        'default' => '{{ now_playing.song.artist }}',
-                    ]
-                ],
-
-                'url' => [
-                    'text',
-                    [
-                        'label' => __('URL'),
-                        'belongsTo' => 'config',
-                        'default' => '{{ station.listen_url }}',
-                    ]
-                ],
-
-                'author' => [
-                    'text',
-                    [
-                        'label' => __('Author Name'),
-                        'belongsTo' => 'config',
-                        'default' => '{{ live.streamer_name }}',
-                    ]
-                ],
-
-                'thumbnail' => [
-                    'text',
-                    [
-                        'label' => __('Thumbnail Image URL'),
-                        'belongsTo' => 'config',
-                        'default' => '{{ now_playing.song.art }}',
-                    ]
-                ],
-
-                'footer' => [
-                    'text',
-                    [
-                        'label' => __('Footer Text'),
-                        'belongsTo' => 'config',
-                        'default' => sprintf(__('Powered by %s'), $app_settings['name']),
+                        'label' => __('Message parsing mode'),
+                        'description' => __('See the <a href="%s" target="_blank">Telegram Documentation</a> for more details.', 'https://core.telegram.org/bots/api#sendmessage'),
+                        'default' => 'Markdown',
+                        'options' => [
+                            'Markdown' => 'Markdown',
+                            'HTML' => 'HTML',
+                        ],
                     ]
                 ],
 

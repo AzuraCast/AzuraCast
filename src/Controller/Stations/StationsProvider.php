@@ -128,6 +128,7 @@ class StationsProvider implements ServiceProviderInterface
                     'tunein' => $config->get('forms/webhook/tunein'),
                     'discord' => $config->get('forms/webhook/discord', ['url' => $di[\App\Url::class], 'app_settings' => $di['app_settings']]),
                     'generic' => $config->get('forms/webhook/generic', ['url' => $di[\App\Url::class]]),
+                    'telegram' => $config->get('forms/webhook/telegram', ['url' => $di[\App\Url::class]]),
                     'twitter' => $config->get('forms/webhook/twitter', ['url' => $di[\App\Url::class]]),
                 ]
             );

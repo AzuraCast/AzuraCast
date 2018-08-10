@@ -126,6 +126,10 @@ class Dispatcher
                 'name' => __('Discord Webhook'),
                 'description' => __('Automatically send a customized message to your Discord server.'),
             ],
+            'telegram' => [
+                'name' => __('Telegram Chat Message'),
+                'description' => __('Use the Telegram Bot API to send a message to a channel.'),
+            ],
             'twitter' => [
                 'name' => __('Twitter Post'),
                 'description' => __('Automatically send a tweet.'),

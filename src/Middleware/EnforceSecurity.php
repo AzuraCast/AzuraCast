@@ -69,6 +69,10 @@ class EnforceSecurity
             $csp[] = 'upgrade-insecure-requests';
         }
 
+        // Set frame-deny header before next middleware, so it can be overwritten.
+        $response = $response->withHeader('X-Frame-Options', 'DENY')
+
+        /** @var Response $response */
         $response = $next($request, $response);
 
         // CSP JavaScript policy
@@ -80,8 +84,6 @@ class EnforceSecurity
 
         $csp[] = "script-src ".implode(' ', $csp_script_src);
 
-        return $response
-            ->withHeader('Content-Security-Policy', implode('; ', $csp))
-            ->withHeader('X-Frame-Options', 'DENY');
+        return $response->withHeader('Content-Security-Policy', implode('; ', $csp));
     }
 }

@@ -37,8 +37,9 @@ class RateLimit
             }
         } else {
             $this->redis->setex($cache_name, $timeout, 1);
-            return true;
         }
+
+        return true;
     }
 
     protected function _getIp()

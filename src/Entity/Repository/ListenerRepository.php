@@ -2,6 +2,7 @@
 namespace App\Entity\Repository;
 
 use App\Entity;
+use Doctrine\ORM\NoResultException;
 
 class ListenerRepository extends BaseRepository
 {
@@ -43,6 +44,7 @@ class ListenerRepository extends BaseRepository
             try {
                 $listener_hash = Entity\Listener::calculateListenerHash($client);
 
+                /** @throws NoResultException */
                 $existing_id = $this->_em->createQuery('SELECT l.id FROM '.$this->_entityName.' l
                     WHERE l.station_id = :station_id
                     AND l.listener_uid = :uid
@@ -53,8 +55,14 @@ class ListenerRepository extends BaseRepository
                         ->setParameter('hash', $listener_hash)
                         ->getSingleScalarResult();
 
-                $listener_ids[] = $existing_id;
+                if ($existing_id !== null) {
+                    $listener_ids[] = $existing_id;
+                }
             } catch(\Doctrine\ORM\NoResultException $e) {
+                $existing_id = null;
+            }
+
+            if ($existing_id === null) {
                 // Create a new record.
                 $record = new Entity\Listener($station, $client);
                 $this->_em->persist($record);

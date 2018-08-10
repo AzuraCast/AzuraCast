@@ -38,15 +38,12 @@ class UptimeWait extends \App\Console\Command\CommandAbstract
         switch ($service_name) {
             case "influxdb":
             case "influx":
-
-
                 break;
 
             case "database":
             case "mariadb":
             case "mysql":
             default:
-
                 /** @var EntityManager $em */
                 $em = $this->get(EntityManager::class);
 
@@ -67,8 +64,9 @@ class UptimeWait extends \App\Console\Command\CommandAbstract
                 }
 
                 return 1;
-
                 break;
         }
+
+        throw new \InvalidArgumentException('Invalid service specified.');
     }
 }

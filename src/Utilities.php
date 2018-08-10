@@ -24,6 +24,7 @@ class Utilities
             return $return_value;
         } else {
             echo $return_value;
+            return null;
         }
     }
 

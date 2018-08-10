@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fa41c62f9434589247ac1eb1841f7f3",
+    "content-hash": "08b034a641da81c7ba2045e8fca73eac",
     "packages": [
         {
             "name": "azuracast/azuraforms",
@@ -1702,12 +1702,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "fc0bf6bf7bee6dedc3d69ca5816e42111aaddff2"
+                "reference": "dfd7fd78644e8ef99fa20c8a7a33eed40e2f718c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/fc0bf6bf7bee6dedc3d69ca5816e42111aaddff2",
-                "reference": "fc0bf6bf7bee6dedc3d69ca5816e42111aaddff2",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/dfd7fd78644e8ef99fa20c8a7a33eed40e2f718c",
+                "reference": "dfd7fd78644e8ef99fa20c8a7a33eed40e2f718c",
                 "shasum": ""
             },
             "require": {
@@ -1740,7 +1740,7 @@
                 "php",
                 "tags"
             ],
-            "time": "2018-08-05T12:18:13+00:00"
+            "time": "2018-08-08T21:53:55+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -6033,7 +6033,14 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.2",
-        "ext-redis": "*"
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
+        "ext-intl": "*",
+        "ext-json": "*",
+        "ext-redis": "*",
+        "ext-simplexml": "*",
+        "ext-xml": "*",
+        "ext-xmlwriter": "*"
     },
     "platform-dev": []
 }

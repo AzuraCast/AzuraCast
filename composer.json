@@ -4,8 +4,14 @@
     "license": "Apache-2.0",
     "require": {
         "php": ">=7.2",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
+        "ext-intl": "*",
         "ext-json": "*",
         "ext-redis": "*",
+        "ext-simplexml": "*",
+        "ext-xml": "*",
+        "ext-xmlwriter": "*",
 
         "azuracast/azuraforms": "dev-master",
         "cakephp/chronos": "^1.1",

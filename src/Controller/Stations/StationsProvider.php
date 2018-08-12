@@ -122,15 +122,23 @@ class StationsProvider implements ServiceProviderInterface
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
+            $webhook_config = $config->get('webhooks');
+
+            $webhook_forms = [];
+            $config_injections = [
+                'url' => $di[\App\Url::class],
+                'app_settings' => $di['app_settings'],
+                'triggers' => $webhook_config['triggers'],
+            ];
+            foreach($webhook_config['webhooks'] as $webhook_key => $webhook_info) {
+                $webhook_forms[$webhook_key] = $config->get('forms/webhook/'.$webhook_key, $config_injections);
+            }
+
             return new WebhooksController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                [
-                    'tunein' => $config->get('forms/webhook/tunein'),
-                    'discord' => $config->get('forms/webhook/discord', ['url' => $di[\App\Url::class], 'app_settings' => $di['app_settings']]),
-                    'generic' => $config->get('forms/webhook/generic', ['url' => $di[\App\Url::class]]),
-                    'telegram' => $config->get('forms/webhook/telegram', ['url' => $di[\App\Url::class]]),
-                    'twitter' => $config->get('forms/webhook/twitter', ['url' => $di[\App\Url::class]]),
-                ]
+                $di[\App\Webhook\Dispatcher::class],
+                $webhook_config,
+                $webhook_forms
             );
         };
     }

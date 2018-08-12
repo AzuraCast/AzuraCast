@@ -442,6 +442,9 @@ return function(\Slim\App $app) {
             $this->get('/toggle/{id}/{csrf}', Controller\Stations\WebhooksController::class.':toggleAction')
                 ->setName('stations:webhooks:toggle');
 
+            $this->get('/test/{id}/{csrf}', Controller\Stations\WebhooksController::class.':testAction')
+                ->setName('stations:webhooks:test');
+
             $this->get('/delete/{id}/{csrf}', Controller\Stations\WebhooksController::class.':deleteAction')
                 ->setName('stations:webhooks:delete');
 

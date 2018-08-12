@@ -126,4 +126,15 @@ abstract class AbstractConnector implements ConnectorInterface
         $pattern = sprintf(self::URL_PATTERN, implode('|', ['http', 'https']));
         return (preg_match($pattern, $url)) ? $url : null;
     }
+
+    /**
+     * Get the displayable name of the connector class.
+     *
+     * @return string
+     */
+    protected function _getName(): string
+    {
+        $class_name = get_called_class();
+        return array_pop(explode("\\", $class_name));
+    }
 }

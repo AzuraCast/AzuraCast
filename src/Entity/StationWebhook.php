@@ -111,24 +111,6 @@ class StationWebhook
     }
 
     /**
-     * @return string The localized name of the connector type.
-     */
-    public function getTypeName(): string
-    {
-        $connectors = \App\Webhook\Dispatcher::getConnectors();
-        return $connectors[$this->type]['name'] ?? '';
-    }
-
-    /**
-     * @return string The localized description of the connector type.
-     */
-    public function getTypeDescription(): string
-    {
-        $connectors = \App\Webhook\Dispatcher::getConnectors();
-        return $connectors[$this->type]['description'] ?? '';
-    }
-
-    /**
      * @return bool
      */
     public function isEnabled(): bool
@@ -159,27 +141,6 @@ class StationWebhook
     public function getTriggers(): array
     {
         return (array)$this->triggers;
-    }
-
-    /**
-     * Return an array of localized names of the triggers for this hook.
-     *
-     * @return array
-     */
-    public function getTriggerNames(): array
-    {
-        if (empty($this->triggers)) {
-            return [__('Default')];
-        }
-
-        $trigger_names = [];
-        $triggers = \App\Webhook\Dispatcher::getTriggers();
-
-        foreach($this->triggers as $trigger) {
-            $trigger_names[] = $triggers[$trigger];
-        }
-
-        return $trigger_names;
     }
 
     /**

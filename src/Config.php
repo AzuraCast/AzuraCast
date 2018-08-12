@@ -21,7 +21,7 @@ class Config
      */
     public function get($name, $inject_vars = []): array
     {
-        $path = $this->_base_folder.DIRECTORY_SEPARATOR.str_replace(['.', '..'], ['', ''], $name).'.conf.php';
+        $path = $this->_getPath($name);
 
         if (file_exists($path)) {
             unset($name);
@@ -32,5 +32,27 @@ class Config
         }
 
         return [];
+    }
+
+    /**
+     * Indicate whether a given configuration file name exists.
+     *
+     * @param $name
+     * @return bool
+     */
+    public function has($name): bool
+    {
+        return file_exists($this->_getPath($name));
+    }
+
+    /**
+     * Return the configuration path resolved by the specified name.
+     *
+     * @param $name
+     * @return string
+     */
+    public function _getPath($name)
+    {
+        return $this->_base_folder.DIRECTORY_SEPARATOR.str_replace(['.', '..'], ['', ''], $name).'.php';
     }
 }

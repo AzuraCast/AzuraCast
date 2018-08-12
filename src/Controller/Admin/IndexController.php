@@ -5,11 +5,16 @@ use App\Acl;
 use App\Http\Request;
 use App\Http\Response;
 use App\Sync\Runner;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
 
 class IndexController
 {
     /** @var Acl */
     protected $acl;
+
+    /** @var Logger */
+    protected $logger;
 
     /** @var Runner */
     protected $sync;
@@ -19,9 +24,10 @@ class IndexController
      * @param Acl $acl
      * @param Runner $sync
      */
-    public function __construct(Acl $acl, Runner $sync)
+    public function __construct(Acl $acl, Logger $logger, Runner $sync)
     {
         $this->acl = $acl;
+        $this->logger = $logger;
         $this->sync = $sync;
     }
 
@@ -46,6 +52,12 @@ class IndexController
 
     public function syncAction(Request $request, Response $response, $type): Response
     {
+        $view = $request->getView();
+        $view->sidebar = null;
+
+        $handler = new TestHandler(Logger::DEBUG, false);
+        $this->logger->pushHandler($handler);
+
         switch ($type) {
             case "long":
                 $this->sync->syncLong(true);
@@ -65,6 +77,11 @@ class IndexController
                 break;
         }
 
-        return $response->write('Sync task complete. See log above.');
+        $this->logger->popHandler();
+
+        return $view->renderToResponse($response, 'system/log_view', [
+            'title' => __('Sync Task Output'),
+            'log_records' => $handler->getRecords(),
+        ]);
     }
 }

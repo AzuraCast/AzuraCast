@@ -40,7 +40,7 @@ return [
                     'multiCheckbox',
                     [
                         'label' => __('Web Hook Triggers'),
-                        'options' => \App\Webhook\Dispatcher::getTriggers(),
+                        'options' => $triggers,
                         'required' => true,
                     ]
                 ],

@@ -1,0 +1,49 @@
+<?php $this->layout('main', ['title' => $title, 'manual' => true]); ?>
+
+<? foreach($log_records as $row): ?>
+<div class="card">
+<?php if ($row['level'] === \Monolog\Logger::DEBUG): ?>
+    <div class="card-header bgm-bluegray">
+        <h2><?=$this->e($row['message']) ?> <small>DEBUG</small></h2>
+    </div>
+<?php elseif ($row['level'] === \Monolog\Logger::INFO): ?>
+    <div class="card-header bgm-blue">
+        <h2><?=$this->e($row['message']) ?> <small>INFO</small></h2>
+    </div>
+<?php elseif ($row['level'] === \Monolog\Logger::NOTICE): ?>
+    <div class="card-header bgm-gray">
+        <h2><?=$this->e($row['message']) ?> <small>NOTICE</small></h2>
+    </div>
+<?php elseif ($row['level'] === \Monolog\Logger::WARNING): ?>
+    <div class="card-header bgm-yellow">
+        <h2><?=$this->e($row['message']) ?> <small>WARNING</small></h2>
+    </div>
+<?php elseif ($row['level'] === \Monolog\Logger::ERROR): ?>
+    <div class="card-header bgm-orange">
+        <h2><?=$this->e($row['message']) ?> <small>ERROR</small></h2>
+    </div>
+<?php elseif ($row['level'] === \Monolog\Logger::CRITICAL): ?>
+    <div class="card-header bgm-deeporange">
+        <h2><?=$this->e($row['message']) ?> <small>CRITICAL</small></h2>
+    </div>
+<?php elseif ($row['level'] === \Monolog\Logger::ALERT): ?>
+    <div class="card-header bgm-red">
+        <h2><?=$this->e($row['message']) ?> <small>ALERT</small></h2>
+    </div>
+<?php elseif ($row['level'] === \Monolog\Logger::EMERGENCY): ?>
+    <div class="card-header bgm-red">
+        <h2><?=$this->e($row['message']) ?> <small>EMERGENCY</small></h2>
+    </div>
+<?php endif; ?>
+
+<?php if (!empty($row['context'])): ?>
+    <div class="card-body card-padding text-preformatted">
+        <?php foreach($row['context'] as $context_header => $context_value): ?>
+            <h5><?=$context_header ?></h5>
+            <pre><?=print_r($context_value, true) ?></pre>
+        <?php endforeach; ?>
+        </dl>
+    </div>
+<?php endif; ?>
+</div>
+<?php endforeach; ?>

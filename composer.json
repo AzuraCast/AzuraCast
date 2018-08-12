@@ -8,6 +8,7 @@
         "ext-gd": "*",
         "ext-intl": "*",
         "ext-json": "*",
+        "ext-PDO": "*",
         "ext-redis": "*",
         "ext-simplexml": "*",
         "ext-xml": "*",

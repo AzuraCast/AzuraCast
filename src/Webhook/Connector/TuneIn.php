@@ -25,7 +25,7 @@ class TuneIn extends AbstractConnector
     public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
     {
         if (empty($config['partner_id']) || empty($config['partner_key']) || empty($config['station_id'])) {
-            $this->logger->error('Webhook '.get_called_class().' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook '.$this->_getName().' is missing necessary configuration. Skipping...');
             return;
         }
 

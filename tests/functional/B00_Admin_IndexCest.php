@@ -26,7 +26,7 @@ class B00_Admin_IndexCest extends CestAbstract
         $I->wantTo('Run now-playing synchronization task.');
 
         $I->amOnPage('/admin/sync/nowplaying');
-        $I->seeInSource('Sync task complete. See log above.');
+        $I->seeInSource('Sync Task Output');
     }
 
     /**
@@ -38,7 +38,7 @@ class B00_Admin_IndexCest extends CestAbstract
         $I->wantTo('Run short synchronization task.');
 
         $I->amOnPage('/admin/sync/short');
-        $I->seeInSource('Sync task complete. See log above.');
+        $I->seeInSource('Sync Task Output');
     }
 
     /**
@@ -50,7 +50,7 @@ class B00_Admin_IndexCest extends CestAbstract
         $I->wantTo('Run medium synchronization task.');
 
         $I->amOnPage('/admin/sync/medium');
-        $I->seeInSource('Sync task complete. See log above.');
+        $I->seeInSource('Sync Task Output');
     }
 
     /**
@@ -62,6 +62,6 @@ class B00_Admin_IndexCest extends CestAbstract
         $I->wantTo('Run long synchronization task.');
 
         $I->amOnPage('/admin/sync/long');
-        $I->seeInSource('Sync task complete. See log above.');
+        $I->seeInSource('Sync Task Output');
     }
 }

@@ -22,14 +22,14 @@ class Telegram extends AbstractConnector
         $chat_id = $config['chat_id'] ?? '';
 
         if (empty($bot_token) || empty($chat_id)) {
-            $this->logger->error('Webhook '.get_called_class().' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook '.$this->_getName().' is missing necessary configuration. Skipping...');
             return;
         }
 
         $client = new \GuzzleHttp\Client([
             'base_uri' => 'https://api.telegram.org/', // bot<bot_token>/sendMessage?chat_id=-1001433&text=LIVE',
             'http_errors' => false,
-            'timeout' => 2.0,
+            'timeout' => 4.0,
         ]);
 
         $messages = $this->_replaceVariables([
@@ -39,23 +39,29 @@ class Telegram extends AbstractConnector
         try {
             $webhook_url = '/bot'.$bot_token.'/sendMessage';
 
+            $request_params = [
+                'chat_id' => $chat_id,
+                'text' => $messages['text'],
+                'parse_mode' => $config['parse_mode'] ?? 'Markdown' // Markdown or HTML
+            ];
+
             $response = $client->request('POST', $webhook_url, [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
-                'json' => [
-                    'chat_id' => $chat_id,
-                    'text' => $messages['text'],
-                    'parse_mode' => $config['parse_mode'] ?? 'Markdown' // Markdown or HTML
-                ],
+                'json' => $request_params,
             ]);
 
             $this->logger->debug(
-                sprintf('Webhook %s code %d', get_called_class(), $response->getStatusCode()),
-                ['response_body' => $response->getBody()->getContents()]
+                sprintf('Webhook %s returned code %d', $this->_getName(), $response->getStatusCode()),
+                [
+                    'request_url' => $webhook_url,
+                    'request_params' => $request_params,
+                    'response_body' => $response->getBody()->getContents()
+                ]
             );
         } catch(TransferException $e) {
-            $this->logger->error(sprintf('Error from webhook %s (%d): %s', get_called_class(), $e->getCode(), $e->getMessage()));
+            $this->logger->error(sprintf('Error from webhook %s (%d): %s', $this->_getName(), $e->getCode(), $e->getMessage()));
         }
     }
 }

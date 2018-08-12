@@ -9,16 +9,20 @@ class WebhookProvider implements ServiceProviderInterface
     public function register(Container $di)
     {
         $di[Dispatcher::class] = function($di) {
+
+            /** @var \App\Config $config */
+            $config = $di[\App\Config::class];
+
+            $webhooks = $config->get('webhooks');
+
+            $services = [];
+            foreach($webhooks['webhooks'] as $webhook_key => $webhook_info) {
+                $services[$webhook_key] = $webhook_info['class'];
+            }
+
             return new Dispatcher(
                 $di[\Monolog\Logger::class],
-                new \Pimple\Psr11\ServiceLocator($di, [
-                    'discord'   => Connector\Discord::class,
-                    'generic'   => Connector\Generic::class,
-                    'local'     => Connector\Local::class,
-                    'telegram'  => Connector\Telegram::class,
-                    'tunein'    => Connector\TuneIn::class,
-                    'twitter'   => Connector\Twitter::class,
-                ])
+                new \Pimple\Psr11\ServiceLocator($di, $services)
             );
         };
 

@@ -336,7 +336,10 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\App\Assets::class] = function ($di) {
-        $libraries = require(__DIR__.'/assets.php');
+        /** @var \App\Config $config */
+        $config = $di[\App\Config::class];
+
+        $libraries = $config->get('assets');
 
         $versioned_files = [];
         $assets_file = APP_INCLUDE_STATIC . '/assets.json';

@@ -42,6 +42,7 @@ class AdminProvider implements ServiceProviderInterface
         $di[IndexController::class] = function($di) {
             return new IndexController(
                 $di[\App\Acl::class],
+                $di[\Monolog\Logger::class],
                 $di[\App\Sync\Runner::class]
             );
         };

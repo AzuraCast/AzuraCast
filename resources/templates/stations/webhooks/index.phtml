@@ -15,9 +15,9 @@
     <div class="table-responsive">
         <table class="table table-striped">
             <colgroup>
-                <col width="25%">
+                <col width="30%">
                 <col width="35%">
-                <col width="40%">
+                <col width="35%">
             </colgroup>
             <thead>
             <tr>
@@ -28,19 +28,26 @@
             </thead>
             <tbody>
             <?php foreach($webhooks as $row): ?>
-                <?php /** @var \Entity\StationWebhook $row */ ?>
+                <?php /** @var \App\Entity\StationWebhook $row */ ?>
                 <tr class="vertical-align-middle">
                     <td>
                         <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:webhooks:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
                         <a class="btn btn-sm <?=($row->isEnabled() ? 'btn-warning' : 'btn-success') ?>" href="<?=$url->named('stations:webhooks:toggle', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=($row->isEnabled() ? __('Disable') : __('Enable')) ?></a>
+                        <a class="btn btn-sm btn-default" href="<?=$url->named('stations:webhooks:test', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>" title="<?=__('Trigger the web hook manually and view the raw response.') ?>"><?=__('Test') ?></a>
                         <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:webhooks:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </td>
                     <td>
                         <big><?=$this->e($row->getName()) ?></big><br>
-                        <?=$row->getTypeName() ?><?php if (!$row->isEnabled()): ?> <span class="label label-danger"><?=__('Disabled') ?></span><?php endif; ?>
+                        <?=$webhook_config['webhooks'][$row->getType()]['name'] ?><?php if (!$row->isEnabled()): ?> <span class="label label-danger"><?=__('Disabled') ?></span><?php endif; ?>
                     </td>
                     <td>
-                        <?=implode(', ', $row->getTriggerNames()) ?>
+                        <?php
+                        $trigger_names = [];
+                        foreach((array)$row->getTriggers() as $trigger) {
+                            $trigger_names[] = $webhook_config['triggers'][$trigger];
+                        }
+                        echo implode(', ', $trigger_names);
+                        ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

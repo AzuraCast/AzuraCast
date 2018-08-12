@@ -1,10 +1,18 @@
 <?php
 namespace App\Webhook;
 
+use App\Config;
 use App\Entity;
+use App\Exception;
+use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Pimple\Psr11\ServiceLocator;
 
+/**
+ * Class Dispatcher
+ * @package App\Webhook
+ * @see WebhookProvider
+ */
 class Dispatcher
 {
     /** @var Logger */
@@ -111,41 +119,51 @@ class Dispatcher
         $this->logger->popProcessor();
     }
 
-    public static function getConnectors()
+    /**
+     * Send a "test" dispatch of the web hook, regardless of whether it is currently enabled, and
+     * return any logging information this yields.
+     *
+     * @param Entity\Station $station
+     * @param Entity\StationWebhook $webhook
+     * @return TestHandler
+     * @throws Exception
+     */
+    public function testDispatch(Entity\Station $station, Entity\StationWebhook $webhook)
     {
-        return [
-            'generic' => [
-                'name' => __('Generic Web Hook'),
-                'description' => __('Automatically send a message to any URL when your station data changes.'),
-            ],
-            'tunein' => [
-                'name' => __('TuneIn AIR'),
-                'description' => __('Send song metadata changes to TuneIn.'),
-            ],
-            'discord' => [
-                'name' => __('Discord Webhook'),
-                'description' => __('Automatically send a customized message to your Discord server.'),
-            ],
-            'telegram' => [
-                'name' => __('Telegram Chat Message'),
-                'description' => __('Use the Telegram Bot API to send a message to a channel.'),
-            ],
-            'twitter' => [
-                'name' => __('Twitter Post'),
-                'description' => __('Automatically send a tweet.'),
-            ],
-        ];
+        $webhook_type = $webhook->getType();
+        $webhook_config = $webhook->getConfig();
+
+        if (!$this->connectors->has($webhook_type)) {
+            throw new Exception(sprintf('Webhook connector "%s" does not exist; skipping.', $webhook_type));
+        }
+
+        $handler = new TestHandler(Logger::DEBUG, false);
+        $this->logger->pushHandler($handler);
+
+        /** @var Connector\ConnectorInterface $connector_obj */
+        $connector_obj = $this->connectors->get($webhook_type);
+
+        $np = $station->getNowplaying();
+
+        $connector_obj->dispatch($station, $np, $webhook_config);
+
+        $this->logger->popHandler();
+
+        return $handler;
     }
 
-    public static function getTriggers()
+    /**
+     * Directly access a webhook connector of the specified type.
+     *
+     * @param $type
+     * @return Connector\ConnectorInterface
+     */
+    public function getConnector($type): Connector\ConnectorInterface
     {
-        return [
-            'song_changed' => __('Any time the currently playing song changes'),
-            'listener_gained' => __('Any time the listener count increases'),
-            'listener_lost' => __('Any time the listener count decreases'),
-            'live_connect' => __('Any time a live streamer/DJ connects to the stream'),
-            'live_disconnect' => __('Any time a live streamer/DJ disconnects from the stream'),
-        ];
-    }
+        if ($this->connectors->has($type)) {
+            return $this->connectors->get($type);
+        }
 
+        throw new \InvalidArgumentException('Invalid web hook connector type specified.');
+    }
 }

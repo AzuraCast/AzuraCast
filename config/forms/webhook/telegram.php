@@ -44,7 +44,7 @@ return [
                     'multiCheckbox',
                     [
                         'label' => __('Web Hook Triggers'),
-                        'options' => array_diff_key(\App\Webhook\Dispatcher::getTriggers(), ['listener_lost' => 1, 'listener_gained' => 1]),
+                        'options' => array_diff_key($triggers, ['listener_lost' => 1, 'listener_gained' => 1]),
                         'required' => true,
                     ]
                 ],

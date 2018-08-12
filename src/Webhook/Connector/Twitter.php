@@ -18,7 +18,7 @@ class Twitter extends AbstractConnector
             || empty($config['consumer_secret'])
             || empty($config['token'])
             || empty($config['token_secret'])) {
-            $this->logger->error('Webhook '.get_called_class().' is missing necessary configuration. Skipping...');
+            $this->logger->error('Webhook '.$this->_getName().' is missing necessary configuration. Skipping...');
             return;
         }
 

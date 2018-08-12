@@ -74,7 +74,7 @@ class WebhooksController
             ]);
         }
 
-        if (!isset($this->form_configs[$type])) {
+        if (!isset($this->webhook_forms[$type])) {
             throw new \App\Exception\NotFound(__('%s not found.', __('Web Hook')));
         }
 

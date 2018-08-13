@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-08-10T09:08:08+00:00\n"
-"PO-Revision-Date: 2018-08-10T09:08:08+00:00\n"
+"POT-Creation-Date: 2018-08-13T02:35:45+00:00\n"
+"PO-Revision-Date: 2018-08-13T02:35:45+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:49
@@ -30,9 +30,10 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:166
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:217
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:226
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:54
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:141
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:78
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:123
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:165
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:188
 msgid "%s not found."
 msgstr ""
 
@@ -46,7 +47,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:121
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:294
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:99
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:117
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:141
 msgid "%s updated."
 msgstr ""
 
@@ -60,7 +61,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:129
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:301
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:107
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:149
 msgid "Edit %s"
 msgstr ""
 
@@ -73,7 +74,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:154
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:410
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:130
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:169
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:218
 msgid "%s deleted."
 msgstr ""
 
@@ -84,7 +85,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:121
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:294
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:99
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:74
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:98
 msgid "%s added."
 msgstr ""
 
@@ -102,8 +103,12 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:129
 #: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:301
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:107
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:82
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:106
 msgid "Add %s"
+msgstr ""
+
+#: /var/azuracast/www/src/Controller/Admin/IndexController.php:83
+msgid "Sync Task Output"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Admin/PermissionsController.php:95
@@ -337,28 +342,29 @@ msgstr ""
 msgid "Streamer"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:54
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:74
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:82
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:99
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:117
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:125
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:78
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:98
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:106
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:123
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:141
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:148
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:169
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:149
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:165
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:172
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:188
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:218
 msgid "Web Hook"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:148
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:172
 msgid "%s enabled."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:148
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:172
 msgid "%s disabled."
 msgstr ""
 
-#: /var/azuracast/www/src/Entity/StationWebhook.php:172
-msgid "Default"
+#: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:196
+msgid "Web Hook Test Output"
 msgstr ""
 
 #: /var/azuracast/www/src/Handler/ErrorHandler.php:82
@@ -442,63 +448,3 @@ msgstr[0] ""
 msgid "%d month"
 msgid_plural "%d months"
 msgstr[0] ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:118
-msgid "Generic Web Hook"
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:119
-msgid "Automatically send a message to any URL when your station data changes."
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:122
-msgid "TuneIn AIR"
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:123
-msgid "Send song metadata changes to TuneIn."
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:126
-msgid "Discord Webhook"
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:127
-msgid "Automatically send a customized message to your Discord server."
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:130
-msgid "Telegram Chat Message"
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:131
-msgid "Use the Telegram Bot API to send a message to a channel."
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:134
-msgid "Twitter Post"
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:135
-msgid "Automatically send a tweet."
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:143
-msgid "Any time the currently playing song changes"
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:144
-msgid "Any time the listener count increases"
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:145
-msgid "Any time the listener count decreases"
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:146
-msgid "Any time a live streamer/DJ connects to the stream"
-msgstr ""
-
-#: /var/azuracast/www/src/Webhook/Dispatcher.php:147
-msgid "Any time a live streamer/DJ disconnects from the stream"
-msgstr ""

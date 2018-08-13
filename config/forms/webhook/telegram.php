@@ -41,17 +41,11 @@ return [
                 ],
 
                 'api' => [
-                    'radio',
+                    'text',
                     [
-                        'label' => __('Telegram API Selection'),
-                        'description' => __('Choose which API service to connect to. The primary Telegram API is recommended for most cases, unless it is restricted in your area.'),
+                        'label' => __('Advanced: Custom API Base URL'),
+                        'description' => __('Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.'),
                         'belongsTo' => 'config',
-                        'required' => true,
-                        'default' => 'telegram',
-                        'options' => [
-                            'telegram' => __('Primary Telegram API (Recommended)'),
-                            'pwrtelegram' => __('PWRTelegram API'),
-                        ]
                     ]
                 ],
 

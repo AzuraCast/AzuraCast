@@ -26,14 +26,7 @@ class Telegram extends AbstractConnector
             return;
         }
 
-        $api_urls = [
-            'telegram' => 'https://api.telegram.org/',
-            'pwrtelegram' => 'https://api.pwrtelegram.xyz/',
-        ];
-        $api = $config['api'] ?? 'telegram';
-
         $client = new \GuzzleHttp\Client([
-            'base_uri' => $api_urls[$api],
             'http_errors' => false,
             'timeout' => 4.0,
         ]);
@@ -43,7 +36,8 @@ class Telegram extends AbstractConnector
         ], $np);
 
         try {
-            $webhook_url = '/bot'.$bot_token.'/sendMessage';
+            $api_url = (!empty($config['api'])) ? rtrim($config['api'], '/') : 'https://api.telegram.org';
+            $webhook_url = $api_url.'/bot'.$bot_token.'/sendMessage';
 
             $request_params = [
                 'chat_id' => $chat_id,

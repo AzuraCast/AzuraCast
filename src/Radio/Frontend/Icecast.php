@@ -69,11 +69,8 @@ class Icecast extends FrontendAbstract
 
         $song_data_by_mount = [];
         $current_listeners = 0;
-
-        if ($include_clients) {
-            $unique_listeners = [];
-            $clients = [];
-        }
+        $unique_listeners = [];
+        $clients = [];
 
         foreach($mounts as $mount) {
             $song_data_by_mount[$mount['@mount']] = $mount;
@@ -113,6 +110,8 @@ class Icecast extends FrontendAbstract
         }
 
         if ($include_clients) {
+            $unique_listeners = count($unique_listeners);
+
             $np['listeners'] = [
                 'current' => $this->getListenerCount($unique_listeners, $current_listeners),
                 'unique' => $unique_listeners,

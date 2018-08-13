@@ -26,8 +26,14 @@ class Telegram extends AbstractConnector
             return;
         }
 
+        $api_urls = [
+            'telegram' => 'https://api.telegram.org/',
+            'pwrtelegram' => 'https://api.pwrtelegram.xyz/',
+        ];
+        $api = $config['api'] ?? 'telegram';
+
         $client = new \GuzzleHttp\Client([
-            'base_uri' => 'https://api.telegram.org/', // bot<bot_token>/sendMessage?chat_id=-1001433&text=LIVE',
+            'base_uri' => $api_urls[$api],
             'http_errors' => false,
             'timeout' => 4.0,
         ]);

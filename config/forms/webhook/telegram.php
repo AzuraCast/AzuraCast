@@ -40,6 +40,21 @@ return [
                     ]
                 ],
 
+                'api' => [
+                    'radio',
+                    [
+                        'label' => __('Telegram API Selection'),
+                        'description' => __('Choose which API service to connect to. The primary Telegram API is recommended for most cases, unless it is restricted in your area.'),
+                        'belongsTo' => 'config',
+                        'required' => true,
+                        'default' => 'telegram',
+                        'options' => [
+                            'telegram' => __('Primary Telegram API (Recommended)'),
+                            'pwrtelegram' => __('PWRTelegram API'),
+                        ]
+                    ]
+                ],
+
                 'triggers' => [
                     'multiCheckbox',
                     [

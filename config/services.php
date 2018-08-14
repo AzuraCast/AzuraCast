@@ -299,7 +299,7 @@ return function (\Slim\Container $di, $settings) {
             $di[\Monolog\Logger::class],
             $di[\App\Session::class],
             $di[\App\Url::class],
-            $di[App\View::class]
+            $di[\App\View::class]
         );
     };
 
@@ -319,9 +319,9 @@ return function (\Slim\Container $di, $settings) {
         return $logger;
     };
 
-    $di[MaxMind\Db\Reader::class] = function($di) {
+    $di[\MaxMind\Db\Reader::class] = function($di) {
         $mmdb_path = dirname(APP_INCLUDE_ROOT).'/geoip/GeoLite2-City.mmdb';
-        return new MaxMind\Db\Reader($mmdb_path);
+        return new \MaxMind\Db\Reader($mmdb_path);
     };
 
     //

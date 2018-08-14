@@ -11,8 +11,7 @@ return function(\Slim\App $app) {
 
         $this->get('/sync/{type}', Controller\Admin\IndexController::class.':syncAction')
             ->setName('admin:index:sync')
-            ->add([Middleware\Permissions::class, 'administer all'])
-            ->add(Middleware\DebugEcho::class);
+            ->add([Middleware\Permissions::class, 'administer all']);
 
         $this->group('/api', function () {
 

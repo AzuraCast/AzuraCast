@@ -14,6 +14,17 @@ return [
                         'label' => __('Mount Point Name/URL'),
                         'description' => __('This name should always begin with a slash (/), and must be a valid URL, such as /autodj.mp3'),
                         'required' => true,
+                        'validator' => function($text) {
+                            $forbidden_paths = ['listen', 'admin', 'statistics', '7.html'];
+
+                            foreach($forbidden_paths as $forbidden_path) {
+                                if (stripos($text, $forbidden_path) !== false) {
+                                    return __('Stream path cannot include reserved keywords: %s', implode(', ', $forbidden_paths));
+                                }
+                            }
+
+                            return true;
+                        },
                     ]
                 ],
 

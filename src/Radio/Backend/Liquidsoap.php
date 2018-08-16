@@ -158,9 +158,9 @@ class Liquidsoap extends BackendAbstract
                     '"'.$playlist_file_path.'"',
                 ];
 
-                $ls_config[] = $playlist_var_name . ' = playlist('.implode(',', $playlist_params).')';
+                $ls_config[] = $playlist_var_name . ' = audio_to_stereo(playlist('.implode(',', $playlist_params).'))';
             } else {
-                $ls_config[] = $playlist_var_name . ' = mksafe(input.http("'.$playlist->getRemoteUrl().'"))';
+                $ls_config[] = $playlist_var_name . ' = audio_to_stereo(mksafe(input.http("'.$playlist->getRemoteUrl().'")))';
             }
 
             if ($playlist->getType() === Entity\StationPlaylist::TYPE_ADVANCED) {
@@ -217,10 +217,10 @@ class Liquidsoap extends BackendAbstract
         $fallbacks = [];
 
         if ($this->station->useManualAutoDJ()) {
-            $ls_config[] = 'requests = request.queue(id="requests")';
+            $ls_config[] = 'requests = audio_to_stereo(request.queue(id="requests"))';
             $fallbacks[] = 'requests';
         } else {
-            $ls_config[] = 'dynamic = request.dynamic(id="azuracast_next_song", azuracast_next_song)';
+            $ls_config[] = 'dynamic = audio_to_stereo(request.dynamic(id="azuracast_next_song", azuracast_next_song))';
             $ls_config[] = 'dynamic = cue_cut(id="azuracast_next_song_cued", dynamic)';
             $fallbacks[] = 'dynamic';
         }
@@ -247,12 +247,12 @@ class Liquidsoap extends BackendAbstract
             'on_disconnect=live_disconnected',
         ];
 
-        $ls_config[] = 'live = input.harbor('.implode(', ', $harbor_params).')';
+        $ls_config[] = 'live = audio_to_stereo(input.harbor('.implode(', ', $harbor_params).'))';
         $ls_config[] = 'ignore(output.dummy(live, fallible=true))';
         $ls_config[] = 'live = fallback(track_sensitive=false, [live, blank(duration=2.)])';
 
         $ls_config[] = '';
-        $ls_config[] = 'radio = audio_to_stereo(switch(id="live_switch", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)]))';
+        $ls_config[] = 'radio = switch(id="live_switch", track_sensitive=false, [({!live_enabled}, live), ({true}, radio)])';
         $ls_config[] = '';
 
         // Crossfading

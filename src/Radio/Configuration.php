@@ -284,7 +284,13 @@ class Configuration
         }
 
         // Iterate from port 8000 to 9000, in increments of 10
+        $protected_ports = [8080];
+
         for($port = 8000; $port < 9000; $port += 10) {
+            if (in_array($port, $protected_ports)) {
+                continue;
+            }
+
             $range_in_use = false;
             for($i = $port; $i < $port+10; $i++) {
                 if (isset($used_ports[$i])) {

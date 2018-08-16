@@ -524,8 +524,10 @@ class Utilities
         if (file_exists('/etc/timezone')) {
             // Ubuntu / Debian.
             $data = file_get_contents('/etc/timezone');
-            if ($data) {
-                return trim($data);
+            $data = trim($data);
+
+            if (!empty($data)) {
+                return $data;
             }
         } elseif (is_link('/etc/localtime')) {
             // Mac OS X (and older Linuxes)

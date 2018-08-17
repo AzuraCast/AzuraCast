@@ -13,11 +13,6 @@ class UtilitiesTest extends \Codeception\Test\Unit
         $expected_result = print_r($test_arr, true);
         $this->assertContains($expected_result, $test_result);
 
-        $money_test = -14.00;
-        $test_result = \App\Utilities::money_format($money_test);
-        $expected_result = '-$14.00';
-        $this->assertEquals($expected_result, $test_result);
-
         $test_result = \App\Utilities::generatePassword(10);
         $this->assertTrue(strlen($test_result) == 10);
 

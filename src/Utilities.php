@@ -29,17 +29,6 @@ class Utilities
     }
 
     /**
-     * Replacement for money_format that places the negative sign ahead of the dollar sign.
-     *
-     * @param $number
-     * @return string
-     */
-    public static function money_format($number)
-    {
-        return (($number < 0) ? '-' : '') . '$' . number_format(abs($number), 2);
-    }
-
-    /**
      * Generate a randomized password of specified length.
      *
      * @param $char_length

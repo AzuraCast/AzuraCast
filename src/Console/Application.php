@@ -72,6 +72,8 @@ class Application extends \Symfony\Component\Console\Application
 
             // User-side tools
             new Command\ResetPassword,
+            new Command\ListSettings,
+            new Command\SetSetting,
         ]);
     }
 }

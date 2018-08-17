@@ -33,10 +33,26 @@ class SettingsRepository extends BaseRepository
         $record->setSettingValue($value);
 
         $this->_em->persist($record);
-        $this->_em->flush();
+        $this->_em->flush($record);
 
         // Update cached value
         self::$settings[$key] = $value;
+    }
+
+    /**
+     * @param $key
+     */
+    public function deleteSetting($key): void
+    {
+       $record = $this->findOneBy(['setting_key' => $key]);
+
+       if ($record instanceof Entity\Settings)
+       {
+           $this->_em->remove($record);
+           $this->_em->flush($record);
+       }
+
+       unset(self::$settings[$key]);
     }
 
     /**
@@ -60,7 +76,8 @@ class SettingsRepository extends BaseRepository
 
         $all_records = [];
         foreach ($all_records_raw as $record) {
-            $all_records[$record['setting_key']] = $record['setting_value'];
+            /** @var Entity\Settings $record */
+            $all_records[$record->getSettingKey()] = $record->getSettingValue();
         }
 
         return $all_records;

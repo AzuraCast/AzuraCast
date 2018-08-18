@@ -1,4 +1,6 @@
 <?php
+use App\Entity\Station;
+
 $frontends = \App\Radio\Adapters::getFrontendAdapters();
 $frontend_types = [];
 foreach ($frontends['adapters'] as $adapter_nickname => $adapter_info) {
@@ -93,6 +95,22 @@ return [
                         'description' => __('The directory where media files are stored. Leave blank to use default directory.'),
                     ]
                 ],
+
+                'api_history_items' => [
+                    'select',
+                    [
+                        'label' => __('Advanced: Number of Recently Played Songs'),
+                        'description' => __('Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.'),
+                        'choices' => [
+                            0 => __('Disabled'),
+                            1 => '1',
+                            5 => '5',
+                            10 => '10',
+                            15 => '15',
+                        ],
+                        'default' => Station::DEFAULT_API_HISTORY_ITEMS,
+                    ]
+                ]
             ],
         ],
 
@@ -283,7 +301,7 @@ return [
                     [
                         'label' => __('Request Minimum Delay (Minutes)'),
                         'description' => __('If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.'),
-                        'default' => '5',
+                        'default' => Station::DEFAULT_REQUEST_DELAY,
                     ]
                 ],
 
@@ -292,7 +310,7 @@ return [
                     [
                         'label' => __('Request Last Played Threshold (Minutes)'),
                         'description' => __('If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.'),
-                        'default' => '15',
+                        'default' => Station::DEFAULT_REQUEST_THRESHOLD,
                     ]
                 ],
 

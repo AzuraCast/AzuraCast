@@ -46,11 +46,16 @@ class SongHistoryRepository extends BaseRepository
     /**
      * @param Entity\Station $station
      * @param \App\ApiUtilities $api_utils
-     * @param int $num_entries
      * @return array
      */
-    public function getHistoryForStation(Entity\Station $station, \App\ApiUtilities $api_utils, $num_entries = 5)
+    public function getHistoryForStation(Entity\Station $station, \App\ApiUtilities $api_utils)
     {
+        $num_entries = $station->getApiHistoryItems();
+
+        if ($num_entries === 0) {
+            return [];
+        }
+
         $history = $this->_em->createQuery('SELECT sh, s 
             FROM ' . $this->_entityName . ' sh JOIN sh.song s LEFT JOIN sh.media sm  
             WHERE sh.station_id = :station_id 

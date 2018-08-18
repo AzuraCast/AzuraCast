@@ -14,6 +14,10 @@ use Interop\Container\ContainerInterface;
  */
 class Station
 {
+    const DEFAULT_REQUEST_DELAY = 5;
+    const DEFAULT_REQUEST_THRESHOLD = 15;
+    const DEFAULT_API_HISTORY_ITEMS = 5;
+
     use Traits\TruncateStrings;
 
     /**
@@ -38,37 +42,37 @@ class Station
 
     /**
      * @Column(name="is_enabled", type="boolean", nullable=false)
-     * @var bool
+     * @var bool If set to "false", prevents the station from broadcasting but leaves it in the database.
      */
-    protected $is_enabled;
+    protected $is_enabled = true;
 
     /**
      * @Column(name="frontend_type", type="string", length=100, nullable=true)
-     * @var string|null
+     * @var string|null The frontend adapter (icecast,shoutcast,remote,etc)
      */
     protected $frontend_type;
 
     /**
      * @Column(name="frontend_config", type="json_array", nullable=true)
-     * @var array|null
+     * @var array|null An array containing station-specific frontend configuration
      */
     protected $frontend_config;
 
     /**
      * @Column(name="backend_type", type="string", length=100, nullable=true)
-     * @var string|null
+     * @var string|null The backend adapter (liquidsoap,etc)
      */
     protected $backend_type;
 
     /**
      * @Column(name="backend_config", type="json_array", nullable=true)
-     * @var array|null
+     * @var array|null An array containing station-specific backend configuration
      */
     protected $backend_config;
 
     /**
      * @Column(name="adapter_api_key", type="string", length=150, nullable=true)
-     * @var string|null
+     * @var string|null An internal-use API key used for container-to-container communications from Liquidsoap to AzuraCast
      */
     protected $adapter_api_key;
 
@@ -116,57 +120,63 @@ class Station
 
     /**
      * @Column(name="automation_timestamp", type="integer", nullable=true)
-     * @var int|null
+     * @var int|null The UNIX timestamp when station automation was most recently run.
      */
-    protected $automation_timestamp;
+    protected $automation_timestamp = 0;
 
     /**
      * @Column(name="enable_requests", type="boolean", nullable=false)
-     * @var bool
+     * @var bool Whether listeners can request songs to play on this station.
      */
-    protected $enable_requests;
+    protected $enable_requests = false;
 
     /**
      * @Column(name="request_delay", type="integer", nullable=true)
      * @var int|null
      */
-    protected $request_delay;
+    protected $request_delay = self::DEFAULT_REQUEST_DELAY;
 
     /**
      * @Column(name="request_threshold", type="integer", nullable=true)
      * @var int|null
      */
-    protected $request_threshold;
+    protected $request_threshold = self::DEFAULT_REQUEST_THRESHOLD;
 
     /**
      * @Column(name="enable_streamers", type="boolean", nullable=false)
-     * @var bool
+     * @var bool Whether streamers are allowed to broadcast to this station at all.
      */
-    protected $enable_streamers;
+    protected $enable_streamers = false;
 
     /**
      * @Column(name="is_streamer_live", type="boolean", nullable=false)
-     * @var bool
+     * @var bool Whether a streamer is currently active on the station.
      */
-    protected $is_streamer_live;
+    protected $is_streamer_live = false;
 
     /**
      * @Column(name="enable_public_page", type="boolean", nullable=false)
-     * @var bool
+     * @var bool Whether this station is visible as a public page and in a now-playing API response.
      */
-    protected $enable_public_page;
+    protected $enable_public_page = true;
 
     /**
      * @Column(name="needs_restart", type="boolean")
-     * @var bool
+     * @var bool Whether to show the "Restart station to apply changes" sidebar for this station
      */
-    protected $needs_restart;
+    protected $needs_restart = false;
 
     /**
      * @Column(name="has_started", type="boolean")
      * @var bool
      */
-    protected $has_started;
+    protected $has_started = false;
+
+    /**
+     * @Column(name="api_history_items", type="smallint")
+     * @var int|null The number of "last played" history items to show for a given station in the Now Playing API responses.
+     */
+    protected $api_history_items = self::DEFAULT_API_HISTORY_ITEMS;
 
     /**
      * @OneToMany(targetEntity="SongHistory", mappedBy="station")
@@ -229,20 +239,6 @@ class Station
 
     public function __construct()
     {
-        $this->is_enabled = true;
-
-        $this->automation_timestamp = 0;
-        $this->enable_streamers = false;
-        $this->is_streamer_live = false;
-        $this->enable_requests = false;
-
-        $this->request_delay = 5;
-        $this->request_threshold = 15;
-
-        $this->needs_restart = false;
-        $this->has_started = false;
-        $this->enable_public_page = true;
-
         $this->history = new ArrayCollection;
         $this->media = new ArrayCollection;
         $this->playlists = new ArrayCollection;
@@ -755,6 +751,22 @@ class Station
     public function setHasStarted(bool $has_started)
     {
         $this->has_started = $has_started;
+    }
+
+    /**
+     * @return int
+     */
+    public function getApiHistoryItems(): int
+    {
+        return $this->api_history_items ?? self::DEFAULT_API_HISTORY_ITEMS;
+    }
+
+    /**
+     * @param int|null $api_history_items
+     */
+    public function setApiHistoryItems(?int $api_history_items): void
+    {
+        $this->api_history_items = $api_history_items;
     }
 
     /**

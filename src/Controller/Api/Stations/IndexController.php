@@ -43,7 +43,8 @@ class IndexController
      */
     public function listAction(Request $request, Response $response): Response
     {
-        $stations_raw = $this->em->getRepository(Entity\Station::class)->findBy(['is_enabled' => 1]);
+        $stations_raw = $this->em->getRepository(Entity\Station::class)
+            ->findBy(['is_enabled' => 1]);
 
         $stations = [];
         foreach ($stations_raw as $row) {
@@ -76,10 +77,7 @@ class IndexController
      */
     public function indexAction(Request $request, Response $response): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        $api_response = $station->api($request->getAttribute('station_frontend'));
+        $api_response = $request->getStation()->api($request->getStationFrontend());
         return $response->withJson($api_response);
     }
 }

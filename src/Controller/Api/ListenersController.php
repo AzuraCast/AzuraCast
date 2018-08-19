@@ -54,8 +54,7 @@ class ListenersController
      */
     public function indexAction(Request $request, Response $response): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         if ($request->getParam('start') !== null) {
 

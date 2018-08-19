@@ -14,22 +14,16 @@ class InternalController
     /** @var Acl */
     protected $acl;
 
-    /** @var Adapters */
-    protected $adapters;
-
     /** @var NowPlaying */
     protected $sync_nowplaying;
 
     /**
-     * InternalController constructor.
      * @param Acl $acl
-     * @param Adapters $adapters
      * @param NowPlaying $sync_nowplaying
      */
-    public function __construct(Acl $acl, Adapters $adapters, NowPlaying $sync_nowplaying)
+    public function __construct(Acl $acl, NowPlaying $sync_nowplaying)
     {
         $this->acl = $acl;
-        $this->adapters = $adapters;
         $this->sync_nowplaying = $sync_nowplaying;
     }
 
@@ -37,9 +31,7 @@ class InternalController
     {
         $this->_checkStationAuth($request);
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
+        $station = $request->getStation();
         if (!$station->getEnableStreamers()) {
             return $response->write('false');
         }
@@ -47,11 +39,11 @@ class InternalController
         $user = $request->getParam('dj_user');
         $pass = $request->getParam('dj_password');
 
-        $adapter = $this->adapters->getBackendAdapter($station);
-
+        $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
             return $response->write($adapter->authenticateStreamer($user, $pass));
         }
+
         return $response->write('false');
     }
 
@@ -59,13 +51,9 @@ class InternalController
     {
         $this->_checkStationAuth($request);
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
         $as_autodj = $request->hasParam('api_auth');
 
-        $adapter = $this->adapters->getBackendAdapter($station);
-
+        $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
             return $response->write($adapter->getNextSong($as_autodj));
         }
@@ -77,11 +65,7 @@ class InternalController
     {
         $this->_checkStationAuth($request);
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        $adapter = $this->adapters->getBackendAdapter($station);
-
+        $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
             $adapter->toggleLiveStatus(true);
         }
@@ -93,11 +77,7 @@ class InternalController
     {
         $this->_checkStationAuth($request);
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        $adapter = $this->adapters->getBackendAdapter($station);
-
+        $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
             $adapter->toggleLiveStatus(false);
         }
@@ -109,8 +89,7 @@ class InternalController
     {
         $this->_checkStationAuth($request);
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         $payload = $request->getBody()->getContents();
 
@@ -126,19 +105,18 @@ class InternalController
 
     /**
      * @param Request $request
-     * @return bool
+     * @throws \App\Exception
      * @throws \App\Exception\PermissionDenied
      */
-    protected function _checkStationAuth(Request $request)
+    protected function _checkStationAuth(Request $request): void
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         /** @var Entity\User $user */
-        $user = $request->getAttribute('user');
+        $user = $request->getAttribute(Request::ATTRIBUTE_USER);
 
         if ($this->acl->userAllowed($user, 'view administration', $station->getId())) {
-            return true;
+            return;
         }
 
         $auth_key = $request->getParam('api_auth');
@@ -146,6 +124,6 @@ class InternalController
             throw new \App\Exception\PermissionDenied();
         }
 
-        return true;
+        return;
     }
 }

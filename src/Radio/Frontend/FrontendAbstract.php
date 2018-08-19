@@ -296,8 +296,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     }
 
     /**
-     * Stop a station frontend and also the associated watcher command if available.
-     * @throws \App\Exception
+     * @inheritdoc
      */
     public function stop()
     {
@@ -316,8 +315,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     }
 
     /**
-     * Start a station frontend and also the associated watcher command if available.
-     * @throws \App\Exception
+     * @inheritdoc
      */
     public function start()
     {

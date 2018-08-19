@@ -234,26 +234,6 @@ class RadioAutomation extends TaskAbstract
             $data_points[$row['song_id']][] = $row;
         }
 
-        /*
-        // Build hourly data point totals.
-        $hourly_distributions = array();
-
-        foreach($data_points_by_hour as $hour_code => $hour_rows)
-        {
-            $hour_listener_points = array();
-            foreach($hour_rows as $row)
-                $hour_listener_points[] = $row['listeners_start'];
-
-            $hour_plays = count($hour_rows);
-            $hour_listeners = array_sum($hour_listener_points) / $hour_plays;
-
-            // ((#CALC#DELTA-X-HR * 100) / #CALC#AVG-LISTENERS-X-HR) / ( #CALC#SONGS-IN-PERIOD / #VAR#MIN-CALC-PLAYS / 24 )
-            $hourly_distributions[$hour_code] = ($hour_listeners) * ($hour_plays / 24);
-        }
-        */
-
-        // Pull all media and playlists.
-
         /** @var Entity\Repository\StationMediaRepository $media_repo */
         $media_repo = $this->em->getRepository(Entity\StationMedia::class);
 
@@ -307,13 +287,18 @@ class RadioAutomation extends TaskAbstract
                     $media['delta_positive'] += $data_row['delta_positive'];
                     $media['delta_negative'] -= $data_row['delta_negative'];
 
+                    /*
+                     * The song ratio is determined by the total impact in listenership the song caused (both up and down)
+                     * over its play time, divided by the number of listeners the song started with. Impacts are weighted
+                     * higher for more significant percentage impacts up or down.
+                     *
+                     * i.e.
+                     * 1 listener at start, gained 3 listeners => 3/1*100 = 300
+                     * 100 listeners at start, lost 15 listeners => -15/100*100 = -15
+                     */
+
                     $delta_total = $data_row['delta_positive'] - $data_row['delta_negative'];
-
                     $ratio_points[] = ($data_row['listeners_start'] == 0) ? 0 : ($delta_total / $data_row['listeners_start']) * 100;
-
-                    // $hour_dist = $hourly_distributions[$data_row['hour']];
-                    // ((#REC#PLAY-DELTA*100)/#REC#PLAY-LISTENS)- #CALC#AVG-HOUR-DELTA<#REC#PLAY-TIME>
-                    // $ratio_points[] = (($delta_total * 100) / $data_row['listeners_start']) - $hour_dist;
                 }
 
                 $media['delta_total'] = $media['delta_positive'] + $media['delta_negative'];

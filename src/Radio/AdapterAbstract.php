@@ -95,10 +95,12 @@ abstract class AdapterAbstract
 
         return false;
     }
+
     /**
      * Stop the executable service.
      *
-     * @throws \App\Exception
+     * @throws \App\Exception\Supervisor
+     * @throws \App\Exception\Supervisor\NotRunning
      */
     public function stop()
     {
@@ -117,7 +119,8 @@ abstract class AdapterAbstract
     /**
      * Start the executable service.
      *
-     * @throws \App\Exception
+     * @throws \App\Exception\Supervisor
+     * @throws \App\Exception\Supervisor\AlreadyRunning
      */
     public function start()
     {
@@ -135,6 +138,10 @@ abstract class AdapterAbstract
 
     /**
      * Restart the executable service.
+     *
+     * @throws \App\Exception\Supervisor
+     * @throws \App\Exception\Supervisor\AlreadyRunning
+     * @throws \App\Exception\Supervisor\NotRunning
      */
     public function restart()
     {
@@ -144,6 +151,7 @@ abstract class AdapterAbstract
 
     /**
      * Return the program's fully qualified supervisord name.
+     *
      * @return bool
      */
     abstract public function getProgramName();

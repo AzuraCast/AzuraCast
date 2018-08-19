@@ -4,7 +4,6 @@ namespace App\Controller\Api;
 use App\Url;
 use App\Utilities;
 use App\ApiUtilities;
-use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -15,9 +14,6 @@ class RequestsController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Adapters */
-    protected $adapters;
-
     /** @var Url */
     protected $url;
 
@@ -27,13 +23,11 @@ class RequestsController
     /**
      * RequestsController constructor.
      * @param EntityManager $em
-     * @param Adapters $adapters
      * @param Url $url
      */
-    public function __construct(EntityManager $em, Adapters $adapters, Url $url, ApiUtilities $api_utils)
+    public function __construct(EntityManager $em, Url $url, ApiUtilities $api_utils)
     {
         $this->em = $em;
-        $this->adapters = $adapters;
         $this->url = $url;
         $this->api_utils = $api_utils;
     }
@@ -57,11 +51,10 @@ class RequestsController
      */
     public function listAction(Request $request, Response $response, $station_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         // Verify that the station supports requests.
-        $ba = $this->adapters->getBackendAdapter($station);
+        $ba = $request->getStationBackend();
         if (!$ba->supportsRequests() || !$station->getEnableRequests()) {
             return $response->withJson('This station does not accept requests currently.', 403);
         }
@@ -176,11 +169,10 @@ class RequestsController
      */
     public function submitAction(Request $request, Response $response, $station_id, $media_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         // Verify that the station supports requests.
-        $ba = $this->adapters->getBackendAdapter($station);
+        $ba = $request->getStationBackend();
         if (!$ba->supportsRequests() || !$station->getEnableRequests()) {
             return $response->withJson('This station does not accept requests currently.', 403);
         }

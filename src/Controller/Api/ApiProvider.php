@@ -18,7 +18,6 @@ class ApiProvider implements ServiceProviderInterface
         $di[InternalController::class] = function($di) {
             return new InternalController(
                 $di[\App\Acl::class],
-                $di[\App\Radio\Adapters::class],
                 $di[\App\Sync\Task\NowPlaying::class]
             );
         };
@@ -48,7 +47,6 @@ class ApiProvider implements ServiceProviderInterface
         $di[RequestsController::class] = function($di) {
             return new RequestsController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Radio\Adapters::class],
                 $di[\App\Url::class],
                 $di[\App\ApiUtilities::class]
             );

@@ -36,14 +36,9 @@ class ServicesController
      */
     public function restartAction(Request $request, Response $response): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
-        /** @var Radio\Backend\BackendAbstract $backend */
-        $backend = $request->getAttribute('station_backend');
-
-        /** @var Radio\Frontend\FrontendAbstract $frontend */
-        $frontend = $request->getAttribute('station_frontend');
+        $station = $request->getStation();
+        $backend = $request->getStationBackend();
+        $frontend = $request->getStationFrontend();
 
         $this->configuration->writeConfiguration($station);
 
@@ -92,8 +87,7 @@ class ServicesController
      */
     public function frontendAction(Request $request, Response $response, $station_id, $do = 'restart'): Response
     {
-        /** @var Radio\Frontend\FrontendAbstract $frontend */
-        $frontend = $request->getAttribute('station_frontend');
+        $frontend = $request->getStationFrontend();
 
         switch ($do) {
             case "stop":
@@ -146,8 +140,7 @@ class ServicesController
      */
     public function backendAction(Request $request, Response $response, $station_id, $do = 'restart'): Response
     {
-        /** @var Radio\Backend\BackendAbstract $backend */
-        $backend = $request->getAttribute('station_backend');
+        $backend = $request->getStationBackend();
 
         switch ($do) {
             case "skip":

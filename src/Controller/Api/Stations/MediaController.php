@@ -17,9 +17,8 @@ class MediaController
     protected $customization;
 
     /**
-     * MediaController constructor.
      * @param EntityManager $em
-     * @param Url $url
+     * @param Customization $customization
      */
     public function __construct(EntityManager $em, Customization $customization)
     {
@@ -52,11 +51,8 @@ class MediaController
      */
     public function artAction(Request $request, Response $response, $station_id, $media_id): Response
     {
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
-
         $media = $this->em->createQuery('SELECT sm, sa FROM '.Entity\StationMedia::class.' sm JOIN sm.art sa WHERE sm.station_id = :station_id AND sm.unique_id = :media_id')
-            ->setParameter('station_id', $station->getId())
+            ->setParameter('station_id', $station_id)
             ->setParameter('media_id', $media_id)
             ->getOneOrNullResult();
 

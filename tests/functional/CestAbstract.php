@@ -91,15 +91,12 @@ abstract class CestAbstract
         $this->di[\App\Acl::class]->reload();
 
         // Create station.
-        $frontends = \App\Radio\Adapters::getFrontendAdapters();
-        $backends = \App\Radio\Adapters::getBackendAdapters();
-
         $station_info = [
             'id'            => 25,
             'name'          => 'Functional Test Radio',
             'description'   => 'Test radio station.',
-            'frontend_type' => $frontends['default'],
-            'backend_type'  => $backends['default'],
+            'frontend_type' => \App\Radio\Adapters::DEFAULT_FRONTEND,
+            'backend_type'  => \App\Radio\Adapters::DEFAULT_BACKEND,
         ];
 
         /** @var Entity\Repository\StationRepository $station_repo */

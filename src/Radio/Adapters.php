@@ -17,6 +17,9 @@ class Adapters
     public const BACKEND_LIQUIDSOAP = 'liquidsoap';
     public const BACKEND_NONE = 'none';
 
+    public const DEFAULT_FRONTEND = self::FRONTEND_ICECAST;
+    public const DEFAULT_BACKEND = self::BACKEND_LIQUIDSOAP;
+
     /** @var ServiceLocator */
     protected $adapters;
 
@@ -26,8 +29,9 @@ class Adapters
     }
 
     /**
+     * @param Station $station
      * @return Frontend\FrontendAbstract
-     * @throws \Exception
+     * @throws NotFound
      */
     public function getFrontendAdapter(Station $station): Frontend\FrontendAbstract
     {
@@ -35,11 +39,11 @@ class Adapters
 
         $frontend_type = $station->getFrontendType();
 
-        if (!isset($adapters['adapters'][$frontend_type])) {
+        if (!isset($adapters[$frontend_type])) {
             throw new NotFound('Adapter not found: ' . $frontend_type);
         }
 
-        $class_name = $adapters['adapters'][$frontend_type]['class'];
+        $class_name = $adapters[$frontend_type]['class'];
 
         if ($this->adapters->has($class_name)) {
             /** @var Frontend\FrontendAbstract $adapter */
@@ -52,8 +56,9 @@ class Adapters
     }
 
     /**
+     * @param Station $station
      * @return Backend\BackendAbstract
-     * @throws \Exception
+     * @throws NotFound
      */
     public function getBackendAdapter(Station $station): Backend\BackendAbstract
     {
@@ -61,11 +66,11 @@ class Adapters
 
         $backend_type = $station->getBackendType();
 
-        if (!isset($adapters['adapters'][$backend_type])) {
+        if (!isset($adapters[$backend_type])) {
             throw new NotFound('Adapter not found: ' . $backend_type);
         }
 
-        $class_name = $adapters['adapters'][$backend_type]['class'];
+        $class_name = $adapters[$backend_type]['class'];
 
         if ($this->adapters->has($class_name)) {
             /** @var Backend\BackendAbstract $adapter */
@@ -107,10 +112,7 @@ class Adapters
             });
         }
 
-        return [
-            'default' => self::FRONTEND_ICECAST,
-            'adapters' => $adapters,
-        ];
+        return $adapters;
     }
 
     /**
@@ -139,9 +141,6 @@ class Adapters
             });
         }
 
-        return [
-            'default' => self::BACKEND_LIQUIDSOAP,
-            'adapters' => $adapters,
-        ];
+        return $adapters;
     }
 }

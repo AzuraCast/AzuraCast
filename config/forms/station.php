@@ -1,19 +1,18 @@
 <?php
 use App\Entity\Station;
+use App\Radio\Adapters;
 
-$frontends = \App\Radio\Adapters::getFrontendAdapters();
+$frontends = Adapters::getFrontendAdapters();
 $frontend_types = [];
-foreach ($frontends['adapters'] as $adapter_nickname => $adapter_info) {
+foreach ($frontends as $adapter_nickname => $adapter_info) {
     $frontend_types[$adapter_nickname] = $adapter_info['name'];
 }
-$frontend_default = $frontends['default'];
 
-$backends = \App\Radio\Adapters::getBackendAdapters();
+$backends = Adapters::getBackendAdapters();
 $backend_types = [];
-foreach ($backends['adapters'] as $adapter_nickname => $adapter_info) {
+foreach ($backends as $adapter_nickname => $adapter_info) {
     $backend_types[$adapter_nickname] = $adapter_info['name'];
 }
-$backend_default = $backends['default'];
 
 return [
     'method' => 'post',
@@ -124,7 +123,7 @@ return [
                         'label' => __('Broadcasting Service'),
                         'description' => __('This software delivers your broadcast to the listening audience.'),
                         'options' => $frontend_types,
-                        'default' => $frontend_default,
+                        'default' => Adapters::DEFAULT_FRONTEND,
                     ]
                 ],
             ],
@@ -250,7 +249,7 @@ return [
                         'label' => __('AutoDJ Service'),
                         'description' => __('This software shuffles from playlists of music constantly and plays when no other radio source is available.'),
                         'options' => $backend_types,
-                        'default' => $backend_default,
+                        'default' => Adapters::DEFAULT_BACKEND,
                     ]
                 ],
             ],

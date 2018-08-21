@@ -12,7 +12,7 @@ $assets
 
         <ul class="actions">
             <li>
-                <a href="<?=$router->named('stations:reports:performance', ['station' => $station->getId(), 'format' => 'csv']) ?>" title="<?=__('Download CSV') ?>">
+                <a href="<?=$router->fromHere(null, ['format' => 'csv']) ?>" title="<?=__('Download CSV') ?>">
                     <i class="zmdi zmdi-download"></i>
                 </a>
             </li>

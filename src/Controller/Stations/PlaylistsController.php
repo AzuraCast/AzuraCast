@@ -292,7 +292,7 @@ class PlaylistsController
 
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Playlist')) . '</b>', 'green');
 
-            return $response->withRedirect($request->getRouter()->named('stations:playlists:index', ['station' => $station_id]));
+            return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/playlists/edit', [
@@ -408,6 +408,6 @@ class PlaylistsController
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Playlist')) . '</b>', 'green');
 
-        return $response->withRedirect($request->getRouter()->named('stations:playlists:index', ['station' => $station_id]));
+        return $response->withRedirect($request->getRouter()->fromHere('stations:playlists:index'));
     }
 }

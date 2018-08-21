@@ -155,7 +155,7 @@ $(function() {
                 e.preventDefault();
 
                 var $files = getSelectedFiles();
-                $files.length && $.post('<?=$router->named('stations:files:batch', ['station' => $station->getId()]) ?>',{
+                $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
                     'do': $(e.target).data('action'),
                     'files': $files.join('|'),
                     'csrf': CSRF,
@@ -183,7 +183,7 @@ $(function() {
             iconRefresh: 'zmdi-refresh',
             iconUp: 'zmdi-sort-amount-asc'
         },
-        url: "<?=$router->named('stations:files:list', ['station' => $station->getId()])  ?>",
+        url: "<?=$router->fromHere('stations:files:list')  ?>",
         post: function() {
             return {
                 'file': $current_dir,
@@ -274,7 +274,7 @@ $(function() {
         var hashval = getUrlHash();
         var $dir = $(this).find('[name=name]');
 
-        $dir.val().length && $.post('<?=$router->named('stations:files:mkdir', ['station' => $station->getId()]) ?>',{
+        $dir.val().length && $.post('<?=$router->fromHere('stations:files:mkdir') ?>',{
             name: $dir.val(),
             csrf: CSRF,
             file: hashval
@@ -294,7 +294,7 @@ $(function() {
         e.preventDefault();
 
         var $files = getSelectedFiles();
-        $files.length && $.post('<?=$router->named('stations:files:batch', ['station' => $station->getId()]) ?>',{
+        $files.length && $.post('<?=$router->fromHere('stations:files:batch') ?>',{
             'do': 'playlist_new',
             'name': $('#fld-playlist-name').val(),
             'files': $files.join('|'),
@@ -318,7 +318,7 @@ $(function() {
 
         var $dir = $('#fld-directory-name');
 
-        $dir.val().length && $.post('<?=$router->named('stations:files:mkdir', ['station' => $station->getId()]) ?>',{
+        $dir.val().length && $.post('<?=$router->fromHere('stations:files:mkdir') ?>',{
             name: $dir.val(),
             csrf: CSRF,
             file: getUrlHash()
@@ -333,7 +333,7 @@ $(function() {
 
     // File upload stuff
     var flow = new Flow({
-        target: '<?=$router->named('stations:files:upload', ['station' => $station->getId()]) ?>',
+        target: '<?=$router->fromHere('stations:files:upload') ?>',
         query: function() {
             return {
                 csrf: CSRF,

@@ -3,7 +3,7 @@
         <h2><?=__('Profile') ?></h2>
 
         <?php if ($acl->userAllowed($user, 'manage station profile', $station->getId())): ?>
-            <a class="btn bgm-blue btn-float" role="button" title="<?=__('Edit') ?>" href="<?=$router->named('stations:profile:edit', ['station' => $station->getId()]) ?>">
+            <a class="btn bgm-blue btn-float" role="button" title="<?=__('Edit') ?>" href="<?=$router->fromHere('stations:profile:edit') ?>">
                 <span class="sr-only"><?=__('Edit') ?></span>
                 <i class="zmdi zmdi-edit"></i>
             </a>
@@ -45,7 +45,7 @@
                 <td>
                     <?php if ($station->getEnableStreamers()): ?>
                         <span class="text-success"><?=__('Enabled') ?></span><br>
-                        <a href="<?=$router->named('stations:streamers:index', ['station' => $station->getId()]) ?>"><?=__('Manage streamer accounts') ?></a>
+                        <a href="<?=$router->fromHere('stations:streamers:index') ?>"><?=__('Manage streamer accounts') ?></a>
                     <?php else: ?>
                         <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
                     <?php endif; ?>

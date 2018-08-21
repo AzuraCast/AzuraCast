@@ -64,7 +64,7 @@ class MountsController
             $this->em->flush();
         }
 
-        return $response->withRedirect($request->getRouter()->named('stations:mounts:index', ['station' => $station_id]));
+        return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
     }
 
     public function editAction(Request $request, Response $response, $station_id, $id = null): Response
@@ -120,7 +120,7 @@ class MountsController
 
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Mount Point')) . '</b>', 'green');
 
-            return $response->withRedirect($request->getRouter()->named('stations:mounts:index', ['station' => $station_id]));
+            return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -153,6 +153,6 @@ class MountsController
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Mount Point')) . '</b>', 'green');
 
-        return $response->withRedirect($request->getRouter()->named('stations:mounts:index', ['station' => $station_id]));
+        return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
     }
 }

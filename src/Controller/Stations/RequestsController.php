@@ -52,6 +52,6 @@ class RequestsController
             $request->getSession()->flash('<b>Request deleted!</b>', 'green');
         }
 
-        return $response->withRedirect($request->getRouter()->named('stations:requests:index', ['station' => $station_id]));
+        return $response->withRedirect($request->getRouter()->fromHere('stations:requests:index'));
     }
 }

@@ -97,7 +97,7 @@ class WebhooksController
 
             $request->getSession()->flash('<b>' . __('%s added.', __('Web Hook')) . '</b>', 'green');
 
-            return $response->withRedirect($request->getRouter()->named('stations:webhooks:index', ['station' => $station_id]));
+            return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
         }
 
         return $view->renderToResponse($response, 'system/form_page', [
@@ -140,7 +140,7 @@ class WebhooksController
 
             $request->getSession()->flash('<b>' . __('%s updated.', __('Web Hook')) . '</b>', 'green');
 
-            return $response->withRedirect($request->getRouter()->named('stations:webhooks:index', ['station' => $station_id]));
+            return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -170,7 +170,7 @@ class WebhooksController
         $this->em->refresh($station);
 
         $request->getSession()->flash('<b>' . sprintf(($new_status) ? __('%s enabled.') : __('%s disabled.'), __('Web Hook')) . '</b>', 'green');
-        return $response->withRedirect($request->getRouter()->named('stations:webhooks:index', ['station' => $station_id]));
+        return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
     }
 
     public function testAction(Request $request, Response $response, $station_id, $id, $csrf_token): Response
@@ -217,6 +217,6 @@ class WebhooksController
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Web Hook')) . '</b>', 'green');
 
-        return $response->withRedirect($request->getRouter()->named('stations:webhooks:index', ['station' => $station_id]));
+        return $response->withRedirect($request->getRouter()->fromHere('stations:webhooks:index'));
     }
 }

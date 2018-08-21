@@ -156,15 +156,15 @@ class Paginator
 
         $page_links = [];
         if ($this->router instanceof Router) {
-            $page_links['first'] = $this->router->fromHere(null, [], ['page' => 1]);
+            $page_links['first'] = $this->router->fromHereWithQuery(null, [], ['page' => 1]);
 
             $prev_page = ($this->current_page > 1) ? $this->current_page - 1 : 1;
-            $page_links['previous'] = $this->router->fromHere(null, [], ['page' => $prev_page]);
+            $page_links['previous'] = $this->router->fromHereWithQuery(null, [], ['page' => $prev_page]);
 
             $next_page = ($this->current_page < $total_pages) ? $this->current_page + 1 : $total_pages;
-            $page_links['next'] = $this->router->fromHere(null, [], ['page' => $next_page]);
+            $page_links['next'] = $this->router->fromHereWithQuery(null, [], ['page' => $next_page]);
 
-            $page_links['last'] = $this->router->fromHere(null, [], ['page' => $total_pages]);
+            $page_links['last'] = $this->router->fromHereWithQuery(null, [], ['page' => $total_pages]);
         }
 
         return $response->withJson([

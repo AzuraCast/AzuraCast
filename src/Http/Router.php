@@ -9,21 +9,23 @@ class Router extends \Slim\Router
     /** @var bool Whether to include the domain in the URLs generated. */
     protected $include_domain = false;
 
-    /** @var Route */
-    protected $current_route;
+    /** @var Request */
+    protected $current_request;
 
-    /** @var array */
-    protected $current_query_params = [];
-
-    public function setCurrentRoute(Route $route, array $query_params = [])
+    /**
+     * @return Request
+     */
+    public function getCurrentRequest(): Request
     {
-        $this->current_route = $route;
-        $this->current_query_params = $query_params;
+        return $this->current_request;
     }
 
-    public function getCurrentRoute(): ?Route
+    /**
+     * @param Request $current_request
+     */
+    public function setCurrentRequest(Request $current_request): void
     {
-        return $this->current_route;
+        $this->current_request = $current_request;
     }
 
     /**
@@ -43,7 +45,7 @@ class Router extends \Slim\Router
             $base_url = $settings_repo->getSetting('base_url', '');
             $prefer_browser_url = (bool)$settings_repo->getSetting('prefer_browser_url', 0);
 
-            $http_host = $_SERVER['HTTP_HOST'] ?? '';
+            $http_host = ($this->current_request instanceof Request) ? $this->current_request->getHeaderLine('Host') : '';
             $ignore_hosts = ['localhost', 'nginx'];
 
             if (!empty($http_host) && !in_array($http_host, $ignore_hosts) && ($prefer_browser_url || empty($base_url))) {
@@ -69,11 +71,11 @@ class Router extends \Slim\Router
      */
     public function current($absolute = false): string
     {
-        if (!empty($_SERVER['REQUEST_URI'])) {
-            return $this->getUrl($_SERVER['REQUEST_URI'], $absolute);
-        } else {
-            return '';
+        if ($this->current_request instanceof Request) {
+            return $this->getUrl((string)$this->current_request->getUri(), $absolute);
         }
+
+        return '';
     }
 
     /**
@@ -84,8 +86,8 @@ class Router extends \Slim\Router
      */
     public function referrer($default_url = null): ?string
     {
-        if (isset($_SERVER['HTTP_REFERER'])) {
-            return $this->getUrl($_SERVER['HTTP_REFERER']);
+        if ($this->current_request instanceof Request) {
+            return $this->getUrl($this->current_request->getHeaderLine('Referer'));
         }
 
         return $default_url;
@@ -154,22 +156,41 @@ class Router extends \Slim\Router
      */
     public function fromHere($route_name = null, array $route_params = [], array $query_params = [], $absolute = false): string
     {
+        $route = ($this->current_request instanceof Request)
+            ? $this->current_request->getAttribute('route')
+            : null;
+
         if ($route_name === null) {
-            if ($this->current_route) {
-                $route_name = $this->current_route->getName();
+            if ($route instanceof Route) {
+                $route_name = $route->getName();
             } else {
                 throw new \InvalidArgumentException('Cannot specify a null route name if no existing route is configured.');
             }
         }
 
-        if ($this->current_route) {
-            $route_params = array_merge($this->current_route->getArguments(), $route_params);
-        }
-
-        if ($this->current_query_params) {
-            $query_params = array_merge($this->current_query_params, $query_params);
+        if ($route instanceof Route) {
+            $route_params = array_merge($route->getArguments(), $route_params);
         }
 
         return $this->named($route_name, $route_params, $query_params, $absolute);
+    }
+
+    /**
+     * Same as $this->fromHere(), but merging the current GET query parameters into the request as well.
+     *
+     * @param null $route_name
+     * @param array $route_params
+     * @param array $query_params
+     * @param bool $absolute
+     * @return string
+     */
+
+    public function fromHereWithQuery($route_name = null, array $route_params = [], array $query_params = [], $absolute = false): string
+    {
+        if ($this->current_request instanceof Request) {
+            $query_params = array_merge($this->current_request->getQueryParams(), $query_params);
+        }
+
+        return $this->fromHere($route_name, $route_params, $query_params, $absolute);
     }
 }

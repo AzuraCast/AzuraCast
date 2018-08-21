@@ -4,7 +4,6 @@ namespace App\Middleware;
 use App\Http\Request;
 use App\Http\Response;
 use App\Http\Router;
-use Slim\Route;
 
 /**
  * Set the current route on the URL object, and inject the URL object into the
@@ -27,11 +26,7 @@ class EnableRouter
      */
     public function __invoke(Request $request, Response $response, $next): Response
     {
-        $route = $request->getAttribute('route');
-
-        if ($route instanceof Route) {
-            $this->router->setCurrentRoute($route, $request->getQueryParams());
-        }
+        $this->router->setCurrentRequest($request);
 
         $request = $request->withAttribute(Request::ATTRIBUTE_ROUTER, $this->router);
 

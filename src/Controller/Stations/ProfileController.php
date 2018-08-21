@@ -152,7 +152,7 @@ class ProfileController
             // Clear station cache.
             $this->cache->remove('stations');
 
-            return $response->withRedirect($request->getRouter()->named('stations:profile:index', ['station' => $station_id]));
+            return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/profile/edit', [

@@ -69,6 +69,6 @@ class AutomationController
             $request->getSession()->flash('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(), 'red');
         }
 
-        return $response->withRedirect($request->getRouter()->named('stations:automation:index', ['station' => $station_id]));
+        return $response->withRedirect($request->getRouter()->fromHere('stations:automation:index'));
     }
 }

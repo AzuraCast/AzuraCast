@@ -49,7 +49,7 @@ class StreamersController
                 $request->getSession()->flash('<b>' . __('Streamers enabled!') . '</b><br>' . __('You can now set up streamer (DJ) accounts.'),
                     'green');
 
-                return $response->withRedirect($request->getRouter()->named('stations:streamers:index', ['station' => $station_id]));
+                return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
             }
 
             return $view->renderToResponse($response, 'stations/streamers/disabled');
@@ -98,7 +98,7 @@ class StreamersController
 
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Streamer')) . '</b>', 'green');
 
-            return $response->withRedirect($request->getRouter()->named('stations:streamers:index', ['station' => $station_id]));
+            return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -129,6 +129,6 @@ class StreamersController
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Streamer')) . '</b>', 'green');
 
-        return $response->withRedirect($request->getRouter()->named('stations:streamers:index', ['station' => $station_id]));
+        return $response->withRedirect($request->getRouter()->fromHere('stations:streamers:index'));
     }
 }

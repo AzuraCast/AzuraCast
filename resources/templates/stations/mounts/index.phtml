@@ -4,7 +4,7 @@
     <div class="card-header ch-alt">
         <h2><?=__('Mount Points') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Mount Point')) ?>" href="<?=$router->named('stations:mounts:add', ['station' => $station->getId()]) ?>">
+        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Mount Point')) ?>" href="<?=$router->fromHere('stations:mounts:add') ?>">
             <span class="sr-only"><?=__('Add %s', __('Mount Point')) ?></span>
             <i class="zmdi zmdi-plus"></i>
         </a>
@@ -16,7 +16,7 @@
         <p><?=__('Ready to get started using mount points on your remote station? Click the button below to automatically create your first mount based on your existing settings.') ?></p>
 
         <div class="buttons">
-            <a href="<?=$router->named('stations:mounts:migrate', ['station' => $station->getId()]) ?>" class="btn btn-primary"><?=__('Migrate Settings') ?></a>
+            <a href="<?=$router->fromHere('stations:mounts:migrate') ?>" class="btn btn-primary"><?=__('Migrate Settings') ?></a>
         </div>
         <?php endif; ?>
     </div>

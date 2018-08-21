@@ -28,11 +28,11 @@
                     </thead>
                     <tbody>
                     <?php foreach($streamers as $row): ?>
-                        <?php /** @var \Entity\StationStreamer $row */ ?>
+                        <?php /** @var App\Entity\StationStreamer $row */ ?>
                         <tr class="vertical-align-middle <?php if (!$row->getIsActive()): ?>text-muted<?php endif; ?>">
                             <td>
-                                <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:streamers:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                                <a class="btn btn-sm btn-danger" href="<?=$router->named('stations:streamers:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                                <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:streamers:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                                <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('stations:streamers:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                             </td>
                             <td><code><?=$this->e($row->getStreamerUsername()) ?></code></td>
                             <td><?=$this->e($row->getDisplayName()) ?></td>

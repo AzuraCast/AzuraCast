@@ -408,6 +408,6 @@ class PlaylistsController
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Playlist')) . '</b>', 'green');
 
-        return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
+        return $response->withRedirect($request->getRouter()->named('stations:playlists:index', ['station' => $station_id]));
     }
 }

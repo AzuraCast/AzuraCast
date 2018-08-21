@@ -2,7 +2,6 @@
 namespace App;
 
 use App\Http\Response;
-use Interop\Container\ContainerInterface;
 use League\Plates\Template\Data;
 
 class View extends \League\Plates\Engine

@@ -12,9 +12,13 @@ class Router extends \Slim\Router
     /** @var Route */
     protected $current_route;
 
-    public function setCurrentRoute(Route $route)
+    /** @var array */
+    protected $current_query_params = [];
+
+    public function setCurrentRoute(Route $route, array $query_params = [])
     {
         $this->current_route = $route;
+        $this->current_query_params = $query_params;
     }
 
     public function getCurrentRoute(): ?Route
@@ -160,6 +164,10 @@ class Router extends \Slim\Router
 
         if ($this->current_route) {
             $route_params = array_merge($this->current_route->getArguments(), $route_params);
+        }
+
+        if ($this->current_query_params) {
+            $query_params = array_merge($this->current_query_params, $query_params);
         }
 
         return $this->named($route_name, $route_params, $query_params, $absolute);

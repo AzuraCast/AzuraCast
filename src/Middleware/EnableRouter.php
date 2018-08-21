@@ -30,7 +30,7 @@ class EnableRouter
         $route = $request->getAttribute('route');
 
         if ($route instanceof Route) {
-            $this->router->setCurrentRoute($route);
+            $this->router->setCurrentRoute($route, $request->getQueryParams());
         }
 
         $request = $request->withAttribute(Request::ATTRIBUTE_ROUTER, $this->router);

@@ -154,7 +154,7 @@ var updateListeners = function(start, end) {
         params.end = end.format('YYYY-MM-DD');
     }
 
-    $.getJSON('<?=$url->named('api:listeners:index', ['station' => $station->getId()]) ?>', params, function (data) {
+    $.getJSON('<?=$router->named('api:listeners:index', ['station' => $station->getId()]) ?>', params, function (data) {
         app_datatable.listeners = data;
 
         $('#listener-count').text(data.length);

@@ -5,7 +5,7 @@
 ?>
 <ul class="main-menu">
     <li class="menu-header">
-        <a href="<?=$url->named('stations:index:index', ['station' => $station->getId()]) ?>">
+        <a href="<?=$router->named('stations:index:index', ['station' => $station->getId()]) ?>">
             <?=$this->e($station->getName()) ?>
         </a>
     </li>
@@ -13,14 +13,14 @@
 <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
     <?php if (!$station->getHasStarted()): ?>
     <li class="menu-info">
-        <a class="api-call" href="<?=$url->named('api:stations:restart', ['station' => $station->getId()]) ?>">
+        <a class="api-call" href="<?=$router->named('api:stations:restart', ['station' => $station->getId()]) ?>">
             <i class="zmdi zmdi-refresh-sync"></i>
             <?=__('<b>Ready to Broadcast?</b><br>Click to Start Station') ?>
         </a>
     </li>
     <?php elseif ($station->getNeedsRestart()): ?>
     <li class="menu-alert">
-        <a class="api-call" href="<?=$url->named('api:stations:restart', ['station' => $station->getId()]) ?>">
+        <a class="api-call" href="<?=$router->named('api:stations:restart', ['station' => $station->getId()]) ?>">
             <i class="zmdi zmdi-refresh-sync-alert"></i>
             <?=__('<b>Apply Pending Changes</b><br>Click to Restart Station') ?>
         </a>
@@ -30,26 +30,26 @@
 <?php endif; ?>
 
 <?php if ($station->getEnablePublicPage()): ?>
-    <li><a href="<?=$url->named('public:index', ['station' => $station->getShortName()]) ?>" target="_blank"><i class="zmdi zmdi-globe"></i> <?=__('Public Page') ?></a></li>
+    <li><a href="<?=$router->named('public:index', ['station' => $station->getShortName()]) ?>" target="_blank"><i class="zmdi zmdi-globe"></i> <?=__('Public Page') ?></a></li>
 <?php endif; ?>
 
-    <li><a href="<?=$url->named('stations:profile:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-image"></i> <?=__('Profile') ?></a></li>
+    <li><a href="<?=$router->named('stations:profile:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-image"></i> <?=__('Profile') ?></a></li>
 
     <?php if ($acl->userAllowed($user, 'manage station media', $station->getId()) && $backend->supportsMedia()): ?>
-        <li><a href="<?=$url->named('stations:files:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-collection-music"></i> <?=__('Music Files') ?></a></li>
-        <li><a href="<?=$url->named('stations:playlists:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-format-list-bulleted"></i> <?=__('Playlists') ?></a></li>
+        <li><a href="<?=$router->named('stations:files:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-collection-music"></i> <?=__('Music Files') ?></a></li>
+        <li><a href="<?=$router->named('stations:playlists:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-format-list-bulleted"></i> <?=__('Playlists') ?></a></li>
     <?php endif; ?>
 
     <?php if ($acl->userAllowed($user, 'manage station streamers', $station->getId()) && $backend->supportsStreamers()): ?>
-        <li><a href="<?=$url->named('stations:streamers:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-account"></i> <?=__('Streamer/DJ Accounts') ?></a></li>
+        <li><a href="<?=$router->named('stations:streamers:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-account"></i> <?=__('Streamer/DJ Accounts') ?></a></li>
     <?php endif; ?>
 
     <?php if ($acl->userAllowed($user, 'manage station mounts', $station->getId()) && $frontend->supportsMounts()): ?>
-        <li><a href="<?=$url->named('stations:mounts:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=__('Mount Points') ?></a></li>
+        <li><a href="<?=$router->named('stations:mounts:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=__('Mount Points') ?></a></li>
     <?php endif; ?>
 
     <?php if ($acl->userAllowed($user, 'manage station web hooks', $station->getId())): ?>
-        <li><a href="<?=$url->named('stations:webhooks:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-code-setting"></i> <?=__('Web Hooks') ?></a></li>
+        <li><a href="<?=$router->named('stations:webhooks:index', ['station' => $station->getId()]) ?>"><i class="zmdi zmdi-code-setting"></i> <?=__('Web Hooks') ?></a></li>
     <?php endif; ?>
 
     <?php if ($acl->userAllowed($user, 'view station reports', $station->getId())): ?>
@@ -58,15 +58,15 @@
 
             <ul>
             <?php if ($frontend->supportsListenerDetail()): ?>
-                <li><a href="<?=$url->named('stations:reports:listeners', ['station' => $station->getId()]) ?>"><?=__('Listeners') ?></a></li>
+                <li><a href="<?=$router->named('stations:reports:listeners', ['station' => $station->getId()]) ?>"><?=__('Listeners') ?></a></li>
             <?php endif; ?>
             <?php if ($station->getEnableRequests()): ?>
-                <li><a href="<?=$url->named('stations:requests:index', ['station' => $station->getId()]) ?>"><?=__('Song Requests') ?></a></li>
+                <li><a href="<?=$router->named('stations:requests:index', ['station' => $station->getId()]) ?>"><?=__('Song Requests') ?></a></li>
             <?php endif; ?>
-                <li><a href="<?=$url->named('stations:reports:timeline', ['station' => $station->getId()]) ?>"><?=__('Song Playback Timeline') ?></a></li>
+                <li><a href="<?=$router->named('stations:reports:timeline', ['station' => $station->getId()]) ?>"><?=__('Song Playback Timeline') ?></a></li>
             <?php if ($backend->supportsMedia()): ?>
-                <li><a href="<?=$url->named('stations:reports:performance', ['station' => $station->getId()]) ?>"><?=__('Song Listener Impact') ?></a></li>
-                <li><a href="<?=$url->named('stations:reports:duplicates', ['station' => $station->getId()]) ?>"><?=__('Duplicate Songs') ?></a></li>
+                <li><a href="<?=$router->named('stations:reports:performance', ['station' => $station->getId()]) ?>"><?=__('Song Listener Impact') ?></a></li>
+                <li><a href="<?=$router->named('stations:reports:duplicates', ['station' => $station->getId()]) ?>"><?=__('Duplicate Songs') ?></a></li>
             <?php endif; ?>
             </ul>
         </li>
@@ -77,10 +77,10 @@
 
         <ul>
             <?php if ($acl->userAllowed($user, 'manage station automation', $station->getId()) && $backend->supportsMedia()): ?>
-                <li><a href="<?=$url->named('stations:automation:index', ['station' => $station->getId()]) ?>"><?=__('Automated Assignment') ?></a></li>
+                <li><a href="<?=$router->named('stations:automation:index', ['station' => $station->getId()]) ?>"><?=__('Automated Assignment') ?></a></li>
             <?php endif; ?>
             <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
-                <li><a class="api-call" data-restart="false" href="<?=$url->named('api:stations:restart', ['station' => $station->getId()]) ?>"><?=__('Restart Broadcasting') ?></a></li>
+                <li><a class="api-call" data-restart="false" href="<?=$router->named('api:stations:restart', ['station' => $station->getId()]) ?>"><?=__('Restart Broadcasting') ?></a></li>
             <?php endif; ?>
         </ul>
     </li>

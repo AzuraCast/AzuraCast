@@ -10,12 +10,12 @@ class MiddlewareProvider implements ServiceProviderInterface
 {
     public function register(Container $di)
     {
-        $di[DebugEcho::class] = function($di) {
-            return new DebugEcho($di[\Monolog\Logger::class]);
-        };
-
         $di[EnableSession::class] = function($di) {
             return new EnableSession($di[App\Session::class]);
+        };
+
+        $di[EnableRouter::class] = function($di) {
+            return new EnableRouter($di['router']);
         };
 
         $di[EnableView::class] = function($di) {

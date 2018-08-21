@@ -2,6 +2,7 @@
 namespace App\Controller\Stations\Files;
 
 use App\Cache;
+use App\Http\Router;
 use App\Url;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -11,8 +12,8 @@ abstract class FilesControllerAbstract
     /** @var EntityManager */
     protected $em;
 
-    /** @var Url */
-    protected $url;
+    /** @var Router */
+    protected $router;
 
     /** @var string */
     protected $csrf_namespace = 'stations_files';
@@ -32,14 +33,14 @@ abstract class FilesControllerAbstract
     /**
      * FilesController constructor.
      * @param EntityManager $em
-     * @param Url $url
+     * @param Router $router
      * @param Cache $cache
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Url $url, Cache $cache, array $form_config)
+    public function __construct(EntityManager $em, Router $router, Cache $cache, array $form_config)
     {
         $this->em = $em;
-        $this->url = $url;
+        $this->router = $router;
         $this->cache = $cache;
         $this->form_config = $form_config;
 

@@ -69,7 +69,7 @@ class CustomFieldsController
 
             $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Custom Field')), 'green');
 
-            return $response->redirectToRoute('admin:custom_fields:index');
+            return $response->withRedirect($request->getRouter()->named('admin:custom_fields:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -93,6 +93,6 @@ class CustomFieldsController
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Custom Field')) . '</b>', 'green');
 
-        return $response->redirectToRoute('admin:custom_fields:index');
+        return $response->withRedirect($request->getRouter()->named('admin:custom_fields:index'));
     }
 }

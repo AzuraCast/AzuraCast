@@ -49,7 +49,7 @@ if ($metrics) {
 
                 <ul class="actions">
                 <?php if ($acl->userAllowed($user, 'administer stations')): ?>
-                    <li><a class="" title="<?=sprintf(__('Add %s'), __('Station')) ?>" href="<?=$url->named('admin:stations:add') ?>"><i class="zmdi zmdi-plus"></i></a></li>
+                    <li><a class="" title="<?=sprintf(__('Add %s'), __('Station')) ?>" href="<?=$router->named('admin:stations:add') ?>"><i class="zmdi zmdi-plus"></i></a></li>
                 <?php endif; ?>
                 </ul>
             </div>
@@ -203,7 +203,7 @@ $(function() {
 });
 
 function loadNowPlaying() {
-    $.getJSON('<?=$url->named('api:nowplaying:index') ?>', function(data) {
+    $.getJSON('<?=$router->named('api:nowplaying:index') ?>', function(data) {
         $.each(data, function(k, row) {
             var station_id = row.station.id;
             station_dashboard['stations'][station_id]['np'] = row;

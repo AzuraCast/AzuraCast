@@ -39,7 +39,7 @@ class IndexController
 
         if ($analytics_level === Entity\Analytics::LEVEL_NONE) {
             // The entirety of the dashboard can't be shown, so redirect user to the profile page.
-            return $response->redirectToRoute('stations:profile:index', ['station' => $station_id]);
+            return $response->withRedirect($request->getRouter()->named('stations:profile:index', ['station' => $station_id]));
         }
 
         /* Statistics */

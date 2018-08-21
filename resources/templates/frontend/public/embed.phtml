@@ -1,4 +1,4 @@
-<?php /** @var \Entity\Station $station */ ?>
+<?php /** @var App\Entity\Station $station */ ?>
 
 <?php $this->layout('minimal', ['page_class' => 'embed', 'title' => $this->e($station->getName()), 'hide_footer' => true]) ?>
 
@@ -20,7 +20,7 @@ $assets
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function() {
     function loadNowPlaying() {
-        $.getJSON('<?=$url->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
+        $.getJSON('<?=$router->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
             nowPlaying.np = row;
 
             if ('mediaSession' in navigator) {

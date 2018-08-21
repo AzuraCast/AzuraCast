@@ -1,4 +1,8 @@
 <?php
+/** @var array $app_settings */
+/** @var array $triggers */
+/** @var \App\Http\Router $router */
+
 return [
     'method' => 'post',
 
@@ -59,7 +63,7 @@ return [
 
         'message_grp' => [
             'legend' => __('Web Hook Details'),
-            'description' => sprintf(__('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'), $url->named('api:nowplaying:index')),
+            'description' => sprintf(__('Variables are in the form of <code>{{ var.name }}</code>. All values in the <a href="%s" target="_blank">Now Playing API response</a> are avaliable for use. Any empty fields are ignored.'), $router->named('api:nowplaying:index')),
 
             'elements' => [
 

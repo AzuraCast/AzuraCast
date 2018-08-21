@@ -65,7 +65,7 @@ $di = new \Slim\Container([
         'displayErrorDetails' => !APP_IN_PRODUCTION,
         'addContentLengthHeader' => false,
         'routerCacheFile' => (APP_IN_PRODUCTION) ? APP_INCLUDE_TEMP . '/app_routes.cache.php' : false,
-        // 'determineRouteBeforeAppMiddleware' => true,
+        'determineRouteBeforeAppMiddleware' => true,
     ]
 ]);
 

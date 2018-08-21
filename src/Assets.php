@@ -18,9 +18,6 @@ class Assets
     /** @var array Loaded libraries. */
     protected $loaded = [];
 
-    /** @var \App\Url URL Resolver object */
-    protected $url;
-
     /** @var bool Whether the current loaded libraries have been sorted by order. */
     protected $is_sorted = true;
 
@@ -33,19 +30,17 @@ class Assets
     /**
      * Assets constructor.
      *
-     * @param \App\Url $url URL Resolver object
      * @param array $libraries
      * @param array $versioned_files
      * @throws \Exception
      */
-    public function __construct(Url $url, array $libraries = [], array $versioned_files = [])
+    public function __construct(array $libraries = [], array $versioned_files = [])
     {
         foreach($libraries as $library) {
             $this->addLibrary($library);
         }
 
         $this->versioned_files = $versioned_files;
-        $this->url = $url;
         $this->csp_nonce = base64_encode(\random_bytes(18));
         $this->csp_domains = [];
     }
@@ -338,7 +333,7 @@ class Assets
             $this->_addDomainToCsp($resource_uri);
             return $resource_uri;
         } else {
-            return $this->url->content($resource_uri);
+            return '/static/'.$resource_uri;
         }
     }
 

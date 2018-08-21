@@ -82,7 +82,7 @@ class UsersController
 
                 $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('User')), 'green');
 
-                return $response->redirectToRoute('admin:users:index');
+                return $response->withRedirect($request->getRouter()->named('admin:users:index'));
             } catch(UniqueConstraintViolationException $e) {
                 $request->getSession()->flash(__('Another user already exists with this e-mail address. Please update the e-mail address.'), 'red');
             }
@@ -109,7 +109,7 @@ class UsersController
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('User')) . '</b>', 'green');
 
-        return $response->redirectToRoute('admin:users:index');
+        return $response->withRedirect($request->getRouter()->named('admin:users:index'));
     }
 
     public function impersonateAction(Request $request, Response $response, $id, $csrf_token): Response
@@ -126,6 +126,6 @@ class UsersController
 
         $request->getSession()->flash('<b>' . __('Logged in successfully.') . '</b><br>' . $user->getEmail(), 'green');
 
-        return $response->redirectToRoute('dashboard');
+        return $response->withRedirect($request->getRouter()->named('dashboard'));
     }
 }

@@ -232,8 +232,7 @@ return function(\Slim\App $app) {
         // Used for internal development
         if (!APP_IN_PRODUCTION) {
             $this->any('/test', Controller\Frontend\UtilController::class.':testAction')
-                ->setName('util:test')
-                ->add(Middleware\DebugEcho::class);
+                ->setName('util:test');
         }
 
     })

@@ -25,6 +25,13 @@ class UtilController
 
     public function testAction(Request $request, Response $response): Response
     {
+        print_r(array_keys($request->getAttributes()));
+
+        print_r($request->getAttribute('routeInfo'));
+        print_r(get_class($request->getAttribute('route')));
+
+        exit;
+
         /** @var EntityManager $em */
         $em = $this->di[EntityManager::class];
 

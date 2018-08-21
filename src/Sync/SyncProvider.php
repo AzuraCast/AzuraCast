@@ -51,7 +51,6 @@ class SyncProvider implements ServiceProviderInterface
         $di[Task\NowPlaying::class] = function($di) {
             return new Task\NowPlaying(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Url::class],
                 $di[\InfluxDB\Database::class],
                 $di[\App\Cache::class],
                 $di[\App\Radio\Adapters::class],

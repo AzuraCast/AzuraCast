@@ -11,7 +11,7 @@ $assets->load('fullcalendar');
     <div class="card-header ch-alt">
         <h2><?=__('Playlists') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Playlist')) ?>" href="<?=$url->named('stations:playlists:add', ['station' => $station->getId()]) ?>">
+        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Playlist')) ?>" href="<?=$router->named('stations:playlists:add', ['station' => $station->getId()]) ?>">
             <span class="sr-only"><?=__('Add %s', __('Playlist')) ?></span>
             <i class="zmdi zmdi-plus"></i>
         </a>
@@ -45,10 +45,10 @@ $assets->load('fullcalendar');
                     <?php foreach($playlists as $row): ?>
                         <tr class="vertical-align-middle">
                             <td>
-                                <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:playlists:edit', ['station' => $station->getId(), 'id' => $row['id']]) ?>"><?=__('Edit') ?></a>
+                                <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:playlists:edit', ['station' => $station->getId(), 'id' => $row['id']]) ?>"><?=__('Edit') ?></a>
 
                             <?php if ($row['source'] === StationPlaylist::SOURCE_SONGS && $row['order'] === StationPlaylist::ORDER_SEQUENTIAL): ?>
-                                <a class="btn btn-sm btn-default" href="<?=$url->named('stations:playlists:reorder', ['station' => $station->getId(), 'id' => $row['id']]) ?>"><?=__('Reorder') ?></a>
+                                <a class="btn btn-sm btn-default" href="<?=$router->named('stations:playlists:reorder', ['station' => $station->getId(), 'id' => $row['id']]) ?>"><?=__('Reorder') ?></a>
                             <?php endif; ?>
 
                                 <div class="btn-group">
@@ -57,15 +57,15 @@ $assets->load('fullcalendar');
                                     </button>
                                     <ul class="dropdown-menu">
                                         <?php foreach(['pls', 'm3u'] as $format): ?>
-                                            <li><a href="<?=$url->named('stations:playlists:export', ['station' => $station->getId(), 'id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(__('Download %s'), strtoupper($format)) ?></a></li>                                        <?php endforeach; ?>
+                                            <li><a href="<?=$router->named('stations:playlists:export', ['station' => $station->getId(), 'id' => $row['id'], 'format' => $format]) ?>"><?=sprintf(__('Download %s'), strtoupper($format)) ?></a></li>                                        <?php endforeach; ?>
                                     </ul>
                                 </div>
 
-                                <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:playlists:delete', ['station' => $station->getId(), 'id' => $row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                                <a class="btn btn-sm btn-danger" href="<?=$router->named('stations:playlists:delete', ['station' => $station->getId(), 'id' => $row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                             </td>
                             <td>
                                 <big>
-                                    <a href="<?=$url->named('stations:files:index', ['station' => $station->getId()]).'#playlist:'.urlencode($row['name']) ?>"><?=$this->e($row['name']) ?></a>
+                                    <a href="<?=$router->named('stations:files:index', ['station' => $station->getId()]).'#playlist:'.urlencode($row['name']) ?>"><?=$this->e($row['name']) ?></a>
                                 </big>
                                 <br>
                                 <span class="label label-default"><?=(($row['source'] === StationPlaylist::SOURCE_SONGS) ? __('Song-based') : __('Remote URL')) ?></span>

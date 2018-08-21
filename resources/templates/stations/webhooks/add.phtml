@@ -4,7 +4,7 @@
 
 <dl>
 <?php foreach($connectors as $type => $info): ?>
-    <dt class="p-t-5"><a href="<?=$url->named('stations:webhooks:add', ['station' => $station->getId(), 'type' => $type]) ?>"><?=$info['name'] ?></a></dt>
+    <dt class="p-t-5"><a href="<?=$router->named('stations:webhooks:add', ['station' => $station->getId(), 'type' => $type]) ?>"><?=$info['name'] ?></a></dt>
     <dd class="p-b-5"><?=$info['description'] ?></dd>
 <?php endforeach; ?>
 </dl>

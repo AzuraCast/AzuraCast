@@ -24,8 +24,8 @@
             <?php foreach($records as $record): ?>
                 <tr class="input">
                     <td class="center">
-                        <a class="btn btn-sm btn-primary" href="<?=$url->named('admin:api:edit', ['id' => $record['id']]) ?>"><?=__('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:api:delete', ['id' => $record['id'], 'csrf' => $csrf]) ?>"><?=__('Revoke') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$router->named('admin:api:edit', ['id' => $record['id']]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$router->named('admin:api:delete', ['id' => $record['id'], 'csrf' => $csrf]) ?>"><?=__('Revoke') ?></a>
                     </td>
                     <td><code><?=$record['id'] ?></code></td>
                     <td><?=$this->e($record['comment']) ?></td>

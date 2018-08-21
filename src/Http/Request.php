@@ -6,15 +6,17 @@ use App\Exception;
 use App\View;
 use App\Radio;
 use App\Session;
+use Slim\Route;
 
 class Request extends \Slim\Http\Request
 {
-    const ATTRIBUTE_VIEW = 'view';
-    const ATTRIBUTE_USER = 'user';
+    const ATTRIBUTE_ROUTER = 'router';
     const ATTRIBUTE_SESSION = 'session';
     const ATTRIBUTE_STATION = 'station';
     const ATTRIBUTE_STATION_BACKEND = 'station_backend';
     const ATTRIBUTE_STATION_FRONTEND = 'station_frontend';
+    const ATTRIBUTE_USER = 'user';
+    const ATTRIBUTE_VIEW = 'view';
 
     /**
      * Detect if a parameter exists in the request.
@@ -39,6 +41,21 @@ class Request extends \Slim\Http\Request
     }
 
     /**
+     * Pull the current route, if it's generated yet.
+     *
+     * @return Route
+     * @throws Exception
+     */
+    public function getCurrentRoute(): Route
+    {
+        if ($this->hasAttribute('route')) {
+            return $this->getAttribute('route');
+        }
+
+        throw new Exception("Route does not exist.");
+    }
+
+    /**
      * Get the View associated with the request, if it's set.
      * Set by @see \App\Middleware\EnableView
      *
@@ -53,6 +70,18 @@ class Request extends \Slim\Http\Request
         }
 
         throw new Exception('No view present in this request.');
+    }
+
+    /**
+     * Get the application's Router.
+     * Set by @see \App\Middleware\EnableRouter
+     *
+     * @return Router
+     * @throws Exception
+     */
+    public function getRouter(): Router
+    {
+        return $this->_getAttributeOfType(self::ATTRIBUTE_ROUTER, Router::class);
     }
 
     /**

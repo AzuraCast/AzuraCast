@@ -1,7 +1,8 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Url;
+use App\Doctrine\Paginator;
+use App\Http\Router;
 use App\Utilities;
 use App\ApiUtilities;
 use Doctrine\ORM\EntityManager;
@@ -14,8 +15,8 @@ class RequestsController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Url */
-    protected $url;
+    /** @var Router */
+    protected $router;
 
     /** @var ApiUtilities */
     protected $api_utils;
@@ -23,12 +24,13 @@ class RequestsController
     /**
      * RequestsController constructor.
      * @param EntityManager $em
-     * @param Url $url
+     * @param Router $router
+     * @param ApiUtilities $api_utils
      */
-    public function __construct(EntityManager $em, Url $url, ApiUtilities $api_utils)
+    public function __construct(EntityManager $em, Router $router, ApiUtilities $api_utils)
     {
         $this->em = $em;
-        $this->url = $url;
+        $this->router = $router;
         $this->api_utils = $api_utils;
     }
 
@@ -59,94 +61,69 @@ class RequestsController
             return $response->withJson('This station does not accept requests currently.', 403);
         }
 
-        $requestable_media = $this->em->createQuery('SELECT sm, s, spm, sp 
-            FROM '.Entity\StationMedia::class.' sm JOIN sm.song s
-             LEFT JOIN sm.playlist_items spm
-             LEFT JOIN spm.playlist sp
-            WHERE sm.station_id = :station_id 
-            AND sp.id IS NOT NULL
-            AND sp.is_enabled = 1 
-            AND sp.include_in_requests = 1')
-            ->setParameter('station_id', $station_id)
-            ->useResultCache(true, 60)
-            ->execute();
+        $qb = $this->em->createQueryBuilder();
 
-        $result = [];
+        $qb->select('sm, s, spm, sp')
+            ->from(Entity\StationMedia::class, 'sm')
+            ->join('sm.song', 's')
+            ->leftJoin('sm.playlist_items', 'spm')
+            ->leftJoin('spm.playlist', 'sp')
+            ->where('sm.station_id = :station_id')
+            ->andWhere('sp.id IS NOT NULL')
+            ->andWhere('sp.is_enabled = 1')
+            ->andWhere('sp.include_in_requests = 1')
+            ->setParameter('station_id', $station_id);
 
-        foreach ($requestable_media as $media_row) {
+        if ($request->hasParam('sort')) {
+            $sort_fields = [
+                'song_title'    => 'sm.title',
+                'song_artist'   => 'sm.artist',
+                'song_album'    => 'sm.album',
+            ];
+
+            foreach($request->getParam('sort') as $sort_key => $sort_direction)
+            {
+                if (isset($sort_fields[$sort_key])) {
+                    $qb->addOrderBy($sort_fields[$sort_key], $sort_direction);
+                }
+            }
+        } else {
+            $qb->orderBy('sm.artist', 'ASC')
+                ->addOrderBy('sm.title', 'ASC');
+        }
+
+        $search_phrase = trim($request->getParam('searchPhrase'));
+        if (!empty($search_phrase)) {
+            $qb->andWhere('(sm.title LIKE :query OR sm.artist LIKE :query OR sm.album LIKE :query)')
+                ->setParameter('query', '%'.$search_phrase.'%');
+        }
+
+        $paginator = new Paginator($qb);
+        $paginator->setFromRequest($request);
+
+        $is_bootgrid = $paginator->isFromBootgrid();
+
+        $paginator->setPostprocessor(function($media_row) use ($station_id, $is_bootgrid) {
             /** @var Entity\StationMedia $media_row */
             $row = new Entity\Api\StationRequest;
             $row->song = $media_row->api($this->api_utils);
             $row->request_id = (int)$media_row->getId();
-            $row->request_url = (string)$this->url->named('api:requests:submit', [
+            $row->request_url = (string)$this->router->named('api:requests:submit', [
                 'station' => $station_id,
                 'media_id' => $media_row->getUniqueId(),
             ]);
-            $result[] = $row;
-        }
 
-        // Handle Bootgrid-style iteration through result
-        if ($request->hasParam('current')) {
-            $result = json_decode(json_encode($result), true);
-
-            // Flatten the results array for bootgrid.
-            foreach ($result as &$row) {
-                foreach ($row['song'] as $song_key => $song_val) {
-                    $row['song_' . $song_key] = $song_val;
+            if ($is_bootgrid) {
+                $row = json_decode(json_encode($row), true);
+                foreach($row['song'] as $song_key => $song_val) {
+                    $row['song_'.$song_key] = $song_val;
                 }
             }
-            unset($row);
 
-            // Example from bootgrid docs:
-            // current=1&rowCount=10&sort[sender]=asc&searchPhrase=&id=b0df282a-0d67-40e5-8558-c9e93b7befed
+            return $row;
+        });
 
-            // Apply sorting, limiting and searching.
-            $search_phrase = trim($request->getParam('searchPhrase'));
-
-            if (!empty($search_phrase)) {
-                $result = array_filter($result, function ($row) use ($search_phrase) {
-                    $search_fields = ['song_title', 'song_artist', 'song_album'];
-
-                    foreach ($search_fields as $field_name) {
-                        if (stripos($row[$field_name], $search_phrase) !== false) {
-                            return true;
-                        }
-                    }
-
-                    return false;
-                });
-            }
-
-            if ($request->hasParam('sort')) {
-                $sort_by = [];
-                foreach ($request->getParam('sort') as $sort_key => $sort_direction) {
-                    $sort_dir = (strtolower($sort_direction) === 'desc') ? \SORT_DESC : \SORT_ASC;
-                    $sort_by[] = $sort_key;
-                    $sort_by[] = $sort_dir;
-                }
-            } else {
-                $sort_by = ['song_artist', \SORT_ASC, 'song_title', \SORT_ASC];
-            }
-
-            $result = Utilities::array_order_by($result, $sort_by);
-
-            $num_results = count($result);
-
-            $page = $request->getParam('current', 1);
-            $row_count = $request->getParam('rowCount', 15);
-
-            $offset_start = ($page - 1) * $row_count;
-            $return_result = array_slice($result, $offset_start, $row_count);
-
-            return $response->withJson([
-                'current' => $page,
-                'rowCount' => $row_count,
-                'total' => $num_results,
-                'rows' => $return_result,
-            ]);
-        }
-
-        return $response->withJson($result);
+        return $paginator->write($response);
     }
 
     /**

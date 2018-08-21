@@ -3,7 +3,7 @@
         <h2><?=__('Profile') ?></h2>
 
         <?php if ($acl->userAllowed($user, 'manage station profile', $station->getId())): ?>
-            <a class="btn bgm-blue btn-float" role="button" title="<?=__('Edit') ?>" href="<?=$url->named('stations:profile:edit', ['station' => $station->getId()]) ?>">
+            <a class="btn bgm-blue btn-float" role="button" title="<?=__('Edit') ?>" href="<?=$router->named('stations:profile:edit', ['station' => $station->getId()]) ?>">
                 <span class="sr-only"><?=__('Edit') ?></span>
                 <i class="zmdi zmdi-edit"></i>
             </a>
@@ -31,7 +31,7 @@
                         <span class="text-success"><?=__('Enabled') ?></span>
 
                         <div class="form-field">
-                            <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$url->named('public:embedrequests', ['station' => $station->getShortName()], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
+                            <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$router->named('public:embedrequests', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
                         </div>
                     <?php else: ?>
                         <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
@@ -45,7 +45,7 @@
                 <td>
                     <?php if ($station->getEnableStreamers()): ?>
                         <span class="text-success"><?=__('Enabled') ?></span><br>
-                        <a href="<?=$url->named('stations:streamers:index', ['station' => $station->getId()]) ?>"><?=__('Manage streamer accounts') ?></a>
+                        <a href="<?=$router->named('stations:streamers:index', ['station' => $station->getId()]) ?>"><?=__('Manage streamer accounts') ?></a>
                     <?php else: ?>
                         <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
                     <?php endif; ?>
@@ -63,7 +63,7 @@
         <tr>
             <td><?=__('Player Embed Code') ?></td>
             <td class="form-field">
-                <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$url->named('public:embed', ['station' => $station->getShortName()], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
+                <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$router->named('public:embed', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
             </td>
         </tr>
         </tbody>

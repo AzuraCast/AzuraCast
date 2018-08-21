@@ -49,7 +49,7 @@ class AutomationController
 
             $request->getSession()->flash(__('Changes saved.'), 'green');
 
-            return $response->redirectHere();
+            return $response->withRedirect($request->getUri());
         }
 
         return $request->getView()->renderToResponse($response, 'stations/automation/index', [
@@ -69,6 +69,6 @@ class AutomationController
             $request->getSession()->flash('<b>' . __('Automated assignment error') . ':</b><br>' . $e->getMessage(), 'red');
         }
 
-        return $response->redirectToRoute('stations:automation:index', ['station' => $station_id]);
+        return $response->withRedirect($request->getRouter()->named('stations:automation:index', ['station' => $station_id]));
     }
 }

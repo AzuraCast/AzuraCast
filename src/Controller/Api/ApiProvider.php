@@ -10,9 +10,7 @@ class ApiProvider implements ServiceProviderInterface
     public function register(Container $di)
     {
         $di[IndexController::class] = function($di) {
-            return new IndexController(
-                $di[\App\Url::class]
-            );
+            return new IndexController;
         };
 
         $di[InternalController::class] = function($di) {
@@ -47,7 +45,7 @@ class ApiProvider implements ServiceProviderInterface
         $di[RequestsController::class] = function($di) {
             return new RequestsController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Url::class],
+                $di['router'],
                 $di[\App\ApiUtilities::class]
             );
         };

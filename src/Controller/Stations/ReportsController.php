@@ -229,7 +229,7 @@ class ReportsController
             $request->getSession()->flash('<b>Duplicate file deleted!</b>', 'green');
         }
 
-        return $response->redirectToRoute('stations:reports:duplicates', ['station' => $station_id]);
+        return $response->withRedirect($request->getRouter()->named('stations:reports:duplicates', ['station' => $station_id]));
     }
 
     public function listenersAction(Request $request, Response $response): Response

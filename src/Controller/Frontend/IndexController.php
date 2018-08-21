@@ -23,7 +23,7 @@ class IndexController
     {
         // Redirect to complete setup, if it hasn't been completed yet.
         if ($this->settings_repo->getSetting('setup_complete', 0) === 0) {
-            return $response->redirectToRoute('setup:index');
+            return $response->withRedirect($request->getRouter()->named('setup:index'));
         }
 
         // Redirect to login screen if the user isn't logged in.
@@ -37,10 +37,10 @@ class IndexController
                 return $response->withRedirect($homepage_redirect, 302);
             }
 
-            return $response->redirectToRoute('account:login');
+            return $response->withRedirect($request->getRouter()->named('account:login'));
         }
 
         // Redirect to dashboard if no other custom redirection rules exist.
-        return $response->redirectToRoute('dashboard');
+        return $response->withRedirect($request->getRouter()->named('dashboard'));
     }
 }

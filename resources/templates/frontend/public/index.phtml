@@ -44,7 +44,7 @@ $assets
                 </button>
                 <ul class="dropdown-menu">
                     <?php foreach(['pls', 'm3u'] as $format): ?>
-                        <li><a href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => $format]) ?>"><?=sprintf(__('Download %s'), strtoupper($format)) ?></a></li>
+                        <li><a href="<?=$router->named('public:playlist', ['station' => $station->getShortName(), 'format' => $format]) ?>"><?=sprintf(__('Download %s'), strtoupper($format)) ?></a></li>
                     <?php endforeach; ?>
                 </ul>
             </div>
@@ -115,7 +115,7 @@ $(function() {
     });
 
     function loadNowPlaying() {
-        $.getJSON('<?=$url->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
+        $.getJSON('<?=$router->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
             nowPlaying.np = row;
             songHistory.history = row.song_history;
 
@@ -156,7 +156,7 @@ request_dialog.on('show.bs.modal', function (event) {
                 iconRefresh: 'zmdi-refresh',
                 iconUp: 'zmdi-sort-amount-asc'
             },
-            url: "<?=$url->named('api:requests:list', ['station' => $station->getId()]) ?>",
+            url: "<?=$router->named('api:requests:list', ['station' => $station->getId()]) ?>",
             formatters: {
                 "commands": function(column, row) {
                     return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=__('Request') ?></a>';

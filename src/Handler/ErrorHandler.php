@@ -8,6 +8,7 @@ use App\Url;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use App\Http\Router;
 use Monolog\Logger;
 
 class ErrorHandler
@@ -21,8 +22,8 @@ class ErrorHandler
     /** @var Session */
     protected $session;
 
-    /** @var Url */
-    protected $url;
+    /** @var Router */
+    protected $router;
 
     /** @var View */
     protected $view;
@@ -35,21 +36,21 @@ class ErrorHandler
      * @param Acl $acl
      * @param Logger $logger
      * @param Session $session
-     * @param Url $url
+     * @param Router $router
      * @param \App\View $view
      */
     public function __construct(
         Acl $acl,
         Logger $logger,
+        Router $router,
         Session $session,
-        Url $url,
         View $view
     )
     {
         $this->acl = $acl;
         $this->logger = $logger;
+        $this->router = $router;
         $this->session = $session;
-        $this->url = $url;
         $this->view = $view;
     }
 
@@ -83,11 +84,11 @@ class ErrorHandler
 
             // Set referrer for login redirection.
             $referrer_login = $this->session->get('login_referrer');
-            $referrer_login->url = $this->url->current();
+            $referrer_login->url = $this->router->current();
 
             return $res
                 ->withStatus(302)
-                ->withHeader('Location', $this->url->named('account:login'));
+                ->withHeader('Location', $this->router->named('account:login'));
         }
 
         if ($e instanceof \App\Exception\PermissionDenied) {
@@ -97,7 +98,7 @@ class ErrorHandler
 
             return $res
                 ->withStatus(302)
-                ->withHeader('Location', $this->url->named('home'));
+                ->withHeader('Location', $this->router->named('home'));
         }
 
         if ($show_detailed) {

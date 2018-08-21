@@ -83,7 +83,7 @@ class ApiKeysController
             }
 
             $request->getSession()->flash(__('%s updated.', __('API Key')), 'green');
-            return $response->redirectToRoute('api_keys:index');
+            return $response->withRedirect($request->getRouter()->named('api_keys:index'));
         }
 
         return $view->renderToResponse($response, 'system/form_page', [
@@ -112,6 +112,6 @@ class ApiKeysController
 
         $request->getSession()->flash(__('%s deleted.', __('API Key')), 'green');
 
-        return $response->redirectToRoute('api_keys:index');
+        return $response->withRedirect($request->getRouter()->named('api_keys:index'));
     }
 }

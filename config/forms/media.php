@@ -1,4 +1,6 @@
 <?php
+/** @var \App\Http\Router $router */
+
 return [
     'method' => 'post',
     'groups' => [
@@ -61,7 +63,7 @@ return [
 
         'custom_fields' => [
             'legend' => __('Custom Fields'),
-            'description' => __('Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.', $url->named('admin:custom_fields:index')),
+            'description' => __('Administrators can customize the fields that appear here in the <a href="%s">administration page</a>.', $router->named('admin:custom_fields:index')),
             'elements' => [
 
 

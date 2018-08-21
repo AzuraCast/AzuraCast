@@ -1,28 +1,8 @@
 <?php
 namespace App\Http;
 
-use App\Url;
-use Guzzle\Stream\StreamInterface;
-use Slim\Interfaces\Http\HeadersInterface;
-
 class Response extends \Slim\Http\Response
 {
-    /** @var Url */
-    protected $url;
-
-    /**
-     * Create new HTTP response.
-     *
-     * @param int                   $status  The response status code.
-     * @param HeadersInterface|null $headers The response headers.
-     * @param StreamInterface|null  $body    The response body.
-     */
-    public function __construct($status = 200, HeadersInterface $headers = null, StreamInterface $body = null, Url $url)
-    {
-        parent::__construct($status, $headers, $body);
-        $this->url = $url;
-    }
-
     /**
      * Stream the contents of a file directly through to the response.
      *
@@ -72,30 +52,5 @@ class Response extends \Slim\Http\Response
         }
 
         return $response->write($file_data);
-    }
-
-    /**
-     * Redirect to the current page (i.e. after a form is submitted).
-     *
-     * @param int $code
-     * @return self
-     */
-    public function redirectHere($code = 302, $suffix = ''): self
-    {
-        return $this->withRedirect($this->url->current().$suffix, $code);
-    }
-
-    /**
-     * Redirect with parameters to named route.
-     *
-     * @param $name
-     * @param array $route_params
-     * @param int $code
-     * @param string $suffix
-     * @return self
-     */
-    public function redirectToRoute($name, $route_params = [], $code = 302, $suffix = ''): self
-    {
-        return $this->withRedirect($this->url->named($name, $route_params).$suffix, $code);
     }
 }

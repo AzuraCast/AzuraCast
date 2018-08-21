@@ -61,7 +61,7 @@ class ApiController
 
             $request->getSession()->flash(__('%s updated.', __('API Key')), 'green');
 
-            return $response->redirectToRoute('admin:api:index');
+            return $response->withRedirect($request->getRouter()->named('admin:api:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -85,6 +85,6 @@ class ApiController
 
         $request->getSession()->flash(__('%s deleted.', __('API Key')), 'green');
 
-        return $response->redirectToRoute('admin:api:index');
+        return $response->withRedirect($request->getRouter()->named('admin:api:index'));
     }
 }

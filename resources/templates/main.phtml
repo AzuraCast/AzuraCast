@@ -4,7 +4,7 @@
  * @var \League\Plates\Template\Template $this
  * @var \App\Auth $auth
  * @var \App\Acl $acl
- * @var \App\Url $url
+ * @var \App\Http\Router $router
  * @var \App\Session\Flash $flash
  * @var \App\Customization $customization
  * @var \App\Assets $assets
@@ -47,7 +47,7 @@ $assets
 <body class="<?=$page_class ?>">
 <a class="sr-only" href="#content"><?=__('Skip to main content') ?></a>
 
-<header id="header" class="clearfix" data-ma-theme="blue" style="background-image: url('<?=$url->content('img/header_bg.png') ?>');" data-rjs="3">
+<header id="header" class="clearfix" data-ma-theme="blue" style="background-image: url('/static/img/header_bg.png');" data-rjs="3">
     <ul class="h-inner">
         <?php if (!empty($sidebar)): ?>
         <li class="hi-trigger ma-trigger" data-ma-action="sidebar-open" data-ma-target="#sidebar">
@@ -60,7 +60,7 @@ $assets
         <?php endif; ?>
 
         <li class="logo">
-            <a href="<?=$url->named('dashboard') ?>">
+            <a href="<?=$router->named('dashboard') ?>">
                 azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
             </a>
         </li>
@@ -72,17 +72,17 @@ $assets
                 <li class="dropdown">
                     <a data-toggle="dropdown" href="" aria-label="menu" title="<?=__('Open or Close Dropdown Menu') ?>"><i class="him-icon zmdi zmdi-more-vert"></i></a>
                     <ul class="dropdown-menu dm-icon pull-right">
-                        <li><a href="<?=$url->named('dashboard') ?>"><i class="zmdi zmdi-home"></i> <?=__('Dashboard') ?></a></li>
+                        <li><a href="<?=$router->named('dashboard') ?>"><i class="zmdi zmdi-home"></i> <?=__('Dashboard') ?></a></li>
                         <?php if ($acl->userAllowed($user, 'view administration')): ?>
-                            <li><a href="<?=$url->named('admin:index:index') ?>"><i class="zmdi zmdi-settings"></i> <?=__('System Administration') ?></a></li>
+                            <li><a href="<?=$router->named('admin:index:index') ?>"><i class="zmdi zmdi-settings"></i> <?=__('System Administration') ?></a></li>
                         <?php endif; ?>
-                        <li><a href="<?=$url->named('profile:index') ?>"><i class="zmdi zmdi-account"></i> <?=__('My Account') ?></a></li>
-                        <li><a href="<?=$url->named('api_keys:index') ?>"><i class="zmdi zmdi-key"></i> <?=__('My API Keys') ?></a></li>
+                        <li><a href="<?=$router->named('profile:index') ?>"><i class="zmdi zmdi-account"></i> <?=__('My Account') ?></a></li>
+                        <li><a href="<?=$router->named('api_keys:index') ?>"><i class="zmdi zmdi-key"></i> <?=__('My API Keys') ?></a></li>
                         <li class="divider">&nbsp;</li>
                     <?php if ($auth->isMasqueraded()): ?>
-                        <li><a href="<?=$url->named('account:endmasquerade') ?>"><i class="zmdi zmdi-power"></i> <?=__('End Session') ?></a></li>
+                        <li><a href="<?=$router->named('account:endmasquerade') ?>"><i class="zmdi zmdi-power"></i> <?=__('End Session') ?></a></li>
                     <?php else: ?>
-                        <li><a href="<?=$url->named('account:logout') ?>"><i class="zmdi zmdi-power"></i> <?=__('Sign Out') ?></a></li>
+                        <li><a href="<?=$router->named('account:logout') ?>"><i class="zmdi zmdi-power"></i> <?=__('Sign Out') ?></a></li>
                     <?php endif; ?>
                     </ul>
                 </li>

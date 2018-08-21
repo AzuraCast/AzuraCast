@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Http\Router;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -15,18 +16,18 @@ class ApiUtilities
     /** @var EntityManager */
     protected $em;
 
-    /** @var Url */
-    protected $url;
+    /** @var Router */
+    protected $router;
 
     /**
-     * ApiSupport constructor.
+     * ApiUtilities constructor.
      * @param EntityManager $em
-     * @param Url $url
+     * @param Router $router
      */
-    public function __construct(EntityManager $em, Url $url)
+    public function __construct(EntityManager $em, Router $router)
     {
         $this->em = $em;
-        $this->url = $url;
+        $this->router = $router;
     }
 
     /**
@@ -38,7 +39,7 @@ class ApiUtilities
      */
     public function getAlbumArtUrl($station_id, $media_unique_id): string
     {
-        return $this->url->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_unique_id], true);
+        return $this->router->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_unique_id], [], true);
     }
 
     /**

@@ -10,9 +10,16 @@ return function (\Slim\Container $di, $settings) {
 
     $di['response'] = function (\Slim\Container $di) {
         $headers = new \Slim\Http\Headers(['Content-Type' => 'text/html; charset=UTF-8']);
-        $response = new \App\Http\Response(200, $headers, null, $di[\App\Url::class]);
+        $response = new \App\Http\Response(200, $headers, null);
 
         return $response->withProtocolVersion($di->get('settings')['httpVersion']);
+    };
+
+    $di['router'] = function(\Slim\Container $di) {
+        $routerCacheFile = $di['settings']['routerCacheFile'];
+        $router = (new \App\Http\Router())->setCacheFile($routerCacheFile);
+        $router->setContainer($di);
+        return $router;
     };
 
     $di['callableResolver'] = function ($di) {
@@ -177,30 +184,6 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Cache($redis);
     };
 
-    $di[\App\Url::class] = function ($di) {
-        /** @var App\Entity\Repository\SettingsRepository $settings_repo */
-        $settings_repo = $di[\App\Entity\Repository\SettingsRepository::class];
-
-        $base_url = $settings_repo->getSetting('base_url', '');
-        $prefer_browser_url = (bool)$settings_repo->getSetting('prefer_browser_url', 0);
-
-        $http_host = $_SERVER['HTTP_HOST'] ?? '';
-        $ignore_hosts = ['localhost', 'nginx'];
-
-        if (!empty($http_host) && !in_array($http_host, $ignore_hosts) && ($prefer_browser_url || empty($base_url))) {
-            $base_url = $http_host;
-        }
-
-        if (!empty($base_url)) {
-            $always_use_ssl = (bool)$settings_repo->getSetting('always_use_ssl', 0);
-            $base_url_schema = (APP_IS_SECURE || $always_use_ssl) ? 'https://' : 'http://';
-
-            $base_url = $base_url_schema.$base_url;
-        }
-
-        return new \App\Url($di['router'], $base_url);
-    };
-
     $di[\App\Session::class] = function ($di) {
         if (!APP_TESTING_MODE) {
             ini_set('session.gc_maxlifetime', 86400);
@@ -281,13 +264,13 @@ return function (\Slim\Container $di, $settings) {
         $session = $di[\App\Session::class];
 
         $view->addData([
+            'app_settings' => $di['app_settings'],
+            'router' => $di['router'],
             'assets' => $di[\App\Assets::class],
             'auth' => $di[\App\Auth::class],
             'acl' => $di[\App\Acl::class],
-            'url' => $di[\App\Url::class],
             'flash' => $session->getFlash(),
             'customization' => $di[\App\Customization::class],
-            'app_settings' => $di['app_settings'],
         ]);
 
         return $view;
@@ -297,8 +280,8 @@ return function (\Slim\Container $di, $settings) {
         return new \App\Handler\ErrorHandler(
             $di[\App\Acl::class],
             $di[\Monolog\Logger::class],
+            $di['router'],
             $di[\App\Session::class],
-            $di[\App\Url::class],
             $di[\App\View::class]
         );
     };
@@ -331,7 +314,7 @@ return function (\Slim\Container $di, $settings) {
     $di[\App\ApiUtilities::class] = function($di) {
         return new \App\ApiUtilities(
             $di[\Doctrine\ORM\EntityManager::class],
-            $di[\App\Url::class]
+            $di['router']
         );
     };
 
@@ -347,14 +330,13 @@ return function (\Slim\Container $di, $settings) {
             $versioned_files = json_decode(file_get_contents($assets_file), true);
         }
 
-        return new \App\Assets($di[\App\Url::class], $libraries, $versioned_files);
+        return new \App\Assets($libraries, $versioned_files);
     };
 
     $di[\App\Customization::class] = function ($di) {
         return new \App\Customization(
             $di['app_settings'],
-            $di[\App\Entity\Repository\SettingsRepository::class],
-            $di[\App\Url::class]
+            $di[\App\Entity\Repository\SettingsRepository::class]
         );
     };
 
@@ -391,6 +373,9 @@ return function (\Slim\Container $di, $settings) {
 
         // Get the current user entity object and assign it into the request if it exists.
         $app->add(\App\Middleware\GetCurrentUser::class);
+
+        // Inject the application router into the request object.
+        $app->add(\App\Middleware\EnableRouter::class);
 
         // Inject the session manager into the request object.
         $app->add(\App\Middleware\EnableSession::class);

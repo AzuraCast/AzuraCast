@@ -4,7 +4,7 @@
     <div class="card-header ch-alt">
         <h2><?=__('Web Hooks') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Web Hook')) ?>" href="<?=$url->named('stations:webhooks:add', ['station' => $station->getId()]) ?>">
+        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Web Hook')) ?>" href="<?=$router->named('stations:webhooks:add', ['station' => $station->getId()]) ?>">
             <span class="sr-only"><?=__('Add %s', __('Web Hook')) ?></span>
             <i class="zmdi zmdi-plus"></i>
         </a>
@@ -31,10 +31,10 @@
                 <?php /** @var \App\Entity\StationWebhook $row */ ?>
                 <tr class="vertical-align-middle">
                     <td>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:webhooks:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                        <a class="btn btn-sm <?=($row->isEnabled() ? 'btn-warning' : 'btn-success') ?>" href="<?=$url->named('stations:webhooks:toggle', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=($row->isEnabled() ? __('Disable') : __('Enable')) ?></a>
-                        <a class="btn btn-sm btn-default" href="<?=$url->named('stations:webhooks:test', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>" title="<?=__('Trigger the web hook manually and view the raw response.') ?>"><?=__('Test') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:webhooks:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:webhooks:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm <?=($row->isEnabled() ? 'btn-warning' : 'btn-success') ?>" href="<?=$router->named('stations:webhooks:toggle', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=($row->isEnabled() ? __('Disable') : __('Enable')) ?></a>
+                        <a class="btn btn-sm btn-default" href="<?=$router->named('stations:webhooks:test', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>" title="<?=__('Trigger the web hook manually and view the raw response.') ?>"><?=__('Test') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$router->named('stations:webhooks:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </td>
                     <td>
                         <big><?=$this->e($row->getName()) ?></big><br>

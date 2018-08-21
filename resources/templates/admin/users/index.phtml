@@ -4,7 +4,7 @@
     <div class="card-header ch-alt">
         <h2><?=__('User Accounts') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('User')) ?>" href="<?=$url->named('admin:users:add') ?>">
+        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('User')) ?>" href="<?=$router->named('admin:users:add') ?>">
             <span class="sr-only"><?=__('Add %s', __('User')) ?></span>
             <i class="zmdi zmdi-plus"></i>
         </a>
@@ -28,10 +28,10 @@
                 <tr class="input">
                     <td>
                     <?php if ($user_row->getId() !== $user->getId()): ?>
-                        <a class="btn btn-sm btn-primary" href="<?=$url->named('admin:users:impersonate', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Log In') ?></a>
+                        <a class="btn btn-sm btn-primary" href="<?=$router->named('admin:users:impersonate', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Log In') ?></a>
                     <?php endif; ?>
-                        <a class="btn btn-sm btn-default" href="<?=$url->named('admin:users:edit', ['id' => $user_row->getId()]) ?>"><?=__('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:users:delete', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        <a class="btn btn-sm btn-default" href="<?=$router->named('admin:users:edit', ['id' => $user_row->getId()]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$router->named('admin:users:delete', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </td>
                     <td><?=$this->mailto($user_row->getEmail()) ?> <?php if ($user_row->getId() === $user->getId()): ?><?=__('(You)') ?><?php endif; ?></td>
                     <td>

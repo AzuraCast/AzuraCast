@@ -1,4 +1,8 @@
 <?php
+/** @var array $app_settings */
+/** @var array $triggers */
+/** @var \App\Http\Router $router */
+
 return [
     'method' => 'post',
 

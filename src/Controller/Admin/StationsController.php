@@ -100,7 +100,7 @@ class StationsController
 
             $request->getSession()->flash(sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Station')), 'green');
 
-            return $response->redirectToRoute('admin:stations:index');
+            return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'admin/stations/edit', [
@@ -193,7 +193,7 @@ class StationsController
 
             $request->getSession()->flash(__('Changes saved.'), 'green');
 
-            return $response->redirectToRoute('admin:stations:index');
+            return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -215,6 +215,6 @@ class StationsController
 
         $request->getSession()->flash(__('%s deleted.', __('Station')), 'green');
 
-        return $response->redirectToRoute('admin:stations:index');
+        return $response->withRedirect($request->getRouter()->named('admin:stations:index'));
     }
 }

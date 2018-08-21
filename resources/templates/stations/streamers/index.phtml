@@ -6,7 +6,7 @@
             <div class="card-header ch-alt">
                 <h2><?=__('Streamer/DJ Accounts') ?></h2>
 
-                <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Streamer')) ?>" href="<?=$url->named('stations:streamers:add', ['station' => $station->getId()]) ?>">
+                <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Streamer')) ?>" href="<?=$router->named('stations:streamers:add', ['station' => $station->getId()]) ?>">
                     <span class="sr-only"><?=__('Add %s', __('Streamer')) ?></span><i class="zmdi zmdi-plus"></i>
                 </a>
             </div>
@@ -31,8 +31,8 @@
                         <?php /** @var \Entity\StationStreamer $row */ ?>
                         <tr class="vertical-align-middle <?php if (!$row->getIsActive()): ?>text-muted<?php endif; ?>">
                             <td>
-                                <a class="btn btn-sm btn-primary" href="<?=$url->named('stations:streamers:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
-                                <a class="btn btn-sm btn-danger" href="<?=$url->named('stations:streamers:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                                <a class="btn btn-sm btn-primary" href="<?=$router->named('stations:streamers:edit', ['station' => $station->getId(), 'id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                                <a class="btn btn-sm btn-danger" href="<?=$router->named('stations:streamers:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                             </td>
                             <td><code><?=$this->e($row->getStreamerUsername()) ?></code></td>
                             <td><?=$this->e($row->getDisplayName()) ?></td>

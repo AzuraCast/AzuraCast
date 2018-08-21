@@ -1,7 +1,7 @@
 <?php
 namespace App\Radio\Frontend;
 
-use App\Url;
+use App\Http\Router;
 use App\Entity;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
@@ -10,14 +10,14 @@ use Supervisor\Supervisor;
 
 abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
 {
-    /** @var Url */
-    protected $url;
+    /** @var Router */
+    protected $router;
 
-    public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger, Url $url)
+    public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger, Router $router)
     {
         parent::__construct($em, $supervisor, $logger);
 
-        $this->url = $url;
+        $this->router = $router;
     }
 
     /** @var bool Whether the station supports multiple mount points per station */
@@ -144,7 +144,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
-        $base_url = $this->url->getBaseUrl();
+        $base_url = $this->router->getBaseUrl();
         $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
 
         if ( $use_radio_proxy

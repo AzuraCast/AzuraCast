@@ -16,14 +16,10 @@ class Customization
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
-    /** @var \App\Url */
-    protected $url;
-
-    public function __construct($app_settings, Entity\Repository\SettingsRepository $settings_repo, \App\Url $url)
+    public function __construct($app_settings, Entity\Repository\SettingsRepository $settings_repo)
     {
         $this->app_settings = $app_settings;
         $this->settings_repo = $settings_repo;
-        $this->url = $url;
     }
 
     /**
@@ -296,6 +292,6 @@ class Customization
             return $custom_url;
         }
 
-        return $this->url->content('img/generic_song.jpg');
+        return '/static/img/generic_song.jpg';
     }
 }

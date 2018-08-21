@@ -94,7 +94,7 @@ class PermissionsController
 
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Permission')) . '</b>', 'green');
 
-            return $response->redirectToRoute('admin:permissions:index');
+            return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [
@@ -119,6 +119,6 @@ class PermissionsController
         $this->em->flush();
 
         $request->getSession()->flash('<b>' . __('%s deleted.', __('Permission')) . '</b>', 'green');
-        return $response->redirectToRoute('admin:permissions:index');
+        return $response->withRedirect($request->getRouter()->named('admin:permissions:index'));
     }
 }

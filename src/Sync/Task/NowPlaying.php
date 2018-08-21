@@ -15,9 +15,6 @@ class NowPlaying extends TaskAbstract
     /** @var EntityManager */
     protected $em;
 
-    /** @var Url */
-    protected $url;
-
     /** @var Database */
     protected $influx;
 
@@ -48,11 +45,10 @@ class NowPlaying extends TaskAbstract
     /** @var string */
     protected $analytics_level;
 
-    public function __construct(EntityManager $em, Url $url, Database $influx, Cache $cache, Adapters $adapters,
+    public function __construct(EntityManager $em, Database $influx, Cache $cache, Adapters $adapters,
                                 Dispatcher $webhook_dispatcher, ApiUtilities $api_utils)
     {
         $this->em = $em;
-        $this->url = $url;
         $this->influx = $influx;
         $this->cache = $cache;
         $this->adapters = $adapters;

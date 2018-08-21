@@ -68,7 +68,7 @@ class SetupController
     public function indexAction(Request $request, Response $response): Response
     {
         $current_step = $this->_getSetupStep();
-        return $response->redirectToRoute('setup:'.$current_step);
+        return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
     }
 
     /**
@@ -78,7 +78,7 @@ class SetupController
     {
         $request->getSession()->flash('<b>' . __('Setup has already been completed!') . '</b>', 'red');
 
-        return $response->redirectToRoute('dashboard');
+        return $response->withRedirect($request->getRouter()->named('dashboard'));
     }
 
     /**
@@ -90,7 +90,7 @@ class SetupController
         // Verify current step.
         $current_step = $this->_getSetupStep();
         if ($current_step !== 'register') {
-            return $response->redirectToRoute('setup:'.$current_step);
+            return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
         }
 
         // Create first account form.
@@ -123,7 +123,7 @@ class SetupController
             $this->auth->authenticate($data['username'], $data['password']);
             $this->acl->reload();
 
-            return $response->redirectToRoute('setup:index');
+            return $response->withRedirect($request->getRouter()->named('setup:index'));
         }
 
         return $request->getView()
@@ -139,7 +139,7 @@ class SetupController
         // Verify current step.
         $current_step = $this->_getSetupStep();
         if ($current_step !== 'station') {
-            return $response->redirectToRoute('setup:'.$current_step);
+            return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
         }
 
         // Set up station form.
@@ -156,7 +156,7 @@ class SetupController
             $station_repo = $this->em->getRepository(Entity\Station::class);
             $station_repo->create($data, $this->adapters, $this->configuration);
 
-            return $response->redirectToRoute('setup:settings');
+            return $response->withRedirect($request->getRouter()->named('setup:settings'));
         }
 
         return $request->getView()->renderToResponse($response, 'frontend/setup/station', [
@@ -173,7 +173,7 @@ class SetupController
         // Verify current step.
         $current_step = $this->_getSetupStep();
         if ($current_step !== 'settings') {
-            return $response->redirectToRoute('setup:'.$current_step);
+            return $response->withRedirect($request->getRouter()->named('setup:'.$current_step));
         }
 
         $form = new \AzuraForms\Form($this->settings_form_config);
@@ -196,7 +196,7 @@ class SetupController
             $request->getSession()->flash('<b>' . __('Setup is now complete!') . '</b><br>' . __('Continue setting up your station in the main AzuraCast app.'),
                 'green');
 
-            return $response->redirectToRoute('dashboard');
+            return $response->withRedirect($request->getRouter()->named('dashboard'));
         }
 
         return $request->getView()->renderToResponse($response, 'frontend/setup/settings', [

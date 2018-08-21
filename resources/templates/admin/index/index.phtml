@@ -15,7 +15,7 @@
                 <ul class="nav nav-list" <?php if (count($category_info['items']) >= 15): ?>style="height: 300px; overflow-y: scroll;"<?php endif; ?>>
                     <?php foreach($category_info['items'] as $item_name => $item_params): ?>
                         <li>
-                            <a href="<?=(is_array($item_params['url']) ? $url->route($item_params['url']) : $url->named($item_params['url'])) ?>" title="<?=$item_params['title'] ?>">
+                            <a href="<?=(is_array($item_params['url']) ? $router->route($item_params['url']) : $router->named($item_params['url'])) ?>" title="<?=$item_params['title'] ?>">
                                 <i class="<?=$item_params['icon'] ?>"></i> <?=$item_name ?>
                             </a>
                         </li>
@@ -40,7 +40,7 @@
                     <?=$sync_info['name'] ?>
                     <small><?=implode(', ', $sync_info['contents']) ?></small>
                 </h2>
-                <a class="btn bgm-blue btn-float" role="button" href="<?=$url->named('admin:index:sync', ['type' => $sync_key]) ?>" title="Run Manually"><i class="zmdi zmdi-mail-send"></i></a>
+                <a class="btn bgm-blue btn-float" role="button" href="<?=$router->named('admin:index:sync', ['type' => $sync_key]) ?>" title="Run Manually"><i class="zmdi zmdi-mail-send"></i></a>
             </div>
             <div class="card-body card-padding">
                 <p><?=$customization->formatDateTime($sync_info['latest']) ?><br><small><?=sprintf(__('%s ago'), $sync_info['diff_text']) ?></small></p>

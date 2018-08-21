@@ -3,6 +3,7 @@ namespace App\Controller\Frontend;
 
 use App\Acl;
 use App\Cache;
+use App\Http\Router;
 use App\Url;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
@@ -25,28 +26,29 @@ class DashboardController
     /** @var Database */
     protected $influx;
 
-    /** @var Url */
-    protected $url;
+    /** @var Router */
+    protected $router;
 
     /** @var Adapters */
     protected $adapter_manager;
 
     /**
-     * IndexController constructor.
+     * DashboardController constructor.
      * @param EntityManager $em
      * @param Acl $acl
      * @param Cache $cache
      * @param Database $influx
      * @param Adapters $adapter_manager
+     * @param Router $router
      */
-    public function __construct(EntityManager $em, Acl $acl, Cache $cache, Database $influx, Adapters $adapter_manager, Url $url)
+    public function __construct(EntityManager $em, Acl $acl, Cache $cache, Database $influx, Adapters $adapter_manager, Router $router)
     {
         $this->em = $em;
         $this->acl = $acl;
         $this->cache = $cache;
         $this->influx = $influx;
         $this->adapter_manager = $adapter_manager;
-        $this->url = $url;
+        $this->router = $router;
     }
 
     public function indexAction(Request $request, Response $response): Response
@@ -103,8 +105,8 @@ class DashboardController
                     'name' => $row->getName(),
                     'short_name' => $row->getShortName(),
                 ],
-                'public_url' => $this->url->named('public:index', ['station' => $row->getShortName()]),
-                'manage_url' => $this->url->named('stations:index:index', ['station' => $row->getId()]),
+                'public_url' => $this->router->named('public:index', ['station' => $row->getShortName()]),
+                'manage_url' => $this->router->named('stations:index:index', ['station' => $row->getId()]),
                 'stream_url' => $frontend_adapter->getStreamUrl(),
                 'np' => $np,
             ];

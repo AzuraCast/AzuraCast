@@ -25,7 +25,7 @@ class StationsProvider implements ServiceProviderInterface
 
             return new Files\FilesController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Url::class],
+                $di['router'],
                 $di[\App\Cache::class],
                 $config->get('forms/rename')
             );
@@ -35,14 +35,14 @@ class StationsProvider implements ServiceProviderInterface
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            $url = $di[\App\Url::class];
+            $router = $di['router'];
 
             return new Files\EditController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $url,
+                $router,
                 $di[\App\Cache::class],
                 $config->get('forms/media', [
-                    'url' => $url
+                    'router' => $router,
                 ])
             );
         };
@@ -75,7 +75,7 @@ class StationsProvider implements ServiceProviderInterface
 
             return new PlaylistsController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Url::class],
+                $di['router'],
                 $config->get('forms/playlist', [
                     'customization' => $di[\App\Customization::class]
                 ])
@@ -126,7 +126,7 @@ class StationsProvider implements ServiceProviderInterface
 
             $webhook_forms = [];
             $config_injections = [
-                'url' => $di[\App\Url::class],
+                'router' => $di['router'],
                 'app_settings' => $di['app_settings'],
                 'triggers' => $webhook_config['triggers'],
             ];

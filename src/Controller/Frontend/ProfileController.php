@@ -88,7 +88,7 @@ class ProfileController
 
             $request->getSession()->flash(__('Profile saved!'), 'green');
 
-            return $response->redirectToRoute('profile:index');
+            return $response->withRedirect($request->getRouter()->named('profile:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [

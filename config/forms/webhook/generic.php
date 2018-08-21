@@ -1,5 +1,7 @@
 <?php
-/** @var \App\Url $url */
+/** @var array $app_settings */
+/** @var array $triggers */
+/** @var \App\Http\Router $router */
 
 return [
     'method' => 'post',
@@ -13,7 +15,7 @@ return [
                 is the exact same as the <a href="%s" target="_blank">Now Playing API response</a> for your station. 
                 In order to process quickly, web hooks have a short timeout, so the responding service should be
                 optimized to handle the request in under 2 seconds.'),
-                $url->named('api:nowplaying:index')),
+                $router->named('api:nowplaying:index')),
 
             'elements' => [
 

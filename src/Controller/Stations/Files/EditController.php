@@ -99,7 +99,7 @@ class EditController extends FilesControllerAbstract
             $request->getSession()->flash('<b>' . __('%s updated.', __('Media')) . '</b>', 'green');
 
             $file_dir = (dirname($media->getPath()) === '.') ? '' : dirname($media->getPath());
-            return $response->redirectToRoute('stations:files:index', ['station' => $station_id], 302, '#'.$file_dir);
+            return $response->withRedirect($request->getRouter()->named('stations:files:index', ['station' => $station_id]).'#'.$file_dir, 302);
         }
 
         return $request->getView()->renderToResponse($response, 'system/form_page', [

@@ -3,8 +3,8 @@ namespace App\Controller\Frontend;
 
 use App\Acl;
 use App\Auth;
+use App\Entity\Repository\SettingsRepository;
 use App\Entity\User;
-use App\Url;
 use App\RateLimit;
 use Doctrine\ORM\EntityManager;
 use App\Entity\Settings;
@@ -19,9 +19,6 @@ class AccountController
     /** @var Auth */
     protected $auth;
 
-    /** @var Url */
-    protected $url;
-
     /** @var RateLimit */
     protected $rate_limit;
 
@@ -31,14 +28,12 @@ class AccountController
     public function __construct(
         EntityManager $em,
         Auth $auth,
-        Url $url,
         RateLimit $rate_limit,
         Acl $acl
     )
     {
         $this->em = $em;
         $this->auth = $auth;
-        $this->url = $url;
         $this->rate_limit = $rate_limit;
         $this->acl = $acl;
     }
@@ -46,16 +41,19 @@ class AccountController
     public function loginAction(Request $request, Response $response): Response
     {
         // Check installation completion progress.
-        if ($this->em->getRepository(Settings::class)->getSetting('setup_complete', 0) == 0) {
+
+        /** @var SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Settings::class);
+        if ($settings_repo->getSetting('setup_complete', 0) == 0) {
             $num_users = $this->em->createQuery('SELECT COUNT(u.id) FROM '.User::class.' u')->getSingleScalarResult();
 
             if ($num_users == 0) {
-                return $response->redirectToRoute('setup:index');
+                return $response->withRedirect($request->getRouter()->named('setup:index'));
             }
         }
 
         if ($this->auth->isLoggedIn()) {
-            return $response->redirectToRoute('dashboard');
+            return $response->withRedirect($request->getRouter()->named('dashboard'));
         }
 
         $session = $request->getSession();
@@ -67,7 +65,7 @@ class AccountController
                 $session->flash('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
                     'red');
 
-                return $response->redirectHere();
+                return $response->withRedirect($request->getUri());
             }
 
             $login_success = $this->auth->authenticate($_POST['username'], $_POST['password']);
@@ -93,13 +91,13 @@ class AccountController
                     return $response->withRedirect($referrer->url);
                 }
 
-                return $response->redirectToRoute('dashboard');
+                return $response->withRedirect($request->getRouter()->named('dashboard'));
             }
 
             $session->flash('<b>' . __('Login unsuccessful') . '</b><br>' . __('Your credentials could not be verified.'),
                 'red');
 
-            return $response->redirectHere();
+            return $response->withRedirect($request->getUri());
         }
 
         return $request->getView()->renderToResponse($response, 'frontend/account/login');
@@ -110,13 +108,13 @@ class AccountController
         $this->auth->logout();
         $request->getSession()->destroy();
 
-        return $response->redirectToRoute('account:login');
+        return $response->withRedirect($request->getRouter()->named('account:login'));
     }
 
     public function endmasqueradeAction(Request $request, Response $response): Response
     {
         $this->auth->endMasquerade();
 
-        return $response->redirectToRoute('admin:users:index');
+        return $response->withRedirect($request->getRouter()->named('admin:users:index'));
     }
 }

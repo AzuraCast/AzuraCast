@@ -4,7 +4,7 @@
     <div class="card-header ch-alt">
         <h2><?=__('Custom Fields') ?></h2>
 
-        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('Custom Field')) ?>" href="<?=$url->named('admin:custom_fields:add') ?>">
+        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('Custom Field')) ?>" href="<?=$router->named('admin:custom_fields:add') ?>">
             <span class="sr-only"><?=__('Add %s', __('Custom Field')) ?></span>
             <i class="zmdi zmdi-plus"></i>
         </a>
@@ -27,8 +27,8 @@
             <?php foreach($records as $row): ?>
                 <tr class="input">
                     <td>
-                        <a class="btn btn-sm btn-default" href="<?=$url->named('admin:custom_fields:edit', ['id' => $row['id']]) ?>"><?=__('Edit') ?></a>
-                        <a class="btn btn-sm btn-danger" href="<?=$url->named('admin:custom_fields:delete', ['id' => $row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                        <a class="btn btn-sm btn-default" href="<?=$router->named('admin:custom_fields:edit', ['id' => $row['id']]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$router->named('admin:custom_fields:delete', ['id' => $row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </td>
                     <td>
                         <?=$this->e($row['name']) ?>

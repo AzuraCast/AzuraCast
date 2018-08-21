@@ -1,4 +1,4 @@
-<?php /** @var \Entity\Station $station */ ?>
+<?php /** @var App\Entity\Station $station */ ?>
 
 <?php $this->layout('minimal', ['page_class' => 'embed', 'title' => $this->e($station->getName()), 'hide_footer' => true]) ?>
 
@@ -33,7 +33,7 @@ $(function() {
             iconRefresh: 'zmdi-refresh',
             iconUp: 'zmdi-sort-amount-asc'
         },
-        url: "<?=$url->named('api:requests:list', ['station' => $station->getId()]) ?>",
+        url: "<?=$router->named('api:requests:list', ['station' => $station->getId()]) ?>",
         formatters: {
             "commands": function(column, row) {
                 return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=__('Request') ?></a>';

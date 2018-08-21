@@ -1,22 +1,21 @@
 <?php
 namespace App\Controller\Stations;
 
-use App\Url;
-use App\Radio\Backend\BackendAbstract;
 use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use Slim\Http\UploadedFile;
 use App\Http\Request;
 use App\Http\Response;
+use App\Http\Router;
 
 class PlaylistsController
 {
     /** @var EntityManager */
     protected $em;
 
-    /** @var Url */
-    protected $url;
+    /** @var Router */
+    protected $router;
 
     /** @var string */
     protected $csrf_namespace = 'stations_playlists';
@@ -33,13 +32,13 @@ class PlaylistsController
     /**
      * PlaylistsController constructor.
      * @param EntityManager $em
-     * @param Url $url
+     * @param Router $router
      * @param array $form_config
      */
-    public function __construct(EntityManager $em, Url $url, array $form_config)
+    public function __construct(EntityManager $em, Router $router, array $form_config)
     {
         $this->em = $em;
-        $this->url = $url;
+        $this->router = $router;
         $this->form_config = $form_config;
 
         $this->playlist_repo = $this->em->getRepository(Entity\StationPlaylist::class);
@@ -83,7 +82,7 @@ class PlaylistsController
             'playlists' => $playlists,
             'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
             'schedule_now' => Chronos::now()->toIso8601String(),
-            'schedule_url' => $this->url->named('stations:playlists:schedule', ['station' => $station_id]),
+            'schedule_url' => $this->router->named('stations:playlists:schedule', ['station' => $station_id]),
         ]);
     }
 
@@ -145,7 +144,7 @@ class PlaylistsController
                     'allDay' => $playlist_start->eq($playlist_end),
                     'start' => $playlist_start->toIso8601String(),
                     'end' => $playlist_end->toIso8601String(),
-                    'url' => $this->url->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()]),
+                    'url' => $this->router->named('stations:playlists:edit', ['station' => $station_id, 'id' => $playlist->getId()]),
                 ];
             }
 
@@ -293,7 +292,7 @@ class PlaylistsController
 
             $request->getSession()->flash('<b>' . sprintf(($id) ? __('%s updated.') : __('%s added.'), __('Playlist')) . '</b>', 'green');
 
-            return $response->redirectToRoute('stations:playlists:index', ['station' => $station_id]);
+            return $response->withRedirect($request->getRouter()->named('stations:playlists:index', ['station' => $station_id]));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/playlists/edit', [

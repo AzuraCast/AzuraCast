@@ -82,8 +82,8 @@ $assets
 
             <?php if ($backend_type == 'liquidsoap' && $acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
                 <div class="buttons pull-right p-t-15">
-                    <a id="btn_skip_song" class="btn btn-sm btn-primary" role="button" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'skip']) ?>" v-if="!np.live.is_live"><i class="zmdi zmdi-skip-next"></i> <?=__('Skip Song') ?></a>
-                    <a id="btn_disconnect_streamer" class="btn btn-sm btn-primary" role="button" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'disconnect']) ?>" v-if="np.live.is_live"><i class="zmdi zmdi-volume-off"></i> <?=__('Disconnect Streamer') ?></a>
+                    <a id="btn_skip_song" class="btn btn-sm btn-primary" role="button" href="<?=$router->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'skip']) ?>" v-if="!np.live.is_live"><i class="zmdi zmdi-skip-next"></i> <?=__('Skip Song') ?></a>
+                    <a id="btn_disconnect_streamer" class="btn btn-sm btn-primary" role="button" href="<?=$router->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'disconnect']) ?>" v-if="np.live.is_live"><i class="zmdi zmdi-volume-off"></i> <?=__('Disconnect Streamer') ?></a>
                 </div>
                 <div class="clearfix"></div>
             <?php endif; ?>
@@ -146,9 +146,9 @@ $assets
                             <i class="zmdi zmdi-more-vert"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a class="api-call" href="<?=$url->named('api:stations:frontend', ['station' => $station->getId(), 'do' => 'restart']) ?>"><?=__('Restart Service') ?></a></li>
-                            <li><a class="api-call" href="<?=$url->named('api:stations:frontend', ['station' => $station->getId(), 'do' => 'start']) ?>"><?=__('Start Service') ?></a></li>
-                            <li><a class="api-call" href="<?=$url->named('api:stations:frontend', ['station' => $station->getId(), 'do' => 'stop']) ?>"><?=__('Stop Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$router->named('api:stations:frontend', ['station' => $station->getId(), 'do' => 'restart']) ?>"><?=__('Restart Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$router->named('api:stations:frontend', ['station' => $station->getId(), 'do' => 'start']) ?>"><?=__('Start Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$router->named('api:stations:frontend', ['station' => $station->getId(), 'do' => 'stop']) ?>"><?=__('Stop Service') ?></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -186,8 +186,8 @@ $assets
                 <dl>
                     <dt><?=__('Stream Playlists') ?>:</dt>
                     <dd>
-                        <a class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">PLS</a>
-                        <a class="btn btn-xs btn-primary" href="<?=$url->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'm3u']) ?>">M3U</a>
+                        <a class="btn btn-xs btn-primary" href="<?=$router->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'pls']) ?>">PLS</a>
+                        <a class="btn btn-xs btn-primary" href="<?=$router->named('public:playlist', ['station' => $station->getShortName(), 'format' => 'm3u']) ?>">M3U</a>
                     </dd>
                 </dl>
 
@@ -231,9 +231,9 @@ $assets
                             <i class="zmdi zmdi-more-vert"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a class="api-call" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'restart']) ?>"><?=__('Restart Service') ?></a></li>
-                            <li><a class="api-call" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'start']) ?>"><?=__('Start Service') ?></a></li>
-                            <li><a class="api-call" href="<?=$url->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'stop']) ?>"><?=__('Stop Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$router->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'restart']) ?>"><?=__('Restart Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$router->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'start']) ?>"><?=__('Start Service') ?></a></li>
+                            <li><a class="api-call" href="<?=$router->named('api:stations:backend', ['station' => $station->getId(), 'do' => 'stop']) ?>"><?=__('Stop Service') ?></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -244,8 +244,8 @@ $assets
 
                 <?php if ($acl->userAllowed($user, 'manage station media', $station->getId())): ?>
                     <div class="buttons">
-                        <a class="btn btn-primary" href="<?=$url->named('stations:files:index', ['station' => $station->getId()]) ?>"><?=__('Music Files') ?></a>
-                        <a class="btn btn-primary" href="<?=$url->named('stations:playlists:index', ['station' => $station->getId()]) ?>"><?=__('Playlists') ?></a>
+                        <a class="btn btn-primary" href="<?=$router->named('stations:files:index', ['station' => $station->getId()]) ?>"><?=__('Music Files') ?></a>
+                        <a class="btn btn-primary" href="<?=$router->named('stations:playlists:index', ['station' => $station->getId()]) ?>"><?=__('Playlists') ?></a>
                     </div>
                 <?php endif; ?>
             </div>
@@ -310,7 +310,7 @@ $(function() {
     setInterval(iterateTimer, 1000);
 
     function loadNowPlaying() {
-        $.getJSON('<?=$url->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
+        $.getJSON('<?=$router->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
             nowPlaying.np = row;
 
             if ('mediaSession' in navigator) {

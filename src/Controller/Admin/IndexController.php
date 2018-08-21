@@ -22,6 +22,7 @@ class IndexController
     /**
      * IndexController constructor.
      * @param Acl $acl
+     * @param Logger $logger
      * @param Runner $sync
      */
     public function __construct(Acl $acl, Logger $logger, Runner $sync)

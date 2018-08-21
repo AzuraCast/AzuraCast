@@ -40,7 +40,7 @@ class SettingsController
 
             $request->getSession()->flash(__('Changes saved.'), 'green');
 
-            return $response->withRedirect($request->getUrl());
+            return $response->withRedirect($request->getUri());
         }
 
         return $request->getView()->renderToResponse($response, $form_template, [

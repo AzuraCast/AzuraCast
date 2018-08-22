@@ -6,6 +6,7 @@ use App\Exception;
 use App\View;
 use App\Radio;
 use App\Session;
+use Psr\Http\Message\UriInterface;
 use Slim\Route;
 
 class Request extends \Slim\Http\Request
@@ -17,6 +18,21 @@ class Request extends \Slim\Http\Request
     const ATTRIBUTE_STATION_FRONTEND = 'station_frontend';
     const ATTRIBUTE_USER = 'user';
     const ATTRIBUTE_VIEW = 'view';
+
+    /**
+     * Get the current URI with redundant "http://url:80/" and "https://url:443/" filtered out.
+     *
+     * @return UriInterface
+     */
+    public function getFilteredUri(): UriInterface
+    {
+        if (($this->uri->getScheme() === 'http' && $this->uri->getPort() === 80)
+            || ($this->uri->getScheme() === 'https' && $this->uri->getPort() === 443)) {
+            return $this->uri->withPort(null);
+        }
+
+        return $this->uri;
+    }
 
     /**
      * Detect if a parameter exists in the request.

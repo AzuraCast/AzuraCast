@@ -65,7 +65,7 @@ class AccountController
                 $session->flash('<b>' . __('Too many login attempts') . '</b><br>' . __('You have attempted to log in too many times. Please wait 30 seconds and try again.'),
                     'red');
 
-                return $response->withRedirect($request->getUri());
+                return $response->withRedirect($request->getUri()->getPath());
             }
 
             $login_success = $this->auth->authenticate($_POST['username'], $_POST['password']);

@@ -23,15 +23,15 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di['callableResolver'] = function ($di) {
-        return new App\Resolver($di);
+        return new \App\Http\Resolver($di);
     };
 
     $di['errorHandler'] = function ($di) {
-        return $di[\App\Handler\ErrorHandler::class];
+        return $di[\App\Http\ErrorHandler::class];
     };
 
     $di['phpErrorHandler'] = function($di) {
-        return $di[\App\Handler\ErrorHandler::class];
+        return $di[\App\Http\ErrorHandler::class];
     };
 
     $di['notFoundHandler'] = function ($di) {
@@ -276,8 +276,8 @@ return function (\Slim\Container $di, $settings) {
         return $view;
     });
 
-    $di[\App\Handler\ErrorHandler::class] = function($di) {
-        return new \App\Handler\ErrorHandler(
+    $di[\App\Http\ErrorHandler::class] = function($di) {
+        return new \App\Http\ErrorHandler(
             $di[\App\Acl::class],
             $di[\Monolog\Logger::class],
             $di['router'],

@@ -1,14 +1,10 @@
 <?php
-namespace App\Handler;
+namespace App\Http;
 
 use App\Acl;
 use App\View;
 use App\Session;
-use App\Url;
 use App\Entity;
-use App\Http\Request;
-use App\Http\Response;
-use App\Http\Router;
 use Monolog\Logger;
 
 class ErrorHandler

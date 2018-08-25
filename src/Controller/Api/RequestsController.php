@@ -2,7 +2,6 @@
 namespace App\Controller\Api;
 
 use App\Doctrine\Paginator;
-use App\Http\Router;
 use App\Utilities;
 use App\ApiUtilities;
 use Doctrine\ORM\EntityManager;
@@ -15,22 +14,17 @@ class RequestsController
     /** @var EntityManager */
     protected $em;
 
-    /** @var Router */
-    protected $router;
-
     /** @var ApiUtilities */
     protected $api_utils;
 
     /**
      * RequestsController constructor.
      * @param EntityManager $em
-     * @param Router $router
      * @param ApiUtilities $api_utils
      */
-    public function __construct(EntityManager $em, Router $router, ApiUtilities $api_utils)
+    public function __construct(EntityManager $em, ApiUtilities $api_utils)
     {
         $this->em = $em;
-        $this->router = $router;
         $this->api_utils = $api_utils;
     }
 
@@ -102,22 +96,20 @@ class RequestsController
         $paginator->setFromRequest($request);
 
         $is_bootgrid = $paginator->isFromBootgrid();
+        $router = $request->getRouter();
 
-        $paginator->setPostprocessor(function($media_row) use ($station_id, $is_bootgrid) {
+        $paginator->setPostprocessor(function($media_row) use ($station_id, $is_bootgrid, $router) {
             /** @var Entity\StationMedia $media_row */
             $row = new Entity\Api\StationRequest;
             $row->song = $media_row->api($this->api_utils);
             $row->request_id = (int)$media_row->getId();
-            $row->request_url = (string)$this->router->named('api:requests:submit', [
+            $row->request_url = (string)$router->named('api:requests:submit', [
                 'station' => $station_id,
                 'media_id' => $media_row->getUniqueId(),
             ]);
 
             if ($is_bootgrid) {
-                $row = json_decode(json_encode($row), true);
-                foreach($row['song'] as $song_key => $song_val) {
-                    $row['song_'.$song_key] = $song_val;
-                }
+                return Utilities::flatten_array($row, '_');
             }
 
             return $row;

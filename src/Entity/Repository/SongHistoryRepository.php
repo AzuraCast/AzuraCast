@@ -68,7 +68,7 @@ class SongHistoryRepository extends BaseRepository
         $return = [];
         foreach ($history as $sh) {
             /** @var Entity\SongHistory $sh */
-            $return[] = $sh->api($api_utils);
+            $return[] = $sh->api(new Entity\Api\SongHistory, $api_utils);
         }
 
         return $return;

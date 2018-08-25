@@ -2,6 +2,7 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
+use App\Utilities;
 use Monolog\Logger;
 
 abstract class AbstractConnector implements ConnectorInterface
@@ -30,44 +31,6 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
-     * Flatten an array from format:
-     * [
-     *   'user' => [
-     *     'id' => 1,
-     *     'name' => 'test',
-     *   ]
-     * ]
-     *
-     * to format:
-     * [
-     *   'user.id' => 1,
-     *   'user.name' => 'test',
-     * ]
-     *
-     * This function is used to create replacements for variables in strings.
-     *
-     * @param array $array
-     * @param string $separator
-     * @param null $prefix
-     * @return array
-     */
-    protected function _flattenArray(array $array, $separator = '.', $prefix = null): array
-    {
-        $return = [];
-
-        foreach($array as $key => $value) {
-            $return_key = $prefix ? $prefix.$separator.$key : $key;
-            if (\is_array($value)) {
-                $return = array_merge($return, $this->_flattenArray($value, $separator, $return_key));
-            } else {
-                $return[$return_key] = $value;
-            }
-        }
-
-        return $return;
-    }
-
-    /**
      * Replace variables in the format {{ blah }} with the flattened contents of the NowPlaying API array.
      *
      * @param array $raw_vars
@@ -76,7 +39,7 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     public function _replaceVariables(array $raw_vars, Entity\Api\NowPlaying $np): array
     {
-        $values = $this->_flattenArray(json_decode(json_encode($np), true));
+        $values = Utilities::flatten_array($np, '.');
         $vars = [];
 
         foreach($raw_vars as $var_key => $var_value) {

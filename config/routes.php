@@ -164,6 +164,11 @@ return function(\Slim\App $app) {
             $this->get('/nowplaying', Controller\Api\NowplayingController::class.':indexAction');
 
             // This would not normally be POST-able, but Bootgrid requires it
+            $this->map(['GET', 'POST'], '/history', Controller\Api\Stations\HistoryController::class)
+                ->setName('api:stations:history')
+                ->add([Middleware\Permissions::class, 'view station reports', true]);
+
+            // This would not normally be POST-able, but Bootgrid requires it
             $this->map(['GET', 'POST'], '/requests', Controller\Api\RequestsController::class.':listAction')
                 ->setName('api:requests:list');
 

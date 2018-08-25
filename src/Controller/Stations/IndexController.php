@@ -10,19 +10,19 @@ use InfluxDB\Database;
 
 class IndexController
 {
-    use Traits\SongHistoryFilters;
+    /** @var EntityManager */
+    protected $em;
 
     /** @var Database */
     protected $influx;
 
     /**
-     * IndexController constructor.
+     * @param EntityManager $em
      * @param Database $influx
      */
-    public function __construct(EntityManager $em, Cache $cache, Database $influx)
+    public function __construct(EntityManager $em, Database $influx)
     {
         $this->em = $em;
-        $this->cache = $cache;
         $this->influx = $influx;
     }
 
@@ -111,11 +111,6 @@ class IndexController
             ->setMaxResults(40)
             ->getArrayResult();
 
-        $ignored_songs = $this->_getIgnoredSongs();
-        $song_totals_raw['played'] = array_filter($song_totals_raw['played'], function ($value) use ($ignored_songs) {
-            return !(isset($ignored_songs[$value['song_id']]));
-        });
-
         // Compile the above data.
         $song_totals = [];
         foreach ($song_totals_raw as $total_type => $total_records) {
@@ -142,11 +137,6 @@ class IndexController
             ->setParameter('station_id', $station->getId())
             ->setParameter('timestamp', $threshold)
             ->getArrayResult();
-
-        $ignored_songs = $this->_getIgnoredSongs();
-        $songs_played_raw = array_filter($songs_played_raw, function ($value) use ($ignored_songs) {
-            return !(isset($ignored_songs[$value['song_id']]));
-        });
 
         $songs_played_raw = array_values($songs_played_raw);
         $songs = [];

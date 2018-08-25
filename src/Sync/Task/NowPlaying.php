@@ -180,7 +180,7 @@ class NowPlaying extends TaskAbstract
 
             $next_song = $this->history_repo->getNextSongForStation($station);
             if ($next_song instanceof Entity\SongHistory) {
-                $np->playing_next = $next_song->api($this->api_utils);
+                $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils);
             } else {
                 $np->playing_next = null;
             }
@@ -209,7 +209,7 @@ class NowPlaying extends TaskAbstract
                 $next_song = $this->history_repo->getNextSongForStation($station);
 
                 if ($next_song instanceof Entity\SongHistory) {
-                    $np->playing_next = $next_song->api($this->api_utils);
+                    $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils);
                 }
             }
 
@@ -231,7 +231,7 @@ class NowPlaying extends TaskAbstract
             }
 
             // Register a new item in song history.
-            $np->now_playing = $sh_obj->api($this->api_utils, true);
+            $np->now_playing = $sh_obj->api(new Entity\Api\NowPlayingCurrentSong, $this->api_utils);
         }
 
         $np->update();

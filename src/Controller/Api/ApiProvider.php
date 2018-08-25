@@ -28,13 +28,6 @@ class ApiProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Stations\MediaController::class] = function($di) {
-            return new Stations\MediaController(
-                $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Customization::class]
-            );
-        };
-
         $di[NowplayingController::class] = function($di) {
             return new NowplayingController(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -45,7 +38,13 @@ class ApiProvider implements ServiceProviderInterface
         $di[RequestsController::class] = function($di) {
             return new RequestsController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di['router'],
+                $di[\App\ApiUtilities::class]
+            );
+        };
+
+        $di[Stations\HistoryController::class] = function($di) {
+            return new Stations\HistoryController(
+                $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\ApiUtilities::class]
             );
         };
@@ -54,6 +53,13 @@ class ApiProvider implements ServiceProviderInterface
             return new Stations\IndexController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Radio\Adapters::class]
+            );
+        };
+
+        $di[Stations\MediaController::class] = function($di) {
+            return new Stations\MediaController(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\App\Customization::class]
             );
         };
 

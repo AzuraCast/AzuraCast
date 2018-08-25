@@ -10,7 +10,8 @@ use App\Http\Response;
 
 class ReportsController
 {
-    use Traits\SongHistoryFilters;
+    /** @var EntityManager */
+    protected $em;
 
     /** @var RadioAutomation */
     protected $sync_automation;
@@ -18,77 +19,17 @@ class ReportsController
     /**
      * ReportsController constructor.
      * @param EntityManager $em
-     * @param Cache $cache
      * @param RadioAutomation $sync_automation
      */
-    public function __construct(EntityManager $em, Cache $cache, RadioAutomation $sync_automation)
+    public function __construct(EntityManager $em, RadioAutomation $sync_automation)
     {
         $this->em = $em;
-        $this->cache = $cache;
         $this->sync_automation = $sync_automation;
     }
 
-    public function timelineAction(Request $request, Response $response, $station_id, $format = 'html'): Response
+    public function timelineAction(Request $request, Response $response): Response
     {
-        $station = $request->getStation();
-
-        $songs_played_raw = $this->_getEligibleHistory($station_id);
-
-        $songs = [];
-        foreach ($songs_played_raw as $song_row) {
-            // Song has no recorded ending.
-            if ($song_row['timestamp_end'] == 0) {
-                continue;
-            }
-
-            $song_row['stat_start'] = $song_row['listeners_start'];
-            $song_row['stat_end'] = $song_row['listeners_end'];
-            $song_row['stat_delta'] = $song_row['delta_total'];
-
-            $songs[] = $song_row;
-        }
-
-        if ($format === 'csv') {
-            $export_all = [];
-            $export_all[] = [
-                'Date',
-                'Time',
-                'Listeners',
-                'Delta',
-                'Likes',
-                'Dislikes',
-                'Track',
-                'Artist',
-                'Playlist'
-            ];
-
-            foreach ($songs as $song_row) {
-                $export_row = [
-                    date('Y-m-d', $song_row['timestamp_start']),
-                    date('g:ia', $song_row['timestamp_start']),
-                    $song_row['stat_start'],
-                    $song_row['stat_delta'],
-                    $song_row['score_likes'],
-                    $song_row['score_dislikes'],
-                    $song_row['song']['title'] ?: $song_row['song']['text'],
-                    $song_row['song']['artist'],
-                    $song_row['playlist']['name'] ?? '',
-                ];
-
-                $export_all[] = $export_row;
-            }
-
-            $csv_file = \App\Export::csv($export_all);
-            $csv_filename = $station->getShortName() . '_timeline_' . date('Ymd') . '.csv';
-
-            return $response->renderStringAsFile($csv_file, 'text/csv', $csv_filename);
-        }
-
-        $songs = array_reverse($songs);
-
-        return $request->getView()->renderToResponse($response, 'stations/reports/timeline', [
-            'songs' => $songs,
-        ]);
+        return $request->getView()->renderToResponse($response, 'stations/reports/timeline');
     }
 
     public function performanceAction(Request $request, Response $response, $station_id, $format = 'html'): Response

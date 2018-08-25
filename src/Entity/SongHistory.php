@@ -459,11 +459,12 @@ class SongHistory
     }
 
     /**
-     * @return Api\SongHistory|Api\NowPlayingCurrentSong
+     * @param Api\SongHistory $response
+     * @param \App\ApiUtilities $api
+     * @return Api\SongHistory
      */
-    public function api(\App\ApiUtilities $api, $now_playing = false)
+    public function api(Api\SongHistory $response, \App\ApiUtilities $api)
     {
-        $response = ($now_playing) ? new Api\NowPlayingCurrentSong : new Api\SongHistory;
         $response->sh_id = (int)$this->id;
         $response->played_at = (int)$this->timestamp_start;
         $response->duration = (int)$this->duration;
@@ -474,6 +475,12 @@ class SongHistory
             $response->playlist = $playlist->getName();
         } else {
             $response->playlist = '';
+        }
+
+        if ($response instanceof Api\DetailedSongHistory) {
+            $response->listeners_start = (int)$this->listeners_start;
+            $response->listeners_end = (int)$this->listeners_end;
+            $response->delta_total = (int)$this->delta_total;
         }
 
         $response->song = ($this->media)

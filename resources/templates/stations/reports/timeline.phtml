@@ -3,21 +3,25 @@
 <?php
 /** @var \App\Assets $assets */
 $assets
+    ->load('daterangepicker')
     ->load('bootgrid');
 ?>
 
 <div class="card">
     <div class="card-header ch-alt">
-        <h2><?=__('Song Playback Timeline') ?></h2>
-
-        <ul class="actions">
-            <li>
-                <a href="<?=$router->fromHere(null, ['format' => 'csv']) ?>" title="<?=__('Download CSV') ?>">
-                    <span class="sr-only"><?=__('Download CSV') ?></span>
-                    <i class="zmdi zmdi-download"></i>
+        <div class="row">
+            <div class="col-md-5">
+                <h2><?=__('Song Playback Timeline') ?></h2>
+            </div>
+            <div class="col-md-7 text-right">
+                <a class="btn btn-default" id="reportrange" href="#">
+                    <i class="zmdi zmdi-calendar"></i> <span><?=__('Last 14 Days') ?></span> <i class="caret"></i>
                 </a>
-            </li>
-        </ul>
+                <a class="btn btn-primary" id="btn-export" href="<?=$router->fromHere('api:stations:history', [], ['format' => 'csv']) ?>" target="_blank" title="<?=__('Download CSV') ?>">
+                    <i class="zmdi zmdi-download"></i> <?=__('Download CSV') ?>
+                </a>
+            </div>
+        </div>
     </div>
     <div class="table-responsive">
         <table class="data-table table table-striped">
@@ -30,65 +34,105 @@ $assets
             </colgroup>
             <thead>
                 <tr>
-                    <th data-column-id="date_time"><?=__('Date/Time') ?></th>
-                    <th data-column-id="listeners"><?=__('Listeners') ?></th>
-                    <th data-column-id="delta"><?=__('Change') ?></th>
-                    <th data-column-id="song"><?=__('Song Title') ?></th>
-                    <th data-column-id="playlists"><?=__('Source') ?></th>
+                    <th data-column-id="date_time" data-formatter="datetime"><?=__('Date/Time') ?></th>
+                    <th data-column-id="listeners_start"><?=__('Listeners') ?></th>
+                    <th data-column-id="delta" data-formatter="delta"><?=__('Change') ?></th>
+                    <th data-column-id="song" data-formatter="song_title"><?=__('Song Title') ?></th>
+                    <th data-column-id="playlists" data-formatter="playlists"><?=__('Source') ?></th>
                 </tr>
             </thead>
             <tbody>
-            <?php foreach($songs as $song_row): ?>
-                <tr class="input" id="song_<?=$song_row['timestamp'] ?>">
-                    <td class="text-center"><?=$customization->formatTime($song_row['timestamp_start']) ?></td>
-                    <td class="text-center"><big><?=$song_row['stat_start'] ?></big></td>
-                    <td class="text-center">
-                        <big>
-                    <?php if ($song_row['stat_delta'] > 0): ?>
-                        <span class="text-success"><i class="icon-caret-up"></i> <?=$song_row['stat_delta'] ?></span>
-                    <?php elseif ($song_row['stat_delta'] < 0): ?>
-                        <span class="text-danger"><i class="icon-caret-down"></i> <?=abs($song_row['stat_delta']) ?></span>
-                    <?php else: ?>
-                        0
-                    <?php endif; ?>
-                        </big>
-                    </td>
-                    <td>
-                    <?php if ($song_row['song']['title']): ?>
-                        <b><?=$song_row['song']['title'] ?></b><br>
-                        <?=$song_row['song']['artist'] ?>
-                    <?php else: ?>
-                        <?=$song_row['song']['text'] ?>
-                    <?php endif; ?>
-                    </td>
-                    <td>
-                    <?php if (isset($song_row['request'])): ?>
-                        <?=sprintf(__('Request: %s'), date('D g:ia', $song_row['request']['timestamp'])) ?>
-                    <?php elseif (isset($song_row['playlist'])): ?>
-                        <?=sprintf(__('Playlist: %s'), $song_row['playlist']['name']) ?>
-                    <?php else: ?>
-                        <?=__('Live Broadcast') ?>
-                    <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
 </div>
 
 <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-    $(function() {
-        $(".data-table").bootgrid({
-            caseSensitive: false,
-            sorting: false,
-            css: {
-                icon: 'zmdi icon',
-                iconColumns: 'zmdi-view-module',
-                iconDown: 'zmdi-sort-amount-desc',
-                iconRefresh: 'zmdi-refresh',
-                iconUp: 'zmdi-sort-amount-asc'
+let range_start = null,
+    range_end = null;
+
+const api_url = "<?=$router->fromHere('api:stations:history') ?>";
+
+$(function() {
+    $(".data-table").bootgrid({
+        ajax: true,
+        sorting: false,
+        caseSensitive: false,
+        css: {
+            icon: 'zmdi icon',
+            iconColumns: 'zmdi-view-module',
+            iconDown: 'zmdi-sort-amount-desc',
+            iconRefresh: 'zmdi-refresh',
+            iconUp: 'zmdi-sort-amount-asc'
+        },
+        url: api_url,
+        post: function() {
+            return {
+                start: range_start,
+                end: range_end
+            };
+        },
+        formatters: {
+            "datetime": function(column, row) {
+                return formatTimestamp(row.played_at);
+            },
+            "delta": function(column, row) {
+                if (row.delta_total > 0) {
+                    return '<big><span class="text-success"><i class="zmdi zmdi-trending-up"></i> '+row.delta_total+'</span></big>';
+                } else if (row.delta_total < 0) {
+                    return '<big><span class="text-danger"><i class="zmdi zmdi-trending-down"></i> ' + Math.abs(row.delta_total) + '</span></big>';
+                } else {
+                    return '<big>0</big>';
+                }
+            },
+            "song_title": function(column, row) {
+                if (row.song_title) {
+                    return '<b>'+row.song_title+'</b><br>'+row.song_artist;
+                } else {
+                    return row.song_text;
+                }
+            },
+            "playlists": function(column, row) {
+                if (row.is_request) {
+                    return <?=$this->escapeJs(__('Listener Request')) ?>;
+                } else if (row.playlist) {
+                    return <?=$this->escapeJs(__('Playlist:')) ?>+" "+row.playlist;
+                } else {
+                    return <?=$this->escapeJs(__('Live Broadcast')) ?>;
+                }
             }
-        });
+        }
     });
+
+    $('#reportrange').daterangepicker({
+        startDate: moment().subtract(13, 'days'),
+        endDate: moment(),
+        opens: "left",
+        ranges: {
+            "<?=__('Today') ?>": [moment(), moment()],
+            "<?=__('Yesterday') ?>": [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            "<?=__('Last 7 Days') ?>": [moment().subtract(6, 'days'), moment()],
+            "<?=__('Last 14 Days') ?>": [moment().subtract(13, 'days'), moment()],
+            "<?=__('Last 30 Days') ?>": [moment().subtract(29, 'days'), moment()],
+            "<?=__('This Month') ?>": [moment().startOf('month'), moment().endOf('month')],
+            "<?=__('Last Month') ?>": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, function(start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+        range_start = start.format('YYYY-MM-DD');
+        range_end = end.format('YYYY-MM-DD');
+
+        $('#btn-export').attr('href', api_url+'?format=csv&start='+range_start+'&end='+range_end);
+        $('.data-table').bootgrid("reload");
+    });
+
+    function formatTimestamp(unix_timestamp) {
+        var m = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var d = new Date(unix_timestamp*1000);
+        return [m[d.getMonth()],' ',d.getDate(),', ',d.getFullYear()," ",
+            (d.getHours() % 12 || 12),":",(d.getMinutes() < 10 ? '0' : '')+d.getMinutes(),
+            " ",d.getHours() >= 12 ? 'PM' : 'AM'].join('');
+    }
+});
 </script>

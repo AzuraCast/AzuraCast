@@ -50,7 +50,6 @@ class StationsProvider implements ServiceProviderInterface
         $di[IndexController::class] = function($di) {
             return new IndexController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class],
                 $di[\InfluxDB\Database::class]
             );
         };
@@ -97,7 +96,6 @@ class StationsProvider implements ServiceProviderInterface
         $di[ReportsController::class] = function($di) {
             return new ReportsController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class],
                 $di[\App\Sync\Task\RadioAutomation::class]
             );
         };

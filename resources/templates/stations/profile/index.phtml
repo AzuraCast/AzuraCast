@@ -1,10 +1,12 @@
 <?php
-/** @var \Entity\Station $station */
-?>
+/** @var App\Entity\Station $station */
 
-<?php $this->layout('main', ['title' => __('Profile'), 'manual' => true]) ?>
+$this->layout('main', [
+    'title' => __('Profile'),
+    'manual' => true,
+    'sidebar_tab' => 'profile',
+]);
 
-<?php
 /** @var \App\Assets $assets */
 $assets
     ->load('vue')

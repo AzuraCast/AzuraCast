@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2018-08-13T02:35:45+00:00\n"
-"PO-Revision-Date: 2018-08-13T02:35:45+00:00\n"
+"POT-Creation-Date: 2018-08-26T21:57:30+00:00\n"
+"PO-Revision-Date: 2018-08-26T21:57:30+00:00\n"
 "Language: \n"
 
 #: /var/azuracast/www/src/Controller/Admin/ApiController.php:49
@@ -27,9 +27,9 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:122
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:54
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:25
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:166
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:217
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:226
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:216
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:225
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:78
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:123
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:165
@@ -45,7 +45,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:85
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:99
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:121
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:294
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:293
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:99
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:141
 msgid "%s updated."
@@ -59,7 +59,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:93
 #: /var/azuracast/www/src/Controller/Stations/Files/EditController.php:108
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:129
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:301
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:300
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:107
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:149
 msgid "Edit %s"
@@ -72,7 +72,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:110
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:113
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:154
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:410
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:409
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:130
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:218
 msgid "%s deleted."
@@ -83,7 +83,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:101
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:83
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:121
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:294
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:293
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:99
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:98
 msgid "%s added."
@@ -101,13 +101,13 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:94
 #: /var/azuracast/www/src/Controller/Frontend/ApiKeysController.php:93
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:129
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:301
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:300
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:107
 #: /var/azuracast/www/src/Controller/Stations/WebhooksController.php:106
 msgid "Add %s"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Admin/IndexController.php:83
+#: /var/azuracast/www/src/Controller/Admin/IndexController.php:84
 msgid "Sync Task Output"
 msgstr ""
 
@@ -131,7 +131,7 @@ msgstr ""
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:108
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:117
 #: /var/azuracast/www/src/Controller/Admin/StationsController.php:216
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:69
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:64
 msgid "Station"
 msgstr ""
 
@@ -151,59 +151,59 @@ msgid "Another user already exists with this e-mail address. Please update the e
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Admin/UsersController.php:127
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:89
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:87
 msgid "Logged in successfully."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:69
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:121
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:191
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:64
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:115
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:184
 msgid "%s restarted."
 msgstr ""
 
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:96
 #: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:102
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:108
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:121
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:115
 msgid "Frontend"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:102
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:172
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:96
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:165
 msgid "%s stopped."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:108
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:178
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:102
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
 msgid "%s started."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:158
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:151
 msgid "Song skipped."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:166
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:159
 msgid "Streamer disconnected."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:172
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:178
-#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:191
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:165
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:171
+#: /var/azuracast/www/src/Controller/Api/Stations/ServicesController.php:184
 msgid "Backend"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:67
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:65
 msgid "Too many login attempts"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:67
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:65
 msgid "You have attempted to log in too many times. Please wait 30 seconds and try again."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:99
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:97
 msgid "Login unsuccessful"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:99
+#: /var/azuracast/www/src/Controller/Frontend/AccountController.php:97
 msgid "Your credentials could not be verified."
 msgstr ""
 
@@ -211,11 +211,11 @@ msgstr ""
 msgid "My Account"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:196
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:198
 msgid "%s Listener Range"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:207
+#: /var/azuracast/www/src/Controller/Frontend/DashboardController.php:209
 msgid "%s Daily Average"
 msgstr ""
 
@@ -282,7 +282,7 @@ msgid "File Not Processed"
 msgstr ""
 
 #: /var/azuracast/www/src/Controller/Stations/MountsController.php:38
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:56
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:55
 #: /var/azuracast/www/src/Controller/Stations/StreamersController.php:38
 #: /var/azuracast/www/src/Middleware/Module/StationFiles.php:26
 msgid "This feature is not currently supported on this station."
@@ -294,27 +294,27 @@ msgstr ""
 msgid "Mount Point"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:166
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:217
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:294
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:301
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:410
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:165
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:216
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:293
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:300
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:409
 msgid "Playlist"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:171
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:170
 msgid "This playlist is not a sequential playlist."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:226
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:225
 msgid "Format"
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:277
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 msgid "Existing playlist imported."
 msgstr ""
 
-#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:277
+#: /var/azuracast/www/src/Controller/Stations/PlaylistsController.php:276
 msgid "%d song(s) were imported into the playlist."
 msgstr ""
 
@@ -367,27 +367,27 @@ msgstr ""
 msgid "Web Hook Test Output"
 msgstr ""
 
-#: /var/azuracast/www/src/Handler/ErrorHandler.php:82
-#: /var/azuracast/www/src/Middleware/Module/Api.php:65
+#: /var/azuracast/www/src/Http/ErrorHandler.php:70
+#: /var/azuracast/www/src/Http/ErrorHandler.php:79
 msgid "You must be logged in to access this page."
 msgstr ""
 
-#: /var/azuracast/www/src/Handler/ErrorHandler.php:95
-#: /var/azuracast/www/src/Middleware/Module/Api.php:62
+#: /var/azuracast/www/src/Http/ErrorHandler.php:91
+#: /var/azuracast/www/src/Http/ErrorHandler.php:100
 msgid "You do not have permission to access this portion of the site."
 msgstr ""
 
-#: /var/azuracast/www/src/Radio/Adapters.php:90
-#: /var/azuracast/www/src/Radio/Adapters.php:94
-#: /var/azuracast/www/src/Radio/Adapters.php:126
+#: /var/azuracast/www/src/Radio/Adapters.php:95
+#: /var/azuracast/www/src/Radio/Adapters.php:99
+#: /var/azuracast/www/src/Radio/Adapters.php:128
 msgid "Use <b>%s</b> on this server"
 msgstr ""
 
-#: /var/azuracast/www/src/Radio/Adapters.php:98
+#: /var/azuracast/www/src/Radio/Adapters.php:103
 msgid "Connect to a <b>remote radio server</b>"
 msgstr ""
 
-#: /var/azuracast/www/src/Radio/Adapters.php:130
+#: /var/azuracast/www/src/Radio/Adapters.php:132
 msgid "<b>Do not use</b> an AutoDJ service"
 msgstr ""
 
@@ -424,27 +424,27 @@ msgstr ""
 msgid "Cleanup"
 msgstr ""
 
-#: /var/azuracast/www/src/Utilities.php:92
+#: /var/azuracast/www/src/Utilities.php:81
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] ""
 
-#: /var/azuracast/www/src/Utilities.php:97
+#: /var/azuracast/www/src/Utilities.php:86
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] ""
 
-#: /var/azuracast/www/src/Utilities.php:102
+#: /var/azuracast/www/src/Utilities.php:91
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] ""
 
-#: /var/azuracast/www/src/Utilities.php:107
+#: /var/azuracast/www/src/Utilities.php:96
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] ""
 
-#: /var/azuracast/www/src/Utilities.php:111
+#: /var/azuracast/www/src/Utilities.php:100
 msgid "%d month"
 msgid_plural "%d months"
 msgstr[0] ""

@@ -3,8 +3,8 @@ namespace App\Middleware\Module;
 
 use App\Entity;
 use App\Session;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 /**
  * Handle API calls and wrap exceptions in JSON formatting.
@@ -36,13 +36,16 @@ class Api
             $this->session->disable();
         }
 
+        // Set "is API call" attribute on the request so error handling responds correctly.
+        $request = $request->withAttribute('is_api_call', true);
+
         // Attempt API key auth if a key exists.
         $api_key = $this->getApiKey($request);
         $api_user = (!empty($api_key)) ? $this->api_repo->authenticate($api_key) : null;
 
         // Override the request's "user" variable if API authentication is supplied and valid.
         if ($api_user instanceof Entity\User) {
-            $request = $request->withAttribute('user', $api_user);
+            $request = $request->withAttribute(Request::ATTRIBUTE_USER, $api_user);
         }
 
         // Only set global CORS for GET requests and API-authenticated requests;
@@ -56,23 +59,7 @@ class Api
             ->withHeader('X-Accel-Expires', 30); // CloudFlare caching
 
         // Custom error handling for API responses.
-        try {
-            return $next($request, $response);
-        } catch(\App\Exception\PermissionDenied $e) {
-            $api_response = new Entity\Api\Error(403, __('You do not have permission to access this portion of the site.'));
-            return $response->withStatus(403)->withJson($api_response);
-        } catch (\App\Exception\NotLoggedIn $e) {
-            $api_response = new Entity\Api\Error(403, __('You must be logged in to access this page.'));
-            return $response->withStatus(403)->withJson($api_response);
-        } catch(\Exception $e) {
-            $api_response = new Entity\Api\Error(
-                $e->getCode(),
-                $e->getMessage(),
-                (!APP_IN_PRODUCTION) ? $e->getTrace() : []
-            );
-
-            return $response->withStatus(500)->withJson($api_response);
-        }
+        return $next($request, $response);
     }
 
     protected function getApiKey(Request $request): ?string

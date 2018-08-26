@@ -64,17 +64,17 @@ class ErrorHandler
         ]);
 
         $show_detailed = !APP_IN_PRODUCTION;
-
-        if ($req->isXhr() || APP_IS_COMMAND_LINE || APP_TESTING_MODE) {
-            $api_response = new Entity\Api\Error(
-                $e->getCode(),
-                $e->getMessage(),
-                ($show_detailed) ? $e->getTrace() : []
-            );
-            return $res->withStatus(500)->withJson($api_response);
-        }
+        $return_json = ($req->isXhr() || APP_IS_COMMAND_LINE || APP_TESTING_MODE);
 
         if ($e instanceof \App\Exception\NotLoggedIn) {
+            $error_message = __('You must be logged in to access this page.');
+
+            if ($return_json) {
+                return $res
+                    ->withStatus(403)
+                    ->withJson(new Entity\Api\Error(403, $error_message));
+            }
+
             // Redirect to login page for not-logged-in users.
             $this->session->flash(__('You must be logged in to access this page.'), 'red');
 
@@ -88,6 +88,14 @@ class ErrorHandler
         }
 
         if ($e instanceof \App\Exception\PermissionDenied) {
+            $error_message = __('You do not have permission to access this portion of the site.');
+
+            if ($return_json) {
+                return $res
+                    ->withStatus(403)
+                    ->withJson(new Entity\Api\Error(403, $error_message));
+            }
+
             // Bounce back to homepage for permission-denied users.
             $this->session->flash(__('You do not have permission to access this portion of the site.'),
                 Session\Flash::ERROR);
@@ -95,6 +103,18 @@ class ErrorHandler
             return $res
                 ->withStatus(302)
                 ->withHeader('Location', $this->router->named('home'));
+        }
+
+        if ($return_json) {
+            $api_response = new Entity\Api\Error(
+                $e->getCode(),
+                $e->getMessage(),
+                ($show_detailed) ? $e->getTrace() : []
+            );
+
+            return $res
+                ->withStatus(500)
+                ->withJson($api_response);
         }
 
         if ($show_detailed) {

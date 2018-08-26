@@ -294,10 +294,10 @@ return function (\Slim\Container $di, $settings) {
 
             $handler = new \Monolog\Handler\StreamHandler('php://stderr', $logging_level, true);
             $logger->pushHandler($handler);
+        } else {
+            $handler = new \Monolog\Handler\StreamHandler(APP_INCLUDE_TEMP.'/azuracast.log', \Monolog\Logger::WARNING, true);
+            $logger->pushHandler($handler);
         }
-
-        $handler = new \Monolog\Handler\StreamHandler(APP_INCLUDE_TEMP.'/azuracast.log', \Monolog\Logger::WARNING, true);
-        $logger->pushHandler($handler);
 
         return $logger;
     };

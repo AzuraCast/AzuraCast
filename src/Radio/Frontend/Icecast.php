@@ -30,10 +30,11 @@ class Icecast extends FrontendAbstract
     protected function _getNowPlaying(&$np, $payload = null, $include_clients = true)
     {
         $fe_config = (array)$this->station->getFrontendConfig();
+        $radio_port = $fe_config['port'];
+
         $reader = new \App\Xml\Reader();
 
         if (empty($payload)) {
-            $radio_port = $fe_config['port'];
             $np_url = 'http://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $radio_port . '/admin/stats';
 
             $payload = $this->getUrl($np_url, [

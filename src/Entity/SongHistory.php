@@ -3,7 +3,7 @@ namespace App\Entity;
 
 /**
  * @Table(name="song_history", indexes={
- *   @index(name="sort_idx", columns={"timestamp_start"}),
+ *   @index(name="history_idx", columns={"timestamp_start","timestamp_end","listeners_start"}),
  * })
  * @Entity(repositoryClass="App\Entity\Repository\SongHistoryRepository")
  */

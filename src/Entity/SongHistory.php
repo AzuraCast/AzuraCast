@@ -9,6 +9,8 @@ namespace App\Entity;
  */
 class SongHistory
 {
+    const DEFAULT_DAYS_TO_KEEP = 60;
+
     /**
      * @Column(name="id", type="integer")
      * @Id

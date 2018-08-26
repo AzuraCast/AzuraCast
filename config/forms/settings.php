@@ -64,6 +64,23 @@ return [
                     ]
                 ],
 
+                'history_keep_days' => [
+                    'radio',
+                    [
+                        'label' => __('Days of Playback History to Keep'),
+                        'description' => __('Set longer to preserve more playback history for stations. Set shorter to save disk space.'),
+                        'choices' => [
+                            14 => __('Last 14 Days'),
+                            30 => __('Last 30 Days'),
+                            60 => __('Last 60 Days'),
+                            365 => __('Last Year'),
+                            730 => __('Last 2 Years'),
+                            0 => __('Indefinitely'),
+                        ],
+                        'default' => \App\Entity\SongHistory::DEFAULT_DAYS_TO_KEEP,
+                    ]
+                ]
+
             ],
         ],
 
@@ -86,7 +103,7 @@ return [
                         ],
                         'default' => \App\Entity\Analytics::LEVEL_ALL,
                     ]
-                ]
+                ],
 
             ],
         ],

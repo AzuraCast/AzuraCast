@@ -1,8 +1,9 @@
 <?php
 namespace App\Sync\Task;
 
-use App\Entity\SongHistory;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\EntityManager;
+use App\Entity;
 
 class HistoryCleanup extends TaskAbstract
 {
@@ -20,9 +21,20 @@ class HistoryCleanup extends TaskAbstract
 
     public function run($force = false)
     {
-        $threshold = strtotime('-1 month');
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
-        $this->em->createQuery('DELETE FROM '.SongHistory::class.' sh WHERE sh.timestamp_start <= :threshold')
+        $days_to_keep = (int)$settings_repo->getSetting('history_keep_days', Entity\SongHistory::DEFAULT_DAYS_TO_KEEP);
+
+        if ($days_to_keep === 0) {
+            return;
+        }
+
+        $threshold = (new Chronos())
+            ->subDays($days_to_keep)
+            ->getTimestamp();
+
+        $this->em->createQuery('DELETE FROM '.Entity\SongHistory::class.' sh WHERE sh.timestamp_start <= :threshold')
             ->setParameter('threshold', $threshold)
             ->execute();
     }

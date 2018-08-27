@@ -266,6 +266,7 @@ return function (\Slim\Container $di, $settings) {
         $view->addData([
             'app_settings' => $di['app_settings'],
             'router' => $di['router'],
+            'request' => $di['request'],
             'assets' => $di[\App\Assets::class],
             'auth' => $di[\App\Auth::class],
             'acl' => $di[\App\Acl::class],

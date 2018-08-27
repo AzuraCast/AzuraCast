@@ -27,6 +27,7 @@ class EnableView
     public function __invoke(Request $request, Response $response, $next): Response
     {
         $this->view->addData([
+            'request' => $request,
             'user' => $request->getAttribute(Request::ATTRIBUTE_USER),
         ]);
 

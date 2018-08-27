@@ -45,6 +45,8 @@ $assets
 </style>
 </head>
 <body class="<?=$page_class ?>">
+<?=$assets->inlineJs($request) ?>
+
 <a class="sr-only" href="#content"><?=__('Skip to main content') ?></a>
 
 <header id="header" class="clearfix" data-ma-theme="blue" style="background-image: url('/static/img/header_bg.png');" data-rjs="3">
@@ -127,8 +129,6 @@ $assets
 </footer>
 
 <div id="radio-player"></div>
-
-<?=$assets->inlineJs() ?>
 
 <?php if ($flash->hasMessages()): ?>
     <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">

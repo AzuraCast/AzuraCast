@@ -1,4 +1,6 @@
 <?php
+use App\Http\Request;
+
 /**
  * Static assets referenced in AzuraCast.
  * Stored here to easily resolve dependencies on individual pages.
@@ -291,11 +293,30 @@ return [
         'files' => [
             'js' => [
                 [
-                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js',
-                    'integrity' => 'sha256-ABVkpwb9K9PxubvRrHMkk6wmWcIHUE9eBxNZLXYQ84k=',
-                    'defer' => true,
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js',
+                    'integrity' => 'sha256-VrmtNHAdGzjNsUNtWYG55xxE9xDTz4gF63x/prKXKH0=',
+                ],
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.21/moment-timezone-with-data.min.js',
+                    'integrity' => 'sha256-VX6SyoDzanqBxHY3YQyaYB/R7t5TpgjF4ZvotrViKAY=',
                 ],
             ]
+        ],
+        'inline' => [
+            'js' => [
+                function(Request $request) {
+                    $tz = $request->getAttribute('timezone');
+
+                    $locales = [];
+                    $locale = $request->getAttribute('locale');
+
+                    $locales[] = $locale;
+                    $locales[] = substr($locale, 0, 2);
+
+                    return 'moment.tz.setDefault('.json_encode($tz).');'."\n"
+                        .'moment.locale('.json_encode($locales).');';
+                },
+            ],
         ],
     ],
     [
@@ -354,7 +375,6 @@ return [
                 [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js',
                     'integrity' => 'sha256-Daf8GuI2eLKHJlOWLRR/zRy9Clqcj4TUSumbxYH9kGI=',
-                    'defer' => true,
                 ],
             ],
         ],

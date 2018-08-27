@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use App\Http\Request;
+
 /**
  * Asset management class for AzuraCast.
  * Inspired by Asseter by Adam Banaszkiewicz: https://github.com/requtize
@@ -262,7 +264,7 @@ class Assets
     /**
      * Return any inline JavaScript.
      */
-    public function inlineJs()
+    public function inlineJs(Request $request)
     {
         $this->_sort();
 
@@ -271,6 +273,10 @@ class Assets
         {
             if (!empty($item['inline']['js'])) {
                 foreach($item['inline']['js'] as $inline) {
+                    if (is_callable($inline)) {
+                        $inline = $inline($request);
+                    }
+
                     $result[] = '<script type="text/javascript" nonce="'.$this->csp_nonce.'">'.$inline.'</script>';
                 }
             }

@@ -47,6 +47,8 @@ $assets
 </head>
 
 <body class="<?=$page_class ?>">
+<?=$assets->inlineJs($request) ?>
+
 <?=$this->section('content') ?>
 
 <?php if (!$customization->hideProductName() && !$hide_footer): ?>
@@ -55,8 +57,6 @@ $assets
         <?=sprintf(__('Mascot designed by %s'), '<a href="https://tysontan.deviantart.com/" target="_blank">Tyson Tan</a>') ?>
     </footer>
 <?php endif; ?>
-
-<?=$assets->inlineJs() ?>
 
 <?php if ($flash->hasMessages()): ?>
     <script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">

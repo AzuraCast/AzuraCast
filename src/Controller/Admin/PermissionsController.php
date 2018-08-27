@@ -20,6 +20,12 @@ class PermissionsController
     /** @var string */
     protected $csrf_namespace = 'admin_permissions';
 
+    /**
+     * @param EntityManager $em
+     * @param array $actions
+     * @param array $form_config
+     * @see \App\Provider\AdminProvider
+     */
     public function __construct(EntityManager $em, array $actions, array $form_config)
     {
         $this->em = $em;

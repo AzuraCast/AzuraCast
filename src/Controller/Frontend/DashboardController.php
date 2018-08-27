@@ -33,13 +33,13 @@ class DashboardController
     protected $adapter_manager;
 
     /**
-     * DashboardController constructor.
      * @param EntityManager $em
      * @param Acl $acl
      * @param Cache $cache
      * @param Database $influx
      * @param Adapters $adapter_manager
      * @param Router $router
+     * @see \App\Provider\FrontendProvider
      */
     public function __construct(EntityManager $em, Acl $acl, Cache $cache, Database $influx, Adapters $adapter_manager, Router $router)
     {

@@ -26,10 +26,10 @@ class UsersController
     protected $csrf_namespace = 'admin_users';
 
     /**
-     * UsersController constructor.
      * @param EntityManager $em
      * @param Auth $auth
      * @param array $form_config
+     * @see \App\Provider\AdminProvider
      */
     public function __construct(EntityManager $em, Auth $auth, array $form_config)
     {

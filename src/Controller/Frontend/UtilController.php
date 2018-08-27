@@ -17,6 +17,7 @@ class UtilController
 
     /**
      * @param Container $di
+     * @see \App\Provider\FrontendProvider
      */
     public function __construct(Container $di)
     {

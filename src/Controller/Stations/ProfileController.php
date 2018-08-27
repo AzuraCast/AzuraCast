@@ -28,11 +28,11 @@ class ProfileController
     protected $form_config;
 
     /**
-     * ProfileController constructor.
      * @param EntityManager $em
      * @param Cache $cache
      * @param Configuration $configuration
      * @param array $form_config
+     * @see \App\Provider\StationsProvider
      */
     public function __construct(
         EntityManager $em,

@@ -35,6 +35,16 @@ class StationsController
     /** @var Entity\Repository\StationRepository */
     protected $record_repo;
 
+    /**
+     * StationsController constructor.
+     * @param EntityManager $em
+     * @param Cache $cache
+     * @param Adapters $adapters
+     * @param Configuration $configuration
+     * @param array $edit_form_config
+     * @param array $clone_form_config
+     * @see \App\Provider\AdminProvider
+     */
     public function __construct(
         EntityManager $em,
         Cache $cache,

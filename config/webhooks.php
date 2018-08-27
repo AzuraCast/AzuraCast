@@ -3,7 +3,7 @@
  * Webhook Configuration
  *
  * Web hooks should also be registered in:
- * @see \App\Webhook\WebhookProvider
+ * @see \App\Provider\WebhookProvider
  */
 
 use App\Webhook\Connector;

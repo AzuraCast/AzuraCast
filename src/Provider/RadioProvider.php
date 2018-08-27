@@ -1,6 +1,10 @@
 <?php
-namespace App\Radio;
+namespace App\Provider;
 
+use App\Radio\Adapters;
+use App\Radio\Backend;
+use App\Radio\Configuration;
+use App\Radio\Frontend;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
 

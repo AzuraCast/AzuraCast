@@ -1,6 +1,7 @@
 <?php
-namespace App\Controller\Frontend;
+namespace App\Provider;
 
+use App\Controller\Frontend;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
 
@@ -8,8 +9,8 @@ class FrontendProvider implements ServiceProviderInterface
 {
     public function register(Container $di)
     {
-        $di[AccountController::class] = function($di) {
-            return new AccountController(
+        $di[Frontend\AccountController::class] = function($di) {
+            return new Frontend\AccountController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Auth::class],
                 $di[\App\RateLimit::class],
@@ -17,8 +18,8 @@ class FrontendProvider implements ServiceProviderInterface
             );
         };
 
-        $di[DashboardController::class] = function($di) {
-            return new DashboardController(
+        $di[Frontend\DashboardController::class] = function($di) {
+            return new Frontend\DashboardController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Acl::class],
                 $di[\App\Cache::class],
@@ -28,17 +29,17 @@ class FrontendProvider implements ServiceProviderInterface
             );
         };
 
-        $di[IndexController::class] = function($di) {
-            return new IndexController(
+        $di[Frontend\IndexController::class] = function($di) {
+            return new Frontend\IndexController(
                 $di[\App\Entity\Repository\SettingsRepository::class]
             );
         };
 
-        $di[ProfileController::class] = function($di) {
+        $di[Frontend\ProfileController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new ProfileController(
+            return new Frontend\ProfileController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $config->get('forms/profile', [
                     'settings' => $di['app_settings'],
@@ -46,25 +47,25 @@ class FrontendProvider implements ServiceProviderInterface
             );
         };
 
-        $di[ApiKeysController::class] = function($di) {
+        $di[Frontend\ApiKeysController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new ApiKeysController(
+            return new Frontend\ApiKeysController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $config->get('forms/api_key')
             );
         };
 
-        $di[PublicController::class] = function($di) {
-            return new PublicController();
+        $di[Frontend\PublicController::class] = function($di) {
+            return new Frontend\PublicController();
         };
 
-        $di[SetupController::class] = function($di) {
+        $di[Frontend\SetupController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new SetupController(
+            return new Frontend\SetupController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Auth::class],
                 $di[\App\Acl::class],
@@ -76,8 +77,8 @@ class FrontendProvider implements ServiceProviderInterface
         };
 
         if (!APP_IN_PRODUCTION) {
-            $di[UtilController::class] = function ($di) {
-                return new UtilController($di);
+            $di[Frontend\UtilController::class] = function ($di) {
+                return new Frontend\UtilController($di);
             };
         }
     }

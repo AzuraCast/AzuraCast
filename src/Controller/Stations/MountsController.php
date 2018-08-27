@@ -19,9 +19,9 @@ class MountsController
     protected $mount_form_configs;
 
     /**
-     * MountsController constructor.
      * @param EntityManager $em
      * @param array $mount_form_configs
+     * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityManager $em, array $mount_form_configs)
     {

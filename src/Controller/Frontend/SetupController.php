@@ -34,7 +34,6 @@ class SetupController
     protected $settings_form_config;
 
     /**
-     * SetupController constructor.
      * @param EntityManager $em
      * @param Auth $auth
      * @param Acl $acl
@@ -42,6 +41,7 @@ class SetupController
      * @param Configuration $configuration
      * @param array $station_form_config
      * @param array $settings_form_config
+     * @see \App\Provider\FrontendProvider
      */
     public function __construct(
         EntityManager $em,

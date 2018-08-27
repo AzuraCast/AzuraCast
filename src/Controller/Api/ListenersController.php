@@ -20,10 +20,10 @@ class ListenersController
     protected $geoip;
 
     /**
-     * ListenersController constructor.
      * @param EntityManager $em
      * @param Cache $cache
      * @param Reader $geoip
+     * @see \App\Provider\ApiProvider
      */
     public function __construct(EntityManager $em, Cache $cache, Reader $geoip)
     {

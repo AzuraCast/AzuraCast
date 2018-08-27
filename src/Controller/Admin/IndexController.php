@@ -20,10 +20,10 @@ class IndexController
     protected $sync;
 
     /**
-     * IndexController constructor.
      * @param Acl $acl
      * @param Logger $logger
      * @param Runner $sync
+     * @see \App\Provider\AdminProvider
      */
     public function __construct(Acl $acl, Logger $logger, Runner $sync)
     {

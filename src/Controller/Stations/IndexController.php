@@ -19,6 +19,7 @@ class IndexController
     /**
      * @param EntityManager $em
      * @param Database $influx
+     * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityManager $em, Database $influx)
     {

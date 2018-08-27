@@ -1,6 +1,8 @@
 <?php
-namespace App\Sync;
+namespace App\Provider;
 
+use App\Sync;
+use App\Sync\Task;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
 
@@ -8,8 +10,8 @@ class SyncProvider implements ServiceProviderInterface
 {
     public function register(Container $di)
     {
-        $di[Runner::class] = function ($di) {
-            return new Runner(
+        $di[Sync\Runner::class] = function ($di) {
+            return new Sync\Runner(
                 $di[\App\Entity\Repository\SettingsRepository::class],
                 $di[\Monolog\Logger::class],
                 new \Pimple\ServiceIterator($di, [

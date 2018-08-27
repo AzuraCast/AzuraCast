@@ -31,11 +31,11 @@ abstract class FilesControllerAbstract
     protected $playlists_media_repo;
 
     /**
-     * FilesController constructor.
      * @param EntityManager $em
      * @param Router $router
      * @param Cache $cache
      * @param array $form_config
+     * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityManager $em, Router $router, Cache $cache, array $form_config)
     {

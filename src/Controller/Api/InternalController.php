@@ -2,7 +2,6 @@
 namespace App\Controller\Api;
 
 use App\Acl;
-use App\Radio\Adapters;
 use App\Radio\Backend\Liquidsoap;
 use App\Sync\Task\NowPlaying;
 use App\Entity;
@@ -20,6 +19,7 @@ class InternalController
     /**
      * @param Acl $acl
      * @param NowPlaying $sync_nowplaying
+     * @see \App\Provider\ApiProvider
      */
     public function __construct(Acl $acl, NowPlaying $sync_nowplaying)
     {

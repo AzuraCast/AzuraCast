@@ -1,6 +1,7 @@
 <?php
-namespace App\Controller\Stations;
+namespace App\Provider;
 
+use App\Controller\Stations;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
 
@@ -8,22 +9,22 @@ class StationsProvider implements ServiceProviderInterface
 {
     public function register(Container $di)
     {
-        $di[AutomationController::class] = function($di) {
+        $di[Stations\AutomationController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new AutomationController(
+            return new Stations\AutomationController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Sync\Task\RadioAutomation::class],
                 $config->get('forms/automation')
             );
         };
 
-        $di[Files\FilesController::class] = function($di) {
+        $di[Stations\Files\FilesController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new Files\FilesController(
+            return new Stations\Files\FilesController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di['router'],
                 $di[\App\Cache::class],
@@ -31,13 +32,13 @@ class StationsProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Files\EditController::class] = function($di) {
+        $di[Stations\Files\EditController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
             $router = $di['router'];
 
-            return new Files\EditController(
+            return new Stations\Files\EditController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $router,
                 $di[\App\Cache::class],
@@ -47,18 +48,18 @@ class StationsProvider implements ServiceProviderInterface
             );
         };
 
-        $di[IndexController::class] = function($di) {
-            return new IndexController(
+        $di[Stations\IndexController::class] = function($di) {
+            return new Stations\IndexController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\InfluxDB\Database::class]
             );
         };
 
-        $di[MountsController::class] = function($di) {
+        $di[Stations\MountsController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new MountsController(
+            return new Stations\MountsController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 [
                     'icecast' => $config->get('forms/mount/icecast'),
@@ -68,11 +69,11 @@ class StationsProvider implements ServiceProviderInterface
             );
         };
 
-        $di[PlaylistsController::class] = function($di) {
+        $di[Stations\PlaylistsController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new PlaylistsController(
+            return new Stations\PlaylistsController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di['router'],
                 $config->get('forms/playlist', [
@@ -81,11 +82,11 @@ class StationsProvider implements ServiceProviderInterface
             );
         };
 
-        $di[ProfileController::class] = function($di) {
+        $di[Stations\ProfileController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new ProfileController(
+            return new Stations\ProfileController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Cache::class],
                 $di[\App\Radio\Configuration::class],
@@ -93,30 +94,30 @@ class StationsProvider implements ServiceProviderInterface
             );
         };
 
-        $di[ReportsController::class] = function($di) {
-            return new ReportsController(
+        $di[Stations\ReportsController::class] = function($di) {
+            return new Stations\ReportsController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Sync\Task\RadioAutomation::class]
             );
         };
 
-        $di[RequestsController::class] = function($di) {
-            return new RequestsController(
+        $di[Stations\RequestsController::class] = function($di) {
+            return new Stations\RequestsController(
                 $di[\Doctrine\ORM\EntityManager::class]
             );
         };
 
-        $di[StreamersController::class] = function($di) {
+        $di[Stations\StreamersController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new StreamersController(
+            return new Stations\StreamersController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $config->get('forms/streamer')
             );
         };
 
-        $di[WebhooksController::class] = function($di) {
+        $di[Stations\WebhooksController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
@@ -132,7 +133,7 @@ class StationsProvider implements ServiceProviderInterface
                 $webhook_forms[$webhook_key] = $config->get('forms/webhook/'.$webhook_key, $config_injections);
             }
 
-            return new WebhooksController(
+            return new Stations\WebhooksController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Webhook\Dispatcher::class],
                 $webhook_config,

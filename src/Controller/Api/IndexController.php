@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Url;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;

@@ -1,6 +1,7 @@
 <?php
-namespace App\Controller\Admin;
+namespace App\Provider;
 
+use App\Controller\Admin;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
 use App\Entity;
@@ -9,45 +10,45 @@ class AdminProvider implements ServiceProviderInterface
 {
     public function register(Container $di)
     {
-        $di[ApiController::class] = function($di) {
+        $di[Admin\ApiController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new ApiController(
+            return new Admin\ApiController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $config->get('forms/api_key')
             );
         };
 
-        $di[BrandingController::class] = function($di) {
+        $di[Admin\BrandingController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new BrandingController(
+            return new Admin\BrandingController(
                 $di[Entity\Repository\SettingsRepository::class],
                 $config->get('forms/branding', ['settings' => $di['app_settings']])
             );
         };
 
-        $di[CustomFieldsController::class] = function($di) {
+        $di[Admin\CustomFieldsController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new CustomFieldsController(
+            return new Admin\CustomFieldsController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $config->get('forms/custom_field')
             );
         };
 
-        $di[IndexController::class] = function($di) {
-            return new IndexController(
+        $di[Admin\IndexController::class] = function($di) {
+            return new Admin\IndexController(
                 $di[\App\Acl::class],
                 $di[\Monolog\Logger::class],
                 $di[\App\Sync\Runner::class]
             );
         };
 
-        $di[PermissionsController::class] = function($di) {
+        $di[Admin\PermissionsController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
@@ -59,7 +60,7 @@ class AdminProvider implements ServiceProviderInterface
 
             $actions = $config->get('admin/actions');
 
-            return new PermissionsController(
+            return new Admin\PermissionsController(
                 $em,
                 $actions,
                 $config->get('forms/role', [
@@ -69,21 +70,21 @@ class AdminProvider implements ServiceProviderInterface
             );
         };
 
-        $di[SettingsController::class] = function($di) {
+        $di[Admin\SettingsController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new SettingsController(
+            return new Admin\SettingsController(
                 $di[Entity\Repository\SettingsRepository::class],
                 $config->get('forms/settings')
             );
         };
 
-        $di[StationsController::class] = function($di) {
+        $di[Admin\StationsController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
-            return new StationsController(
+            return new Admin\StationsController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Cache::class],
                 $di[\App\Radio\Adapters::class],
@@ -93,7 +94,7 @@ class AdminProvider implements ServiceProviderInterface
             );
         };
 
-        $di[UsersController::class] = function($di) {
+        $di[Admin\UsersController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
 
@@ -103,7 +104,7 @@ class AdminProvider implements ServiceProviderInterface
             /** @var Entity\Repository\BaseRepository $role_repo */
             $role_repo = $em->getRepository(Entity\Role::class);
 
-            return new UsersController(
+            return new Admin\UsersController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Auth::class],
                 $config->get('forms/user', [

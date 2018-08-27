@@ -17,9 +17,9 @@ class ReportsController
     protected $sync_automation;
 
     /**
-     * ReportsController constructor.
      * @param EntityManager $em
      * @param RadioAutomation $sync_automation
+     * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityManager $em, RadioAutomation $sync_automation)
     {

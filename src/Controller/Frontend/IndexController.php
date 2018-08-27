@@ -11,8 +11,8 @@ class IndexController
     protected $settings_repo;
 
     /**
-     * IndexController constructor.
      * @param Entity\Repository\SettingsRepository $settings_repo
+     * @see \App\Provider\FrontendProvider
      */
     public function __construct(Entity\Repository\SettingsRepository $settings_repo)
     {

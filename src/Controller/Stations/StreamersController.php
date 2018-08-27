@@ -21,6 +21,11 @@ class StreamersController
     /** @var Entity\Repository\StationStreamerRepository */
     protected $streamers_repo;
 
+    /**
+     * @param EntityManager $em
+     * @param array $form_config
+     * @see \App\Provider\StationsProvider
+     */
     public function __construct(EntityManager $em, array $form_config)
     {
         $this->em = $em;

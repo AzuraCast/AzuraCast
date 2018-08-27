@@ -18,9 +18,9 @@ class RequestsController
     protected $api_utils;
 
     /**
-     * RequestsController constructor.
      * @param EntityManager $em
      * @param ApiUtilities $api_utils
+     * @see \App\Provider\ApiProvider
      */
     public function __construct(EntityManager $em, ApiUtilities $api_utils)
     {

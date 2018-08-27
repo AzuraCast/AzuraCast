@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Stations;
 
+use App\Provider\StationsProvider;
 use App\Webhook\Dispatcher;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -30,11 +31,11 @@ class WebhooksController
     protected $webhook_forms;
 
     /**
-     * MountsController constructor.
      * @param EntityManager $em
      * @param Dispatcher $dispatcher
      * @param array $webhook_config
      * @param array $webhook_forms
+     * @see \App\Provider\StationsProvider
      */
     public function __construct(
         EntityManager $em,

@@ -4,6 +4,7 @@ namespace App\Webhook;
 use App\Config;
 use App\Entity;
 use App\Exception;
+use App\Provider\WebhookProvider;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Pimple\Psr11\ServiceLocator;

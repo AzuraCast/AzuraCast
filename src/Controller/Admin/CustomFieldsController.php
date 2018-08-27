@@ -21,9 +21,9 @@ class CustomFieldsController
     protected $csrf_namespace = 'admin_custom_fields';
 
     /**
-     * UsersController constructor.
      * @param EntityManager $em
      * @param array $form_config
+     * @see \App\Provider\AdminProvider
      */
     public function __construct(EntityManager $em, array $form_config)
     {

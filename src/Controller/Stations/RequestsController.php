@@ -14,6 +14,10 @@ class RequestsController
     /** @var string */
     protected $csrf_namespace = 'stations_requests';
 
+    /**
+     * @param EntityManager $em
+     * @see \App\Provider\StationsProvider
+     */
     public function __construct(EntityManager $em)
     {
         $this->em = $em;

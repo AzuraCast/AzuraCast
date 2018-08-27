@@ -18,10 +18,10 @@ class AutomationController
     protected $form_config;
 
     /**
-     * AutomationController constructor.
      * @param EntityManager $em
      * @param array $form_config
      * @param RadioAutomation $sync_task
+     * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityManager $em, RadioAutomation $sync_task, array $form_config)
     {

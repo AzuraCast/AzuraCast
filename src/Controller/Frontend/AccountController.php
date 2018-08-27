@@ -25,6 +25,13 @@ class AccountController
     /** @var Acl */
     protected $acl;
 
+    /**
+     * @param EntityManager $em
+     * @param Auth $auth
+     * @param RateLimit $rate_limit
+     * @param Acl $acl
+     * @see \App\Provider\FrontendProvider
+     */
     public function __construct(
         EntityManager $em,
         Auth $auth,

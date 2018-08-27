@@ -16,9 +16,9 @@ class NowplayingController
     protected $cache;
 
     /**
-     * NowplayingController constructor.
      * @param EntityManager $em
      * @param Cache $cache
+     * @see \App\Provider\ApiProvider
      */
     public function __construct(EntityManager $em, Cache $cache)
     {

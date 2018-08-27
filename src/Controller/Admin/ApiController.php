@@ -20,6 +20,11 @@ class ApiController
     /** @var string */
     protected $csrf_namespace = 'admin_api';
 
+    /**
+     * @param EntityManager $em
+     * @param array $form_config
+     * @see \App\Provider\AdminProvider
+     */
     public function __construct(EntityManager $em, array $form_config)
     {
         $this->em = $em;

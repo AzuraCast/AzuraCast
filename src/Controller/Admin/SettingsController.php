@@ -16,6 +16,7 @@ class SettingsController
     /**
      * @param Entity\Repository\SettingsRepository $settings_repo
      * @param array $form_config
+     * @see \App\Provider\AdminProvider
      */
     public function __construct(Entity\Repository\SettingsRepository $settings_repo, array $form_config)
     {

@@ -30,10 +30,10 @@ class PlaylistsController
     protected $playlist_media_repo;
 
     /**
-     * PlaylistsController constructor.
      * @param EntityManager $em
      * @param Router $router
      * @param array $form_config
+     * @see \App\Provider\StationsProvider
      */
     public function __construct(EntityManager $em, Router $router, array $form_config)
     {

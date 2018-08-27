@@ -349,22 +349,22 @@ return function (\Slim\Container $di, $settings) {
     };
 
     // Radio management
-    $di->register(new \App\Radio\RadioProvider);
+    $di->register(new \App\Provider\RadioProvider);
 
     // Synchronization tasks
-    $di->register(new \App\Sync\SyncProvider);
+    $di->register(new \App\Provider\SyncProvider);
 
     // Web Hooks
-    $di->register(new \App\Webhook\WebhookProvider);
+    $di->register(new \App\Provider\WebhookProvider);
 
     // Middleware
-    $di->register(new \App\Middleware\MiddlewareProvider);
+    $di->register(new \App\Provider\MiddlewareProvider);
 
     // Controller groups
-    $di->register(new \App\Controller\Admin\AdminProvider);
-    $di->register(new \App\Controller\Api\ApiProvider);
-    $di->register(new \App\Controller\Frontend\FrontendProvider);
-    $di->register(new \App\Controller\Stations\StationsProvider);
+    $di->register(new \App\Provider\AdminProvider);
+    $di->register(new \App\Provider\ApiProvider);
+    $di->register(new \App\Provider\FrontendProvider);
+    $di->register(new \App\Provider\StationsProvider);
 
     // Main Slim Application
     $di['app'] = function ($di) {

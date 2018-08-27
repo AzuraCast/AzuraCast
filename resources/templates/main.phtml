@@ -34,15 +34,12 @@ if (!APP_IN_PRODUCTION)
 $assets
     ->load('main_header')
     ->load('main_body')
-    ->load('theme_'.$customization->getTheme());
+    ->load('theme_'.$customization->getTheme())
+    ->addInlineCss($customization->getCustomInternalCss());
+
+echo $assets->css();
+echo $assets->js();
 ?>
-
-<?=$assets->css() ?>
-<?=$assets->js() ?>
-
-<style type="text/css">
-<?=$customization->getCustomInternalCss() ?>
-</style>
 </head>
 <body class="<?=$page_class ?>">
 <?=$assets->inlineJs($request) ?>

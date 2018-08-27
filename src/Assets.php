@@ -38,8 +38,8 @@ class Assets
      */
     public function __construct(array $libraries = [], array $versioned_files = [])
     {
-        foreach($libraries as $library) {
-            $this->addLibrary($library);
+        foreach($libraries as $library_name => $library) {
+            $this->addLibrary($library, $library_name);
         }
 
         $this->versioned_files = $versioned_files;
@@ -71,11 +71,12 @@ class Assets
      * Add a library to the collection.
      *
      * @param array $data Array with asset data.
+     * @param string|null $library_name
      * @return $this
      */
-    public function addLibrary(array $data): self
+    public function addLibrary(array $data, $library_name = null): self
     {
-        $library_name = $data['name'] ?? uniqid();
+        $library_name = $library_name ?? uniqid();
 
         $this->libraries[$library_name] = [
             'name'     => $library_name,
@@ -190,7 +191,7 @@ class Assets
      * @param $css_script
      * @return $this
      */
-    public function addInlineCss($css_script)
+    public function addInlineCss($css_script): self
     {
         $this->load([
             'order' => 100,
@@ -227,7 +228,9 @@ class Assets
 
             if (!empty($item['inline']['css'])) {
                 foreach($item['inline']['css'] as $inline) {
-                    $result[] = '<style type="text/css" nonce="'.$this->csp_nonce.'">'.$inline.'</style>';
+                    if (!empty($inline)) {
+                        $result[] = '<style type="text/css" nonce="'.$this->csp_nonce.'">'.$inline.'</style>';
+                    }
                 }
             }
         }
@@ -277,7 +280,9 @@ class Assets
                         $inline = $inline($request);
                     }
 
-                    $result[] = '<script type="text/javascript" nonce="'.$this->csp_nonce.'">'.$inline.'</script>';
+                    if (!empty($inline)) {
+                        $result[] = '<script type="text/javascript" nonce="'.$this->csp_nonce.'">'.$inline.'</script>';
+                    }
                 }
             }
         }

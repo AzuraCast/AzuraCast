@@ -10,8 +10,7 @@ return [
     /*
      * Core libraries
      */
-    [
-        'name' => 'jquery',
+    'jquery' => [
         'order' => 0,
         'files' => [
             'js' => [
@@ -22,8 +21,7 @@ return [
             ],
         ],
     ],
-    [
-        'name' => 'vue',
+    'vue' => [
         'order' => 1,
         'files' => [
             'js' => [
@@ -40,8 +38,7 @@ return [
     /*
      * Main per-layout dependencies
      */
-    [
-        'name' => 'minimal_header',
+    'minimal_header' => [
         'order' => 2,
         'require' => ['jquery'],
         'files' => [
@@ -63,8 +60,7 @@ return [
         ],
 
     ],
-    [
-        'name' => 'minimal_body',
+    'minimal_body' => [
         'order' => 50,
         'files' => [
             'js' => [
@@ -85,8 +81,7 @@ return [
             ],
         ],
     ],
-    [
-        'name' => 'main_header',
+    'main_header' => [
         'order' => 3,
         'require' => ['minimal_header'],
         'files' => [
@@ -102,8 +97,7 @@ return [
             ],
         ],
     ],
-    [
-        'name' => 'main_body',
+    'main_body' => [
         'order' => 49,
         'require' => ['minimal_body'],
         'files' => [
@@ -130,8 +124,7 @@ return [
     /*
      * Themes
      */
-    [
-        'name' => 'theme_dark',
+    'theme_dark' => [
         'order' => 50,
         'files' => [
             'css' => [
@@ -141,8 +134,7 @@ return [
             ],
         ]
     ],
-    [
-        'name' => 'theme_light',
+    'theme_light' => [
         'order' => 50,
         'files' => [
             'css' => [
@@ -156,8 +148,7 @@ return [
     /*
      * Individual libraries
      */
-    [
-        'name' => 'bootgrid',
+    'bootgrid' => [
         'order' => 8,
         'require' => ['jquery'],
         'files' => [
@@ -174,8 +165,7 @@ return [
             ],
         ],
     ],
-    [
-        'name' => 'radio',
+    'radio' => [
         'order' => 20,
         'require' => ['jquery'],
         'files' => [
@@ -193,8 +183,7 @@ return [
         ],
 
     ],
-    [
-        'name' => 'highcharts',
+    'highcharts' => [
         'order' => 20,
         'files' => [
             'js' => [
@@ -216,8 +205,7 @@ return [
             ]
         ]
     ],
-    [
-        'name' => 'highmaps',
+    'highmaps' => [
         'order' => 22,
         'require' => ['jquery', 'highcharts'],
         'files' => [
@@ -239,8 +227,7 @@ return [
             ]
         ],
     ],
-    [
-        'name' => 'highcharts_theme_dark',
+    'highcharts_theme_dark' => [
         'order' => 21,
         'files' => [
             'js' => [
@@ -251,12 +238,9 @@ return [
             ]
         ]
     ],
-    [
-        'name' => 'highcharts_theme_light',
-        // empty
-    ],
-    [
-        'name' => 'zxcvbn',
+    'highcharts_theme_light' => [], //empty placeholder
+
+    'zxcvbn' => [
         'order' => 10,
         'files' => [
             'js' => [
@@ -268,8 +252,8 @@ return [
             ],
         ],
     ],
-    [
-        'name' => 'chosen',
+
+    'chosen' => [
         'order' => 10,
         'files' => [
             'js' => [
@@ -287,14 +271,15 @@ return [
             ]
         ],
     ],
-    [
-        'name' => 'moment',
+
+    'moment' => [
         'order' => 8,
         'files' => [
             'js' => [
                 [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js',
                     'integrity' => 'sha256-VrmtNHAdGzjNsUNtWYG55xxE9xDTz4gF63x/prKXKH0=',
+                    'charset' => 'UTF-8',
                 ],
                 [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.21/moment-timezone-with-data.min.js',
@@ -318,8 +303,8 @@ return [
             ],
         ],
     ],
-    [
-        'name' => 'daterangepicker',
+
+    'daterangepicker' => [
         'order' => 9,
         'require' => ['moment'],
         'files' => [
@@ -338,8 +323,8 @@ return [
             ],
         ],
     ],
-    [
-        'name' => 'codemirror_css',
+
+    'codemirror_css' => [
         'order' => 10,
         'files' => [
             'js' => [
@@ -366,8 +351,8 @@ return [
             ],
         ],
     ],
-    [
-        'name' => 'clipboard',
+
+    'clipboard' => [
         'order' => 10,
         'files' => [
             'js' => [
@@ -383,8 +368,8 @@ return [
             ],
         ],
     ],
-    [
-        'name' => 'fancybox',
+
+    'fancybox' => [
         'order' => 10,
         'files' => [
             'js' => [
@@ -402,8 +387,8 @@ return [
             ],
         ],
     ],
-    [
-        'name' => 'fullcalendar',
+
+    'fullcalendar' => [
         'order' => 10,
         'require' => ['moment'],
         'files' => [
@@ -427,8 +412,8 @@ return [
             ]
         ],
     ],
-    [
-        'name' => 'jquery-sortable',
+
+    'jquery-sortable' => [
         'order' => 10,
         'require' => ['jquery'],
         'files' => [

@@ -35,15 +35,13 @@ if (!APP_IN_PRODUCTION)
 $assets
     ->load('minimal_header')
     ->load('minimal_body')
-    ->load('theme_'.$customization->getPublicTheme());
+    ->load('theme_'.$customization->getPublicTheme())
+    ->addInlineCss($customization->getCustomPublicCss())
+    ->addInlineJs($customization->getCustomPublicJs());
+
+echo $assets->css();
+echo $assets->js();
 ?>
-
-<?=$assets->css() ?>
-<?=$assets->js() ?>
-
-<style type="text/css">
-<?=$customization->getCustomPublicCss() ?>
-</style>
 </head>
 
 <body class="<?=$page_class ?>">
@@ -67,9 +65,5 @@ $assets
         });
     </script>
 <?php endif; ?>
-
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-<?=$customization->getCustomPublicJs() ?>
-</script>
 </body>
 </html>

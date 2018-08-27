@@ -305,16 +305,15 @@ return [
         'inline' => [
             'js' => [
                 function(Request $request) {
+                    if (!$request->hasAttribute('timezone')) {
+                        return '';
+                    }
+
                     $tz = $request->getAttribute('timezone');
-
-                    $locales = [];
-                    $locale = $request->getAttribute('locale');
-
-                    $locales[] = $locale;
-                    $locales[] = substr($locale, 0, 2);
+                    $locale = str_replace('_', '-', explode('.', $request->getAttribute('locale'))[0]);
 
                     return 'moment.tz.setDefault('.json_encode($tz).');'."\n"
-                        .'moment.locale('.json_encode($locales).');';
+                        .'moment.locale('.json_encode($locale).');';
                 },
             ],
         ],

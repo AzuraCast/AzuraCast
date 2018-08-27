@@ -51,7 +51,7 @@ class HistoryController
             ->leftJoin('sh.playlist', 'sp')
             ->leftJoin('sh.song', 's')
             ->where('sh.station_id = :station_id')
-            ->andWhere('sh.timestamp_end >= :start AND sh.timestamp_start <= :end')
+            ->andWhere('sh.timestamp_start >= :start AND sh.timestamp_start <= :end')
             ->andWhere('sh.listeners_start IS NOT NULL')
             ->setParameter('station_id', $station_id)
             ->setParameter('start', $start)

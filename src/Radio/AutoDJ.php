@@ -1,19 +1,48 @@
 <?php
-namespace App\Entity\Repository;
+namespace App\Radio;
 
-use Doctrine\ORM\NoResultException;
 use App\Entity;
+use Doctrine\ORM\EntityManager;
+use App\Cache;
 
-class SongHistoryRepository extends BaseRepository
+class AutoDJ
 {
-    public function getNextSongForStation(Entity\Station $station, $is_autodj = false)
+    /** @var int The time to live (in seconds) of cached playlist queues. */
+    const CACHE_TTL = 43200;
+
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var Cache */
+    protected $cache;
+
+    /**
+     * @param EntityManager $em
+     * @param Cache $cache
+     * @see \App\Provider\RadioProvider
+     */
+    public function __construct(EntityManager $em, Cache $cache)
+    {
+        $this->em = $em;
+        $this->cache = $cache;
+    }
+
+    /**
+     * If the next song for a station has already been calculated, return the calculated result; otherwise,
+     * calculate the next playing song.
+     * 
+     * @param Entity\Station $station
+     * @param bool $is_autodj
+     * @return Entity\SongHistory|null
+     */
+    public function getNextSong(Entity\Station $station, $is_autodj = false): ?Entity\SongHistory
     {
         if ($station->useManualAutoDJ()) {
             return null;
         }
 
-        $next_song = $this->_em->createQuery('SELECT sh, s, sm
-            FROM ' . $this->_entityName . ' sh JOIN sh.song s JOIN sh.media sm
+        $next_song = $this->em->createQuery('SELECT sh, s, sm
+            FROM ' . Entity\SongHistory::class . ' sh JOIN sh.song s JOIN sh.media sm
             WHERE sh.station_id = :station_id
             AND sh.timestamp_cued >= :threshold
             AND sh.sent_to_autodj = 0
@@ -26,147 +55,21 @@ class SongHistoryRepository extends BaseRepository
             ->getOneOrNullResult();
 
         if (!($next_song instanceof Entity\SongHistory)) {
-            $next_song = $this->getNextSong($station);
+            $next_song = $this->calculateNextSong($station);
         }
 
         if ($next_song instanceof Entity\SongHistory && $is_autodj) {
             $next_song->sentToAutodj();
-            $this->_em->persist($next_song);
+            $this->em->persist($next_song);
 
             // The "get next song" function is only called when a streamer is not live
             $station->setIsStreamerLive(false);
-            $this->_em->persist($station);
+            $this->em->persist($station);
 
-            $this->_em->flush();
+            $this->em->flush();
         }
 
         return $next_song;
-    }
-
-    /**
-     * @param Entity\Station $station
-     * @param \App\ApiUtilities $api_utils
-     * @return array
-     */
-    public function getHistoryForStation(Entity\Station $station, \App\ApiUtilities $api_utils)
-    {
-        $num_entries = $station->getApiHistoryItems();
-
-        if ($num_entries === 0) {
-            return [];
-        }
-
-        $history = $this->_em->createQuery('SELECT sh, s 
-            FROM ' . $this->_entityName . ' sh JOIN sh.song s LEFT JOIN sh.media sm  
-            WHERE sh.station_id = :station_id 
-            AND sh.timestamp_end != 0
-            ORDER BY sh.id DESC')
-            ->setParameter('station_id', $station->getId())
-            ->setMaxResults($num_entries)
-            ->execute();
-
-        $return = [];
-        foreach ($history as $sh) {
-            /** @var Entity\SongHistory $sh */
-            $return[] = $sh->api(new Entity\Api\SongHistory, $api_utils);
-        }
-
-        return $return;
-    }
-
-    /**
-     * @param Entity\Song $song
-     * @param Entity\Station $station
-     * @param $np
-     * @return Entity\SongHistory
-     */
-    public function register(Entity\Song $song, Entity\Station $station, $np): Entity\SongHistory
-    {
-        // Pull the most recent history item for this station.
-        $last_sh = $this->_em->createQuery('SELECT sh FROM '.Entity\SongHistory::class.' sh
-            WHERE sh.station_id = :station_id
-            ORDER BY sh.timestamp_start DESC')
-            ->setParameter('station_id', $station->getId())
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
-
-        $listeners = (int)$np['listeners']['current'];
-
-        if ($last_sh instanceof Entity\SongHistory && $last_sh->getSong() === $song) {
-            // Updating the existing SongHistory item with a new data point.
-            $last_sh->addDeltaPoint($listeners);
-
-            $this->_em->persist($last_sh);
-            $this->_em->flush();
-
-            return $last_sh;
-        } else {
-            // Wrapping up processing on the previous SongHistory item (if present).
-            if ($last_sh instanceof Entity\SongHistory) {
-                $last_sh->setTimestampEnd(time());
-                $last_sh->setListenersEnd($listeners);
-
-                // Calculate "delta" data for previous item, based on all data points.
-                $last_sh->addDeltaPoint($listeners);
-
-                $delta_points = (array)$last_sh->getDeltaPoints();
-
-                $delta_positive = 0;
-                $delta_negative = 0;
-                $delta_total = 0;
-
-                for ($i = 1; $i < count($delta_points); $i++) {
-                    $current_delta = $delta_points[$i];
-                    $previous_delta = $delta_points[$i - 1];
-
-                    $delta_delta = $current_delta - $previous_delta;
-                    $delta_total += $delta_delta;
-
-                    if ($delta_delta > 0) {
-                        $delta_positive += $delta_delta;
-                    } elseif ($delta_delta < 0) {
-                        $delta_negative += abs($delta_delta);
-                    }
-                }
-
-                $last_sh->setDeltaPositive($delta_positive);
-                $last_sh->setDeltaNegative($delta_negative);
-                $last_sh->setDeltaTotal($delta_total);
-
-                /** @var ListenerRepository $listener_repo */
-                $listener_repo = $this->_em->getRepository(Entity\Listener::class);
-                $last_sh->setUniqueListeners($listener_repo->getUniqueListeners($station, $last_sh->getTimestampStart(), time()));
-
-                $this->_em->persist($last_sh);
-            }
-
-            // Look for an already cued but unplayed song.
-            $sh = $this->_em->createQuery('SELECT sh FROM '.Entity\SongHistory::class.' sh
-                WHERE sh.station_id = :station_id
-                AND sh.song_id = :song_id
-                AND sh.timestamp_cued != 0
-                AND sh.timestamp_start = 0
-                ORDER BY sh.timestamp_cued DESC')
-                ->setParameter('station_id', $station->getId())
-                ->setParameter('song_id', $song->getId())
-                ->setMaxResults(1)
-                ->getOneOrNullResult();
-
-            // Processing a new SongHistory item.
-            if (!($sh instanceof Entity\SongHistory))
-            {
-                $sh = new Entity\SongHistory($song, $station);
-            }
-
-            $sh->setTimestampStart(time());
-            $sh->setListenersStart($listeners);
-            $sh->addDeltaPoint($listeners);
-
-            $this->_em->persist($sh);
-            $this->_em->flush();
-
-            return $sh;
-        }
     }
 
     /**
@@ -175,7 +78,7 @@ class SongHistoryRepository extends BaseRepository
      * @param Entity\Station $station
      * @return Entity\SongHistory|null
      */
-    public function getNextSong(Entity\Station $station)
+    public function calculateNextSong(Entity\Station $station)
     {
         // Process requests first (if applicable)
         if ($station->getEnableRequests()) {
@@ -186,7 +89,7 @@ class SongHistoryRepository extends BaseRepository
             $threshold = time() - ($threshold_minutes * 60);
 
             // Look up all requests that have at least waited as long as the threshold.
-            $request = $this->_em->createQuery('SELECT sr, sm 
+            $request = $this->em->createQuery('SELECT sr, sm 
                 FROM '.Entity\StationRequest::class.' sr JOIN sr.track sm
                 WHERE sr.played_at = 0 AND sr.station_id = :station_id AND sr.timestamp <= :threshold
                 ORDER BY sr.id ASC')
@@ -215,7 +118,7 @@ class SongHistoryRepository extends BaseRepository
         }
 
         // Pull all recent cued songs for easy referencing below.
-        $cued_song_history = $this->_em->createQuery('SELECT sh FROM '.$this->_entityName.' sh
+        $cued_song_history = $this->em->createQuery('SELECT sh FROM '.Entity\SongHistory::class.' sh
             WHERE sh.station_id = :station_id
             AND (sh.timestamp_cued != 0 AND sh.timestamp_cued IS NOT NULL)
             AND sh.timestamp_cued >= :threshold
@@ -342,5 +245,116 @@ class SongHistoryRepository extends BaseRepository
         }
 
         return null;
+    }
+
+    /**
+     * Mark a playlist's cache as invalidated and force regeneration on the next "next song" call.
+     *
+     * @param Entity\StationPlaylist $playlist
+     */
+    public function clearPlaybackCache(Entity\StationPlaylist $playlist): void
+    {
+        $this->cache->remove($this->_getCacheName($playlist));
+    }
+
+    /**
+     * Given a StationRequest object, create a new SongHistory entry that cues the requested song to play next.
+     *
+     * @param Entity\StationRequest $request
+     * @return Entity\SongHistory
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    protected function _playSongFromRequest(Entity\StationRequest $request)
+    {
+        // Log in history
+        $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
+        $sh->setRequest($request);
+        $sh->setMedia($request->getTrack());
+
+        $sh->setDuration($request->getTrack()->getCalculatedLength());
+        $sh->setTimestampCued(time());
+        $this->em->persist($sh);
+
+        $request->setPlayedAt(time());
+        $this->em->persist($request);
+
+        $this->em->flush();
+
+        return $sh;
+    }
+
+    /**
+     * Given a specified (sequential or shuffled) playlist, choose a song from the playlist to play and return it.
+     *
+     * @param Entity\StationPlaylist $playlist
+     * @return Entity\SongHistory|null
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist)
+    {
+        $cache_name = $this->_getCacheName($playlist);
+        $media_queue = (array)$this->cache->get($cache_name);
+
+        if (empty($media_queue)) {
+            $all_media = $this->em->createQuery('SELECT sm.id FROM '.Entity\StationMedia::class.' sm
+                JOIN sm.playlist_items spm
+                WHERE spm.playlist_id = :playlist_id
+                ORDER BY spm.weight ASC')
+                    ->setParameter('playlist_id', $playlist->getId())
+                    ->getArrayResult();
+
+            $media_queue = [];
+            foreach($all_media as $media_row) {
+                $media_queue[] = $media_row['id'];
+            }
+
+            if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_RANDOM) {
+                shuffle($media_queue);
+            }
+        }
+
+        $media_id = array_shift($media_queue);
+
+        // Save the modified cache, sans the now-missing entry.
+        $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+
+        /** @var Entity\Repository\StationMediaRepository $media_repo */
+        $media_repo = $this->em->getRepository(Entity\StationMedia::class);
+
+        $media_to_play = $media_repo->find($media_id);
+
+        if ($media_to_play instanceof Entity\StationMedia) {
+            $spm = $media_to_play->getItemForPlaylist($playlist);
+            $spm->played();
+            $this->em->persist($spm);
+
+            // Log in history
+            $sh = new Entity\SongHistory($media_to_play->getSong(), $playlist->getStation());
+            $sh->setPlaylist($playlist);
+            $sh->setMedia($media_to_play);
+
+            $sh->setDuration($media_to_play->getCalculatedLength());
+            $sh->setTimestampCued(time());
+
+            $this->em->persist($sh);
+            $this->em->flush();
+
+            return $sh;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the cache name for the given playlist.
+     *
+     * @param Entity\StationPlaylist $playlist
+     * @return string
+     */
+    protected function _getCacheName(Entity\StationPlaylist $playlist): string
+    {
+        return 'autodj/playlist_'.$playlist->getId().'_'.$playlist->getOrder().'_'.$playlist->getType();
     }
 }

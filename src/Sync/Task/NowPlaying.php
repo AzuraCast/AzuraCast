@@ -2,7 +2,7 @@
 namespace App\Sync\Task;
 
 use App\Cache;
-use App\Url;
+use App\Radio\AutoDJ;
 use App\ApiUtilities;
 use App\Radio\Adapters;
 use App\Webhook\Dispatcher;
@@ -23,6 +23,9 @@ class NowPlaying extends TaskAbstract
 
     /** @var Adapters */
     protected $adapters;
+
+    /** @var AutoDJ */
+    protected $autodj;
 
     /** @var Dispatcher */
     protected $webhook_dispatcher;
@@ -45,8 +48,18 @@ class NowPlaying extends TaskAbstract
     /** @var string */
     protected $analytics_level;
 
+    /**
+     * @param EntityManager $em
+     * @param Database $influx
+     * @param Cache $cache
+     * @param Adapters $adapters
+     * @param Dispatcher $webhook_dispatcher
+     * @param ApiUtilities $api_utils
+     * @param AutoDJ $autodj
+     * @see \App\Provider\SyncProvider
+     */
     public function __construct(EntityManager $em, Database $influx, Cache $cache, Adapters $adapters,
-                                Dispatcher $webhook_dispatcher, ApiUtilities $api_utils)
+                                Dispatcher $webhook_dispatcher, ApiUtilities $api_utils, AutoDJ $autodj)
     {
         $this->em = $em;
         $this->influx = $influx;
@@ -54,6 +67,7 @@ class NowPlaying extends TaskAbstract
         $this->adapters = $adapters;
         $this->webhook_dispatcher = $webhook_dispatcher;
         $this->api_utils = $api_utils;
+        $this->autodj = $autodj;
 
         $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
         $this->song_repo = $this->em->getRepository(Entity\Song::class);
@@ -178,7 +192,7 @@ class NowPlaying extends TaskAbstract
 
             $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils);
 
-            $next_song = $this->history_repo->getNextSongForStation($station);
+            $next_song = $this->autodj->getNextSong($station);
             if ($next_song instanceof Entity\SongHistory) {
                 $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils);
             } else {
@@ -206,7 +220,7 @@ class NowPlaying extends TaskAbstract
 
                 $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils);
 
-                $next_song = $this->history_repo->getNextSongForStation($station);
+                $next_song = $this->autodj->getNextSong($station);
 
                 if ($next_song instanceof Entity\SongHistory) {
                     $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils);

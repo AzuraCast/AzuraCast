@@ -57,7 +57,8 @@ class SyncProvider implements ServiceProviderInterface
                 $di[\App\Cache::class],
                 $di[\App\Radio\Adapters::class],
                 $di[\App\Webhook\Dispatcher::class],
-                $di[\App\ApiUtilities::class]
+                $di[\App\ApiUtilities::class],
+                $di[\App\Radio\AutoDJ::class]
             );
         };
 

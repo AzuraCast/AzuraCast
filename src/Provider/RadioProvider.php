@@ -2,6 +2,7 @@
 namespace App\Provider;
 
 use App\Radio\Adapters;
+use App\Radio\AutoDJ;
 use App\Radio\Backend;
 use App\Radio\Configuration;
 use App\Radio\Frontend;
@@ -22,6 +23,13 @@ class RadioProvider implements ServiceProviderInterface
             ]));
         };
 
+        $di[AutoDJ::class] = function($di) {
+            return new AutoDJ(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\App\Cache::class]
+            );
+        };
+
         $di[Configuration::class] = function($di) {
             return new Configuration(
                 $di[\Doctrine\ORM\EntityManager::class],
@@ -34,7 +42,8 @@ class RadioProvider implements ServiceProviderInterface
             return new Backend\Liquidsoap(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
-                $di[\Monolog\Logger::class]
+                $di[\Monolog\Logger::class],
+                $di[AutoDJ::class]
             );
         });
 

@@ -1,11 +1,31 @@
 <?php
 namespace App\Radio\Backend;
 
+use App\Radio\AutoDJ;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
+use Monolog\Logger;
+use Supervisor\Supervisor;
 
 class Liquidsoap extends BackendAbstract
 {
+    /** @var AutoDJ */
+    protected $autodj;
+
+    /**
+     * @param EntityManager $em
+     * @param Supervisor $supervisor
+     * @param Logger $logger
+     * @param AutoDJ $autodj
+     * @see \App\Provider\RadioProvider
+     */
+    public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger, AutoDJ $autodj)
+    {
+        parent::__construct($em, $supervisor, $logger);
+
+        $this->autodj = $autodj;
+    }
+
     /**
      * @inheritdoc
      */
@@ -715,11 +735,8 @@ class Liquidsoap extends BackendAbstract
 
     public function getNextSong($as_autodj = false)
     {
-        /** @var Entity\Repository\SongHistoryRepository $history_repo */
-        $history_repo = $this->em->getRepository(Entity\SongHistory::class);
-
         /** @var Entity\SongHistory|null $sh */
-        $sh = $history_repo->getNextSongForStation($this->station, $as_autodj);
+        $sh = $this->autodj->getNextSong($this->station, $as_autodj);
 
         if ($sh instanceof Entity\SongHistory) {
             $media = $sh->getMedia();

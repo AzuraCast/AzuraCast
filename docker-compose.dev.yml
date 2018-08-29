@@ -159,6 +159,15 @@ services:
      - "8888:8888"
     command: "chronograf --influxdb-url=http://influxdb:8086"
 
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    depends_on:
+    - redis
+    environment:
+      REDIS_HOSTS: "local-app:redis:6379:0,local-sessions:redis:6379:1,local-doctrine:redis:6379:2"
+    ports:
+    - "127.0.0.1:8081:8081"
+
 volumes:
   nginx_letsencrypt_certs: {}
   nginx_letsencrypt_www: {}

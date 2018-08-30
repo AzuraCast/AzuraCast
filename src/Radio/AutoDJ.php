@@ -250,11 +250,11 @@ class AutoDJ
     /**
      * Mark a playlist's cache as invalidated and force regeneration on the next "next song" call.
      *
-     * @param Entity\StationPlaylist $playlist
+     * @param int $playlist_id
      */
-    public function clearPlaybackCache(Entity\StationPlaylist $playlist): void
+    public function clearPlaybackCache($playlist_id): void
     {
-        $this->cache->remove($this->_getCacheName($playlist));
+        $this->cache->remove($this->_getCacheName($playlist_id));
     }
 
     /**
@@ -294,7 +294,7 @@ class AutoDJ
      */
     protected function _playSongFromPlaylist(Entity\StationPlaylist $playlist)
     {
-        $cache_name = $this->_getCacheName($playlist);
+        $cache_name = $this->_getCacheName($playlist->getId());
         $media_queue = (array)$this->cache->get($cache_name);
 
         if (empty($media_queue)) {
@@ -355,11 +355,11 @@ class AutoDJ
     /**
      * Get the cache name for the given playlist.
      *
-     * @param Entity\StationPlaylist $playlist
+     * @param int $playlist_id
      * @return string
      */
-    protected function _getCacheName(Entity\StationPlaylist $playlist): string
+    protected function _getCacheName($playlist_id): string
     {
-        return 'autodj/playlist_'.$playlist->getId().'_'.$playlist->getOrder().'_'.$playlist->getType();
+        return 'autodj/playlist_'.$playlist_id;
     }
 }

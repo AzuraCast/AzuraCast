@@ -336,8 +336,7 @@ class FilesController extends FilesControllerAbstract
                 break;
 
             case 'clear':
-                /** @var BackendAbstract $backend */
-                $backend = $request->getAttribute('station_backend');
+                $backend = $request->getStationBackend();
 
                 // Clear all assigned playlists from the selected files.
                 $music_files = $this->_getMusicFiles($files);
@@ -346,6 +345,7 @@ class FilesController extends FilesControllerAbstract
                 foreach ($music_files as $file) {
                     try {
                         $media = $this->media_repo->getOrCreate($station, $file);
+
                         $this->playlists_media_repo->clearPlaylistsFromMedia($media);
                     } catch (\Exception $e) {
                         $errors[] = $file.': '.$e->getMessage();

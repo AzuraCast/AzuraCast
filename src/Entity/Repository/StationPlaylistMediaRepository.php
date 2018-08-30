@@ -2,11 +2,20 @@
 
 namespace App\Entity\Repository;
 
+use App\Radio\AutoDJ;
 use Doctrine\ORM\NoResultException;
 use App\Entity;
 
 class StationPlaylistMediaRepository extends BaseRepository
 {
+    /** @var AutoDJ */
+    protected $autodj;
+
+    public function setAutoDJ(AutoDJ $autodj)
+    {
+        $this->autodj = $autodj;
+    }
+
     /**
      * Add the specified media to the specified playlist.
      * Must flush the EntityManager after using.
@@ -52,6 +61,10 @@ class StationPlaylistMediaRepository extends BaseRepository
             $this->_em->persist($record);
         }
 
+        if ($this->autodj instanceof AutoDJ) {
+            $this->autodj->clearPlaybackCache($playlist->getId());
+        }
+
         return $weight;
     }
 
@@ -62,6 +75,16 @@ class StationPlaylistMediaRepository extends BaseRepository
      */
     public function clearPlaylistsFromMedia(Entity\StationMedia $media)
     {
+        if ($this->autodj instanceof AutoDJ) {
+            $playlists = $this->_em->createQuery('SELECT e.playlist_id FROM '.$this->_entityName.' e WHERE e.media_id = :media_id')
+                ->setParameter('media_id', $media->getId())
+                ->getArrayResult();
+
+            foreach($playlists as $row) {
+                $this->autodj->clearPlaybackCache($row['playlist_id']);
+            }
+        }
+
         $this->_em->createQuery('DELETE FROM '.$this->_entityName.' e WHERE e.media_id = :media_id')
             ->setParameter('media_id', $media->getId())
             ->execute();
@@ -83,6 +106,10 @@ class StationPlaylistMediaRepository extends BaseRepository
             SET e.weight = :weight
             WHERE e.playlist_id = :playlist_id AND e.media_id = :media_id')
             ->setParameter('playlist_id', $playlist->getId());
+
+        if ($this->autodj instanceof AutoDJ) {
+            $this->autodj->clearPlaybackCache($playlist->getId());
+        }
 
         foreach($mapping as $media_id => $weight) {
             $update_query->setParameter('media_id', $media_id)

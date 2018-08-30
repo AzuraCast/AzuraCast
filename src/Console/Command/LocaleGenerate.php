@@ -24,13 +24,21 @@ class LocaleGenerate extends CommandAbstract
         $translations = new \Gettext\Translations;
 
         // Find all PHP/PHTML files in the application's code.
-        $directory = new \RecursiveDirectoryIterator(APP_INCLUDE_ROOT.'/src');
-        $iterator = new \RecursiveIteratorIterator($directory);
-        $regex = new \RegexIterator($iterator, '/^.+\.(phtml|php)$/i', \RecursiveRegexIterator::GET_MATCH);
+        $translatable_folders = [
+            APP_INCLUDE_ROOT.'/src',
+            APP_INCLUDE_ROOT.'/config',
+            APP_INCLUDE_ROOT.'/resources/templates',
+        ];
 
-        foreach($regex as $path_match) {
-            $path = $path_match[0];
-            $translations->addFromPhpCodeFile($path);
+        foreach($translatable_folders as $folder) {
+            $directory = new \RecursiveDirectoryIterator($folder);
+            $iterator = new \RecursiveIteratorIterator($directory);
+            $regex = new \RegexIterator($iterator, '/^.+\.(phtml|php)$/i', \RecursiveRegexIterator::GET_MATCH);
+
+            foreach($regex as $path_match) {
+                $path = $path_match[0];
+                $translations->addFromPhpCodeFile($path);
+            }
         }
 
         $translations->toPoFile($dest_file);

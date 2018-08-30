@@ -26,10 +26,8 @@ class StationPlaylist
     public const SOURCE_REMOTE_URL ='remote_url';
 
     public const ORDER_RANDOM = 'random';
+    public const ORDER_SHUFFLE = 'shuffle';
     public const ORDER_SEQUENTIAL = 'sequential';
-
-    // public const SOURCE_RANDOM = 'random_songs';
-    // public const SOURCE_SEQUENTIAL = 'sequential_songs';
 
     /**
      * @Column(name="id", type="integer")
@@ -163,7 +161,7 @@ class StationPlaylist
 
         $this->type = self::TYPE_DEFAULT;
         $this->source = self::SOURCE_SONGS;
-        $this->order = self::ORDER_RANDOM;
+        $this->order = self::ORDER_SHUFFLE;
         $this->is_enabled = 1;
 
         $this->weight = 3;

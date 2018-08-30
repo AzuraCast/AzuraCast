@@ -310,8 +310,13 @@ class AutoDJ
                 $media_queue[] = $media_row['id'];
             }
 
-            if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_RANDOM) {
+            if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_SHUFFLE) {
+                // Build a queue with the song arrangement randomized.
                 shuffle($media_queue);
+            } else if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_RANDOM) {
+                // The queue should always consist of one randomly selected song.
+                shuffle($media_queue);
+                $media_queue = [array_pop($media_queue)];
             }
         }
 

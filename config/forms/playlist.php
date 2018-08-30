@@ -137,10 +137,11 @@ return [
                         'label' => __('Song Playback Order'),
                         'required' => true,
                         'choices' => [
-                            StationPlaylist::ORDER_RANDOM => __('Random (Shuffled)'),
+                            StationPlaylist::ORDER_SHUFFLE => __('Shuffled'),
+                            StationPlaylist::ORDER_RANDOM => __('Random'),
                             StationPlaylist::ORDER_SEQUENTIAL => __('Sequential'),
                         ],
-                        'default' => StationPlaylist::ORDER_RANDOM,
+                        'default' => StationPlaylist::ORDER_SHUFFLE,
                     ],
                 ],
 

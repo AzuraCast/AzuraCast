@@ -258,6 +258,30 @@ class AutoDJ
     }
 
     /**
+     * Add the given media to the playlist, appending it to the existing queue if one exists.
+     *
+     * @param Entity\StationMedia $media
+     * @param Entity\StationPlaylist $playlist
+     */
+    public function addMediaToPlaylist(Entity\StationMedia $media, Entity\StationPlaylist $playlist): void
+    {
+        if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_RANDOM) {
+            $cache_name = $this->_getCacheName($playlist->getId());
+            $media_queue = (array)$this->cache->get($cache_name);
+
+            if (!empty($media_queue)) {
+                $media_queue[] = $media->getId();
+
+                if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_SHUFFLE) {
+                    shuffle($media_queue);
+                }
+
+                $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
+            }
+        }
+    }
+
+    /**
      * Given a StationRequest object, create a new SongHistory entry that cues the requested song to play next.
      *
      * @param Entity\StationRequest $request

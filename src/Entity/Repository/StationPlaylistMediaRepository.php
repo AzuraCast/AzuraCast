@@ -62,7 +62,7 @@ class StationPlaylistMediaRepository extends BaseRepository
         }
 
         if ($this->autodj instanceof AutoDJ) {
-            $this->autodj->clearPlaybackCache($playlist->getId());
+            $this->autodj->addMediaToPlaylist($media, $playlist);
         }
 
         return $weight;

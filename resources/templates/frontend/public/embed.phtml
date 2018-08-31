@@ -1,8 +1,12 @@
-<?php /** @var App\Entity\Station $station */ ?>
-
-<?php $this->layout('minimal', ['page_class' => 'embed', 'title' => $this->e($station->getName()), 'hide_footer' => true]) ?>
-
 <?php
+/** @var App\Entity\Station $station */
+
+$this->layout('minimal', [
+    'page_class' => 'embed station-'.$station->getShortName(),
+    'title' => $this->e($station->getName()),
+    'hide_footer' => true
+]);
+
 /** @var \App\Assets $assets */
 $assets
     ->load('vue')

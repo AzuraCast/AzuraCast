@@ -1,8 +1,11 @@
-<?php /** @var \Entity\Station $station */ ?>
-
-<?php $this->layout('minimal', ['title' => $this->e($station->getName()), 'page_class' => 'public-page-content']) ?>
-
 <?php
+/** @var \App\Entity\Station $station */
+
+$this->layout('minimal', [
+    'page_class' => 'public-page-content station-'.$station->getShortName(),
+    'title' => $this->e($station->getName()),
+]);
+
 /** @var \App\Assets $assets */
 $assets
     ->load('vue')

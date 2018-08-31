@@ -66,6 +66,7 @@ return [
             [
                 'label' => __('Custom CSS for Public Pages'),
                 'description' => __('This CSS will be applied to the station public pages and login page.'),
+                'spellcheck' => 'false',
                 'class' => 'css-editor',
                 'filter' => function($val) { return strip_tags($val); }
             ]
@@ -76,6 +77,7 @@ return [
             [
                 'label' => __('Custom JS for Public Pages'),
                 'description' => __('This javascript code will be applied to the station public pages and login page.'),
+                'spellcheck' => 'false',
                 'class' => 'js-editor',
                 'filter' => function($val) { return strip_tags($val); }
             ]
@@ -86,12 +88,11 @@ return [
             [
                 'label' => __('Custom CSS for Internal Pages'),
                 'description' => __('This CSS will be applied to the main management pages, like this one.'),
+                'spellcheck' => 'false',
                 'class' => 'css-editor',
                 'filter' => function($val) { return strip_tags($val); }
             ],
         ],
-
-
 
         'submit' => [
             'submit',

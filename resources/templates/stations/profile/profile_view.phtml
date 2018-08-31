@@ -31,7 +31,7 @@
                         <span class="text-success"><?=__('Enabled') ?></span>
 
                         <div class="form-field">
-                            <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$router->named('public:embedrequests', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
+                            <textarea class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embedrequests', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 850px; border: 0;"></iframe></textarea>
                         </div>
                     <?php else: ?>
                         <span class="text-danger"><?=__('Disabled') ?></span><br><small><?=__('Edit station profile to enable.') ?></small>
@@ -63,7 +63,7 @@
         <tr>
             <td><?=__('Player Embed Code') ?></td>
             <td class="form-field">
-                <textarea class="full-width form-control text-preformatted" style="height: 50px;"><iframe src="<?=$router->named('public:embed', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
+                <textarea class="full-width form-control text-preformatted" spellcheck="false" style="height: 70px;"><iframe src="<?=$router->named('public:embed', ['station' => $station->getShortName()], [], true) ?>" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 150px; border: 0;"></iframe></textarea>
             </td>
         </tr>
         </tbody>

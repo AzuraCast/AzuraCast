@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08b034a641da81c7ba2045e8fca73eac",
+    "content-hash": "43f5da23019a8af219184bd2c1af7a3a",
     "packages": [
         {
             "name": "azuracast/azuraforms",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "54a26e33088f61c2fb68ca76b0886f47d89db533"
+                "reference": "1f0579ac74a2debbc963430d3b049bf9603435b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/54a26e33088f61c2fb68ca76b0886f47d89db533",
-                "reference": "54a26e33088f61c2fb68ca76b0886f47d89db533",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/1f0579ac74a2debbc963430d3b049bf9603435b9",
+                "reference": "1f0579ac74a2debbc963430d3b049bf9603435b9",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
             ],
             "description": "A modern, namespaced, configuration-driven forms engine for PHP.",
             "homepage": "https://github.com/AzuraCast/azuraforms",
-            "time": "2018-05-17T08:37:50+00:00"
+            "time": "2018-09-04T19:53:44+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -2914,17 +2914,6 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "918748563a72c409d945531f7c21cb6ae4d7574e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/918748563a72c409d945531f7c21cb6ae4d7574e",
-                "reference": "918748563a72c409d945531f7c21cb6ae4d7574e",
-                "shasum": ""
-            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
@@ -6037,6 +6026,7 @@
         "ext-gd": "*",
         "ext-intl": "*",
         "ext-json": "*",
+        "ext-pdo": "*",
         "ext-redis": "*",
         "ext-simplexml": "*",
         "ext-xml": "*",

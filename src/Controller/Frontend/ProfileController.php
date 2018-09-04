@@ -71,7 +71,7 @@ class ProfileController
         $user_profile = $this->user_repo->toArray($user);
         unset($user_profile['auth_password']);
 
-        $form->populate($user_profile);
+        $form->populate(array_filter($user_profile));
 
         if ($_POST && $form->isValid($_POST)) {
             $data = $form->getValues();

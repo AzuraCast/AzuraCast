@@ -13,6 +13,16 @@ return [
                     ],
                 ],
 
+                'timezone' => [
+                    'select',
+                    [
+                        'label' => __('System Default Time Zone'),
+                        'description' => __('For users who have not customized their time zone, all times displayed on the site will be based on this time zone.'),
+                        'options' => \App\Timezone::fetchSelect(),
+                        'default' => 'UTC',
+                    ],
+                ],
+
                 'base_url' => [
                     'text',
                     [
@@ -79,7 +89,7 @@ return [
                         ],
                         'default' => \App\Entity\SongHistory::DEFAULT_DAYS_TO_KEEP,
                     ]
-                ]
+                ],
 
             ],
         ],

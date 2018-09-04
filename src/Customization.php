@@ -67,7 +67,7 @@ class Customization
      *
      * @param Entity\User $user
      */
-    public function setUser(Entity\User $user = null)
+    public function setUser(Entity\User $user = null): void
     {
         $this->user = $user;
     }
@@ -77,10 +77,26 @@ class Customization
      *
      * @return string
      */
-    public function getTimeZone()
+    public function getTimeZone(): string
     {
         if ($this->user !== null && !empty($this->user->getTimezone())) {
             return $this->user->getTimezone();
+        }
+
+        return $this->getDefaultTimeZone();
+    }
+
+    /**
+     * Return either the configured global default timezone or the system's regular default.
+     *
+     * @return string
+     */
+    public function getDefaultTimeZone(): string
+    {
+        $global_tz = $this->settings_repo->getSetting('timezone');
+
+        if (!empty($global_tz)) {
+            return $global_tz;
         }
 
         return date_default_timezone_get();

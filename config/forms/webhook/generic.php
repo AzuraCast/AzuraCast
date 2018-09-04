@@ -38,6 +38,24 @@ return [
                     ]
                 ],
 
+                'basic_auth_username' => [
+                    'text',
+                    [
+                        'label' => __('Optional: HTTP Basic Authentication Username'),
+                        'description' => __('If your web hook requires HTTP basic authentication, provide the username here.'),
+                        'belongsTo' => 'config',
+                    ]
+                ],
+
+                'basic_auth_password' => [
+                    'text',
+                    [
+                        'label' => __('Optional: HTTP Basic Authentication Password'),
+                        'description' => __('If your web hook requires HTTP basic authentication, provide the password here.'),
+                        'belongsTo' => 'config',
+                    ]
+                ],
+
                 'triggers' => [
                     'multiCheckbox',
                     [

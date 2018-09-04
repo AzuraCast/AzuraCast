@@ -27,12 +27,21 @@ class Generic extends AbstractConnector
         ]);
 
         try {
-            $response = $client->request('POST', $webhook_url, [
+            $request_options = [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
                 'json' => $np,
-            ]);
+            ];
+
+            if (!empty($config['basic_auth_username']) && !empty($config['basic_auth_password'])) {
+                $request_options['auth'] = [
+                    $config['basic_auth_username'],
+                    $config['basic_auth_password']
+                ];
+            }
+
+            $response = $client->request('POST', $webhook_url, $request_options);
 
             $this->logger->debug(
                 sprintf('Generic webhook returned code %d', $response->getStatusCode()),

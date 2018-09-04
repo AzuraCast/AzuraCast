@@ -266,11 +266,17 @@ return [
             'elements' => [
 
                 'play_per_songs' => [
-                    'select',
+                    'number',
                     [
                         'label' => __('Number of Songs Between Plays'),
                         'description' => __('This playlist will play every $x songs, where $x is specified below.'),
-                        'options' => \App\Utilities::pairs(range(1, 100)),
+                        'default' => 1,
+                        'step' => 1,
+                        'min' => 1,
+                        'max' => 150,
+                        'filter' => function($val) {
+                            return (int)$val;
+                        }
                     ]
                 ],
 
@@ -283,11 +289,17 @@ return [
             'elements' => [
 
                 'play_per_minutes' => [
-                    'select',
+                    'number',
                     [
                         'label' => __('Number of Minutes Between Plays'),
                         'description' => __('This playlist will play every $x minutes, where $x is specified below.'),
-                        'options' => \App\Utilities::pairs(range(1, 240)),
+                        'default' => 1,
+                        'step' => 1,
+                        'min' => 1,
+                        'max' => 120,
+                        'filter' => function($val) {
+                            return (int)$val;
+                        }
                     ]
                 ],
 

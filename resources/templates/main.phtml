@@ -121,8 +121,8 @@ echo $assets->js();
 </section>
 
 <footer id="footer" <?php if (empty($sidebar)): ?>class="footer-alt"<?php endif; ?> role="contentinfo">
-    <?=sprintf(__('Powered by %s'), '<a href="https://azuracast.com/" target="_blank">'.$app_settings['name'].'</a>'.' '.\App\Version::getVersionText().' '.(APP_INSIDE_DOCKER ? '(Docker)' : '(Traditional)')) ?><br>
-    PHP <?=\PHP_VERSION ?>, SlimPHP 3
+    <?=__('Powered by %s', '<a href="https://www.azuracast.com/" target="_blank">'.$app_settings['name'].'</a> &bull; '.\App\Version::getVersionText().' &bull; '.(APP_INSIDE_DOCKER ? 'Docker' : 'Traditional').' &bull; PHP '.\PHP_MAJOR_VERSION.'.'.\PHP_MINOR_VERSION) ?><br>
+    <?=__('Like our software? <a href="%s" target="_blank">Donate to support AzuraCast!</a>', 'http://www.azuracast.com/donate.html') ?>
 </footer>
 
 <div id="radio-player"></div>

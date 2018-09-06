@@ -141,6 +141,7 @@ return [
                         'label' => __('Advanced: Customize Broadcasting Port'),
                         'description' => __('No other program can be using this port. Leave blank to automatically assign a port.'),
                         'belongsTo' => 'frontend_config',
+                        'class' => 'input-port',
                     ]
                 ],
 
@@ -347,6 +348,7 @@ return [
                         'label' => __('Advanced: Customize DJ/Streamer Port'),
                         'description' => __('No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections.'),
                         'belongsTo' => 'backend_config',
+                        'class' => 'input-port',
                     ]
                 ],
 
@@ -366,6 +368,7 @@ return [
                         'label' => __('Advanced: Customize Internal Request Processing Port'),
                         'description' => __('This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.'),
                         'belongsTo' => 'backend_config',
+                        'class' => 'input-port',
                     ]
                 ],
 

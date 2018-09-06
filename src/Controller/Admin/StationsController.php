@@ -87,6 +87,28 @@ class StationsController
             $record = null;
         }
 
+        $port_checker = function($value) use ($record) {
+            if (!empty($value)) {
+                $value = (int)$value;
+                $used_ports = $this->configuration->getUsedPorts($record);
+
+                if (isset($used_ports[$value])) {
+                    $station_reference = $used_ports[$value];
+                    return __('This port is currently in use by the station "%s".', $station_reference['name']);
+                }
+            }
+            return true;
+        };
+
+        foreach($form as $field) {
+            /** @var AbstractField $field */
+            $attrs = $field->getAttributes();
+
+            if (isset($attrs['class']) && strpos($attrs['class'], 'input-port') !== false) {
+                $field->addValidator($port_checker);
+            }
+        }
+
         if ($_POST && $form->isValid($_POST)) {
             $data = $form->getValues();
 

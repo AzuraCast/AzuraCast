@@ -5,6 +5,7 @@ use App\Cache;
 use App\Radio\Backend\BackendAbstract;
 use App\Radio\Configuration;
 use App\Radio\Frontend\FrontendAbstract;
+use AzuraForms\Field\AbstractField;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -125,6 +126,28 @@ class ProfileController
         unset($base_form['groups']['admin']);
 
         $form = new \AzuraForms\Form($base_form);
+
+        $port_checker = function($value) use ($station) {
+            if (!empty($value)) {
+                $value = (int)$value;
+                $used_ports = $this->configuration->getUsedPorts($station);
+
+                if (isset($used_ports[$value])) {
+                    $station_reference = $used_ports[$value];
+                    return __('This port is currently in use by the station "%s".', $station_reference['name']);
+                }
+            }
+            return true;
+        };
+
+        foreach($form as $field) {
+            /** @var AbstractField $field */
+            $attrs = $field->getAttributes();
+
+            if (isset($attrs['class']) && strpos($attrs['class'], 'input-port') !== false) {
+                $field->addValidator($port_checker);
+            }
+        }
 
         $form->populate($this->station_repo->toArray($station));
 

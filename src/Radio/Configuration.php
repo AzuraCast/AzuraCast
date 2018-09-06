@@ -16,6 +16,9 @@ class Configuration
     /** @var Supervisor */
     protected $supervisor;
 
+    /** @var array */
+    protected $used_ports;
+
     /**
      * Configuration constructor.
      * @param EntityManager $em
@@ -27,6 +30,8 @@ class Configuration
         $this->em = $em;
         $this->adapters = $adapters;
         $this->supervisor = $supervisor;
+
+        $this->used_ports = [];
     }
 
     /**
@@ -253,35 +258,7 @@ class Configuration
      */
     public function getFirstAvailableRadioPort(Station $station = null): int
     {
-        $used_ports = [];
-
-        // Get all station used ports.
-        $station_configs = $this->em->createQuery('SELECT s.id, s.frontend_type, s.frontend_config, s.backend_type, s.backend_config FROM '.Station::class.' s')
-            ->getArrayResult();
-
-        foreach($station_configs as $row) {
-            // Skip the specified station, if it's specified
-            if ($station !== null && $row['id'] === $station->getId()) {
-                continue;
-            }
-
-            if ($row['frontend_type'] !== 'remote' && $row['backend_type'] !== 'none') {
-                $frontend_config = (array)$row['frontend_config'];
-
-                if (!empty($frontend_config['port'])) {
-                    $used_ports[$frontend_config['port']] = $frontend_config['port'];
-                }
-
-                $backend_config = (array)$row['backend_config'];
-
-                if (!empty($backend_config['dj_port'])) {
-                    $used_ports[$backend_config['dj_port']] = $backend_config['dj_port'];
-                }
-                if (!empty($backend_config['telnet_port'])) {
-                    $used_ports[$backend_config['telnet_port']] = $backend_config['telnet_port'];
-                }
-            }
-        }
+        $used_ports = $this->getUsedPorts($station);
 
         // Iterate from port 8000 to 9000, in increments of 10
         $protected_ports = [8080];
@@ -305,5 +282,54 @@ class Configuration
         }
 
         throw new \App\Exception('This installation has no available ports for new radio stations.');
+    }
+
+    /**
+     * Get an array of all used ports across the system, except the ones used by the station specified (if specified).
+     *
+     * @param Station|null $except_station
+     * @return array
+     */
+    public function getUsedPorts(Station $except_station = null): array
+    {
+        if (!$this->used_ports) {
+            $this->used_ports = [];
+
+            // Get all station used ports.
+            $station_configs = $this->em->createQuery('SELECT s.id, s.name, s.frontend_type, s.frontend_config, s.backend_type, s.backend_config FROM '.Station::class.' s')
+                ->getArrayResult();
+
+            foreach($station_configs as $row) {
+                $station_reference = ['id' => $row['id'], 'name' => $row['name']];
+
+                if ($row['frontend_type'] !== 'remote' && $row['backend_type'] !== 'none') {
+                    $frontend_config = (array)$row['frontend_config'];
+
+                    if (!empty($frontend_config['port'])) {
+                        $port = (int)$frontend_config['port'];
+                        $this->used_ports[$port] = $station_reference;
+                    }
+
+                    $backend_config = (array)$row['backend_config'];
+
+                    if (!empty($backend_config['dj_port'])) {
+                        $port = (int)$frontend_config['dj_port'];
+                        $this->used_ports[$port] = $station_reference;
+                    }
+                    if (!empty($backend_config['telnet_port'])) {
+                        $port = (int)$frontend_config['telnet_port'];
+                        $this->used_ports[$port] = $station_reference;
+                    }
+                }
+            }
+        }
+
+        if ($except_station !== null) {
+            return array_filter($this->used_ports, function($station_reference) use ($except_station) {
+                return ($station_reference['id'] !== $except_station->getId());
+            });
+        }
+
+        return $this->used_ports;
     }
 }

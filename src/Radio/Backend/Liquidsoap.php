@@ -280,7 +280,7 @@ class Liquidsoap extends BackendAbstract
         if ($crossfade > 0) {
             $start_next = round($crossfade * 1.5, 2);
             $ls_config[] = '# Crossfading';
-            $ls_config[] = 'radio = crossfade(start_next=' . $start_next . ',fade_out=' . $crossfade . ',fade_in=' . $crossfade . ',radio)';
+            $ls_config[] = 'radio = crossfade(start_next=' . $this->_toFloat($start_next) . ',fade_out=' . $this->_toFloat($crossfade) . ',fade_in=' . $this->_toFloat($crossfade) . ',radio)';
             $ls_config[] = '';
         }
 
@@ -403,6 +403,22 @@ class Liquidsoap extends BackendAbstract
         file_put_contents($ls_config_path, $ls_config_contents);
 
         return true;
+    }
+
+    /**
+     * Convert an integer or float into a Liquidsoap configuration compatible float.
+     *
+     * @param float $number
+     * @param int $decimals
+     * @return string
+     */
+    protected function _toFloat($number, $decimals = 2): string
+    {
+        if ((int)$number == $number) {
+            return (int)$number.'.';
+        }
+
+        return number_format($number, $decimals, '.', '');
     }
 
     /**

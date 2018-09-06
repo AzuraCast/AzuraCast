@@ -280,7 +280,7 @@ class Liquidsoap extends BackendAbstract
         if ($crossfade > 0) {
             $start_next = round($crossfade * 1.5, 2);
             $ls_config[] = '# Crossfading';
-            $ls_config[] = 'radio = crossfade(start_next=' . $start_next . '.,fade_out=' . $crossfade . '.,fade_in=' . $crossfade . '.,radio)';
+            $ls_config[] = 'radio = crossfade(start_next=' . $start_next . ',fade_out=' . $crossfade . ',fade_in=' . $crossfade . ',radio)';
             $ls_config[] = '';
         }
 

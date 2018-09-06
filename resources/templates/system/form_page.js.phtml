@@ -1,0 +1,17 @@
+$(function() {
+    var error_fields = $('form .has-error:visible');
+    console.log(error_fields);
+    if (error_fields.length > 0) {
+        console.log(error_fields.first().offset().top);
+
+        $([document.documentElement, document.body]).animate({
+            scrollTop: error_fields.first().offset().top - $('#header').outerHeight() - 15
+        }, 1000);
+    }
+
+    $('select').chosen({
+        placeholder_text_single: '<?=__('Select...') ?>',
+        placeholder_text_multiple: '<?=__('Select...') ?>',
+        no_results_text: '<?=__('No results found!') ?>'
+    });
+});

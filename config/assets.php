@@ -76,7 +76,6 @@ return [
                 ],
                 [
                     'src' => 'dist/app.min.js',
-                    'defer' => true,
                 ],
             ],
         ],

@@ -52,7 +52,7 @@ class Assets
      *
      * @return string
      */
-    public function getCspNonce()
+    public function getCspNonce(): string
     {
         return $this->csp_nonce;
     }
@@ -76,7 +76,7 @@ class Assets
      */
     public function addLibrary(array $data, $library_name = null): self
     {
-        $library_name = $library_name ?? uniqid();
+        $library_name = $library_name ?? uniqid('', false);
 
         $this->libraries[$library_name] = [
             'name'     => $library_name,
@@ -97,13 +97,13 @@ class Assets
      */
     public function load($data): self
     {
-        if (is_array($data)) {
+        if (\is_array($data)) {
             $item = [
-                'name'     => $data['name'] ?? uniqid(),
+                'name'     => $data['name'] ?? uniqid('', false),
                 'order'    => $data['order'] ?? 0,
                 'files'    => $data['files'] ?? [],
                 'inline'   => $data['inline'] ?? [],
-                'require'  => isset($data['require']) ? $data['require'] : []
+                'require'  => $data['require'] ?? []
             ];
         } elseif (isset($this->libraries[$data])) {
             $item = $this->libraries[$data];
@@ -139,7 +139,7 @@ class Assets
             'order' => 100,
             'files' => [
                 'js' => [
-                    (is_array($js_script)) ? $js_script : ['src' => $js_script]
+                    (\is_array($js_script)) ? $js_script : ['src' => $js_script]
                 ],
             ],
         ]);
@@ -153,12 +153,12 @@ class Assets
      * @param $js_script
      * @return $this
      */
-    public function addInlineJs($js_script): self
+    public function addInlineJs($js_script, $order = 100): self
     {
         $this->load([
-            'order' => 100,
+            'order' => $order,
             'inline' => [
-                'js' => $js_script,
+                'js' => (is_array($js_script)) ? $js_script : array($js_script),
             ],
         ]);
 
@@ -171,13 +171,13 @@ class Assets
      * @param $css_script
      * @return $this
      */
-    public function addCss($css_script): self
+    public function addCss($css_script, $order = 100): self
     {
         $this->load([
-            'order' => 100,
+            'order' => $order,
             'files' => [
                 'css' => [
-                    (is_array($css_script)) ? $css_script : ['src' => $css_script]
+                    (\is_array($css_script)) ? $css_script : ['src' => $css_script]
                 ],
             ],
         ]);
@@ -229,7 +229,7 @@ class Assets
             if (!empty($item['inline']['css'])) {
                 foreach($item['inline']['css'] as $inline) {
                     if (!empty($inline)) {
-                        $result[] = '<style type="text/css" nonce="'.$this->csp_nonce.'">'.$inline.'</style>';
+                        $result[] = '<style type="text/css" nonce="'.$this->csp_nonce.'">'."\n".$inline.'</style>';
                     }
                 }
             }
@@ -266,8 +266,10 @@ class Assets
 
     /**
      * Return any inline JavaScript.
+     * @param Request $request
+     * @return string
      */
-    public function inlineJs(Request $request)
+    public function inlineJs(Request $request): string
     {
         $this->_sort();
 
@@ -276,12 +278,12 @@ class Assets
         {
             if (!empty($item['inline']['js'])) {
                 foreach($item['inline']['js'] as $inline) {
-                    if (is_callable($inline)) {
+                    if (\is_callable($inline)) {
                         $inline = $inline($request);
                     }
 
                     if (!empty($inline)) {
-                        $result[] = '<script type="text/javascript" nonce="'.$this->csp_nonce.'">'.$inline.'</script>';
+                        $result[] = '<script type="text/javascript" nonce="'.$this->csp_nonce.'">'."\n".$inline.'</script>';
                     }
                 }
             }

@@ -1,24 +1,17 @@
-<?php $this->layout('main', ['title' => $title, 'header' => $header]); ?>
-
-<?php if ($render_mode == 'edit'): ?>
-    <?=$form->render() ?>
-<?php else: ?>
-    <?=$form->renderView() ?>
-<?php endif; ?>
-
 <?php
+$this->layout('main', [
+    'title' => $title,
+    'header' => $header
+]);
+
 /** @var \App\Assets $assets */
 $assets
     ->load('chosen')
-    ->load('zxcvbn');
-?>
+    ->load('zxcvbn')
+    ->addInlineJs($this->fetch('system/form_page.js'));
 
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-$(function() {
-    $('select').chosen({
-        placeholder_text_single: '<?=__('Select...') ?>',
-        placeholder_text_multiple: '<?=__('Select...') ?>',
-        no_results_text: '<?=__('No results found!') ?>'
-    });
-});
-</script>
+if ($render_mode === 'edit') {
+    echo $form->render();
+} else {
+    echo $form->renderView();
+}

@@ -1,43 +1,11 @@
-<?=$form->render() ?>
+<?php
+/** @var \App\Assets $assets */
+$assets
+    ->addInlineJs($this->fetch('partials/station_form.js'), 99);
 
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-$(function() {
-
-    showFrontend($('form #field_frontend_type input:checked').val());
-    showBackend($('form #field_backend_type input:checked').val());
-
-    $('form #field_frontend_type input').on('change', function() {
-        showFrontend($(this).val());
-    });
-    $('form #field_backend_type input').on('change', function() {
-        showBackend($(this).val());
-    });
-
-});
-
-var active_frontend;
-
-function showFrontend(selected)
-{
-    selected = (selected === "remote") ? 'remote' : 'local';
-
-    if (selected !== active_frontend) {
-        active_frontend = selected;
-
-        $('form fieldset.frontend_fieldset').slideUp('fast');
-        $('form fieldset#frontend_'+active_frontend).slideDown('fast');
-    }
-}
-
-var active_backend;
-
-function showBackend(selected)
-{
-    if (selected !== active_backend) {
-        active_backend = selected;
-
-        $('form fieldset.backend_fieldset').slideUp('fast');
-        $('form fieldset#backend_'+selected).slideDown('fast');
-    }
-}
-</script>
+echo $this->fetch('system/form_page', [
+    'title' => $title,
+    'header' => $header,
+    'form' => $form,
+    'render_mode' => 'edit'
+]);

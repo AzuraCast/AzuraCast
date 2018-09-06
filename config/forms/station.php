@@ -296,33 +296,37 @@ return [
                 ],
 
                 'request_delay' => [
-                    'text',
+                    'number',
                     [
                         'label' => __('Request Minimum Delay (Minutes)'),
                         'description' => __('If requests are enabled, this specifies the minimum delay (in minutes) between a request being submitted and being played. If set to zero, no delay is applied.<br><b>Important:</b> Some stream licensing rules require a minimum delay for requests (in the US, this is currently 60 minutes). Check your local regulations for more information.'),
                         'default' => Station::DEFAULT_REQUEST_DELAY,
+                        'min' => '0',
+                        'max' => '1440',
                     ]
                 ],
 
                 'request_threshold' => [
-                    'text',
+                    'number',
                     [
                         'label' => __('Request Last Played Threshold (Minutes)'),
                         'description' => __('If requests are enabled, this specifies the minimum time (in minutes) between a song playing on the radio and being available to request again. Set to 0 for no threshold.'),
                         'default' => Station::DEFAULT_REQUEST_THRESHOLD,
+                        'min' => '0',
+                        'max' => '1440',
                     ]
                 ],
 
                 'crossfade' => [
-                    'text',
+                    'number',
                     [
                         'label' => __('Crossfade Duration (Seconds)'),
                         'belongsTo' => 'backend_config',
                         'description' => __('Number of seconds to overlap songs. Set to 0 to disable crossfade completely.'),
                         'default' => 2,
-                        'filter' => function($str) {
-                            return (int)$str;
-                        }
+                        'min' => '0.0',
+                        'max' => '30.0',
+                        'step' => '0.1',
                     ]
                 ],
 

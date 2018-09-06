@@ -271,12 +271,8 @@ return [
                         'label' => __('Number of Songs Between Plays'),
                         'description' => __('This playlist will play every $x songs, where $x is specified below.'),
                         'default' => 1,
-                        'step' => 1,
                         'min' => 0,
                         'max' => 150,
-                        'filter' => function($val) {
-                            return (int)$val;
-                        }
                     ]
                 ],
 
@@ -294,12 +290,8 @@ return [
                         'label' => __('Number of Minutes Between Plays'),
                         'description' => __('This playlist will play every $x minutes, where $x is specified below.'),
                         'default' => 1,
-                        'step' => 1,
                         'min' => 0,
                         'max' => 120,
-                        'filter' => function($val) {
-                            return (int)$val;
-                        }
                     ]
                 ],
 

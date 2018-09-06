@@ -23,7 +23,7 @@ class LocaleImport extends CommandAbstract
         $app_settings = $this->get('app_settings');
         $locales = $app_settings['locale']['supported'];
 
-        $locale_base = APP_INCLUDE_BASE.'/locale';
+        $locale_base = APP_INCLUDE_ROOT.'/resources/locale';
 
         foreach($locales as $locale_key => $locale_name) {
 

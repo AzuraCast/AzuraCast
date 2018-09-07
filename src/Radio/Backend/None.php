@@ -11,10 +11,12 @@ class None extends BackendAbstract
 
     public function read(): bool
     {
+        return true;
     }
 
     public function write(): bool
     {
+        return true;
     }
 
     public function isRunning(): bool

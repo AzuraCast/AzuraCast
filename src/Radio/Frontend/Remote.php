@@ -1,6 +1,8 @@
 <?php
 namespace App\Radio\Frontend;
 
+use App\Entity;
+
 class Remote extends FrontendAbstract
 {
     protected $supports_mounts = true;
@@ -34,10 +36,14 @@ class Remote extends FrontendAbstract
     }
 
     public function read(): bool
-    {}
+    {
+        return true;
+    }
 
     public function write(): bool
-    {}
+    {
+        return true;
+    }
 
     public function isRunning(): bool
     {
@@ -89,7 +95,7 @@ class Remote extends FrontendAbstract
                 break;
         }
 
-        return false;
+        return '';
     }
 
     protected function _getDefaultMount()
@@ -98,7 +104,7 @@ class Remote extends FrontendAbstract
 
         if ($mounts->count() > 0) {
             foreach($mounts as $mount) {
-                /** @var \Entity\StationMount $mount */
+                /** @var Entity\StationMount $mount */
                 if ($mount->getIsDefault()) {
                     return $mount;
                 }
@@ -112,16 +118,16 @@ class Remote extends FrontendAbstract
     {
         $mounts = $this->station->getMounts();
 
-        if ($mounts->count() == 0) {
+        if ($mounts->count() === 0) {
             return [ (array)$this->station->getFrontendConfig() ];
-        } else {
-            return $mounts;
         }
+
+        return $mounts;
     }
 
     protected function _getMountNowPlayingData($mount)
     {
-        if ($mount instanceof \Entity\StationMount) {
+        if ($mount instanceof Entity\StationMount) {
             $settings = [
                 'remote_type'   => $mount->getRemoteType(),
                 'remote_url'    => $mount->getRemoteUrl(),

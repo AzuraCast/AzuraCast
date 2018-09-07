@@ -173,6 +173,7 @@ class SHOUTcast extends FrontendAbstract
         }
 
         file_put_contents($sc_path, $sc_file);
+        return true;
     }
 
     /*
@@ -206,7 +207,7 @@ class SHOUTcast extends FrontendAbstract
         return @parse_ini_file($config_dir . '/sc_serv.conf', false, INI_SCANNER_RAW);
     }
 
-    protected function _loadFromConfig($config)
+    protected function _loadFromConfig($config): array
     {
         return [
             'port' => $config['portbase'],
@@ -216,7 +217,7 @@ class SHOUTcast extends FrontendAbstract
         ];
     }
 
-    protected function _getDefaults()
+    protected function _getDefaults(): array
     {
         $config_path = $this->station->getRadioConfigDir();
 

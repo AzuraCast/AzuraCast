@@ -32,6 +32,7 @@ class Liquidsoap extends BackendAbstract
     public function read(): bool
     {
         // This function not implemented for LiquidSoap.
+        return true;
     }
 
     /**

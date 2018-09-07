@@ -212,6 +212,7 @@ class Icecast extends FrontendAbstract
         $icecast_config_str = substr($icecast_config_str, strpos($icecast_config_str, "\n") + 1);
 
         file_put_contents($icecast_path, $icecast_config_str);
+        return true;
     }
 
     /*

@@ -26,11 +26,6 @@ class Telegram extends AbstractConnector
             return;
         }
 
-        $client = new \GuzzleHttp\Client([
-            'http_errors' => false,
-            'timeout' => 4.0,
-        ]);
-
         $messages = $this->_replaceVariables([
             'text' => $config['text'],
         ], $np);
@@ -45,7 +40,7 @@ class Telegram extends AbstractConnector
                 'parse_mode' => $config['parse_mode'] ?? 'Markdown' // Markdown or HTML
             ];
 
-            $response = $client->request('POST', $webhook_url, [
+            $response = $this->http_client->request('POST', $webhook_url, [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],

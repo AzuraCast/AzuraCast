@@ -29,7 +29,7 @@ abstract class BackendAbstract extends \App\Radio\AdapterAbstract
         return null;
     }
 
-    public function getProgramName()
+    public function getProgramName(): string
     {
         return 'station_' . $this->station->getId() . ':station_' . $this->station->getId() . '_backend';
     }

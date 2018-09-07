@@ -3,16 +3,21 @@ namespace App\Webhook\Connector;
 
 use App\Entity;
 use App\Utilities;
+use GuzzleHttp\Client;
 use Monolog\Logger;
 
 abstract class AbstractConnector implements ConnectorInterface
 {
+    /** @var Client */
+    protected $http_client;
+
     /** @var Logger */
     protected $logger;
 
-    public function __construct(Logger $logger)
+    public function __construct(Logger $logger, Client $http_client)
     {
         $this->logger = $logger;
+        $this->http_client = $http_client;
     }
 
     public function shouldDispatch(array $current_events, array $triggers): bool
@@ -97,7 +102,7 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     protected function _getName(): string
     {
-        $class_name = get_called_class();
+        $class_name = static::class;
         return array_pop(explode("\\", $class_name));
     }
 }

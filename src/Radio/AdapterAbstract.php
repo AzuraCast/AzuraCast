@@ -38,7 +38,7 @@ abstract class AdapterAbstract
     /**
      * @param Station $station
      */
-    public function setStation(Station $station)
+    public function setStation(Station $station): void
     {
         $this->station = $station;
     }
@@ -47,19 +47,19 @@ abstract class AdapterAbstract
      * Read configuration from external service to Station object.
      * @return bool
      */
-    abstract public function read();
+    abstract public function read(): bool;
 
     /**
      * Write configuration from Station object to the external service.
      * @return bool
      */
-    abstract public function write();
+    abstract public function write(): bool;
 
     /**
      * Return the shell command required to run the program.
      * @return string|null
      */
-    public function getCommand()
+    public function getCommand(): ?string
     {
         return null;
     }
@@ -68,7 +68,7 @@ abstract class AdapterAbstract
      * Return a boolean indicating whether the adapter has an executable command associated with it.
      * @return bool
      */
-    public function hasCommand()
+    public function hasCommand(): bool
     {
         if (APP_TESTING_MODE || !$this->station->isEnabled()) {
             return false;
@@ -82,7 +82,7 @@ abstract class AdapterAbstract
      *
      * @return bool
      */
-    public function isRunning()
+    public function isRunning(): bool
     {
         if ($this->hasCommand()) {
             $program_name = $this->getProgramName();
@@ -102,7 +102,7 @@ abstract class AdapterAbstract
      * @throws \App\Exception\Supervisor
      * @throws \App\Exception\Supervisor\NotRunning
      */
-    public function stop()
+    public function stop(): void
     {
         if ($this->hasCommand()) {
             $program_name = $this->getProgramName();
@@ -122,7 +122,7 @@ abstract class AdapterAbstract
      * @throws \App\Exception\Supervisor
      * @throws \App\Exception\Supervisor\AlreadyRunning
      */
-    public function start()
+    public function start(): void
     {
         if ($this->hasCommand()) {
             $program_name = $this->getProgramName();
@@ -143,7 +143,7 @@ abstract class AdapterAbstract
      * @throws \App\Exception\Supervisor\AlreadyRunning
      * @throws \App\Exception\Supervisor\NotRunning
      */
-    public function restart()
+    public function restart(): void
     {
         $this->stop();
         $this->start();
@@ -151,25 +151,22 @@ abstract class AdapterAbstract
 
     /**
      * Return the program's fully qualified supervisord name.
-     *
-     * @return bool
+     * @return string
      */
-    abstract public function getProgramName();
+    abstract public function getProgramName(): string;
 
     /**
      * Indicate if the adapter in question is installed on the server.
      *
      * @return bool
      */
-    public static function isInstalled()
+    public static function isInstalled(): bool
     {
         return (static::getBinary() !== false);
     }
 
     /**
      * Return the binary executable location for this item.
-     *
-     * @return bool
      */
     public static function getBinary()
     {
@@ -185,17 +182,17 @@ abstract class AdapterAbstract
      * @throws \App\Exception\Supervisor\AlreadyRunning
      * @throws \App\Exception\Supervisor\NotRunning
      */
-    protected function _handleSupervisorException(FaultException $e, $program_name)
+    protected function _handleSupervisorException(FaultException $e, $program_name): void
     {
         if (false !== stripos($e->getMessage(), 'ALREADY_STARTED')) {
             $app_e = new \App\Exception\Supervisor\AlreadyRunning(
-                sprintf('Adapter "%s" cannot start; was already running.', get_called_class()),
+                sprintf('Adapter "%s" cannot start; was already running.', static::class),
                 $e->getCode(),
                 $e
             );
         } else if (false !== stripos($e->getMessage(), 'NOT_RUNNING')) {
             $app_e = new \App\Exception\Supervisor\NotRunning(
-                sprintf('Adapter "%s" cannot start; was already running.', get_called_class()),
+                sprintf('Adapter "%s" cannot start; was already running.', static::class),
                 $e->getCode(),
                 $e
             );

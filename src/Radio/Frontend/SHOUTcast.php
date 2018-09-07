@@ -9,7 +9,7 @@ class SHOUTcast extends FrontendAbstract
 {
     protected $force_proxy_on_secure_pages = true;
 
-    public function getWatchCommand()
+    public function getWatchCommand(): ?string
     {
         $fe_config = (array)$this->station->getFrontendConfig();
 
@@ -106,14 +106,14 @@ class SHOUTcast extends FrontendAbstract
     /**
      * @inheritdoc
      */
-    public function read()
+    public function read(): bool
     {
         $config = $this->_getConfig();
         $this->station->setFrontendConfigDefaults($this->_loadFromConfig($config));
         return true;
     }
 
-    public function write()
+    public function write(): bool
     {
         $config = $this->_getDefaults();
 
@@ -179,7 +179,7 @@ class SHOUTcast extends FrontendAbstract
      * Process Management
      */
 
-    public function getCommand()
+    public function getCommand(): ?string
     {
         if ($binary = self::getBinary()) {
             $config_path = $this->station->getRadioConfigDir();
@@ -191,7 +191,7 @@ class SHOUTcast extends FrontendAbstract
         return '/bin/false';
     }
 
-    public function getAdminUrl()
+    public function getAdminUrl(): string
     {
         return $this->getPublicUrl() . '/admin.cgi';
     }

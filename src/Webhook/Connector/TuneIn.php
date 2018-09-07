@@ -31,14 +31,8 @@ class TuneIn extends AbstractConnector
 
         $this->logger->debug('Dispatching TuneIn AIR API call...');
 
-        $client = new \GuzzleHttp\Client([
-            'base_uri' => 'http://air.radiotime.com',
-            'http_errors' => false,
-            'timeout' => 2.0,
-        ]);
-
         try {
-            $response = $client->get('/Playing.ashx', [
+            $response = $this->http_client->get('http://air.radiotime.com/Playing.ashx', [
                 'query' => [
                     'partnerId' => $config['partner_id'],
                     'partnerKey' => $config['partner_key'],

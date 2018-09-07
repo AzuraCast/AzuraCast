@@ -41,15 +41,10 @@ class Twitter extends AbstractConnector
         // Dispatch webhook
         $this->logger->debug('Posting to Twitter...');
 
-        $client = new \GuzzleHttp\Client([
-            'http_errors' => false,
-            'timeout' => 2.0,
-            'auth' => 'oauth',
-            'handler' => $stack,
-        ]);
-
         try {
-            $response = $client->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', [
+            $response = $this->http_client->request('POST', 'https://api.twitter.com/1.1/statuses/update.json', [
+                'auth' => 'oauth',
+                'handler' => $stack,
                 'form_params' => [
                     'status' => $vars['message'],
                 ],

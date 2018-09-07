@@ -122,13 +122,8 @@ class Discord extends AbstractConnector
         // Dispatch webhook
         $this->logger->debug('Dispatching Discord webhook...');
 
-        $client = new \GuzzleHttp\Client([
-            'http_errors' => false,
-            'timeout' => 2.0,
-        ]);
-
         try {
-            $response = $client->request('POST', $webhook_url, [
+            $response = $this->http_client->request('POST', $webhook_url, [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],

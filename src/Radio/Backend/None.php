@@ -9,20 +9,20 @@ class None extends BackendAbstract
 
     protected $supports_streamers = false;
 
-    public function read()
+    public function read(): bool
     {
     }
 
-    public function write()
+    public function write(): bool
     {
     }
 
-    public function isRunning()
+    public function isRunning(): bool
     {
         return true;
     }
 
-    public function start()
+    public function start(): void
     {
         $this->logger->error('Cannot start process; AutoDJ is currently disabled.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
     }

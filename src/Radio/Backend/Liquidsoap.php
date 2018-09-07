@@ -29,7 +29,7 @@ class Liquidsoap extends BackendAbstract
     /**
      * @inheritdoc
      */
-    public function read()
+    public function read(): bool
     {
         // This function not implemented for LiquidSoap.
     }
@@ -40,10 +40,10 @@ class Liquidsoap extends BackendAbstract
      * Special thanks to the team of PonyvilleFM for assisting with Liquidsoap configuration and debugging.
      *
      * @return bool
-     * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function write()
+    public function write(): bool
     {
         $settings = (array)$this->station->getBackendConfig();
 
@@ -487,7 +487,7 @@ class Liquidsoap extends BackendAbstract
             $hours += $offset_hours;
         }
 
-        $hours = $hours % 24;
+        $hours %= 24;
         if ($hours < 0) {
             $hours += 24;
         }
@@ -585,7 +585,7 @@ class Liquidsoap extends BackendAbstract
     /**
      * @inheritdoc
      */
-    public function getCommand()
+    public function getCommand(): ?string
     {
         if ($binary = self::getBinary()) {
             $config_path = $this->station->getRadioConfigDir() . '/liquidsoap.liq';
@@ -698,7 +698,7 @@ class Liquidsoap extends BackendAbstract
      */
     public static function getBinary()
     {
-        $user_base = dirname(APP_INCLUDE_ROOT);
+        $user_base = \dirname(APP_INCLUDE_ROOT);
         $new_path = $user_base . '/.opam/system/bin/liquidsoap';
 
         $legacy_path = '/usr/bin/liquidsoap';
@@ -716,7 +716,7 @@ class Liquidsoap extends BackendAbstract
      * INTERNAL LIQUIDSOAP COMMANDS
      */
 
-    public function authenticateStreamer($user, $pass)
+    public function authenticateStreamer($user, $pass): string
     {
         // Allow connections using the exact broadcast source password.
         $fe_config = (array)$this->station->getFrontendConfig();
@@ -726,10 +726,10 @@ class Liquidsoap extends BackendAbstract
 
         // Handle login conditions where the username and password are joined in the password field.
         if (strpos($pass, ',') !== false) {
-            list($user, $pass) = explode(',', $pass);
+            [$user, $pass] = explode(',', $pass);
         }
         if (strpos($pass, ':') !== false) {
-            list($user, $pass) = explode(':', $pass);
+            [$user, $pass] = explode(':', $pass);
         }
 
         /** @var Entity\Repository\StationStreamerRepository $streamer_repo */
@@ -749,7 +749,7 @@ class Liquidsoap extends BackendAbstract
         return 'false';
     }
 
-    public function getNextSong($as_autodj = false)
+    public function getNextSong($as_autodj = false): string
     {
         /** @var Entity\SongHistory|null $sh */
         $sh = $this->autodj->getNextSong($this->station, $as_autodj);
@@ -762,12 +762,12 @@ class Liquidsoap extends BackendAbstract
             }
         }
 
-        return (APP_INSIDE_DOCKER)
-            ? '/usr/local/share/icecast/web/error.mp3' :
-            APP_INCLUDE_ROOT . '/resources/error.mp3';
+        return APP_INSIDE_DOCKER
+            ? '/usr/local/share/icecast/web/error.mp3'
+            : APP_INCLUDE_ROOT . '/resources/error.mp3';
     }
 
-    public function toggleLiveStatus($is_streamer_live = true)
+    public function toggleLiveStatus($is_streamer_live = true): void
     {
         $this->station->setIsStreamerLive($is_streamer_live);
 

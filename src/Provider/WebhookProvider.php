@@ -29,19 +29,22 @@ class WebhookProvider implements ServiceProviderInterface
 
         $di[Webhook\Connector\Discord::class] = function($di) {
             return new Webhook\Connector\Discord(
-                $di[\Monolog\Logger::class]
+                $di[\Monolog\Logger::class],
+                $di[\GuzzleHttp\Client::class]
             );
         };
 
         $di[Webhook\Connector\Generic::class] = function($di) {
             return new Webhook\Connector\Generic(
-                $di[\Monolog\Logger::class]
+                $di[\Monolog\Logger::class],
+                $di[\GuzzleHttp\Client::class]
             );
         };
 
         $di[Webhook\Connector\Local::class] = function($di) {
             return new Webhook\Connector\Local(
                 $di[\Monolog\Logger::class],
+                $di[\GuzzleHttp\Client::class],
                 $di[\InfluxDB\Database::class],
                 $di[\App\Cache::class],
                 $di[\App\Entity\Repository\SettingsRepository::class]
@@ -50,19 +53,22 @@ class WebhookProvider implements ServiceProviderInterface
 
         $di[Webhook\Connector\TuneIn::class] = function($di) {
             return new Webhook\Connector\TuneIn(
-                $di[\Monolog\Logger::class]
+                $di[\Monolog\Logger::class],
+                $di[\GuzzleHttp\Client::class]
             );
         };
 
         $di[Webhook\Connector\Telegram::class] = function($di) {
             return new Webhook\Connector\Telegram(
-                $di[\Monolog\Logger::class]
+                $di[\Monolog\Logger::class],
+                $di[\GuzzleHttp\Client::class]
             );
         };
 
         $di[Webhook\Connector\Twitter::class] = function($di) {
             return new Webhook\Connector\Twitter(
-                $di[\Monolog\Logger::class]
+                $di[\Monolog\Logger::class],
+                $di[\GuzzleHttp\Client::class]
             );
         };
     }

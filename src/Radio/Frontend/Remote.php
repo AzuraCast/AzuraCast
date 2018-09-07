@@ -33,22 +33,24 @@ class Remote extends FrontendAbstract
         return false;
     }
 
-    public function read() {}
+    public function read(): bool
+    {}
 
-    public function write() {}
+    public function write(): bool
+    {}
 
-    public function isRunning()
+    public function isRunning(): bool
     {
         return true;
     }
 
-    public function getStreamUrl()
+    public function getStreamUrl(): string
     {
         $default_mount = $this->_getDefaultMount();
         return $this->getUrlForMount($default_mount);
     }
 
-    public function getStreamUrls()
+    public function getStreamUrls(): array
     {
         $mounts = $this->_getMounts();
 
@@ -60,7 +62,7 @@ class Remote extends FrontendAbstract
         return $stream_urls;
     }
 
-    public function getPublicUrl()
+    public function getPublicUrl(): string
     {
         return $this->_getMountPublicUrl($this->_getDefaultMount());
     }
@@ -71,7 +73,7 @@ class Remote extends FrontendAbstract
         return $np['listenurl'] ?? '';
     }
 
-    public function getAdminUrl()
+    public function getAdminUrl(): string
     {
         $mount = $this->_getDefaultMount();
         $remote_type = ($mount instanceof \Entity\StationMount) ? $mount->getRemoteType() : $mount['remote_type'];

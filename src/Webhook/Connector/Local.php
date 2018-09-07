@@ -3,6 +3,7 @@ namespace App\Webhook\Connector;
 
 use App\Cache;
 use App\Entity;
+use GuzzleHttp\Client;
 use InfluxDB\Database;
 use Monolog\Logger;
 
@@ -17,9 +18,9 @@ class Local extends AbstractConnector
     /** @var Entity\Repository\SettingsRepository */
     protected $settings_repo;
 
-    public function __construct(Logger $logger, Database $influx, Cache $cache, Entity\Repository\SettingsRepository $settings_repo)
+    public function __construct(Logger $logger, Client $http_client, Database $influx, Cache $cache, Entity\Repository\SettingsRepository $settings_repo)
     {
-        parent::__construct($logger);
+        parent::__construct($logger, $http_client);
 
         $this->influx = $influx;
         $this->cache = $cache;

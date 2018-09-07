@@ -21,11 +21,6 @@ class Generic extends AbstractConnector
             return;
         }
 
-        $client = new \GuzzleHttp\Client([
-            'http_errors' => false,
-            'timeout' => 2.0,
-        ]);
-
         try {
             $request_options = [
                 'headers' => [
@@ -41,7 +36,7 @@ class Generic extends AbstractConnector
                 ];
             }
 
-            $response = $client->request('POST', $webhook_url, $request_options);
+            $response = $this->http_client->request('POST', $webhook_url, $request_options);
 
             $this->logger->debug(
                 sprintf('Generic webhook returned code %d', $response->getStatusCode()),

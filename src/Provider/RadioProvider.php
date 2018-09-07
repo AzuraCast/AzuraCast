@@ -60,6 +60,7 @@ class RadioProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
+                $di[\GuzzleHttp\Client::class],
                 $di['router']
             );
         });
@@ -69,6 +70,7 @@ class RadioProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
+                $di[\GuzzleHttp\Client::class],
                 $di['router']
             );
         });
@@ -78,6 +80,7 @@ class RadioProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
+                $di[\GuzzleHttp\Client::class],
                 $di['router']
             );
         });

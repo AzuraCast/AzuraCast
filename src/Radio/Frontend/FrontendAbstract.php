@@ -5,6 +5,7 @@ use App\Http\Router;
 use App\Entity;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
+use GuzzleHttp\Client;
 use Monolog\Logger;
 use Supervisor\Supervisor;
 
@@ -13,10 +14,14 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     /** @var Router */
     protected $router;
 
-    public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger, Router $router)
+    /** @var Client */
+    protected $http_client;
+
+    public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger, Client $client, Router $router)
     {
         parent::__construct($em, $supervisor, $logger);
 
+        $this->http_client = $client;
         $this->router = $router;
     }
 
@@ -29,12 +34,12 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     /** @var bool If set to true, all URLs for this adapter type will be proxied if the user is viewing on a secure page. */
     protected $force_proxy_on_secure_pages = false;
 
-    public function supportsMounts()
+    public function supportsMounts(): bool
     {
         return $this->supports_mounts;
     }
 
-    public function supportsListenerDetail()
+    public function supportsListenerDetail(): bool
     {
         return $this->supports_listener_detail;
     }
@@ -42,7 +47,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     /**
      * @return null|string The command to pass the station-watcher app.
      */
-    public function getWatchCommand()
+    public function getWatchCommand(): ?string
     {
         return null;
     }
@@ -50,7 +55,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     /**
      * @return bool Whether a station-watcher command exists for this adapter.
      */
-    public function hasWatchCommand()
+    public function hasWatchCommand(): bool
     {
         if (APP_TESTING_MODE || !APP_INSIDE_DOCKER || !$this->station->isEnabled()) {
             return false;
@@ -64,7 +69,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
      *
      * @return string
      */
-    public function getWatchProgramName()
+    public function getWatchProgramName(): string
     {
         return 'station_' . $this->station->getId() . ':station_' . $this->station->getId() . '_watcher';
     }
@@ -76,7 +81,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
      * @param $watch_uri
      * @return string
      */
-    protected function _getStationWatcherCommand($adapter, $watch_uri)
+    protected function _getStationWatcherCommand($adapter, $watch_uri): string
     {
         $base_url = (APP_INSIDE_DOCKER) ? 'http://nginx' : 'http://localhost';
         $notify_uri = $base_url.'/api/internal/'.$this->station->getId().'/notify?api_auth='.$this->station->getAdapterApiKey();
@@ -89,7 +94,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
      *
      * @return array
      */
-    public function getDefaultMounts()
+    public function getDefaultMounts(): array
     {
         return [
             [
@@ -102,12 +107,12 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         ];
     }
 
-    public function getProgramName()
+    public function getProgramName(): string
     {
         return 'station_' . $this->station->getId() . ':station_' . $this->station->getId() . '_frontend';
     }
 
-    public function getStreamUrl()
+    public function getStreamUrl(): string
     {
         $mount_repo = $this->em->getRepository(Entity\StationMount::class);
         $default_mount = $mount_repo->getDefaultMount($this->station);
@@ -115,7 +120,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         return $this->getUrlForMount($default_mount);
     }
 
-    public function getStreamUrls()
+    public function getStreamUrls(): array
     {
         $urls = [];
         foreach ($this->station->getMounts() as $mount) {
@@ -134,9 +139,9 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         ) . '?' . time();
     }
 
-    abstract public function getAdminUrl();
+    abstract public function getAdminUrl(): string;
 
-    public function getPublicUrl()
+    public function getPublicUrl(): string
     {
         $fe_config = (array)$this->station->getFrontendConfig();
         $radio_port = $fe_config['port'];
@@ -159,7 +164,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     }
 
     /* Fetch a remote URL. */
-    protected function getUrl($url, $c_opts = null)
+    protected function getUrl($url, $c_opts = null): string
     {
         if (APP_TESTING_MODE) {
             return '';
@@ -172,14 +177,12 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
             ],
         ];
 
-        if (is_array($c_opts)) {
+        if (\is_array($c_opts)) {
             $defaults = array_merge($defaults, $c_opts);
         }
 
-        $client = new \GuzzleHttp\Client();
-
         try {
-            $response = $client->get($url, $defaults);
+            $response = $this->http_client->get($url, $defaults);
         } catch(\GuzzleHttp\Exception\ClientException $e) {
             $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
             $app_e->addLoggingContext('url', $url);
@@ -196,7 +199,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
      * @param bool $include_clients Whether to try to retrieve detailed listener client info
      * @return array
      */
-    public function getNowPlaying($payload = null, $include_clients = true)
+    public function getNowPlaying($payload = null, $include_clients = true): array
     {
         // Now Playing defaults.
         $np = [
@@ -251,7 +254,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
      */
     abstract protected function _getNowPlaying(&$np, $payload = null, $include_clients = true);
 
-    protected function _cleanUpString(&$value)
+    protected function _cleanUpString(&$value): void
     {
         $value = htmlspecialchars_decode($value);
         $value = trim($value);
@@ -263,13 +266,13 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         $unique_listeners = (int)$unique_listeners;
         $current_listeners = (int)$current_listeners;
 
-        return ($unique_listeners == 0 || $current_listeners == 0)
+        return ($unique_listeners === 0 || $current_listeners === 0)
             ? max($unique_listeners, $current_listeners)
             : min($unique_listeners, $current_listeners);
     }
 
     /* Return the artist and title from a string in the format "Artist - Title" */
-    protected function getSongFromString($song_string, $delimiter = '-')
+    protected function getSongFromString($song_string, $delimiter = '-'): array
     {
         // Fix ShoutCast 2 bug where 3 spaces = " - "
         $song_string = str_replace('   ', ' - ', $song_string);
@@ -280,7 +283,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         $string_parts = explode($delimiter, $song_string);
 
         // If not normally delimited, return "text" only.
-        if (count($string_parts) == 1) {
+        if (count($string_parts) === 1) {
             return ['text' => $song_string, 'artist' => '', 'title' => $song_string];
         }
 
@@ -298,7 +301,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     /**
      * @inheritdoc
      */
-    public function stop()
+    public function stop(): void
     {
         parent::stop();
 
@@ -317,7 +320,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     /**
      * @inheritdoc
      */
-    public function start()
+    public function start(): void
     {
         parent::start();
 

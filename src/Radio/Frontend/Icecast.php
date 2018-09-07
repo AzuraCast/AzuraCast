@@ -14,7 +14,7 @@ class Icecast extends FrontendAbstract
 
     protected $force_proxy_on_secure_pages = true;
 
-    public function getWatchCommand()
+    public function getWatchCommand(): ?string
     {
         $fe_config = (array)$this->station->getFrontendConfig();
 
@@ -152,14 +152,14 @@ class Icecast extends FrontendAbstract
         return true;
     }
 
-    public function read()
+    public function read(): bool
     {
         $config = $this->_getConfig();
         $this->station->setFrontendConfigDefaults($this->_loadFromConfig($config));
         return true;
     }
 
-    public function write()
+    public function write(): bool
     {
         $config = $this->_getDefaults();
 
@@ -218,7 +218,7 @@ class Icecast extends FrontendAbstract
      * Process Management
      */
 
-    public function getCommand()
+    public function getCommand(): ?string
     {
         if ($binary = self::getBinary()) {
             $config_path = $this->station->getRadioConfigDir() . '/icecast.xml';
@@ -227,7 +227,7 @@ class Icecast extends FrontendAbstract
         return '/bin/false';
     }
 
-    public function getAdminUrl()
+    public function getAdminUrl(): string
     {
         return $this->getPublicUrl() . '/admin/';
     }

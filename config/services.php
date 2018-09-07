@@ -229,7 +229,7 @@ return function (\Slim\Container $di, $settings) {
         return $supervisor;
     };
 
-    $di[App\View::class] = $di->factory(function(\Slim\Container $di) {
+    $di[\App\View::class] = $di->factory(function(\Slim\Container $di) {
         $view = new App\View(dirname(__DIR__) . '/resources/templates');
         $view->setFileExtension('phtml');
 
@@ -306,6 +306,17 @@ return function (\Slim\Container $di, $settings) {
     $di[\MaxMind\Db\Reader::class] = function($di) {
         $mmdb_path = dirname(APP_INCLUDE_ROOT).'/geoip/GeoLite2-City.mmdb';
         return new \MaxMind\Db\Reader($mmdb_path);
+    };
+
+    $di[\GuzzleHttp\Client::class] = function($di) {
+        $fetcher = new \ParagonIE\Certainty\RemoteFetch(APP_INCLUDE_TEMP);
+        $latestCACertBundle = $fetcher->getLatestBundle();
+
+        return new \GuzzleHttp\Client([
+            'verify' => $latestCACertBundle->getFilePath(),
+            'http_errors' => false,
+            'timeout' => 3.0,
+        ]);
     };
 
     //

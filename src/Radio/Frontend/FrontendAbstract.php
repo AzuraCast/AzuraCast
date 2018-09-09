@@ -3,6 +3,7 @@ namespace App\Radio\Frontend;
 
 use App\Http\Router;
 use App\Entity;
+use App\Radio\Traits\AdapterCommon;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
 use GuzzleHttp\Client;
@@ -11,11 +12,10 @@ use Supervisor\Supervisor;
 
 abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
 {
+    use AdapterCommon;
+
     /** @var Router */
     protected $router;
-
-    /** @var Client */
-    protected $http_client;
 
     public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger, Client $client, Router $router)
     {
@@ -25,24 +25,27 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         $this->router = $router;
     }
 
-    /** @var bool Whether the station supports multiple mount points per station */
-    protected $supports_mounts = true;
-
-    /** @var bool Whether the station supports a full, unique listener count (including IP, user-agent, etc) */
-    protected $supports_listener_detail = true;
-
-    /** @var bool If set to true, all URLs for this adapter type will be proxied if the user is viewing on a secure page. */
-    protected $force_proxy_on_secure_pages = false;
-
+    /**
+     * @return bool Whether the station supports multiple mount points per station
+     */
     public function supportsMounts(): bool
     {
-        return $this->supports_mounts;
+        return true;
     }
 
+    /**
+     * @return bool Whether the station supports enhanced listener detail (per-client records)
+     */
     public function supportsListenerDetail(): bool
     {
-        return $this->supports_listener_detail;
+        return true;
     }
+
+    /**
+     * Read configuration from external service to Station object.
+     * @return bool
+     */
+    abstract public function read(): bool;
 
     /**
      * @return null|string The command to pass the station-watcher app.
@@ -154,7 +157,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
 
         if ( $use_radio_proxy
             || (!APP_IN_PRODUCTION && !APP_INSIDE_DOCKER)
-            || ($this->force_proxy_on_secure_pages && APP_IS_SECURE)) {
+            || APP_IS_SECURE) {
             // Web proxy support.
             return $base_url . '/radio/' . $radio_port;
         } else {
@@ -163,139 +166,15 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         }
     }
 
-    /* Fetch a remote URL. */
-    protected function getUrl($url, $c_opts = null): string
-    {
-        if (APP_TESTING_MODE) {
-            return '';
-        }
-
-        $defaults = [
-            'timeout' => 4,
-            'headers' => [
-                'User-Agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2',
-            ],
-        ];
-
-        if (\is_array($c_opts)) {
-            $defaults = array_merge($defaults, $c_opts);
-        }
-
-        try {
-            $response = $this->http_client->get($url, $defaults);
-        } catch(\GuzzleHttp\Exception\ClientException $e) {
-            $app_e = new \App\Exception($e->getMessage(), $e->getCode(), $e);
-            $app_e->addLoggingContext('url', $url);
-            $app_e->addLoggingContext('station_id', $this->station->getId());
-            $app_e->addLoggingContext('station_name', $this->station->getName());
-            throw $app_e;
-        }
-
-        return $response->getBody()->getContents();
-    }
-
     /**
-     * @param string|null $payload The payload from the push notification service (if applicable)
-     * @param bool $include_clients Whether to try to retrieve detailed listener client info
-     * @return array
-     */
-    public function getNowPlaying($payload = null, $include_clients = true): array
-    {
-        // Now Playing defaults.
-        $np = [
-            'current_song' => [
-                'text' => 'Stream Offline',
-                'title' => '',
-                'artist' => '',
-            ],
-            'listeners' => [
-                'current' => 0,
-                'unique' => null,
-                'total' => null,
-            ],
-            'meta' => [
-                'status' => 'offline',
-                'bitrate' => 0,
-                'format' => '',
-            ],
-        ];
-
-        // Merge station-specific info into defaults.
-        $this->_getNowPlaying($np, $payload, $include_clients);
-
-        // Update status code for offline stations, clean up song info for online ones.
-        if ($np['current_song']['text'] === 'Stream Offline') {
-            $np['meta']['status'] = 'offline';
-        } else {
-            array_walk($np['current_song'], [$this, '_cleanUpString']);
-        }
-
-        // Fill in any missing listener info.
-        if ($np['listeners']['unique'] === null) {
-            $np['listeners']['unique'] = $np['listeners']['current'];
-        }
-
-        if ($np['listeners']['total'] === null) {
-            $np['listeners']['total'] = $np['listeners']['current'];
-        }
-
-        $this->logger->debug('Now Playing result', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName(), 'np' => $np]);
-
-        return $np;
-    }
-
-    /**
-     * Stub function for the process internal handler.
-     *
      * @param $np
      * @param string|null $payload A prepopulated payload (to avoid duplicate web requests)
      * @param bool $include_clients Whether to try to retrieve detailed listener client info
-     * @return mixed
+     * @return bool Whether the NP update succeeded
      */
-    abstract protected function _getNowPlaying(&$np, $payload = null, $include_clients = true);
-
-    protected function _cleanUpString(&$value): void
+    public function updateNowPlaying(&$np, $payload = null, $include_clients = true): bool
     {
-        $value = htmlspecialchars_decode($value);
-        $value = trim($value);
-    }
-
-    /* Calculate listener count from unique and current totals. */
-    protected function getListenerCount($unique_listeners = 0, $current_listeners = 0)
-    {
-        $unique_listeners = (int)$unique_listeners;
-        $current_listeners = (int)$current_listeners;
-
-        return ($unique_listeners === 0 || $current_listeners === 0)
-            ? max($unique_listeners, $current_listeners)
-            : min($unique_listeners, $current_listeners);
-    }
-
-    /* Return the artist and title from a string in the format "Artist - Title" */
-    protected function getSongFromString($song_string, $delimiter = '-'): array
-    {
-        // Fix ShoutCast 2 bug where 3 spaces = " - "
-        $song_string = str_replace('   ', ' - ', $song_string);
-
-        // Remove dashes or spaces on both sides of the name.
-        $song_string = trim($song_string, " \t\n\r\0\x0B-");
-
-        $string_parts = explode($delimiter, $song_string);
-
-        // If not normally delimited, return "text" only.
-        if (count($string_parts) === 1) {
-            return ['text' => $song_string, 'artist' => '', 'title' => $song_string];
-        }
-
-        // Title is the last element, artist is all other elements (artists are far more likely to have hyphens).
-        $title = trim(array_pop($string_parts));
-        $artist = trim(implode($delimiter, $string_parts));
-
-        return [
-            'text' => $song_string,
-            'artist' => $artist,
-            'title' => $title,
-        ];
+        return true;
     }
 
     /**
@@ -344,7 +223,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
             $custom_config = @json_decode($custom_config_raw, true);
         } elseif (substr($custom_config_raw, 0, 1) == '<') {
             $reader = new \App\Xml\Reader;
-            $custom_config = $reader->fromString('<icecast>' . $custom_config_raw . '</icecast>');
+            $custom_config = $reader->fromString('<custom_config>' . $custom_config_raw . '</custom_config>');
         }
 
         return $custom_config;

@@ -44,12 +44,6 @@ abstract class AdapterAbstract
     }
 
     /**
-     * Read configuration from external service to Station object.
-     * @return bool
-     */
-    abstract public function read(): bool;
-
-    /**
      * Write configuration from Station object to the external service.
      * @return bool
      */
@@ -205,17 +199,13 @@ abstract class AdapterAbstract
 
         // Get more detailed information for more significant errors.
         if ($app_e->getLoggerLevel() !== Logger::INFO) {
-            try {
-                $process_log = $this->supervisor->tailProcessLog($program_name, 0, 0);
-                $process_log = array_filter(explode("\n", $process_log[0]));
+            $process_log = $this->supervisor->tailProcessLog($program_name, 0, 0);
+            $process_log = array_filter(explode("\n", $process_log[0]));
 
-                $app_e->addExtraData('Supervisord Log', $process_log);
-                $this->supervisor->clearProcessLogs($program_name);
+            $app_e->addExtraData('Supervisord Log', $process_log);
+            $this->supervisor->clearProcessLogs($program_name);
 
-                $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
-            } catch(FaultException $e) {
-                throw $e;
-            }
+            $app_e->addExtraData('Supervisord Process Info', $this->supervisor->getProcessInfo($program_name));
         }
 
         throw $app_e;

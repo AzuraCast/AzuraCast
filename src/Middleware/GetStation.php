@@ -51,6 +51,7 @@ class GetStation
         if ($record instanceof Entity\Station) {
             $frontend = $this->adapters->getFrontendAdapter($record);
             $backend = $this->adapters->getBackendAdapter($record);
+            $remotes = $this->adapters->getRemoteAdapters($record);
 
             $request = $request
                 ->withAttribute(Request::ATTRIBUTE_STATION, $record)

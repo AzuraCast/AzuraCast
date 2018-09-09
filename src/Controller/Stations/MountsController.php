@@ -45,28 +45,6 @@ class MountsController
         ]);
     }
 
-    public function migrateAction(Request $request, Response $response, $station_id): Response
-    {
-        $station = $request->getStation();
-
-        if ($station->getFrontendType() === 'remote') {
-
-            $settings = (array)$station->getFrontendConfig();
-
-            $mount = new Entity\StationMount($station);
-            $mount->setRemoteType($settings['remote_type']);
-            $mount->setRemoteUrl($settings['remote_url']);
-            $mount->setRemoteMount($settings['remote_mount']);
-            $mount->setEnableAutodj(false);
-            $mount->setIsDefault(true);
-
-            $this->em->persist($mount);
-            $this->em->flush();
-        }
-
-        return $response->withRedirect($request->getRouter()->fromHere('stations:mounts:index'));
-    }
-
     public function editAction(Request $request, Response $response, $station_id, $id = null): Response
     {
         $station = $request->getStation();

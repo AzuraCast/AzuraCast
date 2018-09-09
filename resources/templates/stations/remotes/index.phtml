@@ -1,0 +1,52 @@
+<?php $this->layout('main', ['title' => __('Remote Relays'), 'manual' => true]) ?>
+
+<div class="card">
+    <div class="card-header ch-alt">
+        <h2><?=__('Remote Relays') ?></h2>
+
+        <a class="btn bgm-blue btn-float" role="button" title="<?=__('Add %s', __('Remote Relay')) ?>" href="<?=$router->fromHere('stations:remotes:add') ?>">
+            <span class="sr-only"><?=__('Add %s', __('Remote Relay')) ?></span>
+            <i class="zmdi zmdi-plus"></i>
+        </a>
+    </div>
+    <div class="card-body card-padding p-b-0">
+        <p><?=__('Remote relays let you work with broadcasting software outside this server. Any relay you include here will be included in your station\'s statistics. You can also broadcast from this server to remote relays.') ?></p>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <colgroup>
+                <col width="25%">
+                <col width="45%">
+                <col width="30%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th><?=__('Actions') ?></th>
+                <th><?=__('Remote Relay') ?></th>
+                <th><?=__('AutoDJ') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($remotes as $row): ?>
+                <?php /** @var App\Entity\StationRemote $row */ ?>
+                <tr class="vertical-align-middle">
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="<?=$router->fromHere('stations:remotes:edit', ['id' => $row->getId()]) ?>"><?=__('Edit') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('stations:remotes:delete', ['id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
+                    </td>
+                    <td>
+                        <big><a href="<?=$this->e($row->getUrl()) ?>" target="_blank"><?=$this->e($row->getUrl()) ?></a> # <?=$row->getMount() ?></big>
+                    </td>
+                    <td>
+                    <?php if ($row->getEnableAutodj()): ?>
+                        <?=__('Enabled') ?> - <?=(int)$row->getAutodjBitrate() ?>kbps <?=strtoupper($this->e($row->getAutodjFormat())) ?>
+                    <?php else: ?>
+                        <?=__('Disabled') ?>
+                    <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

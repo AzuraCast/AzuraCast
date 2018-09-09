@@ -6,6 +6,7 @@ use App\Radio\AutoDJ;
 use App\Radio\Backend;
 use App\Radio\Configuration;
 use App\Radio\Frontend;
+use App\Radio\Remote;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
 
@@ -20,6 +21,9 @@ class RadioProvider implements ServiceProviderInterface
                 Frontend\Icecast::class,
                 Frontend\Remote::class,
                 Frontend\SHOUTcast::class,
+                Remote\Icecast::class,
+                Remote\SHOUTcast1::class,
+                Remote\SHOUTcast2::class,
             ]));
         };
 
@@ -82,6 +86,27 @@ class RadioProvider implements ServiceProviderInterface
                 $di[\Monolog\Logger::class],
                 $di[\GuzzleHttp\Client::class],
                 $di['router']
+            );
+        });
+
+        $di[Remote\Icecast::class] = $di->factory(function($di) {
+            return new Remote\Icecast(
+                $di[\GuzzleHttp\Client::class],
+                $di[\Monolog\Logger::class]
+            );
+        });
+
+        $di[Remote\SHOUTcast1::class] = $di->factory(function($di) {
+            return new Remote\SHOUTcast1(
+                $di[\GuzzleHttp\Client::class],
+                $di[\Monolog\Logger::class]
+            );
+        });
+
+        $di[Remote\SHOUTcast2::class] = $di->factory(function($di) {
+            return new Remote\SHOUTcast2(
+                $di[\GuzzleHttp\Client::class],
+                $di[\Monolog\Logger::class]
             );
         });
     }

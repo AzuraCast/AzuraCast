@@ -101,36 +101,6 @@ class StationMount
      */
     protected $frontend_config;
 
-    /**
-     * @Column(name="remote_type", type="string", length=50, nullable=true)
-     * @var string|null
-     */
-    protected $remote_type;
-
-    /**
-     * @Column(name="remote_url", type="string", length=255, nullable=true)
-     * @var string|null
-     */
-    protected $remote_url;
-
-    /**
-     * @Column(name="remote_mount", type="string", length=150, nullable=true)
-     * @var string|null
-     */
-    protected $remote_mount;
-
-    /**
-     * @Column(name="remote_source_username", type="string", length=100, nullable=true)
-     * @var string|null
-     */
-    protected $remote_source_username;
-
-    /**
-     * @Column(name="remote_source_password", type="string", length=100, nullable=true)
-     * @var string|null
-     */
-    protected $remote_source_password;
-
     public function __construct(Station $station)
     {
         $this->station = $station;
@@ -335,86 +305,6 @@ class StationMount
     public function setFrontendConfig(string $frontend_config = null)
     {
         $this->frontend_config = $frontend_config;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getRemoteType()
-    {
-        return $this->remote_type;
-    }
-
-    /**
-     * @param null|string $remote_type
-     */
-    public function setRemoteType($remote_type)
-    {
-        $this->remote_type = $remote_type;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getRemoteUrl()
-    {
-        return $this->remote_url;
-    }
-
-    /**
-     * @param null|string $remote_url
-     */
-    public function setRemoteUrl($remote_url)
-    {
-        $this->remote_url = $this->_truncateString($remote_url);
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getRemoteMount()
-    {
-        return $this->remote_mount;
-    }
-
-    /**
-     * @param null|string $remote_mount
-     */
-    public function setRemoteMount($remote_mount)
-    {
-        $this->remote_mount = $this->_truncateString($remote_mount, 150);
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getRemoteSourceUsername()
-    {
-        return $this->remote_source_username;
-    }
-
-    /**
-     * @param null|string $remote_source_username
-     */
-    public function setRemoteSourceUsername($remote_source_username)
-    {
-        $this->remote_source_username = $this->_truncateString($remote_source_username, 100);
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getRemoteSourcePassword()
-    {
-        return $this->remote_source_password;
-    }
-
-    /**
-     * @param null|string $remote_source_password
-     */
-    public function setRemoteSourcePassword($remote_source_password)
-    {
-        $this->remote_source_password = $this->_truncateString($remote_source_password, 100);
     }
 
     /**

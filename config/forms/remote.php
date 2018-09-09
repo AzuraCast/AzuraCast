@@ -8,7 +8,7 @@ return [
         'basic_info' => [
             'elements' => [
 
-                'remote_type' => [
+                'type' => [
                     'radio',
                     [
                         'label' => __('Remote Station Type'),
@@ -21,7 +21,7 @@ return [
                     ]
                 ],
 
-                'remote_url' => [
+                'url' => [
                     'text',
                     [
                         'label' => __('Remote Station Base URL'),
@@ -30,21 +30,11 @@ return [
                     ]
                 ],
 
-                'remote_mount' => [
+                'mount' => [
                     'text',
                     [
                         'label' => __('Remote Station Mountpoint/SID'),
-                        'description' => __('Specify a mountpoint (i.e. <code>/radio.mp3</code>) or a Shoutcast SID (i.e. <code>2</code>) to specify a specific stream to use.'),
-                    ]
-                ],
-
-                'is_default' => [
-                    'radio',
-                    [
-                        'label' => __('Is Default Mount'),
-                        'description' => __('If this mount is the default, it will be played on the radio preview and the public radio page in this system.'),
-                        'choices' => [0 => __('No'), 1 => __('Yes')],
-                        'default' => 0,
+                        'description' => __('Specify a mountpoint (i.e. <code>/radio.mp3</code>) or a Shoutcast SID (i.e. <code>2</code>) to specify a specific stream to use for statistics or broadcasting.'),
                     ]
                 ],
 
@@ -58,6 +48,13 @@ return [
                     ]
                 ],
 
+            ],
+        ],
+
+        'autodj' => [
+            'legend' => __('Configure AutoDJ Broadcasting'),
+            'class' => 'fieldset_autodj',
+            'elements' => [
                 'autodj_format' => [
                     'radio',
                     [
@@ -89,7 +86,23 @@ return [
                     ]
                 ],
 
-                'remote_source_username' => [
+                'source_port' => [
+                    'text',
+                    [
+                        'label' => __('Remote Station Source Port'),
+                        'description' => __('If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.'),
+                    ]
+                ],
+
+                'source_mount' => [
+                    'text',
+                    [
+                        'label' => __('Remote Station Source Mountpoint/SID'),
+                        'description' => __('If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.'),
+                    ]
+                ],
+
+                'source_username' => [
                     'text',
                     [
                         'label' => __('Remote Station Source Username'),
@@ -97,7 +110,7 @@ return [
                     ]
                 ],
 
-                'remote_source_password' => [
+                'source_password' => [
                     'text',
                     [
                         'label' => __('Remote Station Source Password'),

@@ -7,12 +7,10 @@ use App\Entity;
 
 class Icecast extends FrontendAbstract
 {
-    const LOGLEVEL_DEBUG = 4;
-    const LOGLEVEL_INFO = 3;
-    const LOGLEVEL_WARN = 2;
-    const LOGLEVEL_ERROR = 1;
-
-    protected $force_proxy_on_secure_pages = true;
+    public const LOGLEVEL_DEBUG = 4;
+    public const LOGLEVEL_INFO = 3;
+    public const LOGLEVEL_WARN = 2;
+    public const LOGLEVEL_ERROR = 1;
 
     public function getWatchCommand(): ?string
     {
@@ -24,10 +22,7 @@ class Icecast extends FrontendAbstract
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function _getNowPlaying(&$np, $payload = null, $include_clients = true)
+    public function updateNowPlaying(&$np, $payload = null, $include_clients = true): bool
     {
         $fe_config = (array)$this->station->getFrontendConfig();
         $radio_port = $fe_config['port'];
@@ -135,20 +130,11 @@ class Icecast extends FrontendAbstract
             return false;
         }
 
-        if (isset($song_data['artist'])) {
-            $np['current_song'] = [
-                'artist' => $song_data['artist'],
-                'title' => $song_data['title'],
-                'text' => $song_data['artist'] . ' - ' . $song_data['title'],
-            ];
-        } else {
-            $np['current_song'] = $this->getSongFromString($song_data['title'], ' - ');
-        }
+        $np['current_song'] = $this->getCurrentSong($song_data, ' - ');
 
         $np['meta']['status'] = 'online';
         $np['meta']['bitrate'] = $song_data['bitrate'];
         $np['meta']['format'] = $song_data['server_type'];
-
         return true;
     }
 
@@ -192,7 +178,7 @@ class Icecast extends FrontendAbstract
         if (!empty($frontend_config['custom_config'])) {
             $custom_conf = $this->_processCustomConfig($frontend_config['custom_config']);
             if (!empty($custom_conf)) {
-                $config = \App\Utilities::array_merge_recursive_distinct($config, $custom_conf);
+                $config = Utilities::array_merge_recursive_distinct($config, $custom_conf);
             }
         }
 
@@ -347,7 +333,7 @@ class Icecast extends FrontendAbstract
                 $mount_conf = $this->_processCustomConfig($mount_row->getFrontendConfig());
 
                 if (!empty($mount_conf)) {
-                    $mount = \App\Utilities::array_merge_recursive_distinct($mount, $mount_conf);
+                    $mount = Utilities::array_merge_recursive_distinct($mount, $mount_conf);
                 }
             }
 
@@ -367,7 +353,6 @@ class Icecast extends FrontendAbstract
 
         return $defaults;
     }
-
 
     public static function getBinary()
     {

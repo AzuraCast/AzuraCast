@@ -1,0 +1,19 @@
+$(function() {
+
+    showFieldset('type', $('form #field_type input:checked').val());
+    showFieldset('source', $('form #field_source input:checked').val());
+
+    $('form #field_type input').on('change', function() {
+        showFieldset('type', $(this).val());
+    });
+
+    $('form #field_source input').on('change', function() {
+        showFieldset('source', $(this).val());
+    });
+});
+
+function showFieldset(fieldset_prefix, fieldset_id)
+{
+    $('form fieldset.'+fieldset_prefix+'_fieldset').hide();
+    $('form fieldset#'+fieldset_prefix+'_'+fieldset_id).show();
+}

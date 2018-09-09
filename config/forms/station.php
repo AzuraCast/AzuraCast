@@ -2,13 +2,13 @@
 use App\Entity\Station;
 use App\Radio\Adapters;
 
-$frontends = Adapters::getFrontendAdapters();
+$frontends = Adapters::listFrontendAdapters();
 $frontend_types = [];
 foreach ($frontends as $adapter_nickname => $adapter_info) {
     $frontend_types[$adapter_nickname] = $adapter_info['name'];
 }
 
-$backends = Adapters::getBackendAdapters();
+$backends = Adapters::listBackendAdapters();
 $backend_types = [];
 foreach ($backends as $adapter_nickname => $adapter_info) {
     $backend_types[$adapter_nickname] = $adapter_info['name'];
@@ -183,61 +183,6 @@ return [
                 ],
 
             ],
-        ],
-
-        'frontend_remote' => [
-            'legend' => __('Configure Remote Radio Server'),
-            'class' => 'frontend_fieldset',
-
-            'elements' => [
-
-                'remote_type' => [
-                    'radio',
-                    [
-                        'label' => __('Remote Station Type'),
-                        'belongsTo' => 'frontend_config',
-                        'choices' => [
-                            'shoutcast1' => 'SHOUTcast v1',
-                            'shoutcast2' => 'SHOUTcast v2',
-                            'icecast' => 'Icecast v2.4+',
-                        ],
-                    ]
-                ],
-
-                'remote_url' => [
-                    'text',
-                    [
-                        'label' => __('Remote Station Base URL'),
-                        'description' => __('Example: if the remote radio URL is http://station.example.com:8000/stream.mp3, enter <code>http://station.example.com:8000</code>.'),
-                        'belongsTo' => 'frontend_config',
-                    ]
-                ],
-
-                'remote_mount' => [
-                    'text',
-                    [
-                        'label' => __('Remote Station Mountpoint/SID'),
-                        'description' => __('Specify a mountpoint (i.e. <code>/radio.mp3</code>) or a Shoutcast SID (i.e. <code>2</code>) to specify a specific stream to use.'),
-                        'belongsTo' => 'frontend_config',
-                    ]
-                ],
-
-                'remote_more_markup' => [
-                    'markup',
-                    [
-                        'label' => __('Do More with Remote Servers using the Mount Points feature'),
-                        'markup' => __('
-                            <div class="well well-sm">
-                                Want to connect to more than one stream on the same station, or broadcast to a remote stream from this server?<br>
-                                Use the Mount Points feature in your station profile.<br><br>
-                                
-                                <b>Note:</b> Any mount points you add will override the details specified on this page.
-                            </div>
-                        '),
-                    ]
-                ],
-
-            ]
         ],
 
         'select_backend_type' => [

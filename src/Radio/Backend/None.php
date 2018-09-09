@@ -3,15 +3,19 @@ namespace App\Radio\Backend;
 
 class None extends BackendAbstract
 {
-    protected $supports_media = false;
-
-    protected $supports_requests = false;
-
-    protected $supports_streamers = false;
-
-    public function read(): bool
+    public function supportsMedia(): bool
     {
-        return true;
+        return false;
+    }
+
+    public function supportsStreamers(): bool
+    {
+        return false;
+    }
+
+    public function supportsRequests(): bool
+    {
+        return false;
     }
 
     public function write(): bool

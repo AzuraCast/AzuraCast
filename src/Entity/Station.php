@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use App\Radio\Frontend\FrontendAbstract;
+use App\Radio\Remote\RemoteAbstract;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
@@ -14,9 +15,9 @@ use Interop\Container\ContainerInterface;
  */
 class Station
 {
-    const DEFAULT_REQUEST_DELAY = 5;
-    const DEFAULT_REQUEST_THRESHOLD = 15;
-    const DEFAULT_API_HISTORY_ITEMS = 5;
+    public const DEFAULT_REQUEST_DELAY = 5;
+    public const DEFAULT_REQUEST_THRESHOLD = 15;
+    public const DEFAULT_API_HISTORY_ITEMS = 5;
 
     use Traits\TruncateStrings;
 
@@ -232,6 +233,12 @@ class Station
     protected $mounts;
 
     /**
+     * @OneToMany(targetEntity="StationRemote", mappedBy="station")
+     * @var Collection
+     */
+    protected $remotes;
+
+    /**
      * @OneToMany(targetEntity="StationWebhook", mappedBy="station", fetch="EXTRA_LAZY")
      * @var Collection
      */
@@ -243,6 +250,7 @@ class Station
         $this->media = new ArrayCollection;
         $this->playlists = new ArrayCollection;
         $this->mounts = new ArrayCollection;
+        $this->remotes = new ArrayCollection;
         $this->webhooks = new ArrayCollection;
         $this->streamers = new ArrayCollection;
     }
@@ -422,7 +430,7 @@ class Station
     public function useManualAutoDJ(): bool
     {
         $settings = (array)$this->getBackendConfig();
-        return (bool)$settings['use_manual_autodj'] ?? false;
+        return (bool)($settings['use_manual_autodj'] ?? false);
     }
 
     /**
@@ -836,6 +844,14 @@ class Station
     /**
      * @return Collection
      */
+    public function getRemotes(): Collection
+    {
+        return $this->remotes;
+    }
+
+    /**
+     * @return Collection
+     */
     public function getWebhooks(): Collection
     {
         return $this->webhooks;
@@ -854,9 +870,10 @@ class Station
      * Retrieve the API version of the object/array.
      *
      * @param FrontendAbstract $fa
+     * @param RemoteAbstract[] $remote_adapters
      * @return Api\Station
      */
-    public function api(FrontendAbstract $fa): Api\Station
+    public function api(FrontendAbstract $fa, array $remote_adapters = []): Api\Station
     {
         $response = new Api\Station;
         $response->id = (int)$this->id;
@@ -865,8 +882,8 @@ class Station
         $response->description = (string)$this->description;
         $response->frontend = (string)$this->frontend_type;
         $response->backend = (string)$this->backend_type;
-        $response->listen_url = (string)$fa->getStreamUrl();
         $response->is_public = (bool)$this->enable_public_page;
+        $response->listen_url = $fa->getStreamUrl();
 
         $mounts = [];
         if ($fa->supportsMounts() && $this->mounts->count() > 0) {
@@ -874,8 +891,15 @@ class Station
                 $mounts[] = $mount->api($fa);
             }
         }
-
         $response->mounts = $mounts;
+
+        $remotes = [];
+        foreach($remote_adapters as $remote_adapter) {
+            $remote = $remote_adapter->getRemote();
+            $remotes[] = $remote->api($remote_adapter);
+        }
+        $response->remotes = $remotes;
+
         return $response;
     }
 }

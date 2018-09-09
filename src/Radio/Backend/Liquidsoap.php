@@ -27,15 +27,6 @@ class Liquidsoap extends BackendAbstract
     }
 
     /**
-     * @inheritdoc
-     */
-    public function read(): bool
-    {
-        // This function not implemented for LiquidSoap.
-        return true;
-    }
-
-    /**
      * Write configuration from Station object to the external service.
      *
      * Special thanks to the team of PonyvilleFM for assisting with Liquidsoap configuration and debugging.
@@ -300,52 +291,27 @@ class Liquidsoap extends BackendAbstract
         // Reset the incrementing counter for stream IDs.
         $this->output_stream_number = 0;
 
+        // Set up broadcast to local sources.
         switch ($this->station->getFrontendType()) {
-            case 'remote':
-                $mounts = $this->station->getMounts();
-
-                if ($mounts->count() > 0) {
-                    foreach ($this->station->getMounts() as $mount_row) {
-                        /** @var Entity\StationMount $mount_row */
-                        if (!$mount_row->getEnableAutodj()) {
-                            continue;
-                        }
-
-                        $stream_mount = NULL;
-                        $stream_username = $mount_row->getRemoteSourceUsername();
-                        $stream_password = $mount_row->getRemoteSourcePassword();
-
-                        switch($mount_row->getRemoteType())
-                        {
-                            case 'shoutcast2':
-                                $stream_password .= ':#'.$mount_row->getRemoteMount();
-                                break;
-
-                            case 'icecast':
-                                $stream_mount = $mount_row->getRemoteMount();
-                                break;
-                        }
-
-                        $remote_url_parts = parse_url($mount_row->getRemoteUrl());
-
-                        $ls_config[] = $this->_getOutputString(
-                            $remote_url_parts['host'],
-                            $remote_url_parts['port'],
-                            $stream_mount,
-                            $stream_username,
-                            $stream_password,
-                            strtolower($mount_row->getAutodjFormat() ?: 'mp3'),
-                            $mount_row->getAutodjBitrate() ?: 128,
-                            $charset,
-                            false,
-                            $mount_row->getRemoteType() !== 'icecast'
-                        );
+            case 'icecast':
+                foreach ($this->station->getMounts() as $mount_row) {
+                    /** @var Entity\StationMount $mount_row */
+                    if (!$mount_row->getEnableAutodj()) {
+                        continue;
                     }
 
-
-                } else {
-                    $this->logger->error('Mount Points feature was not used to configure remote broadcasting; cannot continue.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
-                    return false;
+                    $ls_config[] = $this->_getOutputString(
+                        '127.0.0.1',
+                        $fe_settings['port'],
+                        $mount_row->getName(),
+                        '',
+                        $fe_settings['source_pw'],
+                        strtolower($mount_row->getAutodjFormat() ?: 'mp3'),
+                        $mount_row->getAutodjBitrate() ?: 128,
+                        $charset,
+                        $mount_row->getIsPublic(),
+                        false
+                    );
                 }
                 break;
 
@@ -374,28 +340,59 @@ class Liquidsoap extends BackendAbstract
                 }
                 break;
 
-            case 'icecast':
+            case 'remote':
             default:
-                foreach ($this->station->getMounts() as $mount_row) {
-                    /** @var Entity\StationMount $mount_row */
-                    if (!$mount_row->getEnableAutodj()) {
-                        continue;
-                    }
-
-                    $ls_config[] = $this->_getOutputString(
-                        '127.0.0.1',
-                        $fe_settings['port'],
-                        $mount_row->getName(),
-                        '',
-                        $fe_settings['source_pw'],
-                        strtolower($mount_row->getAutodjFormat() ?: 'mp3'),
-                        $mount_row->getAutodjBitrate() ?: 128,
-                        $charset,
-                        $mount_row->getIsPublic(),
-                        false
-                    );
-                }
                 break;
+        }
+
+        // Set up broadcast to remote relays.
+        foreach($this->station->getRemotes() as $remote_row) {
+            /** @var Entity\StationRemote $remote_row */
+            if (!$remote_row->getEnableAutodj()) {
+                continue;
+            }
+
+            $stream_username = $remote_row->getSourceUsername();
+            $stream_password = $remote_row->getSourcePassword();
+
+            $stream_mount = $remote_row->getSourceMount();
+            if (empty($stream_mount)) {
+                $stream_mount = $remote_row->getMount();
+            }
+
+            switch($remote_row->getType())
+            {
+                case 'shoutcast1':
+                    // SHOUTcast 1 doesn't have multiple streams.
+                    $stream_mount = null;
+                    break;
+
+                case 'shoutcast2':
+                    // Broadcasting to a separate SID is done via a password modifier in SHOUTcast 2.
+                    $stream_password .= ':#'.$stream_mount;
+                    $stream_mount = null;
+                    break;
+
+                case 'icecast':
+                    // Normal behavior.
+                    break;
+            }
+
+            $remote_url_parts = parse_url($remote_row->getUrl());
+            $remote_port = $remote_row->getSourcePort() ?? $remote_url_parts['port'];
+
+            $ls_config[] = $this->_getOutputString(
+                $remote_url_parts['host'],
+                $remote_port,
+                $stream_mount,
+                $stream_username,
+                $stream_password,
+                strtolower($remote_row->getAutodjFormat() ?: 'mp3'),
+                $remote_row->getAutodjBitrate() ?: 128,
+                $charset,
+                false,
+                $remote_row->getType() !== 'icecast'
+            );
         }
 
         $ls_config_contents = implode("\n", $ls_config);
@@ -557,7 +554,7 @@ class Liquidsoap extends BackendAbstract
         $output_params[] = 'host = "'.str_replace('"', '', $host).'"';
         $output_params[] = 'port = ' . (int)$port;
         if (!empty($username)) {
-            $output_params[] = 'username = "'.str_replace('"', '', $username).'"';
+            $output_params[] = 'user = "'.str_replace('"', '', $username).'"';
         }
         $output_params[] = 'password = "'.str_replace('"', '', $password).'"';
         if (!empty($mount)) {

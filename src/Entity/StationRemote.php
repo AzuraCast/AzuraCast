@@ -78,6 +78,18 @@ class StationRemote
     protected $mount;
 
     /**
+     * @Column(name="source_port", type="smallint", nullable=true)
+     * @var int|null
+     */
+    protected $source_port;
+
+    /**
+     * @Column(name="source_mount", type="string", length=150, nullable=true)
+     * @var string|null
+     */
+    protected $source_mount;
+
+    /**
      * @Column(name="source_username", type="string", length=100, nullable=true)
      * @var string|null
      */
@@ -139,6 +151,12 @@ class StationRemote
      */
     public function setUrl(?string $url): void
     {
+        if (!empty($url)) {
+            if (substr($url, 0, 4) !== 'http') {
+                $url = 'http://'.$url;
+            }
+        }
+
         $this->url = $this->_truncateString($url);
     }
 
@@ -156,6 +174,42 @@ class StationRemote
     public function setMount(?string $mount): void
     {
         $this->mount = $this->_truncateString($mount, 150);
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSourcePort(): ?int
+    {
+        return $this->source_port;
+    }
+
+    /**
+     * @param int|null $source_port
+     */
+    public function setSourcePort(?int $source_port): void
+    {
+        if ((int)$source_port === 0) {
+            $source_port = null;
+        }
+
+        $this->source_port = $source_port;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSourceMount(): ?string
+    {
+        return $this->source_mount;
+    }
+
+    /**
+     * @param null|string $source_mount
+     */
+    public function setSourceMount(?string $source_mount): void
+    {
+        $this->source_mount =  $this->_truncateString($source_mount, 150);
     }
 
     /**

@@ -1,0 +1,17 @@
+$(function() {
+    toggleFieldset('fieldset_autodj', $('form #field_enable_autodj input:checked').val() == 1);
+
+    $('form #field_enable_autodj input').on('change', function() {
+        toggleFieldset('fieldset_autodj', $(this).val() == 1);
+    });
+});
+
+function toggleFieldset(fieldset_class, is_visible) {
+    var fieldset = $('form fieldset.'+fieldset_class);
+
+    if (is_visible) {
+        fieldset.slideDown('fast');
+    } else {
+        fieldset.slideUp('fast');
+    }
+}

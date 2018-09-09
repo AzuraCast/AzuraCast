@@ -34,7 +34,7 @@ return [
                     'text',
                     [
                         'label' => __('Remote Station Mountpoint/SID'),
-                        'description' => __('Specify a mountpoint (i.e. <code>/radio.mp3</code>) or a Shoutcast SID (i.e. <code>2</code>) to specify a specific stream to use.'),
+                        'description' => __('Specify a mountpoint (i.e. <code>/radio.mp3</code>) or a Shoutcast SID (i.e. <code>2</code>) to specify a specific stream to use for statistics or broadcasting.'),
                     ]
                 ],
 
@@ -48,6 +48,13 @@ return [
                     ]
                 ],
 
+            ],
+        ],
+
+        'autodj' => [
+            'legend' => __('Configure AutoDJ Broadcasting'),
+            'class' => 'fieldset_autodj',
+            'elements' => [
                 'autodj_format' => [
                     'radio',
                     [
@@ -76,6 +83,22 @@ return [
                             320 => '320',
                         ],
                         'default' => 128,
+                    ]
+                ],
+
+                'source_port' => [
+                    'text',
+                    [
+                        'label' => __('Remote Station Source Port'),
+                        'description' => __('If the port you broadcast to is different from the one you listed in the URL above, specify the source port here.'),
+                    ]
+                ],
+
+                'source_mount' => [
+                    'text',
+                    [
+                        'label' => __('Remote Station Source Mountpoint/SID'),
+                        'description' => __('If the mountpoint (i.e. <code>/radio.mp3</code>) or Shoutcast SID (i.e. <code>2</code>) you broadcast to is different from the one listed above, specify the source mount point here.'),
                     ]
                 ],
 

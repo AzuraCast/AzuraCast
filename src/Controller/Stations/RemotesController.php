@@ -83,7 +83,7 @@ class RemotesController
             return $response->withRedirect($request->getRouter()->fromHere('stations:remotes:index'));
         }
 
-        return $request->getView()->renderToResponse($response, 'system/form_page', [
+        return $request->getView()->renderToResponse($response, 'stations/remotes/edit', [
             'form' => $form,
             'render_mode' => 'edit',
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('Remote Relay'))

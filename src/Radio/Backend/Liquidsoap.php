@@ -352,26 +352,38 @@ class Liquidsoap extends BackendAbstract
                 continue;
             }
 
-            $stream_mount = NULL;
             $stream_username = $remote_row->getSourceUsername();
             $stream_password = $remote_row->getSourcePassword();
 
+            $stream_mount = $remote_row->getSourceMount();
+            if (empty($stream_mount)) {
+                $stream_mount = $remote_row->getMount();
+            }
+
             switch($remote_row->getType())
             {
+                case 'shoutcast1':
+                    // SHOUTcast 1 doesn't have multiple streams.
+                    $stream_mount = null;
+                    break;
+
                 case 'shoutcast2':
-                    $stream_password .= ':#'.$remote_row->getMount();
+                    // Broadcasting to a separate SID is done via a password modifier in SHOUTcast 2.
+                    $stream_password .= ':#'.$stream_mount;
+                    $stream_mount = null;
                     break;
 
                 case 'icecast':
-                    $stream_mount = $remote_row->getMount();
+                    // Normal behavior.
                     break;
             }
 
             $remote_url_parts = parse_url($remote_row->getUrl());
+            $remote_port = $remote_row->getSourcePort() ?? $remote_url_parts['port'];
 
             $ls_config[] = $this->_getOutputString(
                 $remote_url_parts['host'],
-                $remote_url_parts['port'],
+                $remote_port,
                 $stream_mount,
                 $stream_username,
                 $stream_password,
@@ -542,7 +554,7 @@ class Liquidsoap extends BackendAbstract
         $output_params[] = 'host = "'.str_replace('"', '', $host).'"';
         $output_params[] = 'port = ' . (int)$port;
         if (!empty($username)) {
-            $output_params[] = 'username = "'.str_replace('"', '', $username).'"';
+            $output_params[] = 'user = "'.str_replace('"', '', $username).'"';
         }
         $output_params[] = 'password = "'.str_replace('"', '', $password).'"';
         if (!empty($mount)) {

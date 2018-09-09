@@ -49,9 +49,11 @@ class IndexController
         $stations = [];
         foreach ($stations_raw as $row) {
             /** @var Entity\Station $row */
+            $api_row = $row->api(
+                $this->adapters->getFrontendAdapter($row),
+                $this->adapters->getRemoteAdapters($row)
+            );
 
-            $frontend_adapter = $this->adapters->getFrontendAdapter($row);
-            $api_row = $row->api($frontend_adapter);
             if ($api_row->is_public) {
                 $stations[] = $api_row;
             }

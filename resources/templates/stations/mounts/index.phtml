@@ -11,14 +11,6 @@
     </div>
     <div class="card-body card-padding p-b-0">
         <p><?=__('Mount points are how listeners connect and listen to your station. Each mount point can be a different audio format or quality. Using mount points, you can set up a high-quality stream for broadband listeners and a mobile stream for phone users.') ?></p>
-
-        <?php if ($frontend_type === 'remote' && count($mounts) == 0): ?>
-        <p><?=__('Ready to get started using mount points on your remote station? Click the button below to automatically create your first mount based on your existing settings.') ?></p>
-
-        <div class="buttons">
-            <a href="<?=$router->fromHere('stations:mounts:migrate') ?>" class="btn btn-primary"><?=__('Migrate Settings') ?></a>
-        </div>
-        <?php endif; ?>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">

@@ -70,4 +70,10 @@ class Station
      * @var array
      */
     public $mounts;
+
+    /**
+     * @SWG\Property(type="array", @SWG\Items(ref="#/definitions/StationRemote"))
+     * @var array
+     */
+    public $remotes;
 }

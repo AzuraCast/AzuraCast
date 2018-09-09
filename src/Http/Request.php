@@ -16,6 +16,7 @@ class Request extends \Slim\Http\Request
     const ATTRIBUTE_STATION = 'station';
     const ATTRIBUTE_STATION_BACKEND = 'station_backend';
     const ATTRIBUTE_STATION_FRONTEND = 'station_frontend';
+    const ATTRIBUTE_STATION_REMOTES = 'station_remotes';
     const ATTRIBUTE_USER = 'user';
     const ATTRIBUTE_VIEW = 'view';
 
@@ -146,6 +147,18 @@ class Request extends \Slim\Http\Request
     public function getStationBackend(): Radio\Backend\BackendAbstract
     {
         return $this->_getAttributeOfType(self::ATTRIBUTE_STATION_BACKEND, Radio\Backend\BackendAbstract::class);
+    }
+
+    /**
+     * @return Radio\Remote\RemoteAbstract[]
+     */
+    public function getStationRemotes(): array
+    {
+        if ($this->hasAttribute(self::ATTRIBUTE_STATION_REMOTES)) {
+            return $this->getAttribute(self::ATTRIBUTE_STATION_REMOTES);
+        }
+
+        throw new Exception(sprintf('Attribute "%s" was not set.', self::ATTRIBUTE_STATION_REMOTES));
     }
 
     /**

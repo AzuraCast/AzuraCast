@@ -65,7 +65,6 @@ class StationsProvider implements ServiceProviderInterface
                 $di[\Doctrine\ORM\EntityManager::class],
                 [
                     'icecast' => $config->get('forms/mount/icecast'),
-                    'remote' => $config->get('forms/mount/remote'),
                     'shoutcast2' => $config->get('forms/mount/shoutcast2'),
                 ]
             );
@@ -94,6 +93,16 @@ class StationsProvider implements ServiceProviderInterface
                 $di[\App\Cache::class],
                 $di[\App\Radio\Configuration::class],
                 $config->get('forms/station')
+            );
+        };
+
+        $di[Stations\RemotesController::class] = function($di) {
+            /** @var \App\Config $config */
+            $config = $di[\App\Config::class];
+
+            return new Stations\RemotesController(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $config->get('forms/remote')
             );
         };
 

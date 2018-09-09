@@ -7,8 +7,6 @@ use App\Entity;
 
 class SHOUTcast extends FrontendAbstract
 {
-    protected $force_proxy_on_secure_pages = true;
-
     public function getWatchCommand(): ?string
     {
         $fe_config = (array)$this->station->getFrontendConfig();
@@ -19,10 +17,7 @@ class SHOUTcast extends FrontendAbstract
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function _getNowPlaying(&$np, $payload = null, $include_clients = true)
+    public function updateNowPlaying(&$np, $payload = null, $include_clients = true): bool
     {
         $fe_config = (array)$this->station->getFrontendConfig();
         $radio_port = $fe_config['port'];

@@ -59,6 +59,12 @@
         </li>
     <?php endif; ?>
 
+    <?php if ($acl->userAllowed($user, 'manage station remotes', $station->getId())): ?>
+        <li <?php if ($active_tab === 'remotes'): ?>class="active"<?php endif; ?>>
+            <a href="<?=$router->fromHere('stations:remotes:index') ?>"><i class="zmdi zmdi-router"></i> <?=__('Remote Relays') ?></a>
+        </li>
+    <?php endif; ?>
+
     <?php if ($acl->userAllowed($user, 'manage station web hooks', $station->getId())): ?>
         <li <?php if ($active_tab === 'webhooks'): ?>class="active"<?php endif; ?>>
             <a href="<?=$router->fromHere('stations:webhooks:index') ?>"><i class="zmdi zmdi-code-setting"></i> <?=__('Web Hooks') ?></a>

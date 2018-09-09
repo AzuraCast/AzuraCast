@@ -5,6 +5,7 @@ use App\Cache;
 use App\Radio\AutoDJ;
 use App\ApiUtilities;
 use App\Radio\Adapters;
+use App\Radio\Frontend\FrontendAbstract;
 use App\Webhook\Dispatcher;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
@@ -58,8 +59,14 @@ class NowPlaying extends TaskAbstract
      * @param AutoDJ $autodj
      * @see \App\Provider\SyncProvider
      */
-    public function __construct(EntityManager $em, Database $influx, Cache $cache, Adapters $adapters,
-                                Dispatcher $webhook_dispatcher, ApiUtilities $api_utils, AutoDJ $autodj)
+    public function __construct(
+        EntityManager $em,
+        Database $influx,
+        Cache $cache,
+        Adapters $adapters,
+        Dispatcher $webhook_dispatcher,
+        ApiUtilities $api_utils,
+        AutoDJ $autodj)
     {
         $this->em = $em;
         $this->influx = $influx;
@@ -170,16 +177,61 @@ class NowPlaying extends TaskAbstract
     {
         $include_clients = ($this->analytics_level === Entity\Analytics::LEVEL_ALL);
 
+        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
+        $remote_adapters = $this->adapters->getRemoteAdapters($station);
+
         /** @var Entity\Api\NowPlaying|null $np_old */
         $np_old = $station->getNowplaying();
 
         $np = new Entity\Api\NowPlaying;
+        $np->station = $station->api($frontend_adapter, $remote_adapters);
 
-        $frontend_adapter = $this->adapters->getFrontendAdapter($station);
+        // Build the new "raw" NowPlaying data from the adapters.
+        $np_raw = [
+            'current_song' => [
+                'text' => 'Stream Offline',
+                'title' => '',
+                'artist' => '',
+            ],
+            'listeners' => [
+                'current' => 0,
+                'unique' => null,
+                'total' => null,
+            ],
+            'meta' => [
+                'status' => 'offline',
+                'bitrate' => 0,
+                'format' => '',
+            ],
+        ];
 
-        $np->station = $station->api($frontend_adapter);
-        $np_raw = $frontend_adapter->getNowPlaying($payload, $include_clients);
+        // Merge station-specific info into defaults.
+        $frontend_adapter->updateNowPlaying($np_raw, $payload, $include_clients);
 
+        // Update status code for offline stations, clean up song info for online ones.
+        if ($np_raw['current_song']['text'] === 'Stream Offline') {
+            $np_raw['meta']['status'] = 'offline';
+        }
+
+        // Fill in any missing listener info.
+        if ($np_raw['listeners']['unique'] === null) {
+            $np_raw['listeners']['unique'] = (int)$np_raw['listeners']['current'];
+        }
+        if ($np_raw['listeners']['total'] === null) {
+            $np_raw['listeners']['total'] = (int)$np_raw['listeners']['current'];
+        }
+
+        // Loop through all remotes and update NP data accordingly.
+        foreach($remote_adapters as $remote_adapter) {
+            $remote_adapter->updateNowPlaying($np_raw);
+        }
+
+        array_walk($np_raw['current_song'], function(&$value) {
+            $value = htmlspecialchars_decode($value);
+            $value = trim($value);
+        });
+
+        // Start to convert the "raw" NowPlaying data into the proper API entities.
         $np->listeners = new Entity\Api\NowPlayingListeners($np_raw['listeners']);
 
         if (empty($np_raw['current_song']['text'])) {

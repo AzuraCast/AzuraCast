@@ -18,6 +18,7 @@ return [
         'manage station broadcasting' => sprintf(__('Manage Station %s'), __('Broadcasting')),
         'manage station streamers' => sprintf(__('Manage Station %s'), __('Streamers')),
         'manage station mounts' => sprintf(__('Manage Station %s'), __('Mount Points')),
+        'manage station remotes' => sprintf(__('Manage Station %s'), __('Remote Relays')),
         'manage station media' => sprintf(__('Manage Station %s'), __('Media')),
         'manage station automation' => sprintf(__('Manage Station %s'), __('Automation')),
         'manage station web hooks' => sprintf(__('Manage Station %s'), __('Web Hooks')),

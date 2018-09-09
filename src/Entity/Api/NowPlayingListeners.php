@@ -15,8 +15,8 @@ class NowPlayingListeners
     public function __construct($listeners = [])
     {
         $this->current = (int)$listeners['current'];
-        $this->unique = (int)$listeners['unique'];
-        $this->total = (int)$listeners['total'];
+        $this->unique = (int)($listeners['unique'] ?? $listeners['current']);
+        $this->total = (int)($listeners['total'] ?? $listeners['current']);
     }
 
     /**

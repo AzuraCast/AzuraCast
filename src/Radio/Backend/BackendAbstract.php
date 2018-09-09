@@ -3,25 +3,19 @@ namespace App\Radio\Backend;
 
 abstract class BackendAbstract extends \App\Radio\AdapterAbstract
 {
-    protected $supports_media = true;
-
-    public function supportsMedia()
+    public function supportsMedia(): bool
     {
-        return $this->supports_media;
+        return true;
     }
 
-    protected $supports_requests = true;
-
-    public function supportsRequests()
+    public function supportsRequests(): bool
     {
-        return $this->supports_requests;
+        return true;
     }
 
-    protected $supports_streamers = true;
-
-    public function supportsStreamers()
+    public function supportsStreamers(): bool
     {
-        return $this->supports_streamers;
+        return true;
     }
 
     public function getStreamPort()

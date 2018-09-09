@@ -4,24 +4,8 @@ namespace App\Entity\Api;
 /**
  * @SWG\Definition(type="object")
  */
-class StationMount
+class StationRemote
 {
-    /**
-     * Mount point name/URL
-     *
-     * @SWG\Property(example="/radio.mp3")
-     * @var string
-     */
-    public $name;
-
-    /**
-     * If the mount is the default mount for the parent station
-     *
-     * @SWG\Property(example=true)
-     * @var bool
-     */
-    public $is_default;
-
     /**
      * Full listening URL specific to this mount
      *

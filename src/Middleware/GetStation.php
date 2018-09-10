@@ -56,7 +56,8 @@ class GetStation
             $request = $request
                 ->withAttribute(Request::ATTRIBUTE_STATION, $record)
                 ->withAttribute(Request::ATTRIBUTE_STATION_FRONTEND, $frontend)
-                ->withAttribute(Request::ATTRIBUTE_STATION_BACKEND, $backend);
+                ->withAttribute(Request::ATTRIBUTE_STATION_BACKEND, $backend)
+                ->withAttribute(Request::ATTRIBUTE_STATION_REMOTES, $remotes);
         } else if ($station_required) {
             throw new \RuntimeException('Station not found!');
         }

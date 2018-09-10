@@ -1,0 +1,93 @@
+var nowPlaying;
+
+function iterateTimer() {
+    var np_elapsed = nowPlaying.np.now_playing.elapsed;
+    var np_total = nowPlaying.np.now_playing.duration;
+
+    if (np_elapsed < np_total) {
+        nowPlaying.np.now_playing.elapsed = np_elapsed + 1;
+    }
+}
+
+function formatTime(time) {
+    var sec_num = parseInt(time, 10);
+
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) {
+        hours = "0" + hours;
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    return (hours !== "00" ? hours + ':' : "") + minutes + ':' + seconds;
+}
+
+$(function() {
+    nowPlaying = new Vue({
+        el: '#profile-nowplaying',
+        data: <?=json_encode(['np' => $nowplaying]) ?>,
+        computed: {
+            "time_display": function() {
+                var time_played = this.np.now_playing.elapsed;
+                var time_total = this.np.now_playing.duration;
+
+                if (!time_total) {
+                    return null;
+                }
+
+                if (time_played > time_total) {
+                    time_played = time_total;
+                }
+
+                return formatTime(time_played) + ' / ' + formatTime(time_total);
+            }
+        }
+    });
+
+    setInterval(iterateTimer, 1000);
+
+    function loadNowPlaying() {
+        $.getJSON('<?=$router->fromHere('api:nowplaying:index') ?>', function(row) {
+            nowPlaying.np = row;
+
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: row.now_playing.song.title,
+                    artist: row.now_playing.song.artist
+                });
+            }
+
+            setTimeout(loadNowPlaying, 15000);
+        });
+    }
+
+    setTimeout(loadNowPlaying, 15000);
+
+    $('#btn_skip_song,#btn_disconnect_streamer').on('click', function(e) {
+        e.stopPropagation();
+        var btn = $(this);
+
+        btn.addClass('disabled');
+
+        $.ajax({
+            type: "POST",
+            url: btn.attr('href'),
+            success: function(data) {
+                var notify_type = (data.success) ? 'success' : 'warning';
+                notify(data.message, notify_type);
+
+                btn.removeClass('disabled');
+            },
+            dataType: "json"
+        });
+
+        return false;
+    });
+
+});

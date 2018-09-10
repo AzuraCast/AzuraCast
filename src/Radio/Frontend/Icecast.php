@@ -163,6 +163,10 @@ class Icecast extends FrontendAbstract
             $config['authentication']['admin-password'] = $frontend_config['admin_pw'];
         }
 
+        if (!empty($frontend_config['relay_pw'])) {
+            $config['authentication']['relay-password'] = $frontend_config['relay_pw'];
+        }
+
         if (!empty($frontend_config['streamer_pw'])) {
             foreach ($config['mount'] as &$mount) {
                 if (!empty($mount['password'])) {
@@ -248,6 +252,7 @@ class Icecast extends FrontendAbstract
             'custom_config' => $frontend_config['custom_config'],
             'source_pw' => $config['authentication']['source-password'],
             'admin_pw' => $config['authentication']['admin-password'],
+            'relay_pw' => $config['authentication']['relay-password'],
             'streamer_pw' => $config['mount'][0]['password'],
             'max_listeners' => $config['limits']['clients'],
         ];

@@ -53,13 +53,23 @@ class ProfileController
     public function indexAction(Request $request, Response $response): Response
     {
         $station = $request->getStation();
-        $backend = $request->getStationBackend();
-        $frontend = $request->getStationFrontend();
-
         $view = $request->getView();
 
         if (!$station->isEnabled()) {
             return $view->renderToResponse($response, 'stations/profile/disabled');
+        }
+
+        $backend = $request->getStationBackend();
+        $frontend = $request->getStationFrontend();
+        $remotes = $request->getStationRemotes();
+
+        $stream_urls = [
+            'local' => $frontend->getStreamUrls(),
+            'remote' => [],
+        ];
+
+        foreach($remotes as $remote_adapter) {
+            $stream_urls['remote'][] = $remote_adapter->getPublicUrl();
         }
 
         // Statistics about backend playback.
@@ -106,13 +116,13 @@ class ProfileController
         return $view->renderToResponse($response, 'stations/profile/index', [
             'num_songs' => $num_songs,
             'num_playlists' => $num_playlists,
+            'stream_urls' => $stream_urls,
             'backend_type' => $station->getBackendType(),
             'backend_config' => (array)$station->getBackendConfig(),
             'backend_is_running' => $backend->isRunning(),
             'frontend_type' => $station->getFrontendType(),
             'frontend_config' => (array)$station->getFrontendConfig(),
             'frontend_is_running' => $frontend->isRunning(),
-            'stream_urls' => $frontend->getStreamUrls(),
             'nowplaying' => $np,
         ]);
     }

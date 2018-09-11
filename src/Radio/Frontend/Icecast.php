@@ -220,7 +220,7 @@ class Icecast extends FrontendAbstract
 
     public function getAdminUrl(): string
     {
-        return $this->getPublicUrl() . '/admin/';
+        return $this->getPublicUrl() . '/admin.html';
     }
 
     /*

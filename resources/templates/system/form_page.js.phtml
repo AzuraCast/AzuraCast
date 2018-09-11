@@ -33,6 +33,7 @@ $(function() {
         $form.find('.help-block.form-success').parent().addClass('has-success');
         $form.find('.help-block.form-warning').parent().addClass('has-warning');
 
+        // noinspection JSAnnotator
         $form.find('.control-label.advanced,fieldset.advanced legend')
             .prepend('<span class="label label-default">'+<?=$this->escapeJs(__('Advanced')) ?>+'</span> ');
 

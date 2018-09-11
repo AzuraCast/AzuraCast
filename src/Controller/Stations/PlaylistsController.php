@@ -335,13 +335,15 @@ class PlaylistsController
             }
 
         } else {
+            $filter_line = function($line) {
+                return trim(urldecode($line));
+            };
 
             // Process as a simple list of files or M3U-style playlist.
             $lines = explode("\n", $playlist_raw);
-            $paths = array_filter(array_map('trim', $lines), function($line) {
+            $paths = array_filter(array_map($filter_line, $lines), function($line) {
                 return !empty($line) && $line[0] !== '#';
             });
-
         }
 
         if (empty($paths)) {

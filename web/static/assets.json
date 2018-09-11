@@ -1,5 +1,7 @@
 {
-  "dist/app.min.js": "dist/app-0bd230d4a5.min.js",
-  "dist/dark.css": "dist/dark-dcee7af86c.css",
-  "dist/light.css": "dist/light-70c58ca500.css"
+  "dist/app.js": "dist/app-b0b3f79e67.js",
+  "dist/dark.css": "dist/dark-6c34129d52.css",
+  "dist/light.css": "dist/light-c08cbcbc7f.css",
+  "dist/radio.js": "dist/radio-8f8220814e.js",
+  "dist/zxcvbn.js": "dist/zxcvbn-da450ff5bb.js"
 }

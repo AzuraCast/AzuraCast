@@ -75,7 +75,7 @@ return [
                     'defer' => true,
                 ],
                 [
-                    'src' => 'dist/app.min.js',
+                    'src' => 'dist/app.js',
                 ],
             ],
         ],
@@ -175,7 +175,7 @@ return [
                     'defer' => true,
                 ],
                 [
-                    'src' => 'js/radio.js',
+                    'src' => 'dist/radio.js',
                     'defer' => true,
                 ],
             ],
@@ -246,6 +246,10 @@ return [
                 [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js',
                     'integrity' => 'sha256-Znf8FdJF85f1LV0JmPOob5qudSrns8pLPZ6qkd/+F0o=',
+                    'defer' => true,
+                ],
+                [
+                    'src' => 'dist/zxcvbn.js',
                     'defer' => true,
                 ],
             ],

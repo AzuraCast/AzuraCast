@@ -26,7 +26,7 @@ return [
                     'text',
                     [
                         'label' => __('Station Name'),
-                        'class' => 'half-width',
+                        'class' => 'half-width fg-line',
                         'required' => true,
                     ]
                 ],

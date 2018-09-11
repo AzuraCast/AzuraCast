@@ -7,6 +7,52 @@ var volume = 55,
     player,
     $player;
 
+function stopAllPlayers()
+{
+    player.pause();
+    player.src = '';
+
+    is_playing = false;
+    $('.btn-audio').removeClass('playing').find('i').removeClass('zmdi-stop').addClass('zmdi-play');
+
+    $('#radio-player-controls').removeClass('jp-state-playing');
+}
+
+function setVolume(new_volume)
+{
+    volume = new_volume;
+
+    var volume_percent = Math.round(volume * 100);
+    $('.jp-volume-bar-value').css('width', volume_percent+'%');
+
+    player.volume = Math.pow(volume,3);
+
+    if (store.enabled)
+        store.set('player_volume', volume*100);
+}
+
+function playAudio(source_url)
+{
+    player.src = source_url;
+    player.play();
+}
+
+function handlePlayClick(audio_source)
+{
+    btn = $('.btn-audio[data-url="'+audio_source+'"]');
+
+    if (btn.hasClass('playing')) {
+        stopAllPlayers();
+    } else {
+        if (is_playing)
+            stopAllPlayers();
+
+        playAudio(audio_source);
+
+        btn.addClass('playing').find('i').removeClass('zmdi-play').addClass('zmdi-stop');
+    }
+}
+
 $(function() {
 
     // Check webstorage for existing volume preference.
@@ -27,7 +73,6 @@ $(function() {
 
     // Handle events.
     $player.on('play', function(e) {
-
         is_playing = true;
 
         $('.jp-unmute').hide();
@@ -35,13 +80,10 @@ $(function() {
 
         var volume_percent = Math.round($player.volume * 100);
         $('.jp-volume-bar-value').css('width', volume_percent+'%');
-
     });
 
     $player.on('ended', function(e) {
-
         $('#radio-player-controls,#radio-embedded-controls').removeClass('jp-state-playing');
-
     });
 
     if ('mediaSession' in navigator) {
@@ -68,7 +110,6 @@ $(function() {
     });
 
     $('.jp-volume-bar').on('click', function(e) {
-
         var $bar = $(e.currentTarget),
             offset = $bar.offset(),
             x = e.pageX - offset.left,
@@ -83,51 +124,3 @@ $(function() {
     $('.btn-audio[data-autoplay="true"]:first').click();
 
 });
-
-function setVolume(new_volume)
-{
-    console.log('New volume: '+new_volume);
-
-    volume = new_volume;
-
-    var volume_percent = Math.round(volume * 100);
-    $('.jp-volume-bar-value').css('width', volume_percent+'%');
-
-    player.volume = Math.pow(volume,3);
-
-    if (store.enabled)
-        store.set('player_volume', volume*100);
-}
-
-function handlePlayClick(audio_source)
-{
-    btn = $('.btn-audio[data-url="'+audio_source+'"]');
-
-    if (btn.hasClass('playing')) {
-        stopAllPlayers();
-    } else {
-        if (is_playing)
-            stopAllPlayers();
-
-        playAudio(audio_source);
-
-        btn.addClass('playing').find('i').removeClass('zmdi-play').addClass('zmdi-stop');
-    }
-}
-
-function playAudio(source_url)
-{
-    player.src = source_url;
-    player.play();
-}
-
-function stopAllPlayers()
-{
-    player.pause();
-    player.src = '';
-
-    is_playing = false;
-    $('.btn-audio').removeClass('playing').find('i').removeClass('zmdi-stop').addClass('zmdi-play');
-
-    $('#radio-player-controls').removeClass('jp-state-playing');
-}

@@ -72,7 +72,9 @@ return [
         ],
 
         'autodj_controls' => [
-            'legend' => __('Advanced: Control Song Playback'),
+            'legend' => __('Control Song Playback'),
+            'class' => 'advanced',
+
             'elements' => [
 
                 'length' => [

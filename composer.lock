@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AzuraCast/azuraforms.git",
-                "reference": "d13d563e70a22c55814b75650e5b072f2807db14"
+                "reference": "a04cfc78dc6864fbff8bfdba14186bef4fb551a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/d13d563e70a22c55814b75650e5b072f2807db14",
-                "reference": "d13d563e70a22c55814b75650e5b072f2807db14",
+                "url": "https://api.github.com/repos/AzuraCast/azuraforms/zipball/a04cfc78dc6864fbff8bfdba14186bef4fb551a7",
+                "reference": "a04cfc78dc6864fbff8bfdba14186bef4fb551a7",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
             ],
             "description": "A modern, namespaced, configuration-driven forms engine for PHP.",
             "homepage": "https://github.com/AzuraCast/azuraforms",
-            "time": "2018-09-06T05:54:07+00:00"
+            "time": "2018-09-11T04:25:54+00:00"
         },
         {
             "name": "cakephp/chronos",

@@ -100,7 +100,8 @@ return [
                 'custom_listen_url' => [
                     'text',
                     [
-                        'label' => __('Advanced: Custom Stream URL'),
+                        'label' => __('Custom Stream URL'),
+                        'label_class' => 'advanced',
                         'description' => __('You can set a custom URL for this stream that AzuraCast will use when referring to it. Leave empty to use the default value.')
                     ]
                 ],

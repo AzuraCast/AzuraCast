@@ -82,7 +82,8 @@ return [
                 'short_name' => [
                     'text',
                     [
-                        'label' => __('Advanced: Station URL Stub'),
+                        'label' => __('Station URL Stub'),
+                        'label_class' => 'advanced',
                         'description' => __('Optionally specify a short URL-friendly name, such as <code>my_station_name</code>, that will be used in this station\'s URLs. Leave this field blank to automatically create one based on the station name.'),
                     ]
                 ],
@@ -90,7 +91,8 @@ return [
                 'radio_media_dir' => [
                     'text',
                     [
-                        'label' => __('Advanced: Custom Media Directory'),
+                        'label' => __('Custom Media Directory'),
+                        'label_class' => 'advanced',
                         'description' => __('The directory where media files are stored. Leave blank to use default directory.'),
                     ]
                 ],
@@ -98,7 +100,8 @@ return [
                 'api_history_items' => [
                     'select',
                     [
-                        'label' => __('Advanced: Number of Recently Played Songs'),
+                        'label' => __('Number of Recently Played Songs'),
+                        'label_class' => 'advanced',
                         'description' => __('Customize the number of songs that will appear in the "Song History" section for this station and in all public APIs.'),
                         'choices' => [
                             0 => __('Disabled'),
@@ -138,7 +141,8 @@ return [
                 'port' => [
                     'text',
                     [
-                        'label' => __('Advanced: Customize Broadcasting Port'),
+                        'label' => __('Customize Broadcasting Port'),
+                        'label_class' => 'advanced',
                         'description' => __('No other program can be using this port. Leave blank to automatically assign a port.'),
                         'belongsTo' => 'frontend_config',
                         'class' => 'input-port',
@@ -148,7 +152,8 @@ return [
                 'source_pw' => [
                     'text',
                     [
-                        'label' => __('Advanced: Customize Source Password'),
+                        'label' => __('Customize Source Password'),
+                        'label_class' => 'advanced',
                         'description' => __('Leave blank to automatically generate a new password.'),
                         'belongsTo' => 'frontend_config',
                     ]
@@ -157,7 +162,8 @@ return [
                 'admin_pw' => [
                     'text',
                     [
-                        'label' => __('Advanced: Customize Administrator Password'),
+                        'label' => __('Customize Administrator Password'),
+                        'label_class' => 'advanced',
                         'description' => __('Leave blank to automatically generate a new password.'),
                         'belongsTo' => 'frontend_config',
                     ]
@@ -166,7 +172,8 @@ return [
                 'max_listeners' => [
                     'text',
                     [
-                        'label' => __('Advanced: Maximum Listeners'),
+                        'label' => __('Maximum Listeners'),
+                        'label_class' => 'advanced',
                         'description' => __('Maximum number of total listeners across all streams. Leave blank to use the default (250).'),
                         'belongsTo' => 'frontend_config',
                     ]
@@ -175,7 +182,8 @@ return [
                 'custom_config' => [
                     'textarea',
                     [
-                        'label' => __('Advanced: Custom Configuration'),
+                        'label' => __('Custom Configuration'),
+                        'label_class' => 'advanced',
                         'belongsTo' => 'frontend_config',
                         'class' => 'text-preformatted',
                         'description' => __('This code will be included in the frontend configuration. You can use either JSON {"new_key": "new_value"} format or XML &lt;new_key&gt;new_value&lt;/new_key&gt;.'),
@@ -238,6 +246,7 @@ return [
                             'UTF-8' => 'UTF-8',
                             'ISO-8859-1' => 'ISO-8859-1',
                         ],
+                        'class' => 'field-advanced',
                     ],
                 ],
 
@@ -279,7 +288,8 @@ return [
                 'use_manual_autodj' => [
                     'radio',
                     [
-                        'label' => __('Advanced: Manual AutoDJ Mode'),
+                        'label' => __('Manual AutoDJ Mode'),
+                        'label_class' => 'advanced',
                         'description' => __('This mode disables App\'s AutoDJ management, using Liquidsoap itself to manage song playback. "Next Song" and some other features will not be available.'),
                         'default' => '0',
                         'choices' => [0 => __('No'), 1 => __('Yes')],
@@ -290,7 +300,8 @@ return [
                 'dj_port' => [
                     'text',
                     [
-                        'label' => __('Advanced: Customize DJ/Streamer Port'),
+                        'label' => __('Customize DJ/Streamer Port'),
+                        'label_class' => 'advanced',
                         'description' => __('No other program can be using this port. Leave blank to automatically assign a port.<br><b>Note:</b> The port after this one (n+1) will automatically be used for legacy connections.'),
                         'belongsTo' => 'backend_config',
                         'class' => 'input-port',
@@ -300,7 +311,8 @@ return [
                 'dj_buffer' => [
                     'text',
                     [
-                        'label' => __('Advanced: DJ/Streamer Buffer Time (Seconds)'),
+                        'label' => __('DJ/Streamer Buffer Time (Seconds)'),
+                        'label_class' => 'advanced',
                         'description' => __('The number of seconds of signal to store in case of interruption. Set to the lowest value that your DJs can use without stream interruptions.'),
                         'default' => 5,
                         'belongsTo' => 'backend_config',
@@ -310,7 +322,8 @@ return [
                 'telnet_port' => [
                     'text',
                     [
-                        'label' => __('Advanced: Customize Internal Request Processing Port'),
+                        'label' => __('Customize Internal Request Processing Port'),
+                        'label_class' => 'advanced',
                         'description' => __('This port is not used by any external process. Only modify this port if the assigned port is in use. Leave blank to automatically assign a port.'),
                         'belongsTo' => 'backend_config',
                         'class' => 'input-port',
@@ -320,7 +333,8 @@ return [
                 'custom_config' => [
                     'textarea',
                     [
-                        'label' => __('Advanced: Custom Configuration'),
+                        'label' => __('Custom Configuration'),
+                        'label_class' => 'advanced',
                         'belongsTo' => 'backend_config',
                         'class' => 'text-preformatted',
                         'description' => __('This code will be inserted into your station\'s Liquidsoap configuration, below the playlist configuration and just before the Icecast output. Only use valid Liquidsoap code for this section!'),

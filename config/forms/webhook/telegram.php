@@ -44,7 +44,8 @@ return [
                 'api' => [
                     'text',
                     [
-                        'label' => __('Advanced: Custom API Base URL'),
+                        'label' => __('Custom API Base URL'),
+                        'label_class' => 'advanced',
                         'description' => __('Leave blank to use the default Telegram API URL (recommended). Specify the full URL, like <code>https://api.pwrtelegram.xyz/</code>.'),
                         'belongsTo' => 'config',
                     ]

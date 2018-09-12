@@ -1,7 +1,7 @@
 # This is a security.txt file according to https://github.com/EdOverflow/security-txt
 
 # Our security address
-Contact: https://keybase.io/slvreagle23
+Contact: help@azuracast.com
 
 # Our PGP key
 PGP-key:-----BEGIN PGP PUBLIC KEY BLOCK-----

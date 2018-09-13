@@ -11,91 +11,41 @@ class SHOUTcast extends FrontendAbstract
     {
         $fe_config = (array)$this->station->getFrontendConfig();
 
+        $mount_name = $this->_getDefaultMountSid();
+
         return $this->_getStationWatcherCommand(
             'shoutcast2',
-            'http://localhost:' . $fe_config['port'] . '/statistics?json=1'
+            'http://localhost:' . $fe_config['port'] . '/stats?sid='.$mount_name
         );
     }
 
-    public function updateNowPlaying(&$np, $payload = null, $include_clients = true): bool
+    public function getNowPlaying($payload = null, $include_clients = true): array
     {
         $fe_config = (array)$this->station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
-        if (empty($payload)) {
-            $np_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/statistics?json=1';
-            $payload = $this->getUrl($np_url);
+        $base_url = 'http://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $radio_port;
 
-            if (empty($payload)) {
-                return false;
-            }
-        }
+        $np_adapter = new \NowPlaying\Adapter\SHOUTcast2($base_url, $this->http_client);
+        $np_adapter->setAdminPassword($fe_config['admin_pw']);
 
-        $current_data = json_decode($payload, true);
+        $mount_name = $this->_getDefaultMountSid();
 
-        $this->logger->debug('SHOUTcast 2 raw response.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName(), 'response' => $current_data]);
+        try {
+            $np = $np_adapter->getNowPlaying($mount_name, $payload);
 
-        $streams = count($current_data['streams']);
-        $u_list = 0;
-        $t_list = 0;
+            $this->logger->debug('NowPlaying adapter response', ['response' => $np]);
 
-        $mount_repo = $this->em->getRepository(Entity\StationMount::class);
-
-        /** @var Entity\StationMount $default_mount */
-        $default_mount = $mount_repo->getDefaultMount($this->station);
-
-        if (!($default_mount instanceof Entity\StationMount)) {
-            $this->logger->error('Station does not have a default mount configured.', ['station' => ['id' => $this->station->getId(), 'name' => $this->station->getName()]]);
-            return false;
-        }
-
-        foreach($current_data['streams'] as $stream) {
-            if ($stream['streampath'] === $default_mount->getName()) {
-                $song_data = $stream;
+            if ($include_clients) {
+                $np['listeners']['clients'] = $np_adapter->getClients($mount_name, true);
+                $np['listeners']['unique'] = count($np['listeners']['clients']);
             }
 
-            $u_list += (int)$stream['uniquelisteners'];
-            $t_list += (int)$stream['currentlisteners'];
+            return $np;
+        } catch(Exception $e) {
+            $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+            return \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
         }
-
-        $np['meta']['status'] = 'online';
-        $np['meta']['bitrate'] = $song_data['bitrate'];
-        $np['meta']['format'] = $song_data['content'];
-
-        $np['current_song'] = $this->getSongFromString($song_data['songtitle'], '-');
-
-        $np['listeners'] = [
-            'current' => $this->getListenerCount($u_list, $t_list),
-            'unique' => $u_list,
-            'total' => $t_list,
-        ];
-
-        if ($include_clients) {
-            // Attempt to fetch detailed listener information for better unique statistics.
-            $np['listeners']['clients'] = [];
-
-            for($i = 1; $i <= $streams; $i++) {
-                $listeners_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin.cgi?sid='.$i.'&mode=viewjson&page=3';
-                $return_raw = $this->getUrl($listeners_url, [
-                    'auth' => ['admin', $fe_config['admin_pw']],
-                ]);
-
-                if (!empty($return_raw)) {
-                    $listeners = json_decode($return_raw, true);
-
-                    foreach((array)$listeners as $listener) {
-                        $np['listeners']['clients'][] = [
-                            'uid' => $listener['uid'],
-                            'ip' => $listener['xff'] ?: $listener['hostname'],
-                            'user_agent' => $listener['useragent'],
-                            'connected_seconds' => $listener['connecttime'],
-                        ];
-                    }
-                }
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -229,6 +179,23 @@ class SHOUTcast extends FrontendAbstract
         ];
 
         return $defaults;
+    }
+
+    protected function _getDefaultMountSid(): int
+    {
+        $default_sid = null;
+        $sid = 0;
+        foreach($this->station->getMounts() as $mount) {
+            /** @var Entity\StationMount $mount */
+            $sid++;
+
+            if ($mount->getIsDefault()) {
+                $default_sid = $sid;
+                break;
+            }
+        }
+
+        return $default_sid ?? 1;
     }
 
     public static function getBinary()

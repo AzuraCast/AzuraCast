@@ -13,7 +13,7 @@ if (!defined('APP_TESTING_MODE')) {
 
 // General includes
 define('APP_INCLUDE_BASE', __DIR__);
-define('APP_INCLUDE_ROOT', dirname(APP_INCLUDE_BASE));
+define('APP_INCLUDE_ROOT', dirname(__DIR__));
 define('APP_INCLUDE_WEB', APP_INCLUDE_ROOT . '/web');
 define('APP_INCLUDE_STATIC', APP_INCLUDE_WEB . '/static');
 
@@ -56,7 +56,7 @@ ini_set('session.use_strict_mode',      1);
 
 // Composer autoload.
 $autoloader = require(APP_INCLUDE_VENDOR . '/autoload.php');
-$autoloader->addPsr4('\\Proxy\\', APP_INCLUDE_TEMP . '/proxies');
+$autoloader->setPsr4('Proxy\\', APP_INCLUDE_TEMP . '/proxies');
 
 // Set up DI container.
 $di = new \Slim\Container([

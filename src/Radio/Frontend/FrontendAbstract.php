@@ -3,7 +3,6 @@ namespace App\Radio\Frontend;
 
 use App\Http\Router;
 use App\Entity;
-use App\Radio\Traits\AdapterCommon;
 use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
 use GuzzleHttp\Client;
@@ -12,7 +11,8 @@ use Supervisor\Supervisor;
 
 abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
 {
-    use AdapterCommon;
+    /** @var Client */
+    protected $http_client;
 
     /** @var Router */
     protected $router;
@@ -167,14 +167,13 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     }
 
     /**
-     * @param $np
      * @param string|null $payload A prepopulated payload (to avoid duplicate web requests)
      * @param bool $include_clients Whether to try to retrieve detailed listener client info
-     * @return bool Whether the NP update succeeded
+     * @return array Whether the NP update succeeded
      */
-    public function updateNowPlaying(&$np, $payload = null, $include_clients = true): bool
+    public function getNowPlaying($payload = null, $include_clients = true): array
     {
-        return true;
+        return \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
     }
 
     /**

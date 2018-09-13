@@ -10,6 +10,7 @@ use App\Webhook\Dispatcher;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use App\Entity;
+use Monolog\Logger;
 
 class NowPlaying extends TaskAbstract
 {
@@ -27,6 +28,9 @@ class NowPlaying extends TaskAbstract
 
     /** @var AutoDJ */
     protected $autodj;
+
+    /** @var Logger */
+    protected $logger;
 
     /** @var Dispatcher */
     protected $webhook_dispatcher;
@@ -57,24 +61,27 @@ class NowPlaying extends TaskAbstract
      * @param Dispatcher $webhook_dispatcher
      * @param ApiUtilities $api_utils
      * @param AutoDJ $autodj
+     * @param Logger $logger
      * @see \App\Provider\SyncProvider
      */
     public function __construct(
-        EntityManager $em,
-        Database $influx,
-        Cache $cache,
         Adapters $adapters,
-        Dispatcher $webhook_dispatcher,
         ApiUtilities $api_utils,
-        AutoDJ $autodj)
+        AutoDJ $autodj,
+        Cache $cache,
+        Database $influx,
+        Dispatcher $webhook_dispatcher,
+        EntityManager $em,
+        Logger $logger)
     {
-        $this->em = $em;
-        $this->influx = $influx;
-        $this->cache = $cache;
         $this->adapters = $adapters;
-        $this->webhook_dispatcher = $webhook_dispatcher;
         $this->api_utils = $api_utils;
         $this->autodj = $autodj;
+        $this->cache = $cache;
+        $this->em = $em;
+        $this->influx = $influx;
+        $this->logger = $logger;
+        $this->webhook_dispatcher = $webhook_dispatcher;
 
         $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
         $this->song_repo = $this->em->getRepository(Entity\Song::class);
@@ -175,6 +182,14 @@ class NowPlaying extends TaskAbstract
      */
     public function processStation(Entity\Station $station, $payload = null)
     {
+        $this->logger->pushProcessor(function($record) use ($station) {
+            $record['extra']['station'] = [
+                'id' => $station->getId(),
+                'name' => $station->getName(),
+            ];
+            return $record;
+        });
+
         $include_clients = ($this->analytics_level === Entity\Analytics::LEVEL_ALL);
 
         $frontend_adapter = $this->adapters->getFrontendAdapter($station);
@@ -187,43 +202,11 @@ class NowPlaying extends TaskAbstract
         $np->station = $station->api($frontend_adapter, $remote_adapters);
 
         // Build the new "raw" NowPlaying data from the adapters.
-        $np_raw = [
-            'current_song' => [
-                'text' => 'Stream Offline',
-                'title' => '',
-                'artist' => '',
-            ],
-            'listeners' => [
-                'current' => 0,
-                'unique' => null,
-                'total' => null,
-            ],
-            'meta' => [
-                'status' => 'offline',
-                'bitrate' => 0,
-                'format' => '',
-            ],
-        ];
-
-        // Merge station-specific info into defaults.
-        $frontend_adapter->updateNowPlaying($np_raw, $payload, $include_clients);
-
-        // Update status code for offline stations, clean up song info for online ones.
-        if ($np_raw['current_song']['text'] === 'Stream Offline') {
-            $np_raw['meta']['status'] = 'offline';
-        }
-
-        // Fill in any missing listener info.
-        if ($np_raw['listeners']['unique'] === null) {
-            $np_raw['listeners']['unique'] = (int)$np_raw['listeners']['current'];
-        }
-        if ($np_raw['listeners']['total'] === null) {
-            $np_raw['listeners']['total'] = (int)$np_raw['listeners']['current'];
-        }
+        $np_raw = $frontend_adapter->getNowPlaying($payload, $include_clients);
 
         // Loop through all remotes and update NP data accordingly.
         foreach($remote_adapters as $remote_adapter) {
-            $remote_adapter->updateNowPlaying($np_raw);
+            $remote_adapter->updateNowPlaying($np_raw, $include_clients);
         }
 
         array_walk($np_raw['current_song'], function(&$value) {
@@ -310,6 +293,8 @@ class NowPlaying extends TaskAbstract
 
         $np_old = ($np_old instanceof Entity\Api\NowPlaying) ? $np_old : $np;
         $this->webhook_dispatcher->dispatch($station, $np_old, $np, ($payload !== null));
+
+        $this->logger->popProcessor();
 
         return $np;
     }

@@ -4,6 +4,7 @@ namespace App\Radio\Frontend;
 use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
+use NowPlaying\Exception;
 
 class Icecast extends FrontendAbstract
 {
@@ -22,35 +23,15 @@ class Icecast extends FrontendAbstract
         );
     }
 
-    public function updateNowPlaying(&$np, $payload = null, $include_clients = true): bool
+    public function getNowPlaying($payload = null, $include_clients = true): array
     {
         $fe_config = (array)$this->station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
-        $reader = new \App\Xml\Reader();
+        $base_url = 'http://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $radio_port;
 
-        if (empty($payload)) {
-            $np_url = 'http://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $radio_port . '/admin/stats';
-
-            $payload = $this->getUrl($np_url, [
-                'auth' => ['admin', $fe_config['admin_pw']],
-            ]);
-
-            if (!$payload) {
-                return false;
-            }
-        }
-
-        $return = $reader->fromString($payload);
-
-        $this->logger->debug('Processed IceCast response.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName(), 'response' => $return]);
-
-        if (!$return || empty($return['source'])) {
-            return false;
-        }
-
-        $sources = $return['source'];
-        $mounts = (key($sources) === 0) ? $sources : [$sources];
+        $np_adapter = new \NowPlaying\Adapter\Icecast($base_url, $this->http_client);
+        $np_adapter->setAdminPassword($fe_config['admin_pw']);
 
         /** @var Entity\Repository\StationMountRepository $mount_repo */
         $mount_repo = $this->em->getRepository(Entity\StationMount::class);
@@ -58,84 +39,23 @@ class Icecast extends FrontendAbstract
         /** @var Entity\StationMount $default_mount */
         $default_mount = $mount_repo->getDefaultMount($this->station);
 
-        if (!($default_mount instanceof Entity\StationMount)) {
-            $this->logger->error('Station does not have a default mount configured.', ['station' => ['id' => $this->station->getId(), 'name' => $this->station->getName()]]);
-            return false;
-        }
+        $mount_name = ($default_mount instanceof Entity\StationMount) ? $default_mount->getName() : null;
 
-        $song_data_by_mount = [];
-        $current_listeners = 0;
-        $unique_listeners = [];
-        $clients = [];
+        try {
+            $np = $np_adapter->getNowPlaying($mount_name, $payload);
 
-        foreach($mounts as $mount) {
-            $song_data_by_mount[$mount['@mount']] = $mount;
-
-            $current_listeners += $mount['listeners'];
+            $this->logger->debug('NowPlaying adapter response', ['response' => $np]);
 
             if ($include_clients) {
-                // Attempt to fetch detailed listener information for better unique statistics.
-                $listeners_url = 'http://'.(APP_INSIDE_DOCKER ? 'stations' : 'localhost').':' . $radio_port . '/admin/listclients?mount='.urlencode($mount['@mount']);
-                $return_raw = $this->getUrl($listeners_url, [
-                    'auth' => ['admin', $fe_config['admin_pw']],
-                ]);
-
-                if (!empty($return_raw)) {
-                    $listeners_raw = $reader->fromString($return_raw);
-
-                    if (!empty($listeners_raw['source']['listener']))
-                    {
-                        $listeners = $listeners_raw['source']['listener'];
-                        $listeners = (key($listeners) === 0) ? $listeners : [$listeners];
-
-                        foreach($listeners as $listener) {
-                            $client = [
-                                'uid' => $listener['ID'],
-                                'ip' => $listener['IP'],
-                                'user_agent' => $listener['UserAgent'],
-                                'connected_seconds' => $listener['Connected'],
-                            ];
-
-                            $client_hash = Entity\Listener::calculateListenerHash($client);
-                            $unique_listeners[$client_hash] = $client_hash;
-                            $clients[] = $client;
-                        }
-                    }
-                }
+                $np['listeners']['clients'] = $np_adapter->getClients($mount_name, true);
+                $np['listeners']['unique'] = count($np['listeners']['clients']);
             }
+
+            return $np;
+        } catch(Exception $e) {
+            $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
+            return \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
         }
-
-        if ($include_clients) {
-            $unique_listeners = count($unique_listeners);
-
-            $np['listeners'] = [
-                'current' => $this->getListenerCount($unique_listeners, $current_listeners),
-                'unique' => $unique_listeners,
-                'total' => $current_listeners,
-                'clients' => $clients,
-            ];
-        } else {
-            $np['listeners'] = [
-                'current' => $current_listeners,
-                'total' => $current_listeners,
-            ];
-        }
-
-        // Check the default mount, then its fallback if otherwise not available.
-        if (!empty($song_data_by_mount[$default_mount->getName()]['title'])) {
-            $song_data = $song_data_by_mount[$default_mount->getName()];
-        } elseif (!empty($song_data_by_mount[$default_mount->getFallbackMount()]['title'])) {
-            $song_data = $song_data_by_mount[$default_mount->getFallbackMount()];
-        } else {
-            return false;
-        }
-
-        $np['current_song'] = $this->getCurrentSong($song_data, ' - ');
-
-        $np['meta']['status'] = 'online';
-        $np['meta']['bitrate'] = $song_data['bitrate'];
-        $np['meta']['format'] = $song_data['server_type'];
-        return true;
     }
 
     public function read(): bool

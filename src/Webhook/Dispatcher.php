@@ -38,17 +38,8 @@ class Dispatcher
      */
     public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np_old, Entity\Api\NowPlaying $np_new, $is_standalone = true): void
     {
-        $this->logger->pushProcessor(function($record) use ($station) {
-            $record['extra']['station'] = [
-                'id' => $station->getId(),
-                'name' => $station->getName(),
-            ];
-            return $record;
-        });
-
         if (APP_TESTING_MODE) {
             $this->logger->info('In testing mode; no webhooks dispatched.');
-            $this->logger->popProcessor();
             return;
         }
 
@@ -116,8 +107,6 @@ class Dispatcher
                 $connector_obj->dispatch($station, $np_new, (array)$connector['config']);
             }
         }
-
-        $this->logger->popProcessor();
     }
 
     /**

@@ -202,17 +202,21 @@ class NowPlaying extends TaskAbstract
         $np->station = $station->api($frontend_adapter, $remote_adapters);
 
         // Build the new "raw" NowPlaying data from the adapters.
-        $np_raw = $frontend_adapter->getNowPlaying($payload, $include_clients);
+        if (APP_TESTING_MODE) {
+            $np_raw = \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
+        } else {
+            $np_raw = $frontend_adapter->getNowPlaying($payload, $include_clients);
 
-        // Loop through all remotes and update NP data accordingly.
-        foreach($remote_adapters as $remote_adapter) {
-            $remote_adapter->updateNowPlaying($np_raw, $include_clients);
+            // Loop through all remotes and update NP data accordingly.
+            foreach($remote_adapters as $remote_adapter) {
+                $remote_adapter->updateNowPlaying($np_raw, $include_clients);
+            }
+
+            array_walk($np_raw['current_song'], function(&$value) {
+                $value = htmlspecialchars_decode($value);
+                $value = trim($value);
+            });
         }
-
-        array_walk($np_raw['current_song'], function(&$value) {
-            $value = htmlspecialchars_decode($value);
-            $value = trim($value);
-        });
 
         // Start to convert the "raw" NowPlaying data into the proper API entities.
         $np->listeners = new Entity\Api\NowPlayingListeners($np_raw['listeners']);

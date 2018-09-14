@@ -3,6 +3,7 @@ namespace App\Webhook\Connector;
 
 use App\Entity;
 use GuzzleHttp\Exception\TransferException;
+use GuzzleHttp\HandlerStack;
 use Monolog\Logger;
 
 class Twitter extends AbstractConnector
@@ -23,7 +24,10 @@ class Twitter extends AbstractConnector
         }
 
         // Set up Twitter OAuth
-        $stack = \GuzzleHttp\HandlerStack::create();
+
+        /** @var HandlerStack $stack */
+        $stack = clone $this->http_client->getConfig('handler');
+
         $middleware = new \GuzzleHttp\Subscriber\Oauth\Oauth1([
             'consumer_key'    => trim($config['consumer_key']),
             'consumer_secret' => trim($config['consumer_secret']),

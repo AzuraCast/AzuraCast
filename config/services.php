@@ -309,11 +309,29 @@ return function (\Slim\Container $di, $settings) {
     };
 
     $di[\GuzzleHttp\Client::class] = function($di) {
-        $fetcher = new \ParagonIE\Certainty\RemoteFetch(APP_INCLUDE_TEMP);
-        $latestCACertBundle = $fetcher->getLatestBundle();
+        $stack = \GuzzleHttp\HandlerStack::create();
+
+        $stack->unshift(function (callable $handler) use ($di) {
+            return function (\Psr\Http\Message\RequestInterface $request, array $options) use ($handler, $di) {
+                if ($request->getUri()->getScheme() === 'https') {
+                    $fetcher = new \ParagonIE\Certainty\RemoteFetch(APP_INCLUDE_TEMP);
+                    $latestCACertBundle = $fetcher->getLatestBundle();
+
+                    $options['verify'] = $latestCACertBundle->getFilePath();
+                }
+
+                return $handler($request, $options);
+            };
+        }, 'ssl_verify');
+
+        $stack->push(\GuzzleHttp\Middleware::log(
+            $di[\Monolog\Logger::class],
+            new \GuzzleHttp\MessageFormatter('HTTP client {method} call to {uri} produced response {code}'),
+            \Monolog\Logger::DEBUG
+        ));
 
         return new \GuzzleHttp\Client([
-            'verify' => $latestCACertBundle->getFilePath(),
+            'handler' => $stack,
             'http_errors' => false,
             'timeout' => 3.0,
         ]);

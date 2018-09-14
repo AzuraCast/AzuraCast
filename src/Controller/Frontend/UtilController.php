@@ -26,11 +26,11 @@ class UtilController
 
     public function testAction(Request $request, Response $response): Response
     {
-        print_r(array_keys($request->getAttributes()));
+        $np = new \NowPlaying\Adapter\SHOUTcast2('http://stations:8000');
 
-        print_r($request->getAttribute('routeInfo'));
-        print_r(get_class($request->getAttribute('route')));
+        $np->setAdminPassword('zhhG4D4K');
 
+        print_r($np->getClients());
         exit;
 
         /** @var EntityManager $em */

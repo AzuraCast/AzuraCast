@@ -401,30 +401,35 @@ return function(\Slim\App $app) {
 
         $this->group('/reports', function () {
 
-            $this->get('/timeline[/format/{format}]', Controller\Stations\ReportsController::class.':timelineAction')
+            $this->get('/timeline[/format/{format}]', Controller\Stations\Reports\TimelineController::class)
                 ->setName('stations:reports:timeline');
 
-            $this->get('/performance[/format/{format}]', Controller\Stations\ReportsController::class.':performanceAction')
+            $this->get('/performance[/format/{format}]', Controller\Stations\Reports\PerformanceController::class)
                 ->setName('stations:reports:performance');
 
-            $this->get('/duplicates', Controller\Stations\ReportsController::class.':duplicatesAction')
+            $this->get('/duplicates', Controller\Stations\Reports\DuplicatesController::class)
                 ->setName('stations:reports:duplicates');
 
-            $this->get('/duplicates/delete/{media_id}', Controller\Stations\ReportsController::class.':deletedupeAction')
-                ->setName('stations:reports:deletedupe');
+            $this->get('/duplicates/delete/{media_id}', Controller\Stations\Reports\DuplicatesController::class.':deleteAction')
+                ->setName('stations:reports:duplicates:delete');
 
-            $this->map(['GET', 'POST'], '/listeners', Controller\Stations\ReportsController::class.':listenersAction')
+            $this->map(['GET', 'POST'], '/listeners', Controller\Stations\Reports\ListenersController::class)
                 ->setName('stations:reports:listeners');
+
+            $this->map(['GET', 'POST'], '/soundexchange', Controller\Stations\Reports\SoundExchangeController::class)
+                ->setName('stations:reports:soundexchange');
+
+            $this->get('/requests', Controller\Stations\Reports\RequestsController::class)
+                ->setName('stations:reports:requests');
+
+            $this->get('/requests/delete/{request_id}/{csrf}', Controller\Stations\Reports\RequestsController::class.':deleteAction')
+                ->setName('stations:reports:requests:delete');
 
         })->add([Middleware\Permissions::class, 'view station reports', true]);
 
         $this->group('/requests', function () {
 
-            $this->get('', Controller\Stations\RequestsController::class.':indexAction')
-                ->setName('stations:requests:index');
 
-            $this->get('/delete/{request_id}/{csrf}', Controller\Stations\RequestsController::class.':deleteAction')
-                ->setName('stations:requests:delete');
 
         })->add([Middleware\Permissions::class, 'view station reports', true]);
 

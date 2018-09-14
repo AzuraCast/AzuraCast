@@ -106,17 +106,44 @@ class StationsProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Stations\ReportsController::class] = function($di) {
-            return new Stations\ReportsController(
+        $di[Stations\Reports\DuplicatesController::class] = function($di) {
+            return new Stations\Reports\DuplicatesController(
+                $di[\Doctrine\ORM\EntityManager::class]
+            );
+        };
+
+        $di[Stations\Reports\ListenersController::class] = function($di) {
+            return new Stations\Reports\ListenersController(
+                $di[\Doctrine\ORM\EntityManager::class]
+            );
+        };
+
+        $di[Stations\Reports\PerformanceController::class] = function($di) {
+            return new Stations\Reports\PerformanceController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\App\Sync\Task\RadioAutomation::class]
             );
         };
 
-        $di[Stations\RequestsController::class] = function($di) {
-            return new Stations\RequestsController(
+        $di[Stations\Reports\RequestsController::class] = function($di) {
+            return new Stations\Reports\RequestsController(
                 $di[\Doctrine\ORM\EntityManager::class]
             );
+        };
+
+        $di[Stations\Reports\SoundExchangeController::class] = function($di) {
+            /** @var \App\Config $config */
+            $config = $di[\App\Config::class];
+
+            return new Stations\Reports\SoundExchangeController(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\GuzzleHttp\Client::class],
+                $config->get('forms/report/soundexchange')
+            );
+        };
+
+        $di[Stations\Reports\TimelineController::class] = function($di) {
+            return new Stations\Reports\TimelineController();
         };
 
         $di[Stations\StreamersController::class] = function($di) {

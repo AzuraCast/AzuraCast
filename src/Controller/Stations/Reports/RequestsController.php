@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Stations;
+namespace App\Controller\Stations\Reports;
 
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -23,7 +23,7 @@ class RequestsController
         $this->em = $em;
     }
 
-    public function indexAction(Request $request, Response $response, $station_id): Response
+    public function __invoke(Request $request, Response $response, $station_id): Response
     {
         $requests = $this->em->createQuery('SELECT sr, sm, s FROM '.Entity\StationRequest::class.' sr
             JOIN sr.track sm
@@ -33,7 +33,7 @@ class RequestsController
             ->setParameter('station_id', $station_id)
             ->getArrayResult();
 
-        return $request->getView()->renderToResponse($response, 'stations/requests/index', [
+        return $request->getView()->renderToResponse($response, 'stations/reports/requests', [
             'requests' => $requests,
             'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);

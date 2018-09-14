@@ -40,9 +40,12 @@
     <div class="card-body card-padding text-preformatted">
         <?php foreach($row['context'] as $context_header => $context_value): ?>
             <h5><?=$context_header ?></h5>
-            <pre><?=print_r($context_value, true) ?></pre>
+            <pre><?=json_encode($context_value, \JSON_PRETTY_PRINT) ?></pre>
         <?php endforeach; ?>
-        </dl>
+        <?php foreach($row['extra'] as $context_header => $context_value): ?>
+            <h5><?=$context_header ?></h5>
+            <pre><?=json_encode($context_value, \JSON_PRETTY_PRINT) ?></pre>
+        <?php endforeach; ?>
     </div>
 <?php endif; ?>
 </div>

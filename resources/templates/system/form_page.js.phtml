@@ -1,5 +1,4 @@
 $(function() {
-
     $('form.form').each(function() {
         var $form = $(this);
 
@@ -8,7 +7,13 @@ $(function() {
         $form.find('.form-group > label').addClass('control-label');
 
         $form.find('input:not(input[type=button],input[type=submit],input[type=reset],input[type=radio],input[type=checkbox]),textarea,select').addClass('form-control');
-        $form.find('select').wrap('<div class="select" />');
+
+        $form.find('select').wrap('<div class="select" />').chosen({
+            width: "100%",
+            placeholder_text_single: <?=$this->escapeJs(__('Select...')) ?>,
+            placeholder_text_multiple: <?=$this->escapeJs(__('Select...')) ?>,
+            no_results_text: <?=$this->escapeJs(__('No results found!')) ?>
+        });
 
         autosize($form.find('textarea'));
 
@@ -38,18 +43,15 @@ $(function() {
             .prepend('<span class="label label-default">'+<?=$this->escapeJs(__('Advanced')) ?>+'</span> ');
 
         $form.find('input[type=button],input[type=submit],input[type=reset]').addClass('btn m-t-10');
+
+        // Scroll to errors.
+        var error_fields = $form.find('.has-error:visible');
+        if (error_fields.length > 0) {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: error_fields.first().offset().top - $('#header').outerHeight() - 15
+            }, 1000);
+        }
     });
 
-    var error_fields = $('form .has-error:visible');
-    if (error_fields.length > 0) {
-        $([document.documentElement, document.body]).animate({
-            scrollTop: error_fields.first().offset().top - $('#header').outerHeight() - 15
-        }, 1000);
-    }
 
-    $('select').chosen({
-        placeholder_text_single: '<?=__('Select...') ?>',
-        placeholder_text_multiple: '<?=__('Select...') ?>',
-        no_results_text: '<?=__('No results found!') ?>'
-    });
 });

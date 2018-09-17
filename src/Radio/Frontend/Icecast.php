@@ -191,7 +191,7 @@ class Icecast extends FrontendAbstract
             'hostname' => $settings_repo->getSetting('base_url', 'localhost'),
             'limits' => [
                 'clients' => 250,
-                'sources' => 3,
+                'sources' => $this->station->getMounts()->count(),
                 // 'threadpool' => 5,
                 'queue-size' => 524288,
                 'client-timeout' => 30,

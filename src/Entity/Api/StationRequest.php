@@ -5,14 +5,14 @@ namespace App\Entity\Api;
 use App\Entity;
 
 /**
- * @SWG\Definition(type="object")
+ * @OA\Schema(type="object")
  */
 class StationRequest
 {
     /**
      * Requestable ID unique identifier
      *
-     * @SWG\Property(example=1)
+     * @OA\Property(example=1)
      * @var int
      */
     public $request_id;
@@ -20,7 +20,7 @@ class StationRequest
     /**
      * URL to directly submit request
      *
-     * @SWG\Property(example="/api/station/1/request/1")
+     * @OA\Property(example="/api/station/1/request/1")
      * @var int
      */
     public $request_url;
@@ -28,7 +28,7 @@ class StationRequest
     /**
      * Song
      *
-     * @SWG\Property
+     * @OA\Property
      * @var Song
      */
     public $song;

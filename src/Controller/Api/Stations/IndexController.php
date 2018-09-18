@@ -27,16 +27,16 @@ class IndexController
     }
 
     /**
-     * @SWG\Get(path="/stations",
+     * @OA\Get(path="/stations",
      *   tags={"Stations: General"},
      *   description="Returns a list of stations.",
      *   parameters={},
-     *   @SWG\Response(
+     *   @OA\Response(
      *     response=200,
      *     description="Success",
-     *     @SWG\Schema(
+     *     @OA\Schema(
      *       type="array",
-     *       @SWG\Items(ref="#/definitions/Station")
+     *       @OA\Items(ref="#/components/schemas/Station")
      *     )
      *   )
      * )
@@ -63,18 +63,18 @@ class IndexController
     }
 
     /**
-     * @SWG\Get(path="/station/{station_id}",
+     * @OA\Get(path="/station/{station_id}",
      *   tags={"Stations: General"},
      *   description="Return information about a single station.",
-     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
-     *   @SWG\Response(
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Response(
      *     response=200,
      *     description="Success",
-     *     @SWG\Schema(
-     *       ref="#/definitions/Station"
+     *     @OA\Schema(
+     *       ref="#/components/schemas/Station"
      *     )
      *   ),
-     *   @SWG\Response(response=404, description="Station not found")
+     *   @OA\Response(response=404, description="Station not found")
      * )
      */
     public function indexAction(Request $request, Response $response): Response

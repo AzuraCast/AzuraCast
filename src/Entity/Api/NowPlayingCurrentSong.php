@@ -5,14 +5,14 @@ namespace App\Entity\Api;
 use App\Entity;
 
 /**
- * @SWG\Definition(type="object")
+ * @OA\Schema(type="object")
  */
 class NowPlayingCurrentSong extends SongHistory
 {
     /**
      * Elapsed time of the song's playback since it started.
      *
-     * @SWG\Property(example=25)
+     * @OA\Property(example=25)
      * @var int
      */
     public $elapsed;
@@ -20,7 +20,7 @@ class NowPlayingCurrentSong extends SongHistory
     /**
      * Remaining time in the song, in seconds.
      *
-     * @SWG\Property(example=155)
+     * @OA\Property(example=155)
      * @var int
      */
     public $remaining;

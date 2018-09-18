@@ -3,7 +3,7 @@
 namespace App\Entity\Api;
 
 /**
- * @SWG\Definition(type="object")
+ * @OA\Schema(type="object")
  */
 class Error
 {
@@ -18,7 +18,7 @@ class Error
     /**
      * The numeric code of the error.
      *
-     * @SWG\Property(example=500)
+     * @OA\Property(example=500)
      * @var int
      */
     public $code;
@@ -26,7 +26,7 @@ class Error
     /**
      * The text description of the error.
      *
-     * @SWG\Property(example="Error description.")
+     * @OA\Property(example="Error description.")
      * @var string
      */
     public $message;
@@ -34,7 +34,7 @@ class Error
     /**
      * A stack trace outlining the error, if permissions allow this to be shown.
      *
-     * @SWG\Property(@SWG\Items)
+     * @OA\Property(@OA\Items)
      * @var array
      */
     public $stack_trace;
@@ -42,7 +42,7 @@ class Error
     /**
      * Used for API calls that expect an \Entity\Api\Status type response.
      *
-     * @SWG\Property(example=false)
+     * @OA\Property(example=false)
      * @var bool
      */
     public $success;

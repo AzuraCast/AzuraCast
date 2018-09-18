@@ -5,7 +5,7 @@ namespace App\Entity\Api;
 use App\Entity;
 
 /**
- * @SWG\Definition(type="object")
+ * @OA\Schema(type="object")
  */
 class SystemStatus
 {
@@ -18,7 +18,7 @@ class SystemStatus
     /**
      * Whether the service is online or not (should always be true)
      *
-     * @SWG\Property(example=true)
+     * @OA\Property(example=true)
      * @var boolean
      */
     public $online;
@@ -26,7 +26,7 @@ class SystemStatus
     /**
      * The current UNIX timestamp
      *
-     * @SWG\Property(example=SAMPLE_TIMESTAMP)
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
     public $timestamp;

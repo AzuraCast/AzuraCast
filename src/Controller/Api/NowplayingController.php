@@ -27,32 +27,32 @@ class NowplayingController
     }
 
     /**
-     * @SWG\Get(path="/nowplaying",
+     * @OA\Get(path="/nowplaying",
      *   tags={"Now Playing"},
      *   description="Returns a full summary of all stations' current state.",
      *   parameters={},
-     *   @SWG\Response(
+     *   @OA\Response(
      *     response=200,
      *     description="Success",
-     *     @SWG\Schema(
+     *     @OA\Schema(
      *       type="array",
-     *       @SWG\Items(ref="#/definitions/NowPlaying")
+     *       @OA\Items(ref="#/components/schemas/NowPlaying")
      *     )
      *   )
      * )
      *
-     * @SWG\Get(path="/nowplaying/{station_id}",
+     * @OA\Get(path="/nowplaying/{station_id}",
      *   tags={"Now Playing"},
      *   description="Returns a full summary of the specified station's current state.",
-     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
-     *   @SWG\Response(
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Response(
      *     response=200,
      *     description="Success",
-     *     @SWG\Schema(
-     *       ref="#/definitions/NowPlaying"
+     *     @OA\Schema(
+     *       ref="#/components/schemas/NowPlaying"
      *     )
      *   ),
-     *   @SWG\Response(response=404, description="Station not found")
+     *   @OA\Response(response=404, description="Station not found")
      * )
      */
     public function indexAction(Request $request, Response $response, $id = null): Response

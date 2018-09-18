@@ -23,12 +23,12 @@ class ServicesController
     }
 
     /**
-     * @SWG\Post(path="/station/{station_id}/restart",
+     * @OA\Post(path="/station/{station_id}/restart",
      *   tags={"Stations: Service Control"},
      *   description="Restart all services associated with the radio broadcast.",
-     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
-     *   @SWG\Response(response=200, description="Success", @SWG\Schema(ref="#/definitions/Status")),
-     *   @SWG\Response(response=403, description="Access Forbidden", @SWG\Schema(ref="#/definitions/Error")),
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Status")),
+     *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Error")),
      *   security={
      *     {"api_key": {"manage station broadcasting"}}
      *   }
@@ -65,21 +65,22 @@ class ServicesController
     }
 
     /**
-     * @SWG\Post(path="/station/{station_id}/frontend/{action}",
+     * @OA\Post(path="/station/{station_id}/frontend/{action}",
      *   tags={"Stations: Service Control"},
      *   description="Perform service control actions on the radio frontend (Icecast, SHOUTcast, etc.)",
-     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
-     *   @SWG\Parameter(
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
      *     name="action",
      *     description="The action to perform (start, stop, restart)",
-     *     type="string",
-     *     format="string",
      *     in="path",
-     *     default="restart",
-     *     required=false
+     *     content="restart",
+     *     required=false,
+     *     @OA\Schema(
+     *         type="string"
+     *     )
      *   ),
-     *   @SWG\Response(response=200, description="Success", @SWG\Schema(ref="#/definitions/Status")),
-     *   @SWG\Response(response=403, description="Access Forbidden", @SWG\Schema(ref="#/definitions/Error")),
+     *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Status")),
+     *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Error")),
      *   security={
      *     {"api_key": {"manage station broadcasting"}}
      *   }
@@ -118,21 +119,22 @@ class ServicesController
     }
 
     /**
-     * @SWG\Post(path="/station/{station_id}/backend/{action}",
+     * @OA\Post(path="/station/{station_id}/backend/{action}",
      *   tags={"Stations: Service Control"},
      *   description="Perform service control actions on the radio backend (Liquidsoap)",
-     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
-     *   @SWG\Parameter(
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
      *     name="action",
      *     description="The action to perform (start, stop, restart)",
-     *     type="string",
-     *     format="string",
      *     in="path",
-     *     default="restart",
-     *     required=false
+     *     content="restart",
+     *     required=false,
+     *     @OA\Schema(
+     *         type="string"
+     *     )
      *   ),
-     *   @SWG\Response(response=200, description="Success", @SWG\Schema(ref="#/definitions/Status")),
-     *   @SWG\Response(response=403, description="Access Forbidden", @SWG\Schema(ref="#/definitions/Error")),
+     *   @OA\Response(response=200, description="Success", @OA\Schema(ref="#/components/schemas/Status")),
+     *   @OA\Response(response=403, description="Access Forbidden", @OA\Schema(ref="#/components/schemas/Error")),
      *   security={
      *     {"api_key": {"manage station broadcasting"}}
      *   }

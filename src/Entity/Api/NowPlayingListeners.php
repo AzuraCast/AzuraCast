@@ -5,7 +5,7 @@ namespace App\Entity\Api;
 use App\Entity;
 
 /**
- * @SWG\Definition(type="object")
+ * @OA\Schema(type="object")
  */
 class NowPlayingListeners
 {
@@ -21,21 +21,21 @@ class NowPlayingListeners
 
     /**
      * Current listeners, either unique (if supplied) or total (non-unique)
-     * @SWG\Property(example=15)
+     * @OA\Property(example=15)
      * @var int
      */
     public $current;
 
     /**
      * Total unique current listeners
-     * @SWG\Property(example=15)
+     * @OA\Property(example=15)
      * @var int
      */
     public $unique;
 
     /**
      * Total non-unique current listeners
-     * @SWG\Property(example=20)
+     * @OA\Property(example=20)
      * @var int
      */
     public $total;

@@ -5,7 +5,7 @@ namespace App\Entity\Api;
 use App\Entity;
 
 /**
- * @SWG\Definition(type="object")
+ * @OA\Schema(type="object")
  */
 class Time
 {
@@ -35,67 +35,67 @@ class Time
     /**
      * The current UNIX timestamp
      *
-     * @SWG\Property(example=1497652397)
+     * @OA\Property(example=1497652397)
      * @var int
      */
     public $timestamp;
 
     /**
-     * @SWG\Property(example="2017-06-16 10:33:17")
+     * @OA\Property(example="2017-06-16 10:33:17")
      * @var string
      */
     public $gmt_datetime;
 
     /**
-     * @SWG\Property(example="June 16, 2017")
+     * @OA\Property(example="June 16, 2017")
      * @var string
      */
     public $gmt_date;
 
     /**
-     * @SWG\Property(example="10:33pm")
+     * @OA\Property(example="10:33pm")
      * @var string
      */
     public $gmt_time;
 
     /**
-     * @SWG\Property(example="GMT")
+     * @OA\Property(example="GMT")
      * @var string
      */
     public $gmt_timezone;
 
     /**
-     * @SWG\Property(example="GMT")
+     * @OA\Property(example="GMT")
      * @var string
      */
     public $gmt_timezone_abbr;
 
     /**
-     * @SWG\Property(example="2017-06-16 10:33:17")
+     * @OA\Property(example="2017-06-16 10:33:17")
      * @var string
      */
     public $local_datetime;
 
     /**
-     * @SWG\Property(example="June 16, 2017")
+     * @OA\Property(example="June 16, 2017")
      * @var string
      */
     public $local_date;
 
     /**
-     * @SWG\Property(example="10:33pm")
+     * @OA\Property(example="10:33pm")
      * @var string
      */
     public $local_time;
 
     /**
-     * @SWG\Property(example="UTC")
+     * @OA\Property(example="UTC")
      * @var string
      */
     public $local_timezone;
 
     /**
-     * @SWG\Property(example="UTC")
+     * @OA\Property(example="UTC")
      * @var string
      */
     public $local_timezone_abbr;

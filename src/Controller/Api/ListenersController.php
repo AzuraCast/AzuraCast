@@ -33,20 +33,20 @@ class ListenersController
     }
 
     /**
-     * @SWG\Get(path="/station/{station_id}/listeners",
+     * @OA\Get(path="/station/{station_id}/listeners",
      *   tags={"Stations: Listeners"},
      *   description="Return detailed information about current listeners.",
-     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
-     *   @SWG\Response(
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Response(
      *     response=200,
      *     description="Success",
-     *     @SWG\Schema(
+     *     @OA\Schema(
      *       type="array",
-     *       @SWG\Items(ref="#/definitions/Listener")
+     *       @OA\Items(ref="#/components/schemas/Listener")
      *     )
      *   ),
-     *   @SWG\Response(response=404, description="Station not found"),
-     *   @SWG\Response(response=403, description="Access denied"),
+     *   @OA\Response(response=404, description="Station not found"),
+     *   @OA\Response(response=403, description="Access denied"),
      *   security={
      *     {"api_key": {"view station reports"}}
      *   },

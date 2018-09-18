@@ -5,14 +5,14 @@ namespace App\Entity\Api;
 use App\Entity;
 
 /**
- * @SWG\Definition(type="object")
+ * @OA\Schema(type="object")
  */
 class Listener
 {
     /**
      * The listener's IP address
      *
-     * @SWG\Property(example="127.0.0.1")
+     * @OA\Property(example="127.0.0.1")
      * @var string
      */
     public $ip;
@@ -20,7 +20,7 @@ class Listener
     /**
      * The listener's HTTP User-Agent
      *
-     * @SWG\Property(example="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36")
+     * @OA\Property(example="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36")
      * @var string
      */
     public $user_agent;
@@ -28,7 +28,7 @@ class Listener
     /**
      * Whether the user-agent is likely a mobile browser.
      *
-     * @SWG\Property(example=true)
+     * @OA\Property(example=true)
      * @var bool
      */
     public $is_mobile;
@@ -36,7 +36,7 @@ class Listener
     /**
      * UNIX timestamp that the user first connected.
      *
-     * @SWG\Property(example=SAMPLE_TIMESTAMP)
+     * @OA\Property(example=SAMPLE_TIMESTAMP)
      * @var int
      */
     public $connected_on;
@@ -44,7 +44,7 @@ class Listener
     /**
      * Number of seconds that the user has been connected.
      *
-     * @SWG\Property(example=30)
+     * @OA\Property(example=30)
      * @var int
      */
     public $connected_time;
@@ -52,7 +52,7 @@ class Listener
     /**
      * Location metadata, if available
      *
-     * @SWG\Property(@SWG\Items)
+     * @OA\Property(@OA\Items)
      * @var array
      */
     public $location;

@@ -25,10 +25,10 @@ class GenerateApiDocs extends \App\Console\Command\CommandAbstract
         define('AZURACAST_VERSION', \App\Version::getVersion());
         define('SAMPLE_TIMESTAMP', rand(time() - 86400, time() + 86400));
 
-        $swagger = \Swagger\scan([
-            APP_INCLUDE_ROOT . '/util/swagger.php',
-            APP_INCLUDE_ROOT . '/Entity/Api',
-            APP_INCLUDE_ROOT . '/Controller/Api',
+        $oa = \OpenApi\scan([
+            APP_INCLUDE_ROOT . '/util/openapi.php',
+            APP_INCLUDE_ROOT . '/src/Entity/Api',
+            APP_INCLUDE_ROOT . '/src/Controller/Api',
         ], [
             'exclude' => [
                 'bootstrap',
@@ -37,7 +37,10 @@ class GenerateApiDocs extends \App\Console\Command\CommandAbstract
             ],
         ]);
 
-        file_put_contents(APP_INCLUDE_STATIC . '/api/swagger.json', $swagger);
+        $yaml_path = APP_INCLUDE_STATIC.'/api/openapi.yml';
+        $yaml = $oa->toYaml();
+
+        file_put_contents($yaml_path, $yaml);
 
         $output->writeln('API documentation updated!');
         return 0;

@@ -5,14 +5,14 @@ namespace App\Entity\Api;
 use App\Entity;
 
 /**
- * @SWG\Definition(type="object")
+ * @OA\Schema(type="object")
  */
 class Song
 {
     /**
      * The song's 32-character unique identifier hash
      *
-     * @SWG\Property(example="9f33bbc912c19603e51be8e0987d076b")
+     * @OA\Property(example="9f33bbc912c19603e51be8e0987d076b")
      * @var string
      */
     public $id;
@@ -20,7 +20,7 @@ class Song
     /**
      * The song title, usually "Artist - Title"
      *
-     * @SWG\Property(example="Chet Porter - Aluko River")
+     * @OA\Property(example="Chet Porter - Aluko River")
      * @var string
      */
     public $text;
@@ -28,7 +28,7 @@ class Song
     /**
      * The song artist.
      *
-     * @SWG\Property(example="Chet Porter")
+     * @OA\Property(example="Chet Porter")
      * @var string
      */
     public $artist;
@@ -36,7 +36,7 @@ class Song
     /**
      * The song title.
      *
-     * @SWG\Property(example="Aluko River")
+     * @OA\Property(example="Aluko River")
      * @var string
      */
     public $title;
@@ -44,7 +44,7 @@ class Song
     /**
      * The song album.
      *
-     * @SWG\Property(example="Moving Castle")
+     * @OA\Property(example="Moving Castle")
      * @var string
      */
     public $album = "";
@@ -52,7 +52,7 @@ class Song
     /**
      * Lyrics to the song.
      *
-     * @SWG\Property(example="")
+     * @OA\Property(example="")
      * @var string
      */
     public $lyrics = "";
@@ -60,13 +60,18 @@ class Song
     /**
      * URL to the album artwork (if available).
      *
-     * @SWG\Property(example="https://picsum.photos/1200/1200")
+     * @OA\Property(example="https://picsum.photos/1200/1200")
      * @var string
      */
     public $art = "";
 
     /**
-     * @SWG\Property
+     * @OA\Property(
+     *     @OA\Items(
+     *         type="string",
+     *         example="custom_field_value"
+     *     )
+     * )
      * @var array
      */
     public $custom_fields = [];

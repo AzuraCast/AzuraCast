@@ -29,20 +29,20 @@ class RequestsController
     }
 
     /**
-     * @SWG\Get(path="/station/{station_id}/requests",
+     * @OA\Get(path="/station/{station_id}/requests",
      *   tags={"Stations: Song Requests"},
      *   description="Return a list of requestable songs.",
-     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
-     *   @SWG\Response(
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Response(
      *     response=200,
      *     description="Success",
-     *     @SWG\Schema(
+     *     @OA\Schema(
      *       type="array",
-     *       @SWG\Items(ref="#/definitions/StationRequest")
+     *       @OA\Items(ref="#/components/schemas/StationRequest")
      *     )
      *   ),
-     *   @SWG\Response(response=404, description="Station not found"),
-     *   @SWG\Response(response=403, description="Station does not support requests")
+     *   @OA\Response(response=404, description="Station not found"),
+     *   @OA\Response(response=403, description="Station does not support requests")
      * )
      */
     public function listAction(Request $request, Response $response, $station_id): Response
@@ -119,21 +119,22 @@ class RequestsController
     }
 
     /**
-     * @SWG\Post(path="/station/{station_id}/request/{request_id}",
+     * @OA\Post(path="/station/{station_id}/request/{request_id}",
      *   tags={"Stations: Song Requests"},
      *   description="Submit a song request.",
-     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
-     *   @SWG\Parameter(
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
      *     name="request_id",
      *     description="The requestable song ID",
-     *     type="integer",
-     *     format="int64",
      *     in="path",
-     *     required=true
+     *     required=true,
+     *     @OA\Schema(
+     *         type="int64"
+     *     )
      *   ),
-     *   @SWG\Response(response=200, description="Success"),
-     *   @SWG\Response(response=404, description="Station not found"),
-     *   @SWG\Response(response=403, description="Station does not support requests")
+     *   @OA\Response(response=200, description="Success"),
+     *   @OA\Response(response=404, description="Station not found"),
+     *   @OA\Response(response=403, description="Station does not support requests")
      * )
      */
     public function submitAction(Request $request, Response $response, $station_id, $media_id): Response

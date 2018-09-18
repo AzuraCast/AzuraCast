@@ -27,23 +27,24 @@ class MediaController
     }
 
     /**
-     * @SWG\Get(path="/station/{station_id}/art/{media_id}",
+     * @OA\Get(path="/station/{station_id}/art/{media_id}",
      *   tags={"Stations: Media"},
      *   description="Returns the album art for a song, or a generic image.",
-     *   @SWG\Parameter(ref="#/parameters/station_id_required"),
-     *   @SWG\Parameter(
+     *   @OA\Parameter(ref="#/components/parameters/station_id_required"),
+     *   @OA\Parameter(
      *     name="media_id",
      *     description="The station media ID",
-     *     type="integer",
-     *     format="int64",
      *     in="path",
-     *     required=true
+     *     required=true,
+     *     @OA\Schema(
+     *         type="int64"
+     *     )
      *   ),
-     *   @SWG\Response(
+     *   @OA\Response(
      *     response=200,
      *     description="The requested album artwork"
      *   ),
-     *   @SWG\Response(
+     *   @OA\Response(
      *     response=404,
      *     description="Image not found; generic filler image."
      *   )

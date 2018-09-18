@@ -1,0 +1,605 @@
+openapi: 3.0.0
+info:
+  title: AzuraCast
+  description: 'AzuraCast is a standalone, turnkey web radio management tool. Radio stations hosted by AzuraCast expose a public API for viewing now playing data, making requests and more.'
+  license:
+    name: 'Apache 2.0'
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 0.8.2-2018.04
+servers:
+  -
+    url: 'https://demo.azuracast.com/api'
+    description: 'AzuraCast Demo API'
+paths:
+  /status:
+    get:
+      tags:
+        - Miscellaneous
+      description: 'Returns an affirmative response if the API is active.'
+      operationId: 'App\Controller\Api\IndexController::statusAction'
+      parameters: {  }
+      responses:
+        '200':
+          description: Success
+  /time:
+    get:
+      tags:
+        - Miscellaneous
+      description: 'Returns the time (with formatting) in GMT and the user''s local time zone, if logged in.'
+      operationId: 'App\Controller\Api\IndexController::timeAction'
+      parameters: {  }
+      responses:
+        '200':
+          description: Success
+  '/station/{station_id}/listeners':
+    get:
+      tags:
+        - 'Stations: Listeners'
+      description: 'Return detailed information about current listeners.'
+      operationId: 'App\Controller\Api\ListenersController::indexAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Station not found'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          api_key:
+            - 'view station reports'
+  /nowplaying:
+    get:
+      tags:
+        - 'Now Playing'
+      description: 'Returns a full summary of all stations'' current state.'
+      operationId: 'App\Controller\Api\NowplayingController::indexAction'
+      parameters: {  }
+      responses:
+        '200':
+          description: Success
+  '/nowplaying/{station_id}':
+    get:
+      tags:
+        - 'Now Playing'
+      description: 'Returns a full summary of the specified station''s current state.'
+      operationId: 'App\Controller\Api\NowplayingController::indexAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Station not found'
+  '/station/{station_id}/requests':
+    get:
+      tags:
+        - 'Stations: Song Requests'
+      description: 'Return a list of requestable songs.'
+      operationId: 'App\Controller\Api\RequestsController::listAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Station not found'
+        '403':
+          description: 'Station does not support requests'
+  '/station/{station_id}/request/{request_id}':
+    post:
+      tags:
+        - 'Stations: Song Requests'
+      description: 'Submit a song request.'
+      operationId: 'App\Controller\Api\RequestsController::submitAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: request_id
+          in: path
+          description: 'The requestable song ID'
+          required: true
+          schema:
+            type: int64
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Station not found'
+        '403':
+          description: 'Station does not support requests'
+  /stations:
+    get:
+      tags:
+        - 'Stations: General'
+      description: 'Returns a list of stations.'
+      operationId: 'App\Controller\Api\Stations\IndexController::listAction'
+      parameters: {  }
+      responses:
+        '200':
+          description: Success
+  '/station/{station_id}':
+    get:
+      tags:
+        - 'Stations: General'
+      description: 'Return information about a single station.'
+      operationId: 'App\Controller\Api\Stations\IndexController::indexAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: 'Station not found'
+  '/station/{station_id}/art/{media_id}':
+    get:
+      tags:
+        - 'Stations: Media'
+      description: 'Returns the album art for a song, or a generic image.'
+      operationId: 'App\Controller\Api\Stations\MediaController::artAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: media_id
+          in: path
+          description: 'The station media ID'
+          required: true
+          schema:
+            type: int64
+      responses:
+        '200':
+          description: 'The requested album artwork'
+        '404':
+          description: 'Image not found; generic filler image.'
+  '/station/{station_id}/restart':
+    post:
+      tags:
+        - 'Stations: Service Control'
+      description: 'Restart all services associated with the radio broadcast.'
+      operationId: 'App\Controller\Api\Stations\ServicesController::restartAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+      responses:
+        '200':
+          description: Success
+        '403':
+          description: 'Access Forbidden'
+      security:
+        -
+          api_key:
+            - 'manage station broadcasting'
+  '/station/{station_id}/frontend/{action}':
+    post:
+      tags:
+        - 'Stations: Service Control'
+      description: 'Perform service control actions on the radio frontend (Icecast, SHOUTcast, etc.)'
+      operationId: 'App\Controller\Api\Stations\ServicesController::frontendAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: action
+          in: path
+          description: 'The action to perform (start, stop, restart)'
+          required: false
+          schema:
+            type: string
+          content: restart
+      responses:
+        '200':
+          description: Success
+        '403':
+          description: 'Access Forbidden'
+      security:
+        -
+          api_key:
+            - 'manage station broadcasting'
+  '/station/{station_id}/backend/{action}':
+    post:
+      tags:
+        - 'Stations: Service Control'
+      description: 'Perform service control actions on the radio backend (Liquidsoap)'
+      operationId: 'App\Controller\Api\Stations\ServicesController::backendAction'
+      parameters:
+        -
+          $ref: '#/components/parameters/station_id_required'
+        -
+          name: action
+          in: path
+          description: 'The action to perform (start, stop, restart)'
+          required: false
+          schema:
+            type: string
+          content: restart
+      responses:
+        '200':
+          description: Success
+        '403':
+          description: 'Access Forbidden'
+      security:
+        -
+          api_key:
+            - 'manage station broadcasting'
+components:
+  schemas:
+    DetailedSongHistory:
+      allOf:
+        -
+          $ref: '#/components/schemas/SongHistory'
+        -
+          properties:
+            listeners_start:
+              description: 'Number of listeners when the song playback started.'
+              type: integer
+              example: 94
+            listeners_end:
+              description: 'Number of listeners when song playback ended.'
+              type: integer
+              example: 105
+            delta_total:
+              description: 'The sum total change of listeners between the song''s start and ending.'
+              type: integer
+              example: 11
+          type: object
+    Error:
+      properties:
+        code:
+          description: 'The numeric code of the error.'
+          type: integer
+          example: 500
+        message:
+          description: 'The text description of the error.'
+          type: string
+          example: 'Error description.'
+        stack_trace:
+          description: 'A stack trace outlining the error, if permissions allow this to be shown.'
+          type: array
+          items: {  }
+        success:
+          description: 'Used for API calls that expect an \Entity\Api\Status type response.'
+          type: boolean
+          example: false
+      type: object
+    Listener:
+      properties:
+        ip:
+          description: 'The listener''s IP address'
+          type: string
+          example: 127.0.0.1
+        user_agent:
+          description: 'The listener''s HTTP User-Agent'
+          type: string
+          example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36'
+        is_mobile:
+          description: 'Whether the user-agent is likely a mobile browser.'
+          type: boolean
+          example: true
+        connected_on:
+          description: 'UNIX timestamp that the user first connected.'
+          type: integer
+          example: 1537220436
+        connected_time:
+          description: 'Number of seconds that the user has been connected.'
+          type: integer
+          example: 30
+        location:
+          description: 'Location metadata, if available'
+          type: array
+          items: {  }
+      type: object
+    NowPlaying:
+      properties:
+        station:
+          $ref: '#/components/schemas/Station'
+        listeners:
+          $ref: '#/components/schemas/NowPlayingListeners'
+        live:
+          $ref: '#/components/schemas/NowPlayingLive'
+        now_playing:
+          $ref: '#/components/schemas/NowPlayingCurrentSong'
+        playing_next:
+          $ref: '#/components/schemas/SongHistory'
+        song_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/SongHistory'
+        cache:
+          description: 'Debugging information about where the now playing data comes from.'
+          type: string
+          enum:
+            - hit
+            - database
+            - station
+      type: object
+    NowPlayingCurrentSong:
+      allOf:
+        -
+          $ref: '#/components/schemas/SongHistory'
+        -
+          properties:
+            elapsed:
+              description: 'Elapsed time of the song''s playback since it started.'
+              type: integer
+              example: 25
+            remaining:
+              description: 'Remaining time in the song, in seconds.'
+              type: integer
+              example: 155
+          type: object
+    NowPlayingListeners:
+      properties:
+        current:
+          description: 'Current listeners, either unique (if supplied) or total (non-unique)'
+          type: integer
+          example: 15
+        unique:
+          description: 'Total unique current listeners'
+          type: integer
+          example: 15
+        total:
+          description: 'Total non-unique current listeners'
+          type: integer
+          example: 20
+      type: object
+    NowPlayingLive:
+      properties:
+        is_live:
+          description: 'Whether the stream is known to currently have a live DJ.'
+          type: boolean
+          example: false
+        streamer_name:
+          description: 'The current active streamer/DJ, if one is available.'
+          type: string
+          example: 'DJ Jazzy Jeff'
+      type: object
+    Song:
+      properties:
+        id:
+          description: 'The song''s 32-character unique identifier hash'
+          type: string
+          example: 9f33bbc912c19603e51be8e0987d076b
+        text:
+          description: 'The song title, usually "Artist - Title"'
+          type: string
+          example: 'Chet Porter - Aluko River'
+        artist:
+          description: 'The song artist.'
+          type: string
+          example: 'Chet Porter'
+        title:
+          description: 'The song title.'
+          type: string
+          example: 'Aluko River'
+        album:
+          description: 'The song album.'
+          type: string
+          example: 'Moving Castle'
+        lyrics:
+          description: 'Lyrics to the song.'
+          type: string
+          example: ''
+        art:
+          description: 'URL to the album artwork (if available).'
+          type: string
+          example: 'https://picsum.photos/1200/1200'
+        custom_fields:
+          type: array
+          items:
+            type: string
+            example: custom_field_value
+      type: object
+    SongHistory:
+      properties:
+        sh_id:
+          description: 'Song history unique identifier'
+          type: integer
+        played_at:
+          description: 'UNIX timestamp when playback started.'
+          type: integer
+          example: 1537220436
+        duration:
+          description: 'Duration of the song in seconds'
+          type: integer
+          example: 180
+        playlist:
+          description: 'Indicates the playlist that the song was played from, if available, or empty string if not.'
+          type: string
+          example: 'Top 100'
+        is_request:
+          description: 'Indicates whether the song is a listener request.'
+          type: boolean
+        song:
+          $ref: '#/components/schemas/Song'
+      type: object
+    Station:
+      properties:
+        id:
+          description: 'Station ID'
+          type: integer
+          example: 1
+        name:
+          description: 'Station name'
+          type: string
+          example: 'AzuraTest Radio'
+        shortcode:
+          description: 'Station "short code", used for URL and folder paths'
+          type: string
+          example: azuratest_radio
+        description:
+          description: 'Station description'
+          type: string
+          example: 'An AzuraCast station!'
+        frontend:
+          description: 'Which broadcasting software (frontend) the station uses'
+          type: string
+          example: shoutcast2
+        backend:
+          description: 'Which AutoDJ software (backend) the station uses'
+          type: string
+          example: liquidsoap
+        listen_url:
+          description: 'The full URL to listen to the default mount of the station'
+          type: string
+          example: 'http://localhost:8000/radio.mp3'
+        is_public:
+          description: 'If the station is public (i.e. should be shown in listings of all stations)'
+          type: boolean
+          example: true
+        mounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/StationMount'
+        remotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/StationRemote'
+      type: object
+    StationMount:
+      properties:
+        name:
+          description: 'Mount point name/URL'
+          type: string
+          example: /radio.mp3
+        is_default:
+          description: 'If the mount is the default mount for the parent station'
+          type: boolean
+          example: true
+        url:
+          description: 'Full listening URL specific to this mount'
+          type: string
+          example: 'http://localhost:8000/radio.mp3'
+        bitrate:
+          description: 'Bitrate (kbps) of the broadcasted audio (if known)'
+          type: integer
+          example: 128
+        format:
+          description: 'Audio encoding format of broadcasted audio (if known)'
+          type: string
+          example: mp3
+      type: object
+    StationRemote:
+      properties:
+        url:
+          description: 'Full listening URL specific to this mount'
+          type: string
+          example: 'http://localhost:8000/radio.mp3'
+        bitrate:
+          description: 'Bitrate (kbps) of the broadcasted audio (if known)'
+          type: integer
+          example: 128
+        format:
+          description: 'Audio encoding format of broadcasted audio (if known)'
+          type: string
+          example: mp3
+      type: object
+    StationRequest:
+      properties:
+        request_id:
+          description: 'Requestable ID unique identifier'
+          type: integer
+          example: 1
+        request_url:
+          description: 'URL to directly submit request'
+          type: integer
+          example: /api/station/1/request/1
+        song:
+          $ref: '#/components/schemas/Song'
+      type: object
+    Status:
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: 'Changes saved successfully.'
+      type: object
+    SystemStatus:
+      properties:
+        online:
+          description: 'Whether the service is online or not (should always be true)'
+          type: boolean
+          example: true
+        timestamp:
+          description: 'The current UNIX timestamp'
+          type: integer
+          example: 1537220436
+      type: object
+    Time:
+      properties:
+        timestamp:
+          description: 'The current UNIX timestamp'
+          type: integer
+          example: 1497652397
+        gmt_datetime:
+          type: string
+          example: '2017-06-16 10:33:17'
+        gmt_date:
+          type: string
+          example: 'June 16, 2017'
+        gmt_time:
+          type: string
+          example: '10:33pm'
+        gmt_timezone:
+          type: string
+          example: GMT
+        gmt_timezone_abbr:
+          type: string
+          example: GMT
+        local_datetime:
+          type: string
+          example: '2017-06-16 10:33:17'
+        local_date:
+          type: string
+          example: 'June 16, 2017'
+        local_time:
+          type: string
+          example: '10:33pm'
+        local_timezone:
+          type: string
+          example: UTC
+        local_timezone_abbr:
+          type: string
+          example: UTC
+      type: object
+  responses:
+    todo:
+      description: 'This API call has no documented response (yet)'
+  parameters:
+    station_id_required:
+      name: station_id
+      in: path
+      description: 'The station ID'
+      required: true
+      schema:
+        type: int64
+      example: 1
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: X-API-Key
+      in: header
+tags:
+  -
+    name: 'Now Playing'
+    description: 'Endpoints that provide full summaries of the current state of stations.'
+  -
+    name: Miscellaneous
+  -
+    name: 'Stations: General'
+  -
+    name: 'Stations: Song Requests'
+  -
+    name: 'Stations: Listeners'
+externalDocs:
+  description: 'AzuraCast on GitHub'
+  url: 'https://github.com/AzuraCast/AzuraCast'

@@ -16,14 +16,14 @@ class IndexController
     }
 
     /**
-     * @SWG\Get(path="/status",
+     * @OA\Get(path="/status",
      *   tags={"Miscellaneous"},
      *   description="Returns an affirmative response if the API is active.",
      *   parameters={},
-     *   @SWG\Response(
+     *   @OA\Response(
      *     response=200,
      *     description="Success",
-     *     @SWG\Schema(ref="#/definitions/SystemStatus")
+     *     @OA\Schema(ref="#/components/schemas/SystemStatus")
      *   )
      * )
      */
@@ -33,14 +33,14 @@ class IndexController
     }
 
     /**
-     * @SWG\Get(path="/time",
+     * @OA\Get(path="/time",
      *   tags={"Miscellaneous"},
      *   description="Returns the time (with formatting) in GMT and the user's local time zone, if logged in.",
      *   parameters={},
-     *   @SWG\Response(
+     *   @OA\Response(
      *     response=200,
      *     description="Success",
-     *     @SWG\Schema(ref="#/definitions/Time")
+     *     @OA\Schema(ref="#/components/schemas/Time")
      *   )
      * )
      */

@@ -5,14 +5,14 @@ namespace App\Entity\Api;
 use App\Entity;
 
 /**
- * @SWG\Definition(type="object")
+ * @OA\Schema(type="object")
  */
 class NowPlaying
 {
     /**
      * Station
      *
-     * @SWG\Property
+     * @OA\Property
      * @var Station
      */
     public $station;
@@ -20,7 +20,7 @@ class NowPlaying
     /**
      * Listener details
      *
-     * @SWG\Property
+     * @OA\Property
      * @var NowPlayingListeners
      */
     public $listeners;
@@ -28,7 +28,7 @@ class NowPlaying
     /**
      * Live broadcast details
      *
-     * @SWG\Property
+     * @OA\Property
      * @var NowPlayingLive
      */
     public $live;
@@ -36,7 +36,7 @@ class NowPlaying
     /**
      * Current Song
      *
-     * @SWG\Property
+     * @OA\Property
      * @var NowPlayingCurrentSong
      */
     public $now_playing;
@@ -44,13 +44,13 @@ class NowPlaying
     /**
      * Next Playing Song
      *
-     * @SWG\Property
+     * @OA\Property
      * @var SongHistory
      */
     public $playing_next;
 
     /**
-     * @SWG\Property
+     * @OA\Property
      * @var SongHistory[]
      */
     public $song_history;
@@ -58,7 +58,7 @@ class NowPlaying
     /**
      * Debugging information about where the now playing data comes from.
      *
-     * @SWG\Property(enum={"hit", "database", "station"})
+     * @OA\Property(enum={"hit", "database", "station"})
      * @var string
      */
     public $cache;

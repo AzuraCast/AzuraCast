@@ -5,7 +5,7 @@ namespace App\Entity\Api;
 use App\Entity;
 
 /**
- * @SWG\Definition(type="object")
+ * @OA\Schema(type="object")
  */
 class Status
 {
@@ -16,13 +16,13 @@ class Status
     }
 
     /**
-     * @SWG\Property(example=true)
+     * @OA\Property(example=true)
      * @var bool
      */
     public $success;
 
     /**
-     * @SWG\Property(example="Changes saved successfully.")
+     * @OA\Property(example="Changes saved successfully.")
      * @var string
      */
     public $message;

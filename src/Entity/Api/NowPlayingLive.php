@@ -5,7 +5,7 @@ namespace App\Entity\Api;
 use App\Entity;
 
 /**
- * @SWG\Definition(type="object")
+ * @OA\Schema(type="object")
  */
 class NowPlayingLive
 {
@@ -18,7 +18,7 @@ class NowPlayingLive
     /**
      * Whether the stream is known to currently have a live DJ.
      *
-     * @SWG\Property(example=false)
+     * @OA\Property(example=false)
      * @var bool
      */
     public $is_live;
@@ -26,7 +26,7 @@ class NowPlayingLive
     /**
      * The current active streamer/DJ, if one is available.
      *
-     * @SWG\Property(example="DJ Jazzy Jeff")
+     * @OA\Property(example="DJ Jazzy Jeff")
      * @var string
      */
     public $streamer_name;

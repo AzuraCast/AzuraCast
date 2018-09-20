@@ -64,7 +64,7 @@ Whether you're using the traditional installer or Docker containers, AzuraCast w
 
 ## AzuraCast API
 
-Once installed and running, AzuraCast exposes an API that allows you to monitor and interact with your stations. Documentation about this API and its endpoints are available on the [AzuraCast API Documentation](https://azuracast.com/api/).
+Once installed and running, AzuraCast exposes an API that allows you to monitor and interact with your stations. Documentation about this API and its endpoints are available on the [AzuraCast API Documentation](https://www.azuracast.com/api/index.html).
 
 ## License
 

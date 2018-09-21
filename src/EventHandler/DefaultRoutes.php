@@ -6,6 +6,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DefaultRoutes implements EventSubscriberInterface
 {
+    protected $routes_path;
+
+    public function __construct($routes_path)
+    {
+        $this->routes_path = $routes_path;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
@@ -14,13 +21,6 @@ class DefaultRoutes implements EventSubscriberInterface
                 ['addDefaultRoutes', 0],
             ],
         ];
-    }
-
-    protected $routes_path;
-
-    public function __construct($routes_path)
-    {
-        $this->routes_path = $routes_path;
     }
 
     public function addDefaultMiddleware(BuildRoutes $event)

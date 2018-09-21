@@ -4,15 +4,14 @@ namespace App\Sync\Task;
 use App\Cache;
 use App\Event\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
+use App\EventDispatcher;
 use App\Radio\AutoDJ;
 use App\ApiUtilities;
 use App\Radio\Adapters;
-use App\Webhook\Dispatcher;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use App\Entity;
 use Monolog\Logger;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class NowPlaying extends TaskAbstract
 {

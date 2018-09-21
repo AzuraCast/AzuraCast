@@ -2,7 +2,8 @@
 use App\Controller;
 use App\Middleware;
 
-return function(\Slim\App $app) {
+return function(\Slim\App $app)
+{
 
     $app->group('/admin', function () {
 

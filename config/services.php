@@ -1,5 +1,6 @@
 <?php
-return function (\Slim\Container $di, $settings) {
+return function (\Slim\Container $di, $settings)
+{
 
     $di['app_settings'] = $settings;
 
@@ -233,8 +234,8 @@ return function (\Slim\Container $di, $settings) {
         $view = new App\View(dirname(__DIR__) . '/resources/templates');
         $view->setFileExtension('phtml');
 
-        /** @var \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher */
-        $dispatcher = $di[\Symfony\Component\EventDispatcher\EventDispatcher::class];
+        /** @var \App\EventDispatcher $dispatcher */
+        $dispatcher = $di[\App\EventDispatcher::class];
         $dispatcher->dispatch(\App\Event\BuildView::NAME, new \App\Event\BuildView($view));
 
         return $view;
@@ -300,17 +301,17 @@ return function (\Slim\Container $di, $settings) {
         ]);
     };
 
-    $di[\Symfony\Component\EventDispatcher\EventDispatcher::class] = function($di) use ($settings) {
-        $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
+    $di[\App\EventDispatcher::class] = function($di) use ($settings) {
+        $dispatcher = new \App\EventDispatcher($di);
 
         // Register application default events.
-        call_user_func(include(__DIR__.'/events.php'), $dispatcher, $di, $settings);
+        call_user_func(include(__DIR__.'/events.php'), $dispatcher);
 
         /** @var \App\Plugins $plugins */
         $plugins = $di[\App\Plugins::class];
 
         // Register plugin-provided events.
-        $plugins->registerEvents($dispatcher, $di, $settings);
+        $plugins->registerEvents($dispatcher);
 
         return $dispatcher;
     };
@@ -368,6 +369,9 @@ return function (\Slim\Container $di, $settings) {
     // Middleware
     $di->register(new \App\Provider\MiddlewareProvider);
 
+    // Event Handlers
+    $di->register(new \App\Provider\EventHandlerProvider);
+
     // Controller groups
     $di->register(new \App\Provider\AdminProvider);
     $di->register(new \App\Provider\ApiProvider);
@@ -379,8 +383,8 @@ return function (\Slim\Container $di, $settings) {
 
         $app = new \Slim\App($di);
 
-        /** @var \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher */
-        $dispatcher = $di[\Symfony\Component\EventDispatcher\EventDispatcher::class];
+        /** @var \App\EventDispatcher $dispatcher */
+        $dispatcher = $di[\App\EventDispatcher::class];
         $dispatcher->dispatch(\App\Event\BuildRoutes::NAME, new \App\Event\BuildRoutes($app));
 
         return $app;

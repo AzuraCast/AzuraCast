@@ -3,7 +3,6 @@ namespace App;
 
 use Composer\Autoload\ClassLoader;
 use Slim\Container;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -75,16 +74,14 @@ class Plugins
      * Register custom events that the plugin overrides with the Event Dispatcher.
      *
      * @param EventDispatcher $dispatcher
-     * @param Container $di
-     * @param array $settings
      */
-    public function registerEvents(EventDispatcher $dispatcher, Container $di, array $settings): void
+    public function registerEvents(EventDispatcher $dispatcher): void
     {
         foreach($this->plugins as $plugin) {
             $plugin_path = $plugin['path'];
 
             if (file_exists($plugin_path . '/events.php')) {
-                call_user_func(include($plugin_path . '/events.php'), $dispatcher, $di, $settings);
+                call_user_func(include($plugin_path . '/events.php'), $dispatcher);
             }
         }
     }

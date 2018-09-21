@@ -9,13 +9,14 @@ use App\Provider\WebhookProvider;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Pimple\Psr11\ServiceLocator;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class Dispatcher
  * @package App\Webhook
  * @see WebhookProvider
  */
-class Dispatcher
+class Dispatcher implements EventSubscriberInterface
 {
     /** @var Logger */
     protected $logger;
@@ -27,6 +28,19 @@ class Dispatcher
     {
         $this->logger = $logger;
         $this->connectors = $connectors;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        if (APP_TESTING_MODE) {
+            return [];
+        }
+
+        return [
+            SendWebhooks::NAME => [
+                ['dispatch', 0],
+            ],
+        ];
     }
 
     /**

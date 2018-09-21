@@ -58,7 +58,7 @@ class SyncProvider implements ServiceProviderInterface
                 $di[\App\Cache::class],
                 $di[\InfluxDB\Database::class],
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\Symfony\Component\EventDispatcher\EventDispatcher::class],
+                $di[\App\EventDispatcher::class],
                 $di[\Monolog\Logger::class]
             );
         };

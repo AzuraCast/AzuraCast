@@ -2,17 +2,13 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
+use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
 
 class Generic extends AbstractConnector
 {
-    /**
-     * @param Entity\Station $station
-     * @param Entity\Api\NowPlaying $np
-     * @param array $config
-     */
-    public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
+    public function dispatch(SendWebhooks $event, array $config): void
     {
         $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
 
@@ -26,7 +22,7 @@ class Generic extends AbstractConnector
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
-                'json' => $np,
+                'json' => $event->getNowPlaying(),
             ];
 
             if (!empty($config['basic_auth_username']) && !empty($config['basic_auth_password'])) {

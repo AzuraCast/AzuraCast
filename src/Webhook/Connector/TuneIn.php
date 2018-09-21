@@ -2,27 +2,18 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
+use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
 
 class TuneIn extends AbstractConnector
 {
-    /**
-     * @param array $current_events
-     * @param array|null $triggers
-     * @return bool
-     */
-    public function shouldDispatch(array $current_events, array $triggers): bool
+    public function shouldDispatch(SendWebhooks $event, array $triggers): bool
     {
-        return in_array('song_changed', $current_events);
+        return $event->hasTrigger('song_changed');
     }
 
-    /**
-     * @param Entity\Station $station
-     * @param Entity\Api\NowPlaying $np
-     * @param array $config
-     */
-    public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
+    public function dispatch(SendWebhooks $event, array $config): void
     {
         if (empty($config['partner_id']) || empty($config['partner_key']) || empty($config['station_id'])) {
             $this->logger->error('Webhook '.$this->_getName().' is missing necessary configuration. Skipping...');
@@ -32,6 +23,8 @@ class TuneIn extends AbstractConnector
         $this->logger->debug('Dispatching TuneIn AIR API call...');
 
         try {
+            $np = $event->getNowPlaying();
+
             $response = $this->http_client->get('http://air.radiotime.com/Playing.ashx', [
                 'query' => [
                     'partnerId' => $config['partner_id'],

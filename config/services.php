@@ -233,46 +233,9 @@ return function (\Slim\Container $di, $settings) {
         $view = new App\View(dirname(__DIR__) . '/resources/templates');
         $view->setFileExtension('phtml');
 
-        $view->registerFunction('service', function($service) use ($di) {
-            return $di->get($service);
-        });
-
-        $view->registerFunction('escapeJs', function($string) {
-            return json_encode($string);
-        });
-
-        $view->registerFunction('mailto', function ($address, $link_text = null) {
-            $address = substr(chunk_split(bin2hex(" $address"), 2, ";&#x"), 3, -3);
-            $link_text = $link_text ?? $address;
-
-            return '<a href="mailto:' . $address . '">' . $link_text . '</a>';
-        });
-
-        $view->registerFunction('pluralize', function ($word, $num = 0) {
-            if ((int)$num === 1) {
-                return $word;
-            } else {
-                return \Doctrine\Common\Inflector\Inflector::pluralize($word);
-            }
-        });
-
-        $view->registerFunction('truncate', function ($text, $length = 80) {
-            return \App\Utilities::truncate_text($text, $length);
-        });
-
-        /** @var \App\Session $session */
-        $session = $di[\App\Session::class];
-
-        $view->addData([
-            'app_settings' => $di['app_settings'],
-            'router' => $di['router'],
-            'request' => $di['request'],
-            'assets' => $di[\App\Assets::class],
-            'auth' => $di[\App\Auth::class],
-            'acl' => $di[\App\Acl::class],
-            'flash' => $session->getFlash(),
-            'customization' => $di[\App\Customization::class],
-        ]);
+        /** @var \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher */
+        $dispatcher = $di[\Symfony\Component\EventDispatcher\EventDispatcher::class];
+        $dispatcher->dispatch(\App\Event\BuildView::NAME, new \App\Event\BuildView($view));
 
         return $view;
     });
@@ -335,6 +298,21 @@ return function (\Slim\Container $di, $settings) {
             'http_errors' => false,
             'timeout' => 3.0,
         ]);
+    };
+
+    $di[\Symfony\Component\EventDispatcher\EventDispatcher::class] = function($di) use ($settings) {
+        $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
+
+        // Register application default events.
+        call_user_func(include(__DIR__.'/events.php'), $dispatcher, $di, $settings);
+
+        /** @var \App\Plugins $plugins */
+        $plugins = $di[\App\Plugins::class];
+
+        // Register plugin-provided events.
+        $plugins->registerEvents($dispatcher, $di, $settings);
+
+        return $dispatcher;
     };
 
     //
@@ -401,23 +379,9 @@ return function (\Slim\Container $di, $settings) {
 
         $app = new \Slim\App($di);
 
-        // Get the current user entity object and assign it into the request if it exists.
-        $app->add(\App\Middleware\GetCurrentUser::class);
-
-        // Inject the application router into the request object.
-        $app->add(\App\Middleware\EnableRouter::class);
-
-        // Inject the session manager into the request object.
-        $app->add(\App\Middleware\EnableSession::class);
-
-        // Check HTTPS setting and enforce Content Security Policy accordingly.
-        $app->add(\App\Middleware\EnforceSecurity::class);
-
-        // Remove trailing slash from all URLs when routing.
-        $app->add(\App\Middleware\RemoveSlashes::class);
-
-        // Load routes
-        call_user_func(include(__DIR__.'/routes.php'), $app);
+        /** @var \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher */
+        $dispatcher = $di[\Symfony\Component\EventDispatcher\EventDispatcher::class];
+        $dispatcher->dispatch(\App\Event\BuildRoutes::NAME, new \App\Event\BuildRoutes($app));
 
         return $app;
     };

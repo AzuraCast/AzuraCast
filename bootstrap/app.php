@@ -58,6 +58,10 @@ ini_set('session.use_strict_mode',      1);
 $autoloader = require(APP_INCLUDE_VENDOR . '/autoload.php');
 $autoloader->setPsr4('Proxy\\', APP_INCLUDE_TEMP . '/proxies');
 
+// Initialize plugins
+$plugins = new \App\Plugins(APP_INCLUDE_ROOT.'/plugins');
+$plugins->registerAutoloaders($autoloader);
+
 // Set up DI container.
 $di = new \Slim\Container([
     'settings' => [
@@ -69,8 +73,12 @@ $di = new \Slim\Container([
     ]
 ]);
 
+$di[\App\Plugins::class] = $plugins;
+
 // Define services.
 $settings = require(dirname(__DIR__).'/config/settings.php');
 call_user_func(include(dirname(__DIR__).'/config/services.php'), $di, $settings);
+
+$plugins->registerServices($di, $settings);
 
 return $di;

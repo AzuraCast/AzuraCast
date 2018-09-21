@@ -2,18 +2,14 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
+use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\HandlerStack;
 use Monolog\Logger;
 
 class Twitter extends AbstractConnector
 {
-    /**
-     * @param Entity\Station $station
-     * @param Entity\Api\NowPlaying $np
-     * @param array $config
-     */
-    public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
+    public function dispatch(SendWebhooks $event, array $config): void
     {
         if (empty($config['consumer_key'])
             || empty($config['consumer_secret'])
@@ -40,7 +36,7 @@ class Twitter extends AbstractConnector
             'message' => $config['message'] ?? '',
         ];
 
-        $vars = $this->_replaceVariables($raw_vars, $np);
+        $vars = $this->_replaceVariables($raw_vars, $event->getNowPlaying());
 
         // Dispatch webhook
         $this->logger->debug('Posting to Twitter...');

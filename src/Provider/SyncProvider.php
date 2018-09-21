@@ -57,8 +57,8 @@ class SyncProvider implements ServiceProviderInterface
                 $di[\App\Radio\AutoDJ::class],
                 $di[\App\Cache::class],
                 $di[\InfluxDB\Database::class],
-                $di[\App\Webhook\Dispatcher::class],
                 $di[\Doctrine\ORM\EntityManager::class],
+                $di[\Symfony\Component\EventDispatcher\EventDispatcher::class],
                 $di[\Monolog\Logger::class]
             );
         };

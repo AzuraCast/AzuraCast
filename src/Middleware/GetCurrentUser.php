@@ -3,9 +3,11 @@ namespace App\Middleware;
 
 use App\Auth;
 use App\Customization;
+use App\Event\BuildView;
 use App\Http\Request;
 use App\Http\Response;
 use App\Entity;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Get the current user entity object and assign it into the request if it exists.
@@ -18,10 +20,14 @@ class GetCurrentUser
     /** @var Customization */
     protected $customization;
 
-    public function __construct(Auth $auth, Customization $customization)
+    /** @var EventDispatcher */
+    protected $dispatcher;
+
+    public function __construct(Auth $auth, Customization $customization, EventDispatcher $dispatcher)
     {
         $this->auth = $auth;
         $this->customization = $customization;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -38,6 +44,12 @@ class GetCurrentUser
         // Initialize customization (timezones, locales, etc) based on the current logged in user.
         $this->customization->setUser($user);
         $request = $this->customization->init($request);
+
+        $this->dispatcher->addListener(BuildView::NAME, function(BuildView $event) use ($user) {
+            $event->getView()->addData([
+                'user' => $user,
+            ]);
+        });
 
         $request = $request
             ->withAttribute(Request::ATTRIBUTE_USER, $user)

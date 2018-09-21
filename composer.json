@@ -41,6 +41,7 @@
         "php-http/guzzle6-adapter": "^1.1",
         "slim/slim": "^3.0",
         "supervisorphp/supervisor": "^3.0",
+        "symfony/event-dispatcher": "^4.1",
         "symfony/finder": "^4.1",
         "zendframework/zend-config": "^3.1.0",
         "zendframework/zend-paginator": "^2.7"

@@ -28,7 +28,6 @@ class EnableView
     {
         $this->view->addData([
             'request' => $request,
-            'user' => $request->getAttribute(Request::ATTRIBUTE_USER),
         ]);
 
         $request = $request->withAttribute(Request::ATTRIBUTE_VIEW, $this->view);

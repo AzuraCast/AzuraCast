@@ -33,7 +33,8 @@ class MiddlewareProvider implements ServiceProviderInterface
         $di[Middleware\GetCurrentUser::class] = function($di) {
             return new Middleware\GetCurrentUser(
                 $di[App\Auth::class],
-                $di[App\Customization::class]
+                $di[App\Customization::class],
+                $di[\Symfony\Component\EventDispatcher\EventDispatcher::class]
             );
         };
 

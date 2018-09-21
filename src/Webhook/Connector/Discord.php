@@ -2,6 +2,7 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
+use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
 use Monolog\Logger;
 
@@ -60,12 +61,7 @@ use Monolog\Logger;
 
 class Discord extends AbstractConnector
 {
-    /**
-     * @param Entity\Station $station
-     * @param Entity\Api\NowPlaying $np
-     * @param array $config
-     */
-    public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
+    public function dispatch(SendWebhooks $event, array $config): void
     {
         $webhook_url = $this->_getValidUrl($config['webhook_url'] ?? '');
 
@@ -84,7 +80,7 @@ class Discord extends AbstractConnector
             'footer' => $config['footer'] ?? '',
         ];
 
-        $vars = $this->_replaceVariables($raw_vars, $np);
+        $vars = $this->_replaceVariables($raw_vars, $event->getNowPlaying());
 
         // Compose webhook
         $embed = [

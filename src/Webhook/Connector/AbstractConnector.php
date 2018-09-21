@@ -2,6 +2,7 @@
 namespace App\Webhook\Connector;
 
 use App\Entity;
+use App\Event\SendWebhooks;
 use App\Utilities;
 use GuzzleHttp\Client;
 use Monolog\Logger;
@@ -20,14 +21,14 @@ abstract class AbstractConnector implements ConnectorInterface
         $this->http_client = $http_client;
     }
 
-    public function shouldDispatch(array $current_events, array $triggers): bool
+    public function shouldDispatch(SendWebhooks $event, array $triggers): bool
     {
         if (empty($triggers)) {
             return true;
         }
 
         foreach($triggers as $trigger) {
-            if (in_array($trigger, $current_events)) {
+            if ($event->hasTrigger($trigger)) {
                 return true;
             }
         }

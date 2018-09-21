@@ -2,15 +2,17 @@
 namespace App\Sync\Task;
 
 use App\Cache;
+use App\Event\GenerateRawNowPlaying;
+use App\Event\SendWebhooks;
 use App\Radio\AutoDJ;
 use App\ApiUtilities;
 use App\Radio\Adapters;
-use App\Radio\Frontend\FrontendAbstract;
 use App\Webhook\Dispatcher;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use App\Entity;
 use Monolog\Logger;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class NowPlaying extends TaskAbstract
 {
@@ -32,8 +34,8 @@ class NowPlaying extends TaskAbstract
     /** @var Logger */
     protected $logger;
 
-    /** @var Dispatcher */
-    protected $webhook_dispatcher;
+    /** @var EventDispatcher */
+    protected $event_dispatcher;
 
     /** @var ApiUtilities */
     protected $api_utils;
@@ -54,14 +56,15 @@ class NowPlaying extends TaskAbstract
     protected $analytics_level;
 
     /**
-     * @param EntityManager $em
-     * @param Database $influx
-     * @param Cache $cache
      * @param Adapters $adapters
-     * @param Dispatcher $webhook_dispatcher
      * @param ApiUtilities $api_utils
      * @param AutoDJ $autodj
+     * @param Cache $cache
+     * @param Database $influx
+     * @param EntityManager $em
+     * @param EventDispatcher $event_dispatcher
      * @param Logger $logger
+     *
      * @see \App\Provider\SyncProvider
      */
     public function __construct(
@@ -70,8 +73,8 @@ class NowPlaying extends TaskAbstract
         AutoDJ $autodj,
         Cache $cache,
         Database $influx,
-        Dispatcher $webhook_dispatcher,
         EntityManager $em,
+        EventDispatcher $event_dispatcher,
         Logger $logger)
     {
         $this->adapters = $adapters;
@@ -79,9 +82,9 @@ class NowPlaying extends TaskAbstract
         $this->autodj = $autodj;
         $this->cache = $cache;
         $this->em = $em;
+        $this->event_dispatcher = $event_dispatcher;
         $this->influx = $influx;
         $this->logger = $logger;
-        $this->webhook_dispatcher = $webhook_dispatcher;
 
         $this->history_repo = $this->em->getRepository(Entity\SongHistory::class);
         $this->song_repo = $this->em->getRepository(Entity\Song::class);
@@ -198,27 +201,13 @@ class NowPlaying extends TaskAbstract
         /** @var Entity\Api\NowPlaying|null $np_old */
         $np_old = $station->getNowplaying();
 
+        // Build the new "raw" NowPlaying data.
+        $event = new GenerateRawNowPlaying($station, $frontend_adapter, $remote_adapters, $payload, $include_clients);
+        $this->event_dispatcher->dispatch(GenerateRawNowPlaying::NAME, $event);
+        $np_raw = $event->getRawResponse();
+
         $np = new Entity\Api\NowPlaying;
         $np->station = $station->api($frontend_adapter, $remote_adapters);
-
-        // Build the new "raw" NowPlaying data from the adapters.
-        if (APP_TESTING_MODE) {
-            $np_raw = \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
-        } else {
-            $np_raw = $frontend_adapter->getNowPlaying($payload, $include_clients);
-
-            // Loop through all remotes and update NP data accordingly.
-            foreach($remote_adapters as $remote_adapter) {
-                $remote_adapter->updateNowPlaying($np_raw, $include_clients);
-            }
-
-            array_walk($np_raw['current_song'], function(&$value) {
-                $value = htmlspecialchars_decode($value);
-                $value = trim($value);
-            });
-        }
-
-        // Start to convert the "raw" NowPlaying data into the proper API entities.
         $np->listeners = new Entity\Api\NowPlayingListeners($np_raw['listeners']);
 
         if (empty($np_raw['current_song']['text'])) {
@@ -295,8 +284,9 @@ class NowPlaying extends TaskAbstract
         $this->em->persist($station);
         $this->em->flush();
 
-        $np_old = ($np_old instanceof Entity\Api\NowPlaying) ? $np_old : $np;
-        $this->webhook_dispatcher->dispatch($station, $np_old, $np, ($payload !== null));
+        // Trigger the dispatching of webhooks.
+        $webhook_event = new SendWebhooks($station, $np, $np_old, ($payload !== null));
+        $this->event_dispatcher->dispatch(SendWebhooks::NAME, $webhook_event);
 
         $this->logger->popProcessor();
 

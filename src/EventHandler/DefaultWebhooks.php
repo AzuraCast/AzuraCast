@@ -1,21 +1,16 @@
 <?php
-namespace App\Webhook;
+namespace App\EventHandler;
 
-use App\Config;
 use App\Entity;
 use App\Event\SendWebhooks;
 use App\Exception;
-use App\Provider\WebhookProvider;
+use App\Webhook\Connector;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Pimple\Psr11\ServiceLocator;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * Class Dispatcher
- * @package App\Webhook
- * @see WebhookProvider
- */
-class Dispatcher
+class DefaultWebhooks implements EventSubscriberInterface
 {
     /** @var Logger */
     protected $logger;
@@ -29,18 +24,21 @@ class Dispatcher
         $this->connectors = $connectors;
     }
 
-    /**
-     * Determine which webhooks to dispatch for a given change in Now Playing data, and dispatch them.
-     *
-     * @param SendWebhooks $event
-     */
-    public function dispatch(SendWebhooks $event): void
+    public static function getSubscribedEvents()
     {
         if (APP_TESTING_MODE) {
-            $this->logger->info('In testing mode; no webhooks dispatched.');
-            return;
+            return [];
         }
 
+        return [
+            SendWebhooks::NAME => [
+                ['dispatchWebhooks', 0],
+            ],
+        ];
+    }
+
+    public function dispatchWebhooks(SendWebhooks $event)
+    {
         // Compile list of connectors for the station. Always dispatch to the local websocket receiver.
         $connectors = [];
 

@@ -1,7 +1,7 @@
 <?php
 namespace App\Webhook\Connector;
 
-use App\Entity;
+use App\Event\SendWebhooks;
 use GuzzleHttp\Exception\TransferException;
 
 /**
@@ -11,12 +11,7 @@ use GuzzleHttp\Exception\TransferException;
  */
 class Telegram extends AbstractConnector
 {
-    /**
-     * @param Entity\Station $station
-     * @param Entity\Api\NowPlaying $np
-     * @param array $config
-     */
-    public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
+    public function dispatch(SendWebhooks $event, array $config): void
     {
         $bot_token = $config['bot_token'] ?? '';
         $chat_id = $config['chat_id'] ?? '';
@@ -28,7 +23,7 @@ class Telegram extends AbstractConnector
 
         $messages = $this->_replaceVariables([
             'text' => $config['text'],
-        ], $np);
+        ], $event->getNowPlaying());
 
         try {
             $api_url = (!empty($config['api'])) ? rtrim($config['api'], '/') : 'https://api.telegram.org';

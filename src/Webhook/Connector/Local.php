@@ -3,6 +3,7 @@ namespace App\Webhook\Connector;
 
 use App\Cache;
 use App\Entity;
+use App\Event\SendWebhooks;
 use GuzzleHttp\Client;
 use InfluxDB\Database;
 use Monolog\Logger;
@@ -27,33 +28,21 @@ class Local extends AbstractConnector
         $this->settings_repo = $settings_repo;
     }
 
-    /**
-     * @param array $current_events
-     * @param array|null $triggers
-     * @return bool
-     */
-    public function shouldDispatch(array $current_events, array $triggers): bool
+    public function shouldDispatch(SendWebhooks $event, array $triggers): bool
     {
         return true;
     }
 
-    /**
-     * @param Entity\Station $station
-     * @param Entity\Api\NowPlaying $np
-     * @param array $config
-     * @throws Database\Exception
-     * @throws \InfluxDB\Exception
-     */
-    public function dispatch(Entity\Station $station, Entity\Api\NowPlaying $np, array $config): void
+    public function dispatch(SendWebhooks $event, array $config): void
     {
         $this->logger->debug('Writing entry to InfluxDB...');
 
         // Post statistics to InfluxDB.
         $influx_point = new \InfluxDB\Point(
-            'station.' . $station->getId() . '.listeners',
+            'station.' . $event->getStation()->getId() . '.listeners',
             (int)$np->listeners->current,
             [],
-            ['station' => $station->getId()],
+            ['station' => $event->getStation()->getId()],
             time()
         );
 
@@ -67,7 +56,7 @@ class Local extends AbstractConnector
         if ($np_full) {
             foreach($np_full as &$np_row) {
                 /** @var Entity\Api\NowPlaying $np_row */
-                if ($np_row->station->id === $station->getId()) {
+                if ($np_row->station->id === $event->getStation()->getId()) {
                     $np_row = $np;
                 }
 

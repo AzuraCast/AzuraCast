@@ -32,3 +32,8 @@ web/static/yarn-error\.log
 # Docker files
 /docker-compose.yml
 /*.tar.gz
+
+# Plugins
+/plugins/*
+/plugins/**/*
+!/plugins/.gitkeep

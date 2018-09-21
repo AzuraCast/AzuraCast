@@ -45,12 +45,6 @@ class GetCurrentUser
         $this->customization->setUser($user);
         $request = $this->customization->init($request);
 
-        $this->dispatcher->addListener(BuildView::NAME, function(BuildView $event) use ($user) {
-            $event->getView()->addData([
-                'user' => $user,
-            ]);
-        });
-
         $request = $request
             ->withAttribute(Request::ATTRIBUTE_USER, $user)
             ->withAttribute('is_logged_in', ($user instanceof Entity\User));

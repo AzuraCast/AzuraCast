@@ -175,7 +175,7 @@ class SHOUTcast extends FrontendAbstract
             'banfile' => $config_path . '/sc_serv.ban',
             'ripfile' => $config_path . '/sc_serv.rip',
             'maxuser' => 250,
-            'portbase' => $this->_getRadioPort(),
+            'portbase' => $this->_getRadioPort($station),
             'requirestreamconfigs' => 1,
         ];
 

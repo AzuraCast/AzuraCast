@@ -360,8 +360,10 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
         // Set up broadcast to local sources.
         switch ($station->getFrontendType()) {
             case Adapters::FRONTEND_ICECAST:
-                $i = 1;
+                $i = 0;
                 foreach ($station->getMounts() as $mount_row) {
+                    $i++;
+
                     /** @var Entity\StationMount $mount_row */
                     if (!$mount_row->getEnableAutodj()) {
                         continue;
@@ -385,11 +387,11 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
                 break;
 
             case Adapters::FRONTEND_SHOUTCAST:
-                $i = 1;
+                $i = 0;
                 foreach ($station->getMounts() as $mount_row) {
-                    /** @var Entity\StationMount $mount_row */
                     $i++;
 
+                    /** @var Entity\StationMount $mount_row */
                     if (!$mount_row->getEnableAutodj()) {
                         continue;
                     }
@@ -408,8 +410,6 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
                         $mount_row->getIsPublic(),
                         true
                     );
-
-                    $i++;
                 }
                 break;
 

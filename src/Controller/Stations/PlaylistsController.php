@@ -58,7 +58,7 @@ class PlaylistsController
 
         $backend = $request->getStationBackend();
 
-        if (!$backend->supportsMedia()) {
+        if (!$backend::supportsMedia()) {
             throw new \App\Exception(__('This feature is not currently supported on this station.'));
         }
 

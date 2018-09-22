@@ -317,7 +317,7 @@ class StationRemote
     public function api(RemoteAbstract $adapter): Api\StationRemote
     {
         $response = new Api\StationRemote;
-        $response->url = $adapter->getPublicUrl();
+        $response->url = $adapter->getPublicUrl($this);
 
         if ($this->enable_autodj) {
             $response->bitrate = (int)$this->autodj_bitrate;

@@ -1,10 +1,12 @@
 <?php
 namespace App\Radio\Remote;
 
+use App\Entity;
+
 class Icecast extends RemoteAbstract
 {
-    public function updateNowPlaying(&$np, $include_clients = false): bool
+    public function updateNowPlaying(Entity\StationRemote $remote, &$np, $include_clients = false): bool
     {
-        return $this->_updateNowPlayingFromAdapter($np, \NowPlaying\Adapter\Icecast::class, $include_clients);
+        return $this->_updateNowPlayingFromAdapter($remote, $np, \NowPlaying\Adapter\Icecast::class, $include_clients);
     }
 }

@@ -98,7 +98,7 @@ class StationRepository extends BaseRepository
         $this->resetMounts($station, $frontend_adapter);
 
         // Load configuration from adapter to pull source and admin PWs.
-        $frontend_adapter->read();
+        $frontend_adapter->read($station);
 
         // Write the adapter configurations and update supervisord.
         $configuration->writeConfiguration($station, true);
@@ -123,9 +123,9 @@ class StationRepository extends BaseRepository
         }
 
         // Create default mountpoints if station supports them.
-        if ($frontend_adapter->supportsMounts()) {
+        if ($frontend_adapter::supportsMounts()) {
             // Create default mount points.
-            $mount_points = $frontend_adapter->getDefaultMounts();
+            $mount_points = $frontend_adapter::getDefaultMounts();
 
             foreach ($mount_points as $mount_point) {
                 $mount_record = new Entity\StationMount($station);

@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use App\Radio\Frontend\FrontendAbstract;
+use App\Radio\Remote\AdapterProxy;
 use App\Radio\Remote\RemoteAbstract;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -870,7 +871,7 @@ class Station
      * Retrieve the API version of the object/array.
      *
      * @param FrontendAbstract $fa
-     * @param RemoteAbstract[] $remote_adapters
+     * @param AdapterProxy[] $remote_adapters
      * @return Api\Station
      */
     public function api(FrontendAbstract $fa, array $remote_adapters = []): Api\Station
@@ -883,10 +884,10 @@ class Station
         $response->frontend = (string)$this->frontend_type;
         $response->backend = (string)$this->backend_type;
         $response->is_public = (bool)$this->enable_public_page;
-        $response->listen_url = $fa->getStreamUrl();
+        $response->listen_url = $fa->getStreamUrl($this);
 
         $mounts = [];
-        if ($fa->supportsMounts() && $this->mounts->count() > 0) {
+        if ($fa::supportsMounts() && $this->mounts->count() > 0) {
             foreach ($this->mounts as $mount) {
                 $mounts[] = $mount->api($fa);
             }
@@ -894,9 +895,8 @@ class Station
         $response->mounts = $mounts;
 
         $remotes = [];
-        foreach($remote_adapters as $remote_adapter) {
-            $remote = $remote_adapter->getRemote();
-            $remotes[] = $remote->api($remote_adapter);
+        foreach($remote_adapters as $ra_proxy) {
+            $remotes[] = $ra_proxy->getRemote()->api($ra_proxy->getAdapter());
         }
         $response->remotes = $remotes;
 

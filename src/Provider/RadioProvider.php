@@ -30,7 +30,8 @@ class RadioProvider implements ServiceProviderInterface
         $di[AutoDJ::class] = function($di) {
             return new AutoDJ(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class]
+                $di[\App\Cache::class],
+                $di[\App\EventDispatcher::class]
             );
         };
 
@@ -42,72 +43,77 @@ class RadioProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Backend\Liquidsoap::class] = $di->factory(function($di) {
+        $di[Backend\Liquidsoap::class] = function($di) {
             return new Backend\Liquidsoap(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
+                $di[\App\EventDispatcher::class],
                 $di[AutoDJ::class]
             );
-        });
+        };
 
-        $di[Backend\None::class] = $di->factory(function($di) {
+        $di[Backend\None::class] = function($di) {
             return new Backend\None(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
-                $di[\Monolog\Logger::class]
+                $di[\Monolog\Logger::class],
+                $di[\App\EventDispatcher::class]
             );
-        });
+        };
 
-        $di[Frontend\Icecast::class] = $di->factory(function($di) {
+        $di[Frontend\Icecast::class] = function($di) {
             return new Frontend\Icecast(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
+                $di[\App\EventDispatcher::class],
                 $di[\GuzzleHttp\Client::class],
                 $di['router']
             );
-        });
+        };
 
-        $di[Frontend\Remote::class] = $di->factory(function($di) {
+        $di[Frontend\Remote::class] = function($di) {
             return new Frontend\Remote(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
+                $di[\App\EventDispatcher::class],
                 $di[\GuzzleHttp\Client::class],
                 $di['router']
             );
-        });
+        };
 
-        $di[Frontend\SHOUTcast::class] = $di->factory(function($di) {
+        $di[Frontend\SHOUTcast::class] = function($di) {
             return new Frontend\SHOUTcast(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\Supervisor\Supervisor::class],
                 $di[\Monolog\Logger::class],
+                $di[\App\EventDispatcher::class],
                 $di[\GuzzleHttp\Client::class],
                 $di['router']
             );
-        });
+        };
 
-        $di[Remote\Icecast::class] = $di->factory(function($di) {
+        $di[Remote\Icecast::class] = function($di) {
             return new Remote\Icecast(
                 $di[\GuzzleHttp\Client::class],
                 $di[\Monolog\Logger::class]
             );
-        });
+        };
 
-        $di[Remote\SHOUTcast1::class] = $di->factory(function($di) {
+        $di[Remote\SHOUTcast1::class] = function($di) {
             return new Remote\SHOUTcast1(
                 $di[\GuzzleHttp\Client::class],
                 $di[\Monolog\Logger::class]
             );
-        });
+        };
 
-        $di[Remote\SHOUTcast2::class] = $di->factory(function($di) {
+        $di[Remote\SHOUTcast2::class] = function($di) {
             return new Remote\SHOUTcast2(
                 $di[\GuzzleHttp\Client::class],
                 $di[\Monolog\Logger::class]
             );
-        });
+        };
     }
 }

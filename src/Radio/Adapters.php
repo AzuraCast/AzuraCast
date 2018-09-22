@@ -51,10 +51,7 @@ class Adapters
         $class_name = $adapters[$frontend_type]['class'];
 
         if ($this->adapters->has($class_name)) {
-            /** @var Frontend\FrontendAbstract $adapter */
-            $adapter = $this->adapters->get($class_name);
-            $adapter->setStation($station);
-            return $adapter;
+            return $this->adapters->get($class_name);
         }
 
         throw new NotFound('Adapter not found: ' . $class_name);
@@ -78,10 +75,7 @@ class Adapters
         $class_name = $adapters[$backend_type]['class'];
 
         if ($this->adapters->has($class_name)) {
-            /** @var Backend\BackendAbstract $adapter */
-            $adapter = $this->adapters->get($class_name);
-            $adapter->setStation($station);
-            return $adapter;
+            return $this->adapters->get($class_name);
         }
 
         throw new NotFound('Adapter not found: ' . $class_name);
@@ -89,7 +83,7 @@ class Adapters
 
     /**
      * @param Entity\Station $station
-     * @return Remote\RemoteAbstract[]
+     * @return Remote\AdapterProxy[]
      * @throws NotFound
      */
     public function getRemoteAdapters(Entity\Station $station): array
@@ -97,7 +91,7 @@ class Adapters
         $remote_adapters = [];
 
         foreach($station->getRemotes() as $remote) {
-            $remote_adapters[] = $this->getRemoteAdapter($station, $remote);
+            $remote_adapters[] = new Remote\AdapterProxy($this->getRemoteAdapter($station, $remote), $remote);
         }
 
         return $remote_adapters;
@@ -108,7 +102,7 @@ class Adapters
      *
      * @param Entity\Station $station
      * @param Entity\StationRemote $remote
-     * @return RemoteAbstract
+     * @return Remote\RemoteAbstract
      * @throws NotFound
      */
     public function getRemoteAdapter(Entity\Station $station, Entity\StationRemote $remote): Remote\RemoteAbstract
@@ -124,12 +118,7 @@ class Adapters
         $class_name = $adapters[$remote_type]['class'];
 
         if ($this->adapters->has($class_name)) {
-            /** @var Remote\RemoteAbstract $adapter */
-            $adapter = $this->adapters->get($class_name);
-
-            $adapter->setStation($station);
-            $adapter->setRemote($remote);
-            return $adapter;
+            return $this->adapters->get($class_name);
         }
 
         throw new NotFound('Adapter not found: ' . $class_name);

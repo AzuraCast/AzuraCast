@@ -62,7 +62,7 @@ class DjAuth extends \App\Console\Command\CommandAbstract
         $adapter = $adapters->getBackendAdapter($station);
 
         if ($adapter instanceof Liquidsoap) {
-            $response = $adapter->authenticateStreamer($user, $pass);
+            $response = $adapter->authenticateStreamer($station, $user, $pass);
             $output->write($response);
             return ($response === 'true');
         }

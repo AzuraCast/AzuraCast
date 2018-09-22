@@ -1,45 +1,47 @@
 <?php
 namespace App\Radio\Frontend;
 
+use App\Entity;
+
 class Remote extends FrontendAbstract
 {
-    public function supportsMounts(): bool
-    {
-        return false;
-    }
-
-    public function supportsListenerDetail(): bool
-    {
-        return false;
-    }
-
-    public function read(): bool
+    public function read(Entity\Station $station): bool
     {
         return true;
     }
 
-    public function write(): bool
+    public function write(Entity\Station $station): bool
     {
         return true;
     }
 
-    public function isRunning(): bool
+    public function isRunning(Entity\Station $station): bool
     {
         return true;
     }
 
-    public function getStreamUrl(): string
+    public function getStreamUrl(Entity\Station $station): string
     {
         return '';
     }
 
-    public function getStreamUrls(): array
+    public function getStreamUrls(Entity\Station $station): array
     {
         return [];
     }
 
-    public function getAdminUrl(): string
+    public function getAdminUrl(Entity\Station $station): string
     {
         return '';
+    }
+
+    public static function supportsMounts(): bool
+    {
+        return false;
+    }
+
+    public static function supportsListenerDetail(): bool
+    {
+        return false;
     }
 }

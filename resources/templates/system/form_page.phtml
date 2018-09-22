@@ -4,14 +4,8 @@ $this->layout('main', [
     'header' => $header
 ]);
 
-/** @var \App\Assets $assets */
-$assets
-    ->load('chosen')
-    ->load('zxcvbn')
-    ->addInlineJs($this->fetch('system/form_page.js'));
-
 if ($render_mode === 'edit') {
-    echo $form->render();
+    echo $this->fetch('system/form_edit', ['form' => $form]);
 } else {
     echo $form->renderView();
 }

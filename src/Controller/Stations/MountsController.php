@@ -34,7 +34,7 @@ class MountsController
         $station = $request->getStation();
         $frontend = $request->getStationFrontend();
 
-        if (!$frontend->supportsMounts()) {
+        if (!$frontend::supportsMounts()) {
             throw new \App\Exception(__('This feature is not currently supported on this station.'));
         }
 

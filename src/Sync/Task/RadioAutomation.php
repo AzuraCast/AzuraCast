@@ -188,7 +188,7 @@ class RadioAutomation extends TaskAbstract
 
         // Write new PLS playlist configuration.
         $backend_adapter = $this->adapters->getBackendAdapter($station);
-        $backend_adapter->write();
+        $backend_adapter->write($station);
 
         return true;
     }

@@ -39,7 +39,7 @@ class StreamersController
         $station = $request->getStation();
         $backend = $request->getStationBackend();
 
-        if (!$backend->supportsStreamers()) {
+        if (!$backend::supportsStreamers()) {
             throw new \App\Exception(__('This feature is not currently supported on this station.'));
         }
 
@@ -65,7 +65,7 @@ class StreamersController
 
         return $view->renderToResponse($response, 'stations/streamers/index', [
             'server_url' => $settings_repo->getSetting('base_url', ''),
-            'stream_port' => $backend->getStreamPort(),
+            'stream_port' => $backend->getStreamPort($station),
             'streamers' => $station->getStreamers(),
             'csrf' => $request->getSession()->getCsrf()->generate($this->csrf_namespace),
         ]);

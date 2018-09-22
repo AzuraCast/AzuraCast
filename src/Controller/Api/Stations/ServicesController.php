@@ -44,16 +44,16 @@ class ServicesController
 
         try
         {
-            $backend->stop();
+            $backend->stop($station);
         } catch(\App\Exception\Supervisor\NotRunning $e) {}
 
         try
         {
-            $frontend->stop();
+            $frontend->stop($station);
         } catch(\App\Exception\Supervisor\NotRunning $e) {}
 
-        $frontend->start();
-        $backend->start();
+        $frontend->start($station);
+        $backend->start($station);
 
         $station->setHasStarted(true);
         $station->setNeedsRestart(false);
@@ -88,17 +88,18 @@ class ServicesController
      */
     public function frontendAction(Request $request, Response $response, $station_id, $do = 'restart'): Response
     {
+        $station = $request->getStation();
         $frontend = $request->getStationFrontend();
 
         switch ($do) {
             case "stop":
-                $frontend->stop();
+                $frontend->stop($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('%s stopped.', __('Frontend'))));
             break;
 
             case "start":
-                $frontend->start();
+                $frontend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('%s started.', __('Frontend'))));
             break;
@@ -107,11 +108,11 @@ class ServicesController
             default:
                 try
                 {
-                    $frontend->stop();
+                    $frontend->stop($station);
                 } catch(\App\Exception\Supervisor\NotRunning $e) {}
 
-                $frontend->write();
-                $frontend->start();
+                $frontend->write($station);
+                $frontend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Frontend'))));
             break;
@@ -142,12 +143,13 @@ class ServicesController
      */
     public function backendAction(Request $request, Response $response, $station_id, $do = 'restart'): Response
     {
+        $station = $request->getStation();
         $backend = $request->getStationBackend();
 
         switch ($do) {
             case "skip":
                 if (method_exists($backend, 'skip')) {
-                    $backend->skip();
+                    $backend->skip($station);
                 }
 
                 return $response->withJson(new Entity\Api\Status(true, __('Song skipped.')));
@@ -162,13 +164,13 @@ class ServicesController
             break;
 
             case "stop":
-                $backend->stop();
+                $backend->stop($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('%s stopped.', __('Backend'))));
                 break;
 
             case "start":
-                $backend->start();
+                $backend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('%s started.', __('Backend'))));
                 break;
@@ -177,11 +179,11 @@ class ServicesController
             default:
                 try
                 {
-                    $backend->stop();
+                    $backend->stop($station);
                 } catch(\App\Exception\Supervisor\NotRunning $e) {}
 
-                $backend->write();
-                $backend->start();
+                $backend->write($station);
+                $backend->start($station);
 
                 return $response->withJson(new Entity\Api\Status(true, __('%s restarted.', __('Backend'))));
                 break;

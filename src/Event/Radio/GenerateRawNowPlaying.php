@@ -1,22 +1,21 @@
 <?php
-namespace App\Event;
+namespace App\Event\Radio;
 
 use App\Entity\Station;
-use App\Radio\Frontend\FrontendAbstract;
-use App\Radio\Remote\RemoteAbstract;
+use App\Radio;
 use Symfony\Component\EventDispatcher\Event;
 
 class GenerateRawNowPlaying extends Event
 {
-    const NAME = 'nowplaying-generate-raw';
+    const NAME = 'radio-nowplaying-generate-raw';
 
     /** @var Station */
     protected $station;
 
-    /** @var FrontendAbstract */
+    /** @var Radio\Frontend\FrontendAbstract */
     protected $frontend;
 
-    /** @var RemoteAbstract[] */
+    /** @var Radio\Remote\AdapterProxy[] */
     protected $remotes;
 
     /** @var bool */
@@ -30,7 +29,7 @@ class GenerateRawNowPlaying extends Event
 
     public function __construct(
         Station $station,
-        FrontendAbstract $frontend,
+        Radio\Frontend\FrontendAbstract $frontend,
         array $remotes,
         $payload = null,
         $include_clients = false
@@ -47,13 +46,13 @@ class GenerateRawNowPlaying extends Event
         return $this->station;
     }
 
-    public function getFrontend(): FrontendAbstract
+    public function getFrontend(): Radio\Frontend\FrontendAbstract
     {
         return $this->frontend;
     }
 
     /**
-     * @return RemoteAbstract[]
+     * @return Radio\Remote\AdapterProxy[]
      */
     public function getRemotes(): array
     {

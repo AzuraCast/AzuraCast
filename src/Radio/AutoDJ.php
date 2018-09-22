@@ -2,10 +2,13 @@
 namespace App\Radio;
 
 use App\Entity;
+use App\Event\Radio\GetNextSong;
+use App\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use App\Cache;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class AutoDJ
+class AutoDJ implements EventSubscriberInterface
 {
     /** @var int The time to live (in seconds) of cached playlist queues. */
     const CACHE_TTL = 43200;
@@ -16,15 +19,32 @@ class AutoDJ
     /** @var Cache */
     protected $cache;
 
+    /** @var EventDispatcher */
+    protected $dispatcher;
+
     /**
      * @param EntityManager $em
      * @param Cache $cache
+     * @param EventDispatcher $dispatcher
+     *
      * @see \App\Provider\RadioProvider
      */
-    public function __construct(EntityManager $em, Cache $cache)
+    public function __construct(EntityManager $em, Cache $cache, EventDispatcher $dispatcher)
     {
         $this->em = $em;
         $this->cache = $cache;
+        $this->dispatcher = $dispatcher;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            GetNextSong::NAME => [
+                ['checkDatabaseForNextSong', 10],
+                ['getNextSongFromRequests', 5],
+                ['calculateNextSong', 0],
+            ],
+        ];
     }
 
     /**
@@ -41,22 +61,10 @@ class AutoDJ
             return null;
         }
 
-        $next_song = $this->em->createQuery('SELECT sh, s, sm
-            FROM ' . Entity\SongHistory::class . ' sh JOIN sh.song s JOIN sh.media sm
-            WHERE sh.station_id = :station_id
-            AND sh.timestamp_cued >= :threshold
-            AND sh.sent_to_autodj = 0
-            AND sh.timestamp_start = 0
-            AND sh.timestamp_end = 0
-            ORDER BY sh.id DESC')
-            ->setParameter('station_id', $station->getId())
-            ->setParameter('threshold', time() - 60 * 15)
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+        $event = new GetNextSong($station);
+        $this->dispatcher->dispatch(GetNextSong::NAME, $event);
 
-        if (!($next_song instanceof Entity\SongHistory)) {
-            $next_song = $this->calculateNextSong($station);
-        }
+        $next_song = $event->getNextSong();
 
         if ($next_song instanceof Entity\SongHistory && $is_autodj) {
             $next_song->sentToAutodj();
@@ -72,14 +80,30 @@ class AutoDJ
         return $next_song;
     }
 
-    /**
-     * Determine the next-playing song for this station based on its playlist rotation rules.
-     *
-     * @param Entity\Station $station
-     * @return Entity\SongHistory|null
-     */
-    public function calculateNextSong(Entity\Station $station)
+    public function checkDatabaseForNextSong(GetNextSong $event)
     {
+        $next_song = $this->em->createQuery('SELECT sh, s, sm
+            FROM ' . Entity\SongHistory::class . ' sh JOIN sh.song s JOIN sh.media sm
+            WHERE sh.station_id = :station_id
+            AND sh.timestamp_cued >= :threshold
+            AND sh.sent_to_autodj = 0
+            AND sh.timestamp_start = 0
+            AND sh.timestamp_end = 0
+            ORDER BY sh.id DESC')
+            ->setParameter('station_id', $event->getStation()->getId())
+            ->setParameter('threshold', time() - 60 * 15)
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+
+        if ($next_song instanceof Entity\SongHistory) {
+            $event->setNextSong($next_song);
+        }
+    }
+
+    public function getNextSongFromRequests(GetNextSong $event)
+    {
+        $station = $event->getStation();
+
         // Process requests first (if applicable)
         if ($station->getEnableRequests()) {
 
@@ -99,10 +123,46 @@ class AutoDJ
                 ->getOneOrNullResult();
 
             if ($request instanceof Entity\StationRequest) {
-                return $this->_playSongFromRequest($request);
+                $event->setNextSong($this->_playSongFromRequest($request));
             }
-
         }
+    }
+
+    /**
+     * Given a StationRequest object, create a new SongHistory entry that cues the requested song to play next.
+     *
+     * @param Entity\StationRequest $request
+     * @return Entity\SongHistory
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    protected function _playSongFromRequest(Entity\StationRequest $request)
+    {
+        // Log in history
+        $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
+        $sh->setRequest($request);
+        $sh->setMedia($request->getTrack());
+
+        $sh->setDuration($request->getTrack()->getCalculatedLength());
+        $sh->setTimestampCued(time());
+        $this->em->persist($sh);
+
+        $request->setPlayedAt(time());
+        $this->em->persist($request);
+
+        $this->em->flush();
+
+        return $sh;
+    }
+
+    /**
+     * Determine the next-playing song for this station based on its playlist rotation rules.
+     *
+     * @param GetNextSong $event
+     */
+    public function calculateNextSong(GetNextSong $event): void
+    {
+        $station = $event->getStation();
 
         // Pull all active, non-empty playlists and sort by type.
         $playlists_by_type = [];
@@ -144,10 +204,9 @@ class AutoDJ
                     }
 
                     if (!$was_played) {
-                        $sh = $this->_playSongFromPlaylist($playlist);
-                        if ($sh) {
-                            return $sh;
-                        }
+                        if ($event->setNextSong($this->_playSongFromPlaylist($playlist))) {
+                            return;
+                        };
                     }
 
                     reset($cued_song_history);
@@ -171,10 +230,9 @@ class AutoDJ
                 }
 
                 if (!$was_played) {
-                    $sh = $this->_playSongFromPlaylist($playlist);
-                    if ($sh) {
-                        return $sh;
-                    }
+                    if ($event->setNextSong($this->_playSongFromPlaylist($playlist))) {
+                        return;
+                    };
                 }
 
                 reset($cued_song_history);
@@ -199,10 +257,9 @@ class AutoDJ
                 }
 
                 if (!$was_played) {
-                    $sh = $this->_playSongFromPlaylist($playlist);
-                    if ($sh) {
-                        return $sh;
-                    }
+                    if ($event->setNextSong($this->_playSongFromPlaylist($playlist))) {
+                        return;
+                    };
                 }
 
                 reset($cued_song_history);
@@ -214,10 +271,9 @@ class AutoDJ
             foreach ($playlists_by_type['scheduled'] as $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
                 if ($playlist->canPlayScheduled()) {
-                    $sh = $this->_playSongFromPlaylist($playlist);
-                    if ($sh) {
-                        return $sh;
-                    }
+                    if ($event->setNextSong($this->_playSongFromPlaylist($playlist))) {
+                        return;
+                    };
                 }
             }
         }
@@ -225,7 +281,7 @@ class AutoDJ
         // Default rotation playlists
         if (!empty($playlists_by_type['default'])) {
             $playlist_weights = [];
-            foreach($playlists_by_type['default'] as $playlist_id => $playlist) {
+            foreach ($playlists_by_type['default'] as $playlist_id => $playlist) {
                 /** @var Entity\StationPlaylist $playlist */
                 $playlist_weights[$playlist_id] = $playlist->getWeight();
             }
@@ -236,15 +292,12 @@ class AutoDJ
                 if ($rand <= 0) {
                     $playlist = $playlists_by_type['default'][$playlist_id];
 
-                    $sh = $this->_playSongFromPlaylist($playlist);
-                    if ($sh) {
-                        return $sh;
-                    }
+                    if ($event->setNextSong($this->_playSongFromPlaylist($playlist))) {
+                        return;
+                    };
                 }
             }
         }
-
-        return null;
     }
 
     /**
@@ -279,33 +332,6 @@ class AutoDJ
                 $this->cache->set($media_queue, $cache_name, self::CACHE_TTL);
             }
         }
-    }
-
-    /**
-     * Given a StationRequest object, create a new SongHistory entry that cues the requested song to play next.
-     *
-     * @param Entity\StationRequest $request
-     * @return Entity\SongHistory
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    protected function _playSongFromRequest(Entity\StationRequest $request)
-    {
-        // Log in history
-        $sh = new Entity\SongHistory($request->getTrack()->getSong(), $request->getStation());
-        $sh->setRequest($request);
-        $sh->setMedia($request->getTrack());
-
-        $sh->setDuration($request->getTrack()->getCalculatedLength());
-        $sh->setTimestampCued(time());
-        $this->em->persist($sh);
-
-        $request->setPlayedAt(time());
-        $this->em->persist($request);
-
-        $this->em->flush();
-
-        return $sh;
     }
 
     /**

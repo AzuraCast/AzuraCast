@@ -234,6 +234,47 @@ return function (\Slim\Container $di, $settings)
         $view = new App\View(dirname(__DIR__) . '/resources/templates');
         $view->setFileExtension('phtml');
 
+        $view->registerFunction('service', function($service) {
+            return $this->di->get($service);
+        });
+
+        $view->registerFunction('escapeJs', function($string) {
+            return json_encode($string);
+        });
+
+        $view->registerFunction('mailto', function ($address, $link_text = null) {
+            $address = substr(chunk_split(bin2hex(" $address"), 2, ";&#x"), 3, -3);
+            $link_text = $link_text ?? $address;
+
+            return '<a href="mailto:' . $address . '">' . $link_text . '</a>';
+        });
+
+        $view->registerFunction('pluralize', function ($word, $num = 0) {
+            if ((int)$num === 1) {
+                return $word;
+            } else {
+                return \Doctrine\Common\Inflector\Inflector::pluralize($word);
+            }
+        });
+
+        $view->registerFunction('truncate', function ($text, $length = 80) {
+            return \App\Utilities::truncate_text($text, $length);
+        });
+
+        /** @var \App\Session $session */
+        $session = $di[\App\Session::class];
+
+        $view->addData([
+            'app_settings' => $di['app_settings'],
+            'router' => $di['router'],
+            'request' => $di['request'],
+            'assets' => $di[\App\Assets::class],
+            'auth' => $di[\App\Auth::class],
+            'acl' => $di[\App\Acl::class],
+            'flash' => $session->getFlash(),
+            'customization' => $di[\App\Customization::class],
+        ]);
+
         /** @var \App\EventDispatcher $dispatcher */
         $dispatcher = $di[\App\EventDispatcher::class];
         $dispatcher->dispatch(\App\Event\BuildView::NAME, new \App\Event\BuildView($view));

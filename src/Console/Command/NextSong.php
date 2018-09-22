@@ -54,7 +54,7 @@ class NextSong extends \App\Console\Command\CommandAbstract
         $adapter = $adapters->getBackendAdapter($station);
 
         if ($adapter instanceof Liquidsoap) {
-            $output->write($adapter->getNextSong($as_autodj));
+            $output->write($adapter->getNextSong($station, $as_autodj));
             return 0;
         }
 

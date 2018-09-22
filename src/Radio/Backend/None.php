@@ -1,35 +1,37 @@
 <?php
 namespace App\Radio\Backend;
 
+use App\Entity;
+
 class None extends BackendAbstract
 {
-    public function supportsMedia(): bool
-    {
-        return false;
-    }
-
-    public function supportsStreamers(): bool
-    {
-        return false;
-    }
-
-    public function supportsRequests(): bool
-    {
-        return false;
-    }
-
-    public function write(): bool
+    public function write(Entity\Station $station): bool
     {
         return true;
     }
 
-    public function isRunning(): bool
+    public function isRunning(Entity\Station $station): bool
     {
         return true;
     }
 
-    public function start(): void
+    public function start(Entity\Station $station): void
     {
-        $this->logger->error('Cannot start process; AutoDJ is currently disabled.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
+        $this->logger->error('Cannot start process; AutoDJ is currently disabled.', ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
+    }
+
+    public static function supportsMedia(): bool
+    {
+        return false;
+    }
+
+    public static function supportsStreamers(): bool
+    {
+        return false;
+    }
+
+    public static function supportsRequests(): bool
+    {
+        return false;
     }
 }

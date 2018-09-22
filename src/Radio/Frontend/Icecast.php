@@ -13,19 +13,20 @@ class Icecast extends FrontendAbstract
     public const LOGLEVEL_WARN = 2;
     public const LOGLEVEL_ERROR = 1;
 
-    public function getWatchCommand(): ?string
+    public function getWatchCommand(Entity\Station $station): ?string
     {
-        $fe_config = (array)$this->station->getFrontendConfig();
+        $fe_config = (array)$station->getFrontendConfig();
 
         return $this->_getStationWatcherCommand(
+            $station,
             'icecast',
             'http://admin:'.$fe_config['admin_pw'].'@localhost:' . $fe_config['port'] . '/admin/stats'
         );
     }
 
-    public function getNowPlaying($payload = null, $include_clients = true): array
+    public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
     {
-        $fe_config = (array)$this->station->getFrontendConfig();
+        $fe_config = (array)$station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
         $base_url = 'http://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $radio_port;
@@ -37,7 +38,7 @@ class Icecast extends FrontendAbstract
         $mount_repo = $this->em->getRepository(Entity\StationMount::class);
 
         /** @var Entity\StationMount $default_mount */
-        $default_mount = $mount_repo->getDefaultMount($this->station);
+        $default_mount = $mount_repo->getDefaultMount($station);
 
         $mount_name = ($default_mount instanceof Entity\StationMount) ? $default_mount->getName() : null;
 
@@ -58,18 +59,18 @@ class Icecast extends FrontendAbstract
         }
     }
 
-    public function read(): bool
+    public function read(Entity\Station $station): bool
     {
-        $config = $this->_getConfig();
-        $this->station->setFrontendConfigDefaults($this->_loadFromConfig($config));
+        $config = $this->_getConfig($station);
+        $station->setFrontendConfigDefaults($this->_loadFromConfig($station, $config));
         return true;
     }
 
-    public function write(): bool
+    public function write(Entity\Station $station): bool
     {
-        $config = $this->_getDefaults();
+        $config = $this->_getDefaults($station);
 
-        $frontend_config = (array)$this->station->getFrontendConfig();
+        $frontend_config = (array)$station->getFrontendConfig();
 
         if (!empty($frontend_config['port'])) {
             $config['listen-socket']['port'] = $frontend_config['port'];
@@ -107,12 +108,12 @@ class Icecast extends FrontendAbstract
         }
 
         // Set any unset values back to the DB config.
-        $this->station->setFrontendConfigDefaults($this->_loadFromConfig($config));
+        $station->setFrontendConfigDefaults($this->_loadFromConfig($station, $config));
 
-        $this->em->persist($this->station);
+        $this->em->persist($station);
         $this->em->flush();
 
-        $config_path = $this->station->getRadioConfigDir();
+        $config_path = $station->getRadioConfigDir();
         $icecast_path = $config_path . '/icecast.xml';
 
         $writer = new \App\Xml\Writer;
@@ -129,30 +130,30 @@ class Icecast extends FrontendAbstract
      * Process Management
      */
 
-    public function getCommand(): ?string
+    public function getCommand(Entity\Station $station): ?string
     {
         if ($binary = self::getBinary()) {
-            $config_path = $this->station->getRadioConfigDir() . '/icecast.xml';
+            $config_path = $station->getRadioConfigDir() . '/icecast.xml';
             return $binary . ' -c ' . $config_path;
         }
         return '/bin/false';
     }
 
-    public function getAdminUrl(): string
+    public function getAdminUrl(Entity\Station $station): string
     {
-        return $this->getPublicUrl() . '/admin.html';
+        return $this->getPublicUrl($station) . '/admin.html';
     }
 
     /*
      * Configuration
      */
 
-    protected function _getConfig()
+    protected function _getConfig(Entity\Station $station)
     {
-        $config_path = $this->station->getRadioConfigDir();
+        $config_path = $station->getRadioConfigDir();
         $icecast_path = $config_path . '/icecast.xml';
 
-        $defaults = $this->_getDefaults();
+        $defaults = $this->_getDefaults($station);
 
         if (file_exists($icecast_path)) {
             $reader = new \App\Xml\Reader;
@@ -164,9 +165,9 @@ class Icecast extends FrontendAbstract
         return $defaults;
     }
 
-    protected function _loadFromConfig($config)
+    protected function _loadFromConfig(Entity\Station $station, $config)
     {
-        $frontend_config = (array)$this->station->getFrontendConfig();
+        $frontend_config = (array)$station->getFrontendConfig();
 
         return [
             'custom_config' => $frontend_config['custom_config'],
@@ -178,12 +179,12 @@ class Icecast extends FrontendAbstract
         ];
     }
 
-    protected function _getDefaults()
+    protected function _getDefaults(Entity\Station $station)
     {
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
-        $config_dir = $this->station->getRadioConfigDir();
+        $config_dir = $station->getRadioConfigDir();
 
         $defaults = [
             'location' => 'AzuraCast',
@@ -191,7 +192,7 @@ class Icecast extends FrontendAbstract
             'hostname' => $settings_repo->getSetting('base_url', 'localhost'),
             'limits' => [
                 'clients' => 250,
-                'sources' => $this->station->getMounts()->count(),
+                'sources' => $station->getMounts()->count(),
                 // 'threadpool' => 5,
                 'queue-size' => 524288,
                 'client-timeout' => 30,
@@ -208,7 +209,7 @@ class Icecast extends FrontendAbstract
             ],
 
             'listen-socket' => [
-                'port' => $this->_getRadioPort(),
+                'port' => $this->_getRadioPort($station),
             ],
 
             'mount' => [],
@@ -239,7 +240,7 @@ class Icecast extends FrontendAbstract
             ],
         ];
 
-        foreach ($this->station->getMounts() as $mount_row) {
+        foreach ($station->getMounts() as $mount_row) {
             /** @var Entity\StationMount $mount_row */
 
             $mount = [

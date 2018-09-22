@@ -107,7 +107,7 @@ class DashboardController
                 ],
                 'public_url' => $this->router->named('public:index', ['station' => $row->getShortName()]),
                 'manage_url' => $this->router->named('stations:index:index', ['station' => $row->getId()]),
-                'stream_url' => $frontend_adapter->getStreamUrl(),
+                'stream_url' => $frontend_adapter->getStreamUrl($row),
                 'np' => $np,
             ];
             $station_ids[] = $row->getId();

@@ -319,7 +319,7 @@ class StationMount
 
         $response->name = (string)$this->name;
         $response->is_default = (bool)$this->is_default;
-        $response->url = (string)$fa->getUrlForMount($this);
+        $response->url = (string)$fa->getUrlForMount($this->station, $this);
 
         if ($this->enable_autodj) {
             $response->bitrate = (int)$this->autodj_bitrate;

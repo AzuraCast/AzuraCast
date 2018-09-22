@@ -2,18 +2,20 @@
 namespace App\Sync\Task;
 
 use App\Cache;
-use App\Event\GenerateRawNowPlaying;
+use App\Event\Radio\GenerateRawNowPlaying;
 use App\Event\SendWebhooks;
 use App\EventDispatcher;
 use App\Radio\AutoDJ;
 use App\ApiUtilities;
 use App\Radio\Adapters;
+use App\Radio\Remote\RemoteAbstract;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use App\Entity;
 use Monolog\Logger;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class NowPlaying extends TaskAbstract
+class NowPlaying extends TaskAbstract implements EventSubscriberInterface
 {
     /** @var EntityManager */
     protected $em;
@@ -91,6 +93,21 @@ class NowPlaying extends TaskAbstract
 
         $this->settings_repo = $this->em->getRepository(Entity\Settings::class);
         $this->analytics_level = $this->settings_repo->getSetting('analytics', Entity\Analytics::LEVEL_ALL);
+    }
+
+    public static function getSubscribedEvents()
+    {
+        if (APP_TESTING_MODE) {
+            return [];
+        }
+
+        return [
+            GenerateRawNowPlaying::NAME => [
+                ['loadRawFromFrontend', 10],
+                ['addToRawFromRemotes', 0],
+                ['cleanUpRawOutput', -10],
+            ],
+        ];
     }
 
     public function run($force = false)
@@ -290,5 +307,38 @@ class NowPlaying extends TaskAbstract
         $this->logger->popProcessor();
 
         return $np;
+    }
+
+    public function loadRawFromFrontend(GenerateRawNowPlaying $event)
+    {
+        $np_raw = $event
+            ->getFrontend()
+            ->getNowPlaying($event->getStation(), $event->getPayload(), $event->includeClients());
+
+        $event->setRawResponse($np_raw);
+    }
+
+    public function addToRawFromRemotes(GenerateRawNowPlaying $event)
+    {
+        $np_raw = $event->getRawResponse();
+
+        // Loop through all remotes and update NP data accordingly.
+        foreach($event->getRemotes() as $ra_proxy) {
+            $ra_proxy->getAdapter()->updateNowPlaying($ra_proxy->getRemote(), $np_raw, $event->includeClients());
+        }
+
+        $event->setRawResponse($np_raw);
+    }
+
+    public function cleanUpRawOutput(GenerateRawNowPlaying $event)
+    {
+        $np_raw = $event->getRawResponse();
+
+        array_walk($np_raw['current_song'], function(&$value) {
+            $value = htmlspecialchars_decode($value);
+            $value = trim($value);
+        });
+
+        $event->setRawResponse($np_raw);
     }
 }

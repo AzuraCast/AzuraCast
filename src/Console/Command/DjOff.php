@@ -47,7 +47,7 @@ class DjOff extends \App\Console\Command\CommandAbstract
         $adapter = $adapters->getBackendAdapter($station);
 
         if ($adapter instanceof Liquidsoap) {
-            $adapter->toggleLiveStatus(false);
+            $adapter->toggleLiveStatus($station, false);
         }
 
         $output->write('received');

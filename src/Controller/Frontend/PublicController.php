@@ -31,28 +31,25 @@ class PublicController
         // Override system-wide iframe refusal
         $response = $response->withoutHeader('X-Frame-Options');
 
-        /** @var Entity\Station $station */
-        $station = $request->getAttribute('station');
+        $station = $request->getStation();
 
         if (!$station->getEnablePublicPage()) {
             throw new \App\Exception(__('Station not found!'));
         }
 
-        /** @var FrontendAbstract $frontend_adapter */
-        $frontend_adapter = $request->getAttribute('station_frontend');
+        $frontend_adapter = $request->getStationFrontend();
 
         return $request->getView()->renderToResponse($response, $template_name, $template_vars + [
             'station' => $station,
-            'stream_url' => $frontend_adapter->getStreamUrl(),
+            'stream_url' => $frontend_adapter->getStreamUrl($station),
         ]);
     }
 
     public function playlistAction(Request $request, Response $response): Response
     {
-        /** @var FrontendAbstract $frontend_adapter */
-        $fa = $request->getAttribute('station_frontend');
+        $fa = $request->getStationFrontend();
 
-        $stream_urls = $fa->getStreamUrls();
+        $stream_urls = $fa->getStreamUrls($request->getStation());
 
         $format = strtolower($request->getParam('format', 'pls'));
         switch ($format) {

@@ -1,4 +1,6 @@
-<?php $this->layout('main', ['title' => __('Automated Playlist Assignment'), 'manual' => true]) ?>
+<?php
+$this->layout('main', ['title' => __('Automated Playlist Assignment'), 'manual' => true]);
+?>
 <div class="card">
     <div class="card-header ch-alt">
         <h2><?=__('Automated Playlist Assignment') ?></h2>
@@ -17,6 +19,6 @@
         <h2><?=__('Configure Automated Assignment') ?></h2>
     </div>
     <div class="card-body card-padding">
-        <?=$form->render() ?>
+        <?=$this->fetch('system/form_edit', ['form' => $form]) ?>
     </div>
 </div>

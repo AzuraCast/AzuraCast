@@ -27,51 +27,30 @@ abstract class RemoteAbstract
     }
 
     /**
-     * @param Entity\Station $station
-     */
-    public function setStation(Entity\Station $station): void
-    {
-        $this->station = $station;
-    }
-
-    /**
      * @param Entity\StationRemote $remote
-     */
-    public function setRemote(Entity\StationRemote $remote): void
-    {
-        $this->remote = $remote;
-    }
-
-    /**
-     * @return Entity\StationRemote
-     */
-    public function getRemote(): Entity\StationRemote
-    {
-        return $this->remote;
-    }
-
-    /**
      * @param $np
+     * @param bool $include_clients
      * @return bool
      */
-    public function updateNowPlaying(&$np, $include_clients = false): bool
+    public function updateNowPlaying(Entity\StationRemote $remote, &$np, $include_clients = false): bool
     {
         return true;
     }
 
     /**
+     * @param Entity\StationRemote $remote
      * @param $np
      * @param $adapter_class
      * @param bool $include_clients
      * @return bool
      */
-    protected function _updateNowPlayingFromAdapter(&$np, $adapter_class, $include_clients = false): bool
+    protected function _updateNowPlayingFromAdapter(Entity\StationRemote $remote, &$np, $adapter_class, $include_clients = false): bool
     {
         /** @var \NowPlaying\Adapter\AdapterAbstract $np_adapter */
-        $np_adapter = new $adapter_class($this->remote->getUrl(), $this->http_client);
+        $np_adapter = new $adapter_class($remote->getUrl(), $this->http_client);
 
         try {
-            $np_new = $np_adapter->getNowPlaying($this->remote->getMount());
+            $np_new = $np_adapter->getNowPlaying($remote->getMount());
 
             $this->logger->debug('NowPlaying adapter response', ['response' => $np_new]);
 
@@ -93,26 +72,28 @@ abstract class RemoteAbstract
     /**
      * Return the likely "public" listen URL for the remote.
      *
+     * @param Entity\StationRemote $remote
      * @return string
      */
-    public function getPublicUrl(): string
+    public function getPublicUrl(Entity\StationRemote $remote): string
     {
-        $custom_listen_url = $this->remote->getCustomListenUrl();
+        $custom_listen_url = $remote->getCustomListenUrl();
 
         return (!empty($custom_listen_url))
             ? $custom_listen_url
-            : $this->_getRemoteUrl($this->remote->getMount());
+            : $this->_getRemoteUrl($remote, $remote->getMount());
     }
 
     /**
      * Format and return a URL for the remote path.
      *
-     * @param string|null $custom_path
+     * @param Entity\StationRemote $remote
+     * @param null $custom_path
      * @return string
      */
-    protected function _getRemoteUrl($custom_path = null): string
+    protected function _getRemoteUrl(Entity\StationRemote $remote, $custom_path = null): string
     {
-        $uri = new Uri($this->remote->getUrl());
+        $uri = new Uri($remote->getUrl());
 
         return ($custom_path !== null)
             ? (string)$uri->withPath($custom_path)

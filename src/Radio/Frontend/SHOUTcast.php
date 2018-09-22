@@ -7,21 +7,22 @@ use App\Entity;
 
 class SHOUTcast extends FrontendAbstract
 {
-    public function getWatchCommand(): ?string
+    public function getWatchCommand(Entity\Station $station): ?string
     {
-        $fe_config = (array)$this->station->getFrontendConfig();
+        $fe_config = (array)$station->getFrontendConfig();
 
-        $mount_name = $this->_getDefaultMountSid();
+        $mount_name = $this->_getDefaultMountSid($station);
 
         return $this->_getStationWatcherCommand(
+            $station,
             'shoutcast2',
             'http://localhost:' . $fe_config['port'] . '/stats?sid='.$mount_name
         );
     }
 
-    public function getNowPlaying($payload = null, $include_clients = true): array
+    public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
     {
-        $fe_config = (array)$this->station->getFrontendConfig();
+        $fe_config = (array)$station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
         $base_url = 'http://' . (APP_INSIDE_DOCKER ? 'stations' : 'localhost') . ':' . $radio_port;
@@ -29,7 +30,7 @@ class SHOUTcast extends FrontendAbstract
         $np_adapter = new \NowPlaying\Adapter\SHOUTcast2($base_url, $this->http_client);
         $np_adapter->setAdminPassword($fe_config['admin_pw']);
 
-        $mount_name = $this->_getDefaultMountSid();
+        $mount_name = $this->_getDefaultMountSid($station);
 
         try {
             $np = $np_adapter->getNowPlaying($mount_name, $payload);
@@ -42,7 +43,7 @@ class SHOUTcast extends FrontendAbstract
             }
 
             return $np;
-        } catch(Exception $e) {
+        } catch(\NowPlaying\Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
             return \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
         }
@@ -51,18 +52,18 @@ class SHOUTcast extends FrontendAbstract
     /**
      * @inheritdoc
      */
-    public function read(): bool
+    public function read(Entity\Station $station): bool
     {
-        $config = $this->_getConfig();
-        $this->station->setFrontendConfigDefaults($this->_loadFromConfig($config));
+        $config = $this->_getConfig($station);
+        $station->setFrontendConfigDefaults($this->_loadFromConfig($config));
         return true;
     }
 
-    public function write(): bool
+    public function write(Entity\Station $station): bool
     {
-        $config = $this->_getDefaults();
+        $config = $this->_getDefaults($station);
 
-        $frontend_config = (array)$this->station->getFrontendConfig();
+        $frontend_config = (array)$station->getFrontendConfig();
 
         if (!empty($frontend_config['port'])) {
             $config['portbase'] = $frontend_config['port'];
@@ -88,7 +89,7 @@ class SHOUTcast extends FrontendAbstract
         }
 
         $i = 0;
-        foreach ($this->station->getMounts() as $mount_row) {
+        foreach ($station->getMounts() as $mount_row) {
             /** @var Entity\StationMount $mount_row */
             $i++;
             $config['streamid_'.$i] = $i;
@@ -104,12 +105,12 @@ class SHOUTcast extends FrontendAbstract
         }
 
         // Set any unset values back to the DB config.
-        $this->station->setFrontendConfigDefaults($this->_loadFromConfig($config));
+        $station->setFrontendConfigDefaults($this->_loadFromConfig($config));
 
-        $this->em->persist($this->station);
+        $this->em->persist($station);
         $this->em->flush();
 
-        $config_path = $this->station->getRadioConfigDir();
+        $config_path = $station->getRadioConfigDir();
         $sc_path = $config_path . '/sc_serv.conf';
 
         $sc_file = '';
@@ -125,10 +126,10 @@ class SHOUTcast extends FrontendAbstract
      * Process Management
      */
 
-    public function getCommand(): ?string
+    public function getCommand(Entity\Station $station): ?string
     {
         if ($binary = self::getBinary()) {
-            $config_path = $this->station->getRadioConfigDir();
+            $config_path = $station->getRadioConfigDir();
             $sc_config = $config_path . '/sc_serv.conf';
 
             return $binary . ' ' . $sc_config;
@@ -137,18 +138,18 @@ class SHOUTcast extends FrontendAbstract
         return '/bin/false';
     }
 
-    public function getAdminUrl(): string
+    public function getAdminUrl(Entity\Station $station): string
     {
-        return $this->getPublicUrl() . '/admin.cgi';
+        return $this->getPublicUrl($station) . '/admin.cgi';
     }
 
     /*
      * Configuration
      */
 
-    protected function _getConfig()
+    protected function _getConfig(Entity\Station $station)
     {
-        $config_dir = $this->station->getRadioConfigDir();
+        $config_dir = $station->getRadioConfigDir();
         return @parse_ini_file($config_dir . '/sc_serv.conf', false, INI_SCANNER_RAW);
     }
 
@@ -162,9 +163,9 @@ class SHOUTcast extends FrontendAbstract
         ];
     }
 
-    protected function _getDefaults(): array
+    protected function _getDefaults(Entity\Station $station): array
     {
-        $config_path = $this->station->getRadioConfigDir();
+        $config_path = $station->getRadioConfigDir();
 
         $defaults = [
             'password' => Utilities::generatePassword(),
@@ -181,11 +182,11 @@ class SHOUTcast extends FrontendAbstract
         return $defaults;
     }
 
-    protected function _getDefaultMountSid(): int
+    protected function _getDefaultMountSid(Entity\Station $station): int
     {
         $default_sid = null;
         $sid = 0;
-        foreach($this->station->getMounts() as $mount) {
+        foreach($station->getMounts() as $mount) {
             /** @var Entity\StationMount $mount */
             $sid++;
 

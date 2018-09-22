@@ -41,7 +41,7 @@ class InternalController
 
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
-            return $response->write($adapter->authenticateStreamer($user, $pass));
+            return $response->write($adapter->authenticateStreamer($station, $user, $pass));
         }
 
         return $response->write('false');
@@ -55,7 +55,7 @@ class InternalController
 
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
-            return $response->write($adapter->getNextSong($as_autodj));
+            return $response->write($adapter->getNextSong($request->getStation(), $as_autodj));
         }
 
         return $response->write('');
@@ -67,7 +67,7 @@ class InternalController
 
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
-            $adapter->toggleLiveStatus(true);
+            $adapter->toggleLiveStatus($request->getStation(), true);
         }
 
         return $response->write('received');
@@ -79,7 +79,7 @@ class InternalController
 
         $adapter = $request->getStationBackend();
         if ($adapter instanceof Liquidsoap) {
-            $adapter->toggleLiveStatus(false);
+            $adapter->toggleLiveStatus($request->getStation(), false);
         }
 
         return $response->write('received');

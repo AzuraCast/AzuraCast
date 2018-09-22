@@ -150,7 +150,7 @@ class Request extends \Slim\Http\Request
     }
 
     /**
-     * @return Radio\Remote\RemoteAbstract[]
+     * @return Radio\Remote\AdapterProxy[]
      */
     public function getStationRemotes(): array
     {

@@ -1,6 +1,7 @@
 <?php
 namespace App\Radio\Frontend;
 
+use App\EventDispatcher;
 use App\Http\Router;
 use App\Entity;
 use Doctrine\ORM\EntityManager;
@@ -17,136 +18,108 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     /** @var Router */
     protected $router;
 
-    public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger, Client $client, Router $router)
+    public function __construct(EntityManager $em, Supervisor $supervisor, Logger $logger, EventDispatcher $dispatcher, Client $client, Router $router)
     {
-        parent::__construct($em, $supervisor, $logger);
+        parent::__construct($em, $supervisor, $logger, $dispatcher);
 
         $this->http_client = $client;
         $this->router = $router;
     }
 
     /**
-     * @return bool Whether the station supports multiple mount points per station
-     */
-    public function supportsMounts(): bool
-    {
-        return true;
-    }
-
-    /**
-     * @return bool Whether the station supports enhanced listener detail (per-client records)
-     */
-    public function supportsListenerDetail(): bool
-    {
-        return true;
-    }
-
-    /**
      * Read configuration from external service to Station object.
+     *
+     * @param Entity\Station $station
      * @return bool
      */
-    abstract public function read(): bool;
+    abstract public function read(Entity\Station $station): bool;
 
     /**
+     * @param Entity\Station $station
      * @return null|string The command to pass the station-watcher app.
      */
-    public function getWatchCommand(): ?string
+    public function getWatchCommand(Entity\Station $station): ?string
     {
         return null;
     }
 
     /**
+     * @param Entity\Station $station
      * @return bool Whether a station-watcher command exists for this adapter.
      */
-    public function hasWatchCommand(): bool
+    public function hasWatchCommand(Entity\Station $station): bool
     {
-        if (APP_TESTING_MODE || !APP_INSIDE_DOCKER || !$this->station->isEnabled()) {
+        if (APP_TESTING_MODE || !APP_INSIDE_DOCKER || !$station->isEnabled()) {
             return false;
         }
 
-        return ($this->getCommand() !== null);
+        return ($this->getCommand($station) !== null);
     }
 
     /**
      * Return the supervisord programmatic name for the station-watcher command.
      *
+     * @param Entity\Station $station
      * @return string
      */
-    public function getWatchProgramName(): string
+    public function getWatchProgramName(Entity\Station $station): string
     {
-        return 'station_' . $this->station->getId() . ':station_' . $this->station->getId() . '_watcher';
+        return 'station_' . $station->getId() . ':station_' . $station->getId() . '_watcher';
     }
 
     /**
      * Get the AzuraCast station-watcher binary command for the specified adapter and watch URI.
      *
+     * @param Entity\Station $station
      * @param $adapter
      * @param $watch_uri
      * @return string
      */
-    protected function _getStationWatcherCommand($adapter, $watch_uri): string
+    protected function _getStationWatcherCommand(Entity\Station $station, $adapter, $watch_uri): string
     {
         $base_url = (APP_INSIDE_DOCKER) ? 'http://nginx' : 'http://localhost';
-        $notify_uri = $base_url.'/api/internal/'.$this->station->getId().'/notify?api_auth='.$this->station->getAdapterApiKey();
+        $notify_uri = $base_url.'/api/internal/'.$station->getId().'/notify?api_auth='.$station->getAdapterApiKey();
 
-        return '/var/azuracast/servers/station-watcher/station-watcher '.$adapter.' '.$watch_uri.' '.$notify_uri.' '.$this->station->getShortName();
+        return '/var/azuracast/servers/station-watcher/station-watcher '.$adapter.' '.$watch_uri.' '.$notify_uri.' '.$station->getShortName();
     }
 
-    /**
-     * Get the default mounts when resetting or initializing a station.
-     *
-     * @return array
-     */
-    public function getDefaultMounts(): array
+    public function getProgramName(Entity\Station $station): string
     {
-        return [
-            [
-                'name' => '/radio.mp3',
-                'is_default' => 1,
-                'enable_autodj' => 1,
-                'autodj_format' => 'mp3',
-                'autodj_bitrate' => 128,
-            ]
-        ];
+        return 'station_' . $station->getId() . ':station_' . $station->getId() . '_frontend';
     }
 
-    public function getProgramName(): string
-    {
-        return 'station_' . $this->station->getId() . ':station_' . $this->station->getId() . '_frontend';
-    }
-
-    public function getStreamUrl(): string
+    public function getStreamUrl(Entity\Station $station): string
     {
         $mount_repo = $this->em->getRepository(Entity\StationMount::class);
-        $default_mount = $mount_repo->getDefaultMount($this->station);
+        $default_mount = $mount_repo->getDefaultMount($station);
 
-        return $this->getUrlForMount($default_mount);
+        return $this->getUrlForMount($station, $default_mount);
     }
 
-    public function getStreamUrls(): array
+    public function getStreamUrls(Entity\Station $station): array
     {
         $urls = [];
-        foreach ($this->station->getMounts() as $mount) {
-            $urls[] = $this->getUrlForMount($mount);
+        foreach ($station->getMounts() as $mount) {
+            $urls[] = $this->getUrlForMount($station, $mount);
         }
 
         return $urls;
     }
 
-    public function getUrlForMount($mount)
+    public function getUrlForMount(Entity\Station $station, $mount)
     {
         if(!$mount instanceof Entity\StationMount) return null;
         return (!empty($mount->getCustomListenUrl())
             ? $mount->getCustomListenUrl()
-            : $this->getPublicUrl() . $mount->getName()
+            : $this->getPublicUrl($station) . $mount->getName()
         ) . '?' . time();
     }
 
-    abstract public function getAdminUrl(): string;
+    abstract public function getAdminUrl(Entity\Station $station): string;
 
-    public function getPublicUrl(): string
+    public function getPublicUrl(Entity\Station $station): string
     {
-        $fe_config = (array)$this->station->getFrontendConfig();
+        $fe_config = (array)$station->getFrontendConfig();
         $radio_port = $fe_config['port'];
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */
@@ -167,11 +140,12 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     }
 
     /**
+     * @param Entity\Station $station
      * @param string|null $payload A prepopulated payload (to avoid duplicate web requests)
      * @param bool $include_clients Whether to try to retrieve detailed listener client info
      * @return array Whether the NP update succeeded
      */
-    public function getNowPlaying($payload = null, $include_clients = true): array
+    public function getNowPlaying(Entity\Station $station, $payload = null, $include_clients = true): array
     {
         return \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
     }
@@ -179,18 +153,18 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     /**
      * @inheritdoc
      */
-    public function stop(): void
+    public function stop(Entity\Station $station): void
     {
-        parent::stop();
+        parent::stop($station);
 
-        if ($this->hasWatchCommand()) {
-            $program_name = $this->getWatchProgramName();
+        if ($this->hasWatchCommand($station)) {
+            $program_name = $this->getWatchProgramName($station);
 
             try {
                 $this->supervisor->stopProcess($program_name);
-                $this->logger->info('Frontend watcher stopped.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
+                $this->logger->info('Frontend watcher stopped.', ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
             } catch (FaultException $e) {
-                $this->_handleSupervisorException($e, $program_name);
+                $this->_handleSupervisorException($e, $program_name, $station);
             }
         }
     }
@@ -198,18 +172,18 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
     /**
      * @inheritdoc
      */
-    public function start(): void
+    public function start(Entity\Station $station): void
     {
-        parent::start();
+        parent::start($station);
 
-        if ($this->hasWatchCommand()) {
-            $program_name = $this->getWatchProgramName();
+        if ($this->hasWatchCommand($station)) {
+            $program_name = $this->getWatchProgramName($station);
 
             try {
                 $this->supervisor->startProcess($program_name);
-                $this->logger->info('Frontend watcher started.', ['station_id' => $this->station->getId(), 'station_name' => $this->station->getName()]);
+                $this->logger->info('Frontend watcher started.', ['station_id' => $station->getId(), 'station_name' => $station->getName()]);
             } catch (FaultException $e) {
-                $this->_handleSupervisorException($e, $program_name);
+                $this->_handleSupervisorException($e, $program_name, $station);
             }
         }
     }
@@ -228,8 +202,42 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         return $custom_config;
     }
 
-    protected function _getRadioPort()
+    protected function _getRadioPort(Entity\Station $station)
     {
-        return (8000 + (($this->station->getId() - 1) * 10));
+        return (8000 + (($station->getId() - 1) * 10));
+    }
+
+    /**
+     * Get the default mounts when resetting or initializing a station.
+     *
+     * @return array
+     */
+    public static function getDefaultMounts(): array
+    {
+        return [
+            [
+                'name' => '/radio.mp3',
+                'is_default' => 1,
+                'enable_autodj' => 1,
+                'autodj_format' => 'mp3',
+                'autodj_bitrate' => 128,
+            ]
+        ];
+    }
+
+    /**
+     * @return bool Whether the station supports multiple mount points per station
+     */
+    public static function supportsMounts(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return bool Whether the station supports enhanced listener detail (per-client records)
+     */
+    public static function supportsListenerDetail(): bool
+    {
+        return true;
     }
 }

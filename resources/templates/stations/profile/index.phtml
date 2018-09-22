@@ -119,7 +119,7 @@ $assets
                     <td><?=__('Description') ?></td>
                     <td><?=$this->e($station->getDescription()) ?></td>
                 </tr>
-                <?php if ($backend->supportsRequests()): ?>
+                <?php if ($backend::supportsRequests()): ?>
                     <tr>
                         <td><?=__('Song Requests') ?></td>
                         <td>
@@ -136,7 +136,7 @@ $assets
                         </td>
                     </tr>
                 <? endif; ?>
-                <?php if ($backend->supportsStreamers()): ?>
+                <?php if ($backend::supportsStreamers()): ?>
                     <tr>
                         <td><?=__('Streamers/DJs') ?></td>
                         <td>
@@ -270,7 +270,7 @@ $assets
                 <tbody>
                     <tr>
                         <td><?=__('Administration URL') ?></td>
-                        <td><a href="<?=$this->e($frontend->getAdminUrl()) ?>"><?=$this->e($frontend->getAdminUrl()) ?></a></td>
+                        <td><a href="<?=$this->e($frontend->getAdminUrl($station)) ?>"><?=$this->e($frontend->getAdminUrl($station)) ?></a></td>
                     </tr>
                     <tr>
                         <td><?=__('Administrator Password') ?></td>

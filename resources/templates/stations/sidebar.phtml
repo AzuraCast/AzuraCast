@@ -38,7 +38,7 @@
         <a href="<?=$router->fromHere('stations:profile:index') ?>"><i class="zmdi zmdi-image"></i> <?=__('Profile') ?></a>
     </li>
 
-    <?php if ($acl->userAllowed($user, 'manage station media', $station->getId()) && $backend->supportsMedia()): ?>
+    <?php if ($acl->userAllowed($user, 'manage station media', $station->getId()) && $backend::supportsMedia()): ?>
         <li <?php if ($active_tab === 'files'): ?>class="active"<?php endif; ?>>
             <a href="<?=$router->fromHere('stations:files:index') ?>"><i class="zmdi zmdi-collection-music"></i> <?=__('Music Files') ?></a>
         </li>
@@ -47,13 +47,13 @@
         </li>
     <?php endif; ?>
 
-    <?php if ($acl->userAllowed($user, 'manage station streamers', $station->getId()) && $backend->supportsStreamers()): ?>
+    <?php if ($acl->userAllowed($user, 'manage station streamers', $station->getId()) && $backend::supportsStreamers()): ?>
         <li <?php if ($active_tab === 'streamers'): ?>class="active"<?php endif; ?>>
             <a href="<?=$router->fromHere('stations:streamers:index') ?>"><i class="zmdi zmdi-account"></i> <?=__('Streamer/DJ Accounts') ?></a>
         </li>
     <?php endif; ?>
 
-    <?php if ($acl->userAllowed($user, 'manage station mounts', $station->getId()) && $frontend->supportsMounts()): ?>
+    <?php if ($acl->userAllowed($user, 'manage station mounts', $station->getId()) && $frontend::supportsMounts()): ?>
         <li <?php if ($active_tab === 'mounts'): ?>class="active"<?php endif; ?>>
             <a href="<?=$router->fromHere('stations:mounts:index') ?>"><i class="zmdi zmdi-portable-wifi"></i> <?=__('Mount Points') ?></a>
         </li>
@@ -76,18 +76,18 @@
             <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i> <?=__('Reports') ?></a>
 
             <ul>
-            <?php if ($frontend->supportsListenerDetail()): ?>
+            <?php if ($frontend::supportsListenerDetail()): ?>
                 <li><a href="<?=$router->fromHere('stations:reports:listeners') ?>"><?=__('Listeners') ?></a></li>
             <?php endif; ?>
             <?php if ($station->getEnableRequests()): ?>
                 <li><a href="<?=$router->fromHere('stations:reports:requests') ?>"><?=__('Song Requests') ?></a></li>
             <?php endif; ?>
                 <li><a href="<?=$router->fromHere('stations:reports:timeline') ?>"><?=__('Song Playback Timeline') ?></a></li>
-            <?php if ($backend->supportsMedia()): ?>
+            <?php if ($backend::supportsMedia()): ?>
                 <li><a href="<?=$router->fromHere('stations:reports:performance') ?>"><?=__('Song Listener Impact') ?></a></li>
                 <li><a href="<?=$router->fromHere('stations:reports:duplicates') ?>"><?=__('Duplicate Songs') ?></a></li>
             <?php endif; ?>
-            <?php if ($frontend->supportsListenerDetail()): ?>
+            <?php if ($frontend::supportsListenerDetail()): ?>
                 <li><a href="<?=$router->fromHere('stations:reports:soundexchange') ?>"><?=__('SoundExchange Royalties') ?></a></li>
             <?php endif; ?>
             </ul>
@@ -98,7 +98,7 @@
         <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-settings"></i> <?=__('Utilities') ?></a>
 
         <ul>
-            <?php if ($acl->userAllowed($user, 'manage station automation', $station->getId()) && $backend->supportsMedia()): ?>
+            <?php if ($acl->userAllowed($user, 'manage station automation', $station->getId()) && $backend::supportsMedia()): ?>
                 <li><a href="<?=$router->fromHere('stations:automation:index') ?>"><?=__('Automated Assignment') ?></a></li>
             <?php endif; ?>
             <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>

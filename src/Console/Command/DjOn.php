@@ -47,7 +47,7 @@ class DjOn extends \App\Console\Command\CommandAbstract
         $adapter = $adapters->getBackendAdapter($station);
 
         if ($adapter instanceof Liquidsoap) {
-            $adapter->toggleLiveStatus(true);
+            $adapter->toggleLiveStatus($station, true);
         }
 
         $output->write('received');

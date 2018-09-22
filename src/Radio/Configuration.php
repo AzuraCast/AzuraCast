@@ -71,35 +71,35 @@ class Configuration
         $backend = $this->adapters->getBackendAdapter($station);
 
         // If no processes need to be managed, remove any existing config.
-        if (!$frontend->hasCommand() && !$backend->hasCommand()) {
+        if (!$frontend->hasCommand($station) && !$backend->hasCommand($station)) {
             @unlink($supervisor_config_path);
             $this->_reloadSupervisor();
             return;
         }
 
         // Write config files for both backend and frontend.
-        $frontend->write();
-        $backend->write();
+        $frontend->write($station);
+        $backend->write($station);
 
         // Get group information
-        $backend_name = $backend->getProgramName();
+        $backend_name = $backend->getProgramName($station);
         list($backend_group, $backend_program) = explode(':', $backend_name);
 
-        $frontend_name = $frontend->getProgramName();
+        $frontend_name = $frontend->getProgramName($station);
         list(,$frontend_program) = explode(':', $frontend_name);
 
-        $frontend_watch_name = $frontend->getWatchProgramName();
+        $frontend_watch_name = $frontend->getWatchProgramName($station);
         list(,$frontend_watch_program) = explode(':', $frontend_watch_name);
 
         // Write group section of config
         $programs = [];
-        if ($backend->hasCommand()) {
+        if ($backend->hasCommand($station)) {
             $programs[] = $backend_program;
         }
-        if ($frontend->hasCommand()) {
+        if ($frontend->hasCommand($station)) {
             $programs[] = $frontend_program;
         }
-        if ($frontend->hasWatchCommand()) {
+        if ($frontend->hasWatchCommand($station)) {
             $programs[] = $frontend_watch_program;
         }
 
@@ -108,28 +108,28 @@ class Configuration
         $supervisor_config[] = '';
 
         // Write frontend
-        if ($frontend->hasCommand()) {
+        if ($frontend->hasCommand($station)) {
             $this->_writeConfigurationSection($supervisor_config, $frontend_program, [
                 'directory' => $config_path,
-                'command' => $frontend->getCommand(),
+                'command' => $frontend->getCommand($station),
                 'priority' => 90,
             ]);
         }
 
         // Write frontend watcher program
-        if ($frontend->hasWatchCommand()) {
+        if ($frontend->hasWatchCommand($station)) {
             $this->_writeConfigurationSection($supervisor_config, $frontend_watch_program, [
                 'directory' => '/var/azuracast/servers/station-watcher',
-                'command' => $frontend->getWatchCommand(),
+                'command' => $frontend->getWatchCommand($station),
                 'priority' => 95,
             ]);
         }
 
         // Write backend
-        if ($backend->hasCommand()) {
+        if ($backend->hasCommand($station)) {
             $this->_writeConfigurationSection($supervisor_config, $backend_program, [
                 'directory' => $config_path,
-                'command' => $backend->getCommand(),
+                'command' => $backend->getCommand($station),
                 'priority' => 100,
             ]);
         }

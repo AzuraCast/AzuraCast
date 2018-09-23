@@ -21,14 +21,12 @@
         "doctrine/dbal": "^2.8",
         "doctrine/migrations": "^1.5",
         "doctrine/orm": "~2.6",
-        "electrolinux/phpquery": "0.9.6",
         "filp/whoops": "2.*",
         "gettext/gettext": "^4.4",
         "guzzlehttp/guzzle": ">6.0",
         "guzzlehttp/oauth-subscriber": "^0.3.0",
         "influxdb/influxdb-php": "^1.14.3",
         "james-heinrich/getid3": "dev-master",
-        "jdorn/sql-formatter": "^1.2",
         "league/plates": "^3.1",
         "lstrojny/fxmlrpc": "^0.14.0",
         "maxmind-db/reader": "~1.0",
@@ -43,8 +41,7 @@
         "supervisorphp/supervisor": "^3.0",
         "symfony/event-dispatcher": "^4.1",
         "symfony/finder": "^4.1",
-        "zendframework/zend-config": "^3.1.0",
-        "zendframework/zend-paginator": "^2.7"
+        "zendframework/zend-config": "^3.1.0"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",

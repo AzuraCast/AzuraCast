@@ -31,11 +31,13 @@ class StationPlaylistMediaRepository extends BaseRepository
         }
 
         // Only update existing record for random-order playlists.
-        if ($playlist->getOrder() === Entity\StationPlaylist::ORDER_RANDOM) {
+        if ($playlist->getOrder() !== Entity\StationPlaylist::ORDER_SEQUENTIAL) {
             $record = $this->findOneBy([
                 'media_id' => $media->getId(),
                 'playlist_id' => $playlist->getId(),
             ]);
+        } else {
+            $record = null;
         }
 
         if (($record instanceof Entity\StationPlaylistMedia)) {

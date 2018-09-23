@@ -11,7 +11,7 @@
 
   - name: Download IceCast-KH Source
     get_url:
-      url: https://github.com/karlheyes/icecast-kh/archive/icecast-2.4.0-kh7.tar.gz
+      url: https://github.com/karlheyes/icecast-kh/archive/icecast-2.4.0-kh10.tar.gz
       dest: "{{ app_base }}/servers/icecast2/icecast2.tar.gz"
 
   - name: Extract IceCast-KH Source
@@ -60,7 +60,7 @@
 
   - name: Build LiquidSoap
     become_user: azuracast
-    shell: "opam init -y && opam update && opam install -y taglib.0.3.3 mad.0.4.5 faad.0.3.3 fdkaac.0.2.1 lame.0.3.3 vorbis.0.7.0 cry.0.6.0 flac.0.1.2 opus.0.1.2 liquidsoap.1.3.3"
+    shell: "opam init -y && opam update && opam install -y taglib.0.3.3 mad.0.4.5 faad.0.4.0 fdkaac.0.2.1 lame.0.3.3 vorbis.0.7.0 cry.0.6.0 opus.0.1.2 flac.0.1.2 liquidsoap.1.3.4"
     args:
       chdir: "{{ app_base }}"
 

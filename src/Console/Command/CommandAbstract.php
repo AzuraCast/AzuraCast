@@ -21,4 +21,20 @@ abstract class CommandAbstract extends Command
 
         return $application->getService($service_name);
     }
+
+    /**
+     * @param OutputInterface $output
+     * @param $command_name
+     * @param array $command_args
+     * @throws \Exception
+     */
+    protected function runCommand(OutputInterface $output, $command_name, $command_args = [])
+    {
+        $command = $this->getApplication()->find($command_name);
+
+        $input = new ArrayInput(['command' => $command_name] + $command_args);
+        $input->setInteractive(false);
+
+        $command->run($input, $output);
+    }
 }

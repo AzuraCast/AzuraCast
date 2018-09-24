@@ -1,7 +1,11 @@
 <?php
 namespace App\Console;
 
+use App\Event\BuildConsoleCommands;
+use App\EventDispatcher;
 use Slim\Container;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class Application extends \Symfony\Component\Console\Application
 {
@@ -40,40 +44,17 @@ class Application extends \Symfony\Component\Console\Application
     }
 
     /**
-     * Register commands associated with this application.
+     * @inheritdoc
      */
-    public function registerAppCommands()
+    public function run(InputInterface $input = null, OutputInterface $output = null)
     {
-        $this->addCommands([
-            // Liquidsoap Internal CLI Commands
-            new Command\NextSong,
-            new Command\DjAuth,
-            new Command\DjOn,
-            new Command\DjOff,
+        /** @var EventDispatcher $dispatcher */
+        $dispatcher = $this->di[EventDispatcher::class];
 
-            // Locales
-            new Command\LocaleGenerate,
-            new Command\LocaleImport,
+        // Trigger an event for the core app and all plugins to build their CLI commands.
+        $event = new BuildConsoleCommands($this);
+        $dispatcher->dispatch(BuildConsoleCommands::NAME, $event);
 
-            // Setup
-            new Command\MigrateConfig,
-            new Command\SetupInflux,
-            new Command\SetupFixtures,
-            new Command\Setup,
-
-            // Maintenance
-            new Command\ClearCache,
-            new Command\RestartRadio,
-            new Command\Sync,
-            new Command\ReprocessMedia,
-
-            new Command\GenerateApiDocs,
-            new Command\UptimeWait,
-
-            // User-side tools
-            new Command\ResetPassword,
-            new Command\ListSettings,
-            new Command\SetSetting,
-        ]);
+        return parent::run($input, $output);
     }
 }

@@ -1,28 +1,11 @@
-<?php $this->layout('main', ['title' => __('Custom Branding')]); ?>
-
 <?php
 /** @var \App\Assets $assets */
 $assets
-    ->load('codemirror_css');
-?>
+    ->load('codemirror_css')
+    ->addInlineJs($this->fetch('admin/branding/index.js'), 99);
 
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-    $(function() {
-
-        $('textarea.css-editor').each(function() {
-            CodeMirror.fromTextArea($(this)[0], {
-                lineNumbers: true,
-                theme: '<?=(($customization->getTheme() === 'light') ? 'default' : 'material') ?>'
-            });
-        });
-
-        $('textarea.js-editor').each(function() {
-            CodeMirror.fromTextArea($(this)[0], {
-                lineNumbers: true,
-                theme: '<?=(($customization->getTheme() === 'light') ? 'default' : 'material') ?>'
-            });
-        });
-    });
-</script>
-
-<?=$form->render() ?>
+echo $this->fetch('system/form_page', [
+    'title' => __('Custom Branding'),
+    'form' => $form,
+    'render_mode' => 'edit'
+]);

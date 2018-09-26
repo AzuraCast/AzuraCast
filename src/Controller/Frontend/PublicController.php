@@ -47,11 +47,13 @@ class PublicController
 
     public function playlistAction(Request $request, Response $response): Response
     {
+        $station = $request->getStation();
         $fa = $request->getStationFrontend();
 
-        $stream_urls = $fa->getStreamUrls($request->getStation());
+        $stream_urls = $fa->getStreamUrls($station);
 
         $format = strtolower($request->getParam('format', 'pls'));
+
         switch ($format) {
             // M3U Playlist Format
             case "m3u":
@@ -59,6 +61,7 @@ class PublicController
 
                 return $response
                     ->withHeader('Content-Type', 'audio/x-mpegurl')
+                    ->withHeader('Content-Disposition', 'attachment; filename='.$station->getShortName().'.m3u')
                     ->write($m3u_file);
                 break;
 
@@ -82,6 +85,7 @@ class PublicController
 
                 return $response
                     ->withHeader('Content-Type', 'audio/x-scpls')
+                    ->withHeader('Content-Disposition', 'attachment; filename='.$station->getShortName().'.pls')
                     ->write(implode("\n", $output));
                 break;
         }

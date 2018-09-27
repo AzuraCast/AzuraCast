@@ -13,7 +13,7 @@ class Station extends AbstractFixture
         $station = new Entity\Station;
         $station->setName('AzuraTest Radio');
         $station->setDescription('A test radio station.');
-        $station->setFrontendType(Adapters::FRONTEND_SHOUTCAST);
+        $station->setFrontendType(Adapters::FRONTEND_ICECAST);
         $station->setBackendType(Adapters::BACKEND_LIQUIDSOAP);
         $station->setRadioBaseDir('/var/azuracast/stations/azuratest_radio');
 

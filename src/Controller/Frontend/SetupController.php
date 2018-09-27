@@ -5,6 +5,7 @@ use App\Acl;
 use App\Auth;
 use App\Radio\Adapters;
 use App\Radio\Configuration;
+use App\Radio\Frontend\SHOUTcast;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
@@ -146,6 +147,10 @@ class SetupController
         $form_config = $this->station_form_config;
         unset($form_config['groups']['admin']);
         unset($form_config['groups']['profile']['legend']);
+
+        if (!SHOUTcast::isInstalled()) {
+            $form_config['groups']['select_frontend_type']['elements']['frontend_type'][1]['description'] = __('Want to use SHOUTcast 2? <a href="%s" target="_blank">Install it here</a>, then reload this page.', $request->getRouter()->named('admin:install:shoutcast'));
+        }
 
         $form = new \AzuraForms\Form($form_config);
 

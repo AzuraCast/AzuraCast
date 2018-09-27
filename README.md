@@ -52,7 +52,8 @@ Whether you're using the traditional installer or Docker containers, AzuraCast w
 
 * **[Liquidsoap](https://www.liquidsoap.info/)** as the always-playing "AutoDJ"
 * **[Icecast 2.4](https://icecast.org/)** as a radio broadcasting frontend (Icecast-KH installed on supported platforms)
-* **[SHOUTcast 2 DNAS](http://wiki.shoutcast.com/wiki/SHOUTcast_DNAS_Server_2)** as an alternative radio frontend (x86/x64 only)
+
+For x86/x64 installations, [SHOUTcast 2 DNAS](http://wiki.shoutcast.com/wiki/SHOUTcast_DNAS_Server_2) can also be used as a broadcasting frontend. SHOUTcast is non-free software and does not come bundled with AzuraCast, but can be installed via the administration panel after AzuraCast has been installed.
 
 #### Supporting Software
 

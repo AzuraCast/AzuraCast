@@ -14,6 +14,13 @@ return function(\Slim\App $app)
             ->setName('admin:index:sync')
             ->add([Middleware\Permissions::class, 'administer all']);
 
+        $this->group('/install', function () {
+
+            $this->map(['GET', 'POST'], '/shoutcast', Controller\Admin\Install\ShoutcastController::class)
+                ->setName('admin:install:shoutcast');
+
+        })->add([Middleware\Permissions::class, 'administer all']);
+
         $this->group('/api', function () {
 
             $this->get('', Controller\Admin\ApiController::class.':indexAction')

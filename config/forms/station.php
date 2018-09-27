@@ -2,13 +2,13 @@
 use App\Entity\Station;
 use App\Radio\Adapters;
 
-$frontends = Adapters::listFrontendAdapters();
+$frontends = Adapters::listFrontendAdapters(true);
 $frontend_types = [];
 foreach ($frontends as $adapter_nickname => $adapter_info) {
     $frontend_types[$adapter_nickname] = $adapter_info['name'];
 }
 
-$backends = Adapters::listBackendAdapters();
+$backends = Adapters::listBackendAdapters(true);
 $backend_types = [];
 foreach ($backends as $adapter_nickname => $adapter_info) {
     $backend_types[$adapter_nickname] = $adapter_info['name'];

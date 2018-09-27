@@ -21,6 +21,7 @@ class Plugins
         $plugins = (new Finder())
             ->ignoreUnreadableDirs()
             ->directories()
+            ->depth('== 0')
             ->in($dir);
 
         foreach($plugins as $plugin_dir) {

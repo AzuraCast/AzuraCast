@@ -16,11 +16,12 @@ services:
       MYSQL_PASSWORD: "azur4c457"   # ^
       MYSQL_DATABASE: "azuracast"   # ^
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      AZURACAST_DC_REVISION: 2      # Only modified when this Docker Compose file has changed.
+      AZURACAST_DC_REVISION: 3      # Only modified when this Docker Compose file has changed.
     volumes:
       - www_data:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
+      - shoutcast2_install:/var/azuracast/servers/shoutcast2
     init: true
     restart: always
 
@@ -100,7 +101,7 @@ services:
 
   stations:
     container_name: azuracast_stations
-    image: azuracast/azuracast_stations:latest
+    image: azuracast/azuracast_radio:latest
     ports:
     # Uncomment the line below to expose the full range of available station ports.
     # Note: This is not recommended currently due to performance and memory usage problems with Docker.
@@ -134,6 +135,7 @@ services:
      - '8096:8096'
     volumes:
      - station_data:/var/azuracast/stations
+     - shoutcast2_install:/var/azuracast/servers/shoutcast2
      - nginx_letsencrypt_certs:/etc/nginx/ssl:ro
     init: true
     restart: always
@@ -144,5 +146,6 @@ volumes:
   db_data: {}
   influx_data: {}
   station_data: {}
+  shoutcast2_install: {}
   www_data: {}
   tmp_data: {}

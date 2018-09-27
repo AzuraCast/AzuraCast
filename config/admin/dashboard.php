@@ -52,6 +52,11 @@ return [
                 'icon' => 'zmdi zmdi-format-list-bulleted',
                 'permission' => 'administer custom fields',
             ],
+            __('Install SHOUTcast') => [
+                'url' => 'admin:install:shoutcast',
+                'icon' => 'zmdi zmdi-upload',
+                'permission' => 'administer all',
+            ],
         ],
     ],
 ];

@@ -203,10 +203,13 @@ class SHOUTcast extends FrontendAbstract
     {
         $new_path = dirname(APP_INCLUDE_ROOT) . '/servers/shoutcast2/sc_serv';
 
-        if (APP_INSIDE_DOCKER || file_exists($new_path)) {
+        // Docker versions before 3 included the SC binary across the board.
+        if (APP_INSIDE_DOCKER && APP_DOCKER_REVISION < 3) {
             return $new_path;
         }
 
-        return false;
+        return file_exists($new_path)
+            ? $new_path
+            : false;
     }
 }

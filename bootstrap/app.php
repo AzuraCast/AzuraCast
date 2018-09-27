@@ -39,6 +39,8 @@ if (APP_INSIDE_DOCKER) {
 define('APP_APPLICATION_ENV', $_ENV['application_env'] ?? $_ENV['APPLICATION_ENV'] ?? 'production');
 define('APP_IN_PRODUCTION', APP_APPLICATION_ENV === 'production');
 
+define('APP_DOCKER_REVISION', $_ENV['AZURACAST_DC_REVISION'] ?? 1);
+
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
     $_SERVER['HTTPS'] = (strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https');
 }

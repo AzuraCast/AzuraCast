@@ -127,7 +127,7 @@ class Adapters
     /**
      * @return array
      */
-    public static function listFrontendAdapters(): array
+    public static function listFrontendAdapters($check_installed = false): array
     {
         static $adapters;
 
@@ -146,8 +146,10 @@ class Adapters
                     'class' => Frontend\Remote::class,
                 ],
             ];
+        }
 
-            $adapters = array_filter($adapters, function($adapter_info) {
+        if ($check_installed) {
+            return array_filter($adapters, function($adapter_info) {
                 /** @var \App\Radio\AdapterAbstract $adapter_class */
                 $adapter_class = $adapter_info['class'];
                 return $adapter_class::isInstalled();
@@ -160,7 +162,7 @@ class Adapters
     /**
      * @return array
      */
-    public static function listBackendAdapters(): array
+    public static function listBackendAdapters($check_installed = false): array
     {
         static $adapters;
 
@@ -175,8 +177,10 @@ class Adapters
                     'class' => Backend\None::class,
                 ],
             ];
+        }
 
-            $adapters = array_filter($adapters, function ($adapter_info) {
+        if ($check_installed) {
+            return array_filter($adapters, function ($adapter_info) {
                 /** @var \App\Radio\AdapterAbstract $adapter_class */
                 $adapter_class = $adapter_info['class'];
                 return $adapter_class::isInstalled();

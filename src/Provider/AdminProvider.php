@@ -112,5 +112,14 @@ class AdminProvider implements ServiceProviderInterface
                 ])
             );
         };
+
+        $di[Admin\Install\ShoutcastController::class] = function($di) {
+            /** @var \App\Config $config */
+            $config = $di[\App\Config::class];
+
+            return new Admin\Install\ShoutcastController(
+                $config->get('forms/install_shoutcast')
+            );
+        };
     }
 }

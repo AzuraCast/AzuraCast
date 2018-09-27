@@ -63,25 +63,3 @@
     shell: "opam init -y && opam update && opam install -y taglib.0.3.3 mad.0.4.5 faad.0.4.0 fdkaac.0.2.1 lame.0.3.3 vorbis.0.7.0 cry.0.6.0 opus.0.1.2 flac.0.1.2 liquidsoap.1.3.4"
     args:
       chdir: "{{ app_base }}"
-
-  - name: Download ShoutCast 2 (x86)
-    get_url:
-      url: http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux-latest.tar.gz
-      dest: "{{ app_base }}/servers/shoutcast2/sc_serv.tar.gz"
-    when: ansible_architecture == 'i386'
-
-  - name: Download ShoutCast 2 (x64)
-    get_url:
-      url: http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz
-      dest: "{{ app_base }}/servers/shoutcast2/sc_serv.tar.gz"
-    when: ansible_architecture == 'x86_64'
-
-  - name: Extract ShoutCast 2 Binary
-    unarchive:
-      src: "{{ app_base }}/servers/shoutcast2/sc_serv.tar.gz"
-      dest: "{{ app_base }}/servers/shoutcast2"
-      remote_src: yes
-      mode: "u=rwx,g=rx,o=rx"
-      owner: "azuracast"
-      group: "www-data"
-      # creates: "{{ app_base }}/servers/shoutcast2/sc_serv"

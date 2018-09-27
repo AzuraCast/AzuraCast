@@ -4,7 +4,7 @@ services:
   web:
     image: azuracast/azuracast_web:latest
     build:
-      context: ../docker-azuracast-web
+      context: ./util/docker/web
     depends_on:
       - mariadb
       - influxdb
@@ -18,11 +18,12 @@ services:
       MYSQL_PASSWORD: "azur4c457"   # ^
       MYSQL_DATABASE: "azuracast"   # ^
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      AZURACAST_DC_REVISION: 2      # Only modified when this Docker Compose file has changed.
+      AZURACAST_DC_REVISION: 3      # Only modified when this Docker Compose file has changed.
     volumes:
       - .:/var/azuracast/www
       - tmp_data:/var/azuracast/www_tmp
       - station_data:/var/azuracast/stations
+      - shoutcast2_install:/var/azuracast/servers/shoutcast2
     init: true
     restart: always
 
@@ -121,9 +122,9 @@ services:
 
   stations:
     container_name: azuracast_stations
-    image: azuracast/azuracast_stations:latest
+    image: azuracast/azuracast_radio:latest
     build:
-      context: ../docker-azuracast-stations
+      context: ../docker-azuracast-radio
     ports:
      - '8000:8000'
      - '8005:8005'
@@ -143,6 +144,7 @@ services:
     volumes:
      - station_data:/var/azuracast/stations
      - nginx_letsencrypt_certs:/etc/nginx/ssl:ro
+     - shoutcast2_install:/var/azuracast/servers/shoutcast2
     init: true
     restart: always
 
@@ -168,10 +170,17 @@ services:
     ports:
     - "127.0.0.1:8081:8081"
 
+  blackfire:
+    image: blackfire/blackfire
+    environment:
+      BLACKFIRE_SERVER_ID: ""
+      BLACKFIRE_SERVER_TOKEN: ""
+
 volumes:
   nginx_letsencrypt_certs: {}
   nginx_letsencrypt_www: {}
   db_data: {}
   influx_data: {}
   station_data: {}
+  shoutcast2_install: {}
   tmp_data: {}

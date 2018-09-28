@@ -31,7 +31,8 @@ class ApiProvider implements ServiceProviderInterface
         $di[Api\NowplayingController::class] = function($di) {
             return new Api\NowplayingController(
                 $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class]
+                $di[\App\Cache::class],
+                $di[\App\EventDispatcher::class]
             );
         };
 

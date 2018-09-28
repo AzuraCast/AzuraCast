@@ -35,6 +35,8 @@ class Local extends AbstractConnector
 
     public function dispatch(SendWebhooks $event, array $config): void
     {
+        $np = $event->getNowPlaying();
+
         $this->logger->debug('Writing entry to InfluxDB...');
 
         // Post statistics to InfluxDB.
@@ -46,7 +48,7 @@ class Local extends AbstractConnector
             time()
         );
 
-        $this->influx->writePoints([$influx_point], \InfluxDB\Database::PRECISION_SECONDS);
+        $this->influx->writePoints([$influx_point], Database::PRECISION_SECONDS);
 
         // Replace the relevant station information in the cache and database.
         $this->logger->debug('Updating NowPlaying cache...');
@@ -54,25 +56,18 @@ class Local extends AbstractConnector
         $np_full = $this->cache->get('api_nowplaying_data');
 
         if ($np_full) {
-            foreach($np_full as &$np_row) {
-                /** @var Entity\Api\NowPlaying $np_row */
-                if ($np_row->station->id === $event->getStation()->getId()) {
-                    $np_row = $np;
+            $np_new = [];
+            foreach($np_full as $np_old) {
+                /** @var Entity\Api\NowPlaying $np_old */
+                if ($np_old->station->id === $event->getStation()->getId()) {
+                    $np_new[] = $np;
+                } else {
+                    $np_new[] = $np_old;
                 }
-
-                $np_row->cache = 'hit';
             }
-            unset($np_row);
 
-            $this->cache->save($np_full, 'api_nowplaying_data', 120);
-
-            foreach ($np_full as &$np_row) {
-                /** @var Entity\Api\NowPlaying $np_row */
-                $np_row->cache = 'database';
-            }
-            unset($np_row);
-
-            $this->settings_repo->setSetting('nowplaying', $np_full);
+            $this->cache->save($np_new, 'api_nowplaying_data', 120);
+            $this->settings_repo->setSetting('nowplaying', $np_new);
         }
     }
 }

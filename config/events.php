@@ -102,6 +102,7 @@ return function (\App\EventDispatcher $dispatcher)
         \App\Radio\Backend\Liquidsoap::class,
         \App\Sync\Task\NowPlaying::class,
         \App\Webhook\Dispatcher::class,
+        \App\Controller\Api\NowplayingController::class,
     ]);
 
 };

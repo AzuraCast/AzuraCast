@@ -2,12 +2,15 @@
 namespace App\Controller\Api;
 
 use App\Cache;
+use App\Event\Radio\LoadNowPlaying;
+use App\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class NowplayingController
+class NowplayingController implements EventSubscriberInterface
 {
     /** @var EntityManager */
     protected $em;
@@ -15,15 +18,50 @@ class NowplayingController
     /** @var Cache */
     protected $cache;
 
+    /** @var EventDispatcher */
+    protected $dispatcher;
+
     /**
      * @param EntityManager $em
      * @param Cache $cache
+     * @param EventDispatcher $dispatcher
+     *
      * @see \App\Provider\ApiProvider
      */
-    public function __construct(EntityManager $em, Cache $cache)
+    public function __construct(EntityManager $em, Cache $cache, EventDispatcher $dispatcher)
     {
         $this->em = $em;
         $this->cache = $cache;
+        $this->dispatcher = $dispatcher;
+    }
+
+    /**
+     * Returns an array of event names this subscriber wants to listen to.
+     *
+     * The array keys are event names and the value can be:
+     *
+     *  * The method name to call (priority defaults to 0)
+     *  * An array composed of the method name to call and the priority
+     *  * An array of arrays composed of the method names to call and respective
+     *    priorities, or 0 if unset
+     *
+     * For instance:
+     *
+     *  * array('eventName' => 'methodName')
+     *  * array('eventName' => array('methodName', $priority))
+     *  * array('eventName' => array(array('methodName1', $priority), array('methodName2')))
+     *
+     * @return array The event names to listen to
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            LoadNowPlaying::NAME => [
+                ['loadFromCache', 5],
+                ['loadFromSettings', 0],
+                ['loadFromStations', -5],
+            ]
+        ];
     }
 
     /**
@@ -61,23 +99,15 @@ class NowplayingController
             ->withHeader('Cache-Control', 'public, max-age=15')
             ->withHeader('X-Accel-Expires', 15); // CloudFlare caching
 
-        // Pull from cache, or load from flatfile otherwise.
-        /** @var Entity\Api\NowPlaying[] $np */
-        $np = $this->cache->get('api_nowplaying_data', function () {
-            $nowplaying_db = $this->em->createQuery('SELECT s.nowplaying FROM '.Entity\Station::class.' s WHERE s.is_enabled = 1')
-                ->getArrayResult();
+        // Pull NP data from the fastest/first available source using the EventDispatcher.
+        $event = new LoadNowPlaying();
+        $this->dispatcher->dispatch(LoadNowPlaying::NAME, $event);
 
-            $np = [];
-            foreach($nowplaying_db as $np_row) {
-                $np[] = $np_row['nowplaying'];
-            }
-            return $np;
-        });
-
-        // Sanity check for now playing data.
-        if (empty($np)) {
-            return $response->withJson('Now Playing data has not loaded into the cache. Wait for file reload.', 500);
+        if (!$event->hasNowPlaying()) {
+            return $response->withJson('Now Playing data has not loaded yet. Please try again later.', 408);
         }
+
+        $np = $event->getNowPlaying();
 
         if (!empty($id)) {
             foreach ($np as $np_row) {
@@ -102,5 +132,31 @@ class NowplayingController
         }
 
         return $response->withJson($np);
+    }
+
+    public function loadFromCache(LoadNowPlaying $event)
+    {
+        $event->setNowPlaying((array)$this->cache->get('api_nowplaying_data'), 'redis');
+    }
+
+    public function loadFromSettings(LoadNowPlaying $event)
+    {
+        /** @var Entity\Repository\SettingsRepository $settings_repo */
+        $settings_repo = $this->em->getRepository(Entity\Settings::class);
+
+        $event->setNowPlaying((array)$settings_repo->getSetting('nowplaying'), 'settings');
+    }
+
+    public function loadFromStations(LoadNowPlaying $event)
+    {
+        $nowplaying_db = $this->em->createQuery('SELECT s.nowplaying FROM '.Entity\Station::class.' s WHERE s.is_enabled = 1')
+            ->getArrayResult();
+
+        $np = [];
+        foreach($nowplaying_db as $np_row) {
+            $np[] = $np_row['nowplaying'];
+        }
+
+        $event->setNowPlaying($np, 'station');
     }
 }

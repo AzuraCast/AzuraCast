@@ -8,7 +8,6 @@ use App\EventDispatcher;
 use App\Radio\AutoDJ;
 use App\ApiUtilities;
 use App\Radio\Adapters;
-use App\Radio\Remote\RemoteAbstract;
 use Doctrine\ORM\EntityManager;
 use InfluxDB\Database;
 use App\Entity;
@@ -147,15 +146,7 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
         }
 
         // Generate API cache.
-        foreach ($nowplaying as $station => $np_info) {
-            $nowplaying[$station]->cache = 'hit';
-        }
-
         $this->cache->save($nowplaying, 'api_nowplaying_data', 120);
-
-        foreach ($nowplaying as $station => $np_info) {
-            $nowplaying[$station]->cache = 'database';
-        }
 
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
@@ -166,10 +157,11 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
     /**
      * @return Entity\Api\NowPlaying[]
      */
-    protected function _loadNowPlaying($force = false)
+    protected function _loadNowPlaying($force = false): array
     {
         $stations = $this->em->getRepository(Entity\Station::class)
             ->findBy(['is_enabled' => 1]);
+
         $nowplaying = [];
 
         foreach ($stations as $station) {
@@ -178,12 +170,15 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
 
             if ($last_run >= (time()-10) && !$force) {
                 $np = $station->getNowplaying();
-                $np->update();
 
-                $nowplaying[] = $np;
-            } else {
-                $nowplaying[] = $this->processStation($station);
+                if ($np instanceof Entity\Api\NowPlaying) {
+                    $np->update();
+                    $nowplaying[] = $np;
+                    continue;
+                }
             }
+
+            $nowplaying[] = $this->processStation($station);
         }
 
         return $nowplaying;
@@ -199,7 +194,7 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Exception
      */
-    public function processStation(Entity\Station $station, $payload = null)
+    public function processStation(Entity\Station $station, $payload = null): Entity\Api\NowPlaying
     {
         $this->logger->pushProcessor(function($record) use ($station) {
             $record['extra']['station'] = [
@@ -293,7 +288,6 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
         }
 
         $np->update();
-        $np->cache = 'station';
 
         $station->setNowplaying($np);
 

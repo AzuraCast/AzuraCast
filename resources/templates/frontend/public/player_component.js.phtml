@@ -1,3 +1,21 @@
+<?php
+/** @var \App\Customization $customization */
+$vue_data_model = [
+    'np' => [
+        'now_playing' => [
+            'song' => [
+                'title' => __('Song Title'),
+                'artist' => __('Song Artist'),
+                'art' => $customization->getDefaultAlbumArtUrl(),
+            ],
+            'is_request' => false,
+            'elapsed' => 0,
+            'duration' => 0,
+        ]
+    ]
+];
+?>
+
 var nowPlaying;
 
 function iterateTimer() {
@@ -30,8 +48,8 @@ function formatTime(time) {
 
 $(function() {
     nowPlaying = new Vue({
-        el: '#profile-nowplaying',
-        data: <?=json_encode(['np' => $nowplaying]) ?>,
+        el: '#station-nowplaying',
+        data: <?=$this->escapeJs($vue_data_model) ?>,
         computed: {
             "time_display": function() {
                 var time_played = this.np.now_playing.elapsed;
@@ -51,45 +69,4 @@ $(function() {
     });
 
     setInterval(iterateTimer, 1000);
-
-    function loadNowPlaying() {
-        $.getJSON('<?=$router->fromHere('api:nowplaying:index') ?>', function(row) {
-            nowPlaying.np = row;
-
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: row.now_playing.song.title,
-                    artist: row.now_playing.song.artist
-                });
-            }
-
-            setTimeout(loadNowPlaying, 15000);
-        }).fail(function() {
-            setTimeout(loadNowPlaying, 30000);
-        });
-    }
-
-    setTimeout(loadNowPlaying, 15000);
-
-    $('#btn_skip_song,#btn_disconnect_streamer').on('click', function(e) {
-        e.stopPropagation();
-        var btn = $(this);
-
-        btn.addClass('disabled');
-
-        $.ajax({
-            type: "POST",
-            url: btn.attr('href'),
-            success: function(data) {
-                var notify_type = (data.success) ? 'success' : 'warning';
-                notify(data.message, notify_type);
-
-                btn.removeClass('disabled');
-            },
-            dataType: "json"
-        });
-
-        return false;
-    });
-
 });

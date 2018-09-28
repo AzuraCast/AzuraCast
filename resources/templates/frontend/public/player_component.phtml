@@ -1,20 +1,6 @@
 <?php
-/** @var \App\Customization $customization */
-
-$vue_data_model = [
-    'np' => [
-        'now_playing' => [
-            'song' => [
-                'title' => __('Song Title'),
-                'artist' => __('Song Artist'),
-                'art' => $customization->getDefaultAlbumArtUrl(),
-            ],
-            'is_request' => false,
-            'elapsed' => 0,
-            'duration' => 0,
-        ]
-    ]
-];
+/** @var \App\Assets $assets */
+$assets->addInlineJs($this->fetch('frontend/public/player_component.js'), 95);
 ?>
 <div class="media media-left" id="station-nowplaying">
     <div class="pull-left p-r-10 p-t-5">
@@ -39,60 +25,3 @@ $vue_data_model = [
         </div>
     </div>
 </div>
-
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-var nowPlaying;
-
-function iterateTimer() {
-    var np_elapsed = nowPlaying.np.now_playing.elapsed;
-    var np_total = nowPlaying.np.now_playing.duration;
-
-    if (np_elapsed < np_total) {
-        nowPlaying.np.now_playing.elapsed = np_elapsed + 1;
-    }
-}
-
-function formatTime(time) {
-    var sec_num = parseInt(time, 10);
-
-    var hours = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-    if (hours < 10) {
-        hours = "0" + hours;
-    }
-    if (minutes < 10) {
-        minutes = "0" + minutes;
-    }
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
-    return (hours !== "00" ? hours + ':' : "") + minutes + ':' + seconds;
-}
-
-$(function() {
-    nowPlaying = new Vue({
-        el: '#station-nowplaying',
-        data: <?=$this->escapeJs($vue_data_model) ?>,
-        computed: {
-            "time_display": function() {
-                var time_played = this.np.now_playing.elapsed;
-                var time_total = this.np.now_playing.duration;
-
-                if (!time_total) {
-                    return null;
-                }
-
-                if (time_played > time_total) {
-                    time_played = time_total;
-                }
-
-                return formatTime(time_played) + ' / ' + formatTime(time_total);
-            }
-        }
-    });
-
-    setInterval(iterateTimer, 1000);
-});
-</script>

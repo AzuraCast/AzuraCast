@@ -8,7 +8,9 @@ $this->layout('minimal', [
 ]);
 
 /** @var \App\Assets $assets */
-$assets->load('bootgrid');
+$assets
+    ->load('bootgrid')
+    ->addInlineJs($this->fetch('frontend/public/embedrequests.js', ['station' => $station]));
 ?>
 
 <table class="data-table table table-striped" id="requests-table">
@@ -23,44 +25,3 @@ $assets->load('bootgrid');
     </thead>
     <tbody></tbody>
 </table>
-
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-$(function() {
-    var grid = $("#requests-table").bootgrid({
-        ajax: true,
-        rowSelect: false,
-        caseSensitive: false,
-        css: {
-            icon: 'zmdi icon',
-            iconColumns: 'zmdi-view-module',
-            iconDown: 'zmdi-sort-amount-desc',
-            iconRefresh: 'zmdi-refresh',
-            iconUp: 'zmdi-sort-amount-asc'
-        },
-        url: "<?=$router->named('api:requests:list', ['station' => $station->getId()]) ?>",
-        formatters: {
-            "commands": function(column, row) {
-                return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=__('Request') ?></a>';
-            }
-        }
-    }).on("loaded.rs.jquery.bootgrid", function()
-    {
-        /* Executes after data is loaded and rendered */
-        grid.find(".btn-request").on("click", function(e)
-        {
-            e.preventDefault();
-
-            $.ajax({
-                dataType: "json",
-                url: $(this).data('url')
-            }).done(function(data) {
-                notify(data, 'success');
-            }).fail(function(jqXhr) {
-                notify('Error: ' + jqXhr.responseJSON, 'danger');
-            });
-
-            return false;
-        });
-    });
-});
-</script>

@@ -1,0 +1,90 @@
+$(function() {
+    songHistory = new Vue({
+        el: '#station-history',
+        data: {
+            history: [
+                {
+                    song: {
+                        title: '<?= __('Song Title') ?>',
+                        artist: '<?= __('Song Artist') ?>'
+                    }
+                }
+            ]
+        }
+    });
+
+    function loadNowPlaying() {
+        $.getJSON('<?=$router->named('api:nowplaying:index', ['station' => $station->getId()]) ?>', function(row) {
+            nowPlaying.np = row;
+            songHistory.history = row.song_history;
+
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: row.now_playing.song.title,
+                    artist: row.now_playing.song.artist,
+                    artwork: [
+                        { src: row.now_playing.song.art }
+                    ]
+                });
+            }
+
+            setTimeout(loadNowPlaying, 15000);
+        }).fail(function() {
+            setTimeout(loadNowPlaying, 30000);
+        });
+    }
+    loadNowPlaying();
+
+    $('[data-fancybox]').fancybox({
+        buttons: ['close']
+    });
+});
+
+var request_dialog = $('#modal-request');
+
+request_dialog.on('show.bs.modal', function (event) {
+
+    if (!request_dialog.data('request_loaded'))
+    {
+        var grid = $("#requests-table").bootgrid({
+            ajax: true,
+            rowSelect: false,
+            caseSensitive: false,
+            css: {
+                icon: 'zmdi icon',
+                iconColumns: 'zmdi-view-module',
+                iconDown: 'zmdi-sort-amount-desc',
+                iconRefresh: 'zmdi-refresh',
+                iconUp: 'zmdi-sort-amount-asc'
+            },
+            url: "<?=$router->named('api:requests:list', ['station' => $station->getId()]) ?>",
+            formatters: {
+                "commands": function(column, row) {
+                    return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=__('Request') ?></a>';
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function()
+        {
+            /* Executes after data is loaded and rendered */
+            grid.find(".btn-request").on("click", function(e)
+            {
+                e.preventDefault();
+                request_dialog.modal('hide');
+
+                $.ajax({
+                    dataType: "json",
+                    url: $(this).data('url')
+                }).done(function(data) {
+                    notify(data, 'success');
+                }).fail(function(jqXhr) {
+                    notify('Error: ' + jqXhr.responseJSON, 'danger');
+                });
+
+                return false;
+            });
+        });
+
+        request_dialog.data('request_loaded', true);
+    }
+
+});

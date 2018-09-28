@@ -1,0 +1,86 @@
+$(function () {
+    Highcharts.setOptions({
+        global: {
+            timezoneOffset: <?=\App\Timezone::getOffsetMinutes() ?>,
+            useUTC: false
+        }
+    });
+
+    var datetime_axis = {
+        type: 'datetime',
+        labels: {
+            formatter: function () {
+                return Highcharts.dateFormat('%a %d %b', this.value);
+            },
+            dateTimeLabelFormats: {
+                minute: '%H:%M',
+                hour: '%H:%M',
+                day: '%e. %b',
+                week: '%e. %b',
+                month: '%b \'%y',
+                year: '%Y'
+            }
+        }
+    };
+
+    $('#network_chart').highcharts({
+        chart: { zoomType: 'x' },
+        title: {text: ''},
+        xAxis: datetime_axis,
+        plotOptions: {
+            spline: {
+                marker: { enabled: false }
+            }
+        },
+        yAxis: {
+            title: {
+                text: <?=$this->escapeJs(__('Listeners')) ?>
+            },
+            min: 0
+        },
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            xDateFormat: '%Y-%m-%d'
+        },
+        colors: [
+            '#AEE1FF',
+            '#0091E5',
+            '#FFA6A6',
+            '#8C0000'
+        ],
+
+        series: <?=$metrics['network'] ?>
+    });
+
+    $('#station_chart').highcharts({
+        chart: { zoomType: 'x' },
+        title: {text: ''},
+        xAxis: datetime_axis,
+        plotOptions: {
+            spline: {
+                lineWidth: 1,
+                marker: { enabled: false },
+                shadow: false,
+                states: {
+                    hover: {
+                        lineWidth: 3
+                    }
+                },
+                threshold: null
+            }
+        },
+        yAxis: {
+            title: {
+                text: <?=$this->escapeJs(__('Listeners')) ?>
+            },
+            min: 0
+        },
+        tooltip: {
+            crosshairs: true,
+            xDateFormat: '%Y-%m-%d'
+        },
+
+        series: <?=$metrics['station'] ?>
+    });
+});

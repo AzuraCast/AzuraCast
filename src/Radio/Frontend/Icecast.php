@@ -139,7 +139,7 @@ class Icecast extends FrontendAbstract
         return '/bin/false';
     }
 
-    public function getAdminUrl(Entity\Station $station): string
+    public function getAdminUrl(Entity\Station $station): ?string
     {
         return $this->getPublicUrl($station) . '/admin.html';
     }

@@ -88,7 +88,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         return 'station_' . $station->getId() . ':station_' . $station->getId() . '_frontend';
     }
 
-    public function getStreamUrl(Entity\Station $station): string
+    public function getStreamUrl(Entity\Station $station): ?string
     {
         $mount_repo = $this->em->getRepository(Entity\StationMount::class);
         $default_mount = $mount_repo->getDefaultMount($station);
@@ -115,7 +115,7 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         ) . '?' . time();
     }
 
-    abstract public function getAdminUrl(Entity\Station $station): string;
+    abstract public function getAdminUrl(Entity\Station $station): ?string;
 
     public function getPublicUrl(Entity\Station $station): string
     {

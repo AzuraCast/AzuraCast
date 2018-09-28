@@ -20,9 +20,9 @@ class Remote extends FrontendAbstract
         return true;
     }
 
-    public function getStreamUrl(Entity\Station $station): string
+    public function getStreamUrl(Entity\Station $station): ?string
     {
-        return '';
+        return null;
     }
 
     public function getStreamUrls(Entity\Station $station): array
@@ -30,7 +30,7 @@ class Remote extends FrontendAbstract
         return [];
     }
 
-    public function getAdminUrl(Entity\Station $station): string
+    public function getAdminUrl(Entity\Station $station): ?string
     {
         return '';
     }

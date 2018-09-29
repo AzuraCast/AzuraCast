@@ -11,6 +11,11 @@ class C04_Station_ReportsCest extends CestAbstract
 
         $station_id = $this->test_station->getId();
 
+        $I->amOnPAge('/station/'.$station_id.'/reports/overview');
+
+        $I->seeResponseCodeIs(200);
+        $I->see('Statistics Overview');
+
         $I->amOnPage('/station/'.$station_id.'/reports/timeline');
 
         $I->seeResponseCodeIs(200);
@@ -25,5 +30,15 @@ class C04_Station_ReportsCest extends CestAbstract
 
         $I->seeResponseCodeIs(200);
         $I->see('No duplicates were found. Nice work!');
+
+        $I->amOnPage('/station/'.$station_id.'/reports/requests');
+
+        $I->seeResponseCodeIs(200);
+        $I->see('Song Requests');
+
+        $I->amOnPage('/station/'.$station_id.'/reports/listeners');
+
+        $I->seeResponseCodeIs(200);
+        $I->see('Listeners');
     }
 }

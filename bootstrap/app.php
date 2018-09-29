@@ -58,7 +58,6 @@ ini_set('session.use_strict_mode',      1);
 
 // Composer autoload.
 $autoloader = require(APP_INCLUDE_VENDOR . '/autoload.php');
-$autoloader->setPsr4('Proxy\\', APP_INCLUDE_TEMP . '/proxies');
 
 // Initialize plugins
 $plugins = new \App\Plugins(APP_INCLUDE_ROOT.'/plugins');

@@ -87,8 +87,6 @@ return function (\Slim\Container $di, $settings)
                 $options['conn']['password'] = $_ENV['db_password'];
             }
 
-            \Doctrine\Common\Proxy\Autoloader::register($options['proxyPath'], $options['proxyNamespace']);
-
             // Fetch and store entity manager.
             $config = new \Doctrine\ORM\Configuration;
 

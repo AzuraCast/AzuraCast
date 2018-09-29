@@ -15,7 +15,11 @@ class SongRepository extends BaseRepository
         $ids_raw = $this->_em->createQuery('SELECT s.id FROM ' . $this->_entityName . ' s')
             ->getArrayResult();
 
-        return \Packaged\Helpers\Arrays::ipull($ids_raw, 'id');
+        $ids = [];
+        foreach($ids_raw as $id_raw) {
+            $ids[] = $id_raw['id'];
+        }
+        return $ids;
     }
 
     /**

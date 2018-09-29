@@ -32,7 +32,6 @@
         "maxmind-db/reader": "~1.0",
         "mobiledetect/mobiledetectlib": "^2.8",
         "monolog/monolog": "^1.23",
-        "packaged/helpers": "^1.5",
         "paragonie/certainty": "^2",
         "php-http/socket-client": "^1.2",
         "php-http/message": "^1.4",

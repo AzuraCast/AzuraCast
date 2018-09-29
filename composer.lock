@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "efc1be26d0606fb1c60c0bbdf7676e28",
+    "content-hash": "55968856be089da1642b8b45352b987c",
     "packages": [
         {
             "name": "azuracast/azuraforms",
@@ -1705,12 +1705,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JamesHeinrich/getID3.git",
-                "reference": "17461949907103a68d0390103c50962618d318a4"
+                "reference": "dd1099bcef91ee9d750bba4eb3a0c93a73edebb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/17461949907103a68d0390103c50962618d318a4",
-                "reference": "17461949907103a68d0390103c50962618d318a4",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/dd1099bcef91ee9d750bba4eb3a0c93a73edebb8",
+                "reference": "dd1099bcef91ee9d750bba4eb3a0c93a73edebb8",
                 "shasum": ""
             },
             "require": {
@@ -1760,7 +1760,7 @@
                 "php",
                 "tags"
             ],
-            "time": "2018-09-22T16:42:14+00:00"
+            "time": "2018-09-28T23:48:50+00:00"
         },
         {
             "name": "league/plates",
@@ -2174,16 +2174,16 @@
         },
         {
             "name": "ocramius/proxy-manager",
-            "version": "2.2.1",
+            "version": "2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/ProxyManager.git",
-                "reference": "306da837ddf12aa5a85a8ca343587ec822802ac3"
+                "reference": "14b137b06b0f911944132df9d51e445a35920ab1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/306da837ddf12aa5a85a8ca343587ec822802ac3",
-                "reference": "306da837ddf12aa5a85a8ca343587ec822802ac3",
+                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/14b137b06b0f911944132df9d51e445a35920ab1",
+                "reference": "14b137b06b0f911944132df9d51e445a35920ab1",
                 "shasum": ""
             },
             "require": {
@@ -2240,47 +2240,7 @@
                 "proxy pattern",
                 "service proxies"
             ],
-            "time": "2018-08-26T15:07:25+00:00"
-        },
-        {
-            "name": "packaged/helpers",
-            "version": "1.15.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/packaged/helpers.git",
-                "reference": "d90f23d2d6a9520b87331c03facc2dcb34bc15b5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/packaged/helpers/zipball/d90f23d2d6a9520b87331c03facc2dcb34bc15b5",
-                "reference": "d90f23d2d6a9520b87331c03facc2dcb34bc15b5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Packaged\\Helpers\\": "src",
-                    "Packaged\\Tests\\": "tests"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Brooke Bryan",
-                    "email": "brooke@bajb.net"
-                }
-            ],
-            "description": "Generic PHP Helper Classes",
-            "time": "2018-09-04T09:50:54+00:00"
+            "time": "2018-09-27T13:45:01+00:00"
         },
         {
             "name": "paragonie/certainty",
@@ -3922,16 +3882,16 @@
         },
         {
             "name": "codeception/phpunit-wrapper",
-            "version": "7.3.0",
+            "version": "7.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/phpunit-wrapper.git",
-                "reference": "a4990126a20bbaa67ca34088ff91960c209a664b"
+                "reference": "1967be130082effb3c30510cf8f8397fbd9d8b84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/a4990126a20bbaa67ca34088ff91960c209a664b",
-                "reference": "a4990126a20bbaa67ca34088ff91960c209a664b",
+                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/1967be130082effb3c30510cf8f8397fbd9d8b84",
+                "reference": "1967be130082effb3c30510cf8f8397fbd9d8b84",
                 "shasum": ""
             },
             "require": {
@@ -3961,7 +3921,7 @@
                 }
             ],
             "description": "PHPUnit classes used by Codeception",
-            "time": "2018-08-28T23:24:24+00:00"
+            "time": "2018-09-28T15:36:26+00:00"
         },
         {
             "name": "codeception/stub",

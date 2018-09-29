@@ -66,7 +66,7 @@ return [
      * it sensitive especially for big projects and  when requireDev option enabled
      **/
 
-    'reportPath' => null, //path in directory, where usage report will be stores;
+    'reportPath' => __DIR__, //path in directory, where usage report will be stores;
 
     /**
      * Optional custom formatter (by default report stored as json)

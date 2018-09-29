@@ -19,6 +19,7 @@ tmp/cache/*---*
 /util/fixtures/**/*
 !/util/fixtures/.gitkeep
 web/static/yarn-error\.log
+/util/package_usage_report*
 
 # Composer-generated content
 /vendor/

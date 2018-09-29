@@ -372,7 +372,10 @@ class Assets
     protected function _sort()
     {
         if (!$this->is_sorted) {
-            $this->loaded = \Packaged\Helpers\Arrays::isort($this->loaded, 'order');
+            uasort($this->loaded, function($a, $b) {
+                return $a['order'] <=> $b['order']; // SPACESHIP!
+            });
+
             $this->is_sorted = true;
         }
     }

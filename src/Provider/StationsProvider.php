@@ -20,6 +20,18 @@ class StationsProvider implements ServiceProviderInterface
             );
         };
 
+        $di[Stations\EditProfileController::class] = function($di) {
+            /** @var \App\Config $config */
+            $config = $di[\App\Config::class];
+
+            return new Stations\EditProfileController(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\App\Cache::class],
+                $di[\App\Radio\Configuration::class],
+                $config->get('forms/station')
+            );
+        };
+
         $di[Stations\Files\FilesController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
@@ -52,6 +64,12 @@ class StationsProvider implements ServiceProviderInterface
 
         $di[Stations\IndexController::class] = function($di) {
             return new Stations\IndexController(
+                $di[\Doctrine\ORM\EntityManager::class]
+            );
+        };
+
+        $di[Stations\Reports\OverviewController::class] = function($di) {
+            return new Stations\Reports\OverviewController(
                 $di[\Doctrine\ORM\EntityManager::class],
                 $di[\InfluxDB\Database::class]
             );
@@ -81,18 +99,6 @@ class StationsProvider implements ServiceProviderInterface
                 $config->get('forms/playlist', [
                     'customization' => $di[\App\Customization::class]
                 ])
-            );
-        };
-
-        $di[Stations\ProfileController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
-
-            return new Stations\ProfileController(
-                $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class],
-                $di[\App\Radio\Configuration::class],
-                $config->get('forms/station')
             );
         };
 

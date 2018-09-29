@@ -4,7 +4,6 @@ use App\Middleware;
 
 return function(\Slim\App $app)
 {
-
     $app->group('/admin', function () {
 
         $this->get('', Controller\Admin\IndexController::class.':indexAction')
@@ -296,7 +295,7 @@ return function(\Slim\App $app)
 
     $app->group('/station/{station}', function () {
 
-        $this->get('', Controller\Stations\IndexController::class.':indexAction')
+        $this->get('', Controller\Stations\IndexController::class)
             ->setName('stations:index:index');
 
         $this->group('/automation', function () {
@@ -380,16 +379,13 @@ return function(\Slim\App $app)
 
         })->add([Middleware\Permissions::class, 'manage station mounts', true]);
 
-        $this->group('/profile', function () {
+        $this->get('/profile', function (\App\Http\Request $request, \App\Http\Response $response) {
+            return $response->withRedirect($request->getRouter()->fromHere('stations:index:index'));
+        })->setName('stations:profile:index');
 
-            $this->get('', Controller\Stations\ProfileController::class.':indexAction')
-                ->setName('stations:profile:index');
-
-            $this->map(['GET', 'POST'], '/edit', Controller\Stations\ProfileController::class.':editAction')
-                ->setName('stations:profile:edit')
-                ->add([Middleware\Permissions::class, 'manage station profile', true]);
-
-        });
+        $this->map(['GET', 'POST'], '/profile/edit', Controller\Stations\EditProfileController::class)
+            ->setName('stations:profile:edit')
+            ->add([Middleware\Permissions::class, 'manage station profile', true]);
 
         $this->group('/remotes', function () {
 
@@ -408,6 +404,9 @@ return function(\Slim\App $app)
         })->add([Middleware\Permissions::class, 'manage station remotes', true]);
 
         $this->group('/reports', function () {
+
+            $this->get('/overview', Controller\Stations\Reports\OverviewController::class)
+                ->setName('stations:reports:overview');
 
             $this->get('/timeline[/format/{format}]', Controller\Stations\Reports\TimelineController::class)
                 ->setName('stations:reports:timeline');

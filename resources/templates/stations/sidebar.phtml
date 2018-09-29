@@ -34,10 +34,6 @@
     <li><a href="<?=$router->named('public:index', ['station' => $station->getShortName()]) ?>" target="_blank"><i class="zmdi zmdi-globe"></i> <?=__('Public Page') ?></a></li>
 <?php endif; ?>
 
-    <li <?php if ($active_tab === 'profile'): ?>class="active"<?php endif; ?>>
-        <a href="<?=$router->fromHere('stations:profile:index') ?>"><i class="zmdi zmdi-image"></i> <?=__('Profile') ?></a>
-    </li>
-
     <?php if ($acl->userAllowed($user, 'manage station media', $station->getId()) && $backend::supportsMedia()): ?>
         <li <?php if ($active_tab === 'files'): ?>class="active"<?php endif; ?>>
             <a href="<?=$router->fromHere('stations:files:index') ?>"><i class="zmdi zmdi-collection-music"></i> <?=__('Music Files') ?></a>
@@ -76,6 +72,7 @@
             <a href="" data-ma-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i> <?=__('Reports') ?></a>
 
             <ul>
+                <li><a href="<?=$router->fromHere('stations:reports:overview') ?>"><?=__('Statistics Overview') ?></a></li>
             <?php if ($frontend::supportsListenerDetail()): ?>
                 <li><a href="<?=$router->fromHere('stations:reports:listeners') ?>"><?=__('Listeners') ?></a></li>
             <?php endif; ?>

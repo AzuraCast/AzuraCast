@@ -1,7 +1,11 @@
-<div id="listeners_by_day" style="height: 250px;"></div>
-
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
 $(function () {
+    Highcharts.setOptions({
+        global: {
+            timezoneOffset: <?=\App\Timezone::getOffsetMinutes() ?>,
+            useUTC: false
+        }
+    });
+
     $('#listeners_by_day').highcharts({
         chart: {
             zoomType: 'x'
@@ -51,7 +55,7 @@ $(function () {
             '#2f7ed8',
             '#000000'
         ],
-        
+
         series: [{
             name: <?=$this->escapeJs(__('Daily Listener Range')) ?>,
             type: 'arearange',
@@ -66,5 +70,56 @@ $(function () {
             data: <?=$daily_averages ?>
         }]
     });
+
+    $('#listeners_by_day_of_week').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: { text:'' },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+
+        series: [{
+            type: 'pie',
+            name: <?=$this->escapeJs(__('Listeners')) ?>,
+            data: <?=$day_of_week_stats ?>
+        }]
+    });
+
+    $('#listeners_by_hour').highcharts({
+        chart: {},
+        title: { text:'' },
+        xAxis: {
+            allowDecimals: false,
+            tickInterval: 1
+        },
+        yAxis: {
+            title: {
+                text: '<?=__('Listeners') ?>'
+            },
+            min: 0
+        },
+        tooltip: {
+            crosshairs: true,
+            shared: true
+        },
+
+        series: [{
+            name: <?=$this->escapeJs(__('Average Listeners')) ?>,
+            type: 'column',
+            data: <?=$averages_by_hour ?>
+        }]
+    });
 });
-</script>

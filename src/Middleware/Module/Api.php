@@ -55,7 +55,7 @@ class Api
         }
 
         // Set default cache control for API pages.
-        $response = $response->withHeader('Cache-Control', 'public, max-age=' . 30)
+        $response = $response->withHeader('Cache-Control', 'public, must-revalidate, max-age=' . 30)
             ->withHeader('X-Accel-Expires', 30); // CloudFlare caching
 
         // Custom error handling for API responses.

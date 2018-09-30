@@ -187,8 +187,10 @@ return function(\Slim\App $app)
                 ->setName('api:listeners:index')
                 ->add([Middleware\Permissions::class, 'view station reports', true]);
 
-            $this->get('/art/{media_id}', Controller\Api\Stations\MediaController::class.':artAction')
+            $this->get('/art/{media_id:[a-zA-Z0-9]+}.jpg', Controller\Api\Stations\MediaController::class.':artAction')
                 ->setName('api:stations:media:art');
+
+            $this->get('/art/{media_id:[a-zA-Z0-9]+}', Controller\Api\Stations\MediaController::class.':artAction');
 
             $this->post('/backend/{do}', Controller\Api\Stations\ServicesController::class.':backendAction')
                 ->setName('api:stations:backend')
@@ -431,12 +433,6 @@ return function(\Slim\App $app)
 
             $this->get('/requests/delete/{request_id}/{csrf}', Controller\Stations\Reports\RequestsController::class.':deleteAction')
                 ->setName('stations:reports:requests:delete');
-
-        })->add([Middleware\Permissions::class, 'view station reports', true]);
-
-        $this->group('/requests', function () {
-
-
 
         })->add([Middleware\Permissions::class, 'view station reports', true]);
 

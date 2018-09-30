@@ -75,15 +75,19 @@ class EnforceSecurity
         /** @var Response $response */
         $response = $next($request, $response);
 
-        // CSP JavaScript policy
-        // Note: unsafe-eval included for Vue template compiling
-        $csp_script_src = (array)$this->assets->getCspDomains();
-        $csp_script_src[] = "'self'";
-        $csp_script_src[] = "'unsafe-eval'";
-        $csp_script_src[] = "'nonce-".$this->assets->getCspNonce()."'";
+        if (!$response->hasHeader('Cache-Control')) {
+            // CSP JavaScript policy
+            // Note: unsafe-eval included for Vue template compiling
+            $csp_script_src = (array)$this->assets->getCspDomains();
+            $csp_script_src[] = "'self'";
+            $csp_script_src[] = "'unsafe-eval'";
+            $csp_script_src[] = "'nonce-".$this->assets->getCspNonce()."'";
 
-        $csp[] = "script-src ".implode(' ', $csp_script_src);
+            $csp[] = "script-src ".implode(' ', $csp_script_src);
 
-        return $response->withHeader('Content-Security-Policy', implode('; ', $csp));
+            $response = $response->withHeader('Content-Security-Policy', implode('; ', $csp));
+        }
+
+        return $response;
     }
 }

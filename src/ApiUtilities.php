@@ -19,15 +19,19 @@ class ApiUtilities
     /** @var Router */
     protected $router;
 
+    /** @var Customization */
+    protected $customization;
+
     /**
      * ApiUtilities constructor.
      * @param EntityManager $em
      * @param Router $router
      */
-    public function __construct(EntityManager $em, Router $router)
+    public function __construct(EntityManager $em, Router $router, Customization $customization)
     {
         $this->em = $em;
         $this->router = $router;
+        $this->customization = $customization;
     }
 
     /**
@@ -40,6 +44,14 @@ class ApiUtilities
     public function getAlbumArtUrl($station_id, $media_unique_id): string
     {
         return $this->router->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_unique_id], [], true);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultAlbumArtUrl(): string
+    {
+        return $this->router->getUrl($this->customization->getDefaultAlbumArtUrl(), true);
     }
 
     /**

@@ -169,6 +169,7 @@ class Song
     /**
      * Retrieve the API version of the object/array.
      *
+     * @param \App\ApiUtilities $api_utils
      * @return Api\Song
      */
     public function api(\App\ApiUtilities $api_utils): Api\Song
@@ -178,6 +179,7 @@ class Song
         $response->text = (string)$this->text;
         $response->artist = (string)$this->artist;
         $response->title = (string)$this->title;
+        $response->art = $api_utils->getDefaultAlbumArtUrl();
 
         $response->custom_fields = $api_utils->getCustomFields();
 

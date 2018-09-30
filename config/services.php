@@ -362,7 +362,8 @@ return function (\Slim\Container $di, $settings)
     $di[\App\ApiUtilities::class] = function($di) {
         return new \App\ApiUtilities(
             $di[\Doctrine\ORM\EntityManager::class],
-            $di['router']
+            $di['router'],
+            $di[\App\Customization::class]
         );
     };
 

@@ -28,7 +28,6 @@ server {
     }
 
     location ~ \.php$ {
-        fastcgi_hide_header Cache-Control;
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
 
         # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini

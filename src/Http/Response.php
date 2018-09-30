@@ -1,8 +1,6 @@
 <?php
 namespace App\Http;
 
-use Cake\Chronos\Chronos;
-
 class Response extends \Slim\Http\Response
 {
     const CACHE_ONE_MINUTE = 60;
@@ -20,7 +18,7 @@ class Response extends \Slim\Http\Response
     {
         return $this
             ->withHeader('Pragma', 'no-cache')
-            ->withHeader('Expires', '0')
+            ->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', 0))
             ->withHeader('Cache-Control', 'private, no-cache, no-store')
             ->withHeader('X-Accel-Expires', '0'); // CloudFlare
     }
@@ -33,12 +31,9 @@ class Response extends \Slim\Http\Response
      */
     public function withCacheLifetime(int $seconds = self::CACHE_ONE_MONTH)
     {
-        $timestamp = new Chronos(null, new \DateTimeZone('UTC'));
-        $timestamp = $timestamp->addSeconds($seconds);
-
         return $this
             ->withHeader('Pragma', '')
-            ->withHeader('Expires', $timestamp->format('D, d M Y H:i:s \G\M\T'))
+            ->withHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + $seconds))
             ->withHeader('Cache-Control', 'public, must-revalidate, max-age=' . $seconds)
             ->withHeader('X-Accel-Expires', $seconds); // CloudFlare
     }

@@ -63,8 +63,8 @@ class MediaController
 
             if (is_resource($art)) {
                 return $response
+                    ->withCacheLifetime(Response::CACHE_ONE_YEAR)
                     ->withHeader('Content-Type', 'image/jpeg')
-                    ->withHeader('Cache-Control', 'public, immutable, max-age=31536000')
                     ->withBody(new \Slim\Http\Stream($art));
             }
         }

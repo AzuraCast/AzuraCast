@@ -19,6 +19,8 @@ class RequireLogin
      */
     public function __invoke(Request $request, Response $response, $next): Response
     {
+        $response = $response->withNoCache();
+
         try
         {
             $request->getUser();

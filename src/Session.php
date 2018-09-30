@@ -19,6 +19,15 @@ class Session
     {
         $this->flash = new Session\Flash($this);
         $this->csrf = new Session\Csrf($this);
+
+        // Disable sessions sending their own Cache-Control/Expires headers.
+        session_cache_limiter('');
+
+        // Set session-specific settings for PHP.
+        ini_set('session.use_only_cookies',     1);
+        ini_set('session.cookie_httponly',      1);
+        ini_set('session.cookie_lifetime',      86400);
+        ini_set('session.use_strict_mode',      1);
     }
 
     /**

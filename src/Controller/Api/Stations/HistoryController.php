@@ -35,9 +35,10 @@ class HistoryController
     {
         $station = $request->getStation();
 
-        if ($request->hasParam('start')) {
-            $start = strtotime($request->getParam('start') . ' 00:00:00');
-            $end = strtotime($request->getParam('end', $request->getParam('start')) . ' 23:59:59');
+        $start_param = $request->getParam('start');
+        if (!empty($start_param)) {
+            $start = strtotime($start_param . ' 00:00:00');
+            $end = strtotime($request->getParam('end', $start_param) . ' 23:59:59');
         } else {
             $start = strtotime('-2 weeks');
             $end = time();

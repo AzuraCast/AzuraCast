@@ -69,7 +69,7 @@ class Paginator
         if ($per_page > 0) {
             $this->per_page = ($per_page <= $this->max_per_page) ? $per_page : $this->max_per_page;
         } else {
-            $this->per_page = 1;
+            $this->per_page = -1;
         }
     }
 
@@ -122,10 +122,11 @@ class Paginator
         static $paginator;
 
         if (!$paginator) {
-            $offset = ($this->current_page - 1) * $this->per_page;
-
-            $this->query->setFirstResult($offset);
-            $this->query->setMaxResults($this->per_page);
+            if ($this->per_page !== -1) {
+                $offset = ($this->current_page - 1) * $this->per_page;
+                $this->query->setFirstResult($offset);
+                $this->query->setMaxResults($this->per_page);
+            }
 
             $paginator = new DoctrinePaginator($this->query);
         }
@@ -138,18 +139,25 @@ class Paginator
         $paginator = $this->getPaginator();
 
         $total = count($paginator);
-        $total_pages = ceil($total / $this->per_page);
+        $total_pages = ($this->per_page === -1)
+            ? 1
+            : ceil($total / $this->per_page);
 
-        $results = iterator_to_array($paginator);
         if ($this->postprocessor) {
-            $results = array_map($this->postprocessor, $results);
+            $results = [];
+            $postprocessor = $this->postprocessor;
+            foreach($paginator as $result) {
+                $results[] = $postprocessor($result);
+            }
+        } else {
+            $results = iterator_to_array($paginator);
         }
 
         if ($this->is_bootgrid) {
             return $response->withJson([
                 'current'   => $this->current_page,
                 'rowCount'  => $this->per_page,
-                'total'     => count($paginator),
+                'total'     => $paginator->count(),
                 'rows'      => $results,
             ]);
         }
@@ -170,7 +178,7 @@ class Paginator
         return $response->withJson([
             'page'      => $this->current_page,
             'per_page'  => $this->per_page,
-            'total'     => count($paginator),
+            'total'     => $paginator->count(),
             'total_pages' => $total_pages,
             'links'     => $page_links,
             'rows'      => $results,

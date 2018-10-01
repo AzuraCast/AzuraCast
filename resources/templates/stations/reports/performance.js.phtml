@@ -1,0 +1,30 @@
+$(function() {
+    $.expr[':'].textEquals = $.expr.createPseudo(function(arg) {
+        return function( elem ) {
+            return $(elem).text().match("^" + arg + "$");
+        };
+    });
+
+    $('#btn-toggle-unplayed').on('click', function(e) {
+        e.preventDefault();
+
+        $("#tbl-report").find("td.num_plays:textEquals('0')").closest('tr').toggle();
+        return false;
+    });
+
+    $(".data-table").bootgrid({
+        caseSensitive: false,
+        css: {
+            icon: 'zmdi icon',
+            iconColumns: 'zmdi-view-module',
+            iconDown: 'zmdi-sort-amount-desc',
+            iconRefresh: 'zmdi-refresh',
+            iconUp: 'zmdi-sort-amount-asc'
+        },
+        formatters: {
+            "length": function (column, row) {
+                return row.length;
+            }
+        }
+    });
+});

@@ -40,7 +40,13 @@
                         <?php if (count($media_row['playlists']) == 0): ?>
                             0
                         <?php else: ?>
-                            <abbr title="<?=implode(', ', \Packaged\Helpers\Arrays::ipull($media_row['playlists'], 'name')) ?>"><?=count($media_row['playlists']) ?></abbr>
+                            <?php
+                            $playlists = [];
+                            foreach($media_row['playlists'] as $playlist) {
+                                $playlists[] = $playlist['name'];
+                            }
+                            ?>
+                            <abbr title="<?=implode(', ', $playlists) ?>"><?=count($playlists) ?></abbr>
                         <?php endif; ?>
                         </td>
                         <td class="text-right"><?=$media_row['length_text'] ?></td>

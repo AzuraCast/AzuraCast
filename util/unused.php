@@ -14,6 +14,7 @@ $scanDirectories = [
     $projectPath . '/config/',
     $projectPath . '/bootstrap/',
     $projectPath . '/src/',
+    $projectPath . '/resources/templates',
 ];
 
 $scanFiles = [

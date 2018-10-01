@@ -4,7 +4,8 @@
 /** @var \App\Assets $assets */
 $assets
     ->load('daterangepicker')
-    ->load('bootgrid');
+    ->load('bootgrid')
+    ->addInlineJs($this->fetch('stations/reports/timeline.js'));
 ?>
 
 <div class="card">
@@ -46,89 +47,3 @@ $assets
         </table>
     </div>
 </div>
-
-<script type="text/javascript" nonce="<?=$assets->getCspNonce() ?>">
-let range_start = null,
-    range_end = null;
-
-const api_url = "<?=$router->fromHere('api:stations:history') ?>";
-
-$(function() {
-    $(".data-table").bootgrid({
-        ajax: true,
-        sorting: false,
-        caseSensitive: false,
-        css: {
-            icon: 'zmdi icon',
-            iconColumns: 'zmdi-view-module',
-            iconDown: 'zmdi-sort-amount-desc',
-            iconRefresh: 'zmdi-refresh',
-            iconUp: 'zmdi-sort-amount-asc'
-        },
-        url: api_url,
-        post: function() {
-            return {
-                start: range_start,
-                end: range_end
-            };
-        },
-        formatters: {
-            "datetime": function(column, row) {
-                return formatTimestamp(row.played_at);
-            },
-            "delta": function(column, row) {
-                if (row.delta_total > 0) {
-                    return '<big><span class="text-success"><i class="zmdi zmdi-trending-up"></i> '+row.delta_total+'</span></big>';
-                } else if (row.delta_total < 0) {
-                    return '<big><span class="text-danger"><i class="zmdi zmdi-trending-down"></i> ' + Math.abs(row.delta_total) + '</span></big>';
-                } else {
-                    return '<big>0</big>';
-                }
-            },
-            "song_title": function(column, row) {
-                if (row.song_title) {
-                    return '<b>'+row.song_title+'</b><br>'+row.song_artist;
-                } else {
-                    return row.song_text;
-                }
-            },
-            "playlists": function(column, row) {
-                if (row.is_request) {
-                    return <?=$this->escapeJs(__('Listener Request')) ?>;
-                } else if (row.playlist) {
-                    return <?=$this->escapeJs(__('Playlist:')) ?>+" "+row.playlist;
-                } else {
-                    return <?=$this->escapeJs(__('Live Broadcast')) ?>;
-                }
-            }
-        }
-    });
-
-    $('#reportrange').daterangepicker({
-        startDate: moment().subtract(13, 'days'),
-        endDate: moment(),
-        opens: "left",
-        ranges: {
-            "<?=__('Today') ?>": [moment(), moment()],
-            "<?=__('Yesterday') ?>": [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            "<?=__('Last 7 Days') ?>": [moment().subtract(6, 'days'), moment()],
-            "<?=__('Last 14 Days') ?>": [moment().subtract(13, 'days'), moment()],
-            "<?=__('Last 30 Days') ?>": [moment().subtract(29, 'days'), moment()],
-            "<?=__('This Month') ?>": [moment().startOf('month'), moment().endOf('month')],
-            "<?=__('Last Month') ?>": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, function(start, end) {
-        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-
-        range_start = start.format('YYYY-MM-DD');
-        range_end = end.format('YYYY-MM-DD');
-
-        $('#btn-export').attr('href', api_url+'?format=csv&start='+range_start+'&end='+range_end);
-        $('.data-table').bootgrid("reload");
-    });
-
-    function formatTimestamp(unix_timestamp) {
-        return moment.unix(unix_timestamp).format('lll');
-    }
-});
-</script>

@@ -329,7 +329,7 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
             $event->appendLines([
                 '# Crossfading',
-                'radio = crossfade(start_next=' . $this->_toFloat($start_next) . ',fade_out=' . $this->_toFloat($crossfade) . ',fade_in=' . $this->_toFloat($crossfade) . ',radio)',
+                'radio = crossfade(start_next=' . self::toFloat($start_next) . ',fade_out=' . self::toFloat($crossfade) . ',fade_in=' . self::toFloat($crossfade) . ',radio)',
             ]);
         }
 
@@ -487,22 +487,6 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
         }
 
         $event->appendLines($ls_config);
-    }
-
-    /**
-     * Convert an integer or float into a Liquidsoap configuration compatible float.
-     *
-     * @param float $number
-     * @param int $decimals
-     * @return string
-     */
-    protected function _toFloat($number, $decimals = 2): string
-    {
-        if ((int)$number == $number) {
-            return (int)$number.'.';
-        }
-
-        return number_format($number, $decimals, '.', '');
     }
 
     /**
@@ -864,6 +848,22 @@ class Liquidsoap extends BackendAbstract implements EventSubscriberInterface
 
         $this->em->persist($station);
         $this->em->flush();
+    }
+
+    /**
+     * Convert an integer or float into a Liquidsoap configuration compatible float.
+     *
+     * @param float $number
+     * @param int $decimals
+     * @return string
+     */
+    public static function toFloat($number, $decimals = 2): string
+    {
+        if ((int)$number == $number) {
+            return (int)$number.'.';
+        }
+
+        return number_format($number, $decimals, '.', '');
     }
 
     /**

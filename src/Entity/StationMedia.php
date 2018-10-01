@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Radio\Backend\Liquidsoap;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -540,6 +541,11 @@ class StationMedia
 
                 if ($annotation_property === 'cue_out' && $prop < 0) {
                     $prop = max(0, $this->getLength() - abs($prop));
+                }
+
+                // Convert Liquidsoap-specific annotations to floats.
+                if ('liq' === substr($annotation_name, 0, 3)) {
+                    $prop = Liquidsoap::toFloat($prop);
                 }
 
                 $annotations[$annotation_property] = $annotation_name . '="' . $prop . '"';

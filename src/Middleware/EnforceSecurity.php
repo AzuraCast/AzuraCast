@@ -4,8 +4,8 @@ namespace App\Middleware;
 use App\Assets;
 use App\Entity;
 use Doctrine\ORM\EntityManager;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 /**
  * Remove trailing slash from all URLs when routing.
@@ -75,7 +75,7 @@ class EnforceSecurity
         /** @var Response $response */
         $response = $next($request, $response);
 
-        if (!$response->hasHeader('Cache-Control')) {
+        if (!$response->hasCacheLifetime()) {
             // CSP JavaScript policy
             // Note: unsafe-eval included for Vue template compiling
             $csp_script_src = (array)$this->assets->getCspDomains();

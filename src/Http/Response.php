@@ -39,6 +39,20 @@ class Response extends \Slim\Http\Response
     }
 
     /**
+     * Returns whether the request has a "cache lifetime" assigned to it.
+     *
+     * @return bool
+     */
+    public function hasCacheLifetime(): bool
+    {
+        if ($this->hasHeader('Pragma')) {
+            return (false === strpos($this->getHeaderLine('Pragma'), 'no-cache'));
+        } else {
+            return (false === strpos($this->getHeaderLine('Cache-Control'), 'no-cache'));
+        }
+    }
+
+    /**
      * Stream the contents of a file directly through to the response.
      *
      * @param $file_path

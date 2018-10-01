@@ -121,6 +121,13 @@ return function(\Slim\App $app)
 
     $app->group('/api', function () {
 
+        $this->options('/{routes:.+}', function (\App\Http\Request $request, \App\Http\Response $response) {
+            return $response
+                ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                ->withHeader('Access-Control-Allow-Headers', 'x-requested-with, Content-Type, Accept, Origin, Authorization')
+                ->withHeader('Access-Control-Allow-Origin', '*');
+        });
+
         $this->get('', Controller\Api\IndexController::class.':indexAction')
             ->setName('api:index:index');
 
@@ -155,7 +162,7 @@ return function(\Slim\App $app)
 
         });
 
-        $this->get('/nowplaying[/{station}]', Controller\Api\NowplayingController::class.':indexAction')
+        $this->get('/nowplaying[/{station}]', Controller\Api\NowplayingController::class)
             ->setName('api:nowplaying:index');
 
         $this->get('/stations', Controller\Api\Stations\IndexController::class.':listAction')

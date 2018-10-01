@@ -291,7 +291,7 @@ return [
                         'description' => __('This playlist will play every $x minutes, where $x is specified below.'),
                         'default' => 1,
                         'min' => 0,
-                        'max' => 120,
+                        'max' => 360,
                     ]
                 ],
 

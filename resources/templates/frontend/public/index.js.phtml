@@ -38,53 +38,53 @@ $(function() {
     $('[data-fancybox]').fancybox({
         buttons: ['close']
     });
-});
 
-var request_dialog = $('#modal-request');
+	var request_dialog = $('#modal-request');
 
-request_dialog.on('show.bs.modal', function (event) {
+	request_dialog.on('show.bs.modal', function (event) {
 
-    if (!request_dialog.data('request_loaded'))
-    {
-        var grid = $("#requests-table").bootgrid({
-            ajax: true,
-            rowSelect: false,
-            caseSensitive: false,
-            css: {
-                icon: 'zmdi icon',
-                iconColumns: 'zmdi-view-module',
-                iconDown: 'zmdi-sort-amount-desc',
-                iconRefresh: 'zmdi-refresh',
-                iconUp: 'zmdi-sort-amount-asc'
-            },
-            url: "<?=$router->named('api:requests:list', ['station' => $station->getId()]) ?>",
-            formatters: {
-                "commands": function(column, row) {
-                    return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=__('Request') ?></a>';
-                }
-            }
-        }).on("loaded.rs.jquery.bootgrid", function()
-        {
-            /* Executes after data is loaded and rendered */
-            grid.find(".btn-request").on("click", function(e)
-            {
-                e.preventDefault();
-                request_dialog.modal('hide');
+		if (!request_dialog.data('request_loaded'))
+		{
+			var grid = $("#requests-table").bootgrid({
+				ajax: true,
+				rowSelect: false,
+				caseSensitive: false,
+				css: {
+					icon: 'zmdi icon',
+					iconColumns: 'zmdi-view-module',
+					iconDown: 'zmdi-sort-amount-desc',
+					iconRefresh: 'zmdi-refresh',
+					iconUp: 'zmdi-sort-amount-asc'
+				},
+				url: "<?=$router->named('api:requests:list', ['station' => $station->getId()]) ?>",
+				formatters: {
+					"commands": function(column, row) {
+						return '<a class="btn btn-request btn-sm btn-primary" data-url="'+row.request_url+'"><?=__('Request') ?></a>';
+					}
+				}
+			}).on("loaded.rs.jquery.bootgrid", function()
+			{
+				/* Executes after data is loaded and rendered */
+				grid.find(".btn-request").on("click", function(e)
+				{
+					e.preventDefault();
+					request_dialog.modal('hide');
 
-                $.ajax({
-                    dataType: "json",
-                    url: $(this).data('url')
-                }).done(function(data) {
-                    notify(data, 'success');
-                }).fail(function(jqXhr) {
-                    notify('Error: ' + jqXhr.responseJSON, 'danger');
-                });
+					$.ajax({
+						dataType: "json",
+						url: $(this).data('url')
+					}).done(function(data) {
+						notify(data, 'success');
+					}).fail(function(jqXhr) {
+						notify('Error: ' + jqXhr.responseJSON, 'danger');
+					});
 
-                return false;
-            });
-        });
+					return false;
+				});
+			});
 
-        request_dialog.data('request_loaded', true);
-    }
+			request_dialog.data('request_loaded', true);
+		}
 
+	});
 });

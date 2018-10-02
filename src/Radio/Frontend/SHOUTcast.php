@@ -30,23 +30,44 @@ class SHOUTcast extends FrontendAbstract
         $np_adapter = new \NowPlaying\Adapter\SHOUTcast2($base_url, $this->http_client);
         $np_adapter->setAdminPassword($fe_config['admin_pw']);
 
-        $mount_name = $this->_getDefaultMountSid($station);
+        $np_final = \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
+        $np_final['listeners']['clients'] = [];
 
         try {
-            $np = $np_adapter->getNowPlaying($mount_name, $payload);
+            $sid = 0;
 
-            $this->logger->debug('NowPlaying adapter response', ['response' => $np]);
+            foreach($station->getMounts() as $mount) {
+                /** @var Entity\StationMount $mount */
+                $sid++;
+                $np = $np_adapter->getNowPlaying($sid, $payload);
 
-            if ($include_clients) {
-                $np['listeners']['clients'] = $np_adapter->getClients($mount_name, true);
-                $np['listeners']['unique'] = count($np['listeners']['clients']);
+                if ($include_clients) {
+                    $np['listeners']['clients'] = $np_adapter->getClients($sid, true);
+                    $np['listeners']['unique'] = count($np['listeners']['clients']);
+                } else {
+                    $np['listeners']['clients'] = [];
+                }
+
+                if ($mount->getIsDefault()) {
+                    $np_final['current_song'] = $np['current_song'];
+                    $np_final['meta'] = $np['meta'];
+                }
+
+                $np_final['listeners']['clients'] = array_merge($np_final['listeners']['clients'], $np['listeners']['clients']);
+
+                $np_final['listeners']['current'] += $np['listeners']['current'];
+                $np_final['listeners']['unique'] += $np['listeners']['unique'];
+                $np_final['listeners']['total'] += $np['listeners']['total'];
+
+                $this->logger->debug('Response for mount point', ['mount' => $mount->getName(), 'response' => $np]);
             }
 
-            return $np;
+            $this->logger->debug('Aggregated NowPlaying response', ['response' => $np_final]);
         } catch(\NowPlaying\Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
-            return \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
         }
+
+        return $np_final;
     }
 
     /**

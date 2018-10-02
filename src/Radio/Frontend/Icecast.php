@@ -34,29 +34,41 @@ class Icecast extends FrontendAbstract
         $np_adapter = new \NowPlaying\Adapter\Icecast($base_url, $this->http_client);
         $np_adapter->setAdminPassword($fe_config['admin_pw']);
 
-        /** @var Entity\Repository\StationMountRepository $mount_repo */
-        $mount_repo = $this->em->getRepository(Entity\StationMount::class);
-
-        /** @var Entity\StationMount $default_mount */
-        $default_mount = $mount_repo->getDefaultMount($station);
-
-        $mount_name = ($default_mount instanceof Entity\StationMount) ? $default_mount->getName() : null;
+        $np_final = \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
+        $np_final['listeners']['clients'] = [];
 
         try {
-            $np = $np_adapter->getNowPlaying($mount_name, $payload);
+            foreach($station->getMounts() as $mount) {
+                /** @var Entity\StationMount $mount */
+                $np = $np_adapter->getNowPlaying($mount->getName(), $payload);
 
-            $this->logger->debug('NowPlaying adapter response', ['response' => $np]);
+                if ($include_clients) {
+                    $np['listeners']['clients'] = $np_adapter->getClients($mount->getName(), true);
+                    $np['listeners']['unique'] = count($np['listeners']['clients']);
+                } else {
+                    $np['listeners']['clients'] = [];
+                }
 
-            if ($include_clients) {
-                $np['listeners']['clients'] = $np_adapter->getClients($mount_name, true);
-                $np['listeners']['unique'] = count($np['listeners']['clients']);
+                if ($mount->getIsDefault()) {
+                    $np_final['current_song'] = $np['current_song'];
+                    $np_final['meta'] = $np['meta'];
+                }
+
+                $np_final['listeners']['clients'] = array_merge($np_final['listeners']['clients'], $np['listeners']['clients']);
+
+                $np_final['listeners']['current'] += $np['listeners']['current'];
+                $np_final['listeners']['unique'] += $np['listeners']['unique'];
+                $np_final['listeners']['total'] += $np['listeners']['total'];
+
+                $this->logger->debug('Response for mount point', ['mount' => $mount->getName(), 'response' => $np]);
             }
 
-            return $np;
+            $this->logger->debug('Aggregated NowPlaying response', ['response' => $np_final]);
         } catch(Exception $e) {
             $this->logger->error(sprintf('NowPlaying adapter error: %s', $e->getMessage()));
-            return \NowPlaying\Adapter\AdapterAbstract::NOWPLAYING_EMPTY;
         }
+
+        return $np_final;
     }
 
     public function read(Entity\Station $station): bool

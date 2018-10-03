@@ -4,7 +4,7 @@ services:
   web:
     image: azuracast/azuracast_web:latest
     build:
-      context: ./util/docker/web
+      context: ../docker-azuracast-web
     depends_on:
       - mariadb
       - influxdb
@@ -116,7 +116,7 @@ services:
       INIT_MUSIC_PATH: "/var/azuracast/www/util/fixtures/init_music"
     user: 'azuracast'
     working_dir: '/var/azuracast/www'
-    command: 'bash'
+    command: '/bin/true'
     tty: true # Pretty colors
     init: true
 
@@ -155,26 +155,26 @@ services:
     volumes:
       - ./web/static:/data
 
-  chronograf:
-    image: chronograf:alpine
-    ports:
-     - "8888:8888"
-    command: "chronograf --influxdb-url=http://influxdb:8086"
+#  chronograf:
+#    image: chronograf:alpine
+#    ports:
+#     - "8888:8888"
+#    command: "chronograf --influxdb-url=http://influxdb:8086"
 
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    depends_on:
-    - redis
-    environment:
-      REDIS_HOSTS: "local-app:redis:6379:0,local-sessions:redis:6379:1,local-doctrine:redis:6379:2"
-    ports:
-    - "127.0.0.1:8081:8081"
+#  redis-commander:
+#    image: rediscommander/redis-commander:latest
+#    depends_on:
+#    - redis
+#    environment:
+#      REDIS_HOSTS: "local-app:redis:6379:0,local-sessions:redis:6379:1,local-doctrine:redis:6379:2"
+#    ports:
+#    - "127.0.0.1:8081:8081"
 
-  blackfire:
-    image: blackfire/blackfire
-    environment:
-      BLACKFIRE_SERVER_ID: ""
-      BLACKFIRE_SERVER_TOKEN: ""
+#  blackfire:
+#    image: blackfire/blackfire
+#    environment:
+#      BLACKFIRE_SERVER_ID: ""
+#      BLACKFIRE_SERVER_TOKEN: ""
 
 volumes:
   nginx_letsencrypt_certs: {}

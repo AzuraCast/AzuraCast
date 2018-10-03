@@ -95,7 +95,7 @@ services:
       << : *default-environment
     user: 'azuracast'
     working_dir: '/var/azuracast/www'
-    command: 'bash'
+    command: '/bin/true'
     tty: true # Pretty colors
     init: true
 

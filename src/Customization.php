@@ -4,6 +4,8 @@ namespace App;
 use App\Http\Request;
 use Gettext\Translations;
 use Gettext\Translator;
+use GuzzleHttp\Psr7\Uri;
+use Psr\Http\Message\UriInterface;
 
 class Customization
 {
@@ -298,16 +300,16 @@ class Customization
     /**
      * Return the URL to use for songs with no specified album artwork, when artwork is displayed.
      *
-     * @return string
+     * @return UriInterface
      */
-    public function getDefaultAlbumArtUrl(): string
+    public function getDefaultAlbumArtUrl(): UriInterface
     {
         $custom_url = trim($this->settings_repo->getSetting('default_album_art_url'));
 
         if (!empty($custom_url)) {
-            return $custom_url;
+            return new Uri($custom_url);
         }
 
-        return '/static/img/generic_song.jpg';
+        return new Uri('/static/img/generic_song.jpg');
     }
 }

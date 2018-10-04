@@ -199,12 +199,12 @@ $assets
                 <?php foreach($stream_urls['local'] as $stream_url): ?>
                     <tr class="input">
                         <td>
-                            <a class="btn-audio" href="#" data-url="<?=$this->e($stream_url) ?>">
+                            <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
                                 <i class="zmdi zmdi-play"></i>
                             </a>
                         </td>
                         <td>
-                            <a href="<?=$this->e($stream_url) ?>"><?=$this->e($stream_url) ?></a>
+                            <a href="<?=$this->e((string)$stream_url) ?>"><?=$this->e((string)$stream_url) ?></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -220,12 +220,12 @@ $assets
                 <?php foreach($stream_urls['remote'] as $stream_url): ?>
                     <tr class="input">
                         <td>
-                            <a class="btn-audio" href="#" data-url="<?=$this->e($stream_url) ?>">
+                            <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
                                 <i class="zmdi zmdi-play"></i>
                             </a>
                         </td>
                         <td>
-                            <a href="<?=$this->e($stream_url) ?>"><?=$this->e($stream_url) ?></a>
+                            <a href="<?=$this->e((string)$stream_url) ?>"><?=$this->e((string)$stream_url) ?></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

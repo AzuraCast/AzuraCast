@@ -3,6 +3,7 @@
 namespace App\Entity\Api;
 
 use App\Entity;
+use App\Http\Router;
 
 /**
  * @OA\Schema(type="object")
@@ -67,13 +68,27 @@ class Station
 
     /**
      * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/StationMount"))
-     * @var array
+     * @var StationMount[]
      */
     public $mounts;
 
     /**
      * @OA\Property(type="array", @OA\Items(ref="#/components/schemas/StationRemote"))
-     * @var array
+     * @var StationRemote[]
      */
     public $remotes;
+
+    /**
+     * Re-resolve any Uri instances to reflect base URL changes.
+     *
+     * @param Router $router
+     */
+    public function resolveUrls(Router $router): void
+    {
+        $this->listen_url = (string)$router->getUri($this->listen_url, true);
+
+        foreach($this->mounts as $mount) {
+            $mount->resolveUrls($router);
+        }
+    }
 }

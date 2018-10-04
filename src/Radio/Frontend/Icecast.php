@@ -5,6 +5,7 @@ use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
 use NowPlaying\Exception;
+use Psr\Http\Message\UriInterface;
 
 class Icecast extends FrontendAbstract
 {
@@ -40,7 +41,7 @@ class Icecast extends FrontendAbstract
         try {
             foreach($station->getMounts() as $mount) {
                 /** @var Entity\StationMount $mount */
-                $np = $np_adapter->getNowPlaying($mount->getName(), $payload);
+                $np = $np_adapter->getNowPlaying($mount->getName());
 
                 if ($include_clients) {
                     $np['listeners']['clients'] = $np_adapter->getClients($mount->getName(), true);
@@ -151,9 +152,11 @@ class Icecast extends FrontendAbstract
         return '/bin/false';
     }
 
-    public function getAdminUrl(Entity\Station $station): ?string
+    public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
     {
-        return $this->getPublicUrl($station) . '/admin.html';
+        $public_url = $this->getPublicUrl($station, $base_url);
+        return $public_url
+            ->withPath($public_url->getPath().'/admin.html');
     }
 
     /*

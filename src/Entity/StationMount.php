@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use App\Radio\Frontend\FrontendAbstract;
+use GuzzleHttp\Psr7\Uri;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @Table(name="station_mounts")
@@ -276,11 +278,13 @@ class StationMount
     }
 
     /**
-     * @return string|null
+     * @return UriInterface|null
      */
-    public function getCustomListenUrl(): ?string
+    public function getCustomListenUrl(): ?UriInterface
     {
-        return $this->custom_listen_url;
+        return (!empty($this->custom_listen_url))
+            ? new Uri($this->custom_listen_url)
+            : null;
     }
 
     /**
@@ -311,15 +315,16 @@ class StationMount
      * Retrieve the API version of the object/array.
      *
      * @param FrontendAbstract $fa
+     * @param UriInterface|null $base_url
      * @return Api\StationMount
      */
-    public function api(FrontendAbstract $fa): Api\StationMount
+    public function api(FrontendAbstract $fa, UriInterface $base_url = null): Api\StationMount
     {
         $response = new Api\StationMount;
 
         $response->name = (string)$this->name;
         $response->is_default = (bool)$this->is_default;
-        $response->url = (string)$fa->getUrlForMount($this->station, $this);
+        $response->url = $fa->getUrlForMount($this->station, $this, $base_url);
 
         if ($this->enable_autodj) {
             $response->bitrate = (int)$this->autodj_bitrate;

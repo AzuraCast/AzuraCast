@@ -6,7 +6,7 @@ $vue_data_model = [
             'song' => [
                 'title' => __('Song Title'),
                 'artist' => __('Song Artist'),
-                'art' => $customization->getDefaultAlbumArtUrl(),
+                'art' => (string)$customization->getDefaultAlbumArtUrl(),
             ],
             'is_request' => false,
             'elapsed' => 0,

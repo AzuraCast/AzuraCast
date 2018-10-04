@@ -3,6 +3,7 @@
 namespace App\Entity\Api;
 
 use App\Entity;
+use App\Http\Router;
 
 /**
  * @OA\Schema(type="object")
@@ -75,4 +76,14 @@ class Song
      * @var array
      */
     public $custom_fields = [];
+
+    /**
+     * Re-resolve any Uri instances to reflect base URL changes.
+     *
+     * @param Router $router
+     */
+    public function resolveUrls(Router $router): void
+    {
+        $this->art = (string)$router->getUri($this->art, true);
+    }
 }

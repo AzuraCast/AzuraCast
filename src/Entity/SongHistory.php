@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity;
 
+use Psr\Http\Message\UriInterface;
+
 /**
  * @Table(name="song_history", indexes={
  *   @index(name="history_idx", columns={"timestamp_start","timestamp_end","listeners_start"}),
@@ -463,9 +465,10 @@ class SongHistory
     /**
      * @param Api\SongHistory $response
      * @param \App\ApiUtilities $api
+     * @param UriInterface|null $base_url
      * @return Api\SongHistory
      */
-    public function api(Api\SongHistory $response, \App\ApiUtilities $api)
+    public function api(Api\SongHistory $response, \App\ApiUtilities $api, UriInterface $base_url = null)
     {
         $response->sh_id = (int)$this->id;
         $response->played_at = (int)$this->timestamp_start;
@@ -486,8 +489,8 @@ class SongHistory
         }
 
         $response->song = ($this->media)
-            ? $this->media->api($api)
-            : $this->song->api($api);
+            ? $this->media->api($api, $base_url)
+            : $this->song->api($api, $base_url);
 
         return $response;
     }

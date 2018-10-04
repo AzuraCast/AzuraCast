@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use fXmlRpc\Exception\FaultException;
 use GuzzleHttp\Client;
 use Monolog\Logger;
+use Psr\Http\Message\UriInterface;
 use Supervisor\Supervisor;
 
 abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
@@ -88,36 +89,60 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         return 'station_' . $station->getId() . ':station_' . $station->getId() . '_frontend';
     }
 
-    public function getStreamUrl(Entity\Station $station): ?string
+    /**
+     * @param Entity\Station $station
+     * @param UriInterface|null $base_url
+     * @return UriInterface
+     */
+    public function getStreamUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
     {
+        /** @var Entity\Repository\StationMountRepository $mount_repo */
         $mount_repo = $this->em->getRepository(Entity\StationMount::class);
         $default_mount = $mount_repo->getDefaultMount($station);
 
-        return $this->getUrlForMount($station, $default_mount);
+        return $this->getUrlForMount($station, $default_mount, $base_url);
     }
 
-    public function getStreamUrls(Entity\Station $station): array
+    /**
+     * @param Entity\Station $station
+     * @param UriInterface|null $base_url
+     * @return UriInterface[]
+     */
+    public function getStreamUrls(Entity\Station $station, UriInterface $base_url = null): array
     {
         $urls = [];
         foreach ($station->getMounts() as $mount) {
-            $urls[] = $this->getUrlForMount($station, $mount);
+            $urls[] = $this->getUrlForMount($station, $mount, $base_url);
         }
 
         return $urls;
     }
 
-    public function getUrlForMount(Entity\Station $station, $mount)
+    /**
+     * @param Entity\Station $station
+     * @param $mount
+     * @param UriInterface|null $base_url
+     * @return UriInterface
+     */
+    public function getUrlForMount(Entity\Station $station, Entity\StationMount $mount = null, UriInterface $base_url = null): UriInterface
     {
-        if(!$mount instanceof Entity\StationMount) return null;
-        return (!empty($mount->getCustomListenUrl())
-            ? $mount->getCustomListenUrl()
-            : $this->getPublicUrl($station) . $mount->getName()
-        ) . '?' . time();
+        if ($mount === null) {
+            return $this->getPublicUrl($station, $base_url);
+        }
+
+        if ($mount->getCustomListenUrl() !== null) {
+            return $mount->getCustomListenUrl();
+        }
+
+        $public_url = $this->getPublicUrl($station, $base_url);
+        return $public_url
+            ->withPath($public_url->getPath().$mount->getName())
+            ->withQuery((string)time());
     }
 
-    abstract public function getAdminUrl(Entity\Station $station): ?string;
+    abstract public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface;
 
-    public function getPublicUrl(Entity\Station $station): string
+    public function getPublicUrl(Entity\Station $station, $base_url = null): UriInterface
     {
         $fe_config = (array)$station->getFrontendConfig();
         $radio_port = $fe_config['port'];
@@ -125,17 +150,23 @@ abstract class FrontendAbstract extends \App\Radio\AdapterAbstract
         /** @var Entity\Repository\SettingsRepository $settings_repo */
         $settings_repo = $this->em->getRepository(Entity\Settings::class);
 
-        $base_url = $this->router->getBaseUrl();
+        if (!($base_url instanceof UriInterface)) {
+            $base_url = $this->router->getBaseUrl();
+        }
+
         $use_radio_proxy = $settings_repo->getSetting('use_radio_proxy', 0);
 
         if ( $use_radio_proxy
             || (!APP_IN_PRODUCTION && !APP_INSIDE_DOCKER)
             || APP_IS_SECURE) {
             // Web proxy support.
-            return $base_url . '/radio/' . $radio_port;
+            return $base_url
+                ->withPath($base_url->getPath().'/radio/' . $radio_port);
         } else {
             // Remove port number and other decorations.
-            return parse_url($base_url, \PHP_URL_SCHEME).'://'.parse_url($base_url, \PHP_URL_HOST) . ':' . $radio_port;
+            return $base_url
+                ->withPort($radio_port)
+                ->withPath('');
         }
     }
 

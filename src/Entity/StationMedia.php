@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Radio\Backend\Liquidsoap;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @Table(name="station_media", indexes={
@@ -721,9 +722,11 @@ class StationMedia
     /**
      * Retrieve the API version of the object/array.
      *
+     * @param \App\ApiUtilities $api_utils
+     * @param UriInterface|null $base_url
      * @return Api\Song
      */
-    public function api(\App\ApiUtilities $api_utils): Api\Song
+    public function api(\App\ApiUtilities $api_utils, UriInterface $base_url = null): Api\Song
     {
         $response = new Api\Song;
         $response->id = (string)$this->song_id;
@@ -734,7 +737,7 @@ class StationMedia
         $response->album = (string)$this->album;
         $response->lyrics = (string)$this->lyrics;
 
-        $response->art = $api_utils->getAlbumArtUrl($this->station_id, $this->unique_id);
+        $response->art = $api_utils->getAlbumArtUrl($this->station_id, $this->unique_id, $base_url);
         $response->custom_fields = $api_utils->getCustomFields($this->id);
 
         return $response;

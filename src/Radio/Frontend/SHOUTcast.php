@@ -4,6 +4,7 @@ namespace App\Radio\Frontend;
 use App\Utilities;
 use Doctrine\ORM\EntityManager;
 use App\Entity;
+use Psr\Http\Message\UriInterface;
 
 class SHOUTcast extends FrontendAbstract
 {
@@ -39,7 +40,7 @@ class SHOUTcast extends FrontendAbstract
             foreach($station->getMounts() as $mount) {
                 /** @var Entity\StationMount $mount */
                 $sid++;
-                $np = $np_adapter->getNowPlaying($sid, $payload);
+                $np = $np_adapter->getNowPlaying($sid);
 
                 if ($include_clients) {
                     $np['listeners']['clients'] = $np_adapter->getClients($sid, true);
@@ -159,9 +160,11 @@ class SHOUTcast extends FrontendAbstract
         return '/bin/false';
     }
 
-    public function getAdminUrl(Entity\Station $station): ?string
+    public function getAdminUrl(Entity\Station $station, UriInterface $base_url = null): UriInterface
     {
-        return $this->getPublicUrl($station) . '/admin.cgi';
+        $public_url = $this->getPublicUrl($station, $base_url);
+        return $public_url
+            ->withPath($public_url->getPath().'/admin.cgi');
     }
 
     /*

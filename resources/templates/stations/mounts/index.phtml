@@ -35,7 +35,7 @@
                         <a class="btn btn-sm btn-danger" href="<?=$router->named('stations:mounts:delete', ['station' => $station->getId(), 'id' => $row->getId(), 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>
                     </td>
                     <td>
-                        <big><a href="<?=$this->e($frontend->getUrlForMount($station, $row->getName())) ?>" target="_blank"><?=$this->e($row->getName()) ?></a></big>
+                        <big><a href="<?=$this->e($frontend->getUrlForMount($station, $row)) ?>" target="_blank"><?=$this->e($row->getName()) ?></a></big>
                     <?php if ($row->getIsDefault()): ?>
                         <br><span class="label label-success"><?=__('Default Mount') ?></span>
                     <?php endif; ?>

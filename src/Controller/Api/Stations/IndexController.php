@@ -54,6 +54,8 @@ class IndexController
                 $this->adapters->getRemoteAdapters($row)
             );
 
+            $api_row->resolveUrls($request->getRouter());
+
             if ($api_row->is_public) {
                 $stations[] = $api_row;
             }
@@ -80,6 +82,8 @@ class IndexController
     public function indexAction(Request $request, Response $response): Response
     {
         $api_response = $request->getStation()->api($request->getStationFrontend());
+        $api_response->resolveUrls($request->getRouter());
+
         return $response->withJson($api_response);
     }
 }

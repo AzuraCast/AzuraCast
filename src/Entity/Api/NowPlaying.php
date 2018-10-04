@@ -3,6 +3,7 @@
 namespace App\Entity\Api;
 
 use App\Entity;
+use App\Http\Router;
 
 /**
  * @OA\Schema(type="object")
@@ -79,5 +80,21 @@ class NowPlaying
     public function toArray(): array
     {
         return json_decode(json_encode($this), true);
+    }
+
+    /**
+     * Iterate through sub-items and re-resolve any Uri instances to reflect base URL changes.
+     *
+     * @param Router $router
+     */
+    public function resolveUrls(Router $router): void
+    {
+        $this->station->resolveUrls($router);
+        $this->now_playing->resolveUrls($router);
+        $this->playing_next->resolveUrls($router);
+
+        foreach($this->song_history as $history_obj) {
+            $history_obj->resolveUrls($router);
+        }
     }
 }

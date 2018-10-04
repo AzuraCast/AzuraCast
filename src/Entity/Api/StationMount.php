@@ -1,6 +1,8 @@
 <?php
 namespace App\Entity\Api;
 
+use App\Http\Router;
+
 /**
  * @OA\Schema(type="object")
  */
@@ -45,4 +47,14 @@ class StationMount
      * @var string
      */
     public $format;
+
+    /**
+     * Re-resolve any Uri instances to reflect base URL changes.
+     *
+     * @param Router $router
+     */
+    public function resolveUrls(Router $router): void
+    {
+        $this->url = (string)$router->getUri($this->url, true);
+    }
 }

@@ -80,7 +80,7 @@ class ErrorHandler
 
             // Set referrer for login redirection.
             $referrer_login = $this->session->get('login_referrer');
-            $referrer_login->url = $this->router->current();
+            $referrer_login->url = $req->getUri()->getPath();
 
             return $res
                 ->withStatus(302)

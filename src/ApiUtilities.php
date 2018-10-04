@@ -3,6 +3,9 @@ namespace App;
 
 use App\Http\Router;
 use Doctrine\ORM\EntityManager;
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7\UriResolver;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Class ApiSupport
@@ -39,19 +42,29 @@ class ApiUtilities
      *
      * @param $station_id
      * @param $media_unique_id
-     * @return string
+     * @param UriInterface|null $base_url
+     * @return UriInterface
      */
-    public function getAlbumArtUrl($station_id, $media_unique_id): string
+    public function getAlbumArtUrl($station_id, $media_unique_id, UriInterface $base_url = null): UriInterface
     {
-        return $this->router->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_unique_id], [], true);
+        if ($base_url === null) {
+            $base_url = $this->router->getBaseUrl();
+        }
+
+        $path = $this->router->pathFor('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_unique_id], []);
+        return UriResolver::resolve($base_url, new Uri($path));
     }
 
     /**
-     * @return string
+     * @return UriInterface
      */
-    public function getDefaultAlbumArtUrl(): string
+    public function getDefaultAlbumArtUrl(UriInterface $base_url = null): UriInterface
     {
-        return $this->router->getUrl($this->customization->getDefaultAlbumArtUrl(), true);
+        if ($base_url === null) {
+            $base_url = $this->router->getBaseUrl();
+        }
+
+        return UriResolver::resolve($base_url, $this->customization->getDefaultAlbumArtUrl());
     }
 
     /**

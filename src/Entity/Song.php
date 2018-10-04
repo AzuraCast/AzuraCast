@@ -3,6 +3,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @Table(name="songs", indexes={
@@ -172,14 +173,14 @@ class Song
      * @param \App\ApiUtilities $api_utils
      * @return Api\Song
      */
-    public function api(\App\ApiUtilities $api_utils): Api\Song
+    public function api(\App\ApiUtilities $api_utils, UriInterface $base_url = null): Api\Song
     {
         $response = new Api\Song;
         $response->id = (string)$this->id;
         $response->text = (string)$this->text;
         $response->artist = (string)$this->artist;
         $response->title = (string)$this->title;
-        $response->art = $api_utils->getDefaultAlbumArtUrl();
+        $response->art = $api_utils->getDefaultAlbumArtUrl($base_url);
 
         $response->custom_fields = $api_utils->getCustomFields();
 

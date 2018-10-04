@@ -3,6 +3,7 @@ namespace App\Entity\Repository;
 
 use Doctrine\ORM\NoResultException;
 use App\Entity;
+use Psr\Http\Message\UriInterface;
 
 class SongHistoryRepository extends BaseRepository
 {
@@ -46,9 +47,10 @@ class SongHistoryRepository extends BaseRepository
     /**
      * @param Entity\Station $station
      * @param \App\ApiUtilities $api_utils
-     * @return array
+     * @param UriInterface|null $base_url
+     * @return Entity\Api\SongHistory[]
      */
-    public function getHistoryForStation(Entity\Station $station, \App\ApiUtilities $api_utils)
+    public function getHistoryForStation(Entity\Station $station, \App\ApiUtilities $api_utils, UriInterface $base_url = null)
     {
         $num_entries = $station->getApiHistoryItems();
 
@@ -68,7 +70,7 @@ class SongHistoryRepository extends BaseRepository
         $return = [];
         foreach ($history as $sh) {
             /** @var Entity\SongHistory $sh */
-            $return[] = $sh->api(new Entity\Api\SongHistory, $api_utils);
+            $return[] = $sh->api(new Entity\Api\SongHistory, $api_utils, $base_url);
         }
 
         return $return;

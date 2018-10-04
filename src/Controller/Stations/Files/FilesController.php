@@ -175,9 +175,9 @@ class FilesController extends FilesControllerAbstract
                 'title' => $media_row['title'],
                 'album' => $media_row['album'],
                 'name' => $media_row['artist'] . ' - ' . $media_row['title'],
-                'art' => $this->router->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
-                'edit_url' => $this->router->named('stations:files:edit', ['station' => $station_id, 'id' => $media_row['id']]),
-                'play_url' => $this->router->named('stations:files:download', ['station' => $station_id]) . '?file=' . urlencode($media_row['path']),
+                'art' => (string)$this->router->named('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_row['unique_id']]),
+                'edit_url' => (string)$this->router->named('stations:files:edit', ['station' => $station_id, 'id' => $media_row['id']]),
+                'play_url' => (string)$this->router->named('stations:files:download', ['station' => $station_id]) . '?file=' . urlencode($media_row['path']),
                 'playlists' => $playlists,
             ] + $custom_fields;
         }

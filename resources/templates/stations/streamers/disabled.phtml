@@ -7,6 +7,6 @@
     <div class="card-body card-padding">
         <p><?=__('Streamer accounts are currently disabled for this station. To enable streamer accounts, click the button below.') ?></p>
 
-        <a class="btn btn-lg btn-success" role="button" href="<?=$router->current() ?>?enable=true"><?=__('Enable Streaming') ?></a>
+        <a class="btn btn-lg btn-success" role="button" href="<?=$router->fromHere(null, [], ['enable' => true]) ?>"><?=__('Enable Streaming') ?></a>
     </div>
 </div>

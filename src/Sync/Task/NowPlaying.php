@@ -9,6 +9,7 @@ use App\Radio\AutoDJ;
 use App\ApiUtilities;
 use App\Radio\Adapters;
 use Doctrine\ORM\EntityManager;
+use GuzzleHttp\Psr7\Uri;
 use InfluxDB\Database;
 use App\Entity;
 use Monolog\Logger;
@@ -218,7 +219,9 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
         $np_raw = $event->getRawResponse();
 
         $np = new Entity\Api\NowPlaying;
-        $np->station = $station->api($frontend_adapter, $remote_adapters);
+        $uri_empty = new Uri('');
+
+        $np->station = $station->api($frontend_adapter, $remote_adapters, $uri_empty);
         $np->listeners = new Entity\Api\NowPlayingListeners($np_raw['listeners']);
 
         if (empty($np_raw['current_song']['text'])) {
@@ -262,7 +265,7 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
                 $next_song = $this->autodj->getNextSong($station);
 
                 if ($next_song instanceof Entity\SongHistory) {
-                    $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils);
+                    $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils, $uri_empty);
                 }
             }
 
@@ -284,7 +287,7 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
             }
 
             // Register a new item in song history.
-            $np->now_playing = $sh_obj->api(new Entity\Api\NowPlayingCurrentSong, $this->api_utils);
+            $np->now_playing = $sh_obj->api(new Entity\Api\NowPlayingCurrentSong, $this->api_utils, $uri_empty);
         }
 
         $np->update();

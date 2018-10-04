@@ -2,13 +2,13 @@
 namespace App\Http;
 
 use App\Entity\Repository\SettingsRepository;
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7\UriResolver;
+use Psr\Http\Message\UriInterface;
 use Slim\Route;
 
 class Router extends \Slim\Router
 {
-    /** @var bool Whether to include the domain in the URLs generated. */
-    protected $include_domain = false;
-
     /** @var Request */
     protected $current_request;
 
@@ -31,32 +31,43 @@ class Router extends \Slim\Router
     /**
      * Dynamically calculate the base URL the first time it's called, if it is at all in the request.
      *
-     * @return string|null
+     * @return UriInterface
      */
-    public function getBaseUrl(): ?string
+    public function getBaseUrl(): UriInterface
     {
         static $base_url;
 
         if (!$base_url)
         {
+            $base_url = new Uri('');
+
             /** @var SettingsRepository $settings_repo */
             $settings_repo = $this->container[SettingsRepository::class];
 
-            $base_url = $settings_repo->getSetting('base_url', '');
-            $prefer_browser_url = (bool)$settings_repo->getSetting('prefer_browser_url', 0);
+            $settings_base_url = $settings_repo->getSetting('base_url', '');
 
-            $http_host = ($this->current_request instanceof Request) ? $this->current_request->getHeaderLine('Host') : '';
-            $ignore_hosts = ['localhost', 'nginx'];
-
-            if (!empty($http_host) && !in_array($http_host, $ignore_hosts) && ($prefer_browser_url || empty($base_url))) {
-                $base_url = $http_host;
+            if (!empty($settings_base_url)) {
+                $base_url = new Uri('http://'.$settings_base_url);
             }
 
-            if (!empty($base_url)) {
-                $always_use_ssl = (bool)$settings_repo->getSetting('always_use_ssl', 0);
-                $base_url_schema = (APP_IS_SECURE || $always_use_ssl) ? 'https://' : 'http://';
+            $prefer_browser_url = (bool)$settings_repo->getSetting('prefer_browser_url', 0);
+            if ($this->current_request instanceof Request && ($prefer_browser_url || $base_url->getHost() === '')) {
+                $current_uri = $this->current_request->getUri();
 
-                $base_url = $base_url_schema.$base_url;
+                $ignored_hosts = ['nginx', 'localhost'];
+                if (!in_array($current_uri->getHost(), $ignored_hosts)) {
+                    $base_url = (new Uri())
+                        ->withScheme($current_uri->getScheme())
+                        ->withHost($current_uri->getHost())
+                        ->withPort($current_uri->getPort());
+                }
+            }
+
+            $always_use_ssl = (bool)$settings_repo->getSetting('always_use_ssl', 0);
+            if (APP_IS_SECURE || $always_use_ssl) {
+                $base_url = $base_url->withScheme('https');
+            } else {
+                $base_url = $base_url->withScheme('http');
             }
         }
 
@@ -64,71 +75,24 @@ class Router extends \Slim\Router
     }
 
     /**
-     * Get the URI for the current page.
-     *
-     * @param bool $absolute
-     * @return string
-     */
-    public function current($absolute = false): string
-    {
-        if ($this->current_request instanceof Request) {
-            return $this->getUrl((string)$this->current_request->getUri(), $absolute);
-        }
-
-        return '';
-    }
-
-    /**
-     * Get the HTTP_REFERER value for the current page.
-     *
-     * @param null $default_url
-     * @return string|null
-     */
-    public function referrer($default_url = null): ?string
-    {
-        if ($this->current_request instanceof Request) {
-            return $this->getUrl($this->current_request->getHeaderLine('Referer'));
-        }
-
-        return $default_url;
-    }
-
-    public function getSchemePrefixSetting(): bool
-    {
-        return $this->include_domain;
-    }
-
-    public function forceSchemePrefix($new_value = true)
-    {
-        $this->include_domain = (bool)$new_value;
-    }
-
-    public function addSchemePrefix($url_raw)
-    {
-        return $this->getUrl($url_raw, true);
-    }
-
-    /**
      * Compose a URL, returning an absolute URL (including base URL) if the current settings or this function's parameters
      * indicate an absolute URL is necessary
      *
-     * @param $url_raw
+     * @param $uri_raw
      * @param bool $absolute
-     * @return string
+     * @return UriInterface
      */
-    public function getUrl($url_raw, $absolute = false)
+    public function getUri($uri_raw, $absolute = false): UriInterface
     {
-        // Ignore preformed URLs.
-        if (false !== strpos($url_raw, '://')) {
-            return $url_raw;
+        if ($uri_raw instanceof UriInterface) {
+            $uri = $uri_raw;
+        } else {
+            $uri = new Uri($uri_raw);
         }
 
-        // Retrieve domain from either MVC controller or config file.
-        if ($this->include_domain || $absolute) {
-            $url_raw = $this->getBaseUrl() . $url_raw;
-        }
-
-        return $url_raw;
+        return ($absolute)
+            ? UriResolver::resolve($this->getBaseUrl(), $uri)
+            : $uri;
     }
 
     /**
@@ -138,11 +102,11 @@ class Router extends \Slim\Router
      * @param array $route_params
      * @param array $query_params
      * @param boolean $absolute Whether to include the full URL.
-     * @return string
+     * @return UriInterface
      */
-    public function named($route_name, $route_params = [], array $query_params = [], $absolute = false): string
+    public function named($route_name, $route_params = [], array $query_params = [], $absolute = false): UriInterface
     {
-        return $this->getUrl($this->pathFor($route_name, $route_params, $query_params), $absolute);
+        return $this->getUri($this->pathFor($route_name, $route_params, $query_params), $absolute);
     }
 
     /**
@@ -184,7 +148,6 @@ class Router extends \Slim\Router
      * @param bool $absolute
      * @return string
      */
-
     public function fromHereWithQuery($route_name = null, array $route_params = [], array $query_params = [], $absolute = false): string
     {
         if ($this->current_request instanceof Request) {

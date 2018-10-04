@@ -7,7 +7,9 @@ use App\Radio\Remote\RemoteAbstract;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
+use GuzzleHttp\Psr7\Uri;
 use Interop\Container\ContainerInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @Table(name="station")
@@ -872,9 +874,10 @@ class Station
      *
      * @param FrontendAbstract $fa
      * @param AdapterProxy[] $remote_adapters
+     * @param UriInterface|null $base_url
      * @return Api\Station
      */
-    public function api(FrontendAbstract $fa, array $remote_adapters = []): Api\Station
+    public function api(FrontendAbstract $fa, array $remote_adapters = [], UriInterface $base_url = null): Api\Station
     {
         $response = new Api\Station;
         $response->id = (int)$this->id;
@@ -884,12 +887,13 @@ class Station
         $response->frontend = (string)$this->frontend_type;
         $response->backend = (string)$this->backend_type;
         $response->is_public = (bool)$this->enable_public_page;
-        $response->listen_url = $fa->getStreamUrl($this);
+        $response->listen_url = $fa->getStreamUrl($this, $base_url);
 
         $mounts = [];
         if ($fa::supportsMounts() && $this->mounts->count() > 0) {
             foreach ($this->mounts as $mount) {
-                $mounts[] = $mount->api($fa);
+                /** @var StationMount $mount */
+                $mounts[] = $mount->api($fa, $base_url);
             }
         }
         $response->mounts = $mounts;

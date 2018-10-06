@@ -5,6 +5,19 @@ return [
         'system' => [
             'elements' => [
 
+                'base_url' => [
+                    'text',
+                    [
+                        'label' => __('Site Base URL'),
+                        'description' => __('The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.'),
+                        'default' => $_SERVER['HTTP_HOST'],
+                        'filter' => function($str) {
+                            return str_replace(['http://', 'https://'], ['', ''], trim($str));
+                        },
+                        'required' => true,
+                    ]
+                ],
+
                 'instance_name' => [
                     'text',
                     [
@@ -21,18 +34,6 @@ return [
                         'options' => \App\Timezone::fetchSelect(),
                         'default' => 'UTC',
                     ],
-                ],
-
-                'base_url' => [
-                    'text',
-                    [
-                        'label' => __('Site Base URL'),
-                        'description' => __('The base URL where this service is located. Use either the external IP address or fully-qualified domain name (if one exists) pointing to this server.'),
-                        'default' => $_SERVER['HTTP_HOST'],
-                        'filter' => function($str) {
-                            return str_replace(['http://', 'https://'], ['', ''], trim($str));
-                        },
-                    ]
                 ],
 
                 'prefer_browser_url' => [

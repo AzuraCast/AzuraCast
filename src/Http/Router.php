@@ -78,7 +78,7 @@ class Router extends \Slim\Router
      * Compose a URL, returning an absolute URL (including base URL) if the current settings or this function's parameters
      * indicate an absolute URL is necessary
      *
-     * @param $uri_raw
+     * @param  UriInterface|string $uri_raw
      * @param bool $absolute
      * @return UriInterface
      */
@@ -118,7 +118,7 @@ class Router extends \Slim\Router
      */
     public function named($route_name, $route_params = [], array $query_params = [], $absolute = false): UriInterface
     {
-        return $this->getUri($this->pathFor($route_name, $route_params, $query_params), $absolute);
+        return $this->getUri($this->relativePathFor($route_name, $route_params, $query_params), $absolute);
     }
 
     /**

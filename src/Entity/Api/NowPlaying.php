@@ -90,8 +90,13 @@ class NowPlaying
     public function resolveUrls(Router $router): void
     {
         $this->station->resolveUrls($router);
-        $this->now_playing->resolveUrls($router);
-        $this->playing_next->resolveUrls($router);
+
+        if ($this->now_playing) {
+            $this->now_playing->resolveUrls($router);
+        }
+        if ($this->playing_next) {
+            $this->playing_next->resolveUrls($router);
+        }
 
         foreach($this->song_history as $history_obj) {
             $history_obj->resolveUrls($router);

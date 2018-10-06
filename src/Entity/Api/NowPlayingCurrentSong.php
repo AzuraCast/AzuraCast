@@ -3,7 +3,6 @@
 namespace App\Entity\Api;
 
 use App\Entity;
-use App\Http\Router;
 
 /**
  * @OA\Schema(type="object")
@@ -43,15 +42,5 @@ class NowPlayingCurrentSong extends SongHistory
                 $this->remaining = $this->duration - $this->elapsed;
             }
         }
-    }
-
-    /**
-     * Re-resolve any Uri instances to reflect base URL changes.
-     *
-     * @param Router $router
-     */
-    public function resolveUrls(Router $router): void
-    {
-        $this->song->resolveUrls($router);
     }
 }

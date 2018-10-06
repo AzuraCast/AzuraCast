@@ -51,7 +51,7 @@ class ApiUtilities
             $base_url = $this->router->getBaseUrl();
         }
 
-        $path = $this->router->pathFor('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_unique_id], []);
+        $path = $this->router->relativePathFor('api:stations:media:art', ['station' => $station_id, 'media_id' => $media_unique_id], []);
         return UriResolver::resolve($base_url, new Uri($path));
     }
 

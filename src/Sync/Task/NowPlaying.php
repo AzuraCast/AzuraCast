@@ -229,14 +229,14 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
 
             $offline_sh = new Entity\Api\NowPlayingCurrentSong;
             $offline_sh->sh_id = 0;
-            $offline_sh->song = $song_obj->api($this->api_utils);
+            $offline_sh->song = $song_obj->api($this->api_utils, $uri_empty);
             $np->now_playing = $offline_sh;
 
-            $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils);
+            $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils, $uri_empty);
 
             $next_song = $this->autodj->getNextSong($station);
             if ($next_song instanceof Entity\SongHistory) {
-                $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils);
+                $np->playing_next = $next_song->api(new Entity\Api\SongHistory, $this->api_utils, $uri_empty);
             } else {
                 $np->playing_next = null;
             }
@@ -260,7 +260,7 @@ class NowPlaying extends TaskAbstract implements EventSubscriberInterface
                 $song_obj = $this->song_repo->getOrCreate($np_raw['current_song'], true);
                 $sh_obj = $this->history_repo->register($song_obj, $station, $np_raw);
 
-                $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils);
+                $np->song_history = $this->history_repo->getHistoryForStation($station, $this->api_utils, $uri_empty);
 
                 $next_song = $this->autodj->getNextSong($station);
 

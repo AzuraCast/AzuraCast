@@ -171,6 +171,7 @@ class Song
      * Retrieve the API version of the object/array.
      *
      * @param \App\ApiUtilities $api_utils
+     * @param UriInterface|null $base_url
      * @return Api\Song
      */
     public function api(\App\ApiUtilities $api_utils, UriInterface $base_url = null): Api\Song

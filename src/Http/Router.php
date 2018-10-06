@@ -90,9 +90,21 @@ class Router extends \Slim\Router
             $uri = new Uri($uri_raw);
         }
 
-        return ($absolute)
-            ? UriResolver::resolve($this->getBaseUrl(), $uri)
-            : $uri;
+        if (!$absolute) {
+            return $uri;
+        }
+
+        // URI has an authority solely because of its port.
+        if ($uri->getAuthority() != '' && $uri->getHost() == '' && $uri->getPort()) {
+            // Strip the authority from the URI, then reapply the port after the merge.
+            $original_port = $uri->getPort();
+
+            $new_uri = UriResolver::resolve($this->getBaseUrl(), $uri->withScheme('')->withHost('')->withPort(null));
+
+            return $new_uri->withPort($original_port);
+        }
+
+        return UriResolver::resolve($this->getBaseUrl(), $uri);
     }
 
     /**

@@ -18,11 +18,7 @@ return [
             [
                 'label' => __('Select SHOUTcast 64-bit .tar.gz File'),
                 'required' => true,
-                'type' => [
-                    'application/x-gzip',
-                    'application/tar+gzip',
-                    'application/octet-stream',
-                ],
+                'type' => 'archive',
             ]
         ],
 

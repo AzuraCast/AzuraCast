@@ -236,6 +236,7 @@ class Icecast extends FrontendAbstract
                 'adminroot' => '/usr/local/share/icecast/admin',
                 'pidfile' => $config_dir . '/icecast.pid',
                 'x-forwarded-for' => '127.0.0.1',
+                'all-x-forwarded-for' => 1,
                 'alias' => [
                     '@source' => '/',
                     '@dest' => '/status.xsl',

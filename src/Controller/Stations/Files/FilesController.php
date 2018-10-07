@@ -484,8 +484,27 @@ class FilesController extends FilesControllerAbstract
                 rename($flow_response['path'], $final_path);
 
                 $station_media = $this->media_repo->getOrCreate($station, $final_path);
-
                 $this->em->persist($station_media);
+                $this->em->flush($station_media);
+
+                // If the user is looking at a playlist's contents, add uploaded media to that playlist.
+                if ($request->hasParam('searchPhrase')) {
+                    $search_phrase = $request->getParam('searchPhrase');
+
+                    if (substr($search_phrase, 0, 9) === 'playlist:') {
+                        $playlist_name = substr($search_phrase, 9);
+
+                        $playlist = $this->em->getRepository(Entity\StationPlaylist::class)->findOneBy([
+                            'station_id' => $station->getId(),
+                            'name' => $playlist_name,
+                        ]);
+
+                        if ($playlist instanceof Entity\StationPlaylist) {
+                            $this->playlists_media_repo->addMediaToPlaylist($station_media, $playlist);
+                        }
+                    }
+                }
+
                 $this->em->flush();
 
                 return $response->withJson(['success' => true]);

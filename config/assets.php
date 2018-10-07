@@ -391,6 +391,19 @@ return [
         ],
     ],
 
+    'flowjs' => [
+        'order' => 10,
+        'files' => [
+            'js' => [
+                [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/flow.js/2.13.0/flow.min.js',
+                    'integrity' => 'sha256-F82/auvnDa23QdME+MJ76ucrjnWyUDxKwEvCuhT1m2Y=',
+                    'defer' => true,
+                ],
+            ],
+        ],
+    ],
+
     'fullcalendar' => [
         'order' => 10,
         'require' => ['moment'],

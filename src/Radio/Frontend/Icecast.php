@@ -242,6 +242,7 @@ class Icecast extends FrontendAbstract
                 'ssl-private-key' => '/etc/nginx/ssl/ssl.key',
                 'ssl-certificate' => '/etc/nginx/ssl/ssl.crt',
                 'ssl-allowed-ciphers' => 'ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS',
+                'x-forwarded-for' => '127.0.0.1',
             ],
             'logging' => [
                 'accesslog' => 'icecast_access.log',
@@ -254,10 +255,9 @@ class Icecast extends FrontendAbstract
             ],
         ];
 
+        // Allow all sources to set the X-Forwarded-For header
         if (APP_INSIDE_DOCKER && APP_DOCKER_REVISION >= 3) {
             $defaults['paths']['all-x-forwarded-for'] = '1';
-        } else {
-            $defaults['paths']['x-forwarded-for'] = '127.0.0.1';
         }
 
         foreach ($station->getMounts() as $mount_row) {

@@ -304,8 +304,9 @@ return function(\Slim\App $app)
 
     $app->group('/station/{station}', function () {
 
-        $this->get('', Controller\Stations\IndexController::class)
-            ->setName('stations:index:index');
+        $this->get('', function (\App\Http\Request $request, \App\Http\Response $response) {
+            return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
+        })->setName('stations:index:index');
 
         $this->group('/automation', function () {
 
@@ -388,11 +389,10 @@ return function(\Slim\App $app)
 
         })->add([Middleware\Permissions::class, 'manage station mounts', true]);
 
-        $this->get('/profile', function (\App\Http\Request $request, \App\Http\Response $response) {
-            return $response->withRedirect($request->getRouter()->fromHere('stations:index:index'));
-        })->setName('stations:profile:index');
+        $this->get('/profile', Controller\Stations\Profile\IndexController::class)
+            ->setName('stations:profile:index');
 
-        $this->map(['GET', 'POST'], '/profile/edit', Controller\Stations\EditProfileController::class)
+        $this->map(['GET', 'POST'], '/profile/edit', Controller\Stations\Profile\EditController::class)
             ->setName('stations:profile:edit')
             ->add([Middleware\Permissions::class, 'manage station profile', true]);
 

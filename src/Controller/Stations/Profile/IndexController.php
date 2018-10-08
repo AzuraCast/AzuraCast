@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Stations;
+namespace App\Controller\Stations\Profile;
 
 use Doctrine\ORM\EntityManager;
 use App\Entity;
@@ -32,7 +32,7 @@ class IndexController
         $view = $request->getView();
 
         if (!$station->isEnabled()) {
-            return $view->renderToResponse($response, 'stations/index/disabled');
+            return $view->renderToResponse($response, 'stations/profile/disabled');
         }
 
         $backend = $request->getStationBackend();
@@ -89,7 +89,7 @@ class IndexController
             $np = array_intersect_key($station_np->toArray(), $np) + $np;
         }
 
-        return $view->renderToResponse($response, 'stations/index/index', [
+        return $view->renderToResponse($response, 'stations/profile/index', [
             'num_songs' => $num_songs,
             'num_playlists' => $num_playlists,
             'stream_urls' => $stream_urls,

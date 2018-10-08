@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Stations;
+namespace App\Controller\Stations\Profile;
 
 use App\Cache;
 use App\Radio\Backend\BackendAbstract;
@@ -11,7 +11,7 @@ use App\Entity;
 use App\Http\Request;
 use App\Http\Response;
 
-class EditProfileController
+class EditController
 {
     /** @var EntityManager */
     protected $em;
@@ -108,7 +108,7 @@ class EditProfileController
             // Clear station cache.
             $this->cache->remove('stations');
 
-            return $response->withRedirect($request->getRouter()->fromHere('stations:index:index'));
+            return $response->withRedirect($request->getRouter()->fromHere('stations:profile:index'));
         }
 
         return $request->getView()->renderToResponse($response, 'stations/profile/edit', [

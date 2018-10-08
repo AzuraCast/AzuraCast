@@ -20,18 +20,6 @@ class StationsProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Stations\EditProfileController::class] = function($di) {
-            /** @var \App\Config $config */
-            $config = $di[\App\Config::class];
-
-            return new Stations\EditProfileController(
-                $di[\Doctrine\ORM\EntityManager::class],
-                $di[\App\Cache::class],
-                $di[\App\Radio\Configuration::class],
-                $config->get('forms/station')
-            );
-        };
-
         $di[Stations\Files\FilesController::class] = function($di) {
             /** @var \App\Config $config */
             $config = $di[\App\Config::class];
@@ -62,9 +50,21 @@ class StationsProvider implements ServiceProviderInterface
             );
         };
 
-        $di[Stations\IndexController::class] = function($di) {
-            return new Stations\IndexController(
+        $di[Stations\Profile\IndexController::class] = function($di) {
+            return new Stations\Profile\IndexController(
                 $di[\Doctrine\ORM\EntityManager::class]
+            );
+        };
+
+        $di[Stations\Profile\EditController::class] = function($di) {
+            /** @var \App\Config $config */
+            $config = $di[\App\Config::class];
+
+            return new Stations\Profile\EditController(
+                $di[\Doctrine\ORM\EntityManager::class],
+                $di[\App\Cache::class],
+                $di[\App\Radio\Configuration::class],
+                $config->get('forms/station')
             );
         };
 

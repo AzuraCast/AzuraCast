@@ -235,7 +235,6 @@ class Icecast extends FrontendAbstract
                 'webroot' => '/usr/local/share/icecast/web',
                 'adminroot' => '/usr/local/share/icecast/admin',
                 'pidfile' => $config_dir . '/icecast.pid',
-                'x-forwarded-for' => '127.0.0.1',
                 'alias' => [
                     '@source' => '/',
                     '@dest' => '/status.xsl',
@@ -254,6 +253,12 @@ class Icecast extends FrontendAbstract
                 'chroot' => 0,
             ],
         ];
+
+        if (APP_INSIDE_DOCKER) {
+            $defaults['paths']['all-x-forwarded-for'] = '1';
+        } else {
+            $defaults['paths']['x-forwarded-for'] = '127.0.0.1';
+        }
 
         foreach ($station->getMounts() as $mount_row) {
             /** @var Entity\StationMount $mount_row */

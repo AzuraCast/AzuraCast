@@ -262,13 +262,17 @@ class FilesController extends FilesControllerAbstract
             $row_count = $num_results;
         }
 
-        $offset_start = ($page - 1) * $row_count;
-        if ($offset_start >= $num_results) {
-            $page = floor($num_results / $row_count);
+        if ($num_results > 0 && $row_count > 0) {
             $offset_start = ($page - 1) * $row_count;
-        }
+            if ($offset_start >= $num_results) {
+                $page = floor($num_results / $row_count);
+                $offset_start = ($page - 1) * $row_count;
+            }
 
-        $return_result = array_slice($result, $offset_start, $row_count);
+            $return_result = array_slice($result, $offset_start, $row_count);
+        } else {
+            $return_result = [];
+        }
 
         return $response->withJson([
             'current' => $page,

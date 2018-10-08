@@ -34,7 +34,10 @@ function setVolume(new_volume)
 function playAudio(source_url)
 {
     player.src = source_url;
-    player.play();
+    player.play().catch(function(error) {
+        console.error(error);
+        stopAllPlayers();
+    });
 }
 
 function handlePlayClick(audio_source)
@@ -44,11 +47,11 @@ function handlePlayClick(audio_source)
     if (btn.hasClass('playing')) {
         stopAllPlayers();
     } else {
-        if (is_playing)
+        if (is_playing) {
             stopAllPlayers();
+        }
 
         playAudio(audio_source);
-
         btn.addClass('playing').find('i').removeClass('zmdi-play').addClass('zmdi-stop');
     }
 }
@@ -83,7 +86,7 @@ $(function() {
     });
 
     $player.on('ended', function(e) {
-        $('#radio-player-controls,#radio-embedded-controls').removeClass('jp-state-playing');
+        stopAllPlayers();
     });
 
     if ('mediaSession' in navigator) {

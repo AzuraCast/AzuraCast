@@ -5,7 +5,7 @@ info:
   license:
     name: 'Apache 2.0'
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: 0.8.2-2018.04
+  version: 0.9.0-2018.10
 servers:
   -
     url: 'https://demo.azuracast.com/api'
@@ -56,7 +56,7 @@ paths:
       tags:
         - 'Now Playing'
       description: 'Returns a full summary of all stations'' current state.'
-      operationId: 'App\Controller\Api\NowplayingController::indexAction'
+      operationId: 'App\Controller\Api\NowplayingController::__invoke'
       parameters: {  }
       responses:
         '200':
@@ -66,7 +66,7 @@ paths:
       tags:
         - 'Now Playing'
       description: 'Returns a full summary of the specified station''s current state.'
-      operationId: 'App\Controller\Api\NowplayingController::indexAction'
+      operationId: 'App\Controller\Api\NowplayingController::__invoke'
       parameters:
         -
           $ref: '#/components/parameters/station_id_required'
@@ -286,7 +286,7 @@ components:
         connected_on:
           description: 'UNIX timestamp that the user first connected.'
           type: integer
-          example: 1537220436
+          example: 1539107993
         connected_time:
           description: 'Number of seconds that the user has been connected.'
           type: integer
@@ -405,7 +405,7 @@ components:
         played_at:
           description: 'UNIX timestamp when playback started.'
           type: integer
-          example: 1537220436
+          example: 1539107993
         duration:
           description: 'Duration of the song in seconds'
           type: integer
@@ -532,7 +532,7 @@ components:
         timestamp:
           description: 'The current UNIX timestamp'
           type: integer
-          example: 1537220436
+          example: 1539107993
       type: object
     Time:
       properties:

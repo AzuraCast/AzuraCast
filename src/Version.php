@@ -1,7 +1,7 @@
 <?php
 namespace App;
 
-define('APP_CORE_VERSION', '0.8.2-2018.04');
+define('APP_CORE_VERSION', '0.9.0-2018.10');
 define('APP_CORE_RELEASE', 'Beta');
 
 /**

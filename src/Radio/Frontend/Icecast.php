@@ -254,7 +254,7 @@ class Icecast extends FrontendAbstract
             ],
         ];
 
-        if (APP_INSIDE_DOCKER) {
+        if (APP_INSIDE_DOCKER && APP_DOCKER_REVISION >= 3) {
             $defaults['paths']['all-x-forwarded-for'] = '1';
         } else {
             $defaults['paths']['x-forwarded-for'] = '127.0.0.1';

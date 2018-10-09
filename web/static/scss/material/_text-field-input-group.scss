@@ -1,0 +1,223 @@
+.input-group {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  width: 100%;
+
+  > .custom-file,
+  > .custom-select,
+  > .floating-label,
+  > .form-control,
+  > .form-control-file,
+  > .textfield-box {
+    flex: 1 1 auto;
+    margin-bottom: 0;
+    width: 1%;
+
+    + .custom-file,
+    + .custom-select,
+    + .floating-label,
+    + .form-control,
+    + .form-control-file,
+    + .textfield-box {
+      margin-left: $input-group-inner-spacer-x;
+    }
+  }
+}
+
+// Addons
+
+.input-group-append,
+.input-group-prepend {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  .btn {
+    min-width: 0;
+
+    + .btn {
+      margin-left: ($btn-group-inner-spacer-x * -1);
+    }
+  }
+}
+
+.input-group-append {
+  margin-left: $input-group-inner-spacer-x;
+}
+
+.input-group-prepend {
+  margin-right: $input-group-inner-spacer-x;
+}
+
+.input-group-text {
+  color: inherit;
+  font-size: $textfield-font-size;
+  line-height: $textfield-line-height;
+  margin-bottom: 0;
+  white-space: nowrap;
+
+  + .input-group-text {
+    margin-left: ($input-group-inner-spacer-x / 2);
+  }
+}
+
+// Border radius
+
+.input-group > .input-group-append > .btn,
+.input-group > .input-group-prepend > .btn {
+  &:not(:first-of-type) {
+    @include border-left-radius(0);
+  }
+
+  &:not(:last-of-type) {
+    @include border-right-radius(0);
+  }
+}
+
+// Icons
+
+.input-group-icon {
+  @include transition-standard(color);
+
+  color: $textfield-border-color;
+  font-size: ($font-size-base / 1rem * $textfield-font-size);
+  margin-right: $input-group-inner-spacer-x;
+  order: -1;
+
+  @include hover {
+    color: $textfield-border-color-hover;
+  }
+
+  .floating-label.is-focused ~ &,
+  .form-control:focus ~ & {
+    color: $textfield-border-color-focus;
+  }
+
+  .floating-label:not(.textfield-box) ~ & {
+    margin-top: $floating-label-font-size;
+  }
+}
+
+// Size
+
+.input-group-lg {
+  > .floating-label {
+    @extend .floating-label-lg;
+
+    &.has-value label,
+    &.is-focused label {
+      top: 0;
+    }
+
+    &.textfield-box.has-value label,
+    &.textfield-box.is-focused label {
+      top: $textfield-box-label-spacer-y;
+    }
+
+    &:not(.textfield-box) ~ .input-group-icon {
+      margin-top: $floating-label-font-size-lg;
+    }
+  }
+
+  > %form-control {
+    font-size: $textfield-font-size-lg;
+    line-height: $textfield-line-height-lg;
+    padding: $textfield-padding-y-lg $textfield-padding-x-lg calc(#{$textfield-padding-y-lg} - #{$textfield-border-width});
+  }
+
+  > %form-select {
+    padding-right: $textfield-select-bg-size;
+  }
+
+  > %form-textarea {
+    padding: $textfield-box-padding-y-lg $textfield-box-padding-x-lg calc(#{$textfield-box-padding-y-lg} - #{$textfield-border-width});
+  }
+
+  > .form-control[type='file'],
+  > .form-control-file {
+    max-height: $textfield-box-height-lg;
+  }
+
+  > .input-group-append,
+  > .input-group-prepend {
+    > .btn {
+      @extend %btn-lg;
+    }
+
+    > .input-group-text {
+      font-size: $textfield-font-size-lg;
+      line-height: $textfield-line-height-lg;
+    }
+  }
+
+  > .input-group-icon {
+    font-size: ($font-size-base / 1rem * $textfield-font-size-lg);
+    line-height: $textfield-line-height-lg;
+  }
+
+  > .textfield-box {
+    @extend .textfield-box-lg;
+  }
+}
+
+.input-group-sm {
+  > .floating-label {
+    @extend .floating-label-sm;
+
+    &.has-value label,
+    &.is-focused label {
+      top: 0;
+    }
+
+    &.textfield-box.has-value label,
+    &.textfield-box.is-focused label {
+      top: $textfield-box-label-spacer-y;
+    }
+
+    &:not(.textfield-box) ~ .input-group-icon {
+      margin-top: $floating-label-font-size-sm;
+    }
+  }
+
+  > %form-control {
+    font-size: $textfield-font-size-sm;
+    line-height: $textfield-line-height-sm;
+    padding: $textfield-padding-y-sm $textfield-padding-x-sm calc(#{$textfield-padding-y-sm} - #{$textfield-border-width});
+  }
+
+  > %form-select {
+    padding-right: $textfield-select-bg-size;
+  }
+
+  > %form-textarea {
+    padding: $textfield-box-padding-y-sm $textfield-box-padding-x-sm calc(#{$textfield-box-padding-y-sm} - #{$textfield-border-width});
+  }
+
+  > .form-control[type='file'],
+  > .form-control-file {
+    max-height: $textfield-box-height-sm;
+  }
+
+  > .input-group-append,
+  > .input-group-prepend {
+    > .btn {
+      @extend %btn-sm;
+    }
+
+    > .input-group-text {
+      font-size: $textfield-font-size-sm;
+      line-height: $textfield-line-height-sm;
+    }
+  }
+
+  > .input-group-icon {
+    font-size: ($font-size-base / 1rem * $textfield-font-size-sm);
+    line-height: $textfield-line-height-sm;
+  }
+
+  > .textfield-box {
+    @extend .textfield-box-sm;
+  }
+}

@@ -1,0 +1,125 @@
+// Snackbar based on https://material.io/guidelines/components/snackbars-toasts.html#snackbars-toasts-specs
+
+.snackbar {
+  align-items: center;
+  background-color: $snackbar-bg;
+  color: $snackbar-color;
+  display: flex;
+  font-size: $snackbar-font-size;
+  line-height: $snackbar-line-height;
+  opacity: 0;
+  padding: $snackbar-padding-y $snackbar-padding-x;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  transform: translateY(100%);
+  transition: opacity 0s $transition-duration-mobile-leaving, transform $transition-duration-mobile-leaving $transition-timing-function-acceleration;
+  width: 100%;
+  z-index: map-get($snackbar-elevation-shadow, elevation);
+
+  @include media-breakpoint-up($snackbar-breakpoint) {
+    border-radius: $snackbar-border-radius;
+    max-width: $snackbar-max-width;
+    min-width: $snackbar-min-width;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    width: auto;
+  }
+
+  @include media-breakpoint-up(sm) {
+    transition: opacity 0s $transition-duration-tablet-leaving, transform $transition-duration-tablet-leaving $transition-timing-function-acceleration;
+  }
+
+  @include media-breakpoint-up(lg) {
+    transition: opacity 0s $transition-duration-desktop-leaving, transform $transition-duration-desktop-leaving $transition-timing-function-acceleration;
+  }
+
+  @media screen and (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+
+  &.show {
+    @include transition-deceleration(transform);
+
+    opacity: 1;
+    transform: translateY(0);
+
+    @include media-breakpoint-up($snackbar-breakpoint) {
+      transform: translate(-50%, 0);
+    }
+  }
+}
+
+.snackbar-body {
+  @include text-truncate;
+
+  margin-right: auto;
+  max-height: 100%;
+  min-width: 0;
+}
+
+.snackbar-btn {
+  @include transition-standard(background-color, background-image);
+
+  background-color: transparent;
+  background-image: none;
+  border: 0;
+  color: $snackbar-btn-color;
+  cursor: pointer;
+  display: block;
+  flex-shrink: 0;
+  font-size: inherit;
+  font-weight: $btn-font-weight;
+  line-height: inherit;
+  margin-left: $snackbar-inner-spacer-x;
+  padding: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  @include focus-hover {
+    color: $snackbar-btn-color-hover;
+    text-decoration: none;
+  }
+
+  @include media-breakpoint-up($snackbar-breakpoint) {
+    margin-left: $snackbar-inner-spacer-x-desktop;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.snackbar-left,
+.snackbar-right {
+  @include media-breakpoint-up($snackbar-breakpoint) {
+    transform: translateY(100%);
+
+    &.show {
+      transform: translateY($snackbar-margin-y * -1);
+    }
+  }
+}
+
+.snackbar-left {
+  @include media-breakpoint-up($snackbar-breakpoint) {
+    left: $snackbar-margin-x;
+  }
+}
+
+.snackbar-right {
+  @include media-breakpoint-up($snackbar-breakpoint) {
+    right: $snackbar-margin-x;
+    left: auto;
+  }
+}
+
+.snackbar-multi-line {
+  height: $snackbar-height-multi;
+  padding-top: $snackbar-padding-y-multi;
+  padding-bottom: $snackbar-padding-y-multi;
+
+  .snackbar-body {
+    white-space: normal;
+  }
+}

@@ -1,0 +1,187 @@
+// Alert
+
+$alert-border-radius:    $border-radius !default;
+$alert-link-font-weight: $font-weight-medium !default;
+$alert-margin-y:         $spacer !default;
+$alert-padding-x:        1rem !default;
+$alert-padding-y:        1rem !default;
+
+// Badge
+
+$badge-border-radius: $border-radius !default;
+$badge-font-weight:   $font-weight-medium !default;
+$badge-padding-x:     0.5em !default;
+
+// Body
+
+$body-bg:    $white-primary !default;
+$body-color: $black-primary !default;
+
+// Breadcrumb
+
+$breadcrumb-bg:               $material-color-grey-100 !default;
+$breadcrumb-border-radius:    $border-radius !default;
+$breadcrumb-height:           3.5rem !default;
+$breadcrumb-inner-spacer-x:   0.5rem !default;
+$breadcrumb-item-color:       $black-secondary !default;
+$breadcrumb-item-color-hover: $black-primary !default;
+$breadcrumb-item-icon:        'chevron_right' !default;
+$breadcrumb-margin-y:         $spacer !default;
+$breadcrumb-padding-x:        1rem !default;
+$breadcrumb-padding-y:        0.625rem !default;
+
+// Caret
+
+$caret-bg:         str-replace(url('data:image/svg+xml;charset=utf8,%3Csvg fill="#{$black}" fill-opacity="#{$black-secondary-opacity}" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M7 10l5 5 5-5z"/%3E%3Cpath d="M0 0h24v24H0z" fill="none"/%3E%3C/svg%3E'), '#', '%23') !default;
+$caret-icon:       'expand_more' !default;
+$caret-icon-left:  'keyboard_arrow_left' !default;
+$caret-icon-right: 'keyboard_arrow_right' !default;
+$caret-icon-up:    'expand_less' !default;
+$caret-spacer-x:   0.2em !default;
+
+// Carousel
+
+$carousel-caption-color:                   $white-primary !default;
+$carousel-caption-width:                   50% !default;
+$carousel-control-bg:                      $white-divider !default;
+$carousel-control-bg-hover:                rgba(204, 204, 204, 0.25) !default;
+$carousel-control-color:                   $white-primary !default;
+$carousel-control-elevation-shadow:        map-get($elevation-shadows, 6) !default;
+$carousel-control-elevation-shadow-active: map-get($elevation-shadows, 12) !default;
+$carousel-control-font-size:               0.8125rem !default;
+$carousel-control-next-icon:               'chevron_right' !default;
+$carousel-control-prev-icon:               'chevron_left' !default;
+$carousel-control-size:                    2.5rem !default;
+$carousel-indicator-bg:                    rgba(204, 204, 204, 0.25) !default;
+$carousel-indicator-border-color:          $white-divider !default;
+$carousel-indicator-border-width:          $border-width !default;
+$carousel-indicator-size:                  0.5rem !default;
+
+// Close
+
+$close-color:       $black-hint !default;
+$close-color-hover: $black-primary !default;
+$close-font-size:   $material-icon-size !default;
+$close-font-weight: $font-weight-light !default;
+
+// Code
+
+$code-bg:                   $material-color-grey-100 !default;
+$code-border-radius:        $border-radius !default;
+$code-color:                #bd4147 !default;
+$code-font-size:            87.5% !default;
+$code-padding-x:            0.4rem !default;
+$code-padding-y:            0.2rem !default;
+
+$kbd-bg:                    $black-primary !default;
+$kbd-color:                 $white-primary !default;
+
+$pre-color:                 $black-primary !default;
+$pre-margin-y:              $spacer !default;
+$pre-scrollable-max-height: 340px !default;
+
+// Form
+
+$custom-file-button-icon:     'attachment' !default;
+
+$form-check-inline-margin-x:  $spacer-sm !default;
+$form-check-input-gutter:     1.25rem !default;
+
+$form-feedback-invalid-color: theme-color(danger) !default;
+$form-feedback-valid-color:   theme-color(success) !default;
+
+$form-group-margin-y:         $spacer !default;
+
+$input-group-inner-spacer-x:  1rem !default;
+
+// Jumbotron
+
+$jumbotron-bg:               $white-primary !default;
+$jumbotron-border-radius:    $border-radius !default;
+$jumbotron-color:            $black-primary !default;
+$jumbotron-elevation-shadow: map-get($elevation-shadows, 2) !default;
+$jumbotron-padding-x:        2rem !default;
+$jumbotron-padding-y:        3rem !default;
+
+// Link
+
+$link-color:            theme-color(secondary) !default;
+$link-color-hover:      theme-color(secondary) !default;
+$link-decoration:       none !default;
+$link-decoration-hover: underline !default;
+
+// Misc
+
+$blockquote-border-color:    theme-color(primary) !default;
+$blockquote-border-width:    0.3125rem !default;
+$blockquote-small-color:     $black-hint !default;
+
+$dt-font-weight:             $font-weight-medium !default;
+
+$figure-caption-color:       $black-hint !default;
+$figure-img-margin-y:        $spacer-sm !default;
+
+$headings-color:             inherit !default;
+$headings-font-family:       inherit !default;
+$headings-margin-y:          $spacer-sm !default;
+
+$hr-border-color:            $border-color !default;
+$hr-border-width:            $border-width !default;
+
+$list-inline-inner-spacer-x: $spacer-sm !default;
+
+$mark-bg:                    $material-color-yellow-500 !default;
+$mark-color:                 $black-primary !default;
+$mark-padding:               0.2em !default;
+
+$paragraph-margin-y:         $spacer !default;
+
+$small-font-size:            80% !default;
+
+$table-caption-color:        $black-hint !default;
+
+$text-muted:                 $black-hint !default;
+
+$thumbnail-box-shadow:       map-get($shadows, 2) !default;
+
+$webkit-tap-highlight-color: rgba(0, 0, 0, 0) !default;
+
+// Nav
+
+$nav-link-color-disabled: $black-hint !default;
+$nav-link-padding-x:      1rem !default;
+$nav-link-padding-y:      0.5rem !default;
+
+$nav-pills-bg-hover:      $black-divider !default;
+$nav-pills-border-radius: $border-radius !default;
+$nav-pills-color:         $black-primary !default;
+$nav-pills-color-active:  theme-color(secondary) !default;
+$nav-pills-link-opacity:  0.7 !default;
+
+// Pagination
+
+$pagination-bg:             $material-color-grey-100 !default;
+$pagination-border-radius:  $border-radius !default;
+$pagination-color:          $black-primary !default;
+$pagination-color-disabled: $black-hint !default;
+$pagination-inner-spacer-x: 1px !default;
+$pagination-padding-x:      0.5rem !default;
+$pagination-padding-y:      0.625rem !default;
+
+// Popover
+
+$popover-bg:               $white !default;
+$popover-border-radius:    $border-radius !default;
+$popover-breakpoint:       md !default;
+$popover-elevation-shadow: map-get($elevation-shadows, 24) !default;
+$popover-font-size:        $font-size-base !default;
+$popover-margin:           1.5rem !default;
+$popover-margin-desktop:   0.875rem !default;
+$popover-max-width:        17.5rem !default;
+$popover-padding-x:        1.5rem !default;
+$popover-padding-y:        1.25rem !default;
+
+// Print
+
+$print-body-min-width: map-get($grid-breakpoints, 'lg') !default;
+$print-page-size:      a3 !default;

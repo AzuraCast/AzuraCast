@@ -1,0 +1,77 @@
+@mixin _assert-ascending($map, $map-name) {
+  $prev-key: null;
+  $prev-num: null;
+
+  @each $key, $num in $map {
+    @if $prev-num == null {
+      // Do nothing
+    } @else if not comparable($num, $prev-num) {
+      @warn 'Potentially invalid value for #{$map-name}: This map must be in ascending order, but key "#{$key}" has value #{$num} whose unit makes it incomparable to #{$prev-num}, the value of the previous key "#{$prev-key}"!';
+    } @else if $num <= $prev-num {
+      @warn 'Invalid value for #{$map-name}: This map must be in ascending order, but key "#{$key}" has value #{$num} which is not greater than #{$prev-num}, the value of the previous key "#{$prev-key}"!';
+    }
+
+    $prev-key: $key;
+    $prev-num: $num;
+  }
+}
+
+@mixin _assert-starts-at-zero($map) {
+  $first-value: nth(map-values($map), 1);
+
+  @if $first-value != 0 {
+    @warn 'First breakpoint in `$grid-breakpoints` must start at 0, but starts at #{$first-value}.';
+  }
+}
+
+// Colour contrast
+
+@function color-yiq($color) {
+  $r: red($color);
+  $g: green($color);
+  $b: blue($color);
+
+  $yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+  @if ($yiq >= $yiq-contrasted-threshold) {
+    @return $yiq-text-dark;
+  } @else {
+    @return $yiq-text-light;
+  }
+}
+
+// Replace `$key` with `$replace` in `$content`
+
+@function str-replace($content, $key, $replace: '') {
+  $index: str-index($content, $key);
+
+  @if $index {
+    @return str-slice($content, 1, $index - 1) + $replace + str-replace(str-slice($content, $index + str-length($key)), $key, $replace);
+  } @else {
+    @return $content;
+  }
+}
+
+// Retrieve a colour
+
+@function color($key: amber) {
+  @return map-get($colors, $key);
+}
+
+@function theme-color($key: primary) {
+  @return map-get(map-get($theme-colors, $key), color);
+}
+
+@function theme-color-dark($key: primary) {
+  @return map-get(map-get($theme-colors, $key), dark);
+}
+
+@function theme-color-light($key: primary) {
+  @return map-get(map-get($theme-colors, $key), light);
+}
+
+// Strip unit
+
+@function strip-unit($val) {
+  @return $val / ($val * 0 + 1);
+}

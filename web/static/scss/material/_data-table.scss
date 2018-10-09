@@ -1,0 +1,312 @@
+.table {
+  background-color: $table-bg;
+  border: 0;
+  margin-bottom: $table-margin-y;
+  max-width: 100%;
+  width: 100%;
+
+  td,
+  th {
+    border-top: $table-border-width solid $table-border-color;
+    line-height: $table-line-height;
+    padding-right: $table-cell-padding-x;
+    padding-left: $table-cell-padding-x;
+    vertical-align: top;
+
+    &:first-child {
+      padding-left: $table-cell-padding-x-alt;
+    }
+
+    &:last-child {
+      padding-right: $table-cell-padding-x-alt;
+    }
+  }
+
+  tbody {
+    color: $table-tbody-color;
+
+    td,
+    th {
+      font-size: $table-tbody-font-size;
+      font-weight: $table-tbody-font-weight;
+      height: $table-tbody-cell-height;
+      padding-top: $table-tbody-padding-y;
+      padding-bottom: $table-tbody-padding-y;
+    }
+  }
+
+  tfoot {
+    color: $table-tfoot-color;
+
+    td,
+    th {
+      font-size: $table-tfoot-font-size;
+      font-weight: $table-tfoot-font-weight;
+      height: $table-tfoot-cell-height;
+      padding-top: $table-tfoot-padding-y;
+      padding-bottom: $table-tfoot-padding-y;
+    }
+  }
+
+  thead {
+    color: $table-thead-color;
+
+    td,
+    th {
+      font-size: $table-thead-font-size;
+      font-weight: $table-thead-font-weight;
+      height: $table-thead-cell-height;
+      padding-top: $table-thead-padding-y;
+      padding-bottom: $table-thead-padding-y;
+    }
+  }
+
+  .card > & {
+    &:first-child {
+      &,
+      > :first-child,
+      > :first-child > tr:first-child {
+        @include border-top-radius($card-border-radius);
+      }
+
+      > :first-child > tr:first-child {
+        // stylelint-disable selector-max-compound-selectors
+        td,
+        th {
+          &:first-child {
+            border-top-left-radius: $card-border-radius;
+          }
+
+          &:last-child {
+            border-top-right-radius: $card-border-radius;
+          }
+        }
+        // stylelint-enable
+      }
+    }
+
+    &:last-child {
+      &,
+      > :last-child,
+      > :last-child > tr:last-child {
+        @include border-bottom-radius($card-border-radius);
+      }
+
+      > :last-child > tr:last-child {
+        // stylelint-disable selector-max-compound-selectors
+        td,
+        th {
+          &:first-child {
+            border-bottom-left-radius: $card-border-radius;
+          }
+
+          &:last-child {
+            border-bottom-right-radius: $card-border-radius;
+          }
+        }
+        // stylelint-enable
+      }
+    }
+  }
+
+  .table {
+    border-top: $table-border-width solid $table-border-color;
+  }
+
+  > :first-child > tr:first-child {
+    td,
+    th {
+      border-top: 0;
+    }
+  }
+}
+
+.table-borderless {
+  td,
+  th,
+  .table {
+    border: 0;
+  }
+}
+
+.table-bordered {
+  border: $table-border-width solid $table-border-color;
+
+  .card > & {
+    border: 0;
+  }
+}
+
+.table-sm {
+  td,
+  th {
+    padding-right: $table-sm-cell-padding-x;
+    padding-left: $table-sm-cell-padding-x;
+
+    &:first-child {
+      padding-left: $table-sm-cell-padding-x-alt;
+    }
+
+    &:last-child {
+      padding-right: $table-sm-cell-padding-x-alt;
+    }
+  }
+
+  tbody {
+    td,
+    th {
+      height: $table-sm-tbody-cell-height;
+      padding-top: $table-sm-tbody-padding-y;
+      padding-bottom: $table-sm-tbody-padding-y;
+    }
+  }
+
+  tfoot {
+    td,
+    th {
+      padding-top: $table-sm-tfoot-padding-y;
+      padding-bottom: $table-sm-tfoot-padding-y;
+    }
+  }
+
+  thead {
+    td,
+    th {
+      height: $table-sm-thead-cell-height;
+      padding-top: $table-sm-thead-padding-y;
+      padding-bottom: $table-sm-thead-padding-y;
+    }
+  }
+}
+
+.table-striped {
+  tbody tr:nth-of-type(#{$table-striped-order}) {
+    background-color: $table-bg-accent;
+  }
+}
+
+// Placed here because it has to come after the striping styles
+
+.table-hover {
+  tbody tr {
+    @include hover {
+      background-color: $table-bg-hover;
+    }
+  }
+}
+
+// Table background
+
+@each $color, $values in $theme-colors {
+  .table-#{$color} {
+    &,
+    > td,
+    > th {
+      background-color: theme-color-light($color);
+      color: color-yiq(theme-color-light($color));
+    }
+
+    .table-hover & {
+      @include hover {
+        &,
+        > td,
+        > th {
+          background-color: theme-color($color);
+          color: color-yiq(theme-color($color));
+        }
+      }
+    }
+  }
+}
+
+.table-active {
+  &,
+  > td,
+  > th {
+    background-color: $table-bg-active;
+    color: color-yiq($table-bg-active);
+  }
+
+  .table-hover & {
+    @include hover {
+      &,
+      > td,
+      > th {
+        background-color: $table-bg-active-hover;
+        color: color-yiq($table-bg-active-hover);
+      }
+    }
+  }
+}
+
+// stylelint-disable-next-line no-duplicate-selectors
+.table {
+  .thead-dark {
+    td,
+    th {
+      background-color: $table-dark-bg;
+      color: $table-dark-color;
+    }
+  }
+
+  .thead-light {
+    td,
+    th {
+      background-color: $table-thead-bg;
+      color: $table-thead-color;
+    }
+  }
+}
+
+.table-dark {
+  background-color: $table-dark-bg;
+  color: $table-dark-color;
+
+  &.table-bordered {
+    border-color: $table-dark-border-color;
+  }
+
+  &.table-striped {
+    tbody tr:nth-of-type(odd) {
+      background-color: $table-dark-bg-accent;
+    }
+  }
+
+  &.table-hover {
+    tbody tr {
+      @include hover {
+        background-color: $table-dark-bg-hover;
+      }
+    }
+  }
+
+  tbody,
+  tfoot,
+  thead {
+    color: inherit;
+  }
+
+  td,
+  th,
+  .table {
+    border-color: $table-dark-border-color;
+  }
+}
+
+// Table responsive
+
+.table-responsive {
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    $next: breakpoint-next($breakpoint);
+    $infix: breakpoint-infix($next);
+
+    &#{$infix} {
+      @include media-breakpoint-down($breakpoint) {
+        display: block;
+        overflow-x: auto;
+        width: 100%;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+      }
+    }
+  }
+}

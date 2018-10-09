@@ -21,6 +21,7 @@ return [
             ],
         ],
     ],
+
     'vue' => [
         'order' => 1,
         'files' => [
@@ -38,7 +39,7 @@ return [
     /*
      * Main per-layout dependencies
      */
-    'minimal_header' => [
+    'minimal' => [
         'order' => 2,
         'require' => ['jquery'],
         'files' => [
@@ -54,17 +55,6 @@ return [
             ],
             'js' => [
                 [
-                    'src' => 'vendor/bootstrap/dist/js/bootstrap.min.js',
-                ],
-            ]
-        ],
-
-    ],
-    'minimal_body' => [
-        'order' => 50,
-        'files' => [
-            'js' => [
-                [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.5/waves.min.js',
                     'integrity' => 'sha256-ICvFZLf7gslwfpvdxzQ8w8oZt0brzoFr8v2dXBecuLY=',
                     'defer' => true,
@@ -77,12 +67,16 @@ return [
                 [
                     'src' => 'dist/app.js',
                 ],
-            ],
+                [
+                    'src' => 'dist/material.js',
+                ]
+            ]
         ],
     ],
-    'main_header' => [
+
+    'main' => [
         'order' => 3,
-        'require' => ['minimal_header'],
+        'require' => ['minimal'],
         'files' => [
             'css' => [
                 [
@@ -94,12 +88,6 @@ return [
                     'integrity' => 'sha256-JHGEmB629pipTkMag9aMaw32I8zle24p3FpsEeI6oZU=',
                 ]
             ],
-        ],
-    ],
-    'main_body' => [
-        'order' => 49,
-        'require' => ['minimal_body'],
-        'files' => [
             'js' => [
                 [
                     'src' => 'https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js',

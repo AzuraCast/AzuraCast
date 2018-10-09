@@ -3,7 +3,7 @@
 }
 
 .public-block {
-  background: @body-bg;
+  background: theme-color-dark('dark');
   border-radius: 2px;
   position: absolute;
   top: 50%;
@@ -25,8 +25,8 @@
     font-weight: 100;
   }
 
-  @media (max-width: @screen-xs-max) {
-    width: ~"calc(100% - 40px)";
+  @include media-breakpoint-only('xs') {
+    width: calc(100% - 40px);
     left: 20px;
     margin-left: 0;
     height: 260px;

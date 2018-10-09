@@ -154,6 +154,7 @@ services:
       context: ./util/docker/static
     volumes:
       - ./web/static:/data
+      - static_node_modules:/data/node_modules
 
 #  chronograf:
 #    image: chronograf:alpine
@@ -184,3 +185,4 @@ volumes:
   station_data: {}
   shoutcast2_install: {}
   tmp_data: {}
+  static_node_modules: {}

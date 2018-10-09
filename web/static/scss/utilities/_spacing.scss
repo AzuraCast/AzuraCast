@@ -1,0 +1,71 @@
+// stylelint-disable declaration-no-important
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint);
+
+    @each $prop, $prop-abbr in (margin: m, padding: p) {
+      @each $size, $value in $spacers {
+        .#{$prop-abbr}#{$infix}-#{$size} {
+          #{$prop}: $value !important;
+        }
+
+        .#{$prop-abbr}t#{$infix}-#{$size} {
+          #{$prop}-top: $value !important;
+        }
+
+        .#{$prop-abbr}r#{$infix}-#{$size} {
+          #{$prop}-right: $value !important;
+        }
+
+        .#{$prop-abbr}b#{$infix}-#{$size} {
+          #{$prop}-bottom: $value !important;
+        }
+
+        .#{$prop-abbr}l#{$infix}-#{$size} {
+          #{$prop}-left: $value !important;
+        }
+
+        .#{$prop-abbr}x#{$infix}-#{$size} {
+          #{$prop}-right: $value !important;
+          #{$prop}-left: $value !important;
+        }
+
+        .#{$prop-abbr}y#{$infix}-#{$size} {
+          #{$prop}-top: $value !important;
+          #{$prop}-bottom: $value !important;
+        }
+      }
+    }
+
+    .m#{$infix}-auto {
+      margin: auto !important;
+    }
+
+    .mt#{$infix}-auto {
+      margin-top: auto !important;
+    }
+
+    .mr#{$infix}-auto {
+      margin-right: auto !important;
+    }
+
+    .mb#{$infix}-auto {
+      margin-bottom: auto !important;
+    }
+
+    .ml#{$infix}-auto {
+      margin-left: auto !important;
+    }
+
+    .mx#{$infix}-auto {
+      margin-right: auto !important;
+      margin-left: auto !important;
+    }
+
+    .my#{$infix}-auto {
+      margin-top: auto !important;
+      margin-bottom: auto !important;
+    }
+  }
+}

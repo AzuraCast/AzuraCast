@@ -1,0 +1,81 @@
+// A base value used to responsively scale all typography, applied to the `<html>` element
+
+$font-size-root: 16px !default;
+
+// Font face
+// Based on https://material.google.com/style/typography.html#typography-typeface
+
+// N.B. Although some values are not used in this project
+// we leave them here just in case they may be required by your project
+
+// stylelint-disable value-keyword-case
+$font-family-monospace:  'Roboto Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !default;
+$font-family-sans-serif: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol' !default;
+$font-family-serif:      'Roboto Slab', Georgia, 'Times New Roman', Times, serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol' !default;
+// stylelint-enable
+
+$font-family-base:       $font-family-sans-serif !default;
+
+$font-weight-medium:     500 !default;
+$font-weight-regular:    400 !default;
+$font-weight-light:      300 !default;
+
+$font-weight-base:       $font-weight-regular !default;
+
+// Font styles
+// Based on https://material.google.com/style/typography.html#typography-styles
+
+$font-size-base:            0.875rem !default;   // 14px
+
+$font-size-display-4:       ($font-size-base * 8) !default;        // 112px
+$font-size-display-3:       ($font-size-base * 4) !default;        // 56px
+$font-size-display-2:       ($font-size-base * 3.214286) !default; // 45px
+$font-size-display-1:       ($font-size-base * 2.428571) !default; // 34px
+$font-size-headline:        ($font-size-base * 1.714286) !default; // 24px
+$font-size-title:           ($font-size-base * 1.428571) !default; // 20px
+$font-size-subheading:      ($font-size-base * 1.142857) !default; // 16px
+$font-size-body-2:          ($font-size-base * 1) !default;        // 14px
+$font-size-body-1:          ($font-size-base * 1) !default;        // 14px
+$font-size-caption:         ($font-size-base * 0.857143) !default; // 12px
+
+$font-weight-display-4:     $font-weight-light !default;
+$font-weight-display-3:     $font-weight-regular !default;
+$font-weight-display-2:     $font-weight-regular !default;
+$font-weight-display-1:     $font-weight-regular !default;
+$font-weight-headline:      $font-weight-regular !default;
+$font-weight-title:         $font-weight-medium !default;
+$font-weight-subheading:    $font-weight-regular !default;
+$font-weight-body-2:        $font-weight-medium !default;
+$font-weight-body-1:        $font-weight-regular !default;
+$font-weight-caption:       $font-weight-regular !default;
+
+$letter-spacing-display-4:  -0.04em !default;
+$letter-spacing-display-3:  -0.02em !default;
+$letter-spacing-display-2:  0 !default;
+$letter-spacing-display-1:  0 !default;
+$letter-spacing-headline:   0 !default;
+$letter-spacing-title:      0.02em !default;
+$letter-spacing-subheading: 0.04em !default;
+$letter-spacing-body-2:     0 !default;
+$letter-spacing-body-1:     0 !default;
+$letter-spacing-caption:    0 !default;
+
+// Line height
+// Based on https://material.google.com/style/typography.html#typography-line-height
+
+$line-height-base:       1.428572 !default;
+
+$line-height-display-4:  1 !default;        // 112px
+$line-height-display-3:  1.035715 !default; // 58px
+$line-height-display-2:  1.066667 !default; // 48px
+$line-height-display-1:  1.176471 !default; // 40px
+$line-height-headline:   1.333334 !default; // 32px
+$line-height-title:      1.4 !default;      // 28px
+$line-height-subheading: 1.5 !default;      // 24px
+$line-height-body-2:     1.428572 !default; // 20px
+$line-height-body-1:     1.428572 !default; // 20px
+$line-height-caption:    1.5 !default;      // 18px
+
+// Material icons default size
+
+$material-icon-size: (24 / strip-unit($font-size-root) * 1rem) !default;

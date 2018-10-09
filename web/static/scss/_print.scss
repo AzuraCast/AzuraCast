@@ -1,0 +1,138 @@
+// stylelint-disable declaration-no-important
+
+@if $enable-print-styles {
+  @media print {
+    @page {
+      size: $print-page-size;
+    }
+
+    *,
+    *::after,
+    *::before {
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+
+    a:not(.btn) {
+      text-decoration: underline;
+    }
+
+    // stylelint-disable-next-line selector-no-qualifying-type
+    abbr[title]::after {
+      content: ' (" attr(title) ") ';
+    }
+
+    blockquote {
+      page-break-inside: avoid;
+    }
+
+    body {
+      min-width: $print-body-min-width !important;
+    }
+
+    h2,
+    h3,
+    p {
+      orphans: 3;
+      widows: 3;
+    }
+
+    h2,
+    h3 {
+      page-break-inside: avoid;
+    }
+
+    img {
+      page-break-inside: avoid;
+    }
+
+    pre {
+      page-break-inside: avoid;
+      white-space: pre-wrap !important;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    tr {
+      page-break-inside: avoid;
+    }
+
+    .card {
+      border: $border-width solid $border-color-solid;
+    }
+
+    .container {
+      min-width: $print-body-min-width !important;
+    }
+
+    .dropdown-menu {
+      border: $border-width solid $border-color-solid;
+    }
+
+    .list-group-item {
+      border: $border-width solid $border-color-solid;
+      margin-bottom: ($border-width * -1);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .list-group-flush {
+      &:first-child .list-group-item:first-child {
+        border-top: 0;
+      }
+
+      &:last-child .list-group-item:last-child {
+        border-bottom: 0;
+      }
+
+      .list-group-item {
+        border-right: 0;
+        border-left: 0;
+      }
+    }
+
+    .nav-tabs {
+      border-bottom: $border-width solid $border-color-solid;
+    }
+
+    .navbar {
+      display: none;
+    }
+
+    .popover {
+      border: $border-width solid $border-color-solid;
+    }
+
+    .table {
+      td,
+      th {
+        background-color: $white !important;
+      }
+    }
+
+    .table-bordered {
+      border: $border-width solid $border-color-solid;
+    }
+
+    .table-dark {
+      color: inherit;
+
+      td,
+      th,
+      .table {
+        border-color: $border-color-solid;
+      }
+    }
+
+    .table .thead-dark {
+      td,
+      th {
+        color: inherit;
+      }
+    }
+  }
+}

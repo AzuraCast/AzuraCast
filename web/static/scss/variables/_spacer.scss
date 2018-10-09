@@ -1,0 +1,38 @@
+$border-color:       $black-divider !default;
+$border-color-solid: #e1e1e1 !default;
+$border-radius:      2px !default;
+$border-width:       1px !default;
+
+$sizes: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$sizes: map-merge(
+  (
+    25: 25%,
+    50: 50%,
+    75: 75%,
+    100: 100%,
+    auto: auto
+  ),
+  $sizes
+);
+
+$spacer:    1rem !default;
+
+$spacer-xs: ($spacer * 0.25) !default;
+$spacer-sm: ($spacer * 0.5) !default;
+$spacer-lg: ($spacer * 1.5) !default;
+$spacer-xl: ($spacer * 3) !default;
+
+$spacers: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$spacers: map-merge(
+  (
+    0: 0,
+    1: $spacer-xs,
+    2: $spacer-sm,
+    3: $spacer,
+    4: $spacer-lg,
+    5: $spacer-xl
+  ),
+  $spacers
+);

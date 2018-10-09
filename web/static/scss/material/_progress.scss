@@ -1,0 +1,199 @@
+// Material design does not have specs for striped progress bars
+// so striped progress bars have been styled according to the "buffer" variation of linear indicator
+// (https://material.google.com/components/progress-activity.html#progress-activity-types-of-indicators)
+
+.progress {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-bar {
+  border-bottom: $progress-bar-height solid $progress-bar-bg;
+
+  @each $color, $values in $theme-colors {
+    &.bg-#{$color} {
+      background-color: transparent !important; // stylelint-disable-line declaration-no-important
+      border-bottom-color: theme-color($color);
+
+      &::after {
+        background-color: theme-color-light($color);
+      }
+    }
+  }
+
+  &::after {
+    background-color: $progress-bg;
+    content: '';
+    display: block;
+    height: $progress-bar-height;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+  }
+}
+
+// Animated & striped
+
+.progress-bar-animated {
+  &::before {
+    animation-direction: reverse;
+    animation-duration: $transition-duration-mobile;
+    animation-iteration-count: infinite;
+    animation-name: progress-bar-animation;
+    animation-timing-function: linear;
+
+    @include media-breakpoint-up(sm) {
+      animation-duration: $transition-duration-tablet;
+    }
+
+    @include media-breakpoint-up(lg) {
+      animation-duration: $transition-duration-desktop;
+    }
+  }
+}
+
+.progress-bar-animated,
+.progress-bar-striped {
+  box-sizing: content-box;
+  position: relative;
+
+  @each $color, $values in $theme-colors {
+    &.bg-#{$color}::before {
+      // stylelint-disable value-no-vendor-prefix
+      background-image: repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, theme-color-light($color), theme-color-light($color) #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
+      background-image: -webkit-repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, theme-color-light($color), theme-color-light($color) #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
+      background-image: -moz-repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, theme-color-light($color), theme-color-light($color) #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
+      // stylelint-enable
+    }
+  }
+
+  &::after {
+    @include border-right-radius($progress-bar-border-radius);
+
+    right: ($progress-bar-buffer-width * -1);
+    bottom: ($progress-bar-height * -1);
+  }
+
+  &::before {
+    // stylelint-disable value-no-vendor-prefix
+    background-image: repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, #{$progress-bg}, #{$progress-bg} #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
+    background-image: -webkit-repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, #{$progress-bg}, #{$progress-bg} #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
+    background-image: -moz-repeating-radial-gradient(#{$progress-bar-height / 2} #{$progress-bar-height / 2}, #{$progress-bg}, #{$progress-bg} #{$progress-bar-height / 2}, transparent #{$progress-bar-height / 2}, transparent 100%);
+    // stylelint-enable
+    background-position: 0 0;
+    background-repeat: repeat-x;
+    background-size: ($progress-bar-height * 3) ($progress-bar-height * 3);
+    content: '';
+    display: block;
+    height: $progress-bar-height;
+    position: absolute;
+    right: -100vw;
+    bottom: ($progress-bar-height * -1);
+    left: 0;
+    z-index: -1;
+  }
+}
+
+@keyframes progress-bar-animation {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: ($progress-bar-height * 3) 0;
+  }
+}
+
+// Indeterminate
+
+.progress-bar-indeterminate {
+  border-bottom-color: $progress-bg;
+  position: relative;
+  width: 100%;
+
+  @each $color, $values in $theme-colors {
+    &.bg-#{$color} {
+      border-bottom-color: theme-color-light($color);
+
+      &::after,
+      &::before {
+        background-color: theme-color($color);
+      }
+
+      &::before {
+        background-image: none;
+      }
+    }
+  }
+
+  &::after,
+  &::before {
+    @include border-radius($progress-bar-border-radius);
+
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    background-color: $progress-bar-bg;
+    width: 0%;
+  }
+
+  &::after {
+    animation-name: progress-bar-indeterminate-after;
+    bottom: ($progress-bar-height * -1);
+    z-index: 0;
+  }
+
+  &::before {
+    animation-name: progress-bar-indeterminate-before;
+    content: '';
+    display: block;
+    height: $progress-bar-height;
+    position: absolute;
+    bottom: ($progress-bar-height * -1);
+    z-index: 0;
+  }
+}
+
+@keyframes progress-bar-indeterminate-after {
+  0% {
+    left: 0%;
+    width: 0%;
+  }
+
+  50% {
+    left: 25%;
+    width: 75%;
+  }
+
+  75% {
+    left: 100%;
+    width: 0%;
+  }
+}
+
+@keyframes progress-bar-indeterminate-before {
+  0%,
+  62.5% {
+    left: 0%;
+    width: 0%;
+  }
+
+  71.875% {
+    left: 0%;
+    width: 25%;
+  }
+
+  81.25% {
+    left: 25%;
+    width: 50%;
+  }
+
+  100% {
+    left: 100%;
+    width: 25%;
+  }
+}

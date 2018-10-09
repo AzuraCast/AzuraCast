@@ -1,0 +1,50 @@
+// N.B. Material design specifically discouragaes the usage of tooltips with rich information
+// (https://material.google.com/components/tooltips.html#tooltips-usage)
+// Therefore, popovers are styled as Material design's dialogs
+
+.popover {
+  @include reset-text;
+  @include border-radius($popover-border-radius);
+
+  background-color: $popover-bg;
+  box-shadow: map-get($popover-elevation-shadow, shadow);
+  display: block;
+  font-size: $popover-font-size;
+  margin: $popover-margin;
+  max-width: $popover-max-width;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: map-get($popover-elevation-shadow, elevation);
+}
+
+.popover-body {
+  padding: $popover-padding-y $popover-padding-x;
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.popover-header {
+  @include typography-title;
+
+  margin-bottom: 0;
+  padding: $popover-padding-y $popover-padding-x 0;
+
+  &:empty {
+    display: none;
+  }
+
+  &:last-child {
+    padding-bottom: $popover-padding-y;
+  }
+}
+
+// Desktop
+
+@include media-breakpoint-up($popover-breakpoint) {
+  .popover {
+    margin: $popover-margin-desktop;
+  }
+}

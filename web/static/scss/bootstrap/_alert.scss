@@ -1,0 +1,45 @@
+.alert {
+  @include border-radius($alert-border-radius);
+
+  border: 0;
+  display: block;
+  margin-bottom: $alert-margin-y;
+  padding: $alert-padding-y $alert-padding-x;
+  position: relative;
+}
+
+@each $color, $values in $theme-colors {
+  .alert-#{$color} {
+    background-color: theme-color-light($color);
+    color: color-yiq(theme-color-light($color));
+  }
+}
+
+// Dismissible
+
+.alert-dismissible {
+  padding-right: ($alert-padding-x * 2 + $close-font-size);
+
+  .close {
+    color: inherit;
+    padding: ($alert-padding-y - ($close-font-size - $font-size-base * $line-height-base) / 2) $alert-padding-x;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+// Misc
+
+.alert-heading {
+  color: inherit;
+}
+
+.alert-link {
+  color: inherit;
+  font-weight: $alert-link-font-weight;
+
+  @include active-focus-hover {
+    color: inherit;
+  }
+}

@@ -1,0 +1,43 @@
+body {
+    &.theme-dark {
+        background: $dark-theme-1;
+        color: theme-color-dark('light');
+
+        .navbar {
+            background: $dark-theme-4;
+        }
+
+        .bg-default {
+            background: $dark-theme-2;
+            color: #d8dada;
+
+            .card-header {
+                background: $dark-theme-3;
+            }
+        }
+
+        .table {
+            border: 0;
+            background-color: transparent;
+
+            td, th {
+                border: 0;
+            }
+
+            &.table-striped > tbody {
+                & > tr:nth-of-type(odd) {
+                    background-color: rgba(255,255,255,.02);
+                }
+            }
+        }
+    }
+
+    &.theme-light {
+        background: $light-theme-1;
+
+        .navbar {
+            background: theme-color('primary');
+        }
+
+    }
+}

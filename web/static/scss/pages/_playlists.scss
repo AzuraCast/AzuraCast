@@ -14,7 +14,7 @@ table.sortable {
 
   tr.placeholder {
     display: block;
-    background: @brand-primary;
+    background: theme-color-light('primary');
     position: relative;
     margin: 0;
     padding: 0;
@@ -29,7 +29,7 @@ table.sortable {
       border-right-style: solid;
       border-right-color: transparent;
       border-left-color: transparent;
-      border-left-color: @brand-primary;
+      border-left-color: theme-color-light('primary');
       margin-top: -5px;
       left: 0;
       border-right: none;

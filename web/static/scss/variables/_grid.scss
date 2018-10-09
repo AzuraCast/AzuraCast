@@ -1,0 +1,28 @@
+$grid-columns:      12 !default;
+$grid-gutter-width: 40px !default;
+
+// Breakpoint
+// Based on https://material.google.com/layout/responsive-ui.html#responsive-ui-breakpoints
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+) !default;
+
+@include _assert-ascending($grid-breakpoints, '$grid-breakpoints');
+@include _assert-starts-at-zero($grid-breakpoints);
+
+// Container width
+// Based on https://material.google.com/layout/responsive-ui.html#responsive-ui-breakpoints
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px
+) !default;
+
+@include _assert-ascending($container-max-widths, '$container-max-widths');

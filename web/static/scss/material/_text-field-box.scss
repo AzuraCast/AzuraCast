@@ -1,0 +1,94 @@
+.textfield-box {
+  %form-control {
+    background-color: $textfield-box-bg;
+    border-radius: $textfield-box-border-radius;
+    padding: $textfield-box-padding-y $textfield-box-padding-x calc(#{$textfield-box-padding-y} - #{$textfield-border-width});
+  }
+
+  %form-select {
+    padding-right: $textfield-select-bg-size;
+  }
+
+  %form-textarea {
+    border-width: 0 0 $textfield-border-width;
+    padding: $textfield-box-padding-y $textfield-box-padding-x calc(#{$textfield-box-padding-y} - #{$textfield-border-width});
+
+    @include hover {
+      box-shadow: inset 0 ($textfield-border-width-hover * -1) 0 ($textfield-border-width * -1) $textfield-border-color-hover;
+    }
+
+    &:focus {
+      box-shadow: inset 0 ($textfield-border-width-focus * -1) 0 ($textfield-border-width * -1) $textfield-border-color-focus;
+    }
+  }
+
+  // Form control sizing
+
+  // stylelint-disable-next-line order/order, selector-no-qualifying-type
+  textarea.form-control {
+    min-height: $textfield-box-height;
+  }
+
+  .form-control[type='file'],
+  .form-control-file {
+    max-height: $textfield-box-height;
+  }
+}
+
+// Size
+
+.textfield-box-lg {
+  %form-control {
+    font-size: $textfield-font-size-lg;
+    line-height: $textfield-line-height-lg;
+    padding: $textfield-box-padding-y-lg $textfield-box-padding-x-lg calc(#{$textfield-box-padding-y-lg} - #{$textfield-border-width});
+  }
+
+  %form-textarea {
+    padding: $textfield-box-padding-y-lg $textfield-box-padding-x-lg calc(#{$textfield-box-padding-y-lg} - #{$textfield-border-width});
+  }
+
+  // Form control sizing
+
+  // stylelint-disable-next-line order/order, selector-no-qualifying-type
+  textarea.form-control {
+    min-height: $textfield-box-height-lg;
+  }
+
+  .custom-select {
+    padding-right: $textfield-select-bg-size;
+  }
+
+  .form-control[type='file'],
+  .form-control-file {
+    max-height: $textfield-box-height-lg;
+  }
+}
+
+.textfield-box-sm {
+  %form-control {
+    font-size: $textfield-font-size-sm;
+    line-height: $textfield-line-height-sm;
+    padding: $textfield-box-padding-y-sm $textfield-box-padding-x-sm calc(#{$textfield-box-padding-y-sm} - #{$textfield-border-width});
+  }
+
+  %form-textarea {
+    padding: $textfield-box-padding-y-sm $textfield-box-padding-x-sm calc(#{$textfield-box-padding-y-sm} - #{$textfield-border-width});
+  }
+
+  // Form control sizing
+
+  // stylelint-disable-next-line order/order, selector-no-qualifying-type
+  textarea.form-control {
+    min-height: $textfield-box-height-sm;
+  }
+
+  .custom-select {
+    padding-right: $textfield-select-bg-size;
+  }
+
+  .form-control[type='file'],
+  .form-control-file {
+    max-height: $textfield-box-height-sm;
+  }
+}

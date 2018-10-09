@@ -1,0 +1,173 @@
+// Checkbox and radio button
+
+.form-check {
+  display: block;
+  margin-bottom: $textfield-margin-y;
+  padding-left: $form-check-input-gutter;
+  position: relative;
+}
+
+.form-check-inline {
+  display: inline-block;
+  margin-right: $form-check-inline-margin-x;
+  margin-bottom: 0;
+}
+
+.form-check-input {
+  margin-top: (($font-size-base * $line-height-base - $font-size-base) / 3 * 2);
+  margin-left: ($form-check-input-gutter * -1);
+  position: absolute;
+
+  &:disabled ~ .form-check-label {
+    color: $textfield-color-disabled;
+  }
+}
+
+.form-check-label {
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+// Form group
+
+.form-group {
+  margin-bottom: $form-group-margin-y;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: ($textfield-margin-x / -2);
+  margin-left: ($textfield-margin-x / -2);
+
+  > .col,
+  > [class*='col-'] {
+    padding-right: ($textfield-margin-x / 2);
+    padding-left: ($textfield-margin-x / 2);
+  }
+}
+
+// Inline
+
+.form-inline {
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+
+  .custom-file,
+  .custom-select {
+    width: auto;
+  }
+
+  .form-check {
+    margin-bottom: 0;
+    width: auto;
+  }
+
+  .form-control,
+  .form-control-file {
+    display: inline-block;
+    vertical-align: middle;
+    width: auto;
+  }
+
+  .form-control-plaintext {
+    display: inline-block;
+  }
+
+  .form-group {
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    flex-flow: row wrap;
+    margin-bottom: 0;
+  }
+
+  .input-group {
+    width: auto;
+  }
+}
+
+// Label
+
+.col-form-label {
+  color: inherit;
+  font-size: $font-size-base;
+  line-height: ($textfield-font-size * $textfield-line-height / $font-size-base);
+  padding-top: $textfield-padding-y;
+  padding-bottom: $textfield-padding-y;
+}
+
+.col-form-label-lg {
+  font-size: ($font-size-base / $textfield-font-size * $textfield-font-size-lg);
+  line-height: ($textfield-line-height-lg / ($font-size-base / $textfield-font-size));
+  padding-top: $textfield-padding-y-lg;
+  padding-bottom: $textfield-padding-y-lg;
+}
+
+.col-form-label-sm {
+  font-size: ($font-size-base / $textfield-font-size * $textfield-font-size-sm);
+  line-height: ($textfield-line-height-sm / ($font-size-base / $textfield-font-size));
+  padding-top: $textfield-padding-y-sm;
+  padding-bottom: $textfield-padding-y-sm;
+}
+
+// Misc
+
+.form-text {
+  @include typography-caption;
+
+  color: $textfield-hint-color;
+  display: block;
+  margin-top: $textfield-margin-y;
+
+  .custom-select-lg + &,
+  .floating-label-lg + &,
+  .floating-label-lg .custom-select + &,
+  .floating-label-lg .form-control + &,
+  .floating-label-lg .form-control-file + &,
+  .form-control-lg + &,
+  .textfield-box-lg + &,
+  .textfield-box-lg .custom-select + &,
+  .textfield-box-lg .form-control + &,
+  .textfield-box-lg .form-control-file + & {
+    margin-top: $textfield-margin-y-lg;
+  }
+
+  .custom-select-sm + &,
+  .floating-label-sm + &,
+  .floating-label-sm .custom-select + &,
+  .floating-label-sm .form-control + &,
+  .floating-label-sm .form-control-file + &,
+  .form-control-sm + &,
+  .textfield-box-sm + &,
+  .textfield-box-sm .custom-select + &,
+  .textfield-box-sm .form-control + &,
+  .textfield-box-sm .form-control-file + & {
+    margin-top: $textfield-margin-y-sm;
+  }
+}
+
+// Readonly control as plain text
+
+.form-control-plaintext {
+  background-color: transparent;
+  border-color: transparent;
+  border-radius: 0;
+  border-style: solid;
+  border-width: 0 0 $textfield-border-width;
+  box-shadow: none;
+  color: $textfield-plaintext-color;
+  display: block;
+  font-size: $textfield-font-size;
+  line-height: $textfield-line-height;
+  padding: $textfield-padding-y 0 calc(#{$textfield-padding-y} - #{$textfield-border-width});
+  width: 100%;
+
+  &.form-control-sm,
+  &.form-control-lg {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}

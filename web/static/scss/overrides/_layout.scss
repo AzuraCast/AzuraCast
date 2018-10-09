@@ -1,0 +1,21 @@
+body {
+    position: relative;
+}
+
+#main {
+    padding-bottom: 75px;
+    padding-top: 100px;
+    min-height: 100vh;
+}
+
+#footer {
+    opacity: .5;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    height: 75px;
+    
+    padding-top: 20px;
+    padding-bottom: 15px;
+}

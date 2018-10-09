@@ -1,0 +1,47 @@
+.btn-float {
+  border-radius: 50%;
+  box-shadow: map-get($btn-float-elevation-shadow, shadow);
+  height: $btn-float-size;
+  line-height: $btn-float-size;
+  min-width: 0;
+  padding: 0;
+  width: $btn-float-size;
+
+  &.active,
+  &:active {
+    box-shadow: map-get($btn-float-elevation-shadow-active, shadow);
+  }
+
+  &.disabled,
+  &:disabled {
+    box-shadow: none;
+  }
+
+  &.btn-sm {
+    height: $btn-float-size-sm;
+    line-height: $btn-float-size-sm;
+    width: $btn-float-size-sm;
+  }
+}
+
+.btn-float-dropdown {
+  .dropdown-menu {
+    border-radius: 0;
+    margin-top: $btn-float-dropdown-inner-spacer-y;
+    min-width: $btn-float-size;
+    padding-top: 0;
+    padding-bottom: 0;
+    text-align: center;
+
+    &::before {
+      display: none;
+    }
+
+    .btn-float {
+      display: block;
+      margin-right: auto;
+      margin-bottom: $btn-float-dropdown-inner-spacer-y;
+      margin-left: auto;
+    }
+  }
+}

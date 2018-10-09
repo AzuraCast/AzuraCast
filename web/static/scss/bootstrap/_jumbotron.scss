@@ -1,0 +1,15 @@
+.jumbotron {
+  @include border-radius($jumbotron-border-radius);
+
+  background-color: $jumbotron-bg;
+  box-shadow: map-get($jumbotron-elevation-shadow, shadow);
+  color: $jumbotron-color;
+  padding: $jumbotron-padding-y $jumbotron-padding-x;
+}
+
+.jumbotron-fluid {
+  @include border-radius(0);
+
+  padding-right: 0;
+  padding-left: 0;
+}

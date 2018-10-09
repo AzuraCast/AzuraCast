@@ -48,6 +48,6 @@
 
   .nowplaying-progress {
     font-size: 10px;
-    color: @list-group-disabled-text-color;
+    color: theme-color-light('dark');
   }
 }

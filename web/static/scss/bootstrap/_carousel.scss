@@ -1,0 +1,204 @@
+.carousel {
+  position: relative;
+
+  @include hover {
+    .carousel-control-next,
+    .carousel-control-prev {
+      opacity: 1;
+    }
+  }
+}
+
+.carousel-inner {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.carousel-item {
+  @include transition-standard-complex(transform);
+
+  align-items: center;
+  backface-visibility: hidden;
+  display: none;
+  perspective: 1000px;
+  position: relative;
+  width: 100%;
+}
+
+.carousel-item.active,
+.carousel-item-next,
+.carousel-item-prev {
+  display: flex;
+}
+
+.carousel-item-left.active,
+.carousel-item-prev {
+  transform: translateX(-100%);
+
+  @supports (transform-style: preserve-3d) {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.carousel-item-left.carousel-item-next,
+.carousel-item-prev.carousel-item-right {
+  transform: translateX(0);
+
+  @supports (transform-style: preserve-3d) {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.carousel-item-next,
+.carousel-item-right.active {
+  transform: translateX(100%);
+
+  @supports (transform-style: preserve-3d) {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+.carousel-item-next,
+.carousel-item-prev {
+  position: absolute;
+  top: 0;
+}
+
+// Fade
+
+.carousel-fade {
+  .carousel-item {
+    @include transition-standard-complex(opacity);
+
+    opacity: 0;
+  }
+
+  .carousel-item.active,
+  .carousel-item-next.carousel-item-left,
+  .carousel-item-prev.carousel-item-right {
+    opacity: 1;
+  }
+
+  .carousel-item.active,
+  .carousel-item-left.active,
+  .carousel-item-next,
+  .carousel-item-prev,
+  .carousel-item-prev.active {
+    transform: translateX(0);
+
+    @supports (transform-style: preserve-3d) {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .carousel-item-left.active,
+  .carousel-item-right.active {
+    opacity: 0;
+  }
+}
+
+// Left/right controls
+
+.carousel-control-next,
+.carousel-control-prev {
+  align-items: center;
+  background-color: $carousel-control-bg;
+  border-radius: 50%;
+  box-shadow: map-get($carousel-control-elevation-shadow, shadow);
+  color: $carousel-control-color;
+  cursor: pointer;
+  display: flex;
+  font-size: $carousel-control-font-size;
+  height: $carousel-control-size;
+  justify-content: center;
+  line-height: 1;
+  margin-top: ($carousel-control-size / -2);
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  user-select: none;
+  width: $carousel-control-size;
+
+  @include active-focus-hover {
+    background-color: $carousel-control-bg-hover;
+    color: $carousel-control-color;
+    text-decoration: none;
+  }
+
+  &:active {
+    box-shadow: map-get($carousel-control-elevation-shadow-active, shadow);
+  }
+
+  &:focus {
+    opacity: 1;
+    outline: 0;
+  }
+}
+
+.carousel-control-next {
+  right: ($carousel-control-size / 2);
+}
+
+.carousel-control-prev {
+  left: ($carousel-control-size / 2);
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  @include set-material-icons;
+}
+
+.carousel-control-next-icon::before {
+  content: $carousel-control-next-icon;
+}
+
+.carousel-control-prev-icon::before {
+  content: $carousel-control-prev-icon;
+}
+
+// Optional captions
+
+.carousel-caption {
+  color: $carousel-caption-color;
+  position: absolute;
+  right: ((100% - $carousel-caption-width) / 2);
+  bottom: ($carousel-indicator-size * 3);
+  left: ((100% - $carousel-caption-width) / 2);
+  text-align: center;
+  z-index: 1;
+}
+
+// Optional indicators
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin-bottom: 0;
+  padding-left: 0;
+  position: absolute;
+  right: ($carousel-control-size * 2);
+  bottom: $carousel-indicator-size;
+  left: ($carousel-control-size * 2);
+  z-index: 1;
+
+  li {
+    background-color: transparent;
+    border: $carousel-indicator-border-width solid $carousel-indicator-border-color;
+    border-radius: $carousel-indicator-size;
+    cursor: pointer;
+    flex: 0 0 auto;
+    height: $carousel-indicator-size;
+    margin-right: $carousel-indicator-border-width;
+    margin-left: $carousel-indicator-border-width;
+    overflow: hidden;
+    text-indent: 100%;
+    white-space: nowrap;
+    width: $carousel-indicator-size;
+  }
+
+  .active {
+    background-color: $carousel-indicator-bg;
+  }
+}

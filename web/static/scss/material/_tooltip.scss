@@ -1,0 +1,40 @@
+.tooltip {
+  @include reset-text;
+
+  display: block;
+  font-size: $tooltip-font-size;
+  line-height: $tooltip-line-height;
+  margin: $tooltip-margin;
+  opacity: 0;
+  position: absolute;
+  word-break: break-word;
+  z-index: $tooltip-zindex;
+
+  @include media-breakpoint-up($tooltip-breakpoint) {
+    font-size: $tooltip-font-size-desktop;
+    margin: $tooltip-margin-desktop;
+  }
+
+  &.show {
+    opacity: $tooltip-opacity;
+
+    .tooltip-inner {
+      transform: scale(1);
+    }
+  }
+}
+
+.tooltip-inner {
+  @include border-radius($tooltip-border-radius);
+  @include transition-standard(transform);
+
+  background-color: $tooltip-bg;
+  color: $tooltip-color;
+  padding: $tooltip-padding-y $tooltip-padding-x;
+  text-align: center;
+  transform: scale($tooltip-scale);
+
+  @include media-breakpoint-up($tooltip-breakpoint) {
+    padding: $tooltip-padding-y-desktop $tooltip-padding-x-desktop;
+  }
+}

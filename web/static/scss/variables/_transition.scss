@@ -1,0 +1,29 @@
+$transition-scale: 0.87 !default;
+
+// The movement of an element is based on https://material.google.com/motion/movement.html
+
+// Transition duration
+// Based on https://material.google.com/motion/duration-easing.html#duration-easing-common-durations
+
+$transition-duration-desktop:          0.2s !default;
+$transition-duration-desktop-complex:  0.25s !default;
+$transition-duration-desktop-entering: 0.15s !default;
+$transition-duration-desktop-leaving:  0.13s !default;
+
+$transition-duration-mobile:           0.3s !default;
+$transition-duration-mobile-complex:   0.375s !default;
+$transition-duration-mobile-entering:  0.225s !default;
+$transition-duration-mobile-leaving:   0.195s !default;
+
+$transition-duration-tablet:           0.39s !default;
+$transition-duration-tablet-complex:   0.4875s !default;
+$transition-duration-tablet-entering:  0.2925s !default;
+$transition-duration-tablet-leaving:   0.2535s !default;
+
+// Transition timing function
+// Based on https://material.google.com/motion/duration-easing.html#duration-easing-natural-easing-curves
+
+$transition-timing-function-acceleration: cubic-bezier(0.4, 0, 1, 1) !default;
+$transition-timing-function-deceleration: cubic-bezier(0, 0, 0.2, 1) !default;
+$transition-timing-function-sharp:        cubic-bezier(0.4, 0, 0.6, 1) !default;
+$transition-timing-function-standard:     cubic-bezier(0.4, 0, 0.2, 1) !default;

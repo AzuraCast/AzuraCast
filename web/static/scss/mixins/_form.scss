@@ -1,0 +1,152 @@
+@mixin form-validation-state($state, $color) {
+  .#{$state}-feedback {
+    @include typography-caption;
+
+    color: $color;
+    display: none;
+    margin-top: $textfield-margin-y;
+    width: 100%;
+
+    .form-control-lg + & {
+      margin-top: $textfield-margin-y-lg;
+    }
+
+    .form-control-sm + & {
+      margin-top: $textfield-margin-y-sm;
+    }
+  }
+
+  .#{$state}-tooltip {
+    @include border-radius($border-radius);
+
+    background-color: $color;
+    color: color-yiq($color);
+    display: none;
+    font-size: $tooltip-font-size;
+    line-height: $tooltip-line-height;
+    margin-top: $textfield-margin-y;
+    max-width: 100%;
+    opacity: $tooltip-opacity;
+    padding: $tooltip-padding-y $tooltip-padding-x;
+    position: absolute;
+    top: 100%;
+    text-align: center;
+    word-break: break-word;
+    z-index: $tooltip-zindex;
+
+    @include media-breakpoint-up(md) {
+      font-size: $tooltip-font-size-desktop;
+      padding: $tooltip-padding-y-desktop $tooltip-padding-x-desktop;
+    }
+
+    .form-control-lg + & {
+      margin-top: $textfield-margin-y-lg;
+    }
+
+    .form-control-sm + & {
+      margin-top: $textfield-margin-y-sm;
+    }
+  }
+
+  .custom-control-input {
+    &.is-#{$state},
+    .was-validated &:#{$state} {
+      ~ .custom-control-label {
+        &,
+        &::after {
+          color: $color;
+        }
+
+        &::before {
+          background-color: $color;
+        }
+      }
+
+      ~ .custom-control-track {
+        background-color: rgba($color, $selection-control-track-opacity);
+      }
+
+      ~ .#{$state}-feedback,
+      ~ .#{$state}-tooltip {
+        display: block;
+      }
+    }
+  }
+
+  .custom-file-input {
+    &.is-#{$state},
+    .was-validated &:#{$state} {
+      @include focus-hover {
+        ~ .custom-file-label {
+          border-bottom-color: $color;
+          box-shadow: inset 0 ($textfield-border-width-focus * -1) 0 ($textfield-border-width * -1) $color;
+        }
+      }
+
+      ~ .custom-file-label {
+        border-bottom-color: $color;
+
+        @include hover {
+          border-bottom-color: $color;
+          box-shadow: inset 0 ($textfield-border-width-hover * -1) 0 ($textfield-border-width * -1) $color;
+        }
+      }
+
+      ~ .#{$state}-feedback,
+      ~ .#{$state}-tooltip {
+        display: block;
+      }
+    }
+  }
+
+  .custom-switch .custom-control-input {
+    &.is-#{$state},
+    .was-validated &:#{$state} {
+      ~ .custom-control-label::after {
+        background-color: $color;
+      }
+    }
+  }
+
+  .form-check-input {
+    &.is-#{$state},
+    .was-validated &:#{$state} {
+      + .form-check-label {
+        color: $color;
+      }
+    }
+  }
+
+  %form-control {
+    &.is-#{$state},
+    .was-validated &:#{$state} {
+      border-color: $color;
+
+      @include focus-hover {
+        border-color: $color;
+        box-shadow: inset 0 ($textfield-border-width-hover * -1) 0 ($textfield-border-width * -1) $color;
+      }
+
+      ~ .#{$state}-feedback,
+      ~ .#{$state}-tooltip {
+        display: block;
+      }
+    }
+  }
+
+  %form-textarea {
+    &.is-#{$state},
+    .was-validated &:#{$state} {
+      @include focus-hover {
+        box-shadow: inset $textfield-border-width-hover $textfield-border-width-hover 0 ($textfield-border-width * -1) $color, inset ($textfield-border-width-hover * -1) ($textfield-border-width-hover * -1) 0 ($textfield-border-width * -1) $color;
+      }
+    }
+
+    .textfield-box &.is-#{$state},
+    .was-validated .textfield-box &:#{$state} {
+      @include focus-hover {
+        box-shadow: inset 0 ($textfield-border-width-hover * -1) 0 ($textfield-border-width * -1) $color;
+      }
+    }
+  }
+}

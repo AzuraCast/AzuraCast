@@ -1,0 +1,176 @@
+.btn-group,
+.btn-group-vertical {
+  @include border-radius($btn-border-radius);
+
+  background-color: $btn-group-bg;
+  box-shadow: map-get($btn-elevation-shadow, shadow);
+  display: inline-flex;
+  position: relative;
+  vertical-align: middle;
+
+  @each $color, $values in $theme-colors {
+    > .btn-#{$color} {
+      &.disabled,
+      &:disabled {
+        background-color: theme-color-light($color);
+        color: color-yiq(theme-color-light($color));
+      }
+    }
+  }
+
+  > .btn {
+    @include transition-standard(border-color, opacity);
+
+    box-shadow: none;
+    flex: 0 1 auto;
+    min-width: 0;
+
+    &.active,
+    &:active {
+      box-shadow: none;
+    }
+
+    &.disabled,
+    &:disabled {
+      opacity: $btn-group-toggle-opacity;
+    }
+
+    &[class*='btn-outline'] {
+      opacity: $btn-group-toggle-opacity;
+
+      &.active,
+      &:active {
+        opacity: 1;
+      }
+
+      &.disabled,
+      &:disabled {
+        opacity: 1;
+      }
+    }
+  }
+
+  > .btn-group,
+  > .btn-group-vertical {
+    @include border-radius(0);
+
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.btn-group {
+  &.show > .btn.dropdown-toggle {
+    box-shadow: none;
+  }
+
+  > .btn,
+  > .btn-group {
+    margin-left: ($btn-group-inner-spacer-x * -1);
+  }
+
+  > .btn:first-child,
+  > .btn-group:first-child {
+    margin-left: 0;
+  }
+
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) > .btn {
+    @include border-left-radius(0);
+  }
+
+  > .btn:not(:last-child):not(.dropdown-toggle),
+  > .btn-group:not(:last-child) > .btn,
+  > .dropdown-toggle:not(:last-of-type) {
+    @include border-right-radius(0);
+  }
+}
+
+.btn-group-vertical {
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+
+  > .btn,
+  > .btn-group {
+    margin-top: ($btn-group-inner-spacer-y * -1);
+    margin-left: 0;
+    width: 100%;
+  }
+
+  > .btn:first-child,
+  > .btn-group:first-child {
+    margin-top: 0;
+  }
+
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) > .btn {
+    @include border-top-radius(0);
+  }
+
+  > .btn:not(:last-child):not(.dropdown-toggle),
+  > .btn-group:not(:last-child) > .btn,
+  > .dropdown-toggle:not(:last-of-type) {
+    @include border-bottom-radius(0);
+  }
+}
+
+.btn-group-fluid {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.btn-group-lg > .btn {
+  @extend %btn-lg;
+}
+
+.btn-group-sm > .btn {
+  @extend %btn-sm;
+}
+
+// Checkbox and radio options
+
+[data-toggle='buttons'] {
+  > .btn,
+  > .btn-group > .btn {
+    margin-bottom: 0;
+
+    [type='checkbox'],
+    [type='radio'] {
+      clip: rect(0, 0, 0, 0);
+      pointer-events: none;
+      position: absolute;
+    }
+  }
+}
+
+// Split button dropdown
+
+.dropdown-toggle.dropdown-toggle-split {
+  padding-right: $caret-spacer-x;
+  padding-left: $caret-spacer-x;
+
+  &::after {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .dropleft & {
+    &::before {
+      margin-right: 0;
+      margin-left: 0;
+    }
+  }
+}
+
+// Toolbar
+
+.btn-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  .input-group {
+    width: auto;
+  }
+}

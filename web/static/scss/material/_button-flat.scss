@@ -1,0 +1,41 @@
+[class*='btn-flat'],
+[class*='btn-outline'] {
+  background-color: transparent;
+  box-shadow: none;
+
+  &.active,
+  &:active {
+    box-shadow: none;
+  }
+
+  &.disabled,
+  &:disabled {
+    background-color: transparent;
+  }
+}
+
+@each $color, $values in $theme-colors {
+  .btn-flat-#{$color},
+  .btn-outline-#{$color} {
+    @include plain-active-focus-hover {
+      color: theme-color($color);
+    }
+
+    &.disabled,
+    &:disabled {
+      color: $btn-color-disabled;
+    }
+  }
+}
+
+.btn-flat-light,
+.btn-outline-light {
+  @include focus-hover {
+    background-image: linear-gradient(to bottom, $btn-overlay-inverse, $btn-overlay-inverse);
+  }
+
+  &.active,
+  &:active {
+    background-color: $btn-bg-active-inverse;
+  }
+}

@@ -1,0 +1,39 @@
+// Column
+
+@if $enable-grid-classes {
+  @include make-grid-columns;
+}
+
+// Container
+
+@if $enable-grid-classes {
+  .container {
+    @include make-container;
+    @include make-container-max-widths;
+  }
+}
+
+@if $enable-grid-classes {
+  .container-fluid {
+    @include make-container;
+  }
+}
+
+// Row
+
+@if $enable-grid-classes {
+  .row {
+    @include make-row;
+  }
+
+  .no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+
+    > .col,
+    > [class*='col-'] {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+}

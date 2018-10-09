@@ -1,0 +1,23 @@
+// scss-lint:disable DuplicateProperty
+
+@mixin text-align($direction: 'left') {
+  @if $direction == 'left' {
+    text-align: left;
+    text-align: start;
+
+    [dir='rtl'] & {
+      text-align: right;
+      text-align: start;
+    }
+  }
+
+  @if $direction == 'right' {
+    text-align: right;
+    text-align: end;
+
+    [dir='rtl'] & {
+      text-align: left;
+      text-align: end;
+    }
+  }
+}

@@ -1,0 +1,252 @@
+// Todo: expansion panel with different background colours
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+.list-group-item {
+  @include transition-standard(background-color, color);
+
+  background-color: $expansion-panel-bg;
+  border: 0;
+  box-shadow: map-get($expansion-panel-elevation-shadow, shadow);
+  color: $expansion-panel-color;
+  display: block;
+  font-size: $expansion-panel-font-size;
+  line-height: $expansion-panel-line-height;
+  min-height: $expansion-panel-height;
+  padding: $expansion-panel-padding-y $expansion-panel-padding-x;
+  position: relative;
+
+  @include active-focus-hover {
+    color: $expansion-panel-color;
+    text-decoration: none;
+  }
+
+  &.active {
+    background-color: $expansion-panel-bg-active;
+    color: $expansion-panel-color;
+  }
+
+  &.disabled,
+  &:disabled {
+    background-color: $expansion-panel-bg;
+    color: $expansion-panel-color-disabled;
+  }
+
+  &:first-child {
+    @include border-top-radius($expansion-panel-border-radius);
+  }
+
+  &:last-child {
+    @include border-bottom-radius($expansion-panel-border-radius);
+  }
+
+  .card & {
+    padding-right: $card-padding-x;
+    padding-left: $card-padding-x;
+  }
+}
+
+.list-group-item-action {
+  color: $expansion-panel-color;
+  text-align: inherit;
+  width: 100%;
+
+  @include active-focus-hover {
+    background-color: $expansion-panel-bg-active;
+    color: $expansion-panel-color;
+    text-decoration: none;
+  }
+
+  &.disabled,
+  &:disabled {
+    background-color: $expansion-panel-bg;
+    color: $expansion-panel-color-disabled;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+@each $color, $values in $theme-colors {
+  .list-group-item-#{$color} {
+    background-color: theme-color-light($color);
+    color: color-yiq(theme-color-light($color));
+
+    &.active {
+      background-color: theme-color($color);
+      color: color-yiq(theme-color($color));
+    }
+
+    &.list-group-item-action {
+      @include active-focus-hover {
+        background-color: theme-color($color);
+        color: color-yiq(theme-color($color));
+      }
+    }
+  }
+}
+
+// Expansion panel
+
+.expansion-panel {
+  @include transition-standard(background-color, color, margin);
+
+  padding: 0;
+
+  &.show {
+    border-radius: $expansion-panel-border-radius;
+
+    &:not(:first-child) {
+      margin-top: $expansion-panel-margin-y;
+
+      .card & {
+        margin-top: 0;
+      }
+    }
+
+    &:not(:last-child) {
+      margin-bottom: $expansion-panel-margin-y;
+
+      .card & {
+        margin-bottom: 0;
+      }
+    }
+
+    + .expansion-panel {
+      @include border-top-radius($expansion-panel-border-radius);
+
+      &.show {
+        margin-top: 0;
+      }
+
+      .card & {
+        @include border-top-radius(0);
+      }
+    }
+  }
+
+  &.show-predecessor {
+    @include border-bottom-radius($expansion-panel-border-radius);
+
+    .card & {
+      @include border-bottom-radius(0);
+    }
+  }
+
+  .card & {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+.expansion-panel-body {
+  padding: $expansion-panel-inner-spacer-y $expansion-panel-padding-x;
+
+  .card & {
+    padding-right: $card-padding-x;
+    padding-left: $card-padding-x;
+  }
+}
+
+.expansion-panel-footer {
+  align-items: flex-end;
+  border-top: $expansion-panel-border-width solid $expansion-panel-border-color;
+  display: flex;
+  justify-content: flex-end;
+  padding: $expansion-panel-inner-spacer-y $expansion-panel-footer-padding-x ($expansion-panel-inner-spacer-y - $expansion-panel-footer-inner-spacer-y) ($expansion-panel-footer-padding-x - $expansion-panel-footer-inner-spacer-x);
+
+  .card & {
+    padding-right: $card-padding-x;
+    padding-left: ($card-padding-x - $expansion-panel-footer-inner-spacer-x);
+  }
+
+  .btn {
+    margin-bottom: $expansion-panel-footer-inner-spacer-y;
+    margin-left: $expansion-panel-footer-inner-spacer-x;
+    min-width: $expansion-panel-footer-btn-min-width;
+    padding-right: $expansion-panel-footer-inner-spacer-x;
+    padding-left: $expansion-panel-footer-inner-spacer-x;
+
+    .card & {
+      padding-right: ($card-padding-x - $expansion-panel-footer-padding-x);
+      padding-left: ($card-padding-x - $expansion-panel-footer-padding-x);
+    }
+  }
+}
+
+.expansion-panel-icon {
+  flex-shrink: 0;
+  margin-left: $expansion-panel-inner-spacer-x;
+
+  .collapsed-hide {
+    [data-toggle='collapse'].collapsed & {
+      display: none;
+    }
+  }
+
+  .collapsed-show {
+    [data-toggle='collapse']:not(.collapsed) & {
+      display: none;
+    }
+  }
+}
+
+.expansion-panel-toggler {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  justify-content: space-between;
+  min-height: $expansion-panel-height;
+  padding: $expansion-panel-padding-y $expansion-panel-padding-x;
+  text-align: inherit;
+  width: 100%;
+
+  @include active-focus-hover {
+    background-color: $expansion-panel-bg-active;
+    color: $expansion-panel-color;
+    text-decoration: none;
+  }
+
+  &.disabled,
+  &:disabled {
+    background-color: $expansion-panel-bg;
+    color: $expansion-panel-color-disabled;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  .card & {
+    padding-right: $card-padding-x;
+    padding-left: $card-padding-x;
+  }
+}
+
+// Flush
+
+.list-group-flush {
+  &:first-child .list-group-item:first-child {
+    border-top: 0;
+  }
+
+  &:last-child .list-group-item:last-child {
+    border-bottom: 0;
+  }
+
+  .list-group-item {
+    border-top: $expansion-panel-border-width solid $expansion-panel-border-color;
+    border-radius: 0;
+    box-shadow: none;
+
+    &:last-child {
+      border-bottom: $expansion-panel-border-width solid $expansion-panel-border-color;
+    }
+  }
+}

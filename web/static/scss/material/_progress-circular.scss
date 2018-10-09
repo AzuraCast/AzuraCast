@@ -1,0 +1,143 @@
+.progress-circular {
+  height: $progress-circular-height;
+  position: relative;
+  width: $progress-circular-height;
+}
+
+.progress-circular-gap {
+  border-top: ($progress-circular-spinner-width / 2) solid $progress-circular-bg;
+  position: absolute;
+  top: 0;
+  right: ($progress-circular-height / 2 - $progress-circular-spinner-width / 4);
+  bottom: 0;
+  left: ($progress-circular-height / 2 - $progress-circular-spinner-width / 4);
+}
+
+.progress-circular-inner {
+  animation: progress-circular-inner-rotate $progress-circular-animation-duration $transition-timing-function-standard infinite;
+  height: $progress-circular-height;
+  position: relative;
+  width: $progress-circular-height;
+}
+
+.progress-circular-left,
+.progress-circular-right {
+  height: $progress-circular-height;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: ($progress-circular-height / 2);
+}
+
+.progress-circular-left {
+  left: 0;
+}
+
+.progress-circular-right {
+  right: 0;
+}
+
+.progress-circular-spinner {
+  border: $progress-circular-spinner-width solid $progress-circular-bg;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  height: $progress-circular-height;
+  position: absolute;
+  top: 0;
+  width: $progress-circular-height;
+
+  .progress-circular-left & {
+    animation: progress-circular-spinner-left ($progress-circular-animation-duration / 4) $transition-timing-function-standard infinite;
+    border-right-color: transparent;
+    left: 0;
+  }
+
+  .progress-circular-right & {
+    animation: progress-circular-spinner-right ($progress-circular-animation-duration / 4) $transition-timing-function-standard infinite;
+    border-left-color: transparent;
+    right: 0;
+  }
+}
+
+.progress-circular-wrapper {
+  animation: progress-circular-wrapper-rotate ($progress-circular-animation-duration / 2) linear infinite;
+}
+
+@keyframes progress-circular-inner-rotate {
+  12.5% {
+    transform: rotate(135deg);
+  }
+
+  25% {
+    transform: rotate(270deg);
+  }
+
+  37.5% {
+    transform: rotate(405deg);
+  }
+
+  50% {
+    transform: rotate(540deg);
+  }
+
+  62.5% {
+    transform: rotate(675deg);
+  }
+
+  75% {
+    transform: rotate(810deg);
+  }
+
+  87.5% {
+    transform: rotate(945deg);
+  }
+
+  100% {
+    transform: rotate(1080deg);
+  }
+}
+
+@keyframes progress-circular-spinner-left {
+  0%,
+  100% {
+    transform: rotate(130deg);
+  }
+
+  50% {
+    transform: rotate(-5deg);
+  }
+}
+
+@keyframes progress-circular-spinner-right {
+  0%,
+  100% {
+    transform: rotate(-130deg);
+  }
+
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes progress-circular-wrapper-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@each $color, $values in $theme-colors {
+  .progress-circular-#{$color} {
+    .progress-circular-gap,
+    .progress-circular-spinner {
+      border-top-color: theme-color($color);
+    }
+
+    .progress-circular-left .progress-circular-spinner {
+      border-left-color: theme-color($color);
+    }
+
+    .progress-circular-right .progress-circular-spinner {
+      border-right-color: theme-color($color);
+    }
+  }
+}

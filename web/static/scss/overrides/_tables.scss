@@ -1,0 +1,14 @@
+
+$aligns: top, text-top, middle, baseline, text-bottom, bottom;
+
+table {
+
+  @each $align in $aligns {
+    tr.align-#{$align} {
+      td, th {
+        vertical-align: $align;
+      }
+    }
+  }
+
+}

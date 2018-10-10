@@ -104,9 +104,9 @@ $jumbotron-padding-x:        2rem !default;
 $jumbotron-padding-y:        3rem !default;
 
 // Link
+$link-color:            theme-color(primary) !default;
+$link-color-hover:      theme-color-light(primary) !default;
 
-$link-color:            theme-color(secondary) !default;
-$link-color-hover:      theme-color(secondary) !default;
 $link-decoration:       none !default;
 $link-decoration-hover: underline !default;
 

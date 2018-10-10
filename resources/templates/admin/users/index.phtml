@@ -25,7 +25,7 @@
             </thead>
             <tbody>
             <?php foreach($users as $user_row): ?>
-                <tr class="input">
+                <tr class="align-middle">
                     <td>
                     <?php if ($user_row->getId() !== $user->getId()): ?>
                         <a class="btn btn-sm btn-primary" href="<?=$router->named('admin:users:impersonate', ['id' => $user_row->getId(), 'csrf' => $csrf]) ?>"><?=__('Log In') ?></a>

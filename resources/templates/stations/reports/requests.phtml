@@ -30,7 +30,7 @@ $assets
             </thead>
             <tbody>
             <?php foreach($requests as $request_row): ?>
-                <tr class="input" id="request_<?=$request_row['id'] ?>">
+                <tr class="align-middle" id="request_<?=$request_row['id'] ?>">
                     <td class="text-center"><?=date('F j, Y g:ia', $request_row['timestamp']) ?></td>
                     <td class="text-center">
                     <?php if ($request_row['played_at'] > 0): ?>

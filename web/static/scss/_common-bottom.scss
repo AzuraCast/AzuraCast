@@ -56,7 +56,10 @@
 @import 'print';
 
 // Overrides for the Daemonite Material theme
-@import 'overrides/layout';
+@import 'overrides/header';
+@import 'overrides/body';
+@import 'overrides/footer';
+@import 'overrides/tables';
 
 // Individual AzuraCast pages
 @import 'pages/embed';

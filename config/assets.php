@@ -65,6 +65,10 @@ return [
                     'defer' => true,
                 ],
                 [
+                    'src' => 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js',
+                    'integrity' => 'sha256-xaF9RpdtRxzwYMWg4ldJoyPWqyDPCRD0Cv7YEEe6Ie8=',
+                ],
+                [
                     'src' => 'dist/app.js',
                 ],
                 [

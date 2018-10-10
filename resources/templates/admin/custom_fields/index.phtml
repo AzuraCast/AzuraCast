@@ -25,7 +25,7 @@
             </thead>
             <tbody>
             <?php foreach($records as $row): ?>
-                <tr class="input">
+                <tr class="align-middle">
                     <td>
                         <a class="btn btn-sm btn-default" href="<?=$router->named('admin:custom_fields:edit', ['id' => $row['id']]) ?>"><?=__('Edit') ?></a>
                         <a class="btn btn-sm btn-danger" href="<?=$router->named('admin:custom_fields:delete', ['id' => $row['id'], 'csrf' => $csrf]) ?>"><?=__('Delete') ?></a>

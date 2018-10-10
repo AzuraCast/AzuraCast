@@ -28,7 +28,7 @@
                 </thead>
                 <tbody>
                 <?php foreach($dupe_row as $media_row): ?>
-                    <tr class="input">
+                    <tr class="align-middle">
                         <td>
                             <a class="btn btn-sm btn-danger" href="<?=$router->fromHere('stations:reports:duplicates:delete', ['media_id' => $media_row['id']]) ?>"><?=__('Delete') ?></a>
                         </td>

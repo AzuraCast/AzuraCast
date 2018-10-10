@@ -47,12 +47,12 @@ echo $assets->js();
 
 <header class="navbar bg-primary-dark fixed-top">
 <?php if (!empty($sidebar)): ?>
-    <button aria-controls="sidebar" aria-expanded="false" aria-label="<?=__('Toggle Sidebar') ?>" class="navbar-toggler mr-3" data-breakpoint="lg" data-target="#doc-sidebar" data-toggle="navdrawer" data-type="permanent">
+    <button aria-controls="sidebar" aria-expanded="false" aria-label="<?=__('Toggle Sidebar') ?>" class="navbar-toggler d-inline-flex d-lg-none mr-3" data-breakpoint="lg" data-target="#sidebar" data-toggle="navdrawer" data-type="permanent">
         <span class="navbar-toggler-icon"></span>
     </button>
 <?php endif; ?>
 
-    <a class="navbar-brand mr-auto" href="<?=$router->named('dashboard') ?>">
+    <a class="navbar-brand ml-0 mr-auto" href="<?=$router->named('dashboard') ?>">
         azura<strong>cast</strong> <?php if (!empty($customization->getInstanceName())): ?><small><?=$this->e($customization->getInstanceName()) ?></small><?php endif; ?>
     </a>
 
@@ -60,32 +60,60 @@ echo $assets->js();
         <?=$this->fetch('partials/radio_controls') ?>
 
         <div class="dropdown">
-            <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" data-toggle="dropdown" id="doc-dropdown-follow" type="button"><i class="zmdi zmdi-more-vert"></i></button>
-            <div aria-labelledby="doc-dropdown-follow" class="dropdown-menu dropdown-menu-right">
-                <ul class="dropdown-menu dm-icon pull-right">
-                    <li><a href="<?=$router->named('dashboard') ?>"><i class="zmdi zmdi-home"></i> <?=__('Dashboard') ?></a></li>
-                    <?php if ($acl->userAllowed($user, 'view administration')): ?>
-                        <li><a href="<?=$router->named('admin:index:index') ?>"><i class="zmdi zmdi-settings"></i> <?=__('System Administration') ?></a></li>
-                    <?php endif; ?>
-                    <li><a href="<?=$router->named('profile:index') ?>"><i class="zmdi zmdi-account"></i> <?=__('My Account') ?></a></li>
-                    <li><a href="<?=$router->named('api_keys:index') ?>"><i class="zmdi zmdi-key"></i> <?=__('My API Keys') ?></a></li>
-                    <li class="divider">&nbsp;</li>
-                    <?php if ($auth->isMasqueraded()): ?>
-                        <li><a href="<?=$router->named('account:endmasquerade') ?>"><i class="zmdi zmdi-power"></i> <?=__('End Session') ?></a></li>
-                    <?php else: ?>
-                        <li><a href="<?=$router->named('account:logout') ?>"><i class="zmdi zmdi-power"></i> <?=__('Sign Out') ?></a></li>
-                    <?php endif; ?>
-                </ul>
-            </div>
+            <button aria-expanded="false" aria-haspopup="true" class="navbar-toggler" data-toggle="dropdown" type="button">
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                    <a class="dropdown-item" href="<?=$router->named('dashboard') ?>">
+                        <i class="material-icons">home</i>
+                        <?=__('Dashboard') ?>
+                    </a>
+                </li>
+                <?php if ($acl->userAllowed($user, 'view administration')): ?>
+                    <li>
+                        <a class="dropdown-item" href="<?=$router->named('admin:index:index') ?>">
+                            <i class="material-icons">settings</i>
+                            <?=__('System Administration') ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <li>
+                    <a class="dropdown-item" href="<?=$router->named('profile:index') ?>">
+                        <i class="material-icons">account_circle</i>
+                        <?=__('My Account') ?>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="<?=$router->named('api_keys:index') ?>">
+                        <i class="material-icons">vpn_key</i>
+                        <?=__('My API Keys') ?>
+                    </a>
+                </li>
+                <li class="dropdown-divider">&nbsp;</li>
+            <?php if ($auth->isMasqueraded()): ?>
+                <li>
+                    <a class="dropdown-item" href="<?=$router->named('account:endmasquerade') ?>">
+                        <i class="zmdi zmdi-power"></i>
+                        <?=__('End Session') ?>
+                    </a>
+                </li>
+            <?php else: ?>
+                <li>
+                    <a class="dropdown-item" href="<?=$router->named('account:logout') ?>">
+                        <i class="zmdi zmdi-power"></i>
+                        <?=__('Sign Out') ?></a></li>
+            <?php endif; ?>
+            </ul>
         </div>
     </div>
 </header>
 
 <?php if (!empty($sidebar)): ?>
-    <div aria-hidden="true" class="navdrawer navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
-        <div class="navdrawer-content">
+    <div aria-hidden="true" class="navdrawer navdrawer-permanent-lg navdrawer-permanent-clipped" id="sidebar" tabindex="-1">
+        <nav class="navdrawer-content">
             <?=$sidebar ?>
-        </div>
+        </nav>
     </div>
 <?php endif; ?>
 
@@ -102,10 +130,9 @@ echo $assets->js();
                 </div>
             <?php endif; ?>
             <div class="card">
-                <div class="card-header ch-alt">
-                    <h3><?=$title ?></h3>
-                </div>
-                <div class="card-body card-padding">
+                <div class="card-body">
+                    <h3 class="card-title"><?=$title ?></h3>
+
                     <?=$this->section('content') ?>
                 </div>
             </div>

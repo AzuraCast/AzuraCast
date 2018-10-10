@@ -18,12 +18,15 @@ $assets
 <div class="row">
     <div class="col">
         <section class="card bg-default mb-4 nowplaying" role="region" id="profile-nowplaying">
-            <h3 class="card-header"><?=__('On the Air') ?></h3>
             <div class="card-body">
+                <h3 class="card-title"><?=__('On the Air') ?></h3>
+
                 <div class="row">
-                    <div class="col">
-                        <div class="ml-4" style="position: relative;">
-                            <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-collection-music"></i></div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="ml-4 position-relative">
+                            <div class="position-absolute top-0 left--2">
+                                <i class="material-icons">collection_music</i>
+                            </div>
 
                             <h6><?=__('Now Playing') ?>:</h6>
 
@@ -39,7 +42,7 @@ $assets
                         </div>
                     </div>
 
-                    <div class="col" v-if="!np.live.is_live && np.playing_next">
+                    <div class="col-md-4 col-sm-12" v-if="!np.live.is_live && np.playing_next">
                         <div class="ml-4" style="position: relative;">
                             <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-skip-next"></i></div>
 
@@ -53,7 +56,7 @@ $assets
                             </div>
                         </div>
                     </div>
-                    <div class="col" v-if="np.live.is_live">
+                    <div class="col-md-4 col-sm-12" v-if="np.live.is_live">
                         <div class="ml-4" style="position: relative;">
                             <div style="position: absolute; top: 0; left: -22px;"><i class="zmdi-hc-lg zmdi zmdi-account"></i></div>
 
@@ -88,7 +91,9 @@ $assets
             <?php endif; ?>
         </section>
         <section class="card bg-default" role="region">
-            <h3 class="card-header"><?=__('Profile') ?></h3>
+            <div class="card-body">
+                <h3 class="card-title"><?=__('Profile') ?></h3>
+            </div>
         <?php if ($acl->userAllowed($user, 'manage station profile', $station->getId())): ?>
             <div class="card-actions">
                 <a class="btn btn-outline-primary" role="button" href="<?=$router->fromHere('stations:profile:edit') ?>">
@@ -163,20 +168,10 @@ $assets
     <div class="col">
     <?php if (count($stream_urls['local']) > 0 || count($stream_urls['remote']) > 0): ?>
         <section class="card bg-default mb-4" role="region">
-            <div class="card-header ch-alt">
-                <h3><?=__('Streams') ?></h3>
-
-                <ul class="actions">
-                    <a href="" data-toggle="dropdown" aria-expanded="false">
-                        <i class="zmdi zmdi-download"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="<?=$router->fromHere('public:playlist', ['format' => 'pls']) ?>"><?=__('Download %s', 'PLS') ?></a></li>
-                        <li><a href="<?=$router->fromHere('public:playlist', ['format' => 'm3u']) ?>"><?=__('Download %s', 'M3U') ?></a></li>
-                    </ul>
-                </ul>
+            <div class="card-body">
+                <h3 class="card-title"><?=__('Streams') ?></h3>
             </div>
-            <table class="table table-condensed table-striped">
+            <table class="table table-sm table-striped">
                 <colgroup>
                     <col width="10%">
                     <col width="90%">
@@ -189,7 +184,7 @@ $assets
                 </thead>
                 <tbody>
                 <?php foreach($stream_urls['local'] as $stream_url): ?>
-                    <tr class="input">
+                    <tr class="align-middle">
                         <td>
                             <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
                                 <i class="zmdi zmdi-play"></i>
@@ -210,7 +205,7 @@ $assets
                 </thead>
                 <tbody>
                 <?php foreach($stream_urls['remote'] as $stream_url): ?>
-                    <tr class="input">
+                    <tr class="align-middle">
                         <td>
                             <a class="btn-audio" href="#" data-url="<?=$this->e((string)$stream_url) ?>">
                                 <i class="zmdi zmdi-play"></i>
@@ -224,36 +219,36 @@ $assets
                 </tbody>
             <?php endif; ?>
             </table>
+            <div class="card-actions">
+                <a class="btn btn-outline-primary" href="<?=$router->fromHere('public:playlist', ['format' => 'pls']) ?>">
+                    <i class="material-icons">file_download</i>
+                    <?=__('Download %s', 'PLS') ?>
+                </a>
+                <a class="btn btn-outline-primary" href="<?=$router->fromHere('public:playlist', ['format' => 'm3u']) ?>">
+                    <i class="material-icons">file_download</i>
+                    <?=__('Download %s', 'M3U') ?>
+                </a>
+            </div>
         </section>
     <?php endif; ?>
 
     <?php if ($frontend_type !== \App\Radio\Adapters::FRONTEND_REMOTE): ?>
-        <section class="card <?php if ($frontend_is_running): ?>border-success<?php else: ?>border-danger<?php endif; ?> mb-4" role="region">
-            <div class="card-header text-success">
-                <h3>
+        <section class="card mb-4" role="region">
+            <div class="card-body">
+                <h3 class="card-title">
                     <?php if ($frontend_type === \App\Radio\Adapters::FRONTEND_ICECAST): ?>
                         <?=__('Icecast (Broadcasting Service)') ?>
                     <?php elseif ($frontend_type === \App\Radio\Adapters::FRONTEND_SHOUTCAST): ?>
                         <?=__('SHOUTcast DNAS 2 (Broadcasting Service)') ?>
                     <?php endif; ?>
-                    <br><small><?php if ($frontend_is_running): ?><?=__('Running') ?><?php else: ?><?=__('Not Running') ?><?php endif; ?></small>
                 </h3>
-
-                <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
-                <ul class="actions">
-                    <li class="dropdown">
-                        <a href="" data-toggle="dropdown" aria-expanded="false">
-                            <i class="zmdi zmdi-more-vert"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a class="api-call" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'restart']) ?>"><?=__('Restart Service') ?></a></li>
-                            <li><a class="api-call" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'start']) ?>"><?=__('Start Service') ?></a></li>
-                            <li><a class="api-call" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'stop']) ?>"><?=__('Stop Service') ?></a></li>
-                        </ul>
-                    </li>
-                </ul>
+                <?php if ($frontend_is_running): ?>
+                    <h5 class="card-subtitle text-success"><?=__('Running') ?></h5>
+                <?php else: ?>
+                    <h5 class="card-subtitle text-danger"><?=__('Not Running') ?></h5>
                 <?php endif; ?>
             </div>
+
             <table class="table table-striped table-responsive">
                 <colgroup>
                     <col width="30%">
@@ -289,44 +284,47 @@ $assets
                 <?php endif; ?>
                 </tbody>
             </table>
+
+            <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
+                <div class="card-actions">
+                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'restart']) ?>">
+                        <i class="material-icons">update</i>
+                        <?=__('Restart') ?>
+                    </a>
+                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'start']) ?>">
+                        <i class="material-icons">play_arrow</i>
+                        <?=__('Start') ?>
+                    </a>
+                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:frontend', ['do' => 'stop']) ?>">
+                        <i class="material-icons">stop</i>
+                        <?=__('Stop') ?>
+                    </a>
+                </div>
+            <?php endif; ?>
         </section>
         <?php endif; ?>
 
         <?php if ($backend_type == 'none'): ?>
-        <section class="card bg-default mb-4" role="region">
-            <div class="card-header bgm-bluegray ch-alt">
-                <h3><?=__('AutoDJ Disabled') ?></h3>
-            </div>
-            <div class="card-body card-padding">
+        <section class="card" role="region">
+            <div class="card-body">
+                <h3 class="card-title"><?=__('AutoDJ Disabled') ?></h3>
                 <p><?=__('AutoDJ has been disabled for this station. No music will automatically be played when a source is not live.') ?></p>
             </div>
         </section>
         <?php else: ?>
-        <section class="card bg-default mb-4" role="region">
-            <div class="card-header <?php if ($backend_is_running): ?>bgm-green<?php else: ?>bgm-red<?php endif; ?> ch-alt">
-                <h3>
+        <section class="card" role="region">
+            <div class="card-body">
+                <h3 class="card-title">
                 <?php if ($backend_type === \App\Radio\Adapters::BACKEND_LIQUIDSOAP): ?>
                     <?=__('Liquidsoap (AutoDJ Service)') ?><br>
                 <?php endif; ?>
-                    <small><?php if ($backend_is_running): ?><?=__('Running') ?><?php else: ?><?=__('Not Running') ?><?php endif; ?></small>
                 </h3>
-
-                <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
-                <ul class="actions">
-                    <li class="dropdown">
-                        <a href="" data-toggle="dropdown" aria-expanded="false">
-                            <i class="zmdi zmdi-more-vert"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a class="api-call" href="<?=$router->fromHere('api:stations:backend', ['do' => 'restart']) ?>"><?=__('Restart Service') ?></a></li>
-                            <li><a class="api-call" href="<?=$router->fromHere('api:stations:backend', ['do' => 'start']) ?>"><?=__('Start Service') ?></a></li>
-                            <li><a class="api-call" href="<?=$router->fromHere('api:stations:backend', ['do' => 'stop']) ?>"><?=__('Stop Service') ?></a></li>
-                        </ul>
-                    </li>
-                </ul>
+                <?php if ($backend_is_running): ?>
+                    <h5 class="card-subtitle text-success"><?=__('Running') ?></h5>
+                <?php else: ?>
+                    <h5 class="card-subtitle text-danger"><?=__('Not Running') ?></h5>
                 <?php endif; ?>
-            </div>
-            <div class="card-body card-padding">
+
                 <p><?=sprintf(__('LiquidSoap is currently shuffling from <b>%d uploaded songs</b> in <b>%d playlists</b>.'), $num_songs, $num_playlists) ?></p>
 
                 <?php if ($acl->userAllowed($user, 'manage station media', $station->getId())): ?>
@@ -336,6 +334,22 @@ $assets
                     </div>
                 <?php endif; ?>
             </div>
+            <?php if ($acl->userAllowed($user, 'manage station broadcasting', $station->getId())): ?>
+                <div class="card-actions">
+                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'restart']) ?>">
+                        <i class="material-icons">update</i>
+                        <?=__('Restart') ?>
+                    </a>
+                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'start']) ?>">
+                        <i class="material-icons">play_arrow</i>
+                        <?=__('Start') ?>
+                    </a>
+                    <a class="api-call btn btn-outline-secondary" href="<?=$router->fromHere('api:stations:backend', ['do' => 'stop']) ?>">
+                        <i class="material-icons">stop</i>
+                        <?=__('Stop') ?>
+                    </a>
+                </div>
+            <?php endif; ?>
         </section>
         <?php endif; ?>
     </div>

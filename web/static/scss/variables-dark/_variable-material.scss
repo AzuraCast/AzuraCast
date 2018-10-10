@@ -125,7 +125,7 @@ $progress-circular-bg:                 $material-color-indigo-500;
 // Selection control (Bootstrap custom form control)
 // Based on https://material.google.com/components/selection-controls.html
 
-$selection-control-color:                       $black-secondary;
+$selection-control-color:                       $white-hint;
 $selection-control-color-active:                theme-color(secondary);
 $selection-control-color-disabled:              rgba(0, 0, 0, 0.26);
 $selection-control-indicator-size:              $material-icon-size;
@@ -181,15 +181,15 @@ $nav-tab-indicator-bg:     theme-color(secondary);
 // Text field (Bootstrap form control)
 // Based on https://material.io/guidelines/components/text-fields.html#text-fields-states
 
-$textfield-border-color:       rgba(0, 0, 0, 0.42);
+$textfield-border-color:       rgba(255, 255, 255, 0.22);
 $textfield-border-color-focus: theme-color(secondary);
-$textfield-border-color-hover: rgba(0, 0, 0, 0.87);
+$textfield-border-color-hover: rgba(255, 255, 255, 0.47);
 $textfield-border-width:       $border-width;
 $textfield-border-width-focus: ($textfield-border-width * 2);
 $textfield-border-width-hover: ($textfield-border-width * 2);
-$textfield-color:              $material-color-grey-200;
-$textfield-color-disabled:     $black-hint;
-$textfield-hint-color:         $black-hint;
+$textfield-color:              $white-secondary;
+$textfield-color-disabled:     $white-hint;
+$textfield-hint-color:         $white-secondary;
 $textfield-plaintext-color:    $body-color;
 
 // Text field: box

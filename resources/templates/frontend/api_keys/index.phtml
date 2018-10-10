@@ -1,19 +1,22 @@
-<?php $this->layout('main', ['title' => __('My API Keys'), 'manual' => true]); ?>
-
-<div class="block-header">
-    <h2><?=__('My Account') ?></h2>
-</div>
+<?php
+$this->layout('main', [
+    'title' => __('My API Keys'),
+    'manual' => true
+]); ?>
 
 <div class="card">
-    <div class="card-header ch-alt">
-        <h2><?=__('My API Keys') ?></h2>
-        <a class="btn bgm-blue btn-float" role="button" title="<?=sprintf(__('Add %s'), __('API Key')) ?>" href="<?=$router->named('api_keys:add') ?>"><i class="zmdi zmdi-plus"></i></a>
-    </div>
-    <div class="card-body card-padding p-b-0">
+    <div class="card-body">
+        <h2 class="card-title"><?=__('My API Keys') ?></h2>
         <p>
-        <?=sprintf(__('API keys can be used to access some system functionality without needing to log in. All of the keys 
+            <?=sprintf(__('API keys can be used to access some system functionality without needing to log in. All of the keys 
             you create share your permissions in the system. For more information, see the <a href="%s">API documentation</a>.'), '/static/api/index.html') ?>
         </p>
+    </div>
+    <div class="card-actions">
+        <a class="btn btn-outline-primary" role="button" href="<?=$router->named('api_keys:add') ?>">
+            <i class="material-icons">add</i>
+            <?=sprintf(__('Add %s'), __('API Key')) ?>
+        </a>
     </div>
     <div class="table-responsive">
         <table class="table table-striped">

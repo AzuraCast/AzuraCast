@@ -176,7 +176,7 @@ input {
 }
 
 label {
-  @include typography-caption;
+  @include typography-subheading;
 
   color: $textfield-hint-color;
   display: inline-block;

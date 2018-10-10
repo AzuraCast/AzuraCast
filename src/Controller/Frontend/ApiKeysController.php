@@ -94,7 +94,6 @@ class ApiKeysController
         return $view->renderToResponse($response, 'system/form_page', [
             'form' => $form,
             'render_mode' => 'edit',
-            'header' => __('My Account'),
             'title' => sprintf(($id) ? __('Edit %s') : __('Add %s'), __('API Key'))
         ]);
     }

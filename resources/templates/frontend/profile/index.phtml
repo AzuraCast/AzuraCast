@@ -38,15 +38,11 @@
             <div class="card-body">
                 <h3 class="card-subtitle"><?=__('Account Information') ?></h3>
 
-                <dl class="dl-horizontal">
-                    <?=$account_info_form->renderView() ?>
-                </dl>
+                <?=$account_info_form->renderView() ?>
 
-                <h3 class="card-subtitle"><?=__('Customization') ?></h3>
+                <h3 class="card-subtitle mt-4"><?=__('Customization') ?></h3>
 
-                <dl class="dl-horizontal">
-                    <?=$customization_form->renderView() ?>
-                </dl>
+                <?=$customization_form->renderView() ?>
             </div>
         </div>
     </div>

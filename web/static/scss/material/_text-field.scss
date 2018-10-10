@@ -102,17 +102,9 @@
 
 %form-textarea {
   border-radius: $textfield-box-border-radius;
-  border-width: $textfield-border-width;
+  border-width: 0 0 $textfield-border-width 0;
   min-height: $textfield-box-height;
   padding: calc(#{$textfield-box-padding-y} - #{$textfield-border-width}) $textfield-box-padding-x;
-
-  @include hover {
-    box-shadow: inset $textfield-border-width-hover $textfield-border-width-hover 0 ($textfield-border-width * -1) $textfield-border-color-hover, inset ($textfield-border-width-hover * -1) ($textfield-border-width-hover * -1) 0 ($textfield-border-width * -1) $textfield-border-color-hover;
-  }
-
-  &:focus {
-    box-shadow: inset $textfield-border-width-focus $textfield-border-width-focus 0 ($textfield-border-width * -1) $textfield-border-color-focus, inset ($textfield-border-width-focus * -1) ($textfield-border-width-focus * -1) 0 ($textfield-border-width * -1) $textfield-border-color-focus;
-  }
 }
 
 // stylelint-disable selector-no-qualifying-type

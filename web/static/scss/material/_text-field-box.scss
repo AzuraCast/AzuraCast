@@ -10,7 +10,7 @@
   }
 
   %form-textarea {
-    border-width: 0 0 $textfield-border-width;
+    border-width: 0 0 $textfield-border-width 0;
     padding: $textfield-box-padding-y $textfield-box-padding-x calc(#{$textfield-box-padding-y} - #{$textfield-border-width});
 
     @include hover {

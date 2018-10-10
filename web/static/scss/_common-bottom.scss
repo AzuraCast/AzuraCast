@@ -55,6 +55,10 @@
 // Very basic print styles
 @import 'print';
 
+// Overrides for specific third-party products
+@import 'vendors/chosen';
+@import 'vendors/fullcalendar';
+
 // Overrides for the Daemonite Material theme
 @import 'overrides/header';
 @import 'overrides/body';
